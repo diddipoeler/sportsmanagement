@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -21,7 +21,7 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 /**
  * sportsmanagementViewextrafields
  *
- * @package 
+ * @package
  * @author
  * @copyright diddi
  * @version   2014
@@ -29,34 +29,33 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
  */
 class sportsmanagementViewextrafields extends sportsmanagementView
 {
-  
-    /**
-     * sportsmanagementViewextrafields::init()
-     *
-     * @return void
-     */
-    public function init()
-    {
-            
-        $this->table = Table::getInstance('club', 'sportsmanagementTable');
-      
-    }
-  
-    /**
-    * Add the page title and toolbar.
-    *
-    * @since 1.7
-    */
-    protected function addToolbar()
-    {
-        // Set toolbar items for the page
-        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_EXTRAFIELDS_TITLE');
-        ToolbarHelper::addNew('extrafield.add');
-        ToolbarHelper::editList('extrafield.edit');
-        ToolbarHelper::custom('extrafield.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
-        ToolbarHelper::archiveList('extrafield.export', Text::_('JTOOLBAR_EXPORT'));
-  
-        parent::addToolbar();
-    }
+
+	/**
+	 * sportsmanagementViewextrafields::init()
+	 *
+	 * @return void
+	 */
+	public function init()
+	{
+
+					$this->table = Table::getInstance('club', 'sportsmanagementTable');
+
+	}
+
+	/**
+	 * Add the page title and toolbar.
+	 *
+	 * @since 1.7
+	 */
+	protected function addToolbar()
+	{
+		// Set toolbar items for the page
+		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_EXTRAFIELDS_TITLE');
+		ToolbarHelper::addNew('extrafield.add');
+		ToolbarHelper::editList('extrafield.edit');
+		ToolbarHelper::custom('extrafield.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
+		ToolbarHelper::archiveList('extrafield.export', Text::_('JTOOLBAR_EXPORT'));
+
+		parent::addToolbar();
+	}
 }
-?>

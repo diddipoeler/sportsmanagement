@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -17,22 +17,33 @@ $nbcols        = 5;
 $dates        = $this->sortByDate($this->matches);
 $nametype = $this->config['names'];
 
-if($this->config['show_match_number']) {$nbcols++;
+if ($this->config['show_match_number'])
+{
+	$nbcols++;
 }
-if($this->config['show_events']) {$nbcols++;
+
+if ($this->config['show_events'])
+{
+	$nbcols++;
 }
-if(($this->config['show_playground'] || $this->config['show_playground_alert'])) {$nbcols++;
+
+if (($this->config['show_playground'] || $this->config['show_playground_alert']))
+{
+	$nbcols++;
 }
-if($this->config['show_referee']) {$nbcols++;
+
+if ($this->config['show_referee'])
+{
+	$nbcols++;
 }
 
 ?>
 
 <table class="<?PHP echo $this->config['table_class']; ?> ">
-    <tr>
-        <td>
-            May be designed in the future???
-        </td>
-    </tr>
+	<tr>
+		<td>
+			May be designed in the future???
+		</td>
+	</tr>
 </table>
 

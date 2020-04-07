@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -15,7 +15,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 
-//Ordering allowed ?
+// Ordering allowed ?
 $ordering = ($this->sortColumn == 'obj.ordering');
 
 

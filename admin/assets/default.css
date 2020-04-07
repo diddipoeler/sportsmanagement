@@ -13,23 +13,23 @@ div#template-files
 {
 	margin: 20px 0 0 0;
 	padding: 3px;
-	background:#F3F6E9 none repeat scroll 0 0;
-	border-bottom:1px solid #D5D5D5;
-	border-top:1px solid #D5D5D5;
+	background: #F3F6E9 none repeat scroll 0 0;
+	border-bottom: 1px solid #D5D5D5;
+	border-top: 1px solid #D5D5D5;
 }
 
 textarea.template-editor
 {
-	width:95%;
-	font-family:monospace;
-	font-size:13px;
-	padding-top:11px;
-	line-height:16px;
-	height: 500px; 
-	padding-left:30px;
+	width: 95%;
+	font-family: monospace;
+	font-size: 13px;
+	padding-top: 11px;
+	line-height: 16px;
+	height: 500px;
+	padding-left: 30px;
 	background: url(line-numbers.png) no-repeat;
-	background-attachment: scroll; 
-	margin-right:26px
+	background-attachment: scroll;
+	margin-right: 26px
 }
 
 div.info
@@ -178,11 +178,11 @@ div.info
 		width: 150px;
 	}
 	.admintable td.key + td { /* Value text */
-		
+
 	}
 		.admintable td .radiobtn-no, .admintable td .radiobtn-yes, .admintable td .radiobtn-show, .admintable td .radiobtn-hide, .admintable td .radiobtn-sidebar, .admintable td label[class="radiobtn-main content"]{ /* Value text */
-			clear:none;
-			padding-right:5px;
+			clear: none;
+			padding-right: 5px;
 		}
 /* Page media tab */
 #page-media td.key + td div {
@@ -190,7 +190,7 @@ div.info
 }
 /* Page Anti spam */
 #config-document #page-antispam td {
-	float:none;
+	float: none;
 }
 /* Page Groups */
 #page-groups td {
@@ -205,16 +205,16 @@ div.info
 	float: none;
 }
 	#page-privacy .privacyfriends input , #page-privacy .privacyprofile input, #page-privacy .privacyphotos input {
-		margin:5px;
+		margin: 5px;
 		/*float:none;*/
 	}
 /* Page Network */
 #page-network td {
-	float:none;
+	float: none;
 }
 /* Page Integration*/
 #page-integrations td {
-	float:none;
+	float: none;
 }
 
 table.admintable td label{
@@ -227,7 +227,7 @@ table.admintable td label{
 
 #com_karmaPoints {width: 380px;}
 #com_karmaPoints img {margin: 0; float: none;}
-#com_karmaPoints .admintable td {float:none;}
+#com_karmaPoints .admintable td {float: none;}
 #com_karmaPoints .admintable input[type=text] {margin: 0 5px 0 0;}
 #com_karmaPoints .admintable tr td table tr td {padding: 0; line-height: 19px;}
 #com_karmaPoints .admintable tr td table {margin: 0; padding: 0;}

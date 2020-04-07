@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -22,7 +22,7 @@ use Joomla\CMS\Form\FormField;
 /**
  * FormFieldTeams
  *
- * @package 
+ * @package
  * @author
  * @copyright diddi
  * @version   2014
@@ -30,39 +30,42 @@ use Joomla\CMS\Form\FormField;
  */
 class JFormFieldTeams extends FormField
 {
+	protected $type = 'teams';
 
-    protected $type = 'teams';
+	/**
+	 * FormFieldTeams::getInput()
+	 *
+	 * @return
+	 */
+	protected function getInput()
+	{
+		$db = sportsmanagementHelper::getDBConnection();
+		$lang = Factory::getLanguage();
 
-    /**
-     * FormFieldTeams::getInput()
-     *
-     * @return
-     */
-    protected function getInput()
-    {
-        $db = sportsmanagementHelper::getDBConnection();
-        $lang = Factory::getLanguage();
-        // welche tabelle soll genutzt werden
-        $params = ComponentHelper::getParams('com_sportsmanagement');
-        //$database_table	= $params->get( 'cfg_which_database_table' );
-      
-        $extension = "com_sportsmanagement";
-        $source = JPATH_ADMINISTRATOR . '/components/' . $extension;
-        $lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
-        ||    $lang->load($extension, $source, null, false, false)
-        ||    $lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
-        ||    $lang->load($extension, $source, $lang->getDefault(), false, false);
+		// Welche tabelle soll genutzt werden
+		$params = ComponentHelper::getParams('com_sportsmanagement');
 
-        $query = 'SELECT t.id, t.name FROM #__sportsmanagement_team t ORDER BY name';
-        $db->setQuery($query);
-        $teams = $db->loadObjectList();
-        $mitems = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+		// $database_table   = $params->get( 'cfg_which_database_table' );
 
-        foreach ( $teams as $team ) {
-            $mitems[] = HTMLHelper::_('select.option',  $team->id, '&nbsp;'.$team->name. ' ('.$team->id.')');
-        }
+			  $extension = "com_sportsmanagement";
+		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
+		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
+		||    $lang->load($extension, $source, null, false, false)
+		||    $lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
+		||    $lang->load($extension, $source, $lang->getDefault(), false, false);
 
-        $output= HTMLHelper::_('select.genericlist',  $mitems, $this->name.'[]', 'class="inputbox" multiple="multiple" size="10"', 'value', 'text', $this->value, $this->id);
-        return $output;
-    }
+		$query = 'SELECT t.id, t.name FROM #__sportsmanagement_team t ORDER BY name';
+		$db->setQuery($query);
+		$teams = $db->loadObjectList();
+		$mitems = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+
+		foreach ($teams as $team)
+		{
+			$mitems[] = HTMLHelper::_('select.option',  $team->id, '&nbsp;' . $team->name . ' (' . $team->id . ')');
+		}
+
+		$output = HTMLHelper::_('select.genericlist',  $mitems, $this->name . '[]', 'class="inputbox" multiple="multiple" size="10"', 'value', 'text', $this->value, $this->id);
+
+		return $output;
+	}
 }

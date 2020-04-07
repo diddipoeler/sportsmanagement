@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -27,7 +27,7 @@ use Joomla\CMS\Factory;
  */
 class modJSMTopTipper
 {
-  
+
 }
-      
-?>
+
+

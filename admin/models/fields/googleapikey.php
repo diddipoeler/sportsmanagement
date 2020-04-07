@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -18,7 +18,7 @@ use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Component\ComponentHelper;
 
-//JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINISTRATOR);
+// JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINISTRATOR);
 FormHelper::loadFieldClass('list');
 
 
@@ -33,19 +33,19 @@ FormHelper::loadFieldClass('list');
  */
 class JFormFieldGoogleApiKey extends \JFormFieldList
 {
-  
-    protected $type = 'GoogleApiKey';
+	protected $type = 'GoogleApiKey';
 
 
-    /**
-     * FormFieldGoogleApiKey::getOptions()
-     *
-     * @return
-     */
-    protected function getOptions()
-    {
-        $google_api_key = ComponentHelper::getParams('com_sportsmanagement')->get('google_api_developerkey', '');  
-        return $google_api_key;
-    }
-  
+	/**
+	 * FormFieldGoogleApiKey::getOptions()
+	 *
+	 * @return
+	 */
+	protected function getOptions()
+	{
+		$google_api_key = ComponentHelper::getParams('com_sportsmanagement')->get('google_api_developerkey', '');
+
+		return $google_api_key;
+	}
+
 }

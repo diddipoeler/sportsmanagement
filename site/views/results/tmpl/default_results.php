@@ -8,13 +8,13 @@
  * @subpackage results
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 
-if ( !isset ( $this->project ) )
+if (!isset($this->project))
 {
-Log::add( Text::_( 'Error: ProjectID was not submitted in URL or selected project was not found in database!' ) );
+	Log::add(Text::_('Error: ProjectID was not submitted in URL or selected project was not found in database!'));
 }
 else
 {
@@ -22,39 +22,36 @@ else
 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultresults">
 <br />
 <?php
-if ( count( $this->matches ) > 0 )
-{
-
-switch ( $this->config['result_style'] )
-{
-case 4:
-{
-echo $this->loadTemplate('results_style_dfcday');
-}
-break;
-case 3:
-{
-echo $this->loadTemplate('results_style3');
-}
-break;
-case 0:
-case 1:
-case 2:				
-default:
-{
-echo $this->loadTemplate('results_style0');
-}
-break;
-}
+if (count($this->matches) > 0)
+	{
+	switch ($this->config['result_style'])
+		{
+		case 4:
+		{
+			echo $this->loadTemplate('results_style_dfcday');
+		}
+		break;
+		case 3:
+		{
+			echo $this->loadTemplate('results_style3');
+		}
+		break;
+		case 0:
+		case 1:
+		case 2:
+		default:
+		{
+			echo $this->loadTemplate('results_style0');
+		}
+		break;
+	}
 }
 ?>
 </div>
 <!-- Main END -->
 <?php
-if ( $this->config['show_dnp_teams'] )
-{
-echo $this->loadTemplate('freeteams');
+if ($this->config['show_dnp_teams'])
+	{
+	echo $this->loadTemplate('freeteams');
 }
-      
 }
-?>

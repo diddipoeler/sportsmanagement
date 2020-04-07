@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -19,7 +19,7 @@ use Joomla\CMS\Language\Text;
 /**
  * sportsmanagementViewSeason
  *
- * @package 
+ * @package
  * @author
  * @copyright diddi
  * @version   2014
@@ -27,30 +27,30 @@ use Joomla\CMS\Language\Text;
  */
 class sportsmanagementViewSeason extends sportsmanagementView
 {
-  
-    /**
-     * sportsmanagementViewSeason::init()
-     *
-     * @return
-     */
-    public function init()
-    {
-  
-    }
 
-  
-    /**
-     * sportsmanagementViewSeason::addToolBar()
-     *
-     * @return void
-     */
-    protected function addToolBar()
-    {
-        $this->jinput->set('hidemainmenu', true);
-        $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SEASON_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SEASON_ADD_NEW');
-        $this->icon = 'season';
-        parent::addToolbar();
-    }
-  
-  
+	/**
+	 * sportsmanagementViewSeason::init()
+	 *
+	 * @return
+	 */
+	public function init()
+	{
+
+	}
+
+
+	/**
+	 * sportsmanagementViewSeason::addToolBar()
+	 *
+	 * @return void
+	 */
+	protected function addToolBar()
+	{
+		$this->jinput->set('hidemainmenu', true);
+		$isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SEASON_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SEASON_ADD_NEW');
+		$this->icon = 'season';
+		parent::addToolbar();
+	}
+
+
 }

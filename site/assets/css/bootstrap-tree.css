@@ -55,7 +55,7 @@
 		&.parent_li > span {
 			cursor: pointer;
 			/*Time for some hover effects*/
-			&:hover {
+			&: hover {
 				background-color: darken(@orange, 5%);
 				border: 1px solid darken(@orange, 10%);
 				color: #fff;

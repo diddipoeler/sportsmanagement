@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -15,8 +15,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 
-if(version_compare(JSM_JVERSION, '3', 'eq')) {
-
+if (version_compare(JSM_JVERSION, '3', 'eq'))
+{
 }
 
 $templatesToLoad = array('footer','listheader');
@@ -25,16 +25,16 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <script>
 
-    function searchClub(val,key)
-    {
-        var f = $('adminForm');
-        if(f)
-        {
-        f.elements['filter_search'].value=val;
-      
-        f.submit();
-        }
-    }
+	function searchClub(val,key)
+	{
+		var f = $('adminForm');
+		if(f)
+		{
+		f.elements['filter_search'].value=val;
+
+			  f.submit();
+		}
+	}
 
 </script>
 
@@ -47,11 +47,10 @@ echo $this->loadTemplate('joomla_version');
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
-<?php echo HTMLHelper::_('form.token')."\n"; ?>
+<?php echo HTMLHelper::_('form.token') . "\n"; ?>
 <?php echo $this->table_data_div; ?>
 </form>
 <?PHP
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>  

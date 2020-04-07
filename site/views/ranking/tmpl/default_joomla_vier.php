@@ -1,6 +1,6 @@
 <?PHP
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung fűr alle Sportarten
  *
  * @version    1.0.05
@@ -22,6 +22,7 @@ $this->endPane = 'endTabSet';
 $this->addPanel = 'addTab';
 $this->endPanel = 'endTab';
 $this->config['table_class'] = 'table table-striped';
+
 /*
 // Define tabs options for version of Joomla! 4.0
 $tabsOptions = array(
@@ -36,75 +37,90 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 echo $this->loadTemplate('projectheading');
 
 echo HTMLHelper::_('bootstrap.' . $this->startPane, 'myTab', array('active' => 'tab1id'));
-if ($this->config['show_table_1']) {
-    echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab1id', Text::_($this->config['table_text_1']));
+
+if ($this->config['show_table_1'])
+{
+	echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab1id', Text::_($this->config['table_text_1']));
 
 ?>
 <div class="<?php echo $this->divclasscontainer;?>">
-    <div class="<?php echo $this->divclassrow;?>">
-        <?PHP
-        echo $this->loadTemplate('ranking');
-        ?>
-    </div>
+	<div class="<?php echo $this->divclassrow;?>">
+		<?PHP
+		echo $this->loadTemplate('ranking');
+		?>
+	</div>
 </div>
 <?PHP
 echo HTMLHelper::_('bootstrap.' . $this->endPanel);
 }
-if ($this->config['show_table_2']) {
-    echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab2id', Text::_($this->config['table_text_2']));
+
+
+if ($this->config['show_table_2'])
+{
+	echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab2id', Text::_($this->config['table_text_2']));
 
 ?>
 <div class="<?php echo $this->divclasscontainer;?>">
-    <div class="<?php echo $this->divclassrow;?>">
-        <?PHP
-        echo $this->loadTemplate('ranking_home');
-        ?>
-    </div>
+	<div class="<?php echo $this->divclassrow;?>">
+		<?PHP
+		echo $this->loadTemplate('ranking_home');
+		?>
+	</div>
 </div>
 <?PHP
 echo HTMLHelper::_('bootstrap.' . $this->endPanel);
 }
-if ($this->config['show_table_3']) {
-    echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab3id', Text::_($this->config['table_text_3']));
+
+
+if ($this->config['show_table_3'])
+{
+	echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab3id', Text::_($this->config['table_text_3']));
 
 ?>
 <div class="<?php echo $this->divclasscontainer;?>">
-    <div class="<?php echo $this->divclassrow;?>">
-        <?PHP
-        echo $this->loadTemplate('ranking_away');
-        ?>
-    </div>
+	<div class="<?php echo $this->divclassrow;?>">
+		<?PHP
+		echo $this->loadTemplate('ranking_away');
+		?>
+	</div>
 </div>
 <?PHP
 echo HTMLHelper::_('bootstrap.' . $this->endPanel);
 }
-if ($this->config['show_table_4']) {
-    echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab4id', Text::_($this->config['table_text_4']));
+
+
+if ($this->config['show_table_4'])
+{
+	echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab4id', Text::_($this->config['table_text_4']));
 
 ?>
 <div class="<?php echo $this->divclasscontainer;?>">
-    <div class="<?php echo $this->divclassrow;?>">
-        <?PHP
-        echo $this->loadTemplate('ranking_first');
-        ?>
-    </div>
+	<div class="<?php echo $this->divclassrow;?>">
+		<?PHP
+		echo $this->loadTemplate('ranking_first');
+		?>
+	</div>
 </div>
 <?PHP
 echo HTMLHelper::_('bootstrap.' . $this->endPanel);
 }
-if ($this->config['show_table_5']) {
-    echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab5id', Text::_($this->config['table_text_5']));
+
+
+if ($this->config['show_table_5'])
+{
+	echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab5id', Text::_($this->config['table_text_5']));
 
 ?>
 <div class="<?php echo $this->divclasscontainer;?>">
-    <div class="<?php echo $this->divclassrow;?>">
-        <?PHP
-        echo $this->loadTemplate('ranking_second');
-        ?>
-    </div>
+	<div class="<?php echo $this->divclassrow;?>">
+		<?PHP
+		echo $this->loadTemplate('ranking_second');
+		?>
+	</div>
 </div>
 <?PHP
 }
+
 echo HTMLHelper::_('bootstrap.' . $this->endPanel);
 echo HTMLHelper::_('bootstrap.' . $this->endPane, 'myTab');
 
@@ -117,4 +133,3 @@ echo $this->loadTemplate('jsminfo');
 </div>
 </div>
 <?PHP
-?>

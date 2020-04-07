@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version   1.0.05
@@ -53,8 +53,8 @@ use Joomla\CMS\Factory;
 
 /**
  * CBootstrap
- * 
- * @package 
+ *
+ * @package
  * @author    abcde
  * @copyright 2015
  * @version   $Id$
@@ -62,50 +62,60 @@ use Joomla\CMS\Factory;
  */
 class CBootstrap
 {
+	private $_errors;
 
-    private $_errors;
-    private static $_actions;
+	private static $_actions;
 
-    /**
-     * CBootstrap::__construct()
-     * 
-     * @return void
-     */
-    public function __construct()
-    {
+	/**
+	 * CBootstrap::__construct()
+	 *
+	 * @return void
+	 */
+	public function __construct()
+	{
 
-    }
+	}
 
-    /**
-     * CBootstrap::load()
-     * 
-     * @return void
-     */
-    public static function load()
-    {
-        $doc = Factory::getDocument();
+	/**
+	 * CBootstrap::load()
+	 *
+	 * @return void
+	 */
+	public static function load()
+	{
+		$doc = Factory::getDocument();
 
-        if (version_compare(JVERSION, '3.0.0', 'ge')) {
-            // Joomla! 3.0 code here
-            Factory::getDocument()->addScript('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js');
-            //Factory::getDocument()->addScript('http://getbootstrap.com/2.3.2/assets/js/bootstrap-tab.js');
-            Factory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css');
-            Factory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css');
-        } elseif (version_compare(JVERSION, '2.5.0', 'ge')) {
-            // Joomla! 2.5 code here
-            Factory::getDocument()->addScript('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js');
-            //Factory::getDocument()->addScript('http://getbootstrap.com/2.3.2/assets/js/bootstrap-tab.js');
-            Factory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css');
-            Factory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css');
+		if (version_compare(JVERSION, '3.0.0', 'ge'))
+		{
+			// Joomla! 3.0 code here
+			Factory::getDocument()->addScript('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js');
 
-        } elseif (version_compare(JVERSION, '1.7.0', 'ge')) {
-            // Joomla! 1.7 code here
-        } elseif (version_compare(JVERSION, '1.6.0', 'ge')) {
-            // Joomla! 1.6 code here
-        } else {
-            // Joomla! 1.5 code here
-        }
+			// Factory::getDocument()->addScript('http://getbootstrap.com/2.3.2/assets/js/bootstrap-tab.js');
+			Factory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css');
+			Factory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css');
+		}
+		elseif (version_compare(JVERSION, '2.5.0', 'ge'))
+		{
+			// Joomla! 2.5 code here
+			Factory::getDocument()->addScript('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js');
 
-    }
+			// Factory::getDocument()->addScript('http://getbootstrap.com/2.3.2/assets/js/bootstrap-tab.js');
+			Factory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css');
+			Factory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css');
+		}
+		elseif (version_compare(JVERSION, '1.7.0', 'ge'))
+		{
+			// Joomla! 1.7 code here
+		}
+		elseif (version_compare(JVERSION, '1.6.0', 'ge'))
+		{
+			// Joomla! 1.6 code here
+		}
+		else
+		{
+			// Joomla! 1.5 code here
+		}
+
+	}
 
 }

@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -21,7 +21,7 @@ use Joomla\CMS\Form\Form;
 /**
  * sportsmanagementViewPredictionTemplate
  *
- * @package 
+ * @package
  * @author
  * @copyright diddi
  * @version   2013
@@ -29,54 +29,54 @@ use Joomla\CMS\Form\Form;
  */
 class sportsmanagementViewPredictionTemplate extends sportsmanagementView
 {
-  
-    /**
-     * sportsmanagementViewPredictionTemplate::init()
-     *
-     * @return
-     */
-    public function init()
-    {
 
-        $item = $this->get('Item');
-        $this->item = $item;
-      
-        $templatepath = JPATH_COMPONENT_SITE.DIRECTORY_SEPARATOR.'settings';
-        $xmlfile = $templatepath.DIRECTORY_SEPARATOR.'default'.DIRECTORY_SEPARATOR.$item->template.'.xml';
-     
-        $form = Form::getInstance($item->template, $xmlfile, array('control'=> 'params'));
-        $form->bind($item->params);
-        // Assign the Data
-        $this->form = $form;
-      
-        $script = $this->get('Script');
-        $this->script = $script;
-      
-        $this->prediction_id = $this->app->getUserState("$this->option.prediction_id", '0');
-        $this->predictionGame = $this->model->getPredictionGame($this->prediction_id);
+	/**
+	 * sportsmanagementViewPredictionTemplate::init()
+	 *
+	 * @return
+	 */
+	public function init()
+	{
 
-    }
+		$item = $this->get('Item');
+		$this->item = $item;
 
-  
+			  $templatepath = JPATH_COMPONENT_SITE . DIRECTORY_SEPARATOR . 'settings';
+		$xmlfile = $templatepath . DIRECTORY_SEPARATOR . 'default' . DIRECTORY_SEPARATOR . $item->template . '.xml';
 
-    /**
-    * Add the page title and toolbar.
-    *
-    * @since 1.7
-    */
-    protected function addToolbar()
-    {
-      
-        $jinput = Factory::getApplication()->input;
-        $jinput->set('hidemainmenu', true);
-        $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_NEW');
-        $this->icon = 'predtemplate';
-      
-        $this->item->name = $this->item->template;
+			 $form = Form::getInstance($item->template, $xmlfile, array('control' => 'params'));
+		$form->bind($item->params);
 
-        parent::addToolbar();
+		// Assign the Data
+		$this->form = $form;
 
-    }      
-  
+			  $script = $this->get('Script');
+		$this->script = $script;
+
+			  $this->prediction_id = $this->app->getUserState("$this->option.prediction_id", '0');
+		$this->predictionGame = $this->model->getPredictionGame($this->prediction_id);
+
+	}
+
+
+
+	/**
+	 * Add the page title and toolbar.
+	 *
+	 * @since 1.7
+	 */
+	protected function addToolbar()
+	{
+
+			  $jinput = Factory::getApplication()->input;
+		$jinput->set('hidemainmenu', true);
+		$isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_NEW');
+		$this->icon = 'predtemplate';
+
+			  $this->item->name = $this->item->template;
+
+		parent::addToolbar();
+
+	}
+
 }
-?>

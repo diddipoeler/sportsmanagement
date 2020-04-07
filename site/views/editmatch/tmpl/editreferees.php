@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -22,60 +22,61 @@ $params = $this->form->getFieldsets('params');
 
 ?>
 <div id="lineup">
-    <form action="<?php echo $this->uri->toString(); ?>" id='editreferees' method='post' name='editreferees' >
-    <fieldset>
-        <div class="fltrt">
+	<form action="<?php echo $this->uri->toString(); ?>" id='editreferees' method='post' name='editreferees' >
+	<fieldset>
+		<div class="fltrt">
 <button type="button" onclick="jQuery('select.position-starters option').prop('selected', 'selected');Joomla.submitform('editmatch.saveReferees', this.form);">
 <?php echo Text::_('JSAVE');?></button>  
 <button type="button" onclick="Joomla.submitform('editmatch.cancel', this.form);">
 <?php echo Text::_('JCANCEL');?></button>      
-        </div>
-        <div class="configuration" >
-    <?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ER_TITLE'); ?>
-        </div>
-    </fieldset>
-    <div class="clear"></div>
-        <fieldset class="adminform">
-            <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ER_DESCR'); ?></legend>
-            <table class='adminlist'>
-            <thead>
-                <tr>
-                    <th>
-        <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ER_REFS'); ?>
-                    </th>
-                    <th>
-        <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ER_ASSIGNED'); ?>
-                    </th>                  
-                </tr>
-            </thead>          
-                <tr>
-                    <td style="text-align:center; ">
-        <?php
-        // echo select list of non assigned players from team roster
-        echo $this->lists['team_referees'];
-        ?>
-                    </td>
-                    <td style="text-align:center; vertical-align:top; ">
-                        <table>
-        <?php
-        if (isset($this->positions) ) {
-            foreach ($this->positions AS $key => $pos)
-            {
-                                ?>
-                                <tr>
+		</div>
+		<div class="configuration" >
+	<?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ER_TITLE'); ?>
+		</div>
+	</fieldset>
+	<div class="clear"></div>
+		<fieldset class="adminform">
+			<legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ER_DESCR'); ?></legend>
+			<table class='adminlist'>
+			<thead>
+				<tr>
+					<th>
+		<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ER_REFS'); ?>
+					</th>
+					<th>
+		<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ER_ASSIGNED'); ?>
+					</th>                  
+				</tr>
+			</thead>          
+				<tr>
+					<td style="text-align:center; ">
+		<?php
+		// Echo select list of non assigned players from team roster
+		echo $this->lists['team_referees'];
+		?>
+					</td>
+					<td style="text-align:center; vertical-align:top; ">
+						<table>
+		<?php
+		if (isset($this->positions))
+		{
+			foreach ($this->positions AS $key => $pos)
+			{
+								?>
+								<tr>
 <td style='text-align:center; vertical-align:middle; '>
 <!-- left / right buttons -->
 <br />
-                                      
-                                      
-<input id="moveright" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_RIGHT'); ?>" onclick="move_list_items('roster','position<?php echo $key;?>');" />
+
+									  
+									  <input id="moveright" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_RIGHT'); ?>" onclick="move_list_items('roster','position<?php echo $key;?>');" />
 <input id="moveleft" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_LEFT'); ?>" onclick="move_list_items('position<?php echo $key;?>','roster');" />
-                                      
-</td>
+
+									  </td>
 <td>
 <!-- player affected to this position -->
 <b><?php echo Text::_($pos->text); ?></b><br />
-<?php echo $this->lists['team_referees'.$key];?>
+<?php echo $this->lists['team_referees' . $key];?>
 </td>
 <td style='text-align:center; vertical-align:middle; '>
 <!-- up/down buttons -->
@@ -85,18 +86,18 @@ value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_UP'); ?>" /><br />
 <input	type="button" id="movedown-<?php echo $key;?>" class="inputbox move-down"
 value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DOWN'); ?>" />
 </td>
-                                </tr>
-                                <?php
-            }
-        }
-        ?>
-                        </table>
-                    </td>
-                </tr>
-            </table>
-        </fieldset>
-        <br/>
-        <br/>
+								</tr>
+								<?php
+			}
+		}
+		?>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</fieldset>
+		<br/>
+		<br/>
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="view" value="" />
 <input type="hidden" name="close" id="close" value="0" />
@@ -109,6 +110,6 @@ value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DOWN'); ?>" />
 <input type="hidden" name="division" value="<?php echo sportsmanagementModelEditMatch::$divisionid; ?>" />
 <input type="hidden" name="cfg_which_database" value="<?php echo sportsmanagementModelEditMatch::$cfg_which_database; ?>" />
 <input type="hidden" name="positionscount" value="<?php echo count($this->positions); ?>" id="positioncount" />
-<?php echo HTMLHelper::_('form.token')."\n"; ?>
+<?php echo HTMLHelper::_('form.token') . "\n"; ?>
 </form>
 </div>

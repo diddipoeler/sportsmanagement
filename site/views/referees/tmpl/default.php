@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -19,23 +19,28 @@ defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-if (!isset($this->config['show_referees']) ) {
-    $this->config['show_referees'] = 1;
+if (!isset($this->config['show_referees']))
+{
+	$this->config['show_referees'] = 1;
 }
 ?>
 <div class="<?php echo $this->divclasscontainer;?>" id="referees">
 <?php
-if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO ) {
-    echo $this->loadTemplate('debug');
+if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO)
+{
+	echo $this->loadTemplate('debug');
 }
+
 echo $this->loadTemplate('projectheading');
 
-if ($this->config['show_sectionheader'] ) {
-    echo $this->loadTemplate('sectionheader');
+if ($this->config['show_sectionheader'])
+{
+	echo $this->loadTemplate('sectionheader');
 }
 
-if ($this->config['show_referees'] ) {
-    echo $this->loadTemplate('referees');
+if ($this->config['show_referees'])
+{
+	echo $this->loadTemplate('referees');
 }
 
 echo $this->loadTemplate('jsminfo');

@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -18,7 +18,7 @@ use Joomla\CMS\MVC\Controller\BaseController;
 /**
  * sportsmanagementController
  *
- * @package 
+ * @package
  * @author
  * @copyright diddi
  * @version   2014
@@ -27,29 +27,28 @@ use Joomla\CMS\MVC\Controller\BaseController;
 class sportsmanagementController extends BaseController
 {
 
-    /**
-     * sportsmanagementController::__construct()
-     *
-     * @param  mixed $config
-     * @return void
-     */
-    function __construct($config = array())
-    {
-        parent::__construct($config);
-    }
+	/**
+	 * sportsmanagementController::__construct()
+	 *
+	 * @param   mixed $config
+	 * @return void
+	 */
+	function __construct($config = array())
+	{
+		parent::__construct($config);
+	}
 
-    /**
-     * sportsmanagementController::display()
-     *
-     * @param  bool $cachable
-     * @param  bool $urlparams
-     * @return void
-     */
-    public function display($cachable = false, $urlparams = false)
-    {
-        parent::display($cachable, $urlparams);
-    }
+	/**
+	 * sportsmanagementController::display()
+	 *
+	 * @param   bool $cachable
+	 * @param   bool $urlparams
+	 * @return void
+	 */
+	public function display($cachable = false, $urlparams = false)
+	{
+		parent::display($cachable, $urlparams);
+	}
 
 }
 
-?>

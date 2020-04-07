@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -29,16 +29,16 @@ $cfg_bugtracker_server = ComponentHelper::getParams($this->jinput->getCmd('optio
 
 <div id="j-main-container" class="j-toggle-main span12 center" >    
 
-    <a title= "<?php echo Text::_('COM_SPORTSMANAGEMENT_SITE_LINK') ?>" target= "_blank" href="http://www.fussballineuropa.de">
-        <img src= "<?php echo Uri::base(true) ?>/components/com_sportsmanagement/assets/icons/logo_transparent.png"               width="180" height="auto" </a>          
-    <br />
+	<a title= "<?php echo Text::_('COM_SPORTSMANAGEMENT_SITE_LINK') ?>" target= "_blank" href="http://www.fussballineuropa.de">
+		<img src= "<?php echo Uri::base(true) ?>/components/com_sportsmanagement/assets/icons/logo_transparent.png"               width="180" height="auto" </a>          
+	<br />
 <?php echo Text::_("COM_SPORTSMANAGEMENT_DESC"); ?>
-    <br />    
-    <?php echo Text::_("COM_SPORTSMANAGEMENT_COPYRIGHT"); ?> : &copy;
-    <a href="http://www.fussballineuropa.de" target="_blank">Fussball in Europa</a>
-    <br />    
-    <?php echo Text::_("COM_SPORTSMANAGEMENT_VERSION"); ?> :     
+	<br />    
+	<?php echo Text::_("COM_SPORTSMANAGEMENT_COPYRIGHT"); ?> : &copy;
+	<a href="http://www.fussballineuropa.de" target="_blank">Fussball in Europa</a>
+	<br />    
+	<?php echo Text::_("COM_SPORTSMANAGEMENT_VERSION"); ?> :     
 <?php echo Text::sprintf('%1$s', sportsmanagementHelper::getVersion()); ?>
-    <br />
+	<br />
 
 </div>      

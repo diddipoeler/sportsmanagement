@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -13,7 +13,7 @@
  */
 
 
-defined('_JEXEC') or die ;
+defined('_JEXEC') or die;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Form\FormField;
@@ -29,45 +29,45 @@ use Joomla\CMS\Form\FormField;
  */
 class JFormFieldSYWOnlineHelp extends FormField
 {
-    protected $type = 'SYWOnlineHelp';
+	protected $type = 'SYWOnlineHelp';
 
-    /**
-     * FormFieldSYWOnlineHelp::getLabel()
-     *
-     * @return
-     */
-    protected function getLabel()
-    {
+	/**
+	 * FormFieldSYWOnlineHelp::getLabel()
+	 *
+	 * @return
+	 */
+	protected function getLabel()
+	{
 
-        HTMLHelper::_('stylesheet', 'syw/fonts-min.css', false, true);
+		HTMLHelper::_('stylesheet', 'syw/fonts-min.css', false, true);
 
-        $title = $this->element['label'] ? (string) $this->element['label'] : ($this->element['title'] ? (string) $this->element['title'] : '');
-        $heading = $this->element['heading'] ? (string) $this->element['heading'] : 'h4';
-        $description = (string) $this->element['description'];
-        $class = !empty($this->class) ? ' class="' . $this->class . '"' : '';
+		$title = $this->element['label'] ? (string) $this->element['label'] : ($this->element['title'] ? (string) $this->element['title'] : '');
+		$heading = $this->element['heading'] ? (string) $this->element['heading'] : 'h4';
+		$description = (string) $this->element['description'];
+		$class = !empty($this->class) ? ' class="' . $this->class . '"' : '';
 
-        $url = (string) $this->element['url'];
+		$url = (string) $this->element['url'];
 
-        $html = array();
+		$html = array();
 
-        $html[] = !empty($title) ? '<' . $heading . '>' . Text::_($title) . '</' . $heading . '>' : '';
+		$html[] = !empty($title) ? '<' . $heading . '>' . Text::_($title) . '</' . $heading . '>' : '';
 
-        $html[] = '<table style="width: 100%"><tr>';
-        $html[] = !empty($description) ? '<td>'.Text::_($description).'</td>' : '';
-        $html[] = '<td style="text-align: right"><a href="'.$url.'" target="_blank" class="btn btn-info btn-mini btn-xs"><i class="SYWicon-local-library"></i></a></td>';
-        $html[] = '</tr></table>';
+		$html[] = '<table style="width: 100%"><tr>';
+		$html[] = !empty($description) ? '<td>' . Text::_($description) . '</td>' : '';
+		$html[] = '<td style="text-align: right"><a href="' . $url . '" target="_blank" class="btn btn-info btn-mini btn-xs"><i class="SYWicon-local-library"></i></a></td>';
+		$html[] = '</tr></table>';
 
-        return '</div><div ' . $class . '>' . implode('', $html);
-    }
+		return '</div><div ' . $class . '>' . implode('', $html);
+	}
 
-    /**
-     * FormFieldSYWOnlineHelp::getInput()
-     *
-     * @return
-     */
-    protected function getInput()
-    {
-        return '';
-    }
+	/**
+	 * FormFieldSYWOnlineHelp::getInput()
+	 *
+	 * @return
+	 */
+	protected function getInput()
+	{
+		return '';
+	}
 
 }

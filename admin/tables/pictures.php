@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -18,7 +18,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * sportsmanagementTablepictures
  *
- * @package 
+ * @package
  * @author
  * @copyright diddi
  * @version   2014
@@ -26,22 +26,21 @@ defined('_JEXEC') or die('Restricted access');
  */
 class sportsmanagementTablepictures extends JSMTable
 {
-    /**
-     * Constructor
-     *
-     * @param object Database connector object
-     * @since 1.0
-     */
-    function __construct(& $db)
-    {
-          $db = sportsmanagementHelper::getDBConnection();
-        parent::__construct('#__sportsmanagement_pictures', 'id', $db);
-    }
+	/**
+	 * Constructor
+	 *
+	 * @param object Database connector object
+	 * @since 1.0
+	 */
+	function __construct(& $db)
+	{
+		  $db = sportsmanagementHelper::getDBConnection();
+		parent::__construct('#__sportsmanagement_pictures', 'id', $db);
+	}
 
-  
-  
-  
-  
+
+
+
+
 
 }
-?>

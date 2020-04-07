@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -35,38 +35,42 @@ use Joomla\CMS\Filesystem\File;
 <th class="" id="">
 <?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ALL_PROJECTS_SEASON', 's.name', $this->sortDirection, $this->sortColumn); ?>
 </th>
-               
-<th class="" id="">
+
+			   <th class="" id="">
 <?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_COUNTRY', 'v.country', $this->sortDirection, $this->sortColumn); ?>
 </th>                               
-              
-</tr>
+
+			  </tr>
 </thead>
 
-<?php foreach ($this->items as $i => $item) : ?>
+<?php foreach ($this->items as $i => $item)
+:
+	?>
 <tr class="row<?php echo $i % 2; ?>">
 <td>
 <?php
-if ($item->slug ) {
-    $routeparameter = array();
-    $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-    $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
-    $routeparameter['p'] = $item->slug;
-    $routeparameter['type'] = 0;
-    $routeparameter['r'] = 0;
-    $routeparameter['from'] = 0;
-    $routeparameter['to'] = 0;
-    $routeparameter['division'] = 0;
-    $link = sportsmanagementHelperRoute::getSportsmanagementRoute($this->template, $routeparameter);
-    echo HTMLHelper::link($link, $item->name);
+if ($item->slug)
+	{
+	$routeparameter = array();
+	$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+	$routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
+	$routeparameter['p'] = $item->slug;
+	$routeparameter['type'] = 0;
+	$routeparameter['r'] = 0;
+	$routeparameter['from'] = 0;
+	$routeparameter['to'] = 0;
+	$routeparameter['division'] = 0;
+	$link = sportsmanagementHelperRoute::getSportsmanagementRoute($this->template, $routeparameter);
+	echo HTMLHelper::link($link, $item->name);
 }
 else
-{
-    echo $item->name;  
+	{
+	echo $item->name;
 }
 
-if (!File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.$item->picture) ) {
-    $item->picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
+if (!File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $item->picture))
+	{
+	$item->picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
 }
 
 ?>
@@ -74,9 +78,9 @@ if (!File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.$item->picture) ) {
 <td>
 <?PHP
 echo sportsmanagementHelperHtml::getBootstrapModalImage(
-    'allproject'.$item->id, $item->picture, $item->name, '20', '', $this->modalwidth,
-    $this->modalheight,
-    $this->use_jquery_modal
+	'allproject' . $item->id, $item->picture, $item->name, '20', '', $this->modalwidth,
+	$this->modalheight,
+	$this->use_jquery_modal
 );
 ?>
 <td>

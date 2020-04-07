@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -26,20 +26,15 @@ foreach ($this->model_hits as $key => $values)
 </tr>
 <?PHP
 foreach ($values as $row)
-{
+	{
 ?>
 <tr class="">
 <td class=""><?php echo $row->name;?></td>
 <td class=""><?php echo $row->hits;?></td>
 </tr>  
-<?PHP  
+<?PHP
 }
 ?>
 </table>
 <?PHP
 }
-?>
-
-
-
-

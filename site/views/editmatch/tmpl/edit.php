@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -18,8 +18,9 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 jimport('joomla.html.pane');
-//HTMLHelper::_('behavior.tooltip');
-//HTMLHelper::_('behavior.formvalidation');
+
+// HTMLHelper::_('behavior.tooltip');
+// HTMLHelper::_('behavior.formvalidation');
 
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
@@ -38,11 +39,11 @@ $fieldsets = $this->form->getFieldsets();
 <!--
 //window.addEvent('domready', function() {
 jQuery(document).ready(function() {  
-    // altered decision fields management
-    toggle_altdecision();
-    //jQuery('alt_decision').addEvent('change', toggle_altdecision);
+	// altered decision fields management
+	toggle_altdecision();
+	//jQuery('alt_decision').addEvent('change', toggle_altdecision);
   
-    jQuery('#alt_decision').change(function() {
+	jQuery('#alt_decision').change(function() {
   toggle_altdecision() ;
 });
   
@@ -50,22 +51,22 @@ jQuery(document).ready(function() {
 
 function toggle_altdecision()
 {
-    if ( jQuery('#alt_decision').val() == 0)
-    {
-    //jQuery('alt_decision_enter').style.display='none';
-    jQuery("#alt_decision_enter").css("display", "none");
-    jQuery('#team1_result_decision').disabled = true;
-    jQuery('#team2_result_decision').disabled = true;
-    jQuery('#decision_info').disabled = true;
-    }
-    else
-    {
-    //jQuery('alt_decision_enter').style.display='block';
-    jQuery("#alt_decision_enter").css("display", "block");
-    jQuery('#team1_result_decision').disabled = false;
-    jQuery('#team2_result_decision').disabled = false;
-    jQuery('#decision_info').disabled = false;
-    }
+	if ( jQuery('#alt_decision').val() == 0)
+	{
+	//jQuery('alt_decision_enter').style.display='none';
+	jQuery("#alt_decision_enter").css("display", "none");
+	jQuery('#team1_result_decision').disabled = true;
+	jQuery('#team2_result_decision').disabled = true;
+	jQuery('#decision_info').disabled = true;
+	}
+	else
+	{
+	//jQuery('alt_decision_enter').style.display='block';
+	jQuery("#alt_decision_enter").css("display", "block");
+	jQuery('#team1_result_decision').disabled = false;
+	jQuery('#team2_result_decision').disabled = false;
+	jQuery('#decision_info').disabled = false;
+	}
 }
 
 //-->
@@ -93,29 +94,29 @@ function toggle_altdecision()
 </legend>
 </fieldset>
 <?php
-echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'home'));   
+echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'home'));
 echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'home', Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHDETAILS', true));
 echo $this->loadTemplate('matchdetails');
-echo HTMLHelper::_('bootstrap.endTab');          
+echo HTMLHelper::_('bootstrap.endTab');
 echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'menu1', Text::_('COM_SPORTSMANAGEMENT_TABS_ALTDECISION', true));
 echo $this->loadTemplate('altdecision');
-echo HTMLHelper::_('bootstrap.endTab');  
+echo HTMLHelper::_('bootstrap.endTab');
 echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'menu2', Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHPREVIEW', true));
 echo $this->loadTemplate('matchpreview');
-echo HTMLHelper::_('bootstrap.endTab');  
+echo HTMLHelper::_('bootstrap.endTab');
 echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'menu3', Text::_('COM_SPORTSMANAGEMENT_TABS_SCOREDETAILS', true));
 echo $this->loadTemplate('scoredetails');
-echo HTMLHelper::_('bootstrap.endTab');  
+echo HTMLHelper::_('bootstrap.endTab');
 echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'menu4', Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHREPORT', true));
 echo $this->loadTemplate('matchreport');
-echo HTMLHelper::_('bootstrap.endTab');  
+echo HTMLHelper::_('bootstrap.endTab');
 echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'menu5', Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHRELATION', true));
 echo $this->loadTemplate('matchrelation');
-echo HTMLHelper::_('bootstrap.endTab');  
+echo HTMLHelper::_('bootstrap.endTab');
 echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'menu6', Text::_('COM_SPORTSMANAGEMENT_TABS_EXTENDED', true));
 echo $this->loadTemplate('matchextended');
-echo HTMLHelper::_('bootstrap.endTab');      
-echo HTMLHelper::_('bootstrap.endTabSet');      
+echo HTMLHelper::_('bootstrap.endTab');
+echo HTMLHelper::_('bootstrap.endTabSet');
 ?>
 <div class="clr"></div>
 

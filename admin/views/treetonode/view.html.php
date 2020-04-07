@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -29,58 +29,62 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
  */
 class sportsmanagementViewTreetonode extends sportsmanagementView
 {
-  
-    /**
-     * sportsmanagementViewTreetonode::init()
-     *
-     * @return
-     */
-    function init(  )
-    {
-        if ($this->getLayout() == 'edit' || $this->getLayout() == 'edit_3' || $this->getLayout() == 'edit_4' ) {
-               $this->_displayForm();
-               return;
-        }
 
-        //parent::display( $tpl );
-    }
+	/**
+	 * sportsmanagementViewTreetonode::init()
+	 *
+	 * @return
+	 */
+	function init(  )
+	{
+		if ($this->getLayout() == 'edit' || $this->getLayout() == 'edit_3' || $this->getLayout() == 'edit_4')
+		{
+			   $this->_displayForm();
 
-    /**
-     * sportsmanagementViewTreetonode::_displayForm()
-     *
-     * @return void
-     */
-    function _displayForm(  )
-    {
-        $pid = $this->app->getUserState($this->option . '.pid');
-        $tid = $this->app->getUserState($this->option . '.tid');
+			return;
+		}
 
-        $lists = array();
-      
-        //	$node = $this->get('data');
-        $match = $this->model->getNodeMatch();
-      
-        //$total = $this->get('Total');
-        //$pagination = $this->get('Pagination');
-        //$projectws = $this->get( 'Data', 'project' );
-        $mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
-        $projectws = $mdlProject->getProject($pid);
-      
-        $model = $this->getModel('project');
-        $mdlTreetonodes = BaseDatabaseModel::getInstance("Treetonodes", "sportsmanagementModel");
-        $team_id[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
-        if($projectteams = $mdlTreetonodes->getProjectTeamsOptions($pid) ) {
-            $team_id = array_merge($team_id, $projectteams);
-        }
-        $lists['team'] = $team_id;
-        unset($team_id);
+		// Parent::display( $tpl );
+	}
 
-        $this->projectws = $projectws;
-        $this->lists = $lists;
-        $this->node = $this->item;
-        $this->match = $match;
+	/**
+	 * sportsmanagementViewTreetonode::_displayForm()
+	 *
+	 * @return void
+	 */
+	function _displayForm(  )
+	{
+		$pid = $this->app->getUserState($this->option . '.pid');
+		$tid = $this->app->getUserState($this->option . '.tid');
 
-    }
+		$lists = array();
+
+			  //	$node = $this->get('data');
+		$match = $this->model->getNodeMatch();
+
+			  // $total = $this->get('Total');
+		// $pagination = $this->get('Pagination');
+		// $projectws = $this->get( 'Data', 'project' );
+		$mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
+		$projectws = $mdlProject->getProject($pid);
+
+			  $model = $this->getModel('project');
+		$mdlTreetonodes = BaseDatabaseModel::getInstance("Treetonodes", "sportsmanagementModel");
+		$team_id[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
+
+		if ($projectteams = $mdlTreetonodes->getProjectTeamsOptions($pid))
+		{
+			$team_id = array_merge($team_id, $projectteams);
+		}
+
+		$lists['team'] = $team_id;
+		unset($team_id);
+
+		$this->projectws = $projectws;
+		$this->lists = $lists;
+		$this->node = $this->item;
+		$this->match = $match;
+
+	}
 
 }
-?>

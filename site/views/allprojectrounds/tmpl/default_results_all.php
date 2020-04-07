@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -22,21 +22,21 @@ defined('_JEXEC') or die('Restricted access');
 <!-- content -->
 <?php
 
-    ?>
-    <table class="<?php echo $this->tableclass;?>">
-        <tr>
-            <td class="">
-                <?php
-                    //get the division name from the first team of the division
-                    echo $this->content;
-                ?>
-            </td>
-        </tr>
-    </table>
+	?>
+	<table class="<?php echo $this->tableclass;?>">
+		<tr>
+			<td class="">
+				<?php
+					// Get the division name from the first team of the division
+					echo $this->content;
+				?>
+			</td>
+		</tr>
+	</table>
   
-    <?php
+	<?php
 
-    ?>
+	?>
 <!-- all results END -->
 
 </div>

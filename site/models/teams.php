@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -27,32 +27,35 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
  */
 class sportsmanagementModelTeams extends BaseDatabaseModel
 {
-    static $projectid = 0;
-    static $divisionid = 0;
-    static $cfg_which_database = 0;
-    var $teamid = 0;
-    var $team = null;
-    var $club = null;
+	static $projectid = 0;
 
-    /**
-     * sportsmanagementModelTeams::__construct()
-     *
-     * @return void
-     */
-    function __construct( )
-    {
-          // Reference global application object
-        $app = Factory::getApplication();
-        $jinput = $app->input;
-        parent::__construct();
-      
-        self::$projectid = $jinput->request->get('p', 0, 'INT');
-        self::$divisionid = $jinput->request->get('division', 0, 'INT');
-        self::$cfg_which_database = $jinput->request->get('cfg_which_database', 0, 'INT');
-        sportsmanagementModelProject::$projectid = self::$projectid;
+	static $divisionid = 0;
 
+	static $cfg_which_database = 0;
 
-    }
+	var $teamid = 0;
+
+	var $team = null;
+
+	var $club = null;
+
+	/**
+	 * sportsmanagementModelTeams::__construct()
+	 *
+	 * @return void
+	 */
+	function __construct( )
+	{
+		  // Reference global application object
+		$app = Factory::getApplication();
+		$jinput = $app->input;
+		parent::__construct();
+
+			  self::$projectid = $jinput->request->get('p', 0, 'INT');
+		self::$divisionid = $jinput->request->get('division', 0, 'INT');
+		self::$cfg_which_database = $jinput->request->get('cfg_which_database', 0, 'INT');
+		sportsmanagementModelProject::$projectid = self::$projectid;
+
+	}
 
 }
-?>

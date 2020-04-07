@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -44,30 +44,34 @@ use Joomla\CMS\Filesystem\File;
 <th class="" id="">
 <?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_COUNTRY', 'v.country', $this->sortDirection, $this->sortColumn); ?>
 </th>                               
-              
-</tr>
+
+			  </tr>
 </thead>
 
-<?php foreach ($this->items as $i => $item) : ?>
+<?php foreach ($this->items as $i => $item)
+:
+	?>
 <tr class="row<?php echo $i % 2; ?>">
 <td>
 <?php
-if ($item->projectslug ) {
-    $routeparameter = array();
-    $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-    $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
-    $routeparameter['p'] = $item->projectslug;
-    $routeparameter['pgid'] = $item->slug;
-    $link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground', $routeparameter);  
-    echo HTMLHelper::link($link, $item->name);
+if ($item->projectslug)
+	{
+	$routeparameter = array();
+	$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+	$routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
+	$routeparameter['p'] = $item->projectslug;
+	$routeparameter['pgid'] = $item->slug;
+	$link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground', $routeparameter);
+	echo HTMLHelper::link($link, $item->name);
 }
 else
-{
-    echo $item->name;  
+	{
+	echo $item->name;
 }
 
-if (!File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.$item->picture) ) {
-    $item->picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
+if (!File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $item->picture))
+	{
+	$item->picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
 }
 
 ?>
@@ -75,9 +79,9 @@ if (!File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.$item->picture) ) {
 <td>
 <?PHP
 echo sportsmanagementHelperHtml::getBootstrapModalImage(
-    'allplayground'.$item->id, $item->picture, $item->name, '20', '', $this->modalwidth,
-    $this->modalheight,
-    $this->use_jquery_modal
+	'allplayground' . $item->id, $item->picture, $item->name, '20', '', $this->modalwidth,
+	$this->modalheight,
+	$this->use_jquery_modal
 )
 ?>
 

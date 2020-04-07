@@ -31,7 +31,7 @@ use Joomla\CMS\Log\Log;
 class sportsmanagementControllerTreeto extends JSMControllerForm
 {
 	//	protected $view_list = 'treetos';
-	//
+	// 
 
 	/**
 	 * sportsmanagementControllerTreeto::__construct()
@@ -42,12 +42,12 @@ class sportsmanagementControllerTreeto extends JSMControllerForm
 	{
 		parent::__construct();
 
-		// 
+		//
 		//		// Register Extra tasks
 		//         $this->registerTask('add','display');
 		//         $this->registerTask('edit','display');
 		//         $this->registerTask('apply','save');
-		//
+		// 
 		// Reference global application object
 		$this->jsmapp = Factory::getApplication();
 

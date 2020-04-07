@@ -32,7 +32,7 @@
   border-left: 1px solid #ccc;
 }
 
-/*We need to remove left-right connectors from elements without 
+/*We need to remove left-right connectors from elements without
 any siblings*/
 .tree li:only-child::after, .tree li:only-child::before {
   display: none;
@@ -41,7 +41,7 @@ any siblings*/
 /*Remove space from the top of single children*/
 .tree li:only-child{ padding-top: 0;}
 
-/*Remove left connector from first child and 
+/*Remove left connector from first child and
 right connector from last child*/
 .tree li:first-child::before, .tree li:last-child::after{
   border: 0 none;
@@ -91,9 +91,9 @@ right connector from last child*/
   background: #c8e4f8; color: #000; border: 1px solid #94a0b4;
 }
 /*Connector styles on hover*/
-.tree li a:hover+ul li::after, 
-.tree li a:hover+ul li::before, 
-.tree li a:hover+ul::before, 
+.tree li a:hover+ul li::after,
+.tree li a:hover+ul li::before,
+.tree li a:hover+ul::before,
 .tree li a:hover+ul ul::before{
-  border-color:  #94a0b4;
+  border-color: #94a0b4;
 }

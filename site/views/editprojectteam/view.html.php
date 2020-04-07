@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -27,28 +27,31 @@ use Joomla\CMS\Component\ComponentHelper;
  */
 class sportsmanagementViewEditprojectteam extends sportsmanagementView
 {
-  
-    /**
-     * sportsmanagementViewEditClub::init()
-     *
-     * @return void
-     */
-    function init()
-    {
-          $this->item = $this->model->getData();
-        if ($this->item->id ) {
-            $this->team_info = sportsmanagementModelProject::getTeaminfo($this->item->id);
-            if ($this->team_info ) {
-                $this->item->name = $this->team_info->name;
-            }
-        }
-        $lists = array();
-        $this->form = $this->get('Form');  
-        $this->extended = sportsmanagementHelper::getExtended($this->item->extended, 'projectteam');
-          $this->lists = $lists;
-          $this->cfg_which_media_tool = ComponentHelper::getParams($this->option)->get('cfg_which_media_tool', 0);
-    }
-  
-}
-?>
 
+	/**
+	 * sportsmanagementViewEditClub::init()
+	 *
+	 * @return void
+	 */
+	function init()
+	{
+		  $this->item = $this->model->getData();
+
+		if ($this->item->id)
+		{
+			$this->team_info = sportsmanagementModelProject::getTeaminfo($this->item->id);
+
+			if ($this->team_info)
+			{
+				$this->item->name = $this->team_info->name;
+			}
+		}
+
+		$lists = array();
+		$this->form = $this->get('Form');
+		$this->extended = sportsmanagementHelper::getExtended($this->item->extended, 'projectteam');
+		  $this->lists = $lists;
+		  $this->cfg_which_media_tool = ComponentHelper::getParams($this->option)->get('cfg_which_media_tool', 0);
+	}
+
+}

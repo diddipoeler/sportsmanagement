@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -21,7 +21,7 @@ use Joomla\CMS\Language\Text;
 /**
  * sportsmanagementControllerPredictionUsers
  *
- * @package 
+ * @package
  * @author
  * @copyright diddi
  * @version   2014
@@ -30,125 +30,134 @@ use Joomla\CMS\Language\Text;
 class sportsmanagementControllerPredictionUsers extends FormController
 {
 
-    /**
-     * sportsmanagementControllerPredictionUsers::display()
-     *
-     * @return void
-     */
-    function display()
-    {
-        $this->showprojectheading();
-        $this->showbackbutton();
-        $this->showfooter();
-    }
+	/**
+	 * sportsmanagementControllerPredictionUsers::display()
+	 *
+	 * @return void
+	 */
+	function display()
+	{
+		$this->showprojectheading();
+		$this->showbackbutton();
+		$this->showfooter();
+	}
 
-    /**
-     * sportsmanagementControllerPredictionUsers::cancel()
-     *
-     * @return void
-     */
-    function cancel()
-    {
-        Factory::getApplication()->redirect(str_ireplace('&layout=edit', '', Factory::getURI()->toString()));
-    }
+	/**
+	 * sportsmanagementControllerPredictionUsers::cancel()
+	 *
+	 * @return void
+	 */
+	function cancel()
+	{
+		Factory::getApplication()->redirect(str_ireplace('&layout=edit', '', Factory::getURI()->toString()));
+	}
 
-    /**
-     * sportsmanagementControllerPredictionUsers::select()
-     *
-     * @return void
-     */
-    function select()
-    {
-        JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
-        $pID    = Factory::getApplication()->input->getVar('prediction_id',    '',        'post',    'int');
-        $uID    = Factory::getApplication()->input->getVar('uid',            null,    'post',    'int');
-        if (empty($uID)) {$uID=null;
-        }
-        $link = JSMPredictionHelperRoute::getPredictionMemberRoute($pID, $uID);
-        //echo '<br />' . $link . '<br />';
-        $this->setRedirect($link);
-    }
+	/**
+	 * sportsmanagementControllerPredictionUsers::select()
+	 *
+	 * @return void
+	 */
+	function select()
+	{
+		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+		$pID    = Factory::getApplication()->input->getVar('prediction_id',    '',        'post',    'int');
+		$uID    = Factory::getApplication()->input->getVar('uid',            null,    'post',    'int');
 
-    /**
-     * sportsmanagementControllerPredictionUsers::savememberdata()
-     *
-     * @return void
-     */
-    function savememberdata()
-    {
-        JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
-        $option = Factory::getApplication()->input->getCmd('option');
-        $optiontext = strtoupper(Factory::getApplication()->input->getCmd('option').'_');
-        $app = Factory::getApplication();
-        $document = Factory::getDocument();
-      
-        $msg    = '';
-        $link    = '';
+		if (empty($uID))
+		{
+			$uID = null;
+		}
 
-        $post    = Factory::getApplication()->input->post->getArray(array());
-        $predictionGameID    = Factory::getApplication()->input->getVar('prediction_id',    '', 'post', 'int');
-        $joomlaUserID        = Factory::getApplication()->input->getVar('user_id',        '', 'post', 'int');
+		$link = JSMPredictionHelperRoute::getPredictionMemberRoute($pID, $uID);
 
-        $model            = $this->getModel('predictionusers');
-        $user            =& Factory::getUser();
-        $isMember        = $model->checkPredictionMembership();
-        $allowedAdmin    = $model->getAllowed();
+		// Echo '<br />' . $link . '<br />';
+		$this->setRedirect($link);
+	}
 
-        if (( ( $user->id != $joomlaUserID ) ) && ( !$allowedAdmin ) ) {
-            $msg .= Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_ERROR_1');
-            $link = Factory::getURI()->toString();
-        }
-        else
-        {
-            if ((!$isMember) && (!$allowedAdmin)) {
-                $msg .= Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_ERROR_2');
-                $link = Factory::getURI()->toString();
-            }
-            else
-            {
-                if (!$model->savememberdata()) {
-                    $msg .= Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_ERROR_3');
-                    $link = Factory::getURI()->toString();
-                }
-                else
-                {
-                    $msg .= Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_MSG_1');
-                    $link = Factory::getURI()->toString();
-                }
-            }
-        }
+	/**
+	 * sportsmanagementControllerPredictionUsers::savememberdata()
+	 *
+	 * @return void
+	 */
+	function savememberdata()
+	{
+		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+		$option = Factory::getApplication()->input->getCmd('option');
+		$optiontext = strtoupper(Factory::getApplication()->input->getCmd('option') . '_');
+		$app = Factory::getApplication();
+		$document = Factory::getDocument();
 
-        //echo '<br />';
-        //echo '' . $link . '<br />';
-        //echo '' . $msg . '<br />';
-        $this->setRedirect($link, $msg);
-    }
+			  $msg    = '';
+		$link    = '';
 
-    /**
-     * sportsmanagementControllerPredictionUsers::selectprojectround()
-     *
-     * @return void
-     */
-    function selectprojectround()
-    {
-        JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
-        // Reference global application object
-        $app = Factory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $pID = $jinput->getVar('prediction_id', '0');
-        $pggroup = $jinput->getVar('pggroup', '0');
-        $pggrouprank = $jinput->getVar('pggrouprank', '0');
-        $pjID = $jinput->getVar('pj', '0');
-        $rID = $jinput->getVar('r', '0');
-        $set_pj = $jinput->getVar('set_pj', '0');
-        $set_r = $jinput->getVar('set_r', '0');
-      
+		$post    = Factory::getApplication()->input->post->getArray(array());
+		$predictionGameID    = Factory::getApplication()->input->getVar('prediction_id',    '', 'post', 'int');
+		$joomlaUserID        = Factory::getApplication()->input->getVar('user_id',        '', 'post', 'int');
 
-        $link = JSMPredictionHelperRoute::getPredictionMemberRoute($pID, $uID, null, $pjID, $pggroup, $rID);
-        //echo '<br />' . $link . '<br />';
-        $this->setRedirect($link);
-    }
+		$model            = $this->getModel('predictionusers');
+		$user            =& Factory::getUser();
+		$isMember        = $model->checkPredictionMembership();
+		$allowedAdmin    = $model->getAllowed();
+
+		if (( ( $user->id != $joomlaUserID ) ) && ( !$allowedAdmin ))
+		{
+			$msg .= Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_ERROR_1');
+			$link = Factory::getURI()->toString();
+		}
+		else
+		{
+			if ((!$isMember) && (!$allowedAdmin))
+			{
+				$msg .= Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_ERROR_2');
+				$link = Factory::getURI()->toString();
+			}
+			else
+			{
+				if (!$model->savememberdata())
+				{
+					$msg .= Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_ERROR_3');
+					$link = Factory::getURI()->toString();
+				}
+				else
+				{
+					$msg .= Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_MSG_1');
+					$link = Factory::getURI()->toString();
+				}
+			}
+		}
+
+		// Echo '<br />';
+		// echo '' . $link . '<br />';
+		// echo '' . $msg . '<br />';
+		$this->setRedirect($link, $msg);
+	}
+
+	/**
+	 * sportsmanagementControllerPredictionUsers::selectprojectround()
+	 *
+	 * @return void
+	 */
+	function selectprojectround()
+	{
+		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+
+		// Reference global application object
+		$app = Factory::getApplication();
+
+		// JInput object
+		$jinput = $app->input;
+		$pID = $jinput->getVar('prediction_id', '0');
+		$pggroup = $jinput->getVar('pggroup', '0');
+		$pggrouprank = $jinput->getVar('pggrouprank', '0');
+		$pjID = $jinput->getVar('pj', '0');
+		$rID = $jinput->getVar('r', '0');
+		$set_pj = $jinput->getVar('set_pj', '0');
+		$set_r = $jinput->getVar('set_r', '0');
+
+		$link = JSMPredictionHelperRoute::getPredictionMemberRoute($pID, $uID, null, $pjID, $pggroup, $rID);
+
+		// Echo '<br />' . $link . '<br />';
+		$this->setRedirect($link);
+	}
 
 }
-?>

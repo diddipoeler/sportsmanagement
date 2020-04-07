@@ -3,9 +3,9 @@
  *	template Transparent
  */
 @import url(https://fonts.googleapis.com/css?family=Anton&subset=latin,latin-ext);
-#wowslider-container1 { 
+#wowslider-container1 {
 	display: table;
-	zoom: 1; 
+	zoom: 1;
 	position: relative;
 	width: 100%;
 	max-width: 640px;
@@ -19,64 +19,64 @@
 	/* reset box-sizing (to boostrap friendly) */
 	-webkit-box-sizing: content-box;
 	-moz-box-sizing: content-box;
-	box-sizing: content-box; 
+	box-sizing: content-box;
 }
-* html #wowslider-container1{ width:640px }
+* html #wowslider-container1{ width: 640px }
 #wowslider-container1 .ws_images ul{
-	position:relative;
-	width: 10000%; 
-	height:100%;
-	left:0;
-	list-style:none;
-	margin:0;
-	padding:0;
-	border-spacing:0;
+	position: relative;
+	width: 10000%;
+	height: 100%;
+	left: 0;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	border-spacing: 0;
 	overflow: visible;
 	/*table-layout:fixed;*/
 }
 #wowslider-container1 .ws_images ul li{
 	position: relative;
-	width:1%;
-	height:100%;
-	line-height:0; /*opera*/
+	width: 1%;
+	height: 100%;
+	line-height: 0; /*opera*/
 	overflow: hidden;
-	float:left;
-	font-size:0;
-	padding:0 0 0 0 !important;
-	margin:0 0 0 0 !important;
+	float: left;
+	font-size: 0;
+	padding: 0 0 0 0 !important;
+	margin: 0 0 0 0 !important;
 }
 
 #wowslider-container1 .ws_images{
 	position: relative;
-	left:0;
-	top:0;
-	height:100%;
-	max-height:360px;
+	left: 0;
+	top: 0;
+	height: 100%;
+	max-height: 360px;
 	max-width: 640px;
 	vertical-align: top;
-	border:none;
+	border: none;
 	overflow: hidden;
 }
 #wowslider-container1 .ws_images ul a{
-	width:100%;
-	height:100%;
-	max-height:360px;
-	display:block;
-	color:transparent;
+	width: 100%;
+	height: 100%;
+	max-height: 360px;
+	display: block;
+	color: transparent;
 }
 #wowslider-container1 img{
 	max-width: none !important;
 }
 #wowslider-container1 .ws_images .ws_list img,
 #wowslider-container1 .ws_images > div > img{
-	width:100%;
-	border:none 0;
+	width: 100%;
+	border: none 0;
 	max-width: none;
-	padding:0;
-	margin:0;
+	padding: 0;
+	margin: 0;
 }
 #wowslider-container1 .ws_images > div > img {
-	max-height:360px;
+	max-height: 360px;
 }
 
 #wowslider-container1 .ws_images iframe {
@@ -88,20 +88,20 @@
 	display: inline-block !important;
 }
 
-#wowslider-container1 a{ 
-	text-decoration: none; 
-	outline: none; 
-	border: none; 
+#wowslider-container1 a{
+	text-decoration: none;
+	outline: none;
+	border: none;
 }
 
-#wowslider-container1  .ws_bullets { 
+#wowslider-container1  .ws_bullets {
 	float: left;
-	position:absolute;
-	z-index:70;
+	position: absolute;
+	z-index: 70;
 }
 #wowslider-container1  .ws_bullets div{
-	position:relative;
-	float:left;
+	position: relative;
+	float: left;
 	font-size: 0px;
 }
 /* compatibility with Joomla styles */
@@ -110,11 +110,11 @@
 }
 
 #wowslider-container1  .wsl{
-	display:none;
+	display: none;
 }
-#wowslider-container1 sound, 
+#wowslider-container1 sound,
 #wowslider-container1 object{
-	position:absolute;
+	position: absolute;
 }
 
 /* prevent some of users reset styles */
@@ -203,191 +203,191 @@
 #wowslider-container1 .ws_playpause.ws_hide {
 	display: none !important;
 }
-#wowslider-container1  .ws_bullets { 
-	padding: 3px 0; 
+#wowslider-container1  .ws_bullets {
+	padding: 3px 0;
 }
-#wowslider-container1 .ws_bullets a { 
-	width:19px;
-	height:19px;
+#wowslider-container1 .ws_bullets a {
+	width: 19px;
+	height: 19px;
 	background: url(./bullet.png) left top;
-	float: left; 
-	text-indent: -4000px; 
-	position:relative;
-	margin-left:6px;
-	color:transparent;
+	float: left;
+	text-indent: -4000px;
+	position: relative;
+	margin-left: 6px;
+	color: transparent;
 }
 #wowslider-container1 .ws_bullets a.ws_selbull, #wowslider-container1 .ws_bullets a:hover{
 	background-position: 0 100%;
 }
 #wowslider-container1 a.ws_next, #wowslider-container1 a.ws_prev {
-	background-size: 200% ;
-	
+	background-size: 200%;
+
 	position: absolute;
 	top: 50%;
-    height: 6.5em;
-    margin-top: -3.3em;   
-    width: 4.3em;
+	height: 6.5em;
+	margin-top: -3.3em;
+	width: 4.3em;
 	z-index: 60;
 	background-image: url(./arrows.png);
 }
 #wowslider-container1 a.ws_next{
 	background-position: 100% 0;
-	right:0.7em;
+	right: 0.7em;
 }
 #wowslider-container1 a.ws_prev {
-	left:0.7em;
-	background-position: 0 0; 
+	left: 0.7em;
+	background-position: 0 0;
 }
 #wowslider-container1 a.ws_next:hover{
 	background-position: 100% 100%;
 }
 #wowslider-container1 a.ws_prev:hover {
-	background-position: 0 100%; 
+	background-position: 0 100%;
 }
 
 /*playpause*/
 #wowslider-container1 .ws_playpause {
-    width: 1.1em;
-    height: 1.8em;
-    position: absolute;
-    top: 6px;
-    left: 13px;
-    margin-left: -0.6em;
-    margin-top: 0.2em;
-    z-index: 59;
+	width: 1.1em;
+	height: 1.8em;
+	position: absolute;
+	top: 6px;
+	left: 13px;
+	margin-left: -0.6em;
+	margin-top: 0.2em;
+	z-index: 59;
 }
 
 #wowslider-container1 .ws_pause {
 	background-size: 100%;
-    background-image: url(./pause.png);
+	background-image: url(./pause.png);
 }
 
 #wowslider-container1 .ws_play {
 	background-size: 100%;
-    background-image: url(./play.png);
+	background-image: url(./play.png);
 }
 
 #wowslider-container1 .ws_pause:hover, #wowslider-container1 .ws_play:hover {
-    background-position: 100% 100% !important;
+	background-position: 100% 100% !important;
 }
 /* bottom center */
 #wowslider-container1  .ws_bullets {
-    bottom: 0px;
-	left:50%;
+	bottom: 0px;
+	left: 50%;
 }
 #wowslider-container1  .ws_bullets div{
-	left:-50%;
+	left: -50%;
 }
 #wowslider-container1 .ws-title{
-	position:absolute;
-	display:block;
+	position: absolute;
+	display: block;
 	bottom: 1.7em;
 	left: 1.7em;
-	margin-right:0.7em;
-	color:#000000;
+	margin-right: 0.7em;
+	color: #000000;
 	z-index: 50;
 	font-family: 'Anton', sans-serif;
 	line-height: 2.9em;
-	
+
 }
 #wowslider-container1 .ws-title div,#wowslider-container1 .ws-title span{
-	
-	display:inline-block;
-	padding:0.35em;
 
-	opacity:1;
+	display: inline-block;
+	padding: 0.35em;
 
-	filter:progid:DXImageTransform.Microsoft.Alpha(opacity=100); 
+	opacity: 1;
+
+	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
 }
 #wowslider-container1 .ws-title div{
-	display:block;
+	display: block;
 	color: #000000;
-    font-size: 2.5em;
+	font-size: 2.5em;
 	font-weight: normal;
 	line-height: 1em;
 	margin-top: 0.5em;
-	
+
 }
 #wowslider-container1 .ws-title span{
 	font-size: 3em;
-	padding:0.25em;
+	padding: 0.25em;
 }#wowslider-container1 .ws_images > ul{
 	animation: wsBasic 8s infinite;
 	-moz-animation: wsBasic 8s infinite;
 	-webkit-animation: wsBasic 8s infinite;
 }
-@keyframes wsBasic{0%{left:-0%} 25%{left:-0%} 50%{left:-100%} 75%{left:-100%} }
-@-moz-keyframes wsBasic{0%{left:-0%} 25%{left:-0%} 50%{left:-100%} 75%{left:-100%} }
-@-webkit-keyframes wsBasic{0%{left:-0%} 25%{left:-0%} 50%{left:-100%} 75%{left:-100%} }
+@keyframes wsBasic{0%{left: -0%} 25%{left: -0%} 50%{left: -100%} 75%{left: -100%} }
+@-moz-keyframes wsBasic{0%{left: -0%} 25%{left: -0%} 50%{left: -100%} 75%{left: -100%} }
+@-webkit-keyframes wsBasic{0%{left: -0%} 25%{left: -0%} 50%{left: -100%} 75%{left: -100%} }
 
 #wowslider-container1  .ws_shadow{
 	background-image: url(./bg.png);
 	background-repeat: no-repeat;
-	background-size:100%;
-	position:absolute;
+	background-size: 100%;
+	position: absolute;
 	z-index: -1;
-	left:-0.78%;
-	top:-1.39%;
-	width:101.56%;
-	height:102.77%;
+	left: -0.78%;
+	top: -1.39%;
+	width: 101.56%;
+	height: 102.77%;
 }
 * html #wowslider-container1 .ws_shadow{/*ie6*/
-	background:none;
-	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader( src='css//bg.png', sizingMethod='scale');
+	background: none;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader( src='css//bg.png', sizingMethod='scale');
 }
 *+html #wowslider-container1 .ws_shadow{/*ie7*/
-	background:none;
-	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader( src='css//bg.png', sizingMethod='scale');
+	background: none;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader( src='css//bg.png', sizingMethod='scale');
 }
 #wowslider-container1 .ws_bullets  a img{
-	text-indent:0;
-	display:block;
-	bottom:15px;
-	left:-43px;
-	visibility:hidden;
-	position:absolute;
-    -moz-box-shadow: 0 0 5px #999999;
+	text-indent: 0;
+	display: block;
+	bottom: 15px;
+	left: -43px;
+	visibility: hidden;
+	position: absolute;
+	-moz-box-shadow: 0 0 5px #999999;
 	-webkit-box-shadow: 0 0 5px #999999;
-    box-shadow: 0 0 5px #999999;
-    border: 5px solid #FFFFFF;
-	max-width:none;
+	box-shadow: 0 0 5px #999999;
+	border: 5px solid #FFFFFF;
+	max-width: none;
 }
 #wowslider-container1 .ws_bullets a:hover img{
-	visibility:visible;
+	visibility: visible;
 }
 
 #wowslider-container1 .ws_bulframe div div{
-	height:48px;
-	overflow:visible;
-	position:relative;
+	height: 48px;
+	overflow: visible;
+	position: relative;
 }
 #wowslider-container1 .ws_bulframe div {
-	left:0;
-	overflow:hidden;
-	position:relative;
-	width:85px;
-	background-color:#FFFFFF;
+	left: 0;
+	overflow: hidden;
+	position: relative;
+	width: 85px;
+	background-color: #FFFFFF;
 }
 #wowslider-container1  .ws_bullets .ws_bulframe{
-	display:none;
-	bottom:21px;
-	overflow:visible;
-	position:absolute;
-	cursor:pointer;
-    -moz-box-shadow: 0 0 5px #999999;
+	display: none;
+	bottom: 21px;
+	overflow: visible;
+	position: absolute;
+	cursor: pointer;
+	-moz-box-shadow: 0 0 5px #999999;
 	-webkit-box-shadow: 0 0 5px #999999;
-    box-shadow: 0 0 5px #999999;
-    border: 4px ridge rgba(255,255,255,.30);
+	box-shadow: 0 0 5px #999999;
+	border: 4px ridge rgba(255,255,255,.30);
 }
 #wowslider-container1 .ws_bulframe span{
-	display:block;
-	position:absolute;
-	bottom:-11px;
-	margin-left:-8px;
-	left:43px;
-	background:url(./triangle.png);
-	width:15px;
-	height:6px;
+	display: block;
+	position: absolute;
+	bottom: -11px;
+	margin-left: -8px;
+	left: 43px;
+	background: url(./triangle.png);
+	width: 15px;
+	height: 6px;
 }#wowslider-container1 .ws_bulframe div div{
 	height: auto;
 }

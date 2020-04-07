@@ -29,56 +29,75 @@ $document = Factory::getDocument();
 $document->setMimeEncoding('application/json');
 
 $tmp = array();
-if(!empty($this->calendars)) {
-    foreach ($this->calendars as $calendar){
-        if(empty($calendar)) {
-            continue;
-        }
-        foreach ($calendar as $item) {
-            $start = clone $item->getStartDate();
-            $end = clone $item->getEndDate();
 
-            do {
-                $date = $start->format('Y-m-d', true);
-                if(!key_exists($date, $tmp)) {
-                    $tmp[$date] = array();
-                }
-                $tmp[$date][] = $item;
-                $start->modify("+1 day");
-            } while ($start < $end);
-        }
-    }
+if (!empty($this->calendars))
+{
+	foreach ($this->calendars as $calendar)
+	{
+		if (empty($calendar))
+		{
+			continue;
+		}
+
+
+		foreach ($calendar as $item)
+		{
+			$start = clone $item->getStartDate();
+			$end = clone $item->getEndDate();
+
+			do
+			{
+				$date = $start->format('Y-m-d', true);
+
+				if (!key_exists($date, $tmp))
+				{
+					$tmp[$date] = array();
+				}
+
+				$tmp[$date][] = $item;
+				$start->modify("+1 day");
+			}
+			while ($start < $end);
+		}
+	}
 }
 
 $params = clone ComponentHelper::getParams('com_sportsmanagement');
 $params->set('show_event_title', 1);
 $data = array();
-foreach ($tmp as $date => $events){
-    $linkIDs = array();
-    $itemId = '';
-    foreach ($events as $event) {
-        $linkIDs[$event->getParam('gcid')] = $event->getParam('gcid');
 
-        $id = jsmGCalendarUtil::getItemId($event->getParam('gcid'), true);
-        if(!empty($id)) {
-            $itemId = '&Itemid='.$id;
-        }
-    }
+foreach ($tmp as $date => $events)
+{
+	$linkIDs = array();
+	$itemId = '';
 
-    $parts = explode('-', $date);
-    $day = $parts[2];
-    $month = $parts[1];
-    $year = $parts[0];
-    $url = Route::_('index.php?option=com_sportsmanagement&view=gcalendar&gcids='.implode(',', $linkIDs).$itemId.'#year='.$year.'&month='.$month.'&day='.$day.'&view=agendaDay');
+	foreach ($events as $event)
+	{
+		$linkIDs[$event->getParam('gcid')] = $event->getParam('gcid');
 
-    $data[] = array(
-    'id' => $date,
-    'title' => utf8_encode(chr(160)), //space only works in IE, empty only in Chrome... sighh
-    'start' => $date,
-    'url' => $url,
-    'allDay' => true,
-    'description' => jsmGCalendarUtil::renderEvents($events, sprintf(Text::_('COM_GCALENDAR_JSON_VIEW_EVENT_TITLE'), count($events)).'<ul>{{#events}}<li>{{title}}</li>{{/events}}</ul>', $params)
-    );
+		$id = jsmGCalendarUtil::getItemId($event->getParam('gcid'), true);
+
+		if (!empty($id))
+		{
+			$itemId = '&Itemid=' . $id;
+		}
+	}
+
+	$parts = explode('-', $date);
+	$day = $parts[2];
+	$month = $parts[1];
+	$year = $parts[0];
+	$url = Route::_('index.php?option=com_sportsmanagement&view=gcalendar&gcids=' . implode(',', $linkIDs) . $itemId . '#year=' . $year . '&month=' . $month . '&day=' . $day . '&view=agendaDay');
+
+	$data[] = array(
+	'id' => $date,
+	'title' => utf8_encode(chr(160)), // Space only works in IE, empty only in Chrome... sighh
+	'start' => $date,
+	'url' => $url,
+	'allDay' => true,
+	'description' => jsmGCalendarUtil::renderEvents($events, sprintf(Text::_('COM_GCALENDAR_JSON_VIEW_EVENT_TITLE'), count($events)) . '<ul>{{#events}}<li>{{title}}</li>{{/events}}</ul>', $params)
+	);
 }
+
 ob_clean();
 echo json_encode($data);

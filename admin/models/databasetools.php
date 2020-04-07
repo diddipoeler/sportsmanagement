@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -33,22 +33,22 @@ jimport('joomla.filesystem.file');
 class sportsmanagementModelDatabaseTools extends BaseDatabaseModel
 {
 
-    /**
-     * Method to auto-populate the model state.
-     *
-     * Note. Calling getState in this method will result in recursion.
-     *
-     * @since 1.6
-     */
-    protected function populateState($ordering = null, $direction = null)
-    {
-        $app = Factory::getApplication();
-        $option = Factory::getApplication()->input->getCmd('option');
-        // Initialise variables.
-        $app = Factory::getApplication('administrator');
-        $value = Factory::getApplication()->input->getUInt('limitstart', 0);
-        $this->setState('list.start', $value);
-    }      
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since 1.6
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		$app = Factory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+
+		// Initialise variables.
+		$app = Factory::getApplication('administrator');
+		$value = Factory::getApplication()->input->getUInt('limitstart', 0);
+		$this->setState('list.start', $value);
+	}
 
 }
-?>

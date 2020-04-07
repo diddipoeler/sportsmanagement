@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -29,54 +29,54 @@ div.jQBracket {
   }
 
 div.jQBracket .round {
-    position: relative;
-    /* breite der runde: 100*/
-    width: <?PHP echo $this->jl_tree_bracket_round_width;?>px;
-    margin-right: 40px;
-    float: left;
-    }
+	position: relative;
+	/* breite der runde: 100*/
+	width: <?PHP echo $this->jl_tree_bracket_round_width;?>px;
+	margin-right: 40px;
+	float: left;
+	}
   
 div.jQBracket .team {
-    position: relative;
+	position: relative;
   
-    vertical-align:middle;
-    display:table-cell;
+	vertical-align:middle;
+	display:table-cell;
   
-    z-index: 1;
-    float: left;
-    background-color: #666666;
-    color: white;
-    /* breite der teams: 100*/
-    width: <?PHP echo $this->jl_tree_bracket_round_width;?>px;
-    height: 16px;
-    border-radius: 5px;
-    margin: 1px 0px;
-    cursor: default;
-    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
-    }
+	z-index: 1;
+	float: left;
+	background-color: #666666;
+	color: white;
+	/* breite der teams: 100*/
+	width: <?PHP echo $this->jl_tree_bracket_round_width;?>px;
+	height: 16px;
+	border-radius: 5px;
+	margin: 1px 0px;
+	cursor: default;
+	box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+	}
 
 div.jQBracket .team b {
-      font-weight: normal;
-      padding-left: 3px;
-      cursor: pointer;
-      height: inherit;
-      position: absolute;
-      /* breite des teams b: 70*/
-      width: <?PHP echo $this->jl_tree_bracket_teamb_width;?>px;
-      }
-              
-</style>
+	  font-weight: normal;
+	  padding-left: 3px;
+	  cursor: pointer;
+	  height: inherit;
+	  position: absolute;
+	  /* breite des teams b: 70*/
+	  width: <?PHP echo $this->jl_tree_bracket_teamb_width;?>px;
+	  }
+
+			  </style>
 <script type="text/javascript">
 
 jQuery.noConflict();
 
 jQuery(document).ready(function() {
-    var demos = ['save', 'minimal', 'customHandlers', 'autoComplete', 'doubleElimination', 'big']
-    demos.forEach(function(d){
-      var demo = jQuery('div#'+d)
-      jQuery('<div class="demo"></div>').appendTo(demo)
-    
-    })
+	var demos = ['save', 'minimal', 'customHandlers', 'autoComplete', 'doubleElimination', 'big']
+	demos.forEach(function(d){
+	  var demo = jQuery('div#'+d)
+	  jQuery('<div class="demo"></div>').appendTo(demo)
+
+		})
   })
 </script>
 
@@ -91,23 +91,23 @@ jQuery(document).ready(function() {
   <script type="text/javascript">
 
   var customRounds = {
-      roundsheader : [
-        <?PHP echo $this->bracket_rounds;
-        ?>
-      ]
-    }
+	  roundsheader : [
+		<?PHP echo $this->bracket_rounds;
+		?>
+	  ]
+	}
   </script>
 
   <script type="text/javascript">
  
-      var customData = {
-      teams : [
-        <?PHP echo $this->bracket_teams;?>
-      ],
-      results : [
-        <?PHP echo $this->bracket_results;?>
-      ]
-    }
+	  var customData = {
+	  teams : [
+		<?PHP echo $this->bracket_teams;?>
+	  ],
+	  results : [
+		<?PHP echo $this->bracket_results;?>
+	  ]
+	}
  
    /* Render function is called for each team label when data is changed, data
  * contains the data object given in init and belonging to this slot.
@@ -125,20 +125,20 @@ console.log('state : ' + state );
 //console.log('name : ' + data.name );
 //console.log('flag : ' + data.flag );  
   switch(state) {
-    case "empty-bye":
-      container.append("No team")
-      return;
-    case "empty-tbd":
-      container.append("Upcoming")
-      return;
+	case "empty-bye":
+	  container.append("No team")
+	  return;
+	case "empty-tbd":
+	  container.append("Upcoming")
+	  return;
 
-    case "entry-no-score":
-    case "entry-default-win":
-    case "entry-complete":
+	case "entry-no-score":
+	case "entry-default-win":
+	case "entry-complete":
 //console.log('name : ' + data.name );
 //console.log('flag : ' + data.flag );
 //      container.append('<img src="'+data.flag+'" /> ').append(data.name)
-      return;
+	  return;
   }
 }
 
@@ -147,9 +147,9 @@ console.log('state : ' + state );
    * contains the data object given in init and belonging to this slot. */
   /*
   function render_fn(container, data, score) {
-    if (!data.flag || !data.name)
-      return
-    container.append('<img src="'+data.flag+'" height="16"/> ').append(data.name)
+	if (!data.flag || !data.name)
+	  return
+	container.append('<img src="'+data.flag+'" height="16"/> ').append(data.name)
   }
   */
 
@@ -164,21 +164,21 @@ function edit_fn(container, data, doneCb) {
   
   jQuery(document).ready(function()
   {
-         
-      jQuery('div#big .demo').bracket({
-      init: customData,
-      roundsheader: customRounds,
-      jl_tree_bracket_width: <?PHP echo $this->jl_tree_bracket_width;?>,
-      decorator: {edit: edit_fn,
-                render: render_fn}
-       })
+
+			   jQuery('div#big .demo').bracket({
+	  init: customData,
+	  roundsheader: customRounds,
+	  jl_tree_bracket_width: <?PHP echo $this->jl_tree_bracket_width;?>,
+	  decorator: {edit: edit_fn,
+				render: render_fn}
+	   })
    
-    })
+	})
   
-    function resize(target, propName) {
-    resizeParameters[propName] = parseInt(target.value);
-    target.previousElementSibling.textContent = target.value;
-    updateResizeDemo();
+	function resize(target, propName) {
+	resizeParameters[propName] = parseInt(target.value);
+	target.previousElementSibling.textContent = target.value;
+	updateResizeDemo();
   }
   </script>
 
@@ -199,8 +199,8 @@ function updateResizeDemo() {
 }
 jQuery(updateResizeDemo)
 jQuery(document).ready(function() {
-    var big = jQuery('#big div.demo')
-    big.<?PHP echo $this->which_first_round;?>
+	var big = jQuery('#big div.demo')
+	big.<?PHP echo $this->which_first_round;?>
 
   })
 

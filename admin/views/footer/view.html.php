@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -26,16 +26,15 @@ defined('_JEXEC') or die('Restricted access');
  */
 class sportsmanagementViewFooter extends sportsmanagementView
 {
-  
-    /**
-     * sportsmanagementViewFooter::init()
-     *
-     * @return void
-     */
-    public function init()
-    {
-      
-    }
+
+	/**
+	 * sportsmanagementViewFooter::init()
+	 *
+	 * @return void
+	 */
+	public function init()
+	{
+
+	}
 
 }
-?>

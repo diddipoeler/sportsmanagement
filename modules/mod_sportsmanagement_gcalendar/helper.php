@@ -24,17 +24,24 @@ defined('_JEXEC') or die();
 class sportsmanagementModGCalendarHelper
 {
 
-    public static function getCalendars($params)
-    {
-        $calendarids = null;
-        if($params != null) {
-            $calendarids = $params->get('calendarids');
-            if(empty($calendarids)) {
-                return jsmGCalendarDBUtil::getAllCalendars();
-            }
-            return jsmGCalendarDBUtil::getCalendars($calendarids);
-        } else {
-            return jsmGCalendarDBUtil::getAllCalendars();
-        }
-    }
+	public static function getCalendars($params)
+	{
+		$calendarids = null;
+
+		if ($params != null)
+		{
+			$calendarids = $params->get('calendarids');
+
+			if (empty($calendarids))
+			{
+				return jsmGCalendarDBUtil::getAllCalendars();
+			}
+
+			return jsmGCalendarDBUtil::getCalendars($calendarids);
+		}
+		else
+		{
+			return jsmGCalendarDBUtil::getAllCalendars();
+		}
+	}
 }

@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -30,35 +30,35 @@ defined('_JEXEC') or die('Restricted access');?>
 <div id="viewprojectnames" class="panel-collapse collapse">
 <div class="panel-body">
 <table class="table">
-    <?php
+	<?php
 
-    foreach($this->projectnames as $value )
-    {
-        $createroute = array("option" => "com_sportsmanagement",
-        "view" => "ranking",
-        "cfg_which_database" => 0,
-        "s" => 0,
-        "p" => $value->project_slug,
-        "type" => 0,
-        "r" => 0,
-        "from" => 0,
-        "to" => 0,
-        "division" => 0, );
-        $query = sportsmanagementHelperRoute::buildQuery($createroute);
-        $link = Route::_('index.php?' . $query, false);   
-  
-    ?>
-    <tr>
-    <td>
-    <a href="<?PHP echo $link;  ?>" class="btn btn-primary btn-lg btn-block" role="button">
-    <?PHP
-    echo Text::_($value->name);
-    ?>  
+	foreach ($this->projectnames as $value)
+{
+		$createroute = array("option" => "com_sportsmanagement",
+		"view" => "ranking",
+		"cfg_which_database" => 0,
+		"s" => 0,
+		"p" => $value->project_slug,
+		"type" => 0,
+		"r" => 0,
+		"from" => 0,
+		"to" => 0,
+		"division" => 0, );
+		$query = sportsmanagementHelperRoute::buildQuery($createroute);
+		$link = Route::_('index.php?' . $query, false);
+
+	?>
+	<tr>
+	<td>
+	<a href="<?PHP echo $link;  ?>" class="btn btn-primary btn-lg btn-block" role="button">
+	<?PHP
+	echo Text::_($value->name);
+	?>  
   </a>
   </td>
   </tr>
-    <?php
-    }
+	<?php
+	}
 ?>
 </table>
 </div>                    
@@ -72,52 +72,54 @@ defined('_JEXEC') or die('Restricted access');?>
 
 
 <?php
-foreach ( $this->currentRanking as $division => $cu_rk )
+foreach ($this->currentRanking as $division => $cu_rk)
 {
-    if ($division) {
-        ?>
-        <table class="table">
-        <tr>
-        <td class="contentheading">
-        <?php
-        //get the division name from the first team of the division
-        foreach( $cu_rk as $ptid => $team )
-        {
-            echo $this->divisions[$division]->name;
-            break;
-        }
-        ?>
-        </td>
-        </tr>
-        </table>
+	if ($division)
+	{
+		?>
+		<table class="table">
+		<tr>
+		<td class="contentheading">
+		<?php
+		// Get the division name from the first team of the division
+		foreach ($cu_rk as $ptid => $team)
+		{
+			echo $this->divisions[$division]->name;
+			break;
+		}
+		?>
+		</td>
+		</tr>
+		</table>
 
-        <table class="table">
-        <?php
-        foreach( $cu_rk as $ptid => $team )
-        {
-            break;
-        }
-        $this->division = $division;
-        $this->current  = &$cu_rk;
-        echo $this->loadTemplate('rankingrows');
-        ?>
-        </table>
-        <?php
-    }
-    else
-    {
-        ?>
-        <table class="table">
-        <?php
-        echo $this->loadTemplate('rankingheading');
-        $this->division = $division;
-        $this->current  = &$cu_rk;
-        echo $this->loadTemplate('rankingrows');
-        ?>
-        </table>
-        <br />
-        <?php
-    }
+		<table class="table">
+		<?php
+		foreach ($cu_rk as $ptid => $team)
+		{
+			break;
+		}
+
+		$this->division = $division;
+		$this->current  = &$cu_rk;
+		echo $this->loadTemplate('rankingrows');
+		?>
+		</table>
+		<?php
+	}
+	else
+	{
+		?>
+		<table class="table">
+		<?php
+		echo $this->loadTemplate('rankingheading');
+		$this->division = $division;
+		$this->current  = &$cu_rk;
+		echo $this->loadTemplate('rankingrows');
+		?>
+		</table>
+		<br />
+		<?php
+	}
 }
 ?>
 </div>

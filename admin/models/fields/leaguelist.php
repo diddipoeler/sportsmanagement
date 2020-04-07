@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -24,7 +24,7 @@ FormHelper::loadFieldClass('list');
 /**
  * FormFieldleaguelist
  *
- * @package 
+ * @package
  * @author
  * @copyright diddi
  * @version   2014
@@ -32,36 +32,37 @@ FormHelper::loadFieldClass('list');
  */
 class JFormFieldleaguelist extends \JFormFieldList
 {
-    /**
-     * field type
-     *
-     * @var string
-     */
-    public $type = 'leaguelist';
+	/**
+	 * field type
+	 *
+	 * @var string
+	 */
+	public $type = 'leaguelist';
 
-    /**
-     * Method to get the field options.
-     *
-     * @return array  The field option objects.
-     *
-     * @since 11.1
-     */
-    protected function getOptions()
-    {
-        // Initialize variables.
-        $options = array();
-  
-          $db = Factory::getDbo();
-         $query = $db->getQuery(true);
-          
-         $query->select('l.id AS value, l.name AS text');
-         $query->from('#__sportsmanagement_league as l');
-         $query->order('l.name');
-         $db->setQuery($query);
-         $options = $db->loadObjectList();
-  
-        // Merge any additional options in the XML definition.
-        $options = array_merge(parent::getOptions(), $options);
-        return $options;
-    }
+	/**
+	 * Method to get the field options.
+	 *
+	 * @return array  The field option objects.
+	 *
+	 * @since 11.1
+	 */
+	protected function getOptions()
+	{
+		// Initialize variables.
+		$options = array();
+
+		  $db = Factory::getDbo();
+		 $query = $db->getQuery(true);
+
+				   $query->select('l.id AS value, l.name AS text');
+		 $query->from('#__sportsmanagement_league as l');
+		 $query->order('l.name');
+		 $db->setQuery($query);
+		 $options = $db->loadObjectList();
+
+		// Merge any additional options in the XML definition.
+		$options = array_merge(parent::getOptions(), $options);
+
+		return $options;
+	}
 }

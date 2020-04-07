@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -35,38 +35,39 @@ FormHelper::loadFieldClass('list');
  */
 class JFormFieldsortorder extends \JFormFieldList
 {
-    /**
-     * field type
-     *
-     * @var string
-     */
-    public $type = 'sortorder';
+	/**
+	 * field type
+	 *
+	 * @var string
+	 */
+	public $type = 'sortorder';
 
-    /**
-     * Method to get the field options.
-     *
-     * @return array  The field option objects.
-     *
-     * @since 11.1
-     */
-    protected function getOptions()
-    {
-        $app = Factory::getApplication();
-        $option = Factory::getApplication()->input->getCmd('option');
-        $lang = Factory::getLanguage();
-        $options = array();
-        $character = array();
-        $languages = $lang->getTag();
-      
-        $template_sort_orders = ComponentHelper::getParams('com_sportsmanagement')->get('template_sort_orders', 0);
+	/**
+	 * Method to get the field options.
+	 *
+	 * @return array  The field option objects.
+	 *
+	 * @since 11.1
+	 */
+	protected function getOptions()
+	{
+		$app = Factory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+		$lang = Factory::getLanguage();
+		$options = array();
+		$character = array();
+		$languages = $lang->getTag();
 
-        for ($i = 1; $i <= $template_sort_orders; $i++) {
-            $options[] = HTMLHelper::_('select.option', $i, $i, 'value', 'text');
-        }
-         
-        // Merge any additional options in the XML definition.
-        $options = array_merge(parent::getOptions(), $options);
+			  $template_sort_orders = ComponentHelper::getParams('com_sportsmanagement')->get('template_sort_orders', 0);
 
-        return $options;
-    }
+		for ($i = 1; $i <= $template_sort_orders; $i++)
+		{
+			$options[] = HTMLHelper::_('select.option', $i, $i, 'value', 'text');
+		}
+
+				 // Merge any additional options in the XML definition.
+		$options = array_merge(parent::getOptions(), $options);
+
+		return $options;
+	}
 }

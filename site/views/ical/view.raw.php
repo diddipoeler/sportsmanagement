@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -24,12 +24,12 @@ JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINIST
 class sportsmanagementViewIcal extends JViewLegacy
 {
 
-    public function display($tpl = null)
-    {
-        $this->setModel(BaseDatabaseModel::getInstance('Event', 'sportsmanagementModel'), true);
+	public function display($tpl = null)
+	{
+		$this->setModel(BaseDatabaseModel::getInstance('Event', 'sportsmanagementModel'), true);
 
-        $this->event = $this->get('GCalendar');
+		$this->event = $this->get('GCalendar');
 
-        parent::display($tpl);
-    }
+		parent::display($tpl);
+	}
 }

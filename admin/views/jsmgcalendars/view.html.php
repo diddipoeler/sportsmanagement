@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -28,27 +28,27 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 class sportsmanagementViewjsmgcalendars extends sportsmanagementView
 {
 
-    /**
- * sportsmanagementViewjsmgcalendars::init()
- *
- * @return void
- */
-    public function init()
-    {
-        $this->model->check_google_api();
-    }
+	/**
+	 * sportsmanagementViewjsmgcalendars::init()
+	 *
+	 * @return void
+	 */
+	public function init()
+	{
+		$this->model->check_google_api();
+	}
 
-    /**
-     * sportsmanagementViewjsmgcalendars::addToolbar()
-     *
-     * @return void
-     */
-    protected function addToolbar()
-    {
-        ToolbarHelper::addNew('jsmgcalendar.add', 'JTOOLBAR_NEW');
-        ToolbarHelper::custom('jsmgcalendarimport.import', 'upload.png', 'upload.png', 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GCALENDARS_BUTTON_IMPORT', false);
-        $this->icon = 'google-calendar-48-icon.png';
-        parent::addToolbar();
-    }
+	/**
+	 * sportsmanagementViewjsmgcalendars::addToolbar()
+	 *
+	 * @return void
+	 */
+	protected function addToolbar()
+	{
+		ToolbarHelper::addNew('jsmgcalendar.add', 'JTOOLBAR_NEW');
+		ToolbarHelper::custom('jsmgcalendarimport.import', 'upload.png', 'upload.png', 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GCALENDARS_BUTTON_IMPORT', false);
+		$this->icon = 'google-calendar-48-icon.png';
+		parent::addToolbar();
+	}
 
 }

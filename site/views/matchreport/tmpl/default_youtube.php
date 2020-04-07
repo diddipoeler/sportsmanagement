@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -22,14 +22,17 @@ use Joomla\CMS\Factory;
 
 function getYoutubeEmbedHtml($url)
 {
-    $query = parse_url($url, PHP_URL_QUERY);
-    $args = array();
-    parse_str($query, $args);
-    $videoId = isset($args["v"]) ? $args["v"] : null;
-    if(!$videoId) {
-        return null;
-    }
-    return "<style>.iframe-container { position:relative; margin-bottom: 30px; padding-bottom:56.25%; padding-top:25px; height:0; max-width:100%; } .iframe-container iframe { position:absolute; top:0; left:0; width:100%; height:100%; border:none; }</style><div class=\"iframe-container\"><iframe src=\"https://www.youtube-nocookie.com/embed/{$videoId}\" allowfullscreen=\"\"></iframe><br /></div>";
+	$query = parse_url($url, PHP_URL_QUERY);
+	$args = array();
+	parse_str($query, $args);
+	$videoId = isset($args["v"]) ? $args["v"] : null;
+
+	if (!$videoId)
+	{
+		return null;
+	}
+
+	return "<style>.iframe-container { position:relative; margin-bottom: 30px; padding-bottom:56.25%; padding-top:25px; height:0; max-width:100%; } .iframe-container iframe { position:absolute; top:0; left:0; width:100%; height:100%; border:none; }</style><div class=\"iframe-container\"><iframe src=\"https://www.youtube-nocookie.com/embed/{$videoId}\" allowfullscreen=\"\"></iframe><br /></div>";
 }
 
 ?>
@@ -54,7 +57,7 @@ function getYoutubeEmbedHtml($url)
 
 <?php
 echo $this->youtube;
-echo getYoutubeEmbedHtml($this->youtube); 
+echo getYoutubeEmbedHtml($this->youtube);
 ?>
 </div>
 </div>

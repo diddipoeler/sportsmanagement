@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -25,35 +25,36 @@ echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS');
 </h2>		
 
 <?php
-if ($this->config['show_timeline'] && !$this->config['show_timeline_under_results'] ) {
-    echo $this->loadTemplate('timeline');
+if ($this->config['show_timeline'] && !$this->config['show_timeline_under_results'])
+{
+	echo $this->loadTemplate('timeline');
 }
 ?>
 <table class="table " >
-    <?php
-    foreach ( $this->eventtypes as $event )
-    {
-        ?>
-      <tr>
-       <td colspan="2" class="eventid">
-        <?php echo HTMLHelper::_('image', $event->icon, Text::_($event->icon), null) . Text::_($event->name); ?>
-      </td>
-     </tr>
-     <tr>
-      <td class="list">
-       <dl>
-        <?php echo $this->showEvents($event->id, $this->match->projectteam1_id); ?>
-       </dl>
-      </td>
-      <td class="list">
-       <dl>
-        <?php echo $this->showEvents($event->id, $this->match->projectteam2_id); ?>
-       </dl>
-      </td>
-     </tr>
-        <?php
-    }
-    ?>
+	<?php
+	foreach ($this->eventtypes as $event)
+{
+		?>
+	  <tr>
+	   <td colspan="2" class="eventid">
+		<?php echo HTMLHelper::_('image', $event->icon, Text::_($event->icon), null) . Text::_($event->name); ?>
+	  </td>
+	 </tr>
+	 <tr>
+	  <td class="list">
+	   <dl>
+		<?php echo $this->showEvents($event->id, $this->match->projectteam1_id); ?>
+	   </dl>
+	  </td>
+	  <td class="list">
+	   <dl>
+		<?php echo $this->showEvents($event->id, $this->match->projectteam2_id); ?>
+	   </dl>
+	  </td>
+	 </tr>
+		<?php
+	}
+	?>
 </table>
 <!-- END of match events -->
 </div>

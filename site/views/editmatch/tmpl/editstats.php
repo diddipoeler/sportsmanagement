@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -31,8 +31,8 @@ $params = $this->form->getFieldsets('params');
 <?php echo Text::_('JCANCEL');?></button>      
 
 </div>
-      
-<div class="configuration" >
+
+	  <div class="configuration" >
 
 </div>
 </fieldset>
@@ -41,13 +41,13 @@ $params = $this->form->getFieldsets('params');
 echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'home'));
 echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'home', Text::_($this->teams->team1, true));
 echo $this->loadTemplate('home');
-echo HTMLHelper::_('bootstrap.endTab');      
+echo HTMLHelper::_('bootstrap.endTab');
 echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'away', Text::_($this->teams->team2, true));
 echo $this->loadTemplate('away');
-echo HTMLHelper::_('bootstrap.endTab');      
-echo HTMLHelper::_('bootstrap.endTabSet');      
-     
-?>
+echo HTMLHelper::_('bootstrap.endTab');
+echo HTMLHelper::_('bootstrap.endTabSet');
+
+		?>
 <!-- <input type='hidden' name='option' value='com_sportsmanagement' /> -->
 <input type="hidden" name="view" value="" />
 <input type="hidden" name="close" id="close" value="0" />

@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -34,39 +34,38 @@ FormHelper::loadFieldClass('list');
  */
 class JFormFieldLeagueLevel extends \JFormFieldList
 {
-    /**
-     * field type
-     *
-     * @var string
-     */
-    public $type = 'leaguelevel';
+	/**
+	 * field type
+	 *
+	 * @var string
+	 */
+	public $type = 'leaguelevel';
 
-    /**
-     * Method to get the field options.
-     *
-     * @return array  The field option objects.
-     *
-     * @since 11.1
-     */
-    protected function getOptions()
-    {
-        $app = Factory::getApplication();
-        $option = $app->input->getCmd('option');
-        /**
-         * Initialize variables.
-         */
-        for($a=1; $a < 21; $a++ )
-        {
-            $options[] = HTMLHelper::_('select.option', $a, Text::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LEVEL').' - '.$a); 
-        }
-  
-      
-        /**
-         * Merge any additional options in the XML definition.
-         */
-        $options = array_merge(parent::getOptions(), $options);
+	/**
+	 * Method to get the field options.
+	 *
+	 * @return array  The field option objects.
+	 *
+	 * @since 11.1
+	 */
+	protected function getOptions()
+	{
+		$app = Factory::getApplication();
+		$option = $app->input->getCmd('option');
+		/**
+		 * Initialize variables.
+		 */
+		for ($a = 1; $a < 21; $a++)
+		{
+			$options[] = HTMLHelper::_('select.option', $a, Text::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LEVEL') . ' - ' . $a);
+		}
 
-        return $options;
-    }
-  
+			  /**
+		 * Merge any additional options in the XML definition.
+		 */
+		$options = array_merge(parent::getOptions(), $options);
+
+		return $options;
+	}
+
 }

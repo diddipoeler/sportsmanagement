@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -29,35 +29,34 @@ use Joomla\CMS\Factory;
 class JSMControllerAdmin extends AdminController
 {
 
-    /**
-     * Constructor.
-     *
-     * @param  array An optional associative array of configuration settings.
-     * @see    JController
-     * @since  1.6
-     * @throws Exception
-     */
-    public function __construct($config = array())
-    {
-        parent::__construct($config);
-        $this->app = Factory::getApplication();
-        $this->jinput = $this->app->input;
-        $this->option = $this->jinput->getCmd('option');
+	/**
+	 * Constructor.
+	 *
+	 * @param  array An optional associative array of configuration settings.
+	 * @see    JController
+	 * @since  1.6
+	 * @throws Exception
+	 */
+	public function __construct($config = array())
+	{
+		parent::__construct($config);
+		$this->app = Factory::getApplication();
+		$this->jinput = $this->app->input;
+		$this->option = $this->jinput->getCmd('option');
 
-    }
+	}
 
-     /**
-      * JSMControllerAdmin::cancel()
-      *
-      * @return void
-      */
-    function cancel()
-    {
-        $msg = '';
-        $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);
-    }
+	 /**
+	  * JSMControllerAdmin::cancel()
+	  *
+	  * @return void
+	  */
+	function cancel()
+	{
+		$msg = '';
+		$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);
+	}
 
 }
 
 
-?>

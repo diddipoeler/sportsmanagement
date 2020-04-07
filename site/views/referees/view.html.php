@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -26,28 +26,28 @@ use Joomla\CMS\Language\Text;
  */
 class sportsmanagementViewReferees extends sportsmanagementView
 {
-  
-    /**
-     * sportsmanagementViewReferees::init()
-     *
-     * @return void
-     */
-    function init()
-    {
-      
-        if (!$this->config  ) {
-            $this->config = sportsmanagementModelProject::getTemplateConfig('players', $this->jinput->getInt('cfg_which_database', 0));
-        }
 
-        $this->rows = $this->model->getReferees();
+	/**
+	 * sportsmanagementViewReferees::init()
+	 *
+	 * @return void
+	 */
+	function init()
+	{
 
-        // Set page title
-        $pagetitle=Text::_('COM_SPORTSMANAGEMENT_REFEREES_PAGE_TITLE');
-        $this->document->setTitle(Text::sprintf($pagetitle, $this->project->name));
-      
-        $this->headertitle = Text::_('COM_SPORTSMANAGEMENT_REFEREES_TITLE');
+		if (!$this->config)
+		{
+			$this->config = sportsmanagementModelProject::getTemplateConfig('players', $this->jinput->getInt('cfg_which_database', 0));
+		}
 
-    }
+			$this->rows = $this->model->getReferees();
+
+			// Set page title
+			$pagetitle = Text::_('COM_SPORTSMANAGEMENT_REFEREES_PAGE_TITLE');
+			$this->document->setTitle(Text::sprintf($pagetitle, $this->project->name));
+
+			  $this->headertitle = Text::_('COM_SPORTSMANAGEMENT_REFEREES_TITLE');
+
+	}
 
 }
-?>

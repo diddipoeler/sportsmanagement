@@ -9,51 +9,51 @@ a.popup:target + div.popup { display: block; }
 /* popup target anchor and background */
 a.popup {
 	/* background is initially hidden */
-	display		: none;
-	position	: fixed;
-	top		: 0;
-	left		: 0;
-	z-index		: 3; /* anything, really, but bigger than other elements on the page */
-	width		: 100%;
-	height		: 100%;
-	background	: rgba(0, 0, 0, 0.8);
-	cursor		: default;
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 3; /* anything, really, but bigger than other elements on the page */
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.8);
+	cursor: default;
 }
 
 /* popup window */
 div.popup {
 	/* popup window is initially hidden */
-	display 	: none;
-	background	: white; /* choose your color; */
-	width		: 640px; /* width */
-	height		: 480px; /* height */
-	position	: fixed;
-	top		: 50%;
-	left		: 50%;
-	margin-left	: -320px; /* = -width / 2 */
-	margin-top	: -240px; /* = -height / 2 */
-	z-index		: 4; /* z-index of popup backgroung + 1 */
+	display: none;
+	background: white; /* choose your color; */
+	width: 640px; /* width */
+	height: 480px; /* height */
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	margin-left: -320px; /* = -width / 2 */
+	margin-top: -240px; /* = -height / 2 */
+	z-index: 4; /* z-index of popup backgroung + 1 */
 
-	-webkit-box-sizing : border-box;
-	-moz-box-sizing	: border-box;
-	-ms-box-sizing	: border-box;
-	box-sizing	: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 /* links to close popup */
 div.popup > a.close {
-	color		: white;
-	position	: absolute;
-	font-weight	: bold;
-	right		: 10px;
+	color: white;
+	position: absolute;
+	font-weight: bold;
+	right: 10px;
 }
 
 div.popup > a.close.word {
-	top		: 100%;
-	margin-top	: 5px;
+	top: 100%;
+	margin-top: 5px;
 }
 
 div.popup > a.close.x {
-	bottom		: 100%;
-	margin-bottom	: 5px;
+	bottom: 100%;
+	margin-bottom: 5px;
 }

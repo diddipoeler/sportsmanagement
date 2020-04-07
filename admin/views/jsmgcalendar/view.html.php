@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -19,11 +19,11 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Component\ComponentHelper;
 
-//require_once('administrator'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'google-php'.DIRECTORY_SEPARATOR.'google-api-php-client'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'autoload.php');
+// Require_once('administrator'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'google-php'.DIRECTORY_SEPARATOR.'google-api-php-client'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'autoload.php');
 
-//JLoader::import('components.com_gcalendar.libraries.GCalendar.view', JPATH_ADMINISTRATOR);
+// JLoader::import('components.com_gcalendar.libraries.GCalendar.view', JPATH_ADMINISTRATOR);
 
-//class GCalendarViewGCalendar extends GCalendarView
+// Class GCalendarViewGCalendar extends GCalendarView
 /**
  * sportsmanagementViewjsmgcalendar
  *
@@ -37,32 +37,33 @@ class sportsmanagementViewjsmgcalendar extends sportsmanagementView
 {
 
 
-    /**
- * sportsmanagementViewjsmgcalendar::init()
- *
- * @param  mixed $tpl
- * @return void
- */
-    public function init()
-    {
+	/**
+	 * sportsmanagementViewjsmgcalendar::init()
+	 *
+	 * @param   mixed $tpl
+	 * @return void
+	 */
+	public function init()
+	{
 
-        // bei neuanlage user und passwort aus der konfiguration der komponente nehmen
-        if ($this->item->id < 1) {
-            $this->form->setValue('username', null, ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_account', ''));
-            $this->form->setValue('password', null, ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_password', ''));
-        }
-     
-    } 
+		// Bei neuanlage user und passwort aus der konfiguration der komponente nehmen
+		if ($this->item->id < 1)
+		{
+			$this->form->setValue('username', null, ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_account', ''));
+			$this->form->setValue('password', null, ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_password', ''));
+		}
 
-    /**
-    * Add the page title and toolbar.
-    *
-    * @since 1.7
-    */
-    protected function addToolbar()
-    {
+	}
 
-        parent::addToolbar();
-    }
+	/**
+	 * Add the page title and toolbar.
+	 *
+	 * @since 1.7
+	 */
+	protected function addToolbar()
+	{
+
+		parent::addToolbar();
+	}
 
 }

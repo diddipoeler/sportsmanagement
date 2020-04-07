@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -13,7 +13,7 @@
  */
 
 
-defined('_JEXEC') or die ;
+defined('_JEXEC') or die;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormField;
 
@@ -29,41 +29,42 @@ use Joomla\CMS\Form\FormField;
  */
 class JFormFieldJSMSubtitle extends FormField
 {
-      
-    public $type = 'JSMSubtitle';
+	public $type = 'JSMSubtitle';
 
-    /**
-     * Method to get the field options.
-     *
-     * @return array    The field option objects.
-     * @since  1.6
-     */
-    protected function getLabel()
-    {
-      
-        $html = '';
-        $value = trim($this->element['title']);
+	/**
+	 * Method to get the field options.
+	 *
+	 * @return array    The field option objects.
+	 * @since  1.6
+	 */
+	protected function getLabel()
+	{
 
-        $html .= '<div style="clear: both;"></div>';
-        $html .= '<div style="margin: 20px 0 20px 20px; font-weight: bold; padding: 5px; color: #444444; border-bottom: 1px solid #444444;">';
-        if ($value) {
-            $html .= Text::_($value);
-        }
-        $html .= '</div>';
+			  $html = '';
+		$value = trim($this->element['title']);
 
-        return $html;
-    }
+		$html .= '<div style="clear: both;"></div>';
+		$html .= '<div style="margin: 20px 0 20px 20px; font-weight: bold; padding: 5px; color: #444444; border-bottom: 1px solid #444444;">';
 
-    /**
-     * Method to get the field input markup.
-     *
-     * @return string    The field input markup.
-     * @since  1.6
-     */
-    protected function getInput()
-    {
-        return '';
-    }
+		if ($value)
+		{
+			$html .= Text::_($value);
+		}
+
+		$html .= '</div>';
+
+		return $html;
+	}
+
+	/**
+	 * Method to get the field input markup.
+	 *
+	 * @return string    The field input markup.
+	 * @since  1.6
+	 */
+	protected function getInput()
+	{
+		return '';
+	}
 
 }
-?>

@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -27,21 +27,20 @@ use Joomla\CMS\Language\Text;
 class sportsmanagementViewAbout extends sportsmanagementView
 {
 
-    /**
-     * sportsmanagementViewAbout::init()
-     *
-     * @return void
-     */
-    function init()
-    {
+	/**
+	 * sportsmanagementViewAbout::init()
+	 *
+	 * @return void
+	 */
+	function init()
+	{
 
-        $about = $this->model->getAbout();
-        $this->about = $about;
+		$about = $this->model->getAbout();
+		$this->about = $about;
 
-        // Set page title
-        $this->document->setTitle(Text::_('COM_SPORTSMANAGEMENT_ABOUT_PAGE_TITLE'));
-    }
+		// Set page title
+		$this->document->setTitle(Text::_('COM_SPORTSMANAGEMENT_ABOUT_PAGE_TITLE'));
+	}
 
 }
 
-?>

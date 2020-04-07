@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -37,34 +37,34 @@ Joomla.submitform(task, document.getElementById('editperson'));
 <fieldset class="adminform">
 <div class="fltrt">
 <button type="button" onclick="Joomla.submitform('editperson.apply', this.form);">
-    <?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVE');?></button>
+	<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVE');?></button>
 <button type="button" onclick="Joomla.submitform('editperson.save', this.form);">
-    <?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVECLOSE');?></button>
+	<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVECLOSE');?></button>
 <button type="button" onclick="Joomla.submitform('editperson.cancel', this.form);">
-    <?php echo Text::_('JCANCEL');?></button>
+	<?php echo Text::_('JCANCEL');?></button>
 </div>
 <legend>
 <?php
-echo Text::sprintf('COM_SPORTSMANAGEMENT_PERSON_LEGEND_DESC', '<i>'.$this->item->firstname.'</i>', '<i>'.$this->item->lastname.'</i>');
+echo Text::sprintf('COM_SPORTSMANAGEMENT_PERSON_LEGEND_DESC', '<i>' . $this->item->firstname . '</i>', '<i>' . $this->item->lastname . '</i>');
 ?>
 </legend>
 </fieldset>
 
 <?php
-echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'details'));  
-foreach ($fieldsets as $fieldset) :
+echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'details'));
 
-    switch ( $fieldset->name )
-    {
-    case 'details':
-        //case 'picture':
-        //case 'extended':
-        echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));
-        echo $this->loadTemplate($fieldset->name);
-        echo HTMLHelper::_('bootstrap.endTab');
-        break;  
-    }
-
+foreach ($fieldsets as $fieldset)
+:
+	switch ($fieldset->name)
+	{
+		case 'details':
+			// Case 'picture':
+			// case 'extended':
+			echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));
+			echo $this->loadTemplate($fieldset->name);
+			echo HTMLHelper::_('bootstrap.endTab');
+		break;
+	}
 endforeach;
 
 echo HTMLHelper::_('bootstrap.endTabSet');
@@ -81,5 +81,5 @@ echo HTMLHelper::_('bootstrap.endTabSet');
 <input type="hidden" name="tid" value="<?php echo Factory::getApplication()->input->getInt('tid', 0); ?>" />
   
 <input type="hidden" name="task" value="" />
-<?php echo HTMLHelper::_('form.token')."\n"; ?>
+<?php echo HTMLHelper::_('form.token') . "\n"; ?>
 </form>

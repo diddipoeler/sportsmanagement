@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -28,34 +28,36 @@ use Joomla\CMS\Filesystem\Folder;
  */
 class sportsmanagementModelspecialextensions extends BaseDatabaseModel
 {
-  
-    /**
-     * sportsmanagementModelspecialextensions::getSpecialExtensions()
-     *
-     * @return
-     */
-    function getSpecialExtensions()
-    {
-            $option='com_sportsmanagement';
-        $arrExtensions = array();
-        $excludeExtension = array();
-      
-        if(Folder::exists(JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'extensions')) {
-               $folderExtensions  = Folder::folders(
-                   JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'extensions',
-                   '.', false, false, $excludeExtension
-               );
-            if($folderExtensions !== false) {
-                foreach ($folderExtensions as $ext)
-                      {
-                    $arrExtensions[] = $ext;
-                }
-            }
-        }
 
-        return $arrExtensions;
-    }
-  
+	/**
+	 * sportsmanagementModelspecialextensions::getSpecialExtensions()
+	 *
+	 * @return
+	 */
+	function getSpecialExtensions()
+	{
+			$option = 'com_sportsmanagement';
+		$arrExtensions = array();
+		$excludeExtension = array();
+
+		if (Folder::exists(JPATH_SITE . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'com_sportsmanagement' . DIRECTORY_SEPARATOR . 'extensions'))
+		{
+			$folderExtensions  = Folder::folders(
+				JPATH_SITE . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'com_sportsmanagement' . DIRECTORY_SEPARATOR . 'extensions',
+				'.', false, false, $excludeExtension
+			);
+
+			if ($folderExtensions !== false)
+			{
+				foreach ($folderExtensions as $ext)
+				{
+					$arrExtensions[] = $ext;
+				}
+			}
+		}
+
+			return $arrExtensions;
+	}
+
 }
 
-?>

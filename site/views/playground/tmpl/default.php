@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -23,58 +23,71 @@ $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 /**
  * kml file laden
- */          
-if ($this->mapconfig['map_kmlfile'] ) {
-    $this->kmlpath = Uri::root().'tmp'.DIRECTORY_SEPARATOR.$this->playground->id.'-playground.kml';
-    $this->kmlfile = $this->playground->id.'-playground.kml';
+ */
+if ($this->mapconfig['map_kmlfile'])
+{
+	$this->kmlpath = Uri::root() . 'tmp' . DIRECTORY_SEPARATOR . $this->playground->id . '-playground.kml';
+	$this->kmlfile = $this->playground->id . '-playground.kml';
 }
 ?>
 
 <div class="<?php echo $this->divclasscontainer;?>" id="playground">
 <?php
-if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO ) {
-    echo $this->loadTemplate('debug');
+if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO)
+{
+	echo $this->loadTemplate('debug');
 }
+
 echo $this->loadTemplate('projectheading');
 
-if ($this->config['show_sectionheader'] ) {
-    echo $this->loadTemplate('sectionheader');
-}
-      
-if ($this->config['show_playground'] ) {
-    echo $this->loadTemplate('playground');
-}
-      
-if ($this->config['show_extended'] ) {
-    echo $this->loadTemplate('extended');
-}
-      
-if ($this->config['show_picture'] ) {
-    echo $this->loadTemplate('picture');
+if ($this->config['show_sectionheader'])
+{
+	echo $this->loadTemplate('sectionheader');
 }
 
-if ($this->playground->latitude && $this->playground->longitude ) {      
-    if ($this->config['show_maps'] ) {
-        echo $this->loadTemplate('googlemap');
-    }
-}
-  
-if ($this->config['show_description'] ) {
-    echo $this->loadTemplate('description');
+if ($this->config['show_playground'])
+{
+	echo $this->loadTemplate('playground');
 }
 
-if ($this->config['show_teams'] ) {
-    echo $this->loadTemplate('teams');
+if ($this->config['show_extended'])
+{
+	echo $this->loadTemplate('extended');
 }
 
-if ($this->config['show_matches'] ) {
-    echo $this->loadTemplate('matches');
-}  
-
-if ($this->config['show_played_matches'] ) {
-    echo $this->loadTemplate('played_matches');
+if ($this->config['show_picture'])
+{
+	echo $this->loadTemplate('picture');
 }
 
-echo $this->loadTemplate('jsminfo');  
+if ($this->playground->latitude && $this->playground->longitude)
+{
+	if ($this->config['show_maps'])
+	{
+		echo $this->loadTemplate('googlemap');
+	}
+}
+
+if ($this->config['show_description'])
+{
+	echo $this->loadTemplate('description');
+}
+
+if ($this->config['show_teams'])
+{
+	echo $this->loadTemplate('teams');
+}
+
+if ($this->config['show_matches'])
+{
+	echo $this->loadTemplate('matches');
+}
+
+if ($this->config['show_played_matches'])
+{
+	echo $this->loadTemplate('played_matches');
+}
+
+echo $this->loadTemplate('jsminfo');
 ?>
 </div>

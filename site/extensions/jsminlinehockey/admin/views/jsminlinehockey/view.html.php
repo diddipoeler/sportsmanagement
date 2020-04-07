@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -65,54 +65,57 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 class sportsmanagementViewjsminlinehockey extends sportsmanagementView
 {
 
-    /**
-     * sportsmanagementViewjsminlinehockey::init()
-     *
-     * @return void
-     */
-    function init()
-    {
+	/**
+	 * sportsmanagementViewjsminlinehockey::init()
+	 *
+	 * @return void
+	 */
+	function init()
+	{
 
-        $this->projectid = $this->jinput->get("pid", '0');
-        if (!$this->projectid) {
-            $this->projectid = $this->app->getUserState("$this->option.pid", '0');
-        }
+		$this->projectid = $this->jinput->get("pid", '0');
 
-        $this->app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' projectid -> ' . $this->projectid . ''), '');
-        $this->matchlink = $this->model->getMatchLink($this->projectid);
+		if (!$this->projectid)
+		{
+			$this->projectid = $this->app->getUserState("$this->option.pid", '0');
+		}
 
-        $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_PROJECT_SELECT'), '');
+		$this->app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' projectid -> ' . $this->projectid . ''), '');
+		$this->matchlink = $this->model->getMatchLink($this->projectid);
 
-        ToolBarHelper::title(Text::_('COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_TITLE'), 'install');
+		$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_PROJECT_SELECT'), '');
 
-        switch ($this->getLayout())
-        {
-        case 'default':
-        case 'default_3':
-        case 'default_4':
-            $this->setLayout('default');
-            return;
-        break;
-        }
-      
-    }
+		ToolBarHelper::title(Text::_('COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_TITLE'), 'install');
 
-    /**
-     * Add the page title and toolbar.
-     *
-     * @since 1.7
-     */
-    protected function addToolbar()
-    {
-        // Set toolbar items for the page
-        //        ToolBarHelper::save('jsminlinehockey.getteams', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_TEAMS');
-        //        ToolBarHelper::save('jsminlinehockey.getclubs', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_CLUBS');
+		switch ($this->getLayout())
+		{
+			case 'default':
+			case 'default_3':
+			case 'default_4':
+				$this->setLayout('default');
 
-        if ($this->projectid) {
-            ToolBarHelper::save('jsminlinehockey.getmatches', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_MATCHES');
-        }
-    }
+return;
+			break;
+		}
+
+	}
+
+	/**
+	 * Add the page title and toolbar.
+	 *
+	 * @since 1.7
+	 */
+	protected function addToolbar()
+	{
+		// Set toolbar items for the page
+		//        ToolBarHelper::save('jsminlinehockey.getteams', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_TEAMS');
+		//        ToolBarHelper::save('jsminlinehockey.getclubs', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_CLUBS');
+
+		if ($this->projectid)
+		{
+			ToolBarHelper::save('jsminlinehockey.getmatches', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_MATCHES');
+		}
+	}
 
 }
 
-?>

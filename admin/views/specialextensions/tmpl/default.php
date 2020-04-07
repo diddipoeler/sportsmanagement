@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -19,22 +19,21 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 ?>
 <table width="100%" border="0">
-    <tr>
-        <td width="100%" valign="top">
-            <div id="cpanel">
-                <?php
-                foreach ( $this->Extensions as $key => $value )
-                {
-                    echo $this->addIcon('extensions.png', 'index.php?option=com_sportsmanagement&view='.$value.'', Text::_($value));
-                }
-                ?>
+	<tr>
+		<td width="100%" valign="top">
+			<div id="cpanel">
+				<?php
+				foreach ($this->Extensions as $key => $value)
+{
+					echo $this->addIcon('extensions.png', 'index.php?option=com_sportsmanagement&view=' . $value . '', Text::_($value));
+				}
+				?>
 
-            </div>
-        </td>
-    </tr>
+			</div>
+		</td>
+	</tr>
 </table>
 <?PHP
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?> 

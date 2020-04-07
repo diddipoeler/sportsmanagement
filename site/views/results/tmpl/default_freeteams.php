@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -13,12 +13,14 @@
 
 defined('_JEXEC') or die('Restricted access'); ?>
 
-<?php if (!empty($this->rounds)) : ?>
+<?php if (!empty($this->rounds))
+:
+	?>
 <table class="table" >
-    <tr>
-        <td style="text-align:left; ">
-    <?php echo sportsmanagementViewResults::showNotPlayingTeams($this->matches, $this->teams, $this->config, $this->favteams, $this->project); ?>
-        </td>
-    </tr>
+	<tr>
+		<td style="text-align:left; ">
+	<?php echo sportsmanagementViewResults::showNotPlayingTeams($this->matches, $this->teams, $this->config, $this->favteams, $this->project); ?>
+		</td>
+	</tr>
 </table>
-<?php endif; ?>
+<?php endif;

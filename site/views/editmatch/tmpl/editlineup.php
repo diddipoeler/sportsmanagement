@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -44,17 +44,17 @@ $params = $this->form->getFieldsets('params');
 echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'player'));
 echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'player', Text::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS', true));
 echo $this->loadTemplate('players');
-echo HTMLHelper::_('bootstrap.endTab');          
+echo HTMLHelper::_('bootstrap.endTab');
 echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'substitutions', Text::_('COM_SPORTSMANAGEMENT_TABS_SUBST', true));
 echo $this->loadTemplate('substitutions');
-echo HTMLHelper::_('bootstrap.endTab');      
+echo HTMLHelper::_('bootstrap.endTab');
 echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'staff', Text::_('COM_SPORTSMANAGEMENT_TABS_STAFF', true));
 echo $this->loadTemplate('staff');
-echo HTMLHelper::_('bootstrap.endTab');      
+echo HTMLHelper::_('bootstrap.endTab');
 echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'players_trikot_numbers', Text::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS', true));
 echo $this->loadTemplate('players_trikot_numbers');
-echo HTMLHelper::_('bootstrap.endTab');  
-echo HTMLHelper::_('bootstrap.endTabSet');      
+echo HTMLHelper::_('bootstrap.endTab');
+echo HTMLHelper::_('bootstrap.endTabSet');
 ?>  
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="view" value="" />
@@ -71,6 +71,6 @@ echo HTMLHelper::_('bootstrap.endTabSet');
 <input type="hidden" name="positionscount" value="<?php echo count($this->positions); ?>" id="positioncount"    />
 <?php echo HTMLHelper::_('form.token'); ?>     
 
-      
-    </div>
+
+		  </div>
 </form>

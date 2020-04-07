@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -21,34 +21,37 @@ use Joomla\CMS\HTML\HTMLHelper;
 <div class="<?php echo $this->divclassrow;?> table-responsive" id="matchreport">
 <?php
 
-if (!empty($this->match->summary)) {
-    ?>
-    <table class="table ">
-        <tr>
-            <td class="contentheading">
-                <?php
-                echo '&nbsp;' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_SUMMARY');
-                ?>
-            </td>
-        </tr>
-    </table>
-    <table class="table ">
-        <tr>
-            <td>
-    <?php
-    $summary = $this->match->summary;
-    $summary = HTMLHelper::_('content.prepare', $summary);
+if (!empty($this->match->summary))
+{
+	?>
+	<table class="table ">
+		<tr>
+			<td class="contentheading">
+				<?php
+				echo '&nbsp;' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_SUMMARY');
+				?>
+			</td>
+		</tr>
+	</table>
+	<table class="table ">
+		<tr>
+			<td>
+	<?php
+	$summary = $this->match->summary;
+	$summary = HTMLHelper::_('content.prepare', $summary);
 
-    if ($commentsDisabled) {
-        $summary = preg_replace('#{jcomments\s+(off|lock)}#is', '', $summary);
-    }
-    echo $summary;
+	if ($commentsDisabled)
+	{
+		$summary = preg_replace('#{jcomments\s+(off|lock)}#is', '', $summary);
+	}
 
-    ?>
-            </td>
-        </tr>
-    </table>
-    <?php
+	echo $summary;
+
+	?>
+			</td>
+		</tr>
+	</table>
+	<?php
 }
 
 ?>

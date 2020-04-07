@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -18,7 +18,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * sportsmanagementTableMatch
  *
- * @package 
+ * @package
  * @author
  * @copyright diddi
  * @version   2014
@@ -26,36 +26,38 @@ defined('_JEXEC') or die('Restricted access');
  */
 class sportsmanagementTableMatch extends JSMTable
 {
-    /**
-     * Constructor
-     *
-     * @param object Database connector object
-     * @since 1.0
-     */
-    function __construct(& $db)
-    {
-          $db = sportsmanagementHelper::getDBConnection();
-        parent::__construct('#__sportsmanagement_match', 'id', $db);
-    }
+	/**
+	 * Constructor
+	 *
+	 * @param object Database connector object
+	 * @since 1.0
+	 */
+	function __construct(& $db)
+	{
+		  $db = sportsmanagementHelper::getDBConnection();
+		parent::__construct('#__sportsmanagement_match', 'id', $db);
+	}
 
-    /**
-     * Overloaded check method to ensure data integrity
-     *
-     * @access public
-     * @return boolean True on success
-     * @since  1.0
-     */
-    function check()
-    {
-        if (!is_numeric($this->team1_result_decision)) {
-            $this->team1_result_decision = null;
-        }
-        if (!is_numeric($this->team2_result_decision)) {
-            $this->team2_result_decision = null;
-        }
-      
-        return true;
-    }
+	/**
+	 * Overloaded check method to ensure data integrity
+	 *
+	 * @access public
+	 * @return boolean True on success
+	 * @since  1.0
+	 */
+	function check()
+	{
+		if (!is_numeric($this->team1_result_decision))
+		{
+			$this->team1_result_decision = null;
+		}
+
+		if (!is_numeric($this->team2_result_decision))
+		{
+			$this->team2_result_decision = null;
+		}
+
+			  return true;
+	}
 
 }
-?>

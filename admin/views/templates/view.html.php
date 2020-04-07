@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -23,7 +23,7 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 /**
  * sportsmanagementViewTemplates
  *
- * @package 
+ * @package
  * @author
  * @copyright diddi
  * @version   2014
@@ -32,85 +32,91 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 class sportsmanagementViewTemplates extends sportsmanagementView
 {
 
-    /**
-     * sportsmanagementViewTemplates::init()
-     *
-     * @return void
-     */
-    public function init()
-    {
-        $starttime = microtime();
+	/**
+	 * sportsmanagementViewTemplates::init()
+	 *
+	 * @return void
+	 */
+	public function init()
+	{
+		$starttime = microtime();
 
-        $this->state = $this->get('State');
-        $this->sortDirection = $this->state->get('list.direction');
-        $this->sortColumn = $this->state->get('list.ordering');
+		$this->state = $this->get('State');
+		$this->sortDirection = $this->state->get('list.direction');
+		$this->sortColumn = $this->state->get('list.ordering');
 
-        //$this->project_id = $this->app->getUserState("$this->option.pid", '0');
-        $mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
-        $project = $mdlProject->getProject($this->project_id);
-        $lists = array();
-        //$allTemplates = $model->checklist($this->project_id);
+		// $this->project_id = $this->app->getUserState("$this->option.pid", '0');
+		$mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
+		$project = $mdlProject->getProject($this->project_id);
+		$lists = array();
 
-        // das sind die eigenen templates
-        $templates = $this->get('Items');
+		// $allTemplates = $model->checklist($this->project_id);
 
-        $total = $this->get('Total');
+		// Das sind die eigenen templates
+		$templates = $this->get('Items');
 
-        if ($project->master_template) {
-            // das sind die templates aus einenm anderen projekt
-            $this->model->set('_getALL', 1);
-            $allMasterTemplates = $this->model->getMasterTemplatesList();
-            $this->model->set('_getALL', 0);
-            $masterTemplates = $this->model->getMasterTemplatesList();
+		$total = $this->get('Total');
 
-            // Build in Text of template title here
-            foreach ($masterTemplates as $temptext) {
-                $temptext->text = Text::_($temptext->text);
-            }
+		if ($project->master_template)
+		{
+			// Das sind die templates aus einenm anderen projekt
+			$this->model->set('_getALL', 1);
+			$allMasterTemplates = $this->model->getMasterTemplatesList();
+			$this->model->set('_getALL', 0);
+			$masterTemplates = $this->model->getMasterTemplatesList();
 
-            $importlist = array();
-            $importlist[] = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_SELECT_FROM_MASTER'));
-            $importlist = array_merge($importlist, $masterTemplates);
-            $lists['mastertemplates'] = HTMLHelper::_('select.genericlist', $importlist, 'templateid', 'class="inputbox" onChange="Joomla.submitform(\'template.masterimport\', this.form);" ');
-            $master = $this->model->getMasterName();
-            $this->master = $master;
-            $templates = array_merge($templates, $allMasterTemplates);
+			// Build in Text of template title here
+			foreach ($masterTemplates as $temptext)
+			{
+				$temptext->text = Text::_($temptext->text);
+			}
 
-            $total = count($templates);
-        }
+			$importlist = array();
+			$importlist[] = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_SELECT_FROM_MASTER'));
+			$importlist = array_merge($importlist, $masterTemplates);
+			$lists['mastertemplates'] = HTMLHelper::_('select.genericlist', $importlist, 'templateid', 'class="inputbox" onChange="Joomla.submitform(\'template.masterimport\', this.form);" ');
+			$master = $this->model->getMasterName();
+			$this->master = $master;
+			$templates = array_merge($templates, $allMasterTemplates);
 
-        $pagination = $this->get('Pagination');
-        //$this->user = Factory::getUser();
-        $this->lists = $lists; //otherwise no indication of the list in default_data.php on line 64!
-        $this->templates = $templates;
-        $this->projectws = $project;
-        $this->pagination = $pagination;
-        //$this->request_url = $uri->toString();
-    }
+			$total = count($templates);
+		}
 
-    /**
-     * Add the page title and toolbar.
-     *
-     * @since 1.7
-     */
-    protected function addToolbar()
-    {
-        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_TITLE');
+		$pagination = $this->get('Pagination');
 
-            ToolbarHelper::editList('template.edit');
+		// $this->user = Factory::getUser();
+		$this->lists = $lists; // otherwise no indication of the list in default_data.php on line 64!
+		$this->templates = $templates;
+		$this->projectws = $project;
+		$this->pagination = $pagination;
 
-        if ($this->projectws->master_template) {
+		// $this->request_url = $uri->toString();
+	}
 
-            ToolbarHelper::deleteList('', 'template.remove', 'JTOOLBAR_DELETE');
-        } else {
-            ToolbarHelper::custom('template.reset', 'restore', 'restore', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_RESET'));
-            ToolbarHelper::custom('template.update', 'update', 'update', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_UPDATE'));
-        }
+	/**
+	 * Add the page title and toolbar.
+	 *
+	 * @since 1.7
+	 */
+	protected function addToolbar()
+	{
+		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_TITLE');
 
-        ToolbarHelper::checkin('templates.checkin');
-        parent::addToolbar();
-    }
+			ToolbarHelper::editList('template.edit');
+
+		if ($this->projectws->master_template)
+		{
+			ToolbarHelper::deleteList('', 'template.remove', 'JTOOLBAR_DELETE');
+		}
+		else
+		{
+			ToolbarHelper::custom('template.reset', 'restore', 'restore', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_RESET'));
+			ToolbarHelper::custom('template.update', 'update', 'update', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_UPDATE'));
+		}
+
+		ToolbarHelper::checkin('templates.checkin');
+		parent::addToolbar();
+	}
 
 }
 
-?>

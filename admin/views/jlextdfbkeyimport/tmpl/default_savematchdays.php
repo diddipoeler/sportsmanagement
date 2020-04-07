@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -25,13 +25,13 @@ HTMLHelper::_('behavior.tooltip');
 ?>
 
 <form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm">
-    <div id="editcell">
-        <fieldset class="adminform">
-            <legend>
-                <?php
-                echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_2', $this->projectid);
-                ?>
-            </legend>
+	<div id="editcell">
+		<fieldset class="adminform">
+			<legend>
+				<?php
+				echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_2', $this->projectid);
+				?>
+			</legend>
 
 <table class="<?php echo $this->table_data_class; ?>">
 <thead>
@@ -59,8 +59,9 @@ HTMLHelper::_('behavior.tooltip');
 
 
 <?PHP
-$i=0;
-foreach($this->import as $rowdays)
+$i = 0;
+
+foreach ($this->import as $rowdays)
 {
 ?>
 <tr>
@@ -79,16 +80,16 @@ foreach($this->import as $rowdays)
 
 <td>
 <?php
-$date1 =  Factory::getDate($rowdays->match_date)->format('%d-%m-%Y');
+$date1 = Factory::getDate($rowdays->match_date)->format('%d-%m-%Y');
 $append = ' style="background-color:#bbffff;" ';
 
 echo HTMLHelper::calendar(
-    $date1,
-    'match_date['.$i.']',
-    'match_date['.$i.']',
-    '%d-%m-%Y',
-    'size="10" ' . $append .
-            'onchange="document.getElementById(\'cb' . $i . '\').checked=true"'
+	$date1,
+	'match_date[' . $i . ']',
+	'match_date[' . $i . ']',
+	'%d-%m-%Y',
+	'size="10" ' . $append .
+			'onchange="document.getElementById(\'cb' . $i . '\').checked=true"'
 );
 
 ?>
@@ -114,11 +115,12 @@ $i++;
 </div>
 
 <fieldset class="actions">
-                      
-                          
-</fieldset>
+
+					  
+						  </fieldset>
 <input type="hidden" name="sent"			value="3" />
 <input type="hidden" name="projectid"			value="<?php echo $this->projectid;?> " />
 <input type="hidden" name="task"			value="" />
 </form>
-         
+
+		 

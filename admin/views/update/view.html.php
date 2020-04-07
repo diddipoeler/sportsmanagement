@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -18,7 +18,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * sportsmanagementViewUpdate
  *
- * @package 
+ * @package
  * @author
  * @copyright diddi
  * @version   2014
@@ -26,32 +26,29 @@ defined('_JEXEC') or die('Restricted access');
  */
 class sportsmanagementViewUpdate extends sportsmanagementView
 {
-  
-    /**
-     * sportsmanagementViewUpdate::init()
-     *
-     * @return void
-     */
-    public function init()
-    {
+
+	/**
+	 * sportsmanagementViewUpdate::init()
+	 *
+	 * @return void
+	 */
+	public function init()
+	{
+
+	}
+
+	/**
+	 * Add the page title and toolbar.
+	 *
+	 * @since 1.7
+	 */
+	protected function addToolbar()
+	{
+
+			  parent::addToolbar();
+
+	}
 
 
-    }
-  
-    /**
-    * Add the page title and toolbar.
-    *
-    * @since 1.7
-    */
-    protected function addToolbar()
-    {
-      
-        parent::addToolbar();
 
-      
-    }  
-  
-  
-  
 }
-?>

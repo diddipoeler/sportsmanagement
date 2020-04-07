@@ -27,42 +27,57 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 class sportsmanagementModelJSONFeed extends BaseDatabaseModel
 {
 
-    public function getGoogleCalendarFeeds()
-    {
-        $app = Factory::getApplication();
-      
-        $startDate = Factory::getApplication()->input->getVar('start', null, 'GET');
-        $endDate = Factory::getApplication()->input->getVar('end', null, 'GET');
+	public function getGoogleCalendarFeeds()
+	{
+		$app = Factory::getApplication();
 
-        $calendarids = '';
-        if (Factory::getApplication()->input->getVar('gcids', null) != null) {
-            if(is_array(Factory::getApplication()->input->getVar('gcids', null))) {
-                $calendarids = Factory::getApplication()->input->getVar('gcids', null);
-            } else {
-                $calendarids = explode(',', Factory::getApplication()->input->getVar('gcids', null));
-            }
-        } else {
-            $calendarids = Factory::getApplication()->input->getVar('gcid', null);
-        }
-        $results = jsmGCalendarDBUtil::getCalendars($calendarids);
-     
-        if(empty($results)) {
-            return null;
-        }
+			  $startDate = Factory::getApplication()->input->getVar('start', null, 'GET');
+		$endDate = Factory::getApplication()->input->getVar('end', null, 'GET');
 
-        $calendars = array();
-        foreach ($results as $result) {
-            if(empty($result->calendar_id)) {
-                continue;
-            }
+		$calendarids = '';
 
-            $events = jsmGCalendarZendHelper::getEvents($result, $startDate, $endDate, 1000);
-            if ($events == null) {
-                continue;
-            }
-            $calendars[] = $events;
-        }
-      
-        return $calendars;
-    }
+		if (Factory::getApplication()->input->getVar('gcids', null) != null)
+		{
+			if (is_array(Factory::getApplication()->input->getVar('gcids', null)))
+			{
+				$calendarids = Factory::getApplication()->input->getVar('gcids', null);
+			}
+			else
+			{
+				$calendarids = explode(',', Factory::getApplication()->input->getVar('gcids', null));
+			}
+		}
+		else
+		{
+			$calendarids = Factory::getApplication()->input->getVar('gcid', null);
+		}
+
+		$results = jsmGCalendarDBUtil::getCalendars($calendarids);
+
+		if (empty($results))
+		{
+			return null;
+		}
+
+			$calendars = array();
+
+		foreach ($results as $result)
+		{
+			if (empty($result->calendar_id))
+			{
+				continue;
+			}
+
+					$events = jsmGCalendarZendHelper::getEvents($result, $startDate, $endDate, 1000);
+
+			if ($events == null)
+			{
+					continue;
+			}
+
+					$calendars[] = $events;
+		}
+
+			  return $calendars;
+	}
 }

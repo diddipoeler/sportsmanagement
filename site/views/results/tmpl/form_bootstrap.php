@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -22,10 +22,13 @@ $this->divclass = '';
 $this->divclassrest = '';
 $this->columns = 12;
 
-if (version_compare(JSM_JVERSION, '4', 'eq')) {
-    $uri = Uri::getInstance(); 
-} else {
-    $uri = Factory::getURI();
+if (version_compare(JSM_JVERSION, '4', 'eq'))
+{
+	$uri = Uri::getInstance();
+}
+else
+{
+	$uri = Factory::getURI();
 }
 ?>
 <div class="container-fluid">
@@ -36,43 +39,47 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 /**
  * welche bootstrap version
  */
-if ($this->overallconfig['use_bootstrap_version'] ) {
-    $this->divclass = "col-xs-".round((12 / 2));  
-    $this->divclass .= " col-sm-".round((12 / 2));  
-    $this->divclass .= " col-md-".round((12 / 2));  
-    $this->divclass .= " col-lg-".round((12 / 2));  
+if ($this->overallconfig['use_bootstrap_version'])
+{
+	$this->divclass = "col-xs-" . round((12 / 2));
+	$this->divclass .= " col-sm-" . round((12 / 2));
+	$this->divclass .= " col-md-" . round((12 / 2));
+	$this->divclass .= " col-lg-" . round((12 / 2));
 }
 else
 {
-    $this->divclass = "span".round((12 / 2));  
-}  
+	$this->divclass = "span" . round((12 / 2));
+}
 
-if ($this->roundid > 0 ) {
+if ($this->roundid > 0)
+{
 ?>
 <div class="<?php echo $this->divclass; ?>" style="">
 <?PHP
 
 sportsmanagementHelperHtml::showMatchdaysTitle(Text::_('COM_SPORTSMANAGEMENT_RESULTS_ENTER_EDIT_RESULTS'), $this->roundid, $this->config);
-if ($this->showediticon ) //Needed to check if the user is still allowed to get into the match edit
+
+
+if ($this->showediticon) // Needed to check if the user is still allowed to get into the match edit
 {
-    $routeparameter = array();
-    $routeparameter['cfg_which_database'] = sportsmanagementModelProject::$cfg_which_database;
-    $routeparameter['s'] = sportsmanagementModelProject::$seasonid;
-    $routeparameter['p'] = sportsmanagementModelProject::$projectslug;
-    $routeparameter['r'] = sportsmanagementModelProject::$roundslug;
-    $routeparameter['division'] = sportsmanagementModelResults::$divisionid;
-    $routeparameter['mode'] = sportsmanagementModelResults::$mode;
-    $routeparameter['order'] = sportsmanagementModelResults::$order;
-    $routeparameter['layout'] = '';
-    $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);
-    $imgTitle = Text::_('COM_SPORTSMANAGEMENT_RESULTS_CLOSE_EDIT_RESULTS');
-    $desc = HTMLHelper::image('media/com_sportsmanagement/jl_images/edit_exit.png', $imgTitle, array(' title' => $imgTitle));
-    echo '&nbsp;';
-    echo HTMLHelper::link($link, $desc);
+	$routeparameter = array();
+	$routeparameter['cfg_which_database'] = sportsmanagementModelProject::$cfg_which_database;
+	$routeparameter['s'] = sportsmanagementModelProject::$seasonid;
+	$routeparameter['p'] = sportsmanagementModelProject::$projectslug;
+	$routeparameter['r'] = sportsmanagementModelProject::$roundslug;
+	$routeparameter['division'] = sportsmanagementModelResults::$divisionid;
+	$routeparameter['mode'] = sportsmanagementModelResults::$mode;
+	$routeparameter['order'] = sportsmanagementModelResults::$order;
+	$routeparameter['layout'] = '';
+	$link = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);
+	$imgTitle = Text::_('COM_SPORTSMANAGEMENT_RESULTS_CLOSE_EDIT_RESULTS');
+	$desc = HTMLHelper::image('media/com_sportsmanagement/jl_images/edit_exit.png', $imgTitle, array(' title' => $imgTitle));
+	echo '&nbsp;';
+	echo HTMLHelper::link($link, $desc);
 }
 }
 
-                ?>
+				?>
 </div>
 
 
@@ -90,21 +97,22 @@ echo sportsmanagementHelperHtml::getRoundSelectNavigation(true, sportsmanagement
 /**
  * welche bootstrap version
  */
-if ($this->overallconfig['use_bootstrap_version'] ) {
-    $this->divclass = "col-xs-".round((12 / $this->columns));  
-    $this->divclass .= " col-sm-".round((12 / $this->columns));  
-    $this->divclass .= " col-md-".round((12 / $this->columns));  
-    $this->divclass .= " col-lg-".round((12 / $this->columns));
-    $this->divclassrest = "col-xs-3";  
-    $this->divclassrest .= " col-sm-3";  
-    $this->divclassrest .= " col-md-3";  
-    $this->divclassrest .= " col-lg-3";  
+if ($this->overallconfig['use_bootstrap_version'])
+{
+	$this->divclass = "col-xs-" . round((12 / $this->columns));
+	$this->divclass .= " col-sm-" . round((12 / $this->columns));
+	$this->divclass .= " col-md-" . round((12 / $this->columns));
+	$this->divclass .= " col-lg-" . round((12 / $this->columns));
+	$this->divclassrest = "col-xs-3";
+	$this->divclassrest .= " col-sm-3";
+	$this->divclassrest .= " col-md-3";
+	$this->divclassrest .= " col-lg-3";
 }
 else
 {
-    $this->divclass = "span".round((12 / $this->columns));  
-    $this->divclassrest = "span3";  
-}  
+	$this->divclass = "span" . round((12 / $this->columns));
+	$this->divclassrest = "span3";
+}
 ?>
 <div class="<?php echo $this->divclass; ?>" style="">
 <input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->matches); ?>);" />
@@ -128,22 +136,24 @@ else
 <div class="<?php echo $this->divclassrest; ?>" style=""><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_PUBLISHED'); ?></div>  
 </div>	
 <!-- Start of the matches for the selected round -->
-    <?php
-                $i = 0;
-    foreach( $this->matches as $match )
-    {
-        if ((isset($match->allowed)) && ($match->allowed)) {
-            $this->game = $match;
-            $this->i = $i;
-            /**
- * eingabe laden
- */                      
-            echo $this->loadTemplate('row');
-        }
+	<?php
+				$i = 0;
 
-        $i++;
-    }
-    ?>
+	foreach ($this->matches as $match)
+	{
+		if ((isset($match->allowed)) && ($match->allowed))
+		{
+			$this->game = $match;
+			$this->i = $i;
+			/**
+ * eingabe laden
+ */
+			echo $this->loadTemplate('row');
+		}
+
+		$i++;
+	}
+	?>
 
 
 <br/>
@@ -174,4 +184,3 @@ else
 
 
 
-?>

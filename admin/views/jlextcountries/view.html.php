@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -22,7 +22,7 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 /**
  * sportsmanagementViewjlextcountries
  *
- * @package 
+ * @package
  * @author
  * @copyright diddi
  * @version   2014
@@ -30,56 +30,55 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
  */
 class sportsmanagementViewjlextcountries extends sportsmanagementView
 {
-  
-    /**
-     * sportsmanagementViewjlextcountries::init()
-     *
-     * @return void
-     */
-    public function init()
-    {
-      
-        $inputappend = '';
 
-        $this->table = Table::getInstance('jlextcountry', 'sportsmanagementTable');
-      
-         //build the html options for nation
-        $nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_FEDERATION'));
-        if ($res = $this->get('Federation') ) {
-            $nation = array_merge($nation, $res);
-            $this->federation = $res;
-      
+	/**
+	 * sportsmanagementViewjlextcountries::init()
+	 *
+	 * @return void
+	 */
+	public function init()
+	{
 
-        }
-      
-        $lists['federation'] = JHtmlSelect::genericlist(
-            $nation,
-            'filter_federation',
-            $inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
-            'value',
-            'text',
-            $this->state->get('filter.federation')
-        );
+			  $inputappend = '';
 
-        $this->lists = $lists;
+		$this->table = Table::getInstance('jlextcountry', 'sportsmanagementTable');
 
-    }
-  
-    /**
-    * Add the page title and toolbar.
-    *
-    * @since 1.7
-    */
-    protected function addToolbar()
-    {
-        // Set toolbar items for the page
-        ToolbarHelper::addNew('jlextcountry.add');
-        ToolbarHelper::editList('jlextcountry.edit');
-        ToolbarHelper::custom('jlextcountry.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
-        ToolbarHelper::custom('jlextcountries.importplz', 'upload', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_IMPORT_PLZ'), true);
-        ToolbarHelper::archiveList('jlextcountry.export', Text::_('JTOOLBAR_EXPORT'));
+			   // Build the html options for nation
+		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_FEDERATION'));
 
-        parent::addToolbar();
-    }
+		if ($res = $this->get('Federation'))
+		{
+			$nation = array_merge($nation, $res);
+			$this->federation = $res;
+		}
+
+			  $lists['federation'] = JHtmlSelect::genericlist(
+				  $nation,
+				  'filter_federation',
+				  $inputappend . 'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+				  'value',
+				  'text',
+				  $this->state->get('filter.federation')
+			  );
+
+		$this->lists = $lists;
+
+	}
+
+	/**
+	 * Add the page title and toolbar.
+	 *
+	 * @since 1.7
+	 */
+	protected function addToolbar()
+	{
+		// Set toolbar items for the page
+		ToolbarHelper::addNew('jlextcountry.add');
+		ToolbarHelper::editList('jlextcountry.edit');
+		ToolbarHelper::custom('jlextcountry.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
+		ToolbarHelper::custom('jlextcountries.importplz', 'upload', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_IMPORT_PLZ'), true);
+		ToolbarHelper::archiveList('jlextcountry.export', Text::_('JTOOLBAR_EXPORT'));
+
+		parent::addToolbar();
+	}
 }
-?>

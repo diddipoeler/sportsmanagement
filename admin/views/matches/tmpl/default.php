@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -18,12 +18,13 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 
 
-$massadd=Factory::getApplication()->input->getInt('massadd', 0);
+$massadd = Factory::getApplication()->input->getInt('massadd', 0);
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO ) {
-    echo $this->loadTemplate('debug');
+if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO)
+{
+	echo $this->loadTemplate('debug');
 }
 ?>
 
@@ -36,8 +37,9 @@ echo $this->loadTemplate('massadd');
 echo $this->loadTemplate('matches');
 ?>  
 <?php
-if (ComponentHelper::getParams($this->option)->get('show_edit_matches_matrix') ) {
-    echo $this->loadTemplate('matrix');
+if (ComponentHelper::getParams($this->option)->get('show_edit_matches_matrix'))
+{
+	echo $this->loadTemplate('matrix');
 }
 ?>
 <div>

@@ -1,19 +1,19 @@
 .p-y-2 {
-    padding-top: 28px;
-    padding-bottom: 28px;
+	padding-top: 28px;
+	padding-bottom: 28px;
 }
 
 .p-y-3 {
-    padding-top: 45px;
-    padding-bottom: 45px;
+	padding-top: 45px;
+	padding-bottom: 45px;
 }
 
 .m-b-1 {
-    margin-bottom: 18px;
+	margin-bottom: 18px;
 }
 
 .m-t-1 {
-    margin-top: 18px;
+	margin-top: 18px;
 }
 
 /*==========================================================
@@ -21,10 +21,10 @@
 ============================================================*/
 
 .main_counter_area .main_counter_content .single_counter {
-    background: rgba(132, 132, 132, 0.5);
-    color: #fff;
+	background: rgba(132, 132, 132, 0.5);
+	color: #fff;
 }
 
 .main_counter_area .main_counter_content .single_counter i {
-    font-size: 36px;
+	font-size: 36px;
 }

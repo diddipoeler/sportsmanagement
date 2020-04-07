@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -30,40 +30,42 @@ FormHelper::loadFieldClass('list');
  */
 class JFormFieldprojectrounds extends \JFormFieldList
 {
-    /**
-     * The form field type.
-     *
-     * @var   string
-     * @since 1.6
-     */
-    protected $type = 'projectrounds';
+	/**
+	 * The form field type.
+	 *
+	 * @var   string
+	 * @since 1.6
+	 */
+	protected $type = 'projectrounds';
 
-    /**
-     * Method to get the field options.
-     *
-     * @return array  The field option objects.
-     * @since  1.6
-     */
-    protected function getOptions()
-    {
-        $app = Factory::getApplication();
-        $options = array();
+	/**
+	 * Method to get the field options.
+	 *
+	 * @return array  The field option objects.
+	 * @since  1.6
+	 */
+	protected function getOptions()
+	{
+		$app = Factory::getApplication();
+		$options = array();
 
-        $db = Factory::getDbo();
-        $query = $db->getQuery(true)
-            ->select('a.id AS value, a.name AS text')
-            ->from('#__sportsmanagement_round AS a');
+		$db = Factory::getDbo();
+		$query = $db->getQuery(true)
+			->select('a.id AS value, a.name AS text')
+			->from('#__sportsmanagement_round AS a');
 
-        if ($menuType = $this->form->getValue('project')) {
-            $query->where('a.project_id = ' . $db->quote($menuType));
-        }
+		if ($menuType = $this->form->getValue('project'))
+		{
+			$query->where('a.project_id = ' . $db->quote($menuType));
+		}
 
-        // Get the options.
-        $db->setQuery($query);
-        $options = $db->loadObjectList();
-        // Merge any additional options in the XML definition.
-        $options = array_merge(parent::getOptions(), $options);
+		// Get the options.
+		$db->setQuery($query);
+		$options = $db->loadObjectList();
 
-        return $options;
-    }
+		// Merge any additional options in the XML definition.
+		$options = array_merge(parent::getOptions(), $options);
+
+		return $options;
+	}
 }

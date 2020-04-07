@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung fűr alle Sportarten
  *
  * @version    1.0.05
@@ -17,17 +17,18 @@ defined('_JEXEC') or die('Restricted access');
 <div class="row" id="pagnav">
 <br />
 <table class="table">
-    <tr>
-        <td>
-            <?php
-            if (!empty($this->rounds)) {
-                $pageNavigation = "<div class='pagenav'>";
-                $pageNavigation .= "</div>";
-                echo $pageNavigation;
-            }
-            ?>
-        </td>
-    </tr>
+	<tr>
+		<td>
+			<?php
+			if (!empty($this->rounds))
+			{
+				$pageNavigation = "<div class='pagenav'>";
+				$pageNavigation .= "</div>";
+				echo $pageNavigation;
+			}
+			?>
+		</td>
+	</tr>
 </table>
 </div>
 <!-- matchdays pageNav END -->

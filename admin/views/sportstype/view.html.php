@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -19,7 +19,7 @@ use Joomla\CMS\Language\Text;
 /**
  * sportsmanagementViewSportsType
  *
- * @package 
+ * @package
  * @author
  * @copyright diddi
  * @version   2014
@@ -27,26 +27,26 @@ use Joomla\CMS\Language\Text;
  */
 class sportsmanagementViewSportsType extends sportsmanagementView
 {
-  
-    /**
-     * sportsmanagementViewSportsType::init()
-     *
-     * @return
-     */
-    public function init()
-    {
-    
-    }
 
-    /**
-     * Setting the toolbar
-     */
-    protected function addToolBar()
-    {
-        $this->jinput->set('hidemainmenu', true);
-        $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPE_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPE_NEW');
-        $this->icon = 'sportstype';
-        parent::addToolbar();
-    }
+	/**
+	 * sportsmanagementViewSportsType::init()
+	 *
+	 * @return
+	 */
+	public function init()
+	{
+
+	}
+
+	/**
+	 * Setting the toolbar
+	 */
+	protected function addToolBar()
+	{
+		$this->jinput->set('hidemainmenu', true);
+		$isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPE_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPE_NEW');
+		$this->icon = 'sportstype';
+		parent::addToolbar();
+	}
 
 }

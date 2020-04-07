@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -21,20 +21,22 @@ use Joomla\CMS\Language\Text;
 jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
 
-if (!defined('DS')) {
-    define('DS', DIRECTORY_SEPARATOR);
+if (!defined('DS'))
+{
+	define('DS', DIRECTORY_SEPARATOR);
 }
 
-if (!class_exists('sportsmanagementHelper') ) {
-    //add the classes for handling
-    $classpath = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components/com_sportsmanagement'.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'sportsmanagement.php';
-    JLoader::register('sportsmanagementHelper', $classpath);
+if (!class_exists('sportsmanagementHelper'))
+{
+	// Add the classes for handling
+	$classpath = JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'components/com_sportsmanagement' . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'sportsmanagement.php';
+	JLoader::register('sportsmanagementHelper', $classpath);
 }
 
 /**
  * FormFieldsportstypelist
  *
- * @package 
+ * @package
  * @author
  * @copyright diddi
  * @version   2014
@@ -42,47 +44,49 @@ if (!class_exists('sportsmanagementHelper') ) {
  */
 class JFormFieldsportstypelist extends \JFormFieldList
 {
-    /**
-     * field type
-     *
-     * @var string
-     */
-    public $type = 'sportstypelist';
+	/**
+	 * field type
+	 *
+	 * @var string
+	 */
+	public $type = 'sportstypelist';
 
-    /**
-     * Method to get the field options.
-     *
-     * @return array  The field option objects.
-     *
-     * @since 11.1
-     */
-    protected function getOptions()
-    {
-        // Initialize variables.
-        $options = array();
-          $lang = Factory::getLanguage();
-          $db = sportsmanagementHelper::getDBConnection(false, false);
-         $query = $db->getQuery(true);
-          
-         $query->select('id AS value, name AS text');
-         $query->from('#__sportsmanagement_sports_type');
-         $query->order('name');
-         $db->setQuery($query);
-         $options = $db->loadObjectList();
-  
-          $extension = "COM_SPORTSMANAGEMENT";
-        $source = JPATH_ADMINISTRATOR . '/components/' . $extension;
-        $lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
-        ||    $lang->load($extension, $source, null, false, false)
-        ||    $lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
-        ||    $lang->load($extension, $source, $lang->getDefault(), false, false);
-      
-        foreach ( $options as $row )
-          {
-            $row->text = Text::_($row->text);
-        }
-        // Merge any additional options in the XML definition.
-        $options = array_merge(parent::getOptions(), $options);
-        return $options;
-    }
+	/**
+	 * Method to get the field options.
+	 *
+	 * @return array  The field option objects.
+	 *
+	 * @since 11.1
+	 */
+	protected function getOptions()
+	{
+		// Initialize variables.
+		$options = array();
+		  $lang = Factory::getLanguage();
+		  $db = sportsmanagementHelper::getDBConnection(false, false);
+		 $query = $db->getQuery(true);
+
+				   $query->select('id AS value, name AS text');
+		 $query->from('#__sportsmanagement_sports_type');
+		 $query->order('name');
+		 $db->setQuery($query);
+		 $options = $db->loadObjectList();
+
+		  $extension = "COM_SPORTSMANAGEMENT";
+		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
+		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
+		||    $lang->load($extension, $source, null, false, false)
+		||    $lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
+		||    $lang->load($extension, $source, $lang->getDefault(), false, false);
+
+		foreach ($options as $row)
+		{
+			$row->text = Text::_($row->text);
+		}
+
+			// Merge any additional options in the XML definition.
+			$options = array_merge(parent::getOptions(), $options);
+
+			return $options;
+	}
 }

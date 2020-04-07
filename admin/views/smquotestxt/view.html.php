@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -20,7 +20,7 @@ use Joomla\CMS\Factory;
 /**
  * sportsmanagementViewsmquotestxt
  *
- * @package 
+ * @package
  * @author
  * @copyright diddi
  * @version   2014
@@ -28,35 +28,34 @@ use Joomla\CMS\Factory;
  */
 class sportsmanagementViewsmquotestxt extends sportsmanagementView
 {
-    /**
-     * sportsmanagementViewsmquotestxt::init()
-     *
-     * @return void
-     */
-    public function init()
-    {
-        $app = Factory::getApplication();
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $model = $this->getModel();
-        $this->assign('files', $model->getTXTFiles());
-    
-        $this->option = $option;
+	/**
+	 * sportsmanagementViewsmquotestxt::init()
+	 *
+	 * @return void
+	 */
+	public function init()
+	{
+		$app = Factory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+		$model = $this->getModel();
+		$this->assign('files', $model->getTXTFiles());
 
-    }
-  
-    /**
-    * Add the page title and toolbar.
-    *
-    * @since 1.7
-    */
-    protected function addToolbar()
-    {
-        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TXT_EDITORS');
-        parent::addToolbar();
-    }  
-  
-  
-  
+			$this->option = $option;
+
+	}
+
+	/**
+	 * Add the page title and toolbar.
+	 *
+	 * @since 1.7
+	 */
+	protected function addToolbar()
+	{
+		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TXT_EDITORS');
+		parent::addToolbar();
+	}
+
+
+
 }
-?>

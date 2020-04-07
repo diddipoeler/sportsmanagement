@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -22,8 +22,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <div class="<?php echo $this->divclasscontainer;?>" id="treetonode">
 <div class="<?php echo $this->divclassrow;?> table-responsive" id="treetonodeanzeige">  
 <?php
-if ($this->config['show_sectionheader']==1) {
-    echo $this->loadTemplate('sectionheader');
+if ($this->config['show_sectionheader'] == 1)
+{
+	echo $this->loadTemplate('sectionheader');
 }
 
 echo $this->loadTemplate('projectheading');

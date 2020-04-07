@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -49,4 +49,5 @@ echo $this->lists['node_matches'];
 </tr>
 </table>
 
-      
+
+	  

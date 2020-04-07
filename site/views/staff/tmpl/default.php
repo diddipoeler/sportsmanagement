@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -20,46 +20,54 @@ $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <div class="<?php echo $this->divclasscontainer;?>" id="staff">
-    <?php
-    echo $this->loadTemplate('projectheading');
+	<?php
+	echo $this->loadTemplate('projectheading');
 
-    if ($this->config['show_sectionheader'] ) {
-        echo $this->loadTemplate('sectionheader');
-    }
+	if ($this->config['show_sectionheader'])
+	{
+		echo $this->loadTemplate('sectionheader');
+	}
 
-    /**
+	/**
  * diddipoeler
  * aufbau der templates
  */
-    $this->output = array();
+	$this->output = array();
 
-    if ($this->config['show_info'] ) {
-        echo $this->loadTemplate('info');
-    }
+	if ($this->config['show_info'])
+	{
+		echo $this->loadTemplate('info');
+	}
 
-    if ($this->config['show_extended'] ) {
-        echo $this->loadTemplate('extended');
-    }
+	if ($this->config['show_extended'])
+	{
+		echo $this->loadTemplate('extended');
+	}
 
-    if ($this->config['show_status'] ) {
-        echo $this->loadTemplate('status');
-    }
+	if ($this->config['show_status'])
+	{
+		echo $this->loadTemplate('status');
+	}
 
-    if ($this->config['show_description'] ) {
-        echo $this->loadTemplate('description');
-    }
-    // General part of person view END
+	if ($this->config['show_description'])
+	{
+		echo $this->loadTemplate('description');
+	}
 
-    if ($this->config['show_careerstats'] ) {
-        echo $this->loadTemplate('careerstats');
-    }
+	// General part of person view END
 
-    if ($this->config['show_career'] ) {
-        echo $this->loadTemplate('career');
-    }
+	if ($this->config['show_careerstats'])
+	{
+		echo $this->loadTemplate('careerstats');
+	}
 
-    echo $this->loadTemplate('jsminfo');
-  
-    ?>
+	if ($this->config['show_career'])
+	{
+		echo $this->loadTemplate('career');
+	}
+
+	echo $this->loadTemplate('jsminfo');
+
+	?>
   
 </div>

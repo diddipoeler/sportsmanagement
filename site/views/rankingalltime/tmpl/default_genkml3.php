@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -46,9 +46,9 @@ $kml[] = ' </Placemark>';
 $kml[] = ' <Placemark id="placemark1">';
 $kml[] = ' <name>' . htmlentities('Buddha Thai & Bar') . '</name>';
 $kml[] = ' <description>' . htmlentities('2222 2nd Ave, Seattle, WA') . '</description>';
-$kml[] = ' <styleUrl>#' . ('bar') .'Style</styleUrl>';
+$kml[] = ' <styleUrl>#' . ('bar') . 'Style</styleUrl>';
 $kml[] = ' <Point>';
-$kml[] = ' <coordinates>' . '-122.344394' . ','  . '47.613591' . '</coordinates>';
+$kml[] = ' <coordinates>' . '-122.344394' . ',' . '47.613591' . '</coordinates>';
 $kml[] = ' </Point>';
 $kml[] = ' </Placemark>';
 
@@ -61,4 +61,3 @@ echo $kmlOutput;
 
 
 
-?>

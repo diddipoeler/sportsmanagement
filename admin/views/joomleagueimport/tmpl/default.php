@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -15,8 +15,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 ?>
-    
-<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
+
+	<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 <p class="nowarning"><?php echo Text::_('COM_JOOMLAUPDATE_VIEW_UPDATE_INPROGRESS') ?></p>
 <div class="joomlaupdate_spinner" ></div>
 
@@ -31,10 +31,11 @@ use Joomla\CMS\Language\Text;
 
 
 <?PHP
-//echo 'step -> '.$this->work_table.'<br>';
+// Echo 'step -> '.$this->work_table.'<br>';
 
-if ($this->bar_value < 100) {
-    echo '<meta http-equiv="refresh" content="1; URL='.$this->request_url.'">';
+if ($this->bar_value < 100)
+{
+	echo '<meta http-equiv="refresh" content="1; URL=' . $this->request_url . '">';
 }
 ?>
 

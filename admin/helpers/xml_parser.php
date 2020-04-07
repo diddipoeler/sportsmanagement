@@ -1,11 +1,11 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
  * @file       xml_parser.php
- * @author  
+ * @author
  * @copyright
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @package    sportsmanagement
@@ -15,7 +15,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 /*
- * xml_parser.php
+ * Xml_parser.php
  *
  * @(#) $Header: /opt2/ena/metal/xmlparser/xml_parser.php,v 1.35 2012/09/22 06:01:56 mlemos Exp $
  *
@@ -30,146 +30,181 @@ define('XML_PARSER_PARSE_DATA_ERROR',      2);
 define('XML_PARSER_READ_INPUT_DATA_ERROR', 3);
 define('XML_PARSER_VALIDATE_DATA_ERROR',   4);
 
-$xml_parser_handlers=array();
+$xml_parser_handlers = array();
 
 Function xml_parser_start_element_handler($parser,$name,$attrs)
 {
-    global $xml_parser_handlers;
+	global $xml_parser_handlers;
 
-    if(!strcmp($xml_parser_handlers[$parser]->error, "")) {
-        $xml_parser_handlers[$parser]->StartElement($xml_parser_handlers[$parser], $name, $attrs);
-    }
+	if (!strcmp($xml_parser_handlers[$parser]->error, ""))
+	{
+		$xml_parser_handlers[$parser]->StartElement($xml_parser_handlers[$parser], $name, $attrs);
+	}
 }
 
 Function xml_parser_end_element_handler($parser,$name)
 {
-    global $xml_parser_handlers;
+	global $xml_parser_handlers;
 
-    if(!strcmp($xml_parser_handlers[$parser]->error, "")) {
-        $xml_parser_handlers[$parser]->EndElement($xml_parser_handlers[$parser], $name);
-    }
+	if (!strcmp($xml_parser_handlers[$parser]->error, ""))
+	{
+		$xml_parser_handlers[$parser]->EndElement($xml_parser_handlers[$parser], $name);
+	}
 }
 
 Function xml_parser_character_data_handler($parser,$data)
 {
-    global $xml_parser_handlers;
+	global $xml_parser_handlers;
 
-    if(!strcmp($xml_parser_handlers[$parser]->error, "")) {
-        $xml_parser_handlers[$parser]->CharacterData($xml_parser_handlers[$parser], $data);
-    }
+	if (!strcmp($xml_parser_handlers[$parser]->error, ""))
+	{
+		$xml_parser_handlers[$parser]->CharacterData($xml_parser_handlers[$parser], $data);
+	}
 }
 
 class xml_parser_handler_class
 {
-    var $xml_parser;
-    var $error_number = XML_PARSER_NO_ERROR;
-    var $error = '';
-    var $error_code = 0;
-    var $error_line, $error_column, $error_byte_index;
-    var $structure = array();
-    var $positions = array();
-    var $path = '';
-    var $store_positions = 0;
-    var $simplified_xml = 0;
-    var $fail_on_non_simplified_xml = 0;
+	var $xml_parser;
 
-    Function SetError(&$object,$error_number,$error)
-    {
-        $object->error_number=$error_number;
-        $object->error=$error;
-        $object->error_line=xml_get_current_line_number($object->xml_parser);
-        $object->error_column=xml_get_current_column_number($object->xml_parser);
-        $object->error_byte_index=xml_get_current_byte_index($object->xml_parser);
-    }
+	var $error_number = XML_PARSER_NO_ERROR;
 
-    Function SetElementData(&$object,$path,&$data)
-    {
-        $object->structure[$path]=$data;
-        if($object->store_positions) {
-            $object->positions[$path]=array(
-             "Line"=>xml_get_current_line_number($object->xml_parser),
-             "Column"=>xml_get_current_column_number($object->xml_parser),
-             "Byte"=>xml_get_current_byte_index($object->xml_parser)
-            );
-        }
-    }
+	var $error = '';
 
-    Function StartElement(&$object,$name,&$attrs)
-    {
-        if(strcmp($this->path, "")) {
-            $element=$object->structure[$this->path]["Elements"];
-            $object->structure[$this->path]["Elements"]++;
-            $this->path.=",$element";
-        }
-        else
-        {
-            $element=0;
-            $this->path="0";
-        }
-        $data=array(
-         "Elements"=>0
-        );
-        if($object->extract_namespaces
-            && ($colon = strcspn($name, ':')) < strlen($name)
-        ) {
-               $data['Namespace'] = substr($name, 0, $colon);
-               $data['Tag'] = substr($name, $colon + 1);
-        }
-        else {
-            $data['Tag'] = $name;
-        }
-        if($object->simplified_xml) {
-            if($object->fail_on_non_simplified_xml
-                && count($attrs)>0
-            ) {
-                   $this->SetError($object, XML_PARSER_PARSE_DATA_ERROR, "Simplified XML can not have attributes in tags");
-                   return;
-            }
-        }
-        elseif($object->extract_namespaces) {
-             $attributes = $namespaces = array();
-             $ta = count($attrs);
-            for($a = 0, Reset($attrs); $a < $ta; Next($attrs), ++$a)
-             {
-                $attr = Key($attrs);
-                $value = $attrs[$attr];
-                if(($colon = strcspn($attr, ':')) < strlen($attr)) {
-                    $attribute = substr($attr, $colon + 1);
-                    $attributes[$attribute] = $value;
-                    $namespaces[$attribute] = substr($attr, 0, $colon);
-                }
-                else {
-                    $attributes[$attr] = $value;
-                }
-            }
-             $data["Attributes"]=$attributes;
-             $data["AttributeNamespaces"]=$namespaces;
-        }
-        else {
-            $data["Attributes"]=$attrs;
-        }
-        $this->SetElementData($object, $this->path, $data);
-    }
+	var $error_code = 0;
 
-    Function EndElement(&$object,$name)
-    {
-        $this->path=(($position=strrpos($this->path, ",")) ? substr($this->path, 0, $position) : "");
-    }
+	var $error_line, $error_column, $error_byte_index;
 
-    Function CharacterData(&$object,$data)
-    {
-        $element=$object->structure[$this->path]["Elements"];
-        $previous=$this->path.",".strval($element-1);
-        if($element>0
-            && GetType($object->structure[$previous])=="string"
-        ) {
-            $object->structure[$previous].=$data;
-        } else
-        {
-               $this->SetElementData($object, $this->path.",$element", $data);
-               $object->structure[$this->path]["Elements"]++;
-        }
-    }
+	var $structure = array();
+
+	var $positions = array();
+
+	var $path = '';
+
+	var $store_positions = 0;
+
+	var $simplified_xml = 0;
+
+	var $fail_on_non_simplified_xml = 0;
+
+	Function SetError(&$object,$error_number,$error)
+	{
+		$object->error_number = $error_number;
+		$object->error = $error;
+		$object->error_line = xml_get_current_line_number($object->xml_parser);
+		$object->error_column = xml_get_current_column_number($object->xml_parser);
+		$object->error_byte_index = xml_get_current_byte_index($object->xml_parser);
+	}
+
+	Function SetElementData(&$object,$path,&$data)
+	{
+		$object->structure[$path] = $data;
+
+		if ($object->store_positions)
+		{
+			$object->positions[$path] = array(
+			 "Line" => xml_get_current_line_number($object->xml_parser),
+			 "Column" => xml_get_current_column_number($object->xml_parser),
+			 "Byte" => xml_get_current_byte_index($object->xml_parser)
+					);
+		}
+	}
+
+	Function StartElement(&$object,$name,&$attrs)
+	{
+		if (strcmp($this->path, ""))
+		{
+			$element = $object->structure[$this->path]["Elements"];
+			$object->structure[$this->path]["Elements"]++;
+			$this->path .= ",$element";
+		}
+		else
+		{
+			$element = 0;
+			$this->path = "0";
+		}
+
+		$data = array(
+		 "Elements" => 0
+		);
+
+		if ($object->extract_namespaces
+			&& ($colon = strcspn($name, ':')) < strlen($name)
+		)
+		{
+			   $data['Namespace'] = substr($name, 0, $colon);
+			   $data['Tag'] = substr($name, $colon + 1);
+		}
+		else
+		{
+			$data['Tag'] = $name;
+		}
+
+		if ($object->simplified_xml)
+		{
+			if ($object->fail_on_non_simplified_xml
+				&& count($attrs) > 0
+			)
+			{
+				   $this->SetError($object, XML_PARSER_PARSE_DATA_ERROR, "Simplified XML can not have attributes in tags");
+
+				return;
+			}
+		}
+		elseif ($object->extract_namespaces)
+		{
+			 $attributes = $namespaces = array();
+			 $ta = count($attrs);
+
+			for ($a = 0, Reset($attrs); $a < $ta; Next($attrs), ++$a)
+			{
+				$attr = Key($attrs);
+				$value = $attrs[$attr];
+
+				if (($colon = strcspn($attr, ':')) < strlen($attr))
+				{
+					$attribute = substr($attr, $colon + 1);
+					$attributes[$attribute] = $value;
+					$namespaces[$attribute] = substr($attr, 0, $colon);
+				}
+				else
+				{
+					$attributes[$attr] = $value;
+				}
+			}
+
+			 $data["Attributes"] = $attributes;
+			 $data["AttributeNamespaces"] = $namespaces;
+		}
+		else
+		{
+			$data["Attributes"] = $attrs;
+		}
+
+		$this->SetElementData($object, $this->path, $data);
+	}
+
+	Function EndElement(&$object,$name)
+	{
+		$this->path = (($position = strrpos($this->path, ",")) ? substr($this->path, 0, $position) : "");
+	}
+
+	Function CharacterData(&$object,$data)
+	{
+		$element = $object->structure[$this->path]["Elements"];
+		$previous = $this->path . "," . strval($element - 1);
+
+		if ($element > 0
+			&& GetType($object->structure[$previous]) == "string"
+		)
+		{
+			$object->structure[$previous] .= $data;
+		}
+		else
+		{
+			   $this->SetElementData($object, $this->path . ",$element", $data);
+			   $object->structure[$this->path]["Elements"]++;
+		}
+	}
 };
 
 /*
@@ -213,7 +248,7 @@ class xml_parser_handler_class
 */
 class xml_parser_class
 {
-    /*
+	/*
     {metadocument}
     <variable>
     <name>error</name>
@@ -227,9 +262,9 @@ class xml_parser_class
     </variable>
     {/metadocument}
     */
-    var $error = '';
+	var $error = '';
 
-    /*
+	/*
     {metadocument}
     <variable>
     <name>error_number</name>
@@ -249,9 +284,9 @@ class xml_parser_class
     </variable>
     {/metadocument}
     */
-    var $error_number = XML_PARSER_NO_ERROR;
+	var $error_number = XML_PARSER_NO_ERROR;
 
-    /*
+	/*
     {metadocument}
     <variable>
     <name>error_line</name>
@@ -268,9 +303,9 @@ class xml_parser_class
     </variable>
     {/metadocument}
     */
-    var $error_line = 0;
+	var $error_line = 0;
 
-    /*
+	/*
     {metadocument}
     <variable>
     <name>error_column</name>
@@ -287,9 +322,9 @@ class xml_parser_class
     </variable>
     {/metadocument}
     */
-    var $error_column = 0;
+	var $error_column = 0;
 
-    /*
+	/*
     {metadocument}
     <variable>
     <name>error_byte_index</name>
@@ -307,9 +342,9 @@ class xml_parser_class
     </variable>
     {/metadocument}
     */
-    var $error_byte_index = 0;
+	var $error_byte_index = 0;
 
-    /*
+	/*
     {metadocument}
     <variable>
     <name>error_code</name>
@@ -323,9 +358,9 @@ class xml_parser_class
     </variable>
     {/metadocument}
     */
-    var $error_code = 0;
+	var $error_code = 0;
 
-    /*
+	/*
     {metadocument}
     <variable>
     <name>stream_buffer_size</name>
@@ -341,9 +376,9 @@ class xml_parser_class
     </variable>
     {/metadocument}
     */
-    var $stream_buffer_size = 4096;
+	var $stream_buffer_size = 4096;
 
-    /*
+	/*
     {metadocument}
     <variable>
     <name>structure</name>
@@ -387,9 +422,9 @@ class xml_parser_class
     </variable>
     {/metadocument}
     */
-    var $structure = array();
+	var $structure = array();
 
-    /*
+	/*
     {metadocument}
     <variable>
     <name>positions</name>
@@ -411,9 +446,9 @@ class xml_parser_class
     </variable>
     {/metadocument}
     */
-    var $positions = array();
+	var $positions = array();
 
-    /*
+	/*
     {metadocument}
     <variable>
     <name>store_positions</name>
@@ -429,9 +464,9 @@ class xml_parser_class
     </variable>
     {/metadocument}
     */
-    var $store_positions = 0;
+	var $store_positions = 0;
 
-    /*
+	/*
     {metadocument}
     <variable>
     <name>extract_namespaces</name>
@@ -447,9 +482,9 @@ class xml_parser_class
     </variable>
     {/metadocument}
     */
-    var $extract_namespaces = 0;
+	var $extract_namespaces = 0;
 
-    /*
+	/*
     {metadocument}
     <variable>
     <name>case_folding</name>
@@ -464,9 +499,9 @@ class xml_parser_class
     </variable>
     {/metadocument}
     */
-    var $case_folding = 0;
+	var $case_folding = 0;
 
-    /*
+	/*
     {metadocument}
     <variable>
     <name>target_encoding</name>
@@ -481,9 +516,9 @@ class xml_parser_class
     </variable>
     {/metadocument}
     */
-    var $target_encoding = 'ISO-8859-1';
+	var $target_encoding = 'ISO-8859-1';
 
-    /*
+	/*
     {metadocument}
     <variable>
     <name>simplified_xml</name>
@@ -500,9 +535,9 @@ class xml_parser_class
     </variable>
     {/metadocument}
     */
-    var $simplified_xml = 0;
+	var $simplified_xml = 0;
 
-    /*
+	/*
     {metadocument}
     <variable>
     <name>fail_on_non_simplified_xml</name>
@@ -519,210 +554,254 @@ class xml_parser_class
     </variable>
     {/metadocument}
     */
-    var $fail_on_non_simplified_xml = 0;
+	var $fail_on_non_simplified_xml = 0;
 
-    /* private variables */
-    var $xml_parser=0;
-    var $parser_handler;
+	// Private variables
+	var $xml_parser = 0;
 
-    /* private functions */
-    Function xml_parser_start_element_handler($parser,$name,$attrs)
-    {
-        if(!strcmp($this->error, "")) {
-            $this->parser_handler->StartElement($this, $name, $attrs);
-        }
-    }
+	var $parser_handler;
 
-    Function xml_parser_end_element_handler($parser,$name)
-    {
-        if(!strcmp($this->error, "")) {
-            $this->parser_handler->EndElement($this, $name);
-        }
-    }
+	// Private functions
 
-    Function xml_parser_character_data_handler($parser,$data)
-    {
-        if(!strcmp($this->error, "")) {
-            $this->parser_handler->CharacterData($this, $data);
-        }
-    }
+	Function xml_parser_start_element_handler($parser,$name,$attrs)
+	{
+		if (!strcmp($this->error, ""))
+		{
+			$this->parser_handler->StartElement($this, $name, $attrs);
+		}
+	}
 
-    Function SetErrorPosition($error_number, $error, $line, $column, $byte_index)
-    {
-        $this->error_number=$error_number;
-        $this->error=$error;
-        $this->error_line=$line;
-        $this->error_column=$column;
-        $this->error_byte_index=$byte_index;
-        return($error);
-    }
+	Function xml_parser_end_element_handler($parser,$name)
+	{
+		if (!strcmp($this->error, ""))
+		{
+			$this->parser_handler->EndElement($this, $name);
+		}
+	}
 
-    Function SetPathErrorPosition($path, $error_number, $error)
-    {
-        if($this->store_positions) {
-            $line = $this->positions[$path]["Line"];
-            $column = $this->positions[$path]["Column"];
-            $byte_index = $this->positions[$path]["Byte"];
-        }
-        else
-        {
-            $line = $column = 1;
-            $byte_index = 0;
-        }
-        return($this->SetErrorPosition($error_number, $error, $line, $column, $byte_index));
-    }
+	Function xml_parser_character_data_handler($parser,$data)
+	{
+		if (!strcmp($this->error, ""))
+		{
+			$this->parser_handler->CharacterData($this, $data);
+		}
+	}
 
-    Function SetError($error_number,$error)
-    {
-        $this->error_number=$error_number;
-        $this->error=$error;
-        if($this->xml_parser) {
-            $line=xml_get_current_line_number($this->xml_parser);
-            $column=xml_get_current_column_number($this->xml_parser);
-            $byte_index=xml_get_current_byte_index($this->xml_parser);
-        }
-        else
-        {
-            $line=$column=1;
-            $byte_index=0;
-        }
-        $this->SetErrorPosition($error_number, $error, $line, $column, $byte_index);
-    }
+	Function SetErrorPosition($error_number, $error, $line, $column, $byte_index)
+	{
+		$this->error_number = $error_number;
+		$this->error = $error;
+		$this->error_line = $line;
+		$this->error_column = $column;
+		$this->error_byte_index = $byte_index;
 
-    Function ValidateTypedValue($value, $type, $path, $parameters, &$v)
-    {
-        switch($type)
-        {
-        case 'text':
-            $v = $value;
-            if(IsSet($parameters['minimumlength'])
-                && strlen($v) < $parameters['minimumlength']
-            ) {
-                return($this->SetPathErrorPosition($path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was specified a text value with length below the limit of '.$parameters['minimumlength'].' '.($parameters['minimumlength'] == 1 ? 'character' : 'characters')));
-            }
-            if(IsSet($parameters['maximumlength'])
-                && strlen($v) > $parameters['maximumlength']
-            ) {
-                return($this->SetPathErrorPosition($path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was specified a text value with length above the limit of '.$parameters['maximumlength'].' '.($parameters['maximumlength'] == 1 ? 'character' : 'characters')));
-            }
-            break;
-        case 'integer':
-            if(strcmp($value, intval($value))) {
-                return($this->SetPathErrorPosition($path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was not specified a valid integer value'));
-            }
-            $v = intval($value);
-            if(IsSet($parameters['minimumvalue'])
-                && $v < $parameters['minimumvalue']
-            ) {
-                return($this->SetPathErrorPosition($path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was specified a integer value below the limit of '.$parameters['minimumvalue']));
-            }
-            if(IsSet($parameters['maximumvalue'])
-                && $v > $parameters['maximumvalue']
-            ) {
-                return($this->SetPathErrorPosition($path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was specified a integer value above the limit of '.$parameters['maximumvalue']));
-            }
-            break;
-        case 'decimal':
-            if(!preg_match('/^[0-9]+(.[0-9]*)?$/', $value)) {
-                return($this->SetPathErrorPosition($path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was not specified a valid decimal value'));
-            }
-            $v = $value;
-            if(IsSet($parameters['minimumvalue'])
-                && $v < $parameters['minimumvalue']
-            ) {
-                return($this->SetPathErrorPosition($path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was specified a decimal value below the limit of '.$parameters['minimumvalue']));
-            }
-            if(IsSet($parameters['maximumvalue'])
-                && $v > $parameters['maximumvalue']
-            ) {
-                return($this->SetPathErrorPosition($path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was specified a decimal value above the limit of '.$parameters['maximumvalue']));
-            }
-            break;
-        case 'boolean':
-            switch(strtolower($value))
-            {
-            case 'true':
-            case 't':
-            case '1':
-            case 'y':
-            case 'yes':
-                $v = 1;
-                break;
-            case 'false':
-            case 'f':
-            case '0':
-            case 'n':
-            case 'no':
-                $v = 0;
-                break;
-            default:
-                return($this->SetPathErrorPosition($path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was not specified a valid boolean value'));
-            }
-            break;
-        case 'date':
-            if(!strcmp($value, 'now')) {
-                $v = $value;
-                break;
-            }
-            if(!preg_match('/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/', $value, $matches)) {
-                return($this->SetPathErrorPosition($path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was not specified a valid date value'));
-            }
-            $year = $matches[1];
-            $month = $matches[2];
-            $day = $matches[3];
-            if(strlen($year)) {
-                while(!strcmp($year[0], "0")) {
-                    $year=substr($year, 1);
-                }
-            }
-            if(strcmp($year, intval($year))
-                || intval($year)<=0
-            ) {
-                return($this->SetPathErrorPosition($path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was not specified a valid date year'));
-            }
-            switch($month)
-            {
-            case "01":
-            case "03":
-            case "05":
-            case "07":
-            case "08":
-            case "10":
-            case "12":
-                $month_days=31;
-                break;
-            case "02":
-                $is_leap_year=(($year % 4)==0 && (($year % 100)!=0 || ($year % 400)==0));
-                $month_days=($is_leap_year ? 29 : 28);
-                break;
-            case "04":
-            case "06":
-            case "09":
-            case "11":
-                $month_days=30;
-                break;
-            default:
-                return($this->SetPathErrorPosition($path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was not specified a valid date month'));
-            }
-            if(strlen($day)) {
-                while(!strcmp($day[0], "0")) {
-                    $day=substr($day, 1);
-                }
-            }
-            if(strcmp($day, intval($day))
-                || $day>$month_days
-            ) {
-                return($this->SetPathErrorPosition($path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was not specified a valid date day'));
-            }
-            $v = $value;
-            break;
-        default:
-            return($this->SetPathErrorPosition($path, XML_PARSER_PARSE_DATA_ERROR, 'type "'.$type.'" is not yet supported'));
-        }
-        return('');
-    }
+		return($error);
+	}
 
-    /*
+	Function SetPathErrorPosition($path, $error_number, $error)
+	{
+		if ($this->store_positions)
+		{
+			$line = $this->positions[$path]["Line"];
+			$column = $this->positions[$path]["Column"];
+			$byte_index = $this->positions[$path]["Byte"];
+		}
+		else
+		{
+			$line = $column = 1;
+			$byte_index = 0;
+		}
+
+		return($this->SetErrorPosition($error_number, $error, $line, $column, $byte_index));
+	}
+
+	Function SetError($error_number,$error)
+	{
+		$this->error_number = $error_number;
+		$this->error = $error;
+
+		if ($this->xml_parser)
+		{
+			$line = xml_get_current_line_number($this->xml_parser);
+			$column = xml_get_current_column_number($this->xml_parser);
+			$byte_index = xml_get_current_byte_index($this->xml_parser);
+		}
+		else
+		{
+			$line = $column = 1;
+			$byte_index = 0;
+		}
+
+		$this->SetErrorPosition($error_number, $error, $line, $column, $byte_index);
+	}
+
+	Function ValidateTypedValue($value, $type, $path, $parameters, &$v)
+	{
+		switch ($type)
+		{
+			case 'text':
+				$v = $value;
+
+				if (IsSet($parameters['minimumlength'])
+					&& strlen($v) < $parameters['minimumlength']
+				)
+				{
+						return($this->SetPathErrorPosition($path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was specified a text value with length below the limit of ' . $parameters['minimumlength'] . ' ' . ($parameters['minimumlength'] == 1 ? 'character' : 'characters')));
+				}
+
+				if (IsSet($parameters['maximumlength'])
+					&& strlen($v) > $parameters['maximumlength']
+				)
+				{
+						return($this->SetPathErrorPosition($path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was specified a text value with length above the limit of ' . $parameters['maximumlength'] . ' ' . ($parameters['maximumlength'] == 1 ? 'character' : 'characters')));
+				}
+			break;
+			case 'integer':
+				if (strcmp($value, intval($value)))
+				{
+					return($this->SetPathErrorPosition($path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was not specified a valid integer value'));
+				}
+
+				$v = intval($value);
+
+				if (IsSet($parameters['minimumvalue'])
+					&& $v < $parameters['minimumvalue']
+				)
+				{
+					return($this->SetPathErrorPosition($path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was specified a integer value below the limit of ' . $parameters['minimumvalue']));
+				}
+
+				if (IsSet($parameters['maximumvalue'])
+					&& $v > $parameters['maximumvalue']
+				)
+				{
+					return($this->SetPathErrorPosition($path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was specified a integer value above the limit of ' . $parameters['maximumvalue']));
+				}
+			break;
+			case 'decimal':
+				if (!preg_match('/^[0-9]+(.[0-9]*)?$/', $value))
+				{
+					return($this->SetPathErrorPosition($path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was not specified a valid decimal value'));
+				}
+
+				$v = $value;
+
+				if (IsSet($parameters['minimumvalue'])
+					&& $v < $parameters['minimumvalue']
+				)
+				{
+					return($this->SetPathErrorPosition($path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was specified a decimal value below the limit of ' . $parameters['minimumvalue']));
+				}
+
+				if (IsSet($parameters['maximumvalue'])
+					&& $v > $parameters['maximumvalue']
+				)
+				{
+					return($this->SetPathErrorPosition($path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was specified a decimal value above the limit of ' . $parameters['maximumvalue']));
+				}
+			break;
+			case 'boolean':
+				switch (strtolower($value))
+				{
+					case 'true':
+					case 't':
+					case '1':
+					case 'y':
+					case 'yes':
+						$v = 1;
+						break;
+					case 'false':
+					case 'f':
+					case '0':
+					case 'n':
+					case 'no':
+						$v = 0;
+					break;
+					default:
+					return($this->SetPathErrorPosition($path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was not specified a valid boolean value'));
+				}
+			break;
+			case 'date':
+				if (!strcmp($value, 'now'))
+				{
+					$v = $value;
+					break;
+				}
+
+				if (!preg_match('/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/', $value, $matches))
+				{
+					return($this->SetPathErrorPosition($path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was not specified a valid date value'));
+				}
+
+				$year = $matches[1];
+				$month = $matches[2];
+				$day = $matches[3];
+
+				if (strlen($year))
+				{
+					while (!strcmp($year[0], "0"))
+					{
+						$year = substr($year, 1);
+					}
+				}
+
+				if (strcmp($year, intval($year))
+					|| intval($year) <= 0
+				)
+				{
+					return($this->SetPathErrorPosition($path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was not specified a valid date year'));
+				}
+
+				switch ($month)
+				{
+					case "01":
+					case "03":
+					case "05":
+					case "07":
+					case "08":
+					case "10":
+					case "12":
+						$month_days = 31;
+						break;
+					case "02":
+						$is_leap_year = (($year % 4) == 0 && (($year % 100) != 0 || ($year % 400) == 0));
+						$month_days = ($is_leap_year ? 29 : 28);
+						break;
+					case "04":
+					case "06":
+					case "09":
+					case "11":
+						$month_days = 30;
+						break;
+					default:
+						return($this->SetPathErrorPosition($path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was not specified a valid date month'));
+				}
+
+				if (strlen($day))
+				{
+					while (!strcmp($day[0], "0"))
+					{
+						$day = substr($day, 1);
+					}
+				}
+
+				if (strcmp($day, intval($day))
+					|| $day > $month_days
+				)
+				{
+					return($this->SetPathErrorPosition($path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was not specified a valid date day'));
+				}
+
+				$v = $value;
+			break;
+			default:
+			return($this->SetPathErrorPosition($path, XML_PARSER_PARSE_DATA_ERROR, 'type "' . $type . '" is not yet supported'));
+		}
+
+		return('');
+	}
+
+	/*
     {metadocument}
     <function>
     <name>Parse</name>
@@ -761,84 +840,109 @@ class xml_parser_class
     <do>
     {/metadocument}
     */
-    Function Parse($data, $end_of_data)
-    {
-        global $xml_parser_handlers;
+	Function Parse($data, $end_of_data)
+	{
+		global $xml_parser_handlers;
 
-        if(strcmp($this->error, "")) {
-            return($this->error);
-        }
-        if(!$this->xml_parser) {
-            if(!function_exists("xml_parser_create")) {
-                $this->SetError(XML_PARSER_CREATE_PARSER_ERROR, "XML support is not available in this PHP configuration");
-                return($this->error);
-            }
-            if(!($this->xml_parser=xml_parser_create())) {
-                $this->SetError(XML_PARSER_CREATE_PARSER_ERROR, "Could not create the XML parser");
-                return($this->error);
-            }
-            xml_parser_set_option($this->xml_parser, XML_OPTION_CASE_FOLDING, $this->case_folding);
-            xml_parser_set_option($this->xml_parser, XML_OPTION_TARGET_ENCODING, $this->target_encoding);
-            if(function_exists("xml_set_object")) {
-                xml_set_object($this->xml_parser, $this);
-                $this->parser_handler=new xml_parser_handler_class;
-                $this->structure=array();
-                $this->positions=array();
-            }
-            else
-            {
-                $xml_parser_handlers[$this->xml_parser]=new xml_parser_handler_class;
-                $xml_parser_handlers[$this->xml_parser]->xml_parser=$this->xml_parser;
-                $xml_parser_handlers[$this->xml_parser]->store_positions=$this->store_positions;
-                $xml_parser_handlers[$this->xml_parser]->simplified_xml=$this->simplified_xml;
-                $xml_parser_handlers[$this->xml_parser]->fail_on_non_simplified_xml=$this->fail_on_non_simplified_xml;
-            }
-            xml_set_element_handler($this->xml_parser, "xml_parser_start_element_handler", "xml_parser_end_element_handler");
-            xml_set_character_data_handler($this->xml_parser, "xml_parser_character_data_handler");
-        }
-        $parser_ok=xml_parse($this->xml_parser, $data, $end_of_data);
-        if(!function_exists("xml_set_object")) {
-            $this->error=$xml_parser_handlers[$this->xml_parser]->error;
-        }
-        if(!strcmp($this->error, "")) {
-            if($parser_ok) {
-                if($end_of_data) {
-                    if(function_exists("xml_set_object")) {
-                        Unset($this->parser_handler);
-                    } else
-                    {
-                        $this->structure=$xml_parser_handlers[$this->xml_parser]->structure;
-                        $this->positions=$xml_parser_handlers[$this->xml_parser]->positions;
-                        Unset($xml_parser_handlers[$this->xml_parser]);
-                    }
-                    xml_parser_free($this->xml_parser);
-                    $this->xml_parser=0;
-                }
-            }
-            else {
-                $this->SetError(XML_PARSER_PARSE_DATA_ERROR, "Could not parse data: ".xml_error_string($this->error_code=xml_get_error_code($this->xml_parser)));
-            }
-        }
-        else
-        {
-            if(!function_exists("xml_set_object")) {
-                $this->error_number=$xml_parser_handlers[$this->xml_parser]->error_number;
-                $this->error_code=$xml_parser_handlers[$this->xml_parser]->error_code;
-                $this->error_line=$xml_parser_handlers[$this->xml_parser]->error_line;
-                $this->error_column=$xml_parser_handlers[$this->xml_parser]->error_column;
-                $this->error_byte_index=$xml_parser_handlers[$this->xml_parser]->error_byte_index;
-            }          
-        }
-        return($this->error);
-    }
-    /*
+		if (strcmp($this->error, ""))
+		{
+			return($this->error);
+		}
+
+		if (!$this->xml_parser)
+		{
+			if (!function_exists("xml_parser_create"))
+			{
+				$this->SetError(XML_PARSER_CREATE_PARSER_ERROR, "XML support is not available in this PHP configuration");
+
+				return($this->error);
+			}
+
+			if (!($this->xml_parser = xml_parser_create()))
+			{
+				$this->SetError(XML_PARSER_CREATE_PARSER_ERROR, "Could not create the XML parser");
+
+				return($this->error);
+			}
+
+			xml_parser_set_option($this->xml_parser, XML_OPTION_CASE_FOLDING, $this->case_folding);
+			xml_parser_set_option($this->xml_parser, XML_OPTION_TARGET_ENCODING, $this->target_encoding);
+
+			if (function_exists("xml_set_object"))
+			{
+				xml_set_object($this->xml_parser, $this);
+				$this->parser_handler = new xml_parser_handler_class;
+				$this->structure = array();
+				$this->positions = array();
+			}
+			else
+			{
+				$xml_parser_handlers[$this->xml_parser] = new xml_parser_handler_class;
+				$xml_parser_handlers[$this->xml_parser]->xml_parser = $this->xml_parser;
+				$xml_parser_handlers[$this->xml_parser]->store_positions = $this->store_positions;
+				$xml_parser_handlers[$this->xml_parser]->simplified_xml = $this->simplified_xml;
+				$xml_parser_handlers[$this->xml_parser]->fail_on_non_simplified_xml = $this->fail_on_non_simplified_xml;
+			}
+
+			xml_set_element_handler($this->xml_parser, "xml_parser_start_element_handler", "xml_parser_end_element_handler");
+			xml_set_character_data_handler($this->xml_parser, "xml_parser_character_data_handler");
+		}
+
+		$parser_ok = xml_parse($this->xml_parser, $data, $end_of_data);
+
+		if (!function_exists("xml_set_object"))
+		{
+			$this->error = $xml_parser_handlers[$this->xml_parser]->error;
+		}
+
+		if (!strcmp($this->error, ""))
+		{
+			if ($parser_ok)
+			{
+				if ($end_of_data)
+				{
+					if (function_exists("xml_set_object"))
+					{
+						Unset($this->parser_handler);
+					}
+					else
+					{
+						$this->structure = $xml_parser_handlers[$this->xml_parser]->structure;
+						$this->positions = $xml_parser_handlers[$this->xml_parser]->positions;
+						Unset($xml_parser_handlers[$this->xml_parser]);
+					}
+
+					xml_parser_free($this->xml_parser);
+					$this->xml_parser = 0;
+				}
+			}
+			else
+			{
+				$this->SetError(XML_PARSER_PARSE_DATA_ERROR, "Could not parse data: " . xml_error_string($this->error_code = xml_get_error_code($this->xml_parser)));
+			}
+		}
+		else
+		{
+			if (!function_exists("xml_set_object"))
+			{
+				$this->error_number = $xml_parser_handlers[$this->xml_parser]->error_number;
+				$this->error_code = $xml_parser_handlers[$this->xml_parser]->error_code;
+				$this->error_line = $xml_parser_handlers[$this->xml_parser]->error_line;
+				$this->error_column = $xml_parser_handlers[$this->xml_parser]->error_column;
+				$this->error_byte_index = $xml_parser_handlers[$this->xml_parser]->error_byte_index;
+			}
+		}
+
+		return($this->error);
+	}
+	/*
     {metadocument}
     </do>
     </function>
     {/metadocument}
     */
 
-    /*
+	/*
     {metadocument}
     <function>
     <name>ParseStream</name>
@@ -864,34 +968,41 @@ class xml_parser_class
     <do>
     {/metadocument}
     */
-    Function ParseStream($stream)
-    {
-        if(strcmp($this->error, "")) {
-            return($this->error);
-        }
-        do
-        {
-            if(!($data=@fread($stream, $this->stream_buffer_size))) {
-                if(!feof($stream)) {
-                    $this->SetError(XML_PARSER_READ_INPUT_DATA_ERROR, "Could not read from input stream".(IsSet($php_errormsg) ? ': '.$php_errormsg : ''));
-                    break;
-                }
-            }
-            if(strcmp($error = $this->Parse($data, feof($stream)), "")) {
-                break;
-            }
-        }
-        while(!feof($stream));
-        return($this->error);
-    }
-    /*
+	Function ParseStream($stream)
+	{
+		if (strcmp($this->error, ""))
+		{
+			return($this->error);
+		}
+
+		do
+		{
+			if (!($data = @fread($stream, $this->stream_buffer_size)))
+			{
+				if (!feof($stream))
+				{
+					$this->SetError(XML_PARSER_READ_INPUT_DATA_ERROR, "Could not read from input stream" . (IsSet($php_errormsg) ? ': ' . $php_errormsg : ''));
+					break;
+				}
+			}
+
+			if (strcmp($error = $this->Parse($data, feof($stream)), ""))
+			{
+				break;
+			}
+		}
+		while (!feof($stream));
+
+		return($this->error);
+	}
+	/*
     {metadocument}
     </do>
     </function>
     {/metadocument}
     */
 
-    /*
+	/*
     {metadocument}
     <function>
     <name>ParseFile</name>
@@ -916,98 +1027,123 @@ class xml_parser_class
     <do>
     {/metadocument}
     */
-    Function ParseFile($file)
-    {
-        if(!($definition=@fopen($file, "r"))) {
-            return("could not open the XML file ($file)".(IsSet($php_errormsg) ? ': '.$php_errormsg : ''));
-        }
-        $error=$this->ParseStream($definition);
-        fclose($definition);
-        return($error);
-    }
-    /*
+	Function ParseFile($file)
+	{
+		if (!($definition = @fopen($file, "r")))
+		{
+			return("could not open the XML file ($file)" . (IsSet($php_errormsg) ? ': ' . $php_errormsg : ''));
+		}
+
+		$error = $this->ParseStream($definition);
+		fclose($definition);
+
+		return($error);
+	}
+	/*
     {metadocument}
     </do>
     </function>
     {/metadocument}
     */
 
-    Function VerifyWhiteSpace($path)
-    {
-        if(!IsSet($this->structure[$path])) {
-            return($this->SetErrorPosition(XML_PARSER_PARSE_DATA_ERROR, $path.' element path does not exist', 1, 1, 0));
-        }
-        if($this->store_positions) {
-            $line = $this->positions[$path]['Line'];
-            $column = $this->positions[$path]['Column'];
-            $byte_index = $this->positions[$path]['Byte'];
-        }
-        else
-        {
-            $line = $column = 1;
-            $byte_index = 0;
-        }
-        if(GetType($this->structure[$path]) != 'string') {
-            $this->SetErrorPosition(XML_PARSER_PARSE_DATA_ERROR, 'element is not data', $line, $column, $byte_index);
-            return($this->error);
-        }
-        $data=$this->structure[$path];
-        for($previous_return=0,$position=0;$position<strlen($data);$position++)
-        {
-            switch($data[$position])
-            {
-            case " ":
-            case "\t":
-                $column++;
-                $byte_index++;
-                $previous_return=0;
-                break;
-            case "\n":
-                if(!$previous_return) {
-                    $line++;
-                }
-                $column=1;
-                $byte_index++;
-                $previous_return=0;
-                break;
-            case "\r":
-                $line++;
-                $column=1;
-                $byte_index++;
-                $previous_return=1;
-                break;
-            default:
-                $this->SetErrorPosition(XML_PARSER_PARSE_DATA_ERROR, 'data is not white space', $line, $column, $byte_index);
-                return($this->error);
-            }
-        }
-        return("");
-    }
+	Function VerifyWhiteSpace($path)
+	{
+		if (!IsSet($this->structure[$path]))
+		{
+			return($this->SetErrorPosition(XML_PARSER_PARSE_DATA_ERROR, $path . ' element path does not exist', 1, 1, 0));
+		}
 
-    Function GetTagValue($path, &$value)
-    {
-        if(!IsSet($this->structure[$path])) {
-            return($this->SetErrorPosition(XML_PARSER_PARSE_DATA_ERROR, $path.' element path does not exist', 1, 1, 0));
-        }
-        $tag = $this->structure[$path];
-        if(GetType($tag)!="array") {
-            return($this->SetPathErrorPosition($path, XML_PARSER_PARSE_DATA_ERROR, 'element is not tag'));
-        }
-        $value = '';
-        $te = $tag['Elements'];
-        for($e = 0; $e < $te; ++$e)
-        {
-            $element_path = $path.','.$e;
-            $data = $this->structure[$element_path];
-            if(GetType($data) != 'string') {
-                return($this->SetPathErrorPosition($element_path, XML_PARSER_PARSE_DATA_ERROR, 'tag has elements that are not data'));
-            }
-            $value .= $data;
-        }
-        return('');
-    }
+		if ($this->store_positions)
+		{
+			$line = $this->positions[$path]['Line'];
+			$column = $this->positions[$path]['Column'];
+			$byte_index = $this->positions[$path]['Byte'];
+		}
+		else
+		{
+			$line = $column = 1;
+			$byte_index = 0;
+		}
 
-    /*
+		if (GetType($this->structure[$path]) != 'string')
+		{
+			$this->SetErrorPosition(XML_PARSER_PARSE_DATA_ERROR, 'element is not data', $line, $column, $byte_index);
+
+			return($this->error);
+		}
+
+		$data = $this->structure[$path];
+
+		for ($previous_return = 0,$position = 0;$position < strlen($data);$position++)
+		{
+			switch ($data[$position])
+			{
+				case " ":
+				case "\t":
+					$column++;
+					$byte_index++;
+					$previous_return = 0;
+				break;
+				case "\n":
+					if (!$previous_return)
+					{
+						$line++;
+					}
+
+					$column = 1;
+					$byte_index++;
+					$previous_return = 0;
+				break;
+				case "\r":
+					$line++;
+					$column = 1;
+					$byte_index++;
+					$previous_return = 1;
+				break;
+				default:
+					$this->SetErrorPosition(XML_PARSER_PARSE_DATA_ERROR, 'data is not white space', $line, $column, $byte_index);
+
+return($this->error);
+			}
+		}
+
+		return("");
+	}
+
+	Function GetTagValue($path, &$value)
+	{
+		if (!IsSet($this->structure[$path]))
+		{
+			return($this->SetErrorPosition(XML_PARSER_PARSE_DATA_ERROR, $path . ' element path does not exist', 1, 1, 0));
+		}
+
+		$tag = $this->structure[$path];
+
+		if (GetType($tag) != "array")
+		{
+			return($this->SetPathErrorPosition($path, XML_PARSER_PARSE_DATA_ERROR, 'element is not tag'));
+		}
+
+		$value = '';
+		$te = $tag['Elements'];
+
+		for ($e = 0; $e < $te; ++$e)
+		{
+			$element_path = $path . ',' . $e;
+			$data = $this->structure[$element_path];
+
+			if (GetType($data) != 'string')
+			{
+				return($this->SetPathErrorPosition($element_path, XML_PARSER_PARSE_DATA_ERROR, 'tag has elements that are not data'));
+			}
+
+			$value .= $data;
+		}
+
+		return('');
+	}
+
+	/*
     {metadocument}
     <function>
     <name>ValidateElementData</name>
@@ -1071,18 +1207,18 @@ class xml_parser_class
     <do>
     {/metadocument}
     */
-    Function ValidateElementData($validation, $path, &$value, &$result)
-    {
-        return($validation.' is not a supported type of validation');
-    }
-    /*
+	Function ValidateElementData($validation, $path, &$value, &$result)
+	{
+		return($validation . ' is not a supported type of validation');
+	}
+	/*
     {metadocument}
     </do>
     </function>
     {/metadocument}
     */
 
-    /*
+	/*
     {metadocument}
     <function>
     <name>ExtractElementData</name>
@@ -1163,7 +1299,7 @@ class xml_parser_class
 							<argument>types</argument>
 							<function>ExtractElementData</function>
 						</argumentlink> argument.<paragraphbreak />
-					
+
 					<tt>attributes</tt> - Associative array with the names and rules
 						of the allowed attributes for the current tag. Each attribute
 						rule must contain a <tt>type</tt> parameter that is the same
@@ -1220,182 +1356,251 @@ class xml_parser_class
     <do>
     {/metadocument}
     */
-    Function ExtractElementData($path, $name, $types, $hash, &$values)
-    {
-        $values = array();
-        $required = $types;
-        if(!IsSet($this->structure[$path])) {
-            if(strlen($path)) {
-                return($this->SetErrorPosition(XML_PARSER_PARSE_DATA_ERROR, $path.' element path does not exist', 1, 1, 0));
-            }
-            $elements = 1;
-        }
-        else {
-            $elements = $this->structure[$path]['Elements'];
-        }
-        for($index = $element = 0; $element < $elements; $element++)
-        {
-            $element_path = (strlen($path) ? $path.',' : '').$element;
-            $data = $this->structure[$element_path];
-            if(GetType($data) == 'array') {
-                $type = $data['Tag'];
-                if(!IsSet($types[$type])) {
-                    return($this->SetPathErrorPosition($element_path, XML_PARSER_VALIDATE_DATA_ERROR, strlen($path) ? 'unexpected '.$name.' element "'.$type.'"' : 'the XML document is not valid '.$name.' definition'));
-                }
-                $t = $types[$type];
-                if(!IsSet($t['type'])) {
-                    return($this->SetPathErrorPosition($element_path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was not specified the '.$name.' '.$type.' element type'));
-                }
-                $expected_type = $t['type'];
-                $minimum = (IsSet($t['minimum']) ? $t['minimum'] : 1);
-                $maximum = (IsSet($t['maximum']) ? $t['maximum'] : 1);
-                if(strcmp($maximum, '*')) {
-                    if($minimum < 0
-                        || $minimum > $maximum
-                    ) {
-                        return($this->SetPathErrorPosition($element_path, XML_PARSER_VALIDATE_DATA_ERROR, $name.' element "'.$type.'" is set to an invalid minimum value'));
-                    }
-                    $current = (IsSet($values[$type]) ? (GetType($values[$type]) == 'array' ? count($values[$type]) : 1) : 0);
-                    if($current >= $maximum) {
-                        return($this->SetPathErrorPosition($element_path, XML_PARSER_VALIDATE_DATA_ERROR, $name.' element "'.$type.'" is defined more than '.($maximum == 1 ? 'once' : $maximum.' times')));
-                    }
-                }
-                if(strcmp($expected_type, 'path')
-                    && strcmp($expected_type, 'hash')
-                    && strcmp($expected_type, 'array')
-                ) {
-                    if($data['Elements'] > 1
-                        || ($data['Elements'] == 1
-                        && GetType($this->structure[$element_path.',0']) == 'array')
-                    ) {
-                        return($this->SetPathErrorPosition($element_path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was not specified a valid '.$name.' element "'.$type.'" value'));
-                    }
-                    $value = ($data['Elements'] == 1 ? $this->structure[$element_path.',0'] : '');
-                }
-                switch($expected_type)
-                {
-                case 'text':
-                case 'integer':
-                case 'decimal':
-                case 'boolean':
-                case 'date':
-                    if(strlen($error = $this->ValidateTypedValue($value, $expected_type, $element_path, $t, $v))) {
-                        return $error;
-                    }
-                    break;
-                case 'path':
-                    $v = $element_path;
-                    break;
-                case 'array':
-                case 'hash':
-                    if(!IsSet($t['types'])
-                        || GetType($t['types']) != 'array'
-                    ) {
-                        return($this->SetPathErrorPosition($element_path, XML_PARSER_PARSE_DATA_ERROR, 'it was not specified a valid list of types elements for '.$type.' element'));
-                    }
-                    $child_hash = !strcmp($expected_type, 'hash');
-                    if(strlen($error = $this->ExtractElementData($element_path, $type, $t['types'], $child_hash, $v))) {
-                        return $error;
-                    }
-                    if(IsSet($t['attributes'])) {
-                            $a = $t['attributes'];
-                            $total = count($a);
-                        for(Reset($a), $ia = 0; $ia < $total; Next($a), ++$ia)
-                            {
-                            $attribute_name = Key($a);
-                            $ta = $a[$attribute_name];
-                            if(!IsSet($ta['type'])) {
-                                return($this->SetPathErrorPosition($element_path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was not specified the '.$name.' '.$type.' attribute '.$attribute_name.' type'));
-                            }
-                            if(!IsSet($data['Attributes'][$attribute_name])) {
-                                if(IsSet($ta['optional'])
-                                    && $ta['optional']
-                                ) {
-                                    continue;
-                                }
-                                return($this->SetPathErrorPosition($element_path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was not specified the '.$name.' '.$type.' attribute '.$attribute_name.' value'));
-                            }
-                            if(strlen($error = $this->ValidateTypedValue($data['Attributes'][$attribute_name], $ta['type'], $element_path, $ta, $av))) {
-                                 return $error;
-                            }
-                            if(IsSet($ta['validation'])) {
-                                 $result = array();
-                                if(strlen($error = $this->ValidateElementData($ta['validation'], $element_path, $va, $result))) {
-                                    return($this->SetPathErrorPosition($element_path, XML_PARSER_PARSE_DATA_ERROR, $error));
-                                }
-                                if(IsSet($result['error'])) {
-                                    return($this->SetPathErrorPosition(IsSet($result['path']) ? $result['path'] : $element_path, XML_PARSER_VALIDATE_DATA_ERROR, strlen($result['error']) ? $result['error'] : 'the '.$name.' attribute failed the '.$t['validation'].' validation'));
-                                }
-                            }
-                            if($child_hash) {
-                                 $v[$attribute_name] = $av;
-                            } else {
-                                $v[count($v)] = array('type'=>$attribute_name, 'value'=>$av);
-                            }
-                        }
-                    }
-                    break;
-                default:
-                    return($this->SetPathErrorPosition($element_path, XML_PARSER_PARSE_DATA_ERROR, $name.' element "'.$type.'" type "'.$expected_type.'" is not yet supported'));
-                }
-                if(IsSet($t['validation'])) {
-                    $result = array();
-                    if(strlen($error = $this->ValidateElementData($t['validation'], $element_path, $v, $result))) {
-                        return($this->SetPathErrorPosition($element_path, XML_PARSER_PARSE_DATA_ERROR, $error));
-                    }
-                    if(IsSet($result['error'])) {
-                        return($this->SetPathErrorPosition(IsSet($result['path']) ? $result['path'] : $element_path, XML_PARSER_VALIDATE_DATA_ERROR, strlen($result['error']) ? $result['error'] : 'the '.$name.' element failed the '.$t['validation'].' validation'));
-                    }
-                }
-                $i = ($hash ? $type : $index++);
-                if($hash
-                    && (!strcmp($maximum, '*')
-                    || $maximum > 1)
-                ) {
-                    $values[$i][] = $v;
-                    $current = count($values[$i]);
-                }
-                else
-                {
-                    $values[$i] = ($hash ? $v : array('type'=>$type, 'value'=>$v));
-                    $current = 1;
-                }
-                if(IsSet($required[$type])
-                    && $current >= $minimum
-                ) {
-                    UnSet($required[$type]);
-                }
-            }
-            else
-            {
-                if(strlen($error = $this->VerifyWhiteSpace($element_path))) {
-                    return($this->SetPathErrorPosition($element_path, XML_PARSER_PARSE_DATA_ERROR, $error));
-                }
-            }
-        }
-        if(count($required)) {
-            $tr = count($required);
-            for(Reset($required), $r = 0; $r < $tr; Next($required), ++$r)
-            {
-                $element = Key($required);
-                $t = $required[$element];
-                $minimum = (IsSet($t['minimum']) ? $t['minimum'] : 1);
-                if($minimum > 0) {
-                    return($this->SetPathErrorPosition($element_path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was not specified the '.$name.' element "'.$element.'"'.($minimum > 1 ? ' at least '.$minimum.' times' : '')));
-                }
-            }
-        }
-        return '';
-    }
-    /*
+	Function ExtractElementData($path, $name, $types, $hash, &$values)
+	{
+		$values = array();
+		$required = $types;
+
+		if (!IsSet($this->structure[$path]))
+		{
+			if (strlen($path))
+			{
+				return($this->SetErrorPosition(XML_PARSER_PARSE_DATA_ERROR, $path . ' element path does not exist', 1, 1, 0));
+			}
+
+			$elements = 1;
+		}
+		else
+		{
+			$elements = $this->structure[$path]['Elements'];
+		}
+
+		for ($index = $element = 0; $element < $elements; $element++)
+		{
+			$element_path = (strlen($path) ? $path . ',' : '') . $element;
+			$data = $this->structure[$element_path];
+
+			if (GetType($data) == 'array')
+			{
+				$type = $data['Tag'];
+
+				if (!IsSet($types[$type]))
+				{
+					return($this->SetPathErrorPosition($element_path, XML_PARSER_VALIDATE_DATA_ERROR, strlen($path) ? 'unexpected ' . $name . ' element "' . $type . '"' : 'the XML document is not valid ' . $name . ' definition'));
+				}
+
+				$t = $types[$type];
+
+				if (!IsSet($t['type']))
+				{
+					return($this->SetPathErrorPosition($element_path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was not specified the ' . $name . ' ' . $type . ' element type'));
+				}
+
+				$expected_type = $t['type'];
+				$minimum = (IsSet($t['minimum']) ? $t['minimum'] : 1);
+				$maximum = (IsSet($t['maximum']) ? $t['maximum'] : 1);
+
+				if (strcmp($maximum, '*'))
+				{
+					if ($minimum < 0
+						|| $minimum > $maximum
+					)
+					{
+								return($this->SetPathErrorPosition($element_path, XML_PARSER_VALIDATE_DATA_ERROR, $name . ' element "' . $type . '" is set to an invalid minimum value'));
+					}
+
+					$current = (IsSet($values[$type]) ? (GetType($values[$type]) == 'array' ? count($values[$type]) : 1) : 0);
+
+					if ($current >= $maximum)
+					{
+						return($this->SetPathErrorPosition($element_path, XML_PARSER_VALIDATE_DATA_ERROR, $name . ' element "' . $type . '" is defined more than ' . ($maximum == 1 ? 'once' : $maximum . ' times')));
+					}
+				}
+
+				if (strcmp($expected_type, 'path')
+					&& strcmp($expected_type, 'hash')
+					&& strcmp($expected_type, 'array')
+				)
+				{
+					if ($data['Elements'] > 1
+						|| ($data['Elements'] == 1
+						&& GetType($this->structure[$element_path . ',0']) == 'array')
+					)
+					{
+						return($this->SetPathErrorPosition($element_path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was not specified a valid ' . $name . ' element "' . $type . '" value'));
+					}
+
+								$value = ($data['Elements'] == 1 ? $this->structure[$element_path . ',0'] : '');
+				}
+
+				switch ($expected_type)
+				{
+					case 'text':
+					case 'integer':
+					case 'decimal':
+					case 'boolean':
+					case 'date':
+						if (strlen($error = $this->ValidateTypedValue($value, $expected_type, $element_path, $t, $v)))
+						{
+							return $error;
+						}
+						break;
+					case 'path':
+						$v = $element_path;
+						break;
+					case 'array':
+					case 'hash':
+						if (!IsSet($t['types'])
+							|| GetType($t['types']) != 'array'
+						)
+						{
+							return($this->SetPathErrorPosition($element_path, XML_PARSER_PARSE_DATA_ERROR, 'it was not specified a valid list of types elements for ' . $type . ' element'));
+						}
+
+						$child_hash = !strcmp($expected_type, 'hash');
+
+						if (strlen($error = $this->ExtractElementData($element_path, $type, $t['types'], $child_hash, $v)))
+						{
+							return $error;
+						}
+
+						if (IsSet($t['attributes']))
+						{
+							$a = $t['attributes'];
+							$total = count($a);
+
+							for (Reset($a), $ia = 0; $ia < $total; Next($a), ++$ia)
+							{
+								$attribute_name = Key($a);
+								$ta = $a[$attribute_name];
+
+								if (!IsSet($ta['type']))
+								{
+									return($this->SetPathErrorPosition($element_path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was not specified the ' . $name . ' ' . $type . ' attribute ' . $attribute_name . ' type'));
+								}
+
+								if (!IsSet($data['Attributes'][$attribute_name]))
+								{
+									if (IsSet($ta['optional'])
+										&& $ta['optional']
+									)
+									{
+										continue;
+									}
+
+									return($this->SetPathErrorPosition($element_path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was not specified the ' . $name . ' ' . $type . ' attribute ' . $attribute_name . ' value'));
+								}
+
+								if (strlen($error = $this->ValidateTypedValue($data['Attributes'][$attribute_name], $ta['type'], $element_path, $ta, $av)))
+								{
+									 return $error;
+								}
+
+								if (IsSet($ta['validation']))
+								{
+									 $result = array();
+
+									if (strlen($error = $this->ValidateElementData($ta['validation'], $element_path, $va, $result)))
+									{
+										return($this->SetPathErrorPosition($element_path, XML_PARSER_PARSE_DATA_ERROR, $error));
+									}
+
+									if (IsSet($result['error']))
+									{
+										return($this->SetPathErrorPosition(IsSet($result['path']) ? $result['path'] : $element_path, XML_PARSER_VALIDATE_DATA_ERROR, strlen($result['error']) ? $result['error'] : 'the ' . $name . ' attribute failed the ' . $t['validation'] . ' validation'));
+									}
+								}
+
+								if ($child_hash)
+								{
+									 $v[$attribute_name] = $av;
+								}
+								else
+								{
+									$v[count($v)] = array('type' => $attribute_name, 'value' => $av);
+								}
+							}
+						}
+						break;
+					default:
+						return($this->SetPathErrorPosition($element_path, XML_PARSER_PARSE_DATA_ERROR, $name . ' element "' . $type . '" type "' . $expected_type . '" is not yet supported'));
+				}
+
+				if (IsSet($t['validation']))
+				{
+					$result = array();
+
+					if (strlen($error = $this->ValidateElementData($t['validation'], $element_path, $v, $result)))
+					{
+						return($this->SetPathErrorPosition($element_path, XML_PARSER_PARSE_DATA_ERROR, $error));
+					}
+
+					if (IsSet($result['error']))
+					{
+						return($this->SetPathErrorPosition(IsSet($result['path']) ? $result['path'] : $element_path, XML_PARSER_VALIDATE_DATA_ERROR, strlen($result['error']) ? $result['error'] : 'the ' . $name . ' element failed the ' . $t['validation'] . ' validation'));
+					}
+				}
+
+				$i = ($hash ? $type : $index++);
+
+				if ($hash
+					&& (!strcmp($maximum, '*')
+					|| $maximum > 1)
+				)
+				{
+								$values[$i][] = $v;
+								$current = count($values[$i]);
+				}
+				else
+				{
+					$values[$i] = ($hash ? $v : array('type' => $type, 'value' => $v));
+					$current = 1;
+				}
+
+				if (IsSet($required[$type])
+					&& $current >= $minimum
+				)
+				{
+								UnSet($required[$type]);
+				}
+			}
+			else
+			{
+				if (strlen($error = $this->VerifyWhiteSpace($element_path)))
+				{
+					return($this->SetPathErrorPosition($element_path, XML_PARSER_PARSE_DATA_ERROR, $error));
+				}
+			}
+		}
+
+		if (count($required))
+		{
+			$tr = count($required);
+
+			for (Reset($required), $r = 0; $r < $tr; Next($required), ++$r)
+			{
+				$element = Key($required);
+				$t = $required[$element];
+				$minimum = (IsSet($t['minimum']) ? $t['minimum'] : 1);
+
+				if ($minimum > 0)
+				{
+					return($this->SetPathErrorPosition($element_path, XML_PARSER_VALIDATE_DATA_ERROR, 'it was not specified the ' . $name . ' element "' . $element . '"' . ($minimum > 1 ? ' at least ' . $minimum . ' times' : '')));
+				}
+			}
+		}
+
+		return '';
+	}
+	/*
     {metadocument}
     </do>
     </function>
     {/metadocument}
     */
 };
-/*
 
+/*
 {metadocument}
 </class>
 {/metadocument}
@@ -1404,76 +1609,105 @@ class xml_parser_class
 
 Function XMLParseFile(&$parser,$file,$store_positions,$cache="",$case_folding=0,$target_encoding="ISO-8859-1",$simplified_xml=0,$fail_on_non_simplified_xml=0)
 {
-    if(strcmp($cache, "")) {
-        if(file_exists($cache)
-            && GetType($last_modified = @filemtime($file)) == 'integer'
-            && $last_modified<=filemtime($cache)
-        ) {
-            if(($cache_file=@fopen($cache, "r"))) {
-                if(function_exists("set_file_buffer")) {
-                    set_file_buffer($cache_file, 0);
-                }
-                if(!($cache_contents=@fread($cache_file, filesize($cache)))) {
-                    $error="could not read from the XML cache file $cache".(IsSet($php_errormsg) ? ': '.$php_errormsg : '');
-                } else {
-                    $error="";
-                }
-                   fclose($cache_file);
-                if(!strcmp($error, "")) {
-                    if(GetType($parser = unserialize($cache_contents))=="object"
-                        && IsSet($parser->structure)
-                    ) {
-                        if(!IsSet($parser->simplified_xml)) {
-                            $parser->simplified_xml=0;
-                        }
-                        if(($simplified_xml
-                            || !$parser->simplified_xml)
-                            && (!$store_positions
-                            || $parser->store_positions)
-                        ) {
-                                        return("");
-                        }
-                    }
-                    else {
-                        $error="it was not specified a valid cache object in XML file ($cache)";
-                    }
-                }
-            }
-            else {
-                $error="could not open cache XML file ($cache)".(IsSet($php_errormsg) ? ': '.$php_errormsg : '');
-            }
-            if(strcmp($error, "")) {
-                return($error);
-            }
-        }
-    }
-    $parser=new xml_parser_class;
-    $parser->store_positions=$store_positions;
-    $parser->case_folding=$case_folding;
-    $parser->target_encoding=$target_encoding;
-    $parser->simplified_xml=$simplified_xml;
-    $parser->fail_on_non_simplified_xml=$fail_on_non_simplified_xml;
-    if(!strcmp($error = $parser->ParseFile($file), "")
-        && strcmp($cache, "")
-    ) {
-        if(($cache_file=@fopen($cache, "w"))) {
-            if(function_exists("set_file_buffer")) {
-                set_file_buffer($cache_file, 0);
-            }
-            if(!@fwrite($cache_file, serialize($parser))
-                || !@fclose($cache_file)
-            ) {
-                $error="could to write to the XML cache file ($cache)".(IsSet($php_errormsg) ? ': '.$php_errormsg : '');
-            }
-            if(strcmp($error, "")) {
-                unlink($cache);
-            }
-        }
-        else {
-            $error="could not open for writing to the cache file ($cache)".(IsSet($php_errormsg) ? ': '.$php_errormsg : '');
-        }
-    }
-    return($error);
+	if (strcmp($cache, ""))
+	{
+		if (file_exists($cache)
+			&& GetType($last_modified = @filemtime($file)) == 'integer'
+			&& $last_modified <= filemtime($cache)
+		)
+		{
+			if (($cache_file = @fopen($cache, "r")))
+			{
+				if (function_exists("set_file_buffer"))
+				{
+					set_file_buffer($cache_file, 0);
+				}
+
+				if (!($cache_contents = @fread($cache_file, filesize($cache))))
+				{
+					$error = "could not read from the XML cache file $cache" . (IsSet($php_errormsg) ? ': ' . $php_errormsg : '');
+				}
+				else
+				{
+					$error = "";
+				}
+
+				   fclose($cache_file);
+
+				if (!strcmp($error, ""))
+				{
+					if (GetType($parser = unserialize($cache_contents)) == "object"
+						&& IsSet($parser->structure)
+					)
+					{
+						if (!IsSet($parser->simplified_xml))
+						{
+							$parser->simplified_xml = 0;
+						}
+
+						if (($simplified_xml
+							|| !$parser->simplified_xml)
+							&& (!$store_positions
+							|| $parser->store_positions)
+						)
+						{
+										return("");
+						}
+					}
+					else
+					{
+						$error = "it was not specified a valid cache object in XML file ($cache)";
+					}
+				}
+			}
+			else
+			{
+				$error = "could not open cache XML file ($cache)" . (IsSet($php_errormsg) ? ': ' . $php_errormsg : '');
+			}
+
+			if (strcmp($error, ""))
+			{
+				return($error);
+			}
+		}
+	}
+
+	$parser = new xml_parser_class;
+	$parser->store_positions = $store_positions;
+	$parser->case_folding = $case_folding;
+	$parser->target_encoding = $target_encoding;
+	$parser->simplified_xml = $simplified_xml;
+	$parser->fail_on_non_simplified_xml = $fail_on_non_simplified_xml;
+
+	if (!strcmp($error = $parser->ParseFile($file), "")
+		&& strcmp($cache, "")
+	)
+	{
+		if (($cache_file = @fopen($cache, "w")))
+		{
+			if (function_exists("set_file_buffer"))
+			{
+				set_file_buffer($cache_file, 0);
+			}
+
+			if (!@fwrite($cache_file, serialize($parser))
+				|| !@fclose($cache_file)
+			)
+			{
+				$error = "could to write to the XML cache file ($cache)" . (IsSet($php_errormsg) ? ': ' . $php_errormsg : '');
+			}
+
+			if (strcmp($error, ""))
+			{
+				unlink($cache);
+			}
+		}
+		else
+		{
+			$error = "could not open for writing to the cache file ($cache)" . (IsSet($php_errormsg) ? ': ' . $php_errormsg : '');
+		}
+	}
+
+	return($error);
 }
 
-?>

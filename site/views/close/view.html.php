@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -25,17 +25,17 @@ jimport('joomla.application.component.view');
  */
 class sportsmanagementViewClose extends JViewLegacy
 {
-    /**
-     * Display the view
-     */
-    function display($tpl = null)
-    {
-        // close a modal window
-        Factory::getDocument()->addScriptDeclaration(
-            '
+	/**
+	 * Display the view
+	 */
+	function display($tpl = null)
+	{
+		// Close a modal window
+		Factory::getDocument()->addScriptDeclaration(
+			'
 			window.parent.location.href=window.parent.location.href;
 			window.parent.SqueezeBox.close();
 		'
-        );
-    }
+		);
+	}
 }

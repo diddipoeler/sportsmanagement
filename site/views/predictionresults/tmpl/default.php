@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -25,9 +25,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 echo $this->loadTemplate('predictionheading');
 echo $this->loadTemplate('sectionheader');
 echo $this->loadTemplate('results');
-if ($this->config['show_help'] ) {
-    echo $this->loadTemplate('show_help');
+
+if ($this->config['show_help'])
+{
+	echo $this->loadTemplate('show_help');
 }
+
 echo $this->loadTemplate('jsminfo');
 ?>
 

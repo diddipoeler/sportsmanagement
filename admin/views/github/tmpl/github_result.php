@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -22,9 +22,10 @@ use Joomla\CMS\Router\Route;
 HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
 
-// welche joomla version ?
-if(version_compare(JVERSION, '3.0.0', 'ge')) {
-    HTMLHelper::_('jquery.framework');
+// Welche joomla version ?
+if (version_compare(JVERSION, '3.0.0', 'ge'))
+{
+	HTMLHelper::_('jquery.framework');
 }
 
 
@@ -35,7 +36,7 @@ HTMLHelper::_('behavior.keepalive');
 
 
 Factory::getDocument()->addScriptDeclaration(
-    '
+	'
 	Joomla.submitbutton = function(task)
 	{
 		if (task == "github.cancel" )
@@ -59,7 +60,7 @@ Factory::getDocument()->addScriptDeclaration(
 <div class="container-popup">
 
 <div class="pull-right">
-    <button class="btn" type="button" onclick="Joomla.submitbutton('github.cancel', this.form);"><?php echo Text::_('JCANCEL') ?></button>
+	<button class="btn" type="button" onclick="Joomla.submitbutton('github.cancel', this.form);"><?php echo Text::_('JCANCEL') ?></button>
 </div>
 <div class="clearfix"></div>
 

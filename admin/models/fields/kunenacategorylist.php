@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -22,7 +22,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 /**
  * FormFieldKunenaCategoryList
  *
- * @package 
+ * @package
  * @author
  * @copyright diddi
  * @version   2014
@@ -30,83 +30,94 @@ use Joomla\CMS\HTML\HTMLHelper;
  */
 class JFormFieldKunenaCategoryList extends \JFormFieldList
 {
-    protected $type = 'KunenaCategoryList';
+	protected $type = 'KunenaCategoryList';
 
-    /**
-     * FormFieldKunenaCategoryList::getInput()
-     *
-     * @return
-     */
-    protected function getInput()
-    {
-        if (!class_exists('KunenaForum') || !KunenaForum::installed()) {
-            echo '<a href="index.php?option=com_kunena">PLEASE COMPLETE KUNENA INSTALLATION</a>';
-            return;
-        }
-        else
-        {
-            HTMLHelper::addIncludePath(KPATH_ADMIN . '/libraries/html/html');
-        }
+	/**
+	 * FormFieldKunenaCategoryList::getInput()
+	 *
+	 * @return
+	 */
+	protected function getInput()
+	{
+		if (!class_exists('KunenaForum') || !KunenaForum::installed())
+		{
+			echo '<a href="index.php?option=com_kunena">PLEASE COMPLETE KUNENA INSTALLATION</a>';
 
-        KunenaFactory::loadLanguage('com_kunena');
+			return;
+		}
+		else
+		{
+			HTMLHelper::addIncludePath(KPATH_ADMIN . '/libraries/html/html');
+		}
 
-        $none = $this->element['none'];
+		KunenaFactory::loadLanguage('com_kunena');
 
-        $size = $this->element['size'];
-        $class = $this->element['class'];
+		$none = $this->element['none'];
 
-        $attribs = ' ';
-        if ($size) {
-            $attribs .= 'size="' . $size . '"';
-        }
-        if ($class) {
-            $attribs .= 'class="' . $class . '"';
-        } else {
-            $attribs .= 'class="inputbox"';
-        }
-        if (!empty($this->element['multiple'])) {
-            $attribs .= ' multiple="multiple"';
-        }
+		$size = $this->element['size'];
+		$class = $this->element['class'];
 
-        // Get the field options.
-        $options = $this->getOptions();
+		$attribs = ' ';
 
-        return HTMLHelper::_('kunenaforum.categorylist', $this->name, 0, $options, $this->element, $attribs, 'value', 'text', $this->value);
-    }
+		if ($size)
+		{
+			$attribs .= 'size="' . $size . '"';
+		}
 
-    /**
-     * Method to get the field options.
-     *
-     * @return array  The field option objects.
-     * @since  11.1
-     */
-    protected function getOptions()
-    {
-        // Initialize variables.
-        $options = array();
+		if ($class)
+		{
+			$attribs .= 'class="' . $class . '"';
+		}
+		else
+		{
+			$attribs .= 'class="inputbox"';
+		}
 
-        foreach ($this->element->children() as $option) {
+		if (!empty($this->element['multiple']))
+		{
+			$attribs .= ' multiple="multiple"';
+		}
 
-            // Only add <option /> elements.
-            if ($option->getName() != 'option') {
-                continue;
-            }
+		// Get the field options.
+		$options = $this->getOptions();
 
-            // Create a new option object based on the <option /> element.
-            $tmp = HTMLHelper::_('select.option', (string) $option['value'], Text::alt(trim((string) $option), preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)), 'value', 'text', ((string) $option['disabled']=='true'));
+		return HTMLHelper::_('kunenaforum.categorylist', $this->name, 0, $options, $this->element, $attribs, 'value', 'text', $this->value);
+	}
 
-            // Set some option attributes.
-            $tmp->class = (string) $option['class'];
+	/**
+	 * Method to get the field options.
+	 *
+	 * @return array  The field option objects.
+	 * @since  11.1
+	 */
+	protected function getOptions()
+	{
+		// Initialize variables.
+		$options = array();
 
-            // Set some JavaScript option attributes.
-            $tmp->onclick = (string) $option['onclick'];
+		foreach ($this->element->children() as $option)
+		{
+			// Only add <option /> elements.
+			if ($option->getName() != 'option')
+			{
+				continue;
+			}
 
-            // Add the option object to the result set.
-            $options[] = $tmp;
-        }
+			// Create a new option object based on the <option /> element.
+			$tmp = HTMLHelper::_('select.option', (string) $option['value'], Text::alt(trim((string) $option), preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)), 'value', 'text', ((string) $option['disabled'] == 'true'));
 
-        reset($options);
+			// Set some option attributes.
+			$tmp->class = (string) $option['class'];
 
-        return $options;
-    }
+			// Set some JavaScript option attributes.
+			$tmp->onclick = (string) $option['onclick'];
+
+			// Add the option object to the result set.
+			$options[] = $tmp;
+		}
+
+		reset($options);
+
+		return $options;
+	}
 }

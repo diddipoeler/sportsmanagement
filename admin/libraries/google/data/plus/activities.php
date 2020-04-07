@@ -29,7 +29,7 @@ class JGoogleDataPlusActivities extends JGoogleData
 	 */
 	public function __construct(Registry $options = null, JGoogleAuth $auth = null)
 	{
-	parent::__construct($options, $auth);
+		parent::__construct($options, $auth);
 
 		if (isset($this->auth) && !$this->auth->getOption('scope'))
 		{

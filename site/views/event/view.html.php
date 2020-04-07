@@ -21,7 +21,7 @@
 
 defined('_JEXEC') or die();
 
-//JLoader::import('components.com_gcalendar.libraries.gcalendar.view', JPATH_SITE);
+// JLoader::import('components.com_gcalendar.libraries.gcalendar.view', JPATH_SITE);
 JLoader::import('joomla.application.component.view');
 JLoader::import('components.com_sportsmanagement.libraries.GCalendar.GCalendarZendHelper', JPATH_ADMINISTRATOR);
 JLoader::import('components.com_sportsmanagement.libraries.dbutil', JPATH_ADMINISTRATOR);
@@ -29,15 +29,15 @@ JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINIST
 
 class sportsmanagementViewEvent extends JViewLegacy
 {
-    public function display($tpl = null)
-    {
-        $this->event = $this->get('GCalendar');
-        parent::display($tpl);
-    }  
+	public function display($tpl = null)
+	{
+		$this->event = $this->get('GCalendar');
+		parent::display($tpl);
+	}
 
-    //	public function init()
-    //    {
-    //		$this->event = $this->get('GCalendar');
-    //	}
+	//	public function init()
+	//    {
+	//		$this->event = $this->get('GCalendar');
+	//	}
 
 }

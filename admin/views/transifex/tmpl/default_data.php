@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -22,8 +22,8 @@ use Joomla\CMS\Router\Route;
 <table class="table table-striped" id="contentList">
 <thead>
 <tr>
-                      
-<th class="title nowrap">
+
+					  <th class="title nowrap">
 <?php echo Text::_('JGLOBAL_TITLE'); ?>
 </th>
 <th width="1%" class="nowrap">
@@ -43,7 +43,8 @@ use Joomla\CMS\Router\Route;
 </thead>
   
 <?php
-foreach ($this->language as $i => $item) :
+foreach ($this->language as $i => $item)
+:
 ?>  
 <tr class="row<?php echo $i % 2; ?>">  
 <td class="hidden-phone hidden-tablet">
@@ -56,7 +57,7 @@ foreach ($this->language as $i => $item) :
 <?php echo $item->completed; ?>
 </td>	
 <td class="hidden-phone hidden-tablet">
-<?php echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/'.$item->images, '', 'title= "' . '' . '"'); ?>
+<?php echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/' . $item->images, '', 'title= "' . '' . '"'); ?>
 </td>	
   
   

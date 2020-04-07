@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -28,26 +28,26 @@ defined('_JEXEC') or die();
 class sportsmanagementViewjsmgooglecalendar extends sportsmanagementView
 {
 
-    /**
-     * sportsmanagementViewjsmgooglecalendar::init()
-     *
-     * @return void
-     */
-    public function init()
-    {
+	/**
+	 * sportsmanagementViewjsmgooglecalendar::init()
+	 *
+	 * @return void
+	 */
+	public function init()
+	{
 
-    }
-  
-  
-    /**
-     * Add the page title and toolbar.
-     *
-     * @since 1.7
-     */
-    protected function addToolbar()
-    {
+	}
 
-        parent::addToolbar();    
 
-    }
+	/**
+	 * Add the page title and toolbar.
+	 *
+	 * @since 1.7
+	 */
+	protected function addToolbar()
+	{
+
+		parent::addToolbar();
+
+	}
 }

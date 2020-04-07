@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -16,16 +16,16 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <!-- colors legend -->
 <?php
-if ($this->config['show_colorlegend']) {
-    ?>
-    <table class="table">
-        <tr>
-    <?php
-    sportsmanagementHelper::showColorsLegend($this->colors, $this->divisions);
-    ?>
-        </tr>
-    </table>
-    <br />
-    <?php
+if ($this->config['show_colorlegend'])
+{
+	?>
+	<table class="table">
+		<tr>
+	<?php
+	sportsmanagementHelper::showColorsLegend($this->colors, $this->divisions);
+	?>
+		</tr>
+	</table>
+	<br />
+	<?php
 }
-?>

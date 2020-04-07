@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -21,7 +21,7 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 /**
  * sportsmanagementViewrosterpositions
  *
- * @package 
+ * @package
  * @author
  * @copyright diddi
  * @version   2014
@@ -29,39 +29,36 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
  */
 class sportsmanagementViewrosterpositions extends sportsmanagementView
 {
-    /**
-     * sportsmanagementViewrosterpositions::init()
-     *
-     * @return void
-     */
-    public function init()
-    {
-      
-        $this->table = Table::getInstance('rosterposition', 'sportsmanagementTable');
-      
-    }
-  
-        /**
-    * Add the page title and toolbar.
-    *
-    * @since 1.7
-    */
-    protected function addToolbar()
-    {
-  
-        // Set toolbar items for the page
-        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_TITLE');
-        ToolbarHelper::custom('rosterpositions.addhome', 'new', 'new', Text::_('COM_SPORTSMAMAGEMENT_ADMIN_ROSTERPOSITIONS_HOME'), false);
-        ToolbarHelper::custom('rosterpositions.addaway', 'new', 'new', Text::_('COM_SPORTSMAMAGEMENT_ADMIN_ROSTERPOSITIONS_AWAY'), false);
-        ToolbarHelper::editList('rosterposition.edit');
-        ToolbarHelper::trash('rosterpositions.trash');
-        ToolbarHelper::deleteList('', 'rosterpositions.delete', 'JTOOLBAR_DELETE');
-        ToolbarHelper::checkin('rosterpositions.checkin');
-        parent::addToolbar();
-     
-     
-     
-    } 
+	/**
+	 * sportsmanagementViewrosterpositions::init()
+	 *
+	 * @return void
+	 */
+	public function init()
+	{
+
+			  $this->table = Table::getInstance('rosterposition', 'sportsmanagementTable');
+
+	}
+
+		/**
+		 * Add the page title and toolbar.
+		 *
+		 * @since 1.7
+		 */
+	protected function addToolbar()
+	{
+
+		// Set toolbar items for the page
+		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_TITLE');
+		ToolbarHelper::custom('rosterpositions.addhome', 'new', 'new', Text::_('COM_SPORTSMAMAGEMENT_ADMIN_ROSTERPOSITIONS_HOME'), false);
+		ToolbarHelper::custom('rosterpositions.addaway', 'new', 'new', Text::_('COM_SPORTSMAMAGEMENT_ADMIN_ROSTERPOSITIONS_AWAY'), false);
+		ToolbarHelper::editList('rosterposition.edit');
+		ToolbarHelper::trash('rosterpositions.trash');
+		ToolbarHelper::deleteList('', 'rosterpositions.delete', 'JTOOLBAR_DELETE');
+		ToolbarHelper::checkin('rosterpositions.checkin');
+		parent::addToolbar();
+
+	}
 
 }
-?>

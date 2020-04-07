@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -22,7 +22,7 @@ use Joomla\CMS\Toolbar\Toolbar;
 /**
  * sportsmanagementViewsmquotes
  *
- * @package 
+ * @package
  * @author
  * @copyright diddi
  * @version   2014
@@ -30,42 +30,41 @@ use Joomla\CMS\Toolbar\Toolbar;
  */
 class sportsmanagementViewsmquotes extends sportsmanagementView
 {
-  
-    /**
-     * sportsmanagementViewsmquotes::init()
-     *
-     * @return void
-     */
-    public function init()
-    {
-  
-        $this->table = Table::getInstance('smquote', 'sportsmanagementTable');
-          
-    }
-  
-    /**
-    * Add the page title and toolbar.
-    *
-    * @since 1.7
-    */
-    protected function addToolbar()
-    {
-        // Set toolbar items for the page
-        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_QUOTES_TITLE');
-        ToolbarHelper::addNew('smquote.add');
-        ToolbarHelper::editList('smquote.edit');
-        ToolbarHelper::custom('smquote.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
-      
-        ToolbarHelper::custom('smquotes.edittxt', 'featured.png', 'featured_f2.png', Text::_('JTOOLBAR_EDIT'), false);
-      
-        $bar = Toolbar::getInstance('toolbar');
-        //$bar->appendButton('Link', 'info', 'Kategorie', 'index.php?option=com_categories&view=categories&extension=com_sportsmanagement');
-        $bar->appendButton('Link', 'info', 'Kategorie', 'index.php?option=com_categories&extension=com_sportsmanagement');
-      
-        ToolbarHelper::archiveList('smquote.export', Text::_('JTOOLBAR_EXPORT'));
-      
-      
-        parent::addToolbar();
-    }
+
+	/**
+	 * sportsmanagementViewsmquotes::init()
+	 *
+	 * @return void
+	 */
+	public function init()
+	{
+
+		$this->table = Table::getInstance('smquote', 'sportsmanagementTable');
+
+	}
+
+	/**
+	 * Add the page title and toolbar.
+	 *
+	 * @since 1.7
+	 */
+	protected function addToolbar()
+	{
+		// Set toolbar items for the page
+		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_QUOTES_TITLE');
+		ToolbarHelper::addNew('smquote.add');
+		ToolbarHelper::editList('smquote.edit');
+		ToolbarHelper::custom('smquote.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
+
+			  ToolbarHelper::custom('smquotes.edittxt', 'featured.png', 'featured_f2.png', Text::_('JTOOLBAR_EDIT'), false);
+
+			  $bar = Toolbar::getInstance('toolbar');
+
+		// $bar->appendButton('Link', 'info', 'Kategorie', 'index.php?option=com_categories&view=categories&extension=com_sportsmanagement');
+		$bar->appendButton('Link', 'info', 'Kategorie', 'index.php?option=com_categories&extension=com_sportsmanagement');
+
+			  ToolbarHelper::archiveList('smquote.export', Text::_('JTOOLBAR_EXPORT'));
+
+			  parent::addToolbar();
+	}
 }
-?>

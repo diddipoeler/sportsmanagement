@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -43,24 +43,26 @@ return true;
 </script>
 
 <style type="text/css">
-    table.paramlist td.paramlist_key {
-        width: 92px;
-        text-align: left;
-        height: 30px;
-    }
+	table.paramlist td.paramlist_key {
+		width: 92px;
+		text-align: left;
+		height: 30px;
+	}
 </style>
 
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 <div class="col50">
 
 <?php
-if(version_compare(JVERSION, '3.0.0', 'ge')) {
-    echo $this->loadTemplate('joomla3');
+if (version_compare(JVERSION, '3.0.0', 'ge'))
+{
+	echo $this->loadTemplate('joomla3');
 }
 else
 {
-    echo $this->loadTemplate('joomla2');  
+	echo $this->loadTemplate('joomla2');
 }
+
 echo $this->loadTemplate('data');
 ?>
   

@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -43,28 +43,34 @@ echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_COUNTRY', 'v
 </tr>
 </thead>
 
-<?php foreach ($this->items as $i => $item): ?>
+<?php foreach ($this->items as $i => $item)
+:
+	?>
 <tr class="row<?php echo $i % 2; ?>">
 <td>
 <?php
-if ($item->country) {
-    $link = sportsmanagementHelperRoute::getAllProjectsRoute($item->country, $item->id);
-    echo HTMLHelper::link($link, $item->name);
-} else {
-    echo $item->name;
+if ($item->country)
+	{
+	$link = sportsmanagementHelperRoute::getAllProjectsRoute($item->country, $item->id);
+	echo HTMLHelper::link($link, $item->name);
+}
+else
+	{
+	echo $item->name;
 }
 
-if (!File::exists(JPATH_SITE .DIRECTORY_SEPARATOR. $item->picture)) {
-    $item->picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
+if (!File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $item->picture))
+	{
+	$item->picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
 }
 ?>
 </td>
 <td>
 <?PHP
 echo sportsmanagementHelperHtml::getBootstrapModalImage(
-    'allleagues' . $item->id, COM_SPORTSMANAGEMENT_PICTURE_SERVER . $item->picture, $item->name, '20', '', $this->modalwidth,
-    $this->modalheight,
-    $this->use_jquery_modal
+	'allleagues' . $item->id, COM_SPORTSMANAGEMENT_PICTURE_SERVER . $item->picture, $item->name, '20', '', $this->modalwidth,
+	$this->modalheight,
+	$this->use_jquery_modal
 )
 ?>
 

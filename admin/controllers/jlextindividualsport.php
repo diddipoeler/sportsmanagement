@@ -41,8 +41,8 @@ class sportsmanagementControllerjlextindividualsport extends JController
 	//        $option = Factory::getApplication()->input->getCmd('option');
 	//        $model = $this->getModel('jlextindividualsport');
 	//        $model->apply($data);
-	// 
-	// 
+	//
+	//
 	//    }
 
 	//    function save($data)
@@ -51,8 +51,8 @@ class sportsmanagementControllerjlextindividualsport extends JController
 	//        $option = Factory::getApplication()->input->getCmd('option');
 	//        $model = $this->getModel('jlextindividualsport');
 	//        $model->save($data);
-	// 
-	// 
+	//
+	//
 	//    }
 
 

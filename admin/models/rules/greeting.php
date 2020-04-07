@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -21,12 +21,12 @@ use Joomla\CMS\Form\FormRule;
  */
 class JFormRuleGreeting extends FormRule
 {
-    /**
-     * The regular expression.
-     *
-     * @access protected
-     * @var    string
-     * @since  1.6
-     */
-    protected $regex = '^[^0-9]+$';
+	/**
+	 * The regular expression.
+	 *
+	 * @access protected
+	 * @var    string
+	 * @since  1.6
+	 */
+	protected $regex = '^[^0-9]+$';
 }

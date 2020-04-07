@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -22,7 +22,7 @@ jimport('joomla.html.html.bootstrap');
 /**
  * sportsmanagementViewUpdates
  *
- * @package 
+ * @package
  * @author
  * @copyright diddi
  * @version   2014
@@ -31,52 +31,56 @@ jimport('joomla.html.html.bootstrap');
 class sportsmanagementViewUpdates extends sportsmanagementView
 {
 
-    /**
-     * sportsmanagementViewUpdates::init()
-     *
-     * @return void
-     */
-    public function init()
-    {
-        $this->app->setUserState($this->option . 'update_part', 0); // 0
-        $filter_order = $this->app->getUserStateFromRequest($this->option . 'updates_filter_order', 'filter_order', 'dates', 'cmd');
-        $filter_order_Dir = $this->app->getUserStateFromRequest($this->option . 'updates_filter_order_Dir', 'filter_order_Dir', '', 'word');
+	/**
+	 * sportsmanagementViewUpdates::init()
+	 *
+	 * @return void
+	 */
+	public function init()
+	{
+		$this->app->setUserState($this->option . 'update_part', 0); // 0
+		$filter_order = $this->app->getUserStateFromRequest($this->option . 'updates_filter_order', 'filter_order', 'dates', 'cmd');
+		$filter_order_Dir = $this->app->getUserStateFromRequest($this->option . 'updates_filter_order_Dir', 'filter_order_Dir', '', 'word');
 
-        $db = sportsmanagementHelper::getDBConnection();
-        if (version_compare(JSM_JVERSION, '4', 'eq')) {
-            $uri = Uri::getInstance();
-        } else {
-            $uri = Factory::getURI();
-        }
-        $model = $this->getModel();
-        $versions = $model->getVersions();
-        $updateFiles = array();
-        $lists = array();
-        $updateFiles = $model->loadUpdateFiles();
+		$db = sportsmanagementHelper::getDBConnection();
 
-        // table ordering
-        $lists['order_Dir'] = $filter_order_Dir;
-        $lists['order'] = $filter_order;
-        $this->updateFiles = $updateFiles;
-        $this->request_url = $uri->toString();
-        $this->lists = $lists;
+		if (version_compare(JSM_JVERSION, '4', 'eq'))
+		{
+			$uri = Uri::getInstance();
+		}
+		else
+		{
+			$uri = Factory::getURI();
+		}
 
-    }
+		$model = $this->getModel();
+		$versions = $model->getVersions();
+		$updateFiles = array();
+		$lists = array();
+		$updateFiles = $model->loadUpdateFiles();
 
-    /**
-     * Add the page title and toolbar.
-     *
-     * @since 1.7
-     */
-    protected function addToolbar()
-    {
+		// Table ordering
+		$lists['order_Dir'] = $filter_order_Dir;
+		$lists['order'] = $filter_order;
+		$this->updateFiles = $updateFiles;
+		$this->request_url = $uri->toString();
+		$this->lists = $lists;
 
-        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_TITLE');
-        $this->icon = 'updates';
+	}
 
-        parent::addToolbar();
-    }
+	/**
+	 * Add the page title and toolbar.
+	 *
+	 * @since 1.7
+	 */
+	protected function addToolbar()
+	{
+
+		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_TITLE');
+		$this->icon = 'updates';
+
+		parent::addToolbar();
+	}
 
 }
 
-?>

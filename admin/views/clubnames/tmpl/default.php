@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -18,8 +18,9 @@ use Joomla\CMS\HTML\HTMLHelper;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 HTMLHelper::_('behavior.tooltip');
-//Ordering allowed ?
-//$ordering=($this->sortColumn == 'dv.ordering');
+
+// Ordering allowed ?
+// $ordering=($this->sortColumn == 'dv.ordering');
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 

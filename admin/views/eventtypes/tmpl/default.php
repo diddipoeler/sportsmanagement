@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -15,8 +15,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 
-//Ordering allowed ?
-//$ordering=($this->sortColumn == 'obj.ordering');
+// Ordering allowed ?
+// $ordering=($this->sortColumn == 'obj.ordering');
 
 
 $templatesToLoad = array('footer','listheader');
@@ -24,16 +24,16 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <script>
 
-    function searchPlayground(val,key)
-    {
-        var f=$('adminForm');
-        if(f)
-        {
-        f.elements['filter_search'].value=val;
-      
-        f.submit();
-        }
-    }
+	function searchPlayground(val,key)
+	{
+		var f=$('adminForm');
+		if(f)
+		{
+		f.elements['filter_search'].value=val;
+
+			  f.submit();
+		}
+	}
 
 </script>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
@@ -49,4 +49,3 @@ echo $this->loadTemplate('joomla_version');
 </form>
 <?PHP
 echo $this->loadTemplate('footer');
-?> 

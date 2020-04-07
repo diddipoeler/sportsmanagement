@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -15,12 +15,12 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\MVC\Controller\BaseController;
 
-require_once JLG_PATH_EXTENSION_PREDICTIONGAME .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'route.php' ;
+require_once JLG_PATH_EXTENSION_PREDICTIONGAME . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'route.php';
 
 /**
  * sportsmanagementControllerPredictiongame
  *
- * @package 
+ * @package
  * @author
  * @copyright diddi
  * @version   2014
@@ -28,14 +28,13 @@ require_once JLG_PATH_EXTENSION_PREDICTIONGAME .DIRECTORY_SEPARATOR. 'helpers' .
  */
 class sportsmanagementControllerPredictiongame extends BaseController
 {
-    /**
-     * sportsmanagementControllerPredictiongame::__construct()
-     *
-     * @return void
-     */
-    function __construct()
-    {
-        parent::__construct();
-    }
+	/**
+	 * sportsmanagementControllerPredictiongame::__construct()
+	 *
+	 * @return void
+	 */
+	function __construct()
+	{
+		parent::__construct();
+	}
 }
-?>

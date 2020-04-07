@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -19,20 +19,22 @@ use Joomla\CMS\Factory;
 <?php
 $view = Factory::getApplication()->input->getCmd('view');
 
-foreach ($this->output as $key => $templ) {
-    switch ($view) {
-    case 'player':
-        $template = $templ['template'];
-        $text = $templ['text'];
-        break;
-    default:
-        $template = $templ;
-        $text = $key;
-        break;
-    }
+foreach ($this->output as $key => $templ)
+{
+	switch ($view)
+	{
+		case 'player':
+			$template = $templ['template'];
+			$text = $templ['text'];
+		break;
+		default:
+			$template = $templ;
+			$text = $key;
+		break;
+	}
 
-    echo $this->loadTemplate($template);
+	echo $this->loadTemplate($template);
 }
 ?>
-    </div>
+	</div>
 </div>

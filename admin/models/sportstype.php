@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -15,7 +15,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-// import Joomla modelform library
+
+// Import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
 
 /**
@@ -24,35 +25,36 @@ jimport('joomla.application.component.modeladmin');
 class sportsmanagementModelsportstype extends JSMModelAdmin
 {
 
-    /**
-     * Override parent constructor.
-     *
-     * @param array $config An optional associative array of configuration settings.
-     *
-     * @see   BaseDatabaseModel
-     * @since 3.2
-     */
-    public function __construct($config = array())
-    {
-        parent::__construct($config);
- 
-    }     
+	/**
+	 * Override parent constructor.
+	 *
+	 * @param   array $config An optional associative array of configuration settings.
+	 *
+	 * @see   BaseDatabaseModel
+	 * @since 3.2
+	 */
+	public function __construct($config = array())
+	{
+		parent::__construct($config);
 
-     /**
-     * return
-     *
-     * @param  int sportstype_id
-     * @return int
-     */
-    function getSportstype($sportstype_id)
-    {
-        $this->jsmquery->clear();
-        $this->jsmquery->select('*');
-        $this->jsmquery->from('#__sportsmanagement_sports_type');
-        $this->jsmquery->where('id = '.$sportstype_id);
-        $this->jsmdb->setQuery($this->jsmquery);
-        return $this->jsmdb->loadObject();
-    }
-  
-  
+	}
+
+	 /**
+	  * return
+	  *
+	  * @param  int sportstype_id
+	  * @return integer
+	  */
+	function getSportstype($sportstype_id)
+	{
+		$this->jsmquery->clear();
+		$this->jsmquery->select('*');
+		$this->jsmquery->from('#__sportsmanagement_sports_type');
+		$this->jsmquery->where('id = ' . $sportstype_id);
+		$this->jsmdb->setQuery($this->jsmquery);
+
+		return $this->jsmdb->loadObject();
+	}
+
+
 }

@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -19,7 +19,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 /**
  * sportsmanagementViewRoster
  *
- * @package 
+ * @package
  * @author
  * @copyright diddi
  * @version   2014
@@ -27,92 +27,103 @@ use Joomla\CMS\HTML\HTMLHelper;
  */
 class sportsmanagementViewRoster extends sportsmanagementView
 {
-  
-    /**
-     * sportsmanagementViewRoster::init()
-     *
-     * @return void
-     */
-    function init()
-    {
-      
-        sportsmanagementModelRoster::$seasonid = $this->project->season_id;
 
-        $this->projectteam = $this->model->getProjectTeam($this->config['team_picture_which']);
-        $this->lastseasondate = $this->model->getLastSeasonDate();
-      
-        $type = $this->jinput->getVar("type", 0);
-        $typestaff = $this->jinput->getVar("typestaff", 0);
-        if (!$type ) {
-            $type = $this->config['show_players_layout'];
-        }
-        if (!$typestaff ) {
-            $typestaff = $this->config['show_staff_layout'];
-        }
-        $this->type = $type;
-        $this->typestaff = $typestaff;
-      
-        $this->config['show_players_layout'] = $type;
-        $this->config['show_staff_layout'] = $typestaff;
-      
-        if ($this->projectteam) {
-            $this->team = $this->model->getTeam();
-            $this->rows = $this->model->getTeamPlayers(1);
-            // events
-            if ($this->config['show_events_stats']) {
-                $this->positioneventtypes = $this->model->getPositionEventTypes();
-              
-                if ($this->project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART' ) {
-                    $this->playereventstats = $this->model->getPlayerEventStats(true, true);
-                    $this->playereventstatsdart = $this->model->getPlayerEventStats(true, false);  
-                }
-                else
-                {
-                    $this->playereventstats = $this->model->getPlayerEventStats(false, false);  
-                }
-            }
-            //stats
-            if ($this->config['show_stats']) {
-                $this->stats = sportsmanagementModelProject::getProjectStats(0, 0, sportsmanagementModelRoster::$cfg_which_database);
-                $this->playerstats = $this->model->getRosterStats();
-            }
+	/**
+	 * sportsmanagementViewRoster::init()
+	 *
+	 * @return void
+	 */
+	function init()
+	{
 
-            $this->stafflist = $this->model->getTeamPlayers(2);
+			  sportsmanagementModelRoster::$seasonid = $this->project->season_id;
 
-            // Set page title
-            $this->document->setTitle(Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_TITLE', $this->team->name));
-        }
-        else
-        {
-            // Set page title
-            $this->document->setTitle(Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_TITLE', Text :: _('COM_SPORTSMANAGEMENT_ROSTER_ERROR_PROJECT_TEAM')));
-        }
-      
-        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'components/'.$this->option.'/assets/css/'.$this->view.'.css'.'" type="text/css" />' ."\n";
-        $this->document->addCustomTag($stylelink);
-      
+		$this->projectteam = $this->model->getProjectTeam($this->config['team_picture_which']);
+		$this->lastseasondate = $this->model->getLastSeasonDate();
 
-          // select roster view
-          $opp_arr = array ();
-          $opp_arr[] = HTMLHelper::_('select.option', "player_standard", Text :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION1_PLAYER_STANDARD'));
-        $opp_arr[] = HTMLHelper::_('select.option', "player_card", Text :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION2_PLAYER_CARD'));
-        $opp_arr[] = HTMLHelper::_('select.option', "player_johncage", Text :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION3_PLAYER_CARD'));
+			  $type = $this->jinput->getVar("type", 0);
+		$typestaff = $this->jinput->getVar("typestaff", 0);
 
-        $lists['type'] = $opp_arr;
-        // select staff view
-          $opp_arr = array ();
-          $opp_arr[] = HTMLHelper::_('select.option', "staff_standard", Text :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION1_STAFF_STANDARD'));
-        $opp_arr[] = HTMLHelper::_('select.option', "staff_card", Text :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION2_STAFF_CARD'));
-        $opp_arr[] = HTMLHelper::_('select.option', "staff_johncage", Text :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION3_STAFF_CARD'));
+		if (!$type)
+		{
+			$type = $this->config['show_players_layout'];
+		}
 
-        $lists['typestaff'] = $opp_arr;
-        $this->lists = $lists;
-  
-        if (!isset($this->config['table_class']) ) {
-            $this->config['table_class'] = 'table';
-        }
+		if (!$typestaff)
+		{
+			$typestaff = $this->config['show_staff_layout'];
+		}
 
-    }
+		$this->type = $type;
+		$this->typestaff = $typestaff;
+
+			  $this->config['show_players_layout'] = $type;
+		$this->config['show_staff_layout'] = $typestaff;
+
+		if ($this->projectteam)
+		{
+			$this->team = $this->model->getTeam();
+			$this->rows = $this->model->getTeamPlayers(1);
+
+			// Events
+			if ($this->config['show_events_stats'])
+			{
+				$this->positioneventtypes = $this->model->getPositionEventTypes();
+
+				if ($this->project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART')
+				{
+					$this->playereventstats = $this->model->getPlayerEventStats(true, true);
+					$this->playereventstatsdart = $this->model->getPlayerEventStats(true, false);
+				}
+				else
+				{
+					$this->playereventstats = $this->model->getPlayerEventStats(false, false);
+				}
+			}
+
+			// Stats
+			if ($this->config['show_stats'])
+			{
+				$this->stats = sportsmanagementModelProject::getProjectStats(0, 0, sportsmanagementModelRoster::$cfg_which_database);
+				$this->playerstats = $this->model->getRosterStats();
+			}
+
+			$this->stafflist = $this->model->getTeamPlayers(2);
+
+			// Set page title
+			$this->document->setTitle(Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_TITLE', $this->team->name));
+		}
+		else
+		{
+			// Set page title
+			$this->document->setTitle(Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_TITLE', Text::_('COM_SPORTSMANAGEMENT_ROSTER_ERROR_PROJECT_TEAM')));
+		}
+
+			  $stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/' . $this->option . '/assets/css/' . $this->view . '.css' . '" type="text/css" />' . "\n";
+			$this->document->addCustomTag($stylelink);
+
+			// Select roster view
+			$opp_arr = array ();
+			$opp_arr[] = HTMLHelper::_('select.option', "player_standard", Text::_('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION1_PLAYER_STANDARD'));
+			$opp_arr[] = HTMLHelper::_('select.option', "player_card", Text::_('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION2_PLAYER_CARD'));
+			$opp_arr[] = HTMLHelper::_('select.option', "player_johncage", Text::_('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION3_PLAYER_CARD'));
+
+			$lists['type'] = $opp_arr;
+
+			// Select staff view
+			$opp_arr = array ();
+			$opp_arr[] = HTMLHelper::_('select.option', "staff_standard", Text::_('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION1_STAFF_STANDARD'));
+			$opp_arr[] = HTMLHelper::_('select.option', "staff_card", Text::_('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION2_STAFF_CARD'));
+			$opp_arr[] = HTMLHelper::_('select.option', "staff_johncage", Text::_('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION3_STAFF_CARD'));
+
+			$lists['typestaff'] = $opp_arr;
+			$this->lists = $lists;
+
+		if (!isset($this->config['table_class']))
+		{
+			$this->config['table_class'] = 'table';
+		}
+
+	}
 
 }
-?>

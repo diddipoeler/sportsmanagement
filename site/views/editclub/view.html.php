@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -27,48 +27,49 @@ use Joomla\CMS\Component\ComponentHelper;
  */
 class sportsmanagementViewEditClub extends sportsmanagementView
 {
-  
-    /**
-     * sportsmanagementViewEditClub::init()
-     *
-     * @return void
-     */
-    function init()
-    {
-  
-        $this->item = $this->model->getData();
-        $lists = array();
-        $this->form = $this->get('Form');
-        if ($this->item->id ) {
-            // alles ok
-            if ($this->item->founded == '0000-00-00' ) {
-                $this->item->founded = '';
-                $this->form->setValue('founded', '');
-            }
-            if ($this->item->dissolved == '0000-00-00' ) {
-                $this->item->dissolved = '';
-                $this->form->setValue('dissolved', '');
-            }
-          
-        }
-        else
-        {
-            $this->form->setValue('founded', '');
-            $this->form->setValue('dissolved', '');
-        }
-      
-          $this->item->merge_teams = explode(",", $this->item->merge_teams);
-  
 
-          
-        $extended = sportsmanagementHelper::getExtended($this->item->extended, 'club');
-        $this->extended = $extended;
-        $this->lists = $lists;
+	/**
+	 * sportsmanagementViewEditClub::init()
+	 *
+	 * @return void
+	 */
+	function init()
+	{
 
-        $this->cfg_which_media_tool = ComponentHelper::getParams($this->option)->get('cfg_which_media_tool', 0);
-  
-    }
+		$this->item = $this->model->getData();
+		$lists = array();
+		$this->form = $this->get('Form');
 
-  
+		if ($this->item->id)
+		{
+			// Alles ok
+			if ($this->item->founded == '0000-00-00')
+			{
+				$this->item->founded = '';
+				$this->form->setValue('founded', '');
+			}
+
+			if ($this->item->dissolved == '0000-00-00')
+			{
+				$this->item->dissolved = '';
+				$this->form->setValue('dissolved', '');
+			}
+		}
+		else
+		{
+			$this->form->setValue('founded', '');
+			$this->form->setValue('dissolved', '');
+		}
+
+				$this->item->merge_teams = explode(",", $this->item->merge_teams);
+
+				  $extended = sportsmanagementHelper::getExtended($this->item->extended, 'club');
+		$this->extended = $extended;
+		$this->lists = $lists;
+
+		$this->cfg_which_media_tool = ComponentHelper::getParams($this->option)->get('cfg_which_media_tool', 0);
+
+	}
+
+
 }
-?>

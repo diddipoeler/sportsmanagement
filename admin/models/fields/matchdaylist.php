@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -24,7 +24,7 @@ FormHelper::loadFieldClass('list');
 /**
  * FormFieldMatchdaylist
  *
- * @package 
+ * @package
  * @author
  * @copyright diddi
  * @version   2014
@@ -32,38 +32,41 @@ FormHelper::loadFieldClass('list');
  */
 class JFormFieldMatchdaylist extends \JFormFieldList
 {
-    /**
-     * field type
-     *
-     * @var string
-     */
-    public $type = 'Matchdaylist';
+	/**
+	 * field type
+	 *
+	 * @var string
+	 */
+	public $type = 'Matchdaylist';
 
-    /**
-     * Method to get the field options.
-     *
-     * @return array  The field option objects.
-     *
-     * @since 11.1
-     */
-    protected function getOptions()
-    {
-        // Initialize variables.
-        $options = array();
-      
-        $varname = (string) $this->element['varname'];
-        $project_id = Factory::getApplication()->input->getVar($varname);
-        if (is_array($project_id)) {
-            $project_id = $project_id[0];
-        }      
+	/**
+	 * Method to get the field options.
+	 *
+	 * @return array  The field option objects.
+	 *
+	 * @since 11.1
+	 */
+	protected function getOptions()
+	{
+		// Initialize variables.
+		$options = array();
 
-        if ($project_id) {      
-            $options = & sportsmanagementHelper::getRoundsOptions($project_id, 'ASC', true);
-        }
-      
-        // Merge any additional options in the XML definition.
-        $options = array_merge(parent::getOptions(), $options);
-              
-        return $options;
-    }
+			  $varname = (string) $this->element['varname'];
+		$project_id = Factory::getApplication()->input->getVar($varname);
+
+		if (is_array($project_id))
+		{
+			$project_id = $project_id[0];
+		}
+
+		if ($project_id)
+		{
+			$options = & sportsmanagementHelper::getRoundsOptions($project_id, 'ASC', true);
+		}
+
+			  // Merge any additional options in the XML definition.
+		$options = array_merge(parent::getOptions(), $options);
+
+					  return $options;
+	}
 }

@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -17,4 +17,3 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 $model = $this->getModel('jlxmlimport');
 echo $model->getXml;
-?>

@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -23,16 +23,18 @@ use Joomla\CMS\Language\Text;
 
 <?php
 
-if (!isset($this->teamPlayer->position_name)  ) {
-    $this->teamPlayer->position_name = 'hauptposition.png';
-}  
-              
-//$backimage = 'images/com_sportsmanagement/database/person_playground/' . $this->teamPlayer->position_name . '.png';
-$backimage = $this->teamPlayer->position_image ;                   
+if (!isset($this->teamPlayer->position_name))
+{
+	$this->teamPlayer->position_name = 'hauptposition.png';
+}
+
+			  // $backimage = 'images/com_sportsmanagement/database/person_playground/' . $this->teamPlayer->position_name . '.png';
+$backimage = $this->teamPlayer->position_image;
 $hauptimage = 'images/com_sportsmanagement/database/person_playground/hauptposition.png';
 $nebenimage = 'images/com_sportsmanagement/database/person_playground/nebenposition.png';
 
-if (isset($this->person_position) ) {
+if (isset($this->person_position))
+{
 ?>
 <div style="position:relative;height:170px;background-image:url(<?PHP echo $backimage;?>);background-repeat:no-repeat;">
 <img src="<?PHP echo $hauptimage;?>" class="<?PHP echo $this->person_position;?>" alt="<?PHP echo Text::_($this->teamPlayer->position_name); ?>" title="<?PHP echo Text::_($this->teamPlayer->position_name); ?>" />
@@ -40,23 +42,23 @@ if (isset($this->person_position) ) {
 <?PHP
 
 
-if (isset($this->person_parent_positions) ) {
-
-    if (is_array($this->person_parent_positions) ) {
-        foreach ( $this->person_parent_positions as $key => $value)
-        {
-            ?>
-            <img src="<?PHP echo $nebenimage;?>" class="<?PHP echo $value;?>" alt="Nebenposition" title="Nebenposition" />
-    <?PHP
-        }
-    }
-    else
-    {
-        ?>
-        <img src="<?PHP echo $nebenimage;?>" class="<?PHP echo $this->person_parent_positions;?>" alt="Nebenposition" title="Nebenposition" />
-    <?PHP
-    }
-
+if (isset($this->person_parent_positions))
+	{
+	if (is_array($this->person_parent_positions))
+		{
+		foreach ($this->person_parent_positions as $key => $value)
+			{
+			?>
+			<img src="<?PHP echo $nebenimage;?>" class="<?PHP echo $value;?>" alt="Nebenposition" title="Nebenposition" />
+	<?PHP
+		}
+	}
+	else
+		{
+		?>
+		<img src="<?PHP echo $nebenimage;?>" class="<?PHP echo $this->person_parent_positions;?>" alt="Nebenposition" title="Nebenposition" />
+	<?PHP
+	}
 }
 ?>
 </div>

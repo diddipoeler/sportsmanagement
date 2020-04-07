@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -19,7 +19,7 @@ use Joomla\CMS\Factory;
 /**
  * sportsmanagementViewsmquote
  *
- * @package 
+ * @package
  * @author
  * @copyright diddi
  * @version   2014
@@ -27,37 +27,37 @@ use Joomla\CMS\Factory;
  */
 class sportsmanagementViewsmquote extends sportsmanagementView
 {
-  
-  
-    /**
-     * sportsmanagementViewsmquote::init()
-     *
-     * @return
-     */
-    public function init()
-    {
-                  
-        $this->item->name = $this->item->author;
 
-    }
 
-  
-    /**
-     * sportsmanagementViewsmquote::addToolBar()
-     *
-     * @return void
-     */
-    protected function addToolBar()
-    {
-  
-        $jinput = Factory::getApplication()->input;
-        $jinput->set('hidemainmenu', true);
-      
-        $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SMQUOTE_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SMQUOTE_ADD_NEW');
-        $this->icon = 'quote';
+	/**
+	 * sportsmanagementViewsmquote::init()
+	 *
+	 * @return
+	 */
+	public function init()
+	{
 
-        parent::addToolbar();
-              
-    }
-  
+						  $this->item->name = $this->item->author;
+
+	}
+
+
+	/**
+	 * sportsmanagementViewsmquote::addToolBar()
+	 *
+	 * @return void
+	 */
+	protected function addToolBar()
+	{
+
+		$jinput = Factory::getApplication()->input;
+		$jinput->set('hidemainmenu', true);
+
+			  $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SMQUOTE_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SMQUOTE_ADD_NEW');
+		$this->icon = 'quote';
+
+		parent::addToolbar();
+
+	}
+
 }

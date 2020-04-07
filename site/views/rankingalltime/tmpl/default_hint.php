@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -16,13 +16,13 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 ?>
 <div class="<?php echo $this->divclassrow;?> table-responsive">
-    <table class="table">
-        <tr>
-            <td align="left">
-                <br />
-                <?php echo Text :: _('COM_SPORTSMANAGEMENT_RANKING_HINT');?>
-        </td>
-            </tr>
-    </table>
+	<table class="table">
+		<tr>
+			<td align="left">
+				<br />
+				<?php echo Text :: _('COM_SPORTSMANAGEMENT_RANKING_HINT');?>
+		</td>
+			</tr>
+	</table>
 
 </div>

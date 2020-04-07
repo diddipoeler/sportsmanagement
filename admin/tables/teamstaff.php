@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -18,7 +18,7 @@ use Joomla\CMS\Language\Text;
 /**
  * sportsmanagementTableTeamStaff
  *
- * @package 
+ * @package
  * @author
  * @copyright diddi
  * @version   2014
@@ -26,30 +26,28 @@ use Joomla\CMS\Language\Text;
  */
 class sportsmanagementTableTeamStaff extends JSMTable
 {
-    /**
-     * Constructor
-     *
-     * @param object Database connector object
-     * @since 1.0
-     */
-    function __construct(& $db)
-    {
-          $db = sportsmanagementHelper::getDBConnection();
-        parent::__construct('#__sportsmanagement_team_staff', 'id', $db);
-    }
+	/**
+	 * Constructor
+	 *
+	 * @param object Database connector object
+	 * @since 1.0
+	 */
+	function __construct(& $db)
+	{
+		  $db = sportsmanagementHelper::getDBConnection();
+		parent::__construct('#__sportsmanagement_team_staff', 'id', $db);
+	}
 
-    /**
-     * sportsmanagementTableTeamStaff::canDelete()
-     *
-     * @param  mixed $id
-     * @param  mixed $joins
-     * @return
-     */
-    function canDelete($id, $joins = null)
-    {
-      
-      
-        return true;
-    }
+	/**
+	 * sportsmanagementTableTeamStaff::canDelete()
+	 *
+	 * @param   mixed $id
+	 * @param   mixed $joins
+	 * @return
+	 */
+	function canDelete($id, $joins = null)
+	{
+
+			  return true;
+	}
 }
-?>

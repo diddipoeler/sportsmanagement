@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -18,40 +18,40 @@ $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 ?>
-    
-<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
+
+	<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 <p class="nowarning"><?php echo Text::_('COM_JOOMLAUPDATE_VIEW_UPDATE_INPROGRESS') ?></p>
 <div class="joomlaupdate_spinner" ></div>
 
 <?PHP
-if(version_compare(JVERSION, '3.0.0', 'ge')) {
-
-    if ($this->bar_value < 100 ) {  
-        $div_class = 'progress progress-info progress-striped';
-    }
-    else
-    {
-        $div_class = 'progress progress-success progress-striped';   
-    } 
+if (version_compare(JVERSION, '3.0.0', 'ge'))
+{
+	if ($this->bar_value < 100)
+	{
+		$div_class = 'progress progress-info progress-striped';
+	}
+	else
+	{
+		$div_class = 'progress progress-success progress-striped';
+	}
 ?>
 <div class="<?php echo $div_class; ?>">
 <div class="bar" style="width: <?php echo $this->bar_value; ?>%;"></div>
 
 </div>
 <?PHP
-echo 'step -> '.$this->work_table.'<br>';
-
+echo 'step -> ' . $this->work_table . '<br>';
 }
 else
 {
 ?>
 <div id="progressbar">
 <div class="progress-label">
-<?php echo $this->task.' - '.$this->work_table; ?>
+<?php echo $this->task . ' - ' . $this->work_table; ?>
 </div>
 </div>
 <?PHP
-//echo 'step -> '.$this->work_table.'<br>';
+// Echo 'step -> '.$this->work_table.'<br>';
 }
 ?>
 
@@ -62,8 +62,9 @@ else
 <?PHP
 
 
-if ($this->bar_value < 100) {
-    echo '<meta http-equiv="refresh" content="1; URL='.$this->request_url.'">';
+if ($this->bar_value < 100)
+{
+	echo '<meta http-equiv="refresh" content="1; URL=' . $this->request_url . '">';
 }
 ?>
 

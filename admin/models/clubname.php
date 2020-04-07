@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -27,62 +27,66 @@ use Joomla\CMS\Factory;
  */
 class sportsmanagementModelclubname extends JSMModelAdmin
 {
-  
-    /**
-     * sportsmanagementModelclubname::import()
-     *
-     * @return void
-     */
-    public function import()
-    {
-        // Reference global application object
-        $app = Factory::getApplication();
-        // Create a new query object.		
-        $db = sportsmanagementHelper::getDBConnection();
-        $query = $db->getQuery(true);
 
-        $option = Factory::getApplication()->input->getCmd('option');
-        // JInput object
-        $jinput = $app->input;  
+	/**
+	 * sportsmanagementModelclubname::import()
+	 *
+	 * @return void
+	 */
+	public function import()
+	{
+		// Reference global application object
+		$app = Factory::getApplication();
 
-        $xml = Factory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/clubnames.xml', true);
-  
-        foreach( $xml->children() as $quote )
-             {
-            
-             $country = (string)$quote->clubname->attributes()->country;
-             $name = (string)$quote->clubname->attributes()->name;
-             $clubname = (string)$quote->clubname;
+		// Create a new query object.
+		$db = sportsmanagementHelper::getDBConnection();
+		$query = $db->getQuery(true);
 
-            $query->clear();
-            $query->select('id');
-            $query->from('#__sportsmanagement_club_names');
-            $query->where('country LIKE '.$db->Quote(''.$country.''));
-            $query->where('name LIKE '.$db->Quote(''.$name.''));
-            $db->setQuery($query);
+		$option = Factory::getApplication()->input->getCmd('option');
 
-            $result = $db->loadResult();
+		// JInput object
+		$jinput = $app->input;
 
-            if (!$result ) {
-                     $insertquery = $db->getQuery(true);
-                     // Insert columns.
-                     $columns = array('country','name','name_long');
-                     // Insert values.
-                     $values = array('\''.$country.'\'','\''.$name.'\'','\''.$clubname.'\'');
-                     // Prepare the insert query.
-                     $insertquery
-                         ->insert($db->quoteName('#__sportsmanagement_club_names'))
-                         ->columns($db->quoteName($columns))
-                         ->values(implode(',', $values));
-                     // Set the query using our newly populated query object and execute it.
-                     $db->setQuery($insertquery);
+		$xml = Factory::getXML(JPATH_ADMINISTRATOR . '/components/' . $option . '/helpers/xml_files/clubnames.xml', true);
 
-                     sportsmanagementModeldatabasetool::runJoomlaQuery();
+		foreach ($xml->children() as $quote)
+		{
+						 $country = (string) $quote->clubname->attributes()->country;
+			 $name = (string) $quote->clubname->attributes()->name;
+			 $clubname = (string) $quote->clubname;
 
-            }
-        }
-      
-      
-    }
-  
+			$query->clear();
+			$query->select('id');
+			$query->from('#__sportsmanagement_club_names');
+			$query->where('country LIKE ' . $db->Quote('' . $country . ''));
+			$query->where('name LIKE ' . $db->Quote('' . $name . ''));
+			$db->setQuery($query);
+
+			$result = $db->loadResult();
+
+			if (!$result)
+			{
+					 $insertquery = $db->getQuery(true);
+
+					 // Insert columns.
+					 $columns = array('country','name','name_long');
+
+					 // Insert values.
+					 $values = array('\'' . $country . '\'','\'' . $name . '\'','\'' . $clubname . '\'');
+
+					 // Prepare the insert query.
+					 $insertquery
+						 ->insert($db->quoteName('#__sportsmanagement_club_names'))
+						 ->columns($db->quoteName($columns))
+						 ->values(implode(',', $values));
+
+					 // Set the query using our newly populated query object and execute it.
+					 $db->setQuery($insertquery);
+
+					 sportsmanagementModeldatabasetool::runJoomlaQuery();
+			}
+		}
+
+	}
+
 }

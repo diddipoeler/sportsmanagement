@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -23,7 +23,7 @@ FormHelper::loadFieldClass('list');
 /**
  * FormFieldacteventtype
  *
- * @package 
+ * @package
  * @author
  * @copyright diddi
  * @version   2014
@@ -31,40 +31,41 @@ FormHelper::loadFieldClass('list');
  */
 class JFormFieldacteventtype extends \JFormFieldList
 {
+	protected $type = 'acteventtype';
 
-    protected $type = 'acteventtype';
-  
-    /**
-     * FormFieldacteventtype::getOptions()
-     *
-     * @return
-     */
-    protected function getOptions()
-    {
-        // Initialize variables.
-        $options = array();
-        $vartable = (string) $this->element['targettable'];
-        $select_id = Factory::getApplication()->input->getVar('id');
-      
-        $db = Factory::getDbo();
-        $query = $db->getQuery(true);
-          
-        $query->select('s.id AS value, s.name AS text');
-        $query->from('#__sportsmanagement_eventtype as s');
-            $query->join('INNER', '#__sportsmanagement_'.$vartable.' AS t on t.sports_type_id = s.sports_type_id');
-            $query->where('t.id = '.$select_id);
-        $query->order('s.name');
-        $db->setQuery($query);
-        $options = $db->loadObjectList();
-  
-        foreach ( $options as $row )
-            {
-                $row->text = Text::_($row->text);
-        }
-        // Merge any additional options in the XML definition.
-        $options = array_merge(parent::getOptions(), $options);
-        return $options;
-    }
-  
+	/**
+	 * FormFieldacteventtype::getOptions()
+	 *
+	 * @return
+	 */
+	protected function getOptions()
+	{
+		// Initialize variables.
+		$options = array();
+		$vartable = (string) $this->element['targettable'];
+		$select_id = Factory::getApplication()->input->getVar('id');
+
+			  $db = Factory::getDbo();
+		$query = $db->getQuery(true);
+
+				  $query->select('s.id AS value, s.name AS text');
+		$query->from('#__sportsmanagement_eventtype as s');
+			$query->join('INNER', '#__sportsmanagement_' . $vartable . ' AS t on t.sports_type_id = s.sports_type_id');
+			$query->where('t.id = ' . $select_id);
+		$query->order('s.name');
+		$db->setQuery($query);
+		$options = $db->loadObjectList();
+
+		foreach ($options as $row)
+		{
+				$row->text = Text::_($row->text);
+		}
+
+		// Merge any additional options in the XML definition.
+		$options = array_merge(parent::getOptions(), $options);
+
+		return $options;
+	}
+
 
 }

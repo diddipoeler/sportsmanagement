@@ -31,25 +31,30 @@ JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINIST
 class sportsmanagementViewJSONFeed extends JViewLegacy
 {
 
-    public function display($tpl = null)
-    {
-        $tz = new DateTimeZone(jsmGCalendarUtil::getComponentParameter('timezone', 'UTC'));
-        $start = Factory::getDate(Factory::getApplication()->input->getInt('start', 0, 'GET'), $tz);
-        Factory::getApplication()->input->setVar('start', $start->format('U') - $tz->getOffset($start));
-        $end = Factory::getDate(Factory::getApplication()->input->getInt('end', 0, 'GET'), $tz);
-        Factory::getApplication()->input->setVar('end', $end->format('U') - $tz->getOffset($end));
+	public function display($tpl = null)
+	{
+		$tz = new DateTimeZone(jsmGCalendarUtil::getComponentParameter('timezone', 'UTC'));
+		$start = Factory::getDate(Factory::getApplication()->input->getInt('start', 0, 'GET'), $tz);
+		Factory::getApplication()->input->setVar('start', $start->format('U') - $tz->getOffset($start));
+		$end = Factory::getDate(Factory::getApplication()->input->getInt('end', 0, 'GET'), $tz);
+		Factory::getApplication()->input->setVar('end', $end->format('U') - $tz->getOffset($end));
 
-        $calendars = $this->get('GoogleCalendarFeeds');
-        if(!is_array($calendars)) {
-            $calendars = array();
-        }
-        $this->calendars = $calendars;
+		$calendars = $this->get('GoogleCalendarFeeds');
 
-        $this->compactMode = Factory::getApplication()->input->getVar('compact', 0);
-        if ($this->compactMode == 1) {
-            $this->setLayout('module');
-        }
+		if (!is_array($calendars))
+		{
+			$calendars = array();
+		}
 
-        parent::display($tpl);
-    }
+		$this->calendars = $calendars;
+
+		$this->compactMode = Factory::getApplication()->input->getVar('compact', 0);
+
+		if ($this->compactMode == 1)
+		{
+			$this->setLayout('module');
+		}
+
+		parent::display($tpl);
+	}
 }

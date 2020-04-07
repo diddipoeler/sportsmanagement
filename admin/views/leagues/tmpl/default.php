@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -22,11 +22,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <script language="javascript" type="text/javascript">
 
 function searchPerson(val)
-    {
-        var s= document.getElementById("filter_search");
-        s.value = val;
-        Joomla.submitform('', this.form)
-    }
+	{
+		var s= document.getElementById("filter_search");
+		s.value = val;
+		Joomla.submitform('', this.form)
+	}
 </script>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 <?PHP
@@ -36,7 +36,7 @@ echo $this->loadTemplate('joomla_version');
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
-<?php echo HTMLHelper::_('form.token')."\n"; ?>
+<?php echo HTMLHelper::_('form.token') . "\n"; ?>
 </form>
 <div>
 <?PHP

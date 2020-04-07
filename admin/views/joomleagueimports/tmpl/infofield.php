@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -32,12 +32,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <table class="<?php echo $this->table_data_class; ?>">
 <?PHP
 $i = 0;
-foreach( $this->get_info_fields as $key => $value )
+
+foreach ($this->get_info_fields as $key => $value)
 {
 ?>
 <tr>
 <td class="nowrap" align="center">
-<?PHP  
+<?PHP
 $inputappend = '';
 $append = ' style="background-color:#bbffff"';
 echo $value->info;
@@ -46,12 +47,12 @@ echo $value->info;
 <td class="nowrap" align="center">
 <?PHP
 echo HTMLHelper::_(
-    'select.genericlist',
-    $this->lists['agegroup'],
-    'agegroup['.$value->info.']',
-    $inputappend.'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
-    $i.'\').checked=true"'.$append,
-    'value', 'text', $value->agegroup_id
+	'select.genericlist',
+	$this->lists['agegroup'],
+	'agegroup[' . $value->info . ']',
+	$inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
+	$i . '\').checked=true"' . $append,
+	'value', 'text', $value->agegroup_id
 );
 echo '<br>';
 ?>
@@ -74,11 +75,10 @@ echo '<br>';
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
 <input type="hidden" name="jl_table_import_step" value="<?php echo $this->jl_table_import_step; ?>" />
 
-<?php echo HTMLHelper::_('form.token')."\n"; ?>
+<?php echo HTMLHelper::_('form.token') . "\n"; ?>
 </form>
 
 <?PHP
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>

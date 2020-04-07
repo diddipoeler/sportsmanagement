@@ -22,12 +22,14 @@
 defined('_JEXEC') or die();
 use Joomla\CMS\Helper\ModuleHelper;
 
-if (! defined('DS')) {
-    define('DS', DIRECTORY_SEPARATOR);
+if (! defined('DS'))
+{
+	define('DS', DIRECTORY_SEPARATOR);
 }
 
-if (!defined('JSM_PATH') ) {
-    DEFINE('JSM_PATH', 'components/com_sportsmanagement');
+if (!defined('JSM_PATH'))
+{
+	DEFINE('JSM_PATH', 'components/com_sportsmanagement');
 }
 
 JLoader::import('joomla.application.component.model');
@@ -35,7 +37,7 @@ JLoader::import('joomla.application.component.model');
 JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINISTRATOR);
 JLoader::import('components.com_sportsmanagement.libraries.fullcalendar.fullcalendar', JPATH_BASE);
 
-require_once dirname(__FILE__).'/helper.php';
+require_once dirname(__FILE__) . '/helper.php';
 
 $calendars = sportsmanagementModGCalendarHelper::getCalendars($params);
 require ModuleHelper::getLayoutPath('mod_sportsmanagement_gcalendar');

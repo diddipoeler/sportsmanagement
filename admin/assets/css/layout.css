@@ -1,131 +1,131 @@
 /** * JSM Component * @package  * * @copyright (C) 2014 jsm Team. All rights reserved. * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL * @link http://www.fussballineuropa.de **/
 /* Joomla! 3.0 header */
 .icon-radio-checked:before, .icon-generic:before {
-    content: none;
+	content: none;
 }
 .page-title {
-    background: url(../images/jsm_24x24.png) no-repeat 0 50%;
-    padding-left: 30px;
-    display: block;
+	background: url(../images/jsm_24x24.png) no-repeat 0 50%;
+	padding-left: 30px;
+	display: block;
 }
 .icon-48-generic {
-    background-image: url(images/jsm_48x48.png);
+	background-image: url(images/jsm_48x48.png);
 }
 .pagetitle h2 {
-    font-size:20px;
-    padding-top:10px;
+	font-size: 20px;
+	padding-top: 10px;
 }
 /*JSM INFO*/
 
 .jsm-info-team img{
-    max-width: 60px;
+	max-width: 60px;
 }
 
 .jsm-logo-box img{
-    flex: 0 0 auto;
-    max-width: 150px;
-    max-height: 100%;
-    align-self: center;
-    -webkit-align-self: center;
-    margin: auto;
-    object-fit: scale-down;
+	flex: 0 0 auto;
+	max-width: 150px;
+	max-height: 100%;
+	align-self: center;
+	-webkit-align-self: center;
+	margin: auto;
+	object-fit: scale-down;
 }
 
 .update-ok {
-    background-color: #5cb85c!important;
-    color: #fff!important;
+	background-color: #5cb85c!important;
+	color: #fff!important;
 }
 
 .update {
-    background-color: #f0ad4e!important;
-    color: #fff!important;
+	background-color: #f0ad4e!important;
+	color: #fff!important;
 }
 
 /* ----------*/
 #sidebar {
-    float: none;
+	float: none;
 }
 #submenu {
-    padding-bottom: 25px;
+	padding-bottom: 25px;
 }
 hr.hr-condensed {
-    margin: 5px 0;
+	margin: 5px 0;
 }
 .well .module-title.nav-header {
-    padding-bottom: 0px;
+	padding-bottom: 0px;
 }
 .row-fluid .span7 {
-    width: 57.1823%;
-    float: left;
-    display: block;
+	width: 57.1823%;
+	float: left;
+	display: block;
 }
 .row-fluid .span5 {
-    float: left;
-    display: block;
-    width: 40.0552%;
+	float: left;
+	display: block;
+	width: 40.0552%;
 }
 .row-fluid [class*="span"] {
-    float: left;
-    display: block;
+	float: left;
+	display: block;
 }
 #jsm.admin.override {
-    font-size: 13px;
-    font-weight: bold;
+	font-size: 13px;
+	font-weight: bold;
 }
 #jsm.admin.override select, #jsm.admin.override input[type="file"] {
-    height: auto;
-    line-height: 30px;
+	height: auto;
+	line-height: 30px;
 }
 #jsm.admin.override li {
-    line-height: 20px;
+	line-height: 20px;
 }
 #jsm.admin.override fieldset input, #jsm.admin.override fieldset textarea, #jsm.admin.override fieldset select, #kunena.admin.override fieldset img, #jsm.admin.override fieldset button {
-    float: none;
-    margin: 0;
+	float: none;
+	margin: 0;
 }
 #jsm.admin.override label {
-    display: inline !important;
+	display: inline !important;
 }
 #jsm.admin.override .center {
-    float: none;
-    margin-left: 0;
-    margin-right: 0;
+	float: none;
+	margin-left: 0;
+	margin-right: 0;
 }
 #jsm.admin.override .select-filter {
-    margin-bottom: 0;
-    width: auto;
+	margin-bottom: 0;
+	width: auto;
 }
 #jsm.admin.override .input-filter {
-    margin-bottom: 0;
+	margin-bottom: 0;
 }
 #jsm.admin.override #dashboard-icons.btn-group {
-    white-space: normal;
-    padding-bottom: 30px;
+	white-space: normal;
+	padding-bottom: 30px;
 }
 #jsm.admin.override #dashboard-icons .btn {
-    border-radius: 3px;
-    border: 1px solid;
-    min-height: 64px;
-    min-width: 125px;
-    overflow: hidden;
-    padding: 6px;
-    margin: 3px;
-    text-align: center;
+	border-radius: 3px;
+	border: 1px solid;
+	min-height: 64px;
+	min-width: 125px;
+	overflow: hidden;
+	padding: 6px;
+	margin: 3px;
+	text-align: center;
 }
 /*All wells in tables should not have margin*/
 #jsm.admin.override table .well {
-    margin-bottom: 0;
+	margin-bottom: 0;
 }
 #jsm.admin.override .filter-state {
-    font-size: 150%;
+	font-size: 150%;
 }
 #jsm.admin.override .filter-state .btn {
-    padding: 0 6px;
-    vertical-align: inherit;
-    font-size: inherit;
-    line-height: 150%
+	padding: 0 6px;
+	vertical-align: inherit;
+	font-size: inherit;
+	line-height: 150%
 }
 /* Fix span1 width isis */
 #adminForm > fieldset > table > tbody > tr:nth-child(2) > td:nth-child(2) > div {
-    display: inline !important;
+	display: inline !important;
 }

@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -18,7 +18,7 @@ use Joomla\CMS\Uri\Uri;
 /**
  * sportsmanagementViewEditPerson
  *
- * @package 
+ * @package
  * @author
  * @copyright diddi
  * @version   2014
@@ -27,54 +27,58 @@ use Joomla\CMS\Uri\Uri;
 class sportsmanagementViewEditPerson extends sportsmanagementView
 {
 
-  
-    /**
-     * sportsmanagementViewEditPerson::init()
-     *
-     * @return
-     */
-    function init()
-    {
 
-     
-        $this->item = $this->model->getData();
-        $this->form = $this->get('Form');
-        if ($this->item->id ) {
-            // alles ok
-            if ($this->item->birthday == '0000-00-00' ) {
-                $this->item->birthday = '';
-                $this->form->setValue('birthday', '');
-            }
-            if ($this->item->deathday == '0000-00-00' ) {
-                $this->item->deathday = '';
-                $this->form->setValue('deathday', '');
-            }
-          
-        }
-        else
-        {
-            $this->form->setValue('birthday', '');
-            $this->form->setValue('deathday', '');
-        }
-      
-        $this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
-        $this->form->setValue('position_id', 'request', $this->item->position_id);
-        $this->form->setValue('agegroup_id', 'request', $this->item->agegroup_id);
+	/**
+	 * sportsmanagementViewEditPerson::init()
+	 *
+	 * @return
+	 */
+	function init()
+	{
 
-        $this->form->setValue('person_art', 'request', $this->item->person_art);
-        $this->form->setValue('person_id1', 'request', $this->item->person_id1);
-        $this->form->setValue('person_id2', 'request', $this->item->person_id2);
+			 $this->item = $this->model->getData();
+		$this->form = $this->get('Form');
 
-        $extended = sportsmanagementHelper::getExtended($this->item->extended, 'person');
-        $this->extended = $extended;
+		if ($this->item->id)
+		{
+			// Alles ok
+			if ($this->item->birthday == '0000-00-00')
+			{
+				$this->item->birthday = '';
+				$this->form->setValue('birthday', '');
+			}
 
-        $this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('frontend', $this->cfg_which_database);
-        if ($this->checkextrafields) {
-            $lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id, 'frontend', $this->cfg_which_database);
-        }
+			if ($this->item->deathday == '0000-00-00')
+			{
+				$this->item->deathday = '';
+				$this->form->setValue('deathday', '');
+			}
+		}
+		else
+		{
+			$this->form->setValue('birthday', '');
+			$this->form->setValue('deathday', '');
+		}
 
-    }
+			  $this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
+		$this->form->setValue('position_id', 'request', $this->item->position_id);
+		$this->form->setValue('agegroup_id', 'request', $this->item->agegroup_id);
+
+		$this->form->setValue('person_art', 'request', $this->item->person_art);
+		$this->form->setValue('person_id1', 'request', $this->item->person_id1);
+		$this->form->setValue('person_id2', 'request', $this->item->person_id2);
+
+		$extended = sportsmanagementHelper::getExtended($this->item->extended, 'person');
+		$this->extended = $extended;
+
+		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('frontend', $this->cfg_which_database);
+
+		if ($this->checkextrafields)
+		{
+			$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id, 'frontend', $this->cfg_which_database);
+		}
+
+	}
 
 }
 
-?>

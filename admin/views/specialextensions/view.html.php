@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -27,39 +27,39 @@ use Joomla\CMS\Factory;
  */
 class sportsmanagementViewspecialextensions extends sportsmanagementView
 {
-  
-    /**
-     * sportsmanagementViewspecialextensions::init()
-     *
-     * @return void
-     */
-    public function init()
-    {
-        $this->Extensions = $this->model->getSpecialExtensions();
-    }
-  
-    /**
-     * sportsmanagementViewspecialextensions::addIcon()
-     *
-     * @param  mixed $image
-     * @param  mixed $url
-     * @param  mixed $text
-     * @param  bool  $newWindow
-     * @return void
-     */
-    public function addIcon( $image , $url , $text , $newWindow = false )
-    {
-        $lang        = Factory::getLanguage();
-        $newWindow    = ( $newWindow ) ? ' target="_blank"' : '';
-        ?>
-        <div style="float:<?php echo ($lang->isRTL()) ? 'right' : 'left'; ?>;">
-      <div class="icon">
-                <a href="<?php echo $url; ?>"<?php echo $newWindow; ?>>
-        <?php echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/icons/' . $image, null, null); ?>
-                    <span><?php echo $text; ?></span></a>
-      </div>
-     </div>
-    <?php
-    }
-  
+
+	/**
+	 * sportsmanagementViewspecialextensions::init()
+	 *
+	 * @return void
+	 */
+	public function init()
+	{
+		$this->Extensions = $this->model->getSpecialExtensions();
+	}
+
+	/**
+	 * sportsmanagementViewspecialextensions::addIcon()
+	 *
+	 * @param   mixed $image
+	 * @param   mixed $url
+	 * @param   mixed $text
+	 * @param   bool  $newWindow
+	 * @return void
+	 */
+	public function addIcon( $image , $url , $text , $newWindow = false )
+	{
+		$lang        = Factory::getLanguage();
+		$newWindow    = ( $newWindow ) ? ' target="_blank"' : '';
+		?>
+		<div style="float:<?php echo ($lang->isRTL()) ? 'right' : 'left'; ?>;">
+	  <div class="icon">
+				<a href="<?php echo $url; ?>"<?php echo $newWindow; ?>>
+		<?php echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/icons/' . $image, null, null); ?>
+					<span><?php echo $text; ?></span></a>
+	  </div>
+	 </div>
+	<?php
+	}
+
 }

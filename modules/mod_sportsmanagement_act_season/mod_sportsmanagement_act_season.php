@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -19,34 +19,44 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 
-if (! defined('DS')) {
-    define('DS', DIRECTORY_SEPARATOR);
+if (! defined('DS'))
+{
+	define('DS', DIRECTORY_SEPARATOR);
 }
 
-if (!defined('JSM_PATH') ) {
-    DEFINE('JSM_PATH', 'components/com_sportsmanagement');
+if (!defined('JSM_PATH'))
+{
+	DEFINE('JSM_PATH', 'components/com_sportsmanagement');
 }
 
 /**
  * prüft vor Benutzung ob die gewünschte Klasse definiert ist
  */
-if (!class_exists('JSMModelLegacy')) {
-    JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_SITE);
-}
-if (!class_exists('JSMCountries')) {
-    JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
-}
-if (!class_exists('sportsmanagementHelper') ) {
-    /**
- * add the classes for handling
- */
-    $classpath = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'sportsmanagement.php';
-    JLoader::register('sportsmanagementHelper', $classpath);
-    BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
+if (!class_exists('JSMModelLegacy'))
+{
+	JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_SITE);
 }
 
-if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE')) {
-    DEFINE('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE', ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database'));
+
+if (!class_exists('JSMCountries'))
+{
+	JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
+}
+
+
+if (!class_exists('sportsmanagementHelper'))
+{
+	/**
+ * add the classes for handling
+ */
+	$classpath = JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'sportsmanagement.php';
+	JLoader::register('sportsmanagementHelper', $classpath);
+	BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
+}
+
+if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
+{
+	DEFINE('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE', ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database'));
 }
 
 /**
@@ -70,7 +80,7 @@ $list = modJSMActSeasonHelper::getData($season_ids);
 /**
  * add css file
  */
-//$document->addStyleSheet(Uri::base().'modules/mod_sportsmanagement_new_project/css/mod_sportsmanagement_new_project.css');
+// $document->addStyleSheet(Uri::base().'modules/mod_sportsmanagement_new_project/css/mod_sportsmanagement_new_project.css');
 
 /**
  * Layout

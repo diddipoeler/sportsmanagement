@@ -1,147 +1,143 @@
 /* Styles for Tabelle 1*/
 
 #sistabelle {
-	width:100%;
-	border:0;
-	margin-bottom:10px;
-	border-collapse:collapse;
-	font-size:12px;
+	width: 100%;
+	border: 0;
+	margin-bottom: 10px;
+	border-collapse: collapse;
+	font-size: 12px;
 }
 
 #sistabelle th {
-	background-color:#B0BDCB;
-	padding:2px 4px;
-	border-bottom:2px solid #999;
-	text-align:center;
+	background-color: #B0BDCB;
+	padding: 2px 4px;
+	border-bottom: 2px solid #999;
+	text-align: center;
 }
 
 .sisdesc {
-	background-color:#FFF;
-	padding:2px 4px;
-	border-bottom:1px solid #999;
-	font-weight:bold;
+	background-color: #FFF;
+	padding: 2px 4px;
+	border-bottom: 1px solid #999;
+	font-weight: bold;
 }
 
 #sistabelle td {
-	padding:2px 4px;
-	border-bottom:1px solid #999;
+	padding: 2px 4px;
+	border-bottom: 1px solid #999;
 }
 
 .even {
-	background-color:#E7EBEF;
+	background-color: #E7EBEF;
 }
 
 .odd {
-	background-color:#FFF;
+	background-color: #FFF;
 }
 
 .team {
-	background-color:#FFFF99;
-	font-weight:bold;
+	background-color: #FFFF99;
+	font-weight: bold;
 }
 
 /* Styles for Spiele */
 
 #sisspielplan {
-	width:100%;
-	border:0;
-	margin-bottom:10px;
-	border-collapse:collapse;
-	font-size:12px;
+	width: 100%;
+	border: 0;
+	margin-bottom: 10px;
+	border-collapse: collapse;
+	font-size: 12px;
 }
 
 #sisspielplan th {
-	background-color:#B0BDCB;
-	padding:2px 4px;
-	border-bottom:2px solid #999;
-	text-align:center;
+	background-color: #B0BDCB;
+	padding: 2px 4px;
+	border-bottom: 2px solid #999;
+	text-align: center;
 }
 
 .spieltag {
-	background-color:#CCC;
-	padding:2px 4px;
-	border-bottom:2px solid #999;
-	font-weight:bold;
+	background-color: #CCC;
+	padding: 2px 4px;
+	border-bottom: 2px solid #999;
+	font-weight: bold;
 }
 
 .sisspdesc {
-	background-color:#FFF;
-	padding:2px 4px;
-	border-bottom:1px solid #999;
-	font-weight:bold;
+	background-color: #FFF;
+	padding: 2px 4px;
+	border-bottom: 1px solid #999;
+	font-weight: bold;
 }
 
 .schiedsrichter {
-	background-color:#FFF;
-	padding:2px 4px;
-	border-bottom:1px solid #999;
-	font-size:10px;
+	background-color: #FFF;
+	padding: 2px 4px;
+	border-bottom: 1px solid #999;
+	font-size: 10px;
 }
 
 .schiedsrichterteam {
-	background-color:#FFFF99;
-	padding:2px 4px;
-	border-bottom:1px solid #999;
-	font-size:10px;
+	background-color: #FFFF99;
+	padding: 2px 4px;
+	border-bottom: 1px solid #999;
+	font-size: 10px;
 }
 
 .sporthalle {
-	background-color:#FFF;
-	padding:2px 4px;
-	border-bottom:1px solid #999;
-	font-size:10px;
+	background-color: #FFF;
+	padding: 2px 4px;
+	border-bottom: 1px solid #999;
+	font-size: 10px;
 }
 
 .sporthalleteam {
-	background-color:#FFFF99;
-	padding:2px 4px;
-	border-bottom:1px solid #999;
-	font-size:10px;
+	background-color: #FFFF99;
+	padding: 2px 4px;
+	border-bottom: 1px solid #999;
+	font-size: 10px;
 }
 
 .uhrzeit {
-	font-size:10px;
-	font-weight:normal;
+	font-size: 10px;
+	font-weight: normal;
 }
 
 #sisspielplan td {
-	padding:2px 4px;
-	border-bottom:1px solid #999;
+	padding: 2px 4px;
+	border-bottom: 1px solid #999;
 }
 
 /*Spieltage Liganame*/
 .liganame {
-	margin:2px 0;
+	margin: 2px 0;
 	padding: 4px 0;
 	font-weight: bold;
 }
 /*sis Überschrift*/
 .ueberschrift{
-	margin:2px 0;
+	margin: 2px 0;
 	text-align: center;
 	font-weight: bold;
 	font-size: 14px;
 }
 /*table Spielplan*/
 #table_spielplan {
-	width:100%;
-	border:0;
-	margin-bottom:10px;
-	border-collapse:collapse;
-	font-size:12px;
+	width: 100%;
+	border: 0;
+	margin-bottom: 10px;
+	border-collapse: collapse;
+	font-size: 12px;
 }
 
 #table_spielplan th {
-	background-color:#B0BDCB;
-	padding:2px 4px;
-	border-bottom:2px solid #999;
+	background-color: #B0BDCB;
+	padding: 2px 4px;
+	border-bottom: 2px solid #999;
 }
 
 #table_spielplan td {
-	padding:2px 4px;
-	border-bottom:1px solid #999;
+	padding: 2px 4px;
+	border-bottom: 1px solid #999;
 }
-
-
-
-

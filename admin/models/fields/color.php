@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -28,33 +28,34 @@ use Joomla\CMS\Uri\Uri;
  */
 class JFormFieldColor extends \JFormFieldText
 {
-    protected $type = 'Color';
+	protected $type = 'Color';
 
-    /**
-     * FormFieldColor::getInput()
-     *
-     * @return
-     */
-    public function getInput()
-    {
-        $document = Factory::getDocument();
-        $document->addScript(Uri::base(). 'components/com_gcalendar/libraries/jscolor/jscolor.js');
-        return parent::getInput();
-    }
+	/**
+	 * FormFieldColor::getInput()
+	 *
+	 * @return
+	 */
+	public function getInput()
+	{
+		$document = Factory::getDocument();
+		$document->addScript(Uri::base() . 'components/com_gcalendar/libraries/jscolor/jscolor.js');
 
-    /**
-     * FormFieldColor::setup()
-     *
-     * @param  mixed $element
-     * @param  mixed $value
-     * @param  mixed $group
-     * @return
-     */
-    public function setup(SimpleXMLElement $element, $value, $group = null)
-    {
-        $return= parent::setup($element, $value, $group);
-        $this->element['class'] = $this->element['class'].' color';
-        return $return;
-    }
+		return parent::getInput();
+	}
+
+	/**
+	 * FormFieldColor::setup()
+	 *
+	 * @param   mixed $element
+	 * @param   mixed $value
+	 * @param   mixed $group
+	 * @return
+	 */
+	public function setup(SimpleXMLElement $element, $value, $group = null)
+	{
+		$return = parent::setup($element, $value, $group);
+		$this->element['class'] = $this->element['class'] . ' color';
+
+		return $return;
+	}
 }
-?>

@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -28,44 +28,46 @@ use Joomla\CMS\Log\Log;
  */
 class sportsmanagementViewpredictionmember extends sportsmanagementView
 {
-  
-  
-    /**
-     * sportsmanagementViewpredictionmember::init()
-     *
-     * @return
-     */
-    public function init()
-    {
 
-        // Check for errors.
-        if (count($errors = $this->get('Errors'))) {
-            Log::add(implode('<br />', $errors));
-            return false;
-        }
 
-    }
+	/**
+	 * sportsmanagementViewpredictionmember::init()
+	 *
+	 * @return
+	 */
+	public function init()
+	{
 
-  
-    /**
-     * sportsmanagementViewpredictionmember::addToolBar()
-     *
-     * @return void
-     */
-    protected function addToolBar()
-    {
-      
-        $jinput = Factory::getApplication()->input;
-        $jinput->set('hidemainmenu', true);
+		// Check for errors.
+		if (count($errors = $this->get('Errors')))
+		{
+			Log::add(implode('<br />', $errors));
 
-        $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_ADD_NEW');
-        $this->icon = 'pmember';
-      
-        $this->item->name = '';
+			return false;
+		}
 
-        parent::addToolbar();    
-      
-    }
-  
-  
+	}
+
+
+	/**
+	 * sportsmanagementViewpredictionmember::addToolBar()
+	 *
+	 * @return void
+	 */
+	protected function addToolBar()
+	{
+
+			  $jinput = Factory::getApplication()->input;
+		$jinput->set('hidemainmenu', true);
+
+		$isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_ADD_NEW');
+		$this->icon = 'pmember';
+
+			  $this->item->name = '';
+
+		parent::addToolbar();
+
+	}
+
+
 }

@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung fűr alle Sportarten
  *
  * @version    1.0.05
@@ -19,57 +19,64 @@ defined('_JEXEC') or die('Restricted access');
 
 <!-- content -->
 <?php
-foreach ($this->homeRank as $division => $cu_rk) {
-    if ($division) {
-        ?>
+foreach ($this->homeRank as $division => $cu_rk)
+{
+	if ($division)
+	{
+		?>
 <div class="<?php echo $this->divclassrow;?> table-responsive">
-        <table class="<?PHP echo $this->config['table_class']; ?>">
-            <tr>
-                <td class="contentheading">
-        <?php
-        //get the division name from the first team of the division
-        foreach ($cu_rk as $ptid => $team) {
-            echo $this->divisions[$division]->name;
-            break;
-        }
-        ?>
-                </td>
-            </tr>
-        </table>
+		<table class="<?PHP echo $this->config['table_class']; ?>">
+			<tr>
+				<td class="contentheading">
+		<?php
+		// Get the division name from the first team of the division
+		foreach ($cu_rk as $ptid => $team)
+		{
+			echo $this->divisions[$division]->name;
+			break;
+		}
+		?>
+				</td>
+			</tr>
+		</table>
 </div>
-        <div class="<?php echo $this->divclassrow;?> table-responsive">
-            <table class="<?PHP echo $this->config['table_class']; ?>">
-        <?php
-        foreach ($cu_rk as $ptid => $team) {
-            echo $this->loadTemplate('rankingheading');
-            break;
-        }
-        $this->division = $division;
-        $this->current = &$cu_rk;
-        $this->teamrow = 'hr';
-        echo $this->loadTemplate('rankingrows');
-        ?>
-            </table>
-        </div>
-                <?php
-    } else {
-        ?>
-       <div class="<?php echo $this->divclassrow;?> table-responsive">
-    <table class="<?PHP echo $this->config['table_class']; ?>">
-        <?php
-        echo $this->loadTemplate('rankingheading');
-        $this->division = $division;
-        $this->current = &$cu_rk;
-        $this->teamrow = 'hr';
-        echo $this->loadTemplate('rankingrows');
-        ?>
-    </table>
-        </div>
-        <br />
-        <?php
-    }
+		<div class="<?php echo $this->divclassrow;?> table-responsive">
+			<table class="<?PHP echo $this->config['table_class']; ?>">
+		<?php
+		foreach ($cu_rk as $ptid => $team)
+		{
+			echo $this->loadTemplate('rankingheading');
+			break;
+		}
+
+		$this->division = $division;
+		$this->current = &$cu_rk;
+		$this->teamrow = 'hr';
+		echo $this->loadTemplate('rankingrows');
+		?>
+			</table>
+		</div>
+				<?php
+	}
+	else
+	{
+		?>
+		   <div class="<?php echo $this->divclassrow;?> table-responsive">
+		<table class="<?PHP echo $this->config['table_class']; ?>">
+		<?php
+		echo $this->loadTemplate('rankingheading');
+		$this->division = $division;
+		$this->current = &$cu_rk;
+		$this->teamrow = 'hr';
+		echo $this->loadTemplate('rankingrows');
+		?>
+		</table>
+		</div>
+		<br />
+		<?php
+	}
 }
-        ?>
+		?>
 <!-- ranking END -->
 
 

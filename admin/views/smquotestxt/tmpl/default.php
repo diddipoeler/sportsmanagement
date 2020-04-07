@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -20,44 +20,40 @@ $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <fieldset class="adminform">
-            <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_EXT_TXT'); ?></legend>
+			<legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_EXT_TXT'); ?></legend>
 <table>
 <?PHP
-foreach ( $this->files as $file )
+foreach ($this->files as $file)
 {
+	$link = Route::_('index.php?option=com_sportsmanagement&view=smquotetxt&layout=default&file_name=' . $file);
+	?>
+			<tr class="">
+				<td class="center"></td>
+				<?php
 
+										?>
+					<td class="center" nowrap="nowrap">
+								<a    href="<?php echo $link; ?>" >
+									<?php
+									$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_EXT_TXT_EDIT');
+									echo HTMLHelper::_(
+										'image', 'administrator/components/com_sportsmanagement/assets/images/edit.png',
+										$imageTitle, 'title= "' . $imageTitle . '"'
+									);
+			?>
+					</a>               
+					</td>
+				<td>
+				<?php
 
-    $link = Route::_('index.php?option=com_sportsmanagement&view=smquotetxt&layout=default&file_name='.$file);
-    ?>
-            <tr class="">
-                <td class="center"></td>
-                <?php
-                  
-                    ?>
-                    <td class="center" nowrap="nowrap">
-                                <a    href="<?php echo $link; ?>" >
-                                    <?php
-                                    $imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_EXT_TXT_EDIT');
-                                    echo HTMLHelper::_(
-                                        'image', 'administrator/components/com_sportsmanagement/assets/images/edit.png',
-                                        $imageTitle, 'title= "'.$imageTitle.'"'
-                                    );
-            ?>
-                    </a>               
-                    </td>
-                <td>
-                <?php
-                  
-                echo $file;
-                  
-        ?>
-     </td>
+								  echo $file;
+
+							?>
+	 </td>
   
-            </tr>
-    <?php
-
-  
-}  
+			</tr>
+	<?php
+}
 
 ?>
 </table>
@@ -66,4 +62,3 @@ foreach ( $this->files as $file )
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>

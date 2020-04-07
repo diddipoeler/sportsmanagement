@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -22,6 +22,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 
 $params = $this->form->getFieldsets('params');
+
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
 
@@ -31,63 +32,64 @@ $fieldsets = $this->form->getFieldsets();
 
 
 ?>
-<form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $this->item->id); ?>" method="post" id="adminForm" name="adminForm" class="form-validate">
+<form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view=' . $this->view . '&layout=edit&id=' . (int) $this->item->id); ?>" method="post" id="adminForm" name="adminForm" class="form-validate">
 
 <div class="form-horizontal">
 <?php
 
-if ($this->change_training_date ) {
-    echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'training'));   
+if ($this->change_training_date)
+{
+	echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'training'));
 }
 else
 {
-    echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'details'));
+	echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'details'));
 }
 
 ?>
 
-<?PHP  
+<?PHP
 foreach ($fieldsets as $fieldset)
 {
-    echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));  
+	echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));
 
-    switch ($fieldset->name)
-    {
-    case 'details':
-    ?>
-    <div class="row-fluid">
-            <div class="span9">
-                <div class="row-fluid form-horizontal-desktop">
-                    <div class="span6">
-    <?PHP
-    foreach( $this->form->getFieldset($fieldset->name) as $field )
-    {
-        ?>
-                    <div class="control-group">
-                        <div class="control-label">
-        <?php echo $field->label; ?>
-                        </div>
-                        <div class="controls">
-        <?php echo $field->input; ?>
-                        </div>
-                    </div>
-                <?php
+	switch ($fieldset->name)
+	{
+		case 'details':
+			?>
+			<div class="row-fluid">
+			<div class="span9">
+				<div class="row-fluid form-horizontal-desktop">
+					<div class="span6">
+			<?PHP
+			foreach ($this->form->getFieldset($fieldset->name) as $field)
+			{
+				?>
+					<div class="control-group">
+						<div class="control-label">
+				<?php echo $field->label; ?>
+						</div>
+						<div class="controls">
+			<?php echo $field->input; ?>
+						</div>
+					</div>
+				<?php
+			}
+			?>
+			</div>
+				</div>
+			</div>
+			</div>
+			<?PHP
+		break;
+		default:
+			$this->fieldset = $fieldset->name;
+			echo $this->loadTemplate('fieldsets');
+		break;
+	}
 
-    }
-    ?>
-    </div>
-                </div>
-            </div>
-            </div>
-    <?PHP
-        break;
-    default:
-        $this->fieldset = $fieldset->name;
-        echo $this->loadTemplate('fieldsets');
-        break;
-    }  
-    echo HTMLHelper::_('bootstrap.endTab');  
-}  
+	echo HTMLHelper::_('bootstrap.endTab');
+}
 
 ?>  
   
@@ -106,4 +108,3 @@ foreach ($fieldsets as $fieldset)
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?> 

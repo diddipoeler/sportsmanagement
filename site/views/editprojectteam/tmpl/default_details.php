@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -14,6 +14,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
 ?>
@@ -22,11 +23,12 @@ $fieldsets = $this->form->getFieldsets();
 </legend>
 <table class="admintable">
 <?php
-                  
-foreach ($this->form->getFieldset('details') as $field):
-                  
-    if ($field->type == 'Radio' ) {
-    }
+
+foreach ($this->form->getFieldset('details') as $field)
+:
+	if ($field->type == 'Radio')
+	{
+	}
 ?>
 <tr>
 <td class="key"><?php echo $field->label; ?></td>

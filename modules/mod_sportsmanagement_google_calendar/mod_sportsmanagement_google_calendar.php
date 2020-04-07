@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -18,29 +18,29 @@ use Joomla\CMS\Factory;
 
 try
 {
-    // Require the module helper file
-    include_once __DIR__ . '/helper.php';
+	// Require the module helper file
+	include_once __DIR__ . '/helper.php';
 
-    // Get a new ModGCalendarHelper instance
-    $helper = new ModJSMGoogleCalendarHelper($params);
+	// Get a new ModGCalendarHelper instance
+	$helper = new ModJSMGoogleCalendarHelper($params);
 
-    // Setup joomla cache
-    $cache = Factory::getCache();
-    $cache->setCaching(true);
-    $cache->setLifeTime($params->get('api_cache_time', 60));
+	// Setup joomla cache
+	$cache = Factory::getCache();
+	$cache->setCaching(true);
+	$cache->setLifeTime($params->get('api_cache_time', 60));
 
-    // Get the next events
-    $events = $cache->call(
-        array($helper, 'nextEvents'),
-        (int) $params->get('max_list_events', 5)
-    );
+	// Get the next events
+	$events = $cache->call(
+		array($helper, 'nextEvents'),
+		(int) $params->get('max_list_events', 5)
+	);
 
-    // Get the Layout
-    include ModuleHelper::getLayoutPath($module->module, $params->get('layout', 'default'));
+	// Get the Layout
+	include ModuleHelper::getLayoutPath($module->module, $params->get('layout', 'default'));
 }
-catch(Exception $e)
+catch (Exception $e)
 {
-    Factory::getApplication()->enqueueMessage(
-        'JSM Google Calendar error: ' . $e->getMessage(), 'error'
-    );
+	Factory::getApplication()->enqueueMessage(
+		'JSM Google Calendar error: ' . $e->getMessage(), 'error'
+	);
 }

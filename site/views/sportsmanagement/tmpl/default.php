@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -13,4 +13,4 @@
  */
 defined('_JEXEC') or die('Restricted access');
 ?>
-<h1><?php echo $this->item->greeting.(($this->item->category and $this->item->params->get('show_category')) ? (' ('.$this->item->category.')') : ''); ?></h1>
+<h1><?php echo $this->item->greeting . (($this->item->category && $this->item->params->get('show_category')) ? (' (' . $this->item->category . ')') : ''); ?></h1>

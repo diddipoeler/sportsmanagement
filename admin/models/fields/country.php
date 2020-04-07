@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -24,7 +24,7 @@ FormHelper::loadFieldClass('list');
 /**
  * FormFieldCountry
  *
- * @package 
+ * @package
  * @author
  * @copyright diddi
  * @version   2013
@@ -32,35 +32,35 @@ FormHelper::loadFieldClass('list');
  */
 class JFormFieldCountry extends \JFormFieldList
 {
-    /**
-     * field type
-     *
-     * @var string
-     */
-    public $type = 'Country';
+	/**
+	 * field type
+	 *
+	 * @var string
+	 */
+	public $type = 'Country';
 
-    /**
-     * Method to get the field options.
-     *
-     * @return array  The field option objects.
-     *
-     * @since 11.1
-     */
-    protected function getOptions()
-    {
-        $app = Factory::getApplication();
-        $option = $app->input->getCmd('option');
-        /**
-         * Initialize variables.
-         */
-        $options = JSMCountries::getCountryOptions();
-     
-        /**
-         * Merge any additional options in the XML definition.
-         */
-        $options = array_merge(parent::getOptions(), $options);
+	/**
+	 * Method to get the field options.
+	 *
+	 * @return array  The field option objects.
+	 *
+	 * @since 11.1
+	 */
+	protected function getOptions()
+	{
+		$app = Factory::getApplication();
+		$option = $app->input->getCmd('option');
+		/**
+		 * Initialize variables.
+		 */
+		$options = JSMCountries::getCountryOptions();
 
-        return $options;
-    }
-  
+			 /**
+		 * Merge any additional options in the XML definition.
+		 */
+		$options = array_merge(parent::getOptions(), $options);
+
+		return $options;
+	}
+
 }

@@ -215,7 +215,8 @@ class JGithubPackageIssues extends JGithubPackage
 	 * @return  array
 	 */
 	public function getList($filter = null, $state = null, $labels = null, $sort = null,
-		$direction = null, JDate $since = null, $page = 0, $limit = 0)
+		$direction = null, JDate $since = null, $page = 0, $limit = 0
+	)
 	{
 		// Build the request path.
 		$path = '/issues';
@@ -258,7 +259,8 @@ class JGithubPackageIssues extends JGithubPackage
 	 * @return  array
 	 */
 	public function getListByRepository($user, $repo, $milestone = null, $state = null, $assignee = null, $mentioned = null, $labels = null,
-		$sort = null, $direction = null, JDate $since = null, $page = 0, $limit = 0)
+		$sort = null, $direction = null, JDate $since = null, $page = 0, $limit = 0
+	)
 	{
 		// Build the request path.
 		$path = '/repos/' . $user . '/' . $repo . '/issues';

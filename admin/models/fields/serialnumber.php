@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -12,17 +12,18 @@
  * @subpackage fields
  */
 
-defined('_JEXEC') or die ;
+defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Form\FormField;
 
-if (!class_exists('sportsmanagementHelper') ) {
-    /**
+if (!class_exists('sportsmanagementHelper'))
+{
+	/**
  * add the classes for handling
 */
-    $classpath = JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. 'components/com_sportsmanagement' .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'sportsmanagement.php';
-    JLoader::register('sportsmanagementHelper', $classpath);
+	$classpath = JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'components/com_sportsmanagement' . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'sportsmanagement.php';
+	JLoader::register('sportsmanagementHelper', $classpath);
 }
 
 /**
@@ -36,25 +37,26 @@ if (!class_exists('sportsmanagementHelper') ) {
  */
 class JFormFieldserialnumber extends FormField
 {
-      
-    public $type = 'serialnumber';
+	public $type = 'serialnumber';
 
-    /**
-     * JFormFieldserialnumber::getInput()
-     *
-     * @return
-     */
-    protected function getInput()
-    {
-        $app = Factory::getApplication();
-        if (!$this->value ) {
-            $this->value = sportsmanagementHelper::jsmsernum();
-        }
+	/**
+	 * JFormFieldserialnumber::getInput()
+	 *
+	 * @return
+	 */
+	protected function getInput()
+	{
+		$app = Factory::getApplication();
 
-        $html = '<input type="text" id="'.$this->id.'" name="'.$this->name.'" value="'.$this->value.'" />';      
-        return $html;
-  
-    }
+		if (!$this->value)
+		{
+			$this->value = sportsmanagementHelper::jsmsernum();
+		}
+
+		$html = '<input type="text" id="' . $this->id . '" name="' . $this->name . '" value="' . $this->value . '" />';
+
+		return $html;
+
+	}
 
 }
-?>

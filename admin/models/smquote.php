@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -29,75 +29,81 @@ use Joomla\CMS\Filter\OutputFilter;
  */
 class sportsmanagementModelsmquote extends JSMModelAdmin
 {
-  
-    static $db_num_rows  = 0;
-  
-    /**
-     * Method to save the form data.
-     *
-     * @param  array    The form data.
-     * @return boolean    True on success.
-     * @since  1.6
-     */
-    public function save($data)
-    {
-          $app = Factory::getApplication();
-          $date = Factory::getDate();
-          $user = Factory::getUser();
-          $db = Factory::getDbo();
-        $query = $db->getQuery(true);
+	static $db_num_rows  = 0;
 
-          $post = Factory::getApplication()->input->post->getArray(array());
-          // Set the values
-          $data['modified'] = $date->toSql();
-          $data['modified_by'] = $user->get('id');
-    
-        if (isset($post['extended']) && is_array($post['extended'])) {
-            // Convert the extended field to a string.
-            $parameter = new Registry;
-            $parameter->loadArray($post['extended']);
-            $data['extended'] = (string)$parameter;
-        }
-        // Alter the title for Save as Copy
-        if ($this->jsmjinput->get('task') == 'save2copy') {
-            $orig_table = $this->getTable();
-            $orig_table->load((int) $this->jsmjinput->getInt('id'));
-            $data['id'] = 0;
+	/**
+	 * Method to save the form data.
+	 *
+	 * @param  array    The form data.
+	 * @return boolean    True on success.
+	 * @since  1.6
+	 */
+	public function save($data)
+	{
+		  $app = Factory::getApplication();
+		  $date = Factory::getDate();
+		  $user = Factory::getUser();
+		  $db = Factory::getDbo();
+		$query = $db->getQuery(true);
 
-            if ($data['name'] == $orig_table->name) {
-                $data['name'] .= ' ' . Text::_('JGLOBAL_COPY');
-                $data['alias'] = OutputFilter::stringURLSafe($data['name']);
-            }
-        }
-    
-        // zuerst sichern, damit wir bei einer neuanlage die id haben
-        if (parent::save($data) ) {
-            $id =  (int) $this->getState($this->getName().'.id');
-            $isNew = $this->getState($this->getName() . '.new');
-            $data['id'] = $id;
-          
-            if ($isNew ) {
-                //Here you can do other tasks with your newly saved record...
-                $app->enqueueMessage(Text::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id), '');
-            }
-         
-            // Fields to update.
-            $fields = array(
-            $db->quoteName('picture') . ' = ' . $db->quote($data['picture'])
-            );
+		  $post = Factory::getApplication()->input->post->getArray(array());
 
-            // Conditions for which records should be updated.
-            $conditions = array(
-            $db->quoteName('author') . ' LIKE ' . $db->quote($data['author'])
-            );
+		  // Set the values
+		  $data['modified'] = $date->toSql();
+		  $data['modified_by'] = $user->get('id');
 
-            $query->update($db->quoteName('#__sportsmanagement_rquote'))->set($fields)->where($conditions);
+		if (isset($post['extended']) && is_array($post['extended']))
+		{
+			// Convert the extended field to a string.
+			$parameter = new Registry;
+			$parameter->loadArray($post['extended']);
+			$data['extended'] = (string) $parameter;
+		}
 
-            $db->setQuery($query);
-            sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);          
-        }
-      
-        return true; 
-    }
-  
+		// Alter the title for Save as Copy
+		if ($this->jsmjinput->get('task') == 'save2copy')
+		{
+			$orig_table = $this->getTable();
+			$orig_table->load((int) $this->jsmjinput->getInt('id'));
+			$data['id'] = 0;
+
+			if ($data['name'] == $orig_table->name)
+			{
+				$data['name'] .= ' ' . Text::_('JGLOBAL_COPY');
+				$data['alias'] = OutputFilter::stringURLSafe($data['name']);
+			}
+		}
+
+			// Zuerst sichern, damit wir bei einer neuanlage die id haben
+		if (parent::save($data))
+		{
+			$id = (int) $this->getState($this->getName() . '.id');
+			$isNew = $this->getState($this->getName() . '.new');
+			$data['id'] = $id;
+
+			if ($isNew)
+			{
+				// Here you can do other tasks with your newly saved record...
+				$app->enqueueMessage(Text::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id), '');
+			}
+
+					 // Fields to update.
+					$fields = array(
+					$db->quoteName('picture') . ' = ' . $db->quote($data['picture'])
+			);
+
+			// Conditions for which records should be updated.
+			$conditions = array(
+			$db->quoteName('author') . ' LIKE ' . $db->quote($data['author'])
+			);
+
+			$query->update($db->quoteName('#__sportsmanagement_rquote'))->set($fields)->where($conditions);
+
+			$db->setQuery($query);
+			sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+		}
+
+			  return true;
+	}
+
 }

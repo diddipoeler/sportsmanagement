@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -16,16 +16,21 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
-// check if any player returned
+// Check if any player returned
 $items = count($list['player']);
-if (!$items) {
-    echo '<p class="modjlgrandomplayer">' . Text::_('NO ITEMS') . '</p>';
-    return;
+
+if (!$items)
+{
+	echo '<p class="modjlgrandomplayer">' . Text::_('NO ITEMS') . '</p>';
+
+	return;
 }?>
 
 <div class="row">
 <div class="col-md-10 blogShort">
-<?php if ($params->get('show_project_name')) :?>
+<?php if ($params->get('show_project_name'))
+:
+?>
 
 <h4><?php echo $list['project']->name; ?></h4>
 
@@ -39,7 +44,7 @@ $routeparameter['tid'] = $list['infoteam']->team_slug;
 $routeparameter['pid'] = $person->slug;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
 
-//$link = sportsmanagementHelperRoute::getPlayerRoute( $list['project']->slug,
+// $link = sportsmanagementHelperRoute::getPlayerRoute( $list['project']->slug,
 //												$list['infoteam']->team_id,
 //												$person->slug );
 ?>
@@ -47,84 +52,100 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routepa
 <?php
 $picturetext = Text::_('MOD_SPORTSMANAGEMENT_RANDOMPLAYER_PERSON_PICTURE');
 $text = sportsmanagementHelper::formatName(
-    null, $person->firstname,
-    $person->nickname,
-    $person->lastname,
-    $params->get("name_format")
+	null, $person->firstname,
+	$person->nickname,
+	$person->lastname,
+	$params->get("name_format")
 );
-  
-$imgTitle = Text::sprintf($picturetext .' %1$s', $text);
-if (isset($list['inprojectinfo']->picture) ) {
-    $picture = $list['inprojectinfo']->picture;
+
+$imgTitle = Text::sprintf($picturetext . ' %1$s', $text);
+
+if (isset($list['inprojectinfo']->picture))
+{
+	$picture = $list['inprojectinfo']->picture;
 }
 else
 {
-    $picture = '';
+	$picture = '';
 }
+
 $pic = sportsmanagementHelper::getPictureThumb($picture, $imgTitle, $params->get('picture_width'), 'auto');
-echo '<a href="'.$link.'">'.$pic.'</a>' ;
+echo '<a href="' . $link . '">' . $pic . '</a>';
 ?>
 
 <article>
 <p>
 <?php
-if($params->get('show_player_flag')) {
-    echo JSMCountries::getCountryFlag($person->country)." ";
+if ($params->get('show_player_flag'))
+{
+	echo JSMCountries::getCountryFlag($person->country) . " ";
 }
-if ($params->get('show_player_link')) {
-       $routeparameter = array();
-    $routeparameter['cfg_which_database'] = $params->get('cfg_which_database');
-    $routeparameter['s'] = $params->get('s');
-    $routeparameter['p'] = $list['project']->slug;
-    $routeparameter['tid'] = $list['infoteam']->team_slug;
-    $routeparameter['pid'] = $person->slug;
-    $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
-    //		$link = sportsmanagementHelperRoute::getPlayerRoute($list['project']->slug,
-    //														$list['infoteam']->team_id,
-    //														$person->slug );
-    echo HTMLHelper::link($link, $text);
+
+
+if ($params->get('show_player_link'))
+{
+	   $routeparameter = array();
+	$routeparameter['cfg_which_database'] = $params->get('cfg_which_database');
+	$routeparameter['s'] = $params->get('s');
+	$routeparameter['p'] = $list['project']->slug;
+	$routeparameter['tid'] = $list['infoteam']->team_slug;
+	$routeparameter['pid'] = $person->slug;
+	$link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
+
+	//		$link = sportsmanagementHelperRoute::getPlayerRoute($list['project']->slug,
+	//														$list['infoteam']->team_id,
+	//														$person->slug );
+	echo HTMLHelper::link($link, $text);
 }
 else
 {
-    echo Text::sprintf('%1$s', $text);
+	echo Text::sprintf('%1$s', $text);
 }
 ?>
 </p>
-<?php if ($params->get('show_team_name')) :?>
+<?php if ($params->get('show_team_name'))
+:
+?>
 <p>
 <?php
-    echo sportsmanagementHelper::getPictureThumb(
-        $list['infoteam']->team_picture,
-        $list['infoteam']->name,
-        $params->get('team_picture_width', 21),
-        'auto',
-        1
-    )." ";
-    $text = $list['infoteam']->name;
-if ($params->get('show_team_link')) {
-       $routeparameter = array();
-    $routeparameter['cfg_which_database'] = $params->get('cfg_which_database');
-    $routeparameter['s'] = $params->get('s');
-    $routeparameter['p'] = $list['project']->slug;
-    $routeparameter['tid'] = $list['infoteam']->team_slug;
-    $routeparameter['ptid'] = 0;
-    $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);
-    //		$link = sportsmanagementHelperRoute::getTeamInfoRoute($list['project']->slug,
-    //														$list['infoteam']->team_id);
-    echo HTMLHelper::link($link, $text);
+	echo sportsmanagementHelper::getPictureThumb(
+		$list['infoteam']->team_picture,
+		$list['infoteam']->name,
+		$params->get('team_picture_width', 21),
+		'auto',
+		1
+	) . " ";
+	$text = $list['infoteam']->name;
+
+if ($params->get('show_team_link'))
+	{
+	   $routeparameter = array();
+	$routeparameter['cfg_which_database'] = $params->get('cfg_which_database');
+	$routeparameter['s'] = $params->get('s');
+	$routeparameter['p'] = $list['project']->slug;
+	$routeparameter['tid'] = $list['infoteam']->team_slug;
+	$routeparameter['ptid'] = 0;
+	$link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);
+
+	//		$link = sportsmanagementHelperRoute::getTeamInfoRoute($list['project']->slug,
+	//														$list['infoteam']->team_id);
+	echo HTMLHelper::link($link, $text);
 }
 else
-    {
-    echo Text::sprintf('%1$s', $text);
+	{
+	echo Text::sprintf('%1$s', $text);
 }
 ?>
 </p>
 <?php endif; ?>
-<?php if ($params->get('show_position_name') && isset($list['inprojectinfo']->position_name) ) :?>
+<?php
+if ($params->get('show_position_name') && isset($list['inprojectinfo']->position_name))
+:
+?>
 <p>
 <?php
-    $positionName = $list['inprojectinfo']->position_name;
-    echo Text::_($positionName);?>
+	$positionName = $list['inprojectinfo']->position_name;
+	echo Text::_($positionName);?>
 </p>
 <?php endif; ?>
 </article>

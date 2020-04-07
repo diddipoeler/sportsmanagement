@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -17,38 +17,41 @@ use Joomla\CMS\Language\Text;
 ?>
 <div class="<?php echo $this->divclassrow;?> table-responsive" id="roster">
 <?php
-    // Show team-picture if defined.
-if ($this->config['show_team_logo'] ) {
-    ?>
-        <table class="table">
-            <tr>
-                <td align="center">
-    <?php
+	// Show team-picture if defined.
+if ($this->config['show_team_logo'])
+{
+	?>
+		<table class="table">
+			<tr>
+				<td align="center">
+	<?php
 
-    $picture = $this->projectteam->picture;
-    if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("team") )) {
-        $picture = $this->team->picture;
-    }
-                                      
-    $imgTitle = Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_PICTURE_TEAM', $this->team->name);
-         
-    echo sportsmanagementHelperHtml::getBootstrapModalImage(
-        'roster'.$this->team->name,
-        $picture,
-        $this->team->name,
-        $this->config['team_picture_width'],
-        '',
-        $this->modalwidth,
-        $this->modalheight,
-        $this->overallconfig['use_jquery_modal']
-    );    
-    ?>
+	$picture = $this->projectteam->picture;
+
+	if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("team") ))
+	{
+		$picture = $this->team->picture;
+	}
+
+										  $imgTitle = Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_PICTURE_TEAM', $this->team->name);
+
+			 echo sportsmanagementHelperHtml::getBootstrapModalImage(
+				 'roster' . $this->team->name,
+				 $picture,
+				 $this->team->name,
+				 $this->config['team_picture_width'],
+				 '',
+				 $this->modalwidth,
+				 $this->modalheight,
+				 $this->overallconfig['use_jquery_modal']
+			 );
+	?>
 
  
-                </td>
-            </tr>
-        </table>
-    <?php
+				</td>
+			</tr>
+		</table>
+	<?php
 }
-    ?>
+	?>
 </div>

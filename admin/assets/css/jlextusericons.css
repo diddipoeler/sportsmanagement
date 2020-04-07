@@ -23,71 +23,71 @@ legend {
 .cpanel div.icon a:active,
 .a:link,
 .a:visited{
-	-moz-transition-duration:none !important;
-	-webkit-transition-duration:none !important;
-	-webkit-transition-property:none !important;
-	background-color:transparent !important;
-	background-position:none !important;
-	-webkit-box-shadow:none !important;
-	 -moz-box-shadow:none !important; 
-	 box-shadow:none !important;
-	color:#0033ff;}
+	-moz-transition-duration: none !important;
+	-webkit-transition-duration: none !important;
+	-webkit-transition-property: none !important;
+	background-color: transparent !important;
+	background-position: none !important;
+	-webkit-box-shadow: none !important;
+	-moz-box-shadow: none !important;
+	box-shadow: none !important;
+	color: #0033ff;}
 #cpanel,.cpanel{
-background:url(images/cpanel_bg.jpg) left 0px;
-padding-bottom:10px;
-display:inline-block;
-zoom:1;
-display:block;
+background: url(images/cpanel_bg.jpg) left 0px;
+padding-bottom: 10px;
+display: inline-block;
+zoom: 1;
+display: block;
 }
 #cpanel:after, .cpanel:after {
-    content: ".";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden;
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
 }
 #cpanel div.icon, .cpanel div.icon {
 	text-align: center;
 	margin-right: 15px;
-  margin-left:15px;
+	margin-left: 15px;
 	float: left;
 	margin-bottom: 5px;
-	border:none;
-  height:135px;
-  font-size: 1.0em;
+	border: none;
+	height: 135px;
+	font-size: 1.0em;
 }
 
 #cpanel div.icon a, .cpanel div.icon a{
 	display: block;
-  background-color: transparent;
+	background-color: transparent;
 	background-position: 0px;
 	float: left;
 	width: 80px;
-	margin:3px 0px 0px 0px;
-	height:auto;
+	margin: 3px 0px 0px 0px;
+	height: auto;
 	color: #333;
 	vertical-align: middle;
 	text-decoration: none;
-	border:none;
-  border-radius:0px;
-  box-shadow:none;
-  transition-duration:0.0s;
-  transition-property:none;
-  padding:0px;
+	border: none;
+	border-radius: 0px;
+	box-shadow: none;
+	transition-duration: 0.0s;
+	transition-property: none;
+	padding: 0px;
 }
 #cpanel div.icon img, .cpanel div.icon img{
-background:#eee;
-padding:20px 15px;
-margin:9px 0px;
-border-top:1px solid #fff;
-border-left:1px solid #fff;
-border-right:1px solid #bbb;
-border-bottom:1px solid #bbb;
+background: #eee;
+padding: 20px 15px;
+margin: 9px 0px;
+border-top: 1px solid #fff;
+border-left: 1px solid #fff;
+border-right: 1px solid #bbb;
+border-bottom: 1px solid #bbb;
 
 }
-#cpanel div.icon img:hover, .cpanel div.icon img:hover{border:1px solid #999;}
+#cpanel div.icon img:hover, .cpanel div.icon img:hover{border: 1px solid #999;}
 #cpanel img, .cpanel img  { padding: 10px 0; margin: 0 auto; }
-#cpanel span, .cpanel span { display: block; text-align: center; font-weight:bold; }
+#cpanel span, .cpanel span { display: block; text-align: center; font-weight: bold; }
 
 div.cpanel-left {
 	width: 54%;
@@ -327,7 +327,7 @@ fieldset.panelform label, fieldset.panelform div.paramrow label, fieldset.panelf
 	background-image: url(../icons/dfbnetimport.png);
 }
 .icon-48-sisimport {
-        background-image: url(../icons/sisimport.png);
+	background-image: url(../icons/sisimport.png);
 }
 .icon-48-xmlimport {
 	background-image: url(../icons/xmlimport.png);
@@ -383,5 +383,3 @@ fieldset.panelform label, fieldset.panelform div.paramrow label, fieldset.panelf
 .icon-48-cbe-pinboard {
 	background-image: url(../icons/pinboard.png);
 }
-
-

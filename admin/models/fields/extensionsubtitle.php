@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -12,7 +12,7 @@
  * @subpackage fields
  */
 
-defined('_JEXEC') or die ;
+defined('_JEXEC') or die;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormField;
 
@@ -27,64 +27,65 @@ use Joomla\CMS\Form\FormField;
  */
 class JFormFieldextensionsubtitle extends FormField
 {
-    public $type = 'extensionsubtitle';
+	public $type = 'extensionsubtitle';
 
-    /**
-     * FormFieldSubtitle::getLabel()
-     *
-     * @return
-     */
-    protected function getLabel()
-    {
-        $value = trim($this->element['title']);
+	/**
+	 * FormFieldSubtitle::getLabel()
+	 *
+	 * @return
+	 */
+	protected function getLabel()
+	{
+		$value = trim($this->element['title']);
 
-        $color = $this->element['color'];
-        if (empty($color)) {
-            $color = '#e65100';
-        }
+		$color = $this->element['color'];
 
-        $html = '</div>';
+		if (empty($color))
+		{
+			$color = '#e65100';
+		}
 
-        $style = array();
+		$html = '</div>';
 
-        $style[] = 'display: inherit; ';
-        $style[] = 'position: relative; ';
-        $style[] = 'background: '.$color.'; ';
-        $style[] = 'background: linear-gradient(to right, '.$color.' 0%, #fff 100%); ';
-        $style[] = 'height: 5px; ';
+		$style = array();
 
-        $html .= '<div style="'.implode($style).'">';
+		$style[] = 'display: inherit; ';
+		$style[] = 'position: relative; ';
+		$style[] = 'background: ' . $color . '; ';
+		$style[] = 'background: linear-gradient(to right, ' . $color . ' 0%, #fff 100%); ';
+		$style[] = 'height: 5px; ';
 
-        if ($value) {
-              
-            $style = array();
+		$html .= '<div style="' . implode($style) . '">';
 
-            $style[] = 'font-family: "Courier New", Courier, monospace; ';
-            $style[] = 'letter-spacing: 2px; ';
-            $style[] = 'font-size: 10px; ';
-            $style[] = 'font-weight: bold; ';
-            $style[] = 'background-color: #fff; ';
-            $style[] = 'color: '.$color.'; ';
-            $style[] = 'padding: 0 8px 0 10px; ';
-            $style[] = 'position: absolute; ';
-            $style[] = 'left: 20px; ';
-            $style[] = 'top: -6px; ';
-              
-            $html .= '<div style=\''.implode($style).'\'>'.Text::_($value).'</div>';
-        }
+		if ($value)
+		{
+						  $style = array();
 
-        return $html;
-    }
+			$style[] = 'font-family: "Courier New", Courier, monospace; ';
+			$style[] = 'letter-spacing: 2px; ';
+			$style[] = 'font-size: 10px; ';
+			$style[] = 'font-weight: bold; ';
+			$style[] = 'background-color: #fff; ';
+			$style[] = 'color: ' . $color . '; ';
+			$style[] = 'padding: 0 8px 0 10px; ';
+			$style[] = 'position: absolute; ';
+			$style[] = 'left: 20px; ';
+			$style[] = 'top: -6px; ';
 
-    /**
-     * FormFieldSubtitle::getInput()
-     *
-     * @return
-     */
-    protected function getInput()
-    {
-        return '';
-    }
+						  $html .= '<div style=\'' . implode($style) . '\'>' . Text::_($value) . '</div>';
+		}
+
+		return $html;
+	}
+
+	/**
+	 * FormFieldSubtitle::getInput()
+	 *
+	 * @return
+	 */
+	protected function getInput()
+	{
+		return '';
+	}
 
 }
-?>

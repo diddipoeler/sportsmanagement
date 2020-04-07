@@ -1,51 +1,51 @@
 .card {
-    box-shadow: 0 0 8px 3px rgba(0, 0, 0, 0.25);
-    max-width: 300px;
-    margin: auto;
-    text-align: center;
-    margin-bottom: 20px;
+	box-shadow: 0 0 8px 3px rgba(0, 0, 0, 0.25);
+	max-width: 300px;
+	margin: auto;
+	text-align: center;
+	margin-bottom: 20px;
 }
 
 .photo {
-    margin-top: 20px;
+	margin-top: 20px;
 }
 
 .birthday-text {
-    color: #ff3333;
-    font-size: 18px;
+	color: #ff3333;
+	font-size: 18px;
 }
 
 .player-info a {
-    border: none;
-    outline: 0;
-    display: inline-block;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    margin-top: 5px;
-    color: white;
-    background-color: #3399ff;
-    text-align: center;
-    cursor: pointer;
-    width: 100%;
-    font-size: 18px;
+	border: none;
+	outline: 0;
+	display: inline-block;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	margin-top: 5px;
+	color: white;
+	background-color: #3399ff;
+	text-align: center;
+	cursor: pointer;
+	width: 100%;
+	font-size: 18px;
 }
 
 .name {
-    font-size: 22px;
-    color: #ff3333;
-    margin-top: 5px;
-    font-weight: bold;
+	font-size: 22px;
+	color: #ff3333;
+	margin-top: 5px;
+	font-weight: bold;
 }
 
 button:hover, a:hover {
-    opacity: 0.7;
+	opacity: 0.7;
 }
 
 .position {
-    font-size: 12px;
-    margin-bottom: 5px;
+	font-size: 12px;
+	margin-bottom: 5px;
 }
 
 .name > .flag-icon {
-    width: 20px;
+	width: 20px;
 }

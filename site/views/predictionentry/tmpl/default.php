@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -19,39 +19,47 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <div class="row-fluid">
 <?php
 
-    echo $this->loadTemplate('predictionheading');
-    echo $this->loadTemplate('sectionheader');
+	echo $this->loadTemplate('predictionheading');
+	echo $this->loadTemplate('sectionheader');
 
-if (( !isset($this->actJoomlaUser) ) || ( $this->actJoomlaUser->id == 0 ) ) {
-    echo $this->loadTemplate('view_deny');
+if (( !isset($this->actJoomlaUser) ) || ( $this->actJoomlaUser->id == 0 ))
+{
+	echo $this->loadTemplate('view_deny');
 }
 else
 {
-    if (( !$this->isPredictionMember ) && ( !$this->allowedAdmin ) ) {
-        echo $this->loadTemplate('view_not_member');
-    }
-    else
-    {
-        if ($this->isNewMember) {
-                echo $this->loadTemplate('view_welcome');
-        }
+	if (( !$this->isPredictionMember ) && ( !$this->allowedAdmin ))
+	{
+		echo $this->loadTemplate('view_not_member');
+	}
+	else
+	{
+		if ($this->isNewMember)
+		{
+				echo $this->loadTemplate('view_welcome');
+		}
 
-        if (!$this->tippEntryDone) {
-            if (($this->config['show_help']==0)||($this->config['show_help']==2)) {
-                    echo $this->model->createHelptText($predictionProject->mode);
-            }
-                echo $this->loadTemplate('view_tippentry_do');
-            if (($this->config['show_help']==1)||($this->config['show_help']==2)) {
-                echo $this->model->createHelptText($predictionProject->mode);
-            }
-          
-        }
-        else
-        {
-            echo $this->loadTemplate('view_tippentry_done');
-        }
-    }
+		if (!$this->tippEntryDone)
+		{
+			if (($this->config['show_help'] == 0)||($this->config['show_help'] == 2))
+			{
+					echo $this->model->createHelptText($predictionProject->mode);
+			}
+
+				echo $this->loadTemplate('view_tippentry_do');
+
+			if (($this->config['show_help'] == 1)||($this->config['show_help'] == 2))
+			{
+				echo $this->model->createHelptText($predictionProject->mode);
+			}
+		}
+		else
+		{
+			echo $this->loadTemplate('view_tippentry_done');
+		}
+	}
 }
-    echo $this->loadTemplate('jsminfo');
+
+	echo $this->loadTemplate('jsminfo');
 ?>
 </div>

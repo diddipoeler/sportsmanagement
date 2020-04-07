@@ -5,10 +5,10 @@
 
 /* google map <-> bootstrap problem fix */
 .gcalendar-fixed-map img {
-    border: 0px;
-    box-shadow: 0px;
-    margin: 0px;
-    max-width: none !important;
+	border: 0px;
+	box-shadow: 0px;
+	margin: 0px;
+	max-width: none !important;
 }
 
 /* make facebook comment box width 100% */

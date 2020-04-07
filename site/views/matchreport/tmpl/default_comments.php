@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -23,28 +23,30 @@ use Joomla\Registry\Registry;
 ?>
 <!-- START of match summary -->
 <div class="<?php echo $this->divclassrow;?> table-responsive" id="matchreport">
-    <?php
+	<?php
 
-    /**
- * workaround to support {jcomments (off|lock)} in match summary
- * no comments are shown if {jcomments (off|lock)} is found in the match summary
- */
+	/**
+	 * workaround to support {jcomments (off|lock)} in match summary
+	 * no comments are shown if {jcomments (off|lock)} is found in the match summary
+	 */
 
-    $commentsDisabled = 0;
+	$commentsDisabled = 0;
 
-    if (!empty($this->match->summary) && preg_match('/{jcomments\s+(off|lock)}/is', $this->match->summary)) {
-         $commentsDisabled = 1;
-    }
+	if (!empty($this->match->summary) && preg_match('/{jcomments\s+(off|lock)}/is', $this->match->summary))
+	{
+		 $commentsDisabled = 1;
+	}
 
-    /**
+	/**
  * Comments integration
  */
-    if (!$commentsDisabled) {
-         $commmentsInstance = sportsmanagementModelComments::CreateInstance($this->config);
-         echo $commmentsInstance->showMatchComments($this->match, $this->team1, $this->team2, $this->config, $this->project);
-    }
+	if (!$commentsDisabled)
+	{
+		 $commmentsInstance = sportsmanagementModelComments::CreateInstance($this->config);
+		 echo $commmentsInstance->showMatchComments($this->match, $this->team1, $this->team2, $this->config, $this->project);
+	}
 
-    ?>
+	?>
 </div>
 <!-- END of match summary -->
 

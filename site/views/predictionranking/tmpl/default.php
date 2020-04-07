@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -25,8 +25,8 @@ use Joomla\CMS\Uri\Uri;
 $templatesToLoad = array('globalviews','predictionheading');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-$this->kmlpath = Uri::root().'tmp'.DIRECTORY_SEPARATOR.$this->predictionGame->id.'-prediction.kml';
-$this->kmlfile = $this->predictionGame->id.'-prediction.kml';
+$this->kmlpath = Uri::root() . 'tmp' . DIRECTORY_SEPARATOR . $this->predictionGame->id . '-prediction.kml';
+$this->kmlfile = $this->predictionGame->id . '-prediction.kml';
 
 ?>
 <div class="<?php echo $this->divclasscontainer;?>" id="defaultpredictionranking">
@@ -37,12 +37,14 @@ echo $this->loadTemplate('sectionheader');
 
 echo $this->loadTemplate('ranking');
 
-if ($this->config['show_all_user_google_map']) {
-    echo $this->loadTemplate('googlemap');
+if ($this->config['show_all_user_google_map'])
+{
+	echo $this->loadTemplate('googlemap');
 }
 
-if ($this->config['show_help']) {
-    echo $this->loadTemplate('show_help');
+if ($this->config['show_help'])
+{
+	echo $this->loadTemplate('show_help');
 }
 
 echo $this->loadTemplate('jsminfo');

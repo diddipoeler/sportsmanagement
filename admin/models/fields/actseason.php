@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -23,7 +23,7 @@ FormHelper::loadFieldClass('list');
 /**
  * FormFieldactseason
  *
- * @package 
+ * @package
  * @author
  * @copyright diddi
  * @version   2014
@@ -31,32 +31,32 @@ FormHelper::loadFieldClass('list');
  */
 class JFormFieldactseason extends \JFormFieldList
 {
+	protected $type = 'actseason';
 
-    protected $type = 'actseason';
-  
-    /**
-     * FormFieldactseason::getOptions()
-     *
-     * @return
-     */
-    protected function getOptions()
-    {
-        // Initialize variables.
-        $options = array();
-  
-        $db = Factory::getDbo();
-        $query = $db->getQuery(true);
-          
-        $query->select('s.id AS value, s.name AS text');
-        $query->from('#__sportsmanagement_season as s');
-        $query->order('s.name');
-        $db->setQuery($query);
-        $options = $db->loadObjectList();
-  
-        // Merge any additional options in the XML definition.
-        $options = array_merge(parent::getOptions(), $options);
-        return $options;
-    }
-  
+	/**
+	 * FormFieldactseason::getOptions()
+	 *
+	 * @return
+	 */
+	protected function getOptions()
+	{
+		// Initialize variables.
+		$options = array();
+
+		$db = Factory::getDbo();
+		$query = $db->getQuery(true);
+
+				  $query->select('s.id AS value, s.name AS text');
+		$query->from('#__sportsmanagement_season as s');
+		$query->order('s.name');
+		$db->setQuery($query);
+		$options = $db->loadObjectList();
+
+		// Merge any additional options in the XML definition.
+		$options = array_merge(parent::getOptions(), $options);
+
+		return $options;
+	}
+
 
 }

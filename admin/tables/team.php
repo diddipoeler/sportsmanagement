@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -20,7 +20,7 @@ use Joomla\CMS\Filter\OutputFilter;
 /**
  * sportsmanagementTableTeam
  *
- * @package 
+ * @package
  * @author
  * @copyright diddi
  * @version   2014
@@ -28,49 +28,52 @@ use Joomla\CMS\Filter\OutputFilter;
  */
 class sportsmanagementTableTeam extends JSMTable
 {
-    /**
-     * Constructor
-     *
-     * @param object Database connector object
-     * @since 1.0
-     */
-    function __construct(& $db)
-    {
-          $db = sportsmanagementHelper::getDBConnection();
-        parent::__construct('#__sportsmanagement_team', 'id', $db);
-    }
+	/**
+	 * Constructor
+	 *
+	 * @param object Database connector object
+	 * @since 1.0
+	 */
+	function __construct(& $db)
+	{
+		  $db = sportsmanagementHelper::getDBConnection();
+		parent::__construct('#__sportsmanagement_team', 'id', $db);
+	}
 
-    /**
-     * Overloaded check method to ensure data integrity
-     *
-     * @access public
-     * @return boolean True on success
-     * @since  1.0
-     */
-    function check()
-    {
-        if (empty($this->name)) {
-            $this->setError(Text::_('NAME REQUIRED'));
-            return false;
-        }
-      
-        // add default middle size name
-        if (empty($this->middle_name)) {
-            $parts = explode(" ", $this->name);
-            $this->middle_name = substr($parts[0], 0, 20);
-        }
-  
-        // add default short size name
-        if (empty($this->short_name)) {
-            $parts = explode(" ", $this->name);
-            $this->short_name = substr($parts[0], 0, 2);
-        }
-  
-        // setting alias
-        $this->alias = OutputFilter::stringURLSafe($this->name);
-      
-        return true;
-    }
-  
+	/**
+	 * Overloaded check method to ensure data integrity
+	 *
+	 * @access public
+	 * @return boolean True on success
+	 * @since  1.0
+	 */
+	function check()
+	{
+		if (empty($this->name))
+		{
+			$this->setError(Text::_('NAME REQUIRED'));
+
+			return false;
+		}
+
+			  // Add default middle size name
+		if (empty($this->middle_name))
+		{
+			$parts = explode(" ", $this->name);
+			$this->middle_name = substr($parts[0], 0, 20);
+		}
+
+		// Add default short size name
+		if (empty($this->short_name))
+		{
+			$parts = explode(" ", $this->name);
+			$this->short_name = substr($parts[0], 0, 2);
+		}
+
+		// Setting alias
+		$this->alias = OutputFilter::stringURLSafe($this->name);
+
+			  return true;
+	}
+
 }
-?>

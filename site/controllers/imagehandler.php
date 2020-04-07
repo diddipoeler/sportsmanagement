@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -22,7 +22,7 @@ use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Client\ClientHelper;
 use Joomla\CMS\Log\Log;
 
-require_once JPATH_COMPONENT_SITE .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'imageselect.php';
+require_once JPATH_COMPONENT_SITE . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'imageselect.php';
 
 /**
  * sportsmanagementControllerImagehandler
@@ -36,144 +36,168 @@ require_once JPATH_COMPONENT_SITE .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEP
 class sportsmanagementControllerImagehandler extends BaseController
 {
 
-    /**
-     * Constructor
-     *
-     * @since 0.9
-     */
-    function __construct()
-    {
-        parent::__construct();
+	/**
+	 * Constructor
+	 *
+	 * @since 0.9
+	 */
+	function __construct()
+	{
+		parent::__construct();
 
-        // Register Extra task
-    }
+		// Register Extra task
+	}
 
-    /**
-     * logic for uploading an image
-     *
-     * @access public
-     * @return void
-     * @since  0.9
-     */
-    function upload()
-    {
-        $app = Factory::getApplication();
-        $option = Factory::getApplication()->input->getCmd('option');
+	/**
+	 * logic for uploading an image
+	 *
+	 * @access public
+	 * @return void
+	 * @since  0.9
+	 */
+	function upload()
+	{
+		$app = Factory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
 
-        // Check for request forgeries
-        JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+		// Check for request forgeries
+		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
-        $file = Factory::getApplication()->input->getVar('userfile', '', 'files', 'array');
-        $type = Factory::getApplication()->input->getVar('type');
-        $folder = ImageSelectSM::getfolder($type);
-        $field = Factory::getApplication()->input->getVar('field');
-        $linkaddress = Factory::getApplication()->input->getVar('linkaddress');
-        // Set FTP credentials, if given
-        jimport('joomla.client.helper');
-        ClientHelper::setCredentialsFromRequest('ftp');
+		$file = Factory::getApplication()->input->getVar('userfile', '', 'files', 'array');
+		$type = Factory::getApplication()->input->getVar('type');
+		$folder = ImageSelectSM::getfolder($type);
+		$field = Factory::getApplication()->input->getVar('field');
+		$linkaddress = Factory::getApplication()->input->getVar('linkaddress');
 
-        //set the target directory
-        $base_Dir = JPATH_SITE .DIRECTORY_SEPARATOR. 'images' .DIRECTORY_SEPARATOR. $option .DIRECTORY_SEPARATOR. 'database' .DIRECTORY_SEPARATOR. $folder . DS;
+		// Set FTP credentials, if given
+		jimport('joomla.client.helper');
+		ClientHelper::setCredentialsFromRequest('ftp');
 
-        $app->enqueueMessage(Text::_($type), '');
-        $app->enqueueMessage(Text::_($folder), '');
-        $app->enqueueMessage(Text::_($base_Dir), '');
+		// Set the target directory
+		$base_Dir = JPATH_SITE . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $option . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . $folder . DS;
 
-        //do we have an imagelink?
-        if (!empty($linkaddress)) {
-            $file['name'] = basename($linkaddress);
+		$app->enqueueMessage(Text::_($type), '');
+		$app->enqueueMessage(Text::_($folder), '');
+		$app->enqueueMessage(Text::_($base_Dir), '');
 
-            if (preg_match("/dfs_/i", $linkaddress)) {
-                $filename = $file['name'];
-            } else {
-                //sanitize the image filename
-                $filename = ImageSelectSM::sanitize($base_Dir, $file['name']);
-            }
+		// Do we have an imagelink?
+		if (!empty($linkaddress))
+		{
+			$file['name'] = basename($linkaddress);
 
-            $filepath = $base_Dir . $filename;
+			if (preg_match("/dfs_/i", $linkaddress))
+			{
+				$filename = $file['name'];
+			}
+			else
+			{
+				// Sanitize the image filename
+				$filename = ImageSelectSM::sanitize($base_Dir, $file['name']);
+			}
 
-            if (!copy($linkaddress, $filepath)) {
-                echo "<script> alert('" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_COPY_FAILED') . "'); window.history.go(-1); </script>\n";
-                //$app->close();
-            } else {
-                //echo "<script> alert('" . Text::_( 'COPY COMPLETE'.'-'.$folder.'-'.$type.'-'.$filename.'-'.$field ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
-                echo "<script>  window.parent.selectImage_" . $type . "('$filename', '$filename','$field');window.parent.SqueezeBox.close(); </script>\n";
-                //$app->close();
-            }
-        }
+			$filepath = $base_Dir . $filename;
 
-        //do we have an upload?
-        if (empty($file['name'])) {
-            echo "<script> alert('" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_IMAGE_EMPTY') . "'); window.history.go(-1); </script>\n";
-            //$app->close();
-        }
+			if (!copy($linkaddress, $filepath))
+			{
+				echo "<script> alert('" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_COPY_FAILED') . "'); window.history.go(-1); </script>\n";
 
-        //check the image
-        $check = ImageSelectSM::check($file);
+				// $app->close();
+			}
+			else
+			{
+				// Echo "<script> alert('" . Text::_( 'COPY COMPLETE'.'-'.$folder.'-'.$type.'-'.$filename.'-'.$field ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
+				echo "<script>  window.parent.selectImage_" . $type . "('$filename', '$filename','$field');window.parent.SqueezeBox.close(); </script>\n";
 
-        if ($check === false) {
-            $app->redirect($_SERVER['HTTP_REFERER']);
-        }
+				// $app->close();
+			}
+		}
 
-        //sanitize the image filename
-        $filename = ImageSelectSM::sanitize($base_Dir, $file['name']);
-        $filepath = $base_Dir . $filename;
+		// Do we have an upload?
+		if (empty($file['name']))
+		{
+			echo "<script> alert('" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_IMAGE_EMPTY') . "'); window.history.go(-1); </script>\n";
 
-        //upload the image
-        if (!File::upload($file['tmp_name'], $filepath)) {
-            echo "<script> alert('" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_FAILED') . "'); window.history.go(-1); </script>\n";
-            //          $app->close();
-        } else {
-            //          echo "<script> alert('" . Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE'.'-'.$folder.'-'.$type.'-'.$filename.'-'.$field ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
-            //          echo "<script> alert('" . Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE' ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
-            echo "<script>  window.parent.selectImage_" . $type . "('$filename', '$filename','$field');window.parent.SqueezeBox.close(); </script>\n";
-            //          $app->close();
-        }
-    }
+			// $app->close();
+		}
 
-    /**
-     * logic to mass delete images
-     *
-     * @access public
-     * @return void
-     * @since  0.9
-     */
-    function delete()
-    {
-        $app = Factory::getApplication();
-        $option = Factory::getApplication()->input->getCmd('option');
-      
-        // Set FTP credentials, if given
-        jimport('joomla.client.helper');
-        ClientHelper::setCredentialsFromRequest('ftp');
+		// Check the image
+		$check = ImageSelectSM::check($file);
 
-        // Get some data from the request
-        $images = Factory::getApplication()->input->getVar('rm', array(), '', 'array');
-        $type = Factory::getApplication()->input->getVar('type');
+		if ($check === false)
+		{
+			$app->redirect($_SERVER['HTTP_REFERER']);
+		}
 
-        $folder = ImageSelectSM::getfolder($type);
+		// Sanitize the image filename
+		$filename = ImageSelectSM::sanitize($base_Dir, $file['name']);
+		$filepath = $base_Dir . $filename;
 
-        if (count($images)) {
-            foreach ($images as $image) {
-                if ($image !== FilterInput::clean($image, 'path')) {
-                    Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UNABLE_TO_DELETE') . ' ' . htmlspecialchars($image, ENT_COMPAT, 'UTF-8'), Log::WARNING, 'jsmerror');
-                    continue;
-                }
+		// Upload the image
+		if (!File::upload($file['tmp_name'], $filepath))
+		{
+			echo "<script> alert('" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_FAILED') . "'); window.history.go(-1); </script>\n";
 
-                $fullPath = Path::clean(JPATH_SITE .DIRECTORY_SEPARATOR. 'images' .DIRECTORY_SEPARATOR. $option .DIRECTORY_SEPARATOR. 'database' .DIRECTORY_SEPARATOR. $folder .DIRECTORY_SEPARATOR. $image);
-                $fullPaththumb = Path::clean(JPATH_SITE .DIRECTORY_SEPARATOR. 'images' .DIRECTORY_SEPARATOR. $option .DIRECTORY_SEPARATOR. 'database' .DIRECTORY_SEPARATOR. $folder .DIRECTORY_SEPARATOR. 'small' .DIRECTORY_SEPARATOR. $image);
-                if (is_file($fullPath)) {
-                    File::delete($fullPath);
-                    if (File::exists($fullPaththumb)) {
-                        File::delete($fullPaththumb);
-                    }
-                }
-            }
-        }
+			//          $app->close();
+		}
+		else
+		{
+			//          echo "<script> alert('" . Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE'.'-'.$folder.'-'.$type.'-'.$filename.'-'.$field ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
+			//          echo "<script> alert('" . Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE' ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
+			echo "<script>  window.parent.selectImage_" . $type . "('$filename', '$filename','$field');window.parent.SqueezeBox.close(); </script>\n";
 
-        $app->redirect('index.php?option=' . $option . '&view=imagehandler&type=' . $type . '&tmpl=component');
-    }
+			//          $app->close();
+		}
+	}
+
+	/**
+	 * logic to mass delete images
+	 *
+	 * @access public
+	 * @return void
+	 * @since  0.9
+	 */
+	function delete()
+	{
+		$app = Factory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+
+			  // Set FTP credentials, if given
+		jimport('joomla.client.helper');
+		ClientHelper::setCredentialsFromRequest('ftp');
+
+		// Get some data from the request
+		$images = Factory::getApplication()->input->getVar('rm', array(), '', 'array');
+		$type = Factory::getApplication()->input->getVar('type');
+
+		$folder = ImageSelectSM::getfolder($type);
+
+		if (count($images))
+		{
+			foreach ($images as $image)
+			{
+				if ($image !== FilterInput::clean($image, 'path'))
+				{
+					Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UNABLE_TO_DELETE') . ' ' . htmlspecialchars($image, ENT_COMPAT, 'UTF-8'), Log::WARNING, 'jsmerror');
+					continue;
+				}
+
+				$fullPath = Path::clean(JPATH_SITE . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $option . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . $folder . DIRECTORY_SEPARATOR . $image);
+				$fullPaththumb = Path::clean(JPATH_SITE . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $option . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . $folder . DIRECTORY_SEPARATOR . 'small' . DIRECTORY_SEPARATOR . $image);
+
+				if (is_file($fullPath))
+				{
+					File::delete($fullPath);
+
+					if (File::exists($fullPaththumb))
+					{
+						File::delete($fullPaththumb);
+					}
+				}
+			}
+		}
+
+		$app->redirect('index.php?option=' . $option . '&view=imagehandler&type=' . $type . '&tmpl=component');
+	}
 
 }
 
-?>

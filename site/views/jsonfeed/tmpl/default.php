@@ -32,57 +32,76 @@ $dispatcher = JDispatcher::getInstance();
 PluginHelper::importPlugin('gcalendar');
 
 $data = array();
-$SECSINDAY=86400;
-if (!empty($this->calendars)) {
-    $itemID = Factory::getApplication()->input->getVar('Itemid', null);
-    foreach ($this->calendars as $calendar) {
-        if($itemID == null) {
-            $itemID = jsmGCalendarUtil::getItemId($calendar->id);
-        }
-        $params = Factory::getApplication()->getMenu()->getParams($itemID);
-        $tmp = clone ComponentHelper::getParams('com_sportsmanagement');
-        if (empty($params)) {
-            $params = $tmp;
-        } else {
-            $tmp->merge($params);
-            $params = $tmp;
-        }
-        foreach ($calendar as $event) {
-            $dateformat = $params->get('description_date_format', 'm.d.Y');
-            $timeformat = $params->get('description_time_format', 'g:i a');
+$SECSINDAY = 86400;
 
-            $params->set('event_date_format', $dateformat);
-            $params->set('event_time_format', $timeformat);
+if (!empty($this->calendars))
+{
+	$itemID = Factory::getApplication()->input->getVar('Itemid', null);
 
-            if (!empty($itemID)) {
-                $itemID = '&Itemid='.$itemID;
-            } else {
-                $menu = Factory::getApplication()->getMenu();
-                $activemenu = $menu->getActive();
-                if($activemenu != null) {
-                    $itemID = '&Itemid='.$activemenu->id;
-                }
-            }
+	foreach ($this->calendars as $calendar)
+	{
+		if ($itemID == null)
+		{
+			$itemID = jsmGCalendarUtil::getItemId($calendar->id);
+		}
 
-            $params->set('description_length', 100);
-            $description = jsmGCalendarUtil::renderEvents(array($event), $params->get('description_format', '{{#events}}<p>{{date}}<br/>{{{description}}}</p>{{/events}}'), $params);
+		$params = Factory::getApplication()->getMenu()->getParams($itemID);
+		$tmp = clone ComponentHelper::getParams('com_sportsmanagement');
 
-            $eventData = array(
-              'id' => $event->getGCalId(),
-              'gcid' => $event->getParam('gcid'),
-              'title' => $this->compactMode == 0 ? htmlspecialchars_decode($event->getTitle()) : utf8_encode(chr(160)),
-              'start' => $event->getStartDate()->format('c', true),
-              'end' => $event->getEndDate()->format('c', true),
-              'url' => Route::_('index.php?option=com_sportsmanagement&view=event&eventID='.$event->getGCalId().'&gcid='.$event->getParam('gcid').(empty($itemID)?'':$itemID)),
-              'color' => jsmGCalendarUtil::getFadedColor($event->getParam('gccolor')),
-              'allDay' => $this->compactMode == 0 ? $event->isAllDay() : true,
-              'description' => $description
-            );
+		if (empty($params))
+		{
+			$params = $tmp;
+		}
+		else
+		{
+			$tmp->merge($params);
+			$params = $tmp;
+		}
 
-            $dispatcher->trigger('onGCEventBeforeLoad', array($event, &$eventData));
-            $data[] = $eventData;
-        }
-    }
+
+		foreach ($calendar as $event)
+		{
+			$dateformat = $params->get('description_date_format', 'm.d.Y');
+			$timeformat = $params->get('description_time_format', 'g:i a');
+
+			$params->set('event_date_format', $dateformat);
+			$params->set('event_time_format', $timeformat);
+
+			if (!empty($itemID))
+			{
+				$itemID = '&Itemid=' . $itemID;
+			}
+			else
+			{
+				$menu = Factory::getApplication()->getMenu();
+				$activemenu = $menu->getActive();
+
+				if ($activemenu != null)
+				{
+					$itemID = '&Itemid=' . $activemenu->id;
+				}
+			}
+
+			$params->set('description_length', 100);
+			$description = jsmGCalendarUtil::renderEvents(array($event), $params->get('description_format', '{{#events}}<p>{{date}}<br/>{{{description}}}</p>{{/events}}'), $params);
+
+			$eventData = array(
+			  'id' => $event->getGCalId(),
+			  'gcid' => $event->getParam('gcid'),
+			  'title' => $this->compactMode == 0 ? htmlspecialchars_decode($event->getTitle()) : utf8_encode(chr(160)),
+			  'start' => $event->getStartDate()->format('c', true),
+			  'end' => $event->getEndDate()->format('c', true),
+			  'url' => Route::_('index.php?option=com_sportsmanagement&view=event&eventID=' . $event->getGCalId() . '&gcid=' . $event->getParam('gcid') . (empty($itemID) ? '' : $itemID)),
+			  'color' => jsmGCalendarUtil::getFadedColor($event->getParam('gccolor')),
+			  'allDay' => $this->compactMode == 0 ? $event->isAllDay() : true,
+			  'description' => $description
+				);
+
+				$dispatcher->trigger('onGCEventBeforeLoad', array($event, &$eventData));
+				$data[] = $eventData;
+		}
+	}
 }
+
 ob_clean();
 echo json_encode($data);

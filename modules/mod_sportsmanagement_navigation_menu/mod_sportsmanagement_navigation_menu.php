@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -19,18 +19,20 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 
-if (!defined('JSM_PATH') ) {
-    DEFINE('JSM_PATH', 'components/com_sportsmanagement');
+if (!defined('JSM_PATH'))
+{
+	DEFINE('JSM_PATH', 'components/com_sportsmanagement');
 }
 
-// get helper
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'helper.php';
+// Get helper
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'helper.php';
 
 HTMLHelper::_('behavior.framework');
 $document = Factory::getDocument();
-//add css file
-$document->addStyleSheet(Uri::base().'modules'.DIRECTORY_SEPARATOR.$module->module.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.$module->module.'.css');
-$document->addScript(Uri::base().'modules'.DIRECTORY_SEPARATOR.$module->module.DIRECTORY_SEPARATOR.'js'.DIRECTORY_SEPARATOR.$module->module.'.js');
+
+// Add css file
+$document->addStyleSheet(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . $module->module . '.css');
+$document->addScript(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'js' . DIRECTORY_SEPARATOR . $module->module . '.js');
 
 $helper = new modsportsmanagementNavigationMenuHelper($params);
 

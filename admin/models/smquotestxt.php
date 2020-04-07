@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -26,7 +26,7 @@ jimport('joomla.filesystem.file');
 /**
  * sportsmanagementModelsmquotestxt
  *
- * @package 
+ * @package
  * @author
  * @copyright diddi
  * @version   2014
@@ -35,17 +35,17 @@ jimport('joomla.filesystem.file');
 class sportsmanagementModelsmquotestxt extends JModel
 {
 
-    function getTXTFiles()
-    {
-        $app = Factory::getApplication();
-        $option = Factory::getApplication()->input->getCmd('option');
-        $path = JPATH_SITE.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR.'mod_sportsmanagement_rquotes'.DIRECTORY_SEPARATOR.'mod_sportsmanagement_rquotes';
-        // Get a list of files in the search path with the given filter.
-           $files = Folder::files($path, '.txt$|.php$');
-      
-        return $files;
-      
-    }  
+	function getTXTFiles()
+	{
+		$app = Factory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+		$path = JPATH_SITE . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR . 'mod_sportsmanagement_rquotes' . DIRECTORY_SEPARATOR . 'mod_sportsmanagement_rquotes';
+
+		// Get a list of files in the search path with the given filter.
+		   $files = Folder::files($path, '.txt$|.php$');
+
+			  return $files;
+
+	}
 
 }
-?>

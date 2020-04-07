@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -22,7 +22,8 @@ use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\AdminModel;
 
 JLoader::import('joomla.application.component.modeladmin');
-//JLoader::import('components.com_sportsmanagement.libraries.GCalendar.GCalendarZendHelper', JPATH_ADMINISTRATOR);
+
+// JLoader::import('components.com_sportsmanagement.libraries.GCalendar.GCalendarZendHelper', JPATH_ADMINISTRATOR);
 JLoader::import('joomla.utilities.simplecrypt');
 
 /**
@@ -36,114 +37,128 @@ JLoader::import('joomla.utilities.simplecrypt');
  */
 class sportsmanagementModeljsmGCalendar extends AdminModel
 {
-    /**
-     * sportsmanagementModeljsmGCalendar::allowEdit()
-     *
-     * @param  mixed  $data
-     * @param  string $key
-     * @return
-     */
-    protected function allowEdit($data = array(), $key = 'id')
-    {
-        // Check specific edit permission then general edit permission.
-        return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.calendar.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
-    }
+	/**
+	 * sportsmanagementModeljsmGCalendar::allowEdit()
+	 *
+	 * @param   mixed  $data
+	 * @param   string $key
+	 * @return
+	 */
+	protected function allowEdit($data = array(), $key = 'id')
+	{
+		// Check specific edit permission then general edit permission.
+		return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.calendar.' . ((int) isset($data[$key]) ? $data[$key] : 0)) || parent::allowEdit($data, $key);
+	}
 
-    /**
-     * sportsmanagementModeljsmGCalendar::getTable()
-     *
-     * @param  string $type
-     * @param  string $prefix
-     * @param  mixed  $config
-     * @return
-     */
-    public function getTable($type = 'jsmGCalendar', $prefix = 'sportsmanagementTable', $config = array())
-    {
-        $config['dbo'] = sportsmanagementHelper::getDBConnection();
-        return Table::getInstance($type, $prefix, $config);
-    }
+	/**
+	 * sportsmanagementModeljsmGCalendar::getTable()
+	 *
+	 * @param   string $type
+	 * @param   string $prefix
+	 * @param   mixed  $config
+	 * @return
+	 */
+	public function getTable($type = 'jsmGCalendar', $prefix = 'sportsmanagementTable', $config = array())
+	{
+		$config['dbo'] = sportsmanagementHelper::getDBConnection();
 
-    /**
-     * sportsmanagementModeljsmGCalendar::getForm()
-     *
-     * @param  mixed $data
-     * @param  bool  $loadData
-     * @return
-     */
-    public function getForm($data = array(), $loadData = true)
-    {
-        // Get the form.
-        $form = $this->loadForm('com_sportsmanagement.jsmGCalendar', 'jsmGCalendar', array('control' => 'jform', 'load_data' => $loadData));
-        if (empty($form)) {
-            return false;
-        }
-        return $form;
-    }
+		return Table::getInstance($type, $prefix, $config);
+	}
 
-    /**
-     * sportsmanagementModeljsmGCalendar::loadFormData()
-     *
-     * @return
-     */
-    protected function loadFormData()
-    {
-        // Check the session for previously entered form data.
-        $data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.jsmGCalendar.data', array());
-        if (empty($data)) {
-            $data = $this->getItem();
-        }
-        return $data;
-    }
-  
-  
-    /**
-     * Method to save the form data.
-     *
-     * @param  array    The form data.
-     * @return boolean    True on success.
-     * @since  1.6
-     *
-     * http://framework.zend.com/manual/1.12/en/zend.http.response.html
-     */
-    public function save($data)
-    {
-          $app = Factory::getApplication();
-          $config = Factory::getConfig();
-          $option = Factory::getApplication()->input->getCmd('option');
-          $post = Factory::getApplication()->input->post->getArray(array());
-          // Get a db connection.
-        $db = Factory::getDbo();
-    
-          $timezone = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('timezone', '');
-     
-        if (empty($data['id']) ) {
-            // xml file erstellen
-            $file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'createcal.xml';
-            $output  = "<entry xmlns='http://www.w3.org/2005/Atom'". "\n";
-            $output .= "xmlns:gd='http://schemas.google.com/g/2005'". "\n";
-            $output .= "xmlns:gCal='http://schemas.google.com/gCal/2005'>". "\n";
-            $output .= "<title type='text'>[TITLE]</title>". "\n";
-            $output .= "<summary type='text'>[SUMMARY]</summary>". "\n";
-            $output .= "<gCal:timezone value='";
+	/**
+	 * sportsmanagementModeljsmGCalendar::getForm()
+	 *
+	 * @param   mixed $data
+	 * @param   bool  $loadData
+	 * @return
+	 */
+	public function getForm($data = array(), $loadData = true)
+	{
+		// Get the form.
+		$form = $this->loadForm('com_sportsmanagement.jsmGCalendar', 'jsmGCalendar', array('control' => 'jform', 'load_data' => $loadData));
 
-            if (version_compare(JVERSION, '3.0.0', 'ge')) {
-                        $output .= $config->get('config.offset');
-            } else {
-                $output .= $config->getValue('config.offset');
-            }
+		if (empty($form))
+		{
+			return false;
+		}
 
-            $output .= "'></gCal:timezone>". "\n";
-            $output .= "<gCal:hidden value='false'></gCal:hidden>". "\n";
-            $output .= "<gCal:color value='#".$data['color']."'></gCal:color>". "\n";
-            $output .= "<gd:where rel='' label='' valueString='Oakland'></gd:where>". "\n";
-            $output .= "</entry>". "\n";
-            // mal als test
-            $xmlfile = $xmlfile.$output;
-            File::write($file, $xmlfile);
+		return $form;
+	}
 
-            $username = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_account', '');
-            $password = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_password', '');
-            /*        
+	/**
+	 * sportsmanagementModeljsmGCalendar::loadFormData()
+	 *
+	 * @return
+	 */
+	protected function loadFormData()
+	{
+		// Check the session for previously entered form data.
+		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.jsmGCalendar.data', array());
+
+		if (empty($data))
+		{
+			$data = $this->getItem();
+		}
+
+		return $data;
+	}
+
+
+	/**
+	 * Method to save the form data.
+	 *
+	 * @param  array    The form data.
+	 * @return boolean    True on success.
+	 * @since  1.6
+	 *
+	 * http://framework.zend.com/manual/1.12/en/zend.http.response.html
+	 */
+	public function save($data)
+	{
+		  $app = Factory::getApplication();
+		  $config = Factory::getConfig();
+		  $option = Factory::getApplication()->input->getCmd('option');
+		  $post = Factory::getApplication()->input->post->getArray(array());
+
+		  // Get a db connection.
+		$db = Factory::getDbo();
+
+			  $timezone = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('timezone', '');
+
+		if (empty($data['id']))
+		{
+			// Xml file erstellen
+			$file = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'createcal.xml';
+			$output  = "<entry xmlns='http://www.w3.org/2005/Atom'" . "\n";
+			$output .= "xmlns:gd='http://schemas.google.com/g/2005'" . "\n";
+			$output .= "xmlns:gCal='http://schemas.google.com/gCal/2005'>" . "\n";
+			$output .= "<title type='text'>[TITLE]</title>" . "\n";
+			$output .= "<summary type='text'>[SUMMARY]</summary>" . "\n";
+			$output .= "<gCal:timezone value='";
+
+			if (version_compare(JVERSION, '3.0.0', 'ge'))
+			{
+						$output .= $config->get('config.offset');
+			}
+			else
+			{
+				$output .= $config->getValue('config.offset');
+			}
+
+			$output .= "'></gCal:timezone>" . "\n";
+			$output .= "<gCal:hidden value='false'></gCal:hidden>" . "\n";
+			$output .= "<gCal:color value='#" . $data['color'] . "'></gCal:color>" . "\n";
+			$output .= "<gd:where rel='' label='' valueString='Oakland'></gd:where>" . "\n";
+			$output .= "</entry>" . "\n";
+
+			// Mal als test
+			$xmlfile = $xmlfile . $output;
+			File::write($file, $xmlfile);
+
+			$username = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_account', '');
+			$password = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_password', '');
+
+			/*
             $service = Zend_Gdata_Calendar::AUTH_SERVICE_NAME;
             $client = Zend_Gdata_ClientLogin::getHttpClient($username, $password,$service);
             $gdataCal = new Zend_Gdata_Calendar($client);
@@ -155,15 +170,12 @@ class sportsmanagementModeljsmGCalendar extends AdminModel
             $xml = str_replace('[SUMMARY]', $summary, $xml);
             $response = $gdataCal->post($xml, $uri);
             */
-  
-            // die erstellte kalender id übergeben
-            //$data['calendar_id'] = substr($response->getHeader('Content-location'), strrpos($response->getHeader('Content-location'), '/')+1);
-  
-        }
-      
-      
-      
-          // Proceed with the save
-        return parent::save($data); 
-    }  
+
+			// Die erstellte kalender id übergeben
+			// $data['calendar_id'] = substr($response->getHeader('Content-location'), strrpos($response->getHeader('Content-location'), '/')+1);
+		}
+
+				// Proceed with the save
+			return parent::save($data);
+	}
 }

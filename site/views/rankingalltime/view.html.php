@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -29,36 +29,35 @@ use Joomla\CMS\Factory;
 class sportsmanagementViewRankingAllTime extends sportsmanagementView
 {
 
-  
-    /**
-     * sportsmanagementViewRankingAllTime::init()
-     *
-     * @return void
-     */
-    function init()
-    {
-        $this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
-        $this->projectids = $this->model->getAllProject();
-        $this->projectnames = $this->model->getAllProjectNames();
-        $project_ids = implode(",", $this->projectids);
-        $this->project_ids = $project_ids;
-        $this->teams = $this->model->getAllTeamsIndexedByPtid($project_ids);
-        $this->matches = $this->model->getAllMatches($project_ids);
-        $this->ranking = $this->model->getAllTimeRanking();
-        $this->tableconfig = $this->model->getAllTimeParams();
-        $this->config = $this->model->getAllTimeParams();
-        $this->currentRanking = $this->model->getCurrentRanking();
-        $this->action = $this->uri->toString();
-        $this->colors = $this->model->getColors($this->config['colors']);
-        /**
+
+	/**
+	 * sportsmanagementViewRankingAllTime::init()
+	 *
+	 * @return void
+	 */
+	function init()
+	{
+		$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
+		$this->projectids = $this->model->getAllProject();
+		$this->projectnames = $this->model->getAllProjectNames();
+		$project_ids = implode(",", $this->projectids);
+		$this->project_ids = $project_ids;
+		$this->teams = $this->model->getAllTeamsIndexedByPtid($project_ids);
+		$this->matches = $this->model->getAllMatches($project_ids);
+		$this->ranking = $this->model->getAllTimeRanking();
+		$this->tableconfig = $this->model->getAllTimeParams();
+		$this->config = $this->model->getAllTimeParams();
+		$this->currentRanking = $this->model->getCurrentRanking();
+		$this->action = $this->uri->toString();
+		$this->colors = $this->model->getColors($this->config['colors']);
+		/**
 *
  * Set page title
 */
-        $pageTitle = Text::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE');
-        $this->document->setTitle($pageTitle);
+		$pageTitle = Text::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE');
+		$this->document->setTitle($pageTitle);
 
-    }
+	}
 
 }
 
-?>

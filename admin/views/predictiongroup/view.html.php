@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -29,43 +29,44 @@ use Joomla\CMS\Log\Log;
 class sportsmanagementViewpredictiongroup extends sportsmanagementView
 {
 
-  
-    /**
-     * sportsmanagementViewpredictiongroup::init()
-     *
-     * @return
-     */
-    public function init()
-    {
 
-        // Check for errors.
-        if (count($errors = $this->get('Errors'))) {
-            Log::add(implode('<br />', $errors));
-            return false;
-        }
+	/**
+	 * sportsmanagementViewpredictiongroup::init()
+	 *
+	 * @return
+	 */
+	public function init()
+	{
 
-    }
+		// Check for errors.
+		if (count($errors = $this->get('Errors')))
+		{
+			Log::add(implode('<br />', $errors));
+
+			return false;
+		}
+
+	}
 
 
 
-    /**
-    * Add the page title and toolbar.
-    *
-    * @since 1.7
-    */
-    protected function addToolbar()
-    {  
-     
-        $jinput = Factory::getApplication()->input;
-        $jinput->set('hidemainmenu', true);
-      
-        $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_PREDICTION_GROUP_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICTION_GROUP_NEW');
-        $this->icon = 'pgame';
+	/**
+	 * Add the page title and toolbar.
+	 *
+	 * @since 1.7
+	 */
+	protected function addToolbar()
+	{
 
-        parent::addToolbar();          
-    }
-  
- 
-          
+			 $jinput = Factory::getApplication()->input;
+		$jinput->set('hidemainmenu', true);
+
+			  $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_PREDICTION_GROUP_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICTION_GROUP_NEW');
+		$this->icon = 'pgame';
+
+		parent::addToolbar();
+	}
+
+
+
 }
-?>

@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -21,20 +21,23 @@ use Joomla\CMS\MVC\Model\ListModel;
  */
 class sportsmanagementModelsportsmanagements extends ListModel
 {
-    /**
-     * Method to build an SQL query to load the list data.
-     *
-     * @return string    An SQL query
-     */
-    protected function getListQuery()
-    {
-        // Create a new query object.		
-        $db = sportsmanagementHelper::getDBConnection();
-        $query = $db->getQuery(true);
-        // Select some fields
-        $query->select('id,greeting');
-        // From the hello table
-        $query->from('#__sportsmanagement');
-        return $query;
-    }
+	/**
+	 * Method to build an SQL query to load the list data.
+	 *
+	 * @return string    An SQL query
+	 */
+	protected function getListQuery()
+	{
+		// Create a new query object.
+		$db = sportsmanagementHelper::getDBConnection();
+		$query = $db->getQuery(true);
+
+		// Select some fields
+		$query->select('id,greeting');
+
+		// From the hello table
+		$query->from('#__sportsmanagement');
+
+		return $query;
+	}
 }
