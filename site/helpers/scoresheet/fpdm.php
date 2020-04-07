@@ -746,7 +746,6 @@ if (!call_user_func_array('class_exists', $__tmp)) {
 	
 			$params_call=func_get_args();
 			array_shift($params_call);
-			//var_dump($params_call);
 			
 			return call_user_func_array(array($this,$method),$params_call);
 		}
@@ -1560,9 +1559,6 @@ if (!call_user_func_array('class_exists', $__tmp)) {
 					}
 				}
 				
-				if($verbose_parsing) {
-					var_dump($stream_content);
-				}
 			}
 		}
 	
@@ -1603,12 +1599,6 @@ if (!call_user_func_array('class_exists', $__tmp)) {
 				}else
 					$this->Error("extract_pdf_definition_value() does not support definition '$name'");
 					
-				/*if($name=="/Type") {
-					if(preg_match("/\//",$line,$foo)) {
-					var_dump($match);
-					die("Decoding $name value in line ".htmlentities($line));
-					}
-				}*/
 				return $value;
 		}
 
@@ -1746,7 +1736,6 @@ if (!call_user_func_array('class_exists', $__tmp)) {
 									$stream_filters=$matches[2];
 									$stream["filters"]=array("line"=>$Counter, "type"=>$stream_filters); 
 									if($verbose_parsing) {
-										//var_dump($stream_filters);
 										$stream_filter=implode(" ",$stream_filters);
 										$this->dumpContent($CurLine,"->Stream filter type definition(<font color=\"darkorange\">$stream_filter</font>) for object($obj) at line $Counter");
 									}
@@ -1760,7 +1749,6 @@ if (!call_user_func_array('class_exists', $__tmp)) {
 											
 											$stream["filters"]=array("type"=>array("Standard"));
 											if($verbose_parsing) {
-												var_dump($stream);
 												$this->dumpContent($CurLine,"->No stream filter type definition for object($obj) was found, setting it to '<font color=\"darkorange\">Standard</font>'");
 											}	
 										}
@@ -1780,7 +1768,6 @@ if (!call_user_func_array('class_exists', $__tmp)) {
 											$f=count($filters);
 											$stream_content=$stream["content"];
 											
-											//var_dump($filters);
 											
 											//$filters_type=$filters["type"];
 											
@@ -1793,7 +1780,6 @@ if (!call_user_func_array('class_exists', $__tmp)) {
 												$stream_content=$stream_filter->decode($stream_content);
 												if($verbose_decoding) { 
 													echo "<br><font color=\"blue\"><u>Stream decoded using filter '<font color=\"darkorange\">$filter_name</font>'</u>:[<pre>";
-													var_dump($stream_content); //todo : manipulate this content and adjust offsets.
 													echo "</pre>]</font>";
 												}
 											}
@@ -1807,7 +1793,6 @@ if (!call_user_func_array('class_exists', $__tmp)) {
 												} else {
 													echo "<u>Stream unfiltered</u>:[<pre>";
 												}
-												var_dump($stream_content); 
 												echo "</pre>]</font>";
 												$this->dumpContent($CurLine,"->Closing stream for object($obj) at line $Counter");
 											}
