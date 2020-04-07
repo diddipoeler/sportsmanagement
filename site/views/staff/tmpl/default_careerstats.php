@@ -4,12 +4,12 @@
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
+ * @package    Sportsmanagement
+ * @subpackage staff
  * @file       defaul_careerstats.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
- * @package    sportsmanagement
- * @subpackage staff
  */
 
 defined('_JEXEC') or die('Restricted access');

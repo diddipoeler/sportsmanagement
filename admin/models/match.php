@@ -4,12 +4,12 @@
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
+ * @package    Sportsmanagement
+ * @subpackage match
  * @file       match.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
- * @package    sportsmanagement
- * @subpackage match
  * https://hotexamples.com/de/examples/-/Google_Service_Calendar_EventDateTime/-/php-google_service_calendar_eventdatetime-class-examples.html
  */
 

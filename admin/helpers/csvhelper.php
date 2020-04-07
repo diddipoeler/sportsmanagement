@@ -4,12 +4,12 @@
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
+ * @package    Sportsmanagement
+ * @subpackage helpers
  * @file       csvhelper.php
  * @author
  * @copyright
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
- * @package    sportsmanagement
- * @subpackage helpers
  */
 
 defined('_JEXEC') or die('Restricted access');

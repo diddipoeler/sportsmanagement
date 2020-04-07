@@ -3,7 +3,7 @@
  *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
- * @package    com_sportsmanagement
+ * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_count_rekord
  * @version    1.0
  * @file       /tmpl/default.php
