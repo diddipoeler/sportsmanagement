@@ -424,7 +424,7 @@ class sportsmanagementModelClubPlan extends BaseDatabaseModel
 
 			  // $query->select('m.*,m.id as match_id ,DATE_FORMAT(m.time_present,"%H:%i") time_present');
 			$query->select('m.match_date,m.projectteam1_id,m.projectteam2_id,m.id as match_id ,DATE_FORMAT(m.time_present,"%H:%i") time_present');
-			$query->select('m.playground_id,m.alt_decision ,m.team1_result ,m.team2_result ,m.cancel ');
+			$query->select('m.playground_id,m.alt_decision ,m.team1_result ,m.team2_result ,m.cancel,m.cancel_reason');
 			$query->select('p.name AS project_name,p.id AS project_id,p.id AS prid,CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
 			$query->select('r.id AS roundid,r.roundcode AS roundcode,r.name AS roundname');
 			$query->select('l.name AS l_name');

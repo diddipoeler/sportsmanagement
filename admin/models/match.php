@@ -975,9 +975,9 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 		$data['decision_info'] = $post['decision_info'];
 		$data['team_won'] = $post['team_won'];
 
-		if ($data['id'])
+		if ($data['id'] && !empty($data['match_date']))
 		{
-				$data['match_timestamp'] = sportsmanagementHelper::getTimestamp($data['match_date']);
+			$data['match_timestamp'] = sportsmanagementHelper::getTimestamp($data['match_date']);
 		}
 
 			  /**

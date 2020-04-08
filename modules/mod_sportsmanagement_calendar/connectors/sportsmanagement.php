@@ -295,7 +295,12 @@ class SportsmanagementConnector extends JSMCalendar
 			$newrows[$key]['homepic'] = self::buildImage($teams[$row->projectteam1_id]);
 			$newrows[$key]['awaypic'] = self::buildImage($teams[$row->projectteam2_id]);
 			$newrows[$key]['date'] = sportsmanagementHelper::getMatchStartTimestamp($row);
-			$newrows[$key]['result'] = (!is_null($row->team1_result)) ? $row->team1_result . ':' . $row->team2_result : '-:-';
+			if ($row->cancel = 1) {
+				$newrows[$key]['result'] = $row->cancel_reason;
+			}
+			else {
+				$newrows[$key]['result'] = (!is_null($row->team1_result)) ? $row->team1_result . ':' . $row->team2_result : '-:-';
+			}
 			$newrows[$key]['headingtitle'] = parent::jl_utf8_convert($row->name . '-' . $row->roundname, 'iso-8859-1', 'utf-8');
 			$newrows[$key]['homename'] = self::formatTeamName($teams[$row->projectteam1_id]);
 			$newrows[$key]['awayname'] = self::formatTeamName($teams[$row->projectteam2_id]);
@@ -471,6 +476,7 @@ class SportsmanagementConnector extends JSMCalendar
 		$query->select('m.id,m.round_id,m.projectteam1_id,m.projectteam2_id,m.match_date,m.team1_result,m.team2_result,m.match_date as gamematchdate ');
 		$query->select('p.timezone,p.name,p.alias');
 		$query->select('match_date AS caldate,r.roundcode, r.name AS roundname, r.round_date_first, r.round_date_last,m.id as matchcode, p.id as project_id');
+		$query->select('m.cancel,m.cancel_reason');
 		$query->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
 		$query->select('CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) AS match_slug ');
 		$query->from('#__sportsmanagement_match as m');
