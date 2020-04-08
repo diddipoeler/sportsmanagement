@@ -1,19 +1,22 @@
-<?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+<?php
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage joomleagueimport
+ * @file       default.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 ?>
-      
-<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
+
+	<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 <p class="nowarning"><?php echo Text::_('COM_JOOMLAUPDATE_VIEW_UPDATE_INPROGRESS') ?></p>
 <div class="joomlaupdate_spinner" ></div>
 
@@ -28,14 +31,14 @@ use Joomla\CMS\Language\Text;
 
 
 <?PHP
-//echo 'step -> '.$this->work_table.'<br>';
+// Echo 'step -> '.$this->work_table.'<br>';
 
-if ( $this->bar_value < 100)
+if ($this->bar_value < 100)
 {
-echo '<meta http-equiv="refresh" content="1; URL='.$this->request_url.'">';
+	echo '<meta http-equiv="refresh" content="1; URL=' . $this->request_url . '">';
 }
 ?>
 
-</form>  
+</form>
 
-  
+

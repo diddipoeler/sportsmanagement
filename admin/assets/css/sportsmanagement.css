@@ -1,8 +1,8 @@
 div#ajaxresponse {
-  height:1.2em;
+  height: 1.2em;
 }
 .ajax-loading {
-  background-image : url("../images/ajaxload_1.gif");
+  background-image: url("../images/ajaxload_1.gif");
   background-repeat: no-repeat;
   background-position: 100px;
 }

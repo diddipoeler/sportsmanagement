@@ -1,14 +1,17 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default_data.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+*
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage agegroups
+ * @file       default_data.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -116,14 +119,14 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     <td class="center">
                     <?php if ($row->checked_out) : ?>
                         <?php echo HTMLHelper::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'agegroups.', $canCheckin); ?>
-                        <?php endif; ?>
+                    <?php endif; ?>
                         <?php if ($canEdit) : ?>
                             <a href="<?php echo Route::_('index.php?option=com_sportsmanagement&task=agegroup.edit&id=' . (int) $row->id); ?>">
                             <?php echo $this->escape($row->name); ?></a>
                         <?php else : ?>
                                 <?php echo $this->escape($row->name); ?>
-                            <?php endif; ?>
-                        <input tabindex="2" type="hidden" size="30" maxlength="64" class="form-control form-control-inline" name="name<?php echo $row->id; ?>" value="<?php echo $row->name; ?>" onchange="document.getElementById('cb<?php echo $i; ?>').checked = true" />                        
+                        <?php endif; ?>
+                        <input tabindex="2" type="hidden" size="30" maxlength="64" class="form-control form-control-inline" name="name<?php echo $row->id; ?>" value="<?php echo $row->name; ?>" onchange="document.getElementById('cb<?php echo $i; ?>').checked = true" />                      
 
 
     <?php //echo $checked;  ?>
@@ -152,12 +155,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     } else {
         //$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
         //echo sportsmanagementHelper::getPictureThumb($row->picture, $playerName, 0, 21, 4);
-        ?>                                    
+        ?>                                  
                             <a href="<?php echo Uri::root() . $row->picture; ?>" title="<?php echo $row->name; ?>" class="modal">
                                 <img src="<?php echo Uri::root() . $row->picture; ?>" alt="<?php echo $row->name; ?>" width="20" />
                             </a>
                             <?PHP
-                        }
+    }
                         ?>
                     </td>
 
@@ -183,14 +186,14 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                             <?php echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'agegroup.orderdown', 'JLIB_HTML_MOVE_DOWN', $row->ordering); ?>
                             <?php $disabled = true ? '' : 'disabled="disabled"'; ?>
                         </span>
-                        <input	type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" <?php echo $disabled; ?>
+                        <input    type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" <?php echo $disabled; ?>
                                class="form-control form-control-inline" style="text-align: center" />
                     </td>
                     <td class="center"><?php echo $row->id; ?></td>
                 </tr>
                             <?php
                             $k = 1 - $k;
-                        }
+            }
                         ?>
         </tbody>
     </table>

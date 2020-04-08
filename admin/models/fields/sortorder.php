@@ -1,12 +1,15 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      sortorder.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage fields
+ * @file       sortorder.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 
@@ -23,46 +26,48 @@ FormHelper::loadFieldClass('list');
 
 /**
  * FormFieldsortorder
- * 
- * @package 
- * @author diddi
+ *
+ * @package
+ * @author    diddi
  * @copyright 2014
- * @version $Id$
- * @access public
+ * @version   $Id$
+ * @access    public
  */
 class JFormFieldsortorder extends \JFormFieldList
 {
-    /**
-     * field type
-     * @var string
-     */
-    public $type = 'sortorder';
+	/**
+	 * field type
+	 *
+	 * @var string
+	 */
+	public $type = 'sortorder';
 
-    /**
-     * Method to get the field options.
-     *
-     * @return  array  The field option objects.
-     *
-     * @since   11.1
-     */
-    protected function getOptions()
-    {
-        $app = Factory::getApplication();
-        $option = Factory::getApplication()->input->getCmd('option');
-        $lang = Factory::getLanguage();
-        $options = array();
-        $character = array();
-        $languages = $lang->getTag();
-        
-        $template_sort_orders = ComponentHelper::getParams('com_sportsmanagement')->get('template_sort_orders',0);
+	/**
+	 * Method to get the field options.
+	 *
+	 * @return array  The field option objects.
+	 *
+	 * @since 11.1
+	 */
+	protected function getOptions()
+	{
+		$app = Factory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+		$lang = Factory::getLanguage();
+		$options = array();
+		$character = array();
+		$languages = $lang->getTag();
 
-        for ($i = 1; $i <= $template_sort_orders; $i++) {
-            $options[] = HTMLHelper::_('select.option', $i , $i, 'value', 'text');
-        }
-           
-        // Merge any additional options in the XML definition.
-        $options = array_merge(parent::getOptions(), $options);
+			  $template_sort_orders = ComponentHelper::getParams('com_sportsmanagement')->get('template_sort_orders', 0);
 
-        return $options;
-    }
+		for ($i = 1; $i <= $template_sort_orders; $i++)
+		{
+			$options[] = HTMLHelper::_('select.option', $i, $i, 'value', 'text');
+		}
+
+				 // Merge any additional options in the XML definition.
+		$options = array_merge(parent::getOptions(), $options);
+
+		return $options;
+	}
 }

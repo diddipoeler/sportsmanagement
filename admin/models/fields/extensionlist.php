@@ -1,15 +1,18 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      extensionlist.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage fields
+ * @file       extensionlist.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -21,17 +24,18 @@ FormHelper::loadFieldClass('list');
 
 /**
  * FormFieldExtensionlist
- * 
- * @package   
- * @author 
+ *
+ * @package
+ * @author
  * @copyright diddi
- * @version 2014
- * @access public
+ * @version   2014
+ * @access    public
  */
 class JFormFieldExtensionlist extends \JFormFieldList
 {
 	/**
 	 * field type
+	 *
 	 * @var string
 	 */
 	public $type = 'Extensionlist';
@@ -39,9 +43,9 @@ class JFormFieldExtensionlist extends \JFormFieldList
 	/**
 	 * Method to get the field options.
 	 *
-	 * @return  array  The field option objects.
+	 * @return array  The field option objects.
 	 *
-	 * @since   11.1
+	 * @since 11.1
 	 */
 	protected function getOptions()
 	{
@@ -55,7 +59,8 @@ class JFormFieldExtensionlist extends \JFormFieldList
 		$hideDefault = (string) $this->element['hide_default'];
 
 		// Get the path in which to search for file options.
-		$path = JPATH_ROOT.'/components/com_sportsmanagement/extensions';
+		$path = JPATH_ROOT . '/components/com_sportsmanagement/extensions';
+
 		if (!is_dir($path))
 		{
 			$path = JPATH_ROOT . '/' . $path;
@@ -69,7 +74,6 @@ class JFormFieldExtensionlist extends \JFormFieldList
 		{
 			foreach ($folders as $folder)
 			{
-
 				// Check to see if the file is in the exclude mask.
 				if ($exclude)
 				{

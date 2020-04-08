@@ -24,13 +24,16 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 
-class GCalendarView extends JViewLegacy {
-
+class GCalendarView extends JViewLegacy
+{
 	protected $state;
+
 	protected $params;
+
 	protected $defaultPageTitle = 'COM_GCALENDAR_DEFAULT_PAGE_TITLE';
 
-	public function display($tpl = null) {
+	public function display($tpl = null)
+	{
 		$state = $this->get('State');
 
 		$tmp = clone $state->params;
@@ -41,8 +44,10 @@ class GCalendarView extends JViewLegacy {
 
 		$this->init();
 
-		if (count($errors = $this->get('Errors'))) {
-			Log::add( implode("\n", $errors));
+		if (count($errors = $this->get('Errors')))
+		{
+			Log::add(implode("\n", $errors));
+
 			return false;
 		}
 
@@ -50,7 +55,8 @@ class GCalendarView extends JViewLegacy {
 		parent::display($tpl);
 	}
 
-	protected function prepareDocument() {
+	protected function prepareDocument()
+	{
 		$app	= Factory::getApplication();
 		$menus	= $app->getMenu();
 		$title	= null;
@@ -58,37 +64,53 @@ class GCalendarView extends JViewLegacy {
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself
 		$menu = $menus->getActive();
-		if ($menu) {
+
+		if ($menu)
+		{
 			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
-		} else {
+		}
+		else
+		{
 			$this->params->def('page_heading', Text::_($this->defaultPageTitle));
 		}
+
 		$title = $this->params->get('page_title', '');
-		if (empty($title)) {
+
+		if (empty($title))
+		{
 			$title = $app->getCfg('sitename');
-		} else if ($app->getCfg('sitename_pagetitles', 0) == 1) {
+		}
+		elseif ($app->getCfg('sitename_pagetitles', 0) == 1)
+		{
 			$title = Text::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
-		} else if ($app->getCfg('sitename_pagetitles', 0) == 2) {
+		}
+		elseif ($app->getCfg('sitename_pagetitles', 0) == 2)
+		{
 			$title = Text::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
 		}
+
 		$this->document->setTitle($title);
 
-		if ($this->params->get('menu-meta_description')) {
+		if ($this->params->get('menu-meta_description'))
+		{
 			$this->document->setDescription($this->params->get('menu-meta_description'));
 		}
 
-		if ($this->params->get('menu-meta_keywords')) {
+		if ($this->params->get('menu-meta_keywords'))
+		{
 			$this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords'));
 		}
 
-		if ($this->params->get('robots')) {
+		if ($this->params->get('robots'))
+		{
 			$this->document->setMetadata('robots', $this->params->get('robots'));
 		}
 
-		//Escape strings for HTML output
+		// Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($this->params->get('pageclass_sfx'));
 	}
 
-	protected function init() {
+	protected function init()
+	{
 	}
 }

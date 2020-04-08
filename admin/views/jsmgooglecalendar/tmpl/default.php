@@ -1,12 +1,15 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+*
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage jsmgooglecalendar
+ * @file       default.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die();
@@ -15,26 +18,26 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 
-Factory::getDocument()->addStyleSheet('components/com_sportsmanagement/views/jsmgooglecalendar/tmpl/default.css');   
+Factory::getDocument()->addStyleSheet('components/com_sportsmanagement/views/jsmgooglecalendar/tmpl/default.css'); 
 
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 
-<?php if (!empty( $this->sidebar)) : ?>
-	<div id="j-sidebar-container" class="span2">
-		<?php echo $this->sidebar; ?>
-	</div>
-	<div id="j-main-container" class="span10">
+<?php if (!empty($this->sidebar)) : ?>
+    <div id="j-sidebar-container" class="span2">
+    <?php echo $this->sidebar; ?>
+    </div>
+    <div id="j-main-container" class="span10">
 <?php else : ?>
-	<div id="j-main-container">
+    <div id="j-main-container">
 <?php endif;?>
 
 <div style="width:500px;">
 <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_CPANEL_WELCOME'); ?></h2>
 <p>
 <?php echo Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_CPANEL_INTRO'); ?>
-</p> 
+</p>
 <br>
 
 <div id="cpanel" style="float:left">
@@ -57,8 +60,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                 <span><?php echo Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_CPANEL_ADD'); ?></span>
                 </a>
             </div>
-            
-            
+          
+          
     </div>
 </div>
 </div>
@@ -66,4 +69,4 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?> 
+?>

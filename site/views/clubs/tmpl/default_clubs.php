@@ -1,12 +1,12 @@
-<?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default_clubs.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+<?php
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage clubs
+ * @file       default_clubs.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
@@ -27,7 +27,7 @@ use Joomla\CMS\Factory;
          <?php if ($this->config['show_club_internetadress_picture']) { ?>
 		<th ><?php echo Text::_( 'COM_SPORTSMANAGEMENT_TEAMS_HOMEPAGE_PICTURE' ); ?></th>
 		<?php } ?>
-        
+      
         <?php if ($this->config['show_address'])		{ ?><th class="club_address"><?php echo Text::_( 'COM_SPORTSMANAGEMENT_CLUBS_ADDRESS' ); ?></th><?php } ?>
 	</tr>
 	</thead>
@@ -91,7 +91,7 @@ use Joomla\CMS\Factory;
 						{
 							//dynamic object property string
 							$pic = $this->config['show_picture'];
-                                            
+                                          
 echo sportsmanagementHelperHtml::getBootstrapModalImage('teaminfo'.$team->id,$team->$pic,$team->name,$this->config['team_picture_width']);
 echo '<br />';
 $routeparameter = array();
@@ -100,7 +100,7 @@ $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['tid'] = $team->team_slug;
 $routeparameter['ptid'] = 0;
-$teaminfo_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);                                            
+$teaminfo_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);                                          
 
 							echo HTMLHelper::link( $teaminfo_link, $team->name );
 							echo '<br />';
@@ -109,33 +109,33 @@ $teaminfo_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo
 				</td>
 				<?php
 			}
-            
-            if ($this->config['show_club_internetadress_picture']  ) 
-      { 
+          
+            if ($this->config['show_club_internetadress_picture']  )
+      {
       ?>
 			<td >
-            <?php 
-            
+            <?php
+          
             switch ($this->config['which_internetadress_picture_provider'])
             {
             case 'thumbshots':
             echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$club->website.'">';
-            break;    
+            break;  
             case 'thumbsniper':
             //echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$team->club_www.'">';
             echo '<img style="" src="http://api.thumbsniper.com/api_free.php?size=13&effect='.$this->config['internetadress_picture_thumbsniper_preview'].'&url='.$club->website.'">';
             break;
             }
-             
-            
+           
+          
             ?>
-            
-            
+          
+          
             </td>
-			<?php 
+			<?php
       }
 			?>
-            
+          
 			<?php
 			if ($this->config['show_address'])
 			{

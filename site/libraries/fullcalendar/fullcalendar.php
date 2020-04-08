@@ -21,9 +21,11 @@
 
 defined('_JEXEC') or die();
 
-class jsmFullcalendar{
-	public static function convertFromPHPDate($format){
-		// php date to fullcalendar date conversion
+class jsmFullcalendar
+{
+	public static function convertFromPHPDate($format)
+	{
+		// Php date to fullcalendar date conversion
 		$dateFormat = array(
 			'd' => 'dd',
 			'D' => 'ddd',
@@ -34,60 +36,71 @@ class jsmFullcalendar{
 			'z' => '',
 			'W' => '',
 			'S' => 'S',
-            'F' => 'MMMM',
+			'F' => 'MMMM',
 			'm' => 'MM',
 			'M' => 'MMM',
 			'n' => 'M',
 			't' => '',
 			'L' => '',
-            'o' => 'yyyy',
+			'o' => 'yyyy',
 			'Y' => 'yyyy',
 			'y' => 'yy',
 			'a' => 'tt',
-            'A' => 'TT',
+			'A' => 'TT',
 			'B' => '',
-            'g' => 'h',
-            'G' => 'H',
-            'h' => 'hh',
-            'H' => 'HH',
-            'i' => 'mm',
-            's' => 'ss',
-            'u' => '',
-            'e' => '',
-            'I' => '',
-            'O' => '',
-            'P' => '',
-            'T' => '',
-            'Z' => '',
-            'c' => 'u',
-            'r' => '',
-            'U' => '');
+			'g' => 'h',
+			'G' => 'H',
+			'h' => 'hh',
+			'H' => 'HH',
+			'i' => 'mm',
+			's' => 'ss',
+			'u' => '',
+			'e' => '',
+			'I' => '',
+			'O' => '',
+			'P' => '',
+			'T' => '',
+			'Z' => '',
+			'c' => 'u',
+			'r' => '',
+			'U' => '');
 
 		$newFormat = "";
 		$isText = false;
 		$i = 0;
-		while ($i < strlen($format)) {
+
+		while ($i < strlen($format))
+		{
 			$chr = $format[$i];
-			if ($chr == '"' || $chr == "'") {
+
+			if ($chr == '"' || $chr == "'")
+			{
 				$isText = ! $isText;
 			}
+
 			$replaced = false;
-			if ($isText == false) {
-				foreach ($dateFormat as $zl => $jql) {
-					if (substr($format, $i, strlen($zl)) == $zl) {
+
+			if ($isText == false)
+			{
+				foreach ($dateFormat as $zl => $jql)
+				{
+					if (substr($format, $i, strlen($zl)) == $zl)
+					{
 						$chr = $jql;
 						$i += strlen($zl);
 						$replaced = true;
 					}
 				}
 			}
-			if ($replaced == false) {
+
+			if ($replaced == false)
+			{
 				$i ++;
 			}
+
 			$newFormat .= $chr;
 		}
 
 		return $newFormat;
 	}
 }
-?>

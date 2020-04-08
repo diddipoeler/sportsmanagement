@@ -1,12 +1,15 @@
-<?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+<?php
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage smextxmleditors
+ * @file       default.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -24,14 +27,14 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 <?PHP
 
-//if(version_compare(JVERSION,'3.0.0','ge')) 
-//{
-//echo $this->loadTemplate('joomla3');
-//}
-//else
-//{
-//echo $this->loadTemplate('joomla2');    
-//}
+// If(version_compare(JVERSION,'3.0.0','ge'))
+// {
+// echo $this->loadTemplate('joomla3');
+// }
+// else
+// {
+// echo $this->loadTemplate('joomla2');
+// }
 
 ?>
 
@@ -40,39 +43,37 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 <table class="<?php echo $this->table_data_class; ?>">
 <?PHP
-foreach ( $this->files as $file )
+foreach ($this->files as $file)
 {
-
-
-			$link = Route::_('index.php?option=com_sportsmanagement&view=smextxmleditor&layout=default&file_name='.$file);
-			?>
+	$link = Route::_('index.php?option=com_sportsmanagement&view=smextxmleditor&layout=default&file_name=' . $file);
+	?>
 			<tr class="">
 				<td class="center"></td>
 				<?php
-					
-                    ?>
-                    <td class="center" nowrap="nowrap">
-								<a	href="<?php echo $link; ?>" >
-                                    <?php
-									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_EXT_XML_EDIT');
-									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
-													$imageTitle,'title= "'.$imageTitle.'"');
-									?>
-                    </a>                 
+
+										?>
+					<td class="center" nowrap="nowrap">
+								<a    href="<?php echo $link; ?>" >
+									<?php
+									$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_EXT_XML_EDIT');
+									echo HTMLHelper::_(
+										'image', 'administrator/components/com_sportsmanagement/assets/images/edit.png',
+										$imageTitle, 'title= "' . $imageTitle . '"'
+									);
+			?>
+					</a>               
 					</td>
 				<td>
-                <?php
-					
-					echo $file;
-					
-					?>
-     </td>
-	
-			</tr>
-			<?php
+				<?php
 
-    
-}    
+								  echo $file;
+
+							?>
+	 </td>
+  
+			</tr>
+	<?php
+}
 
 ?>
 </table>
@@ -81,4 +82,3 @@ foreach ( $this->files as $file )
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>  

@@ -6,49 +6,49 @@
 
 
 img{
-padding-bottom:4px;
-padding-right:4px;
-margin-top:5px;
+padding-bottom: 4px;
+padding-right: 4px;
+margin-top: 5px;
 
 }
 
 
 .mod_text_mark {
-	display:block;
-vertical:top;
- color: red;	
+	display: block;
+vertical: top;
+ color: red;
 	}
-	
-	
+
+
  .mod_rquote_quote {
-	 clear:both;
+	 clear: both;
 	 display: block;
 	 font-style: italic;
 	 text-align: bottom;
-	 quotes: "«" ;
-	 font-size:15px;
-	
+	 quotes: "«";
+	 font-size: 15px;
+
    color: blue;
-   
- 
+
+
 }
 .mod_rquote_style {
-  display:block;
+  display: block;
   text-align: left;
   color: brown;
 }
-/* for the creation view:*/ 
+/* for the creation view:*/
 
 .mod_rquote_author {
-  
-  font-style:italic;
+
+  font-style: italic;
   text-align: right;
   color: green;
 }
 
 /* Textfile display options used to control test file display only*/
 .mod_rquote_quote_text_file{
- 	color: fuchsia;
+	 color: fuchsia;
 	font-style: italic;
 }
 
@@ -56,38 +56,38 @@ vertical:top;
 
 .mod_rquote_css {
 		width: 200px;
-    z-index:1;
-    background:#fff;
-    padding:1px;
+	z-index: 1;
+	background: #fff;
+	padding: 1px;
   }
-  
+
 .mod_rquote_css p {							/* Quote style */
 	display: block;
-    font-size: 15px;
-    padding: 10px;
-    position:relative;
-    color: red;
+	font-size: 15px;
+	padding: 10px;
+	position: relative;
+	color: red;
 }
 .mod_rquote_css  p span {
-    position: relative;
-    
-}
+	position: relative;
+
+	}
 .mod_rquote_css p :before {			/* Open Quote Mark */
-    content: "“ ";
-    font-size: 50px;
-    font-weight: bold;
-    line-height:20px;
-    color:inherit;
-    position:absolute;
-    top:10px;
-    left:-25px
+	content: "“ ";
+	font-size: 50px;
+	font-weight: bold;
+	line-height: 20px;
+	color: inherit;
+	position: absolute;
+	top: 10px;
+	left: -25px
 }
 .mod_rquote_css p:after {             /* Close Quote Mark */
-    content: " ”";
-    font-size: 50px;
-    font-weight: bold;
-    line-height:20px;
-    position:absolute;
-    bottom:-5px;
-    color:inherit
+	content: " ”";
+	font-size: 50px;
+	font-weight: bold;
+	line-height: 20px;
+	position: absolute;
+	bottom: -5px;
+	color: inherit
 }

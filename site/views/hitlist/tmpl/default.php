@@ -1,12 +1,15 @@
-<?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+<?php
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage hitlist
+ * @file       default.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -22,31 +25,34 @@ HTMLHelper::_('behavior.modal');
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-if (version_compare(JSM_JVERSION, '4', 'eq')) {
-    $uri = Uri::getInstance();   
-} else {
-    $uri = Factory::getURI();
+if (version_compare(JSM_JVERSION, '4', 'eq'))
+{
+	$uri = Uri::getInstance();
+}
+else
+{
+	$uri = Factory::getURI();
 }
 ?>
 <script language="javascript" type="text/javascript">
 function tableOrdering( order, dir, task )
 {
-        var form = document.adminForm;
+		var form = document.adminForm;
 
-        form.filter_order.value = order;
-        form.filter_order_Dir.value = dir;
-        document.adminForm.submit( task );
+		form.filter_order.value = order;
+		form.filter_order_Dir.value = dir;
+		document.adminForm.submit( task );
 }
 function searchPerson(val)
 	{
-        var s= document.getElementById("filter_search");
-        s.value = val;
-        Joomla.submitform('', this.form)
+		var s= document.getElementById("filter_search");
+		s.value = val;
+		Joomla.submitform('', this.form)
 	}
 </script>
 <div class="row-fluid">
 <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($uri->toString());?>" method="post">
-<?php 
+<?php
 echo $this->loadTemplate('items');
 echo $this->loadTemplate('jsminfo');
 ?>

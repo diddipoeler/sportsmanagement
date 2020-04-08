@@ -1,12 +1,12 @@
-<?php 
+<?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      defaul_players.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage rosteralltime
+ * @file       defaul_players.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 
@@ -94,7 +94,7 @@ foreach ($this->playerposition as $position_id )
 		</th>
 		<?php
 		if ($this->config['show_birthday'] > 0)
-		{ 
+		{
 		  ?>
 		<th class="td_c">
 		  <?php
@@ -121,7 +121,7 @@ foreach ($this->playerposition as $position_id )
 		</th>
 		<?php
 		}
-        
+      
         if ($this->config['show_games_played'])
 			{ ?>
 		<th class="td_c"><?php
@@ -129,7 +129,7 @@ foreach ($this->playerposition as $position_id )
 				echo HTMLHelper::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/played.png',
 				$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		?></th>
-			<?php 
+			<?php
 			}
 			if ($this->config['show_substitution_stats'])
 			{ ?>
@@ -150,7 +150,7 @@ foreach ($this->playerposition as $position_id )
 		?></th>
 			<?php
 			}
-            
+          
        if ($this->config['show_events_stats'])
 		{
 			if ($this->positioneventtypes)
@@ -188,7 +188,7 @@ foreach ($this->playerposition as $position_id )
 				}
 			}
 		}
-                
+              
 	?>
 	</tr>
 	</thead>
@@ -196,7 +196,7 @@ foreach ($this->playerposition as $position_id )
 	<!-- Players row-->
 	<?php
 foreach ($this->rows as $players)
-	{    
+	{  
 	
     if ( $players->position_id == $position_id->id )
     {
@@ -208,11 +208,11 @@ foreach ($this->rows as $players)
     ?>
 		<td width="30" class="td_c"><?php echo $value;?></td>
         <?php
-    
-    //}    
-    $playerName = sportsmanagementHelper::formatName(null, $players->firstname, 
-													$players->nickname, 
-													$players->lastname, 
+  
+    //}  
+    $playerName = sportsmanagementHelper::formatName(null, $players->firstname,
+													$players->nickname,
+													$players->lastname,
 													$this->config["name_format"]);
 		if ($this->config['show_player_icon'])
 		{
@@ -226,21 +226,21 @@ foreach ($this->rows as $players)
 				$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 			} ?>
 		<td width="40" class="td_c" nowrap="nowrap">
-        
-            
+      
+          
 <?PHP
 echo sportsmanagementHelperHtml::getBootstrapModalImage('allplayer'.$players->pid,$picture,$playerName,$this->config['player_picture_width']);
-?>            
+?>          
 		</td><?php
 		}
-        
+      
         if ( $this->config['show_country_flag'] )
 		{ ?>
 		<td width="16" nowrap="nowrap" style="text-align:center; ">
 			<?php echo JSMCountries::getCountryFlag($players->country);?>
 		</td><?php
 		}
-        
+      
         ?>
 		<td class="td_l"><?php
 		if ( $this->config['link_player'] )
@@ -261,8 +261,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('allplayer'.$players->pi
 		}
 		?>
         </td>
-        <?php    
-        
+        <?php  
+      
         if ($this->config['show_birthday'] > 0)
 		{
 			?>
@@ -291,7 +291,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('allplayer'.$players->pi
         // das alter berechnen zur weiterberechnung des durchschnittsalters
         $age += sportsmanagementHelper::getAge( $players->birthday,$players->deathday );
         $countplayer++;
-        
+      
 			}
 			else
 			{
@@ -308,10 +308,10 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('allplayer'.$players->pi
 		</td>
         <?php
 		}
-        
+      
         if ($this->config['show_games_played'])
 			{
-			$played  = $players->start + $players->came_in; 
+			$played  = $players->start + $players->came_in;
 				?>
 		<td class="td_c" nowrap="nowrap"><?php echo $played;?></td>
 				<?php
@@ -325,7 +325,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('allplayer'.$players->pi
 		<td class="td_c"><?php echo $players->out;?></td>
 				<?php
 			}
-            
+          
         if ( $this->config['show_events_stats'] )
 		{
 			if ( isset($this->positioneventtypes[$position_id->id]) )
@@ -353,8 +353,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('allplayer'.$players->pi
 			}
             }
 		}
-        
-        
+      
+      
 	?>
 	</tr>
 	<?php
@@ -369,7 +369,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('allplayer'.$players->pi
   {
   $meanage = round( $age / $countplayer , 2);
   }
-    
+  
     ?>
 	<tr class="">
     <td class="td_r" colspan="3"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_PLAYERS_MEAN_AGE').' '.$meanage; ?></td>

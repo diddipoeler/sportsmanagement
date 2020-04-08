@@ -1,12 +1,15 @@
-<?PHP        
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      table.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+<?PHP
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage libraries
+ * @file       table.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -15,12 +18,12 @@ use Joomla\Registry\Registry;
 
 /**
  * JSMTable
- * 
- * @package 
- * @author Dieter Plöger
+ *
+ * @package
+ * @author    Dieter PlÃ¶ger
  * @copyright 2018
- * @version $Id$
- * @access public
+ * @version   $Id$
+ * @access    public
  */
 class JSMTable extends Table
 {
@@ -28,48 +31,49 @@ class JSMTable extends Table
 
 	/**
 	 * JSMTable::bind()
-	 * 
-	 * @param mixed $array
-	 * @param string $ignore
+	 *
+	 * @param   mixed  $array
+	 * @param   string $ignore
 	 * @return
 	 */
 	function bind($array, $ignore = '')
 	{
-		if (key_exists( 'extended', $array ) && is_array( $array['extended'] ))
+		if (key_exists('extended', $array) && is_array($array['extended']))
 		{
-			$registry = new Registry();
+			$registry = new Registry;
 			$registry->loadArray($array['extended']);
 			$array['extended'] = (string) $registry;
 		}
-		if (key_exists( 'extendeduser', $array ) && is_array( $array['extendeduser'] ))
+
+		if (key_exists('extendeduser', $array) && is_array($array['extendeduser']))
 		{
-			$registry = new Registry();
+			$registry = new Registry;
 			$registry->loadArray($array['extendeduser']);
 			$array['extendeduser'] = (string) $registry;
 		}
-        
-        if (isset($array['season_ids']) && is_array($array['season_ids'])) 
-        {
-        $array['season_ids'] = implode(',', $array['season_ids']);
-        }
-        
-        if ( key_exists( 'params', $array ) && is_array( $array['params'] ) )
+
+		if (isset($array['season_ids']) && is_array($array['season_ids']))
 		{
-			$registry = new Registry();
-			$registry->loadArray( $array['params'] );
+			$array['season_ids'] = implode(',', $array['season_ids']);
+		}
+
+		if (key_exists('params', $array) && is_array($array['params']))
+		{
+			$registry = new Registry;
+			$registry->loadArray($array['params']);
 			$array['params'] = $registry->toString();
 		}
-		if ( key_exists( 'comp_params', $array ) && is_array( $array['comp_params'] ) )
+
+		if (key_exists('comp_params', $array) && is_array($array['comp_params']))
 		{
-			$registry = new Registry();
-			$registry->loadArray( $array['comp_params'] );
-			$array['comp_params'] = $registry->toString();
+					$registry = new Registry;
+					$registry->loadArray($array['comp_params']);
+					$array['comp_params'] = $registry->toString();
 		}
-      
-		return parent::bind($array, $ignore);
+
+			return parent::bind($array, $ignore);
 	}
-    
-        
+
+
 }
 
-?>    

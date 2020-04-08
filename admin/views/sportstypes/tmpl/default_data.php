@@ -1,14 +1,17 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default_data.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+*
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage sportstypes
+ * @file       default_data.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -99,13 +102,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     <td class="center">
                     <?php if ($row->checked_out) : ?>
                         <?php echo HTMLHelper::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'sportstypes.', $canCheckin); ?>
-                        <?php endif; ?>
+                    <?php endif; ?>
                         <?php if ($canEdit) : ?>
                             <a href="<?php echo Route::_('index.php?option=com_sportsmanagement&task=sportstype.edit&id=' . (int) $row->id); ?>">
                             <?php echo $this->escape($row->name); ?></a>
                         <?php else : ?>
                                 <?php echo $this->escape($row->name); ?>
-                            <?php endif; ?>
+                        <?php endif; ?>
 
 
 
@@ -119,7 +122,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     $picture = JPATH_SITE .DIRECTORY_SEPARATOR. $row->icon;
                     $desc = Text::_($row->name);
                     //echo sportsmanagementHelper::getPictureThumb($picture, $desc, 0, 21, 4);
-                    ?>                                    
+                    ?>                                  
                         <a href="<?php echo Uri::root() . $row->icon; ?>" title="<?php echo $desc; ?>" class="modal">
                             <img src="<?php echo Uri::root() . $row->icon; ?>" alt="<?php echo $desc; ?>" width="20" />
                         </a>
@@ -144,7 +147,7 @@ echo HTMLHelper::_('select.genericlist', $this->lists['sportart'], 'sportstype_i
                         }
                         ?>
                         </div>
-                    </td>    
+                    </td>  
 
                     <td class="order">
                         <span>
@@ -156,14 +159,14 @@ echo HTMLHelper::_('select.genericlist', $this->lists['sportart'], 'sportstype_i
     ?>
                             <?php $disabled = true ? '' : 'disabled="disabled"'; ?>
                         </span>
-                        <input	type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" <?php echo $disabled ?>
+                        <input    type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" <?php echo $disabled ?>
                                class="form-control form-control-inline" style="text-align: center" />
                     </td>
                     <td class="center"><?php echo $row->id; ?></td>
                 </tr>
                             <?php
                             $k = 1 - $k;
-                        }
+            }
                         ?>
         </tbody>
     </table>

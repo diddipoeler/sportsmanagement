@@ -13,10 +13,10 @@
  * You should have received a copy of the GNU General Public License
  * along with GCalendar.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package		GCalendar
- * @author		Digital Peak http://www.digital-peak.com
- * @copyright	Copyright (C) 2007 - 2013 Digital Peak. All rights reserved.
- * @license		http://www.gnu.org/licenses/gpl.html GNU/GPL
+ * @package   GCalendar
+ * @author    Digital Peak http://www.digital-peak.com
+ * @copyright Copyright (C) 2007 - 2013 Digital Peak. All rights reserved.
+ * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
 defined('_JEXEC') or die();
@@ -25,63 +25,64 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
 
-//JLoader::import('components.com_gcalendar.libraries.GCalendar.view', JPATH_ADMINISTRATOR);
+// JLoader::import('components.com_gcalendar.libraries.GCalendar.view', JPATH_ADMINISTRATOR);
 
 /**
  * sportsmanagementViewjsmgcalendarImport
- * 
- * @package 
- * @author Dieter Plöger
+ *
+ * @package
+ * @author    Dieter PlÃ¶ger
  * @copyright 2015
- * @version $Id$
- * @access public
+ * @version   $Id$
+ * @access    public
  */
-class sportsmanagementViewjsmgcalendarImport extends sportsmanagementView 
+class sportsmanagementViewjsmgcalendarImport extends sportsmanagementView
 {
-    
-    /**
-     * sportsmanagementViewjsmgcalendarImport::init()
-     * 
-     * @param mixed $tpl
-     * @return void
-     */
-    function init( $tpl = null )
+
+	/**
+	 * sportsmanagementViewjsmgcalendarImport::init()
+	 *
+	 * @param   mixed $tpl
+	 * @return void
+	 */
+	function init( $tpl = null )
 	{
-        
-        if (strpos($this->getLayout(), 'login') === false) 
-        {
+
+		if (strpos($this->getLayout(), 'login') === false)
+		{
 			$this->onlineItems = $this->get('OnlineData');
 			$this->dbItems = $this->get('DBData');
-        }
-       
-        $this->setLayout('login');
-        
-   }     
+		}
 
-//	protected $onlineItems = null;
-//	protected $dbItems = null;
+			 $this->setLayout('login');
+
+	}
+
+	//	protected $onlineItems = null;
+	//	protected $dbItems = null;
 
 	/**
 	 * sportsmanagementViewjsmgcalendarImport::addToolbar()
-	 * 
+	 *
 	 * @return void
 	 */
-	protected function addToolbar() 
-    {
+	protected function addToolbar()
+	{
 		$jinput = Factory::getApplication()->input;
-        $option = $jinput->getCmd('option');
-		if (strpos($this->getLayout(), 'login') === false) {
-				ToolbarHelper::custom('jsmgcalendarimport.save', 'new.png', 'new.png', 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_IMPORT_BUTTON_ADD', false);
+		$option = $jinput->getCmd('option');
+
+		if (strpos($this->getLayout(), 'login') === false)
+		{
+			 ToolbarHelper::custom('jsmgcalendarimport.save', 'new.png', 'new.png', 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_IMPORT_BUTTON_ADD', false);
 			ToolbarHelper::cancel('jsmgcalendar.cancel', 'JTOOLBAR_CANCEL');
 		}
-        else
-        {
-            ToolbarHelper::cancel('jsmgcalendar.cancel', 'JTOOLBAR_CANCEL');
-        }
-        
-		parent::addToolbar();
+		else
+		{
+			ToolbarHelper::cancel('jsmgcalendar.cancel', 'JTOOLBAR_CANCEL');
+		}
+
+			  parent::addToolbar();
 	}
 
 }
 
-?>

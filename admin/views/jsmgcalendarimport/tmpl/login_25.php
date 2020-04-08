@@ -13,10 +13,10 @@
  * You should have received a copy of the GNU General Public License
  * along with GCalendar.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package		GCalendar
- * @author		Digital Peak http://www.digital-peak.com
- * @copyright	Copyright (C) 2007 - 2013 Digital Peak. All rights reserved.
- * @license		http://www.gnu.org/licenses/gpl.html GNU/GPL
+ * @package   GCalendar
+ * @author    Digital Peak http://www.digital-peak.com
+ * @copyright Copyright (C) 2007 - 2013 Digital Peak. All rights reserved.
+ * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
 defined('_JEXEC') or die();
@@ -27,9 +27,9 @@ use Joomla\CMS\Router\Route;
 ?>
 <fieldset>
 	<legend>
-		<?php echo Text::_('COM_GCALENDAR_VIEW_LOGIN_AUTH_DEFAULT_LABEL');?>
+	<?php echo Text::_('COM_GCALENDAR_VIEW_LOGIN_AUTH_DEFAULT_LABEL');?>
 	</legend>
-	<form action="<?php echo Route::_( 'index.php?option=com_sportsmanagement&view=jsmgcalendarimport');?>" method="post" name="adminForm" id="adminForm">
+	<form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view=jsmgcalendarimport');?>" method="post" name="adminForm" id="adminForm">
 		<div class="row-fluid">
 			<div class="span6">
 				<div class="control-group">

@@ -13,31 +13,31 @@
  * You should have received a copy of the GNU General Public License
  * along with GCalendar.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package		GCalendar
- * @author		Digital Peak http://www.digital-peak.com
- * @copyright	Copyright (C) 2007 - 2013 Digital Peak. All rights reserved.
- * @license		http://www.gnu.org/licenses/gpl.html GNU/GPL
+ * @package   GCalendar
+ * @author    Digital Peak http://www.digital-peak.com
+ * @copyright Copyright (C) 2007 - 2013 Digital Peak. All rights reserved.
+ * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
 defined('_JEXEC') or die();
 
-//JLoader::import('components.com_gcalendar.libraries.gcalendar.view', JPATH_SITE);
+// JLoader::import('components.com_gcalendar.libraries.gcalendar.view', JPATH_SITE);
 JLoader::import('joomla.application.component.view');
 JLoader::import('components.com_sportsmanagement.libraries.GCalendar.GCalendarZendHelper', JPATH_ADMINISTRATOR);
 JLoader::import('components.com_sportsmanagement.libraries.dbutil', JPATH_ADMINISTRATOR);
 JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINISTRATOR);
 
-class sportsmanagementViewEvent extends JViewLegacy 
+class sportsmanagementViewEvent extends JViewLegacy
 {
-    public function display($tpl = null) 
-    {
-        $this->event = $this->get('GCalendar');
-        parent::display($tpl);
-    }    
+	public function display($tpl = null)
+	{
+		$this->event = $this->get('GCalendar');
+		parent::display($tpl);
+	}
 
-//	public function init() 
-//    {
-//		$this->event = $this->get('GCalendar');
-//	}
+	//	public function init()
+	//    {
+	//		$this->event = $this->get('GCalendar');
+	//	}
 
 }

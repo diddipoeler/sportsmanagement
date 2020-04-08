@@ -1,41 +1,44 @@
-<?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                GNU General Public License version 2 or later; see LICENSE.txt
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+<?php
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+ *
+ * @version   1.0.05
+ * @file      agegroup.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ *
+ * SportsManagement is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SportsManagement is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Diese Datei ist Teil von SportsManagement.
+ *
+ * SportsManagement ist Freie Software: Sie kÃ¶nnen es unter den Bedingungen
+ * der GNU General Public License, wie von der Free Software Foundation,
+ * Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spÃ¤teren
+ * verÃ¶ffentlichten Version, weiterverbreiten und/oder modifizieren.
+ *
+ * SportsManagement wird in der Hoffnung, dass es nÃ¼tzlich sein wird, aber
+ * OHNE JEDE GEWÃ„HELEISTUNG, bereitgestellt; sogar ohne die implizite
+ * GewÃ¤hrleistung der MARKTFÃ„HIGKEIT oder EIGNUNG FÃœR EINEN BESTIMMTEN ZWECK.
+ * Siehe die GNU General Public License fÃ¼r weitere Details.
+ *
+ * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+ * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+ *
+ * Note : All ini files need to be saved as UTF-8 without BOM
+ */
 
 defined('_JEXEC') or die;
 
@@ -44,15 +47,15 @@ use Joomla\Registry\Registry;
 
 /**
  * ModJSMGoogleCalendarHelper
- * 
- * @package 
- * @author Dieter Plöger
+ *
+ * @package
+ * @author    Dieter PlÃ¶ger
  * @copyright 2017
- * @version $Id$
- * @access public
+ * @version   $Id$
+ * @access    public
  */
-class ModJSMGoogleCalendarHelper {
-
+class ModJSMGoogleCalendarHelper
+{
 	/**
 	 * The google calendar api key
 	 *
@@ -67,11 +70,11 @@ class ModJSMGoogleCalendarHelper {
 	 */
 	protected $calendarId;
 
-	
+
 	/**
 	 * ModJSMGoogleCalendarHelper::__construct()
-	 * 
-	 * @param mixed $params
+	 *
+	 * @param   mixed $params
 	 * @return void
 	 */
 	public function __construct(Registry $params)
@@ -80,19 +83,19 @@ class ModJSMGoogleCalendarHelper {
 		$this->calendarId = $params->get('calendar_id', null);
 	}
 
-	
+
 	/**
 	 * ModJSMGoogleCalendarHelper::nextEvents()
-	 * 
-	 * @param mixed $maxEvents
+	 *
+	 * @param   mixed $maxEvents
 	 * @return
 	 */
 	public function nextEvents($maxEvents)
 	{
 		$options = array(
-			'timeMin'    => JDate::getInstance()->toISO8601(),
-			'orderBy'    => 'startTime',
-			'maxResults' => $maxEvents,
+		 'timeMin'    => JDate::getInstance()->toISO8601(),
+		 'orderBy'    => 'startTime',
+		 'maxResults' => $maxEvents,
 		);
 
 		$events = $this->getEvents($options);
@@ -100,11 +103,11 @@ class ModJSMGoogleCalendarHelper {
 		return $this->prepareEvents($events);
 	}
 
-	
+
 	/**
 	 * ModJSMGoogleCalendarHelper::duration()
-	 * 
-	 * @param mixed $event
+	 *
+	 * @param   mixed $event
 	 * @return
 	 */
 	public static function duration($event)
@@ -128,14 +131,14 @@ class ModJSMGoogleCalendarHelper {
 
 	/**
 	 * ModJSMGoogleCalendarHelper::getEvents()
-	 * 
-	 * @param mixed $options
+	 *
+	 * @param   mixed $options
 	 * @return
 	 */
 	protected function getEvents($options)
 	{
 		$defaultOptions = array(
-			'singleEvents' => 'true',
+		 'singleEvents' => 'true',
 		);
 
 		$options = array_merge($defaultOptions, $options);
@@ -143,8 +146,8 @@ class ModJSMGoogleCalendarHelper {
 		// Create an instance of a default Http object.
 		$http = JHttpFactory::getHttp();
 		$url  = 'https://www.googleapis.com/calendar/v3/calendars/'
-			. urlencode($this->calendarId) . '/events?key=' . urlencode($this->apiKey)
-			. '&' . http_build_query($options);
+		 . urlencode($this->calendarId) . '/events?key=' . urlencode($this->apiKey)
+		 . '&' . http_build_query($options);
 
 		$response = $http->get($url);
 		$data     = json_decode($response->body);
@@ -161,11 +164,11 @@ class ModJSMGoogleCalendarHelper {
 		throw new UnexpectedValueException("Unexpected data received from Google: `{$response->body}`.");
 	}
 
-	
+
 	/**
 	 * ModJSMGoogleCalendarHelper::prepareEvents()
-	 * 
-	 * @param mixed $events
+	 *
+	 * @param   mixed $events
 	 * @return
 	 */
 	protected function prepareEvents($events)
@@ -181,8 +184,8 @@ class ModJSMGoogleCalendarHelper {
 
 	/**
 	 * ModJSMGoogleCalendarHelper::prepareEvent()
-	 * 
-	 * @param mixed $event
+	 *
+	 * @param   mixed $event
 	 * @return
 	 */
 	protected function prepareEvent($event)
@@ -193,11 +196,11 @@ class ModJSMGoogleCalendarHelper {
 		return $event;
 	}
 
-	
+
 	/**
 	 * ModJSMGoogleCalendarHelper::unifyDate()
-	 * 
-	 * @param mixed $date
+	 *
+	 * @param   mixed $date
 	 * @return
 	 */
 	protected function unifyDate($date)

@@ -1,14 +1,17 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage allleagues
+ * @file       default.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -25,20 +28,20 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 
 <script language="javascript" type="text/javascript">
-    function tableOrdering(order, dir, task)
-    {
-        var form = document.adminForm;
+	function tableOrdering(order, dir, task)
+	{
+		var form = document.adminForm;
 
-        form.filter_order.value = order;
-        form.filter_order_Dir.value = dir;
-        document.adminForm.submit(task);
-    }
-    function searchPerson(val)
-    {
-        var s = document.getElementById("filter_search");
-        s.value = val;
-        Joomla.submitform('', this.form)
-    }
+		form.filter_order.value = order;
+		form.filter_order_Dir.value = dir;
+		document.adminForm.submit(task);
+	}
+	function searchPerson(val)
+	{
+		var s = document.getElementById("filter_search");
+		s.value = val;
+		Joomla.submitform('', this.form)
+	}
 </script>
 
 <div class="<?php echo $this->divclasscontainer;?>" id="allleagues">
@@ -46,18 +49,20 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <fieldset class="filters">
 <legend class="hidelabeltxt">
 <?php echo Text::_('JGLOBAL_FILTER_LABEL'); ?>
-</legend>            
+</legend>          
 <div class="filter-search">
 <input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->filter); ?>" class="inputbox" onchange="document.getElementById('adminForm').submit();" />
 <button type="submit" class="btn" title="" ><i class="icon-search"><?php echo Text::_('JGLOBAL_FILTER_BUTTON'); ?></i></button>
 <button type="button" class="btn" title="" onclick="document.id('filter_search').value = '';this.form.submit();" ><i class="icon-remove"><?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?></i></button>
-                
-<?php echo $this->lists['nation2'] . '&nbsp;&nbsp;'; ?>
+
+				<?php echo $this->lists['nation2'] . '&nbsp;&nbsp;'; ?>
 <?php
 $startRange = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('character_filter_start_hex', '0');
 $endRange = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('character_filter_end_hex', '0');
-for ($i = $startRange; $i <= $endRange; $i++) {
-printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;", '&#' . $i . ';', '&#' . $i . ';');
+
+for ($i = $startRange; $i <= $endRange; $i++)
+{
+	printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;", '&#' . $i . ';', '&#' . $i . ';');
 }
 ?>
 </div>

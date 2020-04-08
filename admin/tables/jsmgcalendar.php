@@ -1,12 +1,15 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      jsmgcalendar.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage tables
+ * @file       jsmgcalendar.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -19,19 +22,19 @@ JLoader::import('joomla.database.table');
 
 /**
  * sportsmanagementTablejsmGCalendar
- * 
- * @package   
- * @author 
+ *
+ * @package
+ * @author
  * @copyright diddi
- * @version 2014
- * @access public
+ * @version   2014
+ * @access    public
  */
 class  sportsmanagementTablejsmGCalendar extends JTable
 {
 	/**
 	 * sportsmanagementTablejsmGCalendar::__construct()
-	 * 
-	 * @param mixed $db
+	 *
+	 * @param   mixed $db
 	 * @return
 	 */
 	function __construct(&$db)
@@ -41,9 +44,9 @@ class  sportsmanagementTablejsmGCalendar extends JTable
 
 	/**
 	 * sportsmanagementTablejsmGCalendar::bind()
-	 * 
-	 * @param mixed $array
-	 * @param string $ignore
+	 *
+	 * @param   mixed  $array
+	 * @param   string $ignore
 	 * @return
 	 */
 	public function bind($array, $ignore = '')
@@ -53,7 +56,7 @@ class  sportsmanagementTablejsmGCalendar extends JTable
 			// Convert the params field to a string.
 			$parameter = new Registry;
 			$parameter->loadArray($array['params']);
-			$array['params'] = (string)$parameter;
+			$array['params'] = (string) $parameter;
 		}
 
 		return parent::bind($array, $ignore);
@@ -61,17 +64,18 @@ class  sportsmanagementTablejsmGCalendar extends JTable
 
 	/**
 	 * sportsmanagementTablejsmGCalendar::load()
-	 * 
-	 * @param mixed $keys
-	 * @param bool $reset
+	 *
+	 * @param   mixed $keys
+	 * @param   bool  $reset
 	 * @return
 	 */
 	public function load($keys = null, $reset = true)
 	{
 		$result = parent::load($keys, $reset);
 
-		if(isset($this->password) && !empty($this->password)){
-			$cryptor = new Crypt();
+		if (isset($this->password) && !empty($this->password))
+		{
+			$cryptor = new Crypt;
 			$this->password = $cryptor->decrypt($this->password);
 		}
 
@@ -80,17 +84,20 @@ class  sportsmanagementTablejsmGCalendar extends JTable
 
 	/**
 	 * sportsmanagementTablejsmGCalendar::store()
-	 * 
-	 * @param bool $updateNulls
+	 *
+	 * @param   bool $updateNulls
 	 * @return
 	 */
 	public function store($updateNulls = false)
 	{
 		$oldPassword = $this->password;
-		if(!empty($oldPassword)){
-			$cryptor = new Crypt();
+
+		if (!empty($oldPassword))
+		{
+			$cryptor = new Crypt;
 			$this->password = $cryptor->encrypt($oldPassword);
 		}
+
 		$result = parent::store($updateNulls);
 
 		$this->password = $oldPassword;

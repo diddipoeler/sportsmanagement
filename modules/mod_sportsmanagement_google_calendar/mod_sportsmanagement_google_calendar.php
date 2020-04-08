@@ -1,12 +1,15 @@
-<?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      mod_sportsmanagement_google_calendar.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+<?php
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_google_calendar
+ * @file       mod_sportsmanagement_google_calendar.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
@@ -16,7 +19,7 @@ use Joomla\CMS\Factory;
 try
 {
 	// Require the module helper file
-	require_once __DIR__ . '/helper.php';
+	include_once __DIR__ . '/helper.php';
 
 	// Get a new ModGCalendarHelper instance
 	$helper = new ModJSMGoogleCalendarHelper($params);
@@ -33,9 +36,9 @@ try
 	);
 
 	// Get the Layout
-	require ModuleHelper::getLayoutPath($module->module, $params->get('layout', 'default'));
+	include ModuleHelper::getLayoutPath($module->module, $params->get('layout', 'default'));
 }
-catch(Exception $e)
+catch (Exception $e)
 {
 	Factory::getApplication()->enqueueMessage(
 		'JSM Google Calendar error: ' . $e->getMessage(), 'error'

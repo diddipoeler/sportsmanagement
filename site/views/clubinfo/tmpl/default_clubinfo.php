@@ -1,12 +1,15 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default_clubinfo.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+*
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage clubinfo
+ * @file       default_clubinfo.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -34,7 +37,7 @@ if (version_compare(JSM_JVERSION, '4', 'eq') || $paramscomponent->get('use_jsmgr
 }
 
 if (!isset($this->club)) {
-    Log::add( Text::_('Error: ClubID was not submitted in URL or Club was not found in database'));
+    Log::add(Text::_('Error: ClubID was not submitted in URL or Club was not found in database'));
 } else {
     ?>
     <div class="<?php echo $this->divclassrow;?>">
@@ -47,25 +50,27 @@ if (!isset($this->club)) {
                 $picture = $this->club->logo_big;
             }
 
-$picture = empty($picture) ? sportsmanagementHelper::getDefaultPlaceholder('logo_big') : $picture;
-    
-            echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo' . $this->club->id,
-            $picture,
-            $club_emblem_title,
-            $this->config['club_logo_width'],
-            '',
-            $this->modalwidth,
-            $this->modalheight,
-            $this->overallconfig['use_jquery_modal']);            
+            $picture = empty($picture) ? sportsmanagementHelper::getDefaultPlaceholder('logo_big') : $picture;
+  
+            echo sportsmanagementHelperHtml::getBootstrapModalImage(
+                'clubinfo' . $this->club->id,
+                $picture,
+                $club_emblem_title,
+                $this->config['club_logo_width'],
+                '',
+                $this->modalwidth,
+                $this->modalheight,
+                $this->overallconfig['use_jquery_modal']
+            );          
 
             if ($this->config['show_club_logo_copyright']) {
                 if ($this->club->cr_logo_big) {
                     echo Text::sprintf('COM_SPORTSMANAGEMENT_PAINTER_INFO', '<i>' . $this->club->cr_logo_big . '</i>');
                 }
-                ?> 
-                <!--        : &copy; -->	
+                ?>
+                <!--        : &copy; -->  
                 <?PHP
- 			
+           
             }
             ?>
             <br />
@@ -110,7 +115,7 @@ $picture = empty($picture) ? sportsmanagementHelper::getDefaultPlaceholder('logo
                             ?>
                             <br />
                         </span>
-                    </address>	
+                    </address>  
 
                     <?php
                 }
@@ -162,8 +167,8 @@ $picture = empty($picture) ? sportsmanagementHelper::getDefaultPlaceholder('logo
                     </address>
                     <?php
                 }
-            
-            if ($this->club->twitter) {
+          
+                if ($this->club->twitter) {
                     ?>
                     <address>
                         <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_PERSON_TWITTER'); ?></strong>
@@ -173,7 +178,7 @@ $picture = empty($picture) ? sportsmanagementHelper::getDefaultPlaceholder('logo
                     </address>
                     <?php
                 }
-            if ($this->club->facebook) {
+                if ($this->club->facebook) {
                     ?>
                     <address>
                         <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_PERSON_FACEBOOK'); ?></strong>
@@ -220,10 +225,10 @@ $picture = empty($picture) ? sportsmanagementHelper::getDefaultPlaceholder('logo
                 }
                 if ($this->club->dissolved && $this->club->dissolved != '0000-00-00' && $this->config['show_dissolved']) {
                     ?>
-                    <address>	
+                    <address>  
                         <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_DISSOLVED'); ?></strong>
-                        <?php echo sportsmanagementHelper::convertDate($this->club->dissolved, 1) ?>   
-                    </address>   
+                        <?php echo sportsmanagementHelper::convertDate($this->club->dissolved, 1) ?> 
+                    </address> 
                     <?php
                 }
                 if ($this->club->dissolved_year && $this->config['show_dissolved_year']) {
@@ -268,15 +273,17 @@ $picture = empty($picture) ? sportsmanagementHelper::getDefaultPlaceholder('logo
                             if (!sportsmanagementHelper::existPicture($playground->picture)) {
                                 $playground->picture = sportsmanagementHelper::getDefaultPlaceholder('stadium');
                             }
-echo sportsmanagementHelperHtml::getBootstrapModalImage('playground' . $playground->id,
-            $playground->picture,
-            $playground->name,
-            $this->config['playground_picture_width'],
-            '',
-            $this->modalwidth,
-            $this->modalheight,
-            $this->overallconfig['use_jquery_modal']);                            
-                            
+                            echo sportsmanagementHelperHtml::getBootstrapModalImage(
+                                'playground' . $playground->id,
+                                $playground->picture,
+                                $playground->name,
+                                $this->config['playground_picture_width'],
+                                '',
+                                $this->modalwidth,
+                                $this->modalheight,
+                                $this->overallconfig['use_jquery_modal']
+                            );                          
+                          
                             ?>
                         </address>
                         <?php
@@ -304,21 +311,20 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('playground' . $playgrou
                     <?PHP
                 }
 
-                
-            if ( $this->config['show_fusion'] )
-            {
-            if ($this->familytree) {
-                    $class_collapse = 'collapse in';
-                } else {
-                    $class_collapse = 'collapse';
-                }
-                ?>
-                <a href="#fusion" class="btn btn-info btn-block" data-toggle="collapse">
-                    <strong>
+              
+                if ($this->config['show_fusion'] ) {
+                    if ($this->familytree) {
+                            $class_collapse = 'collapse in';
+                    } else {
+                        $class_collapse = 'collapse';
+                    }
+                        ?>
+                        <a href="#fusion" class="btn btn-info btn-block" data-toggle="collapse">
+                        <strong>
                         <?php echo Text::_('Fusionen'); ?>
                     </strong>
-                </a>
-                <div id="fusion" class="<?PHP echo $class_collapse; ?>">
+                    </a>
+                    <div id="fusion" class="<?PHP echo $class_collapse; ?>">
                     <div class="tree">
 
                         <ul>
@@ -326,20 +332,20 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('playground' . $playgrou
                                 <?php
                                 if (!$this->config['show_bootstrap_tree']) {
                                     ?>
-                                    <span><i class="icon-folder-open"></i> aktueller Verein</span>	
+                                    <span><i class="icon-folder-open"></i> aktueller Verein</span>  
                                     <?php
                                 }
-                                ?>	
+                                ?>  
                                 <a href="#"><?PHP echo HTMLHelper::image($this->club->logo_big, $this->club->name, 'width="30"') . ' ' . $this->club->name; ?></a>
                                 <?php
                                 echo $this->familytree;
                                 ?>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <?php
-        }
+                                </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <?php
+                }
             ?>
             </div>
         <?php }

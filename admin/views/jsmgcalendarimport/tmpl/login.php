@@ -13,10 +13,10 @@
  * You should have received a copy of the GNU General Public License
  * along with GCalendar.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package		GCalendar
- * @author		Digital Peak http://www.digital-peak.com
- * @copyright	Copyright (C) 2007 - 2013 Digital Peak. All rights reserved.
- * @license		http://www.gnu.org/licenses/gpl.html GNU/GPL
+ * @package   GCalendar
+ * @author    Digital Peak http://www.digital-peak.com
+ * @copyright Copyright (C) 2007 - 2013 Digital Peak. All rights reserved.
+ * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
 defined('_JEXEC') or die();
@@ -27,9 +27,9 @@ use Joomla\CMS\Router\Route;
 ?>
 <fieldset>
 	<legend>
-		<?php echo Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_LOGIN_AUTH_DEFAULT_LABEL');?>
+	<?php echo Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_LOGIN_AUTH_DEFAULT_LABEL');?>
 	</legend>
-	<form action="<?php echo Route::_( 'index.php?option=com_sportsmanagement&view=jsmgcalendarimport');?>" method="post" name="adminForm" id="adminForm">
+	<form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view=jsmgcalendarimport');?>" method="post" name="adminForm" id="adminForm">
 		<div class="row-fluid">
 			<div class="span6">
 				<div class="control-group">
@@ -39,7 +39,7 @@ use Joomla\CMS\Router\Route;
 							class="star">&nbsp;*</span> </label>
 					</div>
 					<div class="controls">
-						<input type="text" name="user" id="user" value="<?PHP  echo ComponentHelper::getParams('com_sportsmanagement')->get('google_mail_account',''); ?>"
+						<input type="text" name="user" id="user" value="<?PHP  echo ComponentHelper::getParams('com_sportsmanagement')->get('google_mail_account', ''); ?>"
 							class="inputbox required invalid" size="100" aria-required="true"
 							required="required" aria-invalid="true">
 					</div>
@@ -51,46 +51,46 @@ use Joomla\CMS\Router\Route;
 							class="star">&nbsp;*</span> </label>
 					</div>
 					<div class="controls">
-						<input type="password" name="pass" id="pass" value="<?PHP  echo ComponentHelper::getParams('com_sportsmanagement')->get('google_mail_password',''); ?>"
+						<input type="password" name="pass" id="pass" value="<?PHP  echo ComponentHelper::getParams('com_sportsmanagement')->get('google_mail_password', ''); ?>"
 							class="inputbox required invalid" size="100" aria-required="true"
 							required="required" aria-invalid="true">
 					</div>
 				</div>
-                
-                <div class="control-group">
+
+							  <div class="control-group">
 					<div class="control-label">
 						<label id="jform_name-lbl" for="google_api_clientid"
 							class="hasTip required invalid" title="" aria-invalid="true"><?php echo Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_LOGIN_AUTH_DEFAULT_FIELD_CLIENTID');?><span
 							class="star">&nbsp;*</span> </label>
 					</div>
 					<div class="controls">
-						<input type="text" name="google_api_clientid" id="google_api_clientid" value="<?PHP  echo ComponentHelper::getParams('com_sportsmanagement')->get('google_api_clientid',''); ?>"
+						<input type="text" name="google_api_clientid" id="google_api_clientid" value="<?PHP  echo ComponentHelper::getParams('com_sportsmanagement')->get('google_api_clientid', ''); ?>"
 							class="inputbox required invalid" size="200" aria-required="true"
 							required="required" aria-invalid="true">
 					</div>
 				</div>
-                
-                <div class="control-group">
+
+							  <div class="control-group">
 					<div class="control-label">
 						<label id="jform_name-lbl" for="google_api_clientsecret"
 							class="hasTip required invalid" title="" aria-invalid="true"><?php echo Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_LOGIN_AUTH_DEFAULT_FIELD_CLIENTSECRET');?><span
 							class="star">&nbsp;*</span> </label>
 					</div>
 					<div class="controls">
-						<input type="text" name="google_api_clientsecret" id="google_api_clientsecret" value="<?PHP  echo ComponentHelper::getParams('com_sportsmanagement')->get('google_api_clientsecret',''); ?>"
+						<input type="text" name="google_api_clientsecret" id="google_api_clientsecret" value="<?PHP  echo ComponentHelper::getParams('com_sportsmanagement')->get('google_api_clientsecret', ''); ?>"
 							class="inputbox required invalid" size="200" aria-required="true"
 							required="required" aria-invalid="true">
 					</div>
 				</div>
-                
-                
-                
-                
-			</div>
+
+			  
+			  
+			  
+						  </div>
 		</div>
 		<input type="submit" value="Login" class="btn"/>
-        <input type="" name="task" value="jsmgcalendarimport.login" />
-        <?php echo HTMLHelper::_('form.token'); ?>
+		<input type="" name="task" value="jsmgcalendarimport.login" />
+		<?php echo HTMLHelper::_('form.token'); ?>
 	</form>
 </fieldset>
 

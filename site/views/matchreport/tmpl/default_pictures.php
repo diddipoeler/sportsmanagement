@@ -1,58 +1,69 @@
-<?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default_picture.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+<?php
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage matchreport
+ * @file       default_picture.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined('_JEXEC') or die('Restricted access');
 
-$actualItems = count( $this->matchimages );
-$setItems = count( $this->matchimages ) ;
-$rssitems_colums = $this->config['show_pictures_columns'] ;
-$pictures_width = $this->config['show_pictures_width'] ;
+$actualItems = count($this->matchimages);
+$setItems = count($this->matchimages);
+$rssitems_colums = $this->config['show_pictures_columns'];
+$pictures_width = $this->config['show_pictures_width'];
 
-if ($setItems > $actualItems) {
-$totalItems = $actualItems;
-} else {
-$totalItems = $setItems;
+if ($setItems > $actualItems)
+{
+	$totalItems = $actualItems;
 }
-    
+else
+{
+	$totalItems = $setItems;
+}
+
 ?>
 <div class="<?php echo $this->divclassrow;?> table-responsive" id="matchreport">
 <table class="table ">
 <?php
 $j = 0;
-foreach ( $this->matchimages as $images )
-{
 
-if (($j % $rssitems_colums) == 0 ) : 
-$row = 'row'.(floor($j / $rssitems_colums) % $rssitems_colums) ;
-?>
-<tr class="<?php echo $row; ?>">
-<?php endif; ?>
-<td class="item" style="width:<?php echo floor(99/$rssitems_colums)."%";?>">
-<a href="<?php echo $images->sitepath.DIRECTORY_SEPARATOR.$images->name;?>" alt="<?php echo $images->name;?>" title="<?php echo $images->name;?>" class="highslide" onclick="return hs.expand(this)">
+foreach ($this->matchimages as $images)
+{
+	if (($j % $rssitems_colums) == 0)
+	:
+		$row = 'row' . (floor($j / $rssitems_colums) % $rssitems_colums);
+		?>
+		<tr class="<?php echo $row; ?>">
+	<?php endif; ?>
+<td class="item" style="width:<?php echo floor(99 / $rssitems_colums) . "%";?>">
+<a href="<?php echo $images->sitepath . DIRECTORY_SEPARATOR . $images->name;?>" alt="<?php echo $images->name;?>" title="<?php echo $images->name;?>" class="highslide" onclick="return hs.expand(this)">
 <?php
-echo sportsmanagementHelperHtml::getBootstrapModalImage($images->name,
-$images->sitepath.DIRECTORY_SEPARATOR.$images->name,
-$images->name,
-$pictures_width,
-'',
-$this->modalwidth,
-$this->modalheight,
-$this->overallconfig['use_jquery_modal']);					
+echo sportsmanagementHelperHtml::getBootstrapModalImage(
+	$images->name,
+	$images->sitepath . DIRECTORY_SEPARATOR . $images->name,
+	$images->name,
+	$pictures_width,
+	'',
+	$this->modalwidth,
+	$this->modalheight,
+	$this->overallconfig['use_jquery_modal']
+);
 ?>
 </a>
 </td>
-<?php if (($j % $rssitems_colums) == ($rssitems_colums-1) ) : ?>
+<?php if (($j % $rssitems_colums) == ($rssitems_colums - 1))
+	:
+	?>
 </tr>
 <?php endif; ?>
-<?php						
+<?php
 $j++;
 }
 ?>

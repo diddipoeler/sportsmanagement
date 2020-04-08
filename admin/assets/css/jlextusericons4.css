@@ -1,49 +1,49 @@
 /* mod_quickicon */
 .dashboard-icons{
-    display: flex;
-    flex-wrap: wrap;
+	display: flex;
+	flex-wrap: wrap;
 }
 
 .btn-jsm-dash{
-    border: 2px solid lightgray;
-    border-radius: 5px;
-    margin: 3px;
-    padding: 10px;
-    /* min-width: 120px; */
-    flex-grow: 1;
-    flex-basis: 120px;
+	border: 2px solid lightgray;
+	border-radius: 5px;
+	margin: 3px;
+	padding: 10px;
+	/* min-width: 120px; */
+	flex-grow: 1;
+	flex-basis: 120px;
 }
 
 .btn-jsm-dash:hover{
-    filter: hue-rotate(130deg);
-    color: blue;
-    box-shadow: 1px 1px 10px 0px lightgrey;
+	filter: hue-rotate(130deg);
+	color: blue;
+	box-shadow: 1px 1px 10px 0px lightgrey;
 }
 
 .flexitem img{
-    flex: 0 0 auto;
-    max-width: 100%;
-    max-height: 100%;
-    align-self: center;
-    -webkit-align-self: center;
-    margin: auto;
-    object-fit: scale-down;
+	flex: 0 0 auto;
+	max-width: 100%;
+	max-height: 100%;
+	align-self: center;
+	-webkit-align-self: center;
+	margin: auto;
+	object-fit: scale-down;
 }
 
 /*JSM INFO*/
 
 .jsm-info-team img{
-    max-width: 60px;
+	max-width: 60px;
 }
 
 .jsm-logo-box img{
-    flex: 0 0 auto;
-    max-width: 150px;
-    max-height: 100%;
-    align-self: center;
-    -webkit-align-self: center;
-    margin: auto;
-    object-fit: scale-down;
+	flex: 0 0 auto;
+	max-width: 150px;
+	max-height: 100%;
+	align-self: center;
+	-webkit-align-self: center;
+	margin: auto;
+	object-fit: scale-down;
 }
 
 
@@ -51,14 +51,14 @@
 /*old*/
 
 .pane-sliders .panel h3 {
-    background: #ccc;
-    color: #036;
+	background: #ccc;
+	color: #036;
 }
 
 legend {
-    color: #003366;
-    font-size: 1.182em;
-    font-weight: bold;
+	color: #003366;
+	font-size: 1.182em;
+	font-weight: bold;
 }
 
 #cpanel div.icon a:hover,
@@ -69,365 +69,363 @@ legend {
 .cpanel div.icon a:active,
 .a:link,
 .a:visited{
-    -moz-transition-duration:none !important;
-    -webkit-transition-duration:none !important;
-    -webkit-transition-property:none !important;
-    background-color:transparent !important;
-    background-position:none !important;
-    -webkit-box-shadow:none !important;
-    -moz-box-shadow:none !important; 
-    box-shadow:none !important;
-    color:#0033ff;}
+	-moz-transition-duration: none !important;
+	-webkit-transition-duration: none !important;
+	-webkit-transition-property: none !important;
+	background-color: transparent !important;
+	background-position: none !important;
+	-webkit-box-shadow: none !important;
+	-moz-box-shadow: none !important;
+	box-shadow: none !important;
+	color: #0033ff;}
 #cpanel,.cpanel{
-    background:url(images/cpanel_bg.jpg) left 0px;
-    padding-bottom:10px;
-    display:inline-block;
-    zoom:1;
-    display:block;
+	background: url(images/cpanel_bg.jpg) left 0px;
+	padding-bottom: 10px;
+	display: inline-block;
+	zoom: 1;
+	display: block;
 }
 #cpanel:after, .cpanel:after {
-    content: ".";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden;
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
 }
 #cpanel div.icon, .cpanel div.icon {
-    text-align: center;
-    margin-right: 15px;
-    margin-left:15px;
-    float: left;
-    margin-bottom: 5px;
-    border:none;
-    height:135px;
-    font-size: 1.0em;
+	text-align: center;
+	margin-right: 15px;
+	margin-left: 15px;
+	float: left;
+	margin-bottom: 5px;
+	border: none;
+	height: 135px;
+	font-size: 1.0em;
 }
 
 #cpanel div.icon a, .cpanel div.icon a{
-    display: block;
-    background-color: transparent;
-    background-position: 0px;
-    float: left;
-    width: 80px;
-    margin:3px 0px 0px 0px;
-    height:auto;
-    color: #333;
-    vertical-align: middle;
-    text-decoration: none;
-    border:none;
-    border-radius:0px;
-    box-shadow:none;
-    transition-duration:0.0s;
-    transition-property:none;
-    padding:0px;
+	display: block;
+	background-color: transparent;
+	background-position: 0px;
+	float: left;
+	width: 80px;
+	margin: 3px 0px 0px 0px;
+	height: auto;
+	color: #333;
+	vertical-align: middle;
+	text-decoration: none;
+	border: none;
+	border-radius: 0px;
+	box-shadow: none;
+	transition-duration: 0.0s;
+	transition-property: none;
+	padding: 0px;
 }
 #cpanel div.icon img, .cpanel div.icon img{
-    background:#eee;
-    padding:20px 15px;
-    margin:9px 0px;
-    border-top:1px solid #fff;
-    border-left:1px solid #fff;
-    border-right:1px solid #bbb;
-    border-bottom:1px solid #bbb;
+	background: #eee;
+	padding: 20px 15px;
+	margin: 9px 0px;
+	border-top: 1px solid #fff;
+	border-left: 1px solid #fff;
+	border-right: 1px solid #bbb;
+	border-bottom: 1px solid #bbb;
 
 }
-#cpanel div.icon img:hover, .cpanel div.icon img:hover{border:1px solid #999;}
+#cpanel div.icon img:hover, .cpanel div.icon img:hover{border: 1px solid #999;}
 #cpanel img, .cpanel img  { padding: 10px 0; margin: 0 auto; }
-#cpanel span, .cpanel span { display: block; text-align: center; font-weight:bold; }
+#cpanel span, .cpanel span { display: block; text-align: center; font-weight: bold; }
 
 div.cpanel-left {
-    width: 54%;
-    float: left;
+	width: 54%;
+	float: left;
 }
 
 div.cpanel-right {
-    width: 45%;
-    float: right;
+	width: 45%;
+	float: right;
 }
 
 /** Style for JSM admin/views - added by stony **/
 fieldset.panelform label, fieldset.panelform div.paramrow label, fieldset.panelform span.faux-label {
-    max-width: 255px;
-    min-width: 255px;
-    padding: 0 5px 0 0;
+	max-width: 255px;
+	min-width: 255px;
+	padding: 0 5px 0 0;
 }
 
 /** header icons component**/
 .icon-48-agegroups {
-    background-image: url(../icons/altersklassen.png);
+	background-image: url(../icons/altersklassen.png);
 }
 .icon-48-agegroup {
-    background-image: url(../icons/altersklassen.png);
+	background-image: url(../icons/altersklassen.png);
 }
 .icon-48-association {
-    background-image: url(../icons/landesverbaende.png);
+	background-image: url(../icons/landesverbaende.png);
 }
 .icon-48-associations {
-    background-image: url(../icons/landesverbaende.png);
+	background-image: url(../icons/landesverbaende.png);
 }
 .icon-48-clubs {
-    background-image: url(../icons/vereine.png);
+	background-image: url(../icons/vereine.png);
 }
 .icon-48-club {
-    background-image: url(../icons/vereine.png);
+	background-image: url(../icons/vereine.png);
 }
 .icon-48-countries {
-    background-image: url(../icons/laender.png);
+	background-image: url(../icons/laender.png);
 }
 .icon-48-country {
-    background-image: url(../icons/laender.png);
+	background-image: url(../icons/laender.png);
 }
 .icon-48-currentseason {
-    background-image: url(../icons/aktuellesaison.png);
+	background-image: url(../icons/aktuellesaison.png);
 }
 .icon-48-extrafield {
-    background-image: url(../icons/extrafelder.png);
+	background-image: url(../icons/extrafelder.png);
 }
 .icon-48-extrafields {
-    background-image: url(../icons/extrafelder.png);
+	background-image: url(../icons/extrafelder.png);
 }
 .icon-48-extensions {
-    background-image: url(../icons/extensions.png);
+	background-image: url(../icons/extensions.png);
 }
 .icon-48-event {
-    background-image: url(../icons/ereignisse.png);
+	background-image: url(../icons/ereignisse.png);
 }
 .icon-48-events {
-    background-image: url(../icons/ereignisse.png);
+	background-image: url(../icons/ereignisse.png);
 }
 .icon-48-database {
-    background-image: url(../icons/datenbanktools.png);
+	background-image: url(../icons/datenbanktools.png);
 }
 .icon-48-databases {
-    background-image: url(../icons/datenbanktools.png);
+	background-image: url(../icons/datenbanktools.png);
 }
 .icon-48-division {
-    background-image: url(../icons/divisionen.png);
+	background-image: url(../icons/divisionen.png);
 }
 .icon-48-divisions {
-    background-image: url(../icons/divisionen.png);
+	background-image: url(../icons/divisionen.png);
 }
 .icon-48-leagues {
-    background-image: url(../icons/ligen.png);
+	background-image: url(../icons/ligen.png);
 }
 .icon-48-league {
-    background-image: url(../icons/ligen.png);
+	background-image: url(../icons/ligen.png);
 }
 .icon-48-match {
-    background-image: url(../icons/spiel.png);
+	background-image: url(../icons/spiel.png);
 }
 .icon-48-matches {
-    background-image: url(../icons/spiel.png);
+	background-image: url(../icons/spiel.png);
 }
 .icon-48-persons {
-    background-image: url(../icons/personen.png);
+	background-image: url(../icons/personen.png);
 }
 .icon-48-person {
-    background-image: url(../icons/personen.png);
+	background-image: url(../icons/personen.png);
 }
 .icon-48-playground {
-    background-image: url(../icons/spielorte.png);
+	background-image: url(../icons/spielorte.png);
 }
 .icon-48-playgrounds {
-    background-image: url(../icons/spielorte.png);
+	background-image: url(../icons/spielorte.png);
 }
 .icon-48-position {
-    background-image: url(../icons/positionen.png);
+	background-image: url(../icons/positionen.png);
 }
 .icon-48-positions {
-    background-image: url(../icons/positionen.png);
+	background-image: url(../icons/positionen.png);
 }
 .icon-48-predgame {
-    background-image: url(../icons/tippspiele.png);
+	background-image: url(../icons/tippspiele.png);
 }
 .icon-48-predgames {
-    background-image: url(../icons/tippspiele.png);
+	background-image: url(../icons/tippspiele.png);
 }
 .icon-48-predgroup {
-    background-image: url(../icons/tippspielgruppen.png);
+	background-image: url(../icons/tippspielgruppen.png);
 }
 .icon-48-predgroups {
-    background-image: url(../icons/tippspielgruppen.png);
+	background-image: url(../icons/tippspielgruppen.png);
 }
 .icon-48-predmember {
-    background-image: url(../icons/tippspielmitglieder.png);
+	background-image: url(../icons/tippspielmitglieder.png);
 }
 .icon-48-predmembers {
-    background-image: url(../icons/tippspielmitglieder.png);
+	background-image: url(../icons/tippspielmitglieder.png);
 }
 .icon-48-predproject {
-    background-image: url(../icons/tippspielprojekte.png);
+	background-image: url(../icons/tippspielprojekte.png);
 }
 .icon-48-predictions {
-    background-image: url(../icons/tippspiele.png);
+	background-image: url(../icons/tippspiele.png);
 }
 .icon-48-predtemplate {
-    background-image: url(../icons/tippspieltemplates.png);
+	background-image: url(../icons/tippspieltemplates.png);
 }
 .icon-48-predtemplates {
-    background-image: url(../icons/tippspieltemplates.png);
+	background-image: url(../icons/tippspieltemplates.png);
 }
 .icon-48-project {
-    background-image: url(../icons/projekte.png);
+	background-image: url(../icons/projekte.png);
 }
 .icon-48-pojectpositions {
-    background-image: url(../icons/projektpositionen.png);
+	background-image: url(../icons/projektpositionen.png);
 }
 .icon-48-projectreferees {
-    background-image: url(../icons/projektschiedsrichter.png);
+	background-image: url(../icons/projektschiedsrichter.png);
 }
 .icon-48-projectreferee {
-    background-image: url(../icons/projektschiedsrichter.png);
+	background-image: url(../icons/projektschiedsrichter.png);
 }
 .icon-48-projects {
-    background-image: url(../icons/projekte.png);
+	background-image: url(../icons/projekte.png);
 }
 .icon-48-projectteam {
-    background-image: url(../icons/projektteam.png);
+	background-image: url(../icons/projektteam.png);
 }
 .icon-48-projectteams {
-    background-image: url(../icons/projektteams.png);
+	background-image: url(../icons/projektteams.png);
 }
 .icon-48-projectsettings {
-    background-image: url(../icons/projekte.png);
+	background-image: url(../icons/projekte.png);
 }
 .icon-48-rosterposition {
-    background-image: url(../icons/spielfeldpositionen.png);
+	background-image: url(../icons/spielfeldpositionen.png);
 }
 .icon-48-rosterpositions {
-    background-image: url(../icons/spielfeldpositionen.png);
+	background-image: url(../icons/spielfeldpositionen.png);
 }
 .icon-48-matchday {
-    background-image: url(../icons/spieltage.png);
+	background-image: url(../icons/spieltage.png);
 }
 .icon-48-matchdays {
-    background-image: url(../icons/spieltage.png);
+	background-image: url(../icons/spieltage.png);
 }
 .icon-48-quote {
-    background-image: url(../icons/zitate.png);
+	background-image: url(../icons/zitate.png);
 }
 .icon-48-quotes {
-    background-image: url(../icons/zitate.png);
+	background-image: url(../icons/zitate.png);
 }
 .icon-48-season {
-    background-image: url(../icons/saisons.png);
+	background-image: url(../icons/saisons.png);
 }
 .icon-48-seasons {
-    background-image: url(../icons/saisons.png);
+	background-image: url(../icons/saisons.png);
 }
 .icon-48-sporttype {
-    background-image: url(../icons/sportarten.png);
+	background-image: url(../icons/sportarten.png);
 }
 .icon-48-sporttypes {
-    background-image: url(../icons/sportarten.png);
+	background-image: url(../icons/sportarten.png);
 }
 .icon-48-statistic {
-    background-image: url(../icons/statistik.png);
+	background-image: url(../icons/statistik.png);
 }
 .icon-48-statistics {
-    background-image: url(../icons/statistik.png);
+	background-image: url(../icons/statistik.png);
 }
 .icon-48-team {
-    background-image: url(../icons/mannschaften.png);
+	background-image: url(../icons/mannschaften.png);
 }
 .icon-48-teams {
-    background-image: url(../icons/mannschaften.png);
+	background-image: url(../icons/mannschaften.png);
 }
 .icon-48-teamplayer {
-    background-image: url(../icons/mannschaftsspieler.png);
+	background-image: url(../icons/mannschaftsspieler.png);
 }
 .icon-48-teamplayers {
-    background-image: url(../icons/mannschaftsspieler.png);
+	background-image: url(../icons/mannschaftsspieler.png);
 }
 .icon-48-teamstaff {
-    background-image: url(../icons/mannschaftsmitarbeiter.png);
+	background-image: url(../icons/mannschaftsmitarbeiter.png);
 }
 .icon-48-teamstaffs {
-    background-image: url(../icons/mannschaftsmitarbeiter.png);
+	background-image: url(../icons/mannschaftsmitarbeiter.png);
 }
 .icon-48-template {
-    background-image: url(../icons/template.png);
+	background-image: url(../icons/template.png);
 }
 .icon-48-templates {
-    background-image: url(../icons/templates.png);
+	background-image: url(../icons/templates.png);
 }
 .icon-48-updates {
-    background-image: url(../icons/updates.png);
+	background-image: url(../icons/updates.png);
 }
 .icon-48-helloworld {
-    background-image: url(../icons/transparent_schrift_48.png);
+	background-image: url(../icons/transparent_schrift_48.png);
 }
 .icon-48-pred-cpanel {
-    background-image: url(../icons/tippspiel.png);
+	background-image: url(../icons/tippspiel.png);
 }
 .icon-48-lmo-cpanel {
-    background-image: url(../icons/lmoimport.png);
+	background-image: url(../icons/lmoimport.png);
 }
 .icon-48-dfbkey {
-    background-image: url(../icons/dfbschluessel.png);
+	background-image: url(../icons/dfbschluessel.png);
 }
 .icon-48-dbb-cpanel {
-    background-image: url(../icons/dbbimport.png);
+	background-image: url(../icons/dbbimport.png);
 }
 .icon-48-dfbnet {
-    background-image: url(../icons/dfbnetimport.png);
+	background-image: url(../icons/dfbnetimport.png);
 }
 .icon-48-sisimport {
-    background-image: url(../icons/sisimport.png);
+	background-image: url(../icons/sisimport.png);
 }
 .icon-48-xmlimport {
-    background-image: url(../icons/xmlimport.png);
+	background-image: url(../icons/xmlimport.png);
 }
 .icon-48-xmlimports {
-    background-image: url(../icons/xmlimport.png);
+	background-image: url(../icons/xmlimport.png);
 }
 .icon-48-xml-edit {
-    background-image: url(../icons/xmleditor.png);
+	background-image: url(../icons/xmleditor.png);
 }
 .icon-48-xml-edits {
-    background-image: url(../icons/xmleditor.png);
+	background-image: url(../icons/xmleditor.png);
 }
 .icon-48-cbe-tabs {
-    background-image: url(../icons/tabmanager.png);
+	background-image: url(../icons/tabmanager.png);
 }
 .icon-48-cbe-fields {
-    background-image: url(../icons/fieldmanager.png);
+	background-image: url(../icons/fieldmanager.png);
 }
 .icon-48-cbe-lists {
-    background-image: url(../icons/listmanager.png);
+	background-image: url(../icons/listmanager.png);
 }
 .icon-48-cbe-search {
-    background-image: url(../icons/searchmanager.png);
+	background-image: url(../icons/searchmanager.png);
 }
 .icon-48-cbe-blockedusers {
-    background-image: url(../icons/blockednamesmanager.png);
+	background-image: url(../icons/blockednamesmanager.png);
 }
 .icon-48-cbe-badwords {
-    background-image: url(../icons/badwordsmanager.png);
+	background-image: url(../icons/badwordsmanager.png);
 }
 .icon-48-cbe-config {
-    background-image: url(../icons/cbeconfig.png);
+	background-image: url(../icons/cbeconfig.png);
 }
 .icon-48-cbe-enhconfig {
-    background-image: url(../icons/cbeenhconfig.png);
+	background-image: url(../icons/cbeenhconfig.png);
 }
 .icon-48-cbe-admods {
-    background-image: url(../icons/module.png);
+	background-image: url(../icons/module.png);
 }
 .icon-48-cbe-extensions {
-    background-image: url(../icons/extensions.png);
+	background-image: url(../icons/extensions.png);
 }
 .icon-48-cbe-extensionsconf {
-    background-image: url(../icons/extensionsconfig.png);
+	background-image: url(../icons/extensionsconfig.png);
 }
 .icon-48-cbe-tools {
-    background-image: url(../icons/tools.png);
+	background-image: url(../icons/tools.png);
 }
 .icon-48-cbe-updates {
-    background-image: url(../icons/browser.png);
+	background-image: url(../icons/browser.png);
 }
 .icon-48-cbe-pinboard {
-    background-image: url(../icons/pinboard.png);
+	background-image: url(../icons/pinboard.png);
 }
-
-

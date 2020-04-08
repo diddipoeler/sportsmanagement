@@ -1,15 +1,18 @@
-<?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default_summary.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+<?php
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage matchreport
+ * @file       default_summary.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -25,7 +28,7 @@ if (!empty($this->match->summary))
 		<tr>
 			<td class="contentheading">
 				<?php
-				echo '&nbsp;' . Text::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_SUMMARY' );
+				echo '&nbsp;' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_SUMMARY');
 				?>
 			</td>
 		</tr>
@@ -33,16 +36,18 @@ if (!empty($this->match->summary))
 	<table class="table ">
 		<tr>
 			<td>
-			<?php
-			$summary = $this->match->summary;
-			$summary = HTMLHelper::_('content.prepare', $summary);
+	<?php
+	$summary = $this->match->summary;
+	$summary = HTMLHelper::_('content.prepare', $summary);
 
-			if ($commentsDisabled) {
-				$summary = preg_replace('#{jcomments\s+(off|lock)}#is', '', $summary);
-			}
-			echo $summary;
+	if ($commentsDisabled)
+	{
+		$summary = preg_replace('#{jcomments\s+(off|lock)}#is', '', $summary);
+	}
 
-			?>
+	echo $summary;
+
+	?>
 			</td>
 		</tr>
 	</table>

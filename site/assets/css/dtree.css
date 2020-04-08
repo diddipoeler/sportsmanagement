@@ -7,12 +7,12 @@
 */
 .dtree {
   /* font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; */
-  font-size:11px !important;
+  font-size: 11px !important;
   line-height: 16px !important;
   /* color: #666; */
   white-space: nowrap;
   text-align: left;
-  padding-bottom:5px;
+  padding-bottom: 5px;
 }
 .dtree img {
   border: 0px;

@@ -1,12 +1,15 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      default_data.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+*
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage playgrounds
+ * @file       default_data.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -79,7 +82,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         <tfoot>
             <tr>
                 <td colspan="11" class="center">
-                    <?php echo $this->pagination->getListFooter(); ?>               
+                    <?php echo $this->pagination->getListFooter(); ?>             
                     <?php echo $this->pagination->getResultsCounter(); ?>
                 </td>
             </tr>

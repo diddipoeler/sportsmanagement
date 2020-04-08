@@ -1,12 +1,15 @@
-<?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      view.html.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+<?php
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage referee
+ * @file       view.html.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright  Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -17,35 +20,37 @@ jimport('joomla.application.component.view');
 
 /**
  * sportsmanagementViewReferee
- * 
- * @package 
- * @author diddi
+ *
+ * @package
+ * @author    diddi
  * @copyright 2014
- * @version $Id$
- * @access public
+ * @version   $Id$
+ * @access    public
  */
 class sportsmanagementViewReferee extends JViewLegacy
 {
 
 	/**
 	 * sportsmanagementViewReferee::display()
-	 * 
-	 * @param mixed $tpl
+	 *
+	 * @param   mixed $tpl
 	 * @return void
 	 */
 	function display($tpl=null)
 	{
 		// Reference global application object
-        $app = Factory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        // Get a refrence of the page instance in joomla
+		$app = Factory::getApplication();
+
+		// JInput object
+		$jinput = $app->input;
+
+		// Get a refrence of the page instance in joomla
 		$document = Factory::getDocument();
-        $option = $jinput->getCmd('option');
+		$option = $jinput->getCmd('option');
 
 		$model = $this->getModel();
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
-		$person = sportsmanagementModelPerson::getPerson(0,$model::$cfg_which_database);
+		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(), $model::$cfg_which_database);
+		$person = sportsmanagementModelPerson::getPerson(0, $model::$cfg_which_database);
 
 		$this->project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
 		$this->overallconfig = sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database);
@@ -53,9 +58,10 @@ class sportsmanagementViewReferee extends JViewLegacy
 		$this->person = $person;
 
 		$ref = sportsmanagementModelPerson::getReferee();
+
 		if ($ref)
 		{
-			$titleStr = Text::sprintf('COM_SPORTSMANAGEMENT_REFEREE_ABOUT_AS_A_REFEREE',sportsmanagementHelper::formatName(null, $ref->firstname, $ref->nickname, $ref->lastname, $this->config["name_format"]));
+			$titleStr = Text::sprintf('COM_SPORTSMANAGEMENT_REFEREE_ABOUT_AS_A_REFEREE', sportsmanagementHelper::formatName(null, $ref->firstname, $ref->nickname, $ref->lastname, $this->config["name_format"]));
 		}
 		else
 		{
@@ -69,7 +75,7 @@ class sportsmanagementViewReferee extends JViewLegacy
 		if ($config['show_gameshistory'])
 		{
 			$this->games = $model->getGames();
-			$this->teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$model::$cfg_which_database);
+			$this->teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0, 'name', $model::$cfg_which_database);
 		}
 
 		if ($person)
@@ -77,20 +83,20 @@ class sportsmanagementViewReferee extends JViewLegacy
 			$extended = sportsmanagementHelper::getExtended($person->extended, 'referee');
 			$this->extended = $extended;
 		}
-       
-        if ( !isset($this->config['history_table_class']) )
-        {
-            $this->config['history_table_class'] = 'table';
-        }
-        if ( !isset($this->config['career_table_class']) )
-        {
-            $this->config['career_table_class'] = 'table';
-        }
-        
-        $this->headertitle = $this->title;
-        
-		parent::display($tpl);
+
+		if (!isset($this->config['history_table_class']))
+		{
+			$this->config['history_table_class'] = 'table';
+		}
+
+		if (!isset($this->config['career_table_class']))
+		{
+					$this->config['career_table_class'] = 'table';
+		}
+
+			  $this->headertitle = $this->title;
+
+			  parent::display($tpl);
 	}
 
 }
-?>

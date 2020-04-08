@@ -1,15 +1,18 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      kunenacategorylist.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage fields
+ * @file       kunenacategorylist.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined ( '_JEXEC' ) or die ();
+defined('_JEXEC') or die();
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -18,31 +21,34 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * FormFieldKunenaCategoryList
- * 
- * @package   
- * @author 
+ *
+ * @package
+ * @author
  * @copyright diddi
- * @version 2014
- * @access public
+ * @version   2014
+ * @access    public
  */
-class JFormFieldKunenaCategoryList extends \JFormFieldList 
+class JFormFieldKunenaCategoryList extends \JFormFieldList
 {
 	protected $type = 'KunenaCategoryList';
 
 	/**
 	 * FormFieldKunenaCategoryList::getInput()
-	 * 
+	 *
 	 * @return
 	 */
-	protected function getInput() {
-		if (!class_exists('KunenaForum') || !KunenaForum::installed()) {
+	protected function getInput()
+	{
+		if (!class_exists('KunenaForum') || !KunenaForum::installed())
+		{
 			echo '<a href="index.php?option=com_kunena">PLEASE COMPLETE KUNENA INSTALLATION</a>';
+
 			return;
 		}
-        else
-        {
-            HTMLHelper::addIncludePath(KPATH_ADMIN . '/libraries/html/html');
-        }
+		else
+		{
+			HTMLHelper::addIncludePath(KPATH_ADMIN . '/libraries/html/html');
+		}
 
 		KunenaFactory::loadLanguage('com_kunena');
 
@@ -52,15 +58,23 @@ class JFormFieldKunenaCategoryList extends \JFormFieldList
 		$class = $this->element['class'];
 
 		$attribs = ' ';
-		if ($size) {
+
+		if ($size)
+		{
 			$attribs .= 'size="' . $size . '"';
 		}
-		if ($class) {
+
+		if ($class)
+		{
 			$attribs .= 'class="' . $class . '"';
-		} else {
+		}
+		else
+		{
 			$attribs .= 'class="inputbox"';
 		}
-		if (!empty($this->element['multiple'])) {
+
+		if (!empty($this->element['multiple']))
+		{
 			$attribs .= ' multiple="multiple"';
 		}
 
@@ -73,23 +87,24 @@ class JFormFieldKunenaCategoryList extends \JFormFieldList
 	/**
 	 * Method to get the field options.
 	 *
-	 * @return  array  The field option objects.
-	 * @since   11.1
+	 * @return array  The field option objects.
+	 * @since  11.1
 	 */
 	protected function getOptions()
 	{
 		// Initialize variables.
 		$options = array();
 
-		foreach ($this->element->children() as $option) {
-
+		foreach ($this->element->children() as $option)
+		{
 			// Only add <option /> elements.
-			if ($option->getName() != 'option') {
+			if ($option->getName() != 'option')
+			{
 				continue;
 			}
 
 			// Create a new option object based on the <option /> element.
-			$tmp = HTMLHelper::_('select.option', (string) $option['value'], Text::alt(trim((string) $option), preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)), 'value', 'text', ((string) $option['disabled']=='true'));
+			$tmp = HTMLHelper::_('select.option', (string) $option['value'], Text::alt(trim((string) $option), preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)), 'value', 'text', ((string) $option['disabled'] == 'true'));
 
 			// Set some option attributes.
 			$tmp->class = (string) $option['class'];

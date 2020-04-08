@@ -1,15 +1,18 @@
-<?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default_results_all.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+<?php
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage allprojectrounds
+ * @file       default_results_all.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright  Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 ?>
 
@@ -24,13 +27,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<tr>
 			<td class="">
 				<?php
-					//get the division name from the first team of the division 
+					// Get the division name from the first team of the division
 					echo $this->content;
 				?>
 			</td>
 		</tr>
 	</table>
-	
+  
 	<?php
 
 	?>

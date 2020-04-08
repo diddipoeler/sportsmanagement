@@ -13,10 +13,10 @@
  * You should have received a copy of the GNU General Public License
  * along with GCalendar.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package		GCalendar
- * @author		Digital Peak http://www.digital-peak.com
- * @copyright	Copyright (C) 2007 - 2013 Digital Peak. All rights reserved.
- * @license		http://www.gnu.org/licenses/gpl.html GNU/GPL
+ * @package   GCalendar
+ * @author    Digital Peak http://www.digital-peak.com
+ * @copyright Copyright (C) 2007 - 2013 Digital Peak. All rights reserved.
+ * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
 defined('_JEXEC') or die();
@@ -32,35 +32,53 @@ $dispatcher = JDispatcher::getInstance();
 PluginHelper::importPlugin('gcalendar');
 
 $data = array();
-$SECSINDAY=86400;
-if (!empty($this->calendars)) {
+$SECSINDAY = 86400;
+
+if (!empty($this->calendars))
+{
 	$itemID = Factory::getApplication()->input->getVar('Itemid', null);
-	foreach ($this->calendars as $calendar) {
-		if($itemID == null){
+
+	foreach ($this->calendars as $calendar)
+	{
+		if ($itemID == null)
+		{
 			$itemID = jsmGCalendarUtil::getItemId($calendar->id);
 		}
+
 		$params = Factory::getApplication()->getMenu()->getParams($itemID);
 		$tmp = clone ComponentHelper::getParams('com_sportsmanagement');
-		if (empty($params)) {
+
+		if (empty($params))
+		{
 			$params = $tmp;
-		} else {
+		}
+		else
+		{
 			$tmp->merge($params);
 			$params = $tmp;
 		}
-		foreach ($calendar as $event) {
+
+
+		foreach ($calendar as $event)
+		{
 			$dateformat = $params->get('description_date_format', 'm.d.Y');
 			$timeformat = $params->get('description_time_format', 'g:i a');
 
 			$params->set('event_date_format', $dateformat);
 			$params->set('event_time_format', $timeformat);
 
-			if (!empty($itemID)) {
-				$itemID = '&Itemid='.$itemID;
-			} else {
+			if (!empty($itemID))
+			{
+				$itemID = '&Itemid=' . $itemID;
+			}
+			else
+			{
 				$menu = Factory::getApplication()->getMenu();
 				$activemenu = $menu->getActive();
-				if($activemenu != null){
-					$itemID = '&Itemid='.$activemenu->id;
+
+				if ($activemenu != null)
+				{
+					$itemID = '&Itemid=' . $activemenu->id;
 				}
 			}
 
@@ -68,21 +86,22 @@ if (!empty($this->calendars)) {
 			$description = jsmGCalendarUtil::renderEvents(array($event), $params->get('description_format', '{{#events}}<p>{{date}}<br/>{{{description}}}</p>{{/events}}'), $params);
 
 			$eventData = array(
-					'id' => $event->getGCalId(),
-					'gcid' => $event->getParam('gcid'),
-					'title' => $this->compactMode == 0 ? htmlspecialchars_decode($event->getTitle()) : utf8_encode(chr(160)),
-					'start' => $event->getStartDate()->format('c', true),
-					'end' => $event->getEndDate()->format('c', true),
-					'url' => Route::_('index.php?option=com_sportsmanagement&view=event&eventID='.$event->getGCalId().'&gcid='.$event->getParam('gcid').(empty($itemID)?'':$itemID)),
-					'color' => jsmGCalendarUtil::getFadedColor($event->getParam('gccolor')),
-					'allDay' => $this->compactMode == 0 ? $event->isAllDay() : true,
-					'description' => $description
-			);
+			  'id' => $event->getGCalId(),
+			  'gcid' => $event->getParam('gcid'),
+			  'title' => $this->compactMode == 0 ? htmlspecialchars_decode($event->getTitle()) : utf8_encode(chr(160)),
+			  'start' => $event->getStartDate()->format('c', true),
+			  'end' => $event->getEndDate()->format('c', true),
+			  'url' => Route::_('index.php?option=com_sportsmanagement&view=event&eventID=' . $event->getGCalId() . '&gcid=' . $event->getParam('gcid') . (empty($itemID) ? '' : $itemID)),
+			  'color' => jsmGCalendarUtil::getFadedColor($event->getParam('gccolor')),
+			  'allDay' => $this->compactMode == 0 ? $event->isAllDay() : true,
+			  'description' => $description
+				);
 
-			$dispatcher->trigger('onGCEventBeforeLoad', array($event, &$eventData));
-			$data[] = $eventData;
+				$dispatcher->trigger('onGCEventBeforeLoad', array($event, &$eventData));
+				$data[] = $eventData;
 		}
 	}
 }
+
 ob_clean();
 echo json_encode($data);

@@ -1,12 +1,15 @@
-<?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+<?php
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage joomleagueimports
+ * @file       default.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -17,118 +20,116 @@ use Joomla\CMS\Uri\Uri;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-if ( $this->jl_table_import_step != 'ENDE' )
+if ($this->jl_table_import_step != 'ENDE')
 {
-
 ?>
 
 <script>
 
 jQuery(document).ready(function () {
-    document.getElementById('delayMsg').innerHTML = '';
+	document.getElementById('delayMsg').innerHTML = '';
 
-    delayRedirect();
+	delayRedirect();
 
-const stepsuccess = Joomla.getOptions('success');    
+const stepsuccess = Joomla.getOptions('success');  
 console.log('stepsuccess ' + stepsuccess);
 
 });
 
 function delayRedirect(){
-    document.getElementById('delayMsg').innerHTML = '<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP'); ?>';
-    var count = 5;
-    setInterval(function(){
-        count--;
-        document.getElementById('countDown').innerHTML = count;
-        if (count == 0) {
-            document.getElementById('delayMsg').innerHTML = '<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP_START'); ?>';
-            window.location = '<?php echo $this->request_url.'&task=joomleagueimports.importjoomleaguenew'; ?>'; 
-        }
-    },1000);
+	document.getElementById('delayMsg').innerHTML = '<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP'); ?>';
+	var count = 5;
+	setInterval(function(){
+		count--;
+		document.getElementById('countDown').innerHTML = count;
+		if (count == 0) {
+			document.getElementById('delayMsg').innerHTML = '<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP_START'); ?>';
+			window.location = '<?php echo $this->request_url . '&task=joomleagueimports.importjoomleaguenew'; ?>';
+		}
+	},1000);
 }
 
 </script>
 
-<?PHP    
+<?PHP
 }
 
-if ( $this->jl_table_import_step === 'ENDE' )
+if ($this->jl_table_import_step === 'ENDE')
 {
-
 ?>
 
 <script>
 
 jQuery(document).ready(function () {
-    document.getElementById('delayMsg').innerHTML = '';
+	document.getElementById('delayMsg').innerHTML = '';
 
-    delayRedirect();
-    // Handler for .ready() called.
+	delayRedirect();
+	// Handler for .ready() called.
 //    window.setTimeout(function () {
-//        location.href = "<?php echo $this->request_url.'&task=joomleagueimports.importjoomleaguenew'; ?>";
+//        location.href = "<?php echo $this->request_url . '&task=joomleagueimports.importjoomleaguenew'; ?>";
 //    }, 2000);
 
 
 });
 
 function delayRedirect(){
-    document.getElementById('delayMsg').innerHTML = '<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP'); ?>';
-    var count = 5;
-    setInterval(function(){
-        count--;
-        document.getElementById('countDown').innerHTML = count;
-        if (count == 0) {
-            document.getElementById('delayMsg').innerHTML = '<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP_START'); ?>';
-            window.location = '<?php echo $this->request_url.'&task=joomleagueimports.importjoomleagueagegroup'; ?>'; 
-        }
-    },1000);
+	document.getElementById('delayMsg').innerHTML = '<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP'); ?>';
+	var count = 5;
+	setInterval(function(){
+		count--;
+		document.getElementById('countDown').innerHTML = count;
+		if (count == 0) {
+			document.getElementById('delayMsg').innerHTML = '<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP_START'); ?>';
+			window.location = '<?php echo $this->request_url . '&task=joomleagueimports.importjoomleagueagegroup'; ?>';
+		}
+	},1000);
 }
 
 </script>
 
-<?PHP    
+<?PHP
 }
 
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
-<?PHP 
+<?PHP
 
 ?>
 
 <table>
 <tr>
-<td class="nowrap" align="right"><?php echo $this->lists['sportstypes'].'&nbsp;&nbsp;'; ?></td>
+<td class="nowrap" align="right"><?php echo $this->lists['sportstypes'] . '&nbsp;&nbsp;'; ?></td>
 </tr>
 </table>
 
 <table class="<?php echo $this->table_data_class; ?>">
 <tr>
 <td class="nowrap" align="center">
-<img src= "<?php echo Uri::base( true ) ?>/components/com_sportsmanagement/assets/icons/jl.png" width="180" height="auto" >
+<img src= "<?php echo Uri::base(true) ?>/components/com_sportsmanagement/assets/icons/jl.png" width="180" height="auto" >
 </td>
 <td class="nowrap" align="center">
 <div id="delayMsg"></div>
 </td>
 <td class="nowrap" align="center">
-<img src= "<?php echo Uri::base( true ) ?>/components/com_sportsmanagement/assets/icons/logo_transparent.png" width="180" height="auto" >
+<img src= "<?php echo Uri::base(true) ?>/components/com_sportsmanagement/assets/icons/logo_transparent.png" width="180" height="auto" >
 </td>
 </tr>
 </table>
-  
+
 <div id='editcell'>
 <?PHP
-if ( $this->success )
+if ($this->success)
 {
-foreach ($this->success as $key => $value)
-		{
+	foreach ($this->success as $key => $value)
+	{
 			?>
-			<fieldset>
-				<legend><?php echo Text::_($key); ?></legend>
-				<table class='adminlist'><tr><td><?php echo $value; ?></td></tr></table>
-			</fieldset>
+		   <fieldset>
+		<legend><?php echo Text::_($key); ?></legend>
+		<table class='adminlist'><tr><td><?php echo $value; ?></td></tr></table>
+		   </fieldset>
 			<?php
-		}
-}        
+	}
+}
 ?>
 </div>
 
@@ -138,17 +139,16 @@ foreach ($this->success as $key => $value)
 <table class='adminlist'><tr><td>
 </td></tr></table>
 </fieldset>
-        
-<input type="hidden" name="task" value="" />
+
+	  <input type="hidden" name="task" value="" />
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="filter_order" value="" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
 <input type="hidden" name="jl_table_import_step" value="<?php echo $this->jl_table_import_step; ?>" />
 
-<?php echo HTMLHelper::_('form.token')."\n"; ?>
+<?php echo HTMLHelper::_('form.token') . "\n"; ?>
 </form>
 <?PHP
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>  

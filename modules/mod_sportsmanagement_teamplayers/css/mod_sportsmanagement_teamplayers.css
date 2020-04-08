@@ -12,16 +12,16 @@ text-align:center;
 }
 
 div.modjlteamplayers .projectname {
-	font-weight:bold;
-text-align:center;
+	font-weight: bold;
+text-align: center;
 }
 
 div.modjlgteamplayers .playerlink {
-text-align:center;
+text-align: center;
 vertical-align: middle;
 }
 div.modjlgteamplayers .teamname {
-text-align:center;
+text-align: center;
 vertical-align: middle;
 }
 div.modjlgteamplayers table {
@@ -31,11 +31,11 @@ div.modjlgteamplayers td {
 }
 
 ul.modjlgplayer{
-display:block;
-list-style:none;
+display: block;
+list-style: none;
 }
 
 ul.modjlgposition{
-list-style:none;
-display:block;
+list-style: none;
+display: block;
 }

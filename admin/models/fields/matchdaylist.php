@@ -1,15 +1,18 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      matchdaylist.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage fields
+ * @file       matchdaylist.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -20,17 +23,18 @@ FormHelper::loadFieldClass('list');
 
 /**
  * FormFieldMatchdaylist
- * 
- * @package   
- * @author 
+ *
+ * @package
+ * @author
  * @copyright diddi
- * @version 2014
- * @access public
+ * @version   2014
+ * @access    public
  */
 class JFormFieldMatchdaylist extends \JFormFieldList
 {
 	/**
 	 * field type
+	 *
 	 * @var string
 	 */
 	public $type = 'Matchdaylist';
@@ -38,29 +42,31 @@ class JFormFieldMatchdaylist extends \JFormFieldList
 	/**
 	 * Method to get the field options.
 	 *
-	 * @return  array  The field option objects.
+	 * @return array  The field option objects.
 	 *
-	 * @since   11.1
+	 * @since 11.1
 	 */
 	protected function getOptions()
 	{
 		// Initialize variables.
 		$options = array();
-		
-		$varname = (string) $this->element['varname'];
+
+			  $varname = (string) $this->element['varname'];
 		$project_id = Factory::getApplication()->input->getVar($varname);
-		if (is_array($project_id)) {
+
+		if (is_array($project_id))
+		{
 			$project_id = $project_id[0];
-		}		
+		}
 
 		if ($project_id)
-		{		
+		{
 			$options = & sportsmanagementHelper::getRoundsOptions($project_id, 'ASC', true);
 		}
-		
-		// Merge any additional options in the XML definition.
+
+			  // Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);
-				
-		return $options;
+
+					  return $options;
 	}
 }

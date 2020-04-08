@@ -1,12 +1,15 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage allclubs
+ * @file       default.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
@@ -26,20 +29,20 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 ?>
 <script language="javascript" type="text/javascript">
-    function tableOrdering(order, dir, task)
-    {
-        var form = document.adminForm;
+	function tableOrdering(order, dir, task)
+	{
+		var form = document.adminForm;
 
-        form.filter_order.value = order;
-        form.filter_order_Dir.value = dir;
-        document.adminForm.submit(task);
-    }
-    function searchPerson(val)
-    {
-        var s = document.getElementById("filter_search");
-        s.value = val;
-        Joomla.submitform('', this.form)
-    }
+		form.filter_order.value = order;
+		form.filter_order_Dir.value = dir;
+		document.adminForm.submit(task);
+	}
+	function searchPerson(val)
+	{
+		var s = document.getElementById("filter_search");
+		s.value = val;
+		Joomla.submitform('', this.form)
+	}
 </script>
 <div class="container-fluid">
 <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($this->uri->toString()); ?>" method="post">
@@ -58,8 +61,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <?php
 $startRange = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('character_filter_start_hex', '0');
 $endRange = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('character_filter_end_hex', '0');
-for ($i = $startRange; $i <= $endRange; $i++) {
-printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;", '&#' . $i . ';', '&#' . $i . ';');
+
+for ($i = $startRange; $i <= $endRange; $i++)
+{
+	printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;", '&#' . $i . ';', '&#' . $i . ';');
 }
 ?>
 </td>

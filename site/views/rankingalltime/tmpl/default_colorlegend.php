@@ -1,22 +1,30 @@
-<?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default_colorlegend.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+<?php
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage rankingalltime
+ * @file       default_colorlegend.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 ?>
 <!-- colors legend START -->
 <?php
-	if (!isset($this->tableconfig['show_colors_legend'])){$this->tableconfig['show_colors_legend']=1;}
-	if ($this->tableconfig['show_colors_legend'])
-	{
-		?>
+if (!isset($this->tableconfig['show_colors_legend']))
+{
+	$this->tableconfig['show_colors_legend'] = 1;
+}
+
+
+if ($this->tableconfig['show_colors_legend'])
+{
+	?>
 		<br />
 		<div class="<?php echo $this->divclassrow;?> table-responsive" id="colorlegend">
 		<table class="table">
@@ -27,7 +35,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			</tr>
 		</table>
 		</div>
-		<?php
-	}
+	<?php
+}
 ?>
 <!-- colors legend END -->

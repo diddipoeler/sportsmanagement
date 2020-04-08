@@ -54,21 +54,21 @@
 .jsm .rankingrow_lastrank {
 	vertical-align: middle;
 	text-align: right;
-	width: 10px;	
+	width: 10px;
 	padding: 5px;
-	font-size:90%;
+	font-size: 90%;
 }
 
 .jsm .rankingrow_logo {
-	vertical-align: middle;	
-	text-align: center;	
+	vertical-align: middle;
+	text-align: center;
 }
 
 .jsm .rankingrow_teamname {
 	vertical-align: middle;
 	width: 250px;
 	padding: 5px;
-	text-align: left;	
+	text-align: left;
 }
 
 .jsm .rankingrow_played {
@@ -86,7 +86,7 @@
 }
 
 .jsm .rankingrow.lastgames {
-	white-space:nowrap;
+	white-space: nowrap;
 }
 
 .jsm .rankingrow.lastgames img {

@@ -1,37 +1,37 @@
 @CHARSET "UTF-8";
 
 div.modjlgsports {
-    border: none;
-    margin: 0px;
+	border: none;
+	margin: 0px;
 }
 
 div.modjlgsports .sportstypename {
-    font-weight: bold;
+	font-weight: bold;
 }
 
 div.modjlgsports ul {
-    float: left;
-    width: 100%;
+	float: left;
+	width: 100%;
 }
 
 div.modjlgsports ul li {
-    list-style: none;
-    float: left;
+	list-style: none;
+	float: left;
 }
 
 div.modjlgsports ul li.label {
-    list-style: none;
-    float: left;
-    width: 100px;;
+	list-style: none;
+	float: left;
+	width: 100px;;
 }
 
 div.modjlgsports ul li.text {
-    list-style: none;
-    float: left;
-    text-align: right;
+	list-style: none;
+	float: left;
+	text-align: right;
 }
 
 div.modjlgsports img {
-    border: none;
-    height: 21px;
+	border: none;
+	height: 21px;
 }

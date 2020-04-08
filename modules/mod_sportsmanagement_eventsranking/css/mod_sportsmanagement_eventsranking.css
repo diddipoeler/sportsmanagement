@@ -7,17 +7,17 @@ div.modjlgevent .teamlogo {
 }
 
 div.modjlgevent .projectname {
-	font-weight:bold;
+	font-weight: bold;
 }
 
 div.modjlgevent .fulltablelink {
-	text-align:center;
+	text-align: center;
 }
 
 th.td_c, td.td_c {
-	text-align:center;
+	text-align: center;
 }
 
 table.eventsranking {
-	width:100%;
+	width: 100%;
 }

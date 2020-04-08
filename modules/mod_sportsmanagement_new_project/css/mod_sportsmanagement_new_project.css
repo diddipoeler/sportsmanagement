@@ -12,7 +12,7 @@
 	width: 16px;
 	height: 21px;
 }
- 
+
 #modjlglogo li.logo1 {
 	display: inline-block;
 	margin: 0 5px 0;
@@ -42,7 +42,7 @@ div.modjlglogo{
 }
 
 div.modjlglogo .projectname {
-	font-weight:bold;
+	font-weight: bold;
 }
 
 
@@ -51,7 +51,7 @@ div.modjlglogo .projectname {
 	width: 139px;
 	z-index: 13000;
 }
- 
+
 .tool-title {
 	font-weight: bold;
 	font-size: 11px;
@@ -60,7 +60,7 @@ div.modjlglogo .projectname {
 	padding: 8px 8px 4px;
 	background: url(bubble.png) top left;
 }
- 
+
 .tool-text {
 	font-size: 11px;
 	padding: 4px 8px 8px;

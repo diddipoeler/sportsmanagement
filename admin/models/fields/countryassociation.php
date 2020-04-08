@@ -1,15 +1,18 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      countryassociation.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage fields
+ * @file       countryassociation.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -20,17 +23,18 @@ FormHelper::loadFieldClass('list');
 
 /**
  * FormFieldcountryassociation
- * 
- * @package   
- * @author 
+ *
+ * @package
+ * @author
  * @copyright diddi
- * @version 2014
- * @access public
+ * @version   2014
+ * @access    public
  */
 class JFormFieldcountryassociation extends \JFormFieldList
 {
 	/**
 	 * field type
+	 *
 	 * @var string
 	 */
 	public $type = 'countryassociation';
@@ -38,37 +42,40 @@ class JFormFieldcountryassociation extends \JFormFieldList
 	/**
 	 * Method to get the field options.
 	 *
-	 * @return  array  The field option objects.
+	 * @return array  The field option objects.
 	 *
-	 * @since   11.1
+	 * @since 11.1
 	 */
 	protected function getOptions()
 	{
 		// Initialize variables.
 		$options = array();
 		$varname = (string) $this->element['varname'];
-    $vartable = (string) $this->element['targettable'];
+		  $vartable = (string) $this->element['targettable'];
 		$select_id = Factory::getApplication()->input->getVar($varname);
- 		if (is_array($select_id)) {
- 			$select_id = $select_id[0];
- 		}
-		
+
+		if (is_array($select_id))
+		{
+			$select_id = $select_id[0];
+		}
+
 		if ($select_id)
-		{		
+		{
 			$db = Factory::getDbo();
 			$query = $db->getQuery(true);
-			
-			$query->select('t.id AS value, t.name AS text');
+
+				$query->select('t.id AS value, t.name AS text');
 			$query->from('#__sportsmanagement_associations AS t');
- 			$query->join('inner', '#__sportsmanagement_'.$vartable.' AS wt ON wt.country = t.country ');
-			$query->where('wt.id = '.$select_id);
+			$query->join('inner', '#__sportsmanagement_' . $vartable . ' AS wt ON wt.country = t.country ');
+			$query->where('wt.id = ' . $select_id);
 			$query->order('t.name');
 			$db->setQuery($query);
 			$options = $db->loadObjectList();
 		}
-		
-		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), $options);
-		return $options;
+
+			  // Merge any additional options in the XML definition.
+			$options = array_merge(parent::getOptions(), $options);
+
+			return $options;
 	}
 }

@@ -1,22 +1,25 @@
-<?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      deafult_description.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+<?php
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage teaminfo
+ * @file       deafult_description.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 ?>
 
 	<?php
 	// Show team-description if defined.
-	if ( !isset ( $this->team->notes ) )
+	if (!isset($this->team->notes))
 	{
 		$description = "";
 	}
@@ -25,32 +28,32 @@ use Joomla\CMS\HTML\HTMLHelper;
 		$description = $this->team->notes;
 	}
 
-	if( trim( $description != "" ) )
+	if (trim($description != ""))
 	{
 		?>
-<div class="<?php echo $this->divclassrow;?> table-responsive" id="teamdescription">
+	  <div class="<?php echo $this->divclassrow;?> table-responsive" id="teamdescription">
 		<br />
 		<table class="table">
-			<tr class="sectiontableheader">
-				<td>
-					<?php
-					echo '&nbsp;' . Text::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_TEAMINFORMATION' );
-					?>
-				</td>
-			</tr>
+		 <tr class="sectiontableheader">
+	   <td>
+		<?php
+		echo '&nbsp;' . Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TEAMINFORMATION');
+		?>
+		  </td>
+		 </tr>
 		</table>
 
 		<table class="table">
-			<tr>
-				<td>
-					<?php
-					$description = HTMLHelper::_('content.prepare', $description);
-					echo stripslashes( $description );
-					?>
-				</td>
-			</tr>
+		 <tr>
+		  <td>
+		<?php
+		$description = HTMLHelper::_('content.prepare', $description);
+		echo stripslashes($description);
+		?>
+		  </td>
+		 </tr>
 		</table>
-                </div>
+				</div>
 		<?php
 	}
 	?>

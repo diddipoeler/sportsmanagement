@@ -1,12 +1,15 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default_data.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+*
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage leagues
+ * @file       default_data.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -138,8 +141,10 @@ use Joomla\CMS\Router\Route;
                     <?php
                     $inputappend = '';
                     $append = ' style="background-color:#bbffff"';
-                    echo HTMLHelper::_('select.genericlist', $this->lists['agegroup'], 'agegroup' . $row->id, $inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
-                            $i . '\').checked=true"' . $append, 'value', 'text', $row->agegroup_id);
+                    echo HTMLHelper::_(
+                        'select.genericlist', $this->lists['agegroup'], 'agegroup' . $row->id, $inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
+                        $i . '\').checked=true"' . $append, 'value', 'text', $row->agegroup_id
+                    );
                     ?>
                 </td>
                 <td class="center">
@@ -163,7 +168,7 @@ use Joomla\CMS\Router\Route;
                         $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
                         echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/information.png', $imageTitle, 'title= "' . $imageTitle . '"');
                     } else {
-                        ?>                                    
+                        ?>                                  
                         <a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER . $row->picture; ?>" title="<?php echo $row->name; ?>" class="modal">
                             <img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER . $row->picture; ?>" alt="<?php echo $row->name; ?>" width="20" />
                         </a>
@@ -184,22 +189,22 @@ $options = array(
 $html[] = '<fieldset id="published_act_season' . $row->id . '" class="' . $class. '" >';
 foreach ($options as $in => $option)
         {
-$checked = ( $option->value == $row->published_act_season) ? ' checked="checked"' : '';
-$btn = ( $option->value == $row->published_act_season && $row->published_act_season ) ? ' active btn-success' : ' ';	
-$btn = ( $option->value == $row->published_act_season && !$row->published_act_season ) ? ' active btn-danger' : $btn;	  	
-	
-  $onchange = ' onchange="document.getElementById(\'cb' .$i. '\').checked=true"' ;
-  $html[] = '<input type="radio" style="display:none;" id="published_act_season' .  $row->id  .$in . '" name="published_act_season' . $row->id . '" value="'
+    $checked = ( $option->value == $row->published_act_season) ? ' checked="checked"' : '';
+    $btn = ( $option->value == $row->published_act_season && $row->published_act_season ) ? ' active btn-success' : ' ';  
+    $btn = ( $option->value == $row->published_act_season && !$row->published_act_season ) ? ' active btn-danger' : $btn;        
+  
+    $onchange = ' onchange="document.getElementById(\'cb' .$i. '\').checked=true"' ;
+    $html[] = '<input type="radio" style="display:none;" id="published_act_season' .  $row->id  .$in . '" name="published_act_season' . $row->id . '" value="'
                 . $option->value . '"' . $onchange . ' />';
 
-$html[] = '<label for="published_act_season' .  $row->id .$in  . '"' . $checked . ' class="btn'.$btn.'" >'
-                . Text::_( $option->text) . '</label>';
-  
-}						
-						
-echo implode($html);							
-?>                       
-                </td>    
+    $html[] = '<label for="published_act_season' .  $row->id .$in  . '"' . $checked . ' class="btn'.$btn.'" >'
+                . Text::_($option->text) . '</label>';
+
+}                      
+                      
+echo implode($html);                          
+?>                     
+                </td>  
                 <td class="center">
                     <div class="btn-group">
                         <?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'leagues.', $canChange, 'cb'); ?>
@@ -212,7 +217,7 @@ echo implode($html);
                         }
                         ?>
                     </div>
-                </td>    
+                </td>  
                 <td class="order">
                     <span>
                         <?php echo $this->pagination->orderUpIcon($i, $i > 0, 'leagues.orderup', 'JLIB_HTML_MOVE_UP', 'obj.ordering'); ?>
@@ -221,7 +226,7 @@ echo implode($html);
                         <?php echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'leagues.orderdown', 'JLIB_HTML_MOVE_DOWN', 'obj.ordering'); ?>
                         <?php $disabled = true ? '' : 'disabled="disabled"'; ?>
                     </span>
-                    <input	type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" <?php echo $disabled; ?>
+                    <input    type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" <?php echo $disabled; ?>
                            class="form-control form-control-inline" style="text-align: center" />
                 </td>
                 <td class="center"><?php echo $row->id; ?></td>

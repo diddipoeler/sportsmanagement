@@ -1,12 +1,15 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      github_result.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage github
+ * @file       github_result.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -19,10 +22,10 @@ use Joomla\CMS\Router\Route;
 HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
 
-// welche joomla version ?
-if(version_compare(JVERSION,'3.0.0','ge')) 
-        {
-HTMLHelper::_('jquery.framework');
+// Welche joomla version ?
+if (version_compare(JVERSION, '3.0.0', 'ge'))
+{
+	HTMLHelper::_('jquery.framework');
 }
 
 
@@ -32,7 +35,8 @@ HTMLHelper::_('behavior.keepalive');
 
 
 
-Factory::getDocument()->addScriptDeclaration('
+Factory::getDocument()->addScriptDeclaration(
+	'
 	Joomla.submitbutton = function(task)
 	{
 		if (task == "github.cancel" )
@@ -48,7 +52,8 @@ Factory::getDocument()->addScriptDeclaration('
 			Joomla.submitform(task, document.getElementById("addissue-formresult"));
 		}
 	};
-');
+'
+);
 
 ?>
 

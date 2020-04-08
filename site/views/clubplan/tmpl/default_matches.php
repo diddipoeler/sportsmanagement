@@ -1,15 +1,15 @@
-<?php 
+<?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default_matches.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage clubplan
+ * @file       default_matches.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -91,23 +91,23 @@ $routeparameter['division'] = 0;
 $routeparameter['mode'] = 0;
 $routeparameter['order'] = '';
 $routeparameter['layout'] = '';
-$result_link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);            
+$result_link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);          
 $routeparameter = array();
 $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
 $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $game->project_slug;
 $routeparameter['mid'] = $game->match_slug;
-$nextmatch_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);            
+$nextmatch_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);          
 $routeparameter = array();
 $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
 $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $game->project_slug;
 $routeparameter['tid'] = $game->team1_slug;
 $routeparameter['ptid'] = $game->projectteam1_slug;
-$teaminfo1_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);            
-$routeparameter['tid'] = $game->team2_slug;    
-$routeparameter['ptid'] = $game->projectteam2_slug;        
-$teaminfo2_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);            
+$teaminfo1_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);          
+$routeparameter['tid'] = $game->team2_slug;  
+$routeparameter['ptid'] = $game->projectteam2_slug;      
+$teaminfo2_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);          
 $routeparameter = array();
 $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
 $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
@@ -122,7 +122,7 @@ $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $game->project_slug;
 $routeparameter['pgid'] = $game->playground_id;
 $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground',$routeparameter);
-            
+          
 			$favs = sportsmanagementHelper::getProjectFavTeams($game->project_id);
 			$favteams = explode(",",$favs->fav_team);
 
@@ -255,8 +255,8 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
 						echo $tname1;
 					?>
 				</td>
-					<?php if ( $this->config['show_club_logo'] ) 
-                    { 
+					<?php if ( $this->config['show_club_logo'] )
+                    {
 					   $picture = 'home_'.$this->config['team_picture'];
                        ?>
 				<td>
@@ -270,17 +270,17 @@ $this->modalwidth,
 $this->modalheight,
 $this->overallconfig['use_jquery_modal']);
                 ?>
-                
+              
                 </td>
-					<?php 
-                    } 
+					<?php
+                    }
                     ?>				
 				<td>
 					-
 				</td>
-					<?php 
-                    if ( $this->config['show_club_logo'] ) 
-                    { 
+					<?php
+                    if ( $this->config['show_club_logo'] )
+                    {
 					   $picture = 'away_'.$this->config['team_picture'];
                        ?>
 				<td>
@@ -295,8 +295,8 @@ $this->modalheight,
 $this->overallconfig['use_jquery_modal']);
                 ?>
                 </td>
-					<?php 
-                    } 
+					<?php
+                    }
                     ?>
 				<td>
 					<?php

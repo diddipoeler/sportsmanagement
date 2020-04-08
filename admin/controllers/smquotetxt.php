@@ -1,12 +1,15 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      smquotetxt.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage controllers
+ * @file       smquotetxt.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -15,46 +18,46 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\MVC\Controller\FormController;
- 
+
 
 /**
  * sportsmanagementControllersmquotetxt
- * 
- * @package   
- * @author 
+ *
+ * @package
+ * @author
  * @copyright diddi
- * @version 2014
- * @access public
+ * @version   2014
+ * @access    public
  */
 class sportsmanagementControllersmquotetxt extends FormController
 {
-    
-    /**
+
+	/**
 	 * Constructor.
 	 *
-	 * @param	array An optional associative array of configuration settings.
-	 * @see		JController
+	 * @param array An optional associative array of configuration settings.
+	 * @see   JController
 	 */
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
 
 		// Apply, Save & New, and Save As copy should be standard on forms.
-		$this->registerTask('apply','save');
+		$this->registerTask('apply', 'save');
 	}
-    
-    /**
-     * sportsmanagementControllersmquotetxt::cancel()
-     * 
-     * @return void
-     */
-    public function cancel()
+
+	/**
+	 * sportsmanagementControllersmquotetxt::cancel()
+	 *
+	 * @return void
+	 */
+	public function cancel()
 	{
-    // Redirect to the list screen.
-				$this->setRedirect(Route::_('index.php?option=com_sportsmanagement&view=smquotestxt&layout=default', false));
-    }
-    
-    /**
+		// Redirect to the list screen.
+		$this->setRedirect(Route::_('index.php?option=com_sportsmanagement&view=smquotestxt&layout=default', false));
+	}
+
+	/**
 	 * Saves a template source file.
 	 */
 	public function save()
@@ -63,51 +66,51 @@ class sportsmanagementControllersmquotetxt extends FormController
 		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$app		= Factory::getApplication();
-		$data		= Factory::getApplication()->input->getVar('jform', array(), 'post', 'array');
-		//$context	= 'com_templates.edit.source';
-		$task		= $this->getTask();
-		$model		= $this->getModel();
-        $model->save($data);
-        
-        switch ($task)
+		$app        = Factory::getApplication();
+		$data        = Factory::getApplication()->input->getVar('jform', array(), 'post', 'array');
+
+		// $context  = 'com_templates.edit.source';
+		$task        = $this->getTask();
+		$model        = $this->getModel();
+		$model->save($data);
+
+		switch ($task)
 		{
 			case 'apply':
-				// Reset the record data in the session.
-				//$app->setUserState($context.'.data',	null);
+				  // Reset the record data in the session.
+				  // $app->setUserState($context.'.data',    null);
 
-				// Redirect back to the edit screen.
-				$this->setRedirect(Route::_('index.php?option=com_sportsmanagement&view=smquotetxt&layout=default&file_name='.$data['filename'], false));
-				break;
+				  // Redirect back to the edit screen.
+				  $this->setRedirect(Route::_('index.php?option=com_sportsmanagement&view=smquotetxt&layout=default&file_name=' . $data['filename'], false));
+			break;
 
 			default:
-				// Clear the record id and data from the session.
-				//$app->setUserState($context.'.id', null);
-				//$app->setUserState($context.'.data', null);
+				  // Clear the record id and data from the session.
+				  // $app->setUserState($context.'.id', null);
+				  // $app->setUserState($context.'.data', null);
 
-				// Redirect to the list screen.
-				$this->setRedirect(Route::_('index.php?option=com_sportsmanagement&view=smquotestxt&layout=default', false));
-				break;
+				  // Redirect to the list screen.
+				  $this->setRedirect(Route::_('index.php?option=com_sportsmanagement&view=smquotestxt&layout=default', false));
+			break;
 		}
-        
-        
-        
-    } 
-    
-    /**
+
+	}
+
+	/**
 	 * Method to get a model object, loading it if required.
 	 *
-	 * @param	string	The model name. Optional.
-	 * @param	string	The class prefix. Optional.
-	 * @param	array	Configuration array for model. Optional (note, the empty array is atypical compared to other models).
+	 * @param string    The model name. Optional.
+	 * @param string    The class prefix. Optional.
+	 * @param array    Configuration array for model. Optional (note, the empty array is atypical compared to other models).
 	 *
-	 * @return	object	The model.
+	 * @return object    The model.
 	 */
 	public function getModel($name = 'smquotetxt', $prefix = 'sportsmanagementModel', $config = array())
 	{
 		$model = parent::getModel($name, $prefix, $config);
+
 		return $model;
-	}   
+	}
 
 
 

@@ -1,12 +1,15 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      jsm_bootstrap.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+*
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage plugins
+ * @file       jsm_bootstrap.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 /*
@@ -51,12 +54,12 @@ jimport('joomla.html.parameter');
 
 /**
  * PlgSystemjsm_bootstrap
- * 
- * @package 
- * @author abcde
+ *
+ * @package
+ * @author    abcde
  * @copyright 2015
- * @version $Id$
- * @access public
+ * @version   $Id$
+ * @access    public
  */
 class PlgSystemjsm_bootstrap extends JPlugin
 {
@@ -65,9 +68,9 @@ class PlgSystemjsm_bootstrap extends JPlugin
 
     /**
      * PlgSystemjsm_bootstrap::__construct()
-     * 
-     * @param mixed $subject
-     * @param mixed $params
+     *
+     * @param  mixed $subject
+     * @param  mixed $params
      * @return void
      */
     public function __construct(&$subject, $params)
@@ -75,14 +78,14 @@ class PlgSystemjsm_bootstrap extends JPlugin
         parent::__construct($subject, $params);
 
         $app = Factory::getApplication();
-		$this->loadLanguage();
+        $this->loadLanguage();
         $this->config = $params;
-		$this->subject = $subject;
+        $this->subject = $subject;
     }
 
     /**
      * PlgSystemjsm_bootstrap::onBeforeRender()
-     * 
+     *
      * @return void
      */
     public function onBeforeRender()
@@ -92,7 +95,7 @@ class PlgSystemjsm_bootstrap extends JPlugin
 
     /**
      * PlgSystemjsm_bootstrap::onAfterRender()
-     * 
+     *
      * @return void
      */
     public function onAfterRender()
@@ -102,46 +105,45 @@ class PlgSystemjsm_bootstrap extends JPlugin
 
     /**
      * PlgSystemjsm_bootstrap::onAfterRoute()
-     * 
+     *
      * @return void
      */
     public function onAfterRoute()
     {
         $app = Factory::getApplication();
-	    // Get a refrence of the page instance in joomla
+        // Get a refrence of the page instance in joomla
         $document = Factory::getDocument();
         // JInput object
         $this->jinput = $app->input;
         $this->option = $this->jinput->getCmd('option');
-$dontInclude = array(
-'/media/jui/js/jquery.js',
-'/media/jui/js/jquery.min.js',
-//'/media/jui/js/jquery-noconflict.js',
-'/media/jui/js/jquery-migrate.js',
-'/media/jui/js/jquery-migrate.min.js',
-'/media/jui/js/bootstrap.js',
-'/media/jui/js/bootstrap.min.js',
-'/media/system/js/core-uncompressed.js',
-'/media/system/js/tabs-state.js',
-'/media/system/js/core.js',
-//'/media/system/js/mootools-core.js',
-//'/media/system/js/mootools-core-uncompressed.js',
-);
+        $dontInclude = array(
+        '/media/jui/js/jquery.js',
+        '/media/jui/js/jquery.min.js',
+        //'/media/jui/js/jquery-noconflict.js',
+        '/media/jui/js/jquery-migrate.js',
+        '/media/jui/js/jquery-migrate.min.js',
+        '/media/jui/js/bootstrap.js',
+        '/media/jui/js/bootstrap.min.js',
+        '/media/system/js/core-uncompressed.js',
+        '/media/system/js/tabs-state.js',
+        '/media/system/js/core.js',
+        //'/media/system/js/mootools-core.js',
+        //'/media/system/js/mootools-core-uncompressed.js',
+        );
 
-if ( $this->option == 'com_sportsmanagement' )
-{
-foreach($document->_scripts as $key => $script){
-    if(in_array($key, $dontInclude)){
-        unset($document->_scripts[$key]);
-    }
-}
-Factory::getDocument()->addScript('http://ajax.googleapis.com/ajax/libs/jquery/2.2.1/jquery.min.js');
-}		    
+        if ($this->option == 'com_sportsmanagement' ) {
+            foreach($document->_scripts as $key => $script){
+                if(in_array($key, $dontInclude)) {
+                    unset($document->_scripts[$key]);
+                }
+            }
+                Factory::getDocument()->addScript('http://ajax.googleapis.com/ajax/libs/jquery/2.2.1/jquery.min.js');
+        }          
     }
 
     /**
      * PlgSystemjsm_bootstrap::onAfterDispatch()
-     * 
+     *
      * @return void
      */
     public function onAfterDispatch()
@@ -159,46 +161,52 @@ Factory::getDocument()->addScript('http://ajax.googleapis.com/ajax/libs/jquery/2
             if ($load_bootstrap) {
                 if (!$app->isAdmin()) {
                     //CBootstrap::load();
-                    Factory::getDocument()->addScript('https://maxcdn.bootstrapcdn.com/bootstrap/' .
-                        $load_bootstrap_version . '/js/bootstrap.min.js');
+                    Factory::getDocument()->addScript(
+                        'https://maxcdn.bootstrapcdn.com/bootstrap/' .
+                        $load_bootstrap_version . '/js/bootstrap.min.js'
+                    );
                 }
             }
-            
+          
             if ($this->params->def('load_bootstrap_carousel', 1)) {
                 if (!$app->isAdmin()) {
                     //CBootstrap::load();
                     Factory::getDocument()->addScript('https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-carousel.js');
                 }
             }
-            
+          
             if ($this->params->def('load_bootstrap_modal', 1)) {
                 if (!$app->isAdmin()) {
                     //CBootstrap::load();
                     Factory::getDocument()->addScript('https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-modal.js');
                 }
             }
-            
-	if ($this->params->def('load_bootstrap_tab', 1)) {
+          
+            if ($this->params->def('load_bootstrap_tab', 1)) {
                 if (!$app->isAdmin()) {
                     //CBootstrap::load();
                     Factory::getDocument()->addScript('https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-tab.js');
                 }
             }
-		
+      
             if ($load_bootstrap_css) {
                 if (!$app->isAdmin()) {
                     //CBootstrap::load();
-                    Factory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/' .
-                        $load_bootstrap_version . '/css/bootstrap.min.css');
-                    Factory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/' .
-                        $load_bootstrap_version . '/css/bootstrap-theme.min.css');
+                    Factory::getDocument()->addStyleSheet(
+                        'https://maxcdn.bootstrapcdn.com/bootstrap/' .
+                        $load_bootstrap_version . '/css/bootstrap.min.css'
+                    );
+                    Factory::getDocument()->addStyleSheet(
+                        'https://maxcdn.bootstrapcdn.com/bootstrap/' .
+                        $load_bootstrap_version . '/css/bootstrap-theme.min.css'
+                    );
                 }
             }
-            
+          
             if ($load_k2css) {
                 /**
                  * wenn man die k2 komponente installiert hat, kann es zu problemen im frontend kommen.
-                 * dazu gibt es diesen hilfreichen link: 
+                 * dazu gibt es diesen hilfreichen link:
                  * http://www.optimumtheme.com/support/forum/k2-image-and-link-edit,-add-item-problem-solution.html
                  */
 
@@ -209,8 +217,8 @@ Factory::getDocument()->addScript('http://ajax.googleapis.com/ajax/libs/jquery/2
                 //if (JComponentHelper::getComponent('com_k2', true)->enabled) {
                 if ($is_enabled) {
                     if (!$app->isAdmin()) {
-                        $css = JUri::base() . 'plugins' .DIRECTORY_SEPARATOR. $this->config['type'] .DIRECTORY_SEPARATOR. $this->
-                            config['name'] .DIRECTORY_SEPARATOR. 'css/customk2.css';
+                        $css = JUri::base() . 'plugins' .DIRECTORY_SEPARATOR. $this->config['type'] .DIRECTORY_SEPARATOR. $this
+                            ->config['name'] .DIRECTORY_SEPARATOR. 'css/customk2.css';
                         $document->addStyleSheet($css);
                     }
                 }
@@ -223,25 +231,31 @@ Factory::getDocument()->addScript('http://ajax.googleapis.com/ajax/libs/jquery/2
             if ($load_bootstrap) {
                 if (!$app->isAdmin()) {
                     //CBootstrap::load();
-                    Factory::getDocument()->addScript('https://maxcdn.bootstrapcdn.com/bootstrap/' .
-                        $load_bootstrap_version . '/js/bootstrap.min.js');
+                    Factory::getDocument()->addScript(
+                        'https://maxcdn.bootstrapcdn.com/bootstrap/' .
+                        $load_bootstrap_version . '/js/bootstrap.min.js'
+                    );
                 }
             }
-            
+          
             if ($load_bootstrap_css) {
                 if (!$app->isAdmin()) {
                     //CBootstrap::load();
-                    Factory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/' .
-                        $load_bootstrap_version . '/css/bootstrap.min.css');
-                    Factory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/' .
-                        $load_bootstrap_version . '/css/bootstrap-theme.min.css');
+                    Factory::getDocument()->addStyleSheet(
+                        'https://maxcdn.bootstrapcdn.com/bootstrap/' .
+                        $load_bootstrap_version . '/css/bootstrap.min.css'
+                    );
+                    Factory::getDocument()->addStyleSheet(
+                        'https://maxcdn.bootstrapcdn.com/bootstrap/' .
+                        $load_bootstrap_version . '/css/bootstrap-theme.min.css'
+                    );
                 }
             }
-            
+          
             if ($load_k2css) {
                 /**
                  * wenn man die k2 komponente installiert hat, kann es zu problemen im frontend kommen.
-                 * dazu gibt es diesen hilfreichen link: 
+                 * dazu gibt es diesen hilfreichen link:
                  * http://www.optimumtheme.com/support/forum/k2-image-and-link-edit,-add-item-problem-solution.html
                  */
 
@@ -252,8 +266,8 @@ Factory::getDocument()->addScript('http://ajax.googleapis.com/ajax/libs/jquery/2
                 //if (JComponentHelper::getComponent('com_k2', true)->enabled) {
                 if ($is_enabled) {
                     if (!$app->isAdmin()) {
-                        $css = JUri::base() . 'plugins' .DIRECTORY_SEPARATOR. $this->config['type'] .DIRECTORY_SEPARATOR. $this->
-                            config['name'] .DIRECTORY_SEPARATOR. 'css/customk2.css';
+                        $css = JUri::base() . 'plugins' .DIRECTORY_SEPARATOR. $this->config['type'] .DIRECTORY_SEPARATOR. $this
+                            ->config['name'] .DIRECTORY_SEPARATOR. 'css/customk2.css';
                         $document->addStyleSheet($css);
                     }
                 }
@@ -264,7 +278,7 @@ Factory::getDocument()->addScript('http://ajax.googleapis.com/ajax/libs/jquery/2
 
     /**
      * PlgSystemjsm_bootstrap::onAfterInitialise()
-     * 
+     *
      * @return void
      */
     public function onAfterInitialise()

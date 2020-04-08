@@ -196,7 +196,7 @@ class JGoogleDataPicasaPhoto extends JGoogleData
 	/**
 	 * Method to get the time of the photo
 	 *
-	 * @return  double  Photo time
+	 * @return  float  Photo time
 	 *
 	 * @since   3.1.4
 	 */
@@ -208,7 +208,7 @@ class JGoogleDataPicasaPhoto extends JGoogleData
 	/**
 	 * Method to get the size of the photo
 	 *
-	 * @return  int  Photo size
+	 * @return  integer  Photo size
 	 *
 	 * @since   3.1.4
 	 */
@@ -220,7 +220,7 @@ class JGoogleDataPicasaPhoto extends JGoogleData
 	/**
 	 * Method to get the height of the photo
 	 *
-	 * @return  int  Photo height
+	 * @return  integer  Photo height
 	 *
 	 * @since   3.1.4
 	 */
@@ -232,7 +232,7 @@ class JGoogleDataPicasaPhoto extends JGoogleData
 	/**
 	 * Method to get the width of the photo
 	 *
-	 * @return  int  Photo width
+	 * @return  integer  Photo width
 	 *
 	 * @since   3.1.4
 	 */

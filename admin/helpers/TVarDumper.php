@@ -2,11 +2,11 @@
 /**
  * TVarDumper class file
  *
- * @author Qiang Xue <qiang.xue@gmail.com>
- * @link https://github.com/pradosoft/prado
+ * @author  Qiang Xue <qiang.xue@gmail.com>
+ * @link    https://github.com/pradosoft/prado
  * @license https://github.com/pradosoft/prado/blob/master/LICENSE
  * @package Prado\Util
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @license GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 /**
@@ -22,9 +22,9 @@
  *   echo TVarDumper::dump($var);
  * </code>
  *
- * @author Qiang Xue <qiang.xue@gmail.com>
+ * @author  Qiang Xue <qiang.xue@gmail.com>
  * @package Prado\Util
- * @since 3.0
+ * @since   3.0
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -32,92 +32,117 @@ defined('_JEXEC') or die('Restricted access');
 class TVarDumper
 {
 	private static $_objects;
+
 	private static $_output;
+
 	private static $_depth;
 
 	/**
 	 * Converts a variable into a string representation.
-	 * This method achieves the similar functionality as 
+	 * This method achieves the similar functionality as
 	 * but is more robust when handling complex objects such as PRADO controls.
-	 * @param mixed $var variable to be dumped
-	 * @param int $depth maximum depth that the dumper should go into the variable. Defaults to 10.
-	 * @param bool $highlight wether to highlight th resulting string
+	 *
+	 * @param   mixed $var       variable to be dumped
+	 * @param   int   $depth     maximum depth that the dumper should go into the variable. Defaults to 10.
+	 * @param   bool  $highlight wether to highlight th resulting string
 	 * @return string the string representation of the variable
 	 */
 	public static function dump($var, $depth = 10, $highlight = false)
 	{
 		self::$_output = '';
-		self::$_objects = [];
+		self::$_objects = array();
 		self::$_depth = $depth;
 		self::dumpInternal($var, 0);
-		if ($highlight) {
+
+		if ($highlight)
+		{
 			$result = highlight_string("<?php\n" . self::$_output, true);
+
 			return preg_replace('/&lt;\\?php<br \\/>/', '', $result, 1);
-		} else {
+		}
+		else
+		{
 			return self::$_output;
 		}
 	}
 
 	private static function dumpInternal($var, $level)
 	{
-		switch (gettype($var)) {
+		switch (gettype($var))
+		{
 			case 'boolean':
 				self::$_output .= $var ? 'true' : 'false';
-				break;
+			break;
 			case 'integer':
 				self::$_output .= "$var";
-				break;
+			break;
 			case 'double':
 				self::$_output .= "$var";
-				break;
+			break;
 			case 'string':
 				self::$_output .= "'$var'";
-				break;
+			break;
 			case 'resource':
 				self::$_output .= '{resource}';
-				break;
+			break;
 			case 'NULL':
 				self::$_output .= "null";
-				break;
+			break;
 			case 'unknown type':
 				self::$_output .= '{unknown}';
-				break;
+			break;
 			case 'array':
-				if (self::$_depth <= $level) {
+				if (self::$_depth <= $level)
+				{
 					self::$_output .= 'array(...)';
-				} elseif (empty($var)) {
+				}
+				elseif (empty($var))
+				{
 					self::$_output .= 'array()';
-				} else {
-					$keys = array_keys($var);
-					$spaces = str_repeat(' ', $level * 4);
-					self::$_output .= "array\n" . $spaces . '(';
-					foreach ($keys as $key) {
-						self::$_output .= "\n" . $spaces . "    [$key] => ";
-						self::$_output .= self::dumpInternal($var[$key], $level + 1);
+				}
+				else
+				{
+							$keys = array_keys($var);
+							$spaces = str_repeat(' ', $level * 4);
+							self::$_output .= "array\n" . $spaces . '(';
+
+					foreach ($keys as $key)
+					{
+								self::$_output .= "\n" . $spaces . "    [$key] => ";
+								self::$_output .= self::dumpInternal($var[$key], $level + 1);
 					}
+
 					self::$_output .= "\n" . $spaces . ')';
 				}
-				break;
+			break;
 			case 'object':
-				if (($id = array_search($var, self::$_objects, true)) !== false) {
+				if (($id = array_search($var, self::$_objects, true)) !== false)
+				{
 					self::$_output .= get_class($var) . '#' . ($id + 1) . '(...)';
-				} elseif (self::$_depth <= $level) {
+				}
+				elseif (self::$_depth <= $level)
+				{
 					self::$_output .= get_class($var) . '(...)';
-				} else {
-					$id = array_push(self::$_objects, $var);
-					$className = get_class($var);
-					$members = (array) $var;
-					$keys = array_keys($members);
-					$spaces = str_repeat(' ', $level * 4);
-					self::$_output .= "$className#$id\n" . $spaces . '(';
-					foreach ($keys as $key) {
-						$keyDisplay = strtr(trim($key), ["\0" => ':']);
-						self::$_output .= "\n" . $spaces . "    [$keyDisplay] => ";
-						self::$_output .= self::dumpInternal($members[$key], $level + 1);
+				}
+				else
+				{
+							$id = array_push(self::$_objects, $var);
+							$className = get_class($var);
+							$members = (array) $var;
+							$keys = array_keys($members);
+							$spaces = str_repeat(' ', $level * 4);
+							self::$_output .= "$className#$id\n" . $spaces . '(';
+
+					foreach ($keys as $key)
+					{
+								$keyDisplay = strtr(trim($key), array("\0" => ':'));
+								self::$_output .= "\n" . $spaces . "    [$keyDisplay] => ";
+								self::$_output .= self::dumpInternal($members[$key], $level + 1);
 					}
+
 					self::$_output .= "\n" . $spaces . ')';
 				}
-				break;
+			break;
 		}
 	}
 }

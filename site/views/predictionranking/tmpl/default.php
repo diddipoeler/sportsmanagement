@@ -1,12 +1,15 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage predictionranking
+ * @file       default.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -22,8 +25,8 @@ use Joomla\CMS\Uri\Uri;
 $templatesToLoad = array('globalviews','predictionheading');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-$this->kmlpath = Uri::root().'tmp'.DIRECTORY_SEPARATOR.$this->predictionGame->id.'-prediction.kml';
-$this->kmlfile = $this->predictionGame->id.'-prediction.kml';
+$this->kmlpath = Uri::root() . 'tmp' . DIRECTORY_SEPARATOR . $this->predictionGame->id . '-prediction.kml';
+$this->kmlfile = $this->predictionGame->id . '-prediction.kml';
 
 ?>
 <div class="<?php echo $this->divclasscontainer;?>" id="defaultpredictionranking">
@@ -36,12 +39,12 @@ echo $this->loadTemplate('ranking');
 
 if ($this->config['show_all_user_google_map'])
 {
-echo $this->loadTemplate('googlemap');
+	echo $this->loadTemplate('googlemap');
 }
 
 if ($this->config['show_help'])
 {
-    echo $this->loadTemplate('show_help');
+	echo $this->loadTemplate('show_help');
 }
 
 echo $this->loadTemplate('jsminfo');

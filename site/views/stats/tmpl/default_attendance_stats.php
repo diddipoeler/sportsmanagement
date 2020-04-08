@@ -1,15 +1,18 @@
-<?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default_attendance_stats.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+<?php
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage stats
+ * @file       default_attendance_stats.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 
 ?>
@@ -28,28 +31,28 @@ use Joomla\CMS\Language\Text;
 	<tr class="sectiontableentry2">
 		<td class="statlabel"><?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_PER_MATCH');?>:</td>
 		<td class="statvalue">
-        <?php 
-        if ( isset($this->totals->sumspectators) && $this->totals->attendedmatches )
-        {
-        echo round (($this->totals->sumspectators / $this->totals->attendedmatches),2);
-        }
-        else
-        {
-        echo 0;    
-        }
-        ?>
+		<?php
+		if (isset($this->totals->sumspectators) && $this->totals->attendedmatches)
+		{
+			echo round(($this->totals->sumspectators / $this->totals->attendedmatches), 2);
+		}
+		else
+		{
+			echo 0;
+		}
+		?>
 		</td>
 	</tr>
 	<tr class="sectiontableentry1">
 		<td class="statlabel"><b><?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_BEST_AVG');?>:</b>
 		<br />
-		<?php echo $this->bestavgteam;?></td>
+	<?php echo $this->bestavgteam;?></td>
 		<td class="statvalue"><?php echo $this->bestavg;?></td>
 	</tr>
 	<tr class="sectiontableentry2">
 		<td class="statlabel"><b><?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_WORST_AVG');?>:</b>
 		<br />
-		<?php echo $this->worstavgteam;?></td>
+	<?php echo $this->worstavgteam;?></td>
 		<td class="statvalue"><?php echo $this->worstavg;?></td>
 	</tr>
 </table>

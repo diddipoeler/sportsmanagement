@@ -1,27 +1,30 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      round.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage tables
+ * @file       round.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Filter\OutputFilter;
 
 /**
  * sportsmanagementTableRound
- * 
- * @package   
- * @author 
+ *
+ * @package
+ * @author
  * @copyright diddi
- * @version 2014
- * @access public
+ * @version   2014
+ * @access    public
  */
 class sportsmanagementTableRound extends JSMTable
 {
@@ -33,8 +36,8 @@ class sportsmanagementTableRound extends JSMTable
 	 */
 	function __construct( & $db )
 	{
-	   $db = sportsmanagementHelper::getDBConnection();
-		parent::__construct( '#__sportsmanagement_round', 'id', $db );
+		  $db = sportsmanagementHelper::getDBConnection();
+		parent::__construct('#__sportsmanagement_round', 'id', $db);
 	}
 
 	/**
@@ -42,21 +45,22 @@ class sportsmanagementTableRound extends JSMTable
 	 *
 	 * @access public
 	 * @return boolean True on success
-	 * @since 1.0
+	 * @since  1.0
 	 */
 	function check()
 	{
-		// setting alias
-		if ( empty( $this->alias ) )
+		// Setting alias
+		if (empty($this->alias))
 		{
-			$this->alias = OutputFilter::stringURLSafe( $this->name );
+			$this->alias = OutputFilter::stringURLSafe($this->name);
 		}
-		else {
-			$this->alias = OutputFilter::stringURLSafe( $this->alias ); // make sure the user didn't modify it to something illegal...
+		else
+		{
+			$this->alias = OutputFilter::stringURLSafe($this->alias); // Make sure the user didn't modify it to something illegal...
 		}
-		//should check name unicity
+
+		// Should check name unicity
 		return true;
 	}
-        
+
 }
-?>

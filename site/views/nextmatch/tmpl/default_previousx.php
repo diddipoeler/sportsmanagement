@@ -1,12 +1,15 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default_previousx.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+*
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage nextmatch
+ * @file       default_previousx.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -69,14 +72,16 @@ foreach ($this->teams as $currentteam) {
                                     ?></td>
 
                                 <td class="nowrap"><?php
-                                    echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatchprev' . $game->id . '-' . $game->projectteam1_id,
+                                    echo sportsmanagementHelperHtml::getBootstrapModalImage(
+                                        'nextmatchprev' . $game->id . '-' . $game->projectteam1_id,
                                         $game->home_picture,
                                         $home->name,
                                         '20',
                                         '',
                                         $this->modalwidth,
                                         $this->modalheight,
-                                        $this->overallconfig['use_jquery_modal']);
+                                        $this->overallconfig['use_jquery_modal']
+                                                   );
 
 
                                     ?></td>
@@ -84,14 +89,16 @@ foreach ($this->teams as $currentteam) {
                                 <td nowrap="nowrap">-</td>
 
                                 <td class="nowrap"><?php
-                                    echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatchprev' . $game->id . '-' . $game->projectteam2_id,
+                                    echo sportsmanagementHelperHtml::getBootstrapModalImage(
+                                        'nextmatchprev' . $game->id . '-' . $game->projectteam2_id,
                                         $game->away_picture,
                                         $away->name,
                                         '20',
                                         '',
                                         $this->modalwidth,
                                         $this->modalheight,
-                                        $this->overallconfig['use_jquery_modal']);
+                                        $this->overallconfig['use_jquery_modal']
+                                                   );
                                     ?></td>
 
                                 <td nowrap="nowrap"><?php
@@ -105,15 +112,17 @@ foreach ($this->teams as $currentteam) {
                                     echo $game->team2_result;
                                     ?></td>
                                 <td nowrap="nowrap"><?php
-                                    if ($game->show_report == 1) {
-                                        $desc = HTMLHelper::image(Uri::base() . "media/com_sportsmanagement/jl_images/zoom.png",
-                                            Text::_('Match Report'),
-                                            array("title" => Text::_('Match Report')));
-                                        echo HTMLHelper::link($report_link, $desc);
-                                    }
+                                if ($game->show_report == 1) {
+                                    $desc = HTMLHelper::image(
+                                        Uri::base() . "media/com_sportsmanagement/jl_images/zoom.png",
+                                        Text::_('Match Report'),
+                                        array("title" => Text::_('Match Report'))
+                                    );
+                                    echo HTMLHelper::link($report_link, $desc);
+                                }
                                     $k = 1 - $k;
                                     ?></td>
-                                <?php if (($this->config['show_thumbs_picture'])): ?>
+                                <?php if (($this->config['show_thumbs_picture'])) : ?>
                                     <td><?php echo sportsmanagementHelperHtml::getThumbUpDownImg($game, $currentteam->id); ?></td>
                                 <?php endif; ?>
                             </tr>

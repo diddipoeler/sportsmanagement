@@ -1,14 +1,17 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      default_data.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+*
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage rosterpositions
+ * @file       default_data.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -35,7 +38,7 @@ use Joomla\CMS\Router\Route;
                     <?php
                     echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_SHORT_NAME', 'obj.alias', $this->sortDirection, $this->sortColumn);
                     ?>
-                </th>					
+                </th>                  
                 <th width="1%" class="nowrap center hidden-phone">
                     <?php
                     echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_COUNTRY', 'obj.country', $this->sortDirection, $this->sortColumn);
@@ -102,7 +105,7 @@ use Joomla\CMS\Router\Route;
                             <?php echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'rosterpositions.orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?>
                             <?php $disabled = true ? '' : 'disabled="disabled"'; ?>
                         </span>
-                        <input	type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" <?php echo $disabled; ?>
+                        <input    type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" <?php echo $disabled; ?>
                                class="form-control form-control-inline" style="text-align: center" />
                     </td>
                     <td class="center hidden-phone"><?php echo $row->id; ?></td>

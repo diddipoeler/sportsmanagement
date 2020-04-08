@@ -14,52 +14,52 @@
 
 /* Existing styles */
 #scroller .section {
-	float:left;
-	width: 480px; 
+	float: left;
+	width: 480px;
 /*	width: 95%; */
 	height: 150px;
 }
 
 #scroller .hp-highlight {
-	height:150px;
-	margin:-10px 10px 10px 0;
+	height: 150px;
+	margin: -10px 10px 10px 0;
 }
 
 #scroller .feature-headline {
-	position:relative;
+	position: relative;
 /*	top:140px; */
 /*	width:432px; */
 	width: 100%;
 /*	background:white; */
-	margin:10px 10px 20px 10px;
-	padding:10px 10px 0 10px;
+	margin: 10px 10px 20px 10px;
+	padding: 10px 10px 0 10px;
 }
 #scroller .feature-headline a {
 	font-weight: bold;
 	text-decoration: none;
-	color:#cc0000;
+	color: #cc0000;
 }
 
 #scroller h1 {
-	font-weight:normal;
-	font-size:19px;
+	font-weight: normal;
+	font-size: 19px;
 }
 
 #scroller p {
 	font-size: 14px !important;
-	color:#666666;
-	line-height:130%;
-	padding:0 0 10px;
+	color: #666666;
+	line-height: 130%;
+	padding: 0 0 10px;
 }
 
 
 /* Container DIV - automatically generated */
-.simply-scroll-container { 
+.simply-scroll-container {
 	position: relative;
 }
 
 /* Clip DIV - automatically generated */
-.simply-scroll-clip { 
+.simply-scroll-clip {
 	position: relative;
 	overflow: hidden;
 	z-index: 2;
@@ -67,7 +67,7 @@
 
 /* UL/OL/DIV - the element that simplyScroll is inited on
 Class name automatically added to element */
-.simply-scroll-list { 
+.simply-scroll-list {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -77,13 +77,13 @@ Class name automatically added to element */
 	padding: 0;
 	list-style: none;
 }
-	
+
 .simply-scroll-list li {
 	padding: 0;
 	margin: 0;
 	list-style: none;
 }
-	
+
 .simply-scroll-list li img {
 	border: none;
 	display: block;

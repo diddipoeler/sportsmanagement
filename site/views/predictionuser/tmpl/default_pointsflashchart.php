@@ -1,12 +1,15 @@
-<?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default_pointsflashchart.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+<?php
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage predictionuser
+ * @file       default_pointsflashchart.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -32,12 +35,12 @@ window.chartColors = {
 var ctx = document.getElementById('jsmpointsflashchart').getContext('2d');
 var color = Chart.helpers.color;
 var chart = new Chart(ctx, {
-    // The type of chart we want to create
-    type: 'bar',
+	// The type of chart we want to create
+	type: 'bar',
 
-    // The data for our dataset
-    data: {
-        labels: [<?php echo implode(',', $this->round_labels); ?>],
+	// The data for our dataset
+	data: {
+		labels: [<?php echo implode(',', $this->round_labels); ?>],
 
 datasets: [{
 				label: '<?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_USER_POINTS'); ?>',
@@ -46,27 +49,27 @@ datasets: [{
 				borderWidth: 1,
 				data: [<?php echo implode(',', $this->userpoints); ?>
 				]
-			}            
-            ]
+			}          
+			]
 },
 
-    // Configuration options go here
-    options: {
-    responsive: true,
-    legend: {
-      display: true,
-      labels: {
-        padding: 20
-      },
-    },
-    tooltips: {
-      enabled: true,
-    },
-    scales: {
+	// Configuration options go here
+	options: {
+	responsive: true,
+	legend: {
+	  display: true,
+	  labels: {
+		padding: 20
+	  },
+	},
+	tooltips: {
+	  enabled: true,
+	},
+	scales: {
 yAxes: [{
 ticks: {
-suggestedMin: 0,   
-suggestedMax: <?php echo $this->PointsCountMax; ?>, 
+suggestedMin: 0, 
+suggestedMax: <?php echo $this->PointsCountMax; ?>,
 beginAtZero:false,
 reverse: false,
 stepSize:1,
@@ -74,7 +77,7 @@ callback: function(value) {if (value == 0) {return "";} else {value = value * 1;
 }
 }]
 }
-    }
+	}
 });
 
 </script>

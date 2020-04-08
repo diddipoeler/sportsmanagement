@@ -1,12 +1,15 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      edit_3.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage fieldsets
+ * @file       edit_3.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -22,29 +25,32 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
  */
 HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
-try{ 
-$params = $this->form->getFieldsets('params');
+try
+{
+	$params = $this->form->getFieldsets('params');
 }
 catch (Exception $e)
 {
-    Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
-    Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+	Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
+	Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), 'error');
 }
+
 /**
  * Get the form fieldsets.
  */
-try{  
-$fieldsets = $this->form->getFieldsets();
+try
+{
+	$fieldsets = $this->form->getFieldsets();
 }
 catch (Exception $e)
 {
-    Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
-    Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+	Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
+	Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), 'error');
 }
 ?>
-<form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $this->item->id.'&tmpl='.$this->tmpl); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
+<form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view=' . $this->view . '&layout=edit&id=' . (int) $this->item->id . '&tmpl=' . $this->tmpl); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 <?PHP
-if ( !$this->item->id && $this->view == 'club' )
+if (!$this->item->id && $this->view == 'club')
 {
 ?>
 <fieldset class="adminform">
@@ -52,8 +58,10 @@ if ( !$this->item->id && $this->view == 'club' )
 <input type="checkbox" name="createTeam" />
 </fieldset>
 <?PHP
-}   
-if ( $this->tmpl && $this->view == 'club' )
+}
+
+
+if ($this->tmpl && $this->view == 'club')
 {
 ?>
 <fieldset>
@@ -66,9 +74,7 @@ if ( $this->tmpl && $this->view == 'club' )
 <?php echo Text::_('JCANCEL');?></button>
 </div>
 </fieldset>
-<?PHP    	
-	
-}	
-	
-echo $this->loadTemplate('editdata');  
-?>  
+<?PHP
+}
+
+echo $this->loadTemplate('editdata');

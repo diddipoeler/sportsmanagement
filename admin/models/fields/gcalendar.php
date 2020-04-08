@@ -1,12 +1,15 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      gcalendar.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage fields
+ * @file       gcalendar.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die();
@@ -19,27 +22,26 @@ FormHelper::loadFieldClass('list');
 
 /**
  * FormFieldGCalendar
- * 
- * @package 
- * @author Dieter Plöger
+ *
+ * @package
+ * @author    Dieter PlÃ¶ger
  * @copyright 2017
- * @version $Id$
- * @access public
+ * @version   $Id$
+ * @access    public
  */
 class JFormFieldGCalendar extends \JFormFieldList
 {
-    
 	protected $type = 'GCalendar';
 
 	/**
 	 * FormFieldGCalendar::getOptions()
-	 * 
+	 *
 	 * @return
 	 */
 	protected function getOptions()
-    {
+	{
 		$options = array();
-        $db = Factory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select('id AS value, name AS text');
 		$query->from('#__sportsmanagement_gcalendar');
@@ -48,7 +50,8 @@ class JFormFieldGCalendar extends \JFormFieldList
 		$options = $db->loadObjectList();
 
 		$options = array_merge(parent::getOptions(), $options);
+
 		return $options;
 	}
-    
+
 }

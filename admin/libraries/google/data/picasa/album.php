@@ -174,7 +174,7 @@ class JGoogleDataPicasaAlbum extends JGoogleData
 	/**
 	 * Method to get the time of the album
 	 *
-	 * @return  double  Album time
+	 * @return  float  Album time
 	 *
 	 * @since   3.1.4
 	 */

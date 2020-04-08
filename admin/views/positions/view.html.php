@@ -1,12 +1,15 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      view.html.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage positions
+ * @file       view.html.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 
@@ -19,59 +22,67 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewPositions
- * 
- * @package 
- * @author diddi
+ *
+ * @package
+ * @author    diddi
  * @copyright 2014
- * @version $Id$
- * @access public
+ * @version   $Id$
+ * @access    public
  */
 class sportsmanagementViewPositions extends sportsmanagementView
 {
 	/**
 	 * sportsmanagementViewPositions::init()
-	 * 
+	 *
 	 * @return void
 	 */
-	public function init ()
+	public function init()
 	{
 
 		$this->table = Table::getInstance('position', 'sportsmanagementTable');
 
-		//build the html options for parent position
+		// Build the html options for parent position
 		$parent_id[] = HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_IS_P_POSITION'));
+
 		if ($res = $this->model->getParentsPositions())
 		{
-			foreach ($res as $re){$re->text = Text::_($re->text);}
+			foreach ($res as $re)
+			{
+				$re->text = Text::_($re->text);
+			}
+
 			$parent_id = array_merge($parent_id, $res);
 		}
+
 		$lists['parent_id'] = $parent_id;
 		unset($parent_id);
 
-		//build the html select list for sportstypes
+		// Build the html select list for sportstypes
 		$sportstypes[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_SPORTSTYPE_FILTER'), 'id', 'name');
-		$allSportstypes = BaseDatabaseModel::getInstance('SportsTypes','sportsmanagementmodel')->getSportsTypes();
+		$allSportstypes = BaseDatabaseModel::getInstance('SportsTypes', 'sportsmanagementmodel')->getSportsTypes();
 		$sportstypes = array_merge($sportstypes, $allSportstypes);
-        
-        $this->sports_type	= $allSportstypes;
-        
-		$lists['sportstypes'] = HTMLHelper::_( 'select.genericList', 
-							$sportstypes, 
-							'filter_sports_type', 
-							'class="inputbox" onChange="this.form.submit();" style="width:120px"', 
-							'id', 
-							'name', 
-							$this->state->get('filter.sports_type'));
+
+			  $this->sports_type    = $allSportstypes;
+
+			  $lists['sportstypes'] = HTMLHelper::_(
+				  'select.genericList',
+				  $sportstypes,
+				  'filter_sports_type',
+				  'class="inputbox" onChange="this.form.submit();" style="width:120px"',
+				  'id',
+				  'name',
+				  $this->state->get('filter.sports_type')
+			  );
 		unset($sportstypes);
-		
-		$this->lists = $lists;
-		
+
+			  $this->lists = $lists;
+
 	}
-	
-	
+
+
 	/**
 	 * sportsmanagementViewPositions::addToolbar()
-	 * 
+	 *
 	 * @return void
 	 */
 	protected function addToolbar()
@@ -89,8 +100,7 @@ class sportsmanagementViewPositions extends sportsmanagementView
 		ToolbarHelper::addNew('position.add');
 		ToolbarHelper::custom('position.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
 		ToolbarHelper::archiveList('position.export', Text::_('JTOOLBAR_EXPORT'));
-        		
-        parent::addToolbar();
+
+					  parent::addToolbar();
 	}
 }
-?>

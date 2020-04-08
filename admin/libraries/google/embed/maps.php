@@ -239,7 +239,7 @@ class JGoogleEmbedMaps extends JGoogleEmbed
 	/**
 	 * Method to get the zoom
 	 *
-	 * @return  int  The zoom level
+	 * @return  integer  The zoom level
 	 *
 	 * @since   3.1.4
 	 */
@@ -725,15 +725,15 @@ class JGoogleEmbedMaps extends JGoogleEmbed
 		switch ($this->getAutoload())
 		{
 			case 'onload':
-			$output .= "window.onload={$onload};";
+				$output .= "window.onload={$onload};";
 			break;
 
 			case 'jquery':
-			$output .= "jQuery(document).ready({$onload});";
+				$output .= "jQuery(document).ready({$onload});";
 			break;
 
 			case 'mootools':
-			$output .= "window.addEvent('domready',{$onload});";
+				$output .= "window.addEvent('domready',{$onload});";
 			break;
 		}
 

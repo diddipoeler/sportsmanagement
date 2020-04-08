@@ -1,12 +1,15 @@
-<?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+<?php
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage jlextindividualsportes
+ * @file       default.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -95,17 +98,17 @@ use Joomla\CMS\HTML\HTMLHelper;
 			document.getElementById('massadd_type2').style.display='block';
 		}
 	}
-	
+  
 	function SaveMatch(a,b)
 	{
 		var f = document.matrixForm;
 		if(f)
-		{  
-			f.elements['teamplayer1_id'].value = a;  
-			f.elements['teamplayer2_id'].value = b;  
-			f.submit();  
-		}  
-	}	
+		{
+			f.elements['teamplayer1_id'].value = a;
+			f.elements['teamplayer2_id'].value = b;
+			f.submit();
+		}
+	}  
 //-->
 </script>
 <style>
@@ -119,8 +122,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 
 
-<?php 
-//echo $this->loadTemplate('massadd'); ?>
+<?php
+// Echo $this->loadTemplate('massadd'); ?>
 </div>
 <?php echo $this->loadTemplate('matches'); ?>
-<?php echo $this->loadTemplate('matrix'); ?>
+<?php echo $this->loadTemplate('matrix');

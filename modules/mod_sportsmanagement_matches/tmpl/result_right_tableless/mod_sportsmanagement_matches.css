@@ -1,79 +1,79 @@
 .jlmhaslinks {
-    text-decoration: underline;
+	text-decoration: underline;
 }
 
 span.jlmlteamcol {
-    /* width:40%;
+	/* width:40%;
      display:block;*/
-    margin: 0 5px;
+	margin: 0 5px;
 }
 
 span.jlmlteamcol > img {
-    vertical-align: middle;
-    margin: 0 3px;
+	vertical-align: middle;
+	margin: 0 3px;
 }
 
 span.jlmlleft {
-    float: left;
+	float: left;
 }
 
 span.jlmlright {
-    float: left;
+	float: left;
 }
 
 div.jlmlDateHolder {
-    text-align: center;
-    padding: 10px 10px;
+	text-align: center;
+	padding: 10px 10px;
 }
 
 .jlmlmatchholder, *.jlmlmatchholder {
-    text-align: center;
-    vertical-align: middle;
+	text-align: center;
+	vertical-align: middle;
 }
 
 .jlmlmatchholder > div.contentheading {
-    font-size: 120%;
-    font-weight: bold;
+	font-size: 120%;
+	font-weight: bold;
 }
 
 .jlml_livescore {
-    color: #ff0000;
+	color: #ff0000;
 }
 
 .jlmlusedteam {
-    font-weight: bold;
+	font-weight: bold;
 }
 
 span.jlmlResults {
-    float: right;
-    font-weight: bold;
-    font-size: 110%;
-    text-align: center;
-    margin-right: 5px;
+	float: right;
+	font-weight: bold;
+	font-size: 110%;
+	text-align: center;
+	margin-right: 5px;
 }
 
 span.jsmlCancelR {
-    float: right;
-    font-weight: bold;
-    color: red;
-    text-align: center;
-    margin-right: 5px;
+	float: right;
+	font-weight: bold;
+	color: red;
+	text-align: center;
+	margin-right: 5px;
 }
 
 span.jlmlPartResults {
-    font-weight: normal;
-    float: right;
-    margin: 0 5px;
+	font-weight: normal;
+	float: right;
+	margin: 0 5px;
 }
 
 span.jlmlMatchLinks {
-    float: left;
-    text-align: center;
-    font-weight: normal;
-    font-size: 80%;
+	float: left;
+	text-align: center;
+	font-weight: normal;
+	font-size: 80%;
 }
 
 span.jlmlTeamLinks {
-    font-weight: normal;
-    font-size: 80%;
+	font-weight: normal;
+	font-size: 80%;
 }

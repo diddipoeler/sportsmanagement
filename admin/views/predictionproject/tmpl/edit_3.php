@@ -1,12 +1,15 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      edit_3.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage predictionproject
+ * @file       edit_3.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -30,9 +33,9 @@ $fieldsets = $this->form->getFieldsets();
 /*
 function change_published () {
   if (document.adminForm.published0.checked == true) {
-    var deaktiviert=true;
+	var deaktiviert=true;
   } else {
-    var deaktiviert=false;
+	var deaktiviert=false;
   }
   document.adminForm.mode.disabled=deaktiviert;
   document.adminForm.overview.disabled=deaktiviert;
@@ -44,19 +47,19 @@ function change_published () {
   document.adminForm.champ1.disabled=deaktiviert;
 
   document.adminForm.points_correct_result.disabled=deaktiviert;
-    document.adminForm.points_correct_result_joker.disabled=deaktiviert;
+	document.adminForm.points_correct_result_joker.disabled=deaktiviert;
   document.adminForm.points_correct_diff.disabled=deaktiviert;
-    document.adminForm.points_correct_diff_joker.disabled=deaktiviert;
+	document.adminForm.points_correct_diff_joker.disabled=deaktiviert;
   document.adminForm.points_correct_draw.disabled=deaktiviert;
-    document.adminForm.points_correct_draw_joker.disabled=deaktiviert;
+	document.adminForm.points_correct_draw_joker.disabled=deaktiviert;
   document.adminForm.points_correct_tendence.disabled=deaktiviert;
-    document.adminForm.points_correct_tendence_joker.disabled=deaktiviert;
+	document.adminForm.points_correct_tendence_joker.disabled=deaktiviert;
   document.adminForm.points_tipp.disabled=deaktiviert;
-    document.adminForm.points_tipp_joker.disabled=deaktiviert;
+	document.adminForm.points_tipp_joker.disabled=deaktiviert;
 
-    document.adminForm.joker_limit.disabled=deaktiviert;
+	document.adminForm.joker_limit.disabled=deaktiviert;
 
-    document.adminForm.points_tipp_champ.disabled=deaktiviert;
+	document.adminForm.points_tipp_champ.disabled=deaktiviert;
 
   if (deaktiviert == false){
 //  change_joker();
@@ -81,9 +84,9 @@ function change_published () {
 
 function change_jokerlimit () {
   if (document.adminForm.joker_limit_select0.checked == true) {
-    var deaktiviert=true;
+	var deaktiviert=true;
   } else {
-    var deaktiviert=false;
+	var deaktiviert=false;
   }
   document.adminForm.joker_limit.disabled=deaktiviert;
 }
@@ -100,7 +103,7 @@ function change_jokerlimit () {
 
 </script>
 
-<form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $this->item->id.'&project_id='.(int) $this->item->project_id) ; ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
+<form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view=' . $this->view . '&layout=edit&id=' . (int) $this->item->id . '&project_id=' . (int) $this->item->project_id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 
  <fieldset>
 		<div class="fltrt">
@@ -112,49 +115,50 @@ function change_jokerlimit () {
 			-->
 		</div>
 	</fieldset>
-    	
- <div class="form-horizontal">
+
+	   <div class="form-horizontal">
 <?php echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
 
-<?PHP    
-foreach ($fieldsets as $fieldset) 
+<?PHP
+foreach ($fieldsets as $fieldset)
 {
-echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));    
+	echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));
 
-switch ($fieldset->name)
-{
-    case 'details':
-    echo $this->form->renderFieldset('details');
-    break;
-case 'predchamp':
-echo $this->form->renderFieldset('predchamp');		
-break;		
-case 'predjoker':
-echo $this->form->renderFieldset('predjoker');		
-break;
-		
-    default:
-    $this->fieldset = $fieldset->name;
-    echo $this->loadTemplate('fieldsets');
-    break;
-}    
-echo HTMLHelper::_('bootstrap.endTab');    
-}    
+	switch ($fieldset->name)
+	{
+		case 'details':
+			echo $this->form->renderFieldset('details');
+		break;
+		case 'predchamp':
+			echo $this->form->renderFieldset('predchamp');
+		break;
+		case 'predjoker':
+			echo $this->form->renderFieldset('predjoker');
+		break;
 
-?>    
-	
+		default:
+			$this->fieldset = $fieldset->name;
+			echo $this->loadTemplate('fieldsets');
+		break;
+	}
+
+	echo HTMLHelper::_('bootstrap.endTab');
+}
+
+?>  
+  
 <?php echo HTMLHelper::_('bootstrap.endTabSet'); ?>
-</div>    
+</div>  
 
-	<div>	
+	<div>  
 		<input type='hidden' name='id' value='<?php echo $this->item->id; ?>' />
 		<input type='hidden' name='task' value='predictionproject.edit' />
-		<input type='hidden' name='psapply'	value='1' />
+		<input type='hidden' name='psapply'    value='1' />
 	</div>
-	<?php 
-    echo HTMLHelper::_('form.token'); 
+	<?php
+	echo HTMLHelper::_('form.token');
 
-    ?>
+	?>
 </form>
 <script type="text/javascript">
 	//change_published();
@@ -162,5 +166,5 @@ echo HTMLHelper::_('bootstrap.endTab');
 <div>
 <?PHP
 echo $this->loadTemplate('footer');
-?>   
+?> 
 </div>

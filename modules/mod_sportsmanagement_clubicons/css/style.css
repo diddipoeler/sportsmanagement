@@ -2,16 +2,16 @@
 /* CSS Document */
 
 .img-zoom {
-    width: 310px;
-    -webkit-transition: all .2s ease-in-out;
-    -moz-transition: all .2s ease-in-out;
-    -o-transition: all .2s ease-in-out;
-    -ms-transition: all .2s ease-in-out;
+	width: 310px;
+	-webkit-transition: all .2s ease-in-out;
+	-moz-transition: all .2s ease-in-out;
+	-o-transition: all .2s ease-in-out;
+	-ms-transition: all .2s ease-in-out;
 }
- 
+
 .transition {
-    -webkit-transform: scale(2); 
-    -moz-transform: scale(2);
-    -o-transform: scale(2);
-    transform: scale(2);
+	-webkit-transform: scale(2);
+	-moz-transform: scale(2);
+	-o-transform: scale(2);
+	transform: scale(2);
 }

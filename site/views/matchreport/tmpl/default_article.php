@@ -1,15 +1,18 @@
-<?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default_article.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+<?php
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage matchreport
+ * @file       default_article.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -19,13 +22,12 @@ use Joomla\CMS\HTML\HTMLHelper;
 <?php
 if (!empty($this->match_article->introtext))
 {
-    
 	?>
 	<table class="table " >
 		<tr>
 			<td class="contentheading">
 				<?php
-				echo '&nbsp;' . Text::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_ARTICLE' );
+				echo '&nbsp;' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_ARTICLE');
 				?>
 			</td>
 		</tr>
@@ -33,13 +35,13 @@ if (!empty($this->match_article->introtext))
 	<table class="table " >
 		<tr>
 			<td>
-			<?php
-			$summary = $this->match_article->introtext;
-			$summary = HTMLHelper::_('content.prepare', $summary);
+	<?php
+	$summary = $this->match_article->introtext;
+	$summary = HTMLHelper::_('content.prepare', $summary);
 
-			echo $summary;
+	echo $summary;
 
-			?>
+	?>
 			</td>
 		</tr>
 	</table>

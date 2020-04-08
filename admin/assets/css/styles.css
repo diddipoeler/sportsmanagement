@@ -1,6 +1,6 @@
 /**
  * JSM Component
- * @package 
+ * @package
  *
  * @copyright (C) 2014 jsm Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
@@ -14,7 +14,7 @@
 }*/
 
 #jsm.admin.override #dashboard-icons .btn {
-    background-image: none;
-    border-color: transparent;
-    box-shadow: none;
+	background-image: none;
+	border-color: transparent;
+	box-shadow: none;
 }

@@ -1,31 +1,34 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      preditiongame.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage tables
+ * @file       preditiongame.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Filter\OutputFilter;
 
 /**
  * sportsmanagementTablePredictionGame
- * 
- * @package   
- * @author 
+ *
+ * @package
+ * @author
  * @copyright diddi
- * @version 2013
- * @access public
+ * @version   2013
+ * @access    public
  */
 class sportsmanagementTablePredictionGame extends JSMTable
 {
-	
+
 	/**
 	 * Constructor
 	 *
@@ -34,8 +37,8 @@ class sportsmanagementTablePredictionGame extends JSMTable
 	 */
 	function __construct(& $db)
 	{
-	   $db = sportsmanagementHelper::getDBConnection();
-		parent::__construct( '#__sportsmanagement_prediction_game', 'id', $db );
+		  $db = sportsmanagementHelper::getDBConnection();
+		parent::__construct('#__sportsmanagement_prediction_game', 'id', $db);
 	}
 
 	/**
@@ -43,18 +46,20 @@ class sportsmanagementTablePredictionGame extends JSMTable
 	 *
 	 * @access public
 	 * @return boolean True on success
-	 * @since 1.0
+	 * @since  1.0
 	 */
 	function check()
 	{
-		if ( trim( $this->name ) == '' )
+		if (trim($this->name) == '')
 		{
-			$this->setError( Text::_( 'CHECK FAILED - Empty name of prediction game' ) );
+			$this->setError(Text::_('CHECK FAILED - Empty name of prediction game'));
+
 			return false;
 		}
 
-		$alias = OutputFilter::stringURLSafe( $this->name );
-		if ( empty( $this->alias ) || $this->alias === $alias )
+		$alias = OutputFilter::stringURLSafe($this->name);
+
+		if (empty($this->alias) || $this->alias === $alias)
 		{
 			$this->alias = $alias;
 		}
@@ -63,4 +68,3 @@ class sportsmanagementTablePredictionGame extends JSMTable
 	}
 
 }
-?>

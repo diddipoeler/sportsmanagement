@@ -1,14 +1,17 @@
-<?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default_genkml3.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+<?php
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage rankingalltime
+ * @file       default_genkml3.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined( '_JEXEC',1 ) or die( 'Restricted access' );
+defined('_JEXEC', 1) or die('Restricted access');
 
 // Creates an array of strings to hold the lines of the KML file.
 $kml = array('<?xml version="1.0" encoding="UTF-8"?>');
@@ -43,9 +46,9 @@ $kml[] = ' </Placemark>';
 $kml[] = ' <Placemark id="placemark1">';
 $kml[] = ' <name>' . htmlentities('Buddha Thai & Bar') . '</name>';
 $kml[] = ' <description>' . htmlentities('2222 2nd Ave, Seattle, WA') . '</description>';
-$kml[] = ' <styleUrl>#' . ('bar') .'Style</styleUrl>';
+$kml[] = ' <styleUrl>#' . ('bar') . 'Style</styleUrl>';
 $kml[] = ' <Point>';
-$kml[] = ' <coordinates>' . '-122.344394' . ','  . '47.613591' . '</coordinates>';
+$kml[] = ' <coordinates>' . '-122.344394' . ',' . '47.613591' . '</coordinates>';
 $kml[] = ' </Point>';
 $kml[] = ' </Placemark>';
 
@@ -58,4 +61,3 @@ echo $kmlOutput;
 
 
 
-?>

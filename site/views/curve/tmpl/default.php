@@ -1,15 +1,18 @@
-<?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+<?php
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage curve
+ * @file       default.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Make sure that in case extensions are written for mentioned (common) views,
@@ -22,26 +25,27 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <?php
 echo $this->loadTemplate('projectheading');
 
-if ( $this->config['show_sectionheader'] )
+if ($this->config['show_sectionheader'])
 {
-echo $this->loadTemplate('sectionheader');
+	echo $this->loadTemplate('sectionheader');
 }
 
-//if ( $this->config['show_curve'] )
-//{
-if ( $this->config['which_curve'] )
+// If ( $this->config['show_curve'] )
+// {
+if ($this->config['which_curve'])
 {
-echo $this->loadTemplate('curvejs');    
+	echo $this->loadTemplate('curvejs');
 }
-//else
-//{
-//echo $this->loadTemplate('curve');
-//}
-//}
 
-if ( $this->config['show_colorlegend'] )
+// Else
+// {
+// echo $this->loadTemplate('curve');
+// }
+// }
+
+if ($this->config['show_colorlegend'])
 {
-echo $this->loadTemplate('colorlegend');
+	echo $this->loadTemplate('colorlegend');
 }
 
 echo $this->loadTemplate('jsminfo');

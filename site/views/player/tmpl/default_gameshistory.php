@@ -1,15 +1,15 @@
-<?php 
+<?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default_gameshistory.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage player
+ * @file       default_gameshistory.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -37,29 +37,29 @@ if (count($this->games))
 					<th class=""><?php
 					$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_STARTROSTER');
                     $picture = $picture_path_sport_type_name.'/startroster.png';
-                   
+                 
 					echo HTMLHelper::image($picture,$imageTitle,array(' title' => $imageTitle));
 					?></th>
 					<th class=""><?php
 					$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_IN');
                     $picture = $picture_path_sport_type_name.'/in.png';
-                    
+                  
 					echo HTMLHelper::image($picture,$imageTitle,array(' title' => $imageTitle));
 					?></th>
 					<th class=""><?php
 					$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_OUT');
                     $picture = $picture_path_sport_type_name.'/out.png';
-                   
+                 
 					echo HTMLHelper::image($picture,$imageTitle,array(' title' => $imageTitle));
 					?></th>
-                    
+                  
                     <th class=""><?php
 				$imageTitle=Text::_('COM_SPORTSMANAGEMENT_PLAYED_TIME');
                 $picture = $picture_path_sport_type_name.'/uhr.png';
-                
+              
 				echo HTMLHelper::image($picture,$imageTitle,array('title'=> $imageTitle,'height'=> 11));
 		?></th>
-        
+      
 					<?php
 					}
 					if ($this->config['show_career_events_stats'])
@@ -94,7 +94,7 @@ if (count($this->games))
  * 							do not show statheader when there are no stats
  */
 							if (!empty($stat)) {
-								try{  
+								try{
 							    if ($stat->showInPlayer()) {
 							?>
 					<th class=""><?php echo $stat->getImage(); ?></th>
@@ -112,9 +112,9 @@ catch (Exception $e)
                     {
                     ?>
 					<th class="td_c"><?php echo Text::_('COM_SPORTSMANAGEMENT_EURO_MARKET_VALUE'); ?></th>
-					<?php    
+					<?php  
                     }
-                    
+                  
 					?>
 				</tr>
 			</thead>
@@ -135,7 +135,7 @@ $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt
 $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $game->match_slug;
-$report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter); 
+$report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
 $routeparameter = array();
 $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
 $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
@@ -154,11 +154,11 @@ $teaminfo_away_link = sportsmanagementHelperRoute::getSportsmanagementRoute('tea
                 }
 		    if ( $game->match_result_type )
 		    {
-			$game_regular_time = $this->project->game_regular_time + $this->project->add_time;    
+			$game_regular_time = $this->project->game_regular_time + $this->project->add_time;  
 		    }
 		    else
 		    {
-			$game_regular_time = $this->project->game_regular_time;    
+			$game_regular_time = $this->project->game_regular_time;  
 		    }
                 $timePlayed = $model->getTimePlayed($game->teamplayer_id,$game_regular_time,$game->id,$this->overallconfig['person_events'],$game->project_id,0);
                 ?>
@@ -167,13 +167,13 @@ $teaminfo_away_link = sportsmanagementHelperRoute::getSportsmanagementRoute('tea
 					<?php
 $jdate = Factory::getDate($game->match_date);
 $jdate->setTimezone(new DateTimeZone($this->project->timezone));
-$body = $jdate->format('l, d. F Y H:i'); 		    
+$body = $jdate->format('l, d. F Y H:i'); 		  
 					echo HTMLHelper::link($report_link,$body);
 					?>
 					</td>
 					<td class="<?php if ($game->projectteam_id == $game->projectteam1_id) echo " playerteam"; ?>">
-						<?php 
-						if ( $this->config['show_gameshistory_teamlink'] ) 
+						<?php
+						if ( $this->config['show_gameshistory_teamlink'] )
                         {
 echo sportsmanagementHelperHtml::getBootstrapModalImage('gameshistory'.$game->id.'-'.$game->projectteam1_id,
 $game->home_logo,
@@ -183,9 +183,9 @@ $game->home_name,
 $this->modalwidth,
 $this->modalheight,
 $this->overallconfig['use_jquery_modal']);							
-                            echo HTMLHelper::link($teaminfo_home_link, $this->teams[$game->projectteam1_id]->name); 
-						} 
-                        else 
+                            echo HTMLHelper::link($teaminfo_home_link, $this->teams[$game->projectteam1_id]->name);
+						}
+                        else
                         {
 echo sportsmanagementHelperHtml::getBootstrapModalImage('gameshistory'.$game->id.'-'.$game->projectteam1_id,
 $game->home_logo,
@@ -203,8 +203,8 @@ $this->overallconfig['use_jquery_modal']);
 					<td class=""><?php echo $this->overallconfig['seperator']; ?></td>
 					<td class=""><?php echo $game->team2_result; ?></td>
 					<td class="<?php if ($game->projectteam_id == $game->projectteam2_id) echo " playerteam"; ?>">
-						<?php 
-						if ( $this->config['show_gameshistory_teamlink'] ) 
+						<?php
+						if ( $this->config['show_gameshistory_teamlink'] )
                         {
 echo sportsmanagementHelperHtml::getBootstrapModalImage('gameshistory'.$game->id.'-'.$game->projectteam2_id,
 $game->away_logo,
@@ -213,10 +213,10 @@ $game->away_name,
 '',
 $this->modalwidth,
 $this->modalheight,
-$this->overallconfig['use_jquery_modal']);                            
-							echo HTMLHelper::link($teaminfo_away_link, $this->teams[$game->projectteam2_id]->name); 
-						} 
-                        else 
+$this->overallconfig['use_jquery_modal']);                          
+							echo HTMLHelper::link($teaminfo_away_link, $this->teams[$game->projectteam2_id]->name);
+						}
+                        else
                         {
 echo sportsmanagementHelperHtml::getBootstrapModalImage('gameshistory'.$game->id.'-'.$game->projectteam2_id,
 $game->away_logo,
@@ -225,7 +225,7 @@ $game->away_name,
 '',
 $this->modalwidth,
 $this->modalheight,
-$this->overallconfig['use_jquery_modal']);                            
+$this->overallconfig['use_jquery_modal']);                          
 							echo $this->teams[$game->projectteam2_id]->name;
 						}
 						?>
@@ -250,7 +250,7 @@ $this->overallconfig['use_jquery_modal']);
 					$total['playedtime'] += $timePlayed;
 					echo ($timePlayed) ;
 					?></td>
-                    
+                  
 					<?php
 					}
 					if ($this->config['show_career_events_stats'] && isset($this->AllEvents) )
@@ -286,7 +286,7 @@ $this->overallconfig['use_jquery_modal']);
 /**
  * 							do not show statheader when there are no stats
  */
-							if (!empty($stat)) { 
+							if (!empty($stat)) {
 							    if ($stat->showInPlayer()) {
 							?>
 					<td class="hasTip" title="<?php echo $stat->name; ?>"><?php
@@ -311,7 +311,7 @@ $this->overallconfig['use_jquery_modal']);
                     {
                     ?>
 					<td class=" hasTip" title="<?php echo number_format($game->market_value,0, ",", "."); ?>">
-                    <?php    
+                    <?php  
                     }
 					?>
 				</tr>
@@ -350,13 +350,13 @@ $this->overallconfig['use_jquery_modal']);
 /**
  * 							do not show statheader when there are no stats
  */
-							if (!empty($stat)) { 
+							if (!empty($stat)) {
 							    if ( $stat->showInPlayer() && isset($stat->gamesstats['totals']) ) {
 							?>
-							    
+							  
 					<td class="hasTip" title="<?php echo $stat->name; ?>">
-					<?php 
-                    echo ($stat->gamesstats['totals']->value > 0 ? $stat->gamesstats['totals']->value : $this->overallconfig['zero_events_value']); 
+					<?php
+                    echo ($stat->gamesstats['totals']->value > 0 ? $stat->gamesstats['totals']->value : $this->overallconfig['zero_events_value']);
                     ?>
 					</td>
 					<?php

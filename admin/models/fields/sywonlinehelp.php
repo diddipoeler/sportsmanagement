@@ -1,28 +1,31 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      sywonlinehelp.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage fields
+ * @file       sywonlinehelp.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 
-defined('_JEXEC') or die ;
+defined('_JEXEC') or die;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Form\FormField;
 
 /**
  * FormFieldSYWOnlineHelp
- * 
- * @package 
- * @author Dieter Plöger
+ *
+ * @package
+ * @author    Dieter Plöger
  * @copyright 2017
- * @version $Id$
- * @access public
+ * @version   $Id$
+ * @access    public
  */
 class JFormFieldSYWOnlineHelp extends FormField
 {
@@ -30,7 +33,7 @@ class JFormFieldSYWOnlineHelp extends FormField
 
 	/**
 	 * FormFieldSYWOnlineHelp::getLabel()
-	 * 
+	 *
 	 * @return
 	 */
 	protected function getLabel()
@@ -50,8 +53,8 @@ class JFormFieldSYWOnlineHelp extends FormField
 		$html[] = !empty($title) ? '<' . $heading . '>' . Text::_($title) . '</' . $heading . '>' : '';
 
 		$html[] = '<table style="width: 100%"><tr>';
-		$html[] = !empty($description) ? '<td>'.Text::_($description).'</td>' : '';
-		$html[] = '<td style="text-align: right"><a href="'.$url.'" target="_blank" class="btn btn-info btn-mini btn-xs"><i class="SYWicon-local-library"></i></a></td>';
+		$html[] = !empty($description) ? '<td>' . Text::_($description) . '</td>' : '';
+		$html[] = '<td style="text-align: right"><a href="' . $url . '" target="_blank" class="btn btn-info btn-mini btn-xs"><i class="SYWicon-local-library"></i></a></td>';
 		$html[] = '</tr></table>';
 
 		return '</div><div ' . $class . '>' . implode('', $html);
@@ -59,7 +62,7 @@ class JFormFieldSYWOnlineHelp extends FormField
 
 	/**
 	 * FormFieldSYWOnlineHelp::getInput()
-	 * 
+	 *
 	 * @return
 	 */
 	protected function getInput()

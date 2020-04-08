@@ -1,19 +1,22 @@
-<?php 
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      default_createdays.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+<?php
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage jlextdfbkeyimport
+ * @file       default_createdays.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
-HTMLHelper::_( 'behavior.tooltip' );
+HTMLHelper::_('behavior.tooltip');
 
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm">
@@ -21,7 +24,7 @@ HTMLHelper::_( 'behavior.tooltip' );
 		<fieldset class="adminform">
 			<legend>
 				<?php
-				echo Text::sprintf( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_2',  $this->projectid  );
+				echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_2',  $this->projectid);
 				?>
 			</legend>
 
@@ -29,55 +32,60 @@ HTMLHelper::_( 'behavior.tooltip' );
 <thead>
 <tr>
 <th class="title" nowrap="nowrap" style="vertical-align:top; ">
-<?PHP echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_3' ); ?>
+<?PHP echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_3'); ?>
 </th>
 <th class="title" nowrap="nowrap" style="vertical-align:top; ">
-<?PHP echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_4' ); ?>
+<?PHP echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_4'); ?>
 </th>
 <th class="title" nowrap="nowrap" style="vertical-align:top; ">
-<?PHP echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_5' ); ?>
+<?PHP echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_5'); ?>
 </th>
 <th class="title" nowrap="nowrap" style="vertical-align:top; ">
-<?PHP echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_6' ); ?>
+<?PHP echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_6'); ?>
 </th>
 
 </tr>
 </thead>
 
 <?PHP
-$i=0;
-foreach($this->newmatchdays as $rowdays) 
+$i = 0;
+
+foreach ($this->newmatchdays as $rowdays)
 {
 ?>
 <tr>
 <input type="hidden" name="roundcode[]" value="<?php echo $rowdays->spieltag;?> " />
 <td><?php echo $rowdays->spieltag;?></td>
-<td> <input type="text" name="name[]" value="<?php echo $rowdays->spieltag.Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_7') ;?> " /> </td>
+<td> <input type="text" name="name[]" value="<?php echo $rowdays->spieltag . Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_7');?> " /> </td>
 
-<td> 
+<td>
 <?php
 $append = ' style="background-color:#bbffff;" ';
 $date1 = '';
-echo HTMLHelper::calendar($date1,
-		'round_date_first['.$i.']',
-		'round_date_first['.$i.']',
-		'%d-%m-%Y',
-		'size="10" ' . $append .
-		'onchange="document.getElementById(\'cb' . $i . '\').checked=true"' );
+echo HTMLHelper::calendar(
+	$date1,
+	'round_date_first[' . $i . ']',
+	'round_date_first[' . $i . ']',
+	'%d-%m-%Y',
+	'size="10" ' . $append .
+		'onchange="document.getElementById(\'cb' . $i . '\').checked=true"'
+);
 
 ?>
 </td>
-<td>  
+<td>
 
 <?php
 $append = ' style="background-color:#bbffff;" ';
 
-echo HTMLHelper::calendar($date1,
-		'round_date_last['.$i.']',
-		'round_date_last['.$i.']',
-		'%d-%m-%Y',
-		'size="10" ' . $append .
-		'onchange="document.getElementById(\'cb' . $i . '\').checked=true"' );
+echo HTMLHelper::calendar(
+	$date1,
+	'round_date_last[' . $i . ']',
+	'round_date_last[' . $i . ']',
+	'%d-%m-%Y',
+	'size="10" ' . $append .
+		'onchange="document.getElementById(\'cb' . $i . '\').checked=true"'
+);
 
 ?>
 
@@ -96,14 +104,14 @@ $i++;
 </div>
 
 <fieldset class="actions">
-						
-							
-</fieldset>
+
+					  
+						  </fieldset>
 <input type="hidden" name="sent" value="1" />
 <input type="hidden" name="projectid" value="<?php echo $this->projectid;?> " />
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="divisionid" value="<?php echo $this->division_id;?> " />
 
-               			
-</form>
+
+						 </form>
 

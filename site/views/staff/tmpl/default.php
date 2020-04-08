@@ -1,12 +1,15 @@
-<?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+<?php
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage staff
+ * @file       default.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -20,50 +23,51 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	<?php
 	echo $this->loadTemplate('projectheading');
 
-	if ( $this->config['show_sectionheader'] )
+	if ($this->config['show_sectionheader'])
 	{
 		echo $this->loadTemplate('sectionheader');
 	}
 
-/**
+	/**
  * diddipoeler
  * aufbau der templates
  */
-  $this->output = array();
+	$this->output = array();
 
-	if ( $this->config['show_info'] )
+	if ($this->config['show_info'])
 	{
 		echo $this->loadTemplate('info');
 	}
 
-	if ( $this->config['show_extended'] )
+	if ($this->config['show_extended'])
 	{
 		echo $this->loadTemplate('extended');
 	}
 
-	if ( $this->config['show_status'] )
+	if ($this->config['show_status'])
 	{
 		echo $this->loadTemplate('status');
 	}
 
-	if ( $this->config['show_description'] )
+	if ($this->config['show_description'])
 	{
 		echo $this->loadTemplate('description');
 	}
+
 	// General part of person view END
 
-	if ( $this->config['show_careerstats'] )
+	if ($this->config['show_careerstats'])
 	{
 		echo $this->loadTemplate('careerstats');
 	}
 
-	if ( $this->config['show_career'] )
+	if ($this->config['show_career'])
 	{
 		echo $this->loadTemplate('career');
 	}
 
 	echo $this->loadTemplate('jsminfo');
-	
+
 	?>
-    
+  
 </div>

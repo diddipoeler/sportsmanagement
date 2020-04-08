@@ -1,30 +1,33 @@
-<?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      defaul_massadd.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+<?php
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage matches
+ * @file       defaul_massadd.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 ?>
-	
-		
-			<legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_TITLE','<i>'.$this->projectws->name.'</i>'); ?></legend>
+  
+
+				  <legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_TITLE', '<i>' . $this->projectws->name . '</i>'); ?></legend>
 			<form name='copyform' method='post' style='display:inline' id='copyform'>
-				<input type='hidden' name='match_date' value='<?php echo $this->roundws->round_date_first.' '.$this->projectws->start_time; ?>' />
+				<input type='hidden' name='match_date' value='<?php echo $this->roundws->round_date_first . ' ' . $this->projectws->start_time; ?>' />
 				<input type='hidden' name='round_id' value='<?php echo $this->roundws->id; ?>' />
 				<input type='hidden' name='project_id' value='<?php echo $this->roundws->project_id; ?>' />
 				<input type='hidden' name='act' value='rounds' />
 				<input type='hidden' name='task' value='match.copyfrom' />
 				<input type='hidden' name='addtype' value='0' id='addtype' />
 				<input type='hidden' name='add_match_count' value='0' id='addmatchescount' />
-				<?php echo HTMLHelper::_('form.token')."\n"; ?>
+				<?php echo HTMLHelper::_('form.token') . "\n"; ?>
 				<table class="<?php echo $this->table_data_class; ?>">
 					<thead>
 						<tr>
@@ -65,12 +68,14 @@ use Joomla\CMS\HTML\HTMLHelper;
 													<tr>
 														<td width="100" align="right" class="key"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_STARTTIME'); ?></td>
 														<td>
-															<?php
-															echo HTMLHelper::calendar(	sportsmanagementHelper::convertDate($this->roundws->round_date_first),
-																					'match_date','match_date',
-																					'%d-%m-%Y','size="10" ');
-                                                           ?>
-                                                            &nbsp;
+				<?php
+				echo HTMLHelper::calendar(
+					sportsmanagementHelper::convertDate($this->roundws->round_date_first),
+					'match_date', 'match_date',
+					'%d-%m-%Y', 'size="10" '
+				);
+															?>
+															&nbsp;
 															<input type='text' name='startTime' value='<?php echo $this->projectws->start_time; ?>' size='4' maxlength='5' class='inputbox' />
 														</td>
 													</tr>
@@ -96,11 +101,13 @@ use Joomla\CMS\HTML\HTMLHelper;
 									<tr>
 										<td width="100" align="right" class="key"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_DEFAULT_DATE'); ?></td>
 										<td>
-											<?php
-											echo HTMLHelper::calendar(	sportsmanagementHelper::convertDate($this->roundws->round_date_first),
-																	'date','date',
-																	'%d-%m-%Y','size="10" ');
-											?>
+			<?php
+			echo HTMLHelper::calendar(
+				sportsmanagementHelper::convertDate($this->roundws->round_date_first),
+				'date', 'date',
+				'%d-%m-%Y', 'size="10" '
+			);
+			?>
 											&nbsp;
 											<input type='text' name='time' value='<?php echo $this->projectws->start_time; ?>' size='4' maxlength='5' class='inputbox' />
 										</td>
@@ -114,7 +121,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 										<td><input type="text" name="start_round_name" size="50" value="" /></td>
 									</tr>
 									<tr>
-										<td width="100" align="right" class="key">										
+										<td width="100" align="right" class="key">                                      
 												<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_CREATE_NEW'); ?>
 										</td>
 										<td><input type="checkbox" name="create_new" value="1" class="inputbox" checked="checked" /></td>
@@ -131,7 +138,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 										</td>
 									</tr>
 									<tr>
-										<td width="100" colspan='2'>																	
+										<td width="100" colspan='2'>                                                                  
 											<input type='submit' value='<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_COPY_MATCHES'); ?>' onclick='copymatches();' />
 										</td>
 									</tr>
@@ -142,4 +149,4 @@ use Joomla\CMS\HTML\HTMLHelper;
 				</table>
 			</form>
 
-	
+  

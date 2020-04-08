@@ -1,12 +1,15 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      sportsmanagement.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_matches
+ * @file       sportsmanagement.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -23,8 +26,8 @@ use Joomla\CMS\Language\Text;
  * @package
  * @author
  * @copyright diddi
- * @version 2014
- * @access public
+ * @version   2014
+ * @access    public
  */
 class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 {
@@ -32,67 +35,78 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 	/**
 	 * MatchesSportsmanagementConnector::buildTeamLinks()
 	 *
-	 * @param mixed $obj
-	 * @param mixed $nr
-	 * @return bool|string
+	 * @param   mixed $obj
+	 * @param   mixed $nr
+	 * @return boolean|string
 	 */
 	public function buildTeamLinks(&$obj, $nr)
 	{
 		if (($this->params->get('link_teams', 0) + $this->usedteamscheck($obj->team_id, $obj->project_id)) < 2)
+		{
 			return false;
+		}
 
 		$linktext = '';
 		$urls = array();
 		$linkstructure = array(
-			'club' => array(
-				'view' => 'clubinfo',
-				'cid' => $obj->club_id,
-				'p' => $obj->project_id
-			),
-			'teaminfo' => array(
-				'view' => 'teaminfo',
-				'tid' => $obj->team_id,
-				'p' => $obj->project_id
-			),
-			'roster' => array(
-				'view' => 'roster',
-				'tid' => $obj->team_id,
-				'p' => $obj->project_id
-			),
-			'curve' => array(
-				'view' => 'curve',
-				'tid' => $obj->team_id,
-				'p' => $obj->project_id
-			),
-			'plan' => array(
-				'view' => 'teamplan',
-				'tid' => $obj->team_id,
-				'p' => $obj->project_id
-			)
+		 'club' => array(
+		  'view' => 'clubinfo',
+		  'cid' => $obj->club_id,
+		  'p' => $obj->project_id
+		 ),
+		 'teaminfo' => array(
+		  'view' => 'teaminfo',
+		  'tid' => $obj->team_id,
+		  'p' => $obj->project_id
+		 ),
+		 'roster' => array(
+		  'view' => 'roster',
+		  'tid' => $obj->team_id,
+		  'p' => $obj->project_id
+		 ),
+		 'curve' => array(
+		  'view' => 'curve',
+		  'tid' => $obj->team_id,
+		  'p' => $obj->project_id
+		 ),
+		 'plan' => array(
+		  'view' => 'teamplan',
+		  'tid' => $obj->team_id,
+		  'p' => $obj->project_id
+		 )
 		);
-		foreach ($linkstructure AS $linktype => $urlarray) {
-			if ($this->params->get('link_team_' . $linktype, 1) == 1) {
-				$linktext .= '<a href="' . Route:: _('index.php?option=com_sportsmanagement' . $this->arrayToUri($urlarray) . $this->itemid) . '">' . $this->addteamicon('link_team_' . $linktype) . '</a>';
+
+		foreach ($linkstructure AS $linktype => $urlarray)
+		{
+			if ($this->params->get('link_team_' . $linktype, 1) == 1)
+			{
+				$linktext .= '<a href="' . Route::_('index.php?option=com_sportsmanagement' . $this->arrayToUri($urlarray) . $this->itemid) . '">' . $this->addteamicon('link_team_' . $linktype) . '</a>';
 			}
 		}
-		if ($this->params->get('link_team_www', 1) == 1) {
-			if (!empty ($obj->website))
+
+		if ($this->params->get('link_team_www', 1) == 1)
+		{
+			if (!empty($obj->website))
+			{
 				$linktext .= '<a href="' . trim($obj->website) . '">' . $this->addteamicon('link_team_www') . '</a>';
+			}
 		}
 
-		if (!empty ($linktext)) {
+		if (!empty($linktext))
+		{
 			$linktext = '<span class="jlmlTeamLinks" style="display:' . $this->params->get('team_link_status', 'none') . ';" id="jlmlTeamname' . $obj->id . 'mod' . $this->module_id . 'nr' . $nr . '_over">' .
-				$linktext . '</span>';
+			 $linktext . '</span>';
 		}
+
 		return $linktext;
 	}
 
 	/**
 	 * MatchesSportsmanagementConnector::getCountGames()
 	 *
-	 * @param mixed $projectid
-	 * @param mixed $ishd_update_hour
-	 * @return bool
+	 * @param   mixed $projectid
+	 * @param   mixed $ishd_update_hour
+	 * @return boolean
 	 */
 	static function getCountGames($projectid, $ishd_update_hour)
 	{
@@ -112,15 +126,20 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 		$query->where('m.match_timestamp < ' . $match_timestamp);
 		$db->setQuery($query);
 
-		try {
+		try
+		{
 			$matchestoupdate = $db->loadResult();
 			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+
 			return $matchestoupdate;
-		} catch (Exception $e) {
+		}
+		catch (Exception $e)
+		{
 			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 			$msg = $e->getMessage(); // Returns "Normally you would have other code...
 			$code = $e->getCode(); // Returns '500';
 			$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
+
 			return false;
 		}
 
@@ -130,16 +149,19 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 	/**
 	 * MatchesSportsmanagementConnector::getMatches()
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function getMatches()
 	{
 		// Reference global application object
 		$app = Factory::getApplication();
+
 		// JInput object
 		$jinput = $app->input;
+
 		// Get a refrence of the page instance in joomla
 		$document = Factory::getDocument();
+
 		// Get a db connection.
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
@@ -154,85 +176,96 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 		 *
 		 * laut modulparameter wird der timestamp für die gespielten paarungen berechnet
 		 */
-		if ($this->params->get('show_played', 0)) {
-			$enddatum_played_matches = time();    // aktuelles Datum
+		if ($this->params->get('show_played', 0))
+		{
+			$enddatum_played_matches = time();    // Aktuelles Datum
 			$stunden = 24;   // z.B. ein Tag
 			$minuten = 60;
 			$sekunden = 60;
-			switch ($this->params->get('result_add_unit', 'HOUR')) {
+
+			switch ($this->params->get('result_add_unit', 'HOUR'))
+			{
 				case 'SECOND':
 					$zeit = $this->params->get('result_add_time', 0);
-					break;
+							break;
 				case 'MINUTE':
-					$zeit = $this->params->get('result_add_time', 0) * $sekunden;
-					break;
+						$zeit = $this->params->get('result_add_time', 0) * $sekunden;
+							break;
 				case 'HOUR':
-					$zeit = $this->params->get('result_add_time', 0) * $minuten * $sekunden;
-					break;
+						$zeit = $this->params->get('result_add_time', 0) * $minuten * $sekunden;
+							break;
 				case 'DAY':
-					$zeit = $this->params->get('result_add_time', 0) * $stunden * $minuten * $sekunden;
-					break;
+						$zeit = $this->params->get('result_add_time', 0) * $stunden * $minuten * $sekunden;
+							break;
 			}
+
 			$startdatum_played_matches = $enddatum_played_matches - ($zeit);
 		}
+
 		/**
 		 * laut modulparameter wird der timestamp für die zukünftige paarungen berechnet
 		 */
-		if ($this->params->get('show_nextmatches', 0)) {
+		if ($this->params->get('show_nextmatches', 0))
+		{
 			$startdatum_next_matches = time();
 			$stunden = 24;
 			$minuten = 60;
 			$sekunden = 60;
-			switch ($this->params->get('period_string', 'HOUR')) {
+
+			switch ($this->params->get('period_string', 'HOUR'))
+			{
 				case 'SECOND':
 					$zeit = $this->params->get('period_int', 0);
-					break;
+							break;
 				case 'MINUTE':
-					$zeit = $this->params->get('period_int', 0) * $sekunden;
-					break;
+						$zeit = $this->params->get('period_int', 0) * $sekunden;
+							break;
 				case 'HOUR':
-					$zeit = $this->params->get('period_int', 0) * $minuten * $sekunden;
-					break;
+						$zeit = $this->params->get('period_int', 0) * $minuten * $sekunden;
+							break;
 				case 'DAY':
-					$zeit = $this->params->get('period_int', 0) * $stunden * $minuten * $sekunden;
-					break;
+						$zeit = $this->params->get('period_int', 0) * $stunden * $minuten * $sekunden;
+							break;
 			}
-			$enddatum_next_matches = $startdatum_next_matches + ($zeit);
 
+			$enddatum_next_matches = $startdatum_next_matches + ($zeit);
 		}
 
-		$projectstring = (is_array($p)) ? implode(",", array_map('intval', $p)) : (int)$p;
+		$projectstring = (is_array($p)) ? implode(",", array_map('intval', $p)) : (int) $p;
 
 		$nu = $this->params->get('project_not_used');
-		$notusedstring = (is_array($nu)) ? implode(",", array_map('intval', $nu)) : (int)$nu;
+		$notusedstring = (is_array($nu)) ? implode(",", array_map('intval', $nu)) : (int) $nu;
 
 		$teams = $this->params->get('teams');
 		$fav = '';
-		if ($this->params->get('use_fav', 0)) {
+
+		if ($this->params->get('use_fav', 0))
+		{
 			$query->clear();
 			$query->select('id, fav_team');
 			$query->from('#__sportsmanagement_project AS p ');
 			$query->where("p.fav_team != '' ");
 			$query->where('p.id IN ( ' . $projectstring . ' )');
-			if ($notusedstring) {
+
+			if ($notusedstring)
+			{
 				$query->where('p.id NOT IN ( ' . $notusedstring . ' )');
 			}
 
 			$db->setQuery($query);
 			$fav = $db->loadObjectList();
-
-
 		}
 
-		$usedteams = (is_array($teams)) ? implode(",", array_map('intval', $teams)) : (int)$teams;
+		$usedteams = (is_array($teams)) ? implode(",", array_map('intval', $teams)) : (int) $teams;
 
 		$favteams = array();
-		if ($fav) {
 
-			foreach ($fav AS $key => $team) {
+		if ($fav)
+		{
+			foreach ($fav AS $key => $team)
+			{
 				$favteams[] = $team->fav_team;
 			}
-
 		}
 
 		$query->clear();
@@ -254,9 +287,11 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 		$query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
 		$query->select('CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) AS match_slug ');
 		$query->select('playground.name as pg_name, playground.short_name as pg_shortname');
-		// from
+
+		// From
 		$query->from('#__sportsmanagement_match AS m ');
-		// join
+
+		// Join
 		$query->join('INNER', '#__sportsmanagement_round AS r ON m.round_id = r.id ');
 		$query->join('INNER', '#__sportsmanagement_project AS p ON p.id = r.project_id ');
 		$query->join('LEFT', '#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id');
@@ -283,59 +318,76 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 		/**
 		 * gespielte und keine zukünftigen paarungen
 		 */
-		if ($this->params->get('show_played', 0) && !$this->params->get('show_nextmatches', 0)) {
+		if ($this->params->get('show_played', 0) && !$this->params->get('show_nextmatches', 0))
+		{
 			$query->select('m.match_date AS alreadyplayed');
 			$query->where('m.team1_result IS NOT NULL ');
 			$query->where('( m.match_timestamp >= ' . $startdatum_played_matches . ' AND m.match_timestamp <= ' . $enddatum_played_matches . ' )');
 		}
+
 		/**
 		 * zukünftige und keine gespielten paarungen
 		 */
-		if (!$this->params->get('show_played', 0) && $this->params->get('show_nextmatches', 0)) {
+		if (!$this->params->get('show_played', 0) && $this->params->get('show_nextmatches', 0))
+		{
 			$query->select('m.match_date AS upcoming');
 			$query->where('m.team1_result IS NULL ');
 			$query->where('( m.match_timestamp >= ' . $startdatum_next_matches . ' AND m.match_timestamp <= ' . $enddatum_next_matches . ' )');
 		}
+
 		/**
 		 * zukünftige und gespielte paarungen
 		 */
-		if ($this->params->get('show_played', 0) && $this->params->get('show_nextmatches', 0)) {
+		if ($this->params->get('show_played', 0) && $this->params->get('show_nextmatches', 0))
+		{
 			$query->where('( m.match_timestamp >= ' . $startdatum_played_matches . ' AND m.match_timestamp <= ' . $enddatum_next_matches . ' )');
 		}
 
-		if ($this->id > 0) {
+		if ($this->id > 0)
+		{
 			$query->where('m.id = ' . $this->id);
 		}
 
 		$query->where('p.id IN ( ' . $projectstring . ' )');
 
-		if ($notusedstring) {
+		if ($notusedstring)
+		{
 			$query->where('p.id NOT IN ( ' . $notusedstring . ' )');
 		}
 
-		if ($usedteams) {
+		if ($usedteams)
+		{
 			$query->where(' ( st1.team_id IN (' . $usedteams . ' ) OR st2.team_id IN (' . $usedteams . ' ) )');
 		}
 
-		if ($favteams) {
+		if ($favteams)
+		{
 			$query->where(' ( st1.team_id IN (' . implode(",", $favteams) . ' ) OR st2.team_id IN (' . implode(",", $favteams) . ' ) )');
 		}
 
-		if ($this->params->get('order_by_project') == 0) {
-			if ($this->params->get('lastsortorder') == 'desc') {
+		if ($this->params->get('order_by_project') == 0)
+		{
+			if ($this->params->get('lastsortorder') == 'desc')
+			{
 				$query->order('match_date DESC');
-			} else {
+			}
+			else
+			{
 				$query->order('match_date');
 			}
-		} else {
+		}
+		else
+		{
 			$query->order('match_date, p.ordering ASC');
 		}
 
-		try {
+		try
+		{
 			$db->setQuery($query, 0, $limit);
 			$matches = $db->loadObjectList();
 
-			foreach ($matches AS $key => $match) {
+			foreach ($matches AS $key => $match)
+			{
 				$match->live = 'z';
 				$match->actplaying = 'z';
 				$match->alreadyplayed = 'z';
@@ -343,39 +395,46 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 				$match->match_enddate = strtotime($match->match_date . ' + ' . $match->totaltime . ' minute');
 				$match->currenttimestamp = sportsmanagementHelper::getTimestamp();
 
-				if (in_array($match->currenttimestamp, range($match->match_timestamp, $match->match_enddate))) {
+				if (in_array($match->currenttimestamp, range($match->match_timestamp, $match->match_enddate)))
+				{
 					$match->live = true;
 					$match->actplaying = true;
-				} elseif ($match->currenttimestamp <= $match->match_enddate) {
+				}
+				elseif ($match->currenttimestamp <= $match->match_enddate)
+				{
 					$match->upcoming = true;
-				} elseif ($match->match_timestamp <= $match->currenttimestamp) {
+				}
+				elseif ($match->match_timestamp <= $match->currenttimestamp)
+				{
 					$match->alreadyplayed = true;
 				}
-
 			}
 
-			if (ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info_frontend')) {
-
+			if (ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info_frontend'))
+			{
 			}
 
 			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+
 			return $this->formatMatches($matches);
-		} catch (Exception $e) {
+		}
+		catch (Exception $e)
+		{
 			$msg = $e->getMessage(); // Returns "Normally you would have other code...
 			$code = $e->getCode(); // Returns '500';
 			$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
 			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+
 			return false;
 		}
-
 
 	}
 
 	/**
 	 * MatchesSportsmanagementConnector::formatHeading()
 	 *
-	 * @param mixed $row
-	 * @param mixed $match
+	 * @param   mixed $row
+	 * @param   mixed $match
 	 * @return void
 	 */
 	public function formatHeading(&$row, $match)
@@ -383,59 +442,75 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 		$pview = $this->params->get('p_link_func', 'results');
 		$rview = $this->params->get('r_link_func', 'results');
 		$views = array(
-			'results' => 'results',
-			'resultsrank' => 'resultsranking',
-			'ranking' => 'ranking'
+		 'results' => 'results',
+		 'resultsrank' => 'resultsranking',
+		 'ranking' => 'ranking'
 		);
 		$linkstructure = array(
-			'project' => array(
-				'view' => $views[$pview],
-				'cfg_which_database' => 0,
-				's' => 0,
-				'p' => $match->project_slug
-			),
-			'matchday' => array(
-				'view' => $views[$rview],
-				'cfg_which_database' => 0,
-				's' => 0,
-				'p' => $match->project_slug,
-				'r' => $match->round_slug
-			)
+		 'project' => array(
+		  'view' => $views[$pview],
+		  'cfg_which_database' => 0,
+		  's' => 0,
+		  'p' => $match->project_slug
+		 ),
+		 'matchday' => array(
+		  'view' => $views[$rview],
+		  'cfg_which_database' => 0,
+		  's' => 0,
+		  'p' => $match->project_slug,
+		  'r' => $match->round_slug
+		 )
 		);
 		$heading = '';
 		$heading2 = '';
-		if ($this->params->get('show_project_title') != 0) {
-			if ($this->params->get('link_project_title') != 0) {
-				$heading = '<a href="' . Route:: _('index.php?option=com_sportsmanagement' . $this->arrayToUri($linkstructure['project']) . $this->itemid) . '">';
+
+		if ($this->params->get('show_project_title') != 0)
+		{
+			if ($this->params->get('link_project_title') != 0)
+			{
+				$heading = '<a href="' . Route::_('index.php?option=com_sportsmanagement' . $this->arrayToUri($linkstructure['project']) . $this->itemid) . '">';
 			}
+
 			$heading .= $this->jl_utf8_convert($match->pname, 'iso-8859-1', 'utf-8');
-			if ($this->params->get('link_project_title') != 0) {
+
+			if ($this->params->get('link_project_title') != 0)
+			{
 				$heading .= '</a>';
 			}
 
-			if ($this->params->get('show_matchday_title') != 0) {
+			if ($this->params->get('show_matchday_title') != 0)
+			{
 				$heading2 .= ' - ';
 			}
 		}
+
 		$row['pname'] = $heading;
-		if ($this->params->get('show_matchday_title') != 0) {
-			if ($this->params->get('link_matchday_title') != 0) {
-				$heading2 .= '<a href="' . Route:: _('index.php?option=com_sportsmanagement' . $this->arrayToUri($linkstructure['matchday']) . $this->itemid) . '">';
+
+		if ($this->params->get('show_matchday_title') != 0)
+		{
+			if ($this->params->get('link_matchday_title') != 0)
+			{
+				$heading2 .= '<a href="' . Route::_('index.php?option=com_sportsmanagement' . $this->arrayToUri($linkstructure['matchday']) . $this->itemid) . '">';
 			}
+
 			$heading2 .= $this->jl_utf8_convert($match->name, 'iso-8859-1', 'utf-8');
-			if ($this->params->get('link_matchday_title') != 0) {
+
+			if ($this->params->get('link_matchday_title') != 0)
+			{
 				$heading2 .= '</a>';
 			}
+
 			$row['rname'] = $heading2;
 		}
+
 		$row['heading'] = $heading . $heading2;
 	}
 
 	/**
 	 * MatchesSportsmanagementConnector::getTeamsFromMatches()
 	 *
-	 * @param mixed $matches
-	 * @return array|bool
+	 * @param   mixed $matches
+	 * @return array|boolean
 	 */
 	public function getTeamsFromMatches(&$matches)
 	{
@@ -443,8 +518,12 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 		$query = $db->getQuery(true);
 
 		if (!count($matches))
+		{
 			return Array();
-		foreach ($matches as $m) {
+		}
+
+		foreach ($matches as $m)
+		{
 			$cond[] = "(pt.id = '" . $m->projectteam1_id . "'
 					    OR  pt.id = '" . $m->projectteam2_id . "')";
 		}
@@ -460,7 +539,8 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 		$query->select('p.name AS project_name, c.website');
 
 		$query->from('#__sportsmanagement_team as t');
-		// join
+
+		// Join
 		$query->join('LEFT', '#__sportsmanagement_season_team_id as st1 ON st1.team_id = t.id ');
 		$query->join('LEFT', '#__sportsmanagement_project_team as pt on pt.team_id = st1.id ');
 		$query->join('LEFT', '#__users u on pt.admin = u.id ');
@@ -471,22 +551,31 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 		$query->join('LEFT', '#__sportsmanagement_playground as pg2 ON pg2.id = c.standard_playground ');
 
 		$query->where('(' . implode(' OR ', $cond) . ')');
-		//$tempteams = $this->getFromDB($query, 'ptid');
+
+		// $tempteams = $this->getFromDB($query, 'ptid');
 		$db->setQuery($query);
-		try {
+
+		try
+		{
 			$tempteams = $db->loadObjectList();
 			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 			$teams = array();
-			foreach ((array)$tempteams AS $t) {
+
+			foreach ((array) $tempteams AS $t)
+			{
 				$teams[$t->ptid] = $t;
 			}
+
 			return $teams;
-		} catch (Exception $e) {
+		}
+		catch (Exception $e)
+		{
 			$msg = $e->getMessage(); // Returns "Normally you would have other code...
 			$code = $e->getCode(); // Returns '500';
 			$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
 			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+
 			return false;
 		}
 
@@ -495,8 +584,8 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 	/**
 	 * MatchesSportsmanagementConnector::createMatchLinks()
 	 *
-	 * @param mixed $row
-	 * @param mixed $match
+	 * @param   mixed $row
+	 * @param   mixed $match
 	 * @return void
 	 */
 	public function createMatchLinks(&$row, &$match)
@@ -507,58 +596,70 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 		$row['statisticlink'] = false;
 		$row['nextmatchlink'] = false;
 		$linkstructure = array(
-			'report' => array(
-				'view' => 'matchreport',
-				'cfg_which_database' => 0,
-				's' => 0,
-				'p' => $match->project_slug,
-				'mid' => $match->match_slug
+		 'report' => array(
+		  'view' => 'matchreport',
+		  'cfg_which_database' => 0,
+		  's' => 0,
+		  'p' => $match->project_slug,
+		  'mid' => $match->match_slug
 
-			),
-			'nextmatch' => array(
-				'view' => 'nextmatch',
-				'cfg_which_database' => 0,
-				's' => 0,
-				'p' => $match->project_slug,
-				'mid' => $match->match_slug
+		 ),
+		 'nextmatch' => array(
+		  'view' => 'nextmatch',
+		  'cfg_which_database' => 0,
+		  's' => 0,
+		  'p' => $match->project_slug,
+		  'mid' => $match->match_slug
 
-			),
-			'statistic' => array(
-				'view' => 'stats',
-				'cfg_which_database' => 0,
-				's' => 0,
-				'p' => $match->project_slug
-			),
+		 ),
+		 'statistic' => array(
+		  'view' => 'stats',
+		  'cfg_which_database' => 0,
+		  's' => 0,
+		  'p' => $match->project_slug
+		 ),
 		);
-		if ($this->params->get('show_act_report_link', 0) == 1 AND $match->show_report == 1) {
+
+		if ($this->params->get('show_act_report_link', 0) == 1 && $match->show_report == 1)
+		{
 			$uri = 'index.php?option=com_sportsmanagement' . $this->arrayToUri($linkstructure['report']) . $this->itemid;
-			$row['reportlink'] = '<a href="' . JRoute:: _($uri) . '" title="' . $this->params->get('show_act_report_text') . '">';
-			$row['reportlink'] .= ($useicons) ? HTMLHelper::_('image', $this->iconpath . 'report.png', $this->params->get('show_act_report_text'), array(
+			$row['reportlink'] = '<a href="' . JRoute::_($uri) . '" title="' . $this->params->get('show_act_report_text') . '">';
+			$row['reportlink'] .= ($useicons) ? HTMLHelper::_(
+				'image', $this->iconpath . 'report.png', $this->params->get('show_act_report_text'), array(
 				'title' => $this->params->get('show_act_report_text'),
 				'height' => '16',
 				'width' => '16'
-			)) : $this->params->get('show_act_report_text') . '<br />';
-			$row['reportlink'] .= '</a>';
+				)
+			) : $this->params->get('show_act_report_text') . '<br />';
+					$row['reportlink'] .= '</a>';
 		}
-		if ($this->params->get('show_statistic_link', 0) == 1 && ($match->team1_result || $match->team2_result)) {
+
+		if ($this->params->get('show_statistic_link', 0) == 1 && ($match->team1_result || $match->team2_result))
+		{
 			$uri = 'index.php?option=com_sportsmanagement' . $this->arrayToUri($linkstructure['statistic']) . $this->itemid;
-			$row['statisticlink'] = '<a href="' . Route:: _($uri) . '" title="' . $this->params->get('statistic_link_text') . '">';
-			$row['statisticlink'] .= ($useicons) ? HTMLHelper::_('image', $this->iconpath . 'history.png', $this->params->get('statistic_link_text'), array(
+			$row['statisticlink'] = '<a href="' . Route::_($uri) . '" title="' . $this->params->get('statistic_link_text') . '">';
+			$row['statisticlink'] .= ($useicons) ? HTMLHelper::_(
+				'image', $this->iconpath . 'history.png', $this->params->get('statistic_link_text'), array(
 				'title' => $this->params->get('statistic_link_text'),
 				'height' => '16',
 				'width' => '16'
-			)) : $this->params->get('statistic_link_text') . '<br />';
-			$row['statisticlink'] .= '</a>';
+				)
+			) : $this->params->get('statistic_link_text') . '<br />';
+					$row['statisticlink'] .= '</a>';
 		}
-		if ($this->params->get('show_nextmatch_link', 0) == 1 && !($match->team1_result || $match->team2_result)) {
+
+		if ($this->params->get('show_nextmatch_link', 0) == 1 && !($match->team1_result || $match->team2_result))
+		{
 			$uri = 'index.php?option=com_sportsmanagement' . $this->arrayToUri($linkstructure['nextmatch']) . $this->itemid;
-			$row['nextmatchlink'] = '<a href="' . Route:: _($uri) . '" title="' . $this->params->get('statistic_link_text') . '">';
-			$row['nextmatchlink'] .= ($useicons) ? HTMLHelper::_('image', $this->iconpath . 'history.png', $this->params->get('nextmatch_link_text'), array(
+			$row['nextmatchlink'] = '<a href="' . Route::_($uri) . '" title="' . $this->params->get('statistic_link_text') . '">';
+			$row['nextmatchlink'] .= ($useicons) ? HTMLHelper::_(
+				'image', $this->iconpath . 'history.png', $this->params->get('nextmatch_link_text'), array(
 				'title' => $this->params->get('nextmatch_link_text'),
 				'height' => '16',
 				'width' => '16'
-			)) : $this->params->get('nextmatch_link_text') . '<br />';
-			$row['nextmatchlink'] .= '</a>';
+				)
+			) : $this->params->get('nextmatch_link_text') . '<br />';
+					$row['nextmatchlink'] .= '</a>';
 		}
 
 	}
@@ -566,72 +667,91 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 	/**
 	 * MatchesSportsmanagementConnector::createLocation()
 	 *
-	 * @param mixed $row
-	 * @param mixed $match
-	 * @param mixed $team
+	 * @param   mixed $row
+	 * @param   mixed $match
+	 * @param   mixed $team
 	 * @return void
 	 */
 	public function createLocation(&$row, &$match, &$team)
 	{
 
 		$thisvenue = false;
-		if ($team AND $this->params->get('show_venue') != 0) {
+
+		if ($team && $this->params->get('show_venue') != 0)
+		{
 			$location_id = 0;
 			$usedvenuename = $this->params->get('venue_name');
 			$venue = array(
-				'id' => 0
-			);
-
-			if ($match->playground_id > 0) {
-				$venue['id'] = $match->playground_id;
-				$venue['name'] = $match->pg_name;
-				$venue['short_name'] = $match->pg_shortname;
-			} elseif ($team->tt_pg_id > 0) {
-				$venue['id'] = $team->tt_pg_id;
-				$venue['name'] = $team->tt_pg_name;
-				$venue['short_name'] = $team->tt_pg_short_name;
-			} elseif ($team->club_pg_id > 0) {
-				$venue['id'] = $team->club_pg_id;
-				$venue['name'] = $team->club_pg_name;
-				$venue['short_name'] = $team->club_pg_short_name;
-			}
-			if ($venue['id'] > 0) {
-				$venuename = ($usedvenuename == 'name') ? $this->jl_utf8_convert($venue[$usedvenuename], 'iso-8859-1', 'utf-8') : '<acronym title="' .
-					$this->jl_utf8_convert($venue['name'], 'iso-8859-1', 'utf-8') . '">' .
-					$this->jl_utf8_convert($venue[$usedvenuename], 'iso-8859-1', 'utf-8') . '</acronym>';
-				$venuetext = '%s';
-				$venuetip = $this->params->get('venue_text');
-				if ($this->params->get('link_venue') == 1) {
-					$linkstructure = array(
-						'venue' => array(
-							'view' => 'playground',
-							'cfg_which_database' => $this->params->get('cfg_which_database'),
-							's' => $this->params->get('s'),
-							'p' => $match->project_id,
-							'pgid' => $venue['id']
-
-						)
+			 'id' => 0
 					);
-					$venuelink = Route::_('index.php?option=com_sportsmanagement' . $this->arrayToUri($linkstructure['venue']) . $this->itemid);
-					$venuetext = '<a href="' . $venuelink . '" title="%s">%s</a>';
-					$thisvenue = sprintf($venuetext, $venuetip, $venuename);
-				} else {
+
+			if ($match->playground_id > 0)
+			{
+				   $venue['id'] = $match->playground_id;
+				   $venue['name'] = $match->pg_name;
+				   $venue['short_name'] = $match->pg_shortname;
+			}
+			elseif ($team->tt_pg_id > 0)
+			{
+							 $venue['id'] = $team->tt_pg_id;
+							 $venue['name'] = $team->tt_pg_name;
+							 $venue['short_name'] = $team->tt_pg_short_name;
+			}
+			elseif ($team->club_pg_id > 0)
+			{
+					 $venue['id'] = $team->club_pg_id;
+					 $venue['name'] = $team->club_pg_name;
+					 $venue['short_name'] = $team->club_pg_short_name;
+			}
+
+			if ($venue['id'] > 0)
+			{
+					 $venuename = ($usedvenuename == 'name') ? $this->jl_utf8_convert($venue[$usedvenuename], 'iso-8859-1', 'utf-8') : '<acronym title="' .
+					  $this->jl_utf8_convert($venue['name'], 'iso-8859-1', 'utf-8') . '">' .
+					  $this->jl_utf8_convert($venue[$usedvenuename], 'iso-8859-1', 'utf-8') . '</acronym>';
+					 $venuetext = '%s';
+					 $venuetip = $this->params->get('venue_text');
+
+				if ($this->params->get('link_venue') == 1)
+				{
+					$linkstructure = array(
+					 'venue' => array(
+					  'view' => 'playground',
+					  'cfg_which_database' => $this->params->get('cfg_which_database'),
+					  's' => $this->params->get('s'),
+					  'p' => $match->project_id,
+					  'pgid' => $venue['id']
+
+					 )
+							);
+							$venuelink = Route::_('index.php?option=com_sportsmanagement' . $this->arrayToUri($linkstructure['venue']) . $this->itemid);
+							$venuetext = '<a href="' . $venuelink . '" title="%s">%s</a>';
+							$thisvenue = sprintf($venuetext, $venuetip, $venuename);
+				}
+				else
+				{
 					$thisvenue = sprintf($venuetext, $venuename);
 				}
-				if ($this->iconpath) {
-					$thisvenue = HTMLHelper::_('image', $this->iconpath . 'house.png', $venuetip, array(
-							'title' => $venuetip,
-							'height' => '16',
-							'width' => '16'
-						)) . ' ' . $thisvenue;
-				} else {
+
+				if ($this->iconpath)
+				{
+					$thisvenue = HTMLHelper::_(
+						'image', $this->iconpath . 'house.png', $venuetip, array(
+						'title' => $venuetip,
+						'height' => '16',
+						'width' => '16'
+						)
+					) . ' ' . $thisvenue;
+				}
+				else
+				{
 					$thisvenue = $venuetip . ' ' . $thisvenue;
 				}
 			}
 		}
 
-		if (ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info_frontend')) {
-
+		if (ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info_frontend'))
+		{
 		}
 
 		$row['location'] = $thisvenue;
@@ -645,11 +765,11 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 	public function getDefaultLogos()
 	{
 		return array(
-			"club_big" => sportsmanagementHelper::getDefaultPlaceholder('clublogobig'),
-			"club_middle" => sportsmanagementHelper::getDefaultPlaceholder('clublogomedium'),
-			"club_small" => sportsmanagementHelper::getDefaultPlaceholder('clublogosmall'),
-			"team_picture" => sportsmanagementHelper::getDefaultPlaceholder('team'),
-			"country" => sportsmanagementHelper::getDefaultPlaceholder('icon'),
+		 "club_big" => sportsmanagementHelper::getDefaultPlaceholder('clublogobig'),
+		 "club_middle" => sportsmanagementHelper::getDefaultPlaceholder('clublogomedium'),
+		 "club_small" => sportsmanagementHelper::getDefaultPlaceholder('clublogosmall'),
+		 "team_picture" => sportsmanagementHelper::getDefaultPlaceholder('team'),
+		 "country" => sportsmanagementHelper::getDefaultPlaceholder('icon'),
 		);
 	}
 
@@ -657,11 +777,11 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 	/**
 	 * MatchesSportsmanagementConnector::next_last2()
 	 *
-	 * @param mixed $match
-	 * @param bool $allprojects
+	 * @param   mixed $match
+	 * @param   bool  $allprojects
 	 * @return void
 	 */
-	public function next_last(&$match, $allprojects = FALSE)
+	public function next_last(&$match, $allprojects = false)
 	{
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
@@ -673,11 +793,14 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 		$datebis = strtotime($currentdate . ' + ' . $period_int . ' ' . $this->params->get('period_string'));
 		$datevon = strtotime($currentdate . ' - ' . $result_add_time . ' ' . $this->params->get('result_add_unit'));
 
-		if ($allprojects) {
+		if ($allprojects)
+		{
 			$match->lasthome = $match->nexthome = $match->lastaway = $match->nextaway = false;
 			$p = $this->params->get('p');
-			$projectstring = (is_array($p)) ? implode(",", array_map('intval', $p)) : (int)$p;
-		} else {
+			$projectstring = (is_array($p)) ? implode(",", array_map('intval', $p)) : (int) $p;
+		}
+		else
+		{
 			$projectstring = $match->project_id;
 		}
 
@@ -686,11 +809,13 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 		$match->lastaway = 0;
 		$match->nextaway = 0;
 
-		// select some fields
+		// Select some fields
 		$query->select('m.id');
-		// from
+
+		// From
 		$query->from('#__sportsmanagement_match AS m ');
-		// join
+
+		// Join
 		$query->join('LEFT', '#__sportsmanagement_project_team pt1 ON pt1.id = m.projectteam1_id ');
 		$query->join('LEFT', '#__sportsmanagement_season_team_id as st1 ON st1.id = pt1.team_id ');
 		$query->join('INNER', '#__sportsmanagement_team t1 ON t1.id = st1.team_id ');
@@ -707,7 +832,9 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 		$query->order('m.match_date DESC');
 
 		$db->setQuery($query, 0, 1);
-		if ($temp = $db->loadObjectList()) {
+
+		if ($temp = $db->loadObjectList())
+		{
 			$match->lasthome = $temp[0]->id;
 		}
 
@@ -719,7 +846,9 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 		$query->order('m.match_date ASC');
 
 		$db->setQuery($query, 0, 1);
-		if ($temp = $db->loadObjectList()) {
+
+		if ($temp = $db->loadObjectList())
+		{
 			$match->nexthome = $temp[0]->id;
 		}
 
@@ -731,7 +860,9 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 		$query->order('m.match_date DESC');
 
 		$db->setQuery($query, 0, 1);
-		if ($temp = $db->loadObjectList()) {
+
+		if ($temp = $db->loadObjectList())
+		{
 			$match->lastaway = $temp[0]->id;
 		}
 
@@ -743,10 +874,11 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 		$query->order('m.match_date ASC');
 
 		$db->setQuery($query, 0, 1);
-		if ($temp = $db->loadObjectList()) {
+
+		if ($temp = $db->loadObjectList())
+		{
 			$match->nextaway = $temp[0]->id;
 		}
-
 
 		$db->disconnect();
 	}

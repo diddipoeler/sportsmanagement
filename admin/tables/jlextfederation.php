@@ -1,12 +1,15 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      jlextfederation.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage tables
+ * @file       jlextfederation.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 
@@ -15,16 +18,16 @@ use Joomla\CMS\Filter\OutputFilter;
 
 /**
  * sportsmanagementTablejlextfederation
- * 
- * @package   
- * @author 
+ *
+ * @package
+ * @author
  * @copyright diddi
- * @version 2014
- * @access public
+ * @version   2014
+ * @access    public
  */
-class sportsmanagementTablejlextfederation extends JSMTable 
+class sportsmanagementTablejlextfederation extends JSMTable
 {
-	
+
 	/**
 	 * Constructor
 	 *
@@ -33,8 +36,8 @@ class sportsmanagementTablejlextfederation extends JSMTable
 	 */
 	function __construct(& $db)
 	{
-	   $db = sportsmanagementHelper::getDBConnection();
-		parent :: __construct( '#__sportsmanagement_federations', 'id', $db );
+		  $db = sportsmanagementHelper::getDBConnection();
+		parent::__construct('#__sportsmanagement_federations', 'id', $db);
 	}
 
 	/**
@@ -42,19 +45,19 @@ class sportsmanagementTablejlextfederation extends JSMTable
 	 *
 	 * @access public
 	 * @return boolean True on success
-	 * @since 1.0
+	 * @since  1.0
 	 */
 	function check()
 	{
 		$alias = OutputFilter::stringURLSafe($this->name);
 
-		if ( empty( $this->alias ) || $this->alias === $alias )
+		if (empty($this->alias) || $this->alias === $alias)
 		{
 			$this->alias = $alias;
 		}
-		//should check name unicity
+
+		// Should check name unicity
 		return true;
 	}
 
 }
-?>

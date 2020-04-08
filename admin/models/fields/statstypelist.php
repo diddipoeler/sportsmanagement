@@ -1,16 +1,19 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      statstypelist.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage fields
+ * @file       statstypelist.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -22,17 +25,18 @@ FormHelper::loadFieldClass('list');
 
 /**
  * FormFieldStatstypelist
- * 
- * @package   
- * @author 
+ *
+ * @package
+ * @author
  * @copyright diddi
- * @version 2014
- * @access public
+ * @version   2014
+ * @access    public
  */
 class JFormFieldStatstypelist extends \JFormFieldList
 {
 	/**
 	 * field type
+	 *
 	 * @var string
 	 */
 	public $type = 'statstypelist';
@@ -40,9 +44,9 @@ class JFormFieldStatstypelist extends \JFormFieldList
 	/**
 	 * Method to get the field options.
 	 *
-	 * @return  array  The field option objects.
+	 * @return array  The field option objects.
 	 *
-	 * @since   11.1
+	 * @since 11.1
 	 */
 	protected function getOptions()
 	{
@@ -50,43 +54,46 @@ class JFormFieldStatstypelist extends \JFormFieldList
 		$options = array();
 
 		// Initialize some field attributes.
-		//$filter = (string) $this->element['filter'];
-		//$exclude = (string) $this->element['exclude'];
-		//$hideNone = (string) $this->element['hide_none'];
-		//$hideDefault = (string) $this->element['hide_default'];
+		// $filter = (string) $this->element['filter'];
+		// $exclude = (string) $this->element['exclude'];
+		// $hideNone = (string) $this->element['hide_none'];
+		// $hideDefault = (string) $this->element['hide_default'];
 
 		// Get the path in which to search for file options.
-		$files = Folder::files(JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'statistics', 'php$');
+		$files = Folder::files(JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'statistics', 'php$');
 		$options = array();
+
 		foreach ($files as $file)
 		{
 			$parts = explode('.', $file);
-			if ($parts[0] != 'base') {
+
+			if ($parts[0] != 'base')
+			{
 				$options[] = HTMLHelper::_('select.option', $parts[0], $parts[0]);
 			}
 		}
-		
-		/*
-		// check for statistic in extensions
-		$extensions = sportsmanagementHelper::getExtensions(0);		
-		foreach ($extensions as $type)
-		{
-			$path = JLG_PATH_SITE.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.$type.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'statistics';
-			if (!file_exists($path)) {
-				continue;
-			}
-			$files = Folder::files($path, 'php$');
-			foreach ($files as $file)
-			{
-				$parts = explode('.', $file);
-				if ($parts[0] != 'base') {
-					$options[] = HTMLHelper::_('select.option', $parts[0], $parts[0]);
-				}
-			}	
-		}
-		*/
-		
-		// Merge any additional options in the XML definition.
+
+			  /*
+        // check for statistic in extensions
+        $extensions = sportsmanagementHelper::getExtensions(0);
+        foreach ($extensions as $type)
+        {
+         $path = JLG_PATH_SITE.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.$type.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'statistics';
+         if (!file_exists($path)) {
+          continue;
+         }
+         $files = Folder::files($path, 'php$');
+         foreach ($files as $file)
+         {
+          $parts = explode('.', $file);
+          if ($parts[0] != 'base') {
+        $options[] = HTMLHelper::_('select.option', $parts[0], $parts[0]);
+          }
+         }
+        }
+        */
+
+			  // Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);
 
 		return $options;

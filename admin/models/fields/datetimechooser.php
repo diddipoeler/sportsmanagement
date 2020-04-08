@@ -13,10 +13,10 @@
  * You should have received a copy of the GNU General Public License
  * along with GCalendar.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package		GCalendar
- * @author		Digital Peak http://www.digital-peak.com
- * @copyright	Copyright (C) 2007 - 2013 Digital Peak. All rights reserved.
- * @license		http://www.gnu.org/licenses/gpl.html GNU/GPL
+ * @package   GCalendar
+ * @author    Digital Peak http://www.digital-peak.com
+ * @copyright Copyright (C) 2007 - 2013 Digital Peak. All rights reserved.
+ * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
 defined('_JEXEC') or die();
@@ -25,7 +25,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 class JFormFieldDatetimechooser extends FormField
 {
-
 	public $type = 'Datetimechooser';
 
 	protected function getInput()
@@ -35,38 +34,47 @@ class JFormFieldDatetimechooser extends FormField
 
 		// Build the attributes array.
 		$attributes = array();
+
 		if ($this->element['size'])
 		{
 			$attributes['size'] = (int) $this->element['size'];
 		}
+
 		if ($this->element['maxlength'])
 		{
 			$attributes['maxlength'] = (int) $this->element['maxlength'];
 		}
+
 		if ($this->element['class'])
 		{
 			$attributes['class'] = (string) $this->element['class'];
 		}
+
 		if ((string) $this->element['readonly'] == 'true')
 		{
 			$attributes['readonly'] = 'readonly';
 		}
+
 		if ((string) $this->element['disabled'] == 'true')
 		{
 			$attributes['disabled'] = 'disabled';
 		}
+
 		if ($this->element['onchange'])
 		{
 			$attributes['onchange'] = (string) $this->element['onchange'];
 		}
 
 		// Handle the special case for "now".
-		if(strtoupper($this->value) == 'NOW'){
+		if (strtoupper($this->value) == 'NOW')
+		{
 			$date = Factory::getDate();
 			$date->setTime($date->format('H', true), 0, 0);
 			$this->value = $date->format('U');
 		}
-		if(strtoupper($this->value) == '+1 HOUR' || strtoupper($this->value) == '+2 MONTH'){
+
+		if (strtoupper($this->value) == '+1 HOUR' || strtoupper($this->value) == '+2 MONTH')
+		{
 			$date = Factory::getDate();
 			$date->setTime($date->format('H', true), 0, 0);
 			$date->modify($this->value);
@@ -78,7 +86,8 @@ class JFormFieldDatetimechooser extends FormField
 		$user = Factory::getUser();
 
 		// If a known filter is given use it.
-		switch (strtoupper((string) $this->element['filter'])){
+		switch (strtoupper((string) $this->element['filter']))
+		{
 			case 'SERVER_UTC':
 				// Convert a date to UTC based on the server timezone.
 				if (intval($this->value))
@@ -90,7 +99,7 @@ class JFormFieldDatetimechooser extends FormField
 					// Transform the date string.
 					$this->value = $date->format('Y-m-d H:i:s', true, false);
 				}
-				break;
+			break;
 
 			case 'USER_UTC':
 				// Convert a date to UTC based on the user timezone.
@@ -102,11 +111,13 @@ class JFormFieldDatetimechooser extends FormField
 
 					// Transform the date string.
 					$this->value = $date->format('Y-m-d H:i:s', true, false);
-					if($this->element['all_day'] == '1'){
+
+					if ($this->element['all_day'] == '1')
+					{
 						$this->value = $date->format('Y-m-d', true, false);
 					}
 				}
-				break;
+			break;
 		}
 
 		return HTMLHelper::_('calendar', $this->value, $this->name, $this->id, $format, $attributes);

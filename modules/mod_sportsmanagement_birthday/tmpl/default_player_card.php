@@ -1,12 +1,15 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default_play_card.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+*
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_birthday
+ * @file       default_play_card.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
@@ -22,12 +25,12 @@ use Joomla\CMS\Component\ComponentHelper;
 foreach ($persons AS $person) {
     $text = htmlspecialchars(sportsmanagementHelper::formatName(null, $person['firstname'], $person['nickname'], $person['lastname'], $params->get("name_format")), ENT_QUOTES, 'UTF-8');
     switch ($person['days_to_birthday']) {
-        case 0: $whenmessage = $params->get('todaymessage');
-            break;
-        case 1: $whenmessage = $params->get('tomorrowmessage');
-            break;
-        default: $whenmessage = str_replace('%DAYS_TO%', $person['days_to_birthday'], trim($params->get('futuremessage')));
-            break;
+    case 0: $whenmessage = $params->get('todaymessage');
+        break;
+    case 1: $whenmessage = $params->get('tomorrowmessage');
+        break;
+    default: $whenmessage = str_replace('%DAYS_TO%', $person['days_to_birthday'], trim($params->get('futuremessage')));
+        break;
     }
     $birthdaytext = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
     $dayformat = htmlentities(trim($params->get('dayformat')));
@@ -65,13 +68,13 @@ foreach ($persons AS $person) {
         $routeparameter['pid'] = $person['person_slug'];
         $person_link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee', $routeparameter);
     }
-    
-$flag = $params->get('show_player_flag') ? JSMCountries::getCountryFlag($person['country']) . "&nbsp;" : "";
-$text = htmlspecialchars(sportsmanagementHelper::formatName(null, $person['firstname'], $person['nickname'], $person['lastname'], $params->get("name_format")), ENT_QUOTES, 'UTF-8');
-$usedname = $flag . $text;
-$params_com = ComponentHelper::getParams('com_sportsmanagement');
-$usefontawesome = $params_com->get('use_fontawesome');
-    
+  
+    $flag = $params->get('show_player_flag') ? JSMCountries::getCountryFlag($person['country']) . "&nbsp;" : "";
+    $text = htmlspecialchars(sportsmanagementHelper::formatName(null, $person['firstname'], $person['nickname'], $person['lastname'], $params->get("name_format")), ENT_QUOTES, 'UTF-8');
+    $usedname = $flag . $text;
+    $params_com = ComponentHelper::getParams('com_sportsmanagement');
+    $usefontawesome = $params_com->get('use_fontawesome');
+  
     $showname = HTMLHelper::link($person_link, $usedname);
     ?>
     <div class="card">
@@ -88,20 +91,20 @@ $usefontawesome = $params_com->get('use_fontawesome');
             }
             echo ' /><br />';
         }
-        ?>                            
+        ?>                          
 
         <div class="name">
             <?php
             if ($params->get('show_player_flag') == 1) {
-                echo JSMCountries::getCountryFlag($person['country']). " " . $text;                    
+                echo JSMCountries::getCountryFlag($person['country']). " " . $text;                  
             } else {
-                echo $text;                
-            }           
+                echo $text;              
+            }         
             ?>
         </div>
 
         <div class="position">
-            <?php echo Text::_($person['position_name']); ?> 
+            <?php echo Text::_($person['position_name']); ?>
             <br />
             <?php echo $person['team_name']; ?></div>
         <div class="birthday-text">
@@ -110,9 +113,9 @@ $usefontawesome = $params_com->get('use_fontawesome');
 
         <div class="player-info">
             <a href="<?php echo $person_link; ?>" >
-                <?php if($usefontawesome){
-                    echo '<i aria-hidden class="fa fa-info-circle" title="'.Text::_('MOD_SPORTSMANAGEMENT_BIRTHDAY_PLAYER_CARD_INFO_BTN').'"></i>';                
-                }?>
+                <?php if($usefontawesome) {
+                    echo '<i aria-hidden class="fa fa-info-circle" title="'.Text::_('MOD_SPORTSMANAGEMENT_BIRTHDAY_PLAYER_CARD_INFO_BTN').'"></i>';              
+}?>
                 <?php echo Text::_('MOD_SPORTSMANAGEMENT_BIRTHDAY_PLAYER_CARD_INFO_BTN');?>
             </a>
         </div>

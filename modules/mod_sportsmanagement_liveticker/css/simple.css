@@ -1,21 +1,21 @@
 div#turtushout-shout * {
-	padding:2px;
-	margin:0px;
+	padding: 2px;
+	margin: 0px;
 }
 div.turtushout-entry {
 	border-bottom: 1px solid #efefef;
 }
 div.turtushout-created {
-	font-size:80%;
+	font-size: 80%;
 }
 div.turtushout-title {
-	font-weight:bold;
+	font-weight: bold;
 }
 
 div#turtushout-warning {
-	font-weight:bold;
+	font-weight: bold;
 	color: red;
 }
 a.turtushout-action {
-	cursor:pointer;
+	cursor: pointer;
 }

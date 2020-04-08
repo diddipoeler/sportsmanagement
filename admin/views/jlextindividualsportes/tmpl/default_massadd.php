@@ -1,14 +1,17 @@
-<?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default_massad.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+<?php
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage jlextindividualsportes
+ * @file       default_massad.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -17,16 +20,16 @@ use Joomla\CMS\Language\Text;
 
 	<div id="editcell">
 		<fieldset class="adminform">
-			<legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_MATCHES_MASSADD_TITLE','<i>'.$this->projectws->name.'</i>'); ?></legend>
+			<legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_MATCHES_MASSADD_TITLE', '<i>' . $this->projectws->name . '</i>'); ?></legend>
 			<form name='copyform' method='post' style='display:inline' id='copyform'>
-				<input type='hidden' name='match_date' value='<?php echo $this->roundws->round_date_first.' '.$this->projectws->start_time; ?>' />
+				<input type='hidden' name='match_date' value='<?php echo $this->roundws->round_date_first . ' ' . $this->projectws->start_time; ?>' />
 				<input type='hidden' name='round_id' value='<?php echo $this->roundws->id; ?>' />
 				<input type='hidden' name='project_id' value='<?php echo $this->roundws->project_id; ?>' />
 				<input type='hidden' name='act' value='rounds' />
 				<input type='hidden' name='task' value='copyfrom' />
 				<input type='hidden' name='addtype' value='0' id='addtype' />
 				<input type='hidden' name='add_match_count' value='0' id='addmatchescount' />
-				<?php echo HTMLHelper::_('form.token')."\n"; ?>
+				<?php echo HTMLHelper::_('form.token') . "\n"; ?>
 				<table class='adminlist' border='0'>
 					<thead>
 						<tr>
@@ -67,12 +70,14 @@ use Joomla\CMS\Language\Text;
 													<tr>
 														<td style='text-align:right; vertical-align:top; font-weight:bold; '><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHES_MASSADD_STARTTIME'); ?></td>
 														<td>
-															<?php
-															echo HTMLHelper::calendar(	JoomleagueHelper::convertDate($this->roundws->round_date_first),
-																					'match_date','match_date',
-																					'%d-%m-%Y','size="10" ');
-                                                           ?>
-                                                            &nbsp;
+				<?php
+				echo HTMLHelper::calendar(
+					JoomleagueHelper::convertDate($this->roundws->round_date_first),
+					'match_date', 'match_date',
+					'%d-%m-%Y', 'size="10" '
+				);
+															?>
+															&nbsp;
 															<input type='text' name='startTime' value='<?php echo $this->projectws->start_time; ?>' size='4' maxlength='5' class='inputbox' />
 														</td>
 													</tr>
@@ -98,11 +103,13 @@ use Joomla\CMS\Language\Text;
 									<tr>
 										<td valign="top" align="right"><b><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHES_MASSADD_DEFAULT_DATE'); ?></b></td>
 										<td>
-											<?php
-											echo HTMLHelper::calendar(	JoomleagueHelper::convertDate($this->roundws->round_date_first),
-																	'date','date',
-																	'%d-%m-%Y','size="10" ');
-											?>
+			<?php
+			echo HTMLHelper::calendar(
+				JoomleagueHelper::convertDate($this->roundws->round_date_first),
+				'date', 'date',
+				'%d-%m-%Y', 'size="10" '
+			);
+			?>
 											&nbsp;
 											<input type='text' name='time' value='<?php echo $this->projectws->start_time; ?>' size='4' maxlength='5' class='inputbox' />
 										</td>

@@ -1,12 +1,15 @@
-<?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      about.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+<?php
+/**
+ *
+ * SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+ *
+ * @version    1.0.05
+ * @package    sportsmanagement
  * @subpackage about
+ * @file       about.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -14,85 +17,85 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelAbout
- * 
- * @package 
- * @author diddi
+ *
+ * @package
+ * @author    diddi
  * @copyright 2014
- * @version $Id$
- * @access public
+ * @version   $Id$
+ * @access    public
  */
 class sportsmanagementModelAbout extends BaseDatabaseModel
 {
 	/**
 	 * sportsmanagementModelAbout::getAbout()
-	 * 
+	 *
 	 * @return
 	 */
 	function getAbout()
 	{
-		$about = new stdClass();
-		
-		//Translations Hosted by
+		$about = new stdClass;
+
+			  // Translations Hosted by
 		$about->translations = '<a href="https://www.transifex.com/jsm/sportsmanagement/">https://www.transifex.com/jsm/sportsmanagement/</a>';
-		//Repository Hosted by
+
+		// Repository Hosted by
 		$about->repository = '<a href="https://github.com/diddipoeler/sportsmanagement">https://github.com/diddipoeler/sportsmanagement</a>';
-		//version
+
+		// Version
 		$version = sportsmanagementHelper::getVersion();
 		$revision = explode('.', $version);
 		$about->version = '';
-		
-		//author
+
+			  // Author
 		$about->author = '';
 
-		//page
+		// Page
 		$about->page = 'http://sportsmanagement.fussballineuropa.de/';
 
-		//e-mail
+		// E-mail
 		$about->email = 'diddipoeler@gmx.de';
 
-		//forum
+		// Forum
 		$about->forum = 'http://www.fussballineuropa.de/index.php/forum';
-		
-		//bugtracker
+
+			  // Bugtracker
 		$about->bugs = 'https://github.com/diddipoeler/sportsmanagement/issues';
-		
-		//wiki
+
+			  // Wiki
 		$about->wiki = 'http://smwiki.diddipoeler.de/';
-		
-		//date
+
+			  // Date
 		$about->date = '2014-01-01';
 
-		//developer
-        $about->developer = 'DonClumsy (Tim Keller), SvDoldie (Hauke Prochnow), Stony (Siegfried Galun) ';
+		// Developer
+		$about->developer = 'DonClumsy (Tim Keller), SvDoldie (Hauke Prochnow), Stony (Siegfried Galun) ';
 
-		//designer
+		// Designer
 		$about->designer = 'DonClumsy';
 		$about->designer .= ' (Tim Keller), ';
-        
-        
-		//icons
+
+			  // Icons
 		$about->icons = '<a href="http://www.hollandsevelden.nl/iconset/" target="_blank">Jersey Icons</a> (Hollandsevelden.nl)';
 		$about->icons .= ', <a href="http://www.famfamfam.com/lab/icons/silk/" target="_blank">Silk / Flags Icons</a> (Mark James)';
 		$about->icons .= ', Panel images (Kasi)';
 
-		//flash
+		// Flash
 		$about->flash = '';
 
-		//graphoc library
+		// Graphoc library
 		$about->graphic_library = '';
-		
-		//phpthumb class
+
+			  // Phpthumb class
 		$about->phpthumb = '';
 
-
-    //page
-    $about->github = 'https://github.com/diddipoeler/sportsmanagement';
+		  // Page
+		  $about->github = 'https://github.com/diddipoeler/sportsmanagement';
 		$about->diddipoelerpage = 'http://www.fussballineuropa.de';
 
-		//e-mail
+		// E-mail
 		$about->diddipoeleremail = 'diddipoeler@gmx.de';
 
-		//forum
+		// Forum
 		$about->diddipoelerforum = 'http://www.fussballineuropa.de/index.php/forum/sports-management';
 
 		$this->_about = $about;
@@ -101,4 +104,3 @@ class sportsmanagementModelAbout extends BaseDatabaseModel
 	}
 
 }
-?>

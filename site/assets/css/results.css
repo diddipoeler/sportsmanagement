@@ -30,12 +30,12 @@ a:focus {
 
 .fixtures-results tr { /*border-bottom: 1px solid #666666;*/
 	/*background: #EFEFEF none repeat scroll 0 0;*/
-	
+
 }
 
 .fixtures-results tr.alt {
 	/*background: #DFDFDF none repeat scroll 0 0;*/
-	
+
 }
 
 .fixtures-results tr.hasevents {
@@ -56,7 +56,7 @@ a:focus {
 }
 
 .fixtures-results td.ko {
-	
+
 }
 
 .fixtures-results td.center, .fixtures-results th.center {
@@ -72,7 +72,7 @@ a:focus {
 }
 
 .fixtures-results td.referees {
-	
+
 }
 
 abbr {
@@ -195,9 +195,9 @@ table.matchreport td {
 }
 
 table.matchreport td ul {
-	padding : 0 0 0 20px;
-	margin-top : 0;
-	margin-bottom : 0;
+	padding: 0 0 0 20px;
+	margin-top: 0;
+	margin-bottom: 0;
 	list-style-type: none;
 }
 

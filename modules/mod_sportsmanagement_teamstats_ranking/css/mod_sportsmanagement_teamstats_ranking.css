@@ -7,17 +7,17 @@ div.modjlgstat .teamlogo {
 }
 
 div.modjlgstat .projectname {
-	font-weight:bold;
+	font-weight: bold;
 }
 
 div.modjlgstat .fulltablelink {
-	text-align:center;
+	text-align: center;
 }
 
 th.td_c, td.td_c {
-	text-align:center;
+	text-align: center;
 }
 
 table.statranking {
-	width:100%;
+	width: 100%;
 }

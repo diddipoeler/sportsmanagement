@@ -1,12 +1,15 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      default_data.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+*
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @package    Sportsmanagement
  * @subpackage teams
+ * @file       default_data.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -18,13 +21,12 @@ use Joomla\CMS\Router\Route;
 
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-if ( $this->assign )
-{
-$this->readonly = ' readonly ';	
+if ($this->assign ) {
+    $this->readonly = ' readonly ';  
 }
 else
 {
-$this->readonly = '';		
+    $this->readonly = '';      
 }
 ?>
 <!--	<div id="editcell"> -->
@@ -70,10 +72,10 @@ $this->readonly = '';
                 <th class="title">
                     <?php
                     echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP', 'ag.name', $this->sortDirection, $this->sortColumn);
-                     ?>
+                        ?>
                     </br>
-                    <?php 
-            echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAM_INFO');    
+                    <?php
+                    echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAM_INFO');  
                     ?>
                 </th>
                 <th class="title">
@@ -140,7 +142,7 @@ $this->readonly = '';
                         <?php if ($row->checked_out) : ?>
                             <?php echo HTMLHelper::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'teams.', $canCheckin); ?>
                         <?php endif; ?>
-                        <?php if ( $canEdit && !$this->assign ) : ?>
+                        <?php if ($canEdit && !$this->assign ) : ?>
                             <a href="<?php echo Route::_('index.php?option=com_sportsmanagement&task=team.edit&id=' . (int) $row->id); ?>">
                                 <?php echo $this->escape($row->name); ?></a>
                         <?php else : ?>
@@ -183,8 +185,10 @@ $this->readonly = '';
                         <?php
                         $inputappend = $this->readonly;
                         $append = ' style="background-color:#bbffff"';
-                        echo HTMLHelper::_('select.genericlist', $this->lists['agegroup'], 'agegroup' . $row->id, $inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
-                                $i . '\').checked=true"' . $append, 'value', 'text', $row->agegroup_id);
+                        echo HTMLHelper::_(
+                            'select.genericlist', $this->lists['agegroup'], 'agegroup' . $row->id, $inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
+                            $i . '\').checked=true"' . $append, 'value', 'text', $row->agegroup_id
+                        );
                         ?>
 </br>
             <?php echo $row->info; ?>
@@ -237,7 +241,7 @@ echo HTMLHelper::_('select.genericlist', $this->lists['sportstype'], 'sportstype
                             }
                             ?>
                         </div>
-                    </td>    
+                    </td>  
                     <td class="order">
                         <span>
                             <?php echo $this->pagination->orderUpIcon($i, $i > 0, 'teams.orderup', 'JLIB_HTML_MOVE_UP', true); ?>
@@ -246,7 +250,7 @@ echo HTMLHelper::_('select.genericlist', $this->lists['sportstype'], 'sportstype
                             <?php echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'teams.orderdown', 'JLIB_HTML_MOVE_DOWN', true); ?>
                             <?php $disabled = true ? '' : 'disabled="disabled"'; ?>
                         </span>
-                        <input	type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" <?php echo $disabled; ?>
+                        <input    type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" <?php echo $disabled; ?>
                                class="form-control form-control-inline" style="text-align: center" <?php echo $this->readonly; ?> />
                     </td>
                     <td class="center"><?php echo $row->id; ?></td>

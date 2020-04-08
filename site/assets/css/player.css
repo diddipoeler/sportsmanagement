@@ -6,39 +6,39 @@
 
 /* Positionierung der Positionen */
 
-.hp1 { position:absolute; top:68px; left:25px; }
-.hp2 { position:absolute; top:62px; left:43px; }
-.hp3l { position:absolute; top:47px; left:53px; }
-.hp3r { position:absolute; top:68px; left:69px; }
-.hp4 { position:absolute; top:26px; left:45px; }
-.hp5 { position:absolute; top:89px; left:96px; }
-.hp6 { position:absolute; top:43px; left:89px; }
-.hp7 { position:absolute; top:34px; left:115px; }
-.hp8 { position:absolute; top:62px; left:151px; }
-.hp9 { position:absolute; top:13px; left:93px; }
-.hp10 { position:absolute; top:24px; left:141px; }
-.hp11m { position:absolute; top:4px; left:117px; }
-.hp11s { position:absolute; top:-2px; left:139px; }
-.hp12m { position:absolute; top:49px; left:179px; }
-.hp12s { position:absolute; top:38px; left:201px; }
-.hp13 { position:absolute; top:13px; left:163px; }
-.hp14 { position:absolute; top:8px; left:176px; }
+.hp1 { position: absolute; top: 68px; left: 25px; }
+.hp2 { position: absolute; top: 62px; left: 43px; }
+.hp3l { position: absolute; top: 47px; left: 53px; }
+.hp3r { position: absolute; top: 68px; left: 69px; }
+.hp4 { position: absolute; top: 26px; left: 45px; }
+.hp5 { position: absolute; top: 89px; left: 96px; }
+.hp6 { position: absolute; top: 43px; left: 89px; }
+.hp7 { position: absolute; top: 34px; left: 115px; }
+.hp8 { position: absolute; top: 62px; left: 151px; }
+.hp9 { position: absolute; top: 13px; left: 93px; }
+.hp10 { position: absolute; top: 24px; left: 141px; }
+.hp11m { position: absolute; top: 4px; left: 117px; }
+.hp11s { position: absolute; top: -2px; left: 139px; }
+.hp12m { position: absolute; top: 49px; left: 179px; }
+.hp12s { position: absolute; top: 38px; left: 201px; }
+.hp13 { position: absolute; top: 13px; left: 163px; }
+.hp14 { position: absolute; top: 8px; left: 176px; }
 
 
-.np1 { position:absolute; top:68px; left:25px; }
-.np2 { position:absolute; top:62px; left:43px; }
-.np3l { position:absolute; top:47px; left:53px; }
-.np3r { position:absolute; top:68px; left:69px; }
-.np4 { position:absolute; top:26px; left:45px; }
-.np5 { position:absolute; top:89px; left:96px; }
-.np6 { position:absolute; top:43px; left:89px; }
-.np7 { position:absolute; top:34px; left:115px; }
-.np8 { position:absolute; top:62px; left:151px; }
-.np9 { position:absolute; top:13px; left:93px; }
-.np10 { position:absolute; top:24px; left:141px; }
-.np11m { position:absolute; top:4px; left:117px; }
-.np11s { position:absolute; top:-2px; left:139px; }
-.np12m { position:absolute; top:49px; left:179px; }
-.np12s { position:absolute; top:38px; left:201px; }
-.np13 { position:absolute; top:13px; left:163px; }
-.np14 { position:absolute; top:8px; left:176px; }
+.np1 { position: absolute; top: 68px; left: 25px; }
+.np2 { position: absolute; top: 62px; left: 43px; }
+.np3l { position: absolute; top: 47px; left: 53px; }
+.np3r { position: absolute; top: 68px; left: 69px; }
+.np4 { position: absolute; top: 26px; left: 45px; }
+.np5 { position: absolute; top: 89px; left: 96px; }
+.np6 { position: absolute; top: 43px; left: 89px; }
+.np7 { position: absolute; top: 34px; left: 115px; }
+.np8 { position: absolute; top: 62px; left: 151px; }
+.np9 { position: absolute; top: 13px; left: 93px; }
+.np10 { position: absolute; top: 24px; left: 141px; }
+.np11m { position: absolute; top: 4px; left: 117px; }
+.np11s { position: absolute; top: -2px; left: 139px; }
+.np12m { position: absolute; top: 49px; left: 179px; }
+.np12s { position: absolute; top: 38px; left: 201px; }
+.np13 { position: absolute; top: 13px; left: 163px; }
+.np14 { position: absolute; top: 8px; left: 176px; }
