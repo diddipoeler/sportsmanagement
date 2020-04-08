@@ -295,7 +295,7 @@ class SportsmanagementConnector extends JSMCalendar
 			$newrows[$key]['homepic'] = self::buildImage($teams[$row->projectteam1_id]);
 			$newrows[$key]['awaypic'] = self::buildImage($teams[$row->projectteam2_id]);
 			$newrows[$key]['date'] = sportsmanagementHelper::getMatchStartTimestamp($row);
-			if ($row->cancel = 1) {
+			if ($row->cancel == 1) {
 				$newrows[$key]['result'] = $row->cancel_reason;
 			}
 			else {

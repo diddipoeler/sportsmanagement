@@ -310,13 +310,14 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 		foreach ($result as $row)
 		{
 			$event = new Google_Service_Calendar_Event;
-
-			if ($row->cancel = 1) {
-				$event->setSummary($row->hometeam . ' - ' . $row->awayteam . ' (' . $row->cancel_reason . ')');
+			$detail = "";
+			if ($row->cancel == 1) {
+				$detail = ' (' . $row->cancel_reason . ')';
 			}
-			else {
-				$event->setSummary($row->hometeam . ' - ' . $row->awayteam . ' (' . $row->team1_result . ':' . $row->team2_result . ')');
+			else if (isset($row->team1_result)) {
+				$detail = ' (' . $row->team1_result . ':' . $row->team2_result . ')';
 			}
+			$event->setSummary($row->hometeam . ' - ' . $row->awayteam . $detail);
 			$event->setDescription($row->roundname);
 			if (!empty($row->playground_name)) {
 				$event->setLocation($row->playground_name . ',' . $row->playground_city . ',' . $row->playground_address);
