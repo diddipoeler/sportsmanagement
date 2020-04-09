@@ -273,6 +273,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 		$gcalendar_id = $this->jsmdb->loadObject();
 		$this->jsmquery->clear();
 		$this->jsmquery->select('m.id,m.match_date,m.team1_result,m.team2_result,m.gcal_event_id,DATE_FORMAT(m.time_present,"%H:%i") time_present,m.match_timestamp');
+		$this->jsmquery->select('m.cancel, m.cancel_reason');
 		$this->jsmquery->select('playground.name AS playground_name,playground.zipcode AS playground_zipcode,playground.city AS playground_city,playground.address AS playground_address');
 		$this->jsmquery->select('pt1.project_id');
 		$this->jsmquery->select('t1.name as hometeam,t2.name as awayteam');
@@ -309,10 +310,18 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 		foreach ($result as $row)
 		{
 			$event = new Google_Service_Calendar_Event;
-
-			$event->setSummary($row->hometeam . ' - ' . $row->awayteam . ' (' . $row->team1_result . ':' . $row->team2_result . ')');
+			$detail = "";
+			if ($row->cancel == 1) {
+				$detail = ' (' . $row->cancel_reason . ')';
+			}
+			else if (isset($row->team1_result)) {
+				$detail = ' (' . $row->team1_result . ':' . $row->team2_result . ')';
+			}
+			$event->setSummary($row->hometeam . ' - ' . $row->awayteam . $detail);
 			$event->setDescription($row->roundname);
-			$event->setLocation($row->playground_name . ',' . $row->playground_city . ',' . $row->playground_address);
+			if (!empty($row->playground_name)) {
+				$event->setLocation($row->playground_name . ',' . $row->playground_city . ',' . $row->playground_address);
+			}
 			$start = new Google_Service_Calendar_EventDateTime;
 
 			// Setze das Datum und verwende das RFC 3339 Format.
