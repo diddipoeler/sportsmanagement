@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Router\Route;
 
 /**
@@ -31,7 +32,8 @@ class sportsmanagementControllerplayer extends JSMControllerForm
 	/**
 	 * sportsmanagementControllerplayer::__construct()
 	 *
-	 * @param   mixed $config
+	 * @param   mixed  $config
+	 *
 	 * @return void
 	 */
 	function __construct($config = array())

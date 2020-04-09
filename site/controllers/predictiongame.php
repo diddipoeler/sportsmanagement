@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\MVC\Controller\BaseController;
 
 require_once JLG_PATH_EXTENSION_PREDICTIONGAME . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'route.php';

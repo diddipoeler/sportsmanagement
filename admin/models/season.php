@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
@@ -33,7 +34,7 @@ class sportsmanagementModelseason extends JSMModelAdmin
 	/**
 	 * Override parent constructor.
 	 *
-	 * @param   array $config An optional associative array of configuration settings.
+	 * @param   array  $config  An optional associative array of configuration settings.
 	 *
 	 * @see   BaseDatabaseModel
 	 * @since 3.2
@@ -51,20 +52,20 @@ class sportsmanagementModelseason extends JSMModelAdmin
 	 */
 	function saveshortpersons()
 	{
-		$modified = $this->jsmdate->toSql();
+		$modified    = $this->jsmdate->toSql();
 		$modified_by = $this->jsmuser->get('id');
 
-			 $pks = $this->jsmjinput->getVar('cid', null, 'post', 'array');
-		$teams = $this->jsmjinput->getVar('team_id', null, 'post', 'array');
-		$season_id = $this->jsmjinput->getVar('season_id', 0, 'post', 'array');
+		$pks        = $this->jsmjinput->getVar('cid', null, 'post', 'array');
+		$teams      = $this->jsmjinput->getVar('team_id', null, 'post', 'array');
+		$season_id  = $this->jsmjinput->getVar('season_id', 0, 'post', 'array');
 		$project_id = $this->jsmjinput->getVar('project_id', 0, 'post', 'array');
 		$persontype = $this->jsmjinput->getVar('persontype', 0, 'post', 'array');
 
 		foreach ($pks as $key => $value)
 		{
 			$this->jsmquery->clear();
-			$columns = array('person_id','season_id','modified','modified_by');
-			$values = array($value,$season_id,$this->jsmdb->Quote('' . $modified . ''),$modified_by);
+			$columns = array('person_id', 'season_id', 'modified', 'modified_by');
+			$values  = array($value, $season_id, $this->jsmdb->Quote('' . $modified . ''), $modified_by);
 			$this->jsmquery
 				->insert($this->jsmdb->quoteName('#__sportsmanagement_season_person_id'))
 				->columns($this->jsmdb->quoteName($columns))
@@ -77,9 +78,9 @@ class sportsmanagementModelseason extends JSMModelAdmin
 			}
 			catch (Exception $e)
 			{
-						$row = Table::getInstance('season', 'sportsmanagementTable');
-						$row->load($season_id);
-						$this->jsmapp->enqueueMessage('Saisonzuordnung : ' . $row->name . ' schon vorhanden.', 'notice');
+				$row = Table::getInstance('season', 'sportsmanagementTable');
+				$row->load($season_id);
+				$this->jsmapp->enqueueMessage('Saisonzuordnung : ' . $row->name . ' schon vorhanden.', 'notice');
 
 				if ($persontype == 3)
 				{
@@ -91,13 +92,13 @@ class sportsmanagementModelseason extends JSMModelAdmin
 					$this->jsmdb->setQuery($this->jsmquery);
 					$new_id = $this->jsmdb->loadResult();
 
-					$modified = $this->jsmdate->toSql();
-					$mdlTable = new stdClass;
-					$mdlTable->id = $new_id;
-					$mdlTable->modified = $this->jsmdb->Quote('' . $modified . '');
+					$modified              = $this->jsmdate->toSql();
+					$mdlTable              = new stdClass;
+					$mdlTable->id          = $new_id;
+					$mdlTable->modified    = $this->jsmdb->Quote('' . $modified . '');
 					$mdlTable->modified_by = $modified_by;
-					$mdlTable->persontype = 3;
-					$mdlTable->published = 1;
+					$mdlTable->persontype  = 3;
+					$mdlTable->published   = 1;
 
 					try
 					{
@@ -107,11 +108,11 @@ class sportsmanagementModelseason extends JSMModelAdmin
 					{
 					}
 
-					$profile = new stdClass;
-					$profile->project_id = $project_id;
-					$profile->person_id = $new_id;
-					$profile->published = 1;
-					$profile->modified = $this->jsmdb->Quote('' . $modified . '');
+					$profile              = new stdClass;
+					$profile->project_id  = $project_id;
+					$profile->person_id   = $new_id;
+					$profile->published   = 1;
+					$profile->modified    = $this->jsmdb->Quote('' . $modified . '');
 					$profile->modified_by = $modified_by;
 
 					try
@@ -127,8 +128,8 @@ class sportsmanagementModelseason extends JSMModelAdmin
 			if (isset($teams) && $persontype != 3)
 			{
 				$this->jsmquery->clear();
-				$columns = array('person_id','season_id','team_id','published','persontype','modified','modified_by'   );
-				$values = array($value,$season_id,$teams,'1',$persontype,$this->jsmdb->Quote('' . $modified . ''),$modified_by);
+				$columns = array('person_id', 'season_id', 'team_id', 'published', 'persontype', 'modified', 'modified_by');
+				$values  = array($value, $season_id, $teams, '1', $persontype, $this->jsmdb->Quote('' . $modified . ''), $modified_by);
 				$this->jsmquery
 					->insert($this->jsmdb->quoteName('#__sportsmanagement_season_team_person_id'))
 					->columns($this->jsmdb->quoteName($columns))
@@ -156,14 +157,14 @@ class sportsmanagementModelseason extends JSMModelAdmin
 	 */
 	function saveshortteams()
 	{
-		$pks = $this->jsmjinput->getVar('cid', null, 'post', 'array');
+		$pks       = $this->jsmjinput->getVar('cid', null, 'post', 'array');
 		$season_id = $this->jsmjinput->getVar('season_id', 0, 'post', 'array');
 
 		foreach ($pks as $key => $value)
 		{
 			$this->jsmquery->clear();
-			$columns = array('team_id','season_id');
-			$values = array($value,$season_id);
+			$columns = array('team_id', 'season_id');
+			$values  = array($value, $season_id);
 			$this->jsmquery
 				->insert($this->jsmdb->quoteName('#__sportsmanagement_season_team_id'))
 				->columns($this->jsmdb->quoteName($columns))
@@ -176,8 +177,8 @@ class sportsmanagementModelseason extends JSMModelAdmin
 			}
 			catch (Exception $e)
 			{
-						$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getMessage()), 'Error');
-						$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getCode()), 'Error');
+				$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getMessage()), 'Error');
+				$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getCode()), 'Error');
 			}
 		}
 

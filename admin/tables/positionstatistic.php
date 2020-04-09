@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 
 /**
@@ -30,12 +31,13 @@ class sportsmanagementTablePositionStatistic extends JSMTable
 	/**
 	 * Constructor
 	 *
-	 * @param object Database connector object
+	 * @param   object Database connector object
+	 *
 	 * @since 1.0
 	 */
-	function __construct( & $db )
+	function __construct(&$db)
 	{
-		  $db = sportsmanagementHelper::getDBConnection();
+		$db = sportsmanagementHelper::getDBConnection();
 		parent::__construct('#__sportsmanagement_position_statistic', 'id', $db);
 	}
 
@@ -48,7 +50,7 @@ class sportsmanagementTablePositionStatistic extends JSMTable
 	 */
 	function check()
 	{
-		if (! ( $this->statistic_id && $this->projectteam_id && $this->match_id ))
+		if (!($this->statistic_id && $this->projectteam_id && $this->match_id))
 		{
 			$this->setError(Text::_('CHECK FAILED'));
 

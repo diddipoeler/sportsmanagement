@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
@@ -40,9 +41,9 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
 	public function init()
 	{
 
-			 $tpl = '';
+		$tpl = '';
 
-			 $this->prediction_id = $this->state->get('filter.prediction_id');
+		$this->prediction_id = $this->state->get('filter.prediction_id');
 
 		switch ($this->getLayout())
 		{
@@ -52,33 +53,70 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
 				$this->app->setUserState("$this->option.prediction_id", $this->state->get('filter.prediction_id'));
 				$this->_display($tpl);
 
-return;
-			break;
+				return;
+				break;
 			case 'editlist':
 			case 'editlist_3':
 			case 'editlist_4':
 				$this->_editlist($tpl);
 
-return;
-			break;
+				return;
+				break;
 		}
+
+	}
+
+	/**
+	 * sportsmanagementViewPredictionMembers::_display()
+	 *
+	 * @param   mixed  $tpl
+	 *
+	 * @return void
+	 */
+	function _display($tpl = null)
+	{
+		$this->table = Table::getInstance('predictionmember', 'sportsmanagementTable');
+
+		// Build the html select list for prediction games
+		$mdlPredGames  = BaseDatabaseModel::getInstance('PredictionGames', 'sportsmanagementModel');
+		$predictions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME'), 'value', 'text');
+
+		if ($res = $mdlPredGames->getPredictionGames())
+		{
+			$predictions          = array_merge($predictions, $res);
+			$this->prediction_ids = $res;
+		}
+
+		$lists['predictions'] = HTMLHelper::_(
+			'select.genericlist',
+			$predictions,
+			'filter_prediction_id',
+			'class="inputbox" onChange="this.form.submit();" ',
+			'value',
+			'text',
+			$this->state->get('filter.prediction_id')
+		);
+		unset($res);
+
+		$this->lists = $lists;
 
 	}
 
 	/**
 	 * sportsmanagementViewPredictionMembers::_editlist()
 	 *
-	 * @param   mixed $tpl
+	 * @param   mixed  $tpl
+	 *
 	 * @return void
 	 */
-	function _editlist( $tpl = null )
+	function _editlist($tpl = null)
 	{
 		$this->prediction_id = $this->app->getUserState($this->option . '.prediction_id');
 
-					  $prediction_name    = $this->getModel()->getPredictionProjectName($this->prediction_id);
-		$this->prediction_name    = $prediction_name;
+		$prediction_name       = $this->getModel()->getPredictionProjectName($this->prediction_id);
+		$this->prediction_name = $prediction_name;
 
-			  $res_prediction_members = $this->getModel()->getPredictionMembers($this->prediction_id);
+		$res_prediction_members = $this->getModel()->getPredictionMembers($this->prediction_id);
 
 		if ($res_prediction_members)
 		{
@@ -110,44 +148,8 @@ return;
 			);
 		}
 
-																						  $this->lists    = $lists;
+		$this->lists = $lists;
 		$this->setlayout('editlist');
-
-	}
-
-
-	/**
-	 * sportsmanagementViewPredictionMembers::_display()
-	 *
-	 * @param   mixed $tpl
-	 * @return void
-	 */
-	function _display( $tpl = null )
-	{
-		$this->table = Table::getInstance('predictionmember', 'sportsmanagementTable');
-
-		// Build the html select list for prediction games
-		$mdlPredGames = BaseDatabaseModel::getInstance('PredictionGames', 'sportsmanagementModel');
-		$predictions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME'), 'value', 'text');
-
-		if ($res = $mdlPredGames->getPredictionGames())
-		{
-			 $predictions = array_merge($predictions, $res);
-			 $this->prediction_ids = $res;
-		}
-
-				  $lists['predictions'] = HTMLHelper::_(
-					  'select.genericlist',
-					  $predictions,
-					  'filter_prediction_id',
-					  'class="inputbox" onChange="this.form.submit();" ',
-					  'value',
-					  'text',
-					  $this->state->get('filter.prediction_id')
-				  );
-		unset($res);
-
-			$this->lists    = $lists;
 
 	}
 
@@ -161,7 +163,7 @@ return;
 
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_TITLE');
 
-			  ToolbarHelper::custom('predictionmembers.reminder', 'send.png', 'send_f2.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_SEND_REMINDER'), true);
+		ToolbarHelper::custom('predictionmembers.reminder', 'send.png', 'send_f2.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_SEND_REMINDER'), true);
 		ToolbarHelper::divider();
 
 		if ($this->prediction_id)
@@ -172,9 +174,9 @@ return;
 			ToolbarHelper::deleteList('', 'predictionmembers.remove');
 		}
 
-			ToolbarHelper::checkin('predictionmembers.checkin');
+		ToolbarHelper::checkin('predictionmembers.checkin');
 
-			  parent::addToolbar();
+		parent::addToolbar();
 
 	}
 

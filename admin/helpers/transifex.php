@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die;
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Filesystem\Folder;
@@ -37,11 +38,12 @@ class sportsmanagementHelperTransifex
 	/**
 	 * sportsmanagementHelperTransifex::updatelanguage()
 	 *
-	 * @param   mixed  $data
-	 * @param   string $folder
+	 * @param   mixed   $data
+	 * @param   string  $folder
+	 *
 	 * @return
 	 */
-	public static function updatelanguage($data=null,$folder='de-DE')
+	public static function updatelanguage($data = null, $folder = 'de-DE')
 	{
 		if ($folder == 'de-DE' || $folder == 'en-GB')
 		{
@@ -84,18 +86,18 @@ class sportsmanagementHelperTransifex
 			else
 			{
 				$value->images = 'error.png';
-				$path = '';
+				$path          = '';
 				/**
-*
- * adminsprache
-*/
+				 *
+				 * adminsprache
+				 */
 				if (strpos($value->file, 'admin-com_') !== false)
 				{
-					$mod = str_replace('admin-', '', $value->file);
-					$path = $adminpath;
-					$path .= '/' . $folder . '.' . $mod;
+					$mod           = str_replace('admin-', '', $value->file);
+					$path          = $adminpath;
+					$path          .= '/' . $folder . '.' . $mod;
 					$value->folder = $path;
-					$content = self::getData('resource/' . $value->slug . '/translation/' . $value->language . '?file=1');
+					$content       = self::getData('resource/' . $value->slug . '/translation/' . $value->language . '?file=1');
 
 					try
 					{
@@ -110,14 +112,14 @@ class sportsmanagementHelperTransifex
 				}
 
 				/**
-*
- * frontend
-*/
+				 *
+				 * frontend
+				 */
 				if (strpos($value->file, 'site-com_') !== false)
 				{
-					$mod = str_replace('site-', '', $value->file);
-					$path = $sitepath;
-					$path .= '/' . $folder . '.' . $mod;
+					$mod           = str_replace('site-', '', $value->file);
+					$path          = $sitepath;
+					$path          .= '/' . $folder . '.' . $mod;
 					$value->folder = $path;
 
 					$content = self::getData('resource/' . $value->slug . '/translation/' . $value->language . '?file=1');
@@ -135,14 +137,14 @@ class sportsmanagementHelperTransifex
 				}
 
 				/**
-*
- * module
-*/
+				 *
+				 * module
+				 */
 				if (strpos($value->file, 'mod_') !== false)
 				{
-					$mod = str_replace('admin-', '', $value->file);
-					$path = $sitepath;
-					$path .= '/' . $folder . '.' . $mod;
+					$mod           = str_replace('admin-', '', $value->file);
+					$path          = $sitepath;
+					$path          .= '/' . $folder . '.' . $mod;
 					$value->folder = $path;
 
 					$content = self::getData('resource/' . $value->slug . '/translation/' . $value->language . '?file=1');
@@ -167,48 +169,50 @@ class sportsmanagementHelperTransifex
 	/**
 	 * sportsmanagementHelperTransifex::getData()
 	 *
-	 * @param   mixed $path
+	 * @param   mixed  $path
+	 *
 	 * @return
 	 */
 	public static function getData($path)
 	{
-		  $url = self::$apiUrl . '/' . $path;
-		  $ch = curl_init();
-		  $info = '';
-		  $timeout = 120;
-		  curl_setopt($ch, CURLOPT_URL, $url);
-		  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		  curl_setopt($ch, CURLOPT_USERPWD, "diddipoeler:dp190460");
-		  curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-		  curl_setopt($ch, CURLOPT_TIMEOUT, 400);
-		  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		$url     = self::$apiUrl . '/' . $path;
+		$ch      = curl_init();
+		$info    = '';
+		$timeout = 120;
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_USERPWD, "diddipoeler:dp190460");
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 400);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
-		  // Get the data
-		  $data = curl_exec($ch);
+		// Get the data
+		$data = curl_exec($ch);
 
-		  // Get info about the request
-		  $info = curl_getinfo($ch);
+		// Get info about the request
+		$info = curl_getinfo($ch);
 
-		  // Close the request
-		  curl_close($ch);
+		// Close the request
+		curl_close($ch);
 
-		  return array(
-		'data' => $data,
-		'info' => $info
-		  );
+		return array(
+			'data' => $data,
+			'info' => $info
+		);
 	}
 
 
 	/**
 	 * sportsmanagementHelperTransifex::getLangCode()
 	 *
-	 * @param   mixed $lang
-	 * @param   bool  $inverse
+	 * @param   mixed  $lang
+	 * @param   bool   $inverse
+	 *
 	 * @return
 	 */
-	public static function getLangCode($lang, $inverse = false,$joomla=true)
+	public static function getLangCode($lang, $inverse = false, $joomla = true)
 	{
-		  $languages = self::getLangmap($joomla);
+		$languages = self::getLangmap($joomla);
 
 		if ($inverse)
 		{
@@ -220,7 +224,7 @@ class sportsmanagementHelperTransifex
 			return $languages[$lang];
 		}
 
-		  return false;
+		return false;
 	}
 
 	/**
@@ -228,9 +232,9 @@ class sportsmanagementHelperTransifex
 	 *
 	 * @return
 	 */
-	private static function getLangmap($joomla=true)
+	private static function getLangmap($joomla = true)
 	{
-		if (! count(self::$languages))
+		if (!count(self::$languages))
 		{
 			$langMap = explode(
 				',',
@@ -239,7 +243,7 @@ class sportsmanagementHelperTransifex
 
 			foreach ($langMap as $map)
 			{
-					 $langCodes = explode(':', $map);
+				$langCodes = explode(':', $map);
 
 				if ($joomla)
 				{
@@ -254,7 +258,7 @@ class sportsmanagementHelperTransifex
 			self::$languages = $languages;
 		}
 
-		  return self::$languages;
+		return self::$languages;
 	}
 
 }

@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -46,7 +47,7 @@ class sportsmanagementViewsmextxmleditors extends sportsmanagementView
 	protected function addToolbar()
 	{
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EDITORS');
-		$this->icon = 'xml-edits';
+		$this->icon  = 'xml-edits';
 		ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=cpanel');
 		parent::addToolbar();
 	}

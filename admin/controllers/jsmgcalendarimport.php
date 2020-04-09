@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die();
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
@@ -32,16 +33,17 @@ class sportsmanagementControllerjsmgcalendarImport extends BaseController
 	/**
 	 * Class Constructor
 	 *
-	 * @param   array $config An optional associative array of configuration settings.
+	 * @param   array  $config  An optional associative array of configuration settings.
+	 *
 	 * @return void
 	 * @since  1.5
 	 */
 	function __construct($config = array())
 	{
-		  /**
-*
- * Initialise variables.
-*/
+		/**
+		 *
+		 * Initialise variables.
+		 */
 		$app = Factory::getApplication();
 		parent::__construct($config);
 
@@ -56,8 +58,8 @@ class sportsmanagementControllerjsmgcalendarImport extends BaseController
 	{
 
 		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
-		$model = $this->getModel('jsmgcalendarImport');
+		$app    = Factory::getApplication();
+		$model  = $this->getModel('jsmgcalendarImport');
 		$result = $model->import();
 
 		if ($result)
@@ -69,9 +71,9 @@ class sportsmanagementControllerjsmgcalendarImport extends BaseController
 			$msg = Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GCALENDARS_IMPORT_NO');
 		}
 
-			  $link = 'index.php?option=com_sportsmanagement&view=jsmgcalendars';
+		$link = 'index.php?option=com_sportsmanagement&view=jsmgcalendars';
 
-			$this->setRedirect($link, $msg);
+		$this->setRedirect($link, $msg);
 
 	}
 

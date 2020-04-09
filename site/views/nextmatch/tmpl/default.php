@@ -13,18 +13,19 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 
-<div class="<?php echo $this->divclasscontainer;?>" id="nextmatch">
-<?php
-echo $this->loadTemplate('projectheading');
+<div class="<?php echo $this->divclasscontainer; ?>" id="nextmatch">
+	<?php
+	echo $this->loadTemplate('projectheading');
 
-if ($this->match)
-{
+	if ($this->match)
+	{
 	if ($this->config['show_sectionheader'])
 	{
 		echo $this->loadTemplate('sectionheader');
@@ -74,14 +75,14 @@ if ($this->match)
 
 	echo $this->loadTemplate($this->config['show_nextmatch_tabs']);
 	echo $this->loadTemplate('jsminfo');
-?>
+	?>
 </div>
 <div>
-<?PHP
-}
-else
-{
-	echo "<p>" . Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_NO_MORE_MATCHES') . "</p>";
-}
-?>
+	<?PHP
+	}
+	else
+	{
+		echo "<p>" . Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_NO_MORE_MATCHES') . "</p>";
+	}
+	?>
 </div>

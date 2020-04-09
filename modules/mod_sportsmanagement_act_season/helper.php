@@ -13,7 +13,9 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
+
 JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 
 /**
@@ -31,17 +33,18 @@ class modJSMActSeasonHelper
 	/**
 	 * modJSMActSeasonHelper::getData()
 	 *
-	 * @param   mixed $season_ids
+	 * @param   mixed  $season_ids
+	 *
 	 * @return
 	 */
 	public static function getData($season_ids)
 	{
 		// Reference global application object
-		$app = Factory::getApplication();
-		$date = Factory::getDate();
-		  $user = Factory::getUser();
-		  $db = Factory::getDBO();
-		  $query = $db->getQuery(true);
+		$app    = Factory::getApplication();
+		$date   = Factory::getDate();
+		$user   = Factory::getUser();
+		$db     = Factory::getDBO();
+		$query  = $db->getQuery(true);
 		$result = array();
 
 		$seasons = implode(",", $season_ids);

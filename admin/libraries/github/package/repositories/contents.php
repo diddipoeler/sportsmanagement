@@ -59,9 +59,9 @@ class JGithubPackageRepositoriesContents extends JGithubPackage
 	 * @param   string  $repo   The name of the GitHub repository.
 	 * @param   string  $ref    The String name of the Commit/Branch/Tag. Defaults to master.
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function getReadme($owner, $repo, $ref = '')
 	{
@@ -119,9 +119,9 @@ class JGithubPackageRepositoriesContents extends JGithubPackage
 	 * @param   string  $path   The content path.
 	 * @param   string  $ref    The String name of the Commit/Branch/Tag. Defaults to master.
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function get($owner, $repo, $path, $ref = '')
 	{
@@ -172,10 +172,10 @@ class JGithubPackageRepositoriesContents extends JGithubPackage
 	 * @param   string  $archive_format  Either tarball or zipball.
 	 * @param   string  $ref             The String name of the Commit/Branch/Tag. Defaults to master.
 	 *
+	 * @return object
 	 * @throws UnexpectedValueException
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function getArchiveLink($owner, $repo, $archive_format = 'zipball', $ref = '')
 	{

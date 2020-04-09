@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 
 if (version_compare(JSM_JVERSION, '4', 'eq'))

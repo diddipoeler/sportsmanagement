@@ -25,9 +25,9 @@ class JGithubPackageRepositoriesKeys extends JGithubPackage
 	 * @param   string  $owner  The name of the owner of the GitHub repository.
 	 * @param   string  $repo   The name of the GitHub repository.
 	 *
+	 * @return object
 	 * @since 12.4
 	 *
-	 * @return object
 	 */
 	public function getList($owner, $repo)
 	{
@@ -46,9 +46,9 @@ class JGithubPackageRepositoriesKeys extends JGithubPackage
 	 * @param   string   $repo   The name of the GitHub repository.
 	 * @param   integer  $id     The id of the key.
 	 *
+	 * @return object
 	 * @since 12.4
 	 *
-	 * @return object
 	 */
 	public function get($owner, $repo, $id)
 	{
@@ -68,9 +68,9 @@ class JGithubPackageRepositoriesKeys extends JGithubPackage
 	 * @param   string  $title  The key title.
 	 * @param   string  $key    The key.
 	 *
+	 * @return object
 	 * @since 12.4
 	 *
-	 * @return object
 	 */
 	public function create($owner, $repo, $title, $key)
 	{
@@ -97,9 +97,9 @@ class JGithubPackageRepositoriesKeys extends JGithubPackage
 	 * @param   string   $title  The key title.
 	 * @param   string   $key    The key.
 	 *
+	 * @return object
 	 * @since 12.4
 	 *
-	 * @return object
 	 */
 	public function edit($owner, $repo, $id, $title, $key)
 	{
@@ -123,9 +123,9 @@ class JGithubPackageRepositoriesKeys extends JGithubPackage
 	 * @param   string   $repo   The name of the GitHub repository.
 	 * @param   integer  $id     The id of the key.
 	 *
+	 * @return boolean
 	 * @since 12.4
 	 *
-	 * @return boolean
 	 */
 	public function delete($owner, $repo, $id)
 	{

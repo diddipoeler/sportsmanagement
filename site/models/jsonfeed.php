@@ -20,6 +20,7 @@
  */
 
 defined('_JEXEC') or die();
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -31,8 +32,8 @@ class sportsmanagementModelJSONFeed extends BaseDatabaseModel
 	{
 		$app = Factory::getApplication();
 
-			  $startDate = Factory::getApplication()->input->getVar('start', null, 'GET');
-		$endDate = Factory::getApplication()->input->getVar('end', null, 'GET');
+		$startDate = Factory::getApplication()->input->getVar('start', null, 'GET');
+		$endDate   = Factory::getApplication()->input->getVar('end', null, 'GET');
 
 		$calendarids = '';
 
@@ -59,7 +60,7 @@ class sportsmanagementModelJSONFeed extends BaseDatabaseModel
 			return null;
 		}
 
-			$calendars = array();
+		$calendars = array();
 
 		foreach ($results as $result)
 		{
@@ -68,16 +69,16 @@ class sportsmanagementModelJSONFeed extends BaseDatabaseModel
 				continue;
 			}
 
-					$events = jsmGCalendarZendHelper::getEvents($result, $startDate, $endDate, 1000);
+			$events = jsmGCalendarZendHelper::getEvents($result, $startDate, $endDate, 1000);
 
 			if ($events == null)
 			{
-					continue;
+				continue;
 			}
 
-					$calendars[] = $events;
+			$calendars[] = $events;
 		}
 
-			  return $calendars;
+		return $calendars;
 	}
 }

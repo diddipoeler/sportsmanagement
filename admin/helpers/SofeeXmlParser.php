@@ -76,8 +76,10 @@ class SofeeXmlParser
 	 * Constructor
 	 *
 	 * @access public
+	 *
 	 * @param   mixed        [ $srcenc] source encoding
 	 * @param   mixed        [ $dstenc] target encoding
+	 *
 	 * @return void
 	 * @since
 	 */
@@ -86,31 +88,18 @@ class SofeeXmlParser
 		$this->srcenc = $srcenc;
 		$this->dstenc = $dstenc;
 
-			  // Initialize the variable.
-		$this->parser = null;
+		// Initialize the variable.
+		$this->parser  = null;
 		$this->_struct = array();
-	}
-
-	/**
-	 * Free the resources
-	 *
-	 * @access public
-	 * @return void
-	 **/
-	function free()
-	{
-		if (isset($this->parser) && is_resource($this->parser))
-		{
-			xml_parser_free($this->parser);
-			unset($this->parser);
-		}
 	}
 
 	/**
 	 * Parses the XML file
 	 *
 	 * @access public
+	 *
 	 * @param   string        [ $file] the XML file name
+	 *
 	 * @return void
 	 * @since
 	 */
@@ -124,7 +113,9 @@ class SofeeXmlParser
 	 * Parses a string.
 	 *
 	 * @access public
+	 *
 	 * @param   string        [ $data] XML data
+	 *
 	 * @return void
 	 */
 	function parseString($data)
@@ -143,8 +134,8 @@ class SofeeXmlParser
 			@xml_parser_set_option($this->parser, XML_OPTION_TARGET_ENCODING, $this->dstenc) or die('Invalid target encoding');
 		}
 
-			xml_parser_set_option($this->parser, XML_OPTION_CASE_FOLDING, 0);    // Lowercase tags
-			xml_parser_set_option($this->parser, XML_OPTION_SKIP_WHITE, 1);        // skip empty tags
+		xml_parser_set_option($this->parser, XML_OPTION_CASE_FOLDING, 0);    // Lowercase tags
+		xml_parser_set_option($this->parser, XML_OPTION_SKIP_WHITE, 1);        // skip empty tags
 
 		if (!xml_parse_into_struct($this->parser, $data, $this->_struct))
 		{
@@ -154,12 +145,27 @@ class SofeeXmlParser
 				xml_get_current_line_number($this->parser)
 			);
 
-				$this->free();
+			$this->free();
 			exit();
 		}
 
-			  $this->_count = count($this->_struct);
-			$this->free();
+		$this->_count = count($this->_struct);
+		$this->free();
+	}
+
+	/**
+	 * Free the resources
+	 *
+	 * @access public
+	 * @return void
+	 **/
+	function free()
+	{
+		if (isset($this->parser) && is_resource($this->parser))
+		{
+			xml_parser_free($this->parser);
+			unset($this->parser);
+		}
 	}
 
 	/**
@@ -170,7 +176,7 @@ class SofeeXmlParser
 	 */
 	function getTree()
 	{
-		$i = 0;
+		$i    = 0;
 		$tree = array();
 
 		$tree = $this->addNode(
@@ -187,61 +193,16 @@ class SofeeXmlParser
 	}
 
 	/**
-	 * recursion the children node data
-	 *
-	 * @access public
-	 * @param   integer        [ $i] the last struct index
-	 * @return array
-	 */
-	function getChild(&$i)
-	{
-		// Contain node data
-		$children = array();
-
-		// Loop
-		while (++$i < $this->_count)
-		{
-			// Node tag name
-			$tagname = $this->_struct[$i]['tag'];
-			$value = isset($this->_struct[$i]['value']) ? $this->_struct[$i]['value'] : '';
-			$attributes = isset($this->_struct[$i]['attributes']) ? $this->_struct[$i]['attributes'] : '';
-
-			switch ($this->_struct[$i]['type'])
-			{
-				case 'open':
-					// Node has more children
-					$child = $this->getChild($i);
-
-					// Append the children data to the current node
-					$children = $this->addNode($children, $tagname, $value, $attributes, $child);
-				break;
-				case 'complete':
-					// At end of current branch
-					$children = $this->addNode($children, $tagname, $value, $attributes);
-				break;
-				case 'cdata':
-					// Node has CDATA after one of it's children
-					$children['value'] .= $value;
-				break;
-				case 'close':
-					// End of node, return collected data
-				return $children;
-				break;
-			}
-		}
-
-		// Return $children;
-	}
-
-	/**
 	 * Appends some values to an array
 	 *
 	 * @access public
+	 *
 	 * @param   array        [  $target]
 	 * @param   string        [ $key]
 	 * @param   string        [ $value]
 	 * @param   array        [  $attributes]
 	 * @param   array        [  $child]      the children
+	 *
 	 * @return void
 	 * @since
 	 */
@@ -262,17 +223,17 @@ class SofeeXmlParser
 				}
 			}
 
-					  $target[$key]['value'] = $value;
+			$target[$key]['value'] = $value;
 		}
 		else
 		{
 			if (!isset($target[$key][0]))
 			{
 				// Is string or other
-				$oldvalue = $target[$key];
-				$target[$key] = array();
+				$oldvalue        = $target[$key];
+				$target[$key]    = array();
 				$target[$key][0] = $oldvalue;
-				$index = 1;
+				$index           = 1;
 			}
 			else
 			{
@@ -297,6 +258,55 @@ class SofeeXmlParser
 		}
 
 		return $target;
+	}
+
+	/**
+	 * recursion the children node data
+	 *
+	 * @access public
+	 *
+	 * @param   integer        [ $i] the last struct index
+	 *
+	 * @return array
+	 */
+	function getChild(&$i)
+	{
+		// Contain node data
+		$children = array();
+
+		// Loop
+		while (++$i < $this->_count)
+		{
+			// Node tag name
+			$tagname    = $this->_struct[$i]['tag'];
+			$value      = isset($this->_struct[$i]['value']) ? $this->_struct[$i]['value'] : '';
+			$attributes = isset($this->_struct[$i]['attributes']) ? $this->_struct[$i]['attributes'] : '';
+
+			switch ($this->_struct[$i]['type'])
+			{
+				case 'open':
+					// Node has more children
+					$child = $this->getChild($i);
+
+					// Append the children data to the current node
+					$children = $this->addNode($children, $tagname, $value, $attributes, $child);
+					break;
+				case 'complete':
+					// At end of current branch
+					$children = $this->addNode($children, $tagname, $value, $attributes);
+					break;
+				case 'cdata':
+					// Node has CDATA after one of it's children
+					$children['value'] .= $value;
+					break;
+				case 'close':
+					// End of node, return collected data
+					return $children;
+					break;
+			}
+		}
+
+		// Return $children;
 	}
 
 }

@@ -27,11 +27,11 @@ class JGithubStatuses extends JGithubObject
 	 * @param   string  $targetUrl    Optional target URL.
 	 * @param   string  $description  Optional description for the status.
 	 *
-	 * @deprecated  use repositories->statuses->create()
-	 *
 	 * @return  object
 	 *
-	 * @since   12.3
+	 * @deprecated  use repositories->statuses->create()
+	 *
+	 * @since       12.3
 	 */
 	public function create($user, $repo, $sha, $state, $targetUrl = null, $description = null)
 	{
@@ -79,11 +79,11 @@ class JGithubStatuses extends JGithubObject
 	 * @param   string  $repo  The name of the GitHub repository.
 	 * @param   string  $sha   SHA1 for which to get the statuses.
 	 *
-	 * @deprecated  use repositories->statuses->getList()
-	 *
 	 * @return  array
 	 *
-	 * @since   12.3
+	 * @deprecated  use repositories->statuses->getList()
+	 *
+	 * @since       12.3
 	 */
 	public function getList($user, $repo, $sha)
 	{

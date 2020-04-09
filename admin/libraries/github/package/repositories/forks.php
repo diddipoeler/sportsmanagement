@@ -28,8 +28,8 @@ class JGithubPackageRepositoriesForks extends JGithubPackage
 	 *
 	 * @return  object
 	 *
-	 * @since   11.4
 	 * @throws  DomainException
+	 * @since   11.4
 	 */
 	public function create($user, $repo, $org = '')
 	{
@@ -71,8 +71,8 @@ class JGithubPackageRepositoriesForks extends JGithubPackage
 	 *
 	 * @return  array
 	 *
-	 * @since   11.4
 	 * @throws  DomainException
+	 * @since   11.4
 	 */
 	public function getList($user, $repo, $page = 0, $limit = 0)
 	{

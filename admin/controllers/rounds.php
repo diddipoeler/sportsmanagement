@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -33,14 +34,15 @@ class sportsmanagementControllerrounds extends JSMControllerAdmin
 	/**
 	 * Constructor.
 	 *
-	 * @param array An optional associative array of configuration settings.
+	 * @param   array An optional associative array of configuration settings.
+	 *
 	 * @see   JController
 	 * @since 1.6
 	 */
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
-		$this->app = Factory::getApplication();
+		$this->app    = Factory::getApplication();
 		$this->jinput = $this->app->input;
 		$this->option = $this->jinput->getCmd('option');
 
@@ -62,14 +64,25 @@ class sportsmanagementControllerrounds extends JSMControllerAdmin
 	function massadd()
 	{
 
-			  // Check for request forgeries
+		// Check for request forgeries
 		Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
 
 		$model = $this->getModel();
-		 $msg = $model->massadd();
+		$msg   = $model->massadd();
 		$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);
 	}
 
+	/**
+	 * Proxy for getModel.
+	 *
+	 * @since 1.6
+	 */
+	public function getModel($name = 'Round', $prefix = 'sportsmanagementModel', $config = Array())
+	{
+		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
+
+		return $model;
+	}
 
 	/**
 	 * Method to delete matches in round
@@ -81,13 +94,12 @@ class sportsmanagementControllerrounds extends JSMControllerAdmin
 	function deleteRoundMatches()
 	{
 		$model = $this->getModel();
-		$pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
-		$msg = $model->deleteRoundMatches($pks);
+		$pks   = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
+		$msg   = $model->deleteRoundMatches($pks);
 		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false));
 
 		// $this->setRedirect('index.php?option=com_sportsmanagement&view=rounds',$msg);
 	}
-
 
 	/**
 	 * Method to update checked rounds
@@ -98,8 +110,8 @@ class sportsmanagementControllerrounds extends JSMControllerAdmin
 	function saveshort()
 	{
 		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
-		$model = $this->getModel();
-		$msg = $model->saveshort();
+		$model            = $this->getModel();
+		$msg              = $model->saveshort();
 		$this->setRedirect('index.php?option=com_sportsmanagement&view=rounds&pid=' . $this->project_id, $msg);
 	}
 
@@ -108,26 +120,11 @@ class sportsmanagementControllerrounds extends JSMControllerAdmin
 	 */
 	public function populate()
 	{
-		$app = Factory::getApplication();
-		$jinput = $app->input;
+		$app         = Factory::getApplication();
+		$jinput      = $app->input;
 		$division_id = $jinput->getInt('division_id', 0);
 		$this->setRedirect('index.php?option=' . $this->option . '&view=rounds&layout=populate&division_id=' . $division_id);
 	}
-
-
-	/**
-	 * Proxy for getModel.
-	 *
-	 * @since 1.6
-	 */
-	public function getModel($name = 'Round', $prefix = 'sportsmanagementModel', $config = Array() )
-	{
-		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
-
-		return $model;
-	}
-
-
 
 
 }

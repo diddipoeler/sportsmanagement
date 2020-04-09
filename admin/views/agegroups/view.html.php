@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
@@ -41,36 +42,36 @@ class sportsmanagementViewagegroups extends sportsmanagementView
 	{
 		$mdlSportsType = BaseDatabaseModel::getInstance('SportsType', 'sportsmanagementModel');
 
-			 $this->table = Table::getInstance('agegroup', 'sportsmanagementTable');
+		$this->table = Table::getInstance('agegroup', 'sportsmanagementTable');
 
-			  // Build the html select list for sportstypes
-		$sportstypes[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'), 'id', 'name');
-		$mdlSportsTypes = BaseDatabaseModel::getInstance('SportsTypes', 'sportsmanagementModel');
-		$allSportstypes = $mdlSportsTypes->getSportsTypes();
-		$sportstypes = array_merge($sportstypes, $allSportstypes);
+		// Build the html select list for sportstypes
+		$sportstypes[]     = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'), 'id', 'name');
+		$mdlSportsTypes    = BaseDatabaseModel::getInstance('SportsTypes', 'sportsmanagementModel');
+		$allSportstypes    = $mdlSportsTypes->getSportsTypes();
+		$sportstypes       = array_merge($sportstypes, $allSportstypes);
 		$this->sports_type = $allSportstypes;
 
-			  $lists['sportstypes'] = HTMLHelper::_(
-				  'select.genericList',
-				  $sportstypes,
-				  'filter_sports_type',
-				  'class="inputbox" onChange="this.form.submit();" style="width:120px"',
-				  'id',
-				  'name',
-				  $this->state->get('filter.sports_type')
-			  );
+		$lists['sportstypes'] = HTMLHelper::_(
+			'select.genericList',
+			$sportstypes,
+			'filter_sports_type',
+			'class="inputbox" onChange="this.form.submit();" style="width:120px"',
+			'id',
+			'name',
+			$this->state->get('filter.sports_type')
+		);
 		unset($sportstypes);
 
-			  // Build the html options for nation
+		// Build the html options for nation
 		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 
 		if ($res = JSMCountries::getCountryOptions())
 		{
-			$nation = array_merge($nation, $res);
+			$nation              = array_merge($nation, $res);
 			$this->search_nation = $res;
 		}
 
-			  $lists['nation'] = $nation;
+		$lists['nation']  = $nation;
 		$lists['nation2'] = JHtmlSelect::genericlist(
 			$nation,
 			'filter_search_nation',
@@ -96,12 +97,12 @@ class sportsmanagementViewagegroups extends sportsmanagementView
 
 		if (count($this->items) == 0)
 		{
-			$databasetool = BaseDatabaseModel::getInstance("databasetool", "sportsmanagementModel");
+			$databasetool    = BaseDatabaseModel::getInstance("databasetool", "sportsmanagementModel");
 			$insert_agegroup = $databasetool->insertAgegroup($this->state->get('filter.search_nation'), $this->state->get('filter.sports_type'));
 			$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_NO_RESULT'), 'Error');
 		}
 
-			$this->lists = $lists;
+		$this->lists = $lists;
 
 	}
 

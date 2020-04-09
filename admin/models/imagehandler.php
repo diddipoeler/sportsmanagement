@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\String\StringHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -51,7 +52,7 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
 
-		$limit        = $app->getUserStateFromRequest($option . '.imageselect' . 'limit', 'limit', $app->getCfg('list_limit'), 'int');
+		$limit      = $app->getUserStateFromRequest($option . '.imageselect' . 'limit', 'limit', $app->getCfg('list_limit'), 'int');
 		$limitstart = $app->getUserStateFromRequest($option . '.imageselect' . 'limitstart', 'limitstart', 0, 'int');
 		$search     = $app->getUserStateFromRequest($option . '.search', 'search', '', 'string');
 		$search     = trim(StringHelper::strtolower($search));
@@ -60,28 +61,6 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 		$this->setState('limitstart', $limitstart);
 		$this->setState('search', $search);
 
-	}
-
-	/**
-	 * sportsmanagementModelImagehandler::getState()
-	 *
-	 * @param   mixed $property
-	 * @param   mixed $default
-	 * @return
-	 */
-	function getState($property = null, $default = null)
-	{
-		static $set;
-
-		if (!$set)
-		{
-			$folder = Factory::getApplication()->input->getVar('folder');
-			$this->setState('folder', $folder);
-
-			$set = true;
-		}
-
-		return parent::getState($property);
 	}
 
 	/**
@@ -107,28 +86,28 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 		{
 			if ($i + 1 <= $this->getState('total'))
 			{
-				 $list[$i]->size = $this->_parseSize(filesize($list[$i]->path));
+				$list[$i]->size = $this->_parseSize(filesize($list[$i]->path));
 
-				 $info = @getimagesize($list[$i]->path);
-				 $list[$i]->width        = @$info[0];
-				 $list[$i]->height    = @$info[1];
+				$info             = @getimagesize($list[$i]->path);
+				$list[$i]->width  = @$info[0];
+				$list[$i]->height = @$info[1];
 
-				 // $list[$i]->type      = @$info[2];
-				 // $list[$i]->mime      = @$info['mime'];
+				// $list[$i]->type      = @$info[2];
+				// $list[$i]->mime      = @$info['mime'];
 
 				if (($info[0] > 60) || ($info[1] > 60))
 				{
-					$dimensions = $this->_imageResize($info[0], $info[1], 60);
-					$list[$i]->width_60 = $dimensions[0];
+					$dimensions          = $this->_imageResize($info[0], $info[1], 60);
+					$list[$i]->width_60  = $dimensions[0];
 					$list[$i]->height_60 = $dimensions[1];
 				}
 				else
 				{
-					$list[$i]->width_60 = $list[$i]->width;
+					$list[$i]->width_60  = $list[$i]->width;
 					$list[$i]->height_60 = $list[$i]->height;
 				}
 
-				   $listimg[] = $list[$i];
+				$listimg[] = $list[$i];
 			}
 		}
 
@@ -147,7 +126,7 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 		$app    = Factory::getApplication();
 
 		// JInput object
-		 $jinput = $app->input;
+		$jinput = $app->input;
 
 		static $list;
 
@@ -166,10 +145,10 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 		// Initialize variables
 		$basePath = JPATH_SITE . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $option . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . $folder;
 
-		$images     = array ();
+		$images = array();
 
-			  // Get the list of files and folders from the given folder
-		$fileList     = Folder::files($basePath);
+		// Get the list of files and folders from the given folder
+		$fileList = Folder::files($basePath);
 
 		// Iterate over the files if they exist
 		if ($fileList !== false)
@@ -184,19 +163,19 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 				{
 					if ($search == '')
 					{
-							  $tmp = new JObject;
-							  $tmp->name = $file;
-							  $tmp->path = JPath::clean($basePath . DIRECTORY_SEPARATOR . $file);
+						$tmp       = new JObject;
+						$tmp->name = $file;
+						$tmp->path = JPath::clean($basePath . DIRECTORY_SEPARATOR . $file);
 
-							  $images[] = $tmp;
+						$images[] = $tmp;
 					}
 					elseif (stristr($file, $search))
 					{
-								 $tmp = new JObject;
-								 $tmp->name = $file;
-								 $tmp->path = JPath::clean($basePath . DIRECTORY_SEPARATOR . $file);
+						$tmp       = new JObject;
+						$tmp->name = $file;
+						$tmp->path = JPath::clean($basePath . DIRECTORY_SEPARATOR . $file);
 
-								 $images[] = $tmp;
+						$images[] = $tmp;
 					}
 				}
 			}
@@ -215,47 +194,26 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 	}
 
 	/**
-	 * Method to get a pagination object for the images
+	 * sportsmanagementModelImagehandler::getState()
 	 *
-	 * @access public
-	 * @return integer
-	 */
-	function getPagination()
-	{
-		if (empty($this->_pagination))
-		{
-			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination($this->getState('total'), $this->getState('limitstart'), $this->getState('limit'));
-		}
-
-		return $this->_pagination;
-	}
-
-	/**
-	 * Build display size
+	 * @param   mixed  $property
+	 * @param   mixed  $default
 	 *
-	 * @return array width and height
-	 * @since  0.9
+	 * @return
 	 */
-	function _imageResize($width, $height, $target)
+	function getState($property = null, $default = null)
 	{
-		// Takes the larger size of the width and height and applies the
-		// formula accordingly...this is so this script will work
-		// dynamically with any size image
-		if ($width > $height)
+		static $set;
+
+		if (!$set)
 		{
-			$percentage = ($target / $width);
-		}
-		else
-		{
-			$percentage = ($target / $height);
+			$folder = Factory::getApplication()->input->getVar('folder');
+			$this->setState('folder', $folder);
+
+			$set = true;
 		}
 
-		// Gets the new value and applies the percentage, then rounds the value
-		$width = round($width * $percentage);
-		$height = round($height * $percentage);
-
-		return array($width, $height);
+		return parent::getState($property);
 	}
 
 	/**
@@ -283,7 +241,49 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 		}
 	}
 
+	/**
+	 * Build display size
+	 *
+	 * @return array width and height
+	 * @since  0.9
+	 */
+	function _imageResize($width, $height, $target)
+	{
+		// Takes the larger size of the width and height and applies the
+		// formula accordingly...this is so this script will work
+		// dynamically with any size image
+		if ($width > $height)
+		{
+			$percentage = ($target / $width);
+		}
+		else
+		{
+			$percentage = ($target / $height);
+		}
 
+		// Gets the new value and applies the percentage, then rounds the value
+		$width  = round($width * $percentage);
+		$height = round($height * $percentage);
+
+		return array($width, $height);
+	}
+
+	/**
+	 * Method to get a pagination object for the images
+	 *
+	 * @access public
+	 * @return integer
+	 */
+	function getPagination()
+	{
+		if (empty($this->_pagination))
+		{
+			jimport('joomla.html.pagination');
+			$this->_pagination = new JPagination($this->getState('total'), $this->getState('limitstart'), $this->getState('limit'));
+		}
+
+		return $this->_pagination;
+	}
 
 
 }

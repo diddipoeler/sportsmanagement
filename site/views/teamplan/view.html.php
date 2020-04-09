@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -37,10 +38,10 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 	function init()
 	{
 
-				  $this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
+		$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
 		$this->document->addStyleSheet(Uri::base() . 'components/' . $this->option . '/assets/css/modalwithoutjs.css');
 
-			  sportsmanagementHelperHtml::$project = $this->project;
+		sportsmanagementHelperHtml::$project = $this->project;
 
 		if ($this->config['show_date_image'])
 		{
@@ -49,18 +50,18 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 
 		if (isset($this->project))
 		{
-			$this->rounds = sportsmanagementModelProject::getRounds($this->config['plan_order'], sportsmanagementModelTeamPlan::$cfg_which_database);
-			$this->teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0, 'name', sportsmanagementModelTeamPlan::$cfg_which_database);
-			$this->favteams = sportsmanagementModelProject::getFavTeams(sportsmanagementModelTeamPlan::$cfg_which_database);
-			$this->division = sportsmanagementModelTeamPlan::getDivision();
-			$this->ptid = sportsmanagementModelTeamPlan::getProjectTeamId();
-			$this->projectevents = sportsmanagementModelProject::getProjectEvents(0, sportsmanagementModelTeamPlan::$cfg_which_database);
-			$this->matches = sportsmanagementModelTeamPlan::getMatches($this->config);
+			$this->rounds           = sportsmanagementModelProject::getRounds($this->config['plan_order'], sportsmanagementModelTeamPlan::$cfg_which_database);
+			$this->teams            = sportsmanagementModelProject::getTeamsIndexedByPtid(0, 'name', sportsmanagementModelTeamPlan::$cfg_which_database);
+			$this->favteams         = sportsmanagementModelProject::getFavTeams(sportsmanagementModelTeamPlan::$cfg_which_database);
+			$this->division         = sportsmanagementModelTeamPlan::getDivision();
+			$this->ptid             = sportsmanagementModelTeamPlan::getProjectTeamId();
+			$this->projectevents    = sportsmanagementModelProject::getProjectEvents(0, sportsmanagementModelTeamPlan::$cfg_which_database);
+			$this->matches          = sportsmanagementModelTeamPlan::getMatches($this->config);
 			$this->matches_refering = sportsmanagementModelTeamPlan::getMatchesRefering($this->config);
-			$this->matchesperround = sportsmanagementModelTeamPlan::getMatchesPerRound($this->config, $this->rounds);
+			$this->matchesperround  = sportsmanagementModelTeamPlan::getMatchesPerRound($this->config, $this->rounds);
 		}
 
-			// Set page title
+		// Set page title
 		if (empty($this->ptid))
 		{
 			$pageTitle = (!empty($this->project->id)) ? $this->project->name : '';
@@ -77,7 +78,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 			}
 		}
 
-			$this->document->setTitle(Text::sprintf('COM_SPORTSMANAGEMENT_TEAMPLAN_PAGE_TITLE', $pageTitle));
+		$this->document->setTitle(Text::sprintf('COM_SPORTSMANAGEMENT_TEAMPLAN_PAGE_TITLE', $pageTitle));
 
 		if (!isset($this->config['table_class']))
 		{
@@ -89,30 +90,31 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 	/**
 	 * returns html for events in tabs
 	 *
-	 * @param  object match
-	 * @param  array project events
-	 * @param  array match events
-	 * @param  aray match substitutions
-	 * @param   array                    $config
+	 * @param   object match
+	 * @param   array project events
+	 * @param   array match events
+	 * @param   aray match substitutions
+	 * @param   array  $config
+	 *
 	 * @return string
 	 */
-	function showEventsContainerInResults($matchInfo,$projectevents,$matchevents,$substitutions=null,$config)
+	function showEventsContainerInResults($matchInfo, $projectevents, $matchevents, $substitutions = null, $config)
 	{
 		$output = '';
 		$result = '';
 
 		if ($this->config['use_tabs_events'])
 		{
-			$iPanel = 1;
-			  $selector = 'teamplan';
-			  echo HTMLHelper::_('bootstrap.startTabSet', $selector, array('active' => 'panel' . $iPanel));
+			$iPanel   = 1;
+			$selector = 'teamplan';
+			echo HTMLHelper::_('bootstrap.startTabSet', $selector, array('active' => 'panel' . $iPanel));
 
 			// Size of the event icons in the tabs (when used)
-			$width = 20;
+			$width  = 20;
 			$height = 20;
-			$type = 4;
+			$type   = 4;
 
-			 // Never show event text or icon for each event list item (info already available in tab)
+			// Never show event text or icon for each event list item (info already available in tab)
 			$showEventInfo = 0;
 
 			$cnt = 0;
@@ -139,7 +141,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 				if ($this->config['show_events_with_icons'] == 1)
 				{
 					// Event icon as thumbnail on the tab (a placeholder icon is used when the icon does not exist)
-					$imgTitle = Text::_($event->name);
+					$imgTitle    = Text::_($event->name);
 					$tab_content = sportsmanagementHelper::getPictureThumb($event->icon, $imgTitle, $width, $height, $type);
 				}
 				else
@@ -147,17 +149,17 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 					$tab_content = Text::_($event->name);
 				}
 
-							$output .= HTMLHelper::_('bootstrap.addTab', $selector, 'panel' . $iPanel++, $tab_content);
-							$output .= '<table class="matchreport" border="0">';
-							$output .= '<tr>';
+				$output .= HTMLHelper::_('bootstrap.addTab', $selector, 'panel' . $iPanel++, $tab_content);
+				$output .= '<table class="matchreport" border="0">';
+				$output .= '<tr>';
 
-							// Home team events
-							$output .= '<td class="list">';
-							$output .= '<ul class="list-inline">';
+				// Home team events
+				$output .= '<td class="list">';
+				$output .= '<ul class="list-inline">';
 
 				foreach ($matchevents AS $me)
 				{
-								$output .= self::_formatEventContainerInResults($me, $event, $matchInfo->projectteam1_id, $showEventInfo);
+					$output .= self::_formatEventContainerInResults($me, $event, $matchInfo->projectteam1_id, $showEventInfo);
 				}
 
 				$output .= '</ul>';
@@ -184,8 +186,8 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 				if ($this->config['show_events_with_icons'])
 				{
 					// Event icon as thumbnail on the tab (a placeholder icon is used when the icon does not exist)
-					$imgTitle = Text::_('COM_SPORTSMANAGEMENT_IN_OUT');
-					$pic_tab    = 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/subst.png';
+					$imgTitle    = Text::_('COM_SPORTSMANAGEMENT_IN_OUT');
+					$pic_tab     = 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/subst.png';
 					$tab_content = sportsmanagementHelper::getPictureThumb($pic_tab, $imgTitle, $width, $height, $type);
 				}
 				else
@@ -193,12 +195,12 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 					$tab_content = Text::_('COM_SPORTSMANAGEMENT_IN_OUT');
 				}
 
-				$pic_time    = Uri::root() . 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/playtime.gif';
-				$pic_out    = Uri::root() . 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/out.png';
-				$pic_in        = Uri::root() . 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/in.png';
-				$imgTime = HTMLHelper::image($pic_time, Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE'), array(' title' => Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE')));
-				$imgOut  = HTMLHelper::image($pic_out, Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT'), array(' title' => Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT')));
-				$imgIn   = HTMLHelper::image($pic_in, Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN'), array(' title' => Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN')));
+				$pic_time = Uri::root() . 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/playtime.gif';
+				$pic_out  = Uri::root() . 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/out.png';
+				$pic_in   = Uri::root() . 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/in.png';
+				$imgTime  = HTMLHelper::image($pic_time, Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE'), array(' title' => Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE')));
+				$imgOut   = HTMLHelper::image($pic_out, Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT'), array(' title' => Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT')));
+				$imgIn    = HTMLHelper::image($pic_in, Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN'), array(' title' => Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN')));
 
 				$output .= HTMLHelper::_('bootstrap.addTab', $selector, 'panel' . $iPanel++, $tab_content);
 				$output .= '<table class="matchreport" border="0">';
@@ -233,8 +235,8 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 		else
 		{
 			$showEventInfo = ($this->config['show_events_with_icons'] == 1) ? 1 : 2;
-			$output .= '<table class="matchreport" border="0">';
-			$output .= '<tr>';
+			$output        .= '<table class="matchreport" border="0">';
+			$output        .= '<tr>';
 
 			// Home team events
 			$output .= '<td class="list-left">';
@@ -276,10 +278,11 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 	/**
 	 * sportsmanagementViewTeamPlan::_formatEventContainerInResults()
 	 *
-	 * @param   mixed $matchevent
-	 * @param   mixed $event
-	 * @param   mixed $projectteamId
-	 * @param   mixed $showEventInfo
+	 * @param   mixed  $matchevent
+	 * @param   mixed  $event
+	 * @param   mixed  $projectteamId
+	 * @param   mixed  $showEventInfo
+	 *
 	 * @return
 	 */
 	function _formatEventContainerInResults($matchevent, $event, $projectteamId, $showEventInfo)
@@ -297,11 +300,11 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 			if ($showEventInfo == 1)
 			{
 				// Size of the event icons in the tabs
-				$width = 20;
-				$height = 20;
-				$type = 4;
+				$width    = 20;
+				$height   = 20;
+				$type     = 4;
 				$imgTitle = Text::_($event->name);
-				$icon = sportsmanagementHelper::getPictureThumb($event->icon, $imgTitle, $width, $height, $type);
+				$icon     = sportsmanagementHelper::getPictureThumb($event->icon, $imgTitle, $width, $height, $type);
 
 				$output .= $icon;
 			}
@@ -327,10 +330,10 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 				$output .= Text::_('COM_SPORTSMANAGEMENT_UNKNOWN_PERSON');
 			}
 
-					  // Only show event sum and match notice when set to on in template cofig
+			// Only show event sum and match notice when set to on in template cofig
 			if ($this->config['show_event_sum'] || $this->config['show_event_notice'] == 1)
 			{
-				if (( $this->config['show_event_sum'] && $matchevent->event_sum > 0) || ( $this->config['show_event_notice'] && strlen($matchevent->notice) > 0))
+				if (($this->config['show_event_sum'] && $matchevent->event_sum > 0) || ($this->config['show_event_notice'] && strlen($matchevent->notice) > 0))
 				{
 					$output .= ' (';
 
@@ -339,7 +342,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 						$output .= $matchevent->event_sum;
 					}
 
-					if (( $this->config['show_event_sum'] && $matchevent->event_sum > 0) && ( $this->config['show_event_notice'] && strlen($matchevent->notice) > 0))
+					if (($this->config['show_event_sum'] && $matchevent->event_sum > 0) && ($this->config['show_event_notice'] && strlen($matchevent->notice) > 0))
 					{
 						$output .= ' | ';
 					}
@@ -353,7 +356,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 				}
 			}
 
-					  $output .= '</li>';
+			$output .= '</li>';
 		}
 
 		return $output;
@@ -362,14 +365,15 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 	/**
 	 * sportsmanagementViewTeamPlan::_formatSubstitutionContainerInResults()
 	 *
-	 * @param   mixed $subs
-	 * @param   mixed $projectteamId
-	 * @param   mixed $imgTime
-	 * @param   mixed $imgOut
-	 * @param   mixed $imgIn
+	 * @param   mixed  $subs
+	 * @param   mixed  $projectteamId
+	 * @param   mixed  $imgTime
+	 * @param   mixed  $imgOut
+	 * @param   mixed  $imgIn
+	 *
 	 * @return
 	 */
-	function _formatSubstitutionContainerInResults($subs,$projectteamId,$imgTime,$imgOut,$imgIn)
+	function _formatSubstitutionContainerInResults($subs, $projectteamId, $imgTime, $imgOut, $imgIn)
 	{
 		$output = '';
 

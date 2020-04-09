@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Table\Table;
@@ -41,10 +42,10 @@ class sportsmanagementViewRounds extends sportsmanagementView
 	 */
 	public function init()
 	{
-		$app = Factory::getApplication();
-		$this->massadd = 0;
+		$app            = Factory::getApplication();
+		$this->massadd  = 0;
 		$this->populate = 0;
-		$tpl = null;
+		$tpl            = null;
 		/**
 		 * dadurch werden die spaltenbreiten optimiert
 		 */
@@ -71,26 +72,10 @@ class sportsmanagementViewRounds extends sportsmanagementView
 	}
 
 	/**
-	 * sportsmanagementViewRounds::_displayMassadd()
-	 *
-	 * @param   mixed $tpl
-	 * @return void
-	 */
-	function _displayMassadd($tpl)
-	{
-
-		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
-
-		$mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
-		$project = $mdlProject->getProject($this->project_id);
-		$this->project = $project;
-		$this->setLayout('massadd');
-	}
-
-	/**
 	 * sportsmanagementViewRounds::_displayDefault()
 	 *
-	 * @param   mixed $tpl
+	 * @param   mixed  $tpl
+	 *
 	 * @return void
 	 */
 	function _displayDefault($tpl)
@@ -102,22 +87,23 @@ class sportsmanagementViewRounds extends sportsmanagementView
 
 		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
 
-		$mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
-		$project = $mdlProject->getProject($this->project_id);
-		$myoptions = array();
-		$myoptions[] = HTMLHelper::_('select.option', '0', Text::_('JNO'));
-		$myoptions[] = HTMLHelper::_('select.option', '1', Text::_('JYES'));
+		$mdlProject               = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
+		$project                  = $mdlProject->getProject($this->project_id);
+		$myoptions                = array();
+		$myoptions[]              = HTMLHelper::_('select.option', '0', Text::_('JNO'));
+		$myoptions[]              = HTMLHelper::_('select.option', '1', Text::_('JYES'));
 		$lists['tournementround'] = $myoptions;
 
-		$this->lists = $lists;
+		$this->lists    = $lists;
 		$this->matchday = $this->items;
-		$this->project = $project;
+		$this->project  = $project;
 	}
 
 	/**
 	 * sportsmanagementViewRounds::_displayPopulate()
 	 *
-	 * @param   mixed $tpl
+	 * @param   mixed  $tpl
+	 *
 	 * @return void
 	 */
 	function _displayPopulate($tpl)
@@ -126,7 +112,7 @@ class sportsmanagementViewRounds extends sportsmanagementView
 		$this->document->setTitle(Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TITLE'));
 		$lists = array();
 
-		$options = array(HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TYPE_SINGLE_ROUND_ROBIN')),
+		$options             = array(HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TYPE_SINGLE_ROUND_ROBIN')),
 			HTMLHelper::_('select.option', 1, Text::_('COM_SPORTSMANAGEMENTADMIN_ROUNDS_POPULATE_TYPE_DOUBLE_ROUND_ROBIN')),
 			HTMLHelper::_('select.option', 2, Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TYPE_TOURNAMENT_ROUND_ROBIN'))
 		);
@@ -134,9 +120,9 @@ class sportsmanagementViewRounds extends sportsmanagementView
 
 		// TODO-add error message - what if there are no teams assigned to the project
 		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
-		$mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
-		$teams = $mdlProject->getProjectTeamsOptions($this->project_id);
-		$projectws = $mdlProject->getProject($this->project_id);
+		$mdlProject       = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
+		$teams            = $mdlProject->getProjectTeamsOptions($this->project_id);
+		$projectws        = $mdlProject->getProject($this->project_id);
 
 		$options = array();
 
@@ -148,9 +134,27 @@ class sportsmanagementViewRounds extends sportsmanagementView
 		$lists['teamsorder'] = HTMLHelper::_('select.genericlist', $options, 'teamsorder[]', 'multiple="multiple" size="20"');
 
 		$this->projectws = $projectws;
-		$this->lists = $lists;
-		$this->populate = 1;
+		$this->lists     = $lists;
+		$this->populate  = 1;
 		$this->setLayout('populate');
+	}
+
+	/**
+	 * sportsmanagementViewRounds::_displayMassadd()
+	 *
+	 * @param   mixed  $tpl
+	 *
+	 * @return void
+	 */
+	function _displayMassadd($tpl)
+	{
+
+		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
+
+		$mdlProject    = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
+		$project       = $mdlProject->getProject($this->project_id);
+		$this->project = $project;
+		$this->setLayout('massadd');
 	}
 
 	/**
@@ -167,29 +171,29 @@ class sportsmanagementViewRounds extends sportsmanagementView
 		{
 			if ($this->populate)
 			{
-					$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TITLE');
-						ToolbarHelper::apply('round.startpopulate');
-					ToolbarHelper::back();
-					parent::addToolbar();
+				$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TITLE');
+				ToolbarHelper::apply('round.startpopulate');
+				ToolbarHelper::back();
+				parent::addToolbar();
 			}
 			else
 			{
-						// JLToolBarHelper::custom('round.roundrobin','purge.png','purge_f2.png',Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUND_ROBIN_MASSADD_BUTTON'),false);
-						ToolbarHelper::publishList('rounds.publish');
-						ToolbarHelper::unpublishList('rounds.unpublish');
-						ToolbarHelper::divider();
-						ToolbarHelper::custom('rounds.populate', 'purge.png', 'purge_f2.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_BUTTON'), false);
-						ToolbarHelper::divider();
-						ToolbarHelper::apply('rounds.saveshort');
-						ToolbarHelper::divider();
+				// JLToolBarHelper::custom('round.roundrobin','purge.png','purge_f2.png',Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUND_ROBIN_MASSADD_BUTTON'),false);
+				ToolbarHelper::publishList('rounds.publish');
+				ToolbarHelper::unpublishList('rounds.unpublish');
+				ToolbarHelper::divider();
+				ToolbarHelper::custom('rounds.populate', 'purge.png', 'purge_f2.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_BUTTON'), false);
+				ToolbarHelper::divider();
+				ToolbarHelper::apply('rounds.saveshort');
+				ToolbarHelper::divider();
 
-						sportsmanagementHelper::ToolbarButton('massadd', 'new', Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_BUTTON'));
+				sportsmanagementHelper::ToolbarButton('massadd', 'new', Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_BUTTON'));
 
-						ToolbarHelper::addNew('round.save');
-						ToolbarHelper::divider();
+				ToolbarHelper::addNew('round.save');
+				ToolbarHelper::divider();
 
-						ToolbarHelper::deleteList('', 'rounds.deleteroundmatches', Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSDEL_BUTTON'));
-						parent::addToolbar();
+				ToolbarHelper::deleteList('', 'rounds.deleteroundmatches', Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSDEL_BUTTON'));
+				parent::addToolbar();
 			}
 		}
 		else
@@ -198,7 +202,6 @@ class sportsmanagementViewRounds extends sportsmanagementView
 		}
 
 	}
-
 
 
 }

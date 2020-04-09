@@ -53,9 +53,9 @@ class JGithubPackageRepositoriesHooks extends JGithubPackage
 	 *
 	 * @return  object
 	 *
-	 * @since   12.3
 	 * @throws  DomainException
 	 * @throws  RuntimeException
+	 * @since   12.3
 	 */
 	public function create($user, $repo, $name, $config, array $events = array('push'), $active = true)
 	{
@@ -90,8 +90,8 @@ class JGithubPackageRepositoriesHooks extends JGithubPackage
 	 *
 	 * @return  object
 	 *
-	 * @since   12.3
 	 * @throws  DomainException
+	 * @since   12.3
 	 */
 	public function delete($user, $repo, $id)
 	{
@@ -119,12 +119,12 @@ class JGithubPackageRepositoriesHooks extends JGithubPackage
 	 *
 	 * @return  object
 	 *
-	 * @since   12.3
 	 * @throws  DomainException
 	 * @throws  RuntimeException
+	 * @since   12.3
 	 */
 	public function edit($user, $repo, $id, $name, $config, array $events = array('push'), array $addEvents = array(),
-		array $removeEvents = array(), $active = true
+	                     array $removeEvents = array(), $active = true
 	)
 	{
 		// Check to ensure all events are in the allowed list
@@ -180,8 +180,8 @@ class JGithubPackageRepositoriesHooks extends JGithubPackage
 	 *
 	 * @return  object
 	 *
-	 * @since   12.3
 	 * @throws  DomainException
+	 * @since   12.3
 	 */
 	public function get($user, $repo, $id)
 	{
@@ -201,8 +201,8 @@ class JGithubPackageRepositoriesHooks extends JGithubPackage
 	 *
 	 * @return  object
 	 *
-	 * @since   12.3
 	 * @throws  DomainException
+	 * @since   12.3
 	 */
 	public function getList($user, $repo)
 	{
@@ -223,8 +223,8 @@ class JGithubPackageRepositoriesHooks extends JGithubPackage
 	 *
 	 * @return  object
 	 *
-	 * @since   12.3
 	 * @throws  DomainException
+	 * @since   12.3
 	 */
 	public function test($user, $repo, $id)
 	{

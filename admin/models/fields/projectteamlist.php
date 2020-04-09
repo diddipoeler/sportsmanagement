@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -47,17 +48,17 @@ class JFormFieldprojectteamlist extends \JFormFieldList
 	protected function getOptions()
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		/**
- *          Initialize variables.
- */
+		 *          Initialize variables.
+		 */
 		$options = array();
 
-				$project_id = $app->getUserState("$option.pid", '0');
+		$project_id = $app->getUserState("$option.pid", '0');
 
 		if ($project_id)
 		{
-			$db = Factory::getDbo();
+			$db    = Factory::getDbo();
 			$query = $db->getQuery(true);
 			$query->select('pt.team_id AS value, t.name AS text');
 			$query->from('#__sportsmanagement_team AS t');
@@ -70,8 +71,8 @@ class JFormFieldprojectteamlist extends \JFormFieldList
 		}
 
 		/**
- *          Merge any additional options in the XML definition.
- */
+		 *          Merge any additional options in the XML definition.
+		 */
 		$options = array_merge(parent::getOptions(), $options);
 
 		return $options;

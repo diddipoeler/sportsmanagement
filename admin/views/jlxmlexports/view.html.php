@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -36,7 +37,7 @@ class sportsmanagementViewJLXMLExports extends sportsmanagementView
 	 */
 	function init()
 	{
-		  $this->exportSystem = Factory::getConfig()->get('sitename');
+		$this->exportSystem = Factory::getConfig()->get('sitename');
 
 	}
 

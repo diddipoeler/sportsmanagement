@@ -41,6 +41,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -67,19 +68,19 @@ class JFormFieldagegroups extends JFormField
 	function getInput()
 	{
 		$result = array();
-		$db = sportsmanagementHelper::getDBConnection();
-		$app = Factory::getApplication();
-		$lang = Factory::getLanguage();
+		$db     = sportsmanagementHelper::getDBConnection();
+		$app    = Factory::getApplication();
+		$lang   = Factory::getLanguage();
 		$option = Factory::getApplication()->input->getCmd('option');
 
 		// Welche tabelle soll genutzt werden
-		$params = ComponentHelper::getParams($option);
-		$database_table    = $params->get('cfg_which_database_table');
-		$select_id = Factory::getApplication()->input->getVar('id');
+		$params         = ComponentHelper::getParams($option);
+		$database_table = $params->get('cfg_which_database_table');
+		$select_id      = Factory::getApplication()->input->getVar('id');
 
 		if ($select_id)
 		{
-			$db = Factory::getDbo();
+			$db    = Factory::getDbo();
 			$query = $db->getQuery(true);
 			$query->select('sports_type_id');
 			$query->from('#__sportsmanagement_team AS t');
@@ -101,21 +102,21 @@ class JFormFieldagegroups extends JFormField
 
 				foreach ($result as $sportstype)
 				{
-					   $sportstype->name = Text::_($sportstype->name);
+					$sportstype->name = Text::_($sportstype->name);
 				}
 
 				if ($this->required == false)
 				{
-					   $mitems = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+					$mitems = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
 				}
 
 				foreach ($result as $item)
 				{
-					$mitems[] = HTMLHelper::_('select.option',  $item->id, '&nbsp;' . $item->name . ' (' . $item->id . ')');
+					$mitems[] = HTMLHelper::_('select.option', $item->id, '&nbsp;' . $item->name . ' (' . $item->id . ')');
 				}
 
 				return HTMLHelper::_(
-					'select.genericlist',  $mitems, $this->name,
+					'select.genericlist', $mitems, $this->name,
 					'class="inputbox" size="1"', 'value', 'text', $this->value, $this->id
 				);
 			}

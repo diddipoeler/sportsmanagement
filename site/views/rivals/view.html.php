@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die;
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
@@ -45,34 +46,34 @@ class sportsmanagementViewRivals extends sportsmanagementView
 			$this->overallconfig['seperator'] = "-";
 		}
 
-			// $this->config = $config;
-			$this->opos = $this->model->getOpponents();
-			$this->team = $this->model->getTeam();
+		// $this->config = $config;
+		$this->opos = $this->model->getOpponents();
+		$this->team = $this->model->getTeam();
 
-			 // Set page title
-			$titleInfo = sportsmanagementHelper::createTitleInfo(Text::_('COM_SPORTSMANAGEMENT_RIVALS_PAGE_TITLE'));
+		// Set page title
+		$titleInfo = sportsmanagementHelper::createTitleInfo(Text::_('COM_SPORTSMANAGEMENT_RIVALS_PAGE_TITLE'));
 
 		if (!empty($this->team))
 		{
-					$titleInfo->team1Name = $this->team->name;
+			$titleInfo->team1Name = $this->team->name;
 		}
 
 		if (!empty($this->project))
 		{
-					$titleInfo->projectName = $this->project->name;
-					$titleInfo->leagueName = $this->project->league_name;
-					$titleInfo->seasonName = $this->project->season_name;
+			$titleInfo->projectName = $this->project->name;
+			$titleInfo->leagueName  = $this->project->league_name;
+			$titleInfo->seasonName  = $this->project->season_name;
 		}
 
 		if (!empty($this->division) && $this->division->id != 0)
 		{
-					$titleInfo->divisionName = $this->division->name;
+			$titleInfo->divisionName = $this->division->name;
 		}
 
-							  $this->pagetitle = sportsmanagementHelper::formatTitle($titleInfo, $this->config["page_title_format"]);
-			$this->document->setTitle($this->pagetitle);
+		$this->pagetitle = sportsmanagementHelper::formatTitle($titleInfo, $this->config["page_title_format"]);
+		$this->document->setTitle($this->pagetitle);
 
-			  $this->headertitle = $this->pagetitle;
+		$this->headertitle = $this->pagetitle;
 
 	}
 }

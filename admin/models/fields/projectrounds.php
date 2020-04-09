@@ -13,10 +13,12 @@
  */
 
 defined('JPATH_BASE') or die;
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Text;
+
 FormHelper::loadFieldClass('list');
 
 /**
@@ -46,10 +48,10 @@ class JFormFieldprojectrounds extends \JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$app = Factory::getApplication();
+		$app     = Factory::getApplication();
 		$options = array();
 
-		$db = Factory::getDbo();
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true)
 			->select('a.id AS value, a.name AS text')
 			->from('#__sportsmanagement_round AS a');

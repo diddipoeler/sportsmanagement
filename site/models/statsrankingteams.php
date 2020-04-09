@@ -13,37 +13,31 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Factory;
 
 class sportsmanagementModelStatsRankingTeams extends BaseDatabaseModel
 {
+	static $divisionid = 0;
+	static $teamid = 0;
+	static $cfg_which_database = 0;
+	static $projectid = 0;
 	/**
 	 * players total
 	 *
 	 * @var integer
 	 */
 	var $_total = null;
-
 	/**
 	 * Pagination object
 	 *
 	 * @var object
 	 */
 	var $_pagination = null;
-
 	var $order = null;
 
-	static $divisionid = 0;
-
-	static $teamid = 0;
-
-	static $cfg_which_database = 0;
-
-	static $projectid = 0;
-
-
-	function __construct( )
+	function __construct()
 	{
 		// Reference global application object
 		$app = Factory::getApplication();
@@ -52,9 +46,9 @@ class sportsmanagementModelStatsRankingTeams extends BaseDatabaseModel
 		$jinput = $app->input;
 		parent::__construct();
 
-		self::$projectid    = $jinput->getInt('p', 0);
-		self::$divisionid    = $jinput->getInt('division', 0);
-		self::$teamid        = $jinput->getInt('tid', 0);
+		self::$projectid  = $jinput->getInt('p', 0);
+		self::$divisionid = $jinput->getInt('division', 0);
+		self::$teamid     = $jinput->getInt('tid', 0);
 		self::setStatid($jinput->getVar('sid', 0));
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
 
@@ -71,49 +65,16 @@ class sportsmanagementModelStatsRankingTeams extends BaseDatabaseModel
 		$this->limitstart = $jinput->getInt('limitstart', 0);
 		$this->setOrder($jinput->getVar('order'));
 
-			  self::$cfg_which_database = $jinput->getInt('cfg_which_database', 0);
+		self::$cfg_which_database                = $jinput->getInt('cfg_which_database', 0);
 		sportsmanagementModelProject::$projectid = self::$projectid;
 
 	}
-
-
-
-
-
-	/**
-	 * set order (asc or desc)
-	 *
-	 * @param   string $order
-	 * @return string order
-	 */
-	function setOrder($order)
-	{
-		if (strcasecmp($order, 'asc') === 0 || strcasecmp($order, 'desc') === 0)
-		{
-			$this->order = strtolower($order);
-		}
-
-		return $this->order;
-	}
-
-
-	function getLimit( )
-	{
-		return $this->limit;
-	}
-
-
-	function getLimitStart( )
-	{
-		return $this->limitstart;
-	}
-
 
 	function setStatid($statid)
 	{
 		// Allow for multiple statistics IDs, arranged in a single parameters (sid) as string
 		// with "|" as separator
-		$sidarr = explode("|", $statid);
+		$sidarr        = explode("|", $statid);
 		$this->stat_id = array();
 
 		foreach ($sidarr as $sid)
@@ -128,13 +89,44 @@ class sportsmanagementModelStatsRankingTeams extends BaseDatabaseModel
 		}
 	}
 
+	/**
+	 * set order (asc or desc)
+	 *
+	 * @param   string  $order
+	 *
+	 * @return string order
+	 */
+	function setOrder($order)
+	{
+		if (strcasecmp($order, 'asc') === 0 || strcasecmp($order, 'desc') === 0)
+		{
+			$this->order = strtolower($order);
+		}
 
+		return $this->order;
+	}
+
+	function getPlayersStats($order = null)
+	{
+		$stats    = self::getProjectUniqueStats();
+		$order    = ($order ? $order : $this->order);
+		$results  = array();
+		$results2 = array();
+
+		foreach ($stats as $stat)
+		{
+			$results[$stat->id]  = $stat->getPlayersRanking(self::$projectid, self::$divisionid, self::$teamid, self::getLimit(), self::getLimitStart(), $order);
+			$results2[$stat->id] = $stat->getTeamsRanking(self::$projectid, self::getLimit(), self::getLimitStart(), $order);
+		}
+
+		return $results;
+	}
 
 	function getProjectUniqueStats()
 	{
 		$pos_stats = sportsmanagementModelProject::getProjectStats($this->stat_id, 0, self::$cfg_which_database);
 
-			  $allstats = array();
+		$allstats = array();
 
 		foreach ($pos_stats as $pos => $stats)
 		{
@@ -147,40 +139,33 @@ class sportsmanagementModelStatsRankingTeams extends BaseDatabaseModel
 		return $allstats;
 	}
 
-
-	function getPlayersStats($order=null)
+	function getLimit()
 	{
-		$stats = self::getProjectUniqueStats();
-		$order = ($order ? $order : $this->order);
-		$results = array();
-		$results2 = array();
-
-		foreach ($stats as $stat)
-		{
-			$results[$stat->id] = $stat->getPlayersRanking(self::$projectid, self::$divisionid, self::$teamid, self::getLimit(), self::getLimitStart(), $order);
-			$results2[$stat->id] = $stat->getTeamsRanking(self::$projectid, self::getLimit(), self::getLimitStart(), $order);
-		}
-
-		return $results;
+		return $this->limit;
 	}
 
-	function getTeamsStats($order=null)
+	function getLimitStart()
 	{
-		$stats = self::getProjectUniqueStats();
-		$order = ($order ? $order : $this->order);
-		$results = array();
+		return $this->limitstart;
+	}
+
+	function getTeamsStats($order = null)
+	{
+		$stats    = self::getProjectUniqueStats();
+		$order    = ($order ? $order : $this->order);
+		$results  = array();
 		$results2 = array();
 
 		foreach ($stats as $stat)
 		{
-			$results[$stat->id] = $stat->getPlayersRanking(self::$projectid, self::$divisionid, self::$teamid, self::getLimit(), self::getLimitStart(), $order);
+			$results[$stat->id]  = $stat->getPlayersRanking(self::$projectid, self::$divisionid, self::$teamid, self::getLimit(), self::getLimitStart(), $order);
 			$results2[$stat->id] = $stat->getTeamsRanking(self::$projectid, self::getLimit(), self::getLimitStart(), $order);
 		}
 
 		return $results2;
 	}
 
-	function getTeamsTotal($teamsstats = array() )
+	function getTeamsTotal($teamsstats = array())
 	{
 		$teamstotal = array();
 
@@ -189,15 +174,15 @@ class sportsmanagementModelStatsRankingTeams extends BaseDatabaseModel
 			foreach ($value AS $row)
 			{
 				$teamstotal[$row->team_id][team_id] = $row->team_id;
-				$teamstotal[$row->team_id][total] += $row->total;
-				$teamstotal[$row->team_id][$rows] = $row->total;
+				$teamstotal[$row->team_id][total]   += $row->total;
+				$teamstotal[$row->team_id][$rows]   = $row->total;
 			}
 		}
 
 		// Hole eine Liste von Spalten
 		foreach ($teamstotal as $key => $row)
 		{
-			$total[$key]    = $row['total'];
+			$total[$key] = $row['total'];
 		}
 
 		array_multisort($total, SORT_DESC, $teamstotal);

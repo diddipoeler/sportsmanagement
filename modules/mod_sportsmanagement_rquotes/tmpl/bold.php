@@ -39,8 +39,9 @@
  *
  * Note : All ini files need to be saved as UTF-8 without BOM
  */
- // No direct access
+// No direct access
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 
 // $quotemarks= $params->get('quotemarks');
@@ -48,9 +49,9 @@ if ($list)
 {
 	foreach ($list as $rquote)
 	{
-		 echo '<strong>';
-		 modRquotesHelper::renderRquote($rquote, $params);
-		 echo '</strong>';
+		echo '<strong>';
+		modRquotesHelper::renderRquote($rquote, $params);
+		echo '</strong>';
 	}
 }
 else

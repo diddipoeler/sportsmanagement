@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 
@@ -32,80 +33,30 @@ class sportsmanagementModelextrafields extends JSMModelList
 	/**
 	 * sportsmanagementModelextrafields::__construct()
 	 *
-	 * @param   mixed $config
+	 * @param   mixed  $config
+	 *
 	 * @return void
 	 */
 	public function __construct($config = array())
 	{
-				$config['filter_fields'] = array(
-						'objcountry.name',
-						'objcountry.template_backend',
-						'objcountry.template_frontend',
-						'objcountry.published',
-						'objcountry.id',
-						'objcountry.ordering',
-						'objcountry.checked_out',
-						'objcountry.checked_out_time',
-						'objcountry.views_backend',
-						'objcountry.fieldtyp',
-						'objcountry.views_backend_field',
-						'objcountry.select_columns',
-						'objcountry.select_values'
+		$config['filter_fields'] = array(
+			'objcountry.name',
+			'objcountry.template_backend',
+			'objcountry.template_frontend',
+			'objcountry.published',
+			'objcountry.id',
+			'objcountry.ordering',
+			'objcountry.checked_out',
+			'objcountry.checked_out_time',
+			'objcountry.views_backend',
+			'objcountry.fieldtyp',
+			'objcountry.views_backend_field',
+			'objcountry.select_columns',
+			'objcountry.select_values'
 
-											  );
-				parent::__construct($config);
-				parent::setDbo($this->jsmdb);
-	}
-
-		  /**
-		   * Method to auto-populate the model state.
-		   *
-		   * Note. Calling getState in this method will result in recursion.
-		   *
-		   * @since 1.6
-		   */
-	protected function populateState($ordering = null, $direction = null)
-	{
-		if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend'))
-		{
-			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . $this->context . ''), '');
-			  $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . ''), '');
-		}
-
-		// Load the filter state.
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
-		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string');
-		$this->setState('filter.state', $published);
-		$value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
-		$this->setState('list.limit', $value);
-		$value = $this->getUserStateFromRequest($this->context . '.list.ordering', 'ordering', $ordering, 'string');
-		$this->setState('list.ordering', $value);
-		$value = $this->getUserStateFromRequest($this->context . '.list.direction', 'direction', $direction, 'string');
-		$this->setState('list.direction', $value);
-
-		// List state information.
-		$value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
-		$this->setState('list.start', $value);
-
-			  // Filter.order
-		$orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
-
-		if (!in_array($orderCol, $this->filter_fields))
-		{
-			$orderCol = 'objcountry.name';
-		}
-
-		$this->setState('list.ordering', $orderCol);
-		$listOrder = $this->getUserStateFromRequest($this->context . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
-
-		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
-		{
-			$listOrder = 'ASC';
-		}
-
-		$this->setState('list.direction', $listOrder);
-
+		);
+		parent::__construct($config);
+		parent::setDbo($this->jsmdb);
 	}
 
 	/**
@@ -120,7 +71,7 @@ class sportsmanagementModelextrafields extends JSMModelList
 		$this->jsmsubquery1->clear();
 		$this->jsmsubquery2->clear();
 
-			  // Select some fields
+		// Select some fields
 		$this->jsmquery->select(implode(",", $this->filter_fields));
 
 		// From the hello table
@@ -140,21 +91,22 @@ class sportsmanagementModelextrafields extends JSMModelList
 			$this->jsmquery->where('objcountry.published = ' . $this->getState('filter.state'));
 		}
 
-			  $this->jsmquery->order(
-				  $this->jsmdb->escape($this->getState('list.ordering', 'objcountry.name')) . ' ' .
-				  $this->jsmdb->escape($this->getState('list.direction', 'ASC'))
-			  );
+		$this->jsmquery->order(
+			$this->jsmdb->escape($this->getState('list.ordering', 'objcountry.name')) . ' ' .
+			$this->jsmdb->escape($this->getState('list.direction', 'ASC'))
+		);
 
-				 return $this->jsmquery;
+		return $this->jsmquery;
 	}
 
 	/**
 	 * sportsmanagementModelextrafields::getExtraFieldsProject()
 	 *
-	 * @param   integer $project_id
+	 * @param   integer  $project_id
+	 *
 	 * @return
 	 */
-	function getExtraFieldsProject($project_id=0)
+	function getExtraFieldsProject($project_id = 0)
 	{
 		$result = '';
 
@@ -191,18 +143,19 @@ class sportsmanagementModelextrafields extends JSMModelList
 	/**
 	 * sportsmanagementModelextrafields::getExtraFields()
 	 *
-	 * @param   string $template_backend
-	 * @param   string $template_frontend
+	 * @param   string  $template_backend
+	 * @param   string  $template_frontend
+	 *
 	 * @return
 	 */
 	function getExtraFields($template_backend = '', $template_frontend = '')
 	{
 		// Select some fields
 		$this->jsmquery->clear();
-		  $this->jsmquery->select('id,name');
+		$this->jsmquery->select('id,name');
 
-		  // From the table
-		  $this->jsmquery->from('#__sportsmanagement_user_extra_fields');
+		// From the table
+		$this->jsmquery->from('#__sportsmanagement_user_extra_fields');
 
 		if ($template_backend)
 		{
@@ -231,7 +184,56 @@ class sportsmanagementModelextrafields extends JSMModelList
 		}
 	}
 
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since 1.6
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend'))
+		{
+			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . $this->context . ''), '');
+			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . ''), '');
+		}
 
+		// Load the filter state.
+		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string');
+		$this->setState('filter.state', $published);
+		$value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
+		$this->setState('list.limit', $value);
+		$value = $this->getUserStateFromRequest($this->context . '.list.ordering', 'ordering', $ordering, 'string');
+		$this->setState('list.ordering', $value);
+		$value = $this->getUserStateFromRequest($this->context . '.list.direction', 'direction', $direction, 'string');
+		$this->setState('list.direction', $value);
+
+		// List state information.
+		$value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
+		$this->setState('list.start', $value);
+
+		// Filter.order
+		$orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
+
+		if (!in_array($orderCol, $this->filter_fields))
+		{
+			$orderCol = 'objcountry.name';
+		}
+
+		$this->setState('list.ordering', $orderCol);
+		$listOrder = $this->getUserStateFromRequest($this->context . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+
+		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		{
+			$listOrder = 'ASC';
+		}
+
+		$this->setState('list.direction', $listOrder);
+
+	}
 
 
 }

@@ -13,10 +13,12 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
+
 require_once JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'models' . DIRECTORY_SEPARATOR . 'match.php';
 
 /**
@@ -66,17 +68,17 @@ class sportsmanagementControllermatches extends BaseController
 	 */
 	function saveevent()
 	{
-		$option = Factory::getApplication()->input->getCmd('option');
-		$data = array();
-		$data['teamplayer_id'] = Factory::getApplication()->input->getInt('teamplayer_id');
+		$option                 = Factory::getApplication()->input->getCmd('option');
+		$data                   = array();
+		$data['teamplayer_id']  = Factory::getApplication()->input->getInt('teamplayer_id');
 		$data['projectteam_id'] = Factory::getApplication()->input->getInt('projectteam_id');
-		$data['event_type_id'] = Factory::getApplication()->input->getInt('event_type_id');
-		$data['event_time'] = Factory::getApplication()->input->getVar('event_time', '');
-		$data['match_id'] = Factory::getApplication()->input->getInt('match_id');
-		$data['event_sum'] = Factory::getApplication()->input->getVar('event_sum', '');
-		$data['notice'] = Factory::getApplication()->input->getVar('notice', '');
-		$data['notes'] = Factory::getApplication()->input->getVar('notes', '');
-		$data['useeventtime'] = Factory::getApplication()->input->getVar('useeventtime', '');
+		$data['event_type_id']  = Factory::getApplication()->input->getInt('event_type_id');
+		$data['event_time']     = Factory::getApplication()->input->getVar('event_time', '');
+		$data['match_id']       = Factory::getApplication()->input->getInt('match_id');
+		$data['event_sum']      = Factory::getApplication()->input->getVar('event_sum', '');
+		$data['notice']         = Factory::getApplication()->input->getVar('notice', '');
+		$data['notes']          = Factory::getApplication()->input->getVar('notes', '');
+		$data['useeventtime']   = Factory::getApplication()->input->getVar('useeventtime', '');
 
 		// Diddipoeler
 		$data['projecttime'] = Factory::getApplication()->input->getVar('projecttime', '');
@@ -102,11 +104,11 @@ class sportsmanagementControllermatches extends BaseController
 	 */
 	function savesubst()
 	{
-		$data = array();
-		$data['in'] = Factory::getApplication()->input->getInt('in');
-		$data['out'] = Factory::getApplication()->input->getInt('out');
-		$data['matchid'] = Factory::getApplication()->input->getInt('matchid');
-		$data['in_out_time'] = Factory::getApplication()->input->getVar('in_out_time', '');
+		$data                        = array();
+		$data['in']                  = Factory::getApplication()->input->getInt('in');
+		$data['out']                 = Factory::getApplication()->input->getInt('out');
+		$data['matchid']             = Factory::getApplication()->input->getInt('matchid');
+		$data['in_out_time']         = Factory::getApplication()->input->getVar('in_out_time', '');
 		$data['project_position_id'] = Factory::getApplication()->input->getInt('project_position_id');
 
 		// Diddipoeler
@@ -156,11 +158,11 @@ class sportsmanagementControllermatches extends BaseController
 	 */
 	function savecomment()
 	{
-		$data = array();
+		$data               = array();
 		$data['event_time'] = Factory::getApplication()->input->getVar('event_time', '');
-		$data['match_id'] = Factory::getApplication()->input->getInt('matchid');
-		$data['type'] = Factory::getApplication()->input->getVar('type', '');
-		$data['notes'] = Factory::getApplication()->input->getVar('notes', '');
+		$data['match_id']   = Factory::getApplication()->input->getInt('matchid');
+		$data['type']       = Factory::getApplication()->input->getVar('type', '');
+		$data['notes']      = Factory::getApplication()->input->getVar('notes', '');
 
 		// Diddipoeler
 		$data['projecttime'] = Factory::getApplication()->input->getVar('projecttime', '');
@@ -190,12 +192,12 @@ class sportsmanagementControllermatches extends BaseController
 
 		if (!$result = sportsmanagementModelMatch::deleteevent($event_id))
 		{
-			   // $result="0"."&".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_EVENTS').': '.$model->getError();
+			// $result="0"."&".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_EVENTS').': '.$model->getError();
 			$result = "0" . "&" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_EVENTS') . ': ';
 		}
 		else
 		{
-			   $result = "1" . "&" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_DELETE_EVENTS') . '&' . $event_id;
+			$result = "1" . "&" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_DELETE_EVENTS') . '&' . $event_id;
 		}
 
 		echo json_encode($result);

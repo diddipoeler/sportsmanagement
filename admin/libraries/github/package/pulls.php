@@ -17,7 +17,7 @@ defined('JPATH_PLATFORM') or die;
  * @since       11.3
  * @deprecated  4.0  Use the `joomla/github` package via Composer instead
  *
- * @property-read  JGithubPackagePullsComments  $comments  GitHub API object for comments.
+ * @property-read  JGithubPackagePullsComments $comments  GitHub API object for comments.
  */
 class JGithubPackagePulls extends JGithubPackage
 {
@@ -40,10 +40,10 @@ class JGithubPackagePulls extends JGithubPackage
 	 * @param   string  $head   The branch (or git ref) where your changes are implemented.
 	 * @param   string  $body   The body text for the new pull request.
 	 *
+	 * @return  object
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  object
 	 */
 	public function create($user, $repo, $title, $base, $head, $body = '')
 	{
@@ -54,9 +54,9 @@ class JGithubPackagePulls extends JGithubPackage
 		$data = json_encode(
 			array(
 				'title' => $title,
-				'base' => $base,
-				'head' => $head,
-				'body' => $body,
+				'base'  => $base,
+				'head'  => $head,
+				'body'  => $body,
 			)
 		);
 
@@ -86,10 +86,10 @@ class JGithubPackagePulls extends JGithubPackage
 	 *                             of another repo.
 	 * @param   string   $head     The branch (or git ref) where your changes are implemented.
 	 *
+	 * @return  object
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  object
 	 */
 	public function createFromIssue($user, $repo, $issueId, $base, $head)
 	{
@@ -100,8 +100,8 @@ class JGithubPackagePulls extends JGithubPackage
 		$data = json_encode(
 			array(
 				'issue' => (int) $issueId,
-				'base' => $base,
-				'head' => $head,
+				'base'  => $base,
+				'head'  => $head,
 			)
 		);
 
@@ -129,10 +129,10 @@ class JGithubPackagePulls extends JGithubPackage
 	 * @param   string   $body    The optional new body text for the pull request.
 	 * @param   string   $state   The optional new state for the pull request. [open, closed]
 	 *
+	 * @return  object
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  object
 	 */
 	public function edit($user, $repo, $pullId, $title = null, $body = null, $state = null)
 	{
@@ -184,10 +184,10 @@ class JGithubPackagePulls extends JGithubPackage
 	 * @param   string   $repo    The name of the GitHub repository.
 	 * @param   integer  $pullId  The pull request number.
 	 *
+	 * @return  object
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  object
 	 */
 	public function get($user, $repo, $pullId)
 	{
@@ -217,10 +217,10 @@ class JGithubPackagePulls extends JGithubPackage
 	 * @param   integer  $page    The page number from which to get items.
 	 * @param   integer  $limit   The number of items on a page.
 	 *
+	 * @return  array
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  array
 	 */
 	public function getCommits($user, $repo, $pullId, $page = 0, $limit = 0)
 	{
@@ -250,10 +250,10 @@ class JGithubPackagePulls extends JGithubPackage
 	 * @param   integer  $page    The page number from which to get items.
 	 * @param   integer  $limit   The number of items on a page.
 	 *
+	 * @return  array
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  array
 	 */
 	public function getFiles($user, $repo, $pullId, $page = 0, $limit = 0)
 	{
@@ -283,10 +283,10 @@ class JGithubPackagePulls extends JGithubPackage
 	 * @param   integer  $page   The page number from which to get items.
 	 * @param   integer  $limit  The number of items on a page.
 	 *
+	 * @return  array
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  array
 	 */
 	public function getList($user, $repo, $state = 'open', $page = 0, $limit = 0)
 	{
@@ -320,10 +320,10 @@ class JGithubPackagePulls extends JGithubPackage
 	 * @param   string   $repo    The name of the GitHub repository.
 	 * @param   integer  $pullId  The pull request number.  The pull request number.
 	 *
+	 * @return  boolean  True if the pull request has been merged.
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  boolean  True if the pull request has been merged.
 	 */
 	public function isMerged($user, $repo, $pullId)
 	{
@@ -358,10 +358,10 @@ class JGithubPackagePulls extends JGithubPackage
 	 * @param   integer  $pullId   The pull request number.
 	 * @param   string   $message  The message that will be used for the merge commit.
 	 *
+	 * @return  object
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  object
 	 */
 	public function merge($user, $repo, $pullId, $message = '')
 	{
@@ -404,11 +404,11 @@ class JGithubPackagePulls extends JGithubPackage
 	 * @param   string   $filePath  The Relative path of the file to comment on.
 	 * @param   string   $position  The line index in the diff to comment on.
 	 *
-	 * @deprecated  use pulls->comments->create()
-	 *
 	 * @return  object
 	 *
-	 * @since   11.3
+	 * @deprecated  use pulls->comments->create()
+	 *
+	 * @since       11.3
 	 */
 	public function createComment($user, $repo, $pullId, $body, $commitId, $filePath, $position)
 	{
@@ -424,11 +424,11 @@ class JGithubPackagePulls extends JGithubPackage
 	 * @param   string   $body       The comment body text.
 	 * @param   integer  $inReplyTo  The id of the comment to reply to.
 	 *
-	 * @deprecated  use pulls->comments->createReply()
-	 *
 	 * @return  object
 	 *
-	 * @since   11.3
+	 * @deprecated  use pulls->comments->createReply()
+	 *
+	 * @since       11.3
 	 */
 	public function createCommentReply($user, $repo, $pullId, $body, $inReplyTo)
 	{
@@ -442,11 +442,11 @@ class JGithubPackagePulls extends JGithubPackage
 	 * @param   string   $repo       The name of the GitHub repository.
 	 * @param   integer  $commentId  The id of the comment to delete.
 	 *
-	 * @deprecated  use pulls->comments->delete()
-	 *
 	 * @return  void
 	 *
-	 * @since   11.3
+	 * @deprecated  use pulls->comments->delete()
+	 *
+	 * @since       11.3
 	 */
 	public function deleteComment($user, $repo, $commentId)
 	{
@@ -461,11 +461,11 @@ class JGithubPackagePulls extends JGithubPackage
 	 * @param   integer  $commentId  The id of the comment to update.
 	 * @param   string   $body       The new body text for the comment.
 	 *
-	 * @deprecated  use pulls->comments->edit()
-	 *
 	 * @return  object
 	 *
-	 * @since   11.3
+	 * @deprecated  use pulls->comments->edit()
+	 *
+	 * @since       11.3
 	 */
 	public function editComment($user, $repo, $commentId, $body)
 	{
@@ -479,11 +479,11 @@ class JGithubPackagePulls extends JGithubPackage
 	 * @param   string   $repo       The name of the GitHub repository.
 	 * @param   integer  $commentId  The comment id to get.
 	 *
-	 * @deprecated  use pulls->comments->get()
-	 *
 	 * @return  object
 	 *
-	 * @since   11.3
+	 * @deprecated  use pulls->comments->get()
+	 *
+	 * @since       11.3
 	 */
 	public function getComment($user, $repo, $commentId)
 	{
@@ -499,11 +499,11 @@ class JGithubPackagePulls extends JGithubPackage
 	 * @param   integer  $page    The page number from which to get items.
 	 * @param   integer  $limit   The number of items on a page.
 	 *
-	 * @deprecated  use pulls->comments->getList()
-	 *
 	 * @return  array
 	 *
-	 * @since   11.3
+	 * @deprecated  use pulls->comments->getList()
+	 *
+	 * @since       11.3
 	 */
 	public function getComments($user, $repo, $pullId, $page = 0, $limit = 0)
 	{

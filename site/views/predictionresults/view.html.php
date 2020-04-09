@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -40,30 +41,30 @@ class sportsmanagementViewPredictionResults extends sportsmanagementView
 	function init()
 	{
 		$this->predictionGame = sportsmanagementModelPrediction::getPredictionGame();
-		$this->allowedAdmin = sportsmanagementModelPrediction::getAllowed();
+		$this->allowedAdmin   = sportsmanagementModelPrediction::getAllowed();
 
-		$this->limit = $this->model->getLimit();
-		$this->limitstart = $this->model->getLimitStart();
+		$this->limit        = $this->model->getLimit();
+		$this->limitstart   = $this->model->getLimitStart();
 		$this->ausgabestart = $this->limitstart + 1;
-		$this->ausgabeende = $this->limitstart + $this->limit;
+		$this->ausgabeende  = $this->limitstart + $this->limit;
 
 		if (isset($this->predictionGame))
 		{
-			$config    = sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
-			$configavatar = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
-			$configentry = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionentry');
-			$config = array_merge($configentry, $config);
-			$overallConfig    = sportsmanagementModelPrediction::getPredictionOverallConfig();
+			$config        = sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
+			$configavatar  = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
+			$configentry   = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionentry');
+			$config        = array_merge($configentry, $config);
+			$overallConfig = sportsmanagementModelPrediction::getPredictionOverallConfig();
 
-			$this->roundID = sportsmanagementModelPredictionResults::$roundID;
-			$this->config = array_merge($overallConfig, $config);
-			$this->model->config = $this->config;
-			$this->configavatar = $configavatar;
+			$this->roundID             = sportsmanagementModelPredictionResults::$roundID;
+			$this->config              = array_merge($overallConfig, $config);
+			$this->model->config       = $this->config;
+			$this->configavatar        = $configavatar;
 			$this->model->configavatar = $this->configavatar;
 
-			$this->predictionMember = sportsmanagementModelPrediction::getPredictionMember($configavatar);
+			$this->predictionMember   = sportsmanagementModelPrediction::getPredictionMember($configavatar);
 			$this->predictionProjectS = sportsmanagementModelPrediction::getPredictionProjectS();
-			$this->actJoomlaUser = Factory::getUser();
+			$this->actJoomlaUser      = Factory::getUser();
 
 			$predictionRounds[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_PRED_SELECT_ROUNDS'), 'value', 'text');
 
@@ -76,20 +77,20 @@ class sportsmanagementViewPredictionResults extends sportsmanagementView
 			unset($res);
 			unset($predictionRounds);
 
-					  $this->lists = $lists;
+			$this->lists           = $lists;
 			$this->show_debug_info = ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info', 0);
 
 			// Set page title
 			$pageTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_TITLE');
 
-				  $this->memberList = $this->get('Data');
+			$this->memberList = $this->get('Data');
 			$this->pagination = $this->get('Pagination');
 
 			$this->headertitle = $pageTitle;
 
 			if (!isset($this->config['table_class']))
 			{
-				  $this->config['table_class'] = 'table';
+				$this->config['table_class'] = 'table';
 			}
 
 			$this->document->setTitle($pageTitle);

@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -38,7 +39,7 @@ class sportsmanagementViewsportsmanagements extends sportsmanagementView
 	function display($tpl = null)
 	{
 		// Get data from the model
-		$items = $this->get('Items');
+		$items      = $this->get('Items');
 		$pagination = $this->get('Pagination');
 
 		// Check for errors.
@@ -50,7 +51,7 @@ class sportsmanagementViewsportsmanagements extends sportsmanagementView
 		}
 
 		// Assign data to the view
-		$this->items = $items;
+		$this->items      = $items;
 		$this->pagination = $pagination;
 
 		// Set the toolbar
@@ -98,6 +99,7 @@ class sportsmanagementViewsportsmanagements extends sportsmanagementView
 			ToolbarHelper::preferences('com_sportsmanagement');
 		}
 	}
+
 	/**
 	 * Method to set up the document properties
 	 *

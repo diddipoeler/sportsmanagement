@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
@@ -21,7 +22,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Component\ComponentHelper;
 
-$lang = Factory::getLanguage();
+$lang    = Factory::getLanguage();
 $locales = $lang->getLocale();
 setlocale(LC_ALL, $locales[0]);
 
@@ -48,8 +49,8 @@ if (!class_exists('JSMCountries'))
 if (!class_exists('sportsmanagementHelper'))
 {
 	/**
- * add the classes for handling
-*/
+	 * add the classes for handling
+	 */
 	$classpath = JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'sportsmanagement.php';
 	JLoader::register('sportsmanagementHelper', $classpath);
 	BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
@@ -64,14 +65,14 @@ $lang->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
 
 JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 /**
-*
+ *
  * Include the functions only once
-*/
+ */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'helper.php';
 
 // Reference global application object
-$app = Factory::getApplication();
-$document = Factory::getDocument();
+$app             = Factory::getApplication();
+$document        = Factory::getDocument();
 $show_debug_info = ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info', 0);
 
 
@@ -85,7 +86,7 @@ $mode = $params->def("mode");
 switch ($mode)
 {
 	case 'B':
-	break;
+		break;
 	default:
 		if ($mode == 'L' && $params->get('show_player_card'))
 		{
@@ -101,7 +102,7 @@ switch ($mode)
 			$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'administrator/components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css' . '" type="text/css" />' . "\n";
 			$document->addCustomTag($stylelink);
 		}
-	break;
+		break;
 }
 
 // Prevent that result is null when either $players or $crew is null by casting each to an array.
@@ -116,23 +117,23 @@ if ($show_debug_info)
 {
 }
 
-$k = 0;
+$k       = 0;
 $counter = 0;
 
 switch ($mode)
 {
 	case 'B':
 		$layout = isset($attribs['layout']) ? $attribs['layout'] : 'default';
-	break;
+		break;
 	case 'L':
 		$layout = isset($attribs['layout']) ? $attribs['layout'] : 'default';
-	break;
+		break;
 	case 'J':
-		$html_li = '';
+		$html_li    = '';
 		$html_ahref = '';
-		$id = 0;
-		$container = 'slider' . $module->id . '_container';
-		$layout = isset($attribs['layout']) ? $attribs['layout'] : 'jssor';
+		$id         = 0;
+		$container  = 'slider' . $module->id . '_container';
+		$layout     = isset($attribs['layout']) ? $attribs['layout'] : 'jssor';
 		$document->addScript(Uri::base() . 'modules/' . $module->module . '/js/jssor.slider.mini.js');
 
 		if (count($persons) > 0)
@@ -146,34 +147,34 @@ switch ($mode)
 
 				$class = ($k == 0) ? $params->get('sectiontableentry1') : $params->get('sectiontableentry2');
 
-				$thispic = "";
-				$flag = $params->get('show_player_flag') ? JSMCountries::getCountryFlag($person['country']) . "&nbsp;" : "";
-				$text = htmlspecialchars(sportsmanagementHelper::formatName(null, $person['firstname'], $person['nickname'], $person['lastname'], $params->get("name_format")), ENT_QUOTES, 'UTF-8');
+				$thispic  = "";
+				$flag     = $params->get('show_player_flag') ? JSMCountries::getCountryFlag($person['country']) . "&nbsp;" : "";
+				$text     = htmlspecialchars(sportsmanagementHelper::formatName(null, $person['firstname'], $person['nickname'], $person['lastname'], $params->get("name_format")), ENT_QUOTES, 'UTF-8');
 				$usedname = $flag . $text;
 
-				$person_link = "";
-				$person_type = $person['type'];
-				$routeparameter = array();
+				$person_link                          = "";
+				$person_type                          = $person['type'];
+				$routeparameter                       = array();
 				$routeparameter['cfg_which_database'] = $params->get('cfg_which_database');
-				$routeparameter['s'] = $params->get('s');
-				$routeparameter['p'] = $person['project_slug'];
+				$routeparameter['s']                  = $params->get('s');
+				$routeparameter['p']                  = $person['project_slug'];
 
 				if ($person_type == 1)
 				{
 					$routeparameter['tid'] = $person['team_slug'];
 					$routeparameter['pid'] = $person['person_slug'];
-					$person_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
+					$person_link           = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
 				}
-				elseif ($person_type == 2)
+                elseif ($person_type == 2)
 				{
 					$routeparameter['tid'] = $person['team_slug'];
 					$routeparameter['pid'] = $person['person_slug'];
-					$person_link = sportsmanagementHelperRoute::getSportsmanagementRoute('staff', $routeparameter);
+					$person_link           = sportsmanagementHelperRoute::getSportsmanagementRoute('staff', $routeparameter);
 				}
-				elseif ($person_type == 3)
+                elseif ($person_type == 3)
 				{
 					$routeparameter['pid'] = $person['person_slug'];
-					$person_link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee', $routeparameter);
+					$person_link           = sportsmanagementHelperRoute::getSportsmanagementRoute('referee', $routeparameter);
 				}
 
 				$showname = HTMLHelper::link($person_link, $usedname);
@@ -186,7 +187,7 @@ switch ($mode)
 					{
 						$thispic = $person['picture'];
 					}
-					elseif (sportsmanagementHelper::existPicture($person['default_picture']) && $person['default_picture'] != '')
+                    elseif (sportsmanagementHelper::existPicture($person['default_picture']) && $person['default_picture'] != '')
 					{
 						$thispic = $person['default_picture'];
 					}
@@ -195,43 +196,47 @@ switch ($mode)
 
 				switch ($person['days_to_birthday'])
 				{
-					case 0: $whenmessage = $params->get('todaymessage');
-									break;
-					case 1: $whenmessage = $params->get('tomorrowmessage');
-									break;
-					default: $whenmessage = str_replace('%DAYS_TO%', $person['days_to_birthday'], trim($params->get('futuremessage')));
-									break;
+					case 0:
+						$whenmessage = $params->get('todaymessage');
+						break;
+					case 1:
+						$whenmessage = $params->get('tomorrowmessage');
+						break;
+					default:
+						$whenmessage = str_replace('%DAYS_TO%', $person['days_to_birthday'], trim($params->get('futuremessage')));
+						break;
 				}
 
-				$birthdaytext = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
-				$dayformat = htmlentities(trim($params->get('dayformat')));
+				$birthdaytext   = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
+				$dayformat      = htmlentities(trim($params->get('dayformat')));
 				$birthdayformat = htmlentities(trim($params->get('birthdayformat')));
-				$birthdaytext = str_replace('%WHEN%', $whenmessage, $birthdaytext);
-				$birthdaytext = str_replace('%AGE%', $person['age'], $birthdaytext);
-				$birthdaytext = str_replace('%DATE%', strftime($dayformat, strtotime($person['year'] . '-' . $person['daymonth'])), $birthdaytext);
-				$birthdaytext = str_replace('%DATE_OF_BIRTH%', strftime($birthdayformat, strtotime($person['date_of_birth'])), $birthdaytext);
-				$birthdaytext = str_replace('%BR%', '<br />', $birthdaytext);
-				$birthdaytext = str_replace('%BOLD%', '<b>', $birthdaytext);
-				$birthdaytext = str_replace('%BOLDEND%', '</b>', $birthdaytext);
-				$text .= '<br> ' . $birthdaytext;
+				$birthdaytext   = str_replace('%WHEN%', $whenmessage, $birthdaytext);
+				$birthdaytext   = str_replace('%AGE%', $person['age'], $birthdaytext);
+				$birthdaytext   = str_replace('%DATE%', strftime($dayformat, strtotime($person['year'] . '-' . $person['daymonth'])), $birthdaytext);
+				$birthdaytext   = str_replace('%DATE_OF_BIRTH%', strftime($birthdayformat, strtotime($person['date_of_birth'])), $birthdaytext);
+				$birthdaytext   = str_replace('%BR%', '<br />', $birthdaytext);
+				$birthdaytext   = str_replace('%BOLD%', '<b>', $birthdaytext);
+				$birthdaytext   = str_replace('%BOLDEND%', '</b>', $birthdaytext);
+				$text           .= '<br> ' . $birthdaytext;
 				?>
 				<?php
 				$showname = '';
-				$html_li .= '<div><a href="' . $person_link . '"><img u="image" src="' . $thispic . '" /></a>';
-				$html_li .= '<div u="caption" t="' . $params->get('jssor_captiontransitions') . '" style="position:absolute;left:10px;top:80px;width:600px;height:40px;font-size:36px;color:#000;line-height:40px;">' . $showname . '</div>';
-				$html_li .= '<div u="caption" t="' . $params->get('jssor_captiontransitions') . '" style="position:absolute;left:10px;top:130px;width:600px;height:40px;font-size:36px;color:#000;line-height:40px;">' . $text . '</div>';
-				$html_li .= '</div>';
+				$html_li  .= '<div><a href="' . $person_link . '"><img u="image" src="' . $thispic . '" /></a>';
+				$html_li  .= '<div u="caption" t="' . $params->get('jssor_captiontransitions') . '" style="position:absolute;left:10px;top:80px;width:600px;height:40px;font-size:36px;color:#000;line-height:40px;">' . $showname . '</div>';
+				$html_li  .= '<div u="caption" t="' . $params->get('jssor_captiontransitions') . '" style="position:absolute;left:10px;top:130px;width:600px;height:40px;font-size:36px;color:#000;line-height:40px;">' . $text . '</div>';
+				$html_li  .= '</div>';
 
 				$id++;
 				$k = 1 - $k;
 				$counter++;
 			}
 		}
-	break;
+		break;
 }
-?>         
-<div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
-<?PHP
-require ModuleHelper::getLayoutPath($module->module, $layout);
 ?>
+<div class="<?php echo $params->get('moduleclass_sfx'); ?>"
+     id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+	<?PHP
+	require ModuleHelper::getLayoutPath($module->module, $layout);
+	?>
 </div>

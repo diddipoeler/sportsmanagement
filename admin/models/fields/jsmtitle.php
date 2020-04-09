@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die;
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -39,9 +40,9 @@ class JFormFieldJSMTitle extends FormField
 	 */
 	protected function getLabel()
 	{
-		$value = trim($this->element['title']);
+		$value     = trim($this->element['title']);
 		$image_src = $this->element['imagesrc']; // Path ex: ../modules/mod_latestnews/images/icon.png (16x16)
-		$icon = $this->element['icon'];
+		$icon      = $this->element['icon'];
 
 		$color = $this->element['color'];
 

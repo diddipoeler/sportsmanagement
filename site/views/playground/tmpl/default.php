@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Uri\Uri;
 
 /**
@@ -31,63 +32,63 @@ if ($this->mapconfig['map_kmlfile'])
 }
 ?>
 
-<div class="<?php echo $this->divclasscontainer;?>" id="playground">
-<?php
-if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO)
-{
-	echo $this->loadTemplate('debug');
-}
-
-echo $this->loadTemplate('projectheading');
-
-if ($this->config['show_sectionheader'])
-{
-	echo $this->loadTemplate('sectionheader');
-}
-
-if ($this->config['show_playground'])
-{
-	echo $this->loadTemplate('playground');
-}
-
-if ($this->config['show_extended'])
-{
-	echo $this->loadTemplate('extended');
-}
-
-if ($this->config['show_picture'])
-{
-	echo $this->loadTemplate('picture');
-}
-
-if ($this->playground->latitude && $this->playground->longitude)
-{
-	if ($this->config['show_maps'])
+<div class="<?php echo $this->divclasscontainer; ?>" id="playground">
+	<?php
+	if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO)
 	{
-		echo $this->loadTemplate('googlemap');
+		echo $this->loadTemplate('debug');
 	}
-}
 
-if ($this->config['show_description'])
-{
-	echo $this->loadTemplate('description');
-}
+	echo $this->loadTemplate('projectheading');
 
-if ($this->config['show_teams'])
-{
-	echo $this->loadTemplate('teams');
-}
+	if ($this->config['show_sectionheader'])
+	{
+		echo $this->loadTemplate('sectionheader');
+	}
 
-if ($this->config['show_matches'])
-{
-	echo $this->loadTemplate('matches');
-}
+	if ($this->config['show_playground'])
+	{
+		echo $this->loadTemplate('playground');
+	}
 
-if ($this->config['show_played_matches'])
-{
-	echo $this->loadTemplate('played_matches');
-}
+	if ($this->config['show_extended'])
+	{
+		echo $this->loadTemplate('extended');
+	}
 
-echo $this->loadTemplate('jsminfo');
-?>
+	if ($this->config['show_picture'])
+	{
+		echo $this->loadTemplate('picture');
+	}
+
+	if ($this->playground->latitude && $this->playground->longitude)
+	{
+		if ($this->config['show_maps'])
+		{
+			echo $this->loadTemplate('googlemap');
+		}
+	}
+
+	if ($this->config['show_description'])
+	{
+		echo $this->loadTemplate('description');
+	}
+
+	if ($this->config['show_teams'])
+	{
+		echo $this->loadTemplate('teams');
+	}
+
+	if ($this->config['show_matches'])
+	{
+		echo $this->loadTemplate('matches');
+	}
+
+	if ($this->config['show_played_matches'])
+	{
+		echo $this->loadTemplate('played_matches');
+	}
+
+	echo $this->loadTemplate('jsminfo');
+	?>
 </div>

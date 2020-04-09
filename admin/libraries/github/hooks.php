@@ -49,13 +49,13 @@ class JGithubHooks extends JGithubObject
 	 * @param   array    $events  The events the hook will be triggered for.
 	 * @param   boolean  $active  Flag to determine if the hook is active
 	 *
-	 * @deprecated  use repositories->hooks->create()
-	 *
 	 * @return  object
 	 *
-	 * @since   12.3
 	 * @throws  DomainException
 	 * @throws  RuntimeException
+	 * @deprecated  use repositories->hooks->create()
+	 *
+	 * @since       12.3
 	 */
 	public function create($user, $repo, $name, array $config, array $events = array('push'), $active = true)
 	{
@@ -88,12 +88,12 @@ class JGithubHooks extends JGithubObject
 	 * @param   string   $repo  The name of the GitHub repository.
 	 * @param   integer  $id    ID of the hook to delete.
 	 *
-	 * @deprecated  use repositories->hooks->delete()
-	 *
 	 * @return  object
 	 *
-	 * @since   12.3
 	 * @throws  DomainException
+	 * @since       12.3
+	 * @deprecated  use repositories->hooks->delete()
+	 *
 	 */
 	public function delete($user, $repo, $id)
 	{
@@ -119,16 +119,16 @@ class JGithubHooks extends JGithubObject
 	 * @param   array    $removeEvents  Events to remove from the hook.
 	 * @param   boolean  $active        Flag to determine if the hook is active
 	 *
-	 * @deprecated  use repositories->hooks->edit()
-	 *
 	 * @return  object
 	 *
-	 * @since   12.3
 	 * @throws  DomainException
 	 * @throws  RuntimeException
+	 * @deprecated  use repositories->hooks->edit()
+	 *
+	 * @since       12.3
 	 */
 	public function edit($user, $repo, $id, $name, array $config, array $events = array('push'), array $addEvents = array(),
-		array $removeEvents = array(), $active = true
+	                     array $removeEvents = array(), $active = true
 	)
 	{
 		// Check to ensure all events are in the allowed list
@@ -161,12 +161,12 @@ class JGithubHooks extends JGithubObject
 
 		$data = json_encode(
 			array(
-				'name' => $name,
-				'config' => $config,
-				'events' => $events,
-				'add_events' => $addEvents,
+				'name'          => $name,
+				'config'        => $config,
+				'events'        => $events,
+				'add_events'    => $addEvents,
 				'remove_events' => $removeEvents,
-				'active' => $active,
+				'active'        => $active,
 			)
 		);
 
@@ -182,12 +182,12 @@ class JGithubHooks extends JGithubObject
 	 * @param   string   $repo  The name of the GitHub repository.
 	 * @param   integer  $id    ID of the hook to retrieve
 	 *
-	 * @deprecated  use repositories->hooks->get()
-	 *
 	 * @return  object
 	 *
-	 * @since   12.3
 	 * @throws  DomainException
+	 * @since       12.3
+	 * @deprecated  use repositories->hooks->get()
+	 *
 	 */
 	public function get($user, $repo, $id)
 	{
@@ -207,12 +207,12 @@ class JGithubHooks extends JGithubObject
 	 * @param   integer  $page   Page to request
 	 * @param   integer  $limit  Number of results to return per page
 	 *
-	 * @deprecated  use repositories->hooks->getList()
-	 *
 	 * @return  object
 	 *
-	 * @since   12.3
 	 * @throws  DomainException
+	 * @since       12.3
+	 * @deprecated  use repositories->hooks->getList()
+	 *
 	 */
 	public function getList($user, $repo, $page = 0, $limit = 0)
 	{
@@ -231,12 +231,12 @@ class JGithubHooks extends JGithubObject
 	 * @param   string   $repo  The name of the GitHub repository.
 	 * @param   integer  $id    ID of the hook to delete
 	 *
-	 * @deprecated  use repositories->hooks->test()
-	 *
 	 * @return  object
 	 *
-	 * @since   12.3
 	 * @throws  DomainException
+	 * @since       12.3
+	 * @deprecated  use repositories->hooks->test()
+	 *
 	 */
 	public function test($user, $repo, $id)
 	{

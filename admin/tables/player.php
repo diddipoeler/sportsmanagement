@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Filter\OutputFilter;
 
 
@@ -32,15 +33,15 @@ class sportsmanagementTableplayer extends JSMTable
 	/**
 	 * sportsmanagementTableplayer::__construct()
 	 *
-	 * @param   mixed $db
+	 * @param   mixed  $db
+	 *
 	 * @return
 	 */
-	function __construct(& $db)
+	function __construct(&$db)
 	{
-		  $db = sportsmanagementHelper::getDBConnection();
+		$db = sportsmanagementHelper::getDBConnection();
 		parent::__construct('#__sportsmanagement_person', 'id', $db);
 	}
-
 
 
 	/**
@@ -57,7 +58,7 @@ class sportsmanagementTableplayer extends JSMTable
 			return false;
 		}
 
-		$parts = array( trim($this->firstname), trim($this->lastname) );
+		$parts = array(trim($this->firstname), trim($this->lastname));
 		$alias = OutputFilter::stringURLSafe(implode(' ', $parts));
 
 		if (empty($this->alias))
@@ -71,9 +72,6 @@ class sportsmanagementTableplayer extends JSMTable
 
 		return true;
 	}
-
-
-
 
 
 }

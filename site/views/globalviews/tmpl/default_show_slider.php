@@ -12,9 +12,11 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+
 ?>
 <div class="<?php echo $this->divclassrow; ?>" id="show_slider">
 	<?php
@@ -22,7 +24,7 @@ use Joomla\CMS\Factory;
 	{
 		// Joomla! 4.0 code here
 		$idxTab = 1;
-		$view = Factory::getApplication()->input->getCmd('view');
+		$view   = Factory::getApplication()->input->getCmd('view');
 
 		foreach ($this->output as $key => $templ)
 		{
@@ -30,12 +32,12 @@ use Joomla\CMS\Factory;
 			{
 				case 'player':
 					$template = $templ['template'];
-					$text = $templ['text'];
-				break;
+					$text     = $templ['text'];
+					break;
 				default:
 					$template = $templ;
-					$text = $key;
-				break;
+					$text     = $key;
+					break;
 			}
 
 			if ($idxTab == 1)
@@ -51,11 +53,11 @@ use Joomla\CMS\Factory;
 
 		echo HTMLHelper::_('bootstrap.endAccordion');
 	}
-	elseif (version_compare(JSM_JVERSION, '3', 'eq'))
+    elseif (version_compare(JSM_JVERSION, '3', 'eq'))
 	{
 		// Joomla! 3.0 code here
 		$idxTab = 1;
-		$view = Factory::getApplication()->input->getCmd('view');
+		$view   = Factory::getApplication()->input->getCmd('view');
 
 		foreach ($this->output as $key => $templ)
 		{
@@ -63,12 +65,12 @@ use Joomla\CMS\Factory;
 			{
 				case 'player':
 					$template = $templ['template'];
-					$text = $templ['text'];
-				break;
+					$text     = $templ['text'];
+					break;
 				default:
 					$template = $templ;
-					$text = $key;
-				break;
+					$text     = $key;
+					break;
 			}
 
 			if ($idxTab == 1)
@@ -84,25 +86,26 @@ use Joomla\CMS\Factory;
 
 		echo HTMLHelper::_('bootstrap.endAccordion');
 	}
-	elseif (version_compare(JSM_JVERSION, '2', 'eq'))
+    elseif (version_compare(JSM_JVERSION, '2', 'eq'))
 	{
 		// Joomla! 2.5 code here
 		?>
 
-		<div class="panel-group" id="accordion-nextmatch">
+        <div class="panel-group" id="accordion-nextmatch">
 			<?PHP
 			foreach ($this->output as $key => $templ)
 			{
-				?>  
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h4 class="panel-title">
-							<a data-toggle="collapse" data-parent="#accordion-nextmatch" href="#<?php echo $key; ?>"><?php echo Text::_($key); ?></a>
-						</h4>
-					</div>
+				?>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion-nextmatch"
+                               href="#<?php echo $key; ?>"><?php echo Text::_($key); ?></a>
+                        </h4>
+                    </div>
 
-					<div id="<?php echo $key; ?>" class="panel-collapse collapse">
-						<div class="panel-body">
+                    <div id="<?php echo $key; ?>" class="panel-collapse collapse">
+                        <div class="panel-body">
 							<?PHP
 							switch ($templ)
 							{
@@ -111,28 +114,28 @@ use Joomla\CMS\Factory;
 									echo $this->loadTemplate($templ);
 									$this->currentteam = $this->match->projectteam2_id;
 									echo $this->loadTemplate($templ);
-								break;
+									break;
 								default:
 									echo $this->loadTemplate($templ);
-								break;
+									break;
 							}
 							?>
-						</div>
-					</div>
-				</div>
+                        </div>
+                    </div>
+                </div>
 
 				<?PHP
 			}
 			?>
-			</div>
-  
+        </div>
+
 		<?PHP
 	}
-	elseif (version_compare(JVERSION, '1.7.0', 'ge'))
+    elseif (version_compare(JVERSION, '1.7.0', 'ge'))
 	{
 		// Joomla! 1.7 code here
 	}
-	elseif (version_compare(JVERSION, '1.6.0', 'ge'))
+    elseif (version_compare(JVERSION, '1.6.0', 'ge'))
 	{
 		// Joomla! 1.6 code here
 	}
@@ -140,5 +143,5 @@ use Joomla\CMS\Factory;
 	{
 		// Joomla! 1.5 code here
 	}
-?>
+	?>
 </div>

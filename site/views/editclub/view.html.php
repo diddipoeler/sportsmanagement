@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 
@@ -37,7 +38,7 @@ class sportsmanagementViewEditClub extends sportsmanagementView
 	{
 
 		$this->item = $this->model->getData();
-		$lists = array();
+		$lists      = array();
 		$this->form = $this->get('Form');
 
 		if ($this->item->id)
@@ -61,11 +62,11 @@ class sportsmanagementViewEditClub extends sportsmanagementView
 			$this->form->setValue('dissolved', '');
 		}
 
-				$this->item->merge_teams = explode(",", $this->item->merge_teams);
+		$this->item->merge_teams = explode(",", $this->item->merge_teams);
 
-				  $extended = sportsmanagementHelper::getExtended($this->item->extended, 'club');
+		$extended       = sportsmanagementHelper::getExtended($this->item->extended, 'club');
 		$this->extended = $extended;
-		$this->lists = $lists;
+		$this->lists    = $lists;
 
 		$this->cfg_which_media_tool = ComponentHelper::getParams($this->option)->get('cfg_which_media_tool', 0);
 

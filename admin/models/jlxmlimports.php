@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
@@ -28,12 +29,13 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 class sportsmanagementModelJLXMLImports extends BaseDatabaseModel
 {
 
-		/**
-		 * sportsmanagementModelJLXMLImports::__construct()
-		 *
-		 * @param   mixed $config
-		 * @return void
-		 */
+	/**
+	 * sportsmanagementModelJLXMLImports::__construct()
+	 *
+	 * @param   mixed  $config
+	 *
+	 * @return void
+	 */
 	public function __construct($config = array())
 	{
 		parent::__construct($config);

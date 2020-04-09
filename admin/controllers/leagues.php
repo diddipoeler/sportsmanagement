@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Router\Route;
 
 /**
@@ -45,7 +46,7 @@ class sportsmanagementControllerleagues extends JSMControllerAdmin
 	 *
 	 * @since 1.6
 	 */
-	public function getModel($name = 'League', $prefix = 'sportsmanagementModel', $config = Array() )
+	public function getModel($name = 'League', $prefix = 'sportsmanagementModel', $config = Array())
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 

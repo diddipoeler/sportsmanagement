@@ -14,18 +14,18 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
-<!-- colors legend -->
+    <!-- colors legend -->
 <?php
 if ($this->config['show_colorlegend'])
 {
 	?>
-	<table class="table">
-		<tr>
-	<?php
-	sportsmanagementHelper::showColorsLegend($this->colors, $this->divisions);
-	?>
-		</tr>
-	</table>
-	<br />
+    <table class="table">
+        <tr>
+			<?php
+			sportsmanagementHelper::showColorsLegend($this->colors, $this->divisions);
+			?>
+        </tr>
+    </table>
+    <br/>
 	<?php
 }

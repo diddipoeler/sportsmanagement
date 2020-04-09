@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 
@@ -33,36 +34,37 @@ class sportsmanagementModeljlextfederations extends JSMModelList
 	/**
 	 * sportsmanagementModeljlextfederations::__construct()
 	 *
-	 * @param   mixed $config
+	 * @param   mixed  $config
+	 *
 	 * @return void
 	 */
 	public function __construct($config = array())
 	{
-				$config['filter_fields'] = array(
-						'objassoc.name',
-						'objassoc.short_name',
-						'objassoc.alias',
-						'objassoc.id',
-						'objassoc.ordering',
-						'objassoc.picture',
-						'objassoc.assocflag',
-						'objassoc.published',
-						'objassoc.modified',
-						'objassoc.modified_by',
-						'objassoc.checked_out',
-						'objassoc.checked_out_time'
-						);
-				parent::__construct($config);
-				parent::setDbo($this->jsmdb);
+		$config['filter_fields'] = array(
+			'objassoc.name',
+			'objassoc.short_name',
+			'objassoc.alias',
+			'objassoc.id',
+			'objassoc.ordering',
+			'objassoc.picture',
+			'objassoc.assocflag',
+			'objassoc.published',
+			'objassoc.modified',
+			'objassoc.modified_by',
+			'objassoc.checked_out',
+			'objassoc.checked_out_time'
+		);
+		parent::__construct($config);
+		parent::setDbo($this->jsmdb);
 	}
 
-		  /**
-		   * Method to auto-populate the model state.
-		   *
-		   * Note. Calling getState in this method will result in recursion.
-		   *
-		   * @since 1.6
-		   */
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since 1.6
+	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
 		if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend'))
@@ -138,10 +140,10 @@ class sportsmanagementModeljlextfederations extends JSMModelList
 			$this->jsmquery->where('objassoc.published = ' . $this->getState('filter.state'));
 		}
 
-			  $this->jsmquery->order(
-				  $this->jsmdb->escape($this->getState('list.ordering', 'objassoc.name')) . ' ' .
-				  $this->jsmdb->escape($this->getState('list.direction', 'ASC'))
-			  );
+		$this->jsmquery->order(
+			$this->jsmdb->escape($this->getState('list.ordering', 'objassoc.name')) . ' ' .
+			$this->jsmdb->escape($this->getState('list.direction', 'ASC'))
+		);
 
 		if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend'))
 		{

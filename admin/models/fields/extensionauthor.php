@@ -11,6 +11,7 @@
  */
 
 defined('_JEXEC') or die;
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -36,14 +37,14 @@ class JFormFieldExtensionAuthor extends FormField
 	 */
 	protected function getLabel()
 	{
-		$lang = Factory::getLanguage();
-		$extension = 'com_sportsmanagement';
-		$base_dir = JPATH_ADMINISTRATOR;
+		$lang         = Factory::getLanguage();
+		$extension    = 'com_sportsmanagement';
+		$base_dir     = JPATH_ADMINISTRATOR;
 		$language_tag = $lang->getTag();
-		$reload = true;
+		$reload       = true;
 		$lang->load($extension, $base_dir, $language_tag, $reload);
 
-			  $html = '';
+		$html = '';
 		$html .= '<div style="clear: both;">' . Text::_('COM_SPORTSMANAGEMENT_AUTHOR_LABEL') . '</div>';
 
 		return $html;

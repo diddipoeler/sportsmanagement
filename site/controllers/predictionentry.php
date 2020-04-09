@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Router\Route;
@@ -42,8 +43,8 @@ class sportsmanagementControllerPredictionEntry extends BaseController
 	 */
 	function __construct()
 	{
-		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
+		$option   = Factory::getApplication()->input->getCmd('option');
+		$app      = Factory::getApplication();
 		$document = Factory::getDocument();
 
 		// JInput object
@@ -55,8 +56,9 @@ class sportsmanagementControllerPredictionEntry extends BaseController
 	/**
 	 * sportsmanagementControllerPredictionEntry::display()
 	 *
-	 * @param   bool $cachable
-	 * @param   bool $urlparams
+	 * @param   bool  $cachable
+	 * @param   bool  $urlparams
+	 *
 	 * @return void
 	 */
 	function display($cachable = false, $urlparams = false)
@@ -72,8 +74,8 @@ class sportsmanagementControllerPredictionEntry extends BaseController
 	 */
 	function register()
 	{
-		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
+		$option   = Factory::getApplication()->input->getCmd('option');
+		$app      = Factory::getApplication();
 		$document = Factory::getDocument();
 
 		// JInput object
@@ -82,29 +84,29 @@ class sportsmanagementControllerPredictionEntry extends BaseController
 
 		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
-		$msg = '';
+		$msg  = '';
 		$link = '';
 		$post = Factory::getApplication()->input->post->getArray(array());
 
 		$predictionGameID = Factory::getApplication()->input->getVar('prediction_id', '', 'post', 'int');
-		$joomlaUserID = Factory::getApplication()->input->getVar('user_id', '', 'post', 'int');
-		$approved = Factory::getApplication()->input->getVar('approved', 0, '', 'int');
+		$joomlaUserID     = Factory::getApplication()->input->getVar('user_id', '', 'post', 'int');
+		$approved         = Factory::getApplication()->input->getVar('approved', 0, '', 'int');
 
-		$model = $this->getModel('Prediction');
+		$model              = $this->getModel('Prediction');
 		$mdlPredictionEntry = BaseDatabaseModel::getInstance("PredictionEntry", "sportsmanagementModel");
-		$user = Factory::getUser();
-		$isMember = $model->checkPredictionMembership();
+		$user               = Factory::getUser();
+		$isMember           = $model->checkPredictionMembership();
 
-		if (( $user->id != $joomlaUserID))
+		if (($user->id != $joomlaUserID))
 		{
-			$msg .= Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_ERROR_1');
+			$msg  .= Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_ERROR_1');
 			$link = Uri::getInstance()->toString();
 		}
 		else
 		{
 			if ($isMember)
 			{
-				$msg .= Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_ERROR_4');
+				$msg  .= Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_ERROR_4');
 				$link = Uri::getInstance()->toString();
 			}
 			else
@@ -113,12 +115,12 @@ class sportsmanagementControllerPredictionEntry extends BaseController
 
 				if (!$mdlPredictionEntry->store($post))
 				{
-					$msg .= Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_ERROR_5');
+					$msg  .= Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_ERROR_5');
 					$link = Uri::getInstance()->toString();
 				}
 				else
 				{
-					$cids = array();
+					$cids   = array();
 					$cids[] = $mdlPredictionEntry->getDbo()->insertid();
 					ArrayHelper::toInteger($cids);
 
@@ -135,13 +137,13 @@ class sportsmanagementControllerPredictionEntry extends BaseController
 						$msg .= Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_ERROR_6');
 					}
 
-					$params = array('option' => 'com_sportsmanagement',
-						'view' => 'predictionentry',
-						'prediction_id' => $predictionGameID,
-						's' => '1');
+					$params = array('option'        => 'com_sportsmanagement',
+					                'view'          => 'predictionentry',
+					                'prediction_id' => $predictionGameID,
+					                's'             => '1');
 
-						$query = sportsmanagementHelperRoute::buildQuery($params);
-						$link = Route::_('index.php?' . $query, false);
+					$query = sportsmanagementHelperRoute::buildQuery($params);
+					$link  = Route::_('index.php?' . $query, false);
 				}
 			}
 		}
@@ -149,6 +151,22 @@ class sportsmanagementControllerPredictionEntry extends BaseController
 		echo '<br /><br />';
 		echo '#' . $msg . '#<br />';
 		$this->setRedirect($link, $msg);
+	}
+
+	/**
+	 * Proxy for getModel
+	 *
+	 * @param   string  $name    The model name. Optional.
+	 * @param   string  $prefix  The class prefix. Optional.
+	 *
+	 * @return object    The model.
+	 * @since  1.6
+	 */
+	function getModel($name = 'predictionentry', $prefix = 'sportsmanagementModel', $config = array('ignore_request' => true))
+	{
+		$model = parent::getModel($name, $prefix, $config);
+
+		return $model;
 	}
 
 	/**
@@ -191,29 +209,13 @@ class sportsmanagementControllerPredictionEntry extends BaseController
 		$jinput = $app->input;
 
 		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
-		$pID = $jinput->get('prediction_id', 0, '');
+		$pID     = $jinput->get('prediction_id', 0, '');
 		$groupID = $jinput->get('pggroup', 0, '');
-		$pjID = $jinput->get('pj', 0, '');
-		$rID = $jinput->get('r', 0, '');
-		$uID = $jinput->get('uid', 0, '');
-		$link = JSMPredictionHelperRoute::getPredictionTippEntryRoute($pID, $uID, $rID, $pjID, $groupID);
+		$pjID    = $jinput->get('pj', 0, '');
+		$rID     = $jinput->get('r', 0, '');
+		$uID     = $jinput->get('uid', 0, '');
+		$link    = JSMPredictionHelperRoute::getPredictionTippEntryRoute($pID, $uID, $rID, $pjID, $groupID);
 		$this->setRedirect($link);
-	}
-
-	/**
-	 * Proxy for getModel
-	 *
-	 * @param   string $name   The model name. Optional.
-	 * @param   string $prefix The class prefix. Optional.
-	 *
-	 * @return object    The model.
-	 * @since  1.6
-	 */
-	function getModel($name = 'predictionentry', $prefix = 'sportsmanagementModel', $config = array('ignore_request' => true))
-	{
-		$model = parent::getModel($name, $prefix, $config);
-
-		return $model;
 	}
 
 	/**
@@ -225,68 +227,68 @@ class sportsmanagementControllerPredictionEntry extends BaseController
 	{
 		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
-		$app = Factory::getApplication();
+		$app      = Factory::getApplication();
 		$document = Factory::getDocument();
 
 		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-		$post = $jinput->post->getArray();
+		$post   = $jinput->post->getArray();
 
-		$msg = '';
+		$msg  = '';
 		$link = '';
 
 		$predictionGameID = $jinput->getVar('prediction_id', '', 'post', 'int');
-		$joomlaUserID = $jinput->getVar('user_id', '', 'post', 'int');
-		$memberID = $jinput->getVar('memberID', '', 'post', 'int');
-		$round_id = $jinput->getVar('round_id', '', 'post', 'int');
-		$pjID = $jinput->getVar('pjID', '', 'post', 'int');
-		$set_r = $jinput->getVar('set_r', '', 'post', 'int');
-		$set_pj = $jinput->getVar('set_pj', '', 'post', 'int');
+		$joomlaUserID     = $jinput->getVar('user_id', '', 'post', 'int');
+		$memberID         = $jinput->getVar('memberID', '', 'post', 'int');
+		$round_id         = $jinput->getVar('round_id', '', 'post', 'int');
+		$pjID             = $jinput->getVar('pjID', '', 'post', 'int');
+		$set_r            = $jinput->getVar('set_r', '', 'post', 'int');
+		$set_pj           = $jinput->getVar('set_pj', '', 'post', 'int');
 
-		$model = $this->getModel('Prediction');
-		$user = Factory::getUser();
-		$isMember = $model->checkPredictionMembership();
+		$model        = $this->getModel('Prediction');
+		$user         = Factory::getUser();
+		$isMember     = $model->checkPredictionMembership();
 		$allowedAdmin = $model->getAllowed();
 
-		if (( ( $user->id != $joomlaUserID ) ) && (!$allowedAdmin ))
+		if ((($user->id != $joomlaUserID)) && (!$allowedAdmin))
 		{
-			$msg .= Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_ERROR_1');
+			$msg  .= Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_ERROR_1');
 			$link = Uri::getInstance()->toString();
 		}
 		else
 		{
-			if ((!$isMember ) && (!$allowedAdmin ))
+			if ((!$isMember) && (!$allowedAdmin))
 			{
-				$msg .= Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_ERROR_2');
+				$msg  .= Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_ERROR_2');
 				$link = Uri::getInstance()->toString();
 			}
 			else
 			{
 				if ($pjID != $set_pj)
 				{
-					$params = array('option' => 'com_sportsmanagement',
-						'view' => 'predictionentry',
-						'prediction_id' => $predictionGameID,
-						'pj' => $set_pj
-							);
+					$params = array('option'        => 'com_sportsmanagement',
+					                'view'          => 'predictionentry',
+					                'prediction_id' => $predictionGameID,
+					                'pj'            => $set_pj
+					);
 
-							$query = sportsmanagementHelperRoute::buildQuery($params);
-							$link = Route::_('index.php?' . $query, false);
-							$this->setRedirect($link);
+					$query = sportsmanagementHelperRoute::buildQuery($params);
+					$link  = Route::_('index.php?' . $query, false);
+					$this->setRedirect($link);
 				}
 
 				if ($round_id != $set_r)
 				{
-					$params = array('option' => 'com_sportsmanagement',
-					'view' => 'predictionentry',
-					'prediction_id' => $predictionGameID,
-					'r' => $set_r,
-					'pj' => $pjID
+					$params = array('option'        => 'com_sportsmanagement',
+					                'view'          => 'predictionentry',
+					                'prediction_id' => $predictionGameID,
+					                'r'             => $set_r,
+					                'pj'            => $pjID
 					);
 
 					$query = sportsmanagementHelperRoute::buildQuery($params);
-					$link = Route::_('index.php?' . $query, false);
+					$link  = Route::_('index.php?' . $query, false);
 					$this->setRedirect($link);
 				}
 
@@ -294,12 +296,12 @@ class sportsmanagementControllerPredictionEntry extends BaseController
 
 				if (!$model->savePredictions($allowedAdmin))
 				{
-					$msg .= Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_ERROR_3');
+					$msg  .= Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_ERROR_3');
 					$link = Factory::getURI()->toString();
 				}
 				else
 				{
-					$msg .= Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_MSG_1');
+					$msg  .= Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_MSG_1');
 					$link = Uri::getInstance()->toString();
 				}
 			}

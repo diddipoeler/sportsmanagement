@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -37,15 +38,15 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
 	function init()
 	{
 		$this->statgames = array();
-		$model = $this->getModel();
-		$match = $model->getMatch();
+		$model           = $this->getModel();
+		$match           = $model->getMatch();
 
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(), $model::$cfg_which_database);
+		$config      = sportsmanagementModelProject::getTemplateConfig($this->getName(), $model::$cfg_which_database);
 		$tableconfig = sportsmanagementModelProject::getTemplateConfig("ranking", $model::$cfg_which_database);
 
-		$this->project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
-		$this->config = $config;
-		$this->tableconfig = $tableconfig;
+		$this->project       = sportsmanagementModelProject::getProject($model::$cfg_which_database);
+		$this->config        = $config;
+		$this->tableconfig   = $tableconfig;
 		$this->overallconfig = sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database);
 
 		if (!isset($this->overallconfig['seperator']))
@@ -54,7 +55,7 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
 		}
 
 		// We need extended_cols for "pure" config as well: TODO why do we not merge whole overall config like seen in other views?
-		$this->config['extended_cols'] = $this->overallconfig['extended_cols'];
+		$this->config['extended_cols']            = $this->overallconfig['extended_cols'];
 		$this->config['show_project_kunena_link'] = $this->overallconfig['show_project_kunena_link'];
 
 		$this->match = $match;
@@ -65,30 +66,30 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
 
 			if ($match->new_match_id > 0)
 			{
-				$ret = sportsmanagementModelMatch::getMatchText($match->new_match_id);
-				$matchTime = sportsmanagementHelperHtml::showMatchTime($ret, $this->config, $this->overallconfig, $this->project);
-				$matchDate = HTMLHelper::date($ret->match_date, Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE'));
+				$ret          = sportsmanagementModelMatch::getMatchText($match->new_match_id);
+				$matchTime    = sportsmanagementHelperHtml::showMatchTime($ret, $this->config, $this->overallconfig, $this->project);
+				$matchDate    = HTMLHelper::date($ret->match_date, Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE'));
 				$newmatchtext = $matchDate . " " . $matchTime . ", " . $ret->t1name . " - " . $ret->t2name;
 			}
 
 			$this->newmatchtext = $newmatchtext;
-			$prevmatchtext = "";
+			$prevmatchtext      = "";
 
 			if ($match->old_match_id > 0)
 			{
-				$ret = sportsmanagementModelMatch::getMatchText($match->old_match_id);
-				$matchTime = sportsmanagementHelperHtml::showMatchTime($ret, $this->config, $this->overallconfig, $this->project);
-				$matchDate = HTMLHelper::date($ret->match_date, Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE'));
+				$ret           = sportsmanagementModelMatch::getMatchText($match->old_match_id);
+				$matchTime     = sportsmanagementHelperHtml::showMatchTime($ret, $this->config, $this->overallconfig, $this->project);
+				$matchDate     = HTMLHelper::date($ret->match_date, Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE'));
 				$prevmatchtext = $matchDate . " " . $matchTime . ", " . $ret->t1name . " - " . $ret->t2name;
 			}
 
-			$this->oldmatchtext = $prevmatchtext;
-			$this->teams = $model->getMatchTeams();
-			$this->referees = $model->getReferees();
-			$this->playground = sportsmanagementModelPlayground::getPlayground($this->match->playground_id);
-			$this->homeranked = $model->getHomeRanked();
-			$this->awayranked = $model->getAwayRanked();
-			$this->chances = $model->getChances();
+			$this->oldmatchtext          = $prevmatchtext;
+			$this->teams                 = $model->getMatchTeams();
+			$this->referees              = $model->getReferees();
+			$this->playground            = sportsmanagementModelPlayground::getPlayground($this->match->playground_id);
+			$this->homeranked            = $model->getHomeRanked();
+			$this->awayranked            = $model->getAwayRanked();
+			$this->chances               = $model->getChances();
 			$this->home_highest_home_win = $model->getHomeHighestHomeWin();
 			$this->away_highest_home_win = $model->getAwayHighestHomeWin();
 			$this->home_highest_home_def = $model->getHomeHighestHomeDef();
@@ -98,14 +99,14 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
 			$this->home_highest_away_def = $model->getHomeHighestAwayDef();
 			$this->away_highest_away_def = $model->getAwayHighestAwayDef();
 
-			$this->games = $model->getGames();
+			$this->games      = $model->getGames();
 			$this->gamesteams = $model->getTeamsFromMatches($this->games, $config);
 
 			$previousx = $model->getpreviousx($config);
-			$teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0, 'name', $model::$cfg_which_database);
+			$teams     = sportsmanagementModelProject::getTeamsIndexedByPtid(0, 'name', $model::$cfg_which_database);
 
-			$this->previousx = $previousx;
-			$this->allteams = $teams;
+			$this->previousx       = $previousx;
+			$this->allteams        = $teams;
 			$this->matchcommentary = sportsmanagementModelMatch::getMatchCommentary($this->match->id);
 		}
 
@@ -120,7 +121,7 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
 					$this->gesamtspiele[$game->leaguename] = new stdClass;
 				}
 
-						  $this->gesamtspiele[$game->leaguename]->gesamtspiele += 1;
+				$this->gesamtspiele[$game->leaguename]->gesamtspiele += 1;
 
 				if ($game->team1_id == $this->teams[0]->id)
 				{
@@ -141,7 +142,7 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
 							$this->gesamtspiele[$game->leaguename]->unentschieden += 1;
 						}
 
-						$this->gesamtspiele[$game->leaguename]->plustore += $game->team1_result;
+						$this->gesamtspiele[$game->leaguename]->plustore  += $game->team1_result;
 						$this->gesamtspiele[$game->leaguename]->minustore += $game->team2_result;
 					}
 				}
@@ -164,39 +165,39 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
 							$this->gesamtspiele[$game->leaguename]->unentschieden += 1;
 						}
 
-						$this->gesamtspiele[$game->leaguename]->plustore += $game->team2_result;
+						$this->gesamtspiele[$game->leaguename]->plustore  += $game->team2_result;
 						$this->gesamtspiele[$game->leaguename]->minustore += $game->team1_result;
 					}
 				}
 
 				if (!isset($this->statgames['home'][$game->team1_result . '-' . $game->team2_result]))
 				{
-					  $this->statgames['home'][$game->team1_result . '-' . $game->team2_result] = 0;
+					$this->statgames['home'][$game->team1_result . '-' . $game->team2_result] = 0;
 				}
 
 				if (!isset($this->statgames['gesamt'][$game->team1_result . '-' . $game->team2_result]))
 				{
-					  $this->statgames['gesamt'][$game->team1_result . '-' . $game->team2_result] = 0;
+					$this->statgames['gesamt'][$game->team1_result . '-' . $game->team2_result] = 0;
 				}
 
 				if (!isset($this->statgames['away'][$game->team1_result . '-' . $game->team2_result]))
 				{
-					  $this->statgames['away'][$game->team1_result . '-' . $game->team2_result]  = 0;
+					$this->statgames['away'][$game->team1_result . '-' . $game->team2_result] = 0;
 				}
 
 				if (!isset($this->statgames['gesamt'][$game->team2_result . '-' . $game->team1_result]))
 				{
-					  $this->statgames['gesamt'][$game->team2_result . '-' . $game->team1_result] = 0;
+					$this->statgames['gesamt'][$game->team2_result . '-' . $game->team1_result] = 0;
 				}
 
 				if ($game->team1_id == $this->teams[0]->id)
 				{
-						$this->statgames['home'][$game->team1_result . '-' . $game->team2_result] += 1;
-						$this->statgames['gesamt'][$game->team1_result . '-' . $game->team2_result] += 1;
+					$this->statgames['home'][$game->team1_result . '-' . $game->team2_result]   += 1;
+					$this->statgames['gesamt'][$game->team1_result . '-' . $game->team2_result] += 1;
 				}
 				elseif ($game->team2_id == $this->teams[0]->id)
 				{
-					$this->statgames['away'][$game->team1_result . '-' . $game->team2_result] += 1;
+					$this->statgames['away'][$game->team1_result . '-' . $game->team2_result]   += 1;
 					$this->statgames['gesamt'][$game->team2_result . '-' . $game->team1_result] += 1;
 				}
 			}

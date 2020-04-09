@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
@@ -32,7 +33,8 @@ class sportsmanagementViewallprojectrounds extends sportsmanagementView
 	/**
 	 * sportsmanagementViewallprojectrounds::display()
 	 *
-	 * @param   mixed $tpl
+	 * @param   mixed  $tpl
+	 *
 	 * @return
 	 */
 	function init()
@@ -60,21 +62,21 @@ class sportsmanagementViewallprojectrounds extends sportsmanagementView
 
 		// $this->tableclass = $jinput->getVar('table_class', 'table','request','string');
 		$this->tableclass = $jinput->request->get('table_class', 'table', 'STR');
-		$option = $jinput->getCmd('option');
-		$starttime = microtime();
+		$option           = $jinput->getCmd('option');
+		$starttime        = microtime();
 
 		$project = sportsmanagementModelProject::getProject();
 
-		$this->project = $project;
-		$this->projectid = $this->project->id;
+		$this->project        = $project;
+		$this->projectid      = $this->project->id;
 		$this->projectmatches = $model->getProjectMatches();
-		$this->rounds = sportsmanagementModelProject::getRounds();
-		$this->overallconfig = sportsmanagementModelProject::getOverallConfig();
-		$this->config = array_merge($this->overallconfig, $model->_params);
-		$this->favteams = sportsmanagementModelProject::getFavTeams($this->projectid);
-		$this->projectteamid = $model->getProjectTeamID($this->favteams);
-		$this->content = $model->getRoundsColumn($this->rounds, $this->config);
-		$this->headertitle = Text::sprintf('COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS2', $this->project->name);
+		$this->rounds         = sportsmanagementModelProject::getRounds();
+		$this->overallconfig  = sportsmanagementModelProject::getOverallConfig();
+		$this->config         = array_merge($this->overallconfig, $model->_params);
+		$this->favteams       = sportsmanagementModelProject::getFavTeams($this->projectid);
+		$this->projectteamid  = $model->getProjectTeamID($this->favteams);
+		$this->content        = $model->getRoundsColumn($this->rounds, $this->config);
+		$this->headertitle    = Text::sprintf('COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS2', $this->project->name);
 	}
 
 }

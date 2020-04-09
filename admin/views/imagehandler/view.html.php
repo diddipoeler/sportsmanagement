@@ -14,6 +14,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\String\StringHelper;
 use Joomla\CMS\Application\WebApplication;
 use Joomla\CMS\Language\Text;
@@ -40,10 +41,10 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
 	 */
 	public function init()
 	{
-		$app    = Factory::getApplication();
+		$app      = Factory::getApplication();
 		$document = Factory::getDocument();
-		$jinput = $app->input;
-		$tpl = '';
+		$jinput   = $app->input;
+		$tpl      = '';
 
 		switch ($this->getLayout())
 		{
@@ -52,78 +53,60 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
 			case 'upload_4':
 				$this->_displayupload($tpl);
 
-return;
-			break;
+				return;
+				break;
 			case 'uploaddraganddrop':
 			case 'uploaddraganddrop_3':
 			case 'uploaddraganddrop_4':
 				$this->folder = ImageSelectSM::getfolder($this->jinput->get('type'));
 				$this->setLayout('uploaddraganddrop');
 
-return;
-			break;
+				return;
+				break;
 		}
 
 		// Get vars
-		$type         = Factory::getApplication()->input->getVar('type');
-		$folder     = ImageSelectSM::getfolder($type);
-		$field         = Factory::getApplication()->input->getVar('field');
-		$fieldid     = Factory::getApplication()->input->getVar('fieldid');
-		$search     = $app->getUserStateFromRequest('com_sportsmanagement.imageselect', 'search', '', 'string');
-		$search     = trim(StringHelper::strtolower($search));
+		$type    = Factory::getApplication()->input->getVar('type');
+		$folder  = ImageSelectSM::getfolder($type);
+		$field   = Factory::getApplication()->input->getVar('field');
+		$fieldid = Factory::getApplication()->input->getVar('fieldid');
+		$search  = $app->getUserStateFromRequest('com_sportsmanagement.imageselect', 'search', '', 'string');
+		$search  = trim(StringHelper::strtolower($search));
 
-			  $jinput->set('folder', $folder);
+		$jinput->set('folder', $folder);
 
 		// Do not allow cache
 		// WebApplication::allowCache(false);
 
 		// Get images
-		$images     = $this->get('Images');
-		$pageNav     = $this->get('Pagination');
+		$images  = $this->get('Images');
+		$pageNav = $this->get('Pagination');
 
-			  // $this->request_url	= $uri->toString();
+		// $this->request_url	= $uri->toString();
 
 		if (count($images) > 0 || $search)
 		{
-			   $this->images    = $images;
-			   $this->type    = $type;
-			   $this->folder    = $folder;
-			   $this->search    = $search;
-			   $this->state    = $this->get('state');
-			   $this->pageNav    = $pageNav;
-			   $this->field    = $field;
-			   $this->fieldid    = $fieldid;
+			$this->images  = $images;
+			$this->type    = $type;
+			$this->folder  = $folder;
+			$this->search  = $search;
+			$this->state   = $this->get('state');
+			$this->pageNav = $pageNav;
+			$this->field   = $field;
+			$this->fieldid = $fieldid;
 
-			   // $this->assign('form'       , $this->get('form'));
-			   // parent::display($tpl);
+			// $this->assign('form'       , $this->get('form'));
+			// parent::display($tpl);
 		}
 		else
 		{
-			   // No images in the folder, redirect to uploadscreen and raise notice
+			// No images in the folder, redirect to uploadscreen and raise notice
 			$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_NO_IMAGES'), 'error');
-			   $this->setLayout('upload');
-			   $this->form = $this->get('form');
-			   $this->_displayupload($tpl);
+			$this->setLayout('upload');
+			$this->form = $this->get('form');
+			$this->_displayupload($tpl);
 
 			return;
-		}
-	}
-
-	/**
-	 * sportsmanagementViewImagehandler::setImage()
-	 *
-	 * @param   integer $index
-	 * @return void
-	 */
-	function setImage($index = 0)
-	{
-		if (isset($this->images[$index]))
-		{
-			$this->_tmp_img = &$this->images[$index];
-		}
-		else
-		{
-			$this->_tmp_img = new JObject;
 		}
 	}
 
@@ -141,33 +124,52 @@ return;
 		$option = $jinput->getCmd('option');
 
 		// Initialise variables
-		$document    = Factory::getDocument();
+		$document = Factory::getDocument();
 
 		// $uri      = Factory::getURI();
-		$params     = ComponentHelper::getParams($option);
-		$type         = $jinput->get('type');
-		$folder     = ImageSelectSM::getfolder($type);
-		$field      = $jinput->get('field');
-		$fieldid      = $jinput->get('fieldid');
-		$menu         = $jinput->set('hidemainmenu', 1);
+		$params  = ComponentHelper::getParams($option);
+		$type    = $jinput->get('type');
+		$folder  = ImageSelectSM::getfolder($type);
+		$field   = $jinput->get('field');
+		$fieldid = $jinput->get('fieldid');
+		$menu    = $jinput->set('hidemainmenu', 1);
 
 		// Get vars
-		$task         = $jinput->get('task');
+		$task = $jinput->get('task');
 
 		jimport('joomla.client.helper');
 		$ftp = JClientHelper::setCredentialsFromRequest('ftp');
 
 		// Assign data to template
-		$this->params    = $params;
+		$this->params = $params;
 
 		// $this->request_url    = $uri->toString();
-		$this->ftp    = $ftp;
-		$this->folder    = $folder;
-		$this->field    = $field;
-		$this->fieldid    = $fieldid;
+		$this->ftp     = $ftp;
+		$this->folder  = $folder;
+		$this->field   = $field;
+		$this->fieldid = $fieldid;
 		$this->menu    = $menu;
 		$this->setLayout('upload');
 
 		// Parent::display($tpl);
+	}
+
+	/**
+	 * sportsmanagementViewImagehandler::setImage()
+	 *
+	 * @param   integer  $index
+	 *
+	 * @return void
+	 */
+	function setImage($index = 0)
+	{
+		if (isset($this->images[$index]))
+		{
+			$this->_tmp_img = &$this->images[$index];
+		}
+		else
+		{
+			$this->_tmp_img = new JObject;
+		}
 	}
 }

@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
@@ -35,18 +36,18 @@ class sportsmanagementModelAbout extends BaseDatabaseModel
 	{
 		$about = new stdClass;
 
-			  // Translations Hosted by
+		// Translations Hosted by
 		$about->translations = '<a href="https://www.transifex.com/jsm/sportsmanagement/">https://www.transifex.com/jsm/sportsmanagement/</a>';
 
 		// Repository Hosted by
 		$about->repository = '<a href="https://github.com/diddipoeler/sportsmanagement">https://github.com/diddipoeler/sportsmanagement</a>';
 
 		// Version
-		$version = sportsmanagementHelper::getVersion();
-		$revision = explode('.', $version);
+		$version        = sportsmanagementHelper::getVersion();
+		$revision       = explode('.', $version);
 		$about->version = '';
 
-			  // Author
+		// Author
 		$about->author = '';
 
 		// Page
@@ -58,13 +59,13 @@ class sportsmanagementModelAbout extends BaseDatabaseModel
 		// Forum
 		$about->forum = 'http://www.fussballineuropa.de/index.php/forum';
 
-			  // Bugtracker
+		// Bugtracker
 		$about->bugs = 'https://github.com/diddipoeler/sportsmanagement/issues';
 
-			  // Wiki
+		// Wiki
 		$about->wiki = 'http://smwiki.diddipoeler.de/';
 
-			  // Date
+		// Date
 		$about->date = '2014-01-01';
 
 		// Developer
@@ -74,7 +75,7 @@ class sportsmanagementModelAbout extends BaseDatabaseModel
 		$about->designer = 'DonClumsy';
 		$about->designer .= ' (Tim Keller), ';
 
-			  // Icons
+		// Icons
 		$about->icons = '<a href="http://www.hollandsevelden.nl/iconset/" target="_blank">Jersey Icons</a> (Hollandsevelden.nl)';
 		$about->icons .= ', <a href="http://www.famfamfam.com/lab/icons/silk/" target="_blank">Silk / Flags Icons</a> (Mark James)';
 		$about->icons .= ', Panel images (Kasi)';
@@ -85,11 +86,11 @@ class sportsmanagementModelAbout extends BaseDatabaseModel
 		// Graphoc library
 		$about->graphic_library = '';
 
-			  // Phpthumb class
+		// Phpthumb class
 		$about->phpthumb = '';
 
-		  // Page
-		  $about->github = 'https://github.com/diddipoeler/sportsmanagement';
+		// Page
+		$about->github          = 'https://github.com/diddipoeler/sportsmanagement';
 		$about->diddipoelerpage = 'http://www.fussballineuropa.de';
 
 		// E-mail

@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
@@ -32,48 +33,18 @@ use Joomla\Registry\Registry;
 class sportsmanagementModelpredictionproject extends AdminModel
 {
 	/**
-	 * Method override to check if you can edit an existing record.
-	 *
-	 * @param   array  $data An array of input data.
-	 * @param   string $key  The name of the key for the primary key.
-	 *
-	 * @return boolean
-	 * @since  1.6
-	 */
-	protected function allowEdit($data = array(), $key = 'id')
-	{
-		// Check specific edit permission then general edit permission.
-		return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.' . ((int) isset($data[$key]) ? $data[$key] : 0)) || parent::allowEdit($data, $key);
-	}
-
-	/**
-	 * Returns a reference to the a Table object, always creating it.
-	 *
-	 * @param  type    The table type to instantiate
-	 * @param  string    A prefix for the table class name. Optional.
-	 * @param  array    Configuration array for model. Optional.
-	 * @return JTable    A database object
-	 * @since  1.6
-	 */
-	public function getTable($type = 'predictionproject', $prefix = 'sportsmanagementTable', $config = array())
-	{
-		$config['dbo'] = sportsmanagementHelper::getDBConnection();
-
-		return Table::getInstance($type, $prefix, $config);
-	}
-
-	/**
 	 * Method to get the record form.
 	 *
-	 * @param   array   $data     Data for the form.
-	 * @param   boolean $loadData True if the form is to load its own data (default case), false if not.
+	 * @param   array    $data      Data for the form.
+	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 *
 	 * @return mixed    A JForm object on success, false on failure
 	 * @since  1.6
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		$app = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
+		$app                  = Factory::getApplication();
+		$option               = Factory::getApplication()->input->getCmd('option');
 		$cfg_which_media_tool = ComponentHelper::getParams($option)->get('cfg_which_media_tool', 0);
 
 		// Get the form.
@@ -99,7 +70,7 @@ class sportsmanagementModelpredictionproject extends AdminModel
 			$form->setFieldAttribute('points_tipp_champ', 'type', 'text');
 		}
 
-			  return $form;
+		return $form;
 	}
 
 	/**
@@ -113,25 +84,6 @@ class sportsmanagementModelpredictionproject extends AdminModel
 	}
 
 	/**
-	 * Method to get the data that should be injected in the form.
-	 *
-	 * @return mixed    The data for the form.
-	 * @since  1.6
-	 */
-	protected function loadFormData()
-	{
-		// Check the session for previously entered form data.
-		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.predictionproject.data', array());
-
-		if (empty($data))
-		{
-			$data = $this->getItem();
-		}
-
-		return $data;
-	}
-
-	/**
 	 * Method to save item order
 	 *
 	 * @access public
@@ -142,7 +94,7 @@ class sportsmanagementModelpredictionproject extends AdminModel
 	{
 		$row =& $this->getTable();
 
-			  // Update ordering values
+		// Update ordering values
 		for ($i = 0; $i < count($pks); $i++)
 		{
 			$row->load((int) $pks[$i]);
@@ -162,23 +114,41 @@ class sportsmanagementModelpredictionproject extends AdminModel
 	}
 
 	/**
+	 * Returns a reference to the a Table object, always creating it.
+	 *
+	 * @param   type    The table type to instantiate
+	 * @param   string    A prefix for the table class name. Optional.
+	 * @param   array    Configuration array for model. Optional.
+	 *
+	 * @return JTable    A database object
+	 * @since  1.6
+	 */
+	public function getTable($type = 'predictionproject', $prefix = 'sportsmanagementTable', $config = array())
+	{
+		$config['dbo'] = sportsmanagementHelper::getDBConnection();
+
+		return Table::getInstance($type, $prefix, $config);
+	}
+
+	/**
 	 * Method to save the form data.
 	 *
-	 * @param  array    The form data.
+	 * @param   array    The form data.
+	 *
 	 * @return boolean    True on success.
 	 * @since  1.6
 	 */
 	public function save($data)
 	{
-		  $app = Factory::getApplication();
-		  $option = Factory::getApplication()->input->getCmd('option');
-		  $date = Factory::getDate();
-		  $user = Factory::getUser();
-		  $post = Factory::getApplication()->input->post->getArray(array());
+		$app    = Factory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+		$date   = Factory::getDate();
+		$user   = Factory::getUser();
+		$post   = Factory::getApplication()->input->post->getArray(array());
 
-		  // Set the values
-		  $data['modified'] = $date->toSql();
-		  $data['modified_by'] = $user->get('id');
+		// Set the values
+		$data['modified']    = $date->toSql();
+		$data['modified_by'] = $user->get('id');
 
 		if (isset($post['extended']) && is_array($post['extended']))
 		{
@@ -188,15 +158,15 @@ class sportsmanagementModelpredictionproject extends AdminModel
 			$data['extended'] = (string) $parameter;
 		}
 
-			 // Proceed with the save
+		// Proceed with the save
 		return parent::save($data);
 	}
-
 
 	/**
 	 * sportsmanagementModelpredictionproject::delete()
 	 *
-	 * @param   mixed $pks
+	 * @param   mixed  $pks
+	 *
 	 * @return
 	 */
 	public function delete(&$pks)
@@ -204,6 +174,40 @@ class sportsmanagementModelpredictionproject extends AdminModel
 		$app = Factory::getApplication();
 
 		return parent::delete($pks);
+	}
+
+	/**
+	 * Method override to check if you can edit an existing record.
+	 *
+	 * @param   array   $data  An array of input data.
+	 * @param   string  $key   The name of the key for the primary key.
+	 *
+	 * @return boolean
+	 * @since  1.6
+	 */
+	protected function allowEdit($data = array(), $key = 'id')
+	{
+		// Check specific edit permission then general edit permission.
+		return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.' . ((int) isset($data[$key]) ? $data[$key] : 0)) || parent::allowEdit($data, $key);
+	}
+
+	/**
+	 * Method to get the data that should be injected in the form.
+	 *
+	 * @return mixed    The data for the form.
+	 * @since  1.6
+	 */
+	protected function loadFormData()
+	{
+		// Check the session for previously entered form data.
+		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.predictionproject.data', array());
+
+		if (empty($data))
+		{
+			$data = $this->getItem();
+		}
+
+		return $data;
 	}
 
 

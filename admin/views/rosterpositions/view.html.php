@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -37,15 +38,15 @@ class sportsmanagementViewrosterpositions extends sportsmanagementView
 	public function init()
 	{
 
-			  $this->table = Table::getInstance('rosterposition', 'sportsmanagementTable');
+		$this->table = Table::getInstance('rosterposition', 'sportsmanagementTable');
 
 	}
 
-		/**
-		 * Add the page title and toolbar.
-		 *
-		 * @since 1.7
-		 */
+	/**
+	 * Add the page title and toolbar.
+	 *
+	 * @since 1.7
+	 */
 	protected function addToolbar()
 	{
 

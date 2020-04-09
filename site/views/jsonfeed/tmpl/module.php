@@ -20,6 +20,7 @@
  */
 
 defined('_JEXEC') or die();
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Factory;
@@ -43,7 +44,7 @@ if (!empty($this->calendars))
 		foreach ($calendar as $item)
 		{
 			$start = clone $item->getStartDate();
-			$end = clone $item->getEndDate();
+			$end   = clone $item->getEndDate();
 
 			do
 			{
@@ -56,8 +57,7 @@ if (!empty($this->calendars))
 
 				$tmp[$date][] = $item;
 				$start->modify("+1 day");
-			}
-			while ($start < $end);
+			} while ($start < $end);
 		}
 	}
 }
@@ -69,7 +69,7 @@ $data = array();
 foreach ($tmp as $date => $events)
 {
 	$linkIDs = array();
-	$itemId = '';
+	$itemId  = '';
 
 	foreach ($events as $event)
 	{
@@ -84,18 +84,18 @@ foreach ($tmp as $date => $events)
 	}
 
 	$parts = explode('-', $date);
-	$day = $parts[2];
+	$day   = $parts[2];
 	$month = $parts[1];
-	$year = $parts[0];
-	$url = Route::_('index.php?option=com_sportsmanagement&view=gcalendar&gcids=' . implode(',', $linkIDs) . $itemId . '#year=' . $year . '&month=' . $month . '&day=' . $day . '&view=agendaDay');
+	$year  = $parts[0];
+	$url   = Route::_('index.php?option=com_sportsmanagement&view=gcalendar&gcids=' . implode(',', $linkIDs) . $itemId . '#year=' . $year . '&month=' . $month . '&day=' . $day . '&view=agendaDay');
 
 	$data[] = array(
-	'id' => $date,
-	'title' => utf8_encode(chr(160)), // Space only works in IE, empty only in Chrome... sighh
-	'start' => $date,
-	'url' => $url,
-	'allDay' => true,
-	'description' => jsmGCalendarUtil::renderEvents($events, sprintf(Text::_('COM_GCALENDAR_JSON_VIEW_EVENT_TITLE'), count($events)) . '<ul>{{#events}}<li>{{title}}</li>{{/events}}</ul>', $params)
+		'id'          => $date,
+		'title'       => utf8_encode(chr(160)), // Space only works in IE, empty only in Chrome... sighh
+		'start'       => $date,
+		'url'         => $url,
+		'allDay'      => true,
+		'description' => jsmGCalendarUtil::renderEvents($events, sprintf(Text::_('COM_GCALENDAR_JSON_VIEW_EVENT_TITLE'), count($events)) . '<ul>{{#events}}<li>{{title}}</li>{{/events}}</ul>', $params)
 	);
 }
 

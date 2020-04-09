@@ -27,9 +27,9 @@ class JGithubPackageOrgsTeams extends JGithubPackage
 	 *
 	 * @param   string  $org  The name of the organization.
 	 *
+	 * @return object
 	 * @since    3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function getList($org)
 	{
@@ -46,9 +46,9 @@ class JGithubPackageOrgsTeams extends JGithubPackage
 	 *
 	 * @param   integer  $id  The team id.
 	 *
+	 * @return object
 	 * @since    3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function get($id)
 	{
@@ -73,11 +73,11 @@ class JGithubPackageOrgsTeams extends JGithubPackage
 	 *                               push - team members can pull and push, but not administer these repositories.
 	 *                               admin - team members can pull, push and administer these repositories.
 	 *
+	 * @return object
 	 * @throws UnexpectedValueException
 	 *
 	 * @since    3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function create($org, $name, array $repoNames = array(), $permission = '')
 	{
@@ -121,10 +121,10 @@ class JGithubPackageOrgsTeams extends JGithubPackage
 	 *                                push - team members can pull and push, but not administer these repositories.
 	 *                                admin - team members can pull, push and administer these repositories.
 	 *
+	 * @return object
 	 * @throws UnexpectedValueException
 	 * @since    3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function edit($id, $name, $permission = '')
 	{
@@ -157,9 +157,9 @@ class JGithubPackageOrgsTeams extends JGithubPackage
 	 *
 	 * @param   integer  $id  The team id.
 	 *
+	 * @return object
 	 * @since    3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function delete($id)
 	{
@@ -179,9 +179,9 @@ class JGithubPackageOrgsTeams extends JGithubPackage
 	 *
 	 * @param   integer  $id  The team id.
 	 *
+	 * @return object
 	 * @since    3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function getListMembers($id)
 	{
@@ -201,10 +201,10 @@ class JGithubPackageOrgsTeams extends JGithubPackage
 	 * @param   integer  $id    The team id.
 	 * @param   string   $user  The name of the user.
 	 *
+	 * @return object
 	 * @throws UnexpectedValueException
 	 * @since    3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function isMember($id, $user)
 	{
@@ -240,9 +240,9 @@ class JGithubPackageOrgsTeams extends JGithubPackage
 	 * @param   integer  $id    The team id.
 	 * @param   string   $user  The name of the user.
 	 *
+	 * @return object
 	 * @since    3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function addMember($id, $user)
 	{
@@ -265,9 +265,9 @@ class JGithubPackageOrgsTeams extends JGithubPackage
 	 * @param   integer  $id    The team id.
 	 * @param   string   $user  The name of the user.
 	 *
+	 * @return object
 	 * @since    3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function removeMember($id, $user)
 	{
@@ -285,9 +285,9 @@ class JGithubPackageOrgsTeams extends JGithubPackage
 	 *
 	 * @param   integer  $id  The team id.
 	 *
+	 * @return object
 	 * @since    3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function getListRepos($id)
 	{
@@ -305,10 +305,10 @@ class JGithubPackageOrgsTeams extends JGithubPackage
 	 * @param   integer  $id    The team id.
 	 * @param   string   $repo  The name of the GitHub repository.
 	 *
+	 * @return object
 	 * @throws UnexpectedValueException
 	 * @since    3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function checkRepo($id, $repo)
 	{
@@ -349,9 +349,9 @@ class JGithubPackageOrgsTeams extends JGithubPackage
 	 * @param   string   $owner  The name of the owner of the GitHub repository.
 	 * @param   string   $repo   The name of the GitHub repository.
 	 *
+	 * @return object
 	 * @since    3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function addRepo($id, $owner, $repo)
 	{
@@ -375,9 +375,9 @@ class JGithubPackageOrgsTeams extends JGithubPackage
 	 * @param   string   $owner  The name of the owner of the GitHub repository.
 	 * @param   string   $repo   The name of the GitHub repository.
 	 *
+	 * @return object
 	 * @since    3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function removeRepo($id, $owner, $repo)
 	{

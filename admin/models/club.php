@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
@@ -31,7 +32,7 @@ class sportsmanagementModelclub extends JSMModelAdmin
 	/**
 	 * Override parent constructor.
 	 *
-	 * @param   array $config An optional associative array of configuration settings.
+	 * @param   array  $config  An optional associative array of configuration settings.
 	 *
 	 * @see   BaseDatabaseModel
 	 * @since 3.2
@@ -50,28 +51,28 @@ class sportsmanagementModelclub extends JSMModelAdmin
 	 */
 	function saveshort()
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
 
 		// Get the input
-		$pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
+		$pks  = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
 		$post = Factory::getApplication()->input->post->getArray(array());
 
-			$result = true;
+		$result = true;
 
 		for ($x = 0; $x < count($pks); $x++)
 		{
-			 $address_parts = array();
-				$address_parts2 = array();
-			$tblClub = & $this->getTable();
+			$address_parts  = array();
+			$address_parts2 = array();
+			$tblClub        = &$this->getTable();
 
-					  $tblClub->id    = $pks[$x];
-			$tblClub->zipcode = $post['zipcode' . $pks[$x]];
+			$tblClub->id       = $pks[$x];
+			$tblClub->zipcode  = $post['zipcode' . $pks[$x]];
 			$tblClub->location = $post['location' . $pks[$x]];
-			$tblClub->address = $post['address' . $pks[$x]];
-			$tblClub->country = $post['country' . $pks[$x]];
+			$tblClub->address  = $post['address' . $pks[$x]];
+			$tblClub->country  = $post['country' . $pks[$x]];
 
-					  $tblClub->unique_id = $post['unique_id' . $pks[$x]];
+			$tblClub->unique_id   = $post['unique_id' . $pks[$x]];
 			$tblClub->new_club_id = $post['new_club_id' . $pks[$x]];
 
 			if (!empty($tblClub->address))
@@ -83,28 +84,28 @@ class sportsmanagementModelclub extends JSMModelAdmin
 			{
 				if (!empty($tblClub->zipcode))
 				{
-					$address_parts[] = $tblClub->zipcode . ' ' . $tblClub->location;
-					 $address_parts2[] = $tblClub->zipcode . ' ' . $tblClub->location;
+					$address_parts[]  = $tblClub->zipcode . ' ' . $tblClub->location;
+					$address_parts2[] = $tblClub->zipcode . ' ' . $tblClub->location;
 				}
 				else
 				{
-					$address_parts[] = $tblClub->location;
-					 $address_parts2[] = $tblClub->location;
+					$address_parts[]  = $tblClub->location;
+					$address_parts2[] = $tblClub->location;
 				}
 			}
 
 			if (!empty($tblClub->country))
 			{
-						$address_parts[] = JSMCountries::getShortCountryName($tblClub->country);
-							  $address_parts2[] = JSMCountries::getShortCountryName($tblClub->country);
+				$address_parts[]  = JSMCountries::getShortCountryName($tblClub->country);
+				$address_parts2[] = JSMCountries::getShortCountryName($tblClub->country);
 			}
 
 			$address = implode(', ', $address_parts);
-			$coords = sportsmanagementHelper::resolveLocation($address);
+			$coords  = sportsmanagementHelper::resolveLocation($address);
 
 			if ($coords)
 			{
-				$tblClub->latitude = $coords['latitude'];
+				$tblClub->latitude  = $coords['latitude'];
 				$tblClub->longitude = $coords['longitude'];
 			}
 			else
@@ -124,7 +125,8 @@ class sportsmanagementModelclub extends JSMModelAdmin
 	/**
 	 * sportsmanagementModelclub::teamsofclub()
 	 *
-	 * @param   mixed $club_id
+	 * @param   mixed  $club_id
+	 *
 	 * @return void
 	 */
 	function teamsofclub($club_id)
@@ -135,10 +137,10 @@ class sportsmanagementModelclub extends JSMModelAdmin
 		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$db     = sportsmanagementHelper::getDBConnection();
+		$query  = $db->getQuery(true);
 
-			  $query->clear();
+		$query->clear();
 		$query->select('t.id,t.name');
 		$query->from('#__sportsmanagement_team AS t');
 		$query->where('t.club_id = ' . $club_id);

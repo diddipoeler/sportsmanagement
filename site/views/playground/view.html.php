@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -38,36 +39,36 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 	{
 
 		sportsmanagementModelProject::setProjectID($this->jinput->getInt("p", 0), $this->jinput->getInt('cfg_which_database', 0));
-		$mdlJSMTeams = BaseDatabaseModel::getInstance("teams", "sportsmanagementModel");
-		$this->playground = sportsmanagementModelPlayground::getPlayground($this->jinput->getInt("pgid", 0), 1);
+		$mdlJSMTeams          = BaseDatabaseModel::getInstance("teams", "sportsmanagementModel");
+		$this->playground     = sportsmanagementModelPlayground::getPlayground($this->jinput->getInt("pgid", 0), 1);
 		$this->address_string = $this->model->getAddressString();
-		$this->teams = $mdlJSMTeams->getTeams($this->playground->id);
+		$this->teams          = $mdlJSMTeams->getTeams($this->playground->id);
 
 		if ($this->config['show_matches'])
 		{
-			  $this->games = $this->model->getNextGames($this->jinput->getInt("p", 0), $this->jinput->getInt("pgid", 0), 0, $this->config['show_all_projects']);
+			$this->games      = $this->model->getNextGames($this->jinput->getInt("p", 0), $this->jinput->getInt("pgid", 0), 0, $this->config['show_all_projects']);
 			$this->gamesteams = $mdlJSMTeams->getTeamsFromMatches($this->games);
 		}
 
 		if ($this->config['show_played_matches'])
 		{
-			$this->playedgames = $this->model->getNextGames($this->jinput->getInt("p", 0), $this->jinput->getInt("pgid", 0), 1, $this->config['show_all_projects']);
+			$this->playedgames      = $this->model->getNextGames($this->jinput->getInt("p", 0), $this->jinput->getInt("pgid", 0), 1, $this->config['show_all_projects']);
 			$this->playedgamesteams = $mdlJSMTeams->getTeamsFromMatches($this->playedgames);
 		}
 
 		if ($this->config['show_maps'])
 		{
-			 /**
- * leaflet benutzen
- */
+			/**
+			 * leaflet benutzen
+			 */
 			if ($this->config['use_which_map'])
 			{
 				$this->mapconfig = sportsmanagementModelProject::getTemplateConfig('map', $this->jinput->getInt('cfg_which_database', 0));
 			}
 
-			 /**
- * kml file generieren
- */
+			/**
+			 * kml file generieren
+			 */
 			if ($this->mapconfig['map_kmlfile'])
 			{
 				$this->geo = new JSMsimpleGMapGeocoder;
@@ -78,8 +79,8 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 		$this->extended = sportsmanagementHelper::getExtended($this->playground->extended, 'playground');
 
 		/**
- * Set page title
- */
+		 * Set page title
+		 */
 		$pageTitle = Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_PAGE_TITLE');
 
 		if (isset($this->playground->name))
@@ -91,10 +92,10 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 		$this->document->addCustomTag('<meta property="og:title" content="' . $this->playground->name . '"/>');
 		$this->document->addCustomTag('<meta property="og:street-address" content="' . $this->address_string . '"/>');
 
-			  $stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/' . $this->option . '/assets/css/' . $this->view . '.css' . '" type="text/css" />' . "\n";
+		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/' . $this->option . '/assets/css/' . $this->view . '.css' . '" type="text/css" />' . "\n";
 		$this->document->addCustomTag($stylelink);
 
-			  $this->headertitle = $this->playground->name;
+		$this->headertitle = $this->playground->name;
 
 	}
 }

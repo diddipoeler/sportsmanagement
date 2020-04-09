@@ -20,6 +20,7 @@
  */
 
 defined('_JEXEC') or die();
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -83,7 +84,7 @@ class JFormFieldDatetimechooser extends FormField
 
 		// Get some system objects.
 		$config = Factory::getConfig();
-		$user = Factory::getUser();
+		$user   = Factory::getUser();
 
 		// If a known filter is given use it.
 		switch (strtoupper((string) $this->element['filter']))
@@ -99,7 +100,7 @@ class JFormFieldDatetimechooser extends FormField
 					// Transform the date string.
 					$this->value = $date->format('Y-m-d H:i:s', true, false);
 				}
-			break;
+				break;
 
 			case 'USER_UTC':
 				// Convert a date to UTC based on the user timezone.
@@ -117,7 +118,7 @@ class JFormFieldDatetimechooser extends FormField
 						$this->value = $date->format('Y-m-d', true, false);
 					}
 				}
-			break;
+				break;
 		}
 
 		return HTMLHelper::_('calendar', $this->value, $this->name, $this->id, $format, $attributes);

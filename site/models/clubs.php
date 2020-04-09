@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -39,39 +40,40 @@ class sportsmanagementModelClubs extends BaseDatabaseModel
 	 *
 	 * @return void
 	 */
-	function __construct( )
+	function __construct()
 	{
 		// Reference global application object
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$jinput = $app->input;
 		parent::__construct();
 
-		self::$projectid = $jinput->request->get('p', 0, 'INT');
-		self::$divisionid = $jinput->request->get('division', 0, 'INT');
+		self::$projectid          = $jinput->request->get('p', 0, 'INT');
+		self::$divisionid         = $jinput->request->get('division', 0, 'INT');
 		self::$cfg_which_database = $jinput->request->get('cfg_which_database', 0, 'INT');
 
-			  sportsmanagementModelProject::$projectid = self::$projectid;
+		sportsmanagementModelProject::$projectid = self::$projectid;
 
 	}
 
 	/**
 	 * sportsmanagementModelClubs::getClubs()
 	 *
-	 * @param   mixed $ordering
+	 * @param   mixed  $ordering
+	 *
 	 * @return
 	 */
-	function getClubs( $ordering = null)
+	function getClubs($ordering = null)
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
-		  $app = Factory::getApplication();
+		$app    = Factory::getApplication();
 
 		// Get a db connection.
-		$db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
+		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
 
-					  $teams = array();
+		$teams = array();
 
-			  $query->select('c.*, \'\' as teams');
+		$query->select('c.*, \'\' as teams');
 		$query->select('CONCAT_WS( \':\', c.id, c.alias ) AS club_slug');
 		$query->from('#__sportsmanagement_club AS c ');
 		$query->join('INNER', '#__sportsmanagement_team AS t ON t.club_id = c.id ');
@@ -88,7 +90,7 @@ class sportsmanagementModelClubs extends BaseDatabaseModel
 			}
 		}
 
-			  $query->group('c.id');
+		$query->group('c.id');
 
 		if ($ordering)
 		{
@@ -101,12 +103,12 @@ class sportsmanagementModelClubs extends BaseDatabaseModel
 
 		$db->setQuery($query);
 
-		if (! $clubs = $db->loadObjectList())
+		if (!$clubs = $db->loadObjectList())
 		{
 			echo $db->getErrorMsg();
 		}
 
-			  $query->clear();
+		$query->clear();
 
 		for ($index = 0; $index < count($clubs); $index++)
 		{
@@ -118,26 +120,26 @@ class sportsmanagementModelClubs extends BaseDatabaseModel
 			$query->join('INNER', '#__sportsmanagement_season_team_id as st ON st.team_id = t.id ');
 			$query->join('INNER', '#__sportsmanagement_project_team AS pt ON st.id = pt.team_id ');
 
-				$query->where('pt.project_id = ' . (int) self::$projectid);
+			$query->where('pt.project_id = ' . (int) self::$projectid);
 
 			if (self::$divisionid != 0)
 			{
 				$query->where('pt.division_id = ' . (int) self::$divisionid);
 			}
 
-			  $query->where('t.club_id = ' . $clubs[$index]->id);
+			$query->where('t.club_id = ' . $clubs[$index]->id);
 
-			  $db->setQuery($query);
+			$db->setQuery($query);
 
-			if (! $teams = $db->loadObjectList())
+			if (!$teams = $db->loadObjectList())
 			{
-							echo $db->getErrorMsg();
+				echo $db->getErrorMsg();
 			}
 
-			  $clubs[$index]->teams = $teams;
+			$clubs[$index]->teams = $teams;
 		}
 
-			return $clubs;
+		return $clubs;
 	}
 
 }

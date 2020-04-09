@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -41,14 +42,14 @@ class sportsmanagementViewTemplates extends sportsmanagementView
 	{
 		$starttime = microtime();
 
-		$this->state = $this->get('State');
+		$this->state         = $this->get('State');
 		$this->sortDirection = $this->state->get('list.direction');
-		$this->sortColumn = $this->state->get('list.ordering');
+		$this->sortColumn    = $this->state->get('list.ordering');
 
 		// $this->project_id = $this->app->getUserState("$this->option.pid", '0');
 		$mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
-		$project = $mdlProject->getProject($this->project_id);
-		$lists = array();
+		$project    = $mdlProject->getProject($this->project_id);
+		$lists      = array();
 
 		// $allTemplates = $model->checklist($this->project_id);
 
@@ -71,13 +72,13 @@ class sportsmanagementViewTemplates extends sportsmanagementView
 				$temptext->text = Text::_($temptext->text);
 			}
 
-			$importlist = array();
-			$importlist[] = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_SELECT_FROM_MASTER'));
-			$importlist = array_merge($importlist, $masterTemplates);
+			$importlist               = array();
+			$importlist[]             = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_SELECT_FROM_MASTER'));
+			$importlist               = array_merge($importlist, $masterTemplates);
 			$lists['mastertemplates'] = HTMLHelper::_('select.genericlist', $importlist, 'templateid', 'class="inputbox" onChange="Joomla.submitform(\'template.masterimport\', this.form);" ');
-			$master = $this->model->getMasterName();
-			$this->master = $master;
-			$templates = array_merge($templates, $allMasterTemplates);
+			$master                   = $this->model->getMasterName();
+			$this->master             = $master;
+			$templates                = array_merge($templates, $allMasterTemplates);
 
 			$total = count($templates);
 		}
@@ -85,9 +86,9 @@ class sportsmanagementViewTemplates extends sportsmanagementView
 		$pagination = $this->get('Pagination');
 
 		// $this->user = Factory::getUser();
-		$this->lists = $lists; // otherwise no indication of the list in default_data.php on line 64!
-		$this->templates = $templates;
-		$this->projectws = $project;
+		$this->lists      = $lists; // otherwise no indication of the list in default_data.php on line 64!
+		$this->templates  = $templates;
+		$this->projectws  = $project;
 		$this->pagination = $pagination;
 
 		// $this->request_url = $uri->toString();
@@ -102,7 +103,7 @@ class sportsmanagementViewTemplates extends sportsmanagementView
 	{
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_TITLE');
 
-			ToolbarHelper::editList('template.edit');
+		ToolbarHelper::editList('template.edit');
 
 		if ($this->projectws->master_template)
 		{

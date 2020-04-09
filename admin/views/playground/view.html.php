@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Environment\Browser;
@@ -49,7 +50,7 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 			$this->map = true;
 		}
 
-			  $this->extended    = sportsmanagementHelper::getExtended($this->item->extended, 'playground');
+		$this->extended = sportsmanagementHelper::getExtended($this->item->extended, 'playground');
 
 		if (version_compare(JSM_JVERSION, '4', 'eq'))
 		{

@@ -76,9 +76,9 @@ if (!defined('_JSMMATCHLISTMODURL'))
 }
 
 /**
-*
+ *
  * Include the functions only once
-*/
+ */
 JLoader::register('modMatchesSportsmanagementHelper', __DIR__ . '/helper.php');
 JLoader::register('MatchesSportsmanagementConnector', __DIR__ . '/connectors/sportsmanagement.php');
 
@@ -88,14 +88,14 @@ JLoader::register('MatchesSportsmanagementConnector', __DIR__ . '/connectors/spo
  */
 if ($params->get('ishd_update'))
 {
-	$app = Factory::getApplication();
+	$app       = Factory::getApplication();
 	$projectid = $params->get('p');
 	JLoader::import('components.com_sportsmanagement.extensions.jsminlinehockey.admin.models.jsminlinehockey', JPATH_SITE);
 	$actionsModel = BaseDatabaseModel::getInstance('jsminlinehockey', 'sportsmanagementModel');
 
 	for ($a = 0; $a < sizeof($projectid); $a++)
 	{
-		$project_id = (int) $projectid[$a];
+		$project_id  = (int) $projectid[$a];
 		$count_games = MatchesSportsmanagementConnector::getCountGames($project_id, (int) $params->get('ishd_update_hour', 4));
 
 		if ($count_games)
@@ -105,10 +105,10 @@ if ($params->get('ishd_update'))
 	}
 }
 
-$ajax = $app->input->post->get('ajaxMListMod', 0);
+$ajax     = $app->input->post->get('ajaxMListMod', 0);
 $match_id = $app->input->post->get('match_id', 0);
-$nr = $app->input->post->get('nr', -1);
-$ajaxmod = $app->input->post->get('ajaxmodid', 0);
+$nr       = $app->input->post->get('nr', -1);
+$ajaxmod  = $app->input->post->get('ajaxmodid', 0);
 
 $template = $params->get('template', 'default');
 
@@ -162,10 +162,10 @@ $doc->addScriptDeclaration(
   );
   '
 );
-$mod = new MatchesSportsmanagementConnector($params, $module->id, $match_id);
-$lastheading = '';
+$mod          = new MatchesSportsmanagementConnector($params, $module->id, $match_id);
+$lastheading  = '';
 $oldprojectid = 0;
-$oldround_id = 0;
+$oldround_id  = 0;
 
 if ($ajax == 0)
 {
@@ -186,9 +186,9 @@ if (count($matches) > 0)
 			continue;
 		}
 
-		$styleclass = ($cnt % 2 == 1) ? $params->get('sectiontableentry1') : $params->get('sectiontableentry2');
+		$styleclass    = ($cnt % 2 == 1) ? $params->get('sectiontableentry1') : $params->get('sectiontableentry2');
 		$show_pheading = false;
-		$pheading = '';
+		$pheading      = '';
 
 		if (isset($match['type']))
 		{
@@ -211,9 +211,9 @@ if (count($matches) > 0)
 		}
 
 		include ModuleHelper::getLayoutPath($module->module, $template . DIRECTORY_SEPARATOR . 'match');
-		$lastheading = $heading;
+		$lastheading  = $heading;
 		$oldprojectid = $match['project_id'];
-		$oldround_id = $match['round_id'];
+		$oldround_id  = $match['round_id'];
 		$cnt++;
 	}
 }

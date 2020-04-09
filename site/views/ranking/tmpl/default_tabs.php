@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -71,8 +72,6 @@ if ($this->config['show_table_1']
 }
 
 
-
-
 if ($this->config['show_colorlegend'])
 {
 	echo $this->loadTemplate('colorlegend');
@@ -91,7 +90,6 @@ if ($this->config['show_help'])
 }
 
 echo HTMLHelper::_('bootstrap.endTab');
-
 
 
 if ($this->config['show_projectinfo'])

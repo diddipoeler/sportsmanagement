@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -39,41 +40,41 @@ class sportsmanagementViewTemplate extends sportsmanagementView
 	 */
 	public function init()
 	{
-		$lists = array();
+		$lists     = array();
 		$starttime = microtime();
 
 		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
-		$mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
-		$project = $mdlProject->getProject($this->project_id);
+		$mdlProject       = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
+		$project          = $mdlProject->getProject($this->project_id);
 
-			  $templatepath = JPATH_COMPONENT_SITE . DIRECTORY_SEPARATOR . 'settings';
-		$xmlfile = $templatepath . DIRECTORY_SEPARATOR . 'default' . DIRECTORY_SEPARATOR . $this->item->template . '.xml';
+		$templatepath = JPATH_COMPONENT_SITE . DIRECTORY_SEPARATOR . 'settings';
+		$xmlfile      = $templatepath . DIRECTORY_SEPARATOR . 'default' . DIRECTORY_SEPARATOR . $this->item->template . '.xml';
 
-			 $form = Form::getInstance($this->item->template, $xmlfile, array('control' => 'params'));
+		$form = Form::getInstance($this->item->template, $xmlfile, array('control' => 'params'));
 		$form->bind($this->item->params);
 
-			$this->form = $form;
+		$this->form = $form;
 
 		switch ($this->form->getName())
 		{
 			case 'ranking':
-				$mdlProjecteams = BaseDatabaseModel::getInstance('Projectteams', 'sportsmanagementModel');
+				$mdlProjecteams     = BaseDatabaseModel::getInstance('Projectteams', 'sportsmanagementModel');
 				$iProjectTeamsCount = $mdlProjecteams->getProjectTeamsCount($this->project_id);
-				$this->teamscount = $iProjectTeamsCount;
+				$this->teamscount   = $iProjectTeamsCount;
 				$this->form->setFieldAttribute('colors_ranking', 'rankingteams', $iProjectTeamsCount);
 				$this->form->setFieldAttribute('colors', 'type', 'hidden');
 
-						  $colors = $this->form->getValue('colors');
+				$colors         = $this->form->getValue('colors');
 				$colors_ranking = $this->form->getValue('colors_ranking');
 
-					  $count = 1;
+				$count = 1;
 				$teile = explode(";", $colors);
 
 				if (ComponentHelper::getParams($this->option)->get('show_debug_info_backend'))
 				{
-						$this->app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' colors -> ' . TVarDumper::dump($colors, 10, true) . ''), '');
-						$this->app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' colors_ranking -> ' . TVarDumper::dump($colors_ranking, 10, true) . ''), '');
-						$this->app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' teile -> ' . TVarDumper::dump($teile, 10, true) . ''), '');
+					$this->app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' colors -> ' . TVarDumper::dump($colors, 10, true) . ''), '');
+					$this->app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' colors_ranking -> ' . TVarDumper::dump($colors_ranking, 10, true) . ''), '');
+					$this->app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' teile -> ' . TVarDumper::dump($teile, 10, true) . ''), '');
 				}
 
 				foreach ($teile as $key => $value)
@@ -86,10 +87,10 @@ class sportsmanagementViewTemplate extends sportsmanagementView
 						{
 							if (!isset($colors_ranking[$count]))
 							{
-								$colors_ranking[$count]['von'] = '';
-								$colors_ranking[$count]['bis'] = '';
+								$colors_ranking[$count]['von']   = '';
+								$colors_ranking[$count]['bis']   = '';
 								$colors_ranking[$count]['color'] = '';
-								$colors_ranking[$count]['text'] = '';
+								$colors_ranking[$count]['text']  = '';
 							}
 
 							if (ComponentHelper::getParams($this->option)->get('show_debug_info_backend'))
@@ -98,7 +99,7 @@ class sportsmanagementViewTemplate extends sportsmanagementView
 								$this->app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' count -> ' . TVarDumper::dump($count, 10, true) . ''), '');
 							}
 
-							 list($colors_ranking[$count]['von'], $colors_ranking[$count]['bis'], $colors_ranking[$count]['color'], $colors_ranking[$count]['text'] ) = $teile2;
+							list($colors_ranking[$count]['von'], $colors_ranking[$count]['bis'], $colors_ranking[$count]['color'], $colors_ranking[$count]['text']) = $teile2;
 							$count++;
 						}
 					}
@@ -109,39 +110,40 @@ class sportsmanagementViewTemplate extends sportsmanagementView
 					$this->app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' colors_ranking -> ' . TVarDumper::dump($colors_ranking, 10, true) . ''), '');
 				}
 
-						  $this->form->setValue('colors_ranking', null, $colors_ranking);
+				$this->form->setValue('colors_ranking', null, $colors_ranking);
 
 				break;
 		}
 
-			$master_id = ($project->master_template) ? $project->master_template : '-1';
-			$templates = array();
-			$res = $this->model->getAllTemplatesList($project->id, $master_id);
-			$templates = array_merge($templates, $res);
-			$lists['templates'] = HTMLHelper::_(
-				'select.genericlist', $templates,
-				'new_id',
-				'class="inputbox" size="1" onchange="javascript: Joomla.submitbutton(\'templates.changetemplate\');"',
-				'value',
-				'text',
-				$this->item->id
-			);
+		$master_id          = ($project->master_template) ? $project->master_template : '-1';
+		$templates          = array();
+		$res                = $this->model->getAllTemplatesList($project->id, $master_id);
+		$templates          = array_merge($templates, $res);
+		$lists['templates'] = HTMLHelper::_(
+			'select.genericlist', $templates,
+			'new_id',
+			'class="inputbox" size="1" onchange="javascript: Joomla.submitbutton(\'templates.changetemplate\');"',
+			'value',
+			'text',
+			$this->item->id
+		);
 
-			  $this->template = $this->item;
+		$this->template = $this->item;
 
-			  $this->templatename = $this->form->getName();
-		$this->project = $project;
-		$this->lists = $lists;
+		$this->templatename = $this->form->getName();
+		$this->project      = $project;
+		$this->lists        = $lists;
 
-			  /**
- * Load the language files for the contact integration
- */
+		/**
+		 * Load the language files for the contact integration
+		 */
 		$jlang = Factory::getLanguage();
 		$jlang->load('com_contact', JPATH_ADMINISTRATOR, 'en-GB', true);
 		$jlang->load('com_contact', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
 		$jlang->load('com_contact', JPATH_ADMINISTRATOR, null, true);
 
 	}
+
 	/**
 	 * Add the page title and toolbar.
 	 *
@@ -152,12 +154,10 @@ class sportsmanagementViewTemplate extends sportsmanagementView
 		$this->jinput->set('hidemainmenu', true);
 		$this->jinput->set('pid', $this->project_id);
 		$this->item->name = $this->item->template;
-		$this->title = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_EDIT', (Text::_($this->item->title)));
-		$this->icon = 'template';
+		$this->title      = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_EDIT', (Text::_($this->item->title)));
+		$this->icon       = 'template';
 		parent::addToolbar();
 	}
-
-
 
 
 }

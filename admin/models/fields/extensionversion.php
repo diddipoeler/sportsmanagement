@@ -12,6 +12,7 @@
 
 
 defined('_JEXEC') or die;
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -35,17 +36,38 @@ class JFormFieldExtensionVersion extends FormField
 	protected $version;
 
 	/**
+	 * FormFieldExtensionVersion::setup()
+	 *
+	 * @param   mixed  $element
+	 * @param   mixed  $value
+	 * @param   mixed  $group
+	 *
+	 * @return
+	 */
+	public function setup(SimpleXMLElement $element, $value, $group = null)
+	{
+		$return = parent::setup($element, $value, $group);
+
+		if ($return)
+		{
+			$this->version = isset($this->element['version']) ? $this->element['version'] : '';
+		}
+
+		return $return;
+	}
+
+	/**
 	 * FormFieldExtensionVersion::getLabel()
 	 *
 	 * @return
 	 */
 	protected function getLabel()
 	{
-		$lang = Factory::getLanguage();
-		$extension = 'com_sportsmanagement';
-		$base_dir = JPATH_ADMINISTRATOR;
+		$lang         = Factory::getLanguage();
+		$extension    = 'com_sportsmanagement';
+		$base_dir     = JPATH_ADMINISTRATOR;
 		$language_tag = $lang->getTag();
-		$reload = true;
+		$reload       = true;
 		$lang->load($extension, $base_dir, $language_tag, $reload);
 		$html = '';
 		$html .= '<div style="clear: both;">' . Text::_('COM_SPORTSMANAGEMENT_VERSION_LABEL') . '</div>';
@@ -65,26 +87,6 @@ class JFormFieldExtensionVersion extends FormField
 		$html .= '</div>';
 
 		return $html;
-	}
-
-	/**
-	 * FormFieldExtensionVersion::setup()
-	 *
-	 * @param   mixed $element
-	 * @param   mixed $value
-	 * @param   mixed $group
-	 * @return
-	 */
-	public function setup(SimpleXMLElement $element, $value, $group = null)
-	{
-		$return = parent::setup($element, $value, $group);
-
-		if ($return)
-		{
-			$this->version = isset($this->element['version']) ? $this->element['version'] : '';
-		}
-
-		return $return;
 	}
 
 }

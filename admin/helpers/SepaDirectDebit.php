@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 class PropTool
 {
 
-	public static function transfer( $destObj, $sourceArray, $propList )
+	public static function transfer($destObj, $sourceArray, $propList)
 	{
 		foreach ($propList as $propName)
 		{
@@ -44,17 +44,17 @@ class PropTool
 
 class Creditor
 {
-	private static $propList = array( 'name', 'iban', 'bic', 'identifier' );
+	private static $propList = array('name', 'iban', 'bic', 'identifier');
 
-	public  $name = '';
+	public $name = '';
 
-	public  $iban = '';
+	public $iban = '';
 
-	public  $bic = '';
+	public $bic = '';
 
-	public  $identifier = '';       // Creditor Identifier (Glaeubiger_Identifikationsnummer)
+	public $identifier = '';       // Creditor Identifier (Glaeubiger_Identifikationsnummer)
 
-	function __construct( $initData='' )
+	function __construct($initData = '')
 	{
 		if (is_array($initData))
 		{
@@ -62,12 +62,12 @@ class Creditor
 		}
 	}
 
-	public function setInfo( array $data )
+	public function setInfo(array $data)
 	{
 		PropTool::transfer($this, $data, self::$propList);
 	}
 
-	public function addXML( \SimpleXMLElement &$xml )     // Pass by ref!
+	public function addXML(\SimpleXMLElement &$xml)     // Pass by ref!
 	{
 		$xml->addChild('Cdtr')->addChild('Nm', $this->name);
 		$xml->addChild('CdtrAcct')->addChild('Id')->addChild('IBAN', $this->iban);
@@ -79,36 +79,37 @@ class Creditor
 		$Othr->addChild('Id', $this->identifier);
 		$Othr->addChild('SchmeNm')->addChild('Prtry', 'SEPA');
 	}
-};
+}
+
+;
 
 
 class Debtor
 {
-	private static  $propList = array( 'mandateID', 'name', 'iban', 'bic', 'amount', 'currency', 'info', 'ultimateDebtor', 'mandateDateOfSignature', 'transferID' );
+	private static $propList = array('mandateID', 'name', 'iban', 'bic', 'amount', 'currency', 'info', 'ultimateDebtor', 'mandateDateOfSignature', 'transferID');
 
-	public  $transferID = '';                 // End2End ID
+	public $transferID = '';                 // End2End ID
 
-	public  $mandateID = '';                  // Muss Mandaten vorher mitgeteilt werden und dann immer gleich
+	public $mandateID = '';                  // Muss Mandaten vorher mitgeteilt werden und dann immer gleich
 
-	public  $mandateDateOfSignature = '';     // Wann Mandat unterzeichnet hat ISODATE
+	public $mandateDateOfSignature = '';     // Wann Mandat unterzeichnet hat ISODATE
 
-	public  $name = '';
+	public $name = '';
 
-	public  $iban = '';
+	public $iban = '';
 
-	public  $bic = '';
+	public $bic = '';
 
-	public  $amount = 0.0;
+	public $amount = 0.0;
 
-	public  $currency = 'EUR';
+	public $currency = 'EUR';
 
-	public  $info = '';                 // Remittance Information (max 140 Chars.!!!!)
+	public $info = '';                 // Remittance Information (max 140 Chars.!!!!)
 
-	public  $ultimateDebtor = '';       // Zahlungspflichtiger sofern abweichend vom Kontoinhaber, z.B. Kind des Kontoinhabers
+	public $ultimateDebtor = '';       // Zahlungspflichtiger sofern abweichend vom Kontoinhaber, z.B. Kind des Kontoinhabers
 
 
-
-	function __construct( $initData='' )
+	function __construct($initData = '')
 	{
 		if (is_array($initData))
 		{
@@ -116,12 +117,12 @@ class Debtor
 		}
 	}
 
-	public function setInfo( array $data )
+	public function setInfo(array $data)
 	{
 		PropTool::transfer($this, $data, self::$propList);
 	}
 
-	public function addXML( \SimpleXMLElement &$xml )     // Pass by ref!
+	public function addXML(\SimpleXMLElement &$xml)     // Pass by ref!
 	{
 		$inf = $xml->addChild('DrctDbtTxInf');
 		$inf->addChild('PmtId')->addChild('EndToEndId', $this->transferID);
@@ -148,7 +149,7 @@ class Debtor
 			$inf->addChild('UltmtDbtr')->addChild('Nm', $this->ultimateDebtor);
 		}
 
-			$inf->addChild('RmtInf')->addChild('Ustrd', $this->info);
+		$inf->addChild('RmtInf')->addChild('Ustrd', $this->info);
 	}
 
 }
@@ -156,31 +157,31 @@ class Debtor
 
 class SepaDirectDebit
 {
-	private static  $propList = array( 'messageID', 'paymentID', 'initiator', 'sequenceType', 'creationDateTime', 'requestedCollectionDate' );
+	private static $propList = array('messageID', 'paymentID', 'initiator', 'sequenceType', 'creationDateTime', 'requestedCollectionDate');
 
-	private static  $seqTypes = array( 'FNAL', 'FRST', 'OOFF', 'RCUR' );
+	private static $seqTypes = array('FNAL', 'FRST', 'OOFF', 'RCUR');
 
-	public  $messageID          = '';
+	public $messageID = '';
 
-	public  $paymentID          = '';
+	public $paymentID = '';
 
-	public  $initiator          = '';
+	public $initiator = '';
 
-	public  $creditor           = null;
+	public $creditor = null;
 
-	public  $debtorList         = array();
+	public $debtorList = array();
 
-	public  $sequenceType       = 'OOFF';     // Einmallastschrift
+	public $sequenceType = 'OOFF';     // Einmallastschrift
 
-	public  $creationDateTime;                // DateTime
+	public $creationDateTime;                // DateTime
 
-	public  $requestedCollectionDate;         // DateTime
+	public $requestedCollectionDate;         // DateTime
 
-	function __construct( $initData='' )
+	function __construct($initData = '')
 	{
-		$ti     = new \DateInterval("P5D");   // 5 Days from now
+		$ti = new \DateInterval("P5D");   // 5 Days from now
 
-			 $this->creationDateTime = new \DateTime;
+		$this->creationDateTime        = new \DateTime;
 		$this->requestedCollectionDate = new \DateTime;
 		$this->requestedCollectionDate->add($ti);
 
@@ -190,12 +191,12 @@ class SepaDirectDebit
 		}
 	}
 
-	public function setInfo( array $data )
+	public function setInfo(array $data)
 	{
 		PropTool::transfer($this, $data, self::$propList);
 	}
 
-	public function setCreditor( Creditor $creditor, $updateInitiator=true )
+	public function setCreditor(Creditor $creditor, $updateInitiator = true)
 	{
 		$this->creditor = $creditor;
 
@@ -205,21 +206,9 @@ class SepaDirectDebit
 		}
 	}
 
-	public function addDebtor( Debtor $debtor )
+	public function addDebtor(Debtor $debtor)
 	{
 		$this->debtorList[] = $debtor;
-	}
-
-	private function calcCtrlSum()
-	{
-		$back = 0.0;
-
-		foreach ($this->debtorList as $debtorObj)
-		{
-			$back += $debtorObj->amount;
-		}
-
-			 return $back;
 	}
 
 	public function toXML()
@@ -232,35 +221,35 @@ class SepaDirectDebit
 			$this->messageID = time();
 		}
 
-			 $grpHdr = $sxml->addChild('CstmrDrctDbtInitn')->addChild('GrpHdr');
-			$grpHdr->addChild('MsgId', $this->messageID);
-			$grpHdr->addChild('CreDtTm', $this->creationDateTime->format('Y-m-d\TH:i:s'));
-			$grpHdr->addChild('NbOfTxs', count($this->debtorList));
-			$grpHdr->addChild('CtrlSum', $this->calcCtrlSum());
-			$grpHdr->addChild('InitgPty');
-			$grpHdr->InitgPty->addChild('Nm', $this->initiator);
+		$grpHdr = $sxml->addChild('CstmrDrctDbtInitn')->addChild('GrpHdr');
+		$grpHdr->addChild('MsgId', $this->messageID);
+		$grpHdr->addChild('CreDtTm', $this->creationDateTime->format('Y-m-d\TH:i:s'));
+		$grpHdr->addChild('NbOfTxs', count($this->debtorList));
+		$grpHdr->addChild('CtrlSum', $this->calcCtrlSum());
+		$grpHdr->addChild('InitgPty');
+		$grpHdr->InitgPty->addChild('Nm', $this->initiator);
 
-			 $pmt = $sxml->CstmrDrctDbtInitn->addChild('PmtInf');
+		$pmt = $sxml->CstmrDrctDbtInitn->addChild('PmtInf');
 
 		if ($this->paymentID != '')
 		{
-					$pmt->addChild('PmtInfId', $this->paymentID);
+			$pmt->addChild('PmtInfId', $this->paymentID);
 		}
 
-			$pmt->addChild('PmtMtd', 'DD');
+		$pmt->addChild('PmtMtd', 'DD');
 
-			// DirectDebit
-			// $pmt->addChild( 'BtchBookg', 'true' );    // not set => use default value of the bank
-			$pmt->addChild('NbOfTxs', count($this->debtorList));
-			$pmt->addChild('CtrlSum', $this->calcCtrlSum());
+		// DirectDebit
+		// $pmt->addChild( 'BtchBookg', 'true' );    // not set => use default value of the bank
+		$pmt->addChild('NbOfTxs', count($this->debtorList));
+		$pmt->addChild('CtrlSum', $this->calcCtrlSum());
 
-			 $pmtpi = $pmt->addChild('PmtTpInf');
-			$pmtpi->addChild('SvcLvl')->addChild('Cd', 'SEPA');
-			$pmtpi->addChild('LclInstrm')->addChild('Cd', 'CORE');
-			$pmtpi->addChild('SeqTp', $this->sequenceType);
+		$pmtpi = $pmt->addChild('PmtTpInf');
+		$pmtpi->addChild('SvcLvl')->addChild('Cd', 'SEPA');
+		$pmtpi->addChild('LclInstrm')->addChild('Cd', 'CORE');
+		$pmtpi->addChild('SeqTp', $this->sequenceType);
 
-			 $pmt->addChild('ReqdColltnDt', $this->requestedCollectionDate->format('Y-m-d'));
-			$this->creditor->addXML($pmt);
+		$pmt->addChild('ReqdColltnDt', $this->requestedCollectionDate->format('Y-m-d'));
+		$this->creditor->addXML($pmt);
 
 		if (count($this->debtorList) > 0)
 		{
@@ -270,6 +259,18 @@ class SepaDirectDebit
 			}
 		}
 
-			return $sxml->asXML();
+		return $sxml->asXML();
+	}
+
+	private function calcCtrlSum()
+	{
+		$back = 0.0;
+
+		foreach ($this->debtorList as $debtorObj)
+		{
+			$back += $debtorObj->amount;
+		}
+
+		return $back;
 	}
 }

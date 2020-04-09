@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -57,13 +58,13 @@ class sportsmanagementModelcpanel extends JSMModelLegacy
 	 */
 	public function getGithubRequests()
 	{
-		$app = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
+		$app        = Factory::getApplication();
+		$option     = Factory::getApplication()->input->getCmd('option');
 		$paramsdata = ComponentHelper::getParams($option);
 
 		// Load the parameters
 		$uname = ComponentHelper::getParams($option)->get('cfg_github_username', 'diddipoeler');
-		$repo = ComponentHelper::getParams($option)->get('cfg_github_repository', 'sportsmanagement');
+		$repo  = ComponentHelper::getParams($option)->get('cfg_github_repository', 'sportsmanagement');
 
 		// Convert the list name to a useable string for the JSON
 		if ($repo)
@@ -93,78 +94,27 @@ class sportsmanagementModelcpanel extends JSMModelLegacy
 	}
 
 	/**
-	 * sportsmanagementModelcpanel::getInstalledPlugin()
+	 * Function to convert a formatted repo name into it's URL equivalent
 	 *
-	 * @param   mixed $plugin
-	 * @return
-	 */
-	function getInstalledPlugin($plugin)
-	{
-		// $app = Factory::getApplication();
-		//  $option = Factory::getApplication()->input->getCmd('option');
-		//  $db = sportsmanagementHelper::getDBConnection();
-		//        $query = $db->getQuery(true);
-		$this->jsmquery->clear();
-		$this->jsmquery->select('a.extension_id');
-		$this->jsmquery->from('#__extensions AS a');
-
-		// $type = $db->Quote($type);
-		$this->jsmquery->where("a.type LIKE 'plugin' ");
-		$this->jsmquery->where("a.element LIKE '" . $plugin . "'");
-
-		$this->jsmdb->setQuery($this->jsmquery);
-
-		return $this->jsmdb->loadResult();
-	}
-
-	/**
-	 * sportsmanagementModelcpanel::checkcountry()
+	 * @param   string  $repo  The user inputted repo name
 	 *
-	 * @return
-	 */
-	function checkcountry()
-	{
-		$starttime = microtime();
-
-		$this->jsmquery->clear();
-
-		// Select some fields
-		$this->jsmquery->select('count(*) AS count');
-
-		// From the table
-		$this->jsmquery->from('#__sportsmanagement_countries');
-		$this->jsmdb->setQuery($this->jsmquery);
-
-		return $this->jsmdb->loadResult();
-	}
-
-	/**
-	 * sportsmanagementModelcpanel::checksporttype()
+	 * @return string  The repo name converted
 	 *
-	 * @param   mixed $type
-	 * @return
+	 * @since 1.0
 	 */
-	function checksporttype($type)
+	static function toAscii($repo)
 	{
-		$starttime = microtime();
-		$type = strtoupper($type);
+		$clean = preg_replace("/[^a-z'A-Z0-9\/_|+ -]/", '', $repo);
+		$clean = strtolower(trim($clean, '-'));
+		$repo  = preg_replace("/[\/_|+ -']+/", '-', $clean);
 
-		// Select some fields
-		$this->jsmquery->clear();
-		$this->jsmquery->select('count(*) AS count');
-
-		// From the table
-		$this->jsmquery->from('#__sportsmanagement_sports_type');
-		$this->jsmquery->where('name LIKE ' . $this->jsmdb->Quote('%' . $type . '%'));
-		$this->jsmdb->setQuery($this->jsmquery);
-
-		return $this->jsmdb->loadResult();
+		return $repo;
 	}
 
 	/**
 	 * Function to fetch a JSON feed
 	 *
-	 * @param   string $req The URL of the feed to load
+	 * @param   string  $req  The URL of the feed to load
 	 *
 	 * @return array  The decoded JSON query
 	 *
@@ -197,8 +147,8 @@ class sportsmanagementModelcpanel extends JSMModelLegacy
 	/**
 	 * Function to process the GitHub data into a formatted object
 	 *
-	 * @param   array  $obj    The JSON data
-	 * @param   object $params The module parameters
+	 * @param   array   $obj     The JSON data
+	 * @param   object  $params  The module parameters
 	 *
 	 * @return array  An array of data for output
 	 *
@@ -210,11 +160,11 @@ class sportsmanagementModelcpanel extends JSMModelLegacy
 
 		// Initialize
 		$github = array();
-		$i = 0;
+		$i      = 0;
 
 		// Load the parameters
 		$uname = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_github_username', '');
-		$repo = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_github_repository', '');
+		$repo  = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_github_repository', '');
 		$count = 15;
 
 		// Convert the list name to a useable string for the JSON
@@ -229,7 +179,7 @@ class sportsmanagementModelcpanel extends JSMModelLegacy
 			if ($i <= $count)
 			{
 				// Initialize a new object
-				$temp = new stdClass;
+				$temp         = new stdClass;
 				$temp->commit = new stdClass;
 
 				// The commit message linked to the commit
@@ -282,21 +232,74 @@ class sportsmanagementModelcpanel extends JSMModelLegacy
 	}
 
 	/**
-	 * Function to convert a formatted repo name into it's URL equivalent
+	 * sportsmanagementModelcpanel::getInstalledPlugin()
 	 *
-	 * @param   string $repo The user inputted repo name
+	 * @param   mixed  $plugin
 	 *
-	 * @return string  The repo name converted
-	 *
-	 * @since 1.0
+	 * @return
 	 */
-	static function toAscii($repo)
+	function getInstalledPlugin($plugin)
 	{
-		$clean = preg_replace("/[^a-z'A-Z0-9\/_|+ -]/", '', $repo);
-		$clean = strtolower(trim($clean, '-'));
-		$repo = preg_replace("/[\/_|+ -']+/", '-', $clean);
+		// $app = Factory::getApplication();
+		//  $option = Factory::getApplication()->input->getCmd('option');
+		//  $db = sportsmanagementHelper::getDBConnection();
+		//        $query = $db->getQuery(true);
+		$this->jsmquery->clear();
+		$this->jsmquery->select('a.extension_id');
+		$this->jsmquery->from('#__extensions AS a');
 
-		return $repo;
+		// $type = $db->Quote($type);
+		$this->jsmquery->where("a.type LIKE 'plugin' ");
+		$this->jsmquery->where("a.element LIKE '" . $plugin . "'");
+
+		$this->jsmdb->setQuery($this->jsmquery);
+
+		return $this->jsmdb->loadResult();
+	}
+
+	/**
+	 * sportsmanagementModelcpanel::checkcountry()
+	 *
+	 * @return
+	 */
+	function checkcountry()
+	{
+		$starttime = microtime();
+
+		$this->jsmquery->clear();
+
+		// Select some fields
+		$this->jsmquery->select('count(*) AS count');
+
+		// From the table
+		$this->jsmquery->from('#__sportsmanagement_countries');
+		$this->jsmdb->setQuery($this->jsmquery);
+
+		return $this->jsmdb->loadResult();
+	}
+
+	/**
+	 * sportsmanagementModelcpanel::checksporttype()
+	 *
+	 * @param   mixed  $type
+	 *
+	 * @return
+	 */
+	function checksporttype($type)
+	{
+		$starttime = microtime();
+		$type      = strtoupper($type);
+
+		// Select some fields
+		$this->jsmquery->clear();
+		$this->jsmquery->select('count(*) AS count');
+
+		// From the table
+		$this->jsmquery->from('#__sportsmanagement_sports_type');
+		$this->jsmquery->where('name LIKE ' . $this->jsmdb->Quote('%' . $type . '%'));
+		$this->jsmdb->setQuery($this->jsmquery);
+
+		return $this->jsmdb->loadResult();
 	}
 
 }

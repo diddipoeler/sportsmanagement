@@ -14,6 +14,7 @@
  */
 
 defined('_JEXEC') or die();
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -24,6 +25,7 @@ use Joomla\CMS\Component\ComponentHelper;
 // JLoader::import('components.com_gcalendar.libraries.GCalendar.view', JPATH_ADMINISTRATOR);
 
 // Class GCalendarViewGCalendar extends GCalendarView
+
 /**
  * sportsmanagementViewjsmgcalendar
  *
@@ -40,7 +42,8 @@ class sportsmanagementViewjsmgcalendar extends sportsmanagementView
 	/**
 	 * sportsmanagementViewjsmgcalendar::init()
 	 *
-	 * @param   mixed $tpl
+	 * @param   mixed  $tpl
+	 *
 	 * @return void
 	 */
 	public function init()

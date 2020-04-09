@@ -14,8 +14,8 @@ use Joomla\Registry\Registry;
 /**
  * Joomla Platform class for interacting with the Google APIs.
  *
- * @property-read  JGoogleData    $data    Google API object for data.
- * @property-read  JGoogleEmbed   $embed   Google API object for embed generation.
+ * @property-read  JGoogleData  $data    Google API object for data.
+ * @property-read  JGoogleEmbed $embed   Google API object for embed generation.
  *
  * @since       3.1.4
  * @deprecated  4.0  Use the `joomla/google` package via Composer instead
@@ -57,7 +57,7 @@ class JGoogle
 	public function __construct(Registry $options = null, JGoogleAuth $auth = null)
 	{
 		$this->options = isset($options) ? $options : new Registry;
-		$this->auth  = isset($auth) ? $auth : new JGoogleAuthOauth2($this->options);
+		$this->auth    = isset($auth) ? $auth : new JGoogleAuthOauth2($this->options);
 	}
 
 	/**

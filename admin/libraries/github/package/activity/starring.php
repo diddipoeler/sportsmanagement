@@ -25,9 +25,9 @@ class JGithubPackageActivityStarring extends JGithubPackage
 	 * @param   string  $owner  Repository owner.
 	 * @param   string  $repo   Repository name.
 	 *
+	 * @return mixed
 	 * @since 3.3 (CMS)
 	 *
-	 * @return mixed
 	 */
 	public function getList($owner, $repo)
 	{
@@ -46,9 +46,9 @@ class JGithubPackageActivityStarring extends JGithubPackage
 	 *
 	 * @param   string  $user  User name.
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function getRepositories($user = '')
 	{
@@ -70,10 +70,10 @@ class JGithubPackageActivityStarring extends JGithubPackage
 	 * @param   string  $owner  Repository owner.
 	 * @param   string  $repo   Repository name.
 	 *
+	 * @return object
 	 * @throws UnexpectedValueException
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function check($owner, $repo)
 	{
@@ -106,9 +106,9 @@ class JGithubPackageActivityStarring extends JGithubPackage
 	 * @param   string  $owner  Repository owner.
 	 * @param   string  $repo   Repository name.
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function star($owner, $repo)
 	{
@@ -129,9 +129,9 @@ class JGithubPackageActivityStarring extends JGithubPackage
 	 * @param   string  $owner  Repository owner.
 	 * @param   string  $repo   Repository name.
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function unstar($owner, $repo)
 	{

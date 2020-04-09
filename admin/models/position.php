@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 
 /**
@@ -38,16 +39,16 @@ class sportsmanagementModelposition extends JSMModelAdmin
 		$app = Factory::getApplication();
 
 		// Get the input
-		$pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
+		$pks  = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
 		$post = Factory::getApplication()->input->post->getArray(array());
 
-			 $result = true;
+		$result = true;
 
 		for ($x = 0; $x < count($pks); $x++)
 		{
-			$tblPosition = & $this->getTable();
-			$tblPosition->id = $pks[$x];
-			$tblPosition->parent_id    = $post['parent_id' . $pks[$x]];
+			$tblPosition            = &$this->getTable();
+			$tblPosition->id        = $pks[$x];
+			$tblPosition->parent_id = $post['parent_id' . $pks[$x]];
 
 			if (!$tblPosition->store())
 			{
@@ -58,7 +59,6 @@ class sportsmanagementModelposition extends JSMModelAdmin
 
 		return $result;
 	}
-
 
 
 }

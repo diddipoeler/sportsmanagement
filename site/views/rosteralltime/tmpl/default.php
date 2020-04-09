@@ -21,8 +21,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 ?>
 <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
-<?PHP
-echo $this->loadTemplate('players');
+	<?PHP
+	echo $this->loadTemplate('players');
 
 	echo $this->loadTemplate('jsminfo');
 	?>

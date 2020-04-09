@@ -26,10 +26,10 @@ class JGithubPackageAuthorization extends JGithubPackage
 	 * @param   string  $note    A note to remind you what the OAuth token is for.
 	 * @param   string  $url     A URL to remind you what app the OAuth token is for.
 	 *
+	 * @return  object
 	 * @throws DomainException
 	 * @since   12.3
 	 *
-	 * @return  object
 	 */
 	public function create(array $scopes = array(), $note = '', $url = '')
 	{
@@ -59,10 +59,10 @@ class JGithubPackageAuthorization extends JGithubPackage
 	 *
 	 * @param   integer  $id  ID of the authorization to delete
 	 *
+	 * @return  object
 	 * @throws DomainException
 	 * @since   12.3
 	 *
-	 * @return  object
 	 */
 	public function delete($id)
 	{
@@ -93,11 +93,11 @@ class JGithubPackageAuthorization extends JGithubPackage
 	 * @param   string   $note          A note to remind you what the OAuth token is for.
 	 * @param   string   $url           A URL to remind you what app the OAuth token is for.
 	 *
+	 * @return  object
 	 * @throws RuntimeException
 	 * @throws DomainException
 	 * @since   12.3
 	 *
-	 * @return  object
 	 */
 	public function edit($id, array $scopes = array(), array $addScopes = array(), array $removeScopes = array(), $note = '', $url = '')
 	{
@@ -161,11 +161,11 @@ class JGithubPackageAuthorization extends JGithubPackage
 	 *
 	 * @param   integer  $id  ID of the authorization to retrieve
 	 *
+	 * @return  object
 	 * @throws DomainException
 	 * @since   12.3
 	 * @note    This method will only accept Basic Authentication
 	 *
-	 * @return  object
 	 */
 	public function get($id)
 	{
@@ -189,11 +189,11 @@ class JGithubPackageAuthorization extends JGithubPackage
 	/**
 	 * Method to get the authorised applications for the authenticated user.
 	 *
+	 * @return  object
 	 * @throws DomainException
 	 * @since   12.3
 	 * @note    This method will only accept Basic Authentication
 	 *
-	 * @return  object
 	 */
 	public function getList()
 	{
@@ -217,10 +217,10 @@ class JGithubPackageAuthorization extends JGithubPackage
 	/**
 	 * Method to get the rate limit for the authenticated user.
 	 *
+	 * @return  object
 	 * @throws DomainException
 	 * @since   12.3
 	 *
-	 * @return  object
 	 */
 	public function getRateLimit()
 	{
@@ -250,9 +250,9 @@ class JGithubPackageAuthorization extends JGithubPackage
 	 * @param   string  $state         An unguessable random string. It is used to protect against
 	 *                                 cross-site request forgery attacks.
 	 *
+	 * @return JUri
 	 * @since 3.3 (CMS)
 	 *
-	 * @return JUri
 	 */
 	public function getAuthorizationLink($client_id, $redirect_uri = '', $scope = '', $state = '')
 	{
@@ -287,10 +287,10 @@ class JGithubPackageAuthorization extends JGithubPackage
 	 * @param   string  $redirect_uri   URL in your app where users will be sent after authorization.
 	 * @param   string  $format         The response format (json, xml, ).
 	 *
+	 * @return string
 	 * @throws UnexpectedValueException
 	 * @since 3.3 (CMS)
 	 *
-	 * @return string
 	 */
 	public function requestToken($client_id, $client_secret, $code, $redirect_uri = '', $format = '')
 	{

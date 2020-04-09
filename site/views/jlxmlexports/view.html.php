@@ -21,16 +21,16 @@ jimport('joomla.application.component.view');
 
 class sportsmanagementViewjlxmlexports extends JViewLegacy
 {
-	function display( $tpl = null )
+	function display($tpl = null)
 	{
 
-				// Get a refrence of the page instance in joomla
-		$document = & Factory::getDocument();
-		$uri = &Factory::getURI();
+		// Get a refrence of the page instance in joomla
+		$document = &Factory::getDocument();
+		$uri      = &Factory::getURI();
 
-		  $model = $this->getModel();
+		$model = $this->getModel();
 
-		  $model->exportData();
+		$model->exportData();
 
 		parent::display($tpl);
 	}

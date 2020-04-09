@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -48,23 +49,23 @@ class JFormFieldparentdivision extends \JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
-		$project_id    = $app->getUserState("$option.pid", '0');
+		$option     = Factory::getApplication()->input->getCmd('option');
+		$app        = Factory::getApplication();
+		$project_id = $app->getUserState("$option.pid", '0');
 
-			  // Initialize variables.
+		// Initialize variables.
 		$options = array();
-		$db = Factory::getDbo();
-		$query = $db->getQuery(true);
+		$db      = Factory::getDbo();
+		$query   = $db->getQuery(true);
 
-								  $query->select('dv.id AS value, dv.name AS text');
+		$query->select('dv.id AS value, dv.name AS text');
 		$query->from('#__sportsmanagement_division AS dv');
 		$query->where('dv.project_id = ' . $project_id . ' AND dv.parent_id=0 ');
-		 $query->order('dv.ordering ASC');
-		 $db->setQuery($query);
-		 $options = $db->loadObjectList();
+		$query->order('dv.ordering ASC');
+		$db->setQuery($query);
+		$options = $db->loadObjectList();
 
-			  // Merge any additional options in the XML definition.
+		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);
 
 		return $options;

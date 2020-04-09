@@ -14,6 +14,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\MVC\Controller\BaseController;
 
 /**
@@ -25,7 +26,6 @@ use Joomla\CMS\MVC\Controller\BaseController;
  * @version   $Id$
  * @access    public
  */
-
 class sportsmanagementControllerjlxmlexports extends BaseController
 {
 

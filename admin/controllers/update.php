@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
@@ -45,8 +46,9 @@ class sportsmanagementControllerUpdate extends BaseController
 	/**
 	 * sportsmanagementControllerUpdate::display()
 	 *
-	 * @param   bool $cachable
-	 * @param   bool $urlparams
+	 * @param   bool  $cachable
+	 * @param   bool  $urlparams
+	 *
 	 * @return void
 	 */
 	function display($cachable = false, $urlparams = false)
@@ -54,7 +56,7 @@ class sportsmanagementControllerUpdate extends BaseController
 		//		$document = Factory::getDocument();
 		//		$model=$this->getModel('updates');
 		$viewType = $document->getType();
-		$view = $this->getView('updates', $viewType);
+		$view     = $this->getView('updates', $viewType);
 
 		//      $view->setModel($model,true);
 		$view->setLayout('updates');
@@ -70,9 +72,9 @@ class sportsmanagementControllerUpdate extends BaseController
 	 */
 	function save()
 	{
-		$post = Factory::getApplication()->input->post->getArray(array());
+		$post      = Factory::getApplication()->input->post->getArray(array());
 		$file_name = Factory::getApplication()->input->getVar('file_name');
-		$path = explode('/', $file_name);
+		$path      = explode('/', $file_name);
 
 		if (count($path) > 1)
 		{

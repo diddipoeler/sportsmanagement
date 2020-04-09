@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\Registry\Registry;
 
 JLoader::import('joomla.database.table');
@@ -32,7 +33,8 @@ class  sportsmanagementTablejsmgcalendarComment extends JTable
 	/**
 	 * sportsmanagementTablejsmgcalendarComment::__construct()
 	 *
-	 * @param   mixed $db
+	 * @param   mixed  $db
+	 *
 	 * @return
 	 */
 	public function __construct(&$db)
@@ -43,8 +45,9 @@ class  sportsmanagementTablejsmgcalendarComment extends JTable
 	/**
 	 * sportsmanagementTablejsmgcalendarComment::bind()
 	 *
-	 * @param   mixed  $array
-	 * @param   string $ignore
+	 * @param   mixed   $array
+	 * @param   string  $ignore
+	 *
 	 * @return
 	 */
 	public function bind($array, $ignore = '')

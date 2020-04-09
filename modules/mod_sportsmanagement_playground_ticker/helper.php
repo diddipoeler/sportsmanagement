@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
@@ -31,7 +32,8 @@ class modJSMPlaygroundTicker
 	/**
 	 * modJSMPlaygroundTicker::getData()
 	 *
-	 * @param   mixed $params
+	 * @param   mixed  $params
+	 *
 	 * @return void
 	 */
 	public static function getData($params)
@@ -39,7 +41,7 @@ class modJSMPlaygroundTicker
 		$app = Factory::getApplication();
 
 		// JInput object
-		$jinput = $app->input;
+		$jinput             = $app->input;
 		$cfg_which_database = $jinput->getInt('cfg_which_database', 0);
 
 		// Get a db connection.
@@ -69,7 +71,7 @@ class modJSMPlaygroundTicker
 		 * wir wissen ja durch die while-Schleife bereits, dass keine Duplikate selektiert werden können). UNION bedeutet nämlich in Wirklichkeit UNION DISTINCT.
 		 */
 		$rands = array();
-		$x = $params->get('limit', 1);
+		$x     = $params->get('limit', 1);
 
 		while (count($rands) < $x && $anz_cnt > count($rands))
 		{

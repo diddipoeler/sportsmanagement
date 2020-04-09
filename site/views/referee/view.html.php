@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
@@ -33,10 +34,11 @@ class sportsmanagementViewReferee extends JViewLegacy
 	/**
 	 * sportsmanagementViewReferee::display()
 	 *
-	 * @param   mixed $tpl
+	 * @param   mixed  $tpl
+	 *
 	 * @return void
 	 */
-	function display($tpl=null)
+	function display($tpl = null)
 	{
 		// Reference global application object
 		$app = Factory::getApplication();
@@ -46,16 +48,16 @@ class sportsmanagementViewReferee extends JViewLegacy
 
 		// Get a refrence of the page instance in joomla
 		$document = Factory::getDocument();
-		$option = $jinput->getCmd('option');
+		$option   = $jinput->getCmd('option');
 
-		$model = $this->getModel();
+		$model  = $this->getModel();
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(), $model::$cfg_which_database);
 		$person = sportsmanagementModelPerson::getPerson(0, $model::$cfg_which_database);
 
-		$this->project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
+		$this->project       = sportsmanagementModelProject::getProject($model::$cfg_which_database);
 		$this->overallconfig = sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database);
-		$this->config = $config;
-		$this->person = $person;
+		$this->config        = $config;
+		$this->person        = $person;
 
 		$ref = sportsmanagementModelPerson::getReferee();
 
@@ -70,7 +72,7 @@ class sportsmanagementViewReferee extends JViewLegacy
 
 		$this->referee = $ref;
 		$this->history = $model->getHistory('ASC');
-		$this->title = $titleStr;
+		$this->title   = $titleStr;
 
 		if ($config['show_gameshistory'])
 		{
@@ -80,7 +82,7 @@ class sportsmanagementViewReferee extends JViewLegacy
 
 		if ($person)
 		{
-			$extended = sportsmanagementHelper::getExtended($person->extended, 'referee');
+			$extended       = sportsmanagementHelper::getExtended($person->extended, 'referee');
 			$this->extended = $extended;
 		}
 
@@ -91,12 +93,12 @@ class sportsmanagementViewReferee extends JViewLegacy
 
 		if (!isset($this->config['career_table_class']))
 		{
-					$this->config['career_table_class'] = 'table';
+			$this->config['career_table_class'] = 'table';
 		}
 
-			  $this->headertitle = $this->title;
+		$this->headertitle = $this->title;
 
-			  parent::display($tpl);
+		parent::display($tpl);
 	}
 
 }

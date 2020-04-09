@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
@@ -39,27 +40,27 @@ class sportsmanagementViewjlextcountries extends sportsmanagementView
 	public function init()
 	{
 
-			  $inputappend = '';
+		$inputappend = '';
 
 		$this->table = Table::getInstance('jlextcountry', 'sportsmanagementTable');
 
-			   // Build the html options for nation
+		// Build the html options for nation
 		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_FEDERATION'));
 
 		if ($res = $this->get('Federation'))
 		{
-			$nation = array_merge($nation, $res);
+			$nation           = array_merge($nation, $res);
 			$this->federation = $res;
 		}
 
-			  $lists['federation'] = JHtmlSelect::genericlist(
-				  $nation,
-				  'filter_federation',
-				  $inputappend . 'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
-				  'value',
-				  'text',
-				  $this->state->get('filter.federation')
-			  );
+		$lists['federation'] = JHtmlSelect::genericlist(
+			$nation,
+			'filter_federation',
+			$inputappend . 'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+			'value',
+			'text',
+			$this->state->get('filter.federation')
+		);
 
 		$this->lists = $lists;
 

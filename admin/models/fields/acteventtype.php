@@ -13,10 +13,12 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Text;
+
 jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
 
@@ -41,24 +43,24 @@ class JFormFieldacteventtype extends \JFormFieldList
 	protected function getOptions()
 	{
 		// Initialize variables.
-		$options = array();
-		$vartable = (string) $this->element['targettable'];
+		$options   = array();
+		$vartable  = (string) $this->element['targettable'];
 		$select_id = Factory::getApplication()->input->getVar('id');
 
-			  $db = Factory::getDbo();
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
-				  $query->select('s.id AS value, s.name AS text');
+		$query->select('s.id AS value, s.name AS text');
 		$query->from('#__sportsmanagement_eventtype as s');
-			$query->join('INNER', '#__sportsmanagement_' . $vartable . ' AS t on t.sports_type_id = s.sports_type_id');
-			$query->where('t.id = ' . $select_id);
+		$query->join('INNER', '#__sportsmanagement_' . $vartable . ' AS t on t.sports_type_id = s.sports_type_id');
+		$query->where('t.id = ' . $select_id);
 		$query->order('s.name');
 		$db->setQuery($query);
 		$options = $db->loadObjectList();
 
 		foreach ($options as $row)
 		{
-				$row->text = Text::_($row->text);
+			$row->text = Text::_($row->text);
 		}
 
 		// Merge any additional options in the XML definition.

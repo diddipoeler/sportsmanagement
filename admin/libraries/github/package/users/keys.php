@@ -26,9 +26,9 @@ class JGithubPackageUsersKeys extends JGithubPackage
 	 *
 	 * @param   string  $user  The name of the user.
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function getListUser($user)
 	{
@@ -47,9 +47,9 @@ class JGithubPackageUsersKeys extends JGithubPackage
 	 * Management of public keys via the API requires that you are authenticated
 	 * through basic auth, or OAuth with the ‘user’ scope.
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function getList()
 	{
@@ -66,9 +66,9 @@ class JGithubPackageUsersKeys extends JGithubPackage
 	 *
 	 * @param   integer  $id  The id of the key.
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function get($id)
 	{
@@ -86,9 +86,9 @@ class JGithubPackageUsersKeys extends JGithubPackage
 	 * @param   string  $title  The title of the key.
 	 * @param   string  $key    The key.
 	 *
+	 * @return object
 	 * @since    3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function create($title, $key)
 	{
@@ -113,9 +113,9 @@ class JGithubPackageUsersKeys extends JGithubPackage
 	 * @param   string   $title  The title of the key.
 	 * @param   string   $key    The key.
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function edit($id, $title, $key)
 	{
@@ -137,9 +137,9 @@ class JGithubPackageUsersKeys extends JGithubPackage
 	 *
 	 * @param   integer  $id  The id of the key.
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function delete($id)
 	{

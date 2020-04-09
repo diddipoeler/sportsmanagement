@@ -14,10 +14,12 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Text;
+
 jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
 
@@ -62,31 +64,31 @@ class JFormFieldsportstypelist extends \JFormFieldList
 	{
 		// Initialize variables.
 		$options = array();
-		  $lang = Factory::getLanguage();
-		  $db = sportsmanagementHelper::getDBConnection(false, false);
-		 $query = $db->getQuery(true);
+		$lang    = Factory::getLanguage();
+		$db      = sportsmanagementHelper::getDBConnection(false, false);
+		$query   = $db->getQuery(true);
 
-				   $query->select('id AS value, name AS text');
-		 $query->from('#__sportsmanagement_sports_type');
-		 $query->order('name');
-		 $db->setQuery($query);
-		 $options = $db->loadObjectList();
+		$query->select('id AS value, name AS text');
+		$query->from('#__sportsmanagement_sports_type');
+		$query->order('name');
+		$db->setQuery($query);
+		$options = $db->loadObjectList();
 
-		  $extension = "COM_SPORTSMANAGEMENT";
-		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
+		$extension = "COM_SPORTSMANAGEMENT";
+		$source    = JPATH_ADMINISTRATOR . '/components/' . $extension;
 		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
-		||    $lang->load($extension, $source, null, false, false)
-		||    $lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
-		||    $lang->load($extension, $source, $lang->getDefault(), false, false);
+		|| $lang->load($extension, $source, null, false, false)
+		|| $lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
+		|| $lang->load($extension, $source, $lang->getDefault(), false, false);
 
 		foreach ($options as $row)
 		{
 			$row->text = Text::_($row->text);
 		}
 
-			// Merge any additional options in the XML definition.
-			$options = array_merge(parent::getOptions(), $options);
+		// Merge any additional options in the XML definition.
+		$options = array_merge(parent::getOptions(), $options);
 
-			return $options;
+		return $options;
 	}
 }

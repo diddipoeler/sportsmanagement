@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die;
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -42,14 +43,14 @@ class JFormFieldsportsmanagement extends \JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$db = sportsmanagementHelper::getDBConnection();
+		$db    = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 		$query->select('#__sportsmanagement.id as id,greeting,#__categories.title as category,catid');
 		$query->from('#__sportsmanagement');
 		$query->leftJoin('#__categories on catid=#__categories.id');
 		$db->setQuery((string) $query);
 		$messages = $db->loadObjectList();
-		$options = array();
+		$options  = array();
 
 		if ($messages)
 		{

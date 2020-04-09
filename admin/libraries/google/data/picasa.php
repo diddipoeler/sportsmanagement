@@ -44,16 +44,16 @@ class JGoogleDataPicasa extends JGoogleData
 	 *
 	 * @return  mixed  Data from Google
 	 *
-	 * @since   3.1.4
 	 * @throws UnexpectedValueException
+	 * @since   3.1.4
 	 */
 	public function listAlbums($userID = 'default')
 	{
 		if ($this->isAuthenticated())
 		{
-			$url = 'https://picasaweb.google.com/data/feed/api/user/' . urlencode($userID);
+			$url   = 'https://picasaweb.google.com/data/feed/api/user/' . urlencode($userID);
 			$jdata = $this->query($url, null, array('GData-Version' => 2));
-			$xml = $this->safeXml($jdata->body);
+			$xml   = $this->safeXml($jdata->body);
 
 			if (isset($xml->children()->entry))
 			{
@@ -96,9 +96,9 @@ class JGoogleDataPicasa extends JGoogleData
 	{
 		if ($this->isAuthenticated())
 		{
-			$time = $time ? $time : time();
+			$time  = $time ? $time : time();
 			$title = $title != '' ? $title : date('F j, Y');
-			$xml = new SimpleXMLElement('<entry></entry>');
+			$xml   = new SimpleXMLElement('<entry></entry>');
 			$xml->addAttribute('xmlns', 'http://www.w3.org/2005/Atom');
 			$xml->addChild('title', $title);
 			$xml->addChild('summary', $summary);
@@ -111,7 +111,7 @@ class JGoogleDataPicasa extends JGoogleData
 			$cat->addAttribute('scheme', 'http://schemas.google.com/g/2005#kind');
 			$cat->addAttribute('term', 'http://schemas.google.com/photos/2007#album');
 
-			$url = 'https://picasaweb.google.com/data/feed/api/user/' . urlencode($userID);
+			$url   = 'https://picasaweb.google.com/data/feed/api/user/' . urlencode($userID);
 			$jdata = $this->query($url, $xml->asXml(), array('GData-Version' => 2, 'Content-type' => 'application/atom+xml'), 'post');
 
 			$xml = $this->safeXml($jdata->body);
@@ -131,15 +131,15 @@ class JGoogleDataPicasa extends JGoogleData
 	 *
 	 * @return  mixed  Data from Google
 	 *
-	 * @since   3.1.4
 	 * @throws UnexpectedValueException
+	 * @since   3.1.4
 	 */
 	public function getAlbum($url)
 	{
 		if ($this->isAuthenticated())
 		{
 			$jdata = $this->query($url, null, array('GData-Version' => 2));
-			$xml = $this->safeXml($jdata->body);
+			$xml   = $this->safeXml($jdata->body);
 
 			return new JGoogleDataPicasaAlbum($xml, $this->options, $this->auth);
 		}

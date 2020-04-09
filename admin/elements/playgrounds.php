@@ -41,6 +41,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -66,31 +67,31 @@ class JFormFieldPlaygrounds extends JFormField
 	 */
 	function getInput()
 	{
-		$db = sportsmanagementHelper::getDBConnection();
+		$db   = sportsmanagementHelper::getDBConnection();
 		$lang = Factory::getLanguage();
 
 		// Welche tabelle soll genutzt werden
-		$params = ComponentHelper::getParams('com_sportsmanagement');
-		$database_table    = $params->get('cfg_which_database_table');
+		$params         = ComponentHelper::getParams('com_sportsmanagement');
+		$database_table = $params->get('cfg_which_database_table');
 
-			  $extension = "com_sportsmanagement";
-		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
+		$extension = "com_sportsmanagement";
+		$source    = JPATH_ADMINISTRATOR . '/components/' . $extension;
 		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
-		||    $lang->load($extension, $source, null, false, false)
-		||    $lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
-		||    $lang->load($extension, $source, $lang->getDefault(), false, false);
+		|| $lang->load($extension, $source, null, false, false)
+		|| $lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
+		|| $lang->load($extension, $source, $lang->getDefault(), false, false);
 
-			  $query = 'SELECT pl.id, pl.name FROM #__' . $database_table . '_playground pl ORDER BY name';
+		$query = 'SELECT pl.id, pl.name FROM #__' . $database_table . '_playground pl ORDER BY name';
 		$db->setQuery($query);
 		$playgrounds = $db->loadObjectList();
-		$mitems = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+		$mitems      = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
 
 		foreach ($playgrounds as $playground)
 		{
-			$mitems[] = HTMLHelper::_('select.option',  $playground->id, '&nbsp;' . $playground->name . ' (' . $playground->id . ')');
+			$mitems[] = HTMLHelper::_('select.option', $playground->id, '&nbsp;' . $playground->name . ' (' . $playground->id . ')');
 		}
 
-			  $output = HTMLHelper::_('select.genericlist',  $mitems, $this->name, 'class="inputbox" multiple="multiple" size="10"', 'value', 'text', $this->value, $this->id);
+		$output = HTMLHelper::_('select.genericlist', $mitems, $this->name, 'class="inputbox" multiple="multiple" size="10"', 'value', 'text', $this->value, $this->id);
 
 		return $output;
 	}

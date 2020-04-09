@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die;
+
 use Joomla\CMS\Language\Text;
 
 /**
@@ -31,14 +32,14 @@ class sportsmanagementViewClose extends sportsmanagementView
 	function init()
 	{
 
-			 $this->jsminfo = $this->jinput->getCmd('info');
+		$this->jsminfo   = $this->jinput->getCmd('info');
 		$this->onlymodal = $this->jinput->getCmd('onlymodal');
 
 		if (!$this->onlymodal)
 		{
 			// Close a modal window
-			   $this->document->addScriptDeclaration(
-				   '
+			$this->document->addScriptDeclaration(
+				'
         window.parent.location.href=window.parent.location.href;
 			window.parent.SqueezeBox.close();
 		// available msg types: success, error, notice
@@ -49,13 +50,13 @@ var msg = {
 Joomla.renderMessages( msg );
           
 		'
-			   );
+			);
 		}
 		else
 		{
 			// Close a modal window
-			  $this->document->addScriptDeclaration(
-				  '
+			$this->document->addScriptDeclaration(
+				'
 			window.parent.SqueezeBox.close();
 		// available msg types: success, error, notice
 var msg = {
@@ -65,14 +66,14 @@ var msg = {
 Joomla.renderMessages( msg );
           
 		'
-			  );
+			);
 		}
 
 		switch ($this->jsminfo)
 		{
 			case 'truncate':
 
-			break;
+				break;
 		}
 
 	}

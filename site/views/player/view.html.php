@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
@@ -37,14 +38,14 @@ class sportsmanagementViewPlayer extends sportsmanagementView
 	function init()
 	{
 
-		$model = $this->model;
-		$model::$projectid = $this->jinput->getInt('p', 0);
-		$model::$personid = $this->jinput->getInt('pid', 0);
+		$model                = $this->model;
+		$model::$projectid    = $this->jinput->getInt('p', 0);
+		$model::$personid     = $this->jinput->getInt('pid', 0);
 		$model::$teamplayerid = $this->jinput->getInt('pt', 0);
 
 		sportsmanagementModelProject::setProjectID($this->jinput->getInt('p', 0), $model::$cfg_which_database);
 
-		$person = sportsmanagementModelPerson::getPerson(0, $model::$cfg_which_database, 1);
+		$person   = sportsmanagementModelPerson::getPerson(0, $model::$cfg_which_database, 1);
 		$nickname = isset($person->nickname) ? $person->nickname : "";
 
 		if (!empty($nickname))
@@ -53,9 +54,9 @@ class sportsmanagementViewPlayer extends sportsmanagementView
 		}
 
 		$this->isContactDataVisible = sportsmanagementModelPerson::isContactDataVisible($this->config['show_contact_team_member_only']);
-		$this->person = $person;
-		$this->nickname = $nickname;
-		$this->teamPlayers = $model->getTeamPlayers($model::$cfg_which_database);
+		$this->person               = $person;
+		$this->nickname             = $nickname;
+		$this->teamPlayers          = $model->getTeamPlayers($model::$cfg_which_database);
 
 		if (!isset($this->config['show_players_layout']))
 		{
@@ -65,8 +66,8 @@ class sportsmanagementViewPlayer extends sportsmanagementView
 		if (isset($this->overallconfig['person_events']))
 		{
 			/**
- *              alles ok
- */
+			 *              alles ok
+			 */
 		}
 		else
 		{
@@ -89,8 +90,8 @@ class sportsmanagementViewPlayer extends sportsmanagementView
 		}
 
 		/**
- * Select the teamplayer that is currently published (in case the player played in multiple teams in the project)
- */
+		 * Select the teamplayer that is currently published (in case the player played in multiple teams in the project)
+		 */
 		$teamPlayer = null;
 
 		if (count($this->teamPlayers))
@@ -114,30 +115,30 @@ class sportsmanagementViewPlayer extends sportsmanagementView
 
 		$sportstype = $this->config['show_plcareer_sportstype'] ? sportsmanagementModelProject::getSportsType($model::$cfg_which_database) : 0;
 
-		$this->teamPlayer = $teamPlayer;
-		$this->historyPlayer = $model->getPlayerHistory($sportstype, $this->config['historyorder'], 1, $model::$cfg_which_database);
+		$this->teamPlayer         = $teamPlayer;
+		$this->historyPlayer      = $model->getPlayerHistory($sportstype, $this->config['historyorder'], 1, $model::$cfg_which_database);
 		$this->historyPlayerStaff = $model->getPlayerHistory($sportstype, $this->config['historyorder'], 2, $model::$cfg_which_database);
-		$this->AllEvents = $model->getAllEvents($sportstype);
-		$this->showediticon = sportsmanagementModelPerson::getAllowed($this->config['edit_own_player']);
-		$this->stats = sportsmanagementModelProject::getProjectStats(0, 0, $model::$cfg_which_database);
+		$this->AllEvents          = $model->getAllEvents($sportstype);
+		$this->showediticon       = sportsmanagementModelPerson::getAllowed($this->config['edit_own_player']);
+		$this->stats              = sportsmanagementModelProject::getProjectStats(0, 0, $model::$cfg_which_database);
 
 		/**
- * Get events and stats for current project
- */
+		 * Get events and stats for current project
+		 */
 		if ($this->config['show_gameshistory'])
 		{
-			$this->games = $model->getGames();
-			$this->teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0, 'name', $model::$cfg_which_database);
+			$this->games       = $model->getGames();
+			$this->teams       = sportsmanagementModelProject::getTeamsIndexedByPtid(0, 'name', $model::$cfg_which_database);
 			$this->gamesevents = $model->getGamesEvents();
-			$this->gamesstats = $model->getPlayerStatsByGame();
+			$this->gamesstats  = $model->getPlayerStatsByGame();
 		}
 
 		/**
- * Get events and stats for all projects where player played in (possibly restricted to sports type of current project)
- */
+		 * Get events and stats for all projects where player played in (possibly restricted to sports type of current project)
+		 */
 		if ($this->config['show_career_stats'])
 		{
-			$this->stats = $model->getStats();
+			$this->stats        = $model->getStats();
 			$this->projectstats = $model->getPlayerStatsByProject($sportstype);
 		}
 
@@ -150,8 +151,8 @@ class sportsmanagementViewPlayer extends sportsmanagementView
 		}
 
 		/**
- * nebenposition vorhanden ?
- */
+		 * nebenposition vorhanden ?
+		 */
 		$this->person_parent_positions = $form_value;
 
 		unset($form_value);
@@ -167,32 +168,32 @@ class sportsmanagementViewPlayer extends sportsmanagementView
 		else
 		{
 			/**
- * wenn beim spieler noch nichts gesetzt wurde dann nehmen wir die standards
- */
+			 * wenn beim spieler noch nichts gesetzt wurde dann nehmen wir die standards
+			 */
 			switch ($this->teamPlayer->position_name)
 			{
 				case 'COM_SPORTSMANAGEMENT_SOCCER_P_DEFENDER':
 					$form_value = 'hp2';
-				break;
+					break;
 				case 'COM_SPORTSMANAGEMENT_SOCCER_P_FORWARD':
 					$form_value = 'hp14';
-				break;
+					break;
 				case 'COM_SPORTSMANAGEMENT_SOCCER_P_GOALKEEPER':
 					$form_value = 'hp1';
-				break;
+					break;
 				case 'COM_SPORTSMANAGEMENT_SOCCER_P_MIDFIELDER':
 					$form_value = 'hp7';
-				break;
+					break;
 			}
 		}
 
 		$this->person_position = $form_value;
-		$this->hasDescription = $this->teamPlayer->notes;
+		$this->hasDescription  = $this->teamPlayer->notes;
 
 		foreach ($this->extended->getFieldsets() as $fieldset)
 		{
 			$hasData = false;
-			$fields = $this->extended->getFieldset($fieldset->name);
+			$fields  = $this->extended->getFieldset($fieldset->name);
 
 			foreach ($fields as $field)
 			{
@@ -210,9 +211,9 @@ class sportsmanagementViewPlayer extends sportsmanagementView
 
 		$hasStatus = false;
 
-		if (( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 )
-			|| ( isset($this->teamPlayer->suspension) && $this->teamPlayer->suspension > 0 )
-			|| ( isset($this->teamPlayer->away) && $this->teamPlayer->away > 0 )
+		if ((isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0)
+			|| (isset($this->teamPlayer->suspension) && $this->teamPlayer->suspension > 0)
+			|| (isset($this->teamPlayer->away) && $this->teamPlayer->away > 0)
 		)
 		{
 			$hasStatus = true;
@@ -228,7 +229,7 @@ class sportsmanagementViewPlayer extends sportsmanagementView
 		$this->playername = $name;
 		$this->document->setTitle(Text::sprintf('COM_SPORTSMANAGEMENT_PLAYER_INFORMATION', $name));
 
-		$view = $this->jinput->getVar("view");
+		$view      = $this->jinput->getVar("view");
 		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/' . $this->option . '/assets/css/' . $view . '.css' . '" type="text/css" />' . "\n";
 		$this->document->addCustomTag($stylelink);
 

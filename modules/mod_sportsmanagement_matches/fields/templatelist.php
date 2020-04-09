@@ -45,8 +45,8 @@ class JFormFieldTemplatelist extends JFormField
 	function getInput()
 	{
 		// Path to images directory
-		$path = JPATH_ROOT . DIRECTORY_SEPARATOR . $this->element['directory'];
-		$filter = $this->element['filter'];
+		$path    = JPATH_ROOT . DIRECTORY_SEPARATOR . $this->element['directory'];
+		$filter  = $this->element['filter'];
 		$exclude = $this->element['exclude'];
 		$folders = Folder::folders($path, $filter);
 

@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 
 /**
@@ -40,13 +41,13 @@ class sportsmanagementViewReferees extends sportsmanagementView
 			$this->config = sportsmanagementModelProject::getTemplateConfig('players', $this->jinput->getInt('cfg_which_database', 0));
 		}
 
-			$this->rows = $this->model->getReferees();
+		$this->rows = $this->model->getReferees();
 
-			// Set page title
-			$pagetitle = Text::_('COM_SPORTSMANAGEMENT_REFEREES_PAGE_TITLE');
-			$this->document->setTitle(Text::sprintf($pagetitle, $this->project->name));
+		// Set page title
+		$pagetitle = Text::_('COM_SPORTSMANAGEMENT_REFEREES_PAGE_TITLE');
+		$this->document->setTitle(Text::sprintf($pagetitle, $this->project->name));
 
-			  $this->headertitle = Text::_('COM_SPORTSMANAGEMENT_REFEREES_TITLE');
+		$this->headertitle = Text::_('COM_SPORTSMANAGEMENT_REFEREES_TITLE');
 
 	}
 

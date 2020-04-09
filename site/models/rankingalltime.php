@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
@@ -20,7 +21,7 @@ use Joomla\CMS\Log\Log;
 jimport('joomla.utilities.array');
 jimport('joomla.utilities.arrayhelper');
 
-if (! defined('JSM_PATH'))
+if (!defined('JSM_PATH'))
 {
 	DEFINE('JSM_PATH', 'components/com_sportsmanagement');
 }
@@ -36,29 +37,21 @@ if ((int) ini_get('max_execution_time') < $maxImportTime)
  * sportsmanagementModelRankingAllTime
  *
  * @package
- * @author diddi
+ * @author    diddi
  * @copyright 2014
- * @version $Id$
- * @access public
+ * @version   $Id$
+ * @access    public
  */
 class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 {
-	var $teams = array();
-
-	var $_teams = array();
-
-	var $_matches = array();
-
-	var $alltimepoints = '';
-
-	var $debug_info = false;
-
-	var $projectid = 0;
-
-	var $leagueid = 0;
-
 	static $classname = 'sportsmanagementModelRanking';
-
+	var $teams = array();
+	var $_teams = array();
+	var $_matches = array();
+	var $alltimepoints = '';
+	var $debug_info = false;
+	var $projectid = 0;
+	var $leagueid = 0;
 	/**
 	 * ranking parameters
 	 * @var array
@@ -80,17 +73,17 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 	function __construct()
 	{
 		// Reference global application object
-		$app = Factory::getApplication();
-		$jinput = $app->input;
+		$app                 = Factory::getApplication();
+		$jinput              = $app->input;
 		$this->alltimepoints = $jinput->request->get('points', '3,1,0', 'STR');
 
-			  $file = JPATH_SITE . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'ranking.php';
+		$file = JPATH_SITE . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'ranking.php';
 		require_once $file;
 
-			  $menu = JMenu::getInstance('site');
+		$menu = JMenu::getInstance('site');
 		$item = $menu->getActive();
 
-			 $params = $menu->getParams($item->id);
+		$params = $menu->getParams($item->id);
 
 		if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO)
 		{
@@ -112,7 +105,7 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 
 			foreach ($newparams['data'] as $key => $value)
 			{
-								  $this->_params[$key] = $value;
+				$this->_params[$key] = $value;
 			}
 		}
 		else
@@ -122,15 +115,15 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 
 			// $xml = simplexml_load_file($strXmlFile);
 
-			$xml = Factory::getXML($strXmlFile);
+			$xml      = Factory::getXML($strXmlFile);
 			$children = $xml->document->children();
 
 			// We can now step through each element of the file
 			foreach ($xml->children() as $field)
 			{
-				foreach ($field->fieldset  as $fieldset)
+				foreach ($field->fieldset as $fieldset)
 				{
-					foreach ($fieldset->field  as $param)
+					foreach ($fieldset->field as $param)
 					{
 						$attributes = $param->attributes();
 
@@ -140,7 +133,7 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 			}
 		}
 
-			  parent::__construct();
+		parent::__construct();
 
 	}
 
@@ -148,12 +141,13 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 	/**
 	 * sportsmanagementModelRankingAllTime::getAllTeamsIndexedByPtid()
 	 *
-	 * @param   mixed $project_ids
+	 * @param   mixed  $project_ids
+	 *
 	 * @return
 	 */
 	function getAllTeamsIndexedByPtid($project_ids)
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$result = self::getAllTeams($project_ids);
 
 		if (count($result))
@@ -167,35 +161,35 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 
 				if ($r->use_finally)
 				{
-					$this->teams[$r->team_id]->sum_points += $r->points_finally;
-					$this->teams[$r->team_id]->neg_points += $r->neg_points_finally;
-					$this->teams[$r->team_id]->cnt_matches += $r->matches_finally;
-					$this->teams[$r->team_id]->cnt_won += $r->won_finally;
-					$this->teams[$r->team_id]->cnt_draw += $r->draws_finally;
-					$this->teams[$r->team_id]->cnt_lost += $r->lost_finally;
-					$this->teams[$r->team_id]->sum_team1_result += $r->homegoals_finally;
-					$this->teams[$r->team_id]->sum_team2_result += $r->guestgoals_finally;
+					$this->teams[$r->team_id]->sum_points        += $r->points_finally;
+					$this->teams[$r->team_id]->neg_points        += $r->neg_points_finally;
+					$this->teams[$r->team_id]->cnt_matches       += $r->matches_finally;
+					$this->teams[$r->team_id]->cnt_won           += $r->won_finally;
+					$this->teams[$r->team_id]->cnt_draw          += $r->draws_finally;
+					$this->teams[$r->team_id]->cnt_lost          += $r->lost_finally;
+					$this->teams[$r->team_id]->sum_team1_result  += $r->homegoals_finally;
+					$this->teams[$r->team_id]->sum_team2_result  += $r->guestgoals_finally;
 					$this->teams[$r->team_id]->diff_team_results += $r->diffgoals_finally;
 				}
 				else
 				{
-					$this->teams[$r->team_id]->cnt_matches = 0;
-					$this->teams[$r->team_id]->sum_points = 0;
-					$this->teams[$r->team_id]->neg_points = 0;
-					$this->teams[$r->team_id]->cnt_won_home = 0;
-					$this->teams[$r->team_id]->cnt_draw_home = 0;
-					$this->teams[$r->team_id]->cnt_lost_home = 0;
-					$this->teams[$r->team_id]->cnt_won = 0;
-					$this->teams[$r->team_id]->cnt_draw = 0;
-					$this->teams[$r->team_id]->cnt_lost = 0;
-					$this->teams[$r->team_id]->sum_team1_result = 0;
-					$this->teams[$r->team_id]->sum_team2_result = 0;
-					$this->teams[$r->team_id]->sum_away_for = 0;
+					$this->teams[$r->team_id]->cnt_matches       = 0;
+					$this->teams[$r->team_id]->sum_points        = 0;
+					$this->teams[$r->team_id]->neg_points        = 0;
+					$this->teams[$r->team_id]->cnt_won_home      = 0;
+					$this->teams[$r->team_id]->cnt_draw_home     = 0;
+					$this->teams[$r->team_id]->cnt_lost_home     = 0;
+					$this->teams[$r->team_id]->cnt_won           = 0;
+					$this->teams[$r->team_id]->cnt_draw          = 0;
+					$this->teams[$r->team_id]->cnt_lost          = 0;
+					$this->teams[$r->team_id]->sum_team1_result  = 0;
+					$this->teams[$r->team_id]->sum_team2_result  = 0;
+					$this->teams[$r->team_id]->sum_away_for      = 0;
 					$this->teams[$r->team_id]->diff_team_results = 0;
 				}
 
 				$this->teams[$r->team_id]->round = 0;
-				$this->teams[$r->team_id]->rank = 0;
+				$this->teams[$r->team_id]->rank  = 0;
 			}
 		}
 
@@ -205,22 +199,23 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 		// Echo 'result <pre>'.print_r($result,true).'</pre>';
 		// echo 'teams <pre>'.print_r($this->teams,true).'</pre>';
 
-			return $this->teams;
+		return $this->teams;
 	}
 
 	/**
 	 * sportsmanagementModelRankingAllTime::getAllTeams()
 	 *
-	 * @param   mixed $project_ids
+	 * @param   mixed  $project_ids
+	 *
 	 * @return
 	 */
 	function getAllTeams($project_ids)
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 
 		// Get a db connection.
-		$db = Factory::getDbo();
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$query->clear();
 
@@ -236,7 +231,7 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 			$query->select('d.name AS division_name,d.shortname AS division_shortname,d.parent_id AS parent_division_id');
 			$query->select('plg.name AS playground_name,plg.short_name AS playground_short_name');
 
-				 $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
+			$query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
 			$query->select('CONCAT_WS( \':\', t.id, t.alias ) AS team_slug');
 			$query->select('CONCAT_WS( \':\', d.id, d.alias ) AS division_slug');
 			$query->select('CONCAT_WS( \':\', c.id, c.alias ) AS club_slug');
@@ -249,7 +244,7 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 			$query->join('LEFT', '#__sportsmanagement_playground as plg ON plg.id = tl.standard_playground');
 			$query->join('LEFT', '#__sportsmanagement_project AS p ON p.id = tl.project_id');
 
-					 $query->where('tl.project_id IN (' . $project_ids . ')');
+			$query->where('tl.project_id IN (' . $project_ids . ')');
 
 			// $query->group('st.team_id' );
 
@@ -260,9 +255,9 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 			{
 			}
 
-				$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
-				return $this->_teams;
+			return $this->_teams;
 		}
 		else
 		{
@@ -276,55 +271,56 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 	/**
 	 * sportsmanagementModelRankingAllTime::getAllMatches()
 	 *
-	 * @param   mixed $projects
+	 * @param   mixed  $projects
+	 *
 	 * @return
 	 */
 	function getAllMatches($projects)
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
-		$res = '';
+		$app    = Factory::getApplication();
+		$res    = '';
 
 		// Get a db connection.
-		$db = Factory::getDbo();
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$query->clear();
 
 		if ($projects)
 		{
-			 $query->select('m.id,m.projectteam1_id,m.projectteam2_id,m.team1_result AS home_score,m.team2_result AS away_score,m.team1_bonus AS home_bonus,m.team2_bonus AS away_bonus');
-			  $query->select('m.team1_legs AS l1,m.team2_legs AS l2,m.match_result_type AS match_result_type,m.alt_decision as decision,m.team1_result_decision AS home_score_decision');
-			  $query->select('m.team2_result_decision AS away_score_decision,m.team1_result_ot AS home_score_ot,m.team2_result_ot AS away_score_ot,m.team1_result_so AS home_score_so,m.team2_result_so AS away_score_so');
-			 $query->select('t1.id AS team1_id,t2.id AS team2_id');
-			  $query->select('r.id as roundid, m.team_won, r.roundcode');
+			$query->select('m.id,m.projectteam1_id,m.projectteam2_id,m.team1_result AS home_score,m.team2_result AS away_score,m.team1_bonus AS home_bonus,m.team2_bonus AS away_bonus');
+			$query->select('m.team1_legs AS l1,m.team2_legs AS l2,m.match_result_type AS match_result_type,m.alt_decision as decision,m.team1_result_decision AS home_score_decision');
+			$query->select('m.team2_result_decision AS away_score_decision,m.team1_result_ot AS home_score_ot,m.team2_result_ot AS away_score_ot,m.team1_result_so AS home_score_so,m.team2_result_so AS away_score_so');
+			$query->select('t1.id AS team1_id,t2.id AS team2_id');
+			$query->select('r.id as roundid, m.team_won, r.roundcode');
 
-				   $query->from('#__sportsmanagement_match m');
-			  $query->join('INNER', '#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
-			 $query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id');
-			  $query->join('INNER', '#__sportsmanagement_team t1 ON st1.team_id = t1.id ');
-			  $query->join('INNER', '#__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id ');
-			 $query->join('INNER', '#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id');
-			  $query->join('INNER', '#__sportsmanagement_team t2 ON st2.team_id = t2.id ');
-			  $query->join('INNER', '#__sportsmanagement_round AS r ON m.round_id = r.id ');
+			$query->from('#__sportsmanagement_match m');
+			$query->join('INNER', '#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
+			$query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id');
+			$query->join('INNER', '#__sportsmanagement_team t1 ON st1.team_id = t1.id ');
+			$query->join('INNER', '#__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id ');
+			$query->join('INNER', '#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id');
+			$query->join('INNER', '#__sportsmanagement_team t2 ON st2.team_id = t2.id ');
+			$query->join('INNER', '#__sportsmanagement_round AS r ON m.round_id = r.id ');
 
-				   $query->where('((m.team1_result IS NOT NULL AND m.team2_result IS NOT NULL) OR (m.alt_decision=1))');
-			 $query->where('m.published = 1');
-			 $query->where('r.published = 1');
-			 $query->where('pt1.project_id IN (' . $projects . ')');
-			 $query->where('(m.cancel IS NULL OR m.cancel = 0)');
-			 $query->where('m.projectteam1_id > 0 AND m.projectteam2_id > 0');
+			$query->where('((m.team1_result IS NOT NULL AND m.team2_result IS NOT NULL) OR (m.alt_decision=1))');
+			$query->where('m.published = 1');
+			$query->where('r.published = 1');
+			$query->where('pt1.project_id IN (' . $projects . ')');
+			$query->where('(m.cancel IS NULL OR m.cancel = 0)');
+			$query->where('m.projectteam1_id > 0 AND m.projectteam2_id > 0');
 
-			  $db->setQuery($query);
-			  $res = $db->loadObjectList();
+			$db->setQuery($query);
+			$res = $db->loadObjectList();
 
 			if (!$res)
 			{
 				Log::add(Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_MATCHES'), Log::ERROR, 'jsmerror');
 			}
 
-						  $this->_matches = $res;
+			$this->_matches = $res;
 
-			  $count_matches = count($res);
+			$count_matches = count($res);
 			Log::add(Text::_('Wir verarbeiten ' . $count_matches . ' Spiele !'), Log::INFO, 'jsmerror');
 		}
 		else
@@ -348,34 +344,34 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 	function getAllTimeRanking()
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 
 		$arr = explode(",", $this->alltimepoints);
 
 		foreach ((array) $this->_matches as $match)
 		{
 			$resultType = $match->match_result_type;
-			$decision = $match->decision;
+			$decision   = $match->decision;
 
 			if ($decision == 0)
 			{
 				$home_score = $match->home_score;
 				$away_score = $match->away_score;
-				$leg1 = $match->l1;
-				$leg2 = $match->l2;
+				$leg1       = $match->l1;
+				$leg2       = $match->l2;
 			}
 			else
 			{
 				$home_score = $match->home_score_decision;
 				$away_score = $match->away_score_decision;
-				$leg1 = 0;
-				$leg2 = 0;
+				$leg1       = 0;
+				$leg2       = 0;
 			}
 
-					  $homeId = $match->team1_id;
+			$homeId = $match->team1_id;
 			$awayId = $match->team2_id;
-			$home = &$this->teams[$homeId];
-			$away = &$this->teams[$awayId];
+			$home   = &$this->teams[$homeId];
+			$away   = &$this->teams[$awayId];
 
 			$home->cnt_matches++;
 			$away->cnt_matches++;
@@ -410,7 +406,7 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 
 							$away->cnt_lost++;
 							$away->cnt_lost_away++;
-						break;
+							break;
 						case 1:
 							$home->cnt_wot++;
 							$home->cnt_wot_home++;
@@ -423,7 +419,7 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 							// When LOT, LOT=1 but No LOSS Count(Hockey)
 							// $away->cnt_lost++;
 							// $away->cnt_lost_home++;
-						break;
+							break;
 						case 2:
 							$home->cnt_wso++;
 							$home->cnt_wso_home++;
@@ -438,16 +434,16 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 							// When LSO ,LSO=1 and LOT=1 but No LOSS Count (Hockey)
 							// $away->cnt_lost++;
 							// $away->cnt_lost_home++;
-						break;
+							break;
 					}
 
 					$home->sum_points += $win_points; // Home_score can't be null...
-					$away->sum_points += ( $decision == 0 || isset($away_score) ? $loss_points : 0);
+					$away->sum_points += ($decision == 0 || isset($away_score) ? $loss_points : 0);
 
 					if ($shownegpoints == 1)
 					{
 						$home->neg_points += $loss_points;
-						$away->neg_points += ( $decision == 0 || isset($away_score) ? $win_points : 0);
+						$away->neg_points += ($decision == 0 || isset($away_score) ? $win_points : 0);
 					}
 				}
 				elseif ($home_score == $away_score)
@@ -460,7 +456,7 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 
 							$away->cnt_draw++;
 							$away->cnt_draw_away++;
-					break;
+							break;
 						case 1:
 							if ($home_ot > $away_ot)
 							{
@@ -487,7 +483,7 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 								$home->cnt_lot++;
 								$home->cnt_lot_away++;
 							}
-					break;
+							break;
 						case 2:
 							if ($home_so > $away_so)
 							{
@@ -514,16 +510,16 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 								$home->cnt_lso++;
 								$home->cnt_lso_away++;
 							}
-					break;
+							break;
 					}
 
-					$home->sum_points += ( $decision == 0 || isset($home_score) ? $draw_points : 0);
-					$away->sum_points += ( $decision == 0 || isset($away_score) ? $draw_points : 0);
+					$home->sum_points += ($decision == 0 || isset($home_score) ? $draw_points : 0);
+					$away->sum_points += ($decision == 0 || isset($away_score) ? $draw_points : 0);
 
 					if ($shownegpoints == 1)
 					{
-						$home->neg_points += ( $decision == 0 || isset($home_score) ? ($win_points - $draw_points) : 0); // Bug fixed, timoline 250709
-						$away->neg_points += ( $decision == 0 || isset($away_score) ? ($win_points - $draw_points) : 0);// ex. for soccer, your loss = 2 points not 1 point
+						$home->neg_points += ($decision == 0 || isset($home_score) ? ($win_points - $draw_points) : 0); // Bug fixed, timoline 250709
+						$away->neg_points += ($decision == 0 || isset($away_score) ? ($win_points - $draw_points) : 0);// ex. for soccer, your loss = 2 points not 1 point
 					}
 				}
 				elseif ($home_score < $away_score)
@@ -536,7 +532,7 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 
 							$away->cnt_won++;
 							$away->cnt_won_away++;
-						break;
+							break;
 						case 1:
 							$home->cnt_lot++;
 							$home->cnt_lot_home++;
@@ -549,7 +545,7 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 							$away->cnt_wot_away++;
 							$away->cnt_won++;
 							$away->cnt_won_away++;
-						break;
+							break;
 						case 2:
 							$home->cnt_lso++;
 							$home->cnt_lso_home++;
@@ -564,15 +560,15 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 							$away->cnt_wso_away++;
 							$away->cnt_won++;
 							$away->cnt_won_away++;
-						break;
+							break;
 					}
 
-					$home->sum_points += ( $decision == 0 || isset($home_score) ? $loss_points : 0);
+					$home->sum_points += ($decision == 0 || isset($home_score) ? $loss_points : 0);
 					$away->sum_points += $win_points;
 
 					if ($shownegpoints == 1)
 					{
-						$home->neg_points += ( $decision == 0 || isset($home_score) ? $win_points : 0);
+						$home->neg_points += ($decision == 0 || isset($home_score) ? $win_points : 0);
 						$away->neg_points += $loss_points;
 					}
 				}
@@ -629,47 +625,47 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 				}
 			}
 
-				// Winpoints
+			// Winpoints
 
-				$home->winpoints = $win_points;
+			$home->winpoints = $win_points;
 
-				// Bonus points
+			// Bonus points
 
-				$home->sum_points += $match->home_bonus;
-				$home->bonus_points += $match->home_bonus;
+			$home->sum_points   += $match->home_bonus;
+			$home->bonus_points += $match->home_bonus;
 
-				$away->sum_points += $match->away_bonus;
-				$away->bonus_points += $match->away_bonus;
+			$away->sum_points   += $match->away_bonus;
+			$away->bonus_points += $match->away_bonus;
 
-				// Goals for/against/diff
+			// Goals for/against/diff
 
-				$home->sum_team1_result += $home_score;
-				$home->sum_team2_result += $away_score;
-				$home->diff_team_results = $home->sum_team1_result - $home->sum_team2_result;
-				$home->sum_team1_legs   += $leg1;
-				$home->sum_team2_legs   += $leg2;
-				$home->diff_team_legs    = $home->sum_team1_legs - $home->sum_team2_legs;
+			$home->sum_team1_result  += $home_score;
+			$home->sum_team2_result  += $away_score;
+			$home->diff_team_results = $home->sum_team1_result - $home->sum_team2_result;
+			$home->sum_team1_legs    += $leg1;
+			$home->sum_team2_legs    += $leg2;
+			$home->diff_team_legs    = $home->sum_team1_legs - $home->sum_team2_legs;
 
-				$away->sum_team1_result += $away_score;
-				$away->sum_team2_result += $home_score;
-				$away->diff_team_results = $away->sum_team1_result - $away->sum_team2_result;
-				$away->sum_team1_legs   += $leg2;
-				$away->sum_team2_legs   += $leg1;
-				$away->diff_team_legs    = $away->sum_team1_legs - $away->sum_team2_legs;
+			$away->sum_team1_result  += $away_score;
+			$away->sum_team2_result  += $home_score;
+			$away->diff_team_results = $away->sum_team1_result - $away->sum_team2_result;
+			$away->sum_team1_legs    += $leg2;
+			$away->sum_team2_legs    += $leg1;
+			$away->diff_team_legs    = $away->sum_team1_legs - $away->sum_team2_legs;
 
-				$away->sum_away_for += $away_score;
+			$away->sum_away_for += $away_score;
 		}
 
 		/**
- * hier werden die werte aus dem projekt dem team dazu addiert
- * wenn die werte des projektteams auch genutzt werden sollen
- * dazu müssen die endpunkte neu berechnet werden, da die punkteverteilung
- * über den request anders übergeben werden. z.b. 2 punkte oder 3 punkte für
- * einen sieg
- * $win_points $draw_points $loss_points
- *
- *
- */
+		 * hier werden die werte aus dem projekt dem team dazu addiert
+		 * wenn die werte des projektteams auch genutzt werden sollen
+		 * dazu müssen die endpunkte neu berechnet werden, da die punkteverteilung
+		 * über den request anders übergeben werden. z.b. 2 punkte oder 3 punkte für
+		 * einen sieg
+		 * $win_points $draw_points $loss_points
+		 *
+		 *
+		 */
 		/*
 		foreach ( $this->_teams as $team )
 		{
@@ -706,10 +702,11 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 	/**
 	 * sportsmanagementModelRankingAllTime::getColors()
 	 *
-	 * @param   string $configcolors
+	 * @param   string  $configcolors
+	 *
 	 * @return
 	 */
-	function getColors($configcolors='')
+	function getColors($configcolors = '')
 	{
 		$s = substr($configcolors, 0, -1);
 
@@ -722,9 +719,9 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 
 		$colors = array();
 
-		$colors[0]["from"] = "";
-		$colors[0]["to"] = "";
-		$colors[0]["color"] = "";
+		$colors[0]["from"]        = "";
+		$colors[0]["to"]          = "";
+		$colors[0]["color"]       = "";
 		$colors[0]["description"] = "";
 
 		for ($i = 0; $i < count($arr1); $i++)
@@ -736,9 +733,9 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 				break;
 			}
 
-			$colors[$i]["from"] = $arr2[0];
-			$colors[$i]["to"] = $arr2[1];
-			$colors[$i]["color"] = $arr2[2];
+			$colors[$i]["from"]        = $arr2[0];
+			$colors[$i]["to"]          = $arr2[1];
+			$colors[$i]["color"]       = $arr2[2];
 			$colors[$i]["description"] = $arr2[3];
 		}
 
@@ -748,12 +745,12 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 
 	function getAllProjectNames()
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
 		$jinput = $app->input;
 		$league = $jinput->request->get('l', 0, 'INT');
 
-			 $db = Factory::getDBO();
+		$db    = Factory::getDBO();
 		$query = Factory::getDbo()->getQuery(true);
 
 		if (!$league)
@@ -791,13 +788,13 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 	 */
 	function getAllProject()
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
 		$jinput = $app->input;
 		$league = $jinput->request->get('l', 0, 'INT');
 
-			 // Create a new query object.
-		$db = Factory::getDBO();
+		// Create a new query object.
+		$db    = Factory::getDBO();
 		$query = Factory::getDbo()->getQuery(true);
 
 		if (!$league)
@@ -805,7 +802,7 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 			$projekt = $jinput->request->get('p', 0, 'INT');
 			$query->clear();
 
-					  $query->select('league_id');
+			$query->select('league_id');
 
 			// From the rounds table
 			$query->from('#__sportsmanagement_project');
@@ -836,10 +833,10 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 			$result = $db->loadResultArray(0);
 		}
 
-			  $this->project_ids = implode(",", $result);
+		$this->project_ids       = implode(",", $result);
 		$this->project_ids_array = $result;
 
-			 $count_project = count($result);
+		$count_project = count($result);
 		Log::add(Text::_('Wir verarbeiten ' . $count_project . ' Projekte/Saisons !'), Log::INFO, 'jsmerror');
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
@@ -865,40 +862,40 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 	function getCurrentRanking()
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 
 		$newranking = array();
 
 		foreach ($this->teams as $key)
 		{
 			//            $new = new stdclass(0);
-			$new = new JSMRankingTeamClass(0);
-			$new->cnt_matches = $key->cnt_matches;
-			$new->sum_points = $key->sum_points;
-			$new->neg_points = $key->neg_points;
-			$new->cnt_won_home = $key->cnt_won_home;
-			$new->cnt_draw_home = $key->cnt_draw_home;
-			$new->cnt_lost_home = $key->cnt_lost_home;
-			$new->cnt_won = $key->cnt_won;
-			$new->cnt_draw = $key->cnt_draw;
-			$new->cnt_lost = $key->cnt_lost;
-			$new->sum_team1_result = $key->sum_team1_result;
-			$new->sum_team2_result = $key->sum_team2_result;
-			$new->sum_away_for = $key->sum_away_for;
+			$new                    = new JSMRankingTeamClass(0);
+			$new->cnt_matches       = $key->cnt_matches;
+			$new->sum_points        = $key->sum_points;
+			$new->neg_points        = $key->neg_points;
+			$new->cnt_won_home      = $key->cnt_won_home;
+			$new->cnt_draw_home     = $key->cnt_draw_home;
+			$new->cnt_lost_home     = $key->cnt_lost_home;
+			$new->cnt_won           = $key->cnt_won;
+			$new->cnt_draw          = $key->cnt_draw;
+			$new->cnt_lost          = $key->cnt_lost;
+			$new->sum_team1_result  = $key->sum_team1_result;
+			$new->sum_team2_result  = $key->sum_team2_result;
+			$new->sum_away_for      = $key->sum_away_for;
 			$new->diff_team_results = $key->diff_team_results;
-			$new->_is_in_score = $key->is_in_score;
-			$new->_teamid = $key->team_id;
-			$new->_name = $key->name;
-			$new->_ptid = $key->projectteamid;
-			$new->_pid = $key->project_id;
+			$new->_is_in_score      = $key->is_in_score;
+			$new->_teamid           = $key->team_id;
+			$new->_name             = $key->name;
+			$new->_ptid             = $key->projectteamid;
+			$new->_pid              = $key->project_id;
 
 			$newranking[0][$key->team_id] = $new;
 		}
 
-			 $newranking[0] = self::_sortRanking($newranking[0]);
+		$newranking[0] = self::_sortRanking($newranking[0]);
 
 		$oldpoints = 0;
-		$rank = 0;
+		$rank      = 0;
 
 		foreach ($newranking[0] as $teamid => $row)
 		{
@@ -920,23 +917,22 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 	}
 
 
-
-
 	/**
 	 * sportsmanagementModelRankingAllTime::_sortRanking()
 	 *
-	 * @param   mixed $ranking
+	 * @param   mixed  $ranking
+	 *
 	 * @return
 	 */
 	function _sortRanking(&$ranking)
 	{
 		// Reference global application object
-		$app = Factory::getApplication();
-		$jinput = $app->input;
-		$order = $jinput->request->get('order', '', 'STR');
+		$app       = Factory::getApplication();
+		$jinput    = $app->input;
+		$order     = $jinput->request->get('order', '', 'STR');
 		$order_dir = $jinput->request->get('dir', 'DESC', 'STR');
 
-			  $arr2 = array();
+		$arr2 = array();
 
 		foreach ($ranking as $row)
 		{
@@ -985,25 +981,25 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 			{
 				case 'played':
 					// Uasort($ranking, array(self::$classname, "playedCmp"));
-					$sortarray['cnt_matches'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
+					$sortarray['cnt_matches'] = ($order_dir == 'DESC') ? SORT_DESC : SORT_ASC;
 					break;
 				case 'name':
 					// Uasort($ranking, array(self::$classname, "teamNameCmp"));
-					$sortarray['_name'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
+					$sortarray['_name'] = ($order_dir == 'DESC') ? SORT_DESC : SORT_ASC;
 					break;
 				case 'rank':
 					break;
 				case 'won':
 					// Uasort($ranking, array(self::$classname, "wonCmp"));
-					$sortarray['cnt_won'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
+					$sortarray['cnt_won'] = ($order_dir == 'DESC') ? SORT_DESC : SORT_ASC;
 					break;
 				case 'draw':
 					// Uasort($ranking, array(self::$classname, "drawCmp"));
-					$sortarray['cnt_draw'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
+					$sortarray['cnt_draw'] = ($order_dir == 'DESC') ? SORT_DESC : SORT_ASC;
 					break;
 				case 'loss':
 					// Uasort($ranking, array(self::$classname, "lossCmp"));
-					$sortarray['cnt_lost'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
+					$sortarray['cnt_lost'] = ($order_dir == 'DESC') ? SORT_DESC : SORT_ASC;
 					break;
 				case 'winpct':
 					uasort($ranking, array(self::$classname, "_winpctCmp"));
@@ -1017,49 +1013,49 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 					break;
 				case 'goalsp':
 					// Uasort($ranking, array(self::$classname, "goalspCmp"));
-					$sortarray['sum_team1_result'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
+					$sortarray['sum_team1_result'] = ($order_dir == 'DESC') ? SORT_DESC : SORT_ASC;
 					break;
 				case 'goalsfor':
 					// Uasort($ranking, array(self::$classname, "goalsforCmp"));
-					$sortarray['sum_team1_result'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
+					$sortarray['sum_team1_result'] = ($order_dir == 'DESC') ? SORT_DESC : SORT_ASC;
 					break;
 				case 'goalsagainst':
 					// Uasort($ranking, array(self::$classname, "goalsagainstCmp"));
-					$sortarray['sum_team2_result'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
+					$sortarray['sum_team2_result'] = ($order_dir == 'DESC') ? SORT_DESC : SORT_ASC;
 					break;
 				case 'legsdiff':
 					// Uasort($ranking, array(self::$classname, "legsdiffCmp"));
-					$sortarray['diff_team_legs'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
+					$sortarray['diff_team_legs'] = ($order_dir == 'DESC') ? SORT_DESC : SORT_ASC;
 					break;
 				case 'legsratio':
 					// Uasort($ranking, array(self::$classname, "legsratioCmp"));
-					$sortarray['legsRatio'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
+					$sortarray['legsRatio'] = ($order_dir == 'DESC') ? SORT_DESC : SORT_ASC;
 					break;
 				case 'diff':
 					// Uasort($ranking, array(self::$classname, "diffCmp"));
-					$sortarray['diff_team_legs'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
+					$sortarray['diff_team_legs'] = ($order_dir == 'DESC') ? SORT_DESC : SORT_ASC;
 					break;
 				case 'points':
 					// Uasort($ranking, array(self::$classname, "_pointsCmp"));
-					$sortarray['sum_points'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
+					$sortarray['sum_points'] = ($order_dir == 'DESC') ? SORT_DESC : SORT_ASC;
 
 					// $sortarray['_name'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
 					break;
 				case 'start':
 					// Uasort($ranking, array(self::$classname, "startCmp"));
-					$sortarray['start_points'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
+					$sortarray['start_points'] = ($order_dir == 'DESC') ? SORT_DESC : SORT_ASC;
 					break;
 				case 'bonus':
 					// Uasort($ranking, array(self::$classname, "bonusCmp"));
-					$sortarray['bonus_points'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
+					$sortarray['bonus_points'] = ($order_dir == 'DESC') ? SORT_DESC : SORT_ASC;
 					break;
 				case 'negpoints':
 					// Uasort($ranking, array(self::$classname, "negpointsCmp"));
-					$sortarray['neg_points'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
+					$sortarray['neg_points'] = ($order_dir == 'DESC') ? SORT_DESC : SORT_ASC;
 					break;
 				case 'pointsratio':
 					// Uasort($ranking, array(self::$classname, "pointsratioCmp"));
-					$sortarray['pointsRatio'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
+					$sortarray['pointsRatio'] = ($order_dir == 'DESC') ? SORT_DESC : SORT_ASC;
 					break;
 
 				default:
@@ -1070,7 +1066,7 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 					break;
 			}
 
-					  $arr2 = $this->array_msort($arr2, $sortarray);
+			$arr2 = $this->array_msort($arr2, $sortarray);
 
 			unset($ranking);
 
@@ -1081,66 +1077,6 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 		}
 
 		return $ranking;
-
-	}
-
-	/**
-	 * sportsmanagementModelRankingAllTime::array_msort()
-	 *
-	 * @param   mixed $array
-	 * @param   mixed $cols
-	 * @return
-	 */
-	function array_msort($array, $cols)
-	{
-		$colarr = array();
-
-		foreach ($cols as $col => $order)
-		{
-			$colarr[$col] = array();
-
-			foreach ($array as $k => $row)
-			{
-				$colarr[$col]['_' . $k] = strtolower($row[$col]);
-			}
-		}
-
-		$params = array();
-
-		foreach ($cols as $col => $order)
-		{
-			$params[] = &$colarr[$col];
-			$params = array_merge($params, (array) $order);
-		}
-
-		call_user_func_array('array_multisort', $params);
-		$ret = array();
-		$keys = array();
-		$first = true;
-
-		foreach ($colarr as $col => $arr)
-		{
-			foreach ($arr as $k => $v)
-			{
-				if ($first)
-				{
-					$keys[$k] = substr($k, 1);
-				}
-
-				$k = $keys[$k];
-
-				if (!isset($ret[$k]))
-				{
-					$ret[$k] = $array[$k];
-				}
-
-				$ret[$k][$col] = $array[$k][$col];
-			}
-
-			$first = false;
-		}
-
-		return $ret;
 
 	}
 
@@ -1157,7 +1093,7 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 		{
 			// Get the values from ranking template setting
 			$values = explode(',', $this->_params['ranking_order']);
-			$crit = array();
+			$crit   = array();
 
 			foreach ($values as $v)
 			{
@@ -1189,6 +1125,67 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 		}
 
 		return $this->_criteria;
+	}
+
+	/**
+	 * sportsmanagementModelRankingAllTime::array_msort()
+	 *
+	 * @param   mixed  $array
+	 * @param   mixed  $cols
+	 *
+	 * @return
+	 */
+	function array_msort($array, $cols)
+	{
+		$colarr = array();
+
+		foreach ($cols as $col => $order)
+		{
+			$colarr[$col] = array();
+
+			foreach ($array as $k => $row)
+			{
+				$colarr[$col]['_' . $k] = strtolower($row[$col]);
+			}
+		}
+
+		$params = array();
+
+		foreach ($cols as $col => $order)
+		{
+			$params[] = &$colarr[$col];
+			$params   = array_merge($params, (array) $order);
+		}
+
+		call_user_func_array('array_multisort', $params);
+		$ret   = array();
+		$keys  = array();
+		$first = true;
+
+		foreach ($colarr as $col => $arr)
+		{
+			foreach ($arr as $k => $v)
+			{
+				if ($first)
+				{
+					$keys[$k] = substr($k, 1);
+				}
+
+				$k = $keys[$k];
+
+				if (!isset($ret[$k]))
+				{
+					$ret[$k] = $array[$k];
+				}
+
+				$ret[$k][$col] = $array[$k][$col];
+			}
+
+			$first = false;
+		}
+
+		return $ret;
+
 	}
 
 

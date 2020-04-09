@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -48,43 +49,43 @@ class sportsmanagementViewPredictionGames extends sportsmanagementView
 		}
 		else
 		{
-			 $this->prediction_id = $this->jinput->request->get('prediction_id', 0);
+			$this->prediction_id = $this->jinput->request->get('prediction_id', 0);
 		}
 
-			 $table = Table::getInstance('predictiongame', 'sportsmanagementTable');
-		$this->table    = $table;
+		$table       = Table::getInstance('predictiongame', 'sportsmanagementTable');
+		$this->table = $table;
 
 		if (!$this->items)
 		{
 			$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_GAMES'), 'Error');
 		}
 
-			// Build the html select list for prediction games
-			$predictions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME'), 'value', 'text');
+		// Build the html select list for prediction games
+		$predictions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME'), 'value', 'text');
 
 		if ($res = $this->model->getPredictionGames())
 		{
-					$predictions = array_merge($predictions, $res);
-					$this->prediction_ids    = $res;
+			$predictions          = array_merge($predictions, $res);
+			$this->prediction_ids = $res;
 		}
 
-			  $lists['predictions'] = HTMLHelper::_(
-				  'select.genericlist',
-				  $predictions,
-				  'filter_prediction_id',
-				  'class="inputbox" onChange="this.form.submit();" ',
-				  'value',
-				  'text',
-				  $this->state->get('filter.prediction_id')
-			  );
+		$lists['predictions'] = HTMLHelper::_(
+			'select.genericlist',
+			$predictions,
+			'filter_prediction_id',
+			'class="inputbox" onChange="this.form.submit();" ',
+			'value',
+			'text',
+			$this->state->get('filter.prediction_id')
+		);
 		unset($res);
 
-		$this->lists    = $lists;
-		$this->dPredictionID    = $this->prediction_id;
+		$this->lists         = $lists;
+		$this->dPredictionID = $this->prediction_id;
 
 		if ($this->prediction_id > 0)
 		{
-			$this->predictionProjects    = $this->getModel()->getChilds($this->prediction_id);
+			$this->predictionProjects = $this->getModel()->getChilds($this->prediction_id);
 		}
 
 	}
@@ -98,7 +99,7 @@ class sportsmanagementViewPredictionGames extends sportsmanagementView
 	{
 		// Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TITLE');
-		$this->icon = 'pred-cpanel';
+		$this->icon  = 'pred-cpanel';
 		ToolbarHelper::publish('predictiongames.publish', 'JTOOLBAR_PUBLISH', true);
 		ToolbarHelper::unpublish('predictiongames.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 		ToolbarHelper::divider();
@@ -109,7 +110,6 @@ class sportsmanagementViewPredictionGames extends sportsmanagementView
 		parent::addToolbar();
 
 	}
-
 
 
 }

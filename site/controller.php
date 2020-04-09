@@ -12,6 +12,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\MVC\Controller\BaseController;
 
 /**
@@ -29,7 +30,8 @@ class sportsmanagementController extends BaseController
 	/**
 	 * sportsmanagementController::__construct()
 	 *
-	 * @param   mixed $config
+	 * @param   mixed  $config
+	 *
 	 * @return void
 	 */
 	function __construct($config = array())
@@ -40,8 +42,9 @@ class sportsmanagementController extends BaseController
 	/**
 	 * sportsmanagementController::display()
 	 *
-	 * @param   bool $cachable
-	 * @param   bool $urlparams
+	 * @param   bool  $cachable
+	 * @param   bool  $urlparams
+	 *
 	 * @return void
 	 */
 	public function display($cachable = false, $urlparams = false)

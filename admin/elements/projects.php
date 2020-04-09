@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -39,20 +40,20 @@ class JFormFieldProjects extends FormField
 	 */
 	protected function getInput()
 	{
-		$db = sportsmanagementHelper::getDBConnection();
+		$db   = sportsmanagementHelper::getDBConnection();
 		$lang = Factory::getLanguage();
 
 		// Welche tabelle soll genutzt werden
 		$params = ComponentHelper::getParams('com_sportsmanagement');
 
-			  $extension = "com_sportsmanagement";
-		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
+		$extension = "com_sportsmanagement";
+		$source    = JPATH_ADMINISTRATOR . '/components/' . $extension;
 		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
-		||    $lang->load($extension, $source, null, false, false)
-		||    $lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
-		||    $lang->load($extension, $source, $lang->getDefault(), false, false);
+		|| $lang->load($extension, $source, null, false, false)
+		|| $lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
+		|| $lang->load($extension, $source, $lang->getDefault(), false, false);
 
-						  $query = $db->getQuery(true);
+		$query = $db->getQuery(true);
 		$query->select('p.id, concat(p.name, \' (' . Text::_('COM_SPORTSMANAGEMENT_GLOBAL_LEAGUE') . ': \', l.name, \')\', \' (' . Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SEASON') . ': \', s.name, \' )\' ) as name');
 		$query->from('#__sportsmanagement_project AS p');
 		$query->join('LEFT', '#__sportsmanagement_season AS s ON s.id = p.season_id ');
@@ -69,10 +70,10 @@ class JFormFieldProjects extends FormField
 
 		foreach ($projects as $project)
 		{
-			$mitems[] = HTMLHelper::_('select.option',  $project->id, '&nbsp;&nbsp;&nbsp;' . $project->name);
+			$mitems[] = HTMLHelper::_('select.option', $project->id, '&nbsp;&nbsp;&nbsp;' . $project->name);
 		}
 
-			  $output = HTMLHelper::_('select.genericlist',  $mitems, $this->name . '[]', 'class="inputbox" style="width:90%;" multiple="multiple" size="10"', 'value', 'text', $this->value, $this->id);
+		$output = HTMLHelper::_('select.genericlist', $mitems, $this->name . '[]', 'class="inputbox" style="width:90%;" multiple="multiple" size="10"', 'value', 'text', $this->value, $this->id);
 
 		return $output;
 	}

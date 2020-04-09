@@ -46,18 +46,6 @@ class JGoogleEmbedAnalytics extends JGoogleEmbed
 	}
 
 	/**
-	 * Checks if the javascript is set to be asynchronous
-	 *
-	 * @return  boolean  True if asynchronous
-	 *
-	 * @since   3.1.4
-	 */
-	public function isAsync()
-	{
-		return $this->getOption('async') === null ? true : $this->getOption('async');
-	}
-
-	/**
 	 * Load javascript asynchronously
 	 *
 	 * @return  JGoogleEmbedAnalytics  The object for method chaining
@@ -86,39 +74,6 @@ class JGoogleEmbedAnalytics extends JGoogleEmbed
 	}
 
 	/**
-	 * Add an analytics call
-	 *
-	 * @param   string  $method  The name of the function
-	 * @param   array   $params  The parameters for the call
-	 *
-	 * @return  array  The added call
-	 *
-	 * @since   3.1.4
-	 */
-	public function addCall($method, $params = array())
-	{
-		$call = array('name' => $method, 'params' => $params);
-
-		$calls = $this->listCalls();
-		$calls[] = $call;
-		$this->setOption('calls', $calls);
-
-		return $call;
-	}
-
-	/**
-	 * List the analytics calls to be executed
-	 *
-	 * @return  array  A list of calls
-	 *
-	 * @since   3.1.4
-	 */
-	public function listCalls()
-	{
-		return $this->getOption('calls') ? $this->getOption('calls') : array();
-	}
-
-	/**
 	 * Delete a call from the stack
 	 *
 	 * @param   int  $index  Index of call to delete (defaults to last added call)
@@ -142,6 +97,73 @@ class JGoogleEmbedAnalytics extends JGoogleEmbed
 		$this->setOption('calls', $calls);
 
 		return $call;
+	}
+
+	/**
+	 * List the analytics calls to be executed
+	 *
+	 * @return  array  A list of calls
+	 *
+	 * @since   3.1.4
+	 */
+	public function listCalls()
+	{
+		return $this->getOption('calls') ? $this->getOption('calls') : array();
+	}
+
+	/**
+	 * Add a custom variable to the analytics
+	 *
+	 * @param   int     $slot   The slot to store the variable in (1-5)
+	 * @param   string  $name   The variable name
+	 * @param   string  $value  The variable value
+	 * @param   int     $scope  The scope of the variable (1: visitor level, 2: session level, 3: page level)
+	 *
+	 * @return  array  The added call
+	 *
+	 * @since   3.1.4
+	 */
+	public function addCustomVar($slot, $name, $value, $scope = 3)
+	{
+		return $this->addCall('_setCustomVar', array($slot, $name, $value, $scope));
+	}
+
+	/**
+	 * Add an analytics call
+	 *
+	 * @param   string  $method  The name of the function
+	 * @param   array   $params  The parameters for the call
+	 *
+	 * @return  array  The added call
+	 *
+	 * @since   3.1.4
+	 */
+	public function addCall($method, $params = array())
+	{
+		$call = array('name' => $method, 'params' => $params);
+
+		$calls   = $this->listCalls();
+		$calls[] = $call;
+		$this->setOption('calls', $calls);
+
+		return $call;
+	}
+
+	/**
+	 * Get the code to create a custom analytics variable
+	 *
+	 * @param   int     $slot   The slot to store the variable in (1-5)
+	 * @param   string  $name   The variable name
+	 * @param   string  $value  The variable value
+	 * @param   int     $scope  The scope of the variable (1: visitor level, 2: session level, 3: page level)
+	 *
+	 * @return  string  The created call
+	 *
+	 * @since   3.1.4
+	 */
+	public function createCustomVar($slot, $name, $value, $scope = 3)
+	{
+		return $this->createCall('_setCustomVar', array($slot, $name, $value, $scope));
 	}
 
 	/**
@@ -175,37 +197,15 @@ class JGoogleEmbedAnalytics extends JGoogleEmbed
 	}
 
 	/**
-	 * Add a custom variable to the analytics
+	 * Checks if the javascript is set to be asynchronous
 	 *
-	 * @param   int     $slot   The slot to store the variable in (1-5)
-	 * @param   string  $name   The variable name
-	 * @param   string  $value  The variable value
-	 * @param   int     $scope  The scope of the variable (1: visitor level, 2: session level, 3: page level)
-	 *
-	 * @return  array  The added call
+	 * @return  boolean  True if asynchronous
 	 *
 	 * @since   3.1.4
 	 */
-	public function addCustomVar($slot, $name, $value, $scope = 3)
+	public function isAsync()
 	{
-		return $this->addCall('_setCustomVar', array($slot, $name, $value, $scope));
-	}
-
-	/**
-	 * Get the code to create a custom analytics variable
-	 *
-	 * @param   int     $slot   The slot to store the variable in (1-5)
-	 * @param   string  $name   The variable name
-	 * @param   string  $value  The variable value
-	 * @param   int     $scope  The scope of the variable (1: visitor level, 2: session level, 3: page level)
-	 *
-	 * @return  string  The created call
-	 *
-	 * @since   3.1.4
-	 */
-	public function createCustomVar($slot, $name, $value, $scope = 3)
-	{
-		return $this->createCall('_setCustomVar', array($slot, $name, $value, $scope));
+		return $this->getOption('async') === null ? true : $this->getOption('async');
 	}
 
 	/**
@@ -296,7 +296,7 @@ class JGoogleEmbedAnalytics extends JGoogleEmbed
 		}
 
 		$prefix = $this->isSecure() ? 'https://ssl' : 'http://www';
-		$code = $this->getOption('code');
+		$code   = $this->getOption('code');
 
 		if ($this->isAsync())
 		{

@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Language\Text;
@@ -30,13 +31,14 @@ use Joomla\CMS\Language\Text;
 class sportsmanagementControllerPredictionRanking extends BaseController
 {
 
-		/**
-		 * sportsmanagementControllerPredictionRanking::display()
-		 *
-		 * @param   bool $cachable
-		 * @param   bool $urlparams
-		 * @return void
-		 */
+	/**
+	 * sportsmanagementControllerPredictionRanking::display()
+	 *
+	 * @param   bool  $cachable
+	 * @param   bool  $urlparams
+	 *
+	 * @return void
+	 */
 	function display($cachable = false, $urlparams = false)
 	{
 
@@ -56,28 +58,28 @@ class sportsmanagementControllerPredictionRanking extends BaseController
 		$app = Factory::getApplication();
 
 		// JInput object
-		$jinput = $app->input;
-		$pID = $jinput->getVar('prediction_id', '0');
-		$pggroup = $jinput->getVar('pggroup', '0');
+		$jinput      = $app->input;
+		$pID         = $jinput->getVar('prediction_id', '0');
+		$pggroup     = $jinput->getVar('pggroup', '0');
 		$pggrouprank = $jinput->getVar('pggrouprank', '0');
-		$pjID = $jinput->getVar('pj', '0');
-		$rID = $jinput->getVar('r', '0');
-		$set_pj = $jinput->getVar('set_pj', '0');
-		$set_r = $jinput->getVar('set_r', '0');
+		$pjID        = $jinput->getVar('pj', '0');
+		$rID         = $jinput->getVar('r', '0');
+		$set_pj      = $jinput->getVar('set_pj', '0');
+		$set_r       = $jinput->getVar('set_r', '0');
 
-			  $type = $jinput->getVar('type', '0');
+		$type = $jinput->getVar('type', '0');
 		$from = $jinput->getVar('from', '0');
-		$to = $jinput->getVar('to', '0');
+		$to   = $jinput->getVar('to', '0');
 
 		if (!$rID)
 		{
 			$rID = sportsmanagementModelPrediction::getProjectSettings($pjID);
 		}
 
-			  $link = JSMPredictionHelperRoute::getPredictionRankingRoute($pID, $pjID, $rID, '', $pggroup, $pggrouprank, $type, $from, $to);
+		$link = JSMPredictionHelperRoute::getPredictionRankingRoute($pID, $pjID, $rID, '', $pggroup, $pggrouprank, $type, $from, $to);
 
-			  // Echo '<br />' . $link . '<br />';
-			$this->setRedirect($link);
+		// Echo '<br />' . $link . '<br />';
+		$this->setRedirect($link);
 	}
 
 }

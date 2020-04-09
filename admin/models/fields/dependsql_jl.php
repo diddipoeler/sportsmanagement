@@ -13,11 +13,13 @@
  */
 
 defined('_JEXEC') or die;
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+
 FormHelper::loadFieldClass('list');
 
 HTMLHelper::_('behavior.framework');
@@ -51,16 +53,16 @@ class JFormFieldDependSQL extends FormField
 	{
 		// Elements
 		// $required   = $this->element['required'] ? ' required aria-required="true"' : '';
-		$required     = $this->required ? ' required aria-required="true"' : '';
-		$key         = ($this->element['key_field'] ? $this->element['key_field'] : 'value');
-		$val         = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
-		$task         = $this->element['task'];
-		$depends     = $this->element['depends'];
-		$ctrl         = $this->name;
+		$required = $this->required ? ' required aria-required="true"' : '';
+		$key      = ($this->element['key_field'] ? $this->element['key_field'] : 'value');
+		$val      = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
+		$task     = $this->element['task'];
+		$depends  = $this->element['depends'];
+		$ctrl     = $this->name;
 
-			  // Attribs
-		$attribs     = ' task="' . $task . '"';
-		$attribs    .= $required;
+		// Attribs
+		$attribs = ' task="' . $task . '"';
+		$attribs .= $required;
 
 		if ($v = $this->element['size'])
 		{
@@ -69,22 +71,22 @@ class JFormFieldDependSQL extends FormField
 
 		if ($depends)
 		{
-			$attribs    .= ' depends="' . $depends . '"';
+			$attribs .= ' depends="' . $depends . '"';
 		}
 
-		$attribs    .= ' class="inputbox';
+		$attribs .= ' class="inputbox';
 
 		// Optionally add "depend" to the class attribute
 		if ($depends)
 		{
-			$attribs    .= ' depend"';
+			$attribs .= ' depend"';
 		}
 		else
 		{
-			$attribs    .= '"';
+			$attribs .= '"';
 		}
 
-		$attribs    .= ' current="' . $this->value . '"';
+		$attribs .= ' current="' . $this->value . '"';
 
 		if ($required == 'true')
 		{
@@ -110,7 +112,7 @@ class JFormFieldDependSQL extends FormField
 			$doc->addScript(Uri::base() . 'components/com_sportsmanagement/assets/js/depend.js');
 		}
 
-			return HTMLHelper::_('select.genericlist',  $options, $this->name, trim($attribs), $key, $val, $this->value, $this->id);
+		return HTMLHelper::_('select.genericlist', $options, $this->name, trim($attribs), $key, $val, $this->value, $this->id);
 
 	}
 }

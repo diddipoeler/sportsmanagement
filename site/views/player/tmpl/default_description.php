@@ -13,38 +13,40 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+
 ?>
 <!-- Team Player Description START -->
-<div class="<?php echo $this->divclassrow;?> table-responsive" id="player">
-<?php
+<div class="<?php echo $this->divclassrow; ?> table-responsive" id="player">
+	<?php
 	$description = "";
 
-if (isset($this->teamPlayer) && !empty($this->teamPlayer->notes))
-{
-	$description = $this->teamPlayer->notes;
-}
-else
-{
-	if (!empty($this->person->notes))
+	if (isset($this->teamPlayer) && !empty($this->teamPlayer->notes))
 	{
-		$description = $this->person->notes;
+		$description = $this->teamPlayer->notes;
 	}
-}
+	else
+	{
+		if (!empty($this->person->notes))
+		{
+			$description = $this->person->notes;
+		}
+	}
 
-if (!empty($description))
-{
+	if (!empty($description))
+	{
+		?>
+        <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_INFO'); ?></h2>
+        <div class="personinfo">
+			<?php
+			$description = HTMLHelper::_('content.prepare', $description);
+			echo stripslashes($description);
+			?>
+        </div>
+		<?php
+	}
 	?>
-		<h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_INFO');    ?></h2>
-		<div class="personinfo">
-	<?php
-	$description = HTMLHelper::_('content.prepare', $description);
-	echo stripslashes($description);
-	?>
-		</div>
-	<?php
-}
-	?>
-</div>  
+</div>
 <!-- Team Player Description END -->

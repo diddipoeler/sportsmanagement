@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die();
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -54,7 +55,7 @@ class JFormFieldKunenaCategoryList extends \JFormFieldList
 
 		$none = $this->element['none'];
 
-		$size = $this->element['size'];
+		$size  = $this->element['size'];
 		$class = $this->element['class'];
 
 		$attribs = ' ';

@@ -20,6 +20,7 @@
  */
 
 defined('_JEXEC') or die();
+
 use Joomla\CMS\Factory;
 
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -32,21 +33,21 @@ class sportsmanagementModelEvent extends BaseDatabaseModel
 	{
 		$app = Factory::getApplication();
 
-			  $results = jsmGCalendarDBUtil::getCalendars(Factory::getApplication()->input->getVar('gcid', null));
+		$results = jsmGCalendarDBUtil::getCalendars(Factory::getApplication()->input->getVar('gcid', null));
 
 		if (empty($results) || Factory::getApplication()->input->getVar('eventID', null) == null)
 		{
 			return null;
 		}
 
-			return jsmGCalendarZendHelper::getEvent($results[0], Factory::getApplication()->input->getVar('eventID', null));
+		return jsmGCalendarZendHelper::getEvent($results[0], Factory::getApplication()->input->getVar('eventID', null));
 	}
 
 	protected function populateState()
 	{
 		$app = Factory::getApplication();
 
-		$params    = $app->getParams();
+		$params = $app->getParams();
 		$this->setState('params', $params);
 	}
 }

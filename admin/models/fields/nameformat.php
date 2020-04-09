@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Form\FormField;
@@ -39,15 +40,15 @@ class JFormFieldNameFormat extends FormField
 	 */
 	function getInput()
 	{
-		$lang = Factory::getLanguage();
+		$lang      = Factory::getLanguage();
 		$extension = "com_sportsmanagement";
-		$source = JPath::clean(JPATH_ADMINISTRATOR . '/components/' . $extension);
+		$source    = JPath::clean(JPATH_ADMINISTRATOR . '/components/' . $extension);
 		$lang->load($extension, JPATH_ADMINISTRATOR, null, false, false)
-		||    $lang->load($extension, $source, null, false, false)
-		||    $lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
-		||    $lang->load($extension, $source, $lang->getDefault(), false, false);
+		|| $lang->load($extension, $source, null, false, false)
+		|| $lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
+		|| $lang->load($extension, $source, $lang->getDefault(), false, false);
 
-			  $mitems = array();
+		$mitems   = array();
 		$mitems[] = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_FIRST_NICK_LAST'));
 		$mitems[] = HTMLHelper::_('select.option', 1, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST_NICK_FIRST'));
 		$mitems[] = HTMLHelper::_('select.option', 2, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST_FIRST_NICK'));
@@ -68,12 +69,12 @@ class JFormFieldNameFormat extends FormField
 		$mitems[] = HTMLHelper::_('select.option', 17, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST_FIRST_NICK'));
 		$mitems[] = HTMLHelper::_('select.option', 18, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST_FIRSTNAME_FIRST_CHAR_DOT'));
 
-			  $output = HTMLHelper::_(
-				  'select.genericlist',  $mitems,
-				  $this->name,
-				  'class="inputbox" size="1"',
-				  'value', 'text', $this->value, $this->id
-			  );
+		$output = HTMLHelper::_(
+			'select.genericlist', $mitems,
+			$this->name,
+			'class="inputbox" size="1"',
+			'value', 'text', $this->value, $this->id
+		);
 
 		return $output;
 	}

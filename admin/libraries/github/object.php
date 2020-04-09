@@ -108,10 +108,10 @@ abstract class JGithubObject
 	 * @param   integer        $expectedCode  The expected "good" code.
 	 * @param   boolean        $decode        If the should be response be JSON decoded.
 	 *
+	 * @return mixed
 	 * @throws DomainException
 	 * @since  12.4
 	 *
-	 * @return mixed
 	 */
 	protected function processResponse(JHttpResponse $response, $expectedCode = 200, $decode = true)
 	{

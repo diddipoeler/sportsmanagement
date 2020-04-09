@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -13,48 +13,52 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
 <!-- START of match preview -->
-<div class="<?php echo $this->divclassrow;?> table-responsive" id="nextmatch-preview">
-<div class="panel-group" id="accordionnextmatch">
-<div class="panel panel-default">
+<div class="<?php echo $this->divclassrow; ?> table-responsive" id="nextmatch-preview">
+    <div class="panel-group" id="accordionnextmatch">
+        <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordionnextmatch" href="#nextpreview"><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIEW'); ?></a>
+                    <a data-toggle="collapse" data-parent="#accordionnextmatch"
+                       href="#nextpreview"><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIEW'); ?></a>
                 </h4>
             </div>
             <div id="nextpreview" class="panel-collapse collapse">
                 <div class="panel-body">
-<?php
+					<?php
 
-if (!empty($this->match->preview)) {
-    ?>
-    <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIEW'); ?></h2>
-    <table class="table">
-        <tr>
-            <td><?php
-                $preview = $this->match->preview;
-                $preview = HTMLHelper::_('content.prepare', $preview);
+					if (!empty($this->match->preview))
+					{
+						?>
+                        <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIEW'); ?></h2>
+                        <table class="table">
+                            <tr>
+                                <td><?php
+									$preview = $this->match->preview;
+									$preview = HTMLHelper::_('content.prepare', $preview);
 
-            if ($commentsDisabled) {
-                $preview = preg_replace('#{jcomments\s+(off|lock)}#is', '', $preview);
-            }
+									if ($commentsDisabled)
+									{
+										$preview = preg_replace('#{jcomments\s+(off|lock)}#is', '', $preview);
+									}
 
-                echo $preview;
-                ?>
-            </td>
-        </tr>
-    </table>
-    <!-- END of match preview -->
+									echo $preview;
+									?>
+                                </td>
+                            </tr>
+                        </table>
+                        <!-- END of match preview -->
 
-    <?php
-}
-?>
-</div>
-</div>
-</div>
-</div>
+						<?php
+					}
+					?>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

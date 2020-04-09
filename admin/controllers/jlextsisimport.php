@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
@@ -36,8 +37,8 @@ class sportsmanagementControllerjlextsisimport extends BaseController
 	 */
 	function save()
 	{
-		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
+		$option   = Factory::getApplication()->input->getCmd('option');
+		$app      = Factory::getApplication();
 		$document = Factory::getDocument();
 
 		// Check for request forgeries
@@ -46,17 +47,13 @@ class sportsmanagementControllerjlextsisimport extends BaseController
 
 		// $app = Factory::getApplication();
 		$model = $this->getModel('jlextsisimport');
-		$post = Factory::getApplication()->input->get('post');
+		$post  = Factory::getApplication()->input->get('post');
 
-			  $xml_file = $model->getData();
-		$link = 'index.php?option=' . $option . '&view=jlxmlimports&task=jlxmlimport.edit';
+		$xml_file = $model->getData();
+		$link     = 'index.php?option=' . $option . '&view=jlxmlimports&task=jlxmlimport.edit';
 
-					  $this->setRedirect($link, $msg);
+		$this->setRedirect($link, $msg);
 	}
-
-
-
-
 
 
 }

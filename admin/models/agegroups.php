@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 
@@ -32,65 +33,32 @@ class sportsmanagementModelagegroups extends JSMModelList
 	/**
 	 * sportsmanagementModelagegroups::__construct()
 	 *
-	 * @param   mixed $config
+	 * @param   mixed  $config
+	 *
 	 * @return void
 	 */
 	public function __construct($config = array())
 	{
-				$config['filter_fields'] = array(
-						'obj.name',
-						'obj.alias',
-						'obj.age_from',
-						'obj.age_to',
-						'obj.deadline_day',
-						'obj.country',
-						'obj.sportstype_id',
-						'obj.id',
-						'obj.picture',
-						'obj.ordering',
-						'obj.published',
-						'obj.modified',
-						'obj.modified_by',
-						'obj.checked_out',
-						'obj.checked_out_time'
-						);
-				parent::__construct($config);
-				$getDBConnection = sportsmanagementHelper::getDBConnection();
-				parent::setDbo($getDBConnection);
-
-	}
-
-		  /**
-		   * Method to auto-populate the model state.
-		   *
-		   * Note. Calling getState in this method will result in recursion.
-		   *
-		   * @since 1.6
-		   */
-	protected function populateState($ordering = 'obj.name', $direction = 'asc')
-	{
-		if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend'))
-		{
-			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . TVarDumper::dump($this->context, 10, true) . ''), '');
-			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . TVarDumper::dump($this->context, 10, true) . ''), '');
-		}
-
-		// Load the filter state.
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
-		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string');
-		$this->setState('filter.state', $published);
-		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.sports_type', 'filter_sports_type', '');
-		$this->setState('filter.sports_type', $temp_user_request);
-		   $temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '');
-		$this->setState('filter.search_nation', $temp_user_request);
-		   $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
-		$this->setState('list.limit', $value);
-
-		// List state information.
-		parent::populateState($ordering, $direction);
-		   $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
-		$this->setState('list.start', $value);
+		$config['filter_fields'] = array(
+			'obj.name',
+			'obj.alias',
+			'obj.age_from',
+			'obj.age_to',
+			'obj.deadline_day',
+			'obj.country',
+			'obj.sportstype_id',
+			'obj.id',
+			'obj.picture',
+			'obj.ordering',
+			'obj.published',
+			'obj.modified',
+			'obj.modified_by',
+			'obj.checked_out',
+			'obj.checked_out_time'
+		);
+		parent::__construct($config);
+		$getDBConnection = sportsmanagementHelper::getDBConnection();
+		parent::setDbo($getDBConnection);
 
 	}
 
@@ -133,12 +101,12 @@ class sportsmanagementModelagegroups extends JSMModelList
 			$this->jsmquery->where('obj.published = ' . $this->getState('filter.state'));
 		}
 
-			$this->jsmquery->order(
-				$this->jsmdb->escape($this->getState('list.ordering', 'obj.name')) . ' ' .
-				$this->jsmdb->escape($this->getState('list.direction', 'ASC'))
-			);
+		$this->jsmquery->order(
+			$this->jsmdb->escape($this->getState('list.ordering', 'obj.name')) . ' ' .
+			$this->jsmdb->escape($this->getState('list.direction', 'ASC'))
+		);
 
-			  return $this->jsmquery;
+		return $this->jsmquery;
 
 	}
 
@@ -166,9 +134,9 @@ class sportsmanagementModelagegroups extends JSMModelList
 			$this->jsmquery->where('a.country LIKE ' . $this->jsmdb->Quote('%' . $country . '%'));
 		}
 
-			  $this->jsmquery->from('#__sportsmanagement_agegroup as a');
+		$this->jsmquery->from('#__sportsmanagement_agegroup as a');
 
-							 $this->jsmquery->order('a.name ASC');
+		$this->jsmquery->order('a.name ASC');
 
 		$this->jsmdb->setQuery($this->jsmquery);
 
@@ -178,6 +146,40 @@ class sportsmanagementModelagegroups extends JSMModelList
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since 1.6
+	 */
+	protected function populateState($ordering = 'obj.name', $direction = 'asc')
+	{
+		if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend'))
+		{
+			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . TVarDumper::dump($this->context, 10, true) . ''), '');
+			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . TVarDumper::dump($this->context, 10, true) . ''), '');
+		}
+
+		// Load the filter state.
+		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string');
+		$this->setState('filter.state', $published);
+		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.sports_type', 'filter_sports_type', '');
+		$this->setState('filter.sports_type', $temp_user_request);
+		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '');
+		$this->setState('filter.search_nation', $temp_user_request);
+		$value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
+		$this->setState('list.limit', $value);
+
+		// List state information.
+		parent::populateState($ordering, $direction);
+		$value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
+		$this->setState('list.start', $value);
+
 	}
 
 }

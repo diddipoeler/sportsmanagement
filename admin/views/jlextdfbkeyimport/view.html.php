@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
@@ -39,7 +40,7 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 	 */
 	public function init()
 	{
-		$tpl = '';
+		$tpl               = '';
 		$this->division_id = $this->jinput->get('divisionid');
 
 		switch ($this->getLayout())
@@ -50,81 +51,56 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 				$this->setLayout('default');
 				$this->_displayDefault($tpl);
 
-return;
-			break;
+				return;
+				break;
 			case 'default_createdays':
 			case 'default_createdays_3':
 			case 'default_createdays_4':
 				$this->setLayout('default_createdays');
 				$this->_displayDefaultCreatedays($tpl);
 
-return;
-			break;
+				return;
+				break;
 			case 'default_firstmatchday':
 			case 'default_firstmatchday_3':
 			case 'default_firstmatchday_4':
 				$this->setLayout('default_firstmatchday');
 				$this->_displayDefaultFirstMatchday($tpl);
 
-return;
-			break;
+				return;
+				break;
 			case 'default_savematchdays':
 			case 'default_savematchdays_3':
 			case 'default_savematchdays_4':
 				$this->setLayout('default_savematchdays');
 				$this->_displayDefaultSaveMatchdays($tpl);
 
-return;
-			break;
+				return;
+				break;
 			case 'default_getdivision':
 			case 'default_getdivision_3':
 			case 'default_getdivision_4':
 				$this->setLayout('default_getdivision');
 				$this->_displayDefaultGetDivision($tpl);
 
-return;
-			break;
+				return;
+				break;
 		}
-
-	}
-
-	/**
-	 * sportsmanagementViewjlextdfbkeyimport::_displayDefaultGetDivision()
-	 *
-	 * @param   mixed $tpl
-	 * @return void
-	 */
-	function _displayDefaultGetDivision($tpl)
-	{
-
-		$mdl_divisions = BaseDatabaseModel::getInstance("Divisions", "sportsmanagementModel");
-		$projectdivisions = $mdl_divisions->getDivisions($this->project_id);
-		$this->division = 0;
-		$divisionsList[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
-
-		if ($projectdivisions)
-		{
-			$projectdivisions = array_merge($divisionsList, $projectdivisions);
-		}
-
-			  $lists['divisions'] = $projectdivisions;
-			$this->lists = $lists;
-			ToolbarHelper::back('JPREV', 'index.php?option=' . $this->option . '&view=projects');
-			ToolbarHelper::save('jlextdfbkeyimport.getdivisionfirst', 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_USE_DIVISION');
 
 	}
 
 	/**
 	 * sportsmanagementViewjlextdfbkeyimport::_displayDefault()
 	 *
-	 * @param   mixed $tpl
+	 * @param   mixed  $tpl
+	 *
 	 * @return void
 	 */
 	function _displayDefault($tpl)
 	{
 
 		$this->division_id = $this->jinput->get('divisionid');
-		$project_type = $this->model->getProjectType($this->project_id);
+		$project_type      = $this->model->getProjectType($this->project_id);
 
 		$this->app->enqueueMessage($project_type, 'notice');
 
@@ -149,16 +125,16 @@ return;
 			// build the html options for projectteams
 			if ($res = $this->model->getProjectteams($this->project_id, $this->division_id))
 			{
-				$projectteams[] = HTMLHelper::_('select.option', '0', '- ' . Text::_('Select projectteams') . ' -');
-				$projectteams = array_merge($projectteams, $res);
+				$projectteams[]        = HTMLHelper::_('select.option', '0', '- ' . Text::_('Select projectteams') . ' -');
+				$projectteams          = array_merge($projectteams, $res);
 				$lists['projectteams'] = $projectteams;
 
 				$dfbteams = count($projectteams) - 1;
 
 				if ($resdfbkey = $this->model->getDFBKey($dfbteams, 'FIRST'))
 				{
-					$dfbday = array();
-					$dfbday = array_merge($dfbday, $resdfbkey);
+					$dfbday          = array();
+					$dfbday          = array_merge($dfbday, $resdfbkey);
 					$lists['dfbday'] = $dfbday;
 					unset($dfbday);
 
@@ -204,7 +180,8 @@ return;
 	/**
 	 * sportsmanagementViewjlextdfbkeyimport::_displayDefaultCreatedays()
 	 *
-	 * @param   mixed $tpl
+	 * @param   mixed  $tpl
+	 *
 	 * @return void
 	 */
 	function _displayDefaultCreatedays($tpl)
@@ -215,8 +192,8 @@ return;
 		if ($res = $this->model->getProjectteams($this->project_id, $this->division_id))
 		{
 			$projectteams[] = HTMLHelper::_('select.option', '0', '- ' . Text::_('Select projectteams') . ' -');
-			$projectteams = array_merge($projectteams, $res);
-			$dfbteams = count($projectteams) - 1;
+			$projectteams   = array_merge($projectteams, $res);
+			$dfbteams       = count($projectteams) - 1;
 
 			if ($resdfbkey = $this->model->getDFBKey($dfbteams, 'ALL'))
 			{
@@ -226,46 +203,47 @@ return;
 			unset($projectteams);
 		}
 
-			// Set toolbar items for the page
-			$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'administrator/components/' . $this->option . '/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";
-			$this->document->addCustomTag($stylelink);
+		// Set toolbar items for the page
+		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'administrator/components/' . $this->option . '/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";
+		$this->document->addCustomTag($stylelink);
 
-			// Set toolbar items for the page
-			ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_1'), 'dfbkey');
-			ToolbarHelper::back('JPREV', 'index.php?option=' . $this->option . '&view=projects');
-			ToolbarHelper::save('jlextdfbkeyimport.save', 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INSERT_ROUNDS');
-			ToolbarHelper::divider();
+		// Set toolbar items for the page
+		ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_1'), 'dfbkey');
+		ToolbarHelper::back('JPREV', 'index.php?option=' . $this->option . '&view=projects');
+		ToolbarHelper::save('jlextdfbkeyimport.save', 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INSERT_ROUNDS');
+		ToolbarHelper::divider();
 	}
 
 	/**
 	 * sportsmanagementViewjlextdfbkeyimport::_displayDefaultFirstMatchday()
 	 *
-	 * @param   mixed $tpl
+	 * @param   mixed  $tpl
+	 *
 	 * @return void
 	 */
 	function _displayDefaultFirstMatchday($tpl)
 	{
 
-			 $this->division_id = $this->jinput->get('divisionid');
+		$this->division_id = $this->jinput->get('divisionid');
 
 		if ($res = $this->model->getProjectteams($this->project_id, $this->division_id))
 		{
-			$projectteams[] = HTMLHelper::_('select.option', '0', '- ' . Text::_('Select projectteams') . ' -');
-			$projectteams = array_merge($projectteams, $res);
+			$projectteams[]        = HTMLHelper::_('select.option', '0', '- ' . Text::_('Select projectteams') . ' -');
+			$projectteams          = array_merge($projectteams, $res);
 			$lists['projectteams'] = $projectteams;
 
 			$dfbteams = count($projectteams) - 1;
 
 			if ($resdfbkey = $this->model->getDFBKey($dfbteams, 'FIRST'))
 			{
-				$dfbday = array();
-				$dfbday = array_merge($dfbday, $resdfbkey);
+				$dfbday          = array();
+				$dfbday          = array_merge($dfbday, $resdfbkey);
 				$lists['dfbday'] = $dfbday;
 				unset($dfbday);
 			}
 		}
 
-		$this->lists = $lists;
+		$this->lists    = $lists;
 		$this->dfbteams = $dfbteams;
 
 		// Set toolbar items for the page
@@ -282,7 +260,8 @@ return;
 	/**
 	 * sportsmanagementViewjlextdfbkeyimport::_displayDefaultSaveMatchdays()
 	 *
-	 * @param   mixed $tpl
+	 * @param   mixed  $tpl
+	 *
 	 * @return void
 	 */
 	function _displayDefaultSaveMatchdays($tpl)
@@ -292,8 +271,8 @@ return;
 		// Function syntax is getUserState( $key, $default );
 		$post = $this->app->getUserState("$this->option.first_post", '');
 
-			  $this->division_id = $this->jinput->get('divisionid');
-		$this->import = $this->model->getSchedule($post, $this->project_id, $this->division_id);
+		$this->division_id = $this->jinput->get('divisionid');
+		$this->import      = $this->model->getSchedule($post, $this->project_id, $this->division_id);
 
 		// Set toolbar items for the page
 		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'administrator/components/' . $this->option . '/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";
@@ -304,6 +283,33 @@ return;
 		ToolbarHelper::back('JPREV', 'index.php?option=' . $this->option . '&view=projects');
 		ToolbarHelper::save('jlextdfbkeyimport.insert', 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INSERT_MATCHDAYS');
 		ToolbarHelper::divider();
+
+	}
+
+	/**
+	 * sportsmanagementViewjlextdfbkeyimport::_displayDefaultGetDivision()
+	 *
+	 * @param   mixed  $tpl
+	 *
+	 * @return void
+	 */
+	function _displayDefaultGetDivision($tpl)
+	{
+
+		$mdl_divisions    = BaseDatabaseModel::getInstance("Divisions", "sportsmanagementModel");
+		$projectdivisions = $mdl_divisions->getDivisions($this->project_id);
+		$this->division   = 0;
+		$divisionsList[]  = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
+
+		if ($projectdivisions)
+		{
+			$projectdivisions = array_merge($divisionsList, $projectdivisions);
+		}
+
+		$lists['divisions'] = $projectdivisions;
+		$this->lists        = $lists;
+		ToolbarHelper::back('JPREV', 'index.php?option=' . $this->option . '&view=projects');
+		ToolbarHelper::save('jlextdfbkeyimport.getdivisionfirst', 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_USE_DIVISION');
 
 	}
 

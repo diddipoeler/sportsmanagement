@@ -15,13 +15,13 @@
 defined('_JEXEC') or die('Restricted access'); ?>
 
 <?php if (!empty($this->rounds))
-:
+	:
 	?>
-<table class="table" >
-	<tr>
-		<td style="text-align:left; ">
-	<?php echo sportsmanagementViewResults::showNotPlayingTeams($this->matches, $this->teams, $this->config, $this->favteams, $this->project); ?>
-		</td>
-	</tr>
-</table>
+    <table class="table">
+        <tr>
+            <td style="text-align:left; ">
+				<?php echo sportsmanagementViewResults::showNotPlayingTeams($this->matches, $this->teams, $this->config, $this->favteams, $this->project); ?>
+            </td>
+        </tr>
+    </table>
 <?php endif;

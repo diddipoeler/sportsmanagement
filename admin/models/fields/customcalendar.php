@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die;
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -61,13 +62,13 @@ class JFormFieldCustomCalendar extends FormFieldCalendar
 
 		if ($this->required)
 		{
-			$attributes['required'] = '';
+			$attributes['required']      = '';
 			$attributes['aria-required'] = 'true';
 		}
 
 		$date = new DateTime("now");
 
-		$format = $this->element['format'] ? (string) $this->element['format'] : $this->defaultFormat;
+		$format      = $this->element['format'] ? (string) $this->element['format'] : $this->defaultFormat;
 		$validFormat = preg_replace('/%/', '', $format);
 
 		if ($this->value == '' || is_null($this->value))
@@ -77,7 +78,7 @@ class JFormFieldCustomCalendar extends FormFieldCalendar
 
 		if ($this->value != '0000-00-00' && $this->value != '')
 		{
-			$date = new JDate($this->value);
+			$date        = new JDate($this->value);
 			$this->value = $date->format($this->defaultFormat);
 		}
 		else
@@ -85,7 +86,7 @@ class JFormFieldCustomCalendar extends FormFieldCalendar
 			$this->value = '00-00-0000';
 		}
 
-			 return HTMLHelper::_('calendar', $this->value, $this->name, $this->id, $format, $attributes);
+		return HTMLHelper::_('calendar', $this->value, $this->name, $this->id, $format, $attributes);
 	}
 
 }

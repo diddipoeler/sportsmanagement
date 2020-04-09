@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Filter\OutputFilter;
 
@@ -31,12 +32,13 @@ class sportsmanagementTableTeam extends JSMTable
 	/**
 	 * Constructor
 	 *
-	 * @param object Database connector object
+	 * @param   object Database connector object
+	 *
 	 * @since 1.0
 	 */
-	function __construct(& $db)
+	function __construct(&$db)
 	{
-		  $db = sportsmanagementHelper::getDBConnection();
+		$db = sportsmanagementHelper::getDBConnection();
 		parent::__construct('#__sportsmanagement_team', 'id', $db);
 	}
 
@@ -56,24 +58,24 @@ class sportsmanagementTableTeam extends JSMTable
 			return false;
 		}
 
-			  // Add default middle size name
+		// Add default middle size name
 		if (empty($this->middle_name))
 		{
-			$parts = explode(" ", $this->name);
+			$parts             = explode(" ", $this->name);
 			$this->middle_name = substr($parts[0], 0, 20);
 		}
 
 		// Add default short size name
 		if (empty($this->short_name))
 		{
-			$parts = explode(" ", $this->name);
+			$parts            = explode(" ", $this->name);
 			$this->short_name = substr($parts[0], 0, 2);
 		}
 
 		// Setting alias
 		$this->alias = OutputFilter::stringURLSafe($this->name);
 
-			  return true;
+		return true;
 	}
 
 }

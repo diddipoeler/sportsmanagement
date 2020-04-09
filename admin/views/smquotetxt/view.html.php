@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
@@ -36,17 +37,17 @@ class sportsmanagementViewsmquotetxt extends sportsmanagementView
 	 */
 	public function init()
 	{
-		$app = Factory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$model = $this->getModel();
+		$app             = Factory::getApplication();
+		$jinput          = $app->input;
+		$option          = $jinput->getCmd('option');
+		$model           = $this->getModel();
 		$this->file_name = $jinput->getString('file_name');
 
-			  // Initialise variables.
-		$this->form        = $this->get('Form');
-		$this->source    = $this->get('Source');
+		// Initialise variables.
+		$this->form   = $this->get('Form');
+		$this->source = $this->get('Source');
 
-			$this->option = $option;
+		$this->option = $option;
 
 	}
 
@@ -60,12 +61,11 @@ class sportsmanagementViewsmquotetxt extends sportsmanagementView
 	{
 		$jinput = Factory::getApplication()->input;
 		$jinput->set('hidemainmenu', true);
-		$isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SMQUOTE_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SMQUOTE_ADD_NEW');
+		$isNew      = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SMQUOTE_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SMQUOTE_ADD_NEW');
 		$this->icon = 'quote';
 
 		parent::addToolbar();
 	}
-
 
 
 }

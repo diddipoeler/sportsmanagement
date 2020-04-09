@@ -20,7 +20,7 @@ defined('JPATH_PLATFORM') or die;
  * @since       3.3 (CMS)
  * @deprecated  4.0  Use the `joomla/github` package via Composer instead
  */
-class JGithubPackageRepositoriesStatistics  extends JGithubPackage
+class JGithubPackageRepositoriesStatistics extends JGithubPackage
 {
 	/**
 	 * Get contributors list with additions, deletions, and commit counts.
@@ -38,9 +38,9 @@ class JGithubPackageRepositoriesStatistics  extends JGithubPackage
 	 * @param   string  $owner  The owner of the repository.
 	 * @param   string  $repo   The repository name.
 	 *
+	 * @return  object
 	 * @since   1.0
 	 *
-	 * @return  object
 	 */
 	public function getListContributors($owner, $repo)
 	{
@@ -52,6 +52,31 @@ class JGithubPackageRepositoriesStatistics  extends JGithubPackage
 	}
 
 	/**
+	 * Process the response and decode it.
+	 *
+	 * @param   JHttpResponse  $response      The response.
+	 * @param   integer        $expectedCode  The expected "good" code.
+	 * @param   boolean        $decode        If the should be response be JSON decoded.
+	 *
+	 * @return  mixed
+	 *
+	 * @throws  \DomainException
+	 * @since   1.0
+	 */
+	protected function processResponse(JHttpResponse $response, $expectedCode = 200, $decode = true)
+	{
+		if (202 == $response->code)
+		{
+			throw new \DomainException(
+				'GitHub is building the statistics data. Please try again in a few moments.',
+				$response->code
+			);
+		}
+
+		return parent::processResponse($response, $expectedCode, $decode);
+	}
+
+	/**
 	 * Get the last year of commit activity data.
 	 *
 	 * Returns the last year of commit activity grouped by week.
@@ -60,9 +85,9 @@ class JGithubPackageRepositoriesStatistics  extends JGithubPackage
 	 * @param   string  $owner  The owner of the repository.
 	 * @param   string  $repo   The repository name.
 	 *
+	 * @return  object
 	 * @since   1.0
 	 *
-	 * @return  object
 	 */
 	public function getActivityData($owner, $repo)
 	{
@@ -81,9 +106,9 @@ class JGithubPackageRepositoriesStatistics  extends JGithubPackage
 	 * @param   string  $owner  The owner of the repository.
 	 * @param   string  $repo   The repository name.
 	 *
+	 * @return  object
 	 * @since   1.0
 	 *
-	 * @return  object
 	 */
 	public function getCodeFrequency($owner, $repo)
 	{
@@ -106,9 +131,9 @@ class JGithubPackageRepositoriesStatistics  extends JGithubPackage
 	 * @param   string  $owner  The owner of the repository.
 	 * @param   string  $repo   The repository name.
 	 *
+	 * @return  object
 	 * @since   1.0
 	 *
-	 * @return  object
 	 */
 	public function getParticipation($owner, $repo)
 	{
@@ -135,9 +160,9 @@ class JGithubPackageRepositoriesStatistics  extends JGithubPackage
 	 * @param   string  $owner  The owner of the repository.
 	 * @param   string  $repo   The repository name.
 	 *
+	 * @return  object
 	 * @since   1.0
 	 *
-	 * @return  object
 	 */
 	public function getPunchCard($owner, $repo)
 	{
@@ -146,30 +171,5 @@ class JGithubPackageRepositoriesStatistics  extends JGithubPackage
 
 		// Send the request.
 		return $this->processResponse($this->client->get($this->fetchUrl($path)));
-	}
-
-	/**
-	 * Process the response and decode it.
-	 *
-	 * @param   JHttpResponse  $response      The response.
-	 * @param   integer        $expectedCode  The expected "good" code.
-	 * @param   boolean        $decode        If the should be response be JSON decoded.
-	 *
-	 * @return  mixed
-	 *
-	 * @since   1.0
-	 * @throws  \DomainException
-	 */
-	protected function processResponse(JHttpResponse $response, $expectedCode = 200, $decode = true)
-	{
-		if (202 == $response->code)
-		{
-			throw new \DomainException(
-				'GitHub is building the statistics data. Please try again in a few moments.',
-				$response->code
-			);
-		}
-
-		return parent::processResponse($response, $expectedCode, $decode);
 	}
 }

@@ -20,7 +20,9 @@
  */
 
 defined('_JEXEC') or die();
+
 use Joomla\CMS\Factory;
+
 JLoader::import('joomla.application.component.view');
 
 JLoader::import('components.com_sportsmanagement.libraries.GCalendar.GCalendarZendHelper', JPATH_ADMINISTRATOR);

@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Component\ComponentHelper;
 
 /**
@@ -31,20 +32,21 @@ class sportsmanagementModelcurrentseasons extends JSMModelList
 	/**
 	 * sportsmanagementModelLeagues::__construct()
 	 *
-	 * @param   mixed $config
+	 * @param   mixed  $config
+	 *
 	 * @return void
 	 */
 	public function __construct($config = array())
 	{
-				$config['filter_fields'] = array(
-						'p.name'
-						);
+		$config['filter_fields'] = array(
+			'p.name'
+		);
 
-				// $config['dbo'] = sportsmanagementHelper::getDBConnection();
-				parent::__construct($config);
+		// $config['dbo'] = sportsmanagementHelper::getDBConnection();
+		parent::__construct($config);
 
 		//                $getDBConnection = sportsmanagementHelper::getDBConnection();
-				parent::setDbo($this->jsmdb);
+		parent::setDbo($this->jsmdb);
 	}
 
 	/**
@@ -57,7 +59,7 @@ class sportsmanagementModelcurrentseasons extends JSMModelList
 	protected function populateState($ordering = null, $direction = null)
 	{
 
-			   parent::populateState('p.name', 'asc');
+		parent::populateState('p.name', 'asc');
 	}
 
 

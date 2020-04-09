@@ -12,13 +12,14 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
 <form name="projectteamForm" id="projectteamForm" method="post">
 
-<?php
-// Echo $this->lists['projectteams'];
-echo "" . HTMLHelper::_('select.genericlist', $this->lists['projectteams'], 'projectteam', 'class="inputbox" size="1" onchange="this.form.submit();" ', 'value', 'text', $this->projectteamsel) . "";
-?>
+	<?php
+	// Echo $this->lists['projectteams'];
+	echo "" . HTMLHelper::_('select.genericlist', $this->lists['projectteams'], 'projectteam', 'class="inputbox" size="1" onchange="this.form.submit();" ', 'value', 'text', $this->projectteamsel) . "";
+	?>
 </form>

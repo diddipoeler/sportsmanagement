@@ -1,14 +1,14 @@
 <?php
 /**
  *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * SportsManagement ein Programm zur Verwaltung fï¿½r alle Sportarten
  *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage update
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: ï¿½ 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -45,10 +45,9 @@ class sportsmanagementViewUpdate extends sportsmanagementView
 	protected function addToolbar()
 	{
 
-			  parent::addToolbar();
+		parent::addToolbar();
 
 	}
-
 
 
 }

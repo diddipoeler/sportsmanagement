@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die;
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 
@@ -36,27 +37,28 @@ class sportsmanagementModelallleagues extends JSMModelList
 	/**
 	 * sportsmanagementModelallleagues::__construct()
 	 *
-	 * @param   mixed $config
+	 * @param   mixed  $config
+	 *
 	 * @return void
 	 */
 	public function __construct($config = array())
 	{
-			// Reference global application object
+		// Reference global application object
 		$app = Factory::getApplication();
 
 		// JInput object
-		$jinput = $app->input;
+		$jinput                   = $app->input;
 		$this->use_current_season = $jinput->getVar('use_current_season', '0', 'request', 'string');
-			$this->limitstart = $jinput->getVar('limitstart', 0, '', 'int');
-				$config['filter_fields'] = array(
-						'v.name',
-						'v.picture',
-						'v.country'
-						);
-				parent::__construct($config);
+		$this->limitstart         = $jinput->getVar('limitstart', 0, '', 'int');
+		$config['filter_fields']  = array(
+			'v.name',
+			'v.picture',
+			'v.country'
+		);
+		parent::__construct($config);
 
-				// $getDBConnection = sportsmanagementHelper::getDBConnection();
-				parent::setDbo($this->jsmdb);
+		// $getDBConnection = sportsmanagementHelper::getDBConnection();
+		parent::setDbo($this->jsmdb);
 	}
 
 	/**
@@ -101,6 +103,52 @@ class sportsmanagementModelallleagues extends JSMModelList
 	}
 
 	/**
+	 * sportsmanagementModelallleagues::getListQuery()
+	 *
+	 * @return
+	 */
+	function getListQuery()
+	{
+
+		$this->jsmquery->clear();
+		$this->jsmquery->select('v.id,v.name,v.picture,v.country');
+
+		// From table
+		$this->jsmquery->from('#__sportsmanagement_league AS v');
+
+		if ($this->getState('filter.search'))
+		{
+			$this->jsmquery->where('LOWER(v.name) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%'));
+		}
+
+		if ($this->getState('filter.search_nation'))
+		{
+			$this->jsmquery->where('v.country LIKE ' . $this->jsmdb->Quote('' . $this->getState('filter.search_nation') . ''));
+		}
+
+		if ($this->use_current_season)
+		{
+			$filter_season = ComponentHelper::getParams($this->jsmoption)->get('current_season', 0);
+			$this->jsmquery->join('INNER', '#__sportsmanagement_project AS p ON v.id = p.league_id');
+			/**
+			 * sicherheitshalber noch eine abfrage, wenn der user die nutzung der saison eingeschaltet,
+			 * aber keine saisons hintlergt hat
+			 */
+			if ($filter_season)
+			{
+				$this->jsmquery->where('p.season_id IN (' . implode(',', $filter_season) . ')');
+			}
+		}
+
+		$this->jsmquery->group('v.id');
+
+		$this->jsmquery->order($this->jsmdb->escape($this->getState('filter_order', 'v.name')) . ' ' . $this->jsmdb->escape($this->getState('filter_order_Dir', 'ASC')));
+
+		return $this->jsmquery;
+
+	}
+
+	/**
 	 * Method to auto-populate the model state.
 	 *
 	 * Note. Calling getState in this method will result in recursion.
@@ -119,7 +167,7 @@ class sportsmanagementModelallleagues extends JSMModelList
 		// Initialise variables.
 		$app = Factory::getApplication('site');
 
-			  // List state information
+		// List state information
 
 		$value = $this->getUserStateFromRequest($this->context . '.limit', 'limit', $app->getCfg('list_limit', 0));
 		$this->setState('list.limit', $value);
@@ -127,7 +175,7 @@ class sportsmanagementModelallleagues extends JSMModelList
 		$value = $jinput->getUInt('limitstart', 0);
 		$this->setState('list.start', $value);
 
-			  // Load the filter state.
+		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
 
@@ -136,14 +184,14 @@ class sportsmanagementModelallleagues extends JSMModelList
 		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '');
 		$this->setState('filter.search_nation', $temp_user_request);
 
-			  $filter_order = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
+		$filter_order = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
 
 		if (!in_array($filter_order, $this->filter_fields))
 		{
 			$filter_order = 'v.name';
 		}
 
-			  $filter_order_Dir = $this->getUserStateFromRequest($this->context . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+		$filter_order_Dir = $this->getUserStateFromRequest($this->context . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
 
 		if (!in_array(strtoupper($filter_order_Dir), array('ASC', 'DESC', '')))
 		{
@@ -152,53 +200,6 @@ class sportsmanagementModelallleagues extends JSMModelList
 
 		$this->setState('filter_order', $filter_order);
 		$this->setState('filter_order_Dir', $filter_order_Dir);
-
-	}
-
-
-	/**
-	 * sportsmanagementModelallleagues::getListQuery()
-	 *
-	 * @return
-	 */
-	function getListQuery()
-	{
-
-			  $this->jsmquery->clear();
-		$this->jsmquery->select('v.id,v.name,v.picture,v.country');
-
-		// From table
-		$this->jsmquery->from('#__sportsmanagement_league AS v');
-
-		if ($this->getState('filter.search'))
-		{
-			$this->jsmquery->where('LOWER(v.name) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%'));
-		}
-
-		if ($this->getState('filter.search_nation'))
-		{
-					$this->jsmquery->where('v.country LIKE ' . $this->jsmdb->Quote('' . $this->getState('filter.search_nation') . ''));
-		}
-
-		if ($this->use_current_season)
-		{
-			$filter_season = ComponentHelper::getParams($this->jsmoption)->get('current_season', 0);
-			$this->jsmquery->join('INNER', '#__sportsmanagement_project AS p ON v.id = p.league_id');
-			/**
- * sicherheitshalber noch eine abfrage, wenn der user die nutzung der saison eingeschaltet,
- * aber keine saisons hintlergt hat
-*/
-			if ($filter_season)
-			{
-				$this->jsmquery->where('p.season_id IN (' . implode(',', $filter_season) . ')');
-			}
-		}
-
-			  $this->jsmquery->group('v.id');
-
-			$this->jsmquery->order($this->jsmdb->escape($this->getState('filter_order', 'v.name')) . ' ' . $this->jsmdb->escape($this->getState('filter_order_Dir', 'ASC')));
-
-			  return $this->jsmquery;
 
 	}
 

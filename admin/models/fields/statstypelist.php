@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -60,7 +61,7 @@ class JFormFieldStatstypelist extends \JFormFieldList
 		// $hideDefault = (string) $this->element['hide_default'];
 
 		// Get the path in which to search for file options.
-		$files = Folder::files(JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'statistics', 'php$');
+		$files   = Folder::files(JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'statistics', 'php$');
 		$options = array();
 
 		foreach ($files as $file)
@@ -73,27 +74,27 @@ class JFormFieldStatstypelist extends \JFormFieldList
 			}
 		}
 
-			  /*
-        // check for statistic in extensions
-        $extensions = sportsmanagementHelper::getExtensions(0);
-        foreach ($extensions as $type)
-        {
-         $path = JLG_PATH_SITE.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.$type.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'statistics';
-         if (!file_exists($path)) {
-          continue;
-         }
-         $files = Folder::files($path, 'php$');
-         foreach ($files as $file)
-         {
-          $parts = explode('.', $file);
-          if ($parts[0] != 'base') {
-        $options[] = HTMLHelper::_('select.option', $parts[0], $parts[0]);
-          }
-         }
-        }
-        */
+		/*
+  // check for statistic in extensions
+  $extensions = sportsmanagementHelper::getExtensions(0);
+  foreach ($extensions as $type)
+  {
+   $path = JLG_PATH_SITE.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.$type.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'statistics';
+   if (!file_exists($path)) {
+	continue;
+   }
+   $files = Folder::files($path, 'php$');
+   foreach ($files as $file)
+   {
+	$parts = explode('.', $file);
+	if ($parts[0] != 'base') {
+  $options[] = HTMLHelper::_('select.option', $parts[0], $parts[0]);
+	}
+   }
+  }
+  */
 
-			  // Merge any additional options in the XML definition.
+		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);
 
 		return $options;

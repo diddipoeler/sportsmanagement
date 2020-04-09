@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
@@ -35,13 +36,13 @@ class sportsmanagementViewCurve extends sportsmanagementView
 	 */
 	function init()
 	{
-		$option = Factory::getApplication()->input->getCmd('option');
+		$option   = Factory::getApplication()->input->getCmd('option');
 		$division = Factory::getApplication()->input->getInt('division', 0);
 
-		$model = $this->getModel();
+		$model         = $this->getModel();
 		$rankingconfig = sportsmanagementModelProject::getTemplateConfig("ranking", $model::$cfg_which_database);
-		$flashconfig = sportsmanagementModelProject::getTemplateConfig("flash", $model::$cfg_which_database);
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(), $model::$cfg_which_database);
+		$flashconfig   = sportsmanagementModelProject::getTemplateConfig("flash", $model::$cfg_which_database);
+		$config        = sportsmanagementModelProject::getTemplateConfig($this->getName(), $model::$cfg_which_database);
 
 		$this->project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
 
@@ -54,14 +55,14 @@ class sportsmanagementViewCurve extends sportsmanagementView
 				$this->overallconfig['seperator'] = ":";
 			}
 
-			$this->config = $config;
-			$this->model = $model;
-			$this->colors = sportsmanagementModelProject::getColors($rankingconfig['colors'], $model::$cfg_which_database);
+			$this->config   = $config;
+			$this->model    = $model;
+			$this->colors   = sportsmanagementModelProject::getColors($rankingconfig['colors'], $model::$cfg_which_database);
 			$this->division = $model->getDivision($division);
-			$this->team1 = $model->getTeam1($division);
-			$this->team2 = $model->getTeam2($division);
+			$this->team1    = $model->getTeam1($division);
+			$this->team2    = $model->getTeam2($division);
 
-					  $this->_setChartdata(array_merge($flashconfig, $rankingconfig));
+			$this->_setChartdata(array_merge($flashconfig, $rankingconfig));
 		}
 
 		// Parent::display( $tpl );
@@ -71,12 +72,13 @@ class sportsmanagementViewCurve extends sportsmanagementView
 	 * assign the chartdata object for open flash chart library
 	 *
 	 * @param  $config
+	 *
 	 * @return unknown_type
 	 */
 	function _setChartdata($config)
 	{
-		$model = $this->getModel();
-		$rounds    = sportsmanagementModelProject::getRounds('ASC', $model::$cfg_which_database);
+		$model        = $this->getModel();
+		$rounds       = sportsmanagementModelProject::getRounds('ASC', $model::$cfg_which_database);
 		$round_labels = array();
 
 		foreach ($rounds as $r)
@@ -84,8 +86,8 @@ class sportsmanagementViewCurve extends sportsmanagementView
 			$round_labels[] = $r->name;
 		}
 
-		$division    = $this->get('division');
-		$data = $model->getDataByDivision($division->id);
+		$division = $this->get('division');
+		$data     = $model->getDataByDivision($division->id);
 
 	}
 }

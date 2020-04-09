@@ -15,11 +15,12 @@
 
 
 defined('_JEXEC') or die;
+
 use Joomla\CMS\Form\Field\RadioField;
 
 /**
-* welche joomla version ?
-*/
+ * welche joomla version ?
+ */
 if (version_compare(substr(JVERSION, 0, 1), '4', 'eq'))
 {
 	class JSMFormField extends RadioField
@@ -30,6 +31,7 @@ if (version_compare(substr(JVERSION, 0, 1), '4', 'eq'))
 else
 {
 	include_once JPATH_LIBRARIES . '/joomla/form/fields/radio.php';
+
 	class JSMFormField extends JFormFieldRadio
 	{
 
@@ -57,7 +59,7 @@ class JFormFieldExtensionRadioButton extends JSMFormField
 	protected function getLabel()
 	{
 
-		  return parent::getLabel();
+		return parent::getLabel();
 	}
 
 
@@ -70,8 +72,8 @@ class JFormFieldExtensionRadioButton extends JSMFormField
 	{
 
 		/**
-	 * welche joomla version ?
-	 */
+		 * welche joomla version ?
+		 */
 		if (version_compare(substr(JVERSION, 0, 1), '4', 'eq'))
 		{
 			// $this->class = "switcher btn-group btn-group-yesno";
@@ -84,7 +86,6 @@ class JFormFieldExtensionRadioButton extends JSMFormField
 
 		return parent::getInput();
 	}
-
 
 
 }

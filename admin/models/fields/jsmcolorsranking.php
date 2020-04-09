@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -57,24 +58,24 @@ class JFormFieldjsmcolorsranking extends FormField
 	 */
 	public function getInput()
 	{
-		$app = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
+		$app       = Factory::getApplication();
+		$option    = Factory::getApplication()->input->getCmd('option');
 		$select_id = Factory::getApplication()->input->getVar('id');
 
 		// $this->value = explode(",", $this->value);
-		$rankingteams = $this->element['rankingteams'];
-		$templatename = $this->element['templatename'];
+		$rankingteams  = $this->element['rankingteams'];
+		$templatename  = $this->element['templatename'];
 		$templatefield = $this->element['name'];
 
 		// Initialize variables.
 		$html = array();
 
-			  // Build the html options for extratime
+		// Build the html options for extratime
 		$select_ranking[] = JHtmlSelect::option('0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'));
 
 		for ($a = 1; $a <= $rankingteams; $a++)
 		{
-				$select_ranking[] = JHtmlSelect::option($a, $a);
+			$select_ranking[] = JHtmlSelect::option($a, $a);
 		}
 
 		$select_Options = sportsmanagementHelper::getExtraSelectOptions($templatename, $templatefield, true);
@@ -89,46 +90,46 @@ class JFormFieldjsmcolorsranking extends FormField
 			}
 		}
 
-			$html[] = '<table>';
-			$html[] = '<tr>';
-			$html[] = '<th>';
-			$html[] = 'von';
-			$html[] = '</th>';
-			$html[] = '<th>';
-			$html[] = 'bis';
-			$html[] = '</th>';
-			$html[] = '<th>';
-			$html[] = 'farbe';
-			$html[] = '</th>';
-			$html[] = '<th>';
-			$html[] = 'text';
-			$html[] = '</th>';
-			$html[] = '</tr>';
+		$html[] = '<table>';
+		$html[] = '<tr>';
+		$html[] = '<th>';
+		$html[] = 'von';
+		$html[] = '</th>';
+		$html[] = '<th>';
+		$html[] = 'bis';
+		$html[] = '</th>';
+		$html[] = '<th>';
+		$html[] = 'farbe';
+		$html[] = '</th>';
+		$html[] = '<th>';
+		$html[] = 'text';
+		$html[] = '</th>';
+		$html[] = '</tr>';
 
 		if (ComponentHelper::getParams($option)->get('show_debug_info_backend'))
 		{
-			 $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' this->name -> ' . TVarDumper::dump($this->name, 10, true) . ''), '');
-			 $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' this->value -> ' . TVarDumper::dump($this->value, 10, true) . ''), '');
-			 $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' rankingteams -> ' . TVarDumper::dump($rankingteams, 10, true) . ''), '');
+			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' this->name -> ' . TVarDumper::dump($this->name, 10, true) . ''), '');
+			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' this->value -> ' . TVarDumper::dump($this->value, 10, true) . ''), '');
+			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' rankingteams -> ' . TVarDumper::dump($rankingteams, 10, true) . ''), '');
 		}
 
 		for ($a = 1; $a <= $rankingteams; $a++)
 		{
 			if (!isset($this->value[$a]))
 			{
-				$this->value[$a]['von'] = '';
-				$this->value[$a]['bis'] = '';
-				$this->value[$a]['text'] = '';
+				$this->value[$a]['von']   = '';
+				$this->value[$a]['bis']   = '';
+				$this->value[$a]['text']  = '';
 				$this->value[$a]['color'] = '';
 			}
 
-			  $html[] = '<tr>';
-			  $html[] = '<td>';
-			  $html[] = HTMLHelper::_(
-				  'select.genericlist', $select_ranking,
-				  $this->name . '[' . $a . '][von]"', 'class="inputbox" size="1"', 'value', 'text',
-				  $this->value[$a]['von']
-			  );
+			$html[] = '<tr>';
+			$html[] = '<td>';
+			$html[] = HTMLHelper::_(
+				'select.genericlist', $select_ranking,
+				$this->name . '[' . $a . '][von]"', 'class="inputbox" size="1"', 'value', 'text',
+				$this->value[$a]['von']
+			);
 			$html[] = '</td>';
 			$html[] = '<td>';
 			$html[] = HTMLHelper::_(
@@ -160,9 +161,9 @@ class JFormFieldjsmcolorsranking extends FormField
 			$html[] = '</tr>';
 		}
 
-					$html[] = '</table>';
+		$html[] = '</table>';
 
-					return implode($html);
+		return implode($html);
 
 	}
 }

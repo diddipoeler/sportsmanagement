@@ -13,10 +13,10 @@
  * You should have received a copy of the GNU General Public License
  * along with GCalendar.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package		GCalendar
- * @author		Digital Peak http://www.digital-peak.com
- * @copyright	Copyright (C) 2007 - 2013 Digital Peak. All rights reserved.
- * @license		http://www.gnu.org/licenses/gpl.html GNU/GPL
+ * @package        GCalendar
+ * @author         Digital Peak http://www.digital-peak.com
+ * @copyright      Copyright (C) 2007 - 2013 Digital Peak. All rights reserved.
+ * @license        http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
 defined('_JEXEC') or die();
@@ -66,8 +66,8 @@ class jsmFullcalendar
 			'U' => '');
 
 		$newFormat = "";
-		$isText = false;
-		$i = 0;
+		$isText    = false;
+		$i         = 0;
 
 		while ($i < strlen($format))
 		{
@@ -75,7 +75,7 @@ class jsmFullcalendar
 
 			if ($chr == '"' || $chr == "'")
 			{
-				$isText = ! $isText;
+				$isText = !$isText;
 			}
 
 			$replaced = false;
@@ -86,8 +86,8 @@ class jsmFullcalendar
 				{
 					if (substr($format, $i, strlen($zl)) == $zl)
 					{
-						$chr = $jql;
-						$i += strlen($zl);
+						$chr      = $jql;
+						$i        += strlen($zl);
 						$replaced = true;
 					}
 				}
@@ -95,7 +95,7 @@ class jsmFullcalendar
 
 			if ($replaced == false)
 			{
-				$i ++;
+				$i++;
 			}
 
 			$newFormat .= $chr;

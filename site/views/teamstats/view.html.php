@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 
 /**
@@ -36,8 +37,8 @@ class sportsmanagementViewTeamStats extends sportsmanagementView
 	{
 		if ($this->config['show_goals_stats_flash'])
 		{
-			 $js = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js';
-			 $this->document->addScript($js);
+			$js = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js';
+			$this->document->addScript($js);
 		}
 
 		if (isset($this->project))
@@ -47,38 +48,38 @@ class sportsmanagementViewTeamStats extends sportsmanagementView
 				$this->overallconfig['seperator'] = ":";
 			}
 
-			$this->actualround = sportsmanagementModelProject::getCurrentRound(null, sportsmanagementModelTeamStats::$cfg_which_database);
-			$this->team = $this->model->getTeam();
-			$this->highest_home = $this->model->getHighest('HOME', 'WIN');
-			$this->highest_away = $this->model->getHighest('AWAY', 'WIN');
-			$this->highestdef_home = $this->model->getHighest('HOME', 'DEF');
-			$this->highestdef_away = $this->model->getHighest('AWAY', 'DEF');
-			$this->highestdraw_home = $this->model->getHighest('HOME', 'DRAW');
-			$this->highestdraw_away = $this->model->getHighest('AWAY', 'DRAW');
-			$this->totalshome = $this->model->getSeasonTotals('HOME');
-			$this->totalsaway = $this->model->getSeasonTotals('AWAY');
-			$this->matchdaytotals = $this->model->getMatchDayTotals();
-			$this->totalrounds = $this->model->getTotalRounds();
-			$this->totalattendance = $this->model->getTotalAttendance();
-			$this->bestattendance = $this->model->getBestAttendance();
-			$this->worstattendance = $this->model->getWorstAttendance();
+			$this->actualround       = sportsmanagementModelProject::getCurrentRound(null, sportsmanagementModelTeamStats::$cfg_which_database);
+			$this->team              = $this->model->getTeam();
+			$this->highest_home      = $this->model->getHighest('HOME', 'WIN');
+			$this->highest_away      = $this->model->getHighest('AWAY', 'WIN');
+			$this->highestdef_home   = $this->model->getHighest('HOME', 'DEF');
+			$this->highestdef_away   = $this->model->getHighest('AWAY', 'DEF');
+			$this->highestdraw_home  = $this->model->getHighest('HOME', 'DRAW');
+			$this->highestdraw_away  = $this->model->getHighest('AWAY', 'DRAW');
+			$this->totalshome        = $this->model->getSeasonTotals('HOME');
+			$this->totalsaway        = $this->model->getSeasonTotals('AWAY');
+			$this->matchdaytotals    = $this->model->getMatchDayTotals();
+			$this->totalrounds       = $this->model->getTotalRounds();
+			$this->totalattendance   = $this->model->getTotalAttendance();
+			$this->bestattendance    = $this->model->getBestAttendance();
+			$this->worstattendance   = $this->model->getWorstAttendance();
 			$this->averageattendance = $this->model->getAverageAttendance();
-			$this->chart_url = $this->model->getChartURL();
-			$this->nogoals_against = $this->model->getNoGoalsAgainst();
-			$this->logo = $this->model->getLogo();
-			$this->results = $this->model->getResults();
+			$this->chart_url         = $this->model->getChartURL();
+			$this->nogoals_against   = $this->model->getNoGoalsAgainst();
+			$this->logo              = $this->model->getLogo();
+			$this->results           = $this->model->getResults();
 
 			if ($this->config['show_goals_stats_flash'])
 			{
-				  $rounds    = sportsmanagementModelProject::getRounds('ASC', sportsmanagementModelTeamStats::$cfg_which_database);
-				  $this->round_labels = array();
+				$rounds             = sportsmanagementModelProject::getRounds('ASC', sportsmanagementModelTeamStats::$cfg_which_database);
+				$this->round_labels = array();
 
 				foreach ($rounds as $r)
 				{
 					$this->round_labels[] = '"' . $r->name . '"';
 				}
 
-				  $this->_setChartdata(array_merge(sportsmanagementModelProject::getTemplateConfig("flash", sportsmanagementModelTeamStats::$cfg_which_database), $this->config));
+				$this->_setChartdata(array_merge(sportsmanagementModelProject::getTemplateConfig("flash", sportsmanagementModelTeamStats::$cfg_which_database), $this->config));
 			}
 		}
 
@@ -92,7 +93,7 @@ class sportsmanagementViewTeamStats extends sportsmanagementView
 
 		$this->document->setTitle($pageTitle);
 
-			 $this->headertitle = Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_TITLE') . " - " . $this->team->name;
+		$this->headertitle = Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_TITLE') . " - " . $this->team->name;
 
 	}
 
@@ -100,6 +101,7 @@ class sportsmanagementViewTeamStats extends sportsmanagementView
 	 * assign the chartdata object for open flash chart library
 	 *
 	 * @param  $config
+	 *
 	 * @return unknown_type
 	 */
 	function _setChartdata($config)
@@ -107,8 +109,8 @@ class sportsmanagementViewTeamStats extends sportsmanagementView
 		$data = $this->get('ChartData');
 
 		// Calculate Values for Chart Object
-		$forSum = array();
-		$againstSum = array();
+		$forSum             = array();
+		$againstSum         = array();
 		$matchDayGoalsCount = array();
 
 		$matchDayGoalsCountMax = 0;
@@ -138,11 +140,11 @@ class sportsmanagementViewTeamStats extends sportsmanagementView
 				$matchDayGoalsCount[] = intval($rw->goalsfor + $rw->goalsagainst);
 			}
 
-					  $matchDayGoalsCountMax = intval($rw->goalsfor + $rw->goalsagainst) > $matchDayGoalsCountMax ? intval($rw->goalsfor + $rw->goalsagainst) : $matchDayGoalsCountMax;
+			$matchDayGoalsCountMax = intval($rw->goalsfor + $rw->goalsagainst) > $matchDayGoalsCountMax ? intval($rw->goalsfor + $rw->goalsagainst) : $matchDayGoalsCountMax;
 		}
 
 		$this->matchDayGoalsCountMax = $matchDayGoalsCountMax;
-		  $this->forSum = $forSum;
-		  $this->againstSum = $againstSum;
+		$this->forSum                = $forSum;
+		$this->againstSum            = $againstSum;
 	}
 }

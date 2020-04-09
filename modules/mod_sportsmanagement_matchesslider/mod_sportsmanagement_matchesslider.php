@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Direct Access to this location is not allowed.');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Helper\ModuleHelper;
@@ -20,7 +21,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
-if (! defined('DS'))
+if (!defined('DS'))
 {
 	define('DS', DIRECTORY_SEPARATOR);
 }
@@ -62,8 +63,8 @@ else
 if (!class_exists('sportsmanagementHelper'))
 {
 	/**
- * add the classes for handling
- */
+	 * add the classes for handling
+	 */
 	$classpath = JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'sportsmanagement.php';
 	JLoader::register('sportsmanagementHelper', $classpath);
 	BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
@@ -80,9 +81,9 @@ if (!defined('_JLMATCHLISTSLIDERMODURL'))
 }
 
 /**
-*
+ *
  * Include the functions only once
-*/
+ */
 JLoader::register('modMatchesSliderHelper', __DIR__ . '/helper.php');
 JLoader::register('MatchesSliderSportsmanagementConnector', __DIR__ . '/connectors/sportsmanagement.php');
 
@@ -96,119 +97,119 @@ else
 	HTMLHelper::_('behavior.mootools');
 }
 
-$app = Factory::getApplication();
+$app    = Factory::getApplication();
 $jinput = $app->input;
-$doc = Factory::getDocument();
+$doc    = Factory::getDocument();
 $doc->addScript(_JLMATCHLISTSLIDERMODURL . 'assets/js/jquery.simplyscroll.js');
 $doc->addStyleSheet(_JLMATCHLISTSLIDERMODURL . 'assets/css/' . $module->module . '.css');
 
 HTMLHelper::_('behavior.tooltip');
 
-$config = array();
+$config        = array();
 $slidermatches = array();
 
 $cfg_which_database = $jinput->getInt('cfg_which_database', 0);
-$s = $jinput->getInt('s', 0);
-$projectid = $jinput->getInt('p', 0);
+$s                  = $jinput->getInt('s', 0);
+$projectid          = $jinput->getInt('p', 0);
 
 if (!$projectid)
 {
 	$cfg_which_database = $params->get('cfg_which_database');
-	$s = $params->get('s');
+	$s                  = $params->get('s');
 
 	foreach ($params->get('p') as $key => $value)
 	{
-			$projectid = (int) $value;
+		$projectid = (int) $value;
 
 		if ($params->get('teams'))
 		{
 			foreach ($params->get('teams') as $keyteam => $valueteam)
 			{
-					sportsmanagementModelProject::$projectid = $projectid;
-				   sportsmanagementModelProject::$cfg_which_database = $cfg_which_database;
-				   sportsmanagementModelResults::$projectid = $projectid;
-				   sportsmanagementModelResults::$cfg_which_database = $cfg_which_database;
-				   $matches = sportsmanagementModelResults::getResultsRows(0, 0, $config, $params, $cfg_which_database, (int) $valueteam);
-				   $slidermatches = array_merge($slidermatches, $matches);
+				sportsmanagementModelProject::$projectid          = $projectid;
+				sportsmanagementModelProject::$cfg_which_database = $cfg_which_database;
+				sportsmanagementModelResults::$projectid          = $projectid;
+				sportsmanagementModelResults::$cfg_which_database = $cfg_which_database;
+				$matches                                          = sportsmanagementModelResults::getResultsRows(0, 0, $config, $params, $cfg_which_database, (int) $valueteam);
+				$slidermatches                                    = array_merge($slidermatches, $matches);
 			}
 		}
 		else
 		{
-			  sportsmanagementModelProject::$projectid = $projectid;
-			  sportsmanagementModelProject::$cfg_which_database = $cfg_which_database;
-			  sportsmanagementModelResults::$projectid = $projectid;
-			  sportsmanagementModelResults::$cfg_which_database = $cfg_which_database;
-			  $matches = sportsmanagementModelResults::getResultsRows(0, 0, $config, $params, $cfg_which_database);
-			  $slidermatches = array_merge($slidermatches, $matches);
+			sportsmanagementModelProject::$projectid          = $projectid;
+			sportsmanagementModelProject::$cfg_which_database = $cfg_which_database;
+			sportsmanagementModelResults::$projectid          = $projectid;
+			sportsmanagementModelResults::$cfg_which_database = $cfg_which_database;
+			$matches                                          = sportsmanagementModelResults::getResultsRows(0, 0, $config, $params, $cfg_which_database);
+			$slidermatches                                    = array_merge($slidermatches, $matches);
 		}
 	}
 }
 else
 {
-	sportsmanagementModelProject::$projectid = $projectid;
+	sportsmanagementModelProject::$projectid          = $projectid;
 	sportsmanagementModelProject::$cfg_which_database = $cfg_which_database;
-	sportsmanagementModelResults::$projectid = $projectid;
+	sportsmanagementModelResults::$projectid          = $projectid;
 	sportsmanagementModelResults::$cfg_which_database = $cfg_which_database;
-	$matches = sportsmanagementModelResults::getResultsRows(0, 0, $config, $params, $cfg_which_database);
-	$slidermatches = array_merge($slidermatches, $matches);
+	$matches                                          = sportsmanagementModelResults::getResultsRows(0, 0, $config, $params, $cfg_which_database);
+	$slidermatches                                    = array_merge($slidermatches, $matches);
 }
 
 usort(
 	$slidermatches, function ($a, $b) {
-		return $a->match_timestamp - $b->match_timestamp;
-	}
+	return $a->match_timestamp - $b->match_timestamp;
+}
 );
 
 
 foreach ($slidermatches as $match)
 {
-	$routeparameter = array();
+	$routeparameter                       = array();
 	$routeparameter['cfg_which_database'] = $cfg_which_database;
-	$routeparameter['s'] = $s;
-	$routeparameter['p'] = $match->project_slug;
+	$routeparameter['s']                  = $s;
+	$routeparameter['p']                  = $match->project_slug;
 
 	switch ($params->get('p_link_func'))
 	{
 		case 'results':
-			$routeparameter['r'] = $match->round_slug;
+			$routeparameter['r']        = $match->round_slug;
 			$routeparameter['division'] = 0;
-			$routeparameter['mode'] = 0;
-			$routeparameter['order'] = '';
-			$routeparameter['layout'] = '';
-			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);
-		break;
+			$routeparameter['mode']     = 0;
+			$routeparameter['order']    = '';
+			$routeparameter['layout']   = '';
+			$link                       = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);
+			break;
 		case 'ranking':
-			$routeparameter = array();
+			$routeparameter                       = array();
 			$routeparameter['cfg_which_database'] = $cfg_which_database;
-			$routeparameter['s'] = $s;
-			$routeparameter['p'] = $match->project_slug;
-			$routeparameter['type'] = 0;
-			$routeparameter['r'] = $match->round_slug;
-			$routeparameter['from'] = 0;
-			$routeparameter['to'] = 0;
-			$routeparameter['division'] = 0;
-			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);
-		break;
+			$routeparameter['s']                  = $s;
+			$routeparameter['p']                  = $match->project_slug;
+			$routeparameter['type']               = 0;
+			$routeparameter['r']                  = $match->round_slug;
+			$routeparameter['from']               = 0;
+			$routeparameter['to']                 = 0;
+			$routeparameter['division']           = 0;
+			$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);
+			break;
 		case 'resultsrank':
-			$routeparameter = array();
+			$routeparameter                       = array();
 			$routeparameter['cfg_which_database'] = $cfg_which_database;
-			$routeparameter['s'] = $s;
-			$routeparameter['p'] = $match->project_slug;
-			$routeparameter['r'] = $match->round_slug;
-			$routeparameter['division'] = 0;
-			$routeparameter['mode'] = 0;
-			$routeparameter['order'] = '';
-			$routeparameter['layout'] = '';
-			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsranking', $routeparameter);
-		break;
+			$routeparameter['s']                  = $s;
+			$routeparameter['p']                  = $match->project_slug;
+			$routeparameter['r']                  = $match->round_slug;
+			$routeparameter['division']           = 0;
+			$routeparameter['mode']               = 0;
+			$routeparameter['order']              = '';
+			$routeparameter['layout']             = '';
+			$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsranking', $routeparameter);
+			break;
 	}
 }
 
 
-
 ?>
-<div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
-<?PHP
-require ModuleHelper::getLayoutPath($module->module);
-?>
+<div class="<?php echo $params->get('moduleclass_sfx'); ?>"
+     id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+	<?PHP
+	require ModuleHelper::getLayoutPath($module->module);
+	?>
 </div>

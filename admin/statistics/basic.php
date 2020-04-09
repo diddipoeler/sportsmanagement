@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
@@ -37,14 +38,15 @@ class SMStatisticBasic extends SMStatistic
 	/**
 	 * SMStatisticBasic::getMatchPlayerStat()
 	 *
-	 * @param   mixed $gamemodel
-	 * @param   mixed $teamplayer_id
+	 * @param   mixed  $gamemodel
+	 * @param   mixed  $teamplayer_id
+	 *
 	 * @return
 	 */
 	function getMatchPlayerStat(&$gamemodel, $teamplayer_id)
 	{
 		$gamestats = $gamemodel->getPlayersStats();
-		$res = 0;
+		$res       = 0;
 
 		if (isset($gamestats[$teamplayer_id][$this->id]))
 		{
@@ -55,14 +57,33 @@ class SMStatisticBasic extends SMStatistic
 	}
 
 	/**
+	 * SMStatisticBasic::formatValue()
+	 *
+	 * @param   mixed  $value
+	 * @param   mixed  $precision
+	 *
+	 * @return
+	 */
+	function formatValue($value, $precision)
+	{
+		if (empty($value))
+		{
+			$value = 0;
+		}
+
+		return number_format($value, $precision);
+	}
+
+	/**
 	 * SMStatisticBasic::getMatchPlayersStats()
 	 *
-	 * @param   mixed $match_id
+	 * @param   mixed  $match_id
+	 *
 	 * @return
 	 */
 	function getMatchPlayersStats($match_id)
 	{
-		$db = sportsmanagementHelper::getDBConnection();
+		$db    = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 		$query->select('SUM(ms.value) AS value, tp.id');
 		$query->from('#__sportsmanagement_match_statistic AS ms');
@@ -89,8 +110,9 @@ class SMStatisticBasic extends SMStatistic
 	/**
 	 * SMStatisticBasic::getPlayerStatsByGame()
 	 *
-	 * @param   mixed $teamplayer_ids
-	 * @param   mixed $project_id
+	 * @param   mixed  $teamplayer_ids
+	 * @param   mixed  $project_id
+	 *
 	 * @return
 	 */
 	function getPlayerStatsByGame($teamplayer_ids, $project_id)
@@ -113,10 +135,11 @@ class SMStatisticBasic extends SMStatistic
 	/**
 	 * SMStatisticBasic::getPlayerStatsByProject()
 	 *
-	 * @param   mixed   $person_id
-	 * @param   integer $projectteam_id
-	 * @param   integer $project_id
-	 * @param   integer $sports_type_id
+	 * @param   mixed    $person_id
+	 * @param   integer  $projectteam_id
+	 * @param   integer  $project_id
+	 * @param   integer  $sports_type_id
+	 *
 	 * @return
 	 */
 	function getPlayerStatsByProject($person_id, $projectteam_id = 0, $project_id = 0, $sports_type_id = 0)
@@ -131,6 +154,7 @@ class SMStatisticBasic extends SMStatistic
 	 *
 	 * @param  $team_id
 	 * @param  $project_id
+	 *
 	 * @return array
 	 */
 	function getRosterStats($team_id, $project_id, $position_id)
@@ -150,33 +174,33 @@ class SMStatisticBasic extends SMStatistic
 		return $res;
 	}
 
-
 	/**
 	 * SMStatisticBasic::getPlayersRanking()
 	 *
-	 * @param   integer $project_id
-	 * @param   integer $division_id
-	 * @param   integer $team_id
-	 * @param   integer $limit
-	 * @param   integer $limitstart
-	 * @param   mixed   $order
+	 * @param   integer  $project_id
+	 * @param   integer  $division_id
+	 * @param   integer  $team_id
+	 * @param   integer  $limit
+	 * @param   integer  $limitstart
+	 * @param   mixed    $order
+	 *
 	 * @return
 	 */
 	function getPlayersRanking($project_id = 0, $division_id = 0, $team_id = 0, $limit = 20, $limitstart = 0, $order = null)
 	{
-		$app = Factory::getApplication();
-		$db = sportsmanagementHelper::getDBConnection();
+		$app        = Factory::getApplication();
+		$db         = sportsmanagementHelper::getDBConnection();
 		$query_core = Factory::getDbo()->getQuery(true);
 
-			  $query_select_count = ' COUNT(DISTINCT tp.id) as count';
+		$query_select_count = ' COUNT(DISTINCT tp.id) as count';
 
 		$query_select_details = ' SUM(ms.value) AS total,'
-		. ' tp.id AS teamplayer_id, tp.person_id, tp.picture AS teamplayerpic,'
-		. ' p.firstname, p.nickname, p.lastname, p.picture, p.country,'
-		. ' st.team_id, pt.picture AS projectteam_picture,'
-		. ' t.picture AS team_picture, t.name AS team_name, t.short_name AS team_short_name';
+			. ' tp.id AS teamplayer_id, tp.person_id, tp.picture AS teamplayerpic,'
+			. ' p.firstname, p.nickname, p.lastname, p.picture, p.country,'
+			. ' st.team_id, pt.picture AS projectteam_picture,'
+			. ' t.picture AS team_picture, t.name AS team_name, t.short_name AS team_short_name';
 
-			  $query_core->select($query_select_count);
+		$query_core->select($query_select_count);
 		$query_core->from('#__sportsmanagement_season_team_person_id AS tp');
 		$query_core->join('INNER', '#__sportsmanagement_person AS p ON p.id = tp.person_id ');
 		$query_core->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
@@ -194,22 +218,22 @@ class SMStatisticBasic extends SMStatistic
 
 		if ($team_id != 0)
 		{
-					$query_core->where('st.team_id = ' . $team_id);
+			$query_core->where('st.team_id = ' . $team_id);
 		}
 
-			$res = new stdclass;
-			$db->setQuery($query_core);
+		$res = new stdclass;
+		$db->setQuery($query_core);
 
-			 $res->pagination_total = $db->loadResult();
+		$res->pagination_total = $db->loadResult();
 
-			  $query_core->clear('select');
-			$query_core->select($query_select_details);
-			$query_core->group('tp.id');
-			$query_core->order('total ' . (!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')) . ', tp.id ');
+		$query_core->clear('select');
+		$query_core->select($query_select_details);
+		$query_core->group('tp.id');
+		$query_core->order('total ' . (!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')) . ', tp.id ');
 
-			$db->setQuery($query_core, $limitstart, $limit);
+		$db->setQuery($query_core, $limitstart, $limit);
 
-			 $res->ranking = $db->loadObjectList();
+		$res->ranking = $db->loadObjectList();
 
 		if ($res->ranking)
 		{
@@ -230,46 +254,46 @@ class SMStatisticBasic extends SMStatistic
 					$res->ranking[$k]->rank = $k + 1 + $limitstart;
 				}
 
-					$previousval = $row->total;
-					$currentrank = $res->ranking[$k]->rank;
-					$res->ranking[$k]->total = self::formatValue($res->ranking[$k]->total, $precision);
+				$previousval             = $row->total;
+				$currentrank             = $res->ranking[$k]->rank;
+				$res->ranking[$k]->total = self::formatValue($res->ranking[$k]->total, $precision);
 			}
 		}
 
-			return $res;
+		return $res;
 	}
-
 
 	/**
 	 * SMStatisticBasic::getTeamsRanking()
 	 *
-	 * @param   integer $project_id
-	 * @param   integer $limit
-	 * @param   integer $limitstart
-	 * @param   mixed   $order
-	 * @param   string  $select
-	 * @param   integer $statistic_id
+	 * @param   integer  $project_id
+	 * @param   integer  $limit
+	 * @param   integer  $limitstart
+	 * @param   mixed    $order
+	 * @param   string   $select
+	 * @param   integer  $statistic_id
+	 *
 	 * @return
 	 */
 	function getTeamsRanking($project_id = 0, $limit = 20, $limitstart = 0, $order = null, $select = '', $statistic_id = 0)
 	{
 		$app = Factory::getApplication();
-		$db = sportsmanagementHelper::getDBConnection();
+		$db  = sportsmanagementHelper::getDBConnection();
 
-			  $select = 'SUM(ms.value) AS total, st.team_id ';
+		$select       = 'SUM(ms.value) AS total, st.team_id ';
 		$statistic_id = $this->id;
-		$query = SMStatistic::getTeamsRanking($project_id, $limit, $limitstart, $order, $select, $statistic_id);
+		$query        = SMStatistic::getTeamsRanking($project_id, $limit, $limitstart, $order, $select, $statistic_id);
 		$query->order('total ' . (!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')) . ', tp.id ');
 		$query->group('st.team_id');
 
 		try
 		{
-				$db->setQuery($query, $limitstart, $limit);
-			 $res = $db->loadObjectList();
+			$db->setQuery($query, $limitstart, $limit);
+			$res = $db->loadObjectList();
 		}
 		catch (Exception $e)
 		{
-			$msg = $e->getMessage(); // Returns "Normally you would have other code...
+			$msg  = $e->getMessage(); // Returns "Normally you would have other code...
 			$code = $e->getCode(); // Returns '500';
 			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
 		}
@@ -293,8 +317,8 @@ class SMStatisticBasic extends SMStatistic
 					$res[$k]->rank = $k + 1 + $limitstart;
 				}
 
-				$previousval = $row->total;
-				$currentrank = $res[$k]->rank;
+				$previousval    = $row->total;
+				$currentrank    = $res[$k]->rank;
 				$res[$k]->total = self::formatValue($res[$k]->total, $precision);
 			}
 		}
@@ -305,14 +329,15 @@ class SMStatisticBasic extends SMStatistic
 	/**
 	 * SMStatisticBasic::getMatchStaffStat()
 	 *
-	 * @param   mixed $gamemodel
-	 * @param   mixed $team_staff_id
+	 * @param   mixed  $gamemodel
+	 * @param   mixed  $team_staff_id
+	 *
 	 * @return
 	 */
 	function getMatchStaffStat(&$gamemodel, $team_staff_id)
 	{
 		$gamestats = $gamemodel->getMatchStaffStats();
-		$res = 0;
+		$res       = 0;
 
 		if (isset($gamestats[$team_staff_id][$this->id]))
 		{
@@ -325,22 +350,23 @@ class SMStatisticBasic extends SMStatistic
 	/**
 	 * SMStatisticBasic::getStaffStats()
 	 *
-	 * @param   mixed $person_id
-	 * @param   mixed $team_id
-	 * @param   mixed $project_id
+	 * @param   mixed  $person_id
+	 * @param   mixed  $team_id
+	 * @param   mixed  $project_id
+	 *
 	 * @return
 	 */
 	function getStaffStats($person_id, $team_id, $project_id)
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
-		$db = sportsmanagementHelper::getDBConnection();
+		$app    = Factory::getApplication();
+		$db     = sportsmanagementHelper::getDBConnection();
 		$select = 'SUM(ms.value) AS value ';
-		$query = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $this->id, $select, false);
+		$query  = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $this->id, $select, false);
 
-					$db->setQuery($query, 0, 1);
+		$db->setQuery($query, 0, 1);
 
-			 $res = $db->loadResult();
+		$res = $db->loadResult();
 
 		return self::formatValue($res, $this->getPrecision());
 	}
@@ -348,39 +374,23 @@ class SMStatisticBasic extends SMStatistic
 	/**
 	 * SMStatisticBasic::getHistoryStaffStats()
 	 *
-	 * @param   mixed $person_id
+	 * @param   mixed  $person_id
+	 *
 	 * @return
 	 */
 	function getHistoryStaffStats($person_id)
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
-		$db = sportsmanagementHelper::getDBConnection();
+		$app    = Factory::getApplication();
+		$db     = sportsmanagementHelper::getDBConnection();
 
-			  $select = 'SUM(ms.value) AS value ';
-		$query = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $this->id, $select, true);
+		$select = 'SUM(ms.value) AS value ';
+		$query  = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $this->id, $select, true);
 
-			  $db->setQuery($query);
+		$db->setQuery($query);
 
-			 $res = $db->loadResult();
+		$res = $db->loadResult();
 
 		return self::formatValue($res, SMStatistic::getPrecision());
-	}
-
-	/**
-	 * SMStatisticBasic::formatValue()
-	 *
-	 * @param   mixed $value
-	 * @param   mixed $precision
-	 * @return
-	 */
-	function formatValue($value, $precision)
-	{
-		if (empty($value))
-		{
-			$value = 0;
-		}
-
-		return number_format($value, $precision);
 	}
 }

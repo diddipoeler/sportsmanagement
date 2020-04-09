@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -32,7 +33,7 @@ jimport('joomla.form.helper');
  *
  * @package             sportsmanagement
  * @subpackageParameter
- * @since1.5
+ * @since1              .5
  */
 class JFormFieldDependSQL extends JFormField
 {
@@ -56,24 +57,24 @@ class JFormFieldDependSQL extends JFormField
 
 		// JInput object
 		$jinput = $app->input;
-		$view = $jinput->getCmd('view');
+		$view   = $jinput->getCmd('view');
 		$option = $jinput->getCmd('option');
 
-			 $lang = Factory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load("com_sportsmanagement", JPATH_ADMINISTRATOR);
 
-			  $attribs = '';
+		$attribs   = '';
 		$norequest = 0;
-		$required = $this->element['required'] == "true" ? 'true' : 'false';
-		$key = ($this->element['key_field'] ? $this->element['key_field'] : 'value');
-		$val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
-		$ajaxtask = $this->element['task'];
-		$depends = $this->element['depends'];
-		$slug = $this->element['slug'] == "true" ? 'true' : 'false';
-		$query = (string) $this->element['query'];
+		$required  = $this->element['required'] == "true" ? 'true' : 'false';
+		$key       = ($this->element['key_field'] ? $this->element['key_field'] : 'value');
+		$val       = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
+		$ajaxtask  = $this->element['task'];
+		$depends   = $this->element['depends'];
+		$slug      = $this->element['slug'] == "true" ? 'true' : 'false';
+		$query     = (string) $this->element['query'];
 		$norequest = $this->element['norequest'];
 
-			  $project_id = $this->form->getValue('id');
+		$project_id = $this->form->getValue('id');
 
 		if ($v = $this->element['size'])
 		{
@@ -82,22 +83,22 @@ class JFormFieldDependSQL extends JFormField
 
 		if ($v = $this->element['multiple'])
 		{
-					$attribs .= ' multiple="' . $v . '"';
+			$attribs .= ' multiple="' . $v . '"';
 		}
 
-			  //        if ( !$value )
-			//        {
-			//        $value = $this->form->getValue($val,'params');
-			//        $div = 'params';
-			//        }
-			//        else
-			//        {
+		//        if ( !$value )
+		//        {
+		//        $value = $this->form->getValue($val,'params');
+		//        $div = 'params';
+		//        }
+		//        else
+		//        {
 
 		switch ($option)
 		{
 			case 'com_modules':
-				  $div = 'params';
-			break;
+				$div = 'params';
+				break;
 			case 'com_sportsmanagement':
 				if ($norequest)
 				{
@@ -108,27 +109,27 @@ class JFormFieldDependSQL extends JFormField
 					// $div = 'request';
 					$div = 'params';
 				}
-			break;
+				break;
 			default:
 				$div = 'request';
-			break;
+				break;
 		}
 
-			  $value = $this->form->getValue($val, $div);
+		$value     = $this->form->getValue($val, $div);
 		$key_value = $this->form->getValue($key, $div);
 
-			  // $div = 'request';
+		// $div = 'request';
 		//        }
 
-			  $cfg_which_database = $this->form->getValue('cfg_which_database', $div);
+		$cfg_which_database = $this->form->getValue('cfg_which_database', $div);
 
 		$ctrl = $this->name;
-		$id = $this->id;
+		$id   = $this->id;
 
-			  $options = array();
-		$result = '';
+		$options = array();
+		$result  = '';
 
-			  // Build the script.
+		// Build the script.
 		$script = array();
 
 		$script[] = "\n";
@@ -149,7 +150,7 @@ class JFormFieldDependSQL extends JFormField
 				$script[] = "					var valuecountry = $('#jform_country').val();";
 				$script[] = "if (window.console) console.log('json valuecountry -> ' + valuecountry);";
 				$script[] = " url = url + '&country=' + valuecountry;";
-			break;
+				break;
 		}
 
 		// $script[] = " alert('url -> ' + url);";
@@ -162,13 +163,13 @@ class JFormFieldDependSQL extends JFormField
 		{
 			case 'project':
 				$script[] = "						url: 'index.php?option=com_sportsmanagement&format=json&dbase=" . $cfg_which_database . "&slug=" . $slug . "&task=ajax." . $ajaxtask . "&project=" . $project_id . "&" . $depends . "=' + value,";
-					break;
+				break;
 			case 'club':
-					$script[] = "						url: 'index.php?option=com_sportsmanagement&format=json&dbase=" . $cfg_which_database . "&slug=" . $slug . "&task=ajax." . $ajaxtask . "&country=" . $key_value . "&" . $depends . "=' + value,";
-					break;
+				$script[] = "						url: 'index.php?option=com_sportsmanagement&format=json&dbase=" . $cfg_which_database . "&slug=" . $slug . "&task=ajax." . $ajaxtask . "&country=" . $key_value . "&" . $depends . "=' + value,";
+				break;
 			default:
-					$script[] = "						url: url,";
-					break;
+				$script[] = "						url: url,";
+				break;
 		}
 
 		$script[] = "						dataType: 'json'";
@@ -213,18 +214,18 @@ class JFormFieldDependSQL extends JFormField
 
 		$script[] = "});";
 
-			 // Add the script to the document head.
+		// Add the script to the document head.
 		Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
 
-			  $ajaxtask = 'get' . $ajaxtask;
-		$result = sportsmanagementModelAjax::$ajaxtask($value, $required, $slug);
+		$ajaxtask = 'get' . $ajaxtask;
+		$result   = sportsmanagementModelAjax::$ajaxtask($value, $required, $slug);
 
 		if ($result)
 		{
 			$options = array_merge($options, $result);
 		}
 
-		return HTMLHelper::_('select.genericlist',  $options, $ctrl, $attribs, 'value', 'text', $this->value, $this->id);
+		return HTMLHelper::_('select.genericlist', $options, $ctrl, $attribs, 'value', 'text', $this->value, $this->id);
 	}
 
 

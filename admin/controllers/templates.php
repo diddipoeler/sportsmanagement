@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 
 /**
@@ -29,8 +30,6 @@ class sportsmanagementControllertemplates extends JSMControllerAdmin
 {
 
 
-
-
 	/**
 	 * sportsmanagementControllertemplates::changetemplate()
 	 *
@@ -39,7 +38,7 @@ class sportsmanagementControllertemplates extends JSMControllerAdmin
 	public function changetemplate()
 	{
 		$post = Factory::getApplication()->input->post->getArray(array());
-		$msg = '';
+		$msg  = '';
 		$this->setRedirect('index.php?option=com_sportsmanagement&view=template&layout=edit&id=' . $post['new_id'], $msg);
 	}
 
@@ -49,7 +48,7 @@ class sportsmanagementControllertemplates extends JSMControllerAdmin
 	 *
 	 * @since 1.6
 	 */
-	public function getModel($name = 'template', $prefix = 'sportsmanagementModel', $config = Array() )
+	public function getModel($name = 'template', $prefix = 'sportsmanagementModel', $config = Array())
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 

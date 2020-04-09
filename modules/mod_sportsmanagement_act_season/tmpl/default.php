@@ -14,6 +14,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -32,76 +33,79 @@ if ($params->get("show_slider"))
 
 	$zaehler = 0;
 	asort($ausland);
-?>
-<div class="panel-group" id="<?php echo $module->module; ?>-<?php echo $module->id . '-' . $module->id; ?>">
-<?php
-foreach ($ausland as $key => $value)
-	{
-	if (empty($zaehler))
+	?>
+    <div class="panel-group" id="<?php echo $module->module; ?>-<?php echo $module->id . '-' . $module->id; ?>">
+		<?php
+		foreach ($ausland as $key => $value)
 		{
-		$collapse = 'in';
-		$zaehler++;
-	}
-	else
-		{
-		$collapse = '';
-	}
-
-?>
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h4 class="panel-title">
-					<a data-toggle="collapse" data-parent="#<?php echo $module->module; ?>-<?php echo $module->id . '-' . $module->id; ?>" href="#<?php echo $key; ?>"><?php echo JSMCountries::getCountryFlag($key) . ' ' . $value; ?></a>
-				</h4>
-			</div>
-<div id="<?php echo $key; ?>" class="panel-collapse collapse <?php echo $collapse; ?>">          
-<div class="panel-body">          
-<?php
-foreach ($list as $row)
-		{
-	if ($row->country == $key)
+			if (empty($zaehler))
 			{
-		$createroute = array("option" => "com_sportsmanagement",
-		"view" => "ranking",
-		"cfg_which_database" => 0,
-		"s" => 0,
-		"p" => $row->project_slug,
-		"type" => 0,
-		"r" => $row->roundcode,
-		"from" => 0,
-		"to" => 0,
-		"division" => 0, );
+				$collapse = 'in';
+				$zaehler++;
+			}
+			else
+			{
+				$collapse = '';
+			}
 
-		   $query = sportsmanagementHelperRoute::buildQuery($createroute);
-		   $link = Route::_('index.php?' . $query, false);
-	?>                    
-   <div class="col-xl-2 col-lg-3 col-md-4 col-sm-4">
-   <a href="<?PHP echo $link;  ?>" class="<?PHP echo $params->get('button_class'); ?>  btn-block" role="button">
+			?>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse"
+                           data-parent="#<?php echo $module->module; ?>-<?php echo $module->id . '-' . $module->id; ?>"
+                           href="#<?php echo $key; ?>"><?php echo JSMCountries::getCountryFlag($key) . ' ' . $value; ?></a>
+                    </h4>
+                </div>
+                <div id="<?php echo $key; ?>" class="panel-collapse collapse <?php echo $collapse; ?>">
+                    <div class="panel-body">
+						<?php
+						foreach ($list as $row)
+						{
+							if ($row->country == $key)
+							{
+								$createroute = array("option"             => "com_sportsmanagement",
+								                     "view"               => "ranking",
+								                     "cfg_which_database" => 0,
+								                     "s"                  => 0,
+								                     "p"                  => $row->project_slug,
+								                     "type"               => 0,
+								                     "r"                  => $row->roundcode,
+								                     "from"               => 0,
+								                     "to"                 => 0,
+								                     "division"           => 0,);
+
+								$query = sportsmanagementHelperRoute::buildQuery($createroute);
+								$link  = Route::_('index.php?' . $query, false);
+								?>
+                                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-4">
+                                    <a href="<?PHP echo $link; ?>"
+                                       class="<?PHP echo $params->get('button_class'); ?>  btn-block" role="button">
 <span>
 <?PHP
 echo JSMCountries::getCountryFlag($row->country);
 ?>
 </span>
-<?PHP
-echo Text::_($row->name);
-?>
-</a>
-<!-- </button> -->
-</div>              
-<?php
-	}
-}
-?>        
-</div>
-</div>          
-</div>
-<?php
-$zaehler++;
-}
-?>                    
-</div>
+										<?PHP
+										echo Text::_($row->name);
+										?>
+                                    </a>
+                                    <!-- </button> -->
+                                </div>
+								<?php
+							}
+						}
+						?>
+                    </div>
+                </div>
+            </div>
+			<?php
+			$zaehler++;
+		}
+		?>
+    </div>
 
-<?php
+	<?php
 }
 else
 {
@@ -111,38 +115,38 @@ else
 	{
 		if ($start == 1)
 		{
-			?>  
-			<div class="row-fluid">
+			?>
+            <div class="row-fluid">
 			<?PHP
 		}
 
-		$createroute = array("option" => "com_sportsmanagement",
-		 "view" => "ranking",
-		"cfg_which_database" => 0,
-		"s" => 0,
-		 "p" => $row->project_slug,
-		"type" => 0,
-		"r" => $row->roundcode,
-		"from" => 0,
-		"to" => 0,
-		"division" => 0, );
+		$createroute = array("option"             => "com_sportsmanagement",
+		                     "view"               => "ranking",
+		                     "cfg_which_database" => 0,
+		                     "s"                  => 0,
+		                     "p"                  => $row->project_slug,
+		                     "type"               => 0,
+		                     "r"                  => $row->roundcode,
+		                     "from"               => 0,
+		                     "to"                 => 0,
+		                     "division"           => 0,);
 
-			$query = sportsmanagementHelperRoute::buildQuery($createroute);
-			$link = Route::_('index.php?' . $query, false);
-			?>
-			<div class="col-sm-2">
-			<a href="<?PHP echo $link;  ?>" class="<?PHP echo $params->get('button_class'); ?>  btn-block" role="button">
+		$query = sportsmanagementHelperRoute::buildQuery($createroute);
+		$link  = Route::_('index.php?' . $query, false);
+		?>
+        <div class="col-sm-2">
+            <a href="<?PHP echo $link; ?>" class="<?PHP echo $params->get('button_class'); ?>  btn-block" role="button">
 		<span>
 		<?PHP
 		echo JSMCountries::getCountryFlag($row->country);
 		?>
 		</span>
-		<?PHP
-		echo Text::_($row->name);
-		?>
-		</a>
-		<!-- </button> -->
-		</div>
+				<?PHP
+				echo Text::_($row->name);
+				?>
+            </a>
+            <!-- </button> -->
+        </div>
 		<?PHP
 		$start++;
 
@@ -150,7 +154,7 @@ else
 		{
 			$start = 1;
 			?>
-			</div>
+            </div>
 			<?PHP
 		}
 	}

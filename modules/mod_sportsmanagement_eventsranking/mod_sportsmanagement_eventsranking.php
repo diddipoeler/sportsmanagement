@@ -13,13 +13,14 @@
  */
 
 defined('_JEXEC') or die;
+
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 
-if (! defined('DS'))
+if (!defined('DS'))
 {
 	define('DS', DIRECTORY_SEPARATOR);
 }
@@ -30,9 +31,9 @@ if (!defined('JSM_PATH'))
 }
 
 /**
-*
+ *
  * prüft vor Benutzung ob die gewünschte Klasse definiert ist
-*/
+ */
 if (!class_exists('JSMModelLegacy'))
 {
 	JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_SITE);
@@ -48,60 +49,61 @@ if (!class_exists('JSMCountries'))
 if (!class_exists('sportsmanagementHelper'))
 {
 	/**
- * add the classes for handling
-*/
+	 * add the classes for handling
+	 */
 	$classpath = JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'sportsmanagement.php';
 	JLoader::register('sportsmanagementHelper', $classpath);
 	BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
-if (! defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO'))
+if (!defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO'))
 {
 	DEFINE('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO', ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info'));
 }
 
 
-if (! defined('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO'))
+if (!defined('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO'))
 {
 	DEFINE('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO', ComponentHelper::getParams('com_sportsmanagement')->get('show_query_debug_info'));
 }
 
 /**
-*
+ *
  * die übersetzungen laden
-*/
+ */
 $language = Factory::getLanguage();
 $language->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
 
 /**
-*
+ *
  * Reference global application object
-*/
+ */
 $app = Factory::getApplication();
 
 /**
-*
+ *
  * Include the syndicate functions only once
-*/
+ */
 JLoader::register('modSMEventsrankingHelper', __DIR__ . '/helper.php');
 
 $list = modSMEventsrankingHelper::getData($params);
 
 $document = Factory::getDocument();
 /**
-*
+ *
  * add css file
-*/
+ */
 $document->addStyleSheet(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . $module->module . '.css');
 
 /**
-*
+ *
  * Layout
-*/
+ */
 ?>
-<div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
-<?PHP
-require ModuleHelper::getLayoutPath($module->module);
-?>
+<div class="<?php echo $params->get('moduleclass_sfx'); ?>"
+     id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+	<?PHP
+	require ModuleHelper::getLayoutPath($module->module);
+	?>
 </div>
 

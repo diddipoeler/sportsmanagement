@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
@@ -34,53 +35,54 @@ class sportsmanagementViewPosition extends sportsmanagementView
 	/**
 	 * sportsmanagementViewPosition::display()
 	 *
-	 * @param   mixed $tpl
+	 * @param   mixed  $tpl
+	 *
 	 * @return
 	 */
 	public function init()
 	{
 
-			  // Build the html options for parent position
-				$parent_id = array();
-		$parent_id[] = HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_IS_P_POSITION'));
+		// Build the html options for parent position
+		$parent_id    = array();
+		$parent_id[]  = HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_IS_P_POSITION'));
 		$mdlPositions = BaseDatabaseModel::getInstance('Positions', 'sportsmanagementModel');
 
 		if ($res = $mdlPositions->getParentsPositions())
 		{
 			foreach ($res as $re)
 			{
-				   $re->text = Text::_($re->text);
+				$re->text = Text::_($re->text);
 			}
 
 			$parent_id = array_merge($parent_id, $res);
 		}
 
-			  $lists = array();
-			$lists['parents'] = HTMLHelper::_('select.genericlist', $parent_id, 'parent_id', 'class="inputbox" size="1"', 'value', 'text', $this->item->parent_id);
+		$lists            = array();
+		$lists['parents'] = HTMLHelper::_('select.genericlist', $parent_id, 'parent_id', 'class="inputbox" size="1"', 'value', 'text', $this->item->parent_id);
 
-			  unset($parent_id);
+		unset($parent_id);
 
-			  $mdlEventtypes = BaseDatabaseModel::getInstance('Eventtypes', 'sportsmanagementModel');
+		$mdlEventtypes = BaseDatabaseModel::getInstance('Eventtypes', 'sportsmanagementModel');
 
-			  // Build the html select list for events
-			$res = array();
-			$res1 = array();
-			$notusedevents = array();
+		// Build the html select list for events
+		$res           = array();
+		$res1          = array();
+		$notusedevents = array();
 
-			  // Nur wenn die position angelegt ist, hat sie auch events
+		// Nur wenn die position angelegt ist, hat sie auch events
 		if ($this->item->id)
 		{
 			if ($res = $mdlEventtypes->getEventsPosition($this->item->id))
 			{
-				   $lists['position_events'] = HTMLHelper::_(
-					   'select.genericlist', $res, 'position_eventslist[]',
-					   ' style="width:250px; height:300px;" class="inputbox" multiple="true" size="' . max(10, count($res)) . '"',
-					   'value', 'text'
-				   );
+				$lists['position_events'] = HTMLHelper::_(
+					'select.genericlist', $res, 'position_eventslist[]',
+					' style="width:250px; height:300px;" class="inputbox" multiple="true" size="' . max(10, count($res)) . '"',
+					'value', 'text'
+				);
 			}
 			else
 			{
-				   $lists['position_events'] = '<select name="position_eventslist[]" id="position_eventslist" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
+				$lists['position_events'] = '<select name="position_eventslist[]" id="position_eventslist" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
 			}
 		}
 		else
@@ -88,7 +90,7 @@ class sportsmanagementViewPosition extends sportsmanagementView
 			$lists['position_events'] = '<select name="position_eventslist[]" id="position_eventslist" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
 		}
 
-			  $res1 = $mdlEventtypes->getEvents($this->item->sports_type_id);
+		$res1 = $mdlEventtypes->getEvents($this->item->sports_type_id);
 
 		if ($res = $mdlEventtypes->getEventsPosition($this->item->id))
 		{
@@ -120,7 +122,7 @@ class sportsmanagementViewPosition extends sportsmanagementView
 
 		if ($this->item->id)
 		{
-			   // Build the html select list for events
+			// Build the html select list for events
 			if (($notusedevents) && (count($notusedevents) > 0))
 			{
 				$lists['events'] = HTMLHelper::_(
@@ -144,14 +146,14 @@ class sportsmanagementViewPosition extends sportsmanagementView
 			);
 		}
 
-			unset($res);
-			unset($res1);
-			unset($notusedevents);
+		unset($res);
+		unset($res1);
+		unset($notusedevents);
 
-			  // Position statistics
-			$mdlStatistics = BaseDatabaseModel::getInstance('Statistics', 'sportsmanagementModel');
+		// Position statistics
+		$mdlStatistics = BaseDatabaseModel::getInstance('Statistics', 'sportsmanagementModel');
 
-			  $position_stats = $mdlStatistics->getPositionStatsOptions($this->item->id);
+		$position_stats = $mdlStatistics->getPositionStatsOptions($this->item->id);
 
 		if (!empty($position_stats))
 		{
@@ -166,25 +168,25 @@ class sportsmanagementViewPosition extends sportsmanagementView
 			$lists['position_statistic'] = '<select name="position_statistic[]" id="position_statistic" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
 		}
 
-			  $available_stats = $mdlStatistics->getAvailablePositionStatsOptions($this->item->id);
+		$available_stats = $mdlStatistics->getAvailablePositionStatsOptions($this->item->id);
 
 		if (!empty($available_stats))
 		{
-					$lists['statistic'] = HTMLHelper::_(
-						'select.genericlist', $available_stats, 'statistic[]',
-						' style="width:250px; height:300px;" class="inputbox" id="statistic" multiple="true" size="' . max(10, count($available_stats)) . '"',
-						'value', 'text'
-					);
+			$lists['statistic'] = HTMLHelper::_(
+				'select.genericlist', $available_stats, 'statistic[]',
+				' style="width:250px; height:300px;" class="inputbox" id="statistic" multiple="true" size="' . max(10, count($available_stats)) . '"',
+				'value', 'text'
+			);
 		}
 		else
 		{
 			$lists['statistic'] = '<select name="statistic[]" id="statistic" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
 		}
 
-							  $this->document->addScript(Uri::base() . 'components/com_sportsmanagement/assets/js/sm_functions.js');
+		$this->document->addScript(Uri::base() . 'components/com_sportsmanagement/assets/js/sm_functions.js');
 
-			  $this->lists = $lists;
-			unset($lists);
+		$this->lists = $lists;
+		unset($lists);
 
 	}
 
@@ -197,7 +199,7 @@ class sportsmanagementViewPosition extends sportsmanagementView
 	protected function addToolBar()
 	{
 		$this->jinput->set('hidemainmenu', true);
-		$isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_POSITION_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_POSITION_NEW');
+		$isNew      = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_POSITION_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_POSITION_NEW');
 		$this->icon = 'position';
 		parent::addToolbar();
 	}

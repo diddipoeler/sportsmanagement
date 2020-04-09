@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
@@ -20,17 +21,17 @@ use Joomla\CMS\Component\ComponentHelper;
 
 $app = Factory::getApplication();
 
-if (! defined('DS'))
+if (!defined('DS'))
 {
 	define('DS', DIRECTORY_SEPARATOR);
 }
 
-if (! defined('JSM_PATH'))
+if (!defined('JSM_PATH'))
 {
 	DEFINE('JSM_PATH', 'components/com_sportsmanagement');
 }
 
-if (! defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO'))
+if (!defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO'))
 {
 	DEFINE('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO', ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info', 0));
 }
@@ -46,7 +47,7 @@ if (!class_exists('sportsmanagementHelperRoute'))
 	JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 }
 
-if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
+if (!defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
 {
 	DEFINE('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE', ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database'));
 }
@@ -58,21 +59,21 @@ $app = Factory::getApplication();
 // JInput object
 $jinput = $app->input;
 
-	  /**
-*
+/**
+ *
  * Include the functions only once
-*/
+ */
 JLoader::register('modJSMCalendarHelper', __DIR__ . '/helper.php');
 
-$ajax = $jinput->getVar('ajaxCalMod', 0, 'default', 'POST');
+$ajax    = $jinput->getVar('ajaxCalMod', 0, 'default', 'POST');
 $ajaxmod = $jinput->getVar('ajaxmodid', 0, 'default', 'POST');
 
 if (!$params->get('cal_start_date'))
 {
 	$year = $jinput->getVar('year', date('Y'));    // If there is no date requested, use the current month
 
-	$month  = $jinput->getVar('month', date('m'));
-	$day  = $jinput->getVar('day', 0);
+	$month = $jinput->getVar('month', date('m'));
+	$day   = $jinput->getVar('day', 0);
 }
 else
 {
@@ -83,23 +84,23 @@ else
 		// $doc->addScript( Uri::root().'/media/system/js/mootools-core.js');
 		$config = Factory::getConfig();
 		$offset = $config->get('offset');
-		$year = $jinput->getVar('year', $startDate->toFormat('Y'));
+		$year   = $jinput->getVar('year', $startDate->toFormat('Y'));
 		$month  = $jinput->getVar('month', $startDate->toFormat('m'));
-		$day  = $ajax ? '' : $jinput->getVar('day', $startDate->toFormat('d'));
+		$day    = $ajax ? '' : $jinput->getVar('day', $startDate->toFormat('d'));
 	}
 	else
 	{
 		$config = Factory::getConfig();
 		$offset = $config->get('offset');
-		$year = $jinput->getVar('year', $startDate->toFormat('%Y'));
+		$year   = $jinput->getVar('year', $startDate->toFormat('%Y'));
 		$month  = $jinput->getVar('month', $startDate->toFormat('%m'));
-		$day  = $ajax ? '' : $jinput->getVar('day', $startDate->toFormat('%d'));
+		$day    = $ajax ? '' : $jinput->getVar('day', $startDate->toFormat('%d'));
 	}
 }
 
-$helper = new modJSMCalendarHelper;
-$doc = Factory::getDocument();
-$lightbox = $params->get('lightbox', 1);
+$helper           = new modJSMCalendarHelper;
+$doc              = Factory::getDocument();
+$lightbox         = $params->get('lightbox', 1);
 $inject_container = ($params->get('inject', 0) == 1) ? $params->get('inject_container', 'sportsmanagement') : '';
 
 if (!defined('JLC_MODULESCRIPTLOADED'))
@@ -110,7 +111,7 @@ if (!defined('JLC_MODULESCRIPTLOADED'))
 		$doc->addScript(Uri::root() . '/media/system/js/mootools-core-uncompressed.js');
 		$doc->addScript(Uri::root() . '/media/system/js/mootools-more-uncompressed.js');
 		$doc->addScript(Uri::root() . '/media/system/js/modal-uncompressed.js');
-		 $doc->addScript(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'assets/js' . DIRECTORY_SEPARATOR . $module->module . '.js');
+		$doc->addScript(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'assets/js' . DIRECTORY_SEPARATOR . $module->module . '.js');
 	}
 	else
 	{
@@ -122,9 +123,9 @@ if (!defined('JLC_MODULESCRIPTLOADED'))
 }
 
 $calendar = $helper->showCal($params, $year, $month, $ajax, $module->id);
-?>         
-<div id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
-<?PHP
-require ModuleHelper::getLayoutPath($module->module);
 ?>
+<div id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+	<?PHP
+	require ModuleHelper::getLayoutPath($module->module);
+	?>
 </div>

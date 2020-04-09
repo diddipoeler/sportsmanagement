@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -52,14 +53,14 @@ class JFormFieldTeamlist extends \JFormFieldList
 		// Initialize variables.
 		$options = array();
 
-		  $db = Factory::getDbo();
-		 $query = $db->getQuery(true);
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true);
 
-				   $query->select('id AS value, name AS text');
-		 $query->from('#__sportsmanagement_team');
-		 $query->order('name');
-		 $db->setQuery($query);
-		 $options = $db->loadObjectList();
+		$query->select('id AS value, name AS text');
+		$query->from('#__sportsmanagement_team');
+		$query->order('name');
+		$db->setQuery($query);
+		$options = $db->loadObjectList();
 
 		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);

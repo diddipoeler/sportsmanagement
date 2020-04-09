@@ -63,14 +63,14 @@ class XMLParser
 	/**
 	 * parse the XML file (or URL)
 	 *
-	 * @param   string $path the XML file path, or URL
+	 * @param   string  $path  the XML file path, or URL
 	 */
 	function parse($path)
 	{
 
-			$this->output = array();
+		$this->output = array();
 
-			$this->xml_obj = xml_parser_create($this->char_set);
+		$this->xml_obj = xml_parser_create($this->char_set);
 		xml_set_object($this->xml_obj, $this);
 		xml_set_character_data_handler($this->xml_obj, 'dataHandler');
 		xml_set_element_handler($this->xml_obj, "startHandler", "endHandler");
@@ -87,25 +87,25 @@ class XMLParser
 			if (!xml_parse($this->xml_obj, $data, feof($fp)))
 			{
 				die(
-					sprintf(
-						"XML error: %s at line %d",
-						xml_error_string(xml_get_error_code($this->xml_obj)),
-						xml_get_current_line_number($this->xml_obj)
-					)
+				sprintf(
+					"XML error: %s at line %d",
+					xml_error_string(xml_get_error_code($this->xml_obj)),
+					xml_get_current_line_number($this->xml_obj)
+				)
 				);
-					xml_parser_free($this->xml_obj);
+				xml_parser_free($this->xml_obj);
 			}
 		}
 
-			return $this->output;
+		return $this->output;
 	}
 
 	/**
 	 * define the start tag handler
 	 *
-	 * @param   obj    $parser  the expat parser object
-	 * @param   string $name    the XML tag name
-	 * @param   array  $attribs the XML tag attributes
+	 * @param   obj     $parser   the expat parser object
+	 * @param   string  $name     the XML tag name
+	 * @param   array   $attribs  the XML tag attributes
 	 */
 	function startHandler($parser, $name, $attribs)
 	{
@@ -122,8 +122,8 @@ class XMLParser
 	/**
 	 * define the tag data handler
 	 *
-	 * @param   obj    $parser the expat parser object
-	 * @param   string $data   the XML data
+	 * @param   obj     $parser  the expat parser object
+	 * @param   string  $data    the XML data
 	 */
 	function dataHandler($parser, $data)
 	{
@@ -145,15 +145,15 @@ class XMLParser
 	/**
 	 * define the end tag handler
 	 *
-	 * @param   obj    $parser the expat parser object
-	 * @param   string $name   the XML tag name
+	 * @param   obj     $parser  the expat parser object
+	 * @param   string  $name    the XML tag name
 	 */
 	function endHandler($parser, $name)
 	{
 		if (count($this->output) > 1)
 		{
-			$_data = array_pop($this->output);
-			$_output_idx = count($this->output) - 1;
+			$_data                                 = array_pop($this->output);
+			$_output_idx                           = count($this->output) - 1;
 			$this->output[$_output_idx]['child'][] = $_data;
 		}
 	}

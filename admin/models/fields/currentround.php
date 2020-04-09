@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -50,10 +51,10 @@ class JFormFieldCurrentround extends \JFormFieldList
 	protected function getOptions()
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 
 		// JInput object
-		 $jinput = $app->input;
+		$jinput = $app->input;
 
 		// Initialize variables.
 		$options = array();
@@ -61,7 +62,7 @@ class JFormFieldCurrentround extends \JFormFieldList
 		$varname = (string) $this->element['varname'];
 
 		// $project_id = $app->getUserState( "$option.pid", '0' );
-		 $project_id = $jinput->get->get('id');
+		$project_id = $jinput->get->get('id');
 
 		/*
         $project_id = Factory::getApplication()->input->getVar($varname);
@@ -71,10 +72,10 @@ class JFormFieldCurrentround extends \JFormFieldList
         */
 		if ($project_id)
 		{
-			$db = Factory::getDbo();
+			$db    = Factory::getDbo();
 			$query = $db->getQuery(true);
 
-					  $query->select('id AS value');
+			$query->select('id AS value');
 			$query->select('CASE LENGTH(name) when 0 then CONCAT(' . $db->Quote(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME')) . ', " ", id)	else name END as text ');
 			$query->from('#__sportsmanagement_round ');
 			$query->where('project_id = ' . $project_id);
@@ -83,7 +84,7 @@ class JFormFieldCurrentround extends \JFormFieldList
 			$options = $db->loadObjectList();
 		}
 
-			  // Merge any additional options in the XML definition.
+		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);
 
 		return $options;

@@ -15,20 +15,20 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <!-- matchdays pageNav -->
 <div class="row" id="pagnav">
-<br />
-<table class="table">
-	<tr>
-		<td>
-			<?php
-			if (!empty($this->rounds))
-			{
-				$pageNavigation = "<div class='pagenav'>";
-				$pageNavigation .= "</div>";
-				echo $pageNavigation;
-			}
-			?>
-		</td>
-	</tr>
-</table>
+    <br/>
+    <table class="table">
+        <tr>
+            <td>
+				<?php
+				if (!empty($this->rounds))
+				{
+					$pageNavigation = "<div class='pagenav'>";
+					$pageNavigation .= "</div>";
+					echo $pageNavigation;
+				}
+				?>
+            </td>
+        </tr>
+    </table>
 </div>
 <!-- matchdays pageNav END -->

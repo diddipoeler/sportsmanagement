@@ -20,6 +20,7 @@
  */
 
 defined('_JEXEC') or die();
+
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -31,7 +32,7 @@ $document->setMimeEncoding('application/json');
 $dispatcher = JDispatcher::getInstance();
 PluginHelper::importPlugin('gcalendar');
 
-$data = array();
+$data      = array();
 $SECSINDAY = 86400;
 
 if (!empty($this->calendars))
@@ -46,7 +47,7 @@ if (!empty($this->calendars))
 		}
 
 		$params = Factory::getApplication()->getMenu()->getParams($itemID);
-		$tmp = clone ComponentHelper::getParams('com_sportsmanagement');
+		$tmp    = clone ComponentHelper::getParams('com_sportsmanagement');
 
 		if (empty($params))
 		{
@@ -73,7 +74,7 @@ if (!empty($this->calendars))
 			}
 			else
 			{
-				$menu = Factory::getApplication()->getMenu();
+				$menu       = Factory::getApplication()->getMenu();
 				$activemenu = $menu->getActive();
 
 				if ($activemenu != null)
@@ -86,19 +87,19 @@ if (!empty($this->calendars))
 			$description = jsmGCalendarUtil::renderEvents(array($event), $params->get('description_format', '{{#events}}<p>{{date}}<br/>{{{description}}}</p>{{/events}}'), $params);
 
 			$eventData = array(
-			  'id' => $event->getGCalId(),
-			  'gcid' => $event->getParam('gcid'),
-			  'title' => $this->compactMode == 0 ? htmlspecialchars_decode($event->getTitle()) : utf8_encode(chr(160)),
-			  'start' => $event->getStartDate()->format('c', true),
-			  'end' => $event->getEndDate()->format('c', true),
-			  'url' => Route::_('index.php?option=com_sportsmanagement&view=event&eventID=' . $event->getGCalId() . '&gcid=' . $event->getParam('gcid') . (empty($itemID) ? '' : $itemID)),
-			  'color' => jsmGCalendarUtil::getFadedColor($event->getParam('gccolor')),
-			  'allDay' => $this->compactMode == 0 ? $event->isAllDay() : true,
-			  'description' => $description
-				);
+				'id'          => $event->getGCalId(),
+				'gcid'        => $event->getParam('gcid'),
+				'title'       => $this->compactMode == 0 ? htmlspecialchars_decode($event->getTitle()) : utf8_encode(chr(160)),
+				'start'       => $event->getStartDate()->format('c', true),
+				'end'         => $event->getEndDate()->format('c', true),
+				'url'         => Route::_('index.php?option=com_sportsmanagement&view=event&eventID=' . $event->getGCalId() . '&gcid=' . $event->getParam('gcid') . (empty($itemID) ? '' : $itemID)),
+				'color'       => jsmGCalendarUtil::getFadedColor($event->getParam('gccolor')),
+				'allDay'      => $this->compactMode == 0 ? $event->isAllDay() : true,
+				'description' => $description
+			);
 
-				$dispatcher->trigger('onGCEventBeforeLoad', array($event, &$eventData));
-				$data[] = $eventData;
+			$dispatcher->trigger('onGCEventBeforeLoad', array($event, &$eventData));
+			$data[] = $eventData;
 		}
 	}
 }

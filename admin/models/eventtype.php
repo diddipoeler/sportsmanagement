@@ -28,6 +28,4 @@ class sportsmanagementModeleventtype extends JSMModelAdmin
 {
 
 
-
-
 }

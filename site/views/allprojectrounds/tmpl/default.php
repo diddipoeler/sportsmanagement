@@ -23,21 +23,21 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 
 <div class="container-fluid">
-<!-- projectheading -->
+    <!-- projectheading -->
 
-<?php echo $this->loadTemplate('projectheading'); ?>
+	<?php echo $this->loadTemplate('projectheading'); ?>
 
-<?php
+	<?php
 
-if ($this->config['show_sectionheader'])
-{
-	echo $this->loadTemplate('sectionheader');
-}
+	if ($this->config['show_sectionheader'])
+	{
+		echo $this->loadTemplate('sectionheader');
+	}
 
-?>
-<?php
-echo $this->loadTemplate('results_all');
-echo $this->loadTemplate('jsminfo');
-?>
+	?>
+	<?php
+	echo $this->loadTemplate('results_all');
+	echo $this->loadTemplate('jsminfo');
+	?>
 
 </div>

@@ -16,6 +16,7 @@
  */
 
 defined('_JEXEC') or die;
+
 use Joomla\CMS\Router\Route;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -82,13 +83,14 @@ abstract class sportsmanagementHelper
 	/**
 	 * sportsmanagementHelper::getBootstrapModalImage()
 	 *
-	 * @param   string $target
-	 * @param   string $picture
-	 * @param   string $text
-	 * @param   string $picturewidth
-	 * @param   string $url
-	 * @param   string $width
-	 * @param   string $height
+	 * @param   string  $target
+	 * @param   string  $picture
+	 * @param   string  $text
+	 * @param   string  $picturewidth
+	 * @param   string  $url
+	 * @param   string  $width
+	 * @param   string  $height
+	 *
 	 * @return
 	 */
 	public static function getBootstrapModalImage($target = '', $picture = '', $text = '', $picturewidth = '20', $url = '', $width = '100', $height = '200')
@@ -109,7 +111,7 @@ abstract class sportsmanagementHelper
 			$modaltext .= '<button type="button" class="btn btn-primary">' . $text . '</button>';
 		}
 
-			  $modaltext .= '</a>';
+		$modaltext .= '</a>';
 
 		if (!$url)
 		{
@@ -118,138 +120,15 @@ abstract class sportsmanagementHelper
 
 		$modaltext .= HTMLHelper::_(
 			'bootstrap.renderModal', $target, array(
-					'title' => $text,
-					'url' => $url,
-					'height' => $height,
-					'width' => $width,
-					'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">' . Text::_('JCANCEL') . '</button>'
-						)
+				'title'  => $text,
+				'url'    => $url,
+				'height' => $height,
+				'width'  => $width,
+				'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">' . Text::_('JCANCEL') . '</button>'
+			)
 		);
 
 		return $modaltext;
-	}
-
-	/**
-	 * sportsmanagementHelper::date_diff()
-	 *
-	 * @param   mixed $d1
-	 * @param   mixed $d2
-	 * @return
-	 */
-	function date_diff($d1, $d2)
-	{
-		/*
-         This is correctly working time differentiating function. It's resistant to problems with
-          leap year and different days of month. Inputs are two timestamps and function returns array
-          with differences in year, month, day, hour, minute a nd second.
-
-          Compares two timestamps and returns array with differencies (year, month, day, hour, minute, second)
-
-          More infos at http://de2.php.net/manual/de/function.date-diff.php#93915
-
-          beispiele
-          define(BIRTHDAY, strtotime('1980-08-26 15:25:00')); // geburtsdatum
-          $now  = time(); // aktuelles datum
-
-          // geburtsdatum dieses jahr:
-          $birthdayThisYear = mktime(date('H',BIRTHDAY),date('i',BIRTHDAY),date('s',BIRTHDAY),date('n',BIRTHDAY),date('j',BIRTHDAY),date('Y',$now));
-
-          // geburtsdatum nächstes jahr:
-          $birthdayNextYear = mktime(date('H',BIRTHDAY),date('i',BIRTHDAY),date('s',BIRTHDAY),date('n',BIRTHDAY),date('j',BIRTHDAY),date('Y',$now)+1);
-
-          // geburtsdatum letztes jahr:
-          $birthdayLastYear = mktime(date('H',BIRTHDAY),date('i',BIRTHDAY),date('s',BIRTHDAY),date('n',BIRTHDAY),date('j',BIRTHDAY),date('Y',$now)-1);
-
-          // der nächste geburtstag:
-          $nextBirthday     = ($now<$birthdayThisYear)?$birthdayThisYear:$birthdayNextYear;
-
-          // der letzte geburtstag:
-          $lastBirthday     = ($now<=$birthdayThisYear)?$birthdayLastYear:$birthdayThisYear;
-
-          // wie viel prozent des jahres bis zum nächsten geburtstag sind schon um?
-          $percent          = ($now-$lastBirthday) / ($nextBirthday-$lastBirthday) * 100;
-
-          // wie viele tage sind es noch bis zum nächsten geburtstag?
-          $days2Birthday    = floor(($nextBirthday - $now) / 86400);
-
-          // alter als array  (jahre, monate, tage, stunden, minuten, sekunden - schaltjahre werde berücksichtigt!)
-          $age              = date_diff(BIRTHDAY, $now);
-
-         */
-		// check higher timestamp and switch if neccessary
-		if ($d1 < $d2)
-		{
-			$temp = $d2;
-			$d2 = $d1;
-			$d1 = $temp;
-		}
-		else
-		{
-			$temp = $d1; // Temp can be used for day count if required
-		}
-
-		$d1 = date_parse(date("Y-m-d H:i:s", $d1));
-		$d2 = date_parse(date("Y-m-d H:i:s", $d2));
-
-		// Seconds
-		if ($d1['second'] >= $d2['second'])
-		{
-			$diff['second'] = $d1['second'] - $d2['second'];
-		}
-		else
-		{
-			$d1['minute'] --;
-			$diff['second'] = 60 - $d2['second'] + $d1['second'];
-		}
-
-		// Minutes
-		if ($d1['minute'] >= $d2['minute'])
-		{
-			$diff['minute'] = $d1['minute'] - $d2['minute'];
-		}
-		else
-		{
-			$d1['hour'] --;
-			$diff['minute'] = 60 - $d2['minute'] + $d1['minute'];
-		}
-
-		// Hours
-		if ($d1['hour'] >= $d2['hour'])
-		{
-			$diff['hour'] = $d1['hour'] - $d2['hour'];
-		}
-		else
-		{
-			$d1['day'] --;
-			$diff['hour'] = 24 - $d2['hour'] + $d1['hour'];
-		}
-
-		// Days
-		if ($d1['day'] >= $d2['day'])
-		{
-			$diff['day'] = $d1['day'] - $d2['day'];
-		}
-		else
-		{
-			$d1['month'] --;
-			$diff['day'] = date("t", $temp) - $d2['day'] + $d1['day'];
-		}
-
-		// Months
-		if ($d1['month'] >= $d2['month'])
-		{
-			$diff['month'] = $d1['month'] - $d2['month'];
-		}
-		else
-		{
-			$d1['year'] --;
-			$diff['month'] = 12 - $d2['month'] + $d1['month'];
-		}
-
-		// Years
-		$diff['year'] = $d1['year'] - $d2['year'];
-
-		return $diff;
 	}
 
 	/**
@@ -262,19 +141,22 @@ abstract class sportsmanagementHelper
 	public static function jsmsernum()
 	{
 		$template = 'XX99-XX99-99XX-99XX-XXXX-99XX';
-		$k = strlen($template);
-		$sernum = '';
+		$k        = strlen($template);
+		$sernum   = '';
 
 		for ($i = 0; $i < $k; $i++)
 		{
 			switch ($template[$i])
 			{
-				case 'X': $sernum .= chr(rand(65, 90));
-						break;
-				case '9': $sernum .= rand(0, 9);
-						break;
-				case '-': $sernum .= '-';
-						break;
+				case 'X':
+					$sernum .= chr(rand(65, 90));
+					break;
+				case '9':
+					$sernum .= rand(0, 9);
+					break;
+				case '-':
+					$sernum .= '-';
+					break;
 			}
 		}
 
@@ -284,13 +166,14 @@ abstract class sportsmanagementHelper
 	/**
 	 * sportsmanagementHelper::existPicture()
 	 *
-	 * @param   string $picture
-	 * @param   string $standard
+	 * @param   string  $picture
+	 * @param   string  $standard
+	 *
 	 * @return void
 	 */
 	public static function existPicture($picture = '', $standard = '')
 	{
-		$app = Factory::getApplication();
+		$app        = Factory::getApplication();
 		$imageArray = '';
 
 		if (!File::exists($picture))
@@ -307,11 +190,12 @@ abstract class sportsmanagementHelper
 	/**
 	 * sportsmanagementHelper::setDebugInfoText()
 	 *
-	 * @param   mixed $methode
-	 * @param   mixed $funktion
-	 * @param   mixed $klasse
-	 * @param   mixed $zeile
-	 * @param   mixed $text
+	 * @param   mixed  $methode
+	 * @param   mixed  $funktion
+	 * @param   mixed  $klasse
+	 * @param   mixed  $zeile
+	 * @param   mixed  $text
+	 *
 	 * @return void
 	 */
 	public static function setDebugInfoText($methode, $funktion, $klasse, $zeile, $text)
@@ -322,26 +206,27 @@ abstract class sportsmanagementHelper
 		$object = new stdClass;
 
 		// Must be a valid primary key value.
-		$object->methode = $methode;
+		$object->methode  = $methode;
 		$object->function = $funktion;
-		$object->class = $klasse;
-		$object->line = $zeile;
-		$object->text = $text;
+		$object->class    = $klasse;
+		$object->line     = $zeile;
+		$object->text     = $text;
 
 		if (!array_key_exists($klasse, self::$_success_text))
 		{
 			self::$_success_text[$klasse] = array();
 		}
 
-		$export[] = $object;
+		$export[]                     = $object;
 		self::$_success_text[$klasse] = array_merge(self::$_success_text[$klasse], $export);
 	}
 
 	/**
 	 * sportsmanagementHelper::getTimezone()
 	 *
-	 * @param   mixed $project
-	 * @param   mixed $overallconfig
+	 * @param   mixed  $project
+	 * @param   mixed  $overallconfig
+	 *
 	 * @return
 	 */
 	public static function getTimezone($project, $overallconfig)
@@ -359,7 +244,8 @@ abstract class sportsmanagementHelper
 	/**
 	 * sportsmanagementHelper::getMatchContent()
 	 *
-	 * @param   mixed $match_id
+	 * @param   mixed  $match_id
+	 *
 	 * @return void
 	 */
 	public static function getMatchContent($content_id)
@@ -367,7 +253,7 @@ abstract class sportsmanagementHelper
 		$app = Factory::getApplication();
 
 		// Create a new query object.
-		$db = self::getDBConnection();
+		$db    = self::getDBConnection();
 		$query = $db->getQuery(true);
 
 		// Select some fields
@@ -385,10 +271,209 @@ abstract class sportsmanagementHelper
 	}
 
 	/**
+	 * sportsmanagementHelper::getDBConnection()
+	 *
+	 * @return
+	 */
+	public static function getDBConnection($request = false, $value = false)
+	{
+		$app    = Factory::getApplication();
+		$params = ComponentHelper::getParams('com_sportsmanagement');
+		$config = Factory::getConfig();
+
+		// Echo '<pre>'.print_r($params,true).'</pre>';
+		// Log::add(Text::_($params->get('cfg_which_database')), Log::ERROR, 'jsmerror');
+		if ($params->get('cfg_which_database'))
+		{
+			$options             = array(); // Prevent problems
+			$options['driver']   = $params->get('jsm_dbtype');            // Database driver name
+			$options['host']     = $params->get('jsm_host');    // Database host name
+			$options['user']     = $params->get('jsm_user');       // User for database authentication
+			$options['password'] = $params->get('jsm_password');   // Password for database authentication
+			$options['database'] = $params->get('jsm_db');      // Database name
+			$options['prefix']   = $params->get('jsm_dbprefix');             // Database prefix (may be empty)
+
+			// Log::add(Text::_('options <pre>'.print_r($options,true).'</pre>'), Log::ERROR, 'jsmerror');
+
+			try
+			{
+				// Zuerst noch überprüfen, ob der user
+				// überhaupt den zugriff auf die datenbank hat.
+				if (version_compare(JSM_JVERSION, '4', 'eq'))
+				{
+					self::$_jsm_db = JDatabaseDriver::getInstance($options);
+				}
+				else
+				{
+					self::$_jsm_db = JDatabase::getInstance($options);
+				}
+
+				$user_id = $params->get('jsm_server_user');
+			}
+			catch (Exception $e)
+			{
+				// Catch any database errors.
+				//   $db->transactionRollback();
+				Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+				Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
+
+				// JErrorPage::render($e);
+			}
+
+			// Log::add(Text::_('user_id '.$user_id), Log::WARNING, 'jsmerror');
+			if ($user_id)
+			{
+				// Load the profile data from the database.
+				$db    = self::$_jsm_db;
+				$query = $db->getQuery(true);
+				$query->clear();
+				$query->select('up.profile_key, up.profile_value');
+				$query->from('#__user_profiles as up');
+				$query->where('up.user_id = ' . $user_id);
+				$query->where('up.profile_key LIKE ' . $db->Quote('' . 'jsmprofile.%' . ''));
+
+				// $query->where('up.profile_value LIKE ' . $db->Quote('' . Uri::root() . ''));
+				$db->setQuery($query);
+
+				$row = $db->loadAssocList('profile_key');
+
+				// Log::add(Text::_('row <pre>'.print_r($row,true).'</pre>'), Log::INFO, 'jsmerror');
+
+				if ($row['jsmprofile.databaseaccess']['profile_value'])
+				{
+					Log::add(Text::_('Sie haben Zugriff.'), Log::INFO, 'jsmerror');
+
+					if ($row['jsmprofile.serialnumber']['profile_value'] == $params->get('jsm_user_serialnumber'))
+					{
+						Log::add(Text::_('Die Seriennummer stimmt.'), Log::INFO, 'jsmerror');
+
+						if ($row['jsmprofile.access_from']['profile_value'] && $row['jsmprofile.access_to']['profile_value'])
+						{
+							$timestampfrom    = self::getTimestamp($row['jsmprofile.access_from']['profile_value']);
+							$timestampto      = self::getTimestamp($row['jsmprofile.access_to']['profile_value']);
+							$timestampaktuell = self::getTimestamp();
+
+							$varaccess = filter_var(
+								$timestampaktuell,
+								FILTER_VALIDATE_INT,
+								array(
+									'options' => array(
+										'min_range' => $timestampfrom,
+										'max_range' => $timestampto
+									)
+								)
+							);
+
+							// Log::add(Text::_('access '.$varaccess), Log::INFO, 'jsmerror');
+
+							if ($varaccess)
+							{
+								Log::add(Text::_('Der Zeitraum ist freigeschaltet.'), Log::INFO, 'jsmerror');
+
+								return self::$_jsm_db;
+							}
+							else
+							{
+								Log::add(Text::_('Der Zeitraum ist nicht freigeschaltet.'), Log::ERROR, 'jsmerror');
+							}
+
+							// Log::add(Text::_('timestamp von '.$timestampfrom), Log::INFO, 'jsmerror');
+							// Log::add(Text::_('timestamp bis '.$timestampto), Log::INFO, 'jsmerror');
+							// Log::add(Text::_('timestamp aktuell '.$timestampaktuell), Log::INFO, 'jsmerror');
+						}
+						else
+						{
+							Log::add(Text::_('Der Zeitraum ist nicht freigeschaltet.'), Log::ERROR, 'jsmerror');
+						}
+					}
+					else
+					{
+						Log::add(Text::_('Die Seriennummer stimmt nicht.'), Log::ERROR, 'jsmerror');
+					}
+				}
+			}
+
+			/*
+	if ( !$db ) {
+		header('HTTP/1.1 500 Internal Server Error');
+		jexit('Database Error: ' . $db->toString());
+	} else {
+
+	}
+	*/
+			// $db->debug($debug);
+			// return $db;
+		}
+
+		return Factory::getDbo();
+
+		// Return self::$_jsm_db;
+	}
+
+	/**
+	 * sportsmanagementHelper::getTimestamp()
+	 *
+	 * @param   mixed    $date
+	 * @param   integer  $use_offset
+	 * @param   mixed    $offset
+	 *
+	 * @return
+	 */
+	public static function getTimestamp($date = null, $use_offset = 0, $offset = null)
+	{
+		$date = $date ? $date : 'now';
+		$app  = Factory::getApplication();
+
+		try
+		{
+			$res = Factory::getDate(strtotime($date));
+
+			if ($use_offset)
+			{
+				if ($offset)
+				{
+					$serveroffset = explode(':', $offset);
+
+					if (version_compare(JVERSION, '3.0.0', 'ge'))
+					{
+						$res->setTimezone(new DateTimeZone($serveroffset[0]));
+					}
+					else
+					{
+						$res->setOffset($serveroffset[0]);
+					}
+				}
+				else
+				{
+					if (version_compare(JVERSION, '3.0.0', 'ge'))
+					{
+						$res->setTimezone(new DateTimeZone($app->getCfg('offset')));
+					}
+					else
+					{
+						$res->setOffset($app->getCfg('offset'));
+					}
+				}
+			}
+
+			return $res->toUnix('true');
+		}
+		catch (Exception $e)
+		{
+			$msg  = $e->getMessage(); // Returns "Normally you would have other code...
+			$code = $e->getCode(); // Returns
+			$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+
+			return false;
+		}
+	}
+
+	/**
 	 * sportsmanagementHelper::getMatchDate()
 	 *
-	 * @param   mixed  $match
-	 * @param   string $format
+	 * @param   mixed   $match
+	 * @param   string  $format
+	 *
 	 * @return
 	 */
 	public static function getMatchDate($match, $format = 'Y-m-d')
@@ -397,7 +482,7 @@ abstract class sportsmanagementHelper
 
 		try
 		{
-			  return $match->match_date ? $match->match_date->format($format, true) : "xxxx-xx-xx";
+			return $match->match_date ? $match->match_date->format($format, true) : "xxxx-xx-xx";
 		}
 		catch (Exception $e)
 		{
@@ -410,8 +495,9 @@ abstract class sportsmanagementHelper
 	/**
 	 * sportsmanagementHelper::getMatchTime()
 	 *
-	 * @param   mixed  $match
-	 * @param   string $format
+	 * @param   mixed   $match
+	 * @param   string  $format
+	 *
 	 * @return
 	 */
 	public static function getMatchTime($match, $format = 'H:i')
@@ -420,7 +506,7 @@ abstract class sportsmanagementHelper
 
 		try
 		{
-			  return $match->match_date ? $match->match_date->format($format, true) : "xx:xx";
+			return $match->match_date ? $match->match_date->format($format, true) : "xx:xx";
 		}
 		catch (Exception $e)
 		{
@@ -431,10 +517,42 @@ abstract class sportsmanagementHelper
 	}
 
 	/**
+	 * sportsmanagementHelper::getMatchEndTimestamp()
+	 *
+	 * @param   mixed   $match
+	 * @param   mixed   $totalMatchDuration
+	 * @param   string  $format
+	 *
+	 * @return
+	 */
+	public static function getMatchEndTimestamp($match, $totalMatchDuration, $format = 'Y-m-d H:i')
+	{
+		$app          = Factory::getApplication();
+		$endTimestamp = "xxxx-xx-xx xx:xx";
+
+		try
+		{
+			if ($match->match_date)
+			{
+				$start        = new DateTime(self::getMatchStartTimestamp($match));
+				$end          = $start->add(new DateInterval('PT' . $totalMatchDuration . 'M'));
+				$endTimestamp = $end->format($format);
+			}
+		}
+		catch (Exception $e)
+		{
+			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
+		}
+
+		return $endTimestamp;
+	}
+
+	/**
 	 * sportsmanagementHelper::getMatchStartTimestamp()
 	 *
-	 * @param   mixed  $match
-	 * @param   string $format
+	 * @param   mixed   $match
+	 * @param   string  $format
+	 *
 	 * @return
 	 */
 	public static function getMatchStartTimestamp($match, $format = 'Y-m-d H:i')
@@ -457,39 +575,10 @@ abstract class sportsmanagementHelper
 	}
 
 	/**
-	 * sportsmanagementHelper::getMatchEndTimestamp()
-	 *
-	 * @param   mixed  $match
-	 * @param   mixed  $totalMatchDuration
-	 * @param   string $format
-	 * @return
-	 */
-	public static function getMatchEndTimestamp($match, $totalMatchDuration, $format = 'Y-m-d H:i')
-	{
-		$app = Factory::getApplication();
-		$endTimestamp = "xxxx-xx-xx xx:xx";
-
-		try
-		{
-			if ($match->match_date)
-			{
-				$start = new DateTime(self::getMatchStartTimestamp($match));
-				$end = $start->add(new DateInterval('PT' . $totalMatchDuration . 'M'));
-				$endTimestamp = $end->format($format);
-			}
-		}
-		catch (Exception $e)
-		{
-			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
-		}
-
-		return $endTimestamp;
-	}
-
-	/**
 	 * sportsmanagementHelper::getMatchTimezone()
 	 *
-	 * @param   mixed $match
+	 * @param   mixed  $match
+	 *
 	 * @return
 	 */
 	public static function getMatchTimezone($match)
@@ -503,7 +592,7 @@ abstract class sportsmanagementHelper
 	 * - to the project timezone as set in the project otherwise (so also for guest users,
 	 *   aka visitors that have not logged in).
 	 *
-	 * @param   match $match Typically obtained from a DB-query and contains the match_date and timezone (of the project)
+	 * @param   match  $match  Typically obtained from a DB-query and contains the match_date and timezone (of the project)
 	 */
 	public static function convertMatchDateToTimezone(&$match)
 	{
@@ -511,11 +600,11 @@ abstract class sportsmanagementHelper
 
 		// Get some system objects.
 		$config = Factory::getConfig();
-		$user = Factory::getUser();
+		$user   = Factory::getUser();
 
 		try
 		{
-			  $res = Factory::getDate(strtotime($match->match_date));
+			$res = Factory::getDate(strtotime($match->match_date));
 
 			if ($match->match_date > 0)
 			{
@@ -532,7 +621,7 @@ abstract class sportsmanagementHelper
 					$timezone = $user->getParam('timezone', $match->timezone);
 				}
 
-				   $matchDate = new JDate($match->match_date);
+				$matchDate = new JDate($match->match_date);
 
 				if ($timezone)
 				{
@@ -544,12 +633,12 @@ abstract class sportsmanagementHelper
 					$matchDate->setTimezone(new DateTimeZone($config->get('offset')));
 				}
 
-				   $match->match_date = $matchDate;
-				   $match->timezone = $timezone;
+				$match->match_date = $matchDate;
+				$match->timezone   = $timezone;
 			}
 			else
 			{
-				 $match->match_date = null;
+				$match->match_date = null;
 			}
 		}
 		catch (Exception $e)
@@ -559,46 +648,15 @@ abstract class sportsmanagementHelper
 	}
 
 	/**
-	 * sportsmanagementHelper::get_IP_address()
-	 *
-	 * @return
-	 */
-	function get_IP_address()
-	{
-		$app = Factory::getApplication();
-
-		foreach (array('HTTP_CLIENT_IP',
-		'HTTP_X_FORWARDED_FOR',
-		'HTTP_X_FORWARDED',
-		'HTTP_X_CLUSTER_CLIENT_IP',
-		'HTTP_FORWARDED_FOR',
-		'HTTP_FORWARDED',
-		'REMOTE_ADDR') as $key)
-		{
-			if (array_key_exists($key, $_SERVER) === true)
-			{
-				foreach (explode(',', $_SERVER[$key]) as $IPaddress)
-				{
-					$IPaddress = trim($IPaddress); // Just to be safe
-
-					if (filter_var($IPaddress, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false)
-					{
-						return $IPaddress;
-					}
-				}
-			}
-		}
-	}
-
-	/**
 	 * sportsmanagementHelper::isJoomlaVersion()
 	 *
-	 * @param   mixed $version
+	 * @param   mixed  $version
+	 *
 	 * @return
 	 */
 	public static function isJoomlaVersion($version = '2.5')
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 
@@ -615,30 +673,30 @@ abstract class sportsmanagementHelper
 	/**
 	 * returns titleInfo
 	 *
-	 * @param prefix Text that must be placed at the start of the title.
+	 * @param   prefix Text that must be placed at the start of the title.
 	 */
 	public static function createTitleInfo($prefix)
 	{
 		return (object) array(
-					"prefix" => $prefix,
-					"clubName" => null,
-					"team1Name" => null,
-					"team2Name" => null,
-					"roundName" => null,
-					"personName" => null,
-					"playgroundName" => null,
-					"projectName" => null,
-					"divisionName" => null,
-					"leagueName" => null,
-					"seasonName" => null
+			"prefix"         => $prefix,
+			"clubName"       => null,
+			"team1Name"      => null,
+			"team2Name"      => null,
+			"roundName"      => null,
+			"personName"     => null,
+			"playgroundName" => null,
+			"projectName"    => null,
+			"divisionName"   => null,
+			"leagueName"     => null,
+			"seasonName"     => null
 		);
 	}
 
 	/**
 	 * returns formatName
 	 *
-	 * @param titleInfo (info on prefix, teams (optional), project, division (optional), league and season)
-	 * @param format
+	 * @param   titleInfo (info on prefix, teams (optional), project, division (optional), league and season)
+	 * @param   format
 	 */
 	public static function formatTitle($titleInfo, $format)
 	{
@@ -690,7 +748,7 @@ abstract class sportsmanagementHelper
 				{
 					$name[] = $projectDivisionName;
 				}
-			break;
+				break;
 
 			case 1: // Project and league name
 				if (!empty($projectDivisionName))
@@ -702,7 +760,7 @@ abstract class sportsmanagementHelper
 				{
 					$name[] = $titleInfo->leagueName;
 				}
-			break;
+				break;
 
 			case 2: // Project, league and season name
 				if (!empty($projectDivisionName))
@@ -717,9 +775,9 @@ abstract class sportsmanagementHelper
 
 				if (!empty($titleInfo->seasonName))
 				{
-							$name[] = $titleInfo->seasonName;
+					$name[] = $titleInfo->seasonName;
 				}
-			break;
+				break;
 
 			case 3: // Project and season name
 				if (!empty($projectDivisionName))
@@ -731,14 +789,14 @@ abstract class sportsmanagementHelper
 				{
 					$name[] = $titleInfo->seasonName;
 				}
-			break;
+				break;
 
 			case 4: // League name
 				if (!empty($titleInfo->leagueName))
 				{
 					$name[] = $titleInfo->leagueName;
 				}
-			break;
+				break;
 
 			case 5: // League and season name
 				if (!empty($titleInfo->leagueName))
@@ -750,351 +808,39 @@ abstract class sportsmanagementHelper
 				{
 					$name[] = $titleInfo->seasonName;
 				}
-			break;
+				break;
 
 			case 6: // Season name
 				if (!empty($titleInfo->seasonName))
 				{
 					$name[] = $titleInfo->seasonName;
 				}
-			break;
+				break;
 
 			case 7: // None
-			break;
+				break;
 		}
 
 		return $titleInfo->prefix . ": " . implode(" | ", $name);
 	}
 
 	/**
-	 * sportsmanagementHelper::getDBConnection()
-	 *
-	 * @return
-	 */
-	public static function getDBConnection($request = false, $value = false)
-	{
-		$app = Factory::getApplication();
-		$params = ComponentHelper::getParams('com_sportsmanagement');
-		$config = Factory::getConfig();
-
-		// Echo '<pre>'.print_r($params,true).'</pre>';
-		// Log::add(Text::_($params->get('cfg_which_database')), Log::ERROR, 'jsmerror');
-		if ($params->get('cfg_which_database'))
-		{
-			$options = array(); // Prevent problems
-				$options['driver'] = $params->get('jsm_dbtype');            // Database driver name
-				$options['host'] = $params->get('jsm_host');    // Database host name
-				$options['user'] = $params->get('jsm_user');       // User for database authentication
-				$options['password'] = $params->get('jsm_password');   // Password for database authentication
-				$options['database'] = $params->get('jsm_db');      // Database name
-				$options['prefix'] = $params->get('jsm_dbprefix');             // Database prefix (may be empty)
-
-			// Log::add(Text::_('options <pre>'.print_r($options,true).'</pre>'), Log::ERROR, 'jsmerror');
-
-			try
-			{
-				// Zuerst noch überprüfen, ob der user
-				// überhaupt den zugriff auf die datenbank hat.
-				if (version_compare(JSM_JVERSION, '4', 'eq'))
-				{
-					self::$_jsm_db = JDatabaseDriver::getInstance($options);
-				}
-				else
-				{
-					self::$_jsm_db = JDatabase::getInstance($options);
-				}
-
-				$user_id = $params->get('jsm_server_user');
-			}
-			catch (Exception $e)
-			{
-				// Catch any database errors.
-				//   $db->transactionRollback();
-				Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
-				Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
-
-				// JErrorPage::render($e);
-			}
-
-			// Log::add(Text::_('user_id '.$user_id), Log::WARNING, 'jsmerror');
-			if ($user_id)
-			{
-				// Load the profile data from the database.
-					$db = self::$_jsm_db;
-				$query = $db->getQuery(true);
-				$query->clear();
-					$query->select('up.profile_key, up.profile_value');
-					$query->from('#__user_profiles as up');
-					$query->where('up.user_id = ' . $user_id);
-					$query->where('up.profile_key LIKE ' . $db->Quote('' . 'jsmprofile.%' . ''));
-
-					// $query->where('up.profile_value LIKE ' . $db->Quote('' . Uri::root() . ''));
-					$db->setQuery($query);
-
-						 $row = $db->loadAssocList('profile_key');
-
-					 // Log::add(Text::_('row <pre>'.print_r($row,true).'</pre>'), Log::INFO, 'jsmerror');
-
-				if ($row['jsmprofile.databaseaccess']['profile_value'])
-				{
-					Log::add(Text::_('Sie haben Zugriff.'), Log::INFO, 'jsmerror');
-
-					if ($row['jsmprofile.serialnumber']['profile_value'] == $params->get('jsm_user_serialnumber'))
-					{
-						Log::add(Text::_('Die Seriennummer stimmt.'), Log::INFO, 'jsmerror');
-
-						if ($row['jsmprofile.access_from']['profile_value'] &&  $row['jsmprofile.access_to']['profile_value'])
-						{
-							$timestampfrom = self::getTimestamp($row['jsmprofile.access_from']['profile_value']);
-							$timestampto = self::getTimestamp($row['jsmprofile.access_to']['profile_value']);
-							$timestampaktuell = self::getTimestamp();
-
-							$varaccess = filter_var(
-								$timestampaktuell,
-								FILTER_VALIDATE_INT,
-								array(
-								'options' => array(
-								'min_range' => $timestampfrom,
-								'max_range' => $timestampto
-								)
-								)
-							);
-
-							// Log::add(Text::_('access '.$varaccess), Log::INFO, 'jsmerror');
-
-							if ($varaccess)
-							{
-										   Log::add(Text::_('Der Zeitraum ist freigeschaltet.'), Log::INFO, 'jsmerror');
-
-								return self::$_jsm_db;
-							}
-							else
-							{
-										   Log::add(Text::_('Der Zeitraum ist nicht freigeschaltet.'), Log::ERROR, 'jsmerror');
-							}
-
-							// Log::add(Text::_('timestamp von '.$timestampfrom), Log::INFO, 'jsmerror');
-							// Log::add(Text::_('timestamp bis '.$timestampto), Log::INFO, 'jsmerror');
-							// Log::add(Text::_('timestamp aktuell '.$timestampaktuell), Log::INFO, 'jsmerror');
-						}
-						else
-						{
-							Log::add(Text::_('Der Zeitraum ist nicht freigeschaltet.'), Log::ERROR, 'jsmerror');
-						}
-					}
-					else
-					{
-						Log::add(Text::_('Die Seriennummer stimmt nicht.'), Log::ERROR, 'jsmerror');
-					}
-				}
-			}
-
-					/*
-            if ( !$db ) {
-                header('HTTP/1.1 500 Internal Server Error');
-                jexit('Database Error: ' . $db->toString());
-            } else {
-
-            }
-            */
-			// $db->debug($debug);
-			// return $db;
-		}
-
-		return Factory::getDbo();
-
-		// Return self::$_jsm_db;
-	}
-
-	/**
-	 * Add data to the xml
-	 *
-	 * @param   array $data data what we want to add in the xml
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return void
-	 */
-	function _addToXml($data)
-	{
-		if (is_array($data) && count($data) > 0)
-		{
-			$object = $data[0]['object'];
-			$output = '';
-
-			foreach ($data as $name => $value)
-			{
-				$output .= "<record object=\"" . self::stripInvalidXml($object) . "\">\n";
-
-				foreach ($value as $key => $data)
-				{
-					if (!is_null($data) && !(substr($key, 0, 1) == "_") && $key != "object")
-					{
-						$output .= "  <$key><![CDATA[" . self::stripInvalidXml(trim($data)) . "]]></$key>\n";
-					}
-				}
-
-				$output .= "</record>\n";
-			}
-
-			return $output;
-		}
-
-		return false;
-	}
-
-
-	/**
-	 * sportsmanagementHelper::_setSportsManagementVersion()
-	 *
-	 * @return
-	 */
-	function _setSportsManagementVersion()
-	{
-		$exportRoutine = '2010-09-23 15:00:00';
-		$result[0]['exportRoutine'] = $exportRoutine;
-		$result[0]['exportDate'] = date('Y-m-d');
-		$result[0]['exportTime'] = date('H:i:s');
-
-		// Welche joomla version ?
-		if (version_compare(JVERSION, '3.0.0', 'ge'))
-		{
-			$result[0]['exportSystem'] = Factory::getConfig()->get('sitename');
-		}
-		else
-		{
-			$result[0]['exportSystem'] = Factory::getConfig()->getValue('sitename');
-		}
-
-		$result[0]['object'] = 'SportsManagementVersion';
-
-		return $result;
-	}
-
-
-	/**
-	 * sportsmanagementHelper::_setLeagueData()
-	 *
-	 * @param   mixed $league
-	 * @return
-	 */
-	function _setLeagueData($league)
-	{
-
-		if ($league)
-		{
-			$result[] = ArrayHelper::fromObject($league);
-			$result[0]['object'] = 'League';
-
-			return $result;
-		}
-
-		return false;
-	}
-
-
-	/**
-	 * sportsmanagementHelper::_setProjectData()
-	 *
-	 * @param   mixed $project
-	 * @return
-	 */
-	function _setProjectData($project)
-	{
-		if ($project)
-		{
-			$result[] = ArrayHelper::fromObject($project);
-			$result[0]['object'] = 'SportsManagement';
-
-			return $result;
-		}
-
-		return false;
-	}
-
-
-	/**
-	 * sportsmanagementHelper::_setSeasonData()
-	 *
-	 * @param   mixed $season
-	 * @return
-	 */
-	function _setSeasonData($season)
-	{
-		if ($season)
-		{
-			$result[] = ArrayHelper::fromObject($season);
-			$result[0]['object'] = 'Season';
-
-			return $result;
-		}
-
-		return false;
-	}
-
-
-	/**
-	 * sportsmanagementHelper::_setSportsType()
-	 *
-	 * @param   mixed $sportstype
-	 * @return
-	 */
-	function _setSportsType($sportstype)
-	{
-
-		if ($sportstype)
-		{
-			$result[] = ArrayHelper::fromObject($sportstype);
-			$result[0]['object'] = 'SportsType';
-
-			return $result;
-		}
-
-		return false;
-	}
-
-
-	/**
-	 * sportsmanagementHelper::_setXMLData()
-	 *
-	 * @param   mixed $data
-	 * @param   mixed $object
-	 * @return
-	 */
-	function _setXMLData($data, $object)
-	{
-		if ($data)
-		{
-			foreach ($data as $row)
-			{
-				$result[] = ArrayHelper::fromObject($row);
-			}
-
-			$result[0]['object'] = $object;
-
-			return $result;
-		}
-
-		return false;
-	}
-
-	/**
 	 * sportsmanagementHelper::addSubmenu()
 	 *
-	 * @param   mixed $submenu
+	 * @param   mixed  $submenu
+	 *
 	 * @return void
 	 */
 	public static function addSubmenu($submenu)
 	{
-		$app = Factory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$document = Factory::getDocument();
-		$project_id = $app->getUserState("$option.pid", '0');
+		$app             = Factory::getApplication();
+		$jinput          = $app->input;
+		$option          = $jinput->getCmd('option');
+		$document        = Factory::getDocument();
+		$project_id      = $app->getUserState("$option.pid", '0');
 		$project_team_id = $app->getUserState("$option.project_team_id", '0');
-		$team_id = $app->getUserState("$option.team_id", '0');
-		$club_id = $app->getUserState("$option.club_id", '0');
+		$team_id         = $app->getUserState("$option.team_id", '0');
+		$club_id         = $app->getUserState("$option.club_id", '0');
 
 		if (version_compare(JVERSION, '3.0.0', 'ge'))
 		{
@@ -1162,7 +908,7 @@ abstract class sportsmanagementHelper
 	 */
 	public static function getActions($messageId = 0)
 	{
-		$user = Factory::getUser();
+		$user   = Factory::getUser();
 		$result = new JObject;
 
 		if (empty($messageId))
@@ -1188,16 +934,17 @@ abstract class sportsmanagementHelper
 
 	/**
 	 *
-	 * @param   string $data
-	 * @param   string $file
+	 * @param   string  $data
+	 * @param   string  $file
+	 *
 	 * @return object
 	 */
 	static function getExtendedStatistic($data = '', $file, $format = 'ini')
 	{
-		$app = Factory::getApplication();
+		$app          = Factory::getApplication();
 		$templatepath = JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'statistics';
-		$xmlfile = $templatepath . DIRECTORY_SEPARATOR . $file . '.xml';
-		$extended = JForm::getInstance('params', $xmlfile, array('control' => 'params'), false, '/config');
+		$xmlfile      = $templatepath . DIRECTORY_SEPARATOR . $file . '.xml';
+		$extended     = JForm::getInstance('params', $xmlfile, array('control' => 'params'), false, '/config');
 		$extended->bind($data);
 
 		return $extended;
@@ -1206,13 +953,14 @@ abstract class sportsmanagementHelper
 	/**
 	 * support for extensions which can overload extended data
 	 *
-	 * @param   string $data
-	 * @param   string $file
+	 * @param   string  $data
+	 * @param   string  $file
+	 *
 	 * @return object
 	 */
 	static function getExtended($data = '', $file, $format = 'ini', $frontend = false)
 	{
-		$app = Factory::getApplication();
+		$app     = Factory::getApplication();
 		$xmlfile = JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'extended' . DIRECTORY_SEPARATOR . $file . '.xml';
 		/**
 		 * extended data
@@ -1240,16 +988,16 @@ abstract class sportsmanagementHelper
 
 				if ($frontend)
 				{
-					  return $jRegistry;
+					return $jRegistry;
 				}
 				else
 				{
-						  return $extended;
+					return $extended;
 				}
 			}
 			catch (Exception $e)
 			{
-				$msg = $e->getMessage(); // Returns "Normally you would have other code...
+				$msg  = $e->getMessage(); // Returns "Normally you would have other code...
 				$code = $e->getCode(); // Returns
 				Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
 
@@ -1265,14 +1013,15 @@ abstract class sportsmanagementHelper
 	/**
 	 * sportsmanagementHelper::getExtendedUser()
 	 *
-	 * @param   string $data
-	 * @param   mixed  $file
-	 * @param   string $format
+	 * @param   string  $data
+	 * @param   mixed   $file
+	 * @param   string  $format
+	 *
 	 * @return
 	 */
 	static function getExtendedUser($data = '', $file, $format = 'ini')
 	{
-		$app = Factory::getApplication();
+		$app     = Factory::getApplication();
 		$xmlfile = JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'extendeduser' . DIRECTORY_SEPARATOR . $file . '.xml';
 
 		/*
@@ -1304,7 +1053,7 @@ abstract class sportsmanagementHelper
 			}
 			catch (Exception $e)
 			{
-				$msg = $e->getMessage(); // Returns "Normally you would have other code...
+				$msg  = $e->getMessage(); // Returns "Normally you would have other code...
 				$code = $e->getCode(); // Returns
 				Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
 			}
@@ -1347,50 +1096,6 @@ abstract class sportsmanagementHelper
 	}
 
 	/**
-	 * sportsmanagementHelper::getProjectFavTeams()
-	 *
-	 * @param   mixed $project_id
-	 * @return
-	 */
-	public static function getProjectFavTeams($project_id)
-	{
-
-		if ($project_id)
-		{
-			$row = Table::getInstance('project', 'sportsmanagementTable');
-			$row->load($project_id);
-
-			return $row;
-		}
-		else
-		{
-			return false;
-		}
-	}
-
-	/**
-	 * Method to return the project
-	 *
-	 * @access public
-	 * @return array project
-	 * @since  1.5
-	 */
-	function getTeamplayerProject($projectteam_id)
-	{
-		$db = self::getDBConnection();
-		$query = 'SELECT project_id FROM #__sportsmanagement_project_team WHERE id=' . (int) $projectteam_id;
-		$db->setQuery($query);
-
-		if (!$result = $db->loadResult())
-		{
-			// $this->setError($db->getErrorMsg());
-			return false;
-		}
-
-		return $result;
-	}
-
-	/**
 	 * Method to return a SportsType name
 	 *
 	 * @access public
@@ -1399,7 +1104,7 @@ abstract class sportsmanagementHelper
 	 */
 	public static function getSportsTypeName($sportsType)
 	{
-		$db = self::getDBConnection();
+		$db    = self::getDBConnection();
 		$query = 'SELECT name FROM #__sportsmanagement_sports_type WHERE id=' . (int) $sportsType;
 		$db->setQuery($query);
 
@@ -1413,34 +1118,6 @@ abstract class sportsmanagementHelper
 	}
 
 	/**
-	 * Method to return a sportsTypees array (id,name)
-	 *
-	 * @access public
-	 * @return array seasons
-	 * @since  1.5.0a
-	 */
-	function getSportsTypes()
-	{
-		$db = self::getDBConnection();
-		$query = 'SELECT id, name FROM #__sportsmanagement_sports_type ORDER BY name ASC ';
-		$db->setQuery($query);
-
-		if (!$result = $db->loadObjectList())
-		{
-			$this->setError($db->getErrorMsg());
-
-			return false;
-		}
-
-		foreach ($result as $sportstype)
-		{
-			$sportstype->name = Text::_($sportstype->name);
-		}
-
-		return $result;
-	}
-
-	/**
 	 * Method to return a SportsType name
 	 *
 	 * @access public
@@ -1451,100 +1128,40 @@ abstract class sportsmanagementHelper
 	{
 		switch ($personType)
 		{
-			case 2 : $result = Text::_('COM_SPORTSMANAGEMENT_F_TEAM_STAFF');
-			break;
-			case 3 : $result = Text::_('COM_SPORTSMANAGEMENT_F_REFEREES');
-			break;
-			case 4 : $result = Text::_('COM_SPORTSMANAGEMENT_F_CLUB_STAFF');
-			break;
+			case 2 :
+				$result = Text::_('COM_SPORTSMANAGEMENT_F_TEAM_STAFF');
+				break;
+			case 3 :
+				$result = Text::_('COM_SPORTSMANAGEMENT_F_REFEREES');
+				break;
+			case 4 :
+				$result = Text::_('COM_SPORTSMANAGEMENT_F_CLUB_STAFF');
+				break;
 			default :
-			case 1 : $result = Text::_('COM_SPORTSMANAGEMENT_F_PLAYERS');
-			break;
+			case 1 :
+				$result = Text::_('COM_SPORTSMANAGEMENT_F_PLAYERS');
+				break;
 		}
 
 		return $result;
 	}
 
 	/**
-	 * return name of extension assigned to current project.
-	 *
-	 * @param  int project_id
-	 * @return string or false
-	 */
-	function getExtension($project_id = 0)
-	{
-		$option = 'com_sportsmanagement';
-
-		if (!$project_id)
-		{
-			$app = Factory::getApplication();
-			$project_id = $app->getUserState($option . 'project', 0);
-		}
-
-		if (!$project_id)
-		{
-			return false;
-		}
-
-		$db = self::getDBConnection();
-		$query = $db->getQuery(true);
-		$query->select('extension');
-		$query->from('#__sportsmanagement_project');
-		$query->where('id =' . $db->Quote((int) $project_id));
-		$db->setQuery($query);
-		$res = $db->loadResult();
-
-		return (!empty($res) ? $res : false);
-	}
-
-	/**
-	 * sportsmanagementHelper::getExtensions()
-	 *
-	 * @return
-	 */
-	public static function getExtensions()
-	{
-		$app = Factory::getApplication();
-		$jinput = $app->input;
-		$option = 'com_sportsmanagement';
-		$view = $jinput->get('view');
-		$arrExtensions = array();
-		$excludeExtension = array();
-
-		if (Folder::exists(JPATH_SITE . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'com_sportsmanagement' . DIRECTORY_SEPARATOR . 'extensions'))
-		{
-			$folderExtensions = Folder::folders(JPATH_SITE . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'com_sportsmanagement' . DIRECTORY_SEPARATOR . 'extensions', '.', false, false, $excludeExtension);
-
-			if ($folderExtensions !== false)
-			{
-				foreach ($folderExtensions as $ext)
-				{
-					if ($ext == $view)
-					{
-						$arrExtensions[] = $ext;
-					}
-				}
-			}
-		}
-
-		return $arrExtensions;
-	}
-
-	/**
 	 * sportsmanagementHelper::getExtensionsOverlay()
 	 *
-	 * @param   mixed $project_id
+	 * @param   mixed  $project_id
+	 *
 	 * @return
 	 */
 	public static function getExtensionsOverlay($project_id)
 	{
-		$option = 'com_sportsmanagement';
-		$arrExtensions = array();
+		$option           = 'com_sportsmanagement';
+		$arrExtensions    = array();
 		$excludeExtension = array();
 
 		if ($project_id)
 		{
-			$db = self::getDBConnection();
+			$db    = self::getDBConnection();
 			$query = 'SELECT extension FROM #__sportsmanagement_project WHERE id=' . $db->Quote((int) $project_id);
 
 			$db->setQuery($query);
@@ -1575,15 +1192,16 @@ abstract class sportsmanagementHelper
 	/**
 	 * returns number of years between 2 dates
 	 *
-	 * @param   string $birthday     date in YYYY-mm-dd format
-	 * @param   string $current_date date in YYYY-mm-dd format,default to today
+	 * @param   string  $birthday      date in YYYY-mm-dd format
+	 * @param   string  $current_date  date in YYYY-mm-dd format,default to today
+	 *
 	 * @return integer age
 	 */
 	public static function getAge($date, $seconddate)
 	{
 
 		if (($date != "0000-00-00")
-			&& (preg_match('/([0-9]{4})-([0-9]{2})-([0-9]{2})/', $date, $regs) )
+			&& (preg_match('/([0-9]{4})-([0-9]{2})-([0-9]{2})/', $date, $regs))
 			&& ($seconddate == "0000-00-00")
 		)
 		{
@@ -1608,9 +1226,9 @@ abstract class sportsmanagementHelper
 		}
 
 		if (($date != "0000-00-00")
-			&& ( preg_match('/([0-9]{4})-([0-9]{2})-([0-9]{2})/', $date, $regs) )
+			&& (preg_match('/([0-9]{4})-([0-9]{2})-([0-9]{2})/', $date, $regs))
 			&& ($seconddate != "0000-00-00")
-			&& ( preg_match('/([0-9]{4})-([0-9]{2})-([0-9]{2})/', $seconddate, $regs2) )
+			&& (preg_match('/([0-9]{4})-([0-9]{2})-([0-9]{2})/', $seconddate, $regs2))
 		)
 		{
 			$intAge = $regs2[1] - $regs[1];
@@ -1639,72 +1257,73 @@ abstract class sportsmanagementHelper
 	/**
 	 * returns the default placeholder
 	 *
-	 * @param   string $type ,default is player
+	 * @param   string  $type  ,default is player
+	 *
 	 * @return string placeholder (path)
 	 */
 	public static function getDefaultPlaceholder($type = "player")
 	{
-		$params = ComponentHelper::getParams('com_sportsmanagement');
-		$ph_player = $params->get('ph_player', 0);
-		$ph_logo_big = $params->get('ph_logo_big', 0);
-		$ph_logo_medium = $params->get('ph_logo_medium', 0);
-		$ph_logo_small = $params->get('ph_logo_small', 0);
-		$ph_icon = $params->get('ph_icon', 'images/com_sportsmanagement/database/placeholders/placeholder_21.png');
-		$ph_team = $params->get('ph_team', 0);
-		$ph_stadium = $params->get('ph_stadium', 0);
-		$ph_trikot = $params->get('ph_trikot', 0);
-		$ph_project = $params->get('ph_project', 0);
-		$ph_player_men_large = $params->get('ph_player_men_large', 0);
-		$ph_player_men_small = $params->get('ph_player_men_small', 0);
+		$params                = ComponentHelper::getParams('com_sportsmanagement');
+		$ph_player             = $params->get('ph_player', 0);
+		$ph_logo_big           = $params->get('ph_logo_big', 0);
+		$ph_logo_medium        = $params->get('ph_logo_medium', 0);
+		$ph_logo_small         = $params->get('ph_logo_small', 0);
+		$ph_icon               = $params->get('ph_icon', 'images/com_sportsmanagement/database/placeholders/placeholder_21.png');
+		$ph_team               = $params->get('ph_team', 0);
+		$ph_stadium            = $params->get('ph_stadium', 0);
+		$ph_trikot             = $params->get('ph_trikot', 0);
+		$ph_project            = $params->get('ph_project', 0);
+		$ph_player_men_large   = $params->get('ph_player_men_large', 0);
+		$ph_player_men_small   = $params->get('ph_player_men_small', 0);
 		$ph_player_woman_large = $params->get('ph_player_woman_large', 0);
 		$ph_player_woman_small = $params->get('ph_player_woman_small', 0);
 
 		/**
- * setup the different placeholders
-*/
+		 * setup the different placeholders
+		 */
 		switch ($type)
 		{
-			case "trikot_home": // 
-			case "trikot_away": // 
-			case "clubs_trikot_home": // 
-			case "clubs_trikot_away": // 
-			return $ph_trikot;
-			break;
+			case "trikot_home": //
+			case "trikot_away": //
+			case "clubs_trikot_home": //
+			case "clubs_trikot_away": //
+				return $ph_trikot;
+				break;
 			case "projects":
-			return $ph_project;
-			break;
+				return $ph_project;
+				break;
 			case "projectteams/trikot_home":
-			return $ph_logo_small;
-			break;
+				return $ph_logo_small;
+				break;
 			case "projectteams/trikot_away":
-			return $ph_logo_small;
-			break;
+				return $ph_logo_small;
+				break;
 
 			case "player": // Player
 			case "persons":
-			return $ph_player;
-			break;
+				return $ph_player;
+				break;
 
-			case "stadium": // 
-			case "playgrounds": // 
-			return $ph_stadium;
-			break;
+			case "stadium": //
+			case "playgrounds": //
+				return $ph_stadium;
+				break;
 
-			case "menlarge": // 
-			return $ph_player_men_large;
-			break;
+			case "menlarge": //
+				return $ph_player_men_large;
+				break;
 
-			case "mensmall": // 
-			return $ph_player_men_small;
-			break;
+			case "mensmall": //
+				return $ph_player_men_small;
+				break;
 
-			case "womanlarge": // 
-			return $ph_player_woman_large;
-			break;
+			case "womanlarge": //
+				return $ph_player_woman_large;
+				break;
 
-			case "womansmall": // 
-			return $ph_player_woman_small;
-			break;
+			case "womansmall": //
+				return $ph_player_woman_small;
+				break;
 
 			case "clublogobig": // Club logo big
 			case "logo_big":
@@ -1712,203 +1331,36 @@ abstract class sportsmanagementHelper
 			case "projects":
 			case "league":
 			case "leagues":
-			return $ph_logo_big;
-			break;
+				return $ph_logo_big;
+				break;
 
 			case "clublogomedium": // Club logo medium
 			case "logo_middle":
 			case "clubs_medium":
-			return $ph_logo_medium;
-			break;
+				return $ph_logo_medium;
+				break;
 
 			case "clublogosmall": // Club logo small
 			case "logo_small":
 			case "clubs_small":
-			return $ph_logo_small;
-			break;
+				return $ph_logo_small;
+				break;
 
 			case "icon": // Icon
-			return $ph_icon;
-			break;
+				return $ph_icon;
+				break;
 
 			case "team": // Team picture
 			case "team_picture":
 			case "teams":
 			case "projectteams":
 			case "projectteam_picture":
-			return $ph_team;
-			break;
+				return $ph_team;
+				break;
 			default:
 				$picture = null;
-			break;
+				break;
 		}
-	}
-
-	/**
-	 * static method which return a <img> tag with the given picture
-	 *
-	 * @param   string $picture
-	 * @param   string $alttext
-	 * @param   int    $width=40,  if set to 0 the original picture width will be used
-	 * @param   int    $height=40, if set to 0 the original picture height will be used
-	 * @param   int    $type=0,    0=player, 1=club logo big, 2=club logo medium, 3=club logo small
-	 * @return string
-	 */
-	public static function getPictureThumb($picture, $alttext, $width = 40, $height = 40, $type = 0)
-	{
-		$ret = "";
-		$picturepath = JPath::clean(JPATH_SITE . DIRECTORY_SEPARATOR . str_replace(JPATH_SITE . DIRECTORY_SEPARATOR, '', $picture));
-		$params = ComponentHelper::getParams('com_sportsmanagement');
-		$ph_player = $params->get('ph_player', 0);
-		$ph_logo_big = $params->get('ph_logo_big', 0);
-		$ph_logo_medium = $params->get('ph_logo_medium', 0);
-		$ph_logo_small = $params->get('ph_logo_small', 0);
-		$ph_icon = $params->get('ph_icon', 0);
-		$ph_team = $params->get('ph_team', 0);
-
-		if (!file_exists($picturepath) || $picturepath == JPATH_SITE . DIRECTORY_SEPARATOR)
-		{
-			// Setup the different placeholders
-			switch ($type)
-			{
-				case 0: // Player
-					$picture = JPATH_SITE . DIRECTORY_SEPARATOR . $ph_player;
-				break;
-
-				case 1: // Club logo big
-					$picture = JPATH_SITE . DIRECTORY_SEPARATOR . $ph_logo_big;
-				break;
-
-				case 2: // Club logo medium
-					$picture = JPATH_SITE . DIRECTORY_SEPARATOR . $ph_logo_medium;
-				break;
-
-				case 3: // Club logo small
-					$picture = JPATH_SITE . DIRECTORY_SEPARATOR . $ph_logo_small;
-				break;
-
-				case 4: // Icon
-					$picture = JPATH_SITE . DIRECTORY_SEPARATOR . $ph_icon;
-				break;
-
-				case 5: // Team picture
-					$picture = JPATH_SITE . DIRECTORY_SEPARATOR . $ph_team;
-				break;
-				default:
-					$picture = null;
-				break;
-			}
-		}
-
-		if (!empty($picture))
-		{
-			$params = ComponentHelper::getParams('com_sportsmanagement');
-			$format = "JPG"; // PNG is not working in IE8
-			$format = $params->get('thumbformat', 'PNG');
-			$bUseThumbLib = $params->get('usethumblib', false);
-
-			if ($bUseThumbLib)
-			{
-				if (file_exists($picturepath))
-				{
-					$picture = $picturepath;
-				}
-
-				$thumb = PhpThumbFactory::create($picture);
-				$thumb->setFormat($format);
-
-				// Height and width set, resize it with the thumblib
-				if ($height > 0 && $width > 0)
-				{
-					$thumb->setMaxHeight($height);
-					$thumb->adaptiveResizeQuadrant($width, $height, $quadrant = 'C');
-					$pic = $thumb->getImageAsString();
-					$ret .= '<img src="data:image/' . $format . ';base64,' . base64_encode($pic);
-					$ret .= '" alt="' . $alttext . '" title="' . $alttext . '"/>';
-				}
-
-				// Height==0 and width set, let the browser resize it
-				if ($height == 0 && $width > 0)
-				{
-					$thumb->setMaxWidth($width);
-					$pic = $thumb->getImageAsString();
-					$ret .= '<img src="data:image/' . $format . ';base64,' . base64_encode($pic);
-					$ret .= '" width="' . $width . '" alt="' . $alttext . '" title="' . $alttext . '"/>';
-				}
-
-				// Width==0 and height set, let the browser resize it
-				if ($height > 0 && $width == 0)
-				{
-					$thumb->setMaxHeight($height);
-					$pic = $thumb->getImageAsString();
-					$ret .= '<img src="data:image/' . $format . ';base64,' . base64_encode($pic);
-					$ret .= '" height="' . $height . '" alt="' . $alttext . '" title="' . $alttext . '"/>';
-				}
-
-				// Width==0 and height==0, use original picture size
-				if ($height == 0 && $width == 0)
-				{
-					$thumb->setMaxHeight($height);
-					$pic = $thumb->getImageAsString();
-					$ret .= '<img src="data:image/' . $format . ';base64,' . base64_encode($pic);
-					$ret .= '" alt="' . $alttext . '" title="' . $alttext . '"/>';
-				}
-			}
-			else
-			{
-				$picture = Uri::root(true) . '/' . str_replace(JPATH_SITE . DIRECTORY_SEPARATOR, "", $picture);
-				$title = $alttext;
-
-				// Height and width set, let the browser resize it
-				$bUseHighslide = $params->get('use_highslide', false);
-
-				if ($bUseHighslide && $type != 4)
-				{
-					$title .= ' (' . Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CLICK_TO_ENLARGE') . ')';
-					$ret .= '<a href="' . $picture . '" class="highslide">';
-				}
-
-				$ret .= '<img ';
-				$ret .= ' ';
-
-				if ($height > 0 && $width > 0)
-				{
-					$ret .= ' src="' . $picture;
-					$ret .= '" width="' . $width . '" height="' . $height . '"
-							alt="' . $alttext . '" title="' . $title . '"';
-				}
-
-				// Height==0 and width set, let the browser resize it
-				if ($height == 0 && $width > 0)
-				{
-					$ret .= ' src="' . $picture;
-					$ret .= '" width="' . $width . '" alt="' . $alttext . '" title="' . $title . '"';
-				}
-
-				// Width==0 and height set, let the browser resize it
-				if ($height > 0 && $width == 0)
-				{
-					$ret .= ' src="' . $picture;
-					$ret .= '" height="' . $height . '" alt="' . $alttext . '" title="' . $title . '"';
-				}
-
-				// Width==0 and height==0, use original picture size
-				if ($height == 0 && $width == 0)
-				{
-					$ret .= ' src="' . $picture;
-					$ret .= '" alt="' . $alttext . '" title="' . $title . '"';
-				}
-
-				$ret .= '/>';
-
-				if ($bUseHighslide)
-				{
-					$ret .= '</a>';
-				}
-			}
-		}
-
-		return $ret;
 	}
 
 	/**
@@ -1918,12 +1370,12 @@ abstract class sportsmanagementHelper
 	 * (e.g. 'projectheading', 'backbutton', 'footer')
 	 *
 	 * @param   array(string) $viewnames, names of views for which templates need to be loaded,
-	 *                      so that extensions are used when available
-	 * @param   JLGView       $view       to which the template paths should be added
+	 *                          so that extensions are used when available
+	 * @param   JLGView  $view  to which the template paths should be added
 	 */
 	public static function addTemplatePaths($templatesToLoad, &$view)
 	{
-		$jinput = Factory::getApplication()->input;
+		$jinput     = Factory::getApplication()->input;
 		$extensions = self::getExtensions($jinput->getInt('p'));
 
 		foreach ($templatesToLoad as $template)
@@ -1935,7 +1387,7 @@ abstract class sportsmanagementHelper
 				foreach ($extensions as $e => $extension)
 				{
 					$extension_views = JPATH_COMPONENT_SITE . DIRECTORY_SEPARATOR . 'extensions' . DIRECTORY_SEPARATOR . $extension . DIRECTORY_SEPARATOR . 'views';
-					$tmpl_path = $extension_views . DIRECTORY_SEPARATOR . $template . DIRECTORY_SEPARATOR . 'tmpl';
+					$tmpl_path       = $extension_views . DIRECTORY_SEPARATOR . $template . DIRECTORY_SEPARATOR . 'tmpl';
 
 					if (Folder::exists($tmpl_path))
 					{
@@ -1947,60 +1399,36 @@ abstract class sportsmanagementHelper
 	}
 
 	/**
-	 * sportsmanagementHelper::getTimestamp()
+	 * sportsmanagementHelper::getExtensions()
 	 *
-	 * @param   mixed   $date
-	 * @param   integer $use_offset
-	 * @param   mixed   $offset
 	 * @return
 	 */
-	public static function getTimestamp($date = null, $use_offset = 0, $offset = null)
+	public static function getExtensions()
 	{
-		$date = $date ? $date : 'now';
-		$app = Factory::getApplication();
+		$app              = Factory::getApplication();
+		$jinput           = $app->input;
+		$option           = 'com_sportsmanagement';
+		$view             = $jinput->get('view');
+		$arrExtensions    = array();
+		$excludeExtension = array();
 
-		try
+		if (Folder::exists(JPATH_SITE . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'com_sportsmanagement' . DIRECTORY_SEPARATOR . 'extensions'))
 		{
-			  $res = Factory::getDate(strtotime($date));
+			$folderExtensions = Folder::folders(JPATH_SITE . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'com_sportsmanagement' . DIRECTORY_SEPARATOR . 'extensions', '.', false, false, $excludeExtension);
 
-			if ($use_offset)
+			if ($folderExtensions !== false)
 			{
-				if ($offset)
+				foreach ($folderExtensions as $ext)
 				{
-					$serveroffset = explode(':', $offset);
-
-					if (version_compare(JVERSION, '3.0.0', 'ge'))
+					if ($ext == $view)
 					{
-						$res->setTimezone(new DateTimeZone($serveroffset[0]));
-					}
-					else
-					{
-						$res->setOffset($serveroffset[0]);
-					}
-				}
-				else
-				{
-					if (version_compare(JVERSION, '3.0.0', 'ge'))
-					{
-						$res->setTimezone(new DateTimeZone($app->getCfg('offset')));
-					}
-					else
-					{
-						$res->setOffset($app->getCfg('offset'));
+						$arrExtensions[] = $ext;
 					}
 				}
 			}
-
-			  return $res->toUnix('true');
 		}
-		catch (Exception $e)
-		{
-				$msg = $e->getMessage(); // Returns "Normally you would have other code...
-				$code = $e->getCode(); // Returns
-				$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
 
-			return false;
-		}
+		return $arrExtensions;
 	}
 
 	/**
@@ -2066,189 +1494,14 @@ abstract class sportsmanagementHelper
 	}
 
 	/**
-	 * sportsmanagementHelper::showTeamIcons()
-	 *
-	 * @param   mixed $team
-	 * @param   mixed $config
-	 * @return
-	 */
-	public static function showTeamIcons(&$team, &$config, $cfg_which_database = 0, $s = 0)
-	{
-		$app = Factory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		if (!isset($team->projectteamid))
-		{
-			return "";
-		}
-
-		$projectteamid = $team->projectteam_slug;
-		$teamname = $team->name;
-		$teamid = $team->team_id;
-		$teamSlug = (isset($team->team_slug) ? $team->team_slug : $teamid);
-		$clubSlug = (isset($team->club_slug) ? $team->club_slug : $team->club_id);
-		$division_slug = (isset($team->division_slug) ? $team->division_slug : $team->division_id);
-		$projectSlug = (isset($team->project_slug) ? $team->project_slug : $team->project_id);
-		$output = '<ul class="list-inline">';
-
-		if ($config['show_team_link'])
-		{
-			$routeparameter = array();
-			$routeparameter['cfg_which_database'] = $cfg_which_database;
-			$routeparameter['s'] = $s;
-			$routeparameter['p'] = $projectSlug;
-			$routeparameter['tid'] = $teamSlug;
-			$routeparameter['ptid'] = $projectteamid;
-
-			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('roster', $routeparameter);
-			$title = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_ROSTER_LINK') . '&nbsp;' . $teamname;
-			$picture = 'media/com_sportsmanagement/jl_images/team_icon.png';
-			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
-			$output .= '<li class="list-inline-item">';
-			$output .= HTMLHelper::link($link, $desc);
-			$output .= '</li>';
-		}
-
-		if (((!isset($team_plan)) || ($teamid != $team_plan->id)) && ($config['show_plan_link']))
-		{
-			$routeparameter = array();
-			$routeparameter['cfg_which_database'] = $cfg_which_database;
-			$routeparameter['s'] = $s;
-			$routeparameter['p'] = $projectSlug;
-			$routeparameter['tid'] = $teamSlug;
-			$routeparameter['division'] = $division_slug;
-			$routeparameter['mode'] = 0;
-			$routeparameter['ptid'] = $projectteamid;
-			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan', $routeparameter);
-			$title = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMPLAN_LINK') . '&nbsp;' . $teamname;
-			$picture = 'media/com_sportsmanagement/jl_images/calendar_icon.gif';
-			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
-			$output .= '<li class="list-inline-item">';
-			$output .= HTMLHelper::link($link, $desc);
-			$output .= '</li>';
-		}
-
-		if ($config['show_curve_link'])
-		{
-			$routeparameter = array();
-			$routeparameter['cfg_which_database'] = $cfg_which_database;
-			$routeparameter['s'] = $s;
-			$routeparameter['p'] = $projectSlug;
-			$routeparameter['tid1'] = $teamSlug;
-			$routeparameter['tid2'] = 0;
-			$routeparameter['division'] = $division_slug;
-
-			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('curve', $routeparameter);
-			$title = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_CURVE_LINK') . '&nbsp;' . $teamname;
-			$picture = 'media/com_sportsmanagement/jl_images/curve_icon.gif';
-			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
-			$output .= '<li class="list-inline-item">';
-			$output .= HTMLHelper::link($link, $desc);
-			$output .= '</li>';
-		}
-
-		if ($config['show_teaminfo_link'])
-		{
-			$routeparameter = array();
-			$routeparameter['cfg_which_database'] = $cfg_which_database;
-			$routeparameter['s'] = $s;
-			$routeparameter['p'] = $projectSlug;
-			$routeparameter['tid'] = $teamSlug;
-			$routeparameter['ptid'] = $projectteamid;
-
-			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);
-			$title = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMINFO_LINK') . '&nbsp;' . $teamname;
-			$picture = 'media/com_sportsmanagement/jl_images/teaminfo_icon.png';
-			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
-			$output .= '<li class="list-inline-item">';
-			$output .= HTMLHelper::link($link, $desc);
-			$output .= '</li>';
-		}
-
-		if ($config['show_club_link'])
-		{
-			$routeparameter = array();
-			$routeparameter['cfg_which_database'] = $cfg_which_database;
-			$routeparameter['s'] = $s;
-			$routeparameter['p'] = $projectSlug;
-			$routeparameter['cid'] = $clubSlug;
-			$routeparameter['task'] = null;
-
-			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('clubinfo', $routeparameter);
-			$title = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_CLUBINFO_LINK') . '&nbsp;' . $teamname;
-			$picture = 'media/com_sportsmanagement/jl_images/mail.gif';
-			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
-			$output .= '<li class="list-inline-item">';
-			$output .= HTMLHelper::link($link, $desc);
-			$output .= '</li>';
-		}
-
-		if ($config['show_teamstats_link'])
-		{
-			$routeparameter = array();
-			$routeparameter['cfg_which_database'] = $cfg_which_database;
-			$routeparameter['s'] = $s;
-			$routeparameter['p'] = $projectSlug;
-			$routeparameter['tid'] = $teamSlug;
-
-			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamstats', $routeparameter);
-			$title = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMSTATS_LINK') . '&nbsp;' . $teamname;
-			$picture = 'media/com_sportsmanagement/jl_images/teamstats_icon.png';
-			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
-			$output .= '<li class="list-inline-item">';
-			$output .= HTMLHelper::link($link, $desc);
-			$output .= '</li>';
-		}
-
-		if ($config['show_clubplan_link'])
-		{
-			$routeparameter = array();
-			$routeparameter['cfg_which_database'] = $cfg_which_database;
-			$routeparameter['s'] = $s;
-			$routeparameter['p'] = $projectSlug;
-			$routeparameter['cid'] = $clubSlug;
-			$routeparameter['task'] = null;
-
-			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('clubplan', $routeparameter);
-			$title = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_CLUBPLAN_LINK') . '&nbsp;' . $teamname;
-			$picture = 'media/com_sportsmanagement/jl_images/clubplan_icon.png';
-			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
-			$output .= '<li class="list-inline-item">';
-			$output .= HTMLHelper::link($link, $desc);
-			$output .= '</li>';
-		}
-
-		if ($config['show_rivals_link'])
-		{
-			$routeparameter = array();
-			$routeparameter['cfg_which_database'] = $cfg_which_database;
-			$routeparameter['s'] = $s;
-			$routeparameter['p'] = $projectSlug;
-			$routeparameter['tid'] = $teamSlug;
-
-			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('rivals', $routeparameter);
-			$title = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_RIVALS_LINK') . '&nbsp;' . $teamname;
-			$picture = 'media/com_sportsmanagement/jl_images/rivals.png';
-			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
-			$output .= '<li class="list-inline-item">';
-			$output .= HTMLHelper::link($link, $desc);
-			$output .= '</li>';
-		}
-
-		$output .= '</ul>';
-
-		return $output;
-	}
-
-	/**
 	 * sportsmanagementHelper::formatTeamName()
 	 *
-	 * @param   mixed   $team
-	 * @param   mixed   $containerprefix
-	 * @param   mixed   $config
-	 * @param   integer $isfav
-	 * @param   mixed   $link
+	 * @param   mixed    $team
+	 * @param   mixed    $containerprefix
+	 * @param   mixed    $config
+	 * @param   integer  $isfav
+	 * @param   mixed    $link
+	 *
 	 * @return
 	 */
 	public static function formatTeamName($team, $containerprefix, &$config, $isfav = 0, $link = null, $cfg_which_database = 0)
@@ -2256,50 +1509,50 @@ abstract class sportsmanagementHelper
 		$app = Factory::getApplication();
 
 		$output = '';
-		$desc = '';
+		$desc   = '';
 
 		if ((isset($config['results_below'])) && ($config['results_below']) && ($config['show_logo_small']))
 		{
-			$js_func = 'visibleMenu';
+			$js_func      = 'visibleMenu';
 			$style_append = 'visibility:hidden';
-			$container = 'span';
+			$container    = 'span';
 		}
 		else
 		{
-			$js_func = 'switchMenu';
+			$js_func      = 'switchMenu';
 			$style_append = 'display:none';
-			$container = 'div';
+			$container    = 'div';
 		}
 
-		$showIcons = (
+		$showIcons   = (
 				($config['show_info_link'] == 2) && ($isfav)
-				) ||
-				(
+			) ||
+			(
 				($config['show_info_link'] == 1) &&
 				(
-				$config['show_club_link'] ||
-				$config['show_team_link'] ||
-				$config['show_curve_link'] ||
-				$config['show_plan_link'] ||
-				$config['show_teaminfo_link'] ||
-				$config['show_teamstats_link'] ||
-				$config['show_clubplan_link'] ||
-				$config['show_rivals_link']
+					$config['show_club_link'] ||
+					$config['show_team_link'] ||
+					$config['show_curve_link'] ||
+					$config['show_plan_link'] ||
+					$config['show_teaminfo_link'] ||
+					$config['show_teamstats_link'] ||
+					$config['show_clubplan_link'] ||
+					$config['show_rivals_link']
 				)
-				);
+			);
 		$containerId = $containerprefix . 't' . $team->id . 'p' . $team->project_id;
 
 		if ($showIcons)
 		{
 			$onclick = $js_func . '(\'' . $containerId . '\');return false;';
-			$params = array('onclick' => $onclick);
+			$params  = array('onclick' => $onclick);
 		}
 
 		$style = 'padding:2px;';
 
 		if ($config['highlight_fav'] && $isfav)
 		{
-			$favs = self::getProjectFavTeams($team->project_id);
+			$favs  = self::getProjectFavTeams($team->project_id);
 			$style .= ($favs->fav_team_text_bold != '') ? 'font-weight:bold;' : '';
 			$style .= (trim($favs->fav_team_text_color) != '') ? 'color:' . trim($favs->fav_team_text_color) . ';' : '';
 			$style .= (trim($favs->fav_team_color) != '') ? 'background-color:' . trim($favs->fav_team_color) . ';' : '';
@@ -2355,11 +1608,380 @@ abstract class sportsmanagementHelper
 	}
 
 	/**
+	 * sportsmanagementHelper::getProjectFavTeams()
+	 *
+	 * @param   mixed  $project_id
+	 *
+	 * @return
+	 */
+	public static function getProjectFavTeams($project_id)
+	{
+
+		if ($project_id)
+		{
+			$row = Table::getInstance('project', 'sportsmanagementTable');
+			$row->load($project_id);
+
+			return $row;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	/**
+	 * sportsmanagementHelper::showTeamIcons()
+	 *
+	 * @param   mixed  $team
+	 * @param   mixed  $config
+	 *
+	 * @return
+	 */
+	public static function showTeamIcons(&$team, &$config, $cfg_which_database = 0, $s = 0)
+	{
+		$app    = Factory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+
+		if (!isset($team->projectteamid))
+		{
+			return "";
+		}
+
+		$projectteamid = $team->projectteam_slug;
+		$teamname      = $team->name;
+		$teamid        = $team->team_id;
+		$teamSlug      = (isset($team->team_slug) ? $team->team_slug : $teamid);
+		$clubSlug      = (isset($team->club_slug) ? $team->club_slug : $team->club_id);
+		$division_slug = (isset($team->division_slug) ? $team->division_slug : $team->division_id);
+		$projectSlug   = (isset($team->project_slug) ? $team->project_slug : $team->project_id);
+		$output        = '<ul class="list-inline">';
+
+		if ($config['show_team_link'])
+		{
+			$routeparameter                       = array();
+			$routeparameter['cfg_which_database'] = $cfg_which_database;
+			$routeparameter['s']                  = $s;
+			$routeparameter['p']                  = $projectSlug;
+			$routeparameter['tid']                = $teamSlug;
+			$routeparameter['ptid']               = $projectteamid;
+
+			$link    = sportsmanagementHelperRoute::getSportsmanagementRoute('roster', $routeparameter);
+			$title   = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_ROSTER_LINK') . '&nbsp;' . $teamname;
+			$picture = 'media/com_sportsmanagement/jl_images/team_icon.png';
+			$desc    = self::getPictureThumb($picture, $title, 0, 0, 4);
+			$output  .= '<li class="list-inline-item">';
+			$output  .= HTMLHelper::link($link, $desc);
+			$output  .= '</li>';
+		}
+
+		if (((!isset($team_plan)) || ($teamid != $team_plan->id)) && ($config['show_plan_link']))
+		{
+			$routeparameter                       = array();
+			$routeparameter['cfg_which_database'] = $cfg_which_database;
+			$routeparameter['s']                  = $s;
+			$routeparameter['p']                  = $projectSlug;
+			$routeparameter['tid']                = $teamSlug;
+			$routeparameter['division']           = $division_slug;
+			$routeparameter['mode']               = 0;
+			$routeparameter['ptid']               = $projectteamid;
+			$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan', $routeparameter);
+			$title                                = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMPLAN_LINK') . '&nbsp;' . $teamname;
+			$picture                              = 'media/com_sportsmanagement/jl_images/calendar_icon.gif';
+			$desc                                 = self::getPictureThumb($picture, $title, 0, 0, 4);
+			$output                               .= '<li class="list-inline-item">';
+			$output                               .= HTMLHelper::link($link, $desc);
+			$output                               .= '</li>';
+		}
+
+		if ($config['show_curve_link'])
+		{
+			$routeparameter                       = array();
+			$routeparameter['cfg_which_database'] = $cfg_which_database;
+			$routeparameter['s']                  = $s;
+			$routeparameter['p']                  = $projectSlug;
+			$routeparameter['tid1']               = $teamSlug;
+			$routeparameter['tid2']               = 0;
+			$routeparameter['division']           = $division_slug;
+
+			$link    = sportsmanagementHelperRoute::getSportsmanagementRoute('curve', $routeparameter);
+			$title   = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_CURVE_LINK') . '&nbsp;' . $teamname;
+			$picture = 'media/com_sportsmanagement/jl_images/curve_icon.gif';
+			$desc    = self::getPictureThumb($picture, $title, 0, 0, 4);
+			$output  .= '<li class="list-inline-item">';
+			$output  .= HTMLHelper::link($link, $desc);
+			$output  .= '</li>';
+		}
+
+		if ($config['show_teaminfo_link'])
+		{
+			$routeparameter                       = array();
+			$routeparameter['cfg_which_database'] = $cfg_which_database;
+			$routeparameter['s']                  = $s;
+			$routeparameter['p']                  = $projectSlug;
+			$routeparameter['tid']                = $teamSlug;
+			$routeparameter['ptid']               = $projectteamid;
+
+			$link    = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);
+			$title   = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMINFO_LINK') . '&nbsp;' . $teamname;
+			$picture = 'media/com_sportsmanagement/jl_images/teaminfo_icon.png';
+			$desc    = self::getPictureThumb($picture, $title, 0, 0, 4);
+			$output  .= '<li class="list-inline-item">';
+			$output  .= HTMLHelper::link($link, $desc);
+			$output  .= '</li>';
+		}
+
+		if ($config['show_club_link'])
+		{
+			$routeparameter                       = array();
+			$routeparameter['cfg_which_database'] = $cfg_which_database;
+			$routeparameter['s']                  = $s;
+			$routeparameter['p']                  = $projectSlug;
+			$routeparameter['cid']                = $clubSlug;
+			$routeparameter['task']               = null;
+
+			$link    = sportsmanagementHelperRoute::getSportsmanagementRoute('clubinfo', $routeparameter);
+			$title   = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_CLUBINFO_LINK') . '&nbsp;' . $teamname;
+			$picture = 'media/com_sportsmanagement/jl_images/mail.gif';
+			$desc    = self::getPictureThumb($picture, $title, 0, 0, 4);
+			$output  .= '<li class="list-inline-item">';
+			$output  .= HTMLHelper::link($link, $desc);
+			$output  .= '</li>';
+		}
+
+		if ($config['show_teamstats_link'])
+		{
+			$routeparameter                       = array();
+			$routeparameter['cfg_which_database'] = $cfg_which_database;
+			$routeparameter['s']                  = $s;
+			$routeparameter['p']                  = $projectSlug;
+			$routeparameter['tid']                = $teamSlug;
+
+			$link    = sportsmanagementHelperRoute::getSportsmanagementRoute('teamstats', $routeparameter);
+			$title   = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMSTATS_LINK') . '&nbsp;' . $teamname;
+			$picture = 'media/com_sportsmanagement/jl_images/teamstats_icon.png';
+			$desc    = self::getPictureThumb($picture, $title, 0, 0, 4);
+			$output  .= '<li class="list-inline-item">';
+			$output  .= HTMLHelper::link($link, $desc);
+			$output  .= '</li>';
+		}
+
+		if ($config['show_clubplan_link'])
+		{
+			$routeparameter                       = array();
+			$routeparameter['cfg_which_database'] = $cfg_which_database;
+			$routeparameter['s']                  = $s;
+			$routeparameter['p']                  = $projectSlug;
+			$routeparameter['cid']                = $clubSlug;
+			$routeparameter['task']               = null;
+
+			$link    = sportsmanagementHelperRoute::getSportsmanagementRoute('clubplan', $routeparameter);
+			$title   = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_CLUBPLAN_LINK') . '&nbsp;' . $teamname;
+			$picture = 'media/com_sportsmanagement/jl_images/clubplan_icon.png';
+			$desc    = self::getPictureThumb($picture, $title, 0, 0, 4);
+			$output  .= '<li class="list-inline-item">';
+			$output  .= HTMLHelper::link($link, $desc);
+			$output  .= '</li>';
+		}
+
+		if ($config['show_rivals_link'])
+		{
+			$routeparameter                       = array();
+			$routeparameter['cfg_which_database'] = $cfg_which_database;
+			$routeparameter['s']                  = $s;
+			$routeparameter['p']                  = $projectSlug;
+			$routeparameter['tid']                = $teamSlug;
+
+			$link    = sportsmanagementHelperRoute::getSportsmanagementRoute('rivals', $routeparameter);
+			$title   = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_RIVALS_LINK') . '&nbsp;' . $teamname;
+			$picture = 'media/com_sportsmanagement/jl_images/rivals.png';
+			$desc    = self::getPictureThumb($picture, $title, 0, 0, 4);
+			$output  .= '<li class="list-inline-item">';
+			$output  .= HTMLHelper::link($link, $desc);
+			$output  .= '</li>';
+		}
+
+		$output .= '</ul>';
+
+		return $output;
+	}
+
+	/**
+	 * static method which return a <img> tag with the given picture
+	 *
+	 * @param   string  $picture
+	 * @param   string  $alttext
+	 * @param   int     $width   =40,  if set to 0 the original picture width will be used
+	 * @param   int     $height  =40, if set to 0 the original picture height will be used
+	 * @param   int     $type    =0,    0=player, 1=club logo big, 2=club logo medium, 3=club logo small
+	 *
+	 * @return string
+	 */
+	public static function getPictureThumb($picture, $alttext, $width = 40, $height = 40, $type = 0)
+	{
+		$ret            = "";
+		$picturepath    = JPath::clean(JPATH_SITE . DIRECTORY_SEPARATOR . str_replace(JPATH_SITE . DIRECTORY_SEPARATOR, '', $picture));
+		$params         = ComponentHelper::getParams('com_sportsmanagement');
+		$ph_player      = $params->get('ph_player', 0);
+		$ph_logo_big    = $params->get('ph_logo_big', 0);
+		$ph_logo_medium = $params->get('ph_logo_medium', 0);
+		$ph_logo_small  = $params->get('ph_logo_small', 0);
+		$ph_icon        = $params->get('ph_icon', 0);
+		$ph_team        = $params->get('ph_team', 0);
+
+		if (!file_exists($picturepath) || $picturepath == JPATH_SITE . DIRECTORY_SEPARATOR)
+		{
+			// Setup the different placeholders
+			switch ($type)
+			{
+				case 0: // Player
+					$picture = JPATH_SITE . DIRECTORY_SEPARATOR . $ph_player;
+					break;
+
+				case 1: // Club logo big
+					$picture = JPATH_SITE . DIRECTORY_SEPARATOR . $ph_logo_big;
+					break;
+
+				case 2: // Club logo medium
+					$picture = JPATH_SITE . DIRECTORY_SEPARATOR . $ph_logo_medium;
+					break;
+
+				case 3: // Club logo small
+					$picture = JPATH_SITE . DIRECTORY_SEPARATOR . $ph_logo_small;
+					break;
+
+				case 4: // Icon
+					$picture = JPATH_SITE . DIRECTORY_SEPARATOR . $ph_icon;
+					break;
+
+				case 5: // Team picture
+					$picture = JPATH_SITE . DIRECTORY_SEPARATOR . $ph_team;
+					break;
+				default:
+					$picture = null;
+					break;
+			}
+		}
+
+		if (!empty($picture))
+		{
+			$params       = ComponentHelper::getParams('com_sportsmanagement');
+			$format       = "JPG"; // PNG is not working in IE8
+			$format       = $params->get('thumbformat', 'PNG');
+			$bUseThumbLib = $params->get('usethumblib', false);
+
+			if ($bUseThumbLib)
+			{
+				if (file_exists($picturepath))
+				{
+					$picture = $picturepath;
+				}
+
+				$thumb = PhpThumbFactory::create($picture);
+				$thumb->setFormat($format);
+
+				// Height and width set, resize it with the thumblib
+				if ($height > 0 && $width > 0)
+				{
+					$thumb->setMaxHeight($height);
+					$thumb->adaptiveResizeQuadrant($width, $height, $quadrant = 'C');
+					$pic = $thumb->getImageAsString();
+					$ret .= '<img src="data:image/' . $format . ';base64,' . base64_encode($pic);
+					$ret .= '" alt="' . $alttext . '" title="' . $alttext . '"/>';
+				}
+
+				// Height==0 and width set, let the browser resize it
+				if ($height == 0 && $width > 0)
+				{
+					$thumb->setMaxWidth($width);
+					$pic = $thumb->getImageAsString();
+					$ret .= '<img src="data:image/' . $format . ';base64,' . base64_encode($pic);
+					$ret .= '" width="' . $width . '" alt="' . $alttext . '" title="' . $alttext . '"/>';
+				}
+
+				// Width==0 and height set, let the browser resize it
+				if ($height > 0 && $width == 0)
+				{
+					$thumb->setMaxHeight($height);
+					$pic = $thumb->getImageAsString();
+					$ret .= '<img src="data:image/' . $format . ';base64,' . base64_encode($pic);
+					$ret .= '" height="' . $height . '" alt="' . $alttext . '" title="' . $alttext . '"/>';
+				}
+
+				// Width==0 and height==0, use original picture size
+				if ($height == 0 && $width == 0)
+				{
+					$thumb->setMaxHeight($height);
+					$pic = $thumb->getImageAsString();
+					$ret .= '<img src="data:image/' . $format . ';base64,' . base64_encode($pic);
+					$ret .= '" alt="' . $alttext . '" title="' . $alttext . '"/>';
+				}
+			}
+			else
+			{
+				$picture = Uri::root(true) . '/' . str_replace(JPATH_SITE . DIRECTORY_SEPARATOR, "", $picture);
+				$title   = $alttext;
+
+				// Height and width set, let the browser resize it
+				$bUseHighslide = $params->get('use_highslide', false);
+
+				if ($bUseHighslide && $type != 4)
+				{
+					$title .= ' (' . Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CLICK_TO_ENLARGE') . ')';
+					$ret   .= '<a href="' . $picture . '" class="highslide">';
+				}
+
+				$ret .= '<img ';
+				$ret .= ' ';
+
+				if ($height > 0 && $width > 0)
+				{
+					$ret .= ' src="' . $picture;
+					$ret .= '" width="' . $width . '" height="' . $height . '"
+							alt="' . $alttext . '" title="' . $title . '"';
+				}
+
+				// Height==0 and width set, let the browser resize it
+				if ($height == 0 && $width > 0)
+				{
+					$ret .= ' src="' . $picture;
+					$ret .= '" width="' . $width . '" alt="' . $alttext . '" title="' . $title . '"';
+				}
+
+				// Width==0 and height set, let the browser resize it
+				if ($height > 0 && $width == 0)
+				{
+					$ret .= ' src="' . $picture;
+					$ret .= '" height="' . $height . '" alt="' . $alttext . '" title="' . $title . '"';
+				}
+
+				// Width==0 and height==0, use original picture size
+				if ($height == 0 && $width == 0)
+				{
+					$ret .= ' src="' . $picture;
+					$ret .= '" alt="' . $alttext . '" title="' . $title . '"';
+				}
+
+				$ret .= '/>';
+
+				if ($bUseHighslide)
+				{
+					$ret .= '</a>';
+				}
+			}
+		}
+
+		return $ret;
+	}
+
+	/**
 	 * sportsmanagementHelper::showClubIcon()
 	 *
-	 * @param   mixed   $team
-	 * @param   integer $type
-	 * @param   integer $with_space
+	 * @param   mixed    $team
+	 * @param   integer  $type
+	 * @param   integer  $with_space
+	 *
 	 * @return void
 	 */
 	public static function showClubIcon(&$team, $type = 1, $with_space = 0)
@@ -2421,13 +2043,14 @@ abstract class sportsmanagementHelper
 	/**
 	 * sportsmanagementHelper::showColorsLegend()
 	 *
-	 * @param   mixed $colors
-	 * @param   mixed $divisions
+	 * @param   mixed  $colors
+	 * @param   mixed  $divisions
+	 *
 	 * @return void
 	 */
 	public static function showColorsLegend($colors, $divisions = null)
 	{
-		$jinput = Factory::getApplication()->input;
+		$jinput  = Factory::getApplication()->input;
 		$favshow = $jinput->getString('func', '');
 
 		if (($favshow != 'showCurve') && (sportsmanagementModelProject::$_project->fav_team))
@@ -2463,18 +2086,18 @@ abstract class sportsmanagementHelper
 			}
 
 			$configvalues = $jRegistry->toArray();
-			$colors = array();
+			$colors       = array();
 
 			if (isset($configvalues['rankingparams']))
 			{
 				for ($a = 1; $a <= sizeof($configvalues['rankingparams']); $a++)
 				{
-							   $colors[] = implode(",", $configvalues['rankingparams'][$a]);
+					$colors[] = implode(",", $configvalues['rankingparams'][$a]);
 				}
 			}
 
 			$configvalues = implode(";", $colors);
-			$colors = sportsmanagementModelProject::getColors($configvalues, sportsmanagementModelProject::$cfg_which_database);
+			$colors       = sportsmanagementModelProject::getColors($configvalues, sportsmanagementModelProject::$cfg_which_database);
 
 			foreach ($colors as $color)
 			{
@@ -2492,79 +2115,13 @@ abstract class sportsmanagementHelper
 	}
 
 	/**
-	 * Removes invalid XML
-	 *
-	 * @access public
-	 * @param   string $value
-	 * @return string
-	 */
-	public function stripInvalidXml($value)
-	{
-		$ret = '';
-		$current = '';
-
-		if (is_null($value))
-		{
-			return $ret;
-		}
-
-		$length = strlen($value);
-
-		for ($i = 0; $i < $length; $i++)
-		{
-			$current = ord($value{$i});
-
-			if (($current == 0x9)
-				|| ($current == 0xA)
-				|| ($current == 0xD)
-				|| (($current >= 0x20) && ($current <= 0xD7FF))
-				|| (($current >= 0xE000) && ($current <= 0xFFFD))
-				|| (($current >= 0x10000) && ($current <= 0x10FFFF))
-			)
-			{
-						$ret .= chr($current);
-			}
-			else
-			{
-				$ret .= ' ';
-			}
-		}
-
-		return $ret;
-	}
-
-	/**
-	 * sportsmanagementHelper::getVersion()
-	 *
-	 * @return
-	 */
-	public static function getVersion()
-	{
-		$app = Factory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$query = Factory::getDbo()->getQuery(true);
-
-		// Select some fields
-		$query->select('manifest_cache');
-
-		// From the table
-		$query->from('#__extensions');
-		$query->where('name LIKE ' . Factory::getDbo()->Quote('' . 'com_sportsmanagement' . ''));
-		Factory::getDbo()->setQuery($query);
-		$manifest_cache = json_decode(Factory::getDbo()->loadResult(), true);
-
-		return $manifest_cache['version'];
-	}
-
-	/**
 	 * returns formatName
 	 *
-	 * @param prefix
-	 * @param firstName
-	 * @param nickName
-	 * @param lastName
-	 * @param format
+	 * @param   prefix
+	 * @param   firstName
+	 * @param   nickName
+	 * @param   lastName
+	 * @param   format
 	 */
 	static function formatName($prefix, $firstName, $nickName, $lastName, $format)
 	{
@@ -2592,7 +2149,7 @@ abstract class sportsmanagementHelper
 				{
 					$name[] = $lastName;
 				}
-			break;
+				break;
 
 			case 1: // Lastname, 'Nickname' Firstname
 				if ($lastName != "")
@@ -2602,14 +2159,14 @@ abstract class sportsmanagementHelper
 
 				if ($nickName != "")
 				{
-						$name[] = "'" . $nickName . "'";
+					$name[] = "'" . $nickName . "'";
 				}
 
 				if ($firstName != "")
 				{
-						$name[] = $firstName;
+					$name[] = $firstName;
 				}
-			break;
+				break;
 
 			case 2: // Lastname, Firstname 'Nickname'
 				if ($lastName != "")
@@ -2619,14 +2176,14 @@ abstract class sportsmanagementHelper
 
 				if ($firstName != "")
 				{
-						$name[] = $firstName;
+					$name[] = $firstName;
 				}
 
 				if ($nickName != "")
 				{
-						$name[] = "'" . $nickName . "'";
+					$name[] = "'" . $nickName . "'";
 				}
-			break;
+				break;
 
 			case 3: // Firstname Lastname
 				if ($firstName != "")
@@ -2636,9 +2193,9 @@ abstract class sportsmanagementHelper
 
 				if ($lastName != "")
 				{
-						$name[] = $lastName;
+					$name[] = $lastName;
 				}
-			break;
+				break;
 
 			case 4: // Lastname, Firstname
 				if ($lastName != "")
@@ -2648,9 +2205,9 @@ abstract class sportsmanagementHelper
 
 				if ($firstName != "")
 				{
-						$name[] = $firstName;
+					$name[] = $firstName;
 				}
-			break;
+				break;
 
 			case 5: // 'Nickname' - Firstname Lastname
 				if ($nickName != "")
@@ -2660,14 +2217,14 @@ abstract class sportsmanagementHelper
 
 				if ($firstName != "")
 				{
-						$name[] = $firstName;
+					$name[] = $firstName;
 				}
 
 				if ($lastName != "")
 				{
-						$name[] = $lastName;
+					$name[] = $lastName;
 				}
-			break;
+				break;
 
 			case 6: // 'Nickname' - Lastname, Firstname
 				if ($nickName != "")
@@ -2677,14 +2234,14 @@ abstract class sportsmanagementHelper
 
 				if ($lastName != "")
 				{
-						$name[] = $lastName . ",";
+					$name[] = $lastName . ",";
 				}
 
 				if ($firstName != "")
 				{
-						$name[] = $firstName;
+					$name[] = $firstName;
 				}
-			break;
+				break;
 
 			case 7: // Firstname Lastname (Nickname)
 				if ($firstName != "")
@@ -2694,14 +2251,14 @@ abstract class sportsmanagementHelper
 
 				if ($lastName != "")
 				{
-						$name[] = $lastName;
+					$name[] = $lastName;
 				}
 
 				if ($nickName != "")
 				{
-						$name[] = "(" . $nickName . ")";
+					$name[] = "(" . $nickName . ")";
 				}
-			break;
+				break;
 
 			case 8: // F. Lastname
 				if ($firstName != "")
@@ -2711,9 +2268,9 @@ abstract class sportsmanagementHelper
 
 				if ($lastName != "")
 				{
-						$name[] = $lastName;
+					$name[] = $lastName;
 				}
-			break;
+				break;
 
 			case 9: // Lastname, F.
 				if ($lastName != "")
@@ -2723,16 +2280,16 @@ abstract class sportsmanagementHelper
 
 				if ($firstName != "")
 				{
-						$name[] = $firstName[0] . ".";
+					$name[] = $firstName[0] . ".";
 				}
-			break;
+				break;
 
 			case 10: // Lastname
 				if ($lastName != "")
 				{
 					$name[] = $lastName;
 				}
-					break;
+				break;
 
 			case 11: // Firstname 'Nickname' L.
 				if ($firstName != "")
@@ -2742,21 +2299,21 @@ abstract class sportsmanagementHelper
 
 				if ($nickName != "")
 				{
-						$name[] = "'" . $nickName . "'";
+					$name[] = "'" . $nickName . "'";
 				}
 
 				if ($lastName != "")
 				{
-						$name[] = $lastName[0] . ".";
+					$name[] = $lastName[0] . ".";
 				}
-			break;
+				break;
 
 			case 12: // Nickname
 				if ($nickName != "")
 				{
 					$name[] = $nickName;
 				}
-					break;
+				break;
 
 			case 13: // Firstname L.
 				if ($firstName != "")
@@ -2766,9 +2323,9 @@ abstract class sportsmanagementHelper
 
 				if ($lastName != "")
 				{
-						$name[] = $lastName[0] . ".";
+					$name[] = $lastName[0] . ".";
 				}
-			break;
+				break;
 
 			case 14: // Lastname Firstname
 				if ($lastName != "")
@@ -2778,9 +2335,9 @@ abstract class sportsmanagementHelper
 
 				if ($firstName != "")
 				{
-						$name[] = $firstName;
+					$name[] = $firstName;
 				}
-			break;
+				break;
 
 			case 15: // Lastname newline Firstname
 				if ($lastName != "")
@@ -2791,9 +2348,9 @@ abstract class sportsmanagementHelper
 
 				if ($firstName != "")
 				{
-						$name[] = $firstName;
+					$name[] = $firstName;
 				}
-			break;
+				break;
 
 			case 16: // Firstname newline Lastname
 				if ($lastName != "")
@@ -2804,9 +2361,9 @@ abstract class sportsmanagementHelper
 
 				if ($firstName != "")
 				{
-						$name[] = $firstName;
+					$name[] = $firstName;
 				}
-			break;
+				break;
 		}
 
 		return implode(" ", $name);
@@ -2815,14 +2372,15 @@ abstract class sportsmanagementHelper
 	/**
 	 * Creates the print button
 	 *
-	 * @param   string $print_link
-	 * @param   array  $config
+	 * @param   string  $print_link
+	 * @param   array   $config
+	 *
 	 * @since 1.5.2
 	 */
 	public static function printbutton($print_link, &$config)
 	{
 		$jinput = Factory::getApplication()->input;
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 
 		if ($config['show_print_button'] == 1)
 		{
@@ -2848,7 +2406,7 @@ abstract class sportsmanagementHelper
 			{
 				// Button in view
 				$overlib = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_PRINT_TIP');
-				$text = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_PRINT');
+				$text    = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_PRINT');
 
 				/**
 				 * welche joomla version
@@ -2882,41 +2440,23 @@ abstract class sportsmanagementHelper
 	}
 
 	/**
-	 * return true if mootools upgrade is enabled
-	 *
-	 * @return boolean
-	 */
-	function isMootools12()
-	{
-		$version = new JVersion;
-
-		if ($version->RELEASE == '1.5' && $version->DEV_LEVEL >= 19 && JPluginHelper::isEnabled('system', 'mtupgrade'))
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-
-	/**
 	 * sportsmanagementHelper::ToolbarButton()
 	 *
-	 * @param   mixed   $layout
-	 * @param   string  $icon_image
-	 * @param   string  $alt_text
-	 * @param   string  $view
-	 * @param   integer $type
+	 * @param   mixed    $layout
+	 * @param   string   $icon_image
+	 * @param   string   $alt_text
+	 * @param   string   $view
+	 * @param   integer  $type
+	 *
 	 * @return void
 	 */
 	static function ToolbarButton($layout = null, $icon_image = 'upload', $alt_text = 'My Label', $view = '', $type = 0, $issueview = null, $issuelayout = null)
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 
-		$zusatz = '';
+		$zusatz     = '';
 		$project_id = $jinput->get('pid');
 
 		if ($project_id)
@@ -2934,16 +2474,15 @@ abstract class sportsmanagementHelper
 			case 'assignpersons':
 				$zusatz .= '&team_id=' . $jinput->get('team_id');
 				$zusatz .= '&persontype=' . $jinput->get('persontype');
-				$zusatz .= '&season_id=' . $app->getUserState("$option.season_id", '0');
-				;
-			break;
+				$zusatz .= '&season_id=' . $app->getUserState("$option.season_id", '0');;
+				break;
 		}
 
-		$modal_popup_width = ComponentHelper::getParams($option)->get('modal_popup_width', 0);
+		$modal_popup_width  = ComponentHelper::getParams($option)->get('modal_popup_width', 0);
 		$modal_popup_height = ComponentHelper::getParams($option)->get('modal_popup_height', 0);
-		$bar = Toolbar::getInstance('toolbar');
+		$bar                = Toolbar::getInstance('toolbar');
 
-			  $page_url = OutputFilter::ampReplace('index.php?option=com_sportsmanagement&view=' . $view . '&tmpl=component&layout=' . $layout . '&type=' . $type . '&issueview=' . $issueview . '&issuelayout=' . $issuelayout . $zusatz);
+		$page_url = OutputFilter::ampReplace('index.php?option=com_sportsmanagement&view=' . $view . '&tmpl=component&layout=' . $layout . '&type=' . $type . '&issueview=' . $issueview . '&issuelayout=' . $issuelayout . $zusatz);
 
 		$bar->appendButton('Popup', $icon_image, $alt_text, $page_url, $modal_popup_width, $modal_popup_height);
 	}
@@ -2955,16 +2494,16 @@ abstract class sportsmanagementHelper
 	 */
 	static function ToolbarButtonOnlineHelp()
 	{
-		$app = Factory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
+		$app      = Factory::getApplication();
+		$jinput   = $app->input;
+		$option   = $jinput->getCmd('option');
 		$document = Factory::getDocument();
-		$view = $jinput->get('view');
-		$layout = $jinput->get('layout');
-		$view = ucfirst(strtolower($view));
-		$layout = ucfirst(strtolower($layout));
+		$view     = $jinput->get('view');
+		$layout   = $jinput->get('layout');
+		$view     = ucfirst(strtolower($view));
+		$layout   = ucfirst(strtolower($layout));
 		$document->addScript(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
-		$window_width = '<script>alert($(window).width()); </script>';
+		$window_width  = '<script>alert($(window).width()); </script>';
 		$window_height = '<script>alert(window.screen.height); </script>';
 
 		switch ($view)
@@ -2972,16 +2511,16 @@ abstract class sportsmanagementHelper
 			case 'Template':
 			case 'Predictiontemplate':
 				$template_help = $app->getUserState($option . 'template_help');
-				$view = $view . '_' . $template_help;
-			break;
+				$view          = $view . '_' . $template_help;
+				break;
 			default:
-			break;
+				break;
 		}
 
-		$cfg_help_server = ComponentHelper::getParams($option)->get('cfg_help_server', '');
-		$modal_popup_width = ComponentHelper::getParams($option)->get('modal_popup_width', 0);
+		$cfg_help_server    = ComponentHelper::getParams($option)->get('cfg_help_server', '');
+		$modal_popup_width  = ComponentHelper::getParams($option)->get('modal_popup_width', 0);
 		$modal_popup_height = ComponentHelper::getParams($option)->get('modal_popup_height', 0);
-		$bar = ToolBar::getInstance('toolbar');
+		$bar                = ToolBar::getInstance('toolbar');
 
 		if ($layout)
 		{
@@ -2999,13 +2538,14 @@ abstract class sportsmanagementHelper
 	/**
 	 * return project rounds as array of objects(roundid as value, name as text)
 	 *
-	 * @param   string $ordering
+	 * @param   string  $ordering
+	 *
 	 * @return array
 	 */
 	public static function getRoundsOptions($project_id, $ordering = 'ASC', $required = false, $round_ids = null, $cfg_which_database = 0)
 	{
-		$app = Factory::getApplication();
-		$db = self::getDBConnection(true, $cfg_which_database);
+		$app   = Factory::getApplication();
+		$db    = self::getDBConnection(true, $cfg_which_database);
 		$query = $db->getQuery(true);
 
 		if ($app->isClient('administrator'))
@@ -3034,7 +2574,7 @@ abstract class sportsmanagementHelper
 
 		try
 		{
-				$db->setQuery($query);
+			$db->setQuery($query);
 
 			if (!$required)
 			{
@@ -3059,8 +2599,9 @@ abstract class sportsmanagementHelper
 	/**
 	 * returns -1/0/1 if the team lost/drew/won in specified game, or false if not played/cancelled
 	 *
-	 * @param   object $game date from match table
-	 * @param   int    $ptid project team id
+	 * @param   object  $game  date from match table
+	 * @param   int     $ptid  project team id
+	 *
 	 * @return false|integer
 	 */
 	public static function getTeamMatchResult($game, $ptid)
@@ -3104,23 +2645,24 @@ abstract class sportsmanagementHelper
 	/**
 	 * sportsmanagementHelper::getExtraSelectOptions()
 	 *
-	 * @param   string  $view
-	 * @param   string  $field
-	 * @param   bool    $template
-	 * @param   integer $fieldtyp
+	 * @param   string   $view
+	 * @param   string   $field
+	 * @param   bool     $template
+	 * @param   integer  $fieldtyp
+	 *
 	 * @return
 	 */
 	public static function getExtraSelectOptions($view = '', $field = '', $template = false, $fieldtyp = 0)
 	{
-		$app = Factory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
+		$app            = Factory::getApplication();
+		$jinput         = $app->input;
+		$option         = $jinput->getCmd('option');
 		$select_columns = array();
-		$select_values = array();
+		$select_values  = array();
 		$select_options = array();
 
 		// Create a new query object.
-		$db = self::getDBConnection();
+		$db    = self::getDBConnection();
 		$query = $db->getQuery(true);
 
 		// Select some fields
@@ -3162,9 +2704,9 @@ abstract class sportsmanagementHelper
 
 			foreach ($select_columns as $key => $value)
 			{
-				$temp = new stdClass;
-				$temp->value = $value;
-				$temp->text = $select_values[$key];
+				$temp             = new stdClass;
+				$temp->value      = $value;
+				$temp->text       = $select_values[$key];
 				$select_options[] = $temp;
 			}
 
@@ -3179,16 +2721,17 @@ abstract class sportsmanagementHelper
 	/**
 	 * sportsmanagementHelper::checkUserExtraFields()
 	 *
-	 * @param   string $template
+	 * @param   string  $template
+	 *
 	 * @return
 	 */
 	static function checkUserExtraFields($template = 'backend', $cfg_which_database = 0)
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-		$db = self::getDBConnection();
-		$query = $db->getQuery(true);
+		$db     = self::getDBConnection();
+		$query  = $db->getQuery(true);
 
 		$query->select('ef.id');
 		$query->from('#__sportsmanagement_user_extra_fields as ef ');
@@ -3209,7 +2752,7 @@ abstract class sportsmanagementHelper
 		}
 		catch (Exception $e)
 		{
-			$msg = $e->getMessage(); // Returns "Normally you would have other code...
+			$msg  = $e->getMessage(); // Returns "Normally you would have other code...
 			$code = $e->getCode(); // Returns
 			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
 
@@ -3220,16 +2763,17 @@ abstract class sportsmanagementHelper
 	/**
 	 * sportsmanagementHelper::getUserExtraFields()
 	 *
-	 * @param   mixed  $jlid
-	 * @param   string $template
+	 * @param   mixed   $jlid
+	 * @param   string  $template
+	 *
 	 * @return
 	 */
 	static function getUserExtraFields($jlid, $template = 'backend', $cfg_which_database = 0)
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$jinput = $app->input;
-		$db = self::getDBConnection();
-		$query = $db->getQuery(true);
+		$db     = self::getDBConnection();
+		$query  = $db->getQuery(true);
 
 		if ($jlid)
 		{
@@ -3248,7 +2792,7 @@ abstract class sportsmanagementHelper
 			}
 			catch (Exception $e)
 			{
-				$msg = $e->getMessage(); // Returns "Normally you would have other code...
+				$msg  = $e->getMessage(); // Returns "Normally you would have other code...
 				$code = $e->getCode(); // Returns
 				Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
 
@@ -3264,21 +2808,22 @@ abstract class sportsmanagementHelper
 	/**
 	 * sportsmanagementHelper::saveExtraFields()
 	 *
-	 * @param   mixed $post
-	 * @param   mixed $pid
+	 * @param   mixed  $post
+	 * @param   mixed  $pid
+	 *
 	 * @return void
 	 */
 	public static function saveExtraFields($post, $pid)
 	{
-		$app = Factory::getApplication();
+		$app           = Factory::getApplication();
 		$address_parts = array();
-		$db = self::getDBConnection();
+		$db            = self::getDBConnection();
 
 		// -------extra fields-----------//
 		if (isset($post['extraf']) && count($post['extraf']))
 		{
 			for ($p = 0; $p < count($post['extraf']);
-			$p++)
+			     $p++)
 			{
 				// Create a new query object.
 				$query = $db->getQuery(true);
@@ -3331,76 +2876,25 @@ abstract class sportsmanagementHelper
 	}
 
 	/**
-	 * Fetch google map data refere to
-	 * http://code.google.com/apis/maps/documentation/geocoding/#Geocoding
-	 */
-	public static function getAddressData($address)
-	{
-		$app = Factory::getApplication();
-		$url = 'http://maps.google.com/maps/api/geocode/json?' . 'address=' . urlencode($address) . '&sensor=false&language=de';
-		$content = self::getContent($url);
-
-		$status = null;
-
-		if (!empty($content))
-		{
-			$json = new JSMServices_JSON;
-			$status = $json->decode($content);
-		}
-
-		return $status;
-	}
-
-	/**
-	 * @function     getOSMGeoCoords
-	 * @param        $address : string
-	 * @returns      -
-	 * @description  Gets GeoCoords by calling the OpenStreetMap geoencoding API
-	 */
-	public function getOSMGeoCoords($address)
-	{
-		$app = Factory::getApplication();
-		$coords = array();
-
-		// Call OSM geoencoding api
-		// limit to one result (limit=1) without address details (addressdetails=0)
-		// output in JSON
-		$geoCodeURL = "http://nominatim.openstreetmap.org/search?format=json&limit=1&addressdetails=1&q=" . urlencode($address);
-		$result = json_decode(file_get_contents($geoCodeURL), true);
-
-		if (isset($result[0]))
-		{
-			$coords['latitude'] = $result[0]["lat"];
-			$coords['longitude'] = $result[0]["lon"];
-			$coords['COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME'] = $result[0]["address"]["state"];
-
-			$coords['COM_SPORTSMANAGEMENT_LOCALITY_LONG_NAME'] = $result[0]["address"]["city"];
-			$coords['COM_SPORTSMANAGEMENT_SUBLOCALITY_LONG_NAME'] = $result[0]["address"]["residential"];
-			$coords['COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME'] = $result[0]["address"]["county"];
-		}
-
-		return $coords;
-	}
-
-	/**
 	 * sportsmanagementHelper::resolveLocation()
 	 *
-	 * @param   mixed $address
+	 * @param   mixed  $address
+	 *
 	 * @return
 	 */
 	public static function resolveLocation($address)
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$coords = array();
-		$data = self::getAddressData($address);
+		$data   = self::getAddressData($address);
 
 		if ($data)
 		{
 			if ($data->status == 'OK')
 			{
-				self::$latitude = $data->results[0]->geometry->location->lat;
-				$coords['latitude'] = $data->results[0]->geometry->location->lat;
-				self::$longitude = $data->results[0]->geometry->location->lng;
+				self::$latitude      = $data->results[0]->geometry->location->lat;
+				$coords['latitude']  = $data->results[0]->geometry->location->lat;
+				self::$longitude     = $data->results[0]->geometry->location->lng;
 				$coords['longitude'] = $data->results[0]->geometry->location->lng;
 
 				for ($a = 0; $a < sizeof($data->results[0]->address_components); $a++)
@@ -3408,27 +2902,27 @@ abstract class sportsmanagementHelper
 					switch ($data->results[0]->address_components[$a]->types[0])
 					{
 						case 'administrative_area_level_1':
-							$coords['COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME'] = $data->results[0]->address_components[$a]->long_name;
+							$coords['COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME']  = $data->results[0]->address_components[$a]->long_name;
 							$coords['COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_SHORT_NAME'] = $data->results[0]->address_components[$a]->short_name;
-											break;
+							break;
 
 						case 'administrative_area_level_2':
-								$coords['COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME'] = $data->results[0]->address_components[$a]->long_name;
-								$coords['COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_SHORT_NAME'] = $data->results[0]->address_components[$a]->short_name;
-											break;
+							$coords['COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME']  = $data->results[0]->address_components[$a]->long_name;
+							$coords['COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_SHORT_NAME'] = $data->results[0]->address_components[$a]->short_name;
+							break;
 
 						case 'administrative_area_level_3':
-								$coords['COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_LONG_NAME'] = $data->results[0]->address_components[$a]->long_name;
-								$coords['COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_SHORT_NAME'] = $data->results[0]->address_components[$a]->short_name;
-											break;
+							$coords['COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_LONG_NAME']  = $data->results[0]->address_components[$a]->long_name;
+							$coords['COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_SHORT_NAME'] = $data->results[0]->address_components[$a]->short_name;
+							break;
 
 						case 'locality':
-								$coords['COM_SPORTSMANAGEMENT_LOCALITY_LONG_NAME'] = $data->results[0]->address_components[$a]->long_name;
-											break;
+							$coords['COM_SPORTSMANAGEMENT_LOCALITY_LONG_NAME'] = $data->results[0]->address_components[$a]->long_name;
+							break;
 
 						case 'sublocality':
-								$coords['COM_SPORTSMANAGEMENT_SUBLOCALITY_LONG_NAME'] = $data->results[0]->address_components[$a]->long_name;
-											break;
+							$coords['COM_SPORTSMANAGEMENT_SUBLOCALITY_LONG_NAME'] = $data->results[0]->address_components[$a]->long_name;
+							break;
 					}
 				}
 
@@ -3443,12 +2937,34 @@ abstract class sportsmanagementHelper
 	}
 
 	/**
+	 * Fetch google map data refere to
+	 * http://code.google.com/apis/maps/documentation/geocoding/#Geocoding
+	 */
+	public static function getAddressData($address)
+	{
+		$app     = Factory::getApplication();
+		$url     = 'http://maps.google.com/maps/api/geocode/json?' . 'address=' . urlencode($address) . '&sensor=false&language=de';
+		$content = self::getContent($url);
+
+		$status = null;
+
+		if (!empty($content))
+		{
+			$json   = new JSMServices_JSON;
+			$status = $json->decode($content);
+		}
+
+		return $status;
+	}
+
+	/**
 	 * sportsmanagementHelper::getContent()
 	 * Return content of the given url
 	 *
-	 * @param   mixed $url
-	 * @param   bool  $raw
-	 * @param   bool  $headerOnly
+	 * @param   mixed  $url
+	 * @param   bool   $raw
+	 * @param   bool   $headerOnly
+	 *
 	 * @return
 	 */
 	static public function getContent($url, $raw = false, $headerOnly = false)
@@ -3488,7 +3004,7 @@ abstract class sportsmanagementHelper
 			// as it doesn't work with safe_mode or openbase_dir set.
 			if ($code == 301 || $code == 302)
 			{
-				list( $headers, $body ) = explode("\r\n\r\n", $response, 2);
+				list($headers, $body) = explode("\r\n\r\n", $response, 2);
 
 				preg_match("/(Location:|URI:)(.*?)\n/", $headers, $matches);
 
@@ -3504,7 +3020,7 @@ abstract class sportsmanagementHelper
 
 			if (!$raw)
 			{
-				list( $headers, $body ) = explode("\r\n\r\n", $response, 2);
+				list($headers, $body) = explode("\r\n\r\n", $response, 2);
 			}
 
 			$ret = $raw ? $response : $body;
@@ -3522,15 +3038,16 @@ abstract class sportsmanagementHelper
 	/**
 	 * sportsmanagementHelper::getPictureClub()
 	 *
-	 * @param   mixed $id
+	 * @param   mixed  $id
+	 *
 	 * @return
 	 */
 	static function getPictureClub($id)
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-		$db = self::getDBConnection();
+		$db     = self::getDBConnection();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -3555,15 +3072,16 @@ abstract class sportsmanagementHelper
 	/**
 	 * sportsmanagementHelper::getPicturePlayground()
 	 *
-	 * @param   mixed $id
+	 * @param   mixed  $id
+	 *
 	 * @return
 	 */
 	static function getPicturePlayground($id)
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-		$db = self::getDBConnection();
+		$db     = self::getDBConnection();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -3588,12 +3106,13 @@ abstract class sportsmanagementHelper
 	/**
 	 * sportsmanagementHelper::getArticleList()
 	 *
-	 * @param   mixed $project_category_id
+	 * @param   mixed  $project_category_id
+	 *
 	 * @return
 	 */
 	public static function getArticleList($project_category_id)
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 
@@ -3622,13 +3141,13 @@ abstract class sportsmanagementHelper
 		{
 			case 'com_content':
 				$query->from('#__content as c');
-			break;
+				break;
 			case 'com_k2':
 				$query->from('#__k2_items as c');
-			break;
+				break;
 			default:
 				$query->from('#__content as c');
-			break;
+				break;
 		}
 
 		$query->where('catid =' . $project_category_id);
@@ -3639,39 +3158,9 @@ abstract class sportsmanagementHelper
 	}
 
 	/**
-	 * sportsmanagementHelper::time_to_sec()
-	 *
-	 * @param   mixed $time
-	 * @return
-	 */
-	function time_to_sec($time)
-	{
-		$hours = substr($time, 0, -6);
-		$minutes = substr($time, -5, 2);
-		$seconds = substr($time, -2);
-
-		return $hours * 3600 + $minutes * 60 + $seconds;
-	}
-
-	/**
-	 * sportsmanagementHelper::sec_to_time()
-	 *
-	 * @param   mixed $seconds
-	 * @return
-	 */
-	function sec_to_time($seconds)
-	{
-		$hours = floor($seconds / 3600);
-		$minutes = floor($seconds % 3600 / 60);
-		$seconds = $seconds % 60;
-
-		return sprintf("%d:%02d:%02d", $hours, $minutes, $seconds);
-	}
-
-	/**
 	 * Internal method to get a JavaScript object notation string from an array
 	 *
-	 * @param   array $array The array to convert to JavaScript object notation
+	 * @param   array  $array  The array to convert to JavaScript object notation
 	 *
 	 * @return string  JavaScript object notation representation of the array
 	 *
@@ -3723,13 +3212,75 @@ abstract class sportsmanagementHelper
 	}
 
 	/**
+	 * JSMInfo
+	 */
+	public static function jsminfo()
+	{
+
+		$aktversion = self::checkUpdateVersion();
+		$version    = self::getVersion();
+
+		if (!$aktversion)
+		{
+			$status_text = Text::_('COM_SPORTSMANAGEMENT_ADMIN_COMPONENT_UP_TO_DATE');
+			$status      = 'update-ok';
+		}
+		else
+		{
+			$status_text = Text::_('COM_SPORTSMANAGEMENT_ADMIN_COMPONENT_UPDATE');
+			$status      = 'update';
+		}
+
+		echo '<div class="d-flex align-self-center jsm-logo-box">
+            <img src="components/com_sportsmanagement/assets/icons/boxklein.png" />
+        </div>
+            <hr>
+        <div class="d-flex flex-wrap justify-content-center mb-1 ' . $status . '">
+            <div class="p-1">' . Text::_('COM_SPORTSMANAGEMENT_VERSION') . ': ' . $version . '</div>
+            <div class="p-1">' . $status_text . ' </div>
+        </div>
+        <div class="d-flex flex-column flex-wrap">
+             <div class="p-1">' . Text::_('COM_SPORTSMANAGEMENT_DEVELOPERS') . ': </div>   
+            <div class="jsm-info-team p-1">
+                <img src="components/com_sportsmanagement/assets/icons/ploeger_dieter.jpg" alt="diddipoeler" height="80px">
+                <span>diddipoeler</span><br>
+            </div>
+            <div class="jsm-info-team p-1">
+                <img src="components/com_sportsmanagement/assets/icons/prochnow_hauke.jpg" alt="svdoldie" height="80px">
+                <span>svdoldie</span><br>
+            </div><div class="jsm-info-team p-1">
+                <img src="components/com_sportsmanagement/assets/icons/appu-konrad.jpg" alt="appukonrad" height="80px">
+                <span>appukonrad</span><br>
+            </div>
+            <div class="jsm-info-team p-1">
+                <img src="components/com_sportsmanagement/assets/icons/galun-siegfried02.png" alt="stony" height="80px">
+                <span>stony</span><br>
+            </div>
+            <div class="jsm-info-team p-1">
+                <img src="components/com_sportsmanagement/assets/icons/dittmann-timo.png" alt="tdittmann" height="80px">
+                <span>tdittmann</span><br>
+            </div>
+            <div class="jsm-info-team p-1">
+                <img src="components/com_sportsmanagement/assets/icons/keller-jens.jpg" alt="donclumsy" height="80px">
+                <span>donclumsy</span><br>
+            </div>
+
+            <div class="p-1 mb-2">' . Text::_('COM_SPORTSMANAGEMENT_SITE_LINK') . ': <a href="http://www.fussballineuropa.de" target="_blank">fussballineuropa</a></div>
+
+            <div class="p-1 mb-2">' . Text::_('COM_SPORTSMANAGEMENT_COPYRIGHT') . ': &copy; 2014 fussballineuropa, All rights reserved.</div>
+
+            <div class="p-1 mb-2">' . Text::_('COM_SPORTSMANAGEMENT_LICENSE') . ': GNU General Public License</div>          
+        </div>';
+	}
+
+	/**
 	 * sportsmanagementModelcpanel::checkUpdateVersion()
 	 *
 	 * @return
 	 */
 	public static function checkUpdateVersion()
 	{
-		$return = 0;
+		$return  = 0;
 		$version = self::getVersion();
 
 		$temp = explode(".", $version);
@@ -3800,65 +3351,566 @@ abstract class sportsmanagementHelper
 	}
 
 	/**
-	 * JSMInfo
+	 * sportsmanagementHelper::getVersion()
+	 *
+	 * @return
 	 */
-	public static function jsminfo()
+	public static function getVersion()
 	{
+		$app    = Factory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+		$query  = Factory::getDbo()->getQuery(true);
 
-		$aktversion = self::checkUpdateVersion();
-		$version = self::getVersion();
+		// Select some fields
+		$query->select('manifest_cache');
 
-		if (!$aktversion)
+		// From the table
+		$query->from('#__extensions');
+		$query->where('name LIKE ' . Factory::getDbo()->Quote('' . 'com_sportsmanagement' . ''));
+		Factory::getDbo()->setQuery($query);
+		$manifest_cache = json_decode(Factory::getDbo()->loadResult(), true);
+
+		return $manifest_cache['version'];
+	}
+
+	/**
+	 * sportsmanagementHelper::date_diff()
+	 *
+	 * @param   mixed  $d1
+	 * @param   mixed  $d2
+	 *
+	 * @return
+	 */
+	function date_diff($d1, $d2)
+	{
+		/*
+         This is correctly working time differentiating function. It's resistant to problems with
+          leap year and different days of month. Inputs are two timestamps and function returns array
+          with differences in year, month, day, hour, minute a nd second.
+
+          Compares two timestamps and returns array with differencies (year, month, day, hour, minute, second)
+
+          More infos at http://de2.php.net/manual/de/function.date-diff.php#93915
+
+          beispiele
+          define(BIRTHDAY, strtotime('1980-08-26 15:25:00')); // geburtsdatum
+          $now  = time(); // aktuelles datum
+
+          // geburtsdatum dieses jahr:
+          $birthdayThisYear = mktime(date('H',BIRTHDAY),date('i',BIRTHDAY),date('s',BIRTHDAY),date('n',BIRTHDAY),date('j',BIRTHDAY),date('Y',$now));
+
+          // geburtsdatum nächstes jahr:
+          $birthdayNextYear = mktime(date('H',BIRTHDAY),date('i',BIRTHDAY),date('s',BIRTHDAY),date('n',BIRTHDAY),date('j',BIRTHDAY),date('Y',$now)+1);
+
+          // geburtsdatum letztes jahr:
+          $birthdayLastYear = mktime(date('H',BIRTHDAY),date('i',BIRTHDAY),date('s',BIRTHDAY),date('n',BIRTHDAY),date('j',BIRTHDAY),date('Y',$now)-1);
+
+          // der nächste geburtstag:
+          $nextBirthday     = ($now<$birthdayThisYear)?$birthdayThisYear:$birthdayNextYear;
+
+          // der letzte geburtstag:
+          $lastBirthday     = ($now<=$birthdayThisYear)?$birthdayLastYear:$birthdayThisYear;
+
+          // wie viel prozent des jahres bis zum nächsten geburtstag sind schon um?
+          $percent          = ($now-$lastBirthday) / ($nextBirthday-$lastBirthday) * 100;
+
+          // wie viele tage sind es noch bis zum nächsten geburtstag?
+          $days2Birthday    = floor(($nextBirthday - $now) / 86400);
+
+          // alter als array  (jahre, monate, tage, stunden, minuten, sekunden - schaltjahre werde berücksichtigt!)
+          $age              = date_diff(BIRTHDAY, $now);
+
+         */
+		// check higher timestamp and switch if neccessary
+		if ($d1 < $d2)
 		{
-			$status_text = Text::_('COM_SPORTSMANAGEMENT_ADMIN_COMPONENT_UP_TO_DATE');
-			$status = 'update-ok';
+			$temp = $d2;
+			$d2   = $d1;
+			$d1   = $temp;
 		}
 		else
 		{
-			$status_text = Text::_('COM_SPORTSMANAGEMENT_ADMIN_COMPONENT_UPDATE');
-			$status = 'update';
+			$temp = $d1; // Temp can be used for day count if required
 		}
 
-		echo '<div class="d-flex align-self-center jsm-logo-box">
-            <img src="components/com_sportsmanagement/assets/icons/boxklein.png" />
-        </div>
-            <hr>
-        <div class="d-flex flex-wrap justify-content-center mb-1 ' . $status . '">
-            <div class="p-1">' . Text::_('COM_SPORTSMANAGEMENT_VERSION') . ': ' . $version . '</div>
-            <div class="p-1">' . $status_text . ' </div>
-        </div>
-        <div class="d-flex flex-column flex-wrap">
-             <div class="p-1">' . Text::_('COM_SPORTSMANAGEMENT_DEVELOPERS') . ': </div>   
-            <div class="jsm-info-team p-1">
-                <img src="components/com_sportsmanagement/assets/icons/ploeger_dieter.jpg" alt="diddipoeler" height="80px">
-                <span>diddipoeler</span><br>
-            </div>
-            <div class="jsm-info-team p-1">
-                <img src="components/com_sportsmanagement/assets/icons/prochnow_hauke.jpg" alt="svdoldie" height="80px">
-                <span>svdoldie</span><br>
-            </div><div class="jsm-info-team p-1">
-                <img src="components/com_sportsmanagement/assets/icons/appu-konrad.jpg" alt="appukonrad" height="80px">
-                <span>appukonrad</span><br>
-            </div>
-            <div class="jsm-info-team p-1">
-                <img src="components/com_sportsmanagement/assets/icons/galun-siegfried02.png" alt="stony" height="80px">
-                <span>stony</span><br>
-            </div>
-            <div class="jsm-info-team p-1">
-                <img src="components/com_sportsmanagement/assets/icons/dittmann-timo.png" alt="tdittmann" height="80px">
-                <span>tdittmann</span><br>
-            </div>
-            <div class="jsm-info-team p-1">
-                <img src="components/com_sportsmanagement/assets/icons/keller-jens.jpg" alt="donclumsy" height="80px">
-                <span>donclumsy</span><br>
-            </div>
+		$d1 = date_parse(date("Y-m-d H:i:s", $d1));
+		$d2 = date_parse(date("Y-m-d H:i:s", $d2));
 
-            <div class="p-1 mb-2">' . Text::_('COM_SPORTSMANAGEMENT_SITE_LINK') . ': <a href="http://www.fussballineuropa.de" target="_blank">fussballineuropa</a></div>
+		// Seconds
+		if ($d1['second'] >= $d2['second'])
+		{
+			$diff['second'] = $d1['second'] - $d2['second'];
+		}
+		else
+		{
+			$d1['minute']--;
+			$diff['second'] = 60 - $d2['second'] + $d1['second'];
+		}
 
-            <div class="p-1 mb-2">' . Text::_('COM_SPORTSMANAGEMENT_COPYRIGHT') . ': &copy; 2014 fussballineuropa, All rights reserved.</div>
+		// Minutes
+		if ($d1['minute'] >= $d2['minute'])
+		{
+			$diff['minute'] = $d1['minute'] - $d2['minute'];
+		}
+		else
+		{
+			$d1['hour']--;
+			$diff['minute'] = 60 - $d2['minute'] + $d1['minute'];
+		}
 
-            <div class="p-1 mb-2">' . Text::_('COM_SPORTSMANAGEMENT_LICENSE') . ': GNU General Public License</div>          
-        </div>';
+		// Hours
+		if ($d1['hour'] >= $d2['hour'])
+		{
+			$diff['hour'] = $d1['hour'] - $d2['hour'];
+		}
+		else
+		{
+			$d1['day']--;
+			$diff['hour'] = 24 - $d2['hour'] + $d1['hour'];
+		}
+
+		// Days
+		if ($d1['day'] >= $d2['day'])
+		{
+			$diff['day'] = $d1['day'] - $d2['day'];
+		}
+		else
+		{
+			$d1['month']--;
+			$diff['day'] = date("t", $temp) - $d2['day'] + $d1['day'];
+		}
+
+		// Months
+		if ($d1['month'] >= $d2['month'])
+		{
+			$diff['month'] = $d1['month'] - $d2['month'];
+		}
+		else
+		{
+			$d1['year']--;
+			$diff['month'] = 12 - $d2['month'] + $d1['month'];
+		}
+
+		// Years
+		$diff['year'] = $d1['year'] - $d2['year'];
+
+		return $diff;
+	}
+
+	/**
+	 * sportsmanagementHelper::get_IP_address()
+	 *
+	 * @return
+	 */
+	function get_IP_address()
+	{
+		$app = Factory::getApplication();
+
+		foreach (array('HTTP_CLIENT_IP',
+			         'HTTP_X_FORWARDED_FOR',
+			         'HTTP_X_FORWARDED',
+			         'HTTP_X_CLUSTER_CLIENT_IP',
+			         'HTTP_FORWARDED_FOR',
+			         'HTTP_FORWARDED',
+			         'REMOTE_ADDR') as $key)
+		{
+			if (array_key_exists($key, $_SERVER) === true)
+			{
+				foreach (explode(',', $_SERVER[$key]) as $IPaddress)
+				{
+					$IPaddress = trim($IPaddress); // Just to be safe
+
+					if (filter_var($IPaddress, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false)
+					{
+						return $IPaddress;
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Add data to the xml
+	 *
+	 * @param   array  $data  data what we want to add in the xml
+	 *
+	 * @access private
+	 * @return void
+	 * @since  1.5.0a
+	 *
+	 */
+	function _addToXml($data)
+	{
+		if (is_array($data) && count($data) > 0)
+		{
+			$object = $data[0]['object'];
+			$output = '';
+
+			foreach ($data as $name => $value)
+			{
+				$output .= "<record object=\"" . self::stripInvalidXml($object) . "\">\n";
+
+				foreach ($value as $key => $data)
+				{
+					if (!is_null($data) && !(substr($key, 0, 1) == "_") && $key != "object")
+					{
+						$output .= "  <$key><![CDATA[" . self::stripInvalidXml(trim($data)) . "]]></$key>\n";
+					}
+				}
+
+				$output .= "</record>\n";
+			}
+
+			return $output;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Removes invalid XML
+	 *
+	 * @access public
+	 *
+	 * @param   string  $value
+	 *
+	 * @return string
+	 */
+	public function stripInvalidXml($value)
+	{
+		$ret     = '';
+		$current = '';
+
+		if (is_null($value))
+		{
+			return $ret;
+		}
+
+		$length = strlen($value);
+
+		for ($i = 0; $i < $length; $i++)
+		{
+			$current = ord($value{$i});
+
+			if (($current == 0x9)
+				|| ($current == 0xA)
+				|| ($current == 0xD)
+				|| (($current >= 0x20) && ($current <= 0xD7FF))
+				|| (($current >= 0xE000) && ($current <= 0xFFFD))
+				|| (($current >= 0x10000) && ($current <= 0x10FFFF))
+			)
+			{
+				$ret .= chr($current);
+			}
+			else
+			{
+				$ret .= ' ';
+			}
+		}
+
+		return $ret;
+	}
+
+	/**
+	 * sportsmanagementHelper::_setSportsManagementVersion()
+	 *
+	 * @return
+	 */
+	function _setSportsManagementVersion()
+	{
+		$exportRoutine              = '2010-09-23 15:00:00';
+		$result[0]['exportRoutine'] = $exportRoutine;
+		$result[0]['exportDate']    = date('Y-m-d');
+		$result[0]['exportTime']    = date('H:i:s');
+
+		// Welche joomla version ?
+		if (version_compare(JVERSION, '3.0.0', 'ge'))
+		{
+			$result[0]['exportSystem'] = Factory::getConfig()->get('sitename');
+		}
+		else
+		{
+			$result[0]['exportSystem'] = Factory::getConfig()->getValue('sitename');
+		}
+
+		$result[0]['object'] = 'SportsManagementVersion';
+
+		return $result;
+	}
+
+	/**
+	 * sportsmanagementHelper::_setLeagueData()
+	 *
+	 * @param   mixed  $league
+	 *
+	 * @return
+	 */
+	function _setLeagueData($league)
+	{
+
+		if ($league)
+		{
+			$result[]            = ArrayHelper::fromObject($league);
+			$result[0]['object'] = 'League';
+
+			return $result;
+		}
+
+		return false;
+	}
+
+	/**
+	 * sportsmanagementHelper::_setProjectData()
+	 *
+	 * @param   mixed  $project
+	 *
+	 * @return
+	 */
+	function _setProjectData($project)
+	{
+		if ($project)
+		{
+			$result[]            = ArrayHelper::fromObject($project);
+			$result[0]['object'] = 'SportsManagement';
+
+			return $result;
+		}
+
+		return false;
+	}
+
+	/**
+	 * sportsmanagementHelper::_setSeasonData()
+	 *
+	 * @param   mixed  $season
+	 *
+	 * @return
+	 */
+	function _setSeasonData($season)
+	{
+		if ($season)
+		{
+			$result[]            = ArrayHelper::fromObject($season);
+			$result[0]['object'] = 'Season';
+
+			return $result;
+		}
+
+		return false;
+	}
+
+	/**
+	 * sportsmanagementHelper::_setSportsType()
+	 *
+	 * @param   mixed  $sportstype
+	 *
+	 * @return
+	 */
+	function _setSportsType($sportstype)
+	{
+
+		if ($sportstype)
+		{
+			$result[]            = ArrayHelper::fromObject($sportstype);
+			$result[0]['object'] = 'SportsType';
+
+			return $result;
+		}
+
+		return false;
+	}
+
+	/**
+	 * sportsmanagementHelper::_setXMLData()
+	 *
+	 * @param   mixed  $data
+	 * @param   mixed  $object
+	 *
+	 * @return
+	 */
+	function _setXMLData($data, $object)
+	{
+		if ($data)
+		{
+			foreach ($data as $row)
+			{
+				$result[] = ArrayHelper::fromObject($row);
+			}
+
+			$result[0]['object'] = $object;
+
+			return $result;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Method to return the project
+	 *
+	 * @access public
+	 * @return array project
+	 * @since  1.5
+	 */
+	function getTeamplayerProject($projectteam_id)
+	{
+		$db    = self::getDBConnection();
+		$query = 'SELECT project_id FROM #__sportsmanagement_project_team WHERE id=' . (int) $projectteam_id;
+		$db->setQuery($query);
+
+		if (!$result = $db->loadResult())
+		{
+			// $this->setError($db->getErrorMsg());
+			return false;
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Method to return a sportsTypees array (id,name)
+	 *
+	 * @access public
+	 * @return array seasons
+	 * @since  1.5.0a
+	 */
+	function getSportsTypes()
+	{
+		$db    = self::getDBConnection();
+		$query = 'SELECT id, name FROM #__sportsmanagement_sports_type ORDER BY name ASC ';
+		$db->setQuery($query);
+
+		if (!$result = $db->loadObjectList())
+		{
+			$this->setError($db->getErrorMsg());
+
+			return false;
+		}
+
+		foreach ($result as $sportstype)
+		{
+			$sportstype->name = Text::_($sportstype->name);
+		}
+
+		return $result;
+	}
+
+	/**
+	 * return name of extension assigned to current project.
+	 *
+	 * @param   int project_id
+	 *
+	 * @return string or false
+	 */
+	function getExtension($project_id = 0)
+	{
+		$option = 'com_sportsmanagement';
+
+		if (!$project_id)
+		{
+			$app        = Factory::getApplication();
+			$project_id = $app->getUserState($option . 'project', 0);
+		}
+
+		if (!$project_id)
+		{
+			return false;
+		}
+
+		$db    = self::getDBConnection();
+		$query = $db->getQuery(true);
+		$query->select('extension');
+		$query->from('#__sportsmanagement_project');
+		$query->where('id =' . $db->Quote((int) $project_id));
+		$db->setQuery($query);
+		$res = $db->loadResult();
+
+		return (!empty($res) ? $res : false);
+	}
+
+	/**
+	 * return true if mootools upgrade is enabled
+	 *
+	 * @return boolean
+	 */
+	function isMootools12()
+	{
+		$version = new JVersion;
+
+		if ($version->RELEASE == '1.5' && $version->DEV_LEVEL >= 19 && JPluginHelper::isEnabled('system', 'mtupgrade'))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	/**
+	 * @function     getOSMGeoCoords
+	 *
+	 * @param        $address  : string
+	 *
+	 * @returns      -
+	 * @description  Gets GeoCoords by calling the OpenStreetMap geoencoding API
+	 */
+	public function getOSMGeoCoords($address)
+	{
+		$app    = Factory::getApplication();
+		$coords = array();
+
+		// Call OSM geoencoding api
+		// limit to one result (limit=1) without address details (addressdetails=0)
+		// output in JSON
+		$geoCodeURL = "http://nominatim.openstreetmap.org/search?format=json&limit=1&addressdetails=1&q=" . urlencode($address);
+		$result     = json_decode(file_get_contents($geoCodeURL), true);
+
+		if (isset($result[0]))
+		{
+			$coords['latitude']                                                   = $result[0]["lat"];
+			$coords['longitude']                                                  = $result[0]["lon"];
+			$coords['COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME'] = $result[0]["address"]["state"];
+
+			$coords['COM_SPORTSMANAGEMENT_LOCALITY_LONG_NAME']                    = $result[0]["address"]["city"];
+			$coords['COM_SPORTSMANAGEMENT_SUBLOCALITY_LONG_NAME']                 = $result[0]["address"]["residential"];
+			$coords['COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME'] = $result[0]["address"]["county"];
+		}
+
+		return $coords;
+	}
+
+	/**
+	 * sportsmanagementHelper::time_to_sec()
+	 *
+	 * @param   mixed  $time
+	 *
+	 * @return
+	 */
+	function time_to_sec($time)
+	{
+		$hours   = substr($time, 0, -6);
+		$minutes = substr($time, -5, 2);
+		$seconds = substr($time, -2);
+
+		return $hours * 3600 + $minutes * 60 + $seconds;
+	}
+
+	/**
+	 * sportsmanagementHelper::sec_to_time()
+	 *
+	 * @param   mixed  $seconds
+	 *
+	 * @return
+	 */
+	function sec_to_time($seconds)
+	{
+		$hours   = floor($seconds / 3600);
+		$minutes = floor($seconds % 3600 / 60);
+		$seconds = $seconds % 60;
+
+		return sprintf("%d:%02d:%02d", $hours, $minutes, $seconds);
 	}
 
 }

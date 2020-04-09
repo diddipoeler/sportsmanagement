@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die;
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Language\Text;
@@ -32,21 +33,23 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 	/**
 	 * sportsmanagementModelTreetonodes::__construct()
 	 *
-	 * @param   mixed $config
+	 * @param   mixed  $config
+	 *
 	 * @return void
 	 */
 	public function __construct($config = array())
 	{
-		 parent::__construct($config);
+		parent::__construct($config);
 
-			  $limit = 130;
+		$limit = 130;
 		$this->setState('limit', $limit);
 	}
 
 	/**
 	 * sportsmanagementModelTreetonodes::savenode()
 	 *
-	 * @param   mixed $node
+	 * @param   mixed  $node
+	 *
 	 * @return void
 	 */
 	function savenode($node = null)
@@ -58,19 +61,19 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 		foreach ($node as $key => $value)
 		{
 			/**
-*
- * update node
-*/
-			$object = new stdClass;
+			 *
+			 * update node
+			 */
+			$object     = new stdClass;
 			$object->id = $value->id;
 
 			// $object->title = $this->jsmdb->quote($value->title);
 			// $object->content = $this->jsmdb->quote($value->content);
-			$object->title = $value->title;
-			$object->content = $value->content;
-			$object->team_id = $value->team_id;
-			$object->roundcode = $value->roundcode;
-			$object->modified = $date->toSql();
+			$object->title       = $value->title;
+			$object->content     = $value->content;
+			$object->team_id     = $value->team_id;
+			$object->roundcode   = $value->roundcode;
+			$object->modified    = $date->toSql();
 			$object->modified_by = $user->get('id');
 
 			try
@@ -83,16 +86,16 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 				$result = false;
 			}
 
-					  /**
-*
- * insert node mit spiel id
-*/
+			/**
+			 *
+			 * insert node mit spiel id
+			 */
 			if ($value->match_id)
 			{
-				$object = new stdClass;
-				$object->node_id = $value->id;
-				$object->match_id = $value->match_id;
-				$object->modified = $date->toSql();
+				$object              = new stdClass;
+				$object->node_id     = $value->id;
+				$object->match_id    = $value->match_id;
+				$object->modified    = $date->toSql();
 				$object->modified_by = $user->get('id');
 
 				try
@@ -112,17 +115,18 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 	/**
 	 * sportsmanagementModelTreetonodes::getteamsprorunde()
 	 *
-	 * @param   integer $project_id
-	 * @param   mixed   $treetows
+	 * @param   integer  $project_id
+	 * @param   mixed    $treetows
+	 *
 	 * @return
 	 */
-	function getteamsprorunde($project_id=0,$treetows = null)
+	function getteamsprorunde($project_id = 0, $treetows = null)
 	{
 		$matches = array();
 		/**
-*
- * alle runden
-*/
+		 *
+		 * alle runden
+		 */
 		$this->jsmquery->clear();
 		$this->jsmquery->select('*');
 		$this->jsmquery->from('#__sportsmanagement_round');
@@ -133,10 +137,10 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 
 		$roundresult2 = usort(
 			$roundresult, function ($a, $b) {
-				$c = $a->roundcode - $b->roundcode;
+			$c = $a->roundcode - $b->roundcode;
 
-				return $c;
-			}
+			return $c;
+		}
 		);
 
 		// $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($roundresult,true).'</pre>'  , '');
@@ -182,8 +186,8 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 		{
 			if ($value->roundcode <= $maxresult)
 			{
-				$projectroundcode[$value->roundcode ] = $start;
-				$projectroundcodeschleife[$start ] = $value->roundcode;
+				$projectroundcode[$value->roundcode] = $start;
+				$projectroundcodeschleife[$start]    = $value->roundcode;
 				$start++;
 			}
 		}
@@ -205,7 +209,7 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 				$mannproroundcode[6] = 4;
 				$mannproroundcode[7] = 2;
 				$mannproroundcode[8] = 1;
-			break;
+				break;
 			case 6:
 				$mannproroundcode[1] = 64;
 				$mannproroundcode[2] = 32;
@@ -214,7 +218,7 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 				$mannproroundcode[5] = 4;
 				$mannproroundcode[6] = 2;
 				$mannproroundcode[7] = 1;
-			break;
+				break;
 			case 5:
 				$mannproroundcode[1] = 32;
 				$mannproroundcode[2] = 16;
@@ -222,25 +226,25 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 				$mannproroundcode[4] = 4;
 				$mannproroundcode[5] = 2;
 				$mannproroundcode[6] = 1;
-			break;
+				break;
 			case 4:
 				$mannproroundcode[1] = 16;
 				$mannproroundcode[2] = 8;
 				$mannproroundcode[3] = 4;
 				$mannproroundcode[4] = 2;
 				$mannproroundcode[5] = 1;
-			break;
+				break;
 			case 3:
 				$mannproroundcode[1] = 8;
 				$mannproroundcode[2] = 4;
 				$mannproroundcode[3] = 2;
 				$mannproroundcode[4] = 1;
-			break;
+				break;
 			case 2:
 				$mannproroundcode[1] = 4;
 				$mannproroundcode[2] = 2;
 				$mannproroundcode[3] = 1;
-			break;
+				break;
 		}
 
 		// $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' mannproroundcode<pre>'.print_r($mannproroundcode,true).'</pre>'  , '');
@@ -249,7 +253,7 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 		foreach ($projectroundcode as $key => $value)
 		{
 			$start = $mannproroundcode[$value];
-			$ende = $mannproroundcode[$value - 1];
+			$ende  = $mannproroundcode[$value - 1];
 
 			if (!$ende)
 			{
@@ -262,16 +266,16 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 			}
 		}
 
-		$starttree = $mannproroundcode[$projectroundcode[$maxresult]];
+		$starttree        = $mannproroundcode[$projectroundcode[$maxresult]];
 		$starttreeteamwon = array();
 
 		foreach ($result as $key => $value)
 		{
 			if ($value->roundcode == $maxresult)
 			{
-				$startneu = $mannproroundcode[$projectroundcode[$value->roundcode]];// $projectroundcode[$value->roundcode]
-				$object = new stdClass;
-				$object->team_id = $value->projectteam1_id;
+				$startneu         = $mannproroundcode[$projectroundcode[$value->roundcode]];// $projectroundcode[$value->roundcode]
+				$object           = new stdClass;
+				$object->team_id  = $value->projectteam1_id;
 				$object->match_id = $key;
 				$this->jsmquery->clear();
 				$this->jsmquery->select('t.name');
@@ -280,17 +284,17 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 				$this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');
 				$this->jsmquery->where('pt.id = ' . $value->projectteam1_id);
 				$this->jsmdb->setQuery($this->jsmquery);
-				$object->team_name = $this->jsmdb->loadResult();
-				$object->roundcode = $value->roundcode;
-				$object->next_match_id = $value->next_match_id;
-				$object->team_won = $value->team_won;
-				$matches[$startneu ] = $object;
+				$object->team_name                                      = $this->jsmdb->loadResult();
+				$object->roundcode                                      = $value->roundcode;
+				$object->next_match_id                                  = $value->next_match_id;
+				$object->team_won                                       = $value->team_won;
+				$matches[$startneu]                                     = $object;
 				$mannproroundcode[$projectroundcode[$value->roundcode]] += 1;
-				$startneu = $mannproroundcode[$projectroundcode[$value->roundcode]];
-				$starttreeteamwon[$value->roundcode][$starttree] = $value->projectteam1_id;
+				$startneu                                               = $mannproroundcode[$projectroundcode[$value->roundcode]];
+				$starttreeteamwon[$value->roundcode][$starttree]        = $value->projectteam1_id;
 				$starttree++;
-				$object = new stdClass;
-				$object->team_id = $value->projectteam2_id;
+				$object           = new stdClass;
+				$object->team_id  = $value->projectteam2_id;
 				$object->match_id = $key;
 				$this->jsmquery->clear();
 				$this->jsmquery->select('t.name');
@@ -299,20 +303,20 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 				$this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');
 				$this->jsmquery->where('pt.id = ' . $value->projectteam2_id);
 				$this->jsmdb->setQuery($this->jsmquery);
-				$object->team_name = $this->jsmdb->loadResult();
-				$object->roundcode = $value->roundcode;
-				$object->next_match_id = $value->next_match_id;
-				$object->team_won = $value->team_won;
-				$matches[$startneu ] = $object;
+				$object->team_name                                      = $this->jsmdb->loadResult();
+				$object->roundcode                                      = $value->roundcode;
+				$object->next_match_id                                  = $value->next_match_id;
+				$object->team_won                                       = $value->team_won;
+				$matches[$startneu]                                     = $object;
 				$mannproroundcode[$projectroundcode[$value->roundcode]] += 1;
-				$starttreeteamwon[$value->roundcode][$starttree] = $value->projectteam2_id;
+				$starttreeteamwon[$value->roundcode][$starttree]        = $value->projectteam2_id;
 			}
 		}
 
 		/**
-*
- * damit freilose auch berücksichtgt werden
-*/
+		 *
+		 * damit freilose auch berücksichtgt werden
+		 */
 		$nextroundcode = $maxresult - 1;
 
 		for ($i = $maxresult; $i > 0; $i--)
@@ -327,11 +331,11 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 					{
 						if ($valueresult->team_won == $value)
 						{
-							$nodeneu = $node * 2;
+							$nodeneu                                    = $node * 2;
 							$starttreeteamwon[$nextroundcode][$nodeneu] = $valueresult->projectteam1_id;
-							$object = new stdClass;
-							$object->team_id = $valueresult->projectteam1_id;
-							$object->match_id = $valueresult->id;
+							$object                                     = new stdClass;
+							$object->team_id                            = $valueresult->projectteam1_id;
+							$object->match_id                           = $valueresult->id;
 							$this->jsmquery->clear();
 							$this->jsmquery->select('t.name');
 							$this->jsmquery->from('#__sportsmanagement_team AS t');
@@ -339,16 +343,16 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 							$this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');
 							$this->jsmquery->where('pt.id = ' . $valueresult->projectteam1_id);
 							$this->jsmdb->setQuery($this->jsmquery);
-							$object->team_name = $this->jsmdb->loadResult();
-							$object->roundcode = $valueresult->roundcode;
+							$object->team_name     = $this->jsmdb->loadResult();
+							$object->roundcode     = $valueresult->roundcode;
 							$object->next_match_id = $valueresult->next_match_id;
-							$object->team_won = $valueresult->team_won;
-							$matches[$nodeneu ] = $object;
+							$object->team_won      = $valueresult->team_won;
+							$matches[$nodeneu]     = $object;
 							$nodeneu++;
 							$starttreeteamwon[$nextroundcode][$nodeneu] = $valueresult->projectteam2_id;
-							$object = new stdClass;
-							$object->team_id = $valueresult->projectteam2_id;
-							$object->match_id = $valueresult->id;
+							$object                                     = new stdClass;
+							$object->team_id                            = $valueresult->projectteam2_id;
+							$object->match_id                           = $valueresult->id;
 							$this->jsmquery->clear();
 							$this->jsmquery->select('t.name');
 							$this->jsmquery->from('#__sportsmanagement_team AS t');
@@ -356,11 +360,11 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 							$this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');
 							$this->jsmquery->where('pt.id = ' . $valueresult->projectteam2_id);
 							$this->jsmdb->setQuery($this->jsmquery);
-							$object->team_name = $this->jsmdb->loadResult();
-							$object->roundcode = $valueresult->roundcode;
+							$object->team_name     = $this->jsmdb->loadResult();
+							$object->roundcode     = $valueresult->roundcode;
 							$object->next_match_id = $valueresult->next_match_id;
-							$object->team_won = $valueresult->team_won;
-							$matches[$nodeneu ] = $object;
+							$object->team_won      = $valueresult->team_won;
+							$matches[$nodeneu]     = $object;
 						}
 					}
 				}
@@ -446,7 +450,7 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 		{
 			if (!array_key_exists($i, $matches))
 			{
-				$object = new stdClass;
+				$object          = new stdClass;
 				$object->team_id = 0;
 
 				if ($i % 2 != 0)
@@ -459,11 +463,11 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 				}
 
 				// $object->match_id = $i * -1;
-				$object->team_name = '';
-				$object->roundcode = $nodeproround[$i];
+				$object->team_name     = '';
+				$object->roundcode     = $nodeproround[$i];
 				$object->next_match_id = 0;
-				$object->team_won = 0;
-				$matches[$i ] = $object;
+				$object->team_won      = 0;
+				$matches[$i]           = $object;
 			}
 		}
 
@@ -471,29 +475,319 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 		return $matches;
 	}
 
+	/**
+	 * sportsmanagementModelTreetonodes::getMaxRound()
+	 *
+	 * @param   mixed  $project_id
+	 *
+	 * @return
+	 */
+	function getMaxRound($project_id)
+	{
+		$result = 0;
+
+		if ($project_id > 0)
+		{
+			$db    = Factory::getDbo();
+			$query = $db->getQuery(true);
+			$query->select('COUNT(roundcode)');
+			$query->from('#__sportsmanagement_round');
+			$query->where('project_id = ' . $project_id);
+			$db->setQuery($query);
+			$result = $db->loadResult();
+		}
+
+		return $result;
+	}
+
+	/**
+	 * sportsmanagementModelTreetonodes::setRemoveNode()
+	 *
+	 * @param   mixed  $post
+	 *
+	 * @return
+	 */
+	function setRemoveNode($post)
+	{
+
+		$treeto_id = $post['treeto_id'];
+
+		$this->jsmquery->clear();
+		$this->jsmquery = ' DELETE ttn, ttm ';
+		$this->jsmquery .= ' FROM #__sportsmanagement_treeto_node AS ttn ';
+		$this->jsmquery .= ' LEFT JOIN #__sportsmanagement_treeto_match AS ttm ON ttm.node_id=ttn.id ';
+		$this->jsmquery .= ' WHERE ttn.treeto_id = ' . $treeto_id;
+		$this->jsmquery .= ';';
+		$this->jsmdb->setQuery($this->jsmquery);
+
+		// $this->_db->query($query);
+
+		sportsmanagementModeldatabasetool::runJoomlaQuery();
+
+		// Create an object for the record we are going to update.
+		$object = new stdClass;
+
+		// Must be a valid primary key value.
+		$object->id              = $treeto_id;
+		$object->tree_i          = 0;
+		$object->global_bestof   = 1;
+		$object->global_matchday = 0;
+		$object->global_known    = 0;
+		$object->global_fake     = 0;
+		$object->mirror          = 0;
+		$object->hide            = 0;
+		$object->leafed          = 0;
+
+		// Update their details in the users table using id as the primary key.
+		$result = $this->jsmdb->updateObject('#__sportsmanagement_treeto', $object, 'id');
+
+		return true;
+	}
+
+	/**
+	 * sportsmanagementModelTreetonodes::storeshortleaf()
+	 *
+	 * @param   mixed  $cid
+	 * @param   mixed  $post
+	 *
+	 * @return
+	 */
+	function storeshortleaf($cid, $post)
+	{
+		// $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($cid,true).'</pre>', '');
+		// $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($post,true).'</pre>', '');
+
+		$result      = true;
+		$project_id  = $this->jsmjinput->get('pid');
+		$tree_i      = $post['tree_i'];
+		$treeto_id   = $post['treeto_id'];
+		$global_fake = $post['global_fake'];
+
+		// If user checked at least ONE node as leaf
+		for ($x = 0; $x < count($cid); $x++)
+		{
+			// Find index of checked node
+			// Create an object for the record we are going to update.
+			$object = new stdClass;
+
+			// Must be a valid primary key value.
+			$object->id      = $cid[$x];
+			$object->is_leaf = 1;
+
+			// Update their details in the users table using id as the primary key.
+			$result = $this->jsmdb->updateObject('#__sportsmanagement_treeto_node', $object, 'id');
+
+			// $db->getQuery(true);
+			$this->jsmquery->clear();
+			$this->jsmquery->select('node');
+			$this->jsmquery->from('#__sportsmanagement_treeto_node');
+			$this->jsmquery->where('id=' . $cid[$x]);
+			$this->jsmdb->setQuery($this->jsmquery);
+
+			// $db->execute();
+			$resultleafnode = $this->jsmdb->loadResult();
+
+			// Unpublish children node
+			if ($resultleafnode < (pow(2, $tree_i)))
+			{
+				for ($y = 1; $y <= ($tree_i - 1); $y++)
+				{
+					$childleft  = (pow(2, $y)) * $resultleafnode;
+					$childright = ((pow(2, $y)) * ($resultleafnode + 1)) - 1;
+
+					for ($z = $childleft; $z <= $childright; $z++)
+					{
+						if ($z < pow(2, $tree_i + 1))
+						{
+							$this->jsmquery->clear();
+
+							// Fields to update.
+							$fields = array(
+								$this->jsmdb->quoteName('published') . ' = 0'
+							);
+
+							// Conditions for which records should be updated.
+							$conditions = array(
+								$this->jsmdb->quoteName('node') . ' = ' . $this->jsmdb->quote($z),
+								$this->jsmdb->quoteName('treeto_id') . ' = ' . $this->jsmdb->quote($treeto_id)
+							);
+							$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_treeto_node'))->set($fields)->where($conditions);
+							$this->jsmdb->setQuery($this->jsmquery);
+
+							sportsmanagementModeldatabasetool::runJoomlaQuery();
+						}
+					}
+				}
+			}
+		}
+
+		// 2, 4, 8, 16, 32, 64, 128 teams, default leaf(ing)
+		for ($k = pow(2, $tree_i); $k < pow(2, $tree_i + 1); $k++)
+		{
+			$this->jsmquery->clear();
+
+			// Fields to update.
+			$fields = array(
+				$this->jsmdb->quoteName('is_leaf') . ' = 1'
+			);
+
+			// Conditions for which records should be updated.
+			$conditions = array(
+				$this->jsmdb->quoteName('node') . ' = ' . $this->jsmdb->quote($k),
+				$this->jsmdb->quoteName('treeto_id') . ' = ' . $this->jsmdb->quote($treeto_id)
+			);
+			$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_treeto_node'))->set($fields)->where($conditions);
+			$this->jsmdb->setQuery($this->jsmquery);
+
+			sportsmanagementModeldatabasetool::runJoomlaQuery();
+		}
+
+		// Create an object for the record we are going to update.
+		$object = new stdClass;
+
+		// Must be a valid primary key value.
+		$object->id     = $treeto_id;
+		$object->leafed = 3;
+
+		// Update their details in the users table using id as the primary key.
+		$resultupdate = $this->jsmdb->updateObject('#__sportsmanagement_treeto', $object, 'id');
+
+		return $result;
+	}
+
+	/**
+	 * sportsmanagementModelTreetonodes::storefinishleaf()
+	 *
+	 * @param   mixed  $post
+	 *
+	 * @return
+	 */
+	function storefinishleaf($post)
+	{
+		// $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($post,true).'</pre>', '');
+
+		$treeto_id = $post['treeto_id'];
+
+		// Create an object for the record we are going to update.
+		$object = new stdClass;
+
+		// Must be a valid primary key value.
+		$object->id     = $treeto_id;
+		$object->leafed = 1;
+
+		// Update their details in the users table using id as the primary key.
+		$resultupdate = $this->jsmdb->updateObject('#__sportsmanagement_treeto', $object, 'id');
+
+		return true;
+	}
+
+	/**
+	 * sportsmanagementModelTreetonodes::getProjectTeamsOptions()
+	 *
+	 * @param   integer  $project_id
+	 *
+	 * @return
+	 */
+	function getProjectTeamsOptions($project_id = 0)
+	{
+
+		if (!$project_id)
+		{
+			$project_id = $this->jsmjinput->get('pid');
+		}
+
+		$this->jsmquery->clear();
+
+		$this->jsmquery->select('pt.id AS value');
+		$this->jsmquery->select(' CASE WHEN CHAR_LENGTH(t.name) < 45 THEN t.name ELSE t.middle_name END AS text ');
+		$this->jsmquery->from('#__sportsmanagement_team AS t');
+		$this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on t.id = st.team_id');
+		$this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');
+
+		// . ' LEFT JOIN #__sportsmanagement_project_team AS pt ON pt.team_id = t.id '
+		$this->jsmquery->where('pt.project_id = ' . $project_id);
+
+		$this->jsmquery->order('text ASC');
+
+		$this->jsmdb->setQuery($this->jsmquery);
+		$result = $this->jsmdb->loadObjectList();
+
+		if ($result === false)
+		{
+			Log::add($this->jsmdb->getErrorMsg());
+
+			return false;
+		}
+		else
+		{
+			return $result;
+		}
+	}
+
+	/**
+	 * UPDATE selected node as a leaf AND unpublish ALL children node
+	 */
+
+	/**
+	 * sportsmanagementModelTreetonodes::storeshort()
+	 *
+	 * @param   mixed  $cid
+	 * @param   mixed  $post
+	 *
+	 * @return
+	 */
+	function storeshort($cid, $post)
+	{
+		// $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($cid,true).'</pre>', '');
+		// $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($post,true).'</pre>', '');
+		for ($x = 0; $x < count($cid); $x++)
+		{
+			// Create an object for the record we are going to update.
+			$object = new stdClass;
+
+			// Must be a valid primary key value.
+			$object->id      = $cid[$x];
+			$object->team_id = $post['team_id' . $cid[$x]];
+
+			try
+			{
+				// Update their details in the users table using id as the primary key.
+				$result = $this->jsmdb->updateObject('#__sportsmanagement_treeto_node', $object, 'id');
+			}
+			catch (Exception $e)
+			{
+				$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+				$result = false;
+			}
+		}
+
+		return $result;
+	}
 
 	/**
 	 * sportsmanagementModelTreetonodes::populateState()
 	 *
-	 * @param   mixed $ordering
-	 * @param   mixed $direction
+	 * @param   mixed  $ordering
+	 * @param   mixed  $direction
+	 *
 	 * @return void
 	 */
-	protected function populateState($ordering = null,$direction = null)
+	protected function populateState($ordering = null, $direction = null)
 	{
 		// $app = Factory::getApplication();
 
 		// Adjust the context to support modal layouts.
 		if ($layout = $this->jsmjinput->get('layout'))
 		{
-			   $this->context .= '.' . $layout;
+			$this->context .= '.' . $layout;
 		}
 	}
 
 	/**
 	 * sportsmanagementModelTreetonodes::getStoreId()
 	 *
-	 * @param   string $id
+	 * @param   string  $id
+	 *
 	 * @return
 	 */
 	protected function getStoreId($id = '')
@@ -548,297 +842,5 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 		$this->jsmquery->group('a.id');
 
 		return $this->jsmquery;
-	}
-
-
-
-	/**
-	 * sportsmanagementModelTreetonodes::getMaxRound()
-	 *
-	 * @param   mixed $project_id
-	 * @return
-	 */
-	function getMaxRound($project_id)
-	{
-		$result = 0;
-
-		if ($project_id > 0)
-		{
-			$db = Factory::getDbo();
-			$query = $db->getQuery(true);
-			$query->select('COUNT(roundcode)');
-			$query->from('#__sportsmanagement_round');
-			$query->where('project_id = ' . $project_id);
-			$db->setQuery($query);
-			$result = $db->loadResult();
-		}
-
-		return $result;
-	}
-
-
-
-	/**
-	 * sportsmanagementModelTreetonodes::setRemoveNode()
-	 *
-	 * @param   mixed $post
-	 * @return
-	 */
-	function setRemoveNode($post)
-	{
-
-			  $treeto_id = $post['treeto_id'];
-
-		$this->jsmquery->clear();
-		$this->jsmquery = ' DELETE ttn, ttm ';
-		$this->jsmquery .= ' FROM #__sportsmanagement_treeto_node AS ttn ';
-		$this->jsmquery .= ' LEFT JOIN #__sportsmanagement_treeto_match AS ttm ON ttm.node_id=ttn.id ';
-		$this->jsmquery .= ' WHERE ttn.treeto_id = ' . $treeto_id;
-		$this->jsmquery .= ';';
-		$this->jsmdb->setQuery($this->jsmquery);
-
-		// $this->_db->query($query);
-
-		sportsmanagementModeldatabasetool::runJoomlaQuery();
-
-		// Create an object for the record we are going to update.
-		$object = new stdClass;
-
-		// Must be a valid primary key value.
-		$object->id = $treeto_id;
-		$object->tree_i = 0;
-		$object->global_bestof = 1;
-		$object->global_matchday = 0;
-		$object->global_known = 0;
-		$object->global_fake = 0;
-		$object->mirror = 0;
-		$object->hide = 0;
-		$object->leafed = 0;
-
-		// Update their details in the users table using id as the primary key.
-		$result = $this->jsmdb->updateObject('#__sportsmanagement_treeto', $object, 'id');
-
-		return true;
-	}
-
-	/**
-	 * UPDATE selected node as a leaf AND unpublish ALL children node
-	 */
-	/**
-	 * sportsmanagementModelTreetonodes::storeshortleaf()
-	 *
-	 * @param   mixed $cid
-	 * @param   mixed $post
-	 * @return
-	 */
-	function storeshortleaf($cid,$post)
-	{
-		// $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($cid,true).'</pre>', '');
-		// $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($post,true).'</pre>', '');
-
-			 $result = true;
-		$project_id = $this->jsmjinput->get('pid');
-		$tree_i = $post['tree_i'];
-		$treeto_id = $post['treeto_id'];
-		$global_fake = $post['global_fake'];
-
-		// If user checked at least ONE node as leaf
-		for ($x = 0;$x < count($cid);$x ++)
-		{
-			  // Find index of checked node
-			// Create an object for the record we are going to update.
-			$object = new stdClass;
-
-			// Must be a valid primary key value.
-			$object->id = $cid[$x];
-			$object->is_leaf = 1;
-
-			// Update their details in the users table using id as the primary key.
-			$result = $this->jsmdb->updateObject('#__sportsmanagement_treeto_node', $object, 'id');
-
-			// $db->getQuery(true);
-			$this->jsmquery->clear();
-			$this->jsmquery->select('node');
-			$this->jsmquery->from('#__sportsmanagement_treeto_node');
-			$this->jsmquery->where('id=' . $cid[$x]);
-			$this->jsmdb->setQuery($this->jsmquery);
-
-			// $db->execute();
-			$resultleafnode = $this->jsmdb->loadResult();
-
-			// Unpublish children node
-			if ($resultleafnode < (pow(2, $tree_i)))
-			{
-				for ($y = 1;$y <= ($tree_i - 1);$y ++)
-				{
-					$childleft = (pow(2, $y)) * $resultleafnode;
-					$childright = ((pow(2, $y)) * ($resultleafnode + 1)) - 1;
-
-					for ($z = $childleft;$z <= $childright;$z ++)
-					{
-						if ($z < pow(2, $tree_i + 1))
-						{
-							$this->jsmquery->clear();
-
-							// Fields to update.
-							$fields = array(
-							$this->jsmdb->quoteName('published') . ' = 0'
-							);
-
-							// Conditions for which records should be updated.
-							$conditions = array(
-							$this->jsmdb->quoteName('node') . ' = ' . $this->jsmdb->quote($z),
-							$this->jsmdb->quoteName('treeto_id') . ' = ' . $this->jsmdb->quote($treeto_id)
-							);
-							$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_treeto_node'))->set($fields)->where($conditions);
-							$this->jsmdb->setQuery($this->jsmquery);
-
-							sportsmanagementModeldatabasetool::runJoomlaQuery();
-						}
-					}
-				}
-			}
-		}
-
-		// 2, 4, 8, 16, 32, 64, 128 teams, default leaf(ing)
-		for ($k = pow(2, $tree_i);$k < pow(2, $tree_i + 1);$k ++)
-		{
-			$this->jsmquery->clear();
-
-			// Fields to update.
-			$fields = array(
-			 $this->jsmdb->quoteName('is_leaf') . ' = 1'
-			);
-
-			// Conditions for which records should be updated.
-			$conditions = array(
-			 $this->jsmdb->quoteName('node') . ' = ' . $this->jsmdb->quote($k),
-			 $this->jsmdb->quoteName('treeto_id') . ' = ' . $this->jsmdb->quote($treeto_id)
-			);
-			$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_treeto_node'))->set($fields)->where($conditions);
-			$this->jsmdb->setQuery($this->jsmquery);
-
-			sportsmanagementModeldatabasetool::runJoomlaQuery();
-		}
-
-			  // Create an object for the record we are going to update.
-		$object = new stdClass;
-
-		// Must be a valid primary key value.
-		$object->id = $treeto_id;
-		$object->leafed = 3;
-
-		// Update their details in the users table using id as the primary key.
-		$resultupdate = $this->jsmdb->updateObject('#__sportsmanagement_treeto', $object, 'id');
-
-		return $result;
-	}
-
-
-
-	/**
-	 * sportsmanagementModelTreetonodes::storefinishleaf()
-	 *
-	 * @param   mixed $post
-	 * @return
-	 */
-	function storefinishleaf($post)
-	{
-		// $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($post,true).'</pre>', '');
-
-			  $treeto_id = $post['treeto_id'];
-
-		// Create an object for the record we are going to update.
-		$object = new stdClass;
-
-		// Must be a valid primary key value.
-		$object->id = $treeto_id;
-		$object->leafed = 1;
-
-		// Update their details in the users table using id as the primary key.
-		$resultupdate = $this->jsmdb->updateObject('#__sportsmanagement_treeto', $object, 'id');
-
-		return true;
-	}
-
-
-
-	/**
-	 * sportsmanagementModelTreetonodes::getProjectTeamsOptions()
-	 *
-	 * @param   integer $project_id
-	 * @return
-	 */
-	function getProjectTeamsOptions($project_id=0)
-	{
-
-		if (!$project_id)
-		{
-			$project_id = $this->jsmjinput->get('pid');
-		}
-
-					$this->jsmquery->clear();
-
-					$this->jsmquery->select('pt.id AS value');
-					$this->jsmquery->select(' CASE WHEN CHAR_LENGTH(t.name) < 45 THEN t.name ELSE t.middle_name END AS text ');
-					$this->jsmquery->from('#__sportsmanagement_team AS t');
-					$this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on t.id = st.team_id');
-					$this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');
-
-					// . ' LEFT JOIN #__sportsmanagement_project_team AS pt ON pt.team_id = t.id '
-					$this->jsmquery->where('pt.project_id = ' . $project_id);
-
-					$this->jsmquery->order('text ASC');
-
-					  $this->jsmdb->setQuery($this->jsmquery);
-					$result = $this->jsmdb->loadObjectList();
-
-		if ($result === false)
-		{
-						Log::add($this->jsmdb->getErrorMsg());
-
-			return false;
-		}
-		else
-		{
-			return $result;
-		}
-	}
-
-
-
-	/**
-	 * sportsmanagementModelTreetonodes::storeshort()
-	 *
-	 * @param   mixed $cid
-	 * @param   mixed $post
-	 * @return
-	 */
-	function storeshort($cid,$post)
-	{
-		// $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($cid,true).'</pre>', '');
-		// $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($post,true).'</pre>', '');
-		for ($x = 0;$x < count($cid);$x ++)
-		{
-							  // Create an object for the record we are going to update.
-			$object = new stdClass;
-
-			// Must be a valid primary key value.
-			$object->id = $cid[$x];
-			$object->team_id = $post['team_id' . $cid[$x]];
-
-			try
-			{
-				// Update their details in the users table using id as the primary key.
-				$result = $this->jsmdb->updateObject('#__sportsmanagement_treeto_node', $object, 'id');
-			}
-			catch (Exception $e)
-			{
-				$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
-				$result = false;
-			}
-		}
-
-		return $result;
 	}
 }

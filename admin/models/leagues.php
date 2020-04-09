@@ -12,6 +12,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 
@@ -31,37 +32,82 @@ class sportsmanagementModelLeagues extends JSMModelList
 	/**
 	 * sportsmanagementModelLeagues::__construct()
 	 *
-	 * @param   mixed $config
+	 * @param   mixed  $config
+	 *
 	 * @return void
 	 */
 	public function __construct($config = array())
 	{
-				$config['filter_fields'] = array(
-						'obj.name',
-						'obj.alias',
-						'obj.short_name',
-						'obj.country',
-						'obj.published_act_season',
-						'st.name',
-						'obj.id',
-						'obj.ordering',
-						'obj.published',
-						'obj.modified',
-						'obj.modified_by',
-						'ag.name',
-						'fed.name'
-						);
-				parent::__construct($config);
-				parent::setDbo($this->jsmdb);
+		$config['filter_fields'] = array(
+			'obj.name',
+			'obj.alias',
+			'obj.short_name',
+			'obj.country',
+			'obj.published_act_season',
+			'st.name',
+			'obj.id',
+			'obj.ordering',
+			'obj.published',
+			'obj.modified',
+			'obj.modified_by',
+			'ag.name',
+			'fed.name'
+		);
+		parent::__construct($config);
+		parent::setDbo($this->jsmdb);
 	}
 
-		  /**
-		   * Method to auto-populate the model state.
-		   *
-		   * Note. Calling getState in this method will result in recursion.
-		   *
-		   * @since 1.6
-		   */
+
+	function getLeagues()
+	{
+
+		$search_nation = '';
+
+		if ($this->jsmapp->isClient('administrator'))
+		{
+			$search_nation = $this->getState('filter.search_nation');
+
+			// $search_nation    = self::getState('filter.search_nation');
+		}
+
+		//        // Get a db connection.
+		//        $db = sportsmanagementHelper::getDBConnection();
+		//        // Create a new query object.
+		//        $query = $db->getQuery(true);
+		$this->jsmquery->select('id,name');
+		$this->jsmquery->from('#__sportsmanagement_league');
+
+		if ($search_nation)
+		{
+			$this->jsmquery->where('country LIKE ' . $this->jsmdb->Quote('' . $search_nation . ''));
+		}
+
+		$this->jsmquery->order('name ASC');
+
+		$this->jsmdb->setQuery($this->jsmquery);
+
+		if (!$result = $this->jsmdb->loadObjectList())
+		{
+			// SportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->jsmdb->getErrorMsg(), __LINE__);
+
+			return array();
+		}
+
+		foreach ($result as $league)
+		{
+			$league->name = Text::_($league->name);
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since 1.6
+	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
 		if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info'))
@@ -70,24 +116,24 @@ class sportsmanagementModelLeagues extends JSMModelList
 			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . ''), '');
 		}
 
-			  // Load the filter state.
+		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
 		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string');
 		$this->setState('filter.state', $published);
-		   $temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '');
+		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '');
 		$this->setState('filter.search_nation', $temp_user_request);
-		   $temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.search_agegroup', 'filter_search_agegroup', '');
+		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.search_agegroup', 'filter_search_agegroup', '');
 		$this->setState('filter.search_agegroup', $temp_user_request);
-		   $temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.search_association', 'filter_search_association', '');
+		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.search_association', 'filter_search_association', '');
 		$this->setState('filter.search_association', $temp_user_request);
-		   $temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.federation', 'filter_federation', '');
-		   $this->setState('filter.federation', $temp_user_request);
-		   $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
+		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.federation', 'filter_federation', '');
+		$this->setState('filter.federation', $temp_user_request);
+		$value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
 		$this->setState('list.limit', $value);
 
 		// List state information.
-		   $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
+		$value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);
 
 		// Filter.order
@@ -109,6 +155,19 @@ class sportsmanagementModelLeagues extends JSMModelList
 		$this->setState('list.direction', $listOrder);
 	}
 
+
+
+
+
+
+	/**
+	 * Method to return a leagues array (id,name)
+	 *
+	 * @access public
+	 * @return array seasons
+	 * @since  1.5.0a
+	 */
+	// Public static function getLeagues()
 	/**
 	 * sportsmanagementModelLeagues::getListQuery()
 	 *
@@ -132,10 +191,10 @@ class sportsmanagementModelLeagues extends JSMModelList
 		$this->jsmquery->select('uc.name AS editor');
 		$this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
 
-			  $this->jsmquery->select('ag.name AS agegroup');
+		$this->jsmquery->select('ag.name AS agegroup');
 		$this->jsmquery->join('LEFT', '#__sportsmanagement_agegroup AS ag ON ag.id = obj.agegroup_id');
 
-			  $this->jsmquery->select('fed.name AS fedname');
+		$this->jsmquery->select('fed.name AS fedname');
 		$this->jsmquery->join('LEFT', '#__sportsmanagement_associations AS fed ON fed.id = obj.associations');
 
 		if ($this->getState('filter.search'))
@@ -168,68 +227,12 @@ class sportsmanagementModelLeagues extends JSMModelList
 			$this->jsmquery->where('obj.published = ' . $this->getState('filter.state'));
 		}
 
-			$this->jsmquery->order(
-				$this->jsmdb->escape($this->getState('list.ordering', 'obj.name')) . ' ' .
-				$this->jsmdb->escape($this->getState('list.direction', 'ASC'))
-			);
+		$this->jsmquery->order(
+			$this->jsmdb->escape($this->getState('list.ordering', 'obj.name')) . ' ' .
+			$this->jsmdb->escape($this->getState('list.direction', 'ASC'))
+		);
 
 		return $this->jsmquery;
-	}
-
-
-
-
-
-
-	/**
-	 * Method to return a leagues array (id,name)
-	 *
-	 * @access public
-	 * @return array seasons
-	 * @since  1.5.0a
-	 */
-	// Public static function getLeagues()
-	function getLeagues()
-	{
-
-		$search_nation = '';
-
-		if ($this->jsmapp->isClient('administrator'))
-		{
-			$search_nation    = $this->getState('filter.search_nation');
-
-			// $search_nation    = self::getState('filter.search_nation');
-		}
-
-			//        // Get a db connection.
-			//        $db = sportsmanagementHelper::getDBConnection();
-			//        // Create a new query object.
-			//        $query = $db->getQuery(true);
-			$this->jsmquery->select('id,name');
-			$this->jsmquery->from('#__sportsmanagement_league');
-
-		if ($search_nation)
-		{
-			$this->jsmquery->where('country LIKE ' . $this->jsmdb->Quote('' . $search_nation . ''));
-		}
-
-			  $this->jsmquery->order('name ASC');
-
-			$this->jsmdb->setQuery($this->jsmquery);
-
-		if (!$result = $this->jsmdb->loadObjectList())
-		{
-					// SportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->jsmdb->getErrorMsg(), __LINE__);
-
-					return array();
-		}
-
-		foreach ($result as $league)
-		{
-					$league->name = Text::_($league->name);
-		}
-
-			return $result;
 	}
 
 

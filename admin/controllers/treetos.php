@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Session\Session;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
@@ -33,12 +34,13 @@ class sportsmanagementControllertreetos extends JSMControllerAdmin
 	/**
 	 * sportsmanagementControllertreetos::__construct()
 	 *
-	 * @param   mixed $config
+	 * @param   mixed  $config
+	 *
 	 * @return void
 	 */
 	public function __construct($config = array())
 	{
-		  parent::__construct($config);
+		parent::__construct($config);
 
 		// Reference global application object
 		$this->jsmapp = Factory::getApplication();
@@ -48,18 +50,6 @@ class sportsmanagementControllertreetos extends JSMControllerAdmin
 		$this->jsmoption = $this->jsmjinput->getCmd('option');
 	}
 
-		/**
-		 * Proxy for getModel.
-		 *
-		 * @since 1.6
-		 */
-	public function getModel($name = 'treeto', $prefix = 'sportsmanagementModel', $config = Array() )
-	{
-		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
-
-		return $model;
-	}
-
 	/**
 	 * sportsmanagementControllertreetos::genNode()
 	 *
@@ -67,27 +57,27 @@ class sportsmanagementControllertreetos extends JSMControllerAdmin
 	 */
 	public function genNode()
 	{
-		  $id = $this->jsmjinput->get->get('id');
-		  $this->setRedirect('index.php?option=com_sportsmanagement&view=treeto&layout=gennode&id=' . $id);
+		$id = $this->jsmjinput->get->get('id');
+		$this->setRedirect('index.php?option=com_sportsmanagement&view=treeto&layout=gennode&id=' . $id);
 	}
 
-		  /**
-		   * sportsmanagementControllertreetos::save()
-		   *
-		   * @return void
-		   */
+	/**
+	 * sportsmanagementControllertreetos::save()
+	 *
+	 * @return void
+	 */
 	public function save()
 	{
-		  // Check for token
-		  Session::checkToken() or jexit(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN'));
-		  $cid = $this->jsmjinput->get('cid', array(), 'array');
-		  ArrayHelper::toInteger($cid);
+		// Check for token
+		Session::checkToken() or jexit(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN'));
+		$cid = $this->jsmjinput->get('cid', array(), 'array');
+		ArrayHelper::toInteger($cid);
 
-				$post = $this->jsmjinput->post->getArray();
-		  $data['project_id'] = $post['project_id'];
+		$post               = $this->jsmjinput->post->getArray();
+		$data['project_id'] = $post['project_id'];
 
-			  $model = $this->getModel('treeto');
-		$row = $model->getTable();
+		$model = $this->getModel('treeto');
+		$row   = $model->getTable();
 
 		if ($row->save($data))
 		{
@@ -98,7 +88,7 @@ class sportsmanagementControllertreetos extends JSMControllerAdmin
 			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_CTRL_ERROR_SAVED') . $model->getError();
 		}
 
-			$task = $this->getTask();
+		$task = $this->getTask();
 
 		if ($task == 'save')
 		{
@@ -109,11 +99,20 @@ class sportsmanagementControllertreetos extends JSMControllerAdmin
 			$link = 'index.php?option=com_sportsmanagement&task=treeto.edit&id=' . $post['id'];
 		}
 
-			$this->setRedirect($link, $msg);
+		$this->setRedirect($link, $msg);
 	}
 
+	/**
+	 * Proxy for getModel.
+	 *
+	 * @since 1.6
+	 */
+	public function getModel($name = 'treeto', $prefix = 'sportsmanagementModel', $config = Array())
+	{
+		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 
-
+		return $model;
+	}
 
 
 }

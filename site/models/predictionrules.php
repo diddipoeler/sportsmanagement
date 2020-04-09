@@ -14,9 +14,9 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-
 
 
 /**
@@ -44,28 +44,28 @@ class sportsmanagementModelPredictionRules extends BaseDatabaseModel
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 
-			 $prediction = new sportsmanagementModelPrediction;
+		$prediction = new sportsmanagementModelPrediction;
 
-			   sportsmanagementModelPrediction::$roundID = $jinput->getVar('r', '0');
-		  sportsmanagementModelPrediction::$pjID = $jinput->getVar('pj', '0');
-		  sportsmanagementModelPrediction::$from = $jinput->getVar('from', $jinput->getVar('r', '0'));
-		  sportsmanagementModelPrediction::$to = $jinput->getVar('to', $jinput->getVar('r', '0'));
+		sportsmanagementModelPrediction::$roundID = $jinput->getVar('r', '0');
+		sportsmanagementModelPrediction::$pjID    = $jinput->getVar('pj', '0');
+		sportsmanagementModelPrediction::$from    = $jinput->getVar('from', $jinput->getVar('r', '0'));
+		sportsmanagementModelPrediction::$to      = $jinput->getVar('to', $jinput->getVar('r', '0'));
 
-				sportsmanagementModelPrediction::$predictionGameID = $jinput->getVar('prediction_id', '0');
+		sportsmanagementModelPrediction::$predictionGameID = $jinput->getVar('prediction_id', '0');
 
-			 sportsmanagementModelPrediction::$predictionMemberID = $jinput->getInt('uid', 0);
-		sportsmanagementModelPrediction::$joomlaUserID = $jinput->getInt('juid', 0);
+		sportsmanagementModelPrediction::$predictionMemberID = $jinput->getInt('uid', 0);
+		sportsmanagementModelPrediction::$joomlaUserID       = $jinput->getInt('juid', 0);
 
-			  sportsmanagementModelPrediction::$pggroup = $jinput->getInt('pggroup', 0);
+		sportsmanagementModelPrediction::$pggroup     = $jinput->getInt('pggroup', 0);
 		sportsmanagementModelPrediction::$pggrouprank = $jinput->getInt('pggrouprank', 0);
 
-			  sportsmanagementModelPrediction::$isNewMember = $jinput->getInt('s', 0);
+		sportsmanagementModelPrediction::$isNewMember   = $jinput->getInt('s', 0);
 		sportsmanagementModelPrediction::$tippEntryDone = $jinput->getInt('eok', 0);
 
-			  sportsmanagementModelPrediction::$type = $jinput->getInt('type', 0);
+		sportsmanagementModelPrediction::$type = $jinput->getInt('type', 0);
 		sportsmanagementModelPrediction::$page = $jinput->getInt('page', 1);
 
-			  parent::__construct();
+		parent::__construct();
 	}
 
 }

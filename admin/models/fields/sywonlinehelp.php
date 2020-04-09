@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die;
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Form\FormField;
@@ -41,10 +42,10 @@ class JFormFieldSYWOnlineHelp extends FormField
 
 		HTMLHelper::_('stylesheet', 'syw/fonts-min.css', false, true);
 
-		$title = $this->element['label'] ? (string) $this->element['label'] : ($this->element['title'] ? (string) $this->element['title'] : '');
-		$heading = $this->element['heading'] ? (string) $this->element['heading'] : 'h4';
+		$title       = $this->element['label'] ? (string) $this->element['label'] : ($this->element['title'] ? (string) $this->element['title'] : '');
+		$heading     = $this->element['heading'] ? (string) $this->element['heading'] : 'h4';
 		$description = (string) $this->element['description'];
-		$class = !empty($this->class) ? ' class="' . $this->class . '"' : '';
+		$class       = !empty($this->class) ? ' class="' . $this->class . '"' : '';
 
 		$url = (string) $this->element['url'];
 

@@ -21,34 +21,34 @@ defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<div class="<?php echo $this->divclasscontainer;?>" id="curve">
-<?php
-echo $this->loadTemplate('projectheading');
+<div class="<?php echo $this->divclasscontainer; ?>" id="curve">
+	<?php
+	echo $this->loadTemplate('projectheading');
 
-if ($this->config['show_sectionheader'])
-{
-	echo $this->loadTemplate('sectionheader');
-}
+	if ($this->config['show_sectionheader'])
+	{
+		echo $this->loadTemplate('sectionheader');
+	}
 
-// If ( $this->config['show_curve'] )
-// {
-if ($this->config['which_curve'])
-{
-	echo $this->loadTemplate('curvejs');
-}
+	// If ( $this->config['show_curve'] )
+	// {
+	if ($this->config['which_curve'])
+	{
+		echo $this->loadTemplate('curvejs');
+	}
 
-// Else
-// {
-// echo $this->loadTemplate('curve');
-// }
-// }
+	// Else
+	// {
+	// echo $this->loadTemplate('curve');
+	// }
+	// }
 
-if ($this->config['show_colorlegend'])
-{
-	echo $this->loadTemplate('colorlegend');
-}
+	if ($this->config['show_colorlegend'])
+	{
+		echo $this->loadTemplate('colorlegend');
+	}
 
-echo $this->loadTemplate('jsminfo');
-?>
+	echo $this->loadTemplate('jsminfo');
+	?>
 
 </div>

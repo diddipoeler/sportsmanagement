@@ -13,13 +13,14 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 
 
-$massadd = Factory::getApplication()->input->getInt('massadd', 0);
-$templatesToLoad = array('footer','listheader');
+$massadd         = Factory::getApplication()->input->getInt('massadd', 0);
+$templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO)
@@ -29,13 +30,13 @@ if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO)
 ?>
 
 <div id="alt_decision_enter" style="display:<?php echo ($massadd == 0) ? 'none' : 'block'; ?>">
-<?php
-echo $this->loadTemplate('massadd');
-?>
+	<?php
+	echo $this->loadTemplate('massadd');
+	?>
 </div>
 <?php
 echo $this->loadTemplate('matches');
-?>  
+?>
 <?php
 if (ComponentHelper::getParams($this->option)->get('show_edit_matches_matrix'))
 {
@@ -43,7 +44,7 @@ if (ComponentHelper::getParams($this->option)->get('show_edit_matches_matrix'))
 }
 ?>
 <div>
-<?PHP
-echo $this->loadTemplate('footer');
-?> 
+	<?PHP
+	echo $this->loadTemplate('footer');
+	?>
 </div>

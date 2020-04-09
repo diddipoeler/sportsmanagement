@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Filter\OutputFilter;
 
 /**
@@ -32,12 +33,13 @@ class sportsmanagementTableProject extends JSMTable
 	/**
 	 * Constructor
 	 *
-	 * @param object Database connector object
+	 * @param   object Database connector object
+	 *
 	 * @since 1.0
 	 */
-	function __construct(& $db)
+	function __construct(&$db)
 	{
-		  $db = sportsmanagementHelper::getDBConnection();
+		$db = sportsmanagementHelper::getDBConnection();
 		parent::__construct('#__sportsmanagement_project', 'id', $db);
 	}
 
@@ -56,7 +58,6 @@ class sportsmanagementTableProject extends JSMTable
 
 		return true;
 	}
-
 
 
 }

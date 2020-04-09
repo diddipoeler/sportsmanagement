@@ -13,13 +13,15 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
+
 ?>
-<div class="<?php echo $this->divclassrow;?> table-responsive" id="hint">
-<table class="matrix">
-<tr>
-<td align="left"><br /> <?php echo Text :: _('COM_SPORTSMANAGEMENT_MATRIX_HINT');?>
-</td>
-</tr>
-</table>
+<div class="<?php echo $this->divclassrow; ?> table-responsive" id="hint">
+    <table class="matrix">
+        <tr>
+            <td align="left"><br/> <?php echo Text:: _('COM_SPORTSMANAGEMENT_MATRIX_HINT'); ?>
+            </td>
+        </tr>
+    </table>
 </div>

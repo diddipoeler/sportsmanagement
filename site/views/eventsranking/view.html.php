@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
@@ -40,13 +41,13 @@ class sportsmanagementViewEventsRanking extends sportsmanagementView
 
 		sportsmanagementModelProject::setProjectID($this->jinput->getInt('p', 0), $this->jinput->getInt('cfg_which_database', 0));
 
-		$this->division = sportsmanagementModelProject::getDivision(0, $this->jinput->getInt('cfg_which_database', 0));
-		$this->matchid = sportsmanagementModelEventsRanking::$matchid;
-		$this->teamid = $this->model->getTeamId();
-		$this->teams = sportsmanagementModelProject::getTeamsIndexedById(0, 'name', $this->jinput->getInt('cfg_which_database', 0));
-		$this->favteams = sportsmanagementModelProject::getFavTeams($this->jinput->getInt('cfg_which_database', 0));
+		$this->division   = sportsmanagementModelProject::getDivision(0, $this->jinput->getInt('cfg_which_database', 0));
+		$this->matchid    = sportsmanagementModelEventsRanking::$matchid;
+		$this->teamid     = $this->model->getTeamId();
+		$this->teams      = sportsmanagementModelProject::getTeamsIndexedById(0, 'name', $this->jinput->getInt('cfg_which_database', 0));
+		$this->favteams   = sportsmanagementModelProject::getFavTeams($this->jinput->getInt('cfg_which_database', 0));
 		$this->eventtypes = sportsmanagementModelProject::getEventTypes(sportsmanagementModelEventsRanking::$eventid, $this->jinput->getInt('cfg_which_database', 0));
-		$this->limit = $this->model->getLimit();
+		$this->limit      = $this->model->getLimit();
 		$this->limitstart = $this->model->getLimitStart();
 		$this->pagination = $this->get('Pagination');
 
@@ -61,7 +62,7 @@ class sportsmanagementViewEventsRanking extends sportsmanagementView
 
 		$this->multiple_events = count($this->eventtypes) > 1;
 
-			  $prefix = Text::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_PAGE_TITLE');
+		$prefix = Text::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_PAGE_TITLE');
 
 		if ($this->multiple_events)
 		{
@@ -87,8 +88,8 @@ class sportsmanagementViewEventsRanking extends sportsmanagementView
 		if (!empty($this->project))
 		{
 			$titleInfo->projectName = $this->project->name;
-			$titleInfo->leagueName = $this->project->league_name;
-			$titleInfo->seasonName = $this->project->season_name;
+			$titleInfo->leagueName  = $this->project->league_name;
+			$titleInfo->seasonName  = $this->project->season_name;
 		}
 
 		if (!empty($this->division) && $this->division->id != 0)
@@ -99,7 +100,7 @@ class sportsmanagementViewEventsRanking extends sportsmanagementView
 		$this->pagetitle = sportsmanagementHelper::formatTitle($titleInfo, $this->config["page_title_format"]);
 		$this->document->setTitle($this->pagetitle);
 
-			  $this->headertitle = $this->pagetitle;
+		$this->headertitle = $this->pagetitle;
 
 		if (!isset($this->config['table_class']))
 		{

@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Environment\Browser;
@@ -40,16 +41,16 @@ class sportsmanagementViewplayer extends sportsmanagementView
 	public function init()
 	{
 
-					 /**
- * name für den titel setzen
- */
+		/**
+		 * name für den titel setzen
+		 */
 		$this->item->name = $this->item->lastname . ' - ' . $this->item->firstname;
 
-			  $this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
+		$this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
 		$this->form->setValue('position_id', 'request', $this->item->position_id);
 		$this->form->setValue('agegroup_id', 'request', $this->item->agegroup_id);
 
-			  $this->form->setValue('person_art', 'request', $this->item->person_art);
+		$this->form->setValue('person_art', 'request', $this->item->person_art);
 		$this->form->setValue('person_id1', 'request', $this->item->person_id1);
 		$this->form->setValue('person_id2', 'request', $this->item->person_id2);
 
@@ -63,30 +64,30 @@ class sportsmanagementViewplayer extends sportsmanagementView
 			$this->map = true;
 		}
 
-			  $isNew = $this->item->id == 0;
+		$isNew = $this->item->id == 0;
 
 		if ($this->item->birthday == '0000-00-00')
 		{
-					$this->item->birthday = '';
-					$this->form->setValue('birthday', '');
+			$this->item->birthday = '';
+			$this->form->setValue('birthday', '');
 		}
 
 		if ($this->item->deathday == '0000-00-00')
 		{
-					   $this->item->birthday = '';
-					   $this->form->setValue('deathday', '');
+			$this->item->birthday = '';
+			$this->form->setValue('deathday', '');
 		}
 
 		if ($this->item->injury_date_start == '0000-00-00')
 		{
-					   $this->item->injury_date_start = '';
-					   $this->form->setValue('injury_date_start', '');
+			$this->item->injury_date_start = '';
+			$this->form->setValue('injury_date_start', '');
 		}
 
 		if ($this->item->injury_date_end == '0000-00-00')
 		{
-					   $this->item->injury_date_end = '';
-					   $this->form->setValue('injury_date_end', '');
+			$this->item->injury_date_end = '';
+			$this->form->setValue('injury_date_end', '');
 		}
 
 		if ($this->item->susp_date_start == '0000-00-00')
@@ -97,8 +98,8 @@ class sportsmanagementViewplayer extends sportsmanagementView
 
 		if ($this->item->susp_date_end == '0000-00-00')
 		{
-					   $this->item->susp_date_end = '';
-					   $this->form->setValue('susp_date_end', '');
+			$this->item->susp_date_end = '';
+			$this->form->setValue('susp_date_end', '');
 		}
 
 		if ($this->item->away_date_start == '0000-00-00')
@@ -109,49 +110,48 @@ class sportsmanagementViewplayer extends sportsmanagementView
 
 		if ($this->item->away_date_end == '0000-00-00')
 		{
-					   $this->item->away_date_end = '';
-					   $this->form->setValue('away_date_end', '');
+			$this->item->away_date_end = '';
+			$this->form->setValue('away_date_end', '');
 		}
 
-			$extended = sportsmanagementHelper::getExtended($this->item->extended, 'player');
-			$this->extended = $extended;
-			$extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'player');
-			$this->extendeduser = $extendeduser;
-			$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields();
-			$lists = array();
+		$extended               = sportsmanagementHelper::getExtended($this->item->extended, 'player');
+		$this->extended         = $extended;
+		$extendeduser           = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'player');
+		$this->extendeduser     = $extendeduser;
+		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields();
+		$lists                  = array();
 
 		if ($this->checkextrafields)
 		{
-					$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id);
+			$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id);
 		}
 
-			  $this->lists = $lists;
-			unset($lists);
+		$this->lists = $lists;
+		unset($lists);
 
-			$person_age = sportsmanagementHelper::getAge($this->form->getValue('birthday'), $this->form->getValue('deathday'));
-			$person_range = $this->model->getAgeGroupID($person_age);
+		$person_age   = sportsmanagementHelper::getAge($this->form->getValue('birthday'), $this->form->getValue('deathday'));
+		$person_range = $this->model->getAgeGroupID($person_age);
 
 		if ($person_range)
 		{
 			$this->form->setValue('agegroup_id', null, $person_range);
 		}
 
-			$this->document->addScript(Uri::base() . 'components/' . $this->option . '/assets/js/sm_functions.js');
+		$this->document->addScript(Uri::base() . 'components/' . $this->option . '/assets/js/sm_functions.js');
 
-			/**
- * Load the language files for the contact integration
- */
-			$jlang = Factory::getLanguage();
-			$jlang->load('com_contact', JPATH_ADMINISTRATOR, 'en-GB', true);
-			$jlang->load('com_contact', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
-			$jlang->load('com_contact', JPATH_ADMINISTRATOR, null, true);
+		/**
+		 * Load the language files for the contact integration
+		 */
+		$jlang = Factory::getLanguage();
+		$jlang->load('com_contact', JPATH_ADMINISTRATOR, 'en-GB', true);
+		$jlang->load('com_contact', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
+		$jlang->load('com_contact', JPATH_ADMINISTRATOR, null, true);
 
-			  $this->document->addScript('https://maps.googleapis.com/maps/api/js?libraries=places&language=de');
-			$this->document->addScript(Uri::base() . 'components/' . $this->option . '/assets/js/geocomplete.js');
-			$this->document->addScript(Uri::base() . 'components/' . $this->option . '/views/person/tmpl/edit.js');
+		$this->document->addScript('https://maps.googleapis.com/maps/api/js?libraries=places&language=de');
+		$this->document->addScript(Uri::base() . 'components/' . $this->option . '/assets/js/geocomplete.js');
+		$this->document->addScript(Uri::base() . 'components/' . $this->option . '/views/person/tmpl/edit.js');
 
 	}
-
 
 
 	/**
@@ -162,7 +162,7 @@ class sportsmanagementViewplayer extends sportsmanagementView
 	protected function addToolBar()
 	{
 		$this->jinput->set('hidemainmenu', true);
-		$isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSON_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSON_NEW');
+		$isNew      = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSON_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSON_NEW');
 		$this->icon = 'person';
 		parent::addToolbar();
 

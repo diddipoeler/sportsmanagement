@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
@@ -33,74 +34,27 @@ class sportsmanagementModelPositions extends JSMModelList
 	/**
 	 * sportsmanagementModelPositions::__construct()
 	 *
-	 * @param   mixed $config
+	 * @param   mixed  $config
+	 *
 	 * @return void
 	 */
 	public function __construct($config = array())
 	{
-				$config['filter_fields'] = array(
-						'po.name',
-						'po.picture',
-						'po.parent_id',
-						'po.sports_type_id',
-						'po.persontype',
-						'po.id',
-						'po.published',
-						'po.modified',
-						'po.modified_by',
-						'po.ordering'
-						);
-				parent::__construct($config);
-				$getDBConnection = sportsmanagementHelper::getDBConnection();
-				parent::setDbo($getDBConnection);
-	}
-
-		  /**
-		   * Method to auto-populate the model state.
-		   *
-		   * Note. Calling getState in this method will result in recursion.
-		   *
-		   * @since 1.6
-		   */
-	protected function populateState($ordering = null, $direction = null)
-	{
-		if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend'))
-		{
-			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . $this->context . ''), '');
-			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . ''), '');
-		}
-
-		// Load the filter state.
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
-		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string');
-		$this->setState('filter.state', $published);
-		   $temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.sports_type', 'filter_sports_type', '');
-		$this->setState('filter.sports_type', $temp_user_request);
-		   $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
-		$this->setState('list.limit', $value);
-
-		// List state information.
-		   $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
-		$this->setState('list.start', $value);
-
-		// Filter.order
-		$orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
-
-		if (!in_array($orderCol, $this->filter_fields))
-		{
-			$orderCol = 'po.name';
-		}
-
-		$this->setState('list.ordering', $orderCol);
-		$listOrder = $this->getUserStateFromRequest($this->context . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
-
-		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
-		{
-			$listOrder = 'ASC';
-		}
-
-		$this->setState('list.direction', $listOrder);
+		$config['filter_fields'] = array(
+			'po.name',
+			'po.picture',
+			'po.parent_id',
+			'po.sports_type_id',
+			'po.persontype',
+			'po.id',
+			'po.published',
+			'po.modified',
+			'po.modified_by',
+			'po.ordering'
+		);
+		parent::__construct($config);
+		$getDBConnection = sportsmanagementHelper::getDBConnection();
+		parent::setDbo($getDBConnection);
 	}
 
 	/**
@@ -137,17 +91,13 @@ class sportsmanagementModelPositions extends JSMModelList
 			$this->jsmquery->where('po.sports_type_id = ' . $this->getState('filter.sports_type'));
 		}
 
-			$this->jsmquery->order(
-				$this->jsmdb->escape($this->getState('list.ordering', 'po.name')) . ' ' .
-				$this->jsmdb->escape($this->getState('list.direction', 'ASC'))
-			);
+		$this->jsmquery->order(
+			$this->jsmdb->escape($this->getState('list.ordering', 'po.name')) . ' ' .
+			$this->jsmdb->escape($this->getState('list.direction', 'ASC'))
+		);
 
 		return $this->jsmquery;
 	}
-
-
-
-
 
 	/**
 	 * Method to return the positions array (id,name)
@@ -174,26 +124,24 @@ class sportsmanagementModelPositions extends JSMModelList
 			return false;
 		}
 
-			 return $result;
+		return $result;
 	}
-
-
-
 
 	/**
 	 * sportsmanagementModelPositions::getProjectPositions()
 	 *
-	 * @param   mixed   $project_id
-	 * @param   integer $persontype
+	 * @param   mixed    $project_id
+	 * @param   integer  $persontype
+	 *
 	 * @return
 	 */
-	function getProjectPositions($project_id,$persontype=1)
+	function getProjectPositions($project_id, $persontype = 1)
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
-		$query = Factory::getDbo()->getQuery(true);
+		$app    = Factory::getApplication();
+		$query  = Factory::getDbo()->getQuery(true);
 
-			  // Select some fields
+		// Select some fields
 		$query->select('ppos.id AS value, pos.name AS text, ppos.position_id as position_id');
 
 		// From the table
@@ -210,22 +158,18 @@ class sportsmanagementModelPositions extends JSMModelList
 
 			foreach ($result as $position)
 			{
-					   $position->text = Text::_($position->text);
+				$position->text = Text::_($position->text);
 			}
 		}
 		catch (Exception $e)
 		{
-				$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
-				 $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), 'error');
+			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
+			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), 'error');
 			$result = false;
 		}
 
-			  return $result;
+		return $result;
 	}
-
-
-
-
 
 	/**
 	 * Method to return a project positions array (id,position)
@@ -237,10 +181,10 @@ class sportsmanagementModelPositions extends JSMModelList
 	function getPositions($project_id)
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
-		$query = Factory::getDbo()->getQuery(true);
+		$app    = Factory::getApplication();
+		$query  = Factory::getDbo()->getQuery(true);
 
-			 // Select some fields
+		// Select some fields
 		$query->select('pp.id AS value,name AS text');
 
 		// From the table
@@ -249,7 +193,7 @@ class sportsmanagementModelPositions extends JSMModelList
 		$query->where('pp.project_id = ' . $project_id);
 		$query->order('p.ordering');
 
-			  Factory::getDbo()->setQuery($query);
+		Factory::getDbo()->setQuery($query);
 
 		if (!$result = Factory::getDbo()->loadObjectList())
 		{
@@ -278,9 +222,9 @@ class sportsmanagementModelPositions extends JSMModelList
 	function getAllPositions()
 	{
 
-			 $this->jsmquery->clear();
+		$this->jsmquery->clear();
 
-			  // Select some fields
+		// Select some fields
 		$this->jsmquery->select('pos.id AS value, pos.name AS posName,s.name AS sName');
 
 		// From the table
@@ -306,7 +250,6 @@ class sportsmanagementModelPositions extends JSMModelList
 		}
 	}
 
-
 	/**
 	 * sportsmanagementModelPositions::getPositionListSelect()
 	 *
@@ -315,8 +258,8 @@ class sportsmanagementModelPositions extends JSMModelList
 	public function getPositionListSelect()
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
-		$query = Factory::getDbo()->getQuery(true);
+		$app    = Factory::getApplication();
+		$query  = Factory::getDbo()->getQuery(true);
 
 		// Select some fields
 		$query->select('id,name,id AS value,name AS text,alias,parent_id,persontype,sports_type_id');
@@ -325,7 +268,7 @@ class sportsmanagementModelPositions extends JSMModelList
 		$query->from('#__sportsmanagement_position');
 		$query->order('name');
 
-			 Factory::getDbo()->setQuery($query);
+		Factory::getDbo()->setQuery($query);
 		$result = Factory::getDbo()->loadObjectList();
 
 		foreach ($result as $position)
@@ -334,6 +277,54 @@ class sportsmanagementModelPositions extends JSMModelList
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since 1.6
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend'))
+		{
+			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . $this->context . ''), '');
+			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . ''), '');
+		}
+
+		// Load the filter state.
+		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string');
+		$this->setState('filter.state', $published);
+		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.sports_type', 'filter_sports_type', '');
+		$this->setState('filter.sports_type', $temp_user_request);
+		$value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
+		$this->setState('list.limit', $value);
+
+		// List state information.
+		$value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
+		$this->setState('list.start', $value);
+
+		// Filter.order
+		$orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
+
+		if (!in_array($orderCol, $this->filter_fields))
+		{
+			$orderCol = 'po.name';
+		}
+
+		$this->setState('list.ordering', $orderCol);
+		$listOrder = $this->getUserStateFromRequest($this->context . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+
+		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		{
+			$listOrder = 'ASC';
+		}
+
+		$this->setState('list.direction', $listOrder);
 	}
 
 

@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -53,9 +54,9 @@ class JFormFieldExtensionlist extends \JFormFieldList
 		$options = array();
 
 		// Initialize some field attributes.
-		$filter = (string) $this->element['filter'];
-		$exclude = (string) $this->element['exclude'];
-		$hideNone = (string) $this->element['hide_none'];
+		$filter      = (string) $this->element['filter'];
+		$exclude     = (string) $this->element['exclude'];
+		$hideNone    = (string) $this->element['hide_none'];
 		$hideDefault = (string) $this->element['hide_default'];
 
 		// Get the path in which to search for file options.

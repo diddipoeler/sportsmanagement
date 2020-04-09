@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\Folder;
@@ -22,6 +23,7 @@ use Joomla\CMS\Session\Session;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Log\Log;
+
 jimport('joomla.filesystem.archive');
 
 /**
@@ -44,29 +46,29 @@ class sportsmanagementControllerjlextlmoimports extends BaseController
 	function save()
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 
 		// Check for request forgeries
 		Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
 		$msg = '';
 		ToolbarHelper::back(Text::_('JPREV'), Route::_('index.php?option=com_sportsmanagement&view=jllmoimport&controller=jllmoimport'));
-		$app = Factory::getApplication();
-		$post = Factory::getApplication()->input->post->getArray(array());
+		$app   = Factory::getApplication();
+		$post  = Factory::getApplication()->input->post->getArray(array());
 		$model = $this->getModel('jlextlmoimports');
 
 		// First step - upload
 		if (isset($post['sent']) && $post['sent'] == 1)
 		{
-			  $upload = $app->input->files->get('import_package');
+			$upload = $app->input->files->get('import_package');
 
 			$lmoimportuseteams = Factory::getApplication()->input->getVar('lmoimportuseteams', null);
 			$app->setUserState($option . 'lmoimportuseteams', $lmoimportuseteams);
 
-					  $tempFilePath = $upload['tmp_name'];
+			$tempFilePath = $upload['tmp_name'];
 			$app->setUserState($option . 'uploadArray', $upload);
-			$filename = '';
-			$msg = '';
-			$dest = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . $upload['name'];
+			$filename   = '';
+			$msg        = '';
+			$dest       = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . $upload['name'];
 			$extractdir = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp';
 			$importFile = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'sportsmanagement_import.l98';
 
@@ -84,7 +86,7 @@ class sportsmanagementControllerjlextlmoimports extends BaseController
 
 				if (!File::upload($tempFilePath, $dest))
 				{
-					   Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_CTRL_CANT_UPLOAD'), Log::NOTICE, 'jsmerror');
+					Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_CTRL_CANT_UPLOAD'), Log::NOTICE, 'jsmerror');
 
 					return;
 				}
@@ -96,7 +98,7 @@ class sportsmanagementControllerjlextlmoimports extends BaseController
 
 						if ($result === false)
 						{
-								Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_CTRL_EXTRACT_ERROR'), Log::NOTICE, 'jsmerror');
+							Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_CTRL_EXTRACT_ERROR'), Log::NOTICE, 'jsmerror');
 
 							return false;
 						}
@@ -108,8 +110,8 @@ class sportsmanagementControllerjlextlmoimports extends BaseController
 						{
 							Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_CTRL_EXTRACT_NOJLG'), Log::NOTICE, 'jsmerror');
 
-												// Todo: delete every extracted file / directory
-												return false;
+							// Todo: delete every extracted file / directory
+							return false;
 						}
 
 						if (strtolower(File::getExt($src[0])) == 'l98')
@@ -150,18 +152,10 @@ class sportsmanagementControllerjlextlmoimports extends BaseController
 			}
 		}
 
-		  $model->getData();
+		$model->getData();
 		$link = 'index.php?option=' . $option . '&view=jlxmlimports&task=jlxmlimport.edit';
 		$this->setRedirect($link, $msg);
 	}
-
-
-
-
-
-
-
-
 
 
 }

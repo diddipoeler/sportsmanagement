@@ -17,8 +17,8 @@ defined('JPATH_PLATFORM') or die;
  *
  * @documentation  https://developer.github.com/v3/orgs/
  *
- * @property-read  JGithubPackageOrgsMembers  $members  GitHub API object for members.
- * @property-read  JGithubPackageOrgsTeams    $teams    GitHub API object for teams.
+ * @property-read  JGithubPackageOrgsMembers $members  GitHub API object for members.
+ * @property-read  JGithubPackageOrgsTeams   $teams    GitHub API object for teams.
  */
 class JGithubPackageOrgs extends JGithubPackage
 {
@@ -33,9 +33,9 @@ class JGithubPackageOrgs extends JGithubPackage
 	 *
 	 * @param   string  $user  The user name.
 	 *
+	 * @return  object
 	 * @since   3.3 (CMS)
 	 *
-	 * @return  object
 	 */
 	public function getList($user = '')
 	{
@@ -55,9 +55,9 @@ class JGithubPackageOrgs extends JGithubPackage
 	 *
 	 * @param   string  $org  The organization name.
 	 *
+	 * @return  object
 	 * @since   3.3 (CMS)
 	 *
-	 * @return  object
 	 */
 	public function get($org)
 	{
@@ -80,9 +80,9 @@ class JGithubPackageOrgs extends JGithubPackage
 	 * @param   string  $location      The location name.
 	 * @param   string  $name          The name.
 	 *
+	 * @return  object
 	 * @since   3.3 (CMS)
 	 *
-	 * @return  object
 	 */
 	public function edit($org, $billingEmail = '', $company = '', $email = '', $location = '', $name = '')
 	{

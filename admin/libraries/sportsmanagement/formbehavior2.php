@@ -8,6 +8,7 @@
  */
 
 defined('JPATH_PLATFORM') or die;
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -29,9 +30,9 @@ abstract class JHtmlFormbehavior2
 	/**
 	 * Method to load the Select2 JavaScript framework and supporting CSS into the document head
 	 *
-	 * @param   string $selector Class for Chosen elements. [optional]
-	 * @param   string $option   options for Select2 elements. [optional]
-	 * @param   mixed  $debug    Is debugging mode on? [optional]
+	 * @param   string  $selector  Class for Chosen elements. [optional]
+	 * @param   string  $option    options for Select2 elements. [optional]
+	 * @param   mixed   $debug     Is debugging mode on? [optional]
 	 *
 	 * @return void
 	 *
@@ -47,7 +48,7 @@ abstract class JHtmlFormbehavior2
 		// Include jQuery
 		HTMLHelper::_('jquery.framework');
 
-		  // If no debugging value is set, use the configuration setting
+		// If no debugging value is set, use the configuration setting
 		if ($debug === null)
 		{
 			$config = Factory::getConfig();

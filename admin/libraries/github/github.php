@@ -14,27 +14,27 @@ use Joomla\Registry\Registry;
 /**
  * Joomla Platform class for interacting with a GitHub server instance.
  *
- * @property-read  JGithubPackageActivity       $activity       GitHub API object for activity.
- * @property-read  JGithubPackageAuthorization  $authorization  GitHub API object for authorizations.
- * @property-read  JGithubPackageData           $data           GitHub API object for data.
- * @property-read  JGithubPackageGists          $gists          GitHub API object for gists.
- * @property-read  JGithubPackageGitignore      $gitignore      GitHub API object for gitignore.
- * @property-read  JGithubPackageIssues         $issues         GitHub API object for issues.
- * @property-read  JGithubPackageMarkdown       $markdown       GitHub API object for markdown.
- * @property-read  JGithubPackageOrgs           $orgs           GitHub API object for orgs.
- * @property-read  JGithubPackagePulls          $pulls          GitHub API object for pulls.
- * @property-read  JGithubPackageRepositories   $repositories   GitHub API object for repositories.
- * @property-read  JGithubPackageSearch         $search         GitHub API object for search.
- * @property-read  JGithubPackageUsers          $users          GitHub API object for users.
+ * @property-read  JGithubPackageActivity      $activity       GitHub API object for activity.
+ * @property-read  JGithubPackageAuthorization $authorization  GitHub API object for authorizations.
+ * @property-read  JGithubPackageData          $data           GitHub API object for data.
+ * @property-read  JGithubPackageGists         $gists          GitHub API object for gists.
+ * @property-read  JGithubPackageGitignore     $gitignore      GitHub API object for gitignore.
+ * @property-read  JGithubPackageIssues        $issues         GitHub API object for issues.
+ * @property-read  JGithubPackageMarkdown      $markdown       GitHub API object for markdown.
+ * @property-read  JGithubPackageOrgs          $orgs           GitHub API object for orgs.
+ * @property-read  JGithubPackagePulls         $pulls          GitHub API object for pulls.
+ * @property-read  JGithubPackageRepositories  $repositories   GitHub API object for repositories.
+ * @property-read  JGithubPackageSearch        $search         GitHub API object for search.
+ * @property-read  JGithubPackageUsers         $users          GitHub API object for users.
  *
- * @property-read  JGithubRefs        $refs        Deprecated GitHub API object for referencess.
- * @property-read  JGithubForks       $forks       Deprecated GitHub API object for forks.
- * @property-read  JGithubCommits     $commits     Deprecated GitHub API object for commits.
- * @property-read  JGithubMilestones  $milestones  Deprecated GitHub API object for commits.
- * @property-read  JGithubStatuses    $statuses    Deprecated GitHub API object for commits.
- * @property-read  JGithubAccount     $account     Deprecated GitHub API object for account references.
- * @property-read  JGithubHooks       $hooks       Deprecated GitHub API object for hooks.
- * @property-read  JGithubMeta        $meta        Deprecated GitHub API object for meta.
+ * @property-read  JGithubRefs                 $refs           Deprecated GitHub API object for referencess.
+ * @property-read  JGithubForks                $forks          Deprecated GitHub API object for forks.
+ * @property-read  JGithubCommits              $commits        Deprecated GitHub API object for commits.
+ * @property-read  JGithubMilestones           $milestones     Deprecated GitHub API object for commits.
+ * @property-read  JGithubStatuses             $statuses       Deprecated GitHub API object for commits.
+ * @property-read  JGithubAccount              $account        Deprecated GitHub API object for account references.
+ * @property-read  JGithubHooks                $hooks          Deprecated GitHub API object for hooks.
+ * @property-read  JGithubMeta                 $meta           Deprecated GitHub API object for meta.
  *
  * @since       11.3
  * @deprecated  4.0  Use the `joomla/github` package via Composer instead
@@ -99,10 +99,10 @@ class JGithub
 	 *
 	 * @param   string  $name  Name of property to retrieve
 	 *
+	 * @return  JGithubObject  GitHub API object (gists, issues, pulls, etc).
 	 * @throws RuntimeException
 	 *
 	 * @since   11.3
-	 * @return  JGithubObject  GitHub API object (gists, issues, pulls, etc).
 	 */
 	public function __get($name)
 	{

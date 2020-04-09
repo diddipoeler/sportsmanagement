@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\MVC\Controller\AdminController;
 use Joomla\CMS\Factory;
 
@@ -32,25 +33,26 @@ class JSMControllerAdmin extends AdminController
 	/**
 	 * Constructor.
 	 *
-	 * @param  array An optional associative array of configuration settings.
-	 * @see    JController
-	 * @since  1.6
+	 * @param   array An optional associative array of configuration settings.
+	 *
 	 * @throws Exception
+	 * @since  1.6
+	 * @see    JController
 	 */
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
-		$this->app = Factory::getApplication();
+		$this->app    = Factory::getApplication();
 		$this->jinput = $this->app->input;
 		$this->option = $this->jinput->getCmd('option');
 
 	}
 
-	 /**
-	  * JSMControllerAdmin::cancel()
-	  *
-	  * @return void
-	  */
+	/**
+	 * JSMControllerAdmin::cancel()
+	 *
+	 * @return void
+	 */
 	function cancel()
 	{
 		$msg = '';

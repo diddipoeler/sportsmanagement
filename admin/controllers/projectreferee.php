@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 
 /**
@@ -37,12 +38,12 @@ class sportsmanagementControllerprojectreferee extends JSMControllerForm
 	 */
 	function remove()
 	{
-		$app =& Factory::getApplication();
-		  $pks = Factory::getApplication()->input->getVar('cid', array(), 'post', 'array');
-		  $model = $this->getModel('projectreferee');
-		  $model->delete($pks);
+		$app   =& Factory::getApplication();
+		$pks   = Factory::getApplication()->input->getVar('cid', array(), 'post', 'array');
+		$model = $this->getModel('projectreferee');
+		$model->delete($pks);
 
-		  $this->setRedirect('index.php?option=com_sportsmanagement&view=projectreferees');
+		$this->setRedirect('index.php?option=com_sportsmanagement&view=projectreferees');
 
 	}
 

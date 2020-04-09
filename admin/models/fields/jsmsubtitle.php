@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die;
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormField;
 
@@ -40,7 +41,7 @@ class JFormFieldJSMSubtitle extends FormField
 	protected function getLabel()
 	{
 
-			  $html = '';
+		$html  = '';
 		$value = trim($this->element['title']);
 
 		$html .= '<div style="clear: both;"></div>';

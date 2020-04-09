@@ -31,10 +31,10 @@ class JGithubPackageIssuesComments extends JGithubPackage
 	 * @param   integer  $page     The page number from which to get items.
 	 * @param   integer  $limit    The number of items on a page.
 	 *
+	 * @return  array
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  array
 	 */
 	public function getList($owner, $repo, $issueId, $page = 0, $limit = 0)
 	{
@@ -56,11 +56,11 @@ class JGithubPackageIssuesComments extends JGithubPackage
 	 * @param   string  $direction  The sort order- asc or desc. Ignored without sort parameter.
 	 * @param   JDate   $since      A timestamp in ISO 8601 format.
 	 *
-	 * @throws UnexpectedValueException
+	 * @return  array
 	 * @throws DomainException
+	 * @throws UnexpectedValueException
 	 * @since   11.3
 	 *
-	 * @return  array
 	 */
 	public function getRepositoryList($owner, $repo, $sort = 'created', $direction = 'asc', JDate $since = null)
 	{
@@ -125,10 +125,10 @@ class JGithubPackageIssuesComments extends JGithubPackage
 	 * @param   integer  $commentId  The id of the comment to update.
 	 * @param   string   $body       The new body text for the comment.
 	 *
-	 * @since   11.3
+	 * @return  object
 	 * @throws DomainException
 	 *
-	 * @return  object
+	 * @since   11.3
 	 */
 	public function edit($user, $repo, $commentId, $body)
 	{
@@ -156,10 +156,10 @@ class JGithubPackageIssuesComments extends JGithubPackage
 	 * @param   integer  $issueId  The issue number.
 	 * @param   string   $body     The comment body text.
 	 *
+	 * @return  object
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  object
 	 */
 	public function create($user, $repo, $issueId, $body)
 	{
@@ -187,10 +187,10 @@ class JGithubPackageIssuesComments extends JGithubPackage
 	 * @param   string   $repo       The name of the GitHub repository.
 	 * @param   integer  $commentId  The id of the comment to delete.
 	 *
+	 * @return  boolean
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  boolean
 	 */
 	public function delete($user, $repo, $commentId)
 	{

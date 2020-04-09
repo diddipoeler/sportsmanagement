@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Filesystem\File;
@@ -34,24 +35,25 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 	/**
 	 * sportsmanagementModelUpdates::loadUpdateFile()
 	 *
-	 * @param   mixed $myfilename
-	 * @param   mixed $file
+	 * @param   mixed  $myfilename
+	 * @param   mixed  $file
+	 *
 	 * @return
 	 */
-	function loadUpdateFile($myfilename,$file)
+	function loadUpdateFile($myfilename, $file)
 	{
 		include_once $myfilename;
-		$data = array();
+		$data        = array();
 		$updateArray = array();
-		$file_name = $file;
-		$this->app = Factory::getApplication();
+		$file_name   = $file;
+		$this->app   = Factory::getApplication();
 
 		if ($file == 'jl_upgrade-0_93b_to_1_5.php')
 		{
 			return '';
 		}
 
-		$data['id'] = 0;
+		$data['id']    = 0;
 		$data['count'] = 0;
 
 		$query = 'SELECT id,count FROM #__sportsmanagement_version where file LIKE ' . $this->_db->Quote($file);
@@ -63,7 +65,7 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 		}
 		else
 		{
-			$data['id'] = $result->id;
+			$data['id']    = $result->id;
 			$data['count'] = (int) $result->count + 1;
 		}
 
@@ -78,29 +80,29 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 		}
 		else
 		{
-			$data['version'] = !empty($version) ? $version : $result->version;
-			$data['major'] = !empty($major) ? $major : $result->major;
-			$data['minor'] = !empty($minor) ? $minor : $result->minor;
-			$data['build'] = !empty($build) ? $build : $result->build;
+			$data['version']  = !empty($version) ? $version : $result->version;
+			$data['major']    = !empty($major) ? $major : $result->major;
+			$data['minor']    = !empty($minor) ? $minor : $result->minor;
+			$data['build']    = !empty($build) ? $build : $result->build;
 			$data['revision'] = !empty($revision) ? $revision : $result->revision;
 		}
 
-		$object = new stdClass;
-		$object->id = $data['id'];
+		$object        = new stdClass;
+		$object->id    = $data['id'];
 		$object->count = $data['count'];
-		$object->file = $data['file'];
+		$object->file  = $data['file'];
 
 		if ($data['id'])
 		{
-			 // Update their details in the table using id as the primary key.
-			 $result = Factory::getDbo()->updateObject('#__sportsmanagement_version', $object, 'id');
+			// Update their details in the table using id as the primary key.
+			$result = Factory::getDbo()->updateObject('#__sportsmanagement_version', $object, 'id');
 		}
 		else
 		{
-			 $object->count = 1;
+			$object->count = 1;
 
-			 // Insert the object into the table.
-			 $result = $this->_db->insertObject('#__sportsmanagement_version', $object);
+			// Insert the object into the table.
+			$result = $this->_db->insertObject('#__sportsmanagement_version', $object);
 		}
 
 		return '';
@@ -129,11 +131,12 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 	/**
 	 * sportsmanagementModelUpdates::_cmpDate()
 	 *
-	 * @param   mixed $a
-	 * @param   mixed $b
+	 * @param   mixed  $a
+	 * @param   mixed  $b
+	 *
 	 * @return
 	 */
-	function _cmpDate($a,$b)
+	function _cmpDate($a, $b)
 	{
 		$ua = strtotime($a['updateFileDate']);
 		$ub = strtotime($b['updateFileDate']);
@@ -149,11 +152,12 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 	/**
 	 * sportsmanagementModelUpdates::_cmpName()
 	 *
-	 * @param   mixed $a
-	 * @param   mixed $b
+	 * @param   mixed  $a
+	 * @param   mixed  $b
+	 *
 	 * @return
 	 */
-	function _cmpName($a,$b)
+	function _cmpName($a, $b)
 	{
 		return strcasecmp($a['file_name'], $b['file_name']);
 	}
@@ -161,11 +165,12 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 	/**
 	 * sportsmanagementModelUpdates::_cmpVersion()
 	 *
-	 * @param   mixed $a
-	 * @param   mixed $b
+	 * @param   mixed  $a
+	 * @param   mixed  $b
+	 *
 	 * @return
 	 */
-	function _cmpVersion($a,$b)
+	function _cmpVersion($a, $b)
 	{
 		return strcasecmp($a['last_version'], $b['last_version']);
 	}
@@ -193,7 +198,7 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 	function loadUpdateFiles()
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 
 		// $updateFileList=Folder::files(JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'updates'.DS,'.php$',false,true,array('',''));
 		$updateFileList = Folder::files(JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'updates' . DS, '.php$');
@@ -215,7 +220,7 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 		}
 
 		$updateFiles = array();
-		$i = 0;
+		$i           = 0;
 
 		foreach ($updateFileList AS $updateFile)
 		{
@@ -232,21 +237,21 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 
 			if ($fileContent = File::read($filepath))
 			{
-				$version = '';
+				$version           = '';
 				$updateDescription = '';
-				$lastVersion = '';
-				$updateDate = '';
-				$updateTime = '';
-				$pos = strpos($fileContent, '$version');
+				$lastVersion       = '';
+				$updateDate        = '';
+				$updateTime        = '';
+				$pos               = strpos($fileContent, '$version');
 
 				if ($pos !== false)
 				{
-					$dDummy = substr($fileContent, $pos);
-					$pos2 = strpos($dDummy, '=');
-					$dDummy = substr($dDummy, $pos2);
-					$pos3 = strpos($dDummy, "'");
-					$dDummy = substr($dDummy, $pos3 + 1);
-					$pos4 = strpos($dDummy, "'");
+					$dDummy  = substr($fileContent, $pos);
+					$pos2    = strpos($dDummy, '=');
+					$dDummy  = substr($dDummy, $pos2);
+					$pos3    = strpos($dDummy, "'");
+					$dDummy  = substr($dDummy, $pos3 + 1);
+					$pos4    = strpos($dDummy, "'");
 					$version = trim(substr($dDummy, 0, $pos4));
 				}
 
@@ -254,12 +259,12 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 
 				if ($pos !== false)
 				{
-					$dDummy = substr($fileContent, $pos);
-					$pos2 = strpos($dDummy, '=');
-					$dDummy = substr($dDummy, $pos2);
-					$pos3 = strpos($dDummy, "'");
-					$dDummy = substr($dDummy, $pos3 + 1);
-					$pos4 = strpos($dDummy, "'");
+					$dDummy            = substr($fileContent, $pos);
+					$pos2              = strpos($dDummy, '=');
+					$dDummy            = substr($dDummy, $pos2);
+					$pos3              = strpos($dDummy, "'");
+					$dDummy            = substr($dDummy, $pos3 + 1);
+					$pos4              = strpos($dDummy, "'");
 					$updateDescription = trim(substr($dDummy, 0, $pos4));
 				}
 
@@ -267,12 +272,12 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 
 				if ($pos !== false)
 				{
-					$dDummy = substr($fileContent, $pos);
-					$pos2 = strpos($dDummy, '=');
-					$dDummy = substr($dDummy, $pos2);
-					$pos3 = strpos($dDummy, "'");
-					$dDummy = substr($dDummy, $pos3 + 1);
-					$pos4 = strpos($dDummy, "'");
+					$dDummy      = substr($fileContent, $pos);
+					$pos2        = strpos($dDummy, '=');
+					$dDummy      = substr($dDummy, $pos2);
+					$pos3        = strpos($dDummy, "'");
+					$dDummy      = substr($dDummy, $pos3 + 1);
+					$pos4        = strpos($dDummy, "'");
 					$lastVersion = trim(substr($dDummy, 0, $pos4));
 				}
 
@@ -280,12 +285,12 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 
 				if ($pos !== false)
 				{
-					$dDummy = substr($fileContent, $pos);
-					$pos2 = strpos($dDummy, '=');
-					$dDummy = substr($dDummy, $pos2);
-					$pos3 = strpos($dDummy, "'");
-					$dDummy = substr($dDummy, $pos3 + 1);
-					$pos4 = strpos($dDummy, "'");
+					$dDummy         = substr($fileContent, $pos);
+					$pos2           = strpos($dDummy, '=');
+					$dDummy         = substr($dDummy, $pos2);
+					$pos3           = strpos($dDummy, "'");
+					$dDummy         = substr($dDummy, $pos3 + 1);
+					$pos4           = strpos($dDummy, "'");
 					$updateFileDate = trim(substr($dDummy, 0, $pos4));
 				}
 
@@ -293,12 +298,12 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 
 				if ($pos !== false)
 				{
-					$dDummy = substr($fileContent, $pos);
-					$pos2 = strpos($dDummy, '=');
-					$dDummy = substr($dDummy, $pos2);
-					$pos3 = strpos($dDummy, "'");
-					$dDummy = substr($dDummy, $pos3 + 1);
-					$pos4 = strpos($dDummy, "'");
+					$dDummy         = substr($fileContent, $pos);
+					$pos2           = strpos($dDummy, '=');
+					$dDummy         = substr($dDummy, $pos2);
+					$pos3           = strpos($dDummy, "'");
+					$dDummy         = substr($dDummy, $pos3 + 1);
+					$pos4           = strpos($dDummy, "'");
 					$updateFileTime = trim(substr($dDummy, 0, $pos4));
 				}
 
@@ -306,12 +311,12 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 
 				if ($pos !== false)
 				{
-					$dDummy = substr($fileContent, $pos);
-					$pos2 = strpos($dDummy, '=');
-					$dDummy = substr($dDummy, $pos2);
-					$pos3 = strpos($dDummy, "'");
-					$dDummy = substr($dDummy, $pos3 + 1);
-					$pos4 = strpos($dDummy, "'");
+					$dDummy      = substr($fileContent, $pos);
+					$pos2        = strpos($dDummy, '=');
+					$dDummy      = substr($dDummy, $pos2);
+					$pos3        = strpos($dDummy, "'");
+					$dDummy      = substr($dDummy, $pos3 + 1);
+					$pos4        = strpos($dDummy, "'");
 					$excludeFile = trim(substr($dDummy, 0, $pos4));
 
 					if ($excludeFile == 'true')
@@ -320,17 +325,17 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 					}
 				}
 
-				$updateFiles[$i]['id'] = $i;
-				$updateFiles[$i]['file_name'] = $updateFile;
-				$updateFiles[$i]['version'] = $version;
-				$updateFiles[$i]['last_version'] = $lastVersion;
-				$updateFiles[$i]['updateFileDate'] = trim($updateFileDate);
-				$updateFiles[$i]['updateFileTime'] = $updateFileTime;
-				$updateFiles[$i]['updateTime'] = '0000-00-00 00:00:00';
+				$updateFiles[$i]['id']                = $i;
+				$updateFiles[$i]['file_name']         = $updateFile;
+				$updateFiles[$i]['version']           = $version;
+				$updateFiles[$i]['last_version']      = $lastVersion;
+				$updateFiles[$i]['updateFileDate']    = trim($updateFileDate);
+				$updateFiles[$i]['updateFileTime']    = $updateFileTime;
+				$updateFiles[$i]['updateTime']        = '0000-00-00 00:00:00';
 				$updateFiles[$i]['updateDescription'] = $updateDescription;
-				$updateFiles[$i]['date'] = '';
-				$updateFiles[$i]['count'] = 0;
-				$query = "SELECT date,count FROM #__sportsmanagement_version where file=" . $this->_db->Quote($updateFile);
+				$updateFiles[$i]['date']              = '';
+				$updateFiles[$i]['count']             = 0;
+				$query                                = "SELECT date,count FROM #__sportsmanagement_version where file=" . $this->_db->Quote($updateFile);
 				$this->_db->setQuery($query);
 
 				if (!$result = $this->_db->loadObject())
@@ -339,7 +344,7 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 				}
 				else
 				{
-					$updateFiles[$i]['date'] = $result->date;
+					$updateFiles[$i]['date']  = $result->date;
 					$updateFiles[$i]['count'] = $result->count;
 				}
 
@@ -347,26 +352,26 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 			}
 		}
 
-		$filter_order        = $app->getUserState($option . 'updates_filter_order',        'filter_order',        'dates',    'cmd');
-		$filter_order_Dir    = $app->getUserState($option . 'updates_filter_order_Dir',    'filter_order_Dir',    '',            'word');
-		$orderfn = '_cmpDate';
+		$filter_order     = $app->getUserState($option . 'updates_filter_order', 'filter_order', 'dates', 'cmd');
+		$filter_order_Dir = $app->getUserState($option . 'updates_filter_order_Dir', 'filter_order_Dir', '', 'word');
+		$orderfn          = '_cmpDate';
 
 		switch ($filter_order)
 		{
 			case 'name':
 				$orderfn = '_cmpName';
-					break;
+				break;
 
 			case 'version':
-					$orderfn = '_cmpVersion';
-					break;
+				$orderfn = '_cmpVersion';
+				break;
 
 			case 'date':
-					$orderfn = '_cmpDate';
-					break;
+				$orderfn = '_cmpDate';
+				break;
 		}
 
-		usort($updateFiles, array($this,$orderfn));
+		usort($updateFiles, array($this, $orderfn));
 
 		if (strcasecmp($filter_order_Dir, 'ASC') == 0)
 		{

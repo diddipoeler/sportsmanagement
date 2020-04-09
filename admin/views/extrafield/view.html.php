@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
@@ -52,9 +53,9 @@ class sportsmanagementViewextrafield extends sportsmanagementView
 		//		$this->item = $item;
 		//		$this->script = $script;
 
-			  //		$extended = sportsmanagementHelper::getExtended($item->extended, 'jlextcountry');
+		//		$extended = sportsmanagementHelper::getExtended($item->extended, 'jlextcountry');
 		//		$this->assignRef( 'extended', $extended );
-		$this->cfg_which_media_tool    = ComponentHelper::getParams($this->option)->get('cfg_which_media_tool', 0);
+		$this->cfg_which_media_tool = ComponentHelper::getParams($this->option)->get('cfg_which_media_tool', 0);
 
 	}
 
@@ -64,13 +65,13 @@ class sportsmanagementViewextrafield extends sportsmanagementView
 	protected function addToolBar()
 	{
 		$app    = Factory::getApplication();
-		$jinput    = $app->input;
+		$jinput = $app->input;
 		$jinput->set('hidemainmenu', true);
 
-			  $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_EXTRAFIELD_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_EXTRAFIELD_NEW');
+		$isNew      = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_EXTRAFIELD_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_EXTRAFIELD_NEW');
 		$this->icon = 'extrafield';
 
-			  parent::addToolbar();
+		parent::addToolbar();
 	}
 
 

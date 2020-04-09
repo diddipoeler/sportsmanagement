@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -32,7 +33,8 @@ class modJSMRankingHelper
 	/**
 	 * modJSMRankingHelper::getData()
 	 *
-	 * @param   mixed $params
+	 * @param   mixed  $params
+	 *
 	 * @return
 	 */
 	public static function getData(&$params)
@@ -46,7 +48,7 @@ class modJSMRankingHelper
 			JLoader::import('components.com_sportsmanagement.helpers.ranking', JPATH_SITE);
 		}
 
-			  sportsmanagementModelProject::$cfg_which_database = $params->get('cfg_which_database');
+		sportsmanagementModelProject::$cfg_which_database = $params->get('cfg_which_database');
 		sportsmanagementModelProject::setProjectId($params->get('p'), $params->get('cfg_which_database'));
 
 		$project = sportsmanagementModelProject::getProject($params->get('cfg_which_database'), __METHOD__);
@@ -57,21 +59,21 @@ class modJSMRankingHelper
 		//		$divisionid = explode(':', $params->get('division_id', 0));
 		//		$divisionid = $divisionid[0];
 		$divisionid = (int) $params->get('division_id', 0);
-		$res   = $ranking->getRanking(null, null, $divisionid, $params->get('cfg_which_database'));
-		$teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0, 'name', $params->get('cfg_which_database'), __METHOD__);
+		$res        = $ranking->getRanking(null, null, $divisionid, $params->get('cfg_which_database'));
+		$teams      = sportsmanagementModelProject::getTeamsIndexedByPtid(0, 'name', $params->get('cfg_which_database'), __METHOD__);
 
-			  $list = array();
+		$list = array();
 
 		foreach ($res as $ptid => $t)
 		{
 			$t->team = $teams[$ptid];
-			$list[] = $t;
+			$list[]  = $t;
 		}
 
 		if ($params->get('visible_team') != '')
 		{
 			$exParam = explode(':', $params->get('visible_team'));
-			$list = self::getShrinkedDataAroundOneTeam($list, $exParam[0], $params->get('limit', 5));
+			$list    = self::getShrinkedDataAroundOneTeam($list, $exParam[0], $params->get('limit', 5));
 		}
 
 		$colors = array();
@@ -79,41 +81,12 @@ class modJSMRankingHelper
 		if ($params->get('show_rank_colors', 0))
 		{
 			sportsmanagementModelRanking::$projectid = $params->get('p');
-			$config = sportsmanagementModelProject::getTemplateConfig("ranking", $params->get('cfg_which_database'), __METHOD__);
-			$colors = sportsmanagementModelProject::getColors($config["colors"]);
+			$config                                  = sportsmanagementModelProject::getTemplateConfig("ranking", $params->get('cfg_which_database'), __METHOD__);
+			$colors                                  = sportsmanagementModelProject::getColors($config["colors"]);
 		}
 
 		return array('project' => $project, 'ranking' => $list, 'colors' => $colors);
 
-	}
-
-	/**
-	 * modJSMRankingHelper::getCountGames()
-	 *
-	 * @param   mixed $projectid
-	 * @param   mixed $ishd_update_hour
-	 * @return void
-	 */
-	static function getCountGames($projectid,$ishd_update_hour)
-	{
-		$db = Factory::getDBO();
-		$app = Factory::getApplication();
-		$query = $db->getQuery(true);
-		$date = time();    // Aktuelles Datum
-		$enddatum = $date - ($ishd_update_hour * 60 * 60);  // Ein Tag später (stunden * minuten * sekunden)
-		$match_timestamp = sportsmanagementHelper::getTimestamp($enddatum);
-		$query->clear();
-		$query->select('count(*) AS count');
-		$query->from('#__sportsmanagement_match AS m ');
-		$query->join('INNER', '#__sportsmanagement_round AS r on r.id = m.round_id ');
-		$query->join('INNER', '#__sportsmanagement_project AS p on p.id = r.project_id ');
-		$query->where('p.id = ' . $projectid);
-		$query->where('m.team1_result IS NULL ');
-		$query->where('m.match_timestamp < ' . $match_timestamp);
-		$db->setQuery($query);
-		$matchestoupdate = $db->loadResult();
-
-		return $matchestoupdate;
 	}
 
 	/**
@@ -126,7 +99,7 @@ class modJSMRankingHelper
 	{
 		// First Fav-Team should be always visible in the ranking view
 		$rank = $completeRankingList;
-		$i = 0;
+		$i    = 0;
 
 		foreach ($rank as $item)
 		{
@@ -160,12 +133,42 @@ class modJSMRankingHelper
 		return $rank;
 	}
 
+	/**
+	 * modJSMRankingHelper::getCountGames()
+	 *
+	 * @param   mixed  $projectid
+	 * @param   mixed  $ishd_update_hour
+	 *
+	 * @return void
+	 */
+	static function getCountGames($projectid, $ishd_update_hour)
+	{
+		$db              = Factory::getDBO();
+		$app             = Factory::getApplication();
+		$query           = $db->getQuery(true);
+		$date            = time();    // Aktuelles Datum
+		$enddatum        = $date - ($ishd_update_hour * 60 * 60);  // Ein Tag später (stunden * minuten * sekunden)
+		$match_timestamp = sportsmanagementHelper::getTimestamp($enddatum);
+		$query->clear();
+		$query->select('count(*) AS count');
+		$query->from('#__sportsmanagement_match AS m ');
+		$query->join('INNER', '#__sportsmanagement_round AS r on r.id = m.round_id ');
+		$query->join('INNER', '#__sportsmanagement_project AS p on p.id = r.project_id ');
+		$query->where('p.id = ' . $projectid);
+		$query->where('m.team1_result IS NULL ');
+		$query->where('m.match_timestamp < ' . $match_timestamp);
+		$db->setQuery($query);
+		$matchestoupdate = $db->loadResult();
+
+		return $matchestoupdate;
+	}
 
 	/**
 	 * returns value corresponding to specified column
 	 *
-	 * @param  string column
-	 * @param  object ranking item
+	 * @param   string column
+	 * @param   object ranking item
+	 *
 	 * @return value POINTS, RESULTS, DIFF, BONUS, START....see the cases here below :)
 	 */
 	public static function getColValue($column, $item)
@@ -176,60 +179,60 @@ class modJSMRankingHelper
 		switch ($column)
 		{
 			case 'points':
-					return $item->getPoints();
+				return $item->getPoints();
 			case 'played':
-					return $item->cnt_matches;
+				return $item->cnt_matches;
 			case 'wins':
-					return $item->cnt_won;
+				return $item->cnt_won;
 			case 'ties':
-					return $item->cnt_draw;
+				return $item->cnt_draw;
 			case 'losses':
-					return $item->cnt_lost;
+				return $item->cnt_lost;
 			case 'wot':
-					return $item->cnt_wot;
+				return $item->cnt_wot;
 			case 'wso':
-					return $item->cnt_wso;
+				return $item->cnt_wso;
 			case 'lot':
-					return $item->cnt_lot;
+				return $item->cnt_lot;
 			case 'lso':
-					return $item->cnt_lso;
+				return $item->cnt_lso;
 			case 'scorefor':
-					return $item->sum_team1_result;
+				return $item->sum_team1_result;
 			case 'scoreagainst':
-					return $item->sum_team2_result;
+				return $item->sum_team2_result;
 			case 'results':
-					return $item->sum_team1_result . ':' . $item->sum_team2_result;
+				return $item->sum_team1_result . ':' . $item->sum_team2_result;
 			case 'diff':
 			case 'scorediff':
-					return $item->diff_team_results;
+				return $item->diff_team_results;
 			case 'scorepct':
-					return round(($item->scorePct()), 2);
+				return round(($item->scorePct()), 2);
 			case 'bonus':
-					return $item->bonus_points;
+				return $item->bonus_points;
 			case 'start':
-					return $item->cnt_lost;
+				return $item->cnt_lost;
 			case 'winpct':
-					return round(($item->winpct()), 2);
+				return round(($item->winpct()), 2);
 			case 'legs':
-					return $item->sum_team1_legs . ':' . $item->sum_team2_legs;
+				return $item->sum_team1_legs . ':' . $item->sum_team2_legs;
 			case 'legsdiff':
-					return $item->diff_team_legs;
+				return $item->diff_team_legs;
 			case 'legsratio':
-					return round(($item->legsRatio()), 2);
+				return round(($item->legsRatio()), 2);
 			case 'negpoints':
-					return $item->neg_points;
+				return $item->neg_points;
 			case 'oldnegpoints':
-					return $item->getPoints() . ':' . $item->neg_points;
+				return $item->getPoints() . ':' . $item->neg_points;
 			case 'pointsratio':
-					return round(($item->pointsRatio()), 2);
+				return round(($item->pointsRatio()), 2);
 			case 'gfa':
-					return round(($item->getGFA()), 2);
+				return round(($item->getGFA()), 2);
 			case 'gaa':
-					return round(($item->getGAA()), 2);
+				return round(($item->getGAA()), 2);
 			case 'ppg':
-					return round(($item->getPPG()), 2);
+				return round(($item->getPPG()), 2);
 			case 'ppp':
-					return round(($item->getPPP()), 2);
+				return round(($item->getPPP()), 2);
 
 			default:
 				if (isset($item->$column))
@@ -244,8 +247,9 @@ class modJSMRankingHelper
 	/**
 	 * get img for team
 	 *
-	 * @param  object ranking row
-	 * @param  int type = 1 for club small logo, 2 for country
+	 * @param   object ranking row
+	 * @param   int type = 1 for club small logo, 2 for country
+	 *
 	 * @return html string
 	 */
 	static function getLogo($item, $type = 1)
@@ -261,14 +265,14 @@ class modJSMRankingHelper
 		{
 			if (!empty($item->team->logo_middle))
 			{
-					  return HTMLHelper::image($item->team->logo_middle, $item->team->short_name, 'class="teamlogo" width="20" ');
+				return HTMLHelper::image($item->team->logo_middle, $item->team->short_name, 'class="teamlogo" width="20" ');
 			}
 		}
 		elseif ($type == 4) // Club small logo
 		{
 			if (!empty($item->team->logo_big))
 			{
-					  return HTMLHelper::image($item->team->logo_big, $item->team->short_name, 'class="teamlogo" width="20" ');
+				return HTMLHelper::image($item->team->logo_big, $item->team->short_name, 'class="teamlogo" width="20" ');
 			}
 		}
 		elseif ($type == 2 && !empty($item->team->country))
@@ -282,39 +286,40 @@ class modJSMRankingHelper
 	/**
 	 * modJSMRankingHelper::getTeamLink()
 	 *
-	 * @param   mixed $item
-	 * @param   mixed $params
-	 * @param   mixed $project
+	 * @param   mixed  $item
+	 * @param   mixed  $params
+	 * @param   mixed  $project
+	 *
 	 * @return
 	 */
 	public static function getTeamLink($item, $params, $project)
 	{
-		  $routeparameter = array();
+		$routeparameter                       = array();
 		$routeparameter['cfg_which_database'] = $params->get('cfg_which_database');
-		$routeparameter['s'] = $params->get('s');
-		$routeparameter['p'] = $project->slug;
+		$routeparameter['s']                  = $params->get('s');
+		$routeparameter['p']                  = $project->slug;
 
 		switch ($params->get('teamlink'))
 		{
 			case 'teaminfo':
-				$routeparameter['tid'] = $item->team->team_slug;
+				$routeparameter['tid']  = $item->team->team_slug;
 				$routeparameter['ptid'] = $item->team->projectteamid;
 
-return sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);
+				return sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);
 			case 'roster':
-				$routeparameter['tid'] = $item->team->team_slug;
+				$routeparameter['tid']  = $item->team->team_slug;
 				$routeparameter['ptid'] = $item->team->projectteamid;
 
-return sportsmanagementHelperRoute::getSportsmanagementRoute('roster', $routeparameter);
+				return sportsmanagementHelperRoute::getSportsmanagementRoute('roster', $routeparameter);
 			case 'teamplan':
-				$routeparameter['tid'] = $item->team->team_slug;
+				$routeparameter['tid']      = $item->team->team_slug;
 				$routeparameter['division'] = $item->team->division_slug;
-				$routeparameter['mode'] = 0;
-				$routeparameter['ptid'] = $item->team->projectteamid;
+				$routeparameter['mode']     = 0;
+				$routeparameter['ptid']     = $item->team->projectteamid;
 
-return sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan', $routeparameter);
+				return sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan', $routeparameter);
 			case 'clubinfo':
-			return sportsmanagementHelperRoute::getClubInfoRoute($project->slug, $item->team->club_slug, null, $params->get('cfg_which_database'));
+				return sportsmanagementHelperRoute::getClubInfoRoute($project->slug, $item->team->club_slug, null, $params->get('cfg_which_database'));
 		}
 	}
 }

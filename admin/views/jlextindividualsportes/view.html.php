@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -45,7 +46,7 @@ class sportsmanagementViewjlextindividualsportes extends sportsmanagementView
 			case 'default_3';
 			case 'default_4';
 				$this->_displayDefault($tpl);
-					break;
+				break;
 		}
 
 	}
@@ -53,69 +54,70 @@ class sportsmanagementViewjlextindividualsportes extends sportsmanagementView
 	/**
 	 * sportsmanagementViewjlextindividualsportes::_displayDefault()
 	 *
-	 * @param   mixed $tpl
+	 * @param   mixed  $tpl
+	 *
 	 * @return void
 	 */
 	function _displayDefault($tpl)
 	{
-		$this->state = $this->get('State');
+		$this->state         = $this->get('State');
 		$this->sortDirection = $this->state->get('list.direction');
-		$this->sortColumn = $this->state->get('list.ordering');
+		$this->sortColumn    = $this->state->get('list.ordering');
 
-			  $cid = $this->jinput->request->get('cid', null, array());
+		$cid = $this->jinput->request->get('cid', null, array());
 
-			  $project_id    = $this->app->getUserState("$this->option.pid", '0');
-		$match_id = $this->jinput->getInt('id', 0);
-		$rid = $this->jinput->getInt('rid', 0);
+		$project_id      = $this->app->getUserState("$this->option.pid", '0');
+		$match_id        = $this->jinput->getInt('id', 0);
+		$rid             = $this->jinput->getInt('rid', 0);
 		$projectteam1_id = $this->jinput->getInt('team1', 0);
 		$projectteam2_id = $this->jinput->getInt('team2', 0);
 
-			  $mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
-		$projectws = $mdlProject->getProject($project_id);
-		$mdlRound = BaseDatabaseModel::getInstance("Round", "sportsmanagementModel");
-		$roundws = $mdlRound->getRound($rid);
+		$mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
+		$projectws  = $mdlProject->getProject($project_id);
+		$mdlRound   = BaseDatabaseModel::getInstance("Round", "sportsmanagementModel");
+		$roundws    = $mdlRound->getRound($rid);
 
-			  $this->model->checkGames($projectws, $match_id, $rid, $projectteam1_id, $projectteam2_id);
+		$this->model->checkGames($projectws, $match_id, $rid, $projectteam1_id, $projectteam2_id);
 
-			  $matches = $this->get('Items');
-		$total = $this->get('Total');
+		$matches    = $this->get('Items');
+		$total      = $this->get('Total');
 		$pagination = $this->get('Pagination');
 
-			  $teams[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM_PLAYER'));
+		$teams[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM_PLAYER'));
 
 		if ($projectteams = $this->model->getPlayer($projectteam1_id, $project_id))
 		{
 			$teams = array_merge($teams, $projectteams);
 		}
 
-		 $lists['homeplayer'] = $teams;
-		 unset($teams);
+		$lists['homeplayer'] = $teams;
+		unset($teams);
 
-				   $teams[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM_PLAYER'));
+		$teams[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM_PLAYER'));
 
 		if ($projectteams = $this->model->getPlayer($projectteam2_id, $project_id))
 		{
 			$teams = array_merge($teams, $projectteams);
 		}
 
-		 $lists['awayplayer'] = $teams;
-		 unset($teams);
+		$lists['awayplayer'] = $teams;
+		unset($teams);
 
-			  $this->matches    = $matches;
-		$this->pagination    = $pagination;
+		$this->matches    = $matches;
+		$this->pagination = $pagination;
 
 		// $this->request_url    = $uri->toString();
 
-			  $this->ProjectTeams    = $this->model->getProjectTeams($project_id);
+		$this->ProjectTeams = $this->model->getProjectTeams($project_id);
 
-			  $this->match_id    = $match_id;
-		$this->rid    = $rid;
+		$this->match_id = $match_id;
+		$this->rid      = $rid;
 
-			  $this->projectteam1_id    = $projectteam1_id;
-		$this->projectteam2_id    = $projectteam2_id;
+		$this->projectteam1_id = $projectteam1_id;
+		$this->projectteam2_id = $projectteam2_id;
 
-			  $this->projectws    = $projectws;
-		$this->roundws    = $roundws;
+		$this->projectws = $projectws;
+		$this->roundws   = $roundws;
 
 		if ($result = $this->model->getPlayer($projectteam1_id, $project_id))
 		{
@@ -123,10 +125,10 @@ class sportsmanagementViewjlextindividualsportes extends sportsmanagementView
 		}
 		else
 		{
-			$tempplayer = new stdClass;
-			$tempplayer->value = 0;
-			$tempplayer->text = 'TempPlayer';
-			$exportplayer[] = $tempplayer;
+			$tempplayer          = new stdClass;
+			$tempplayer->value   = 0;
+			$tempplayer->text    = 'TempPlayer';
+			$exportplayer[]      = $tempplayer;
 			$this->getHomePlayer = $exportplayer;
 		}
 
@@ -136,16 +138,16 @@ class sportsmanagementViewjlextindividualsportes extends sportsmanagementView
 		}
 		else
 		{
-			$tempplayer = new stdClass;
-			$tempplayer->value = 0;
-			$tempplayer->text = 'TempPlayer';
-			$exportplayer[] = $tempplayer;
+			$tempplayer          = new stdClass;
+			$tempplayer->value   = 0;
+			$tempplayer->text    = 'TempPlayer';
+			$exportplayer[]      = $tempplayer;
 			$this->getAwayPlayer = $exportplayer;
 		}
 
-			$this->lists = $lists;
+		$this->lists = $lists;
 
-			$this->setLayout('default');
+		$this->setLayout('default');
 	}
 
 }

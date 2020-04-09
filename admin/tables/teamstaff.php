@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 
 /**
@@ -29,25 +30,27 @@ class sportsmanagementTableTeamStaff extends JSMTable
 	/**
 	 * Constructor
 	 *
-	 * @param object Database connector object
+	 * @param   object Database connector object
+	 *
 	 * @since 1.0
 	 */
-	function __construct(& $db)
+	function __construct(&$db)
 	{
-		  $db = sportsmanagementHelper::getDBConnection();
+		$db = sportsmanagementHelper::getDBConnection();
 		parent::__construct('#__sportsmanagement_team_staff', 'id', $db);
 	}
 
 	/**
 	 * sportsmanagementTableTeamStaff::canDelete()
 	 *
-	 * @param   mixed $id
-	 * @param   mixed $joins
+	 * @param   mixed  $id
+	 * @param   mixed  $joins
+	 *
 	 * @return
 	 */
 	function canDelete($id, $joins = null)
 	{
 
-			  return true;
+		return true;
 	}
 }

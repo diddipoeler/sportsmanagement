@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -48,14 +49,13 @@ class JFormFieldprojectpositionreferee extends \JFormFieldList
 	protected function getOptions()
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 
 		// Initialize variables.
 		$options = array();
 
-		$varname = (string) $this->element['varname'];
-		$project_id = $app->getUserState("$option.pid", '0');
-		;
+		$varname    = (string) $this->element['varname'];
+		$project_id = $app->getUserState("$option.pid", '0');;
 
 		/*
         $project_id = Factory::getApplication()->input->getVar($varname);
@@ -65,10 +65,10 @@ class JFormFieldprojectpositionreferee extends \JFormFieldList
         */
 		if ($project_id)
 		{
-			$db = Factory::getDbo();
+			$db    = Factory::getDbo();
 			$query = $db->getQuery(true);
 
-						  $query->select('ppos.id AS value,pos.name AS text');
+			$query->select('ppos.id AS value,pos.name AS text');
 			$query->from('#__sportsmanagement_position AS pos');
 			$query->join('inner', '#__sportsmanagement_project_position AS ppos ON pos.id=ppos.position_id');
 			$query->where('ppos.project_id=' . $project_id . ' AND pos.persontype=3');
@@ -78,7 +78,7 @@ class JFormFieldprojectpositionreferee extends \JFormFieldList
 			$options = $db->loadObjectList();
 		}
 
-			  // Merge any additional options in the XML definition.
+		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);
 
 		return $options;

@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
@@ -43,7 +44,7 @@ class sportsmanagementViewStats extends sportsmanagementView
 
 		if (isset($this->project))
 		{
-			$this->division = sportsmanagementModelProject::getDivision($this->jinput->getint("division", 0), $this->jinput->getint("cfg_which_database", 0));
+			$this->division      = sportsmanagementModelProject::getDivision($this->jinput->getint("division", 0), $this->jinput->getint("cfg_which_database", 0));
 			$this->overallconfig = sportsmanagementModelProject::getOverallConfig($this->jinput->getint("cfg_which_database", 0));
 
 			if (!isset($this->overallconfig['seperator']))
@@ -51,30 +52,30 @@ class sportsmanagementViewStats extends sportsmanagementView
 				$this->overallconfig['seperator'] = ":";
 			}
 
-			$this->actualround = sportsmanagementModelProject::getCurrentRoundNumber($this->jinput->getint("cfg_which_database", 0));
-			$this->highest_home = $this->model->getHighest('HOME');
-			$this->highest_away = $this->model->getHighest('AWAY');
-			$this->totals = $this->model->getSeasonTotals();
-			$this->totalrounds = $this->model->getTotalRounds();
+			$this->actualround       = sportsmanagementModelProject::getCurrentRoundNumber($this->jinput->getint("cfg_which_database", 0));
+			$this->highest_home      = $this->model->getHighest('HOME');
+			$this->highest_away      = $this->model->getHighest('AWAY');
+			$this->totals            = $this->model->getSeasonTotals();
+			$this->totalrounds       = $this->model->getTotalRounds();
 			$this->attendanceranking = $this->model->getAttendanceRanking();
-			$this->bestavg = $this->model->getBestAvg();
-			$this->bestavgteam = $this->model->getBestAvgTeam();
-			$this->worstavg = $this->model->getWorstAvg();
-			$this->worstavgteam = $this->model->getWorstAvgTeam();
+			$this->bestavg           = $this->model->getBestAvg();
+			$this->bestavgteam       = $this->model->getBestAvgTeam();
+			$this->worstavg          = $this->model->getWorstAvg();
+			$this->worstavgteam      = $this->model->getWorstAvgTeam();
 
 			$limit = 3;
 
 			$this->limit = $limit;
 
-					  $rounds    = sportsmanagementModelProject::getRounds('ASC', $this->jinput->getint("cfg_which_database", 0));
+			$rounds             = sportsmanagementModelProject::getRounds('ASC', $this->jinput->getint("cfg_which_database", 0));
 			$this->round_labels = array();
 
 			foreach ($rounds as $r)
 			{
-				  $this->round_labels[] = '"' . $r->name . '"';
+				$this->round_labels[] = '"' . $r->name . '"';
 			}
 
-					  $this->_setChartdata(array_merge(sportsmanagementModelProject::getTemplateConfig("flash", $this->jinput->getint("cfg_which_database", 0)), $this->config));
+			$this->_setChartdata(array_merge(sportsmanagementModelProject::getTemplateConfig("flash", $this->jinput->getint("cfg_which_database", 0)), $this->config));
 		}
 
 		// Set page title
@@ -92,18 +93,19 @@ class sportsmanagementViewStats extends sportsmanagementView
 
 		$this->document->setTitle($pageTitle);
 
-			  $view = $this->jinput->getVar("view");
+		$view      = $this->jinput->getVar("view");
 		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/' . $this->option . '/assets/css/' . $view . '.css' . '" type="text/css" />' . "\n";
 		$this->document->addCustomTag($stylelink);
 
-			  $this->headertitle = Text::_('COM_SPORTSMANAGEMENT_STATS_TITLE');
+		$this->headertitle = Text::_('COM_SPORTSMANAGEMENT_STATS_TITLE');
 
 	}
 
 	/**
 	 * sportsmanagementViewStats::_setChartdata()
 	 *
-	 * @param   mixed $config
+	 * @param   mixed  $config
+	 *
 	 * @return
 	 */
 	function _setChartdata($config)
@@ -111,9 +113,9 @@ class sportsmanagementViewStats extends sportsmanagementView
 		$data = $this->get('ChartData');
 
 		// Calculate Values for Chart Object
-		$homeSum = array();
-		$awaySum = array();
-		$matchDayGoalsCount = array();
+		$homeSum               = array();
+		$awaySum               = array();
+		$matchDayGoalsCount    = array();
 		$matchDayGoalsCountMax = 0;
 
 		foreach ($data as $rw)
@@ -144,10 +146,10 @@ class sportsmanagementViewStats extends sportsmanagementView
 			$matchDayGoalsCountMax = (int) $rw->homegoalspd + $rw->guestgoalspd > $matchDayGoalsCountMax ? (int) $rw->homegoalspd + $rw->guestgoalspd : $matchDayGoalsCountMax;
 		}
 
-		$this->matchDayGoalsCount = $matchDayGoalsCount;
+		$this->matchDayGoalsCount    = $matchDayGoalsCount;
 		$this->matchDayGoalsCountMax = $matchDayGoalsCountMax;
-		$this->homeSum = $homeSum;
-		$this->awaySum = $awaySum;
+		$this->homeSum               = $homeSum;
+		$this->awaySum               = $awaySum;
 
 	}
 }

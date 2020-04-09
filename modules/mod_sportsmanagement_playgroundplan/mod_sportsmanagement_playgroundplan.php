@@ -13,12 +13,13 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 
-if (! defined('DS'))
+if (!defined('DS'))
 {
 	define('DS', DIRECTORY_SEPARATOR);
 }
@@ -46,8 +47,8 @@ if (!class_exists('JSMCountries'))
 if (!class_exists('sportsmanagementHelper'))
 {
 	/**
- * add the classes for handling
- */
+	 * add the classes for handling
+	 */
 	$classpath = JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'sportsmanagement.php';
 	JLoader::register('sportsmanagementHelper', $classpath);
 	BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
@@ -56,9 +57,9 @@ if (!class_exists('sportsmanagementHelper'))
 JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 
 /**
-*
+ *
  * Include the functions only once
-*/
+ */
 JLoader::register('modSportsmanagementPlaygroundplanHelper', __DIR__ . '/helper.php');
 
 $list = modSportsmanagementPlaygroundplanHelper::getData($params);
@@ -77,14 +78,15 @@ switch ($mode)
 	case 0:
 		$document->addScript(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'js/qscroller.js');
 		include_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'js' . DIRECTORY_SEPARATOR . 'ticker.js';
-	break;
+		break;
 	case 1:
-	break;
+		break;
 }
 
 ?>
-<div class="<?php echo $params->get('divclasscontainer'); ?> table-responsive" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
-<?PHP
-require ModuleHelper::getLayoutPath($module->module);
-?>
+<div class="<?php echo $params->get('divclasscontainer'); ?> table-responsive"
+     id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+	<?PHP
+	require ModuleHelper::getLayoutPath($module->module);
+	?>
 </div>

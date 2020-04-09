@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Uri\Uri;
@@ -44,13 +45,13 @@ class JFormFieldJLGColor extends FormField
 	 */
 	protected function getInput()
 	{
-		$app = Factory::getApplication();
+		$app      = Factory::getApplication();
 		$document = Factory::getDocument();
 		$document->addScript(Uri::base() . 'components/com_sportsmanagement/assets/js/301a.js');
 
-			  // Initialize some field attributes.
-		$size = $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
-		$classes = (string) $this->element['class'];
+		// Initialize some field attributes.
+		$size     = $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
+		$classes  = (string) $this->element['class'];
 		$disabled = ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
 
 		// Initialize JavaScript field attributes.
@@ -58,8 +59,8 @@ class JFormFieldJLGColor extends FormField
 
 		$class = $classes ? ' class="' . trim($classes) . '"' : '';
 
-			  $document->addScriptDeclaration(
-				  "
+		$document->addScriptDeclaration(
+			"
 				window.addEvent('domready', function() {
 					$$('.pickerbutton').addEvent('click', function(){
 						var field = this.id.substr(12);
@@ -72,12 +73,12 @@ class JFormFieldJLGColor extends FormField
 					document.id('sample_" . $this->id . "').style.backgroundColor = document.id('" . $this->id . "').value;
 				});
 		"
-			  );
+		);
 
-			  $html = array();
+		$html   = array();
 		$html[] = '<input class="inputbox" type="text" id="sample_' . $this->id . '" size="1" value="">&nbsp;';
 		$html[] = '<input type="text" name="' . $this->name . '" id="' . $this->id . '"' . ' value="'
-		 . htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '"' . $class . $size . $disabled . '/>';
+			. htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '"' . $class . $size . $disabled . '/>';
 		$html[] = '<input	type="button" id="buttonpicker' . $this->id . '" class="inputbox pickerbutton" value="..."/>';
 		$html[] = '<div	id="colorpicker301" class="colorpicker301" style="position:absolute;top:0px;left:0px;z-index:1000;display:none;"></div>';
 

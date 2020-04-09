@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\ItemModel;
@@ -35,37 +36,12 @@ class sportsmanagementModelsportsmanagement extends ItemModel
 	protected $item;
 
 	/**
-	 * Method to auto-populate the model state.
-	 *
-	 * This method should only be called once per instantiation and is designed
-	 * to be called on the first call to the getState() method unless the model
-	 * configuration flag to ignore the request is set.
-	 *
-	 * Note. Calling getState in this method will result in recursion.
-	 *
-	 * @return void
-	 * @since  1.6
-	 */
-	protected function populateState()
-	{
-		$app = Factory::getApplication();
-
-		// Get the message id
-		$id = Factory::getApplication()->input->getInt('id');
-		$this->setState('message.id', $id);
-
-		// Load the parameters.
-		$params = $app->getParams();
-		$this->setState('params', $params);
-		parent::populateState();
-	}
-
-	/**
 	 * Returns a reference to the a Table object, always creating it.
 	 *
-	 * @param  type    The table type to instantiate
-	 * @param  string    A prefix for the table class name. Optional.
-	 * @param  array    Configuration array for model. Optional.
+	 * @param   type    The table type to instantiate
+	 * @param   string    A prefix for the table class name. Optional.
+	 * @param   array    Configuration array for model. Optional.
+	 *
 	 * @return Table    A database object
 	 * @since  1.6
 	 */
@@ -94,31 +70,57 @@ class sportsmanagementModelsportsmanagement extends ItemModel
 
 			if (!$this->item = $this->_db->loadObject())
 			{
-				   $this->setError($this->_db->getError());
+				$this->setError($this->_db->getError());
 			}
 			else
 			{
-					 // Load the JSON string
-					 $params = new Registry;
+				// Load the JSON string
+				$params = new Registry;
 
 				if (version_compare(JVERSION, '3.0.0', 'ge'))
 				{
-					   $params->loadString($this->item->params);
+					$params->loadString($this->item->params);
 				}
 				else
 				{
 					$params->loadJSON($this->item->params);
 				}
 
-								   $this->item->params = $params;
+				$this->item->params = $params;
 
-					 // Merge global params with item params
-					 $params = clone $this->getState('params');
-					 $params->merge($this->item->params);
-					 $this->item->params = $params;
+				// Merge global params with item params
+				$params = clone $this->getState('params');
+				$params->merge($this->item->params);
+				$this->item->params = $params;
 			}
 		}
 
 		return $this->item;
+	}
+
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * This method should only be called once per instantiation and is designed
+	 * to be called on the first call to the getState() method unless the model
+	 * configuration flag to ignore the request is set.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @return void
+	 * @since  1.6
+	 */
+	protected function populateState()
+	{
+		$app = Factory::getApplication();
+
+		// Get the message id
+		$id = Factory::getApplication()->input->getInt('id');
+		$this->setState('message.id', $id);
+
+		// Load the parameters.
+		$params = $app->getParams();
+		$this->setState('params', $params);
+		parent::populateState();
 	}
 }

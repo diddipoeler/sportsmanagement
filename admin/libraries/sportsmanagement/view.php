@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die();
+
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -24,14 +25,14 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Log\Log;
 
 /**
-*
+ *
  * welche joomla version ?
-*/
+ */
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
 	/**
-  * Include the component HTML helpers.
-*/
+	 * Include the component HTML helpers.
+	 */
 	HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 	HTMLHelper::_('behavior.formvalidator');
 	HTMLHelper::_('behavior.keepalive');
@@ -53,6 +54,7 @@ elseif (version_compare(substr(JVERSION, 0, 3), '2.0', 'ge'))
 ?>
 
 <?PHP
+
 /**
  * sportsmanagementView
  *
@@ -79,26 +81,27 @@ class sportsmanagementView extends HtmlView
 	/**
 	 * sportsmanagementView::display()
 	 *
-	 * @param   mixed $tpl
+	 * @param   mixed  $tpl
+	 *
 	 * @return
 	 */
 	public function display($tpl = null)
 	{
 		/**
- * alle fehlermeldungen online ausgeben
- * mit der kategorie: jsmerror
- */
+		 * alle fehlermeldungen online ausgeben
+		 * mit der kategorie: jsmerror
+		 */
 		Log::addLogger(array('logger' => 'messagequeue'), Log::ALL, array('jsmerror'));
 		/**
- * fehlermeldungen datenbankabfragen
- */
-		Log::addLogger(array('logger' => 'database','db_table' => '#__sportsmanagement_log_entries'), Log::ALL, array('dblog'));
+		 * fehlermeldungen datenbankabfragen
+		 */
+		Log::addLogger(array('logger' => 'database', 'db_table' => '#__sportsmanagement_log_entries'), Log::ALL, array('dblog'));
 		/**
- * laufzeit datenbankabfragen
- */
-		Log::addLogger(array('logger' => 'database','db_table' => '#__sportsmanagement_log_entries'), Log::ALL, array('dbperformance'));
+		 * laufzeit datenbankabfragen
+		 */
+		Log::addLogger(array('logger' => 'database', 'db_table' => '#__sportsmanagement_log_entries'), Log::ALL, array('dbperformance'));
 
-			 $this->app = Factory::getApplication();
+		$this->app       = Factory::getApplication();
 		$this->starttime = microtime();
 		/**
 		 * Check for errors.
@@ -121,34 +124,34 @@ class sportsmanagementView extends HtmlView
 			$this->uri = Factory::getURI();
 		}
 
-			/**
- * alles aufrufen was für die views benötigt wird
- */
+		/**
+		 * alles aufrufen was für die views benötigt wird
+		 */
 
-			  $this->document    = Factory::getDocument();
-			$this->document->addStyleSheet(Uri::root() . 'components/com_sportsmanagement/assets/css/flex.css', 'text/css');
-			$this->document->addScript(Uri::root() . '/components/com_sportsmanagement/assets/js/sm_functions.js');
-			$this->jinput = $this->app->input;
-			$this->option = $this->jinput->getCmd('option');
-			$this->format = $this->jinput->getCmd('format');
-			$this->view = $this->jinput->getCmd('view', 'cpanel');
-			$this->tmpl = $this->jinput->getCmd('tmpl', '');
-			$this->modalheight = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_height', 600);
-			$this->modalwidth = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_width', 900);
-			$this->project_id = $this->jinput->get('pid');
-			$this->jsmmessage = '';
-			$this->jsmmessagetype = 'notice';
-			$this->state = $this->get('State');
+		$this->document = Factory::getDocument();
+		$this->document->addStyleSheet(Uri::root() . 'components/com_sportsmanagement/assets/css/flex.css', 'text/css');
+		$this->document->addScript(Uri::root() . '/components/com_sportsmanagement/assets/js/sm_functions.js');
+		$this->jinput         = $this->app->input;
+		$this->option         = $this->jinput->getCmd('option');
+		$this->format         = $this->jinput->getCmd('format');
+		$this->view           = $this->jinput->getCmd('view', 'cpanel');
+		$this->tmpl           = $this->jinput->getCmd('tmpl', '');
+		$this->modalheight    = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_height', 600);
+		$this->modalwidth     = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_width', 900);
+		$this->project_id     = $this->jinput->get('pid');
+		$this->jsmmessage     = '';
+		$this->jsmmessagetype = 'notice';
+		$this->state          = $this->get('State');
 
 		if (isset($this->state))
 		{
-				 $this->sortDirection = $this->state->get('list.direction');
-				 $this->sortColumn = $this->state->get('list.ordering');
+			$this->sortDirection = $this->state->get('list.direction');
+			$this->sortColumn    = $this->state->get('list.ordering');
 		}
 
 		if (ComponentHelper::getParams($this->option)->get('cfg_which_database'))
 		{
-			 $this->jsmmessage = 'Sie haben Zugriff auf die externe Datenbank';
+			$this->jsmmessage = 'Sie haben Zugriff auf die externe Datenbank';
 		}
 
 		if (!$this->project_id)
@@ -156,24 +159,24 @@ class sportsmanagementView extends HtmlView
 			$this->project_id = $this->app->getUserState("$this->option.pid", '0');
 		}
 
-			$this->user = Factory::getUser();
-			$this->request_url    = $this->uri->toString();
+		$this->user        = Factory::getUser();
+		$this->request_url = $this->uri->toString();
 
 		switch ($this->view)
 		{
 			case 'predictions';
 			case 'extensions';
 
-					// Case 'github';
-			break;
+				// Case 'github';
+				break;
 			default:
-				  $this->model = $this->getModel();
-			break;
+				$this->model = $this->getModel();
+				break;
 		}
 
-			/**
- * bei der einzelverarbeitung
-*/
+		/**
+		 * bei der einzelverarbeitung
+		 */
 		if ($this->layout == 'edit'
 			|| $this->layout == 'edit_3'
 			|| $this->layout == 'edit_4'
@@ -185,17 +188,17 @@ class sportsmanagementView extends HtmlView
 				case 'predictionproject';
 
 					// Case 'jsmgcalendar':
-				break;
+					break;
 				default:
 					$this->addTemplatePath(JPATH_ROOT . DIRECTORY_SEPARATOR . 'administrator' . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . $this->option . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'fieldsets' . DIRECTORY_SEPARATOR . 'tmpl');
 
 					// Get the Data
-					$this->form = $this->get('Form');
-					$this->item = $this->get('Item');
+					$this->form   = $this->get('Form');
+					$this->item   = $this->get('Item');
 					$this->script = $this->get('Script');
 
-						  $this->document->addScriptDeclaration(
-							  "
+					$this->document->addScriptDeclaration(
+						"
 	Joomla.submitbutton = function(task)
 	{
 		if (task == '" . $this->view . ".cancel' || document.formvalidator.isValid(document.getElementById('adminForm')))
@@ -205,23 +208,23 @@ class sportsmanagementView extends HtmlView
 	};
 
 "
-						  );
+					);
 
-				break;
+					break;
 			}
 		}
 
-			/**
- * in der listansicht
-*/
+		/**
+		 * in der listansicht
+		 */
 		else
 		{
 			if ($this->format != 'json')
 			{
-					/**
-* dadurch werden die spaltenbreiten optimiert
-*/
-					$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/form_control.css', 'text/css');
+				/**
+				 * dadurch werden die spaltenbreiten optimiert
+				 */
+				$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/form_control.css', 'text/css');
 			}
 
 			switch ($this->view)
@@ -234,14 +237,14 @@ class sportsmanagementView extends HtmlView
 				case 'transifex';
 					break;
 				default:
-					$this->items = $this->get('Items');
-					$this->total = $this->get('Total');
+					$this->items      = $this->get('Items');
+					$this->total      = $this->get('Total');
 					$this->pagination = $this->get('Pagination');
 					break;
 			}
 
-			$this->user    = Factory::getUser();
-			$this->config = Factory::getConfig();
+			$this->user        = Factory::getUser();
+			$this->config      = Factory::getConfig();
 			$this->request_url = $this->uri->toString();
 		}
 
@@ -253,27 +256,27 @@ class sportsmanagementView extends HtmlView
 		{
 			$this->setLayout($this->getLayout() . '_4');
 			$this->table_data_class = 'table table-striped';
-			$this->table_data_div = '</div>';
+			$this->table_data_div   = '</div>';
 		}
 		elseif (version_compare(JSM_JVERSION, '3', 'eq'))
 		{
 			$this->setLayout($this->getLayout() . '_3');
 			$this->table_data_class = 'table table-striped';
-			$this->table_data_div = '</div>';
+			$this->table_data_div   = '</div>';
 		}
 		else
 		{
-			 // Wir lassen das layout so wie es ist, dann müssen
+			// Wir lassen das layout so wie es ist, dann müssen
 			// nicht so viele dateien umbenannt werden
 			$this->setLayout($this->getLayout());
 			$this->table_data_class = 'adminlist';
-			$this->table_data_div = '';
+			$this->table_data_div   = '';
 		}
 
-			  $this->init();
-			$this->addToolbar();
+		$this->init();
+		$this->addToolbar();
 
-			 // Hier wird gesteuert, welcher menüeintrag aktiv ist.
+		// Hier wird gesteuert, welcher menüeintrag aktiv ist.
 		if (version_compare(JVERSION, '3.0.0', 'ge'))
 		{
 			switch ($this->view)
@@ -288,7 +291,7 @@ class sportsmanagementView extends HtmlView
 				case 'treetos';
 				case 'divisions';
 				case 'githubinstall';
-						sportsmanagementHelper::addSubmenu('projects');
+					sportsmanagementHelper::addSubmenu('projects');
 					break;
 				case 'predictions';
 				case 'predictiongames';
@@ -314,7 +317,16 @@ class sportsmanagementView extends HtmlView
 			}
 		}
 
-			  parent::display($tpl);
+		parent::display($tpl);
+	}
+
+	/**
+	 * sportsmanagementView::init()
+	 *
+	 * @return void
+	 */
+	protected function init()
+	{
 	}
 
 	/**
@@ -326,7 +338,7 @@ class sportsmanagementView extends HtmlView
 	{
 		$canDo = sportsmanagementHelper::getActions();
 
-			  // In der joomla 3 version kann man die filter setzen
+		// In der joomla 3 version kann man die filter setzen
 		if (version_compare(JVERSION, '3.0.0', 'ge'))
 		{
 			JHtmlSidebar::setAction('index.php?option=com_sportsmanagement');
@@ -358,7 +370,7 @@ class sportsmanagementView extends HtmlView
 						'filter_state',
 						HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
 					);
-				break;
+					break;
 				case 'clubs':
 					JHtmlSidebar::addFilter(
 						Text::_('JOPTION_SELECT_PUBLISHED'),
@@ -366,14 +378,14 @@ class sportsmanagementView extends HtmlView
 						HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
 					);
 
-						$myoptions[] = HTMLHelper::_('select.option', '1', Text::_('JNO'));
-						$myoptions[] = HTMLHelper::_('select.option', '2', Text::_('JYES'));
+					$myoptions[] = HTMLHelper::_('select.option', '1', Text::_('JNO'));
+					$myoptions[] = HTMLHelper::_('select.option', '2', Text::_('JYES'));
 
-						JHtmlSidebar::addFilter(
-							Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN'),
-							'filter_geo_daten',
-							HTMLHelper::_('select.options', $myoptions, 'value', 'text', $this->state->get('filter.geo_daten'), true)
-						);
+					JHtmlSidebar::addFilter(
+						Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN'),
+						'filter_geo_daten',
+						HTMLHelper::_('select.options', $myoptions, 'value', 'text', $this->state->get('filter.geo_daten'), true)
+					);
 
 					if (isset($this->search_nation) && is_object($this->association))
 					{
@@ -391,12 +403,12 @@ class sportsmanagementView extends HtmlView
 						'filter_state',
 						HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
 					);
-						JHtmlSidebar::addFilter(
-							Text::_('JOPTION_SELECT_CATEGORY'),
-							'filter_category_id',
-							HTMLHelper::_('select.options', HTMLHelper::_('category.options', 'com_sportsmanagement'), 'value', 'text', $this->state->get('filter.category_id'))
-						);
-				break;
+					JHtmlSidebar::addFilter(
+						Text::_('JOPTION_SELECT_CATEGORY'),
+						'filter_category_id',
+						HTMLHelper::_('select.options', HTMLHelper::_('category.options', 'com_sportsmanagement'), 'value', 'text', $this->state->get('filter.category_id'))
+					);
+					break;
 			}
 
 			if (isset($this->search_nation))
@@ -437,29 +449,29 @@ class sportsmanagementView extends HtmlView
 
 			if (isset($this->league))
 			{
-							JHtmlSidebar::addFilter(
-								Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER'),
-								'filter_league',
-								HTMLHelper::_('select.options', $this->league, 'id', 'name', $this->state->get('filter.league'), true)
-							);
+				JHtmlSidebar::addFilter(
+					Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER'),
+					'filter_league',
+					HTMLHelper::_('select.options', $this->league, 'id', 'name', $this->state->get('filter.league'), true)
+				);
 			}
 
 			if (isset($this->sports_type))
 			{
-							JHtmlSidebar::addFilter(
-								Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'),
-								'filter_sports_type',
-								HTMLHelper::_('select.options', $this->sports_type, 'id', 'name', $this->state->get('filter.sports_type'), true)
-							);
+				JHtmlSidebar::addFilter(
+					Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'),
+					'filter_sports_type',
+					HTMLHelper::_('select.options', $this->sports_type, 'id', 'name', $this->state->get('filter.sports_type'), true)
+				);
 			}
 
 			if (isset($this->season))
 			{
-							JHtmlSidebar::addFilter(
-								Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'),
-								'filter_season',
-								HTMLHelper::_('select.options', $this->season, 'id', 'name', $this->state->get('filter.season'), true)
-							);
+				JHtmlSidebar::addFilter(
+					Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'),
+					'filter_season',
+					HTMLHelper::_('select.options', $this->season, 'id', 'name', $this->state->get('filter.season'), true)
+				);
 			}
 
 			if (isset($this->prediction_ids))
@@ -512,11 +524,11 @@ class sportsmanagementView extends HtmlView
 
 			// Built the actions for new and existing records.
 			// Projectteam
-			$search_tmpl_array = array('projectteam' => null, 'treetonode' => null );
+			$search_tmpl_array = array('projectteam' => null, 'treetonode' => null);
 
 			if ($isNew)
 			{
-					   // For new records, check the create permission.
+				// For new records, check the create permission.
 				if ($canDo->get('core.create'))
 				{
 					if (version_compare(JSM_JVERSION, '3', 'eq'))
@@ -541,7 +553,7 @@ class sportsmanagementView extends HtmlView
 					}
 				}
 
-					   ToolbarHelper::cancel($this->view . '.cancel', 'JTOOLBAR_CANCEL');
+				ToolbarHelper::cancel($this->view . '.cancel', 'JTOOLBAR_CANCEL');
 			}
 			else
 			{
@@ -549,9 +561,9 @@ class sportsmanagementView extends HtmlView
 				{
 					if (version_compare(JSM_JVERSION, '3', 'eq'))
 					{
-							  // We can save the new record
-							  ToolbarHelper::apply($this->view . '.apply', 'JTOOLBAR_APPLY');
-							  ToolbarHelper::save($this->view . '.save', 'JTOOLBAR_SAVE');
+						// We can save the new record
+						ToolbarHelper::apply($this->view . '.apply', 'JTOOLBAR_APPLY');
+						ToolbarHelper::save($this->view . '.save', 'JTOOLBAR_SAVE');
 					}
 					elseif (version_compare(JSM_JVERSION, '4', 'eq'))
 					{
@@ -559,7 +571,7 @@ class sportsmanagementView extends HtmlView
 						$toolbarButtons[] = array('save', $this->view . '.save');
 					}
 
-						   // We can save this record, but check the create permission to see if we can return to make a new one.
+					// We can save this record, but check the create permission to see if we can return to make a new one.
 					if ($canDo->get('core.create') && !array_key_exists($this->view, $search_tmpl_array))
 					{
 						if (version_compare(JSM_JVERSION, '3', 'eq'))
@@ -573,7 +585,7 @@ class sportsmanagementView extends HtmlView
 					}
 				}
 
-				if ($canDo->get('core.create')  && !array_key_exists($this->view, $search_tmpl_array))
+				if ($canDo->get('core.create') && !array_key_exists($this->view, $search_tmpl_array))
 				{
 					if (version_compare(JSM_JVERSION, '3', 'eq'))
 					{
@@ -585,7 +597,7 @@ class sportsmanagementView extends HtmlView
 					}
 				}
 
-					   ToolbarHelper::cancel($this->view . '.cancel', 'JTOOLBAR_CLOSE');
+				ToolbarHelper::cancel($this->view . '.cancel', 'JTOOLBAR_CLOSE');
 			}
 
 			if (version_compare(JSM_JVERSION, '4', 'eq'))
@@ -600,7 +612,7 @@ class sportsmanagementView extends HtmlView
 		{
 			if (empty($this->title))
 			{
-					   $this->title = 'COM_SPORTSMANAGEMENT_ADMIN_' . strtoupper($this->getName());
+				$this->title = 'COM_SPORTSMANAGEMENT_ADMIN_' . strtoupper($this->getName());
 			}
 		}
 
@@ -609,7 +621,7 @@ class sportsmanagementView extends HtmlView
 			$this->icon = strtolower($this->getName());
 		}
 
-			  $document = Factory::getDocument();
+		$document = Factory::getDocument();
 
 		if (version_compare(JVERSION, '4.0.0-dev', 'ge'))
 		{
@@ -660,8 +672,8 @@ class sportsmanagementView extends HtmlView
 			}
 
 			/**
- * zwischen den views unterscheiden
- */
+			 * zwischen den views unterscheiden
+			 */
 			switch ($this->view)
 			{
 				case 'joomleagueimports':
@@ -688,10 +700,10 @@ class sportsmanagementView extends HtmlView
 					break;
 				default:
 					/**
- * es gibt nur noch die ablage in den papierkorb
- * dadurch sind wir in der lage, fehlerhaft gelöschte einträge
- * wieder herzustellen um eine fehlerursache besser zu finden
- */
+					 * es gibt nur noch die ablage in den papierkorb
+					 * dadurch sind wir in der lage, fehlerhaft gelöschte einträge
+					 * wieder herzustellen um eine fehlerursache besser zu finden
+					 */
 					if ($canDo->get('core.delete'))
 					{
 						ToolbarHelper::deleteList('', $this->view . '.delete');
@@ -703,10 +715,10 @@ class sportsmanagementView extends HtmlView
 			}
 		}
 
-			$cfg_help_server = ComponentHelper::getParams($this->option)->get('cfg_help_server', '');
-			$layout = $this->jinput->get('layout');
-			$view = ucfirst(strtolower($this->view));
-			$layout = ucfirst(strtolower($layout));
+		$cfg_help_server = ComponentHelper::getParams($this->option)->get('cfg_help_server', '');
+		$layout          = $this->jinput->get('layout');
+		$view            = ucfirst(strtolower($this->view));
+		$layout          = ucfirst(strtolower($layout));
 
 		if ($canDo->get('core.admin'))
 		{
@@ -715,28 +727,19 @@ class sportsmanagementView extends HtmlView
 			ToolbarHelper::divider();
 		}
 
-			/**
- * test
- */
-			$title = Text::_('JTOOLBAR_BATCH');
-			$layout = new JLayoutFile('newissue', JPATH_ROOT . '/components/com_sportsmanagement/layouts');
-			$html = $layout->render();
-			Toolbar::getInstance('toolbar')->appendButton('Custom', $html, 'batch');
+		/**
+		 * test
+		 */
+		$title  = Text::_('JTOOLBAR_BATCH');
+		$layout = new JLayoutFile('newissue', JPATH_ROOT . '/components/com_sportsmanagement/layouts');
+		$html   = $layout->render();
+		Toolbar::getInstance('toolbar')->appendButton('Custom', $html, 'batch');
 
-			$modal_params = array();
-			$modal_params['url'] = 'index.php?option=com_sportsmanagement&view=github&layout=addissue&tmpl=component&issuelayout=' . $this->layout . '&issueview=' . $this->view;
-			$modal_params['height'] = $this->modalheight;
-			$modal_params['width'] = $this->modalwidth;
-			echo HTMLHelper::_('bootstrap.renderModal', 'collapseModal', $modal_params);
+		$modal_params           = array();
+		$modal_params['url']    = 'index.php?option=com_sportsmanagement&view=github&layout=addissue&tmpl=component&issuelayout=' . $this->layout . '&issueview=' . $this->view;
+		$modal_params['height'] = $this->modalheight;
+		$modal_params['width']  = $this->modalwidth;
+		echo HTMLHelper::_('bootstrap.renderModal', 'collapseModal', $modal_params);
 
-	}
-
-	/**
-	 * sportsmanagementView::init()
-	 *
-	 * @return void
-	 */
-	protected function init()
-	{
 	}
 }

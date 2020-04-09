@@ -25,16 +25,16 @@ if (!isset($this->tableconfig['show_colors_legend']))
 if ($this->tableconfig['show_colors_legend'])
 {
 	?>
-		<br />
-		<div class="<?php echo $this->divclassrow;?> table-responsive" id="colorlegend">
-		<table class="table">
-			<tr>
+    <br/>
+    <div class="<?php echo $this->divclassrow; ?> table-responsive" id="colorlegend">
+        <table class="table">
+            <tr>
 				<?php
 				sportsmanagementHelper::showColorsLegend($this->colors);
 				?>
-			</tr>
-		</table>
-		</div>
+            </tr>
+        </table>
+    </div>
 	<?php
 }
 ?>

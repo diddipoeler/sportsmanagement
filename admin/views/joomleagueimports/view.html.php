@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -38,7 +39,7 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
 	 */
 	public function init()
 	{
-		$this->cfg_jl_import = ComponentHelper::getParams($this->option)->get('cfg_jl_import', 1);
+		$this->cfg_jl_import        = ComponentHelper::getParams($this->option)->get('cfg_jl_import', 1);
 		$this->jl_table_import_step = $this->jinput->get('jl_table_import_step', 0);
 
 		if (!$this->jl_table_import_step)
@@ -55,29 +56,29 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
 			$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_JL_IMPORT_ALLOWED_NO'), 'Error');
 		}
 
-			$this->model->check_database();
+		$this->model->check_database();
 
-			  // Build the html select list for sportstypes
-			$sportstypes[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'), 'id', 'name');
-			$mdlSportsTypes = BaseDatabaseModel::getInstance('SportsTypes', 'sportsmanagementModel');
-			$allSportstypes = $mdlSportsTypes->getSportsTypes();
-			$sportstypes = array_merge($sportstypes, $allSportstypes);
+		// Build the html select list for sportstypes
+		$sportstypes[]  = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'), 'id', 'name');
+		$mdlSportsTypes = BaseDatabaseModel::getInstance('SportsTypes', 'sportsmanagementModel');
+		$allSportstypes = $mdlSportsTypes->getSportsTypes();
+		$sportstypes    = array_merge($sportstypes, $allSportstypes);
 
-			  $variable = $this->jinput->get('filter_sports_type', 0);
+		$variable = $this->jinput->get('filter_sports_type', 0);
 
-			$lists['sportstype'] = $sportstypes;
-			$lists['sportstypes'] = HTMLHelper::_(
-				'select.genericList',
-				$sportstypes,
-				'filter_sports_type',
-				'class="inputbox" onChange="" style="width:120px"',
-				'id',
-				'name',
-				$variable
-			);
+		$lists['sportstype']  = $sportstypes;
+		$lists['sportstypes'] = HTMLHelper::_(
+			'select.genericList',
+			$sportstypes,
+			'filter_sports_type',
+			'class="inputbox" onChange="" style="width:120px"',
+			'id',
+			'name',
+			$variable
+		);
 		unset($sportstypes);
 
-			  $this->lists = $lists;
+		$this->lists   = $lists;
 		$this->success = $this->app->getUserStateFromRequest($this->option . ".jl_table_import_success", 0);
 
 		// $this->success = sportsmanagementModeljoomleagueimports::$_success;
@@ -97,11 +98,11 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
 
 				$lists['agegroup'] = $myoptions;
 
-					  $this->get_info_fields = $this->model->get_info_fields();
+				$this->get_info_fields = $this->model->get_info_fields();
 
-					  $this->lists = $lists;
+				$this->lists = $lists;
 				$this->setLayout('infofield');
-			break;
+				break;
 		}
 
 	}
@@ -115,7 +116,7 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
 	{
 		// Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT');
-		$this->icon = 'joomleague-import';
+		$this->icon  = 'joomleague-import';
 
 		switch ($this->getLayout())
 		{
@@ -123,20 +124,19 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
 			case 'default_3';
 			case 'default_4';
 				ToolbarHelper::custom('joomleagueimports.importjoomleaguenew', 'edit', 'edit', Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_START_BUTTON'), false);
-			break;
+				break;
 			case 'infofield';
 			case 'infofield_3';
 			case 'infofield_4';
 				ToolbarHelper::custom('joomleagueimports.joomleaguesetagegroup', 'edit', 'edit', Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_SETAGEGROUP_START_BUTTON'), false);
-			break;
+				break;
 		}
 
-			ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=projects');
+		ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=projects');
 
-			ToolbarHelper::divider();
-			parent::addToolbar();
+		ToolbarHelper::divider();
+		parent::addToolbar();
 	}
-
 
 
 }

@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Table\Table;
 use Joomla\Registry\Registry;
 
@@ -32,8 +33,9 @@ class JSMTable extends Table
 	/**
 	 * JSMTable::bind()
 	 *
-	 * @param   mixed  $array
-	 * @param   string $ignore
+	 * @param   mixed   $array
+	 * @param   string  $ignore
+	 *
 	 * @return
 	 */
 	function bind($array, $ignore = '')
@@ -66,12 +68,12 @@ class JSMTable extends Table
 
 		if (key_exists('comp_params', $array) && is_array($array['comp_params']))
 		{
-					$registry = new Registry;
-					$registry->loadArray($array['comp_params']);
-					$array['comp_params'] = $registry->toString();
+			$registry = new Registry;
+			$registry->loadArray($array['comp_params']);
+			$array['comp_params'] = $registry->toString();
 		}
 
-			return parent::bind($array, $ignore);
+		return parent::bind($array, $ignore);
 	}
 
 

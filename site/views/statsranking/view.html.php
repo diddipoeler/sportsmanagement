@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
@@ -40,11 +41,11 @@ class sportsmanagementViewStatsRanking extends sportsmanagementView
 
 		// $config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database,__METHOD__);
 
-			  // $this->project = sportsmanagementModelProject::getProject($model::$cfg_which_database,__METHOD__);
+		// $this->project = sportsmanagementModelProject::getProject($model::$cfg_which_database,__METHOD__);
 		$this->division = sportsmanagementModelProject::getDivision(0, $this->cfg_which_database);
-		$this->teamid = $this->model->getTeamId();
+		$this->teamid   = $this->model->getTeamId();
 
-			  $teams = sportsmanagementModelProject::getTeamsIndexedById(0, 'name', $this->cfg_which_database);
+		$teams = sportsmanagementModelProject::getTeamsIndexedById(0, 'name', $this->cfg_which_database);
 
 		// $teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$model::$cfg_which_database);
 
@@ -59,22 +60,22 @@ class sportsmanagementViewStatsRanking extends sportsmanagementView
 			}
 		}
 
-			$this->teams = $teams;
+		$this->teams = $teams;
 
-			// $this->overallconfig = sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database);
-			// $this->config = $config;
-			$this->favteams = sportsmanagementModelProject::getFavTeams($this->cfg_which_database);
-			$this->stats = $this->model->getProjectUniqueStats();
-			$this->playersstats = $this->model->getPlayersStats();
-			$this->limit = $this->model->getLimit();
-			$this->limitstart = $this->model->getLimitStart();
-			$this->multiple_stats = count($this->stats) > 1;
+		// $this->overallconfig = sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database);
+		// $this->config = $config;
+		$this->favteams       = sportsmanagementModelProject::getFavTeams($this->cfg_which_database);
+		$this->stats          = $this->model->getProjectUniqueStats();
+		$this->playersstats   = $this->model->getPlayersStats();
+		$this->limit          = $this->model->getLimit();
+		$this->limitstart     = $this->model->getLimitStart();
+		$this->multiple_stats = count($this->stats) > 1;
 
-			  $prefix = Text::_('COM_SPORTSMANAGEMENT_STATSRANKING_PAGE_TITLE');
+		$prefix = Text::_('COM_SPORTSMANAGEMENT_STATSRANKING_PAGE_TITLE');
 
 		if ($this->multiple_stats)
 		{
-					$prefix .= " - " . Text::_('COM_SPORTSMANAGEMENT_STATSRANKING_TITLE');
+			$prefix .= " - " . Text::_('COM_SPORTSMANAGEMENT_STATSRANKING_TITLE');
 		}
 		else
 		{
@@ -85,26 +86,26 @@ class sportsmanagementViewStatsRanking extends sportsmanagementView
 			$prefix .= " - " . $this->stats[$sid[0]]->name;
 		}
 
-			// Set page title
-			$titleInfo = sportsmanagementHelper::createTitleInfo($prefix);
+		// Set page title
+		$titleInfo = sportsmanagementHelper::createTitleInfo($prefix);
 
 		if (!empty($this->project))
 		{
-					$titleInfo->projectName = $this->project->name;
-					$titleInfo->leagueName = $this->project->league_name;
-					$titleInfo->seasonName = $this->project->season_name;
+			$titleInfo->projectName = $this->project->name;
+			$titleInfo->leagueName  = $this->project->league_name;
+			$titleInfo->seasonName  = $this->project->season_name;
 		}
 
 		if (!empty($this->division) && $this->division->id != 0)
 		{
-					$titleInfo->divisionName = $this->division->name;
+			$titleInfo->divisionName = $this->division->name;
 		}
 
-			$this->pagetitle = sportsmanagementHelper::formatTitle($titleInfo, $this->config["page_title_format"]);
-			$this->document->setTitle($this->pagetitle);
+		$this->pagetitle = sportsmanagementHelper::formatTitle($titleInfo, $this->config["page_title_format"]);
+		$this->document->setTitle($this->pagetitle);
 
-			  $this->headertitle = $this->pagetitle;
+		$this->headertitle = $this->pagetitle;
 
-			  // Parent::display( $tpl );
+		// Parent::display( $tpl );
 	}
 }

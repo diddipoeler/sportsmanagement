@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 
@@ -41,25 +42,26 @@ class sportsmanagementViewspecialextensions extends sportsmanagementView
 	/**
 	 * sportsmanagementViewspecialextensions::addIcon()
 	 *
-	 * @param   mixed $image
-	 * @param   mixed $url
-	 * @param   mixed $text
-	 * @param   bool  $newWindow
+	 * @param   mixed  $image
+	 * @param   mixed  $url
+	 * @param   mixed  $text
+	 * @param   bool   $newWindow
+	 *
 	 * @return void
 	 */
-	public function addIcon( $image , $url , $text , $newWindow = false )
+	public function addIcon($image, $url, $text, $newWindow = false)
 	{
-		$lang        = Factory::getLanguage();
-		$newWindow    = ( $newWindow ) ? ' target="_blank"' : '';
+		$lang      = Factory::getLanguage();
+		$newWindow = ($newWindow) ? ' target="_blank"' : '';
 		?>
-		<div style="float:<?php echo ($lang->isRTL()) ? 'right' : 'left'; ?>;">
-	  <div class="icon">
-				<a href="<?php echo $url; ?>"<?php echo $newWindow; ?>>
-		<?php echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/icons/' . $image, null, null); ?>
-					<span><?php echo $text; ?></span></a>
-	  </div>
-	 </div>
-	<?php
+        <div style="float:<?php echo ($lang->isRTL()) ? 'right' : 'left'; ?>;">
+            <div class="icon">
+                <a href="<?php echo $url; ?>"<?php echo $newWindow; ?>>
+					<?php echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/icons/' . $image, null, null); ?>
+                    <span><?php echo $text; ?></span></a>
+            </div>
+        </div>
+		<?php
 	}
 
 }

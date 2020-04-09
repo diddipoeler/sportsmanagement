@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 
 /**
@@ -36,13 +37,13 @@ class sportsmanagementViewLeague extends sportsmanagementView
 	public function init()
 	{
 
-			   $this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
+		$this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
 		$this->form->setValue('agegroup_id', 'request', $this->item->agegroup_id);
 
-			  $extended = sportsmanagementHelper::getExtended($this->item->extended, 'league');
-		$this->extended    = $extended;
-		$extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'league');
-		$this->extendeduser    = $extendeduser;
+		$extended           = sportsmanagementHelper::getExtended($this->item->extended, 'league');
+		$this->extended     = $extended;
+		$extendeduser       = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'league');
+		$this->extendeduser = $extendeduser;
 
 	}
 
@@ -55,7 +56,7 @@ class sportsmanagementViewLeague extends sportsmanagementView
 	protected function addToolBar()
 	{
 		$this->jinput->set('hidemainmenu', true);
-		$isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ADD_NEW');
+		$isNew      = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ADD_NEW');
 		$this->icon = 'league';
 		parent::addToolbar();
 	}

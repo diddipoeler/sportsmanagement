@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 
@@ -42,8 +43,8 @@ class sportsmanagementControllerclubnames extends JSMControllerAdmin
 		// JInput object
 		$jinput = $app->input;
 
-			  $model = $this->getModel();
-		 $model->import();
+		$model = $this->getModel();
+		$model->import();
 		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false));
 
 	}
@@ -53,7 +54,7 @@ class sportsmanagementControllerclubnames extends JSMControllerAdmin
 	 *
 	 * @since 1.6
 	 */
-	public function getModel($name = 'clubname', $prefix = 'sportsmanagementModel', $config = Array() )
+	public function getModel($name = 'clubname', $prefix = 'sportsmanagementModel', $config = Array())
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 

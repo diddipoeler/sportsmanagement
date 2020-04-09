@@ -22,8 +22,8 @@ class JGithubMeta extends JGithubObject
 	 *
 	 * @return  array  Authorized IP addresses
 	 *
-	 * @since   13.1
 	 * @throws  DomainException
+	 * @since   13.1
 	 */
 	public function getMeta()
 	{

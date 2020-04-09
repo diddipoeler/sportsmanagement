@@ -27,9 +27,9 @@ class JGithubPackageGitignore extends JGithubPackage
 	 *
 	 * List all templates available to pass as an option when creating a repository.
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function getList()
 	{
@@ -47,10 +47,10 @@ class JGithubPackageGitignore extends JGithubPackage
 	 * @param   string   $name  The name of the template
 	 * @param   boolean  $raw   Raw output
 	 *
+	 * @return mixed|string
 	 * @throws DomainException
 	 * @since  3.3 (CMS)
 	 *
-	 * @return mixed|string
 	 */
 	public function get($name, $raw = false)
 	{

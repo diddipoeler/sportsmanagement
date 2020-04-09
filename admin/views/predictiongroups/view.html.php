@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -38,7 +39,7 @@ class sportsmanagementViewpredictiongroups extends sportsmanagementView
 	public function init()
 	{
 
-			 $this->table = Table::getInstance('predictiongroup', 'sportsmanagementTable');
+		$this->table = Table::getInstance('predictiongroup', 'sportsmanagementTable');
 
 		if (!$this->items)
 		{
@@ -56,7 +57,7 @@ class sportsmanagementViewpredictiongroups extends sportsmanagementView
 	{
 		// Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONGROUPS_TITLE');
-		$this->icon = 'predgroups';
+		$this->icon  = 'predgroups';
 
 		ToolbarHelper::addNew('predictiongroup.add');
 		ToolbarHelper::editList('predictiongroup.edit');

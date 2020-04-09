@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
@@ -44,16 +45,16 @@ class sportsmanagementModelTeams extends BaseDatabaseModel
 	 *
 	 * @return void
 	 */
-	function __construct( )
+	function __construct()
 	{
-		  // Reference global application object
-		$app = Factory::getApplication();
+		// Reference global application object
+		$app    = Factory::getApplication();
 		$jinput = $app->input;
 		parent::__construct();
 
-			  self::$projectid = $jinput->request->get('p', 0, 'INT');
-		self::$divisionid = $jinput->request->get('division', 0, 'INT');
-		self::$cfg_which_database = $jinput->request->get('cfg_which_database', 0, 'INT');
+		self::$projectid                         = $jinput->request->get('p', 0, 'INT');
+		self::$divisionid                        = $jinput->request->get('division', 0, 'INT');
+		self::$cfg_which_database                = $jinput->request->get('cfg_which_database', 0, 'INT');
 		sportsmanagementModelProject::$projectid = self::$projectid;
 
 	}

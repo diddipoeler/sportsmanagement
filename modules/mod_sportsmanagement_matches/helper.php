@@ -36,24 +36,24 @@ class modMatchesSportsmanagementHelper
 	/**
 	 * modMatchesHelper::__construct()
 	 *
-	 * @param   mixed   $params
-	 * @param   mixed   $id
-	 * @param   integer $match_id
+	 * @param   mixed    $params
+	 * @param   mixed    $id
+	 * @param   integer  $match_id
 	 */
 	public function __construct(&$params, $id, $match_id = 0)
 	{
 		$this->module_id = $id;
-		$this->params = $params;
-		$this->app = Factory::getApplication();
-		$itemid = $this->params->get('Itemid');
-		$this->itemid = (!empty($itemid)) ? '&amp;Itemid=' . $itemid : '';
-		$this->id = $match_id;
+		$this->params    = $params;
+		$this->app       = Factory::getApplication();
+		$itemid          = $this->params->get('Itemid');
+		$this->itemid    = (!empty($itemid)) ? '&amp;Itemid=' . $itemid : '';
+		$this->id        = $match_id;
 		$this->usedteams = array(
-		 0 => array()
+			0 => array()
 		);
 		$this->addusedprojects();
 		$this->iconpath = ($params->get('use_icons') != '-1') ? _JSMMATCHLISTMODURL . 'assets/images/' .
-		 $params->get('use_icons') . '/' : false;
+			$params->get('use_icons') . '/' : false;
 	}
 
 	/**
@@ -91,8 +91,9 @@ class modMatchesSportsmanagementHelper
 	/**
 	 * modMatchesHelper::arrStrToClean()
 	 *
-	 * @param   mixed  $string
-	 * @param   string $sep
+	 * @param   mixed   $string
+	 * @param   string  $sep
+	 *
 	 * @return
 	 */
 	public function arrStrToClean(&$string, $sep = ',')
@@ -112,9 +113,10 @@ class modMatchesSportsmanagementHelper
 	/**
 	 * modMatchesHelper::getFromDB()
 	 *
-	 * @param   mixed  $query
-	 * @param   string $key
-	 * @param   string $type
+	 * @param   mixed   $query
+	 * @param   string  $key
+	 * @param   string  $type
+	 *
 	 * @return
 	 */
 	public function getFromDB($query, $key = "", $type = "objlist")
@@ -126,16 +128,16 @@ class modMatchesSportsmanagementHelper
 		{
 			case "obj" :
 				$result = $db->loadObject($key);
-					break;
+				break;
 			case 'arr' :
-					$result = $db->loadResultArray($key);
-					break;
+				$result = $db->loadResultArray($key);
+				break;
 			case 'assc' :
-					$result = $db->loadAssocList($key);
-					break;
+				$result = $db->loadAssocList($key);
+				break;
 			default :
-					$result = $db->loadObjectList($key);
-					break;
+				$result = $db->loadObjectList($key);
+				break;
 		}
 
 		if ($this->params->get('debug', 0) == 1)
@@ -151,9 +153,10 @@ class modMatchesSportsmanagementHelper
 	/**
 	 * modMatchesHelper::sortArray()
 	 *
-	 * @param   mixed  $array
-	 * @param   mixed  $comparefunction
-	 * @param   string $property
+	 * @param   mixed   $array
+	 * @param   mixed   $comparefunction
+	 * @param   string  $property
+	 *
 	 * @return
 	 */
 	public function sortArray($array, $comparefunction, $property = '')
@@ -166,9 +169,9 @@ class modMatchesSportsmanagementHelper
 			{
 				if ($this->$comparefunction ($array[$a - 1][$property], $array[$a][$property]) > 0)
 				{
-					$tempzal = $array[$a - 1];
+					$tempzal       = $array[$a - 1];
 					$array[$a - 1] = $array[$a];
-					$array[$a] = $tempzal;
+					$array[$a]     = $tempzal;
 				}
 			}
 		}
@@ -179,7 +182,8 @@ class modMatchesSportsmanagementHelper
 	/**
 	 * modMatchesHelper::addteamicon()
 	 *
-	 * @param   mixed $which
+	 * @param   mixed  $which
+	 *
 	 * @return
 	 */
 	public function addteamicon($which)
@@ -199,7 +203,8 @@ class modMatchesSportsmanagementHelper
 	/**
 	 * modMatchesHelper::formatMatches()
 	 *
-	 * @param   mixed $matches
+	 * @param   mixed  $matches
+	 *
 	 * @return
 	 */
 	public function formatMatches(&$matches)
@@ -217,14 +222,14 @@ class modMatchesSportsmanagementHelper
 			$matches = $this->sortObject($matches, 'asc', 'upcoming');
 		}
 
-		$matches = $this->sortObject($matches, 'asc', 'actplaying');
-		$matches = $this->sortObject($matches, 'asc', 'live');
-		$teams = $this->getTeamsFromMatches($matches);
-		$rows = array();
+		$matches  = $this->sortObject($matches, 'asc', 'actplaying');
+		$matches  = $this->sortObject($matches, 'asc', 'live');
+		$teams    = $this->getTeamsFromMatches($matches);
+		$rows     = array();
 		$useicons = $this->iconpath;
-		$cnt = $app->input->post->get('nr', 0);
-		$hteam = false;
-		$ateam = false;
+		$cnt      = $app->input->post->get('nr', 0);
+		$hteam    = false;
+		$ateam    = false;
 
 		foreach ((array) $matches AS $key => $match)
 		{
@@ -270,13 +275,13 @@ class modMatchesSportsmanagementHelper
 			if ($useicons)
 			{
 				$rows[$match->match_id]['date'] = HTMLHelper::_(
-					'image', $this->iconpath . 'date.png', Text::_('MOD_SPORTSMANAGEMENT_MATCHES_DATE'), array(
-					'title' => Text::_('MOD_SPORTSMANAGEMENT_MATCHES_DATE'),
-					'height' => '16',
-					'width' => '16'
-					)
-				) .
-						 ' ' . $rows[$match->match_id]['date'];
+						'image', $this->iconpath . 'date.png', Text::_('MOD_SPORTSMANAGEMENT_MATCHES_DATE'), array(
+							'title'  => Text::_('MOD_SPORTSMANAGEMENT_MATCHES_DATE'),
+							'height' => '16',
+							'width'  => '16'
+						)
+					) .
+					' ' . $rows[$match->match_id]['date'];
 			}
 
 			$rows[$match->match_id]['time'] = HTMLHelper::_('date', $match->match_date, $this->params->get('timeformat'), null);
@@ -284,13 +289,13 @@ class modMatchesSportsmanagementHelper
 			if ($useicons)
 			{
 				$rows[$match->match_id]['time'] = HTMLHelper::_(
-					'image', $this->iconpath . 'time.png', Text::_('MOD_SPORTSMANAGEMENT_MATCHES_TIME'), array(
-					'title' => Text::_('MOD_SPORTSMANAGEMENT_MATCHES_TIME'),
-					'height' => '16',
-					'width' => '16'
-					)
-				) .
-				 ' ' . $rows[$match->match_id]['time'];
+						'image', $this->iconpath . 'time.png', Text::_('MOD_SPORTSMANAGEMENT_MATCHES_TIME'), array(
+							'title'  => Text::_('MOD_SPORTSMANAGEMENT_MATCHES_TIME'),
+							'height' => '16',
+							'width'  => '16'
+						)
+					) .
+					' ' . $rows[$match->match_id]['time'];
 			}
 
 			if (isset($match->meeting))
@@ -300,26 +305,26 @@ class modMatchesSportsmanagementHelper
 				if ($useicons)
 				{
 					$rows[$match->match_id]['meeting'] = HTMLHelper::_(
-						'image', $this->iconpath . 'time_go.png', Text::_('MOD_SPORTSMANAGEMENT_MATCHES_MEETING'), array(
-						'title' => Text::_('MOD_SPORTSMANAGEMENT_MATCHES_MEETING'),
-						'height' => '16',
-						'width' => '16'
-						)
-					) .
-								 ' ' . $rows[$match->match_id]['meeting'];
+							'image', $this->iconpath . 'time_go.png', Text::_('MOD_SPORTSMANAGEMENT_MATCHES_MEETING'), array(
+								'title'  => Text::_('MOD_SPORTSMANAGEMENT_MATCHES_MEETING'),
+								'height' => '16',
+								'width'  => '16'
+							)
+						) .
+						' ' . $rows[$match->match_id]['meeting'];
 				}
 			}
 
-			$rows[$match->match_id]['project_id'] = $match->project_id;
-			$rows[$match->match_id]['totaltime'] = $match->totaltime;
-			$rows[$match->match_id]['round_id'] = $match->round_id;
-			$rows[$match->match_id]['hometeam'] = $this->getTeamDetails($hteam, $cnt);
-			$rows[$match->match_id]['homescore'] = (!is_null($match->team1_result)) ? $match->team1_result : '-';
-			$rows[$match->match_id]['homeover'] = $this->buildTeamLinks($hteam, $cnt);
-			$rows[$match->match_id]['awayteam'] = $this->getTeamDetails($ateam, $cnt);
-			$rows[$match->match_id]['awayscore'] = (!is_null($match->team2_result)) ? $match->team2_result : '-';
-			$rows[$match->match_id]['awayover'] = $this->buildTeamLinks($ateam, $cnt);
-			$rows[$match->match_id]['cancel'] = $match->cancel;
+			$rows[$match->match_id]['project_id']    = $match->project_id;
+			$rows[$match->match_id]['totaltime']     = $match->totaltime;
+			$rows[$match->match_id]['round_id']      = $match->round_id;
+			$rows[$match->match_id]['hometeam']      = $this->getTeamDetails($hteam, $cnt);
+			$rows[$match->match_id]['homescore']     = (!is_null($match->team1_result)) ? $match->team1_result : '-';
+			$rows[$match->match_id]['homeover']      = $this->buildTeamLinks($hteam, $cnt);
+			$rows[$match->match_id]['awayteam']      = $this->getTeamDetails($ateam, $cnt);
+			$rows[$match->match_id]['awayscore']     = (!is_null($match->team2_result)) ? $match->team2_result : '-';
+			$rows[$match->match_id]['awayover']      = $this->buildTeamLinks($ateam, $cnt);
+			$rows[$match->match_id]['cancel']        = $match->cancel;
 			$rows[$match->match_id]['cancel_reason'] = $match->cancel_reason;
 			$this->createMatchInfo($rows[$match->match_id], $match);
 			$this->formatHeading($rows[$match->match_id], $match);
@@ -341,9 +346,10 @@ class modMatchesSportsmanagementHelper
 	/**
 	 * modMatchesHelper::sortObject()
 	 *
-	 * @param   mixed  $array
-	 * @param   mixed  $comparefunction
-	 * @param   string $property
+	 * @param   mixed   $array
+	 * @param   mixed   $comparefunction
+	 * @param   string  $property
+	 *
 	 * @return
 	 */
 	public function sortObject($array, $comparefunction, $property = '')
@@ -356,9 +362,9 @@ class modMatchesSportsmanagementHelper
 			{
 				if ($this->$comparefunction ($array[$a - 1]->$property, $array[$a]->$property) > 0)
 				{
-					$tempzal = $array[$a - 1];
+					$tempzal       = $array[$a - 1];
 					$array[$a - 1] = $array[$a];
-					$array[$a] = $tempzal;
+					$array[$a]     = $tempzal;
 				}
 			}
 		}
@@ -369,8 +375,9 @@ class modMatchesSportsmanagementHelper
 	/**
 	 * modMatchesHelper::getTeamDetails()
 	 *
-	 * @param   mixed $team
-	 * @param   mixed $nr
+	 * @param   mixed  $team
+	 * @param   mixed  $nr
+	 *
 	 * @return boolean
 	 */
 	public function getTeamDetails(&$team, $nr)
@@ -380,8 +387,8 @@ class modMatchesSportsmanagementHelper
 			return false;
 		}
 
-		$usedname = $this->params->get('team_names');
-		$class = 'jlmlTeamname';
+		$usedname   = $this->params->get('team_names');
+		$class      = 'jlmlTeamname';
 		$isusedteam = $this->usedteamscheck($team->id, $team->project_id);
 
 		if ($isusedteam)
@@ -401,13 +408,13 @@ class modMatchesSportsmanagementHelper
 		{
 			case "short_name" :
 				$teamdetails['name'] .= '<acronym title="' .
-				$this->jl_utf8_convert($team->name, 'iso-8859-1', 'utf-8') . '">' .
-				$this->jl_utf8_convert($team->short_name, 'iso-8859-1', 'utf-8') .
-				'</acronym>';
-					break;
+					$this->jl_utf8_convert($team->name, 'iso-8859-1', 'utf-8') . '">' .
+					$this->jl_utf8_convert($team->short_name, 'iso-8859-1', 'utf-8') .
+					'</acronym>';
+				break;
 			default :
-					$teamdetails['name'] .= ($team->$usedname != '') ? $this->jl_utf8_convert($team->$usedname, 'iso-8859-1', 'utf-8') : $this->jl_utf8_convert($team->name, 'iso-8859-1', 'utf-8');
-					break;
+				$teamdetails['name'] .= ($team->$usedname != '') ? $this->jl_utf8_convert($team->$usedname, 'iso-8859-1', 'utf-8') : $this->jl_utf8_convert($team->name, 'iso-8859-1', 'utf-8');
+				break;
 		}
 
 		$teamdetails['name'] .= '</span>';
@@ -418,8 +425,9 @@ class modMatchesSportsmanagementHelper
 	/**
 	 * modMatchesHelper::usedteamscheck()
 	 *
-	 * @param   mixed $team_id
-	 * @param   mixed $project_id
+	 * @param   mixed  $team_id
+	 * @param   mixed  $project_id
+	 *
 	 * @return integer
 	 */
 	public function usedteamscheck($team_id, $project_id)
@@ -448,7 +456,8 @@ class modMatchesSportsmanagementHelper
 	/**
 	 * modMatchesHelper::getpix()
 	 *
-	 * @param   mixed $team
+	 * @param   mixed  $team
+	 *
 	 * @return boolean
 	 */
 	public function getpix($team)
@@ -470,13 +479,13 @@ class modMatchesSportsmanagementHelper
 		}
 		else
 		{
-			$defaultlogos = $this->getDefaultLogos();
+			$defaultlogos  = $this->getDefaultLogos();
 			$matchpart_pic = !empty($team->$pt) ? $team->$pt : $defaultlogos[$pt];
 
 			if (File::exists(JPATH_ROOT . DIRECTORY_SEPARATOR . $matchpart_pic))
 			{
-				$size = getimagesize($matchpart_pic);
-				$pic_width = $size[0];
+				$size       = getimagesize($matchpart_pic);
+				$pic_width  = $size[0];
 				$pic_height = $size[1];
 				$whichparam = ($pic_width > $pic_height) ? ' width' : ' height';
 
@@ -506,9 +515,10 @@ class modMatchesSportsmanagementHelper
 	/**
 	 * modMatchesHelper::jl_utf8_convert()
 	 *
-	 * @param   mixed  $text
-	 * @param   string $fromenc
-	 * @param   string $toenc
+	 * @param   mixed   $text
+	 * @param   string  $fromenc
+	 * @param   string  $toenc
+	 *
 	 * @return false|mixed|string
 	 */
 	public function jl_utf8_convert($text, $fromenc = 'iso-8859-1', $toenc = 'UTF-8')
@@ -543,8 +553,9 @@ class modMatchesSportsmanagementHelper
 	/**
 	 * modMatchesHelper::createMatchInfo()
 	 *
-	 * @param   mixed $row
-	 * @param   mixed $match
+	 * @param   mixed  $row
+	 * @param   mixed  $match
+	 *
 	 * @return void
 	 */
 	public function createMatchInfo(&$row, $match)
@@ -556,12 +567,12 @@ class modMatchesSportsmanagementHelper
 			$row['referee'] = '<span style="float:right;">';
 			$row['referee'] .= ($this->iconpath) ? HTMLHelper::_(
 				'image', $this->iconpath . 'referee.png', Text::_('MOD_SPORTSMANAGEMENT_MATCHES_REFEREE'), array(
-				'title' => Text::_('MOD_SPORTSMANAGEMENT_MATCHES_REFEREE'),
-				'height' => '16',
-				'width' => '16'
+					'title'  => Text::_('MOD_SPORTSMANAGEMENT_MATCHES_REFEREE'),
+					'height' => '16',
+					'width'  => '16'
 				)
 			) : Text::_('MOD_SPORTSMANAGEMENT_MATCHES_REFEREE') . ': ';
-					$row['referee'] .= $this->jl_utf8_convert($match->refname, 'iso-8859-1', 'utf-8') . '</span>';
+			$row['referee'] .= $this->jl_utf8_convert($match->refname, 'iso-8859-1', 'utf-8') . '</span>';
 		}
 		else
 		{
@@ -573,13 +584,12 @@ class modMatchesSportsmanagementHelper
 			$row['spectators'] = '<span style="float:left;">';
 			$row['spectators'] .= ($this->iconpath) ? HTMLHelper::_(
 				'image', $this->iconpath . 'spectators.png', Text::_('MOD_SPORTSMANAGEMENT_MATCHES_SPECTATORS'), array(
-				'title' => Text::_('MOD_SPORTSMANAGEMENT_MATCHES_SPECTATORS'),
-				'height' => '16',
-				'width' => '16'
+					'title'  => Text::_('MOD_SPORTSMANAGEMENT_MATCHES_SPECTATORS'),
+					'height' => '16',
+					'width'  => '16'
 				)
 			) : Text::_('MOD_SPORTSMANAGEMENT_MATCHES_SPECTATORS') . ': ';
-					$row['spectators'] .= number_format($match->crowd, 0, ',', '.') . '</span>';
-			;
+			$row['spectators'] .= number_format($match->crowd, 0, ',', '.') . '</span>';;
 		}
 		else
 		{
@@ -590,34 +600,35 @@ class modMatchesSportsmanagementHelper
 	/**
 	 * modMatchesHelper::formatResults()
 	 *
-	 * @param   mixed $row
-	 * @param   mixed $match
+	 * @param   mixed  $row
+	 * @param   mixed  $match
+	 *
 	 * @return void
 	 */
 	public function formatResults(&$row, &$match)
 	{
-		$live = ($match->live == 'z') ? 0 : 1;
-		$mrt = array(
-		 0 => array(
-		  0 => '',
-		  1 => ''
-		 ),
-		 1 => array(
-		  0 => Text::_('AET'),
-		  1 => Text::_('IET')
-		 ),
-		 2 => array(
-		  0 => Text::_('ONP'),
-		  1 => Text::_('INP')
-		 )
+		$live        = ($match->live == 'z') ? 0 : 1;
+		$mrt         = array(
+			0 => array(
+				0 => '',
+				1 => ''
+			),
+			1 => array(
+				0 => Text::_('AET'),
+				1 => Text::_('IET')
+			),
+			2 => array(
+				0 => Text::_('ONP'),
+				1 => Text::_('INP')
+			)
 		);
 		$partresults = '';
 
 		if ($this->params->get('part_result') == 1 && trim(str_replace(';', '', $match->team1_result_split)) != '')
 		{
-			$homepartresults = $this->array_trim(explode(";", $match->team1_result_split));
+			$homepartresults  = $this->array_trim(explode(";", $match->team1_result_split));
 			$guestpartresults = $this->array_trim(explode(";", $match->team2_result_split));
-			$cntmp = ($match->game_parts + $this->params->get('part_result_count'));
+			$cntmp            = ($match->game_parts + $this->params->get('part_result_count'));
 
 			for ($x = 0; $x < $cntmp; $x++)
 			{
@@ -741,7 +752,8 @@ class modMatchesSportsmanagementHelper
 	/**
 	 * modMatchesHelper::array_trim()
 	 *
-	 * @param   mixed $a
+	 * @param   mixed  $a
+	 *
 	 * @return array
 	 */
 	public function array_trim($a)
@@ -767,8 +779,9 @@ class modMatchesSportsmanagementHelper
 	/**
 	 * modMatchesHelper::createAjaxMenu()
 	 *
-	 * @param   mixed $row
-	 * @param   mixed $cnt
+	 * @param   mixed  $row
+	 * @param   mixed  $cnt
+	 *
 	 * @return boolean
 	 */
 	public function createAjaxMenu(&$row, $cnt)
@@ -791,13 +804,13 @@ class modMatchesSportsmanagementHelper
 			$this->next_last($row, false);
 		}
 
-		$origin = $app->input->post->get('origin', $row->match_id);
-		$jsfunc = "jlml_loadMatch('%s', '%s', '" . $this->module_id . "', '" . $cnt . "', '%s')";
+		$origin  = $app->input->post->get('origin', $row->match_id);
+		$jsfunc  = "jlml_loadMatch('%s', '%s', '" . $this->module_id . "', '" . $cnt . "', '%s')";
 		$options = array(
-		 'height' => '16',
-		 'width' => '16',
-		 'onclick' => 'alert(\'coming soon...\')',
-		 'style' => 'cursor:pointer;'
+			'height'  => '16',
+			'width'   => '16',
+			'onclick' => 'alert(\'coming soon...\')',
+			'style'   => 'cursor:pointer;'
 		);
 
 		// Start ajaxifying
@@ -815,10 +828,10 @@ class modMatchesSportsmanagementHelper
 
 			if ($row->lasthome)
 			{
-				$tmp = $options;
-				$tmp['title'] = Text::_('MOD_SPORTSMANAGEMENT_MATCHES_PREVIOUS_TEAM_MATCH');
+				$tmp            = $options;
+				$tmp['title']   = Text::_('MOD_SPORTSMANAGEMENT_MATCHES_PREVIOUS_TEAM_MATCH');
 				$tmp['onclick'] = sprintf($jsfunc, $row->team1_id, $row->lasthome, $origin);
-				$alt = $tmp['title'];
+				$alt            = $tmp['title'];
 
 				if ($this->iconpath && $this->params->get('icons_for_ajax'))
 				{
@@ -832,10 +845,10 @@ class modMatchesSportsmanagementHelper
 
 			if ($row->nexthome)
 			{
-				$tmp = $options;
-				$tmp['title'] = Text::_('MOD_SPORTSMANAGEMENT_MATCHES_NEXT_TEAM_MATCH');
+				$tmp            = $options;
+				$tmp['title']   = Text::_('MOD_SPORTSMANAGEMENT_MATCHES_NEXT_TEAM_MATCH');
 				$tmp['onclick'] = sprintf($jsfunc, $row->team1_id, $row->nexthome, $origin);
-				$alt = $tmp['title'];
+				$alt            = $tmp['title'];
 
 				if ($this->iconpath && $this->params->get('icons_for_ajax'))
 				{
@@ -856,10 +869,10 @@ class modMatchesSportsmanagementHelper
 
 			if ($row->lastaway)
 			{
-				$tmp = $options;
-				$tmp['title'] = Text::_('MOD_SPORTSMANAGEMENT_MATCHES_PREVIOUS_TEAM_MATCH');
+				$tmp            = $options;
+				$tmp['title']   = Text::_('MOD_SPORTSMANAGEMENT_MATCHES_PREVIOUS_TEAM_MATCH');
 				$tmp['onclick'] = sprintf($jsfunc, $row->team2_id, $row->lastaway, $origin);
-				$alt = $tmp['title'];
+				$alt            = $tmp['title'];
 
 				if ($this->iconpath && $this->params->get('icons_for_ajax'))
 				{
@@ -873,10 +886,10 @@ class modMatchesSportsmanagementHelper
 
 			if ($row->nextaway)
 			{
-				$tmp = $options;
-				$tmp['title'] = Text::_('MOD_SPORTSMANAGEMENT_MATCHES_NEXT_TEAM_MATCH');
+				$tmp            = $options;
+				$tmp['title']   = Text::_('MOD_SPORTSMANAGEMENT_MATCHES_NEXT_TEAM_MATCH');
 				$tmp['onclick'] = sprintf($jsfunc, $row->team2_id, $row->nextaway, $origin);
-				$alt = $tmp['title'];
+				$alt            = $tmp['title'];
 
 				if ($this->iconpath && $this->params->get('icons_for_ajax'))
 				{
@@ -893,11 +906,11 @@ class modMatchesSportsmanagementHelper
 
 		if ($this->params->get('reset_start_match') == 1 && $origin != $row->id)
 		{
-			$temp .= '<span style="float:none;">';
-			$tmp = $options;
-			$tmp['title'] = Text::_('MOD_SPORTSMANAGEMENT_MATCHES_RESET_TEAM_MATCH');
+			$temp           .= '<span style="float:none;">';
+			$tmp            = $options;
+			$tmp['title']   = Text::_('MOD_SPORTSMANAGEMENT_MATCHES_RESET_TEAM_MATCH');
 			$tmp['onclick'] = sprintf($jsfunc, '0', $origin, $origin);
-			$alt = $tmp['title'];
+			$alt            = $tmp['title'];
 
 			if ($this->iconpath && $this->params->get('icons_for_ajax'))
 			{
@@ -911,7 +924,7 @@ class modMatchesSportsmanagementHelper
 			$temp .= '</span>';
 		}
 
-		$temp .= '</div>';
+		$temp      .= '</div>';
 		$row->ajax = $temp;
 	}
 
@@ -922,7 +935,7 @@ class modMatchesSportsmanagementHelper
 	 */
 	public function getTimeLimit()
 	{
-		$livematchestime = "IF((p.allow_add_time > 0), ((p.game_regular_time+(p.game_parts * p.halftime)) + p.add_time), (p.game_regular_time+(p.game_parts * p.halftime)))";
+		$livematchestime   = "IF((p.allow_add_time > 0), ((p.game_regular_time+(p.game_parts * p.halftime)) + p.add_time), (p.game_regular_time+(p.game_parts * p.halftime)))";
 		$timeforfirstmatch = "DATE_SUB(" . $this->getDateString() . ", INTERVAL $livematchestime MINUTE) > NOW()";
 
 		if ($this->params->get('show_played', 0) == 1 && ($this->params->get('result_add_time', 0)) > 0)
@@ -931,7 +944,7 @@ class modMatchesSportsmanagementHelper
 		}
 
 		$timeforlastmatch = ($this->params->get('period_int', 0) > 0) ? $this->getDateString() . " < DATE_ADD(NOW(), INTERVAL " . intval($this->params->get('period_int')) . " " . $this->params->get('period_string') . ")" : '';
-		$wheretime = "(" . $timeforfirstmatch;
+		$wheretime        = "(" . $timeforfirstmatch;
 
 		if (!empty($timeforlastmatch))
 		{
@@ -946,7 +959,8 @@ class modMatchesSportsmanagementHelper
 	/**
 	 * modMatchesHelper::arrayToUri()
 	 *
-	 * @param   mixed $arr
+	 * @param   mixed  $arr
+	 *
 	 * @return boolean|string
 	 */
 	public function arrayToUri(&$arr)
@@ -969,8 +983,9 @@ class modMatchesSportsmanagementHelper
 	/**
 	 * modMatchesHelper::asc()
 	 *
-	 * @param   mixed $a
-	 * @param   mixed $b
+	 * @param   mixed  $a
+	 * @param   mixed  $b
+	 *
 	 * @return integer
 	 */
 	private function asc($a, $b)
@@ -991,8 +1006,9 @@ class modMatchesSportsmanagementHelper
 	/**
 	 * modMatchesHelper::desc()
 	 *
-	 * @param   mixed $a
-	 * @param   mixed $b
+	 * @param   mixed  $a
+	 * @param   mixed  $b
+	 *
 	 * @return integer
 	 */
 	private function desc($a, $b)

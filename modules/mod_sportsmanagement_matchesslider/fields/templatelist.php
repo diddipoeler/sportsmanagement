@@ -14,10 +14,12 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\Folder;
+
 jimport('joomla.form.formfield');
 
 defined('JPATH_BASE') or die();
@@ -43,12 +45,12 @@ class JFormFieldTemplatelist extends JFormField
 	function getInput()
 	{
 		// Path to images directory
-		$path        = JPATH_ROOT . DIRECTORY_SEPARATOR . $this->element['directory'];
-		$filter        = $this->element['filter'];
-		$exclude    = $this->element['exclude'];
-		$folders    = Folder::folders($path, $filter);
+		$path    = JPATH_ROOT . DIRECTORY_SEPARATOR . $this->element['directory'];
+		$filter  = $this->element['filter'];
+		$exclude = $this->element['exclude'];
+		$folders = Folder::folders($path, $filter);
 
-			  $options = array ();
+		$options = array();
 
 		foreach ($folders as $folder)
 		{
@@ -63,7 +65,7 @@ class JFormFieldTemplatelist extends JFormField
 			$options[] = HTMLHelper::_('select.option', $folder, $folder);
 		}
 
-			  $lang = Factory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load("com_sportsmanagement", JPATH_ADMINISTRATOR);
 
 		if (!$this->element['hide_none'])
@@ -76,9 +78,9 @@ class JFormFieldTemplatelist extends JFormField
 			array_unshift($options, HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_USE_DEFAULT')));
 		}
 
-			  $doc = Factory::getDocument();
-			$doc->addScriptDeclaration(
-				'
+		$doc = Factory::getDocument();
+		$doc->addScriptDeclaration(
+			'
 			function getPosition(element)
 			{
 				var pos = { y: 0, x: 0 };
@@ -106,33 +108,33 @@ class JFormFieldTemplatelist extends JFormField
 		
 			}
 			'
-			);
+		);
 
-			  $mainframe = Factory::getApplication();
+		$mainframe = Factory::getApplication();
 
 		$select = '<table>'
-		  . '<tr>'
-		  . '<td>'
-		  . HTMLHelper::_(
-			  'select.genericlist',  $options, $this->name,
-			  'class="inputbox" onchange="$(\'TemplateImage\').src=\''
-						   . $mainframe->getCfg('live_site')
-			  . '/modules/mod_sportsmanagement_matches/tmpl/\'+this.options[this.selectedIndex].value+\'/template.png\';"',
-			  'value', 'text', $this->value, $this->id
-		  )
-		  . '<br /><br />'
-		  . Text::_($this->element['details'])
-		  . '</td>'
-		  . '</tr>'
-		  . '<tr>'
-		  . '<td style="text-align:right;background-color:grey;padding:4px;margin:20px;width:200px;height:150px;">'
-		  . HTMLHelper::_(
-			  'image', 'modules/mod_sportsmanagement_matches/tmpl/' . $this->value . '/template.png',
-			  'TemplateImage', 'id="TemplateImage" width="200"'
-		  )
-			 . '</td>'
-			 . '</tr>'
-			 . '</table>';
+			. '<tr>'
+			. '<td>'
+			. HTMLHelper::_(
+				'select.genericlist', $options, $this->name,
+				'class="inputbox" onchange="$(\'TemplateImage\').src=\''
+				. $mainframe->getCfg('live_site')
+				. '/modules/mod_sportsmanagement_matches/tmpl/\'+this.options[this.selectedIndex].value+\'/template.png\';"',
+				'value', 'text', $this->value, $this->id
+			)
+			. '<br /><br />'
+			. Text::_($this->element['details'])
+			. '</td>'
+			. '</tr>'
+			. '<tr>'
+			. '<td style="text-align:right;background-color:grey;padding:4px;margin:20px;width:200px;height:150px;">'
+			. HTMLHelper::_(
+				'image', 'modules/mod_sportsmanagement_matches/tmpl/' . $this->value . '/template.png',
+				'TemplateImage', 'id="TemplateImage" width="200"'
+			)
+			. '</td>'
+			. '</tr>'
+			. '</table>';
 
 		return $select;
 	}

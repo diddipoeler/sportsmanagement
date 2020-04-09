@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 
 /**
@@ -36,17 +37,17 @@ class sportsmanagementViewClubs extends sportsmanagementView
 	{
 
 		$division = sportsmanagementModelProject::getDivision(sportsmanagementModelClubs::$divisionid, sportsmanagementModelClubs::$cfg_which_database);
-		$clubs = $this->model->getClubs();
+		$clubs    = $this->model->getClubs();
 
 		$this->division = $division;
-		$this->clubs = $clubs;
+		$this->clubs    = $clubs;
 
 		// Set page title
 		$pageTitle = Text::_('COM_SPORTSMANAGEMENT_CLUBS_PAGE_TITLE');
 
 		if (isset($this->project))
 		{
-			   $pageTitle .= ' - ' . $this->project->name;
+			$pageTitle .= ' - ' . $this->project->name;
 
 			if (isset($this->division))
 			{

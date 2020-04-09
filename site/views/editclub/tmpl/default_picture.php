@@ -13,23 +13,24 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 
 ?>
 
-		<fieldset class="adminform">
-			<legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO');?>
-			</legend>
-			<table class="admintable" border='0'>
+<fieldset class="adminform">
+    <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO'); ?>
+    </legend>
+    <table class="admintable" border='0'>
 		<?php foreach ($this->form->getFieldset('picture') as $field)
-		:
-	?>
-					<tr>
-						<td class="key"><?php echo $field->label; ?></td>
-						<td><?php echo $field->input; ?></td>
-					</tr>                  
+			:
+			?>
+            <tr>
+                <td class="key"><?php echo $field->label; ?></td>
+                <td><?php echo $field->input; ?></td>
+            </tr>
 		<?php endforeach; ?>
-			</table>
-		</fieldset>
+    </table>
+</fieldset>
 
 	  

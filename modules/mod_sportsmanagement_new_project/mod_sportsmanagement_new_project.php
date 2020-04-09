@@ -13,13 +13,14 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Component\ComponentHelper;
 
-if (! defined('DS'))
+if (!defined('DS'))
 {
 	define('DS', DIRECTORY_SEPARATOR);
 }
@@ -38,29 +39,30 @@ if (!class_exists('sportsmanagementHelper'))
 	BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
-if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
+if (!defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
 {
 	DEFINE('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE', ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database'));
 }
 
 /**
-*
+ *
  * Include the functions only once
-*/
+ */
 JLoader::register('modJSMNewProjectHelper', __DIR__ . '/helper.php');
 
 $document = Factory::getDocument();
 
-$new_project_article   = $params->get('new_project_article', 0);
-$mycategory      = $params->get('mycategory', 0);
+$new_project_article = $params->get('new_project_article', 0);
+$mycategory          = $params->get('mycategory', 0);
 
 $list = modJSMNewProjectHelper::getData($new_project_article, $mycategory);
 
 // Add css file
 // $document->addStyleSheet(Uri::base().'modules/mod_sportsmanagement_new_project/css/mod_sportsmanagement_new_project.css');
 ?>
-<div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
-<?PHP
-require ModuleHelper::getLayoutPath($module->module);
-?>
+<div class="<?php echo $params->get('moduleclass_sfx'); ?>"
+     id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+	<?PHP
+	require ModuleHelper::getLayoutPath($module->module);
+	?>
 </div>

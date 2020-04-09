@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die();
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
@@ -38,24 +39,12 @@ JLoader::import('joomla.utilities.simplecrypt');
 class sportsmanagementModeljsmGCalendar extends AdminModel
 {
 	/**
-	 * sportsmanagementModeljsmGCalendar::allowEdit()
-	 *
-	 * @param   mixed  $data
-	 * @param   string $key
-	 * @return
-	 */
-	protected function allowEdit($data = array(), $key = 'id')
-	{
-		// Check specific edit permission then general edit permission.
-		return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.calendar.' . ((int) isset($data[$key]) ? $data[$key] : 0)) || parent::allowEdit($data, $key);
-	}
-
-	/**
 	 * sportsmanagementModeljsmGCalendar::getTable()
 	 *
-	 * @param   string $type
-	 * @param   string $prefix
-	 * @param   mixed  $config
+	 * @param   string  $type
+	 * @param   string  $prefix
+	 * @param   mixed   $config
+	 *
 	 * @return
 	 */
 	public function getTable($type = 'jsmGCalendar', $prefix = 'sportsmanagementTable', $config = array())
@@ -68,8 +57,9 @@ class sportsmanagementModeljsmGCalendar extends AdminModel
 	/**
 	 * sportsmanagementModeljsmGCalendar::getForm()
 	 *
-	 * @param   mixed $data
-	 * @param   bool  $loadData
+	 * @param   mixed  $data
+	 * @param   bool   $loadData
+	 *
 	 * @return
 	 */
 	public function getForm($data = array(), $loadData = true)
@@ -86,28 +76,10 @@ class sportsmanagementModeljsmGCalendar extends AdminModel
 	}
 
 	/**
-	 * sportsmanagementModeljsmGCalendar::loadFormData()
-	 *
-	 * @return
-	 */
-	protected function loadFormData()
-	{
-		// Check the session for previously entered form data.
-		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.jsmGCalendar.data', array());
-
-		if (empty($data))
-		{
-			$data = $this->getItem();
-		}
-
-		return $data;
-	}
-
-
-	/**
 	 * Method to save the form data.
 	 *
-	 * @param  array    The form data.
+	 * @param   array    The form data.
+	 *
 	 * @return boolean    True on success.
 	 * @since  1.6
 	 *
@@ -115,21 +87,21 @@ class sportsmanagementModeljsmGCalendar extends AdminModel
 	 */
 	public function save($data)
 	{
-		  $app = Factory::getApplication();
-		  $config = Factory::getConfig();
-		  $option = Factory::getApplication()->input->getCmd('option');
-		  $post = Factory::getApplication()->input->post->getArray(array());
+		$app    = Factory::getApplication();
+		$config = Factory::getConfig();
+		$option = Factory::getApplication()->input->getCmd('option');
+		$post   = Factory::getApplication()->input->post->getArray(array());
 
-		  // Get a db connection.
+		// Get a db connection.
 		$db = Factory::getDbo();
 
-			  $timezone = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('timezone', '');
+		$timezone = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('timezone', '');
 
 		if (empty($data['id']))
 		{
 			// Xml file erstellen
-			$file = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'createcal.xml';
-			$output  = "<entry xmlns='http://www.w3.org/2005/Atom'" . "\n";
+			$file   = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'createcal.xml';
+			$output = "<entry xmlns='http://www.w3.org/2005/Atom'" . "\n";
 			$output .= "xmlns:gd='http://schemas.google.com/g/2005'" . "\n";
 			$output .= "xmlns:gCal='http://schemas.google.com/gCal/2005'>" . "\n";
 			$output .= "<title type='text'>[TITLE]</title>" . "\n";
@@ -138,7 +110,7 @@ class sportsmanagementModeljsmGCalendar extends AdminModel
 
 			if (version_compare(JVERSION, '3.0.0', 'ge'))
 			{
-						$output .= $config->get('config.offset');
+				$output .= $config->get('config.offset');
 			}
 			else
 			{
@@ -175,7 +147,39 @@ class sportsmanagementModeljsmGCalendar extends AdminModel
 			// $data['calendar_id'] = substr($response->getHeader('Content-location'), strrpos($response->getHeader('Content-location'), '/')+1);
 		}
 
-				// Proceed with the save
-			return parent::save($data);
+		// Proceed with the save
+		return parent::save($data);
+	}
+
+	/**
+	 * sportsmanagementModeljsmGCalendar::allowEdit()
+	 *
+	 * @param   mixed   $data
+	 * @param   string  $key
+	 *
+	 * @return
+	 */
+	protected function allowEdit($data = array(), $key = 'id')
+	{
+		// Check specific edit permission then general edit permission.
+		return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.calendar.' . ((int) isset($data[$key]) ? $data[$key] : 0)) || parent::allowEdit($data, $key);
+	}
+
+	/**
+	 * sportsmanagementModeljsmGCalendar::loadFormData()
+	 *
+	 * @return
+	 */
+	protected function loadFormData()
+	{
+		// Check the session for previously entered form data.
+		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.jsmGCalendar.data', array());
+
+		if (empty($data))
+		{
+			$data = $this->getItem();
+		}
+
+		return $data;
 	}
 }

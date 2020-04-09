@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 
@@ -38,17 +39,29 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
 		parent::__construct();
 	}
 
-		  /**
-		   * sportsmanagementControllerprojectteams::set_playground_match()
-		   *
-		   * @return void
-		   */
+	/**
+	 * sportsmanagementControllerprojectteams::set_playground_match()
+	 *
+	 * @return void
+	 */
 	function set_playground_match()
 	{
 		$model = $this->getModel();
-		  $post = Factory::getApplication()->input->post->getArray(array());
-		$msg = $model->set_playground_match($post);
+		$post  = Factory::getApplication()->input->post->getArray(array());
+		$msg   = $model->set_playground_match($post);
 		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list . '&pid=' . $post['pid'], false));
+	}
+
+	/**
+	 * Proxy for getModel.
+	 *
+	 * @since 1.6
+	 */
+	public function getModel($name = 'Projectteam', $prefix = 'sportsmanagementModel', $config = Array())
+	{
+		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
+
+		return $model;
 	}
 
 	/**
@@ -59,23 +72,23 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
 	function set_playground()
 	{
 		$model = $this->getModel();
-		  $post = Factory::getApplication()->input->post->getArray(array());
-		$msg = $model->set_playground($post);
+		$post  = Factory::getApplication()->input->post->getArray(array());
+		$msg   = $model->set_playground($post);
 		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list . '&pid=' . $post['pid'], false));
 	}
 
-		  /**
-		   * Method to assign persons or teams
-		   *
-		   * @access public
-		   * @return boolean    True on success
-		   */
+	/**
+	 * Method to assign persons or teams
+	 *
+	 * @access public
+	 * @return boolean    True on success
+	 */
 	function assign()
 	{
-		$post = Factory::getApplication()->input->post->getArray(array());
+		$post  = Factory::getApplication()->input->post->getArray(array());
 		$model = $this->getModel();
-		 $msg = $model->storeAssign($post);
-		 $this->setRedirect('index.php?option=' . $this->option . '&view=close&tmpl=component', $msg);
+		$msg   = $model->storeAssign($post);
+		$this->setRedirect('index.php?option=' . $this->option . '&view=close&tmpl=component', $msg);
 	}
 
 	/**
@@ -86,9 +99,9 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
 	function matchgroups()
 	{
 		$model = $this->getModel();
-		 $post = Factory::getApplication()->input->post->getArray(array());
-		 $model->matchgroups();
-		 $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list . '&pid=' . $post['pid'], false));
+		$post  = Factory::getApplication()->input->post->getArray(array());
+		$model->matchgroups();
+		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list . '&pid=' . $post['pid'], false));
 	}
 
 	/**
@@ -99,7 +112,7 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
 	function setseasonid()
 	{
 		$model = $this->getModel();
-		$post = Factory::getApplication()->input->post->getArray(array());
+		$post  = Factory::getApplication()->input->post->getArray(array());
 		$model->setseasonid();
 		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list . '&pid=' . $post['pid'], false));
 	}
@@ -112,7 +125,7 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
 	function use_table_yes()
 	{
 		$model = $this->getModel();
-		$post = Factory::getApplication()->input->post->getArray(array());
+		$post  = Factory::getApplication()->input->post->getArray(array());
 		$model->setusetable(1);
 		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list . '&pid=' . $post['pid'], false));
 	}
@@ -125,7 +138,7 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
 	function use_table_no()
 	{
 		$model = $this->getModel();
-		$post = Factory::getApplication()->input->post->getArray(array());
+		$post  = Factory::getApplication()->input->post->getArray(array());
 		$model->setusetable(0);
 		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list . '&pid=' . $post['pid'], false));
 	}
@@ -138,7 +151,7 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
 	function use_table_points_yes()
 	{
 		$model = $this->getModel();
-		$post = Factory::getApplication()->input->post->getArray(array());
+		$post  = Factory::getApplication()->input->post->getArray(array());
 		$model->setusetablepoints(1);
 		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list . '&pid=' . $post['pid'], false));
 	}
@@ -151,7 +164,7 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
 	function use_table_points_no()
 	{
 		$model = $this->getModel();
-		$post = Factory::getApplication()->input->post->getArray(array());
+		$post  = Factory::getApplication()->input->post->getArray(array());
 		$model->setusetablepoints(0);
 		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list . '&pid=' . $post['pid'], false));
 	}
@@ -165,21 +178,9 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
 	function saveshort()
 	{
 		$model = $this->getModel();
-		$post = Factory::getApplication()->input->post->getArray(array());
+		$post  = Factory::getApplication()->input->post->getArray(array());
 		$model->saveshort();
 		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list . '&pid=' . $post['pid'], false));
-	}
-
-	/**
-	 * Proxy for getModel.
-	 *
-	 * @since 1.6
-	 */
-	public function getModel($name = 'Projectteam', $prefix = 'sportsmanagementModel', $config = Array() )
-	{
-		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
-
-		return $model;
 	}
 
 }

@@ -25,10 +25,10 @@ class JGithubPackageGistsComments extends JGithubPackage
 	 * @param   integer  $gistId  The gist number.
 	 * @param   string   $body    The comment body text.
 	 *
+	 * @return  object
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  object
 	 */
 	public function create($gistId, $body)
 	{
@@ -61,10 +61,10 @@ class JGithubPackageGistsComments extends JGithubPackage
 	 *
 	 * @param   integer  $commentId  The id of the comment to delete.
 	 *
+	 * @return  void
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  void
 	 */
 	public function delete($commentId)
 	{
@@ -89,10 +89,10 @@ class JGithubPackageGistsComments extends JGithubPackage
 	 * @param   integer  $commentId  The id of the comment to update.
 	 * @param   string   $body       The new body text for the comment.
 	 *
+	 * @return  object
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  object
 	 */
 	public function edit($commentId, $body)
 	{
@@ -125,10 +125,10 @@ class JGithubPackageGistsComments extends JGithubPackage
 	 *
 	 * @param   integer  $commentId  The comment id to get.
 	 *
+	 * @return  object
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  object
 	 */
 	public function get($commentId)
 	{
@@ -156,10 +156,10 @@ class JGithubPackageGistsComments extends JGithubPackage
 	 * @param   integer  $page    The page number from which to get items.
 	 * @param   integer  $limit   The number of items on a page.
 	 *
+	 * @return  array
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  array
 	 */
 	public function getList($gistId, $page = 0, $limit = 0)
 	{

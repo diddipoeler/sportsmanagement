@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Session\Session;
@@ -50,10 +51,9 @@ class sportsmanagementControllerprojectpositions extends JSMControllerAdmin
 		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
 		$model = $this->getModel();
-		 $msg = $model->store($post);
+		$msg   = $model->store($post);
 		$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);
 	}
-
 
 
 	/**
@@ -61,14 +61,12 @@ class sportsmanagementControllerprojectpositions extends JSMControllerAdmin
 	 *
 	 * @since 1.6
 	 */
-	public function getModel($name = 'Projectposition', $prefix = 'sportsmanagementModel', $config = Array() )
+	public function getModel($name = 'Projectposition', $prefix = 'sportsmanagementModel', $config = Array())
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 
 		return $model;
 	}
-
-
 
 
 }

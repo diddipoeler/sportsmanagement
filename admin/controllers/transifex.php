@@ -13,8 +13,10 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+
 JLoader::import('components.com_sportsmanagement.helpers.transifex', JPATH_ADMINISTRATOR);
 
 /**
@@ -31,7 +33,8 @@ class sportsmanagementControllertransifex extends JSMControllerAdmin
 	/**
 	 * Class Constructor
 	 *
-	 * @param   array $config An optional associative array of configuration settings.
+	 * @param   array  $config  An optional associative array of configuration settings.
+	 *
 	 * @return void
 	 * @since  1.5
 	 */
@@ -49,7 +52,6 @@ class sportsmanagementControllertransifex extends JSMControllerAdmin
 	{
 
 	}
-
 
 
 }

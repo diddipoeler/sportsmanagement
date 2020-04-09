@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
@@ -35,7 +36,8 @@ class sportsmanagementModelsmimageimports extends ListModel
 	/**
 	 * sportsmanagementModelsmimageimports::__construct()
 	 *
-	 * @param   mixed $config
+	 * @param   mixed  $config
+	 *
 	 * @return void
 	 */
 	public function __construct($config = array())
@@ -50,89 +52,13 @@ class sportsmanagementModelsmimageimports extends ListModel
 	}
 
 	/**
-	 * Method to auto-populate the model state.
-	 *
-	 * Note. Calling getState in this method will result in recursion.
-	 *
-	 * @since 1.6
-	 */
-	protected function populateState($ordering = null, $direction = null)
-	{
-		$app = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
-
-		// Initialise variables.
-		$app = Factory::getApplication('administrator');
-
-		// Load the filter state.
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
-
-		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string');
-		$this->setState('filter.state', $published);
-
-		$image_folder = $this->getUserStateFromRequest($this->context . '.filter.image_folder', 'filter_image_folder', '');
-		$this->setState('filter.image_folder', $image_folder);
-
-		// List state information.
-		parent::populateState('obj.name', 'asc');
-	}
-
-	/**
-	 * sportsmanagementModelsmimageimports::getListQuery()
-	 *
-	 * @return
-	 */
-	protected function getListQuery()
-	{
-		$app = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
-
-		// Create a new query object.
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-
-		// Select some fields
-		$query->select('obj.*');
-
-		// From the hello table
-		$query->from('#__sportsmanagement_pictures as obj');
-
-		// Join over the users for the checked out user.
-		$query->select('uc.name AS editor');
-		$query->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
-
-		if (is_numeric($this->getState('filter.state')))
-		{
-			$query->where('obj.published = ' . $this->getState('filter.state'));
-		}
-
-		if ($this->getState('filter.search'))
-		{
-			$query->where('LOWER(obj.name) LIKE ' . $this->_db->Quote('%' . $this->getState('filter.search') . '%'));
-		}
-
-		if ($this->getState('filter.image_folder'))
-		{
-			$query->where('obj.folder LIKE ' . $this->_db->Quote('' . $this->getState('filter.image_folder') . ''));
-		}
-
-		$query->order(
-			$db->escape($this->getState('list.ordering', 'name')) . ' ' .
-			$db->escape($this->getState('list.direction', 'ASC'))
-		);
-
-		return $query;
-	}
-
-	/**
 	 * sportsmanagementModelsmimageimports::getXMLFolder()
 	 *
 	 * @return
 	 */
 	function getXMLFolder()
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
 
 		// Get a db connection.
@@ -164,7 +90,7 @@ class sportsmanagementModelsmimageimports extends ListModel
 	 */
 	function getimagesxml()
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
 
 		// Sind neue bilder pakete vorhanden ?
@@ -232,11 +158,11 @@ class sportsmanagementModelsmimageimports extends ListModel
 	 */
 	function getXMLFiles()
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
-		$query = Factory::getDbo()->getQuery(true);
-		$files = array();
-		$path = JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'xml_files' . DIRECTORY_SEPARATOR . 'pictures.xml';
+		$query  = Factory::getDbo()->getQuery(true);
+		$files  = array();
+		$path   = JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'xml_files' . DIRECTORY_SEPARATOR . 'pictures.xml';
 
 		//        $xml = Factory::getXMLParser( 'Simple' );
 		//       $xml->loadFile($path);
@@ -250,24 +176,24 @@ class sportsmanagementModelsmimageimports extends ListModel
 			$xml = Factory::getXML($path);
 		}
 
-			  $i = 0;
+		$i = 0;
 
 		foreach ($xml->children() as $picture)
 		{
-			$folder = (string) $picture->picture->attributes()->folder;
+			$folder    = (string) $picture->picture->attributes()->folder;
 			$directory = (string) $picture->picture->attributes()->directory;
-			$file = (string) $picture->picture->attributes()->file;
+			$file      = (string) $picture->picture->attributes()->file;
 
 			$picturedescription = (string) $picture->picture;
 
-			$temp = new stdClass;
-			$temp->id = $i;
-			$temp->picture = $picturedescription;
-			$temp->folder = $folder;
+			$temp            = new stdClass;
+			$temp->id        = $i;
+			$temp->picture   = $picturedescription;
+			$temp->folder    = $folder;
 			$temp->directory = $directory;
-			$temp->file = $file;
-			$export[] = $temp;
-			$files = array_merge($export);
+			$temp->file      = $file;
+			$export[]        = $temp;
+			$files           = array_merge($export);
 			$i++;
 
 			$query->clear();
@@ -278,17 +204,93 @@ class sportsmanagementModelsmimageimports extends ListModel
 
 			if (!Factory::getDbo()->loadResult())
 			{
-				$temp = new stdClass;
-				$temp->name = $picturedescription;
-				$temp->file = $file;
+				$temp            = new stdClass;
+				$temp->name      = $picturedescription;
+				$temp->file      = $file;
 				$temp->directory = $directory;
-				$temp->folder = $folder;
+				$temp->folder    = $folder;
 				$temp->published = 0;
-				$result = Factory::getDbo()->insertObject('#__sportsmanagement_pictures', $temp);
+				$result          = Factory::getDbo()->insertObject('#__sportsmanagement_pictures', $temp);
 			}
 		}
 
 		return $files;
+	}
+
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since 1.6
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		$app    = Factory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+
+		// Initialise variables.
+		$app = Factory::getApplication('administrator');
+
+		// Load the filter state.
+		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+
+		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string');
+		$this->setState('filter.state', $published);
+
+		$image_folder = $this->getUserStateFromRequest($this->context . '.filter.image_folder', 'filter_image_folder', '');
+		$this->setState('filter.image_folder', $image_folder);
+
+		// List state information.
+		parent::populateState('obj.name', 'asc');
+	}
+
+	/**
+	 * sportsmanagementModelsmimageimports::getListQuery()
+	 *
+	 * @return
+	 */
+	protected function getListQuery()
+	{
+		$app    = Factory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+
+		// Create a new query object.
+		$db    = sportsmanagementHelper::getDBConnection();
+		$query = $db->getQuery(true);
+
+		// Select some fields
+		$query->select('obj.*');
+
+		// From the hello table
+		$query->from('#__sportsmanagement_pictures as obj');
+
+		// Join over the users for the checked out user.
+		$query->select('uc.name AS editor');
+		$query->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
+
+		if (is_numeric($this->getState('filter.state')))
+		{
+			$query->where('obj.published = ' . $this->getState('filter.state'));
+		}
+
+		if ($this->getState('filter.search'))
+		{
+			$query->where('LOWER(obj.name) LIKE ' . $this->_db->Quote('%' . $this->getState('filter.search') . '%'));
+		}
+
+		if ($this->getState('filter.image_folder'))
+		{
+			$query->where('obj.folder LIKE ' . $this->_db->Quote('' . $this->getState('filter.image_folder') . ''));
+		}
+
+		$query->order(
+			$db->escape($this->getState('list.ordering', 'name')) . ' ' .
+			$db->escape($this->getState('list.direction', 'ASC'))
+		);
+
+		return $query;
 	}
 
 }

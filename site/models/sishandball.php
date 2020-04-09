@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -31,23 +32,23 @@ class sportsmanagementModelsishandball extends BaseDatabaseModel
 {
 
 
-
 	/**
 	 * sportsmanagementModelsishandball::getLink()
 	 *
-	 * @param   mixed $vereinsnummer
-	 * @param   mixed $vereinspasswort
-	 * @param   mixed $liganummer
-	 * @param   mixed $sis_art
-	 * @param   mixed $sis_xmllink
+	 * @param   mixed  $vereinsnummer
+	 * @param   mixed  $vereinspasswort
+	 * @param   mixed  $liganummer
+	 * @param   mixed  $sis_art
+	 * @param   mixed  $sis_xmllink
+	 *
 	 * @return
 	 */
-	function getLink($vereinsnummer,$vereinspasswort,$liganummer,$sis_art,$sis_xmllink)
+	function getLink($vereinsnummer, $vereinspasswort, $liganummer, $sis_art, $sis_xmllink)
 	{
-		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
+		$option  = Factory::getApplication()->input->getCmd('option');
+		$app     = Factory::getApplication();
 		$sislink = $sis_xmllink . '/xmlexport/xml_dyn.aspx?user=%s&pass=%s&art=%s&auf=%s';
-		$link = sprintf($sislink, $vereinsnummer, $vereinspasswort, $sis_art, $liganummer);
+		$link    = sprintf($sislink, $vereinsnummer, $vereinspasswort, $sis_art, $liganummer);
 
 		return $link;
 	}
@@ -56,15 +57,16 @@ class sportsmanagementModelsishandball extends BaseDatabaseModel
 	/**
 	 * sportsmanagementModelsishandball::getTabelle()
 	 *
-	 * @param   mixed $linkresults
-	 * @param   mixed $liganummer
-	 * @param   mixed $sis_art
+	 * @param   mixed  $linkresults
+	 * @param   mixed  $liganummer
+	 * @param   mixed  $sis_art
+	 *
 	 * @return
 	 */
-	function getTabelle($linkresults,$liganummer,$sis_art)
+	function getTabelle($linkresults, $liganummer, $sis_art)
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 
 		// XML File
 		$filepath = 'components/' . $option . '/data/';
@@ -79,9 +81,9 @@ class sportsmanagementModelsishandball extends BaseDatabaseModel
 			if ((time() - $LetzteAenderung) > 1800)
 			{
 				// If(file_get_contents($linkresults))
-				 // {
-				 // Laden
-				 // $content = file_get_contents($linkresults);
+				// {
+				// Laden
+				// $content = file_get_contents($linkresults);
 				if (function_exists('curl_version'))
 				{
 					$curl = curl_init();
@@ -92,7 +94,7 @@ class sportsmanagementModelsishandball extends BaseDatabaseModel
 				}
 				elseif (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
 				{
-					   $content = file_get_contents($linkresults);
+					$content = file_get_contents($linkresults);
 				}
 				else
 				{
@@ -151,14 +153,15 @@ class sportsmanagementModelsishandball extends BaseDatabaseModel
 	/**
 	 * sportsmanagementModelsishandball::getStatistik()
 	 *
-	 * @param   mixed $linkresults
-	 * @param   mixed $liganummer
+	 * @param   mixed  $linkresults
+	 * @param   mixed  $liganummer
+	 *
 	 * @return
 	 */
-	function getStatistik($linkresults,$liganummer)
+	function getStatistik($linkresults, $liganummer)
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 
 		// XML File
 		$filepath = 'components/' . $option . '/data/';
@@ -175,8 +178,8 @@ class sportsmanagementModelsishandball extends BaseDatabaseModel
 				// Unlink($datei);
 				// if(file_get_contents($linkresults))
 				// {
-				 // Laden
-				 // $content = file_get_contents($linkresults);
+				// Laden
+				// $content = file_get_contents($linkresults);
 				if (function_exists('curl_version'))
 				{
 					$curl = curl_init();
@@ -244,19 +247,19 @@ class sportsmanagementModelsishandball extends BaseDatabaseModel
 	// Statistik, Tore end
 
 
-
 	/**
 	 * sportsmanagementModelsishandball::getSpielplan()
 	 *
-	 * @param   mixed $linkresults
-	 * @param   mixed $liganummer
-	 * @param   mixed $sis_art
+	 * @param   mixed  $linkresults
+	 * @param   mixed  $liganummer
+	 * @param   mixed  $sis_art
+	 *
 	 * @return
 	 */
-	function getSpielplan($linkresults,$liganummer,$sis_art)
+	function getSpielplan($linkresults, $liganummer, $sis_art)
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 
 		// XML File
 		$filepath = 'components/' . $option . '/data/';
@@ -272,8 +275,8 @@ class sportsmanagementModelsishandball extends BaseDatabaseModel
 			{
 				// If(file_get_contents($linkresults))
 				// {
-				  // Laden
-				 // $content = file_get_contents($linkresults);
+				// Laden
+				// $content = file_get_contents($linkresults);
 				if (function_exists('curl_version'))
 				{
 					$curl = curl_init();
@@ -338,10 +341,10 @@ class sportsmanagementModelsishandball extends BaseDatabaseModel
 		// XML File end
 		foreach ($result->Spiel as $temp)
 		{
-			$nummer = substr($temp->Liga, -3);
-			$datum = substr($temp->SpielVon, 0, 10);
-			$datum_en = date("d.m.Y", strToTime($datum));
-			$temp->Datum = $datum_en;
+			$nummer           = substr($temp->Liga, -3);
+			$datum            = substr($temp->SpielVon, 0, 10);
+			$datum_en         = date("d.m.Y", strToTime($datum));
+			$temp->Datum      = $datum_en;
 			$temp->vonUhrzeit = substr($temp->SpielVon, 11, 8);
 			$temp->bisUhrzeit = substr($temp->SpielBis, 11, 8);
 		}

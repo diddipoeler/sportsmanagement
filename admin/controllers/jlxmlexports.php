@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 
@@ -40,10 +41,10 @@ class sportsmanagementControllerjlxmlexports extends JSMControllerAdmin
 		$app = Factory::getApplication();
 
 		// JInput object
-		$jinput = $app->input;
+		$jinput     = $app->input;
 		$project_id = $jinput->getVar('pid');
-		$model = $this->getModel();
-		 $model->exportData();
+		$model      = $this->getModel();
+		$model->exportData();
 		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list . '&pid=' . $project_id, false));
 
 	}
@@ -54,7 +55,7 @@ class sportsmanagementControllerjlxmlexports extends JSMControllerAdmin
 	 *
 	 * @since 1.6
 	 */
-	public function getModel($name = 'jlxmlexports', $prefix = 'sportsmanagementModel', $config = Array() )
+	public function getModel($name = 'jlxmlexports', $prefix = 'sportsmanagementModel', $config = Array())
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 

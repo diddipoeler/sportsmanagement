@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -38,14 +39,14 @@ class sportsmanagementViewTreetos extends sportsmanagementView
 	public function init()
 	{
 
-			  $this->project_id = $this->app->getUserState("$this->option.pid", '0');
-		$mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
-		$projectws = $mdlProject->getProject($this->project_id);
+		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
+		$mdlProject       = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
+		$projectws        = $mdlProject->getProject($this->project_id);
 
-			  $division = $this->app->getUserStateFromRequest($this->option . 'tt_division', 'division', '', 'string');
+		$division = $this->app->getUserStateFromRequest($this->option . 'tt_division', 'division', '', 'string');
 
 		// Build the html options for divisions
-		$divisions[] = JHtmlSelect::option('0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
+		$divisions[]  = JHtmlSelect::option('0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
 		$mdlDivisions = BaseDatabaseModel::getInstance("divisions", "sportsmanagementModel");
 
 		if ($res = $mdlDivisions->getDivisions($this->project_id))
@@ -61,13 +62,13 @@ class sportsmanagementViewTreetos extends sportsmanagementView
 
 		// $this->items = $items;
 		$this->projectws = $projectws;
-		$this->division = $division;
+		$this->division  = $division;
 
 		// $this->total = $total;
 		// $this->pagination = $pagination;
 		// $this->request_url = $uri;
 
-			  // $this->setLayout('default');
+		// $this->setLayout('default');
 
 		// $this->addToolbar();
 		//		parent::display($tpl);
@@ -91,7 +92,7 @@ class sportsmanagementViewTreetos extends sportsmanagementView
 		ToolbarHelper::deleteList(Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_WARNING'), 'treeto.remove');
 		ToolbarHelper::divider();
 
-			  parent::addToolbar();
+		parent::addToolbar();
 
 	}
 }

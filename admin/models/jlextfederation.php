@@ -28,6 +28,4 @@ class sportsmanagementModeljlextfederation extends JSMModelAdmin
 {
 
 
-
-
 }

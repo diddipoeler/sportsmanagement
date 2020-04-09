@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 
 /**
@@ -35,7 +36,7 @@ class sportsmanagementViewAbout extends sportsmanagementView
 	function init()
 	{
 
-		$about = $this->model->getAbout();
+		$about       = $this->model->getAbout();
 		$this->about = $about;
 
 		// Set page title

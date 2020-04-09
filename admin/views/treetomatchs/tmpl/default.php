@@ -12,36 +12,36 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 
 jimport('joomla.html.pane');
 
 
-$templatesToLoad = array('footer','listheader');
+$templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 
 
-
 <!-- Start games list -->
 <form action="<?php echo $this->request_url; ?>" method="post" id='adminForm' name='adminForm'>
-<?php
+	<?php
 
-if (version_compare(JVERSION, '3.0.0', 'ge'))
-{
-	echo $this->loadTemplate('joomla3');
-}
-else
-{
-	echo $this->loadTemplate('joomla2');
-}
+	if (version_compare(JVERSION, '3.0.0', 'ge'))
+	{
+		echo $this->loadTemplate('joomla3');
+	}
+	else
+	{
+		echo $this->loadTemplate('joomla2');
+	}
 
 
-echo $this->loadTemplate('data');
+	echo $this->loadTemplate('data');
 
-?>
-<input type="hidden" name="boxchecked" value="0" />
-<input type="hidden" name="act" value="" />
-<input type="hidden" name="task" value="treetomatchs.display" id="task" />
-<?php echo HTMLHelper::_('form.token') . "\n"; ?>
+	?>
+    <input type="hidden" name="boxchecked" value="0"/>
+    <input type="hidden" name="act" value=""/>
+    <input type="hidden" name="task" value="treetomatchs.display" id="task"/>
+	<?php echo HTMLHelper::_('form.token') . "\n"; ?>
 </form>

@@ -24,12 +24,12 @@ class JGithubAccount extends JGithubObject
 	 * @param   string  $note    A note to remind you what the OAuth token is for.
 	 * @param   string  $url     A URL to remind you what app the OAuth token is for.
 	 *
-	 * @deprecated  use authorization->create()
-	 *
 	 * @return  object
 	 *
-	 * @since   12.3
 	 * @throws  DomainException
+	 * @since       12.3
+	 * @deprecated  use authorization->create()
+	 *
 	 */
 	public function createAuthorisation(array $scopes = array(), $note = '', $url = '')
 	{
@@ -59,12 +59,12 @@ class JGithubAccount extends JGithubObject
 	 *
 	 * @param   integer  $id  ID of the authorisation to delete
 	 *
-	 * @deprecated  use authorization->delete()
-	 *
 	 * @return  object
 	 *
-	 * @since   12.3
 	 * @throws  DomainException
+	 * @since       12.3
+	 * @deprecated  use authorization->delete()
+	 *
 	 */
 	public function deleteAuthorisation($id)
 	{
@@ -95,13 +95,13 @@ class JGithubAccount extends JGithubObject
 	 * @param   string   $note          A note to remind you what the OAuth token is for.
 	 * @param   string   $url           A URL to remind you what app the OAuth token is for.
 	 *
-	 * @deprecated  use authorization->edit()
-	 *
 	 * @return  object
 	 *
-	 * @since   12.3
 	 * @throws  DomainException
 	 * @throws  RuntimeException
+	 * @deprecated  use authorization->edit()
+	 *
+	 * @since       12.3
 	 */
 	public function editAuthorisation($id, array $scopes = array(), array $addScopes = array(), array $removeScopes = array(), $note = '', $url = '')
 	{
@@ -110,21 +110,21 @@ class JGithubAccount extends JGithubObject
 
 		if (!empty($scopes))
 		{
-			$scope = 'scopes';
+			$scope     = 'scopes';
 			$scopeData = $scopes;
 			$scopesCount++;
 		}
 
 		if (!empty($addScopes))
 		{
-			$scope = 'add_scopes';
+			$scope     = 'add_scopes';
 			$scopeData = $addScopes;
 			$scopesCount++;
 		}
 
 		if (!empty($removeScopes))
 		{
-			$scope = 'remove_scopes';
+			$scope     = 'remove_scopes';
 			$scopeData = $removeScopes;
 			$scopesCount++;
 		}
@@ -140,8 +140,8 @@ class JGithubAccount extends JGithubObject
 
 		$data = json_encode(
 			array(
-				$scope => $scopeData,
-				'note' => $note,
+				$scope     => $scopeData,
+				'note'     => $note,
 				'note_url' => $url,
 			)
 		);
@@ -165,13 +165,13 @@ class JGithubAccount extends JGithubObject
 	 *
 	 * @param   integer  $id  ID of the authorisation to retrieve
 	 *
-	 * @deprecated  use authorization->get()
-	 *
 	 * @return  object
 	 *
-	 * @since   12.3
-	 * @note    This method will only accept Basic Authentication
 	 * @throws  DomainException
+	 * @since       12.3
+	 * @note        This method will only accept Basic Authentication
+	 * @deprecated  use authorization->get()
+	 *
 	 */
 	public function getAuthorisation($id)
 	{
@@ -195,13 +195,13 @@ class JGithubAccount extends JGithubObject
 	/**
 	 * Method to get the authorised applications for the authenticated user.
 	 *
-	 * @deprecated  use authorization->getList()
-	 *
 	 * @return  object
 	 *
-	 * @since   12.3
 	 * @throws  DomainException
-	 * @note    This method will only accept Basic Authentication
+	 * @note        This method will only accept Basic Authentication
+	 * @since       12.3
+	 * @deprecated  use authorization->getList()
+	 *
 	 */
 	public function getAuthorisations()
 	{
@@ -225,12 +225,12 @@ class JGithubAccount extends JGithubObject
 	/**
 	 * Method to get the rate limit for the authenticated user.
 	 *
-	 * @deprecated  use authorization->getRateLimit()
-	 *
 	 * @return  object
 	 *
-	 * @since   12.3
 	 * @throws  DomainException
+	 * @since       12.3
+	 * @deprecated  use authorization->getRateLimit()
+	 *
 	 */
 	public function getRateLimit()
 	{

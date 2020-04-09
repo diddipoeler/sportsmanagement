@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
@@ -32,7 +33,8 @@ class sportsmanagementControllerjoomleagueimports extends JSMControllerAdmin
 	/**
 	 * Class Constructor
 	 *
-	 * @param   array $config An optional associative array of configuration settings.
+	 * @param   array  $config  An optional associative array of configuration settings.
+	 *
 	 * @return void
 	 * @since  1.5
 	 */
@@ -41,7 +43,7 @@ class sportsmanagementControllerjoomleagueimports extends JSMControllerAdmin
 		parent::__construct($config);
 
 		// Reference global application object
-		$this->jsmapp = Factory::getApplication();
+		$this->jsmapp    = Factory::getApplication();
 		$this->jsmjinput = $this->jsmapp->input;
 	}
 
@@ -53,13 +55,24 @@ class sportsmanagementControllerjoomleagueimports extends JSMControllerAdmin
 	 */
 	function joomleaguesetagegroup()
 	{
-		$model = $this->getModel();
+		$model  = $this->getModel();
 		$result = $model->joomleaguesetagegroup();
-		$type = '';
-		$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_SETAGEGROUP');
+		$type   = '';
+		$msg    = Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_SETAGEGROUP');
 		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list . '&jl_table_import_step=0&layout=infofield', false), $msg, $type);
 	}
 
+	/**
+	 * Proxy for getModel.
+	 *
+	 * @since 1.6
+	 */
+	public function getModel($name = 'joomleagueimports', $prefix = 'sportsmanagementModel', $config = Array())
+	{
+		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
+
+		return $model;
+	}
 
 	/**
 	 * sportsmanagementControllerjoomleagueimports::importjoomleaguenew()
@@ -69,12 +82,12 @@ class sportsmanagementControllerjoomleagueimports extends JSMControllerAdmin
 	function importjoomleaguenew()
 	{
 		$jl_table_import_step = $this->jsmjinput->get('jl_table_import_step', 0);
-		$sports_type_id = $this->jsmjinput->get('filter_sports_type', 0);
-		$result = array();
+		$sports_type_id       = $this->jsmjinput->get('filter_sports_type', 0);
+		$result               = array();
 
 		if ($jl_table_import_step != 'ENDE')
 		{
-			$model = $this->getModel();
+			$model  = $this->getModel();
 			$result = $model->importjoomleaguenew($jl_table_import_step, $sports_type_id);
 			Factory::getDocument()->addScriptOptions('success', $result);
 			$jl_table_import_step = $this->jsmjinput->get('jl_table_import_step', 0);
@@ -88,7 +101,6 @@ class sportsmanagementControllerjoomleagueimports extends JSMControllerAdmin
 
 	}
 
-
 	/**
 	 * sportsmanagementControllerjoomleagueimports::importjoomleagueagegroup()
 	 *
@@ -99,19 +111,6 @@ class sportsmanagementControllerjoomleagueimports extends JSMControllerAdmin
 
 		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list . '&layout=infofield', false));
 
-	}
-
-
-	/**
-	 * Proxy for getModel.
-	 *
-	 * @since 1.6
-	 */
-	public function getModel($name = 'joomleagueimports', $prefix = 'sportsmanagementModel', $config = Array() )
-	{
-		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
-
-		return $model;
 	}
 }
 

@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Table;
@@ -38,15 +39,15 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
 	 */
 	public function init()
 	{
-		$this->state = $this->get('State');
+		$this->state         = $this->get('State');
 		$this->sortDirection = $this->state->get('list.direction');
-		$this->sortColumn = $this->state->get('list.ordering');
+		$this->sortColumn    = $this->state->get('list.ordering');
 
-		$items = $this->get('Items');
-		$total = $this->get('Total');
+		$items      = $this->get('Items');
+		$total      = $this->get('Total');
 		$pagination = $this->get('Pagination');
 
-		$table = Table::getInstance('projectreferee', 'sportsmanagementTable');
+		$table       = Table::getInstance('projectreferee', 'sportsmanagementTable');
 		$this->table = $table;
 
 		$this->_persontype = $this->jinput->get('persontype');
@@ -57,29 +58,29 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
 		}
 
 		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
-		$mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
-		$project = $mdlProject->getProject($this->project_id);
+		$mdlProject       = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
+		$project          = $mdlProject->getProject($this->project_id);
 
 		/**
- * build the html options for position
- */
-		$position_id[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REFEREE_FUNCTION'));
-		$mdlPositions = BaseDatabaseModel::getInstance('Positions', 'sportsmanagementModel');
+		 * build the html options for position
+		 */
+		$position_id[]         = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REFEREE_FUNCTION'));
+		$mdlPositions          = BaseDatabaseModel::getInstance('Positions', 'sportsmanagementModel');
 		$project_ref_positions = $mdlPositions->getProjectPositions($this->project_id, $this->_persontype);
 
 		if ($project_ref_positions)
 		{
-			$position_id = array_merge($position_id, $project_ref_positions);
+			$position_id               = array_merge($position_id, $project_ref_positions);
 			$this->project_position_id = $project_ref_positions;
 		}
 
 		$lists['project_position_id'] = $position_id;
 		unset($position_id);
 
-		$this->user = Factory::getUser();
-		$this->config = Factory::getConfig();
-		$this->lists = $lists;
-		$this->items = $items;
+		$this->user       = Factory::getUser();
+		$this->config     = Factory::getConfig();
+		$this->lists      = $lists;
+		$this->items      = $items;
 		$this->pagination = $pagination;
 
 		// $this->request_url = $uri->toString();

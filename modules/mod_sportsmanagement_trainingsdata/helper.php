@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 
 /**
@@ -30,7 +31,8 @@ class modJSMTrainingsData
 	/**
 	 * modJSMTrainingsData::getData()
 	 *
-	 * @param   mixed $params
+	 * @param   mixed  $params
+	 *
 	 * @return
 	 */
 	public static function getData($params)
@@ -46,19 +48,19 @@ class modJSMTrainingsData
 		// Create a new query object.
 		$query = $db->getQuery(true);
 
-			  $result = array();
+		$result = array();
 
-			  $query->select('*');
+		$query->select('*');
 		$query->from('#__sportsmanagement_team_trainingdata');
 		$query->where('team_id = ' . (int) $params->get('teams'));
 		$query->order('dayofweek ASC');
 
-			  $db->setQuery($query);
+		$db->setQuery($query);
 		$result = $db->loadObjectList();
 
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
-			  return $result;
+		return $result;
 
 	}
 

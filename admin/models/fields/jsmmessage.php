@@ -14,8 +14,10 @@
 
 
 defined('_JEXEC') or die;
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormField;
+
 jimport('joomla.form.formfield');
 jimport('joomla.version');
 
@@ -41,12 +43,12 @@ class JFormFieldJSMMessage extends FormField
 	protected function getLabel()
 	{
 
-					  $html = '';
+		$html = '';
 
-			  $version = new JVersion;
+		$version  = new JVersion;
 		$jversion = explode('.', $version->getShortVersion());
 
-			  $message_type = trim($this->element['style']);
+		$message_type = trim($this->element['style']);
 
 		if ($message_type == 'example')
 		{
@@ -59,10 +61,10 @@ class JFormFieldJSMMessage extends FormField
 		}
 		else
 		{
-					$html .= '<div style="clear: both;"></div>';
+			$html .= '<div style="clear: both;"></div>';
 		}
 
-			  return $html;
+		return $html;
 	}
 
 	/**
@@ -74,13 +76,13 @@ class JFormFieldJSMMessage extends FormField
 	protected function getInput()
 	{
 
-			  $html = '';
+		$html = '';
 
-			  $version = new JVersion;
+		$version  = new JVersion;
 		$jversion = explode('.', $version->getShortVersion());
 
-			  $message = trim($this->element['text']);
-		$message_type = trim($this->element['style']);
+		$message       = trim($this->element['text']);
+		$message_type  = trim($this->element['style']);
 		$message_label = '';
 
 		if ($this->element['label'])
@@ -101,67 +103,67 @@ class JFormFieldJSMMessage extends FormField
 			}
 			else
 			{
-						  $html .= '<span style="color: #999999; overflow: hidden; display: block">';
+				$html .= '<span style="color: #999999; overflow: hidden; display: block">';
 
 				if ($message_label)
 				{
-							  $html .= '<i style="padding: 2px; border-radius: 3px; background-color: #999999; color: #FFFFFF; font-style: normal;">' . $message_label . '</i>&nbsp;';
+					$html .= '<i style="padding: 2px; border-radius: 3px; background-color: #999999; color: #FFFFFF; font-style: normal;">' . $message_label . '</i>&nbsp;';
 				}
 			}
 
 			if ($message)
 			{
-						  $html .= Text::_($message);
+				$html .= Text::_($message);
 			}
 
 			$html .= '</span>';
 
 			if (intval($jversion[0]) < 3)
 			{
-						  $html .= '</div>';
+				$html .= '</div>';
 			}
 		}
 		else
 		{
-					$style = '';
-					$style_label = '';
+			$style       = '';
+			$style_label = '';
 
 			switch ($message_type)
 			{
 				case 'warning':
 					if (intval($jversion[0]) > 2)
 					{
-						$style = 'alert-warning';
+						$style       = 'alert-warning';
 						$style_label = ' label-warning';
 					}
 					else
 					{
-								$style = 'border: 1px solid #FBEED5; background-color: #FCF8E3; color: #C09853;';
-								$style_label = 'color: #FCF8E3; background-color: #C09853;';
+						$style       = 'border: 1px solid #FBEED5; background-color: #FCF8E3; color: #C09853;';
+						$style_label = 'color: #FCF8E3; background-color: #C09853;';
 					}
 					break;
 				case 'error':
 					if (intval($jversion[0]) > 2)
 					{
-						$style = 'alert-error';
+						$style       = 'alert-error';
 						$style_label = ' label-important';
 					}
 					else
 					{
-								$style = 'border: 1px solid #EED3D7; background-color: #F2DEDE; color: #B94A48;';
-								$style_label = 'color: #F2DEDE; background-color: #B94A48;';
+						$style       = 'border: 1px solid #EED3D7; background-color: #F2DEDE; color: #B94A48;';
+						$style_label = 'color: #F2DEDE; background-color: #B94A48;';
 					}
 					break;
 				case 'info':
 					if (intval($jversion[0]) > 2)
 					{
-						$style = 'alert-info';
+						$style       = 'alert-info';
 						$style_label = ' label-info';
 					}
 					else
 					{
-									$style = 'border: 1px solid #BCE8F1; background-color: #D9EDF7; color: #3A87AD;';
-									$style_label = 'color: #D9EDF7; background-color: #3A87AD;';
+						$style       = 'border: 1px solid #BCE8F1; background-color: #D9EDF7; color: #3A87AD;';
+						$style_label = 'color: #D9EDF7; background-color: #3A87AD;';
 					}
 					break;
 
@@ -169,13 +171,13 @@ class JFormFieldJSMMessage extends FormField
 
 					if (intval($jversion[0]) > 2)
 					{
-						$style = 'alert-success';
+						$style       = 'alert-success';
 						$style_label = ' label-success';
 					}
 					else
 					{
-									$style = 'border: 1px solid #D6E9C6; background-color: #DFF0D8; color: #468847;';
-									$style_label = 'color: #DFF0D8; background-color: #468847;';
+						$style       = 'border: 1px solid #D6E9C6; background-color: #DFF0D8; color: #468847;';
+						$style_label = 'color: #DFF0D8; background-color: #468847;';
 					}
 					break;
 			}
@@ -186,31 +188,31 @@ class JFormFieldJSMMessage extends FormField
 
 				if ($message_label)
 				{
-							  $html .= '<span class="label' . $style_label . '">' . $message_label . '</span>&nbsp;';
+					$html .= '<span class="label' . $style_label . '">' . $message_label . '</span>&nbsp;';
 				}
 			}
 			else
 			{
-							$html .= '<div style="margin: 5px 0; padding: 8px 35px 8px 14px; border-radius: 4px; ' . $style . '">';
+				$html .= '<div style="margin: 5px 0; padding: 8px 35px 8px 14px; border-radius: 4px; ' . $style . '">';
 
 				if ($message_label)
 				{
-									$html .= '<span style="padding: 1px 4px 2px; border-radius: 3px; ' . $style_label . '">' . $message_label . '</span>&nbsp;';
+					$html .= '<span style="padding: 1px 4px 2px; border-radius: 3px; ' . $style_label . '">' . $message_label . '</span>&nbsp;';
 				}
 			}
 
-							$html .= '<span>';
+			$html .= '<span>';
 
 			if ($message)
 			{
-							$html .= Text::_($message);
+				$html .= Text::_($message);
 			}
 
-							$html .= '</span>';
-							$html .= '</div>';
+			$html .= '</span>';
+			$html .= '</div>';
 		}
 
-			  return $html;
+		return $html;
 	}
 
 }

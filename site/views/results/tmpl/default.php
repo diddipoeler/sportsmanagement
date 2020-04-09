@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Component\ComponentHelper;
 
 // Make sure that in case extensions are written for mentioned (common) views,
@@ -20,46 +21,46 @@ use Joomla\CMS\Component\ComponentHelper;
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<div class="<?php echo $this->divclasscontainer;?>" id="defaultresults">
-<?php
+<div class="<?php echo $this->divclasscontainer; ?>" id="defaultresults">
+	<?php
 
-if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO)
-{
-	echo $this->loadTemplate('debug');
-}
-
-echo $this->loadTemplate('projectheading');
-
-if ($this->config['show_sectionheader'])
-{
-	echo $this->loadTemplate('sectionheader');
-}
-
-if ($this->config['show_matchday_pagenav'] == 2 || $this->config['show_matchday_pagenav'] == 3)
-{
-	echo $this->loadTemplate('pagnav');
-}
-
-if ($this->config['show_pagenav'])
-{
-	echo $this->loadTemplate('pagination');
-}
-
-echo $this->loadTemplate('results');
-
-if ($this->config['show_matchday_pagenav'] == 1 || $this->config['show_matchday_pagenav'] == 3)
-{
-	echo $this->loadTemplate('pagnav');
-}
-
-if ($this->overallconfig['show_project_rss_feed'])
-{
-	if ($this->rssfeeditems)
+	if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO)
 	{
-		echo $this->loadTemplate('rssfeed');
+		echo $this->loadTemplate('debug');
 	}
-}
 
-echo $this->loadTemplate('jsminfo');
-?>
+	echo $this->loadTemplate('projectheading');
+
+	if ($this->config['show_sectionheader'])
+	{
+		echo $this->loadTemplate('sectionheader');
+	}
+
+	if ($this->config['show_matchday_pagenav'] == 2 || $this->config['show_matchday_pagenav'] == 3)
+	{
+		echo $this->loadTemplate('pagnav');
+	}
+
+	if ($this->config['show_pagenav'])
+	{
+		echo $this->loadTemplate('pagination');
+	}
+
+	echo $this->loadTemplate('results');
+
+	if ($this->config['show_matchday_pagenav'] == 1 || $this->config['show_matchday_pagenav'] == 3)
+	{
+		echo $this->loadTemplate('pagnav');
+	}
+
+	if ($this->overallconfig['show_project_rss_feed'])
+	{
+		if ($this->rssfeeditems)
+		{
+			echo $this->loadTemplate('rssfeed');
+		}
+	}
+
+	echo $this->loadTemplate('jsminfo');
+	?>
 </div>

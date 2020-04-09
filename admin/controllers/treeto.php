@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -52,12 +53,13 @@ class sportsmanagementControllerTreeto extends JSMControllerForm
 		$this->jsmapp = Factory::getApplication();
 
 		// JInput object
-		$this->jsmjinput = $this->jsmapp->input;
-		$this->jsmoption = $this->jsmjinput->getCmd('option');
+		$this->jsmjinput   = $this->jsmapp->input;
+		$this->jsmoption   = $this->jsmjinput->getCmd('option');
 		$this->jsmdocument = Factory::getDocument();
 	}
 
 	// Save the checked rows inside the treetos list (save division assignment)
+
 	/**
 	 * sportsmanagementControllerTreeto::saveshort()
 	 *
@@ -67,14 +69,13 @@ class sportsmanagementControllerTreeto extends JSMControllerForm
 	{
 		//		$option		= Factory::getApplication()->input->getCmd('option');
 		//		$app	= Factory::getApplication();
-		 $project_id = $this->jsmjinput->get('pid');
+		$project_id = $this->jsmjinput->get('pid');
 
-			  $post = $this->jsmjinput->post->getArray();
-		$cid = $cid = $this->jsmjinput->get('cid', array(), 'array');
-		;
+		$post = $this->jsmjinput->post->getArray();
+		$cid  = $cid = $this->jsmjinput->get('cid', array(), 'array');;
 		ArrayHelper::toInteger($cid);
 
-			  $model = $this->getModel('treetos');
+		$model = $this->getModel('treetos');
 
 		if ($model->storeshort($cid, $post))
 		{
@@ -85,8 +86,24 @@ class sportsmanagementControllerTreeto extends JSMControllerForm
 			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_CTRL_ERROR_SAVED') . $model->getError();
 		}
 
-			$link = 'index.php?option=com_sportsmanagement&view=treetos&task=treeto.display';
-			$this->setRedirect($link, $msg);
+		$link = 'index.php?option=com_sportsmanagement&view=treetos&task=treeto.display';
+		$this->setRedirect($link, $msg);
+	}
+
+	/**
+	 * Proxy for getModel
+	 *
+	 * @param   string  $name    The model name. Optional.
+	 * @param   string  $prefix  The class prefix. Optional.
+	 *
+	 * @return object    The model.
+	 * @since  1.6
+	 */
+	public function getModel($name = 'Treeto', $prefix = 'sportsmanagementModel', $config = array('ignore_request' => true))
+	{
+		$model = parent::getModel($name, $prefix, $config);
+
+		return $model;
 	}
 
 	/**
@@ -96,37 +113,36 @@ class sportsmanagementControllerTreeto extends JSMControllerForm
 	 */
 	public function genNode()
 	{
-		  /*
-        //$option = Factory::getApplication()->input->getCmd('option');
-        //		$app = Factory::getApplication();
-        //		$document = Factory::getDocument();
-        $proj = $this->jsmapp->getUserState($this->jsmoption.'.pid',0);
-        $post = $this->jsmjinput->post->getArray(array());
-        $cid = $this->jsmjinput->post->get('cid');
-        ArrayHelper::toInteger($cid);
+		/*
+	  //$option = Factory::getApplication()->input->getCmd('option');
+	  //		$app = Factory::getApplication();
+	  //		$document = Factory::getDocument();
+	  $proj = $this->jsmapp->getUserState($this->jsmoption.'.pid',0);
+	  $post = $this->jsmjinput->post->getArray(array());
+	  $cid = $this->jsmjinput->post->get('cid');
+	  ArrayHelper::toInteger($cid);
 
-        $model = $this->getModel('treeto');
+	  $model = $this->getModel('treeto');
 
-        $viewType = $this->jsmdocument->getType();
-        $view = $this->getView('treeto',$viewType);
-        $view->setModel($model,true);	// true is for the default model;
+	  $viewType = $this->jsmdocument->getType();
+	  $view = $this->getView('treeto',$viewType);
+	  $view->setModel($model,true);	// true is for the default model;
 
-        $projectws = $this->getModel('project');
-        //$projectws->setId($app->getUserState($option.'project',0));
-        $view->setModel($projectws);
+	  $projectws = $this->getModel('project');
+	  //$projectws->setId($app->getUserState($option.'project',0));
+	  $view->setModel($projectws);
 
-        Factory::getApplication()->input->setVar('hidemainmenu',0);
-        Factory::getApplication()->input->setVar('layout','gennode');
-        Factory::getApplication()->input->setVar('view','treeto');
-        Factory::getApplication()->input->setVar('edit',true);
+	  Factory::getApplication()->input->setVar('hidemainmenu',0);
+	  Factory::getApplication()->input->setVar('layout','gennode');
+	  Factory::getApplication()->input->setVar('view','treeto');
+	  Factory::getApplication()->input->setVar('edit',true);
 
-        // Checkout the project
-        //$model=$this->getModel('treeto');
-        $model->checkout();
-        parent::display();
-        */
+	  // Checkout the project
+	  //$model=$this->getModel('treeto');
+	  $model->checkout();
+	  parent::display();
+	  */
 	}
-
 
 	/**
 	 * sportsmanagementControllerTreeto::generatenode()
@@ -136,18 +152,18 @@ class sportsmanagementControllerTreeto extends JSMControllerForm
 	public function generatenode()
 	{
 		Session::checkToken() or die(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN'));
-		$post = $this->jsmjinput->post->getArray(array());
-		$model = $this->getModel('treeto');
+		$post       = $this->jsmjinput->post->getArray(array());
+		$model      = $this->getModel('treeto');
 		$project_id = $this->jsmapp->getUserState($this->jsmoption . '.pid');
 
 		if ($model->setGenerateNode())
 		{
-			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_CTRL_GENERATE_NODE');
+			$msg  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_CTRL_GENERATE_NODE');
 			$link = 'index.php?option=com_sportsmanagement&view=treetonodes&task=treetonode.display&tid=' . $this->jsmjinput->post->get('id') . '&pid=' . $this->jsmjinput->post->get('pid');
 		}
 		else
 		{
-			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_CTRL_ERROR_GENERATE_NODE') . $model->getError();
+			$msg  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_CTRL_ERROR_GENERATE_NODE') . $model->getError();
 			$link = 'index.php?option=com_sportsmanagement&view=treetos&task=treeto.display';
 		}
 
@@ -182,7 +198,8 @@ class sportsmanagementControllerTreeto extends JSMControllerForm
 	/**
 	 * sportsmanagementControllerTreeto::cancel()
 	 *
-	 * @param   mixed $key
+	 * @param   mixed  $key
+	 *
 	 * @return void
 	 */
 	public function cancel($key = null)
@@ -191,21 +208,5 @@ class sportsmanagementControllerTreeto extends JSMControllerForm
 		// $model=$this->getModel('treeto');
 		// $model->checkin();
 		$this->setRedirect('index.php?option=com_sportsmanagement&task=treeto.display&view=treetos');
-	}
-
-	/**
-	 * Proxy for getModel
-	 *
-	 * @param   string $name   The model name. Optional.
-	 * @param   string $prefix The class prefix. Optional.
-	 *
-	 * @return object    The model.
-	 * @since  1.6
-	 */
-	public function getModel($name = 'Treeto', $prefix = 'sportsmanagementModel', $config = array('ignore_request' => true))
-	{
-		$model = parent::getModel($name, $prefix, $config);
-
-		return $model;
 	}
 }

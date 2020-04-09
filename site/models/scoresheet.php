@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -40,30 +41,30 @@ class sportsmanagementModelScoresheet extends BaseDatabaseModel
 	 *
 	 * @return void
 	 */
-	function __construct( )
+	function __construct()
 	{
-		  // Reference global application object
-		$app = Factory::getApplication();
+		// Reference global application object
+		$app    = Factory::getApplication();
 		$jinput = $app->input;
 		parent::__construct();
 
-			  self::$matchid = (int) $jinput->get('mid', 0, '');
-		self::$cfg_which_database = $jinput->request->get('cfg_which_database', 0, 'INT');
-		self::$projectid = $jinput->request->get('p', 0, 'INT');
+		self::$matchid                           = (int) $jinput->get('mid', 0, '');
+		self::$cfg_which_database                = $jinput->request->get('cfg_which_database', 0, 'INT');
+		self::$projectid                         = $jinput->request->get('p', 0, 'INT');
 		sportsmanagementModelProject::$projectid = self::$projectid;
 	}
 
-	function getMatch($matchid = 0,$cfg_which_database = 0)
+	function getMatch($matchid = 0, $cfg_which_database = 0)
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 
 		// Get a db connection.
-		$db = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query = $db->getQuery(true);
+		$db     = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
+		$query  = $db->getQuery(true);
 		$result = array();
 
-				  $query->select('m.match_number as match_number, m.match_date as match_date, m.projectteam1_id as projectteam1_id, m.projectteam2_id as projectteam2_id');
+		$query->select('m.match_number as match_number, m.match_date as match_date, m.projectteam1_id as projectteam1_id, m.projectteam2_id as projectteam2_id');
 		$query->select('x.game_parts as game_parts, s1.team_id as team1_id, t1.name as team1_name, s2.team_id as team2_id, t2.name as team2_name');
 		$query->select('j.name as projectname, j.timezone as timezone, g.name as playgroundname');
 
@@ -94,11 +95,11 @@ class sportsmanagementModelScoresheet extends BaseDatabaseModel
 		{
 			$query->select('u.lastname as referee');
 			$query->join('LEFT', '#__sportsmanagement_match_referee AS r ON m.id=r.match_id');
-			   $query->join('LEFT', '#__sportsmanagement_project_referee AS s ON r.project_referee_id=s.id');
+			$query->join('LEFT', '#__sportsmanagement_project_referee AS s ON r.project_referee_id=s.id');
 			$query->join('LEFT', '#__sportsmanagement_person AS u ON s.person_id=u.id');
 		}
 
-			  // Where
+		// Where
 		$query->where('m.id = ' . $matchid);
 
 		try
@@ -117,17 +118,17 @@ class sportsmanagementModelScoresheet extends BaseDatabaseModel
 		return $result;
 	}
 
-	function getTeamPlayer($teamid = 0,$cfg_which_database = 0)
+	function getTeamPlayer($teamid = 0, $cfg_which_database = 0)
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 
 		// Get a db connection.
-		$db = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query = $db->getQuery(true);
+		$db     = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
+		$query  = $db->getQuery(true);
 		$result = array();
 
-				  $query->select('b.firstname, b.lastname, b.knvbnr');
+		$query->select('b.firstname, b.lastname, b.knvbnr');
 
 		// From
 		$query->from('#__sportsmanagement_season_team_person_id AS a');
@@ -135,7 +136,7 @@ class sportsmanagementModelScoresheet extends BaseDatabaseModel
 		// Join
 		$query->join('INNER', '#__sportsmanagement_person AS b ON a.person_id=b.id');
 
-			  $query->order('b.lastname');
+		$query->order('b.lastname');
 
 		// Where
 		$query->where('team_id = ' . $teamid);

@@ -28,11 +28,11 @@ class JGithubMilestones extends JGithubObject
 	 * @param   integer  $page       The page number from which to get items.
 	 * @param   integer  $limit      The number of items on a page.
 	 *
-	 * @deprecated  use issues->milestones->getList()
-	 *
 	 * @return  array
 	 *
-	 * @since   12.3
+	 * @deprecated  use issues->milestones->getList()
+	 *
+	 * @since       12.3
 	 */
 	public function getList($user, $repo, $state = 'open', $sort = 'due_date', $direction = 'desc', $page = 0, $limit = 0)
 	{
@@ -64,11 +64,11 @@ class JGithubMilestones extends JGithubObject
 	 * @param   string   $repo         The name of the GitHub repository.
 	 * @param   integer  $milestoneId  The milestone id to get.
 	 *
-	 * @deprecated  use issues->milestones->get()
-	 *
 	 * @return  object
 	 *
-	 * @since   12.3
+	 * @deprecated  use issues->milestones->get()
+	 *
+	 * @since       12.3
 	 */
 	public function get($user, $repo, $milestoneId)
 	{
@@ -99,11 +99,11 @@ class JGithubMilestones extends JGithubObject
 	 * @param   string   $description  Optional description for milestone.
 	 * @param   string   $due_on       Optional ISO 8601 time.
 	 *
-	 * @deprecated  use issues->milestones->create()
-	 *
 	 * @return  object
 	 *
-	 * @since   12.3
+	 * @deprecated  use issues->milestones->create()
+	 *
+	 * @since       12.3
 	 */
 	public function create($user, $repo, $title, $state = null, $description = null, $due_on = null)
 	{
@@ -157,11 +157,11 @@ class JGithubMilestones extends JGithubObject
 	 * @param   string   $description  Optional description for milestone.
 	 * @param   string   $due_on       Optional ISO 8601 time.
 	 *
-	 * @deprecated  use issues->milestones->edit()
-	 *
 	 * @return  object
 	 *
-	 * @since   12.3
+	 * @deprecated  use issues->milestones->edit()
+	 *
+	 * @since       12.3
 	 */
 	public function edit($user, $repo, $milestoneId, $title = null, $state = null, $description = null, $due_on = null)
 	{
@@ -214,11 +214,11 @@ class JGithubMilestones extends JGithubObject
 	 * @param   string   $repo         The name of the GitHub repository.
 	 * @param   integer  $milestoneId  The id of the milestone to delete.
 	 *
-	 * @deprecated  use issues->milestones->delete()
-	 *
 	 * @return  void
 	 *
-	 * @since   12.3
+	 * @deprecated  use issues->milestones->delete()
+	 *
+	 * @since       12.3
 	 */
 	public function delete($user, $repo, $milestoneId)
 	{

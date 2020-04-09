@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
@@ -49,12 +50,12 @@ class sportsmanagementModelPlayground extends JSMModelAdmin
 
 		if (!empty($playground->address))
 		{
-			   $address_parts[] = $playground->address;
+			$address_parts[] = $playground->address;
 		}
 
 		if (!empty($playground->state))
 		{
-			   $address_parts[] = $playground->state;
+			$address_parts[] = $playground->state;
 		}
 
 		if (!empty($playground->location))
@@ -71,7 +72,7 @@ class sportsmanagementModelPlayground extends JSMModelAdmin
 
 		if (!empty($playground->country))
 		{
-			   $address_parts[] = JSMCountries::getShortCountryName($playground->country);
+			$address_parts[] = JSMCountries::getShortCountryName($playground->country);
 		}
 
 		$address = implode(', ', $address_parts);
@@ -79,29 +80,95 @@ class sportsmanagementModelPlayground extends JSMModelAdmin
 		return $address;
 	}
 
+	/**
+	 * sportsmanagementModelPlayground::getPlayground()
+	 *
+	 * @param   integer  $pgid
+	 * @param   integer  $inserthits
+	 *
+	 * @return
+	 */
+	public static function getPlayground($pgid = 0, $inserthits = 0)
+	{
+		$option = Factory::getApplication()->input->getCmd('option');
+		$app    = Factory::getApplication();
+		$db     = sportsmanagementHelper::getDBConnection(true, $app->getUserState("com_sportsmanagement.cfg_which_database", false));
+		$query  = $db->getQuery(true);
 
+		self::updateHits($pgid, $inserthits);
+
+		if (is_null(self::$playground))
+		{
+			if ($pgid < 1)
+			{
+				$pgid = Factory::getApplication()->input->getInt("pgid", 0);
+			}
+
+			if ($pgid > 0)
+			{
+				$query->select('*');
+				$query->from('#__sportsmanagement_playground');
+				$query->where('id = ' . $pgid);
+				$db->setQuery($query);
+
+				self::$playground = $db->loadObject();
+			}
+		}
+
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+
+		return self::$playground;
+	}
+
+	/**
+	 * sportsmanagementModelPlayground::updateHits()
+	 *
+	 * @param   integer  $pgid
+	 * @param   integer  $inserthits
+	 *
+	 * @return void
+	 */
+	public static function updateHits($pgid = 0, $inserthits = 0)
+	{
+		$option = Factory::getApplication()->input->getCmd('option');
+		$app    = Factory::getApplication();
+		$db     = Factory::getDbo();
+		$query  = $db->getQuery(true);
+
+		if ($inserthits)
+		{
+			$query->update($db->quoteName('#__sportsmanagement_playground'))->set('hits = hits + 1')->where('id = ' . $pgid);
+
+			$db->setQuery($query);
+
+			$result = $db->execute();
+			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		}
+
+	}
 
 	/**
 	 * sportsmanagementModelPlayground::getNextGames()
 	 *
-	 * @param   integer $project
-	 * @param   integer $pgid
-	 * @param   integer $played
-	 * @param   integer $allproject
+	 * @param   integer  $project
+	 * @param   integer  $pgid
+	 * @param   integer  $played
+	 * @param   integer  $allproject
+	 *
 	 * @return
 	 */
-	function getNextGames( $project = 0, $pgid = 0, $played = 0, $allproject = 0 )
+	function getNextGames($project = 0, $pgid = 0, $played = 0, $allproject = 0)
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 
 		// Get a db connection.
-		$db = Factory::getDbo();
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
-			  $result = array();
+		$result    = array();
 		$starttime = microtime();
-		$d2 = new Datetime("now");
+		$d2        = new Datetime("now");
 
 		$playground = self::getPlayground($pgid);
 
@@ -122,11 +189,11 @@ class sportsmanagementModelPlayground extends JSMModelAdmin
 
 			if ($played)
 			{
-					  $query->where('m.match_timestamp < ' . $d2->format('U'));
+				$query->where('m.match_timestamp < ' . $d2->format('U'));
 			}
 			else
 			{
-				  $query->where('m.match_timestamp > ' . $d2->format('U'));
+				$query->where('m.match_timestamp > ' . $d2->format('U'));
 			}
 
 			$query->where('m.published = 1');
@@ -137,96 +204,28 @@ class sportsmanagementModelPlayground extends JSMModelAdmin
 				$query->where('p.id = ' . (int) $project);
 			}
 
-					  $query->group('m.id');
+			$query->group('m.id');
 			$query->order('match_date ASC');
 
-					  $db->setQuery($query);
+			$db->setQuery($query);
 
 			try
 			{
-					  $result = $db->loadObjectList();
-					 $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+				$result = $db->loadObjectList();
+				$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 			}
 			catch (Exception $e)
 			{
-					 $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-				$msg = $e->getMessage(); // Returns "Normally you would have other code...
-					$code = $e->getCode(); // Returns '500';
-					$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
-					 $result = false;
+				$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+				$msg  = $e->getMessage(); // Returns "Normally you would have other code...
+				$code = $e->getCode(); // Returns '500';
+				$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
+				$result = false;
 			}
 		}
 
-			  return $result;
+		return $result;
 	}
-
-
-	/**
-	 * sportsmanagementModelPlayground::updateHits()
-	 *
-	 * @param   integer $pgid
-	 * @param   integer $inserthits
-	 * @return void
-	 */
-	public static function updateHits($pgid=0,$inserthits=0)
-	{
-		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
-		$db = Factory::getDbo();
-		$query = $db->getQuery(true);
-
-		if ($inserthits)
-		{
-			   $query->update($db->quoteName('#__sportsmanagement_playground'))->set('hits = hits + 1')->where('id = ' . $pgid);
-
-			  $db->setQuery($query);
-
-			  $result = $db->execute();
-			  $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-		}
-
-	}
-
-	/**
-	 * sportsmanagementModelPlayground::getPlayground()
-	 *
-	 * @param   integer $pgid
-	 * @param   integer $inserthits
-	 * @return
-	 */
-	public static function getPlayground( $pgid = 0,$inserthits=0 )
-	{
-		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
-		$db = sportsmanagementHelper::getDBConnection(true, $app->getUserState("com_sportsmanagement.cfg_which_database", false));
-		$query = $db->getQuery(true);
-
-			  self::updateHits($pgid, $inserthits);
-
-		if (is_null(self::$playground))
-		{
-			if ($pgid < 1)
-			{
-				$pgid = Factory::getApplication()->input->getInt("pgid", 0);
-			}
-
-			if ($pgid > 0)
-			{
-				$query->select('*');
-				$query->from('#__sportsmanagement_playground');
-				$query->where('id = ' . $pgid);
-				$db->setQuery($query);
-
-					self::$playground = $db->loadObject();
-			}
-		}
-
-			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
-			return self::$playground;
-	}
-
-
 
 
 }

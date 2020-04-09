@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -49,14 +50,14 @@ class JFormFieldCountry extends \JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 		/**
 		 * Initialize variables.
 		 */
 		$options = JSMCountries::getCountryOptions();
 
-			 /**
+		/**
 		 * Merge any additional options in the XML definition.
 		 */
 		$options = array_merge(parent::getOptions(), $options);

@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -51,7 +52,7 @@ class JFormFieldMatchdaylist extends \JFormFieldList
 		// Initialize variables.
 		$options = array();
 
-			  $varname = (string) $this->element['varname'];
+		$varname    = (string) $this->element['varname'];
 		$project_id = Factory::getApplication()->input->getVar($varname);
 
 		if (is_array($project_id))
@@ -61,12 +62,12 @@ class JFormFieldMatchdaylist extends \JFormFieldList
 
 		if ($project_id)
 		{
-			$options = & sportsmanagementHelper::getRoundsOptions($project_id, 'ASC', true);
+			$options = &sportsmanagementHelper::getRoundsOptions($project_id, 'ASC', true);
 		}
 
-			  // Merge any additional options in the XML definition.
+		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);
 
-					  return $options;
+		return $options;
 	}
 }

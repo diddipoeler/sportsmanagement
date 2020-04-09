@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die;
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
@@ -37,11 +38,11 @@ class sportsmanagementViewTreetonode extends sportsmanagementView
 	{
 		$config = sportsmanagementModelProject::getTemplateConfig('treetonode');
 
-			  $this->project = sportsmanagementModelProject::getProject();
+		$this->project       = sportsmanagementModelProject::getProject();
 		$this->overallconfig = sportsmanagementModelProject::getOverallConfig();
-		$this->config = $config;
-		$this->node = $this->model->getTreetonode();
-		$this->roundname = $this->model->getRoundName();
+		$this->config        = $config;
+		$this->node          = $this->model->getTreetonode();
+		$this->roundname     = $this->model->getRoundName();
 
 		// Set page title
 		// TODO: treeto name, no project name
@@ -50,8 +51,8 @@ class sportsmanagementViewTreetonode extends sportsmanagementView
 		if (!empty($this->project))
 		{
 			$titleInfo->projectName = $this->project->name;
-			$titleInfo->leagueName = $this->project->league_name;
-			$titleInfo->seasonName = $this->project->season_name;
+			$titleInfo->leagueName  = $this->project->league_name;
+			$titleInfo->seasonName  = $this->project->season_name;
 		}
 
 		$division = sportsmanagementModelProject::getDivision(Factory::getApplication()->input->getInt('division', 0));

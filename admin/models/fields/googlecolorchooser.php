@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die();
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Form\FormField;
@@ -31,27 +32,27 @@ class JFormFieldGoogleColorChooser extends \JFormFieldText
 	protected $type = 'GoogleColorChooser';
 
 	private $googleColors = array(
-	'A32929'
-	,'B1365F'
-	,'7A367A'
-	,'5229A3'
-	,'29527A'
-	,'2952A3'
-	,'1B887A'
-	,'28754E'
-	,'0D7813'
-	,'528800'
-	,'88880E'
-	,'AB8B00'
-	,'BE6D00'
-	,'B1440E'
-	,'865A5A'
-	,'705770'
-	,'4E5D6C'
-	,'5A6986'
-	,'4A716C'
-	,'6E6E41'
-	,'8D6F47');
+		'A32929'
+	, 'B1365F'
+	, '7A367A'
+	, '5229A3'
+	, '29527A'
+	, '2952A3'
+	, '1B887A'
+	, '28754E'
+	, '0D7813'
+	, '528800'
+	, '88880E'
+	, 'AB8B00'
+	, 'BE6D00'
+	, 'B1440E'
+	, '865A5A'
+	, '705770'
+	, '4E5D6C'
+	, '5A6986'
+	, '4A716C'
+	, '6E6E41'
+	, '8D6F47');
 
 	/**
 	 * JFormFieldGoogleColorChooser::getInput()
@@ -74,7 +75,7 @@ class JFormFieldGoogleColorChooser extends \JFormFieldText
 				$buffer .= "<tr>\n";
 			}
 
-			$c = $this->googleColors[$i];
+			$c      = $this->googleColors[$i];
 			$cFaded = $c;
 			$buffer .= "<td onmouseover=\"this.style.cursor='pointer'\" onclick=\"document.getElementById('" . $this->id . "').style.backgroundColor = '#" . $cFaded . "';document.getElementById('" . $this->id . "').value = '#" . $c . "';\" style=\"background-color: #" . $cFaded . ";width: 20px;\">" . $c . "</td>\n";
 

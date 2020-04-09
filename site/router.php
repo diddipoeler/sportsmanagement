@@ -12,6 +12,7 @@
  */
 
 defined('_JEXEC') or die;
+
 use Joomla\CMS\Component\Router\RouterBase;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -19,8 +20,8 @@ use Joomla\CMS\Language\Text;
 if (!class_exists('sportsmanagementHelperRoute'))
 {
 	/**
- * add the classes for handling
- */
+	 * add the classes for handling
+	 */
 	JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 }
 
@@ -40,17 +41,18 @@ class SportsmanagementRouter extends RouterBase
 	 * SportsmanagementRouter::build()
 	 * Build SEF URL
 	 *
-	 * @param   mixed $query
+	 * @param   mixed  $query
+	 *
 	 * @return
 	 */
 	public function build(&$query)
 	{
 		$segments = array();
 
-			  /**
-*
- * Get menu item
-*/
+		/**
+		 *
+		 * Get menu item
+		 */
 		$menuitem = null;
 
 		if (isset($query ['Itemid']))
@@ -65,9 +67,9 @@ class SportsmanagementRouter extends RouterBase
 				if (!$menuitems[$Itemid])
 				{
 					/**
-*
- * Itemid doesn't exist or is invalid
-*/
+					 *
+					 * Itemid doesn't exist or is invalid
+					 */
 					unset($query ['Itemid']);
 				}
 			}
@@ -75,64 +77,64 @@ class SportsmanagementRouter extends RouterBase
 			$menuitem = $menuitems[$Itemid];
 		}
 
-			  /**
-*
- * Safety check: we need view in order to create SEF URLs
-*/
+		/**
+		 *
+		 * Safety check: we need view in order to create SEF URLs
+		 */
 		if (!isset($menuitem->query['view']) && empty($query ['view']))
 		{
 			return $segments;
 		}
 
-			  /**
-*
- * Get view for later use (query wins menu item)
-*/
+		/**
+		 *
+		 * Get view for later use (query wins menu item)
+		 */
 		$view = isset($query ['view']) ? (string) preg_replace('/[^a-z]/', '', $query ['view']) : $menuitem->query ['view'];
 
 		/**
-*
- * Get default values for URI variables
-*/
+		 *
+		 * Get default values for URI variables
+		 */
 		if (isset(sportsmanagementHelperRoute::$views[$view]))
 		{
 			$defaults = sportsmanagementHelperRoute::$views[$view];
 		}
 
-			  $segments [] = $view;
+		$segments [] = $view;
 		unset($query['view']);
 		/**
-*
- * Check all URI variables and remove those which aren't needed
-*/
+		 *
+		 * Check all URI variables and remove those which aren't needed
+		 */
 		foreach ($query as $var => $value)
 		{
 			if (isset($defaults [$var]))
 			{
-				  $segments [] = $value;
-				 /**
-*
- * Remove URI variable which has default value
-*/
-				 unset($query [$var]);
+				$segments [] = $value;
+				/**
+				 *
+				 * Remove URI variable which has default value
+				 */
+				unset($query [$var]);
 			}
 			elseif (isset($menuitem->query [$var]) && $value == $menuitem->query [$var] && $var != 'Itemid' && $var != 'option')
 			{
 				/**
-*
- * Remove URI variable which has the same value as menu item
-*/
+				 *
+				 * Remove URI variable which has the same value as menu item
+				 */
 				unset($query [$var]);
 			}
 		}
 
-			  return $segments;
+		return $segments;
 	}
 
 	/**
 	 * Parse the segments of a URL.
 	 *
-	 * @param   array &$segments The segments of the URL to parse.
+	 * @param   array &$segments  The segments of the URL to parse.
 	 *
 	 * @return array  The URL attributes to be used by the application.
 	 *
@@ -141,13 +143,13 @@ class SportsmanagementRouter extends RouterBase
 	public function parse(&$segments)
 	{
 
-			  /**
-*
- * Get current menu item and get query variables from it
-*/
-		$active = Factory::getApplication()->getMenu()->getActive();
-		$vars   = isset($active->query) ? $active->query : array('view' => 'home');
-		  $defaults = array();
+		/**
+		 *
+		 * Get current menu item and get query variables from it
+		 */
+		$active   = Factory::getApplication()->getMenu()->getActive();
+		$vars     = isset($active->query) ? $active->query : array('view' => 'home');
+		$defaults = array();
 
 		if (empty($vars['view']) || $vars['view'] == 'home' || $vars['view'] == 'entrypage')
 		{
@@ -155,9 +157,9 @@ class SportsmanagementRouter extends RouterBase
 		}
 
 		/**
-*
- * Get default values for URI variables
-*/
+		 *
+		 * Get default values for URI variables
+		 */
 		if (isset(sportsmanagementHelperRoute::$views[$segments[0]]))
 		{
 			$defaults = sportsmanagementHelperRoute::$views[$segments[0]];
@@ -166,7 +168,7 @@ class SportsmanagementRouter extends RouterBase
 		if ($defaults)
 		{
 			$vars['view'] = $segments[0];
-			$count = 1;
+			$count        = 1;
 
 			foreach ($defaults as $key => $value)
 			{
@@ -177,7 +179,7 @@ class SportsmanagementRouter extends RouterBase
 				{
 					if (isset($segments[$count]))
 					{
-						 $vars[$key] = $segments[$count];
+						$vars[$key] = $segments[$count];
 					}
 				}
 
@@ -185,17 +187,17 @@ class SportsmanagementRouter extends RouterBase
 			}
 		}
 
-			/**
-*
- * Handle all segments
-*/
+		/**
+		 *
+		 * Handle all segments
+		 */
 		$count = 0;
 
 		while (($segment = array_shift($segments)) !== null)
 		{
 		}
 
-			  return $vars;
+		return $vars;
 	}
 }
 
@@ -205,7 +207,7 @@ class SportsmanagementRouter extends RouterBase
  * This function is a proxy for the new router interface
  * for old SEF extensions.
  *
- * @param   array &$query An array of URL arguments
+ * @param   array &$query  An array of URL arguments
  *
  * @return array  The URL arguments to use to assemble the subsequent URL.
  *
@@ -225,7 +227,7 @@ function SportsmanagementBuildRoute(&$query)
  * This function is a proxy for the new router interface
  * for old SEF extensions.
  *
- * @param   array $segments The segments of the URL to parse.
+ * @param   array  $segments  The segments of the URL to parse.
  *
  * @return array  The URL attributes to be used by the application.
  *

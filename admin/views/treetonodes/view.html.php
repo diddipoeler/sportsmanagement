@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -55,12 +56,12 @@ class sportsmanagementViewTreetonodes extends sportsmanagementView
 	 */
 	function _displayDefault()
 	{
-		$this->node = $this->items;
+		$this->node       = $this->items;
 		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
-		$mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
-		$projectws = $mdlProject->getProject($this->project_id);
-		$mdltreeto = BaseDatabaseModel::getInstance('treeto', 'sportsmanagementModel');
-		$treetows = $mdltreeto->getTreeToData($this->jinput->get('tid'));
+		$mdlProject       = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
+		$projectws        = $mdlProject->getProject($this->project_id);
+		$mdltreeto        = BaseDatabaseModel::getInstance('treeto', 'sportsmanagementModel');
+		$treetows         = $mdltreeto->getTreeToData($this->jinput->get('tid'));
 
 		// Build the html options for teams
 		$team_id[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TEAMS_LEGEND'));
@@ -73,20 +74,20 @@ class sportsmanagementViewTreetonodes extends sportsmanagementView
 		$lists['team'] = $team_id;
 		unset($team_id);
 
-		$style  = 'style="background-color: #dddddd; ';
+		$style = 'style="background-color: #dddddd; ';
 		$style .= 'border: 0px solid white;';
 		$style .= 'font-weight: normal; ';
 		$style .= 'font-size: 8pt; ';
 		$style .= 'width: 150px; ';
 		$style .= 'font-family: verdana; ';
 		$style .= 'text-align: center;"';
-		$path = 'media/com_sportsmanagement/treebracket/onwhite/';
+		$path  = 'media/com_sportsmanagement/treebracket/onwhite/';
 
-			  // Build the html radio for adding into new round / exist round
-		$createYesNo = array(0 => Text::_('JNO'),1 => Text::_('JYES'));
-		$createLeftRight = array(0 => Text::_('L'),1 => Text::_('R'));
-		$ynOptions = array();
-		$lrOptions = array();
+		// Build the html radio for adding into new round / exist round
+		$createYesNo     = array(0 => Text::_('JNO'), 1 => Text::_('JYES'));
+		$createLeftRight = array(0 => Text::_('L'), 1 => Text::_('R'));
+		$ynOptions       = array();
+		$lrOptions       = array();
 
 		foreach ($createYesNo AS $key => $value)
 		{
@@ -109,22 +110,22 @@ class sportsmanagementViewTreetonodes extends sportsmanagementView
 		// Build the html radio for create new treeto
 		$lists['createNewTreeto'] = JHtmlSelect::radiolist($ynOptions, 'createNewTreeto', 'class="inputbox"', 'value', 'text', 1);
 
-		$this->lists = $lists;
-		$this->style = $style;
-		$this->path = $path;
+		$this->lists     = $lists;
+		$this->style     = $style;
+		$this->path      = $path;
 		$this->projectws = $projectws;
-		$this->treetows = $treetows;
-		$this->matches = $this->model->getteamsprorunde($this->project_id, $this->treetows);
+		$this->treetows  = $treetows;
+		$this->matches   = $this->model->getteamsprorunde($this->project_id, $this->treetows);
 
 		// $this->app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($this->node,true).'</pre>'  , '');
 		foreach ($this->node as $key => $value)
 		{
-			 $value->team_id = $this->matches[$value->node]->team_id;
-			 $value->team_name = $this->matches[$value->node]->team_name;
-			 $value->title = $this->matches[$value->node]->team_name;
-			 $value->content = $this->matches[$value->node]->team_name;
-			 $value->match_id = $this->matches[$value->node]->match_id;
-			 $value->roundcode = $this->matches[$value->node]->roundcode;
+			$value->team_id   = $this->matches[$value->node]->team_id;
+			$value->team_name = $this->matches[$value->node]->team_name;
+			$value->title     = $this->matches[$value->node]->team_name;
+			$value->content   = $this->matches[$value->node]->team_name;
+			$value->match_id  = $this->matches[$value->node]->match_id;
+			$value->roundcode = $this->matches[$value->node]->roundcode;
 		}
 
 		$this->model->savenode($this->node);
@@ -132,11 +133,11 @@ class sportsmanagementViewTreetonodes extends sportsmanagementView
 	}
 
 
-		/**
-		 * sportsmanagementViewTreetonodes::addToolBar()
-		 *
-		 * @return void
-		 */
+	/**
+	 * sportsmanagementViewTreetonodes::addToolBar()
+	 *
+	 * @return void
+	 */
 	protected function addToolBar()
 	{
 		// $istree = $this->treetows->tree_i;
@@ -148,15 +149,15 @@ class sportsmanagementViewTreetonodes extends sportsmanagementView
 			case 1:
 				ToolbarHelper::apply('treetonode.saveshort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_SAVE_APPLY'), false);
 				ToolbarHelper::custom('treetonode.removenode', 'delete.png', 'delete_f2.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_DELETE_ALL'), false);
-					break;
+				break;
 			case 2:
-					ToolbarHelper::apply('treetonode.saveallleaf', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_TEST_SHOW'), false);
-					ToolbarHelper::custom('treetonode.removenode', 'delete.png', 'delete_f2.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_DELETE'), false);
-					break;
+				ToolbarHelper::apply('treetonode.saveallleaf', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_TEST_SHOW'), false);
+				ToolbarHelper::custom('treetonode.removenode', 'delete.png', 'delete_f2.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_DELETE'), false);
+				break;
 			case 3:
-					ToolbarHelper::apply('treetonode.savefinishleaf', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_SAVE_LEAF'), false);
-					ToolbarHelper::custom('treetonode.removenode', 'delete.png', 'delete_f2.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_DELETE'), false);
-					break;
+				ToolbarHelper::apply('treetonode.savefinishleaf', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_SAVE_LEAF'), false);
+				ToolbarHelper::custom('treetonode.removenode', 'delete.png', 'delete_f2.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_DELETE'), false);
+				break;
 		}
 
 		parent::addToolbar();

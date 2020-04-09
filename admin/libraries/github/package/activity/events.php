@@ -22,8 +22,8 @@ class JGithubPackageActivityEvents extends JGithubPackage
 	/**
 	 * List public events.
 	 *
-	 * @since   12.3
 	 * @return  object
+	 * @since   12.3
 	 */
 	public function getPublic()
 	{
@@ -41,9 +41,9 @@ class JGithubPackageActivityEvents extends JGithubPackage
 	 * @param   string  $owner  Repository owner.
 	 * @param   string  $repo   Repository name.
 	 *
+	 * @return  object
 	 * @since   12.3
 	 *
-	 * @return  object
 	 */
 	public function getRepository($owner, $repo)
 	{
@@ -61,8 +61,8 @@ class JGithubPackageActivityEvents extends JGithubPackage
 	 * @param   string  $owner  Repository owner.
 	 * @param   string  $repo   Repository name.
 	 *
-	 * @since   12.3
 	 * @return  object
+	 * @since   12.3
 	 */
 	public function getIssue($owner, $repo)
 	{
@@ -80,8 +80,8 @@ class JGithubPackageActivityEvents extends JGithubPackage
 	 * @param   string  $owner  Repository owner.
 	 * @param   string  $repo   Repository name.
 	 *
-	 * @since   12.3
 	 * @return  object
+	 * @since   12.3
 	 */
 	public function getNetwork($owner, $repo)
 	{
@@ -98,8 +98,8 @@ class JGithubPackageActivityEvents extends JGithubPackage
 	 *
 	 * @param   string  $org  Organisation.
 	 *
-	 * @since   12.3
 	 * @return  object
+	 * @since   12.3
 	 */
 	public function getOrg($org)
 	{
@@ -120,8 +120,8 @@ class JGithubPackageActivityEvents extends JGithubPackage
 	 *
 	 * @param   string  $user  User name.
 	 *
-	 * @since   12.3
 	 * @return  object
+	 * @since   12.3
 	 */
 	public function getUser($user)
 	{
@@ -138,8 +138,8 @@ class JGithubPackageActivityEvents extends JGithubPackage
 	 *
 	 * @param   string  $user  User name.
 	 *
-	 * @since   12.3
 	 * @return  object
+	 * @since   12.3
 	 */
 	public function getUserPublic($user)
 	{
@@ -159,8 +159,8 @@ class JGithubPackageActivityEvents extends JGithubPackage
 	 *
 	 * @param   string  $user  User name.
 	 *
-	 * @since   12.3
 	 * @return  object
+	 * @since   12.3
 	 */
 	public function getByUser($user)
 	{
@@ -177,8 +177,8 @@ class JGithubPackageActivityEvents extends JGithubPackage
 	 *
 	 * @param   string  $user  User name.
 	 *
-	 * @since   12.3
 	 * @return  object
+	 * @since   12.3
 	 */
 	public function getByUserPublic($user)
 	{
@@ -199,8 +199,8 @@ class JGithubPackageActivityEvents extends JGithubPackage
 	 * @param   string  $user  User name.
 	 * @param   string  $org   Organisation.
 	 *
-	 * @since   12.3
 	 * @return  object
+	 * @since   12.3
 	 */
 	public function getUserOrg($user, $org)
 	{

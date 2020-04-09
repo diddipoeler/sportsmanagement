@@ -13,8 +13,8 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\MVC\Controller\FormController;
 
+use Joomla\CMS\MVC\Controller\FormController;
 
 
 /**
@@ -28,10 +28,6 @@ use Joomla\CMS\MVC\Controller\FormController;
  */
 class sportsmanagementControllerpredictiontemplate extends FormController
 {
-
-
-
-
 
 
 }

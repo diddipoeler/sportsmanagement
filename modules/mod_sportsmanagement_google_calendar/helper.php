@@ -74,7 +74,8 @@ class ModJSMGoogleCalendarHelper
 	/**
 	 * ModJSMGoogleCalendarHelper::__construct()
 	 *
-	 * @param   mixed $params
+	 * @param   mixed  $params
+	 *
 	 * @return void
 	 */
 	public function __construct(Registry $params)
@@ -83,31 +84,11 @@ class ModJSMGoogleCalendarHelper
 		$this->calendarId = $params->get('calendar_id', null);
 	}
 
-
-	/**
-	 * ModJSMGoogleCalendarHelper::nextEvents()
-	 *
-	 * @param   mixed $maxEvents
-	 * @return
-	 */
-	public function nextEvents($maxEvents)
-	{
-		$options = array(
-		 'timeMin'    => JDate::getInstance()->toISO8601(),
-		 'orderBy'    => 'startTime',
-		 'maxResults' => $maxEvents,
-		);
-
-		$events = $this->getEvents($options);
-
-		return $this->prepareEvents($events);
-	}
-
-
 	/**
 	 * ModJSMGoogleCalendarHelper::duration()
 	 *
-	 * @param   mixed $event
+	 * @param   mixed  $event
+	 *
 	 * @return
 	 */
 	public static function duration($event)
@@ -128,17 +109,37 @@ class ModJSMGoogleCalendarHelper
 		return $event->startDate->format($startDateFormat, true) . ' - ' . $event->endDate->format($endDateFormat, true);
 	}
 
+	/**
+	 * ModJSMGoogleCalendarHelper::nextEvents()
+	 *
+	 * @param   mixed  $maxEvents
+	 *
+	 * @return
+	 */
+	public function nextEvents($maxEvents)
+	{
+		$options = array(
+			'timeMin'    => JDate::getInstance()->toISO8601(),
+			'orderBy'    => 'startTime',
+			'maxResults' => $maxEvents,
+		);
+
+		$events = $this->getEvents($options);
+
+		return $this->prepareEvents($events);
+	}
 
 	/**
 	 * ModJSMGoogleCalendarHelper::getEvents()
 	 *
-	 * @param   mixed $options
+	 * @param   mixed  $options
+	 *
 	 * @return
 	 */
 	protected function getEvents($options)
 	{
 		$defaultOptions = array(
-		 'singleEvents' => 'true',
+			'singleEvents' => 'true',
 		);
 
 		$options = array_merge($defaultOptions, $options);
@@ -146,8 +147,8 @@ class ModJSMGoogleCalendarHelper
 		// Create an instance of a default Http object.
 		$http = JHttpFactory::getHttp();
 		$url  = 'https://www.googleapis.com/calendar/v3/calendars/'
-		 . urlencode($this->calendarId) . '/events?key=' . urlencode($this->apiKey)
-		 . '&' . http_build_query($options);
+			. urlencode($this->calendarId) . '/events?key=' . urlencode($this->apiKey)
+			. '&' . http_build_query($options);
 
 		$response = $http->get($url);
 		$data     = json_decode($response->body);
@@ -168,7 +169,8 @@ class ModJSMGoogleCalendarHelper
 	/**
 	 * ModJSMGoogleCalendarHelper::prepareEvents()
 	 *
-	 * @param   mixed $events
+	 * @param   mixed  $events
+	 *
 	 * @return
 	 */
 	protected function prepareEvents($events)
@@ -185,7 +187,8 @@ class ModJSMGoogleCalendarHelper
 	/**
 	 * ModJSMGoogleCalendarHelper::prepareEvent()
 	 *
-	 * @param   mixed $event
+	 * @param   mixed  $event
+	 *
 	 * @return
 	 */
 	protected function prepareEvent($event)
@@ -200,7 +203,8 @@ class ModJSMGoogleCalendarHelper
 	/**
 	 * ModJSMGoogleCalendarHelper::unifyDate()
 	 *
-	 * @param   mixed $date
+	 * @param   mixed  $date
+	 *
 	 * @return
 	 */
 	protected function unifyDate($date)

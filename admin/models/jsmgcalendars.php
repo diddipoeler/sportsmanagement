@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die();
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Table\Table;
@@ -24,7 +25,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Installer\InstallerHelper;
 use Joomla\Archive\Archive;
 
-if (! defined('JSM_PATH'))
+if (!defined('JSM_PATH'))
 {
 	DEFINE('JSM_PATH', 'components/com_sportsmanagement');
 }
@@ -64,27 +65,27 @@ class sportsmanagementModeljsmGCalendars extends ListModel
 
 		if (File::exists($importFile))
 		{
-			 Log::add(Text::_('Google API vorhanden'), Log::NOTICE, 'jsmerror');
+			Log::add(Text::_('Google API vorhanden'), Log::NOTICE, 'jsmerror');
 		}
 		else
 		{
-			 Log::add(Text::_('Google API nicht vorhanden'), Log::ERROR, 'jsmerror');
-			 $link = ComponentHelper::getParams('com_sportsmanagement')->get('google_api_datei', 0);
-			 /**
-*
- * set the target directory
-*/
-			 $base_Dir = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR;
-			 $file['name'] = basename($link);
-			 $filename = $file['name'];
-			 $filepath = $base_Dir . $filename;
+			Log::add(Text::_('Google API nicht vorhanden'), Log::ERROR, 'jsmerror');
+			$link = ComponentHelper::getParams('com_sportsmanagement')->get('google_api_datei', 0);
+			/**
+			 *
+			 * set the target directory
+			 */
+			$base_Dir     = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR;
+			$file['name'] = basename($link);
+			$filename     = $file['name'];
+			$filepath     = $base_Dir . $filename;
 
 			if (version_compare(JSM_JVERSION, '3', 'eq'))
 			{
 				/**
-*
- * Get the handler to download the package
-*/
+				 *
+				 * Get the handler to download the package
+				 */
 				try
 				{
 					$http = JHttpFactory::getHttp(null, array('curl', 'stream'));
@@ -97,9 +98,9 @@ class sportsmanagementModeljsmGCalendars extends ListModel
 				}
 
 				/**
-*
- * Download the package
-*/
+				 *
+				 * Download the package
+				 */
 				try
 				{
 					$result = $http->get($link);
@@ -122,9 +123,9 @@ class sportsmanagementModeljsmGCalendars extends ListModel
 				try
 				{
 					/**
-*
- * Write the file to disk
-*/
+					 *
+					 * Write the file to disk
+					 */
 					File::write($filepath, $result->body);
 					Log::add(Text::_('Google API in´s tmp Verzeichnis geladen'), Log::NOTICE, 'jsmerror');
 				}
@@ -139,14 +140,14 @@ class sportsmanagementModeljsmGCalendars extends ListModel
 			elseif (version_compare(JSM_JVERSION, '4', 'eq'))
 			{
 				/**
-*
- * Download the package at the URL given.
-*/
+				 *
+				 * Download the package at the URL given.
+				 */
 				$p_file = InstallerHelper::downloadPackage($link);
 				/**
-*
- * Was the package downloaded?
-*/
+				 *
+				 * Was the package downloaded?
+				 */
 				if (!$p_file)
 				{
 					$my_text = '<span style="color:' . $this->storeFailedColor . '">';
@@ -164,17 +165,17 @@ class sportsmanagementModeljsmGCalendars extends ListModel
 				}
 			}
 
-			 /**
-*
- * zip entpacken
-*/
-			 $extractdir = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp';
-			 $dest = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . $file['name'];
+			/**
+			 *
+			 * zip entpacken
+			 */
+			$extractdir = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp';
+			$dest       = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . $file['name'];
 
 			try
 			{
 				$archive = new Archive;
-				$result = $archive->extract($dest, $extractdir);
+				$result  = $archive->extract($dest, $extractdir);
 				Log::add(Text::_('Google API entpackt'), Log::NOTICE, 'jsmerror');
 			}
 			catch (Exception $e)
@@ -183,10 +184,10 @@ class sportsmanagementModeljsmGCalendars extends ListModel
 				$result = false;
 			}
 
-			 /**
-*
- * kopieren
-*/
+			/**
+			 *
+			 * kopieren
+			 */
 			try
 			{
 				Folder::copy(JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp/google-api-php-client-2.4.0/', JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'libraries' . DIRECTORY_SEPARATOR . 'google-php/', '', true);
@@ -204,9 +205,10 @@ class sportsmanagementModeljsmGCalendars extends ListModel
 	/**
 	 * sportsmanagementModeljsmGCalendars::_getList()
 	 *
-	 * @param   mixed   $query
-	 * @param   integer $limitstart
-	 * @param   integer $limit
+	 * @param   mixed    $query
+	 * @param   integer  $limitstart
+	 * @param   integer  $limit
+	 *
 	 * @return
 	 */
 	protected function _getList($query, $limitstart = 0, $limit = 0)
@@ -237,9 +239,9 @@ class sportsmanagementModeljsmGCalendars extends ListModel
 	 */
 	protected function getListQuery()
 	{
-		$db = sportsmanagementHelper::getDBConnection();
+		$db    = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
-		$user    = Factory::getUser();
+		$user  = Factory::getUser();
 
 		$query->select('*');
 		$calendarIDs = $this->getState('ids', null);
@@ -259,7 +261,7 @@ class sportsmanagementModeljsmGCalendars extends ListModel
 		// Implement View Level Access
 		if (!$user->authorise('core.admin'))
 		{
-			$groups    = implode(',', $user->getAuthorisedViewLevels());
+			$groups = implode(',', $user->getAuthorisedViewLevels());
 			$query->where('access IN (' . $groups . ')');
 		}
 

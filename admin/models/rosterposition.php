@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\Registry\Registry;
@@ -33,20 +34,21 @@ class sportsmanagementModelrosterposition extends JSMModelAdmin
 	/**
 	 * Method to save the form data.
 	 *
-	 * @param  array    The form data.
+	 * @param   array    The form data.
+	 *
 	 * @return boolean    True on success.
 	 * @since  1.6
 	 */
 	public function save($data)
 	{
-		  $option = Factory::getApplication()->input->getCmd('option');
+		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
-		  $date = Factory::getDate();
-		  $user = Factory::getUser();
+		$date   = Factory::getDate();
+		$user   = Factory::getUser();
 
-		  // Get a db connection.
-		$db = Factory::getDbo();
-		  $post = Factory::getApplication()->input->post->getArray(array());
+		// Get a db connection.
+		$db   = Factory::getDbo();
+		$post = Factory::getApplication()->input->post->getArray(array());
 
 		if (isset($post['extended']) && is_array($post['extended']))
 		{
@@ -56,16 +58,16 @@ class sportsmanagementModelrosterposition extends JSMModelAdmin
 			$data['extended'] = (string) $parameter;
 		}
 
-		  // Set the values
-		$data['modified'] = $date->toSql();
+		// Set the values
+		$data['modified']    = $date->toSql();
 		$data['modified_by'] = $user->get('id');
-		   $data['alias'] = OutputFilter::stringURLSafe($data['name']);
+		$data['alias']       = OutputFilter::stringURLSafe($data['name']);
 
-				// Zuerst sichern, damit wir bei einer neuanlage die id haben
+		// Zuerst sichern, damit wir bei einer neuanlage die id haben
 		if (parent::save($data))
 		{
-			$id = (int) $this->getState($this->getName() . '.id');
-			$isNew = $this->getState($this->getName() . '.new');
+			$id         = (int) $this->getState($this->getName() . '.id');
+			$isNew      = $this->getState($this->getName() . '.new');
 			$data['id'] = $id;
 
 			if ($isNew)
@@ -75,7 +77,7 @@ class sportsmanagementModelrosterposition extends JSMModelAdmin
 			}
 		}
 
-				 return true;
+		return true;
 	}
 
 

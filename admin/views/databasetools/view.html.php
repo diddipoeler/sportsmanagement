@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
@@ -49,7 +50,7 @@ class sportsmanagementViewDatabaseTools extends sportsmanagementView
 
 		//		// Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TITLE');
-		$this->icon = 'databases';
+		$this->icon  = 'databases';
 
 		parent::addToolbar();
 	}

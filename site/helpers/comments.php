@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -57,74 +58,6 @@ class sportsmanagementModelComments
 	}
 
 	/**
-	 * get information, if comments are enabled and working
-	 *
-	 * @return boolean
-	 */
-	function isEnabled()
-	{
-		return false;
-	}
-
-	/**
-	 * display the configured match specific Commenticon
-	 *
-	 * @param   object $match     the match to check comments for
-	 * @param   object $hometeam  the team 1 which take part on the match
-	 * @param   object $guestteam the team 2 which take part on the match
-	 * @param   object $config    configuration of the parent screen / template
-	 * @param   object $project   reference to parent project (used for slug)
-	 * @return string
-	 */
-	function showMatchCommentIcon(&$match, &$hometeam, &$guestteam, &$config, &$project)
-	{
-		$imgTitle = "Comments not available";
-
-		if ($config['show_comments_count'] == 1)
-		{
-			$href_text        = HTMLHelper::image(Uri::root() . 'media/com_sportsmanagement/jl_images/discuss.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
-		}
-		elseif ($config['show_comments_count'] == 2)
-		{
-			$href_text        = '<span title="' . $imgTitle . '">(0)</span>';
-		}
-
-		// Link
-		if (isset($match->team1_result))
-		{
-			   $routeparameter = array();
-			$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-			$routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
-			$routeparameter['p'] = $project->slug;
-			$routeparameter['mid'] = $match->id;
-			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);
-		}
-		else
-		{
-			$link = sportsmanagementHelperRoute::getNextMatchRoute($project->slug, $match->id) . '#comments';
-		}
-
-		$viewComment    = HTMLHelper::link($link, $href_text);
-
-		return $viewComment;
-	}
-
-	/**
-	 * display the configured match specific Commenticon
-	 *
-	 * @param   object $match     the match to check comments for
-	 * @param   object $hometeam  the team 1 which take part on the match
-	 * @param   object $guestteam the team 2 which take part on the match
-	 * @param   object $config    configuration of the parent screen / template
-	 * @param   object $project   reference to parent project (used for slug)
-	 * @return array
-	 */
-	function showMatchComments(&$match, &$hometeam, &$guestteam, &$config, &$project)
-	{
-		return "Comments not available";
-	}
-
-	/**
 	 * helper method to get the recommended subject of a topic to discuss a match
 	 *
 	 * Diese statische Methode kann aus Kunena aufgerufen werden, um den Betreff des Themas (Spielpaarung "Heim - Gast")
@@ -148,7 +81,8 @@ class sportsmanagementModelComments
 	 *         return true;
 	 *     }
 	 *
-	 * @param   int $match_id
+	 * @param   int  $match_id
+	 *
 	 * @return string
 	 */
 	static function getForumSubjectFromMatchID($match_id)
@@ -158,10 +92,10 @@ class sportsmanagementModelComments
 		if ($match_id > 0)
 		{
 			$database = JFactory::getDBO();
-			$query = $database->getQuery(true);
+			$query    = $database->getQuery(true);
 			$query->clear();
 
-					  $query->select(' t1.name AS home,t2.name AS away ');
+			$query->select(' t1.name AS home,t2.name AS away ');
 
 			// From
 			$query->from('#__sportsmanagement_match AS m');
@@ -192,9 +126,80 @@ class sportsmanagementModelComments
 	}
 
 	/**
+	 * get information, if comments are enabled and working
+	 *
+	 * @return boolean
+	 */
+	function isEnabled()
+	{
+		return false;
+	}
+
+	/**
+	 * display the configured match specific Commenticon
+	 *
+	 * @param   object  $match      the match to check comments for
+	 * @param   object  $hometeam   the team 1 which take part on the match
+	 * @param   object  $guestteam  the team 2 which take part on the match
+	 * @param   object  $config     configuration of the parent screen / template
+	 * @param   object  $project    reference to parent project (used for slug)
+	 *
+	 * @return string
+	 */
+	function showMatchCommentIcon(&$match, &$hometeam, &$guestteam, &$config, &$project)
+	{
+		$imgTitle = "Comments not available";
+
+		if ($config['show_comments_count'] == 1)
+		{
+			$href_text = HTMLHelper::image(Uri::root() . 'media/com_sportsmanagement/jl_images/discuss.gif', $imgTitle, array(' title' => $imgTitle, ' border' => 0, ' style' => 'vertical-align: middle'));
+		}
+		elseif ($config['show_comments_count'] == 2)
+		{
+			$href_text = '<span title="' . $imgTitle . '">(0)</span>';
+		}
+
+		// Link
+		if (isset($match->team1_result))
+		{
+			$routeparameter                       = array();
+			$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+			$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+			$routeparameter['p']                  = $project->slug;
+			$routeparameter['mid']                = $match->id;
+			$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);
+		}
+		else
+		{
+			$link = sportsmanagementHelperRoute::getNextMatchRoute($project->slug, $match->id) . '#comments';
+		}
+
+		$viewComment = HTMLHelper::link($link, $href_text);
+
+		return $viewComment;
+	}
+
+	/**
+	 * display the configured match specific Commenticon
+	 *
+	 * @param   object  $match      the match to check comments for
+	 * @param   object  $hometeam   the team 1 which take part on the match
+	 * @param   object  $guestteam  the team 2 which take part on the match
+	 * @param   object  $config     configuration of the parent screen / template
+	 * @param   object  $project    reference to parent project (used for slug)
+	 *
+	 * @return array
+	 */
+	function showMatchComments(&$match, &$hometeam, &$guestteam, &$config, &$project)
+	{
+		return "Comments not available";
+	}
+
+	/**
 	 * helper method to get the Icon and the alternative Text to display the status of matches comments
 	 *
-	 * @param   int $match_id
+	 * @param   int  $match_id
+	 *
 	 * @return string
 	 */
 	protected function getHRefText($count, &$config)
@@ -203,41 +208,41 @@ class sportsmanagementModelComments
 
 		if ($count == 1)
 		{
-			$imgTitle        = $count . ' ' . Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_COMMENTS_COUNT_SINGULAR');
+			$imgTitle = $count . ' ' . Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_COMMENTS_COUNT_SINGULAR');
 
 			if ($config['show_comments_count'] == 1)
 			{
-				$href_text        = HTMLHelper::image(Uri::root() . 'media/com_sportsmanagement/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
+				$href_text = HTMLHelper::image(Uri::root() . 'media/com_sportsmanagement/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle, ' border' => 0, ' style' => 'vertical-align: middle'));
 			}
 			elseif ($config['show_comments_count'] == 2)
 			{
-				$href_text        = '<span title="' . $imgTitle . '">(' . $count . ')</span>';
+				$href_text = '<span title="' . $imgTitle . '">(' . $count . ')</span>';
 			}
 		}
 		elseif ($count > 1)
 		{
-			$imgTitle    = $count . ' ' . Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_COMMENTS_COUNT_PLURAL');
+			$imgTitle = $count . ' ' . Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_COMMENTS_COUNT_PLURAL');
 
 			if ($config['show_comments_count'] == 1)
 			{
-				$href_text        = HTMLHelper::image(Uri::root() . 'media/com_sportsmanagement/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
+				$href_text = HTMLHelper::image(Uri::root() . 'media/com_sportsmanagement/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle, ' border' => 0, ' style' => 'vertical-align: middle'));
 			}
 			elseif ($config['show_comments_count'] == 2)
 			{
-				$href_text        = '<span title="' . $imgTitle . '">(' . $count . ')</span>';
+				$href_text = '<span title="' . $imgTitle . '">(' . $count . ')</span>';
 			}
 		}
 		else
 		{
-			$imgTitle    = Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_COMMENTS_COUNT_NOCOMMENT');
+			$imgTitle = Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_COMMENTS_COUNT_NOCOMMENT');
 
 			if ($config['show_comments_count'] == 1)
 			{
-				$href_text        = HTMLHelper::image(Uri::root() . 'media/com_sportsmanagement/jl_images/discuss.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
+				$href_text = HTMLHelper::image(Uri::root() . 'media/com_sportsmanagement/jl_images/discuss.gif', $imgTitle, array(' title' => $imgTitle, ' border' => 0, ' style' => 'vertical-align: middle'));
 			}
 			elseif ($config['show_comments_count'] == 2)
 			{
-				$href_text        = '<span title="' . $imgTitle . '">(' . $count . ')</span>';
+				$href_text = '<span title="' . $imgTitle . '">(' . $count . ')</span>';
 			}
 		}
 
@@ -276,14 +281,33 @@ class sportsmanagementModelCommentsKunena extends sportsmanagementModelComments
 	/**
 	 * description see base class
 	 */
+	function showMatchComments(&$match, &$hometeam, &$guestteam, &$config, &$project)
+	{
+		// TODO: probably we can add an seamless preview her using the
+		// KunenaForum::display('topics', $layout, null, $this->params); method
+		// as done in kunenalatest module, but it wasn't a quick implementation
+
+		if (!isset($config['show_comments_count']))
+		{
+			// For nextmatch we do not have show_comments_count configurable
+			$config['show_comments_count'] = 2;
+		}
+
+		// No on-page preview available, provide the link to forum instead
+		return $this->showMatchCommentIcon($match, $hometeam, $guestteam, $config, $project);
+	}
+
+	/**
+	 * description see base class
+	 */
 	function showMatchCommentIcon(&$match, &$hometeam, &$guestteam, &$config, &$project)
 	{
 		// Keine HTML Tags in den Mannschaftsnamen
 		$match_home = preg_replace("|<[^>]*>|", "", $hometeam->name);
 		$match_away = preg_replace("|<[^>]*>|", "", $guestteam->name);
-		$title = sprintf("%s - %s", addslashes($match_home), addslashes($match_away));
+		$title      = sprintf("%s - %s", addslashes($match_home), addslashes($match_away));
 
-		$query = sprintf("SELECT id, posts FROM #__kunena_topics WHERE category_id = %s AND subject = '%s'", $project->sb_catid, $title);
+		$query    = sprintf("SELECT id, posts FROM #__kunena_topics WHERE category_id = %s AND subject = '%s'", $project->sb_catid, $title);
 		$database = JFactory::getDBO();
 		$database->setQuery($query);
 		$result = $database->loadAssoc();
@@ -307,28 +331,9 @@ class sportsmanagementModelCommentsKunena extends sportsmanagementModelComments
 			$showlink = JRoute::_("index.php?option=com_kunena&view=topic&catid=" . $project->sb_catid . "&Itemid=" . $this->sbItemid . "&id=" . $result['id']);
 		}
 
-		$viewComment    = HTMLHelper::link($showlink, $href_text);
+		$viewComment = HTMLHelper::link($showlink, $href_text);
 
 		return $viewComment;
-	}
-
-	/**
-	 * description see base class
-	 */
-	function showMatchComments(&$match, &$hometeam, &$guestteam, &$config, &$project)
-	{
-		// TODO: probably we can add an seamless preview her using the
-		// KunenaForum::display('topics', $layout, null, $this->params); method
-		// as done in kunenalatest module, but it wasn't a quick implementation
-
-		if (!isset($config['show_comments_count']))
-		{
-			// For nextmatch we do not have show_comments_count configurable
-			$config['show_comments_count'] = 2;
-		}
-
-		// No on-page preview available, provide the link to forum instead
-		return $this->showMatchCommentIcon($match, $hometeam, $guestteam, $config, $project);
 	}
 }
 
@@ -341,7 +346,7 @@ class sportsmanagementModelCommentsJSMJComments extends sportsmanagementModelCom
 	function __construct(&$config)
 	{
 		$this->comJcomments = true;
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher         = JDispatcher::getInstance();
 
 		if (file_exists(JPATH_ROOT . '/components/com_jcomments/classes/config.php'))
 		{
@@ -373,7 +378,7 @@ class sportsmanagementModelCommentsJSMJComments extends sportsmanagementModelCom
 			$pluginParams = new Registry('');
 		}
 
-		$this->separate_comments     = $pluginParams->get('separate_comments', 0);
+		$this->separate_comments = $pluginParams->get('separate_comments', 0);
 	}
 
 	/**
@@ -407,11 +412,11 @@ class sportsmanagementModelCommentsJSMJComments extends sportsmanagementModelCom
 			$joomleage_comments_object_group = 'com_sportsmanagement';
 		}
 
-		$options                     = array();
-		$options['object_id']        = (int) $match->id;
-		$options['object_group']    = $joomleage_comments_object_group;
-		$options['published']        = 1;
-		$count = JCommentsModel::getCommentsCount($options);
+		$options                 = array();
+		$options['object_id']    = (int) $match->id;
+		$options['object_group'] = $joomleage_comments_object_group;
+		$options['published']    = 1;
+		$count                   = JCommentsModel::getCommentsCount($options);
 
 		$href_text = parent::getHrefText($count, $config);
 
@@ -419,17 +424,17 @@ class sportsmanagementModelCommentsJSMJComments extends sportsmanagementModelCom
 		if (isset($match->team1_result))
 		{
 			$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-			$routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
-			$routeparameter['p'] = $project->slug;
-			$routeparameter['mid'] = $match->id;
-			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);
+			$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+			$routeparameter['p']                  = $project->slug;
+			$routeparameter['mid']                = $match->id;
+			$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);
 		}
 		else
 		{
 			$link = sportsmanagementHelperRoute::getNextMatchRoute($project->slug, $match->id) . '#comments';
 		}
 
-		$viewComment    = HTMLHelper::link($link, $href_text);
+		$viewComment = HTMLHelper::link($link, $href_text);
 
 		return $viewComment;
 	}
@@ -444,12 +449,12 @@ class sportsmanagementModelCommentsJSMJComments extends sportsmanagementModelCom
 		if ($this->separate_comments)
 		{
 			// Comments integration trigger when separate_comments in plugin is set to yes/1
-			Factory::getApplication()->triggerEvent('onMatchReportComments', array( $match, $hometeam->name . ' - ' . $guestteam->name, &$comments ));
+			Factory::getApplication()->triggerEvent('onMatchReportComments', array($match, $hometeam->name . ' - ' . $guestteam->name, &$comments));
 		}
 		else
 		{
 			// Comments integration trigger when separate_comments in plugin is set to no/0
-			Factory::getApplication()->triggerEvent('onMatchComments', array( $match, $hometeam->name . ' - ' . $guestteam->name, &$comments ));
+			Factory::getApplication()->triggerEvent('onMatchComments', array($match, $hometeam->name . ' - ' . $guestteam->name, &$comments));
 		}
 
 		return $comments;

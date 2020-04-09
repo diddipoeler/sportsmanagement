@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
@@ -35,14 +36,15 @@ class sportsmanagementModelQuickAdd extends JSMModelList
 	/**
 	 * sportsmanagementModelQuickAdd::getNotAssignedPlayers()
 	 *
-	 * @param   mixed $searchterm
-	 * @param   mixed $projectteam_id
-	 * @param   mixed $searchinfo
+	 * @param   mixed  $searchterm
+	 * @param   mixed  $projectteam_id
+	 * @param   mixed  $searchinfo
+	 *
 	 * @return
 	 */
-	function getNotAssignedPlayers($searchterm, $projectteam_id,$searchinfo = null )
+	function getNotAssignedPlayers($searchterm, $projectteam_id, $searchinfo = null)
 	{
-		$query  = "	SELECT pl.*, pl.id as id2
+		$query = "	SELECT pl.*, pl.id as id2
 					FROM #__sportsmanagement_person AS pl
 					WHERE	(	LOWER( CONCAT(pl.firstname, ' ', pl.lastname) ) LIKE " . $this->_db->Quote("%" . $searchterm . "%") . " OR
 								alias LIKE " . $this->_db->Quote("%" . $searchterm . "%") . " OR
@@ -59,19 +61,19 @@ class sportsmanagementModelQuickAdd extends JSMModelList
 			$query .= " AND pl.info LIKE '" . $searchinfo . "' ";
 		}
 
-			  $option = Factory::getApplication()->input->getCmd('option');
+		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
 
-		$filter_order        = $app->getUserStateFromRequest($option . 'pl_filter_order', 'filter_order', 'pl.lastname', 'cmd');
-		$filter_order_Dir    = $app->getUserStateFromRequest($option . 'pl_filter_order_Dir',    'filter_order_Dir', '',    'word');
+		$filter_order     = $app->getUserStateFromRequest($option . 'pl_filter_order', 'filter_order', 'pl.lastname', 'cmd');
+		$filter_order_Dir = $app->getUserStateFromRequest($option . 'pl_filter_order_Dir', 'filter_order_Dir', '', 'word');
 
 		if ($filter_order == 'pl.lastname')
 		{
-			$orderby     = ' ORDER BY pl.lastname ' . $filter_order_Dir;
+			$orderby = ' ORDER BY pl.lastname ' . $filter_order_Dir;
 		}
 		else
 		{
-			$orderby     = ' ORDER BY ' . $filter_order . ' ' . $filter_order_Dir . ' , pl.lastname ';
+			$orderby = ' ORDER BY ' . $filter_order . ' ' . $filter_order_Dir . ' , pl.lastname ';
 		}
 
 		$query = $query . $orderby;
@@ -82,24 +84,24 @@ class sportsmanagementModelQuickAdd extends JSMModelList
 			echo $this->_db->getErrorMsg();
 		}
 
-			$this->_total = $this->_getListCount($query);
+		$this->_total = $this->_getListCount($query);
 
-			return $this->_data;
+		return $this->_data;
 	}
-
 
 
 	/**
 	 * sportsmanagementModelQuickAdd::getNotAssignedStaff()
 	 *
-	 * @param   mixed $searchterm
-	 * @param   mixed $projectteam_id
-	 * @param   mixed $searchinfo
+	 * @param   mixed  $searchterm
+	 * @param   mixed  $projectteam_id
+	 * @param   mixed  $searchinfo
+	 *
 	 * @return
 	 */
-	function getNotAssignedStaff($searchterm, $projectteam_id,$searchinfo = null)
+	function getNotAssignedStaff($searchterm, $projectteam_id, $searchinfo = null)
 	{
-		$query  = "SELECT pl.* ";
+		$query = "SELECT pl.* ";
 		$query .= "FROM #__sportsmanagement_person AS pl ";
 		$query .= "WHERE (LOWER( CONCAT(pl.firstname, ' ', pl.lastname) ) LIKE " . $this->_db->Quote("%" . $searchterm . "%") . " ";
 		$query .= "   OR alias LIKE " . $this->_db->Quote("%" . $searchterm . "%") . " ";
@@ -116,23 +118,23 @@ class sportsmanagementModelQuickAdd extends JSMModelList
 			$query .= " AND pl.info LIKE '" . $searchinfo . "' ";
 		}
 
-			  $option = Factory::getApplication()->input->getCmd('option');
-			$app    = Factory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+		$app    = Factory::getApplication();
 
-			$filter_order        = $app->getUserStateFromRequest($option . 'pl_filter_order', 'filter_order', 'pl.lastname', 'cmd');
-			$filter_order_Dir    = $app->getUserStateFromRequest($option . 'pl_filter_order_Dir',    'filter_order_Dir', '',    'word');
+		$filter_order     = $app->getUserStateFromRequest($option . 'pl_filter_order', 'filter_order', 'pl.lastname', 'cmd');
+		$filter_order_Dir = $app->getUserStateFromRequest($option . 'pl_filter_order_Dir', 'filter_order_Dir', '', 'word');
 
 		if ($filter_order == 'pl.lastname')
 		{
-			$orderby     = ' ORDER BY pl.lastname ' . $filter_order_Dir;
+			$orderby = ' ORDER BY pl.lastname ' . $filter_order_Dir;
 		}
 		else
 		{
-			$orderby     = ' ORDER BY ' . $filter_order . ' ' . $filter_order_Dir . ' , pl.lastname ';
+			$orderby = ' ORDER BY ' . $filter_order . ' ' . $filter_order_Dir . ' , pl.lastname ';
 		}
 
-			$query = $query . $orderby;
-			$this->_db->setQuery($query);
+		$query = $query . $orderby;
+		$this->_db->setQuery($query);
 
 		if (!$this->_data = $this->_getList(
 			$query,
@@ -144,23 +146,24 @@ class sportsmanagementModelQuickAdd extends JSMModelList
 			echo $this->_db->getErrorMsg();
 		}
 
-			$this->_total = $this->_getListCount($query);
+		$this->_total = $this->_getListCount($query);
 
-			return $this->_data;
+		return $this->_data;
 	}
 
 
 	/**
 	 * sportsmanagementModelQuickAdd::getNotAssignedReferees()
 	 *
-	 * @param   mixed $searchterm
-	 * @param   mixed $projectid
-	 * @param   mixed $searchinfo
+	 * @param   mixed  $searchterm
+	 * @param   mixed  $projectid
+	 * @param   mixed  $searchinfo
+	 *
 	 * @return
 	 */
-	function getNotAssignedReferees($searchterm, $projectid,$searchinfo = null)
+	function getNotAssignedReferees($searchterm, $projectid, $searchinfo = null)
 	{
-		$query  = "SELECT pl.* ";
+		$query = "SELECT pl.* ";
 		$query .= "FROM #__sportsmanagement_person AS pl ";
 		$query .= "WHERE (LOWER( CONCAT(pl.firstname, ' ', pl.lastname) ) LIKE " . $this->_db->Quote("%" . $searchterm . "%") . " ";
 		$query .= "   OR alias LIKE " . $this->_db->Quote("%" . $searchterm . "%") . " ";
@@ -177,24 +180,24 @@ class sportsmanagementModelQuickAdd extends JSMModelList
 			$query .= " AND pl.info LIKE '" . $searchinfo . "' ";
 		}
 
-			  $option = Factory::getApplication()->input->getCmd('option');
-			$app    = Factory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+		$app    = Factory::getApplication();
 
-			$filter_order        = $app->getUserStateFromRequest($option . 'pl_filter_order', 'filter_order', 'pl.lastname', 'cmd');
-			$filter_order_Dir    = $app->getUserStateFromRequest($option . 'pl_filter_order_Dir',    'filter_order_Dir', '',    'word');
+		$filter_order     = $app->getUserStateFromRequest($option . 'pl_filter_order', 'filter_order', 'pl.lastname', 'cmd');
+		$filter_order_Dir = $app->getUserStateFromRequest($option . 'pl_filter_order_Dir', 'filter_order_Dir', '', 'word');
 
 		if ($filter_order == 'pl.lastname')
 		{
-			$orderby     = ' ORDER BY pl.lastname ' . $filter_order_Dir;
+			$orderby = ' ORDER BY pl.lastname ' . $filter_order_Dir;
 		}
 		else
 		{
-			$orderby     = ' ORDER BY ' . $filter_order . ' ' . $filter_order_Dir . ' , pl.lastname ';
+			$orderby = ' ORDER BY ' . $filter_order . ' ' . $filter_order_Dir . ' , pl.lastname ';
 		}
 
-			$query = $query . $orderby;
+		$query = $query . $orderby;
 
-			  $this->_db->setQuery($query);
+		$this->_db->setQuery($query);
 
 		if (!$this->_data = $this->_getList(
 			$query,
@@ -206,22 +209,23 @@ class sportsmanagementModelQuickAdd extends JSMModelList
 			echo $this->_db->getErrorMsg();
 		}
 
-			$this->_total = $this->_getListCount($query);
+		$this->_total = $this->_getListCount($query);
 
-			return $this->_data;
+		return $this->_data;
 	}
 
 
 	/**
 	 * sportsmanagementModelQuickAdd::getNotAssignedTeams()
 	 *
-	 * @param   mixed $searchterm
-	 * @param   mixed $projectid
+	 * @param   mixed  $searchterm
+	 * @param   mixed  $projectid
+	 *
 	 * @return
 	 */
 	function getNotAssignedTeams($searchterm, $projectid)
 	{
-		$query  = "SELECT t.* ";
+		$query = "SELECT t.* ";
 		$query .= "FROM #__sportsmanagement_team AS t ";
 		$query .= "WHERE (LOWER( t.name ) LIKE " . $this->_db->Quote("%" . $searchterm . "%") . " ";
 		$query .= "   OR alias LIKE " . $this->_db->Quote("%" . $searchterm . "%") . " ";
@@ -253,9 +257,10 @@ class sportsmanagementModelQuickAdd extends JSMModelList
 	/**
 	 * sportsmanagementModelQuickAdd::addPlayer()
 	 *
-	 * @param   mixed $projectteam_id
-	 * @param   mixed $personid
-	 * @param   mixed $name
+	 * @param   mixed  $projectteam_id
+	 * @param   mixed  $personid
+	 * @param   mixed  $name
+	 *
 	 * @return
 	 */
 	function addPlayer($projectteam_id, $personid, $name = null)
@@ -271,37 +276,37 @@ class sportsmanagementModelQuickAdd extends JSMModelList
 		if (!$personid)
 		{
 			$mdlPerson = BaseDatabaseModel::getInstance('Person', 'sportsmanagementModel');
-			$name = explode(" ", $name);
+			$name      = explode(" ", $name);
 			$firstname = '';
-			$nickname = '';
-			$lastname = '';
+			$nickname  = '';
+			$lastname  = '';
 
 			if (count($name) == 1)
 			{
 				$firstname = ucfirst($name[0]);
-				$nickname = $name[0];
-				$lastname = ".";
+				$nickname  = $name[0];
+				$lastname  = ".";
 			}
 
 			if (count($name) == 2)
 			{
 				$firstname = ucfirst($name[0]);
-				$nickname = $name[1];
-				$lastname = ucfirst($name[1]);
+				$nickname  = $name[1];
+				$lastname  = ucfirst($name[1]);
 			}
 
 			if (count($name) == 3)
 			{
 				$firstname = ucfirst($name[0]);
-				$nickname = $name[1];
-				$lastname = ucfirst($name[2]);
+				$nickname  = $name[1];
+				$lastname  = ucfirst($name[2]);
 			}
 
 			$data = array(
-			  "firstname" => $firstname,
-			  "nickname" => $nickname,
-			  "lastname" => $lastname,
-			  "published" => 1
+				"firstname" => $firstname,
+				"nickname"  => $nickname,
+				"lastname"  => $lastname,
+				"published" => 1
 			);
 			$mdlPerson->store($data);
 			$personid = $mdlPerson->_db->insertid();
@@ -315,8 +320,8 @@ class sportsmanagementModelQuickAdd extends JSMModelList
 		}
 
 		/**
- * muss noch programmiert werden
- */
+		 * muss noch programmiert werden
+		 */
 
 		return true;
 	}

@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
@@ -38,9 +39,9 @@ JLoader::import('components.com_sportsmanagement.models.project', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.models.teamstats', JPATH_SITE);
 
 /**
-*
+ *
  * Include the functions only once
-*/
+ */
 JLoader::register('modJSMTeamStatisticsCounter', __DIR__ . '/helper.php');
 
 $data     = modJSMTeamStatisticsCounter::getData($params);
@@ -53,6 +54,6 @@ $document->addStyleSheet(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module
 ?>
 
 <div class="<?php echo $params->get('moduleclass_sfx'); ?>"
-	 id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+     id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 	<?PHP require ModuleHelper::getLayoutPath($module->module); ?>
 </div>

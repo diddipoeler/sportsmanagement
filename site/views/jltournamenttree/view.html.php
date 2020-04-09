@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
@@ -45,17 +46,17 @@ class sportsmanagementViewjltournamenttree extends sportsmanagementView
 		{
 			$this->rounds = $this->model->getTournamentRounds();
 
-			$this->color_from = $this->model->getColorFrom();
-			$this->color_to = $this->model->getColorTo();
-			$this->font_size = $this->model->getFontSize();
-			$this->projectname = $this->project->name;
-			$this->bracket_rounds = $this->model->getTournamentBracketRounds($this->rounds);
-			$this->bracket_teams = $this->model->getTournamentMatches($this->rounds);
-			$this->bracket_results = $this->model->getTournamentResults($this->rounds);
-			$this->which_first_round = $this->model->getWhichShowFirstRound();
+			$this->color_from                  = $this->model->getColorFrom();
+			$this->color_to                    = $this->model->getColorTo();
+			$this->font_size                   = $this->model->getFontSize();
+			$this->projectname                 = $this->project->name;
+			$this->bracket_rounds              = $this->model->getTournamentBracketRounds($this->rounds);
+			$this->bracket_teams               = $this->model->getTournamentMatches($this->rounds);
+			$this->bracket_results             = $this->model->getTournamentResults($this->rounds);
+			$this->which_first_round           = $this->model->getWhichShowFirstRound();
 			$this->jl_tree_bracket_round_width = $this->model->getTreeBracketRoundWidth();
 			$this->jl_tree_bracket_teamb_width = $this->model->getTreeBracketTeambWidth();
-			$this->jl_tree_bracket_width = $this->model->getTreeBracketWidth();
+			$this->jl_tree_bracket_width       = $this->model->getTreeBracketWidth();
 
 			//            $this->document->addScript(Uri::base() . 'components/' . $this->option . '/assets/js/jquery.json-2.3.min.js');
 			//            $this->document->addScript(Uri::base() . 'components/' . $this->option . '/assets/js/jquery.bracket-3.js');
@@ -71,7 +72,7 @@ class sportsmanagementViewjltournamenttree extends sportsmanagementView
 
 			if (ComponentHelper::getParams($this->option)->get('show_debug_info_frontend'))
 			{
-						Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' config <pre>' . print_r($this->config, true) . '</pre>', '');
+				Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' config <pre>' . print_r($this->config, true) . '</pre>', '');
 			}
 		}
 

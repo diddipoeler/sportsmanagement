@@ -19,25 +19,25 @@ defined('_JEXEC') or die('Restricted access');
 <!-- Main START -->
 <div class="row-fluid" id="">
 
-<!-- content -->
-<?php
-
-	?>
-	<table class="<?php echo $this->tableclass;?>">
-		<tr>
-			<td class="">
-				<?php
-					// Get the division name from the first team of the division
-					echo $this->content;
-				?>
-			</td>
-		</tr>
-	</table>
-  
+    <!-- content -->
 	<?php
 
 	?>
-<!-- all results END -->
+    <table class="<?php echo $this->tableclass; ?>">
+        <tr>
+            <td class="">
+				<?php
+				// Get the division name from the first team of the division
+				echo $this->content;
+				?>
+            </td>
+        </tr>
+    </table>
+
+	<?php
+
+	?>
+    <!-- all results END -->
 
 </div>
 

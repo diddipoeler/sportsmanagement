@@ -31,10 +31,10 @@ class JGithubPackageOrgsMembers extends JGithubPackage
 	 *
 	 * @param   string  $org  The name of the organization.
 	 *
+	 * @return boolean|mixed
 	 * @throws UnexpectedValueException
 	 * @since    3.3 (CMS)
 	 *
-	 * @return boolean|mixed
 	 */
 	public function getList($org)
 	{
@@ -68,10 +68,10 @@ class JGithubPackageOrgsMembers extends JGithubPackage
 	 * @param   string  $org   The name of the organization.
 	 * @param   string  $user  The name of the user.
 	 *
+	 * @return boolean
 	 * @throws UnexpectedValueException
 	 * @since    3.3 (CMS)
 	 *
-	 * @return boolean
 	 */
 	public function check($org, $user)
 	{
@@ -119,9 +119,9 @@ class JGithubPackageOrgsMembers extends JGithubPackage
 	 * @param   string  $org   The name of the organization.
 	 * @param   string  $user  The name of the user.
 	 *
+	 * @return object
 	 * @since    3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function remove($org, $user)
 	{
@@ -141,9 +141,9 @@ class JGithubPackageOrgsMembers extends JGithubPackage
 	 *
 	 * @param   string  $org  The name of the organization.
 	 *
+	 * @return object
 	 * @since    3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function getListPublic($org)
 	{
@@ -161,10 +161,10 @@ class JGithubPackageOrgsMembers extends JGithubPackage
 	 * @param   string  $org   The name of the organization.
 	 * @param   string  $user  The name of the user.
 	 *
+	 * @return object
 	 * @throws UnexpectedValueException
 	 * @since    3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function checkPublic($org, $user)
 	{
@@ -197,9 +197,9 @@ class JGithubPackageOrgsMembers extends JGithubPackage
 	 * @param   string  $org   The name of the organization.
 	 * @param   string  $user  The name of the user.
 	 *
+	 * @return object
 	 * @since    3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function publicize($org, $user)
 	{
@@ -218,9 +218,9 @@ class JGithubPackageOrgsMembers extends JGithubPackage
 	 * @param   string  $org   The name of the organization.
 	 * @param   string  $user  The name of the user.
 	 *
+	 * @return object
 	 * @since    3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function conceal($org, $user)
 	{

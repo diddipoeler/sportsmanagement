@@ -42,13 +42,14 @@
 
 /**
  * @package        Twitter Bootstrap Integration
- * @subpackage    com_cbootstrap
- * @copyright    Copyright (C) 2012 Conflate. All rights reserved.
+ * @subpackage     com_cbootstrap
+ * @copyright      Copyright (C) 2012 Conflate. All rights reserved.
  * @license        GNU General Public License <http://www.gnu.org/copyleft/gpl.html>
- * @link        http://www.conflate.nl
+ * @link           http://www.conflate.nl
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 
 /**
@@ -62,9 +63,8 @@ use Joomla\CMS\Factory;
  */
 class CBootstrap
 {
-	private $_errors;
-
 	private static $_actions;
+	private $_errors;
 
 	/**
 	 * CBootstrap::__construct()

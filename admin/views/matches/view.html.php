@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -42,14 +43,14 @@ class sportsmanagementViewMatches extends sportsmanagementView
 	 */
 	public function init()
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-		$model = $this->getModel();
+		$model  = $this->getModel();
 		$params = ComponentHelper::getParams($option);
 
 		$view = $jinput->get('view');
-		$_db = sportsmanagementHelper::getDBConnection(); // The method is contextual so we must have a DBO
+		$_db  = sportsmanagementHelper::getDBConnection(); // The method is contextual so we must have a DBO
 
 		if (version_compare(JVERSION, '3.0', 'ge'))
 		{
@@ -57,57 +58,57 @@ class sportsmanagementViewMatches extends sportsmanagementView
 		}
 		else
 		{
-			   $fieldsArray = $_db->getTableFields('#__sportsmanagement_match', true);
-			   $table_info = array_shift($fieldsArray);
+			$fieldsArray = $_db->getTableFields('#__sportsmanagement_match', true);
+			$table_info  = array_shift($fieldsArray);
 		}
 
-			$this->projectteamsel = Factory::getApplication()->input->getvar('projectteam', 0);
+		$this->projectteamsel = Factory::getApplication()->input->getvar('projectteam', 0);
 
-			$table = Table::getInstance('match', 'sportsmanagementTable');
-			$this->table = $table;
+		$table       = Table::getInstance('match', 'sportsmanagementTable');
+		$this->table = $table;
 
-			$this->project_id = $app->getUserState("$option.pid", '0');
-			$this->project_art_id = $app->getUserState("$option.project_art_id", '0');
+		$this->project_id     = $app->getUserState("$option.pid", '0');
+		$this->project_art_id = $app->getUserState("$option.project_art_id", '0');
 
-			$this->project_id = $jinput->get('pid', 0);
+		$this->project_id = $jinput->get('pid', 0);
 
 		if (!$this->project_id)
 		{
-					$this->project_id = $app->getUserState("$option.pid", '0');
+			$this->project_id = $app->getUserState("$option.pid", '0');
 		}
 
-			$this->rid = $jinput->get('rid', 0);
+		$this->rid = $jinput->get('rid', 0);
 
 		if (!$this->rid)
 		{
-					$this->rid = $app->getUserState("$option.rid", '0');
+			$this->rid = $app->getUserState("$option.rid", '0');
 		}
 
-			$mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
-			$projectws = $mdlProject->getProject($this->project_id);
+		$mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
+		$projectws  = $mdlProject->getProject($this->project_id);
 
-			$mdlRound = BaseDatabaseModel::getInstance('Round', 'sportsmanagementModel');
-			$roundws = $mdlRound->getRound($this->rid);
+		$mdlRound = BaseDatabaseModel::getInstance('Round', 'sportsmanagementModel');
+		$roundws  = $mdlRound->getRound($this->rid);
 
-			// Build the html selectlist for rounds
-			$ress = sportsmanagementHelper::getRoundsOptions($this->project_id, 'ASC', true);
+		// Build the html selectlist for rounds
+		$ress = sportsmanagementHelper::getRoundsOptions($this->project_id, 'ASC', true);
 
-			/**
+		/**
 		 * dadurch werden die spaltenbreiten optimiert
 		 */
-			$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/form_control.css', 'text/css');
+		$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/form_control.css', 'text/css');
 
 		foreach ($ress as $res)
 		{
-			$datum = sportsmanagementHelper::convertDate($res->round_date_first, 1) . ' - ' . sportsmanagementHelper::convertDate($res->round_date_last, 1);
+			$datum                = sportsmanagementHelper::convertDate($res->round_date_first, 1) . ' - ' . sportsmanagementHelper::convertDate($res->round_date_last, 1);
 			$project_roundslist[] = HTMLHelper::_('select.option', $res->id, sprintf("%s (%s)", $res->name, $datum));
 		}
 
-			$lists['project_rounds'] = HTMLHelper::_(
-				'select.genericList', $project_roundslist, 'rid', 'class="inputbox" ' .
-						'onChange="document.getElementById(\'short_act\').value=\'rounds\';' .
-				'document.roundForm.submit();" ', 'value', 'text', $roundws->id
-			);
+		$lists['project_rounds'] = HTMLHelper::_(
+			'select.genericList', $project_roundslist, 'rid', 'class="inputbox" ' .
+			'onChange="document.getElementById(\'short_act\').value=\'rounds\';' .
+			'document.roundForm.submit();" ', 'value', 'text', $roundws->id
+		);
 
 		$lists['project_rounds2'] = HTMLHelper::_('select.genericList', $project_roundslist, 'rid', 'class="inputbox" ', 'value', 'text', $roundws->id);
 
@@ -164,7 +165,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
 			}
 
 			$lists['teams_' . $divhomeid] = $teams;
-			$lists['projectteams'] = $teams;
+			$lists['projectteams']        = $teams;
 			unset($teams);
 
 			// Sind die verzeichnisse vorhanden ?
@@ -181,9 +182,9 @@ class sportsmanagementViewMatches extends sportsmanagementView
 		}
 
 		// Build the html options for extratime
-		$match_result_type[] = JHtmlSelect::option('0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RT'));
-		$match_result_type[] = JHtmlSelect::option('1', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_OT'));
-		$match_result_type[] = JHtmlSelect::option('2', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SO'));
+		$match_result_type[]        = JHtmlSelect::option('0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RT'));
+		$match_result_type[]        = JHtmlSelect::option('1', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_OT'));
+		$match_result_type[]        = JHtmlSelect::option('2', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SO'));
 		$lists['match_result_type'] = $match_result_type;
 		unset($match_result_type);
 
@@ -199,7 +200,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
 		unset($articles);
 
 		// Build the html options for divisions
-		$divisions[] = JHtmlSelect::option('0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
+		$divisions[]  = JHtmlSelect::option('0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
 		$mdlDivisions = BaseDatabaseModel::getInstance('divisions', 'sportsmanagementModel');
 
 		if ($res = $mdlDivisions->getDivisions($this->project_id))
@@ -222,23 +223,23 @@ class sportsmanagementViewMatches extends sportsmanagementView
 
 				if ($select_Options)
 				{
-					$select[] = JHtmlSelect::option('0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'));
-					$select = array_merge($select, $select_Options);
+					$select[]           = JHtmlSelect::option('0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'));
+					$select             = array_merge($select, $select_Options);
 					$selectlist[$field] = $select;
 					unset($select);
 				}
 			}
 		}
 
-		$this->user = Factory::getUser();
-		$this->lists = $lists;
+		$this->user       = Factory::getUser();
+		$this->lists      = $lists;
 		$this->selectlist = $selectlist;
-		$this->option = $option;
-		$this->matches = $this->model->prepareItems($this->items);
-		$this->ress = $ress;
-		$this->projectws = $projectws;
-		$this->roundws = $roundws;
-		$this->prefill = $params->get('use_prefilled_match_roster', 0);
+		$this->option     = $option;
+		$this->matches    = $this->model->prepareItems($this->items);
+		$this->ress       = $ress;
+		$this->projectws  = $projectws;
+		$this->roundws    = $roundws;
+		$this->prefill    = $params->get('use_prefilled_match_roster', 0);
 
 		switch ($this->getLayout())
 		{
@@ -247,14 +248,14 @@ class sportsmanagementViewMatches extends sportsmanagementView
 			case 'massadd_4':
 				// Build the html options for massadd create type
 				$createTypes = array(0 => Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD'),
-				1 => Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_1'),
-				2 => Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_2')
-					);
-					$ctOptions = array();
+				                     1 => Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_1'),
+				                     2 => Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_2')
+				);
+				$ctOptions   = array();
 
 				foreach ($createTypes AS $key => $value)
 				{
-						$ctOptions[] = JHtmlSelect::option($key, $value);
+					$ctOptions[] = JHtmlSelect::option($key, $value);
 				}
 
 				$lists['createTypes'] = JHtmlSelect::genericlist($ctOptions, 'ct[]', 'class="inputbox" onchange="javascript:displayTypeView();"', 'value', 'text', 1, 'ct');
@@ -262,20 +263,20 @@ class sportsmanagementViewMatches extends sportsmanagementView
 
 				// Build the html radio for adding into one round / all rounds
 				$createYesNo = array(0 => Text::_('JNO'), 1 => Text::_('JYES'));
-				$ynOptions = array();
+				$ynOptions   = array();
 
 				foreach ($createYesNo AS $key => $value)
 				{
-						$ynOptions[] = JHtmlSelect::option($key, $value);
+					$ynOptions[] = JHtmlSelect::option($key, $value);
 				}
 
 				$lists['addToRound'] = JHtmlSelect::radiolist($ynOptions, 'addToRound', 'class="inputbox"', 'value', 'text', 0);
 
 				// Build the html radio for auto publish new matches
 				$lists['autoPublish'] = JHtmlSelect::radiolist($ynOptions, 'autoPublish', 'class="inputbox"', 'value', 'text', 0);
-				$this->lists = $lists;
+				$this->lists          = $lists;
 				$this->setLayout('massadd');
-			break;
+				break;
 		}
 	}
 
@@ -287,7 +288,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
 	protected function addToolbar()
 	{
 
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 

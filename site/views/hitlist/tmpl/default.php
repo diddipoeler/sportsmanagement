@@ -13,9 +13,11 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.framework');
 HTMLHelper::_('behavior.modal');
@@ -35,28 +37,27 @@ else
 }
 ?>
 <script language="javascript" type="text/javascript">
-function tableOrdering( order, dir, task )
-{
-		var form = document.adminForm;
+    function tableOrdering(order, dir, task) {
+        var form = document.adminForm;
 
-		form.filter_order.value = order;
-		form.filter_order_Dir.value = dir;
-		document.adminForm.submit( task );
-}
-function searchPerson(val)
-	{
-		var s= document.getElementById("filter_search");
-		s.value = val;
-		Joomla.submitform('', this.form)
-	}
+        form.filter_order.value = order;
+        form.filter_order_Dir.value = dir;
+        document.adminForm.submit(task);
+    }
+
+    function searchPerson(val) {
+        var s = document.getElementById("filter_search");
+        s.value = val;
+        Joomla.submitform('', this.form)
+    }
 </script>
 <div class="row-fluid">
-<form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($uri->toString());?>" method="post">
-<?php
-echo $this->loadTemplate('items');
-echo $this->loadTemplate('jsminfo');
-?>
+    <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($uri->toString()); ?>" method="post">
+		<?php
+		echo $this->loadTemplate('items');
+		echo $this->loadTemplate('jsminfo');
+		?>
 
-</form>
+    </form>
 </div>
 

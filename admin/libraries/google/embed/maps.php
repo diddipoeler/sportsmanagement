@@ -41,18 +41,6 @@ class JGoogleEmbedMaps extends JGoogleEmbed
 	}
 
 	/**
-	 * Method to get the API key
-	 *
-	 * @return  string  The Google Maps API key
-	 *
-	 * @since   3.1.4
-	 */
-	public function getKey()
-	{
-		return $this->getOption('key');
-	}
-
-	/**
 	 * Method to set the API key
 	 *
 	 * @param   string  $key  The Google Maps API key
@@ -66,18 +54,6 @@ class JGoogleEmbedMaps extends JGoogleEmbed
 		$this->setOption('key', $key);
 
 		return $this;
-	}
-
-	/**
-	 * Method to get the id of the map div
-	 *
-	 * @return  string  The ID
-	 *
-	 * @since   3.1.4
-	 */
-	public function getMapId()
-	{
-		return $this->getOption('mapid') ? $this->getOption('mapid') : 'map_canvas';
 	}
 
 	/**
@@ -97,18 +73,6 @@ class JGoogleEmbedMaps extends JGoogleEmbed
 	}
 
 	/**
-	 * Method to get the class of the map div
-	 *
-	 * @return  string  The class
-	 *
-	 * @since   3.1.4
-	 */
-	public function getMapClass()
-	{
-		return $this->getOption('mapclass') ? $this->getOption('mapclass') : '';
-	}
-
-	/**
 	 * Method to set the map div class
 	 *
 	 * @param   string  $class  The class
@@ -122,18 +86,6 @@ class JGoogleEmbedMaps extends JGoogleEmbed
 		$this->setOption('mapclass', $class);
 
 		return $this;
-	}
-
-	/**
-	 * Method to get the style of the map div
-	 *
-	 * @return  string  The style
-	 *
-	 * @since   3.1.4
-	 */
-	public function getMapStyle()
-	{
-		return $this->getOption('mapstyle') ? $this->getOption('mapstyle') : '';
 	}
 
 	/**
@@ -153,18 +105,6 @@ class JGoogleEmbedMaps extends JGoogleEmbed
 	}
 
 	/**
-	 * Method to get the map type setting
-	 *
-	 * @return  string  The class
-	 *
-	 * @since   3.1.4
-	 */
-	public function getMapType()
-	{
-		return $this->getOption('maptype') ? $this->getOption('maptype') : 'ROADMAP';
-	}
-
-	/**
 	 * Method to set the map type ()
 	 *
 	 * @param   string  $type  Valid types are ROADMAP, SATELLITE, HYBRID, and TERRAIN
@@ -178,18 +118,6 @@ class JGoogleEmbedMaps extends JGoogleEmbed
 		$this->setOption('maptype', strtoupper($type));
 
 		return $this;
-	}
-
-	/**
-	 * Method to get additional map options
-	 *
-	 * @return  string  The options
-	 *
-	 * @since   3.1.4
-	 */
-	public function getAdditionalMapOptions()
-	{
-		return $this->getOption('mapoptions') ? $this->getOption('mapoptions') : array();
 	}
 
 	/**
@@ -209,18 +137,6 @@ class JGoogleEmbedMaps extends JGoogleEmbed
 	}
 
 	/**
-	 * Method to get additional map options
-	 *
-	 * @return  string  The options
-	 *
-	 * @since   3.1.4
-	 */
-	public function getAdditionalJavascript()
-	{
-		return $this->getOption('extrascript') ? $this->getOption('extrascript') : '';
-	}
-
-	/**
 	 * Method to add additional javascript
 	 *
 	 * @param   array  $script  Additional javascript
@@ -234,18 +150,6 @@ class JGoogleEmbedMaps extends JGoogleEmbed
 		$this->setOption('extrascript', $script);
 
 		return $this;
-	}
-
-	/**
-	 * Method to get the zoom
-	 *
-	 * @return  integer  The zoom level
-	 *
-	 * @since   3.1.4
-	 */
-	public function getZoom()
-	{
-		return $this->getOption('zoom') ? $this->getOption('zoom') : 0;
 	}
 
 	/**
@@ -267,34 +171,22 @@ class JGoogleEmbedMaps extends JGoogleEmbed
 	/**
 	 * Method to set the center of the map
 	 *
-	 * @return  mixed  A latitude longitude array or an address string
-	 *
-	 * @since   3.1.4
-	 */
-	public function getCenter()
-	{
-		return $this->getOption('mapcenter') ? $this->getOption('mapcenter') : array(0, 0);
-	}
-
-	/**
-	 * Method to set the center of the map
-	 *
 	 * @param   mixed  $location       A latitude/longitude array or an address string
 	 * @param   mixed  $title          Title of marker or false for no marker
 	 * @param   array  $markeroptions  Options for marker
 	 * @param   array  $markerevents   Events for marker
 	 *
-	 * @example with events call:
-	 *		$map->setCenter(
-	 *			array(0, 0),
-	 *			'Map Center',
-	 *			array(),
-	 *			array(
-	 *				'click' => 'function() { // code goes here }
-	 *			)
-	 *		)
-	 *
 	 * @return  JGoogleEmbedMaps  The latitude/longitude of the center or false on failure
+	 *
+	 * @example with events call:
+	 *        $map->setCenter(
+	 *            array(0, 0),
+	 *            'Map Center',
+	 *            array(),
+	 *            array(
+	 *                'click' => 'function() { // code goes here }
+	 *            )
+	 *        )
 	 *
 	 * @since   3.1.4
 	 */
@@ -330,71 +222,6 @@ class JGoogleEmbedMaps extends JGoogleEmbed
 	}
 
 	/**
-	 * Method to add an event handler to the map.
-	 * Event handlers must be passed in either as callback name or fully qualified function declaration
-	 *
-	 * @param   string  $type      The event name
-	 * @param   string  $function  The event handling function body
-	 *
-	 * @example to add an event call:
-	 *		$map->addEventHandler('click', 'function(){ alert("map click event"); }');
-	 *
-	 * @return  JGoogleEmbedMaps   The object for method chaining
-	 *
-	 * @since   3.1.4
-	 */
-	public function addEventHandler($type, $function)
-	{
-		$events = $this->listEventHandlers();
-
-		$events[$type] = $function;
-
-		$this->setOption('events', $events);
-
-		return $this;
-	}
-
-	/**
-	 * Method to remove an event handler from the map
-	 *
-	 * @param   string  $type  The event name
-	 *
-	 * @example to delete an event call:
-	 *		$map->deleteEventHandler('click');
-	 *
-	 * @return  string  The event handler content
-	 *
-	 * @since   3.1.4
-	 */
-	public function deleteEventHandler($type = null)
-	{
-		$events = $this->listEventHandlers();
-
-		if ($type === null || !isset($events[$type]))
-		{
-			return;
-		}
-
-		$event = $events[$type];
-		unset($events[$type]);
-		$this->setOption('events', $events);
-
-		return $event;
-	}
-
-	/**
-	 * List the events added to the map
-	 *
-	 * @return  array  A list of events
-	 *
-	 * @since   3.1.4
-	 */
-	public function listEventHandlers()
-	{
-		return $this->getOption('events') ? $this->getOption('events') : array();
-	}
-
-	/**
 	 * Add a marker to the map
 	 *
 	 * @param   mixed  $location  A latitude/longitude array or an address string
@@ -402,17 +229,17 @@ class JGoogleEmbedMaps extends JGoogleEmbed
 	 * @param   array  $options   Options for marker
 	 * @param   array  $events    Events for marker
 	 *
-	 * @example with events call:
-	 *		$map->addMarker(
-	 *			array(0, 0),
-	 *			'My Marker',
-	 *			array(),
-	 *			array(
-	 *				'click' => 'function() { // code goes here }
-	 *			)
-	 *		)
-	 *
 	 * @return  mixed  The marker or false on failure
+	 *
+	 * @example with events call:
+	 *        $map->addMarker(
+	 *            array(0, 0),
+	 *            'My Marker',
+	 *            array(),
+	 *            array(
+	 *                'click' => 'function() { // code goes here }
+	 *            )
+	 *        )
 	 *
 	 * @since   3.1.4
 	 */
@@ -440,13 +267,72 @@ class JGoogleEmbedMaps extends JGoogleEmbed
 		}
 
 		$location = array_values($location);
-		$marker = array('loc' => $location, 'title' => $title, 'options' => $options, 'events' => $events);
+		$marker   = array('loc' => $location, 'title' => $title, 'options' => $options, 'events' => $events);
 
-		$markers = $this->listMarkers();
+		$markers   = $this->listMarkers();
 		$markers[] = $marker;
 		$this->setOption('markers', $markers);
 
 		return $marker;
+	}
+
+	/**
+	 * Method to get the location information back from an address
+	 *
+	 * @param   string  $address  The address to geocode
+	 *
+	 * @return  array  An array containing Google's geocode data
+	 *
+	 * @since   3.1.4
+	 */
+	public function geocodeAddress($address)
+	{
+		$uri = JUri::getInstance('https://maps.googleapis.com/maps/api/geocode/json');
+
+		$uri->setVar('address', urlencode($address));
+
+		if (($key = $this->getKey()))
+		{
+			$uri->setVar('key', $key);
+		}
+
+		$response = $this->http->get($uri->toString());
+
+		if ($response->code < 200 || $response->code >= 300)
+		{
+			throw new RuntimeException('Error code ' . $response->code . ' received geocoding address: ' . $response->body . '.');
+		}
+
+		$data = json_decode($response->body, true);
+
+		if (!$data)
+		{
+			throw new RuntimeException('Invalid json received geocoding address: ' . $response->body . '.');
+		}
+
+		if ($data['status'] != 'OK')
+		{
+			if (!empty($data['error_message']))
+			{
+				throw new RuntimeException($data['error_message']);
+			}
+
+			return;
+		}
+
+		return $data['results'][0];
+	}
+
+	/**
+	 * Method to get the API key
+	 *
+	 * @return  string  The Google Maps API key
+	 *
+	 * @since   3.1.4
+	 */
+	public function getKey()
+	{
+		return $this->getOption('key');
 	}
 
 	/**
@@ -459,6 +345,71 @@ class JGoogleEmbedMaps extends JGoogleEmbed
 	public function listMarkers()
 	{
 		return $this->getOption('markers') ? $this->getOption('markers') : array();
+	}
+
+	/**
+	 * Method to add an event handler to the map.
+	 * Event handlers must be passed in either as callback name or fully qualified function declaration
+	 *
+	 * @param   string  $type      The event name
+	 * @param   string  $function  The event handling function body
+	 *
+	 * @return  JGoogleEmbedMaps   The object for method chaining
+	 *
+	 * @example to add an event call:
+	 *        $map->addEventHandler('click', 'function(){ alert("map click event"); }');
+	 *
+	 * @since   3.1.4
+	 */
+	public function addEventHandler($type, $function)
+	{
+		$events = $this->listEventHandlers();
+
+		$events[$type] = $function;
+
+		$this->setOption('events', $events);
+
+		return $this;
+	}
+
+	/**
+	 * List the events added to the map
+	 *
+	 * @return  array  A list of events
+	 *
+	 * @since   3.1.4
+	 */
+	public function listEventHandlers()
+	{
+		return $this->getOption('events') ? $this->getOption('events') : array();
+	}
+
+	/**
+	 * Method to remove an event handler from the map
+	 *
+	 * @param   string  $type  The event name
+	 *
+	 * @return  string  The event handler content
+	 *
+	 * @example to delete an event call:
+	 *        $map->deleteEventHandler('click');
+	 *
+	 * @since   3.1.4
+	 */
+	public function deleteEventHandler($type = null)
+	{
+		$events = $this->listEventHandlers();
+
+		if ($type === null || !isset($events[$type]))
+		{
+			return;
+		}
+
+		$event = $events[$type];
+		unset($events[$type]);
+		$this->setOption('events', $events);
+
+		return $event;
 	}
 
 	/**
@@ -493,18 +444,6 @@ class JGoogleEmbedMaps extends JGoogleEmbed
 	}
 
 	/**
-	 * Checks if the javascript is set to be asynchronous
-	 *
-	 * @return  boolean  True if asynchronous
-	 *
-	 * @since   3.1.4
-	 */
-	public function isAsync()
-	{
-		return $this->getOption('async') === null ? true : $this->getOption('async');
-	}
-
-	/**
 	 * Load javascript asynchronously
 	 *
 	 * @return  JGoogleEmbedMaps  The object for method chaining
@@ -533,18 +472,6 @@ class JGoogleEmbedMaps extends JGoogleEmbed
 	}
 
 	/**
-	 * Method to get callback function for async javascript loading
-	 *
-	 * @return  string  The ID
-	 *
-	 * @since   3.1.4
-	 */
-	public function getAsyncCallback()
-	{
-		return $this->getOption('callback') ? $this->getOption('callback') : 'initialize';
-	}
-
-	/**
 	 * Method to set the callback function for async javascript loading
 	 *
 	 * @param   string  $callback  The callback function name
@@ -558,18 +485,6 @@ class JGoogleEmbedMaps extends JGoogleEmbed
 		$this->setOption('callback', $callback);
 
 		return $this;
-	}
-
-	/**
-	 * Checks if a sensor is set to be required
-	 *
-	 * @return  boolean  True if asynchronous
-	 *
-	 * @since   3.1.4
-	 */
-	public function hasSensor()
-	{
-		return $this->getOption('sensor') === null ? false : $this->getOption('sensor');
 	}
 
 	/**
@@ -601,18 +516,6 @@ class JGoogleEmbedMaps extends JGoogleEmbed
 	}
 
 	/**
-	 * Checks how the script should be loaded
-	 *
-	 * @return  string  Autoload type (onload, jquery, mootools, or false)
-	 *
-	 * @since   3.1.4
-	 */
-	public function getAutoload()
-	{
-		return $this->getOption('autoload') ? $this->getOption('autoload') : 'false';
-	}
-
-	/**
 	 * Automatically add the callback to the window
 	 *
 	 * @param   string  $type  The method to add the callback (options are onload, jquery, mootools, and false)
@@ -637,13 +540,13 @@ class JGoogleEmbedMaps extends JGoogleEmbed
 	 */
 	public function getHeader()
 	{
-		$zoom = $this->getZoom();
-		$center = $this->getCenter();
+		$zoom    = $this->getZoom();
+		$center  = $this->getCenter();
 		$maptype = $this->getMapType();
-		$id = $this->getMapId();
-		$scheme = $this->isSecure() ? 'https' : 'http';
-		$key = $this->getKey();
-		$sensor = $this->hasSensor() ? 'true' : 'false';
+		$id      = $this->getMapId();
+		$scheme  = $this->isSecure() ? 'https' : 'http';
+		$key     = $this->getKey();
+		$sensor  = $this->hasSensor() ? 'true' : 'false';
 
 		$setup = 'var mapOptions = {';
 		$setup .= "zoom: {$zoom},";
@@ -671,8 +574,8 @@ class JGoogleEmbedMaps extends JGoogleEmbed
 
 			foreach ($markers as $marker)
 			{
-				$loc = $marker['loc'];
-				$title = $marker['title'];
+				$loc     = $marker['loc'];
+				$title   = $marker['title'];
 				$options = $marker['options'];
 
 				$setup .= 'marker = new google.maps.Marker({';
@@ -726,20 +629,140 @@ class JGoogleEmbedMaps extends JGoogleEmbed
 		{
 			case 'onload':
 				$output .= "window.onload={$onload};";
-			break;
+				break;
 
 			case 'jquery':
 				$output .= "jQuery(document).ready({$onload});";
-			break;
+				break;
 
 			case 'mootools':
 				$output .= "window.addEvent('domready',{$onload});";
-			break;
+				break;
 		}
 
 		$output .= '</script>';
 
 		return $output;
+	}
+
+	/**
+	 * Method to get the zoom
+	 *
+	 * @return  integer  The zoom level
+	 *
+	 * @since   3.1.4
+	 */
+	public function getZoom()
+	{
+		return $this->getOption('zoom') ? $this->getOption('zoom') : 0;
+	}
+
+	/**
+	 * Method to set the center of the map
+	 *
+	 * @return  mixed  A latitude longitude array or an address string
+	 *
+	 * @since   3.1.4
+	 */
+	public function getCenter()
+	{
+		return $this->getOption('mapcenter') ? $this->getOption('mapcenter') : array(0, 0);
+	}
+
+	/**
+	 * Method to get the map type setting
+	 *
+	 * @return  string  The class
+	 *
+	 * @since   3.1.4
+	 */
+	public function getMapType()
+	{
+		return $this->getOption('maptype') ? $this->getOption('maptype') : 'ROADMAP';
+	}
+
+	/**
+	 * Method to get the id of the map div
+	 *
+	 * @return  string  The ID
+	 *
+	 * @since   3.1.4
+	 */
+	public function getMapId()
+	{
+		return $this->getOption('mapid') ? $this->getOption('mapid') : 'map_canvas';
+	}
+
+	/**
+	 * Checks if a sensor is set to be required
+	 *
+	 * @return  boolean  True if asynchronous
+	 *
+	 * @since   3.1.4
+	 */
+	public function hasSensor()
+	{
+		return $this->getOption('sensor') === null ? false : $this->getOption('sensor');
+	}
+
+	/**
+	 * Method to get additional map options
+	 *
+	 * @return  string  The options
+	 *
+	 * @since   3.1.4
+	 */
+	public function getAdditionalMapOptions()
+	{
+		return $this->getOption('mapoptions') ? $this->getOption('mapoptions') : array();
+	}
+
+	/**
+	 * Method to get additional map options
+	 *
+	 * @return  string  The options
+	 *
+	 * @since   3.1.4
+	 */
+	public function getAdditionalJavascript()
+	{
+		return $this->getOption('extrascript') ? $this->getOption('extrascript') : '';
+	}
+
+	/**
+	 * Checks if the javascript is set to be asynchronous
+	 *
+	 * @return  boolean  True if asynchronous
+	 *
+	 * @since   3.1.4
+	 */
+	public function isAsync()
+	{
+		return $this->getOption('async') === null ? true : $this->getOption('async');
+	}
+
+	/**
+	 * Method to get callback function for async javascript loading
+	 *
+	 * @return  string  The ID
+	 *
+	 * @since   3.1.4
+	 */
+	public function getAsyncCallback()
+	{
+		return $this->getOption('callback') ? $this->getOption('callback') : 'initialize';
+	}
+
+	/**
+	 * Checks how the script should be loaded
+	 *
+	 * @return  string  Autoload type (onload, jquery, mootools, or false)
+	 *
+	 * @since   3.1.4
+	 */
+	public function getAutoload()
+	{
+		return $this->getOption('autoload') ? $this->getOption('autoload') : 'false';
 	}
 
 	/**
@@ -751,7 +774,7 @@ class JGoogleEmbedMaps extends JGoogleEmbed
 	 */
 	public function getBody()
 	{
-		$id = $this->getMapId();
+		$id    = $this->getMapId();
 		$class = $this->getMapClass();
 		$style = $this->getMapStyle();
 
@@ -773,49 +796,26 @@ class JGoogleEmbedMaps extends JGoogleEmbed
 	}
 
 	/**
-	 * Method to get the location information back from an address
+	 * Method to get the class of the map div
 	 *
-	 * @param   string  $address  The address to geocode
-	 *
-	 * @return  array  An array containing Google's geocode data
+	 * @return  string  The class
 	 *
 	 * @since   3.1.4
 	 */
-	public function geocodeAddress($address)
+	public function getMapClass()
 	{
-		$uri = JUri::getInstance('https://maps.googleapis.com/maps/api/geocode/json');
+		return $this->getOption('mapclass') ? $this->getOption('mapclass') : '';
+	}
 
-		$uri->setVar('address', urlencode($address));
-
-		if (($key = $this->getKey()))
-		{
-			$uri->setVar('key', $key);
-		}
-
-		$response = $this->http->get($uri->toString());
-
-		if ($response->code < 200 || $response->code >= 300)
-		{
-			throw new RuntimeException('Error code ' . $response->code . ' received geocoding address: ' . $response->body . '.');
-		}
-
-		$data = json_decode($response->body, true);
-
-		if (!$data)
-		{
-			throw new RuntimeException('Invalid json received geocoding address: ' . $response->body . '.');
-		}
-
-		if ($data['status'] != 'OK')
-		{
-			if (!empty($data['error_message']))
-			{
-				throw new RuntimeException($data['error_message']);
-			}
-
-			return;
-		}
-
-		return $data['results'][0];
+	/**
+	 * Method to get the style of the map div
+	 *
+	 * @return  string  The style
+	 *
+	 * @since   3.1.4
+	 */
+	public function getMapStyle()
+	{
+		return $this->getOption('mapstyle') ? $this->getOption('mapstyle') : '';
 	}
 }

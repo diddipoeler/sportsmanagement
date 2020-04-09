@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
@@ -36,18 +37,19 @@ $document->addScript(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->mo
 
 $helper = new modsportsmanagementNavigationMenuHelper($params);
 
-$seasonselect = $helper->getSeasonSelect();
-$leagueselect = $helper->getLeagueSelect();
-$projectselect = $helper->getProjectSelect();
+$seasonselect   = $helper->getSeasonSelect();
+$leagueselect   = $helper->getLeagueSelect();
+$projectselect  = $helper->getProjectSelect();
 $divisionselect = $helper->getDivisionSelect();
-$teamselect = $helper->getTeamSelect();
+$teamselect     = $helper->getTeamSelect();
 
-$defaultview = $params->get('project_start');
+$defaultview   = $params->get('project_start');
 $defaultitemid = $params->get('custom_item_id');
 
 ?>
-<div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
-<?PHP
-require ModuleHelper::getLayoutPath($module->module);
-?>
+<div class="<?php echo $params->get('moduleclass_sfx'); ?>"
+     id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+	<?PHP
+	require ModuleHelper::getLayoutPath($module->module);
+	?>
 </div>
