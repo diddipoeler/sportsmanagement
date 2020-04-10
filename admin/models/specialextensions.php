@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Filesystem\Folder;
 
@@ -36,13 +37,13 @@ class sportsmanagementModelspecialextensions extends BaseDatabaseModel
 	 */
 	function getSpecialExtensions()
 	{
-			$option = 'com_sportsmanagement';
-		$arrExtensions = array();
+		$option           = 'com_sportsmanagement';
+		$arrExtensions    = array();
 		$excludeExtension = array();
 
 		if (Folder::exists(JPATH_SITE . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'com_sportsmanagement' . DIRECTORY_SEPARATOR . 'extensions'))
 		{
-			$folderExtensions  = Folder::folders(
+			$folderExtensions = Folder::folders(
 				JPATH_SITE . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'com_sportsmanagement' . DIRECTORY_SEPARATOR . 'extensions',
 				'.', false, false, $excludeExtension
 			);
@@ -56,7 +57,7 @@ class sportsmanagementModelspecialextensions extends BaseDatabaseModel
 			}
 		}
 
-			return $arrExtensions;
+		return $arrExtensions;
 	}
 
 }

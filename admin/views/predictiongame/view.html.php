@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
@@ -37,10 +38,10 @@ class sportsmanagementViewPredictionGame extends sportsmanagementView
 	public function init()
 	{
 
-			  $pred_admins = sportsmanagementModelPredictionGames::getAdmins($this->item->id);
+		$pred_admins   = sportsmanagementModelPredictionGames::getAdmins($this->item->id);
 		$pred_projects = $this->model->getPredictionProjectIDs($this->item->id);
 
-			 // Check for errors.
+		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
 			Log::add(implode('<br />', $errors));
@@ -64,11 +65,10 @@ class sportsmanagementViewPredictionGame extends sportsmanagementView
 		$jinput = Factory::getApplication()->input;
 		$jinput->set('hidemainmenu', true);
 
-			  $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAME_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAME_NEW');
+		$isNew      = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAME_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAME_NEW');
 		$this->icon = 'pgame';
 		parent::addToolbar();
 	}
-
 
 
 }

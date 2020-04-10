@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die;
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
@@ -49,7 +50,7 @@ abstract class ModSportsmanagementQuickIconHelper
 		$query->from('#__modules');
 		$query->where('module LIKE ' . Factory::getDbo()->Quote('' . 'mod_sportsmanagement_quickicon' . ''));
 
-			  Factory::getDBO()->setQuery($query);
+		Factory::getDBO()->setQuery($query);
 		$res = Factory::getDBO()->loadResult();
 
 		return $res;
@@ -61,7 +62,7 @@ abstract class ModSportsmanagementQuickIconHelper
 	 * This method returns the array by reference so it can be
 	 * used to add custom buttons or remove default ones.
 	 *
-	 * @param   JObject $params The module parameters.
+	 * @param   JObject  $params  The module parameters.
 	 *
 	 * @return array  An array of buttons
 	 *
@@ -81,50 +82,50 @@ abstract class ModSportsmanagementQuickIconHelper
 				Factory::getLanguage()->load('mod_sportsmanagement_quickicon');
 
 				self::$buttons[$key] = array(
-				 array(
-				  'link' => Route::_('index.php?option=com_sportsmanagement'),
-				  'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
-				  'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
-				  'text' => Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_PANEL_LINK'),
-				  'access' => array('core.manage', 'com_sportsmanagement'),
-				  'group' => 'MOD_SPORTSMANAGEMENT_QUICKICON_LABEL'
-				  ),
+					array(
+						'link'   => Route::_('index.php?option=com_sportsmanagement'),
+						'image'  => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+						'icon'   => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+						'text'   => Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_PANEL_LINK'),
+						'access' => array('core.manage', 'com_sportsmanagement'),
+						'group'  => 'MOD_SPORTSMANAGEMENT_QUICKICON_LABEL'
+					),
 
-											  array(
-				  'link' => Route::_('index.php?option=com_sportsmanagement&view=extensions'),
-				  'image' => 'pencil-2',
-				  'icon' => '/components/com_sportsmanagement/assets/icons/extensions.png',
-				  'text' => Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_EXTENSIONS_LINK'),
-				  'access' => array('core.manage', 'com_sportsmanagement'),
-				  'group' => 'MOD_SPORTSMANAGEMENT_QUICKICON_LABEL'
-				  ),
+					array(
+						'link'   => Route::_('index.php?option=com_sportsmanagement&view=extensions'),
+						'image'  => 'pencil-2',
+						'icon'   => '/components/com_sportsmanagement/assets/icons/extensions.png',
+						'text'   => Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_EXTENSIONS_LINK'),
+						'access' => array('core.manage', 'com_sportsmanagement'),
+						'group'  => 'MOD_SPORTSMANAGEMENT_QUICKICON_LABEL'
+					),
 
-											  array(
-				  'link' => Route::_('index.php?option=com_sportsmanagement&view=projects'),
-				  'image' => 'pencil-2',
-				  'icon' => '/components/com_sportsmanagement/assets/icons/projekte.png',
-				  'text' => Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_PROJECTS_LINK'),
-				  'access' => array('core.manage', 'com_sportsmanagement'),
-				  'group' => 'MOD_SPORTSMANAGEMENT_QUICKICON_LABEL'
-				  ),
+					array(
+						'link'   => Route::_('index.php?option=com_sportsmanagement&view=projects'),
+						'image'  => 'pencil-2',
+						'icon'   => '/components/com_sportsmanagement/assets/icons/projekte.png',
+						'text'   => Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_PROJECTS_LINK'),
+						'access' => array('core.manage', 'com_sportsmanagement'),
+						'group'  => 'MOD_SPORTSMANAGEMENT_QUICKICON_LABEL'
+					),
 
-											  array(
-				  'link' => Route::_('index.php?option=com_sportsmanagement&view=predictions'),
-				  'image' => 'pencil-2',
-				  'icon' => '/components/com_sportsmanagement/assets/icons/tippspiele.png',
-				  'text' => Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_PREDICTIONS_LINK'),
-				  'access' => array('core.manage', 'com_sportsmanagement'),
-				  'group' => 'MOD_SPORTSMANAGEMENT_QUICKICON_LABEL'
-				  ),
+					array(
+						'link'   => Route::_('index.php?option=com_sportsmanagement&view=predictions'),
+						'image'  => 'pencil-2',
+						'icon'   => '/components/com_sportsmanagement/assets/icons/tippspiele.png',
+						'text'   => Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_PREDICTIONS_LINK'),
+						'access' => array('core.manage', 'com_sportsmanagement'),
+						'group'  => 'MOD_SPORTSMANAGEMENT_QUICKICON_LABEL'
+					),
 
-											  array(
-				  'link' => Route::_('index.php?option=com_sportsmanagement&view=currentseasons'),
-				  'image' => 'pencil-2',
-				  'icon' => '/components/com_sportsmanagement/assets/icons/aktuellesaison.png',
-				  'text' => Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_CURRENT_SAISON_LINK'),
-				  'access' => array('core.manage', 'com_sportsmanagement'),
-				  'group' => 'MOD_SPORTSMANAGEMENT_QUICKICON_LABEL'
-				  )
+					array(
+						'link'   => Route::_('index.php?option=com_sportsmanagement&view=currentseasons'),
+						'image'  => 'pencil-2',
+						'icon'   => '/components/com_sportsmanagement/assets/icons/aktuellesaison.png',
+						'text'   => Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_CURRENT_SAISON_LINK'),
+						'access' => array('core.manage', 'com_sportsmanagement'),
+						'group'  => 'MOD_SPORTSMANAGEMENT_QUICKICON_LABEL'
+					)
 				);
 			}
 			else
@@ -134,7 +135,7 @@ abstract class ModSportsmanagementQuickIconHelper
 
 			// Include buttons defined by published quickicon plugins
 			PluginHelper::importPlugin('quickicon');
-			$app = Factory::getApplication();
+			$app    = Factory::getApplication();
 			$arrays = (array) $app->triggerEvent('onGetIcons', array($context));
 
 			foreach ($arrays as $response)
@@ -142,17 +143,17 @@ abstract class ModSportsmanagementQuickIconHelper
 				foreach ($response as $icon)
 				{
 					$default = array(
-					 'link' => null,
-					 'image' => 'cog',
-					 'text' => null,
-					 'access' => true,
-					 'group' => 'MOD_SPORTSMANAGEMENT_QUICKICON_LABEL'
+						'link'   => null,
+						'image'  => 'cog',
+						'text'   => null,
+						'access' => true,
+						'group'  => 'MOD_SPORTSMANAGEMENT_QUICKICON_LABEL'
 					);
-					$icon = array_merge($default, $icon);
+					$icon    = array_merge($default, $icon);
 
 					if (!is_null($icon['link']) && !is_null($icon['text']))
 					{
-								 self::$buttons[$key][] = $icon;
+						self::$buttons[$key][] = $icon;
 					}
 				}
 			}
@@ -164,7 +165,7 @@ abstract class ModSportsmanagementQuickIconHelper
 	/**
 	 * Classifies the $buttons by group
 	 *
-	 * @param   array $buttons The buttons
+	 * @param   array  $buttons  The buttons
 	 *
 	 * @return array  The buttons sorted by groups
 	 *
@@ -185,8 +186,8 @@ abstract class ModSportsmanagementQuickIconHelper
 	/**
 	 * Get the alternate title for the module
 	 *
-	 * @param   JObject $params The module parameters.
-	 * @param   JObject $module The module.
+	 * @param   JObject  $params  The module parameters.
+	 * @param   JObject  $module  The module.
 	 *
 	 * @return string    The alternate title for the module.
 	 */

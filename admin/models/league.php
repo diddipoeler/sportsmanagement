@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
@@ -31,7 +32,7 @@ class sportsmanagementModelleague extends JSMModelAdmin
 	/**
 	 * Override parent constructor.
 	 *
-	 * @param   array $config An optional associative array of configuration settings.
+	 * @param   array  $config  An optional associative array of configuration settings.
 	 *
 	 * @see   BaseDatabaseModel
 	 * @since 3.2
@@ -57,17 +58,17 @@ class sportsmanagementModelleague extends JSMModelAdmin
 		$option = $jinput->getCmd('option');
 
 		// Get the input
-		$pks = $jinput->getVar('cid', null, 'post', 'array');
-		$post = Factory::getApplication()->input->post->getArray(array());
+		$pks    = $jinput->getVar('cid', null, 'post', 'array');
+		$post   = Factory::getApplication()->input->post->getArray(array());
 		$result = true;
 
 		for ($x = 0; $x < count($pks); $x++)
 		{
-			$tblLeague = & $this->getTable();
-			$tblLeague->id    = $pks[$x];
-			$tblLeague->associations = $post['association' . $pks[$x]];
-			$tblLeague->country = $post['country' . $pks[$x]];
-			$tblLeague->agegroup_id = $post['agegroup' . $pks[$x]];
+			$tblLeague                       = &$this->getTable();
+			$tblLeague->id                   = $pks[$x];
+			$tblLeague->associations         = $post['association' . $pks[$x]];
+			$tblLeague->country              = $post['country' . $pks[$x]];
+			$tblLeague->agegroup_id          = $post['agegroup' . $pks[$x]];
 			$tblLeague->published_act_season = $post['published_act_season' . $pks[$x]];
 
 			if (!$tblLeague->store())
@@ -78,11 +79,6 @@ class sportsmanagementModelleague extends JSMModelAdmin
 
 		return $result;
 	}
-
-
-
-
-
 
 
 }

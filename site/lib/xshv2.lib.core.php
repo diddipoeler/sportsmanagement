@@ -3,11 +3,11 @@
 /**
  * XML SIS Handball v2
  *
- * @package xmlsishandballv2 for Joomla 2.5
- * @version 2.5.0: xshv2.lib.core.php 2012-06-12
- * @author Martin Maetz (webmaster@maetzokopter.at)
+ * @package       xmlsishandballv2 for Joomla 2.5
+ * @version       2.5.0: xshv2.lib.core.php 2012-06-12
+ * @author        Martin Maetz (webmaster@maetzokopter.at)
  * @copyright (C) 2012 Martin Maetz (http://www.maetzokopter.at)
- * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
+ * @license       GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  **/
 
 defined('_JEXEC') or die('Restricted access');

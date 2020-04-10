@@ -25,11 +25,11 @@ class JGithubRefs extends JGithubObject
 	 * @param   string  $ref   The name of the fully qualified reference.
 	 * @param   string  $sha   The SHA1 value to set this reference to.
 	 *
-	 * @deprecated  use data->refs->create()
-	 *
 	 * @return  object
 	 *
-	 * @since   11.3
+	 * @deprecated  use data->refs->create()
+	 *
+	 * @since       11.3
 	 */
 	public function create($user, $repo, $ref, $sha)
 	{
@@ -67,11 +67,11 @@ class JGithubRefs extends JGithubObject
 	 * @param   string  $sha    The SHA1 value to set the reference to.
 	 * @param   string  $force  Whether the update should be forced. Default to false.
 	 *
-	 * @deprecated  use data->refs->edit()
-	 *
 	 * @return  object
 	 *
-	 * @since   11.3
+	 * @deprecated  use data->refs->edit()
+	 *
+	 * @since       11.3
 	 */
 	public function edit($user, $repo, $ref, $sha, $force = false)
 	{
@@ -113,11 +113,11 @@ class JGithubRefs extends JGithubObject
 	 * @param   string  $repo  The name of the GitHub repository.
 	 * @param   string  $ref   The reference to get.
 	 *
-	 * @deprecated  use data->refs->get()
-	 *
 	 * @return  object
 	 *
-	 * @since   11.3
+	 * @deprecated  use data->refs->get()
+	 *
+	 * @since       11.3
 	 */
 	public function get($user, $repo, $ref)
 	{
@@ -147,11 +147,11 @@ class JGithubRefs extends JGithubObject
 	 * @param   integer  $page       Page to request
 	 * @param   integer  $limit      Number of results to return per page
 	 *
-	 * @deprecated  use data->refs->getList()
-	 *
 	 * @return  array
 	 *
-	 * @since   11.3
+	 * @deprecated  use data->refs->getList()
+	 *
+	 * @since       11.3
 	 */
 	public function getList($user, $repo, $namespace = '', $page = 0, $limit = 0)
 	{

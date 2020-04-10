@@ -42,6 +42,7 @@
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 
 $quotemarks = $params->get('quotemarks');
@@ -50,9 +51,9 @@ if ($list)
 {
 	foreach ($list as $rquote)
 	{
-		 echo '<i>';
-		 modRquotesHelper::renderRquote($rquote, $params);
-		 echo '</i>';
+		echo '<i>';
+		modRquotesHelper::renderRquote($rquote, $params);
+		echo '</i>';
 	}
 }
 else

@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Component\ComponentHelper;
@@ -33,31 +34,31 @@ class sportsmanagementControllerResults extends BaseController
 	/**
 	 * sportsmanagementControllerEditMatch::__construct()
 	 *
-	 * @param   mixed $config
+	 * @param   mixed  $config
+	 *
 	 * @return void
 	 */
 	function __construct($config = array())
 	{
 		parent::__construct($config);
 
-		  // Initialise variables.
-		  $this->app = Factory::getApplication();
+		// Initialise variables.
+		$this->app = Factory::getApplication();
 
-		  // JInput object
-		  $this->jinput = $this->app->input;
-		  $this->jsmoption = $this->jinput->getCmd('option');
-		  $this->model = $this->getModel('results');
+		// JInput object
+		$this->jinput    = $this->app->input;
+		$this->jsmoption = $this->jinput->getCmd('option');
+		$this->model     = $this->getModel('results');
 
-		  // Get the input
-		  $this->pks = $this->jinput->getVar('cid', null, 'post', 'array');
-		  $this->post = $this->jinput->post->getArray();
+		// Get the input
+		$this->pks  = $this->jinput->getVar('cid', null, 'post', 'array');
+		$this->post = $this->jinput->post->getArray();
 
 		if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend'))
 		{
 		}
 
 	}
-
 
 
 	/**
@@ -72,13 +73,14 @@ class sportsmanagementControllerResults extends BaseController
 	}
 
 
-		 /**
-		  * sportsmanagementControllerResults::display()
-		  *
-		  * @param   bool $cachable
-		  * @param   bool $urlparams
-		  * @return void
-		  */
+	/**
+	 * sportsmanagementControllerResults::display()
+	 *
+	 * @param   bool  $cachable
+	 * @param   bool  $urlparams
+	 *
+	 * @return void
+	 */
 	public function display($cachable = false, $urlparams = false)
 	{
 
@@ -96,11 +98,11 @@ class sportsmanagementControllerResults extends BaseController
 
 		// JInput object
 		$jinput = $app->input;
-		$model = $this->getModel('results');
+		$model  = $this->getModel('results');
 
 		// Get the input
-		$pks = $jinput->getVar('cid', null, 'post', 'array');
-		$post = $jinput->post->getArray();
+		$pks    = $jinput->getVar('cid', null, 'post', 'array');
+		$post   = $jinput->post->getArray();
 		$layout = $jinput->getCmd('layout', 'form');
 
 		if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend'))

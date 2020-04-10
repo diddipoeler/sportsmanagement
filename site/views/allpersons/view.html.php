@@ -13,10 +13,11 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
-if (! defined('JSM_PATH'))
+if (!defined('JSM_PATH'))
 {
 	DEFINE('JSM_PATH', 'components/com_sportsmanagement');
 }
@@ -57,16 +58,16 @@ class sportsmanagementViewallpersons extends sportsmanagementView
 	function init()
 	{
 
-		$inputappend = '';
-		$this->tableclass = $this->jinput->getVar('table_class', 'table', 'request', 'string');
+		$inputappend            = '';
+		$this->tableclass       = $this->jinput->getVar('table_class', 'table', 'request', 'string');
 		$this->use_jquery_modal = $this->jinput->getVar('use_jquery_modal', '2', 'request', 'string');
 
-		$starttime = microtime();
+		$starttime   = microtime();
 		$this->state = $this->get('State');
 		$this->items = $this->get('Items');
 
-			 $this->pagination = $this->get('Pagination');
-		$this->columns = $this->model->columns;
+		$this->pagination = $this->get('Pagination');
+		$this->columns    = $this->model->columns;
 
 		// Build the html options for nation
 		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
@@ -76,7 +77,7 @@ class sportsmanagementViewallpersons extends sportsmanagementView
 			$nation = array_merge($nation, $res);
 		}
 
-			  $lists['nation'] = $nation;
+		$lists['nation']  = $nation;
 		$lists['nation2'] = JHtmlSelect::genericlist(
 			$nation,
 			'filter_search_nation',
@@ -86,17 +87,17 @@ class sportsmanagementViewallpersons extends sportsmanagementView
 			$this->state->get('filter.search_nation')
 		);
 
-																		 // Set page title
+		// Set page title
 		$this->document->setTitle(Text::_('COM_SPORTSMANAGEMENT_ALLPERSONS_PAGE_TITLE'));
 
-				 $form = new stdClass;
-		   $form->limitField = $this->pagination->getLimitBox();
-		   $this->filter = $this->state->get('filter.search');
-		$this->form = $form;
+		$form             = new stdClass;
+		$form->limitField = $this->pagination->getLimitBox();
+		$this->filter     = $this->state->get('filter.search');
+		$this->form       = $form;
 
-		   $this->sortDirection = $this->state->get('filter_order_Dir');
-		   $this->sortColumn = $this->state->get('filter_order');
-		   $this->lists = $lists;
+		$this->sortDirection = $this->state->get('filter_order_Dir');
+		$this->sortColumn    = $this->state->get('filter_order');
+		$this->lists         = $lists;
 
 	}
 

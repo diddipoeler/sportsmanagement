@@ -17,26 +17,28 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 
 <div id="wowslider-container1">
-<div class="ws_images"><ul>
-<!--
-<li><img src="images/com_sportsmanagement/database/placeholders/placeholder_150.png" alt="placeholder_150" title="placeholder_150" id="wows1_1"/></li>
--->
-<?php echo $html_li; ?>
+    <div class="ws_images">
+        <ul>
+            <!--
+			<li><img src="images/com_sportsmanagement/database/placeholders/placeholder_150.png" alt="placeholder_150" title="placeholder_150" id="wows1_1"/></li>
+			-->
+			<?php echo $html_li; ?>
 
-</ul>
-</div>
+        </ul>
+    </div>
 
-<div class="ws_bullets">
-  
-<div>
+    <div class="ws_bullets">
 
-</div>
-</div>
-<a href="#" class="ws_frame"></a>
-<div class="ws_shadow">
-</div>
+        <div>
+
+        </div>
+    </div>
+    <a href="#" class="ws_frame"></a>
+    <div class="ws_shadow">
+    </div>
 
 </div>
 
 <script type="text/javascript" src="modules/mod_sportsmanagement_club_birthday/js/wowslider.js"></script>
-<script type="text/javascript" src="modules/mod_sportsmanagement_club_birthday/wowslider/<?php echo $wowslider_style; ?>/script.js"></script>
+<script type="text/javascript"
+        src="modules/mod_sportsmanagement_club_birthday/wowslider/<?php echo $wowslider_style; ?>/script.js"></script>

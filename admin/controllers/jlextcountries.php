@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Router\Route;
 
 /**
@@ -36,8 +37,8 @@ class sportsmanagementControllerjlextcountries extends JSMControllerAdmin
 	function importplz()
 	{
 		$model = $this->getModel();
-		 $model->importplz();
-		 $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false));
+		$model->importplz();
+		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false));
 	}
 
 	/**
@@ -45,7 +46,7 @@ class sportsmanagementControllerjlextcountries extends JSMControllerAdmin
 	 *
 	 * @since 1.6
 	 */
-	public function getModel($name = 'Jlextcountry', $prefix = 'sportsmanagementModel',$config = array() )
+	public function getModel($name = 'Jlextcountry', $prefix = 'sportsmanagementModel', $config = array())
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 

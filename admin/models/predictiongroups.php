@@ -31,29 +31,57 @@ class sportsmanagementModelpredictiongroups extends JSMModelList
 	/**
 	 * sportsmanagementModelpredictiongroups::__construct()
 	 *
-	 * @param   mixed $config
+	 * @param   mixed  $config
+	 *
 	 * @return void
 	 */
 	public function __construct($config = array())
 	{
-				$config['filter_fields'] = array(
-						's.name',
-						's.ordering',
-						's.id',
-						's.modified',
-						's.modified_by'
-						);
-				parent::__construct($config);
-				parent::setDbo($this->jsmdb);
+		$config['filter_fields'] = array(
+			's.name',
+			's.ordering',
+			's.id',
+			's.modified',
+			's.modified_by'
+		);
+		parent::__construct($config);
+		parent::setDbo($this->jsmdb);
 	}
 
-		  /**
-		   * Method to auto-populate the model state.
-		   *
-		   * Note. Calling getState in this method will result in recursion.
-		   *
-		   * @since 1.6
-		   */
+	/**
+	 * sportsmanagementModelpredictiongroups::getListQuery()
+	 *
+	 * @return
+	 */
+	function getListQuery()
+	{
+		// Create a new query object.
+		$this->jsmquery->clear();
+		$this->jsmquery->select(array('s.*', 'u.name AS editor', 'u1.username'))
+			->from('#__sportsmanagement_prediction_groups AS s')
+			->join('LEFT', '#__users AS u ON u.id = s.checked_out')
+			->join('LEFT', '#__users AS u1 ON u1.id = s.modified_by');
+
+		if ($this->getState('filter.search'))
+		{
+			$this->jsmquery->where('(LOWER(s.name) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%'));
+		}
+
+		$this->jsmquery->order(
+			$this->jsmdb->escape($this->getState('list.ordering', 's.name')) . ' ' .
+			$this->jsmdb->escape($this->getState('list.direction', 'ASC'))
+		);
+
+		return $this->jsmquery;
+	}
+
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since 1.6
+	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
 		// Load the filter state.
@@ -65,12 +93,12 @@ class sportsmanagementModelpredictiongroups extends JSMModelList
 		if ($this->jsmjinput->getInt('prediction_id'))
 		{
 			$this->setState('filter.prediction_id', $this->jsmjinput->getInt('prediction_id'));
-			  $this->jsmapp->setUserState("com_sportsmanagement.prediction_id", $temp_user_request);
+			$this->jsmapp->setUserState("com_sportsmanagement.prediction_id", $temp_user_request);
 		}
 		else
 		{
-			  $temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.prediction_id', 'filter_prediction_id', '');
-			  $this->setState('filter.prediction_id', $temp_user_request);
+			$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.prediction_id', 'filter_prediction_id', '');
+			$this->setState('filter.prediction_id', $temp_user_request);
 		}
 
 		// List state information.
@@ -95,33 +123,6 @@ class sportsmanagementModelpredictiongroups extends JSMModelList
 
 		$this->setState('list.direction', $listOrder);
 
-	}
-
-	/**
-	 * sportsmanagementModelpredictiongroups::getListQuery()
-	 *
-	 * @return
-	 */
-	function getListQuery()
-	{
-		  // Create a new query object.
-		$this->jsmquery->clear();
-		$this->jsmquery->select(array('s.*', 'u.name AS editor','u1.username'))
-			->from('#__sportsmanagement_prediction_groups AS s')
-			->join('LEFT', '#__users AS u ON u.id = s.checked_out')
-			->join('LEFT', '#__users AS u1 ON u1.id = s.modified_by');
-
-		if ($this->getState('filter.search'))
-		{
-			$this->jsmquery->where('(LOWER(s.name) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%'));
-		}
-
-			   $this->jsmquery->order(
-				   $this->jsmdb->escape($this->getState('list.ordering', 's.name')) . ' ' .
-				   $this->jsmdb->escape($this->getState('list.direction', 'ASC'))
-			   );
-
-		return $this->jsmquery;
 	}
 
 }

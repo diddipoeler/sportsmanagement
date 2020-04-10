@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die;
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormField;
 
@@ -59,7 +60,7 @@ class JFormFieldextensionsubtitle extends FormField
 
 		if ($value)
 		{
-						  $style = array();
+			$style = array();
 
 			$style[] = 'font-family: "Courier New", Courier, monospace; ';
 			$style[] = 'letter-spacing: 2px; ';
@@ -72,7 +73,7 @@ class JFormFieldextensionsubtitle extends FormField
 			$style[] = 'left: 20px; ';
 			$style[] = 'top: -6px; ';
 
-						  $html .= '<div style=\'' . implode($style) . '\'>' . Text::_($value) . '</div>';
+			$html .= '<div style=\'' . implode($style) . '\'>' . Text::_($value) . '</div>';
 		}
 
 		return $html;

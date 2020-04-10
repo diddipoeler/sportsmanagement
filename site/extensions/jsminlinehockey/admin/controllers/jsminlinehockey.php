@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\AdminController;
@@ -50,9 +51,9 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
 	function getmatches()
 	{
 		$model = $this->getModel('jsminlinehockey');
-		$clubs  = $model->getmatches();
-		$msg = 'Spiele importiert';
-		$link = 'index.php?option=com_sportsmanagement&view=projects';
+		$clubs = $model->getmatches();
+		$msg   = 'Spiele importiert';
+		$link  = 'index.php?option=com_sportsmanagement&view=projects';
 		$this->setRedirect($link, $msg);
 	}
 
@@ -64,9 +65,9 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
 	function getclubs()
 	{
 		$model = $this->getModel('jsminlinehockey');
-		$clubs  = $model->getClubs();
-		$msg = 'Vereine importiert';
-		$link = 'index.php?option=com_sportsmanagement&view=clubs';
+		$clubs = $model->getClubs();
+		$msg   = 'Vereine importiert';
+		$link  = 'index.php?option=com_sportsmanagement&view=clubs';
 		$this->setRedirect($link, $msg);
 
 	}
@@ -78,23 +79,23 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
 	 */
 	function save()
 	{
-		$app = Factory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
+		$app      = Factory::getApplication();
+		$jinput   = $app->input;
+		$option   = $jinput->getCmd('option');
 		$document = Factory::getDocument();
-		$msg = '';
+		$msg      = '';
 
 		$model = $this->getModel('jsminlinehockey');
-		$post = $jinput->post->getArray(array());
+		$post  = $jinput->post->getArray(array());
 
-			  // First step - upload
+		// First step - upload
 		if (isset($post ['sent']) && $post ['sent'] == 1)
 		{
-			   $upload = Factory::getApplication()->input->getVar('import_package', null, 'files', 'array');
+			$upload       = Factory::getApplication()->input->getVar('import_package', null, 'files', 'array');
 			$tempFilePath = $upload ['tmp_name'];
-			$dest = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . $upload ['name'];
-			   $extractdir = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp';
-			   $importFile = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'ish_bw_import.xls';
+			$dest         = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . $upload ['name'];
+			$extractdir   = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp';
+			$importFile   = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'ish_bw_import.xls';
 
 			if (File::exists($importFile))
 			{
@@ -108,9 +109,9 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
 					File::delete($dest);
 				}
 
-				if (! File::upload($tempFilePath, $dest))
+				if (!File::upload($tempFilePath, $dest))
 				{
-									 Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_CANT_UPLOAD'), Log::WARNING, 'jsmerror');
+					Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_CANT_UPLOAD'), Log::WARNING, 'jsmerror');
 
 					return;
 				}
@@ -118,11 +119,11 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
 				{
 					if (strtolower(File::getExt($dest)) == 'zip')
 					{
-								$result = JArchive::extract($dest, $extractdir);
+						$result = JArchive::extract($dest, $extractdir);
 
 						if ($result === false)
 						{
-												Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_EXTRACT_ERROR'), Log::WARNING, 'jsmerror');
+							Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_EXTRACT_ERROR'), Log::WARNING, 'jsmerror');
 
 							return false;
 						}
@@ -130,7 +131,7 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
 						File::delete($dest);
 						$src = Folder::files($extractdir, 'l98', false, true);
 
-						if (! count($src))
+						if (!count($src))
 						{
 							Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_EXTRACT_NOJLG'), Log::WARNING, 'jsmerror');
 
@@ -140,7 +141,7 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
 
 						if (strtolower(File::getExt($src [0])) == 'xls')
 						{
-							if (! @ rename($src [0], $importFile))
+							if (!@ rename($src [0], $importFile))
 							{
 								Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_ERROR_RENAME'), Log::WARNING, 'jsmerror');
 
@@ -158,7 +159,7 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
 					{
 						if (strtolower(File::getExt($dest)) == 'xls' || strtolower(File::getExt($dest)) == 'ics')
 						{
-							if (! @ rename($dest, $importFile))
+							if (!@ rename($dest, $importFile))
 							{
 								Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_RENAME_FAILED'), Log::WARNING, 'jsmerror');
 
@@ -167,7 +168,7 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
 						}
 						else
 						{
-								Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_WRONG_EXTENSION'), Log::WARNING, 'jsmerror');
+							Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_WRONG_EXTENSION'), Log::WARNING, 'jsmerror');
 
 							return false;
 						}
@@ -177,9 +178,9 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
 		}
 
 		/**
-*
- * es wird keine excel verarbeitung mehr angeboten
-*/
+		 *
+		 * es wird keine excel verarbeitung mehr angeboten
+		 */
 		// $xml_file = $model->getData ();
 
 	}

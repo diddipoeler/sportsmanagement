@@ -28,9 +28,9 @@ class JGithubPackageDataTags extends JGithubPackage
 	 * @param   string  $repo   The name of the GitHub repository.
 	 * @param   string  $sha    The SHA1 value to set the reference to.
 	 *
+	 * @return object
 	 * @since   3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function get($owner, $repo, $sha)
 	{
@@ -61,9 +61,9 @@ class JGithubPackageDataTags extends JGithubPackage
 	 * @param   string  $tagger_email  The email of the author of the tag.
 	 * @param   string  $tagger_date   Timestamp of when this object was tagged.
 	 *
+	 * @return object
 	 * @since   3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function create($owner, $repo, $tag, $message, $object, $type, $tagger_name, $tagger_email, $tagger_date)
 	{

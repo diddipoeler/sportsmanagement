@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 
 /**
@@ -30,22 +31,22 @@ class modJSMTeamStatisticsCounter
 	/**
 	 * modJSMTeamStatisticsCounter::getData()
 	 *
-	 * @param   mixed $params
+	 * @param   mixed  $params
 	 *
 	 * @return
 	 */
 	public static function getData($params)
 	{
 		/**
- *         Get params from module
- */
+		 *         Get params from module
+		 */
 		$seasonId  = (int) $params->get('s', '0');
 		$projectId = (int) $params->get('p', '0');
 		$teamId    = (int) $params->get('teams', '0');
 
 		/**
- *         Load project team id
- */
+		 *         Load project team id
+		 */
 		$db    = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 
@@ -61,43 +62,43 @@ class modJSMTeamStatisticsCounter
 		$db->disconnect();
 
 		/**
- *         Set data in model
- */
+		 *         Set data in model
+		 */
 		sportsmanagementModelTeamStats::$projectid     = $projectId;
 		sportsmanagementModelTeamStats::$teamid        = $teamId;
 		sportsmanagementModelTeamStats::$projectteamid = $projectTeamId;
 		Factory::getApplication()->input->setVar('p', $projectId);
 
 		/**
- *         Get data
- */
+		 *         Get data
+		 */
 		$team    = sportsmanagementModelTeamStats::getTeam();
 		$project = sportsmanagementModelProject::getProject();
 		$stats   = array(
-		 'highest_home'      => sportsmanagementModelTeamStats::getHighest('HOME', 'WIN'),
-		 'highest_away'      => sportsmanagementModelTeamStats::getHighest('AWAY', 'WIN'),
-		 'highestdef_home'   => sportsmanagementModelTeamStats::getHighest('HOME', 'DEF'),
-		 'highestdef_away'   => sportsmanagementModelTeamStats::getHighest('AWAY', 'DEF'),
-		 'highestdraw_home'  => sportsmanagementModelTeamStats::getHighest('HOME', 'DRAW'),
-		 'highestdraw_away'  => sportsmanagementModelTeamStats::getHighest('AWAY', 'DRAW'),
-		 'totalshome'        => sportsmanagementModelTeamStats::getSeasonTotals('HOME'),
-		 'totalsaway'        => sportsmanagementModelTeamStats::getSeasonTotals('AWAY'),
-		 'matchdaytotals'    => sportsmanagementModelTeamStats::getMatchDayTotals(),
-		 'totalrounds'       => sportsmanagementModelTeamStats::getTotalRounds(),
-		 'totalattendance'   => sportsmanagementModelTeamStats::getTotalAttendance(),
-		 'bestattendance'    => sportsmanagementModelTeamStats::getBestAttendance(),
-		 'worstattendance'   => sportsmanagementModelTeamStats::getWorstAttendance(),
-		 'averageattendance' => sportsmanagementModelTeamStats::getAverageAttendance(),
-		 'chart_url'         => sportsmanagementModelTeamStats::getChartURL(),
-		 'nogoals_against'   => sportsmanagementModelTeamStats::getNoGoalsAgainst(),
-		 'logo'              => sportsmanagementModelTeamStats::getLogo(),
-		 'results'           => sportsmanagementModelTeamStats::getResults(),
+			'highest_home'      => sportsmanagementModelTeamStats::getHighest('HOME', 'WIN'),
+			'highest_away'      => sportsmanagementModelTeamStats::getHighest('AWAY', 'WIN'),
+			'highestdef_home'   => sportsmanagementModelTeamStats::getHighest('HOME', 'DEF'),
+			'highestdef_away'   => sportsmanagementModelTeamStats::getHighest('AWAY', 'DEF'),
+			'highestdraw_home'  => sportsmanagementModelTeamStats::getHighest('HOME', 'DRAW'),
+			'highestdraw_away'  => sportsmanagementModelTeamStats::getHighest('AWAY', 'DRAW'),
+			'totalshome'        => sportsmanagementModelTeamStats::getSeasonTotals('HOME'),
+			'totalsaway'        => sportsmanagementModelTeamStats::getSeasonTotals('AWAY'),
+			'matchdaytotals'    => sportsmanagementModelTeamStats::getMatchDayTotals(),
+			'totalrounds'       => sportsmanagementModelTeamStats::getTotalRounds(),
+			'totalattendance'   => sportsmanagementModelTeamStats::getTotalAttendance(),
+			'bestattendance'    => sportsmanagementModelTeamStats::getBestAttendance(),
+			'worstattendance'   => sportsmanagementModelTeamStats::getWorstAttendance(),
+			'averageattendance' => sportsmanagementModelTeamStats::getAverageAttendance(),
+			'chart_url'         => sportsmanagementModelTeamStats::getChartURL(),
+			'nogoals_against'   => sportsmanagementModelTeamStats::getNoGoalsAgainst(),
+			'logo'              => sportsmanagementModelTeamStats::getLogo(),
+			'results'           => sportsmanagementModelTeamStats::getResults(),
 		);
 
 		return array(
-		 'project' => $project,
-		 'team'    => $team,
-		 'stats'   => $stats
+			'project' => $project,
+			'team'    => $team,
+			'stats'   => $stats
 		);
 
 	}

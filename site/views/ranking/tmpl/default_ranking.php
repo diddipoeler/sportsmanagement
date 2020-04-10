@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\Registry\Registry;
 
 /**
@@ -34,7 +35,7 @@ foreach ($this->currentRanking as $division => $cu_rk)
 		}
 
 		$configvalues = $jRegistry->toArray();
-		$colors = array();
+		$colors       = array();
 
 		if (isset($configvalues['rankingparams']))
 		{
@@ -48,55 +49,55 @@ foreach ($this->currentRanking as $division => $cu_rk)
 
 		$this->colors = sportsmanagementModelProject::getColors($configvalues, sportsmanagementModelProject::$cfg_which_database);
 		?>
-<div class="<?php echo $this->divclassrow;?> table-responsive">
-		<table class="<?PHP echo $this->config['table_class']; ?>">
-			<tr>
-				<td class="contentheading">
-		<?php
-		// Get the division name from the first team of the division
-		foreach ($cu_rk as $ptid => $team)
-		{
-			echo $this->divisions[$division]->name;
-			break;
-		}
-		?>
-				</td>
-			</tr>
-		</table>
-</div>  
-		<div class="<?php echo $this->divclassrow;?> table-responsive">
-			<table class="<?PHP echo $this->config['table_class']; ?>">
-					<?php
-					foreach ($cu_rk as $ptid => $team)
-		{
-						echo $this->loadTemplate('rankingheading');
-						break;
-					}
-
-					$this->division = $division;
-					$this->current = &$cu_rk;
-					$this->teamrow = 'tr';
-					echo $this->loadTemplate('rankingrows');
-					?>
-			</table>
-		</div>
+        <div class="<?php echo $this->divclassrow; ?> table-responsive">
+            <table class="<?PHP echo $this->config['table_class']; ?>">
+                <tr>
+                    <td class="contentheading">
+						<?php
+						// Get the division name from the first team of the division
+						foreach ($cu_rk as $ptid => $team)
+						{
+							echo $this->divisions[$division]->name;
+							break;
+						}
+						?>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="<?php echo $this->divclassrow; ?> table-responsive">
+            <table class="<?PHP echo $this->config['table_class']; ?>">
 				<?php
+				foreach ($cu_rk as $ptid => $team)
+				{
+					echo $this->loadTemplate('rankingheading');
+					break;
+				}
+
+				$this->division = $division;
+				$this->current  = &$cu_rk;
+				$this->teamrow  = 'tr';
+				echo $this->loadTemplate('rankingrows');
+				?>
+            </table>
+        </div>
+		<?php
 	}
 	else
 	{
 		?>
-		<div class="<?php echo $this->divclassrow;?> table-responsive">
-		<table class="<?PHP echo $this->config['table_class']; ?>">
-		<?php
-		echo $this->loadTemplate('rankingheading');
-		$this->division = $division;
-		$this->current = &$cu_rk;
-		$this->teamrow = 'tr';
-		echo $this->loadTemplate('rankingrows');
-		?>
-		</table>
-		</div>
-		<br />
+        <div class="<?php echo $this->divclassrow; ?> table-responsive">
+            <table class="<?PHP echo $this->config['table_class']; ?>">
+				<?php
+				echo $this->loadTemplate('rankingheading');
+				$this->division = $division;
+				$this->current  = &$cu_rk;
+				$this->teamrow  = 'tr';
+				echo $this->loadTemplate('rankingrows');
+				?>
+            </table>
+        </div>
+        <br/>
 		<?php
 	}
 }

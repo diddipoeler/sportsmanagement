@@ -2,29 +2,6 @@
 // --------------------------------------------------------------------------------------------------
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Utilities for our event-fetching scripts.
 // 
 // Requires PHP 5.2.0 or higher.
@@ -57,7 +34,7 @@ class Event
 
 	// Constructs an Event object from the given array of key=>values.
 	// You can optionally force the timezone of the parsed dates.
-	public function __construct($array, $timezone=null)
+	public function __construct($array, $timezone = null)
 	{
 
 		$this->title = $array['title'];
@@ -71,7 +48,7 @@ class Event
 		{
 			// Guess allDay based off of ISO8601 date strings
 			$this->allDay = preg_match(self::ALL_DAY_REGEX, $array['start']) &&
-			 (!isset($array['end']) || preg_match(self::ALL_DAY_REGEX, $array['end']));
+				(!isset($array['end']) || preg_match(self::ALL_DAY_REGEX, $array['end']));
 		}
 
 		if ($this->allDay)
@@ -82,7 +59,7 @@ class Event
 
 		// Parse dates
 		$this->start = parseDateTime($array['start'], $timezone);
-		$this->end = isset($array['end']) ? parseDateTime($array['end'], $timezone) : null;
+		$this->end   = isset($array['end']) ? parseDateTime($array['end'], $timezone) : null;
 
 		// Record misc properties
 		foreach ($array as $name => $value)
@@ -102,7 +79,7 @@ class Event
 
 		// Normalize our event's dates for comparison with the all-day range.
 		$eventStart = stripTime($this->start);
-		$eventEnd = isset($this->end) ? stripTime($this->end) : null;
+		$eventEnd   = isset($this->end) ? stripTime($this->end) : null;
 
 		if (!$eventEnd)
 		{
@@ -155,13 +132,13 @@ class Event
 
 
 // Parses a string into a DateTime object, optionally forced into the given timezone.
-function parseDateTime($string, $timezone=null)
+function parseDateTime($string, $timezone = null)
 {
 	$date = new DateTime(
 		$string,
 		$timezone ? $timezone : new DateTimeZone('UTC')
-		// Used only when the string is ambiguous.
-		// Ignored if string has a timezone offset in it.
+	// Used only when the string is ambiguous.
+	// Ignored if string has a timezone offset in it.
 	);
 
 	if ($timezone)

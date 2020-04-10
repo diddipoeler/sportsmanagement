@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
@@ -33,9 +34,10 @@ class sportsmanagementModeltrainingdata extends JSMModelAdmin
 	/**
 	 * Returns a reference to the a Table object, always creating it.
 	 *
-	 * @param  type    The table type to instantiate
-	 * @param  string    A prefix for the table class name. Optional.
-	 * @param  array    Configuration array for model. Optional.
+	 * @param   type    The table type to instantiate
+	 * @param   string    A prefix for the table class name. Optional.
+	 * @param   array    Configuration array for model. Optional.
+	 *
 	 * @return JTable    A database object
 	 * @since  1.6
 	 */
@@ -47,32 +49,30 @@ class sportsmanagementModeltrainingdata extends JSMModelAdmin
 	}
 
 
-
-
-
 	/**
 	 * Method to save the form data.
 	 *
-	 * @param  array    The form data.
+	 * @param   array    The form data.
+	 *
 	 * @return boolean    True on success.
 	 * @since  1.6
 	 */
 	public function save($data)
 	{
-		  $app = Factory::getApplication();
-		  $date = Factory::getDate();
-		  $user = Factory::getUser();
-		  $post = Factory::getApplication()->input->post->getArray(array());
+		$app  = Factory::getApplication();
+		$date = Factory::getDate();
+		$user = Factory::getUser();
+		$post = Factory::getApplication()->input->post->getArray(array());
 
-		  // Set the values
-		  $data['modified'] = $date->toSql();
-		  $data['modified_by'] = $user->get('id');
+		// Set the values
+		$data['modified']    = $date->toSql();
+		$data['modified_by'] = $user->get('id');
 
-				// Zuerst sichern, damit wir bei einer neuanlage die id haben
+		// Zuerst sichern, damit wir bei einer neuanlage die id haben
 		if (parent::save($data))
 		{
-			$id = (int) $this->getState($this->getName() . '.id');
-			$isNew = $this->getState($this->getName() . '.new');
+			$id         = (int) $this->getState($this->getName() . '.id');
+			$isNew      = $this->getState($this->getName() . '.new');
 			$data['id'] = $id;
 
 			if ($isNew)

@@ -14,13 +14,15 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 
 
 jimport('joomla.application.component.model');
-use Joomla\CMS\Filesystem\Folder;
-jimport('joomla.filesystem.file');
 
+use Joomla\CMS\Filesystem\Folder;
+
+jimport('joomla.filesystem.file');
 
 
 /**
@@ -37,14 +39,14 @@ class sportsmanagementModelsmquotestxt extends JModel
 
 	function getTXTFiles()
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
-		$path = JPATH_SITE . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR . 'mod_sportsmanagement_rquotes' . DIRECTORY_SEPARATOR . 'mod_sportsmanagement_rquotes';
+		$path   = JPATH_SITE . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR . 'mod_sportsmanagement_rquotes' . DIRECTORY_SEPARATOR . 'mod_sportsmanagement_rquotes';
 
 		// Get a list of files in the search path with the given filter.
-		   $files = Folder::files($path, '.txt$|.php$');
+		$files = Folder::files($path, '.txt$|.php$');
 
-			  return $files;
+		return $files;
 
 	}
 

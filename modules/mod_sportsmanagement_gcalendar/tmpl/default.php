@@ -20,6 +20,7 @@
  */
 
 defined('_JEXEC') or die();
+
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
@@ -29,9 +30,9 @@ jsmGCalendarUtil::loadLibrary(array('jquery' => true, 'fullcalendar' => true));
 $document = Factory::getDocument();
 $document->addStyleSheet(Uri::base() . 'modules/mod_sportsmanagement_gcalendar/tmpl/gcalendar.css');
 
-$color = $params->get('event_color', '135CAE');
+$color      = $params->get('event_color', '135CAE');
 $fadedColor = jsmGCalendarUtil::getFadedColor($color);
-$cssClass = "gcal-module_event_gccal_" . $module->id;
+$cssClass   = "gcal-module_event_gccal_" . $module->id;
 $document->addStyleDeclaration("." . $cssClass . ",." . $cssClass . " a, ." . $cssClass . " div{background-color: " . $fadedColor . " !important; border-color: #" . $color . "; color: " . $fadedColor . ";} .fc-header-center{vertical-align: middle !important;} #gcalendar_module_" . $module->id . " .fc-state-default span, #gcalendar_module_" . $module->id . " .ui-state-default{padding:0px !important;}");
 
 $theme = $params->get('theme', jsmGCalendarUtil::getComponentParameter('theme'));
@@ -41,43 +42,43 @@ if (!empty($theme))
 	jsmGCalendarUtil::loadLibrary(array('jqueryui' => $theme));
 }
 
-$daysLong = "[";
-$daysShort = "[";
-$daysMin = "[";
-$monthsLong = "[";
+$daysLong    = "[";
+$daysShort   = "[";
+$daysMin     = "[";
+$monthsLong  = "[";
 $monthsShort = "[";
 
 for ($i = 0; $i < 7; $i++)
 {
-	$daysLong .= "'" . jsmGCalendarUtil::dayToString($i, false) . "'";
+	$daysLong  .= "'" . jsmGCalendarUtil::dayToString($i, false) . "'";
 	$daysShort .= "'" . jsmGCalendarUtil::dayToString($i, true) . "'";
-	$daysMin .= "'" . mb_substr(jsmGCalendarUtil::dayToString($i, true), 0, 2) . "'";
+	$daysMin   .= "'" . mb_substr(jsmGCalendarUtil::dayToString($i, true), 0, 2) . "'";
 
 	if ($i < 6)
 	{
-		$daysLong .= ",";
+		$daysLong  .= ",";
 		$daysShort .= ",";
-		$daysMin .= ",";
+		$daysMin   .= ",";
 	}
 }
 
 
 for ($i = 1; $i <= 12; $i++)
 {
-	$monthsLong .= "'" . jsmGCalendarUtil::monthToString($i, false) . "'";
+	$monthsLong  .= "'" . jsmGCalendarUtil::monthToString($i, false) . "'";
 	$monthsShort .= "'" . jsmGCalendarUtil::monthToString($i, true) . "'";
 
 	if ($i < 12)
 	{
-		$monthsLong .= ",";
+		$monthsLong  .= ",";
 		$monthsShort .= ",";
 	}
 }
 
-$daysLong .= "]";
-$daysShort .= "]";
-$daysMin .= "]";
-$monthsLong .= "]";
+$daysLong    .= "]";
+$daysShort   .= "]";
+$daysMin     .= "]";
+$monthsLong  .= "]";
 $monthsShort .= "]";
 
 $ids = '';

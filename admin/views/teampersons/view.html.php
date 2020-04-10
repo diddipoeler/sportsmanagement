@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -42,7 +43,7 @@ class sportsmanagementViewteampersons extends sportsmanagementView
 
 		$this->restartpage = false;
 
-		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
+		$this->project_id  = $this->app->getUserState("$this->option.pid", '0');
 		$this->_persontype = $this->jinput->getVar('persontype');
 
 		if (empty($this->_persontype))
@@ -51,7 +52,7 @@ class sportsmanagementViewteampersons extends sportsmanagementView
 		}
 
 		$this->project_team_id = $this->jinput->getVar('project_team_id');
-		$this->team_id = $this->jinput->getInt('team_id');
+		$this->team_id         = $this->jinput->getInt('team_id');
 
 		if (!$this->team_id)
 		{
@@ -64,17 +65,17 @@ class sportsmanagementViewteampersons extends sportsmanagementView
 		}
 
 		$mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
-		$project = $mdlProject->getProject($this->project_id);
+		$project    = $mdlProject->getProject($this->project_id);
 
 		$this->season_id = $project->season_id;
-		$items = $this->model->PersonProjectPosition($this->project_id, $this->_persontype);
+		$items           = $this->model->PersonProjectPosition($this->project_id, $this->_persontype);
 
 		if (!$items)
 		{
 			/**
-			fehlen im projekt die positionen ?
-			wenn ja, dann fehlende positionen hinzufügen
-*/
+			 * fehlen im projekt die positionen ?
+			 * wenn ja, dann fehlende positionen hinzufügen
+			 */
 		}
 		else
 		{
@@ -88,14 +89,14 @@ class sportsmanagementViewteampersons extends sportsmanagementView
 		$this->app->setUserState("$this->option.sports_type_id", $project->sports_type_id);
 
 		$mdlProjectTeam = BaseDatabaseModel::getInstance('ProjectTeam', 'sportsmanagementModel');
-		$project_team = $mdlProjectTeam->getProjectTeam($this->team_id);
+		$project_team   = $mdlProjectTeam->getProjectTeam($this->team_id);
 
 		/**
- * build the html options for position
- */
-		$position_id = array();
+		 * build the html options for position
+		 */
+		$position_id   = array();
 		$position_id[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER_FUNCTION'));
-		$mdlPositions = BaseDatabaseModel::getInstance('Positions', 'sportsmanagementModel');
+		$mdlPositions  = BaseDatabaseModel::getInstance('Positions', 'sportsmanagementModel');
 
 		if ($this->_persontype == 1)
 		{
@@ -111,24 +112,24 @@ class sportsmanagementViewteampersons extends sportsmanagementView
 			$position_id = array_merge($position_id, $project_ref_positions);
 		}
 
-		$lists = array();
+		$lists                        = array();
 		$lists['project_position_id'] = $position_id;
 		unset($position_id);
 
 		/**
- * build the html options for nation
- */
+		 * build the html options for nation
+		 */
 		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 
 		if ($res = JSMCountries::getCountryOptions())
 		{
-			$nation = array_merge($nation, $res);
+			$nation              = array_merge($nation, $res);
 			$this->search_nation = $res;
 		}
 
-			  $lists['nation'] = $nation;
-		$this->lists = $lists;
-		$this->project = $project;
+		$lists['nation']    = $nation;
+		$this->lists        = $lists;
+		$this->project      = $project;
 		$this->project_team = $project_team;
 	}
 

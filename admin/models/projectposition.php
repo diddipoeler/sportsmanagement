@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
 
@@ -29,21 +30,6 @@ class sportsmanagementModelProjectposition extends JSMModelAdmin
 	var $_project_id = 0;
 
 	/**
-	 * Method override to check if you can edit an existing record.
-	 *
-	 * @param   array  $data An array of input data.
-	 * @param   string $key  The name of the key for the primary key.
-	 *
-	 * @return boolean
-	 * @since  1.6
-	 */
-	protected function allowEdit($data = array(), $key = 'id')
-	{
-		// Check specific edit permission then general edit permission.
-		return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.' . ((int) isset($data[$key]) ? $data[$key] : 0)) || parent::allowEdit($data, $key);
-	}
-
-	/**
 	 * Method to update project positions list
 	 *
 	 * @access public
@@ -51,9 +37,9 @@ class sportsmanagementModelProjectposition extends JSMModelAdmin
 	 */
 	function store($data)
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$result = true;
-		$peid = (isset($data['project_positionslist']));
+		$peid   = (isset($data['project_positionslist']));
 
 		if ($peid == null)
 		{
@@ -90,7 +76,20 @@ class sportsmanagementModelProjectposition extends JSMModelAdmin
 		return $result;
 	}
 
-
+	/**
+	 * Method override to check if you can edit an existing record.
+	 *
+	 * @param   array   $data  An array of input data.
+	 * @param   string  $key   The name of the key for the primary key.
+	 *
+	 * @return boolean
+	 * @since  1.6
+	 */
+	protected function allowEdit($data = array(), $key = 'id')
+	{
+		// Check specific edit permission then general edit permission.
+		return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.' . ((int) isset($data[$key]) ? $data[$key] : 0)) || parent::allowEdit($data, $key);
+	}
 
 
 }

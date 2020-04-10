@@ -34,10 +34,21 @@ class sportsmanagementControlleragegroups extends JSMControllerAdmin
 	function saveshort()
 	{
 		$model = $this->getModel();
-		   $msg = $model->saveshort();
-		   $this->setRedirect('index.php?option=com_sportsmanagement&view=agegroups', $msg);
+		$msg   = $model->saveshort();
+		$this->setRedirect('index.php?option=com_sportsmanagement&view=agegroups', $msg);
 	}
 
+	/**
+	 * Proxy for getModel.
+	 *
+	 * @since 1.6
+	 */
+	public function getModel($name = 'agegroup', $prefix = 'sportsmanagementModel', $config = Array())
+	{
+		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
+
+		return $model;
+	}
 
 	/**
 	 * sportsmanagementControlleragegroups::import()
@@ -46,21 +57,9 @@ class sportsmanagementControlleragegroups extends JSMControllerAdmin
 	 */
 	function import()
 	{
-		   $model = $this->getModel();
-		   $msg = $model->importAgeGroupFile();
-		   $this->setRedirect('index.php?option=com_sportsmanagement&view=agegroups', $msg);
+		$model = $this->getModel();
+		$msg   = $model->importAgeGroupFile();
+		$this->setRedirect('index.php?option=com_sportsmanagement&view=agegroups', $msg);
 
-	}
-
-	/**
-	 * Proxy for getModel.
-	 *
-	 * @since 1.6
-	 */
-	public function getModel($name = 'agegroup', $prefix = 'sportsmanagementModel', $config = Array() )
-	{
-		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
-
-		return $model;
 	}
 }

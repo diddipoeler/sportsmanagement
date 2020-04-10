@@ -40,13 +40,13 @@ class JGoogleDataPlusActivities extends JGoogleData
 	/**
 	 * List all of the activities in the specified collection for a particular user.
 	 *
-	 * @param   string   $userId      The ID of the user to get activities for. The special value "me" can be used to indicate the authenticated user.
-	 * @param   string   $collection  The collection of activities to list. Acceptable values are: "public".
-	 * @param   string   $fields      Used to specify the fields you want returned.
-	 * @param   integer  $max         The maximum number of people to include in the response, used for paging.
-	 * @param   string   $token       The continuation token, used to page through large result sets. To get the next page of results, set this
-	 *								  parameter to the value of "nextPageToken" from the previous response. This token may be of any length.
-	 * @param   string   $alt         Specifies an alternative representation type. Acceptable values are: "json" - Use JSON format (default)
+	 * @param   string   $userId        The ID of the user to get activities for. The special value "me" can be used to indicate the authenticated user.
+	 * @param   string   $collection    The collection of activities to list. Acceptable values are: "public".
+	 * @param   string   $fields        Used to specify the fields you want returned.
+	 * @param   integer  $max           The maximum number of people to include in the response, used for paging.
+	 * @param   string   $token         The continuation token, used to page through large result sets. To get the next page of results, set this
+	 *                                  parameter to the value of "nextPageToken" from the previous response. This token may be of any length.
+	 * @param   string   $alt           Specifies an alternative representation type. Acceptable values are: "json" - Use JSON format (default)
 	 *
 	 * @return  mixed  Data from Google
 	 *
@@ -138,13 +138,13 @@ class JGoogleDataPlusActivities extends JGoogleData
 	/**
 	 * Search all public activities.
 	 *
-	 * @param   string   $query     Full-text search query string.
-	 * @param   string   $fields    Used to specify the fields you want returned.
-	 * @param   string   $language  Specify the preferred language to search with. https://developers.google.com/+/api/search#available-languages
-	 * @param   integer  $max       The maximum number of people to include in the response, used for paging.
-	 * @param   string   $order     Specifies how to order search results. Acceptable values are "best" and "recent".
-	 * @param   string   $token     The continuation token, used to page through large result sets. To get the next page of results, set this
-	 * 								parameter to the value of "nextPageToken" from the previous response. This token may be of any length.
+	 * @param   string   $query       Full-text search query string.
+	 * @param   string   $fields      Used to specify the fields you want returned.
+	 * @param   string   $language    Specify the preferred language to search with. https://developers.google.com/+/api/search#available-languages
+	 * @param   integer  $max         The maximum number of people to include in the response, used for paging.
+	 * @param   string   $order       Specifies how to order search results. Acceptable values are "best" and "recent".
+	 * @param   string   $token       The continuation token, used to page through large result sets. To get the next page of results, set this
+	 *                                parameter to the value of "nextPageToken" from the previous response. This token may be of any length.
 	 *
 	 * @return  mixed  Data from Google
 	 *

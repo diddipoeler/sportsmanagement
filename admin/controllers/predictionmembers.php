@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Session\Session;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
@@ -34,7 +35,7 @@ class sportsmanagementControllerpredictionmembers extends JSMControllerAdmin
 	/**
 	 * Constructor.
 	 *
-	 * @param   array $config An optional associative array of configuration settings.
+	 * @param   array  $config  An optional associative array of configuration settings.
 	 *
 	 * @see   BaseController
 	 * @since 1.6
@@ -43,7 +44,7 @@ class sportsmanagementControllerpredictionmembers extends JSMControllerAdmin
 	{
 		parent::__construct($config);
 
-			  // Reference global application object
+		// Reference global application object
 		$this->jsmapp = Factory::getApplication();
 
 		// JInput object
@@ -59,13 +60,25 @@ class sportsmanagementControllerpredictionmembers extends JSMControllerAdmin
 	function save_memberlist()
 	{
 
-			  // Check for request forgeries
+		// Check for request forgeries
 		Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
 
 		$model = $this->getModel();
-		$msg = $model->save_memberlist();
+		$msg   = $model->save_memberlist();
 		$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);
 
+	}
+
+	/**
+	 * Proxy for getModel.
+	 *
+	 * @since 1.6
+	 */
+	public function getModel($name = 'predictionmember', $prefix = 'sportsmanagementModel', $config = Array())
+	{
+		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
+
+		return $model;
 	}
 
 	/**
@@ -75,7 +88,7 @@ class sportsmanagementControllerpredictionmembers extends JSMControllerAdmin
 	 */
 	function editlist()
 	{
-		$msg        = '';
+		$msg  = '';
 		$link = 'index.php?option=com_sportsmanagement&view=predictionmembers&layout=editlist';
 
 		// Echo $msg;
@@ -83,18 +96,18 @@ class sportsmanagementControllerpredictionmembers extends JSMControllerAdmin
 
 	}
 
-		 /**
-		  * sportsmanagementControllerpredictionmembers::sendReminder()
-		  *
-		  * @return void
-		  */
+	/**
+	 * sportsmanagementControllerpredictionmembers::sendReminder()
+	 *
+	 * @return void
+	 */
 	function reminder()
 	{
 		/**
- * This will send an email to all members of the prediction game with reminder option enabled. Are you sure?
- */
-		$post = $this->jsmjinput->post->getArray();
-		$cid = $this->jsmjinput->getVar('cid', null, 'post', 'array');
+		 * This will send an email to all members of the prediction game with reminder option enabled. Are you sure?
+		 */
+		$post  = $this->jsmjinput->post->getArray();
+		$cid   = $this->jsmjinput->getVar('cid', null, 'post', 'array');
 		$pgmid = Factory::getApplication()->input->getVar('prediction_id', 0, 'post', 'INT');
 
 		if ($pgmid == 0)
@@ -102,19 +115,17 @@ class sportsmanagementControllerpredictionmembers extends JSMControllerAdmin
 			Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SELECT_ERROR'), Log::WARNING, 'jsmerror');
 		}
 
-		$msg        = '';
-		$d            = ' - ';
+		$msg = '';
+		$d   = ' - ';
 
 		$model = $this->getModel('predictionmember');
-		  $model->sendEmailtoMembers($cid, $pgmid);
+		$model->sendEmailtoMembers($cid, $pgmid);
 
 		$link = 'index.php?option=com_sportsmanagement&view=predictionmembers';
 
 		// Echo $msg;
 		$this->setRedirect($link, $msg);
 	}
-
-
 
 	/**
 	 * sportsmanagementControllerpredictionmembers::publish()
@@ -125,7 +136,7 @@ class sportsmanagementControllerpredictionmembers extends JSMControllerAdmin
 	{
 		$cids = Factory::getApplication()->input->getVar('cid', array(), 'post', 'array');
 		ArrayHelper::toInteger($cids);
-		$predictionGameID    = Factory::getApplication()->input->getVar('prediction_id', '', 'post', 'int');
+		$predictionGameID = Factory::getApplication()->input->getVar('prediction_id', '', 'post', 'int');
 
 		if (count($cids) < 1)
 		{
@@ -136,12 +147,11 @@ class sportsmanagementControllerpredictionmembers extends JSMControllerAdmin
 
 		if (!$model->publishpredmembers($cids, 1, $predictionGameID))
 		{
-			   echo "<script> alert( '" . $model->getError(true) . "' ); window.history.go(-1); </script>\n";
+			echo "<script> alert( '" . $model->getError(true) . "' ); window.history.go(-1); </script>\n";
 		}
 
 		$this->setRedirect('index.php?option=com_sportsmanagement&view=predictionmembers');
 	}
-
 
 	/**
 	 * sportsmanagementControllerpredictionmembers::unpublish()
@@ -152,7 +162,7 @@ class sportsmanagementControllerpredictionmembers extends JSMControllerAdmin
 	{
 		$cids = Factory::getApplication()->input->getVar('cid', array(), 'post', 'array');
 		ArrayHelper::toInteger($cids);
-		$predictionGameID    = Factory::getApplication()->input->getVar('prediction_id', '', 'post', 'int');
+		$predictionGameID = Factory::getApplication()->input->getVar('prediction_id', '', 'post', 'int');
 
 		if (count($cids) < 1)
 		{
@@ -163,12 +173,11 @@ class sportsmanagementControllerpredictionmembers extends JSMControllerAdmin
 
 		if (!$model->publishpredmembers($cids, 0, $predictionGameID))
 		{
-			   echo "<script> alert( '" . $model->getError(true) . "' ); window.history.go(-1); </script>\n";
+			echo "<script> alert( '" . $model->getError(true) . "' ); window.history.go(-1); </script>\n";
 		}
 
 		$this->setRedirect('index.php?option=com_sportsmanagement&view=predictionmembers');
 	}
-
 
 	/**
 	 * sportsmanagementControllerpredictionmembers::remove()
@@ -184,11 +193,11 @@ class sportsmanagementControllerpredictionmembers extends JSMControllerAdmin
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 
-		$d        = ' - ';
-		$msg    = '';
-		$cid    = Factory::getApplication()->input->getVar('cid', array(), 'post', 'array');
+		$d   = ' - ';
+		$msg = '';
+		$cid = Factory::getApplication()->input->getVar('cid', array(), 'post', 'array');
 		ArrayHelper::toInteger($cid);
-		$prediction_id    = Factory::getApplication()->input->getInt('prediction_id', (-1), 'post');
+		$prediction_id = Factory::getApplication()->input->getInt('prediction_id', (-1), 'post');
 
 		if (count($cid) < 1)
 		{
@@ -199,14 +208,14 @@ class sportsmanagementControllerpredictionmembers extends JSMControllerAdmin
 
 		if (!$model->deletePredictionResults($cid, $prediction_id))
 		{
-			   $msg .= $d . Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_MSG');
+			$msg .= $d . Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_MSG');
 		}
 
 		$msg .= $d . Text::_('COM_SPORTSMANAGEMENTADMIN_PMEMBER_CTRL_DEL_PRESULTS');
 
 		if (!$model->deletePredictionMembers($cid))
 		{
-			   $msg .= Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_PMEMBERS_MSG');
+			$msg .= Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_PMEMBERS_MSG');
 		}
 
 		$msg .= $d . Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_PMEMBERS');
@@ -215,20 +224,5 @@ class sportsmanagementControllerpredictionmembers extends JSMControllerAdmin
 
 		// Echo $msg;
 		$this->setRedirect($link, $msg);
-	}
-
-
-
-
-	/**
-	 * Proxy for getModel.
-	 *
-	 * @since 1.6
-	 */
-	public function getModel($name = 'predictionmember', $prefix = 'sportsmanagementModel', $config = Array() )
-	{
-		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
-
-		return $model;
 	}
 }

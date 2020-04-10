@@ -29,10 +29,10 @@ class JGithubPackageRepositoriesMerging extends JGithubPackage
 	 * @param   string  $commit_message  Commit message to use for the merge commit.
 	 *                                   If omitted, a default message will be used.
 	 *
+	 * @return  boolean
 	 * @throws UnexpectedValueException
 	 * @since   12.4
 	 *
-	 * @return  boolean
 	 */
 	public function perform($owner, $repo, $base, $head, $commit_message = '')
 	{

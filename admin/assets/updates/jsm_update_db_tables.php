@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -22,12 +23,12 @@ use Joomla\CMS\Component\ComponentHelper;
 HTMLHelper::_('bootstrap.framework');
 jimport('joomla.html.html.bootstrap');
 
-$version            = '1.0.58';
-$updateFileDate        = '2017-01-15';
-$updateFileTime        = '00:05';
-$updateDescription    = '<span style="color:orange">Update all tables using the current install sql-file.</span>';
-$excludeFile        = 'false';
-$option = Factory::getApplication()->input->getCmd('option');
+$version           = '1.0.58';
+$updateFileDate    = '2017-01-15';
+$updateFileTime    = '00:05';
+$updateDescription = '<span style="color:orange">Update all tables using the current install sql-file.</span>';
+$excludeFile       = 'false';
+$option            = Factory::getApplication()->input->getCmd('option');
 
 $maxImportTime = ComponentHelper::getParams($option)->get('max_import_time', 0);
 
@@ -62,8 +63,8 @@ if ((int) ini_get('memory_limit') < (int) $maxImportMemory)
  */
 function getUpdatePart()
 {
-	$option = Factory::getApplication()->input->getCmd('option');
-	$app = Factory::getApplication();
+	$option      = Factory::getApplication()->input->getCmd('option');
+	$app         = Factory::getApplication();
 	$update_part = $app->getUserState($option . 'update_part');
 
 	return $update_part;
@@ -72,13 +73,14 @@ function getUpdatePart()
 /**
  * setUpdatePart()
  *
- * @param   integer $val
+ * @param   integer  $val
+ *
  * @return void
  */
-function setUpdatePart($val=1)
+function setUpdatePart($val = 1)
 {
-	$option = Factory::getApplication()->input->getCmd('option');
-	$app = Factory::getApplication();
+	$option      = Factory::getApplication()->input->getCmd('option');
+	$app         = Factory::getApplication();
 	$update_part = $app->getUserState($option . 'update_part');
 
 	if ($val != 0)
@@ -107,7 +109,7 @@ function setUpdatePart($val=1)
  */
 function ImportTables()
 {
-	$db = sportsmanagementHelper::getDBConnection();
+	$db     = sportsmanagementHelper::getDBConnection();
 	$option = Factory::getApplication()->input->getCmd('option');
 
 	$imports = file_get_contents(JPATH_ADMINISTRATOR . '/components/' . $option . '/sql/install.mysql.utf8.sql');
@@ -116,14 +118,14 @@ function ImportTables()
 	$imports = preg_replace("%^--(.*)\n%mU", '', $imports);
 	$imports = preg_replace("%^$\n%mU", '', $imports);
 
-	$imports = explode(';', $imports);
+	$imports  = explode(';', $imports);
 	$cntPanel = 0;
 
 	// $slidesOptions = '';
 	// Define slides options
-		$slidesOptions = array(
-			"active" => "slide1_id" // It is the ID of the active tab.
-		);
+	$slidesOptions = array(
+		"active" => "slide1_id" // It is the ID of the active tab.
+	);
 	echo HTMLHelper::_('bootstrap.startAccordion', 'slide-group-id', $slidesOptions);
 
 	$slide_id = 1;
@@ -140,10 +142,10 @@ function ImportTables()
 			$db->setQuery($import);
 			$panelName = substr(str_replace('sportsmanagement', '', str_replace('_', '', $DummyStr)), 1);
 
-							  // Echo HTMLHelper::_('sliders.panel',$DummyStr,'panel-'.$panelName);
+			// Echo HTMLHelper::_('sliders.panel',$DummyStr,'panel-'.$panelName);
 			echo HTMLHelper::_('bootstrap.addSlide', 'slide-group-id', Text::_($panelName), "slide" . $slide_id . "_id");
 
-							  echo '<table class="table" style="width:100%; " border="0"><thead><tr><td colspan="2" class="key" style="text-align:center;"><h3>';
+			echo '<table class="table" style="width:100%; " border="0"><thead><tr><td colspan="2" class="key" style="text-align:center;"><h3>';
 			echo "Checking existence of table [$DummyStr] - <span style='color:";
 
 			if ($db->execute())
@@ -157,14 +159,14 @@ function ImportTables()
 
 			echo '</span>';
 			echo '</h3></td></tr></thead><tbody>';
-			$DummyStr = $import;
-			$DummyStr = substr($DummyStr, strpos($DummyStr, '`') + 1);
+			$DummyStr  = $import;
+			$DummyStr  = substr($DummyStr, strpos($DummyStr, '`') + 1);
 			$tableName = substr($DummyStr, 0, strpos($DummyStr, '`'));
 
-			$DummyStr = substr($DummyStr, strpos($DummyStr, '(') + 1);
-			$DummyStr = substr($DummyStr, 0, strpos($DummyStr, 'ENGINE'));
+			$DummyStr    = substr($DummyStr, strpos($DummyStr, '(') + 1);
+			$DummyStr    = substr($DummyStr, 0, strpos($DummyStr, 'ENGINE'));
 			$keysIndexes = trim(trim(substr($DummyStr, strpos($DummyStr, 'PRIMARY KEY'))), ')');
-			$indexes = explode("\r\n", $keysIndexes);
+			$indexes     = explode("\r\n", $keysIndexes);
 
 			if ($indexes[0] == $keysIndexes)
 			{
@@ -177,7 +179,7 @@ function ImportTables()
 			}
 
 			$DummyStr = trim(trim(substr($DummyStr, 0, strpos($DummyStr, 'PRIMARY KEY'))), ',');
-			$fields = explode("\r\n", $DummyStr);
+			$fields   = explode("\r\n", $DummyStr);
 
 			if ($fields[0] == $DummyStr)
 			{
@@ -190,7 +192,7 @@ function ImportTables()
 			}
 
 			$newIndexes = array();
-			$i = (-1);
+			$i          = (-1);
 
 			foreach ($indexes AS $index)
 			{
@@ -204,7 +206,7 @@ function ImportTables()
 			}
 
 			$newFields = array();
-			$i = (-1);
+			$i         = (-1);
 
 			foreach ($fields AS $field)
 			{
@@ -247,29 +249,29 @@ function ImportTables()
 			{
 				foreach ($newIndexes AS $index)
 				{
-					 $query = '';
-					 $index = trim($index);
-					 echo '<tr class="row' . $k . '"><td>';
+					$query = '';
+					$index = trim($index);
+					echo '<tr class="row' . $k . '"><td>';
 
 					if (substr($index, 0, 11) != 'PRIMARY KEY')
 					{
-						$keyName = '';
+						$keyName     = '';
 						$queryDelete = '';
 
 						if (substr($index, 0, 3) == 'KEY')
 						{
-							$keyName = substr($index, 0, strpos($index, '('));
+							$keyName     = substr($index, 0, strpos($index, '('));
 							$queryDelete = "ALTER TABLE `$tableName` DROP $keyName";
 						}
-						elseif (substr($index, 0, 5) == 'INDEX')
+                        elseif (substr($index, 0, 5) == 'INDEX')
 						{
-							$keyName = substr($index, 0, strpos($index, '('));
+							$keyName     = substr($index, 0, strpos($index, '('));
 							$queryDelete = "ALTER TABLE `$tableName` DROP $keyName";
 						}
-						elseif (substr($index, 0, 6) == 'UNIQUE')
+                        elseif (substr($index, 0, 6) == 'UNIQUE')
 						{
-							$keyName = trim(substr($index, 6));
-							$keyName = substr($keyName, 0, strpos($keyName, '('));
+							$keyName     = trim(substr($index, 6));
+							$keyName     = substr($keyName, 0, strpos($keyName, '('));
 							$queryDelete = "ALTER TABLE `$tableName` DROP $keyName";
 						}
 
@@ -279,7 +281,7 @@ function ImportTables()
 						{
 							foreach ($keys as $key)
 							{
-								 preg_match('/`(.*?)`/', $keyName, $reg);
+								preg_match('/`(.*?)`/', $keyName, $reg);
 
 								if (strcasecmp($key->Key_name, $reg[1]) !== 0)
 								{
@@ -305,7 +307,7 @@ function ImportTables()
 							}
 							catch (Exception $e)
 							{
-											  echo "$queryDelete - <span style='color:red'" . Text::_('Failed') . '</span>';
+								echo "$queryDelete - <span style='color:red'" . Text::_('Failed') . '</span>';
 							}
 						}
 					}
@@ -314,33 +316,33 @@ function ImportTables()
 						echo "<span style='color:orange; '>" . Text::sprintf('Skipping handling of %1$s', $index) . '</span>';
 					}
 
-					 echo '&nbsp;</td></tr>';
-					 $k = (1 - $k);
+					echo '&nbsp;</td></tr>';
+					$k = (1 - $k);
 				}
 			}
 
-				$rows = count($newFields) + 1;
-				echo '<tr><th class="key" style="vertical-align:top; width:10; white-space:nowrap; " rowspan="' . $rows . '">';
-				echo Text::_('Updating fields:');
-				echo '</th></tr>';
-				$columns = $db->getTableColumns($tableName, false);
+			$rows = count($newFields) + 1;
+			echo '<tr><th class="key" style="vertical-align:top; width:10; white-space:nowrap; " rowspan="' . $rows . '">';
+			echo Text::_('Updating fields:');
+			echo '</th></tr>';
+			$columns = $db->getTableColumns($tableName, false);
 
 			foreach ($newFields AS $field)
 			{
-					$dFfieldName = substr($field, strpos($field, '`') + 1);
-					$fieldName = substr($dFfieldName, 0, strpos($dFfieldName, '`'));
-					$dFieldSetting = substr($dFfieldName, strpos($dFfieldName, '`') + 1);
-					echo '<tr class="row' . $k . '"><td>';
-					$add = true;
-					$query = "ALTER TABLE `$tableName` ADD `$fieldName` $dFieldSetting";
+				$dFfieldName   = substr($field, strpos($field, '`') + 1);
+				$fieldName     = substr($dFfieldName, 0, strpos($dFfieldName, '`'));
+				$dFieldSetting = substr($dFfieldName, strpos($dFfieldName, '`') + 1);
+				echo '<tr class="row' . $k . '"><td>';
+				$add   = true;
+				$query = "ALTER TABLE `$tableName` ADD `$fieldName` $dFieldSetting";
 
 				if (array_key_exists($fieldName, $columns)
 					&& (strcasecmp($fieldName, $columns[$fieldName]->Field) === 0)
 					&& strpos(strtolower($dFieldSetting), $columns[$fieldName]->Type)
 				)
 				{
-						echo "<span style='color:orange; '>" . Text::sprintf('Skipping handling of %1$s', $query) . '</span>';
-						continue;
+					echo "<span style='color:orange; '>" . Text::sprintf('Skipping handling of %1$s', $query) . '</span>';
+					continue;
 				}
 				else
 				{
@@ -352,7 +354,7 @@ function ImportTables()
 						}
 						else
 						{
-								$add = false;
+							$add = false;
 						}
 					}
 				}
@@ -363,9 +365,9 @@ function ImportTables()
 					{
 						try
 						{
-							  $db->setQuery($query);
-								   $db->execute();
-								   echo "$query - <span style='color:green'" . Text::_('Success') . '</span>';
+							$db->setQuery($query);
+							$db->execute();
+							echo "$query - <span style='color:green'" . Text::_('Success') . '</span>';
 						}
 						catch (Exception $e)
 						{
@@ -413,23 +415,23 @@ function ImportTables()
 
 				if (substr($index, 0, 11) != 'PRIMARY KEY')
 				{
-					$keyName = '';
+					$keyName  = '';
 					$queryAdd = '';
 
 					if (substr($index, 0, 3) == 'KEY')
 					{
-						$keyName = substr($index, 0, strpos($index, '('));
+						$keyName  = substr($index, 0, strpos($index, '('));
 						$queryAdd = "ALTER TABLE `$tableName` ADD $index";
 					}
-					elseif (substr($index, 0, 5) == 'INDEX')
+                    elseif (substr($index, 0, 5) == 'INDEX')
 					{
-						$keyName = substr($index, 0, strpos($index, '('));
+						$keyName  = substr($index, 0, strpos($index, '('));
 						$queryAdd = "ALTER TABLE `$tableName` ADD $index";
 					}
-					elseif (substr($index, 0, 6) == 'UNIQUE')
+                    elseif (substr($index, 0, 6) == 'UNIQUE')
 					{
-						$keyName = trim(substr($index, 6));
-						$keyName = substr($keyName, 0, strpos($keyName, '('));
+						$keyName  = trim(substr($index, 6));
+						$keyName  = substr($keyName, 0, strpos($keyName, '('));
 						$queryAdd = "ALTER TABLE `$tableName` ADD $index";
 					}
 
@@ -437,13 +439,13 @@ function ImportTables()
 
 					foreach ($keys as $key)
 					{
-							preg_match('/`(.*?)`/', $keyName, $reg);
+						preg_match('/`(.*?)`/', $keyName, $reg);
 
 						if (strcasecmp($key->Key_name, $reg[1]) === 0)
 						{
-								echo "<span style='color:orange; '>" . Text::sprintf('Skipping handling of %1$s', $queryDelete) . '</span>';
-								$skip = true;
-								break;
+							echo "<span style='color:orange; '>" . Text::sprintf('Skipping handling of %1$s', $queryDelete) . '</span>';
+							$skip = true;
+							break;
 						}
 					}
 
@@ -482,63 +484,63 @@ function ImportTables()
 		}
 
 		unset($import);
-			echo HTMLHelper::_('bootstrap.endSlide');
+		echo HTMLHelper::_('bootstrap.endSlide');
 	}
 
-		echo HTMLHelper::_('bootstrap.endAccordion');
+	echo HTMLHelper::_('bootstrap.endAccordion');
 
 	return '';
 
 }
 
 ?>
-<hr />
+    <hr/>
 <?php
-	$mtime = microtime();
-	$mtime = explode(" ", $mtime);
-	$mtime = $mtime[1] + $mtime[0];
-	$starttime = $mtime;
+$mtime     = microtime();
+$mtime     = explode(" ", $mtime);
+$mtime     = $mtime[1] + $mtime[0];
+$starttime = $mtime;
 
-	ToolbarHelper::title(Text::_('JSM Sportsmanagement - Database update process'));
-	echo '<h2>' . Text::sprintf(
+ToolbarHelper::title(Text::_('JSM Sportsmanagement - Database update process'));
+echo '<h2>' . Text::sprintf(
 		'JSM Sportsmanagement v%1$s - %2$s - Filedate: %3$s / %4$s',
 		$version, $updateDescription, $updateFileDate, $updateFileTime
 	) . '</h2>';
-	$totalUpdateParts = 2;
-	setUpdatePart();
+$totalUpdateParts = 2;
+setUpdatePart();
 
-	if (getUpdatePart() < $totalUpdateParts)
-	{
-		echo '<p><b>';
-		echo Text::sprintf('Please remember that this update routine has totally %1$s update steps!', $totalUpdateParts) . '</b><br />';
-		echo Text::_('So please go to the bottom of this page to check if there are errors and more update steps to do!');
-		echo '</p>';
-		echo '<p style="color:red; font-weight:bold; ">';
-		echo Text::_('It is recommended that you make a backup of your Database before!!!') . '<br />';
-		echo '</p>';
-		echo '<hr>';
-	}
+if (getUpdatePart() < $totalUpdateParts)
+{
+	echo '<p><b>';
+	echo Text::sprintf('Please remember that this update routine has totally %1$s update steps!', $totalUpdateParts) . '</b><br />';
+	echo Text::_('So please go to the bottom of this page to check if there are errors and more update steps to do!');
+	echo '</p>';
+	echo '<p style="color:red; font-weight:bold; ">';
+	echo Text::_('It is recommended that you make a backup of your Database before!!!') . '<br />';
+	echo '</p>';
+	echo '<hr>';
+}
 
-	if (getUpdatePart() == $totalUpdateParts)
-	{
-		echo '<hr />';
-		echo ImportTables();
-		echo '<br /><center><hr />';
-		 echo Text::sprintf('Memory Limit is %1$s', ini_get('memory_limit')) . '<br />';
-		 echo Text::sprintf('Memory Peak Usage was %1$s Bytes', number_format(memory_get_peak_usage(true), 0, '', '.')) . '<br />';
-		 echo Text::sprintf('Time Limit is %1$s seconds', ini_get('max_execution_time')) . '<br />';
-		 $mtime = microtime();
-		 $mtime = explode(" ", $mtime);
-		 $mtime = $mtime[1] + $mtime[0];
-		 $endtime = $mtime;
-		 $totaltime = ($endtime - $starttime);
-		 echo Text::sprintf('This page was created in %1$s seconds', $totaltime);
-		echo '<hr /></center>';
-		setUpdatePart(0);
-	}
-	else
-	{
-		echo '<input type="button" onclick="document.body.innerHTML=\'please wait...\';location.reload(true)" value="';
-		echo Text::sprintf('Click here to do step %1$s of %2$s steps to finish the update.', getUpdatePart() + 1, $totalUpdateParts);
-		echo '" />';
-	}
+if (getUpdatePart() == $totalUpdateParts)
+{
+	echo '<hr />';
+	echo ImportTables();
+	echo '<br /><center><hr />';
+	echo Text::sprintf('Memory Limit is %1$s', ini_get('memory_limit')) . '<br />';
+	echo Text::sprintf('Memory Peak Usage was %1$s Bytes', number_format(memory_get_peak_usage(true), 0, '', '.')) . '<br />';
+	echo Text::sprintf('Time Limit is %1$s seconds', ini_get('max_execution_time')) . '<br />';
+	$mtime     = microtime();
+	$mtime     = explode(" ", $mtime);
+	$mtime     = $mtime[1] + $mtime[0];
+	$endtime   = $mtime;
+	$totaltime = ($endtime - $starttime);
+	echo Text::sprintf('This page was created in %1$s seconds', $totaltime);
+	echo '<hr /></center>';
+	setUpdatePart(0);
+}
+else
+{
+	echo '<input type="button" onclick="document.body.innerHTML=\'please wait...\';location.reload(true)" value="';
+	echo Text::sprintf('Click here to do step %1$s of %2$s steps to finish the update.', getUpdatePart() + 1, $totalUpdateParts);
+	echo '" />';
+}

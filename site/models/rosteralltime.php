@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\ListModel;
@@ -70,15 +71,15 @@ class sportsmanagementModelRosteralltime extends ListModel
 	{
 		parent::__construct();
 		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 
 		// JInput object
-		  $jinput = $app->input;
-		self::$projectid = (int) $jinput->get('p', 0);
-		self::$teamid = (int) $jinput->get('tid', 0);
-		self::$projectteamid = (int) $jinput->get('ttid', 0);
+		$jinput                   = $app->input;
+		self::$projectid          = (int) $jinput->get('p', 0);
+		self::$teamid             = (int) $jinput->get('tid', 0);
+		self::$projectteamid      = (int) $jinput->get('ttid', 0);
 		self::$cfg_which_database = Factory::getApplication()->input->get('cfg_which_database', 0, 'INT');
-		$this->limitstart = $jinput->getVar('limitstart', 0, '', 'int');
+		$this->limitstart         = $jinput->getVar('limitstart', 0, '', 'int');
 	}
 
 	/**
@@ -123,38 +124,10 @@ class sportsmanagementModelRosteralltime extends ListModel
 	}
 
 	/**
-	 * Method to auto-populate the model state.
+	 * sportsmanagementModelRosteralltime::getListQuery()
 	 *
-	 * Note. Calling getState in this method will result in recursion.
-	 *
-	 * @since 1.6
+	 * @return
 	 */
-	protected function populateState($ordering = null, $direction = null)
-	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		// Initialise variables.
-		$app = Factory::getApplication('site');
-
-			  // List state information
-		$value = $this->getUserStateFromRequest($this->context . '.limit', 'limit', $app->getCfg('list_limit', 0));
-		$this->setState('list.limit', $value);
-
-		$value = $jinput->getUInt('limitstart', 0);
-		$this->setState('list.start', $value);
-
-	}
-
-		  /**
-		   * sportsmanagementModelRosteralltime::getListQuery()
-		   *
-		   * @return
-		   */
 	function getListQuery()
 	{
 		// Reference global application object
@@ -164,12 +137,12 @@ class sportsmanagementModelRosteralltime extends ListModel
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 
-			  // Create a new query object.
-		$db        = $this->getDbo();
-		$query    = $db->getQuery(true);
-		$user    = Factory::getUser();
+		// Create a new query object.
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true);
+		$user  = Factory::getUser();
 
-			  $query->select('tp.person_id AS person_id');
+		$query->select('tp.person_id AS person_id');
 
 		// $query->select('pos.ordering, ppos.position_id, tp.ordering, tp.jerseynumber, pr.lastname, pr.firstname');
 		$query->from('#__sportsmanagement_season_team_person_id AS tp ');
@@ -184,14 +157,13 @@ class sportsmanagementModelRosteralltime extends ListModel
 		$query->where('pr.published = 1');
 		$query->where('tp.published = 1');
 
-			  // $query->order('pos.ordering, ppos.position_id, tp.ordering, tp.jerseynumber, pr.lastname, pr.firstname');
+		// $query->order('pos.ordering, ppos.position_id, tp.ordering, tp.jerseynumber, pr.lastname, pr.firstname');
 		$query->group('tp.person_id');
 		$query->order('pos.ordering, ppos.position_id, tp.ordering, tp.jerseynumber, pr.lastname, pr.firstname');
 
-			 return $query;
+		return $query;
 
 	}
-
 
 	/**
 	 * sportsmanagementModelRosteralltime::getPlayerPosition()
@@ -200,10 +172,10 @@ class sportsmanagementModelRosteralltime extends ListModel
 	 */
 	function getPlayerPosition()
 	{
-		 $option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
-		$db = Factory::getDbo();
-		$query = $db->getQuery(true);
+		$option = Factory::getApplication()->input->getCmd('option');
+		$app    = Factory::getApplication();
+		$db     = Factory::getDbo();
+		$query  = $db->getQuery(true);
 
 		$query->select('po.*');
 		$query->from('#__sportsmanagement_position as po');
@@ -219,18 +191,19 @@ class sportsmanagementModelRosteralltime extends ListModel
 	/**
 	 * sportsmanagementModelRosteralltime::getPositionEventTypes()
 	 *
-	 * @param   integer $positionId
+	 * @param   integer  $positionId
+	 *
 	 * @return
 	 */
-	function getPositionEventTypes($positionId=0)
+	function getPositionEventTypes($positionId = 0)
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
-		$db = Factory::getDbo();
-		$query = $db->getQuery(true);
+		$app    = Factory::getApplication();
+		$db     = Factory::getDbo();
+		$query  = $db->getQuery(true);
 		$result = array();
 
-			   $query->select('pet.*');
+		$query->select('pet.*');
 		$query->select('et.name AS name,et.icon AS icon');
 		$query->from('#__sportsmanagement_position_eventtype AS pet');
 		$query->join('INNER', '#__sportsmanagement_eventtype AS et ON et.id = pet.eventtype_id');
@@ -270,9 +243,9 @@ class sportsmanagementModelRosteralltime extends ListModel
 	function getTeam()
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
-		$db = Factory::getDbo();
-		$query = $db->getQuery(true);
+		$app    = Factory::getApplication();
+		$db     = Factory::getDbo();
+		$query  = $db->getQuery(true);
 
 		if (is_null($this->team))
 		{
@@ -290,48 +263,46 @@ class sportsmanagementModelRosteralltime extends ListModel
 				return false;
 			}
 
-							  $query->select('t.*');
-					$query->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
-					$query->from('#__sportsmanagement_team AS t');
-					$query->where('t.id = ' . self::$teamid);
+			$query->select('t.*');
+			$query->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
+			$query->from('#__sportsmanagement_team AS t');
+			$query->where('t.id = ' . self::$teamid);
 
-			   $db->setQuery($query);
-			   $this->team = $db->loadObject();
+			$db->setQuery($query);
+			$this->team = $db->loadObject();
 		}
 
 		return $this->team;
 	}
 
-
-
-
 	/**
 	 * sportsmanagementModelRosteralltime::getTeamPlayers()
 	 *
-	 * @param   integer $persontype
-	 * @param   mixed   $positioneventtypes
-	 * @param   integer $from
-	 * @param   integer $to
+	 * @param   integer  $persontype
+	 * @param   mixed    $positioneventtypes
+	 * @param   integer  $from
+	 * @param   integer  $to
+	 *
 	 * @return
 	 */
-	function getTeamPlayers($persontype = 1,$positioneventtypes = array(),$items = array() )
+	function getTeamPlayers($persontype = 1, $positioneventtypes = array(), $items = array())
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
-		  $db = Factory::getDbo();
-		$query = $db->getQuery(true);
+		$app    = Factory::getApplication();
+		$db     = Factory::getDbo();
+		$query  = $db->getQuery(true);
 
-		  $person_range = array();
+		$person_range = array();
 
 		foreach ($items as $row)
 		{
 			$person_range[] = $row->person_id;
 		}
 
-			  //        if (empty($this->_players))
+		//        if (empty($this->_players))
 		//		{
 
-			  $query->select('pr.firstname,pr.nickname,pr.lastname,pr.country,pr.birthday,pr.deathday,pr.id AS pid,pr.id AS person_id,pr.picture AS ppic');
+		$query->select('pr.firstname,pr.nickname,pr.lastname,pr.country,pr.birthday,pr.deathday,pr.id AS pid,pr.id AS person_id,pr.picture AS ppic');
 		$query->select('pr.suspension AS suspension,pr.away AS away,pr.injury AS injury,pr.id AS pid,pr.picture AS ppic,CONCAT_WS(\':\',pr.id,pr.alias) AS person_slug');
 		$query->select('tp.id AS playerid,tp.id AS season_team_person_id,tp.jerseynumber AS position_number,tp.notes AS description,tp.market_value AS market_value,tp.picture');
 		$query->select('st.id AS season_team_id');
@@ -352,32 +323,32 @@ class sportsmanagementModelRosteralltime extends ListModel
 		{
 			case 1:
 				$query->join('LEFT', '#__sportsmanagement_position AS pos ON pos.id = ppos.position_id');
-					break;
+				break;
 			case 2:
-					$query->select('posparent.name AS parentname');
-					$query->join('LEFT', '#__sportsmanagement_position AS pos ON pos.id = ppos.position_id');
-					$query->join('LEFT', '#__sportsmanagement_position AS posparent ON pos.parent_id = posparent.id');
-					break;
+				$query->select('posparent.name AS parentname');
+				$query->join('LEFT', '#__sportsmanagement_position AS pos ON pos.id = ppos.position_id');
+				$query->join('LEFT', '#__sportsmanagement_position AS posparent ON pos.parent_id = posparent.id');
+				break;
 		}
 
-			  $query->where('tp.person_id IN ( ' . implode(",", $person_range) . ' )');
+		$query->where('tp.person_id IN ( ' . implode(",", $person_range) . ' )');
 		$query->where('st.team_id = ' . self::$teamid);
 		$query->where('pr.published = 1');
 		$query->where('tp.published = 1');
 		$query->where('tp.persontype = ' . $persontype);
 		$query->order('pos.ordering, ppos.position_id, tp.ordering, tp.jerseynumber, pr.lastname, pr.firstname');
 
-		 $db->setQuery($query);
-		 $this->_players = $db->loadObjectList();
-		 $this->_all_time_players = $db->loadObjectList('pid');
+		$db->setQuery($query);
+		$this->_players          = $db->loadObjectList();
+		$this->_all_time_players = $db->loadObjectList('pid');
 
 		//		}
 
 		foreach ($this->_players as $player)
 		{
-			$player->start = 0;
+			$player->start   = 0;
 			$player->came_in = 0;
-			$player->out = 0;
+			$player->out     = 0;
 
 			if (!isset($this->_all_time_players[$player->pid]->start))
 			{
@@ -386,20 +357,20 @@ class sportsmanagementModelRosteralltime extends ListModel
 
 			if (!isset($this->_all_time_players[$player->pid]->came_in))
 			{
-							$this->_all_time_players[$player->pid]->came_in = 0;
+				$this->_all_time_players[$player->pid]->came_in = 0;
 			}
 
 			if (!isset($this->_all_time_players[$player->pid]->out))
 			{
-							$this->_all_time_players[$player->pid]->out = 0;
+				$this->_all_time_players[$player->pid]->out = 0;
 			}
 
-			   $this->InOutStat = sportsmanagementModelPlayer::getInOutStats(0, 0, 0, 0, 0, Factory::getApplication()->input->getInt('cfg_which_database', 0), self::$teamid, $player->pid);
+			$this->InOutStat = sportsmanagementModelPlayer::getInOutStats(0, 0, 0, 0, 0, Factory::getApplication()->input->getInt('cfg_which_database', 0), self::$teamid, $player->pid);
 
-				$this->_all_time_players[$player->pid]->played = $this->InOutStat->played;
-				$this->_all_time_players[$player->pid]->start = $this->InOutStat->started;
-				$this->_all_time_players[$player->pid]->came_in = $this->InOutStat->sub_in;
-				$this->_all_time_players[$player->pid]->out = $this->InOutStat->sub_out;
+			$this->_all_time_players[$player->pid]->played  = $this->InOutStat->played;
+			$this->_all_time_players[$player->pid]->start   = $this->InOutStat->started;
+			$this->_all_time_players[$player->pid]->came_in = $this->InOutStat->sub_in;
+			$this->_all_time_players[$player->pid]->out     = $this->InOutStat->sub_out;
 
 			foreach ($positioneventtypes AS $event => $eventid)
 			{
@@ -411,7 +382,7 @@ class sportsmanagementModelRosteralltime extends ListModel
 					$query->where('event_type_id = ' . $eventid[$a]->eventtype_id);
 					$query->where('teamplayer_id = ' . $player->playerid);
 					$db->setQuery($query);
-					$event_type_id = 'event_type_id_' . $eventid[$a]->eventtype_id;
+					$event_type_id          = 'event_type_id_' . $eventid[$a]->eventtype_id;
 					$player->$event_type_id = $db->loadResult();
 
 					if (!isset($this->_all_time_players[$player->pid]->$event_type_id))
@@ -424,9 +395,36 @@ class sportsmanagementModelRosteralltime extends ListModel
 			}
 		}
 
-			return $this->_all_time_players;
+		return $this->_all_time_players;
 	}
 
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since 1.6
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		// Reference global application object
+		$app = Factory::getApplication();
+
+		// JInput object
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+
+		// Initialise variables.
+		$app = Factory::getApplication('site');
+
+		// List state information
+		$value = $this->getUserStateFromRequest($this->context . '.limit', 'limit', $app->getCfg('list_limit', 0));
+		$this->setState('list.limit', $value);
+
+		$value = $jinput->getUInt('limitstart', 0);
+		$this->setState('list.start', $value);
+
+	}
 
 
 }

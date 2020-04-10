@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -234,12 +235,11 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 	private $_statistic = array();
 
 
-
-
 	/**
 	 * sportsmanagementModelJLXMLExports::__construct()
 	 *
-	 * @param   mixed $config
+	 * @param   mixed  $config
+	 *
 	 * @return void
 	 */
 	public function __construct($config = array())
@@ -248,28 +248,28 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 		parent::__construct($config);
 		$getDBConnection = sportsmanagementHelper::getDBConnection();
 		parent::setDbo($getDBConnection);
-		$this->app = Factory::getApplication();
-		$this->user    = Factory::getUser();
+		$this->app    = Factory::getApplication();
+		$this->user   = Factory::getUser();
 		$this->jinput = $this->app->input;
 		$this->option = $this->jinput->getCmd('option');
-		$this->jsmdb = $this->getDbo();
-		$this->query = $this->jsmdb->getQuery(true);
+		$this->jsmdb  = $this->getDbo();
+		$this->query  = $this->jsmdb->getQuery(true);
 	}
 
-		  /**
-		   * exportData
-		   *
-		   * Export the active project data to xml
-		   *
-		   * @access public
-		   * @since  1.5.0a
-		   *
-		   * @return null
-		   */
+	/**
+	 * exportData
+	 *
+	 * Export the active project data to xml
+	 *
+	 * @access public
+	 * @return null
+	 * @since  1.5.0a
+	 *
+	 */
 	public function exportData()
 	{
 		$this->_project_id = $this->jinput->getVar('pid');
-		$this->_update = $this->jinput->getVar('update');
+		$this->_update     = $this->jinput->getVar('update');
 
 		if (empty($this->_project_id) || $this->_project_id == 0)
 		{
@@ -278,7 +278,7 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 		else
 		{
 			//  das ist neu
-			 $filename = $this->_getIdFromData('name', $this->_project);
+			$filename = $this->_getIdFromData('name', $this->_project);
 
 			if (empty($filename))
 			{
@@ -289,18 +289,18 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 				else
 				{
 					/**
-*
- * get the project datas
-*/
+					 *
+					 * get the project datas
+					 */
 					$this->_getProjectData();
-					$filename = $this->_getIdFromData('name', $this->_project);
+					$filename    = $this->_getIdFromData('name', $this->_project);
 					$filename[0] = $filename[0] . "-" . $table;
 				}
 			}
 
-				$l98filename = OutputFilter::stringURLSafe($filename[0]) . "-" . date("ymd-His");
-				$file = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . $this->user->username . DIRECTORY_SEPARATOR . OutputFilter::stringURLSafe($filename[0]) . '.jlg';
-				$userpath = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . $this->user->username;
+			$l98filename = OutputFilter::stringURLSafe($filename[0]) . "-" . date("ymd-His");
+			$file        = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . $this->user->username . DIRECTORY_SEPARATOR . OutputFilter::stringURLSafe($filename[0]) . '.jlg';
+			$userpath    = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . $this->user->username;
 
 			if (Folder::exists($userpath))
 			{
@@ -310,14 +310,14 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 				Folder::create($userpath);
 			}
 
-				   $output = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
+			$output = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
 
-				// Open the project
-				$output .= "<project>\n";
+			// Open the project
+			$output .= "<project>\n";
 
 			if ($this->_update)
 			{
-				 // Get the matches data
+				// Get the matches data
 				$output .= $this->_addToXml($this->_getMatchData());
 			}
 			else
@@ -450,125 +450,89 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 				$output .= $this->_addToXml($this->_getStatistic());
 			}
 
-				// Close the project
-				$output .= '</project>';
+			// Close the project
+			$output .= '</project>';
 
-				// Mal als test
-				$xmlfile = $xmlfile . $output;
+			// Mal als test
+			$xmlfile = $xmlfile . $output;
 
-				// Download the generated xml
-				$this->downloadXml($output, "");
+			// Download the generated xml
+			$this->downloadXml($output, "");
 
-				// Close the application
-				$app = Factory::getApplication();
-				$app->close();
+			// Close the application
+			$app = Factory::getApplication();
+			$app->close();
 		}
 	}
 
 	/**
-	 * downloadXml
+	 * _getIdFromData
 	 *
-	 * Pop-up the browser's download window with the generated xml file
+	 * Get only the ids array from the full array
 	 *
-	 * @param   string $data generated xml data
+	 * @param   string  $id     field name what we find in the array
+	 * @param   array   $array  the array where we find the field
 	 *
-	 * @since 1.5.0a
+	 * @access private
+	 * @return void
+	 * @since  1.5.0a
 	 *
-	 * @return null
 	 */
-	function downloadXml($data, $table)
+	private function _getIdFromData($id, $array)
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$db    = $this->getDbo();
-		$this->query = $this->jsmdb->getQuery(true);
-
-			  jimport('joomla.filter.output');
-		$filename = $this->_getIdFromData('name', $this->_project);
-
-		if (empty($filename))
+		if (is_array($array) && count($array) > 0)
 		{
-			$this->_project_id = $app->getUserState($option . 'project');
+			$ids = array();
 
-			if (empty($this->_project_id) || $this->_project_id == 0)
+			foreach ($array as $key => $value)
 			{
-				Log::add(Text::_('COM_SPORTSMANAGEMENT_XML_EXPORT_MODEL_SELECT_PROJECT'));
+				if (array_key_exists($id, $value) && $value[$id] != '')
+				{
+					$ids[] = $value[$id];
+				}
 			}
-			else
-			{
-				// Get the project datas
-				$this->_getProjectData();
-				$filename = $this->_getIdFromData('name', $this->_project);
-				$filename[0] = $filename[0] . "-" . $table;
-			}
+
+			return $ids;
 		}
 
-		header('Content-type: "text/xml"; charset="utf-8"');
-		header("Content-Disposition: attachment; filename=\"" . OutputFilter::stringURLSafe($filename[0]) . "-" . date("ymd-His") . ".jlg\"");
-		header("Expires: " . gmdate("D, d M Y H:i:s", mktime(date("H") + 2, date("i"), date("s"), date("m"), date("d"), date("Y"))) . " GMT");
-		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-		header("Cache-Control: no-cache, must-revalidate");
-		header("Pragma: no-cache");
-
-		ob_clean();
-		echo $data;
+		return false;
 	}
 
 	/**
-	 * Removes invalid XML
+	 * sportsmanagementModelJLXMLExports::_getProjectData()
 	 *
-	 * @access public
-	 * @param   string $value
-	 * @return string
+	 * @return
 	 */
-	private function stripInvalidXml($value)
+	private function _getProjectData()
 	{
-		$ret = '';
-		$current;
+		$this->query->select('*');
+		$this->query->from('#__sportsmanagement_project');
+		$this->query->where('id = ' . $this->_project_id);
 
-		if (is_null($value))
+		$this->jsmdb->setQuery($this->query);
+		$this->jsmdb->execute();
+
+		if ($this->jsmdb->getNumRows() > 0)
 		{
-			return $ret;
+			$result              = $this->jsmdb->loadAssocList();
+			$result[0]['object'] = 'SportsManagement';
+			$this->_project      = $result;
+
+			return $result;
 		}
 
-		$length = strlen($value);
-
-		for ($i = 0; $i < $length; $i++)
-		{
-			$current = ord($value{$i});
-
-			if (($current == 0x9)
-				|| ($current == 0xA)
-				|| ($current == 0xD)
-				|| (($current >= 0x20) && ($current <= 0xD7FF))
-				|| (($current >= 0xE000) && ($current <= 0xFFFD))
-				|| (($current >= 0x10000) && ($current <= 0x10FFFF))
-			)
-			{
-						$ret .= chr($current);
-			}
-			else
-			{
-				$ret .= ' ';
-			}
-		}
-
-		return $ret;
+		return false;
 	}
 
 	/**
 	 * Add data to the xml
 	 *
-	 * @param   array $data data what we want to add in the xml
+	 * @param   array  $data  data what we want to add in the xml
 	 *
 	 * @access private
+	 * @return void
 	 * @since  1.5.0a
 	 *
-	 * @return void
 	 */
 	private function _addToXml($data)
 	{
@@ -599,38 +563,74 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 	}
 
 	/**
-	 * _getIdFromData
+	 * Removes invalid XML
 	 *
-	 * Get only the ids array from the full array
+	 * @access public
 	 *
-	 * @param   string $id    field name what we find in the array
-	 * @param   array  $array the array where we find the field
+	 * @param   string  $value
 	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return void
+	 * @return string
 	 */
-	private function _getIdFromData($id,$array)
+	private function stripInvalidXml($value)
 	{
-		if (is_array($array) && count($array) > 0)
+		$ret = '';
+		$current;
+
+		if (is_null($value))
 		{
-			$ids = array();
+			return $ret;
+		}
 
-			foreach ($array as $key => $value)
+		$length = strlen($value);
+
+		for ($i = 0; $i < $length; $i++)
+		{
+			$current = ord($value{$i});
+
+			if (($current == 0x9)
+				|| ($current == 0xA)
+				|| ($current == 0xD)
+				|| (($current >= 0x20) && ($current <= 0xD7FF))
+				|| (($current >= 0xE000) && ($current <= 0xFFFD))
+				|| (($current >= 0x10000) && ($current <= 0x10FFFF))
+			)
 			{
-				if (array_key_exists($id, $value) && $value[$id] != '')
-				{
-					$ids[] = $value[$id];
-				}
+				$ret .= chr($current);
 			}
+			else
+			{
+				$ret .= ' ';
+			}
+		}
 
-			return $ids;
+		return $ret;
+	}
+
+	/**
+	 * sportsmanagementModelJLXMLExports::_getMatchData()
+	 *
+	 * @return
+	 */
+	private function _getMatchData()
+	{
+		$this->query->select('*');
+		$this->query->from('#__sportsmanagement_match as m');
+		$this->query->join('INNER', '#__sportsmanagement_round as r ON r.id = m.round_id');
+		$this->query->where('r.project_id = ' . $this->_project_id);
+		$this->jsmdb->setQuery($this->query);
+		$this->jsmdb->execute();
+
+		if ($this->jsmdb->getNumRows() > 0)
+		{
+			$result              = $this->jsmdb->loadAssocList();
+			$result[0]['object'] = 'Match';
+			$this->_match        = $result;
+
+			return $result;
 		}
 
 		return false;
 	}
-
 
 	/**
 	 * sportsmanagementModelJLXMLExports::_getSportsManagementVersion()
@@ -644,23 +644,23 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 		$this->query->from('#__extensions');
 		$this->query->where('name LIKE ' . $this->jsmdb->Quote('' . 'com_sportsmanagement' . ''));
 		$this->jsmdb->setQuery($this->query);
-		  $manifest_cache = json_decode($this->jsmdb->loadResult(), true);
+		$manifest_cache = json_decode($this->jsmdb->loadResult(), true);
 
 		if ($manifest_cache['version'])
 		{
-			$result[0]['version'] = $manifest_cache['version'];
+			$result[0]['version']       = $manifest_cache['version'];
 			$result[0]['exportversion'] = $manifest_cache['version'];
 			$result[0]['exportRoutine'] = $exportRoutine;
-			$result[0]['exportDate'] = date('Y-m-d');
-			$result[0]['exportTime'] = date('H:i:s');
+			$result[0]['exportDate']    = date('Y-m-d');
+			$result[0]['exportTime']    = date('H:i:s');
 
 			if (version_compare(JVERSION, '3.0.0', 'ge'))
 			{
-				  $result[0]['exportSystem'] = Factory::getConfig()->get('sitename');
+				$result[0]['exportSystem'] = Factory::getConfig()->get('sitename');
 			}
 			else
 			{
-				  $result[0]['exportSystem'] = Factory::getConfig()->getValue('sitename');
+				$result[0]['exportSystem'] = Factory::getConfig()->getValue('sitename');
 			}
 
 			$result[0]['object'] = 'SportsManagementVersion';
@@ -668,29 +668,26 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 			return $result;
 		}
 
-			return false;
+		return false;
 	}
 
-
 	/**
-	 * sportsmanagementModelJLXMLExports::_getProjectData()
+	 * sportsmanagementModelJLXMLExports::_getSportsTypeData()
 	 *
 	 * @return
 	 */
-	private function _getProjectData()
+	private function _getSportsTypeData()
 	{
 		$this->query->select('*');
-		$this->query->from('#__sportsmanagement_project');
-		$this->query->where('id = ' . $this->_project_id);
-
-			  $this->jsmdb->setQuery($this->query);
+		$this->query->from('#__sportsmanagement_sports_type');
+		$this->query->where('id = ' . $this->_project[0]['sports_type_id']);
+		$this->jsmdb->setQuery($this->query);
 		$this->jsmdb->execute();
 
 		if ($this->jsmdb->getNumRows() > 0)
 		{
-			$result = $this->jsmdb->loadAssocList();
-			$result[0]['object'] = 'SportsManagement';
-			$this->_project = $result;
+			$result              = $this->jsmdb->loadAssocList();
+			$result[0]['object'] = 'SportsType';
 
 			return $result;
 		}
@@ -698,6 +695,53 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 		return false;
 	}
 
+	/**
+	 * sportsmanagementModelJLXMLExports::_getLeagueData()
+	 *
+	 * @return
+	 */
+	private function _getLeagueData()
+	{
+		$this->query->select('*');
+		$this->query->from('#__sportsmanagement_league');
+		$this->query->where('id = ' . $this->_project[0]['league_id']);
+		$this->jsmdb->setQuery($this->query);
+		$this->jsmdb->execute();
+
+		if ($this->jsmdb->getNumRows() > 0)
+		{
+			$result              = $this->jsmdb->loadAssocList();
+			$result[0]['object'] = 'League';
+
+			return $result;
+		}
+
+		return false;
+	}
+
+	/**
+	 * sportsmanagementModelJLXMLExports::_getSeasonData()
+	 *
+	 * @return
+	 */
+	private function _getSeasonData()
+	{
+		$this->query->select('*');
+		$this->query->from('#__sportsmanagement_season');
+		$this->query->where('id = ' . $this->_project[0]['season_id']);
+		$this->jsmdb->setQuery($this->query);
+		$this->jsmdb->execute();
+
+		if ($this->jsmdb->getNumRows() > 0)
+		{
+			$result              = $this->jsmdb->loadAssocList();
+			$result[0]['object'] = 'Season';
+
+			return $result;
+		}
+
+		return false;
+	}
 
 	/**
 	 * sportsmanagementModelJLXMLExports::_getTemplateData()
@@ -716,7 +760,7 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 			$master_template_id = $this->_project[0]['master_template'];
 		}
 
-			  $this->query->select('*');
+		$this->query->select('*');
 		$this->query->from('#__sportsmanagement_template_config');
 		$this->query->where('project_id = ' . $master_template_id);
 		$this->jsmdb->setQuery($this->query);
@@ -724,7 +768,7 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
 		if ($this->jsmdb->getNumRows() > 0)
 		{
-			$result = $this->jsmdb->loadAssocList();
+			$result              = $this->jsmdb->loadAssocList();
 			$result[0]['object'] = 'Template';
 
 			return $result;
@@ -732,82 +776,6 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
 		return false;
 	}
-
-
-	/**
-	 * sportsmanagementModelJLXMLExports::_getLeagueData()
-	 *
-	 * @return
-	 */
-	private function _getLeagueData()
-	{
-		$this->query->select('*');
-		$this->query->from('#__sportsmanagement_league');
-		$this->query->where('id = ' . $this->_project[0]['league_id']);
-		$this->jsmdb->setQuery($this->query);
-		$this->jsmdb->execute();
-
-		if ($this->jsmdb->getNumRows() > 0)
-		{
-			$result = $this->jsmdb->loadAssocList();
-			$result[0]['object'] = 'League';
-
-			return $result;
-		}
-
-		return false;
-	}
-
-
-	/**
-	 * sportsmanagementModelJLXMLExports::_getSportsTypeData()
-	 *
-	 * @return
-	 */
-	private function _getSportsTypeData()
-	{
-		$this->query->select('*');
-		$this->query->from('#__sportsmanagement_sports_type');
-		$this->query->where('id = ' . $this->_project[0]['sports_type_id']);
-		$this->jsmdb->setQuery($this->query);
-		$this->jsmdb->execute();
-
-		if ($this->jsmdb->getNumRows() > 0)
-		{
-			$result = $this->jsmdb->loadAssocList();
-			$result[0]['object'] = 'SportsType';
-
-			return $result;
-		}
-
-		return false;
-	}
-
-
-	/**
-	 * sportsmanagementModelJLXMLExports::_getSeasonData()
-	 *
-	 * @return
-	 */
-	private function _getSeasonData()
-	{
-		$this->query->select('*');
-		$this->query->from('#__sportsmanagement_season');
-		$this->query->where('id = ' . $this->_project[0]['season_id']);
-		$this->jsmdb->setQuery($this->query);
-		$this->jsmdb->execute();
-
-		if ($this->jsmdb->getNumRows() > 0)
-		{
-			$result = $this->jsmdb->loadAssocList();
-			$result[0]['object'] = 'Season';
-
-			return $result;
-		}
-
-		return false;
-	}
-
 
 	/**
 	 * sportsmanagementModelJLXMLExports::_getDivisionData()
@@ -824,7 +792,7 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
 		if ($this->jsmdb->getNumRows() > 0)
 		{
-			$result = $this->jsmdb->loadAssocList();
+			$result              = $this->jsmdb->loadAssocList();
 			$result[0]['object'] = 'LeagueDivision';
 
 			return $result;
@@ -873,42 +841,15 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
 		if ($this->jsmdb->getNumRows() > 0)
 		{
-			$result = $this->jsmdb->loadAssocList();
+			$result              = $this->jsmdb->loadAssocList();
 			$result[0]['object'] = 'ProjectTeam';
-			$this->_projectteam =& $result;
+			$this->_projectteam  =& $result;
 
 			return $result;
 		}
 
 		return false;
 	}
-
-
-	/**
-	 * sportsmanagementModelJLXMLExports::_getProjectPositionData()
-	 *
-	 * @return
-	 */
-	private function _getProjectPositionData()
-	{
-		$this->query->select('*');
-		$this->query->from('#__sportsmanagement_project_position');
-		$this->query->where('project_id = ' . $this->_project_id);
-		$this->jsmdb->setQuery($this->query);
-		$this->jsmdb->execute();
-
-		if ($this->jsmdb->getNumRows() > 0)
-		{
-			$result = $this->jsmdb->loadAssocList();
-			$result[0]['object'] = 'ProjectPosition';
-			$this->_projectposition =& $result;
-
-			return $result;
-		}
-
-		return false;
-	}
-
 
 	/**
 	 * sportsmanagementModelJLXMLExports::_getProjectRefereeData()
@@ -925,8 +866,8 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
 		if ($this->jsmdb->getNumRows() > 0)
 		{
-			$result = $this->jsmdb->loadAssocList();
-			$result[0]['object'] = 'ProjectReferee';
+			$result                = $this->jsmdb->loadAssocList();
+			$result[0]['object']   = 'ProjectReferee';
 			$this->_projectreferee =& $result;
 
 			return $result;
@@ -935,6 +876,30 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 		return false;
 	}
 
+	/**
+	 * sportsmanagementModelJLXMLExports::_getProjectPositionData()
+	 *
+	 * @return
+	 */
+	private function _getProjectPositionData()
+	{
+		$this->query->select('*');
+		$this->query->from('#__sportsmanagement_project_position');
+		$this->query->where('project_id = ' . $this->_project_id);
+		$this->jsmdb->setQuery($this->query);
+		$this->jsmdb->execute();
+
+		if ($this->jsmdb->getNumRows() > 0)
+		{
+			$result                 = $this->jsmdb->loadAssocList();
+			$result[0]['object']    = 'ProjectPosition';
+			$this->_projectposition =& $result;
+
+			return $result;
+		}
+
+		return false;
+	}
 
 	/**
 	 * sportsmanagementModelJLXMLExports::_getTeamData()
@@ -960,9 +925,9 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
 			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->jsmdb->loadAssocList();
+				$result              = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'JL_Team';
-				$this->_team =& $result;
+				$this->_team         =& $result;
 
 				return $result;
 			}
@@ -981,7 +946,7 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 	 */
 	private function _getClubData()
 	{
-		$cIDs = array();
+		$cIDs         = array();
 		$teamClub_ids = $this->_getIdFromData('club_id', $this->_team);
 
 		if (is_array($teamClub_ids))
@@ -1001,9 +966,9 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
 			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->jsmdb->loadAssocList();
+				$result              = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'Club';
-				$this->_club = $result;
+				$this->_club         = $result;
 
 				return $result;
 			}
@@ -1030,7 +995,7 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
 		if ($this->jsmdb->getNumRows() > 0)
 		{
-			$result = $this->jsmdb->loadAssocList();
+			$result              = $this->jsmdb->loadAssocList();
 			$result[0]['object'] = 'Round';
 
 			return $result;
@@ -1039,34 +1004,6 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 		return false;
 	}
 
-
-	/**
-	 * sportsmanagementModelJLXMLExports::_getMatchData()
-	 *
-	 * @return
-	 */
-	private function _getMatchData()
-	{
-		$this->query->select('*');
-		$this->query->from('#__sportsmanagement_match as m');
-		$this->query->join('INNER', '#__sportsmanagement_round as r ON r.id = m.round_id');
-		$this->query->where('r.project_id = ' . $this->_project_id);
-		$this->jsmdb->setQuery($this->query);
-		$this->jsmdb->execute();
-
-		if ($this->jsmdb->getNumRows() > 0)
-		{
-			$result = $this->jsmdb->loadAssocList();
-			$result[0]['object'] = 'Match';
-			$this->_match = $result;
-
-			return $result;
-		}
-
-		return false;
-	}
-
-
 	/**
 	 * sportsmanagementModelJLXMLExports::_getPlaygroundData()
 	 *
@@ -1074,7 +1011,7 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 	 */
 	private function _getPlaygroundData()
 	{
-		$pgIDs = array();
+		$pgIDs               = array();
 		$clubsPlayground_ids = $this->_getIdFromData('standard_playground', $this->_club);
 
 		if (is_array($clubsPlayground_ids))
@@ -1107,9 +1044,9 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
 			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->jsmdb->loadAssocList();
+				$result              = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'Playground';
-				$this->_playground = $result;
+				$this->_playground   = $result;
 
 				return $result;
 			}
@@ -1119,7 +1056,6 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
 		return false;
 	}
-
 
 	/**
 	 * sportsmanagementModelJLXMLExports::_getTeamPlayerData()
@@ -1137,14 +1073,14 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 			$this->query->from('#__sportsmanagement_team_player');
 			$this->query->where('projectteam_id IN (' . $ids . ')');
 
-					  $this->jsmdb->setQuery($this->query);
+			$this->jsmdb->setQuery($this->query);
 			$this->jsmdb->execute();
 
 			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->jsmdb->loadAssocList();
+				$result              = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'TeamPlayer';
-				$this->_teamplayer = $result;
+				$this->_teamplayer   = $result;
 
 				return $result;
 			}
@@ -1154,50 +1090,6 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
 		return false;
 	}
-
-
-	/**
-	 * sportsmanagementModelJLXMLExports::_getTeamTrainingData()
-	 *
-	 * @return
-	 */
-	private function _getTeamTrainingData()
-	{
-		$teamtraining_ids = $this->_getIdFromData('id', $this->_projectteam);
-
-		if (is_array($teamtraining_ids) && count($teamtraining_ids) > 0)
-		{
-			$ids = implode(',', array_unique($teamtraining_ids));
-			$this->query->select('*');
-			$this->query->from('#__sportsmanagement_team_trainingdata');
-			$this->query->where('project_team_id IN (' . $ids . ')');
-
-			try
-			{
-				  $this->jsmdb->setQuery($this->query);
-				  $this->jsmdb->execute();
-
-				if ($this->jsmdb->getNumRows() > 0)
-				{
-					$result = $this->jsmdb->loadAssocList();
-					$result[0]['object'] = 'TeamTraining';
-					$this->_teamtrainingdata = $result;
-
-					return $result;
-				}
-			}
-			catch (Exception $e)
-			{
-				$this->app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
-				$this->app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), 'error');
-			}
-
-			return false;
-		}
-
-		return false;
-	}
-
 
 	/**
 	 * sportsmanagementModelJLXMLExports::_getTeamStaffData()
@@ -1217,14 +1109,14 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
 			try
 			{
-				  $this->jsmdb->setQuery($this->query);
-				  $this->jsmdb->execute();
+				$this->jsmdb->setQuery($this->query);
+				$this->jsmdb->execute();
 
 				if ($this->jsmdb->getNumRows() > 0)
 				{
-					$result = $this->jsmdb->loadAssocList();
+					$result              = $this->jsmdb->loadAssocList();
 					$result[0]['object'] = 'TeamStaff';
-					$this->_teamstaff = $result;
+					$this->_teamstaff    = $result;
 
 					return $result;
 				}
@@ -1241,33 +1133,40 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 		return false;
 	}
 
-
 	/**
-	 * sportsmanagementModelJLXMLExports::_getMatchPlayerData()
+	 * sportsmanagementModelJLXMLExports::_getTeamTrainingData()
 	 *
 	 * @return
 	 */
-	private function _getMatchPlayerData()
+	private function _getTeamTrainingData()
 	{
-		$match_ids = $this->_getIdFromData('id', $this->_match);
+		$teamtraining_ids = $this->_getIdFromData('id', $this->_projectteam);
 
-		if (is_array($match_ids) && count($match_ids) > 0)
+		if (is_array($teamtraining_ids) && count($teamtraining_ids) > 0)
 		{
-			$ids = implode(",", array_unique($match_ids));
+			$ids = implode(',', array_unique($teamtraining_ids));
 			$this->query->select('*');
-			$this->query->from('#__sportsmanagement_match_player');
-			$this->query->where('match_id IN (' . $ids . ')');
+			$this->query->from('#__sportsmanagement_team_trainingdata');
+			$this->query->where('project_team_id IN (' . $ids . ')');
 
-			$this->jsmdb->setQuery($this->query);
-			$this->jsmdb->execute();
-
-			if ($this->jsmdb->getNumRows() > 0)
+			try
 			{
-				$result = $this->jsmdb->loadAssocList();
-				$result[0]['object'] = 'MatchPlayer';
-				$this->_matchplayer = $result;
+				$this->jsmdb->setQuery($this->query);
+				$this->jsmdb->execute();
 
-				return $result;
+				if ($this->jsmdb->getNumRows() > 0)
+				{
+					$result                  = $this->jsmdb->loadAssocList();
+					$result[0]['object']     = 'TeamTraining';
+					$this->_teamtrainingdata = $result;
+
+					return $result;
+				}
+			}
+			catch (Exception $e)
+			{
+				$this->app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
+				$this->app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), 'error');
 			}
 
 			return false;
@@ -1275,77 +1174,6 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
 		return false;
 	}
-
-
-	/**
-	 * sportsmanagementModelJLXMLExports::_getMatchStaffData()
-	 *
-	 * @return
-	 */
-	private function _getMatchStaffData()
-	{
-		$match_ids = $this->_getIdFromData('id', $this->_match);
-
-		if (is_array($match_ids) && count($match_ids) > 0)
-		{
-			$ids = implode(",", array_unique($match_ids));
-			$this->query->select('*');
-			$this->query->from('#__sportsmanagement_match_staff');
-			$this->query->where('match_id IN (' . $ids . ')');
-
-			$this->jsmdb->setQuery($this->query);
-			$this->jsmdb->execute();
-
-			if ($this->jsmdb->getNumRows() > 0)
-			{
-				$result = $this->jsmdb->loadAssocList();
-				$result[0]['object'] = 'MatchStaff';
-				$this->_matchstaff = $result;
-
-				return $result;
-			}
-
-			return false;
-		}
-
-		return false;
-	}
-
-
-	/**
-	 * sportsmanagementModelJLXMLExports::_getMatchRefereeData()
-	 *
-	 * @return
-	 */
-	private function _getMatchRefereeData()
-	{
-		$match_ids = $this->_getIdFromData('id', $this->_match);
-
-		if (is_array($match_ids) && count($match_ids) > 0)
-		{
-			$ids = implode(",", array_unique($match_ids));
-			$this->query->select('*');
-			$this->query->from('#__sportsmanagement_match_referee');
-			$this->query->where('match_id IN (' . $ids . ')');
-
-			$this->jsmdb->setQuery($this->query);
-			$this->jsmdb->execute();
-
-			if ($this->jsmdb->getNumRows() > 0)
-			{
-				$result = $this->jsmdb->loadAssocList();
-				$result[0]['object'] = 'MatchReferee';
-				$this->_matchreferee = $result;
-
-				return $result;
-			}
-
-			return false;
-		}
-
-		return false;
-	}
-
 
 	/**
 	 * sportsmanagementModelJLXMLExports::_getPositionData()
@@ -1368,9 +1196,9 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
 			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->jsmdb->loadAssocList();
+				$result              = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'Position';
-				$this->_position = $result;
+				$this->_position     = $result;
 
 				return $result;
 			}
@@ -1380,7 +1208,6 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
 		return false;
 	}
-
 
 	/**
 	 * sportsmanagementModelJLXMLExports::_getParentPositionData()
@@ -1403,8 +1230,8 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
 			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->jsmdb->loadAssocList();
-				$result[0]['object'] = 'ParentPosition';
+				$result                = $this->jsmdb->loadAssocList();
+				$result[0]['object']   = 'ParentPosition';
 				$this->_parentposition = $result;
 
 				return $result;
@@ -1415,7 +1242,6 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
 		return false;
 	}
-
 
 	/**
 	 * sportsmanagementModelJLXMLExports::_getPersonData()
@@ -1459,9 +1285,9 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
 			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->jsmdb->loadAssocList();
+				$result              = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'Person';
-				$this->_person = $result;
+				$this->_person       = $result;
 
 				return $result;
 			}
@@ -1471,7 +1297,6 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
 		return false;
 	}
-
 
 	/**
 	 * sportsmanagementModelJLXMLExports::_getMatchEvent()
@@ -1494,9 +1319,9 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
 			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->jsmdb->loadAssocList();
+				$result              = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'MatchEvent';
-				$this->_matchevent = $result;
+				$this->_matchevent   = $result;
 
 				return $result;
 			}
@@ -1506,7 +1331,6 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
 		return false;
 	}
-
 
 	/**
 	 * sportsmanagementModelJLXMLExports::_getEventType()
@@ -1529,9 +1353,9 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
 			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->jsmdb->loadAssocList();
+				$result              = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'EventType';
-				$this->_eventtype = $result;
+				$this->_eventtype    = $result;
 
 				return $result;
 			}
@@ -1542,7 +1366,6 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 		return false;
 	}
 
-
 	/**
 	 * sportsmanagementModelJLXMLExports::_getPositionEventType()
 	 *
@@ -1550,24 +1373,24 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 	 */
 	private function _getPositionEventType()
 	{
-		$eventtype_ids    = $this->_getIdFromData('id', $this->_eventtype);
-		$position_ids    = $this->_getIdFromData('id', $this->_position);
+		$eventtype_ids = $this->_getIdFromData('id', $this->_eventtype);
+		$position_ids  = $this->_getIdFromData('id', $this->_position);
 
 		if (is_array($eventtype_ids) && count($eventtype_ids) > 0)
 		{
-			$event_ids        = implode(",", array_unique($eventtype_ids));
-			$position_ids    = implode(",", array_unique($position_ids));
+			$event_ids    = implode(",", array_unique($eventtype_ids));
+			$position_ids = implode(",", array_unique($position_ids));
 			$this->query->select('*');
 			$this->query->from('#__sportsmanagement_position_eventtype');
 			$this->query->where('eventtype_id IN (' . $event_ids . ')');
 			$this->query->where('position_id IN (' . $position_ids . ')');
 
-					  $this->jsmdb->setQuery($this->query);
+			$this->jsmdb->setQuery($this->query);
 			$this->jsmdb->execute();
 
 			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->jsmdb->loadAssocList();
+				$result              = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'PositionEventType';
 
 				return $result;
@@ -1578,42 +1401,6 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
 		return false;
 	}
-
-
-	/**
-	 * sportsmanagementModelJLXMLExports::_getPositionStatistic()
-	 *
-	 * @return
-	 */
-	private function _getPositionStatistic()
-	{
-		$position_ids = $this->_getIdFromData('id', $this->_position);
-
-		if (is_array($position_ids) && count($position_ids) > 0)
-		{
-			$ids = implode(",", array_unique($position_ids));
-			$this->query->select('*');
-			$this->query->from('#__sportsmanagement_position_statistic');
-			$this->query->where('position_id IN (' . $ids . ')');
-
-			$this->jsmdb->setQuery($this->query);
-			$this->jsmdb->execute();
-
-			if ($this->jsmdb->getNumRows() > 0)
-			{
-				$result = $this->jsmdb->loadAssocList();
-				$result[0]['object'] = 'PositionStatistic';
-				$this->_positionstatistic = $result;
-
-				return $result;
-			}
-
-			return false;
-		}
-
-		return false;
-	}
-
 
 	/**
 	 * sportsmanagementModelJLXMLExports::_getMatchStatistic()
@@ -1636,8 +1423,8 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
 			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->jsmdb->loadAssocList();
-				$result[0]['object'] = 'MatchStatistic';
+				$result                = $this->jsmdb->loadAssocList();
+				$result[0]['object']   = 'MatchStatistic';
 				$this->_matchstatistic = $result;
 
 				return $result;
@@ -1648,7 +1435,6 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
 		return false;
 	}
-
 
 	/**
 	 * sportsmanagementModelJLXMLExports::_getMatchStaffStatistic()
@@ -1671,8 +1457,8 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
 			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->jsmdb->loadAssocList();
-				$result[0]['object'] = 'MatchStaffStatistic';
+				$result                     = $this->jsmdb->loadAssocList();
+				$result[0]['object']        = 'MatchStaffStatistic';
 				$this->_matchstaffstatistic = $result;
 
 				return $result;
@@ -1684,6 +1470,39 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 		return false;
 	}
 
+	/**
+	 * sportsmanagementModelJLXMLExports::_getPositionStatistic()
+	 *
+	 * @return
+	 */
+	private function _getPositionStatistic()
+	{
+		$position_ids = $this->_getIdFromData('id', $this->_position);
+
+		if (is_array($position_ids) && count($position_ids) > 0)
+		{
+			$ids = implode(",", array_unique($position_ids));
+			$this->query->select('*');
+			$this->query->from('#__sportsmanagement_position_statistic');
+			$this->query->where('position_id IN (' . $ids . ')');
+
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+
+			if ($this->jsmdb->getNumRows() > 0)
+			{
+				$result                   = $this->jsmdb->loadAssocList();
+				$result[0]['object']      = 'PositionStatistic';
+				$this->_positionstatistic = $result;
+
+				return $result;
+			}
+
+			return false;
+		}
+
+		return false;
+	}
 
 	/**
 	 * sportsmanagementModelJLXMLExports::_getStatistic()
@@ -1719,7 +1538,7 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 		{
 			$ids = implode(",", array_unique($sIDs));
 			$this->query->select('*');
-						$this->query->from('#__sportsmanagement_statistic');
+			$this->query->from('#__sportsmanagement_statistic');
 			$this->query->where('id IN (' . $ids . ')');
 
 			$this->jsmdb->setQuery($this->query);
@@ -1727,9 +1546,164 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
 			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->jsmdb->loadAssocList();
+				$result              = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'Statistic';
-				$this->_person = $result;
+				$this->_person       = $result;
+
+				return $result;
+			}
+
+			return false;
+		}
+
+		return false;
+	}
+
+	/**
+	 * downloadXml
+	 *
+	 * Pop-up the browser's download window with the generated xml file
+	 *
+	 * @param   string  $data  generated xml data
+	 *
+	 * @return null
+	 * @since 1.5.0a
+	 *
+	 */
+	function downloadXml($data, $table)
+	{
+		// Reference global application object
+		$app = Factory::getApplication();
+
+		// JInput object
+		$jinput      = $app->input;
+		$option      = $jinput->getCmd('option');
+		$db          = $this->getDbo();
+		$this->query = $this->jsmdb->getQuery(true);
+
+		jimport('joomla.filter.output');
+		$filename = $this->_getIdFromData('name', $this->_project);
+
+		if (empty($filename))
+		{
+			$this->_project_id = $app->getUserState($option . 'project');
+
+			if (empty($this->_project_id) || $this->_project_id == 0)
+			{
+				Log::add(Text::_('COM_SPORTSMANAGEMENT_XML_EXPORT_MODEL_SELECT_PROJECT'));
+			}
+			else
+			{
+				// Get the project datas
+				$this->_getProjectData();
+				$filename    = $this->_getIdFromData('name', $this->_project);
+				$filename[0] = $filename[0] . "-" . $table;
+			}
+		}
+
+		header('Content-type: "text/xml"; charset="utf-8"');
+		header("Content-Disposition: attachment; filename=\"" . OutputFilter::stringURLSafe($filename[0]) . "-" . date("ymd-His") . ".jlg\"");
+		header("Expires: " . gmdate("D, d M Y H:i:s", mktime(date("H") + 2, date("i"), date("s"), date("m"), date("d"), date("Y"))) . " GMT");
+		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+		header("Cache-Control: no-cache, must-revalidate");
+		header("Pragma: no-cache");
+
+		ob_clean();
+		echo $data;
+	}
+
+	/**
+	 * sportsmanagementModelJLXMLExports::_getMatchPlayerData()
+	 *
+	 * @return
+	 */
+	private function _getMatchPlayerData()
+	{
+		$match_ids = $this->_getIdFromData('id', $this->_match);
+
+		if (is_array($match_ids) && count($match_ids) > 0)
+		{
+			$ids = implode(",", array_unique($match_ids));
+			$this->query->select('*');
+			$this->query->from('#__sportsmanagement_match_player');
+			$this->query->where('match_id IN (' . $ids . ')');
+
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+
+			if ($this->jsmdb->getNumRows() > 0)
+			{
+				$result              = $this->jsmdb->loadAssocList();
+				$result[0]['object'] = 'MatchPlayer';
+				$this->_matchplayer  = $result;
+
+				return $result;
+			}
+
+			return false;
+		}
+
+		return false;
+	}
+
+	/**
+	 * sportsmanagementModelJLXMLExports::_getMatchStaffData()
+	 *
+	 * @return
+	 */
+	private function _getMatchStaffData()
+	{
+		$match_ids = $this->_getIdFromData('id', $this->_match);
+
+		if (is_array($match_ids) && count($match_ids) > 0)
+		{
+			$ids = implode(",", array_unique($match_ids));
+			$this->query->select('*');
+			$this->query->from('#__sportsmanagement_match_staff');
+			$this->query->where('match_id IN (' . $ids . ')');
+
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+
+			if ($this->jsmdb->getNumRows() > 0)
+			{
+				$result              = $this->jsmdb->loadAssocList();
+				$result[0]['object'] = 'MatchStaff';
+				$this->_matchstaff   = $result;
+
+				return $result;
+			}
+
+			return false;
+		}
+
+		return false;
+	}
+
+	/**
+	 * sportsmanagementModelJLXMLExports::_getMatchRefereeData()
+	 *
+	 * @return
+	 */
+	private function _getMatchRefereeData()
+	{
+		$match_ids = $this->_getIdFromData('id', $this->_match);
+
+		if (is_array($match_ids) && count($match_ids) > 0)
+		{
+			$ids = implode(",", array_unique($match_ids));
+			$this->query->select('*');
+			$this->query->from('#__sportsmanagement_match_referee');
+			$this->query->where('match_id IN (' . $ids . ')');
+
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+
+			if ($this->jsmdb->getNumRows() > 0)
+			{
+				$result              = $this->jsmdb->loadAssocList();
+				$result[0]['object'] = 'MatchReferee';
+				$this->_matchreferee = $result;
 
 				return $result;
 			}

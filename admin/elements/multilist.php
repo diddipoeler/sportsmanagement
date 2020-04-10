@@ -41,6 +41,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -71,39 +72,39 @@ class JFormFieldMultiList extends JFormField
 	function getInput()
 	{
 		// Base name of the HTML control.
-		$ctrl    = $control_name . '[' . $name . ']';
+		$ctrl = $control_name . '[' . $name . ']';
 
 		// Construct an array of the HTML OPTION statements.
-		$options = array ();
+		$options = array();
 
 		foreach ($node->children() as $option)
 		{
-			$val    = $option->attributes('value');
-			$text    = $option->data();
+			$val       = $option->attributes('value');
+			$text      = $option->data();
 			$options[] = HTMLHelper::_('select.option', $val, Text::_($text));
 		}
 
 		// Construct the various argument calls that are supported.
-		$attribs    = ' ';
+		$attribs = ' ';
 
 		if ($v = $node->attributes('size'))
 		{
-			$attribs    .= 'size="' . $v . '"';
+			$attribs .= 'size="' . $v . '"';
 		}
 
 		if ($v = $node->attributes('class'))
 		{
-			$attribs    .= 'class="' . $v . '"';
+			$attribs .= 'class="' . $v . '"';
 		}
 		else
 		{
-			$attribs    .= 'class="inputbox"';
+			$attribs .= 'class="inputbox"';
 		}
 
 		if ($m = $node->attributes('multiple'))
 		{
-			$attribs    .= ' multiple="multiple"';
-			$ctrl        .= '[]';
+			$attribs .= ' multiple="multiple"';
+			$ctrl    .= '[]';
 		}
 
 		// Render the HTML SELECT list.

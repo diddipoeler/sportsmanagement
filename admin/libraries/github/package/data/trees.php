@@ -26,9 +26,9 @@ class JGithubPackageDataTrees extends JGithubPackage
 	 * @param   string  $repo   The name of the GitHub repository.
 	 * @param   string  $sha    The SHA1 value to set the reference to.
 	 *
+	 * @return object
 	 * @since   3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function get($owner, $repo, $sha)
 	{
@@ -47,9 +47,9 @@ class JGithubPackageDataTrees extends JGithubPackage
 	 * @param   string  $repo   The name of the GitHub repository.
 	 * @param   string  $sha    The SHA1 value to set the reference to.
 	 *
+	 * @return object
 	 * @since   3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function getRecursively($owner, $repo, $sha)
 	{
@@ -90,9 +90,9 @@ class JGithubPackageDataTrees extends JGithubPackage
 	 *                              a tree structure
 	 * @param   string  $base_tree  The SHA1 of the tree you want to update with new data.
 	 *
+	 * @return object
 	 * @since   3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function create($owner, $repo, $tree, $base_tree = '')
 	{

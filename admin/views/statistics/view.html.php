@@ -14,11 +14,13 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+
 jimport('joomla.filesystem.file');
 
 
@@ -43,11 +45,11 @@ class sportsmanagementViewStatistics extends sportsmanagementView
 	{
 		$this->table = Table::getInstance('statistic', 'sportsmanagementTable');
 
-			  // Build the html select list for sportstypes
-		$sportstypes[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_SPORTSTYPE_FILTER'), 'id', 'name');
+		// Build the html select list for sportstypes
+		$sportstypes[]  = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_SPORTSTYPE_FILTER'), 'id', 'name');
 		$allSportstypes = BaseDatabaseModel::getInstance('SportsTypes', 'sportsmanagementmodel')->getSportsTypes();
 
-			  $sportstypes = array_merge($sportstypes, $allSportstypes);
+		$sportstypes          = array_merge($sportstypes, $allSportstypes);
 		$lists['sportstypes'] = HTMLHelper::_(
 			'select.genericList',
 			$sportstypes,
@@ -72,7 +74,7 @@ class sportsmanagementViewStatistics extends sportsmanagementView
 		// Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_TITLE');
 
-			  ToolbarHelper::publishList();
+		ToolbarHelper::publishList();
 		ToolbarHelper::unpublishList();
 		ToolbarHelper::divider();
 		ToolbarHelper::editList('statistic.edit');
@@ -80,6 +82,6 @@ class sportsmanagementViewStatistics extends sportsmanagementView
 		ToolbarHelper::custom('statistic.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
 		ToolbarHelper::archiveList('statistic.export', Text::_('JTOOLBAR_EXPORT'));
 
-			  parent::addToolbar();
+		parent::addToolbar();
 	}
 }

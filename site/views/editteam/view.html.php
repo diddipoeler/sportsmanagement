@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 
@@ -28,19 +29,19 @@ use Joomla\CMS\Component\ComponentHelper;
 class sportsmanagementViewEditteam extends sportsmanagementView
 {
 
-		/**
-		 * sportsmanagementViewEditClub::init()
-		 *
-		 * @return void
-		 */
+	/**
+	 * sportsmanagementViewEditClub::init()
+	 *
+	 * @return void
+	 */
 	function init()
 	{
-		$this->item = $this->model->getData();
-		$lists = array();
-		$this->form = $this->get('Form');
-		$extended = sportsmanagementHelper::getExtended($this->item->extended, 'team');
-		$this->extended = $extended;
-		$this->lists = $lists;
+		$this->item                 = $this->model->getData();
+		$lists                      = array();
+		$this->form                 = $this->get('Form');
+		$extended                   = sportsmanagementHelper::getExtended($this->item->extended, 'team');
+		$this->extended             = $extended;
+		$this->lists                = $lists;
 		$this->cfg_which_media_tool = ComponentHelper::getParams($this->option)->get('cfg_which_media_tool', 0);
 	}
 

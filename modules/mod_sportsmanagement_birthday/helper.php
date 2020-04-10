@@ -13,22 +13,24 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
 $mainframe = Factory::getApplication();
-$database = sportsmanagementHelper::getDBConnection();
-$players = array();
-$crew = array();
+$database  = sportsmanagementHelper::getDBConnection();
+$players   = array();
+$crew      = array();
 
 if (!function_exists('jsm_birthday_sort'))
 {
 	/**
 	 * jsm_birthday_sort()
 	 *
-	 * @param   mixed $array
-	 * @param   mixed $arguments
-	 * @param   bool  $keys
+	 * @param   mixed  $array
+	 * @param   mixed  $arguments
+	 * @param   bool   $keys
+	 *
 	 * @return
 	 */
 	function jsm_birthday_sort($array, $arguments = '-', $keys = true)
@@ -36,16 +38,16 @@ if (!function_exists('jsm_birthday_sort'))
 		$mainframe = Factory::getApplication();
 
 		/**
- * Hole eine Liste von Spalten
-*/
+		 * Hole eine Liste von Spalten
+		 */
 		foreach ($array as $key => $row)
 		{
 			$days_to_birthday[$key] = $row['days_to_birthday'];
-			$age[$key] = $row['age'];
+			$age[$key]              = $row['age'];
 		}
 
 		// $sort_age = ( $arguments == '-' ) ? array_multisort($days_to_birthday, SORT_ASC, $age, SORT_ASC, $array )  : array_multisort($days_to_birthday, SORT_ASC, $age, SORT_DESC, $array );
-		$sort_age = ( $arguments == '-' ) ? array_multisort($days_to_birthday, SORT_ASC, $age, SORT_DESC, $array) : array_multisort($days_to_birthday, SORT_ASC, $age, SORT_ASC, $array);
+		$sort_age = ($arguments == '-') ? array_multisort($days_to_birthday, SORT_ASC, $age, SORT_DESC, $array) : array_multisort($days_to_birthday, SORT_ASC, $age, SORT_ASC, $array);
 
 		return $array;
 	}
@@ -53,14 +55,14 @@ if (!function_exists('jsm_birthday_sort'))
 }
 
 $usedp = $params->get('p', '0');
-$p = (is_array($usedp)) ? implode(",", array_map('intval', $usedp)) : (int) $usedp;
+$p     = (is_array($usedp)) ? implode(",", array_map('intval', $usedp)) : (int) $usedp;
 
 $usedteams = "";
 
 /**
-*
+ *
  * get favorite team(s), we have to make a function for this
-*/
+ */
 if ($params->get('use_fav'))
 {
 	$query = $database->getQuery(true);
@@ -87,16 +89,16 @@ if ($params->get('use_fav'))
 }
 else
 {
-	$usedp = $params->get('teams', '0');
+	$usedp     = $params->get('teams', '0');
 	$usedteams = (is_array($usedp)) ? implode(",", array_map('intval', $usedp)) : (int) $usedp;
 }
 
 $birthdaytext = '';
 
 /**
-*
+ *
  * get player info, we have to make a function for this
-*/
+ */
 $dateformat = "DATE_FORMAT(p.birthday,'%Y-%m-%d') AS date_of_birth";
 
 if ($params->get('use_which') <= 1)
@@ -133,11 +135,11 @@ if ($params->get('use_which') <= 1)
 
 	if ($params->get('use_which') == 1)
 	{
-		  $query->where('stp.persontype = 1');
+		$query->where('stp.persontype = 1');
 	}
 	elseif ($params->get('use_which') == 0)
 	{
-		  $query->where(' ( stp.persontype = 1 OR stp.persontype = 2 ) ');
+		$query->where(' ( stp.persontype = 1 OR stp.persontype = 2 ) ');
 	}
 
 	$subquery1->select('pos.name');
@@ -187,18 +189,18 @@ if ($params->get('use_which') <= 1)
 
 	try
 	{
-		  $players = $database->loadAssocList();
+		$players = $database->loadAssocList();
 	}
 	catch (Exception $e)
 	{
-				$mainframe->enqueueMessage(__FILE__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+		$mainframe->enqueueMessage(__FILE__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
 	}
 }
 
 /**
-*
+ *
  * get staff info, we have to make a function for this
-*/
+ */
 if ($params->get('use_which') == 2)
 {
 	$query = $database->getQuery(true);
@@ -234,9 +236,9 @@ if ($params->get('use_which') == 2)
 	}
 
 	/**
-*
- * Exclude players from the staff query to avoid duplicate persons (if a person is both player and staff)
-*/
+	 *
+	 * Exclude players from the staff query to avoid duplicate persons (if a person is both player and staff)
+	 */
 	if (count($players) > 0)
 	{
 		$ids = "0";
@@ -286,6 +288,6 @@ if ($params->get('use_which') == 2)
 	}
 	catch (Exception $e)
 	{
-				$mainframe->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+		$mainframe->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
 	}
 }

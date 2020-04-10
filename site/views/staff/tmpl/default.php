@@ -19,7 +19,7 @@ defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<div class="<?php echo $this->divclasscontainer;?>" id="staff">
+<div class="<?php echo $this->divclasscontainer; ?>" id="staff">
 	<?php
 	echo $this->loadTemplate('projectheading');
 
@@ -29,9 +29,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	}
 
 	/**
- * diddipoeler
- * aufbau der templates
- */
+	 * diddipoeler
+	 * aufbau der templates
+	 */
 	$this->output = array();
 
 	if ($this->config['show_info'])
@@ -69,5 +69,5 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	echo $this->loadTemplate('jsminfo');
 
 	?>
-  
+
 </div>

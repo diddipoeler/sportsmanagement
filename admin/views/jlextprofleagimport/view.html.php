@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -42,14 +43,14 @@ class sportsmanagementViewjlextprofleagimport extends sportsmanagementView
 		$lang = Factory::getLanguage();
 
 		$config = ComponentHelper::getParams('com_media');
-		$post = $this->jinput->post->getArray(array());
-		$files = $this->jinput->get('files');
+		$post   = $this->jinput->post->getArray(array());
+		$files  = $this->jinput->get('files');
 
-		$this->config    = $config;
-		$teile = explode("-", $lang->getTag());
-		$country = JSMCountries::convertIso2to3($teile[1]);
-		$this->country    = $country;
-		$countries = JSMCountries::getCountryOptions();
+		$this->config       = $config;
+		$teile              = explode("-", $lang->getTag());
+		$country            = JSMCountries::convertIso2to3($teile[1]);
+		$this->country      = $country;
+		$countries          = JSMCountries::getCountryOptions();
 		$lists['countries'] = HTMLHelper::_('select.genericlist', $countries, 'country', 'class="inputbox" size="1"', 'value', 'text', $country);
 		$this->countries    = $lists['countries'];
 
@@ -66,16 +67,13 @@ class sportsmanagementViewjlextprofleagimport extends sportsmanagementView
 		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'administrator/components/' . $this->option . '/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";
 		$this->document->addCustomTag($stylelink);
 
-			  // Set toolbar items for the page
+		// Set toolbar items for the page
 		ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROF_LEAGUE_IMPORT_TITLE_1'), 'profleage-cpanel');
 		ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=extensions');
 		ToolbarHelper::divider();
 		parent::addToolbar();
 
 	}
-
-
-
 
 
 }

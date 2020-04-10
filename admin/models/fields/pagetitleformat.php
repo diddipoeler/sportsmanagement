@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Form\FormField;
@@ -25,15 +26,15 @@ class JFormFieldPageTitleFormat extends FormField
 
 	function getInput()
 	{
-		$lang = Factory::getLanguage();
+		$lang      = Factory::getLanguage();
 		$extension = "com_sportsmanagement";
-		$source = JPath::clean(JPATH_ADMINISTRATOR . '/components/' . $extension);
+		$source    = JPath::clean(JPATH_ADMINISTRATOR . '/components/' . $extension);
 		$lang->load($extension, JPATH_ADMINISTRATOR, null, false, false)
-		||    $lang->load($extension, $source, null, false, false)
-		||    $lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
-		||    $lang->load($extension, $source, $lang->getDefault(), false, false);
+		|| $lang->load($extension, $source, null, false, false)
+		|| $lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
+		|| $lang->load($extension, $source, $lang->getDefault(), false, false);
 
-			  $mitems = array();
+		$mitems   = array();
 		$mitems[] = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_PROJECT'));
 		$mitems[] = HTMLHelper::_('select.option', 1, Text::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_PROJECT_LEAGUE'));
 		$mitems[] = HTMLHelper::_('select.option', 2, Text::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_PROJECT_LEAGUE_SEASON'));
@@ -43,12 +44,12 @@ class JFormFieldPageTitleFormat extends FormField
 		$mitems[] = HTMLHelper::_('select.option', 6, Text::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_SEASON'));
 		$mitems[] = HTMLHelper::_('select.option', 7, Text::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_NONE'));
 
-			  $output = HTMLHelper::_(
-				  'select.genericlist',  $mitems,
-				  $this->name,
-				  'class="inputbox" size="1"',
-				  'value', 'text', $this->value, $this->id
-			  );
+		$output = HTMLHelper::_(
+			'select.genericlist', $mitems,
+			$this->name,
+			'class="inputbox" size="1"',
+			'value', 'text', $this->value, $this->id
+		);
 
 		return $output;
 	}

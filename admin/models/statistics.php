@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
@@ -33,48 +34,24 @@ class sportsmanagementModelStatistics extends ListModel
 	/**
 	 * sportsmanagementModelStatistics::__construct()
 	 *
-	 * @param   mixed $config
+	 * @param   mixed  $config
+	 *
 	 * @return void
 	 */
 	public function __construct($config = array())
 	{
-				$config['filter_fields'] = array(
-						'obj.name',
-						'obj.short',
-						'obj.icon',
-						'obj.sports_type_id',
-						'obj.published',
-						'obj.id',
-						'obj.ordering'
-						);
-				parent::__construct($config);
-				$getDBConnection = sportsmanagementHelper::getDBConnection();
-				parent::setDbo($getDBConnection);
-	}
-
-		  /**
-		   * Method to auto-populate the model state.
-		   *
-		   * Note. Calling getState in this method will result in recursion.
-		   *
-		   * @since 1.6
-		   */
-	protected function populateState($ordering = null, $direction = null)
-	{
-		// Load the filter state.
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
-
-		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string');
-		$this->setState('filter.state', $published);
-		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.sports_type', 'filter_sports_type', '');
-		$this->setState('filter.sports_type', $temp_user_request);
-
-			  $value = Factory::getApplication()->input->getUInt('limitstart', 0);
-		$this->setState('list.start', $value);
-
-		// List state information.
-		parent::populateState('obj.name', 'asc');
+		$config['filter_fields'] = array(
+			'obj.name',
+			'obj.short',
+			'obj.icon',
+			'obj.sports_type_id',
+			'obj.published',
+			'obj.id',
+			'obj.ordering'
+		);
+		parent::__construct($config);
+		$getDBConnection = sportsmanagementHelper::getDBConnection();
+		parent::setDbo($getDBConnection);
 	}
 
 	/**
@@ -84,7 +61,7 @@ class sportsmanagementModelStatistics extends ListModel
 	 */
 	function getListQuery()
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
 
 		// $search   = $this->getState('filter.search');
@@ -92,11 +69,11 @@ class sportsmanagementModelStatistics extends ListModel
 		// $search_state = $this->getState('filter.state');
 
 		// Create a new query object.
-		$db        = $this->getDbo();
-		$query    = $db->getQuery(true);
-		$user    = Factory::getUser();
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true);
+		$user  = Factory::getUser();
 
-			  // Select some fields
+		// Select some fields
 		$query->select('obj.*');
 
 		// From table
@@ -117,20 +94,20 @@ class sportsmanagementModelStatistics extends ListModel
 
 		if ($this->getState('filter.sports_type'))
 		{
-					$query->where('obj.sports_type_id = ' . $this->getState('filter.sports_type'));
+			$query->where('obj.sports_type_id = ' . $this->getState('filter.sports_type'));
 		}
 
 		if (is_numeric($this->getState('filter.state')))
 		{
-					$query->where('obj.published = ' . $this->getState('filter.state'));
+			$query->where('obj.published = ' . $this->getState('filter.state'));
 		}
 
-			$query->order(
-				$db->escape($this->getState('list.ordering', 'obj.name')) . ' ' .
-				$db->escape($this->getState('list.direction', 'ASC'))
-			);
+		$query->order(
+			$db->escape($this->getState('list.ordering', 'obj.name')) . ' ' .
+			$db->escape($this->getState('list.direction', 'ASC'))
+		);
 
-			 return $query;
+		return $query;
 	}
 
 	/**
@@ -142,14 +119,14 @@ class sportsmanagementModelStatistics extends ListModel
 	 */
 	function getPositionStatsOptions($id)
 	{
-		  $app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
 
 		// Create a new query object.
-		$db = sportsmanagementHelper::getDBConnection();
-		$query    = $db->getQuery(true);
+		$db    = sportsmanagementHelper::getDBConnection();
+		$query = $db->getQuery(true);
 
-			  $query->select('s.id AS value, concat(s.name, " (" , st.name, ")") AS text');
+		$query->select('s.id AS value, concat(s.name, " (" , st.name, ")") AS text');
 		$query->from('#__sportsmanagement_statistic AS s');
 		$query->join('INNER', '#__sportsmanagement_position_statistic AS ps ON ps.statistic_id = s.id ');
 		$query->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = s.sports_type_id  ');
@@ -158,7 +135,7 @@ class sportsmanagementModelStatistics extends ListModel
 
 		$db->setQuery($query);
 
-			  return $db->loadObjectList();
+		return $db->loadObjectList();
 	}
 
 	/**
@@ -170,12 +147,12 @@ class sportsmanagementModelStatistics extends ListModel
 	 */
 	function getAvailablePositionStatsOptions($id)
 	{
-		  $app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
 
 		// Create a new query object.
-		$db = sportsmanagementHelper::getDBConnection();
-		$query    = $db->getQuery(true);
+		$db    = sportsmanagementHelper::getDBConnection();
+		$query = $db->getQuery(true);
 		$query->select('s.id AS value, concat(s.name, " (" , st.name, ")") AS text');
 		$query->from('#__sportsmanagement_statistic AS s');
 		$query->join('LEFT', '#__sportsmanagement_position_statistic AS ps ON ps.statistic_id = s.id AND ps.position_id = ' . (int) $id);
@@ -187,7 +164,6 @@ class sportsmanagementModelStatistics extends ListModel
 		return $db->loadObjectList();
 	}
 
-
 	/**
 	 * sportsmanagementModelStatistics::getStatisticListSelect()
 	 *
@@ -195,18 +171,43 @@ class sportsmanagementModelStatistics extends ListModel
 	 */
 	public function getStatisticListSelect()
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
 
 		// Create a new query object.
-		$db = sportsmanagementHelper::getDBConnection();
-		$query    = $db->getQuery(true);
+		$db    = sportsmanagementHelper::getDBConnection();
+		$query = $db->getQuery(true);
 		$query->select('id,name,id AS value,name AS text,short,class,note');
 		$query->from('#__sportsmanagement_statistic');
 		$query->order('name');
 		$db->setQuery($query);
 
 		return $db->loadObjectList();
+	}
+
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since 1.6
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		// Load the filter state.
+		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+
+		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string');
+		$this->setState('filter.state', $published);
+		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.sports_type', 'filter_sports_type', '');
+		$this->setState('filter.sports_type', $temp_user_request);
+
+		$value = Factory::getApplication()->input->getUInt('limitstart', 0);
+		$this->setState('list.start', $value);
+
+		// List state information.
+		parent::populateState('obj.name', 'asc');
 	}
 
 }

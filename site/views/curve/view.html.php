@@ -19,6 +19,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -51,14 +52,14 @@ class sportsmanagementViewCurve extends sportsmanagementView
 			$this->document->addScript($js);
 		}
 
-			$this->season_id = sportsmanagementModelCurve::$season_id;
-			$this->cfg_which_database = sportsmanagementModelCurve::$cfg_which_database;
+		$this->season_id          = sportsmanagementModelCurve::$season_id;
+		$this->cfg_which_database = sportsmanagementModelCurve::$cfg_which_database;
 
 		if (isset($this->project))
 		{
-			$teamid1 = sportsmanagementModelCurve::$teamid1;
-			$teamid2 = sportsmanagementModelCurve::$teamid2;
-			$options = array(    HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_CURVE_CHOOSE_TEAM')) );
+			$teamid1   = sportsmanagementModelCurve::$teamid1;
+			$teamid2   = sportsmanagementModelCurve::$teamid2;
+			$options   = array(HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_CURVE_CHOOSE_TEAM')));
 			$divisions = sportsmanagementModelProject::getDivisions(0, sportsmanagementModelCurve::$cfg_which_database);
 
 			if (count($divisions) > 0)
@@ -66,16 +67,16 @@ class sportsmanagementViewCurve extends sportsmanagementView
 				foreach ($divisions as $d)
 				{
 					$options = array();
-					$teams = sportsmanagementModelProject::getTeams($d->id, 'name', sportsmanagementModelCurve::$cfg_which_database);
-					$i = 0;
+					$teams   = sportsmanagementModelProject::getTeams($d->id, 'name', sportsmanagementModelCurve::$cfg_which_database);
+					$i       = 0;
 
 					foreach ((array) $teams as $t)
 					{
-										$options[] = HTMLHelper::_('select.option', $t->id, $t->name);
+						$options[] = HTMLHelper::_('select.option', $t->id, $t->name);
 
 						if ($i == 0)
 						{
-											$teamid1 = $t->id;
+							$teamid1 = $t->id;
 						}
 
 						if ($i == 1)
@@ -83,7 +84,7 @@ class sportsmanagementViewCurve extends sportsmanagementView
 							$teamid2 = $t->id;
 						}
 
-										$i++;
+						$i++;
 					}
 
 					if ($this->config['which_curve'])
@@ -100,31 +101,31 @@ class sportsmanagementViewCurve extends sportsmanagementView
 			}
 			else
 			{
-				$divisions = array();
+				$divisions   = array();
 				$team1select = array();
 				$team2select = array();
-				$div = $this->model->getDivision(sportsmanagementModelCurve::$division);
+				$div         = $this->model->getDivision(sportsmanagementModelCurve::$division);
 
 				if (empty($div))
 				{
-						$div = new stdClass;
-						$div->id = 0;
-						$div->name = '';
+					$div       = new stdClass;
+					$div->id   = 0;
+					$div->name = '';
 				}
 
 				$divisions[0] = $div;
-				$teams = sportsmanagementModelProject::getTeams(sportsmanagementModelCurve::$division, 'name', sportsmanagementModelCurve::$cfg_which_database);
+				$teams        = sportsmanagementModelProject::getTeams(sportsmanagementModelCurve::$division, 'name', sportsmanagementModelCurve::$cfg_which_database);
 
-						$i = 0;
+				$i = 0;
 
 				foreach ((array) $teams as $t)
 				{
-						$options[] = HTMLHelper::_('select.option', $t->id, $t->name);
+					$options[] = HTMLHelper::_('select.option', $t->id, $t->name);
 
 					if ($i == 0 && $teamid1 == 0)
 					{
-							// $teamid1 = $t->id;
-							$teamid1 = $t->team_id;
+						// $teamid1 = $t->id;
+						$teamid1 = $t->team_id;
 					}
 
 					if ($i == 1 && $teamid2 == 0)
@@ -133,7 +134,7 @@ class sportsmanagementViewCurve extends sportsmanagementView
 						$teamid2 = $t->team_id;
 					}
 
-						$i++;
+					$i++;
 				}
 
 				if ($this->config['which_curve'])
@@ -153,42 +154,42 @@ class sportsmanagementViewCurve extends sportsmanagementView
 				$this->overallconfig['seperator'] = ":";
 			}
 
-			$rankingconfig = sportsmanagementModelProject::getTemplateConfig("ranking", sportsmanagementModelCurve::$cfg_which_database);
-			$this->colors = sportsmanagementModelProject::getColors($rankingconfig['colors'], sportsmanagementModelCurve::$cfg_which_database);
-			$this->divisions = $divisions;
-			$this->division = $this->model->getDivision(sportsmanagementModelCurve::$division);
-			$this->favteams = sportsmanagementModelProject::getFavTeams(sportsmanagementModelCurve::$cfg_which_database);
-			$this->team1 = $this->model->getTeam1(sportsmanagementModelCurve::$division);
-			$this->team2 = $this->model->getTeam2(sportsmanagementModelCurve::$division);
-			$this->allteams = sportsmanagementModelProject::getTeams(sportsmanagementModelCurve::$division, 'name', sportsmanagementModelCurve::$cfg_which_database);
+			$rankingconfig     = sportsmanagementModelProject::getTemplateConfig("ranking", sportsmanagementModelCurve::$cfg_which_database);
+			$this->colors      = sportsmanagementModelProject::getColors($rankingconfig['colors'], sportsmanagementModelCurve::$cfg_which_database);
+			$this->divisions   = $divisions;
+			$this->division    = $this->model->getDivision(sportsmanagementModelCurve::$division);
+			$this->favteams    = sportsmanagementModelProject::getFavTeams(sportsmanagementModelCurve::$cfg_which_database);
+			$this->team1       = $this->model->getTeam1(sportsmanagementModelCurve::$division);
+			$this->team2       = $this->model->getTeam2(sportsmanagementModelCurve::$division);
+			$this->allteams    = sportsmanagementModelProject::getTeams(sportsmanagementModelCurve::$division, 'name', sportsmanagementModelCurve::$cfg_which_database);
 			$this->team1select = $team1select;
 			$this->team2select = $team2select;
 
 			if ($this->config['which_curve'])
 			{
-				$rounds    = sportsmanagementModelProject::getRounds('ASC', sportsmanagementModelCurve::$cfg_which_database);
+				$rounds             = sportsmanagementModelProject::getRounds('ASC', sportsmanagementModelCurve::$cfg_which_database);
 				$this->round_labels = array();
 
 				foreach ($rounds as $r)
 				{
-								  $this->round_labels[] = '"' . $r->name . '"';
+					$this->round_labels[] = '"' . $r->name . '"';
 				}
 
 				$this->_setChartdata(array_merge(sportsmanagementModelProject::getTemplateConfig("flash", sportsmanagementModelCurve::$cfg_which_database), $this->config));
 			}
 			else
 			{
-				  $this->_setChartdata(array_merge(sportsmanagementModelProject::getTemplateConfig("flash", sportsmanagementModelCurve::$cfg_which_database), $this->config));
+				$this->_setChartdata(array_merge(sportsmanagementModelProject::getTemplateConfig("flash", sportsmanagementModelCurve::$cfg_which_database), $this->config));
 			}
 
-				// Set page title
-			  $pageTitle = Text::_('COM_SPORTSMANAGEMENT_CURVE_PAGE_TITLE');
+			// Set page title
+			$pageTitle = Text::_('COM_SPORTSMANAGEMENT_CURVE_PAGE_TITLE');
 
-			if (( isset($this->team1) ) && (isset($this->team1)))
+			if ((isset($this->team1)) && (isset($this->team1)))
 			{
 			}
 
-			  $this->document->setTitle($pageTitle);
+			$this->document->setTitle($pageTitle);
 		}
 
 	}
@@ -197,6 +198,7 @@ class sportsmanagementViewCurve extends sportsmanagementView
 	 * assign the chartdata object for open flash chart library
 	 *
 	 * @param  $config
+	 *
 	 * @return unknown_type
 	 */
 	function _setChartdata($config)
@@ -206,10 +208,10 @@ class sportsmanagementViewCurve extends sportsmanagementView
 
 		// JInput object
 		$jinput = $app->input;
-		  $option = $jinput->getCmd('option');
+		$option = $jinput->getCmd('option');
 
-			  $model = $this->getModel();
-		$rounds    = sportsmanagementModelProject::getRounds('ASC', $model::$cfg_which_database);
+		$model        = $this->getModel();
+		$rounds       = sportsmanagementModelProject::getRounds('ASC', $model::$cfg_which_database);
 		$round_labels = array();
 
 		foreach ($rounds as $r)
@@ -217,11 +219,11 @@ class sportsmanagementViewCurve extends sportsmanagementView
 			$round_labels[] = $r->name;
 		}
 
-		$divisions    = $this->divisions;
+		$divisions = $this->divisions;
 
 		foreach ($divisions as $division)
 		{
-			$data = $model->getDataByDivision($division->id);
+			$data                             = $model->getDataByDivision($division->id);
 			$this->teamranking[$division->id] = $data;
 		}
 	}

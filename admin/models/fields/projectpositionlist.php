@@ -13,12 +13,14 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filesystem\Folder;
+
 FormHelper::loadFieldClass('list');
 
 /**
@@ -55,25 +57,25 @@ class JFormFieldprojectpositionlist extends \JFormFieldList
 		$this->jsmjinput = $this->jsmapp->input;
 		$this->jsmoption = $this->jsmjinput->getCmd('option');
 
-			  $team_id = $this->jsmapp->getUserState("$this->jsmoption.team_id", '0');
-		$persontype = $this->jsmapp->getUserState("$this->jsmoption.persontype", '0');
+		$team_id         = $this->jsmapp->getUserState("$this->jsmoption.team_id", '0');
+		$persontype      = $this->jsmapp->getUserState("$this->jsmoption.persontype", '0');
 		$project_team_id = $this->jsmapp->getUserState("$this->jsmoption.project_team_id", '0');
-		$pid = $this->jsmapp->getUserState("$this->jsmoption.pid", '0');
+		$pid             = $this->jsmapp->getUserState("$this->jsmoption.pid", '0');
 
-			  // Initialize variables.
-		$options = array();
+		// Initialize variables.
+		$options   = array();
 		$select_id = Factory::getApplication()->input->getVar('id');
-		$db = Factory::getDbo();
-		 $query = $db->getQuery(true);
-		 $query->select('pp.id AS value, pos.name AS text');
-			$query->from('#__sportsmanagement_position as pos');
-			$query->join('INNER', '#__sportsmanagement_project_position AS pp ON pp.position_id = pos.id');
-		 $query->join('INNER', '#__sportsmanagement_sports_type AS s ON s.id = pos.sports_type_id');
-			$query->join('INNER', '#__sportsmanagement_person_project_position AS ppp ON pp.project_id = ppp.project_id');
-			$query->where('pp.project_id = ' . $pid);
-		 $query->order('pos.ordering,pos.name');
-			$query->group('pos.id');
-		 $db->setQuery($query);
+		$db        = Factory::getDbo();
+		$query     = $db->getQuery(true);
+		$query->select('pp.id AS value, pos.name AS text');
+		$query->from('#__sportsmanagement_position as pos');
+		$query->join('INNER', '#__sportsmanagement_project_position AS pp ON pp.position_id = pos.id');
+		$query->join('INNER', '#__sportsmanagement_sports_type AS s ON s.id = pos.sports_type_id');
+		$query->join('INNER', '#__sportsmanagement_person_project_position AS ppp ON pp.project_id = ppp.project_id');
+		$query->where('pp.project_id = ' . $pid);
+		$query->order('pos.ordering,pos.name');
+		$query->group('pos.id');
+		$db->setQuery($query);
 
 		try
 		{
@@ -81,17 +83,17 @@ class JFormFieldprojectpositionlist extends \JFormFieldList
 		}
 		catch (Exception $e)
 		{
-			 Factory::getApplication()->enqueueMessage($db->getErrorMsg());
+			Factory::getApplication()->enqueueMessage($db->getErrorMsg());
 		}
 
 		foreach ($options as $row)
 		{
-					$row->text = Text::_($row->text);
+			$row->text = Text::_($row->text);
 		}
 
-				// Merge any additional options in the XML definition.
-				$options = array_merge(parent::getOptions(), $options);
+		// Merge any additional options in the XML definition.
+		$options = array_merge(parent::getOptions(), $options);
 
-				return $options;
+		return $options;
 	}
 }

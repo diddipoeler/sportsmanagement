@@ -53,10 +53,10 @@ class JGoogleDataPicasaPhoto extends JGoogleData
 	 *
 	 * @return  boolean  Success or failure.
 	 *
-	 * @since   3.1.4
 	 * @throws  Exception
 	 * @throws  RuntimeException
 	 * @throws  UnexpectedValueException
+	 * @since   3.1.4
 	 */
 	public function delete($match = '*')
 	{
@@ -148,9 +148,9 @@ class JGoogleDataPicasaPhoto extends JGoogleData
 
 		foreach ($this->xml->children('media', true)->group->thumbnail as $item)
 		{
-			$url = (string) $item->attributes()->url;
-			$width = (int) $item->attributes()->width;
-			$height = (int) $item->attributes()->height;
+			$url            = (string) $item->attributes()->url;
+			$width          = (int) $item->attributes()->width;
+			$height         = (int) $item->attributes()->height;
 			$thumbs[$width] = array('url' => $url, 'w' => $width, 'h' => $height);
 		}
 
@@ -329,7 +329,7 @@ class JGoogleDataPicasaPhoto extends JGoogleData
 			try
 			{
 				$headers = array('GData-Version' => 2, 'Content-type' => 'application/atom+xml', 'If-Match' => $match);
-				$jdata = $this->query($url, $this->xml->asXml(), $headers, 'put');
+				$jdata   = $this->query($url, $this->xml->asXml(), $headers, 'put');
 			}
 			catch (Exception $e)
 			{
@@ -362,8 +362,8 @@ class JGoogleDataPicasaPhoto extends JGoogleData
 	{
 		if ($this->isAuthenticated())
 		{
-			$url = $this->getLink();
-			$jdata = $this->query($url, null, array('GData-Version' => 2));
+			$url       = $this->getLink();
+			$jdata     = $this->query($url, null, array('GData-Version' => 2));
 			$this->xml = $this->safeXml($jdata->body);
 
 			return $this;

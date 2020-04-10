@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\MVC\Controller\BaseController;
 
 /**
@@ -25,15 +26,15 @@ use Joomla\CMS\MVC\Controller\BaseController;
  * @version   $Id$
  * @access    public
  */
-
 class sportsmanagementControllerEventsRanking extends BaseController
 {
 
 	/**
 	 * sportsmanagementControllerEventsRanking::display()
 	 *
-	 * @param   bool $cachable
-	 * @param   bool $urlparams
+	 * @param   bool  $cachable
+	 * @param   bool  $urlparams
+	 *
 	 * @return void
 	 */
 	public function display($cachable = false, $urlparams = false)

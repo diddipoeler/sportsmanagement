@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
@@ -32,7 +33,8 @@ class sportsmanagementControllerround extends JSMControllerForm
 	/**
 	 * Class Constructor
 	 *
-	 * @param   array $config An optional associative array of configuration settings.
+	 * @param   array  $config  An optional associative array of configuration settings.
+	 *
 	 * @return void
 	 * @since  1.5
 	 */
@@ -48,10 +50,10 @@ class sportsmanagementControllerround extends JSMControllerForm
 	 */
 	function startpopulate()
 	{
-		$msgType = 'message';
-		$msg = '';
-		$model = $this->getModel('rounds');
-		$post = Factory::getApplication()->input->post->getArray(array());
+		$msgType    = 'message';
+		$msg        = '';
+		$model      = $this->getModel('rounds');
+		$post       = Factory::getApplication()->input->post->getArray(array());
 		$project_id = $post['project_id'];
 		$scheduling = $post['scheduling'];
 		$time       = $post['time'];
@@ -62,7 +64,7 @@ class sportsmanagementControllerround extends JSMControllerForm
 
 		if (!$teamsorder)
 		{
-			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_NO_CLUB');
+			$msg     = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_NO_CLUB');
 			$msgType = 'error';
 		}
 		else

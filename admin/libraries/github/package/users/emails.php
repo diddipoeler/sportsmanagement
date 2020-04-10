@@ -33,9 +33,9 @@ class JGithubPackageUsersEmails extends JGithubPackage
 	 * Until API v3 is finalized, use the application/vnd.github.v3 media type
 	 * to get this response format.
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function getList()
 	{
@@ -52,9 +52,9 @@ class JGithubPackageUsersEmails extends JGithubPackage
 	 *
 	 * @param   string|array  $email  The email address(es).
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function add($email)
 	{
@@ -72,9 +72,9 @@ class JGithubPackageUsersEmails extends JGithubPackage
 	 *
 	 * @param   string|array  $email  The email address(es).
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function delete($email)
 	{

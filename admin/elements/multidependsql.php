@@ -41,6 +41,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -64,7 +65,7 @@ else
  *
  * @package             Joomleague
  * @subpackageParameter
- * @since1.5
+ * @since1              .5
  */
 class JFormFieldMultiDependSQL extends JFormField
 {
@@ -89,45 +90,45 @@ class JFormFieldMultiDependSQL extends JFormField
 		// be fixed later, so that when nothing is selected, only id=0 will be in the link address.
 		// $required = (int) $node->attributes('required');
 		$required = 1;
-		$key = ($this->element['key_field'] ? $this->element['key_field'] : 'value');
-		$val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
-		$task = $this->element['task'];
-		$depends = $this->element['depends'];
-		$query = $this->element['query'];
+		$key      = ($this->element['key_field'] ? $this->element['key_field'] : 'value');
+		$val      = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
+		$task     = $this->element['task'];
+		$depends  = $this->element['depends'];
+		$query    = $this->element['query'];
 
-			  $ctrl = $this->name;
+		$ctrl = $this->name;
 
-			  // Construct the various argument calls that are supported.
-		$attribs     = ' task="' . $task . '"';
-		$attribs    .= ' isrequired="' . $required . '"';
+		// Construct the various argument calls that are supported.
+		$attribs = ' task="' . $task . '"';
+		$attribs .= ' isrequired="' . $required . '"';
 
 		if ($v = $this->element['size'])
 		{
-			$attribs    .= 'size="' . $v . '"';
+			$attribs .= 'size="' . $v . '"';
 		}
 
 		if ($depends)
 		{
-			$attribs    .= ' depends="' . $depends . '"';
+			$attribs .= ' depends="' . $depends . '"';
 		}
 
-		$attribs    .= ' class="mdepend inputbox';
+		$attribs .= ' class="mdepend inputbox';
 
 		// Optionally add "depend" to the class attribute
 		if ($depends)
 		{
-			$attribs    .= ' depend"';
+			$attribs .= ' depend"';
 		}
 		else
 		{
-			$attribs    .= '"';
+			$attribs .= '"';
 		}
 
-			  $value = is_array($this->value) ? $this->value[0] : $this->value;
-		$attribs    .= ' current="' . $value . '"';
-		$attribs    .= ' multiple="multiple"';
+		$value   = is_array($this->value) ? $this->value[0] : $this->value;
+		$attribs .= ' current="' . $value . '"';
+		$attribs .= ' multiple="multiple"';
 
-			  $selected = explode("|", $value);
+		$selected = explode("|", $value);
 
 		if ($required)
 		{

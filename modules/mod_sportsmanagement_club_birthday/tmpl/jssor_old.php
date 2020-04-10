@@ -45,26 +45,42 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <script>
 
-jQuery(document).ready(function ($) {
-  
-	var _SlideshowTransitions = [
-		//Fade
-{$Duration:1600,x:1,$Rows:2,$ChessMode:{$Row:3},$Easing:{$Left:$JssorEasing$.$EaseInOutQuart,$Opacity:$JssorEasing$.$EaseLinear},$Opacity:2,$Brother:{$Duration:1600,x:-1,$Rows:2,$ChessMode:{$Row:3},$Easing:{$Left:$JssorEasing$.$EaseInOutQuart,$Opacity:$JssorEasing$.$EaseLinear},$Opacity:2}}      
-		];
+    jQuery(document).ready(function ($) {
 
-			  var options = {$AutoPlay: true,                     //[Optional] Whether to auto play, to enable slideshow, this option must be set to true, default value is false
-		$PlayOrientation: 2,                                //[Optional] Orientation to play slide (for auto play, navigation), 1 horizental, 2 vertical, 5 horizental reverse, 6 vertical reverse, default value is 1
-		$FillMode: 4,
-		//$SlideWidth: 150,
-		//$SlideHeight: 150,
+        var _SlideshowTransitions = [
+            //Fade
+            {
+                $Duration: 1600,
+                x: 1,
+                $Rows: 2,
+                $ChessMode: {$Row: 3},
+                $Easing: {$Left: $JssorEasing$.$EaseInOutQuart, $Opacity: $JssorEasing$.$EaseLinear},
+                $Opacity: 2,
+                $Brother: {
+                    $Duration: 1600,
+                    x: -1,
+                    $Rows: 2,
+                    $ChessMode: {$Row: 3},
+                    $Easing: {$Left: $JssorEasing$.$EaseInOutQuart, $Opacity: $JssorEasing$.$EaseLinear},
+                    $Opacity: 2
+                }
+            }
+        ];
+
+        var options = {
+            $AutoPlay: true,                     //[Optional] Whether to auto play, to enable slideshow, this option must be set to true, default value is false
+            $PlayOrientation: 2,                                //[Optional] Orientation to play slide (for auto play, navigation), 1 horizental, 2 vertical, 5 horizental reverse, 6 vertical reverse, default value is 1
+            $FillMode: 4,
+            //$SlideWidth: 150,
+            //$SlideHeight: 150,
 
 
-			  $SlideshowOptions: {                                //[Optional] Options to specify and enable slideshow or not
-				$Class: $JssorSlideshowRunner$,                 //[Required] Class to create instance of slideshow
-				$Transitions: _SlideshowTransitions,            //[Required] An array of slideshow transitions to play slideshow
-				$TransitionsOrder: 1,                           //[Optional] The way to choose transition to play slide, 1 Sequence, 0 Random
-				$ShowLink: true                                    //[Optional] Whether to bring slide link on top of the slider when slideshow is running, default value is false
-			}
+            $SlideshowOptions: {                                //[Optional] Options to specify and enable slideshow or not
+                $Class: $JssorSlideshowRunner$,                 //[Required] Class to create instance of slideshow
+                $Transitions: _SlideshowTransitions,            //[Required] An array of slideshow transitions to play slideshow
+                $TransitionsOrder: 1,                           //[Optional] The way to choose transition to play slide, 1 Sequence, 0 Random
+                $ShowLink: true                                    //[Optional] Whether to bring slide link on top of the slider when slideshow is running, default value is false
+            }
 //        $CaptionSliderOptions: {                            //[Optional] Options which specifies how to animate caption
 //                $Class: $JssorCaptionSlider$,                   //[Required] Class to create instance to animate caption
 //                $PlayInMode: 1,                                 //[Optional] 0 None (no play), 1 Chain (goes after main slide), 3 Chain Flatten (goes after main slide and flatten all caption animations), default value is 1
@@ -87,55 +103,59 @@ jQuery(document).ready(function ($) {
 //                }
 
 
-				  };                          
-		var jssor_slider1 = new $JssorSlider$('slider1_container', options);
+        };
+        var jssor_slider1 = new $JssorSlider$('slider1_container', options);
 
-		//responsive code begin
-		//you can remove responsive code if you don't want the slider scales
-		//while window resizes
-		function ScaleSlider() {
-			var parentWidth = $('#slider1_container').parent().width();
-			if (parentWidth) {
-				jssor_slider1.$ScaleWidth(parentWidth);
-			}
-			else
-				window.setTimeout(ScaleSlider, 30);
-		}
-		//Scale slider after document ready
-		ScaleSlider();
+        //responsive code begin
+        //you can remove responsive code if you don't want the slider scales
+        //while window resizes
+        function ScaleSlider() {
+            var parentWidth = $('#slider1_container').parent().width();
+            if (parentWidth) {
+                jssor_slider1.$ScaleWidth(parentWidth);
+            } else
+                window.setTimeout(ScaleSlider, 30);
+        }
 
-											  //Scale slider while window load/resize/orientationchange.
-		$(window).bind("load", ScaleSlider);
-		$(window).bind("resize", ScaleSlider);
-		$(window).bind("orientationchange", ScaleSlider);
-		//responsive code end
-	});
-  
+        //Scale slider after document ready
+        ScaleSlider();
+
+        //Scale slider while window load/resize/orientationchange.
+        $(window).bind("load", ScaleSlider);
+        $(window).bind("resize", ScaleSlider);
+        $(window).bind("orientationchange", ScaleSlider);
+        //responsive code end
+    });
+
 </script>
 
 <div id="slider1_container" style="position: relative; top: 0px; left: 0px; width: 600px; height: 300px;">
-	<!-- Slides Container -->
-	<div u="slides" style="cursor: move; position: absolute; overflow: hidden; left: 0px; top: 0px; width: 600px; height: 300px;">
+    <!-- Slides Container -->
+    <div u="slides"
+         style="cursor: move; position: absolute; overflow: hidden; left: 0px; top: 0px; width: 600px; height: 300px;">
 
-			  <div><img u="image" src="images/com_sportsmanagement/database/clubs/large/logo_bredstedter_tsv_1420642211.gif" />
-		<div u="caption" t="transition_name1" style="position: absolute; top: 30px; left: 30px; width: 50px;height: 50px;">
-		Any HTML Content Here 1
-	</div>
+        <div><img u="image" src="images/com_sportsmanagement/database/clubs/large/logo_bredstedter_tsv_1420642211.gif"/>
+            <div u="caption" t="transition_name1"
+                 style="position: absolute; top: 30px; left: 30px; width: 50px;height: 50px;">
+                Any HTML Content Here 1
+            </div>
 
-			  </div>
+        </div>
 
-			  <div><img u="image" src="images/com_sportsmanagement/database/clubs/large/sz-arlewatt-logo-gro_c3_9f-300x300_1420642319.png" />
-		<div u="caption" t="transition_name1" style="position: absolute; top: 30px; left: 30px; width: 50px;height: 50px;">
-		Any HTML Content Here 2
-	</div>
-		</div>
+        <div><img u="image"
+                  src="images/com_sportsmanagement/database/clubs/large/sz-arlewatt-logo-gro_c3_9f-300x300_1420642319.png"/>
+            <div u="caption" t="transition_name1"
+                 style="position: absolute; top: 30px; left: 30px; width: 50px;height: 50px;">
+                Any HTML Content Here 2
+            </div>
+        </div>
 
-		  </div>
+    </div>
 
-<!-- Trigger -->
-		<script>
-			jssor_slider1_starter('slider1_container');
-		</script>
+    <!-- Trigger -->
+    <script>
+        jssor_slider1_starter('slider1_container');
+    </script>
 
 </div>
 

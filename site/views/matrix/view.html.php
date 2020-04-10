@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
@@ -37,9 +38,9 @@ class sportsmanagementViewMatrix extends sportsmanagementView
 	{
 
 		$this->divisionid = sportsmanagementModelMatrix::$divisionid;
-		$this->roundid = sportsmanagementModelMatrix::$roundid;
-		$this->division = $this->model->getDivision();
-		$this->round = $this->model->getRound();
+		$this->roundid    = sportsmanagementModelMatrix::$roundid;
+		$this->division   = $this->model->getDivision();
+		$this->round      = $this->model->getRound();
 
 		if (isset($this->config['teamnames']) && $this->config['teamnames'])
 		{
@@ -48,7 +49,7 @@ class sportsmanagementViewMatrix extends sportsmanagementView
 		else
 		{
 			$this->config['teamnames'] = 'name';
-			$this->teams = sportsmanagementModelProject::getTeamsIndexedByPtid(sportsmanagementModelMatrix::$divisionid, 'name', $this->jinput->getInt('cfg_which_database', 0));
+			$this->teams               = sportsmanagementModelProject::getTeamsIndexedByPtid(sportsmanagementModelMatrix::$divisionid, 'name', $this->jinput->getInt('cfg_which_database', 0));
 		}
 
 		if (!isset($this->config['image_placeholder']))
@@ -56,7 +57,7 @@ class sportsmanagementViewMatrix extends sportsmanagementView
 			$this->config['image_placeholder'] = '';
 		}
 
-			  $this->results = $this->model->getMatrixResults($this->project->id);
+		$this->results = $this->model->getMatrixResults($this->project->id);
 
 		if (isset($this->config['show_matrix_russia']))
 		{
@@ -68,9 +69,9 @@ class sportsmanagementViewMatrix extends sportsmanagementView
 
 		if ($this->project->project_type == 'DIVISIONS_LEAGUE' && !$this->divisionid)
 		{
-					$ranking_reason = array();
-					   $divisions = sportsmanagementModelProject::getDivisions(0, $this->jinput->getInt('cfg_which_database', 0));
-					$this->divisions = $divisions;
+			$ranking_reason  = array();
+			$divisions       = sportsmanagementModelProject::getDivisions(0, $this->jinput->getInt('cfg_which_database', 0));
+			$this->divisions = $divisions;
 
 			foreach ($this->results as $result)
 			{
@@ -93,7 +94,7 @@ class sportsmanagementViewMatrix extends sportsmanagementView
 									$color = "green";
 								}
 
-									$ranking_reason[$result->division_id][$teams->name] = '<font color="' . $color . '">' . $teams->name . ': ' . $teams->start_points . ' Punkte Grund: ' . $teams->reason . '</font>';
+								$ranking_reason[$result->division_id][$teams->name] = '<font color="' . $color . '">' . $teams->name . ': ' . $teams->start_points . ' Punkte Grund: ' . $teams->reason . '</font>';
 							}
 						}
 					}
@@ -104,7 +105,7 @@ class sportsmanagementViewMatrix extends sportsmanagementView
 			{
 				if (isset($ranking_reason[$row->id]))
 				{
-					 $row->notes = implode(", ", $ranking_reason[$row->id]);
+					$row->notes = implode(", ", $ranking_reason[$row->id]);
 				}
 			}
 		}
@@ -114,19 +115,19 @@ class sportsmanagementViewMatrix extends sportsmanagementView
 			$this->favteams = sportsmanagementModelProject::getFavTeams($this->jinput->getInt('cfg_which_database', 0));
 		}
 
-				// Set page title
-			$pageTitle = Text::_('COM_SPORTSMANAGEMENT_MATRIX_PAGE_TITLE');
+		// Set page title
+		$pageTitle = Text::_('COM_SPORTSMANAGEMENT_MATRIX_PAGE_TITLE');
 
 		if (isset($this->project->name))
 		{
-					$pageTitle .= ': ' . $this->project->name;
+			$pageTitle .= ': ' . $this->project->name;
 		}
 
-			$this->document->setTitle($pageTitle);
+		$this->document->setTitle($pageTitle);
 
-			// $view = $jinput->getVar( "view") ;
-			$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/' . $this->option . '/assets/css/' . $this->view . '.css' . '" type="text/css" />' . "\n";
-			$this->document->addCustomTag($stylelink);
+		// $view = $jinput->getVar( "view") ;
+		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/' . $this->option . '/assets/css/' . $this->view . '.css' . '" type="text/css" />' . "\n";
+		$this->document->addCustomTag($stylelink);
 
 	}
 }

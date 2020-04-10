@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\MVC\Model\ListModel;
 
 /**
@@ -29,7 +30,7 @@ class sportsmanagementModelsportsmanagements extends ListModel
 	protected function getListQuery()
 	{
 		// Create a new query object.
-		$db = sportsmanagementHelper::getDBConnection();
+		$db    = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 
 		// Select some fields

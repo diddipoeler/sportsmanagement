@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 
 /**
@@ -30,21 +31,22 @@ class modTurtushoutHelper
 	/**
 	 * modTurtushoutHelper::getListCommentary()
 	 *
-	 * @param   mixed $list
+	 * @param   mixed  $list
+	 *
 	 * @return
 	 */
 	public static function getListCommentary($list)
 	{
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$db        = sportsmanagementHelper::getDBConnection();
+		$query     = $db->getQuery(true);
 		$mainframe = Factory::getApplication();
-		$matches = array();
+		$matches   = array();
 
 		foreach ($list as $row)
 		{
 			// $matches[] = $row->match_id;
 
-				  // $selmatchcomm = implode(',',$matches);
+			// $selmatchcomm = implode(',',$matches);
 			$query->clear();
 			$query->select('*');
 			$query->from('#__sportsmanagement_match_commentary');
@@ -65,32 +67,33 @@ class modTurtushoutHelper
 		return $matches;
 	}
 
-		  /**
-		   * modTurtushoutHelper::getList()
-		   *
-		   * @param   mixed $params
-		   * @param   mixed $limit
-		   * @return
-		   */
+	/**
+	 * modTurtushoutHelper::getList()
+	 *
+	 * @param   mixed  $params
+	 * @param   mixed  $limit
+	 *
+	 * @return
+	 */
 	public static function getList(&$params, $limit)
 	{
 
-		$date = new DateTime;
+		$date   = new DateTime;
 		$config = Factory::getConfig();
 		$date->setTimezone(new DateTimeZone($config->get('offset')));
 
 		// $timestamp = strtotime($this->match->match_date);
 
-			  // Aktuelles datum
+		// Aktuelles datum
 		$akt_datum = date("Y-m-d", time());
 
 		// $timestamp = strtotime($akt_datum);
 		// echo 'timestamp '.$timestamp.'<br>';
 
-			  // $date->format('Y-m-d H:i:s');
-		$timestamp = strtotime($date->format('Y-m-d H:i:s'));
-		$timestampvon = $timestamp - ( $params->get('playtime') * 60 );
-		$timestampbis = $timestamp + ( $params->get('playtime') * 60 );
+		// $date->format('Y-m-d H:i:s');
+		$timestamp    = strtotime($date->format('Y-m-d H:i:s'));
+		$timestampvon = $timestamp - ($params->get('playtime') * 60);
+		$timestampbis = $timestamp + ($params->get('playtime') * 60);
 
 		//        echo 'timestamp '.$timestamp.'<br>';
 		//        echo 'timestampvon '.$timestampvon.'<br>';
@@ -99,8 +102,8 @@ class modTurtushoutHelper
 		// $bis = $akt_datum.' 23:59:59';
 		$rows = array();
 
-			  $db        = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$db        = sportsmanagementHelper::getDBConnection();
+		$query     = $db->getQuery(true);
 		$mainframe = Factory::getApplication();
 
 		$query->clear();
@@ -129,9 +132,9 @@ class modTurtushoutHelper
 
 		// $query->where('jm.round_id IN ('.$round_ids.')');
 
-			  $query->where('( jm.match_timestamp >= ' . $timestampvon . ' AND jm.match_timestamp <= ' . $timestampbis . ' )');
+		$query->where('( jm.match_timestamp >= ' . $timestampvon . ' AND jm.match_timestamp <= ' . $timestampbis . ' )');
 
-			  $db->setQuery($query, 0, $limit);
+		$db->setQuery($query, 0, $limit);
 		$rows = $db->loadObjectList();
 
 		if ($db->getErrorMsg())
@@ -139,17 +142,18 @@ class modTurtushoutHelper
 			//			 modTurtushoutHelper::install();
 		}
 
-			  $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
-			  return $rows;
+		return $rows;
 	}
 
 	/**
 	 * modTurtushoutHelper::shout()
 	 *
-	 * @param   mixed $display_username
-	 * @param   mixed $display_title
-	 * @param   mixed $add_timeout
+	 * @param   mixed  $display_username
+	 * @param   mixed  $display_title
+	 * @param   mixed  $add_timeout
+	 *
 	 * @return
 	 */
 	function shout($display_username, $display_title, $add_timeout)

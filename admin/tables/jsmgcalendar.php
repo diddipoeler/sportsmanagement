@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Crypt\Crypt;
@@ -34,7 +35,8 @@ class  sportsmanagementTablejsmGCalendar extends JTable
 	/**
 	 * sportsmanagementTablejsmGCalendar::__construct()
 	 *
-	 * @param   mixed $db
+	 * @param   mixed  $db
+	 *
 	 * @return
 	 */
 	function __construct(&$db)
@@ -45,8 +47,9 @@ class  sportsmanagementTablejsmGCalendar extends JTable
 	/**
 	 * sportsmanagementTablejsmGCalendar::bind()
 	 *
-	 * @param   mixed  $array
-	 * @param   string $ignore
+	 * @param   mixed   $array
+	 * @param   string  $ignore
+	 *
 	 * @return
 	 */
 	public function bind($array, $ignore = '')
@@ -65,8 +68,9 @@ class  sportsmanagementTablejsmGCalendar extends JTable
 	/**
 	 * sportsmanagementTablejsmGCalendar::load()
 	 *
-	 * @param   mixed $keys
-	 * @param   bool  $reset
+	 * @param   mixed  $keys
+	 * @param   bool   $reset
+	 *
 	 * @return
 	 */
 	public function load($keys = null, $reset = true)
@@ -75,7 +79,7 @@ class  sportsmanagementTablejsmGCalendar extends JTable
 
 		if (isset($this->password) && !empty($this->password))
 		{
-			$cryptor = new Crypt;
+			$cryptor        = new Crypt;
 			$this->password = $cryptor->decrypt($this->password);
 		}
 
@@ -85,7 +89,8 @@ class  sportsmanagementTablejsmGCalendar extends JTable
 	/**
 	 * sportsmanagementTablejsmGCalendar::store()
 	 *
-	 * @param   bool $updateNulls
+	 * @param   bool  $updateNulls
+	 *
 	 * @return
 	 */
 	public function store($updateNulls = false)
@@ -94,7 +99,7 @@ class  sportsmanagementTablejsmGCalendar extends JTable
 
 		if (!empty($oldPassword))
 		{
-			$cryptor = new Crypt;
+			$cryptor        = new Crypt;
 			$this->password = $cryptor->encrypt($oldPassword);
 		}
 

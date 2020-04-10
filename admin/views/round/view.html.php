@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
 
@@ -37,11 +38,11 @@ class sportsmanagementViewRound extends sportsmanagementView
 	public function init()
 	{
 
-			  $this->project_id = $this->app->getUserState("$this->option.pid", '0');
+		$this->project_id     = $this->app->getUserState("$this->option.pid", '0');
 		$this->project_art_id = $this->app->getUserState("$this->option.project_art_id", '0');
 
-			 $mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
-		$project = $mdlProject->getProject($this->project_id);
+		$mdlProject    = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
+		$project       = $mdlProject->getProject($this->project_id);
 		$this->project = $this->project_id;
 
 		if ($this->item->id)
@@ -68,7 +69,7 @@ class sportsmanagementViewRound extends sportsmanagementView
 	{
 		$this->jinput->set('hidemainmenu', true);
 		$this->jinput->set('pid', $this->project_id);
-		$isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUND_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUND_NEW');
+		$isNew      = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUND_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUND_NEW');
 		$this->icon = 'round';
 		parent::addToolbar();
 	}

@@ -13,95 +13,99 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
-$app    = Factory::getApplication();
+$app = Factory::getApplication();
 
 ?>
 <div class="no-column">
-	<div class="contentpaneopen">
-		<div class="contentheading">
-	<?php echo Text::_('COM_SPORTSMANAGEMENT_PROJECT_LIVE_RSS_FEEDS'); ?>
-		</div>
-	</div>
+    <div class="contentpaneopen">
+        <div class="contentheading">
+			<?php echo Text::_('COM_SPORTSMANAGEMENT_PROJECT_LIVE_RSS_FEEDS'); ?>
+        </div>
+    </div>
 
 
-<div class="srfrContainer <?php echo $moduleclass_sfx; ?>">
-  
-	<?php if ($this->feedsBlockPreText)
-	:
-	?>
-	<p class="srfrPreText"><?php echo $this->feedsBlockPreText; ?></p>
-	<?php endif; ?>
-  
-	<table width="100%" class="srfrList">
+    <div class="srfrContainer <?php echo $moduleclass_sfx; ?>">
+
+		<?php if ($this->feedsBlockPreText)
+			:
+			?>
+            <p class="srfrPreText"><?php echo $this->feedsBlockPreText; ?></p>
+		<?php endif; ?>
+
+        <table width="100%" class="srfrList">
 
 			<?php
 			$rssfeedrow = 1;
 
 			foreach ($this->rssfeedoutput as $key => $feed)
-			:
+				:
 				if ($rssfeedrow % 2)
 				{
 					echo "<tr>";
 				}
 
-					?>
-  
-					<td class="srfrRow<?php echo $key % 2; ?>">
-				<?php
-				if ($this->feedItemTitle)
-				:
-		?>
-			<h3><a target="_blank" href="<?php echo $feed->itemLink; ?>"><?php echo $feed->itemTitle; ?></a></h3>
-				<?php endif; ?>
+				?>
 
-				<?php if ($this->feedTitle)
-				:
-	?>
-			<span class="srfrFeedSource">
+                <td class="srfrRow<?php echo $key % 2; ?>">
+					<?php
+					if ($this->feedItemTitle)
+						:
+						?>
+                        <h3><a target="_blank" href="<?php echo $feed->itemLink; ?>"><?php echo $feed->itemTitle; ?></a>
+                        </h3>
+					<?php endif; ?>
+
+					<?php if ($this->feedTitle)
+						:
+						?>
+                        <span class="srfrFeedSource">
 				<a target="_blank" href="<?php echo $feed->siteURL; ?>"><?php echo $feed->feedTitle; ?></a>
 			</span>
-				<?php endif; ?>
+					<?php endif; ?>
 
-				<?php if ($this->feedItemDate)
-				:
-	?>
-			<span class="srfrFeedItemDate"><?php echo $feed->itemDate; ?></span>
-				<?php endif; ?>          
+					<?php if ($this->feedItemDate)
+						:
+						?>
+                        <span class="srfrFeedItemDate"><?php echo $feed->itemDate; ?></span>
+					<?php endif; ?>
 
-				<?php if ($this->feedItemDescription || $feed->feedImageSrc)
-				:
-	?>
-			<p>
-				<?php if ($feed->feedImageSrc)
-				:
-	?>
-				<a target="_blank" href="<?php echo $feed->itemLink; ?>">
-					<img class="srfrImage" src="<?php echo $feed->feedImageSrc; ?>" alt="<?php echo $feed->itemTitle; ?>" />
-				</a>
-				<?php endif; ?>
-
-								<?php if ($this->feedItemDescription)
+					<?php if ($this->feedItemDescription || $feed->feedImageSrc)
+						:
+						?>
+                        <p>
+							<?php if ($feed->feedImageSrc)
 								:
-	?>
-				<?php echo $feed->itemDescription; ?>
-								<?php endif; ?>
-			</p>
-				<?php endif; ?>
-
-							<?php if ($this->feedItemReadMore)
-							:
-	?>
-			<span class="srfrReadMore">
-				<a target="_blank" href="<?php echo $feed->itemLink; ?>"><?php echo Text::_('MOD_JW_SRFR_READ_MORE'); ?></a>
-			</span>
+								?>
+                                <a target="_blank" href="<?php echo $feed->itemLink; ?>">
+                                    <img class="srfrImage" src="<?php echo $feed->feedImageSrc; ?>"
+                                         alt="<?php echo $feed->itemTitle; ?>"/>
+                                </a>
 							<?php endif; ?>
 
-					  <span class="clr"></span>
-		</td>
-  
+							<?php if ($this->feedItemDescription)
+								:
+								?>
+								<?php echo $feed->itemDescription; ?>
+							<?php endif; ?>
+                        </p>
+					<?php endif; ?>
+
+					<?php if ($this->feedItemReadMore)
+						:
+						?>
+                        <span class="srfrReadMore">
+				<a target="_blank"
+                   href="<?php echo $feed->itemLink; ?>"><?php echo Text::_('MOD_JW_SRFR_READ_MORE'); ?></a>
+			</span>
+					<?php endif; ?>
+
+                    <span class="clr"></span>
+                </td>
+
 				<?php
 				$rssfeedrow++;
 
@@ -110,24 +114,25 @@ $app    = Factory::getApplication();
 					echo "</tr>";
 				}
 			endforeach;
-	?>  
-  
-	</table>
-  
+			?>
+
+        </table>
 
 
-	<?php if ($this->feedsBlockPostText)
-	:
-	?>
-	<p class="srfrPostText"><?php echo $this->feedsBlockPostText; ?></p>
-	<?php endif; ?>
-  
-	<?php if ($this->feedsBlockPostLink)
-	:
-	?>
-	<p class="srfrPostTextLink"><a href="<?php echo $this->feedsBlockPostLinkURL; ?>"><?php echo $this->feedsBlockPostLinkTitle; ?></a></p>
-	<?php endif; ?>
-</div>
+		<?php if ($this->feedsBlockPostText)
+			:
+			?>
+            <p class="srfrPostText"><?php echo $this->feedsBlockPostText; ?></p>
+		<?php endif; ?>
 
-<div class="clr"></div>
+		<?php if ($this->feedsBlockPostLink)
+			:
+			?>
+            <p class="srfrPostTextLink"><a
+                        href="<?php echo $this->feedsBlockPostLinkURL; ?>"><?php echo $this->feedsBlockPostLinkTitle; ?></a>
+            </p>
+		<?php endif; ?>
+    </div>
+
+    <div class="clr"></div>
 </div>

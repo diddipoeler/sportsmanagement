@@ -14,9 +14,11 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
+
 jimport('joomla.html.html.bootstrap');
 
 /**
@@ -39,7 +41,7 @@ class sportsmanagementViewUpdates extends sportsmanagementView
 	public function init()
 	{
 		$this->app->setUserState($this->option . 'update_part', 0); // 0
-		$filter_order = $this->app->getUserStateFromRequest($this->option . 'updates_filter_order', 'filter_order', 'dates', 'cmd');
+		$filter_order     = $this->app->getUserStateFromRequest($this->option . 'updates_filter_order', 'filter_order', 'dates', 'cmd');
 		$filter_order_Dir = $this->app->getUserStateFromRequest($this->option . 'updates_filter_order_Dir', 'filter_order_Dir', '', 'word');
 
 		$db = sportsmanagementHelper::getDBConnection();
@@ -53,18 +55,18 @@ class sportsmanagementViewUpdates extends sportsmanagementView
 			$uri = Factory::getURI();
 		}
 
-		$model = $this->getModel();
-		$versions = $model->getVersions();
+		$model       = $this->getModel();
+		$versions    = $model->getVersions();
 		$updateFiles = array();
-		$lists = array();
+		$lists       = array();
 		$updateFiles = $model->loadUpdateFiles();
 
 		// Table ordering
 		$lists['order_Dir'] = $filter_order_Dir;
-		$lists['order'] = $filter_order;
-		$this->updateFiles = $updateFiles;
-		$this->request_url = $uri->toString();
-		$this->lists = $lists;
+		$lists['order']     = $filter_order;
+		$this->updateFiles  = $updateFiles;
+		$this->request_url  = $uri->toString();
+		$this->lists        = $lists;
 
 	}
 
@@ -77,7 +79,7 @@ class sportsmanagementViewUpdates extends sportsmanagementView
 	{
 
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_TITLE');
-		$this->icon = 'updates';
+		$this->icon  = 'updates';
 
 		parent::addToolbar();
 	}

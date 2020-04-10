@@ -12,6 +12,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -54,11 +55,11 @@ class sportsmanagementViewallleagues extends sportsmanagementView
 	 */
 	function init()
 	{
-		$inputappend = '';
-		$this->tableclass = $this->jinput->getVar('table_class', 'table', 'request', 'string');
+		$inputappend            = '';
+		$this->tableclass       = $this->jinput->getVar('table_class', 'table', 'request', 'string');
 		$this->use_jquery_modal = $this->jinput->getVar('use_jquery_modal', '2', 'request', 'string');
 
-		$starttime = microtime();
+		$starttime   = microtime();
 		$this->state = $this->get('State');
 		$this->items = $this->get('Items');
 
@@ -72,19 +73,19 @@ class sportsmanagementViewallleagues extends sportsmanagementView
 			$nation = array_merge($nation, $res);
 		}
 
-		$lists['nation'] = $nation;
+		$lists['nation']  = $nation;
 		$lists['nation2'] = JHtmlSelect::genericlist($nation, 'filter_search_nation', $inputappend . 'class="inputbox" style="width:140px; " onchange="this.form.submit();"', 'value', 'text', $this->state->get('filter.search_nation'));
 
 		// Set page title
 		$this->document->setTitle(Text::_('COM_SPORTSMANAGEMENT_ALLLEAGUES_PAGE_TITLE'));
-		$form = new stdClass;
+		$form             = new stdClass;
 		$form->limitField = $this->pagination->getLimitBox();
-		$this->filter = $this->state->get('filter.search');
-		$this->form = $form;
+		$this->filter     = $this->state->get('filter.search');
+		$this->form       = $form;
 
 		$this->sortDirection = $this->state->get('filter_order_Dir');
-		$this->sortColumn = $this->state->get('filter_order');
-		$this->lists = $lists;
+		$this->sortColumn    = $this->state->get('filter_order');
+		$this->lists         = $lists;
 	}
 
 }

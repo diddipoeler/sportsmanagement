@@ -14,6 +14,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 
@@ -30,13 +31,13 @@ class sportsmanagementViewjson extends JViewLegacy
 	function display($tpl = null)
 	{
 		$app        = Factory::getApplication();
-		$params        = $app->getParams();
+		$params     = $app->getParams();
 		$dispatcher = JDispatcher::getInstance();
 
 		// Get some data from the models
-		$state        = $this->get('State');
+		$state       = $this->get('State');
 		$item        = $this->get('Item');
-		$this->form    = $this->get('Form');
+		$this->form  = $this->get('Form');
 		$this->state = $state;
 
 		// Check for errors.

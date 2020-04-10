@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -31,12 +32,12 @@ if (!empty($this->match->preview) && preg_match('/{jcomments\s+(off|lock)}/is', 
 if (!$commentsDisabled)
 {
 	?>
-	<!-- START of match comments -->
-	<div class="<?php echo $this->divclassrow;?> table-responsive" id="nextmatch-comments">
-	<?php
-	$commmentsInstance = sportsmanagementModelComments::CreateInstance($this->config);
-	echo $commmentsInstance->showMatchComments($this->match, $this->teams[0], $this->teams[1], $this->config, $this->project);
-	?>
-	</div>
+    <!-- START of match comments -->
+    <div class="<?php echo $this->divclassrow; ?> table-responsive" id="nextmatch-comments">
+		<?php
+		$commmentsInstance = sportsmanagementModelComments::CreateInstance($this->config);
+		echo $commmentsInstance->showMatchComments($this->match, $this->teams[0], $this->teams[1], $this->config, $this->project);
+		?>
+    </div>
 	<?php
 }

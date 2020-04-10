@@ -29,9 +29,9 @@ class JGithubPackageRepositoriesCollaborators extends JGithubPackage
 	 * @param   string  $owner  The name of the owner of the GitHub repository.
 	 * @param   string  $repo   The name of the GitHub repository.
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function getList($owner, $repo)
 	{
@@ -50,10 +50,10 @@ class JGithubPackageRepositoriesCollaborators extends JGithubPackage
 	 * @param   string  $repo   The name of the GitHub repository.
 	 * @param   string  $user   The name of the GitHub user.
 	 *
+	 * @return boolean
 	 * @throws UnexpectedValueException
 	 * @since 3.3 (CMS)
 	 *
-	 * @return boolean
 	 */
 	public function get($owner, $repo, $user)
 	{
@@ -85,9 +85,9 @@ class JGithubPackageRepositoriesCollaborators extends JGithubPackage
 	 * @param   string  $repo   The name of the GitHub repository.
 	 * @param   string  $user   The name of the GitHub user.
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function add($owner, $repo, $user)
 	{
@@ -107,9 +107,9 @@ class JGithubPackageRepositoriesCollaborators extends JGithubPackage
 	 * @param   string  $repo   The name of the GitHub repository.
 	 * @param   string  $user   The name of the GitHub user.
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function remove($owner, $repo, $user)
 	{

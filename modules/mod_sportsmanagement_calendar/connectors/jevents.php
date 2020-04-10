@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 
@@ -34,71 +35,28 @@ class JEventsConnector extends JSMCalendar
 			return;
 		}
 
-		$year = substr($caldates['start'], 0, 4);
+		$year  = substr($caldates['start'], 0, 4);
 		$month = (substr($caldates['start'], 5, 1) == '0') ? substr($caldates['start'], 6, 1) : substr($caldates['start'], 5, 2);
 
 		self::$xparams = $params;
 		/**
-	 * Gets calendar data for use in main calendar and module
-	 *
-	 * @param  int $year
-	 * @param  int $month
-	 * @param  int $day
-	 * @param  boolean $short - use true for module which only requires knowledge of if dat has an event
-	 * @param  boolean $veryshort - use true for module which only requires dates and nothing about events
-	 * @return array - calendar data array
-	 */
+		 * Gets calendar data for use in main calendar and module
+		 *
+		 * @param   int      $year
+		 * @param   int      $month
+		 * @param   int      $day
+		 * @param   boolean  $short      - use true for module which only requires knowledge of if dat has an event
+		 * @param   boolean  $veryshort  - use true for module which only requires dates and nothing about events
+		 *
+		 * @return array - calendar data array
+		 */
 		$data = self::$jevent->getCalendarData($year, $month, 1);
 
 		$formatted = self::formatEntries($data['dates'], $matches);
 
 		return $formatted;
 	}
-	function formatEntries( $rows, &$matches )
-	{
-		$newrows = array();
 
-		foreach ($rows AS $key => $row)
-		{
-			if (!empty($row['events']))
-			{
-				foreach ($row['events'] AS $event)
-				{
-					$newrow = array();
-					$user = Factory::getUser();
-
-					if ($user->id == 62)
-					{
-					}
-
-					$newrow['link'] = self::buildLink($event, $row['year'], $row['month']);
-					$newrow['date'] = strftime('%Y-%m-%d', $row['cellDate']) . ' ' . strftime('%H:%M', $event->_dtstart);
-					$newrow['type'] = 'jevents';
-					$newrow['time'] = '';
-
-					if ($event->_alldayevent != 1)
-					{
-						$newrow['time'] = strftime('%H:%M', $event->_dtstart);
-						$newrow['time'] .= ($event->_dtstart != $event->_dtend && $event->_noendtime == 0) ? '-' . strftime('%H:%M', $event->_dtend) : '';
-					}
-
-					$newrow['headingtitle'] = self::$xparams->get('jevents_text', 'JEvents');
-					$newrow['name'] = '';
-					$newrow['title'] = $event->_title;
-					$newrow['location'] = $event->_location;
-					$newrow['color'] = $event->_color_bar;
-					$newrow['matchcode'] = 0;
-					$newrow['project_id'] = 0;
-					$matches[] = $newrow;
-				}
-			}
-		}
-
-	}
-	private function _raiseError($message)
-	{
-		echo $message;
-	}
 	private function _checkJEvents()
 	{
 
@@ -136,12 +94,60 @@ class JEventsConnector extends JSMCalendar
 
 		return true;
 	}
+
+	private function _raiseError($message)
+	{
+		echo $message;
+	}
+
+	function formatEntries($rows, &$matches)
+	{
+		$newrows = array();
+
+		foreach ($rows AS $key => $row)
+		{
+			if (!empty($row['events']))
+			{
+				foreach ($row['events'] AS $event)
+				{
+					$newrow = array();
+					$user   = Factory::getUser();
+
+					if ($user->id == 62)
+					{
+					}
+
+					$newrow['link'] = self::buildLink($event, $row['year'], $row['month']);
+					$newrow['date'] = strftime('%Y-%m-%d', $row['cellDate']) . ' ' . strftime('%H:%M', $event->_dtstart);
+					$newrow['type'] = 'jevents';
+					$newrow['time'] = '';
+
+					if ($event->_alldayevent != 1)
+					{
+						$newrow['time'] = strftime('%H:%M', $event->_dtstart);
+						$newrow['time'] .= ($event->_dtstart != $event->_dtend && $event->_noendtime == 0) ? '-' . strftime('%H:%M', $event->_dtend) : '';
+					}
+
+					$newrow['headingtitle'] = self::$xparams->get('jevents_text', 'JEvents');
+					$newrow['name']         = '';
+					$newrow['title']        = $event->_title;
+					$newrow['location']     = $event->_location;
+					$newrow['color']        = $event->_color_bar;
+					$newrow['matchcode']    = 0;
+					$newrow['project_id']   = 0;
+					$matches[]              = $newrow;
+				}
+			}
+		}
+
+	}
+
 	function buildLink(&$event, $year, $month)
 	{
 		include_once JPATH_SITE . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'com_jevents' . DIRECTORY_SEPARATOR . 'router.php';
 		$link = 'index.php?option=com_jevents&amp;task=icalrepeat.detail&amp;evid='
-		. $event->_eventdetail_id . '&amp;year=' . $year . '&amp;month=' . $month . '&amp;day='
-		. $event->_dup . '&amp;uid=' . $event->_uid;
+			. $event->_eventdetail_id . '&amp;year=' . $year . '&amp;month=' . $month . '&amp;day='
+			. $event->_dup . '&amp;uid=' . $event->_uid;
 
 		return Route::_($link);
 	}

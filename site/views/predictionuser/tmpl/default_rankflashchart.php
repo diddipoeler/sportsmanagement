@@ -13,73 +13,81 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
 ?>
 <script>
-window.chartColors = {
-	red: 'rgb(255, 99, 132)',
-	orange: 'rgb(255, 159, 64)',
-	yellow: 'rgb(255, 205, 86)',
-	green: 'rgb(75, 192, 192)',
-	blue: 'rgb(54, 162, 235)',
-	purple: 'rgb(153, 102, 255)',
-	grey: 'rgb(201, 203, 207)'
-};
+    window.chartColors = {
+        red: 'rgb(255, 99, 132)',
+        orange: 'rgb(255, 159, 64)',
+        yellow: 'rgb(255, 205, 86)',
+        green: 'rgb(75, 192, 192)',
+        blue: 'rgb(54, 162, 235)',
+        purple: 'rgb(153, 102, 255)',
+        grey: 'rgb(201, 203, 207)'
+    };
 </script>
 <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_SEASON_RANKS'); ?></h2>
-<div class="<?php echo $this->divclassrow;?> table-responsive" id="rankflashchart">
-<canvas id="jsmrankflashchart"></canvas>
-<script>
-var ctx = document.getElementById('jsmrankflashchart').getContext('2d');
-var color = Chart.helpers.color;
-var chart = new Chart(ctx, {
-	// The type of chart we want to create
-	type: 'bar',
+<div class="<?php echo $this->divclassrow; ?> table-responsive" id="rankflashchart">
+    <canvas id="jsmrankflashchart"></canvas>
+    <script>
+        var ctx = document.getElementById('jsmrankflashchart').getContext('2d');
+        var color = Chart.helpers.color;
+        var chart = new Chart(ctx, {
+            // The type of chart we want to create
+            type: 'bar',
 
-	// The data for our dataset
-	data: {
-		labels: [<?php echo implode(',', $this->round_labels); ?>],
+            // The data for our dataset
+            data: {
+                labels: [<?php echo implode(',', $this->round_labels); ?>],
 
-datasets: [{
-				label: '<?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_RANK'); ?>',
-				backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
-				borderColor: window.chartColors.blue,
-				borderWidth: 1,
-				data: [<?php echo implode(',', $this->userranking); ?>
-				]
-			}
+                datasets: [{
+                    label: '<?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_RANK'); ?>',
+                    backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
+                    borderColor: window.chartColors.blue,
+                    borderWidth: 1,
+                    data: [<?php echo implode(',', $this->userranking); ?>
+                    ]
+                }
 
-					  ]
-},
+                ]
+            },
 
-	// Configuration options go here
-	options: {
-	responsive: true,
-	legend: {
-	  display: true,
-	  labels: {
-		padding: 20
-	  },
-	},
-	tooltips: {
-	  enabled: true,
-	},
-	scales: {
-yAxes: [{
-ticks: {
-suggestedMin: 0, 
-suggestedMax: <?php echo $this->RankingCountMax; ?>,
-beginAtZero:false,
-reverse: true,
-stepSize:1,
-callback: function(value) {if (value == 0) {return "";} else {value = value * 1; return value;}}
-}
-}]
-}
-	}
-});
+            // Configuration options go here
+            options: {
+                responsive: true,
+                legend: {
+                    display: true,
+                    labels: {
+                        padding: 20
+                    },
+                },
+                tooltips: {
+                    enabled: true,
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            suggestedMin: 0,
+                            suggestedMax: <?php echo $this->RankingCountMax; ?>,
+                            beginAtZero: false,
+                            reverse: true,
+                            stepSize: 1,
+                            callback: function (value) {
+                                if (value == 0) {
+                                    return "";
+                                } else {
+                                    value = value * 1;
+                                    return value;
+                                }
+                            }
+                        }
+                    }]
+                }
+            }
+        });
 
-</script>
+    </script>
 </div>

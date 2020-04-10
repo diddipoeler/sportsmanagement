@@ -32,7 +32,7 @@ class sportsmanagementControllerPlaygrounds extends JSMControllerAdmin
 	 *
 	 * @since 1.6
 	 */
-	public function getModel($name = 'Playground', $prefix = 'sportsmanagementModel', $config = Array() )
+	public function getModel($name = 'Playground', $prefix = 'sportsmanagementModel', $config = Array())
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 

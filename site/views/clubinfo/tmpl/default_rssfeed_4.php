@@ -12,7 +12,9 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
+
 ?>
 
 <?php
@@ -22,72 +24,72 @@ $this->rssDoc = $this->rssfeeditems;
 // Foreach ($this->rssfeeditems as $feed)
 // {
 ?>
-<!-- Show Feed's Description -->
+    <!-- Show Feed's Description -->
 
 
-			<div class="feed-description">
-				<?php echo str_replace('&apos;', "'", $this->rssDoc->description); ?>
-			</div>
+    <div class="feed-description">
+		<?php echo str_replace('&apos;', "'", $this->rssDoc->description); ?>
+    </div>
 
 
-		<!-- Show Image -->
-		<?php if (isset($this->rssDoc->image, $this->rssDoc->imagetitle))
-		:
+    <!-- Show Image -->
+<?php if (isset($this->rssDoc->image, $this->rssDoc->imagetitle))
+	:
 	?>
-			<div>
-				<img src="<?php echo $this->rssDoc->image; ?>" alt="<?php echo $this->rssDoc->image->decription; ?>">
-			</div>
-		<?php endif; ?>
+    <div>
+        <img src="<?php echo $this->rssDoc->image; ?>" alt="<?php echo $this->rssDoc->image->decription; ?>">
+    </div>
+<?php endif; ?>
 
-<!-- Show items -->
-		<?php if (!empty($this->rssDoc[0]))
-		:
+    <!-- Show items -->
+<?php if (!empty($this->rssDoc[0]))
+	:
 	?>
-			<ol>
-				<?php for ($i = 0; $i < 10; $i++)
+    <ol>
+		<?php for ($i = 0; $i < 10; $i++)
+			:
+			?>
+			<?php
+			if (empty($this->rssDoc[$i]))
 				:
-	?>
-					<?php
-					if (empty($this->rssDoc[$i]))
+				?>
+				<?php break; ?>
+			<?php endif; ?>
+			<?php $uri = !empty($this->rssDoc[$i]->guid) || $this->rssDoc[$i]->guid !== null ? trim($this->rssDoc[$i]->guid) : trim($this->rssDoc[$i]->uri); ?>
+			<?php $uri = strpos($uri, 'http') !== 0 ? $uri : $uri; ?>
+			<?php $text = !empty($this->rssDoc[$i]->content) || $this->rssDoc[$i]->content !== null ? trim($this->rssDoc[$i]->content) : trim($this->rssDoc[$i]->description); ?>
+			<?php $title = trim($this->rssDoc[$i]->title); ?>
+            <li>
+				<?php if (!empty($uri))
 					:
-	?>
-						<?php break; ?>
-					<?php endif; ?>
-					<?php $uri   = !empty($this->rssDoc[$i]->guid) || $this->rssDoc[$i]->guid !== null ? trim($this->rssDoc[$i]->guid) : trim($this->rssDoc[$i]->uri); ?>
-					<?php $uri   = strpos($uri, 'http') !== 0 ? $uri : $uri; ?>
-					<?php $text  = !empty($this->rssDoc[$i]->content) || $this->rssDoc[$i]->content !== null ? trim($this->rssDoc[$i]->content) : trim($this->rssDoc[$i]->description); ?>
-					<?php $title = trim($this->rssDoc[$i]->title); ?>
-					<li>
-						<?php if (!empty($uri))
-						:
-	?>
-							<h3 class="feed-link">
-								<a href="<?php echo htmlspecialchars($uri); ?>" target="_blank">
-									<?php echo $title; ?>
-								</a>
-							</h3>
-						<?php else
+					?>
+                    <h3 class="feed-link">
+                        <a href="<?php echo htmlspecialchars($uri); ?>" target="_blank">
+							<?php echo $title; ?>
+                        </a>
+                    </h3>
+				<?php else
 
-		:
-	?>
-							<h3 class="feed-link"><?php echo $title; ?></h3>
-						<?php endif; ?>
+					:
+					?>
+                    <h3 class="feed-link"><?php echo $title; ?></h3>
+				<?php endif; ?>
 
-						<?php if (!empty($text))
-						:
-	?>
-							<div class="feed-item-description">
+				<?php if (!empty($text))
+					:
+					?>
+                    <div class="feed-item-description">
 
-																	<?php $text = JFilterOutput::stripImages($text); ?>
+						<?php $text = JFilterOutput::stripImages($text); ?>
 
-																<?php $text = HTMLHelper::_('string.truncate', $text, 200); ?>
-								<?php echo str_replace('&apos;', "'", $text); ?>
-							</div>
-						<?php endif; ?>
-					</li>
-				<?php endfor; ?>
-			</ol>
-		<?php endif; ?>
+						<?php $text = HTMLHelper::_('string.truncate', $text, 200); ?>
+						<?php echo str_replace('&apos;', "'", $text); ?>
+                    </div>
+				<?php endif; ?>
+            </li>
+		<?php endfor; ?>
+    </ol>
+<?php endif; ?>
 
 
 <?php

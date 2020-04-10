@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 
 /**
@@ -30,12 +31,13 @@ class sportsmanagementTableMatchplayer extends JSMTable
 	/**
 	 * Constructor
 	 *
-	 * @param object Database connector object
+	 * @param   object Database connector object
+	 *
 	 * @since 1.0
 	 */
-	function __construct( & $db )
+	function __construct(&$db)
 	{
-		  $db = sportsmanagementHelper::getDBConnection();
+		$db = sportsmanagementHelper::getDBConnection();
 		parent::__construct('#__sportsmanagement_match_player', 'id', $db);
 	}
 
@@ -48,7 +50,7 @@ class sportsmanagementTableMatchplayer extends JSMTable
 	 */
 	function check()
 	{
-		if (! ( $this->match_id && $this->teamplayer_id ))
+		if (!($this->match_id && $this->teamplayer_id))
 		{
 			$this->setError(Text::_('CHECK FAILED'));
 

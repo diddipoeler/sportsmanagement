@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -49,10 +50,10 @@ class JFormFieldlanguagecharacter extends \JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$app = Factory::getApplication();
-		$option = $app->input->getCmd('option');
-		$lang = Factory::getLanguage();
-		$options = array();
+		$app       = Factory::getApplication();
+		$option    = $app->input->getCmd('option');
+		$lang      = Factory::getLanguage();
+		$options   = array();
 		$character = array();
 		$languages = $lang->getTag();
 
@@ -61,27 +62,27 @@ class JFormFieldlanguagecharacter extends \JFormFieldList
 			case 'ru-RU':
 				$character[] = "0410";
 				$character[] = "042F";
-			break;
+				break;
 			case 'el-GR':
 				$character[] = "0391";
 				$character[] = "03A9";
-			break;
+				break;
 			default:
 				$character[] = "0041";
 				$character[] = "005A";
-			break;
+				break;
 		}
 
 		// $laenge = sizeof($character) - 1;
 		$startRange = hexdec($character[0]);
-		$endRange = hexdec($character[1]);
+		$endRange   = hexdec($character[1]);
 
 		for ($i = $startRange; $i <= $endRange; $i++)
 		{
 			$options[] = HTMLHelper::_('select.option', $i, '&#' . $i . ';', 'value', 'text');
 		}
 
-				 // Merge any additional options in the XML definition.
+		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);
 
 		return $options;

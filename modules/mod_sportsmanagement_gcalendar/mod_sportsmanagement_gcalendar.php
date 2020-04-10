@@ -20,9 +20,10 @@
  */
 
 defined('_JEXEC') or die();
+
 use Joomla\CMS\Helper\ModuleHelper;
 
-if (! defined('DS'))
+if (!defined('DS'))
 {
 	define('DS', DIRECTORY_SEPARATOR);
 }

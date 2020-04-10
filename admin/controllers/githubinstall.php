@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\MVC\Controller\FormController;
@@ -21,6 +22,7 @@ use Joomla\CMS\MVC\Controller\FormController;
 /**
  * SportsManagement Controller
  */
+
 /**
  * sportsmanagementControllergithubinstall
  *

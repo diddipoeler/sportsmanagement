@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
@@ -35,7 +36,7 @@ class sportsmanagementViewsmextxmleditor extends sportsmanagementView
 	public function init()
 	{
 		$this->file_name = $this->jinput->getString('file_name', "");
-		$this->form        = $this->get('Form');
+		$this->form      = $this->get('Form');
 		$this->source    = $this->get('Source');
 	}
 
@@ -52,7 +53,7 @@ class sportsmanagementViewsmextxmleditor extends sportsmanagementView
 		ToolbarHelper::save('smextxmleditor.save');
 		ToolbarHelper::cancel('smextxmleditor.cancel', 'JTOOLBAR_CANCEL');
 		$this->title = $this->file_name;
-		$this->icon = 'xml-edit';
+		$this->icon  = 'xml-edit';
 	}
 
 }

@@ -18,6 +18,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
@@ -50,37 +51,38 @@ class sportsmanagementModelgithub extends BaseDatabaseModel
 	/**
 	 * sportsmanagementModelgithub::__construct()
 	 *
-	 * @param   mixed $config
+	 * @param   mixed  $config
+	 *
 	 * @return void
 	 */
 	public function __construct($config = array())
 	{
-			parent::__construct($config);
-		$this->app = Factory::getApplication();
-		$this->user    = Factory::getUser();
+		parent::__construct($config);
+		$this->app    = Factory::getApplication();
+		$this->user   = Factory::getUser();
 		$this->jinput = $this->app->input;
 		$this->option = $this->jinput->getCmd('option');
-		$this->pks = $this->jinput->get('cid', array(), 'array');
-		$this->post = $this->jinput->post->getArray(array());
+		$this->pks    = $this->jinput->get('cid', array(), 'array');
+		$this->post   = $this->jinput->post->getArray(array());
 
 	}
 
-			  /**
-			   * sportsmanagementModelgithub::addissue()
-			   *
-			   * @return void
-			   */
+	/**
+	 * sportsmanagementModelgithub::addissue()
+	 *
+	 * @return void
+	 */
 	function addissue()
 	{
 		/**
-	 * gibt es den github token
-	 */
+		 * gibt es den github token
+		 */
 		if (empty($this->post['gh_token']))
 		{
 			$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NO_TOKEN'), 'Error');
 			/**
-	 * wenn nicht kann es aber einen user mit passwort geben
-	 */
+			 * wenn nicht kann es aber einen user mit passwort geben
+			 */
 			if (empty($this->post['api_username']) && empty($this->post['api_password']))
 			{
 				$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NO_USER_PASSWORD'), 'Error');
@@ -92,19 +94,19 @@ class sportsmanagementModelgithub extends BaseDatabaseModel
 				$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_USER_PASSWORD'), 'Notice');
 
 				/**
-	 * hat die nachricht einen titel ?
-	 */
+				 * hat die nachricht einen titel ?
+				 */
 				if (empty($this->post['title']))
 				{
-						$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NO_TITLE'), 'Error');
+					$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NO_TITLE'), 'Error');
 
 					return false;
 				}
 				else
 				{
-						/**
-	* ist die nachricht auch ausgefüllt ?
-	*/
+					/**
+					 * ist die nachricht auch ausgefüllt ?
+					 */
 					if (empty($this->post['message']))
 					{
 						$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NO_MESSAGE'), 'Error');
@@ -118,7 +120,7 @@ class sportsmanagementModelgithub extends BaseDatabaseModel
 				}
 			}
 
-					  return false;
+			return false;
 		}
 
 	}
@@ -133,18 +135,18 @@ class sportsmanagementModelgithub extends BaseDatabaseModel
 	{
 		$github_user = ComponentHelper::getParams($this->option)->get('cfg_github_username', '');
 		$github_repo = ComponentHelper::getParams($this->option)->get('cfg_github_repository', '');
-		$gh_options = new Registry;
+		$gh_options  = new Registry;
 
 		// If an API token is set in the params, use it for authentication
 		if ($this->post['gh_token'])
 		{
-			  $gh_options->set('gh.token', $this->post['gh_token']);
+			$gh_options->set('gh.token', $this->post['gh_token']);
 		}
 		// Set the username and password if set in the params
 		else
 		{
-			  $gh_options->set('api.username', $this->post['api_username']);
-			  $gh_options->set('api.password', $this->post['api_password']);
+			$gh_options->set('api.username', $this->post['api_username']);
+			$gh_options->set('api.password', $this->post['api_password']);
 		}
 
 		$github = new JGithub($gh_options);
@@ -164,45 +166,45 @@ class sportsmanagementModelgithub extends BaseDatabaseModel
 	 */
 	function getGithubList()
 	{
-		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
+		$option       = Factory::getApplication()->input->getCmd('option');
+		$app          = Factory::getApplication();
 		$this->client = JApplicationHelper::getClientInfo();
-		$github_user = ComponentHelper::getParams($option)->get('cfg_github_username', '');
-		$github_repo = ComponentHelper::getParams($option)->get('cfg_github_repository', '');
+		$github_user  = ComponentHelper::getParams($option)->get('cfg_github_username', '');
+		$github_repo  = ComponentHelper::getParams($option)->get('cfg_github_repository', '');
 
-			  $params = ComponentHelper::getParams($option);
+		$params = ComponentHelper::getParams($option);
 
 		$gh_options = new Registry;
 
 		// If an API token is set in the params, use it for authentication
 		if ($params->get('gh_token', ''))
 		{
-			  $gh_options->set('gh.token', $params->get('gh_token', ''));
+			$gh_options->set('gh.token', $params->get('gh_token', ''));
 		}
 		// Set the username and password if set in the params
 		else
 		{
-			  $gh_options->set('api.username', $params->get('gh_user', ''));
-			  $gh_options->set('api.password', $params->get('gh_password', ''));
+			$gh_options->set('api.username', $params->get('gh_user', ''));
+			$gh_options->set('api.password', $params->get('gh_password', ''));
 		}
 
 		$github = new JGithub($gh_options);
 
 		// List pull requests
-		$state = 'open|closed';
-		$page = 0;
+		$state   = 'open|closed';
+		$page    = 0;
 		$perPage = 20;
 
-		$page = 0;
+		$page    = 0;
 		$perPage = 30;
 		$commits = $github->commits->getList($github_user, $github_repo, $page, $perPage);
 
 		// List milestones for a repository
-		$state = 'open|closed';
-		$sort = 'due_date|completeness';
-		$direction = 'asc|desc';
-		$page = 0;
-		$perPage = 20;
+		$state      = 'open|closed';
+		$sort       = 'due_date|completeness';
+		$direction  = 'asc|desc';
+		$page       = 0;
+		$perPage    = 20;
 		$milestones = $github->issues->milestones->getList($github_user, $github_repo);
 
 		// Create an issue
@@ -212,20 +214,20 @@ class sportsmanagementModelgithub extends BaseDatabaseModel
 		$starred = $github->activity->starring->getList($github_user, $github_repo);
 
 		// List issues
-		$filter = 'assigned|created|mentioned|subscribed';
-		$state = 'open|closed';
-		$labels = ':label1,:label2';
-		$sort = 'created|updated|comments';
+		$filter    = 'assigned|created|mentioned|subscribed';
+		$state     = 'open|closed';
+		$labels    = ':label1,:label2';
+		$sort      = 'created|updated|comments';
 		$direction = 'asc|desc';
-		$since = new JDate('2012-12-12');
+		$since     = new JDate('2012-12-12');
 
 		// $since = '2012-12-12';
-		$page = 0;
+		$page    = 0;
 		$perPage = 20;
 
 		// $issues = $github->issues->getList($filter, $state, $labels, $sort, $direction, $since, $page, $perPage);
 
-			  return $commits;
+		return $commits;
 	}
 
 }

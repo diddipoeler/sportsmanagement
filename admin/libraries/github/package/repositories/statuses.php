@@ -29,12 +29,12 @@ class JGithubPackageRepositoriesStatuses extends JGithubPackage
 	 * @param   string  $targetUrl    Optional target URL.
 	 * @param   string  $description  Optional description for the status.
 	 *
+	 * @return  object
 	 * @throws InvalidArgumentException
 	 * @throws DomainException
 	 *
 	 * @since   12.3
 	 *
-	 * @return  object
 	 */
 	public function create($user, $repo, $sha, $state, $targetUrl = null, $description = null)
 	{

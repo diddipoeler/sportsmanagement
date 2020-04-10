@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -50,14 +51,14 @@ class JFormFieldFavteam extends \JFormFieldList
 	{
 		$app = Factory::getApplication();
 
-		  // JInput object
+		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-		$view = $jinput->getCmd('view');
+		$view   = $jinput->getCmd('view');
 		$layout = $jinput->getCmd('layout');
-		$id = $jinput->getVar('id', '0');
+		$id     = $jinput->getVar('id', '0');
 
-			  // Initialize variables.
+		// Initialize variables.
 		$options = array();
 
 		$varname = (string) $this->element['varname'];
@@ -73,10 +74,10 @@ class JFormFieldFavteam extends \JFormFieldList
 
 		if ($project_id)
 		{
-			$db = Factory::getDbo();
+			$db    = Factory::getDbo();
 			$query = $db->getQuery(true);
 
-				  $query->select('t.id AS value, t.name AS text');
+			$query->select('t.id AS value, t.name AS text');
 			$query->from('#__sportsmanagement_team AS t');
 			$query->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
 			$query->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
@@ -86,9 +87,9 @@ class JFormFieldFavteam extends \JFormFieldList
 			$options = $db->loadObjectList();
 		}
 
-			  // Merge any additional options in the XML definition.
-			$options = array_merge(parent::getOptions(), $options);
+		// Merge any additional options in the XML definition.
+		$options = array_merge(parent::getOptions(), $options);
 
-			return $options;
+		return $options;
 	}
 }

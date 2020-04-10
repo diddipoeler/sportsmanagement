@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -38,7 +39,7 @@ class sportsmanagementViewextrafields extends sportsmanagementView
 	public function init()
 	{
 
-					$this->table = Table::getInstance('club', 'sportsmanagementTable');
+		$this->table = Table::getInstance('club', 'sportsmanagementTable');
 
 	}
 

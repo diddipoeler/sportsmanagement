@@ -16,22 +16,22 @@ defined('_JEXEC') or die('Restricted access');
 
 // Make sure that in case extensions are written for mentioned (common) views,
 // that they are loaded i.s.o. of the template of this view
-$templatesToLoad = array('globalviews','predictionheading');
+$templatesToLoad = array('globalviews', 'predictionheading');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 ?>
 <div class="row-fluid">
-<?php
-echo $this->loadTemplate('predictionheading');
-echo $this->loadTemplate('sectionheader');
-echo $this->loadTemplate('results');
+	<?php
+	echo $this->loadTemplate('predictionheading');
+	echo $this->loadTemplate('sectionheader');
+	echo $this->loadTemplate('results');
 
-if ($this->config['show_help'])
-{
-	echo $this->loadTemplate('show_help');
-}
+	if ($this->config['show_help'])
+	{
+		echo $this->loadTemplate('show_help');
+	}
 
-echo $this->loadTemplate('jsminfo');
-?>
+	echo $this->loadTemplate('jsminfo');
+	?>
 
 </div>

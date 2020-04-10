@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
@@ -35,33 +36,140 @@ class sportsmanagementModelTemplates extends JSMModelList
 	/**
 	 * sportsmanagementModelTemplates::__construct()
 	 *
-	 * @param   mixed $config
+	 * @param   mixed  $config
+	 *
 	 * @return void
 	 */
 	public function __construct($config = array())
 	{
-				$config['filter_fields'] = array(
-						'tmpl.template',
-						'tmpl.title',
-						'tmpl.id',
-						'tmpl.ordering',
-						'tmpl.checked_out_time',
-						'tmpl.checked_out',
-						'tmpl.modified',
-						'tmpl.modified_by'
-						);
-				parent::__construct($config);
-				$getDBConnection = sportsmanagementHelper::getDBConnection();
-				parent::setDbo($getDBConnection);
+		$config['filter_fields'] = array(
+			'tmpl.template',
+			'tmpl.title',
+			'tmpl.id',
+			'tmpl.ordering',
+			'tmpl.checked_out_time',
+			'tmpl.checked_out',
+			'tmpl.modified',
+			'tmpl.modified_by'
+		);
+		parent::__construct($config);
+		$getDBConnection = sportsmanagementHelper::getDBConnection();
+		parent::setDbo($getDBConnection);
 	}
 
-		  /**
-		   * Method to auto-populate the model state.
-		   *
-		   * Note. Calling getState in this method will result in recursion.
-		   *
-		   * @since 1.6
-		   */
+	function getMasterTemplates()
+	{
+		$this->jsmquery->clear();
+		$this->jsmquery->select('id AS value, name AS text');
+		$this->jsmquery->from('#__sportsmanagement_project');
+		$this->jsmquery->where('master_template=0 ');
+		$this->jsmquery->order('name');
+		$this->jsmdb->setQuery($this->jsmquery);
+		$options = $this->jsmdb->loadObjectList();
+
+		return $options;
+	}
+
+	/**
+	 * sportsmanagementModelTemplates::getMasterTemplatesList()
+	 *
+	 * @return
+	 */
+	function getMasterTemplatesList()
+	{
+
+		$this->jsmquery->clear();
+
+		// Get current project settings
+		$this->jsmquery->select('template');
+		$this->jsmquery->from('#__sportsmanagement_template_config');
+		$this->jsmquery->where('project_id = ' . (int) $this->project_id);
+		$this->jsmdb->setQuery($this->jsmquery);
+
+		if (version_compare(JVERSION, '3.0.0', 'ge'))
+		{
+			// Joomla! 3.0 code here
+			$current = $this->jsmdb->loadColumn();
+		}
+		elseif (version_compare(JVERSION, '2.5.0', 'ge'))
+		{
+			// Joomla! 2.5 code here
+			$current = $this->jsmdb->loadResultArray();
+		}
+
+		$this->jsmquery->clear();
+
+		if ($this->_getALL)
+		{
+			$this->jsmquery->select('t.*,(1) AS isMaster');
+		}
+		else
+		{
+			$this->jsmquery->select('t.id as value, t.title as text, t.template as template');
+		}
+
+		$this->jsmquery->select('u1.username');
+		$this->jsmquery->from('#__sportsmanagement_template_config as t');
+		$this->jsmquery->join('INNER', '#__sportsmanagement_project as pm ON pm.id = t.project_id');
+		$this->jsmquery->join('INNER', '#__sportsmanagement_project as p ON p.master_template = pm.id');
+		$this->jsmquery->join('LEFT', '#__users AS u ON u.id = t.checked_out');
+		$this->jsmquery->join('LEFT', '#__users AS u1 ON u1.id = t.modified_by');
+		$this->jsmquery->where('p.id = ' . (int) $this->project_id);
+
+		$oldTemplates = "frontpage'";
+		$oldTemplates .= ",'do_tipsl','tipranking','tipresults','user'";
+		$oldTemplates .= ",'tippentry','tippoverall','tippranking','tippresults','tipprules','tippusers'";
+		$oldTemplates .= ",'predictionentry','predictionoverall','predictionranking','predictionresults','predictionrules','predictionusers";
+		$this->jsmquery->where(" t.template NOT IN ('" . $oldTemplates . "')");
+
+		if (count($current))
+		{
+			$this->jsmquery->where(" t.template NOT IN ('" . implode("','", $current) . "')");
+		}
+
+		$this->jsmquery->order('t.title');
+
+		$this->jsmdb->setQuery($this->jsmquery);
+
+		$current = $this->jsmdb->loadObjectList();
+
+		return (count($current)) ? $current : array();
+	}
+
+	/**
+	 * sportsmanagementModelTemplates::getMasterName()
+	 *
+	 * @return
+	 */
+	function getMasterName()
+	{
+		$this->jsmquery->clear();
+		$this->jsmquery->select('master.name');
+		$this->jsmquery->from('#__sportsmanagement_project as master');
+		$this->jsmquery->join('INNER', '#__sportsmanagement_project as p ON p.master_template = master.id');
+		$this->jsmquery->where('p.id = ' . (int) $this->project_id);
+
+		try
+		{
+			$this->jsmdb->setQuery($this->jsmquery);
+			$result = $this->jsmdb->loadResult();
+		}
+		catch (Exception $e)
+		{
+			$result = false;
+			$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' <pre>' . $e->getMessage() . '</pre><br>', 'Error');
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since 1.6
+	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
 
@@ -102,22 +210,22 @@ class sportsmanagementModelTemplates extends JSMModelList
 		$this->jsmquery->join('LEFT', '#__users AS u1 ON u1.id = tmpl.modified_by');
 		$this->jsmquery->where('tmpl.project_id = ' . (int) $this->project_id);
 
-			  $oldTemplates = "frontpage'";
+		$oldTemplates = "frontpage'";
 		$oldTemplates .= ",'do_tipsl','tipranking','tipresults','user'";
 		$oldTemplates .= ",'tippentry','tippoverall','tippranking','tippresults','tipprules','tippusers'";
 		$oldTemplates .= ",'predictionentry','predictionoverall','predictionranking','predictionresults','predictionrules','predictionusers";
 
-			  $this->jsmquery->where("tmpl.template NOT IN ('" . $oldTemplates . "')");
+		$this->jsmquery->where("tmpl.template NOT IN ('" . $oldTemplates . "')");
 
 		if ($this->getState('filter.search'))
 		{
 			$this->jsmquery->where(' ( LOWER(tmpl.title) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%') . ' OR ' . ' LOWER(tmpl.template) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%') . ' )');
 		}
 
-			$this->jsmquery->order(
-				$this->jsmdb->escape($this->getState('list.ordering', 'tmpl.template')) . ' ' .
-				$this->jsmdb->escape($this->getState('list.direction', 'ASC'))
-			);
+		$this->jsmquery->order(
+			$this->jsmdb->escape($this->getState('list.ordering', 'tmpl.template')) . ' ' .
+			$this->jsmdb->escape($this->getState('list.direction', 'ASC'))
+		);
 
 		return $this->jsmquery;
 	}
@@ -130,7 +238,7 @@ class sportsmanagementModelTemplates extends JSMModelList
 		$defaultpath = JPATH_COMPONENT_SITE . DIRECTORY_SEPARATOR . 'settings';
 
 		// Get the views for this component.
-		$path = JPATH_SITE . '/components/' . $this->jsmoption . '/views';
+		$path                     = JPATH_SITE . '/components/' . $this->jsmoption . '/views';
 		$predictionTemplatePrefix = 'prediction';
 
 		if (!$project_id)
@@ -168,8 +276,8 @@ class sportsmanagementModelTemplates extends JSMModelList
 		}
 		elseif (version_compare(JVERSION, '2.5.0', 'ge'))
 		{
-			 // Joomla! 2.5 code here
-			 $records = $this->jsmdb->loadResultArray();
+			// Joomla! 2.5 code here
+			$records = $this->jsmdb->loadResultArray();
 		}
 
 		if (empty($records))
@@ -177,10 +285,10 @@ class sportsmanagementModelTemplates extends JSMModelList
 			$records = array();
 		}
 
-			  // Add default folder
+		// Add default folder
 		$xmldirs[] = $defaultpath . DIRECTORY_SEPARATOR . 'default';
 
-			  $extensions = sportsmanagementHelper::getExtensions($this->_project_id);
+		$extensions = sportsmanagementHelper::getExtensions($this->_project_id);
 
 		foreach ($extensions as $e => $extension)
 		{
@@ -198,11 +306,11 @@ class sportsmanagementModelTemplates extends JSMModelList
 			if ($handle = opendir($xmldir))
 			{
 				/**
-*
- * check that each xml template has a corresponding record in the
-				database for this project. If not,create the rows with default values
-				from the xml file
-*/
+				 *
+				 * check that each xml template has a corresponding record in the
+				 * database for this project. If not,create the rows with default values
+				 * from the xml file
+				 */
 				while ($file = readdir($handle))
 				{
 					if ($file != '.'
@@ -214,9 +322,9 @@ class sportsmanagementModelTemplates extends JSMModelList
 					{
 						$template = substr($file, 0, (strlen($file) - 4));
 
-													// Determine if a metadata file exists for the view.
-							  $metafile = $path . '/' . $template . '/tmpl/default.xml';
-							  $attributetitle = '';
+						// Determine if a metadata file exists for the view.
+						$metafile       = $path . '/' . $template . '/tmpl/default.xml';
+						$attributetitle = '';
 
 						if (is_file($metafile))
 						{
@@ -226,22 +334,22 @@ class sportsmanagementModelTemplates extends JSMModelList
 							}
 							else
 							{
-										   $xml = Factory::getXML($metafile, true);
+								$xml = Factory::getXML($metafile, true);
 							}
 
-													 $attributetitle = (string) $xml->layout->attributes()->title;
+							$attributetitle = (string) $xml->layout->attributes()->title;
 						}
 
 						if ((empty($records)) || (!in_array($template, $records)))
 						{
-										$xmlfile = $xmldir . DIRECTORY_SEPARATOR . $file;
-										$arrStandardSettings = array();
+							$xmlfile             = $xmldir . DIRECTORY_SEPARATOR . $file;
+							$arrStandardSettings = array();
 
 							if (file_exists($xmlfile))
 							{
 								$strXmlFile = $xmlfile;
-											$form = JForm::getInstance($template, $strXmlFile, array('control' => ''));
-											$fieldsets = $form->getFieldsets();
+								$form       = JForm::getInstance($template, $strXmlFile, array('control' => ''));
+								$fieldsets  = $form->getFieldsets();
 
 								foreach ($fieldsets as $fieldset)
 								{
@@ -252,163 +360,57 @@ class sportsmanagementModelTemplates extends JSMModelList
 								}
 							}
 
-																		   $defaultvalues = json_encode($arrStandardSettings);
+							$defaultvalues = json_encode($arrStandardSettings);
 
-																	$this->jsmquery->clear();
+							$this->jsmquery->clear();
 
-										   // Select some fields
-										 $this->jsmquery->select('id');
+							// Select some fields
+							$this->jsmquery->select('id');
 
-								  // From the table
-								  $this->jsmquery->from('#__sportsmanagement_template_config');
-										 $this->jsmquery->where('template LIKE ' . $this->jsmdb->Quote('' . $template . ''));
-										 $this->jsmquery->where('project_id = ' . (int) $project_id);
-								  $this->jsmdb->setQuery($this->jsmquery);
-								  $resulttemplate = $this->jsmdb->loadResult();
+							// From the table
+							$this->jsmquery->from('#__sportsmanagement_template_config');
+							$this->jsmquery->where('template LIKE ' . $this->jsmdb->Quote('' . $template . ''));
+							$this->jsmquery->where('project_id = ' . (int) $project_id);
+							$this->jsmdb->setQuery($this->jsmquery);
+							$resulttemplate = $this->jsmdb->loadResult();
 
 							if (!$resulttemplate)
 							{
 								// Create and populate an object.
-								$object_template = new stdClass;
-								$object_template->template = $template;
-								$object_template->title = $attributetitle;
-								$object_template->params = $defaultvalues;
+								$object_template             = new stdClass;
+								$object_template->template   = $template;
+								$object_template->title      = $attributetitle;
+								$object_template->params     = $defaultvalues;
 								$object_template->project_id = $project_id;
 
 								// Insert the object into the user profile table.
 								$result = $this->jsmdb->insertObject('#__sportsmanagement_template_config', $object_template);
 							}
 
-										array_push($records, $template);
+							array_push($records, $template);
 						}
 						else
 						{
-								 $this->jsmquery->clear();
-								   $this->jsmquery->select('id');
-										$this->jsmquery->from('#__sportsmanagement_template_config');
-								   $this->jsmquery->where('template LIKE ' . $this->jsmdb->Quote('' . $template . ''));
-								   $this->jsmquery->where('project_id = ' . (int) $project_id);
-										$this->jsmdb->setQuery($this->jsmquery);
-										$resulttemplate = $this->jsmdb->loadResult();
+							$this->jsmquery->clear();
+							$this->jsmquery->select('id');
+							$this->jsmquery->from('#__sportsmanagement_template_config');
+							$this->jsmquery->where('template LIKE ' . $this->jsmdb->Quote('' . $template . ''));
+							$this->jsmquery->where('project_id = ' . (int) $project_id);
+							$this->jsmdb->setQuery($this->jsmquery);
+							$resulttemplate = $this->jsmdb->loadResult();
 
-															 $object_template = new stdClass;
-									   $object_template->id = $resulttemplate;
-									   $object_template->title = $attributetitle;
-									   $result_update = $this->jsmdb->updateObject('#__sportsmanagement_template_config', $object_template, 'id', true);
+							$object_template        = new stdClass;
+							$object_template->id    = $resulttemplate;
+							$object_template->title = $attributetitle;
+							$result_update          = $this->jsmdb->updateObject('#__sportsmanagement_template_config', $object_template, 'id', true);
 						}
 					}
 				}
 
-									   closedir($handle);
+				closedir($handle);
 			}
 		}
 
-	}
-
-
-	function getMasterTemplates()
-	{
-		$this->jsmquery->clear();
-		$this->jsmquery->select('id AS value, name AS text');
-		$this->jsmquery->from('#__sportsmanagement_project');
-		$this->jsmquery->where('master_template=0 ');
-		$this->jsmquery->order('name');
-		$this->jsmdb->setQuery($this->jsmquery);
-		$options = $this->jsmdb->loadObjectList();
-
-		return $options;
-	}
-	/**
-	 * sportsmanagementModelTemplates::getMasterTemplatesList()
-	 *
-	 * @return
-	 */
-	function getMasterTemplatesList()
-	{
-
-			   $this->jsmquery->clear();
-
-		// Get current project settings
-		$this->jsmquery->select('template');
-		$this->jsmquery->from('#__sportsmanagement_template_config');
-		$this->jsmquery->where('project_id = ' . (int) $this->project_id);
-		$this->jsmdb->setQuery($this->jsmquery);
-
-		if (version_compare(JVERSION, '3.0.0', 'ge'))
-		{
-			// Joomla! 3.0 code here
-			$current = $this->jsmdb->loadColumn();
-		}
-		elseif (version_compare(JVERSION, '2.5.0', 'ge'))
-		{
-			 // Joomla! 2.5 code here
-			 $current = $this->jsmdb->loadResultArray();
-		}
-
-			 $this->jsmquery->clear();
-
-		if ($this->_getALL)
-		{
-			$this->jsmquery->select('t.*,(1) AS isMaster');
-		}
-		else
-		{
-			$this->jsmquery->select('t.id as value, t.title as text, t.template as template');
-		}
-
-			  $this->jsmquery->select('u1.username');
-			$this->jsmquery->from('#__sportsmanagement_template_config as t');
-			$this->jsmquery->join('INNER', '#__sportsmanagement_project as pm ON pm.id = t.project_id');
-			$this->jsmquery->join('INNER', '#__sportsmanagement_project as p ON p.master_template = pm.id');
-			$this->jsmquery->join('LEFT', '#__users AS u ON u.id = t.checked_out');
-			$this->jsmquery->join('LEFT', '#__users AS u1 ON u1.id = t.modified_by');
-			$this->jsmquery->where('p.id = ' . (int) $this->project_id);
-
-			$oldTemplates = "frontpage'";
-			$oldTemplates .= ",'do_tipsl','tipranking','tipresults','user'";
-			$oldTemplates .= ",'tippentry','tippoverall','tippranking','tippresults','tipprules','tippusers'";
-			$oldTemplates .= ",'predictionentry','predictionoverall','predictionranking','predictionresults','predictionrules','predictionusers";
-			$this->jsmquery->where(" t.template NOT IN ('" . $oldTemplates . "')");
-
-		if (count($current))
-		{
-			$this->jsmquery->where(" t.template NOT IN ('" . implode("','", $current) . "')");
-		}
-
-			$this->jsmquery->order('t.title');
-
-			$this->jsmdb->setQuery($this->jsmquery);
-
-			$current = $this->jsmdb->loadObjectList();
-
-			return (count($current)) ? $current : array();
-	}
-
-	/**
-	 * sportsmanagementModelTemplates::getMasterName()
-	 *
-	 * @return
-	 */
-	function getMasterName()
-	{
-		$this->jsmquery->clear();
-		$this->jsmquery->select('master.name');
-		$this->jsmquery->from('#__sportsmanagement_project as master');
-		$this->jsmquery->join('INNER', '#__sportsmanagement_project as p ON p.master_template = master.id');
-		$this->jsmquery->where('p.id = ' . (int) $this->project_id);
-
-		try
-		{
-			$this->jsmdb->setQuery($this->jsmquery);
-			$result = $this->jsmdb->loadResult();
-		}
-		catch (Exception $e)
-		{
-			 $result = false;
-			 $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' <pre>' . $e->getMessage() . '</pre><br>', 'Error');
-		}
-
-		return $result;
 	}
 
 }

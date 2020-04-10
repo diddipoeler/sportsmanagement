@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -30,53 +31,15 @@ use Joomla\CMS\Log\Log;
  */
 class sportsmanagementModelAjax extends BaseDatabaseModel
 {
-		/**
-		 * sportsmanagementModelAjax::addGlobalSelectElement()
-		 *
-		 * @param   mixed $elements
-		 * @param   bool  $required
-		 * @return
-		 */
-	public static function addGlobalSelectElement($elements, $required=false)
-	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$mitems = '';
-
-		if (!$required)
-		{
-			$mitems = array(HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
-
-			return array_merge($mitems, $elements);
-		}
-		else
-		{
-			$mitems = array(HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
-
-			if ($elements)
-			{
-					return array_merge($mitems, $elements);
-			}
-			else
-			{
-				return $elements;
-			}
-		}
-	}
-
-
-		  /**
-		   * sportsmanagementModelAjax::getpredictionid()
-		   *
-		   * @param   bool $dabse
-		   * @param   bool $required
-		   * @param   bool $slug
-		   * @return
-		   */
+	/**
+	 * sportsmanagementModelAjax::getpredictionid()
+	 *
+	 * @param   bool  $dabse
+	 * @param   bool  $required
+	 * @param   bool  $slug
+	 *
+	 * @return
+	 */
 	static function getPredictionId($dabse = false, $required = false, $slug = false)
 	{
 		// Reference global application object
@@ -87,7 +50,7 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 
 		// $required = 0;
 
-			  // Get a db connection.
+		// Get a db connection.
 		if (!$dabse)
 		{
 			$db = sportsmanagementHelper::getDBConnection();
@@ -110,32 +73,72 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		}
 
 		// From
-		  $query->from('#__sportsmanagement_prediction_game');
+		$query->from('#__sportsmanagement_prediction_game');
 		$query->where('published = 1');
 		$query->order('name DESC');
 
-			  $db->setQuery($query);
+		$db->setQuery($query);
 
-				// Return $db->loadObjectList();
-				return self::addGlobalSelectElement($db->loadObjectList(), $required);
+		// Return $db->loadObjectList();
+		return self::addGlobalSelectElement($db->loadObjectList(), $required);
 
 	}
 
-		  /**
-		   * sportsmanagementModelAjax::getPredictionProjects()
-		   *
-		   * @param   integer $prediction_id
-		   * @param   bool    $required
-		   * @param   bool    $slug
-		   * @param   bool    $dabse
-		   * @return
-		   */
+	/**
+	 * sportsmanagementModelAjax::addGlobalSelectElement()
+	 *
+	 * @param   mixed  $elements
+	 * @param   bool   $required
+	 *
+	 * @return
+	 */
+	public static function addGlobalSelectElement($elements, $required = false)
+	{
+		// Reference global application object
+		$app = Factory::getApplication();
+
+		// JInput object
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+		$mitems = '';
+
+		if (!$required)
+		{
+			$mitems = array(HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+
+			return array_merge($mitems, $elements);
+		}
+		else
+		{
+			$mitems = array(HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+
+			if ($elements)
+			{
+				return array_merge($mitems, $elements);
+			}
+			else
+			{
+				return $elements;
+			}
+		}
+	}
+
+	/**
+	 * sportsmanagementModelAjax::getPredictionProjects()
+	 *
+	 * @param   integer  $prediction_id
+	 * @param   bool     $required
+	 * @param   bool     $slug
+	 * @param   bool     $dabse
+	 *
+	 * @return
+	 */
 	public static function getPredictionPj($prediction_id = 0, $required = false, $slug = false, $dabse = false)
 	{
-		  $app = Factory::getApplication();
-			 $option = $app->input->getCmd('option');
+		$app    = Factory::getApplication();
+		$option = $app->input->getCmd('option');
 
-		  // Get a db connection.
+		// Get a db connection.
 		if (!$dabse)
 		{
 			$db = sportsmanagementHelper::getDBConnection();
@@ -168,7 +171,7 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		// Order
 		$query->order('p.name');
 
-					  $db->setQuery($query);
+		$db->setQuery($query);
 
 		return self::addGlobalSelectElement($db->loadObjectList(), $required);
 	}
@@ -177,18 +180,19 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 	/**
 	 * sportsmanagementModelAjax::getPredictionGroups()
 	 *
-	 * @param   integer $prediction_id
-	 * @param   bool    $required
-	 * @param   bool    $slug
-	 * @param   bool    $dabse
+	 * @param   integer  $prediction_id
+	 * @param   bool     $required
+	 * @param   bool     $slug
+	 * @param   bool     $dabse
+	 *
 	 * @return
 	 */
 	public static function getPredictionGroups($prediction_id = 0, $required = false, $slug = false, $dabse = false)
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 
-		   // Get a db connection.
+		// Get a db connection.
 		if (!$dabse)
 		{
 			$db = sportsmanagementHelper::getDBConnection();
@@ -211,7 +215,7 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		}
 
 		// From
-		  $query->from('#__sportsmanagement_prediction_groups as p');
+		$query->from('#__sportsmanagement_prediction_groups as p');
 
 		// Where
 		$query->where('p.published = 1');
@@ -219,69 +223,71 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		// Order
 		$query->order('p.name');
 
-					  $db->setQuery($query);
+		$db->setQuery($query);
 
 		return self::addGlobalSelectElement($db->loadObjectList(), $required);
 	}
 
-							  /**
-							   * sportsmanagementModelAjax::getpersoncontactid()
-							   *
-							   * @param   integer $show_user_profile
-							   * @param   bool    $required
-							   * @return
-							   */
-	static function getpersoncontactid($show_user_profile=0, $required = false)
+	/**
+	 * sportsmanagementModelAjax::getpersoncontactid()
+	 *
+	 * @param   integer  $show_user_profile
+	 * @param   bool     $required
+	 *
+	 * @return
+	 */
+	static function getpersoncontactid($show_user_profile = 0, $required = false)
 	{
-		$db = sportsmanagementHelper::getDBConnection();
+		$db    = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 
 		switch ($show_user_profile)
 		{
 			case 0:
 
-					  break;
+				break;
 			case 1:
-					$query = $db->getQuery(true);
+				$query = $db->getQuery(true);
 
-					// Select some fields
-					$query->select('a.id AS value,concat(a.name, \' - \',a.username) AS text');
+				// Select some fields
+				$query->select('a.id AS value,concat(a.name, \' - \',a.username) AS text');
 
-					// From
-					$query->from('#__users AS a');
-					$query->order('a.name');
-					$db->setQuery($query);
+				// From
+				$query->from('#__users AS a');
+				$query->order('a.name');
+				$db->setQuery($query);
 
-		return self::addGlobalSelectElement($db->loadObjectList(), $required);
-					break;
+				return self::addGlobalSelectElement($db->loadObjectList(), $required);
+				break;
 			case 2;
-					$query = $db->getQuery(true);
+				$query = $db->getQuery(true);
 
-					// Select some fields
-					$query->select('a.id AS value,concat(a.firstname, \' - \',a.lastname) AS text');
+				// Select some fields
+				$query->select('a.id AS value,concat(a.firstname, \' - \',a.lastname) AS text');
 
-					// From
-					$query->from('#__comprofiler AS a');
-					$query->order('a.lastname');
-					$db->setQuery($query);
+				// From
+				$query->from('#__comprofiler AS a');
+				$query->order('a.lastname');
+				$db->setQuery($query);
 
-		return self::addGlobalSelectElement($db->loadObjectList(), $required);
-					break;
+				return self::addGlobalSelectElement($db->loadObjectList(), $required);
+				break;
 		}
 
 	}
 
 
-			  /**
-			   * sportsmanagementModelAjax::getcountryclubagegroupoptions()
-			   *
-			   * @param   integer $club_id
-			   * @param   bool    $required
-			   * @param   bool    $slug
-			   * @param   bool    $dbase
-			   * @return
-			   */
-	static function getcountryclubagegroupoptions($club_id = 0, $required = false, $slug = false,$dbase = false)
+	/**
+	 * sportsmanagementModelAjax::getcountryclubagegroupoptions()
+	 *
+	 * @param   integer  $club_id
+	 * @param   bool     $required
+	 * @param   bool     $slug
+	 * @param   bool     $dbase
+	 *
+	 * @return
+	 */
+	static function getcountryclubagegroupoptions($club_id = 0, $required = false, $slug = false, $dbase = false)
 	{
 		// Reference global application object
 		$app = Factory::getApplication();
@@ -289,7 +295,7 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		// JInput object
 		$option = $app->input->getCmd('option');
 
-			// Get a db connection.
+		// Get a db connection.
 		if (!$dbase)
 		{
 			$db = sportsmanagementHelper::getDBConnection();
@@ -321,36 +327,37 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		}
 		else
 		{
-			$temp = new stdClass;
+			$temp        = new stdClass;
 			$temp->value = 0;
-			$temp->text = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_CLUB');
-			$export[] = $temp;
+			$temp->text  = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_CLUB');
+			$export[]    = $temp;
 
 			return self::addGlobalSelectElement($export, $required);
 		}
 
 	}
 
-			  /**
-			   * sportsmanagementModelAjax::getassociationsoptions()
-			   *
-			   * @param   mixed $country
-			   * @param   bool  $required
-			   * @param   bool  $slug
-			   * @param   bool  $dabse
-			   * @return
-			   */
-	static function getassociationsoptions($country = null, $required = false, $slug = false,$dabse = false)
+	/**
+	 * sportsmanagementModelAjax::getassociationsoptions()
+	 *
+	 * @param   mixed  $country
+	 * @param   bool   $required
+	 * @param   bool   $slug
+	 * @param   bool   $dabse
+	 *
+	 * @return
+	 */
+	static function getassociationsoptions($country = null, $required = false, $slug = false, $dabse = false)
 	{
 		// Reference global application object
 		$app = Factory::getApplication();
 
 		// JInput object
 		$jinput = $app->input;
-		$db = Factory::getDbo();
-		$query = $db->getQuery(true);
+		$db     = Factory::getDbo();
+		$query  = $db->getQuery(true);
 
-				  $query->select('t.id AS value, t.name AS text');
+		$query->select('t.id AS value, t.name AS text');
 		$query->from('#__sportsmanagement_associations AS t');
 		$query->where("t.country LIKE " . $db->Quote('' . $country . ''));
 		$query->order('t.name');
@@ -361,17 +368,18 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 	}
 
 
-			  /**
-			   * sportsmanagementModelAjax::getseasons()
-			   *
-			   * @param   bool $dabse
-			   * @param   bool $required
-			   * @param   bool $slug
-			   * @return
-			   */
+	/**
+	 * sportsmanagementModelAjax::getseasons()
+	 *
+	 * @param   bool  $dabse
+	 * @param   bool  $required
+	 * @param   bool  $slug
+	 *
+	 * @return
+	 */
 	static function getseasons($dabse = false, $required = false, $slug = false)
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 
 		if (!$dabse)
@@ -402,17 +410,18 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 
 	}
 
-			  /**
-			   * sportsmanagementModelAjax::getsportstypes()
-			   *
-			   * @param   bool $dabse
-			   * @param   bool $required
-			   * @param   bool $slug
-			   * @return
-			   */
+	/**
+	 * sportsmanagementModelAjax::getsportstypes()
+	 *
+	 * @param   bool  $dabse
+	 * @param   bool  $required
+	 * @param   bool  $slug
+	 *
+	 * @return
+	 */
 	static function getsportstypes($dabse = false, $required = false, $slug = false)
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 
 		if (!$dabse)
@@ -443,16 +452,17 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 
 	}
 
-			  /**
-			   * sportsmanagementModelAjax::getlocationzipcodeoptions()
-			   *
-			   * @param   mixed   $zipcode
-			   * @param   bool    $required
-			   * @param   bool    $slug
-			   * @param   bool    $dabse
-			   * @param   integer $project_id
-			   * @return
-			   */
+	/**
+	 * sportsmanagementModelAjax::getlocationzipcodeoptions()
+	 *
+	 * @param   mixed    $zipcode
+	 * @param   bool     $required
+	 * @param   bool     $slug
+	 * @param   bool     $dabse
+	 * @param   integer  $project_id
+	 *
+	 * @return
+	 */
 	static function getlocationzipcodeoptions($zipcode, $required = false, $slug = false, $dabse = false, $country = null)
 	{
 		// Reference global application object
@@ -461,7 +471,7 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		// JInput object
 		$option = $app->input->getCmd('option');
 
-			  $result = array();
+		$result = array();
 
 		// Get a db connection.
 		if ($dabse)
@@ -484,14 +494,14 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 
 		if ($zipcode)
 		{
-					$query->where('a.postal_code LIKE ' . $db->Quote('' . $zipcode . ''));
-					$query->order('a.postal_code');
+			$query->where('a.postal_code LIKE ' . $db->Quote('' . $zipcode . ''));
+			$query->order('a.postal_code');
 		}
 
 		if ($country)
 		{
-					$query->where('c.alpha3 LIKE ' . $db->Quote('' . $country . ''));
-					$query->order('a.place_name');
+			$query->where('c.alpha3 LIKE ' . $db->Quote('' . $country . ''));
+			$query->order('a.place_name');
 		}
 
 		if ($zipcode || $country)
@@ -500,7 +510,7 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 			$result = $db->loadObjectList();
 		}
 
-				  return self::addGlobalSelectElement($result, $required);
+		return self::addGlobalSelectElement($result, $required);
 
 	}
 
@@ -515,13 +525,13 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		$result = array();
 
 		// Get a db connection.
-		$db = sportsmanagementHelper::getDBConnection();
+		$db    = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 		$query->select('c.name AS text');
 		$query->from('#__sportsmanagement_countries as c');
 		$query->where('c.alpha3 LIKE ' . $db->Quote('' . $country . ''));
 
-					$db->setQuery($query);
+		$db->setQuery($query);
 		$result = $db->loadObjectList();
 
 		foreach ($result as $row)
@@ -533,12 +543,13 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 
 	}
 
-		/**
-		 * sportsmanagementModelAjax::getCcountryAlpha2()
-		 *
-		 * @param   mixed $country
-		 * @return void
-		 */
+	/**
+	 * sportsmanagementModelAjax::getCcountryAlpha2()
+	 *
+	 * @param   mixed  $country
+	 *
+	 * @return void
+	 */
 	static function getCcountryAlpha2($country)
 	{
 		// Reference global application object
@@ -547,32 +558,33 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		// JInput object
 		$option = $app->input->getCmd('option');
 
-		  $result = array();
+		$result = array();
 
 		// Get a db connection.
-		$db = sportsmanagementHelper::getDBConnection();
+		$db    = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 		$query->select('c.alpha2 AS text');
 		$query->from('#__sportsmanagement_countries as c');
 		$query->where('c.alpha3 LIKE ' . $db->Quote('' . $country . ''));
 
-					  $db->setQuery($query);
+		$db->setQuery($query);
 		$result = $db->loadObjectList();
 
-			  return $result;
+		return $result;
 
 	}
 
-			  /**
-			   * sportsmanagementModelAjax::getcountryzipcodeoptions()
-			   *
-			   * @param   mixed   $country
-			   * @param   bool    $required
-			   * @param   bool    $slug
-			   * @param   bool    $dabse
-			   * @param   integer $project_id
-			   * @return
-			   */
+	/**
+	 * sportsmanagementModelAjax::getcountryzipcodeoptions()
+	 *
+	 * @param   mixed    $country
+	 * @param   bool     $required
+	 * @param   bool     $slug
+	 * @param   bool     $dabse
+	 * @param   integer  $project_id
+	 *
+	 * @return
+	 */
 	static function getcountryzipcodeoptions($country, $required = false, $slug = false, $dabse = false, $project_id = 0)
 	{
 		// Reference global application object
@@ -581,7 +593,7 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		// JInput object
 		$option = $app->input->getCmd('option');
 
-		  $result = array();
+		$result = array();
 
 		// Get a db connection.
 		if ($dabse)
@@ -595,7 +607,7 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 
 		$query = $db->getQuery(true);
 
-		  $query->select('a.postal_code AS value, concat(a.postal_code, \' ( \',a.country_code,\' )  \',a.admin_name1) AS text');
+		$query->select('a.postal_code AS value, concat(a.postal_code, \' ( \',a.country_code,\' )  \',a.admin_name1) AS text');
 		$query->from('#__sportsmanagement_countries_plz as a');
 		$query->join('INNER', '#__sportsmanagement_countries AS c ON c.alpha2 = a.country_code');
 		$query->where('c.alpha3 LIKE ' . $db->Quote('' . $country . ''));
@@ -604,19 +616,19 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		$db->setQuery($query);
 		$result = $db->loadObjectList();
 
-			  return self::addGlobalSelectElement($result, $required);
+		return self::addGlobalSelectElement($result, $required);
 	}
 
 
-
-			  /**
-			   * sportsmanagementModelAjax::getProjectRoundOptions()
-			   *
-			   * @param   mixed $sports_type_id
-			   * @param   bool  $required
-			   * @return
-			   */
-	public static function getProjectRoundOptions($project_id, $required = false, $slug = false, $ordering = 'ASC' , $round_ids = null,  $dabse = false)
+	/**
+	 * sportsmanagementModelAjax::getProjectRoundOptions()
+	 *
+	 * @param   mixed  $sports_type_id
+	 * @param   bool   $required
+	 *
+	 * @return
+	 */
+	public static function getProjectRoundOptions($project_id, $required = false, $slug = false, $ordering = 'ASC', $round_ids = null, $dabse = false)
 	{
 		// Reference global application object
 		$app = Factory::getApplication();
@@ -624,7 +636,7 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		// JInput object
 		$option = $app->input->getCmd('option');
 
-		 // Get a db connection.
+		// Get a db connection.
 		if (!$dabse)
 		{
 			$db = sportsmanagementHelper::getDBConnection();
@@ -634,11 +646,11 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 			$db = sportsmanagementHelper::getDBConnection(true, true);
 		}
 
-		  $query = $db->getQuery(true);
+		$query = $db->getQuery(true);
 
 		if ($slug)
 		{
-				$query->select('CONCAT_WS(\':\', id, alias) AS value,name AS text');
+			$query->select('CONCAT_WS(\':\', id, alias) AS value,name AS text');
 		}
 		else
 		{
@@ -647,7 +659,7 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 
 		$query->select('id, name, round_date_first, round_date_last, roundcode');
 
-		  $query->from('#__sportsmanagement_round');
+		$query->from('#__sportsmanagement_round');
 
 		if ($project_id)
 		{
@@ -665,30 +677,31 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 			$query->where('id IN (' . implode(',', $round_ids) . ')');
 		}
 
-		  $query->order('roundcode ' . $ordering);
-			$db->setQuery($query);
+		$query->order('roundcode ' . $ordering);
+		$db->setQuery($query);
 
-			  $result = $db->loadObjectList();
+		$result = $db->loadObjectList();
 
-		  //        foreach ($result as $row)
-			//        {
-			//            $row->name = Text::_($row->name);
-			//        }
+		//        foreach ($result as $row)
+		//        {
+		//            $row->name = Text::_($row->name);
+		//        }
 
-		  return self::addGlobalSelectElement($result, $required);
+		return self::addGlobalSelectElement($result, $required);
 	}
 
-			 /**
-			  * sportsmanagementModelAjax::getpersonpositionoptions()
-			  *
-			  * @param   mixed $sports_type_id
-			  * @param   bool  $required
-			  * @return
-			  */
+	/**
+	 * sportsmanagementModelAjax::getpersonpositionoptions()
+	 *
+	 * @param   mixed  $sports_type_id
+	 * @param   bool   $required
+	 *
+	 * @return
+	 */
 	public static function getpersonpositionoptions($sports_type_id, $required = false, $slug = false, $dbase = false)
 	{
 
-			  $app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 
 		// Get a db connection.
@@ -703,7 +716,7 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 
 		$query = $db->getQuery(true);
 
-		  $query->select('pos.id AS value, pos.name AS text');
+		$query->select('pos.id AS value, pos.name AS text');
 		$query->from('#__sportsmanagement_position as pos');
 
 		if ($sports_type_id)
@@ -711,27 +724,28 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 			$query->where('pos.sports_type_id = ' . $sports_type_id);
 		}
 
-			  $query->order('pos.name');
-				$db->setQuery($query);
+		$query->order('pos.name');
+		$db->setQuery($query);
 
-			  $result = $db->loadObjectList();
+		$result = $db->loadObjectList();
 
 		foreach ($result as $row)
 		{
 			$row->text = Text::_($row->text);
 		}
 
-				return self::addGlobalSelectElement($result, $required);
+		return self::addGlobalSelectElement($result, $required);
 	}
 
-			  /**
-			   * sportsmanagementModelAjax::getpersonagegroupoptions()
-			   *
-			   * @param   mixed $sports_type_id
-			   * @param   bool  $required
-			   * @return
-			   */
-	public static function getpersonagegroupoptions($sports_type_id=0, $required = false, $slug = false, $dabse = false, $project_id = 0, $country = '' )
+	/**
+	 * sportsmanagementModelAjax::getpersonagegroupoptions()
+	 *
+	 * @param   mixed  $sports_type_id
+	 * @param   bool   $required
+	 *
+	 * @return
+	 */
+	public static function getpersonagegroupoptions($sports_type_id = 0, $required = false, $slug = false, $dabse = false, $project_id = 0, $country = '')
 	{
 		// Reference global application object
 		$app = Factory::getApplication();
@@ -739,7 +753,7 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		// JInput object
 		$option = $app->input->getCmd('option');
 
-		  $result = array();
+		$result = array();
 
 		// Get a db connection.
 		if ($dabse)
@@ -753,7 +767,7 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 
 		$query = $db->getQuery(true);
 
-		  $query->select('a.id AS value, concat(a.country, \'-\',a.name, \' von: \',a.age_from,\' bis: \',a.age_to,\' Stichtag: \',a.deadline_day) AS text');
+		$query->select('a.id AS value, concat(a.country, \'-\',a.name, \' von: \',a.age_from,\' bis: \',a.age_to,\' Stichtag: \',a.deadline_day) AS text');
 		$query->from('#__sportsmanagement_agegroup as a');
 
 		if ($project_id)
@@ -765,32 +779,33 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 
 		if ($sports_type_id)
 		{
-			  $query->where('a.sportstype_id = ' . $sports_type_id);
+			$query->where('a.sportstype_id = ' . $sports_type_id);
 		}
 
 		if ($country)
 		{
-			  $query->where('a.country LIKE ' . $db->Quote('' . $country . ''));
+			$query->where('a.country LIKE ' . $db->Quote('' . $country . ''));
 		}
 
-			  $query->order('a.name');
+		$query->order('a.name');
 
-					  $db->setQuery($query);
-				$result = $db->loadObjectList();
+		$db->setQuery($query);
+		$result = $db->loadObjectList();
 
-				return self::addGlobalSelectElement($result, $required);
+		return self::addGlobalSelectElement($result, $required);
 	}
 
 
-			  /**
-			   * sportsmanagementModelAjax::getpredictionmembersoptions()
-			   *
-			   * @param   mixed $prgame_id
-			   * @param   bool  $required
-			   * @param   bool  $slug
-			   * @param   bool  $dbase
-			   * @return
-			   */
+	/**
+	 * sportsmanagementModelAjax::getpredictionmembersoptions()
+	 *
+	 * @param   mixed  $prgame_id
+	 * @param   bool   $required
+	 * @param   bool   $slug
+	 * @param   bool   $dbase
+	 *
+	 * @return
+	 */
 	static function getpredictionmembersoptions($prgame_id, $required = false, $slug = false, $dbase = false)
 	{
 		// Reference global application object
@@ -798,40 +813,41 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 
 		// JInput object
 		$option = $app->input->getCmd('option');
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$db     = sportsmanagementHelper::getDBConnection();
+		$query  = $db->getQuery(true);
 
-		  $query->select('a.user_id AS value, concat(u.name, \' ( \',u.username,\' ) \') AS text');
+		$query->select('a.user_id AS value, concat(u.name, \' ( \',u.username,\' ) \') AS text');
 		$query->from('#__sportsmanagement_prediction_member as a');
 		$query->join('LEFT', '#__users AS u ON u.id = a.user_id');
 		$query->where('a.prediction_id = ' . (int) $prgame_id);
 
 		try
 		{
-				  $db->setQuery($query);
-				  $result = $db->loadObjectList();
+			$db->setQuery($query);
+			$result = $db->loadObjectList();
 		}
 		catch (Exception $e)
 		{
-				// $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+			// $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
 			// $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($query->dump()), 'Error');
-				$result = false;
+			$result = false;
 		}
 
-			  return self::addGlobalSelectElement($result, $required);
+		return self::addGlobalSelectElement($result, $required);
 	}
 
-			  /**
-			   * sportsmanagementModelAjax::getpersonlistoptions()
-			   *
-			   * @param   mixed $person_art
-			   * @param   bool  $required
-			   * @return
-			   */
+	/**
+	 * sportsmanagementModelAjax::getpersonlistoptions()
+	 *
+	 * @param   mixed  $person_art
+	 * @param   bool   $required
+	 *
+	 * @return
+	 */
 	static function getpersonlistoptions($person_art, $required = false, $slug = false, $dbase = false)
 	{
 
-			  $app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 
 		// Get a db connection.
@@ -848,119 +864,29 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 
 		if ($person_art == 2)
 		{
-				$query->select("id AS value, concat(lastname,' - ',firstname,'' ) AS text");
-				$query->from('#__sportsmanagement_person ');
-				$query->order('lastname');
-				$db->setQuery($query);
-				$result = $db->loadObjectList();
+			$query->select("id AS value, concat(lastname,' - ',firstname,'' ) AS text");
+			$query->from('#__sportsmanagement_person ');
+			$query->order('lastname');
+			$db->setQuery($query);
+			$result = $db->loadObjectList();
 
 			return self::addGlobalSelectElement($result, $required);
 		}
 
 	}
 
-			  /**
-			   * sportsmanagementModelAjax::getProjectsBySportsTypesOptions()
-			   *
-			   * @param   mixed $sports_type_id
-			   * @param   bool  $required
-			   * @return
-			   */
-	function getProjectsBySportsTypesOptions($sports_type_id, $required = false, $slug = false, $dbase = false)
-	{
-
-			  $app = Factory::getApplication();
-		$option = $app->input->getCmd('option');
-
-		// Get a db connection.
-		if (!$dbase)
-		{
-			$db = sportsmanagementHelper::getDBConnection();
-		}
-		else
-		{
-			$db = sportsmanagementHelper::getDBConnection(true, true);
-		}
-
-		$query = $db->getQuery(true);
-
-		// Select some fields
-		$query->select('CONCAT_WS(\':\', p.id, p.alias) AS value,p.name AS text');
-
-		// From
-		$query->from('#__sportsmanagement_project AS p');
-		$query->join('INNER', ' #__sportsmanagement_sports_type AS st ON st.id = p.sports_type_id ');
-
-		// Where
-		$query->where('p.sports_type_id = ' . $db->Quote($sports_type_id));
-
-		// Order
-		$query->order('p.name');
-
-		$db->setQuery($query);
-
-															 return self::addGlobalSelectElement($db->loadObjectList(), $required);
-	}
-
-			   /**
-				* sportsmanagementModelAjax::getAgeGroupsBySportsTypesOptions()
-				*
-				* @param   mixed $sports_type_id
-				* @param   bool  $required
-				* @return
-				*/
-	function getAgeGroupsBySportsTypesOptions($sports_type_id, $required = false, $slug = false, $dbase = false)
-	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$option = $app->input->getCmd('option');
-
-		// Get a db connection.
-		if (!$dbase)
-		{
-			$db = sportsmanagementHelper::getDBConnection();
-		}
-		else
-		{
-			$db = sportsmanagementHelper::getDBConnection(true, true);
-		}
-
-		$query = $db->getQuery(true);
-
-		// Select some fields
-		$query->select('CONCAT_WS(\':\', a.id, a.alias) AS value,a.name AS text');
-
-		// From
-		$query->from('#__sportsmanagement_agegroup AS a');
-		$query->join('INNER', ' #__sportsmanagement_sports_type AS st ON st.id = a.sportstype_id ');
-
-		// Where
-		if ($sports_type_id)
-		{
-			$query->where('a.sports_type_id = ' . $sports_type_id);
-		}
-
-		// Order
-		$query->order('a.name');
-
-		$db->setQuery($query);
-
-															 return self::addGlobalSelectElement($db->loadObjectList(), $required);
-	}
-
-		/**
-		 * sportsmanagementModelAjax::getProjectDivisionsOptions()
-		 *
-		 * @param   mixed $project_id
-		 * @param   bool  $required
-		 * @return
-		 */
+	/**
+	 * sportsmanagementModelAjax::getProjectDivisionsOptions()
+	 *
+	 * @param   mixed  $project_id
+	 * @param   bool   $required
+	 *
+	 * @return
+	 */
 	public static function getProjectDivisionsOptions($project_id, $required = false, $slug = false, $dabse = false)
 	{
 
-			$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 
 		// Get a db connection.
@@ -975,7 +901,7 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 
 		$query = $db->getQuery(true);
 
-		  // Select some fields
+		// Select some fields
 		if ($slug)
 		{
 			$query->select('CONCAT_WS(\':\', d.id, d.alias) AS value,d.name AS text');
@@ -1001,7 +927,7 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 			$query->where('d.project_id = ' . (int) $project_id);
 		}
 
-		  // $query->where('d.project_id = ' . $db->Quote($project_id) );
+		// $query->where('d.project_id = ' . $db->Quote($project_id) );
 		// group
 		// $query->group('d.id');
 		// order
@@ -1009,21 +935,22 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 
 		$db->setQuery($query);
 
-				  return self::addGlobalSelectElement($db->loadObjectList(), $required);
+		return self::addGlobalSelectElement($db->loadObjectList(), $required);
 	}
 
-		/**
-		 * sportsmanagementModelAjax::getProjectTeamsByDivisionOptions()
-		 *
-		 * @param   mixed   $project_id
-		 * @param   integer $division_id
-		 * @param   bool    $required
-		 * @return
-		 */
-	public static function getProjectTeamsByDivisionOptions($project_id, $division_id=0, $required=false, $slug = false, $dbase = false)
+	/**
+	 * sportsmanagementModelAjax::getProjectTeamsByDivisionOptions()
+	 *
+	 * @param   mixed    $project_id
+	 * @param   integer  $division_id
+	 * @param   bool     $required
+	 *
+	 * @return
+	 */
+	public static function getProjectTeamsByDivisionOptions($project_id, $division_id = 0, $required = false, $slug = false, $dbase = false)
 	{
 
-			  $app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 
 		// Get a db connection.
@@ -1047,7 +974,7 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		$query->join('INNER', ' #__sportsmanagement_team t ON t.id = st.team_id ');
 		$query->join('INNER', ' #__sportsmanagement_project p ON p.id = pt.project_id ');
 
-								  // Where
+		// Where
 		$query->where('pt.project_id = ' . $db->Quote($project_id));
 
 		if ($division_id > 0)
@@ -1056,25 +983,26 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 			$query->where('pt.division_id = ' . $db->Quote($division_id));
 		}
 
-									// Order
-									$query->order('t.name');
+		// Order
+		$query->order('t.name');
 
-									$db->setQuery($query);
+		$db->setQuery($query);
 
-									return self::addGlobalSelectElement($db->loadObjectList(), $required);
+		return self::addGlobalSelectElement($db->loadObjectList(), $required);
 	}
 
-			  /**
-			   * sportsmanagementModelAjax::getProjectsByClubOptions()
-			   *
-			   * @param   mixed $club_id
-			   * @param   bool  $required
-			   * @return
-			   */
-	public static function getProjectsByClubOptions($club_id, $required=false, $slug = false, $dbase = false)
+	/**
+	 * sportsmanagementModelAjax::getProjectsByClubOptions()
+	 *
+	 * @param   mixed  $club_id
+	 * @param   bool   $required
+	 *
+	 * @return
+	 */
+	public static function getProjectsByClubOptions($club_id, $required = false, $slug = false, $dbase = false)
 	{
 
-			  $app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 
 		// Get a db connection.
@@ -1106,24 +1034,24 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 			$query->join('INNER', ' #__sportsmanagement_team t ON t.id = st.team_id ');
 			$query->join('INNER', ' #__sportsmanagement_project p ON p.id = pt.project_id ');
 
-									  // Where
+			// Where
 			$query->where('t.club_id = ' . $db->Quote($club_id));
 
-							  $db->setQuery($query);
+			$db->setQuery($query);
 
 			return self::addGlobalSelectElement($db->loadObjectList(), $required);
 		}
 	}
 
-			  /**
-			   * sportsmanagementModelAjax::getProjects()
-			   *
-			   * @return
-			   */
+	/**
+	 * sportsmanagementModelAjax::getProjects()
+	 *
+	 * @return
+	 */
 	public static function getProjects($season_id = 0, $required = false, $slug = false, $dabse = false)
 	{
 
-			  $app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 
 		// Get a db connection.
@@ -1160,8 +1088,8 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 
 			if (is_array($season_id))
 			{
-					$ids = implode(",", array_map('intval', $season_id));
-					$query->where('p.season_id IN (' . $ids . ')');
+				$ids = implode(",", array_map('intval', $season_id));
+				$query->where('p.season_id IN (' . $ids . ')');
 			}
 			else
 			{
@@ -1186,22 +1114,23 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		// order
 		$query->order('p.name');
 
-		  $db->setQuery($query);
+		$db->setQuery($query);
 
 		return self::addGlobalSelectElement($db->loadObjectList(), $required);
 	}
 
-			  /**
-			   * sportsmanagementModelAjax::getProjectTeamOptions()
-			   *
-			   * @param   mixed $project_id
-			   * @param   bool  $required
-			   * @return
-			   */
+	/**
+	 * sportsmanagementModelAjax::getProjectTeamOptions()
+	 *
+	 * @param   mixed  $project_id
+	 * @param   bool   $required
+	 *
+	 * @return
+	 */
 	public static function getProjectTeamOptions($project_id, $required = false, $slug = false, $dabse = false)
 	{
 
-			  $app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 
 		// Get a db connection.
@@ -1216,7 +1145,7 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 
 		$query = $db->getQuery(true);
 
-		  // Select some fields
+		// Select some fields
 		if ($slug)
 		{
 			$query->select('CONCAT_WS(\':\', t.id, t.alias) AS value,t.name AS text');
@@ -1232,18 +1161,18 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		$query->join('INNER', ' #__sportsmanagement_team t ON t.id = st.team_id ');
 		$query->join('INNER', ' #__sportsmanagement_project p ON p.id = pt.project_id ');
 
-								  // Where
+		// Where
 		if ($project_id)
 		{
 			if (!is_array($project_id))
 			{
-				   $project_id = explode(",", $project_id);
+				$project_id = explode(",", $project_id);
 			}
 
 			// Ist es ein array ?
 			if (is_array($project_id))
 			{
-					   $ids = implode(",", array_map('intval', $project_id));
+				$ids = implode(",", array_map('intval', $project_id));
 				$query->where('pt.project_id IN (' . $ids . ')');
 			}
 			else
@@ -1261,22 +1190,23 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		// Order
 		$query->order('t.name');
 
-				  $db->setQuery($query);
+		$db->setQuery($query);
 
 		return self::addGlobalSelectElement($db->loadObjectList(), $required);
 	}
 
-		/**
-		 * sportsmanagementModelAjax::getProjectTeamPtidOptions()
-		 *
-		 * @param   mixed $project_id
-		 * @param   bool  $required
-		 * @return
-		 */
-	function getProjectTeamPtidOptions($project_id, $required = false, $slug = false, $dbase = false)
+	/**
+	 * sportsmanagementModelAjax::getProjectPlayerOptions()
+	 *
+	 * @param   mixed  $project_id
+	 * @param   bool   $required
+	 *
+	 * @return
+	 */
+	public static function getProjectPlayerOptions($project_id, $required = false, $slug = false, $dbase = false)
 	{
 
-			  $app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 
 		// Get a db connection.
@@ -1292,58 +1222,6 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		$query = $db->getQuery(true);
 
 		// Select some fields
-		if ($slug)
-		{
-			$query->select('CONCAT_WS(\':\', pt.id, t.alias) AS value,t.name AS text');
-		}
-		else
-		{
-			$query->select('pt.id AS value,t.name AS text');
-		}
-
-		// From
-		$query->from('#__sportsmanagement_project_team as pt');
-		$query->join('INNER', ' #__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
-		$query->join('INNER', ' #__sportsmanagement_team t ON t.id = st.team_id ');
-		$query->join('INNER', ' #__sportsmanagement_project p ON p.id = pt.project_id ');
-
-								  // Where
-		$query->where('pt.project_id = ' . $db->Quote($project_id));
-
-		// Order
-		$query->order('t.name');
-
-				  $db->setQuery($query);
-
-		return self::addGlobalSelectElement($db->loadObjectList(), $required);
-	}
-
-		/**
-		 * sportsmanagementModelAjax::getProjectPlayerOptions()
-		 *
-		 * @param   mixed $project_id
-		 * @param   bool  $required
-		 * @return
-		 */
-	public static function getProjectPlayerOptions($project_id, $required = false, $slug = false, $dbase = false)
-	{
-
-			  $app = Factory::getApplication();
-		$option = $app->input->getCmd('option');
-
-		// Get a db connection.
-		if (!$dbase)
-		{
-			$db = sportsmanagementHelper::getDBConnection();
-		}
-		else
-		{
-			$db = sportsmanagementHelper::getDBConnection(true, true);
-		}
-
-		$query = $db->getQuery(true);
-
-				  // Select some fields
 		$query->select("CONCAT_WS(':', p.id, p.alias) AS value");
 		$query->select("CONCAT(p.lastname, ', ', p.firstname, ' (', p.birthday, ')') AS text");
 
@@ -1368,22 +1246,23 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		// Order
 		$query->order('text');
 
-						  $db->setQuery($query);
+		$db->setQuery($query);
 
 		return self::addGlobalSelectElement($db->loadObjectList(), $required);
 	}
 
-		/**
-		 * sportsmanagementModelAjax::getProjectStaffOptions()
-		 *
-		 * @param   mixed $project_id
-		 * @param   bool  $required
-		 * @return
-		 */
+	/**
+	 * sportsmanagementModelAjax::getProjectStaffOptions()
+	 *
+	 * @param   mixed  $project_id
+	 * @param   bool   $required
+	 *
+	 * @return
+	 */
 	public static function getProjectStaffOptions($project_id, $required = false, $slug = false, $dbase = false)
 	{
 
-			  $app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 
 		// Get a db connection.
@@ -1423,22 +1302,23 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		// Order
 		$query->order('text');
 
-				   $db->setQuery($query);
+		$db->setQuery($query);
 
 		return self::addGlobalSelectElement($db->loadObjectList(), $required);
 	}
 
-		/**
-		 * sportsmanagementModelAjax::getProjectClubOptions()
-		 *
-		 * @param   mixed $project_id
-		 * @param   bool  $required
-		 * @return
-		 */
+	/**
+	 * sportsmanagementModelAjax::getProjectClubOptions()
+	 *
+	 * @param   mixed  $project_id
+	 * @param   bool   $required
+	 *
+	 * @return
+	 */
 	public static function getProjectClubOptions($project_id, $required = false, $slug = false, $dbase = false)
 	{
 
-			  $app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 
 		// Get a db connection.
@@ -1463,14 +1343,14 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 			$query->select('c.id AS value,c.name AS text');
 		}
 
-				  // From
+		// From
 		$query->from('#__sportsmanagement_project_team as pt');
 		$query->join('INNER', ' #__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
 		$query->join('INNER', ' #__sportsmanagement_team t ON t.id = st.team_id ');
 		$query->join('INNER', ' #__sportsmanagement_club AS c ON c.id = t.club_id ');
 		$query->join('INNER', ' #__sportsmanagement_project p ON p.id = pt.project_id ');
 
-								  // Where
+		// Where
 		if ($project_id)
 		{
 			// Ist es ein array ?
@@ -1495,22 +1375,23 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		// Order
 		$query->order('c.name');
 
-																  $db->setQuery($query);
+		$db->setQuery($query);
 
 		return self::addGlobalSelectElement($db->loadObjectList(), $required);
 	}
 
-		/**
-		 * sportsmanagementModelAjax::getProjectEventsOptions()
-		 *
-		 * @param   mixed $project_id
-		 * @param   bool  $required
-		 * @return
-		 */
+	/**
+	 * sportsmanagementModelAjax::getProjectEventsOptions()
+	 *
+	 * @param   mixed  $project_id
+	 * @param   bool   $required
+	 *
+	 * @return
+	 */
 	public static function getProjectEventsOptions($project_id, $required = false, $slug = false, $dbase = false)
 	{
 
-			  $app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 
 		// Get a db connection.
@@ -1525,7 +1406,7 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 
 		$query = $db->getQuery(true);
 
-		  // Select some fields
+		// Select some fields
 		$query->select('CONCAT_WS(\':\', et.id, et.alias) AS value,et.name AS text');
 
 		// From
@@ -1545,7 +1426,7 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 
 		try
 		{
-				$db->setQuery($query);
+			$db->setQuery($query);
 
 			return self::addGlobalSelectElement($db->loadObjectList(), $required);
 		}
@@ -1557,18 +1438,18 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		}
 	}
 
-
-		/**
-		 * sportsmanagementModelAjax::getProjectStatOptions()
-		 *
-		 * @param   mixed $project_id
-		 * @param   bool  $required
-		 * @return
-		 */
-	public static function getProjectStatOptions($project_id, $required=false, $slug = false, $dbase = false)
+	/**
+	 * sportsmanagementModelAjax::getProjectStatOptions()
+	 *
+	 * @param   mixed  $project_id
+	 * @param   bool   $required
+	 *
+	 * @return
+	 */
+	public static function getProjectStatOptions($project_id, $required = false, $slug = false, $dbase = false)
 	{
 
-			  $app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 
 		// Get a db connection.
@@ -1583,7 +1464,7 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 
 		$query = $db->getQuery(true);
 
-		  // Select some fields
+		// Select some fields
 		$query->select('CONCAT_WS(\':\', s.id, s.alias) AS value,s.name AS text');
 
 		// From
@@ -1601,22 +1482,23 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		// Order
 		$query->order('s.name');
 
-		  $db->setQuery($query);
+		$db->setQuery($query);
 
 		return self::addGlobalSelectElement($db->loadObjectList(), $required);
 	}
 
-		/**
-		 * sportsmanagementModelAjax::getMatchesOptions()
-		 *
-		 * @param   mixed $project_id
-		 * @param   bool  $required
-		 * @return
-		 */
-	public static function getMatchesOptions($project_id, $required=false, $slug = false, $dbase = false)
+	/**
+	 * sportsmanagementModelAjax::getMatchesOptions()
+	 *
+	 * @param   mixed  $project_id
+	 * @param   bool   $required
+	 *
+	 * @return
+	 */
+	public static function getMatchesOptions($project_id, $required = false, $slug = false, $dbase = false)
 	{
 
-			  $app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 
 		// Get a db connection.
@@ -1631,7 +1513,7 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 
 		$query = $db->getQuery(true);
 
-		  // Select some fields
+		// Select some fields
 		$query->select("m.id AS value,CONCAT('(', m.match_date, ') - ', t1.middle_name, ' - ', t2.middle_name) AS text");
 
 		// From
@@ -1639,13 +1521,13 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		$query->join('INNER', ' #__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
 		$query->join('INNER', ' #__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id ');
 
-		  $query->join('INNER', ' #__sportsmanagement_season_team_id as st1 ON st1.id = pt1.team_id ');
+		$query->join('INNER', ' #__sportsmanagement_season_team_id as st1 ON st1.id = pt1.team_id ');
 		$query->join('INNER', ' #__sportsmanagement_season_team_id as st2 ON st2.id = pt2.team_id ');
 
-		  $query->join('INNER', ' #__sportsmanagement_team AS t1 ON st1.team_id = t1.id ');
+		$query->join('INNER', ' #__sportsmanagement_team AS t1 ON st1.team_id = t1.id ');
 		$query->join('INNER', ' #__sportsmanagement_team AS t2 ON st2.team_id = t2.id ');
 
-								  // Where
+		// Where
 		// ist es ein array ?
 		if (is_array($project_id))
 		{
@@ -1659,25 +1541,216 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 
 		// $query->where('pt1.project_id = ' . $db->Quote($project_id) );
 
-		  // Order
+		// Order
 		$query->order('m.match_date, t1.short_name');
 
-										  $db->setQuery($query);
+		$db->setQuery($query);
 
 		return self::addGlobalSelectElement($db->loadObjectList(), $required);
 	}
 
-		/**
-		 * sportsmanagementModelAjax::getRefereesOptions()
-		 *
-		 * @param   mixed $project_id
-		 * @param   bool  $required
-		 * @return
-		 */
+	/**
+	 * sportsmanagementModelAjax::getProjectTreenodeOptions()
+	 *
+	 * @param   mixed  $project_id
+	 * @param   bool   $required
+	 *
+	 * @return
+	 */
+	public static function getProjectTreenodeOptions($project_id, $required = false, $slug = false, $dbase = false)
+	{
+
+		$app    = Factory::getApplication();
+		$option = $app->input->getCmd('option');
+
+		// Get a db connection.
+		if (!$dbase)
+		{
+			$db = sportsmanagementHelper::getDBConnection();
+		}
+		else
+		{
+			$db = sportsmanagementHelper::getDBConnection(true, true);
+		}
+
+		$query = $db->getQuery(true);
+
+		// Select some fields
+		$query->select('tt.id AS value,tt.id AS text');
+
+		// From
+		$query->from('#__sportsmanagement_treeto AS tt');
+		$query->join('INNER', ' #__sportsmanagement_project p ON p.id = tt.project_id ');
+
+		// Where
+		$query->where('tt.project_id = ' . $db->Quote($project_id));
+
+		// Order
+		$query->order('tt.id');
+
+		$db->setQuery($query);
+
+		return self::addGlobalSelectElement($db->loadObjectList(), $required);
+	}
+
+	/**
+	 * sportsmanagementModelAjax::getProjectsBySportsTypesOptions()
+	 *
+	 * @param   mixed  $sports_type_id
+	 * @param   bool   $required
+	 *
+	 * @return
+	 */
+	function getProjectsBySportsTypesOptions($sports_type_id, $required = false, $slug = false, $dbase = false)
+	{
+
+		$app    = Factory::getApplication();
+		$option = $app->input->getCmd('option');
+
+		// Get a db connection.
+		if (!$dbase)
+		{
+			$db = sportsmanagementHelper::getDBConnection();
+		}
+		else
+		{
+			$db = sportsmanagementHelper::getDBConnection(true, true);
+		}
+
+		$query = $db->getQuery(true);
+
+		// Select some fields
+		$query->select('CONCAT_WS(\':\', p.id, p.alias) AS value,p.name AS text');
+
+		// From
+		$query->from('#__sportsmanagement_project AS p');
+		$query->join('INNER', ' #__sportsmanagement_sports_type AS st ON st.id = p.sports_type_id ');
+
+		// Where
+		$query->where('p.sports_type_id = ' . $db->Quote($sports_type_id));
+
+		// Order
+		$query->order('p.name');
+
+		$db->setQuery($query);
+
+		return self::addGlobalSelectElement($db->loadObjectList(), $required);
+	}
+
+	/**
+	 * sportsmanagementModelAjax::getAgeGroupsBySportsTypesOptions()
+	 *
+	 * @param   mixed  $sports_type_id
+	 * @param   bool   $required
+	 *
+	 * @return
+	 */
+	function getAgeGroupsBySportsTypesOptions($sports_type_id, $required = false, $slug = false, $dbase = false)
+	{
+		// Reference global application object
+		$app = Factory::getApplication();
+
+		// JInput object
+		$option = $app->input->getCmd('option');
+
+		// Get a db connection.
+		if (!$dbase)
+		{
+			$db = sportsmanagementHelper::getDBConnection();
+		}
+		else
+		{
+			$db = sportsmanagementHelper::getDBConnection(true, true);
+		}
+
+		$query = $db->getQuery(true);
+
+		// Select some fields
+		$query->select('CONCAT_WS(\':\', a.id, a.alias) AS value,a.name AS text');
+
+		// From
+		$query->from('#__sportsmanagement_agegroup AS a');
+		$query->join('INNER', ' #__sportsmanagement_sports_type AS st ON st.id = a.sportstype_id ');
+
+		// Where
+		if ($sports_type_id)
+		{
+			$query->where('a.sports_type_id = ' . $sports_type_id);
+		}
+
+		// Order
+		$query->order('a.name');
+
+		$db->setQuery($query);
+
+		return self::addGlobalSelectElement($db->loadObjectList(), $required);
+	}
+
+	/**
+	 * sportsmanagementModelAjax::getProjectTeamPtidOptions()
+	 *
+	 * @param   mixed  $project_id
+	 * @param   bool   $required
+	 *
+	 * @return
+	 */
+	function getProjectTeamPtidOptions($project_id, $required = false, $slug = false, $dbase = false)
+	{
+
+		$app    = Factory::getApplication();
+		$option = $app->input->getCmd('option');
+
+		// Get a db connection.
+		if (!$dbase)
+		{
+			$db = sportsmanagementHelper::getDBConnection();
+		}
+		else
+		{
+			$db = sportsmanagementHelper::getDBConnection(true, true);
+		}
+
+		$query = $db->getQuery(true);
+
+		// Select some fields
+		if ($slug)
+		{
+			$query->select('CONCAT_WS(\':\', pt.id, t.alias) AS value,t.name AS text');
+		}
+		else
+		{
+			$query->select('pt.id AS value,t.name AS text');
+		}
+
+		// From
+		$query->from('#__sportsmanagement_project_team as pt');
+		$query->join('INNER', ' #__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
+		$query->join('INNER', ' #__sportsmanagement_team t ON t.id = st.team_id ');
+		$query->join('INNER', ' #__sportsmanagement_project p ON p.id = pt.project_id ');
+
+		// Where
+		$query->where('pt.project_id = ' . $db->Quote($project_id));
+
+		// Order
+		$query->order('t.name');
+
+		$db->setQuery($query);
+
+		return self::addGlobalSelectElement($db->loadObjectList(), $required);
+	}
+
+	/**
+	 * sportsmanagementModelAjax::getRefereesOptions()
+	 *
+	 * @param   mixed  $project_id
+	 * @param   bool   $required
+	 *
+	 * @return
+	 */
 	function getRefereesOptions($project_id, $required = false, $slug = false, $dbase = false)
 	{
 
-			  $app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 
 		// Get a db connection.
@@ -1707,50 +1780,7 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		// Order
 		$query->order('text');
 
-				  $db->setQuery($query);
-
-		return self::addGlobalSelectElement($db->loadObjectList(), $required);
-	}
-
-		/**
-		 * sportsmanagementModelAjax::getProjectTreenodeOptions()
-		 *
-		 * @param   mixed $project_id
-		 * @param   bool  $required
-		 * @return
-		 */
-	public static function getProjectTreenodeOptions($project_id, $required = false, $slug = false, $dbase = false)
-	{
-
-			  $app = Factory::getApplication();
-		$option = $app->input->getCmd('option');
-
-		// Get a db connection.
-		if (!$dbase)
-		{
-			$db = sportsmanagementHelper::getDBConnection();
-		}
-		else
-		{
-			$db = sportsmanagementHelper::getDBConnection(true, true);
-		}
-
-		$query = $db->getQuery(true);
-
-		  // Select some fields
-		$query->select('tt.id AS value,tt.id AS text');
-
-		// From
-		$query->from('#__sportsmanagement_treeto AS tt');
-		$query->join('INNER', ' #__sportsmanagement_project p ON p.id = tt.project_id ');
-
-		// Where
-		$query->where('tt.project_id = ' . $db->Quote($project_id));
-
-		// Order
-		$query->order('tt.id');
-
-		  $db->setQuery($query);
+		$db->setQuery($query);
 
 		return self::addGlobalSelectElement($db->loadObjectList(), $required);
 	}

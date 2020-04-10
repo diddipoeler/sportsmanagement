@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
@@ -43,18 +44,18 @@ class sportsmanagementViewLeagues extends sportsmanagementView
 		$inputappend = '';
 		$startmemory = memory_get_usage();
 
-			  $this->table = Table::getInstance('league', 'sportsmanagementTable');
+		$this->table = Table::getInstance('league', 'sportsmanagementTable');
 
-			  // Build the html options for nation
+		// Build the html options for nation
 		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 
 		if ($res = JSMCountries::getCountryOptions())
 		{
-			$nation = array_merge($nation, $res);
+			$nation              = array_merge($nation, $res);
 			$this->search_nation = $res;
 		}
 
-			  $lists['nation'] = $nation;
+		$lists['nation']  = $nation;
 		$lists['nation2'] = JHtmlSelect::genericlist(
 			$nation,
 			'filter_search_nation',
@@ -65,16 +66,16 @@ class sportsmanagementViewLeagues extends sportsmanagementView
 		);
 
 		unset($nation);
-		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'));
+		$nation[]       = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'));
 		$mdlassociation = BaseDatabaseModel::getInstance('jlextassociations', 'sportsmanagementModel');
 
 		if ($res = $mdlassociation->getAssociations($this->state->get('filter.federation')))
 		{
-			$nation = array_merge($nation, $res);
+			$nation                   = array_merge($nation, $res);
 			$this->search_association = $res;
 		}
 
-			  $lists['association'] = array();
+		$lists['association'] = array();
 
 		foreach ($res as $row)
 		{
@@ -89,27 +90,27 @@ class sportsmanagementViewLeagues extends sportsmanagementView
 			}
 		}
 
-			  $lists['association2'] = JHtmlSelect::genericlist(
-				  $nation,
-				  'filter_search_association',
-				  $inputappend . 'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
-				  'value',
-				  'text',
-				  $this->state->get('filter.search_association')
-			  );
+		$lists['association2'] = JHtmlSelect::genericlist(
+			$nation,
+			'filter_search_association',
+			$inputappend . 'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+			'value',
+			'text',
+			$this->state->get('filter.search_association')
+		);
 
-			  unset($myoptions);
+		unset($myoptions);
 
-			  $myoptions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
+		$myoptions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
 		$mdlagegroup = BaseDatabaseModel::getInstance('agegroups', 'sportsmanagementModel');
 
 		if ($res = $mdlagegroup->getAgeGroups())
 		{
-			$myoptions = array_merge($myoptions, $res);
-			$this->search_agegroup    = $res;
+			$myoptions             = array_merge($myoptions, $res);
+			$this->search_agegroup = $res;
 		}
 
-		$lists['agegroup'] = $myoptions;
+		$lists['agegroup']  = $myoptions;
 		$lists['agegroup2'] = JHtmlSelect::genericlist(
 			$myoptions,
 			'filter_search_agegroup',
@@ -124,11 +125,11 @@ class sportsmanagementViewLeagues extends sportsmanagementView
 
 		if ($res = $mdlassociation->getAssociations())
 		{
-			$nation = array_merge($nation, $res);
+			$nation           = array_merge($nation, $res);
 			$this->federation = $res;
 		}
 
-			  $this->lists = $lists;
+		$this->lists = $lists;
 
 	}
 
@@ -147,6 +148,6 @@ class sportsmanagementViewLeagues extends sportsmanagementView
 		ToolbarHelper::custom('league.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
 		ToolbarHelper::archiveList('league.export', Text::_('JTOOLBAR_EXPORT'));
 
-					  parent::addToolbar();
+		parent::addToolbar();
 	}
 }

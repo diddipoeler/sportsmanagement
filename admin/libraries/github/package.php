@@ -36,8 +36,8 @@ abstract class JGithubPackage extends JGithubObject
 	 *
 	 * @return  JGithubPackage  GitHub API package object.
 	 *
-	 * @since   3.3 (CMS)
 	 * @throws  RuntimeException
+	 * @since   3.3 (CMS)
 	 */
 	public function __get($name)
 	{

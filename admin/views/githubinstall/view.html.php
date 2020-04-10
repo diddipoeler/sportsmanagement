@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
@@ -36,10 +37,10 @@ class sportsmanagementViewgithubinstall extends sportsmanagementView
 	 */
 	public function init()
 	{
-		  $github_link = ComponentHelper::getParams($this->option)->get('cfg_update_server_file', '');
-		  $this->github_link = $github_link;
-		  $this->_success_text = $this->model->CopyGithubLink($github_link);
-		  $this->setDocument();
+		$github_link         = ComponentHelper::getParams($this->option)->get('cfg_update_server_file', '');
+		$this->github_link   = $github_link;
+		$this->_success_text = $this->model->CopyGithubLink($github_link);
+		$this->setDocument();
 	}
 
 	/**

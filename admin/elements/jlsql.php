@@ -41,6 +41,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 
@@ -83,9 +84,9 @@ class JFormFieldJLSQL extends JFormField
 	{
 		$db = sportsmanagementHelper::getDBConnection();
 		$db->setQuery($this->elements['query']);
-		$key = ($this->elements['key_field'] ? $this->elements['key_field'] : 'value');
-		$val = ($this->elements['value_field'] ? $this->elements['value_field'] : $this->name);
-		$doc = Factory::getDocument();
+		$key     = ($this->elements['key_field'] ? $this->elements['key_field'] : 'value');
+		$val     = ($this->elements['value_field'] ? $this->elements['value_field'] : $this->name);
+		$doc     = Factory::getDocument();
 		$updates = $this->elements['updates'];
 		$depends = $this->elements['depends'];
 
@@ -129,7 +130,7 @@ class JFormFieldJLSQL extends JFormField
 			);
 		}
 
-		$html = HTMLHelper::_('select.genericlist',  $db->loadObjectList(), $this->name, 'class="inputbox"' . ($updates ? ' onchange="javascript:update_' . $updates . '()"' : '') . ($depends ? ' onclick="javascript:update_' . $this->name . '()"' : ''), $key, $val, $this->value, $this->name);
+		$html = HTMLHelper::_('select.genericlist', $db->loadObjectList(), $this->name, 'class="inputbox"' . ($updates ? ' onchange="javascript:update_' . $updates . '()"' : '') . ($depends ? ' onclick="javascript:update_' . $this->name . '()"' : ''), $key, $val, $this->value, $this->name);
 
 		return $html;
 	}

@@ -18,11 +18,11 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 
 <div class="pagination">
-<p class="counter">
-<?php echo $this->pagination->getPagesCounter(); ?>
-</p>
-<p class="counter">
-<?php echo $this->pagination->getResultsCounter(); ?>
-</p>
-<?php echo $this->pagination->getPagesLinks(); ?>
+    <p class="counter">
+		<?php echo $this->pagination->getPagesCounter(); ?>
+    </p>
+    <p class="counter">
+		<?php echo $this->pagination->getResultsCounter(); ?>
+    </p>
+	<?php echo $this->pagination->getPagesLinks(); ?>
 </div>

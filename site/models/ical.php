@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -49,19 +50,19 @@ class sportsmanagementModelical extends BaseDatabaseModel
 	 *
 	 * @return void
 	 */
-	function __construct( )
+	function __construct()
 	{
-		  // Reference global application object
-		$app = Factory::getApplication();
+		// Reference global application object
+		$app    = Factory::getApplication();
 		$jinput = $app->input;
 		parent::__construct();
 
-			  self::$teamid = (int) $jinput->get('tid', 0, '');
+		self::$teamid        = (int) $jinput->get('tid', 0, '');
 		self::$projectteamid = (int) $jinput->get('ptid', 0, '');
 
-			  self::$projectid = $jinput->request->get('p', 0, 'INT');
-		self::$divisionid = $jinput->request->get('division', 0, 'INT');
-		self::$cfg_which_database = $jinput->request->get('cfg_which_database', 0, 'INT');
+		self::$projectid                         = $jinput->request->get('p', 0, 'INT');
+		self::$divisionid                        = $jinput->request->get('division', 0, 'INT');
+		self::$cfg_which_database                = $jinput->request->get('cfg_which_database', 0, 'INT');
 		sportsmanagementModelProject::$projectid = self::$projectid;
 
 		// SportsmanagementModelResults::$projectid = self::$projectid;
@@ -69,17 +70,17 @@ class sportsmanagementModelical extends BaseDatabaseModel
 
 	}
 
-	function getResultsPlan($projectid = 0, $teamid = 0, $divisionid = 0, $playgroundid = 0, $ordering = 'ASC',$cfg_which_database = 0)
+	function getResultsPlan($projectid = 0, $teamid = 0, $divisionid = 0, $playgroundid = 0, $ordering = 'ASC', $cfg_which_database = 0)
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 
 		// Get a db connection.
-		$db = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query = $db->getQuery(true);
+		$db     = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
+		$query  = $db->getQuery(true);
 		$result = array();
 
-			  $query->select('m.id,m.projectteam1_id, m.projectteam2_id, m.match_date,DATE_FORMAT(m.time_present,"%H:%i") time_present');
+		$query->select('m.id,m.projectteam1_id, m.projectteam2_id, m.match_date,DATE_FORMAT(m.time_present,"%H:%i") time_present');
 		$query->select('playground.id AS playground_id,playground.name AS playground_name,playground.short_name AS playground_short_name');
 		$query->select('playground.address AS playground_address,playground.zipcode AS playground_zipcode,playground.city AS playground_city');
 		$query->select('pt1.project_id');
@@ -93,7 +94,7 @@ class sportsmanagementModelical extends BaseDatabaseModel
 		$query->select('t1.id AS team1, t2.id AS team2');
 		$query->select('p.name AS project_name');
 
-			  // From
+		// From
 		$query->from('#__sportsmanagement_match AS m');
 
 		// Join
@@ -111,7 +112,7 @@ class sportsmanagementModelical extends BaseDatabaseModel
 		$query->join('LEFT', '#__sportsmanagement_division AS d2 ON m.division_id = d2.id');
 		$query->join('LEFT', '#__sportsmanagement_playground AS playground ON playground.id = m.playground_id');
 
-			  // Where
+		// Where
 		$query->where('m.published = 1');
 		$query->where('r.project_id = ' . $projectid);
 
@@ -134,11 +135,11 @@ class sportsmanagementModelical extends BaseDatabaseModel
 			$result = false;
 		}
 
-			// }
+		// }
 
-			  $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
-			  return $result;
+		return $result;
 
 	}
 

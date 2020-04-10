@@ -46,29 +46,29 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 <div class="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
-<?PHP
-$list  = modJSMStatistikRekordHelper::getData($params, $module);
-
-?>
-
-
-<table class ="table">
-
-<?PHP
-
-if ($list)
-{
-	foreach ($list as $row)
-	{
-		?>
-		<tr>
-		<td width ="50%" align ="left" ><?PHP echo $row->text; ?></td>
-	</tr>
 	<?PHP
-	}
-}
+	$list = modJSMStatistikRekordHelper::getData($params, $module);
 
-?>
+	?>
 
-</table>
+
+    <table class="table">
+
+		<?PHP
+
+		if ($list)
+		{
+			foreach ($list as $row)
+			{
+				?>
+                <tr>
+                    <td width="50%" align="left"><?PHP echo $row->text; ?></td>
+                </tr>
+				<?PHP
+			}
+		}
+
+		?>
+
+    </table>
 </div>

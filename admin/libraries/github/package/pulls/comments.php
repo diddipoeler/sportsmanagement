@@ -30,10 +30,10 @@ class JGithubPackagePullsComments extends JGithubPackage
 	 * @param   string   $filePath  The Relative path of the file to comment on.
 	 * @param   string   $position  The line index in the diff to comment on.
 	 *
+	 * @return  object
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  object
 	 */
 	public function create($user, $repo, $pullId, $body, $commitId, $filePath, $position)
 	{
@@ -43,10 +43,10 @@ class JGithubPackagePullsComments extends JGithubPackage
 		// Build the request data.
 		$data = json_encode(
 			array(
-				'body' => $body,
+				'body'      => $body,
 				'commit_id' => $commitId,
-				'path' => $filePath,
-				'position' => $position,
+				'path'      => $filePath,
+				'position'  => $position,
 			)
 		);
 
@@ -66,10 +66,10 @@ class JGithubPackagePullsComments extends JGithubPackage
 	 * @param   string   $body       The comment body text.
 	 * @param   integer  $inReplyTo  The id of the comment to reply to.
 	 *
+	 * @return  object
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  object
 	 */
 	public function createReply($user, $repo, $pullId, $body, $inReplyTo)
 	{
@@ -79,7 +79,7 @@ class JGithubPackagePullsComments extends JGithubPackage
 		// Build the request data.
 		$data = json_encode(
 			array(
-				'body' => $body,
+				'body'        => $body,
 				'in_reply_to' => (int) $inReplyTo,
 			)
 		);
@@ -98,10 +98,10 @@ class JGithubPackagePullsComments extends JGithubPackage
 	 * @param   string   $repo       The name of the GitHub repository.
 	 * @param   integer  $commentId  The id of the comment to delete.
 	 *
+	 * @return  void
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  void
 	 */
 	public function delete($user, $repo, $commentId)
 	{
@@ -123,10 +123,10 @@ class JGithubPackagePullsComments extends JGithubPackage
 	 * @param   integer  $commentId  The id of the comment to update.
 	 * @param   string   $body       The new body text for the comment.
 	 *
+	 * @return  object
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  object
 	 */
 	public function edit($user, $repo, $commentId, $body)
 	{
@@ -153,10 +153,10 @@ class JGithubPackagePullsComments extends JGithubPackage
 	 * @param   string   $repo       The name of the GitHub repository.
 	 * @param   integer  $commentId  The comment id to get.
 	 *
+	 * @return  object
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  object
 	 */
 	public function get($user, $repo, $commentId)
 	{
@@ -178,10 +178,10 @@ class JGithubPackagePullsComments extends JGithubPackage
 	 * @param   integer  $page    The page number from which to get items.
 	 * @param   integer  $limit   The number of items on a page.
 	 *
+	 * @return  array
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  array
 	 */
 	public function getList($user, $repo, $pullId, $page = 0, $limit = 0)
 	{

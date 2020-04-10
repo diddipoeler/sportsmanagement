@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
@@ -42,27 +43,27 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
 	public function init()
 	{
 
-			 $this->table = Table::getInstance('eventtype', 'sportsmanagementTable');
+		$this->table = Table::getInstance('eventtype', 'sportsmanagementTable');
 
 		// Build the html select list for sportstypes
-		$sportstypes[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_SPORTSTYPE_FILTER'), 'id', 'name');
+		$sportstypes[]  = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_SPORTSTYPE_FILTER'), 'id', 'name');
 		$allSportstypes = BaseDatabaseModel::getInstance('SportsTypes', 'sportsmanagementmodel')->getSportsTypes();
 
-				  $sportstypes = array_merge($sportstypes, $allSportstypes);
-		$this->sports_type    = $allSportstypes;
+		$sportstypes       = array_merge($sportstypes, $allSportstypes);
+		$this->sports_type = $allSportstypes;
 
-			  $lists['sportstypes'] = HTMLHelper::_(
-				  'select.genericList',
-				  $sportstypes,
-				  'filter_sports_type',
-				  'class="inputbox" onChange="this.form.submit();" style="width:120px"',
-				  'id',
-				  'name',
-				  $this->state->get('filter.sports_type')
-			  );
+		$lists['sportstypes'] = HTMLHelper::_(
+			'select.genericList',
+			$sportstypes,
+			'filter_sports_type',
+			'class="inputbox" onChange="this.form.submit();" style="width:120px"',
+			'id',
+			'name',
+			$this->state->get('filter.sports_type')
+		);
 		unset($sportstypes);
 
-		$this->lists    = $lists;
+		$this->lists = $lists;
 
 	}
 
@@ -80,11 +81,11 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
 		ToolbarHelper::unpublish('eventtypes.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 		ToolbarHelper::divider();
 
-			  ToolbarHelper::addNew('eventtype.add');
+		ToolbarHelper::addNew('eventtype.add');
 		ToolbarHelper::editList('eventtype.edit');
 		ToolbarHelper::custom('eventtype.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
 		ToolbarHelper::archiveList('eventtype.export', Text::_('JTOOLBAR_EXPORT'));
 
-					  parent::addToolbar();
+		parent::addToolbar();
 	}
 }

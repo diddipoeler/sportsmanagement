@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
@@ -37,23 +38,23 @@ class sportsmanagementViewpredictionproject extends sportsmanagementView
 	public function init()
 	{
 
-			  // Get the Data
-		$this->form = $this->get('Form');
-		$this->item = $this->get('Item');
+		// Get the Data
+		$this->form   = $this->get('Form');
+		$this->item   = $this->get('Item');
 		$this->script = $this->get('Script');
 
 		if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 		{
-			 $this->form->setFieldAttribute('champ', 'type', 'radio');
-			 $this->form->setFieldAttribute('champ', 'class', 'switcher');
-			 $this->form->setFieldAttribute('joker', 'type', 'radio');
-			 $this->form->setFieldAttribute('joker', 'class', 'switcher');
-			 $this->form->setFieldAttribute('published', 'type', 'radio');
-			 $this->form->setFieldAttribute('published', 'class', 'switcher');
-			 $this->form->setFieldAttribute('mode', 'type', 'radio');
-			 $this->form->setFieldAttribute('mode', 'class', 'switcher');
-			 $this->form->setFieldAttribute('overview', 'type', 'radio');
-			 $this->form->setFieldAttribute('overview', 'class', 'switcher');
+			$this->form->setFieldAttribute('champ', 'type', 'radio');
+			$this->form->setFieldAttribute('champ', 'class', 'switcher');
+			$this->form->setFieldAttribute('joker', 'type', 'radio');
+			$this->form->setFieldAttribute('joker', 'class', 'switcher');
+			$this->form->setFieldAttribute('published', 'type', 'radio');
+			$this->form->setFieldAttribute('published', 'class', 'switcher');
+			$this->form->setFieldAttribute('mode', 'type', 'radio');
+			$this->form->setFieldAttribute('mode', 'class', 'switcher');
+			$this->form->setFieldAttribute('overview', 'type', 'radio');
+			$this->form->setFieldAttribute('overview', 'class', 'switcher');
 		}
 
 		// Check for errors.
@@ -66,7 +67,7 @@ class sportsmanagementViewpredictionproject extends sportsmanagementView
 
 		$this->item->name = '';
 
-			  $this->app->setUserState("$this->option.pid", $this->item->project_id);
+		$this->app->setUserState("$this->option.pid", $this->item->project_id);
 
 		// Set the document
 		$this->setDocument();
@@ -77,7 +78,7 @@ class sportsmanagementViewpredictionproject extends sportsmanagementView
 			case 'edit_3';
 			case 'edit_4';
 				$this->setLayout('edit_3');
-			break;
+				break;
 		}
 
 	}

@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Uri\Uri;
 
 /**
@@ -36,7 +37,7 @@ class sportsmanagementViewEditPerson extends sportsmanagementView
 	function init()
 	{
 
-			 $this->item = $this->model->getData();
+		$this->item = $this->model->getData();
 		$this->form = $this->get('Form');
 
 		if ($this->item->id)
@@ -60,7 +61,7 @@ class sportsmanagementViewEditPerson extends sportsmanagementView
 			$this->form->setValue('deathday', '');
 		}
 
-			  $this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
+		$this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
 		$this->form->setValue('position_id', 'request', $this->item->position_id);
 		$this->form->setValue('agegroup_id', 'request', $this->item->agegroup_id);
 
@@ -68,7 +69,7 @@ class sportsmanagementViewEditPerson extends sportsmanagementView
 		$this->form->setValue('person_id1', 'request', $this->item->person_id1);
 		$this->form->setValue('person_id2', 'request', $this->item->person_id2);
 
-		$extended = sportsmanagementHelper::getExtended($this->item->extended, 'person');
+		$extended       = sportsmanagementHelper::getExtended($this->item->extended, 'person');
 		$this->extended = $extended;
 
 		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('frontend', $this->cfg_which_database);

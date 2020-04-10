@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -46,25 +47,25 @@ class JFormFieldpersonlist extends \JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
 		/**
- *          Initialize variables.
- */
+		 *          Initialize variables.
+		 */
 		$options = array();
 
-		  $db = Factory::getDbo();
-		 $query = $db->getQuery(true);
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true);
 
-				   $query->select("id AS value, concat(lastname,' - ',firstname,'' ) AS text");
-		 $query->from('#__sportsmanagement_person ');
-		 $query->order('lastname');
-		 $db->setQuery($query);
-		 $options = $db->loadObjectList();
+		$query->select("id AS value, concat(lastname,' - ',firstname,'' ) AS text");
+		$query->from('#__sportsmanagement_person ');
+		$query->order('lastname');
+		$db->setQuery($query);
+		$options = $db->loadObjectList();
 
 		/**
- *          Merge any additional options in the XML definition.
- */
+		 *          Merge any additional options in the XML definition.
+		 */
 		$options = array_merge(parent::getOptions(), $options);
 
 		return $options;

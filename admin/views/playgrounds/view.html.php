@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
@@ -41,16 +42,16 @@ class sportsmanagementViewPlaygrounds extends sportsmanagementView
 
 		$this->table = Table::getInstance('playground', 'sportsmanagementTable');
 
-			  // Build the html options for nation
+		// Build the html options for nation
 		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 
 		if ($res = JSMCountries::getCountryOptions())
 		{
-			$nation = array_merge($nation, $res);
+			$nation              = array_merge($nation, $res);
 			$this->search_nation = $res;
 		}
 
-			  $lists['nation'] = $nation;
+		$lists['nation']  = $nation;
 		$lists['nation2'] = JHtmlSelect::genericlist(
 			$nation,
 			'filter_search_nation',
@@ -60,7 +61,7 @@ class sportsmanagementViewPlaygrounds extends sportsmanagementView
 			$this->state->get('filter.search_nation')
 		);
 
-		$this->lists    = $lists;
+		$this->lists = $lists;
 
 	}
 
@@ -73,7 +74,7 @@ class sportsmanagementViewPlaygrounds extends sportsmanagementView
 	protected function addToolbar()
 	{
 
-			  // Set toolbar items for the page
+		// Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_TITLE');
 		ToolbarHelper::editList('playground.edit');
 		ToolbarHelper::addNew('playground.add');

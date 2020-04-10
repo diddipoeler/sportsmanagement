@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -32,8 +33,8 @@ class sportsmanagementViewsportsmanagement extends sportsmanagementView
 	public function init()
 	{
 		// Get the Data
-		$form = $this->get('Form');
-		$item = $this->get('Item');
+		$form   = $this->get('Form');
+		$item   = $this->get('Item');
 		$script = $this->get('Script');
 
 		// Check for errors.
@@ -45,8 +46,8 @@ class sportsmanagementViewsportsmanagement extends sportsmanagementView
 		}
 
 		// Assign the Data
-		$this->form = $form;
-		$this->item = $item;
+		$this->form   = $form;
+		$this->item   = $item;
 		$this->script = $script;
 
 		// Set the toolbar
@@ -72,10 +73,10 @@ class sportsmanagementViewsportsmanagement extends sportsmanagementView
 		$document->addCustomTag($stylelink);
 		$jinput = Factory::getApplication()->input;
 		$jinput->set('hidemainmenu', true);
-		$user = Factory::getUser();
+		$user   = Factory::getUser();
 		$userId = $user->id;
-		$isNew = $this->item->id == 0;
-		$canDo = sportsmanagementHelper::getActions($this->item->id);
+		$isNew  = $this->item->id == 0;
+		$canDo  = sportsmanagementHelper::getActions($this->item->id);
 		ToolbarHelper::title($isNew ? Text::_('COM_SPORTSMANAGEMENT__NEW') : Text::_('COM_SPORTSMANAGEMENT__EDIT'), 'helloworld');
 
 		// Built the actions for new and existing records.
@@ -114,6 +115,7 @@ class sportsmanagementViewsportsmanagement extends sportsmanagementView
 			ToolbarHelper::cancel('sportsmanagement.cancel', 'JTOOLBAR_CLOSE');
 		}
 	}
+
 	/**
 	 * Method to set up the document properties
 	 *
@@ -121,7 +123,7 @@ class sportsmanagementViewsportsmanagement extends sportsmanagementView
 	 */
 	protected function setDocument()
 	{
-		$isNew = $this->item->id == 0;
+		$isNew    = $this->item->id == 0;
 		$document = Factory::getDocument();
 		$document->setTitle($isNew ? Text::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : Text::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
 		$document->addScript(Uri::root() . $this->script);

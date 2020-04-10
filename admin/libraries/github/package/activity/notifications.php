@@ -30,9 +30,9 @@ class JGithubPackageActivityNotifications extends JGithubPackage
 	 * @param   JDate    $since          filters out any notifications updated before the given time. The time should be passed in
 	 *                                   as UTC in the ISO 8601 format.
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function getList($all = true, $participating = true, JDate $since = null)
 	{
@@ -61,9 +61,9 @@ class JGithubPackageActivityNotifications extends JGithubPackage
 	 * @param   JDate    $since          filters out any notifications updated before the given time. The time should be passed in
 	 *                                   as UTC in the ISO 8601 format.
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function getListRepository($owner, $repo, $all = true, $participating = true, JDate $since = null)
 	{
@@ -89,9 +89,9 @@ class JGithubPackageActivityNotifications extends JGithubPackage
 	 * @param   JDate    $last_read_at  Describes the last point that notifications were checked.
 	 *                                  Anything updated since this time will not be updated. Default: Now. Expected in ISO 8601 format.
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function markRead($unread = true, $read = true, JDate $last_read_at = null)
 	{
@@ -126,9 +126,9 @@ class JGithubPackageActivityNotifications extends JGithubPackage
 	 * @param   JDate    $last_read_at  Describes the last point that notifications were checked.
 	 *                                  Anything updated since this time will not be updated. Default: Now. Expected in ISO 8601 format.
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function markReadRepository($owner, $repo, $unread, $read, JDate $last_read_at = null)
 	{
@@ -156,9 +156,9 @@ class JGithubPackageActivityNotifications extends JGithubPackage
 	 *
 	 * @param   integer  $id  The thread id.
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function viewThread($id)
 	{
@@ -177,9 +177,9 @@ class JGithubPackageActivityNotifications extends JGithubPackage
 	 * @param   boolean  $unread  Changes the unread status of the threads.
 	 * @param   boolean  $read    Inverse of “unread”.
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function markReadThread($id, $unread = true, $read = true)
 	{
@@ -205,9 +205,9 @@ class JGithubPackageActivityNotifications extends JGithubPackage
 	 *
 	 * @param   integer  $id  The thread id.
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function getThreadSubscription($id)
 	{
@@ -230,9 +230,9 @@ class JGithubPackageActivityNotifications extends JGithubPackage
 	 * @param   boolean  $subscribed  Determines if notifications should be received from this thread.
 	 * @param   boolean  $ignored     Determines if all notifications should be blocked from this thread.
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function setThreadSubscription($id, $subscribed, $ignored)
 	{
@@ -254,9 +254,9 @@ class JGithubPackageActivityNotifications extends JGithubPackage
 	 *
 	 * @param   integer  $id  The thread id.
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function deleteThreadSubscription($id)
 	{

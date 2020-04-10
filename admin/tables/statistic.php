@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Filter\OutputFilter;
 
@@ -31,12 +32,13 @@ class sportsmanagementTableStatistic extends JSMTable
 	/**
 	 * Constructor
 	 *
-	 * @param object Database connector object
+	 * @param   object Database connector object
+	 *
 	 * @since 1.0
 	 */
-	function __construct(& $db)
+	function __construct(&$db)
 	{
-		  $db = sportsmanagementHelper::getDBConnection();
+		$db = sportsmanagementHelper::getDBConnection();
 		parent::__construct('#__sportsmanagement_statistic', 'id', $db);
 	}
 
@@ -61,7 +63,7 @@ class sportsmanagementTableStatistic extends JSMTable
 			$this->short = strtoupper(substr($this->name, 0, 4));
 		}
 
-			// Setting alias
+		// Setting alias
 		if (empty($this->alias))
 		{
 			$this->alias = OutputFilter::stringURLSafe($this->name);
@@ -71,7 +73,7 @@ class sportsmanagementTableStatistic extends JSMTable
 			$this->alias = OutputFilter::stringURLSafe($this->alias); // Make sure the user didn't modify it to something illegal...
 		}
 
-			  return true;
+		return true;
 	}
 
 

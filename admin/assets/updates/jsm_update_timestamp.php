@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Component\ComponentHelper;
@@ -28,28 +29,28 @@ if (!class_exists('sportsmanagementHelper'))
 	BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
-$uri    = Factory::getUri();
+$uri = Factory::getUri();
 
 $table = Factory::getApplication()->input->getVar('table');
 $uri->delVar('table');
 $link = $uri->toString();
 
 ?>
-<script type="text/javascript">
-function sendData (sData) {
-var oldLocation = '<?PHP echo $link;?>';
-window.location = oldLocation + '&table=' + sData ;
+    <script type="text/javascript">
+        function sendData(sData) {
+            var oldLocation = '<?PHP echo $link;?>';
+            window.location = oldLocation + '&table=' + sData;
 //  window.location.search = sData;
 //  window.location.reload(true)
-}
-</script>
+        }
+    </script>
 <?PHP
 
-$version            = '1.0.53';
-$updateFileDate        = '2016-02-01';
-$updateFileTime        = '00:05';
-$updateDescription    = '<span style="color:orange">Update Timestamp Fields.</span>';
-$excludeFile        = 'false';
+$version           = '1.0.53';
+$updateFileDate    = '2016-02-01';
+$updateFileTime    = '00:05';
+$updateDescription = '<span style="color:orange">Update Timestamp Fields.</span>';
+$excludeFile       = 'false';
 
 $maxImportTime = ComponentHelper::getParams('com_sportsmanagement')->get('max_import_time', 0);
 
@@ -103,7 +104,7 @@ if ($table)
 					$object = new stdClass;
 
 					// Must be a valid primary key value.
-					$object->id = $projekt->id;
+					$object->id                 = $projekt->id;
 					$object->modified_timestamp = $projekt->modified_timestamp;
 
 					// Echo 'modified_timestamp -> '.$projekt->modified_timestamp.'<br>';
@@ -112,7 +113,7 @@ if ($table)
 				}
 			}
 
-		break;
+			break;
 
 		case 'match':
 
@@ -133,7 +134,7 @@ if ($table)
 					$object = new stdClass;
 
 					// Must be a valid primary key value.
-					$object->id = $match->id;
+					$object->id              = $match->id;
 					$object->match_timestamp = $match->match_timestamp;
 
 					// Update their details in the table using id as the primary key.
@@ -141,7 +142,7 @@ if ($table)
 				}
 			}
 
-		break;
+			break;
 	}
 }
 

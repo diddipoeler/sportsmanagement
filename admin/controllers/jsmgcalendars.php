@@ -29,12 +29,13 @@ class sportsmanagementControllerjsmGCalendars extends JSMControllerAdmin
 	/**
 	 * sportsmanagementControllerjsmGCalendars::getModel()
 	 *
-	 * @param   string $name
-	 * @param   string $prefix
-	 * @param   mixed  $config
+	 * @param   string  $name
+	 * @param   string  $prefix
+	 * @param   mixed   $config
+	 *
 	 * @return
 	 */
-	public function getModel($name = 'jsmGCalendar', $prefix = 'sportsmanagementModel', $config = Array() )
+	public function getModel($name = 'jsmGCalendar', $prefix = 'sportsmanagementModel', $config = Array())
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 

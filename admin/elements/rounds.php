@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -39,26 +40,26 @@ class JFormFieldRounds extends FormField
 	 */
 	protected function getInput()
 	{
-		$required     = $this->element['required'] == 'true' ? 'true' : 'false';
-		$order         = $this->element['order'] == 'DESC' ? 'DESC' : 'ASC';
-		$db         = sportsmanagementHelper::getDBConnection();
-		$lang         = Factory::getLanguage();
+		$required = $this->element['required'] == 'true' ? 'true' : 'false';
+		$order    = $this->element['order'] == 'DESC' ? 'DESC' : 'ASC';
+		$db       = sportsmanagementHelper::getDBConnection();
+		$lang     = Factory::getLanguage();
 
 		// Welche tabelle soll genutzt werden
 		$params = ComponentHelper::getParams('com_sportsmanagement');
 
-			  $extension     = "com_sportsmanagement";
-		$source     = JPath::clean(JPATH_ADMINISTRATOR . '/components/' . $extension);
+		$extension = "com_sportsmanagement";
+		$source    = JPath::clean(JPATH_ADMINISTRATOR . '/components/' . $extension);
 		$lang->load($extension, JPATH_ADMINISTRATOR, null, false, false)
-		||    $lang->load($extension, $source, null, false, false)
-		||    $lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
-		||    $lang->load($extension, $source, $lang->getDefault(), false, false);
+		|| $lang->load($extension, $source, null, false, false)
+		|| $lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
+		|| $lang->load($extension, $source, $lang->getDefault(), false, false);
 
-			  $query = $db->getQuery(true);
+		$query = $db->getQuery(true);
 		$query->select(
 			' SELECT id as value '
-			   . '      , CASE LENGTH(name) when 0 then CONCAT(' . $db->Quote(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME')) . ', " ", id)	else name END as text '
-			   . '      , id, name, round_date_first, round_date_last, roundcode '
+			. '      , CASE LENGTH(name) when 0 then CONCAT(' . $db->Quote(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME')) . ', " ", id)	else name END as text '
+			. '      , id, name, round_date_first, round_date_last, roundcode '
 		);
 		$query->from('#__sportsmanagement_round');
 		$query->where('project_id= ' . $project_id);
@@ -73,10 +74,10 @@ class JFormFieldRounds extends FormField
 
 		foreach ($rounds as $round)
 		{
-			$mitems[] = HTMLHelper::_('select.option',  $round->id, '&nbsp;&nbsp;&nbsp;' . $round->name);
+			$mitems[] = HTMLHelper::_('select.option', $round->id, '&nbsp;&nbsp;&nbsp;' . $round->name);
 		}
 
-			  $output = HTMLHelper::_('select.genericlist',  $mitems, $this->name . '[]', 'class="inputbox" style="width:90%;" multiple="multiple" size="10"', 'value', 'text', $this->value, $this->id);
+		$output = HTMLHelper::_('select.genericlist', $mitems, $this->name . '[]', 'class="inputbox" style="width:90%;" multiple="multiple" size="10"', 'value', 'text', $this->value, $this->id);
 
 		return $output;
 	}

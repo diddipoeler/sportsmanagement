@@ -14,10 +14,12 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+
 /**
  * sportsmanagementModelPredictionResults
  *
@@ -29,31 +31,24 @@ use Joomla\CMS\Language\Text;
  */
 class sportsmanagementModelPredictionResults extends JSMModelList
 {
+	static $roundID = 0;
+	static $limitstart = 0;
+	static $limit = 0;
 	var $predictionGameID = 0;
-
 	/**
 	 * Items total
 	 *
 	 * @var integer
 	 */
 	var $_total = null;
-
 	/**
 	 * Pagination object
 	 *
 	 * @var object
 	 */
 	var $_pagination = null;
-
 	var $config = array();
-
 	var $configavatar = array();
-
-	static $roundID = 0;
-
-	static $limitstart = 0;
-
-	static $limit = 0;
 
 	/**
 	 * sportsmanagementModelPredictionResults::__construct()
@@ -65,19 +60,19 @@ class sportsmanagementModelPredictionResults extends JSMModelList
 		parent::__construct();
 		$prediction = new sportsmanagementModelPrediction;
 
-		sportsmanagementModelPrediction::$roundID = $this->jsmjinput->getVar('r', '0');
-		sportsmanagementModelPrediction::$pjID = $this->jsmjinput->getVar('pj', '0');
-		sportsmanagementModelPrediction::$from = $this->jsmjinput->getVar('from', $this->jsmjinput->getVar('r', '0'));
-		sportsmanagementModelPrediction::$to = $this->jsmjinput->getVar('to', $this->jsmjinput->getVar('r', '0'));
-		sportsmanagementModelPrediction::$predictionGameID = $this->jsmjinput->getVar('prediction_id', '0');
+		sportsmanagementModelPrediction::$roundID            = $this->jsmjinput->getVar('r', '0');
+		sportsmanagementModelPrediction::$pjID               = $this->jsmjinput->getVar('pj', '0');
+		sportsmanagementModelPrediction::$from               = $this->jsmjinput->getVar('from', $this->jsmjinput->getVar('r', '0'));
+		sportsmanagementModelPrediction::$to                 = $this->jsmjinput->getVar('to', $this->jsmjinput->getVar('r', '0'));
+		sportsmanagementModelPrediction::$predictionGameID   = $this->jsmjinput->getVar('prediction_id', '0');
 		sportsmanagementModelPrediction::$predictionMemberID = $this->jsmjinput->getVar('uid', '0');
-		sportsmanagementModelPrediction::$joomlaUserID = $this->jsmjinput->getVar('juid', '0');
-		sportsmanagementModelPrediction::$pggroup = $this->jsmjinput->getVar('pggroup', '0');
-		sportsmanagementModelPrediction::$pggrouprank = $this->jsmjinput->getInt('pggrouprank', 0);
-		sportsmanagementModelPrediction::$isNewMember = $this->jsmjinput->getInt('s', 0);
-		sportsmanagementModelPrediction::$tippEntryDone = $this->jsmjinput->getInt('eok', 0);
-		sportsmanagementModelPrediction::$type = $this->jsmjinput->getInt('type', 0);
-		sportsmanagementModelPrediction::$page = $this->jsmjinput->getInt('page', 1);
+		sportsmanagementModelPrediction::$joomlaUserID       = $this->jsmjinput->getVar('juid', '0');
+		sportsmanagementModelPrediction::$pggroup            = $this->jsmjinput->getVar('pggroup', '0');
+		sportsmanagementModelPrediction::$pggrouprank        = $this->jsmjinput->getInt('pggrouprank', 0);
+		sportsmanagementModelPrediction::$isNewMember        = $this->jsmjinput->getInt('s', 0);
+		sportsmanagementModelPrediction::$tippEntryDone      = $this->jsmjinput->getInt('eok', 0);
+		sportsmanagementModelPrediction::$type               = $this->jsmjinput->getInt('type', 0);
+		sportsmanagementModelPrediction::$page               = $this->jsmjinput->getInt('page', 1);
 
 		if ((int) sportsmanagementModelPrediction::$pjID == 0)
 		{
@@ -96,142 +91,14 @@ class sportsmanagementModelPredictionResults extends JSMModelList
 	}
 
 	/**
-	 * sportsmanagementModelPredictionResults::getStart()
-	 *
-	 * @return
-	 */
-	public function getStart()
-	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-
-		// $limitstart = $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart');
-		$this->setState('list.start', self::$limitstart);
-
-		$store = $this->getStoreId('getstart');
-
-		// Try to load the data from internal storage.
-		if (isset($this->cache[$store]))
-		{
-			return $this->cache[$store];
-		}
-
-		$start = $this->getState('list.start');
-		$limit = $this->getState('list.limit');
-		$total = $this->getTotal();
-
-		if ($start > $total - $limit)
-		{
-			$start = max(0, (int) (ceil($total / $limit) - 1) * $limit);
-		}
-
-		// Add the total to the internal cache.
-		$this->cache[$store] = $start;
-
-		return $this->cache[$store];
-	}
-
-	/**
-	 * sportsmanagementModelPredictionResults::populateState()
-	 *
-	 * @param   mixed $ordering
-	 * @param   mixed $direction
-	 * @return void
-	 */
-	protected function populateState($ordering = null, $direction = null)
-	{
-		$app = Factory::getApplication();
-		$value = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'uint');
-		self::$limit = $value;
-		$this->setState('list.limit', self::$limit);
-		$value = $app->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0);
-		self::$limitstart = (self::$limit != 0 ? (floor($value / self::$limit) * self::$limit) : 0);
-		$this->setState('list.start', self::$limitstart);
-
-	}
-
-	/**
-	 * sportsmanagementModelPredictionResults::getLimit()
-	 *
-	 * @return
-	 */
-	function getLimit()
-	{
-		  return $this->getState('list.limit');
-	}
-
-	/**
-	 * sportsmanagementModelPredictionResults::getLimitStart()
-	 *
-	 * @return
-	 */
-	function getLimitStart()
-	{
-		return $this->getState('list.start');
-	}
-
-	/**
-	 * sportsmanagementModelPredictionResults::getPagination()
-	 *
-	 * @return
-	 */
-	/*
-    function getPagination() {
-        // Load the content if it doesn't already exist
-        if (empty($this->_pagination)) {
-            jimport('joomla.html.pagination');
-            $this->_pagination = new JPagination($this->getTotal(), $this->getState('limitstart'), $this->getState('limit'));
-        }
-        return $this->_pagination;
-    }
-    */
-	/**
-	 * sportsmanagementModelPredictionResults::getTotal()
-	 *
-	 * @return
-	 */
-	function getTotal()
-	{
-		// Load the content if it doesn't already exist
-		if (empty($this->_total))
-		{
-			// $query = $this->_buildQuery();
-			$query = sportsmanagementModelPrediction::getPredictionMembersList($this->config, $this->configavatar, true);
-			$this->_total = $this->_getListCount($query);
-		}
-
-		return $this->_total;
-	}
-
-	/**
-	 * sportsmanagementModelPredictionResults::getData()
-	 *
-	 * @return
-	 */
-	function getData()
-	{
-		// If data hasn't already been obtained, load it
-		if (empty($this->_data))
-		{
-			// $query = $this->_buildQuery();
-			$query = sportsmanagementModelPrediction::getPredictionMembersList($this->config, $this->configavatar, true);
-			$this->_data = $this->_getList($query);
-		}
-
-		return $this->_data;
-	}
-
-	/**
 	 * sportsmanagementModelPredictionResults::getMatches()
 	 *
-	 * @param   mixed $roundID
-	 * @param   mixed $project_id
-	 * @param   mixed $match_ids
-	 * @param   mixed $round_ids
-	 * @param   mixed $proteams_ids
+	 * @param   mixed  $roundID
+	 * @param   mixed  $project_id
+	 * @param   mixed  $match_ids
+	 * @param   mixed  $round_ids
+	 * @param   mixed  $proteams_ids
+	 *
 	 * @return
 	 */
 	static function getMatches($roundID, $project_id, $match_ids, $round_ids, $proteams_ids, $show_logo_small_overview = '')
@@ -240,12 +107,12 @@ class sportsmanagementModelPredictionResults extends JSMModelList
 		$app = Factory::getApplication();
 
 		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
+		$jinput   = $app->input;
+		$option   = $jinput->getCmd('option');
 		$document = Factory::getDocument();
 
 		// Create a new query object.
-		$db = sportsmanagementHelper::getDBConnection();
+		$db    = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 
 		if ((int) $roundID == 0)
@@ -264,11 +131,11 @@ class sportsmanagementModelPredictionResults extends JSMModelList
 			case 'logo_big':
 				$query->select('c1.' . $show_logo_small_overview . ' AS homeLogo,c1.country AS homeCountry');
 				$query->select('c2.' . $show_logo_small_overview . ' AS awayLogo,c2.country AS awayCountry');
-			break;
+				break;
 			case 'country_flag':
 				$query->select('c1.country AS homeCountry');
 				$query->select('c2.country AS awayCountry');
-			break;
+				break;
 		}
 
 		// $query->select('c1.logo_small AS homeLogo,c1.country AS homeCountry');
@@ -330,10 +197,122 @@ class sportsmanagementModelPredictionResults extends JSMModelList
 	}
 
 	/**
+	 * sportsmanagementModelPredictionResults::getStart()
+	 *
+	 * @return
+	 */
+	public function getStart()
+	{
+		// Reference global application object
+		$app = Factory::getApplication();
+
+		// JInput object
+		$jinput = $app->input;
+
+		// $limitstart = $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart');
+		$this->setState('list.start', self::$limitstart);
+
+		$store = $this->getStoreId('getstart');
+
+		// Try to load the data from internal storage.
+		if (isset($this->cache[$store]))
+		{
+			return $this->cache[$store];
+		}
+
+		$start = $this->getState('list.start');
+		$limit = $this->getState('list.limit');
+		$total = $this->getTotal();
+
+		if ($start > $total - $limit)
+		{
+			$start = max(0, (int) (ceil($total / $limit) - 1) * $limit);
+		}
+
+		// Add the total to the internal cache.
+		$this->cache[$store] = $start;
+
+		return $this->cache[$store];
+	}
+
+	/**
+	 * sportsmanagementModelPredictionResults::getTotal()
+	 *
+	 * @return
+	 */
+	function getTotal()
+	{
+		// Load the content if it doesn't already exist
+		if (empty($this->_total))
+		{
+			// $query = $this->_buildQuery();
+			$query        = sportsmanagementModelPrediction::getPredictionMembersList($this->config, $this->configavatar, true);
+			$this->_total = $this->_getListCount($query);
+		}
+
+		return $this->_total;
+	}
+
+	/**
+	 * sportsmanagementModelPredictionResults::getLimit()
+	 *
+	 * @return
+	 */
+	function getLimit()
+	{
+		return $this->getState('list.limit');
+	}
+
+	/**
+	 * sportsmanagementModelPredictionResults::getPagination()
+	 *
+	 * @return
+	 */
+	/*
+    function getPagination() {
+        // Load the content if it doesn't already exist
+        if (empty($this->_pagination)) {
+            jimport('joomla.html.pagination');
+            $this->_pagination = new JPagination($this->getTotal(), $this->getState('limitstart'), $this->getState('limit'));
+        }
+        return $this->_pagination;
+    }
+    */
+
+	/**
+	 * sportsmanagementModelPredictionResults::getLimitStart()
+	 *
+	 * @return
+	 */
+	function getLimitStart()
+	{
+		return $this->getState('list.start');
+	}
+
+	/**
+	 * sportsmanagementModelPredictionResults::getData()
+	 *
+	 * @return
+	 */
+	function getData()
+	{
+		// If data hasn't already been obtained, load it
+		if (empty($this->_data))
+		{
+			// $query = $this->_buildQuery();
+			$query       = sportsmanagementModelPrediction::getPredictionMembersList($this->config, $this->configavatar, true);
+			$this->_data = $this->_getList($query);
+		}
+
+		return $this->_data;
+	}
+
+	/**
 	 * sportsmanagementModelPredictionResults::showClubLogo()
 	 *
-	 * @param   mixed $clubLogo
-	 * @param   mixed $teamName
+	 * @param   mixed  $clubLogo
+	 * @param   mixed  $teamName
+	 *
 	 * @return
 	 */
 	function showClubLogo($clubLogo, $teamName)
@@ -342,8 +321,8 @@ class sportsmanagementModelPredictionResults extends JSMModelList
 		$app = Factory::getApplication();
 
 		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
+		$jinput   = $app->input;
+		$option   = $jinput->getCmd('option');
 		$document = Factory::getDocument();
 
 		if (version_compare(JSM_JVERSION, '4', 'eq'))
@@ -363,9 +342,29 @@ class sportsmanagementModelPredictionResults extends JSMModelList
 		}
 
 		$imgTitle = Text::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_LOGO_OF', $teamName);
-		$output .= HTMLHelper::image($clubLogo, $imgTitle, array(' width' => 20, ' title' => $imgTitle));
+		$output   .= HTMLHelper::image($clubLogo, $imgTitle, array(' width' => 20, ' title' => $imgTitle));
 
 		return $output;
+	}
+
+	/**
+	 * sportsmanagementModelPredictionResults::populateState()
+	 *
+	 * @param   mixed  $ordering
+	 * @param   mixed  $direction
+	 *
+	 * @return void
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		$app         = Factory::getApplication();
+		$value       = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'uint');
+		self::$limit = $value;
+		$this->setState('list.limit', self::$limit);
+		$value            = $app->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0);
+		self::$limitstart = (self::$limit != 0 ? (floor($value / self::$limit) * self::$limit) : 0);
+		$this->setState('list.start', self::$limitstart);
+
 	}
 
 }

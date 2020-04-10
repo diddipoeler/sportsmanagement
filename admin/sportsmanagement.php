@@ -12,6 +12,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Language\Text;
@@ -94,11 +95,11 @@ else
 	// Joomla! 1.5 code here
 }
 
-$jinput = Factory::getApplication()->input;
+$jinput  = Factory::getApplication()->input;
 $command = $jinput->get('task', 'display');
-$view = $jinput->get('view');
-$lang = Factory::getLanguage();
-$app = Factory::getApplication();
+$view    = $jinput->get('view');
+$lang    = Factory::getLanguage();
+$app     = Factory::getApplication();
 
 
 // Welche tabelle soll genutzt werden
@@ -147,13 +148,13 @@ else
 	DEFINE('COM_SPORTSMANAGEMENT_USE_NEW_TABLE', false);
 }
 
-$controller = '';
-$type = '';
-$task = '';
-$arrExtensions = sportsmanagementHelper::getExtensions();
+$controller        = '';
+$type              = '';
+$task              = '';
+$arrExtensions     = sportsmanagementHelper::getExtensions();
 $model_pathes[]    = array();
-$view_pathes[]    = array();
-$template_pathes[]    = array();
+$view_pathes[]     = array();
+$template_pathes[] = array();
 
 /**
  *  Check for array format.
@@ -175,29 +176,29 @@ else
 if (strpos($command, '.') !== false)
 {
 	/**
- *      Explode the controller.task command.
- */
+	 *      Explode the controller.task command.
+	 */
 	list ($type, $task) = explode('.', $command);
 }
 
 for ($e = 0; $e < count($arrExtensions); $e++)
 {
-	$extension = $arrExtensions[$e];
+	$extension     = $arrExtensions[$e];
 	$extensionname = $arrExtensions[$e];
 	$extensionpath = JPATH_SITE . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'com_sportsmanagement' . DIRECTORY_SEPARATOR . 'extensions' . DIRECTORY_SEPARATOR . $extension;
 
 	if ($app->isClient('administrator'))
 	{
-		  $base_path = $extensionpath . DIRECTORY_SEPARATOR . 'admin';
+		$base_path = $extensionpath . DIRECTORY_SEPARATOR . 'admin';
 		/**
- *          language file
- */
-		  $lang->load('com_sportsmanagement_' . $extension, $base_path);
+		 *          language file
+		 */
+		$lang->load('com_sportsmanagement_' . $extension, $base_path);
 	}
 
 	/**
- * set the base_path to the extension controllers directory
- */
+	 * set the base_path to the extension controllers directory
+	 */
 	if (is_dir($base_path))
 	{
 		$params = array('base_path' => $base_path);
@@ -208,8 +209,8 @@ for ($e = 0; $e < count($arrExtensions); $e++)
 	}
 
 	/**
-  *  own controllers
-  */
+	 *  own controllers
+	 */
 	if (!file_exists($base_path . DIRECTORY_SEPARATOR . 'controller.php'))
 	{
 		if ($type != $extension)
@@ -230,17 +231,17 @@ for ($e = 0; $e < count($arrExtensions); $e++)
 	}
 
 	/**
- *  import joomla controller library
- */
+	 *  import joomla controller library
+	 */
 	jimport('joomla.application.component.controller');
 
 	try
 	{
-		  $controller = BaseController::getInstance(ucfirst($extension), $params);
+		$controller = BaseController::getInstance(ucfirst($extension), $params);
 	}
 	catch (Exception $exc)
 	{
-		$controller    = BaseController::getInstance('sportsmanagement');
+		$controller = BaseController::getInstance('sportsmanagement');
 	}
 
 	if (is_dir($base_path . DIRECTORY_SEPARATOR . 'models'))
@@ -250,7 +251,7 @@ for ($e = 0; $e < count($arrExtensions); $e++)
 
 	if (is_dir($base_path . DIRECTORY_SEPARATOR . 'views'))
 	{
-		$view_pathes[] = $base_path . DIRECTORY_SEPARATOR . 'views';
+		$view_pathes[]     = $base_path . DIRECTORY_SEPARATOR . 'views';
 		$template_pathes[] = $base_path . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . $extensionname . DIRECTORY_SEPARATOR . 'tmpl';
 	}
 }
@@ -259,11 +260,11 @@ for ($e = 0; $e < count($arrExtensions); $e++)
  *  import joomla controller library
  */
 jimport('joomla.application.component.controller');
-$controller    = BaseController::getInstance('sportsmanagement');
+$controller = BaseController::getInstance('sportsmanagement');
 
 if (is_null($controller) && !($controller instanceof BaseController))
 {
-	$controller    = BaseController::getInstance('sportsmanagement');
+	$controller = BaseController::getInstance('sportsmanagement');
 }
 
 foreach ($model_pathes as $path)
@@ -284,7 +285,7 @@ foreach ($view_pathes as $path)
 
 for ($e = 0; $e < count($arrExtensions); $e++)
 {
-	$extension = $arrExtensions[$e];
+	$extension     = $arrExtensions[$e];
 	$extensionname = $arrExtensions[$e];
 
 	foreach ($template_pathes as $path)
@@ -292,10 +293,10 @@ for ($e = 0; $e < count($arrExtensions); $e++)
 		if (!empty($path))
 		{
 			/**
- *         get view and set template context
- */
-			  $view = $controller->getView($extensionname, "html", "sportsmanagementView");
-			  $view->addTemplatePath($path);
+			 *         get view and set template context
+			 */
+			$view = $controller->getView($extensionname, "html", "sportsmanagementView");
+			$view->addTemplatePath($path);
 		}
 	}
 }

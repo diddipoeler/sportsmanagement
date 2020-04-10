@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -34,22 +35,23 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 	/**
 	 * Method to save the form data.
 	 *
-	 * @param  array    The form data.
+	 * @param   array    The form data.
+	 *
 	 * @return boolean    True on success.
 	 * @since  1.6
 	 */
 	public function save($data)
 	{
-		  $post = Factory::getApplication()->input->post->getArray(array());
+		$post = Factory::getApplication()->input->post->getArray(array());
 
-		  // Set the values
-		  $data['modified'] = $this->jsmdate->toSql();
-		  $data['modified_by'] = $this->jsmuser->get('id');
+		// Set the values
+		$data['modified']    = $this->jsmdate->toSql();
+		$data['modified_by'] = $this->jsmuser->get('id');
 
-			   // Zuerst sichern, damit wir bei einer neuanlage die id haben
+		// Zuerst sichern, damit wir bei einer neuanlage die id haben
 		try
 		{
-			  $result = parent::save($data);
+			$result = parent::save($data);
 		}
 		catch (Exception $e)
 		{
@@ -58,12 +60,12 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 			$result = false;
 		}
 
-			 //       $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '.'result '.$result,'');
+		//       $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '.'result '.$result,'');
 
 		if ($result)
 		{
-			$id = (int) $this->getState($this->getName() . '.id');
-			$isNew = $this->getState($this->getName() . '.new');
+			$id         = (int) $this->getState($this->getName() . '.id');
+			$isNew      = $this->getState($this->getName() . '.new');
 			$data['id'] = $id;
 
 			if ($isNew)
@@ -72,129 +74,31 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 				$this->jsmapp->enqueueMessage(Text::plural(strtoupper($this->jsmoption) . '_N_ITEMS_CREATED', $id), '');
 			}
 
-				self::storePredictionAdmins($data);
-					self::storePredictionProjects($data);
+			self::storePredictionAdmins($data);
+			self::storePredictionProjects($data);
 		}
 
-			   return $result;
+		return $result;
 	}
-
-	/**
-	 * sportsmanagementModelPredictionGame::import()
-	 *
-	 * @return void
-	 */
-	function import()
-	{
-		$app = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
-	}
-
-
-
-	/**
-	 * Method to return a prediction game item array
-	 * sportsmanagementModelPredictionGame::getPredictionGame()
-	 *
-	 * @param   integer $id
-	 * @return
-	 */
-	function getPredictionGame($id=0)
-	{
-		//	   $app = Factory::getApplication();
-		//        $option = Factory::getApplication()->input->getCmd('option');
-		//        // Create a new query object.
-		//		$db = sportsmanagementHelper::getDBConnection();
-		//		$query = $db->getQuery(true);
-
-		if ($id)
-		{
-			// Select some fields
-			$this->jsmquery->clear();
-			$this->jsmquery->select('*');
-			$this->jsmquery->from('#__sportsmanagement_prediction_game');
-			$this->jsmquery->where('id = ' . $id);
-
-			$this->jsmdb->setQuery($this->jsmquery);
-
-			if (!$result = $this->jsmdb->loadObject())
-			{
-					   sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->jsmdb->getErrorMsg(), __LINE__);
-
-				return false;
-			}
-			else
-			{
-					   return $result;
-			}
-		}
-		else
-		{
-			return false;
-		}
-	}
-
-	/**
-	 * Method to return a prediction project array
-	 *
-	 * @access public
-	 * @return array
-	 * @since  0.1
-	 */
-	function getPredictionProjectIDs($prediction_id=0)
-	{
-		  // $app = Factory::getApplication();
-		//        $option = Factory::getApplication()->input->getCmd('option');
-		//        // Create a new query object.
-		//		$db = sportsmanagementHelper::getDBConnection();
-		//		$query = $db->getQuery(true);
-
-		if ($prediction_id)
-		{
-			// Select some fields
-			$this->jsmquery->clear();
-			$this->jsmquery->select('project_id');
-			$this->jsmquery->from('#__sportsmanagement_prediction_project');
-			$this->jsmquery->where('prediction_id = ' . $prediction_id);
-
-			$this->jsmdb->setQuery($this->jsmquery);
-
-			if (version_compare(JVERSION, '3.0.0', 'ge'))
-			{
-				// Joomla! 3.0 code here
-				return $this->jsmdb->loadColumn();
-			}
-			elseif (version_compare(JVERSION, '2.5.0', 'ge'))
-			{
-				  // Joomla! 2.5 code here
-					return $this->jsmdb->loadResultArray();
-			}
-		}
-		else
-		{
-			return false;
-		}
-
-	}
-
 
 	/**
 	 * sportsmanagementModelPredictionGame::storePredictionAdmins()
 	 *
-	 * @param   mixed $data
+	 * @param   mixed  $data
+	 *
 	 * @return
 	 */
 	function storePredictionAdmins($data)
 	{
-		 $option = Factory::getApplication()->input->getCmd('option');
+		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
 
-		  // Create a new query object.
-		$db = sportsmanagementHelper::getDBConnection();
+		// Create a new query object.
+		$db    = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 
-			   $result    = true;
-		$peid    = ( isset($data['user_ids']) ? $data['user_ids'] : array() );
+		$result = true;
+		$peid   = (isset($data['user_ids']) ? $data['user_ids'] : array());
 		ArrayHelper::toInteger($peid);
 		$peids = implode(',', $peid);
 
@@ -233,20 +137,21 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 			$app->enqueueMessage(Text::_('Admins zum Tippspiel gespeichern'), 'Notice');
 		}
 
-			return $result;
+		return $result;
 	}
 
 	/**
 	 * sportsmanagementModelPredictionGame::storePredictionProjects()
 	 *
-	 * @param   mixed $data
+	 * @param   mixed  $data
+	 *
 	 * @return
 	 */
 	function storePredictionProjects($data)
 	{
 
-			  $result = true;
-		$peid = (isset($data['project_ids']) ? $data['project_ids'] : array());
+		$result = true;
+		$peid   = (isset($data['project_ids']) ? $data['project_ids'] : array());
 		ArrayHelper::toInteger($peid);
 		$peids = implode(',', $peid);
 
@@ -259,9 +164,9 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 
 		try
 		{
-			  $this->jsmdb->setQuery($this->jsmquery);
-			  $this->jsmdb->execute();
-			  $result = true;
+			$this->jsmdb->setQuery($this->jsmquery);
+			$this->jsmdb->execute();
+			$result = true;
 		}
 		catch (Exception $e)
 		{
@@ -276,9 +181,9 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 
 			try
 			{
-				 $this->jsmdb->setQuery($this->jsmquery);
-				 $this->jsmdb->execute();
-				 $result = true;
+				$this->jsmdb->setQuery($this->jsmquery);
+				$this->jsmdb->execute();
+				$result = true;
 			}
 			catch (Exception $e)
 			{
@@ -293,12 +198,105 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 			$this->jsmapp->enqueueMessage(Text::_('Projekte zum Tippspiel gespeichern'), 'Notice');
 		}
 
-			return $result;
+		return $result;
 	}
 
+	/**
+	 * sportsmanagementModelPredictionGame::import()
+	 *
+	 * @return void
+	 */
+	function import()
+	{
+		$app    = Factory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+	}
 
+	/**
+	 * Method to return a prediction game item array
+	 * sportsmanagementModelPredictionGame::getPredictionGame()
+	 *
+	 * @param   integer  $id
+	 *
+	 * @return
+	 */
+	function getPredictionGame($id = 0)
+	{
+		//	   $app = Factory::getApplication();
+		//        $option = Factory::getApplication()->input->getCmd('option');
+		//        // Create a new query object.
+		//		$db = sportsmanagementHelper::getDBConnection();
+		//		$query = $db->getQuery(true);
 
+		if ($id)
+		{
+			// Select some fields
+			$this->jsmquery->clear();
+			$this->jsmquery->select('*');
+			$this->jsmquery->from('#__sportsmanagement_prediction_game');
+			$this->jsmquery->where('id = ' . $id);
 
+			$this->jsmdb->setQuery($this->jsmquery);
+
+			if (!$result = $this->jsmdb->loadObject())
+			{
+				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->jsmdb->getErrorMsg(), __LINE__);
+
+				return false;
+			}
+			else
+			{
+				return $result;
+			}
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	/**
+	 * Method to return a prediction project array
+	 *
+	 * @access public
+	 * @return array
+	 * @since  0.1
+	 */
+	function getPredictionProjectIDs($prediction_id = 0)
+	{
+		// $app = Factory::getApplication();
+		//        $option = Factory::getApplication()->input->getCmd('option');
+		//        // Create a new query object.
+		//		$db = sportsmanagementHelper::getDBConnection();
+		//		$query = $db->getQuery(true);
+
+		if ($prediction_id)
+		{
+			// Select some fields
+			$this->jsmquery->clear();
+			$this->jsmquery->select('project_id');
+			$this->jsmquery->from('#__sportsmanagement_prediction_project');
+			$this->jsmquery->where('prediction_id = ' . $prediction_id);
+
+			$this->jsmdb->setQuery($this->jsmquery);
+
+			if (version_compare(JVERSION, '3.0.0', 'ge'))
+			{
+				// Joomla! 3.0 code here
+				return $this->jsmdb->loadColumn();
+			}
+			elseif (version_compare(JVERSION, '2.5.0', 'ge'))
+			{
+				// Joomla! 2.5 code here
+				return $this->jsmdb->loadResultArray();
+			}
+		}
+		else
+		{
+			return false;
+		}
+
+	}
 
 	/**
 	 * Method to remove selected items
@@ -309,12 +307,12 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 	 * @since  0.1
 	 */
 
-	function deletePredictionAdmins($cid=array())
+	function deletePredictionAdmins($cid = array())
 	{
-		  $app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
-		$db = Factory::getDbo();
-		$query = $db->getQuery(true);
+		$db     = Factory::getDbo();
+		$query  = $db->getQuery(true);
 
 		if (count($cid))
 		{
@@ -331,7 +329,7 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 			}
 		}
 
-			return true;
+		return true;
 	}
 
 	/**
@@ -343,12 +341,12 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 	 * @since  0.1
 	 */
 
-	function deletePredictionProjects($cid=array())
+	function deletePredictionProjects($cid = array())
 	{
-		  $app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
-		$db = Factory::getDbo();
-		$query = $db->getQuery(true);
+		$db     = Factory::getDbo();
+		$query  = $db->getQuery(true);
 
 		if (count($cid))
 		{
@@ -366,7 +364,7 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 			}
 		}
 
-			return true;
+		return true;
 	}
 
 	/**
@@ -378,12 +376,12 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 	 * @since  0.1
 	 */
 
-	function deletePredictionMembers($cid=array())
+	function deletePredictionMembers($cid = array())
 	{
-		  $app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
-		$db = Factory::getDbo();
-		$query = $db->getQuery(true);
+		$db     = Factory::getDbo();
+		$query  = $db->getQuery(true);
 
 		if (count($cid))
 		{
@@ -400,7 +398,7 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 			}
 		}
 
-			return true;
+		return true;
 	}
 
 	/**
@@ -412,12 +410,12 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 	 * @since  0.1
 	 */
 
-	function deletePredictionResults($cid=array())
+	function deletePredictionResults($cid = array())
 	{
-		  $app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
-		$db = Factory::getDbo();
-		$query = $db->getQuery(true);
+		$db     = Factory::getDbo();
+		$query  = $db->getQuery(true);
 
 		if (count($cid))
 		{
@@ -434,7 +432,7 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 			}
 		}
 
-			return true;
+		return true;
 	}
 
 
@@ -446,12 +444,12 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 	 */
 	function savePredictionProjectSettings($data)
 	{
-		  $app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
-		$db = Factory::getDbo();
-		$query = $db->getQuery(true);
+		$db     = Factory::getDbo();
+		$query  = $db->getQuery(true);
 
-			   $result    = true;
+		$result = true;
 
 		if (!isset($data['points_tipp_champ']))
 		{
@@ -521,36 +519,36 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 		//					";
 
 		// Must be a valid primary key value.
-		   $object = new stdClass;
-		   $object->id = $data['id'];
-		   $object->prediction_id = $data['prediction_id'];
-		$object->project_id = $data['project_id'];
-		$object->mode = $data['mode'];
-		$object->overview = $data['overview'];
-		$object->points_tipp = $data['points_tipp'];
-		$object->points_tipp_joker = $data['points_tipp_joker'];
-		$object->points_tipp_champ = $data['points_tipp_champ'];
-		$object->points_correct_result = $data['points_correct_result'];
-		$object->points_correct_result_joker = $data['points_correct_result_joker'];
-		$object->points_correct_diff = $data['points_correct_diff'];
-		$object->points_correct_diff_joker = $data['points_correct_diff_joker'];
-		$object->points_correct_draw = $data['points_correct_draw'];
-		$object->points_correct_draw_joker = $data['points_correct_draw_joker'];
-		$object->points_correct_tendence = $data['points_correct_tendence'];
+		$object                                = new stdClass;
+		$object->id                            = $data['id'];
+		$object->prediction_id                 = $data['prediction_id'];
+		$object->project_id                    = $data['project_id'];
+		$object->mode                          = $data['mode'];
+		$object->overview                      = $data['overview'];
+		$object->points_tipp                   = $data['points_tipp'];
+		$object->points_tipp_joker             = $data['points_tipp_joker'];
+		$object->points_tipp_champ             = $data['points_tipp_champ'];
+		$object->points_correct_result         = $data['points_correct_result'];
+		$object->points_correct_result_joker   = $data['points_correct_result_joker'];
+		$object->points_correct_diff           = $data['points_correct_diff'];
+		$object->points_correct_diff_joker     = $data['points_correct_diff_joker'];
+		$object->points_correct_draw           = $data['points_correct_draw'];
+		$object->points_correct_draw_joker     = $data['points_correct_draw_joker'];
+		$object->points_correct_tendence       = $data['points_correct_tendence'];
 		$object->points_correct_tendence_joker = $data['points_correct_tendence_joker'];
-		$object->joker = $data['joker'];
-		$object->joker_limit = $data['joker_limit'];
-		   $object->league_champ = $data['league_champ'];
-		$object->champ = $data['champ'];
-		$object->published = $data['published'];
+		$object->joker                         = $data['joker'];
+		$object->joker_limit                   = $data['joker_limit'];
+		$object->league_champ                  = $data['league_champ'];
+		$object->champ                         = $data['champ'];
+		$object->published                     = $data['published'];
 
-				 // Update their details in the table using id as the primary key.
-		   $result = Factory::getDbo()->updateObject('#__sportsmanagement_prediction_project', $object, 'id');
+		// Update their details in the table using id as the primary key.
+		$result = Factory::getDbo()->updateObject('#__sportsmanagement_prediction_project', $object, 'id');
 
-			  // $this->_db->setQuery( $query );
+		// $this->_db->setQuery( $query );
 		if (!$result)
 		{
-			   $result = false;
+			$result = false;
 		}
 
 		return $result;
@@ -565,20 +563,20 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 	 */
 	function rebuildPredictionProjectSPoints($cid)
 	{
-		  $app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
-		$db = Factory::getDbo();
-		$query = $db->getQuery(true);
+		$db     = Factory::getDbo();
+		$query  = $db->getQuery(true);
 
-			   $result    = true;
+		$result = true;
 
 		foreach ($cid AS $predictonID)
 		{
-			 // Select some fields
-			  $query->clear();
-			  $query->select('pp.id');
-			  $query->from('#__sportsmanagement_prediction_project AS pp ');
-			  $query->where('pp.prediction_id = ' . (int) $predictonID);
+			// Select some fields
+			$query->clear();
+			$query->select('pp.id');
+			$query->from('#__sportsmanagement_prediction_project AS pp ');
+			$query->where('pp.prediction_id = ' . (int) $predictonID);
 
 			$db->setQuery($query);
 
@@ -589,8 +587,8 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 			}
 			elseif (version_compare(JVERSION, '2.5.0', 'ge'))
 			{
-				  // Joomla! 2.5 code here
-				 $result = $db->loadResultArray();
+				// Joomla! 2.5 code here
+				$result = $db->loadResultArray();
 			}
 
 			if ($predictionProjectIDList = $result)
@@ -606,7 +604,7 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 					$db->setQuery($query);
 					$predictionProject = $db->loadObject();
 
-									  $query->clear();
+					$query->clear();
 					$query->select('pr.*');
 					$query->select('m.team1_result,m.team2_result,m.team1_result_decision,m.team2_result_decision');
 					$query->from('#__sportsmanagement_prediction_result AS pr ');
@@ -614,27 +612,27 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 					$query->where('pr.prediction_id = ' . (int) $predictonID);
 					$query->where('pr.project_id = ' . (int) $predictionProject->project_id);
 
-									  $db->setQuery($query);
+					$db->setQuery($query);
 					$predictionProjectResultList = $db->loadObjectList();
 
 					foreach ($predictionProjectResultList AS $predictionProjectResult)
 					{
-						$result_home    = $predictionProjectResult->team1_result;
-						$result_away    = $predictionProjectResult->team2_result;
+						$result_home = $predictionProjectResult->team1_result;
+						$result_away = $predictionProjectResult->team2_result;
 
-						$result_dHome    = $predictionProjectResult->team1_result_decision;
-						$result_dAway    = $predictionProjectResult->team2_result_decision;
+						$result_dHome = $predictionProjectResult->team1_result_decision;
+						$result_dAway = $predictionProjectResult->team2_result_decision;
 
-						$tipp_home    = $predictionProjectResult->tipp_home;
-						$tipp_away    = $predictionProjectResult->tipp_away;
+						$tipp_home = $predictionProjectResult->tipp_home;
+						$tipp_away = $predictionProjectResult->tipp_away;
 
-						$tipp        = $predictionProjectResult->tipp;
-						$joker        = $predictionProjectResult->joker;
+						$tipp  = $predictionProjectResult->tipp;
+						$joker = $predictionProjectResult->joker;
 
-						$points        = $predictionProjectResult->points;
-						$top        = $predictionProjectResult->top;
-						$diff        = $predictionProjectResult->diff;
-						$tend        = $predictionProjectResult->tend;
+						$points = $predictionProjectResult->points;
+						$top    = $predictionProjectResult->top;
+						$diff   = $predictionProjectResult->diff;
+						$tend   = $predictionProjectResult->tend;
 
 						if ($tipp_home > $tipp_away)
 						{
@@ -644,7 +642,7 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 						{
 							$tipp = '2';
 						}
-						elseif (!is_null($tipp_home)&&!is_null($tipp_away))
+						elseif (!is_null($tipp_home) && !is_null($tipp_away))
 						{
 							$tipp = '0';
 						}
@@ -653,12 +651,12 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 							$tipp = null;
 						}
 
-						$points        = null;
-						$top        = null;
-						$diff        = null;
-						$tend        = null;
+						$points = null;
+						$top    = null;
+						$diff   = null;
+						$tend   = null;
 
-						if (!is_null($tipp_home)&&!is_null($tipp_away))
+						if (!is_null($tipp_home) && !is_null($tipp_away))
 						{
 							if ($predictionProject->mode == 1)    // TOTO prediction Mode
 							{
@@ -668,33 +666,33 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 							{
 								if ($joker)    // Member took a Joker for this prediction
 								{
-									if (($result_home == $tipp_home)&&($result_away == $tipp_away))
+									if (($result_home == $tipp_home) && ($result_away == $tipp_away))
 									{
 										// Prediction Result is the same as the match result / Top Tipp
 										$points = $predictionProject->points_correct_result_joker;
-										$top = 1;
+										$top    = 1;
 									}
-									elseif (($result_home == $result_away)&&($result_home - $result_away) == ($tipp_home - $tipp_away))
+									elseif (($result_home == $result_away) && ($result_home - $result_away) == ($tipp_home - $tipp_away))
 									{
 										// Prediction Result is not the same as the match result but the correct difference between home and
 										// away result was tipped and the matchresult is draw
 										$points = $predictionProject->points_correct_draw_joker;
-										$diff = 1;
+										$diff   = 1;
 									}
 									elseif (($result_home - $result_away) == ($tipp_home - $tipp_away))
 									{
 										// Prediction Result is not the same as the match result but the correct difference between home and
 										// away result was tipped
 										$points = $predictionProject->points_correct_diff_joker;
-										$diff = 1;
+										$diff   = 1;
 									}
-									elseif (((($result_home - $result_away) > 0)&&(($tipp_home - $tipp_away) > 0))
-										|| ((($result_home - $result_away) < 0)&&(($tipp_home - $tipp_away) < 0))
+									elseif (((($result_home - $result_away) > 0) && (($tipp_home - $tipp_away) > 0))
+										|| ((($result_home - $result_away) < 0) && (($tipp_home - $tipp_away) < 0))
 									)
 									{
 										// Prediction Result is not the same as the match result but the tendence of the result is correct
 										$points = $predictionProject->points_correct_tendence_joker;
-										$tend = 1;
+										$tend   = 1;
 									}
 									else
 									{
@@ -704,33 +702,33 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 								}
 								else    // No Joker was used for this prediction
 								{
-									if (($result_home == $tipp_home)&&($result_away == $tipp_away))
+									if (($result_home == $tipp_home) && ($result_away == $tipp_away))
 									{
 										// Prediction Result is the same as the match result / Top Tipp
 										$points = $predictionProject->points_correct_result;
-										$top = 1;
+										$top    = 1;
 									}
-									elseif (($result_home == $result_away)&&($result_home - $result_away) == ($tipp_home - $tipp_away))
+									elseif (($result_home == $result_away) && ($result_home - $result_away) == ($tipp_home - $tipp_away))
 									{
 										// Prediction Result is not the same as the match result but the correct difference between home and
 										// away result was tipped and the matchresult is draw
 										$points = $predictionProject->points_correct_draw;
-										$diff = 1;
+										$diff   = 1;
 									}
 									elseif (($result_home - $result_away) == ($tipp_home - $tipp_away))
 									{
 										// Prediction Result is not the same as the match result but the correct difference between home and
 										// away result was tipped
 										$points = $predictionProject->points_correct_diff;
-										$diff = 1;
+										$diff   = 1;
 									}
-									elseif (((($result_home - $result_away) > 0)&&(($tipp_home - $tipp_away) > 0))
-										|| ((($result_home - $result_away) < 0)&&(($tipp_home - $tipp_away) < 0))
+									elseif (((($result_home - $result_away) > 0) && (($tipp_home - $tipp_away) > 0))
+										|| ((($result_home - $result_away) < 0) && (($tipp_home - $tipp_away) < 0))
 									)
 									{
 										// Prediction Result is not the same as the match result but the tendence of the result is correct
 										$points = $predictionProject->points_correct_tendence;
-										$tend = 1;
+										$tend   = 1;
 									}
 									else
 									{
@@ -754,22 +752,22 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 						//											tend=" .		((!is_null($tend))		? "'".$tend."'"			: 'NULL') . "
 						//										WHERE id=".$predictionProjectResult->id;
 
-															  // Must be a valid primary key value.
-						  $object = new stdClass;
-						  $object->id = $predictionProjectResult->id;
-						  $object->tipp_home = $tipp_home;
+						// Must be a valid primary key value.
+						$object            = new stdClass;
+						$object->id        = $predictionProjectResult->id;
+						$object->tipp_home = $tipp_home;
 						$object->tipp_away = $tipp_away;
-						$object->tipp = $tipp;
-						$object->joker = $joker;
-						$object->points = $points;
-						$object->top = $top;
-						$object->diff = $diff;
-						$object->tend = $tend;
+						$object->tipp      = $tipp;
+						$object->joker     = $joker;
+						$object->points    = $points;
+						$object->top       = $top;
+						$object->diff      = $diff;
+						$object->tend      = $tend;
 
 						// Update their details in the table using id as the primary key.
-						  $result = Factory::getDbo()->updateObject('#__sportsmanagement_prediction_result', $object, 'id');
+						$result = Factory::getDbo()->updateObject('#__sportsmanagement_prediction_result', $object, 'id');
 
-							  // Echo "<br />$query<br />";
+						// Echo "<br />$query<br />";
 						// $this->_db->setQuery($query);
 						if (!$result)
 						{

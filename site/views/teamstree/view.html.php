@@ -12,6 +12,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -40,29 +41,29 @@ class sportsmanagementViewTeamsTree extends sportsmanagementView
 
 		foreach ($this->teams as $rowclub)
 		{
-			 $mdlClubInfo = BaseDatabaseModel::getInstance("ClubInfo", "sportsmanagementModel");
-			 $mdlClubInfo::$tree_fusion = '';
-			 $mdlClubInfo::$historyhtmltree = '';
-			 $mdlClubInfo::$first_club_id = 0;
-			 $tree_club_id = $rowclub->club_id;
+			$mdlClubInfo                   = BaseDatabaseModel::getInstance("ClubInfo", "sportsmanagementModel");
+			$mdlClubInfo::$tree_fusion     = '';
+			$mdlClubInfo::$historyhtmltree = '';
+			$mdlClubInfo::$first_club_id   = 0;
+			$tree_club_id                  = $rowclub->club_id;
 
-			 $this->findclub[$rowclub->club_id] = $rowclub->club_id;
-			 /**
- * ist das die erste club_id in der kette des stammbaumes ?
- */
+			$this->findclub[$rowclub->club_id] = $rowclub->club_id;
+			/**
+			 * ist das die erste club_id in der kette des stammbaumes ?
+			 */
 			if ($rowclub->new_club_id)
 			{
-				$this->firstclubid = $mdlClubInfo::getFirstClubId($rowclub->club_id, $rowclub->new_club_id);
-				$firstclubid = $mdlClubInfo::$first_club_id;
-				$tree_club_id = $firstclubid;
+				$this->firstclubid    = $mdlClubInfo::getFirstClubId($rowclub->club_id, $rowclub->new_club_id);
+				$firstclubid          = $mdlClubInfo::$first_club_id;
+				$tree_club_id         = $firstclubid;
 				$mdlClubInfo::$clubid = $rowclub->club_id;
 			}
 
-			 $this->clubhistory = $mdlClubInfo::getClubHistory($tree_club_id);
-			 $this->clubhistoryhtml = $mdlClubInfo::getClubHistoryHTML($tree_club_id);
-			 $this->clubhistoryfamilytree = $mdlClubInfo::fbTreeRecurse($tree_club_id, '', array (), $mdlClubInfo::$tree_fusion, 10, 0, 1);
-			 $this->genfamilytree = $mdlClubInfo::generateTree($tree_club_id, $this->config['show_bootstrap_tree']);
-			 $this->familytree = $mdlClubInfo::$historyhtmltree;
+			$this->clubhistory           = $mdlClubInfo::getClubHistory($tree_club_id);
+			$this->clubhistoryhtml       = $mdlClubInfo::getClubHistoryHTML($tree_club_id);
+			$this->clubhistoryfamilytree = $mdlClubInfo::fbTreeRecurse($tree_club_id, '', array(), $mdlClubInfo::$tree_fusion, 10, 0, 1);
+			$this->genfamilytree         = $mdlClubInfo::generateTree($tree_club_id, $this->config['show_bootstrap_tree']);
+			$this->familytree            = $mdlClubInfo::$historyhtmltree;
 
 			if (!array_key_exists($tree_club_id, $this->familyteamstree))
 			{
@@ -71,8 +72,8 @@ class sportsmanagementViewTeamsTree extends sportsmanagementView
 
 			if ($tree_club_id)
 			{
-				$firstrowclub = $mdlClubInfo::getFirstClub($tree_club_id);
-				$firstrowclub->club_name = $firstrowclub->name;
+				$firstrowclub                    = $mdlClubInfo::getFirstClub($tree_club_id);
+				$firstrowclub->club_name         = $firstrowclub->name;
 				$this->familyclub[$tree_club_id] = $firstrowclub;
 
 				// $this->familyclub[$tree_club_id] = $rowclub;
@@ -85,7 +86,7 @@ class sportsmanagementViewTeamsTree extends sportsmanagementView
 
 		if ($this->config['show_bootstrap_tree'])
 		{
-			   $this->document->addStyleSheet(Uri::base() . 'components/' . $this->option . '/assets/css/bootstrap-familytree.css');
+			$this->document->addStyleSheet(Uri::base() . 'components/' . $this->option . '/assets/css/bootstrap-familytree.css');
 		}
 		else
 		{

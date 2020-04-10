@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\Language\Text;
@@ -34,7 +35,8 @@ class sportsmanagementControllerEditClub extends FormController
 	/**
 	 * Class Constructor
 	 *
-	 * @param   array $config An optional associative array of configuration settings.
+	 * @param   array  $config  An optional associative array of configuration settings.
+	 *
 	 * @return void
 	 * @since  1.5
 	 */
@@ -43,31 +45,19 @@ class sportsmanagementControllerEditClub extends FormController
 		parent::__construct($config);
 
 		/**
-*
- * Map the apply task to the save method.
-*/
+		 *
+		 * Map the apply task to the save method.
+		 */
 		$this->registerTask('apply', 'save');
 	}
 
 	/**
-	 * sportsmanagementControllerEditClub::getModel()
+	 * sportsmanagementControllerEditClub::cancel()
 	 *
-	 * @param   string $name
-	 * @param   string $prefix
-	 * @param   mixed  $config
+	 * @param   mixed  $key
+	 *
 	 * @return
 	 */
-	public function getModel($name = '', $prefix = '', $config = array('ignore_request' => true))
-	{
-		return parent::getModel($name, $prefix, array('ignore_request' => false));
-	}
-
-		 /**
-		  * sportsmanagementControllerEditClub::cancel()
-		  *
-		  * @param   mixed $key
-		  * @return
-		  */
 	public function cancel($key = null)
 	{
 		$msg = 'cancel';
@@ -75,7 +65,6 @@ class sportsmanagementControllerEditClub extends FormController
 
 		return true;
 	}
-
 
 	/**
 	 * sportsmanagementControllerEditClub::load()
@@ -93,25 +82,25 @@ class sportsmanagementControllerEditClub extends FormController
 		$this->display();
 	}
 
-
 	/**
 	 * sportsmanagementControllerEditClub::display()
 	 *
-	 * @param   bool  $cachable
-	 * @param   mixed $urlparams
+	 * @param   bool   $cachable
+	 * @param   mixed  $urlparams
+	 *
 	 * @return void
 	 */
-	function display($cachable = false, $urlparams = Array() )
+	function display($cachable = false, $urlparams = Array())
 	{
 
 	}
 
-
 	/**
 	 * sportsmanagementControllerEditClub::save()
 	 *
-	 * @param   mixed $key
-	 * @param   mixed $urlVar
+	 * @param   mixed  $key
+	 * @param   mixed  $urlVar
+	 *
 	 * @return void
 	 */
 	function save($key = null, $urlVar = null)
@@ -120,9 +109,9 @@ class sportsmanagementControllerEditClub extends FormController
 
 		// Check for request forgeries
 		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
-		$msg = '';
+		$msg           = '';
 		$address_parts = array();
-		$post = Factory::getApplication()->input->post->getArray(array());
+		$post          = Factory::getApplication()->input->post->getArray(array());
 
 		// $cid = Factory::getApplication()->input->getVar('cid', array(0), 'post', 'array');
 		// $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post '.'<pre>'.print_r($post,true).'</pre>'  ), '');
@@ -159,14 +148,14 @@ class sportsmanagementControllerEditClub extends FormController
 		}
 
 		$address = implode(', ', $address_parts);
-		$coords = sportsmanagementHelper::resolveLocation($address);
+		$coords  = sportsmanagementHelper::resolveLocation($address);
 
 		foreach ($coords as $key => $value)
 		{
 			$post['extended'][$key] = $value;
 		}
 
-		$post['latitude'] = $coords['latitude'];
+		$post['latitude']  = $coords['latitude'];
 		$post['longitude'] = $coords['longitude'];
 
 		if (isset($post['merge_teams']))
@@ -187,7 +176,7 @@ class sportsmanagementControllerEditClub extends FormController
 			$post['merge_teams'] = '';
 		}
 
-			  $updateresult = $model->updItem($post);
+		$updateresult = $model->updItem($post);
 
 		//        if ($model->updItem($post)) {
 		//            $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CTRL_SAVED');
@@ -216,6 +205,20 @@ class sportsmanagementControllerEditClub extends FormController
 		{
 			$this->setRedirect('index.php?option=com_sportsmanagement&tmpl=component&view=editclub&cid=' . $post['id'] . '&id=' . $post['id'] . '&p=' . $post['p'], $msg, $type);
 		}
+	}
+
+	/**
+	 * sportsmanagementControllerEditClub::getModel()
+	 *
+	 * @param   string  $name
+	 * @param   string  $prefix
+	 * @param   mixed   $config
+	 *
+	 * @return
+	 */
+	public function getModel($name = '', $prefix = '', $config = array('ignore_request' => true))
+	{
+		return parent::getModel($name, $prefix, array('ignore_request' => false));
 	}
 
 }

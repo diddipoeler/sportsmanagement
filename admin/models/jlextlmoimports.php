@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
@@ -23,7 +24,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Log\Log;
 use Joomla\Utilities\ArrayHelper;
 
-$option = Factory::getApplication()->input->getCmd('option');
+$option        = Factory::getApplication()->input->getCmd('option');
 $maxImportTime = ComponentHelper::getParams($option)->get('max_import_time', 0);
 
 if (empty($maxImportTime))
@@ -49,7 +50,6 @@ if ((int) ini_get('memory_limit') < (int) $maxImportMemory)
 {
 	@ini_set('memory_limit', $maxImportMemory);
 }
-
 
 
 jimport('joomla.html.pane');
@@ -83,10 +83,10 @@ class sportsmanagementModeljlextlmoimports extends BaseDatabaseModel
 	 *
 	 * @return void
 	 */
-	function __construct( )
+	function __construct()
 	{
-		$option = Factory::getApplication()->input->getCmd('option');
-		 $show_debug_info = ComponentHelper::getParams($option)->get('show_debug_info', 0);
+		$option          = Factory::getApplication()->input->getCmd('option');
+		$show_debug_info = ComponentHelper::getParams($option)->get('show_debug_info', 0);
 
 		if ($show_debug_info)
 		{
@@ -97,7 +97,7 @@ class sportsmanagementModeljlextlmoimports extends BaseDatabaseModel
 			$this->debug_info = false;
 		}
 
-		  parent::__construct();
+		parent::__construct();
 
 	}
 
@@ -108,15 +108,15 @@ class sportsmanagementModeljlextlmoimports extends BaseDatabaseModel
 	 */
 	function checkStartExtension()
 	{
-		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
-		$user = Factory::getUser();
+		$option        = Factory::getApplication()->input->getCmd('option');
+		$app           = Factory::getApplication();
+		$user          = Factory::getUser();
 		$fileextension = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'lmoimport-2-0.txt';
-		$xmlfile = '';
+		$xmlfile       = '';
 
 		if (!File::exists($fileextension))
 		{
-			$to = 'diddipoeler@gmx.de';
+			$to      = 'diddipoeler@gmx.de';
 			$subject = 'LMO-Import Extension';
 			$message = 'LMO-Import Extension wurde auf der Seite : ' . Uri::base() . ' gestartet.';
 			Utility::sendMail('', Uri::base(), $to, $subject, $message);
@@ -126,63 +126,6 @@ class sportsmanagementModeljlextlmoimports extends BaseDatabaseModel
 		}
 
 	}
-
-
-	/**
-	 * sportsmanagementModeljlextlmoimports::parse_ini_file_ersatz()
-	 *
-	 * @param   mixed $f
-	 * @return
-	 */
-	function parse_ini_file_ersatz($f)
-	{
-		 $r = null;
-		 $sec = null;
-		 $f = @file($f);
-
-		for ($i = 0;$i < @count($f);$i++)
-		{
-			$newsec = 0;
-			$w = @trim($f[$i]);
-
-			if ($w)
-			{
-				if ((!$r) || ($sec))
-				{
-					if ((@substr($w, 0, 1) == "[") && (@substr($w, -1, 1)) == "]")
-					{
-						$sec = @substr($w, 1, @strlen($w) - 2);
-						$newsec = 1;
-					}
-				}
-
-				if (!$newsec)
-				{
-					$w = @explode("=", $w);
-					$k = @trim($w[0]);
-					unset($w[0]);
-					$v = @trim(@implode("=", $w));
-
-					if ((@substr($v, 0, 1) == "\"") && (@substr($v, -1, 1) == "\""))
-					{
-						$v = @substr($v, 1, @strlen($v) - 2);
-					}
-
-					if ($sec)
-					{
-						$r[$sec][$k] = $v;
-					}
-					else
-					{
-						$r[$k] = $v;
-					}
-				}
-			}
-		}
-
-		return $r;
-	}
-
 
 	/**
 	 * sportsmanagementModeljlextlmoimports::_getXml()
@@ -212,8 +155,9 @@ class sportsmanagementModeljlextlmoimports extends BaseDatabaseModel
 	/**
 	 * Method to get the record form.
 	 *
-	 * @param   array   $data     Data for the form.
-	 * @param   boolean $loadData True if the form is to load its own data (default case), false if not.
+	 * @param   array    $data      Data for the form.
+	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 *
 	 * @return mixed    A JForm object on success, false on failure
 	 * @since  1.7
 	 */
@@ -252,41 +196,41 @@ class sportsmanagementModeljlextlmoimports extends BaseDatabaseModel
 		return $data;
 	}
 
-			  /**
-			   * sportsmanagementModeljlextlmoimports::getData()
-			   *
-			   * @return
-			   */
+	/**
+	 * sportsmanagementModeljlextlmoimports::getData()
+	 *
+	 * @return
+	 */
 	function getData()
 	{
 
-		  global $app, $option;
-		  $app =& Factory::getApplication();
-		  $document    =& Factory::getDocument();
+		global $app, $option;
+		$app      =& Factory::getApplication();
+		$document =& Factory::getDocument();
 
-		  $lang = Factory::getLanguage();
-		  $teile = explode("-", $lang->getTag());
+		$lang  = Factory::getLanguage();
+		$teile = explode("-", $lang->getTag());
 
-		  $post = Factory::getApplication()->input->post->getArray(array());
-		  $country = $post['country'];
-		 $agegroup = $post['agegroup'];
-		 $template = $post['copyTemplate'];
+		$post     = Factory::getApplication()->input->post->getArray(array());
+		$country  = $post['country'];
+		$agegroup = $post['agegroup'];
+		$template = $post['copyTemplate'];
 
-		  $app->enqueueMessage(Text::_('land ' . $country . ''), '');
+		$app->enqueueMessage(Text::_('land ' . $country . ''), '');
 
-		  $option = Factory::getApplication()->input->getCmd('option');
-		 $project = $app->getUserState($option . 'project', 0);
+		$option  = Factory::getApplication()->input->getCmd('option');
+		$project = $app->getUserState($option . 'project', 0);
 
-		 $tempprovorschlag = '';
-		 $team2_summary = '';
+		$tempprovorschlag = '';
+		$team2_summary    = '';
 
 		if ($project)
 		{
 			// Projekt wurde mitgegeben, also die liga und alles andere vorselektieren
 
-			$temp = new stdClass;
-			$temp->exportRoutine = '2010-09-19 23:00:00';
-			$temp->exportSystem = 'LMO File';
+			$temp                          = new stdClass;
+			$temp->exportRoutine           = '2010-09-19 23:00:00';
+			$temp->exportSystem            = 'LMO File';
 			$this->_datas['exportversion'] = $temp;
 
 			// Projektname
@@ -294,7 +238,7 @@ class sportsmanagementModeljlextlmoimports extends BaseDatabaseModel
 FROM #__sportsmanagement_project as pro
 WHERE pro.id = ' . (int) $project;
 			$this->_db->setQuery($query);
-			$row = $this->_db->loadAssoc();
+			$row              = $this->_db->loadAssoc();
 			$tempprovorschlag = $row['name'];
 			$app->enqueueMessage(Text::_('project ' . $tempprovorschlag . ''), '');
 
@@ -307,13 +251,13 @@ WHERE pro.id = ' . (int) $project;
 			$this->_db->setQuery($query);
 			$row = $this->_db->loadAssoc();
 
-			$temp = new stdClass;
-			$temp->id = $row['id'];
-			$temp->name = $row['name'];
+			$temp                   = new stdClass;
+			$temp->id               = $row['id'];
+			$temp->name             = $row['name'];
 			$this->_datas['season'] = $temp;
 			$app->enqueueMessage(Text::_('season ' . $temp->name . ''), '');
-			$convert = array (
-			$temp->name => ''
+			$convert          = array(
+				$temp->name => ''
 			);
 			$tempprovorschlag = str_replace(array_keys($convert), array_values($convert), $tempprovorschlag);
 
@@ -326,17 +270,17 @@ WHERE pro.id = ' . (int) $project;
 			$this->_db->setQuery($query);
 			$row = $this->_db->loadAssoc();
 
-			$temp = new stdClass;
-			$temp->id = $row['id'];
+			$temp       = new stdClass;
+			$temp->id   = $row['id'];
 			$temp->name = $row['name'];
 
 			if (!$row['country'])
 			{
-					  $temp->country = 'DEU';
+				$temp->country = 'DEU';
 			}
 			else
 			{
-				   $temp->country = $row['country'];
+				$temp->country = $row['country'];
 			}
 
 			$this->_datas['league'] = $temp;
@@ -354,14 +298,14 @@ inner join #__sportsmanagement_project as pro
 on st.id = pro.sports_type_id
 WHERE pro.id = ' . (int) $project;
 			$this->_db->setQuery($query);
-			$row = $this->_db->loadAssoc();
-			$temp = new stdClass;
-			$temp->id = $row['id'];
-			$temp->name = $row['name'];
+			$row                        = $this->_db->loadAssoc();
+			$temp                       = new stdClass;
+			$temp->id                   = $row['id'];
+			$temp->name                 = $row['name'];
 			$this->_datas['sportstype'] = $temp;
 			$app->enqueueMessage(Text::_('sportstype ' . $temp->name . ''), '');
 
-			$temp = new stdClass;
+			$temp                     = new stdClass;
 			$this->_datas['template'] = $temp;
 		}
 		else
@@ -372,45 +316,45 @@ WHERE pro.id = ' . (int) $project;
 			//   $this->_datas['sportstype'] = $temp;
 		}
 
-		  $temp = new stdClass;
-		  $temp->id = 1;
-		  $temp->name = 'COM_SPORTSMANAGEMENT_ST_SOCCER';
-		  $this->_datas['sportstype'] = $temp;
+		$temp                       = new stdClass;
+		$temp->id                   = 1;
+		$temp->name                 = 'COM_SPORTSMANAGEMENT_ST_SOCCER';
+		$this->_datas['sportstype'] = $temp;
 
-		 $lmoimportuseteams = $app->getUserState($option . 'lmoimportuseteams');
+		$lmoimportuseteams = $app->getUserState($option . 'lmoimportuseteams');
 
-		  $teamid = 1;
-		  $file = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'sportsmanagement_import.l98';
+		$teamid = 1;
+		$file   = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'sportsmanagement_import.l98';
 
-		$exportplayer = array();
-		$exportclubs = array();
-		$exportteams = array();
-		$exportteamplayer = array();
-		$exportprojectteam = array();
-		$exportreferee = array();
+		$exportplayer          = array();
+		$exportclubs           = array();
+		$exportteams           = array();
+		$exportteamplayer      = array();
+		$exportprojectteam     = array();
+		$exportreferee         = array();
 		$exportprojectposition = array();
-		$exportposition = array();
-		$exportparentposition = array();
-		$exportplayground = array();
-		$exportround = array();
-		$exportmatch = array();
-		$exportmatchplayer = array();
-		$exportmatchevent = array();
-		$exportevent = array();
+		$exportposition        = array();
+		$exportparentposition  = array();
+		$exportplayground      = array();
+		$exportround           = array();
+		$exportmatch           = array();
+		$exportmatchplayer     = array();
+		$exportmatchevent      = array();
+		$exportevent           = array();
 
-			$parse = $this->parse_ini_file_ersatz($file);
+		$parse = $this->parse_ini_file_ersatz($file);
 
-			// Select options for the project
+		// Select options for the project
 		foreach ($parse['Options'] AS $key => $value)
 		{
 			if ($key == 'Title')
 			{
-				  $exportname = $value;
+				$exportname = $value;
 			}
 
 			if ($key == 'Name')
 			{
-				  $projectname = utf8_encode($value);
+				$projectname = utf8_encode($value);
 
 				if (array_key_exists('season', $this->_datas))
 				{
@@ -419,20 +363,20 @@ WHERE pro.id = ' . (int) $project;
 				else
 				{
 					// Which season ?
-					$teile = explode(" ", $value);
-					$temp = new stdClass;
-					$temp->name = array_pop($teile);
+					$teile                  = explode(" ", $value);
+					$temp                   = new stdClass;
+					$temp->name             = array_pop($teile);
 					$this->_datas['season'] = $temp;
 				}
 
 				if (array_key_exists('league', $this->_datas))
 				{
-						// Nichts machen
+					// Nichts machen
 				}
 				else
 				{
 					// Which liga ?
-					$temp = new stdClass;
+					$temp       = new stdClass;
 					$temp->name = $value;
 
 					if (!$country)
@@ -470,68 +414,68 @@ WHERE pro.id = ' . (int) $project;
 
 			if ($key == 'PointsForDraw')
 			{
-							$Points[] = $value;
+				$Points[] = $value;
 			}
 
 			if ($key == 'PointsForLost')
 			{
-							$Points[] = $value;
+				$Points[] = $value;
 			}
 		}
 
-			$temp->points_after_regular_time = implode(",", $Points);
-			$temp->name = $projectname;
-			$temp->namevorschlag = $tempprovorschlag;
-			$temp->serveroffset = 0;
-			$temp->project_type = 'SIMPLE_LEAGUE';
-			$temp->start_time = '15:30';
-			$temp->start_date = '0000-00-00';
-			$temp->sports_type_id = 1;
-			$temp->admin = 62;
-			$temp->editor = 62;
-			$temp->timezone = 321;
+		$temp->points_after_regular_time = implode(",", $Points);
+		$temp->name                      = $projectname;
+		$temp->namevorschlag             = $tempprovorschlag;
+		$temp->serveroffset              = 0;
+		$temp->project_type              = 'SIMPLE_LEAGUE';
+		$temp->start_time                = '15:30';
+		$temp->start_date                = '0000-00-00';
+		$temp->sports_type_id            = 1;
+		$temp->admin                     = 62;
+		$temp->editor                    = 62;
+		$temp->timezone                  = 321;
 
-		 $temp->master_template = $template;
-			$temp->agegroup_id = $agegroup;
+		$temp->master_template = $template;
+		$temp->agegroup_id     = $agegroup;
 
-			$temp->current_round_auto = 1;
-			$temp->auto_time = 1440;
+		$temp->current_round_auto = 1;
+		$temp->auto_time          = 1440;
 
-			$temp->points_after_add_time = implode(",", $Points);
-			$temp->points_after_penalty = implode(",", $Points);
-			$temp->game_regular_time = 90;
-			$temp->game_parts = 2;
+		$temp->points_after_add_time = implode(",", $Points);
+		$temp->points_after_penalty  = implode(",", $Points);
+		$temp->game_regular_time     = 90;
+		$temp->game_parts            = 2;
 
-			$this->_datas['project'] = $temp;
+		$this->_datas['project'] = $temp;
 
-			$temp = new stdClass;
-			$temp->name = $exportname;
-			$this->_datas['exportversion'] = $temp;
+		$temp                          = new stdClass;
+		$temp->name                    = $exportname;
+		$this->_datas['exportversion'] = $temp;
 
-			// Select rounds
-			unset($export);
-			$matchnumber = 1;
+		// Select rounds
+		unset($export);
+		$matchnumber = 1;
 
 		for ($a = 1; $a <= $countrounds; $a++)
 		{
 			$spielnummerrunde = 1;
-			$lfdmatch = 1;
+			$lfdmatch         = 1;
 
 			foreach ($parse['Round' . $a] AS $key => $value)
 			{
-				$temp = new stdClass;
-				$tempmatch = new stdClass;
-				 $tempmatch->playground_id = 0;
+				$temp                     = new stdClass;
+				$tempmatch                = new stdClass;
+				$tempmatch->playground_id = 0;
 
-				$temp->id = $a;
+				$temp->id        = $a;
 				$temp->roundcode = $a;
-				$temp->name = $a . '. Spieltag';
-				$temp->alias = $a . '. Spieltag';
+				$temp->name      = $a . '. Spieltag';
+				$temp->alias     = $a . '. Spieltag';
 
 				if ($key == 'D1')
 				{
-					$round_id = $a;
-					$datetime = strtotime($value);
+					$round_id         = $a;
+					$datetime         = strtotime($value);
 					$round_date_first = date('Y-m-d', $datetime);
 
 					if ($a == 1)
@@ -543,10 +487,10 @@ WHERE pro.id = ' . (int) $project;
 				if ($key == 'D2')
 				{
 					$temp->round_date_first = $round_date_first;
-					$datetime = strtotime($value);
-					$temp->round_date_last = date('Y-m-d', $datetime);
-					$export[] = $temp;
-					$this->_datas['round'] = array_merge($export);
+					$datetime               = strtotime($value);
+					$temp->round_date_last  = date('Y-m-d', $datetime);
+					$export[]               = $temp;
+					$this->_datas['round']  = array_merge($export);
 				}
 
 				if (substr($key, 0, 2) == 'TA')
@@ -594,27 +538,27 @@ WHERE pro.id = ' . (int) $project;
 					{
 						$lfdmatch++;
 
-						$tempmatch->id = $matchnumber;
-						$tempmatch->round_id = $round_id;
-						$tempmatch->round_id_lmo = $round_id;
-						$tempmatch->match_number = $matchnumber;
-						$tempmatch->published = 1;
-						$tempmatch->count_result = 1;
-						$tempmatch->show_report = 1;
-						$tempmatch->projectteam1_id = $projectteam1_id_lmo;
-						$tempmatch->projectteam2_id = $projectteam2_id_lmo;
+						$tempmatch->id                  = $matchnumber;
+						$tempmatch->round_id            = $round_id;
+						$tempmatch->round_id_lmo        = $round_id;
+						$tempmatch->match_number        = $matchnumber;
+						$tempmatch->published           = 1;
+						$tempmatch->count_result        = 1;
+						$tempmatch->show_report         = 1;
+						$tempmatch->projectteam1_id     = $projectteam1_id_lmo;
+						$tempmatch->projectteam2_id     = $projectteam2_id_lmo;
 						$tempmatch->projectteam1_id_lmo = $projectteam1_id_lmo;
 						$tempmatch->projectteam2_id_lmo = $projectteam2_id_lmo;
-						$tempmatch->team1_result = $team1_result;
-						$tempmatch->team2_result = $team2_result;
-						$tempmatch->summary = $team2_summary;
+						$tempmatch->team1_result        = $team1_result;
+						$tempmatch->team2_result        = $team2_result;
+						$tempmatch->summary             = $team2_summary;
 
 						if ($projectteam1_id_lmo)
 						{
 							$exportmatch[] = $tempmatch;
 						}
 
-						   $matchnumber++;
+						$matchnumber++;
 					}
 				}
 
@@ -624,111 +568,111 @@ WHERE pro.id = ' . (int) $project;
 
 					if ($timestamp)
 					{
-						  $tempmatch->match_date = date('Y-m-d', $timestamp) . " " . date('H:i', $timestamp);
+						$tempmatch->match_date = date('Y-m-d', $timestamp) . " " . date('H:i', $timestamp);
 					}
 
 					// 		$tempmatch->match_date = $mazch_date." ".$mazch_time;
 
-					$tempmatch->id = $matchnumber;
-					$tempmatch->round_id = $round_id;
-					$tempmatch->round_id_lmo = $round_id;
-					$tempmatch->match_number = $matchnumber;
-					$tempmatch->published = 1;
-					$tempmatch->count_result = 1;
-					$tempmatch->show_report = 1;
-					$tempmatch->projectteam1_id = $projectteam1_id_lmo;
-					$tempmatch->projectteam2_id = $projectteam2_id_lmo;
+					$tempmatch->id                  = $matchnumber;
+					$tempmatch->round_id            = $round_id;
+					$tempmatch->round_id_lmo        = $round_id;
+					$tempmatch->match_number        = $matchnumber;
+					$tempmatch->published           = 1;
+					$tempmatch->count_result        = 1;
+					$tempmatch->show_report         = 1;
+					$tempmatch->projectteam1_id     = $projectteam1_id_lmo;
+					$tempmatch->projectteam2_id     = $projectteam2_id_lmo;
 					$tempmatch->projectteam1_id_lmo = $projectteam1_id_lmo;
 					$tempmatch->projectteam2_id_lmo = $projectteam2_id_lmo;
-					$tempmatch->team1_result = $team1_result;
-					$tempmatch->team2_result = $team2_result;
-					$tempmatch->summary = $team2_summary;
+					$tempmatch->team1_result        = $team1_result;
+					$tempmatch->team2_result        = $team2_result;
+					$tempmatch->summary             = $team2_summary;
 
 					if ($projectteam1_id_lmo)
 					{
-							$exportmatch[] = $tempmatch;
+						$exportmatch[] = $tempmatch;
 					}
 
 					$matchnumber++;
 					$lfdmatch++;
 				}
 
-					//     }
+				//     }
 
-					$spielnummerrunde++;
+				$spielnummerrunde++;
 			}
 		}
 
-			$this->_datas['match'] = array_merge($exportmatch);
+		$this->_datas['match'] = array_merge($exportmatch);
 
-			// Select clubs
-			unset($export);
-			$teamid = 1;
+		// Select clubs
+		unset($export);
+		$teamid = 1;
 
 		foreach ($parse['Teams'] AS $key => $value)
 		{
-				  // Der clubname muss um die mannschaftsnummer verkürzt werden
+			// Der clubname muss um die mannschaftsnummer verkürzt werden
 			if (substr($value, -4, 4) == ' III')
 			{
-				$convert = array (
-					  ' III' => ''
-					  );
-					$value = str_replace(array_keys($convert), array_values($convert), $value);
+				$convert = array(
+					' III' => ''
+				);
+				$value   = str_replace(array_keys($convert), array_values($convert), $value);
 			}
 
 			if (substr($value, -3, 3) == ' II')
 			{
-				$convert = array (
-				  ' II' => ''
-							  );
-							$value = str_replace(array_keys($convert), array_values($convert), $value);
+				$convert = array(
+					' II' => ''
+				);
+				$value   = str_replace(array_keys($convert), array_values($convert), $value);
 			}
 
 			if (substr($value, -2, 2) == ' I')
 			{
-				$convert = array (
-				  ' I' => ''
-					  );
-					$value = str_replace(array_keys($convert), array_values($convert), $value);
+				$convert = array(
+					' I' => ''
+				);
+				$value   = str_replace(array_keys($convert), array_values($convert), $value);
 			}
 
 			if (substr($value, -2, 2) == ' 3')
 			{
-				$convert = array (
-				  ' 3' => ''
-					  );
-					$value = str_replace(array_keys($convert), array_values($convert), $value);
+				$convert = array(
+					' 3' => ''
+				);
+				$value   = str_replace(array_keys($convert), array_values($convert), $value);
 			}
 
 			if (substr($value, -2, 2) == ' 2')
 			{
-				$convert = array (
-				  ' 2' => ''
-					  );
-					$value = str_replace(array_keys($convert), array_values($convert), $value);
+				$convert = array(
+					' 2' => ''
+				);
+				$value   = str_replace(array_keys($convert), array_values($convert), $value);
 			}
 
 			if (substr($value, -3, 3) == ' 2.')
 			{
-				$convert = array (
-				  ' 2.' => ''
-					  );
-					$value = str_replace(array_keys($convert), array_values($convert), $value);
+				$convert = array(
+					' 2.' => ''
+				);
+				$value   = str_replace(array_keys($convert), array_values($convert), $value);
 			}
 
-			$convert = array (
-			'.' => ' '
-					);
-					$value = str_replace(array_keys($convert), array_values($convert), $value);
-					$value = trim($value);
+			$convert = array(
+				'.' => ' '
+			);
+			$value   = str_replace(array_keys($convert), array_values($convert), $value);
+			$value   = trim($value);
 
-					$temp = new stdClass;
-					$temp->name = utf8_encode($value);
-					$temp->alias = $temp->name;
-					$temp->id = $teamid;
-					$temp->info = '';
-					$temp->extended = '';
-					$temp->standard_playground = '';
+			$temp                      = new stdClass;
+			$temp->name                = utf8_encode($value);
+			$temp->alias               = $temp->name;
+			$temp->id                  = $teamid;
+			$temp->info                = '';
+			$temp->extended            = '';
+			$temp->standard_playground = '';
 
 			if (!$country)
 			{
@@ -747,38 +691,38 @@ WHERE pro.id = ' . (int) $project;
 				}
 			}
 
-					$export[] = $temp;
-					$this->_datas['club'] = array_merge($export);
+			$export[]             = $temp;
+			$this->_datas['club'] = array_merge($export);
 
-					$teamid++;
+			$teamid++;
 		}
 
-				// Select teams
-		  unset($export);
-		  $teamid = 1;
+		// Select teams
+		unset($export);
+		$teamid = 1;
 
 		foreach ($parse['Teams'] AS $key => $value)
 		{
-			$convert = array (
-			'.' => ' '
-					);
-					$value = str_replace(array_keys($convert), array_values($convert), $value);
-					$value = trim($value);
+			$convert = array(
+				'.' => ' '
+			);
+			$value   = str_replace(array_keys($convert), array_values($convert), $value);
+			$value   = trim($value);
 
-					$temp = new stdClass;
-					$temp->name = utf8_encode($value);
-					$temp->alias = $temp->name;
-					$temp->id = $teamid;
-					$temp->team_id = $teamid;
-					$temp->club_id = $teamid;
+			$temp          = new stdClass;
+			$temp->name    = utf8_encode($value);
+			$temp->alias   = $temp->name;
+			$temp->id      = $teamid;
+			$temp->team_id = $teamid;
+			$temp->club_id = $teamid;
 
-					// $temp->country = $country;
-					$temp->info = '';
-					$temp->extended = '';
-					$temp->is_in_score = 1;
-					$temp->project_team_id = $teamid;
+			// $temp->country = $country;
+			$temp->info            = '';
+			$temp->extended        = '';
+			$temp->is_in_score     = 1;
+			$temp->project_team_id = $teamid;
 
-					// Select middle name
+			// Select middle name
 			if (array_key_exists('Teamm', $parse))
 			{
 				foreach ($parse['Teamm'] AS $keymiddle => $valuemiddle)
@@ -790,44 +734,44 @@ WHERE pro.id = ' . (int) $project;
 
 					if (empty($temp->middle_name))
 					{
-						  $temp->middle_name = $temp->name;
+						$temp->middle_name = $temp->name;
 					}
 				}
 			}
 
-					// Select short name
+			// Select short name
 			if (array_key_exists('Teamk', $parse))
 			{
 				foreach ($parse['Teamk'] AS $keyshort => $valueshort)
 				{
 					if ($key == $keyshort)
 					{
-						  $temp->short_name = utf8_encode($valueshort);
+						$temp->short_name = utf8_encode($valueshort);
 					}
 				}
 			}
 
-					// Add default middle size name
+			// Add default middle size name
 			if (empty($temp->middle_name))
 			{
-				   $parts = explode(" ", $temp->name);
-				   $temp->middle_name = substr($parts[0], 0, 20);
+				$parts             = explode(" ", $temp->name);
+				$temp->middle_name = substr($parts[0], 0, 20);
 			}
 
-					// Add default short size name
+			// Add default short size name
 			if (empty($temp->short_name))
 			{
-				   $parts = explode(" ", $temp->name);
-				   $temp->short_name = substr($parts[0], 0, 2);
+				$parts            = explode(" ", $temp->name);
+				$temp->short_name = substr($parts[0], 0, 2);
 			}
 
-				  $export[] = $temp;
-					$this->_datas['team'] = array_merge($export);
-					$this->_datas['projectteam'] = array_merge($export);
-					$teamid++;
+			$export[]                    = $temp;
+			$this->_datas['team']        = array_merge($export);
+			$this->_datas['projectteam'] = array_merge($export);
+			$teamid++;
 		}
 
-			// Check count teams lmo <-> project
+		// Check count teams lmo <-> project
 		if ($lmoimportuseteams)
 		{
 			$query = '	SELECT count(*) as total
@@ -848,8 +792,8 @@ WHERE project = ' . $project;
 		}
 
 		/**
- * das ganze für den standardimport aufbereiten
- */
+		 * das ganze für den standardimport aufbereiten
+		 */
 		$output = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
 
 		// Open the project
@@ -962,12 +906,12 @@ WHERE project = ' . $project;
 			$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['playground'], 'Playground'));
 		}
 
-				  // Close the project
+		// Close the project
 		$output .= '</project>';
 
 		// Mal als test
 		$xmlfile = $output;
-		$file = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'sportsmanagement_import.jlg';
+		$file    = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'sportsmanagement_import.jlg';
 		File::write($file, $xmlfile);
 
 		$this->import_version = 'NEW';
@@ -975,6 +919,62 @@ WHERE project = ' . $project;
 		// $this->import_version='';
 		return $this->_datas;
 
+	}
+
+	/**
+	 * sportsmanagementModeljlextlmoimports::parse_ini_file_ersatz()
+	 *
+	 * @param   mixed  $f
+	 *
+	 * @return
+	 */
+	function parse_ini_file_ersatz($f)
+	{
+		$r   = null;
+		$sec = null;
+		$f   = @file($f);
+
+		for ($i = 0; $i < @count($f); $i++)
+		{
+			$newsec = 0;
+			$w      = @trim($f[$i]);
+
+			if ($w)
+			{
+				if ((!$r) || ($sec))
+				{
+					if ((@substr($w, 0, 1) == "[") && (@substr($w, -1, 1)) == "]")
+					{
+						$sec    = @substr($w, 1, @strlen($w) - 2);
+						$newsec = 1;
+					}
+				}
+
+				if (!$newsec)
+				{
+					$w = @explode("=", $w);
+					$k = @trim($w[0]);
+					unset($w[0]);
+					$v = @trim(@implode("=", $w));
+
+					if ((@substr($v, 0, 1) == "\"") && (@substr($v, -1, 1) == "\""))
+					{
+						$v = @substr($v, 1, @strlen($v) - 2);
+					}
+
+					if ($sec)
+					{
+						$r[$sec][$k] = $v;
+					}
+					else
+					{
+						$r[$k] = $v;
+					}
+				}
+			}
+		}
+
+		return $r;
 	}
 
 

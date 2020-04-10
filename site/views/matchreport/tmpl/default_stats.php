@@ -13,15 +13,17 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+
 ?>
 <!-- START: game stats -->
 <?php
 if (!empty($this->matchplayerpositions))
 {
 	$hasMatchPlayerStats = false;
-	$hasMatchStaffStats = false;
+	$hasMatchStaffStats  = false;
 
 	foreach ($this->matchplayerpositions as $pos)
 	{
@@ -54,15 +56,15 @@ if (!empty($this->matchplayerpositions))
 	}
 
 	if ($hasMatchPlayerStats || $hasMatchStaffStats)
-	:
+		:
 		?>
 
-	   <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STATISTICS'); ?></h2>
-  
+        <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STATISTICS'); ?></h2>
+
 		<?php
 		// Define tabs options for version of Joomla! 4.0
 		$tabsOptions = array(
-		"active" => "tabstats1_id" // It is the ID of the active tab.
+			"active" => "tabstats1_id" // It is the ID of the active tab.
 		);
 		echo HTMLHelper::_('bootstrap.startTabSet', 'ID-Tabs-Group-Stats', $tabsOptions);
 		echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-Group-Stats', 'tabstats1_id', Text::_($this->team1->name));

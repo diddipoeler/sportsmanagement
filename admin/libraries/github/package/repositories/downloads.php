@@ -29,9 +29,9 @@ class JGithubPackageRepositoriesDownloads extends JGithubPackage
 	 * @param   string  $owner  The name of the owner of the GitHub repository.
 	 * @param   string  $repo   The name of the GitHub repository.
 	 *
+	 * @return object
 	 * @since    3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function getList($owner, $repo)
 	{
@@ -51,9 +51,9 @@ class JGithubPackageRepositoriesDownloads extends JGithubPackage
 	 * @param   string   $repo   The name of the GitHub repository.
 	 * @param   integer  $id     The id of the download.
 	 *
+	 * @return object
 	 * @since    3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function get($owner, $repo, $id)
 	{
@@ -78,9 +78,9 @@ class JGithubPackageRepositoriesDownloads extends JGithubPackage
 	 * @param   string  $description   The description.
 	 * @param   string  $content_type  The content type.
 	 *
+	 * @return object
 	 * @since    3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function create($owner, $repo, $name, $size, $description = '', $content_type = '')
 	{
@@ -147,9 +147,9 @@ class JGithubPackageRepositoriesDownloads extends JGithubPackage
 	 * @param   string  $file                   Local file. Example assumes the file existing in the directory
 	 *                                          where you are running the curl command. Yes, the @ matters.
 	 *
+	 * @return boolean
 	 * @since    3.3 (CMS)
 	 *
-	 * @return boolean
 	 */
 	public function upload($key, $acl, $success_action_status, $filename, $awsAccessKeyId, $policy, $signature, $content_type, $file)
 	{
@@ -183,9 +183,9 @@ class JGithubPackageRepositoriesDownloads extends JGithubPackage
 	 * @param   string   $repo   The name of the GitHub repository.
 	 * @param   integer  $id     The id of the download.
 	 *
+	 * @return object
 	 * @since    3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function delete($owner, $repo, $id)
 	{

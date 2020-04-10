@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
@@ -36,7 +37,7 @@ class sportsmanagementModelsmextxmleditor extends JSMModelAdmin
 	/**
 	 * Method to store the source file contents.
 	 *
-	 * @param array    The souce data to save.
+	 * @param   array    The souce data to save.
 	 *
 	 * @return boolean    True on success, false otherwise and internal error set.
 	 * @since  1.6
@@ -49,7 +50,7 @@ class sportsmanagementModelsmextxmleditor extends JSMModelAdmin
 		// $option = $jinput->getCmd('option');
 		// jimport('joomla.filesystem.file');
 
-			 $filePath = JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . $this->jsmoption . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'extended' . DIRECTORY_SEPARATOR . $data['filename'];
+		$filePath = JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . $this->jsmoption . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'extended' . DIRECTORY_SEPARATOR . $data['filename'];
 
 		if (!File::write($filePath, $data['source']))
 		{
@@ -64,8 +65,9 @@ class sportsmanagementModelsmextxmleditor extends JSMModelAdmin
 	/**
 	 * Method to get the record form.
 	 *
-	 * @param   array   $data     Data for the form.
-	 * @param   boolean $loadData True if the form is to load its own data (default case), false if not.
+	 * @param   array    $data      Data for the form.
+	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 *
 	 * @return mixed    A JForm object on success, false on failure
 	 * @since  1.6
 	 */
@@ -90,6 +92,7 @@ class sportsmanagementModelsmextxmleditor extends JSMModelAdmin
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/agegroups');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         */
+
 		return $form;
 	}
 
@@ -125,18 +128,18 @@ class sportsmanagementModelsmextxmleditor extends JSMModelAdmin
 		// JInput object
 		// $jinput = $app->input;
 		// $option = $jinput->getCmd('option');
-		$item = new stdClass;
-		$config = new stdClass;
-		$configPath = JPATH_SITE . DIRECTORY_SEPARATOR . 'configuration.php';
-		$config->source    = file_get_contents($configPath);
-		$file_name = Factory::getApplication()->input->getVar('file_name');
-		$filePath = JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . $this->jsmoption . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'extended' . DIRECTORY_SEPARATOR . $file_name;
+		$item           = new stdClass;
+		$config         = new stdClass;
+		$configPath     = JPATH_SITE . DIRECTORY_SEPARATOR . 'configuration.php';
+		$config->source = file_get_contents($configPath);
+		$file_name      = Factory::getApplication()->input->getVar('file_name');
+		$filePath       = JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . $this->jsmoption . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'extended' . DIRECTORY_SEPARATOR . $file_name;
 
 		if (file_exists($filePath))
 		{
 			jimport('joomla.filesystem.file');
-			$item->filename    = Factory::getApplication()->input->getVar('file_name');
-			$item->source = file_get_contents($filePath);
+			$item->filename = Factory::getApplication()->input->getVar('file_name');
+			$item->source   = file_get_contents($filePath);
 		}
 		else
 		{

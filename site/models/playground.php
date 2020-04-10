@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
@@ -28,19 +29,16 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 class sportsmanagementModelPlayground extends BaseDatabaseModel
 {
 	static $playgroundid = 0;
-
-	var $playground = null;
-
 	static $projectid = 0;
-
 	static $cfg_which_database = 0;
+	var $playground = null;
 
 	/**
 	 * sportsmanagementModelPlayground::__construct()
 	 *
 	 * @return
 	 */
-	function __construct( )
+	function __construct()
 	{
 		// Reference global application object
 		$app = Factory::getApplication();
@@ -48,12 +46,12 @@ class sportsmanagementModelPlayground extends BaseDatabaseModel
 		// JInput object
 		$jinput = $app->input;
 
-		self::$projectid = $jinput->getInt("p", 0);
-		self::$playgroundid = $jinput->getInt("pgid", 0);
+		self::$projectid                         = $jinput->getInt("p", 0);
+		self::$playgroundid                      = $jinput->getInt("pgid", 0);
 		sportsmanagementModelProject::$projectid = self::$projectid;
-		self::$cfg_which_database = $jinput->getInt('cfg_which_database', 0);
+		self::$cfg_which_database                = $jinput->getInt('cfg_which_database', 0);
 
-			  parent::__construct();
+		parent::__construct();
 	}
 
 }

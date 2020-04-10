@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
@@ -48,8 +49,8 @@ if (!class_exists('JSMModelLegacy'))
 if (!class_exists('sportsmanagementHelper'))
 {
 	/**
- * add the classes for handling
- */
+	 * add the classes for handling
+	 */
 	$classpath = JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'sportsmanagement.php';
 	JLoader::register('sportsmanagementHelper', $classpath);
 	BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
@@ -61,24 +62,24 @@ JLoader::import('components.com_sportsmanagement.models.predictionranking', JPAT
 JLoader::import('components.com_sportsmanagement.models.prediction', JPATH_SITE);
 
 /**
-*
+ *
  * Include the functions only once
-*/
+ */
 JLoader::register('modJSMTopTipper', __DIR__ . '/helper.php');
 
-$document = Factory::getDocument();
+$document  = Factory::getDocument();
 $mainframe = Factory::getApplication();
 $config    = array();
 
 /**
  * sprachdatei aus dem frontend laden
  */
-$langtag = Factory::getLanguage();
-$lang = Factory::getLanguage();
-$extension = 'com_sportsmanagement';
-$base_dir = JPATH_SITE;
+$langtag      = Factory::getLanguage();
+$lang         = Factory::getLanguage();
+$extension    = 'com_sportsmanagement';
+$base_dir     = JPATH_SITE;
 $language_tag = $langtag->getTag();
-$reload = true;
+$reload       = true;
 $lang->load($extension, $base_dir, $language_tag, $reload);
 
 /**
@@ -88,34 +89,34 @@ $document->addStyleSheet(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module
 
 $pg_id = $params->get('pg');
 
-$config['limit']                      = $params->get('limit');
-$config['show_project_name']          = $params->get('show_project_name');
-$config['show_project_name_selector'] = $params->get('show_project_name_selector');
-$config['show_rankingnav'] = $params->get('show_rankingnav');
-$config['show_all_user']   = $params->get('show_all_user');
-$config['show_user_icon']  = $params->get('show_user_icon');
-$config['show_user_link'] = $params->get('show_user_link');
-$config['show_tip_details'] = $params->get('show_tip_details');
-$config['show_tip_ranking'] = $params->get('show_tip_ranking');
-$config['show_tip_ranking_text'] = $params->get('show_tip_ranking_text');
+$config['limit']                       = $params->get('limit');
+$config['show_project_name']           = $params->get('show_project_name');
+$config['show_project_name_selector']  = $params->get('show_project_name_selector');
+$config['show_rankingnav']             = $params->get('show_rankingnav');
+$config['show_all_user']               = $params->get('show_all_user');
+$config['show_user_icon']              = $params->get('show_user_icon');
+$config['show_user_link']              = $params->get('show_user_link');
+$config['show_tip_details']            = $params->get('show_tip_details');
+$config['show_tip_ranking']            = $params->get('show_tip_ranking');
+$config['show_tip_ranking_text']       = $params->get('show_tip_ranking_text');
 $config['show_tip_ranking_round']      = $params->get('show_tip_ranking_round');
 $config['show_tip_link_ranking_round'] = $params->get('show_tip_link_ranking_round');
-$config['show_average_points']  = $params->get('show_average_points');
-$config['show_count_tips']      = $params->get('show_count_tips');
-$config['show_count_joker']     = $params->get('show_count_joker');
-$config['show_count_topptips']  = $params->get('show_count_topptips');
-$config['show_count_difftips']  = $params->get('show_count_difftips');
-$config['show_count_tendtipps'] = $params->get('show_count_tendtipps');
-$config['show_debug_modus'] = $params->get('show_debug_modus');
+$config['show_average_points']         = $params->get('show_average_points');
+$config['show_count_tips']             = $params->get('show_count_tips');
+$config['show_count_joker']            = $params->get('show_count_joker');
+$config['show_count_topptips']         = $params->get('show_count_topptips');
+$config['show_count_difftips']         = $params->get('show_count_difftips');
+$config['show_count_tendtipps']        = $params->get('show_count_tendtipps');
+$config['show_debug_modus']            = $params->get('show_debug_modus');
 
 
 /**
  * das model laden
  */
-$modelpg = BaseDatabaseModel::getInstance('PredictionRanking', 'sportsmanagementModel');
-sportsmanagementModelPrediction::$_predictionProjectS = null;
-sportsmanagementModelPrediction::$_predictionGame = null;
-sportsmanagementModelPrediction::$predictionGameID = (int) $pg_id;
+$modelpg                                                  = BaseDatabaseModel::getInstance('PredictionRanking', 'sportsmanagementModel');
+sportsmanagementModelPrediction::$_predictionProjectS     = null;
+sportsmanagementModelPrediction::$_predictionGame         = null;
+sportsmanagementModelPrediction::$predictionGameID        = (int) $pg_id;
 sportsmanagementModelPredictionRanking::$predictionGameID = (int) $pg_id;
 
 /**
@@ -139,8 +140,9 @@ $lists['type'] = $type_array;
 unset($type_array);
 
 ?>
-<div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
-<?PHP
-require ModuleHelper::getLayoutPath($module->module);
-?>
+<div class="<?php echo $params->get('moduleclass_sfx'); ?>"
+     id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+	<?PHP
+	require ModuleHelper::getLayoutPath($module->module);
+	?>
 </div>

@@ -13,10 +13,11 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
 
-if (! defined('JSM_PATH'))
+if (!defined('JSM_PATH'))
 {
 	DEFINE('JSM_PATH', 'components/com_sportsmanagement');
 }
@@ -41,29 +42,30 @@ class SportsManagementController extends BaseController
 	/**
 	 * SportsManagementController::display()
 	 *
-	 * @param   bool $cachable
-	 * @param   bool $urlparams
+	 * @param   bool  $cachable
+	 * @param   bool  $urlparams
+	 *
 	 * @return void
 	 */
 	function display($cachable = false, $urlparams = false)
 	{
 		$jinput = Factory::getApplication()->input;
 
-			  /**
- * set default view if not set
- */
-		$view = $jinput->set('view', $jinput->getCmd('view', 'cpanel'));
+		/**
+		 * set default view if not set
+		 */
+		$view   = $jinput->set('view', $jinput->getCmd('view', 'cpanel'));
 		$layout = $jinput->getCmd('layout', 'default');
 		/**
- * call parent behavior
- */
+		 * call parent behavior
+		 */
 		parent::display($cachable);
 
 		if ($layout != 'edit')
 		{
 			/**
- * Set the submenu
- */
+			 * Set the submenu
+			 */
 			sportsmanagementHelper::addSubmenu('messages');
 		}
 

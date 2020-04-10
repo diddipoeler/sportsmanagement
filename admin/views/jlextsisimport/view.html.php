@@ -14,9 +14,9 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
-
 
 
 /**
@@ -45,59 +45,59 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
 			case 'default_4':
 				$this->_displayDefault($tpl);
 
-return;
-			break;
+				return;
+				break;
 		}
 
-			 // Set toolbar items for the page
-			$app = Factory::getApplication();
-			$jinput = $app->input;
-			$option = $jinput->getCmd('option');
-			$uri = Factory::getURI();
-			$config = ComponentHelper::getParams('com_media');
-			$post = $jinput->post->getArray(array());
-			$files = $jinput->get('files');
+		// Set toolbar items for the page
+		$app    = Factory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+		$uri    = Factory::getURI();
+		$config = ComponentHelper::getParams('com_media');
+		$post   = $jinput->post->getArray(array());
+		$files  = $jinput->get('files');
 
-			$revisionDate = '2011-04-28 - 12:00';
-			$this->revisionDate    = $revisionDate;
+		$revisionDate       = '2011-04-28 - 12:00';
+		$this->revisionDate = $revisionDate;
 
 	}
-
 
 
 	/**
 	 * sportsmanagementViewjlextsisimport::_displayDefault()
 	 *
-	 * @param   mixed $tpl
+	 * @param   mixed  $tpl
+	 *
 	 * @return void
 	 */
 	function _displayDefault($tpl)
 	{
 		// Global $option;
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-		$db = Factory::getDBO();
-		$uri = Factory::getURI();
-		$user = Factory::getUser();
+		$db     = Factory::getDBO();
+		$uri    = Factory::getURI();
+		$user   = Factory::getUser();
 
-			  // $model = $this->getModel('project') ;
+		// $model = $this->getModel('project') ;
 		// $projectdata = $this->get('Data');
 		// $this->assignRef( 'name', $projectdata->name);
 
-			  $model = $this->getModel();
-		$project = $app->getUserState($option . 'project');
-		$this->project    = $project;
-		$config = ComponentHelper::getParams('com_media');
-		$params = ComponentHelper::getParams($option);
-		$sis_xmllink    = $params->get('sis_xmllink');
+		$model         = $this->getModel();
+		$project       = $app->getUserState($option . 'project');
+		$this->project = $project;
+		$config        = ComponentHelper::getParams('com_media');
+		$params        = ComponentHelper::getParams($option);
+		$sis_xmllink   = $params->get('sis_xmllink');
 		$sis_nummer    = $params->get('sis_meinevereinsnummer');
-		$sis_passwort    = $params->get('sis_meinvereinspasswort');
+		$sis_passwort  = $params->get('sis_meinvereinspasswort');
 
-			 $revisionDate = '2011-04-28 - 12:00';
-		$this->revisionDate    = $revisionDate;
-		$import_version = 'NEW';
-		$this->import_version    = $import_version;
+		$revisionDate         = '2011-04-28 - 12:00';
+		$this->revisionDate   = $revisionDate;
+		$import_version       = 'NEW';
+		$this->import_version = $import_version;
 
 	}
 
@@ -105,34 +105,34 @@ return;
 	/**
 	 * sportsmanagementViewjlextsisimport::_displayDefaultUpdate()
 	 *
-	 * @param   mixed $tpl
+	 * @param   mixed  $tpl
+	 *
 	 * @return void
 	 */
 	function _displayDefaultUpdate($tpl)
 	{
 		// Global $app, $option;
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 
-			  $db = Factory::getDBO();
-		$uri = Factory::getURI();
-		$user = Factory::getUser();
-		$model = $this->getModel();
-		$project = $app->getUserState($option . 'project');
-		$this->project    = $project;
-		$config = ComponentHelper::getParams('com_media');
+		$db            = Factory::getDBO();
+		$uri           = Factory::getURI();
+		$user          = Factory::getUser();
+		$model         = $this->getModel();
+		$project       = $app->getUserState($option . 'project');
+		$this->project = $project;
+		$config        = ComponentHelper::getParams('com_media');
 
-			  $uploadArray = $app->getUserState($option . 'uploadArray', array ());
+		$uploadArray       = $app->getUserState($option . 'uploadArray', array());
 		$lmoimportuseteams = $app->getUserState($option . 'lmoimportuseteams');
-		$whichfile = $app->getUserState($option . 'whichfile');
+		$whichfile         = $app->getUserState($option . 'whichfile');
 
-			  $this->uploadArray    = $uploadArray;
+		$this->uploadArray = $uploadArray;
 
-			  $this->importData    = $model->getUpdateData();
+		$this->importData = $model->getUpdateData();
 
 	}
-
 
 
 	/**
@@ -143,7 +143,7 @@ return;
 	protected function addToolbar()
 	{
 
-				  parent::addToolbar();
+		parent::addToolbar();
 
 	}
 }

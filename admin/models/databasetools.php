@@ -13,12 +13,12 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
-
 
 
 /**
@@ -42,11 +42,11 @@ class sportsmanagementModelDatabaseTools extends BaseDatabaseModel
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
 
 		// Initialise variables.
-		$app = Factory::getApplication('administrator');
+		$app   = Factory::getApplication('administrator');
 		$value = Factory::getApplication()->input->getUInt('limitstart', 0);
 		$this->setState('list.start', $value);
 	}

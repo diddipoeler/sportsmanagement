@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -59,14 +60,14 @@ class JFormFieldeventtypelist extends \JFormFieldList
 
 		// Initialize variables.
 		$options = array();
-		  $db = Factory::getDbo();
-		 $query = $db->getQuery(true);
+		$db      = Factory::getDbo();
+		$query   = $db->getQuery(true);
 
-				   $query->select('pos.id AS value, pos.name AS text');
-		 $query->from('#__sportsmanagement_eventtype as pos');
-		 $query->where('pos.published = 1');
-		 $query->order('pos.ordering,pos.name');
-		 $db->setQuery($query);
+		$query->select('pos.id AS value, pos.name AS text');
+		$query->from('#__sportsmanagement_eventtype as pos');
+		$query->where('pos.published = 1');
+		$query->order('pos.ordering,pos.name');
+		$db->setQuery($query);
 
 		try
 		{
@@ -74,17 +75,17 @@ class JFormFieldeventtypelist extends \JFormFieldList
 		}
 		catch (Exception $e)
 		{
-			 Log::add(Text::_($e->getMessage()), Log::NOTICE, 'jsmerror');
+			Log::add(Text::_($e->getMessage()), Log::NOTICE, 'jsmerror');
 		}
 
 		foreach ($options as $row)
 		{
-				  $row->text = Text::_($row->text);
+			$row->text = Text::_($row->text);
 		}
 
-				// Merge any additional options in the XML definition.
-				$options = array_merge(parent::getOptions(), $options);
+		// Merge any additional options in the XML definition.
+		$options = array_merge(parent::getOptions(), $options);
 
-				return $options;
+		return $options;
 	}
 }

@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Language\Text;
@@ -40,7 +41,7 @@ class JFormFieldFlagsFolder extends FormField
 	 */
 	function getInput()
 	{
-		$folderlist = array();
+		$folderlist  = array();
 		$folderlist1 = Folder::folders(JPATH_ROOT . DIRECTORY_SEPARATOR . 'images', '', true, true, array(0 => 'system'));
 		$folderlist2 = Folder::folders(JPATH_ROOT . DIRECTORY_SEPARATOR . 'media', '', true, true, array(0 => 'system'));
 
@@ -56,15 +57,15 @@ class JFormFieldFlagsFolder extends FormField
 
 		$lang = Factory::getLanguage();
 		$lang->load("com_sportsmanagement", JPATH_ADMINISTRATOR);
-		$items = array(HTMLHelper::_('select.option',  '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE')));
+		$items = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE')));
 
 		foreach ($folderlist as $folder)
 		{
-			$items[] = HTMLHelper::_('select.option',  $folder, '&nbsp;' . $folder);
+			$items[] = HTMLHelper::_('select.option', $folder, '&nbsp;' . $folder);
 		}
 
 		$output = HTMLHelper::_(
-			'select.genericlist',  $items, $this->name,
+			'select.genericlist', $items, $this->name,
 			'class="inputbox"', 'value', 'text', $this->value, $this->id
 		);
 

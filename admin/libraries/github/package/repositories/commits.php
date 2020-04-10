@@ -35,10 +35,10 @@ class JGithubPackageRepositoriesCommits extends JGithubPackage
 	 * @param   JDate   $since   ISO 8601 Date - Only commits after this date will be returned.
 	 * @param   JDate   $until   ISO 8601 Date - Only commits before this date will be returned.
 	 *
+	 * @return  array
 	 * @throws DomainException
 	 * @since    12.1
 	 *
-	 * @return  array
 	 */
 	public function getList($user, $repo, $sha = '', $path = '', $author = '', JDate $since = null, JDate $until = null)
 	{
@@ -72,10 +72,10 @@ class JGithubPackageRepositoriesCommits extends JGithubPackage
 	 * @param   string  $repo  The name of the GitHub repository.
 	 * @param   string  $sha   The SHA of the commit to retrieve.
 	 *
+	 * @return  array
 	 * @throws DomainException
 	 * @since   12.1
 	 *
-	 * @return  array
 	 */
 	public function get($user, $repo, $sha)
 	{

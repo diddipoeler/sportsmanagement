@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
@@ -37,7 +38,7 @@ class sportsmanagementViewsmquote extends sportsmanagementView
 	public function init()
 	{
 
-						  $this->item->name = $this->item->author;
+		$this->item->name = $this->item->author;
 
 	}
 
@@ -53,7 +54,7 @@ class sportsmanagementViewsmquote extends sportsmanagementView
 		$jinput = Factory::getApplication()->input;
 		$jinput->set('hidemainmenu', true);
 
-			  $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SMQUOTE_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SMQUOTE_ADD_NEW');
+		$isNew      = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SMQUOTE_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SMQUOTE_ADD_NEW');
 		$this->icon = 'quote';
 
 		parent::addToolbar();

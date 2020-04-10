@@ -1,12 +1,13 @@
 <?php
 /**
  * @package        GCalendar Action Pack
- * @author        Digital Peak http://www.digital-peak.com
- * @copyright    Copyright (C) 2012 - 2013 Digital Peak. All rights reserved.
+ * @author         Digital Peak http://www.digital-peak.com
+ * @copyright      Copyright (C) 2012 - 2013 Digital Peak. All rights reserved.
  * @license        http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
 defined('_JEXEC') or die();
+
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Access\Rules;
 

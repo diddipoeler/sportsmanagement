@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -29,10 +30,7 @@ if (version_compare(JVERSION, '3.0.0', 'ge'))
 }
 
 
-
 HTMLHelper::_('behavior.keepalive');
-
-
 
 
 Factory::getDocument()->addScriptDeclaration(
@@ -59,18 +57,20 @@ Factory::getDocument()->addScriptDeclaration(
 
 <div class="container-popup">
 
-<div class="pull-right">
-	<button class="btn" type="button" onclick="Joomla.submitbutton('github.cancel', this.form);"><?php echo Text::_('JCANCEL') ?></button>
-</div>
-<div class="clearfix"></div>
+    <div class="pull-right">
+        <button class="btn" type="button"
+                onclick="Joomla.submitbutton('github.cancel', this.form);"><?php echo Text::_('JCANCEL') ?></button>
+    </div>
+    <div class="clearfix"></div>
 
-<form  action="<?php echo Route::_('index.php?option=com_sportsmanagement');?>" id='addissue-formresult' method='post' style='display:inline' name='adminform' >
-<input type="hidden" name="component" value="<?PHP echo $this->option; ?>" />
-<input type='hidden' name='task' value='' />
-<input type="hidden" name="close" id="close" value="0" />
-<input type="hidden" name="gh.token" value="<?PHP echo $this->gh_token; ?>" />
-<input type="hidden" name="api.username" value="<?PHP echo $this->api_username; ?>" />
-<input type="hidden" name="api.password" value="<?PHP echo $this->api_password; ?>" />
-</form>
+    <form action="<?php echo Route::_('index.php?option=com_sportsmanagement'); ?>" id='addissue-formresult'
+          method='post' style='display:inline' name='adminform'>
+        <input type="hidden" name="component" value="<?PHP echo $this->option; ?>"/>
+        <input type='hidden' name='task' value=''/>
+        <input type="hidden" name="close" id="close" value="0"/>
+        <input type="hidden" name="gh.token" value="<?PHP echo $this->gh_token; ?>"/>
+        <input type="hidden" name="api.username" value="<?PHP echo $this->api_username; ?>"/>
+        <input type="hidden" name="api.password" value="<?PHP echo $this->api_password; ?>"/>
+    </form>
 
 </div>

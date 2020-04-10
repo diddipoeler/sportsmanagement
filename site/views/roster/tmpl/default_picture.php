@@ -13,45 +13,47 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
+
 ?>
-<div class="<?php echo $this->divclassrow;?> table-responsive" id="roster">
-<?php
+<div class="<?php echo $this->divclassrow; ?> table-responsive" id="roster">
+	<?php
 	// Show team-picture if defined.
-if ($this->config['show_team_logo'])
-{
-	?>
-		<table class="table">
-			<tr>
-				<td align="center">
-	<?php
-
-	$picture = $this->projectteam->picture;
-
-	if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("team") ))
+	if ($this->config['show_team_logo'])
 	{
-		$picture = $this->team->picture;
+		?>
+        <table class="table">
+            <tr>
+                <td align="center">
+					<?php
+
+					$picture = $this->projectteam->picture;
+
+					if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("team")))
+					{
+						$picture = $this->team->picture;
+					}
+
+					$imgTitle = Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_PICTURE_TEAM', $this->team->name);
+
+					echo sportsmanagementHelperHtml::getBootstrapModalImage(
+						'roster' . $this->team->name,
+						$picture,
+						$this->team->name,
+						$this->config['team_picture_width'],
+						'',
+						$this->modalwidth,
+						$this->modalheight,
+						$this->overallconfig['use_jquery_modal']
+					);
+					?>
+
+
+                </td>
+            </tr>
+        </table>
+		<?php
 	}
-
-										  $imgTitle = Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_PICTURE_TEAM', $this->team->name);
-
-			 echo sportsmanagementHelperHtml::getBootstrapModalImage(
-				 'roster' . $this->team->name,
-				 $picture,
-				 $this->team->name,
-				 $this->config['team_picture_width'],
-				 '',
-				 $this->modalwidth,
-				 $this->modalheight,
-				 $this->overallconfig['use_jquery_modal']
-			 );
-	?>
-
- 
-				</td>
-			</tr>
-		</table>
-	<?php
-}
 	?>
 </div>

@@ -12,6 +12,7 @@
 
 
 defined('_JEXEC') or die;
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -33,22 +34,43 @@ class JFormFieldExtensionTranslators extends FormField
 	public $type = 'ExtensionTranslators';
 
 	/**
+	 * FormFieldExtensionTranslators::setup()
+	 *
+	 * @param   mixed  $element
+	 * @param   mixed  $value
+	 * @param   mixed  $group
+	 *
+	 * @return
+	 */
+	public function setup(SimpleXMLElement $element, $value, $group = null)
+	{
+		$return = parent::setup($element, $value, $group);
+
+		if ($return)
+		{
+			$this->translators = isset($this->element['translators']) ? Text::_($this->element['translators']) : null;
+		}
+
+		return $return;
+	}
+
+	/**
 	 * FormFieldExtensionTranslators::getLabel()
 	 *
 	 * @return
 	 */
 	protected function getLabel()
 	{
-		$lang = Factory::getLanguage();
-		$extension = 'com_sportsmanagement';
-		$base_dir = JPATH_ADMINISTRATOR;
+		$lang         = Factory::getLanguage();
+		$extension    = 'com_sportsmanagement';
+		$base_dir     = JPATH_ADMINISTRATOR;
 		$language_tag = $lang->getTag();
-		$reload = true;
+		$reload       = true;
 		$lang->load($extension, $base_dir, $language_tag, $reload);
 
-			  $html = '';
+		$html = '';
 
-			  $html .= '<div style="clear: both;">';
+		$html .= '<div style="clear: both;">';
 
 		if (!empty($this->translators))
 		{
@@ -57,7 +79,7 @@ class JFormFieldExtensionTranslators extends FormField
 
 		$html .= '</div>';
 
-			  return $html;
+		return $html;
 	}
 
 	/**
@@ -76,27 +98,7 @@ class JFormFieldExtensionTranslators extends FormField
 			$html .= '</div>';
 		}
 
-			  return $html;
-	}
-
-	/**
-	 * FormFieldExtensionTranslators::setup()
-	 *
-	 * @param   mixed $element
-	 * @param   mixed $value
-	 * @param   mixed $group
-	 * @return
-	 */
-	public function setup(SimpleXMLElement $element, $value, $group = null)
-	{
-		$return = parent::setup($element, $value, $group);
-
-		if ($return)
-		{
-			$this->translators = isset($this->element['translators']) ? Text::_($this->element['translators']) : null;
-		}
-
-		return $return;
+		return $html;
 	}
 
 }

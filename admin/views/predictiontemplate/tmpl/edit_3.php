@@ -13,95 +13,95 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-$templatesToLoad = array('footer','listheader');
+
+$templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-$params = $this->form->getFieldsets('params');
+$params    = $this->form->getFieldsets('params');
 $fieldsets = $this->form->getFieldsets();
 
 
 JHtmlBehavior::formvalidation();
 
 
-
-
-
-$i    = 1;
+$i = 1;
 ?>
 
-<form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view=predictiontemplate&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
-  
-	<?php
+    <form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view=predictiontemplate&layout=edit&id=' . (int) $this->item->id); ?>"
+          method="post" name="adminForm" id="adminForm" class="form-validate">
 
-	?>
-	<fieldset class="adminform">
-		<legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_LEGEND', '<i>' . Text::_('COM_SPORTSMANAGEMENT_FES_' . strtoupper($this->form->getName()) . '_NAME') . '</i>', '<i>' . $this->predictionGame->name . '</i>'); ?></legend>
-		<fieldset class="adminform">
-	<?php
-	echo Text::_('COM_SPORTSMANAGEMENT_FES_' . strtoupper($this->form->getName()) . '_DESCR');
-	?>
-		</fieldset>
+		<?php
 
-<div class="form-horizontal">
-<?php
-
-echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS'));
-
-
-?>
-
-<?PHP
-foreach ($fieldsets as $fieldset)
-{
-	echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));
-
-
-	?>
-	<div class="row-fluid">
-			<div class="span9">
-				<div class="row-fluid form-horizontal-desktop">
-					<div class="span6">
-	<?PHP
-	foreach ($this->form->getFieldset($fieldset->name) as $field)
-	{
 		?>
-					<div class="control-group">
-						<div class="control-label">
-		<?php echo $field->label; ?>
-						</div>
-						<div class="controls">
-		<?php echo $field->input; ?>
-						</div>
-					</div>
+        <fieldset class="adminform">
+            <legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_LEGEND', '<i>' . Text::_('COM_SPORTSMANAGEMENT_FES_' . strtoupper($this->form->getName()) . '_NAME') . '</i>', '<i>' . $this->predictionGame->name . '</i>'); ?></legend>
+            <fieldset class="adminform">
 				<?php
-	}
-	?>
-	</div>
-				</div>
-			</div>
-			</div>
-	<?PHP
+				echo Text::_('COM_SPORTSMANAGEMENT_FES_' . strtoupper($this->form->getName()) . '_DESCR');
+				?>
+            </fieldset>
 
-	echo HTMLHelper::_('bootstrap.endTab');
-}
+            <div class="form-horizontal">
+				<?php
 
-?>  
-  
-<?php echo HTMLHelper::_('bootstrap.endTabSet'); ?>
-</div> 			
-  
-</fieldset>  
-<div>		
-<input type='hidden' name='user_id' value='<?php echo $this->user->id; ?>'/>
-<input type="hidden" name="id" value="<?php echo $this->item->id; ?>"/>
-<input type="hidden" name="predid" value="<?php echo $this->prediction_id; ?>"/>
-<input type="hidden" name="task" value="predictiontemplate.edit"/>
-<?php echo HTMLHelper::_('form.token'); ?>
-</div>
-</form>
+				echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS'));
+
+
+				?>
+
+				<?PHP
+				foreach ($fieldsets as $fieldset)
+				{
+					echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));
+
+
+					?>
+                    <div class="row-fluid">
+                        <div class="span9">
+                            <div class="row-fluid form-horizontal-desktop">
+                                <div class="span6">
+									<?PHP
+									foreach ($this->form->getFieldset($fieldset->name) as $field)
+									{
+										?>
+                                        <div class="control-group">
+                                            <div class="control-label">
+												<?php echo $field->label; ?>
+                                            </div>
+                                            <div class="controls">
+												<?php echo $field->input; ?>
+                                            </div>
+                                        </div>
+										<?php
+									}
+									?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+					<?PHP
+
+					echo HTMLHelper::_('bootstrap.endTab');
+				}
+
+				?>
+
+				<?php echo HTMLHelper::_('bootstrap.endTabSet'); ?>
+            </div>
+
+        </fieldset>
+        <div>
+            <input type='hidden' name='user_id' value='<?php echo $this->user->id; ?>'/>
+            <input type="hidden" name="id" value="<?php echo $this->item->id; ?>"/>
+            <input type="hidden" name="predid" value="<?php echo $this->prediction_id; ?>"/>
+            <input type="hidden" name="task" value="predictiontemplate.edit"/>
+			<?php echo HTMLHelper::_('form.token'); ?>
+        </div>
+    </form>
 
 <?PHP
 echo "<div>";

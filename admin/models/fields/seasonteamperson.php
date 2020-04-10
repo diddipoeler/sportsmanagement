@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -20,6 +21,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
 use Joomla\CMS\Filesystem\Folder;
+
 FormHelper::loadFieldClass('list');
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
@@ -51,14 +53,14 @@ class JFormFieldseasonteamperson extends FormField
 	 */
 	protected function getInput()
 	{
-		$app = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
-		$select_id = Factory::getApplication()->input->getVar('id');
+		$app         = Factory::getApplication();
+		$option      = Factory::getApplication()->input->getCmd('option');
+		$select_id   = Factory::getApplication()->input->getVar('id');
 		$this->value = explode(",", $this->value);
 		$targettable = $this->element['targettable'];
-		$targetid = $this->element['targetid'];
+		$targetid    = $this->element['targetid'];
 
-		  // Teilnehmende saisons selektieren
+		// Teilnehmende saisons selektieren
 		if ($select_id)
 		{
 			$query = Factory::getDbo()->getQuery(true);
@@ -77,13 +79,13 @@ class JFormFieldseasonteamperson extends FormField
 		}
 		else
 		{
-			 $options = '';
+			$options = '';
 		}
 
 		// Initialize variables.
-			$html = '';
-			$attribs['width'] = '25px';
-			$attribs['height'] = '25px';
+		$html              = '';
+		$attribs['width']  = '25px';
+		$attribs['height'] = '25px';
 
 		if ($options)
 		{
@@ -91,13 +93,13 @@ class JFormFieldseasonteamperson extends FormField
 
 			foreach ($options as $i => $option)
 			{
-						  $html .= '<tr>';
+				$html .= '<tr>';
 				$html .= '<td>' . $option->seasonname . '</td>';
 
-						  $html .= '<td>' . HTMLHelper::image($option->clublogo, '',    $attribs) . '</td>';
+				$html .= '<td>' . HTMLHelper::image($option->clublogo, '', $attribs) . '</td>';
 				$html .= '<td>' . $option->teamname . '</td>';
 
-						  $html .= '</tr>';
+				$html .= '</tr>';
 			}
 
 			$html .= '</table>';
@@ -109,7 +111,7 @@ class JFormFieldseasonteamperson extends FormField
 			$html .= '</div>';
 		}
 
-				return $html;
+		return $html;
 
 	}
 }

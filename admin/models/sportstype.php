@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 // Import Joomla modelform library
@@ -28,7 +29,7 @@ class sportsmanagementModelsportstype extends JSMModelAdmin
 	/**
 	 * Override parent constructor.
 	 *
-	 * @param   array $config An optional associative array of configuration settings.
+	 * @param   array  $config  An optional associative array of configuration settings.
 	 *
 	 * @see   BaseDatabaseModel
 	 * @since 3.2
@@ -39,12 +40,13 @@ class sportsmanagementModelsportstype extends JSMModelAdmin
 
 	}
 
-	 /**
-	  * return
-	  *
-	  * @param  int sportstype_id
-	  * @return integer
-	  */
+	/**
+	 * return
+	 *
+	 * @param   int sportstype_id
+	 *
+	 * @return integer
+	 */
 	function getSportstype($sportstype_id)
 	{
 		$this->jsmquery->clear();

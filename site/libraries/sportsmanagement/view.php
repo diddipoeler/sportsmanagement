@@ -19,6 +19,7 @@
  */
 
 defined('_JEXEC') or die();
+
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Component\ComponentHelper;
@@ -27,14 +28,14 @@ use Joomla\CMS\Log\Log;
 use Joomla\CMS\HTML\HTMLHelper;
 
 /**
-*
+ *
  * welche joomla version ?
-*/
+ */
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
 	/**
-  * Include the component HTML helpers.
-*/
+	 * Include the component HTML helpers.
+	 */
 	HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 	HTMLHelper::_('behavior.formvalidator');
 	HTMLHelper::_('behavior.keepalive');
@@ -55,12 +56,12 @@ elseif (version_compare(substr(JVERSION, 0, 3), '2.0', 'ge'))
 
 $document = Factory::getDocument();
 
-$params_com = ComponentHelper::getParams('com_sportsmanagement');
-$jsmgrid    = $params_com->get('use_jsmgrid');
-$jsmflex    = $params_com->get('use_jsmflex');
-$cssflags    = $params_com->get('cfg_flags_css');
-$usefontawesome    = $params_com->get('use_fontawesome');
-$addfontawesome    = $params_com->get('add_fontawesome');
+$params_com     = ComponentHelper::getParams('com_sportsmanagement');
+$jsmgrid        = $params_com->get('use_jsmgrid');
+$jsmflex        = $params_com->get('use_jsmflex');
+$cssflags       = $params_com->get('cfg_flags_css');
+$usefontawesome = $params_com->get('use_fontawesome');
+$addfontawesome = $params_com->get('add_fontawesome');
 
 // Welche joomla version ?
 if (version_compare(JVERSION, '3.0.0', 'ge'))
@@ -138,35 +139,36 @@ class sportsmanagementView extends HtmlView
 	/**
 	 * sportsmanagementView::display()
 	 *
-	 * @param   mixed $tpl
+	 * @param   mixed  $tpl
+	 *
 	 * @return
 	 */
 	public function display($tpl = null)
 	{
 
-			  /**
- * alle fehlermeldungen online ausgeben
- * mit der kategorie: jsmerror
- * JLog::INFO, JLog::WARNING, JLog::ERROR, JLog::ALL, JLog::EMERGENCY or JLog::CRITICAL
- */
+		/**
+		 * alle fehlermeldungen online ausgeben
+		 * mit der kategorie: jsmerror
+		 * JLog::INFO, JLog::WARNING, JLog::ERROR, JLog::ALL, JLog::EMERGENCY or JLog::CRITICAL
+		 */
 		Log::addLogger(array('logger' => 'messagequeue'), Log::ALL, array('jsmerror'));
 		/**
- * fehlermeldungen datenbankabfragen
- */
-		Log::addLogger(array('logger' => 'database','db_table' => '#__sportsmanagement_log_entries'), Log::ALL, array('dblog'));
+		 * fehlermeldungen datenbankabfragen
+		 */
+		Log::addLogger(array('logger' => 'database', 'db_table' => '#__sportsmanagement_log_entries'), Log::ALL, array('dblog'));
 		/**
- * laufzeit datenbankabfragen
- */
-		Log::addLogger(array('logger' => 'database','db_table' => '#__sportsmanagement_log_entries'), Log::ALL, array('dbperformance'));
+		 * laufzeit datenbankabfragen
+		 */
+		Log::addLogger(array('logger' => 'database', 'db_table' => '#__sportsmanagement_log_entries'), Log::ALL, array('dbperformance'));
 
-			  // Reference global application object
+		// Reference global application object
 		$this->app = Factory::getApplication();
 
 		// JInput object
 		$this->jinput = $this->app->input;
 
 		$this->modalheight = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_height', 600);
-		$this->modalwidth = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_width', 900);
+		$this->modalwidth  = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_width', 900);
 
 		if (version_compare(JSM_JVERSION, '4', 'eq'))
 		{
@@ -181,10 +183,10 @@ class sportsmanagementView extends HtmlView
 		$this->params = $this->app->getParams();
 
 		// Get a refrence of the page instance in joomla
-		$this->document = Factory::getDocument();
-		$this->option = $this->jinput->getCmd('option');
-		$this->user = Factory::getUser();
-		$this->view = $this->jinput->getVar("view");
+		$this->document           = Factory::getDocument();
+		$this->option             = $this->jinput->getCmd('option');
+		$this->user               = Factory::getUser();
+		$this->view               = $this->jinput->getVar("view");
 		$this->cfg_which_database = $this->jinput->getVar('cfg_which_database', '0');
 
 		if (isset($_SERVER['HTTP_REFERER']))
@@ -196,24 +198,24 @@ class sportsmanagementView extends HtmlView
 			$this->backbuttonreferer = getenv('HTTP_REFERER');
 		}
 
-			  $this->model = $this->getModel();
-			$headData = $this->document->getHeadData();
-			$scripts = $headData['scripts'];
-			$this->document->addStyleSheet(Uri::base() . 'components/' . $this->option . '/assets/css/modalwithoutjs.css');
+		$this->model = $this->getModel();
+		$headData    = $this->document->getHeadData();
+		$scripts     = $headData['scripts'];
+		$this->document->addStyleSheet(Uri::base() . 'components/' . $this->option . '/assets/css/modalwithoutjs.css');
 
-			  $this->document->addStyleSheet(Uri::base() . 'components/' . $this->option . '/assets/css/jcemediabox.css');
-			$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/jcemediabox.js');
+		$this->document->addStyleSheet(Uri::base() . 'components/' . $this->option . '/assets/css/jcemediabox.css');
+		$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/jcemediabox.js');
 
-			$headData['scripts'] = $scripts;
-			$this->document->setHeadData($headData);
+		$headData['scripts'] = $scripts;
+		$this->document->setHeadData($headData);
 
 		switch ($this->view)
 		{
 			case 'jltournamenttree':
-					$this->project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
-					$this->overallconfig = sportsmanagementModelProject::getOverallConfig(sportsmanagementModelProject::$cfg_which_database);
-					$this->config = sportsmanagementModelProject::getTemplateConfig('treetonode', sportsmanagementModelProject::$cfg_which_database);
-					$this->config = array_merge($this->overallconfig, $this->config);
+				$this->project       = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
+				$this->overallconfig = sportsmanagementModelProject::getOverallConfig(sportsmanagementModelProject::$cfg_which_database);
+				$this->config        = sportsmanagementModelProject::getTemplateConfig('treetonode', sportsmanagementModelProject::$cfg_which_database);
+				$this->config        = array_merge($this->overallconfig, $this->config);
 				break;
 			case 'ical':
 				$this->project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
@@ -223,45 +225,39 @@ class sportsmanagementView extends HtmlView
 				break;
 			case 'resultsranking':
 			case 'resultsmatrix':
-				$this->project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
+				$this->project       = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
 				$this->overallconfig = sportsmanagementModelProject::getOverallConfig(sportsmanagementModelProject::$cfg_which_database);
 				break;
 			case 'curve':
 			case 'stats':
 			case 'teamstats':
-				   $this->project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
-				   $this->overallconfig = sportsmanagementModelProject::getOverallConfig(sportsmanagementModelProject::$cfg_which_database);
-				   $this->config = sportsmanagementModelProject::getTemplateConfig($this->getName(), sportsmanagementModelProject::$cfg_which_database);
-				   $this->flashconfig = sportsmanagementModelProject::getTemplateConfig('flash', sportsmanagementModelProject::$cfg_which_database);
-				   $this->config = array_merge($this->overallconfig, $this->config);
+				$this->project       = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
+				$this->overallconfig = sportsmanagementModelProject::getOverallConfig(sportsmanagementModelProject::$cfg_which_database);
+				$this->config        = sportsmanagementModelProject::getTemplateConfig($this->getName(), sportsmanagementModelProject::$cfg_which_database);
+				$this->flashconfig   = sportsmanagementModelProject::getTemplateConfig('flash', sportsmanagementModelProject::$cfg_which_database);
+				$this->config        = array_merge($this->overallconfig, $this->config);
 				break;
 			default:
-				$this->project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
+				$this->project       = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
 				$this->overallconfig = sportsmanagementModelProject::getOverallConfig(sportsmanagementModelProject::$cfg_which_database);
-				$this->config = sportsmanagementModelProject::getTemplateConfig($this->getName(), sportsmanagementModelProject::$cfg_which_database);
-				$this->config = array_merge($this->overallconfig, $this->config);
+				$this->config        = sportsmanagementModelProject::getTemplateConfig($this->getName(), sportsmanagementModelProject::$cfg_which_database);
+				$this->config        = array_merge($this->overallconfig, $this->config);
 				break;
 		}
 
-			/**
-  * flexible einstellung der div klassen im frontend
-  * da man nicht alle templates mit unterschiedlich bootstrap versionen
-  * abfangen kann. hier muss der anwender bei den templates hand anlegen
-  */
-			$this->divclasscontainer = isset($this->config['divclasscontainer']) ? $this->config['divclasscontainer'] : 'container-fluid';
-			$this->divclassrow = isset($this->config['divclassrow']) ? $this->config['divclassrow'] : 'row-fluid';
+		/**
+		 * flexible einstellung der div klassen im frontend
+		 * da man nicht alle templates mit unterschiedlich bootstrap versionen
+		 * abfangen kann. hier muss der anwender bei den templates hand anlegen
+		 */
+		$this->divclasscontainer = isset($this->config['divclasscontainer']) ? $this->config['divclasscontainer'] : 'container-fluid';
+		$this->divclassrow       = isset($this->config['divclassrow']) ? $this->config['divclassrow'] : 'row-fluid';
 
-			  $this->init();
+		$this->init();
 
-			$this->addToolbar();
+		$this->addToolbar();
 
-			parent::display($tpl);
-	}
-
-
-	protected function addToolbar()
-	{
-
+		parent::display($tpl);
 	}
 
 	/**
@@ -270,6 +266,11 @@ class sportsmanagementView extends HtmlView
 	 * @return void
 	 */
 	protected function init()
+	{
+
+	}
+
+	protected function addToolbar()
 	{
 
 	}

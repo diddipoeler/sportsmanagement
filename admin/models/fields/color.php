@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die();
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Uri\Uri;
@@ -46,14 +47,15 @@ class JFormFieldColor extends \JFormFieldText
 	/**
 	 * FormFieldColor::setup()
 	 *
-	 * @param   mixed $element
-	 * @param   mixed $value
-	 * @param   mixed $group
+	 * @param   mixed  $element
+	 * @param   mixed  $value
+	 * @param   mixed  $group
+	 *
 	 * @return
 	 */
 	public function setup(SimpleXMLElement $element, $value, $group = null)
 	{
-		$return = parent::setup($element, $value, $group);
+		$return                 = parent::setup($element, $value, $group);
 		$this->element['class'] = $this->element['class'] . ' color';
 
 		return $return;

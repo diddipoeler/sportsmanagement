@@ -13,41 +13,39 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 
 // Ordering allowed ?
 // $ordering=($this->sortColumn == 'po.ordering');
 
 
-
-$templatesToLoad = array('footer','listheader');
+$templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<script>
+    <script>
 
-	function searchPlayground(val,key)
-	{
-		var f=$('adminForm');
-		if(f)
-		{
-		f.elements['filter_search'].value=val;
+        function searchPlayground(val, key) {
+            var f = $('adminForm');
+            if (f) {
+                f.elements['filter_search'].value = val;
 
-			  f.submit();
-		}
-	}
+                f.submit();
+            }
+        }
 
-</script>
-<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
-  
-<?PHP
-echo $this->loadTemplate('joomla_version');
-?>  
-<input type="hidden" name="task" value="" />
-<input type="hidden" name="boxchecked" value="0" />
-<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
-<input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
-<?php echo HTMLHelper::_('form.token') . "\n"; ?>
-</form>
+    </script>
+    <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
+
+		<?PHP
+		echo $this->loadTemplate('joomla_version');
+		?>
+        <input type="hidden" name="task" value=""/>
+        <input type="hidden" name="boxchecked" value="0"/>
+        <input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>"/>
+        <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>"/>
+		<?php echo HTMLHelper::_('form.token') . "\n"; ?>
+    </form>
 <?PHP
 echo "<div>";
 echo $this->loadTemplate('footer');

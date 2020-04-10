@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -39,8 +40,33 @@ class sportsmanagementViewextensions extends sportsmanagementView
 	 */
 	public function init()
 	{
-		$params = ComponentHelper::getParams($this->option);
+		$params           = ComponentHelper::getParams($this->option);
 		$this->sporttypes = $params->get('cfg_sport_types');
+	}
+
+	/**
+	 * sportsmanagementViewextensions::addIcon()
+	 *
+	 * @param   mixed  $image
+	 * @param   mixed  $url
+	 * @param   mixed  $text
+	 * @param   bool   $newWindow
+	 *
+	 * @return void
+	 */
+	public function addIcon($image, $url, $text, $newWindow = false)
+	{
+		$lang      = Factory::getLanguage();
+		$newWindow = ($newWindow) ? ' target="_blank"' : '';
+		?>
+        <div style="float:<?php echo ($lang->isRTL()) ? 'right' : 'left'; ?>;">
+            <div class="icon">
+                <a href="<?php echo $url; ?>"<?php echo $newWindow; ?>>
+					<?php echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/icons/' . $image, null, null); ?>
+                    <span><?php echo $text; ?></span></a>
+            </div>
+        </div>
+		<?php
 	}
 
 	/**
@@ -61,6 +87,7 @@ class sportsmanagementViewextensions extends sportsmanagementView
 
 		parent::addToolbar();
 	}
+
 	/**
 	 * Method to set up the document properties
 	 *
@@ -69,30 +96,6 @@ class sportsmanagementViewextensions extends sportsmanagementView
 	protected function setDocument()
 	{
 		$this->document->setTitle(Text::_('COM_SPORTSMANAGEMENT_ADMIN_EXTENSIONS'));
-	}
-
-	/**
-	 * sportsmanagementViewextensions::addIcon()
-	 *
-	 * @param   mixed $image
-	 * @param   mixed $url
-	 * @param   mixed $text
-	 * @param   bool  $newWindow
-	 * @return void
-	 */
-	public function addIcon( $image , $url , $text , $newWindow = false )
-	{
-		$lang        = Factory::getLanguage();
-		$newWindow    = ( $newWindow ) ? ' target="_blank"' : '';
-		?>
-		<div style="float:<?php echo ($lang->isRTL()) ? 'right' : 'left'; ?>;">
-	  <div class="icon">
-				<a href="<?php echo $url; ?>"<?php echo $newWindow; ?>>
-		<?php echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/icons/' . $image, null, null); ?>
-					<span><?php echo $text; ?></span></a>
-	  </div>
-	 </div>
-	<?php
 	}
 
 }

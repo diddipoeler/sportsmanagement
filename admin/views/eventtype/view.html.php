@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 
@@ -37,7 +38,7 @@ class sportsmanagementVieweventtype extends sportsmanagementView
 	public function init()
 	{
 
-		$this->cfg_which_media_tool    = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool', 0);
+		$this->cfg_which_media_tool = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool', 0);
 
 	}
 
@@ -50,7 +51,7 @@ class sportsmanagementVieweventtype extends sportsmanagementView
 	protected function addToolBar()
 	{
 		$this->jinput->set('hidemainmenu', true);
-		$isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTTYPE_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTTYPE_NEW');
+		$isNew      = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTTYPE_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTTYPE_NEW');
 		$this->icon = 'quote';
 		parent::addToolbar();
 	}

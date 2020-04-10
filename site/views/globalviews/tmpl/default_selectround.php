@@ -13,10 +13,12 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
+
 ?>
-<div class="<?php echo $this->divclassrow;?>" id="selectround">
-<?php
-echo HTMLHelper::_('select.genericlist', $this->matchdaysoptions, 'select-round', 'onchange="sportsmanagement_changedoc(this);" style="float:right;"', 'value', 'text', $this->currenturl);
-?>
+<div class="<?php echo $this->divclassrow; ?>" id="selectround">
+	<?php
+	echo HTMLHelper::_('select.genericlist', $this->matchdaysoptions, 'select-round', 'onchange="sportsmanagement_changedoc(this);" style="float:right;"', 'value', 'text', $this->currenturl);
+	?>
 </div>

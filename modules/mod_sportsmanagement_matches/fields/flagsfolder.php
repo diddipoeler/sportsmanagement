@@ -43,7 +43,7 @@ class JFormFieldFlagsFolder extends JFormField
 	 */
 	function getInput()
 	{
-		$folderlist = array();
+		$folderlist  = array();
 		$folderlist1 = Folder::folders(JPATH_ROOT . DIRECTORY_SEPARATOR . 'images', '', true, true, array(0 => 'system'));
 		$folderlist2 = Folder::folders(JPATH_ROOT . DIRECTORY_SEPARATOR . 'media', '', true, true, array(0 => 'system'));
 

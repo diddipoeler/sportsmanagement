@@ -50,10 +50,10 @@ class JGithubPackageDataCommits extends JGithubPackage
 	 *                            For a single parent, an array of one SHA should be provided.
 	 *                            For a merge commit, an array of more than one should be provided.
 	 *
+	 * @return  object
 	 * @throws DomainException
 	 * @since   12.1
 	 *
-	 * @return  object
 	 */
 	public function create($owner, $repo, $message, $tree, array $parents = array())
 	{

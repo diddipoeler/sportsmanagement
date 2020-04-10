@@ -24,25 +24,25 @@ if (!isset($this->config['show_referees']))
 	$this->config['show_referees'] = 1;
 }
 ?>
-<div class="<?php echo $this->divclasscontainer;?>" id="referees">
-<?php
-if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO)
-{
-	echo $this->loadTemplate('debug');
-}
+<div class="<?php echo $this->divclasscontainer; ?>" id="referees">
+	<?php
+	if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO)
+	{
+		echo $this->loadTemplate('debug');
+	}
 
-echo $this->loadTemplate('projectheading');
+	echo $this->loadTemplate('projectheading');
 
-if ($this->config['show_sectionheader'])
-{
-	echo $this->loadTemplate('sectionheader');
-}
+	if ($this->config['show_sectionheader'])
+	{
+		echo $this->loadTemplate('sectionheader');
+	}
 
-if ($this->config['show_referees'])
-{
-	echo $this->loadTemplate('referees');
-}
+	if ($this->config['show_referees'])
+	{
+		echo $this->loadTemplate('referees');
+	}
 
-echo $this->loadTemplate('jsminfo');
-?>
+	echo $this->loadTemplate('jsminfo');
+	?>
 </div>

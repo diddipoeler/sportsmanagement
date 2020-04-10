@@ -13,41 +13,42 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
 <!-- START of match summary -->
-<div class="<?php echo $this->divclassrow;?> table-responsive" id="matchreport">
-<?php
-if (!empty($this->match_article->introtext))
-{
-	?>
-	<table class="table " >
-		<tr>
-			<td class="contentheading">
-				<?php
-				echo '&nbsp;' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_ARTICLE');
-				?>
-			</td>
-		</tr>
-	</table>
-	<table class="table " >
-		<tr>
-			<td>
+<div class="<?php echo $this->divclassrow; ?> table-responsive" id="matchreport">
 	<?php
-	$summary = $this->match_article->introtext;
-	$summary = HTMLHelper::_('content.prepare', $summary);
+	if (!empty($this->match_article->introtext))
+	{
+		?>
+        <table class="table ">
+            <tr>
+                <td class="contentheading">
+					<?php
+					echo '&nbsp;' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_ARTICLE');
+					?>
+                </td>
+            </tr>
+        </table>
+        <table class="table ">
+            <tr>
+                <td>
+					<?php
+					$summary = $this->match_article->introtext;
+					$summary = HTMLHelper::_('content.prepare', $summary);
 
-	echo $summary;
+					echo $summary;
+
+					?>
+                </td>
+            </tr>
+        </table>
+		<?php
+	}
 
 	?>
-			</td>
-		</tr>
-	</table>
-	<?php
-}
-
-?>
-<!-- END of match summary -->
+    <!-- END of match summary -->
 </div>

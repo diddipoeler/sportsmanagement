@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -42,16 +43,16 @@ class sportsmanagementViewjlextlmoimports extends sportsmanagementView
 		$lang = Factory::getLanguage();
 
 		$config = ComponentHelper::getParams('com_media');
-		$post = $this->jinput->post->getArray(array());
-		$files = $this->jinput->getArray(array('files'));
+		$post   = $this->jinput->post->getArray(array());
+		$files  = $this->jinput->getArray(array('files'));
 
-		$this->config = $config;
-		$teile = explode("-", $lang->getTag());
-		$country = JSMCountries::convertIso2to3($teile[1]);
-		$this->country = $country;
-		$countries = JSMCountries::getCountryOptions();
+		$this->config       = $config;
+		$teile              = explode("-", $lang->getTag());
+		$country            = JSMCountries::convertIso2to3($teile[1]);
+		$this->country      = $country;
+		$countries          = JSMCountries::getCountryOptions();
 		$lists['countries'] = HTMLHelper::_('select.genericlist', $countries, 'country', 'class="inputbox" size="1"', 'value', 'text', $country);
-		$this->countries = $lists['countries'];
+		$this->countries    = $lists['countries'];
 
 		$myoptions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
 		$mdlagegroup = BaseDatabaseModel::getInstance('agegroups', 'sportsmanagementModel');
@@ -62,9 +63,9 @@ class sportsmanagementViewjlextlmoimports extends sportsmanagementView
 		}
 
 		$lists['agegroup'] = $myoptions;
-		$this->agegroup = HTMLHelper::_('select.genericlist', $lists['agegroup'], 'agegroup', 'class="inputbox" size="1"', 'value', 'text', 0);
+		$this->agegroup    = HTMLHelper::_('select.genericlist', $lists['agegroup'], 'agegroup', 'class="inputbox" size="1"', 'value', 'text', 0);
 
-			  $model = BaseDatabaseModel::getInstance('jlxmlimport', 'sportsmanagementmodel');
+		$model           = BaseDatabaseModel::getInstance('jlxmlimport', 'sportsmanagementmodel');
 		$this->templates = $model->getTemplateList();
 
 	}
@@ -82,9 +83,6 @@ class sportsmanagementViewjlextlmoimports extends sportsmanagementView
 		// SportsmanagementHelper::ToolbarButtonOnlineHelp();
 		parent::addToolbar();
 	}
-
-
-
 
 
 }

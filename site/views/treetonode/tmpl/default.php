@@ -19,18 +19,18 @@ defined('_JEXEC') or die;
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<div class="<?php echo $this->divclasscontainer;?>" id="treetonode">
-<div class="<?php echo $this->divclassrow;?> table-responsive" id="treetonodeanzeige">  
-<?php
-if ($this->config['show_sectionheader'] == 1)
-{
-	echo $this->loadTemplate('sectionheader');
-}
+<div class="<?php echo $this->divclasscontainer; ?>" id="treetonode">
+    <div class="<?php echo $this->divclassrow; ?> table-responsive" id="treetonodeanzeige">
+		<?php
+		if ($this->config['show_sectionheader'] == 1)
+		{
+			echo $this->loadTemplate('sectionheader');
+		}
 
-echo $this->loadTemplate('projectheading');
-echo $this->loadTemplate('treetonode');
+		echo $this->loadTemplate('projectheading');
+		echo $this->loadTemplate('treetonode');
 
-echo $this->loadTemplate('jsminfo');
-?>
-</div>
+		echo $this->loadTemplate('jsminfo');
+		?>
+    </div>
 </div>

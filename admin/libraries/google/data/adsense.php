@@ -45,14 +45,14 @@ class JGoogleDataAdsense extends JGoogleData
 	 *
 	 * @return  mixed  Data from Google
 	 *
-	 * @since   3.1.4
 	 * @throws  UnexpectedValueException
+	 * @since   3.1.4
 	 */
 	public function getAccount($accountID, $subaccounts = true)
 	{
 		if ($this->isAuthenticated())
 		{
-			$url = 'https://www.googleapis.com/adsense/v1.1/accounts/' . urlencode($accountID) . ($subaccounts ? '?tree=true' : '');
+			$url   = 'https://www.googleapis.com/adsense/v1.1/accounts/' . urlencode($accountID) . ($subaccounts ? '?tree=true' : '');
 			$jdata = $this->query($url);
 
 			if ($data = json_decode($jdata->body, true))
@@ -78,8 +78,8 @@ class JGoogleDataAdsense extends JGoogleData
 	 *
 	 * @return  mixed  Data from Google
 	 *
-	 * @since   3.1.4
 	 * @throws  UnexpectedValueException
+	 * @since   3.1.4
 	 */
 	public function listAccounts($options = array(), $maxpages = 1)
 	{
@@ -106,8 +106,8 @@ class JGoogleDataAdsense extends JGoogleData
 	 *
 	 * @return  mixed  Data from Google
 	 *
-	 * @since   3.1.4
 	 * @throws  UnexpectedValueException
+	 * @since   3.1.4
 	 */
 	public function listClients($accountID, $options = array(), $maxpages = 1)
 	{
@@ -134,15 +134,15 @@ class JGoogleDataAdsense extends JGoogleData
 	 *
 	 * @return  mixed  Data from Google
 	 *
-	 * @since   3.1.4
 	 * @throws  UnexpectedValueException
+	 * @since   3.1.4
 	 */
 	public function getUnit($accountID, $adclientID, $adunitID)
 	{
 		if ($this->isAuthenticated())
 		{
-			$url = 'https://www.googleapis.com/adsense/v1.1/accounts/' . urlencode($accountID);
-			$url .= '/adclients/' . urlencode($adclientID) . '/adunits/' . urlencode($adunitID);
+			$url   = 'https://www.googleapis.com/adsense/v1.1/accounts/' . urlencode($accountID);
+			$url   .= '/adclients/' . urlencode($adclientID) . '/adunits/' . urlencode($adunitID);
 			$jdata = $this->query($url);
 
 			if ($data = json_decode($jdata->body, true))
@@ -171,8 +171,8 @@ class JGoogleDataAdsense extends JGoogleData
 	 *
 	 * @return  mixed  Data from Google
 	 *
-	 * @since   3.1.4
 	 * @throws  UnexpectedValueException
+	 * @since   3.1.4
 	 */
 	public function listUnitChannels($accountID, $adclientID, $adunitID, $options = array(), $maxpages = 1)
 	{
@@ -200,15 +200,15 @@ class JGoogleDataAdsense extends JGoogleData
 	 *
 	 * @return  mixed  Data from Google
 	 *
-	 * @since   3.1.4
 	 * @throws  UnexpectedValueException
+	 * @since   3.1.4
 	 */
 	public function getChannel($accountID, $adclientID, $channelID)
 	{
 		if ($this->isAuthenticated())
 		{
-			$url = 'https://www.googleapis.com/adsense/v1.1/accounts/' . urlencode($accountID) . '/adclients/';
-			$url .= urlencode($adclientID) . '/customchannels/' . urlencode($channelID);
+			$url   = 'https://www.googleapis.com/adsense/v1.1/accounts/' . urlencode($accountID) . '/adclients/';
+			$url   .= urlencode($adclientID) . '/customchannels/' . urlencode($channelID);
 			$jdata = $this->query($url);
 
 			if ($data = json_decode($jdata->body, true))
@@ -236,8 +236,8 @@ class JGoogleDataAdsense extends JGoogleData
 	 *
 	 * @return  mixed  Data from Google
 	 *
-	 * @since   3.1.4
 	 * @throws  UnexpectedValueException
+	 * @since   3.1.4
 	 */
 	public function listChannels($accountID, $adclientID, $options = array(), $maxpages = 1)
 	{
@@ -267,8 +267,8 @@ class JGoogleDataAdsense extends JGoogleData
 	 *
 	 * @return  mixed  Data from Google
 	 *
-	 * @since   3.1.4
 	 * @throws  UnexpectedValueException
+	 * @since   3.1.4
 	 */
 	public function listChannelUnits($accountID, $adclientID, $channelID, $options = array(), $maxpages = 1)
 	{
@@ -297,8 +297,8 @@ class JGoogleDataAdsense extends JGoogleData
 	 *
 	 * @return  mixed  Data from Google
 	 *
-	 * @since   3.1.4
 	 * @throws  UnexpectedValueException
+	 * @since   3.1.4
 	 */
 	public function listUrlChannels($accountID, $adclientID, $options = array(), $maxpages = 1)
 	{
@@ -328,9 +328,9 @@ class JGoogleDataAdsense extends JGoogleData
 	 *
 	 * @return  mixed  Data from Google
 	 *
-	 * @since   3.1.4
 	 * @throws  InvalidArgumentException
 	 * @throws  UnexpectedValueException
+	 * @since   3.1.4
 	 */
 	public function generateReport($accountID, $start, $end = false, $options = array(), $maxpages = 1)
 	{
@@ -377,7 +377,7 @@ class JGoogleDataAdsense extends JGoogleData
 			}
 
 			$options['startDate'] = $startobj->format('Y-m-d');
-			$options['endDate'] = $endobj->format('Y-m-d');
+			$options['endDate']   = $endobj->format('Y-m-d');
 
 			unset($options['startIndex']);
 
@@ -388,18 +388,18 @@ class JGoogleDataAdsense extends JGoogleData
 				$url .= '&';
 			}
 
-			$i = 0;
+			$i            = 0;
 			$data['rows'] = array();
 
 			do
 			{
-				$jdata = $this->query($url . 'startIndex=' . count($data['rows']));
+				$jdata   = $this->query($url . 'startIndex=' . count($data['rows']));
 				$newdata = json_decode($jdata->body, true);
 
 				if ($newdata && array_key_exists('rows', $newdata))
 				{
 					$newdata['rows'] = array_merge($data['rows'], $newdata['rows']);
-					$data = $newdata;
+					$data            = $newdata;
 				}
 				else
 				{
@@ -407,8 +407,7 @@ class JGoogleDataAdsense extends JGoogleData
 				}
 
 				$i++;
-			}
-			while (count($data['rows']) < $data['totalMatchedRows'] && $i < $maxpages);
+			} while (count($data['rows']) < $data['totalMatchedRows'] && $i < $maxpages);
 
 			return $data;
 		}

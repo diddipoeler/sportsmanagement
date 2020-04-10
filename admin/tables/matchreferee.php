@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 
 /**
@@ -30,12 +31,13 @@ class sportsmanagementTableMatchreferee extends JSMTable
 	/**
 	 * Constructor
 	 *
-	 * @param object Database connector object
+	 * @param   object Database connector object
+	 *
 	 * @since 1.0
 	 */
-	function __construct( & $db )
+	function __construct(&$db)
 	{
-		  $db = sportsmanagementHelper::getDBConnection();
+		$db = sportsmanagementHelper::getDBConnection();
 		parent::__construct('#__sportsmanagement_match_referee', 'id', $db);
 	}
 
@@ -48,7 +50,7 @@ class sportsmanagementTableMatchreferee extends JSMTable
 	 */
 	function check()
 	{
-		if (! ( $this->match_id && $this->project_referee_id ))
+		if (!($this->match_id && $this->project_referee_id))
 		{
 			$this->setError(Text::_('CHECK FAILED'));
 

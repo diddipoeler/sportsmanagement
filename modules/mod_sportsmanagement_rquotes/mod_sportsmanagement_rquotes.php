@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -28,9 +29,9 @@ if (!defined('JSM_PATH'))
 }
 
 /**
-*
+ *
  * Include the functions only once
-*/
+ */
 JLoader::register('modRquotesHelper', __DIR__ . '/helper.php');
 
 // Prüft vor Benutzung ob die gewünschte Klasse definiert ist
@@ -42,17 +43,17 @@ if (!class_exists('sportsmanagementHelper'))
 	BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
-$source = $params->get('source');
+$source             = $params->get('source');
 $cfg_which_database = $params->get('cfg_which_database');
 
 // Text file params
-$filename = $params->get('filename', 'rquotes.txt');
+$filename   = $params->get('filename', 'rquotes.txt');
 $randomtext = $params->get('randomtext');
 
 // Database params
-$style = $params->get('style', 'default');
-$category = $params->get('category', '');
-$rotate = $params->get('rotate');
+$style         = $params->get('style', 'default');
+$category      = $params->get('category', '');
+$rotate        = $params->get('rotate');
 $num_of_random = $params->get('num_of_random');
 
 switch ($source)
@@ -62,45 +63,46 @@ switch ($source)
 		{
 			$list = modRquotesHelper::getRandomRquote($category, $num_of_random, $params);
 		}
-		elseif ($rotate == 'multiple_random')
+        elseif ($rotate == 'multiple_random')
 		{
 			$list = modRquotesHelper::getMultyRandomRquote($category, $num_of_random, $params);
 		}
-		elseif ($rotate == 'sequential')
+        elseif ($rotate == 'sequential')
 		{
 			$list = modRquotesHelper::getSequentialRquote($category, $params);
 		}
-		elseif ($rotate == 'daily')
+        elseif ($rotate == 'daily')
 		{
 			$list = modRquotesHelper::getDailyRquote($category, $params);
 		}
-		elseif ($rotate == 'weekly')
+        elseif ($rotate == 'weekly')
 		{
 			$list = modRquotesHelper::getWeeklyRquote($category, $params);
 		}
-		elseif ($rotate == 'monthly')
+        elseif ($rotate == 'monthly')
 		{
 			$list = modRquotesHelper::getMonthlyRquote($category, $params);
 		}
-		elseif ($rotate == 'yearly')
+        elseif ($rotate == 'yearly')
 		{
 			$list = modRquotesHelper::getYearlyRquote($category, $params);
 		}
 		// Start
-		elseif ($rotate == 'today')
+        elseif ($rotate == 'today')
 		{
 			$list = modRquotesHelper::getTodayRquote($category, $params);
 		}
 
 		// End
 		?>
-		<div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
-	<?PHP
-	include ModuleHelper::getLayoutPath($module->module, $style, 'default');
-	?>
-	</div>
-	<?PHP
-	break;
+        <div class="<?php echo $params->get('moduleclass_sfx'); ?>"
+             id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+			<?PHP
+			include ModuleHelper::getLayoutPath($module->module, $style, 'default');
+			?>
+        </div>
+		<?PHP
+		break;
 
 	case 'text':
 		if (!$randomtext)
@@ -111,7 +113,7 @@ switch ($source)
 		{
 			$list = modRquotesHelper::getTextFile2($params, $filename, $module);
 		}
-	break;
+		break;
 	default:
 		echo Text::_('MOD_SPORTSMANAGEMENT_RQUOTES_SAVE_DISPLAY_INFORMATION');
 }

@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\Registry\Registry;
@@ -29,28 +30,29 @@ use Joomla\CMS\Filter\OutputFilter;
  */
 class sportsmanagementModelsmquote extends JSMModelAdmin
 {
-	static $db_num_rows  = 0;
+	static $db_num_rows = 0;
 
 	/**
 	 * Method to save the form data.
 	 *
-	 * @param  array    The form data.
+	 * @param   array    The form data.
+	 *
 	 * @return boolean    True on success.
 	 * @since  1.6
 	 */
 	public function save($data)
 	{
-		  $app = Factory::getApplication();
-		  $date = Factory::getDate();
-		  $user = Factory::getUser();
-		  $db = Factory::getDbo();
+		$app   = Factory::getApplication();
+		$date  = Factory::getDate();
+		$user  = Factory::getUser();
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
-		  $post = Factory::getApplication()->input->post->getArray(array());
+		$post = Factory::getApplication()->input->post->getArray(array());
 
-		  // Set the values
-		  $data['modified'] = $date->toSql();
-		  $data['modified_by'] = $user->get('id');
+		// Set the values
+		$data['modified']    = $date->toSql();
+		$data['modified_by'] = $user->get('id');
 
 		if (isset($post['extended']) && is_array($post['extended']))
 		{
@@ -69,16 +71,16 @@ class sportsmanagementModelsmquote extends JSMModelAdmin
 
 			if ($data['name'] == $orig_table->name)
 			{
-				$data['name'] .= ' ' . Text::_('JGLOBAL_COPY');
+				$data['name']  .= ' ' . Text::_('JGLOBAL_COPY');
 				$data['alias'] = OutputFilter::stringURLSafe($data['name']);
 			}
 		}
 
-			// Zuerst sichern, damit wir bei einer neuanlage die id haben
+		// Zuerst sichern, damit wir bei einer neuanlage die id haben
 		if (parent::save($data))
 		{
-			$id = (int) $this->getState($this->getName() . '.id');
-			$isNew = $this->getState($this->getName() . '.new');
+			$id         = (int) $this->getState($this->getName() . '.id');
+			$isNew      = $this->getState($this->getName() . '.new');
 			$data['id'] = $id;
 
 			if ($isNew)
@@ -87,14 +89,14 @@ class sportsmanagementModelsmquote extends JSMModelAdmin
 				$app->enqueueMessage(Text::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id), '');
 			}
 
-					 // Fields to update.
-					$fields = array(
-					$db->quoteName('picture') . ' = ' . $db->quote($data['picture'])
+			// Fields to update.
+			$fields = array(
+				$db->quoteName('picture') . ' = ' . $db->quote($data['picture'])
 			);
 
 			// Conditions for which records should be updated.
 			$conditions = array(
-			$db->quoteName('author') . ' LIKE ' . $db->quote($data['author'])
+				$db->quoteName('author') . ' LIKE ' . $db->quote($data['author'])
 			);
 
 			$query->update($db->quoteName('#__sportsmanagement_rquote'))->set($fields)->where($conditions);
@@ -103,7 +105,7 @@ class sportsmanagementModelsmquote extends JSMModelAdmin
 			sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 		}
 
-			  return true;
+		return true;
 	}
 
 }

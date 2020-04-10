@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Component\ComponentHelper;
 
 /**
@@ -35,8 +36,8 @@ class sportsmanagementViewJLXMLImport extends sportsmanagementView
 	public function init()
 	{
 
-		$config = ComponentHelper::getParams('com_media');
-		$this->config    = $config;
+		$config       = ComponentHelper::getParams('com_media');
+		$this->config = $config;
 
 	}
 }

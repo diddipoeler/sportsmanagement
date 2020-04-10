@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
@@ -45,24 +46,15 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 	static $historyhtml = '';
 
 	static $historyobj = array();
-
-	var $catssorted = array();
-
 	static $jgcat_rows = array();
-
 	static $jgcat_rows_sorted = Array();
-
 	static $treedepth = 0;
-
 	static $treedepthold = 0;
-
 	static $cfg_which_database = 0;
-
 	static $tree_fusion = Array();
-
 	static $arrPCat = Array();
-
 	static $historyhtmltree = '';
+	var $catssorted = array();
 
 	/**
 	 * sportsmanagementModelClubInfo::__construct()
@@ -78,15 +70,15 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 		$jinput = $app->input;
 
 		self::$projectid = $jinput->getInt("p", 0);
-		self::$clubid = $jinput->getInt("cid", 0);
+		self::$clubid    = $jinput->getInt("cid", 0);
 
-		sportsmanagementModelProject::$projectid = self::$projectid;
-		self::$cfg_which_database = $jinput->getInt('cfg_which_database', 0);
+		sportsmanagementModelProject::$projectid          = self::$projectid;
+		self::$cfg_which_database                         = $jinput->getInt('cfg_which_database', 0);
 		sportsmanagementModelProject::$cfg_which_database = self::$cfg_which_database;
 
 		if (empty(self::$projectid))
 		{
-			 Log::add(Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO'), Log::ERROR, 'jsmerror');
+			Log::add(Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO'), Log::ERROR, 'jsmerror');
 		}
 
 		parent::__construct();
@@ -95,16 +87,17 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 	/**
 	 * sportsmanagementModelClubInfo::getFirstClubId()
 	 *
-	 * @param   integer $club_id
-	 * @param   integer $new_club_id
+	 * @param   integer  $club_id
+	 * @param   integer  $new_club_id
+	 *
 	 * @return
 	 */
-	static function getFirstClubId($club_id=0,$new_club_id=0)
+	static function getFirstClubId($club_id = 0, $new_club_id = 0)
 	{
 		$app = Factory::getApplication();
 
 		// Get a db connection.
-		$db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
+		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
 
 		if ($new_club_id > 0)
@@ -134,7 +127,8 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 	/**
 	 * sportsmanagementModelClubInfo::generateTree()
 	 *
-	 * @param   mixed $parent
+	 * @param   mixed  $parent
+	 *
 	 * @return void
 	 */
 	static function generateTree($parent, $tree = 0)
@@ -169,13 +163,14 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 	/**
 	 * sportsmanagementModelClubInfo::fbTreeRecurse()
 	 *
-	 * @param   mixed   $id
-	 * @param   mixed   $indent
-	 * @param   mixed   $list
-	 * @param   mixed   $children
-	 * @param   integer $maxlevel
-	 * @param   integer $level
-	 * @param   integer $type
+	 * @param   mixed    $id
+	 * @param   mixed    $indent
+	 * @param   mixed    $list
+	 * @param   mixed    $children
+	 * @param   integer  $maxlevel
+	 * @param   integer  $level
+	 * @param   integer  $type
+	 *
 	 * @return
 	 */
 	static function fbTreeRecurse($id, $indent, $list, &$children, $maxlevel = 9999, $level = 0, $type = 1)
@@ -190,12 +185,12 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 
 				if ($type)
 				{
-					$pre = '&nbsp;';
+					$pre    = '&nbsp;';
 					$spacer = '...';
 				}
 				else
 				{
-					$pre = '- ';
+					$pre    = '- ';
 					$spacer = '&nbsp;&nbsp;';
 				}
 
@@ -208,11 +203,11 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 					$txt = $pre . $v->name;
 				}
 
-				$pt = $v->new_club_id;
-				$list[$id] = $v;
+				$pt                  = $v->new_club_id;
+				$list[$id]           = $v;
 				$list[$id]->treename = $indent . $txt;
 				$list[$id]->children = !empty($children[$id]) ? count($children[$id]) : 0;
-				$list[$id]->section = ($v->new_club_id == 0);
+				$list[$id]->section  = ($v->new_club_id == 0);
 
 				$list = self::fbTreeRecurse($id, $indent . $spacer, $list, $children, $maxlevel, $level + 1, $type);
 			}
@@ -222,37 +217,11 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 	}
 
 	/**
-	 * sportsmanagementModelClubInfo::limitText()
-	 *
-	 * @param   mixed $text
-	 * @param   mixed $wordcount
-	 * @return
-	 */
-	function limitText($text, $wordcount)
-	{
-		if (!$wordcount)
-		{
-			return $text;
-		}
-
-		$texts = explode(' ', $text);
-		$count = count($texts);
-
-		if ($count > $wordcount)
-		{
-			$texts = array_slice($texts, 0, $wordcount);
-			$text = implode(' ', $texts);
-			$text .= '...';
-		}
-
-		return $text;
-	}
-
-	/**
 	 * sportsmanagementModelClubInfo::getRssFeeds()
 	 *
-	 * @param   mixed $rssfeedlink
-	 * @param   mixed $rssitems
+	 * @param   mixed  $rssfeedlink
+	 * @param   mixed  $rssitems
+	 *
 	 * @return
 	 */
 	public static function getRssFeeds($rssfeedlink, $rssitems)
@@ -261,7 +230,7 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 		$rssIds = explode(',', $rssfeedlink);
 
 		//  get RSS parsed object
-		$options = array();
+		$options               = array();
 		$options['cache_time'] = null;
 
 		$lists = array();
@@ -323,12 +292,12 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 				if ($rssDoc != false)
 				{
 					// Channel header and link
-					$feed->title = $rssDoc->get_title();
-					$feed->link = $rssDoc->get_link();
+					$feed->title       = $rssDoc->get_title();
+					$feed->link        = $rssDoc->get_link();
 					$feed->description = $rssDoc->get_description();
 
 					// Channel image if exists
-					$feed->image->url = $rssDoc->get_image_url();
+					$feed->image->url   = $rssDoc->get_image_url();
 					$feed->image->title = $rssDoc->get_image_title();
 
 					// Items
@@ -336,7 +305,7 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 
 					// Feed elements
 					$feed->items = array_slice($items, 0, $rssitems);
-					$lists[] = $feed;
+					$lists[]     = $feed;
 				}
 
 				return $lists;
@@ -348,7 +317,8 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 	/**
 	 * sportsmanagementModelClubInfo::getClubAssociation()
 	 *
-	 * @param   mixed $associations
+	 * @param   mixed  $associations
+	 *
 	 * @return
 	 */
 	public static function getClubAssociation($associations)
@@ -361,10 +331,10 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 		$option = $jinput->getCmd('option');
 
 		// Get a db connection.
-		$db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
+		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
 
-			  $query->select('asoc.*');
+		$query->select('asoc.*');
 
 		// From
 		$query->from('#__sportsmanagement_associations AS asoc');
@@ -382,7 +352,8 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 	/**
 	 * sportsmanagementModelClubInfo::getFirstClub()
 	 *
-	 * @param   integer $club_id
+	 * @param   integer  $club_id
+	 *
 	 * @return
 	 */
 	static function getFirstClub($club_id = 0)
@@ -395,68 +366,39 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 		$option = $jinput->getCmd('option');
 
 		// Get a db connection.
-		$db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
+		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
 
-					  $query->select('c.*');
-		 $query->select('CONCAT_WS( \':\', c.id, c.alias ) AS club_slug');
-		 $query->select('CONCAT_WS(\':\',p.id,p.alias) as pro_slug');
+		$query->select('c.*');
+		$query->select('CONCAT_WS( \':\', c.id, c.alias ) AS club_slug');
+		$query->select('CONCAT_WS(\':\',p.id,p.alias) as pro_slug');
 
-				// From
-				$query->from('#__sportsmanagement_club AS c');
-		 $query->join('INNER', '#__sportsmanagement_team AS t on t.club_id = c.id');
-			$query->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
-			$query->join('INNER', ' #__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');
-			$query->join('INNER', ' #__sportsmanagement_project AS p ON p.id = pt.project_id ');
+		// From
+		$query->from('#__sportsmanagement_club AS c');
+		$query->join('INNER', '#__sportsmanagement_team AS t on t.club_id = c.id');
+		$query->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
+		$query->join('INNER', ' #__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');
+		$query->join('INNER', ' #__sportsmanagement_project AS p ON p.id = pt.project_id ');
 
-				// Where
-				$query->where('c.id = ' . $db->Quote($club_id));
+		// Where
+		$query->where('c.id = ' . $db->Quote($club_id));
 		$query->group('c.name');
-				$db->setQuery($query);
+		$db->setQuery($query);
 
-		 $firstclub = $db->loadObject();
-		 $firstclub->clublink = sportsmanagementHelperRoute::getClubInfoRoute($firstclub->pro_slug, $firstclub->club_slug, null, self::$cfg_which_database);
-		 $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		$firstclub           = $db->loadObject();
+		$firstclub->clublink = sportsmanagementHelperRoute::getClubInfoRoute($firstclub->pro_slug, $firstclub->club_slug, null, self::$cfg_which_database);
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return $firstclub;
 
 	}
 
 	/**
-	 * sportsmanagementModelClubInfo::updateHits()
+	 * sportsmanagementModelClubInfo::getPlaygrounds()
 	 *
-	 * @param   integer $clubid
-	 * @param   integer $inserthits
-	 * @return void
-	 */
-	public static function updateHits($clubid = 0, $inserthits = 0)
-	{
-		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
-		$db = Factory::getDbo();
-		$query = $db->getQuery(true);
-
-		if ($inserthits)
-		{
-			$query->update($db->quoteName('#__sportsmanagement_club'))->set('hits = hits + 1')->where('id = ' . $clubid);
-
-			$db->setQuery($query);
-
-			$result = $db->execute();
-			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-		}
-
-	}
-
-
-	/**
-	 * sportsmanagementModelClubInfo::getClub()
-	 *
-	 * @param   integer $inserthits
-	 * @param   integer $club_id
 	 * @return
 	 */
-	static function getClub($inserthits = 0,$club_id = 0)
+	public static function getPlaygrounds()
 	{
 		// Reference global application object
 		$app = Factory::getApplication();
@@ -466,149 +408,43 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 		$option = $jinput->getCmd('option');
 
 		// Get a db connection.
-		$db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
+		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
 
-		self::$projectid = $jinput->getInt("p", 0);
+		$playgrounds = array();
 
-		if (empty(self::$projectid))
+		$stadiums = self::getStadiums();
+
+		if (!isset($stadiums))
 		{
-				 Log::add(Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO'), Log::ERROR, 'jsmerror');
+			return null;
 		}
 
-		if ($club_id)
+		foreach ($stadiums AS $stadium)
 		{
-			self::$clubid = $club_id;
-		}
-		else
-		{
-			  self::$clubid = $jinput->getInt("cid", 0);
-		}
+			$query->clear();
 
-			  self::updateHits(self::$clubid, $inserthits);
+			$query->select('id AS value, name AS text, pl.*');
+			$query->select('CONCAT_WS( \':\', pl.id, pl.alias ) AS slug');
 
-		if (is_null(self::$club))
-		{
-			if (self::$clubid > 0)
+			// From
+			$query->from('#__sportsmanagement_playground AS pl');
+
+			// Where
+			$query->where('id = ' . $stadium);
+
+			$db->setQuery($query, 0, 1);
+			$result = $db->loadObject();
+
+			if ($result)
 			{
-						  $query->select('c.*');
-
-				// From
-				$query->from('#__sportsmanagement_club AS c');
-
-				// Where
-				$query->where('c.id = ' . $db->Quote(self::$clubid));
-
-				$db->setQuery($query);
-				self::$club = $db->loadObject();
-			}
-		}
-
-			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
-			return self::$club;
-	}
-
-	/**
-	 * sportsmanagementModelClubInfo::getTeamsByClubId()
-	 *
-	 * @return
-	 */
-	public static function getTeamsByClubId()
-	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		// Get a db connection.
-		$db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
-		$query = $db->getQuery(true);
-		$subquery1 = $db->getQuery(true);
-		$subquery2 = $db->getQuery(true);
-		$start_time = microtime(true);
-
-		$teams = array(0);
-
-		if (self::$clubid && self::$projectid)
-		{
-			$query->select('t.id,t.name as team_name,t.short_name as team_shortcut,t.info as team_description');
-			$query->select('CONCAT_WS( \':\', t.id, t.alias ) AS team_slug');
-			$query->select(
-				'COALESCE((SELECT MAX(pt.project_id)
-				FROM #__sportsmanagement_project_team as pt
-				RIGHT JOIN #__sportsmanagement_project as p on pt.project_id = p.id
-                RIGHT JOIN #__sportsmanagement_season_team_id AS st on pt.team_id = st.id
-				WHERE st.team_id = t.id), 0) as pid'
-			);
-					$query->from('#__sportsmanagement_team as t ');
-					$query->where('t.club_id = ' . (int) self::$clubid);
-
-			try
-			{
-				$db->setQuery($query);
-				$teams = $db->loadObjectList();
-
-				foreach ($teams AS $team)
-				{
-					$subquery1->clear();
-					$subquery1->select('pt.id as ptid,pt.picture as project_team_picture,pt.trikot_home,pt.trikot_away');
-					$subquery1->from('#__sportsmanagement_project_team AS pt');
-					$subquery1->join('LEFT', '#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id ');
-					$subquery1->where('pt.project_id = ' . $team->pid);
-					$subquery1->where('st.team_id = ' . $team->id);
-					$db->setQuery($subquery1);
-					$result = $db->loadObject();
-					$team->ptid = $result->ptid;
-					$team->project_team_picture = $result->project_team_picture;
-					$team->trikot_home = $result->trikot_home;
-					$team->trikot_away = $result->trikot_away;
-					$subquery1->clear();
-					$subquery1->select('CONCAT_WS( \':\', p.id , p.alias )');
-					$subquery1->from('#__sportsmanagement_project AS p');
-					$subquery1->where('p.id = ' . $team->pid);
-
-					try
-					{
-									 $db->setQuery($subquery1);
-									 $team->pid = $db->loadResult();
-					}
-					catch (Exception $e)
-					{
-								  $msg = $e->getMessage(); // Returns "Normally you would have other code...
-								  $code = $e->getCode(); // Returns
-								  Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
-								  $team->pid = 0;
-					}
-				}
-			}
-			catch (Exception $e)
-			{
-						$msg = $e->getMessage(); // Returns "Normally you would have other code...
-						$code = $e->getCode(); // Returns
-						Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
-
-				return false;
+				$playgrounds[] = $result;
 			}
 		}
 
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-		$diff = microtime(true) - $start_time;
-		$logarray['method'] = __METHOD__;
-		$logarray['line'] = __LINE__;
-		$logarray['zeit'] = $diff;
 
-		if (ComponentHelper::getParams($option)->get('show_query_debug_info'))
-		{
-				/**
- * Add the message.
- */
-				Log::add(json_encode($logarray), Log::INFO, 'dbperformance');
-		}
-
-		return $teams;
+		return $playgrounds;
 	}
 
 	/**
@@ -626,7 +462,7 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 		$option = $jinput->getCmd('option');
 
 		// Get a db connection.
-		$db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
+		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
 
 		$stadiums = array();
@@ -651,7 +487,7 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 			{
 				$query->clear();
 
-							  $query->select('distinct(pt.standard_playground)');
+				$query->select('distinct(pt.standard_playground)');
 
 				// From
 				$query->from('#__sportsmanagement_project_team AS pt');
@@ -684,11 +520,14 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 	}
 
 	/**
-	 * sportsmanagementModelClubInfo::getPlaygrounds()
+	 * sportsmanagementModelClubInfo::getClub()
+	 *
+	 * @param   integer  $inserthits
+	 * @param   integer  $club_id
 	 *
 	 * @return
 	 */
-	public static function getPlaygrounds()
+	static function getClub($inserthits = 0, $club_id = 0)
 	{
 		// Reference global application object
 		$app = Factory::getApplication();
@@ -698,49 +537,183 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 		$option = $jinput->getCmd('option');
 
 		// Get a db connection.
-		$db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
+		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
 
-		$playgrounds = array();
+		self::$projectid = $jinput->getInt("p", 0);
 
-		$stadiums = self::getStadiums();
-
-		if (!isset($stadiums))
+		if (empty(self::$projectid))
 		{
-			return null;
+			Log::add(Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO'), Log::ERROR, 'jsmerror');
 		}
 
-		foreach ($stadiums AS $stadium)
+		if ($club_id)
 		{
-			$query->clear();
+			self::$clubid = $club_id;
+		}
+		else
+		{
+			self::$clubid = $jinput->getInt("cid", 0);
+		}
 
-					  $query->select('id AS value, name AS text, pl.*');
-			$query->select('CONCAT_WS( \':\', pl.id, pl.alias ) AS slug');
+		self::updateHits(self::$clubid, $inserthits);
 
-			// From
-			$query->from('#__sportsmanagement_playground AS pl');
-
-			// Where
-			$query->where('id = ' . $stadium);
-
-			$db->setQuery($query, 0, 1);
-			$result = $db->loadObject();
-
-			if ($result)
+		if (is_null(self::$club))
+		{
+			if (self::$clubid > 0)
 			{
-					  $playgrounds[] = $result;
+				$query->select('c.*');
+
+				// From
+				$query->from('#__sportsmanagement_club AS c');
+
+				// Where
+				$query->where('c.id = ' . $db->Quote(self::$clubid));
+
+				$db->setQuery($query);
+				self::$club = $db->loadObject();
 			}
 		}
 
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
-		return $playgrounds;
+		return self::$club;
+	}
+
+	/**
+	 * sportsmanagementModelClubInfo::updateHits()
+	 *
+	 * @param   integer  $clubid
+	 * @param   integer  $inserthits
+	 *
+	 * @return void
+	 */
+	public static function updateHits($clubid = 0, $inserthits = 0)
+	{
+		$option = Factory::getApplication()->input->getCmd('option');
+		$app    = Factory::getApplication();
+		$db     = Factory::getDbo();
+		$query  = $db->getQuery(true);
+
+		if ($inserthits)
+		{
+			$query->update($db->quoteName('#__sportsmanagement_club'))->set('hits = hits + 1')->where('id = ' . $clubid);
+
+			$db->setQuery($query);
+
+			$result = $db->execute();
+			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		}
+
+	}
+
+	/**
+	 * sportsmanagementModelClubInfo::getTeamsByClubId()
+	 *
+	 * @return
+	 */
+	public static function getTeamsByClubId()
+	{
+		// Reference global application object
+		$app = Factory::getApplication();
+
+		// JInput object
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+
+		// Get a db connection.
+		$db         = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
+		$query      = $db->getQuery(true);
+		$subquery1  = $db->getQuery(true);
+		$subquery2  = $db->getQuery(true);
+		$start_time = microtime(true);
+
+		$teams = array(0);
+
+		if (self::$clubid && self::$projectid)
+		{
+			$query->select('t.id,t.name as team_name,t.short_name as team_shortcut,t.info as team_description');
+			$query->select('CONCAT_WS( \':\', t.id, t.alias ) AS team_slug');
+			$query->select(
+				'COALESCE((SELECT MAX(pt.project_id)
+				FROM #__sportsmanagement_project_team as pt
+				RIGHT JOIN #__sportsmanagement_project as p on pt.project_id = p.id
+                RIGHT JOIN #__sportsmanagement_season_team_id AS st on pt.team_id = st.id
+				WHERE st.team_id = t.id), 0) as pid'
+			);
+			$query->from('#__sportsmanagement_team as t ');
+			$query->where('t.club_id = ' . (int) self::$clubid);
+
+			try
+			{
+				$db->setQuery($query);
+				$teams = $db->loadObjectList();
+
+				foreach ($teams AS $team)
+				{
+					$subquery1->clear();
+					$subquery1->select('pt.id as ptid,pt.picture as project_team_picture,pt.trikot_home,pt.trikot_away');
+					$subquery1->from('#__sportsmanagement_project_team AS pt');
+					$subquery1->join('LEFT', '#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id ');
+					$subquery1->where('pt.project_id = ' . $team->pid);
+					$subquery1->where('st.team_id = ' . $team->id);
+					$db->setQuery($subquery1);
+					$result                     = $db->loadObject();
+					$team->ptid                 = $result->ptid;
+					$team->project_team_picture = $result->project_team_picture;
+					$team->trikot_home          = $result->trikot_home;
+					$team->trikot_away          = $result->trikot_away;
+					$subquery1->clear();
+					$subquery1->select('CONCAT_WS( \':\', p.id , p.alias )');
+					$subquery1->from('#__sportsmanagement_project AS p');
+					$subquery1->where('p.id = ' . $team->pid);
+
+					try
+					{
+						$db->setQuery($subquery1);
+						$team->pid = $db->loadResult();
+					}
+					catch (Exception $e)
+					{
+						$msg  = $e->getMessage(); // Returns "Normally you would have other code...
+						$code = $e->getCode(); // Returns
+						Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+						$team->pid = 0;
+					}
+				}
+			}
+			catch (Exception $e)
+			{
+				$msg  = $e->getMessage(); // Returns "Normally you would have other code...
+				$code = $e->getCode(); // Returns
+				Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+
+				return false;
+			}
+		}
+
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		$diff               = microtime(true) - $start_time;
+		$logarray['method'] = __METHOD__;
+		$logarray['line']   = __LINE__;
+		$logarray['zeit']   = $diff;
+
+		if (ComponentHelper::getParams($option)->get('show_query_debug_info'))
+		{
+			/**
+			 * Add the message.
+			 */
+			Log::add(json_encode($logarray), Log::INFO, 'dbperformance');
+		}
+
+		return $teams;
 	}
 
 	/**
 	 * sportsmanagementModelClubInfo::getClubHistory()
 	 *
-	 * @param   mixed $clubid
+	 * @param   mixed  $clubid
+	 *
 	 * @return
 	 */
 	public static function getClubHistory($clubid)
@@ -753,7 +726,7 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 		$option = $jinput->getCmd('option');
 
 		// Get a db connection.
-		$db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
+		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
 		$query->select('c.id, c.name, c.new_club_id');
 		$query->select('CONCAT_WS( \':\', id, alias ) AS slug');
@@ -768,7 +741,7 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 		}
 		catch (Exception $e)
 		{
-			$msg = $e->getMessage(); // Returns "Normally you would have other code...
+			$msg  = $e->getMessage(); // Returns "Normally you would have other code...
 			$code = $e->getCode(); // Returns
 			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
@@ -778,10 +751,10 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 
 		foreach ($result as $row)
 		{
-			$temp = new stdClass;
-			$temp->id = $row->id;
-			$temp->name = $row->name;
-			$temp->slug = $row->slug;
+			$temp               = new stdClass;
+			$temp->id           = $row->id;
+			$temp->name         = $row->name;
+			$temp->slug         = $row->slug;
 			self::$historyobj[] = $temp;
 
 			if ($row->new_club_id)
@@ -800,7 +773,8 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 	/**
 	 * sportsmanagementModelClubInfo::getClubHistoryHTML()
 	 *
-	 * @param   mixed $clubid
+	 * @param   mixed  $clubid
+	 *
 	 * @return
 	 */
 	public static function getClubHistoryHTML($clubid)
@@ -813,8 +787,8 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 		$option = $jinput->getCmd('option');
 
 		// Get a db connection.
-		$db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
-		$query = $db->getQuery(true);
+		$db       = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
+		$query    = $db->getQuery(true);
 		$subquery = $db->getQuery(true);
 		$query->select('c.id, c.name, c.new_club_id,c.logo_big,c.founded_year');
 		$query->select('CONCAT_WS( \':\', id, alias ) AS slug');
@@ -829,10 +803,10 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 		}
 		catch (Exception $e)
 		{
-					$msg = $e->getMessage(); // Returns "Normally you would have other code...
-					$code = $e->getCode(); // Returns
-					$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-					Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+			$msg  = $e->getMessage(); // Returns "Normally you would have other code...
+			$code = $e->getCode(); // Returns
+			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
 
 			return false;
 		}
@@ -849,10 +823,10 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 			$subquery->where('t.club_id = ' . $row->id);
 			$subquery->where('p.published = 1');
 			$db->setQuery($subquery);
-			$result2 = $db->loadObject();
+			$result2  = $db->loadObject();
 			$row->pid = $result2->pid;
 
-				  $pt = $row->new_club_id;
+			$pt   = $row->new_club_id;
 			$list = isset(self::$tree_fusion[$pt]) ? self::$tree_fusion[$pt] : array();
 			array_push($list, $row);
 			self::$tree_fusion[$pt] = $list;
@@ -865,20 +839,20 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 			// Store parent and its children into the $arrPCat Array
 			if ($row->id == self::$clubid)
 			{
-					$color = 'lawngreen';
+				$color = 'lawngreen';
 			}
 			else
 			{
-					$color = '';
+				$color = '';
 			}
 
-			self::$arrPCat[$pt][] = Array('id' => $row->id,
-			'name' => $row->name . ' (' . $row->founded_year . ')',
-			'pid' => $row->pid,
-			'slug' => $row->slug,
-			'color' => $color,
-			'logo_big' => $row->logo_big,
-			'clublink' => sportsmanagementHelperRoute::getClubInfoRoute($row->pid, $row->slug)
+			self::$arrPCat[$pt][] = Array('id'       => $row->id,
+			                              'name'     => $row->name . ' (' . $row->founded_year . ')',
+			                              'pid'      => $row->pid,
+			                              'slug'     => $row->slug,
+			                              'color'    => $color,
+			                              'logo_big' => $row->logo_big,
+			                              'clublink' => sportsmanagementHelperRoute::getClubInfoRoute($row->pid, $row->slug)
 			);
 
 			if (self::$treedepthold === self::$treedepth)
@@ -887,16 +861,16 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 			}
 			else
 			{
-					$temp = '<ul><li>';
+				$temp = '<ul><li>';
 			}
 
-			$link = sportsmanagementHelperRoute::getClubInfoRoute($row->pid, $row->slug, null, self::$cfg_which_database);
+			$link       = sportsmanagementHelperRoute::getClubInfoRoute($row->pid, $row->slug, null, self::$cfg_which_database);
 			$imageTitle = Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_HISTORY_FROM');
 
-			$temp .= HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/club_from.png', $imageTitle, 'title= "' . $imageTitle . '"');
-			$temp .= "&nbsp;";
-			$temp .= HTMLHelper::link($link, $row->name);
-			$temp .= '</li>';
+			$temp              .= HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/club_from.png', $imageTitle, 'title= "' . $imageTitle . '"');
+			$temp              .= "&nbsp;";
+			$temp              .= HTMLHelper::link($link, $row->name);
+			$temp              .= '</li>';
 			self::$historyhtml .= $temp;
 
 			if ($row->new_club_id)
@@ -917,14 +891,15 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 			self::$treedepthold = self::$treedepth;
 		}
 
-			return self::$historyhtml;
+		return self::$historyhtml;
 	}
 
 	/**
 	 * sportsmanagementModelClubInfo::getClubHistoryTree()
 	 *
-	 * @param   mixed $clubid
-	 * @param   mixed $new_club_id
+	 * @param   mixed  $clubid
+	 * @param   mixed  $new_club_id
+	 *
 	 * @return
 	 */
 	public static function getClubHistoryTree($clubid, $new_club_id)
@@ -937,8 +912,8 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 		$option = $jinput->getCmd('option');
 
 		// Get a db connection.
-		$db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
-		$query = $db->getQuery(true);
+		$db       = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
+		$query    = $db->getQuery(true);
 		$subquery = $db->getQuery(true);
 
 		if (self::$new_club_id != 0)
@@ -972,7 +947,7 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 		}
 		catch (Exception $e)
 		{
-			$msg = $e->getMessage(); // Returns "Normally you would have other code...
+			$msg  = $e->getMessage(); // Returns "Normally you would have other code...
 			$code = $e->getCode(); // Returns
 			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
@@ -1007,9 +982,10 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 	/**
 	 * sportsmanagementModelClubInfo::getSortClubHistoryTree()
 	 *
-	 * @param   mixed $clubtree
-	 * @param   mixed $root_catid
-	 * @param   mixed $cat_name
+	 * @param   mixed  $clubtree
+	 * @param   mixed  $root_catid
+	 * @param   mixed  $cat_name
+	 *
 	 * @return
 	 */
 	public static function getSortClubHistoryTree($clubtree, $root_catid, $cat_name)
@@ -1060,11 +1036,40 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 	}
 
 	/**
+	 * sportsmanagementModelClubInfo::sortCategoryList()
+	 *
+	 * @param   mixed  $cats
+	 * @param   mixed  $catssorted
+	 *
+	 * @return
+	 */
+	public static function sortCategoryList(&$cats, &$catssorted)
+	{
+		// First create a two dimensional array containing the child category objects
+		// for each parent category id
+		$children = array();
+
+		foreach ($cats as $cat)
+		{
+			$pcid            = $cat->new_club_id;
+			$list            = isset($children[$pcid]) ? $children[$pcid] : array();
+			$list[]          = $cat;
+			$children[$pcid] = $list;
+		}
+
+		// Now resort the given $cats array with the help of the $children array
+		$sortresult = self::sortCategoryListRecurse(0, $children, $catssorted);
+
+		return $children;
+	}
+
+	/**
 	 * sportsmanagementModelClubInfo::sortCategoryListRecurse()
 	 *
-	 * @param   mixed $catid
-	 * @param   mixed $children
-	 * @param   mixed $catssorted
+	 * @param   mixed  $catid
+	 * @param   mixed  $children
+	 * @param   mixed  $catssorted
+	 *
 	 * @return void
 	 */
 	public static function sortCategoryListRecurse($catid, &$children, &$catssorted)
@@ -1077,33 +1082,6 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 				$this->sortCategoryListRecurse($cat->cid, $children, $catssorted);
 			}
 		}
-	}
-
-	/**
-	 * sportsmanagementModelClubInfo::sortCategoryList()
-	 *
-	 * @param   mixed $cats
-	 * @param   mixed $catssorted
-	 * @return
-	 */
-	public static function sortCategoryList(&$cats, &$catssorted)
-	{
-		// First create a two dimensional array containing the child category objects
-		// for each parent category id
-		$children = array();
-
-		foreach ($cats as $cat)
-		{
-			$pcid = $cat->new_club_id;
-			$list = isset($children[$pcid]) ? $children[$pcid] : array();
-			$list[] = $cat;
-			$children[$pcid] = $list;
-		}
-
-		// Now resort the given $cats array with the help of the $children array
-		$sortresult = self::sortCategoryListRecurse(0, $children, $catssorted);
-
-		return $children;
 	}
 
 	/**
@@ -1155,16 +1133,45 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 	}
 
 	/**
+	 * sportsmanagementModelClubInfo::limitText()
+	 *
+	 * @param   mixed  $text
+	 * @param   mixed  $wordcount
+	 *
+	 * @return
+	 */
+	function limitText($text, $wordcount)
+	{
+		if (!$wordcount)
+		{
+			return $text;
+		}
+
+		$texts = explode(' ', $text);
+		$count = count($texts);
+
+		if ($count > $wordcount)
+		{
+			$texts = array_slice($texts, 0, $wordcount);
+			$text  = implode(' ', $texts);
+			$text  .= '...';
+		}
+
+		return $text;
+	}
+
+	/**
 	 * sportsmanagementModelClubInfo::hasEditPermission()
 	 *
-	 * @param   mixed $task
+	 * @param   mixed  $task
+	 *
 	 * @return
 	 */
 	function hasEditPermission($task = null)
 	{
 		// Check for ACL permsission and project admin/editor
 		$allowed = parent::hasEditPermission($task);
-		$user = Factory::getUser();
+		$user    = Factory::getUser();
 
 		if ($user->id > 0 && !$allowed)
 		{

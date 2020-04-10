@@ -40,6 +40,7 @@
  * Note : All ini files need to be saved as UTF-8 without BOM
  */
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 
@@ -53,40 +54,40 @@ $display_add_box = 0;
 if ($display_add_box)
 {
 	?>
-		<form name='turtushout-form' id='turtushout-form' style='display:none;'>
-	<?php
-	if ($userId)
-	{
-		if ($display_welcome)
+    <form name='turtushout-form' id='turtushout-form' style='display:none;'>
+		<?php
+		if ($userId)
 		{
-	?>
-			Hi, you logged in as <?php echo $name; ?><br/>
-			<?php
+			if ($display_welcome)
+			{
+				?>
+                Hi, you logged in as <?php echo $name; ?><br/>
+				<?php
+			}
 		}
-	}
-	else
-	{
-		if ($display_username)
+		else
 		{
-	?>
-			<label><?php echo Text::_('Name') ?></label>
-			<input class="inputbox" type="text" name="created_by_alias" size="<?php echo $size;?>"><br/>
-			<?php
+			if ($display_username)
+			{
+				?>
+                <label><?php echo Text::_('Name') ?></label>
+                <input class="inputbox" type="text" name="created_by_alias" size="<?php echo $size; ?>"><br/>
+				<?php
+			}
 		}
-	}
-	?>
+		?>
 
-	<?php if ($display_title)
-	{
-	?>
-				<label><?php echo Text::_('Title') ?></label>
-				<input class="inputbox" type="text" name="title" size="<?php echo $size;?>"><br/>
-	<?php } ?>
-				<label><?php echo Text::_('Text') ?></label>
-				<textarea class="inputbox" name="text" rows="<?php echo $rows;?>" cols="<?php echo $cols; ?>"></textarea>
-			<input type="submit" name="Submit" class="button" value="<?php echo Text::_('Submit') ?>" />
+		<?php if ($display_title)
+		{
+			?>
+            <label><?php echo Text::_('Title') ?></label>
+            <input class="inputbox" type="text" name="title" size="<?php echo $size; ?>"><br/>
+		<?php } ?>
+        <label><?php echo Text::_('Text') ?></label>
+        <textarea class="inputbox" name="text" rows="<?php echo $rows; ?>" cols="<?php echo $cols; ?>"></textarea>
+        <input type="submit" name="Submit" class="button" value="<?php echo Text::_('Submit') ?>"/>
 
-		</form>
+    </form>
 
 	<?php
 }
@@ -98,6 +99,6 @@ if ($display_add_box)
 </div>
 
 <script>
-	var turtushout_update_timeout = <?php echo $update_timeout * 1000; ?>;
-	var turtushout_server_url = '<?php echo Uri::root(); ?>';
+    var turtushout_update_timeout = <?php echo $update_timeout * 1000; ?>;
+    var turtushout_server_url = '<?php echo Uri::root(); ?>';
 </script>

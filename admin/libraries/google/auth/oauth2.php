@@ -36,7 +36,7 @@ class JGoogleAuthOauth2 extends JGoogleAuth
 	public function __construct(Registry $options = null, JOAuth2Client $client = null)
 	{
 		$this->options = isset($options) ? $options : new Registry;
-		$this->client = isset($client) ? $client : new JOAuth2Client($this->options);
+		$this->client  = isset($client) ? $client : new JOAuth2Client($this->options);
 	}
 
 	/**
@@ -51,37 +51,6 @@ class JGoogleAuthOauth2 extends JGoogleAuth
 		$this->googlize();
 
 		return $this->client->authenticate();
-	}
-
-	/**
-	 * Verify if the client has been authenticated
-	 *
-	 * @return  boolean  Is authenticated
-	 *
-	 * @since   3.1.4
-	 */
-	public function isAuthenticated()
-	{
-		return $this->client->isAuthenticated();
-	}
-
-	/**
-	 * Method to retrieve data from Google
-	 *
-	 * @param   string  $url      The URL for the request.
-	 * @param   mixed   $data     The data to include in the request.
-	 * @param   array   $headers  The headers to send with the request.
-	 * @param   string  $method   The type of http request to send.
-	 *
-	 * @return  mixed  Data from Google.
-	 *
-	 * @since   3.1.4
-	 */
-	public function query($url, $data = null, $headers = null, $method = 'get')
-	{
-		$this->googlize();
-
-		return $this->client->query($url, $data, $headers, $method);
 	}
 
 	/**
@@ -128,5 +97,36 @@ class JGoogleAuthOauth2 extends JGoogleAuth
 		$this->client->setOption('requestparams', $params);
 
 		return $this->client;
+	}
+
+	/**
+	 * Verify if the client has been authenticated
+	 *
+	 * @return  boolean  Is authenticated
+	 *
+	 * @since   3.1.4
+	 */
+	public function isAuthenticated()
+	{
+		return $this->client->isAuthenticated();
+	}
+
+	/**
+	 * Method to retrieve data from Google
+	 *
+	 * @param   string  $url      The URL for the request.
+	 * @param   mixed   $data     The data to include in the request.
+	 * @param   array   $headers  The headers to send with the request.
+	 * @param   string  $method   The type of http request to send.
+	 *
+	 * @return  mixed  Data from Google.
+	 *
+	 * @since   3.1.4
+	 */
+	public function query($url, $data = null, $headers = null, $method = 'get')
+	{
+		$this->googlize();
+
+		return $this->client->query($url, $data, $headers, $method);
 	}
 }

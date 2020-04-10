@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
@@ -33,7 +34,8 @@ class sportsmanagementModelTeams extends JSMModelList
 	/**
 	 * sportsmanagementModelTeams::__construct()
 	 *
-	 * @param   mixed $config
+	 * @param   mixed  $config
+	 *
 	 * @return void
 	 */
 	public function __construct($config = array())
@@ -56,7 +58,7 @@ class sportsmanagementModelTeams extends JSMModelList
 		);
 		parent::__construct($config);
 
-		$this->app = Factory::getApplication();
+		$this->app    = Factory::getApplication();
 		$this->jinput = $this->app->input;
 		$this->option = $this->jinput->getCmd('option');
 
@@ -70,46 +72,9 @@ class sportsmanagementModelTeams extends JSMModelList
 		$getDBConnection = sportsmanagementHelper::getDBConnection();
 		parent::setDbo($getDBConnection);
 
-		$this->user = Factory::getUser();
+		$this->user  = Factory::getUser();
 		$this->jsmdb = $this->getDbo();
 		$this->query = $this->jsmdb->getQuery(true);
-	}
-
-	/**
-	 * Method to auto-populate the model state.
-	 *
-	 * Note. Calling getState in this method will result in recursion.
-	 *
-	 * @since 1.6
-	 */
-	protected function populateState($ordering = 't.name', $direction = 'asc')
-	{
-
-		if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend'))
-		{
-			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . $this->context . ''), '');
-			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . ''), '');
-		}
-
-		// Load the filter state.
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
-		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string');
-		$this->setState('filter.state', $published);
-		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.sports_type', 'filter_sports_type', '');
-		$this->setState('filter.sports_type', $temp_user_request);
-		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '');
-		$this->setState('filter.search_nation', $temp_user_request);
-		$value = $this->jsmjinput->getUInt('limitstart', 0);
-		$this->setState('list.start', $value);
-
-		$value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
-		$this->setState('list.limit', $value);
-
-		// List state information.
-		parent::populateState($ordering, $direction);
-		$value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
-		$this->setState('list.start', $value);
 	}
 
 	/**
@@ -171,15 +136,15 @@ class sportsmanagementModelTeams extends JSMModelList
 		{
 			$this->_season_id = $this->jsmapp->input->get('season_id');
 			$this->jsmsubquery1->select('stp.team_id');
-				$this->jsmsubquery1->from('#__sportsmanagement_season_team_id AS stp ');
-				$this->jsmsubquery1->where('stp.season_id = ' . $this->_season_id);
-				$this->query->where('t.id NOT IN (' . $this->jsmsubquery1 . ')');
+			$this->jsmsubquery1->from('#__sportsmanagement_season_team_id AS stp ');
+			$this->jsmsubquery1->where('stp.season_id = ' . $this->_season_id);
+			$this->query->where('t.id NOT IN (' . $this->jsmsubquery1 . ')');
 		}
 
-			  $this->query->order(
-				  $this->jsmdb->escape($this->getState('list.ordering', 't.name')) . ' ' .
-				  $this->jsmdb->escape($this->getState('list.direction', 'ASC'))
-			  );
+		$this->query->order(
+			$this->jsmdb->escape($this->getState('list.ordering', 't.name')) . ' ' .
+			$this->jsmdb->escape($this->getState('list.direction', 'ASC'))
+		);
 
 		return $this->query;
 	}
@@ -193,7 +158,7 @@ class sportsmanagementModelTeams extends JSMModelList
 	{
 
 		$starttime = microtime();
-		$results = array();
+		$results   = array();
 
 		// Select some fields
 		$this->query->select('id,id AS value,name,club_id,short_name, middle_name,info');
@@ -221,7 +186,8 @@ class sportsmanagementModelTeams extends JSMModelList
 	/**
 	 * sportsmanagementModelTeams::getTeams()
 	 *
-	 * @param   mixed $playground_id
+	 * @param   mixed  $playground_id
+	 *
 	 * @return
 	 */
 	function getTeams($playground_id)
@@ -285,10 +251,11 @@ class sportsmanagementModelTeams extends JSMModelList
 	/**
 	 * sportsmanagementModelTeams::getTeamsFromMatches()
 	 *
-	 * @param   mixed $games
+	 * @param   mixed  $games
+	 *
 	 * @return
 	 */
-	function getTeamsFromMatches(& $games)
+	function getTeamsFromMatches(&$games)
 	{
 
 		$teams = Array();
@@ -323,6 +290,43 @@ class sportsmanagementModelTeams extends JSMModelList
 		}
 
 		return $teams;
+	}
+
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since 1.6
+	 */
+	protected function populateState($ordering = 't.name', $direction = 'asc')
+	{
+
+		if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend'))
+		{
+			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . $this->context . ''), '');
+			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . ''), '');
+		}
+
+		// Load the filter state.
+		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string');
+		$this->setState('filter.state', $published);
+		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.sports_type', 'filter_sports_type', '');
+		$this->setState('filter.sports_type', $temp_user_request);
+		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '');
+		$this->setState('filter.search_nation', $temp_user_request);
+		$value = $this->jsmjinput->getUInt('limitstart', 0);
+		$this->setState('list.start', $value);
+
+		$value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
+		$this->setState('list.limit', $value);
+
+		// List state information.
+		parent::populateState($ordering, $direction);
+		$value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
+		$this->setState('list.start', $value);
 	}
 
 }

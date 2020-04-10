@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
@@ -54,88 +55,104 @@ class SMStatisticEventPergame extends SMStatistic
 	/**
 	 * SMStatisticEventPergame::getPlayerStatsByProject()
 	 *
-	 * @param   mixed   $person_id
-	 * @param   integer $projectteam_id
-	 * @param   integer $project_id
-	 * @param   integer $sports_type_id
+	 * @param   mixed    $person_id
+	 * @param   integer  $projectteam_id
+	 * @param   integer  $project_id
+	 * @param   integer  $sports_type_id
+	 *
 	 * @return
 	 */
 	function getPlayerStatsByProject($person_id, $projectteam_id = 0, $project_id = 0, $sports_type_id = 0)
 	{
-		  $app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
 
-			  $sids = SMStatistic::getSids($this->_ids);
-		$num = SMStatistic::getPlayerStatsByProjectForEvents($person_id, $projectteam_id, $project_id, $sports_type_id, $sids);
-		$den = SMStatistic::getGamesPlayedByPlayer($person_id, $projectteam_id, $project_id, $sports_type_id);
+		$sids = SMStatistic::getSids($this->_ids);
+		$num  = SMStatistic::getPlayerStatsByProjectForEvents($person_id, $projectteam_id, $project_id, $sports_type_id, $sids);
+		$den  = SMStatistic::getGamesPlayedByPlayer($person_id, $projectteam_id, $project_id, $sports_type_id);
 
 		return self::formatValue($num, $den, SMStatistic::getPrecision());
 	}
 
+	/**
+	 * SMStatisticEventPergame::formatValue()
+	 *
+	 * @param   mixed  $num
+	 * @param   mixed  $den
+	 * @param   mixed  $precision
+	 *
+	 * @return
+	 */
+	function formatValue($num, $den, $precision)
+	{
+		$value = (!empty($num) && !empty($den)) ? $num / $den : 0;
 
+		return number_format($value, $precision);
+	}
 
 	/**
 	 * SMStatisticEventPergame::getRosterStats()
 	 *
-	 * @param   mixed $team_id
-	 * @param   mixed $project_id
-	 * @param   mixed $position_id
+	 * @param   mixed  $team_id
+	 * @param   mixed  $project_id
+	 * @param   mixed  $position_id
+	 *
 	 * @return
 	 */
 	function getRosterStats($team_id, $project_id, $position_id)
 	{
-		$sids = SMStatistic::getSids($this->_ids);
-		$num = $this->getRosterStatsForEvents($team_id, $project_id, $position_id, $sids);
-		$den = $this->getGamesPlayedByProjectTeam($team_id, $project_id, $position_id);
+		$sids      = SMStatistic::getSids($this->_ids);
+		$num       = $this->getRosterStatsForEvents($team_id, $project_id, $position_id, $sids);
+		$den       = $this->getGamesPlayedByProjectTeam($team_id, $project_id, $position_id);
 		$precision = SMStatistic::getPrecision();
 
-			  $res = array();
+		$res = array();
 
 		foreach (array_unique(array_merge(array_keys($num), array_keys($den))) as $person_id)
 		{
-			$n = isset($num[$person_id]) ? $num[$person_id]->value : 0;
-			$d = isset($den[$person_id]) ? $den[$person_id]->value : 0;
-			$res[$person_id] = new stdclass;
+			$n                          = isset($num[$person_id]) ? $num[$person_id]->value : 0;
+			$d                          = isset($den[$person_id]) ? $den[$person_id]->value : 0;
+			$res[$person_id]            = new stdclass;
 			$res[$person_id]->person_id = $person_id;
-			$res[$person_id]->value = self::formatValue($n, $d, $precision);
+			$res[$person_id]->value     = self::formatValue($n, $d, $precision);
 		}
 
 		return $res;
 	}
 
-
 	/**
 	 * SMStatisticEventPergame::getPlayersRanking()
 	 *
-	 * @param   integer $project_id
-	 * @param   integer $division_id
-	 * @param   integer $team_id
-	 * @param   integer $limit
-	 * @param   integer $limitstart
-	 * @param   mixed   $order
+	 * @param   integer  $project_id
+	 * @param   integer  $division_id
+	 * @param   integer  $team_id
+	 * @param   integer  $limit
+	 * @param   integer  $limitstart
+	 * @param   mixed    $order
+	 *
 	 * @return
 	 */
 	function getPlayersRanking($project_id = 0, $division_id = 0, $team_id = 0, $limit = 20, $limitstart = 0, $order = null)
 	{
-		$sids = SMStatistic::getQuotedSids($this->_ids);
+		$sids   = SMStatistic::getQuotedSids($this->_ids);
 		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
-		$db = sportsmanagementHelper::getDBConnection();
+		$app    = Factory::getApplication();
+		$db     = sportsmanagementHelper::getDBConnection();
 
-			  $query_core = Factory::getDbo()->getQuery(true);
+		$query_core = Factory::getDbo()->getQuery(true);
 
-			  $query_select_count = 'SUM(ms.event_sum) AS num, tp.id AS tpid, tp.person_id';
-		$query_num    = SMStatistic::getPlayersRankingStatisticQuery($project_id, $division_id, $team_id, $sids, $query_select_count, 'event');
-		$query_den = SMStatistic::getGamesPlayedQuery($project_id, $division_id, $team_id);
+		$query_select_count = 'SUM(ms.event_sum) AS num, tp.id AS tpid, tp.person_id';
+		$query_num          = SMStatistic::getPlayersRankingStatisticQuery($project_id, $division_id, $team_id, $sids, $query_select_count, 'event');
+		$query_den          = SMStatistic::getGamesPlayedQuery($project_id, $division_id, $team_id);
 
-			  $query_select_count = ' COUNT(DISTINCT tp.id) as count';
+		$query_select_count   = ' COUNT(DISTINCT tp.id) as count';
 		$query_select_details = ' (n.num / d.played) AS total, n.person_id, 1 as rank,'
-							  . ' tp.id AS teamplayer_id, tp.person_id, tp.picture AS teamplayerpic,'
-							  . ' p.firstname, p.nickname, p.lastname, p.picture, p.country,'
-							  . ' st.team_id, pt.picture AS projectteam_picture,'
-							  . ' t.picture AS team_picture, t.name AS team_name, t.short_name AS team_short_name';
+			. ' tp.id AS teamplayer_id, tp.person_id, tp.picture AS teamplayerpic,'
+			. ' p.firstname, p.nickname, p.lastname, p.picture, p.country,'
+			. ' st.team_id, pt.picture AS projectteam_picture,'
+			. ' t.picture AS team_picture, t.name AS team_name, t.short_name AS team_short_name';
 
-			  $query_core->select($query_select_count);
+		$query_core->select($query_select_count);
 		$query_core->from('#__sportsmanagement_season_team_person_id AS tp');
 		$query_core->join('INNER', '(' . $query_num . ') AS n ON n.tpid = tp.id');
 		$query_core->join('INNER', '(' . $query_den . ') AS d ON d.tpid = tp.id');
@@ -156,17 +173,17 @@ class SMStatisticEventPergame extends SMStatistic
 			$query_core->where('st.team_id = ' . $team_id);
 		}
 
-			 $res = new stdclass;
+		$res = new stdclass;
 
 		// $db->setQuery($query_select_count.$query_core);
 		$db->setQuery($query_core);
 		$res->pagination_total = $db->loadResult();
 
-			  $query_core->clear('select');
+		$query_core->clear('select');
 		$query_core->select($query_select_details);
 		$query_core->order('total ' . (!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')) . ' ');
 
-			  $db->setQuery($query_core, $limitstart, $limit);
+		$db->setQuery($query_core, $limitstart, $limit);
 		$res->ranking = $db->loadObjectList();
 
 		if ($res->ranking)
@@ -198,26 +215,26 @@ class SMStatisticEventPergame extends SMStatistic
 		return $res;
 	}
 
-
 	/**
 	 * SMStatisticEventPergame::getTeamsRanking()
 	 *
-	 * @param   integer $project_id
-	 * @param   integer $limit
-	 * @param   integer $limitstart
-	 * @param   mixed   $order
+	 * @param   integer  $project_id
+	 * @param   integer  $limit
+	 * @param   integer  $limitstart
+	 * @param   mixed    $order
+	 *
 	 * @return
 	 */
 	function getTeamsRanking($project_id = 0, $limit = 20, $limitstart = 0, $order = null)
 	{
-		$app = Factory::getApplication();
-		$sids = SMStatistic::getQuotedSids($this->_ids);
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$app       = Factory::getApplication();
+		$sids      = SMStatistic::getQuotedSids($this->_ids);
+		$db        = sportsmanagementHelper::getDBConnection();
+		$query     = $db->getQuery(true);
 		$query_num = $db->getQuery(true);
 		$query_den = $db->getQuery(true);
 
-			  $query_num->select('SUM(es.event_sum) AS num, pt.id');
+		$query_num->select('SUM(es.event_sum) AS num, pt.id');
 		$query_num->from('#__sportsmanagement_season_team_person_id AS tp');
 		$query_num->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
 		$query_num->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');
@@ -238,15 +255,15 @@ class SMStatisticEventPergame extends SMStatistic
 		$query->join('INNER', '#__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
 		$query->join('INNER', '#__sportsmanagement_team AS t ON st.team_id = t.id ');
 
-			  $query->join('INNER', '(' . $query_num . ') AS n ON n.id = pt.id ');
+		$query->join('INNER', '(' . $query_num . ') AS n ON n.id = pt.id ');
 		$query->join('INNER', '(' . $query_den . ') AS d ON d.id = pt.id ');
 
-			  $query->where('pt.project_id = ' . $projectid);
+		$query->where('pt.project_id = ' . $projectid);
 		$query->order('total DESC');
 
-			  $db->setQuery($query, $limitstart, $limit);
+		$db->setQuery($query, $limitstart, $limit);
 
-			 $res = $db->loadObjectList();
+		$res = $db->loadObjectList();
 
 		if (!empty($res))
 		{
@@ -280,74 +297,60 @@ class SMStatisticEventPergame extends SMStatistic
 	/**
 	 * SMStatisticEventPergame::getStaffStats()
 	 *
-	 * @param   mixed $person_id
-	 * @param   mixed $team_id
-	 * @param   mixed $project_id
+	 * @param   mixed  $person_id
+	 * @param   mixed  $team_id
+	 * @param   mixed  $project_id
+	 *
 	 * @return
 	 */
 	function getStaffStats($person_id, $team_id, $project_id)
 	{
 		$sids = SMStatistic::getQuotedSids($this->_ids);
 
-			  $db = sportsmanagementHelper::getDBConnection();
+		$db    = sportsmanagementHelper::getDBConnection();
 		$query = Factory::getDbo()->getQuery(true);
-		$app = Factory::getApplication();
+		$app   = Factory::getApplication();
 
-			  $select = 'SUM(ms.value) AS value, tp.person_id';
-		$query = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $sids, $select, false);
+		$select = 'SUM(ms.value) AS value, tp.person_id';
+		$query  = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $sids, $select, false);
 		$db->setQuery($query);
 
-			  $num = $db->loadResult();
-
-			  $select = 'SUM(ms.value) AS value, tp.person_id';
-		$query = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, '', $select, false);
-
-			  $db->setQuery($query);
-
-			  $den = $db->loadResult();
-
-		return $this->formatValue($num, $den, $this->getPrecision());
-	}
-
-
-	/**
-	 * SMStatisticEventPergame::getHistoryStaffStats()
-	 *
-	 * @param   mixed $person_id
-	 * @return
-	 */
-	function getHistoryStaffStats($person_id)
-	{
-		$sids = $this->getQuotedSids();
-
-			  $db = sportsmanagementHelper::getDBConnection();
-
-			  $select = 'SUM(ms.value) AS value, tp.person_id';
-		$query = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $sids, $select, true);
-
-			  $db->setQuery($query);
 		$num = $db->loadResult();
 
-			  $select = 'SUM(ms.value) AS value, tp.person_id';
-		$query = SMStatistic::getStaffStatsQuery($person_id, 0, 0, '', $select, true);
+		$select = 'SUM(ms.value) AS value, tp.person_id';
+		$query  = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, '', $select, false);
+
 		$db->setQuery($query);
+
 		$den = $db->loadResult();
 
 		return $this->formatValue($num, $den, $this->getPrecision());
 	}
 
 	/**
-	 * SMStatisticEventPergame::formatValue()
+	 * SMStatisticEventPergame::getHistoryStaffStats()
 	 *
-	 * @param   mixed $num
-	 * @param   mixed $den
-	 * @param   mixed $precision
+	 * @param   mixed  $person_id
+	 *
 	 * @return
 	 */
-	function formatValue($num, $den, $precision)
+	function getHistoryStaffStats($person_id)
 	{
-		$value = (!empty($num) && !empty($den)) ? $num / $den : 0;
+		$sids = $this->getQuotedSids();
 
-		return number_format($value, $precision);
+		$db = sportsmanagementHelper::getDBConnection();
+
+		$select = 'SUM(ms.value) AS value, tp.person_id';
+		$query  = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $sids, $select, true);
+
+		$db->setQuery($query);
+		$num = $db->loadResult();
+
+		$select = 'SUM(ms.value) AS value, tp.person_id';
+		$query  = SMStatistic::getStaffStatsQuery($person_id, 0, 0, '', $select, true);
+		$db->setQuery($query);
+		$den = $db->loadResult();
+
+		return $this->formatValue($num, $den, $this->getPrecision());
 	}
 }

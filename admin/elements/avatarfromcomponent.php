@@ -41,6 +41,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
@@ -64,13 +65,13 @@ class JFormFieldAvatarFromComponent extends JFormField
 	 */
 	function getInput()
 	{
-		$db = sportsmanagementHelper::getDBConnection();
-		$sel_component = array();
-		$sel_component['com_kunena'] = 'COM_SPORTSMANAGEMENT_GLOBAL_AVATAR_FROM_KUNENA';
-		$sel_component['com_cbe'] = 'COM_SPORTSMANAGEMENT_GLOBAL_AVATAR_FROM_JOOMLA_CBE';
+		$db                               = sportsmanagementHelper::getDBConnection();
+		$sel_component                    = array();
+		$sel_component['com_kunena']      = 'COM_SPORTSMANAGEMENT_GLOBAL_AVATAR_FROM_KUNENA';
+		$sel_component['com_cbe']         = 'COM_SPORTSMANAGEMENT_GLOBAL_AVATAR_FROM_JOOMLA_CBE';
 		$sel_component['com_comprofiler'] = 'COM_SPORTSMANAGEMENT_GLOBAL_AVATAR_FROM_CB_ENHANCED';
 
-			  $mitems = array();
+		$mitems   = array();
 		$mitems[] = HTMLHelper::_('select.option', 'com_users', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_AVATAR_FROM_JOOMLA'));
 
 		foreach ($sel_component as $key => $value)
@@ -85,12 +86,12 @@ class JFormFieldAvatarFromComponent extends JFormField
 			}
 		}
 
-			$output = HTMLHelper::_(
-				'select.genericlist',  $mitems,
-				$this->name,
-				'class="inputbox" size="1"',
-				'value', 'text', $this->value, $this->id
-			);
+		$output = HTMLHelper::_(
+			'select.genericlist', $mitems,
+			$this->name,
+			'class="inputbox" size="1"',
+			'value', 'text', $this->value, $this->id
+		);
 
 		return $output;
 	}

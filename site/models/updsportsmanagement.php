@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 
 // Include dependancy of the main model form
@@ -72,21 +73,21 @@ class sportsmanagementModelUpdsportsmanagement extends JModelForm
 
 		if (!isset($this->_item))
 		{
-			$cache = Factory::getCache('com_sportsmanagement', '');
-			$id = $this->getState('sportsmanagement.id');
+			$cache       = Factory::getCache('com_sportsmanagement', '');
+			$id          = $this->getState('sportsmanagement.id');
 			$this->_item = $cache->get($id);
 
 			if ($this->_item === false)
 			{
 				// Menu parameters
 				$menuitemid = Factory::getApplication()->input->getInt('Itemid');  // this returns the menu id number so you can reference parameters
-				$menu = JSite::getMenu();
+				$menu       = JSite::getMenu();
 
 				if ($menuitemid)
 				{
-					$menuparams = $menu->getParams($menuitemid);
+					$menuparams      = $menu->getParams($menuitemid);
 					$headingtxtcolor = $menuparams->get('headingtxtcolor');  // This shows how to get an individual parameter for use
-					$headingbgcolor = $menuparams->get('headingbgcolor');  // This shows how to get an individual parameter for use
+					$headingbgcolor  = $menuparams->get('headingbgcolor');  // This shows how to get an individual parameter for use
 				}
 
 				$this->setState('menuparams', $menuparams);  // This sets the parameter values to the state for later use
@@ -100,18 +101,19 @@ class sportsmanagementModelUpdsportsmanagement extends JModelForm
 	/**
 	 * sportsmanagementModelUpdsportsmanagement::updItem()
 	 *
-	 * @param   mixed $data
+	 * @param   mixed  $data
+	 *
 	 * @return
 	 */
 	public function updItem($data)
 	{
 		// Set the variables from the passed data
-		$id = $data['id'];
+		$id       = $data['id'];
 		$greeting = $data['greeting'];
 
 		// Set the data into a query to update the record
-		$db        = $this->getDbo();
-		$query    = $db->getQuery(true);
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true);
 		$query->clear();
 		$query->update(' #__sportsmanagement ');
 		$query->set(' greeting = ' . $db->Quote($greeting));

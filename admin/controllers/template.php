@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\FormController;
@@ -38,13 +39,13 @@ class sportsmanagementControllertemplate extends FormController
 	 */
 	function __construct()
 	{
-		  $app    = Factory::getApplication();
-		  $option = Factory::getApplication()->input->getCmd('option');
-		  parent::__construct();
+		$app    = Factory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+		parent::__construct();
 
-		  // Register Extra tasks
-		  $this->registerTask('reset', 'remove');
-		  $this->registerTask('update', 'update');
+		// Register Extra tasks
+		$this->registerTask('reset', 'remove');
+		$this->registerTask('update', 'update');
 	}
 
 	/**
@@ -54,10 +55,10 @@ class sportsmanagementControllertemplate extends FormController
 	 */
 	function remove()
 	{
-		  $cid = Factory::getApplication()->input->getVar('cid', array(0), 'post', 'array');
-		  ArrayHelper::toInteger($cid);
-		  $isMaster = Factory::getApplication()->input->getVar('isMaster', array(), 'post', 'array');
-		  ArrayHelper::toInteger($isMaster);
+		$cid = Factory::getApplication()->input->getVar('cid', array(0), 'post', 'array');
+		ArrayHelper::toInteger($cid);
+		$isMaster = Factory::getApplication()->input->getVar('isMaster', array(), 'post', 'array');
+		ArrayHelper::toInteger($isMaster);
 
 		if (count($cid) < 1)
 		{
@@ -74,15 +75,15 @@ class sportsmanagementControllertemplate extends FormController
 			}
 		}
 
-		  $model = $this->getModel('template');
+		$model = $this->getModel('template');
 
 		if (!$model->delete($cid))
 		{
 			echo "<script> alert('" . $model->getError(true) . "'); window.history.go(-1); </script>\n";
 		}
 
-		  $msg = Text::_("COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_RESET_SUCCESS");
-		  $this->setRedirect('index.php?option=com_sportsmanagement&view=templates&pid=' . Factory::getApplication()->input->getInt("pid", 0), $msg);
+		$msg = Text::_("COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_RESET_SUCCESS");
+		$this->setRedirect('index.php?option=com_sportsmanagement&view=templates&pid=' . Factory::getApplication()->input->getInt("pid", 0), $msg);
 	}
 
 	/**
@@ -134,8 +135,8 @@ class sportsmanagementControllertemplate extends FormController
 	function masterimport()
 	{
 		$templateid = Factory::getApplication()->input->getVar('templateid', 0, 'post', 'int');
-		$projectid = Factory::getApplication()->input->getVar('pid', 0, 'post', 'int');
-		$model = $this->getModel('template');
+		$projectid  = Factory::getApplication()->input->getVar('pid', 0, 'post', 'int');
+		$model      = $this->getModel('template');
 
 		if ($templateid)
 		{

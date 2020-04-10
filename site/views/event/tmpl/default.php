@@ -20,8 +20,10 @@
  */
 
 defined('_JEXEC') or die();
+
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+
 jsmGCalendarUtil::loadLibrary(array('jquery' => true, 'maps' => true, 'bootstrap' => true, 'gcalendar' => true));
 
 $document = Factory::getDocument();
@@ -80,11 +82,11 @@ $content = '{{#events}}
 {{emptyText}}
 {{/events}}';
 
-$plugins = array();
+$plugins                  = array();
 $plugins['pluginsBefore'] = array();
-$plugins['pluginsAfter'] = array();
-$dispatcher->trigger('onBeforeDisplayEvent', array($this->event,  &$content, &$plugins['pluginsBefore']));
-$dispatcher->trigger('onAfterDisplayEvent', array($this->event,  &$content, &$plugins['pluginsAfter']));
+$plugins['pluginsAfter']  = array();
+$dispatcher->trigger('onBeforeDisplayEvent', array($this->event, &$content, &$plugins['pluginsBefore']));
+$dispatcher->trigger('onAfterDisplayEvent', array($this->event, &$content, &$plugins['pluginsAfter']));
 
 echo jsmGCalendarUtil::renderEvents(array($this->event), $content, Factory::getApplication()->getParams(), $plugins);
 

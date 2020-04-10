@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -39,7 +40,8 @@ class sportsmanagementControllermatch extends FormController
 	/**
 	 * Class Constructor
 	 *
-	 * @param   array $config An optional associative array of configuration settings.
+	 * @param   array  $config  An optional associative array of configuration settings.
+	 *
 	 * @return void
 	 * @since  1.5
 	 */
@@ -47,9 +49,9 @@ class sportsmanagementControllermatch extends FormController
 	{
 		parent::__construct($config);
 		/**
-*
- * Map the apply task to the save method.
-*/
+		 *
+		 * Map the apply task to the save method.
+		 */
 		$this->registerTask('apply', 'save');
 		$this->jsmuser = Factory::getUser();
 		$this->jsmdate = Factory::getDate();
@@ -59,7 +61,8 @@ class sportsmanagementControllermatch extends FormController
 	/**
 	 * sportsmanagementControllermatch::cancelmodal()
 	 *
-	 * @param   mixed $key
+	 * @param   mixed  $key
+	 *
 	 * @return void
 	 */
 	function cancelmodal($key = null)
@@ -76,23 +79,23 @@ class sportsmanagementControllermatch extends FormController
 	 */
 	public function copyfrom()
 	{
-		$app = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
-		$db = Factory::getDbo();
-		$msg = '';
-		$post = Factory::getApplication()->input->post->getArray(array());
-		$model = $this->getModel('match');
-		$add_match_count = $post['add_match_count'];
-		$round_id = Factory::getApplication()->input->getInt('rid');
+		$app                = Factory::getApplication();
+		$option             = Factory::getApplication()->input->getCmd('option');
+		$db                 = Factory::getDbo();
+		$msg                = '';
+		$post               = Factory::getApplication()->input->post->getArray(array());
+		$model              = $this->getModel('match');
+		$add_match_count    = $post['add_match_count'];
+		$round_id           = Factory::getApplication()->input->getInt('rid');
 		$post['project_id'] = $app->getUserState($option . '.pid', 0);
-		$post['round_id'] = $round_id;
-		$mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
-		$projectws = $mdlProject->getProject($post['project_id']);
+		$post['round_id']   = $round_id;
+		$mdlProject         = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
+		$projectws          = $mdlProject->getProject($post['project_id']);
 
-			 /**
-*
- * Add matches (type=1)
-*/
+		/**
+		 *
+		 * Add matches (type=1)
+		 */
 		if ($post['addtype'] == 1)
 		{
 			if ($add_match_count > 0) // Only MassAdd a number of new and empty matches
@@ -103,14 +106,14 @@ class sportsmanagementControllermatch extends FormController
 				}
 
 				$matchNumber = Factory::getApplication()->input->getInt('firstMatchNumber', 1);
-				$roundFound = false;
+				$roundFound  = false;
 
 				if ($projectRounds = $model->getProjectRoundCodes($post['project_id']))
 				{
 					/**
-*
- * convert date and time to utc
-*/
+					 *
+					 * convert date and time to utc
+					 */
 					$post['match_date'] = sportsmanagementHelper::convertDate($post['match_date'], 0) . ' ' . $post['startTime'];
 
 					foreach ($projectRounds AS $projectRound)
@@ -122,7 +125,7 @@ class sportsmanagementControllermatch extends FormController
 
 						if ($roundFound)
 						{
-							$post['round_id'] = $projectRound->id;
+							$post['round_id']  = $projectRound->id;
 							$post['roundcode'] = $projectRound->roundcode;
 
 							for ($x = 1; $x <= $add_match_count; $x++)
@@ -132,7 +135,7 @@ class sportsmanagementControllermatch extends FormController
 									$post['match_number'] = $matchNumber;
 								}
 
-																 $model = $this->getModel('match');
+								$model = $this->getModel('match');
 
 								if ($model->save($post))
 								{
@@ -165,19 +168,19 @@ class sportsmanagementControllermatch extends FormController
 
 				if ($post['create_new'])
 				{
-					  $round = new stdClass;
-					  $round->project_id = $post['project_id'];
-					  $round->roundcode = '';
-					  $round->name = $post['start_round_name'];
-					  $round->modified = $this->jsmdate->toSql();
-					  $round->modified_by = $this->jsmuser->get('id');
-					  /**
-*
- * Insert the object into the table.
-*/
+					$round              = new stdClass;
+					$round->project_id  = $post['project_id'];
+					$round->roundcode   = '';
+					$round->name        = $post['start_round_name'];
+					$round->modified    = $this->jsmdate->toSql();
+					$round->modified_by = $this->jsmuser->get('id');
+					/**
+					 *
+					 * Insert the object into the table.
+					 */
 					try
 					{
-						$resultinsert = $db->insertObject('#__sportsmanagement_round', $round);
+						$resultinsert     = $db->insertObject('#__sportsmanagement_round', $round);
 						$post['round_id'] = $db->insertid();
 					}
 					catch (Exception $e)
@@ -191,10 +194,10 @@ class sportsmanagementControllermatch extends FormController
 				foreach ($matches as $match)
 				{
 					/**
-*
- * aufpassen,was uebernommen werden soll und welche daten durch die aus der post ueberschrieben werden muessen
-					manche daten muessen auf null gesetzt werden
-*/
+					 *
+					 * aufpassen,was uebernommen werden soll und welche daten durch die aus der post ueberschrieben werden muessen
+					 * manche daten muessen auf null gesetzt werden
+					 */
 					$dmatch['match_date'] = $post['match_date'];
 
 					if ($post['mirror'] == '1')
@@ -208,21 +211,21 @@ class sportsmanagementControllermatch extends FormController
 						$dmatch['projectteam2_id'] = $match->projectteam2_id;
 					}
 
-					  $dmatch['project_id'] = $post['project_id'];
-					  $dmatch['round_id']    = $post['round_id'];
+					$dmatch['project_id'] = $post['project_id'];
+					$dmatch['round_id']   = $post['round_id'];
 
 					if ($post['start_match_number'] != '')
 					{
-											$dmatch['match_number'] = $post['start_match_number'];
-											$post['start_match_number']++;
+						$dmatch['match_number'] = $post['start_match_number'];
+						$post['start_match_number']++;
 					}
 
-					  // If ($model->store($dmatch))
-					  $model = $this->getModel('match');
+					// If ($model->store($dmatch))
+					$model = $this->getModel('match');
 
 					if ($model->save($dmatch))
 					{
-											$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_COPY_MATCH');
+						$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_COPY_MATCH');
 					}
 					else
 					{
@@ -248,8 +251,8 @@ class sportsmanagementControllermatch extends FormController
 	function insertgooglecalendar()
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
-		$model = $this->getModel('match');
+		$app    = Factory::getApplication();
+		$model  = $this->getModel('match');
 		$result = $model->insertgooglecalendar();
 
 		if ($result)
@@ -261,8 +264,8 @@ class sportsmanagementControllermatch extends FormController
 			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_NO_GOOGLECALENDAR_ID');
 		}
 
-			  $link = 'index.php?option=com_sportsmanagement&view=matches';
-			$this->setRedirect($link, $msg);
+		$link = 'index.php?option=com_sportsmanagement&view=matches';
+		$this->setRedirect($link, $msg);
 	}
 
 
@@ -288,25 +291,25 @@ class sportsmanagementControllermatch extends FormController
 		$this->setRedirect($link, $msg);
 	}
 
-		 /**
-		  * Method add a match to round
-		  *
-		  * @access public
-		  * @return
-		  * @since  0.1
-		  */
+	/**
+	 * Method add a match to round
+	 *
+	 * @access public
+	 * @return
+	 * @since  0.1
+	 */
 	function addmatch()
 	{
-		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
-		$post = Factory::getApplication()->input->post->getArray(array());
-		$post['project_id'] = $app->getUserState("$option.pid", '0');
-		$post['round_id'] = $app->getUserState("$option.rid", '0');
+		$option               = Factory::getApplication()->input->getCmd('option');
+		$app                  = Factory::getApplication();
+		$post                 = Factory::getApplication()->input->post->getArray(array());
+		$post['project_id']   = $app->getUserState("$option.pid", '0');
+		$post['round_id']     = $app->getUserState("$option.rid", '0');
 		$post['count_result'] = 1;
-		$post['published'] = 1;
-		$post['summary'] = '-';
-		$post['preview'] = '-';
-		$model = $this->getModel('match');
+		$post['published']    = 1;
+		$post['summary']      = '-';
+		$post['preview']      = '-';
+		$model                = $this->getModel('match');
 
 		if ($model->save($post))
 		{
@@ -314,11 +317,11 @@ class sportsmanagementControllermatch extends FormController
 		}
 		else
 		{
-			   $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_ADD_MATCH') . $model->getError();
+			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_ADD_MATCH') . $model->getError();
 		}
 
-			$link = 'index.php?option=com_sportsmanagement&view=matches';
-			$this->setRedirect($link, $msg);
+		$link = 'index.php?option=com_sportsmanagement&view=matches';
+		$this->setRedirect($link, $msg);
 	}
 
 
@@ -330,11 +333,11 @@ class sportsmanagementControllermatch extends FormController
 	function save($key = null, $urlVar = null)
 	{
 		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
-		$app = Factory::getApplication();
-		$db = sportsmanagementHelper::getDBConnection();
-		$id    = Factory::getApplication()->input->getInt('id');
-		$model = $this->getModel('match');
-		$data = Factory::getApplication()->input->getVar('jform', array(), 'post', 'array');
+		$app    = Factory::getApplication();
+		$db     = sportsmanagementHelper::getDBConnection();
+		$id     = Factory::getApplication()->input->getInt('id');
+		$model  = $this->getModel('match');
+		$data   = Factory::getApplication()->input->getVar('jform', array(), 'post', 'array');
 		$return = $model->save($data);
 
 		switch ($this->getTask())
@@ -342,11 +345,11 @@ class sportsmanagementControllermatch extends FormController
 			case 'apply':
 				$message = Text::_('JLIB_APPLICATION_SAVE_SUCCESS');
 				$this->setRedirect('index.php?option=com_sportsmanagement&view=match&layout=edit&tmpl=component&id=' . $id, $message);
-			break;
+				break;
 			case 'save':
 			default:
 				$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');
-			break;
+				break;
 		}
 	}
 
@@ -360,11 +363,11 @@ class sportsmanagementControllermatch extends FormController
 	 */
 	function remove()
 	{
-		$app = Factory::getApplication();
-		  $pks = Factory::getApplication()->input->getVar('cid', array(), 'post', 'array');
-		  $model = $this->getModel('match');
-		  $model->delete($pks);
-		  $this->setRedirect('index.php?option=com_sportsmanagement&view=matches');
+		$app   = Factory::getApplication();
+		$pks   = Factory::getApplication()->input->getVar('cid', array(), 'post', 'array');
+		$model = $this->getModel('match');
+		$model->delete($pks);
+		$this->setRedirect('index.php?option=com_sportsmanagement&view=matches');
 	}
 
 
@@ -376,8 +379,8 @@ class sportsmanagementControllermatch extends FormController
 	function picture()
 	{
 		$match_id = Factory::getApplication()->input->getInt('id', 0);
-		$dest = JPATH_ROOT . '/images/com_sportsmanagement/database/matchreport/' . $match_id;
-		$folder = 'matchreport/' . $match_id;
+		$dest     = JPATH_ROOT . '/images/com_sportsmanagement/database/matchreport/' . $match_id;
+		$folder   = 'matchreport/' . $match_id;
 
 		if (Folder::exists($dest))
 		{
@@ -387,7 +390,7 @@ class sportsmanagementControllermatch extends FormController
 			Folder::create($dest);
 		}
 
-		$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_MATCHPICTURE');
+		$msg  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_MATCHPICTURE');
 		$link = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sportsmanagement&author=&folder=com_sportsmanagement/database/' . $folder;
 		$this->setRedirect($link, $msg);
 
@@ -403,25 +406,25 @@ class sportsmanagementControllermatch extends FormController
 		Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
 		$msg = '';
 		ToolbarHelper::back(Text::_('JPREV'), Route::_('index.php?option=com_sportsmanagement&task=jlxmlimport.display'));
-		$app = Factory::getApplication();
-		$post = Factory::getApplication()->input->post->getArray(array());
+		$app   = Factory::getApplication();
+		$post  = Factory::getApplication()->input->post->getArray(array());
 		$model = $this->getModel('match');
 
 		// First step - upload
 		if (isset($post['sent']) && $post['sent'] == 1)
 		{
-			$upload = $app->input->files->get('import_package');
-			$match_id = Factory::getApplication()->input->getInt('id', 0);
-			   $tempFilePath = $upload['tmp_name'];
-			   $app->setUserState('com_sportsmanagement' . 'uploadArray', $upload);
-			   $filename = '';
-			   $msg = '';
-			   $dest = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . $upload['name'];
-			   $extractdir = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp';
+			$upload       = $app->input->files->get('import_package');
+			$match_id     = Factory::getApplication()->input->getInt('id', 0);
+			$tempFilePath = $upload['tmp_name'];
+			$app->setUserState('com_sportsmanagement' . 'uploadArray', $upload);
+			$filename   = '';
+			$msg        = '';
+			$dest       = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . $upload['name'];
+			$extractdir = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp';
 
 			if (!Folder::exists(JPATH_SITE . DIRECTORY_SEPARATOR . 'media' . DIRECTORY_SEPARATOR . 'com_sportsmanagement' . DIRECTORY_SEPARATOR . 'pressebericht'))
 			{
-				  Folder::create(JPATH_SITE . DIRECTORY_SEPARATOR . 'media' . DIRECTORY_SEPARATOR . 'com_sportsmanagement' . DIRECTORY_SEPARATOR . 'pressebericht');
+				Folder::create(JPATH_SITE . DIRECTORY_SEPARATOR . 'media' . DIRECTORY_SEPARATOR . 'com_sportsmanagement' . DIRECTORY_SEPARATOR . 'pressebericht');
 			}
 
 			$importFile = JPATH_SITE . DIRECTORY_SEPARATOR . 'media' . DIRECTORY_SEPARATOR . 'com_sportsmanagement' . DIRECTORY_SEPARATOR . 'pressebericht' . DIRECTORY_SEPARATOR . $match_id . '.jlg';
@@ -440,7 +443,7 @@ class sportsmanagementControllermatch extends FormController
 
 				if (!File::upload($tempFilePath, $dest))
 				{
-								  Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_CANT_UPLOAD'), Log::WARNING, 'jsmerror');
+					Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_CANT_UPLOAD'), Log::WARNING, 'jsmerror');
 
 					return;
 				}
@@ -452,7 +455,7 @@ class sportsmanagementControllermatch extends FormController
 
 						if ($result === false)
 						{
-									Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_EXTRACT_ERROR'), Log::WARNING, 'jsmerror');
+							Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_EXTRACT_ERROR'), Log::WARNING, 'jsmerror');
 
 							return false;
 						}
@@ -462,10 +465,10 @@ class sportsmanagementControllermatch extends FormController
 
 						if (!count($src))
 						{
-									Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_EXTRACT_NOJLG'), Log::WARNING, 'jsmerror');
+							Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_EXTRACT_NOJLG'), Log::WARNING, 'jsmerror');
 
-									// Todo: delete every extracted file / directory
-									return false;
+							// Todo: delete every extracted file / directory
+							return false;
 						}
 
 						if (strtolower(File::getExt($src[0])) == 'jlg')
@@ -510,11 +513,11 @@ class sportsmanagementControllermatch extends FormController
 		$this->setRedirect($link, $msg);
 	}
 
-		 /**
-		  * sportsmanagementControllermatch::pressebericht()
-		  *
-		  * @return void
-		  */
+	/**
+	 * sportsmanagementControllermatch::pressebericht()
+	 *
+	 * @return void
+	 */
 	function pressebericht()
 	{
 		Factory::getApplication()->input->setVar('hidemainmenu', 1);
@@ -527,18 +530,19 @@ class sportsmanagementControllermatch extends FormController
 	/**
 	 * sportsmanagementControllermatch::convertUiDateTimeToMatchDate()
 	 *
-	 * @param   mixed $uiDate
-	 * @param   mixed $uiTime
-	 * @param   mixed $timezone
+	 * @param   mixed  $uiDate
+	 * @param   mixed  $uiTime
+	 * @param   mixed  $timezone
+	 *
 	 * @return
 	 */
 	private function convertUiDateTimeToMatchDate($uiDate, $uiTime, $timezone)
 	{
 		$format = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_DATE_FORMAT');
 
-		if (((!strpos($uiDate, '-') !== false) && (!strpos($uiDate, '.') !== false)) && (strlen($uiDate) <= 8 ))
+		if (((!strpos($uiDate, '-') !== false) && (!strpos($uiDate, '.') !== false)) && (strlen($uiDate) <= 8))
 		{
-			   // To support short date inputs
+			// To support short date inputs
 			if (strlen($uiDate) == 8)
 			{
 				if ($format == 'Y-m-d')
@@ -579,24 +583,24 @@ class sportsmanagementControllermatch extends FormController
 		}
 		else
 		{
-			   $dateStr = $uiDate;
+			$dateStr = $uiDate;
 		}
 
 		if (!empty($uiTime))
 		{
-			   $format  .= ' H:i';
+			$format .= ' H:i';
 
 			if (strpos($uiTime, ":") !== false)
 			{
 				$dateStr .= ' ' . $uiTime;
 			}
-			   // To support short time inputs
-			   // for example 2158 is used instead of 21:58
+			// To support short time inputs
+			// for example 2158 is used instead of 21:58
 			elseif (strlen($uiTime) == 4)
 			{
 				$dateStr .= ' ' . substr($uiTime, 0, -2) . ':' . substr($uiTime, -2);
 			}
-			   // For example 21 is used instead of 2100
+			// For example 21 is used instead of 2100
 			elseif (strlen($uiTime) == 2)
 			{
 				$dateStr .= ' ' . $uiTime . ':00';
@@ -607,7 +611,7 @@ class sportsmanagementControllermatch extends FormController
 
 		if (is_object($timestamp))
 		{
-			   $timestamp->setTimezone(new DateTimeZone('UTC'));
+			$timestamp->setTimezone(new DateTimeZone('UTC'));
 
 			return $timestamp->format('Y-m-d H:i:s');
 		}
@@ -616,7 +620,6 @@ class sportsmanagementControllermatch extends FormController
 			return '0000-00-00 00:00:00';
 		}
 	}
-
 
 
 }

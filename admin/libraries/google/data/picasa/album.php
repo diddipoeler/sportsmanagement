@@ -53,10 +53,10 @@ class JGoogleDataPicasaAlbum extends JGoogleData
 	 *
 	 * @return  boolean  Success or failure.
 	 *
-	 * @since   3.1.4
 	 * @throws  Exception
 	 * @throws  RuntimeException
 	 * @throws  UnexpectedValueException
+	 * @since   3.1.4
 	 */
 	public function delete($match = '*')
 	{
@@ -270,8 +270,8 @@ class JGoogleDataPicasaAlbum extends JGoogleData
 	 *
 	 * @return  mixed  Data from Google.
 	 *
-	 * @since   3.1.4
 	 * @throws  Exception
+	 * @since   3.1.4
 	 */
 	public function save($match = '*')
 	{
@@ -288,7 +288,7 @@ class JGoogleDataPicasaAlbum extends JGoogleData
 			try
 			{
 				$headers = array('GData-Version' => 2, 'Content-type' => 'application/atom+xml', 'If-Match' => $match);
-				$jdata = $this->query($url, $this->xml->asXml(), $headers, 'put');
+				$jdata   = $this->query($url, $this->xml->asXml(), $headers, 'put');
 			}
 			catch (Exception $e)
 			{
@@ -315,15 +315,15 @@ class JGoogleDataPicasaAlbum extends JGoogleData
 	 *
 	 * @return  mixed  Data from Google
 	 *
-	 * @since   3.1.4
 	 * @throws UnexpectedValueException
+	 * @since   3.1.4
 	 */
 	public function refresh()
 	{
 		if ($this->isAuthenticated())
 		{
-			$url = $this->getLink();
-			$jdata = $this->query($url, null, array('GData-Version' => 2));
+			$url       = $this->getLink();
+			$jdata     = $this->query($url, null, array('GData-Version' => 2));
 			$this->xml = $this->safeXml($jdata->body);
 
 			return $this;
@@ -339,16 +339,16 @@ class JGoogleDataPicasaAlbum extends JGoogleData
 	 *
 	 * @return  mixed  Data from Google
 	 *
-	 * @since   3.1.4
 	 * @throws UnexpectedValueException
+	 * @since   3.1.4
 	 */
 	public function listPhotos()
 	{
 		if ($this->isAuthenticated())
 		{
-			$url = $this->getLink('http://schemas.google.com/g/2005#feed');
+			$url   = $this->getLink('http://schemas.google.com/g/2005#feed');
 			$jdata = $this->query($url, null, array('GData-Version' => 2));
-			$xml = $this->safeXml($jdata->body);
+			$xml   = $this->safeXml($jdata->body);
 
 			if (isset($xml->children()->entry))
 			{
@@ -381,8 +381,8 @@ class JGoogleDataPicasaAlbum extends JGoogleData
 	 *
 	 * @return  mixed  Data from Google
 	 *
-	 * @since   3.1.4
 	 * @throws  RuntimeException
+	 * @since   3.1.4
 	 */
 	public function upload($file, $title = '', $summary = '')
 	{
@@ -434,8 +434,8 @@ class JGoogleDataPicasaAlbum extends JGoogleData
 	 *
 	 * @return  mixed  Data from Google
 	 *
-	 * @since   3.1.4
 	 * @throws UnexpectedValueException
+	 * @since   3.1.4
 	 */
 	protected function getMime($file)
 	{
@@ -443,33 +443,33 @@ class JGoogleDataPicasaAlbum extends JGoogleData
 		{
 			case 'bmp':
 			case 'bm':
-			return 'image/bmp';
+				return 'image/bmp';
 			case 'gif':
-			return 'image/gif';
+				return 'image/gif';
 			case 'jpg':
 			case 'jpeg':
 			case 'jpe':
 			case 'jif':
 			case 'jfif':
 			case 'jfi':
-			return 'image/jpeg';
+				return 'image/jpeg';
 			case 'png':
-			return 'image/png';
+				return 'image/png';
 			case '3gp':
-			return 'video/3gpp';
+				return 'video/3gpp';
 			case 'avi':
-			return 'video/avi';
+				return 'video/avi';
 			case 'mov':
 			case 'moov':
 			case 'qt':
-			return 'video/quicktime';
+				return 'video/quicktime';
 			case 'mp4':
 			case 'm4a':
 			case 'm4p':
 			case 'm4b':
 			case 'm4r':
 			case 'm4v':
-			return 'video/mp4';
+				return 'video/mp4';
 			case 'mpg':
 			case 'mpeg':
 			case 'mp1':
@@ -480,13 +480,13 @@ class JGoogleDataPicasaAlbum extends JGoogleData
 			case 'm2a':
 			case 'mpa':
 			case 'mpv':
-			return 'video/mpeg';
+				return 'video/mpeg';
 			case 'asf':
-			return 'video/x-ms-asf';
+				return 'video/x-ms-asf';
 			case 'wmv':
-			return 'video/x-ms-wmv';
+				return 'video/x-ms-wmv';
 			default:
-			return false;
+				return false;
 		}
 	}
 }

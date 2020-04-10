@@ -51,8 +51,8 @@ class JGithubPackageIssuesAssignees extends JGithubPackage
 	 * @param   string  $repo      The name of the GitHub repository.
 	 * @param   string  $assignee  The assinees login name.
 	 *
-	 * @throws DomainException|Exception
 	 * @return boolean
+	 * @throws DomainException|Exception
 	 */
 	public function check($owner, $repo, $assignee)
 	{

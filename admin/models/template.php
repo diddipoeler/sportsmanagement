@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
@@ -32,25 +33,26 @@ class sportsmanagementModeltemplate extends JSMModelAdmin
 	/**
 	 * sportsmanagementModeltemplate::getAllTemplatesList()
 	 *
-	 * @param   mixed $project_id
-	 * @param   mixed $master_id
+	 * @param   mixed  $project_id
+	 * @param   mixed  $master_id
+	 *
 	 * @return
 	 */
-	function getAllTemplatesList($project_id,$master_id)
+	function getAllTemplatesList($project_id, $master_id)
 	{
 
-			  $app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
 
 		// Create a new query object.
-		$db    = $this->getDbo();
-		$query1    = $db->getQuery(true);
-		$query2    = $db->getQuery(true);
-		$query3    = $db->getQuery(true);
+		$db      = $this->getDbo();
+		$query1  = $db->getQuery(true);
+		$query2  = $db->getQuery(true);
+		$query3  = $db->getQuery(true);
 		$result1 = array();
 		$result2 = array();
 
-					  // Select some fields
+		// Select some fields
 		$query1->select('template');
 
 		// From table
@@ -65,8 +67,8 @@ class sportsmanagementModeltemplate extends JSMModelAdmin
 		}
 		elseif (version_compare(JVERSION, '2.5.0', 'ge'))
 		{
-				// Joomla! 2.5 code here
-				  $current = $db->loadResultArray();
+			// Joomla! 2.5 code here
+			$current = $db->loadResultArray();
 		}
 
 		if ($current)
@@ -74,7 +76,7 @@ class sportsmanagementModeltemplate extends JSMModelAdmin
 			$current = implode("','", $current);
 		}
 
-			  // Select some fields
+		// Select some fields
 		$query2->select('id as value, title as text');
 
 		// From table
@@ -94,15 +96,15 @@ class sportsmanagementModeltemplate extends JSMModelAdmin
 			$template->text = Text::_($template->text);
 		}
 
-			  // Select some fields
-			$query3->select('id as value, title as text');
+		// Select some fields
+		$query3->select('id as value, title as text');
 
-			// From table
-			$query3->from('#__sportsmanagement_template_config');
-			$query3->where('project_id = ' . $project_id);
-			$query3->order('title');
-			$db->setQuery($query3);
-			$result2 = $db->loadObjectList();
+		// From table
+		$query3->from('#__sportsmanagement_template_config');
+		$query3->where('project_id = ' . $project_id);
+		$query3->order('title');
+		$db->setQuery($query3);
+		$result2 = $db->loadObjectList();
 
 		foreach ($result2 as $template)
 		{
@@ -124,30 +126,31 @@ class sportsmanagementModeltemplate extends JSMModelAdmin
 	/**
 	 * sportsmanagementModeltemplate::import()
 	 *
-	 * @param   mixed $templateid
-	 * @param   mixed $projectid
+	 * @param   mixed  $templateid
+	 * @param   mixed  $projectid
+	 *
 	 * @return
 	 */
-	function import($templateid,$projectid)
+	function import($templateid, $projectid)
 	{
 		$row =& $this->getTable();
 
 		// Load record to copy
 		if (!$row->load($templateid))
 		{
-			 $this->setError($this->_db->getErrorMsg());
+			$this->setError($this->_db->getErrorMsg());
 
 			return false;
 		}
 
 		// Copy to new element
-		$row->id = null;
+		$row->id         = null;
 		$row->project_id = (int) $projectid;
 
 		// Make sure the item is valid
 		if (!$row->check())
 		{
-			 $this->setError($this->_db->getErrorMsg());
+			$this->setError($this->_db->getErrorMsg());
 
 			return false;
 		}
@@ -155,7 +158,7 @@ class sportsmanagementModeltemplate extends JSMModelAdmin
 		// Store the item to the database
 		if (!$row->store())
 		{
-			 $this->setError($this->_db->getErrorMsg());
+			$this->setError($this->_db->getErrorMsg());
 
 			return false;
 		}
@@ -167,21 +170,22 @@ class sportsmanagementModeltemplate extends JSMModelAdmin
 	/**
 	 * sportsmanagementModeltemplate::delete()
 	 *
-	 * @param   mixed $pks
+	 * @param   mixed  $pks
+	 *
 	 * @return
 	 */
 	public function delete(&$pks)
 	{
 		$app = Factory::getApplication();
 
-		  return parent::delete($pks);
+		return parent::delete($pks);
 
 	}
 
 	/**
 	 * Method to update one or more records.
 	 *
-	 * @param   array &$pks An array of record primary keys.
+	 * @param   array &$pks  An array of record primary keys.
 	 *
 	 * @return
 	 *
@@ -190,7 +194,7 @@ class sportsmanagementModeltemplate extends JSMModelAdmin
 	public function update(&$pks)
 	{
 		$dispatcher = \JEventDispatcher::getInstance();
-		$pks = (array) $pks;
+		$pks        = (array) $pks;
 
 		// Iterate the items to delete each one.
 		foreach ($pks as $i => $pk)
@@ -208,7 +212,7 @@ class sportsmanagementModeltemplate extends JSMModelAdmin
 				}
 
 				$templatepath = JPATH_COMPONENT_SITE . DIRECTORY_SEPARATOR . 'settings';
-				$xmlfile = $templatepath . DIRECTORY_SEPARATOR . 'default' . DIRECTORY_SEPARATOR . $table_row->template . '.xml';
+				$xmlfile      = $templatepath . DIRECTORY_SEPARATOR . 'default' . DIRECTORY_SEPARATOR . $table_row->template . '.xml';
 
 				// Create form containing ALL keys and their default values
 				$form = Form::getInstance($table_row->template, $xmlfile, array('control' => 'params'));
@@ -228,10 +232,10 @@ class sportsmanagementModeltemplate extends JSMModelAdmin
 						case  "Spacer":
 						case  "JSMMessage":
 							// Spacers and Message fields are no changeable parameters
-						break;
+							break;
 						default:
 							$params[$f->fieldname] = $f->value;
-						break;
+							break;
 					}
 				}
 

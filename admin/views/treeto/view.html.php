@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -41,13 +42,13 @@ class sportsmanagementViewTreeto extends sportsmanagementView
 
 		if ($this->getLayout() == 'edit' || $this->getLayout() == 'edit_3' || $this->getLayout() == 'edit_4')
 		{
-			   $this->_displayForm();
+			$this->_displayForm();
 
 			return;
 		}
 		elseif ($this->getLayout() == 'gennode' || $this->getLayout() == 'gennode_3' || $this->getLayout() == 'gennode_4')
 		{
-			   $this->_displayGennode();
+			$this->_displayGennode();
 
 			return;
 		}
@@ -67,6 +68,16 @@ class sportsmanagementViewTreeto extends sportsmanagementView
 	}
 
 	/**
+	 * sportsmanagementViewTreeto::setDocument()
+	 *
+	 * @return void
+	 */
+	protected function setDocument()
+	{
+
+	}
+
+	/**
 	 * sportsmanagementViewTreeto::_displayGennode()
 	 *
 	 * @return void
@@ -80,17 +91,17 @@ class sportsmanagementViewTreeto extends sportsmanagementView
 		//		$user = Factory::getUser();
 		//		$model = $this->getModel();
 
-			  $this->form = $this->get('Form');
+		$this->form = $this->get('Form');
 
-			  $lists = array();
+		$lists = array();
 
 		$this->treeto = $this->get('Item');
-		$projectws = $this->get('Data', 'project');
+		$projectws    = $this->get('Data', 'project');
 
 		// $this->assignRef('form'   ,$this->get('form'));
 		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
-		$mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
-		$this->projectws = $mdlProject->getProject($this->project_id);
+		$mdlProject       = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
+		$this->projectws  = $mdlProject->getProject($this->project_id);
 
 		// $this->assignRef('projectws',$projectws);
 		$this->lists = $lists;
@@ -126,15 +137,5 @@ class sportsmanagementViewTreeto extends sportsmanagementView
 		ToolbarHelper::apply('treeto.apply');
 
 		// ToolbarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetos&task=treeto.display');
-	}
-
-	/**
-	 * sportsmanagementViewTreeto::setDocument()
-	 *
-	 * @return void
-	 */
-	protected function setDocument()
-	{
-
 	}
 }

@@ -13,10 +13,12 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Text;
+
 jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
 
@@ -55,18 +57,18 @@ class JFormFieldpositionlist extends \JFormFieldList
 		$this->jsmoption = $this->jsmjinput->getCmd('option');
 
 		// Initialize variables.
-		$options = array();
-		  $vartable = (string) $this->element['targettable'];
+		$options   = array();
+		$vartable  = (string) $this->element['targettable'];
 		$select_id = Factory::getApplication()->input->getVar('id');
-		  $db = Factory::getDbo();
-		 $query = $db->getQuery(true);
+		$db        = Factory::getDbo();
+		$query     = $db->getQuery(true);
 
-				   $query->select('pos.id AS value, pos.name AS text');
-		 $query->from('#__sportsmanagement_position as pos');
-		 $query->join('INNER', '#__sportsmanagement_sports_type AS s ON s.id = pos.sports_type_id');
-		 $query->where('pos.published = 1');
-		 $query->order('pos.ordering,pos.name');
-		 $db->setQuery($query);
+		$query->select('pos.id AS value, pos.name AS text');
+		$query->from('#__sportsmanagement_position as pos');
+		$query->join('INNER', '#__sportsmanagement_sports_type AS s ON s.id = pos.sports_type_id');
+		$query->where('pos.published = 1');
+		$query->order('pos.ordering,pos.name');
+		$db->setQuery($query);
 
 		try
 		{
@@ -74,19 +76,19 @@ class JFormFieldpositionlist extends \JFormFieldList
 		}
 		catch (Exception $e)
 		{
-			 //    // catch any database errors.
-			 //    $db->transactionRollback();
-			 //    JErrorPage::render($e);
+			//    // catch any database errors.
+			//    $db->transactionRollback();
+			//    JErrorPage::render($e);
 		}
 
 		foreach ($options as $row)
 		{
-				  $row->text = Text::_($row->text);
+			$row->text = Text::_($row->text);
 		}
 
-				// Merge any additional options in the XML definition.
-				$options = array_merge(parent::getOptions(), $options);
+		// Merge any additional options in the XML definition.
+		$options = array_merge(parent::getOptions(), $options);
 
-				return $options;
+		return $options;
 	}
 }

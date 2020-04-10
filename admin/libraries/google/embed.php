@@ -42,7 +42,7 @@ abstract class JGoogleEmbed
 	public function __construct(Registry $options = null, JUri $uri = null)
 	{
 		$this->options = $options ? $options : new Registry;
-		$this->uri = $uri ? $uri : JUri::getInstance();
+		$this->uri     = $uri ? $uri : JUri::getInstance();
 	}
 
 	/**
@@ -58,24 +58,6 @@ abstract class JGoogleEmbed
 	}
 
 	/**
-	 * Method to retrieve the header for the API
-	 *
-	 * @return  string  The header
-	 *
-	 * @since   3.1.4
-	 */
-	abstract public function getHeader();
-
-	/**
-	 * Method to retrieve the body for the API
-	 *
-	 * @return  string  The body
-	 *
-	 * @since   3.1.4
-	 */
-	abstract public function getBody();
-
-	/**
 	 * Method to output the javascript header for the embed API
 	 *
 	 * @return  null
@@ -88,6 +70,15 @@ abstract class JGoogleEmbed
 	}
 
 	/**
+	 * Method to retrieve the header for the API
+	 *
+	 * @return  string  The header
+	 *
+	 * @since   3.1.4
+	 */
+	abstract public function getHeader();
+
+	/**
 	 * Method to output the body for the API
 	 *
 	 * @return  null
@@ -98,6 +89,15 @@ abstract class JGoogleEmbed
 	{
 		echo $this->getBody();
 	}
+
+	/**
+	 * Method to retrieve the body for the API
+	 *
+	 * @return  string  The body
+	 *
+	 * @since   3.1.4
+	 */
+	abstract public function getBody();
 
 	/**
 	 * Get an option from the JGoogleEmbed instance.

@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -40,13 +41,13 @@ class JFormFieldrankingcolumns extends FormField
 	function getInput()
 	{
 		$result = array();
-		$db = sportsmanagementHelper::getDBConnection();
-		$app = Factory::getApplication();
-		$lang = Factory::getLanguage();
+		$db     = sportsmanagementHelper::getDBConnection();
+		$app    = Factory::getApplication();
+		$lang   = Factory::getLanguage();
 		$option = Factory::getApplication()->input->getCmd('option');
 		$mitems = array();
 
-			  $selrankingcol = (int) ($this->element['selrankingcol']);
+		$selrankingcol = (int) ($this->element['selrankingcol']);
 
 		if ($selrankingcol)
 		{
@@ -89,13 +90,13 @@ class JFormFieldrankingcolumns extends FormField
 			{
 				foreach ($this->value as $key => $value)
 				{
-					   $mitems[] = HTMLHelper::_('select.option', $value, Text::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_' . $value));
+					$mitems[] = HTMLHelper::_('select.option', $value, Text::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_' . $value));
 				}
 			}
 		}
 
 		return HTMLHelper::_(
-			'select.genericlist',  $mitems, $this->name,
+			'select.genericlist', $mitems, $this->name,
 			'class="inputbox" size="10" multiple="true" ', 'value', 'text', $this->value, $this->id
 		);
 

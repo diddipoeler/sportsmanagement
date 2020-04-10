@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 
 /**
@@ -29,12 +30,13 @@ class sportsmanagementTableTeamPlayer extends JSMTable
 	/**
 	 * Constructor
 	 *
-	 * @param object Database connector object
+	 * @param   object Database connector object
+	 *
 	 * @since 1.0
 	 */
-	function __construct(& $db)
+	function __construct(&$db)
 	{
-		  $db = sportsmanagementHelper::getDBConnection();
+		$db = sportsmanagementHelper::getDBConnection();
 		parent::__construct('#__sportsmanagement_team_player', 'id', $db);
 	}
 
@@ -45,7 +47,7 @@ class sportsmanagementTableTeamPlayer extends JSMTable
 	 * @access public
 	 * @return true if successful otherwise returns and error message
 	 */
-	function delete( $oid=null )
+	function delete($oid = null)
 	{
 		// Check that there are no events and matches associated to this player
 		return true;
@@ -55,13 +57,14 @@ class sportsmanagementTableTeamPlayer extends JSMTable
 	/**
 	 * sportsmanagementTableTeamPlayer::canDelete()
 	 *
-	 * @param   mixed $id
-	 * @param   mixed $joins
+	 * @param   mixed  $id
+	 * @param   mixed  $joins
+	 *
 	 * @return
 	 */
 	function canDelete($id, $joins = null)
 	{
 
-			  return true;
+		return true;
 	}
 }

@@ -11,6 +11,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Component\ComponentHelper;
 
@@ -45,28 +46,28 @@ else
 		echo $this->loadTemplate('debug');
 	}
 	?>
- 
-		<?PHP
-		echo $this->loadTemplate('projectheading');
-		?>
-  
+
+	<?PHP
+	echo $this->loadTemplate('projectheading');
+	?>
+
 	<?PHP
 	if ($this->config['show_sectionheader'])
 	{
 		?>
 
-					<?PHP
-					echo $this->loadTemplate('sectionheader');
-			?>
+		<?PHP
+		echo $this->loadTemplate('sectionheader');
+		?>
 
-				<?PHP
+		<?PHP
 	}
 	?>
-	<!-- <div class="row"> -->
+    <!-- <div class="row"> -->
 	<?PHP
 	echo $this->loadTemplate('clubinfo');
 	?>
-	<!-- </div> -->
+    <!-- </div> -->
 	<?PHP
 	/**
 	 * diddipoeler
@@ -129,6 +130,6 @@ else
 	echo $this->loadTemplate('jsminfo');
 	?>
 
-	<!-- ende clubinfo -->  
+    <!-- ende clubinfo -->
 </div>
 

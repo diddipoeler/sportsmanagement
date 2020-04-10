@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die();
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -41,8 +42,8 @@ class JFormFieldGCalendar extends \JFormFieldList
 	protected function getOptions()
 	{
 		$options = array();
-		$db = Factory::getDbo();
-		$query = $db->getQuery(true);
+		$db      = Factory::getDbo();
+		$query   = $db->getQuery(true);
 		$query->select('id AS value, name AS text');
 		$query->from('#__sportsmanagement_gcalendar');
 		$query->order('name');

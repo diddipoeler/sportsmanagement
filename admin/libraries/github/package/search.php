@@ -27,11 +27,11 @@ class JGithubPackageSearch extends JGithubPackage
 	 * @param   string  $state    The state - open or closed.
 	 * @param   string  $keyword  The search term.
 	 *
+	 * @return object
 	 * @throws UnexpectedValueException
 	 *
 	 * @since    3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function issues($owner, $repo, $state, $keyword)
 	{
@@ -61,9 +61,9 @@ class JGithubPackageSearch extends JGithubPackage
 	 * @param   string   $language    Filter results by language https://github.com/languages
 	 * @param   integer  $start_page  Page number to fetch
 	 *
+	 * @return object
 	 * @since    3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function repositories($keyword, $language = '', $start_page = 0)
 	{
@@ -87,9 +87,9 @@ class JGithubPackageSearch extends JGithubPackage
 	 * @param   string   $keyword     The search term.
 	 * @param   integer  $start_page  Page number to fetch
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function users($keyword, $start_page = 0)
 	{
@@ -114,9 +114,9 @@ class JGithubPackageSearch extends JGithubPackage
 	 *
 	 * @param   string  $email  The email address(es).
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function email($email)
 	{

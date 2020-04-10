@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
@@ -38,22 +39,22 @@ class sportsmanagementViewRankingAllTime extends sportsmanagementView
 	function init()
 	{
 		$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
-		$this->projectids = $this->model->getAllProject();
-		$this->projectnames = $this->model->getAllProjectNames();
-		$project_ids = implode(",", $this->projectids);
-		$this->project_ids = $project_ids;
-		$this->teams = $this->model->getAllTeamsIndexedByPtid($project_ids);
-		$this->matches = $this->model->getAllMatches($project_ids);
-		$this->ranking = $this->model->getAllTimeRanking();
-		$this->tableconfig = $this->model->getAllTimeParams();
-		$this->config = $this->model->getAllTimeParams();
+		$this->projectids     = $this->model->getAllProject();
+		$this->projectnames   = $this->model->getAllProjectNames();
+		$project_ids          = implode(",", $this->projectids);
+		$this->project_ids    = $project_ids;
+		$this->teams          = $this->model->getAllTeamsIndexedByPtid($project_ids);
+		$this->matches        = $this->model->getAllMatches($project_ids);
+		$this->ranking        = $this->model->getAllTimeRanking();
+		$this->tableconfig    = $this->model->getAllTimeParams();
+		$this->config         = $this->model->getAllTimeParams();
 		$this->currentRanking = $this->model->getCurrentRanking();
-		$this->action = $this->uri->toString();
-		$this->colors = $this->model->getColors($this->config['colors']);
+		$this->action         = $this->uri->toString();
+		$this->colors         = $this->model->getColors($this->config['colors']);
 		/**
-*
- * Set page title
-*/
+		 *
+		 * Set page title
+		 */
 		$pageTitle = Text::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE');
 		$this->document->setTitle($pageTitle);
 

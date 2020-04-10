@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 
 /**
@@ -39,7 +40,7 @@ class sportsmanagementModelclubname extends JSMModelAdmin
 		$app = Factory::getApplication();
 
 		// Create a new query object.
-		$db = sportsmanagementHelper::getDBConnection();
+		$db    = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 
 		$option = Factory::getApplication()->input->getCmd('option');
@@ -51,9 +52,9 @@ class sportsmanagementModelclubname extends JSMModelAdmin
 
 		foreach ($xml->children() as $quote)
 		{
-						 $country = (string) $quote->clubname->attributes()->country;
-			 $name = (string) $quote->clubname->attributes()->name;
-			 $clubname = (string) $quote->clubname;
+			$country  = (string) $quote->clubname->attributes()->country;
+			$name     = (string) $quote->clubname->attributes()->name;
+			$clubname = (string) $quote->clubname;
 
 			$query->clear();
 			$query->select('id');
@@ -66,24 +67,24 @@ class sportsmanagementModelclubname extends JSMModelAdmin
 
 			if (!$result)
 			{
-					 $insertquery = $db->getQuery(true);
+				$insertquery = $db->getQuery(true);
 
-					 // Insert columns.
-					 $columns = array('country','name','name_long');
+				// Insert columns.
+				$columns = array('country', 'name', 'name_long');
 
-					 // Insert values.
-					 $values = array('\'' . $country . '\'','\'' . $name . '\'','\'' . $clubname . '\'');
+				// Insert values.
+				$values = array('\'' . $country . '\'', '\'' . $name . '\'', '\'' . $clubname . '\'');
 
-					 // Prepare the insert query.
-					 $insertquery
-						 ->insert($db->quoteName('#__sportsmanagement_club_names'))
-						 ->columns($db->quoteName($columns))
-						 ->values(implode(',', $values));
+				// Prepare the insert query.
+				$insertquery
+					->insert($db->quoteName('#__sportsmanagement_club_names'))
+					->columns($db->quoteName($columns))
+					->values(implode(',', $values));
 
-					 // Set the query using our newly populated query object and execute it.
-					 $db->setQuery($insertquery);
+				// Set the query using our newly populated query object and execute it.
+				$db->setQuery($insertquery);
 
-					 sportsmanagementModeldatabasetool::runJoomlaQuery();
+				sportsmanagementModeldatabasetool::runJoomlaQuery();
 			}
 		}
 

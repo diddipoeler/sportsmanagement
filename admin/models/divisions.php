@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 
@@ -27,46 +28,96 @@ use Joomla\CMS\Component\ComponentHelper;
  */
 class sportsmanagementModelDivisions extends JSMModelList
 {
+	static $_project_id = 0;
 	var $_identifier = "divisions";
-
-	static  $_project_id = 0;
 
 	/**
 	 * sportsmanagementModelDivisions::__construct()
 	 *
-	 * @param   mixed $config
+	 * @param   mixed  $config
+	 *
 	 * @return void
 	 */
 	public function __construct($config = array())
 	{
-				$config['filter_fields'] = array(
-						'dv.name',
-						'dv.alias',
-						'dv.id',
-						'dv.ordering',
-						'dv.picture'
-						);
-				parent::__construct($config);
-				$getDBConnection = sportsmanagementHelper::getDBConnection();
-				parent::setDbo($getDBConnection);
-				self::$_project_id    = $this->jsmjinput->getInt('pid', 0);
+		$config['filter_fields'] = array(
+			'dv.name',
+			'dv.alias',
+			'dv.id',
+			'dv.ordering',
+			'dv.picture'
+		);
+		parent::__construct($config);
+		$getDBConnection = sportsmanagementHelper::getDBConnection();
+		parent::setDbo($getDBConnection);
+		self::$_project_id = $this->jsmjinput->getInt('pid', 0);
 
 		if (!self::$_project_id)
 		{
-			self::$_project_id    = $this->jsmapp->getUserState("$this->jsmoption.pid", '0');
+			self::$_project_id = $this->jsmapp->getUserState("$this->jsmoption.pid", '0');
 		}
 
-				$this->jsmapp->setUserState("$this->jsmoption.pid", self::$_project_id);
+		$this->jsmapp->setUserState("$this->jsmoption.pid", self::$_project_id);
 
 	}
 
-		  /**
-		   * Method to auto-populate the model state.
-		   *
-		   * Note. Calling getState in this method will result in recursion.
-		   *
-		   * @since 1.6
-		   */
+	/**
+	 * Method to return a divisions array (id, name)
+	 *
+	 * @param   int  $project_id
+	 *
+	 * @access public
+	 * @return array
+	 * @since  0.1
+	 */
+	function getDivisions($project_id)
+	{
+		$starttime = microtime();
+		$this->jsmquery->clear();
+		$this->jsmquery->select('id AS value,name AS text');
+		$this->jsmquery->from('#__sportsmanagement_division');
+		$this->jsmquery->where('project_id = ' . $project_id);
+		$this->jsmquery->order('name ASC');
+		$this->jsmdb->setQuery($this->jsmquery);
+
+		if (!$result = $this->jsmdb->loadObjectList("value"))
+		{
+			return array();
+		}
+		else
+		{
+			return $result;
+		}
+
+	}
+
+	/**
+	 * return count of project divisions
+	 *
+	 * @param   int project_id
+	 *
+	 * @return integer
+	 */
+	function getProjectDivisionsCount($project_id)
+	{
+		$starttime = microtime();
+		$this->jsmquery->clear();
+		$this->jsmquery->select('count(*) AS count');
+		$this->jsmquery->from('#__sportsmanagement_division AS d');
+		$this->jsmquery->join('INNER', '#__sportsmanagement_project AS p on p.id = d.project_id');
+		$this->jsmquery->where('p.id = ' . $project_id);
+		$this->jsmdb->setQuery($this->jsmquery);
+
+		return $this->jsmdb->loadResult();
+	}
+
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since 1.6
+	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
 		if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend'))
@@ -80,11 +131,11 @@ class sportsmanagementModelDivisions extends JSMModelList
 		$this->setState('filter.search', $search);
 		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string');
 		$this->setState('filter.state', $published);
-		   $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
+		$value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
 		$this->setState('list.limit', $value);
 
-				 // List state information.
-		   $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
+		// List state information.
+		$value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);
 
 		// Filter.order
@@ -131,60 +182,12 @@ class sportsmanagementModelDivisions extends JSMModelList
 			$this->jsmquery->where('dv.published = ' . $this->getState('filter.state'));
 		}
 
-			  $this->jsmquery->order(
-				  $this->jsmdb->escape($this->getState('list.ordering', 'dv.name')) . ' ' .
-				  $this->jsmdb->escape($this->getState('list.direction', 'ASC'))
-			  );
+		$this->jsmquery->order(
+			$this->jsmdb->escape($this->getState('list.ordering', 'dv.name')) . ' ' .
+			$this->jsmdb->escape($this->getState('list.direction', 'ASC'))
+		);
 
 		return $this->jsmquery;
-	}
-
-	/**
-	 * Method to return a divisions array (id, name)
-	 *
-	 * @param   int $project_id
-	 * @access public
-	 * @return array
-	 * @since  0.1
-	 */
-	function getDivisions($project_id)
-	{
-		$starttime = microtime();
-		$this->jsmquery->clear();
-		$this->jsmquery->select('id AS value,name AS text');
-		$this->jsmquery->from('#__sportsmanagement_division');
-		$this->jsmquery->where('project_id = ' . $project_id);
-		$this->jsmquery->order('name ASC');
-		$this->jsmdb->setQuery($this->jsmquery);
-
-		if (!$result = $this->jsmdb->loadObjectList("value"))
-		{
-			return array();
-		}
-		else
-		{
-			return $result;
-		}
-
-	}
-
-	/**
-	 * return count of project divisions
-	 *
-	 * @param  int project_id
-	 * @return integer
-	 */
-	function getProjectDivisionsCount($project_id)
-	{
-		$starttime = microtime();
-		$this->jsmquery->clear();
-		$this->jsmquery->select('count(*) AS count');
-		$this->jsmquery->from('#__sportsmanagement_division AS d');
-		$this->jsmquery->join('INNER', '#__sportsmanagement_project AS p on p.id = d.project_id');
-		$this->jsmquery->where('p.id = ' . $project_id);
-		$this->jsmdb->setQuery($this->jsmquery);
-
-		return $this->jsmdb->loadResult();
 	}
 
 }

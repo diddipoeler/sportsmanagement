@@ -25,9 +25,9 @@ class JGithubPackageActivityWatching extends JGithubPackage
 	 * @param   string  $owner  Repository owner.
 	 * @param   string  $repo   Repository name.
 	 *
+	 * @return mixed
 	 * @since 3.3 (CMS)
 	 *
-	 * @return mixed
 	 */
 	public function getList($owner, $repo)
 	{
@@ -46,9 +46,9 @@ class JGithubPackageActivityWatching extends JGithubPackage
 	 *
 	 * @param   string  $user  User name.
 	 *
+	 * @return mixed
 	 * @since 3.3 (CMS)
 	 *
-	 * @return mixed
 	 */
 	public function getRepositories($user = '')
 	{
@@ -68,9 +68,9 @@ class JGithubPackageActivityWatching extends JGithubPackage
 	 * @param   string  $owner  Repository owner.
 	 * @param   string  $repo   Repository name.
 	 *
+	 * @return mixed
 	 * @since 3.3 (CMS)
 	 *
-	 * @return mixed
 	 */
 	public function getSubscription($owner, $repo)
 	{
@@ -90,9 +90,9 @@ class JGithubPackageActivityWatching extends JGithubPackage
 	 * @param   boolean  $subscribed  Determines if notifications should be received from this thread.
 	 * @param   boolean  $ignored     Determines if all notifications should be blocked from this thread.
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function setSubscription($owner, $repo, $subscribed, $ignored)
 	{
@@ -115,9 +115,9 @@ class JGithubPackageActivityWatching extends JGithubPackage
 	 * @param   string  $owner  Repository owner.
 	 * @param   string  $repo   Repository name.
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function deleteSubscription($owner, $repo)
 	{
@@ -138,10 +138,10 @@ class JGithubPackageActivityWatching extends JGithubPackage
 	 * @param   string  $owner  Repository owner.
 	 * @param   string  $repo   Repository name.
 	 *
+	 * @return object
 	 * @throws UnexpectedValueException
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function check($owner, $repo)
 	{
@@ -174,9 +174,9 @@ class JGithubPackageActivityWatching extends JGithubPackage
 	 * @param   string  $owner  Repository owner.
 	 * @param   string  $repo   Repository name.
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function watch($owner, $repo)
 	{
@@ -197,9 +197,9 @@ class JGithubPackageActivityWatching extends JGithubPackage
 	 * @param   string  $owner  Repository owner.
 	 * @param   string  $repo   Repository name.
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function unwatch($owner, $repo)
 	{

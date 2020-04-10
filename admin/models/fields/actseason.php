@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -43,10 +44,10 @@ class JFormFieldactseason extends \JFormFieldList
 		// Initialize variables.
 		$options = array();
 
-		$db = Factory::getDbo();
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
-				  $query->select('s.id AS value, s.name AS text');
+		$query->select('s.id AS value, s.name AS text');
 		$query->from('#__sportsmanagement_season as s');
 		$query->order('s.name');
 		$db->setQuery($query);

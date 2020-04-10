@@ -13,32 +13,33 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filter\OutputFilter;
 
-$uri    = Factory::getUri();
+$uri = Factory::getUri();
 
 $table = Factory::getApplication()->input->getVar('table');
 $uri->delVar('table');
 $link = $uri->toString();
 
 ?>
-<script type="text/javascript">
-function sendData (sData) {
-var oldLocation = '<?PHP echo $link;?>';
-window.location = oldLocation + '&table=' + sData ;
+    <script type="text/javascript">
+        function sendData(sData) {
+            var oldLocation = '<?PHP echo $link;?>';
+            window.location = oldLocation + '&table=' + sData;
 //  window.location.search = sData;
 //  window.location.reload(true)
-}
-</script>
+        }
+    </script>
 <?PHP
 
-$version            = '1.0.53';
-$updateFileDate        = '2016-02-01';
-$updateFileTime        = '00:05';
-$updateDescription    = '<span style="color:orange">Update Alias Fields.</span>';
-$excludeFile        = 'false';
+$version           = '1.0.53';
+$updateFileDate    = '2016-02-01';
+$updateFileTime    = '00:05';
+$updateDescription = '<span style="color:orange">Update Alias Fields.</span>';
+$excludeFile       = 'false';
 
 $maxImportTime = ComponentHelper::getParams('com_sportsmanagement')->get('max_import_time', 0);
 
@@ -88,14 +89,14 @@ if ($table)
 				$object = new stdClass;
 
 				// Must be a valid primary key value.
-				$object->id = $row->id;
+				$object->id    = $row->id;
 				$object->alias = OutputFilter::stringURLSafe($row->firstname) . '-' . OutputFilter::stringURLSafe($row->lastname);
 
 				// Update their details in the table using id as the primary key.
 				$result_update = Factory::getDbo()->updateObject('#__sportsmanagement_' . $table, $object, 'id', true);
 			}
 
-			  break;
+			break;
 		case 'league':
 		case 'season':
 		case 'club':
@@ -117,13 +118,13 @@ if ($table)
 				$object = new stdClass;
 
 				// Must be a valid primary key value.
-				$object->id = $row->id;
+				$object->id    = $row->id;
 				$object->alias = OutputFilter::stringURLSafe($row->name);
 
 				// Update their details in the table using id as the primary key.
 				$result_update = Factory::getDbo()->updateObject('#__sportsmanagement_' . $table, $object, 'id', true);
 			}
-		break;
+			break;
 	}
 }
 

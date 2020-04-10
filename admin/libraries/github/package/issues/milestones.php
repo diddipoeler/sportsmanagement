@@ -30,10 +30,10 @@ class JGithubPackageIssuesMilestones extends JGithubPackage
 	 * @param   integer  $page       The page number from which to get items.
 	 * @param   integer  $limit      The number of items on a page.
 	 *
+	 * @return  array
 	 * @throws DomainException
 	 * @since   12.3
 	 *
-	 * @return  array
 	 */
 	public function getList($user, $repo, $state = 'open', $sort = 'due_date', $direction = 'desc', $page = 0, $limit = 0)
 	{
@@ -65,9 +65,9 @@ class JGithubPackageIssuesMilestones extends JGithubPackage
 	 * @param   string   $repo         The name of the GitHub repository.
 	 * @param   integer  $milestoneId  The milestone id to get.
 	 *
-	 * @throws DomainException
 	 * @return  object
 	 *
+	 * @throws DomainException
 	 * @since   12.3
 	 */
 	public function get($user, $repo, $milestoneId)
@@ -99,9 +99,9 @@ class JGithubPackageIssuesMilestones extends JGithubPackage
 	 * @param   string   $description  Optional description for milestone.
 	 * @param   string   $due_on       Optional ISO 8601 time.
 	 *
-	 * @throws DomainException
 	 * @return  object
 	 *
+	 * @throws DomainException
 	 * @since   12.3
 	 */
 	public function create($user, $repo, $title, $state = null, $description = null, $due_on = null)
@@ -156,9 +156,9 @@ class JGithubPackageIssuesMilestones extends JGithubPackage
 	 * @param   string   $description  Optional description for milestone.
 	 * @param   string   $due_on       Optional ISO 8601 time.
 	 *
-	 * @throws DomainException
 	 * @return  object
 	 *
+	 * @throws DomainException
 	 * @since   12.3
 	 */
 	public function edit($user, $repo, $milestoneId, $title = null, $state = null, $description = null, $due_on = null)
@@ -212,9 +212,9 @@ class JGithubPackageIssuesMilestones extends JGithubPackage
 	 * @param   string   $repo         The name of the GitHub repository.
 	 * @param   integer  $milestoneId  The id of the milestone to delete.
 	 *
-	 * @throws DomainException
 	 * @return  void
 	 *
+	 * @throws DomainException
 	 * @since   12.3
 	 */
 	public function delete($user, $repo, $milestoneId)

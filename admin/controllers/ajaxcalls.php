@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
@@ -39,24 +40,24 @@ class sportsmanagementControllerajaxcalls extends BaseController
 	function removeCommentary()
 	{
 
-			  // $response = self::getAjaxResponse();
+		// $response = self::getAjaxResponse();
 		// $result = $response;
 
-			  // Check for request forgeries
+		// Check for request forgeries
 		Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
 
-			  // Check for request forgeries
+		// Check for request forgeries
 		// Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
 
-			   //       if (!Session::checkToken('post'))
+		//       if (!Session::checkToken('post'))
 		//        {
-		   // $result='0'.'&'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_COMMENTARY').': '.Text::_('JINVALID_TOKEN');
-		  // echo json_encode($result);
+		// $result='0'.'&'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_COMMENTARY').': '.Text::_('JINVALID_TOKEN');
+		// echo json_encode($result);
 		// }
 		// else
 		// {
-		  $event_id = Factory::getApplication()->input->getInt('event_id');
-		  $model = $this->getModel();
+		$event_id = Factory::getApplication()->input->getInt('event_id');
+		$model    = $this->getModel();
 
 		if (!$result = $model->deletecommentary($event_id))
 		{
@@ -67,14 +68,14 @@ class sportsmanagementControllerajaxcalls extends BaseController
 			$result = '1' . '&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_DELETE_COMMENTARY') . '&' . $event_id;
 		}
 
-		  echo json_encode($result);
+		echo json_encode($result);
 
-		 // }
-			// Close the application
-		  Factory::getApplication()->close();
+		// }
+		// Close the application
+		Factory::getApplication()->close();
 
-				  // Jexit();
-		  // Factory::getApplication()->close();
+		// Jexit();
+		// Factory::getApplication()->close();
 	}
 
 

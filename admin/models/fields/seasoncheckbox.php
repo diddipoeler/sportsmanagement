@@ -13,11 +13,13 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Filesystem\Folder;
+
 FormHelper::loadFieldClass('list');
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
@@ -49,12 +51,12 @@ class JFormFieldseasoncheckbox extends FormField
 	 */
 	protected function getInput()
 	{
-		$app = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
-		$select_id = Factory::getApplication()->input->getVar('id');
+		$app         = Factory::getApplication();
+		$option      = Factory::getApplication()->input->getCmd('option');
+		$select_id   = Factory::getApplication()->input->getVar('id');
 		$this->value = explode(",", $this->value);
 		$targettable = $this->element['targettable'];
-		$targetid = $this->element['targetid'];
+		$targetid    = $this->element['targetid'];
 
 		// Initialize variables.
 		$query = Factory::getDbo()->getQuery(true);
@@ -64,11 +66,11 @@ class JFormFieldseasoncheckbox extends FormField
 		$query->from('#__sportsmanagement_season');
 		$query->order('name DESC');
 
-				  $starttime = microtime();
+		$starttime = microtime();
 		Factory::getDbo()->setQuery($query);
 		$options = Factory::getDbo()->loadObjectList();
 
-		  // Teilnehmende saisons selektieren
+		// Teilnehmende saisons selektieren
 		if ($select_id)
 		{
 			$query = Factory::getDbo()->getQuery(true);
@@ -84,44 +86,44 @@ class JFormFieldseasoncheckbox extends FormField
 		}
 		else
 		{
-			 $this->value = '';
+			$this->value = '';
 		}
 
 		// Initialize variables.
-			$html = array();
+		$html = array();
 
-			// Initialize some field attributes.
-			$class = $this->element['class'] ? ' class="checkboxes ' . (string) $this->element['class'] . '"' : ' class="checkboxes"';
+		// Initialize some field attributes.
+		$class = $this->element['class'] ? ' class="checkboxes ' . (string) $this->element['class'] . '"' : ' class="checkboxes"';
 
-			// Start the checkbox field output.
-			$html[] = '<fieldset id="' . $this->id . '"' . $class . '>';
+		// Start the checkbox field output.
+		$html[] = '<fieldset id="' . $this->id . '"' . $class . '>';
 
-			// Build the checkbox field output.
-			$html[] = '<ul>';
+		// Build the checkbox field output.
+		$html[] = '<ul>';
 
 		foreach ($options as $i => $option)
 		{
-				// Initialize some option attributes.
-				$checked = (in_array((string) $option->value, (array) $this->value) ? ' checked="checked"' : '');
-				$class = !empty($option->class) ? ' class="' . $option->class . '"' : '';
-				$disabled = !empty($option->disable) ? ' disabled="disabled"' : '';
+			// Initialize some option attributes.
+			$checked  = (in_array((string) $option->value, (array) $this->value) ? ' checked="checked"' : '');
+			$class    = !empty($option->class) ? ' class="' . $option->class . '"' : '';
+			$disabled = !empty($option->disable) ? ' disabled="disabled"' : '';
 
-				// Initialize some JavaScript option attributes.
-				$onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
-				$html[] = '<li>';
-				$html[] = '<input type="checkbox" id="' . $this->id . $i . '" name="' . $this->name . '[]"' . ' value="'
+			// Initialize some JavaScript option attributes.
+			$onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
+			$html[]  = '<li>';
+			$html[]  = '<input type="checkbox" id="' . $this->id . $i . '" name="' . $this->name . '[]"' . ' value="'
 				. htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"' . $checked . $class . $onclick . $disabled . '/>';
 
-				$html[] = '<label for="' . $this->id . $i . '"' . $class . '>' . Text::_($option->text) . '</label>';
-				$html[] = '</li>';
+			$html[] = '<label for="' . $this->id . $i . '"' . $class . '>' . Text::_($option->text) . '</label>';
+			$html[] = '</li>';
 		}
 
-			$html[] = '</ul>';
+		$html[] = '</ul>';
 
-			// End the checkbox field output.
-			$html[] = '</fieldset>';
+		// End the checkbox field output.
+		$html[] = '</fieldset>';
 
-			return implode($html);
+		return implode($html);
 
 	}
 }

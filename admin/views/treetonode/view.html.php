@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -35,11 +36,11 @@ class sportsmanagementViewTreetonode extends sportsmanagementView
 	 *
 	 * @return
 	 */
-	function init(  )
+	function init()
 	{
 		if ($this->getLayout() == 'edit' || $this->getLayout() == 'edit_3' || $this->getLayout() == 'edit_4')
 		{
-			   $this->_displayForm();
+			$this->_displayForm();
 
 			return;
 		}
@@ -52,25 +53,25 @@ class sportsmanagementViewTreetonode extends sportsmanagementView
 	 *
 	 * @return void
 	 */
-	function _displayForm(  )
+	function _displayForm()
 	{
 		$pid = $this->app->getUserState($this->option . '.pid');
 		$tid = $this->app->getUserState($this->option . '.tid');
 
 		$lists = array();
 
-			  //	$node = $this->get('data');
+		//	$node = $this->get('data');
 		$match = $this->model->getNodeMatch();
 
-			  // $total = $this->get('Total');
+		// $total = $this->get('Total');
 		// $pagination = $this->get('Pagination');
 		// $projectws = $this->get( 'Data', 'project' );
 		$mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
-		$projectws = $mdlProject->getProject($pid);
+		$projectws  = $mdlProject->getProject($pid);
 
-			  $model = $this->getModel('project');
+		$model          = $this->getModel('project');
 		$mdlTreetonodes = BaseDatabaseModel::getInstance("Treetonodes", "sportsmanagementModel");
-		$team_id[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
+		$team_id[]      = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
 
 		if ($projectteams = $mdlTreetonodes->getProjectTeamsOptions($pid))
 		{
@@ -81,9 +82,9 @@ class sportsmanagementViewTreetonode extends sportsmanagementView
 		unset($team_id);
 
 		$this->projectws = $projectws;
-		$this->lists = $lists;
-		$this->node = $this->item;
-		$this->match = $match;
+		$this->lists     = $lists;
+		$this->node      = $this->item;
+		$this->match     = $match;
 
 	}
 

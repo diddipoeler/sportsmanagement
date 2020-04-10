@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Factory;
 
@@ -35,12 +36,12 @@ class sportsmanagementControllersmimageimports extends JSMControllerAdmin
 	 */
 	function import()
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
-		$model    = $this->getModel();
+		$model  = $this->getModel();
 		$result = $model->import();
 
-			  $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false));
+		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false));
 
 	}
 
@@ -49,7 +50,7 @@ class sportsmanagementControllersmimageimports extends JSMControllerAdmin
 	 *
 	 * @since 1.6
 	 */
-	public function getModel($name = 'smimageimport', $prefix = 'sportsmanagementModel', $config = Array() )
+	public function getModel($name = 'smimageimport', $prefix = 'sportsmanagementModel', $config = Array())
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 

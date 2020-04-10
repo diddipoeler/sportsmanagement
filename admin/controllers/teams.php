@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -41,7 +42,7 @@ class sportsmanagementControllerteams extends JSMControllerAdmin
 		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
 		// Get the arrays from the Request
-		$order = Factory::getApplication()->input->getVar('order', null, 'post', 'array');
+		$order         = Factory::getApplication()->input->getVar('order', null, 'post', 'array');
 		$originalOrder = explode(',', Factory::getApplication()->input->getString('original_order_values'));
 
 		// Make sure something has changed
@@ -65,8 +66,8 @@ class sportsmanagementControllerteams extends JSMControllerAdmin
 	 */
 	function saveshort()
 	{
-		$model = $this->getModel();
-		$msg = $model->saveshort();
+		$model   = $this->getModel();
+		$msg     = $model->saveshort();
 		$club_id = $this->jsmjinput->getInt('club_id');
 		$this->setRedirect('index.php?option=com_sportsmanagement&view=teams&club_id=' . $club_id, $msg);
 	}

@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -37,12 +38,12 @@ class sportsmanagementViewDivisions extends sportsmanagementView
 	 */
 	public function init()
 	{
-		$lists = array();
+		$lists            = array();
 		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
-		$mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
-		$this->projectws = $mdlProject->getProject($this->project_id);
-		$this->table = Table::getInstance('division', 'sportsmanagementTable');
-		$this->lists = $lists;
+		$mdlProject       = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
+		$this->projectws  = $mdlProject->getProject($this->project_id);
+		$this->table      = Table::getInstance('division', 'sportsmanagementTable');
+		$this->lists      = $lists;
 	}
 
 	/**

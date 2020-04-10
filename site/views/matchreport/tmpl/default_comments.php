@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Dispatcher\Dispatcher;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -22,7 +23,7 @@ use Joomla\Registry\Registry;
 
 ?>
 <!-- START of match summary -->
-<div class="<?php echo $this->divclassrow;?> table-responsive" id="matchreport">
+<div class="<?php echo $this->divclassrow; ?> table-responsive" id="matchreport">
 	<?php
 
 	/**
@@ -34,16 +35,16 @@ use Joomla\Registry\Registry;
 
 	if (!empty($this->match->summary) && preg_match('/{jcomments\s+(off|lock)}/is', $this->match->summary))
 	{
-		 $commentsDisabled = 1;
+		$commentsDisabled = 1;
 	}
 
 	/**
- * Comments integration
- */
+	 * Comments integration
+	 */
 	if (!$commentsDisabled)
 	{
-		 $commmentsInstance = sportsmanagementModelComments::CreateInstance($this->config);
-		 echo $commmentsInstance->showMatchComments($this->match, $this->team1, $this->team2, $this->config, $this->project);
+		$commmentsInstance = sportsmanagementModelComments::CreateInstance($this->config);
+		echo $commmentsInstance->showMatchComments($this->match, $this->team1, $this->team2, $this->config, $this->project);
 	}
 
 	?>

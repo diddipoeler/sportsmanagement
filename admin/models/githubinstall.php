@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\Archive\Archive;
 use Joomla\CMS\Filesystem\Folder;
@@ -49,7 +50,8 @@ class sportsmanagementModelgithubinstall extends JSMModelLegacy
 	/**
 	 * sportsmanagementModelgithubinstall::CopyGithubLink()
 	 *
-	 * @param   mixed $link
+	 * @param   mixed  $link
+	 *
 	 * @return
 	 */
 	function CopyGithubLink($link)
@@ -63,12 +65,12 @@ class sportsmanagementModelgithubinstall extends JSMModelLegacy
 		else
 		{
 			/**
- * set the target directory
- */
-			$base_Dir = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR;
+			 * set the target directory
+			 */
+			$base_Dir     = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR;
 			$file['name'] = basename($link);
-			$filename = $file['name'];
-			$filepath = $base_Dir . $filename;
+			$filename     = $file['name'];
+			$filepath     = $base_Dir . $filename;
 
 			if (!isset($this->_success_text['Komponente:']))
 			{
@@ -80,9 +82,9 @@ class sportsmanagementModelgithubinstall extends JSMModelLegacy
 			if (version_compare(JSM_JVERSION, '3', 'eq'))
 			{
 				/**
-*
- * Get the handler to download the package
-*/
+				 *
+				 * Get the handler to download the package
+				 */
 				try
 				{
 					$http = JHttpFactory::getHttp(null, array('curl', 'stream'));
@@ -95,12 +97,12 @@ class sportsmanagementModelgithubinstall extends JSMModelLegacy
 				}
 
 				/**
-*
- * Download the package
-*/
+				 *
+				 * Download the package
+				 */
 				try
 				{
-					$result = $http->get($link);
+					$result  = $http->get($link);
 					$my_text = '<span style="color:' . $this->storeSuccessColor . '">';
 					$my_text .= Text::sprintf('Die ZIP-Datei der Komponente [ %1$s ] konnte kopiert werden!', "</span><strong>" . $link . "</strong>");
 					$my_text .= '<br />';
@@ -122,9 +124,9 @@ class sportsmanagementModelgithubinstall extends JSMModelLegacy
 				try
 				{
 					/**
-*
- * Write the file to disk
-*/
+					 *
+					 * Write the file to disk
+					 */
 					File::write($filepath, $result->body);
 				}
 				catch (RuntimeException $e)
@@ -138,14 +140,14 @@ class sportsmanagementModelgithubinstall extends JSMModelLegacy
 			elseif (version_compare(JSM_JVERSION, '4', 'eq'))
 			{
 				/**
-*
- * Download the package at the URL given.
-*/
+				 *
+				 * Download the package at the URL given.
+				 */
 				$p_file = InstallerHelper::downloadPackage($link);
 				/**
-*
- * Was the package downloaded?
-*/
+				 *
+				 * Was the package downloaded?
+				 */
 				if (!$p_file)
 				{
 					$my_text = '<span style="color:' . $this->storeFailedColor . '">';
@@ -185,7 +187,7 @@ class sportsmanagementModelgithubinstall extends JSMModelLegacy
 			}
 			elseif (version_compare(JSM_JVERSION, '4', 'eq'))
 			{
-				$dest = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'sportsmanagement-' . $file['name'];
+				$dest    = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'sportsmanagement-' . $file['name'];
 				$archive = new Archive;
 
 				try
@@ -200,16 +202,16 @@ class sportsmanagementModelgithubinstall extends JSMModelLegacy
 			}
 
 			/**
-*
- * Get an installer instance
-*/
+			 *
+			 * Get an installer instance
+			 */
 
 			$installer = Installer::getInstance();
 
 			/**
-*
- * Get the path to the package to install
-*/
+			 *
+			 * Get the path to the package to install
+			 */
 
 			$p_dir = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'sportsmanagement-' . str_replace(".zip", "", $file['name']) . DIRECTORY_SEPARATOR;
 
@@ -217,20 +219,20 @@ class sportsmanagementModelgithubinstall extends JSMModelLegacy
 			$p_dir_modules = JPATH_SITE . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR;
 
 			/**
-*
- * Detect the package type
-*/
+			 *
+			 * Detect the package type
+			 */
 			$type = InstallerHelper::detectType($p_dir);
 
 			$package['packagefile'] = null;
-			$package['extractdir'] = null;
-			$package['dir'] = $p_dir;
-			$package['type'] = $type;
+			$package['extractdir']  = null;
+			$package['dir']         = $p_dir;
+			$package['type']        = $type;
 
 			/**
-*
- * Install the package
-*/
+			 *
+			 * Install the package
+			 */
 
 			if (!$installer->install($package['dir']))
 			{
@@ -266,7 +268,6 @@ class sportsmanagementModelgithubinstall extends JSMModelLegacy
 
 		return $this->_success_text;
 	}
-
 
 
 }

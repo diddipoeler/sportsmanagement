@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -41,25 +42,25 @@ class sportsmanagementViewTeams extends sportsmanagementView
 	public function init()
 	{
 
-		$starttime = microtime();
+		$starttime    = microtime();
 		$this->assign = false;
 
 		if ($this->getLayout() == 'assignteams' || $this->getLayout() == 'assignteams_3')
 		{
 			$this->season_id = $this->jinput->get('season_id');
-			$this->assign = true;
+			$this->assign    = true;
 		}
 
 		$this->table = Table::getInstance('team', 'sportsmanagementTable');
 
 		// Build the html select list for sportstypes
-		$sportstypes[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'), 'id', 'name');
+		$sportstypes[]  = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'), 'id', 'name');
 		$mdlSportsTypes = BaseDatabaseModel::getInstance('SportsTypes', 'sportsmanagementModel');
 		$allSportstypes = $mdlSportsTypes->getSportsTypes();
-		$sportstypes = array_merge($sportstypes, $allSportstypes);
+		$sportstypes    = array_merge($sportstypes, $allSportstypes);
 
-		$this->sports_type = $allSportstypes;
-		$lists['sportstype'] = $sportstypes;
+		$this->sports_type    = $allSportstypes;
+		$lists['sportstype']  = $sportstypes;
 		$lists['sportstypes'] = HTMLHelper::_('select.genericList', $sportstypes, 'filter_sports_type', 'class="inputbox" onChange="this.form.submit();" style="width:120px"', 'id', 'name', $this->state->get('filter.sports_type'));
 		unset($sportstypes);
 
@@ -74,10 +75,10 @@ class sportsmanagementViewTeams extends sportsmanagementView
 			$this->search_nation = $res;
 		}
 
-		$lists['nation'] = $nation;
+		$lists['nation']  = $nation;
 		$lists['nation2'] = JHtmlSelect::genericlist($nation, 'filter_search_nation', 'class="inputbox" style="width:140px; " onchange="this.form.submit();"', 'value', 'text', $this->state->get('filter.search_nation'));
 
-		$myoptions = array();
+		$myoptions   = array();
 		$myoptions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
 		$mdlagegroup = BaseDatabaseModel::getInstance('agegroups', 'sportsmanagementModel');
 
@@ -90,7 +91,7 @@ class sportsmanagementViewTeams extends sportsmanagementView
 		unset($myoptions);
 
 		$this->club_id = $this->jinput->get->get('club_id');
-		$this->lists = $lists;
+		$this->lists   = $lists;
 	}
 
 	/**
@@ -103,7 +104,7 @@ class sportsmanagementViewTeams extends sportsmanagementView
 
 		// Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_TITLE');
-		$this->icon = 'teams';
+		$this->icon  = 'teams';
 		ToolbarHelper::apply('teams.saveshort');
 		ToolbarHelper::addNew('team.add');
 		ToolbarHelper::editList('team.edit');

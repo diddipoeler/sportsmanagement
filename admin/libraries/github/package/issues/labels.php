@@ -25,10 +25,10 @@ class JGithubPackageIssuesLabels extends JGithubPackage
 	 * @param   string  $owner  The name of the owner of the GitHub repository.
 	 * @param   string  $repo   The name of the GitHub repository.
 	 *
+	 * @return  array
 	 * @throws DomainException
 	 * @since   12.3
 	 *
-	 * @return  array
 	 */
 	public function getList($owner, $repo)
 	{
@@ -48,10 +48,10 @@ class JGithubPackageIssuesLabels extends JGithubPackage
 	 * @param   string  $repo  The name of the GitHub repository.
 	 * @param   string  $name  The label name to get.
 	 *
+	 * @return  object
 	 * @throws DomainException
 	 * @since   12.3
 	 *
-	 * @return  object
 	 */
 	public function get($user, $repo, $name)
 	{
@@ -72,10 +72,10 @@ class JGithubPackageIssuesLabels extends JGithubPackage
 	 * @param   string  $name   The label name.
 	 * @param   string  $color  The label color.
 	 *
+	 * @return  object
 	 * @throws DomainException
 	 * @since   12.3
 	 *
-	 * @return  object
 	 */
 	public function create($owner, $repo, $name, $color)
 	{
@@ -113,10 +113,10 @@ class JGithubPackageIssuesLabels extends JGithubPackage
 	 * @param   string  $name   The new label name.
 	 * @param   string  $color  The new label color.
 	 *
+	 * @return  object
 	 * @throws DomainException
 	 * @since   12.3
 	 *
-	 * @return  object
 	 */
 	public function update($user, $repo, $label, $name, $color)
 	{
@@ -144,9 +144,9 @@ class JGithubPackageIssuesLabels extends JGithubPackage
 	 * @param   string  $repo   The name of the GitHub repository.
 	 * @param   string  $name   The label name.
 	 *
-	 * @throws DomainException
 	 * @return  object
 	 *
+	 * @throws DomainException
 	 * @since   12.3
 	 */
 	public function delete($owner, $repo, $name)
@@ -168,9 +168,9 @@ class JGithubPackageIssuesLabels extends JGithubPackage
 	 * @param   string   $repo    The name of the GitHub repository.
 	 * @param   integer  $number  The issue number.
 	 *
+	 * @return  object
 	 * @since   3.3 (CMS)
 	 *
-	 * @return  object
 	 */
 	public function getListByIssue($owner, $repo, $number)
 	{
@@ -191,9 +191,9 @@ class JGithubPackageIssuesLabels extends JGithubPackage
 	 * @param   string  $number  The issue number.
 	 * @param   array   $labels  An array of labels to add.
 	 *
+	 * @return  object
 	 * @since   3.3 (CMS)
 	 *
-	 * @return  object
 	 */
 	public function add($owner, $repo, $number, array $labels)
 	{
@@ -214,9 +214,9 @@ class JGithubPackageIssuesLabels extends JGithubPackage
 	 * @param   string  $number  The issue number.
 	 * @param   string  $name    The name of the label to remove.
 	 *
+	 * @return  object
 	 * @since   3.3 (CMS)
 	 *
-	 * @return  object
 	 */
 	public function removeFromIssue($owner, $repo, $number, $name)
 	{
@@ -239,9 +239,9 @@ class JGithubPackageIssuesLabels extends JGithubPackage
 	 * @param   string  $number  The issue number.
 	 * @param   array   $labels  New labels
 	 *
+	 * @return  object
 	 * @since   3.3 (CMS)
 	 *
-	 * @return  object
 	 */
 	public function replace($owner, $repo, $number, array $labels)
 	{
@@ -255,15 +255,15 @@ class JGithubPackageIssuesLabels extends JGithubPackage
 	}
 
 	/**
-	.* Remove all labels from an issue.
+	 * .* Remove all labels from an issue.
 	 *
 	 * @param   string  $owner   The name of the owner of the GitHub repository.
 	 * @param   string  $repo    The name of the GitHub repository.
 	 * @param   string  $number  The issue number.
 	 *
+	 * @return  object
 	 * @since   3.3 (CMS)
 	 *
-	 * @return  object
 	 */
 	public function removeAllFromIssue($owner, $repo, $number)
 	{
@@ -284,9 +284,9 @@ class JGithubPackageIssuesLabels extends JGithubPackage
 	 * @param   string  $repo    The name of the GitHub repository.
 	 * @param   string  $number  The issue number.
 	 *
+	 * @return  object
 	 * @since   3.3 (CMS)
 	 *
-	 * @return  object
 	 */
 	public function getListByMilestone($owner, $repo, $number)
 	{

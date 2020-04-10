@@ -24,9 +24,9 @@ class JGithubPackageUsersFollowers extends JGithubPackage
 	 *
 	 * @param   string  $user  The name of the user. If not set the current authenticated user will be used.
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function getList($user = '')
 	{
@@ -45,9 +45,9 @@ class JGithubPackageUsersFollowers extends JGithubPackage
 	 *
 	 * @param   string  $user  The name of the user. If not set the current authenticated user will be used.
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function getListFollowedBy($user = '')
 	{
@@ -66,10 +66,10 @@ class JGithubPackageUsersFollowers extends JGithubPackage
 	 *
 	 * @param   string  $user  The name of the user.
 	 *
+	 * @return boolean
 	 * @throws UnexpectedValueException
 	 * @since 3.3 (CMS)
 	 *
-	 * @return boolean
 	 */
 	public function check($user)
 	{
@@ -104,9 +104,9 @@ class JGithubPackageUsersFollowers extends JGithubPackage
 	 *
 	 * @param   string  $user  The name of the user.
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function follow($user)
 	{
@@ -127,9 +127,9 @@ class JGithubPackageUsersFollowers extends JGithubPackage
 	 *
 	 * @param   string  $user  The name of the user.
 	 *
+	 * @return object
 	 * @since 3.3 (CMS)
 	 *
-	 * @return object
 	 */
 	public function unfollow($user)
 	{

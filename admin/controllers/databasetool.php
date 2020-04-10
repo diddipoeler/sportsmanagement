@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
 
@@ -35,8 +36,8 @@ class sportsmanagementControllerDatabaseTool extends BaseController
 	 */
 	function repair()
 	{
-		$app = Factory::getApplication();
-		$model = $this->getModel('databasetool');
+		$app        = Factory::getApplication();
+		$model      = $this->getModel('databasetool');
 		$jsm_tables = $model->getSportsManagementTables();
 
 		foreach ($jsm_tables as $key => $value)
@@ -56,8 +57,8 @@ class sportsmanagementControllerDatabaseTool extends BaseController
 	 */
 	function optimize()
 	{
-		$app = Factory::getApplication();
-		$model = $this->getModel('databasetool');
+		$app        = Factory::getApplication();
+		$model      = $this->getModel('databasetool');
 		$jsm_tables = $model->getSportsManagementTables();
 
 		foreach ($jsm_tables as $key => $value)
@@ -77,8 +78,8 @@ class sportsmanagementControllerDatabaseTool extends BaseController
 	 */
 	function truncate()
 	{
-		$app = Factory::getApplication();
-		$model = $this->getModel('databasetool');
+		$app        = Factory::getApplication();
+		$model      = $this->getModel('databasetool');
 		$jsm_tables = $model->getSportsManagementTables();
 
 		foreach ($jsm_tables as $key => $value)
@@ -98,8 +99,8 @@ class sportsmanagementControllerDatabaseTool extends BaseController
 	 */
 	function truncatejl()
 	{
-		$app = Factory::getApplication();
-		$model = $this->getModel('databasetool');
+		$app       = Factory::getApplication();
+		$model     = $this->getModel('databasetool');
 		$jl_tables = $model->getJoomleagueTablesTruncate();
 
 		foreach ($jl_tables as $key => $value)
@@ -131,7 +132,7 @@ class sportsmanagementControllerDatabaseTool extends BaseController
 	 */
 	function picturepath()
 	{
-		$app = Factory::getApplication();
+		$app   = Factory::getApplication();
 		$model = $this->getModel('databasetool');
 		$model->setNewPicturePath();
 		$msg = 'Alle Bilderpfade angepasst';

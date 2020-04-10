@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -49,9 +50,9 @@ class JFormFieldcountryassociation extends \JFormFieldList
 	protected function getOptions()
 	{
 		// Initialize variables.
-		$options = array();
-		$varname = (string) $this->element['varname'];
-		  $vartable = (string) $this->element['targettable'];
+		$options   = array();
+		$varname   = (string) $this->element['varname'];
+		$vartable  = (string) $this->element['targettable'];
 		$select_id = Factory::getApplication()->input->getVar($varname);
 
 		if (is_array($select_id))
@@ -61,10 +62,10 @@ class JFormFieldcountryassociation extends \JFormFieldList
 
 		if ($select_id)
 		{
-			$db = Factory::getDbo();
+			$db    = Factory::getDbo();
 			$query = $db->getQuery(true);
 
-				$query->select('t.id AS value, t.name AS text');
+			$query->select('t.id AS value, t.name AS text');
 			$query->from('#__sportsmanagement_associations AS t');
 			$query->join('inner', '#__sportsmanagement_' . $vartable . ' AS wt ON wt.country = t.country ');
 			$query->where('wt.id = ' . $select_id);
@@ -73,9 +74,9 @@ class JFormFieldcountryassociation extends \JFormFieldList
 			$options = $db->loadObjectList();
 		}
 
-			  // Merge any additional options in the XML definition.
-			$options = array_merge(parent::getOptions(), $options);
+		// Merge any additional options in the XML definition.
+		$options = array_merge(parent::getOptions(), $options);
 
-			return $options;
+		return $options;
 	}
 }

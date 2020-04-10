@@ -13,10 +13,12 @@
  */
 
 defined('_JEXEC') or die();
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Text;
+
 FormHelper::loadFieldClass('textarea');
 
 /**
@@ -53,9 +55,10 @@ class JFormFieldTextarea2 extends JFormFieldTextarea
 	/**
 	 * FormFieldTextarea2::setup()
 	 *
-	 * @param   mixed $element
-	 * @param   mixed $value
-	 * @param   mixed $group
+	 * @param   mixed  $element
+	 * @param   mixed  $value
+	 * @param   mixed  $group
+	 *
 	 * @return
 	 */
 	public function setup(SimpleXMLElement $element, $value, $group = null)

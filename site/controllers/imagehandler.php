@@ -12,6 +12,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Language\Text;
@@ -56,16 +57,16 @@ class sportsmanagementControllerImagehandler extends BaseController
 	 */
 	function upload()
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
 
 		// Check for request forgeries
 		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
-		$file = Factory::getApplication()->input->getVar('userfile', '', 'files', 'array');
-		$type = Factory::getApplication()->input->getVar('type');
-		$folder = ImageSelectSM::getfolder($type);
-		$field = Factory::getApplication()->input->getVar('field');
+		$file        = Factory::getApplication()->input->getVar('userfile', '', 'files', 'array');
+		$type        = Factory::getApplication()->input->getVar('type');
+		$folder      = ImageSelectSM::getfolder($type);
+		$field       = Factory::getApplication()->input->getVar('field');
 		$linkaddress = Factory::getApplication()->input->getVar('linkaddress');
 
 		// Set FTP credentials, if given
@@ -157,16 +158,16 @@ class sportsmanagementControllerImagehandler extends BaseController
 	 */
 	function delete()
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
 
-			  // Set FTP credentials, if given
+		// Set FTP credentials, if given
 		jimport('joomla.client.helper');
 		ClientHelper::setCredentialsFromRequest('ftp');
 
 		// Get some data from the request
 		$images = Factory::getApplication()->input->getVar('rm', array(), '', 'array');
-		$type = Factory::getApplication()->input->getVar('type');
+		$type   = Factory::getApplication()->input->getVar('type');
 
 		$folder = ImageSelectSM::getfolder($type);
 
@@ -180,7 +181,7 @@ class sportsmanagementControllerImagehandler extends BaseController
 					continue;
 				}
 
-				$fullPath = Path::clean(JPATH_SITE . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $option . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . $folder . DIRECTORY_SEPARATOR . $image);
+				$fullPath      = Path::clean(JPATH_SITE . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $option . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . $folder . DIRECTORY_SEPARATOR . $image);
 				$fullPaththumb = Path::clean(JPATH_SITE . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $option . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . $folder . DIRECTORY_SEPARATOR . 'small' . DIRECTORY_SEPARATOR . $image);
 
 				if (is_file($fullPath))

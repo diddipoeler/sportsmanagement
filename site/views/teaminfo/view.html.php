@@ -13,7 +13,9 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
+
 /**
  * sportsmanagementViewTeamInfo
  *
@@ -38,27 +40,27 @@ class sportsmanagementViewTeamInfo extends sportsmanagementView
 
 		if ($this->project->id)
 		{
-			$this->team = sportsmanagementModelTeamInfo::getTeamByProject(1);
-			$this->club = sportsmanagementModelTeamInfo::getClub();
-			$this->seasons = sportsmanagementModelTeamInfo::getSeasons($this->config, 0);
-			$this->showediticon = sportsmanagementModelProject::hasEditPermission('projectteam.edit');
+			$this->team          = sportsmanagementModelTeamInfo::getTeamByProject(1);
+			$this->club          = sportsmanagementModelTeamInfo::getClub();
+			$this->seasons       = sportsmanagementModelTeamInfo::getSeasons($this->config, 0);
+			$this->showediticon  = sportsmanagementModelProject::hasEditPermission('projectteam.edit');
 			$this->projectteamid = sportsmanagementModelTeamInfo::$projectteamid;
-			$this->teamid = sportsmanagementModelTeamInfo::$teamid;
-			$this->trainingData = sportsmanagementModelTeamInfo::getTrainigData($this->project->id);
+			$this->teamid        = sportsmanagementModelTeamInfo::$teamid;
+			$this->trainingData  = sportsmanagementModelTeamInfo::getTrainigData($this->project->id);
 
 			if ($this->checkextrafields)
 			{
 				$this->extrafields = sportsmanagementHelper::getUserExtraFields(sportsmanagementModelTeamInfo::$teamid, 'frontend', sportsmanagementModelTeamInfo::$cfg_which_database);
 			}
 
-			$daysOfWeek = array(
-			 1 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MONDAY'),
-			 2 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_TUESDAY'),
-			 3 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_WEDNESDAY'),
-			 4 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_THURSDAY'),
-			 5 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_FRIDAY'),
-			 6 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SATURDAY'),
-			 7 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SUNDAY')
+			$daysOfWeek       = array(
+				1 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MONDAY'),
+				2 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_TUESDAY'),
+				3 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_WEDNESDAY'),
+				4 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_THURSDAY'),
+				5 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_FRIDAY'),
+				6 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SATURDAY'),
+				7 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SUNDAY')
 			);
 			$this->daysOfWeek = $daysOfWeek;
 
@@ -69,14 +71,14 @@ class sportsmanagementViewTeamInfo extends sportsmanagementView
 
 			//	if ( $this->config['show_history_leagues'] )
 			//	{
-			$this->seasons = sportsmanagementModelTeamInfo::getSeasons($this->config, 1);
-			$this->leaguerankoverview = sportsmanagementModelTeamInfo::getLeagueRankOverview($this->seasons);
+			$this->seasons                  = sportsmanagementModelTeamInfo::getSeasons($this->config, 1);
+			$this->leaguerankoverview       = sportsmanagementModelTeamInfo::getLeagueRankOverview($this->seasons);
 			$this->leaguerankoverviewdetail = sportsmanagementModelTeamInfo::getLeagueRankOverviewDetail($this->seasons);
 
 			//	}
 		}
 
-			  $this->extended = sportsmanagementHelper::getExtended($this->team->teamextended, 'team');
+		$this->extended = sportsmanagementHelper::getExtended($this->team->teamextended, 'team');
 
 		// Set page title
 		$pageTitle = Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_PAGE_TITLE');

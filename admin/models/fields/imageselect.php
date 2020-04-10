@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -41,14 +42,14 @@ class JFormFieldImageSelect extends FormField
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 
-			  $default = $this->value;
+		$default   = $this->value;
 		$arrPathes = explode('/', $default);
-		$filename = array_pop($arrPathes);
+		$filename  = array_pop($arrPathes);
 
 		// $targetfolder = array_pop($arrPathes);
 		$targetfolder = $this->element['targetfolder'];
 
-		$output  = ImageSelectSM::getSelector($this->name, $this->name . '_preview', $targetfolder, $this->value, $default, $this->name, $this->id);
+		$output = ImageSelectSM::getSelector($this->name, $this->name . '_preview', $targetfolder, $this->value, $default, $this->name, $this->id);
 		$output .= '<img class="imagepreview" src="' . Uri::root(true) . '/media/com_sportsmanagement/jl_images/spinner.gif" ';
 		$output .= ' name="' . $this->name . '_preview" id="' . $this->id . '_preview" border="3" alt="Preview" title="Preview" />';
 		$output .= '<input type="hidden" id="original_' . $this->id . '" name="original_' . $this->name . '" value="' . $this->value . '" />';

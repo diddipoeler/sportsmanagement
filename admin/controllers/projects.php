@@ -36,7 +36,7 @@ class sportsmanagementControllerprojects extends JSMControllerAdmin
 	function saveshort()
 	{
 		$model = $this->getModel();
-		$msg = $model->saveshort();
+		$msg   = $model->saveshort();
 		$this->setRedirect('index.php?option=com_sportsmanagement&view=projects', $msg);
 	}
 
@@ -46,14 +46,12 @@ class sportsmanagementControllerprojects extends JSMControllerAdmin
 	 *
 	 * @since 1.6
 	 */
-	public function getModel($name = 'Project', $prefix = 'sportsmanagementModel', $config = Array() )
+	public function getModel($name = 'Project', $prefix = 'sportsmanagementModel', $config = Array())
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 
 		return $model;
 	}
-
-
 
 
 }

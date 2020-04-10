@@ -17,7 +17,7 @@ defined('JPATH_PLATFORM') or die;
  * @since       11.3
  * @deprecated  4.0  Use the `joomla/github` package via Composer instead
  *
- * @property-read  JGithubPackageGistsComments  $comments  GitHub API object for gist comments.
+ * @property-read  JGithubPackageGistsComments $comments  GitHub API object for gist comments.
  */
 class JGithubPackageGists extends JGithubPackage
 {
@@ -34,10 +34,10 @@ class JGithubPackageGists extends JGithubPackage
 	 * @param   boolean  $public       True if the gist should be public.
 	 * @param   string   $description  The optional description of the gist.
 	 *
+	 * @return  object
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  object
 	 */
 	public function create($files, $public = false, $description = null)
 	{
@@ -47,8 +47,8 @@ class JGithubPackageGists extends JGithubPackage
 		// Build the request data.
 		$data = json_encode(
 			array(
-				'files' => $this->buildFileData((array) $files),
-				'public' => (bool) $public,
+				'files'       => $this->buildFileData((array) $files),
+				'public'      => (bool) $public,
 				'description' => $description,
 			)
 		);
@@ -68,14 +68,52 @@ class JGithubPackageGists extends JGithubPackage
 	}
 
 	/**
+	 * Method to fetch a data array for transmitting to the GitHub API for a list of files based on
+	 * an input array of file paths or filename and content pairs.
+	 *
+	 * @param   array  $files  The list of file paths or filenames and content.
+	 *
+	 * @return  array
+	 * @throws InvalidArgumentException
+	 * @since   11.3
+	 *
+	 */
+	protected function buildFileData(array $files)
+	{
+		$data = array();
+
+		foreach ($files as $key => $file)
+		{
+			// If the key isn't numeric, then we are dealing with a file whose content has been supplied
+			if (!is_numeric($key))
+			{
+				$data[$key] = array('content' => $file);
+			}
+
+			// Otherwise, we have been given a path and we have to load the content
+			// Verify that the each file exists.
+			elseif (!file_exists($file))
+			{
+				throw new InvalidArgumentException('The file ' . $file . ' does not exist.');
+			}
+			else
+			{
+				$data[basename($file)] = array('content' => file_get_contents($file));
+			}
+		}
+
+		return $data;
+	}
+
+	/**
 	 * Method to delete a gist.
 	 *
 	 * @param   integer  $gistId  The gist number.
 	 *
+	 * @return  void
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  void
 	 */
 	public function delete($gistId)
 	{
@@ -102,10 +140,10 @@ class JGithubPackageGists extends JGithubPackage
 	 * @param   boolean  $public       True if the gist should be public.
 	 * @param   string   $description  The description of the gist.
 	 *
+	 * @return  object
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  object
 	 */
 	public function edit($gistId, $files = null, $public = null, $description = null)
 	{
@@ -155,10 +193,10 @@ class JGithubPackageGists extends JGithubPackage
 	 *
 	 * @param   integer  $gistId  The gist number.
 	 *
+	 * @return  object
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  object
 	 */
 	public function fork($gistId)
 	{
@@ -185,10 +223,10 @@ class JGithubPackageGists extends JGithubPackage
 	 *
 	 * @param   integer  $gistId  The gist number.
 	 *
+	 * @return  object
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  object
 	 */
 	public function get($gistId)
 	{
@@ -216,10 +254,10 @@ class JGithubPackageGists extends JGithubPackage
 	 * @param   integer  $page   The page number from which to get items.
 	 * @param   integer  $limit  The number of items on a page.
 	 *
+	 * @return  array
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  array
 	 */
 	public function getList($page = 0, $limit = 0)
 	{
@@ -247,10 +285,10 @@ class JGithubPackageGists extends JGithubPackage
 	 * @param   integer  $page   The page number from which to get items.
 	 * @param   integer  $limit  The number of items on a page.
 	 *
+	 * @return  array
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  array
 	 */
 	public function getListByUser($user, $page = 0, $limit = 0)
 	{
@@ -277,10 +315,10 @@ class JGithubPackageGists extends JGithubPackage
 	 * @param   integer  $page   The page number from which to get items.
 	 * @param   integer  $limit  The number of items on a page.
 	 *
+	 * @return  array
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  array
 	 */
 	public function getListPublic($page = 0, $limit = 0)
 	{
@@ -307,10 +345,10 @@ class JGithubPackageGists extends JGithubPackage
 	 * @param   integer  $page   The page number from which to get items.
 	 * @param   integer  $limit  The number of items on a page.
 	 *
+	 * @return  array
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  array
 	 */
 	public function getListStarred($page = 0, $limit = 0)
 	{
@@ -336,10 +374,10 @@ class JGithubPackageGists extends JGithubPackage
 	 *
 	 * @param   integer  $gistId  The gist number.
 	 *
+	 * @return  boolean  True if the gist is starred.
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  boolean  True if the gist is starred.
 	 */
 	public function isStarred($gistId)
 	{
@@ -371,10 +409,10 @@ class JGithubPackageGists extends JGithubPackage
 	 *
 	 * @param   integer  $gistId  The gist number.
 	 *
+	 * @return  void
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  void
 	 */
 	public function star($gistId)
 	{
@@ -398,10 +436,10 @@ class JGithubPackageGists extends JGithubPackage
 	 *
 	 * @param   integer  $gistId  The gist number.
 	 *
+	 * @return  void
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  void
 	 */
 	public function unstar($gistId)
 	{
@@ -420,44 +458,6 @@ class JGithubPackageGists extends JGithubPackage
 		}
 	}
 
-	/**
-	 * Method to fetch a data array for transmitting to the GitHub API for a list of files based on
-	 * an input array of file paths or filename and content pairs.
-	 *
-	 * @param   array  $files  The list of file paths or filenames and content.
-	 *
-	 * @throws InvalidArgumentException
-	 * @since   11.3
-	 *
-	 * @return  array
-	 */
-	protected function buildFileData(array $files)
-	{
-		$data = array();
-
-		foreach ($files as $key => $file)
-		{
-			// If the key isn't numeric, then we are dealing with a file whose content has been supplied
-			if (!is_numeric($key))
-			{
-				$data[$key] = array('content' => $file);
-			}
-
-			// Otherwise, we have been given a path and we have to load the content
-			// Verify that the each file exists.
-			elseif (!file_exists($file))
-			{
-				throw new InvalidArgumentException('The file ' . $file . ' does not exist.');
-			}
-			else
-			{
-				$data[basename($file)] = array('content' => file_get_contents($file));
-			}
-		}
-
-		return $data;
-	}
-
 	/*
 	 * Deprecated methods
 	 */
@@ -468,9 +468,9 @@ class JGithubPackageGists extends JGithubPackage
 	 * @param   integer  $gistId  The gist number.
 	 * @param   string   $body    The comment body text.
 	 *
-	 * @deprecated use gists->comments->create()
-	 *
 	 * @return  object
+	 *
+	 * @deprecated use gists->comments->create()
 	 *
 	 * @since      11.3
 	 */
@@ -484,11 +484,11 @@ class JGithubPackageGists extends JGithubPackage
 	 *
 	 * @param   integer  $commentId  The id of the comment to delete.
 	 *
-	 * @deprecated use gists->comments->delete()
-	 *
 	 * @return  void
 	 *
-	 * @since   11.3
+	 * @deprecated use gists->comments->delete()
+	 *
+	 * @since      11.3
 	 */
 	public function deleteComment($commentId)
 	{
@@ -501,11 +501,11 @@ class JGithubPackageGists extends JGithubPackage
 	 * @param   integer  $commentId  The id of the comment to update.
 	 * @param   string   $body       The new body text for the comment.
 	 *
-	 * @deprecated use gists->comments->edit()
-	 *
 	 * @return  object
 	 *
-	 * @since   11.3
+	 * @deprecated use gists->comments->edit()
+	 *
+	 * @since      11.3
 	 */
 	public function editComment($commentId, $body)
 	{
@@ -517,11 +517,11 @@ class JGithubPackageGists extends JGithubPackage
 	 *
 	 * @param   integer  $commentId  The comment id to get.
 	 *
-	 * @deprecated use gists->comments->get()
-	 *
 	 * @return  object
 	 *
-	 * @since   11.3
+	 * @deprecated use gists->comments->get()
+	 *
+	 * @since      11.3
 	 */
 	public function getComment($commentId)
 	{
@@ -535,11 +535,11 @@ class JGithubPackageGists extends JGithubPackage
 	 * @param   integer  $page    The page number from which to get items.
 	 * @param   integer  $limit   The number of items on a page.
 	 *
-	 * @deprecated use gists->comments->getList()
-	 *
 	 * @return  array
 	 *
-	 * @since   11.3
+	 * @deprecated use gists->comments->getList()
+	 *
+	 * @since      11.3
 	 */
 	public function getComments($gistId, $page = 0, $limit = 0)
 	{

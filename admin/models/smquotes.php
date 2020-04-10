@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 
@@ -32,18 +33,19 @@ class sportsmanagementModelsmquotes extends JSMModelList
 	/**
 	 * sportsmanagementModelsmquotes::__construct()
 	 *
-	 * @param   mixed $config
+	 * @param   mixed  $config
+	 *
 	 * @return void
 	 */
 	public function __construct($config = array())
 	{
-				$config['filter_fields'] = array(
-						'obj.quote',
-						'obj.id',
-						'obj.ordering'
-						);
-				parent::__construct($config);
-				parent::setDbo($this->jsmdb);
+		$config['filter_fields'] = array(
+			'obj.quote',
+			'obj.id',
+			'obj.ordering'
+		);
+		parent::__construct($config);
+		parent::setDbo($this->jsmdb);
 	}
 
 	/**
@@ -58,9 +60,9 @@ class sportsmanagementModelsmquotes extends JSMModelList
 		if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend'))
 		{
 			// $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
-			  // $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
-			  $this->jsmmessage .= '<br>' . Text::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . $this->context);
-			  $this->jsmmessage .= '<br>' . Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . '');
+			// $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+			$this->jsmmessage .= '<br>' . Text::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . $this->context);
+			$this->jsmmessage .= '<br>' . Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . '');
 		}
 
 		// Load the filter state.
@@ -99,8 +101,6 @@ class sportsmanagementModelsmquotes extends JSMModelList
 
 		$this->setState('list.direction', $listOrder);
 	}
-
-
 
 
 	/**

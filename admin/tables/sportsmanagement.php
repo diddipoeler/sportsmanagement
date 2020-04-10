@@ -41,6 +41,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Table\Table;
 use Joomla\Registry\Registry;
 
@@ -58,16 +59,18 @@ class sportsmanagementTablesportsmanagement extends JSMTable
 	/**
 	 * Constructor
 	 *
-	 * @param object Database connector object
+	 * @param   object Database connector object
 	 */
 	function __construct(&$db)
 	{
 		parent::__construct('#__session', 'session_id', $db);
 	}
+
 	/**
 	 * Overloaded bind function
 	 *
-	 * @param  array           named array
+	 * @param   array           named array
+	 *
 	 * @return null|string     null is operation was satisfactory, otherwise returns an error
 	 * @see    JTable:bind
 	 * @since  1.5
@@ -88,8 +91,9 @@ class sportsmanagementTablesportsmanagement extends JSMTable
 	/**
 	 * Overloaded load function
 	 *
-	 * @param   int     $pk    primary key
-	 * @param   boolean $reset reset data
+	 * @param   int      $pk     primary key
+	 * @param   boolean  $reset  reset data
+	 *
 	 * @return boolean
 	 * @see    JTable:load
 	 */
@@ -109,6 +113,7 @@ class sportsmanagementTablesportsmanagement extends JSMTable
 			return false;
 		}
 	}
+
 	/**
 	 * Method to compute the default name of the asset.
 	 * The default name is in the form `table_name.id`

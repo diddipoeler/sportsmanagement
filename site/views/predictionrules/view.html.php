@@ -13,9 +13,11 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
+
 jimport('joomla.application.component.view');
 
 /**
@@ -32,34 +34,35 @@ class sportsmanagementViewPredictionRules extends JViewLegacy
 	/**
 	 * sportsmanagementViewPredictionRules::display()
 	 *
-	 * @param   mixed $tpl
+	 * @param   mixed  $tpl
+	 *
 	 * @return
 	 */
-	function display($tpl=null)
+	function display($tpl = null)
 	{
 		// Get a refrence of the page instance in joomla
-		$document    = Factory::getDocument();
-		$model        = $this->getModel();
-		  $option = Factory::getApplication()->input->getCmd('option');
+		$document = Factory::getDocument();
+		$model    = $this->getModel();
+		$option   = Factory::getApplication()->input->getCmd('option');
 
 		$app = Factory::getApplication();
 
 		$this->predictionGame = sportsmanagementModelPrediction::getPredictionGame();
-		$this->allowedAdmin = sportsmanagementModelPrediction::getAllowed();
-		$this->headertitle = Text::_('COM_SPORTSMANAGEMENT_PRED_RULES_SECTION_TITLE');
+		$this->allowedAdmin   = sportsmanagementModelPrediction::getAllowed();
+		$this->headertitle    = Text::_('COM_SPORTSMANAGEMENT_PRED_RULES_SECTION_TITLE');
 
 		if (isset($this->predictionGame))
 		{
-			$config            = sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
-			$overallConfig    = sportsmanagementModelPrediction::getPredictionOverallConfig();
+			$config        = sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
+			$overallConfig = sportsmanagementModelPrediction::getPredictionOverallConfig();
 
-			$this->model = $model;
-			$this->config = array_merge($overallConfig, $config);
-			$configavatar    = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
-			$this->configavatar = $configavatar;
-			$this->predictionMember = sportsmanagementModelPrediction::getPredictionMember($configavatar);
+			$this->model              = $model;
+			$this->config             = array_merge($overallConfig, $config);
+			$configavatar             = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
+			$this->configavatar       = $configavatar;
+			$this->predictionMember   = sportsmanagementModelPrediction::getPredictionMember($configavatar);
 			$this->predictionProjectS = sportsmanagementModelPrediction::getPredictionProjectS();
-			$this->actJoomlaUser = Factory::getUser();
+			$this->actJoomlaUser      = Factory::getUser();
 
 			// Set page title
 			$pageTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_TITLE'); // 'Tippspiel Regeln'

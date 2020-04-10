@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
@@ -47,14 +48,14 @@ if (!class_exists('sportsmanagementHelper'))
 }
 
 /**
-*
+ *
  * Include the functions only once
-*/
+ */
 JLoader::register('modJSMSportsHelper', __DIR__ . '/helper.php');
 
-$parameter = $params->get('sportstypes');
+$parameter   = $params->get('sportstypes');
 $sportstypes = Text::_($params->get('sportstypes'));
-$data = modJSMSportsHelper::getData($params);
+$data        = modJSMSportsHelper::getData($params);
 
 $document = Factory::getDocument();
 
@@ -68,17 +69,17 @@ $document = Factory::getDocument();
  */
 if (!defined($data['sportstype'][$sportstypes]->name))
 {
-	$langtag = Factory::getLanguage();
-	$extension = 'com_sportsmanagement';
-	$base_dir = JPATH_ADMINISTRATOR;
+	$langtag      = Factory::getLanguage();
+	$extension    = 'com_sportsmanagement';
+	$base_dir     = JPATH_ADMINISTRATOR;
 	$language_tag = $langtag->getTag();
-	$reload = true;
+	$reload       = true;
 	$lang->load($extension, $base_dir, $language_tag, $reload);
 }
 
 ?>
 <div class="<?php echo $params->get('moduleclass_sfx'); ?>"
-	 id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+     id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 	<?PHP
 	require ModuleHelper::getLayoutPath($module->module);
 	?>

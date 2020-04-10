@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -61,19 +62,19 @@ class sportsmanagementViewTreetomatchs extends sportsmanagementView
 	 */
 	function _displayEditlist()
 	{
-		$project_id = $this->jinput->get('pid');
-		$node_id = $this->jinput->get('nid');
-		$treetomatchs = $this->items;
-		$mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
-		$projectws = $mdlProject->getProject($project_id);
+		$project_id    = $this->jinput->get('pid');
+		$node_id       = $this->jinput->get('nid');
+		$treetomatchs  = $this->items;
+		$mdlProject    = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
+		$projectws     = $mdlProject->getProject($project_id);
 		$mdlTreetoNode = BaseDatabaseModel::getInstance('treetonode', 'sportsmanagementModel');
-		$nodews = $mdlTreetoNode->getNode($node_id);
+		$nodews        = $mdlTreetoNode->getNode($node_id);
 		/**
-*
- * build the html select list for node assigned matches
-*/
-		$ress = array();
-		$res1 = array();
+		 *
+		 * build the html select list for node assigned matches
+		 */
+		$ress           = array();
+		$res1           = array();
 		$notusedmatches = array();
 
 		if ($ress = $this->model->getNodeMatches($node_id))
@@ -169,36 +170,13 @@ class sportsmanagementViewTreetomatchs extends sportsmanagementView
 		unset($res);
 		unset($res1);
 		unset($notusedmatches);
-		$this->lists = $lists;
+		$this->lists        = $lists;
 		$this->treetomatchs = $treetomatchs;
-		$this->projectws = $projectws;
-		$this->nodews = $nodews;
+		$this->projectws    = $projectws;
+		$this->nodews       = $nodews;
 
-			  $this->addToolBarEditlist();
+		$this->addToolBarEditlist();
 		$this->setLayout('editlist');
-
-	}
-
-	/**
-	 * sportsmanagementViewTreetomatchs::_displayDefault()
-	 *
-	 * @return void
-	 */
-	function _displayDefault()
-	{
-		$this->project_id = $this->jinput->get('pid');
-		$mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
-		$projectws = $mdlProject->getProject($this->project_id);
-		$mdlTreetoNode = BaseDatabaseModel::getInstance('treetonode', 'sportsmanagementModel');
-		$nodews = $mdlTreetoNode->getNode($this->jinput->get('nid'));
-
-			  $this->match = $this->items;
-		$this->projectws = $projectws;
-		$this->nodews = $nodews;
-		$this->total = $this->total;
-		$this->pagination = $this->pagination;
-		$this->addToolBarDefault();
-		$this->setLayout('default');
 
 	}
 
@@ -210,23 +188,46 @@ class sportsmanagementViewTreetomatchs extends sportsmanagementView
 	protected function addToolBarEditlist()
 	{
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_ASSIGN');
-		 ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_ASSIGN'));
+		ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_ASSIGN'));
 
 		ToolbarHelper::save('treetomatch.save_matcheslist');
 
 		/**
-*
- * for existing items the button is renamed `close` and the apply button is showed
-*/
+		 *
+		 * for existing items the button is renamed `close` and the apply button is showed
+		 */
 		ToolbarHelper::back('Back', 'index.php?option=com_sportsmanagement&view=treetonodes&layout=default&tid=' . $this->jinput->get('tid') . '&pid=' . $this->jinput->get('pid'));
 
 	}
 
-		 /**
-		  * sportsmanagementViewTreetomatchs::addToolBarDefault()
-		  *
-		  * @return void
-		  */
+	/**
+	 * sportsmanagementViewTreetomatchs::_displayDefault()
+	 *
+	 * @return void
+	 */
+	function _displayDefault()
+	{
+		$this->project_id = $this->jinput->get('pid');
+		$mdlProject       = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
+		$projectws        = $mdlProject->getProject($this->project_id);
+		$mdlTreetoNode    = BaseDatabaseModel::getInstance('treetonode', 'sportsmanagementModel');
+		$nodews           = $mdlTreetoNode->getNode($this->jinput->get('nid'));
+
+		$this->match      = $this->items;
+		$this->projectws  = $projectws;
+		$this->nodews     = $nodews;
+		$this->total      = $this->total;
+		$this->pagination = $this->pagination;
+		$this->addToolBarDefault();
+		$this->setLayout('default');
+
+	}
+
+	/**
+	 * sportsmanagementViewTreetomatchs::addToolBarDefault()
+	 *
+	 * @return void
+	 */
 	protected function addToolBarDefault()
 	{
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_TITLE');

@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Response\JsonResponse;
 use Joomla\CMS\MVC\Controller\BaseController;
@@ -29,11 +30,11 @@ use Joomla\CMS\MVC\Controller\BaseController;
 class sportsmanagementControllerAjax extends BaseController
 {
 
-		/**
-		 * sportsmanagementControllerAjax::__construct()
-		 *
-		 * @return
-		 */
+	/**
+	 * sportsmanagementControllerAjax::__construct()
+	 *
+	 * @return
+	 */
 	public function __construct()
 	{
 		parent::__construct();
@@ -44,11 +45,11 @@ class sportsmanagementControllerAjax extends BaseController
 	}
 
 
-		  /**
-		   * sportsmanagementControllerAjax::predictionpj()
-		   *
-		   * @return void
-		   */
+	/**
+	 * sportsmanagementControllerAjax::predictionpj()
+	 *
+	 * @return void
+	 */
 	public function predictionpj()
 	{
 
@@ -63,11 +64,11 @@ class sportsmanagementControllerAjax extends BaseController
 
 			if (count($result) == 1)
 			{
-				   $this->app->enqueueMessage('Keine Projekte gefunden', 'Error');
+				$this->app->enqueueMessage('Keine Projekte gefunden', 'Error');
 			}
 			else
 			{
-					  $this->app->enqueueMessage('Projekte gefunden', 'Message');
+				$this->app->enqueueMessage('Projekte gefunden', 'Message');
 			}
 
 			echo new JsonResponse($result);
@@ -79,11 +80,11 @@ class sportsmanagementControllerAjax extends BaseController
 
 	}
 
-		  /**
-		   * sportsmanagementControllerAjax::predictiongroup()
-		   *
-		   * @return void
-		   */
+	/**
+	 * sportsmanagementControllerAjax::predictiongroup()
+	 *
+	 * @return void
+	 */
 	public function predictiongroups()
 	{
 
@@ -98,11 +99,11 @@ class sportsmanagementControllerAjax extends BaseController
 
 			if (count($result) == 1)
 			{
-				   $this->app->enqueueMessage('Keine Gruppen gefunden', 'Error');
+				$this->app->enqueueMessage('Keine Gruppen gefunden', 'Error');
 			}
 			else
 			{
-					  $this->app->enqueueMessage('Gruppen gefunden', 'Message');
+				$this->app->enqueueMessage('Gruppen gefunden', 'Message');
 			}
 
 			echo new JsonResponse($result);
@@ -114,11 +115,11 @@ class sportsmanagementControllerAjax extends BaseController
 
 	}
 
-						  /**
-						   * sportsmanagementControllerAjax::getpredictionid()
-						   *
-						   * @return void
-						   */
+	/**
+	 * sportsmanagementControllerAjax::getpredictionid()
+	 *
+	 * @return void
+	 */
 	public function getpredictionid()
 	{
 
@@ -140,11 +141,11 @@ class sportsmanagementControllerAjax extends BaseController
 	}
 
 
-					  /**
-					   * sportsmanagementControllerAjax::personcontactid()
-					   *
-					   * @return void
-					   */
+	/**
+	 * sportsmanagementControllerAjax::personcontactid()
+	 *
+	 * @return void
+	 */
 	public function personcontactid()
 	{
 		try
@@ -156,27 +157,27 @@ class sportsmanagementControllerAjax extends BaseController
 
 			if (count($result) == 1)
 			{
-				   $this->app->enqueueMessage('Keine Benutzer gefunden', 'Error');
+				$this->app->enqueueMessage('Keine Benutzer gefunden', 'Error');
 			}
 			else
 			{
-					  $this->app->enqueueMessage('Benutzer gefunden', 'Message');
+				$this->app->enqueueMessage('Benutzer gefunden', 'Message');
 			}
 
 			echo new JsonResponse($result);
 		}
 		catch (Exception $e)
 		{
-			  echo new JsonResponse($e);
+			echo new JsonResponse($e);
 		}
 
 	}
 
-			  /**
-			   * sportsmanagementControllerAjax::locationzipcodeoptions()
-			   *
-			   * @return void
-			   */
+	/**
+	 * sportsmanagementControllerAjax::locationzipcodeoptions()
+	 *
+	 * @return void
+	 */
 	public function locationzipcodeoptions()
 	{
 
@@ -196,14 +197,14 @@ class sportsmanagementControllerAjax extends BaseController
 			}
 			else
 			{
-				 // $this->app->enqueueMessage('Altersgruppen gefunden','Message');
+				// $this->app->enqueueMessage('Altersgruppen gefunden','Message');
 			}
 
 			echo new JsonResponse($result);
 		}
 		catch (Exception $e)
 		{
-			  echo new JsonResponse($e);
+			echo new JsonResponse($e);
 		}
 
 	}
@@ -221,17 +222,17 @@ class sportsmanagementControllerAjax extends BaseController
 		}
 		catch (Exception $e)
 		{
-			  // Echo new JsonResponse($e);
-			  echo json_encode($e);
+			// Echo new JsonResponse($e);
+			echo json_encode($e);
 		}
 
 	}
 
-			  /**
-			   * sportsmanagementControllerAjax::getCcountryAlpha2()
-			   *
-			   * @return void
-			   */
+	/**
+	 * sportsmanagementControllerAjax::getCcountryAlpha2()
+	 *
+	 * @return void
+	 */
 	public function getCcountryAlpha2()
 	{
 
@@ -244,18 +245,18 @@ class sportsmanagementControllerAjax extends BaseController
 		}
 		catch (Exception $e)
 		{
-			  // Echo new JsonResponse($e);
-			  echo json_encode($e);
+			// Echo new JsonResponse($e);
+			echo json_encode($e);
 		}
 
 	}
 
 
-			  /**
-			   * sportsmanagementControllerAjax::countryzipcodeoptions()
-			   *
-			   * @return void
-			   */
+	/**
+	 * sportsmanagementControllerAjax::countryzipcodeoptions()
+	 *
+	 * @return void
+	 */
 	public function countryzipcodeoptions()
 	{
 
@@ -271,7 +272,7 @@ class sportsmanagementControllerAjax extends BaseController
 
 			if (count($result) == 1)
 			{
-				 // $this->app->enqueueMessage('Keine Altersgruppen gefunden','Error');
+				// $this->app->enqueueMessage('Keine Altersgruppen gefunden','Error');
 			}
 			else
 			{
@@ -282,18 +283,17 @@ class sportsmanagementControllerAjax extends BaseController
 		}
 		catch (Exception $e)
 		{
-			  echo new JsonResponse($e);
+			echo new JsonResponse($e);
 		}
 
 	}
 
 
-
-			  /**
-			   * sportsmanagementControllerAjax::countryclubagegroupoptions()
-			   *
-			   * @return void
-			   */
+	/**
+	 * sportsmanagementControllerAjax::countryclubagegroupoptions()
+	 *
+	 * @return void
+	 */
 	public function countryclubagegroupoptions()
 	{
 
@@ -312,23 +312,23 @@ class sportsmanagementControllerAjax extends BaseController
 			}
 			else
 			{
-				   $this->app->enqueueMessage('Altersgruppen gefunden', 'Message');
+				$this->app->enqueueMessage('Altersgruppen gefunden', 'Message');
 			}
 
 			echo new JsonResponse($result);
 		}
 		catch (Exception $e)
 		{
-			  echo new JsonResponse($e);
+			echo new JsonResponse($e);
 		}
 
 	}
 
-			  /**
-			   * sportsmanagementControllerAjax::associationsoptions()
-			   *
-			   * @return void
-			   */
+	/**
+	 * sportsmanagementControllerAjax::associationsoptions()
+	 *
+	 * @return void
+	 */
 	public function associationsoptions()
 	{
 
@@ -343,27 +343,27 @@ class sportsmanagementControllerAjax extends BaseController
 
 			if (count($result) == 1)
 			{
-					   $this->app->enqueueMessage('Keine Landesverbände gefunden', 'Error');
+				$this->app->enqueueMessage('Keine Landesverbände gefunden', 'Error');
 			}
 			else
 			{
-				  $this->app->enqueueMessage('Landesverbände gefunden', 'Message');
+				$this->app->enqueueMessage('Landesverbände gefunden', 'Message');
 			}
 
 			echo new JsonResponse($result);
 		}
 		catch (Exception $e)
 		{
-			  echo new JsonResponse($e);
+			echo new JsonResponse($e);
 		}
 
 	}
 
-			  /**
-			   * sportsmanagementControllerAjax::projects()
-			   *
-			   * @return void
-			   */
+	/**
+	 * sportsmanagementControllerAjax::projects()
+	 *
+	 * @return void
+	 */
 	public function projects()
 	{
 
@@ -379,29 +379,28 @@ class sportsmanagementControllerAjax extends BaseController
 
 			if (count($result) == 1)
 			{
-						   $this->app->enqueueMessage('Keine Projekte gefunden', 'Error');
+				$this->app->enqueueMessage('Keine Projekte gefunden', 'Error');
 			}
 			else
 			{
-				  $this->app->enqueueMessage('Projekte gefunden', 'Message');
+				$this->app->enqueueMessage('Projekte gefunden', 'Message');
 			}
 
 			echo new JsonResponse($result);
 		}
 		catch (Exception $e)
 		{
-			  echo new JsonResponse($e);
+			echo new JsonResponse($e);
 		}
 
 	}
 
 
-
-			  /**
-			   * sportsmanagementControllerAjax::seasons()
-			   *
-			   * @return void
-			   */
+	/**
+	 * sportsmanagementControllerAjax::seasons()
+	 *
+	 * @return void
+	 */
 	public function seasons()
 	{
 
@@ -417,16 +416,16 @@ class sportsmanagementControllerAjax extends BaseController
 		}
 		catch (Exception $e)
 		{
-			  echo new JsonResponse($e);
+			echo new JsonResponse($e);
 		}
 
 	}
 
-			  /**
-			   * sportsmanagementControllerAjax::personlistoptions()
-			   *
-			   * @return void
-			   */
+	/**
+	 * sportsmanagementControllerAjax::personlistoptions()
+	 *
+	 * @return void
+	 */
 	public function personlistoptions()
 	{
 		try
@@ -441,16 +440,16 @@ class sportsmanagementControllerAjax extends BaseController
 		}
 		catch (Exception $e)
 		{
-			  echo new JsonResponse($e);
+			echo new JsonResponse($e);
 		}
 
 	}
 
-			  /**
-			   * sportsmanagementControllerAjax::personpositionoptions()
-			   *
-			   * @return void
-			   */
+	/**
+	 * sportsmanagementControllerAjax::personpositionoptions()
+	 *
+	 * @return void
+	 */
 	public function personpositionoptions()
 	{
 
@@ -476,16 +475,16 @@ class sportsmanagementControllerAjax extends BaseController
 		}
 		catch (Exception $e)
 		{
-			  echo new JsonResponse($e);
+			echo new JsonResponse($e);
 		}
 
 	}
 
-			  /**
-			   * sportsmanagementControllerAjax::personagegroupoptions()
-			   *
-			   * @return void
-			   */
+	/**
+	 * sportsmanagementControllerAjax::personagegroupoptions()
+	 *
+	 * @return void
+	 */
 	public function personagegroupoptions()
 	{
 
@@ -502,29 +501,28 @@ class sportsmanagementControllerAjax extends BaseController
 
 			if (count($result) == 1)
 			{
-				   $app->enqueueMessage('Keine Altersgruppe gefunden', 'Error');
+				$app->enqueueMessage('Keine Altersgruppe gefunden', 'Error');
 			}
 			else
 			{
-				  $app->enqueueMessage('Altersgruppe gefunden', 'Message');
+				$app->enqueueMessage('Altersgruppe gefunden', 'Message');
 			}
 
 			echo new JsonResponse($result);
 		}
 		catch (Exception $e)
 		{
-			  echo new JsonResponse($e);
+			echo new JsonResponse($e);
 		}
 
 	}
 
 
-
-			  /**
-			   * sportsmanagementControllerAjax::predictionmembersoptions()
-			   *
-			   * @return void
-			   */
+	/**
+	 * sportsmanagementControllerAjax::predictionmembersoptions()
+	 *
+	 * @return void
+	 */
 	public function predictionmembersoptions()
 	{
 
@@ -539,7 +537,7 @@ class sportsmanagementControllerAjax extends BaseController
 
 			if (count($result) == 1)
 			{
-						  $this->app->enqueueMessage('Keine Gruppen gefunden', 'Error');
+				$this->app->enqueueMessage('Keine Gruppen gefunden', 'Error');
 			}
 			else
 			{
@@ -550,16 +548,16 @@ class sportsmanagementControllerAjax extends BaseController
 		}
 		catch (Exception $e)
 		{
-			  echo new JsonResponse($e);
+			echo new JsonResponse($e);
 		}
 
 	}
 
-			  /**
-			   * sportsmanagementControllerAjax::projectdivisionsoptions()
-			   *
-			   * @return
-			   */
+	/**
+	 * sportsmanagementControllerAjax::projectdivisionsoptions()
+	 *
+	 * @return
+	 */
 	public function projectdivisionsoptions()
 	{
 
@@ -585,15 +583,15 @@ class sportsmanagementControllerAjax extends BaseController
 		}
 		catch (Exception $e)
 		{
-			  echo new JsonResponse($e);
+			echo new JsonResponse($e);
 		}
 	}
 
-		/**
-		 * sportsmanagementControllerAjax::projecteventsoptions()
-		 *
-		 * @return
-		 */
+	/**
+	 * sportsmanagementControllerAjax::projecteventsoptions()
+	 *
+	 * @return
+	 */
 	public function projecteventsoptions()
 	{
 
@@ -608,27 +606,27 @@ class sportsmanagementControllerAjax extends BaseController
 
 			if (count($result) == 1)
 			{
-				   // $this->app->enqueueMessage('Keine Gruppen gefunden','Error');
+				// $this->app->enqueueMessage('Keine Gruppen gefunden','Error');
 			}
 			else
 			{
-				   // $this->app->enqueueMessage('Gruppen gefunden','Message');
+				// $this->app->enqueueMessage('Gruppen gefunden','Message');
 			}
 
 			echo new JsonResponse($result);
 		}
 		catch (Exception $e)
 		{
-			  echo new JsonResponse($e);
+			echo new JsonResponse($e);
 		}
 
 	}
 
-		/**
-		 * sportsmanagementControllerAjax::projectteamsbydivisionoptions()
-		 *
-		 * @return
-		 */
+	/**
+	 * sportsmanagementControllerAjax::projectteamsbydivisionoptions()
+	 *
+	 * @return
+	 */
 	public function projectteamsbydivisionoptions()
 	{
 
@@ -646,16 +644,16 @@ class sportsmanagementControllerAjax extends BaseController
 		}
 		catch (Exception $e)
 		{
-			  echo new JsonResponse($e);
+			echo new JsonResponse($e);
 		}
 
 	}
 
-		/**
-		 * sportsmanagementControllerAjax::projectsbysportstypesoptions()
-		 *
-		 * @return
-		 */
+	/**
+	 * sportsmanagementControllerAjax::projectsbysportstypesoptions()
+	 *
+	 * @return
+	 */
 	public function projectsbysportstypesoptions()
 	{
 
@@ -668,20 +666,20 @@ class sportsmanagementControllerAjax extends BaseController
 				$this->jinput->get->getString('dbase')
 			);
 
-				 echo new JsonResponse($result);
+			echo new JsonResponse($result);
 		}
 		catch (Exception $e)
 		{
-			  echo new JsonResponse($e);
+			echo new JsonResponse($e);
 		}
 
 	}
 
-			  /**
-			   * sportsmanagementControllerAjax::agegroupsbysportstypesoptions()
-			   *
-			   * @return
-			   */
+	/**
+	 * sportsmanagementControllerAjax::agegroupsbysportstypesoptions()
+	 *
+	 * @return
+	 */
 	public function agegroupsbysportstypesoptions()
 	{
 
@@ -698,16 +696,16 @@ class sportsmanagementControllerAjax extends BaseController
 		}
 		catch (Exception $e)
 		{
-			  echo new JsonResponse($e);
+			echo new JsonResponse($e);
 		}
 
 	}
 
-		/**
-		 * sportsmanagementControllerAjax::projectsbycluboptions()
-		 *
-		 * @return
-		 */
+	/**
+	 * sportsmanagementControllerAjax::projectsbycluboptions()
+	 *
+	 * @return
+	 */
 	public function projectsbycluboptions()
 	{
 
@@ -724,16 +722,16 @@ class sportsmanagementControllerAjax extends BaseController
 		}
 		catch (Exception $e)
 		{
-			  echo new JsonResponse($e);
+			echo new JsonResponse($e);
 		}
 
 	}
 
-		/**
-		 * sportsmanagementControllerAjax::projectteamsoptions()
-		 *
-		 * @return
-		 */
+	/**
+	 * sportsmanagementControllerAjax::projectteamsoptions()
+	 *
+	 * @return
+	 */
 	public function projectteamoptions()
 	{
 
@@ -761,42 +759,42 @@ class sportsmanagementControllerAjax extends BaseController
 		}
 		catch (Exception $e)
 		{
-			  echo new JsonResponse($e);
+			echo new JsonResponse($e);
 		}
 
 	}
 
-			  /**
-			   * sportsmanagementControllerAjax::projectteamsptidoptions()
-			   *
-			   * @return
-			   */
+	/**
+	 * sportsmanagementControllerAjax::projectteamsptidoptions()
+	 *
+	 * @return
+	 */
 	public function projectteamsptidoptions()
 	{
 
 		try
 		{
-			 $result = $this->getModel('ajax')->getProjectTeamPtidOptions(
-				 $this->jinput->get->getString('p'),
-				 $this->jinput->get->getString('required'),
-				 $this->jinput->get->getString('slug'),
-				 $this->jinput->get->getString('dbase')
-			 );
+			$result = $this->getModel('ajax')->getProjectTeamPtidOptions(
+				$this->jinput->get->getString('p'),
+				$this->jinput->get->getString('required'),
+				$this->jinput->get->getString('slug'),
+				$this->jinput->get->getString('dbase')
+			);
 
-				echo new JsonResponse($result);
+			echo new JsonResponse($result);
 		}
 		catch (Exception $e)
 		{
-			  echo new JsonResponse($e);
+			echo new JsonResponse($e);
 		}
 
 	}
 
-			  /**
-			   * sportsmanagementControllerAjax::projectplayeroptions()
-			   *
-			   * @return
-			   */
+	/**
+	 * sportsmanagementControllerAjax::projectplayeroptions()
+	 *
+	 * @return
+	 */
 	public function projectplayeroptions()
 	{
 
@@ -813,16 +811,16 @@ class sportsmanagementControllerAjax extends BaseController
 		}
 		catch (Exception $e)
 		{
-			  echo new JsonResponse($e);
+			echo new JsonResponse($e);
 		}
 
 	}
 
-		/**
-		 * sportsmanagementControllerAjax::projectstaffoptions()
-		 *
-		 * @return
-		 */
+	/**
+	 * sportsmanagementControllerAjax::projectstaffoptions()
+	 *
+	 * @return
+	 */
 	public function projectstaffoptions()
 	{
 
@@ -839,16 +837,16 @@ class sportsmanagementControllerAjax extends BaseController
 		}
 		catch (Exception $e)
 		{
-			  echo new JsonResponse($e);
+			echo new JsonResponse($e);
 		}
 
 	}
 
-		/**
-		 * sportsmanagementControllerAjax::projectclubsoptions()
-		 *
-		 * @return
-		 */
+	/**
+	 * sportsmanagementControllerAjax::projectclubsoptions()
+	 *
+	 * @return
+	 */
 	public function projectcluboptions()
 	{
 
@@ -865,16 +863,16 @@ class sportsmanagementControllerAjax extends BaseController
 		}
 		catch (Exception $e)
 		{
-			  echo new JsonResponse($e);
+			echo new JsonResponse($e);
 		}
 
 	}
 
-		/**
-		 * sportsmanagementControllerAjax::projectstatsoptions()
-		 *
-		 * @return
-		 */
+	/**
+	 * sportsmanagementControllerAjax::projectstatsoptions()
+	 *
+	 * @return
+	 */
 	public function projectstatsoptions()
 	{
 
@@ -891,16 +889,16 @@ class sportsmanagementControllerAjax extends BaseController
 		}
 		catch (Exception $e)
 		{
-			  echo new JsonResponse($e);
+			echo new JsonResponse($e);
 		}
 
 	}
 
-		/**
-		 * sportsmanagementControllerAjax::matchesoptions()
-		 *
-		 * @return
-		 */
+	/**
+	 * sportsmanagementControllerAjax::matchesoptions()
+	 *
+	 * @return
+	 */
 	public function matchesoptions()
 	{
 
@@ -917,16 +915,16 @@ class sportsmanagementControllerAjax extends BaseController
 		}
 		catch (Exception $e)
 		{
-			  echo new JsonResponse($e);
+			echo new JsonResponse($e);
 		}
 
 	}
 
-		/**
-		 * sportsmanagementControllerAjax::refereesoptions()
-		 *
-		 * @return
-		 */
+	/**
+	 * sportsmanagementControllerAjax::refereesoptions()
+	 *
+	 * @return
+	 */
 	public function refereesoptions()
 	{
 
@@ -943,16 +941,16 @@ class sportsmanagementControllerAjax extends BaseController
 		}
 		catch (Exception $e)
 		{
-			  echo new JsonResponse($e);
+			echo new JsonResponse($e);
 		}
 
 	}
 
-		/**
-		 * sportsmanagementControllerAjax::roundsoptions()
-		 *
-		 * @return
-		 */
+	/**
+	 * sportsmanagementControllerAjax::roundsoptions()
+	 *
+	 * @return
+	 */
 	public function projectroundoptions()
 	{
 
@@ -980,16 +978,16 @@ class sportsmanagementControllerAjax extends BaseController
 		}
 		catch (Exception $e)
 		{
-			  echo new JsonResponse($e);
+			echo new JsonResponse($e);
 		}
 
 	}
 
-		/**
-		 * sportsmanagementControllerAjax::projecttreenodeoptions()
-		 *
-		 * @return
-		 */
+	/**
+	 * sportsmanagementControllerAjax::projecttreenodeoptions()
+	 *
+	 * @return
+	 */
 	public function projecttreenodeoptions()
 	{
 
@@ -1002,35 +1000,35 @@ class sportsmanagementControllerAjax extends BaseController
 				$this->jinput->get->getString('dbase')
 			);
 
-				echo new JsonResponse($result);
+			echo new JsonResponse($result);
 		}
 		catch (Exception $e)
 		{
-			  echo new JsonResponse($e);
+			echo new JsonResponse($e);
 		}
 
 	}
 
-			  /**
-			   * sportsmanagementControllerAjax::sportstypesoptions()
-			   *
-			   * @return
-			   */
+	/**
+	 * sportsmanagementControllerAjax::sportstypesoptions()
+	 *
+	 * @return
+	 */
 	public function sportstypesoptions()
 	{
 		try
 		{
-			  $result = $this->getModel('ajax')->getsportstypes(
-				  $this->jinput->get->getString('cfg_which_database'),
-				  $this->jinput->get->getString('required'),
-				  $this->jinput->get->getString('slug')
-			  );
+			$result = $this->getModel('ajax')->getsportstypes(
+				$this->jinput->get->getString('cfg_which_database'),
+				$this->jinput->get->getString('required'),
+				$this->jinput->get->getString('slug')
+			);
 
-				  echo new JsonResponse($result);
+			echo new JsonResponse($result);
 		}
 		catch (Exception $e)
 		{
-			  echo new JsonResponse($e);
+			echo new JsonResponse($e);
 		}
 
 	}

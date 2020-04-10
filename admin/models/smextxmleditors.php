@@ -14,11 +14,12 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Filesystem\Folder;
-jimport('joomla.filesystem.file');
 
+jimport('joomla.filesystem.file');
 
 
 /**
@@ -46,12 +47,12 @@ class sportsmanagementModelsmextxmleditors extends BaseDatabaseModel
 		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-		$path = JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . $option . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'extended';
+		$path   = JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . $option . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'extended';
 
 		// Get a list of files in the search path with the given filter.
-		   $files = Folder::files($path, '.xml$|.php$');
+		$files = Folder::files($path, '.xml$|.php$');
 
-			 return $files;
+		return $files;
 
 	}
 

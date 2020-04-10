@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
@@ -37,12 +38,12 @@ class sportsmanagementViewstatistic extends sportsmanagementView
 	 */
 	public function init()
 	{
-		$app = Factory::getApplication();
+		$app               = Factory::getApplication();
 		$this->description = '';
 
 		// Get the Data
-		$form = $this->get('Form');
-		$item = $this->get('Item');
+		$form   = $this->get('Form');
+		$item   = $this->get('Item');
 		$script = $this->get('Script');
 
 		// Check for errors.
@@ -54,11 +55,11 @@ class sportsmanagementViewstatistic extends sportsmanagementView
 		}
 
 		// Assign the Data
-		$this->form = $form;
-		$this->item = $item;
+		$this->form   = $form;
+		$this->item   = $item;
 		$this->script = $script;
 
-			  $isNew = $this->item->id == 0;
+		$isNew = $this->item->id == 0;
 
 		if ($isNew)
 		{
@@ -70,8 +71,8 @@ class sportsmanagementViewstatistic extends sportsmanagementView
 			// $this->setLayout('edit');
 		}
 
-			$formparams = sportsmanagementHelper::getExtendedStatistic($item->params, $item->class);
-			$this->formparams = $formparams;
+		$formparams       = sportsmanagementHelper::getExtendedStatistic($item->params, $item->class);
+		$this->formparams = $formparams;
 
 	}
 
@@ -86,10 +87,10 @@ class sportsmanagementViewstatistic extends sportsmanagementView
 
 		Factory::getApplication()->input->set('hidemainmenu', true);
 
-			  $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_STATISTIC_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_STATISTIC_NEW');
+		$isNew      = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_STATISTIC_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_STATISTIC_NEW');
 		$this->icon = 'statistic';
 
-			  parent::addToolbar();
+		parent::addToolbar();
 	}
 
 }

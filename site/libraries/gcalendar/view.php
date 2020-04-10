@@ -13,13 +13,14 @@
  * You should have received a copy of the GNU General Public License
  * along with GCalendar.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package		GCalendar
- * @author		Digital Peak http://www.digital-peak.com
- * @copyright	Copyright (C) 2007 - 2013 Digital Peak. All rights reserved.
- * @license		http://www.gnu.org/licenses/gpl.html GNU/GPL
+ * @package        GCalendar
+ * @author         Digital Peak http://www.digital-peak.com
+ * @copyright      Copyright (C) 2007 - 2013 Digital Peak. All rights reserved.
+ * @license        http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
 defined('_JEXEC') or die();
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
@@ -39,7 +40,7 @@ class GCalendarView extends JViewLegacy
 		$tmp = clone $state->params;
 		$tmp->merge(Factory::getApplication()->getParams());
 
-		$this->state = $state;
+		$this->state  = $state;
 		$this->params = $tmp;
 
 		$this->init();
@@ -55,11 +56,15 @@ class GCalendarView extends JViewLegacy
 		parent::display($tpl);
 	}
 
+	protected function init()
+	{
+	}
+
 	protected function prepareDocument()
 	{
-		$app	= Factory::getApplication();
-		$menus	= $app->getMenu();
-		$title	= null;
+		$app   = Factory::getApplication();
+		$menus = $app->getMenu();
+		$title = null;
 
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself
@@ -108,9 +113,5 @@ class GCalendarView extends JViewLegacy
 
 		// Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($this->params->get('pageclass_sfx'));
-	}
-
-	protected function init()
-	{
 	}
 }

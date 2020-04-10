@@ -13,12 +13,14 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+
 ?>
 <!-- Person description START -->
 <?php
-	$description = "";
+$description = "";
 
 if ($this->referee)
 {
@@ -26,7 +28,7 @@ if ($this->referee)
 	{
 		$description = $this->referee->prnotes;
 	}
-	elseif ($this->referee->notes != '')
+    elseif ($this->referee->notes != '')
 	{
 		$description = $this->referee->notes;
 	}
@@ -35,20 +37,20 @@ if ($this->referee)
 if ($description != '')
 {
 	?>
-		<h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_INFO'); ?></h2>
-<div class="<?php echo $this->divclassrow;?> table-responsive" id="referee_description">
-		<table class="table">
-			<tr>
-				<td>
-	<?php
-	$description = HTMLHelper::_('content.prepare', $description);
-	echo stripslashes($description);
-	?>
-				</td>
-			</tr>
-		</table>
-</div>
-		<br /><br />
+    <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_INFO'); ?></h2>
+    <div class="<?php echo $this->divclassrow; ?> table-responsive" id="referee_description">
+        <table class="table">
+            <tr>
+                <td>
+					<?php
+					$description = HTMLHelper::_('content.prepare', $description);
+					echo stripslashes($description);
+					?>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <br/><br/>
 	<?php
 }
 ?>

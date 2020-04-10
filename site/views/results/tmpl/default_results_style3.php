@@ -14,8 +14,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-$nbcols        = 5;
-$dates        = $this->sortByDate($this->matches);
+$nbcols   = 5;
+$dates    = $this->sortByDate($this->matches);
 $nametype = $this->config['names'];
 
 if ($this->config['show_match_number'])
@@ -41,10 +41,10 @@ if ($this->config['show_referee'])
 ?>
 
 <table class="<?PHP echo $this->config['table_class']; ?> ">
-	<tr>
-		<td>
-			May be designed in the future???
-		</td>
-	</tr>
+    <tr>
+        <td>
+            May be designed in the future???
+        </td>
+    </tr>
 </table>
 

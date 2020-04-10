@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
 
@@ -33,33 +34,92 @@ class sportsmanagementModelrosterpositions extends ListModel
 	/**
 	 * sportsmanagementModelrosterpositions::__construct()
 	 *
-	 * @param   mixed $config
+	 * @param   mixed  $config
+	 *
 	 * @return void
 	 */
 	public function __construct($config = array())
 	{
-				$config['filter_fields'] = array(
-						'obj.name',
-						'obj.country',
-						'obj.alias',
-						'obj.id',
-						'obj.ordering'
-						);
-				parent::__construct($config);
-				$getDBConnection = sportsmanagementHelper::getDBConnection();
-				parent::setDbo($getDBConnection);
+		$config['filter_fields'] = array(
+			'obj.name',
+			'obj.country',
+			'obj.alias',
+			'obj.id',
+			'obj.ordering'
+		);
+		parent::__construct($config);
+		$getDBConnection = sportsmanagementHelper::getDBConnection();
+		parent::setDbo($getDBConnection);
 	}
 
-		  /**
-		   * Method to auto-populate the model state.
-		   *
-		   * Note. Calling getState in this method will result in recursion.
-		   *
-		   * @since 1.6
-		   */
+	function getRosterHome()
+	{
+		$bildpositionenhome                                  = array();
+		$bildpositionenhome['HOME_POS'][0]['heim']['oben']   = 5;
+		$bildpositionenhome['HOME_POS'][0]['heim']['links']  = 233;
+		$bildpositionenhome['HOME_POS'][1]['heim']['oben']   = 113;
+		$bildpositionenhome['HOME_POS'][1]['heim']['links']  = 69;
+		$bildpositionenhome['HOME_POS'][2]['heim']['oben']   = 113;
+		$bildpositionenhome['HOME_POS'][2]['heim']['links']  = 179;
+		$bildpositionenhome['HOME_POS'][3]['heim']['oben']   = 113;
+		$bildpositionenhome['HOME_POS'][3]['heim']['links']  = 288;
+		$bildpositionenhome['HOME_POS'][4]['heim']['oben']   = 113;
+		$bildpositionenhome['HOME_POS'][4]['heim']['links']  = 397;
+		$bildpositionenhome['HOME_POS'][5]['heim']['oben']   = 236;
+		$bildpositionenhome['HOME_POS'][5]['heim']['links']  = 179;
+		$bildpositionenhome['HOME_POS'][6]['heim']['oben']   = 236;
+		$bildpositionenhome['HOME_POS'][6]['heim']['links']  = 288;
+		$bildpositionenhome['HOME_POS'][7]['heim']['oben']   = 318;
+		$bildpositionenhome['HOME_POS'][7]['heim']['links']  = 69;
+		$bildpositionenhome['HOME_POS'][8]['heim']['oben']   = 318;
+		$bildpositionenhome['HOME_POS'][8]['heim']['links']  = 233;
+		$bildpositionenhome['HOME_POS'][9]['heim']['oben']   = 318;
+		$bildpositionenhome['HOME_POS'][9]['heim']['links']  = 397;
+		$bildpositionenhome['HOME_POS'][10]['heim']['oben']  = 400;
+		$bildpositionenhome['HOME_POS'][10]['heim']['links'] = 233;
+
+		return $bildpositionenhome;
+	}
+
+	function getRosterAway()
+	{
+		$bildpositionenaway                                  = array();
+		$bildpositionenaway['AWAY_POS'][0]['heim']['oben']   = 970;
+		$bildpositionenaway['AWAY_POS'][0]['heim']['links']  = 233;
+		$bildpositionenaway['AWAY_POS'][1]['heim']['oben']   = 828;
+		$bildpositionenaway['AWAY_POS'][1]['heim']['links']  = 69;
+		$bildpositionenaway['AWAY_POS'][2]['heim']['oben']   = 828;
+		$bildpositionenaway['AWAY_POS'][2]['heim']['links']  = 179;
+		$bildpositionenaway['AWAY_POS'][3]['heim']['oben']   = 828;
+		$bildpositionenaway['AWAY_POS'][3]['heim']['links']  = 288;
+		$bildpositionenaway['AWAY_POS'][4]['heim']['oben']   = 828;
+		$bildpositionenaway['AWAY_POS'][4]['heim']['links']  = 397;
+		$bildpositionenaway['AWAY_POS'][5]['heim']['oben']   = 746;
+		$bildpositionenaway['AWAY_POS'][5]['heim']['links']  = 179;
+		$bildpositionenaway['AWAY_POS'][6]['heim']['oben']   = 746;
+		$bildpositionenaway['AWAY_POS'][6]['heim']['links']  = 288;
+		$bildpositionenaway['AWAY_POS'][7]['heim']['oben']   = 664;
+		$bildpositionenaway['AWAY_POS'][7]['heim']['links']  = 69;
+		$bildpositionenaway['AWAY_POS'][8]['heim']['oben']   = 664;
+		$bildpositionenaway['AWAY_POS'][8]['heim']['links']  = 397;
+		$bildpositionenaway['AWAY_POS'][9]['heim']['oben']   = 587;
+		$bildpositionenaway['AWAY_POS'][9]['heim']['links']  = 179;
+		$bildpositionenaway['AWAY_POS'][10]['heim']['oben']  = 587;
+		$bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
+
+		return $bildpositionenaway;
+	}
+
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since 1.6
+	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
 
 		// Initialise variables.
@@ -76,15 +136,14 @@ class sportsmanagementModelrosterpositions extends ListModel
 		parent::populateState('obj.name', 'asc');
 	}
 
-
 	protected function getListQuery()
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
-		$search    = $this->getState('filter.search');
+		$search = $this->getState('filter.search');
 
 		// Create a new query object.
-		$db = sportsmanagementHelper::getDBConnection();
+		$db    = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 
 		// Select some fields
@@ -110,69 +169,6 @@ class sportsmanagementModelrosterpositions extends ListModel
 		return $query;
 
 	}
-
-
-
-
-
-	function getRosterHome()
-	{
-		$bildpositionenhome = array();
-		$bildpositionenhome['HOME_POS'][0]['heim']['oben'] = 5;
-		$bildpositionenhome['HOME_POS'][0]['heim']['links'] = 233;
-		$bildpositionenhome['HOME_POS'][1]['heim']['oben'] = 113;
-		$bildpositionenhome['HOME_POS'][1]['heim']['links'] = 69;
-		$bildpositionenhome['HOME_POS'][2]['heim']['oben'] = 113;
-		$bildpositionenhome['HOME_POS'][2]['heim']['links'] = 179;
-		$bildpositionenhome['HOME_POS'][3]['heim']['oben'] = 113;
-		$bildpositionenhome['HOME_POS'][3]['heim']['links'] = 288;
-		$bildpositionenhome['HOME_POS'][4]['heim']['oben'] = 113;
-		$bildpositionenhome['HOME_POS'][4]['heim']['links'] = 397;
-		$bildpositionenhome['HOME_POS'][5]['heim']['oben'] = 236;
-		$bildpositionenhome['HOME_POS'][5]['heim']['links'] = 179;
-		$bildpositionenhome['HOME_POS'][6]['heim']['oben'] = 236;
-		$bildpositionenhome['HOME_POS'][6]['heim']['links'] = 288;
-		$bildpositionenhome['HOME_POS'][7]['heim']['oben'] = 318;
-		$bildpositionenhome['HOME_POS'][7]['heim']['links'] = 69;
-		$bildpositionenhome['HOME_POS'][8]['heim']['oben'] = 318;
-		$bildpositionenhome['HOME_POS'][8]['heim']['links'] = 233;
-		$bildpositionenhome['HOME_POS'][9]['heim']['oben'] = 318;
-		$bildpositionenhome['HOME_POS'][9]['heim']['links'] = 397;
-		$bildpositionenhome['HOME_POS'][10]['heim']['oben'] = 400;
-		$bildpositionenhome['HOME_POS'][10]['heim']['links'] = 233;
-
-		return $bildpositionenhome;
-	}
-
-	function getRosterAway()
-	{
-		$bildpositionenaway = array();
-		$bildpositionenaway['AWAY_POS'][0]['heim']['oben'] = 970;
-		$bildpositionenaway['AWAY_POS'][0]['heim']['links'] = 233;
-		$bildpositionenaway['AWAY_POS'][1]['heim']['oben'] = 828;
-		$bildpositionenaway['AWAY_POS'][1]['heim']['links'] = 69;
-		$bildpositionenaway['AWAY_POS'][2]['heim']['oben'] = 828;
-		$bildpositionenaway['AWAY_POS'][2]['heim']['links'] = 179;
-		$bildpositionenaway['AWAY_POS'][3]['heim']['oben'] = 828;
-		$bildpositionenaway['AWAY_POS'][3]['heim']['links'] = 288;
-		$bildpositionenaway['AWAY_POS'][4]['heim']['oben'] = 828;
-		$bildpositionenaway['AWAY_POS'][4]['heim']['links'] = 397;
-		$bildpositionenaway['AWAY_POS'][5]['heim']['oben'] = 746;
-		$bildpositionenaway['AWAY_POS'][5]['heim']['links'] = 179;
-		$bildpositionenaway['AWAY_POS'][6]['heim']['oben'] = 746;
-		$bildpositionenaway['AWAY_POS'][6]['heim']['links'] = 288;
-		$bildpositionenaway['AWAY_POS'][7]['heim']['oben'] = 664;
-		$bildpositionenaway['AWAY_POS'][7]['heim']['links'] = 69;
-		$bildpositionenaway['AWAY_POS'][8]['heim']['oben'] = 664;
-		$bildpositionenaway['AWAY_POS'][8]['heim']['links'] = 397;
-		$bildpositionenaway['AWAY_POS'][9]['heim']['oben'] = 587;
-		$bildpositionenaway['AWAY_POS'][9]['heim']['links'] = 179;
-		$bildpositionenaway['AWAY_POS'][10]['heim']['oben'] = 587;
-		$bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
-
-		return $bildpositionenaway;
-	}
-
 
 
 }

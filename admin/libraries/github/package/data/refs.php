@@ -89,10 +89,10 @@ class JGithubPackageDataRefs extends JGithubPackage
 	 * @param   string  $ref   The name of the fully qualified reference.
 	 * @param   string  $sha   The SHA1 value to set this reference to.
 	 *
+	 * @return  object
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  object
 	 */
 	public function create($user, $repo, $ref, $sha)
 	{
@@ -130,10 +130,10 @@ class JGithubPackageDataRefs extends JGithubPackage
 	 * @param   string   $sha    The SHA1 value to set the reference to.
 	 * @param   boolean  $force  Whether the update should be forced. Default to false.
 	 *
+	 * @return  object
 	 * @throws DomainException
 	 * @since   11.3
 	 *
-	 * @return  object
 	 */
 	public function edit($user, $repo, $ref, $sha, $force = false)
 	{
@@ -175,8 +175,8 @@ class JGithubPackageDataRefs extends JGithubPackage
 	 * @param   string  $repo   The name of the GitHub repository.
 	 * @param   string  $ref    The reference to update.
 	 *
-	 * @since   3.3 (CMS)
 	 * @return object
+	 * @since   3.3 (CMS)
 	 */
 	public function delete($owner, $repo, $ref)
 	{

@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -40,25 +41,25 @@ class JFormFieldSportsTypes extends FormField
 	function getInput()
 	{
 		$result = array();
-		$db = sportsmanagementHelper::getDBConnection();
-		$app = Factory::getApplication();
-		$lang = Factory::getLanguage();
+		$db     = sportsmanagementHelper::getDBConnection();
+		$app    = Factory::getApplication();
+		$lang   = Factory::getLanguage();
 		$option = Factory::getApplication()->input->getCmd('option');
 
 		// Welche tabelle soll genutzt werden
 		$params = ComponentHelper::getParams($option);
 
-			  $extension = "COM_SPORTSMANAGEMENT";
-		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
+		$extension = "COM_SPORTSMANAGEMENT";
+		$source    = JPATH_ADMINISTRATOR . '/components/' . $extension;
 		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
-		||    $lang->load($extension, $source, null, false, false)
-		||    $lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
-		||    $lang->load($extension, $source, $lang->getDefault(), false, false);
+		|| $lang->load($extension, $source, null, false, false)
+		|| $lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
+		|| $lang->load($extension, $source, $lang->getDefault(), false, false);
 
-			  $query = $db->getQuery(true);
+		$query = $db->getQuery(true);
 		$query->select('id, name');
-		  $query->from('#__sportsmanagement_sports_type');
-		  $query->order('name ASC');
+		$query->from('#__sportsmanagement_sports_type');
+		$query->order('name ASC');
 		$db->setQuery($query);
 
 		if (!$result = $db->loadObjectList())
@@ -78,13 +79,13 @@ class JFormFieldSportsTypes extends FormField
 
 		foreach ($result as $item)
 		{
-			$mitems[] = HTMLHelper::_('select.option',  $item->id, '&nbsp;' . $item->name . ' (' . $item->id . ')');
+			$mitems[] = HTMLHelper::_('select.option', $item->id, '&nbsp;' . $item->name . ' (' . $item->id . ')');
 		}
 
-			return HTMLHelper::_(
-				'select.genericlist',  $mitems, $this->name,
-				'class="inputbox" size="1"', 'value', 'text', $this->value, $this->id
-			);
+		return HTMLHelper::_(
+			'select.genericlist', $mitems, $this->name,
+			'class="inputbox" size="1"', 'value', 'text', $this->value, $this->id
+		);
 	}
 }
 

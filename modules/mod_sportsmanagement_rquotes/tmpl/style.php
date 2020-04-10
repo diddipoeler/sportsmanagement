@@ -42,6 +42,7 @@
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 
@@ -54,10 +55,10 @@ if ($list)
 	foreach ($list as $rquote)
 	{
 		?>
-	  <div class ="mod_rquote_style">
-		<?php	 modRquotesHelper::renderRquote($rquote, $params);?>
-   </div>
-	<?PHP
+        <div class="mod_rquote_style">
+			<?php modRquotesHelper::renderRquote($rquote, $params); ?>
+        </div>
+		<?PHP
 	}
 }
 else

@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Router\Route;
 
 /**
@@ -37,12 +38,13 @@ class sportsmanagementControllersmquotes extends JSMControllerAdmin
 		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=smquotestxt', false));
 
 	}
+
 	/**
 	 * Proxy for getModel.
 	 *
 	 * @since 1.6
 	 */
-	public function getModel($name = 'smquote', $prefix = 'sportsmanagementModel', $config = Array() )
+	public function getModel($name = 'smquote', $prefix = 'sportsmanagementModel', $config = Array())
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 

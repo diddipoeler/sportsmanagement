@@ -13,10 +13,12 @@
  */
 
 defined('_JEXEC') or die(Text::_('Restricted access'));
+
 use Joomla\CMS\Language\Text;
 
 ?><p><?php
 	echo Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_WELCOME_INFO_01');
 	?></p><p><?php
-		echo Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_WELCOME_INFO_02', $this->config['ownername'], '<b>' . $this->websiteName . '</b>');
-	?></p><hr><br />
+	echo Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_WELCOME_INFO_02', $this->config['ownername'], '<b>' . $this->websiteName . '</b>');
+	?></p>
+<hr><br/>

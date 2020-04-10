@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -53,14 +54,14 @@ class JFormFieldprojectlist extends \JFormFieldList
 		// Initialize variables.
 		$options = array();
 
-		  $db = Factory::getDbo();
-		 $query = $db->getQuery(true);
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true);
 
-				   $query->select('l.id AS value, l.name AS text');
-			$query->from('#__sportsmanagement_project as l');
-		 $query->order('l.name');
-		 $db->setQuery($query);
-		 $options = $db->loadObjectList();
+		$query->select('l.id AS value, l.name AS text');
+		$query->from('#__sportsmanagement_project as l');
+		$query->order('l.name');
+		$db->setQuery($query);
+		$options = $db->loadObjectList();
 
 		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);

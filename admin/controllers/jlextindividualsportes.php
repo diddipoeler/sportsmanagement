@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
@@ -37,20 +38,32 @@ class sportsmanagementControllerjlextindividualsportes extends JSMControllerAdmi
 	 */
 	function saveshort()
 	{
-		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
-		$post = Factory::getApplication()->input->post->getArray(array());
+		$option             = Factory::getApplication()->input->getCmd('option');
+		$app                = Factory::getApplication();
+		$post               = Factory::getApplication()->input->post->getArray(array());
 		$post['project_id'] = $app->getUserState("$option.pid", '0');
-		$post['round_id'] = $app->getUserState("$option.rid", '0');
+		$post['round_id']   = $app->getUserState("$option.rid", '0');
 
-			  $model = $this->getModel();
+		$model = $this->getModel();
 		$model->saveshort();
 
-			 //       $link = 'index.php?option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&rid='.$post['round_id'].'&id='.$post['match_id'].'&team1='.$post['projectteam1_id'].'&team2='.$post['projectteam2_id'].'';
+		//       $link = 'index.php?option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&rid='.$post['round_id'].'&id='.$post['match_id'].'&team1='.$post['projectteam1_id'].'&team2='.$post['projectteam2_id'].'';
 		//		$this->setRedirect($link,$msg);
 
-			  $msg = '';
+		$msg = '';
 		$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);
+	}
+
+	/**
+	 * Proxy for getModel.
+	 *
+	 * @since 1.6
+	 */
+	public function getModel($name = 'jlextindividualsport', $prefix = 'sportsmanagementModel')
+	{
+		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
+
+		return $model;
 	}
 
 	/**
@@ -61,16 +74,16 @@ class sportsmanagementControllerjlextindividualsportes extends JSMControllerAdmi
 	 */
 	function applyshort()
 	{
-		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
-		$post = Factory::getApplication()->input->post->getArray(array());
+		$option             = Factory::getApplication()->input->getCmd('option');
+		$app                = Factory::getApplication();
+		$post               = Factory::getApplication()->input->post->getArray(array());
 		$post['project_id'] = $app->getUserState("$option.pid", '0');
-		$post['round_id'] = $app->getUserState("$option.rid", '0');
+		$post['round_id']   = $app->getUserState("$option.rid", '0');
 
-			  $model = $this->getModel();
+		$model = $this->getModel();
 		$model->saveshort();
 
-			 $link = 'index.php?option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&rid=' . $post['round_id'] . '&id=' . $post['match_id'] . '&team1=' . $post['projectteam1_id'] . '&team2=' . $post['projectteam2_id'] . '';
+		$link = 'index.php?option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&rid=' . $post['round_id'] . '&id=' . $post['match_id'] . '&team1=' . $post['projectteam1_id'] . '&team2=' . $post['projectteam2_id'] . '';
 		$this->setRedirect($link, $msg);
 
 	}
@@ -82,16 +95,15 @@ class sportsmanagementControllerjlextindividualsportes extends JSMControllerAdmi
 	 */
 	function publish()
 	{
-		   $option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
-		$pks = Factory::getApplication()->input->getVar('cid', array(), 'post', 'array');
-		$post = Factory::getApplication()->input->post->getArray(array());
+		$option             = Factory::getApplication()->input->getCmd('option');
+		$app                = Factory::getApplication();
+		$pks                = Factory::getApplication()->input->getVar('cid', array(), 'post', 'array');
+		$post               = Factory::getApplication()->input->post->getArray(array());
 		$post['project_id'] = $app->getUserState("$option.pid", '0');
-		$post['round_id'] = $app->getUserState("$option.rid", '0');
+		$post['round_id']   = $app->getUserState("$option.rid", '0');
 
-			 parent::publish();
-		$msg = Text::sprintf('COM_SPORTSMANAGEMENT_N_ITEMS_PUBLISHED', count($pks));
-		;
+		parent::publish();
+		$msg = Text::sprintf('COM_SPORTSMANAGEMENT_N_ITEMS_PUBLISHED', count($pks));;
 		$link = 'index.php?option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&rid=' . $post['round_id'] . '&id=' . $post['match_id'] . '&team1=' . $post['projectteam1_id'] . '&team2=' . $post['projectteam2_id'] . '';
 		$this->setRedirect($link, $msg);
 
@@ -104,32 +116,19 @@ class sportsmanagementControllerjlextindividualsportes extends JSMControllerAdmi
 	 */
 	function delete()
 	{
-		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
-		$pks = Factory::getApplication()->input->getVar('cid', array(), 'post', 'array');
-		$post = Factory::getApplication()->input->post->getArray(array());
+		$option             = Factory::getApplication()->input->getCmd('option');
+		$app                = Factory::getApplication();
+		$pks                = Factory::getApplication()->input->getVar('cid', array(), 'post', 'array');
+		$post               = Factory::getApplication()->input->post->getArray(array());
 		$post['project_id'] = $app->getUserState("$option.pid", '0');
-		$post['round_id'] = $app->getUserState("$option.rid", '0');
+		$post['round_id']   = $app->getUserState("$option.rid", '0');
 
-			  $model = $this->getModel();
+		$model = $this->getModel();
 		$model->delete($pks);
 
-			 $msg = Text::sprintf('COM_SPORTSMANAGEMENT_N_ITEMS_DELETED', count($pks));
+		$msg  = Text::sprintf('COM_SPORTSMANAGEMENT_N_ITEMS_DELETED', count($pks));
 		$link = 'index.php?option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&rid=' . $post['round_id'] . '&id=' . $post['match_id'] . '&team1=' . $post['projectteam1_id'] . '&team2=' . $post['projectteam2_id'] . '';
 		$this->setRedirect($link, $msg);
 
-	}
-
-
-	/**
-	 * Proxy for getModel.
-	 *
-	 * @since 1.6
-	 */
-	public function getModel($name = 'jlextindividualsport', $prefix = 'sportsmanagementModel')
-	{
-		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
-
-		return $model;
 	}
 }

@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
@@ -35,13 +36,13 @@ class sportsmanagementViewsmquotestxt extends sportsmanagementView
 	 */
 	public function init()
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-		$model = $this->getModel();
+		$model  = $this->getModel();
 		$this->assign('files', $model->getTXTFiles());
 
-			$this->option = $option;
+		$this->option = $option;
 
 	}
 
@@ -55,7 +56,6 @@ class sportsmanagementViewsmquotestxt extends sportsmanagementView
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TXT_EDITORS');
 		parent::addToolbar();
 	}
-
 
 
 }

@@ -1,12 +1,14 @@
 <?php
 /**
- * @copyright    Copyright (C) 2011 Simplify Your Web, Inc. All rights reserved.
+ * @copyright      Copyright (C) 2011 Simplify Your Web, Inc. All rights reserved.
  * @license        GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 
 defined('_JEXEC') or die;
+
 use Joomla\CMS\Language\Text;
+
 jimport('joomla.form.formfield');
 
 class JFormFieldJSMLink extends FormField
@@ -19,16 +21,16 @@ class JFormFieldJSMLink extends FormField
 	protected function getLabel()
 	{
 
-			  $html = '';
+		$html = '';
 
-			  $title = trim($this->element['title']);
+		$title     = trim($this->element['title']);
 		$image_src = $this->element['imagesrc']; // Path ex: ../modules/mod_latestnews/images/icon.png
-		$link = $this->element['link'];
+		$link      = $this->element['link'];
 
-			  $html .= '<div style="overflow: hidden; margin: 5px 0">';
+		$html .= '<div style="overflow: hidden; margin: 5px 0">';
 		$html .= '<label style="margin: 0">';
 
-			  $html .= '<a href="' . $link . '" target="_blank" title="' . Text::_($title) . '">';
+		$html .= '<a href="' . $link . '" target="_blank" title="' . Text::_($title) . '">';
 
 		if ($image_src)
 		{
@@ -41,9 +43,9 @@ class JFormFieldJSMLink extends FormField
 
 		$html .= '</a>';
 
-			  $html .= '</label>';
+		$html .= '</label>';
 
-			  return $html;
+		return $html;
 	}
 
 	/**
@@ -52,19 +54,19 @@ class JFormFieldJSMLink extends FormField
 	protected function getInput()
 	{
 
-			  $title = trim($this->element['title']);
+		$title     = trim($this->element['title']);
 		$image_src = $this->element['imagesrc'];
-		$text = trim($this->element['text']);
-		$link = $this->element['link'];
+		$text      = trim($this->element['text']);
+		$link      = $this->element['link'];
 
-			  $titleintext = false;
+		$titleintext = false;
 
 		if ($this->element['titleintext'])
 		{
 			$titleintext = ($this->element['titleintext'] === 'true');
 		}
 
-			  $html = '';
+		$html = '';
 
 		if ($image_src)
 		{
@@ -72,7 +74,7 @@ class JFormFieldJSMLink extends FormField
 		}
 		else
 		{
-					$html .= '<div style="padding: 0; overflow: inherit">';
+			$html .= '<div style="padding: 0; overflow: inherit">';
 		}
 
 		if ($titleintext)
@@ -85,10 +87,10 @@ class JFormFieldJSMLink extends FormField
 			$html .= Text::sprintf($text, $link);
 		}
 
-			  $html .= '</div>';
-					$html .= '</div>';
+		$html .= '</div>';
+		$html .= '</div>';
 
-					return $html;
+		return $html;
 	}
 
 }

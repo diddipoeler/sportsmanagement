@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 
 /**
@@ -30,14 +31,15 @@ class sportsmanagementControllerdivisions extends JSMControllerAdmin
 	/**
 	 * Constructor.
 	 *
-	 * @param array An optional associative array of configuration settings.
+	 * @param   array An optional associative array of configuration settings.
+	 *
 	 * @see   JController
 	 * @since 1.6
 	 */
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
-		$this->app = Factory::getApplication();
+		$this->app    = Factory::getApplication();
 		$this->jinput = $this->app->input;
 		$this->option = $this->jinput->getCmd('option');
 
@@ -47,8 +49,20 @@ class sportsmanagementControllerdivisions extends JSMControllerAdmin
 	function divisiontoproject()
 	{
 		$model = $this->getModel();
-		$msg = $model->divisiontoproject();
+		$msg   = $model->divisiontoproject();
 		$this->setRedirect('index.php?option=com_sportsmanagement&view=divisions&pid=' . $this->project_id, $msg);
+	}
+
+	/**
+	 * Proxy for getModel.
+	 *
+	 * @since 1.6
+	 */
+	public function getModel($name = 'Division', $prefix = 'sportsmanagementModel', $config = Array())
+	{
+		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
+
+		return $model;
 	}
 
 	/**
@@ -62,14 +76,14 @@ class sportsmanagementControllerdivisions extends JSMControllerAdmin
 
 		$model = $this->getModel();
 
-		  // $pks = Factory::getApplication()->input->getInt( 'cid', array() );  //is sanitized
+		// $pks = Factory::getApplication()->input->getInt( 'cid', array() );  //is sanitized
 		//  $order = Factory::getApplication()->input->getInt('order', array() );
 
-		  $pks = $this->jinput->get('cid', array(), 'array');
-		  $order = $this->jinput->get('order', array(), 'array');
+		$pks   = $this->jinput->get('cid', array(), 'array');
+		$order = $this->jinput->get('order', array(), 'array');
 
-		  $msg = $model->saveorder($pks, $order);
-		  $this->setRedirect('index.php?option=com_sportsmanagement&view=divisions&pid=' . $this->project_id, $msg);
+		$msg = $model->saveorder($pks, $order);
+		$this->setRedirect('index.php?option=com_sportsmanagement&view=divisions&pid=' . $this->project_id, $msg);
 	}
 
 	/**
@@ -80,20 +94,8 @@ class sportsmanagementControllerdivisions extends JSMControllerAdmin
 	function saveshort()
 	{
 		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
-		$model = $this->getModel();
-		   $msg = $model->saveshort();
-		   $this->setRedirect('index.php?option=com_sportsmanagement&view=divisions&pid=' . $this->project_id, $msg);
-	}
-
-		/**
-		 * Proxy for getModel.
-		 *
-		 * @since 1.6
-		 */
-	public function getModel($name = 'Division', $prefix = 'sportsmanagementModel', $config = Array()  )
-	{
-		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
-
-		return $model;
+		$model            = $this->getModel();
+		$msg              = $model->saveshort();
+		$this->setRedirect('index.php?option=com_sportsmanagement&view=divisions&pid=' . $this->project_id, $msg);
 	}
 }
