@@ -18,10 +18,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Language\Text;
 
-//require_once JPATH_SITE . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'models' . DIRECTORY_SEPARATOR . 'player.php';
-
-//jimport('joomla.application.component.view');
-
 /**
  * sportsmanagementViewRosteralltime
  *
@@ -41,38 +37,20 @@ class sportsmanagementViewRosteralltime extends sportsmanagementView
 	 */
 	function init()
 	{
-//		// Get a refrence of the page instance in joomla
-//		$document = Factory::getDocument();
-//		$model    = $this->getModel();
-//		$user     = Factory::getUser();
-//		$config   = sportsmanagementModelProject::getTemplateConfig($this->getName(), $model::$cfg_which_database);
-
 		$this->state = $this->get('State');
 		$this->items = $this->get('Items');
-
 		$this->pagination = $this->get('Pagination');
-
-//		$this->config = $config;
-		$this->team   = $this->model->getTeam();
-
+//		$this->team   = $this->model->getTeam();
 		$this->playerposition     = $this->model->getPlayerPosition();
-//		$this->project            = sportsmanagementModelProject::getProject($this->model::$cfg_which_database, __METHOD__);
 		$this->positioneventtypes = $this->model->getPositionEventTypes();
-
 		$this->rows = $this->model->getTeamPlayers(1, $this->positioneventtypes, $this->items);
 
-//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' team<br><pre>' . $this->team . '</pre>'), Log::INFO, 'jsmerror');
-//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' playerposition<br><pre>' . $this->playerposition . '</pre>'), Log::INFO, 'jsmerror');
-//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' positioneventtypes<br><pre>' . $this->positioneventtypes . '</pre>'), Log::INFO, 'jsmerror');
-//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' items<br><pre>' . $this->items . '</pre>'), Log::INFO, 'jsmerror');
-//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' rows<br><pre>' . $this->rows . '</pre>'), Log::INFO, 'jsmerror');
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' team<br><pre>' . print_r($this->team,true) . '</pre>'), Log::INFO, 'jsmerror');
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' playerposition<br><pre>' . print_r($this->playerposition,true) . '</pre>'), Log::INFO, 'jsmerror');
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' positioneventtypes<br><pre>' . print_r($this->positioneventtypes,true) . '</pre>'), Log::INFO, 'jsmerror');
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' items<br><pre>' . print_r($this->items,true) . '</pre>'), Log::INFO, 'jsmerror');
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' rows<br><pre>' . print_r($this->rows,true) . '</pre>'), Log::INFO, 'jsmerror');
 
-		//$this->items      = $items;
-		//$this->state      = $state;
-		//$this->user       = $user;
-		//$this->pagination = $pagination;
-
-		//parent::display($tpl);
 	}
 
 }
