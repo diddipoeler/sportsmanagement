@@ -15,8 +15,10 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
+use Joomla\CMS\Language\Text;
 
-require_once JPATH_SITE . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'models' . DIRECTORY_SEPARATOR . 'player.php';
+//require_once JPATH_SITE . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'models' . DIRECTORY_SEPARATOR . 'player.php';
 
 //jimport('joomla.application.component.view');
 
@@ -45,24 +47,30 @@ class sportsmanagementViewRosteralltime extends sportsmanagementView
 //		$user     = Factory::getUser();
 //		$config   = sportsmanagementModelProject::getTemplateConfig($this->getName(), $model::$cfg_which_database);
 
-		$state = $this->get('State');
-		$items = $this->get('Items');
+		$this->state = $this->get('State');
+		$this->items = $this->get('Items');
 
-		$pagination = $this->get('Pagination');
+		$this->pagination = $this->get('Pagination');
 
-		$this->config = $config;
+//		$this->config = $config;
 		$this->team   = $this->model->getTeam();
 
 		$this->playerposition     = $this->model->getPlayerPosition();
 //		$this->project            = sportsmanagementModelProject::getProject($this->model::$cfg_which_database, __METHOD__);
 		$this->positioneventtypes = $this->model->getPositionEventTypes();
 
-		$this->rows = $this->model->getTeamPlayers(1, $this->positioneventtypes, $items);
+		$this->rows = $this->model->getTeamPlayers(1, $this->positioneventtypes, $this->items);
 
-		$this->items      = $items;
-		$this->state      = $state;
-		$this->user       = $user;
-		$this->pagination = $pagination;
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' team<br><pre>' . $this->team . '</pre>'), Log::INFO, 'jsmerror');
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' playerposition<br><pre>' . $this->playerposition . '</pre>'), Log::INFO, 'jsmerror');
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' positioneventtypes<br><pre>' . $this->positioneventtypes . '</pre>'), Log::INFO, 'jsmerror');
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' items<br><pre>' . $this->items . '</pre>'), Log::INFO, 'jsmerror');
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' rows<br><pre>' . $this->rows . '</pre>'), Log::INFO, 'jsmerror');
+
+		//$this->items      = $items;
+		//$this->state      = $state;
+		//$this->user       = $user;
+		//$this->pagination = $pagination;
 
 		//parent::display($tpl);
 	}

@@ -138,6 +138,7 @@ switch ($view)
 		JLoader::import('components.com_sportsmanagement.helpers.comments', JPATH_SITE);
 		break;
 	case 'roster':
+    case 'rosteralltime':
 		JLoader::import('components.com_sportsmanagement.models.player', JPATH_SITE);
 		break;
 	case 'teamplan':
