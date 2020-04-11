@@ -299,7 +299,7 @@ class sportsmanagementModelRosteralltime extends ListModel
 		$query  = $db->getQuery(true);
 
 		$person_range = array();
-
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' items<br><pre>' . print_r($items,true) . '</pre>'), Log::INFO, 'jsmerror');
 		foreach ($items as $row)
 		{
 			$person_range[] = $row->person_id;
@@ -309,7 +309,7 @@ class sportsmanagementModelRosteralltime extends ListModel
 		//		{
 
 		$query->select('pr.firstname,pr.nickname,pr.lastname,pr.country,pr.birthday,pr.deathday,pr.id AS pid,pr.id AS person_id,pr.picture AS ppic');
-		$query->select('pr.suspension AS suspension,pr.away AS away,pr.injury AS injury,pr.id AS pid,pr.picture AS ppic,CONCAT_WS(\':\',pr.id,pr.alias) AS person_slug');
+		$query->select('pr.suspension AS suspension,pr.away AS away,pr.injury AS injury,pr.picture AS ppic,CONCAT_WS(\':\',pr.id,pr.alias) AS person_slug');
 		$query->select('tp.id AS playerid,tp.id AS season_team_person_id,tp.jerseynumber AS position_number,tp.notes AS description,tp.market_value AS market_value,tp.picture');
 		$query->select('st.id AS season_team_id');
 		$query->select('pt.project_id AS project_id');
@@ -342,6 +342,7 @@ class sportsmanagementModelRosteralltime extends ListModel
 		$query->where('pr.published = 1');
 		$query->where('tp.published = 1');
 		$query->where('tp.persontype = ' . $persontype);
+        $query->group('pr.id');
 		$query->order('pos.ordering, ppos.position_id, tp.ordering, tp.jerseynumber, pr.lastname, pr.firstname');
 
 		$db->setQuery($query);
@@ -354,7 +355,7 @@ class sportsmanagementModelRosteralltime extends ListModel
 
 		foreach ($this->_players as $player)
 		{
-//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' $player<br><pre>' . print_r($player,true) . '</pre>'), Log::INFO, 'jsmerror');		  
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' player<br><pre>' . print_r($player,true) . '</pre>'), Log::INFO, 'jsmerror');		  
 			$player->start   = 0;
 			$player->came_in = 0;
 			$player->out     = 0;
@@ -404,7 +405,7 @@ class sportsmanagementModelRosteralltime extends ListModel
 				}
 			}
 		}
-
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' this  _all_time_players<br><pre>' . print_r($this->_all_time_players,true) . '</pre>'), Log::INFO, 'jsmerror');
 		return $this->_all_time_players;
 	}
 
