@@ -80,6 +80,12 @@ class sportsmanagementModelRosteralltime extends ListModel
 		self::$projectteamid      = (int) $jinput->get('ttid', 0);
 		self::$cfg_which_database = Factory::getApplication()->input->get('cfg_which_database', 0, 'INT');
 		$this->limitstart         = $jinput->getVar('limitstart', 0, '', 'int');
+        
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' projectid<br><pre>' . print_r(self::$projectid,true) . '</pre>'), Log::INFO, 'jsmerror');
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' teamid<br><pre>' . print_r(self::$teamid,true) . '</pre>'), Log::INFO, 'jsmerror');
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' projectteamid<br><pre>' . print_r(self::$projectteamid,true) . '</pre>'), Log::INFO, 'jsmerror');
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' cfg_which_database<br><pre>' . print_r(self::$cfg_which_database,true) . '</pre>'), Log::INFO, 'jsmerror');
+        
 	}
 
 	/**
