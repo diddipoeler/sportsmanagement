@@ -348,10 +348,13 @@ class sportsmanagementModelRosteralltime extends ListModel
 		$this->_players          = $db->loadObjectList();
 		$this->_all_time_players = $db->loadObjectList('pid');
 
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' query<br><pre>' . print_r($query->dump(),true) . '</pre>'), Log::INFO, 'jsmerror');
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' this  _players<br><pre>' . print_r($this->_players,true) . '</pre>'), Log::INFO, 'jsmerror');
 		//		}
 
 		foreach ($this->_players as $player)
 		{
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' $player<br><pre>' . print_r($player,true) . '</pre>'), Log::INFO, 'jsmerror');		  
 			$player->start   = 0;
 			$player->came_in = 0;
 			$player->out     = 0;
@@ -388,6 +391,7 @@ class sportsmanagementModelRosteralltime extends ListModel
 					$query->where('event_type_id = ' . $eventid[$a]->eventtype_id);
 					$query->where('teamplayer_id = ' . $player->playerid);
 					$db->setQuery($query);
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' query<br><pre>' . print_r($query->dump(),true) . '</pre>'), Log::INFO, 'jsmerror');                    
 					$event_type_id          = 'event_type_id_' . $eventid[$a]->eventtype_id;
 					$player->$event_type_id = $db->loadResult();
 
