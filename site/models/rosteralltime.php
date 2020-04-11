@@ -324,7 +324,7 @@ class sportsmanagementModelRosteralltime extends ListModel
 		$query->join('INNER', '#__sportsmanagement_project AS pro ON pro.id = pt.project_id and pro.season_id = st.season_id');
 		$query->join('INNER', '#__sportsmanagement_team AS t ON t.id = st.team_id');
         $query->join('LEFT', '#__sportsmanagement_person_project_position AS perpos ON perpos.project_id = pro.id AND perpos.person_id = pr.id');
-		//$query->join('LEFT', '#__sportsmanagement_project_position AS ppos ON ppos.id = tp.project_position_id');
+		$query->join('LEFT', '#__sportsmanagement_project_position AS ppos ON ppos.id = perpos.project_position_id');
 
 		switch ($persontype)
 		{
