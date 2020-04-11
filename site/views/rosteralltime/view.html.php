@@ -18,7 +18,7 @@ use Joomla\CMS\Factory;
 
 require_once JPATH_SITE . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'models' . DIRECTORY_SEPARATOR . 'player.php';
 
-jimport('joomla.application.component.view');
+//jimport('joomla.application.component.view');
 
 /**
  * sportsmanagementViewRosteralltime
@@ -29,23 +29,21 @@ jimport('joomla.application.component.view');
  * @version   $Id$
  * @access    public
  */
-class sportsmanagementViewRosteralltime extends JViewLegacy
+class sportsmanagementViewRosteralltime extends sportsmanagementView
 {
 
 	/**
-	 * sportsmanagementViewRosteralltime::display()
-	 *
-	 * @param   mixed  $tpl
-	 *
+	 * sportsmanagementViewRosteralltime::init()
+	 * 
 	 * @return void
 	 */
-	function display($tpl = null)
+	function init()
 	{
-		// Get a refrence of the page instance in joomla
-		$document = Factory::getDocument();
-		$model    = $this->getModel();
-		$user     = Factory::getUser();
-		$config   = sportsmanagementModelProject::getTemplateConfig($this->getName(), $model::$cfg_which_database);
+//		// Get a refrence of the page instance in joomla
+//		$document = Factory::getDocument();
+//		$model    = $this->getModel();
+//		$user     = Factory::getUser();
+//		$config   = sportsmanagementModelProject::getTemplateConfig($this->getName(), $model::$cfg_which_database);
 
 		$state = $this->get('State');
 		$items = $this->get('Items');
@@ -53,20 +51,20 @@ class sportsmanagementViewRosteralltime extends JViewLegacy
 		$pagination = $this->get('Pagination');
 
 		$this->config = $config;
-		$this->team   = $model->getTeam();
+		$this->team   = $this->model->getTeam();
 
-		$this->playerposition     = $model->getPlayerPosition();
-		$this->project            = sportsmanagementModelProject::getProject($model::$cfg_which_database, __METHOD__);
-		$this->positioneventtypes = $model->getPositionEventTypes();
+		$this->playerposition     = $this->model->getPlayerPosition();
+//		$this->project            = sportsmanagementModelProject::getProject($this->model::$cfg_which_database, __METHOD__);
+		$this->positioneventtypes = $this->model->getPositionEventTypes();
 
-		$this->rows = $model->getTeamPlayers(1, $this->positioneventtypes, $items);
+		$this->rows = $this->model->getTeamPlayers(1, $this->positioneventtypes, $items);
 
 		$this->items      = $items;
 		$this->state      = $state;
 		$this->user       = $user;
 		$this->pagination = $pagination;
 
-		parent::display($tpl);
+		//parent::display($tpl);
 	}
 
 }

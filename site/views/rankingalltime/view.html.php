@@ -30,7 +30,6 @@ use Joomla\CMS\Factory;
 class sportsmanagementViewRankingAllTime extends sportsmanagementView
 {
 
-
 	/**
 	 * sportsmanagementViewRankingAllTime::init()
 	 *
