@@ -228,10 +228,16 @@ if (!empty($this->rows))
 								$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 							} ?>
                             <td width="40" class="td_c" nowrap="nowrap">
-
-
 							<?PHP
-							echo sportsmanagementHelperHtml::getBootstrapModalImage('allplayer' . $players->pid, $picture, $playerName, $this->config['player_picture_width']);
+							echo sportsmanagementHelperHtml::getBootstrapModalImage('allplayer' . $players->pid, 
+                            $picture, 
+                            $playerName, 
+                            $this->config['player_picture_width'], 
+                            '', 
+                            $this->modalwidth,
+						    $this->modalheight,
+						    $this->use_jquery_modal
+                            );
 							?>
                             </td><?php
 						}
@@ -355,13 +361,10 @@ if (!empty($this->rows))
 								}
 							}
 						}
-
-
 						?>
                     </tr>
 					<?php
 				}
-
 			}
 			?>
             <!-- end players rows -->
