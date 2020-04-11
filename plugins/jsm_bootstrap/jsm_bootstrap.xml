@@ -43,7 +43,7 @@
 
 <field type="sywonlinehelp" url="" class="alert alert-info"
 					description="PLUGIN_JSM_BOOTSTRAP_FIELD_BASICFRONT_DESC" />
-
+<!--
 <field type="jsmtitle" title="PLUGIN_JSM_BOOTSTRAP_JQUERY_FIELD_JQUERY_LABEL" imagesrc="../administrator/components/com_sportsmanagement/assets/images/jquery.png" color="#26a69a" />
 <field name="jqueryversionfrontend" type="list" default="1.8" 
 	            	label="PLG_SYSTEM_JQUERYEASY_FIELD_JQUERYVERSION_LABEL" 
@@ -92,7 +92,7 @@
 					label="PLG_SYSTEM_JQUERYEASY_FIELD_JQUERYUISUBVERSION_LABEL" 
 					description="PLG_SYSTEM_JQUERYEASY_FIELD_JQUERYUISUBVERSION_DESC" />	
 				
-				
+-->				
 				<field type="jsmtitle" title="PLUGIN_JSM_BOOTSTRAP_BOOTSTRAP_LABEL" imagesrc="../administrator/components/com_sportsmanagement/assets/images/bootstrap.png" color="#26a69a" />			
 				<field name="load_bootstrap" 
         type="radio" 
