@@ -80,6 +80,7 @@ if (!empty($this->rows))
 	}
 	//}
 	?>
+    <div class="<?php echo $this->divclassrow; ?> table-responsive">
     <table class="<?php echo $this->config['table_class']; ?>">
 		<?php
 		foreach ($this->playerposition as $position_id)
@@ -402,6 +403,7 @@ if (!empty($this->rows))
 
 		?>
     </table>
+    </div>
 	<?php
 }
 ?>
