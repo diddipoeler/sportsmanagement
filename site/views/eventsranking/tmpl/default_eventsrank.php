@@ -138,8 +138,17 @@ if ($this->project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART')
 									$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 								}
 
-								echo sportsmanagementHelperHtml::getBootstrapModalImage('evplayer' . $row->pid, COM_SPORTSMANAGEMENT_PICTURE_SERVER . $picture, $playerName, $this->config['player_picture_width'])
-								?>
+								echo sportsmanagementHelperHtml::getBootstrapModalImage(
+                'evplayer' . $row->pid,
+                COM_SPORTSMANAGEMENT_PICTURE_SERVER . $picture,
+                $playerName,
+                $this->config['player_picture_width'],
+                '',
+                $this->modalwidth,
+                $this->modalheight,
+                $this->overallconfig['use_jquery_modal']                          
+            );
+        ?>
 
                             </td>
 						<?php endif; ?>
