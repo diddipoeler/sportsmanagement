@@ -355,6 +355,8 @@ class sportsmanagementModelRosteralltime extends ListModel
 //Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' this  _players<br><pre>' . print_r($this->_players,true) . '</pre>'), Log::INFO, 'jsmerror');
 		//		}
 
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' positioneventtypes<br><pre>' . print_r($positioneventtypes,true) . '</pre>'), Log::INFO, 'jsmerror');
+      
 		foreach ($this->_players as $player)
 		{
 //Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' player<br><pre>' . print_r($player,true) . '</pre>'), Log::INFO, 'jsmerror');		  
@@ -389,10 +391,21 @@ class sportsmanagementModelRosteralltime extends ListModel
 				for ($a = 0; $a < count($eventid); $a++)
 				{
 					$query->clear();
-					$query->select('count(*) as total');
-					$query->from('#__sportsmanagement_match_event');
-					$query->where('event_type_id = ' . $eventid[$a]->eventtype_id);
-					$query->where('teamplayer_id = ' . $player->playerid);
+					$query->select('count(mp.event_sum) as total');
+					
+					
+					//$query->where('teamplayer_id = ' . $player->playerid);
+                  $query->from('#__sportsmanagement_match AS m');
+		$query->join('INNER', '#__sportsmanagement_match_event AS mp ON mp.match_id = m.id');
+        $query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp1 ON tp1.id = mp.teamplayer_id');
+        $query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.team_id = tp1.team_id');       
+      	$query->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st1.id and (m.projectteam2_id = pt.id or m.projectteam1_id = pt.id)');
+		$query->join('INNER', '#__sportsmanagement_project AS p ON p.id = pt.project_id ');
+                  $query->where('mp.event_type_id = ' . $eventid[$a]->eventtype_id);
+                  $query->where('st1.team_id = ' . self::$teamid);
+                  $query->where('tp1.team_id = ' . self::$teamid);
+                  $query->where('tp1.person_id = ' . (int) $player->pid);
+                  
 					$db->setQuery($query);
 //Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' query<br><pre>' . print_r($query->dump(),true) . '</pre>'), Log::INFO, 'jsmerror');                    
 					$event_type_id          = 'event_type_id_' . $eventid[$a]->eventtype_id;
