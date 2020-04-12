@@ -165,7 +165,8 @@ class sportsmanagementModelRosteralltime extends ListModel
 
 		// $query->order('pos.ordering, ppos.position_id, tp.ordering, tp.jerseynumber, pr.lastname, pr.firstname');
 		$query->group('tp.person_id');
-		$query->order('pos.ordering, ppos.position_id, tp.ordering, tp.jerseynumber, pr.lastname, pr.firstname');
+		//$query->order('pos.ordering, ppos.position_id, tp.ordering, tp.jerseynumber, pr.lastname, pr.firstname');
+        $query->order('pr.lastname, pr.firstname');
 
 		return $query;
 
