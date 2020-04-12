@@ -17,6 +17,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModelPlayer
@@ -962,16 +963,21 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 		$query->select('m.id AS mid, mp.came_in, mp.out, mp.teamplayer_id, mp.in_for, mp.in_out_time');
 		$query->from('#__sportsmanagement_match AS m');
 		$query->join('INNER', '#__sportsmanagement_match_player AS mp ON mp.match_id = m.id');
-		$query->join('INNER', '#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id');
-		$query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id');
-		$query->join('INNER', '#__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id');
-		$query->join('INNER', '#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id');
-		$query->join('INNER', '#__sportsmanagement_project AS p ON p.id = pt1.project_id ');
-		$query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp1 ON ( tp1.id = mp.teamplayer_id OR tp1.id = mp.in_for)');
+        $query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp1 ON tp1.id = mp.teamplayer_id');
+$query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.team_id = tp1.team_id');       
+      	$query->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st1.id and (m.projectteam2_id = pt.id or m.projectteam1_id = pt.id)');
+		
+		//$query->join('INNER', '#__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id');
+		//$query->join('INNER', '#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id');
+		$query->join('INNER', '#__sportsmanagement_project AS p ON p.id = pt.project_id ');
+		
 
 		if ($team_id)
 		{
-			$query->where('( st1.team_id = ' . (int) $team_id . ' OR st2.team_id = ' . (int) $team_id . ' )');
+			//$query->where('( st1.team_id = ' . (int) $team_id . ' OR st2.team_id = ' . (int) $team_id . ' )');
+          //$query->where('( st1.team_id = ' . (int) $team_id . ' AND tp1.team_id = ' . (int) $team_id . ' )');
+          $query->where('st1.team_id = ' . (int) $team_id);
+          $query->where('tp1.team_id = ' . (int) $team_id);
 		}
 
 		if ($person_id)
@@ -991,20 +997,37 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 
 		if ($project_id)
 		{
-			$query->where('( pt1.project_id = ' . (int) $project_id . ' OR pt2.project_id = ' . (int) $project_id . ' )');
+			//$query->where('( pt1.project_id = ' . (int) $project_id . ' OR pt2.project_id = ' . (int) $project_id . ' )');
+          $query->where('( pt.project_id = ' . (int) $project_id . ' )');
 		}
 
 		if ($projectteam_id)
 		{
-			$query->where('( pt1.id = ' . (int) $projectteam_id . ' OR pt2.id = ' . (int) $projectteam_id . ' )');
+			//$query->where('( pt1.id = ' . (int) $projectteam_id . ' OR pt2.id = ' . (int) $projectteam_id . ' )');
+          $query->where('( pt.id = ' . (int) $projectteam_id .  ' )');
 		}
 
 		$query->where('m.published = 1');
 		$query->where('p.published = 1');
 
 		$db->setQuery($query);
+      
+        //Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' query<br><pre>' . print_r($query->dump(),true) . '</pre>'), Log::INFO, 'jsmerror');  
+      
 		$rows = $db->loadObjectList();
-
+/*
+        $query->clear('join');
+        $query->join('INNER', '#__sportsmanagement_match_player AS mp ON mp.match_id = m.id');
+		$query->join('INNER', '#__sportsmanagement_project_team AS pt1 ON m.projectteam2_id = pt1.id');
+		$query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id');
+		//$query->join('INNER', '#__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id');
+		//$query->join('INNER', '#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id');
+		$query->join('INNER', '#__sportsmanagement_project AS p ON p.id = pt1.project_id ');
+		$query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp1 ON tp1.id = mp.teamplayer_id and tp1.team_id = st1.team_id');
+        Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' query<br><pre>' . print_r($query->dump(),true) . '</pre>'), Log::INFO, 'jsmerror');
+        $db->setQuery($query);
+        $rows2 = $db->loadObjectList();
+*/
 		$inoutstat          = new stdclass;
 		$inoutstat->played  = 0;
 		$inoutstat->started = 0;
@@ -1019,7 +1042,16 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 			$inoutstat->sub_in  += ($row->came_in == 1) && ($row->teamplayer_id == $teamplayer_id);
 			$inoutstat->sub_out += ($row->out == 1) || ($row->in_for == $teamplayer_id);
 		}
-
+      /*
+        foreach ($rows2 AS $row)
+		{
+			$inoutstat->played  += ($row->came_in == 0);
+			$inoutstat->played  += ($row->came_in == 1) && ($row->teamplayer_id == $teamplayer_id);
+			$inoutstat->started += ($row->came_in == 0);
+			$inoutstat->sub_in  += ($row->came_in == 1) && ($row->teamplayer_id == $teamplayer_id);
+			$inoutstat->sub_out += ($row->out == 1) || ($row->in_for == $teamplayer_id);
+		}
+*/
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return $inoutstat;
