@@ -236,7 +236,7 @@ if (!empty($this->rows))
                             '', 
                             $this->modalwidth,
 						    $this->modalheight,
-						    $this->use_jquery_modal
+						    $this->config['use_jquery_modal']
                             );
 							?>
                             </td><?php
