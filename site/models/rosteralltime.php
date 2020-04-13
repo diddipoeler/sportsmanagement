@@ -162,6 +162,11 @@ class sportsmanagementModelRosteralltime extends ListModel
 		$query->where('tp.team_id = ' . self::$teamid);
 		$query->where('pr.published = 1');
 		$query->where('tp.published = 1');
+        
+        if ($this->getState('filter.search'))
+		{
+			$query->where('LOWER(pr.lastname) LIKE ' . $db->Quote('%' . $this->getState('filter.search') . '%'));
+		}
 
 		// $query->order('pos.ordering, ppos.position_id, tp.ordering, tp.jerseynumber, pr.lastname, pr.firstname');
 		$query->group('tp.person_id');
@@ -449,6 +454,9 @@ class sportsmanagementModelRosteralltime extends ListModel
 
 		$value = $jinput->getUInt('limitstart', 0);
 		$this->setState('list.start', $value);
+        
+        $search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
 
 	}
 
