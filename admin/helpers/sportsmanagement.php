@@ -1675,6 +1675,24 @@ abstract class sportsmanagementHelper
 			$output  .= HTMLHelper::link($link, $desc);
 			$output  .= '</li>';
 		}
+        
+        if ($config['show_alltime_team_link'])
+		{
+			$routeparameter                       = array();
+			$routeparameter['cfg_which_database'] = $cfg_which_database;
+			$routeparameter['s']                  = $s;
+			$routeparameter['p']                  = $projectSlug;
+			$routeparameter['tid']                = $teamSlug;
+			//$routeparameter['ptid']               = $projectteamid;
+
+			$link    = sportsmanagementHelperRoute::getSportsmanagementRoute('rosteralltime', $routeparameter);
+			$title   = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_ALLTIME_ROSTER_LINK') . '&nbsp;' . $teamname;
+			$picture = 'media/com_sportsmanagement/jl_images/team_icon.png';
+			$desc    = self::getPictureThumb($picture, $title, 0, 0, 4);
+			$output  .= '<li class="list-inline-item">';
+			$output  .= HTMLHelper::link($link, $desc);
+			$output  .= '</li>';
+		}
 
 		if (((!isset($team_plan)) || ($teamid != $team_plan->id)) && ($config['show_plan_link']))
 		{

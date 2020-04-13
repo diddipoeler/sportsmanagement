@@ -138,6 +138,13 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields"
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		
+		<field name="show_alltime_team_link" type="extensionradiobutton" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_ALLTIME_ROSTER_LINK" description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_ALLTIME_ROSTER_LINK">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 
 		<field name="show_teaminfo_link" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAMINFO_LINK" description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAMINFO_LINK">
