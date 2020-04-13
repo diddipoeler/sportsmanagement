@@ -26,6 +26,21 @@ $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 ?>
+<script language="javascript" type="text/javascript">
+    function tableOrdering(order, dir, task) {
+        var form = document.adminForm;
+
+        form.filter_order.value = order;
+        form.filter_order_Dir.value = dir;
+        document.adminForm.submit(task);
+    }
+
+    function searchPerson(val) {
+        var s = document.getElementById("filter_search");
+        s.value = val;
+        Joomla.submitform('', this.form)
+    }
+</script>
 <div class="<?php echo $this->divclasscontainer; ?>" id="rosteralltime">
 <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($this->uri->toString()); ?>"
           method="post">
