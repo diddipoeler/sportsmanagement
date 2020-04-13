@@ -22,8 +22,6 @@ HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.framework');
 HTMLHelper::_('behavior.modal');
 
-// Make sure that in case extensions are written for mentioned (common) views,
-// that they are loaded i.s.o. of the template of this view
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
@@ -83,12 +81,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             </div>
 
         </fieldset>
-
 		<?php
 		echo $this->loadTemplate('items');
 		echo $this->loadTemplate('jsminfo');
 		?>
-
     </form>
 </div>
 
