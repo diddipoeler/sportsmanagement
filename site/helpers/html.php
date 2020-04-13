@@ -49,7 +49,7 @@ class sportsmanagementHelperHtml
 	 * @param   string  $url
 	 * @param   string  $width
 	 * @param   string  $height
-	 *
+	 * @param   int $use_jquery_modal
 	 * @return
 	 */
 	public static function getBootstrapModalImage($target = '', $picture = '', $text = '', $picturewidth = '20', $url = '', $width = '100', $height = '200', $use_jquery_modal = 0)
