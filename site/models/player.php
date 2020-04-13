@@ -964,7 +964,7 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 		$query->from('#__sportsmanagement_match AS m');
 		$query->join('INNER', '#__sportsmanagement_match_player AS mp ON mp.match_id = m.id');
         $query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp1 ON tp1.id = mp.teamplayer_id');
-$query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.team_id = tp1.team_id');       
+        $query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.team_id = tp1.team_id');       
       	$query->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st1.id and (m.projectteam2_id = pt.id or m.projectteam1_id = pt.id)');
 		
 		//$query->join('INNER', '#__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id');
@@ -1037,10 +1037,10 @@ $query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.team_id 
 		foreach ($rows AS $row)
 		{
 			$inoutstat->played  += ($row->came_in == 0);
-			$inoutstat->played  += ($row->came_in == 1) && ($row->teamplayer_id == $teamplayer_id);
+			$inoutstat->played  += ($row->came_in == 1);
 			$inoutstat->started += ($row->came_in == 0);
-			$inoutstat->sub_in  += ($row->came_in == 1) && ($row->teamplayer_id == $teamplayer_id);
-			$inoutstat->sub_out += ($row->out == 1) || ($row->in_for == $teamplayer_id);
+			$inoutstat->sub_in  += ($row->came_in == 1);
+			$inoutstat->sub_out += ($row->out == 1);
 		}
       /*
         foreach ($rows2 AS $row)
@@ -1053,6 +1053,8 @@ $query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.team_id 
 		}
 */
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+        
+        //Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' inoutstat<br><pre>' . print_r($inoutstat,true) . '</pre>'), Log::INFO, 'jsmerror');  
 
 		return $inoutstat;
 	}

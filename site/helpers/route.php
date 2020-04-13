@@ -73,6 +73,7 @@ class sportsmanagementHelperRoute
 		'resultsranking'    => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'mode' => '', 'order' => '', 'layout' => '', 'division' => ''),
 		'rivals'            => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => ''),
 		'roster'            => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'ptid' => ''),
+        //'rosteralltime'     => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'start' => ''),
 		'staff'             => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'pid' => ''),
 		'stats'             => array('cfg_which_database' => '', 's' => '', 'p' => ''),
 		'statsranking'      => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'tid' => '', 'sid' => '', 'order' => ''),

@@ -128,7 +128,7 @@ if (!empty($this->rows))
 				{ ?>
                     <th class="td_c"><?php
 						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ROSTER_PLAYED');
-						echo HTMLHelper::image('images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/played.png',
+						echo HTMLHelper::image('images/com_sportsmanagement/database/events/spieleinsatz.gif',
 							$imageTitle, array('title' => $imageTitle, 'height' => 20));
 						?></th>
 					<?php
@@ -137,17 +137,17 @@ if (!empty($this->rows))
 				{ ?>
                     <th class="td_c"><?php
 						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ROSTER_STARTING_LINEUP');
-						echo HTMLHelper::image('images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/startroster.png',
+						echo HTMLHelper::image('images/com_sportsmanagement/database/events/startelf.gif',
 							$imageTitle, array('title' => $imageTitle, 'height' => 20));
 						?></th>
                     <th class="td_c"><?php
 						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ROSTER_IN');
-						echo HTMLHelper::image('images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/in.png',
+						echo HTMLHelper::image('images/com_sportsmanagement/database/events/einwechslung.gif',
 							$imageTitle, array('title' => $imageTitle, 'height' => 20));
 						?></th>
                     <th class="td_c"><?php
 						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ROSTER_OUT');
-						echo HTMLHelper::image('images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/out.png',
+						echo HTMLHelper::image('images/com_sportsmanagement/database/events/auswechslung.gif',
 							$imageTitle, array('title' => $imageTitle, 'height' => 20));
 						?></th>
 					<?php
@@ -236,7 +236,7 @@ if (!empty($this->rows))
                             '', 
                             $this->modalwidth,
 						    $this->modalheight,
-						    $this->use_jquery_modal
+						    $this->config['use_jquery_modal']
                             );
 							?>
                             </td><?php

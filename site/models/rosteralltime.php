@@ -162,6 +162,11 @@ class sportsmanagementModelRosteralltime extends ListModel
 		$query->where('tp.team_id = ' . self::$teamid);
 		$query->where('pr.published = 1');
 		$query->where('tp.published = 1');
+        
+        if ($this->getState('filter.search'))
+		{
+			$query->where('LOWER(pr.lastname) LIKE ' . $db->Quote('%' . $this->getState('filter.search') . '%'));
+		}
 
 		// $query->order('pos.ordering, ppos.position_id, tp.ordering, tp.jerseynumber, pr.lastname, pr.firstname');
 		$query->group('tp.person_id');
@@ -215,7 +220,7 @@ class sportsmanagementModelRosteralltime extends ListModel
 		$query->from('#__sportsmanagement_position_eventtype AS pet');
 		$query->join('INNER', '#__sportsmanagement_eventtype AS et ON et.id = pet.eventtype_id');
 		$query->where('et.published = 1');
-		$query->group('pet.ordering, et.ordering');
+		//$query->group('pet.ordering, et.ordering');
 
 		$db->setQuery($query);
 		$result = $db->loadObjectList();
@@ -355,6 +360,8 @@ class sportsmanagementModelRosteralltime extends ListModel
 //Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' this  _players<br><pre>' . print_r($this->_players,true) . '</pre>'), Log::INFO, 'jsmerror');
 		//		}
 
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' positioneventtypes<br><pre>' . print_r($positioneventtypes,true) . '</pre>'), Log::INFO, 'jsmerror');
+      
 		foreach ($this->_players as $player)
 		{
 //Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' player<br><pre>' . print_r($player,true) . '</pre>'), Log::INFO, 'jsmerror');		  
@@ -384,15 +391,26 @@ class sportsmanagementModelRosteralltime extends ListModel
 			$this->_all_time_players[$player->pid]->came_in = $this->InOutStat->sub_in;
 			$this->_all_time_players[$player->pid]->out     = $this->InOutStat->sub_out;
 
-			foreach ($positioneventtypes AS $event => $eventid)
+			foreach ($positioneventtypes AS $event => $eventid) if ( $event == $player->position_id )
 			{
 				for ($a = 0; $a < count($eventid); $a++)
 				{
 					$query->clear();
-					$query->select('count(*) as total');
-					$query->from('#__sportsmanagement_match_event');
-					$query->where('event_type_id = ' . $eventid[$a]->eventtype_id);
-					$query->where('teamplayer_id = ' . $player->playerid);
+					$query->select('count(mp.event_sum) as total');
+					
+					
+					//$query->where('teamplayer_id = ' . $player->playerid);
+                  $query->from('#__sportsmanagement_match AS m');
+		$query->join('INNER', '#__sportsmanagement_match_event AS mp ON mp.match_id = m.id');
+        $query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp1 ON tp1.id = mp.teamplayer_id');
+        $query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.team_id = tp1.team_id');       
+      	$query->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st1.id and (m.projectteam2_id = pt.id or m.projectteam1_id = pt.id)');
+		$query->join('INNER', '#__sportsmanagement_project AS p ON p.id = pt.project_id ');
+                  $query->where('mp.event_type_id = ' . $eventid[$a]->eventtype_id);
+                  $query->where('st1.team_id = ' . self::$teamid);
+                  $query->where('tp1.team_id = ' . self::$teamid);
+                  $query->where('tp1.person_id = ' . (int) $player->pid);
+                  
 					$db->setQuery($query);
 //Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' query<br><pre>' . print_r($query->dump(),true) . '</pre>'), Log::INFO, 'jsmerror');                    
 					$event_type_id          = 'event_type_id_' . $eventid[$a]->eventtype_id;
@@ -436,6 +454,9 @@ class sportsmanagementModelRosteralltime extends ListModel
 
 		$value = $jinput->getUInt('limitstart', 0);
 		$this->setState('list.start', $value);
+        
+        $search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
 
 	}
 

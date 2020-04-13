@@ -21,10 +21,10 @@ if (!defined('JSM_PATH'))
 	DEFINE('JSM_PATH', 'components/com_sportsmanagement');
 }
 
-// Pr�ft vor Benutzung ob die gew�nschte Klasse definiert ist
+/** Prüft vor Benutzung ob die gewünschte Klasse definiert ist */
 if (!class_exists('sportsmanagementHelperHtml'))
 {
-	// Add the classes for handling
+	/** Add the classes for handling */
 	$classpath = JPATH_SITE . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'html.php';
 	JLoader::register('sportsmanagementHelperHtml', $classpath);
 }
@@ -65,7 +65,7 @@ class sportsmanagementViewallleagues extends sportsmanagementView
 
 		$this->pagination = $this->get('Pagination');
 
-		// Build the html options for nation
+		/** Build the html options for nation */
 		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 
 		if ($res = JSMCountries::getCountryOptions())
@@ -76,13 +76,12 @@ class sportsmanagementViewallleagues extends sportsmanagementView
 		$lists['nation']  = $nation;
 		$lists['nation2'] = JHtmlSelect::genericlist($nation, 'filter_search_nation', $inputappend . 'class="inputbox" style="width:140px; " onchange="this.form.submit();"', 'value', 'text', $this->state->get('filter.search_nation'));
 
-		// Set page title
+		/** Set page title */
 		$this->document->setTitle(Text::_('COM_SPORTSMANAGEMENT_ALLLEAGUES_PAGE_TITLE'));
 		$form             = new stdClass;
 		$form->limitField = $this->pagination->getLimitBox();
 		$this->filter     = $this->state->get('filter.search');
 		$this->form       = $form;
-
 		$this->sortDirection = $this->state->get('filter_order_Dir');
 		$this->sortColumn    = $this->state->get('filter_order');
 		$this->lists         = $lists;
