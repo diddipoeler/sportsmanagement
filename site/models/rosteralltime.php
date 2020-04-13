@@ -386,7 +386,7 @@ class sportsmanagementModelRosteralltime extends ListModel
 			$this->_all_time_players[$player->pid]->came_in = $this->InOutStat->sub_in;
 			$this->_all_time_players[$player->pid]->out     = $this->InOutStat->sub_out;
 
-			foreach ($positioneventtypes AS $event => $eventid)
+			foreach ($positioneventtypes AS $event => $eventid) if ( $event == $player->position_id )
 			{
 				for ($a = 0; $a < count($eventid); $a++)
 				{
