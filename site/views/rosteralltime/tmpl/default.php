@@ -58,7 +58,6 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         onclick="document.id('filter_search').value = '';this.form.submit();"><i
                             class="icon-remove"><?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?></i></button>
 
-				<?php echo $this->lists['nation2'] . '&nbsp;&nbsp;'; ?>
 				<?php
 				$startRange = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('character_filter_start_hex', '0');
 				$endRange   = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('character_filter_end_hex', '0');
