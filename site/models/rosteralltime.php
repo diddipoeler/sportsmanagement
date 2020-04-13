@@ -215,7 +215,7 @@ class sportsmanagementModelRosteralltime extends ListModel
 		$query->from('#__sportsmanagement_position_eventtype AS pet');
 		$query->join('INNER', '#__sportsmanagement_eventtype AS et ON et.id = pet.eventtype_id');
 		$query->where('et.published = 1');
-		$query->group('pet.ordering, et.ordering');
+		//$query->group('pet.ordering, et.ordering');
 
 		$db->setQuery($query);
 		$result = $db->loadObjectList();
