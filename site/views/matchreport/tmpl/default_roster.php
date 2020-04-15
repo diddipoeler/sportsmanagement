@@ -137,14 +137,22 @@ HTMLHelper::_('behavior.modal');
 													}
 													if (($this->config['show_player_picture'] == 2) && ($this->config['show_player_profile_link'] == 1))
 													{
-														echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer' . $player->person_id, $picture, $imgTitle, $this->config['player_picture_width']);
+														echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer' . $player->person_id, $picture, $imgTitle, $this->config['player_picture_width'],
+										'',
+										$this->modalwidth,
+										$this->modalheight,
+										$this->overallconfig['use_jquery_modal']);
 														?>
 
 														<?PHP
 													}
 													else
 													{
-														echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer' . $player->person_id, $picture, $imgTitle, $this->config['player_picture_width']);
+														echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer' . $player->person_id, $picture, $imgTitle, $this->config['player_picture_width'],
+										'',
+										$this->modalwidth,
+										$this->modalheight,
+										$this->overallconfig['use_jquery_modal']);
 
 														if ($this->config['show_player_profile_link_alignment'] == 1)
 														{
@@ -224,7 +232,11 @@ HTMLHelper::_('behavior.modal');
 													}
 													else
 													{
-														echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer' . $player->person_id, $picture, $imgTitle, $this->config['player_picture_width']);
+														echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer' . $player->person_id, $picture, $imgTitle, $this->config['player_picture_width'],
+										'',
+										$this->modalwidth,
+										$this->modalheight,
+										$this->overallconfig['use_jquery_modal']);
 														?>
 														<?PHP
 
