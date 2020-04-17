@@ -1003,8 +1003,8 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 
 		if ($projectteam_id)
 		{
-			//$query->where('( pt1.id = ' . (int) $projectteam_id . ' OR pt2.id = ' . (int) $projectteam_id . ' )');
-          $query->where('( pt.id = ' . (int) $projectteam_id .  ' )');
+			$query->where('( m.projectteam1_id = ' . (int) $projectteam_id . ' OR m.projectteam2_id = ' . (int) $projectteam_id . ' )');
+          //$query->where('( pt.id = ' . (int) $projectteam_id .  ' )');
 		}
 
 		$query->where('m.published = 1');
@@ -1054,7 +1054,7 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 */
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         
-        //Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' inoutstat<br><pre>' . print_r($inoutstat,true) . '</pre>'), Log::INFO, 'jsmerror');  
+        //Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' match_id -> '.$match_id. ' inoutstat<br><pre>' . print_r($inoutstat,true) . '</pre>'), Log::INFO, 'jsmerror');  
 
 		return $inoutstat;
 	}
