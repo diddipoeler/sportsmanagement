@@ -656,6 +656,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                                             <td <?php echo $tdStyleStr; ?> >
 												<?PHP
 												echo $imgFile;
+												echo $this->model->getChampionScoreSubString($showProjectID, $membersDataArray[$key]['champ_tipp']);
 												?>
                                             </td>
 											<?PHP

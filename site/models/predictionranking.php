@@ -278,7 +278,47 @@ class sportsmanagementModelPredictionRanking extends JSMModelList
 
 	}
 
+	
 	/**
+	 * sportsmanagementModelPredictionRanking::getChampionScoreSubString()
+	 *
+	 * @param   mixed  $ProjectID
+	 * @param   mixed  $champ_tipp
+	 *
+	 * @return Substring to be displayed in Predictionranking (Result of champ tipp)
+	 */
+    function getChampionScoreSubString($ProjectID, $champ_tipp)
+    {
+        $ScoreSubString = "";
+  
+        if ($champ_tipp) {
+            $sChampTeamsList = array();
+            $dChampTeamsList = array();
+            $champTeamsList = array();
+            $sChampTeamsList = explode(';', $champ_tipp);
+            foreach ($sChampTeamsList as $key => $value) {
+                $dChampTeamsList[] = explode(',', $value);
+            }
+            foreach ($dChampTeamsList as $key => $value) {
+                $champTeamsList[$value[0]] = $value[1];
+            }
+		
+			// if the champion was already set
+            if (isset($champTeamsList[(int) $ProjectID])) {
+                // check for the right tipp
+				if ($champTeamsList[(int) $ProjectID] == $this->predictionProject->league_champ) {
+                    // and score the points
+                    $ScoreSubString = "<sub style='color:#7D0204;font-weight:bold;'>".$this->predictionProject->points_tipp_champ."</sub>";
+                } else {
+					// otherwise show 0 points :-()
+                    $ScoreSubString = "<sub style='color:#7D0204;font-weight:bold;'>0</sub>";
+				}
+            }
+        }
+        return $ScoreSubString;
+    }
+
+    /**
 	 * sportsmanagementModelPredictionRanking::createMatchdayList()
 	 *
 	 * @param   mixed  $project_id
