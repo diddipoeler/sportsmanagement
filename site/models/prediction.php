@@ -197,7 +197,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 	 *
 	 * @param   mixed  $champ_tipp
 	 *
-	 * @return
+	 * @return  champion points or false, if no champion was set
 	 */
 	static function getChampionPoints($champ_tipp)
 	{
@@ -233,6 +233,9 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
 		if ($result)
 		{
+			if ($result->league_champ == 0) {
+				return false;
+			}
 			$resultchamp       = $result->league_champ;
 			$resultchamppoints = $result->points_tipp_champ;
 		}
@@ -2428,7 +2431,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 			$nameType = 'name';
 		}
 
-		$query->select('pm.id AS pmID,pm.user_id AS user_id,pm.picture AS avatar,pm.show_profile AS show_profile,pm.champ_tipp AS champ_tipp,pm.aliasName as aliasName');
+		$query->select('pm.id AS pmID,pm.user_id AS user_id,pm.picture AS avatar,pm.show_profile AS show_profile,pm.champ_tipp AS champ_tipp,pm.final4_tipp AS final4_tipp,pm.aliasName as aliasName');
 		$query->select('u.' . $nameType . ' AS name');
 		$query->select('pg.id as pg_group_id,pg.name as pg_group_name');
 		$query->from('#__sportsmanagement_prediction_member AS pm');
