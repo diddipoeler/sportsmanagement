@@ -231,6 +231,8 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 		$db->setQuery($query);
 		$result = $db->loadObject();
 
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+
 		if ($result)
 		{
 			if ($result->league_champ == 0) {
@@ -263,8 +265,6 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 				}
 			}
 		}
-
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return $ChampPoints;
 	}

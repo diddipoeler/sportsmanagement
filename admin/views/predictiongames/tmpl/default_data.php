@@ -235,6 +235,7 @@ if ($this->dPredictionID > 0)
             <th class='title'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_OVERVIEW'); ?></th>
             <th class='title'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_JOKER'); ?></th>
             <th class='title'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_CHAMP'); ?></th>
+            <th class='title'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_FINAL4'); ?></th>
             <th class='title'><?php echo Text::_('JSTATUS'); ?></th>
 
             <th class='title'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_CARDS'); ?></th>
@@ -331,6 +332,20 @@ if ($this->dPredictionID > 0)
 					?></td>
                 <td style='text-align:center; '><?php
 					if ($pred_project['champ'])
+					{
+						$imageTitle = Text::_('JENABLED');
+						$imageFile  = 'administrator/components/com_sportsmanagement/assets/images/ok.png';
+					}
+					else
+					{
+						$imageTitle = Text::_('JDISABLED');
+						$imageFile  = 'administrator/components/com_sportsmanagement/assets/images/delete.png';
+					}
+
+					echo HTMLHelper::_('image', $imageFile, $imageTitle, 'title= "' . $imageTitle . '"');
+					?></td>
+                <td style='text-align:center; '><?php
+					if ($pred_project['final4'])
 					{
 						$imageTitle = Text::_('JENABLED');
 						$imageFile  = 'administrator/components/com_sportsmanagement/assets/images/ok.png';
