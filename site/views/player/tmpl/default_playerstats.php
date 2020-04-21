@@ -1,5 +1,5 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage player
@@ -475,5 +475,146 @@ $this->LeaguehistoryPlayer = array();
 <?php
               //echo __LINE__.'<pre>'.print_r($this->LeaguehistoryPlayer,true).'</pre>';
               ?>
+              
+<table class="<?PHP echo $this->config['player_table_class']; ?>" id="playerstatsleaguetable">
+        <thead>
+        <tr class="sectiontableheader">
+            <th class="td_l" class="nowrap"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_COMPETITION'); ?></th>              
+<th class="td_c">
+				<?php
+				$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_PLAYED');
+				$picture    = $picture_path_sport_type_name . '/played.png';
+				if (!curl_init($picture))
+				{
+					$picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
+				}
+
+				echo HTMLHelper::image($picture, $imageTitle, array(' title' => $imageTitle));
+				?></th>
+<th class="td_c"><?php
+						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_STARTROSTER');
+						$picture    = $picture_path_sport_type_name . '/startroster.png';
+						if (!curl_init($picture))
+						{
+							$picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
+						}
+						echo HTMLHelper::image($picture, $imageTitle, array(' title' => $imageTitle));
+						?></th>
+                    <th class="td_c"><?php
+						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_IN');
+						$picture    = $picture_path_sport_type_name . '/in.png';
+						if (!curl_init($picture))
+						{
+							$picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
+						}
+						echo HTMLHelper::image($picture, $imageTitle, array(' title' => $imageTitle));
+						?></th>
+                    <th class="td_c"><?php
+						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_OUT');
+						$picture    = $picture_path_sport_type_name . '/out.png';
+						if (!curl_init($picture))
+						{
+							$picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
+						}
+						echo HTMLHelper::image($picture, $imageTitle, array(' title' => $imageTitle));
+						?></th>
+
+ <th class="td_c"><?php
+						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PLAYED_TIME');
+						$picture    = $picture_path_sport_type_name . '/uhr.png';
+						if (!curl_init($picture))
+						{
+							$picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
+						}
+						echo HTMLHelper::image($picture, $imageTitle, array('title' => $imageTitle, 'height' => 11));
+						?></th>
+<?php
+if (count($this->AllEvents))
+				{
+					foreach ($this->AllEvents as $eventtype)
+					{
+						?>
+                        <th class="td_c"><?php
+							$iconPath = $eventtype->icon;
+							if (!strpos(" " . $iconPath, "/"))
+							{
+								$iconPath = "images/com_sportsmanagement/database/events/" . $iconPath;
+							}
+							if (!curl_init($iconPath))
+							{
+								$iconPath = sportsmanagementHelper::getDefaultPlaceholder("icon");
+							}
+
+							echo HTMLHelper::image($iconPath,
+								Text::_($eventtype->name),
+								array("title"  => Text::_($eventtype->name),
+								      "align"  => "top",
+								      'width'  => 30,
+								      "hspace" => "2"));
+							?></th>
+						<?php
+					}
+				}
+?>
+              
+</tr>
+</thead>              
+<?php              
+foreach ($this->LeaguehistoryPlayer as $player_hist_league)
+{
+?>
+<tr class="">
+<td class="td_l" nowrap="nowrap">
+<?php
+echo $player_hist_league['league'];
+?>                    
+</td>
+<td class="td_l" nowrap="nowrap">
+<?php
+echo $player_hist_league['played'];
+?>                    
+</td>
+<td class="td_l" nowrap="nowrap">
+<?php
+echo $player_hist_league['started'];
+?>                    
+</td>
+<td class="td_l" nowrap="nowrap">
+<?php
+echo $player_hist_league['in'];
+?>                    
+</td>
+<td class="td_l" nowrap="nowrap">
+<?php
+echo $player_hist_league['out'];
+?>                    
+</td>
+<td class="td_l" nowrap="nowrap">
+<?php
+echo $player_hist_league['playedtime'];
+?>                    
+</td>
+<?php
+if (count($this->AllEvents))
+				{
+					foreach ($this->AllEvents as $eventtype)
+					{
+						?>
+                        <td class="td_c">
+							<?php
+							echo $player_hist_league[$eventtype->name];
+							?>
+                        </td>
+						<?php
+					}
+				}
+?>
+</tr>
+<?php
+}
+?>              
+              
+</table>              
+              
 </div>
 <!-- Player stats History END -->
