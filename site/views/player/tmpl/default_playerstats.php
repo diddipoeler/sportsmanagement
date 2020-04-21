@@ -166,7 +166,7 @@ $colspan                      = 1;
 		$career['out']        = 0;
 		$career['playedtime'] = 0;
 		$player               = BaseDatabaseModel::getInstance("Person", "sportsmanagementModel");
-
+		//echo __LINE__.'<pre>'.print_r($this->historyPlayer,ture).'</pre>';
 
 		if (count($this->historyPlayer) > 0)
 		{
