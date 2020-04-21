@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
  * @package    Sportsmanagement
@@ -437,6 +437,7 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 		$query->select('p.picture as project_picture');
 		$query->select('p.game_regular_time,p.add_time');
 		$query->select('c.logo_big as club_picture');
+		$query->select('p.league_id,l.name as league_name');
 		$query->from('#__sportsmanagement_person AS pr');
 		$query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp ON tp.person_id = pr.id');
 		$query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id AND st.season_id = tp.season_id');
