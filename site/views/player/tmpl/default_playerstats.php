@@ -129,7 +129,7 @@ $this->LeaguehistoryPlayer = array();
 								Text::_($eventtype->name),
 								array("title"  => Text::_($eventtype->name),
 								      "align"  => "top",
-								      'width'  => 30,
+								      'width'  => 20,
 								      "hspace" => "2"));
 							?></th>
 						<?php
@@ -549,7 +549,7 @@ if (count($this->AllEvents))
 								Text::_($eventtype->name),
 								array("title"  => Text::_($eventtype->name),
 								      "align"  => "top",
-								      'width'  => 30,
+								      'width'  => 20,
 								      "hspace" => "2"));
 							?></th>
 						<?php
