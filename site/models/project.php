@@ -1515,15 +1515,27 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 			$query->from('#__sportsmanagement_person AS p');
 			$query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp1 ON tp1.person_id = p.id');
 			$query->where('tp1.id = ' . $inout->in_for);
+			try
+			{
 			$db->setQuery($query);
 			$result1 = $db->loadObject();
-
 			$inout->out_firstname = $result1->out_firstname;
 			$inout->out_nickname  = $result1->out_nickname;
 			$inout->out_lastname  = $result1->out_lastname;
 			$inout->out_ptid      = $result1->out_ptid;
 			$inout->out_person_id = $result1->person_slug;
 			$inout->person_slug   = $result1->person_slug;
+			}
+			catch (Exception $e)
+			{
+			// Catch any database errors.
+			$inout->out_firstname = '';
+			$inout->out_nickname  = '';
+			$inout->out_lastname  = '';
+			$inout->out_ptid      = 0;
+			$inout->out_person_id = '';
+			$inout->person_slug   = '';	
+			}
 
 			$query->clear();
 			$query->select('pos.id,pos.name');
@@ -1531,10 +1543,17 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 			$query->join('INNER', '#__sportsmanagement_match_player AS mp ON mp.project_position_id = pos.id ');
 			$query->where('mp.teamplayer_id = ' . $inout->in_for);
 			$query->where('mp.match_id = ' . (int) $match_id);
+			try
+			{
 			$db->setQuery($query);
 			$result1 = $db->loadObject();
-
 			$inout->out_position = $result1->name;
+			}
+			catch (Exception $e)
+			{
+			// Catch any database errors.
+			$inout->out_position = '';
+			}
 
 			$query->clear();
 			$query->select('ppos.id');

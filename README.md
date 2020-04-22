@@ -36,6 +36,7 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   20-04-2020: **3.4.00** Erweiterung Tippspieltabellen
 *   25-12-2019: **3.3.00** Anpassungen Joomla 4
 *   20-12-2019: **3.2.00** Turnierbaum automatisch erstellen
 *   14-12-2019: **3.1.00** JED ready Korrektur

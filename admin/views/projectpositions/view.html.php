@@ -189,6 +189,8 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 		$this->project     = $project;
 		$this->lists       = $lists;
 		$this->addToolbar_Editlist();
+        
+        //Log::add(Text::_('lists <pre>'.print_r($this->lists,true).'</pre>'), Log::INFO, 'jsmerror');
 
 		$this->setLayout('editlist');
 
