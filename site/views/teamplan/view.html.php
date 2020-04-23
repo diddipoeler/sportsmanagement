@@ -107,7 +107,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 		{
 			$iPanel   = 1;
 			$selector = 'teamplan'.$matchInfo->id;
-			echo HTMLHelper::_('bootstrap.startTabSet', $selector, array('active' => 'panel' . $iPanel));
+			$output .= HTMLHelper::_('bootstrap.startTabSet', $selector, array('active' => 'panel' . $iPanel));
 
 			/** Size of the event icons in the tabs (when used) */
 			$width  = 20;
@@ -149,7 +149,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 					$tab_content = Text::_($event->name);
 				}
 
-				$output .= HTMLHelper::_('bootstrap.addTab', $selector, 'panel' . $iPanel++, $tab_content);
+				$output .= HTMLHelper::_('bootstrap.addTab', $selector, 'panel-'.$matchInfo->id.'-' . $iPanel++, $tab_content);
 				$output .= '<table class="matchreport" border="0">';
 				$output .= '<tr>';
 
@@ -230,7 +230,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 				$output .= HTMLHelper::_('bootstrap.endTab');
 			}
 
-			echo HTMLHelper::_('bootstrap.endTabSet');
+			$output .= HTMLHelper::_('bootstrap.endTabSet');
 		}
 		else
 		{
