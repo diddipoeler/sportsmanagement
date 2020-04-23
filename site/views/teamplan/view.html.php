@@ -187,7 +187,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 				{
 					// Event icon as thumbnail on the tab (a placeholder icon is used when the icon does not exist)
 					$imgTitle    = Text::_('COM_SPORTSMANAGEMENT_IN_OUT');
-					$pic_tab     = 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/subst.png';
+					$pic_tab     = 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/change.png';
 					$tab_content = sportsmanagementHelper::getPictureThumb($pic_tab, $imgTitle, $width, $height, $type);
 				}
 				else
