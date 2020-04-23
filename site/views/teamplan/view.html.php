@@ -185,14 +185,14 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 			{
 				if ($this->config['show_events_with_icons'])
 				{
-					// Event icon as thumbnail on the tab (a placeholder icon is used when the icon does not exist)
-					$imgTitle    = Text::_('COM_SPORTSMANAGEMENT_IN_OUT');
+					/** Event icon as thumbnail on the tab (a placeholder icon is used when the icon does not exist) */
+					$imgTitle    = Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION');
 					$pic_tab     = 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/change.png';
 					$tab_content = sportsmanagementHelper::getPictureThumb($pic_tab, $imgTitle, $width, $height, $type);
 				}
 				else
 				{
-					$tab_content = Text::_('COM_SPORTSMANAGEMENT_IN_OUT');
+					$tab_content = Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION');
 				}
 
 				$pic_time = Uri::root() . 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/playtime.gif';
