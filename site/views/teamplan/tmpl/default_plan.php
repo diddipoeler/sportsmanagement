@@ -120,7 +120,7 @@ if (!empty($this->matches))
 				{
 					case 1 :
 
-						// Show home team marker
+						/** Show home team marker */
 						echo '<th class="right">';
 						if ($this->config['show_home_guest_team_marker'] && !$this->config['switch_home_guest'])
 						{
@@ -133,25 +133,25 @@ if (!empty($this->matches))
 						$nbcols++;
 						echo '</th>';
 
-						// Create space for logo home team
+						/** Create space for logo home team */
 						if ($this->config['show_logo_small'])
 						{
 							echo '<th class="right">&nbsp;</th>';
 							$nbcols++;
 						}
 
-						// Create room for the score to be displayed
+						/** Create room for the score to be displayed */
 						echo '<th>' . Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_RESULT') . '</th>';
 						$nbcols++;
 
-						// Create space for logo guest team
+						/** Create space for logo guest team */
 						if ($this->config['show_logo_small'])
 						{
 							echo '<th class="left">&nbsp;</th>';
 							$nbcols++;
 						}
 
-						// Show guest team marker
+						/** Show guest team marker */
 						echo '<th class="left">';
 						if ($this->config['show_home_guest_team_marker'] && !$this->config['switch_home_guest'])
 						{
@@ -167,7 +167,7 @@ if (!empty($this->matches))
 					default :
 					case 0 :
 
-						// Show home team marker
+						/** Show home team marker */
 						echo '<th class="right">';
 						if ($this->config['show_home_guest_team_marker'] && !$this->config['switch_home_guest'])
 						{
@@ -180,7 +180,7 @@ if (!empty($this->matches))
 						$nbcols++;
 						echo '</th>';
 
-						// Create space for logo home team
+						/** Create space for logo home team */
 						if ($this->config['show_logo_small'])
 						{
 							echo '<th class="right">&nbsp;</th>';
@@ -190,7 +190,7 @@ if (!empty($this->matches))
 						echo '<th>&nbsp;</th>';
 						$nbcols++;
 
-						// Create space for logo guest team
+						/** Create space for logo guest team */
 						if ($this->config['show_logo_small'])
 						{
 							echo '<th class="left">&nbsp;</th>';
@@ -198,7 +198,7 @@ if (!empty($this->matches))
 						}
 
 						echo '<th class="left">';
-						// Show guest team marker
+						/** Show guest team marker */
 						if ($this->config['show_home_guest_team_marker'] && !$this->config['switch_home_guest'])
 						{
 							echo Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_AWAY_TEAM');
@@ -368,11 +368,7 @@ if (!empty($this->matches))
 				?>
                 <tr class="<?php echo $highlight; ?>"<?php echo $favStyle; ?>>
 					<?php
-
-					/**
-					 * start events
-					 */
-
+					/** start events */
 					if ($this->config['show_events'])
 					{
 						?>
@@ -387,10 +383,7 @@ if (!empty($this->matches))
 							}
 							else
 							{
-
-								/**
-								 * no subs are shown when not using tabs for displaying events so don't check for that
-								 */
+								/** no subs are shown when not using tabs for displaying events so don't check for that */
 								$hasEvents = (count($events) > 0 && $this->config['show_events']);
 							}
 
@@ -410,12 +403,7 @@ if (!empty($this->matches))
 					{
 						$hasEvents = false;
 					}
-					/**
-					 * end events
-					 */
-					?>
-
-					<?php
+					/** end events */
 					if ($this->config['show_matchday'])
 					{
 						?>
@@ -431,7 +419,6 @@ if (!empty($this->matches))
 							$routeparameter['order']              = '';
 							$routeparameter['layout']             = '';
 							$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);
-
 							echo HTMLHelper::link($link, $match->roundcode);
 							?>
                         </td>
@@ -481,7 +468,6 @@ if (!empty($this->matches))
 							{
 								$jdate = Factory::getDate($match->match_date);
 								$jdate->setTimezone(new DateTimeZone($this->project->timezone));
-								//$jdate->format('d.m.Y H:i');
 								$temp1 = $jdate->format('M');
 								$temp2 = $jdate->format('d');
 								$temp3 = $jdate->format('D');
@@ -540,18 +526,11 @@ if (!empty($this->matches))
 
 					<?php
 
-					/**
-					 * Define some variables which will be used
-					 */
-
+					/** Define some variables which will be used */
 					$teamA = '';
 					$teamB = '';
 					$score = "";
-
-					/**
-					 * Check if the home and guest team should be switched arround
-					 */
-
+					/** Check if the home and guest team should be switched arround */
 					if ($this->config['switch_home_guest'])
 					{
 						$class1 = 'left';
@@ -590,10 +569,7 @@ if (!empty($this->matches))
 
 					$teamA .= '<td class="' . $class1 . '" id="teamplan-spielheim">' . $home . '</td>';
 
-					/**
-					 * Check if the user wants to show the club logo or country flag
-					 */
-
+					/** Check if the user wants to show the club logo or country flag */
 					switch ($this->config['show_logo_small'])
 					{
 						case 1 :
@@ -611,7 +587,6 @@ if (!empty($this->matches))
 										$this->overallconfig['use_jquery_modal']
 									);
 								$teamA .= '</td>';
-
 								$teamB .= '<td class="' . $class2 . '"  id="teamplan-spielgastlogo">';
 								$teamB .= sportsmanagementModelProject::getClubIconHtml(
 										$guestteam,
@@ -643,7 +618,6 @@ if (!empty($this->matches))
 										$this->overallconfig['use_jquery_modal']
 									);
 								$teamA .= '</td>';
-
 								$teamB .= '<td class="' . $class2 . '" id="teamplan-spielgastlogo">';
 								$teamB .= sportsmanagementModelProject::getClubIconHtml(
 										$guestteam,
@@ -675,7 +649,6 @@ if (!empty($this->matches))
 										$this->overallconfig['use_jquery_modal']
 									);
 								$teamA .= '</td>';
-
 								$teamB .= '<td class="' . $class2 . '" id="teamplan-spielgastlogo">';
 								$teamB .= sportsmanagementModelProject::getClubIconHtml(
 										$guestteam,
@@ -697,7 +670,6 @@ if (!empty($this->matches))
 								$teamA .= '<td class="' . $class1 . '" id="teamplan-spielheimlogo">';
 								$teamA .= JSMCountries::getCountryFlag($hometeam->country);
 								$teamA .= '</td>';
-
 								$teamB .= '<td class="' . $class2 . '" id="teamplan-spielgastlogo">';
 								$teamB .= JSMCountries::getCountryFlag($guestteam->country);
 								$teamB .= '</td>';
@@ -715,7 +687,6 @@ if (!empty($this->matches))
 								);
 
 								$teamA .= '</td>';
-
 								$teamB .= '<td class="' . $class2 . '" id="teamplan-spielgastlogo">';
 								$teamB .= sportsmanagementHelper::getPictureThumb(
 									$guestteam->picture,
@@ -729,31 +700,25 @@ if (!empty($this->matches))
 					}
 
 					$seperator = '<td width="10" id="teamplan-sepeator">' . $this->config['seperator'] . '</td>';
-
 					$isFavTeam = in_array($guestteam->id, $this->favteams);
 					$away      = sportsmanagementHelper::formatTeamName($guestteam, "g" . $match->id . "t" . $guestteam->id, $this->config, $isFavTeam, $awaylink, Factory::getApplication()->input->getInt('cfg_which_database', 0));
-
 					$teamB .= '<td class="' . $class2 . '" id="teamplan-spielgast">' . $away . '</td>';
 
 					if (!$match->cancel)
 					{
-
 						/**
 						 * In case show_part_results is true, then first check if the part results are available;
 						 * 'No part results available' occurs when teamX_result_split ONLY consists of zero or more ";"
 						 * (zero for projects with a single playing period, one or more for projects with two or more playing periods)
 						 */
-
 						$team1_result_split_present = preg_match('/^;*$/', $match->team1_result_split) == 0;
 						$team2_result_split_present = preg_match('/^;*$/', $match->team2_result_split) == 0;
 
 						if ($this->config['switch_home_guest'])
 						{
 							$result = $match->team2_result . '&nbsp;' . $this->config['seperator'] . '&nbsp;' . $match->team1_result;
-
 							$part_results_left  = explode(";", $match->team2_result_split);
 							$part_results_right = explode(";", $match->team1_result_split);
-
 							$leftResultOT   = $match->team2_result_ot;
 							$rightResultOT  = $match->team1_result_ot;
 							$leftResultSO   = $match->team2_result_so;
@@ -764,10 +729,8 @@ if (!empty($this->matches))
 						else
 						{
 							$result = $match->team1_result . '&nbsp;' . $this->config['seperator'] . '&nbsp;' . $match->team2_result;
-
 							$part_results_left  = explode(";", $match->team1_result_split);
 							$part_results_right = explode(";", $match->team2_result_split);
-
 							$rightResultOT  = $match->team2_result_ot;
 							$leftResultOT   = $match->team1_result_ot;
 							$rightResultSO  = $match->team2_result_so;
@@ -833,7 +796,7 @@ if (!empty($this->matches))
 								break;
 						}
 
-						//Link
+						/** Link */
 						$routeparameter                       = array();
 						$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
 						$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
@@ -857,7 +820,7 @@ if (!empty($this->matches))
 
 						if ($team1_result_split_present && $team2_result_split_present)
 						{
-							//Part results
+							/** Part results */
 							if (!is_array($part_results_left))
 							{
 								$part_results_left = array($part_results_left);
@@ -896,7 +859,7 @@ if (!empty($this->matches))
 							}
 							else
 							{
-								//No need to show a tooltip if the parts are shown anyways
+								/** No need to show a tooltip if the parts are shown anyways */
 								$result = '<span class="hasTip" title="' . $ResultsTooltipTitle . '::' . $ResultsTooltipTp . '" >' . $result . '</span>';
 							}
 						}
@@ -1022,7 +985,6 @@ if (!empty($this->matches))
 												$routeparameter['p']                  = $this->project->slug;
 												$routeparameter['pid']                = $match->referees[$i]->referee_id;
 												$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('referee', $routeparameter);
-												//$link=sportsmanagementHelperRoute::getRefereeRoute($this->project->slug,$match->referees[$i]->referee_id,3);
 												$ref = HTMLHelper::link($link, $ref);
 											}
 											$output .= $ref;
@@ -1073,7 +1035,6 @@ if (!empty($this->matches))
                         <td><?php
 							if (!$match->cancel)
 							{
-								//$link=sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug,$match->id);
 								if (isset($match->team1_result))
 								{
 									if ($this->config['show_matchreport_image'])
