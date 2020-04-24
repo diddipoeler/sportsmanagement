@@ -51,12 +51,12 @@ class sportsmanagementHelperHtml
 	 * @param mixed $config
 	 * @return
 	 */
-	public static function showEventsContainerInResults($matchInfo, $projectevents, $matchevents, $substitutions = null, $config)
+	public static function showEventsContainerInResults($matchInfo, $projectevents, $matchevents, $substitutions = null, $config, $project)
 	{
 		$output = '';
 		$result = '';
 
-		if ($this->config['use_tabs_events'])
+		if ($config['use_tabs_events'])
 		{
 			$iPanel   = 1;
 			$selector = 'teamplan'.$matchInfo->id;
@@ -91,7 +91,7 @@ class sportsmanagementHelperHtml
 					continue;
 				}
 
-				if ($this->config['show_events_with_icons'] == 1)
+				if ($config['show_events_with_icons'] == 1)
 				{
 					/** Event icon as thumbnail on the tab (a placeholder icon is used when the icon does not exist) */
 					$imgTitle    = Text::_($event->name);
@@ -136,11 +136,11 @@ class sportsmanagementHelperHtml
 
 			if (!empty($substitutions))
 			{
-				if ($this->config['show_events_with_icons'])
+				if ($config['show_events_with_icons'])
 				{
 					/** Event icon as thumbnail on the tab (a placeholder icon is used when the icon does not exist) */
 					$imgTitle    = Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION');
-					$pic_tab     = 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/change.png';
+					$pic_tab     = 'images/com_sportsmanagement/database/events/' . $project->fs_sport_type_name . '/change.png';
 					$tab_content = sportsmanagementHelper::getPictureThumb($pic_tab, $imgTitle, $width, $height, $type);
 				}
 				else
@@ -148,9 +148,9 @@ class sportsmanagementHelperHtml
 					$tab_content = Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION');
 				}
 
-				$pic_time = Uri::root() . 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/playtime.gif';
-				$pic_out  = Uri::root() . 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/out.png';
-				$pic_in   = Uri::root() . 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/in.png';
+				$pic_time = Uri::root() . 'images/com_sportsmanagement/database/events/' . $project->fs_sport_type_name . '/playtime.gif';
+				$pic_out  = Uri::root() . 'images/com_sportsmanagement/database/events/' . $project->fs_sport_type_name . '/out.png';
+				$pic_in   = Uri::root() . 'images/com_sportsmanagement/database/events/' . $project->fs_sport_type_name . '/in.png';
 				$imgTime  = HTMLHelper::image($pic_time, Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE'), array(' title' => Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE')));
 				$imgOut   = HTMLHelper::image($pic_out, Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT'), array(' title' => Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT')));
 				$imgIn    = HTMLHelper::image($pic_in, Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN'), array(' title' => Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN')));

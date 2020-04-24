@@ -236,7 +236,8 @@ if ($this->games)
 												$this->projectevents,
 												$events,
 												$subs,
-												$this->config
+												$this->config,
+                                                $this->project
 											);
 											?>
                                         </td>
