@@ -234,7 +234,7 @@ if ($this->games)
                                             sportsmanagementModelProject::$projectid = $game->prid;
 											echo sportsmanagementHelperHtml::showEventsContainerInResults(
 												$game,
-												sportsmanagementModelProject::getProjectEvents(0, $model::$cfg_which_database),
+												sportsmanagementModelProject::getProjectEvents(0, Factory::getApplication()->input->getInt('cfg_which_database', 0)),
 												$events,
 												$subs,
 												$this->config,
