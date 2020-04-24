@@ -231,9 +231,10 @@ if ($this->games)
                                     <tr>
                                         <td>
 											<?php
+                                            sportsmanagementModelProject::$projectid = $game->prid;
 											echo sportsmanagementHelperHtml::showEventsContainerInResults(
 												$game,
-												$this->projectevents,
+												sportsmanagementModelProject::getProjectEvents(0, $model::$cfg_which_database),
 												$events,
 												$subs,
 												$this->config,
