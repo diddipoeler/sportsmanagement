@@ -40,6 +40,7 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
 		$this->statgames = array();
 		$model           = $this->getModel();
 		$match           = $model->getMatch();
+        $this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
 
 		$config      = sportsmanagementModelProject::getTemplateConfig($this->getName(), $model::$cfg_which_database);
 		$tableconfig = sportsmanagementModelProject::getTemplateConfig("ranking", $model::$cfg_which_database);
@@ -54,7 +55,7 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
 			$this->overallconfig['seperator'] = ":";
 		}
 
-		// We need extended_cols for "pure" config as well: TODO why do we not merge whole overall config like seen in other views?
+		/** We need extended_cols for "pure" config as well: TODO why do we not merge whole overall config like seen in other views? */
 		$this->config['extended_cols']            = $this->overallconfig['extended_cols'];
 		$this->config['show_project_kunena_link'] = $this->overallconfig['show_project_kunena_link'];
 
@@ -203,7 +204,7 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
 			}
 		}
 
-		// Set page title
+		/** Set page title */
 		$pageTitle = Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PAGE_TITLE');
 
 		if (isset($this->teams))

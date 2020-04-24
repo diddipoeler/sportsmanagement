@@ -61,7 +61,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 			$this->matchesperround  = sportsmanagementModelTeamPlan::getMatchesPerRound($this->config, $this->rounds);
 		}
 
-		// Set page title
+		/** Set page title */
 		if (empty($this->ptid))
 		{
 			$pageTitle = (!empty($this->project->id)) ? $this->project->name : '';
@@ -114,14 +114,14 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 			$height = 20;
 			$type   = 4;
 
-			// Never show event text or icon for each event list item (info already available in tab)
+			/** Never show event text or icon for each event list item (info already available in tab) */
 			$showEventInfo = 0;
 
 			$cnt = 0;
 
 			foreach ($projectevents AS $event)
 			{
-				// Display only tabs with events
+				/** Display only tabs with events */
 				foreach ($matchevents AS $me)
 				{
 					$cnt = 0;
@@ -140,7 +140,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 
 				if ($this->config['show_events_with_icons'] == 1)
 				{
-					// Event icon as thumbnail on the tab (a placeholder icon is used when the icon does not exist)
+					/** Event icon as thumbnail on the tab (a placeholder icon is used when the icon does not exist) */
 					$imgTitle    = Text::_($event->name);
 					$tab_content = sportsmanagementHelper::getPictureThumb($event->icon, $imgTitle, $width, $height, $type);
 				}
@@ -153,7 +153,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 				$output .= '<table class="matchreport" border="0">';
 				$output .= '<tr>';
 
-				// Home team events
+				/** Home team events */
 				$output .= '<td class="list">';
 				$output .= '<ul class="list-inline">';
 
@@ -165,7 +165,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 				$output .= '</ul>';
 				$output .= '</td>';
 
-				// Away team events
+				/** Away team events */
 				$output .= '<td class="list">';
 				$output .= '<ul class="list-inline">';
 
@@ -238,7 +238,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 			$output        .= '<table class="matchreport" border="0">';
 			$output        .= '<tr>';
 
-			// Home team events
+			/** Home team events */
 			$output .= '<td class="list-left">';
 			$output .= '<ul class="list-inline">';
 
@@ -253,7 +253,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 			$output .= '</ul>';
 			$output .= '</td>';
 
-			// Away team events
+			/** Away team events */
 			$output .= '<td class="list-right">';
 			$output .= '<ul class="list-inline">';
 
@@ -287,10 +287,13 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 	 */
 	function _formatEventContainerInResults($matchevent, $event, $projectteamId, $showEventInfo)
 	{
-		// Meaning of $showEventInfo:
-		// 0 : do not show event as text or as icon in a list item
-		// 1 : show event as icon in a list item (before the time)
-		// 2 : show event as text in a list item (after the time)
+		
+/**
+ *      Meaning of $showEventInfo:
+ * 		0 : do not show event as text or as icon in a list item
+ * 		1 : show event as icon in a list item (before the time)
+ * 		2 : show event as text in a list item (after the time)
+ */
 		$output = '';
 
 		if ($matchevent->event_type_id == $event->id && $matchevent->ptid == $projectteamId)
@@ -299,7 +302,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 
 			if ($showEventInfo == 1)
 			{
-				// Size of the event icons in the tabs
+				/** Size of the event icons in the tabs */
 				$width    = 20;
 				$height   = 20;
 				$type     = 4;
@@ -330,7 +333,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 				$output .= Text::_('COM_SPORTSMANAGEMENT_UNKNOWN_PERSON');
 			}
 
-			// Only show event sum and match notice when set to on in template cofig
+			/** Only show event sum and match notice when set to on in template cofig */
 			if ($this->config['show_event_sum'] || $this->config['show_event_notice'] == 1)
 			{
 				if (($this->config['show_event_sum'] && $matchevent->event_sum > 0) || ($this->config['show_event_notice'] && strlen($matchevent->notice) > 0))
@@ -380,16 +383,12 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 		if ($subs->ptid == $projectteamId)
 		{
 			$output .= '<li class="list-inline-item">';
-
-			// $output .= $imgTime;
 			$output .= '&nbsp;' . $subs->in_out_time . '. ' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE');
 			$output .= '<br />';
-
 			$output .= $imgOut;
 			$output .= '&nbsp;' . sportsmanagementHelper::formatName(null, $subs->out_firstname, $subs->out_nickname, $subs->out_lastname, $this->config["name_format"]);
 			$output .= '&nbsp;(' . Text::_($subs->out_position) . ')';
 			$output .= '<br />';
-
 			$output .= $imgIn;
 			$output .= '&nbsp;' . sportsmanagementHelper::formatName(null, $subs->firstname, $subs->nickname, $subs->lastname, $this->config["name_format"]);
 			$output .= '&nbsp;(' . Text::_($subs->in_position) . ')';
