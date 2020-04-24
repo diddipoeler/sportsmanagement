@@ -118,7 +118,10 @@ if ($this->games)
 							}
 							
 					}
-                                        
+                    else
+					{
+						$hasEvents = false;
+					}                    
                                         
                                         
                                         
@@ -215,6 +218,37 @@ if ($this->games)
 										$k = 1 - $k;
 										?></td>
                                 </tr>
+                                
+                                <?php
+				if ($hasEvents)
+				{
+					?>
+                    <!-- Show icon for editing events in edit mode -->
+                    <tr class="events <?php echo ($k == 0) ? '' : 'alt'; ?>">
+                        <td colspan="<?php echo $nbcols; ?>">
+                            <div id="info<?php echo $game->id; ?>" class="jsmeventsshowhide" style="display: none;">
+                                <table class='matchreport' border='0'>
+                                    <tr>
+                                        <td>
+											<?php
+											echo sportsmanagementHelperHtml::showEventsContainerInResults(
+												$game,
+												$this->projectevents,
+												$events,
+												$subs,
+												$this->config
+											);
+											?>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+					<?php
+				}
+                 ?>               
+                                
 								<?php
 							}
 						}
