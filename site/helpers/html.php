@@ -162,7 +162,7 @@ class sportsmanagementHelperHtml
 
 				foreach ($substitutions AS $subs)
 				{
-					$output .= self::_formatSubstitutionContainerInResults($subs, $matchInfo->projectteam1_id, $imgTime, $imgOut, $imgIn);
+					$output .= self::_formatSubstitutionContainerInResults($subs, $matchInfo->projectteam1_id, $imgTime, $imgOut, $imgIn,$config);
 				}
 
 				$output .= '</ul>';
@@ -172,7 +172,7 @@ class sportsmanagementHelperHtml
 
 				foreach ($substitutions AS $subs)
 				{
-					$output .= self::_formatSubstitutionContainerInResults($subs, $matchInfo->projectteam2_id, $imgTime, $imgOut, $imgIn);
+					$output .= self::_formatSubstitutionContainerInResults($subs, $matchInfo->projectteam2_id, $imgTime, $imgOut, $imgIn,$config);
 				}
 
 				$output .= '</ul>';
@@ -328,7 +328,7 @@ class sportsmanagementHelperHtml
 	 * @param mixed $imgIn
 	 * @return
 	 */
-	public static function _formatSubstitutionContainerInResults($subs, $projectteamId, $imgTime, $imgOut, $imgIn)
+	public static function _formatSubstitutionContainerInResults($subs, $projectteamId, $imgTime, $imgOut, $imgIn,$config)
 	{
 		$output = '';
 
@@ -338,11 +338,11 @@ class sportsmanagementHelperHtml
 			$output .= '&nbsp;' . $subs->in_out_time . '. ' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE');
 			$output .= '<br />';
 			$output .= $imgOut;
-			$output .= '&nbsp;' . sportsmanagementHelper::formatName(null, $subs->out_firstname, $subs->out_nickname, $subs->out_lastname, $this->config["name_format"]);
+			$output .= '&nbsp;' . sportsmanagementHelper::formatName(null, $subs->out_firstname, $subs->out_nickname, $subs->out_lastname, $config["name_format"]);
 			$output .= '&nbsp;(' . Text::_($subs->out_position) . ')';
 			$output .= '<br />';
 			$output .= $imgIn;
-			$output .= '&nbsp;' . sportsmanagementHelper::formatName(null, $subs->firstname, $subs->nickname, $subs->lastname, $this->config["name_format"]);
+			$output .= '&nbsp;' . sportsmanagementHelper::formatName(null, $subs->firstname, $subs->nickname, $subs->lastname, $config["name_format"]);
 			$output .= '&nbsp;(' . Text::_($subs->in_position) . ')';
 			$output .= '<br /><br />';
 			$output .= '</li>';
