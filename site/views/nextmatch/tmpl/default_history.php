@@ -88,6 +88,41 @@ if ($this->games)
                                 <tr class="">
                                     <td id="roundcode"><?php
 										echo HTMLHelper::link($result_link, $game->roundcode);
+                                        /** ereignisse des spiels */
+                                        if ($this->config['show_events'])
+					{
+						
+							$events = sportsmanagementModelProject::getMatchEvents($game->id, 0, 0, Factory::getApplication()->input->getInt('cfg_which_database', 0));
+							$subs   = sportsmanagementModelProject::getMatchSubstitutions($game->id, Factory::getApplication()->input->getInt('cfg_which_database', 0));
+
+							if ($this->config['use_tabs_events'])
+							{
+								$hasEvents = (count($events) + count($subs) > 0 && $this->config['show_events']);
+							}
+							else
+							{
+
+								/**
+								 * no subs are shown when not using tabs for displaying events so don't check for that
+								 */
+								$hasEvents = (count($events) > 0 && $this->config['show_events']);
+							}
+
+							if ($hasEvents)
+							{
+								$link   = "javascript:void(0);";
+								$img    = HTMLHelper::image('media/com_sportsmanagement/jl_images/events.png', 'events.png');
+								$params = array("title"   => Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_EVENTS'),
+								                "onclick" => 'switchMenu(\'info' . $game->id . '\');return false;');
+								echo HTMLHelper::link($link, $img, $params);
+							}
+							
+					}
+                                        
+                                        
+                                        
+                                        
+                                        
 										?></td>
                                     <td class="nowrap" id="matchdate"><?php
 										if ($game->match_date == '0000-00-00 00:00:00' || empty($game->match_date) || !isset($game->match_date))
