@@ -112,7 +112,7 @@ class sportsmanagementHelperHtml
 
 				foreach ($matchevents AS $me)
 				{
-					$output .= self::_formatEventContainerInResults($me, $event, $matchInfo->projectteam1_id, $showEventInfo);
+					$output .= self::_formatEventContainerInResults($me, $event, $matchInfo->projectteam1_id, $showEventInfo,$config);
 				}
 
 				$output .= '</ul>';
@@ -124,7 +124,7 @@ class sportsmanagementHelperHtml
 
 				foreach ($matchevents AS $me)
 				{
-					$output .= self::_formatEventContainerInResults($me, $event, $matchInfo->projectteam2_id, $showEventInfo);
+					$output .= self::_formatEventContainerInResults($me, $event, $matchInfo->projectteam2_id, $showEventInfo,$config);
 				}
 
 				$output .= '</ul>';
@@ -199,7 +199,7 @@ class sportsmanagementHelperHtml
 			{
 				if ($me->ptid == $matchInfo->projectteam1_id)
 				{
-					$output .= self::_formatEventContainerInResults($me, $projectevents[$me->event_type_id], $matchInfo->projectteam1_id, $showEventInfo);
+					$output .= self::_formatEventContainerInResults($me, $projectevents[$me->event_type_id], $matchInfo->projectteam1_id, $showEventInfo,$config);
 				}
 			}
 
@@ -214,7 +214,7 @@ class sportsmanagementHelperHtml
 			{
 				if ($me->ptid == $matchInfo->projectteam2_id)
 				{
-					$output .= self::_formatEventContainerInResults($me, $projectevents[$me->event_type_id], $matchInfo->projectteam2_id, $showEventInfo);
+					$output .= self::_formatEventContainerInResults($me, $projectevents[$me->event_type_id], $matchInfo->projectteam2_id, $showEventInfo,$config);
 				}
 			}
 
@@ -238,7 +238,7 @@ class sportsmanagementHelperHtml
 	 * @param mixed $showEventInfo
 	 * @return
 	 */
-	public static function _formatEventContainerInResults($matchevent, $event, $projectteamId, $showEventInfo)
+	public static function _formatEventContainerInResults($matchevent, $event, $projectteamId, $showEventInfo,$config)
 	{
 		
 /**
@@ -267,7 +267,7 @@ class sportsmanagementHelperHtml
 
 			$event_minute = str_pad($matchevent->event_time, 2, '0', STR_PAD_LEFT);
 
-			if ($this->config['show_event_minute'] && $matchevent->event_time > 0)
+			if ($config['show_event_minute'] && $matchevent->event_time > 0)
 			{
 				$output .= '<b>' . $event_minute . '\'</b> ';
 			}
@@ -279,7 +279,7 @@ class sportsmanagementHelperHtml
 
 			if (strlen($matchevent->firstname1 . $matchevent->lastname1) > 0)
 			{
-				$output .= sportsmanagementHelper::formatName(null, $matchevent->firstname1, $matchevent->nickname1, $matchevent->lastname1, $this->config["name_format"]);
+				$output .= sportsmanagementHelper::formatName(null, $matchevent->firstname1, $matchevent->nickname1, $matchevent->lastname1, $config["name_format"]);
 			}
 			else
 			{
@@ -287,23 +287,23 @@ class sportsmanagementHelperHtml
 			}
 
 			/** Only show event sum and match notice when set to on in template cofig */
-			if ($this->config['show_event_sum'] || $this->config['show_event_notice'] == 1)
+			if ($config['show_event_sum'] || $config['show_event_notice'] == 1)
 			{
-				if (($this->config['show_event_sum'] && $matchevent->event_sum > 0) || ($this->config['show_event_notice'] && strlen($matchevent->notice) > 0))
+				if (($config['show_event_sum'] && $matchevent->event_sum > 0) || ($config['show_event_notice'] && strlen($matchevent->notice) > 0))
 				{
 					$output .= ' (';
 
-					if ($this->config['show_event_sum'] && $matchevent->event_sum > 0)
+					if ($config['show_event_sum'] && $matchevent->event_sum > 0)
 					{
 						$output .= $matchevent->event_sum;
 					}
 
-					if (($this->config['show_event_sum'] && $matchevent->event_sum > 0) && ($this->config['show_event_notice'] && strlen($matchevent->notice) > 0))
+					if (($config['show_event_sum'] && $matchevent->event_sum > 0) && ($config['show_event_notice'] && strlen($matchevent->notice) > 0))
 					{
 						$output .= ' | ';
 					}
 
-					if ($this->config['show_event_notice'] && strlen($matchevent->notice) > 0)
+					if ($config['show_event_notice'] && strlen($matchevent->notice) > 0)
 					{
 						$output .= $matchevent->notice;
 					}
