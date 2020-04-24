@@ -1111,12 +1111,13 @@ if (!empty($this->matches))
                                     <tr>
                                         <td>
 											<?php
-											echo $this->showEventsContainerInResults(
+											echo sportsmanagementHelperHtml::showEventsContainerInResults(
 												$match,
 												$this->projectevents,
 												$events,
 												$subs,
-												$this->config
+												$this->config,
+                                                $this->project
 											);
 											?>
                                         </td>
