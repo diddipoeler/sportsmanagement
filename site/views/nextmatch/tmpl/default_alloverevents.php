@@ -29,20 +29,20 @@ foreach ( $this->alloverevents as $alloverevents )
 ?>
 <tr>  
 <td>
-  <?php
-  echo $alloverevents->team_name;
-  ?>
-  </td>
+<?php
+echo $alloverevents->team_name;
+?>
+</td>
+ 
+<td>
+<?php
+echo sportsmanagementHelper::formatName(null, $alloverevents->firstname1, $alloverevents->nickname1, $alloverevents->lastname1, $this->config["name_format"]);
+?>
+</td>
   
-    <td>
-  <?php
-  echo sportsmanagementHelper::formatName(null, $alloverevents->firstname1, $alloverevents->nickname1, $alloverevents->lastname1, $this->config["name_format"]);
-  ?>
-  </td>
-  
-    <td>
-    <?php
-    echo sportsmanagementHelperHtml::getBootstrapModalImage(
+<td>
+<?php
+echo sportsmanagementHelperHtml::getBootstrapModalImage(
 											'nextmatchalloverevents' . $alloverevents->playerid ,
 											$alloverevents->tppicture1,
 											$alloverevents->lastname1,
@@ -52,11 +52,34 @@ foreach ( $this->alloverevents as $alloverevents )
 											$this->modalheight,
 											$this->overallconfig['use_jquery_modal']
 										);
-    
-    ?>
-    </td>
-    
-    
+?>
+</td>
+</tr>
+<tr> 
+<table class="table">
+<thead>
+<tr>
+<?php
+foreach ( $this->overallevents as $overallevents )
+{
+$width    = 20;
+$height   = 20;
+$type     = 4;
+$imgTitle = Text::_($overallevents->name);
+$icon     = sportsmanagementHelper::getPictureThumb($overallevents->icon, $imgTitle, $width, $height, $type);
+?>
+<td>
+<?php
+echo $icon;
+?>
+</td>                
+<?php
+}
+?>
+</tr>
+</thead>
+
+</table>
 </tr>  
 <?php  
 }          
