@@ -62,6 +62,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	{
 		$this->output['COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY'] = 'history';
 	}
+    
+    if ($this->config['show_events'])
+	{
+		$this->output['COM_SPORTSMANAGEMENT_NEXTMATCH_ALLOVEREVENTS'] = 'alloverevents';
+	}
 
 	if ($this->config['show_previousx'])
 	{
