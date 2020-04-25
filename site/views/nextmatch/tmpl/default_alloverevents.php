@@ -78,7 +78,19 @@ echo $icon;
 ?>
 </tr>
 </thead>
+<?php
+foreach ( $alloverevents->events as $key => $value )
+{
+?>
+<td>
+<?php
+echo $value->event_sum;
+?>
+</td>                
+<?php    
+}
 
+?>
 </table>
 </tr>  
 <?php  
