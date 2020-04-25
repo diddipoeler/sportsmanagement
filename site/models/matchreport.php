@@ -487,6 +487,8 @@ class sportsmanagementModelMatchReport extends JSMModelLegacy
 		{
 			case 'com_content':
 				$query->from('#__content as c');
+                $query->join('INNER', '#__fields_values AS fv ON fv.item_id = c.id ');
+				$query->join('INNER', '#__fields AS f ON f.id = fv.field_id ');
 
 				if ($article_id && !$match_id)
 				{
@@ -494,11 +496,13 @@ class sportsmanagementModelMatchReport extends JSMModelLegacy
 				}
 				elseif (!$article_id && $match_id)
 				{
-					$query->where('xreference = ' . $match_id);
+				    $query->where("f.title LIKE 'jsmmatchid' ");
+					$query->where('fv.value = ' . $match_id);
 				}
 				elseif ($article_id && $match_id)
 				{
-					$query->where('(xreference = ' . $match_id . ' OR id = ' . $article_id . ' )');
+				    $query->where("f.title LIKE 'jsmmatchid' ");
+					$query->where('(fv.value = ' . $match_id . ' OR id = ' . $article_id . ' )');
 				}
 
 				if ($cat_id)

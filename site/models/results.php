@@ -536,27 +536,24 @@ class sportsmanagementModelResults extends JSMModelList
 				}
 
 				$this->jsmquery->clear();
-				/**
-				 *
-				 * welche joomla version ?
-				 */
-				if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+				/** welche joomla version ? */
+				if (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
 				{
 					$this->jsmquery->select('c.id');
 					$this->jsmquery->from('#__content as c');
 					$this->jsmquery->join('INNER', '#__fields_values AS fv ON fv.item_id = c.id ');
 					$this->jsmquery->join('INNER', '#__fields AS f ON f.id = fv.field_id ');
-					$this->jsmquery->where("f.title LIKE 'xreference' ");
+					$this->jsmquery->where("f.title LIKE 'jsmmatchid' ");
 					$this->jsmquery->where('fv.value = ' . $match->id);
 					$this->jsmquery->where('c.catid = ' . $cat_id);
 				}
-				elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
-				{
-					$this->jsmquery->select('c.id');
-					$this->jsmquery->from('#__content as c');
-					$this->jsmquery->where('c.xreference = ' . $match->id);
-					$this->jsmquery->where('c.catid = ' . $cat_id);
-				}
+//				elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
+//				{
+//					$this->jsmquery->select('c.id');
+//					$this->jsmquery->from('#__content as c');
+//					$this->jsmquery->where('c.xreference = ' . $match->id);
+//					$this->jsmquery->where('c.catid = ' . $cat_id);
+//				}
 
 				try
 				{
