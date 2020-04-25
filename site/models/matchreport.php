@@ -492,7 +492,7 @@ class sportsmanagementModelMatchReport extends JSMModelLegacy
 
 				if ($article_id && !$match_id)
 				{
-					$query->where('id = ' . $article_id);
+					$query->where('c.id = ' . $article_id);
 				}
 				elseif (!$article_id && $match_id)
 				{
@@ -502,12 +502,12 @@ class sportsmanagementModelMatchReport extends JSMModelLegacy
 				elseif ($article_id && $match_id)
 				{
 				    $query->where("f.title LIKE 'jsmmatchid' ");
-					$query->where('(fv.value = ' . $match_id . ' OR id = ' . $article_id . ' )');
+					$query->where('(fv.value = ' . $match_id . ' OR c.id = ' . $article_id . ' )');
 				}
 
 				if ($cat_id)
 				{
-					$query->where('catid = ' . $cat_id);
+					$query->where('c.catid = ' . $cat_id);
 				}
 				break;
 			case 'com_k2':
