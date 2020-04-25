@@ -232,6 +232,11 @@ if ($this->games)
                                         <td>
 											<?php
                                             sportsmanagementModelProject::$projectid = $game->prid;
+                                            
+//echo '<pre>'.print_r(sportsmanagementModelProject::getProjectEvents(0, Factory::getApplication()->input->getInt('cfg_which_database', 0)),true).'</pre>';                  
+//echo 'events <pre>'.print_r($events,true).'</pre>';                  
+//echo 'subs <pre>'.print_r($subs,true).'</pre>';           
+                                            
 											echo sportsmanagementHelperHtml::showEventsContainerInResults(
 												$game,
 												sportsmanagementModelProject::getProjectEvents(0, Factory::getApplication()->input->getInt('cfg_which_database', 0)),
