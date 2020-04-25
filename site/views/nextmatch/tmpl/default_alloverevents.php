@@ -56,7 +56,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
 </td>
 </tr>
 <tr> 
-<table class="table">
+<td>
+<table class="<?php echo $this->config['hystory_table_class']; ?>">
 <thead>
 <tr>
 <?php
@@ -92,6 +93,7 @@ echo $value->event_sum;
 
 ?>
 </table>
+</td>
 </tr>  
 <?php  
 }          
