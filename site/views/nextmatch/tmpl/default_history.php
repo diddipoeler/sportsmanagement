@@ -255,7 +255,15 @@ $this->alloverevents[ (int) $event->playerid ]->playerid = $event->playerid;
 
 if ( !isset($this->alloverevents[ (int) $event->playerid ]->events ) )  
 {
-$this->alloverevents[ (int) $event->playerid ]->events = array();  
+$this->alloverevents[ (int) $event->playerid ]->events = array(); 
+
+foreach ( $this->overallevents as $overallevents )
+{
+$this->alloverevents[ (int) $event->playerid ]->events[$overallevents->id]->name = $overallevents->name;  
+$this->alloverevents[ (int) $event->playerid ]->events[$overallevents->id]->icon = $overallevents->icon;  
+}
+
+ 
 }   
 $this->alloverevents[ (int) $event->playerid ]->events[$event->event_type_id]->eventtype_name = $event->eventtype_name;   
 $this->alloverevents[ (int) $event->playerid ]->events[$event->event_type_id]->event_sum += $event->event_sum;    
