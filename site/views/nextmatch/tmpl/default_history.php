@@ -236,7 +236,34 @@ if ($this->games)
 //echo '<pre>'.print_r(sportsmanagementModelProject::getProjectEvents(0, Factory::getApplication()->input->getInt('cfg_which_database', 0)),true).'</pre>';                  
 //echo 'events <pre>'.print_r($events,true).'</pre>';                  
 //echo 'subs <pre>'.print_r($subs,true).'</pre>';           
-                                            
+foreach ($events AS $event)
+{
+//echo 'playerid <pre>'.print_r((int) $event->playerid,true).'</pre>';  
+  
+if ( !isset($this->alloverevents[ (int) $event->playerid ] ) )  
+{
+$this->alloverevents[ (int) $event->playerid ] = new stdclass;  
+}  
+$this->alloverevents[ (int) $event->playerid ]->team_id = $event->team_id;  
+$this->alloverevents[ (int) $event->playerid ]->team_name = $event->team_name; 
+$this->alloverevents[ (int) $event->playerid ]->tppicture1 = $event->tppicture1;
+$this->alloverevents[ (int) $event->playerid ]->firstname1 = $event->firstname1;  
+$this->alloverevents[ (int) $event->playerid ]->nickname1 = $event->nickname1;
+$this->alloverevents[ (int) $event->playerid ]->lastname1 = $event->lastname1;
+$this->alloverevents[ (int) $event->playerid ]->picture1 = $event->picture1;  
+$this->alloverevents[ (int) $event->playerid ]->playerid = $event->playerid;   
+
+if ( !isset($this->alloverevents[ (int) $event->playerid ]->events ) )  
+{
+$this->alloverevents[ (int) $event->playerid ]->events = array();  
+}   
+$this->alloverevents[ (int) $event->playerid ]->events[$event->event_type_id]->eventtype_name = $event->eventtype_name;   
+$this->alloverevents[ (int) $event->playerid ]->events[$event->event_type_id]->event_sum += $event->event_sum;    
+}
+//echo 'alloverevents <pre>'.print_r($this->alloverevents,true).'</pre>';                  
+                  
+                  
+                  
 											echo sportsmanagementHelperHtml::showEventsContainerInResults(
 												$game,
 												sportsmanagementModelProject::getProjectEvents(0, Factory::getApplication()->input->getInt('cfg_which_database', 0)),
