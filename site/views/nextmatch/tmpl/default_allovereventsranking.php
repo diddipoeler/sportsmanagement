@@ -22,6 +22,8 @@ use Joomla\CMS\Factory;
 //echo 'overallevents <pre>'.print_r($this->overallevents,true).'</pre>';
 
 ?>
+<div class="<?php echo $this->divclassrow; ?> table-responsive" id="nextmatchallovereventsranking">
+<h4><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_ALLOVEREVENTSRANKING'); ?></h4>
 <div class="panel-group" id="allovereventsranking">
 <?php
 foreach ( $this->overallevents as $overallevents )
@@ -106,4 +108,5 @@ echo $rankingvalue->event_sum;
 <?php
 }
 ?>
+</div>
 </div>
