@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -66,6 +65,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     if ($this->config['show_events'])
 	{
 		$this->output['COM_SPORTSMANAGEMENT_NEXTMATCH_ALLOVEREVENTS'] = 'alloverevents';
+        $this->output['COM_SPORTSMANAGEMENT_NEXTMATCH_ALLOVEREVENTSRANKING'] = 'allovereventsranking';
 	}
 
 	if ($this->config['show_previousx'])
