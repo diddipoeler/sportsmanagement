@@ -64,7 +64,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     
     if ($this->config['show_events'])
 	{
-		$this->output['COM_SPORTSMANAGEMENT_NEXTMATCH_ALLOVEREVENTS'] = 'alloverevents';
+		//$this->output['COM_SPORTSMANAGEMENT_NEXTMATCH_ALLOVEREVENTS'] = 'alloverevents';
         $this->output['COM_SPORTSMANAGEMENT_NEXTMATCH_ALLOVEREVENTSRANKING'] = 'allovereventsranking';
 	}
 

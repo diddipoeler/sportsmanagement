@@ -26,6 +26,17 @@ use Joomla\CMS\Factory;
 <?php
 foreach ( $this->overallevents as $overallevents )
 {
+unset($ranking);
+/** tabelle pro ereignis */  
+foreach ( $this->alloverevents as $alloverevents => $value ) if ( $value->events[$overallevents->id]->event_sum != 0  )
+{
+$temp = new stdclass;  
+$temp->playerid = $alloverevents;
+$temp->event_sum = $value->events[$overallevents->id]->event_sum;  
+$ranking[] = $temp; 
+}
+/** absteigend sortieren */
+usort($ranking, function($a, $b) { return $b->event_sum - $a->event_sum; });  
 $width    = 20;
 $height   = 20;
 $type     = 4;
@@ -43,19 +54,55 @@ $icon     = sportsmanagementHelper::getPictureThumb($overallevents->icon, $imgTi
                 <div class="panel-body">
                     <table class="table <?php echo $this->config['table_class'] ?>">
 						<?php
-						
+//echo 'ranking <pre>'.print_r($ranking,true).'</pre>'; 						
+  
+foreach ( $ranking as $rankingkey => $rankingvalue )
+{  
+?>
+<tr>  
+<td>
+<?php
+echo $this->alloverevents[$rankingvalue->playerid]->team_name;
+?>
+</td>
+ 
+<td>
+<?php
+echo sportsmanagementHelper::formatName(null, $this->alloverevents[$rankingvalue->playerid]->firstname1, $this->alloverevents[$rankingvalue->playerid]->nickname1, $this->alloverevents[$rankingvalue->playerid]->lastname1, $this->config["name_format"]);
+?>
+</td>
+  
+<td>
+<?php
+echo sportsmanagementHelperHtml::getBootstrapModalImage(
+											'nextmatchalloverevents' . $this->alloverevents[$rankingvalue->playerid]->playerid ,
+											$this->alloverevents[$rankingvalue->playerid]->tppicture1,
+											$this->alloverevents[$rankingvalue->playerid]->lastname1,
+											'20',
+											'',
+											$this->modalwidth,
+											$this->modalheight,
+											$this->overallconfig['use_jquery_modal']
+										);
+?>
+</td>
+<td>
+<?php
+echo $rankingvalue->event_sum;
+?>
+</td>  
+</tr> 
+<?php  
+  
+}  
+  
+  
+  
 						?>
                     </table>
                 </div>
             </div>
         </div>
-
-
-
-
-
-
-
 <?php
 }
 ?>
