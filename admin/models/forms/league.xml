@@ -75,6 +75,45 @@
 	</field>
 
 <field
+            name="founded"
+            type="calendar"
+            format="%d-%m-%Y"
+            label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_FOUNDED"
+            description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_FOUNDED_DESC"
+            class="inputbox"
+        />
+ <field
+            name="founded_year"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_FOUNDED_YEAR"
+            description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_FOUNDED_YEAR_DESC"
+            class="inputbox"
+        />	
+        
+        <field
+            name="dissolved"
+            type="calendar"
+            format="%d-%m-%Y"
+            label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_DISSOLVED"
+            description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_DISSOLVED_DESC"
+            class="inputbox"
+        />
+        <field
+            name="dissolved_year"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_DISSOLVED_YEAR"
+            description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_DISSOLVED_YEAR_DESC"
+            class="inputbox"
+        />	  
+
+
+
+
+
+
+
+
+<field
 			name="published_act_season"
 			type="extensionradiobutton"
 			class="radio btn-group btn-group-yesno"
