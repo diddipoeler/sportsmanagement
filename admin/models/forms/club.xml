@@ -76,6 +76,16 @@
             <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
         </field>
   
+  <field
+            name="country_geocode"
+            type="country"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY_GEOCODE"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY_GEOCODE_DESC"
+            class="form-control form-control-inline"
+        >
+            <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
+        </field>
+		
         <field
             name="state"
             size="50"
