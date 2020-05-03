@@ -2,7 +2,7 @@
 <form>
 	<name><![CDATA[COM_SPORTSMANAGEMENT_FES_NEXTMATCH_NAME]]></name>
 	<description><![CDATA[COM_SPORTSMANAGEMENT_FES_NEXTMATCH_DESCR]]></description>
-
+<!-- reiter 1 -->
 	<fieldset name="details"
   label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
    description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
@@ -104,7 +104,7 @@
 		</field>
 		
 	</fieldset>
-
+<!-- reiter 2 -->
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS" description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS"
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 		addfieldpath="/administrator/components/com_sportsmanagement/elements">
@@ -250,7 +250,7 @@
 		</field>
 
 	</fieldset>
-	
+<!-- reiter 3 -->	
 	<fieldset	name= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS"
 	label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_TEAMOPTIONS2">	
@@ -299,7 +299,7 @@
 -->
 			
 	</fieldset>
-  		
+<!-- reiter 4 -->  		
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS" 
 	label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_ADVANCED_OPTIONS">	
@@ -322,5 +322,66 @@
 		</field>	
 		
 	</fieldset>
-  			
+<!-- reiter 5 -->
+	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_EVENTSOPTIONS" 
+	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_EVENTSOPTIONS" 
+			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_EVENTSOPTIONS" 
+			addfieldpath="/administrator/components/com_sportsmanagement/elements">
+
+		<field name="show_events" type="extensionradiobutton" default="0"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_LABEL_SHOW_EVENTS" description="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_DESCR_SHOW_EVENTS">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field	name="name_format" type="nameformat" default="0"
+				label="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_LABEL_NAME_FORMAT"
+				description="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_DESCR_NAME_FORMAT">
+		</field>
+		
+		<field	name="show_events_with_icons" type="extensionradiobutton" default="1"
+		class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_LABEL_SHOW_EVENTS_WITH_ICONS"
+				description="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_DESCR_SHOW_EVENTS_WITH_ICONS">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field	name="use_tabs_events" type="extensionradiobutton" default="0"
+		class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_LABEL_USE_EVENT_TABS"
+				description="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_DESCR_USE_EVENT_TABS">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field	name="show_event_minute" type="extensionradiobutton" default="1"
+		class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_LABEL_SHOW_EVENT_MINUTE"
+				description="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_DESCR_SHOW_EVENT_MINUTE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+		<field	name="show_event_sum" type="extensionradiobutton" default="0"
+		class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_LABEL_SHOW_EVENT_SUM"
+				description="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_DESCR_SHOW_EVENT_SUM">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field	name="show_event_notice" type="extensionradiobutton" default="0"
+		class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_LABEL_SHOW_EVENT_NOTICE"
+				description="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_DESCR_SHOW_EVENT_NOTICE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+						
+	</fieldset>  			
+			
+			
+			
 </form>

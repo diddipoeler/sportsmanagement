@@ -117,6 +117,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_club` (
   `dissolved_timestamp` INT( 11 ) NOT NULL DEFAULT  '0',
   `use_jl` tinyint(1) NOT NULL DEFAULT '0',
   `use_jsm` tinyint(1) NOT NULL DEFAULT '0',
+  `country_geocode` VARCHAR(3) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   KEY `standard_playground` (`standard_playground`),
   KEY `country` (`country`),
@@ -291,6 +292,10 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_league` (
   `league_level` INT( 11 ) NOT NULL DEFAULT  '0',
   `league_id_up` INT( 11 ) NOT NULL DEFAULT  '0',
   `league_id_down` INT( 11 ) NOT NULL DEFAULT  '0',
+  `founded` DATE NOT NULL DEFAULT '0000-00-00',
+`founded_year` VARCHAR(4) NULL DEFAULT NULL,
+`dissolved` DATE NOT NULL DEFAULT '0000-00-00',
+`dissolved_year` VARCHAR(4) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   KEY `country` (`country`),
   KEY `sports_type_id` (`sports_type_id`)
@@ -1684,7 +1689,6 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_prediction_member` (
   `show_profile` TINYINT(4) NOT NULL DEFAULT '1' ,
   `fav_team` VARCHAR(64) NOT NULL DEFAULT '' ,
   `champ_tipp` VARCHAR(64) NOT NULL DEFAULT '' ,
-  `final4_tipp` VARCHAR(64) NOT NULL DEFAULT '' ,
   `slogan` VARCHAR(255) NULL DEFAULT NULL ,
   `aliasName` VARCHAR(255) NULL DEFAULT NULL ,
   `reminder` TINYINT(4) NOT NULL DEFAULT '0' ,
@@ -1698,6 +1702,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_prediction_member` (
   `modified_by` INT NULL ,
   `group_id` INT(11) NULL DEFAULT '0' ,
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
+  `final4_tipp` VARCHAR(64) NOT NULL DEFAULT '' ,
   PRIMARY KEY (`id`) ,
   KEY `prediction_id` (`prediction_id`),
   KEY `user_id` (`user_id`),
@@ -1718,7 +1723,6 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_prediction_project` (
   `points_tipp` SMALLINT(6) NOT NULL DEFAULT '1' ,
   `points_tipp_joker` SMALLINT(6) NOT NULL DEFAULT '1' ,
   `points_tipp_champ` SMALLINT(6) NOT NULL DEFAULT '10' ,
-  `points_tipp_final4` SMALLINT(6) NOT NULL DEFAULT '5' ,
   `points_correct_result` SMALLINT(6) NOT NULL DEFAULT '7' ,
   `points_correct_result_joker` SMALLINT(6) NOT NULL DEFAULT '7' ,
   `points_correct_diff` SMALLINT(6) NOT NULL DEFAULT '5' ,
@@ -1730,7 +1734,6 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_prediction_project` (
   `joker` TINYINT(4) NOT NULL DEFAULT '0' ,
   `joker_limit` TINYINT(4) NOT NULL DEFAULT '0' ,
   `champ` TINYINT(4) NOT NULL DEFAULT '0' ,
-  `final4` TINYINT(4) NOT NULL DEFAULT '0' ,
   `picture` VARCHAR(128) NULL DEFAULT NULL ,
   `published` TINYINT(1) NOT NULL DEFAULT '0' ,
   `checked_out` INT(11) NULL DEFAULT '0' ,
@@ -1738,8 +1741,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_prediction_project` (
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
   `league_champ` INT(11) NOT NULL DEFAULT '0' ,
-  `league_final4` VARCHAR(128) NOT NULL DEFAULT '' ,
- 
+  
   `points_correct_yellow_cards` SMALLINT(6) NOT NULL DEFAULT '6' ,
   `points_correct_yellow_red_cards` SMALLINT(6) NOT NULL DEFAULT '6' ,
   `points_correct_red_cards` SMALLINT(6) NOT NULL DEFAULT '6' ,
@@ -1749,7 +1751,9 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_prediction_project` (
   `use_cards` TINYINT(4) NOT NULL DEFAULT '0' ,
   `use_penalties` TINYINT(4) NOT NULL DEFAULT '0' ,
   `use_goals` TINYINT(4) NOT NULL DEFAULT '0' ,
-
+`final4` TINYINT(4) NOT NULL DEFAULT '0' ,
+`points_tipp_final4` SMALLINT(6) NOT NULL DEFAULT '5' ,
+`league_final4` VARCHAR(128) NOT NULL DEFAULT '' ,
   PRIMARY KEY (`id`) ,
   KEY `prediction_id` (`prediction_id`),
   KEY `project_id` (`project_id`),
@@ -1822,6 +1826,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_prediction_tippround` (
   )
 ENGINE = MyISAM
 DEFAULT CHARSET = utf8;
+
 
 -- -----------------------------------------------------
 -- Table `#__sportsmanagement_prediction_result_round`

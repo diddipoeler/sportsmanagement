@@ -88,6 +88,44 @@ if ($this->games)
                                 <tr class="">
                                     <td id="roundcode"><?php
 										echo HTMLHelper::link($result_link, $game->roundcode);
+                                        /** ereignisse des spiels */
+                                        if ($this->config['show_events'])
+					{
+						
+							$events = sportsmanagementModelProject::getMatchEvents($game->id, 0, 0, Factory::getApplication()->input->getInt('cfg_which_database', 0));
+							$subs   = sportsmanagementModelProject::getMatchSubstitutions($game->id, Factory::getApplication()->input->getInt('cfg_which_database', 0));
+
+							if ($this->config['use_tabs_events'])
+							{
+								$hasEvents = (count($events) + count($subs) > 0 && $this->config['show_events']);
+							}
+							else
+							{
+
+								/**
+								 * no subs are shown when not using tabs for displaying events so don't check for that
+								 */
+								$hasEvents = (count($events) > 0 && $this->config['show_events']);
+							}
+
+							if ($hasEvents)
+							{
+								$link   = "javascript:void(0);";
+								$img    = HTMLHelper::image('media/com_sportsmanagement/jl_images/events.png', 'events.png');
+								$params = array("title"   => Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_EVENTS'),
+								                "onclick" => 'switchMenu(\'info' . $game->id . '\');return false;');
+								echo HTMLHelper::link($link, $img, $params);
+							}
+							
+					}
+                    else
+					{
+						$hasEvents = false;
+					}                    
+                                        
+                                        
+                                        
+                                        
 										?></td>
                                     <td class="nowrap" id="matchdate"><?php
 										if ($game->match_date == '0000-00-00 00:00:00' || empty($game->match_date) || !isset($game->match_date))
@@ -180,6 +218,81 @@ if ($this->games)
 										$k = 1 - $k;
 										?></td>
                                 </tr>
+                                
+                                <?php
+				if ($hasEvents)
+				{
+					?>
+                    <!-- Show icon for editing events in edit mode -->
+                    <tr class="events <?php echo ($k == 0) ? '' : 'alt'; ?>">
+                        <td colspan="<?php echo $nbcols; ?>">
+                            <div id="info<?php echo $game->id; ?>" class="jsmeventsshowhide" style="display: none;">
+                                <table class='matchreport' border='0'>
+                                    <tr>
+                                        <td>
+											<?php
+                                            sportsmanagementModelProject::$projectid = $game->prid;
+                                            
+//echo '<pre>'.print_r(sportsmanagementModelProject::getProjectEvents(0, Factory::getApplication()->input->getInt('cfg_which_database', 0)),true).'</pre>';                  
+//echo 'events <pre>'.print_r($events,true).'</pre>';                  
+//echo 'subs <pre>'.print_r($subs,true).'</pre>';           
+foreach ($events AS $event)
+{
+//echo 'playerid <pre>'.print_r((int) $event->playerid,true).'</pre>';  
+  
+if ( !isset($this->alloverevents[ (int) $event->playerid ] ) )  
+{
+$this->alloverevents[ (int) $event->playerid ] = new stdclass;  
+}  
+$this->alloverevents[ (int) $event->playerid ]->team_id = $event->team_id;  
+$this->alloverevents[ (int) $event->playerid ]->team_name = $event->team_name; 
+$this->alloverevents[ (int) $event->playerid ]->tppicture1 = $event->tppicture1;
+$this->alloverevents[ (int) $event->playerid ]->firstname1 = $event->firstname1;  
+$this->alloverevents[ (int) $event->playerid ]->nickname1 = $event->nickname1;
+$this->alloverevents[ (int) $event->playerid ]->lastname1 = $event->lastname1;
+$this->alloverevents[ (int) $event->playerid ]->picture1 = $event->picture1;  
+$this->alloverevents[ (int) $event->playerid ]->playerid = $event->playerid;   
+
+if ( !isset($this->alloverevents[ (int) $event->playerid ]->events ) )  
+{
+$this->alloverevents[ (int) $event->playerid ]->events = array(); 
+
+foreach ( $this->overallevents as $overallevents )
+{
+$this->alloverevents[ (int) $event->playerid ]->events[$overallevents->id]->name = $overallevents->name;
+$this->alloverevents[ (int) $event->playerid ]->events[$overallevents->id]->eventtype_name = $overallevents->name;  
+$this->alloverevents[ (int) $event->playerid ]->events[$overallevents->id]->icon = $overallevents->icon;
+$this->alloverevents[ (int) $event->playerid ]->events[$overallevents->id]->event_sum = 0;   
+}
+
+ 
+}   
+$this->alloverevents[ (int) $event->playerid ]->events[$event->event_type_id]->eventtype_name = $event->eventtype_name;   
+$this->alloverevents[ (int) $event->playerid ]->events[$event->event_type_id]->event_sum += $event->event_sum;    
+}
+//echo 'alloverevents <pre>'.print_r($this->alloverevents,true).'</pre>';                  
+                  
+                  
+                  
+											echo sportsmanagementHelperHtml::showEventsContainerInResults(
+												$game,
+												sportsmanagementModelProject::getProjectEvents(0, Factory::getApplication()->input->getInt('cfg_which_database', 0)),
+												$events,
+												$subs,
+												$this->config,
+                                                $this->project
+											);
+											?>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+					<?php
+				}
+                 ?>               
+                                
 								<?php
 							}
 						}

@@ -30,4 +30,4 @@ ALTER TABLE `#__sportsmanagement_prediction_project` ADD `league_final4` VARCHAR
 ALTER TABLE `#__sportsmanagement_prediction_member` ADD `final4_tipp` VARCHAR(64) NOT NULL DEFAULT '';
 
 INSERT INTO `#__sportsmanagement_version_history` (`id`, `date`, `text`, `version`) VALUES
-(NULL, '2020-04-18', 'COM_SPORTSMANAGEMENT_DB_UPDATE_2020-04-18', '3.4.00');
+(NULL, '2020-04-18', 'COM_SPORTSMANAGEMENT_DB_UPDATE_2020-04-20', '3.4.00');

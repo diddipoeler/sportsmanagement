@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
  * @package    Sportsmanagement
@@ -306,7 +306,7 @@ use Joomla\CMS\Factory;
 				if ($this->config['player_number_picture'])
 				{
 					$posnumber = $this->teamPlayer->jerseynumber;
-					echo HTMLHelper::image(Uri::root() . 'images/com_sportsmanagement/database/events/shirt.php?text=' . $posnumber, $posnumber, array('title' => $posnumber));
+					echo HTMLHelper::image(Uri::root() . 'images/com_sportsmanagement/database/teamplayers/shirt.php?text=' . $posnumber, $posnumber, array('title' => $posnumber));
 				}
 				else
 				{

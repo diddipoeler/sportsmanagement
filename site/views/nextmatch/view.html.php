@@ -16,6 +16,8 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewNextMatch
@@ -40,6 +42,7 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
 		$this->statgames = array();
 		$model           = $this->getModel();
 		$match           = $model->getMatch();
+        $this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
 
 		$config      = sportsmanagementModelProject::getTemplateConfig($this->getName(), $model::$cfg_which_database);
 		$tableconfig = sportsmanagementModelProject::getTemplateConfig("ranking", $model::$cfg_which_database);
@@ -48,13 +51,14 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
 		$this->config        = $config;
 		$this->tableconfig   = $tableconfig;
 		$this->overallconfig = sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database);
+        $this->overallevents = sportsmanagementModelProject::getProjectEvents(0, Factory::getApplication()->input->getInt('cfg_which_database', 0));
 
 		if (!isset($this->overallconfig['seperator']))
 		{
 			$this->overallconfig['seperator'] = ":";
 		}
 
-		// We need extended_cols for "pure" config as well: TODO why do we not merge whole overall config like seen in other views?
+		/** We need extended_cols for "pure" config as well: TODO why do we not merge whole overall config like seen in other views? */
 		$this->config['extended_cols']            = $this->overallconfig['extended_cols'];
 		$this->config['show_project_kunena_link'] = $this->overallconfig['show_project_kunena_link'];
 
@@ -203,7 +207,7 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
 			}
 		}
 
-		// Set page title
+		/** Set page title */
 		$pageTitle = Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PAGE_TITLE');
 
 		if (isset($this->teams))

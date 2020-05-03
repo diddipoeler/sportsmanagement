@@ -62,8 +62,9 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_explanation" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
-			label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_SHOW_EXPL" description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_SHOW_EXPL">
+		<field 	name="show_explanation" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_SHOW_EXPL" 
+				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_SHOW_EXPL">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
@@ -75,13 +76,6 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 			<option value="1">JYES</option>
 		</field>
 
-		<field 	name="show_explanation" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
-				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_SHOW_EXPL" 
-				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_SHOW_EXPL">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		
 		<field 	name="show_pagnav" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_SHOW_PAGNAV" 
 				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_SHOW_PAGNAV">
