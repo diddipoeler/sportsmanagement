@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage club
@@ -143,7 +141,6 @@ class sportsmanagementViewClub extends sportsmanagementView
 		}
 	}
 
-
 	/**
 	 * sportsmanagementViewClub::addToolBar()
 	 *
@@ -156,6 +153,5 @@ class sportsmanagementViewClub extends sportsmanagementView
 		$this->icon = 'club';
 		parent::addToolbar();
 	}
-
 
 }

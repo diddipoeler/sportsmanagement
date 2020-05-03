@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage league
@@ -37,7 +35,28 @@ class sportsmanagementViewLeague extends sportsmanagementView
 	public function init()
 	{
 
-		$this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
+		if ($this->item->id)
+		{
+			// Alles ok
+			if ($this->item->founded == '0000-00-00')
+			{
+				$this->item->founded = '';
+				$this->form->setValue('founded', '');
+			}
+
+			if ($this->item->dissolved == '0000-00-00')
+			{
+				$this->item->dissolved = '';
+				$this->form->setValue('dissolved', '');
+			}
+		}
+		else
+		{
+			$this->form->setValue('founded', '');
+			$this->form->setValue('dissolved', '');
+		}
+        
+        $this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
 		$this->form->setValue('agegroup_id', 'request', $this->item->agegroup_id);
 
 		$extended           = sportsmanagementHelper::getExtended($this->item->extended, 'league');
@@ -46,7 +65,6 @@ class sportsmanagementViewLeague extends sportsmanagementView
 		$this->extendeduser = $extendeduser;
 
 	}
-
 
 	/**
 	 * sportsmanagementViewLeague::addToolBar()
@@ -60,6 +78,5 @@ class sportsmanagementViewLeague extends sportsmanagementView
 		$this->icon = 'league';
 		parent::addToolbar();
 	}
-
 
 }
