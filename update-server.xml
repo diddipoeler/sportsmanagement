@@ -5,10 +5,10 @@
       <description>Sports-Management Component</description>
       <element>com_sportsmanagement</element>
       <type>component</type>
-      <version>3.4.00</version>
+      <version>3.5.00</version>
       <infourl title="Sports-Management URL">http://fussballineuropa.de</infourl>
       <downloads>
-         <downloadurl type="full" format="zip">https://github.com/diddipoeler/sportsmanagement/archive/3.4.0.zip</downloadurl>
+         <downloadurl type="full" format="zip">https://github.com/diddipoeler/sportsmanagement/archive/3.5.0.zip</downloadurl>
       </downloads>
       <tags>
          <tag>some-tag</tag>
