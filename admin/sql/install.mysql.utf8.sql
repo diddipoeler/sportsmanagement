@@ -117,6 +117,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_club` (
   `dissolved_timestamp` INT( 11 ) NOT NULL DEFAULT  '0',
   `use_jl` tinyint(1) NOT NULL DEFAULT '0',
   `use_jsm` tinyint(1) NOT NULL DEFAULT '0',
+  `country_geocode` VARCHAR(3) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   KEY `standard_playground` (`standard_playground`),
   KEY `country` (`country`),
@@ -291,6 +292,10 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_league` (
   `league_level` INT( 11 ) NOT NULL DEFAULT  '0',
   `league_id_up` INT( 11 ) NOT NULL DEFAULT  '0',
   `league_id_down` INT( 11 ) NOT NULL DEFAULT  '0',
+  `founded` DATE NOT NULL DEFAULT '0000-00-00',
+`founded_year` VARCHAR(4) NULL DEFAULT NULL,
+`dissolved` DATE NOT NULL DEFAULT '0000-00-00',
+`dissolved_year` VARCHAR(4) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   KEY `country` (`country`),
   KEY `sports_type_id` (`sports_type_id`)
