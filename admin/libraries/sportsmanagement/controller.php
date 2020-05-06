@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage libraries
@@ -215,6 +213,9 @@ class JSMControllerForm extends FormController
 					break;
 				case 'rounds':
 					$setRedirect = '&pid=' . $post['pid'];
+					break;
+				case 'projects':
+					$setRedirect = '&pid=' . $id;
 					break;
 				case 'projectteam':
 					$setRedirect = '&pid=' . $data['project_id'];
