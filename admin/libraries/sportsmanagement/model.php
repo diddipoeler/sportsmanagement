@@ -697,8 +697,10 @@ class JSMModelAdmin extends AdminModel
 			$data['id'] = $id;
 			$this->jsmapp->setUserState("$this->jsmoption.club_id", $id);
 			$this->jsmapp->setUserState("$this->jsmoption.person_id", $id);
+			$this->jsmapp->setUserState("$this->jsmoption.insert_project_id", $id);
 			$this->jsmjinput->set('insert_id', $id);
 			$this->jsmjinput->set('person_id', $id);
+			$this->jsmjinput->set('insert_project_id', $id);
 
 			if ($isNew)
 			{
