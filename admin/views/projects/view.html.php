@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -284,7 +283,7 @@ class sportsmanagementViewProjects extends sportsmanagementView
 		ToolbarHelper::editList('project.edit');
 		ToolbarHelper::custom('project.import', 'upload', 'upload', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CSV_IMPORT'), false);
 		ToolbarHelper::archiveList('project.export', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_XML_EXPORT'));
-		ToolbarHelper::custom('project.copy', 'copy.png', 'copy_f2.png', Text::_('JTOOLBAR_DUPLICATE'), false);
+		ToolbarHelper::custom('projects.copy', 'copy.png', 'copy_f2.png', Text::_('JTOOLBAR_DUPLICATE'), false);
 
 		parent::addToolbar();
 	}
