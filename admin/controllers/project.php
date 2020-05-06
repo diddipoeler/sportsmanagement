@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage controllers
@@ -15,7 +13,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\MVC\Controller\FormController;
+//use Joomla\CMS\MVC\Controller\FormController;
 
 
 /**
@@ -27,7 +25,7 @@ use Joomla\CMS\MVC\Controller\FormController;
  * @version   2014
  * @access    public
  */
-class sportsmanagementControllerproject extends FormController
+class sportsmanagementControllerproject extends JSMControllerForm
 {
 
 
