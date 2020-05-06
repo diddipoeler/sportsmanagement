@@ -218,6 +218,7 @@ class JSMControllerForm extends FormController
 					$setRedirect = '&pid=' . $id;
 					break;
 				case 'project':
+					$id = $this->jsmjinput->getInt('insert_project_id');
 					$setRedirect = '&pid=' . $id;
 					break;
 				case 'projectteam':
