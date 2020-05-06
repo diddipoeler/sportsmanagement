@@ -217,6 +217,9 @@ class JSMControllerForm extends FormController
 				case 'projects':
 					$setRedirect = '&pid=' . $id;
 					break;
+				case 'project':
+					$setRedirect = '&pid=' . $id;
+					break;
 				case 'projectteam':
 					$setRedirect = '&pid=' . $data['project_id'];
 					break;
