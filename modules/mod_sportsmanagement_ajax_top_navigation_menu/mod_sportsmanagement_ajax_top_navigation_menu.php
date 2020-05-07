@@ -218,6 +218,8 @@ foreach ($points as $row)
 	$script[] = "}).done(function(data2) {";
 	$script[] = "$('#jlamtopleagues" . $row->name . $module->id . " option').each(function() {";
 	$script[] = "jQuery('select#jlamtopleagues" . $row->name . $module->id . " option').remove();";
+	$script[] = "jQuery('select#jlamtopprojects" . $row->name . $module->id . " option').remove();";
+  	$script[] = "jQuery('select#jlamtopteams" . $row->name . $module->id . " option').remove();";
 	$script[] = "console.log(data2);";
 	$script[] = "});";
 	$script[] = "";
