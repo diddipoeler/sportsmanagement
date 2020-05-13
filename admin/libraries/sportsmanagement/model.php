@@ -279,6 +279,10 @@ class JSMModelAdmin extends AdminModel
 				{
 					$data['founded'] = sportsmanagementHelper::convertDate($data['founded'], 0);
 				}
+				if ($data['dissolved'] != '0000-00-00' && $data['dissolved'] != '')
+				{
+					$data['dissolved'] = sportsmanagementHelper::convertDate($data['dissolved'], 0);
+				}
 				break;
 			/**
 			 * person
