@@ -825,6 +825,7 @@ class JSMRanking
 
 			// New for is_in_score
 			$t->setIs_In_Score($r->is_in_score);
+			$t->setuse_finaltablerank($r->finaltablerank);
 
 			// New for use_finally
 			$t->setuse_finally($r->use_finally);
@@ -1799,6 +1800,11 @@ class JSMRankingTeamClass
 	function setuse_finally($val)
 	{
 		$this->_use_finally = (int) $val;
+	}
+	
+	function setuse_finaltablerank($val)
+	{
+		$this->_finaltablerank = (int) $val;
 	}
 
 	/**
