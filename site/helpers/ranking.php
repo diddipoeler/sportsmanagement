@@ -1282,6 +1282,13 @@ class JSMRanking
 
 		return $res;
 	}
+	
+	function _cmpFinaltablerank($a, $b)
+	{
+		$res = $a->_finaltablerank < $b->_finaltablerank;
+
+		return $res;
+	}
 
 	/**
 	 * **************************************************************************
