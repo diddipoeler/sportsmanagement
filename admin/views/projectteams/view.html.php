@@ -230,11 +230,14 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 			$lists['country_teams']         = $this->model->getCountryTeams();
 			$lists['country_teams_picture'] = $this->model->getCountryTeamsPicture();
 		}
+		$finaltablerank    = array();
+		for ($a = 0; $a < 41; $a++)
+		{
+			$finaltablerank[] = HTMLHelper::_('select.option', $a, $a);
+		}
+		$lists['finaltablerank'] = $finaltablerank;
 
-		/**
-		 *
-		 * build the html select list for all teams
-		 */
+		/** build the html select list for all teams */
 		$allTeams    = array();
 		$all_teams[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
 
