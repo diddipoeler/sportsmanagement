@@ -1112,6 +1112,11 @@ class JSMRanking
 	 */
 	function _getRankingCriteria()
 	{
+		if ( self::$_use_finaltablerank )
+		{
+		}
+		else
+		{
 		if (empty($this->_criteria))
 		{
 			/**
@@ -1146,6 +1151,7 @@ class JSMRanking
 
 			$this->_criteria = $crit;
 		}
+	}
 
 		return $this->_criteria;
 	}
