@@ -33,6 +33,8 @@ class JSMRanking
 	 * @var integer
 	 */
 	var $_projectid = 0;
+	
+	var $_use_finaltablerank = 0;
 
 	/**
 	 * project model cache
