@@ -741,6 +741,12 @@ class JSMRanking
 		$data->_teams   = self::_initTeams($pid, $division, $cfg_which_database);
 		$data->_matches = self::_getMatches($pid, $division, $cfg_which_database);
 
+ //echo '<pre>'.print_r($data->_matches,true).'</pre>';
+		if ( sizeof($data->_matches) == 0 )
+		{
+		self::$_use_finaltablerank = 1;	
+		}
+		
 		return $data;
 	}
 
