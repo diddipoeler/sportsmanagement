@@ -1708,117 +1708,62 @@ class JSMRanking
 class JSMRankingTeamClass
 {
 	var $_use_finally = 0;
-
+	var $_finaltablerank = 0;
 	var $_points_finally = 0;
-
 	var $_neg_points_finally = 0;
-
 	var $_matches_finally = 0;
-
 	var $_won_finally = 0;
-
 	var $_draws_finally = 0;
-
 	var $_lost_finally = 0;
-
 	var $_homegoals_finally = 0;
-
 	var $_guestgoals_finally = 0;
-
 	var $_diffgoals_finally = 0;
-
 	var $_is_in_score = 0;
-
 	var $_ptid = 0;
-
 	var $_teamid = 0;
-
 	var $_divisionid = 0;
-
 	var $_startpoints = 0;
-
 	var $_name = null;
-
 	var $cnt_matches = 0;
-
 	var $cnt_won = 0;
-
 	var $cnt_draw = 0;
-
 	var $cnt_lost = 0;
-
 	var $cnt_won_home = 0;
-
 	var $cnt_draw_home = 0;
-
 	var $cnt_lost_home = 0;
-
 	var $cnt_won_away = 0;
-
 	var $cnt_draw_away = 0;
-
 	var $cnt_lost_away = 0;
-
 	var $cnt_wot = 0;
-
 	var $cnt_wso = 0;
-
 	var $cnt_lot = 0;
-
 	var $cnt_lso = 0;
-
 	var $cnt_wot_home = 0;
-
 	var $cnt_wso_home = 0;
-
 	var $cnt_lot_home = 0;
-
 	var $cnt_lso_home = 0;
-
 	var $cnt_wot_away = 0;
-
 	var $cnt_wso_away = 0;
-
 	var $cnt_lot_away = 0;
-
 	var $cnt_lso_away = 0;
-
 	var $sum_points = 0;
-
 	var $neg_points = 0;
-
 	var $bonus_points = 0;
-
 	var $sum_team1_result = 0;
-
 	var $sum_team2_result = 0;
-
 	var $sum_away_for = 0;
-
 	var $sum_team1_legs = 0;
-
 	var $sum_team2_legs = 0;
-
 	var $sum_team1_matchpoint = 0;
-
 	var $sum_team2_matchpoint = 0;
-
 	var $sum_team1_sets = 0;
-
 	var $sum_team2_sets = 0;
-
 	var $sum_team1_games = 0;
-
 	var $sum_team2_games = 0;
-
 	var $diff_team_results = 0;
-
 	var $diff_team_legs = 0;
-
 	var $round = 0;
-
 	var $rank = 0;
-
 
 	/**
 	 * JSMRankingTeamClass::JSMRankingTeam()
