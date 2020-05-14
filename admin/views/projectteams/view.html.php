@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage projectteams
@@ -226,7 +224,8 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 			$this->state->get('filter.search_nation')
 		);
 
-		if (ComponentHelper::getParams($this->option)->get('show_option_projectteams_quickadd', 0))
+		//if (ComponentHelper::getParams($this->option)->get('show_option_projectteams_quickadd', 0))
+		if ( $project->fast_projektteam )
 		{
 			$lists['country_teams']         = $this->model->getCountryTeams();
 			$lists['country_teams_picture'] = $this->model->getCountryTeamsPicture();
