@@ -56,7 +56,7 @@ class JFormFieldfinaltablerank extends \JFormFieldList
 		 */
 		for ($a = 1; $a < 41; $a++)
 		{
-			$options[] = HTMLHelper::_('select.option', $a, Text::_('COM_SPORTSMANAGEMENT_ADMIN_FINALTABLERANK') . ' - ' . $a);
+			$options[] = HTMLHelper::_('select.option', $a, Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAM_FINALTABLERANK') . ' - ' . $a);
 		}
 
 		/**
