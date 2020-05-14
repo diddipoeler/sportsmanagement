@@ -1012,7 +1012,7 @@ multiple="true"
 			<option value="1">JYES</option>
 		</field>		
 
-
+<!--
 <field name="show_option_projectteams_quickadd" 
     type="extensionradiobutton" 
     default="0"
@@ -1022,7 +1022,7 @@ multiple="true"
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-	
+	-->
 <field name="show_option_projectteam_change" 
     type="extensionradiobutton" 
     default="0"
