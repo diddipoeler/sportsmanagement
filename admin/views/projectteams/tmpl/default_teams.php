@@ -655,7 +655,17 @@ $optteams = ' allowClear: true,
 					?>
                 </td>
 		<td class="center">
-			
+		<?php
+					$append = ' style="background-color:#bbffff"';
+					echo HTMLHelper::_(
+						'select.genericlist',
+						$this->lists['finaltablerank'],
+						'finaltablerank' . $row->id,
+						$inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
+						$i . '\').checked=true"' . $append,
+						'value', 'text', $row->finaltablerank
+					);
+					?>	
 		</td>
 
                 <td class="center"><?php echo $row->season_team_id; ?>
