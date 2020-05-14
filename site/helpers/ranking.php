@@ -1112,8 +1112,12 @@ class JSMRanking
 	 */
 	function _getRankingCriteria()
 	{
+		$crit   = array();
+		//_cmpFinaltablerank
 		if ( self::$_use_finaltablerank )
 		{
+			$crit[] = '_cmpFinaltablerank';
+			$this->_criteria = $crit;
 		}
 		else
 		{
@@ -1124,7 +1128,7 @@ class JSMRanking
 			 * get the values from ranking template setting
 			 */
 			$values = explode(',', $this->_params['ranking_order']);
-			$crit   = array();
+			//$crit   = array();
 
 			foreach ($values as $v)
 			{
