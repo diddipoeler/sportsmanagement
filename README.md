@@ -36,6 +36,7 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   03-05-2020: **3.6.00** Neue Felder Projekt und Projektteam
 *   03-05-2020: **3.5.00** Neue Felder Verein und Liga
 *   20-04-2020: **3.4.00** Erweiterung Tippspieltabellen
 *   25-12-2019: **3.3.00** Anpassungen Joomla 4
