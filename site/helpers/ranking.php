@@ -129,24 +129,18 @@ class JSMRanking
 	{
 		if ($project)
 		{
-			// $this->_roundcodes = null;
-
 			$extensions = sportsmanagementHelper::getExtensions($project->id);
-
 			foreach ($extensions as $type)
 			{
 				$classname = 'JSMRanking' . ucfirst($type);
-
 				if (!class_exists($classname))
 				{
 					$file = JPATH_COMPONENT_SITE . DIRECTORY_SEPARATOR . 'extensions' . DIRECTORY_SEPARATOR . $type . DIRECTORY_SEPARATOR . 'ranking.php';
-
 					if (file_exists($file))
 					{
 						include_once $file;
 						$obj = new $classname;
 						$obj->setProjectId($project->id, $cfg_which_database);
-
 						return $obj;
 					}
 				}
@@ -154,19 +148,16 @@ class JSMRanking
 				{
 					$obj = new $classname;
 					$obj->setProjectId($project->id, $cfg_which_database);
-
 					return $obj;
 				}
 			}
 
 			$obj = new JSMRanking;
 			$obj->setProjectId($project->id, $cfg_which_database);
-
 			return $obj;
 		}
 
 		$obj = new JSMRanking;
-
 		return $obj;
 	}
 
@@ -181,22 +172,9 @@ class JSMRanking
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
-
 		$this->_projectid = (int) $id;
-
-		//		$this->_project = new sportsmanagementModelProject();
-		//		$this->_project->setProjectID($id);
-		//		$this->_params = $this->_project->getTemplateConfig('ranking');
 		sportsmanagementModelProject::setProjectID($id, $cfg_which_database);
 		$this->_params = sportsmanagementModelProject::getTemplateConfig('ranking', $cfg_which_database, __METHOD__);
-
-		if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO)
-		{
-			$my_text = 'projectid -> ' . $this->_projectid . '<br>';
-			sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-		}
-
-		// Wipe data
 		$this->_data = null;
 	}
 
@@ -741,6 +719,7 @@ class JSMRanking
 		$data->_teams   = self::_initTeams($pid, $division, $cfg_which_database);
 		$data->_matches = self::_getMatches($pid, $division, $cfg_which_database);
 
+ //echo '<pre>'.print_r($data->_teams,true).'</pre>';
  //echo '<pre>'.print_r($data->_matches,true).'</pre>';
 		if ( sizeof($data->_matches) == 0 )
 		{
