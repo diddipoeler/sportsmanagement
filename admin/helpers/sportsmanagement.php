@@ -1673,7 +1673,7 @@ abstract class sportsmanagementHelper
 			$title   = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_ROSTER_LINK') . '&nbsp;' . $teamname;
 			//$picture = 'media/com_sportsmanagement/jl_images/team_icon.png';
             $picture = 'media/com_sportsmanagement/jl_images/user_32x32.png';
-			$desc    = self::getPictureThumb($picture, $title, 0, 0, 4);
+			$desc    = self::getPictureThumb($picture, $title, 16, 0, 4);
 			$output  .= '<li class="list-inline-item">';
 			$output  .= HTMLHelper::link($link, $desc);
 			$output  .= '</li>';
@@ -1746,8 +1746,9 @@ abstract class sportsmanagementHelper
 
 			$link    = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);
 			$title   = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMINFO_LINK') . '&nbsp;' . $teamname;
-			$picture = 'media/com_sportsmanagement/jl_images/teaminfo_icon.png';
-			$desc    = self::getPictureThumb($picture, $title, 0, 0, 4);
+			//$picture = 'media/com_sportsmanagement/jl_images/teaminfo_icon.png';
+            $picture = 'media/com_sportsmanagement/jl_images/workflow_32x32.png';
+			$desc    = self::getPictureThumb($picture, $title, 16, 0, 4);
 			$output  .= '<li class="list-inline-item">';
 			$output  .= HTMLHelper::link($link, $desc);
 			$output  .= '</li>';
