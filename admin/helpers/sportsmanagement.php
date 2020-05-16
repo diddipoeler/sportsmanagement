@@ -1728,8 +1728,9 @@ abstract class sportsmanagementHelper
 
 			$link    = sportsmanagementHelperRoute::getSportsmanagementRoute('curve', $routeparameter);
 			$title   = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_CURVE_LINK') . '&nbsp;' . $teamname;
-			$picture = 'media/com_sportsmanagement/jl_images/curve_icon.gif';
-			$desc    = self::getPictureThumb($picture, $title, 0, 0, 4);
+			//$picture = 'media/com_sportsmanagement/jl_images/curve_icon.gif';
+            $picture = 'media/com_sportsmanagement/jl_images/line_graph_32x32.png';
+			$desc    = self::getPictureThumb($picture, $title, 16, 0, 4);
 			$output  .= '<li class="list-inline-item">';
 			$output  .= HTMLHelper::link($link, $desc);
 			$output  .= '</li>';
@@ -1765,8 +1766,9 @@ abstract class sportsmanagementHelper
 
 			$link    = sportsmanagementHelperRoute::getSportsmanagementRoute('clubinfo', $routeparameter);
 			$title   = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_CLUBINFO_LINK') . '&nbsp;' . $teamname;
-			$picture = 'media/com_sportsmanagement/jl_images/mail.gif';
-			$desc    = self::getPictureThumb($picture, $title, 0, 0, 4);
+			//$picture = 'media/com_sportsmanagement/jl_images/mail.gif';
+            $picture = 'media/com_sportsmanagement/jl_images/mail_32x32.png';
+			$desc    = self::getPictureThumb($picture, $title, 16, 0, 4);
 			$output  .= '<li class="list-inline-item">';
 			$output  .= HTMLHelper::link($link, $desc);
 			$output  .= '</li>';
@@ -1782,8 +1784,9 @@ abstract class sportsmanagementHelper
 
 			$link    = sportsmanagementHelperRoute::getSportsmanagementRoute('teamstats', $routeparameter);
 			$title   = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMSTATS_LINK') . '&nbsp;' . $teamname;
-			$picture = 'media/com_sportsmanagement/jl_images/teamstats_icon.png';
-			$desc    = self::getPictureThumb($picture, $title, 0, 0, 4);
+			//$picture = 'media/com_sportsmanagement/jl_images/teamstats_icon.png';
+            $picture = 'media/com_sportsmanagement/jl_images/line_chart_32x32.png';
+			$desc    = self::getPictureThumb($picture, $title, 16, 0, 4);
 			$output  .= '<li class="list-inline-item">';
 			$output  .= HTMLHelper::link($link, $desc);
 			$output  .= '</li>';
