@@ -725,6 +725,14 @@ class JSMRanking
 		{
 		self::$_use_finaltablerank = 1;	
 		}
+        
+        foreach( $data->_teams as $key => $value )
+        {
+            if ($value->_points_finally)
+            {
+                self::$_use_finaltablerank = 0;
+            }
+        }
 		
 		return $data;
 	}
