@@ -1708,7 +1708,7 @@ abstract class sportsmanagementHelper
 			$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan', $routeparameter);
 			$title                                = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMPLAN_LINK') . '&nbsp;' . $teamname;
 			//$picture                              = 'media/com_sportsmanagement/jl_images/calendar_icon.gif';
-            $picture                              = 'media/com_sportsmanagement/jl_images/cal_32x32.gif';
+            $picture                              = 'media/com_sportsmanagement/jl_images/cal_32x32.png';
 			$desc                                 = self::getPictureThumb($picture, $title, $default_width, 0, 4);
 			$output                               .= '<li class="list-inline-item">';
 			$output                               .= HTMLHelper::link($link, $desc);
