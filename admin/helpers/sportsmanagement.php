@@ -1630,12 +1630,14 @@ abstract class sportsmanagementHelper
 		}
 	}
 
+	
 	/**
 	 * sportsmanagementHelper::showTeamIcons()
-	 *
-	 * @param   mixed  $team
-	 * @param   mixed  $config
-	 *
+	 * 
+	 * @param mixed $team
+	 * @param mixed $config
+	 * @param integer $cfg_which_database
+	 * @param integer $s
 	 * @return
 	 */
 	public static function showTeamIcons(&$team, &$config, $cfg_which_database = 0, $s = 0)
@@ -1669,7 +1671,8 @@ abstract class sportsmanagementHelper
 
 			$link    = sportsmanagementHelperRoute::getSportsmanagementRoute('roster', $routeparameter);
 			$title   = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_ROSTER_LINK') . '&nbsp;' . $teamname;
-			$picture = 'media/com_sportsmanagement/jl_images/team_icon.png';
+			//$picture = 'media/com_sportsmanagement/jl_images/team_icon.png';
+            $picture = 'media/com_sportsmanagement/jl_images/user_32x32.png';
 			$desc    = self::getPictureThumb($picture, $title, 0, 0, 4);
 			$output  .= '<li class="list-inline-item">';
 			$output  .= HTMLHelper::link($link, $desc);
