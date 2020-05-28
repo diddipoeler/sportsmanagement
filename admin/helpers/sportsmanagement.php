@@ -93,7 +93,7 @@ abstract class sportsmanagementHelper
 	 *
 	 * @return
 	 */
-	public static function getBootstrapModalImage($target = '', $picture = '', $text = '', $picturewidth = '20', $url = '', $width = '100', $height = '200')
+	public static function getBootstrapModalImage($target = '', $picture = '', $text = '', $picturewidth = '20', $url = '', $width = '100', $height = '200', $extrabutton = '')
 	{
 		$app = Factory::getApplication();
 
@@ -124,7 +124,7 @@ abstract class sportsmanagementHelper
 				'url'    => $url,
 				'height' => $height,
 				'width'  => $width,
-				'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">' . Text::_('JCANCEL') . '</button>'
+				'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">' . Text::_('JCANCEL') . '</button> '.$extrabutton
 			)
 		);
 
