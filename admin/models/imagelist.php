@@ -36,6 +36,7 @@ class sportsmanagementModelimagelist extends BaseDatabaseModel
 
 public static function getFiles($path, $scopeName)
 {
+      $directory = JPATH_ROOT . DIRECTORY_SEPARATOR . $path;
 $filesOutput = [];
 $files = Folder::files($directory);
 $directories = Folder::folders($directory);
