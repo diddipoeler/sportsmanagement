@@ -87,11 +87,13 @@ $directoriesOutput = [];
 				];
 			}  
   echo '<pre>'.print_r($directoriesOutput,true).'</pre>'; 
-  
+  /*
   return json_encode([
 				'files' => $filesOutput,
 				'directories' => $directoriesOutput
 			]);
+	*/
+	return $filesOutput;
 }
 
 
