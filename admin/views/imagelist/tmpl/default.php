@@ -16,5 +16,17 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-
+?>
+<?php if ( count($this->images) > 0 ) : ?>
+	<ul class="manager thumbnails">
+		<?php for ($i = 0, $n = count($this->images); $i < $n; $i++) :
+			$this->setImage($i);
+			include( dirname(__FILE__) . '/default_image.php');
+		endfor; ?>
+	</ul>
+<?php else : ?>
+	<div id="media-noimages">
+		<div class="alert alert-info"><?php echo JText::_('COM_MEDIA_NO_IMAGES_FOUND'); ?></div>
+	</div>
+<?php endif; ?>
 
