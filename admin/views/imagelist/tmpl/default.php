@@ -16,6 +16,11 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+
+//JHtml::_('script', 'media/popup-imagemanager.min.js', array('version' => 'auto', 'relative' => true));
+//JHtml::_('stylesheet', 'media/popup-imagemanager.css', array('version' => 'auto', 'relative' => true));
+
+
 //echo '<pre>'.print_r($this->images,true).'</pre>';
 ?>
 <?php if ( count($this->images) > 0 ) : ?>
