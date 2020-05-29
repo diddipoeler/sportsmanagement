@@ -48,4 +48,25 @@ $this->images = sportsmanagementModelimagelist::getFiles($data['folder'],'');
 		
   }
   
+/**
+	 * Set the active image
+	 *
+	 * @param   integer  $index  Image position
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0
+	 */
+	public function setImage($index = 0)
+	{
+		if (isset($this->images[$index]))
+		{
+			$this->_tmp_img = &$this->images[$index];
+		}
+		else
+		{
+			$this->_tmp_img = new JObject;
+		}
+	}
+	
   }
