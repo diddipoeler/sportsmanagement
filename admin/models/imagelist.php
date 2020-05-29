@@ -57,6 +57,20 @@ $exs = array_pop($fileParse);
 					$fileDate = $stat['mtime'];
 				}
 
+$fileMeta = new stdclass;
+$fileMeta->size = filesize($directory . DIRECTORY_SEPARATOR . $file);
+$fileMeta->is_writable = (int)is_writable($directory . DIRECTORY_SEPARATOR . $file);
+$fileMeta->name = implode('.', $fileParse);
+$fileMeta->exs = $exs;
+$fileMeta->file = $file;
+$fileMeta->fileP = '';
+$fileMeta->path_relative = $path;
+$fileMeta->width_60 = '60';
+$fileMeta->height_60 = '60';
+$fileMeta->dateC = $fileDate;
+$fileMeta->dateM = $fileDate;
+                    
+/*
 				$fileMeta = [
 					'size' => filesize($directory . DIRECTORY_SEPARATOR . $file),
 					'is_writable' => (int)is_writable($directory . DIRECTORY_SEPARATOR . $file),
@@ -70,7 +84,7 @@ $exs = array_pop($fileParse);
 					'dateC' => $fileDate,
 					'dateM' => $fileDate,
 				];  
-  
+  */
   
   $filesOutput[] = $fileMeta;
   
