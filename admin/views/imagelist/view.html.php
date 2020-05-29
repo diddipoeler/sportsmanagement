@@ -38,8 +38,11 @@ class sportsmanagementViewimagelist extends sportsmanagementView
 	 */
 	public function init()
 	{
+	Factory::getLanguage()->load('com_media', JPATH_ADMINISTRATOR);   
+       
+       
    $data = Factory::getApplication()->input->getArray();
-      echo '<pre>'.print_r($data,true).'</pre>';
+//      echo '<pre>'.print_r($data,true).'</pre>';
       
 $this->images = sportsmanagementModelimagelist::getFiles($data['folder'],'');    
 		

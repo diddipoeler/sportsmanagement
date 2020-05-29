@@ -16,7 +16,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-echo '<pre>'.print_r($this->images,true).'</pre>';
+//echo '<pre>'.print_r($this->images,true).'</pre>';
 ?>
 <?php if ( count($this->images) > 0 ) : ?>
 	<ul class="manager thumbnails">
