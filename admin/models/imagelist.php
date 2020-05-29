@@ -64,6 +64,9 @@ $exs = array_pop($fileParse);
 					'exs' => $exs,
 					'file' => $file,
 					'fileP' => '',
+					'path_relative' => $path,
+					'width_60' => '60',
+					'height_60' => '60',
 					'dateC' => $fileDate,
 					'dateM' => $fileDate,
 				];  
