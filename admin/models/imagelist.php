@@ -44,11 +44,51 @@ $directories = Folder::folders($directory);
 echo '<pre>'.print_r($files,true).'</pre>';
 echo '<pre>'.print_r($directories,true).'</pre>';
 
+foreach ($files as $file)
+{
+$fileParse = explode('.', $file);
+$exs = array_pop($fileParse);
+				$fileDate = filemtime($directory . DIRECTORY_SEPARATOR . $file);
 
+				$stat = stat($directory . DIRECTORY_SEPARATOR . $file);
 
+				if (($stat !== false) && isset($stat[ 'mtime' ]))
+				{
+					$fileDate = $stat['mtime'];
+				}
 
+				$fileMeta = [
+					'size' => filesize($directory . DIRECTORY_SEPARATOR . $file),
+					'is_writable' => (int)is_writable($directory . DIRECTORY_SEPARATOR . $file),
+					'name' => implode('.', $fileParse),
+					'exs' => $exs,
+					'file' => $file,
+					'fileP' => '',
+					'dateC' => $fileDate,
+					'dateM' => $fileDate,
+				];  
+  
+  
+  $filesOutput[] = $fileMeta;
+  
+  
+  
 
-      
+}
+echo '<pre>'.print_r($filesOutput,true).'</pre>';    
+  
+$directoriesOutput = [];
+			foreach ($directories as $value)
+			{
+				$directoriesOutput[] = [
+					'name' => $value,
+					'is_writable' => (int)is_writable($directory . DIRECTORY_SEPARATOR . $value),
+					'is_empty' => (int)self::dirIisEmpty($directory . DIRECTORY_SEPARATOR . $value)
+				];
+			}  
+  echo '<pre>'.print_r($directoriesOutput,true).'</pre>'; 
+  
+  
 }
 
 
