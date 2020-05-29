@@ -36,13 +36,13 @@ class sportsmanagementModelimagelist extends BaseDatabaseModel
 
 public static function getFiles($path, $scopeName)
 {
-      $directory = JPATH_ROOT . DIRECTORY_SEPARATOR . $path;
+$directory = JPATH_ROOT . DIRECTORY_SEPARATOR . $path;
 $filesOutput = [];
 $files = Folder::files($directory);
 $directories = Folder::folders($directory);
 
-echo '<pre>'.print_r($files,true).'</pre>';
-echo '<pre>'.print_r($directories,true).'</pre>';
+//echo '<pre>'.print_r($files,true).'</pre>';
+//echo '<pre>'.print_r($directories,true).'</pre>';
 
 foreach ($files as $file)
 {
@@ -92,7 +92,7 @@ $fileMeta->dateM = $fileDate;
   
 
 }
-echo '<pre>'.print_r($filesOutput,true).'</pre>';    
+//echo '<pre>'.print_r($filesOutput,true).'</pre>';    
   
 $directoriesOutput = [];
 			foreach ($directories as $value)
@@ -103,7 +103,7 @@ $directoriesOutput = [];
 					'is_empty' => (int)self::dirIisEmpty($directory . DIRECTORY_SEPARATOR . $value)
 				];
 			}  
-  echo '<pre>'.print_r($directoriesOutput,true).'</pre>'; 
+//  echo '<pre>'.print_r($directoriesOutput,true).'</pre>'; 
   /*
   return json_encode([
 				'files' => $filesOutput,

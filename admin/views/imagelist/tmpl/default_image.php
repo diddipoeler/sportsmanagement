@@ -17,7 +17,7 @@ $params     = new Registry;
 $dispatcher = JEventDispatcher::getInstance();
 $dispatcher->trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_img, &$params));
 
-echo '<pre>'.print_r($this->_tmp_img,true).'</pre>';
+//echo '<pre>'.print_r($this->_tmp_img,true).'</pre>';
 
 ?>
 
