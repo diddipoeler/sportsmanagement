@@ -187,7 +187,7 @@ $pcture_link = 'index.php?option=com_media&tmpl=component&asset=com_sportsmanage
 elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
 {
 //$pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=component&asset=com_sportsmanagement&author=&folder=images/com_sportsmanagement/database/projectimages/' . $row->id.'&pid='. $row->id;	
-$pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=component&asset=com_sportsmanagement&author=&folder=projectimages/' .'&pid='. $row->id;
+$pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=component&asset=com_sportsmanagement&author=&folder=projectimages' .'&pid='. $row->id;
 }	
 					echo sportsmanagementHelper::getBootstrapModalImage('projectimages' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/link.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_MATCHPICTURE'), '20', Uri::base() . $pcture_link, $this->modalwidth, $this->modalheight);
 					?>
