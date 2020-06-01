@@ -97,6 +97,12 @@ class sportsmanagementControllerImagehandler extends JSMControllerAdmin
 }; </script>\n";
 		$base_Dir = JPATH_SITE . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $this->jsmoption . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . $folder . DIRECTORY_SEPARATOR;
 
+echo "<script>console.log('Debug Objects type: " . $type . "' );</script>";
+echo "<script>console.log('Debug Objects folder: " . $folder . "' );</script>";
+echo "<script>console.log('Debug Objects pid: " . $pid . "' );</script>";
+echo "<script>console.log('Debug Objects mid: " . $mid . "' );</script>";
+echo "<script>console.log('Debug Objects base_dir: " . $base_Dir . "' );</script>";
+
 		// Do we have an imagelink?
 		if (!empty($linkaddress))
 		{
