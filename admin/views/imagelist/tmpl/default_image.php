@@ -22,6 +22,7 @@ $dispatcher->trigger('onContentBeforeDisplay', array('com_media.file', &$this->_
 
 ?>
 <li class="imgOutline thumbnail height-80 width-80 center">
+  <div class="height-50">
 <?php
 
 echo sportsmanagementHelper::getBootstrapModalImage(
@@ -34,6 +35,12 @@ echo sportsmanagementHelper::getBootstrapModalImage(
 							$this->modalheight
 						);
 ?>
+  </div>
+<div class="small">
+<?php
+echo Text::sprintf('COM_MEDIA_IMAGE_TITLE', JHtml::_('string.truncate', $this->_tmp_img->name, 10, false), JHtml::_('number.bytes', $this->_tmp_img->size));
+?>
+</div>  
 </li>
 
 
