@@ -60,7 +60,7 @@ class sportsmanagementViewimagelist extends sportsmanagementView
 $this->folder = $data['folder'];
 $this->pid = $data['pid'];
 $this->match_id = 0;
-$this->images = sportsmanagementModelimagelist::getFiles($data['folder'].$data['pid'],'');    
+$this->images = sportsmanagementModelimagelist::getFiles($data['folder'].'/'.$data['pid'],'');    
 		
 		
 		
