@@ -73,6 +73,8 @@ $languageCode = $languages[$lang->getTag()]->sef;
         <input type="hidden" name="option" value="com_sportsmanagement"/>
         <input type="hidden" name="task" value="imagehandler.upload"/>
         <input type="hidden" name="folder" value="<?php echo $this->folder; ?>"/>
+        <input type="hidden" name="pid" value="<?php echo $this->project_id; ?>"/>
+        <input type="hidden" name="mid" value="<?php echo $this->match_id; ?>"/>
 		<?php echo HTMLHelper::_('form.token'); ?>
     </form>
 

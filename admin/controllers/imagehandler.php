@@ -77,6 +77,18 @@ class sportsmanagementControllerImagehandler extends JSMControllerAdmin
 		$field       = $this->jsmjinput->getVar('field');
 		$fieldid     = $this->jsmjinput->getVar('fieldid');
 		$linkaddress = $this->jsmjinput->getVar('linkaddress');
+        $pid       = $this->jsmjinput->getVar('pid');
+        $mid       = $this->jsmjinput->getVar('mid');
+        
+        
+        switch ($type)
+		{
+		case "projectimages":
+				//return "projectimages/".$data['pid'];
+                $folder .= "/".$pid;
+				break;  
+          
+          }
 
 		// Set FTP credentials, if given
 		ClientHelper::setCredentialsFromRequest('ftp');
