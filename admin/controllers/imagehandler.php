@@ -64,6 +64,7 @@ class sportsmanagementControllerImagehandler extends JSMControllerAdmin
 
 		$type = '';
 		$msg  = '';
+        $updatemodal  = true;
 
 		// Check for request forgeries
 		Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
@@ -86,8 +87,13 @@ class sportsmanagementControllerImagehandler extends JSMControllerAdmin
 		case "projectimages":
 				//return "projectimages/".$data['pid'];
                 $folder .= "/".$pid;
+                $updatemodal  = false;
 				break;  
-          
+          case "matchreport":
+				//return "projectimages/".$data['pid'];
+                $folder .= "/".$mid;
+                $updatemodal  = false;
+				break; 
           }
 
 		// Set FTP credentials, if given
@@ -170,8 +176,15 @@ echo "<script>console.log('Debug Objects base_dir: " . $base_Dir . "' );</script
 
 			//			echo "<script> alert('" . Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE'.'-'.$folder.'-'.$type.'-'.$filename.'-'.$field ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
 			//			echo "<script> alert('" . Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE' ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
-			echo "<script>  window.parent.selectImage_" . $type . "('$filename', '$filename','$field','$fieldid');window.closeModal();window.parent.jQuery('.modal.in').modal('hide'); </script>\n";
-			$msg  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE');
+			if ( $updatemodal )
+            {
+            echo "<script>window.parent.selectImage_" . $type . "('$filename', '$filename','$field','$fieldid');window.closeModal();window.parent.jQuery('.modal.in').modal('hide'); </script>\n";
+			}
+            else
+            {
+            echo "<script>window.closeModal();window.parent.jQuery('.modal.in').modal('hide'); </script>\n";    
+            }
+            $msg  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE');
 			$type = 'notice';
 
 			// $app->close();
