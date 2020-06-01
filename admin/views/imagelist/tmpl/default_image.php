@@ -20,9 +20,9 @@ $dispatcher->trigger('onContentBeforeDisplay', array('com_media.file', &$this->_
 
 //echo '<pre>'.print_r($this->_tmp_img,true).'</pre>';
 
-
-
-
+?>
+<li class="imgOutline thumbnail height-80 width-80 center">
+<?php
 
 echo sportsmanagementHelper::getBootstrapModalImage(
 							$this->_tmp_img->name,
@@ -34,15 +34,16 @@ echo sportsmanagementHelper::getBootstrapModalImage(
 							$this->modalheight
 						);
 ?>
+</li>
 
 
 
 
 
 
-
-
+<!--
 <li class="imgOutline thumbnail height-80 width-80 center">
+  
 	<a class="img-preview" href="" >
 		<div class="height-50">
 			<?php echo JHtml::_('image', 'images/com_sportsmanagement/database/'.$this->_tmp_img->path_relative.'/'.$this->_tmp_img->file, Text::sprintf('COM_MEDIA_IMAGE_TITLE', $this->_tmp_img->name, JHtml::_('number.bytes', $this->_tmp_img->size)), array('width' => $this->_tmp_img->width_60, 'height' => $this->_tmp_img->height_60)); ?>
@@ -51,6 +52,8 @@ echo sportsmanagementHelper::getBootstrapModalImage(
 			<?php echo JHtml::_('string.truncate', $this->_tmp_img->name, 10, false); ?>
 		</div>
 	</a>
+              
 </li>
+-->              
 <?php
 $dispatcher->trigger('onContentAfterDisplay', array('com_media.file', &$this->_tmp_img, &$params));
