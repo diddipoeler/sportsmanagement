@@ -182,7 +182,7 @@ echo "<script>console.log('Debug Objects base_dir: " . $base_Dir . "' );</script
 			}
             else
             {
-            echo "<script>window.closeModal();window.parent.jQuery('.modal.in').modal('hide'); </script>\n";    
+            echo "<script>window.closeModal();window.parent.jQuery('.modal.in').modal('hide');parent.location.reload(); </script>\n";    
             }
             $msg  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE');
 			$type = 'notice';
