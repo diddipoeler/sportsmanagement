@@ -29,7 +29,7 @@ $link = 'index.php?option=com_sportsmanagement&view=imagehandler&layout=uploaddr
 
 //echo '<pre>'.print_r($this->images,true).'</pre>';
 ?>
-<div class="button2-left"><div class="blank">";
+<div class="button2-left"><div class="blank">
 <?php
 echo sportsmanagementHelper::getBootstrapModalImage('upload'.$this->project_id, '', Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE'), '20', Uri::base() . $link, $this->modalwidth , $this->modalheight );
 ?>
