@@ -344,8 +344,9 @@ $img.attr("src", "' . Uri::root() . '" + select);
 				return "agegroups";
 				break;
             case "projectimages":
-                $data = Factory::getApplication()->input->getArray();
-				return "projectimages/".$data['pid'];
+                //$data = Factory::getApplication()->input->getArray();
+				//return "projectimages/".$data['pid'];
+                return "projectimages";
 				break;
 			default:
 				return "events/" . $type;
