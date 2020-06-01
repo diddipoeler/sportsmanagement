@@ -22,7 +22,7 @@ $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 //$modalheight = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('modal_popup_height', 600);
 //$modalwidth  = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('modal_popup_width', 900);
-$link = 'index.php?option=com_sportsmanagement&view=imagehandler&layout=uploaddraganddrop&type=&field=&fieldid=&tmpl=component';
+$link = 'index.php?option=com_sportsmanagement&view=imagehandler&layout=uploaddraganddrop&type='.$this->folder.'&field=&fieldid=&tmpl=component';
 //JHtml::_('script', 'media/popup-imagemanager.min.js', array('version' => 'auto', 'relative' => true));
 //JHtml::_('stylesheet', 'media/popup-imagemanager.css', array('version' => 'auto', 'relative' => true));
 

@@ -57,8 +57,8 @@ class sportsmanagementViewimagelist extends sportsmanagementView
        
    $data = Factory::getApplication()->input->getArray();
 //      echo '<pre>'.print_r($data,true).'</pre>';
-      
-$this->images = sportsmanagementModelimagelist::getFiles($data['folder'],'');    
+$this->folder = $data['folder'];
+$this->images = sportsmanagementModelimagelist::getFiles($data['folder'].$data['pid'],'');    
 		
 		
 		

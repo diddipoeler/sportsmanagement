@@ -34,9 +34,16 @@ use Joomla\Filesystem\Path;
 class sportsmanagementModelimagelist extends BaseDatabaseModel
 {
 
+/**
+ * sportsmanagementModelimagelist::getFiles()
+ * 
+ * @param mixed $path
+ * @param mixed $scopeName
+ * @return
+ */
 public static function getFiles($path, $scopeName)
 {
-$directory = JPATH_ROOT . DIRECTORY_SEPARATOR . $path;
+$directory = JPATH_ROOT . DIRECTORY_SEPARATOR . 'images/com_sportsmanagement/database/'.$path;
 $filesOutput = [];
 $files = Folder::files($directory);
 $directories = Folder::folders($directory);
