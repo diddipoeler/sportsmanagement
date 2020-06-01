@@ -19,7 +19,27 @@ $dispatcher->trigger('onContentBeforeDisplay', array('com_media.file', &$this->_
 
 //echo '<pre>'.print_r($this->_tmp_img,true).'</pre>';
 
+
+
+
+
+echo sportsmanagementHelper::getBootstrapModalImage(
+							$this->_tmp_img->name,
+							Uri::root() . $this->_tmp_img->path_relative.'/'.$this->_tmp_img->file,
+							Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
+							$this->_tmp_img->width_60,
+							'',
+							$this->modalwidth,
+							$this->modalheight
+						);
 ?>
+
+
+
+
+
+
+
 
 <li class="imgOutline thumbnail height-80 width-80 center">
 	<a class="img-preview" href="" >
