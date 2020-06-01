@@ -13,16 +13,25 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-
+$modalheight = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('modal_popup_height', 600);
+$modalwidth  = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('modal_popup_width', 900);
+$link = 'index.php?option=com_sportsmanagement&view=imagehandler&layout=uploaddraganddrop&type=&field=&fieldid=&tmpl=component';
 //JHtml::_('script', 'media/popup-imagemanager.min.js', array('version' => 'auto', 'relative' => true));
 //JHtml::_('stylesheet', 'media/popup-imagemanager.css', array('version' => 'auto', 'relative' => true));
 
 
 //echo '<pre>'.print_r($this->images,true).'</pre>';
 ?>
+<div class="button2-left"><div class="blank">";
+<?php
+echo sportsmanagementHelper::getBootstrapModalImage('upload', '', Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE'), '20', Uri::base() . $link, $modalwidth, $modalheight);
+?>
+</div></div>
+
 <?php if ( count($this->images) > 0 ) : ?>
 	<ul class="manager thumbnails">
 		<?php for ($i = 0, $n = count($this->images); $i < $n; $i++) :

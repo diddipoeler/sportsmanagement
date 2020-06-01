@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage imagehandler
@@ -12,7 +10,6 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * https://www.jqueryscript.net/form/Drag-Drop-File-Upload-Dialog-with-jQuery-Bootstrap.html
  */
-
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\String\StringHelper;
@@ -45,6 +42,7 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
 		$document = Factory::getDocument();
 		$jinput   = $app->input;
 		$tpl      = '';
+        $data = Factory::getApplication()->input->getArray();
 
 		switch ($this->getLayout())
 		{
