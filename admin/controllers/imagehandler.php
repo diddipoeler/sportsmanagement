@@ -53,7 +53,7 @@ class sportsmanagementControllerImagehandler extends JSMControllerAdmin
 	{
 		// Reference global application object
 		$app = Factory::getApplication();
-
+$datainput = Factory::getApplication()->input->getArray();
 		// JInput object
 		// $jinput = $app->input;
 		// $option = $this->jsmjinput->getCmd('option');
