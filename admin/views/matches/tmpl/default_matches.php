@@ -203,7 +203,7 @@ $pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=compon
 						?>
                         <br>
 						<?php
-						echo sportsmanagementHelper::getBootstrapModalImage('matchpicturedelete' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/delete.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_DELETE_MATCHPICTURE'), '20', Uri::base() . $pcture_delete, $this->modalwidth, $this->modalheight);
+						//echo sportsmanagementHelper::getBootstrapModalImage('matchpicturedelete' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/delete.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_DELETE_MATCHPICTURE'), '20', Uri::base() . $pcture_delete, $this->modalwidth, $this->modalheight);
 
 						// Diddipoeler einzelsportart
 						if ($this->projectws->project_art_id == 2)
