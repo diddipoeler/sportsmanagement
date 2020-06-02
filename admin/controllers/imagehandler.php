@@ -90,9 +90,9 @@ class sportsmanagementControllerImagehandler extends JSMControllerAdmin
                 $folder .= "/".$mid;
                 $updatemodal  = false;
 				break; 
-		default:
-			$updatemodal  = false;
-			break; 
+		//default:
+		//$updatemodal  = false;
+		//break; 
           }
 
 		// Set FTP credentials, if given
