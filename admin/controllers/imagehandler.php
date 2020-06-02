@@ -62,6 +62,11 @@ $datainput = Factory::getApplication()->input->getArray();
 		$msg  = '';
         $updatemodal  = true;
 
+		if ( $datainput['imagelist'] )
+		{
+			$updatemodal  = false;
+		}
+
 		// Check for request forgeries
 		Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
 
