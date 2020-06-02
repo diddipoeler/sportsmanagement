@@ -10,9 +10,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * https://css-tricks.com/examples/DragAndDropFileUploading/
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
@@ -216,13 +214,13 @@ $img.attr("src", "' . Uri::root() . '" + select);
 
 		//        $link2 = 'index.php?option=com_sportsmanagement&amp;view=imagehandler&amp;type=' .
 		//		$type . '&amp;field=' . $fieldname . '&amp;fieldid=' . $fieldid .'&amp;tmpl=component';
-
+/*
 		$link2 = 'index.php?option=com_media&amp;view=images' .
 			'&amp;asset=com_sportsmanagement&amp;folder=com_sportsmanagement/database/' . self::getfolder($typefolder) . '&author=&amp;fieldid=' . $fieldid . '&amp;tmpl=component';
-/*
+*/
 $link2 = 'index.php?option=com_sportsmanagement&view=imagelist' .
 			'&asset=com_sportsmanagement&folder=' . self::getfolder($typefolder) . '&author=&fieldid=' . $fieldid . '&tmpl=component';
-		*/
+
 		$document->addScriptDeclaration($js);
 
 		//		HTMLHelper::_( 'behavior.modal', 'a.modal' );
