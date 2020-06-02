@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage helpers
@@ -221,7 +219,10 @@ $img.attr("src", "' . Uri::root() . '" + select);
 
 		$link2 = 'index.php?option=com_media&amp;view=images' .
 			'&amp;asset=com_sportsmanagement&amp;folder=com_sportsmanagement/database/' . self::getfolder($typefolder) . '&author=&amp;fieldid=' . $fieldid . '&amp;tmpl=component';
-
+/*
+$link2 = 'index.php?option=com_sportsmanagement&view=imagelist' .
+			'&asset=com_sportsmanagement&folder=' . self::getfolder($typefolder) . '&author=&fieldid=' . $fieldid . '&tmpl=component';
+		*/
 		$document->addScriptDeclaration($js);
 
 		//		HTMLHelper::_( 'behavior.modal', 'a.modal' );
@@ -257,15 +258,27 @@ $img.attr("src", "' . Uri::root() . '" + select);
 	 */
 	static function getfolder($type)
 	{
+		
+?>
+<script>
+console.log('getfolder: ' + '<?php echo $type;  ?>' );  
+</script>  
+<?php		
 		switch ($type)
 		{
 			case "clubs_small":
+			case "clubssmall":
+			case "clubs/small":
 				return "clubs/small";
 				break;
 			case "clubs_medium":
+			case "clubsmedium":
+			case "clubs/medium":
 				return "clubs/medium";
 				break;
 			case "clubs_large":
+			case "clubslarge":
+			case "clubs/large":
 				return "clubs/large";
 				break;
 			case "clubs_trikot_home":
