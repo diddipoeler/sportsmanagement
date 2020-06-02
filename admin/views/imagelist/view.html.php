@@ -11,7 +11,6 @@
  * https://www.jqueryscript.net/form/Drag-Drop-File-Upload-Dialog-with-jQuery-Bootstrap.html
  */
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\String\StringHelper;
 use Joomla\CMS\Application\WebApplication;
 use Joomla\CMS\Language\Text;
@@ -58,6 +57,7 @@ class sportsmanagementViewimagelist extends sportsmanagementView
    $data = Factory::getApplication()->input->getArray();
 //      echo '<pre>'.print_r($data,true).'</pre>';
 $this->folder = $data['folder'];
+$this->imagelist = $data['imagelist'];		
 
 switch ($this->folder)
 		{
