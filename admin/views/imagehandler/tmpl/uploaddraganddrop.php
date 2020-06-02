@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage imagehandler
@@ -12,9 +10,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * http://plugins.krajee.com/file-input
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -75,6 +71,7 @@ $languageCode = $languages[$lang->getTag()]->sef;
         <input type="hidden" name="folder" value="<?php echo $this->folder; ?>"/>
         <input type="hidden" name="pid" value="<?php echo $this->project_id; ?>"/>
         <input type="hidden" name="mid" value="<?php echo $this->match_id; ?>"/>
+	    <input type="hidden" name="imagelist" value="<?php echo $this->imagelist; ?>"/>
 		<?php echo HTMLHelper::_('form.token'); ?>
     </form>
 
