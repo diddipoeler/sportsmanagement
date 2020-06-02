@@ -186,12 +186,13 @@ use Joomla\CMS\Uri\Uri;
 						if (version_compare(JSM_JVERSION, '4', 'eq'))
 						{
 							$pcture_link   = 'index.php?option=com_media&tmpl=component&path=local-0:/com_sportsmanagement/database/matchreport/' . $row->id;
-							$pcture_delete = 'index.php?option=com_media&tmpl=component&path=local-0:/com_sportsmanagement/database/matchreport/' . $row->id;
+							//$pcture_delete = 'index.php?option=com_media&tmpl=component&path=local-0:/com_sportsmanagement/database/matchreport/' . $row->id;
 						}
 						else
 						{
-							$pcture_link   = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sportsmanagement&author=&folder=com_sportsmanagement/database/matchreport/' . $row->id;
-							$pcture_delete = 'index.php?option=com_media&tmpl=component&asset=com_sportsmanagement&author=&folder=com_sportsmanagement/database/matchreport/' . $row->id;
+//$pcture_link   = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sportsmanagement&author=&folder=com_sportsmanagement/database/matchreport/' . $row->id;
+$pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=component&asset=com_sportsmanagement&author=&folder=matchreport' .'&mid='. $row->id;							
+							//$pcture_delete = 'index.php?option=com_media&tmpl=component&asset=com_sportsmanagement&author=&folder=com_sportsmanagement/database/matchreport/' . $row->id;
 						}
 
 						?>
