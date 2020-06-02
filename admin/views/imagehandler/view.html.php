@@ -59,6 +59,7 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
 				$this->folder = ImageSelectSM::getfolder($this->jinput->get('type'));
                 $this->pid = $this->jinput->get('pid');
                 $this->match_id = $this->jinput->get('mid');
+		$this->imagelist = $this->jinput->get('imagelist');
 				$this->setLayout('uploaddraganddrop');
 
 				return;
