@@ -139,12 +139,15 @@ $directoriesOutput = [];
 	*/
  // $this->items = self::$filesOutput;
 
-$value = $this->getUserStateFromRequest($this->context . '.limit', 'limit', Factory::getApplication()->getCfg('list_limit', 0));
-echo __METHOD__.' '.__LINE__.' limit <pre>'.print_r($value,true).'</pre>';
-$value = Factory::getApplication()->input->getUInt('limitstart', 0);
-echo __METHOD__.' '.__LINE__.' limitstart <pre>'.print_r($value,true).'</pre>';
-  
-  $this->items = self::$filesOutput;
+$valuelimit = $this->getUserStateFromRequest($this->context . '.limit', 'limit', Factory::getApplication()->getCfg('list_limit', 0));
+//echo __METHOD__.' '.__LINE__.' limit <pre>'.print_r($value,true).'</pre>';
+$valuestart = Factory::getApplication()->input->getUInt('limitstart', 0);
+//echo __METHOD__.' '.__LINE__.' limitstart <pre>'.print_r($value,true).'</pre>';
+for ($x = $valuestart; $x < ($valuestart + $valuelimit); $x++)
+{
+$this->items[] = self::$filesOutput[$x];	
+}
+  //$this->items = self::$filesOutput;
   $this->getTotal();
   
   //echo __METHOD__.' '.__LINE__.' getTotal <pre>'.print_r($this->getTotal(),true).'</pre>';
