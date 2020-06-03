@@ -58,7 +58,9 @@ class sportsmanagementViewimagelist extends sportsmanagementView
 //      echo '<pre>'.print_r($data,true).'</pre>';
 $this->folder = $data['folder'];
 $this->imagelist = $data['imagelist'];		
-
+$this->pid = 0;
+$this->match_id = 0;		
+		
 switch ($this->folder)
 		{
 		case "projectimages":
