@@ -20,6 +20,7 @@ use Joomla\Filesystem\File;
 use Joomla\Filesystem\Folder;
 use Joomla\Filesystem\Path;
 use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Pagination\Pagination;
 
 /**
  * sportsmanagementModelimagelist
@@ -37,6 +38,8 @@ var $limitstart = 0;
 var $limit = 0;
 static public $filesOutput = array();
 	
+var $items = array();  
+  
 public function __construct($config = array())
 	{
 		// Reference global application object
@@ -134,9 +137,98 @@ $directoriesOutput = [];
 				'directories' => $directoriesOutput
 			]);
 	*/
+ // $this->items = self::$filesOutput;
+
+$value = $this->getUserStateFromRequest($this->context . '.limit', 'limit', Factory::getApplication()->getCfg('list_limit', 0));
+echo __METHOD__.' '.__LINE__.' limit <pre>'.print_r($value,true).'</pre>';
+$value = Factory::getApplication()->input->getUInt('limitstart', 0);
+echo __METHOD__.' '.__LINE__.' limitstart <pre>'.print_r($value,true).'</pre>';
+  
+  $this->items = self::$filesOutput;
+  $this->getTotal();
+  
+  //echo __METHOD__.' '.__LINE__.' getTotal <pre>'.print_r($this->getTotal(),true).'</pre>';
+  
 	return self::$filesOutput;
 }
+/*
+  public function getItems()
+	{
+    // Get a storage key.
+		//$store = $this->getStoreId();
+    $store = $this->getStoreId('getstart');
+    echo __METHOD__.' '.__LINE__.' store <pre>'.print_r($store,true).'</pre>';
+    echo __METHOD__.' '.__LINE__.' getstart <pre>'.print_r($this->getStart(),true).'</pre>';
+    echo __METHOD__.' '.__LINE__.' getstate <pre>'.print_r($this->getState('list.limit'),true).'</pre>';
+    echo __METHOD__.' '.__LINE__.' getTotal <pre>'.print_r($this->getTotal(),true).'</pre>';
+    
+    //$this->cache[$store] = $this->_getList($this->_getListQuery(), $this->getStart(), $this->getState('list.limit'));
+    $this->cache[$store] = self::$filesOutput;
+    
+    echo __METHOD__.' '.__LINE__.' cache <pre>'.print_r($this->cache[$store],true).'</pre>';
+    return $this->cache[$store];
+  }
+  */
+  public function getPagination()
+	{
+		// Get a storage key.
+		$store = $this->getStoreId('getPagination');
 
+    $limit = (int) $this->getState('list.limit') - (int) $this->getState('list.links');
+    // Create the pagination object and add the object to the internal cache.
+		$this->cache[$store] = new Pagination($this->getTotal(), $this->getStart(), $limit);
+//echo __METHOD__.' '.__LINE__.' cache <pre>'.print_r($this->cache[$store],true).'</pre>';
+		return $this->cache[$store];
+    
+    
+    /*
+		// Try to load the data from internal storage.
+		if (isset($this->cache[$store]))
+		{
+			return $this->cache[$store];
+		}
+
+		$limit = (int) $this->getState('list.limit') - (int) $this->getState('list.links');
+
+		// Create the pagination object and add the object to the internal cache.
+		$this->cache[$store] = new Pagination($this->getTotal(), $this->getStart(), $limit);
+
+		return $this->cache[$store];
+    */
+	}
+  
+  public function getTotal()
+	{
+		// Get a storage key.
+		$store = $this->getStoreId('getTotal');
+//echo __METHOD__.' '.__LINE__.' items <pre>'.print_r($this->items,true).'</pre>';
+    
+    $this->cache[$store] = sizeof($this->items);
+//echo __METHOD__.' '.__LINE__.' cache <pre>'.print_r($this->cache[$store],true).'</pre>';    
+    return $this->cache[$store];
+    /*
+		// Try to load the data from internal storage.
+		if (isset($this->cache[$store]))
+		{
+			return $this->cache[$store];
+		}
+
+		try
+		{
+			// Load the total and add the total to the internal cache.
+			$this->cache[$store] = sizeof($this->items);
+		}
+		catch (\RuntimeException $e)
+		{
+			$this->setError($e->getMessage());
+
+			return false;
+		}
+echo __METHOD__.' '.__LINE__.' cache <pre>'.print_r($this->cache[$store],true).'</pre>';
+		return $this->cache[$store];
+    */
+	}
+  
 public function getStart()
 	{
 		// Reference global application object
@@ -150,16 +242,23 @@ public function getStart()
 
 		$store = $this->getStoreId('getstart');
 
+//  echo __METHOD__.' '.__LINE__.' store <pre>'.print_r($store,true).'</pre>';
+//  echo __METHOD__.' '.__LINE__.' store <pre>'.print_r($this->cache[$store],true).'</pre>';
+  /*
 		// Try to load the data from internal storage.
 		if (isset($this->cache[$store]))
 		{
 			return $this->cache[$store];
 		}
-
+*/
 		$start = $this->getState('list.start');
 		$limit = $this->getState('list.limit');
 		$total = $this->getTotal();
-
+  //$total = sizeof(self::$filesOutput);
+  
+//  echo __METHOD__.' '.__LINE__.' files <pre>'.print_r(self::$filesOutput,true).'</pre>';
+//echo __METHOD__.' '.__LINE__.' getTotal <pre>'.print_r($total,true).'</pre>';
+  
 		if ($start > $total - $limit)
 		{
 			$start = max(0, (int) (ceil($total / $limit) - 1) * $limit);
@@ -202,12 +301,12 @@ protected function populateState($ordering = null, $direction = null)
 		$this->setState('filter.search_nation', $temp_user_request);
 */
 		$filter_order = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
-
+/*
 		if (!in_array($filter_order, $this->filter_fields))
 		{
 			$filter_order = 'v.name';
 		}
-
+*/
 		$filter_order_Dir = $this->getUserStateFromRequest($this->context . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
 
 		if (!in_array(strtoupper($filter_order_Dir), array('ASC', 'DESC', '')))
