@@ -134,7 +134,7 @@ $directoriesOutput = [];
 				'directories' => $directoriesOutput
 			]);
 	*/
-	return $filesOutput;
+	return self::$filesOutput;
 }
 
 public function getStart()
@@ -221,7 +221,7 @@ protected function populateState($ordering = null, $direction = null)
 	
 function getListQuery()
 	{
-	
+	return self::$filesOutput;
 }
 	
 }
