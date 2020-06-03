@@ -9,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
@@ -21,6 +19,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\Filesystem\File;
 use Joomla\Filesystem\Folder;
 use Joomla\Filesystem\Path;
+use Joomla\CMS\MVC\Model\ListModel;
 
 /**
  * sportsmanagementModelimagelist
@@ -31,7 +30,7 @@ use Joomla\Filesystem\Path;
  * @version   $Id$
  * @access    public
  */
-class sportsmanagementModelimagelist extends BaseDatabaseModel
+class sportsmanagementModelimagelist extends ListModel
 {
 
 /**
