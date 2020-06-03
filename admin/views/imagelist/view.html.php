@@ -63,14 +63,14 @@ switch ($this->folder)
 		{
 		case "projectimages":
         $this->pid = $data['pid'];
-        $this->images = sportsmanagementModelimagelist::getFiles($data['folder'].'/'.$data['pid'],'');
+        $this->images = $this->model->getFiles($data['folder'].'/'.$data['pid'],'');
 		break;  
         case "matchreport":
         $this->match_id = $data['mid'];
-        $this->images = sportsmanagementModelimagelist::getFiles($data['folder'].'/'.$data['mid'],'');
+        $this->images = $this->model->getFiles($data['folder'].'/'.$data['mid'],'');
 		break;
 	default:
-		$this->images = sportsmanagementModelimagelist::getFiles($data['folder'],'');
+		$this->images = $this->model->getFiles($data['folder'],'');
 		break;
           }
 
