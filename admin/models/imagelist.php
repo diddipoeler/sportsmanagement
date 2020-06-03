@@ -190,16 +190,17 @@ protected function populateState($ordering = null, $direction = null)
 
 		$value = $jinput->getUInt('limitstart', 0);
 		$this->setState('list.start', $value);
-
+/*
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
-
+*/
 		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string');
 		$this->setState('filter.state', $published);
+/*	
 		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '');
 		$this->setState('filter.search_nation', $temp_user_request);
-
+*/
 		$filter_order = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
 
 		if (!in_array($filter_order, $this->filter_fields))
