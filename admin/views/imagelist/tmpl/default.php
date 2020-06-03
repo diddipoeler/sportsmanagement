@@ -64,23 +64,12 @@ echo sportsmanagementHelper::getBootstrapModalImage('upload'.$this->project_id, 
             <input type="hidden" name="view" value="imagelist"/>
             <input type="hidden" name="imagelist" value="1"/>
             <input type="hidden" name="asset" value="com_sportsmanagement"/>
-            <input type="hidden" name="folder" value="clubs/large"/>
+            <input type="hidden" name="folder" value="<?php echo $this->folder;?>"/>
+<input type="hidden" name="pid" value="<?php echo $this->pid ;?>"/>
+<input type="hidden" name="mid" value="<?php echo $this->match_id ;?>"/>
             <input type="hidden" name="author" value=""/>
             <input type="hidden" name="fieldid" value="jform_logo_big"/>
             <input type="hidden" name="tmpl" value="component"/>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   
   
 </form>
