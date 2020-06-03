@@ -22,7 +22,7 @@ $baseVersion = substr(JVERSION, 0, 3);
 
 if (version_compare($baseVersion, '4.0', 'ge'))
 {
-$dispatcher = Factory::getApplication()->triggerEvent();
+//$dispatcher = Factory::getApplication()->triggerEvent();
 }
 if (version_compare($baseVersion, '3.0', 'ge'))
 {
