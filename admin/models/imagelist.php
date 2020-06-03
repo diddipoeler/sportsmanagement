@@ -35,6 +35,7 @@ class sportsmanagementModelimagelist extends ListModel
 var $_identifier = "imagelist";
 var $limitstart = 0;
 var $limit = 0;
+var $filesOutput = array();
 	
 public function __construct($config = array())
 	{
@@ -60,7 +61,7 @@ public function __construct($config = array())
 public static function getFiles($path, $scopeName)
 {
 $directory = JPATH_ROOT . DIRECTORY_SEPARATOR . 'images/com_sportsmanagement/database/'.$path;
-$filesOutput = [];
+//$filesOutput = [];
 $files = Folder::files($directory);
 $directories = Folder::folders($directory);
 
@@ -109,7 +110,7 @@ $fileMeta->dateM = $fileDate;
 				];  
   */
   
-  $filesOutput[] = $fileMeta;
+  $this->filesOutput[] = $fileMeta;
   
   
   
