@@ -81,7 +81,10 @@ switch ($this->folder)
 $this->state = $this->get('State');
 $this->items = $this->get('Items');
 $this->pagination = $this->get('Pagination');		
-		
+
+//echo 'state <pre>'.print_r($this->state,true).'</pre>';      
+//echo 'items<pre>'.print_r($this->items,true).'</pre>';      
+//echo 'pagination<pre>'.print_r($this->pagination,true).'</pre>';   		
 		
   }
   
