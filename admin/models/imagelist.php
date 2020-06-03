@@ -35,7 +35,7 @@ class sportsmanagementModelimagelist extends ListModel
 var $_identifier = "imagelist";
 var $limitstart = 0;
 var $limit = 0;
-var $filesOutput = array();
+static $filesOutput = array();
 	
 public function __construct($config = array())
 	{
@@ -110,7 +110,7 @@ $fileMeta->dateM = $fileDate;
 				];  
   */
   
-  $this->filesOutput[] = $fileMeta;
+  self::$filesOutput[] = $fileMeta;
   
   
   
