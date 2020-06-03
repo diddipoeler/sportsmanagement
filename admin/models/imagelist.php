@@ -32,7 +32,24 @@ use Joomla\CMS\MVC\Model\ListModel;
  */
 class sportsmanagementModelimagelist extends ListModel
 {
+var $_identifier = "imagelist";
+var $limitstart = 0;
+var $limit = 0;
+	
+public function __construct($config = array())
+	{
+		// Reference global application object
+		$app = Factory::getApplication();
 
+		// JInput object
+		$jinput                   = $app->input;
+		$this->limitstart         = $jinput->getVar('limitstart', 0, '', 'int');
+		parent::__construct($config);
+
+		// $getDBConnection = sportsmanagementHelper::getDBConnection();
+//		parent::setDbo($this->jsmdb);
+	}	
+	
 /**
  * sportsmanagementModelimagelist::getFiles()
  * 
@@ -119,7 +136,39 @@ $directoriesOutput = [];
 	return $filesOutput;
 }
 
+public function getStart()
+	{
+		// Reference global application object
+		$app = Factory::getApplication();
 
+		// JInput object
+		$jinput = $app->input;
+
+		// $limitstart = $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart');
+		$this->setState('list.start', $this->limitstart);
+
+		$store = $this->getStoreId('getstart');
+
+		// Try to load the data from internal storage.
+		if (isset($this->cache[$store]))
+		{
+			return $this->cache[$store];
+		}
+
+		$start = $this->getState('list.start');
+		$limit = $this->getState('list.limit');
+		$total = $this->getTotal();
+
+		if ($start > $total - $limit)
+		{
+			$start = max(0, (int) (ceil($total / $limit) - 1) * $limit);
+		}
+
+		// Add the total to the internal cache.
+		$this->cache[$store] = $start;
+
+		return $this->cache[$store];
+	}
 
 
 }
