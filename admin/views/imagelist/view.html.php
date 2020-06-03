@@ -79,7 +79,8 @@ switch ($this->folder)
 //$this->images = sportsmanagementModelimagelist::getFiles($data['folder'].'/'.$data['pid'],'');    
 		
 $this->state = $this->get('State');
-$this->items = $this->get('Items');
+//$this->items = $this->get('Items');
+$this->items = $this->images;		
 $this->pagination = $this->get('Pagination');		
 
 //echo 'state <pre>'.print_r($this->state,true).'</pre>';      
