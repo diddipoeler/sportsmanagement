@@ -45,4 +45,12 @@ echo sportsmanagementHelper::getBootstrapModalImage('upload'.$this->project_id, 
 		<div class="alert alert-info"><?php echo JText::_('COM_MEDIA_NO_IMAGES_FOUND'); ?></div>
 	</div>
 <?php endif; ?>
-
+<div class="pagination">
+    <p class="counter">
+		<?php echo $this->pagination->getPagesCounter(); ?>
+    </p>
+    <p class="counter">
+		<?php echo $this->pagination->getResultsCounter(); ?>
+    </p>
+	<?php echo $this->pagination->getPagesLinks(); ?>
+</div>
