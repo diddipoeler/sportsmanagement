@@ -34,7 +34,12 @@ $link = 'index.php?option=com_sportsmanagement&view=imagehandler&layout=uploaddr
 <?php
 echo sportsmanagementHelper::getBootstrapModalImage('upload'.$this->project_id, '', Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE'), '20', Uri::base() . $link, $this->modalwidth , $this->modalheight );
 ?>
-</div></div>
+</div>
+<div class="display-limit">
+<?php echo Text::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
+<?php echo $this->pagination->getLimitBox(); ?>
+</div>	
+</div>
 <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($this->uri->toString()); ?>"
 <div class="row-fluid" id="showimages">   
   <?php if ( count($this->images) > 0 ) : ?>
