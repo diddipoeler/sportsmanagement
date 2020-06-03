@@ -78,7 +78,9 @@ switch ($this->folder)
 //$this->match_id = $data['mid'];;
 //$this->images = sportsmanagementModelimagelist::getFiles($data['folder'].'/'.$data['pid'],'');    
 		
-		
+$this->state = $this->get('State');
+$this->items = $this->get('Items');
+$this->pagination = $this->get('Pagination');		
 		
 		
   }
