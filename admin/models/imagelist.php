@@ -58,7 +58,7 @@ public function __construct($config = array())
  * @param mixed $scopeName
  * @return
  */
-public static function getFiles($path, $scopeName)
+public function getFiles($path, $scopeName)
 {
 $directory = JPATH_ROOT . DIRECTORY_SEPARATOR . 'images/com_sportsmanagement/database/'.$path;
 //$filesOutput = [];
