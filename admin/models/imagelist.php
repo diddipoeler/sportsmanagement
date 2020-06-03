@@ -170,5 +170,52 @@ public function getStart()
 		return $this->cache[$store];
 	}
 
+protected function populateState($ordering = null, $direction = null)
+	{
+		// Reference global application object
+		$app = Factory::getApplication();
 
+		// JInput object
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+
+		// Initialise variables.
+		$app = Factory::getApplication('site');
+
+		// List state information
+
+		$value = $this->getUserStateFromRequest($this->context . '.limit', 'limit', $app->getCfg('list_limit', 0));
+		$this->setState('list.limit', $value);
+
+		$value = $jinput->getUInt('limitstart', 0);
+		$this->setState('list.start', $value);
+
+		// Load the filter state.
+		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+
+		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string');
+		$this->setState('filter.state', $published);
+		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '');
+		$this->setState('filter.search_nation', $temp_user_request);
+
+		$filter_order = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
+
+		if (!in_array($filter_order, $this->filter_fields))
+		{
+			$filter_order = 'v.name';
+		}
+
+		$filter_order_Dir = $this->getUserStateFromRequest($this->context . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+
+		if (!in_array(strtoupper($filter_order_Dir), array('ASC', 'DESC', '')))
+		{
+			$filter_order_Dir = 'ASC';
+		}
+
+		$this->setState('filter_order', $filter_order);
+		$this->setState('filter_order_Dir', $filter_order_Dir);
+
+	}
+	
 }
