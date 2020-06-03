@@ -35,7 +35,7 @@ class sportsmanagementModelimagelist extends ListModel
 var $_identifier = "imagelist";
 var $limitstart = 0;
 var $limit = 0;
-static $filesOutput = array();
+static public $filesOutput = array();
 	
 public function __construct($config = array())
 	{
