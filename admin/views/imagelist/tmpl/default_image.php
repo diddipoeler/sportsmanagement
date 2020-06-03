@@ -16,12 +16,16 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 $params     = new Registry;
-if (version_compare(JSM_JVERSION, '4', 'eq'))
-		{
+
+// Get the base version
+$baseVersion = substr(JVERSION, 0, 3);
+
+if (version_compare($baseVersion, '4.0', 'ge'))
+{
 $dispatcher = Factory::getApplication()->triggerEvent();
-          }
-          	elseif (version_compare(JSM_JVERSION, '3', 'eq'))
-		{
+}
+if (version_compare($baseVersion, '3.0', 'ge'))
+{
 $dispatcher = JEventDispatcher::getInstance();
 }
 $dispatcher->trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_img, &$params));
