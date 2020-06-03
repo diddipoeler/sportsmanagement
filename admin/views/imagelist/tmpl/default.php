@@ -29,14 +29,15 @@ $link = 'index.php?option=com_sportsmanagement&view=imagehandler&layout=uploaddr
 
 //echo '<pre>'.print_r($this->images,true).'</pre>';
 ?>
-<div class="container-fluid" id="allleagues">  
+<div class="container-fluid" id="imageslist">  
 <div class="button2-left"><div class="blank">
 <?php
 echo sportsmanagementHelper::getBootstrapModalImage('upload'.$this->project_id, '', Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE'), '20', Uri::base() . $link, $this->modalwidth , $this->modalheight );
 ?>
 </div></div>
 <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($this->uri->toString()); ?>"
-<?php if ( count($this->images) > 0 ) : ?>
+<div class="row-fluid" id="showimages">   
+  <?php if ( count($this->images) > 0 ) : ?>
 	<ul class="manager thumbnails">
 		<?php for ($i = 0, $n = count($this->images); $i < $n; $i++) :
 			$this->setImage($i);
@@ -48,6 +49,8 @@ echo sportsmanagementHelper::getBootstrapModalImage('upload'.$this->project_id, 
 		<div class="alert alert-info"><?php echo JText::_('COM_MEDIA_NO_IMAGES_FOUND'); ?></div>
 	</div>
 <?php endif; ?>
+  </div>
+<div class="row-fluid" id="imageslistpagination">   
 <div class="pagination">
     <p class="counter">
 		<?php echo $this->pagination->getPagesCounter(); ?>
@@ -57,6 +60,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('upload'.$this->project_id, 
     </p>
 	<?php echo $this->pagination->getPagesLinks(); ?>
 </div>
+  </div>
    <input type="hidden" name="limitstart" value=""/>
   <input type="hidden" name="option" value="com_sportsmanagement"/>
   
