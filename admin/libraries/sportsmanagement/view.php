@@ -235,6 +235,7 @@ class sportsmanagementView extends HtmlView
 				case 'treeto';
 				case 'jlextdfbkeyimport';
 				case 'transifex';
+                case 'imagelist';
 					break;
 				default:
 					$this->items      = $this->get('Items');
