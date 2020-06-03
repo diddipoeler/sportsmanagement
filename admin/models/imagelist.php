@@ -218,4 +218,9 @@ protected function populateState($ordering = null, $direction = null)
 
 	}
 	
+function getListQuery()
+	{
+	
+}
+	
 }
