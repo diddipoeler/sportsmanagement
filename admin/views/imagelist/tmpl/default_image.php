@@ -24,7 +24,7 @@ if (version_compare($baseVersion, '4.0', 'ge'))
 {
 //$dispatcher = Factory::getApplication()->triggerEvent();
 }
-if (version_compare($baseVersion, '3.0', 'ge'))
+elseif (version_compare($baseVersion, '3.0', 'ge'))
 {
 $dispatcher = JEventDispatcher::getInstance();
 $dispatcher->trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_img, &$params));
