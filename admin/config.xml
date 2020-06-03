@@ -133,6 +133,7 @@
 		<field name="cfg_which_media_tool" 
     type="extensionradiobutton"
 			default="imageselect" 
+			class="radio btn-group btn-group-yesno"
       label="COM_SPORTSMANAGEMENT_SETTINGS_MEDIA_TOOL_TITLE"
 			description="COM_SPORTSMANAGEMENT_SETTINGS_MEDIA_TOOL_DESC">
 			<option value="media">COM_SPORTSMANAGEMENT_JOOMLA_MEDIA_KOMPONENT</option>
