@@ -14,8 +14,16 @@ defined('_JEXEC') or die;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 $params     = new Registry;
+if (version_compare(JSM_JVERSION, '4', 'eq'))
+		{
+$dispatcher = Factory::getApplication()->triggerEvent();
+          }
+          	elseif (version_compare(JSM_JVERSION, '3', 'eq'))
+		{
 $dispatcher = JEventDispatcher::getInstance();
+}
 $dispatcher->trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_img, &$params));
 
 //echo '<pre>'.print_r($this->_tmp_img,true).'</pre>';
