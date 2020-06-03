@@ -76,7 +76,11 @@ echo Text::sprintf('COM_MEDIA_IMAGE_TITLE', JHtml::_('string.truncate', $this->_
 </li>
 -->              
 <?php
-if (version_compare($baseVersion, '3.0', 'ge'))
+if (version_compare($baseVersion, '4.0', 'ge'))
+{
+//$dispatcher = Factory::getApplication()->triggerEvent();
+}
+elseif (version_compare($baseVersion, '3.0', 'ge'))
 {
 $dispatcher->trigger('onContentAfterDisplay', array('com_media.file', &$this->_tmp_img, &$params));
 }
