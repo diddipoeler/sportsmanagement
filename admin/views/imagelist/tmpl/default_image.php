@@ -27,8 +27,9 @@ $dispatcher = Factory::getApplication()->triggerEvent();
 if (version_compare($baseVersion, '3.0', 'ge'))
 {
 $dispatcher = JEventDispatcher::getInstance();
-}
 $dispatcher->trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_img, &$params));
+}
+//$dispatcher->trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_img, &$params));
 
 //echo '<pre>'.print_r($this->_tmp_img,true).'</pre>';
 
@@ -75,4 +76,7 @@ echo Text::sprintf('COM_MEDIA_IMAGE_TITLE', JHtml::_('string.truncate', $this->_
 </li>
 -->              
 <?php
+if (version_compare($baseVersion, '3.0', 'ge'))
+{
 $dispatcher->trigger('onContentAfterDisplay', array('com_media.file', &$this->_tmp_img, &$params));
+}
