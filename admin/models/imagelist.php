@@ -143,7 +143,7 @@ $valuelimit = $this->getUserStateFromRequest($this->context . '.limit', 'limit',
 //echo __METHOD__.' '.__LINE__.' limit <pre>'.print_r($value,true).'</pre>';
 $valuestart = Factory::getApplication()->input->getUInt('limitstart', 0);
 //echo __METHOD__.' '.__LINE__.' limitstart <pre>'.print_r($value,true).'</pre>';
-for ($x = $valuestart; $x < ($valuestart + $valuelimit); $x++)
+for ($x = $valuestart; $x < ($valuestart + $valuelimit); $x++) if ( $x < sizeof(self::$filesOutput) )
 {
 $this->items[] = self::$filesOutput[$x];	
 }
@@ -152,7 +152,7 @@ $this->items[] = self::$filesOutput[$x];
   
   //echo __METHOD__.' '.__LINE__.' getTotal <pre>'.print_r($this->getTotal(),true).'</pre>';
   
-	return self::$filesOutput;
+	return $this->items;
 }
 /*
   public function getItems()
@@ -206,7 +206,7 @@ $this->items[] = self::$filesOutput[$x];
 		$store = $this->getStoreId('getTotal');
 //echo __METHOD__.' '.__LINE__.' items <pre>'.print_r($this->items,true).'</pre>';
     
-    $this->cache[$store] = sizeof($this->items);
+    $this->cache[$store] = sizeof(self::$filesOutput);
 //echo __METHOD__.' '.__LINE__.' cache <pre>'.print_r($this->cache[$store],true).'</pre>';    
     return $this->cache[$store];
     /*
