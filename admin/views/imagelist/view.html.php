@@ -16,6 +16,7 @@ use Joomla\CMS\Application\WebApplication;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewimagelist
@@ -88,6 +89,13 @@ $this->limit = $this->state->get('list.limit');
 //echo 'state <pre>'.print_r($this->state,true).'</pre>';      
 //echo 'items<pre>'.print_r($this->getState('limitstart'),true).'</pre>';      
 //echo 'pagination<pre>'.print_r($this->pagination,true).'</pre>';   		
+
+// Get the base version
+$baseVersion = substr(JVERSION, 0, 3);
+if (version_compare($baseVersion, '4.0', 'ge'))
+{		
+$this->document->addStyleSheet(Uri::root() . 'components/com_sportsmanagement/assets/css/media-browser.css', 'text/css');		
+}		
 		
   }
   
