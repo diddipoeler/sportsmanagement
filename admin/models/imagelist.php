@@ -40,6 +40,12 @@ static public $filesOutput = array();
 	
 var $items = array();  
   
+/**
+ * sportsmanagementModelimagelist::__construct()
+ * 
+ * @param mixed $config
+ * @return void
+ */
 public function __construct($config = array())
 	{
 		// Reference global application object
@@ -65,7 +71,15 @@ public function getFiles($path, $scopeName)
 {
 $directory = JPATH_ROOT . DIRECTORY_SEPARATOR . 'images/com_sportsmanagement/database/'.$path;
 //$filesOutput = [];
-$files = Folder::files($directory);
+
+// Allowed filetypes
+$allowedExtensions = array('jpg','png','gif');
+// Also allow filetypes in uppercase
+$allowedExtensions = array_merge($allowedExtensions, array_map('strtoupper', $allowedExtensions));
+// Build the filter. Will return something like: "jpg|png|JPG|PNG|gif|GIF"
+$filter = implode('|',$allowedExtensions);
+$filter = "^.*\.(" . implode('|',$allowedExtensions) .")$";
+$files = Folder::files($directory,$filter);
 $directories = Folder::folders($directory);
 
 //echo '<pre>'.print_r($files,true).'</pre>';
@@ -172,6 +186,12 @@ $this->items[] = self::$filesOutput[$x];
     return $this->cache[$store];
   }
   */
+  
+  /**
+   * sportsmanagementModelimagelist::getPagination()
+   * 
+   * @return
+   */
   public function getPagination()
 	{
 		// Get a storage key.
@@ -200,6 +220,11 @@ $this->items[] = self::$filesOutput[$x];
     */
 	}
   
+  /**
+   * sportsmanagementModelimagelist::getTotal()
+   * 
+   * @return
+   */
   public function getTotal()
 	{
 		// Get a storage key.
@@ -232,6 +257,11 @@ echo __METHOD__.' '.__LINE__.' cache <pre>'.print_r($this->cache[$store],true).'
     */
 	}
   
+/**
+ * sportsmanagementModelimagelist::getStart()
+ * 
+ * @return
+ */
 public function getStart()
 	{
 		// Reference global application object
@@ -273,6 +303,13 @@ public function getStart()
 		return $this->cache[$store];
 	}
 
+/**
+ * sportsmanagementModelimagelist::populateState()
+ * 
+ * @param mixed $ordering
+ * @param mixed $direction
+ * @return void
+ */
 protected function populateState($ordering = null, $direction = null)
 	{
 		// Reference global application object
@@ -322,6 +359,11 @@ protected function populateState($ordering = null, $direction = null)
 
 	}
 	
+/**
+ * sportsmanagementModelimagelist::getListQuery()
+ * 
+ * @return void
+ */
 function getListQuery()
 	{
 	//return self::$filesOutput;
