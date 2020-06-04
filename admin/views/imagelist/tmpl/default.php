@@ -42,22 +42,44 @@ echo sportsmanagementHelper::getBootstrapModalImage('upload'.$this->project_id, 
 <?php echo Text::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
 <?php echo $this->pagination->getLimitBox(); ?>
 </div>	
+<?php
+// Get the base version
+$baseVersion = substr(JVERSION, 0, 3);
+if (version_compare($baseVersion, '4.0', 'ge'))
+{
+?>
+<div class="media-browser-grid">
+<div class="media-browser-items media-browser-items-md">
+<?php if ( count($this->images) > 0 ) : ?>
+	
+		<?php for ($i = 0, $n = count($this->images); $i < $n; $i++) :
+			$this->setImage($i);
+
+include( dirname(__FILE__) . '/default_image_4.php');
+
+		endfor; ?>
+	
+<?php else : ?>
+	<div id="media-noimages">
+		<div class="alert alert-info"><?php echo JText::_('COM_MEDIA_NO_IMAGES_FOUND'); ?></div>
+	</div>
+<?php endif; ?>
+</div>
+</div>
+<?php
+}
+elseif (version_compare($baseVersion, '3.0', 'ge'))
+{
+
+?>
 <div class="row-fluid" id="showimages">   
   <?php if ( count($this->images) > 0 ) : ?>
 	<ul class="manager thumbnails">
 		<?php for ($i = 0, $n = count($this->images); $i < $n; $i++) :
 			$this->setImage($i);
-// Get the base version
-$baseVersion = substr(JVERSION, 0, 3);
 
-if (version_compare($baseVersion, '4.0', 'ge'))
-{
-include( dirname(__FILE__) . '/default_image_4.php');
-}
-elseif (version_compare($baseVersion, '3.0', 'ge'))
-{
 include( dirname(__FILE__) . '/default_image.php');
-}
+
 		endfor; ?>
 	</ul>
 <?php else : ?>
@@ -65,7 +87,11 @@ include( dirname(__FILE__) . '/default_image.php');
 		<div class="alert alert-info"><?php echo JText::_('COM_MEDIA_NO_IMAGES_FOUND'); ?></div>
 	</div>
 <?php endif; ?>
-  </div>
+</div>
+<?php
+}
+
+?>
 <div class="row-fluid" id="imageslistpagination">   
 <div class="pagination">
     <p class="counter">
