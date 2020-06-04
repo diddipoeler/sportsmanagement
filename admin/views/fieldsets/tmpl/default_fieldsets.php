@@ -535,9 +535,9 @@ marker='1'\|align='center' } ";
                                        href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER . 'SM-Backend-Felder:' . Factory::getApplication()->input->getVar("view") . '-' . $this->form->getName() . '-' . $var_onlinehelp; ?>"
                                        class="modal">
 										<?php
+                                        $image_attributes['title'] = 'title= "'.Text::_('COM_SPORTSMANAGEMENT_HELP_LINK') . '"';
 										echo HTMLHelper::_(
-											'image', 'media/com_sportsmanagement/jl_images/help.png', Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'), 'title= "' .
-											Text::_('COM_SPORTSMANAGEMENT_HELP_LINK') . '"'
+											'image', 'media/com_sportsmanagement/jl_images/help.png', Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'), $image_attributes
 										);
 										?>
                                     </a>

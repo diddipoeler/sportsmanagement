@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage fieldsets
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -73,10 +69,10 @@ $fieldsets = $this->form->getFieldsets();
                                    href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER . 'SM-Backend-Felder:' . Factory::getApplication()->input->getVar("view") . '-' . $this->form->getName() . '-' . $var_onlinehelp; ?>"
                                    class="modal">
 									<?php
+                                    $image_attributes['title'] = 'title= "'.Text::_('COM_SPORTSMANAGEMENT_HELP_LINK') . '"';
 									echo HTMLHelper::_(
 										'image', 'media/com_sportsmanagement/jl_images/help.png',
-										Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'), 'title= "' .
-										Text::_('COM_SPORTSMANAGEMENT_HELP_LINK') . '"'
+										Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'), $image_attributes
 									);
 									?>
                                 </a>

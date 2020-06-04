@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage fieldsets
@@ -12,9 +10,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * https://www.joomlashack.com/blog/tutorials/tabs-bootstrap/
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -96,10 +92,10 @@ if (version_compare(JSM_JVERSION, '4', 'eq'))
                                                            title="<?php echo $var_onlinehelp; ?>" class=""
                                                            data-toggle="modal">
 															<?php
+                                                            $image_attributes['title'] = 'title= "'.Text::_('COM_SPORTSMANAGEMENT_HELP_LINK') . '"';
 															echo HTMLHelper::_(
 																'image', 'media/com_sportsmanagement/jl_images/help.png',
-																Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'), 'title= "' .
-																Text::_('COM_SPORTSMANAGEMENT_HELP_LINK') . '"'
+																Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'), $image_attributes
 															);
 
 															echo HTMLHelper::_(
