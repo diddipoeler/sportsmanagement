@@ -16,7 +16,6 @@ use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 
-
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
@@ -28,14 +27,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             <th width="20">
                 <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/>
             </th>
-
             <th>
 				<?php
 				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_NAME', 'obj.name', $this->sortDirection, $this->sortColumn);
 				?>
             </th>
-
-
             <th>
 				<?php
 				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_AGE_FROM', 'obj.age_from', $this->sortDirection, $this->sortColumn);
@@ -56,10 +52,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_COUNTRY', 'obj.country', $this->sortDirection, $this->sortColumn);
 				?>
             </th>
-
             <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE'); ?>
             </th>
-
             <th class="title">
 				<?php
 				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_SPORTSTYPE', 'obj.sportstype_id', $this->sortDirection, $this->sortColumn);
@@ -150,13 +144,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					{
 						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE') . $row->picture;
                         $image_attributes['title'] = $imageTitle;
-						echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/delete.png', $imageTitle, $imageTitle);
+						echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/delete.png', $imageTitle, $image_attributes['title']);
 					}
                     elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("player"))
 					{
 						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
                         $image_attributes['title'] = $imageTitle;
-						echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/information.png', $imageTitle, $imageTitle);
+						echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/information.png', $imageTitle, $image_attributes['title']);
 					}
 					else
 					{
@@ -190,10 +184,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                 </td>
                 <td class="order">
                         <span>
-                            <?php echo $this->pagination->orderUpIcon($i, $i > 0, 'agegroup.orderup', 'JLIB_HTML_MOVE_UP', $row->ordering); ?>
+                            <?php echo $this->pagination->orderUpIcon($i, $i > 0, 'agegroup.orderup', 'JLIB_HTML_MOVE_UP', true); ?>
                         </span>
                     <span>
-                            <?php echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'agegroup.orderdown', 'JLIB_HTML_MOVE_DOWN', $row->ordering); ?>
+                            <?php echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'agegroup.orderdown', 'JLIB_HTML_MOVE_DOWN', true); ?>
                             <?php $disabled = true ? '' : 'disabled="disabled"'; ?>
                         </span>
                     <input type="text" name="order[]" size="5"
