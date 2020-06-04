@@ -47,7 +47,17 @@ echo sportsmanagementHelper::getBootstrapModalImage('upload'.$this->project_id, 
 	<ul class="manager thumbnails">
 		<?php for ($i = 0, $n = count($this->images); $i < $n; $i++) :
 			$this->setImage($i);
-			include( dirname(__FILE__) . '/default_image.php');
+// Get the base version
+$baseVersion = substr(JVERSION, 0, 3);
+
+if (version_compare($baseVersion, '4.0', 'ge'))
+{
+include( dirname(__FILE__) . '/default_image_4.php');
+}
+elseif (version_compare($baseVersion, '3.0', 'ge'))
+{
+include( dirname(__FILE__) . '/default_image.php');
+}
 		endfor; ?>
 	</ul>
 <?php else : ?>
