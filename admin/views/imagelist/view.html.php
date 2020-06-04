@@ -94,7 +94,7 @@ $this->limit = $this->state->get('list.limit');
 $baseVersion = substr(JVERSION, 0, 3);
 if (version_compare($baseVersion, '4.0', 'ge'))
 {		
-$this->document->addStyleSheet(Uri::root() . 'components/com_sportsmanagement/assets/css/media-browser.css', 'text/css');		
+$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/media-browser.css', 'text/css');		
 }		
 		
   }
