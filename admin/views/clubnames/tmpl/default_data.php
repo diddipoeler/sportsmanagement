@@ -180,12 +180,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                 <td class="order">
                                 <span>
                     <?php
-                    echo $this->pagination->orderUpIcon($i, $i > 0, 'clubnames.orderup', 'COM_SPORTSMANAGEMENT_GLOBAL_ORDER_UP', true);
+                    echo $this->pagination->orderUpIcon($i, $i > 0, 'clubnames.orderup', 'JLIB_HTML_MOVE_UP', true);
                     ?>
                                 </span>
                     <span>
                     <?php
-                    echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'clubnames.orderdown', 'COM_SPORTSMANAGEMENT_GLOBAL_ORDER_DOWN', true);
+                    echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'clubnames.orderdown', 'JLIB_HTML_MOVE_DOWN', true);
                     $disabled = true ? '' : 'disabled="disabled"';
                     ?>
                                 </span>

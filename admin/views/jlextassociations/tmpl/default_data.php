@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage jlextassociastions
@@ -11,20 +9,16 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 
-
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-
 <div id="editcell">
     <table class="<?php echo $this->table_data_class; ?>">
         <thead>
@@ -210,10 +204,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                 </td>
                 <td class="order">
                             <span>
-                                <?php echo $this->pagination->orderUpIcon($i, $i > 0, 'jlextassociations.orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?>
+                                <?php echo $this->pagination->orderUpIcon($i, $i > 0, 'jlextassociations.orderup', 'JLIB_HTML_MOVE_UP', true); ?>
                             </span>
                     <span>
-                                <?php echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'jlextassociations.orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?>
+                                <?php echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'jlextassociations.orderdown', 'JLIB_HTML_MOVE_DOWN', true); ?>
                                 <?php $disabled = true ? '' : 'disabled="disabled"'; ?>
                             </span>
                     <input type="text" name="order[]" size="5"
