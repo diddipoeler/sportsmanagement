@@ -34,7 +34,7 @@ $dispatcher->trigger('onContentBeforeDisplay', array('com_media.file', &$this->_
 ?>
 <div class="media-browser-item">
 <div class="media-browser-image">	
-<div class="height-50">
+<div class="media-browser-item-preview">
 <?php
 
 echo sportsmanagementHelper::getBootstrapModalImage(
@@ -48,7 +48,7 @@ echo sportsmanagementHelper::getBootstrapModalImage(
 						);
 ?>
 </div>
-<div class="small">
+<div class="media-browser-item-info">
 <?php
 echo Text::sprintf('COM_MEDIA_IMAGE_TITLE', JHtml::_('string.truncate', $this->_tmp_img->name, 10, false), JHtml::_('number.bytes', $this->_tmp_img->size));
 ?>
