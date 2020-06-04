@@ -216,13 +216,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                                                       onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
                 </td>
                 <td class="center">
-					<?php
-					$picture    = ($row->logo_big == sportsmanagementHelper::getDefaultPlaceholder("clublogobig")) ? 'information.png' : 'ok.png';
-					$imageTitle = ($row->logo_big == sportsmanagementHelper::getDefaultPlaceholder("clublogobig")) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
-					echo HTMLHelper::_(
-						'image', 'administrator/components/com_sportsmanagement/assets/images/' . $picture,
-						$imageTitle, 'title= "' . $imageTitle . '"'
-					);
+		<?php
+		$picture    = ($row->logo_big == sportsmanagementHelper::getDefaultPlaceholder("clublogobig")) ? 'information.png' : 'ok.png';
+		$imageTitle = ($row->logo_big == sportsmanagementHelper::getDefaultPlaceholder("clublogobig")) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
+		$image_attributes['title'] = $imageTitle;
+		echo HTMLHelper::_(
+		'image', 'administrator/components/com_sportsmanagement/assets/images/' . $picture,
+		$imageTitle,$image_attributes);
 					echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_big' . $row->id, Uri::root() . $row->logo_big, $imageTitle, '20', Uri::root() . $row->logo_big);
 					?>
                 </td>
