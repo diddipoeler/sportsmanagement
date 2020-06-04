@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage clubs
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -220,9 +216,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		$picture    = ($row->logo_big == sportsmanagementHelper::getDefaultPlaceholder("clublogobig")) ? 'information.png' : 'ok.png';
 		$imageTitle = ($row->logo_big == sportsmanagementHelper::getDefaultPlaceholder("clublogobig")) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
 		$image_attributes['title'] = $imageTitle;
-		echo HTMLHelper::_(
-		'image', 'administrator/components/com_sportsmanagement/assets/images/' . $picture,
-		$imageTitle,$image_attributes);
+		echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/'.$picture,$imageTitle,$image_attributes);
 		echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_big' . $row->id, Uri::root() . $row->logo_big, $imageTitle, '20', Uri::root() . $row->logo_big);
 		?>
                 </td>
@@ -231,9 +225,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		$picture    = ($row->logo_middle == sportsmanagementHelper::getDefaultPlaceholder("clublogomedium")) ? 'information.png' : 'ok.png';
 		$imageTitle = ($row->logo_middle == sportsmanagementHelper::getDefaultPlaceholder("clublogomedium")) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
 		$image_attributes['title'] = $imageTitle;
-		echo HTMLHelper::_(
-		'image', 'administrator/components/com_sportsmanagement/assets/images/' . $picture,
-		$imageTitle,$image_attributes);
+		echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/'.$picture,$imageTitle,$image_attributes);
 		echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_middle' . $row->id, Uri::root() . $row->logo_middle, $imageTitle, '20', Uri::root() . $row->logo_middle);
 		?>
                 </td>
@@ -242,9 +234,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		$picture    = ($row->logo_small == sportsmanagementHelper::getDefaultPlaceholder("clublogosmall")) ? 'information.png' : 'ok.png';
 		$imageTitle = ($row->logo_small == sportsmanagementHelper::getDefaultPlaceholder("clublogosmall")) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
 		$image_attributes['title'] = $imageTitle;
-		echo HTMLHelper::_(
-		'image', 'administrator/components/com_sportsmanagement/assets/images/' . $picture,
-		$imageTitle,$image_attributes);
+		echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/'.$picture,$imageTitle,$image_attributes);
 		echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_small' . $row->id, Uri::root() . $row->logo_small, $imageTitle, '20', Uri::root() . $row->logo_small);
 
 					/*
