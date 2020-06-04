@@ -48,6 +48,8 @@ $baseVersion = substr(JVERSION, 0, 3);
 if (version_compare($baseVersion, '4.0', 'ge'))
 {
 ?>
+<div>
+<div class="media-browser">	
 <div class="media-browser-grid">
 <div class="media-browser-items media-browser-items-md">
 <?php if ( count($this->images) > 0 ) : ?>
@@ -64,6 +66,8 @@ include( dirname(__FILE__) . '/default_image_4.php');
 		<div class="alert alert-info"><?php echo JText::_('COM_MEDIA_NO_IMAGES_FOUND'); ?></div>
 	</div>
 <?php endif; ?>
+</div>
+</div>
 </div>
 </div>
 <?php
