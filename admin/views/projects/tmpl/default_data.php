@@ -278,11 +278,9 @@ echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/asset
 					<?php
 					if (empty($row->picture) || !File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $row->picture))
 					{
-						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE') . $row->picture;
-						echo HTMLHelper::_(
-							'image', 'administrator/components/com_sportsmanagement/assets/images/delete.png',
-							$imageTitle, 'title= "' . $imageTitle . '"'
-						);
+$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE') . $row->picture;
+$image_attributes['title'] = $imageTitle;						
+echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/delete.png',$imageTitle,$image_attributes);
 					}
                     elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("player"))
 					{
