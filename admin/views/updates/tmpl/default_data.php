@@ -16,13 +16,29 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+if (version_compare(substr(JVERSION, 0, 5), '4.0.0', 'ge'))
+{
+$this->startPane = 'startTabSet';
+$this->endPane = 'endTabSet';
+$this->addPanel = 'addTab';
+$this->endPanel = 'endTab';
+}
+else
+{
+$this->startPane = 'startPane';
+$this->endPane = 'endPane';
+$this->addPanel = 'addPanel';
+$this->endPanel = 'endPanel';
+}
 ?>
 
 <?php
 	// tabs anzeigen
 	$idxTab = 1;
-	echo HTMLHelper::_('tabs.start', 'tabs_updates', array('useCookie' => 1));
-	echo HTMLHelper::_('tabs.panel', Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_LIST'), 'panel' . ($idxTab++));
+    echo HTMLHelper::_('bootstrap.' . $this->startPane, 'ID-Tabs-Group', $tabsOptions);
+//	echo HTMLHelper::_('tabs.start', 'tabs_updates', array('useCookie' => 1));    
+	echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab1_id'. ($idxTab++), Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_LIST'));
+//	echo HTMLHelper::_('tabs.panel', Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_LIST'), 'panel' . ($idxTab++));
 	?>
     <table class="table">
         <thead>
@@ -117,7 +133,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     </table>
 
 	<?PHP
-	echo HTMLHelper::_('tabs.panel', Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_HISTORY'), 'panel' . ($idxTab++));
+    echo HTMLHelper::_('bootstrap.' . $this->endPanel);
+    echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab1_id'. ($idxTab++), Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_HISTORY'));
+//	echo HTMLHelper::_('tabs.panel', Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_HISTORY'), 'panel' . ($idxTab++));
 	foreach ($this->versionhistory as $history)
 	{
 		?>
@@ -137,5 +155,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         </fieldset>
 		<?PHP
 	}
-	echo HTMLHelper::_('tabs.end');
+    echo HTMLHelper::_('bootstrap.' . $this->endPanel);
+    echo HTMLHelper::_('bootstrap.' . $this->endPane, 'ID-Tabs-Group');
+//	echo HTMLHelper::_('tabs.end');
 	?>
