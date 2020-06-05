@@ -344,6 +344,17 @@ $fileContent = File::read($filepath);
 				$query                                = "SELECT date,count FROM #__sportsmanagement_version where file=" . $this->_db->Quote($updateFile);
 				Factory::getDbo()->setQuery($query);
 
+try{
+    $result = Factory::getDbo()->loadObject();
+    $updateFiles[$i]['date']  = $result->date;
+$updateFiles[$i]['count'] = $result->count;
+    }
+            catch (Exception $e)
+		{
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');
+		}
+/*
 				if (!$result = Factory::getDbo()->loadObject())
 				{
 					$this->setError($this->_db->getErrorMsg());
@@ -353,7 +364,7 @@ $fileContent = File::read($filepath);
 					$updateFiles[$i]['date']  = $result->date;
 					$updateFiles[$i]['count'] = $result->count;
 				}
-
+*/
 				$i++;
 			}
             catch (Exception $e)
