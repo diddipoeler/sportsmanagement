@@ -55,7 +55,7 @@ class sportsmanagementViewProject extends sportsmanagementView
 			return;
 		}
 
-		Factory::getApplication()->input->setVar('hidemainmenu', true);
+		Factory::getApplication()->input->set('hidemainmenu', true);
 
 		$this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
 		$this->form->setValue('agegroup_id', 'request', $this->item->agegroup_id);
