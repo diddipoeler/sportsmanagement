@@ -37,8 +37,18 @@ if ($this->items)
 }
 else
 {
-	echo '<div class="' . $no_items . '">';
-	echo Text::_('JGLOBAL_NO_MATCHING_RESULTS');
-	echo '</div>';
+    switch ($this->view)
+    {
+        case 'updates':
+        case 'databasetools':
+        echo $this->loadTemplate('data');
+        break;
+        default:
+        echo '<div class="' . $no_items . '">';
+	    echo Text::_('JGLOBAL_NO_MATCHING_RESULTS');
+	    echo '</div>';
+        break;
+    }
+	
 }
 
