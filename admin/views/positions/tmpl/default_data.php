@@ -147,13 +147,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					{
 						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_NO_IMAGE');
                         $image_attributes['title'] = $imageTitle;
-						echo HTMLHelper::_('image', Uri::base() . '/components/com_sportsmanagement/assets/images/delete.png', $imageTitle, $image_attributes['title']);
+						echo HTMLHelper::_('image', Uri::base() . '/components/com_sportsmanagement/assets/images/delete.png', $imageTitle, $image_attributes);
 					}
                     elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("icon"))
 					{
 						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_DEFAULT_IMAGE');
                         $image_attributes['title'] = $imageTitle;
-						echo HTMLHelper::_('image', Uri::base() . '/components/com_sportsmanagement/assets/images/information.png', $imageTitle, $image_attributes['title']);
+						echo HTMLHelper::_('image', Uri::base() . '/components/com_sportsmanagement/assets/images/information.png', $imageTitle, $image_attributes);
 						?>
                         <a href="<?php echo Uri::root() . $row->picture; ?>" title="<?php echo $imageTitle; ?>"
                            class="modal">
