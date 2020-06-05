@@ -232,8 +232,17 @@ try
 				$filepath = JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'updates' . DIRECTORY_SEPARATOR . $path[0];
 			}
 
-			try			{
-			 $fileContent = File::read($filepath);
+			try{
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+$fileContent = file_get_contents($filepath);    
+}
+elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
+{
+$fileContent = File::read($filepath);
+}
+    
+			 
 				$version           = '';
 				$updateDescription = '';
 				$lastVersion       = '';
