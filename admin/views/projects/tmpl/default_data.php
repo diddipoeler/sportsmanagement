@@ -167,12 +167,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						<?php echo HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'projects.', $canCheckin); ?>
 					<?php else: ?>
                         <a href="<?php echo $link; ?>">
-							<?php
-							$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_EDIT_DETAILS');
-							echo HTMLHelper::_(
-								'image', 'administrator/components/com_sportsmanagement/assets/images/edit.png',
-								$imageTitle, 'title= "' . $imageTitle . '"'
-							);
+<?php
+$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_EDIT_DETAILS');
+$image_attributes['title'] = $imageTitle;			
+echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/edit.png',$imageTitle,$image_attributes);
 							?>
                         </a>
                         </br>
