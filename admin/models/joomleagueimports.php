@@ -182,7 +182,15 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		 *  zuerst noch überprüfen, ob der user
 		 *  überhaupt den zugriff auf die datenbank hat.
 		 */
-		$jl_access = JDatabase::getInstance($option);
+         
+        if (version_compare(JSM_JVERSION, '4', 'eq'))
+				{
+					$jl_access = JDatabaseDriver::getInstance($option);
+				}
+				else
+				{
+					$jl_access = JDatabase::getInstance($option);
+				} 
 
 		/**
 		 * fehlende jl felder hinzufügen für alte versionen

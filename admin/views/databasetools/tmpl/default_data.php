@@ -18,7 +18,7 @@ $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 //HTMLHelper::_('behavior.tooltip');
 ?>
-        <!--	<div id="editcell"> -->
+<div id="editcell">
         <table class="table">
             <thead>
             <tr>
@@ -166,4 +166,4 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
             </tbody>
         </table>
-        <!--	</div> -->
+</div>
