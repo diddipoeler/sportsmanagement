@@ -207,13 +207,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					{
 						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_NO_STATISTICS');
                         $image_attributes['title'] = $imageTitle;
-						echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/error.png', $imageTitle, $image_attributes['title']);
+						echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/error.png', $imageTitle, $image_attributes);
 					}
 					else
 					{
 						$imageTitle = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_NR_STATISTICS', $row->countStats);
                         $image_attributes['title'] = $imageTitle;
-						echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/ok.png', $imageTitle, $image_attributes['title']);
+						echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/ok.png', $imageTitle, $image_attributes);
 					}
 					?>
                 </td>
