@@ -14,7 +14,10 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
+$templatesToLoad = array('footer', 'listheader');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
+<div class="table-responsive" id="editcell">
 <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_EXT_IMAGES_IMPORT'); ?></legend>
 
     <table class="<?php echo $this->table_data_class; ?>">
@@ -134,3 +137,4 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 			?>
 
         </table>
+</div>
