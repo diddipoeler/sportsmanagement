@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage rosterpositions
@@ -11,13 +9,10 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
-
 
 ?>
 <div id="editcell">
@@ -104,10 +99,10 @@ use Joomla\CMS\Router\Route;
                 <td class="center hidden-phone"><?php echo JSMCountries::getCountryFlag($row->country); ?></td>
                 <td class="order center hidden-phone">
                         <span>
-                            <?php echo $this->pagination->orderUpIcon($i, $i > 0, 'rosterpositions.orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?>
+                            <?php echo $this->pagination->orderUpIcon($i, $i > 0, 'rosterpositions.orderup', 'JLIB_HTML_MOVE_UP', true); ?>
                         </span>
                     <span>
-                            <?php echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'rosterpositions.orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?>
+                            <?php echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'rosterpositions.orderdown', 'JLIB_HTML_MOVE_DOWN', true); ?>
                             <?php $disabled = true ? '' : 'disabled="disabled"'; ?>
                         </span>
                     <input type="text" name="order[]" size="5"
