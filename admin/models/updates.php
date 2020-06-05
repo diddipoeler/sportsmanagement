@@ -232,8 +232,8 @@ try
 				$filepath = JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'updates' . DIRECTORY_SEPARATOR . $path[0];
 			}
 
-			if ($fileContent = File::read($filepath))
-			{
+			try			{
+			 $fileContent = File::read($filepath);
 				$version           = '';
 				$updateDescription = '';
 				$lastVersion       = '';
@@ -347,6 +347,12 @@ try
 
 				$i++;
 			}
+            catch (Exception $e)
+		{
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');
+		}
+            
 		}
 
 		$filter_order     = $app->getUserState($option . 'updates_filter_order', 'filter_order', 'dates', 'cmd');
