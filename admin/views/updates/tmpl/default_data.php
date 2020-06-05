@@ -33,6 +33,10 @@ $this->endPanel = 'endPanel';
 ?>
 
 <?php
+// Define tabs options for version of Joomla! 3.0
+			$tabsOptions = array(
+			"active" => "tab1_id1" // It is the ID of the active tab.
+			);
 	// tabs anzeigen
 	$idxTab = 1;
     echo HTMLHelper::_('bootstrap.' . $this->startPane, 'ID-Tabs-Group', $tabsOptions);
