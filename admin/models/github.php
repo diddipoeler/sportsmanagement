@@ -107,9 +107,7 @@ class sportsmanagementModelgithub extends BaseDatabaseModel
 
 			return false;
 		}
-
 	}
-
 
 	/**
 	 * sportsmanagementModelgithub::insertissue()
@@ -140,7 +138,6 @@ class sportsmanagementModelgithub extends BaseDatabaseModel
 		$labels = array($this->post['labels']);
 
 		return $github->issues->create($github_user, $github_repo, $this->post['title'], $this->post['message'], $this->post['api_username'], $this->post['milestones'], $labels);
-
 	}
 
 
