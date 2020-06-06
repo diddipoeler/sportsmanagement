@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage github
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
@@ -51,7 +47,6 @@ class sportsmanagementViewgithub extends sportsmanagementView
 			$this->issuetitle = 'Backend-View: ' . $this->jinput->getCmd('issueview') . ' Layout: ' . $this->jinput->getCmd('issuelayout');
 			$this->milestone  = 1;
 		}
-
 		else
 		{
 			$this->milestone = 2;
@@ -62,17 +57,15 @@ class sportsmanagementViewgithub extends sportsmanagementView
 			case 'addissue':
 			case 'addissue_3':
 			case 'addissue_4':
-				$this->_displayAddIssue();
-
-				return;
-				break;
+			$this->_displayAddIssue();
+			return;
+			break;
 			case 'github_result':
 			case 'github_result_3':
 			case 'github_result_4':
-				$this->_displayGithubResult();
-
-				return;
-				break;
+			$this->_displayGithubResult();
+			return;
+			break;
 		}
 
 		$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/octicons.css');
@@ -112,7 +105,7 @@ class sportsmanagementViewgithub extends sportsmanagementView
 		{
 			$this->gh_token = $params->get('gh_token', '');
 		}
-		// Set the username and password if set in the params
+		/** Set the username and password if set in the params */
 		elseif ($params->get('gh_user', '') && $params->get('gh_password'))
 		{
 			$this->api_username = $params->get('gh_user', '');
@@ -130,7 +123,6 @@ class sportsmanagementViewgithub extends sportsmanagementView
 	 */
 	function _displayGithubResult()
 	{
-
 		$this->setLayout('github_result');
 	}
 
@@ -141,7 +133,6 @@ class sportsmanagementViewgithub extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-		// Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_TITLE');
 		sportsmanagementHelper::ToolbarButton('addissue', 'new', Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_ADD_ISSUE'), 'github');
 		ToolbarHelper::back();
