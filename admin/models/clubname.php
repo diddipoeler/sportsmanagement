@@ -47,8 +47,14 @@ class sportsmanagementModelclubname extends JSMModelAdmin
 
 		// JInput object
 		$jinput = $app->input;
-
-		$xml = Factory::getXML(JPATH_ADMINISTRATOR . '/components/' . $option . '/helpers/xml_files/clubnames.xml', true);
+if (version_compare(JVERSION, '3.0.0', 'ge'))
+{
+$xml = simplexml_load_file(JPATH_ADMINISTRATOR . '/components/' . $option . '/helpers/xml_files/clubnames.xml');
+}
+else
+{
+$xml = Factory::getXML(JPATH_ADMINISTRATOR . '/components/' . $option . '/helpers/xml_files/clubnames.xml', true);
+}
 
 		foreach ($xml->children() as $quote)
 		{
