@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage jlextsisimport
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -21,8 +17,6 @@ use Joomla\CMS\Factory;
 $option          = Factory::getApplication()->input->getCmd('option');
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-HTMLHelper::_('behavior.tooltip');
-HTMLHelper::_('behavior.modal');
 
 $url = 'administrator' . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . $option . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'icons' . DIRECTORY_SEPARATOR . 'sislogo.png';
 $alt = 'DFBNet';
@@ -30,7 +24,6 @@ $alt = 'DFBNet';
 $attribs['width']  = '170px';
 $attribs['height'] = '26px';
 $attribs['align']  = 'left';
-
 ?>
 
 <div id="editcell">

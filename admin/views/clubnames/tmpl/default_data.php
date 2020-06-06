@@ -16,11 +16,6 @@ use Joomla\CMS\Router\Route;
 
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-//HTMLHelper::_('behavior.tooltip');
-
-$templatesToLoad = array('footer', 'listheader');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-
 ?>
 
 <!--	<fieldset class="adminform"> -->
