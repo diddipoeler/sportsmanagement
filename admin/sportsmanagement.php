@@ -75,6 +75,7 @@ if (version_compare($baseVersion, '3.0', 'ge'))
 {
 	// Joomla! 3.0 code here
 	defined('JSM_JVERSION') or define('JSM_JVERSION', 3);
+    JLoader::import('libraries.joomla.github.github', JPATH_ADMINISTRATOR);
 }
 
 if (version_compare($baseVersion, '2.5', 'ge'))
