@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -10,15 +8,10 @@
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-
-/**
  * github icons
  * https://octicons.github.com/
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
@@ -47,7 +40,6 @@ class sportsmanagementModelgithub extends BaseDatabaseModel
 {
 	var $client = '';
 
-
 	/**
 	 * sportsmanagementModelgithub::__construct()
 	 *
@@ -74,15 +66,11 @@ class sportsmanagementModelgithub extends BaseDatabaseModel
 	 */
 	function addissue()
 	{
-		/**
-		 * gibt es den github token
-		 */
+		/** gibt es den github token */
 		if (empty($this->post['gh_token']))
 		{
 			$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NO_TOKEN'), 'Error');
-			/**
-			 * wenn nicht kann es aber einen user mit passwort geben
-			 */
+			/** wenn nicht kann es aber einen user mit passwort geben */
 			if (empty($this->post['api_username']) && empty($this->post['api_password']))
 			{
 				$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NO_USER_PASSWORD'), 'Error');
@@ -93,9 +81,7 @@ class sportsmanagementModelgithub extends BaseDatabaseModel
 			{
 				$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_USER_PASSWORD'), 'Notice');
 
-				/**
-				 * hat die nachricht einen titel ?
-				 */
+				/** hat die nachricht einen titel ? */
 				if (empty($this->post['title']))
 				{
 					$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NO_TITLE'), 'Error');
@@ -104,9 +90,7 @@ class sportsmanagementModelgithub extends BaseDatabaseModel
 				}
 				else
 				{
-					/**
-					 * ist die nachricht auch ausgefüllt ?
-					 */
+					/** ist die nachricht auch ausgefüllt ? */
 					if (empty($this->post['message']))
 					{
 						$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NO_MESSAGE'), 'Error');
@@ -137,12 +121,12 @@ class sportsmanagementModelgithub extends BaseDatabaseModel
 		$github_repo = ComponentHelper::getParams($this->option)->get('cfg_github_repository', '');
 		$gh_options  = new Registry;
 
-		// If an API token is set in the params, use it for authentication
+		/** If an API token is set in the params, use it for authentication */
 		if ($this->post['gh_token'])
 		{
 			$gh_options->set('gh.token', $this->post['gh_token']);
 		}
-		// Set the username and password if set in the params
+		/** Set the username and password if set in the params */
 		else
 		{
 			$gh_options->set('api.username', $this->post['api_username']);
@@ -151,7 +135,7 @@ class sportsmanagementModelgithub extends BaseDatabaseModel
 
 		$github = new JGithub($gh_options);
 
-		// Create an issue
+		/** Create an issue */
 		$labels = array($this->post['labels']);
 
 		return $github->issues->create($github_user, $github_repo, $this->post['title'], $this->post['message'], $this->post['api_username'], $this->post['milestones'], $labels);
@@ -176,12 +160,12 @@ class sportsmanagementModelgithub extends BaseDatabaseModel
 
 		$gh_options = new Registry;
 
-		// If an API token is set in the params, use it for authentication
+		/** If an API token is set in the params, use it for authentication */
 		if ($params->get('gh_token', ''))
 		{
 			$gh_options->set('gh.token', $params->get('gh_token', ''));
 		}
-		// Set the username and password if set in the params
+		/** Set the username and password if set in the params */
 		else
 		{
 			$gh_options->set('api.username', $params->get('gh_user', ''));
@@ -190,7 +174,7 @@ class sportsmanagementModelgithub extends BaseDatabaseModel
 
 		$github = new JGithub($gh_options);
 
-		// List pull requests
+		/** List pull requests */
 		$state   = 'open|closed';
 		$page    = 0;
 		$perPage = 20;
@@ -199,7 +183,7 @@ class sportsmanagementModelgithub extends BaseDatabaseModel
 		$perPage = 30;
 		$commits = $github->commits->getList($github_user, $github_repo, $page, $perPage);
 
-		// List milestones for a repository
+		/** List milestones for a repository */
 		$state      = 'open|closed';
 		$sort       = 'due_date|completeness';
 		$direction  = 'asc|desc';
@@ -207,13 +191,13 @@ class sportsmanagementModelgithub extends BaseDatabaseModel
 		$perPage    = 20;
 		$milestones = $github->issues->milestones->getList($github_user, $github_repo);
 
-		// Create an issue
+		/**  Create an issue */
 		$labels = array('bug');
 
-		// List Stargazers.
+		/** List Stargazers. */
 		$starred = $github->activity->starring->getList($github_user, $github_repo);
 
-		// List issues
+		/** List issues */
 		$filter    = 'assigned|created|mentioned|subscribed';
 		$state     = 'open|closed';
 		$labels    = ':label1,:label2';
@@ -221,11 +205,8 @@ class sportsmanagementModelgithub extends BaseDatabaseModel
 		$direction = 'asc|desc';
 		$since     = new JDate('2012-12-12');
 
-		// $since = '2012-12-12';
 		$page    = 0;
 		$perPage = 20;
-
-		// $issues = $github->issues->getList($filter, $state, $labels, $sort, $direction, $since, $page, $perPage);
 
 		return $commits;
 	}
