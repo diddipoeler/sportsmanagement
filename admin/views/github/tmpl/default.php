@@ -16,8 +16,7 @@ use Joomla\CMS\Language\Text;
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-echo '<pre>'.print_r($this->commitlist,true).'</pre>';
-
+//echo '<pre>'.print_r($this->commitlist,true).'</pre>';
 
 $attribs['width']  = '20px';
 $attribs['height'] = 'auto';

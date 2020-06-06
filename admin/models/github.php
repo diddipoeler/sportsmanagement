@@ -17,6 +17,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Registry\Registry;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Log\Log;
 
 if (version_compare(JSM_JVERSION, '4', 'eq'))
 {
@@ -181,7 +182,15 @@ class sportsmanagementModelgithub extends BaseDatabaseModel
 
 		$page    = 0;
 		$perPage = 30;
+        try
+		{
 		$commits = $github->commits->getList($github_user, $github_repo, $page, $perPage);
+        }
+		catch (Exception $e)
+		{
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');
+		}
 
 		/** List milestones for a repository */
 		$state      = 'open|closed';
@@ -189,13 +198,29 @@ class sportsmanagementModelgithub extends BaseDatabaseModel
 		$direction  = 'asc|desc';
 		$page       = 0;
 		$perPage    = 20;
+        try
+		{
 		$milestones = $github->issues->milestones->getList($github_user, $github_repo);
+        }
+		catch (Exception $e)
+		{
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');
+		}
 
 		/**  Create an issue */
 		$labels = array('bug');
 
 		/** List Stargazers. */
+        try
+		{
 		$starred = $github->activity->starring->getList($github_user, $github_repo);
+        }
+		catch (Exception $e)
+		{
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');
+		}
 
 		/** List issues */
 		$filter    = 'assigned|created|mentioned|subscribed';
