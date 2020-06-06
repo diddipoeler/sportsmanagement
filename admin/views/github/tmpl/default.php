@@ -23,7 +23,7 @@ $attribs['height'] = 'auto';
 	<?PHP
 	foreach ($this->commitlist as $key => $value)
 	{
-	   $value->author->avatar_url = 'administrator/components/com_sportsmanagement/assets/images/user_edit.png';
+	   //$value->author->avatar_url = 'administrator/components/com_sportsmanagement/assets/images/user_edit.png';
 		?>
         <tr>
             <td>
