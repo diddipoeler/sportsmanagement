@@ -345,9 +345,18 @@ $fileContent = File::read($filepath);
 				Factory::getDbo()->setQuery($query);
 
 try{
-    $result = Factory::getDbo()->loadObject();
+
+    if ( $result = Factory::getDbo()->loadObject() )
+    {
     $updateFiles[$i]['date']  = $result->date;
 $updateFiles[$i]['count'] = $result->count;
+}
+else
+{
+        $updateFiles[$i]['date']  = '';
+$updateFiles[$i]['count'] = '';
+}
+
     }
             catch (Exception $e)
 		{
