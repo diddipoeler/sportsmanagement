@@ -16,7 +16,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-if (version_compare(substr(JVERSION, 0, 5), '4.0.0', 'ge'))
+if (version_compare(substr(JVERSION, 0, 5), '3.0.0', 'ge'))
 {
 $this->startPane = 'startTabSet';
 $this->endPane = 'endTabSet';
