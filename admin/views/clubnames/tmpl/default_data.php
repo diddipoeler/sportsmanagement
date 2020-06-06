@@ -17,10 +17,6 @@ use Joomla\CMS\Router\Route;
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-
-<!--	<fieldset class="adminform"> -->
-
-
 <div class="table-responsive">
     <table class="<?php echo $this->table_data_class; ?>">
         <thead>
@@ -117,12 +113,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					<?php else: ?>
                         <a href="<?php echo $link; ?>">
 							<?php
-							$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBNAME_EDIT_DETAILS');
-							echo HTMLHelper::_(
-								'image', 'administrator/components/com_sportsmanagement/assets/images/edit.png',
-								$imageTitle,
-								'title= "' . $imageTitle . '"'
-							);
+$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBNAME_EDIT_DETAILS');
+$image_attributes['title'] = $imageTitle;
+echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/edit.png',$imageTitle,$image_attributes);
 							?>
                         </a>
 					<?php endif; ?>
