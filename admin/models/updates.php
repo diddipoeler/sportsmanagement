@@ -28,6 +28,24 @@ use Joomla\CMS\Log\Log;
 class sportsmanagementModelUpdates extends BaseDatabaseModel
 {
 
+/**
+	 * sportsmanagementModelagegroups::__construct()
+	 *
+	 * @param   mixed  $config
+	 *
+	 * @return void
+	 */
+	public function __construct($config = array())
+	{
+		$this->jsmdb = sportsmanagementHelper::getDBConnection();
+		parent::setDbo($this->jsmdb);
+		$this->jsmquery = $this->jsmdb->getQuery(true);
+		parent::__construct($config);
+//		$getDBConnection = sportsmanagementHelper::getDBConnection();
+//		parent::setDbo($getDBConnection);
+
+	}
+    
 	/**
 	 * sportsmanagementModelUpdates::loadUpdateFile()
 	 *
