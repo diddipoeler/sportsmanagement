@@ -314,7 +314,7 @@ class sportsmanagementModelSeasons extends JSMModelList
 			$this->jsmdb->escape($this->getState('list.direction', 'ASC'))
 		);
         
-        Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $this->jsmquery->dump()), Log::NOTICE, 'jsmerror');
+        //Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $this->jsmquery->dump()), Log::NOTICE, 'jsmerror');
 
 		return $this->jsmquery;
 	}
