@@ -366,7 +366,8 @@ switch ($this->fieldset)
 
 					foreach ($fields as $field)
 					{
-						if (COM_SPORTSMANAGEMENT_JOOMLAVERSION == '2.5')
+						//if (COM_SPORTSMANAGEMENT_JOOMLAVERSION == '2.5')
+                        if (version_compare(substr(JVERSION, 0, 3), '2.5', 'eq'))
 						{
 							echo $field->label;
 							echo $field->input;
