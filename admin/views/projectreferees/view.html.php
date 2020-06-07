@@ -88,9 +88,8 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
 	protected function addToolbar()
 	{
 		$this->app->setUserState("$this->option.persontype", $this->_persontype);
-
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_TITLE');
-
+        ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=project&layout=panel&id='.$this->project_id);
 		ToolbarHelper::apply('projectreferees.saveshort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_APPLY'));
 		sportsmanagementHelper::ToolbarButton('assignpersons', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_ASSIGN'), 'players', 3);
 		parent::addToolbar();

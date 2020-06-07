@@ -97,6 +97,7 @@ class sportsmanagementViewTemplates extends sportsmanagementView
 	protected function addToolbar()
 	{
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_TITLE');
+        ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=project&layout=panel&id='.$this->project_id);
 
 		ToolbarHelper::editList('template.edit');
 

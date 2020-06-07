@@ -51,19 +51,16 @@ class sportsmanagementViewRounds extends sportsmanagementView
 			case 'default_4':
 			$this->_displayDefault($tpl);
 			return;
-            
             case 'populate':
 			case 'populate_3':
 			case 'populate_4':
 			$this->_displayPopulate($tpl);
 			return;
-            
             case 'massadd':
 			case 'massadd_3':
 			case 'massadd_4':
 			$this->_displayMassadd($tpl);
 			return;
-            
 		}
 
 	}
@@ -157,8 +154,8 @@ class sportsmanagementViewRounds extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-		// Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_TITLE');
+        ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=project&layout=panel&id='.$this->project_id);
 
 		if (!$this->massadd)
 		{

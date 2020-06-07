@@ -219,11 +219,9 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_TITLE');
-
+        ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=project&layout=panel&id='.$this->project_id);
 		sportsmanagementHelper::ToolbarButton('editlist', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_BUTTON_UN_ASSIGN'));
-
 		parent::addToolbar();
 	}
 
