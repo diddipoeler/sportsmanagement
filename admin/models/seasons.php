@@ -37,7 +37,7 @@ class sportsmanagementModelSeasons extends JSMModelList
 	 */
 	public function __construct($config = array())
 	{
-		$layout = $this->jsmjinput->getVar('layout');
+		$layout = Factory::getApplication()->input->getVar('layout');
 		switch ($layout)
 		{
 			case 'assignteams':
