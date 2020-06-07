@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage jlextcountry
@@ -11,8 +9,6 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
 
 /**
@@ -37,7 +33,6 @@ class sportsmanagementViewJlextcountry extends sportsmanagementView
 
 	}
 
-
 	/**
 	 * sportsmanagementViewJlextcountry::addToolBar()
 	 *
@@ -45,9 +40,8 @@ class sportsmanagementViewJlextcountry extends sportsmanagementView
 	 */
 	protected function addToolBar()
 	{
-		$this->jinput->setVar('hidemainmenu', true);
+		$this->jinput->set('hidemainmenu', true);
 		parent::addToolbar();
 	}
-
 
 }
