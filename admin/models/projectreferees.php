@@ -233,7 +233,7 @@ class sportsmanagementModelProjectReferees extends ListModel
 		// Initialise variables.
 		// $app = Factory::getApplication('administrator');
 
-		if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend'))
+		if (ComponentHelper::getParams($option)->get('show_debug_info_backend'))
 		{
 			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . $this->context . ''), '');
 			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . ''), '');

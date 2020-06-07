@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage templates
@@ -11,10 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -53,20 +48,20 @@ class sportsmanagementViewTemplates extends sportsmanagementView
 
 		// $allTemplates = $model->checklist($this->project_id);
 
-		// Das sind die eigenen templates
+		/** Das sind die eigenen templates */
 		$templates = $this->get('Items');
 
 		$total = $this->get('Total');
 
 		if ($project->master_template)
 		{
-			// Das sind die templates aus einenm anderen projekt
+			/** Das sind die templates aus einenm anderen projekt */
 			$this->model->set('_getALL', 1);
 			$allMasterTemplates = $this->model->getMasterTemplatesList();
 			$this->model->set('_getALL', 0);
 			$masterTemplates = $this->model->getMasterTemplatesList();
 
-			// Build in Text of template title here
+			/** Build in Text of template title here */
 			foreach ($masterTemplates as $temptext)
 			{
 				$temptext->text = Text::_($temptext->text);

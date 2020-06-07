@@ -37,6 +37,7 @@ if ($this->items)
     {
     case 'projectteams':
     case 'projectreferees':
+    case 'templates':
     break;
     default:    
 	echo $this->loadTemplate('data');
