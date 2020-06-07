@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage teams
@@ -11,16 +9,13 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Table\Table;
-
-jimport('joomla.filesystem.file');
+use Joomla\CMS\Filesystem\File;
 
 /**
  * sportsmanagementViewTeams
@@ -44,16 +39,20 @@ class sportsmanagementViewTeams extends sportsmanagementView
 
 		$starttime    = microtime();
 		$this->assign = false;
-
-		if ($this->getLayout() == 'assignteams' || $this->getLayout() == 'assignteams_3')
+        
+        switch ($this->getLayout())
 		{
-			$this->season_id = $this->jinput->get('season_id');
-			$this->assign    = true;
+			case 'assignteams':
+			case 'assignteams_3':
+			case 'assignteams_4':
+			$this->season_id  = $this->jinput->get('season_id');
+			$this->assign     = true;
+			break;
 		}
 
 		$this->table = Table::getInstance('team', 'sportsmanagementTable');
 
-		// Build the html select list for sportstypes
+		/** Build the html select list for sportstypes */
 		$sportstypes[]  = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'), 'id', 'name');
 		$mdlSportsTypes = BaseDatabaseModel::getInstance('SportsTypes', 'sportsmanagementModel');
 		$allSportstypes = $mdlSportsTypes->getSportsTypes();
@@ -64,14 +63,12 @@ class sportsmanagementViewTeams extends sportsmanagementView
 		$lists['sportstypes'] = HTMLHelper::_('select.genericList', $sportstypes, 'filter_sports_type', 'class="inputbox" onChange="this.form.submit();" style="width:120px"', 'id', 'name', $this->state->get('filter.sports_type'));
 		unset($sportstypes);
 
-		// Build the html options for nation
+		/** Build the html options for nation */
 		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 
 		if ($res = JSMCountries::getCountryOptions())
 		{
 			$nation = array_merge($nation, $res);
-
-			// $this->assignRef('search_nation', $res);
 			$this->search_nation = $res;
 		}
 
@@ -101,8 +98,6 @@ class sportsmanagementViewTeams extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-
-		// Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_TITLE');
 		$this->icon  = 'teams';
 		ToolbarHelper::apply('teams.saveshort');
