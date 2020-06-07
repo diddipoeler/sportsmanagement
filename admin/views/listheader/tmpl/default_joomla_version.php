@@ -33,7 +33,15 @@ else
 
 if ($this->items)
 {
+    switch ($this->view)
+    {
+    case 'projectteams':
+    echo $this->loadTemplate('teams');
+    break;
+    default:    
 	echo $this->loadTemplate('data');
+    break;
+    }
 }
 else
 {
