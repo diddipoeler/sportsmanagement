@@ -60,7 +60,7 @@ $app = Factory::getApplication();
 						$imageFile   = 'administrator/components/com_sportsmanagement/assets/images/mail.png';
 						$imageTitle  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SEND_MAIL_TEAMS');
 						$imageParams = 'title= "' . $imageTitle . '"';
-						$image       = HTMLHelper::image($imageFile, $imageTitle, $imageParams);
+						$image       = HTMLHelper::_('image',$imageFile, $imageTitle, $imageParams);
 						$linkParams  = '';
 						echo $image;
 						?>
@@ -91,7 +91,7 @@ $app = Factory::getApplication();
 						$imageFile   = 'administrator/components/com_sportsmanagement/assets/images/mail.png';
 						$imageTitle  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SEND_MAIL_ADMINS');
 						$imageParams = 'title= "' . $imageTitle . '"';
-						$image       = HTMLHelper::image($imageFile, $imageTitle, $imageParams);
+						$image       = HTMLHelper::_('image',$imageFile, $imageTitle, $imageParams);
 						$linkParams  = '';
 						echo $image;
 						?></a>
@@ -176,7 +176,7 @@ $app = Factory::getApplication();
 							$imageFile   = 'administrator/components/com_sportsmanagement/assets/images/edit.png';
 							$imageTitle  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_EDIT_DETAILS');
 							$imageParams = 'title= "' . $imageTitle . '"';
-							$image       = HTMLHelper::image($imageFile, $imageTitle, $imageParams);
+							$image       = HTMLHelper::_('image',$imageFile, $imageTitle, $imageParams);
 							$linkParams  = '';
 							echo HTMLHelper::link($link1, $image);
 							?></td>
@@ -216,7 +216,7 @@ $app = Factory::getApplication();
 						if (empty($row->picture) || !File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $row->picture))
 						{
 							$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_IMAGE') . $row->picture;
-							echo HTMLHelper::image(
+							echo HTMLHelper::_('image',
 								'administrator/components/com_sportsmanagement/assets/images/delete.png',
 								$imageTitle, 'title= "' . $imageTitle . '"'
 							);
@@ -224,7 +224,7 @@ $app = Factory::getApplication();
                         elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("team"))
 						{
 							$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DEFAULT_IMAGE');
-							echo HTMLHelper::image(
+							echo HTMLHelper::_('image',
 								'administrator/components/com_sportsmanagement/assets/images/information.png',
 								$imageTitle, 'title= "' . $imageTitle . '"'
 							);
@@ -236,7 +236,7 @@ $app = Factory::getApplication();
 							$imageParams['title']  = $imageTitle;
 							$imageParams['height'] = 30;
 							//$imageParams['width'] =40;
-							echo HTMLHelper::image($row->picture, $imageTitle, $imageParams);
+							echo HTMLHelper::_('image',$row->picture, $imageTitle, $imageParams);
 						}
 						?>
                     </td>

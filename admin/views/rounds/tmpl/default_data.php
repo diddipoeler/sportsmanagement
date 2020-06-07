@@ -94,7 +94,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						$imageTitle  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_EDIT_DETAILS');
 						$imageFile   = 'administrator/components/com_sportsmanagement/assets/images/edit.png';
 						$imageParams = "title='$imageTitle'";
-						echo HTMLHelper::link($link1, HTMLHelper::image($imageFile, $imageTitle, $imageParams));
+						echo HTMLHelper::link($link1, HTMLHelper::_('image',$imageFile, $imageTitle, $imageParams));
 					endif;
 					?>
                 </td>
@@ -180,7 +180,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						$imageTitle  = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ALL_PUBLISHED', $row->countMatches);
 						$imageFile   = 'administrator/components/com_sportsmanagement/assets/images/ok.png';
 						$imageParams = "title='$imageTitle'";
-						echo HTMLHelper::image($imageFile, $imageTitle, $imageParams);
+						echo HTMLHelper::_('image',$imageFile, $imageTitle, $imageParams);
 					}
 					else
 					{
@@ -194,7 +194,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						}
 						$imageFile   = 'administrator/components/com_sportsmanagement/assets/images/error.png';
 						$imageParams = "title='$imageTitle'";
-						echo HTMLHelper::image($imageFile, $imageTitle, $imageParams);
+						echo HTMLHelper::_('image',$imageFile, $imageTitle, $imageParams);
 					}
 					?>
                 </td>
@@ -205,7 +205,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						$imageTitle  = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ALL_RESULTS', $row->countMatches);
 						$imageFile   = 'administrator/components/com_sportsmanagement/assets/images/ok.png';
 						$imageParams = "title='$imageTitle'";
-						echo HTMLHelper::image($imageFile, $imageTitle, $imageParams);
+						echo HTMLHelper::_('image',$imageFile, $imageTitle, $imageParams);
 					}
 					else
 					{
@@ -219,7 +219,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						}
 						$imageFile   = 'administrator/components/com_sportsmanagement/assets/images/error.png';
 						$imageParams = "title='$imageTitle'";
-						echo HTMLHelper::image($imageFile, $imageTitle, $imageParams);
+						echo HTMLHelper::_('image',$imageFile, $imageTitle, $imageParams);
 					}
 					?>
                 </td>

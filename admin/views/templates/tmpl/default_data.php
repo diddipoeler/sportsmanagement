@@ -119,7 +119,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					$imageFile   = 'administrator/components/com_sportsmanagement/assets/images/edit.png';
 					$imageTitle  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_EDIT_DETAILS');
 					$imageParams = 'title= "' . $imageTitle . '"';
-					$image       = HTMLHelper::image($imageFile, $imageTitle, $imageParams);
+					$image       = HTMLHelper::_('image',$imageFile, $imageTitle, $imageParams);
 					$linkParams  = '';
 					echo HTMLHelper::link($link1, $image);
 				endif;

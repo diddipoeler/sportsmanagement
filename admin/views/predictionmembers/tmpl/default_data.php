@@ -239,7 +239,7 @@ use Joomla\CMS\Router\Route;
 							$imgtitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_NOT_ALLOWED');
 						}
 
-						echo HTMLHelper::image(
+						echo HTMLHelper::_('image',
 							'administrator/components/com_sportsmanagement/assets/images/' . $imgfile,
 							$imgtitle, 'title= "' . $imgtitle . '"'
 						);

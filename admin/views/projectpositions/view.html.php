@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage projectpositions
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -46,23 +42,25 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 
-		if (version_compare(JSM_JVERSION, '4', 'eq'))
-		{
-			$uri = Uri::getInstance();
-		}
-		else
-		{
-			$uri = Factory::getURI();
-		}
+//		if (version_compare(JSM_JVERSION, '4', 'eq'))
+//		{
+//			$uri = Uri::getInstance();
+//		}
+//		else
+//		{
+//			$uri = Factory::getURI();
+//		}
 
 		$model     = $this->getModel();
 		$starttime = microtime();
 		$tpl       = '';
-
-		if ($this->getLayout() == 'editlist' || $this->getLayout() == 'editlist_3' || $this->getLayout() == 'editlist_4')
+        
+        switch ($this->getLayout())
 		{
+			case 'editlist':
+			case 'editlist_3':
+			case 'editlist_4':
 			$this->_displayEditlist($tpl);
-
 			return;
 		}
 
@@ -83,14 +81,14 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 		$this->model->updateprojectpositions($items, $this->project_id);
 
 		$mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
-		$project    = $mdlProject->getProject($this->project_id);
+		$this->project    = $mdlProject->getProject($this->project_id);
 
-		$this->user         = Factory::getUser();
+		//$this->user         = Factory::getUser();
 		$this->config       = Factory::getConfig();
 		$this->positiontool = $items;
 		$this->pagination   = $pagination;
-		$this->request_url  = $uri->toString();
-		$this->project      = $project;
+		//$this->request_url  = $uri->toString();
+		//$this->project      = $project;
 	}
 
 	/**

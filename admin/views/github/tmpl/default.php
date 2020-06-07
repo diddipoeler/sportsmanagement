@@ -45,7 +45,7 @@ $attribs['height'] = 'auto';
             </td>
             <td>
 			<?PHP
-			echo HTMLHelper::image($value->author->avatar_url, $value->commit->author->name, $attribs, true, false);
+			echo HTMLHelper::_('image',$value->author->avatar_url, $value->commit->author->name, $attribs, true, false);
 			?>
             </td>
         </tr>

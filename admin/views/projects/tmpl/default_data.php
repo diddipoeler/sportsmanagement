@@ -304,7 +304,7 @@ echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/asset
 					<?php if ($row->current_round) : ?>
 						<?php echo HTMLHelper::link(
 							'index.php?option=com_sportsmanagement&view=matches&pid=' . $row->id . '&rid=' . $row->current_round,
-							HTMLHelper::image(Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/icon-16-Matchdays.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_GAMES_DETAILS'))
+							HTMLHelper::_('image',Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/icon-16-Matchdays.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_GAMES_DETAILS'))
 						); ?>
 					<?php endif; ?>
                 </td>
@@ -329,7 +329,7 @@ echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/asset
 					{
 						echo HTMLHelper::link(
 								'index.php?option=com_sportsmanagement&view=' . $teile[$a] . '&pid=' . $row->id,
-								HTMLHelper::image(Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/information.png', Text::_($teile[$a]))
+								HTMLHelper::_('image',Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/information.png', Text::_($teile[$a]))
 							) . '<br>';
 					}
 					if ($this->state->get('filter.userfields'))

@@ -2015,7 +2015,7 @@ abstract class sportsmanagementHelper
 		{
 			if ($team->logo_small != '')
 			{
-				echo HTMLHelper::image($team->logo_small, '', array(' title' => '', ' width' => 20));
+				echo HTMLHelper::_('image',$team->logo_small, '', array(' title' => '', ' width' => 20));
 
 				if ($with_space == 1)
 				{
@@ -2031,7 +2031,7 @@ abstract class sportsmanagementHelper
 		{
 			if ($team->logo_middle != '')
 			{
-				echo HTMLHelper::image($team->logo_middle, '', array(' title' => '', ' width' => 20));
+				echo HTMLHelper::_('image',$team->logo_middle, '', array(' title' => '', ' width' => 20));
 
 				if ($with_space == 1)
 				{
@@ -2047,7 +2047,7 @@ abstract class sportsmanagementHelper
 		{
 			if ($team->logo_big != '')
 			{
-				echo HTMLHelper::image($team->logo_big, '', array(' title' => '', ' width' => 20));
+				echo HTMLHelper::_('image',$team->logo_big, '', array(' title' => '', ' width' => 20));
 
 				if ($with_space == 1)
 				{
@@ -2415,7 +2415,7 @@ abstract class sportsmanagementHelper
 			// Checks template image directory for image, if non found default are loaded
 			if ($config['show_icons'] == 1)
 			{
-				$image = HTMLHelper::image('media/com_sportsmanagement/jl_images/printButton.png', Text::_('Print'));
+				$image = HTMLHelper::_('image','media/com_sportsmanagement/jl_images/printButton.png', Text::_('Print'));
 			}
 			else
 			{

@@ -755,7 +755,7 @@ class SMStatistic extends JObject
 				$iconPath = "images/com_sportsmanagement/database/statistics/" . $iconPath;
 			}
 
-			return HTMLHelper::image($iconPath, Text::_($this->name), array("title" => Text::_($this->name), "width" => 30));
+			return HTMLHelper::_('image',$iconPath, Text::_($this->name), array("title" => Text::_($this->name), "width" => 30));
 		}
 
 		return '<span class="stat-alternate hasTip" title="' . Text::_($this->name) . '">' . Text::_($this->short) . '</span>';
