@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage controllers
@@ -11,10 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
@@ -30,6 +25,12 @@ use Joomla\CMS\Language\Text;
 class sportsmanagementControllerseasons extends JSMControllerAdmin
 {
 
+	/**
+	 * sportsmanagementControllerseasons::cancel()
+	 * 
+	 * @param mixed $key
+	 * @return void
+	 */
 	function cancel($key = null)
 	{
 		$msg  = Text::_('JLIB_HTML_BEHAVIOR_CLOSE');
@@ -49,29 +50,9 @@ class sportsmanagementControllerseasons extends JSMControllerAdmin
 		$post   = Factory::getApplication()->input->post->getArray(array());
 		$model  = $this->getModel();
 		$model->saveshortpersons();
-
 		$msg = '';
 		$this->setRedirect('index.php?option=com_sportsmanagement&tmpl=component&view=players&layout=assignpersons&season_id=' . $post['season_id'] . '&team_id=' . $post['team_id'] . '&persontype=' . $post['persontype'], $msg);
-
 	}
-
-	//    /**
-	//     * sportsmanagementControllerseasons::savepersons()
-	//     *
-	//     * @return void
-	//     */
-	//    function savepersons()
-	//    {
-	//        $option = Factory::getApplication()->input->getCmd('option');
-	//		$app = Factory::getApplication();
-	//        $post = Factory::getApplication()->input->post->getArray(array());
-	//        $model = $this->getModel();
-	//       $model->saveshortpersons();
-	//
-	//        $msg = '';
-	//        $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
-	//
-	//    }
 
 	/**
 	 * Proxy for getModel.
@@ -81,27 +62,8 @@ class sportsmanagementControllerseasons extends JSMControllerAdmin
 	public function getModel($name = 'Season', $prefix = 'sportsmanagementModel', $config = Array())
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
-
 		return $model;
 	}
-
-	//    /**
-	//     * sportsmanagementControllerseasons::saveteams()
-	//     *
-	//     * @return void
-	//     */
-	//    function saveteams()
-	//    {
-	//        $option = Factory::getApplication()->input->getCmd('option');
-	//		$app = Factory::getApplication();
-	//        $post = Factory::getApplication()->input->post->getArray(array());
-	//        $model = $this->getModel();
-	//       $model->saveshortteams();
-	//
-	//        $msg = '';
-	//        $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
-	//
-	//    }
 
 	/**
 	 * sportsmanagementControllerseasons::applyteams()
@@ -115,11 +77,8 @@ class sportsmanagementControllerseasons extends JSMControllerAdmin
 		$post   = Factory::getApplication()->input->post->getArray(array());
 		$model  = $this->getModel();
 		$model->saveshortteams();
-
 		$msg = '';
 		$this->setRedirect('index.php?option=com_sportsmanagement&tmpl=component&view=teams&layout=assignteams&season_id=' . $post['season_id'], $msg);
-
 	}
-
 
 }
