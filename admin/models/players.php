@@ -80,6 +80,9 @@ class sportsmanagementModelplayers extends JSMModelList
 		$season_name = substr($mdl->getSeasonName($this->_season_id),0,4);
         $birthday = $season_name.'-01-01';  
         }
+        
+        //Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $this->_season_id), Log::NOTICE, 'jsmerror');
+        //Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $birthday), Log::NOTICE, 'jsmerror');
 
 		$this->jsmquery->clear();
 		$this->jsmsubquery1->clear();
@@ -178,6 +181,8 @@ class sportsmanagementModelplayers extends JSMModelList
 			$this->jsmdb->escape($this->getState('list.ordering', 'pl.lastname')) . ' ' .
 			$this->jsmdb->escape($this->getState('list.direction', 'ASC'))
 		);
+        
+        //Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $this->jsmquery->dump()), Log::NOTICE, 'jsmerror');
 
 		return $this->jsmquery;
 
