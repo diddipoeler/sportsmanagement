@@ -98,10 +98,8 @@ $optteams = ' allowClear: true,
 					<?php
 					$imageFile   = 'administrator/components/com_sportsmanagement/assets/images/mail.png';
 					$imageTitle  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SEND_MAIL_TEAMS');
-					//$imageParams = 'title= "' . $imageTitle . '"';
                     $image_attributes['title'] = $imageTitle;
 					$image       = HTMLHelper::_('image',$imageFile,$imageTitle,$image_attributes);
-					//$linkParams  = '';
 					echo $image;
 					?>
                 </a>
@@ -147,10 +145,8 @@ $optteams = ' allowClear: true,
 					<?php
 					$imageFile   = 'administrator/components/com_sportsmanagement/assets/images/mail.png';
 					$imageTitle  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SEND_MAIL_ADMINS');
-					//$imageParams = 'title= "' . $imageTitle . '"';
                     $image_attributes['title'] = $imageTitle;
 					$image       = HTMLHelper::_('image',$imageFile,$imageTitle,$image_attributes);
-					//$linkParams  = '';
 					echo $image;
 					?></a>
             </th>
@@ -255,12 +251,8 @@ $optteams = ' allowClear: true,
 						$imageFile   = 'administrator/components/com_sportsmanagement/assets/images/edit.png';
 						$imageTitle  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_EDIT_DETAILS');
                         $image_attributes['title'] = $imageTitle;
-						//$imageParams = 'title= "' . $imageTitle . '"';
 						$image       = HTMLHelper::_('image',$imageFile,$imageTitle,$image_attributes);
-						//$linkParams  = '';
 						echo HTMLHelper::link($link1, $image);
-
-
 						?>
 					<?php else : ?>
 						<?php //echo $this->escape($row->name); ?>
@@ -275,9 +267,7 @@ $optteams = ' allowClear: true,
 				?>
                 <td>
 					<?php
-					/**
-					 * die möglichkeit bieten, das vereinslogo zu aktualisieren
-					 */
+					/** die möglichkeit bieten, das vereinslogo zu aktualisieren */
 					$link  = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=component&id=' . $row->club_id;
 					$image = 'icon-16-Teams.png';
 
@@ -438,9 +428,8 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 					}
 					$imageFile   = 'administrator/components/com_sportsmanagement/assets/images/' . $image;
 					$imageTitle  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MANAGE_PLAYERS');
-					$imageParams = 'title= "' . $imageTitle . '"';
-					$image       = HTMLHelper::image($imageFile, $imageTitle, $imageParams) . ' <sub>' . $row->playercount . '</sub>';
-					$linkParams  = '';
+                    $image_attributes['title'] = $imageTitle;
+					$image       = HTMLHelper::_('image',$imageFile, $imageTitle, $image_attributes) . ' <sub>' . $row->playercount . '</sub>';
 					echo HTMLHelper::link($link2, $image);
 					?>
                 </td>
@@ -455,9 +444,8 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 					}
 					$imageFile   = 'administrator/components/com_sportsmanagement/assets/images/' . $image;
 					$imageTitle  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MANAGE_STAFF');
-					$imageParams = 'title= "' . $imageTitle . '"';
-					$image       = HTMLHelper::image($imageFile, $imageTitle, $imageParams) . ' <sub>' . $row->staffcount . '</sub>';
-					$linkParams  = '';
+                    $image_attributes['title'] = $imageTitle;
+					$image       = HTMLHelper::_('image',$imageFile, $imageTitle, $image_attributes) . ' <sub>' . $row->staffcount . '</sub>';
 					echo HTMLHelper::link($link3, $image);
 					?>
                 </td>
