@@ -15,8 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
-
-jimport('joomla.filesystem.file');
+use Joomla\CMS\Filesystem\File;
 
 $user            = Factory::getUser();
 $userId          = $user->get('id');

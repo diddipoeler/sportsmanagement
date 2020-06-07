@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage jsmpersons
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Table\Table;
@@ -22,7 +18,6 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Uri\Uri;
-
 
 /**
  * sportsmanagementViewplayers
@@ -35,7 +30,6 @@ use Joomla\CMS\Uri\Uri;
  */
 class sportsmanagementViewplayers extends sportsmanagementView
 {
-
 
 	/**
 	 * sportsmanagementViewplayers::init()
@@ -55,19 +49,17 @@ class sportsmanagementViewplayers extends sportsmanagementView
 			case 'assignpersons':
 			case 'assignpersons_3':
 			case 'assignpersons_4':
-				$this->season_id  = $this->jinput->get('season_id');
-				$this->team_id    = $this->jinput->get('team_id');
-				$this->persontype = $this->jinput->get('persontype');
-				$this->assign     = true;
-				break;
+			$this->season_id  = $this->jinput->get('season_id');
+			$this->team_id    = $this->jinput->get('team_id');
+			$this->persontype = $this->jinput->get('persontype');
+			$this->assign     = true;
+			break;
 		}
 
 		$this->table = Table::getInstance('player', 'sportsmanagementTable');
 		$this->app->setUserState($this->option . 'task', '');
 
-		/**
-		 * build the html select list for positions
-		 */
+		/** build the html select list for positions */
 		$positionsList[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
 		$positions       = BaseDatabaseModel::getInstance('positions', 'sportsmanagementmodel')->getAllPositions();
 
@@ -79,9 +71,7 @@ class sportsmanagementViewplayers extends sportsmanagementView
 		$lists['positions'] = $positions;
 		unset($positionsList);
 
-		/**
-		 * build the html options for nation
-		 */
+		/** build the html options for nation */
 		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 
 		if ($res = JSMCountries::getCountryOptions())
@@ -137,7 +127,6 @@ class sportsmanagementViewplayers extends sportsmanagementView
 	 */
 	function _displayAssignPlayers($tpl = null)
 	{
-
 		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
 		$this->persontype = $this->app->getUserState("$this->option.persontype", '0');
 		$mdlProject       = BaseDatabaseModel::getInstance('project', 'sportsmanagementModel');
@@ -145,41 +134,34 @@ class sportsmanagementViewplayers extends sportsmanagementView
 		$project_name     = $project->name;
 		$project_team_id  = $this->app->getUserState($this->option . 'project_team_id');
 		$team_name        = $this->model->getProjectTeamName($project_team_id);
-
-		// $items = $this->get('Items');
-		// $total = $this->get('Total');
-		// $pagination = $this->get('Pagination');
-
 		$this->table = Table::getInstance('player', 'sportsmanagementTable');
 
-		//		$this->table	= $table;
-
-		// Save icon should be replaced by the apply
+		/** Save icon should be replaced by the apply */
 		ToolbarHelper::apply('person.saveassigned', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_SAVE_SELECTED'));
 
-		// Set toolbar items for the page
-		$type = $jinput->getInt('type');
+		/** Set toolbar items for the page */
+		$type = $this->jinput->getInt('type');
 
 		if ($type == 0)
 		{
-			// Back icon should be replaced by the abort/close icon
+			/** Back icon should be replaced by the abort/close icon */
 			ToolbarHelper::back(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BACK'), 'index.php?option=com_sportsmanagement&view=teamplayers');
 			ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_ASSIGN_PLAYERS'), 'generic.png');
 		}
 		elseif ($type == 1)
 		{
-			// Back icon should be replaced by the abort/close icon
+			/** Back icon should be replaced by the abort/close icon */
 			ToolbarHelper::back(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BACK'), 'index.php?option=com_sportsmanagement&view=teamstaffs');
 			ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_ASSIGN_STAFF'), 'generic.png');
 		}
 		elseif ($type == 2)
 		{
-			// Back icon should be replaced by the abort/close icon
+			/** Back icon should be replaced by the abort/close icon */
 			ToolbarHelper::back(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BACK'), 'index.php?option=com_sportsmanagement&view=projectreferees');
 			ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_ASSIGN_REFEREES'), 'generic.png');
 		}
 
-		// Build the html options for nation
+		/** Build the html options for nation */
 		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 
 		if ($res = JSMCountries::getCountryOptions())
@@ -189,7 +171,7 @@ class sportsmanagementViewplayers extends sportsmanagementView
 
 		$lists['nation'] = $nation;
 
-		// Build the html select list for positions
+		/** Build the html select list for positions */
 		$positionsList[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
 		$positions       = BaseDatabaseModel::getInstance('positions', 'sportsmanagementmodel')->getAllPositions();
 
@@ -224,20 +206,11 @@ class sportsmanagementViewplayers extends sportsmanagementView
 
 		$this->prjid    = $this->project_id;
 		$this->prj_name = $project_name;
-
-		// $this->team_id    = $team_id;
 		$this->team_name       = $team_name;
 		$this->project_team_id = $project_team_id;
 		$this->lists           = $lists;
-
-		//	$this->items	= $items;
-		//        $this->user	= $user;
-		//		$this->pagination	= $pagination;
-		//		$this->request_url	= Factory::getURI()->toString();
 		$this->type = $type;
-
 		$this->setLayout('assignplayers');
-
 	}
 
 
@@ -290,17 +263,14 @@ class sportsmanagementViewplayers extends sportsmanagementView
 	protected function addToolbar()
 	{
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_TITLE');
-
 		ToolbarHelper::publish('players.publish', 'JTOOLBAR_PUBLISH', true);
 		ToolbarHelper::unpublish('players.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 		ToolbarHelper::divider();
-
 		ToolbarHelper::apply('players.saveshort');
 		ToolbarHelper::editList('player.edit');
 		ToolbarHelper::addNew('player.add');
 		ToolbarHelper::custom('player.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
 		ToolbarHelper::archiveList('player.export', Text::_('JTOOLBAR_EXPORT'));
-
 		parent::addToolbar();
 	}
 }
