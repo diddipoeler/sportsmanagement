@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModelSeasons
@@ -93,8 +94,8 @@ class sportsmanagementModelSeasons extends JSMModelList
 		}
 		catch (Exception $e)
 		{
-			$this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
-
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');
 			return false;
 		}
 	}
@@ -122,8 +123,9 @@ class sportsmanagementModelSeasons extends JSMModelList
 		}
 		catch (Exception $e)
 		{
-			$this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
-
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');
+            Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $this->jsmquery->dump()), Log::ERROR, 'jsmerror');
 			return false;
 		}
 	}
@@ -173,8 +175,8 @@ class sportsmanagementModelSeasons extends JSMModelList
 		}
 		catch (Exception $e)
 		{
-			$this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
-
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');
 			return false;
 		}
 	}
