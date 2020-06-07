@@ -73,11 +73,12 @@ class sportsmanagementModelplayers extends JSMModelList
 		$this->_team_id         = $this->jsmapp->getUserState("$this->jsmoption.team_id", '0');
 		$this->_season_id       = $this->jsmapp->getUserState("$this->jsmoption.season_id", '0');
 		$this->_project_team_id = $this->jsmapp->getUserState("$this->jsmoption.project_team_id", '0');
+        $season_id = $this->jinput->get('season_id');
         
-        if ( $this->_season_id )
+        if ( $season_id )
         {
         $mdl = BaseDatabaseModel::getInstance("Seasons", "sportsmanagementModel");
-		$season_name = substr($mdl->getSeasonName($this->_season_id),0,4);
+		$season_name = substr($mdl->getSeasonName($season_id),0,4);
         $birthday = $season_name.'-01-01';  
         }
         
@@ -92,7 +93,7 @@ class sportsmanagementModelplayers extends JSMModelList
 		$this->jsmquery->join('LEFT', '#__sportsmanagement_agegroup AS ag ON ag.id = pl.agegroup_id');
 		$this->jsmquery->select('uc.name AS editor');
 		$this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = pl.checked_out');
-        if ( $this->_season_id )
+        if ( $season_id )
         {
         $this->jsmquery->where('pl.birthday < ' . $this->jsmdb->Quote('' . $birthday . '') );
         }
