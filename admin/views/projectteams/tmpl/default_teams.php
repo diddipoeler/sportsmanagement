@@ -98,9 +98,10 @@ $optteams = ' allowClear: true,
 					<?php
 					$imageFile   = 'administrator/components/com_sportsmanagement/assets/images/mail.png';
 					$imageTitle  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SEND_MAIL_TEAMS');
-					$imageParams = 'title= "' . $imageTitle . '"';
-					$image       = HTMLHelper::image($imageFile, $imageTitle, $imageParams);
-					$linkParams  = '';
+					//$imageParams = 'title= "' . $imageTitle . '"';
+                    $image_attributes['title'] = $imageTitle;
+					$image       = HTMLHelper::_('image',$imageFile,$imageTitle,$image_attributes);
+					//$linkParams  = '';
 					echo $image;
 					?>
                 </a>
@@ -146,9 +147,10 @@ $optteams = ' allowClear: true,
 					<?php
 					$imageFile   = 'administrator/components/com_sportsmanagement/assets/images/mail.png';
 					$imageTitle  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SEND_MAIL_ADMINS');
-					$imageParams = 'title= "' . $imageTitle . '"';
-					$image       = HTMLHelper::image($imageFile, $imageTitle, $imageParams);
-					$linkParams  = '';
+					//$imageParams = 'title= "' . $imageTitle . '"';
+                    $image_attributes['title'] = $imageTitle;
+					$image       = HTMLHelper::_('image',$imageFile,$imageTitle,$image_attributes);
+					//$linkParams  = '';
 					echo $image;
 					?></a>
             </th>
@@ -252,9 +254,10 @@ $optteams = ' allowClear: true,
 						<?php
 						$imageFile   = 'administrator/components/com_sportsmanagement/assets/images/edit.png';
 						$imageTitle  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_EDIT_DETAILS');
-						$imageParams = 'title= "' . $imageTitle . '"';
-						$image       = HTMLHelper::image($imageFile, $imageTitle, $imageParams);
-						$linkParams  = '';
+                        $image_attributes['title'] = $imageTitle;
+						//$imageParams = 'title= "' . $imageTitle . '"';
+						$image       = HTMLHelper::_('image',$imageFile,$imageTitle,$image_attributes);
+						//$linkParams  = '';
 						echo HTMLHelper::link($link1, $image);
 
 
