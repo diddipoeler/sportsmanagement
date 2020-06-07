@@ -73,7 +73,7 @@ class sportsmanagementModelplayers extends JSMModelList
 		$this->_team_id         = $this->jsmapp->getUserState("$this->jsmoption.team_id", '0');
 		$this->_season_id       = $this->jsmapp->getUserState("$this->jsmoption.season_id", '0');
 		$this->_project_team_id = $this->jsmapp->getUserState("$this->jsmoption.project_team_id", '0');
-        $season_id = $this->jinput->get('season_id');
+        $season_id = $this->jsmjinput->get('season_id');
         
         if ( $season_id )
         {
