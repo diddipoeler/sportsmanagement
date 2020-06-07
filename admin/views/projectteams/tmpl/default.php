@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage projectteams
@@ -13,7 +11,6 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -28,6 +25,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 	<?PHP
+    echo $this->loadTemplate('joomla_version');
+    /*
 	// Welche joomla version
 	if (version_compare(JVERSION, '3.0.0', 'ge'))
 	{
@@ -37,6 +36,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	{
 		echo $this->loadTemplate('joomla2');
 	}
+    */
 	?>
     <div>
 		<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_QUICKADD_DESCR'); ?>

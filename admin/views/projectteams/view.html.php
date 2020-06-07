@@ -9,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
@@ -97,10 +95,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 
 		$lists['divisions'] = $projectdivisions;
 
-		/**
-		 *
-		 * build the html select list for project assigned teams
-		 */
+		/** build the html select list for project assigned teams */
 		$ress         = array();
 		$res1         = array();
 		$notusedteams = array();
@@ -179,10 +174,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 			$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ADD_TEAM'), 'Notice');
 		}
 
-		/**
-		 *
-		 * build the html select list for teams
-		 */
+		/** build the html select list for teams */
 		if (count($notusedteams) > 0)
 		{
 			$lists['teams'] = JHtmlSelect::genericlist(
@@ -202,10 +194,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		unset($res1);
 		unset($notusedteams);
 
-		/**
-		 *
-		 * build the html options for nation
-		 */
+		/** build the html options for nation */
 		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 
 		if ($res = JSMCountries::getCountryOptions())
@@ -224,7 +213,6 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 			$this->state->get('filter.search_nation')
 		);
 
-		//if (ComponentHelper::getParams($this->option)->get('show_option_projectteams_quickadd', 0))
 		if ( $project->fast_projektteam )
 		{
 			$lists['country_teams']         = $this->model->getCountryTeams();
@@ -287,16 +275,12 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-
 		$this->app->setUserState("$this->option.pid", $this->project_id);
 		$this->app->setUserState("$this->option.season_id", $this->season_id);
 		$this->app->setUserState("$this->option.project_art_id", $this->project_art_id);
 		$this->app->setUserState("$this->option.sports_type_id", $this->sports_type_id);
 
-		/**
-		 *
-		 * Set toolbar items for the page
-		 */
+		/** Set toolbar items for the page */
 		if ($this->project_art_id != 3)
 		{
 			$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_TITLE');
