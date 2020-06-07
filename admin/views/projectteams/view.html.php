@@ -257,13 +257,13 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 			case 'editlist';
 			case 'editlist_3';
 			case 'editlist_4';
-				$this->setLayout('editlist');
-				break;
+			$this->setLayout('editlist');
+			break;
 			case 'changeteams';
 			case 'changeteams_3';
 			case 'changeteams_4';
-				$this->setLayout('changeteams');
-				break;
+			$this->setLayout('changeteams');
+			break;
 		}
 
 	}

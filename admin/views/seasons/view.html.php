@@ -74,18 +74,18 @@ class sportsmanagementViewSeasons extends sportsmanagementView
 			case 'assignteams':
 			case 'assignteams_3':
 			case 'assignteams_4':
-				$this->setLayout('assignteams');
-				break;
+			$this->setLayout('assignteams');
+			break;
 			case 'assignpersons':
 			case 'assignpersons_3':
 			case 'assignpersons_4':
-				$season_teams[]        = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
-				$res                   = $this->model->getSeasonTeams($season_id);
-				$season_teams          = array_merge($season_teams, $res);
-				$lists['season_teams'] = $season_teams;
-				$this->lists           = $lists;
-				$this->setLayout('assignpersons');
-				break;
+			$season_teams[]        = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
+			$res                   = $this->model->getSeasonTeams($season_id);
+			$season_teams          = array_merge($season_teams, $res);
+			$lists['season_teams'] = $season_teams;
+			$this->lists           = $lists;
+			$this->setLayout('assignpersons');
+			break;
 		}
 
 	}
@@ -97,24 +97,17 @@ class sportsmanagementViewSeasons extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-
 		$canDo = sportsmanagementHelper::getActions();
-		/**
-		 * Set toolbar items for the page
-		 */
+		/** Set toolbar items for the page */
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_TITLE');
-
 		if ($canDo->get('core.create'))
 		{
 			ToolbarHelper::addNew('season.add', 'JTOOLBAR_NEW');
 		}
-
 		if ($canDo->get('core.edit'))
 		{
 			ToolbarHelper::editList('season.edit', 'JTOOLBAR_EDIT');
 		}
-
 		parent::addToolbar();
-
 	}
 }
