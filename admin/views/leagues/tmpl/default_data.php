@@ -220,7 +220,7 @@ use Joomla\CMS\Router\Route;
                 <div class="btn-group">
 					<?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'leagues.', $canChange, 'cb'); ?>
 					<?php
-					// Create dropdown items and render the dropdown list.
+					/**  Create dropdown items and render the dropdown list. */
 					if ($canChange)
 					{
 						HTMLHelper::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'leagues');

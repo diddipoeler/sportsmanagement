@@ -129,12 +129,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					<?php else: ?>
                         <a href="<?php echo $link; ?>">
 							<?php
-							$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DIVS_EDIT_DETAILS');
-							echo HTMLHelper::_(
-								'image', 'administrator/components/com_sportsmanagement/assets/images/edit.png',
-								$imageTitle,
-								'title= "' . $imageTitle . '"'
-							);
+$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DIVS_EDIT_DETAILS');
+$image_attributes['title'] = $imageTitle;
+echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/edit.png',$imageTitle,$image_attributes);
 							?>
                         </a>
 					<?php endif; ?>
@@ -166,24 +163,18 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					<?php
 					if (empty($row->picture) || !File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $row->picture))
 					{
-						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE') . $row->picture;
-						echo HTMLHelper::_(
-							'image', 'administrator/components/com_sportsmanagement/assets/images/delete.png',
-							$imageTitle, 'title= "' . $imageTitle . '"'
-						);
+$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE') . $row->picture;
+$image_attributes['title'] = $imageTitle;
+echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/delete.png',$imageTitle,$image_attributes);
 					}
                     elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("player"))
 					{
-						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
-						echo HTMLHelper::_(
-							'image', 'administrator/components/com_sportsmanagement/assets/images/information.png',
-							$imageTitle, 'title= "' . $imageTitle . '"'
-						);
+$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
+$image_attributes['title'] = $imageTitle;
+echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/information.png',$imageTitle,$image_attributes);
 					}
 					else
 					{
-						//$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
-						//echo sportsmanagementHelper::getPictureThumb($row->picture, $playerName, 0, 21, 4);
 						?>
                         <a href="<?php echo Uri::root() . $row->picture; ?>" title="<?php echo $row->name; ?>"
                            class="modal">
@@ -199,7 +190,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     <div class="btn-group">
 						<?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'divisions.', $canChange, 'cb'); ?>
 						<?php
-						// Create dropdown items and render the dropdown list.
+						/** Create dropdown items and render the dropdown list. */
 						if ($canChange)
 						{
 							HTMLHelper::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'divisions');
