@@ -1641,7 +1641,8 @@ class JSMModelList extends ListModel
 	 */
 	public function __construct($config = array())
 	{
-
+		$this->jsmapp = Factory::getApplication();
+		$this->jsmjinput      = $this->jsmapp->input;
 		parent::__construct($config);
 		$getDBConnection = sportsmanagementHelper::getDBConnection();
 		parent::setDbo($getDBConnection);
@@ -1652,11 +1653,9 @@ class JSMModelList extends ListModel
 		$this->jsmsubquery2 = $this->jsmdb->getQuery(true);
 		$this->jsmsubquery3 = $this->jsmdb->getQuery(true);
 
-		// Reference global application object
-		$this->jsmapp = Factory::getApplication();
-
-		// JInput object
-		$this->jsmjinput      = $this->jsmapp->input;
+//		$this->jsmapp = Factory::getApplication();
+//		$this->jsmjinput      = $this->jsmapp->input;
+        
 		$this->jsmoption      = $this->jsmjinput->getCmd('option');
 		$this->jsmdocument    = Factory::getDocument();
 		$this->jsmuser        = Factory::getUser();
