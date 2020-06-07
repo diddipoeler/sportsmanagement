@@ -36,7 +36,7 @@ if ($this->items)
     switch ($this->view)
     {
     case 'projectteams':
-    //echo $this->loadTemplate('teams');
+    case 'projectreferees':
     break;
     default:    
 	echo $this->loadTemplate('data');

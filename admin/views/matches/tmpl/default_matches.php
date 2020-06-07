@@ -1,5 +1,6 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage matches
@@ -8,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -263,10 +262,10 @@ $pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=compon
 
                         <a href="javascript:void(0)"
                            onclick="switchMenu('present<?php echo $row->id; ?>')">&nbsp;
-							<?php echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/arrow_open.png',
-								Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PRESENT'),
-								'title= "' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PRESENT') . '"'
-							);
+							<?php 
+$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PRESENT');
+$image_attributes['title'] = $imageTitle;                            
+echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/arrow_open.png',$imageTitle,$image_attributes);
 							?>
                         </a><br/>
                         <span id="present<?php echo $row->id; ?>" style="display: none">
@@ -352,11 +351,8 @@ $pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=compon
 
 						echo '<sub>' . $row->homeplayers_count . '</sub> ';
 
-
-						echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/' . $image,
-							Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_HOME'),
-							'title= "' . $title . '"'
-						);
+$image_attributes['title'] = $title;
+echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/'.$image,Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_HOME'),$image_attributes);
 
 						echo '<sub>' . $row->homestaff_count . '</sub> ';
 						?>
@@ -390,10 +386,8 @@ $pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=compon
 							' ' . Text::_('COM_SPORTSMANAGEMENT_F_TEAM_STAFF') . ': ' . $row->awaystaff_count;
 
 						echo '<sub>' . $row->awayplayers_count . '</sub> ';
-						echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/' . $image,
-							Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_AWAY'),
-							'title= "' . $title . '"'
-						);
+$image_attributes['title'] = $title;                        
+echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/'.$image,Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_AWAY'),$image_attributes);
 						echo '<sub>' . $row->awaystaff_count . '</sub> ';
 
 						?>
@@ -476,20 +470,19 @@ $pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=compon
 
                         <a href="javascript:void(0)"
                            onclick="switchMenu('part<?php echo $row->id; ?>')">&nbsp;
-							<?php echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/arrow_open.png',
-								Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PERIOD_SCORES'),
-								'title= "' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PERIOD_SCORES') . '"'
-							);
+							<?php 
+$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PERIOD_SCORES');
+$image_attributes['title'] = $imageTitle;                            
+echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/arrow_open.png',$imageTitle,$image_attributes);
 							?>
                         </a>
 
 						<?PHP
 						if ($row->alt_decision == 1)
 						{
-							echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/user_edit.png',
-								Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_SUB_DEC'),
-								'title= "' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_SUB_DEC') . '"'
-							);
+$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_SUB_DEC');
+$image_attributes['title'] = $imageTitle;						  
+echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/user_edit.png',$imageTitle,$image_attributes);
 						}
 						?>
 
@@ -687,8 +680,8 @@ $pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=compon
 							$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_UNPUBLISHED');
 							$imageFile  = 'administrator/components/com_sportsmanagement/assets/images/delete.png';
 						}
-
-						echo HTMLHelper::_('image', $imageFile, $imageTitle, 'title= "' . $imageTitle . '"');
+$image_attributes['title'] = $imageTitle;
+echo HTMLHelper::_('image', $imageFile, $imageTitle,$image_attributes);
 						?>
                     </td>
 
@@ -736,5 +729,4 @@ $pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=compon
         <input type='hidden' name='task' value=''/>
 		<?php echo HTMLHelper::_('form.token') . "\n"; ?>
     </form>
-    <!--	</fieldset> -->
 </div>

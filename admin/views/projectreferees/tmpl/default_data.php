@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage projectreferees
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -21,10 +17,7 @@ use Joomla\CMS\Router\Route;
 
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-
 ?>
-
-<!-- 	<fieldset class="adminform"> -->
 <legend>
 	<?php
 	echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PREF_TITLE2', '<i>' . $this->project->name . '</i>');
@@ -129,12 +122,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						?>
                         <a href="<?php echo $link; ?>">
 							<?php
-							$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_EDIT_DETAILS');
-							echo HTMLHelper::_(
-								'image', 'administrator/components/com_sportsmanagement/assets/images/edit.png',
-								$imageTitle,
-								'title= "' . $imageTitle . '"'
-							);
+$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_EDIT_DETAILS');
+$image_attributes['title'] = $imageTitle;
+echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/edit.png',$imageTitle,$image_attributes);
 							?>
                         </a>
 					<?php
@@ -156,30 +146,21 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					<?php
 					if ($row->picture == '')
 					{
-						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_NO_IMAGE');
-						echo HTMLHelper::_(
-							'image',
-							'administrator/components/com_sportsmanagement/assets/images/delete.png',
-							$imageTitle,
-							'title= "' . $imageTitle . '"'
-						);
+$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_NO_IMAGE');
+$image_attributes['title'] = $imageTitle;
+echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/delete.png',$imageTitle,$image_attributes);
 
 					}
                     elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("player"))
 					{
-						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_DEFAULT_IMAGE');
-						echo HTMLHelper::_(
-							'image',
-							'administrator/components/com_sportsmanagement/assets/images/information.png',
-							$imageTitle,
-							'title= "' . $imageTitle . '"'
-						);
+$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_DEFAULT_IMAGE');
+$image_attributes['title'] = $imageTitle;
+echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/information.png',$imageTitle,$image_attributes);
 					}
 					else
 					{
 						$playerName = sportsmanagementHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, 0);
 						$picture    = Uri::root() . $row->picture;
-						//echo sportsmanagementHelper::getPictureThumb($picture, $playerName, 0, 21, 4);
 						echo sportsmanagementHelper::getBootstrapModalImage('collapseModalplayerpicture' . $row->id, $picture, $playerName, '20', $picture);
 					}
 					?>
@@ -250,4 +231,3 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         </tbody>
     </table>
 </div>
-<!--	</fieldset> -->

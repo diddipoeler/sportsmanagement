@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage matches
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -168,8 +164,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
 			$lists['projectteams']        = $teams;
 			unset($teams);
 
-			// Sind die verzeichnisse vorhanden ?
-			// $dest = JPATH_ROOT.'/media/com_sportsmanagement/database/matchreport/'.$row->id;
+			/** Sind die verzeichnisse vorhanden ? */
 			$dest = JPATH_ROOT . '/images/com_sportsmanagement/database/matchreport/' . $row->id;
 
 			if (Folder::exists($dest))

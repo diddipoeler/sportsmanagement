@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage rounds
@@ -11,10 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Table\Table;
@@ -46,29 +41,31 @@ class sportsmanagementViewRounds extends sportsmanagementView
 		$this->massadd  = 0;
 		$this->populate = 0;
 		$tpl            = null;
-		/**
-		 * dadurch werden die spaltenbreiten optimiert
-		 */
+		/** dadurch werden die spaltenbreiten optimiert */
 		$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/form_control.css', 'text/css');
-
-		if ($this->getLayout() == 'default' || $this->getLayout() == 'default_3' || $this->getLayout() == 'default_4')
+        
+        switch ($this->getLayout())
 		{
+			case 'default':
+			case 'default_3':
+			case 'default_4':
 			$this->_displayDefault($tpl);
-
 			return;
-		}
-		elseif ($this->getLayout() == 'populate' || $this->getLayout() == 'populate_3' || $this->getLayout() == 'populate_4')
-		{
+            
+            case 'populate':
+			case 'populate_3':
+			case 'populate_4':
 			$this->_displayPopulate($tpl);
-
 			return;
-		}
-		elseif ($this->getLayout() == 'massadd' || $this->getLayout() == 'massadd_3' || $this->getLayout() == 'massadd_4')
-		{
+            
+            case 'massadd':
+			case 'massadd_3':
+			case 'massadd_4':
 			$this->_displayMassadd($tpl);
-
 			return;
+            
 		}
+
 	}
 
 	/**
@@ -80,11 +77,8 @@ class sportsmanagementViewRounds extends sportsmanagementView
 	 */
 	function _displayDefault($tpl)
 	{
-
 		$matchday = $this->get('Items');
-
 		$this->table = Table::getInstance('round', 'sportsmanagementTable');
-
 		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
 
 		$mdlProject               = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
@@ -118,7 +112,6 @@ class sportsmanagementViewRounds extends sportsmanagementView
 		);
 		$lists['scheduling'] = HTMLHelper::_('select.genericlist', $options, 'scheduling', '', 'value', 'text');
 
-		// TODO-add error message - what if there are no teams assigned to the project
 		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
 		$mdlProject       = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
 		$teams            = $mdlProject->getProjectTeamsOptions($this->project_id);

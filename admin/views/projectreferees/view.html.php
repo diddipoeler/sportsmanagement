@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage projectreferees
@@ -11,10 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Table;
@@ -59,11 +54,9 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
 
 		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
 		$mdlProject       = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
-		$project          = $mdlProject->getProject($this->project_id);
+		$this->project          = $mdlProject->getProject($this->project_id);
 
-		/**
-		 * build the html options for position
-		 */
+		/** build the html options for position */
 		$position_id[]         = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REFEREE_FUNCTION'));
 		$mdlPositions          = BaseDatabaseModel::getInstance('Positions', 'sportsmanagementModel');
 		$project_ref_positions = $mdlPositions->getProjectPositions($this->project_id, $this->_persontype);
@@ -84,7 +77,7 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
 		$this->pagination = $pagination;
 
 		// $this->request_url = $uri->toString();
-		$this->project = $project;
+		//$this->project = $project;
 	}
 
 	/**
