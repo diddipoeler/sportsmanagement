@@ -23,6 +23,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 	<?PHP
     echo $this->loadTemplate('joomla_version');
+    
     /*
 	// Welche joomla version
 	if (version_compare(JVERSION, '3.0.0', 'ge'))
