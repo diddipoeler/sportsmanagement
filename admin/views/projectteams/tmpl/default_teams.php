@@ -9,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -282,11 +280,9 @@ $optteams = ' allowClear: true,
 
 					if ($row->club_logo == '')
 					{
-						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
-						echo HTMLHelper::_(
-							'image', 'administrator/components/com_sportsmanagement/assets/images/information.png',
-							$imageTitle, 'title= "' . $imageTitle . '"'
-						);
+$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
+$image_attributes['title'] = $imageTitle;
+echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/information.png',$imageTitle,$image_attributes);
 						echo sportsmanagementHelper::getBootstrapModalImage(
 							'projectteam' . $row->club_id,
 							Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/' . $image,
@@ -304,11 +300,9 @@ $optteams = ' allowClear: true,
 					}
                     elseif ($row->club_logo == sportsmanagementHelper::getDefaultPlaceholder("clublogobig"))
 					{
-						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE');
-						echo HTMLHelper::_(
-							'image', 'administrator/components/com_sportsmanagement/assets/images/information.png',
-							$imageTitle, 'title= "' . $imageTitle . '"'
-						);
+$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE');
+$image_attributes['title'] = $imageTitle;
+echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/information.png',$imageTitle,$image_attributes);
 						?>
                         <a href="<?php echo Uri::root() . $row->club_logo; ?>" title="<?php echo $imageTitle; ?>"
                            class="modal">
@@ -338,11 +332,9 @@ $optteams = ' allowClear: true,
 
 						if (File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $row->club_logo))
 						{
-							$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
-							echo HTMLHelper::_(
-								'image', 'administrator/components/com_sportsmanagement/assets/images/ok.png',
-								$imageTitle, 'title= "' . $imageTitle . '"'
-							);
+$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
+$image_attributes['title'] = $imageTitle;
+echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/ok.png',$imageTitle,$image_attributes);
 							?>
                             <a href="<?php echo Uri::root() . $row->club_logo; ?>" title="<?php echo $imageTitle; ?>"
                                class="modal">
@@ -495,19 +487,15 @@ $optteams = ' allowClear: true,
 					<?php
 					if (empty($row->picture) || !File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $row->picture))
 					{
-						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_IMAGE') . $row->picture;
-						echo HTMLHelper::image(
-							'administrator/components/com_sportsmanagement/assets/images/delete.png',
-							$imageTitle, 'title= "' . $imageTitle . '"'
-						);
+$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_IMAGE') . $row->picture;
+$image_attributes['title'] = $imageTitle;
+echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/delete.png',$imageTitle,$image_attributes);
 					}
                     elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("team"))
 					{
-						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DEFAULT_IMAGE');
-						echo HTMLHelper::image(
-							'administrator/components/com_sportsmanagement/assets/images/information.png',
-							$imageTitle, 'title= "' . $imageTitle . '"'
-						);
+$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DEFAULT_IMAGE');
+$image_attributes['title'] = $imageTitle;
+echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/information.png',$imageTitle,$image_attributes);
 
 						?>
                         <a href="<?php echo Uri::root() . $row->picture; ?>" title="<?php echo $imageTitle; ?>"
@@ -522,11 +510,9 @@ $optteams = ' allowClear: true,
 					{
 						if (File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $row->picture))
 						{
-							$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_CUSTOM_IMAGE');
-							echo HTMLHelper::_(
-								'image', 'administrator/components/com_sportsmanagement/assets/images/ok.png',
-								$imageTitle, 'title= "' . $imageTitle . '"'
-							);
+$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_CUSTOM_IMAGE');
+$image_attributes['title'] = $imageTitle;
+echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/ok.png',$imageTitle,$image_attributes);
 							?>
                             <a href="<?php echo Uri::root() . $row->picture; ?>" title="<?php echo $imageTitle; ?>"
                                class="modal">
@@ -537,11 +523,9 @@ $optteams = ' allowClear: true,
 						}
 						else
 						{
-							$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_NO_IMAGE');
-							echo HTMLHelper::_(
-								'image', 'administrator/components/com_sportsmanagement/assets/images/delete.png',
-								$imageTitle, 'title= "' . $imageTitle . '"'
-							);
+$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_NO_IMAGE');
+$image_attributes['title'] = $imageTitle;
+echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/delete.png',$imageTitle,$image_attributes);
 						}
 
 					}
