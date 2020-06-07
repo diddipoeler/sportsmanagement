@@ -238,8 +238,11 @@ class sportsmanagementModelSeasons extends JSMModelList
 	{
 		$layout    = $this->jsmjinput->getVar('layout');
 		$season_id = $this->jsmjinput->getVar('id');
+        if ( $season_id )
+        {
         $season_name = substr($this->getSeasonName($season_id),0,4);
         $birthday = $season_name.'-01-01';
+        }
 		$this->setState('list.ordering', $this->_order);
 		switch ($layout)
 		{
@@ -269,7 +272,10 @@ class sportsmanagementModelSeasons extends JSMModelList
 				$this->jsmsubquery1->from('#__sportsmanagement_season_person_id AS stp');
 				$this->jsmsubquery1->where('stp.season_id = ' . $season_id);
 				$this->jsmquery->where('p.id NOT IN (' . $this->jsmsubquery1 . ')');
+                if ( $season_id )
+                {
                 $this->jsmquery->where('p.birthday < ' . $this->jsmdb->Quote('' . $birthday . '') );
+                }
 
 				if ($this->getState('filter.search_nation'))
 				{
