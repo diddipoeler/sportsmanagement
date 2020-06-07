@@ -89,7 +89,7 @@ class sportsmanagementModelplayers extends JSMModelList
 		$this->jsmquery->join('LEFT', '#__sportsmanagement_agegroup AS ag ON ag.id = pl.agegroup_id');
 		$this->jsmquery->select('uc.name AS editor');
 		$this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = pl.checked_out');
-        if ( $season_id )
+        if ( $this->_season_id )
         {
         $this->jsmquery->where('pl.birthday < ' . $this->jsmdb->Quote('' . $birthday . '') );
         }
