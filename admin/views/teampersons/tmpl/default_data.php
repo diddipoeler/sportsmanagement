@@ -412,8 +412,8 @@ else
 
 					$class   = "btn-group btn-group-yesno";
 					$options = array(
-						JHtml::_('select.option', '0', Text::_('JNO')),
-						JHtml::_('select.option', '1', Text::_('JYES'))
+						HTMLHelper::_('select.option', '0', Text::_('JNO')),
+						HTMLHelper::_('select.option', '1', Text::_('JYES'))
 					);
 
 					$html   = array();

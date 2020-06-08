@@ -43,7 +43,7 @@ class sportsmanagementViewimagelist extends sportsmanagementView
 //		JHtml::_('jquery.framework');
 //		JHtml::_('script', 'media/popup-imagemanager.js', true, true);
 //		JHtml::_('stylesheet', 'media/popup-imagemanager.css', array(), true);
-       $lang = JFactory::getLanguage();
+       $lang = Factory::getLanguage();
 
 		//JHtml::_('stylesheet', 'media/popup-imagelist.css', array(), true);
 

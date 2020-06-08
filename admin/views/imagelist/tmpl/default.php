@@ -18,16 +18,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Log\Log;
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-//$modalheight = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('modal_popup_height', 600);
-//$modalwidth  = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('modal_popup_width', 900);
 $link = 'index.php?option=com_sportsmanagement&view=imagehandler&layout=uploaddraganddrop&type='.$this->folder.'&field=&fieldid=&tmpl=component&pid='.$this->pid.'&imagelist='.$this->imagelist;
-//JHtml::_('script', 'media/popup-imagemanager.min.js', array('version' => 'auto', 'relative' => true));
-//JHtml::_('stylesheet', 'media/popup-imagemanager.css', array('version' => 'auto', 'relative' => true));
-
-//echo '<pre>'.print_r($this->uri,true).'</pre>';
-
-
-//echo '<pre>'.print_r($this->images,true).'</pre>';
 ?>
 <div class="container-fluid" id="imageslist">  
 <div class="button2-left"><div class="blank">

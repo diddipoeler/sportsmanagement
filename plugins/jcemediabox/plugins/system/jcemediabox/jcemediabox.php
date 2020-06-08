@@ -20,7 +20,7 @@
  *
  */
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Factory;
 jimport('joomla.plugin.plugin');
 
 /**
@@ -64,14 +64,14 @@ class plgSystemJCEMediabox extends JPlugin
      */
     public function onAfterDispatch()
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 
         // only in "site"
         if ($app->getClientId() !== 0) {
             return;
         }
 
-        $document = JFactory::getDocument();
+        $document = Factory::getDocument();
         $docType = $document->getType();
 
         // only in html pages
@@ -79,7 +79,7 @@ class plgSystemJCEMediabox extends JPlugin
             return;
         }
 
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
 
         // Causes issue in Safari??
         $pop = $app->input->getInt('pop');
