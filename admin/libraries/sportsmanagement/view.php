@@ -147,7 +147,10 @@ class sportsmanagementView extends HtmlView
 		{
 			$this->sortDirection = $this->state->get('list.direction');
 			$this->sortColumn    = $this->state->get('list.ordering');
-            $this->saveOrder = $this->sortColumn == 'ordering';
+            //$this->saveOrder = $this->sortColumn == 'ordering';
+            $this->saveOrder = true;
+            //$ordering   = ($this->sortColumn == 'ordering');
+            $this->ordering = true;
 		}
 
 		if (ComponentHelper::getParams($this->option)->get('cfg_which_database'))

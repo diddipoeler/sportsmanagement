@@ -18,6 +18,11 @@ use Joomla\CMS\Router\Route;
 
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+//$this->saveOrder = $this->sortColumn == 'ordering';
+//echo 'sortColumn<pre>'.print_r($this->sortColumn,true).'</pre>';
+//echo 'sortDirection<pre>'.print_r($this->sortDirection,true).'</pre>';
+//echo 'saveOrder<pre>'.print_r($this->saveOrder,true).'</pre>';
+
 ?>
 <div id="editcell">
     <table class="<?php echo $this->table_data_class; ?>">
@@ -88,7 +93,6 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		$k = 0;
 		for ($i = 0, $n = count($this->items); $i < $n; $i++)
 		{
-		  $ordering   = ($this->sortColumn == 'ordering');
 			$row        = &$this->items[$i];
 			$link       = Route::_('index.php?option=com_sportsmanagement&task=agegroup.edit&id=' . $row->id);
 			$canEdit    = $this->user->authorise('core.edit', 'com_sportsmanagement');
@@ -184,23 +188,15 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     </div>
                 </td>
                 <td class="order">
+                <?php if ($this->saveOrder) : ?>
                 	<?php if ($this->sortDirection == 'asc') : ?>
-								<span><?php echo $this->pagination->orderUpIcon($i, $i > 0, 'agegroup.orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-								<span><?php echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'agegroup.orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+								<span><?php echo $this->pagination->orderUpIcon($i, $i > 0, 'agegroup.orderup', 'JLIB_HTML_MOVE_UP', $this->ordering); ?></span>
+								<span><?php echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'agegroup.orderdown', 'JLIB_HTML_MOVE_DOWN', $this->ordering); ?></span>
 							<?php elseif ($this->sortDirection == 'desc') : ?>
-								<span><?php echo $this->pagination->orderUpIcon($i, $i > 0, 'agegroup.orderdown', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-								<span><?php echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'agegroup.orderup', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+								<span><?php echo $this->pagination->orderUpIcon($i, $i > 0, 'agegroup.orderdown', 'JLIB_HTML_MOVE_UP', $this->ordering); ?></span>
+								<span><?php echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'agegroup.orderup', 'JLIB_HTML_MOVE_DOWN', $this->ordering); ?></span>
 							<?php endif; ?>
-                
-                <!--
-                        <span>
-                            <?php echo $this->pagination->orderUpIcon($i, $i > 0, 'agegroup.orderup', 'JLIB_HTML_MOVE_UP', true); ?>
-                        </span>
-                    <span>
-                            <?php echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'agegroup.orderdown', 'JLIB_HTML_MOVE_DOWN', true); ?>
-                            
-                        </span>
-                    -->    
+                <?php endif; ?>
                         <?php $disabled = $this->saveOrder ? '' : 'disabled="disabled"'; ?>
                     <input type="text" name="order[]" size="5"
                            value="<?php echo $row->ordering; ?>" <?php echo $disabled; ?>
