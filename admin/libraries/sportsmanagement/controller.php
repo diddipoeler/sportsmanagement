@@ -51,6 +51,26 @@ class JSMControllerAdmin extends AdminController
 		$this->jsmoption = $this->jsmjinput->getCmd('option');
 
 	}
+    
+    /**
+	 * Method to save the submitted ordering values for records.
+	 *
+	 * Overrides JControllerAdmin::saveorder to check the core.admin permission.
+	 *
+	 * @return  boolean  True on success
+	 *
+	 * @since   1.6
+	 */
+	public function saveorder()
+	{
+		if (!JFactory::getUser()->authorise('core.admin', $this->option))
+		{
+			JError::raiseError(500, JText::_('JERROR_ALERTNOAUTHOR'));
+			jexit();
+		}
+
+		return parent::saveorder();
+	}
 
 	/**
 	 * JSMControllerAdmin::cancel()
