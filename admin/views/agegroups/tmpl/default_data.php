@@ -184,10 +184,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     </div>
                 </td>
                 <td class="order">
-                	<?php if ($listDirn == 'asc') : ?>
+                	<?php if ($this->sortDirection == 'asc') : ?>
 								<span><?php echo $this->pagination->orderUpIcon($i, $i > 0, 'agegroup.orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
 								<span><?php echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'agegroup.orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
-							<?php elseif ($listDirn == 'desc') : ?>
+							<?php elseif ($this->sortDirection == 'desc') : ?>
 								<span><?php echo $this->pagination->orderUpIcon($i, $i > 0, 'agegroup.orderdown', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
 								<span><?php echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'agegroup.orderup', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
 							<?php endif; ?>
