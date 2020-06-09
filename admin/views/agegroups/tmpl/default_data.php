@@ -88,6 +88,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		$k = 0;
 		for ($i = 0, $n = count($this->items); $i < $n; $i++)
 		{
+		  $ordering   = ($this->sortColumn == 'ordering');
 			$row        = &$this->items[$i];
 			$link       = Route::_('index.php?option=com_sportsmanagement&task=agegroup.edit&id=' . $row->id);
 			$canEdit    = $this->user->authorise('core.edit', 'com_sportsmanagement');
@@ -183,13 +184,24 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     </div>
                 </td>
                 <td class="order">
+                	<?php if ($listDirn == 'asc') : ?>
+								<span><?php echo $this->pagination->orderUpIcon($i, $i > 0, 'agegroup.orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
+								<span><?php echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'agegroup.orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+							<?php elseif ($listDirn == 'desc') : ?>
+								<span><?php echo $this->pagination->orderUpIcon($i, $i > 0, 'agegroup.orderdown', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
+								<span><?php echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'agegroup.orderup', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+							<?php endif; ?>
+                
+                <!--
                         <span>
                             <?php echo $this->pagination->orderUpIcon($i, $i > 0, 'agegroup.orderup', 'JLIB_HTML_MOVE_UP', true); ?>
                         </span>
                     <span>
                             <?php echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'agegroup.orderdown', 'JLIB_HTML_MOVE_DOWN', true); ?>
-                            <?php $disabled = true ? '' : 'disabled="disabled"'; ?>
+                            
                         </span>
+                    -->    
+                        <?php $disabled = $this->saveOrder ? '' : 'disabled="disabled"'; ?>
                     <input type="text" name="order[]" size="5"
                            value="<?php echo $row->ordering; ?>" <?php echo $disabled; ?>
                            class="form-control form-control-inline" style="text-align: center"/>
