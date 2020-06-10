@@ -23,6 +23,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 //echo 'sortDirection<pre>'.print_r($this->sortDirection,true).'</pre>';
 //echo 'saveOrder<pre>'.print_r($this->saveOrder,true).'</pre>';
 
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+if ($this->saveOrder && !empty($this->items))
+{
+HTMLHelper::_('draggablelist.draggable');
+}    
+}    
 ?>
 <div id="editcell">
     <table class="<?php echo $this->table_data_class; ?>">
@@ -88,7 +95,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             </td>
         </tr>
         </tfoot>
-        <tbody>
+        <tbody <?php if ( $this->saveOrder && version_compare(substr(JVERSION, 0, 3), '4.0', 'ge') ) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($listDirn); ?>" data-nested="true"<?php endif; ?>>
 		<?php
 		$k = 0;
 		for ($i = 0, $n = count($this->items); $i < $n; $i++)
