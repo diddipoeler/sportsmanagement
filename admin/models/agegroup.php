@@ -89,7 +89,9 @@ class sportsmanagementModelagegroup extends JSMModelAdmin
 		// Get the input
 		//$pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
         $pks = Factory::getApplication()->input->post->get('cid', array(), 'array');
-        Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' <pre>' . print_r($pks,true).'</pre>' ), Log::INFO, 'jsmerror');
+        $order = Factory::getApplication()->input->post->get('order', array(), 'array');
+        Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' pks<pre>' . print_r($pks,true).'</pre>' ), Log::INFO, 'jsmerror');
+        Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' order<pre>' . print_r($order,true).'</pre>' ), Log::INFO, 'jsmerror');
 
 		if (!$pks)
 		{
