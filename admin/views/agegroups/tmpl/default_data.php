@@ -22,12 +22,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 //echo 'sortColumn<pre>'.print_r($this->sortColumn,true).'</pre>';
 //echo 'sortDirection<pre>'.print_r($this->sortDirection,true).'</pre>';
 //echo 'saveOrder<pre>'.print_r($this->saveOrder,true).'</pre>';
-
+$this->dragable_group = '';
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
 if ($this->saveOrder && !empty($this->items))
 {
 HTMLHelper::_('draggablelist.draggable');
+$this->dragable_group = 'data-dragable-group="<?php echo $item->catid; ?>"';
 }    
 }    
 ?>
@@ -95,12 +96,16 @@ HTMLHelper::_('draggablelist.draggable');
             </td>
         </tr>
         </tfoot>
-        <tbody <?php if ( $this->saveOrder && version_compare(substr(JVERSION, 0, 3), '4.0', 'ge') ) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($listDirn); ?>" data-nested="true"<?php endif; ?>>
+        <tbody <?php if ( $this->saveOrder && version_compare(substr(JVERSION, 0, 3), '4.0', 'ge') ) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($this->sortDirection); ?>" data-nested="true"<?php endif; ?>>
 		<?php
 		$k = 0;
 		for ($i = 0, $n = count($this->items); $i < $n; $i++)
 		{
 			$row        = &$this->items[$i];
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+$this->dragable_group = 'data-dragable-group="'.$row->ordering.'"';
+} 
 			$link       = Route::_('index.php?option=com_sportsmanagement&task=agegroup.edit&id=' . $row->id);
 			$canEdit    = $this->user->authorise('core.edit', 'com_sportsmanagement');
 			$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $row->checked_out == $this->user->get('id') || $row->checked_out == 0;
