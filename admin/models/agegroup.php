@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -11,14 +9,14 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Filter\OutputFilter;
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModelagegroup
@@ -89,7 +87,9 @@ class sportsmanagementModelagegroup extends JSMModelAdmin
 		$option = $jinput->getCmd('option');
 
 		// Get the input
-		$pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
+		//$pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
+        $pks = Factory::getApplication()->input->post->get('cid', array(), 'array');
+        Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' <pre>' . print_r($pks,true).'</pre>' ), Log::INFO, 'jsmerror');
 
 		if (!$pks)
 		{
