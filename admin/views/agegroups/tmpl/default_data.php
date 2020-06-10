@@ -30,6 +30,9 @@ if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 <script>
 function saveorder(n, task) {
 console.warn('window.saveorder() is deprecated without a replacement!');
+console.warn('n ' + n);
+console.warn('task ' + task);
+
 }
 </script>    
     
