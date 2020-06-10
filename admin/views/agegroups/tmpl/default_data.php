@@ -26,6 +26,14 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 $this->dragable_group = '';
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
+?>    
+<script>
+function saveorder(n, task) {
+console.warn('window.saveorder() is deprecated without a replacement!');
+}
+</script>    
+    
+<?php    
 if ($this->saveOrder && !empty($this->items))
 {
 $saveOrderingUrl = 'index.php?option=com_sportsmanagement&task=agegroups.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';    
@@ -83,6 +91,7 @@ $this->dragable_group = 'data-dragable-group="<?php echo $item->catid; ?>"';
 				<?php
 				echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ORDERING', 'obj.ordering', $this->sortDirection, $this->sortColumn);
 				echo HTMLHelper::_('grid.order', $this->items, 'filesave.png', 'agegroups.saveorder');
+                
 				?>
             </th>
             <th width="20">
