@@ -211,10 +211,25 @@ $this->dragable_group = 'data-dragable-group="'.$row->ordering.'"';
 								<span><?php echo $this->pagination->orderDownIcon($i, $n, $row->ordering + 1, 'agegroups.orderup', 'JLIB_HTML_MOVE_DOWN', $this->ordering); ?></span>
 							<?php endif; ?>
                 <?php endif; ?>
-                        <?php $disabled = $this->saveOrder ? '' : 'disabled="disabled"'; ?>
+                        <?php $disabled = $this->saveOrder ? '' : 'disabled="disabled"';?>
                     <input type="text" name="order[]" size="5"
                            value="<?php echo $row->ordering; ?>" <?php echo $disabled; ?>
                            class="form-control form-control-inline" style="text-align: center"/>
+                           <?php
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+$iconClass = '';
+if (!$this->saveOrder)
+{
+$iconClass = ' inactive" title="' . Text::_('JORDERINGDISABLED');
+}
+?>
+<span class="sortable-handler <?php echo $iconClass ?>">
+<span class="fas fa-ellipsis-v" aria-hidden="true"></span>
+</span>
+<?php    
+}    
+?>
                 </td>
                 <td class="center"><?php echo $row->id; ?></td>
             </tr>
