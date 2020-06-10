@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage agegroups
@@ -11,10 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
@@ -41,10 +36,9 @@ class sportsmanagementViewagegroups extends sportsmanagementView
 	public function init()
 	{
 		$mdlSportsType = BaseDatabaseModel::getInstance('SportsType', 'sportsmanagementModel');
-
 		$this->table = Table::getInstance('agegroup', 'sportsmanagementTable');
 
-		// Build the html select list for sportstypes
+		/** Build the html select list for sportstypes */
 		$sportstypes[]     = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'), 'id', 'name');
 		$mdlSportsTypes    = BaseDatabaseModel::getInstance('SportsTypes', 'sportsmanagementModel');
 		$allSportstypes    = $mdlSportsTypes->getSportsTypes();
@@ -62,7 +56,7 @@ class sportsmanagementViewagegroups extends sportsmanagementView
 		);
 		unset($sportstypes);
 
-		// Build the html options for nation
+		/** Build the html options for nation */
 		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 
 		if ($res = JSMCountries::getCountryOptions())
@@ -113,7 +107,6 @@ class sportsmanagementViewagegroups extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-		// Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_TITLE');
 		ToolbarHelper::addNew('agegroup.add');
 		ToolbarHelper::editList('agegroup.edit');

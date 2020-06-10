@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage libraries
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die();
-
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -24,15 +20,10 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Log\Log;
 
-/**
- *
- * welche joomla version ?
- */
+/** welche joomla version ? */
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
-	/**
-	 * Include the component HTML helpers.
-	 */
+	/** Include the component HTML helpers. */
 	HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 	HTMLHelper::_('behavior.formvalidator');
 	HTMLHelper::_('behavior.keepalive');
@@ -124,12 +115,13 @@ class sportsmanagementView extends HtmlView
 			$this->uri = Factory::getURI();
 		}
 
-		/**
-		 * alles aufrufen was für die views benötigt wird
-		 */
-
+		/** alles aufrufen was für die views benötigt wird */
 		$this->document = Factory::getDocument();
 		$this->document->addStyleSheet(Uri::root() . 'components/com_sportsmanagement/assets/css/flex.css', 'text/css');
+        if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+        {
+        $this->document->addScript(Uri::root() . '/components/com_sportsmanagement/assets/js/joomla4functions.js');
+        }
 		$this->document->addScript(Uri::root() . '/components/com_sportsmanagement/assets/js/sm_functions.js');
 		$this->jinput         = $this->app->input;
 		$this->option         = $this->jinput->getCmd('option');
