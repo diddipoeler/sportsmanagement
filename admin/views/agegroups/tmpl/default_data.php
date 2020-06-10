@@ -114,7 +114,7 @@ $this->dragable_group = 'data-dragable-group="'.$row->ordering.'"';
 			$checked    = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'agegroups.', $canCheckin);
 			$canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.agegroup.' . $row->id) && $canCheckin;
 			?>
-            <tr class="<?php echo "row$k"; ?>">
+            <tr class="<?php echo "row$k"; ?>" <?php echo $this->dragable_group; ?>>
                 <td class="center">
 					<?php
 					echo $this->pagination->getRowOffset($i);
