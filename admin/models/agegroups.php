@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 
@@ -59,7 +55,6 @@ class sportsmanagementModelagegroups extends JSMModelList
 		parent::__construct($config);
 		$getDBConnection = sportsmanagementHelper::getDBConnection();
 		parent::setDbo($getDBConnection);
-
 	}
 
 	/**
@@ -69,14 +64,9 @@ class sportsmanagementModelagegroups extends JSMModelList
 	 */
 	function getListQuery()
 	{
-		// Create a new query object.
 		$this->jsmquery->clear();
-
-		// Select some fields
 		$this->jsmquery->select(implode(",", $this->filter_fields));
 		$this->jsmquery->select('uc.name AS editor');
-
-		// From table
 		$this->jsmquery->from('#__sportsmanagement_agegroup as obj');
 		$this->jsmquery->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = obj.sportstype_id');
 		$this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
@@ -135,9 +125,7 @@ class sportsmanagementModelagegroups extends JSMModelList
 		}
 
 		$this->jsmquery->from('#__sportsmanagement_agegroup as a');
-
 		$this->jsmquery->order('a.name ASC');
-
 		$this->jsmdb->setQuery($this->jsmquery);
 
 		if (!$result = $this->jsmdb->loadObjectList())
@@ -162,8 +150,6 @@ class sportsmanagementModelagegroups extends JSMModelList
 			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . TVarDumper::dump($this->context, 10, true) . ''), '');
 			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . TVarDumper::dump($this->context, 10, true) . ''), '');
 		}
-
-		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
 		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string');
@@ -174,12 +160,9 @@ class sportsmanagementModelagegroups extends JSMModelList
 		$this->setState('filter.search_nation', $temp_user_request);
 		$value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
 		$this->setState('list.limit', $value);
-
-		// List state information.
 		parent::populateState($ordering, $direction);
 		$value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);
-
 	}
 
 }
