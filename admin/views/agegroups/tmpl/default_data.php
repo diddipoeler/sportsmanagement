@@ -23,7 +23,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 //echo 'sortColumn<pre>'.print_r($this->sortColumn,true).'</pre>';
 //echo 'sortDirection<pre>'.print_r($this->sortDirection,true).'</pre>';
 //echo 'saveOrder<pre>'.print_r($this->saveOrder,true).'</pre>';
-$this->dragable_group = '';
+//$this->dragable_group = '';
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
 ?>    

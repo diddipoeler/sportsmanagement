@@ -134,6 +134,7 @@ class sportsmanagementView extends HtmlView
 		$this->jsmmessage     = '';
 		$this->jsmmessagetype = 'notice';
 		$this->state          = $this->get('State');
+        $this->dragable_group = '';
 
 		if (isset($this->state))
 		{
