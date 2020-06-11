@@ -129,18 +129,20 @@ $this->dragable_group = 'data-dragable-group="<?php echo $item->catid; ?>"';
         <tbody <?php if ( $this->saveOrder && version_compare(substr(JVERSION, 0, 3), '4.0', 'ge') ) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($this->sortDirection); ?>" data-nested="true"<?php endif; ?>>
 		<?php
 		$k = 0;
-		for ($this->count_i = 0, $this->pagination->total; $this->count_i < $this->pagination->total; $this->count_i++)
+		//for ($this->count_i = 0, $this->pagination->total; $this->count_i < $this->pagination->total; $this->count_i++)
+        foreach ($this->items as $i => $this->item)
 		{
-			$this->datarow        = &$this->items[$this->count_i];
+			//$this->item        = &$this->items[$this->count_i];
+            $this->count_i = $i;
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
-$this->dragable_group = 'data-dragable-group="'.$this->datarow->ordering.'"';
+$this->dragable_group = 'data-dragable-group="'.$this->item->ordering.'"';
 } 
-			$link       = Route::_('index.php?option=com_sportsmanagement&task=agegroup.edit&id=' . $this->datarow->id);
+			$link       = Route::_('index.php?option=com_sportsmanagement&task=agegroup.edit&id=' . $this->item->id);
 			$canEdit    = $this->user->authorise('core.edit', 'com_sportsmanagement');
-			$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $this->datarow->checked_out == $this->user->get('id') || $this->datarow->checked_out == 0;
-			$checked    = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->datarow->checked_out_time, 'agegroups.', $canCheckin);
-			$canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.agegroup.' . $this->datarow->id) && $canCheckin;
+			$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $this->item->checked_out == $this->user->get('id') || $this->item->checked_out == 0;
+			$checked    = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'agegroups.', $canCheckin);
+			$canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.agegroup.' . $this->item->id) && $canCheckin;
 			?>
             <tr class="<?php echo "row$k"; ?>" <?php echo $this->dragable_group; ?>>
                 <td class="center">
@@ -150,50 +152,50 @@ $this->dragable_group = 'data-dragable-group="'.$this->datarow->ordering.'"';
                 </td>
                 <td class="center">
 					<?php
-					echo HTMLHelper::_('grid.id', $this->count_i, $this->datarow->id);
+					echo HTMLHelper::_('grid.id', $this->count_i, $this->item->id);
 					?>
                 </td>
 				<?php
 				$inputappend = '';
 				?>
                 <td class="center">
-					<?php if ($this->datarow->checked_out) : ?>
-						<?php echo HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->datarow->editor, $this->datarow->checked_out_time, 'agegroups.', $canCheckin); ?>
+					<?php if ($this->item->checked_out) : ?>
+						<?php echo HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->item->editor, $this->item->checked_out_time, 'agegroups.', $canCheckin); ?>
 					<?php endif; ?>
 					<?php if ($canEdit) : ?>
-                        <a href="<?php echo Route::_('index.php?option=com_sportsmanagement&task=agegroup.edit&id=' . (int) $this->datarow->id); ?>">
-							<?php echo $this->escape($this->datarow->name); ?></a>
+                        <a href="<?php echo Route::_('index.php?option=com_sportsmanagement&task=agegroup.edit&id=' . (int) $this->item->id); ?>">
+							<?php echo $this->escape($this->item->name); ?></a>
 					<?php else : ?>
-						<?php echo $this->escape($this->datarow->name); ?>
+						<?php echo $this->escape($this->item->name); ?>
 					<?php endif; ?>
                     <input tabindex="2" type="hidden" size="30" maxlength="64" class="form-control form-control-inline"
-                           name="name<?php echo $this->datarow->id; ?>" value="<?php echo $this->datarow->name; ?>"
+                           name="name<?php echo $this->item->id; ?>" value="<?php echo $this->item->name; ?>"
                            onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked = true"/>
 
 
 					<?php //echo $checked;  ?>
 
-					<?php //echo $this->datarow->name;  ?>
+					<?php //echo $this->item->name;  ?>
                     <p class="smallsub">
-						<?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($this->datarow->alias)); ?></p>
+						<?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($this->item->alias)); ?></p>
                 </td>
 				<?php ?>
 
 
-                <td><?php echo $this->datarow->age_from; ?></td>
-                <td><?php echo $this->datarow->age_to; ?></td>
-                <td><?php echo $this->datarow->deadline_day; ?></td>
-                <td class="center"><?php echo JSMCountries::getCountryFlag($this->datarow->country); ?></td>
+                <td><?php echo $this->item->age_from; ?></td>
+                <td><?php echo $this->item->age_to; ?></td>
+                <td><?php echo $this->item->deadline_day; ?></td>
+                <td class="center"><?php echo JSMCountries::getCountryFlag($this->item->country); ?></td>
 
                 <td class="center">
 					<?php
-					if (empty($this->datarow->picture) || !File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $this->datarow->picture))
+					if (empty($this->item->picture) || !File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $this->item->picture))
 					{
-						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE') . $this->datarow->picture;
+						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE') . $this->item->picture;
                         $image_attributes['title'] = $imageTitle;
 						echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/delete.png', $imageTitle, $image_attributes);
 					}
-                    elseif ($this->datarow->picture == sportsmanagementHelper::getDefaultPlaceholder("player"))
+                    elseif ($this->item->picture == sportsmanagementHelper::getDefaultPlaceholder("player"))
 					{
 						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
                         $image_attributes['title'] = $imageTitle;
@@ -201,12 +203,12 @@ $this->dragable_group = 'data-dragable-group="'.$this->datarow->ordering.'"';
 					}
 					else
 					{
-						//$playerName = sportsmanagementHelper::formatName(null ,$this->datarow->firstname, $this->datarow->nickname, $this->datarow->lastname, 0);
-						//echo sportsmanagementHelper::getPictureThumb($this->datarow->picture, $playerName, 0, 21, 4);
+						//$playerName = sportsmanagementHelper::formatName(null ,$this->item->firstname, $this->item->nickname, $this->item->lastname, 0);
+						//echo sportsmanagementHelper::getPictureThumb($this->item->picture, $playerName, 0, 21, 4);
 						?>
-                        <a href="<?php echo Uri::root() . $this->datarow->picture; ?>" title="<?php echo $this->datarow->name; ?>"
+                        <a href="<?php echo Uri::root() . $this->item->picture; ?>" title="<?php echo $this->item->name; ?>"
                            class="modal">
-                            <img src="<?php echo Uri::root() . $this->datarow->picture; ?>" alt="<?php echo $this->datarow->name; ?>"
+                            <img src="<?php echo Uri::root() . $this->item->picture; ?>" alt="<?php echo $this->item->name; ?>"
                                  width="20"/>
                         </a>
 						<?PHP
@@ -214,17 +216,17 @@ $this->dragable_group = 'data-dragable-group="'.$this->datarow->ordering.'"';
 					?>
                 </td>
 
-                <td class=""><?php echo Text::_($this->datarow->sportstype); ?></td>
+                <td class=""><?php echo Text::_($this->item->sportstype); ?></td>
                 <td class="center">
                     <div class="btn-group">
-						<?php echo HTMLHelper::_('jgrid.published', $this->datarow->published, $this->count_i, 'agegroups.', $canChange, 'cb'); ?>
+						<?php echo HTMLHelper::_('jgrid.published', $this->item->published, $this->count_i, 'agegroups.', $canChange, 'cb'); ?>
 						<?php
 						// Create dropdown items and render the dropdown list.
 						if ($canChange)
 						{
-							HTMLHelper::_('actionsdropdown.' . ((int) $this->datarow->published === 2 ? 'un' : '') . 'archive', 'cb' . $this->count_i, 'agegroups');
-							HTMLHelper::_('actionsdropdown.' . ((int) $this->datarow->published === -2 ? 'un' : '') . 'trash', 'cb' . $this->count_i, 'agegroups');
-							echo HTMLHelper::_('actionsdropdown.render', $this->escape($this->datarow->name));
+							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === 2 ? 'un' : '') . 'archive', 'cb' . $this->count_i, 'agegroups');
+							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === -2 ? 'un' : '') . 'trash', 'cb' . $this->count_i, 'agegroups');
+							echo HTMLHelper::_('actionsdropdown.render', $this->escape($this->item->name));
 						}
 						?>
                     </div>
@@ -235,7 +237,7 @@ echo $this->loadTemplate('data_order');
 ?>
 
                 </td>
-                <td class="center"><?php echo $this->datarow->id; ?></td>
+                <td class="center"><?php echo $this->item->id; ?></td>
             </tr>
 			<?php
 			$k = 1 - $k;
