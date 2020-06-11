@@ -332,11 +332,17 @@ abstract class sportsmanagementHelper
 				$query->where('up.user_id = ' . $user_id);
 				$query->where('up.profile_key LIKE ' . $db->Quote('' . 'jsmprofile.%' . ''));
 
-				// $query->where('up.profile_value LIKE ' . $db->Quote('' . Uri::root() . ''));
+try
+		{
 				$db->setQuery($query);
-
 				$row = $db->loadAssocList('profile_key');
-
+ }
+		catch (Exception $e)
+		{
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');
+			return Factory::getDbo();
+		}
 				// Log::add(Text::_('row <pre>'.print_r($row,true).'</pre>'), Log::INFO, 'jsmerror');
 
 				if ($row['jsmprofile.databaseaccess']['profile_value'])
