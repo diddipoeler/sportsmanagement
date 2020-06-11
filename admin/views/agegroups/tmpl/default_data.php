@@ -129,7 +129,7 @@ $this->dragable_group = 'data-dragable-group="<?php echo $item->catid; ?>"';
         <tbody <?php if ( $this->saveOrder && version_compare(substr(JVERSION, 0, 3), '4.0', 'ge') ) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($this->sortDirection); ?>" data-nested="true"<?php endif; ?>>
 		<?php
 		$k = 0;
-		for ($i = 0, $n = count($this->items); $i < $n; $i++)
+		for ($i = 0, $this->pagination->total; $i < $this->pagination->total; $i++)
 		{
 			$this->datarow        = &$this->items[$i];
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))

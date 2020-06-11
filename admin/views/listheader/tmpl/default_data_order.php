@@ -17,10 +17,10 @@ use Joomla\CMS\Language\Text;
 <?php if ($this->saveOrder) : ?>
 <?php if ($this->sortDirection == 'asc') : ?>
 <span><?php echo $this->pagination->orderUpIcon($i, $this->datarow->ordering - 1, $this->view.'.orderup', 'JLIB_HTML_MOVE_UP', $this->ordering); ?></span>
-<span><?php echo $this->pagination->orderDownIcon($i, $n, $this->datarow->ordering + 1, $this->view.'.orderdown', 'JLIB_HTML_MOVE_DOWN', $this->ordering); ?></span>
+<span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, $this->datarow->ordering + 1, $this->view.'.orderdown', 'JLIB_HTML_MOVE_DOWN', $this->ordering); ?></span>
 <?php elseif ($this->sortDirection == 'desc') : ?>
 <span><?php echo $this->pagination->orderUpIcon($i, $this->datarow->ordering - 1, $this->view.'.orderdown', 'JLIB_HTML_MOVE_UP', $this->ordering); ?></span>
-<span><?php echo $this->pagination->orderDownIcon($i, $n, $this->datarow->ordering + 1, $this->view.'.orderup', 'JLIB_HTML_MOVE_DOWN', $this->ordering); ?></span>
+<span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, $this->datarow->ordering + 1, $this->view.'.orderup', 'JLIB_HTML_MOVE_DOWN', $this->ordering); ?></span>
 <?php endif; ?>
 <?php endif; ?>
 <?php $disabled = $this->saveOrder ? '' : 'disabled="disabled"';?>
