@@ -129,9 +129,9 @@ $this->dragable_group = 'data-dragable-group="<?php echo $item->catid; ?>"';
         <tbody <?php if ( $this->saveOrder && version_compare(substr(JVERSION, 0, 3), '4.0', 'ge') ) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($this->sortDirection); ?>" data-nested="true"<?php endif; ?>>
 		<?php
 		$k = 0;
-		for ($i = 0, $this->pagination->total; $i < $this->pagination->total; $i++)
+		for ($this->count_i = 0, $this->pagination->total; $this->count_i < $this->pagination->total; $this->count_i++)
 		{
-			$this->datarow        = &$this->items[$i];
+			$this->datarow        = &$this->items[$this->count_i];
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
 $this->dragable_group = 'data-dragable-group="'.$this->datarow->ordering.'"';
@@ -139,18 +139,18 @@ $this->dragable_group = 'data-dragable-group="'.$this->datarow->ordering.'"';
 			$link       = Route::_('index.php?option=com_sportsmanagement&task=agegroup.edit&id=' . $this->datarow->id);
 			$canEdit    = $this->user->authorise('core.edit', 'com_sportsmanagement');
 			$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $this->datarow->checked_out == $this->user->get('id') || $this->datarow->checked_out == 0;
-			$checked    = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $this->datarow->checked_out_time, 'agegroups.', $canCheckin);
+			$checked    = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->datarow->checked_out_time, 'agegroups.', $canCheckin);
 			$canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.agegroup.' . $this->datarow->id) && $canCheckin;
 			?>
             <tr class="<?php echo "row$k"; ?>" <?php echo $this->dragable_group; ?>>
                 <td class="center">
 					<?php
-					echo $this->pagination->getRowOffset($i);
+					echo $this->pagination->getRowOffset($this->count_i);
 					?>
                 </td>
                 <td class="center">
 					<?php
-					echo HTMLHelper::_('grid.id', $i, $this->datarow->id);
+					echo HTMLHelper::_('grid.id', $this->count_i, $this->datarow->id);
 					?>
                 </td>
 				<?php
@@ -158,7 +158,7 @@ $this->dragable_group = 'data-dragable-group="'.$this->datarow->ordering.'"';
 				?>
                 <td class="center">
 					<?php if ($this->datarow->checked_out) : ?>
-						<?php echo HTMLHelper::_('jgrid.checkedout', $i, $this->datarow->editor, $this->datarow->checked_out_time, 'agegroups.', $canCheckin); ?>
+						<?php echo HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->datarow->editor, $this->datarow->checked_out_time, 'agegroups.', $canCheckin); ?>
 					<?php endif; ?>
 					<?php if ($canEdit) : ?>
                         <a href="<?php echo Route::_('index.php?option=com_sportsmanagement&task=agegroup.edit&id=' . (int) $this->datarow->id); ?>">
@@ -168,7 +168,7 @@ $this->dragable_group = 'data-dragable-group="'.$this->datarow->ordering.'"';
 					<?php endif; ?>
                     <input tabindex="2" type="hidden" size="30" maxlength="64" class="form-control form-control-inline"
                            name="name<?php echo $this->datarow->id; ?>" value="<?php echo $this->datarow->name; ?>"
-                           onchange="document.getElementById('cb<?php echo $i; ?>').checked = true"/>
+                           onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked = true"/>
 
 
 					<?php //echo $checked;  ?>
@@ -217,13 +217,13 @@ $this->dragable_group = 'data-dragable-group="'.$this->datarow->ordering.'"';
                 <td class=""><?php echo Text::_($this->datarow->sportstype); ?></td>
                 <td class="center">
                     <div class="btn-group">
-						<?php echo HTMLHelper::_('jgrid.published', $this->datarow->published, $i, 'agegroups.', $canChange, 'cb'); ?>
+						<?php echo HTMLHelper::_('jgrid.published', $this->datarow->published, $this->count_i, 'agegroups.', $canChange, 'cb'); ?>
 						<?php
 						// Create dropdown items and render the dropdown list.
 						if ($canChange)
 						{
-							HTMLHelper::_('actionsdropdown.' . ((int) $this->datarow->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'agegroups');
-							HTMLHelper::_('actionsdropdown.' . ((int) $this->datarow->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'agegroups');
+							HTMLHelper::_('actionsdropdown.' . ((int) $this->datarow->published === 2 ? 'un' : '') . 'archive', 'cb' . $this->count_i, 'agegroups');
+							HTMLHelper::_('actionsdropdown.' . ((int) $this->datarow->published === -2 ? 'un' : '') . 'trash', 'cb' . $this->count_i, 'agegroups');
 							echo HTMLHelper::_('actionsdropdown.render', $this->escape($this->datarow->name));
 						}
 						?>
