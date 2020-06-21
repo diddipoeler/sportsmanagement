@@ -385,7 +385,7 @@ class sportsmanagementView extends HtmlView
 						HTMLHelper::_('select.options', $myoptions, 'value', 'text', $this->state->get('filter.geo_daten'), true)
 					);
 
-					if (isset($this->search_nation) && is_object($this->association))
+					if (isset($this->search_nation) && is_array($this->association))
 					{
 						JHtmlSidebar::addFilter(
 							Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'),
