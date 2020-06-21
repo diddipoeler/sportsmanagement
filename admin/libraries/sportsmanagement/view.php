@@ -385,14 +385,14 @@ class sportsmanagementView extends HtmlView
 						HTMLHelper::_('select.options', $myoptions, 'value', 'text', $this->state->get('filter.geo_daten'), true)
 					);
 
-					if (isset($this->search_nation) && is_array($this->association))
-					{
-						JHtmlSidebar::addFilter(
-							Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'),
-							'filter_association',
-							HTMLHelper::_('select.options', $this->association, 'value', 'text', $this->state->get('filter.association'), true)
-						);
-					}
+//					if (isset($this->search_nation) && is_array($this->association))
+//					{
+//						JHtmlSidebar::addFilter(
+//							Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'),
+//							'filter_association',
+//							HTMLHelper::_('select.options', $this->association, 'value', 'text', $this->state->get('filter.association'), true)
+//						);
+//					}
 
 					break;
 				case 'smquotes':
@@ -417,6 +417,20 @@ class sportsmanagementView extends HtmlView
 					HTMLHelper::_('select.options', $this->search_nation, 'value', 'text', $this->state->get('filter.search_nation'), true)
 				);
 			}
+            
+            switch ($this->view)
+			{
+			 case 'clubs':
+					if (isset($this->search_nation) && is_array($this->association))
+					{
+						JHtmlSidebar::addFilter(
+							Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'),
+							'filter_association',
+							HTMLHelper::_('select.options', $this->association, 'value', 'text', $this->state->get('filter.association'), true)
+						);
+					}             
+             break;
+             }
 
 			if (isset($this->federation))
 			{
