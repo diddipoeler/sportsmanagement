@@ -1,9 +1,6 @@
 <?php
-
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -12,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\Archive\Archive;
@@ -22,6 +17,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModelsmimageimport
@@ -58,7 +54,6 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel
 	public function getTable($type = 'Pictures', $prefix = 'sportsmanagementTable', $config = array())
 	{
 		$config['dbo'] = sportsmanagementHelper::getDBConnection();
-
 		return Table::getInstance($type, $prefix, $config);
 	}
 
@@ -73,14 +68,11 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		// Get the form.
 		$form = $this->loadForm('com_sportsmanagement.smimageimport', 'smimageimport', array('control' => 'jform', 'load_data' => $loadData));
-
 		if (empty($form))
 		{
 			return false;
 		}
-
 		return $form;
 	}
 
@@ -92,14 +84,9 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel
 	function import()
 	{
 		$app = Factory::getApplication();
-
-		// $option = Factory::getApplication()->input->getCmd('option');
-		// $post = Factory::getApplication()->input->post->getArray(array());
 		$option = $app->input->getCmd('option');
 		$post   = $app->input->post->getArray(array());
-
 		$server = 'http://sportsmanagement.fussballineuropa.de/jdownloads/';
-
 		$cid = $post['cid'];
 
 		foreach ($cid as $key => $value)
@@ -108,18 +95,11 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel
 			$folder    = $post['folder'][$value];
 			$directory = $post['directory'][$value];
 			$file      = $post['file'][$value];
-
 			$folder = str_replace(' ', '%20', $folder);
-
 			$servercopy = $server . $folder . '/' . $file;
 
-			// Set the target directory
+			/** Set the target directory */
 			$base_Dir = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DS;
-
-			// $file['name'] = basename($servercopy);
-			// $filename = $file['name'];
-			// $filepath = $base_Dir . $filename;
-			// $file['name'] = $file;
 			$filename = $file;
 			$filepath = $base_Dir . $filename;
 
@@ -145,26 +125,20 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel
 
 					if ($result === false)
 					{
-						$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_UNZIP_ERROR'), 'error');
-
+                        Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_UNZIP_ERROR'), Log::ERROR, 'jsmerror');
 						return false;
 					}
 					else
 					{
-						$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_UNZIP_DONE', $name), 'notice');
-
-						// Must be a valid primary key value.
+                        Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_UNZIP_DONE', $name), Log::NOTICE, 'jsmerror');
 						$object->id        = $value;
 						$object->published = 1;
-
-						// Update their details in the users table using id as the primary key.
 						$result = Factory::getDbo()->updateObject('#__sportsmanagement_pictures', $object, 'id');
 					}
 				}
 				else
 				{
-					$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_NO_ZIP_ERROR'), 'error');
-
+                    Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_NO_ZIP_ERROR'), Log::ERROR, 'jsmerror');
 					return false;
 				}
 			}
