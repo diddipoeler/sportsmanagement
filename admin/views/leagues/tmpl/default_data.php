@@ -230,18 +230,11 @@ use Joomla\CMS\Router\Route;
 					?>
                 </div>
             </td>
-            <td class="order">
-                    <span>
-                        <?php echo $this->pagination->orderUpIcon($i, $i > 0, 'leagues.orderup', 'JLIB_HTML_MOVE_UP', 'obj.ordering'); ?>
-                    </span>
-                <span>
-                        <?php echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'leagues.orderdown', 'JLIB_HTML_MOVE_DOWN', 'obj.ordering'); ?>
-                        <?php $disabled = true ? '' : 'disabled="disabled"'; ?>
-                    </span>
-                <input type="text" name="order[]" size="5"
-                       value="<?php echo $row->ordering; ?>" <?php echo $disabled; ?>
-                       class="form-control form-control-inline" style="text-align: center"/>
-            </td>
+<td class="order" id="defaultdataorder">
+<?php
+echo $this->loadTemplate('data_order');
+?>
+</td>
             <td class="center"><?php echo $row->id; ?></td>
         </tr>
 		<?php

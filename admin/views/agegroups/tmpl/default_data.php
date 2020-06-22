@@ -231,12 +231,11 @@ $this->dragable_group = 'data-dragable-group="'.$this->item->ordering.'"';
 						?>
                     </div>
                 </td>
-                <td class="order">
+<td class="order" id="defaultdataorder">
 <?php
 echo $this->loadTemplate('data_order');
 ?>
-
-                </td>
+</td>
                 <td class="center"><?php echo $this->item->id; ?></td>
             </tr>
 			<?php
