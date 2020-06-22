@@ -17,8 +17,8 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 
-$templatesToLoad = array('footer', 'listheader');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+//$templatesToLoad = array('footer', 'listheader');
+//sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 //$this->saveOrder = $this->sortColumn == 'ordering';
 //echo 'sortColumn<pre>'.print_r($this->sortColumn,true).'</pre>';
 //echo 'sortDirection<pre>'.print_r($this->sortDirection,true).'</pre>';
@@ -51,7 +51,6 @@ if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 //		Joomla.submitform( task );
 //}
 </script>    
-    
 <?php    
 if ($this->saveOrder && !empty($this->items))
 {

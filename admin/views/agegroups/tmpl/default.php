@@ -35,5 +35,8 @@ echo $this->loadTemplate('joomla_version');
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>"/>
 <?php echo HTMLHelper::_('form.token') . "\n"; ?>
 </form>
-<?PHP
-echo $this->loadTemplate('footer');
+<div>
+	<?PHP
+	echo $this->loadTemplate('footer');
+	?>
+</div> 

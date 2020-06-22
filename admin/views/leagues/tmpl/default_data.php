@@ -13,8 +13,43 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
-
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+?>    
+<script>
+//function saveorder(n, task) {
+//console.warn('window.saveorder() is deprecated without a replacement!');
+//console.warn('n ' + n);
+//console.warn('task ' + task);
+//checkAll_button( n, task );
+//}
+//
+//function checkAll_button(n, task) {
+//console.warn('window.checkAll_button() is deprecated without a replacement!');
+//		task = task ? task : 'saveorder';
+//		var j, box;
+//		for ( j = 0; j <= n; j++ ) {
+//			box = document.adminForm[ 'cb' + j ];
+//			if ( box ) {
+//				box.checked = true;
+//			} else {
+//				alert( "You cannot change the order of items, as an item in the list is `Checked Out`" );
+//				return;
+//			}
+//		}
+//		Joomla.submitform( task );
+//}
+</script>    
+<?php    
+if ($this->saveOrder && !empty($this->items))
+{
+$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task=agegroups.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';    
+HTMLHelper::_('draggablelist.draggable');
+$this->dragable_group = 'data-dragable-group="<?php echo $item->catid; ?>"';
+}    
+}  
 ?>
+<div id="editcell">
 <table class="<?php echo $this->table_data_class; ?>">
     <thead>
     <tr>
@@ -243,4 +278,4 @@ echo $this->loadTemplate('data_order');
 	?>
     </tbody>
 </table>
-
+</div>
