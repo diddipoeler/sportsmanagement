@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage smimageimports
@@ -11,10 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -31,11 +26,10 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
  */
 class sportsmanagementViewsmimageimports extends sportsmanagementView
 {
+	
 	/**
-	 * sportsmanagementViewsmimageimports::display()
-	 *
-	 * @param   mixed  $tpl
-	 *
+	 * sportsmanagementViewsmimageimports::init()
+	 * 
 	 * @return void
 	 */
 	public function init()
@@ -43,7 +37,6 @@ class sportsmanagementViewsmimageimports extends sportsmanagementView
 		$checkimages = $this->model->getimagesxml();
 		$this->files = $this->model->getXMLFiles();
 
-		// Build the html select list
 		$folders[]        = HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_FOLDER'), 'id', 'name');
 		$allfolders       = $this->model->getXMLFolder();
 		$folders          = array_merge($folders, $allfolders);
@@ -57,20 +50,8 @@ class sportsmanagementViewsmimageimports extends sportsmanagementView
 			$this->state->get('filter.image_folder')
 		);
 
-		// $items = $this->get('Items');
-		// $total = $this->get('Total');
-		// $pagination = $this->get('Pagination');
-
-		// $this->option = $option;
-
 		$this->lists = $lists;
 
-		// $this->items  = $items;
-		// $this->pagination = $pagination;
-		// $this->request_url    = $uri->toString();
-
-		//        $this->addToolbar();
-		//		parent::display($tpl);
 	}
 
 	/**
@@ -80,18 +61,11 @@ class sportsmanagementViewsmimageimports extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-
-		$jinput = Factory::getApplication()->input;
-
-		// Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGES_IMPORT');
 		$this->icon  = 'images-import';
 		ToolbarHelper::custom('smimageimports.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
 		ToolbarHelper::divider();
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-		ToolbarHelper::preferences($jinput->getCmd('option'));
-
+        parent::addToolbar();
 	}
-
 
 }
