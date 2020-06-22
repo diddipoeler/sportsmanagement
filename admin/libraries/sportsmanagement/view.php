@@ -709,7 +709,8 @@ class sportsmanagementView extends HtmlView
 				case 'treetomatchs';
 				case 'smextxmleditors';
 				case 'smextxmleditor';
-					break;
+                case 'smimageimports';
+				break;
 				default:
 					/**
 					 * es gibt nur noch die ablage in den papierkorb
