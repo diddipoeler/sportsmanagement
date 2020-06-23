@@ -1013,6 +1013,16 @@ multiple="true"
 			<option value="1">JYES</option>
 		</field>		
 
+<field name="auto_completion_club_name" 
+    type="extensionradiobutton" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_AUTO_COMPLETION_CLUB_NAME" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_AUTO_COMPLETION_CLUB_NAME_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
 <!--
 <field name="show_option_projectteams_quickadd" 
     type="extensionradiobutton" 
