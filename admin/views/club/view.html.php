@@ -128,7 +128,8 @@ class sportsmanagementViewClub extends sportsmanagementView
 		}
         else
         {
-        $this->item->name = $this->item->name.' '.$this->item->founded.' e.V.';    
+        $this->item->name = $this->item->name.' '.$this->item->founded.' e.V.'; 
+        $this->form->setValue('name', $this->item->name);   
         }  
           
         }
