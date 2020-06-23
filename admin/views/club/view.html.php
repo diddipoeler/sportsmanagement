@@ -9,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Environment\Browser;
@@ -52,7 +50,7 @@ class sportsmanagementViewClub extends sportsmanagementView
 
 		if ($this->item->id)
 		{
-			// Alles ok
+			/** Alles ok */
 			if ($this->item->founded == '0000-00-00')
 			{
 				$this->item->founded = '';
@@ -94,9 +92,7 @@ class sportsmanagementViewClub extends sportsmanagementView
 			$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id);
 		}
 
-		/**
-		 * die mannschaften zum verein
-		 */
+		/** die mannschaften zum verein */
 		if ($this->item->id)
 		{
 			$this->teamsofclub = $this->model->teamsofclub($this->item->id);
@@ -122,6 +118,20 @@ class sportsmanagementViewClub extends sportsmanagementView
 
 		$params          = ComponentHelper::getParams($this->option);
 		$opencagedataapi = $params->get('opencagedata_api_clientid');
+        $auto_completion_club_name = $params->get('auto_completion_club_name');
+        
+        if ( $auto_completion_club_name && $this->item->founded )
+		{
+		if (preg_match("/".$this->item->founded."/i", $this->item->name ))
+		{
+		/** Es wurde eine Übereinstimmung gefunden */
+		}
+        else
+        {
+        $this->item->name = $this->item->name.' '.$this->item->founded.' e.V.';    
+        }  
+          
+        }
 
 		if ($opencagedataapi)
 		{
