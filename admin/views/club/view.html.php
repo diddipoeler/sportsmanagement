@@ -131,8 +131,10 @@ class sportsmanagementViewClub extends sportsmanagementView
         $this->item->name = $this->item->name.' '.$this->item->founded_year.' e.V.'; 
         $this->form->setValue('name', $this->item->name.' '.$this->item->founded_year.' e.V.');   
         }  
-          
         }
+
+//$this->app->enqueueMessage(Text::_($this->item->name), 'Error');
+//$this->app->enqueueMessage(Text::_($this->item->founded_year), 'Error');
 
 		if ($opencagedataapi)
 		{
