@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage controllers
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
@@ -41,8 +37,6 @@ class sportsmanagementControllerjoomleagueimports extends JSMControllerAdmin
 	function __construct($config = array())
 	{
 		parent::__construct($config);
-
-		// Reference global application object
 		$this->jsmapp    = Factory::getApplication();
 		$this->jsmjinput = $this->jsmapp->input;
 	}
@@ -108,9 +102,7 @@ class sportsmanagementControllerjoomleagueimports extends JSMControllerAdmin
 	 */
 	function importjoomleagueagegroup()
 	{
-
 		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list . '&layout=infofield', false));
-
 	}
 }
 
