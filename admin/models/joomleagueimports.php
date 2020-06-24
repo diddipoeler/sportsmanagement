@@ -15,9 +15,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\MVC\Model\ListModel;
-
-jimport('joomla.filesystem.file');
-
+use Joomla\CMS\Log\Log;
+use Joomla\CMS\Filesystem\File;
 
 $maxImportTime = 1920;
 
@@ -33,7 +32,6 @@ if ((int) ini_get('memory_limit') < (int) $maxImportMemory)
 	@ini_set('memory_limit', $maxImportMemory);
 }
 
-
 /**
  * sportsmanagementModeljoomleagueimports
  *
@@ -46,23 +44,14 @@ if ((int) ini_get('memory_limit') < (int) $maxImportMemory)
 class sportsmanagementModeljoomleagueimports extends ListModel
 {
 	static $db_num_rows = 0;
-
 	static $storeFailedColor = 'red';
-
 	static $storeSuccessColor = 'green';
-
 	static $existingInDbColor = 'orange';
-
 	static $storeInfo = 'black';
-
 	static $_success = array();
-
 	static $team_player = array();
-
 	static $project_referee = array();
-
 	static $team_staff = array();
-
 
 	/**
 	 * sportsmanagementModeljoomleagueimports::joomleaguesetagegroup()
@@ -178,15 +167,17 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		 *  zuerst noch überprüfen, ob der user
 		 *  überhaupt den zugriff auf die datenbank hat.
 		 */
-         
         if (version_compare(JSM_JVERSION, '4', 'eq'))
-				{
-					$jl_access = JDatabaseDriver::getInstance($option);
-				}
-				else
-				{
-					$jl_access = JDatabase::getInstance($option);
-				} 
+		{
+		$jl_access = JDatabaseDriver::getInstance($option);
+		}
+		else
+		{
+		$jl_access = JDatabase::getInstance($option);
+		}
+        
+        Log::add('option <pre>'.print_r($option,true).'</pre>', Log::NOTICE, 'jsmerror'); 
+        Log::add('access <pre>'.print_r($jl_access,true).'</pre>', Log::NOTICE, 'jsmerror');
 
 		/**
 		 * fehlende jl felder hinzufügen für alte versionen
