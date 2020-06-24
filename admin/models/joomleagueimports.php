@@ -179,8 +179,8 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		}
         $query  = $db->getQuery(true);
         
-        Log::add('option <pre>'.print_r($option,true).'</pre>', Log::NOTICE, 'jsmerror'); 
-        Log::add('db <pre>'.print_r($db,true).'</pre>', Log::NOTICE, 'jsmerror');
+//        Log::add('option <pre>'.print_r($option,true).'</pre>', Log::NOTICE, 'jsmerror'); 
+//        Log::add('db <pre>'.print_r($db,true).'</pre>', Log::NOTICE, 'jsmerror');
 
 		/**
 		 * fehlende jl felder hinzufügen für alte versionen
@@ -195,6 +195,8 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		}
 		catch (Exception $e)
 		{
+		  Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+				Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
 		}
 
 		try
@@ -207,6 +209,8 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		}
 		catch (Exception $e)
 		{
+		  Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+				Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
 		}
 
 		try
@@ -219,6 +223,8 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		}
 		catch (Exception $e)
 		{
+		  Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+				Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
 		}
 
 		try
@@ -231,6 +237,8 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		}
 		catch (Exception $e)
 		{
+		  Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+				Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
 		}
 
 		try
@@ -243,6 +251,8 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		}
 		catch (Exception $e)
 		{
+		  Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+				Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
 		}
 
 		try
@@ -255,6 +265,8 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		}
 		catch (Exception $e)
 		{
+		  Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+				Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
 		}
 
 		try
@@ -267,6 +279,8 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		}
 		catch (Exception $e)
 		{
+		  Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+				Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
 		}
 
 		try
@@ -279,6 +293,8 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		}
 		catch (Exception $e)
 		{
+		  Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+				Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
 		}
 
 		try
@@ -291,6 +307,8 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		}
 		catch (Exception $e)
 		{
+		  Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+				Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
 		}
 
 		try
@@ -303,6 +321,8 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		}
 		catch (Exception $e)
 		{
+		  Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+				Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
 		}
 
 		try
@@ -315,6 +335,8 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		}
 		catch (Exception $e)
 		{
+		  Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+				Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
 		}
 
 		try
@@ -327,6 +349,8 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		}
 		catch (Exception $e)
 		{
+		  Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+				Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
 		}
 
 		try
@@ -339,6 +363,8 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		}
 		catch (Exception $e)
 		{
+		  Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+				Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
 		}
 
 		try
@@ -351,6 +377,8 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		}
 		catch (Exception $e)
 		{
+		  Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+				Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
 		}
 
 		try
@@ -363,6 +391,8 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		}
 		catch (Exception $e)
 		{
+		  Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+				Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
 		}
 
 		try
@@ -375,6 +405,8 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		}
 		catch (Exception $e)
 		{
+		  Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+				Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
 		}
 
 		try
@@ -387,6 +419,8 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		}
 		catch (Exception $e)
 		{
+		  Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+				Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
 		}
 
 		try
@@ -399,6 +433,8 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		}
 		catch (Exception $e)
 		{
+		  Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+				Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
 		}
 
 		try
@@ -411,6 +447,8 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		}
 		catch (Exception $e)
 		{
+		  Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+				Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
 		}
 
 		try
@@ -423,6 +461,8 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		}
 		catch (Exception $e)
 		{
+		  Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+				Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
 		}
 
 	}
