@@ -159,9 +159,9 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		$option             = array(); // Prevent problems
 		$option['driver']   = $params->get('jl_dbtype');      //       Database driver name
 		$option['host']     = $params->get('jl_host') ? $params->get('jl_host') : $conf->get('host');     // Database host name
-		$option['user']     = $params->get('jl_user');        // User for database authentication
-		$option['password'] = $params->get('jl_password');    // Password for database authentication
-		$option['database'] = $params->get('jl_db');       // Database name
+		$option['user']     = $params->get('jl_user') ? $params->get('jl_user') : $conf->get('user');        // User for database authentication
+		$option['password'] = $params->get('jl_password') ? $params->get('jl_password') : $conf->get('password');    // Password for database authentication
+		$option['database'] = $params->get('jl_db') ? $params->get('jl_db') : $conf->get('db');       // Database name
 		$option['prefix']   = $params->get('jl_dbprefix');    //          Database prefix (may be empty)
 		/**
 		 *  zuerst noch überprüfen, ob der user
