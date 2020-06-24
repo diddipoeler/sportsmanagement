@@ -335,6 +335,7 @@ class sportsmanagementView extends HtmlView
 	protected function addToolbar()
 	{
 		$canDo = sportsmanagementHelper::getActions();
+        $myoptions = array();
 
 		// In der joomla 3 version kann man die filter setzen
 		if (version_compare(JVERSION, '3.0.0', 'ge'))
@@ -378,11 +379,19 @@ class sportsmanagementView extends HtmlView
 
 					$myoptions[] = HTMLHelper::_('select.option', '1', Text::_('JNO'));
 					$myoptions[] = HTMLHelper::_('select.option', '2', Text::_('JYES'));
-
 					JHtmlSidebar::addFilter(
 						Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN'),
 						'filter_geo_daten',
 						HTMLHelper::_('select.options', $myoptions, 'value', 'text', $this->state->get('filter.geo_daten'), true)
+					);
+                    unset($myoptions);
+                    
+                    $myoptions[] = HTMLHelper::_('select.option', '0', Text::_('JNO'));
+					$myoptions[] = HTMLHelper::_('select.option', '1', Text::_('JYES'));
+					JHtmlSidebar::addFilter(
+						Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_STANDARD_PICTURE'),
+						'filter_standard_picture',
+						HTMLHelper::_('select.options', $myoptions, 'value', 'text', $this->state->get('filter.standard_picture'), true)
 					);
 
 //					if (isset($this->search_nation) && is_array($this->association))
