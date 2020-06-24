@@ -82,13 +82,11 @@ class sportsmanagementModelClubs extends JSMModelList
 		{
 			$this->jsmdb->setQuery($this->jsmquery);
 			$results = $this->jsmdb->loadObjectList();
-
 			return $results;
 		}
 		catch (Exception $e)
 		{
 			$this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
-
 			return false;
 		}
 	}
@@ -121,6 +119,8 @@ class sportsmanagementModelClubs extends JSMModelList
 		$this->setState('filter.season', $temp_user_request);
 		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.geo_daten', 'filter_geo_daten', '');
 		$this->setState('filter.geo_daten', $temp_user_request);
+        $temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.geo_daten', 'filter_standard_picture', '');
+		$this->setState('filter.standard_picture', $temp_user_request);
 		$value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
 		$this->setState('list.limit', $value);
 		$value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
@@ -194,6 +194,11 @@ class sportsmanagementModelClubs extends JSMModelList
 		{
 			$this->jsmquery->where('a.associations = ' . $this->getState('filter.association'));
 		}
+        
+        if ( $this->getState('filter.standard_picture') )
+		{
+		$this->jsmquery->where('a.logo_big LIKE ' . $this->jsmdb->Quote('%' . 'placeholder' . '%'));  
+        }
 
 		$this->jsmquery->order(
 			$this->jsmdb->escape($this->getState('list.ordering', 'a.name')) . ' ' .
