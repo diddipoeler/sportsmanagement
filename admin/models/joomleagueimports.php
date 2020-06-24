@@ -462,6 +462,8 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		$user        = Factory::getUser();
 		$modified    = $date->toSql();
 		$modified_by = $user->get('id');
+        $params = ComponentHelper::getParams('com_sportsmanagement');
+        $jl_dbprefix   = $params->get('jl_dbprefix');
 
 		self::$_success       = array();
 		$my_text              = '';
