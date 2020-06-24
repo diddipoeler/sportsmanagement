@@ -142,7 +142,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		$app    = Factory::getApplication();
 		$params = ComponentHelper::getParams('com_sportsmanagement');
 		$db     = Factory::getDbo();
-		$query  = $db->getQuery(true);
+		//$query  = $db->getQuery(true);
 
 		/**
 		 * welche joomla version ?
@@ -158,7 +158,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 
 		$option             = array(); // Prevent problems
 		$option['driver']   = $params->get('jl_dbtype');      //       Database driver name
-		$option['host']     = $params->get('jl_host');     // Database host name
+		$option['host']     = $params->get('jl_host') ? $params->get('jl_host') : $conf->get('host');     // Database host name
 		$option['user']     = $params->get('jl_user');        // User for database authentication
 		$option['password'] = $params->get('jl_password');    // Password for database authentication
 		$option['database'] = $params->get('jl_db');       // Database name
@@ -169,15 +169,18 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		 */
         if (version_compare(JSM_JVERSION, '4', 'eq'))
 		{
-		$jl_access = JDatabaseDriver::getInstance($option);
+		//$jl_access = JDatabaseDriver::getInstance($option);
+        $db = JDatabaseDriver::getInstance($option);
 		}
 		else
 		{
-		$jl_access = JDatabase::getInstance($option);
+		//$jl_access = JDatabase::getInstance($option);
+        $db = JDatabase::getInstance($option);
 		}
+        $query  = $db->getQuery(true);
         
         Log::add('option <pre>'.print_r($option,true).'</pre>', Log::NOTICE, 'jsmerror'); 
-        Log::add('access <pre>'.print_r($jl_access,true).'</pre>', Log::NOTICE, 'jsmerror');
+        Log::add('db <pre>'.print_r($db,true).'</pre>', Log::NOTICE, 'jsmerror');
 
 		/**
 		 * fehlende jl felder hinzufügen für alte versionen
