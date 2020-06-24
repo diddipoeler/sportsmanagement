@@ -455,10 +455,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 	 */
 	function importjoomleaguenew($importstep = 0, $sports_type_id = 0)
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput      = $app->input;
 		$option      = $jinput->getCmd('option');
 		$date        = Factory::getDate();
@@ -473,15 +470,15 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		$jinput->set('filter_sports_type', $sports_type_id);
 
 		$db    = Factory::getDbo();
+        $dbjsm    = Factory::getDbo();
 		$query = $db->getQuery(true);
+        $queryjsm = $dbjsm->getQuery(true);
 
 		$exportfields1 = array();
 		$exportfields2 = array();
 		$table_copy    = array();
 
-		/**
-		 * importschritt 0
-		 */
+		/** importschritt 0 */
 		if ($jl_table_import_step == 0)
 		{
 			try
@@ -532,18 +529,13 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 			{
 			}
 
-			/**
-			 * alle personen veröffentlichen
-			 */
+			/** alle personen veröffentlichen */
 			$query = $db->getQuery(true);
 			$query->clear();
 
-			// Fields to update.
 			$fields = array(
 				$db->quoteName('published') . ' = 1'
 			);
-
-			// Conditions for which records should be updated.
 			$conditions = array(
 				$db->quoteName('published') . ' = 0'
 			);
@@ -561,26 +553,19 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 
 			$my_text .= '<span style="color:' . self::$storeSuccessColor . '"<strong>Daten in der Tabelle: ( __joomleague_person ) aktualisiert!</strong>' . '</span>';
 			$my_text .= '<br />';
-
 			$endtime   = sportsmanagementModeldatabasetool::getRunTime();
 			$totaltime = ($endtime - $starttime);
-
 			self::$_success['Laufzeit:']  = Text::sprintf('This page was created in %1$s seconds', $totaltime);
 			self::$_success['JL-Update:'] = $my_text;
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
-
 			return self::$_success;
 		}
 
-		/**
-		 * importschritt 1
-		 */
+		/** importschritt 1 */
 		if ($jl_table_import_step == 1)
 		{
-			/**
-			 * die positionen bei den schiedsrichtern setzen
-			 */
+			/** die positionen bei den schiedsrichtern setzen */
 			$query = $db->getQuery(true);
 			$query->clear();
 			$query->select('pr.id,pr.project_id,pr.position_id,pt.id as project_position_id');
@@ -607,31 +592,22 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 
 			$my_text .= '<span style="color:' . self::$storeSuccessColor . '"<strong>Daten in der Tabelle: ( __joomleague_project_referee ) aktualisiert!</strong>' . '</span>';
 			$my_text .= '<br />';
-
 			$endtime   = sportsmanagementModeldatabasetool::getRunTime();
 			$totaltime = ($endtime - $starttime);
-
 			self::$_success['Laufzeit:']  = Text::sprintf('This page was created in %1$s seconds', $totaltime);
 			self::$_success['JL-Update:'] = $my_text;
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
-
 			return self::$_success;
 		}
 
-		/**
-		 * importschritt 2
-		 */
+		/** importschritt 2 */
 		if ($jl_table_import_step == 2)
 		{
-			/**
-			 * die positionen bei den betreuern setzen
-			 */
+			/** die positionen bei den betreuern setzen */
 			$query = $db->getQuery(true);
 			$query->clear();
 			$query->select('pr.id,pr.position_id,pt.project_id');
-
-			// $query->select('(SELECT pp.id FROM #__joomleague_project_position AS pp WHERE pp.project_id = pt.project_id and pp.position_id = pr.position_id) AS '.$db->QuoteName('project_position_id'));
 			$query->from('#__joomleague_team_staff as pr');
 			$query->join('INNER', '#__joomleague_project_team AS pt ON pt.id = pr.projectteam_id');
 			$query->where('pr.project_position_id = 0');
@@ -664,26 +640,19 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 
 			$my_text .= '<span style="color:' . self::$storeSuccessColor . '"<strong>Daten in der Tabelle: ( __joomleague_team_staff ) aktualisiert!</strong>' . '</span>';
 			$my_text .= '<br />';
-
 			$endtime   = sportsmanagementModeldatabasetool::getRunTime();
 			$totaltime = ($endtime - $starttime);
-
 			self::$_success['Laufzeit:']  = Text::sprintf('This page was created in %1$s seconds', $totaltime);
 			self::$_success['JL-Update:'] = $my_text;
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
-
 			return self::$_success;
 		}
 
-		/**
-		 * importschritt 3
-		 */
+		/** importschritt 3 */
 		if ($jl_table_import_step == 3)
 		{
-			/**
-			 * die positionen bei den spielern setzen
-			 */
+			/** die positionen bei den spielern setzen */
 			$query = $db->getQuery(true);
 			$query->clear();
 			$query->select('pr.id,pr.position_id,pt.project_id');
@@ -719,26 +688,19 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 
 			$my_text .= '<span style="color:' . self::$storeSuccessColor . '"<strong>Daten in der Tabelle: ( __joomleague_team_player ) aktualisiert!</strong>' . '</span>';
 			$my_text .= '<br />';
-
 			$endtime                      = sportsmanagementModeldatabasetool::getRunTime();
 			$totaltime                    = ($endtime - $starttime);
 			self::$_success['Laufzeit:']  = Text::sprintf('This page was created in %1$s seconds', $totaltime);
 			self::$_success['JL-Update:'] = $my_text;
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
-
 			return self::$_success;
 		}
 
-		/**
-		 * importschritt 4
-		 */
+		/** importschritt 4 */
 		if ($jl_table_import_step == 4)
 		{
-			/**
-			 * die positionen bei den spielen spieler setzen
-			 */
-
+			/** die positionen bei den spielen spieler setzen */
 			$query = $db->getQuery(true);
 			$query->clear();
 			$query->select('mp.id,mp.position_id,r.project_id');
@@ -774,7 +736,6 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 
 			$my_text .= '<span style="color:' . self::$storeSuccessColor . '"<strong>Daten in der Tabelle: ( __joomleague_match_player ) aktualisiert!</strong>' . '</span>';
 			$my_text .= '<br />';
-
 			$endtime                      = sportsmanagementModeldatabasetool::getRunTime();
 			$totaltime                    = ($endtime - $starttime);
 			self::$_success['Laufzeit:']  = Text::sprintf('This page was created in %1$s seconds', $totaltime);
@@ -782,19 +743,13 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
 			Factory::getDocument()->addScriptOptions('success', self::$_success);
-
 			return self::$_success;
 		}
 
-		/**
-		 * importschritt 5
-		 */
+		/** importschritt 5 */
 		if ($jl_table_import_step == 5)
 		{
-			/**
-			 * die positionen bei den spielen betreuern setzen
-			 */
-
+			/** die positionen bei den spielen betreuern setzen */
 			$query = $db->getQuery(true);
 			$query->clear();
 			$query->select('mp.id,mp.position_id,r.project_id');
@@ -815,12 +770,9 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 				$query->where('position_id = ' . $row->position_id);
 				$query->where('project_id = ' . $row->project_id);
 				$db->setQuery($query);
-
 				$mdlTable                      = new stdClass;
 				$mdlTable->id                  = $row->id;
 				$mdlTable->project_position_id = $db->loadResult();
-
-				// $mdlTable->published = 1;
 				try
 				{
 					$result_update = $db->updateObject('#__joomleague_match_staff', $mdlTable, 'id');
@@ -832,7 +784,6 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 
 			$my_text .= '<span style="color:' . self::$storeSuccessColor . '"<strong>Daten in der Tabelle: ( __joomleague_match_staff ) aktualisiert!</strong>' . '</span>';
 			$my_text .= '<br />';
-
 			$endtime                      = sportsmanagementModeldatabasetool::getRunTime();
 			$totaltime                    = ($endtime - $starttime);
 			self::$_success['Laufzeit:']  = Text::sprintf('This page was created in %1$s seconds', $totaltime);
@@ -840,19 +791,13 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
 			Factory::getDocument()->addScriptOptions('success', self::$_success);
-
 			return self::$_success;
 		}
 
-		/**
-		 * importschritt 6
-		 */
+		/** importschritt 6 */
 		if ($jl_table_import_step == 6)
 		{
-			/**
-			 * die positionen bei den spielen schiedsrichter setzen
-			 */
-
+			/** die positionen bei den spielen schiedsrichter setzen */
 			$query = $db->getQuery(true);
 			$query->clear();
 			$query->select('mp.id,mp.position_id,r.project_id,mp.referee_id');
@@ -873,13 +818,10 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 				$query->where('position_id = ' . $row->position_id);
 				$query->where('project_id = ' . $row->project_id);
 				$db->setQuery($query);
-
 				$mdlTable                      = new stdClass;
 				$mdlTable->id                  = $row->id;
 				$mdlTable->project_referee_id  = $row->referee_id;
 				$mdlTable->project_position_id = $db->loadResult();
-
-				// $mdlTable->published = 1;
 				try
 				{
 					$result_update = $db->updateObject('#__joomleague_match_referee', $mdlTable, 'id');
@@ -898,13 +840,10 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
 			Factory::getDocument()->addScriptOptions('success', self::$_success);
-
 			return self::$_success;
 		}
 
-		/**
-		 * importschritt 7
-		 */
+		/** importschritt 7 */
 		if ($jl_table_import_step == 7)
 		{
 			$endtime                          = sportsmanagementModeldatabasetool::getRunTime();
@@ -914,13 +853,10 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
 			Factory::getDocument()->addScriptOptions('success', self::$_success);
-
 			return self::$_success;
 		}
 
-		/**
-		 * importschritt 8
-		 */
+		/** importschritt 8 */
 		if ($jl_table_import_step == 8)
 		{
 			$endtime                          = sportsmanagementModeldatabasetool::getRunTime();
@@ -930,13 +866,10 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
 			Factory::getDocument()->addScriptOptions('success', self::$_success);
-
 			return self::$_success;
 		}
 
-		/**
-		 * importschritt 9
-		 */
+		/** importschritt 9 */
 		if ($jl_table_import_step == 9)
 		{
 			$endtime                          = sportsmanagementModeldatabasetool::getRunTime();
@@ -946,29 +879,23 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
 			Factory::getDocument()->addScriptOptions('success', self::$_success);
-
 			return self::$_success;
 		}
 
-		/**
-		 * importschritt 10
-		 */
+		/** importschritt 10 */
 		if ($jl_table_import_step == 10)
 		{
 			$table_copy[] = 'associations';
-
 			$table_copy[] = 'club';
 			$table_copy[] = 'division';
 			$table_copy[] = 'league';
 			$table_copy[] = 'match';
-
 			$table_copy[] = 'match_event';
 			$table_copy[] = 'match_player';
 			$table_copy[] = 'match_referee';
 			$table_copy[] = 'match_staff';
 			$table_copy[] = 'match_staff_statistic';
 			$table_copy[] = 'match_statistic';
-
 			$table_copy[] = 'match_commentary';
 			$table_copy[] = 'person';
 			$table_copy[] = 'playground';
@@ -980,7 +907,6 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 			$table_copy[] = 'project_position';
 			$table_copy[] = 'project_referee';
 			$table_copy[] = 'project_team';
-
 			$table_copy[] = 'rosterposition';
 			$table_copy[] = 'round';
 			$table_copy[] = 'season';
@@ -999,12 +925,9 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 			$table_copy[] = 'prediction_project';
 			$table_copy[] = 'prediction_result';
 			$table_copy[] = 'prediction_template';
-
 			$tables = $db->getTableList();
 
-			/**
-			 * als erstes kommen die tabellen, die nur kopiert werden !
-			 */
+			/** als erstes kommen die tabellen, die nur kopiert werden ! */
 			$my_text = '';
 			$my_text .= '<span style="color:' . self::$storeInfo . '"<strong> ( ' . __METHOD__ . ' )  ( ' . __LINE__ . ' ) </strong>' . '</span>';
 			$my_text .= '<br />';
@@ -1014,20 +937,16 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 				$jl_table  = '#__joomleague_' . $value;
 				$jsm_table = '#__sportsmanagement_' . $value;
 
-				/**
-				 * hier überprüfen wir noch sicherheitshalber ob die jl tabelle existiert
-				 */
+				/** hier überprüfen wir noch sicherheitshalber ob die jl tabelle existiert */
 				$prefix    = $db->getPrefix();
 				$key_table = array_search($prefix . 'joomleague_' . $value, $tables);
 
 				if ($key_table)
 				{
-					/**
-					 * hier muss auch wieder zwischen den joomla versionen unterschieden werden
-					 */
+					/** hier muss auch wieder zwischen den joomla versionen unterschieden werden */
 					if (version_compare(JVERSION, '3.0.0', 'ge'))
 					{
-						// Joomla! 3.0 code here
+						/** Joomla! 3.0 code here */
 						$jl_fields              = $db->getTableColumns('#__joomleague_' . $value);
 						$jsm_fields             = $db->getTableColumns('#__sportsmanagement_' . $value);
 						$jl_fields[$jl_table]   = $jl_fields;
@@ -1035,14 +954,12 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 					}
 					elseif (version_compare(JVERSION, '2.5.0', 'ge'))
 					{
-						// Joomla! 2.5 code here
+						/** Joomla! 2.5 code here */
 						$jl_fields  = $db->getTableFields('#__joomleague_' . $value);
 						$jsm_fields = $db->getTableFields('#__sportsmanagement_' . $value);
 					}
 
-					/**
-					 * importschritt 0
-					 */
+					/** importschritt 0 */
 					if (count($jl_fields[$jl_table]) === 0)
 					{
 						$my_text .= '<span style="color:' . self::$storeFailedColor . '"<strong>Die Tabelle: ( ' . $jl_table . ' ) kann nicht kopiert werden. Tabelle: ( ' . $jl_table . ' ) ist nicht vorhanden!</strong>' . '</span>';
@@ -1050,9 +967,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 					}
 					else
 					{
-						/**
-						 * feld import_id einfügen
-						 */
+						/** feld import_id einfügen */
 						try
 						{
 							$query = $db->getQuery(true);
@@ -1067,9 +982,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 
 						$query = $db->getQuery(true);
 						$query->clear();
-						/**
-						 * löschen die das feld import_id gefüllt haben
-						 */
+						/** löschen die das feld import_id gefüllt haben */
 						$conditions = array(
 							$db->quoteName('import_id') . ' != 0'
 						);
