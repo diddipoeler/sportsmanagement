@@ -1185,11 +1185,11 @@ return $jl_dberror;
 
 						try
 						{
-                        //$query = $db->getQuery(true);
-						$queryjsm->clear();
+                        $queryjsm = $dbjsm->getQuery(true);
+						//$queryjsm->clear();
 						/** löschen die das feld import_id gefüllt haben */
 						$conditions = array(
-							$db->quoteName('import_id') . ' != 0'
+							$dbjsm->quoteName('import_id') . ' != 0'
 						);
 						$queryjsm->delete($dbjsm->quoteName($jsm_table));
 						$queryjsm->where($conditions);
@@ -1272,8 +1272,8 @@ return $jl_dberror;
 
 							$select_fields_1 = implode(',', $exportfields1);
 							$select_fields_2 = implode(',', $exportfields2);
-							//$query = $db->getQuery(true);
-							$queryjsm->clear();
+							$queryjsm = $dbjsm->getQuery(true);
+							//$queryjsm->clear();
 							$queryjsm = 'INSERT INTO ' . $jsm_table . ' (' . $select_fields_1 . ') SELECT ' . $select_fields_2 . ' FROM ' . $jl_table;
 
 							try
@@ -1297,15 +1297,11 @@ return $jl_dberror;
 
 							if ($value == 'position')
 							{
-								//$query = $db->getQuery(true);
-								$queryjsm->clear();
-
-								// Fields to update.
+								$queryjsm = $dbjsm->getQuery(true);
+								//$queryjsm->clear();
 								$fields = array(
 									$dbjsm->quoteName('sports_type_id') . ' = ' . $sports_type_id
 								);
-
-								// Conditions for which records should be updated.
 								$conditions = array(
 									$dbjsm->quoteName('sports_type_id') . ' != ' . $sports_type_id
 								);
