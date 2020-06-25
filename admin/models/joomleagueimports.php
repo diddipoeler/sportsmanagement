@@ -141,7 +141,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		$conf   = Factory::getConfig();
 		$app    = Factory::getApplication();
 		$params = ComponentHelper::getParams('com_sportsmanagement');
-		$db     = Factory::getDbo();
+		//$db     = Factory::getDbo();
 		//$query  = $db->getQuery(true);
 
 		/**
@@ -191,7 +191,6 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 			$query->clear();
 			$query = "ALTER TABLE `#__joomleague_division` ADD `tree_id` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
-//			sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             $db->execute();
 		}
 		catch (Exception $e)
@@ -206,7 +205,6 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 			$query->clear();
 			$query = "ALTER TABLE `#__joomleague_match_player` ADD `position_id` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
-//			sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             $db->execute();
 		}
 		catch (Exception $e)
@@ -221,7 +219,6 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 			$query->clear();
 			$query = "ALTER TABLE `#__joomleague_match_player` ADD `project_position_id` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
-//			sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             $db->execute();
 		}
 		catch (Exception $e)
@@ -236,7 +233,6 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 			$query->clear();
 			$query = "ALTER TABLE `#__joomleague_match_referee` ADD `referee_id` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
-//			sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             $db->execute();
 		}
 		catch (Exception $e)
@@ -251,7 +247,6 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 			$query->clear();
 			$query = "ALTER TABLE `#__joomleague_match_referee` ADD `position_id` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
-//			sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             $db->execute();
 		}
 		catch (Exception $e)
@@ -266,7 +261,6 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 			$query->clear();
 			$query = "ALTER TABLE `#__joomleague_match_referee` ADD `project_position_id` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
-//			sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             $db->execute();
 		}
 		catch (Exception $e)
@@ -281,7 +275,6 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 			$query->clear();
 			$query = "ALTER TABLE `#__joomleague_match_staff` ADD `staff_id` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
-//			sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             $db->execute();
 		}
 		catch (Exception $e)
@@ -296,7 +289,6 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 			$query->clear();
 			$query = "ALTER TABLE `#__joomleague_match_staff` ADD `position_id` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
-//			sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             $db->execute();
 		}
 		catch (Exception $e)
@@ -311,7 +303,6 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 			$query->clear();
 			$query = "ALTER TABLE `#__joomleague_match_staff` ADD `project_position_id` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
-//			sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             $db->execute();
 		}
 		catch (Exception $e)
@@ -326,7 +317,6 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 			$query->clear();
 			$query = "ALTER TABLE `#__joomleague_project_referee` ADD `position_id` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
-//			sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             $db->execute();
 		}
 		catch (Exception $e)
@@ -341,7 +331,6 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 			$query->clear();
 			$query = "ALTER TABLE `#__joomleague_team_player` ADD `position_id` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
-//			sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             $db->execute();
 		}
 		catch (Exception $e)
@@ -356,7 +345,6 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 			$query->clear();
 			$query = "ALTER TABLE `#__joomleague_team_player` ADD `project_position_id` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
-//			sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             $db->execute();
 		}
 		catch (Exception $e)
@@ -371,7 +359,6 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 			$query->clear();
 			$query = "ALTER TABLE `#__joomleague_team_staff` ADD `position_id` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
-//			sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             $db->execute();
 		}
 		catch (Exception $e)
@@ -386,7 +373,6 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 			$query->clear();
 			$query = "ALTER TABLE `#__joomleague_team_staff` ADD `project_position_id` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
-//			sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             $db->execute();
 		}
 		catch (Exception $e)
@@ -401,7 +387,6 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 			$query->clear();
 			$query = "ALTER TABLE `#__joomleague_team_trainingdata` ADD `team_id_in_project` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
-//			sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             $db->execute();
 		}
 		catch (Exception $e)
@@ -416,7 +401,6 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 			$query->clear();
 			$query = "ALTER TABLE `#__joomleague_project_team` ADD `mark` int(11) DEFAULT NULL ";
 			$db->setQuery($query);
-//			sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             $db->execute();
 		}
 		catch (Exception $e)
@@ -431,7 +415,6 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 			$query->clear();
 			$query = "ALTER TABLE `#__joomleague_project` ADD `serveroffset` varchar(6) NOT NULL DEFAULT '-01:00' ";
 			$db->setQuery($query);
-//			sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             $db->execute();
 		}
 		catch (Exception $e)
@@ -446,7 +429,6 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 			$query->clear();
 			$query = "ALTER TABLE `#__joomleague_project` ADD `tree_id` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
-//			sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             $db->execute();
 		}
 		catch (Exception $e)
@@ -461,7 +443,6 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 			$query->clear();
 			$query = "ALTER TABLE `#__joomleague_project` ADD `admin` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
-//			sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             $db->execute();
 		}
 		catch (Exception $e)
@@ -476,7 +457,6 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 			$query->clear();
 			$query = "ALTER TABLE `#__joomleague_project` ADD `editor` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
-//			sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             $db->execute();
 		}
 		catch (Exception $e)
