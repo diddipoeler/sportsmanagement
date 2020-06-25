@@ -1148,7 +1148,7 @@ return $jl_dberror;
 					{
 						/** Joomla! 3.0 code here */
 						$jl_fields              = $db->getTableColumns('#__joomleague_' . $value);
-						$jsm_fields             = $db->getTableColumns('#__sportsmanagement_' . $value);
+						$jsm_fields             = $dbjsm->getTableColumns('#__sportsmanagement_' . $value);
 						$jl_fields[$jl_table]   = $jl_fields;
 						$jsm_fields[$jsm_table] = $jsm_fields;
 					}
@@ -1170,27 +1170,39 @@ return $jl_dberror;
 						/** feld import_id einfügen */
 						try
 						{
-							$query = $db->getQuery(true);
-							$query->clear();
-							$query = "ALTER TABLE `" . $jsm_table . "` ADD `import_id` INT(11) NOT NULL DEFAULT '0' ";
-							$db->setQuery($query);
-							sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+							//$query = $dbjsm->getQuery(true);
+							$queryjsm->clear();
+							$queryjsm = "ALTER TABLE `" . $jsm_table . "` ADD `import_id` INT(11) NOT NULL DEFAULT '0' ";
+							$dbjsm->setQuery($queryjsm);
+							//sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+                            $dbjsm->execute();
 						}
 						catch (Exception $e)
 						{
+						Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+		                Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror'); 
 						}
 
-						$query = $db->getQuery(true);
-						$query->clear();
+						try
+						{
+                        //$query = $db->getQuery(true);
+						$queryjsm->clear();
 						/** löschen die das feld import_id gefüllt haben */
 						$conditions = array(
 							$db->quoteName('import_id') . ' != 0'
 						);
-						$query->delete($db->quoteName($jsm_table));
-						$query->where($conditions);
+						$queryjsm->delete($dbjsm->quoteName($jsm_table));
+						$queryjsm->where($conditions);
 
-						$db->setQuery($query);
-						sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+						$dbjsm->setQuery($queryjsm);
+						//sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+                        $dbjsm->execute();
+                        }
+						catch (Exception $e)
+						{
+						Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+		                Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror'); 
+						}
 
 						/**
 						 * die anzahl der einträge wird nicht mehr benötigt
@@ -1260,47 +1272,60 @@ return $jl_dberror;
 
 							$select_fields_1 = implode(',', $exportfields1);
 							$select_fields_2 = implode(',', $exportfields2);
-							$query           = $db->getQuery(true);
-							$query->clear();
-							$query = 'INSERT INTO ' . $jsm_table . ' (' . $select_fields_1 . ') SELECT ' . $select_fields_2 . ' FROM ' . $jl_table;
-							$db->setQuery($query);
+							//$query = $db->getQuery(true);
+							$queryjsm->clear();
+							$queryjsm = 'INSERT INTO ' . $jsm_table . ' (' . $select_fields_1 . ') SELECT ' . $select_fields_2 . ' FROM ' . $jl_table;
 
 							try
 							{
-								sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+							//sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+                            $dbjsm->setQuery($queryjsm);
+                            $dbjsm->execute();
+                            $infocolor = self::$storeSuccessColor;
+                            $infotext = self::$storeSuccessText;
 							}
 							catch (Exception $e)
 							{
+							Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+		                    Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror'); 
+                            $infocolor = self::$storeFailedColor;
+                            $infotext = self::$storeFailedText; 
 							}
 
-							$my_text .= '<span style="color:' . self::$storeSuccessColor . '"<strong>' . self::$db_num_rows . ' Daten aus der Tabelle: ( ' . $jl_table . ' ) in die Tabelle: ( ' . $jsm_table . ' ) importiert!</strong>' . '</span>';
+							$my_text .= '<span style="color:' . $infocolor . '"<strong>' . $dbjsm->getAffectedRows() . ' Daten aus der Tabelle: ( ' . $jl_table . ' ) in die Tabelle: ( ' . $jsm_table . ' ) importiert!</strong>' . '</span>';
 							$my_text .= '<br />';
 
 							if ($value == 'position')
 							{
-								$query = $db->getQuery(true);
-								$query->clear();
+								//$query = $db->getQuery(true);
+								$queryjsm->clear();
 
 								// Fields to update.
 								$fields = array(
-									$db->quoteName('sports_type_id') . ' = ' . $sports_type_id
+									$dbjsm->quoteName('sports_type_id') . ' = ' . $sports_type_id
 								);
 
 								// Conditions for which records should be updated.
 								$conditions = array(
-									$db->quoteName('sports_type_id') . ' != ' . $sports_type_id
+									$dbjsm->quoteName('sports_type_id') . ' != ' . $sports_type_id
 								);
 
-								$query->update($db->quoteName('#__sportsmanagement_position'))->set($fields)->where($conditions);
-
-								$db->setQuery($query);
+								$queryjsm->update($dbjsm->quoteName('#__sportsmanagement_position'))->set($fields)->where($conditions);
 
 								try
 								{
-									sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+								//sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+                                $dbjsm->setQuery($queryjsm);
+                                $dbjsm->execute();
+                                $infocolor = self::$storeSuccessColor;
+                                $infotext = self::$storeSuccessText;
 								}
 								catch (Exception $e)
 								{
+								Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+		                        Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror'); 
+                                $infocolor = self::$storeFailedColor;
+                                $infotext = self::$storeFailedText; 
 								}
 							}
 						}
