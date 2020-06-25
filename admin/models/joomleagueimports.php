@@ -1170,8 +1170,8 @@ return $jl_dberror;
 						/** feld import_id einfügen */
 						try
 						{
-							//$query = $dbjsm->getQuery(true);
-							$queryjsm->clear();
+							$queryjsm = $dbjsm->getQuery(true);
+							//$queryjsm->clear();
 							$queryjsm = "ALTER TABLE `" . $jsm_table . "` ADD `import_id` INT(11) NOT NULL DEFAULT '0' ";
 							$dbjsm->setQuery($queryjsm);
 							//sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
