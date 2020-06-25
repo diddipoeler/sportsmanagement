@@ -706,13 +706,19 @@ return $jl_dberror;
 				try
 				{
 					$result_update = $db->updateObject('#__joomleague_project_referee', $mdlTable, 'id');
+                    $infocolor = self::$storeSuccessColor;
+            $infotext = self::$storeSuccessText;
 				}
 				catch (Exception $e)
 				{
+				    Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+		    Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror'); 
+            $infocolor = self::$storeFailedColor;
+            $infotext = self::$storeFailedText;
 				}
 			}
 
-			$my_text .= '<span style="color:' . self::$storeSuccessColor . '"<strong>Daten in der Tabelle: ( __joomleague_project_referee ) aktualisiert!</strong>' . '</span>';
+			$my_text .= '<span style="color:' . $infocolor . '"<strong>Daten in der Tabelle: ( __joomleague_project_referee ) ' . $infotext . '!</strong>' . '</span>';
 			$my_text .= '<br />';
 			$endtime   = sportsmanagementModeldatabasetool::getRunTime();
 			$totaltime = ($endtime - $starttime);
