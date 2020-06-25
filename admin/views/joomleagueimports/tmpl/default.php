@@ -22,6 +22,9 @@ if ($this->jl_table_import_step != 'ENDE')
 {
 ?>
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+   console.log('document is ready. I can sleep now');
+});
         jQuery(document).ready(function () {
             document.getElementById('delayMsg').innerHTML = '';
             delayRedirect();
@@ -49,6 +52,9 @@ if ($this->jl_table_import_step === 'ENDE')
 {
 ?>
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+   console.log('document is ready. I can sleep now');
+});
         jQuery(document).ready(function () {
             document.getElementById('delayMsg').innerHTML = '';
             delayRedirect();
