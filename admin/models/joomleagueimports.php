@@ -580,7 +580,7 @@ return $jl_dberror;
 			Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
 		    Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
             $infocolor = self::$storeFailedColor;
-            $infotext = self::$storeFailedText;
+            $infotext = self::$storeFailedText.' ('.$e->getMessage().') ';
 			}
             $my_text .= '<span style="color:' . $infocolor . '"<strong>Daten in der Tabelle: ( __joomleague_match_player ) ' . $infotext . '!</strong>' . '</span>';
 			$my_text .= '<br />';
@@ -600,7 +600,7 @@ return $jl_dberror;
 			Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
 		    Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
             $infocolor = self::$storeFailedColor;
-            $infotext = self::$storeFailedText;
+            $infotext = self::$storeFailedText.' ('.$e->getMessage().') ';
 			}
             $my_text .= '<span style="color:' . $infocolor . '"<strong>Daten in der Tabelle: ( __joomleague_match_staff ) ' . $infotext . '!</strong>' . '</span>';
 			$my_text .= '<br />';
@@ -620,7 +620,7 @@ return $jl_dberror;
 			Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
 		    Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
             $infocolor = self::$storeFailedColor;
-            $infotext = self::$storeFailedText;
+            $infotext = self::$storeFailedText.' ('.$e->getMessage().') ';
 			}
             $my_text .= '<span style="color:' . $infocolor . '"<strong>Daten in der Tabelle: ( __joomleague_match_referee ) ' . $infotext . '!</strong>' . '</span>';
 			$my_text .= '<br />';
@@ -640,7 +640,7 @@ return $jl_dberror;
 			Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
 		    Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
             $infocolor = self::$storeFailedColor;
-            $infotext = self::$storeFailedText;
+            $infotext = self::$storeFailedText.' ('.$e->getMessage().') ';
 			}
             $my_text .= '<span style="color:' . $infocolor . '"<strong>Daten in der Tabelle: ( __joomleague_match ) ' . $infotext . '!</strong>' . '</span>';
 			$my_text .= '<br />';
@@ -670,7 +670,7 @@ return $jl_dberror;
 			Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
 		    Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror'); 
             $infocolor = self::$storeFailedColor;
-            $infotext = self::$storeFailedText;
+            $infotext = self::$storeFailedText.' ('.$e->getMessage().') ';
 			}
 
 			$my_text .= '<span style="color:' . $infocolor . '"<strong>Daten in der Tabelle: ( __joomleague_person ) ' . $infotext . '!</strong>' . '</span>';
@@ -726,7 +726,7 @@ return $jl_dberror;
 				    Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
 		    Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror'); 
             $infocolor = self::$storeFailedColor;
-            $infotext = self::$storeFailedText;
+            $infotext = self::$storeFailedText.' ('.$e->getMessage().') ';
 				}
 			}
 
@@ -764,7 +764,7 @@ return $jl_dberror;
 			Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
 		    Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror'); 
             $infocolor = self::$storeFailedColor;
-            $infotext = self::$storeFailedText;
+            $infotext = self::$storeFailedText.' ('.$e->getMessage().') ';
 			}
 
 			foreach ($result as $row)
@@ -824,7 +824,7 @@ return $jl_dberror;
 			Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
 		    Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror'); 
             $infocolor = self::$storeFailedColor;
-            $infotext = self::$storeFailedText;
+            $infotext = self::$storeFailedText.' ('.$e->getMessage().') ';
 			}
 
 			foreach ($result as $row)
@@ -885,7 +885,7 @@ return $jl_dberror;
 			Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
 		    Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror'); 
             $infocolor = self::$storeFailedColor;
-            $infotext = self::$storeFailedText;
+            $infotext = self::$storeFailedText.' ('.$e->getMessage().') ';
 			}
 
 			foreach ($result as $row)
