@@ -24,13 +24,17 @@ if ($this->jl_table_import_step != 'ENDE')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
    console.log('document is ready. I can sleep now');
-});
-        jQuery(document).ready(function () {
-            document.getElementById('delayMsg').innerHTML = '';
+   document.getElementById('delayMsg').innerHTML = '';
             delayRedirect();
             const stepsuccess = Joomla.getOptions('success');
             console.log('stepsuccess ' + stepsuccess);
-        });
+});
+//        jQuery(document).ready(function () {
+//            document.getElementById('delayMsg').innerHTML = '';
+//            delayRedirect();
+//            const stepsuccess = Joomla.getOptions('success');
+//            console.log('stepsuccess ' + stepsuccess);
+//        });
 
         function delayRedirect() {
             document.getElementById('delayMsg').innerHTML = '<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP'); ?>';
@@ -54,15 +58,17 @@ if ($this->jl_table_import_step === 'ENDE')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
    console.log('document is ready. I can sleep now');
-});
-        jQuery(document).ready(function () {
-            document.getElementById('delayMsg').innerHTML = '';
+   document.getElementById('delayMsg').innerHTML = '';
             delayRedirect();
-            // Handler for .ready() called.
-//    window.setTimeout(function () {
-//        location.href = "<?php echo $this->request_url . '&task=joomleagueimports.importjoomleaguenew'; ?>";
-//    }, 2000);
-        });
+});
+//        jQuery(document).ready(function () {
+//            document.getElementById('delayMsg').innerHTML = '';
+//            delayRedirect();
+//            // Handler for .ready() called.
+////    window.setTimeout(function () {
+////        location.href = "<?php echo $this->request_url . '&task=joomleagueimports.importjoomleaguenew'; ?>";
+////    }, 2000);
+//        });
 
         function delayRedirect() {
             document.getElementById('delayMsg').innerHTML = '<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP'); ?>';
