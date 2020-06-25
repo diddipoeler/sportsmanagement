@@ -488,7 +488,9 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 	 */
 	function importjoomleaguenew($importstep = 0, $sports_type_id = 0)
 	{
-		$app = Factory::getApplication();
+		$conf   = Factory::getConfig();
+		$app    = Factory::getApplication();
+		$params = ComponentHelper::getParams('com_sportsmanagement');
 		$jinput      = $app->input;
 		$option      = $jinput->getCmd('option');
 		$date        = Factory::getDate();
@@ -504,7 +506,29 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		$jl_table_import_step = $jinput->get('jl_table_import_step', 0);
 		$jinput->set('filter_sports_type', $sports_type_id);
 
-		$db    = Factory::getDbo();
+//		$db    = Factory::getDbo();
+        $option             = array(); // Prevent problems
+		$option['driver']   = $params->get('jl_dbtype');      //       Database driver name
+		$option['host']     = $params->get('jl_host') ? $params->get('jl_host') : $conf->get('host');     // Database host name
+		$option['user']     = $params->get('jl_user') ? $params->get('jl_user') : $conf->get('user');        // User for database authentication
+		$option['password'] = $params->get('jl_password') ? $params->get('jl_password') : $conf->get('password');    // Password for database authentication
+		$option['database'] = $params->get('jl_db') ? $params->get('jl_db') : $conf->get('db');       // Database name
+		$option['prefix']   = $params->get('jl_dbprefix');    //          Database prefix (may be empty)
+		/**
+		 *  zuerst noch überprüfen, ob der user
+		 *  überhaupt den zugriff auf die datenbank hat.
+		 */
+        if (version_compare(JSM_JVERSION, '4', 'eq'))
+		{
+		//$jl_access = JDatabaseDriver::getInstance($option);
+        $db = JDatabaseDriver::getInstance($option);
+		}
+		else
+		{
+		//$jl_access = JDatabase::getInstance($option);
+        $db = JDatabase::getInstance($option);
+		}
+        
         $dbjsm    = Factory::getDbo();
 		$query = $db->getQuery(true);
         $queryjsm = $dbjsm->getQuery(true);
@@ -522,11 +546,12 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 				$query->clear();
 				$query = "ALTER TABLE #__joomleague_match_player ADD INDEX `match_id` (`match_id`) ";
 				$db->setQuery($query);
-				sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
                 $db->execute();
 			}
 			catch (Exception $e)
 			{
+			Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+		    Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
 			}
 
 			try
@@ -535,11 +560,12 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 				$query->clear();
 				$query = "ALTER TABLE #__joomleague_match_staff ADD INDEX `match_id` (`match_id`) ";
 				$db->setQuery($query);
-				sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
                 $db->execute();
 			}
 			catch (Exception $e)
 			{
+			Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+		    Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
 			}
 
 			try
@@ -548,11 +574,12 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 				$query->clear();
 				$query = "ALTER TABLE #__joomleague_match_referee ADD INDEX `match_id` (`match_id`) ";
 				$db->setQuery($query);
-				sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
                 $db->execute();
 			}
 			catch (Exception $e)
 			{
+			Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+		    Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
 			}
 
 			try
@@ -561,11 +588,12 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 				$query->clear();
 				$query = "ALTER TABLE #__joomleague_match ADD INDEX `round_id` (`round_id`) ";
 				$db->setQuery($query);
-				sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
                 $db->execute();
 			}
 			catch (Exception $e)
 			{
+			Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+		    Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
 			}
 
 			/** alle personen veröffentlichen */
@@ -580,14 +608,16 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 			);
 
 			$query->update($db->quoteName('#__joomleague_person'))->set($fields)->where($conditions);
-			$db->setQuery($query);
 
 			try
 			{
-				sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+			 $db->setQuery($query);
+                $db->execute();
 			}
 			catch (Exception $e)
 			{
+			Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+		    Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror'); 
 			}
 
 			$my_text .= '<span style="color:' . self::$storeSuccessColor . '"<strong>Daten in der Tabelle: ( __joomleague_person ) aktualisiert!</strong>' . '</span>';
@@ -991,12 +1021,12 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 						$jl_fields[$jl_table]   = $jl_fields;
 						$jsm_fields[$jsm_table] = $jsm_fields;
 					}
-					elseif (version_compare(JVERSION, '2.5.0', 'ge'))
-					{
-						/** Joomla! 2.5 code here */
-						$jl_fields  = $db->getTableFields('#__joomleague_' . $value);
-						$jsm_fields = $db->getTableFields('#__sportsmanagement_' . $value);
-					}
+//					elseif (version_compare(JVERSION, '2.5.0', 'ge'))
+//					{
+//						/** Joomla! 2.5 code here */
+//						$jl_fields  = $db->getTableFields('#__joomleague_' . $value);
+//						$jsm_fields = $db->getTableFields('#__sportsmanagement_' . $value);
+//					}
 
 					/** importschritt 0 */
 					if (count($jl_fields[$jl_table]) === 0)
