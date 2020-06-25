@@ -45,7 +45,9 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 {
 	static $db_num_rows = 0;
 	static $storeFailedColor = 'red';
+    static $storeFailedText = 'nicht aktualisiert';
 	static $storeSuccessColor = 'green';
+    static $storeSuccessText = 'aktualisiert';
 	static $existingInDbColor = 'orange';
 	static $storeInfo = 'black';
 	static $_success = array();
@@ -570,12 +572,18 @@ return $jl_dberror;
 				$query = "ALTER TABLE #__joomleague_match_player ADD INDEX `match_id` (`match_id`) ";
 				$db->setQuery($query);
                 $db->execute();
+                $infocolor = self::$storeSuccessColor;
+            $infotext = self::$storeSuccessText;
 			}
 			catch (Exception $e)
 			{
 			Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
 		    Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
+            $infocolor = self::$storeFailedColor;
+            $infotext = self::$storeFailedText;
 			}
+            $my_text .= '<span style="color:' . $infocolor . '"<strong>Daten in der Tabelle: ( __joomleague_match_player ) ' . $infotext . '!</strong>' . '</span>';
+			$my_text .= '<br />';
 
 			try
 			{
@@ -584,12 +592,18 @@ return $jl_dberror;
 				$query = "ALTER TABLE #__joomleague_match_staff ADD INDEX `match_id` (`match_id`) ";
 				$db->setQuery($query);
                 $db->execute();
+                $infocolor = self::$storeSuccessColor;
+            $infotext = self::$storeSuccessText;
 			}
 			catch (Exception $e)
 			{
 			Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
 		    Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
+            $infocolor = self::$storeFailedColor;
+            $infotext = self::$storeFailedText;
 			}
+            $my_text .= '<span style="color:' . $infocolor . '"<strong>Daten in der Tabelle: ( __joomleague_match_staff ) ' . $infotext . '!</strong>' . '</span>';
+			$my_text .= '<br />';
 
 			try
 			{
@@ -598,12 +612,18 @@ return $jl_dberror;
 				$query = "ALTER TABLE #__joomleague_match_referee ADD INDEX `match_id` (`match_id`) ";
 				$db->setQuery($query);
                 $db->execute();
+                $infocolor = self::$storeSuccessColor;
+            $infotext = self::$storeSuccessText;
 			}
 			catch (Exception $e)
 			{
 			Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
 		    Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
+            $infocolor = self::$storeFailedColor;
+            $infotext = self::$storeFailedText;
 			}
+            $my_text .= '<span style="color:' . $infocolor . '"<strong>Daten in der Tabelle: ( __joomleague_match_referee ) ' . $infotext . '!</strong>' . '</span>';
+			$my_text .= '<br />';
 
 			try
 			{
@@ -612,12 +632,18 @@ return $jl_dberror;
 				$query = "ALTER TABLE #__joomleague_match ADD INDEX `round_id` (`round_id`) ";
 				$db->setQuery($query);
                 $db->execute();
+                $infocolor = self::$storeSuccessColor;
+            $infotext = self::$storeSuccessText;
 			}
 			catch (Exception $e)
 			{
 			Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
 		    Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
+            $infocolor = self::$storeFailedColor;
+            $infotext = self::$storeFailedText;
 			}
+            $my_text .= '<span style="color:' . $infocolor . '"<strong>Daten in der Tabelle: ( __joomleague_match ) ' . $infotext . '!</strong>' . '</span>';
+			$my_text .= '<br />';
 
 			/** alle personen veröffentlichen */
 			$query = $db->getQuery(true);
@@ -634,18 +660,20 @@ return $jl_dberror;
 
 			try
 			{
-			 $db->setQuery($query);
-                $db->execute();
-                $infocolor = self::$storeSuccessColor;
+			$db->setQuery($query);
+            $db->execute();
+            $infocolor = self::$storeSuccessColor;
+            $infotext = self::$storeSuccessText;
 			}
 			catch (Exception $e)
 			{
 			Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
 		    Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror'); 
             $infocolor = self::$storeFailedColor;
+            $infotext = self::$storeFailedText;
 			}
 
-			$my_text .= '<span style="color:' . $infocolor . '"<strong>Daten in der Tabelle: ( __joomleague_person ) aktualisiert!</strong>' . '</span>';
+			$my_text .= '<span style="color:' . $infocolor . '"<strong>Daten in der Tabelle: ( __joomleague_person ) ' . $infotext . '!</strong>' . '</span>';
 			$my_text .= '<br />';
 			$endtime   = sportsmanagementModeldatabasetool::getRunTime();
 			$totaltime = ($endtime - $starttime);

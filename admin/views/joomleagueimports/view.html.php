@@ -38,10 +38,11 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
 	{
 		$this->cfg_jl_import        = ComponentHelper::getParams($this->option)->get('cfg_jl_import', 1);
 		$this->jl_table_import_step = $this->jinput->get('jl_table_import_step', 0);
+        $jl_dberror = 0;
 
 		if (!$this->jl_table_import_step)
 		{
-			$this->model->check_database();
+			$jl_dberror = $this->model->check_database();
 		}
 
 		if ($this->cfg_jl_import)
@@ -53,7 +54,7 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
             Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_JL_IMPORT_ALLOWED_NO'), Log::ERROR, 'jsmerror');
 		}
 
-		$jl_dberror = $this->model->check_database();
+//		$jl_dberror = $this->model->check_database();
         if ($jl_dberror)
 		{
             Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', $jl_dberror), Log::ERROR, 'jsmerror');
