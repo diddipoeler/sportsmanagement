@@ -53,7 +53,16 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
             Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_JL_IMPORT_ALLOWED_NO'), Log::ERROR, 'jsmerror');
 		}
 
-		$this->model->check_database();
+		$jl_dberror = $this->model->check_database();
+        if ($jl_dberror)
+		{
+            Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', $jl_dberror), Log::ERROR, 'jsmerror');
+            Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_JL_IMPORT_ALLOWED_NO'), Log::ERROR, 'jsmerror');
+		}
+		else
+		{
+            Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_JL_IMPORT_ALLOWED_YES'), Log::NOTICE, 'jsmerror');
+		}
 
 		/** Build the html select list for sportstypes */
 		$sportstypes[]  = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'), 'id', 'name');
