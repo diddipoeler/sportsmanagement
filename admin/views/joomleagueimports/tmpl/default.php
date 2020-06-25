@@ -106,6 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </td>
                 <td class="nowrap" align="center">
                     <div id="delayMsg"></div>
+                    <div id="countDown"></div>
                 </td>
                 <td class="nowrap" align="center">
                     <img src="<?php echo Uri::base(true) ?>/components/com_sportsmanagement/assets/icons/logo_transparent.png"
