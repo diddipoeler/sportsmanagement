@@ -636,14 +636,16 @@ return $jl_dberror;
 			{
 			 $db->setQuery($query);
                 $db->execute();
+                $infocolor = self::$storeSuccessColor;
 			}
 			catch (Exception $e)
 			{
 			Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
 		    Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror'); 
+            $infocolor = self::$storeFailedColor;
 			}
 
-			$my_text .= '<span style="color:' . self::$storeSuccessColor . '"<strong>Daten in der Tabelle: ( __joomleague_person ) aktualisiert!</strong>' . '</span>';
+			$my_text .= '<span style="color:' . $infocolor . '"<strong>Daten in der Tabelle: ( __joomleague_person ) aktualisiert!</strong>' . '</span>';
 			$my_text .= '<br />';
 			$endtime   = sportsmanagementModeldatabasetool::getRunTime();
 			$totaltime = ($endtime - $starttime);
