@@ -182,6 +182,9 @@ var url2='https://www.fussballineuropa.de/jsmprojectexport.php?'+'homepage='+hom
 
 var xhttp = new XMLHttpRequest();
 xhttp.open("POST", url2, true);
+xhttp.setRequestHeader('Access-Control-Allow-Headers', '*');
+//xhttp.setRequestHeader('Content-type', 'application/ecmascript');
+xhttp.setRequestHeader('Access-Control-Allow-Origin', '*');
 xhttp.send(data);    
                     		
 		}
@@ -198,6 +201,9 @@ var url2='https://www.fussballineuropa.de/jsmpaket.php?'+'homepage='+homepage+'&
 
 var xhttp = new XMLHttpRequest();
 xhttp.open("POST", url2, true);
+xhttp.setRequestHeader('Access-Control-Allow-Headers', '*');
+//xhttp.setRequestHeader('Content-type', 'application/ecmascript');
+xhttp.setRequestHeader('Access-Control-Allow-Origin', '*');
 xhttp.send(data);
                         		
 		}
