@@ -42,8 +42,17 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
 
 		if (!$this->jl_table_import_step)
 		{
-			$jl_dberror = $this->model->check_database();
-		}
+		switch ($this->getLayout())
+		{
+		case 'infofield';
+		case 'infofield_3';
+		case 'infofield_4';
+        break;
+        default:
+		$jl_dberror = $this->model->check_database();
+        break;
+        }
+		//}
 
 		if ($this->cfg_jl_import)
 		{
@@ -64,6 +73,8 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
 		{
             Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_JL_IMPORT_ALLOWED_YES'), Log::NOTICE, 'jsmerror');
 		}
+        
+        }
 
 		/** Build the html select list for sportstypes */
 		$sportstypes[]  = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'), 'id', 'name');
