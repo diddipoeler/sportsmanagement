@@ -3330,14 +3330,10 @@ return $jl_dberror;
 			return self::$_success;
 		}
 
-		/**
-		 * importschritt 25
-		 */
+		/** importschritt 25 */
 		if ($jl_table_import_step == 25)
 		{
-			/**
-			 * projekt positionen pro spieler einfügen
-			 */
+			/** projekt positionen pro spieler einfügen */
 			$query = $dbjsm->getQuery(true);
 			$query->clear();
 			$query->select('p.id as project_id, p.season_id,st.team_id');
@@ -3370,16 +3366,11 @@ return $jl_dberror;
 			return self::$_success;
 		}
 
-		/**
-		 * importschritt 26
-		 */
+		/** importschritt 26 */
 		if ($jl_table_import_step == 26)
 		{
 			$my_text = '';
-
-			/**
-			 * zum schluss werden noch die bilderpfade umgesetzt
-			 */
+			/** zum schluss werden noch die bilderpfade umgesetzt */
 			$mdl = BaseDatabaseModel::getInstance("databasetool", "sportsmanagementModel");
 
 			$mdl->setNewPicturePath();
