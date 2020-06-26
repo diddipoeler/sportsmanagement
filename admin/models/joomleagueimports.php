@@ -3526,18 +3526,11 @@ return $jl_dberror;
 			return self::$_success;
 		}
 
-		/**
-		 * importschritt 27
-		 */
+		/** importschritt 27 */
 		if ($jl_table_import_step == 27)
 		{
-			/**
-			 * fix prediction game (prediction_ids && fav_team && champ tipps)
-			 */
+			/** fix prediction game (prediction_ids && fav_team && champ tipps) */
 			$my_text = '';
-
-			// $my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
-			// $my_text .= '<br />';
 			$query = $dbjsm->getQuery(true);
 			$query->clear();
 			$query->select('name,id,import_id');
@@ -3545,15 +3538,12 @@ return $jl_dberror;
 			$query->where('import_id != 0 AND id != import_id');
 			$dbjsm->setQuery($query);
 			$result = $dbjsm->loadObjectList();
-
+            try{
 			foreach ($result as $row)
 			{
-				// Fields to update.
 				$fields = array(
 					$dbjsm->quoteName('prediction_id') . ' = ' . $row->id
 				);
-
-				// Conditions for which records should be updated.
 				$conditions = array(
 					$dbjsm->quoteName('prediction_id') . ' = ' . $row->import_id,
 					$dbjsm->quoteName('import_id') . ' != 0'
@@ -3585,11 +3575,17 @@ return $jl_dberror;
 				$dbjsm->setQuery($query);
 				$dbjsm->execute();
 			}
+            }
+					catch (Exception $e)
+					{
+					   Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+		                        Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror'); 
+                                $infocolor = self::$storeFailedColor;
+                                $infotext = self::$storeFailedText;
+					}
 
-			/**
-			 * now update fav_team && champ tipps ( <project_id>,<project_tem_id>[;<project_id>,<project_tem_id>;....] )
-			 */
-			// Create mappings for ids
+			/** now update fav_team && champ tipps ( <project_id>,<project_tem_id>[;<project_id>,<project_tem_id>;....] ) */
+			/** Create mappings for ids */
 			$mapped_project_id[0]      = 0;
 			$mapped_project_team_id[0] = 0;
 
@@ -3617,7 +3613,7 @@ return $jl_dberror;
 				$mapped_project_team_id[$row->import_id] = $row->id;
 			}
 
-			// Now iterate trough member table and update ids
+			/** Now iterate trough member table and update ids */
 			$query->clear();
 			$query->select('id,fav_team,champ_tipp');
 			$query->from('#__sportsmanagement_prediction_member');
@@ -3683,13 +3679,10 @@ return $jl_dberror;
 
 				$dChampTeams = trim($dChampTeams, ';');
 
-				// Fields to update.
 				$fields = array(
 					$dbjsm->quoteName('fav_team') . ' = ' . $dbjsm->quote($dFavTeams),
 					$dbjsm->quoteName('champ_tipp') . ' = ' . $dbjsm->quote($dChampTeams)
 				);
-
-				// Conditions for which records should be updated.
 				$conditions = array(
 					$dbjsm->quoteName('id') . ' = ' . $row->id
 				);
