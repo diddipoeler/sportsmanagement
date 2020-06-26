@@ -2537,22 +2537,14 @@ return $jl_dberror;
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
 			Factory::getDocument()->addScriptOptions('success', self::$_success);
-
 			return self::$_success;
 		}
 
-		/**
-		 * importschritt 22
-		 */
+		/** importschritt 22 */
 		if ($jl_table_import_step == 22)
 		{
-			/**
-			 * jetzt werden die spiel id´s eingetragen
-			 */
+			/** jetzt werden die spiel id´s eingetragen */
 			$my_text = '';
-
-			// $my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
-			// $my_text .= '<br />';
 			$query = $dbjsm->getQuery(true);
 			$query->clear();
 			$query->select('id as name,id,import_id');
@@ -2564,12 +2556,9 @@ return $jl_dberror;
 
 			foreach ($result as $row)
 			{
-				// Fields to update.
 				$fields = array(
 					$dbjsm->quoteName('match_id') . ' = ' . $row->id
 				);
-
-				// Conditions for which records should be updated.
 				$conditions = array(
 					$dbjsm->quoteName('match_id') . ' = ' . $row->import_id,
 					$dbjsm->quoteName('import_id') . ' != 0'
@@ -2682,8 +2671,6 @@ return $jl_dberror;
 				$query = "ALTER TABLE `" . $jsm_table . "` ADD `import_id` INT(11) NOT NULL DEFAULT '0' ";
 				$dbjsm->setQuery($query);
 				$dbjsm->execute();
-
-				// $result = $dbjsm->execute();
 			}
 			catch (Exception $e)
 			{
@@ -2694,9 +2681,7 @@ return $jl_dberror;
 
 			$query = $dbjsm->getQuery(true);
 			$query->clear();
-			/**
-			 * löschen die das feld import_id gefüllt haben
-			 */
+			/** löschen die das feld import_id gefüllt haben */
 			$conditions = array(
 				$dbjsm->quoteName('import_id') . ' != 0'
 			);
@@ -2719,8 +2704,6 @@ return $jl_dberror;
 				$query = "ALTER TABLE `" . $jsm_table . "` ADD `import_id` INT(11) NOT NULL DEFAULT '0' ";
 				$dbjsm->setQuery($query);
 				$dbjsm->execute();
-
-				// $result = $dbjsm->execute();
 			}
 			catch (Exception $e)
 			{
@@ -2731,9 +2714,7 @@ return $jl_dberror;
 
 			$query = $dbjsm->getQuery(true);
 			$query->clear();
-			/**
-			 * löschen die das feld import_id gefüllt haben
-			 */
+			/** löschen die das feld import_id gefüllt haben */
 			$conditions = array(
 				$dbjsm->quoteName('import_id') . ' != 0'
 			);
@@ -2756,8 +2737,6 @@ return $jl_dberror;
 				$query = "ALTER TABLE `" . $jsm_table . "` ADD `import_id` INT(11) NOT NULL DEFAULT '0' ";
 				$dbjsm->setQuery($query);
 				$dbjsm->execute();
-
-				// $result = $dbjsm->execute();
 			}
 			catch (Exception $e)
 			{
@@ -2819,8 +2798,6 @@ return $jl_dberror;
 				$new_id = 0;
 				$query->clear();
 				$query->select('id');
-
-				// From table
 				$query->from('#__sportsmanagement_season_team_id');
 				$query->where('season_id = ' . $row->season_id);
 				$query->where('team_id = ' . $row->team_id);
@@ -2910,8 +2887,6 @@ return $jl_dberror;
 				$new_id = 0;
 				$query->clear();
 				$query->select('id');
-
-				// From table
 				$query->from('#__sportsmanagement_season_person_id');
 				$query->where('season_id = ' . $row->season_id);
 				$query->where('person_id = ' . $row->person_id);
@@ -2949,8 +2924,6 @@ return $jl_dberror;
 				$new_id = 0;
 				$query->clear();
 				$query->select('id');
-
-				// From table
 				$query->from('#__sportsmanagement_season_team_person_id');
 				$query->where('season_id = ' . $row->season_id);
 				$query->where('person_id = ' . $row->person_id);
@@ -3150,13 +3123,8 @@ return $jl_dberror;
 				$dbjsm->execute();
 			}
 
-			/**
-			 * jetzt werden die project referees umgesetzt
-			 */
+			/** jetzt werden die project referees umgesetzt */
 			$my_text = '';
-
-			// $my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
-			// $my_text .= '<br />';
 			$query = $dbjsm->getQuery(true);
 			$query->clear();
 			$query->select('id as name,id,import_id');
@@ -3167,12 +3135,9 @@ return $jl_dberror;
 
 			foreach ($result as $row)
 			{
-				// Fields to update.
 				$fields = array(
 					$dbjsm->quoteName('project_referee_id') . ' = ' . $row->id
 				);
-
-				// Conditions for which records should be updated.
 				$conditions = array(
 					$dbjsm->quoteName('project_referee_id') . ' = ' . $row->import_id,
 					$dbjsm->quoteName('import_id') . ' != 0'
@@ -3263,18 +3228,11 @@ return $jl_dberror;
 			return self::$_success;
 		}
 
-		/**
-		 * importschritt 24
-		 */
+		/** importschritt 24 */
 		if ($jl_table_import_step == 24)
 		{
-			/**
-			 * statistic id umsetzen
-			 */
+			/** statistic id umsetzen */
 			$my_text = '';
-
-			// $my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
-			// $my_text .= '<br />';
 			$query = $dbjsm->getQuery(true);
 			$query->clear();
 			$query->select('id as name,id,import_id');
@@ -3287,12 +3245,9 @@ return $jl_dberror;
 
 			foreach ($result as $row)
 			{
-				// Fields to update.
 				$fields = array(
 					$dbjsm->quoteName('statistic_id') . ' = ' . $row->id
 				);
-
-				// Conditions for which records should be updated.
 				$conditions = array(
 					$dbjsm->quoteName('statistic_id') . ' = ' . $row->import_id,
 					$dbjsm->quoteName('import_id') . ' != 0'

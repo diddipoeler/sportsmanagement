@@ -361,13 +361,18 @@ class sportsmanagementViewcpanel extends sportsmanagementView
 	 */
 	protected function addToolBar()
 	{
-		// Get a refrence of the page instance in joomla
-		$document = Factory::getDocument();
 		$task     = $this->jinput->getCmd('task');
 
-		$document->addScript(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
-		$js = "register('" . Uri::base() . "','" . "" . "','" . $this->app->getCfg('sitename') . "','1');" . "\n";
-		$document->addScriptDeclaration($js);
+// Create an instance of a default JHttp object.
+$http = JHttpFactory::getHttp();      
+// Prepare the data.
+$data = array('homepage' => Uri::base(), 'notes' => '', 'homepagename' => $this->app->getCfg('sitename') , 'isadmin' => 1 );
+// Invoke the POST request.
+$response = $http->post('https://www.fussballineuropa.de/jsmpaket.php', $data);      
+
+		$this->document->addScript(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
+//		$js = "register('" . Uri::base() . "','" . "" . "','" . $this->app->getCfg('sitename') . "','1');" . "\n";
+//		$this->document->addScriptDeclaration($js);
 
 		if ($this->app->isClient('administrator'))
 		{
