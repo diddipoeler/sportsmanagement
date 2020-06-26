@@ -99,7 +99,7 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
 				if ($res = $mdlagegroup->getAgeGroups())
 				{
 					$myoptions = array_merge($myoptions, $res);
-					$this->assignRef('search_agegroup', $res);
+					$this->search_agegroup = $res;
 				}
 
 				$lists['agegroup'] = $myoptions;

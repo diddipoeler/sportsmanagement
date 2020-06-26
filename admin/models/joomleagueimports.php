@@ -1832,17 +1832,12 @@ return $jl_dberror;
 				$my_text .= '<br />';
 			}
 
-			/**
-			 * master template setzen
-			 */
+			/** master template setzen */
 			foreach ($result as $row)
 			{
-				// Fields to update.
 				$fields = array(
 					$dbjsm->quoteName('master_template') . ' = ' . $row->id
 				);
-
-				// Conditions for which records should be updated.
 				$conditions = array(
 					$dbjsm->quoteName('master_template') . ' = ' . $row->import_id,
 					$dbjsm->quoteName('import_id') . ' != 0'
@@ -1880,9 +1875,6 @@ return $jl_dberror;
 		{
 			/** jetzt werden die positionen/events zugeordnet */
 			$my_text = '';
-
-			// $my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
-			// $my_text .= '<br />';
 			$query = $dbjsm->getQuery(true);
 			$query->clear();
 			$query->select('name,id,import_id');
@@ -1893,15 +1885,12 @@ return $jl_dberror;
 
 			foreach ($result as $row)
 			{
-				// Fields to update.
 				$fields = array(
 					$dbjsm->quoteName('position_id') . ' = ' . $row->id,
 					$dbjsm->quoteName('modified') . ' = ' . $dbjsm->Quote('' . $date->toSql() . ''),
 					$dbjsm->quoteName('modified_by') . ' = ' . $user->get('id')
 				);
-
-				// Conditions for which records should be updated.
-				$conditions = array(
+    			$conditions = array(
 					$dbjsm->quoteName('position_id') . ' = ' . $row->import_id,
 					$dbjsm->quoteName('import_id') . ' != 0'
 				);
@@ -1979,12 +1968,9 @@ return $jl_dberror;
 
 			foreach ($result as $row)
 			{
-				// Fields to update.
 				$fields = array(
 					$dbjsm->quoteName('eventtype_id') . ' = ' . $row->id
 				);
-
-				// Conditions for which records should be updated.
 				$conditions = array(
 					$dbjsm->quoteName('eventtype_id') . ' = ' . $row->import_id,
 					$dbjsm->quoteName('import_id') . ' != 0'
@@ -2005,12 +1991,9 @@ return $jl_dberror;
 					//    JErrorPage::render($e);
 				}
 
-				// Fields to update.
 				$fields = array(
 					$dbjsm->quoteName('event_type_id') . ' = ' . $row->id
 				);
-
-				// Conditions for which records should be updated.
 				$conditions = array(
 					$dbjsm->quoteName('event_type_id') . ' = ' . $row->import_id,
 					$dbjsm->quoteName('import_id') . ' != 0'
@@ -2019,7 +2002,17 @@ return $jl_dberror;
 				$query->clear();
 				$query->update($dbjsm->quoteName('#__sportsmanagement_match_event'))->set($fields)->where($conditions);
 				$dbjsm->setQuery($query);
-				$dbjsm->execute();
+				try
+				{
+					$dbjsm->execute();
+				}
+				catch (Exception $e)
+				{
+					//    // catch any database errors.
+					//    $db->transactionRollback();
+					//    JErrorPage::render($e);
+				}
+                
 				$my_text .= '<span style="color:' . self::$storeSuccessColor . '"<strong>Eventtype ' . $row->name . ' im Positionen aktualisiert !</strong>' . '</span>';
 				$my_text .= '<br />';
 			}
