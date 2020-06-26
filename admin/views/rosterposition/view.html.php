@@ -203,7 +203,7 @@ class sportsmanagementViewrosterposition extends sportsmanagementView
 						$position++;
 					}
 
-					$this->assignRef('bildpositionen', $bildpositionenaway);
+					$this->bildpositionen = $bildpositionenaway;
 					break;
 			}
 

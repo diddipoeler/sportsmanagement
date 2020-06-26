@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage cpanel
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -25,6 +21,8 @@ use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\Http\HttpFactory;
+use Joomla\Registry\Registry;
 
 /**
  * sportsmanagementViewcpanel
@@ -364,7 +362,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView
 		$task     = $this->jinput->getCmd('task');
 
 // Create an instance of a default JHttp object.
-$http = JHttpFactory::getHttp();      
+$http = HttpFactory::getHttp();      
 // Prepare the data.
 $data = array('homepage' => Uri::base(), 'notes' => '', 'homepagename' => $this->app->getCfg('sitename') , 'isadmin' => 1 );
 // Invoke the POST request.

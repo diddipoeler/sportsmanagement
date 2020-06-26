@@ -48,13 +48,6 @@ class sportsmanagementViewextrafield extends sportsmanagementView
 			return false;
 		}
 
-		//		// Assign the Data
-		//		$this->form = $form;
-		//		$this->item = $item;
-		//		$this->script = $script;
-
-		//		$extended = sportsmanagementHelper::getExtended($item->extended, 'jlextcountry');
-		//		$this->assignRef( 'extended', $extended );
 		$this->cfg_which_media_tool = ComponentHelper::getParams($this->option)->get('cfg_which_media_tool', 0);
 
 	}
