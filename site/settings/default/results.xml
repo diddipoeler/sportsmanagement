@@ -479,8 +479,7 @@
 			<option value="2">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION2_SHOW_LINK_MATCHREPORT</option>
 		</field>		
 
-		<field type="spacer">
-		</field>
+		<field type="extensionsubtitle" title="" color="#2672a6" />
 		
 		<field	name="show_info_link" type="list" default="1"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_INFO_LINK"
