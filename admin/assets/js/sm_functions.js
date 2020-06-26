@@ -174,22 +174,30 @@ function registerproject(homepage,project,homepagename,isadmin)
 var url='https://www.fussballineuropa.de/jsmprojectexport.php';		
 var data = 'homepage='+homepage+'&project_id='+project+'&homepagename='+homepagename+'&isadmin='+isadmin;
 var url2='https://www.fussballineuropa.de/jsmprojectexport.php?'+'homepage='+homepage+'&project_id='+project+'&homepagename='+homepagename+'&isadmin='+isadmin;
-var request = new Request({
-                        url: url2,
-                        method:'post',
-                        data: data
-                        }).send();
-                        		
+//var request = new Request({
+//                        url: url2,
+//                        method:'post',
+//                        data: data
+//                        }).send();
+
+var xhttp = new XMLHttpRequest();
+xhttp.open("POST", url2, true);
+xhttp.send(data);    
+                    		
 		}
 
 function register(homepage,notes,homepagename,isadmin)
 	{
 var data = 'homepage='+homepage+'&notes='+notes+'&homepagename='+homepagename+'&isadmin='+isadmin;
 var url2='https://www.fussballineuropa.de/jsmpaket.php?'+'homepage='+homepage+'&notes='+notes+'&homepagename='+homepagename+'&isadmin='+isadmin;
-var request = new Request({
-                        url: url2,
-                        method:'post',
-                        data: data
-                        }).send();
+//var request = new Request({
+//                        url: url2,
+//                        method:'post',
+//                        data: data
+//                        }).send();
+
+var xhttp = new XMLHttpRequest();
+xhttp.open("POST", url2, true);
+xhttp.send(data);
                         		
 		}

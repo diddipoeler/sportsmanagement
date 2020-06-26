@@ -1372,41 +1372,57 @@ return $jl_dberror;
 			 * nach der kopie der tabellen müssen wir die sportart bei den mannschaften setzen.
 			 * sonst gibt es in der übersicht der projektmannschaften eine fehlermeldung.
 			 */
-			$query   = $db->getQuery(true);
+			$queryjsm   = $dbjsm->getQuery(true);
 			$my_text = '';
 
-			// Fields to update.
 			$fields = array(
-				$db->quoteName('sports_type_id') . ' = ' . $sports_type_id
+				$dbjsm->quoteName('sports_type_id') . ' = ' . $sports_type_id
 			);
 
-			// Conditions for which records should be updated.
 			$conditions = array(
-				$db->quoteName('sports_type_id') . ' != ' . $sports_type_id
+				$dbjsm->quoteName('sports_type_id') . ' != ' . $sports_type_id
 			);
-			$query->update($db->quoteName('#__sportsmanagement_team'))->set($fields)->where($conditions);
-			$db->setQuery($query);
+			
 
 			try
 			{
-				sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+			 $queryjsm->update($dbjsm->quoteName('#__sportsmanagement_team'))->set($fields)->where($conditions);
+			$dbjsm->setQuery($queryjsm);
+            $dbjsm->execute();
+                                $infocolor = self::$storeSuccessColor;
+                                $infotext = self::$storeSuccessText;
+				//sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 			}
 			catch (Exception $e)
 			{
+			 Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+		                        Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror'); 
+                                $infocolor = self::$storeFailedColor;
+                                $infotext = self::$storeFailedText; 
 			}
-
-			$query->update($db->quoteName('#__sportsmanagement_project'))->set($fields)->where($conditions);
-			$db->setQuery($query);
+            
+            $my_text .= '<span style="color:' . $infocolor . '"<strong>' . $dbjsm->getAffectedRows() . ' Daten in der Tabelle: ( __sportsmanagement_team ) ' . $infotext . '!</strong>' . '</span>';
+			$my_text .= '<br />';
+		
 
 			try
 			{
-				sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+			 $queryjsm->update($dbjsm->quoteName('#__sportsmanagement_project'))->set($fields)->where($conditions);
+			$dbjsm->setQuery($queryjsm);
+            $dbjsm->execute();
+                                $infocolor = self::$storeSuccessColor;
+                                $infotext = self::$storeSuccessText;
+				//sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 			}
 			catch (Exception $e)
 			{
+			 Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+		                        Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror'); 
+                                $infocolor = self::$storeFailedColor;
+                                $infotext = self::$storeFailedText; 
 			}
 
-			$my_text .= '<span style="color:' . self::$storeSuccessColor . '"<strong>' . self::$db_num_rows . ' Daten in der Tabelle: ( __sportsmanagement_project ) aktualisiert!</strong>' . '</span>';
+			$my_text .= '<span style="color:' . $infocolor . '"<strong>' . $dbjsm->getAffectedRows() . ' Daten in der Tabelle: ( __sportsmanagement_project ) ' . $infotext . '!</strong>' . '</span>';
 			$my_text .= '<br />';
 
 			$endtime                                   = sportsmanagementModeldatabasetool::getRunTime();
