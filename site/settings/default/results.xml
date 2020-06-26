@@ -435,7 +435,10 @@
 <!-- register 7 -->
 	<fieldset name= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS"
 	label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS"
-	description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_TEAMOPTIONS2">
+	description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_TEAMOPTIONS2"
+	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
+	addfieldpath="/administrator/components/com_sportsmanagement/models/fields"
+	>
 
 	<field	name="show_logo_small" type="list" default="6"
 	label="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_LABEL_SHOW_LOGO_SMALL"
