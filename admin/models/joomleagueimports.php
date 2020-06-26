@@ -3482,9 +3482,11 @@ return $jl_dberror;
 			$query->select('name,id,import_id');
 			$query->from('#__sportsmanagement_prediction_game');
 			$query->where('import_id != 0 AND id != import_id');
-			$dbjsm->setQuery($query);
-			$result = $dbjsm->loadObjectList();
+			
             try{
+            $dbjsm->setQuery($query);
+			$result = $dbjsm->loadObjectList();
+            
 			foreach ($result as $row)
 			{
 				$fields = array(
