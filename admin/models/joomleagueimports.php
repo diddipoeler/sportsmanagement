@@ -185,9 +185,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 //        Log::add('option <pre>'.print_r($option,true).'</pre>', Log::NOTICE, 'jsmerror'); 
 //        Log::add('db <pre>'.print_r($db,true).'</pre>', Log::NOTICE, 'jsmerror');
 
-		/**
-		 * fehlende jl felder hinzufügen für alte versionen
-		 */
+		/** fehlende jl felder hinzufügen für alte versionen */
 		try
 		{
 			$query = $db->getQuery(true);
@@ -198,9 +196,19 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		}
 		catch (Exception $e)
 		{
-        Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
-		Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
-        $jl_dberror++;
+		  
+          switch ( $e->getCode() )
+          {
+          case '1060';
+          Log::add(Text::_('#__joomleague_division Feld tree_id vorhanden.'), Log::NOTICE, 'jsmerror');
+          break;
+          default:
+          Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+		  Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
+          $jl_dberror++;
+          break;
+          }
+        
 		}
 
 		try
