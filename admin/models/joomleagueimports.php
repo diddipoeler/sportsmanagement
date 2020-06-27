@@ -199,7 +199,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		  
           switch ( $e->getCode() )
           {
-          case '1060';
+          case 1060;
           Log::add(Text::_('#__joomleague_division Feld tree_id vorhanden.'), Log::NOTICE, 'jsmerror');
           break;
           default:
