@@ -200,8 +200,8 @@ class sportsmanagementModeljoomleagueimports extends ListModel
           
           Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()) . '<br />', Log::NOTICE, 'jsmerror');
           //Log::add(Text::_($db->getErrorNumber() ), Log::ERROR, 'jsmerror');
-          Log::add(Text::_(mysql_errno($db) ), Log::ERROR, 'jsmerror');
-          
+          //Log::add(Text::_(mysql_errno($db) ), Log::ERROR, 'jsmerror');
+          Log::add(Text::_('<pre>'.print_r($db,true).'</pre>' ), Log::ERROR, 'jsmerror');
           
           switch ( $e->getCode() )
           {
