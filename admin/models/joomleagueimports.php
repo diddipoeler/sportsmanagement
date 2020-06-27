@@ -196,7 +196,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		}
 		catch (Exception $e)
 		{
-		  
+		  echo JText::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()) . '<br />';
           switch ( $e->getCode() )
           {
           case 1060;
