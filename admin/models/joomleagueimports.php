@@ -202,7 +202,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
           //Log::add(Text::_($db->getErrorNumber() ), Log::ERROR, 'jsmerror');
           //Log::add(Text::_(mysql_errno($db) ), Log::ERROR, 'jsmerror');
           //Log::add(Text::_('<pre>'.print_r($db,true).'</pre>' ), Log::ERROR, 'jsmerror');
-          Log::add(Text::_('<pre>'.print_r(JDatabaseDriver::getErrorNum(),true).'</pre>' ), Log::ERROR, 'jsmerror');
+          //Log::add(Text::_('<pre>'.print_r(JDatabaseDriver::getErrorNum(),true).'</pre>' ), Log::ERROR, 'jsmerror');
           
           switch ( $e->getCode() )
           {
