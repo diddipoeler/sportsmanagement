@@ -1136,6 +1136,41 @@ return $jl_dberror;
 				/** hier überprüfen wir noch sicherheitshalber ob die jl tabelle existiert */
 				$prefix    = $db->getPrefix();
 				$key_table = array_search($prefix . 'joomleague_' . $value, $tables);
+                
+                /** feld import_id einfügen */
+						try
+						{
+							$queryjsm = $dbjsm->getQuery(true);
+							//$queryjsm->clear();
+							$queryjsm = "ALTER TABLE `" . $jsm_table . "` ADD `import_id` INT(11) NOT NULL DEFAULT '0' ";
+							$dbjsm->setQuery($queryjsm);
+							//sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+                            $dbjsm->execute();
+						}
+						catch (Exception $e)
+						{
+						//Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()) . '<br />', Log::ERROR, 'jsmerror');
+						}
+
+						try
+						{
+                        $queryjsm = $dbjsm->getQuery(true);
+						//$queryjsm->clear();
+						/** löschen die das feld import_id gefüllt haben */
+						$conditions = array(
+							$dbjsm->quoteName('import_id') . ' != 0'
+						);
+						$queryjsm->delete($dbjsm->quoteName($jsm_table));
+						$queryjsm->where($conditions);
+
+						$dbjsm->setQuery($queryjsm);
+						//sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+                        $dbjsm->execute();
+                        }
+						catch (Exception $e)
+						{
+						//Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()) . '<br />', Log::ERROR, 'jsmerror');
+						}
 
 				if ($key_table)
 				{
@@ -1163,42 +1198,42 @@ return $jl_dberror;
 					}
 					else
 					{
-						/** feld import_id einfügen */
-						try
-						{
-							$queryjsm = $dbjsm->getQuery(true);
-							//$queryjsm->clear();
-							$queryjsm = "ALTER TABLE `" . $jsm_table . "` ADD `import_id` INT(11) NOT NULL DEFAULT '0' ";
-							$dbjsm->setQuery($queryjsm);
-							//sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
-                            $dbjsm->execute();
-						}
-						catch (Exception $e)
-						{
-						Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
-		                Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror'); 
-						}
-
-						try
-						{
-                        $queryjsm = $dbjsm->getQuery(true);
-						//$queryjsm->clear();
-						/** löschen die das feld import_id gefüllt haben */
-						$conditions = array(
-							$dbjsm->quoteName('import_id') . ' != 0'
-						);
-						$queryjsm->delete($dbjsm->quoteName($jsm_table));
-						$queryjsm->where($conditions);
-
-						$dbjsm->setQuery($queryjsm);
-						//sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
-                        $dbjsm->execute();
-                        }
-						catch (Exception $e)
-						{
-						Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
-		                Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror'); 
-						}
+//						/** feld import_id einfügen */
+//						try
+//						{
+//							$queryjsm = $dbjsm->getQuery(true);
+//							//$queryjsm->clear();
+//							$queryjsm = "ALTER TABLE `" . $jsm_table . "` ADD `import_id` INT(11) NOT NULL DEFAULT '0' ";
+//							$dbjsm->setQuery($queryjsm);
+//							//sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+//                            $dbjsm->execute();
+//						}
+//						catch (Exception $e)
+//						{
+//						Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+//		                Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror'); 
+//						}
+//
+//						try
+//						{
+//                        $queryjsm = $dbjsm->getQuery(true);
+//						//$queryjsm->clear();
+//						/** löschen die das feld import_id gefüllt haben */
+//						$conditions = array(
+//							$dbjsm->quoteName('import_id') . ' != 0'
+//						);
+//						$queryjsm->delete($dbjsm->quoteName($jsm_table));
+//						$queryjsm->where($conditions);
+//
+//						$dbjsm->setQuery($queryjsm);
+//						//sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+//                        $dbjsm->execute();
+//                        }
+//						catch (Exception $e)
+//						{
+//						Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+//		                Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror'); 
+//						}
 
 						/**
 						 * die anzahl der einträge wird nicht mehr benötigt
