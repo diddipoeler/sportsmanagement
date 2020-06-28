@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage allprojectrounds
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -35,34 +31,16 @@ jimport('joomla.utilities.arrayhelper');
 class sportsmanagementModelallprojectrounds extends BaseDatabaseModel
 {
 	var $projectid = 0;
-
 	var $project_ids = 0;
-
 	var $project_ids_array = array();
-
 	var $round = 0;
-
 	var $rounds = array(0);
-
-	// 	var $part = 0;
-	// 	var $type = 0;
-	// 	var $from = 0;
-	// 	var $to = 0;
-	// 	var $divLevel = 0;
 	var $ProjectTeams = array();
-
 	var $previousRanking = array();
-
-	// 	var $homeRank = array();
-	// 	var $awayRank = array();
 	var $colors = array();
-
 	var $result = array();
-
 	var $projectteam_id = 0;
-
 	var $matchid = 0;
-
 	var $_playersevents = array();
 
 	/**
@@ -98,6 +76,7 @@ class sportsmanagementModelallprojectrounds extends BaseDatabaseModel
 		$this->_params['show_secondroster'] = $jinput->request->get('show_secondroster', 0, 'INT');
 		$this->_params['show_secondsubst']  = $jinput->request->get('show_secondsubst', 0, 'INT');
 		$this->_params['show_secondevents'] = $jinput->request->get('show_secondevents', 0, 'INT');
+        $this->_params['show_favteaminfo'] = $jinput->request->get('show_favteaminfo', 0, 'INT');
 
 		$this->_params['s']           = $jinput->request->get('s', 0, 'INT');
 		$this->_params['p']           = $jinput->request->get('p', 0, 'INT');
@@ -196,7 +175,10 @@ class sportsmanagementModelallprojectrounds extends BaseDatabaseModel
 			}
 			catch (Exception $e)
 			{
+			 if ( $this->_params['show_favteaminfo'] )
+             {
 				Log::add(Text::_('COM_SPORTSMANAGEMENT_RANKING_NO_FAVTEAM'), Log::INFO, 'jsmerror');
+                }
 			}
 		}
 
