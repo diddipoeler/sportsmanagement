@@ -119,6 +119,14 @@ class="radio btn-group btn-group-yesno"
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		
+		<field	name="show_favteaminfo" type="extensionradiobutton" default="0" 
+		class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_FAVTEAMINFO" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_FAVTEAMINFO">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
     			
 			</fieldset>
 	</fields>
