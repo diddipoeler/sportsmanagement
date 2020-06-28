@@ -3,7 +3,11 @@
 <!-- register 1 -->
 	<fieldset name= "details"
 	label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
-			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
+	description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS"
+	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
+	addfieldpath="/administrator/components/com_sportsmanagement/models/fields"		
+			
+			>
 
 <field name="show_historylink" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"

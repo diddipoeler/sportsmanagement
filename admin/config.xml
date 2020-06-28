@@ -724,7 +724,6 @@ class="radio btn-group btn-group-yesno"
 <!-- backend -->	
 	<fieldset name="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_BACKEND"
 	label="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_BACKEND"
-		
   	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 
@@ -742,7 +741,7 @@ class="radio btn-group btn-group-yesno"
 			description="COM_SPORTSMANAGEMENT_FIELD_GH_TOKEN_DESC"
 			label="COM_SPORTSMANAGEMENT_FIELD_GH_TOKEN_LABEL"
 		/>
-			
+<field type="extensionsubtitle" title="Joomleague Import" color="#2672a6" />			
 		<field
 			name="jl_dbtype"
 			type="databaseconnection"
