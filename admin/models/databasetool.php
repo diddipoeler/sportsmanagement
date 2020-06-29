@@ -42,6 +42,13 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 	var $existingInDbColor = 'orange';
 
 	
+	/**
+	 * sportsmanagementModeldatabasetool::getExeptionMessage()
+	 * 
+	 * @param string $getcode
+	 * @param string $getmessage
+	 * @return
+	 */
 	public static function getExeptionMessage($getcode='',$getmessage='')
 	{
 		$message = array();
