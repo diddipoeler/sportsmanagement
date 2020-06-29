@@ -8,16 +8,13 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-
 ?>
 <div>
     <div class="cpanel-left">
@@ -212,7 +209,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                 </div>
                 <div style="margin-bottom:5px">
                     <a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_HELP_LINK') ?>" target="_blank"
-                       href="http://smwiki.diddipoeler.de/index.php/Hauptseite">
+                       href="https://smwiki.diddipoeler.de/index.php/Hauptseite">
                         <img src="<?php echo Uri::base(true) ?>/components/com_sportsmanagement/assets/icons/hilfe.png"
                              width="48px" height="48px"></a>
                 </div>
