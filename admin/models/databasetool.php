@@ -46,12 +46,12 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 	{
 		$message = array();
 		
-Log::add(Text::_('<pre>'.print_r(JVERSION,true).'</pre>' ), Log::INFO, 'jsmerror');
+//Log::add(Text::_('<pre>'.print_r(JVERSION,true).'</pre>' ), Log::INFO, 'jsmerror');
 		
 	if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 		{
 		$teile = explode(",", $getmessage);
-Log::add(Text::_('<pre>'.print_r($teile,true).'</pre>' ), Log::INFO, 'jsmerror');		
+//Log::add(Text::_('<pre>'.print_r($teile,true).'</pre>' ), Log::INFO, 'jsmerror');		
 $message['code'] = (int) $teile[1];
 $message['message'] = trim($teile[2]);
 		}	
