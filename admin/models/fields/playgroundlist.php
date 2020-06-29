@@ -36,13 +36,33 @@ class JFormFieldplaygroundlist extends \JFormFieldList
 	 */
 	public $type = 'playgroundlist';
 
+  /**
+   * JFormFieldplaygroundlist::getInput()
+   * 
+   * @return
+   */
   protected function getInput()
 	{
+	   $document = Factory::getDocument();
+       /** Some CSS */
+		$document->addStyleDeclaration(
+			'
+img.item {
+    padding-right: 10px;
+    vertical-align: middle;
+}
+img.car {
+    height: 25px;
+}'
+		);
     /**
 		 *          Initialize variables.
 		 */
 		$options = array();
 $html = '';
+
+// String $opt - second parameter of formbehavior2::select2
+// for details http://ivaynberg.github.io/select2/
       $opt = ' allowClear: true,
    width: "100%",
 
