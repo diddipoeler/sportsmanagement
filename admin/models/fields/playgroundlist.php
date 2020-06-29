@@ -72,15 +72,17 @@ $html = '';
 		$db->setQuery($query);
 		$options = $db->loadObjectList();
         
+    //echo '<pre>'.print_r($options,true).'</pre>';
+    
 $script[] = "var teampicture = new Array;";        
 foreach ($options as $key => $value)
 			{
-//				if (!$value)
-//				{
-//					$value = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
-//				}
+				if (!$value->teampicture)
+				{
+					$value = sportsmanagementHelper::getDefaultPlaceholder("playgrounds");
+				}
 
-				$script[] = 'teampicture[' . ($key) . ']=\'' . $value . "';\n";
+				$script[] = 'teampicture[' . ($key) . ']=\'' . $value->teampicture . "';\n";
 			}        
 Factory::getDocument()->addScriptDeclaration(implode("\n", $script));        
 /**
@@ -94,7 +96,8 @@ Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
    {
    var originalOption = state.element;
    var picture;
-   picture = "images/com_sportsmanagement/database/playgrounds/placeholder_stadium.png";
+   //picture = "images/com_sportsmanagement/database/playgrounds/placeholder_stadium.png";
+   picture = teampicture[state.id];
    if (!state.id)
    return state.text;
    return "<img class=\'item car\' src=\'' . Uri::root() . '" + picture + "\' />" + state.text;
