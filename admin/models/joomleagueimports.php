@@ -220,6 +220,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
           break;
           }
         */
+			$jl_dberror += $logmessage['error'];
 		}
 
 		try
@@ -234,7 +235,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		{
 	$logmessage = sportsmanagementModeldatabasetool::getExeptionMessage($e->getCode(),$e->getMessage()); 		
 	Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $logmessage['code'], $logmessage['message'] ) . '<br />', $logmessage['log'], 'jsmerror');
-        $jl_dberror++;
+        $jl_dberror += $logmessage['error'];
 		}
 
 		try
@@ -249,7 +250,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		{
 			$logmessage = sportsmanagementModeldatabasetool::getExeptionMessage($e->getCode(),$e->getMessage()); 		
 	Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $logmessage['code'], $logmessage['message'] ) . '<br />', $logmessage['log'], 'jsmerror');
-        $jl_dberror++;
+        $jl_dberror += $logmessage['error'];
 		}
 
 		try
@@ -264,7 +265,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		{
 			$logmessage = sportsmanagementModeldatabasetool::getExeptionMessage($e->getCode(),$e->getMessage()); 		
 	Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $logmessage['code'], $logmessage['message'] ) . '<br />', $logmessage['log'], 'jsmerror');
-        $jl_dberror++;
+        $jl_dberror += $logmessage['error'];
 		}
 
 		try
@@ -279,7 +280,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		{
 			$logmessage = sportsmanagementModeldatabasetool::getExeptionMessage($e->getCode(),$e->getMessage()); 		
 	Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $logmessage['code'], $logmessage['message'] ) . '<br />', $logmessage['log'], 'jsmerror');
-        $jl_dberror++;
+        $jl_dberror += $logmessage['error'];
 		}
 
 		try
@@ -294,7 +295,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		{
 			$logmessage = sportsmanagementModeldatabasetool::getExeptionMessage($e->getCode(),$e->getMessage()); 		
 	Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $logmessage['code'], $logmessage['message'] ) . '<br />', $logmessage['log'], 'jsmerror');
-        $jl_dberror++;
+        $jl_dberror += $logmessage['error'];
 		}
 
 		try
@@ -309,7 +310,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		{
 			$logmessage = sportsmanagementModeldatabasetool::getExeptionMessage($e->getCode(),$e->getMessage()); 		
 	Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $logmessage['code'], $logmessage['message'] ) . '<br />', $logmessage['log'], 'jsmerror');
-        $jl_dberror++;
+        $jl_dberror += $logmessage['error'];
 		}
 
 		try
@@ -324,7 +325,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		{
 			$logmessage = sportsmanagementModeldatabasetool::getExeptionMessage($e->getCode(),$e->getMessage()); 		
 	Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $logmessage['code'], $logmessage['message'] ) . '<br />', $logmessage['log'], 'jsmerror');
-        $jl_dberror++;
+        $jl_dberror += $logmessage['error'];
 		}
 
 		try
@@ -339,7 +340,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		{
 			$logmessage = sportsmanagementModeldatabasetool::getExeptionMessage($e->getCode(),$e->getMessage()); 		
 	Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $logmessage['code'], $logmessage['message'] ) . '<br />', $logmessage['log'], 'jsmerror');
-        $jl_dberror++;
+        $jl_dberror += $logmessage['error'];
 		}
 
 		try
@@ -354,7 +355,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		{
 			$logmessage = sportsmanagementModeldatabasetool::getExeptionMessage($e->getCode(),$e->getMessage()); 		
 	Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $logmessage['code'], $logmessage['message'] ) . '<br />', $logmessage['log'], 'jsmerror');
-        $jl_dberror++;
+        $jl_dberror += $logmessage['error'];
 		}
 
 		try
@@ -369,7 +370,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		{
 			$logmessage = sportsmanagementModeldatabasetool::getExeptionMessage($e->getCode(),$e->getMessage()); 		
 	Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $logmessage['code'], $logmessage['message'] ) . '<br />', $logmessage['log'], 'jsmerror');
-        $jl_dberror++;
+        $jl_dberror += $logmessage['error'];
 		}
 
 		try
@@ -384,7 +385,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		{
 			$logmessage = sportsmanagementModeldatabasetool::getExeptionMessage($e->getCode(),$e->getMessage()); 		
 	Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $logmessage['code'], $logmessage['message'] ) . '<br />', $logmessage['log'], 'jsmerror');
-        $jl_dberror++;
+        $jl_dberror += $logmessage['error'];
 		}
 
 		try
@@ -399,7 +400,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		{
 			$logmessage = sportsmanagementModeldatabasetool::getExeptionMessage($e->getCode(),$e->getMessage()); 		
 	Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $logmessage['code'], $logmessage['message'] ) . '<br />', $logmessage['log'], 'jsmerror');
-        $jl_dberror++;
+        $jl_dberror += $logmessage['error'];
 		}
 
 		try
@@ -414,7 +415,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		{
 			$logmessage = sportsmanagementModeldatabasetool::getExeptionMessage($e->getCode(),$e->getMessage()); 		
 	Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $logmessage['code'], $logmessage['message'] ) . '<br />', $logmessage['log'], 'jsmerror');
-        $jl_dberror++;
+        $jl_dberror += $logmessage['error'];
 		}
 
 		try
@@ -429,7 +430,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		{
 			$logmessage = sportsmanagementModeldatabasetool::getExeptionMessage($e->getCode(),$e->getMessage()); 		
 	Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $logmessage['code'], $logmessage['message'] ) . '<br />', $logmessage['log'], 'jsmerror');
-        $jl_dberror++;
+        $jl_dberror += $logmessage['error'];
 		}
 
 		try
@@ -444,7 +445,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		{
 			$logmessage = sportsmanagementModeldatabasetool::getExeptionMessage($e->getCode(),$e->getMessage()); 		
 	Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $logmessage['code'], $logmessage['message'] ) . '<br />', $logmessage['log'], 'jsmerror');
-        $jl_dberror++;
+        $jl_dberror += $logmessage['error'];
 		}
 
 		try
@@ -459,7 +460,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		{
 			$logmessage = sportsmanagementModeldatabasetool::getExeptionMessage($e->getCode(),$e->getMessage()); 		
 	Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $logmessage['code'], $logmessage['message'] ) . '<br />', $logmessage['log'], 'jsmerror');
-        $jl_dberror++;
+        $jl_dberror += $logmessage['error'];
 		}
 
 		try
@@ -474,7 +475,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		{
 			$logmessage = sportsmanagementModeldatabasetool::getExeptionMessage($e->getCode(),$e->getMessage()); 		
 	Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $logmessage['code'], $logmessage['message'] ) . '<br />', $logmessage['log'], 'jsmerror');
-        $jl_dberror++;
+       $jl_dberror += $logmessage['error'];
 		}
 
 		try
@@ -489,7 +490,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		{
 			$logmessage = sportsmanagementModeldatabasetool::getExeptionMessage($e->getCode(),$e->getMessage()); 		
 	Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $logmessage['code'], $logmessage['message'] ) . '<br />', $logmessage['log'], 'jsmerror');
-        $jl_dberror++;
+        $jl_dberror += $logmessage['error'];
 		}
 
 		try
@@ -504,7 +505,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		{
 			$logmessage = sportsmanagementModeldatabasetool::getExeptionMessage($e->getCode(),$e->getMessage()); 		
 	Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $logmessage['code'], $logmessage['message'] ) . '<br />', $logmessage['log'], 'jsmerror');
-        $jl_dberror++;
+        $jl_dberror += $logmessage['error'];
 		}
         
 return $jl_dberror;
