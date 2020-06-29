@@ -66,6 +66,9 @@ $message['message'] = $getmessage;
           case 1060;
 	$message['log'] = 'Log::NOTICE';
           break;
+	case 1062;
+	$message['log'] = 'Log::ERROR';
+          break;
           default:
 	$message['log'] = 'Log::ERROR';
           break;
