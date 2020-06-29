@@ -209,7 +209,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                 </div>
                 <div style="margin-bottom:5px">
                     <a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_HELP_LINK') ?>" target="_blank"
-                       href="https://smwiki.diddipoeler.de/index.php/Hauptseite">
+                       href="https://jsm-wiki.diddipoeler.de/index.php/Hauptseite">
                         <img src="<?php echo Uri::base(true) ?>/components/com_sportsmanagement/assets/icons/hilfe.png"
                              width="48px" height="48px"></a>
                 </div>
