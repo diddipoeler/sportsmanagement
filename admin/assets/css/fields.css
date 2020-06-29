@@ -1,0 +1,8 @@
+/*
+ * @copyright	Copyright (C) 2011 Simplify Your Web, Inc. All rights reserved.
+ * @license		GNU General Public License version 3 or later; see LICENSE.txt
+ */
+ 
+.control-group-header .controls, .control-group-help .controls { margin-left: 0 !important; }
+.control-group-info { background-color: #f9f9f9; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; padding: 6px; }
+.control-group-info .control-label { padding-top: 0 !important; }
