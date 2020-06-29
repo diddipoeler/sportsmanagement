@@ -59,6 +59,7 @@ img.car {
 		 *          Initialize variables.
 		 */
 		$options = array();
+        $script = array();
 $html = '';
 
 
@@ -71,9 +72,17 @@ $html = '';
 		$db->setQuery($query);
 		$options = $db->loadObjectList();
         
-        
-        
-        
+$script[] = "var teampicture = new Array;";        
+foreach ($options as $key => $value)
+			{
+//				if (!$value)
+//				{
+//					$value = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
+//				}
+
+				$script[] = 'teampicture[' . ($key) . ']=\'' . $value . "';\n";
+			}        
+Factory::getDocument()->addScriptDeclaration(implode("\n", $script));        
 /**
  * String $opt - second parameter of formbehavior2::select2
  * for details http://ivaynberg.github.io/select2/
