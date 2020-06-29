@@ -1,17 +1,13 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version   1.0.05
  * @file      default_rssfeed.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -20,6 +16,7 @@ use Joomla\Registry\Registry;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filter\OutputFilter;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModeldatabasetool
@@ -48,9 +45,13 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 	public static function getExeptionMessage($getcode='',$getmessage='')
 	{
 		$message = array();
+		
+Log::add(Text::_('<pre>'.print_r(JVERSION,true).'</pre>' ), Log::INFO, 'jsmerror');
+		
 	if (version_compare(JVERSION, '4.0.0', 'ge'))
 		{
 		$teile = explode(",", $getmessage);
+Log::add(Text::_('<pre>'.print_r($teile,true).'</pre>' ), Log::INFO, 'jsmerror');		
 $message['code'] = (int) $teile[1];
 $message['message'] = trim($teile[2]);
 		}	
