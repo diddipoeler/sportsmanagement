@@ -51,13 +51,13 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 	if (version_compare(JVERSION, '4.0.0', 'ge'))
 		{
 		$teile = explode(",", $message);
-$message[] = (int) $teile[1];
-$message[] = trim($teile[2]);
+$message['code'] = (int) $teile[1];
+$message['message'] = trim($teile[2]);
 		}	
 		elseif (version_compare(JVERSION, '3.0.0', 'ge'))
 		{
-$message[] = $code;
-$message[] = $message;			
+$message['code'] = $code;
+$message['message'] = $message;			
 		}
 		
 		return $message;
