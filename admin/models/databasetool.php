@@ -64,10 +64,10 @@ $message['message'] = $getmessage;
 		switch ( $message['code'] )
           {
           case 1060;
-	$message['log'] = Log::NOTICE;
+	$message['log'] = 'Log::NOTICE';
           break;
           default:
-	$message['log'] = Log::ERROR;
+	$message['log'] = 'Log::ERROR';
           break;
           }
 		
