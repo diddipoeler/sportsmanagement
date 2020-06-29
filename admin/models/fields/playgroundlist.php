@@ -61,8 +61,23 @@ img.car {
 		$options = array();
 $html = '';
 
-// String $opt - second parameter of formbehavior2::select2
-// for details http://ivaynberg.github.io/select2/
+
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('id AS value, name AS text, picture as teampicture');
+		$query->from('#__sportsmanagement_playground');
+		$query->order('name');
+		$db->setQuery($query);
+		$options = $db->loadObjectList();
+        
+        
+        
+        
+/**
+ * String $opt - second parameter of formbehavior2::select2
+ * for details http://ivaynberg.github.io/select2/
+ */
       $opt = ' allowClear: true,
    width: "100%",
 
@@ -77,20 +92,7 @@ $html = '';
    },
  
    escapeMarkup: function(m) { return m; }
-';
-		$db    = Factory::getDbo();
-		$query = $db->getQuery(true);
-
-		$query->select('id AS value, name AS text, picture as teampicture');
-		$query->from('#__sportsmanagement_playground');
-		$query->order('name');
-		$db->setQuery($query);
-		$options = $db->loadObjectList();
-
-		/**
-		 *          Merge any additional options in the XML definition.
-		 */
-		//$options = array_merge(parent::getOptions(), $options);
+';		
 
       $append = '';
 		$html .= HTMLHelper::_('formbehavior2.select2', '.test1', $opt);
