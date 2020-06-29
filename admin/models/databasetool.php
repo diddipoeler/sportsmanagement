@@ -48,18 +48,30 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 		
 Log::add(Text::_('<pre>'.print_r(JVERSION,true).'</pre>' ), Log::INFO, 'jsmerror');
 		
-	if (version_compare(JVERSION, '4.0.0', 'ge'))
+	if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 		{
 		$teile = explode(",", $getmessage);
 Log::add(Text::_('<pre>'.print_r($teile,true).'</pre>' ), Log::INFO, 'jsmerror');		
 $message['code'] = (int) $teile[1];
 $message['message'] = trim($teile[2]);
 		}	
-		elseif (version_compare(JVERSION, '3.0.0', 'ge'))
+		elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
 		{
 $message['code'] = $getcode;
 $message['message'] = $getmessage;			
 		}
+		
+		switch ( $message['code'] )
+          {
+          case 1060;
+	$message['log'] = Log::NOTICE;
+          break;
+          default:
+	$message['log'] = Log::ERROR;
+          break;
+          }
+		
+		
 		
 		return $message;
 	}
