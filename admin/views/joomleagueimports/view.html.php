@@ -67,11 +67,11 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
         if ($jl_dberror)
 		{
             Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', $jl_dberror), Log::ERROR, 'jsmerror');
-            Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_JL_IMPORT_ALLOWED_NO'), Log::ERROR, 'jsmerror');
+            //Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_JL_IMPORT_ALLOWED_NO'), Log::ERROR, 'jsmerror');
 		}
 		else
 		{
-            Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_JL_IMPORT_ALLOWED_YES'), Log::NOTICE, 'jsmerror');
+            //Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_JL_IMPORT_ALLOWED_YES'), Log::NOTICE, 'jsmerror');
 		}
         
         }
