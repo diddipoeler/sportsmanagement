@@ -79,7 +79,7 @@ foreach ($options as $key => $value)
 			{
 				if (!$value->teampicture)
 				{
-					$value = sportsmanagementHelper::getDefaultPlaceholder("playgrounds");
+					$value->teampicture = sportsmanagementHelper::getDefaultPlaceholder("playgrounds");
 				}
 
 				$script[] = 'teampicture[' . ($key) . ']=\'' . $value->teampicture . "';\n";
