@@ -110,7 +110,7 @@ Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
 		$html .= HTMLHelper::_('formbehavior2.select2', '.test1', $opt);
       $html .= HTMLHelper::_(
 				'select.genericlist', $options, 'playground_id',
-				'style="width:225px;" class="test1" size="6"' . $append, 'value', 'text', 0
+				'style="width:225px;" class="test1" size="6"' . $append, 'value', 'text', $this->value, $this->id
 			);
       
       
