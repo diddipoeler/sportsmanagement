@@ -56,7 +56,7 @@ $message['message'] = trim($teile[2]);
 		}	
 		elseif (version_compare(JVERSION, '3.0.0', 'ge'))
 		{
-$message['code'] = $code;
+$message['code'] = $getcode;
 $message['message'] = $getmessage;			
 		}
 		
