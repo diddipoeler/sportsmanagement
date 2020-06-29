@@ -50,14 +50,14 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 		$message = array();
 	if (version_compare(JVERSION, '4.0.0', 'ge'))
 		{
-		$teile = explode(",", $message);
+		$teile = explode(",", $getmessage);
 $message['code'] = (int) $teile[1];
 $message['message'] = trim($teile[2]);
 		}	
 		elseif (version_compare(JVERSION, '3.0.0', 'ge'))
 		{
 $message['code'] = $code;
-$message['message'] = $message;			
+$message['message'] = $getmessage;			
 		}
 		
 		return $message;
