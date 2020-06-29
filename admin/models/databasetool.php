@@ -44,6 +44,25 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 	var $storeSuccessColor = 'green';
 	var $existingInDbColor = 'orange';
 
+	
+	public static function getExeptionMessage($code='',$message='')
+	{
+		$message = array();
+	if (version_compare(JVERSION, '4.0.0', 'ge'))
+		{
+		$teile = explode(",", $message);
+$message[] = (int) $teile[1];
+$message[] = trim($teile[2]);
+		}	
+		elseif (version_compare(JVERSION, '3.0.0', 'ge'))
+		{
+$message[] = $code;
+$message[] = $message;			
+		}
+		
+		return $message;
+	}
+	
 	/**
 	 * sportsmanagementModeldatabasetool::getRunTime()
 	 *
