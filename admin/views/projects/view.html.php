@@ -1,7 +1,6 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage projects
@@ -10,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -224,7 +221,7 @@ class sportsmanagementViewProjects extends sportsmanagementView
 
 		$lists['association'] = array();
 
-		foreach ($res as $row)
+		foreach ($res as $row) if ($res)
 		{
 			if (array_key_exists($row->country, $lists['association']))
 			{
