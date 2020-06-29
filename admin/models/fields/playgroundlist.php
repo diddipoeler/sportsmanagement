@@ -44,7 +44,7 @@ class JFormFieldplaygroundlist extends \JFormFieldList
 		$options = array();
 $html = '';
       $opt = ' allowClear: true,
-   width: "50%",
+   width: "100%",
 
    formatResult: function format(state)
    {
@@ -75,7 +75,7 @@ $html = '';
       $append = '';
 		$html .= HTMLHelper::_('formbehavior2.select2', '.test1', $opt);
       $html .= HTMLHelper::_(
-				'select.genericlist', $options, 'team_id',
+				'select.genericlist', $options, 'playground_id',
 				'style="width:225px;" class="test1" size="6"' . $append, 'value', 'text', 0
 			);
       
