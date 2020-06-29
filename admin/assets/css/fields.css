@@ -1,0 +1,11 @@
+/*
+ * @copyright	Copyright (C) 2011 Simplify Your Web, Inc. All rights reserved.
+ * @license		GNU General Public License version 3 or later; see LICENSE.txt
+ */
+.control-group-header .controls, .control-group-help .controls { margin-left: 0 !important; }
+.controls .syw_title { background-color: #f9f9f9; border: 1px solid #d7d7d7; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; margin: 15px 0; padding: 15px; font-weight: normal; font-size: 19.5px; color: #333; letter-spacing: 0.05em; }
+.controls .syw_subtitle { border-bottom: 1px solid #ddd; line-height: 36px; font-weight: normal; font-size: 19.5px; color: #333; }
+.control-group-info { background-color: #f9f9f9; padding: 6px; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
+.control-group-info .control-label { padding-top: 0 !important; }
+.controls .help-block { font-size: 0.8em; }
+.controls .alert-neutral { color: inherit; background-color: transparent; border: none; }
