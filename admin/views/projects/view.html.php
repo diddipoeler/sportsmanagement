@@ -38,7 +38,7 @@ class sportsmanagementViewProjects extends sportsmanagementView
 	public function init()
 	{
 		$inputappend = '';
-
+		$res = array();
 		$starttime = microtime();
 
 		Table::addIncludePath(JPATH_COMPONENT . DIRECTORY_SEPARATOR . 'tables');
