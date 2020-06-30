@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage match
@@ -11,11 +9,10 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
 
 //$this->document->addScript( Uri::root().'/media/system/js/mootools-core-uncompressed.js');
 //$this->document->addScript( Uri::root().'/media/system/js/mootools-more-uncompressed.js');
@@ -29,9 +26,52 @@ use Joomla\CMS\Uri\Uri;
 //	jQuery('#jform_alt_decision0').change(toggle_altdecision);
 //    jQuery('#jform_alt_decision1').change(toggle_altdecision);
     });
+var playgroundpicture = new Array;
+			<?php
+			foreach ($this->playgrounds as $key => $value)
+			{
+				if (!$value->playgroundpicture)
+				{
+					$value->playgroundpicture = sportsmanagementHelper::getDefaultPlaceholder("playground");
+				}
 
+				echo 'playgroundpicture[' . ($key) . ']=\'' . $value->playgroundpicture . "';\n";
+			}
+			?>
 </script>
+<?php
+$this->document->addStyleDeclaration(
+			'
+img.item {
+    padding-right: 10px;
+    vertical-align: middle;
+}
+img.car {
+    height: 25px;
+}'
+		);
 
+// String $opt - second parameter of formbehavior2::select2
+		// for details http://ivaynberg.github.io/select2/
+		$opt = ' allowClear: true,
+   width: "100%",
+
+   formatResult: function format(state)
+   {
+   var originalOption = state.element;
+   var picture;
+   picture = playgroundpicture[state.id];
+   if (!state.id)
+   return state.text;
+   return "<img class=\'item car\' src=\'' . Uri::root() . '" + picture + "\' />" + state.text;
+   },
+ 
+   escapeMarkup: function(m) { return m; }
+';
+$append = '';
+HTMLHelper::_('formbehavior2.select2', '.test1', $opt);
+
+?>
 <fieldset class="adminform">
     <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD'); ?>
     </legend>
@@ -39,6 +79,11 @@ use Joomla\CMS\Uri\Uri;
 		<?php
 echo $this->form->renderField('cancel');	    
 echo $this->form->renderField('cancel_reason');
+
+echo HTMLHelper::_(
+				'select.genericlist', $this->playgrounds, 'playground_id',
+				'style="width:225px;" class="test1" size="6"' . $append, 'value', 'text', 0
+			);
 	    
 echo $this->form->renderField('overtime');	    
 /*
