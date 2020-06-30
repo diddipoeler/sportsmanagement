@@ -72,7 +72,10 @@ $html = '';
 		$db->setQuery($query);
 		$options = $db->loadObjectList();
         
-    //echo '<pre>'.print_r($options,true).'</pre>';
+//echo '<pre>'.print_r($options,true).'</pre>';
+//echo 'value<pre>'.print_r($this->value,true).'</pre>';
+//echo 'id<pre>'.print_r($this->id,true).'</pre>';
+//echo 'value<pre>'.print_r($this->name,true).'</pre>';
     
 $script[] = "var teampicture = new Array;";        
 foreach ($options as $key => $value)
@@ -109,7 +112,7 @@ Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
       $append = '';
 		$html .= HTMLHelper::_('formbehavior2.select2', '.test1', $opt);
       $html .= HTMLHelper::_(
-				'select.genericlist', $options, 'playground_id',
+				'select.genericlist', $options, $this->name,
 				'style="width:225px;" class="test1" size="6"' . $append, 'value', 'text', $this->value, $this->id
 			);
       
