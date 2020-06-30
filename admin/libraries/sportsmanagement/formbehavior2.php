@@ -6,9 +6,7 @@
  * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
-
 defined('JPATH_PLATFORM') or die;
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -18,6 +16,7 @@ use Joomla\CMS\HTML\HTMLHelper;
  * @package    Joomla.Libraries
  * @subpackage HTML
  * @since      3.0
+ * https://www.joomy.net/en/using-select2-in-joomla-3-example-codes-syntax
  */
 abstract class JHtmlFormbehavior2
 {
