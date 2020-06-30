@@ -1689,7 +1689,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 		$data['team2_legs']          = $post['team2_legs'];
 		$data['match_result_detail'] = $post['match_result_detail'];
 
-		// $data['count_result'] = $post['count_result'];
+		$data['playground_id'] = $post['playground_id'];
 		// $data['alt_decision'] = $post['alt_decision'];
 		$data['team1_result_decision'] = $post['team1_result_decision'];
 		$data['team2_result_decision'] = $post['team2_result_decision'];
