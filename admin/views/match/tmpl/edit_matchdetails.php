@@ -32,7 +32,7 @@ var playgroundpicture = new Array;
 			{
 				if (!$value->playgroundpicture)
 				{
-					$value->playgroundpicture = sportsmanagementHelper::getDefaultPlaceholder("playground");
+					$value->playgroundpicture = sportsmanagementHelper::getDefaultPlaceholder("playgrounds");
 				}
 
 				echo 'playgroundpicture[' . ($key) . ']=\'' . $value->playgroundpicture . "';\n";
@@ -79,10 +79,10 @@ HTMLHelper::_('formbehavior2.select2', '.test1', $opt);
 		<?php
 echo $this->form->renderField('cancel');	    
 echo $this->form->renderField('cancel_reason');
-
+echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_VENUE');
 echo HTMLHelper::_(
 				'select.genericlist', $this->playgrounds, 'playground_id',
-				'style="width:225px;" class="test1" size="6"' . $append, 'value', 'text', 0
+				'style="width:225px;" class="test1" size="6"' . $append, 'value', 'text', $this->match->playground_id 
 			);
 	    
 echo $this->form->renderField('overtime');	    
