@@ -718,14 +718,10 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 	 */
 	public static function getClubHistory($clubid)
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 
-		// Get a db connection.
 		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
 		$query->select('c.id, c.name, c.new_club_id');
@@ -741,11 +737,8 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 		}
 		catch (Exception $e)
 		{
-			$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-			$code = $e->getCode(); // Returns
 			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
-
+			Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()) . '<br />', Log::ERROR, 'jsmerror');
 			return false;
 		}
 
