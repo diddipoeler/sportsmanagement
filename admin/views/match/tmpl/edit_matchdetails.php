@@ -37,14 +37,20 @@ use Joomla\CMS\Uri\Uri;
     </legend>
     <table class="admintable">
 		<?php
-
+echo $this->form->renderField('cancel');	    
+echo $this->form->renderField('cancel_reason');
+	    
+echo $this->form->renderField('overtime');	    
+/*
 		foreach ($this->form->getFieldset('matchdetails') as $field):
 			?>
             <tr>
                 <td class="key"><?php echo $field->label; ?></td>
                 <td><?php echo $field->input; ?></td>
             </tr>
-		<?php endforeach; ?>
+		<?php endforeach; 
+	    */
+	    ?>
     </table>
 </fieldset>
 
