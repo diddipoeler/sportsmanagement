@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 
 /**
@@ -100,13 +96,16 @@ class sportsmanagementModelPlaygrounds extends JSMModelList
 	 * @return array
 	 * @since  0.1
 	 */
-	function getPlaygrounds()
+	function getPlaygrounds($picture=false)
 	{
 		$starttime = microtime();
 		$results   = array();
 		$this->jsmquery->clear();
 		$this->jsmquery->select('id AS value, name AS text');
-
+if ( $picture )
+{
+$this->jsmquery->select('picture as playgroundpicture');	
+}
 		// From table
 		$this->jsmquery->from('#__sportsmanagement_playground');
 		$this->jsmquery->order('text ASC');
