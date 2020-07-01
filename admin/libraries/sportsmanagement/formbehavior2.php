@@ -9,6 +9,7 @@
 defined('JPATH_PLATFORM') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * Utility class for form related behaviors
@@ -54,9 +55,12 @@ abstract class JHtmlFormbehavior2
 			$debug  = (boolean) $config->get('debug');
 		}
 
-		HTMLHelper::_('script', 'jui/select2.min.js', false, true, false, false, $debug);
-		HTMLHelper::_('script', 'jui/select2_locale_cs.js', false, true, false, false, $debug);
-		HTMLHelper::_('stylesheet', 'jui/select2.css', false, true);
+		//HTMLHelper::_('script', 'jui/select2.min.js', false, true, false, false, $debug);
+		//HTMLHelper::_('script', 'jui/select2_locale_cs.js', false, true, false, false, $debug);
+		//HTMLHelper::_('stylesheet', 'jui/select2.css', false, true);
+Factory::getDocument()->addScript(Uri::base() . 'components/com_sportsmanagement/assets/js/select2.min.js');		
+Factory::getDocument()->addScript(Uri::base() . 'components/com_sportsmanagement/assets/js/select2_locale_cs.js');				
+Factory::getDocument()->addStylesheet(URI::base() . 'components/com_sportsmanagement/assets/css/select2.css');		
 		Factory::getDocument()->addScriptDeclaration(
 			"
 				jQuery(document).ready(function (){
