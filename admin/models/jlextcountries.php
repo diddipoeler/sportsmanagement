@@ -117,7 +117,7 @@ class sportsmanagementModeljlextcountries extends JSMModelList
 	{
 		// Select some fields
 		$this->jsmquery->clear();
-		$this->jsmquery->select('id as value,name as text');
+		$this->jsmquery->select('id as value,name as text,picture as listpicture');
 
 		// From the table
 		$this->jsmquery->from('#__sportsmanagement_federations as objassoc');
