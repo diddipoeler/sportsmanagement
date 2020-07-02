@@ -502,6 +502,16 @@ img.car {
 
 			if (isset($this->season))
 			{
+			 /*
+             $append = '';
+             $opt = sportsmanagementHelper::formatselect2output($this->season,'season','season' );
+             HTMLHelper::_('formbehavior2.select2', '.season', $opt);
+             echo HTMLHelper::_(
+				'select.genericlist', $this->season, 'filter_season',
+				'style="width:225px;" class="season" size="1"' . $append, 'id', 'name', $this->state->get('filter.season') 
+			);
+            */
+            
 				JHtmlSidebar::addFilter(
 					Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'),
 					'filter_season',
