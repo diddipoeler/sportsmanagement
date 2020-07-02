@@ -94,7 +94,7 @@ var <?php echo $placeholder; ?> = new Array;
 			{
 				if (!$value->itempicture)
 				{
-					$value->playgroundpicture = sportsmanagementHelper::getDefaultPlaceholder($placeholder);
+					$value->itempicture = sportsmanagementHelper::getDefaultPlaceholder($placeholder);
 				}
 
 				echo $placeholder.'[' . ($key) . ']=\'' . $value->itempicture . "';\n";
