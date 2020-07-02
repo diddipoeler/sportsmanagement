@@ -73,13 +73,56 @@ if (version_compare($baseVersion, '2.5', 'ge'))
 abstract class sportsmanagementHelper
 {
 	static $latitude = '';
-
 	static $longitude = '';
-
 	static $_jsm_db = '';
-
 	static $_success_text = array();
 
+	
+	function formatselect2output($daten=array(),$placeholder='',$class='' )
+	{
+?>
+<script type="text/javascript">
+   // (function () {
+        // altered decision fields management
+        //toggle_altdecision();
+//	jQuery('#jform_alt_decision0').change(toggle_altdecision);
+//    jQuery('#jform_alt_decision1').change(toggle_altdecision);
+   // });
+var <?php echo $placeholder; ?> = new Array;
+			<?php
+			foreach ($daten as $key => $value)
+			{
+				if (!$value->itempicture)
+				{
+					$value->playgroundpicture = sportsmanagementHelper::getDefaultPlaceholder($placeholder);
+				}
+
+				echo $placeholder.'[' . ($key) . ']=\'' . $value->itempicture . "';\n";
+			}
+			?>
+</script>
+<?php		
+	// String $opt - second parameter of formbehavior2::select2
+	// for details http://ivaynberg.github.io/select2/
+	$opt = ' allowClear: true,
+   width: "100%",
+   formatResult: function format(state)
+   {
+   var originalOption = state.element;
+   var picture;
+   picture = '.$placeholder.'[state.id];
+   if (!state.id)
+   return state.text;
+   return "<img class=\'item car\' src=\'' . Uri::root() . '" + picture + "\' />" + state.text;
+   },
+ 
+   escapeMarkup: function(m) { return m; }
+';
+	
+	return $opt;
+	}
+	
+	
 	/**
 	 * sportsmanagementHelper::getBootstrapModalImage()
 	 *
