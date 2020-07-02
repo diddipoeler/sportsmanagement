@@ -503,12 +503,6 @@ img.car {
 			if (isset($this->season))
 			{
 			 /*
-             $this->document->addScriptDeclaration(
-						"
-var element = document.getElementById("filter_season");
-element.classList.add("filter_season");
-             ";
-             
              
              $append = '';
              $opt = sportsmanagementHelper::formatselect2output($this->season,'season','season' );
@@ -524,6 +518,18 @@ element.classList.add("filter_season");
 					'filter_season',
 					HTMLHelper::_('select.options', $this->season, 'id', 'name', $this->state->get('filter.season'), true)
 				);
+             /*   
+ $this->document->addScriptDeclaration(
+						'
+//var element = document.getElementById("filter_season");
+//element.classList.add("filter_season");
+jQuery(document).ready(function($) {
+document.getElementById("filter_season").classList.add("filter_season");
+});
+
+             ');                
+                */
+                
 			}
 
 			if (isset($this->prediction_ids))
