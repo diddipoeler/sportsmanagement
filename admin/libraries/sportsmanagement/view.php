@@ -503,6 +503,13 @@ img.car {
 			if (isset($this->season))
 			{
 			 /*
+             $this->document->addScriptDeclaration(
+						"
+var element = document.getElementById("filter_season");
+element.classList.add("filter_season");
+             ";
+             
+             
              $append = '';
              $opt = sportsmanagementHelper::formatselect2output($this->season,'season','season' );
              HTMLHelper::_('formbehavior2.select2', '.season', $opt);
