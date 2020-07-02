@@ -122,18 +122,32 @@ class sportsmanagementView extends HtmlView
         {
         $this->document->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/joomla4functions.js');
         }
-		$this->document->addScript(Uri::root() . '/components/com_sportsmanagement/assets/js/sm_functions.js');
-		$this->jinput         = $this->app->input;
-		$this->option         = $this->jinput->getCmd('option');
-		$this->format         = $this->jinput->getCmd('format');
-		$this->view           = $this->jinput->getCmd('view', 'cpanel');
-		$this->tmpl           = $this->jinput->getCmd('tmpl', '');
-		$this->modalheight    = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_height', 600);
-		$this->modalwidth     = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_width', 900);
-		$this->project_id     = $this->jinput->get('pid');
-		$this->jsmmessage     = '';
-		$this->jsmmessagetype = 'notice';
-		$this->state          = $this->get('State');
+
+// css parameter of formbehavior2::select2
+// for details http://ivaynberg.github.io/select2/		
+$this->document->addStyleDeclaration(
+			'
+img.item {
+    padding-right: 10px;
+    vertical-align: middle;
+}
+img.car {
+    height: 25px;
+}'
+		);		
+		
+	$this->document->addScript(Uri::root() . '/components/com_sportsmanagement/assets/js/sm_functions.js');
+	$this->jinput         = $this->app->input;
+	$this->option         = $this->jinput->getCmd('option');
+	$this->format         = $this->jinput->getCmd('format');
+	$this->view           = $this->jinput->getCmd('view', 'cpanel');
+	$this->tmpl           = $this->jinput->getCmd('tmpl', '');
+	$this->modalheight    = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_height', 600);
+	$this->modalwidth     = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_width', 900);
+	$this->project_id     = $this->jinput->get('pid');
+	$this->jsmmessage     = '';
+	$this->jsmmessagetype = 'notice';
+	$this->state          = $this->get('State');
         $this->dragable_group = '';
 
 		if (isset($this->state))
