@@ -123,9 +123,6 @@ class sportsmanagementView extends HtmlView
         $this->document->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/joomla4functions.js');
         }
 		
-$this->filterForm    = $this->get('FilterForm');
-$this->activeFilters = $this->get('ActiveFilters');		
-
 // css parameter of formbehavior2::select2
 // for details http://ivaynberg.github.io/select2/		
 $this->document->addStyleDeclaration(
@@ -331,7 +328,8 @@ img.car {
 				$this->sidebar = JHtmlSidebar::render();
 			}
 		}
-
+$this->filterForm    = $this->get('FilterForm');
+$this->activeFilters = $this->get('ActiveFilters');	
 		parent::display($tpl);
 	}
 
