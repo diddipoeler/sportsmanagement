@@ -11,4 +11,19 @@
 		/>
     
     </fields>
+	
+<fields name="list">	
+<field
+            name="country"
+            type="country"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY_DESC"
+            required="true"
+            class="form-control form-control-inline"
+        >
+            <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
+        </field>
+	
+	
+</fields>	
 </form>    
