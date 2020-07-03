@@ -328,8 +328,18 @@ img.car {
 				$this->sidebar = JHtmlSidebar::render();
 			}
 		}
+		
+switch ($this->view)
+		{
+			case 'clubs';
 $this->filterForm    = $this->get('FilterForm');
 $this->activeFilters = $this->get('ActiveFilters');	
+
+				break;
+
+		}
+		
+
 		parent::display($tpl);
 	}
 
