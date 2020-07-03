@@ -107,6 +107,9 @@ class sportsmanagementModelClubs extends JSMModelList
 			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . ''), '');
 		}
 
+//$list = $this->getUserStateFromRequest($this->context . '.list', 'list', array(), 'array');
+//echo 'jsmapp<pre>'.print_r($list,true).'</pre>';
+		
 		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
 		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string');
@@ -121,7 +124,8 @@ class sportsmanagementModelClubs extends JSMModelList
 		$this->setState('filter.geo_daten', $temp_user_request);
         $temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.standard_picture', 'filter_standard_picture', '');
 		$this->setState('filter.standard_picture', $temp_user_request);
-		$value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
+		//$value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
+		$value = $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', 0, 'int');
 		$this->setState('list.limit', $value);
 		$value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);
