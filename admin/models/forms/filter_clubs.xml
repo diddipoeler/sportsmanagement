@@ -25,8 +25,7 @@
             label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY"
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY_DESC"
             required="false"
-            class="form-control form-control-inline"
-		       onchange="this.form.submit();"
+       onchange="this.form.submit();"
         >
             <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
         </field>
