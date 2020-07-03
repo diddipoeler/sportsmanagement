@@ -202,6 +202,12 @@ $html = HTMLHelper::_('links.linksgroups', $groupedButtons);
 		<?php endif; ?>
 
 <?php
+switch ($view)
+		{
+			case 'clubs':
+		echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+				break;
+}
 // Search tools bar
 //echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 ?>
@@ -235,6 +241,7 @@ $html = HTMLHelper::_('links.linksgroups', $groupedButtons);
 					?>
 
                     <div id="filter-bar" class="btn-toolbar">
+			    <!--
                         <div class="filter-search btn-group pull-left">
                             <label for="filter_search"
                                    class="element-invisible"><?php echo Text::_('JSEARCH_FILTER_LABEL'); ?></label>
@@ -254,6 +261,7 @@ $html = HTMLHelper::_('links.linksgroups', $groupedButtons);
                                         class="icon-remove"></i></button>
 
                         </div>
+			    -->
 						<?php
 						$startRange = ComponentHelper::getParams($jinput->getCmd('option'))->get('character_filter_start_hex', '0');
 						$endRange   = ComponentHelper::getParams($jinput->getCmd('option'))->get('character_filter_end_hex', '0');
@@ -264,12 +272,13 @@ $html = HTMLHelper::_('links.linksgroups', $groupedButtons);
 						}
 
 						?>
+			    <!--
                         <div class="btn-group pull-right hidden-phone">
                             <label for="limit"
                                    class="element-invisible"><?php echo Text::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC'); ?></label>
 							<?php echo $this->pagination->getLimitBox(); ?>
                         </div>
-
+-->
 
                     </div>
 					<?PHP
