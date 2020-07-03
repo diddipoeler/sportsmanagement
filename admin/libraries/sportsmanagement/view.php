@@ -344,14 +344,13 @@ img.car {
 		}
 		
 switch ($this->view)
-		{
-			case 'clubs';
+{
+case 'clubs';
+case 'playgrounds':
 $this->filterForm    = $this->get('FilterForm');
 $this->activeFilters = $this->get('ActiveFilters');	
-
-				break;
-
-		}
+break;
+}
 		
 
 		parent::display($tpl);
@@ -396,9 +395,9 @@ $this->activeFilters = $this->get('ActiveFilters');
 				case 'sportstypes':
 				case 'positions':
 				case 'clubnames':
-					// Case 'clubs':
+				//case 'clubs':
 				case 'teams':
-				case 'playgrounds':
+				//case 'playgrounds':
 				case 'rounds':
 				case 'divisions':
 				case 'extrafields':
