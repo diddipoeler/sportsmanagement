@@ -42,12 +42,7 @@ if ($this->jsmmessage)
 {
 	echo $this->loadTemplate('info_message');
 }
-switch ($view)
-		{
-			case 'clubs':
-		echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
-				break;
-}
+
 switch ($view)
 {
 	case 'githubinstall':
@@ -61,6 +56,7 @@ switch ($view)
 	case 'treetomatchs':
 	break;
 	default:
+
 		?>  
 		<div id="filter-bar" class="btn-toolbar">
 			<!--
@@ -95,7 +91,12 @@ switch ($view)
 		<?php
 	break;
 }
-
+switch ($view)
+{
+case 'clubs':
+echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+break;
+}
 
 
 
