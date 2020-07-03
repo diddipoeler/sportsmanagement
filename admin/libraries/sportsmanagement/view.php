@@ -386,12 +386,13 @@ $this->activeFilters = $this->get('ActiveFilters');
 					);
 					break;
 				case 'clubs':
+					/*
 					JHtmlSidebar::addFilter(
 						Text::_('JOPTION_SELECT_PUBLISHED'),
 						'filter_state',
 						HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
 					);
-
+*/
 					$myoptions[] = HTMLHelper::_('select.option', '1', Text::_('JNO'));
 					$myoptions[] = HTMLHelper::_('select.option', '2', Text::_('JYES'));
 					JHtmlSidebar::addFilter(
@@ -432,7 +433,7 @@ $this->activeFilters = $this->get('ActiveFilters');
 					);
 					break;
 			}
-
+/*
 			if (isset($this->search_nation))
 			{
 				JHtmlSidebar::addFilter(
@@ -440,6 +441,7 @@ $this->activeFilters = $this->get('ActiveFilters');
 					'filter_search_nation',
 					HTMLHelper::_('select.options', $this->search_nation, 'value', 'text', $this->state->get('filter.search_nation'), true)
 				);
+				*/
 			}
             
             switch ($this->view)
