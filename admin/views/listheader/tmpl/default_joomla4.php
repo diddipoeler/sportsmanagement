@@ -72,6 +72,7 @@ switch ($view)
 								 </div>
 			-->
 				<?php
+		/*
 				$startRange = ComponentHelper::getParams($jinput->getCmd('option'))->get('character_filter_start_hex', '0');
 				$endRange = ComponentHelper::getParams($jinput->getCmd('option'))->get('character_filter_end_hex', '0');
 
@@ -79,7 +80,7 @@ switch ($view)
 		{
 						  printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;", '&#' . $i . ';', '&#' . $i . ';');
 				}
-
+*/
 								?>
 			<!--
 				<div class="btn-group pull-right hidden-phone">
