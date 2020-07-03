@@ -10,7 +10,9 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die();
-use Joomla\CMS\MVC\View\HtmlView;
+//use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\MVC\View\GenericDataException;
+use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
@@ -19,6 +21,7 @@ use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\Form\Form;
 
 /** welche joomla version ? */
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
@@ -55,19 +58,30 @@ elseif (version_compare(substr(JVERSION, 0, 3), '2.0', 'ge'))
  * @version   $Id$
  * @access    public
  */
-class sportsmanagementView extends HtmlView
+class sportsmanagementView extends BaseHtmlView
 {
 	protected $icon = '';
-
 	protected $title = '';
-
 	protected $layout = '';
-
 	protected $tmpl = '';
-
 	protected $table_data_class = '';
-
 	protected $table_data_div = '';
+    
+    /**
+	 * The search tools form
+	 *
+	 * @var    Form
+	 * @since  1.6
+	 */
+	public $filterForm;
+
+	/**
+	 * The active search filters
+	 *
+	 * @var    array
+	 * @since  1.6
+	 */
+	public $activeFilters;
 
 	/**
 	 * sportsmanagementView::display()
