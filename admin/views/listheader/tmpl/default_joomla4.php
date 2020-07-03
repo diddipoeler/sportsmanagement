@@ -59,7 +59,7 @@ switch ($view)
 	default:
 
 		?>  
-		<div id="filter-bar" class="btn-toolbar">
+		<!-- <div id="filter-bar" class="btn-toolbar"> -->
 			<!--
 			<div class="filter-search btn-group pull-left">
 				<label for="filter_search" class="element-invisible"><?php echo Text::_('JSEARCH_FILTER_LABEL');?></label>
@@ -89,14 +89,20 @@ switch ($view)
 				</div>
 -->
 		  
-				  </div>
+				<!--  </div> -->
 		<?php
 	break;
 }
 switch ($view)
 {
 case 'clubs':
+		?>
+	<div id="filter-bar" class="btn-toolbar"> 
+	<?php
 echo LayoutHelper::render('joomla.searchtools.default', ['view' => $this]);
+		?>
+	</div>
+	<?php
 break;
 }
 
