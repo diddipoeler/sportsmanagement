@@ -105,6 +105,22 @@ echo LayoutHelper::render('joomla.searchtools.default', ['view' => $this]);
 </div>
 <?php
 break;
+case 'githubinstall':
+case 'updates':
+case 'databasetools':
+case 'treetonodes':
+case 'treetomatchs':
+break;
+default:
+?>
+<div id="filter-bar" class="btn-toolbar"> 
+<div class="btn-group pull-right hidden-phone">
+<label for="limit" class="element-invisible"><?php echo Text::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC');?></label>
+<?php echo $this->pagination->getLimitBox(); ?>
+</div>
+</div>
+<?php
+break;
 }
 
 
