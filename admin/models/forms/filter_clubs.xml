@@ -18,11 +18,8 @@
 			>
 			<option value="">JOPTION_SELECT_PUBLISHED</option>
 		</field>
-    </fields>
-	
-<fields name="list">	
-	<!--
-<field
+		
+		<field
             name="country"
             type="country"
             label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY"
@@ -32,7 +29,12 @@
         >
             <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
         </field>
-	-->
+		
+		
+    </fields>
+	
+<fields name="list">	
+	
 <field
 			name="limit"
 			type="limitbox"
