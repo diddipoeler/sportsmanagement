@@ -441,9 +441,9 @@ $this->activeFilters = $this->get('ActiveFilters');
 					'filter_search_nation',
 					HTMLHelper::_('select.options', $this->search_nation, 'value', 'text', $this->state->get('filter.search_nation'), true)
 				);
-				*/
+				
 			}
-            
+            */
             switch ($this->view)
 			{
 			 case 'clubs':
