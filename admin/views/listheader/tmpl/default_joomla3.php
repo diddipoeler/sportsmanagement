@@ -15,6 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Layout\LayoutHelper;
 
 $app    = Factory::getApplication();
 $jinput = $app->input;
@@ -203,10 +204,11 @@ $html = HTMLHelper::_('links.linksgroups', $groupedButtons);
 
 <?php
 switch ($view)
-		{
-			case 'clubs':
-		echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
-				break;
+{
+case 'clubs':
+case 'playgrounds':
+echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+break;
 }
 // Search tools bar
 //echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));

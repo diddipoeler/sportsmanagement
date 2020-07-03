@@ -96,13 +96,14 @@ switch ($view)
 switch ($view)
 {
 case 'clubs':
-		?>
-	<div id="filter-bar" class="btn-toolbar"> 
-	<?php
+case 'playgrounds':
+?>
+<div id="filter-bar" class="btn-toolbar"> 
+<?php
 echo LayoutHelper::render('joomla.searchtools.default', ['view' => $this]);
-		?>
-	</div>
-	<?php
+?>
+</div>
+<?php
 break;
 }
 
