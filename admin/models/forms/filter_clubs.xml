@@ -2,7 +2,7 @@
 <form>
 	<fields name="filter" addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 		<field
-			name="search"
+			name="filter_search"
 			type="text"
 			inputmode="search"
 			label="JGLOBAL_LOOKING_FOR"
@@ -10,7 +10,7 @@
 			hint="JSEARCH_FILTER"
 		/>
     <field
-			name="published"
+			name="filter_state"
 			type="status"
 			label="JOPTION_SELECT_PUBLISHED"
 			description="JOPTION_SELECT_PUBLISHED_DESC"
@@ -20,7 +20,7 @@
 		</field>
 		
 		<field
-            name="country"
+            name="search_nation"
             type="country"
             label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY"
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY_DESC"
