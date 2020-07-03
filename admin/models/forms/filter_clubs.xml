@@ -5,8 +5,8 @@
 			name="search"
 			type="text"
 			inputmode="search"
-			label="COM_BANNERS_BANNERS_FILTER_SEARCH_LABEL"
-			description="COM_BANNERS_BANNERS_FILTER_SEARCH_DESC"
+			label="JGLOBAL_LOOKING_FOR"
+			description="JGLOBAL_LOOKING_FOR"
 			hint="JSEARCH_FILTER"
 		/>
     
