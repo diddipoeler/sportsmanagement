@@ -13,6 +13,7 @@
     </fields>
 	
 <fields name="list">	
+	<!--
 <field
             name="country"
             type="country"
@@ -23,7 +24,16 @@
         >
             <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
         </field>
-	
+	-->
+<field
+			name="limit"
+			type="limitbox"
+			label="COM_BANNERS_LIST_LIMIT"
+			description="COM_BANNERS_LIST_LIMIT_DESC"
+			class="input-mini"
+			default="25"
+			onchange="this.form.submit();"
+		/>
 	
 </fields>	
 </form>    
