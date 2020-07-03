@@ -94,7 +94,7 @@ switch ($view)
 switch ($view)
 {
 case 'clubs':
-echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+echo LayoutHelper::render('joomla.searchtools.default', ['view' => $this]);
 break;
 }
 
