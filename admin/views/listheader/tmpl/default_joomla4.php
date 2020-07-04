@@ -44,7 +44,7 @@ if ($this->jsmmessage)
 	echo $this->loadTemplate('info_message');
 }
 ?>
-<div id="filter-bar" class="btn-toolbar">
+<!-- <div id="filter-bar" class="btn-toolbar"> -->
 <?php
 switch ($view)
 {
@@ -91,7 +91,7 @@ break;
 	    
 <?PHP
 ?>
- </div>
+<!-- </div> -->
 
 
 
