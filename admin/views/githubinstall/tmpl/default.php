@@ -16,21 +16,9 @@ use Joomla\CMS\Language\Text;
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-
     <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 		<?PHP
-		// Welche joomla version ?
-		if (version_compare(JVERSION, '3.0.0', 'ge'))
-		{
-			echo $this->loadTemplate('joomla3');
-		}
-		else
-		{
-			echo $this->loadTemplate('joomla2');
-		}
-
-		// Echo $this->loadTemplate('data');
-
+		echo $this->loadTemplate('joomla_version');
 		foreach ($this->_success_text as $key => $value)
 		{
 			?>
@@ -44,8 +32,6 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             </fieldset>
 			<?php
 		}
-
-
 		?>
         <input type="hidden" name="task" value=""/>
         <input type="hidden" name="boxchecked" value="0"/>
@@ -53,7 +39,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>"/>
 		<?php echo HTMLHelper::_('form.token'); ?>
     </form>
+<div>
 <?PHP
-echo "<div>";
 echo $this->loadTemplate('footer');
-echo "</div>";
+?>
+</div>
