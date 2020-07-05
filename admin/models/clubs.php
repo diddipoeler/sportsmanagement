@@ -108,27 +108,19 @@ class sportsmanagementModelClubs extends JSMModelList
 		}
 
 $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array(), 'array');
-//echo 'jsmapp<pre>'.print_r($list,true).'</pre>';
+echo 'jsmapp<pre>'.print_r($list,true).'</pre>';
+//echo 'state<pre>'.print_r($this->state,true).'</pre>';      
 		
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
-		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string');
-		$this->setState('filter.state', $published);
-		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '');
-		$this->setState('filter.search_nation', $temp_user_request);
-		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.association', 'filter_association', '');
-		$this->setState('filter.association', $temp_user_request);
-		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.season', 'filter_season', '');
-		$this->setState('filter.season', $temp_user_request);
-		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.geo_daten', 'filter_geo_daten', '');
-		$this->setState('filter.geo_daten', $temp_user_request);
-        $temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.standard_picture', 'filter_standard_picture', '');
-		$this->setState('filter.standard_picture', $temp_user_request);
-		//$value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
-		$value = $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int');
-		$this->setState('list.limit', $value);
-		$value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
-		$this->setState('list.start', $value);
+      $this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
+		$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
+		$this->setState('filter.search_nation', $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', ''));
+		$this->setState('filter.association', $this->getUserStateFromRequest($this->context . '.filter.association', 'filter_association', ''));
+		$this->setState('filter.season', $this->getUserStateFromRequest($this->context . '.filter.season', 'filter_season', ''));
+		$this->setState('filter.geo_daten', $this->getUserStateFromRequest($this->context . '.filter.geo_daten', 'filter_geo_daten', ''));
+		$this->setState('filter.standard_picture', $this->getUserStateFromRequest($this->context . '.filter.standard_picture', 'filter_standard_picture', ''));
+		$this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
+     
+		$this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
 		$orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
 
 		if (!in_array($orderCol, $this->filter_fields))
