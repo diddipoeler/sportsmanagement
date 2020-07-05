@@ -108,7 +108,7 @@ class sportsmanagementModelClubs extends JSMModelList
 		}
 
 $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array(), 'array');
-echo 'jsmapp<pre>'.print_r($list,true).'</pre>';
+//echo 'jsmapp<pre>'.print_r($list,true).'</pre>';
 //echo 'state<pre>'.print_r($this->state,true).'</pre>';      
 		
       $this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
