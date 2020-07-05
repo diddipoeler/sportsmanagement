@@ -176,7 +176,7 @@ $this->jsmquery->select('picture as playgroundpicture');
 		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '');
 		$this->setState('filter.search_nation', $temp_user_request);
 		//$value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
-        $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', 0, 'int');
+        $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int');
 		$this->setState('list.limit', $value);
 
 		// List state information.

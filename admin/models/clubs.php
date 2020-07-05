@@ -125,7 +125,7 @@ $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array()
         $temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.standard_picture', 'filter_standard_picture', '');
 		$this->setState('filter.standard_picture', $temp_user_request);
 		//$value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
-		$value = $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', 0, 'int');
+		$value = $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int');
 		$this->setState('list.limit', $value);
 		$value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);
