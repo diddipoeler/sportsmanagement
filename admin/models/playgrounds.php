@@ -168,22 +168,13 @@ $this->jsmquery->select('picture as playgroundpicture');
 	protected function populateState($ordering = null, $direction = null)
 	{
 	   $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array(), 'array');
-		// Load the filter state.
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
-		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string');
-		$this->setState('filter.state', $published);
-		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '');
-		$this->setState('filter.search_nation', $temp_user_request);
-		//$value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
-        $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int');
-		$this->setState('list.limit', $value);
 
-		// List state information.
-		$value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
-		$this->setState('list.start', $value);
+        $this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
+		$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
+		$this->setState('filter.search_nation', $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', ''));
+		$this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
+		$this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
 
-		// Filter.order
 		$orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
 
 		if (!in_array($orderCol, $this->filter_fields))
@@ -202,6 +193,5 @@ $this->jsmquery->select('picture as playgroundpicture');
 		$this->setState('list.direction', $listOrder);
 
 	}
-
 
 }

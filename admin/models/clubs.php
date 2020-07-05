@@ -119,7 +119,6 @@ $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array()
 		$this->setState('filter.geo_daten', $this->getUserStateFromRequest($this->context . '.filter.geo_daten', 'filter_geo_daten', ''));
 		$this->setState('filter.standard_picture', $this->getUserStateFromRequest($this->context . '.filter.standard_picture', 'filter_standard_picture', ''));
 		$this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
-     
 		$this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
 		$orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
 
