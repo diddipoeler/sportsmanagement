@@ -74,7 +74,7 @@ class sportsmanagementViewPlaygrounds extends sportsmanagementView
 		ToolbarHelper::custom('playground.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
 		ToolbarHelper::archiveList('playground.export', Text::_('JTOOLBAR_EXPORT'));
 
-// Get the toolbar object instance
+/*
 		$toolbar = Toolbar::getInstance('toolbar');
         $dropdown = $toolbar->dropdownButton('status-group')
 				->text('JTOOLBAR_CHANGE_STATUS')
@@ -86,7 +86,7 @@ class sportsmanagementViewPlaygrounds extends sportsmanagementView
 			$childBar = $dropdown->getChildToolbar();
         $childBar->publish('users.activate', 'COM_USERS_TOOLBAR_ACTIVATE', true);
 			$childBar->unpublish('users.block', 'COM_USERS_TOOLBAR_BLOCK', true);
-
+*/
 		parent::addToolbar();
 	}
 }
