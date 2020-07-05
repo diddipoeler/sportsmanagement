@@ -11,6 +11,8 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\Database\Exception\ExecutionFailureException;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModelPlaygrounds
@@ -134,12 +136,8 @@ $this->jsmquery->select('picture as playgroundpicture');
 	{
 		$starttime = microtime();
 		$results   = array();
-
-		// Select some fields
 		$this->jsmquery->clear();
 		$this->jsmquery->select('id,name,id AS value,name AS text,short_name,club_id');
-
-		// From table
 		$this->jsmquery->from('#__sportsmanagement_playground');
 		$this->jsmquery->order('name');
 
@@ -147,13 +145,11 @@ $this->jsmquery->select('picture as playgroundpicture');
 		{
 			$this->jsmdb->setQuery($this->jsmquery);
 			$results = $this->jsmdb->loadObjectList();
-
 			return $results;
 		}
-		catch (Exception $e)
+		catch (ExecutionFailureException $databaseException)
 		{
-			$this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
-
+            Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $databaseException->getCode(), $databaseException->getMessage()) . '<br />', Log::ERROR, 'jsmerror');
 			return false;
 		}
 	}
