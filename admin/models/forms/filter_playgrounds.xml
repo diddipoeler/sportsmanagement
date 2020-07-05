@@ -38,8 +38,8 @@
 <field
 			name="limit"
 			type="limitbox"
-			label="COM_BANNERS_LIST_LIMIT"
-			description="COM_BANNERS_LIST_LIMIT_DESC"
+			label="COM_SPORTSMANAGEMENT_LIST_LIMIT"
+			description="COM_SPORTSMANAGEMENT_LIST_LIMIT_DESC"
 			class="input-mini"
 			default="25"
 			onchange="this.form.submit();"
