@@ -26,14 +26,14 @@ FormHelper::loadFieldClass('list');
  * @version   2014
  * @access    public
  */
-class JFormFieldplaygroundlist extends \JFormFieldList
+class JFormFieldplaygroundlist2 extends \JFormFieldList
 {
 	/**
 	 * field type
 	 *
 	 * @var string
 	 */
-	public $type = 'playgroundlist';
+	public $type = 'playgroundlist2';
 
   
   protected function getInput()
