@@ -46,6 +46,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             </button>
             <button type="button" onclick="Joomla.submitform('seasons.cancel', this.form)">
 				<?php echo Text::_('JCANCEL'); ?></button>
+                <?php echo $this->pagination->getLimitBox(); ?>
 
 			<?php
 			echo $this->loadTemplate('data');
