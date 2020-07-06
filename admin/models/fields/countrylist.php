@@ -15,6 +15,7 @@ use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
 FormHelper::loadFieldClass('list');
 
 /**
@@ -43,8 +44,8 @@ class JFormFieldcountrylist extends \JFormFieldList
     // Build the script.
 		$script = array();
     
-       
-    
+      
+      
     //echo 'thisvalue<pre>'.print_r($thisvalue,true).'</pre>';
     //echo 'this value<pre>'.print_r($this->value,true).'</pre>';
     //echo 'label<pre>'.print_r($this->label,true).'</pre>';
@@ -60,15 +61,25 @@ class JFormFieldcountrylist extends \JFormFieldList
 		$db->setQuery($query);
 		$options = $db->loadObjectList();
   
+    
     $script[] = 'var '.$this->fieldname.' = new Array;';
     foreach ($options as $key => $value)
 			{
+      $value->text = Text::_($value->text);
+      
+      
+      $value->itempicture = JSMCountries::getIso3Flag($value->value);
+      
+      
+      
 				if (!$value->itempicture)
 				{
 					$value->itempicture = sportsmanagementHelper::getDefaultPlaceholder("playgrounds");
 				}
-
-				$script[] = $this->fieldname.'[' . ($key) . ']=\'' . $value->itempicture . "';";
+if ( $value->value )
+{
+				$script[] = $this->fieldname.'[\'' . ($value->value) . '\']=\'' . $value->itempicture . "';";
+}
 			}
     
     
@@ -81,7 +92,7 @@ img.item {
     vertical-align: middle;
 }
 img.car {
-    height: 25px;
+    height: 15px;
 }'
 		);
     
@@ -103,7 +114,7 @@ img.car {
 ';
     
     // Setup variables for display.
-	  $append = '';
+	  $append = 'onchange="this.form.submit();"';
 		$html = array();
     $html[] = HTMLHelper::_('formbehavior2.select2', '.'.$this->fieldname, $opt);
     
