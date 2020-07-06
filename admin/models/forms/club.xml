@@ -247,7 +247,7 @@
       	
         <field
             name="standard_playground"
-            type="playgroundlist2"
+            type="playgroundlist"
             class="inputbox"
             default="0"
             size="1"
