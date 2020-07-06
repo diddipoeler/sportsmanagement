@@ -102,8 +102,10 @@ class sportsmanagementViewClubs extends sportsmanagementView
 		}
 
 		$this->lists = $lists;
-		$this->filterForm    = $model->getFilterForm();
-		$this->activeFilters = $model->getActiveFilters();
+//		$this->filterForm    = $model->getFilterForm();
+//		$this->activeFilters = $model->getActiveFilters();
+        $this->filterForm    = $this->get('FilterForm');
+        $this->activeFilters = $this->get('ActiveFilters');
 		
 	}
 
