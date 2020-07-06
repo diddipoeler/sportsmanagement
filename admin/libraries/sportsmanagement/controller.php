@@ -9,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\MVC\Controller\AdminController;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\Language\Text;
@@ -20,6 +18,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Log\Log;
 
 /**
  * JSMControllerAdmin
@@ -199,6 +198,9 @@ class JSMControllerForm extends FormController
 		$this->person_id = $this->jsmapp->getUserState("$this->jsmoption.person_id", '0');
 		$this->team_id   = $this->jsmapp->getUserState("$this->jsmoption.team_id", '0');
 
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . 'post<pre>'.print_r($post,true).'</pre>, Log::NOTICE, 'jsmerror');
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . 'data<pre>'.print_r($data,true).'</pre>, Log::NOTICE, 'jsmerror');
+		
 		$id = $this->jsmdb->insertid();
 
 		if (empty($id))
