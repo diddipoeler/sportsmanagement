@@ -135,6 +135,7 @@ class sportsmanagementView extends BaseHtmlView
         if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
         {
         $this->document->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/joomla4functions.js');
+        $this->document->addScript(Uri::root() . 'media/system/js/searchtools.js');
         }
 		
 // css parameter of formbehavior2::select2
