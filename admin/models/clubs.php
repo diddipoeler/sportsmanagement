@@ -36,7 +36,7 @@ class sportsmanagementModelClubs extends JSMModelList
 	public function __construct($config = array())
 	{
 		$config['filter_fields'] = array(
-			'a.name',
+			'a.name','state','search_nation','geo_daten','standard_picture',
 			'a.website',
 			'a.twitter',
 			'a.facebook',
