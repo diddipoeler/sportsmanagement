@@ -36,7 +36,7 @@ class sportsmanagementModelClubs extends JSMModelList
 	public function __construct($config = array())
 	{
 		$config['filter_fields'] = array(
-			'a.name','state','search_nation','geo_daten','standard_picture',
+			'a.name',
 			'a.website',
 			'a.twitter',
 			'a.facebook',
@@ -60,6 +60,7 @@ class sportsmanagementModelClubs extends JSMModelList
 			'a.checked_out',
 			'a.checked_out_time'
 		);
+        // 'state','search_nation','geo_daten','standard_picture',
 		parent::__construct($config);
 		parent::setDbo($this->jsmdb);
 
