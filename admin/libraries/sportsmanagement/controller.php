@@ -198,8 +198,8 @@ class JSMControllerForm extends FormController
 		$this->person_id = $this->jsmapp->getUserState("$this->jsmoption.person_id", '0');
 		$this->team_id   = $this->jsmapp->getUserState("$this->jsmoption.team_id", '0');
 
-//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . 'post<pre>'.print_r($post,true).'</pre>, Log::NOTICE, 'jsmerror');
-//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . 'data<pre>'.print_r($data,true).'</pre>, Log::NOTICE, 'jsmerror');
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . 'post<pre>'.print_r($post,true).'</pre>'), Log::NOTICE, 'jsmerror');
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . 'data<pre>'.print_r($data,true).'</pre>'), Log::NOTICE, 'jsmerror');
 		
 		$id = $this->jsmdb->insertid();
 
