@@ -66,23 +66,7 @@ class sportsmanagementView extends BaseHtmlView
 	protected $tmpl = '';
 	protected $table_data_class = '';
 	protected $table_data_div = '';
-    
-    /**
-	 * The search tools form
-	 *
-	 * @var    Form
-	 * @since  1.6
-	 */
-	public $filterForm;
-
-	/**
-	 * The active search filters
-	 *
-	 * @var    array
-	 * @since  1.6
-	 */
-	public $activeFilters;
-
+        
 	/**
 	 * sportsmanagementView::display()
 	 *
@@ -348,8 +332,8 @@ switch ($this->view)
 {
 case 'clubs';
 case 'playgrounds':
-$this->filterForm    = $this->get('FilterForm');
-$this->activeFilters = $this->get('ActiveFilters');	
+//$this->filterForm    = $this->get('FilterForm');
+//$this->activeFilters = $this->get('ActiveFilters');	
 break;
 }
 		
