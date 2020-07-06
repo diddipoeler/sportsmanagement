@@ -45,7 +45,7 @@ class JFormFieldplaygroundlist2 extends \JFormFieldList
     
        
     
-    echo 'thisvalue<pre>'.print_r($thisvalue,true).'</pre>';
+    //echo 'thisvalue<pre>'.print_r($thisvalue,true).'</pre>';
     //echo 'this value<pre>'.print_r($this->value,true).'</pre>';
     //echo 'label<pre>'.print_r($this->label,true).'</pre>';
     //echo 'name<pre>'.print_r($this->name,true).'</pre>';
@@ -107,7 +107,7 @@ img.car {
     $html[] = HTMLHelper::_('formbehavior2.select2', '.'.$this->fieldname, $opt);
     
     $html[] = HTMLHelper::_(
-				'select.genericlist', $options, $this->fieldname,
+				'select.genericlist', $options, $this->name,
 				'style="width:225px;" class="'.$this->fieldname.'" size="1"' . $append, 'value', 'text', $this->value 
 			);
     
