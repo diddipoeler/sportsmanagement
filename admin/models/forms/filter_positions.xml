@@ -19,7 +19,18 @@
 			<option value="">JOPTION_SELECT_PUBLISHED</option>
 		</field>
 		
-		
+		<field  
+            name="sports_type_id"
+            type="sportstypelist"
+            default="0"
+            size="1"
+            label="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE"
+            description="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE_DESC"
+            required="true">
+            <option
+                value="">
+                COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE_SELECT</option>
+        </field>
 		
 		
     </fields>
