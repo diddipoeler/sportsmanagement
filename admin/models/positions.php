@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage positions
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
@@ -41,16 +37,16 @@ class sportsmanagementModelPositions extends JSMModelList
 	public function __construct($config = array())
 	{
 		$config['filter_fields'] = array(
-			'po.name',
-			'po.picture',
-			'po.parent_id',
-			'po.sports_type_id',
-			'po.persontype',
-			'po.id',
-			'po.published',
-			'po.modified',
-			'po.modified_by',
-			'po.ordering'
+			'po.name','name',
+			'po.picture','picture',
+			'po.parent_id','parent_id',
+			'po.sports_type_id','sports_type_id',
+			'po.persontype','persontype',
+			'po.id','id',
+			'po.published','published',
+			'po.modified','modified',
+			'po.modified_by','modified_by',
+			'po.ordering','ordering',
 		);
 		parent::__construct($config);
 		$getDBConnection = sportsmanagementHelper::getDBConnection();
