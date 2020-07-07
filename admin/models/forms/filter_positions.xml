@@ -20,7 +20,7 @@
 		</field>
 		
 		<field  
-            name="sports_type_id"
+            name="sports_type"
             type="sportstypelist"
             default="0"
             size="1"
