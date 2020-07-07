@@ -115,7 +115,7 @@ img.car {
  
    escapeMarkup: function(m) { return m; }
 ';
-    
+    $options = array_merge(parent::getOptions(), $options);
     // Setup variables for display.
 	  $append = 'onchange="this.form.submit();"';
 		$html = array();
