@@ -36,6 +36,8 @@ class sportsmanagementModelPositions extends JSMModelList
 	 */
 	public function __construct($config = array())
 	{
+	   if (empty($config['filter_fields']))
+		{
 		$config['filter_fields'] = array(
 			'po.name','name',
 			'po.picture','picture',
@@ -48,6 +50,7 @@ class sportsmanagementModelPositions extends JSMModelList
 			'po.modified_by','modified_by',
 			'po.ordering','ordering',
 		);
+        }
 		parent::__construct($config);
 		$getDBConnection = sportsmanagementHelper::getDBConnection();
 		parent::setDbo($getDBConnection);
