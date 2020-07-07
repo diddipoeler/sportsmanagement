@@ -63,6 +63,9 @@ class JFormFieldcountrylist extends \JFormFieldList
   
     
     $script[] = 'var '.$this->fieldname.' = new Array;';
+$script[] = $this->fieldname.'[\'' . '\']=\'' . "';";	  
+	  
+	  
     foreach ($options as $key => $value)
 			{
       $value->text = Text::_($value->text);
