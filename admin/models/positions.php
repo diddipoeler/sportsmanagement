@@ -40,7 +40,7 @@ class sportsmanagementModelPositions extends JSMModelList
 			'po.name','name',
 			'po.picture','picture',
 			'po.parent_id','parent_id',
-			'po.sports_type_id','sports_type_id',
+			'po.sports_type_id','sports_type',
 			'po.persontype','persontype',
 			'po.id','id',
 			'po.published','published',
