@@ -103,6 +103,7 @@ img.car {
 ';
     
     // Setup variables for display.
+	  $options = array_merge(parent::getOptions(), $options);
 	  $append = '';
 		$html = array();
     $html[] = HTMLHelper::_('formbehavior2.select2', '.'.$this->fieldname, $opt);
