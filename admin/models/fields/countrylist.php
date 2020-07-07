@@ -16,6 +16,7 @@ use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 FormHelper::loadFieldClass('list');
 
 /**
@@ -77,7 +78,7 @@ $script[] = $this->fieldname.'[\'' . '\']=\'' . "';";
       
 				if (!$value->itempicture)
 				{
-					$value->itempicture = sportsmanagementHelper::getDefaultPlaceholder("playgrounds");
+					$value->itempicture = ComponentHelper::getParams('com_sportsmanagement')->get('ph_flags', '');
 				}
 if ( $value->value )
 {
