@@ -11,7 +11,11 @@
  * @link https://www.ghsvs.de/programmierer-schnipsel/joomla/165-suchwerkzeuge-filter-immer-sichtbar
 */
 defined('JPATH_BASE') or die;
- 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
+
 $data = $displayData;
  
 // Receive overridable options
