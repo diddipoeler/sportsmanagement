@@ -35,68 +35,34 @@ class sportsmanagementModelClubs extends JSMModelList
 	 */
 	public function __construct($config = array())
 	{
-		/** welche joomla version ? */
-if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
-{
-	if (empty($config['filter_fields']))
-		{
-$config['filter_fields'] = array(
-			'a.name',
-			'a.website',
-			'a.twitter',
-			'a.facebook',
-			'a.email',
-			'a.logo_big',
-			'a.logo_middle',
-			'a.logo_small',
-			'a.country',
-			'a.state',
-			'a.alias',
-			'a.zipcode',
-			'a.location',
-			'a.address',
-			'a.latitude',
-			'a.longitude',
-			'a.id',
-			'a.published',
-			'a.unique_id',
-			'a.new_club_id',
-			'a.ordering',
-			'a.checked_out',
-			'a.checked_out_time',
-		);	
-}
-}
-		else
-		{
-			if (empty($config['filter_fields']))
+		if (empty($config['filter_fields']))
 		{
 		$config['filter_fields'] = array(
-			'a.name',
-			'a.website',
-			'a.twitter',
-			'a.facebook',
-			'a.email',
-			'a.logo_big',
-			'a.logo_middle',
-			'a.logo_small',
-			'a.country',
-			'a.state',
-			'a.alias',
-			'a.zipcode',
-			'a.location',
-			'a.address',
-			'a.latitude',
-			'a.longitude',
-			'a.id',
-			'a.published',
-			'a.unique_id',
-			'a.new_club_id',
-			'a.ordering',
-			'a.checked_out',
-			'a.checked_out_time',
+			'a.name','name',
+			'a.website','website',
+			'a.twitter','twitter',
+			'a.facebook','facebook',
+			'a.email','email',
+			'a.logo_big','logo_big',
+			'a.logo_middle','logo_middle',
+			'a.logo_small','logo_small',
+			'a.country','country',
+			'a.state','state',
+			'a.alias','alias',
+			'a.zipcode','zipcode',
+			'a.location','location',
+			'a.address','address',
+			'a.latitude','latitude',
+			'a.longitude','longitude',
+			'a.id','id',
+			'a.published','published',
+			'a.unique_id','unique_id',
+			'a.new_club_id','new_club_id',
+			'a.ordering','ordering',
+			'a.checked_out','checked_out',
+			'a.checked_out_time','checked_out_time',
+			'search_nation','geo_daten','standard_picture',
 		);
-		}
 		}
         // 'state','search_nation','geo_daten','standard_picture',
 		parent::__construct($config);
@@ -185,7 +151,29 @@ $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array()
 	protected function getListQuery()
 	{
 		$this->jsmquery->clear();
-		$this->jsmquery->select(implode(",", $this->filter_fields));
+		$this->jsmquery->select('a.name,
+			a.website,
+			a.twitter,
+			a.facebook,
+			a.email,
+			a.logo_big,
+			a.logo_middle,
+			a.logo_small,
+			a.country,
+			a.state,
+			a.alias,
+			a.zipcode,
+			a.location,
+			a.address,
+			a.latitude,
+			a.longitude,
+			a.id,
+			a.published,
+			a.unique_id,
+			a.new_club_id,
+			a.ordering,
+			a.checked_out,
+			a.checked_out_time');
 		$this->jsmquery->from('#__sportsmanagement_club as a');
 		$this->jsmquery->select('uc.name AS editor');
 		$this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = a.checked_out');
