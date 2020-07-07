@@ -61,7 +61,8 @@ $config['filter_fields'] = array(
 			'a.new_club_id','new_club_id',
 			'a.ordering','ordering',
 			'a.checked_out','checked_out',
-			'a.checked_out_time','checked_out_time'
+			'a.checked_out_time','checked_out_time',
+	'state','search_nation','geo_daten','standard_picture'
 		);	
 }
 		else
