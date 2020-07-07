@@ -37,15 +37,16 @@ class sportsmanagementModelPlaygrounds extends JSMModelList
 	public function __construct($config = array())
 	{
 		$config['filter_fields'] = array(
-			'v.name',
-			'v.alias',
-			'v.short_name',
-			'v.max_visitors',
-			'v.picture',
-			'v.country',
+			'v.name','name',
+			'v.alias','alias',
+			'v.short_name','short_name',
+			'v.max_visitors','max_visitors',
+			'v.picture','picture',
+			'v.country','country',
 			'club',
-			'v.id',
-			'v.ordering'
+			'v.id','id',
+			'v.ordering','ordering',
+			'state','search_nation',
 		);
 		parent::__construct($config);
 		parent::setDbo($this->jsmdb);
