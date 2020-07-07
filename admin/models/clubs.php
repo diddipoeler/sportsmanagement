@@ -38,6 +38,8 @@ class sportsmanagementModelClubs extends JSMModelList
 		/** welche joomla version ? */
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
+	if (empty($config['filter_fields']))
+		{
 $config['filter_fields'] = array(
 			'a.name','name',
 			'a.website','website',
@@ -62,10 +64,13 @@ $config['filter_fields'] = array(
 			'a.ordering','ordering',
 			'a.checked_out','checked_out',
 			'a.checked_out_time','checked_out_time',
-	'state','search_nation','geo_daten','standard_picture'
+	'state','search_nation','geo_daten','standard_picture',
 		);	
 }
+}
 		else
+		{
+			if (empty($config['filter_fields']))
 		{
 		$config['filter_fields'] = array(
 			'a.name',
@@ -90,8 +95,9 @@ $config['filter_fields'] = array(
 			'a.new_club_id',
 			'a.ordering',
 			'a.checked_out',
-			'a.checked_out_time'
+			'a.checked_out_time',
 		);
+		}
 		}
         // 'state','search_nation','geo_daten','standard_picture',
 		parent::__construct($config);
