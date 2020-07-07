@@ -52,6 +52,7 @@ switch ($view)
 {
 case 'clubs':
 case 'playgrounds':
+case 'positions':		
 echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 break;
 case 'githubinstall':
