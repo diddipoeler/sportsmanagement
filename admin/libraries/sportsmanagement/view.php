@@ -378,7 +378,7 @@ break;
 				case 'leagues':
 				case 'seasons':
 				case 'sportstypes':
-				case 'positions':
+				//case 'positions':
 				case 'clubnames':
 				//case 'clubs':
 				case 'teams':
