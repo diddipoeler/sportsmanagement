@@ -21,7 +21,7 @@
 		
 		<field
             name="search_nation"
-            type="country"
+            type="countrylist"
             label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY"
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY_DESC"
             required="false"
