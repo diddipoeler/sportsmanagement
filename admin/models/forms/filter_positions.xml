@@ -26,7 +26,7 @@
             size="1"
             label="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE"
             description="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE_DESC"
-            required="true">
+            onchange="this.form.submit();">
             <option
                 value="">
                 COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE_SELECT</option>
