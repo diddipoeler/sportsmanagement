@@ -17,6 +17,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Form\Form;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementViewClubs
@@ -30,6 +31,21 @@ use Joomla\CMS\Form\Form;
 class sportsmanagementViewClubs extends sportsmanagementView
 {
 
+	/**
+	 * A \JForm instance with filter fields.
+	 *
+	 * @var    \JForm
+	 * @since  3.6.3
+	 */
+	public $filterForm;
+
+	/**
+	 * An array with active filters.
+	 *
+	 * @var    array
+	 * @since  3.6.3
+	 */
+	public $activeFilters;
     
 	/**
 	 * sportsmanagementViewClubs::init()
@@ -88,10 +104,11 @@ class sportsmanagementViewClubs extends sportsmanagementView
 		}
 
 		$this->lists = $lists;
-//		$this->filterForm    = $model->getFilterForm();
-//		$this->activeFilters = $model->getActiveFilters();
-//        $this->filterForm    = $this->get('FilterForm');
-//        $this->activeFilters = $this->get('ActiveFilters');
+		$this->filterForm    = $this->model->getFilterForm();
+		$this->activeFilters = $this->model->getActiveFilters();
+	
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>'.print_r($this->filterForm ,true)'</pre>' ), Log::NOTICE, 'jsmerror');		
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>'.print_r($this->activeFilters ,true)'</pre>' ), Log::NOTICE, 'jsmerror');				
 		
 	}
 
