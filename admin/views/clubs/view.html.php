@@ -29,21 +29,7 @@ use Joomla\CMS\Form\Form;
  */
 class sportsmanagementViewClubs extends sportsmanagementView
 {
-/**
-	 * The search tools form
-	 *
-	 * @var    Form
-	 * @since  1.6
-	 */
-	public $filterForm;
 
-	/**
-	 * The active search filters
-	 *
-	 * @var    array
-	 * @since  1.6
-	 */
-	public $activeFilters = [];
     
 	/**
 	 * sportsmanagementViewClubs::init()
