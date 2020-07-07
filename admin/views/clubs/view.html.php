@@ -107,8 +107,8 @@ class sportsmanagementViewClubs extends sportsmanagementView
 		$this->filterForm    = $this->model->getFilterForm();
 		$this->activeFilters = $this->model->getActiveFilters();
 	
-//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>'.print_r($this->filterForm ,true)'</pre>' ), Log::NOTICE, 'jsmerror');		
-//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>'.print_r($this->activeFilters ,true)'</pre>' ), Log::NOTICE, 'jsmerror');				
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>'.print_r($this->filterForm ,true).'</pre>' ), Log::NOTICE, 'jsmerror');		
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>'.print_r($this->activeFilters ,true).'</pre>' ), Log::NOTICE, 'jsmerror');				
 		
 	}
 
