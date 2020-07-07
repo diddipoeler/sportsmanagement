@@ -68,6 +68,46 @@ class sportsmanagementView extends BaseHtmlView
 	protected $table_data_div = '';
         
 	/**
+	 * The item data.
+	 *
+	 * @var   object
+	 * @since 1.6
+	 */
+	protected $items;
+
+	/**
+	 * The pagination object.
+	 *
+	 * @var   \Joomla\CMS\Pagination\Pagination
+	 * @since 1.6
+	 */
+	protected $pagination;
+
+	/**
+	 * The model state.
+	 *
+	 * @var   CMSObject
+	 * @since 1.6
+	 */
+	protected $state;
+
+	/**
+	 * A \JForm instance with filter fields.
+	 *
+	 * @var    \JForm
+	 * @since  3.6.3
+	 */
+	public $filterForm;
+
+	/**
+	 * An array with active filters.
+	 *
+	 * @var    array
+	 * @since  3.6.3
+	 */
+	public $activeFilters;
+	
+	/**
 	 * sportsmanagementView::display()
 	 *
 	 * @param   mixed  $tpl
@@ -332,8 +372,8 @@ switch ($this->view)
 {
 case 'clubs';
 case 'playgrounds':
-//$this->filterForm    = $this->get('FilterForm');
-//$this->activeFilters = $this->get('ActiveFilters');	
+$this->filterForm    = $this->get('FilterForm');
+$this->activeFilters = $this->get('ActiveFilters');	
 break;
 }
 		
