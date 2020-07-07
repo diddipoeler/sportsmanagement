@@ -15,6 +15,7 @@ use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementViewPlaygrounds
@@ -28,6 +29,22 @@ use Joomla\CMS\Toolbar\Toolbar;
 class sportsmanagementViewPlaygrounds extends sportsmanagementView
 {
 
+	/**
+	 * A \JForm instance with filter fields.
+	 *
+	 * @var    \JForm
+	 * @since  3.6.3
+	 */
+	public $filterForm;
+
+	/**
+	 * An array with active filters.
+	 *
+	 * @var    array
+	 * @since  3.6.3
+	 */
+	public $activeFilters;
+	
 	/**
 	 * sportsmanagementViewPlaygrounds::init()
 	 *
@@ -57,6 +74,11 @@ class sportsmanagementViewPlaygrounds extends sportsmanagementView
 		);
 
 		$this->lists = $lists;
+		$this->filterForm    = $this->model->getFilterForm();
+		$this->activeFilters = $this->model->getActiveFilters();
+	
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>'.print_r($this->filterForm ,true)'</pre>' ), Log::NOTICE, 'jsmerror');		
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>'.print_r($this->activeFilters ,true)'</pre>' ), Log::NOTICE, 'jsmerror');		
 
 	}
 
