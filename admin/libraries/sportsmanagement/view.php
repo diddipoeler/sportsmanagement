@@ -501,7 +501,7 @@ break;
 					HTMLHelper::_('select.options', $this->league, 'id', 'name', $this->state->get('filter.league'), true)
 				);
 			}
-
+/*
 			if (isset($this->sports_type))
 			{
 				JHtmlSidebar::addFilter(
@@ -510,7 +510,7 @@ break;
 					HTMLHelper::_('select.options', $this->sports_type, 'id', 'name', $this->state->get('filter.sports_type'), true)
 				);
 			}
-
+*/
 			if (isset($this->season))
 			{
 			 /*
