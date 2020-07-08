@@ -18,7 +18,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 
 $data = $displayData;
  
-// Receive overridable options
+/** Receive overridable options */
 $data['options'] = !empty($data['options']) ? $data['options'] : array();
  
 $noResultsText     = '';
