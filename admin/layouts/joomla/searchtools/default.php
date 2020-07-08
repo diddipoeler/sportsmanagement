@@ -115,12 +115,12 @@ HTMLHelper::_('searchtools.form', $data['options']['formSelector'], $data['optio
             <?php echo LayoutHelper::render('joomla.searchtools.default.selector', $data); ?>
         </div>
         <?php endif; ?>
-        <div class="js-stools-container-bar">
-            <?php echo $this->sublayout('bar', $data); ?>
-        </div>
-        <div class="js-stools-container-list hidden-phone hidden-tablet">
-            <?php echo $this->sublayout('list', $data); ?>
-        </div>
+        <div class="js-stools-container-bar ml-auto">
+		<div class="btn-toolbar">
+			<?php echo $this->sublayout('bar', $data); ?>
+			<?php echo $this->sublayout('list', $data); ?>
+		</div>
+	</div>
     </div>
     <!-- Filters div -->
     <?php #if ($data['options']['filterButton']) : ?>
