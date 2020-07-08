@@ -14,6 +14,7 @@ defined('JPATH_BASE') or die;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 $data = $displayData;
 
@@ -84,7 +85,7 @@ $data['options'] = array_merge($customOptions, $data['options']);
  
 // Add class to hide the active filters if needed.
 if (version_compare(substr(JVERSION, 0, 5), '4.0.0', 'ge'))
-		{
+{
 $filtersActiveClass = $hideActiveFilters ? ' js-stools-container-filters-visible' : ' js-stools-container-filters-visible';    
 }
 else
@@ -95,7 +96,7 @@ $filtersActiveClass = $hideActiveFilters ? '' : ' js-stools-container-filters-vi
 //echo 'filtersActiveClass<pre>'.print_r($filtersActiveClass,true).'</pre>';
 
 // Load search tools
-JHtml::_('searchtools.form', $data['options']['formSelector'], $data['options']);
+HTMLHelper::_('searchtools.form', $data['options']['formSelector'], $data['options']);
 ?>
 
 <div class="js-stools clearfix">
