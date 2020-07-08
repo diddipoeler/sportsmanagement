@@ -103,7 +103,7 @@ img.car {
 // String $opt - second parameter of formbehavior2::select2
 		// for details http://ivaynberg.github.io/select2/
 		$opt = ' allowClear: true,
-   width: "400px",
+   width: "100%",
    formatResult: function format(state)
    {
    var originalOption = state.element;
