@@ -80,12 +80,14 @@ $customOptions = array(
 if (version_compare(substr(JVERSION, 0, 5), '4.0.0', 'ge'))
 {
 $customOptions['filterButton'] = 0;
+$customOptions['filtersHidden'] = 0;    
 }
 else
 {
-$customOptions['filterButton'] = 1;    
+$customOptions['filterButton'] = 1; 
+$customOptions['filtersHidden'] = 1;    
 }
-$customOptions['filtersHidden'] = 0;
+
  
 // Merge custom options in the options array.
 $data['options'] = array_merge($customOptions, $data['options']);
