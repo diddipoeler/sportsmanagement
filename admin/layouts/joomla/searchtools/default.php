@@ -114,13 +114,30 @@ HTMLHelper::_('searchtools.form', $data['options']['formSelector'], $data['optio
         <div class="js-stools-container-selector">
             <?php echo LayoutHelper::render('joomla.searchtools.default.selector', $data); ?>
         </div>
-        <?php endif; ?>
+        <?php endif; 
+	    if (version_compare(substr(JVERSION, 0, 5), '4.0.0', 'ge'))
+{
+	    ?>
         <div class="js-stools-container-bar ml-auto">
 		<div class="btn-toolbar">
 			<?php echo $this->sublayout('bar', $data); ?>
 			<?php echo $this->sublayout('list', $data); ?>
 		</div>
 	</div>
+	    <?php
+	    }
+	    else
+	    {
+	    ?>
+	<div class="js-stools-container-bar">
+            <?php echo $this->sublayout('bar', $data); ?>
+        </div>
+        <div class="js-stools-container-list hidden-phone hidden-tablet">
+            <?php echo $this->sublayout('list', $data); ?>
+        </div>
+	    <?php
+	    }
+	    ?>
     </div>
     <!-- Filters div -->
     <?php #if ($data['options']['filterButton']) : ?>
