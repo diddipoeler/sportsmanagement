@@ -67,7 +67,7 @@
       
         <field
             name="country"
-            type="country"
+            type="countrylist"
             label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY"
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY_DESC"
             required="true"
@@ -78,7 +78,7 @@
   
   <field
             name="country_geocode"
-            type="country"
+            type="countrylist"
             label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY_GEOCODE"
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY_GEOCODE_DESC"
             class="form-control form-control-inline"
