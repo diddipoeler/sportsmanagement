@@ -10,7 +10,6 @@
  * Override by ghsvs.de 2019-05-10
  * @link https://www.ghsvs.de/programmierer-schnipsel/joomla/165-suchwerkzeuge-filter-immer-sichtbar
 */
-
 defined('JPATH_BASE') or die;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Factory;
@@ -84,8 +83,17 @@ $customOptions['filtersHidden'] = 0;
 $data['options'] = array_merge($customOptions, $data['options']);
  
 // Add class to hide the active filters if needed.
+if (version_compare(substr(JVERSION, 0, 5), '4.0.0', 'ge'))
+		{
+$filtersActiveClass = $hideActiveFilters ? ' js-stools-container-filters-visible' : ' js-stools-container-filters-visible';    
+}
+else
+{
 $filtersActiveClass = $hideActiveFilters ? '' : ' js-stools-container-filters-visible';
- 
+}
+
+//echo 'filtersActiveClass<pre>'.print_r($filtersActiveClass,true).'</pre>';
+
 // Load search tools
 JHtml::_('searchtools.form', $data['options']['formSelector'], $data['options']);
 ?>
