@@ -368,7 +368,7 @@ break;
 			switch ($this->view)
 			{
 				case 'projects':
-				case 'players':
+				//case 'players':
 				case 'predictiongames':
 				case 'jlextfederations':
 				case 'jlextassociations':
@@ -560,7 +560,7 @@ document.getElementById("filter_season").classList.add("filter_season");
 					HTMLHelper::_('select.options', $this->project_position_id, 'value', 'text', $this->state->get('filter.project_position_id'), true)
 				);
 			}
-
+/*
 			if (isset($this->search_agegroup))
 			{
 				JHtmlSidebar::addFilter(
@@ -569,6 +569,7 @@ document.getElementById("filter_season").classList.add("filter_season");
 					HTMLHelper::_('select.options', $this->search_agegroup, 'value', 'text', $this->state->get('filter.search_agegroup'), true)
 				);
 			}
+			*/
 		}
 
 		if ($this->layout == 'edit'
