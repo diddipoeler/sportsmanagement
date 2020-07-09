@@ -102,6 +102,17 @@ class JFormFieldseasonlist extends FormField
 		{
 			$attribs .= ' size="' . $v . '"';
 		}
+        
+        switch ( Factory::getApplication()->input->getCmd('view', '') )
+	  {
+			  case 'clubs':
+              case 'projects':
+			  $attribs .= 'onchange="this.form.submit();"';
+			  break;
+		  default:
+			  $attribs .= '';
+			  break;
+	  }
 
 		$cfg_which_database = $this->form->getValue('cfg_which_database', $div);
 

@@ -56,6 +56,19 @@
             <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
         </field>
 		
+		<field
+            name="season"
+            type="seasonlist"
+            label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER"
+            description="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER"
+            required="false"
+       onchange="this.form.submit();"
+        >
+            <option value="">COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER</option>
+        </field>
+		
+		
+		
     </fields>
 	
 <fields name="list">	

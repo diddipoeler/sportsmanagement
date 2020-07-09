@@ -524,11 +524,12 @@ break;
 			);
             */
             
-				JHtmlSidebar::addFilter(
-					Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'),
-					'filter_season',
-					HTMLHelper::_('select.options', $this->season, 'id', 'name', $this->state->get('filter.season'), true)
-				);
+//				JHtmlSidebar::addFilter(
+//					Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'),
+//					'filter_season',
+//					HTMLHelper::_('select.options', $this->season, 'id', 'name', $this->state->get('filter.season'), true)
+//				);
+                
              /*   
  $this->document->addScriptDeclaration(
 						'
