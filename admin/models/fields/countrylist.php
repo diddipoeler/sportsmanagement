@@ -118,7 +118,16 @@ img.car {
 ';
     $options = array_merge(parent::getOptions(), $options);
     // Setup variables for display.
-	  $append = 'onchange="this.form.submit();"';
+	  switch ( Factory::getApplication()->input->getCmd('view', '') )
+	  {
+			  when 'clubs':
+			  $append = 'onchange="this.form.submit();"';
+			  break;
+		  default:
+			  $append = '';
+			  break;
+	  }
+	  
 		$html = array();
     $html[] = HTMLHelper::_('formbehavior2.select2', '.'.$this->fieldname, $opt);
     
