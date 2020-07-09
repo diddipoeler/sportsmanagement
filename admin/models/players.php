@@ -124,6 +124,11 @@ class sportsmanagementModelplayers extends JSMModelList
 		{
 			$this->jsmquery->where('pl.agegroup_id = ' . $this->getState('filter.search_agegroup'));
 		}
+		
+		if ($this->getState('filter.sports_type'))
+		{
+			$this->jsmquery->where('pl.sports_type_id = ' . $this->getState('filter.sports_type'));
+		}
 
 		if (is_numeric($this->getState('filter.state')))
 		{
@@ -421,6 +426,7 @@ $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array()
 		
 		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
 		$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
+		$this->setState('filter.sports_type', $this->getUserStateFromRequest($this->context . '.filter.sports_type', 'filter_sports_type', ''));
 		$this->setState('filter.search_nation', $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', ''));
 		$this->setState('filter.search_agegroup', $this->getUserStateFromRequest($this->context . '.filter.search_agegroup', 'filter_search_agegroup', ''));
 		$this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
