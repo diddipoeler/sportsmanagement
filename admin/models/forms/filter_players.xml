@@ -45,6 +45,17 @@
                 COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP_FILTER</option>
         </field>
 		
+		<field
+            name="search_nation"
+            type="countrylist"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY_DESC"
+            required="false"
+       onchange="this.form.submit();"
+        >
+            <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
+        </field>
+		
     </fields>
 	
 <fields name="list">	
