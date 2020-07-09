@@ -32,6 +32,18 @@
                 COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE_SELECT</option>
         </field>
 		
+		<field  
+            name="search_agegroup"
+            type="agegrouplist"
+            default="0"
+            size="1"
+            label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP"
+            description="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP"
+            onchange="this.form.submit();">
+            <option
+                value="">
+                COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP_FILTER</option>
+        </field>
 		
     </fields>
 	
