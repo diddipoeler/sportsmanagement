@@ -39,7 +39,7 @@
             size="1"
             label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP"
             description="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP"
-            onchange="this.form.submit();"
+            onchange="this.form.submit();">
             <option
                 value="">
                 COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP_FILTER</option>
