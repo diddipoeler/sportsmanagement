@@ -121,6 +121,7 @@ img.car {
 	  switch ( Factory::getApplication()->input->getCmd('view', '') )
 	  {
 			  case 'clubs':
+              case 'projects':
 			  $append = 'onchange="this.form.submit();"';
 			  break;
 		  default:
