@@ -120,7 +120,7 @@ img.car {
     // Setup variables for display.
 	  switch ( Factory::getApplication()->input->getCmd('view', '') )
 	  {
-			  when 'clubs':
+			  case 'clubs':
 			  $append = 'onchange="this.form.submit();"';
 			  break;
 		  default:
