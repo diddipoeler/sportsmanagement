@@ -50,7 +50,7 @@ console.log("fieldid: " + '<?php echo $this->fieldid; ?>');
 console.log("type: " + '<?php echo $this->type; ?>');      
 logopfad = 'images/com_sportsmanagement/database/<?php echo $this->folder; ?>/' + img;
 console.log("logopfad : " + logopfad );	
-window.parent.selectImage_clubs_large(img, logopfad ,'','<?php echo $this->fieldid; ?>');
+window.parent.selectImage_<?php echo $this->type; ?>(img, logopfad ,'<?php echo $this->type; ?>','<?php echo $this->fieldid; ?>');
 //window.closeModal();
 
      
