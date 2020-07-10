@@ -122,6 +122,7 @@ img.car {
 	  {
 			  case 'clubs':
               case 'projects':
+              case 'leagues':
 			  $append = 'onchange="this.form.submit();"';
 			  break;
 		  default:
