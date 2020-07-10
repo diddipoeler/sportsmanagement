@@ -70,6 +70,7 @@ public function __construct($config = array())
 public function getFiles($path, $scopeName)
 {
 $directory = JPATH_ROOT . DIRECTORY_SEPARATOR . 'images/com_sportsmanagement/database/'.$path;
+$post   = Factory::getApplication()->input->post->getArray(array());	
 //$filesOutput = [];
 
 // Allowed filetypes
