@@ -32,20 +32,47 @@ $dispatcher->trigger('onContentBeforeDisplay', array('com_media.file', &$this->_
 //echo '<pre>'.print_r($this->_tmp_img,true).'</pre>';
 
 ?>
+<script>
+function exportToForm(img) {
+//     alert(img);
+//     alert('<?php echo $this->folder; ?>');
+var logopfad;     
+var type = '<?php echo $this->type; ?>';     
+var fieldid = '<?php echo $this->fieldid; ?>';
+var fieldname = '<?php echo $this->fieldname; ?>';     
+console.log("bild: " + img);	
+console.log("pfad: " + '<?php echo $this->folder; ?>');	
+console.log("fieldid: " + '<?php echo $this->fieldid; ?>');     
+console.log("type: " + '<?php echo $this->type; ?>');      
+console.log("fieldname: " + '<?php echo $this->fieldname; ?>');
+logopfad = 'images/com_sportsmanagement/database/<?php echo $this->folder; ?>/' + img;
+console.log("logopfad : " + logopfad );	
+window.parent.selectImage_<?php echo $this->type; ?>(img, img,fieldname ,fieldid);
+window.closeModal();
+
+     
+ }
+
+</script>
+
 <div class="media-browser-item">
 <div class="media-browser-image">	
 <div class="media-browser-item-preview">
 <?php
 
 echo sportsmanagementHelper::getBootstrapModalImage(
-							$this->_tmp_img->name,
-							Uri::root() . 'images/com_sportsmanagement/database/'.$this->_tmp_img->path_relative.'/'.$this->_tmp_img->file,
-							Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
-							$this->_tmp_img->width_60,
-							'',
-							$this->modalwidth,
-							$this->modalheight
-						);
+$this->_tmp_img->name,
+Uri::root() . 'images/com_sportsmanagement/database/'.$this->_tmp_img->path_relative.'/'.$this->_tmp_img->file,
+Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
+$this->_tmp_img->width_60,
+'',
+$this->modalwidth,
+$this->modalheight
+);
+$image_attributes['title'] = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_ADD');
+$image_attributes['id'] = $this->_tmp_img->file;		  
+$image_attributes['onclick'] = "javascript:exportToForm('".$this->_tmp_img->file."')";
+echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/ok.png', '', $image_attributes);	  	
 ?>
 </div>
 <div class="media-browser-item-info">
