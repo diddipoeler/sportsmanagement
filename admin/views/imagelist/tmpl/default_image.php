@@ -50,10 +50,11 @@ console.log("bild: " + img);
 console.log("pfad: " + '<?php echo $this->folder; ?>');	
 console.log("fieldid: " + '<?php echo $this->fieldid; ?>');     
 console.log("type: " + '<?php echo $this->type; ?>');      
+console.log("fieldname: " + '<?php echo $this->fieldname; ?>');
 logopfad = 'images/com_sportsmanagement/database/<?php echo $this->folder; ?>/' + img;
 console.log("logopfad : " + logopfad );	
-window.parent.selectImage_<?php echo $this->type; ?>(img, img,type,fieldid);
-//window.closeModal();
+window.parent.selectImage_<?php echo $this->type; ?>(img, img,fieldname ,fieldid);
+window.closeModal();
 
      
  }
