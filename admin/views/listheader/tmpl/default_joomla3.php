@@ -209,7 +209,8 @@ case 'clubs':
 case 'playgrounds':
 case 'positions':		
 case 'players':
-case 'projects':			
+case 'projects':
+case 'leagues':			
 echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 break;
 case 'githubinstall':

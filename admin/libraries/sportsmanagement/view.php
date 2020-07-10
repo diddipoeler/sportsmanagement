@@ -375,7 +375,7 @@ break;
 				case 'jlextcountries':
 				case 'agegroups':
 				case 'eventtypes':
-				case 'leagues':
+				//case 'leagues':
 				case 'seasons':
 				case 'sportstypes':
 				//case 'positions':

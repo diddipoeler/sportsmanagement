@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -12,7 +10,6 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 
@@ -58,6 +55,11 @@ class sportsmanagementModelLeagues extends JSMModelList
 	}
 
 
+	/**
+	 * sportsmanagementModelLeagues::getLeagues()
+	 * 
+	 * @return
+	 */
 	function getLeagues()
 	{
 
@@ -115,28 +117,18 @@ class sportsmanagementModelLeagues extends JSMModelList
 			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . $this->context . ''), '');
 			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . ''), '');
 		}
+$list = $this->getUserStateFromRequest($this->context . '.list', 'list', array(), 'array');
+		
 
-		// Load the filter state.
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
-		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string');
-		$this->setState('filter.state', $published);
-		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '');
-		$this->setState('filter.search_nation', $temp_user_request);
-		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.search_agegroup', 'filter_search_agegroup', '');
-		$this->setState('filter.search_agegroup', $temp_user_request);
-		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.search_association', 'filter_search_association', '');
-		$this->setState('filter.search_association', $temp_user_request);
-		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.federation', 'filter_federation', '');
-		$this->setState('filter.federation', $temp_user_request);
-		$value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
-		$this->setState('list.limit', $value);
+		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search'));
+		$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
+		$this->setState('filter.search_nation', $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', ''));
+		$this->setState('filter.search_agegroup', $this->getUserStateFromRequest($this->context . '.filter.search_agegroup', 'filter_search_agegroup', ''));
+		$this->setState('filter.search_association', $this->getUserStateFromRequest($this->context . '.filter.search_association', 'filter_search_association', ''));
+		$this->setState('filter.federation', $this->getUserStateFromRequest($this->context . '.filter.federation', 'filter_federation', ''));
+		$this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
+		$this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
 
-		// List state information.
-		$value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
-		$this->setState('list.start', $value);
-
-		// Filter.order
 		$orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
 
 		if (!in_array($orderCol, $this->filter_fields))
