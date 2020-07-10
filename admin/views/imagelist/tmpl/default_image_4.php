@@ -50,8 +50,8 @@ console.log("fieldname: " + '<?php echo $this->fieldname; ?>');
 logopfad = 'images/com_sportsmanagement/database/<?php echo $this->folder; ?>/' + img;
 console.log("logopfad : " + logopfad );	
 window.parent.selectImage_<?php echo $this->type; ?>(img, img,fieldname ,fieldid);
-window.closeModal();
-
+//window.closeModal();
+window.parent.jQuery('.modal.in').modal('hide');
      
  }
 
