@@ -47,6 +47,7 @@ var logopfad;
 console.log("bild: " + img);	
 console.log("pfad: " + '<?php echo $this->folder; ?>');	
 console.log("fieldid: " + '<?php echo $this->fieldid; ?>');     
+console.log("type: " + '<?php echo $this->type; ?>');      
 logopfad = 'images/com_sportsmanagement/database/<?php echo $this->folder; ?>/' + img;
 console.log("logopfad : " + logopfad );	
 window.parent.selectImage_clubs_large(img, logopfad ,'','<?php echo $this->fieldid; ?>');
