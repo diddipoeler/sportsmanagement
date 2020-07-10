@@ -89,6 +89,9 @@ abstract class ImageSelectSM
 		$js = "
 		function selectImage_" . $type . "(image, imagename, field, fieldid)
 		{
+		console.log('selectImage image : ' + image);
+		console.log('selectImage imagename : ' + imagename);
+		
 			console.log('selectImage fieldid : ' + fieldid);
 			console.log('selectImage field : ' + field);
 			document.getElementById('copy_' + fieldid).value = 'images/com_sportsmanagement/database/" . self::getfolder($typefolder) . "/'+image;
