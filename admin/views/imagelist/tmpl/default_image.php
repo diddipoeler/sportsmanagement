@@ -14,6 +14,8 @@ use Joomla\Registry\Registry;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
 $params     = new Registry;
 
 // Get the base version
@@ -45,6 +47,8 @@ echo sportsmanagementHelper::getBootstrapModalImage(
 							$this->modalwidth,
 							$this->modalheight
 						);
+$image_attributes['title'] = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_ADD');			
+echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/ok.png', '', $image_attributes);	  
 ?>
   </div>
 <div class="small">
