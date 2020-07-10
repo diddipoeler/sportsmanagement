@@ -30,7 +30,6 @@ use Joomla\CMS\Uri\Uri;
 class sportsmanagementViewimagelist extends sportsmanagementView
 {
 
-
 	/**
 	 * sportsmanagementViewImagehandler::init()
 	 *
@@ -56,6 +55,7 @@ class sportsmanagementViewimagelist extends sportsmanagementView
 //		$document->addScriptDeclaration("var ImageManager = window.parent.ImageManager;");
        
    $data = Factory::getApplication()->input->getArray();
+$post   = Factory::getApplication()->input->post->getArray(array());	
 //      echo '<pre>'.print_r($data,true).'</pre>';
 $this->folder = $data['folder'];
 $this->type = $data['type'];		
@@ -69,14 +69,14 @@ switch ($this->folder)
 		{
 		case "projectimages":
         $this->pid = $data['pid'];
-        $this->images = $this->model->getFiles($data['folder'].'/'.$data['pid'],'');
+        $this->images = $this->model->getFiles($data['folder'].'/'.$data['pid'],'',$post);
 		break;  
         case "matchreport":
         $this->match_id = $data['mid'];
-        $this->images = $this->model->getFiles($data['folder'].'/'.$data['mid'],'');
+        $this->images = $this->model->getFiles($data['folder'].'/'.$data['mid'],'',$post);
 		break;
 	default:
-		$this->images = $this->model->getFiles($data['folder'],'');
+		$this->images = $this->model->getFiles($data['folder'],'',$post);
 		break;
           }
 
