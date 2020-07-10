@@ -32,6 +32,25 @@ echo sportsmanagementHelper::getBootstrapModalImage('upload'.$this->project_id, 
 <div class="display-limit">
 <?php echo Text::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
 <?php echo $this->pagination->getLimitBox(); ?>
+<div class="filter-search btn-group pull-left">	
+<label for="filter_search" class="element-invisible"><?php echo Text::_('JSEARCH_FILTER_LABEL'); ?></label>
+                            <input type="text" name="filter_search" id="filter_search"
+                                 placeholder="<?php echo Text::_('JSEARCH_FILTER'); ?>"
+                                   value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
+                                   class="hasTooltip"
+                                   title="<?php echo HTMLHelper::tooltipText('JGLOBAL_LOOKING_FOR'); ?>"/>
+                        </div>
+                        <div class="btn-group pull-left">
+                            <button type="submit" class="btn hasTooltip"
+                                    title="<?php echo HTMLHelper::tooltipText('JSEARCH_FILTER_SUBMIT'); ?>"><i
+                                        class="icon-search"></i></button>
+                            <button type="button" class="btn hasTooltip"
+                                    title="<?php echo HTMLHelper::tooltipText('JSEARCH_FILTER_CLEAR'); ?>"
+                                    onclick="document.id('filter_search').value='';this.form.submit();"><i
+                                        class="icon-remove"></i></button>
+
+                        </div>
+
 </div>	
 <?php
 // Get the base version
@@ -110,6 +129,8 @@ include( dirname(__FILE__) . '/default_image.php');
 <input type="hidden" name="mid" value="<?php echo $this->match_id ;?>"/>
             <input type="hidden" name="author" value=""/>
             <input type="hidden" name="fieldid" value="<?php echo $this->fieldid;?>"/>
+<input type="hidden" name="type" value="<?php echo $this->type;?>"/>
+<input type="hidden" name="fieldname" value="<?php echo $this->fieldname;?>"/>
             <input type="hidden" name="tmpl" value="component"/>
   
   
