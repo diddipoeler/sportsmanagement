@@ -67,12 +67,12 @@ public function __construct($config = array())
  * @param mixed $scopeName
  * @return
  */
-public function getFiles($path, $scopeName)
+public function getFiles($path, $scopeName, $post)
 {
 $directory = JPATH_ROOT . DIRECTORY_SEPARATOR . 'images/com_sportsmanagement/database/'.$path;
-$post   = Factory::getApplication()->input->post->getArray(array());	
+//$post   = Factory::getApplication()->input->post->getArray(array());	
 //$filesOutput = [];
-
+//echo '<pre>'.print_r($post,true).'</pre>';
 // Allowed filetypes
 $allowedExtensions = array('jpg','png','gif');
 // Also allow filetypes in uppercase
