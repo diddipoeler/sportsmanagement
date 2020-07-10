@@ -60,6 +60,7 @@ class sportsmanagementViewimagelist extends sportsmanagementView
 $this->folder = $data['folder'];
 $this->type = $data['type'];		
 $this->fieldid = $data['fieldid'];		
+$this->fieldname = $data['fieldname'];		
 $this->imagelist = $data['imagelist'];		
 $this->pid = 0;
 $this->match_id = 0;		
