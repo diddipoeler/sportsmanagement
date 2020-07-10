@@ -109,7 +109,7 @@ include( dirname(__FILE__) . '/default_image.php');
 <input type="hidden" name="pid" value="<?php echo $this->pid ;?>"/>
 <input type="hidden" name="mid" value="<?php echo $this->match_id ;?>"/>
             <input type="hidden" name="author" value=""/>
-            <input type="hidden" name="fieldid" value="jform_logo_big"/>
+            <input type="hidden" name="fieldid" value="<?php echo $this->fieldid;?>"/>
             <input type="hidden" name="tmpl" value="component"/>
   
   
