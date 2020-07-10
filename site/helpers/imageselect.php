@@ -222,7 +222,7 @@ $img.attr("src", "' . Uri::root() . '" + select);
 			'&amp;asset=com_sportsmanagement&amp;folder=com_sportsmanagement/database/' . self::getfolder($typefolder) . '&author=&amp;fieldid=' . $fieldid . '&amp;tmpl=component';
 */
 $link2 = 'index.php?option=com_sportsmanagement&view=imagelist' .
-			'&imagelist=1&asset=com_sportsmanagement&folder=' . self::getfolder($typefolder) . '&author=&fieldid=' . $fieldid . '&tmpl=component&type='.$type;
+			'&imagelist=1&asset=com_sportsmanagement&folder=' . self::getfolder($typefolder) . '&author=&fieldid=' . $fieldid . '&tmpl=component&type='.$type.'&fieldname=' . $fieldname;
 
 		$document->addScriptDeclaration($js);
 
