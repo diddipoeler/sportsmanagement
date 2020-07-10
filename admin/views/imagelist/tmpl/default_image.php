@@ -46,6 +46,7 @@ var logopfad;
      
 console.log("bild: " + img);	
 console.log("pfad: " + '<?php echo $this->folder; ?>');	
+console.log("fieldid: " + '<?php echo $this->fieldid; ?>');     
 logopfad = 'images/com_sportsmanagement/database/<?php echo $this->folder; ?>/' + img;
 console.log("logopfad : " + logopfad );	
      
