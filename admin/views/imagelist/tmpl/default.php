@@ -36,7 +36,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('upload'.$this->project_id, 
 <label for="filter_search" class="element-invisible"><?php echo Text::_('JSEARCH_FILTER_LABEL'); ?></label>
                             <input type="text" name="filter_search" id="filter_search"
                                  placeholder="<?php echo Text::_('JSEARCH_FILTER'); ?>"
-                                   value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
+                                   value="<?php echo $this->escape($this->filter_search); ?>"
                                    class="hasTooltip"
                                    title="<?php echo HTMLHelper::tooltipText('JGLOBAL_LOOKING_FOR'); ?>"/>
                         </div>

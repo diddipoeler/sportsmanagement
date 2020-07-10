@@ -43,6 +43,7 @@ class sportsmanagementViewimagelist extends sportsmanagementView
 //		JHtml::_('script', 'media/popup-imagemanager.js', true, true);
 //		JHtml::_('stylesheet', 'media/popup-imagemanager.css', array(), true);
        $lang = Factory::getLanguage();
+       $this->filter_search = '';
 
 		//JHtml::_('stylesheet', 'media/popup-imagelist.css', array(), true);
 
@@ -55,13 +56,17 @@ class sportsmanagementViewimagelist extends sportsmanagementView
 //		$document->addScriptDeclaration("var ImageManager = window.parent.ImageManager;");
        
    $data = Factory::getApplication()->input->getArray();
-$post   = Factory::getApplication()->input->post->getArray(array());	
+//$post   = Factory::getApplication()->input->post->getArray(array());	
 //      echo '<pre>'.print_r($data,true).'</pre>';
 $this->folder = $data['folder'];
 $this->type = $data['type'];		
 $this->fieldid = $data['fieldid'];		
 $this->fieldname = $data['fieldname'];		
-$this->imagelist = $data['imagelist'];		
+$this->imagelist = $data['imagelist'];	
+if (array_key_exists('filter_search', $data))
+{
+$this->filter_search = $data['filter_search'];    
+}	
 $this->pid = 0;
 $this->match_id = 0;		
 		
