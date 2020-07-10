@@ -33,22 +33,36 @@ $dispatcher->trigger('onContentBeforeDisplay', array('com_media.file', &$this->_
 
 //echo '<pre>'.print_r($this->_tmp_img,true).'</pre>';
 
+
 ?>
+
+<script>
+//jQuery(document).ready(function(){
+
+function exportToForm(img) {
+     alert(img);
+ }
+
+
+//});
+</script>
+
 <li class="imgOutline thumbnail height-80 width-80 center">
   <div class="height-50">
 <?php
 
 echo sportsmanagementHelper::getBootstrapModalImage(
-							$this->_tmp_img->name,
-							Uri::root() . 'images/com_sportsmanagement/database/'.$this->_tmp_img->path_relative.'/'.$this->_tmp_img->file,
-							Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
-							$this->_tmp_img->width_60,
-							'',
-							$this->modalwidth,
-							$this->modalheight
-						);
+$this->_tmp_img->name,
+Uri::root() . 'images/com_sportsmanagement/database/'.$this->_tmp_img->path_relative.'/'.$this->_tmp_img->file,
+Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
+$this->_tmp_img->width_60,
+'',
+$this->modalwidth,
+$this->modalheight
+);
 $image_attributes['title'] = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_ADD');
 $image_attributes['id'] = $this->_tmp_img->file;		  
+$image_attributes['onclick'] = "javascript:exportToForm('".$this->_tmp_img->file."')";
 echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/ok.png', '', $image_attributes);	  
 ?>
   </div>
