@@ -45,6 +45,7 @@ function exportToForm(img) {
 var logopfad;     
 var type = '<?php echo $this->type; ?>';     
 var fieldid = '<?php echo $this->fieldid; ?>';
+var fieldname = '<?php echo $this->fieldname; ?>';     
 console.log("bild: " + img);	
 console.log("pfad: " + '<?php echo $this->folder; ?>');	
 console.log("fieldid: " + '<?php echo $this->fieldid; ?>');     
