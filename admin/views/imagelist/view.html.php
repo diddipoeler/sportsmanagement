@@ -69,14 +69,14 @@ switch ($this->folder)
 		{
 		case "projectimages":
         $this->pid = $data['pid'];
-        $this->images = $this->model->getFiles($data['folder'].'/'.$data['pid'],'',$post);
+        $this->images = $this->model->getFiles($data['folder'].'/'.$data['pid'],'',$data);
 		break;  
         case "matchreport":
         $this->match_id = $data['mid'];
-        $this->images = $this->model->getFiles($data['folder'].'/'.$data['mid'],'',$post);
+        $this->images = $this->model->getFiles($data['folder'].'/'.$data['mid'],'',$data);
 		break;
 	default:
-		$this->images = $this->model->getFiles($data['folder'],'',$post);
+		$this->images = $this->model->getFiles($data['folder'],'',$data);
 		break;
           }
 
