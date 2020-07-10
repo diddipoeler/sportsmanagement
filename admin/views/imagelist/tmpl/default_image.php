@@ -40,7 +40,15 @@ $dispatcher->trigger('onContentBeforeDisplay', array('com_media.file', &$this->_
 //jQuery(document).ready(function(){
 
 function exportToForm(img) {
-     alert(img);
+//     alert(img);
+//     alert('<?php echo $this->folder; ?>');
+var logopfad;     
+     
+console.log("bild: " + img);	
+console.log("pfad: " + '<?php echo $this->folder; ?>');	
+logopfad = 'images/com_sportsmanagement/database/<?php echo $this->folder; ?>/' + img;
+console.log("logopfad : " + logopfad );	
+     
  }
 
 
