@@ -43,14 +43,15 @@ function exportToForm(img) {
 //     alert(img);
 //     alert('<?php echo $this->folder; ?>');
 var logopfad;     
-     
+var type = '<?php echo $this->type; ?>';     
+var fieldid = '<?php echo $this->fieldid; ?>';
 console.log("bild: " + img);	
 console.log("pfad: " + '<?php echo $this->folder; ?>');	
 console.log("fieldid: " + '<?php echo $this->fieldid; ?>');     
 console.log("type: " + '<?php echo $this->type; ?>');      
 logopfad = 'images/com_sportsmanagement/database/<?php echo $this->folder; ?>/' + img;
 console.log("logopfad : " + logopfad );	
-window.parent.selectImage_<?php echo $this->type; ?>(img, logopfad ,'<?php echo $this->type; ?>','<?php echo $this->fieldid; ?>');
+window.parent.selectImage_<?php echo $this->type; ?>(img, img,type,fieldid);
 //window.closeModal();
 
      
