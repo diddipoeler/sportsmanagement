@@ -47,7 +47,8 @@ echo sportsmanagementHelper::getBootstrapModalImage(
 							$this->modalwidth,
 							$this->modalheight
 						);
-$image_attributes['title'] = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_ADD');			
+$image_attributes['title'] = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_ADD');
+$image_attributes['id'] = $this->_tmp_img->file;		  
 echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/ok.png', '', $image_attributes);	  
 ?>
   </div>
