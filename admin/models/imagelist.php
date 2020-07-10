@@ -79,7 +79,21 @@ $allowedExtensions = array('jpg','png','gif');
 $allowedExtensions = array_merge($allowedExtensions, array_map('strtoupper', $allowedExtensions));
 // Build the filter. Will return something like: "jpg|png|JPG|PNG|gif|GIF"
 $filter = implode('|',$allowedExtensions);
+
+if (array_key_exists('filter_search', $post)) {
+    if ( $post['filter_search'] )
+    {
+	$filter = $post['filter_search'].".*\.(" . implode('|',$allowedExtensions) .")$";    
+    }
+	else
+	{
+	$filter = "^.*\.(" . implode('|',$allowedExtensions) .")$";	
+	}
+}
+else
+{
 $filter = "^.*\.(" . implode('|',$allowedExtensions) .")$";
+}	
 $files = Folder::files($directory,$filter);
 $directories = Folder::folders($directory);
 
