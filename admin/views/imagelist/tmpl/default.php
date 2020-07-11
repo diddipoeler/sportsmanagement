@@ -20,10 +20,16 @@ $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 $link = 'index.php?option=com_sportsmanagement&view=imagehandler&layout=uploaddraganddrop&type='.$this->folder.'&field=&fieldid=&tmpl=component&pid='.$this->pid.'&imagelist='.$this->imagelist;
 
-echo 'name: '.$this->app->getUserState("com_sportsmanagement.itemname", '0');
+//echo 'name: '.$this->app->getUserState("com_sportsmanagement.itemname", '0');
 ?>
 <div class="container-fluid" id="imageslist">  
-<div class="button2-left"><div class="blank">
+<div class="button2-left">
+<div class="blank">
+<?php
+echo $this->app->getUserState("com_sportsmanagement.itemname", '0');
+?>
+</div>
+<div class="blank">
 <?php
 echo sportsmanagementHelper::getBootstrapModalImage('upload'.$this->project_id, '', Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE'), '20', Uri::base() . $link, $this->modalwidth , $this->modalheight );
 ?>
