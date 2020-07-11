@@ -66,6 +66,7 @@ class sportsmanagementView extends BaseHtmlView
 	protected $tmpl = '';
 	protected $table_data_class = '';
 	protected $table_data_div = '';
+    public $itemname;
 
 	/**
 	 * sportsmanagementView::display()
@@ -222,6 +223,17 @@ img.car {
 
 					break;
 			}
+            switch ($this->view)
+			{
+				case 'club';
+				case 'playground';
+					$this->itemname = $this->item->name;
+					break;
+            }
+            
+            
+            
+            
 		}
 
 		/**
