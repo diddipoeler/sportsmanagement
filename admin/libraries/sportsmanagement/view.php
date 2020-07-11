@@ -227,7 +227,8 @@ img.car {
 			{
 				case 'club';
 				case 'playground';
-                $this->app->set('itemname', $this->item->name);
+                //$this->app->set('itemname', $this->item->name);
+                $this->app->setUserState('com_sportsmanagement.itemname', $this->item->name);
 					//$this->itemname = $this->item->name;
 					break;
             }
