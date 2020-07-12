@@ -135,6 +135,7 @@ class sportsmanagementViewClub extends sportsmanagementView
         
         if ( !$this->item->founded_year )
         {
+            $this->item->name = 'kein';
             $this->form->setValue('founded_year', 'kein');
         }
 
