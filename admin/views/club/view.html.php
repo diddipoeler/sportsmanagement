@@ -120,7 +120,7 @@ class sportsmanagementViewClub extends sportsmanagementView
 		$opencagedataapi = $params->get('opencagedata_api_clientid');
         $auto_completion_club_name = $params->get('auto_completion_club_name');
         
-        if ( $auto_completion_club_name && $this->item->founded_year )
+        if ( $auto_completion_club_name && $this->item->founded_year && is_numeric($this->item->founded_year) )
 		{
 		if (preg_match("/".$this->item->founded_year."/i", $this->item->name ))
 		{
