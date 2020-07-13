@@ -26,7 +26,7 @@ $link = 'index.php?option=com_sportsmanagement&view=imagehandler&layout=uploaddr
 <div class="button2-left">
 <div class="blank">
 <?php
-echo $this->app->getUserState("com_sportsmanagement.itemname", '0');
+echo $this->app->getUserState("com_sportsmanagement.itemname", '');
 ?>
 </div>
 <div class="blank">
