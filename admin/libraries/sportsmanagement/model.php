@@ -1294,6 +1294,12 @@ class JSMModelAdmin extends AdminModel
 					$form->setFieldAttribute('merge_teams', 'type', 'hidden');
 				}
 
+if ( $form->getValue('logo_big') == 'images/com_sportsmanagement/database/clubs/large/placeholder_150.png' )
+{
+$form->setFieldAttribute('logo_big', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));	
+}
+
+				
 				//        $form->setFieldAttribute('logo_small', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
 				//        $form->setFieldAttribute('logo_small', 'directory', $joomladirectory.'com_sportsmanagement/database/clubs/small');
 				$form->setFieldAttribute('logo_small', 'type', $cfg_which_media_tool);
