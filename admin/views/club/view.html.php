@@ -48,6 +48,22 @@ class sportsmanagementViewClub extends sportsmanagementView
 			$this->googlemap = false;
 		}
 
+if ( $this->item->logo_big == 'images/com_sportsmanagement/database/clubs/large/placeholder_150.png' )
+{
+$this->form->setValue('logo_big','',ComponentHelper::getParams('com_sportsmanagement')->get('ph_logo_big',''));	
+$this->item->logo_big = ComponentHelper::getParams('com_sportsmanagement')->get('ph_logo_big','');  
+}
+if ( $this->item->logo_middle == 'images/com_sportsmanagement/database/clubs/large/placeholder_150.png' )
+{
+$this->form->setValue('logo_middle','',ComponentHelper::getParams('com_sportsmanagement')->get('ph_logo_medium',''));	
+$this->item->logo_middle = ComponentHelper::getParams('com_sportsmanagement')->get('ph_logo_medium','');  
+}		
+if ( $this->item->logo_small == 'images/com_sportsmanagement/database/clubs/large/placeholder_150.png' )
+{
+$this->form->setValue('logo_small','',ComponentHelper::getParams('com_sportsmanagement')->get('ph_logo_small',''));	
+$this->item->logo_small = ComponentHelper::getParams('com_sportsmanagement')->get('ph_logo_small','');  
+}		
+		
 		if ($this->item->id)
 		{
 			/** Alles ok */
@@ -136,7 +152,7 @@ class sportsmanagementViewClub extends sportsmanagementView
         if ( !$this->item->founded_year )
         {
             $this->item->name = 'kein';
-            $this->form->setValue('founded_year', 'kein');
+            $this->form->setValue('founded_year','', 'kein');
         }
 
 //$this->app->enqueueMessage(Text::_($this->item->name), 'Error');
