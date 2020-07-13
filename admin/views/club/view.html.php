@@ -151,7 +151,7 @@ $this->item->logo_small = ComponentHelper::getParams('com_sportsmanagement')->ge
         
         if ( !$this->item->founded_year )
         {
-            $this->item->name = 'kein';
+            $this->item->founded_year = 'kein';
             $this->form->setValue('founded_year','', 'kein');
         }
 
