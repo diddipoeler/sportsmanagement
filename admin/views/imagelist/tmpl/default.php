@@ -24,11 +24,7 @@ $link = 'index.php?option=com_sportsmanagement&view=imagehandler&layout=uploaddr
 ?>
 <div class="container-fluid" id="imageslist">  
 <div class="button2-left">
-<div class="blank">
-<?php
-echo $this->app->getUserState("com_sportsmanagement.itemname", '');
-?>
-</div>
+
 <div class="blank">
 <?php
 echo sportsmanagementHelper::getBootstrapModalImage('upload'.$this->project_id, '', Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE'), '20', Uri::base() . $link, $this->modalwidth , $this->modalheight );
