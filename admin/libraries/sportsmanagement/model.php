@@ -546,6 +546,12 @@ class JSMModelAdmin extends AdminModel
 				{
 					$data['dissolved_year'] = $data['dissolved_year'];
 				}
+				
+				if ( !$data['founded_year'] )
+            {
+            $data['founded_year'] = 'kein';
+            }
+				
 				break;
 			/**
 			 * mannschaft
