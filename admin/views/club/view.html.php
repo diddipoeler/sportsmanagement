@@ -58,7 +58,7 @@ if ( $this->item->logo_middle == 'images/com_sportsmanagement/database/clubs/med
 $this->form->setValue('logo_middle','',ComponentHelper::getParams('com_sportsmanagement')->get('ph_logo_medium',''));	
 $this->item->logo_middle = ComponentHelper::getParams('com_sportsmanagement')->get('ph_logo_medium','');  
 }		
-if ( $this->item->logo_small == 'images/com_sportsmanagement/database/clubs/small/placeholder_small.png' )
+if ( $this->item->logo_small == 'images/com_sportsmanagement/database/clubs/small/placeholder_small.gif' )
 {
 $this->form->setValue('logo_small','',ComponentHelper::getParams('com_sportsmanagement')->get('ph_logo_small',''));	
 $this->item->logo_small = ComponentHelper::getParams('com_sportsmanagement')->get('ph_logo_small','');  
