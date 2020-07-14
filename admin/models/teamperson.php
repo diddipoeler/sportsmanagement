@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -170,7 +166,14 @@ class sportsmanagementModelteamperson extends JSMModelAdmin
 		$this->_project_id = $post['pid'];
 		$this->persontype  = $post['persontype'];
 
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($post,true).'</pre>'), 'error');
+		
 		$result = true;
+		
+		$project_team_id = $post['project_team_id'];
+		$team_id = $post['team_id'];
+		$season_team_id = $post['season_team_id'];
+		$season_id = $post['season_id'];
 
 		// ###############################
 		// update der positionen bei den spielen, wenn keine vorhanden sind
@@ -188,6 +191,7 @@ class sportsmanagementModelteamperson extends JSMModelAdmin
 		{
 			$team_player_id      = $post['tpid'][$pks[$x]];
 			$project_position_id = $post['project_position_id' . $pks[$x]];
+			$person_id     = $pks[$x];
 
 			foreach ($position_ids as $items => $item)
 			{
