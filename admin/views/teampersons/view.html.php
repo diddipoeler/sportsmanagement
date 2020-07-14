@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage teampersons
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -53,6 +49,7 @@ class sportsmanagementViewteampersons extends sportsmanagementView
 
 		$this->project_team_id = $this->jinput->getVar('project_team_id');
 		$this->team_id         = $this->jinput->getInt('team_id');
+		$this->season_team_id         = $this->jinput->getInt('season_team_id');
 
 		if (!$this->team_id)
 		{
