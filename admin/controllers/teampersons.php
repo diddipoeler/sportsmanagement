@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage controllers
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
@@ -71,23 +67,23 @@ class sportsmanagementControllerteampersons extends JSMControllerAdmin
 
 		switch ($value)
 		{
-			case 0:
-				$ntext = 'COM_SPORTSMANAGEMENT_N_ITEMS_UNPUBLISHED';
-				break;
-			case 1:
-				$ntext = 'COM_SPORTSMANAGEMENT_N_ITEMS_PUBLISHED';
-				break;
-			case 2:
-				$ntext = 'COM_SPORTSMANAGEMENT_N_ITEMS_ARCHIVED';
-				break;
-			case -2:
-				$ntext = 'COM_SPORTSMANAGEMENT_N_ITEMS_TRASHED';
-				break;
+		case 0:
+		$ntext = 'COM_SPORTSMANAGEMENT_N_ITEMS_UNPUBLISHED';
+		break;
+		case 1:
+		$ntext = 'COM_SPORTSMANAGEMENT_N_ITEMS_PUBLISHED';
+		break;
+		case 2:
+		$ntext = 'COM_SPORTSMANAGEMENT_N_ITEMS_ARCHIVED';
+		break;
+		case -2:
+		$ntext = 'COM_SPORTSMANAGEMENT_N_ITEMS_TRASHED';
+		break;
 		}
 
 		$this->setMessage(Text::plural($ntext, count($ids)));
 
-		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list . '&persontype=' . $post['persontype'] . '&project_team_id=' . $post['project_team_id'] . '&team_id=' . $post['team_id'] . '&pid=' . $post['pid'], false));
+		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list . '&persontype=' . $post['persontype'] . '&project_team_id=' . $post['project_team_id'] . '&team_id=' . $post['team_id'] . '&pid=' . $post['pid']. '&season_team_id=' . $post['season_team_id'], false));
 	}
 
 	/**
