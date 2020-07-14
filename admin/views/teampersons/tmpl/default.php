@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage teampersons
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 
@@ -92,6 +88,7 @@ else
         <!--	</fieldset> -->
         <input type="hidden" name="project_team_id" value="<?php echo $this->project_team_id; ?>"/>
         <input type="hidden" name="team_id" value="<?php echo $this->team_id; ?>"/>
+	<input type="hidden" name="season_team_id" value="<?php echo $this->season_team_id; ?>"/>
         <input type="hidden" name="season_id" value="<?php echo $this->season_id; ?>"/>
         <input type="hidden" name="pid" value="<?php echo $this->project_id; ?>"/>
         <input type="hidden" name="persontype" value="<?php echo $this->_persontype; ?>"/>
