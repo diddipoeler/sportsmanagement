@@ -442,6 +442,15 @@ class com_sportsmanagementInstallerScript
         
         /** benutzeraktionen */
         $extension = 'com_sportsmanagement';
+        
+        $query = $db->getQuery(true);
+		$query->select($db->quoteName('id'))
+			->from('#__action_logs_extensions')
+			->where($db->quoteName('extension') . ' = ' . $db->quote($extension)   );
+		$db->setQuery($query);
+        if (!$eid = $db->loadResult())
+		{
+        
         $db->setQuery(' INSERT into #__action_logs_extensions (extension) VALUES ('.$db->Quote($extension).') ' );
 	    try {
 	        // If it fails, it will throw a RuntimeException
@@ -450,6 +459,7 @@ class com_sportsmanagementInstallerScript
 	        //Factory::getApplication()->enqueueMessage($e->getMessage());
 	        $result = false;
 	    }
+        }
 
 		// Sicherheitshalber dateien löschen, die ich falsch angelegt habe.
 		// Aber nur wenn sie vorhanden sind
