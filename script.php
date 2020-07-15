@@ -450,7 +450,6 @@ class com_sportsmanagementInstallerScript
 		$db->setQuery($query);
         if (!$eid = $db->loadResult())
 		{
-        
         $db->setQuery(' INSERT into #__action_logs_extensions (extension) VALUES ('.$db->Quote($extension).') ' );
 	    try {
 	        // If it fails, it will throw a RuntimeException
@@ -460,6 +459,36 @@ class com_sportsmanagementInstallerScript
 	        $result = false;
 	    }
         }
+        
+        
+        $query->clear();
+		$query->select($db->quoteName('id'))
+			->from('#__action_log_config')
+			->where($db->quoteName('type_alias') . ' = ' . $db->quote($extension). ' AND ' . $db->quoteName('type_title') . ' = ' . $db->quote('club')   );
+		$db->setQuery($query);
+        if (!$eid = $db->loadResult())
+		{
+        $logConf = new stdClass();
+		$logConf->id = 0;
+		$logConf->type_title = 'club';
+		$logConf->type_alias = $extension;
+		$logConf->id_holder = 'id';
+		$logConf->title_holder = 'club';
+		$logConf->table_name = '#__sportsmanagement_club';
+		$logConf->text_prefix = 'COM_SPORTSMANAGEMENT_TRANSACTION';
+
+	    try {
+	       	// If it fails, it will throw a RuntimeException
+			// Insert the object into the table.
+			$result = Factory::getDbo()->insertObject('#__action_log_config', $logConf);
+	    } catch (RuntimeException $e) {
+	        //Factory::getApplication()->enqueueMessage($e->getMessage());
+	        $result = false;
+	    }
+        }
+        
+        
+        
 
 		// Sicherheitshalber dateien löschen, die ich falsch angelegt habe.
 		// Aber nur wenn sie vorhanden sind
