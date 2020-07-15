@@ -487,6 +487,32 @@ class com_sportsmanagementInstallerScript
 	    }
         }
         
+        $query->clear();
+		$query->select($db->quoteName('id'))
+			->from('#__action_log_config')
+			->where($db->quoteName('type_alias') . ' = ' . $db->quote($extension.'.league'). ' AND ' . $db->quoteName('type_title') . ' = ' . $db->quote('league')   );
+		$db->setQuery($query);
+        if (!$eid = $db->loadResult())
+		{
+        $logConf = new stdClass();
+		$logConf->id = 0;
+		$logConf->type_title = 'league';
+		$logConf->type_alias = $extension.'.league';
+		$logConf->id_holder = 'id';
+		$logConf->title_holder = 'league';
+		$logConf->table_name = '#__sportsmanagement_league';
+		$logConf->text_prefix = 'COM_SPORTSMANAGEMENT_TRANSACTION';
+
+	    try {
+	       	// If it fails, it will throw a RuntimeException
+			// Insert the object into the table.
+			$result = Factory::getDbo()->insertObject('#__action_log_config', $logConf);
+	    } catch (RuntimeException $e) {
+	        //Factory::getApplication()->enqueueMessage($e->getMessage());
+	        $result = false;
+	    }
+        }
+        
         
         
 
