@@ -622,12 +622,13 @@ class sportsmanagementModelProjectteams extends JSMModelList
 			$teamresult = $db->loadColumn();
 
 			$query->clear();
-			$query->select('st.id as value, concat(t.name,\' [\',t.info,\']\' ) as text');
+			$query->select('st.id as value, concat(t.name,\' [\',t.info,\']\' ) as text, s.name as season_name' );
 
 			// From table
 			$query->from('#__sportsmanagement_team as t');
 			$query->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
 			$query->join('INNER', '#__sportsmanagement_club AS c ON c.id = t.club_id');
+			$query->join('INNER', '#__sportsmanagement_season AS s on s.id = st.season_id');
 			$query->where('st.season_id = ' . $this->_season_id);
 
 			if ($teamresult)
@@ -668,6 +669,7 @@ class sportsmanagementModelProjectteams extends JSMModelList
 		foreach ($result as $teams)
 		{
 			$teams->name = Text::_($teams->text);
+			$teams->text = $teams->text.' ('.$teams->season_name.')';
 		}
 
 		return $result;
