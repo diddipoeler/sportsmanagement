@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage matchreport
@@ -11,16 +9,12 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
-
 HTMLHelper::_('behavior.modal');
-
 
 ?>
 <!-- START: game roster -->
@@ -55,7 +49,7 @@ HTMLHelper::_('behavior.modal');
                     <tr>
                         <!-- list of home-team -->
                         <td class="list">
-                            <div style="text-align: right; ">
+                            <div style="text-align: left; ">
                                 <ul style="list-style-type: none;">
 									<?php
 									foreach ($this->matchplayers as $player)
@@ -174,7 +168,7 @@ HTMLHelper::_('behavior.modal');
                         </td>
                         <!-- list of guest-team -->
                         <td class="list">
-                            <div style="text-align: left;">
+                            <div style="text-align: right;">
                                 <ul style="list-style-type: none;">
 									<?php
 									foreach ($this->matchplayers as $player)
