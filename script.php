@@ -439,6 +439,17 @@ class com_sportsmanagementInstallerScript
 	{
 		$mainframe = Factory::getApplication();
 		$db = Factory::getDbo();
+        
+        /** benutzeraktionen */
+        $extension = 'com_sportsmanagement';
+        $db->setQuery(' INSERT into #__action_logs_extensions (extension) VALUES ('.$db->Quote($extension).') ' );
+	    try {
+	        // If it fails, it will throw a RuntimeException
+	        $result = $db->execute();
+	    } catch (RuntimeException $e) {
+	        //Factory::getApplication()->enqueueMessage($e->getMessage());
+	        $result = false;
+	    }
 
 		// Sicherheitshalber dateien löschen, die ich falsch angelegt habe.
 		// Aber nur wenn sie vorhanden sind
