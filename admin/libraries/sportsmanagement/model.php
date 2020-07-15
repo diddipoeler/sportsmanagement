@@ -463,6 +463,7 @@ class JSMModelAdmin extends AdminModel
 					{
 						$team_id   = $post['team_id'][$key];
 						$team_name = $post['team_value_id'][$key];
+						$club_id = $post['club_value_id'][$key];
 
 						// Create an object for the record we are going to update.
 						$object = new stdClass;
@@ -470,6 +471,7 @@ class JSMModelAdmin extends AdminModel
 						// Must be a valid primary key value.
 						$object->id    = $team_id;
 						$object->name  = $team_name;
+						$object->club_id    = $club_id;
 						$object->alias = OutputFilter::stringURLSafe($team_name);
 
 						// Update their details in the table using id as the primary key.
