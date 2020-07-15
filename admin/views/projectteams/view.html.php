@@ -262,6 +262,10 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 			case 'changeteams';
 			case 'changeteams_3';
 			case 'changeteams_4';
+				foreach ($this->projectteam as $teams)
+		{
+				$teams->name = $teams->name.' ('.$teams->seasonname.')';	
+				}
 			$this->setLayout('changeteams');
 			break;
 		}
