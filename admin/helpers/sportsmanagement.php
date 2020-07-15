@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage helpers
@@ -14,9 +12,7 @@
  * toolbar
  * https://issues.joomla.org/tracker/joomla-cms/19670
  */
-
 defined('_JEXEC') or die;
-
 use Joomla\CMS\Router\Route;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -77,7 +73,69 @@ abstract class sportsmanagementHelper
 	static $_jsm_db = '';
 	static $_success_text = array();
 
-	
+	/**
+	 * Record transaction details in log record
+	 * @param   object  $user    Saves getting the current user again.
+	 * @param   int     $tran_id  The transaction id just created or updated
+	 * @param   int     $id  Passed id reference from the form to identify if new record
+	 * @return  boolean	True
+	 */
+    public static function recordActionLog($user = null, $tran_id = 0, $id = 0)
+	{
+			// get the component details such as the id
+		$extension =  MycomponentHelper::getExtensionDetails('com_mycomponent');
+		// get the transaction details for use in the log for easy reference
+        $tran = MycomponentHelper::getTransaction($tran_id);
+        $con_type = "transaction";
+        if ($id === 0) { $type = 'New '; } else { $type = 'Update '; }
+
+		$message = array();
+		$message['action'] = $con_type;
+		$message['type'] = $type . $tran->tran_type . ' - '.$tran->tran_desc . ' $' . $tran->tran_amount;
+		$message['id'] = $tran->id;
+		$message['title'] = $extension->name;
+		$message['extension_name'] = $extension->name;
+		$message['itemlink'] = "index.php?option=com_mycomponent&task=transaction.edit&id=".$tran->id;
+		$message['userid'] = $user->id;
+		$message['username'] = $user->username;
+		$message['accountlink'] = "index.php?option=com_users&task=user.edit&id=".$user->id;
+		
+		$messages = array($message);
+		
+		$messageLanguageKey = Text::_('COM_MYCOMPONENT_TRANSACTION_LINK');
+		$context = $extension->name.'.'.$con_type;
+		
+		$fmodel = MycomponentHelper::getForeignModel('Actionlog', 'ActionlogsModel');
+
+		$fmodel->addLog($messages, $messageLanguageKey, $context, $user->id);
+
+		return true;
+	}
+
+	/**
+	 * Get the Model from another component for use
+	 * @param   string  $name    The model name. Optional. Default to my own for safety.
+	 * @param   string  $prefix  The class prefix. Optional
+	 * @param   array   $config  Configuration array for model. Optional
+	 * @return object	The model
+	 */
+	public function getForeignModel($name = 'Transaction', $prefix = 'MycomponentModel', $config = array('ignore_request' => true))
+	{
+		\Joomla\CMS\MVC\Model\ItemModel::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_actionlogs/models', 'ActionlogsModelActionlog');
+		$fmodel = \Joomla\CMS\MVC\Model\ItemModel::getInstance($name, $prefix, $config);
+
+		return $fmodel;
+	}
+    
+    
+	/**
+	 * sportsmanagementHelper::formatselect2output()
+	 * 
+	 * @param mixed $daten
+	 * @param string $placeholder
+	 * @param string $class
+	 * @return
+	 */
 	function formatselect2output($daten=array(),$placeholder='',$class='' )
 	{
 ?>
