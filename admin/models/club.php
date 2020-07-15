@@ -141,7 +141,7 @@ class sportsmanagementModelclub extends JSMModelAdmin
 		$query  = $db->getQuery(true);
 
 		$query->clear();
-		$query->select('t.id,t.name');
+		$query->select('t.id,t.name,t.club_id');
 		$query->from('#__sportsmanagement_team AS t');
 		$query->where('t.club_id = ' . $club_id);
 		$db->setQuery($query);
