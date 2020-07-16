@@ -59,7 +59,7 @@ use Joomla\CMS\Factory;
 		if ($this->match->match_date != '0000-00-00 00:00:00')
 		{
 			?>
-            <div class="<?php echo $this->divclassrow; ?>">
+            <div class="row">
 <!-- <div class="col-xs-<?php echo $this->config['extended_cols']; ?> col-sm-<?php echo $this->config['extended_cols']; ?> col-md-<?php echo $this->config['extended_cols']; ?> col-lg-<?php echo $this->config['extended_cols']; ?>"> -->
                     <div class="col-xs-<?php echo $this->config['extended_description_cols']; ?> col-sm-<?php echo $this->config['extended_description_cols']; ?> col-md-<?php echo $this->config['extended_description_cols']; ?> col-lg-<?php echo $this->config['extended_description_cols']; ?>">
 
@@ -76,7 +76,7 @@ use Joomla\CMS\Factory;
 		else
 		{
 			?>
-            <div class="<?php echo $this->divclassrow; ?>">
+            <div class="row">
                 <!-- <div class="col-xs-<?php echo $this->config['extended_cols']; ?> col-sm-<?php echo $this->config['extended_cols']; ?> col-md-<?php echo $this->config['extended_cols']; ?> col-lg-<?php echo $this->config['extended_cols']; ?>"> -->
                     <div class="col-xs-<?php echo $this->config['extended_description_cols']; ?> col-sm-<?php echo $this->config['extended_description_cols']; ?> col-md-<?php echo $this->config['extended_description_cols']; ?> col-lg-<?php echo $this->config['extended_description_cols']; ?>">
                         <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DATE'); ?></strong>
@@ -98,7 +98,7 @@ use Joomla\CMS\Factory;
 		if ($this->match->match_date != '0000-00-00 00:00:00')
 		{
 			?>
-            <div class="<?php echo $this->divclassrow; ?>">
+            <div class="row">
                 <!-- <div class="col-xs-<?php echo $this->config['extended_cols']; ?> col-sm-<?php echo $this->config['extended_cols']; ?> col-md-<?php echo $this->config['extended_cols']; ?> col-lg-<?php echo $this->config['extended_cols']; ?>"> -->
                     <div class="col-xs-<?php echo $this->config['extended_description_cols']; ?> col-sm-<?php echo $this->config['extended_description_cols']; ?> col-md-<?php echo $this->config['extended_description_cols']; ?> col-lg-<?php echo $this->config['extended_description_cols']; ?>">
                         <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIME'); ?></strong>
@@ -114,7 +114,7 @@ use Joomla\CMS\Factory;
 		else
 		{
 			?>
-            <div class="<?php echo $this->divclassrow; ?>">
+            <div class="row">
 <!--                <div class="col-xs-<?php echo $this->config['extended_cols']; ?> col-sm-<?php echo $this->config['extended_cols']; ?> col-md-<?php echo $this->config['extended_cols']; ?> col-lg-<?php echo $this->config['extended_cols']; ?>"> -->
                     <div class="col-xs-<?php echo $this->config['extended_description_cols']; ?> col-sm-<?php echo $this->config['extended_description_cols']; ?> col-md-<?php echo $this->config['extended_description_cols']; ?> col-lg-<?php echo $this->config['extended_description_cols']; ?>">
                         <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIME'); ?></strong>
@@ -132,7 +132,7 @@ use Joomla\CMS\Factory;
 		<?php if ($this->match->time_present > 0)
 		:
 		?>
-        <div class="<?php echo $this->divclassrow; ?>">
+        <div class="row">
             <!-- <div class="col-xs-<?php echo $this->config['extended_cols']; ?> col-sm-<?php echo $this->config['extended_cols']; ?> col-md-<?php echo $this->config['extended_cols']; ?> col-lg-<?php echo $this->config['extended_cols']; ?>"> -->
                 <div class="col-xs-<?php echo $this->config['extended_description_cols']; ?> col-sm-<?php echo $this->config['extended_description_cols']; ?> col-md-<?php echo $this->config['extended_description_cols']; ?> col-lg-<?php echo $this->config['extended_description_cols']; ?>">
                     <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_PRESENT'); ?></strong>
@@ -155,7 +155,7 @@ use Joomla\CMS\Factory;
 		if ($this->match->match_number > 0)
 			:
 			?>
-            <div class="<?php echo $this->divclassrow; ?>">
+            <div class="row">
                 <!-- <div class="col-xs-<?php echo $this->config['extended_cols']; ?> col-sm-<?php echo $this->config['extended_cols']; ?> col-md-<?php echo $this->config['extended_cols']; ?> col-lg-<?php echo $this->config['extended_cols']; ?>"> -->
                     <div class="col-xs-<?php echo $this->config['extended_description_cols']; ?> col-sm-<?php echo $this->config['extended_description_cols']; ?> col-md-<?php echo $this->config['extended_description_cols']; ?> col-lg-<?php echo $this->config['extended_description_cols']; ?>">
                         <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_NUMBER'); ?></strong>
