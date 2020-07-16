@@ -91,11 +91,11 @@ abstract class sportsmanagementHelper
 	// get the transaction details for use in the log for easy reference
         //$tran = MycomponentHelper::getTransaction($tran_id);
         $con_type = Factory::getApplication()->input->getCmd('view', 'cpanel');
-        if ($id === 0) { $type = 'New '; } else { $type = 'Update '; }
+        if ($id === 0) { $type = 'New '; } else { $type = Text::_('JLIB_INSTALLER_UPDATE'); }
 
 		$message = array();
 		$message['action'] = $con_type;
-		$message['type'] = $type . $tran['name'];
+		$message['type'] = $type .' '. $tran['name'];
 		$message['id'] = $tran['id'];
 		$message['title'] = $extension;
 		$message['extension_name'] = $extension;
