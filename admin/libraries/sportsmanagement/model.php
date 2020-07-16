@@ -716,11 +716,11 @@ class JSMModelAdmin extends AdminModel
 
 			if ($isNew)
 			{
-			// sportsmanagementHelper::recordActionLog($this->jsmuser, $data, 0);	
+			sportsmanagementHelper::recordActionLog($this->jsmuser, $data, 0);	
 			}
 			else
 			{
-			// sportsmanagementHelper::recordActionLog($this->jsmuser, $data, $data['id'] );	
+			sportsmanagementHelper::recordActionLog($this->jsmuser, $data, $data['id'] );	
 			}
 			
 			if ($isNew)
