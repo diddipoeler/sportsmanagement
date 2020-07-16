@@ -50,13 +50,16 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             <th width="20">
 				<?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_CLUBS_L_LOGO', 'a.logo_big', $this->sortDirection, $this->sortColumn); ?>
             </th>
+	    <!--
             <th width="20">
 				<?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_CLUBS_M_LOGO', 'a.logo_middle', $this->sortDirection, $this->sortColumn); ?>
             </th>
+	    -->
+	    <!--
             <th width="20">
 				<?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_CLUBS_S_LOGO', 'a.logo_small', $this->sortDirection, $this->sortColumn); ?>
             </th>
-
+-->
             <th width="">
 				<?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_CLUB_POSTAL_CODE', 'a.zipcode', $this->sortDirection, $this->sortColumn); ?>
                 <br/>
