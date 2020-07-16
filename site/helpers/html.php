@@ -1,7 +1,6 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage helpers
@@ -10,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -33,12 +30,8 @@ use Joomla\CMS\Component\ComponentHelper;
 class sportsmanagementHelperHtml
 {
 	static $roundid = 0;
-
 	static $project = array();
-
 	static $teams = array();
-
-
 
 	/**
 	 * sportsmanagementHelperHtml::showEventsContainerInResults()
@@ -434,7 +427,8 @@ class sportsmanagementHelperHtml
 				//            $modaltext .= '<img width="' . $picturewidth . '" alt="' . $text . '" src="' . $picture . '"></a>';
 
 				$modaltext = '<a href="#' . $target . '" title="' . $text . '" data-toggle="modal" >';
-				$modaltext .= '<img src="' . $picture . '" alt="' . $text . '" width="' . $picturewidth . '" />';
+				//$modaltext .= '<img src="' . $picture . '" alt="' . $text . '" width="' . $picturewidth . '" />';
+				$modaltext .= '<img src="' . $picture . '" alt="' . $text . '" style="width: auto;height: ' . $picturewidth . 'px" />';
 				$modaltext .= '</a>';
 
 				if (!$url)
