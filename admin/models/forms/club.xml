@@ -347,6 +347,7 @@
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_BIG_CR_DESC"
             class="inputbox"
         />
+	    <!--
 	  <field
             name="logo_middle"
             type="media"
@@ -367,6 +368,9 @@
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_MIDDLE_CR_DESC"
             class="inputbox"
         />   
+	    -->
+	    
+	    <!--
         <field
             name="logo_small"
             type="media"
@@ -387,7 +391,7 @@
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_SMALL_CR_DESC"
             class="inputbox"
         />  
-       
+       -->
         <field
             name="trikot_home"
             type="media"
