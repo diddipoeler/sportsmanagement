@@ -127,6 +127,11 @@ class sportsmanagementView extends BaseHtmlView
 // for details http://ivaynberg.github.io/select2/		
 $this->document->addStyleDeclaration(
 			'
+img.sportsmanagement-img-preview {
+  width: auto;
+  height: 50px;
+}			
+			
 img.item {
     padding-right: 10px;
     vertical-align: middle;
