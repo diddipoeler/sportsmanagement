@@ -104,7 +104,6 @@ abstract class sportsmanagementHelper
 		$message['type'] = $type .' '. $tran['name'];	    
 			    break;
 	    }
-		$message['type'] = $type .' '. $tran['name'];
 		$message['id'] = $tran['id'];
 		$message['title'] = $extension;
 		$message['extension_name'] = $extension;
