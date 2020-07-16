@@ -60,7 +60,7 @@ use Joomla\CMS\Factory;
 		{
 			?>
             <div class="<?php echo $this->divclassrow; ?>">
-                <div class="col-xs-<?php echo $this->config['extended_cols']; ?> col-sm-<?php echo $this->config['extended_cols']; ?> col-md-<?php echo $this->config['extended_cols']; ?> col-lg-<?php echo $this->config['extended_cols']; ?>">
+<!-- <div class="col-xs-<?php echo $this->config['extended_cols']; ?> col-sm-<?php echo $this->config['extended_cols']; ?> col-md-<?php echo $this->config['extended_cols']; ?> col-lg-<?php echo $this->config['extended_cols']; ?>"> -->
                     <div class="col-xs-<?php echo $this->config['extended_description_cols']; ?> col-sm-<?php echo $this->config['extended_description_cols']; ?> col-md-<?php echo $this->config['extended_description_cols']; ?> col-lg-<?php echo $this->config['extended_description_cols']; ?>">
 
                         <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DATE'); ?></strong>
@@ -69,7 +69,7 @@ use Joomla\CMS\Factory;
 
 						<?php echo HTMLHelper::date($this->match->match_date, Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_GAMES_DATE')); ?>
                     </div>
-                </div>
+<!--                </div> --->
             </div>
 			<?php
 		}
@@ -77,14 +77,14 @@ use Joomla\CMS\Factory;
 		{
 			?>
             <div class="<?php echo $this->divclassrow; ?>">
-                <div class="col-xs-<?php echo $this->config['extended_cols']; ?> col-sm-<?php echo $this->config['extended_cols']; ?> col-md-<?php echo $this->config['extended_cols']; ?> col-lg-<?php echo $this->config['extended_cols']; ?>">
+                <!-- <div class="col-xs-<?php echo $this->config['extended_cols']; ?> col-sm-<?php echo $this->config['extended_cols']; ?> col-md-<?php echo $this->config['extended_cols']; ?> col-lg-<?php echo $this->config['extended_cols']; ?>"> -->
                     <div class="col-xs-<?php echo $this->config['extended_description_cols']; ?> col-sm-<?php echo $this->config['extended_description_cols']; ?> col-md-<?php echo $this->config['extended_description_cols']; ?> col-lg-<?php echo $this->config['extended_description_cols']; ?>">
                         <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DATE'); ?></strong>
                     </div>
                     <div class="col-xs-<?php echo $this->config['extended_value_cols']; ?> col-sm-<?php echo $this->config['extended_value_cols']; ?> col-md-<?php echo $this->config['extended_value_cols']; ?> col-lg-<?php echo $this->config['extended_value_cols']; ?>">
 						<?php echo ''; ?>
                     </div>
-                </div>
+              <!--  </div> -->
             </div>
 			<?php
 		}
@@ -99,7 +99,7 @@ use Joomla\CMS\Factory;
 		{
 			?>
             <div class="<?php echo $this->divclassrow; ?>">
-                <div class="col-xs-<?php echo $this->config['extended_cols']; ?> col-sm-<?php echo $this->config['extended_cols']; ?> col-md-<?php echo $this->config['extended_cols']; ?> col-lg-<?php echo $this->config['extended_cols']; ?>">
+                <!-- <div class="col-xs-<?php echo $this->config['extended_cols']; ?> col-sm-<?php echo $this->config['extended_cols']; ?> col-md-<?php echo $this->config['extended_cols']; ?> col-lg-<?php echo $this->config['extended_cols']; ?>"> -->
                     <div class="col-xs-<?php echo $this->config['extended_description_cols']; ?> col-sm-<?php echo $this->config['extended_description_cols']; ?> col-md-<?php echo $this->config['extended_description_cols']; ?> col-lg-<?php echo $this->config['extended_description_cols']; ?>">
                         <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIME'); ?></strong>
                     </div>
@@ -107,7 +107,7 @@ use Joomla\CMS\Factory;
 
 						<?php echo sportsmanagementHelperHtml::showMatchTime($this->match, $this->config, $this->overallconfig, $this->project); ?>
                     </div>
-                </div>
+                <!-- </div> -->
             </div>
 			<?php
 		}
@@ -115,14 +115,14 @@ use Joomla\CMS\Factory;
 		{
 			?>
             <div class="<?php echo $this->divclassrow; ?>">
-                <div class="col-xs-<?php echo $this->config['extended_cols']; ?> col-sm-<?php echo $this->config['extended_cols']; ?> col-md-<?php echo $this->config['extended_cols']; ?> col-lg-<?php echo $this->config['extended_cols']; ?>">
+<!--                <div class="col-xs-<?php echo $this->config['extended_cols']; ?> col-sm-<?php echo $this->config['extended_cols']; ?> col-md-<?php echo $this->config['extended_cols']; ?> col-lg-<?php echo $this->config['extended_cols']; ?>"> -->
                     <div class="col-xs-<?php echo $this->config['extended_description_cols']; ?> col-sm-<?php echo $this->config['extended_description_cols']; ?> col-md-<?php echo $this->config['extended_description_cols']; ?> col-lg-<?php echo $this->config['extended_description_cols']; ?>">
                         <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIME'); ?></strong>
                     </div>
                     <div class="col-xs-<?php echo $this->config['extended_value_cols']; ?> col-sm-<?php echo $this->config['extended_value_cols']; ?> col-md-<?php echo $this->config['extended_value_cols']; ?> col-lg-<?php echo $this->config['extended_value_cols']; ?>">
 						<?php echo ''; ?>
-                    </div>
-                </div>
+                    </div> 
+    <!--            </div> -->
             </div>
 			<?php
 		}
@@ -133,7 +133,7 @@ use Joomla\CMS\Factory;
 		:
 		?>
         <div class="<?php echo $this->divclassrow; ?>">
-            <div class="col-xs-<?php echo $this->config['extended_cols']; ?> col-sm-<?php echo $this->config['extended_cols']; ?> col-md-<?php echo $this->config['extended_cols']; ?> col-lg-<?php echo $this->config['extended_cols']; ?>">
+            <!-- <div class="col-xs-<?php echo $this->config['extended_cols']; ?> col-sm-<?php echo $this->config['extended_cols']; ?> col-md-<?php echo $this->config['extended_cols']; ?> col-lg-<?php echo $this->config['extended_cols']; ?>"> -->
                 <div class="col-xs-<?php echo $this->config['extended_description_cols']; ?> col-sm-<?php echo $this->config['extended_description_cols']; ?> col-md-<?php echo $this->config['extended_description_cols']; ?> col-lg-<?php echo $this->config['extended_description_cols']; ?>">
                     <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_PRESENT'); ?></strong>
                 </div>
@@ -142,7 +142,7 @@ use Joomla\CMS\Factory;
 
 					<?php echo $this->match->time_present; ?>
                 </div>
-            </div>
+            <!-- </div> -->
         </div>
 	<?php endif;
 	}
@@ -156,14 +156,14 @@ use Joomla\CMS\Factory;
 			:
 			?>
             <div class="<?php echo $this->divclassrow; ?>">
-                <div class="col-xs-<?php echo $this->config['extended_cols']; ?> col-sm-<?php echo $this->config['extended_cols']; ?> col-md-<?php echo $this->config['extended_cols']; ?> col-lg-<?php echo $this->config['extended_cols']; ?>">
+                <!-- <div class="col-xs-<?php echo $this->config['extended_cols']; ?> col-sm-<?php echo $this->config['extended_cols']; ?> col-md-<?php echo $this->config['extended_cols']; ?> col-lg-<?php echo $this->config['extended_cols']; ?>"> -->
                     <div class="col-xs-<?php echo $this->config['extended_description_cols']; ?> col-sm-<?php echo $this->config['extended_description_cols']; ?> col-md-<?php echo $this->config['extended_description_cols']; ?> col-lg-<?php echo $this->config['extended_description_cols']; ?>">
                         <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_NUMBER'); ?></strong>
                     </div>
                     <div class="col-xs-<?php echo $this->config['extended_value_cols']; ?> col-sm-<?php echo $this->config['extended_value_cols']; ?> col-md-<?php echo $this->config['extended_value_cols']; ?> col-lg-<?php echo $this->config['extended_value_cols']; ?>">
 						<?php echo $this->match->match_number; ?>
                     </div>
-                </div>
+                <!-- </div> -->
             </div>
 
 		<?php endif;
