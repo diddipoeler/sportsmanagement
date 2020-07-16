@@ -227,7 +227,7 @@ var <?php echo $placeholder; ?> = new Array;
 
 		if ($picture)
 		{
-			$modaltext .= '<img src="' . $picture . '" alt="' . $text . '" width="' . $picturewidth . '" />';
+			$modaltext .= '<img src="' . $picture . '" alt="' . $text . '" width="' . $picturewidth . '" class"img-preview" />';
 		}
 		else
 		{
