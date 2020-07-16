@@ -464,14 +464,14 @@ class com_sportsmanagementInstallerScript
         $query->clear();
 		$query->select($db->quoteName('id'))
 			->from('#__action_log_config')
-			->where($db->quoteName('type_alias') . ' = ' . $db->quote($extension.'.club'). ' AND ' . $db->quoteName('type_title') . ' = ' . $db->quote('club')   );
+			->where($db->quoteName('type_alias') . ' = ' . $db->quote($extension.''). ' AND ' . $db->quoteName('type_title') . ' = ' . $db->quote('club')   );
 		$db->setQuery($query);
         if (!$eid = $db->loadResult())
 		{
         $logConf = new stdClass();
 		$logConf->id = 0;
 		$logConf->type_title = 'club';
-		$logConf->type_alias = $extension.'.club';
+		$logConf->type_alias = $extension.'';
 		$logConf->id_holder = 'id';
 		$logConf->title_holder = 'club';
 		$logConf->table_name = '#__sportsmanagement_club';
@@ -490,14 +490,14 @@ class com_sportsmanagementInstallerScript
         $query->clear();
 		$query->select($db->quoteName('id'))
 			->from('#__action_log_config')
-			->where($db->quoteName('type_alias') . ' = ' . $db->quote($extension.'.league'). ' AND ' . $db->quoteName('type_title') . ' = ' . $db->quote('league')   );
+			->where($db->quoteName('type_alias') . ' = ' . $db->quote($extension.''). ' AND ' . $db->quoteName('type_title') . ' = ' . $db->quote('league')   );
 		$db->setQuery($query);
         if (!$eid = $db->loadResult())
 		{
         $logConf = new stdClass();
 		$logConf->id = 0;
 		$logConf->type_title = 'league';
-		$logConf->type_alias = $extension.'.league';
+		$logConf->type_alias = $extension.'';
 		$logConf->id_holder = 'id';
 		$logConf->title_holder = 'league';
 		$logConf->table_name = '#__sportsmanagement_league';
