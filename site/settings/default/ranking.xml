@@ -309,8 +309,10 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 		<field name="show_logo_small_table" type="list" default="logo_big"
 			label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_SHOW_CLUB_LOGO"
 			description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_SHOW_CLUB_LOGO">
+			<!--
             <option value="logo_small">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_LOGO_SMALL</option>
             <option value="logo_middle">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_LOGO_MIDDLE</option>
+			-->
             <option value="logo_big">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_LOGO_BIG</option>
             <option value="projectteam_picture">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_PROJECTTEAM_PICTURE</option>
             <option value="team_picture">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_TEAM_PICTURE</option>
