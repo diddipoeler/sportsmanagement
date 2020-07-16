@@ -716,6 +716,15 @@ class JSMModelAdmin extends AdminModel
 
 			if ($isNew)
 			{
+			// sportsmanagementHelper::recordActionLog($this->jsmuser, $data, 0);	
+			}
+			else
+			{
+			// sportsmanagementHelper::recordActionLog($this->jsmuser, $data, $data['id'] );	
+			}
+			
+			if ($isNew)
+			{
 				/**
 				 * Here you can do other tasks with your newly saved record...
 				 */
