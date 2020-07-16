@@ -185,8 +185,8 @@ use Joomla\CMS\Factory;
 			$playground_link                      = sportsmanagementHelperRoute::getSportsmanagementRoute('playground', $routeparameter);
 
 			?>
-            <div class="<?php echo $this->divclassrow; ?>">
-                <div class="col-xs-<?php echo $this->config['extended_cols']; ?> col-sm-<?php echo $this->config['extended_cols']; ?> col-md-<?php echo $this->config['extended_cols']; ?> col-lg-<?php echo $this->config['extended_cols']; ?>">
+            <div class="row">
+                <!-- <div class="col-xs-<?php echo $this->config['extended_cols']; ?> col-sm-<?php echo $this->config['extended_cols']; ?> col-md-<?php echo $this->config['extended_cols']; ?> col-lg-<?php echo $this->config['extended_cols']; ?>"> -->
                     <div class="col-xs-<?php echo $this->config['extended_description_cols']; ?> col-sm-<?php echo $this->config['extended_description_cols']; ?> col-md-<?php echo $this->config['extended_description_cols']; ?> col-lg-<?php echo $this->config['extended_description_cols']; ?>">
                         <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_PLAYGROUND'); ?></strong>
                     </div>
@@ -217,7 +217,7 @@ use Joomla\CMS\Factory;
 						}
 						?>
                     </div>
-                </div>
+                <!-- </div> -->
             </div>
 
 		<?php endif;
@@ -230,8 +230,8 @@ use Joomla\CMS\Factory;
 		if ($this->matchreferees)
 		{
 			?>
-            <div class="<?php echo $this->divclassrow; ?>">
-                <div class="col-xs-<?php echo $this->config['extended_cols']; ?> col-sm-<?php echo $this->config['extended_cols']; ?> col-md-<?php echo $this->config['extended_cols']; ?> col-lg-<?php echo $this->config['extended_cols']; ?>">
+            <div class="row">
+                <!-- <div class="col-xs-<?php echo $this->config['extended_cols']; ?> col-sm-<?php echo $this->config['extended_cols']; ?> col-md-<?php echo $this->config['extended_cols']; ?> col-lg-<?php echo $this->config['extended_cols']; ?>"> -->
                     <div class="col-xs-<?php echo $this->config['extended_description_cols']; ?> col-sm-<?php echo $this->config['extended_description_cols']; ?> col-md-<?php echo $this->config['extended_description_cols']; ?> col-lg-<?php echo $this->config['extended_description_cols']; ?>">
                         <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_REFEREE'); ?></strong>
                     </div>
@@ -282,7 +282,7 @@ use Joomla\CMS\Factory;
 
 						?>
                     </div>
-                </div>
+                <!-- </div> -->
             </div>
 
 			<?php
@@ -296,15 +296,15 @@ use Joomla\CMS\Factory;
 		if ($this->match->crowd > 0)
 			:
 			?>
-            <div class="<?php echo $this->divclassrow; ?>">
-                <div class="col-xs-<?php echo $this->config['extended_cols']; ?> col-sm-<?php echo $this->config['extended_cols']; ?> col-md-<?php echo $this->config['extended_cols']; ?> col-lg-<?php echo $this->config['extended_cols']; ?>">
+            <div class="row">
+                <!-- <div class="col-xs-<?php echo $this->config['extended_cols']; ?> col-sm-<?php echo $this->config['extended_cols']; ?> col-md-<?php echo $this->config['extended_cols']; ?> col-lg-<?php echo $this->config['extended_cols']; ?>"> -->
                     <div class="col-xs-<?php echo $this->config['extended_description_cols']; ?> col-sm-<?php echo $this->config['extended_description_cols']; ?> col-md-<?php echo $this->config['extended_description_cols']; ?> col-lg-<?php echo $this->config['extended_description_cols']; ?>">
                         <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_ATTENDANCES'); ?></strong>
                     </div>
                     <div class="col-xs-<?php echo $this->config['extended_value_cols']; ?> col-sm-<?php echo $this->config['extended_value_cols']; ?> col-md-<?php echo $this->config['extended_value_cols']; ?> col-lg-<?php echo $this->config['extended_value_cols']; ?>">
 						<?php echo ': ' . number_format($this->match->crowd, 0, ',', '.'); ?>
                     </div>
-                </div>
+                <!-- </div> -->
             </div>
 
 		<?php endif;
