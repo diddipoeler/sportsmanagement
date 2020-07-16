@@ -29,8 +29,8 @@ use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-
-BaseDatabaseModel::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_actionlogs/models', 'ActionlogsModel');
+use Joomla\Component\Actionlogs\Administrator\Model\ActionlogModel;
+//BaseDatabaseModel::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_actionlogs/models', 'ActionlogsModel');
 
 if (version_compare(JVERSION, '3.0.0', 'ge'))
 {
@@ -109,9 +109,17 @@ abstract class sportsmanagementHelper
 		$messageLanguageKey = Text::_('COM_SPORTSMANAGEMENT_TRANSACTION_LINK');
 		$context = $extension.'.'.$con_type;
 		
-		//$fmodel = MycomponentHelper::getForeignModel('Actionlog', 'ActionlogsModel');
+/** welche joomla version ? */
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+/** @var ActionlogModel $model */
+		$fmodel = new ActionlogModel;	
+}
+	    elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
+{
 	        /** @var ActionlogsModelActionlog $model **/
 		$fmodel = BaseDatabaseModel::getInstance('Actionlog', 'ActionlogsModel');
+	    }
 		//$model->addLog($messages, strtoupper($messageLanguageKey), $context, $userId);
 		$fmodel->addLog($messages, $messageLanguageKey, $context, $user->id);
 
