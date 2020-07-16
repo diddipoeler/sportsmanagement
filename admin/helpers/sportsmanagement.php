@@ -227,7 +227,8 @@ var <?php echo $placeholder; ?> = new Array;
 
 		if ($picture)
 		{
-			$modaltext .= '<img src="' . $picture . '" alt="' . $text . '" width="' . $picturewidth . '" class"sportsmanagement-img-preview" />';
+			//$modaltext .= '<img src="' . $picture . '" alt="' . $text . '" width="' . $picturewidth . '" class"sportsmanagement-img-preview" />';
+			$modaltext .= '<img src="' . $picture . '" alt="' . $text . '" class"sportsmanagement-img-preview" />';
 		}
 		else
 		{
