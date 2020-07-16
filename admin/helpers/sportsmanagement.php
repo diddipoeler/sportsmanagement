@@ -95,11 +95,11 @@ abstract class sportsmanagementHelper
 
 		$message = array();
 		$message['action'] = $con_type;
-		$message['type'] = $type . $tran->name ;
-		$message['id'] = $tran->id;
+		$message['type'] = $type . $tran['name'];
+		$message['id'] = $tran['id'];
 		$message['title'] = $extension;
 		$message['extension_name'] = $extension;
-		$message['itemlink'] = "index.php?option=com_sportsmanagement&task=".$con_type.".edit&id=".$tran->id;
+		$message['itemlink'] = "index.php?option=com_sportsmanagement&task=".$con_type.".edit&id=".$tran['id'];
 		$message['userid'] = $user->id;
 		$message['username'] = $user->username;
 		$message['accountlink'] = "index.php?option=com_users&task=user.edit&id=".$user->id;
