@@ -219,28 +219,26 @@ $joomlaicon = $params->get('show_joomla_icons');
 					echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_big' . $row->id, Uri::root() . $row->logo_big, $imageTitle, '20', Uri::root() . $row->logo_big);
 					?>
                 </td>
+<!--		    
                 <td class="center">
 					<?php
-					$picture    = ($row->logo_middle == sportsmanagementHelper::getDefaultPlaceholder("clublogomedium")) ? 'information.png' : 'ok.png';
-					$imageTitle = ($row->logo_middle == sportsmanagementHelper::getDefaultPlaceholder("clublogomedium")) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
-					echo HTMLHelper::_(
-						'image', 'administrator/components/com_sportsmanagement/assets/images/' . $picture,
-						$imageTitle, 'title= "' . $imageTitle . '"'
-					);
-					echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_middle' . $row->id, Uri::root() . $row->logo_middle, $imageTitle, '20', Uri::root() . $row->logo_middle);
+					//$picture    = ($row->logo_middle == sportsmanagementHelper::getDefaultPlaceholder("clublogomedium")) ? 'information.png' : 'ok.png';
+					//$imageTitle = ($row->logo_middle == sportsmanagementHelper::getDefaultPlaceholder("clublogomedium")) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
+					//echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/' . $picture,$imageTitle, 'title= "' . $imageTitle . '"');
+					//echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_middle' . $row->id, Uri::root() . $row->logo_middle, $imageTitle, '20', Uri::root() . $row->logo_middle);
 					?>
                 </td>
+-->		    
+<!--		    
                 <td class="center">
 					<?php
-					$picture    = ($row->logo_small == sportsmanagementHelper::getDefaultPlaceholder("clublogosmall")) ? 'information.png' : 'ok.png';
-					$imageTitle = ($row->logo_small == sportsmanagementHelper::getDefaultPlaceholder("clublogosmall")) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
-					echo HTMLHelper::_(
-						'image', 'administrator/components/com_sportsmanagement/assets/images/' . $picture,
-						$imageTitle, 'title= "' . $imageTitle . '"'
-					);
-					echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_small' . $row->id, Uri::root() . $row->logo_small, $imageTitle, '20', Uri::root() . $row->logo_small);
+					//$picture    = ($row->logo_small == sportsmanagementHelper::getDefaultPlaceholder("clublogosmall")) ? 'information.png' : 'ok.png';
+					//$imageTitle = ($row->logo_small == sportsmanagementHelper::getDefaultPlaceholder("clublogosmall")) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
+					//echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/' . $picture,$imageTitle, 'title= "' . $imageTitle . '"');
+					//echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_small' . $row->id, Uri::root() . $row->logo_small, $imageTitle, '20', Uri::root() . $row->logo_small);
 					?>
                 </td>
+-->		    
                 <td class="">
                     <input<?php echo $inputappend; ?>
                             type="text" size="10" class="form-control form-control-inline"
