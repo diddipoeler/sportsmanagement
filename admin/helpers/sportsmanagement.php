@@ -28,6 +28,9 @@ use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+
+BaseDatabaseModel::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_actionlogs/models', 'ActionlogsModel');
 
 if (version_compare(JVERSION, '3.0.0', 'ge'))
 {
@@ -82,31 +85,34 @@ abstract class sportsmanagementHelper
 	 */
     public static function recordActionLog($user = null, $tran_id = 0, $id = 0)
 	{
-			// get the component details such as the id
-		$extension =  MycomponentHelper::getExtensionDetails('com_mycomponent');
-		// get the transaction details for use in the log for easy reference
+	// get the component details such as the id
+	//$extension =  MycomponentHelper::getExtensionDetails('com_sportsmanagement');
+	$extension = 'com_sportsmanagement';
+	// get the transaction details for use in the log for easy reference
         $tran = MycomponentHelper::getTransaction($tran_id);
-        $con_type = "transaction";
+        $con_type = Factory::getApplication()->input->getCmd('view', 'cpanel');
         if ($id === 0) { $type = 'New '; } else { $type = 'Update '; }
 
 		$message = array();
 		$message['action'] = $con_type;
 		$message['type'] = $type . $tran->tran_type . ' - '.$tran->tran_desc . ' $' . $tran->tran_amount;
 		$message['id'] = $tran->id;
-		$message['title'] = $extension->name;
-		$message['extension_name'] = $extension->name;
-		$message['itemlink'] = "index.php?option=com_mycomponent&task=transaction.edit&id=".$tran->id;
+		$message['title'] = $extension;
+		$message['extension_name'] = $extension;
+		$message['itemlink'] = "index.php?option=com_sportsmanagement&task=".$con_type.".edit&id=".$tran->id;
 		$message['userid'] = $user->id;
 		$message['username'] = $user->username;
 		$message['accountlink'] = "index.php?option=com_users&task=user.edit&id=".$user->id;
 		
 		$messages = array($message);
 		
-		$messageLanguageKey = Text::_('COM_MYCOMPONENT_TRANSACTION_LINK');
-		$context = $extension->name.'.'.$con_type;
+		$messageLanguageKey = Text::_('COM_SPORTSMANAGEMENT_TRANSACTION_LINK');
+		$context = $extension.'.'.$con_type;
 		
-		$fmodel = MycomponentHelper::getForeignModel('Actionlog', 'ActionlogsModel');
-
+		//$fmodel = MycomponentHelper::getForeignModel('Actionlog', 'ActionlogsModel');
+	        /** @var ActionlogsModelActionlog $model **/
+		$fmodel = BaseDatabaseModel::getInstance('Actionlog', 'ActionlogsModel');
+		//$model->addLog($messages, strtoupper($messageLanguageKey), $context, $userId);
 		$fmodel->addLog($messages, $messageLanguageKey, $context, $user->id);
 
 		return true;
