@@ -317,8 +317,10 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
             <option value="projectteam_picture">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_PROJECTTEAM_PICTURE</option>
             <option value="team_picture">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_TEAM_PICTURE</option>
             <option value="country_flag">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_COUNTRY_FLAG</option>
+			<!--
             <option value="logo_small_country_flag">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_LOGO_SMALL_COUNTRY_FLAG</option>
             <option value="country_flag_logo_small">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_COUNTRY_FLAG_LOGO_SMALL</option>
+			-->
             <option value="logo_big_country_flag">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_LOGO_BIG_COUNTRY_FLAG</option>
             <option value="country_flag_logo_big">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_COUNTRY_FLAG_LOGO_BIG</option>
 	<option value="no_logo">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_NO_LOGO</option>
