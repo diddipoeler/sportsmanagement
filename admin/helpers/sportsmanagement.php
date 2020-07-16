@@ -95,6 +95,15 @@ abstract class sportsmanagementHelper
 
 		$message = array();
 		$message['action'] = $con_type;
+	    switch ( $con_type )
+	    {
+		    case 'player':
+		$message['type'] = $type .' '. $tran['firstname'].' '. $tran['lastname'];	    
+			    break;
+		    default:
+		$message['type'] = $type .' '. $tran['name'];	    
+			    break;
+	    }
 		$message['type'] = $type .' '. $tran['name'];
 		$message['id'] = $tran['id'];
 		$message['title'] = $extension;
