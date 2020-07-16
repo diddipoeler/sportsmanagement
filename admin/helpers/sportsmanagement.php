@@ -83,19 +83,19 @@ abstract class sportsmanagementHelper
 	 * @param   int     $id  Passed id reference from the form to identify if new record
 	 * @return  boolean	True
 	 */
-    public static function recordActionLog($user = null, $tran_id = 0, $id = 0)
+    public static function recordActionLog($user = null, $tran = null, $id = 0)
 	{
 	// get the component details such as the id
 	//$extension =  MycomponentHelper::getExtensionDetails('com_sportsmanagement');
 	$extension = 'com_sportsmanagement';
 	// get the transaction details for use in the log for easy reference
-        $tran = MycomponentHelper::getTransaction($tran_id);
+        //$tran = MycomponentHelper::getTransaction($tran_id);
         $con_type = Factory::getApplication()->input->getCmd('view', 'cpanel');
         if ($id === 0) { $type = 'New '; } else { $type = 'Update '; }
 
 		$message = array();
 		$message['action'] = $con_type;
-		$message['type'] = $type . $tran->tran_type . ' - '.$tran->tran_desc . ' $' . $tran->tran_amount;
+		$message['type'] = $type . $tran->name ;
 		$message['id'] = $tran->id;
 		$message['title'] = $extension;
 		$message['extension_name'] = $extension;
