@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage matchreport
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 
 $startfade = $this->config['roster_playground_player_fade'];
@@ -238,9 +234,7 @@ for ($a = 0; $a < sizeof($favteams1); $a++)
 
 							if ($schemahome)
 							{
-								/**
-								 * hometeam
-								 */
+								/** hometeam */
 								$testlauf = 0;
 
 								foreach ($this->matchplayerpositions as $pos)
@@ -262,7 +256,8 @@ for ($a = 0; $a < sizeof($favteams1); $a++)
 											if ($player->pposid == $pos->pposid && $player->ptid == $this->match->projectteam1_id)
 											{
 												$picture2 = sportsmanagementHelper::getDefaultPlaceholder("player");
-												$picture  = ($player->picture != $picture2) ? $player->picture : $player->ppic;
+												//$picture  = ($player->picture != $picture2) ? $player->picture : $player->ppic;
+                                                $picture  = $player->ppic;
 
 												?>
 
@@ -308,9 +303,7 @@ for ($a = 0; $a < sizeof($favteams1); $a++)
 
 							if ($schemaguest)
 							{
-								/**
-								 * guestteam
-								 */
+								/** guestteam */
 								$testlauf = 0;
 
 								foreach ($this->matchplayerpositions as $pos)
@@ -334,7 +327,8 @@ for ($a = 0; $a < sizeof($favteams1); $a++)
 												// Player->ppic = person picture
 												// player->picture = teamplay picture
 												$picture2 = sportsmanagementHelper::getDefaultPlaceholder("player");
-												$picture  = ($player->picture != $picture2) ? $player->picture : $player->ppic;
+												//$picture  = ($player->picture != $picture2) ? $player->picture : $player->ppic;
+                                                $picture  = $player->ppic;
 
 												?>
 
