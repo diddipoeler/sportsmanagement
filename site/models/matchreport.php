@@ -477,6 +477,11 @@ class sportsmanagementModelMatchReport extends JSMModelLegacy
 		$query->select('c.id,c.title');
 		$query->select('c.introtext');
 
+//echo 'article id<pre>'.print_r($article_id,true).'</pre>';
+//echo 'match id<pre>'.print_r($match_id,true).'</pre>';
+//echo 'cat id<pre>'.print_r($cat_id,true).'</pre>';
+
+
 		switch (ComponentHelper::getParams($option)->get('which_article_component'))
 		{
 			case 'com_content':
@@ -515,6 +520,7 @@ class sportsmanagementModelMatchReport extends JSMModelLegacy
 		}
 
 		$db->setQuery($query);
+//echo 'query <pre>'.print_r($query->dump(),true).'</pre>';
 		$result = $db->loadObject();
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
