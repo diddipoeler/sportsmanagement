@@ -96,7 +96,8 @@ usort(
 				if ((is_null($picture)) || (!file_exists($picture)))
 				{
 					$picture = sportsmanagementHelper::getDefaultPlaceholder("team_picture");
-					$image   = HTMLHelper::image($picture, $teamTitle, array('title' => $teamTitle, ' border' => 0, ' width' => $this->config['team_picture_width']));
+//$image   = HTMLHelper::image($picture, $teamTitle, array('title' => $teamTitle, ' border' => 0, ' width' => $this->config['team_picture_width']));
+$image = HTMLHelper::image($picture, $teamTitle, array('title' => $teamTitle, ' border' => 0, ' style' => 'width: auto;height:'.$this->config['team_picture_width'].'px'  ) );					
 				}
 				else
 				{
