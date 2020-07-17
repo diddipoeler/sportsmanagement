@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage rosterposition
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
@@ -41,7 +37,8 @@ class sportsmanagementViewrosterposition extends sportsmanagementView
 	 */
 	public function init()
 	{
-		$this->document->addScript('http://code.jquery.com/ui/1.10.3/jquery-ui.js');
+		//$this->document->addScript('http://code.jquery.com/ui/1.10.3/jquery-ui.js');
+        $this->document->addScript('https://code.jquery.com/ui/1.12.1/jquery-ui.js');
 
 		$bildpositionenhome                                  = array();
 		$bildpositionenhome['HOME_POS'][0]['heim']['oben']   = 5;

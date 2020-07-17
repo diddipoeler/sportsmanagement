@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage rosterpositions
@@ -11,10 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -30,6 +25,7 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
  */
 class sportsmanagementViewrosterpositions extends sportsmanagementView
 {
+    
 	/**
 	 * sportsmanagementViewrosterpositions::init()
 	 *
@@ -37,9 +33,7 @@ class sportsmanagementViewrosterpositions extends sportsmanagementView
 	 */
 	public function init()
 	{
-
 		$this->table = Table::getInstance('rosterposition', 'sportsmanagementTable');
-
 	}
 
 	/**
@@ -49,8 +43,6 @@ class sportsmanagementViewrosterpositions extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-
-		// Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_TITLE');
 		ToolbarHelper::custom('rosterpositions.addhome', 'new', 'new', Text::_('COM_SPORTSMAMAGEMENT_ADMIN_ROSTERPOSITIONS_HOME'), false);
 		ToolbarHelper::custom('rosterpositions.addaway', 'new', 'new', Text::_('COM_SPORTSMAMAGEMENT_ADMIN_ROSTERPOSITIONS_AWAY'), false);
@@ -59,7 +51,6 @@ class sportsmanagementViewrosterpositions extends sportsmanagementView
 		ToolbarHelper::deleteList('', 'rosterpositions.delete', 'JTOOLBAR_DELETE');
 		ToolbarHelper::checkin('rosterpositions.checkin');
 		parent::addToolbar();
-
 	}
 
 }
