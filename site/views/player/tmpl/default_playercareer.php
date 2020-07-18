@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage player
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -95,7 +91,7 @@ use Joomla\CMS\Factory;
 
 				?>
                 <tr class="">
-                    <td class="td_l">
+                    <td id="show_project_logo">
 						<?php
 						if ($this->config['show_project_logo'])
 						{
@@ -109,7 +105,7 @@ use Joomla\CMS\Factory;
 								'playercareerproject' . $station->project_id . '-' . $station->team_id,
 								$station->project_picture,
 								$station->project_name,
-								'20',
+								$this->config['project_logo_height'],
 								'',
 								$this->modalwidth,
 								$this->modalheight,
@@ -118,7 +114,8 @@ use Joomla\CMS\Factory;
 						}
 
 						echo HTMLHelper::link($link1, $station->project_name);
-						?></td>
+						?>
+                        </td>
                     <td class="td_l">
 						<?php
 						echo $station->season_name;
@@ -128,7 +125,7 @@ use Joomla\CMS\Factory;
 					if ($this->config['show_plcareer_team'])
 					{
 						?>
-                        <td class="td_l">
+                        <td id="show_plcareer_team">
 							<?php
 							if ($this->config['show_team_logo'])
 							{
@@ -141,7 +138,7 @@ use Joomla\CMS\Factory;
 									'playercareerteam' . $station->project_id . '-' . $station->team_id,
 									$station->club_picture,
 									$station->team_name,
-									'20',
+									$this->config['team_logo_height'],
 									'',
 									$this->modalwidth,
 									$this->modalheight,
@@ -156,7 +153,7 @@ use Joomla\CMS\Factory;
 									'playercareerteampicture' . $station->project_id . '-' . $station->team_id,
 									$station->team_picture,
 									$station->team_name,
-									'40',
+									$this->config['team_picture_height'],
 									'',
 									$this->modalwidth,
 									$this->modalheight,
@@ -181,14 +178,14 @@ use Joomla\CMS\Factory;
 					if ($this->config['show_plcareer_ppicture'])
 					{
 						?>
-                        <td>
+                        <td id="show_plcareer_ppicture">
 							<?PHP
 							$station->season_picture = ($station->season_picture != '') ? $station->season_picture : sportsmanagementHelper::getDefaultPlaceholder("team");
 							echo sportsmanagementHelperHtml::getBootstrapModalImage(
 								'playercareerperson' . $station->project_id . '-' . $station->team_id,
 								$station->season_picture,
 								$station->team_name,
-								'50',
+								$this->config['plcareer_ppicture_height'],
 								'',
 								$this->modalwidth,
 								$this->modalheight,
