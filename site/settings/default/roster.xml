@@ -346,7 +346,11 @@
 			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
 			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
 			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
-			
+		</field>
+
+<field 	name="events_picture_height" type="text" default="50"
+				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_EVENTS_HEIGHT" 
+				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_EVENTS_HEIGHT">
 		</field>
 					
 	</fieldset>	

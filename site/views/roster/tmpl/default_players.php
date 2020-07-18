@@ -142,19 +142,19 @@ if (!empty($this->rows))
 							<?php
 							switch ($this->config['show_birthday'])
 							{
-								case     1:            // Show Birthday and Age
+								case     1:            /** Show Birthday and Age */
 									$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_BIRTHDAY_AGE';
 									break;
 
-								case     2:            // Show Only Birthday
+								case     2:            /** Show Only Birthday */
 									$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_BIRTHDAY';
 									break;
 
-								case     3:            // Show Only Age
+								case     3:            /** Show Only Age */
 									$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_AGE';
 									break;
 
-								case     4:            // Show Only Year of birth
+								case     4:            /** Show Only Year of birth */
 									$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_YEAR_OF_BIRTH';
 									break;
 							}
@@ -166,14 +166,10 @@ if (!empty($this->rows))
 					}
                     elseif ($this->config['show_birthday_staff'])
 					{
-						/**
-						 *
-						 * Put empty column to keep vertical alignment with the staff table
-						 */
+						/** Put empty column to keep vertical alignment with the staff table */
 						?>
                         <th class="td_c">&nbsp;</th><?php
 					}
-
 
 					if ($this->overallconfig['use_jl_substitution'])
 					{
@@ -185,11 +181,10 @@ if (!empty($this->rows))
 								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ROSTER_PLAYED');
 								$picture    = $picture_path_sport_type_name . '/played.png';
 
-								echo HTMLHelper::image($picture, $imageTitle, array('title' => $imageTitle, 'height' => 20));
+								echo HTMLHelper::image($picture, $imageTitle, array('title' => $imageTitle, 'style' => 'width: auto;height: ' . $this->config['events_picture_height'] . 'px' ));
 								?></th>
 							<?php
 						}
-
 
 						if ($this->config['show_substitution_stats'])
 						{
@@ -199,19 +194,19 @@ if (!empty($this->rows))
 								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ROSTER_STARTING_LINEUP');
 								$picture    = $picture_path_sport_type_name . '/startroster.png';
 
-								echo HTMLHelper::image($picture, $imageTitle, array('title' => $imageTitle, 'height' => 20));
+								echo HTMLHelper::image($picture, $imageTitle, array('title' => $imageTitle, 'style' => 'width: auto;height: ' . $this->config['events_picture_height'] . 'px'));
 								?></th>
                             <th class="td_c"><?php
 								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ROSTER_IN');
 								$picture    = $picture_path_sport_type_name . '/in.png';
 
-								echo HTMLHelper::image($picture, $imageTitle, array('title' => $imageTitle, 'height' => 20));
+								echo HTMLHelper::image($picture, $imageTitle, array('title' => $imageTitle, 'style' => 'width: auto;height: ' . $this->config['events_picture_height'] . 'px'));
 								?></th>
                             <th class="td_c"><?php
 								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ROSTER_OUT');
 								$picture    = $picture_path_sport_type_name . '/out.png';
 
-								echo HTMLHelper::image($picture, $imageTitle, array('title' => $imageTitle, 'height' => 20));
+								echo HTMLHelper::image($picture, $imageTitle, array('title' => $imageTitle, 'style' => 'width: auto;height: ' . $this->config['events_picture_height'] . 'px'));
 								?></th>
 
                             <th class="td_c">
@@ -219,7 +214,7 @@ if (!empty($this->rows))
 								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PLAYED_TIME');
 								$picture    = $picture_path_sport_type_name . '/uhr.png';
 
-								echo HTMLHelper::image($picture, $imageTitle, array('title' => $imageTitle, 'height' => 11));
+								echo HTMLHelper::image($picture, $imageTitle, array('title' => $imageTitle, 'style' => 'width: auto;height: ' . $this->config['events_picture_height'] . 'px'));
 								?></th>
 
 							<?php
