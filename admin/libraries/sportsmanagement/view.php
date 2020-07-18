@@ -386,7 +386,7 @@ break;
 
 			switch ($this->view)
 			{
-				case 'projects':
+				//case 'projects':
 				//case 'players':
 				case 'predictiongames':
 				case 'jlextfederations':
