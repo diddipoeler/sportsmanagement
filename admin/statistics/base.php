@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage statistics
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -33,9 +29,7 @@ use Joomla\CMS\Log\Log;
 class SMStatistic extends JObject
 {
 	var $_name = 'default';
-
 	var $_calculated = 0;
-
 	var $_showinsinglematchreports = 1;
 
 	/**
@@ -739,12 +733,14 @@ class SMStatistic extends JObject
 		}
 	}
 
+	
 	/**
-	 * return stat <img> html tag
-	 *
-	 * @return string
+	 * SMStatistic::getImage()
+	 * 
+	 * @param integer $events_picture_height
+	 * @return
 	 */
-	function getImage()
+	function getImage($events_picture_height = 30)
 	{
 		if (!empty($this->icon))
 		{
@@ -755,7 +751,7 @@ class SMStatistic extends JObject
 				$iconPath = "images/com_sportsmanagement/database/statistics/" . $iconPath;
 			}
 
-			return HTMLHelper::_('image',$iconPath, Text::_($this->name), array("title" => Text::_($this->name), "width" => 30));
+			return HTMLHelper::_('image',$iconPath, Text::_($this->name), array("title" => Text::_($this->name), "style" => 'width: auto;height: ' . $events_picture_height . 'px'));
 		}
 
 		return '<span class="stat-alternate hasTip" title="' . Text::_($this->name) . '">' . Text::_($this->short) . '</span>';

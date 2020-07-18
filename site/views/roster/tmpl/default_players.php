@@ -275,7 +275,7 @@ if (!empty($this->rows))
 								if ($stat->position_id == $row->position_id)
 								{
 									?>
-                                    <th class="td_c"><?php echo $stat->getImage(); ?></th>
+                                    <th class="td_c"><?php echo $stat->getImage($this->config['events_picture_height']); ?></th>
 									<?php
 								}
 							}
