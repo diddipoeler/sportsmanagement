@@ -144,10 +144,15 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		
+		<!--
 		<field 	name="player_picture_width" type="text" default="40"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PLAYER_PICTURE_WIDTH" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PLAYER_PICTURE_WIDTH">
+		</field>
+		-->
+		<field 	name="player_picture_height" type="text" default="40"
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PLAYER_PICTURE_HEIGHT" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PLAYER_PICTURE_HEIGHT">
 		</field>
 		
 		<field name="player_picture_style" type="list" default=""
