@@ -8,9 +8,7 @@
  * @copyright  Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -201,7 +199,7 @@ $this->LeaguehistoryPlayer = array();
 				$link2                                = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);
 				?>
                 <tr class="">
-                    <td class="td_l" nowrap="nowrap">
+                    <td id="show_project_logo">
 						<?php
 						if ($this->config['show_project_logo'])
 						{
@@ -209,7 +207,7 @@ $this->LeaguehistoryPlayer = array();
 							echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstatsproject' . $player_hist->project_id . '-' . $player_hist->team_id,
 								$player_hist->project_picture,
 								$player_hist->project_name,
-								'20',
+								$this->config['project_logo_height'],
 								'',
 								$this->modalwidth,
 								$this->modalheight,
@@ -222,7 +220,7 @@ $this->LeaguehistoryPlayer = array();
 					if ($this->config['show_plstats_team'])
 					{
 						?>
-                        <td class="td_l" class="nowrap">
+                        <td id="show_plstats_team">
 							<?php
 							if ($this->config['show_team_logo'])
 							{
@@ -230,7 +228,7 @@ $this->LeaguehistoryPlayer = array();
 								echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstatsteam' . $player_hist->project_id . '-' . $player_hist->team_id,
 									$player_hist->club_picture,
 									$player_hist->team_name,
-									'20',
+									$this->config['team_logo_height'],
 									'',
 									$this->modalwidth,
 									$this->modalheight,
@@ -243,7 +241,7 @@ $this->LeaguehistoryPlayer = array();
 								echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstatsteampicture' . $player_hist->project_id . '-' . $player_hist->team_id,
 									$player_hist->team_picture,
 									$player_hist->team_name,
-									'40',
+									$this->config['team_picture_height'],
 									'',
 									$this->modalwidth,
 									$this->modalheight,
@@ -269,13 +267,13 @@ $this->LeaguehistoryPlayer = array();
 					{
 
 						?>
-                        <td>
+                        <td id="show_plstats_ppicture">
 							<?PHP
 							$player_hist->season_picture = ($player_hist->season_picture != '') ? $player_hist->season_picture : sportsmanagementHelper::getDefaultPlaceholder("team");
 							echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstats' . $player_hist->project_id . '-' . $player_hist->team_id,
 								$player_hist->season_picture,
 								$player_hist->team_name,
-								'50',
+								$this->config['plstats_ppicture_height'],
 								'',
 								$this->modalwidth,
 								$this->modalheight,
