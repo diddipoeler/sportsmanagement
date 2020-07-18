@@ -265,12 +265,23 @@ JARCHIVED</option>
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EXTENSION_DESC"/>
 
       <!-- http://docs.joomla.org/Category_form_field_type -->
+	  <!--
       <field name="category_id" 
       type="media" 
       extension="" 
       label="JCATEGORIES" 
-      description="JGLOBAL_CHOOSE_CATEGORY_DESC" />
-
+      description="JGLOBAL_CHOOSE_CATEGORY_DESC" /> 
+	  -->
+<field
+			name="category_id"
+			type="category"
+			label="JGLOBAL_CHOOSE_CATEGORY_DESC"
+			description="JGLOBAL_CHOOSE_CATEGORY_DESC"
+			extension="com_content"
+			>
+			<option value="">JOPTION_SELECT_CATEGORY</option>
+		</field>
+		
 <field name="gcalendar_id" 
 type="gcalendar" 
 default="" 
