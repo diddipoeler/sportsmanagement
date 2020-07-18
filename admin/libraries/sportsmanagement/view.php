@@ -232,10 +232,12 @@ img.car {
 			{
 				case 'club';
 				case 'playground';
-                //$this->app->set('itemname', $this->item->name);
+                case 'league';
+                case 'person';
+                case 'position';
+                case 'agegroup';
                 $this->app->setUserState('com_sportsmanagement.itemname', $this->item->name);
-					//$this->itemname = $this->item->name;
-					break;
+				break;
             }
             
             
