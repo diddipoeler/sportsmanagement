@@ -240,10 +240,15 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-
+<!--
 		<field 	name="staff_picture_width" type="text" default="40"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STAFF_PICTURE_WIDTH" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_STAFF_PICTURE_WIDTH">
+		</field>
+		-->
+		<field 	name="staff_picture_height" type="text" default="40"
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STAFF_PICTURE_HEIGHT" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_STAFF_PICTURE_HEIGHT">
 		</field>
 		
 		<field name="staff_picture_style" type="list" default=""
@@ -291,10 +296,15 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-
+<!--
 		<field 	name="team_picture_width" type="text" default="150"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_PICTURE_WIDTH" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_PICTURE_WIDTH">
+		</field>
+		-->
+		<field 	name="team_picture_height" type="text" default="150"
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_PICTURE_HEIGHT" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_PICTURE_HEIGHT">
 		</field>
 		
 		<field name="team_picture_which" type="list" default="project_team"

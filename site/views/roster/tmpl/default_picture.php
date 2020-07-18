@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage roster
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 
 ?>
@@ -41,7 +37,7 @@ use Joomla\CMS\Language\Text;
 						'roster' . $this->team->name,
 						$picture,
 						$this->team->name,
-						$this->config['team_picture_width'],
+						$this->config['team_picture_height'],
 						'',
 						$this->modalwidth,
 						$this->modalheight,

@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage roster
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -142,7 +138,7 @@ if (count($this->stafflist) > 0)
 								'staff' . $row->playerid,
 								$picture,
 								$playerName,
-								$this->config['staff_picture_width'],
+								$this->config['staff_picture_height'],
 								'',
 								$this->modalwidth,
 								$this->modalheight,
