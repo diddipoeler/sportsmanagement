@@ -251,7 +251,7 @@ if (!empty($this->rows))
 											Text::_($eventtype->name),
 											array('title'  => Text::_($eventtype->name),
 											      'align'  => 'top',
-											      'height' => 20,
+											      'style' => 'width: auto;height: ' . $this->config['events_picture_height'] . 'px',
 											      'hspace' => '2')
 										);
 									}
@@ -414,7 +414,7 @@ if (!empty($this->rows))
 								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_INJURED');
 								echo HTMLHelper::image(
 									'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/injured.gif',
-									$imageTitle, array('title' => $imageTitle, 'height' => 20)
+									$imageTitle, array('title' => $imageTitle, 'style' => 'width: auto;height: ' . $this->config['events_picture_height'] . 'px')
 								);
 							}
 
@@ -424,7 +424,7 @@ if (!empty($this->rows))
 								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_SUSPENDED');
 								echo HTMLHelper::image(
 									'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/suspension.gif',
-									$imageTitle, array('title' => $imageTitle, 'height' => 20)
+									$imageTitle, array('title' => $imageTitle, 'style' => 'width: auto;height: ' . $this->config['events_picture_height'] . 'px')
 								);
 							}
 
@@ -434,7 +434,7 @@ if (!empty($this->rows))
 								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_AWAY');
 								echo HTMLHelper::image(
 									'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/away.gif',
-									$imageTitle, array('title' => $imageTitle, 'height' => 20)
+									$imageTitle, array('title' => $imageTitle, 'style' => 'width: auto;height: ' . $this->config['events_picture_height'] . 'px')
 								);
 							}
 							?></td>
