@@ -45,7 +45,6 @@
         </field>
 	
         <field
-            addfieldpath="/administrator/components/com_sportsmanagement/elements"
             name="sportstype_id"
             type="sportstypes"
             default="0"
