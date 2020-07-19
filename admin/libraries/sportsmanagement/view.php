@@ -238,6 +238,9 @@ img.car {
                 case 'agegroup';
                 $this->app->setUserState('com_sportsmanagement.itemname', $this->item->name);
 				break;
+                case 'player';
+                $this->app->setUserState('com_sportsmanagement.itemname', $this->item->lastname.' '.$this->item->firstname);
+                break;
             }
             
             
