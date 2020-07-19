@@ -39,25 +39,25 @@ $dispatcher->trigger('onContentBeforeDisplay', array('com_media.file', &$this->_
 <script>
 //jQuery(document).ready(function(){
 
-function exportToForm(img) {
-//     alert(img);
-//     alert('<?php echo $this->folder; ?>');
-var logopfad;     
-var type = '<?php echo $this->type; ?>';     
-var fieldid = '<?php echo $this->fieldid; ?>';
-var fieldname = '<?php echo $this->fieldname; ?>';     
-console.log("bild: " + img);	
-console.log("pfad: " + '<?php echo $this->folder; ?>');	
-console.log("fieldid: " + '<?php echo $this->fieldid; ?>');     
-console.log("type: " + '<?php echo $this->type; ?>');      
-console.log("fieldname: " + '<?php echo $this->fieldname; ?>');
-logopfad = 'images/com_sportsmanagement/database/<?php echo $this->folder; ?>/' + img;
-console.log("logopfad : " + logopfad );	
-window.parent.selectImage_<?php echo $this->type; ?>(img, img,fieldname ,fieldid);
-//window.closeModal();
-window.parent.jQuery('.modal.in').modal('hide');
-     
- }
+//function exportToForm(img) {
+////     alert(img);
+////     alert('<?php echo $this->folder; ?>');
+//var logopfad;     
+//var type = '<?php echo $this->type; ?>';     
+//var fieldid = '<?php echo $this->fieldid; ?>';
+//var fieldname = '<?php echo $this->fieldname; ?>';     
+//console.log("bild: " + img);	
+//console.log("pfad: " + '<?php echo $this->folder; ?>');	
+//console.log("fieldid: " + '<?php echo $this->fieldid; ?>');     
+//console.log("type: " + '<?php echo $this->type; ?>');      
+//console.log("fieldname: " + '<?php echo $this->fieldname; ?>');
+//logopfad = 'images/com_sportsmanagement/database/<?php echo $this->folder; ?>/' + img;
+//console.log("logopfad : " + logopfad );	
+//window.parent.selectImage_<?php echo $this->type; ?>(img, img,fieldname ,fieldid);
+////window.closeModal();
+//window.parent.jQuery('.modal.in').modal('hide');
+//     
+// }
 
 
 //});

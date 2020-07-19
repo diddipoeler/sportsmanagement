@@ -104,7 +104,37 @@ if (version_compare($baseVersion, '4.0', 'ge'))
 {		
 $this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/media-browser.css', 'text/css');		
 }		
-		
+	
+/** Build the script. */
+$script = array();    
+
+$script[] = "
+function exportToForm(img) {
+//     alert(img);
+//     alert(\'<?php echo $this->folder; ?>\');
+var logopfad;     
+var type = '".$this->type."';     
+var fieldid = '".$this->fieldid."';
+var fieldname = '".$this->fieldname."';     
+console.log(\"bild: \" + img);	
+console.log(\"pfad: \" + '".$this->folder."');	
+console.log(\"fieldid: \" + '".$this->fieldid."');     
+console.log(\"type: \" + '".$this->type."');      
+console.log(\"fieldname: \" + '".$this->fieldname."');
+logopfad = 'images/com_sportsmanagement/database/".$this->folder."' + img;
+console.log(\"logopfad : \" + logopfad );	
+window.parent.selectImage_".$this->type."(img, img,fieldname ,fieldid);
+//window.closeModal();
+window.parent.jQuery('.modal.in').modal('hide');
+     
+ }
+ ";
+/** Add the script to the document head. */
+Factory::getDocument()->addScriptDeclaration(implode("\n", $script));    
+    
+    
+    
+    	
   }
   
 /**
