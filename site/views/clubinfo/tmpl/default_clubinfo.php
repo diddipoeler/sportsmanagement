@@ -128,7 +128,8 @@ else
                             if (isset($this->clubassoc->name))
                             {
 	                            echo HTMLHelper::image($this->clubassoc->assocflag, $this->clubassoc->name, array('title' => $this->clubassoc->name, 'width' => $this->config['club_assoc_flag_width']));
-	                            echo HTMLHelper::image($this->clubassoc->picture, $this->clubassoc->name, array('title' => $this->clubassoc->name, 'width' => $this->config['club_assoc_logo_width'])) . substr($this->clubassoc->name, 0, 30);
+	                            //echo HTMLHelper::image($this->clubassoc->picture, $this->clubassoc->name, array('title' => $this->clubassoc->name, 'width' => $this->config['club_assoc_logo_width'])) . substr($this->clubassoc->name, 0, 30);
+                                echo HTMLHelper::image($this->clubassoc->picture, $this->clubassoc->name, array('title' => $this->clubassoc->name, 'width' => $this->config['club_assoc_logo_width']));
                             }
                             ?>
                             <br/>
@@ -242,7 +243,8 @@ else
 					?>
                     <address>
                         <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_FOUNDED'); ?></strong>
-						<?php echo sportsmanagementHelper::convertDate($this->club->founded, 1); ?>
+						<?php //echo sportsmanagementHelper::convertDate($this->club->founded, 1); ?>
+                        <?php echo HTMLHelper::date($this->club->founded, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE')); ?>
                     </address>
 					<?php
 				}
