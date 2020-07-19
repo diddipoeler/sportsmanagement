@@ -46,7 +46,7 @@
 	
         <field
             name="sportstype_id"
-            type="sportstypes"
+            type="sportstypelist"
             default="0"
             size="1"
             label="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE"
