@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage matchreport
@@ -13,13 +11,10 @@
  *
  * https://www.html-seminar.de/responsive-webdesign-externe-videos-einbinden.htm
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
-
 
 function getYoutubeEmbedHtml($url)
 {
@@ -40,7 +35,19 @@ function getYoutubeEmbedHtml($url)
 
 <h4><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_YOUTUBE'); ?></h4>
 <div class="panel-group" id="showyoutube">
-
+<div id="videobereich">
+                    <iframe class="videoextern" width="640" height="360"
+                            src="<?php echo $this->youtube; ?>"
+                            frameborder="0" allowfullscreen></iframe>
+  
+  <?php
+//				echo $this->youtube;
+//				echo getYoutubeEmbedHtml($this->youtube);
+				?>
+                  
+                </div>  
+	
+<!--	
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">
@@ -64,3 +71,4 @@ function getYoutubeEmbedHtml($url)
             </div>
         </div>
     </div>
+-->
