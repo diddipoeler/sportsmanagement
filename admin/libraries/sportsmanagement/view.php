@@ -236,6 +236,7 @@ img.car {
                 case 'person';
                 case 'position';
                 case 'agegroup';
+                case 'teamperson';
                 $this->app->setUserState('com_sportsmanagement.itemname', $this->item->name);
 				break;
                 case 'player';
@@ -248,16 +249,12 @@ img.car {
             
 		}
 
-		/**
-		 * in der listansicht
-		 */
+		/** in der listansicht */
 		else
 		{
 			if ($this->format != 'json')
 			{
-				/**
-				 * dadurch werden die spaltenbreiten optimiert
-				 */
+				/** dadurch werden die spaltenbreiten optimiert */
 				$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/form_control.css', 'text/css');
 			}
 
@@ -270,12 +267,12 @@ img.car {
 				case 'jlextdfbkeyimport';
 				case 'transifex';
                 case 'imagelist';
-					break;
+				break;
 				default:
-					$this->items      = $this->get('Items');
-					$this->total      = $this->get('Total');
-					$this->pagination = $this->get('Pagination');
-					break;
+				$this->items      = $this->get('Items');
+				$this->total      = $this->get('Total');
+				$this->pagination = $this->get('Pagination');
+				break;
 			}
 
 			$this->user        = Factory::getUser();

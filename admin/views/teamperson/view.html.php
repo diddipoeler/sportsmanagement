@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage teamperson
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -70,7 +66,7 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
 		$mdlPerson      = BaseDatabaseModel::getInstance("player", "sportsmanagementModel");
 		$project_person = $mdlPerson->getPerson($this->item->person_id);
 
-		// Build the html options for position
+		/** Build the html options for position */
 		$position_id           = array();
 		$mdlPositions          = BaseDatabaseModel::getInstance('Positions', 'sportsmanagementModel');
 		$project_ref_positions = $mdlPositions->getProjectPositions($this->project_id, 1);
@@ -87,9 +83,7 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
 			$position_id = array_merge($position_id, $project_ref_positions);
 		}
 
-		/**
-		 * name für titel setzen
-		 */
+		/** name für titel setzen */
 		$this->item->name = $project_person->lastname . ' - ' . $project_person->firstname;
 
 		$this->project_person = $project_person;
