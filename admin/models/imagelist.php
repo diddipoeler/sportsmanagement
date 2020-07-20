@@ -71,13 +71,15 @@ public function getFiles($path, $scopeName, $post)
 {
 $directory = JPATH_ROOT . DIRECTORY_SEPARATOR . 'images/com_sportsmanagement/database/'.$path;
 
-
+/*
 switch ($path)
 {
     case 'teamplayers':
     $path = 'persons';
     break;
 }
+
+*/
 //$post   = Factory::getApplication()->input->post->getArray(array());	
 //$filesOutput = [];
 //echo '<pre>'.print_r($post['filter_search'],true).'</pre>';
