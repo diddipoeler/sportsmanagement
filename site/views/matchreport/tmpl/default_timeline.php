@@ -15,7 +15,7 @@ use Joomla\CMS\Factory;
 
 ?>
 <!-- START of match timeline -->
-<div class="<?php echo $this->divclassrow; ?> table-responsive" id="matchreport-timeline">
+<div class="" id="matchreport-timeline">
     <script type="text/javascript">
         function gotoevent(row) {
             var t = document.getElementById('event-' + row)
