@@ -38,14 +38,6 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
 	{
 		$lists = array();
 
-		// Check for errors.
-		if (count($errors = $this->get('Errors')))
-		{
-			Log::add(implode('<br />', $errors));
-
-			return false;
-		}
-
 		$this->team_id         = $this->app->getUserState("$this->option.team_id", '0');
 		$this->_persontype     = $this->app->getUserState("$this->option.persontype", '0');
 		$this->project_team_id = $this->app->getUserState("$this->option.project_team_id", '0');

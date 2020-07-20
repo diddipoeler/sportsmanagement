@@ -22,6 +22,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Form\Form;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /** welche joomla version ? */
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
@@ -190,9 +191,7 @@ img.car {
 				break;
 		}
 
-		/**
-		 * bei der einzelverarbeitung
-		 */
+		/** bei der einzelverarbeitung */
 		if ($this->layout == 'edit'
 			|| $this->layout == 'edit_3'
 			|| $this->layout == 'edit_4'
@@ -208,7 +207,7 @@ img.car {
 				default:
 					$this->addTemplatePath(JPATH_ROOT . DIRECTORY_SEPARATOR . 'administrator' . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . $this->option . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'fieldsets' . DIRECTORY_SEPARATOR . 'tmpl');
 
-					// Get the Data
+					/** Get the Data */
 					$this->form   = $this->get('Form');
 					$this->item   = $this->get('Item');
 					$this->script = $this->get('Script');
@@ -236,9 +235,13 @@ img.car {
                 case 'person';
                 case 'position';
                 case 'agegroup';
-                case 'teamperson';
                 $this->app->setUserState('com_sportsmanagement.itemname', $this->item->name);
 				break;
+                case 'teamperson';
+                $mdlPerson      = BaseDatabaseModel::getInstance("player", "sportsmanagementModel");
+		        $project_person = $mdlPerson->getPerson($this->item->person_id);
+                $this->app->setUserState('com_sportsmanagement.itemname', $project_person->lastname . ' - ' . $project_person->firstname);
+                break;
                 case 'player';
                 $this->app->setUserState('com_sportsmanagement.itemname', $this->item->lastname.' '.$this->item->firstname);
                 break;
