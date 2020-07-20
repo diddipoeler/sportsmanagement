@@ -16,7 +16,7 @@ use Joomla\CMS\Factory;
 
 ?>
 <!-- Show Match staff -->
-<div class="<?php echo $this->divclassrow; ?> table-responsive" id="matchreport">
+<div class="<?php echo $this->divclassrow; ?> table-responsive" id="matchreport-staff">
 	<?php
 	if (!empty($this->matchstaffpositions))
 	{

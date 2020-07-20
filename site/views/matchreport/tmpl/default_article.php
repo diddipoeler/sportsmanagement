@@ -15,7 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
 <!-- START of match summary -->
-<div class="<?php echo $this->divclassrow; ?> table-responsive" id="matchreport">
+<div class="<?php echo $this->divclassrow; ?> table-responsive" id="matchreport-article">
 	<?php
 	if (!empty($this->match_article->introtext))
 	{
