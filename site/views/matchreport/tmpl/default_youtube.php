@@ -34,7 +34,10 @@ function getYoutubeEmbedHtml($url)
 ?>
 
 <h4><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_YOUTUBE'); ?></h4>
-
+<?php
+if ( $this->youtube )
+{
+?>
 <div id="videobereich">
                     <iframe class="videoextern" width="640" height="360"
                             src="<?php echo $this->youtube; ?>"
@@ -46,7 +49,10 @@ function getYoutubeEmbedHtml($url)
 				?>
                   
                 </div>  
-	
+<?php
+}
+?>
+
 <!--	
     <div class="panel panel-default">
         <div class="panel-heading">
