@@ -28,7 +28,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 		echo $this->loadTemplate('timeline');
 	}
 	?>
-    <table class="table ">
+    <table class="table " id="events">
 		<?php
 		foreach ($this->eventtypes as $event)
 		{
