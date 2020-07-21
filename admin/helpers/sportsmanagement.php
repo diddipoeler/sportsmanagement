@@ -129,7 +129,12 @@ if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 		$fmodel = BaseDatabaseModel::getInstance('Actionlog', 'ActionlogsModel');
 	    }
 		//$model->addLog($messages, strtoupper($messageLanguageKey), $context, $userId);
+	    try{
 		$fmodel->addLog($messages, $messageLanguageKey, $context, $user->id);
+	    }
+		    catch (Exception $e)
+			{
+		    }
 
 		return true;
 	}
