@@ -18,8 +18,8 @@
 		<field
 			name="project_id"
 			type="number"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_ID"
-			description="COM_SPORTSMANAGEMENT_ADMIN_DESCR_PROJECT_ID" 
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_PROJECTID_ADMIN"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_PROJECTID_ADMIN_DESC" 
 			class="readonly" 
 			size="11" 
 			default="0"
