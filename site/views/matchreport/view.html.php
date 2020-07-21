@@ -53,9 +53,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 			$this->oldmatchtext = $ret->text;
 		}
 
-		/**
-		 * hole den artikel zum spiel
-		 */
+		/** hole den artikel zum spiel */
 		$this->match_article         = $this->model->getMatchArticle($this->match->content_id, $this->model->matchid, $project->category_id);
 		$this->round                 = $this->model->getRound();
 		$this->team1                 = sportsmanagementModelProject::getTeaminfo($this->match->projectteam1_id, sportsmanagementModelProject::$cfg_which_database);
@@ -78,13 +76,6 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 		$this->playerstats           = $this->model->getMatchStats();
 		$this->staffstats            = $this->model->getMatchStaffStats();
 
-		/*
-		$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'extended'.DIRECTORY_SEPARATOR.'match.xml';
-		$jRegistry = new Registry;
-		$jRegistry->loadString($this->match->extended, 'ini');
-		$extended = Form::getInstance('extended', $xmlfile, array('control'=> 'extended'), false, '/config');
-		$extended->bind($jRegistry);
-		*/
 		$this->extended = sportsmanagementHelper::getExtended($this->match->extended, 'match', 'ini', true);
 
 		$this->extended2  = sportsmanagementHelper::getExtended($this->match->extended, 'match');
@@ -107,9 +98,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 
 		if ($this->config['show_pictures'])
 		{
-			/**
-			 * die bilder zum spiel
-			 */
+			/** die bilder zum spiel */
 			$dest   = JPATH_ROOT . '/images/com_sportsmanagement/database/matchreport/' . $this->match->id;
 			$folder = 'matchreport/' . $this->match->id;
 			$images = $this->model->getMatchPictures($folder);
@@ -120,9 +109,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 			}
 		}
 
-		/**
-		 * Set page title
-		 */
+		/** Set page title */
 		$pageTitle = Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_PAGE_TITLE');
 
 		if ((isset($this->team1)) && (isset($this->team1)))
