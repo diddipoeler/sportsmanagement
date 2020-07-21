@@ -309,7 +309,8 @@ console.log('getfolder: ' + '<?php echo $type;  ?>' );
 				return "persons";
 				break;
 			case "projectreferee":
-				return "persons";
+				//return "persons";
+                return "projectreferees";
 				break;
 			case "playgrounds":
 				return "playgrounds";
