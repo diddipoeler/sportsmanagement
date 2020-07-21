@@ -433,8 +433,7 @@ class SMStatistic extends JObject
 
 		if (!count($stat_ids))
 		{
-			Log::add(Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
-
+//			Log::add(Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return (array(0));
 		}
 
@@ -528,8 +527,7 @@ class SMStatistic extends JObject
 
 		if (!count($event_ids))
 		{
-			Log::add(Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
-
+//			Log::add(Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return (array(0));
 		}
 
@@ -658,8 +656,7 @@ class SMStatistic extends JObject
 
 		if (!count($statistic_views))
 		{
-			Log::add(get_class($this) . ' ' . __FUNCTION__ . ' ' . __LINE__ . ' ' . Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
-
+//			Log::add(get_class($this) . ' ' . __FUNCTION__ . ' ' . __LINE__ . ' ' . Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return (array(0));
 		}
 
@@ -688,8 +685,7 @@ class SMStatistic extends JObject
 
 		if (!count($statistic_views))
 		{
-			Log::add(get_class($this) . ' ' . __FUNCTION__ . ' ' . __LINE__ . ' ' . Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
-
+//			Log::add(get_class($this) . ' ' . __FUNCTION__ . ' ' . __LINE__ . ' ' . Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return (array(0));
 		}
 
@@ -718,8 +714,7 @@ class SMStatistic extends JObject
 
 		if (!count($statistic_views))
 		{
-			Log::add(get_class($this) . ' ' . __FUNCTION__ . ' ' . __LINE__ . ' ' . Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
-
+//			Log::add(get_class($this) . ' ' . __FUNCTION__ . ' ' . __LINE__ . ' ' . Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return (array(0));
 		}
 
