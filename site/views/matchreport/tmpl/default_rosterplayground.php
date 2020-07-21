@@ -256,8 +256,8 @@ for ($a = 0; $a < sizeof($favteams1); $a++)
 											if ($player->pposid == $pos->pposid && $player->ptid == $this->match->projectteam1_id)
 											{
 												$picture2 = sportsmanagementHelper::getDefaultPlaceholder("player");
-												//$picture  = ($player->picture != $picture2) ? $player->picture : $player->ppic;
-                                                $picture  = $player->ppic;
+												$picture  = ($player->picture != $picture2) ? $player->picture : $player->ppic;
+                                                //$picture  = $player->ppic;
 
 												?>
 
@@ -327,8 +327,8 @@ for ($a = 0; $a < sizeof($favteams1); $a++)
 												// Player->ppic = person picture
 												// player->picture = teamplay picture
 												$picture2 = sportsmanagementHelper::getDefaultPlaceholder("player");
-												//$picture  = ($player->picture != $picture2) ? $player->picture : $player->ppic;
-                                                $picture  = $player->ppic;
+												$picture  = ($player->picture != $picture2) ? $player->picture : $player->ppic;
+                                                //$picture  = $player->ppic;
 
 												?>
 
