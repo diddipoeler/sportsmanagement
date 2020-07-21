@@ -238,6 +238,7 @@ img.car {
                 $this->app->setUserState('com_sportsmanagement.itemname', $this->item->name);
 				break;
                 case 'teamperson';
+        case 'projectreferee';
                 $mdlPerson      = BaseDatabaseModel::getInstance("player", "sportsmanagementModel");
 		        $project_person = $mdlPerson->getPerson($this->item->person_id);
                 $this->app->setUserState('com_sportsmanagement.itemname', $project_person->lastname . ' - ' . $project_person->firstname);
