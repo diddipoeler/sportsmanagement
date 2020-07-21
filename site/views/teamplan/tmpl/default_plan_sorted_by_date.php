@@ -8,9 +8,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -745,12 +743,13 @@ if (!empty($this->matches))
                                 <tr>
                                     <td>
 										<?php
-										echo $this->showEventsContainerInResults(
+										echo sportsmanagementHelperHtml::showEventsContainerInResults(
 											$match,
 											$this->projectevents,
 											$events,
 											$subs,
-											$this->config);
+											$this->config,
+										$this->project);
 										?>
                                     </td>
                                 </tr>
