@@ -767,8 +767,7 @@ class SMStatistic extends JObject
 	 */
 	function getMatchPlayerStat(&$gamemodel, $teamplayer_id)
 	{
-		Log::add($this->_name . ': ' . Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
-
+//		Log::add($this->_name . ': ' . Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return 0;
 	}
 
@@ -795,8 +794,7 @@ class SMStatistic extends JObject
 	 */
 	function getPlayerStatsByGame($teamplayer_id, $project_id)
 	{
-		Log::add($this->_name . ': ' . Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
-
+//		Log::add($this->_name . ': ' . Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return 0;
 	}
 
@@ -809,8 +807,7 @@ class SMStatistic extends JObject
 	 */
 	function getPlayerStatsByProject($person_id, $projectteam_id = 0, $project_id = 0, $sports_type_id = 0)
 	{
-		Log::add($this->_name . ': ' . Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
-
+//		Log::add($this->_name . ': ' . Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return 0;
 	}
 
@@ -825,8 +822,7 @@ class SMStatistic extends JObject
 	 */
 	function getRosterStats($team_id, $project_id, $position_id)
 	{
-		Log::add($this->_name . ': ' . Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
-
+//		Log::add($this->_name . ': ' . Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return 0;
 	}
 
@@ -842,8 +838,7 @@ class SMStatistic extends JObject
 	 */
 	function getPlayersRanking($project_id, $division_id, $team_id, $limit = 20, $limitstart = 0, $order = null)
 	{
-		Log::add($this->_name . ': ' . Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
-
+//		Log::add($this->_name . ': ' . Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return array();
 	}
 
@@ -898,8 +893,7 @@ class SMStatistic extends JObject
 	 */
 	function getMatchStaffStat(&$gamemodel, $team_staff_id)
 	{
-		Log::add($this->_name . ': ' . Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
-
+//		Log::add($this->_name . ': ' . Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return 0;
 	}
 
@@ -913,8 +907,7 @@ class SMStatistic extends JObject
 	 */
 	function getStaffStats($person_id, $team_id, $project_id)
 	{
-		Log::add($this->_name . ': ' . Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
-
+//		Log::add($this->_name . ': ' . Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return 0;
 	}
 
@@ -928,8 +921,7 @@ class SMStatistic extends JObject
 	 */
 	function getHistoryStaffStats($person_id)
 	{
-		Log::add($this->_name . ': ' . Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
-
+//		Log::add($this->_name . ': ' . Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return 0;
 	}
 
