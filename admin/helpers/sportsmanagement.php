@@ -126,6 +126,7 @@ if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 	    elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
 {
 	        /** @var ActionlogsModelActionlog $model **/
+		    BaseDatabaseModel::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_actionlogs/models', 'ActionlogsModel');
 		$fmodel = BaseDatabaseModel::getInstance('Actionlog', 'ActionlogsModel');
 	    }
 		//$model->addLog($messages, strtoupper($messageLanguageKey), $context, $userId);
