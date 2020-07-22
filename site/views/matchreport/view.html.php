@@ -465,6 +465,8 @@ $result .= self::_formatTimelineSubstitution($sub, $sub->firstname, $sub->nickna
 	function _formatTimelineSubstitution($sub, $firstname, $nickname, $lastname, $out_firstname, $out_nickname, $out_lastname, $two_substitutions_per_minute = 0)
 	{
 $two_substitutions_per_minute -= 1;
+      $pixeltop = $two_substitutions_per_minute * 25;
+      
 		$pic_out  = 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/out.png';
 		$pic_in   = 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/in.png';
 		$pic_time = 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/change.png';
@@ -482,6 +484,8 @@ $two_substitutions_per_minute -= 1;
 		$tiptext   .= sportsmanagementHelper::formatName(null, $out_firstname, $out_nickname, $out_lastname, $this->config["name_format"]);
 		$result    = '';
 
+      $result .= "\n" . '<img class="hasTip" style="position: absolute; left: ' . $time2 . '%; top: ' . $pixeltop . 'px;"';
+      /*
 		if ($two_substitutions_per_minute == 1) // There were two substitutions in one minute in timelinetop
 		{
 			$result .= "\n" . '<img class="hasTip" style="position: absolute; left: ' . $time2 . '%; top: 25px;"';
@@ -494,7 +498,7 @@ $two_substitutions_per_minute -= 1;
 		{
 			$result .= "\n" . '<img class="hasTip" style="position: absolute; left: ' . $time2 . '%;"';
 		}
-
+*/
 		$result .= ' src="' . $pic_time . '" alt="' . $tiptext . '" title="' . $tiptext;
 		$result .= '" />';
 
