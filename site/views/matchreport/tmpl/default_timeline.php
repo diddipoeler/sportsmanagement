@@ -14,59 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 //echo $this->playgroundheight;
 ?>
-<style>  
-
-#semesterbilder { 
-    position: relative; 
-    height: 300px; 
-    background-color: #F0F0F0; 
-} 
-
-#matchreport-homeline { 
-    position: relative; 
-    height:  <?php echo $this->playgroundheight * 25;?>px; 
-    
-}   
-#matchreport-guestline { 
-    position: relative; 
-    height: <?php echo $this->playgroundheight * 25;?>px; 
-    
-} 
-
-#bild1 { 
-    position: absolute; 
-    left: -15px; 
-    top: 0px; 
-    z-index: 1; 
-} 
-#bild2 { 
-    position: absolute; 
-    left: 171px; 
-    top: 109px; 
-    z-index: 2; 
-} 
-#bild3 { 
-    position: absolute; 
-    left: 366px; 
-    top: 19px; 
-    z-index: 3; 
-} 
-#matchreport-homeline {
-background-image: url("/images/com_sportsmanagement/database/matchreport/spielfeld_top.png");
-background-repeat: no-repeat;
-background-size: 100% 99px;
-height: <?php echo $this->playgroundheight * 25;?>px;
-
-}
-#matchreport-guestline {
-background-image: url("/images/com_sportsmanagement/database/matchreport/spielfeld_bottom.png");
-background-repeat: no-repeat;
-background-size: 100% 99px;
-height: <?php echo $this->playgroundheight * 25;?>px;
-vertical-align: baseline;
-
-}  
-</style>  
+  
 <!--  
 <h2><a id="Semesterpraesentationen"></a>Semesterpräsentationen</h2> 
 <div id="semesterbilder"> 
@@ -148,3 +96,56 @@ echo sportsmanagementModelProject::getClubIconHtml($this->team2, 1, 0, 'logo_big
                           
     
 </div>                          
+<style>  
+
+#semesterbilder { 
+    position: relative; 
+    height: 300px; 
+    background-color: #F0F0F0; 
+} 
+
+#matchreport-homeline { 
+    position: relative; 
+    height:  <?php echo $this->playgroundheight * 25;?>px; 
+    
+}   
+#matchreport-guestline { 
+    position: relative; 
+    height: <?php echo $this->playgroundheight * 25;?>px; 
+    
+} 
+
+#bild1 { 
+    position: absolute; 
+    left: -15px; 
+    top: 0px; 
+    z-index: 1; 
+} 
+#bild2 { 
+    position: absolute; 
+    left: 171px; 
+    top: 109px; 
+    z-index: 2; 
+} 
+#bild3 { 
+    position: absolute; 
+    left: 366px; 
+    top: 19px; 
+    z-index: 3; 
+} 
+#matchreport-homeline {
+background-image: url("/images/com_sportsmanagement/database/matchreport/spielfeld_top.png");
+background-repeat: no-repeat;
+background-size: 100% 99px;
+height: <?php echo $this->playgroundheight * 25;?>px;
+
+}
+#matchreport-guestline {
+background-image: url("/images/com_sportsmanagement/database/matchreport/spielfeld_bottom.png");
+background-repeat: no-repeat;
+background-size: 100% 99px;
+height: <?php echo $this->playgroundheight * 25;?>px;
+vertical-align: baseline;
+
+}  
+</style>
