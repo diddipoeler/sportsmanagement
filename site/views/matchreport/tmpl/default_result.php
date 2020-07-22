@@ -15,7 +15,7 @@ use Joomla\CMS\Filesystem\File;
 
 ?>
 <!-- START: game result -->
-<div class="<?php echo $this->divclassrow; ?> table-responsive" id="matchreport-result">
+<div class="<?php echo $this->divclassrow; ?> " id="matchreport-result">
     <table class="table">
 		<?php
 		if ($this->config['show_team_logo'])
