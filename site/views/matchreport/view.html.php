@@ -408,6 +408,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 		{
 			if ($sub->ptid == $this->match->projectteam1_id)
 			{
+			 $substitutioncounter2[$sub->in_out_time] += 1;
 				if (in_array($sub->in_out_time, $eventstimecounter) || in_array($sub->in_out_time, $substitutioncounter))
 				{
 					$result .= self::_formatTimelineSubstitution($sub, $sub->firstname, $sub->nickname, $sub->lastname, $sub->out_firstname, $sub->out_nickname, $sub->out_lastname, 1);
@@ -420,7 +421,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 				$substitutioncounter[] = $sub->in_out_time;
 			}
 		}
-
+//echo '<pre>'.print_r($substitutioncounter2,true).'</pre>';
 		return $result;
 	}
 
@@ -607,6 +608,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 		{
 			if ($sub->ptid == $this->match->projectteam2_id)
 			{
+			 $substitutioncounter2[$sub->in_out_time] += 1;
 				if (in_array($sub->in_out_time, $eventstimecounter) || in_array($sub->in_out_time, $substitutioncounter))
 				{
 					$result .= self::_formatTimelineSubstitution($sub, $sub->firstname, $sub->nickname, $sub->lastname, $sub->out_firstname, $sub->out_nickname, $sub->out_lastname, 2);
@@ -619,6 +621,8 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 				$substitutioncounter[] = $sub->in_out_time;
 			}
 		}
+
+//echo '<pre>'.print_r($substitutioncounter2,true).'</pre>';
 
 		return $result;
 	}
