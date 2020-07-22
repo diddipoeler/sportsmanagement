@@ -14,8 +14,57 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
 ?>
+<style>  
+
+#semesterbilder { 
+    position: relative; 
+    height: 300px; 
+    background-color: #F0F0F0; 
+} 
+
+#matchreport-homeline { 
+    position: relative; 
+    height: 70px; 
+    
+}   
+#matchreport-guestline { 
+    position: relative; 
+    height: 70px; 
+    
+} 
+
+#bild1 { 
+    position: absolute; 
+    left: -15px; 
+    top: 0px; 
+    z-index: 1; 
+} 
+#bild2 { 
+    position: absolute; 
+    left: 171px; 
+    top: 109px; 
+    z-index: 2; 
+} 
+#bild3 { 
+    position: absolute; 
+    left: 366px; 
+    top: 19px; 
+    z-index: 3; 
+} 
+  
+</style>  
+<!--  
+<h2><a id="Semesterpraesentationen"></a>Semesterpräsentationen</h2> 
+<div id="semesterbilder"> 
+    <div id="bild1"><img src="/images/com_sportsmanagement/database/clubs/large/200px-logo-sc_freiburg_svg_1327138422.png" width="auto" height="20"></div> 
+    <div id="bild2"><img src="/images/com_sportsmanagement/database/clubs/large/200px-logo-sc_freiburg_svg_1327138422.png" width="auto" height="20"></div> 
+    <div id="bild3"><img src="/images/com_sportsmanagement/database/clubs/large/200px-logo-sc_freiburg_svg_1327138422.png" width="auto" height="20"></div> 
+</div> 
+--> 
+  
+  
 <!-- START of match timeline -->
-<div class="<?php echo $this->divclassrow; ?> table-responsive" id="matchreport-timeline">
+<div class="<?php echo $this->divclassrow; ?> " id="matchreport-timeline" >
     <script type="text/javascript">
         function gotoevent(row) {
             var t = document.getElementById('event-' + row)
@@ -23,24 +72,7 @@ use Joomla\CMS\Factory;
         }
     </script>
     <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE'); ?></h2>
-    <table id="timeline" class="table ">
-        <tr>
-			<?php
-			if ($this->team1->logo_small == '')
-			{
-			?>
-            <td width="140">
-				<?php
-				}
-				else
-				{
-				?>
-            <td width="40">
-				<?php
-				}
-				?>
-            </td>
-            <td id="" style="">
+    <div id="timelineheader" class="row-fluid" style="position:relative;height:15px;">
                 <div id="timelinetop" style="position:relative;width:100%;">
                     <div id="firsthalftime"
                          style="position:absolute; top:0px; left:0px; width:50%; height:15px;text-align: center;color:#FFFFFF;background-color:lightgrey;">
@@ -52,64 +84,53 @@ use Joomla\CMS\Factory;
 						<?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE_SECOND_HALF'); ?>
                     </div>
                 </div>
-                <br>
-            </td>
-        </tr>
+    </div>
 
-        <tr>
-			<?php
-			if ($this->team1->logo_small == '')
-			{
-			?>
-            <td width="140">
-				<?php
-				echo $this->team1->name;
-				}
-				else
-				{
-				?>
-            <td width="40">
-				<?php
-				echo sportsmanagementModelProject::getClubIconHtml($this->team1, 1, 0, 'logo_big', Factory::getApplication()->input->getInt('cfg_which_database', 0), 0, $this->modalwidth, $this->modalheight, $this->overallconfig['use_jquery_modal']);
-				}
-				?>
-            </td>
-            <td id="timeline-top">
-                <div id="timelinetop">
-					<?php
+<div class="" id="matchreport-homeline" >                          
+<div id="bild1">                          
+<?php
+echo sportsmanagementModelProject::getClubIconHtml($this->team1, 1, 0, 'logo_big', Factory::getApplication()->input->getInt('cfg_which_database', 0), 0, $this->modalwidth, $this->modalheight, $this->overallconfig['use_jquery_modal']);
+?>        
+  
+</div>    
+<div>
+  <?php
 					echo $this->showSubstitution_Timelines1();
 					echo $this->showEvents_Timelines1();
-					?>
-                </div>
-            </td>
-        </tr>
-        <tr>
-			<?php
-			if ($this->team2->logo_small == '')
-			{
-			?>
-            <td width="140">
-				<?php
-				echo $this->team2->name;
-				}
-				else
-				{
-				?>
-            <td width="40">
-				<?php
-				echo sportsmanagementModelProject::getClubIconHtml($this->team2, 1, 0, 'logo_big', Factory::getApplication()->input->getInt('cfg_which_database', 0), 0, $this->modalwidth, $this->modalheight, $this->overallconfig['use_jquery_modal']);
-				}
-				?>
-            </td>
-            <td id="timeline-bottom">
-                <div id="timelinebottom">
-					<?php
+					?>                    
+</div>                      
+                      
+</div>                                                    
+                          
+                          
+<div class="" id="matchreport-guestline" >                          
+<div id="bild1">                          
+<?php
+echo sportsmanagementModelProject::getClubIconHtml($this->team2, 1, 0, 'logo_big', Factory::getApplication()->input->getInt('cfg_which_database', 0), 0, $this->modalwidth, $this->modalheight, $this->overallconfig['use_jquery_modal']);
+?>                          
+</div>  
+  
+<div>
+  <?php
 					echo $this->showSubstitution_Timelines2();
 					echo $this->showEvents_Timelines2();
-					?>
-                </div>
-        </tr>
-
-    </table>
-</div>
-<!-- END of match timeline -->
+					?>                    
+</div>                      
+                      
+</div>                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+    
+</div>                          
