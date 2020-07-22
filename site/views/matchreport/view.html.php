@@ -37,6 +37,8 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 	 */
 	public function init()
 	{
+	   $this->playgroundheight = 25;
+       
 		$this->model->matchid = $this->jinput->getInt('mid', 0);
 		sportsmanagementModelProject::setProjectID($this->jinput->getInt('p', 0));
 		$project           = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
