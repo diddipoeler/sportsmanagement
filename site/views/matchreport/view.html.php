@@ -429,6 +429,7 @@ $result .= self::_formatTimelineSubstitution($sub, $sub->firstname, $sub->nickna
 				$substitutioncounter[] = $sub->in_out_time;
 			}
 		}
+        arsort($substitutioncounter2);
 //echo '<pre>'.print_r($substitutioncounter2,true).'</pre>';
 		return $result;
 	}
@@ -637,7 +638,7 @@ $two_substitutions_per_minute -= 1;
 				$substitutioncounter[] = $sub->in_out_time;
 			}
 		}
-
+arsort($substitutioncounter2);
 //echo '<pre>'.print_r($substitutioncounter2,true).'</pre>';
 
 		return $result;
