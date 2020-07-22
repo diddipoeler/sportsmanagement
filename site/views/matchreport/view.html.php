@@ -404,6 +404,8 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 		$substitutioncounter = array();
 		$eventstimecounter   = $this->getEventsTimes();
 
+      //echo '<pre>'.print_r($eventstimecounter,true).'</pre>';
+      
 		foreach ($this->substitutes as $sub)
 		{
 			if ($sub->ptid == $this->match->projectteam1_id)
@@ -417,7 +419,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
                 
 				else
 				{
-					$result .= self::_formatTimelineSubstitution($sub, $sub->firstname, $sub->nickname, $sub->lastname, $sub->out_firstname, $sub->out_nickname, $sub->out_lastname, 0);
+					$result .= self::_formatTimelineSubstitution($sub, $sub->firstname, $sub->nickname, $sub->lastname, $sub->out_firstname, $sub->out_nickname, $sub->out_lastname, $substitutioncounter2[$sub->in_out_time]);
 				}
 
 				$substitutioncounter[] = $sub->in_out_time;
@@ -460,7 +462,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 	 */
 	function _formatTimelineSubstitution($sub, $firstname, $nickname, $lastname, $out_firstname, $out_nickname, $out_lastname, $two_substitutions_per_minute = 0)
 	{
-
+$two_substitutions_per_minute -= 1;
 		$pic_out  = 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/out.png';
 		$pic_in   = 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/in.png';
 		$pic_time = 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/change.png';
