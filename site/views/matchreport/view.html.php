@@ -477,11 +477,11 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 
 		if ($two_substitutions_per_minute == 1) // There were two substitutions in one minute in timelinetop
 		{
-			$result .= "\n" . '<img class="hasTip" style="position: absolute; left: ' . $time2 . '%; top: -25px;"';
+			$result .= "\n" . '<img class="hasTip" style="position: absolute; left: ' . $time2 . '%; top: 25px;"';
 		}
 		elseif ($two_substitutions_per_minute == 2) // There were two substitutions in one minute in timelinebottom
 		{
-			$result .= "\n" . '<img class="hasTip" style="position: absolute; left: ' . $time2 . '%; top: 25px;"';
+			$result .= "\n" . '<img class="hasTip" style="position: absolute; left: ' . $time2 . '%; top: 50px;"';
 		}
 		else
 		{
