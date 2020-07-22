@@ -609,15 +609,17 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 			if ($sub->ptid == $this->match->projectteam2_id)
 			{
 			 $substitutioncounter2[$sub->in_out_time] += 1;
-				if (in_array($sub->in_out_time, $eventstimecounter) || in_array($sub->in_out_time, $substitutioncounter))
+				//if (in_array($sub->in_out_time, $eventstimecounter) || in_array($sub->in_out_time, $substitutioncounter))
+                if (in_array($sub->in_out_time, $eventstimecounter) )
 				{
-					$result .= self::_formatTimelineSubstitution($sub, $sub->firstname, $sub->nickname, $sub->lastname, $sub->out_firstname, $sub->out_nickname, $sub->out_lastname, 2);
+					$result .= self::_formatTimelineSubstitution($sub, $sub->firstname, $sub->nickname, $sub->lastname, $sub->out_firstname, $sub->out_nickname, $sub->out_lastname, $substitutioncounter2[$sub->in_out_time]);
 				}
+                /*
 				else
 				{
 					$result .= self::_formatTimelineSubstitution($sub, $sub->firstname, $sub->nickname, $sub->lastname, $sub->out_firstname, $sub->out_nickname, $sub->out_lastname, 0);
 				}
-
+*/
 				$substitutioncounter[] = $sub->in_out_time;
 			}
 		}
