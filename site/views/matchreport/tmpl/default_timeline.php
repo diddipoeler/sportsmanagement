@@ -136,14 +136,14 @@ echo sportsmanagementModelProject::getClubIconHtml($this->team2, 1, 0, 'logo_big
 #matchreport-homeline {
 background-image: url("/images/com_sportsmanagement/database/matchreport/spielfeld_top.png");
 background-repeat: no-repeat;
-background-size: 100% 99px;
+background-size: 100% <?php echo ($this->playgroundheight * 25) - 1;?>px;
 height: <?php echo $this->playgroundheight * 25;?>px;
 
 }
 #matchreport-guestline {
 background-image: url("/images/com_sportsmanagement/database/matchreport/spielfeld_bottom.png");
 background-repeat: no-repeat;
-background-size: 100% 99px;
+background-size: 100% <?php echo ($this->playgroundheight * 25) - 1;?>px;
 height: <?php echo $this->playgroundheight * 25;?>px;
 vertical-align: baseline;
 
