@@ -51,7 +51,21 @@ use Joomla\CMS\Factory;
     top: 19px; 
     z-index: 3; 
 } 
-  
+#matchreport-homeline {
+background-image: url("/images/com_sportsmanagement/database/matchreport/spielfeld_top.png");
+background-repeat: no-repeat;
+background-size: 100% 46px;
+height: 47px;
+
+}
+#matchreport-guestline {
+background-image: url("/images/com_sportsmanagement/database/matchreport/spielfeld_bottom.png");
+background-repeat: no-repeat;
+background-size: 100% 46px;
+height: 47px;
+vertical-align: baseline;
+
+}  
 </style>  
 <!--  
 <h2><a id="Semesterpraesentationen"></a>Semesterpräsentationen</h2> 
