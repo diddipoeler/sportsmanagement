@@ -37,7 +37,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 	 */
 	public function init()
 	{
-	   $this->playgroundheight = 25;
+	   $this->playgroundheight = 0;
        
 		$this->model->matchid = $this->jinput->getInt('mid', 0);
 		sportsmanagementModelProject::setProjectID($this->jinput->getInt('p', 0));
@@ -431,6 +431,10 @@ $result .= self::_formatTimelineSubstitution($sub, $sub->firstname, $sub->nickna
 		}
         arsort($substitutioncounter2);
         $first = array_shift($substitutioncounter2);
+        if ( $first > $this->playgroundheight )
+{
+    $this->playgroundheight = $first;
+}
 //echo '<pre>'.print_r($substitutioncounter2,true).'</pre>';
 		return $result;
 	}
@@ -641,6 +645,10 @@ $two_substitutions_per_minute -= 1;
 		}
 arsort($substitutioncounter2);
 $first = array_shift($substitutioncounter2);
+if ( $first > $this->playgroundheight )
+{
+    $this->playgroundheight = $first;
+}
 //echo '<pre>'.print_r($substitutioncounter2,true).'</pre>';
 
 		return $result;
