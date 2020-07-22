@@ -24,12 +24,12 @@ use Joomla\CMS\Factory;
 
 #matchreport-homeline { 
     position: relative; 
-    height: 70px; 
+    height: 80px; 
     
 }   
 #matchreport-guestline { 
     position: relative; 
-    height: 70px; 
+    height: 80px; 
     
 } 
 
@@ -54,15 +54,15 @@ use Joomla\CMS\Factory;
 #matchreport-homeline {
 background-image: url("/images/com_sportsmanagement/database/matchreport/spielfeld_top.png");
 background-repeat: no-repeat;
-background-size: 100% 46px;
-height: 47px;
+background-size: 100% 79px;
+height: 80px;
 
 }
 #matchreport-guestline {
 background-image: url("/images/com_sportsmanagement/database/matchreport/spielfeld_bottom.png");
 background-repeat: no-repeat;
-background-size: 100% 46px;
-height: 47px;
+background-size: 100% 79px;
+height: 80px;
 vertical-align: baseline;
 
 }  
