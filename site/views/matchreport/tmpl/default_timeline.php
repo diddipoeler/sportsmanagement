@@ -12,7 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
+//echo $this->playgroundheight;
 ?>
 <style>  
 
@@ -24,12 +24,12 @@ use Joomla\CMS\Factory;
 
 #matchreport-homeline { 
     position: relative; 
-    height: 100px; 
+    height:  <?php echo $this->playgroundheight * 25;?>px; 
     
 }   
 #matchreport-guestline { 
     position: relative; 
-    height: 100px; 
+    height: <?php echo $this->playgroundheight * 25;?>px; 
     
 } 
 
@@ -55,14 +55,14 @@ use Joomla\CMS\Factory;
 background-image: url("/images/com_sportsmanagement/database/matchreport/spielfeld_top.png");
 background-repeat: no-repeat;
 background-size: 100% 99px;
-height: 100px;
+height: <?php echo $this->playgroundheight * 25;?>px;
 
 }
 #matchreport-guestline {
 background-image: url("/images/com_sportsmanagement/database/matchreport/spielfeld_bottom.png");
 background-repeat: no-repeat;
 background-size: 100% 99px;
-height: 100px;
+height: <?php echo $this->playgroundheight * 25;?>px;
 vertical-align: baseline;
 
 }  
