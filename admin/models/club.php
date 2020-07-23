@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -11,11 +9,10 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Filter\OutputFilter;
 
 /**
  * sportsmanagementModelclub
@@ -74,6 +71,8 @@ class sportsmanagementModelclub extends JSMModelAdmin
 
 			$tblClub->unique_id   = $post['unique_id' . $pks[$x]];
 			$tblClub->new_club_id = $post['new_club_id' . $pks[$x]];
+			$tblClub->name = $post['club_name' . $pks[$x]];
+			$tblClub->alias = OutputFilter::stringURLSafe($tblClub->name);
 
 			if (!empty($tblClub->address))
 			{
