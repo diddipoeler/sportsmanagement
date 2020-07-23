@@ -56,10 +56,10 @@ echo sportsmanagementModelProject::getClubIconHtml($this->team1, 1, 0, 'logo_big
   
 </div>    
 <div>
-  <?php
-					echo $this->showSubstitution_Timelines1();
-					echo $this->showEvents_Timelines1();
-					?>                    
+<?php
+echo $this->showSubstitution_Timelines(0,'projectteam1_id');
+echo $this->showEvents_Timelines(0, 0,'projectteam1_id');
+?>                    
 </div>                      
                       
 </div>                                                    
@@ -73,10 +73,10 @@ echo sportsmanagementModelProject::getClubIconHtml($this->team2, 1, 0, 'logo_big
 </div>  
   
 <div>
-  <?php
-					echo $this->showSubstitution_Timelines2();
-					echo $this->showEvents_Timelines2();
-					?>                    
+<?php
+echo $this->showSubstitution_Timelines(0,'projectteam2_id');
+echo $this->showEvents_Timelines(0, 0,'projectteam2_id');
+?>                    
 </div>                      
                       
 </div>                          
