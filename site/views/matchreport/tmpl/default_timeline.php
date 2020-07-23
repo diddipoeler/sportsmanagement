@@ -80,22 +80,16 @@ echo sportsmanagementModelProject::getClubIconHtml($this->team2, 1, 0, 'logo_big
 </div>                      
                       
 </div>                          
-                          
-                          
-                          
-                          
-                          
-                          
-                          
-                          
-                          
-                          
-                          
-                          
-                          
-                          
-    
-</div>                          
+ 
+</div>      
+
+<?php
+if ( !$this->playgroundheight )
+{
+$this->playgroundheight = 2;
+}
+?>
+
 <style>  
 
 #semesterbilder { 
