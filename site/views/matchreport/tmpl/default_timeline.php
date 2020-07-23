@@ -12,6 +12,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+
+JHtml::_('bootstrap.tooltip'); 
 //echo $this->playgroundheight;
 ?>
   
