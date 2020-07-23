@@ -141,6 +141,16 @@
 			<option value="1">JYES</option>
 		</field>
 
+		<field 	name="which_position_tooltip_subst" type="extensionradiobutton" default="bottom" class="radio btn-group btn-group-yesno"
+				label="Welche Position des Tooltips bei den Wechseln ?" 
+				description="Welche Position des Tooltips bei den Wechseln ?">
+			<option value="bottom">bottom</option>
+			<option value="top">top</option>
+			<option value="left">left</option>
+			<option value="right">right</option>
+		</field>
+		
+		
 		
 		<field 	name="show_which_timeline" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
 				label="Welche Zeitlinie ?" 
