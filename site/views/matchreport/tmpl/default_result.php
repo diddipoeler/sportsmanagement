@@ -266,7 +266,14 @@ use Joomla\CMS\Filesystem\File;
 
 	if ($this->config['show_timeline'] && $this->config['show_timeline_under_results'])
 	{
+		if ( $this->config['show_which_timeline'] )
+		{
+		echo $this->loadTemplate('timeline_graph');
+		}
+		else
+		{
 		echo $this->loadTemplate('timeline');
+		}
 	}
 	?>
 
