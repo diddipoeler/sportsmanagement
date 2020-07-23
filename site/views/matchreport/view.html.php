@@ -944,8 +944,9 @@ $tiptext .= implode("<br>", $value);
 //$tiptext   .= ' <br>';  	
 //$tiptext .= $value[1];  	
 	
+//$result2 .= "\n" . '<img class="hasTip" style="position: absolute; left: ' . $time2 . '%; top: 10px;"';
+$result2 .= "\n" . '<img class="hasTooltip" style="position: absolute; left: ' . $time2 . '%; top: 10px;"';	
 	
-$result2 .= "\n" . '<img class="hasTip" style="position: absolute; left: ' . $time2 . '%; top: 10px;"';
 //$result2 .= ' src="' . $pic_time . '" alt="' . $tiptext . '" title="' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE_SUBSTITUTION_MIN') . ' '.$key.' ::';
 $result2 .= ' src="' . $pic_time . '" alt="' . $tiptext . '" title="' . $tiptext;  
 //$result2 .= ' src="' . $pic_time . '" alt="' . $tiptext . '" title="' . '';  
