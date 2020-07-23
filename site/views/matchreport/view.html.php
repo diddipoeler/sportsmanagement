@@ -863,8 +863,13 @@ if ( $first > $this->playgroundheight )
 function showSubstitution_Timelines($sub = 0,$projectteam_id = 'projectteam1_id')
 	{
 		$result              = '';
+		$tiptext              = '';
 		$substitutioncounter = array();
 		$eventstimecounter   = $this->getEventsTimes();
+		
+		$pic_out  = 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/out.png';
+		$pic_in   = 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/in.png';
+		$pic_time = 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/change.png';
 
       //echo '<pre>'.print_r($eventstimecounter,true).'</pre>';
       
@@ -885,8 +890,29 @@ function showSubstitution_Timelines($sub = 0,$projectteam_id = 'projectteam1_id'
 					$result .= self::_formatTimelineSubstitution($sub, $sub->firstname, $sub->nickname, $sub->lastname, $sub->out_firstname, $sub->out_nickname, $sub->out_lastname, $substitutioncounter2[$sub->in_out_time]);
 				}
               */
-$result .= self::_formatTimelineSubstitution($sub, $sub->firstname, $sub->nickname, $sub->lastname, $sub->out_firstname, $sub->out_nickname, $sub->out_lastname, $substitutioncounter2[$sub->in_out_time]);
-				$substitutioncounter[] = $sub->in_out_time;
+			  
+			  
+
+
+		//$tiptext   = Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE_SUBSTITUTION_MIN') . ' ';
+		//$tiptext   .= $sub->in_out_time;
+		//$tiptext   .= ' ::';
+		
+		if ( $this->config["show_row_timeline"] )
+		{
+		$tiptext   = self::getHtmlImageForTips($pic_in);
+		$tiptext   .= sportsmanagementHelper::formatName(null, $sub->firstname, $sub->nickname, $sub->lastname, $this->config["name_format"]);
+		$tiptext   .= ' &lt;br&gt; ';
+		$tiptext   .= self::getHtmlImageForTips($pic_out);
+		$tiptext   .= sportsmanagementHelper::formatName(null, $sub->out_firstname, $sub->out_nickname, $sub->out_lastname, $this->config["name_format"]);
+		$substitutioncounter[$sub->in_out_time][] = $tiptext;
+		}
+		else
+		{
+		$result .= self::_formatTimelineSubstitution($sub, $sub->firstname, $sub->nickname, $sub->lastname, $sub->out_firstname, $sub->out_nickname, $sub->out_lastname, $substitutioncounter2[$sub->in_out_time]);	
+		}
+		
+		
 			}
 		}
         arsort($substitutioncounter2);
@@ -895,7 +921,47 @@ $result .= self::_formatTimelineSubstitution($sub, $sub->firstname, $sub->nickna
 {
     $this->playgroundheight = $first;
 }
-//echo '<pre>'.print_r($substitutioncounter2,true).'</pre>';
+
+if ( $this->config["show_row_timeline"] )
+		{
+$result2    = '';
+foreach( $substitutioncounter as $key => $value )
+{
+$time = $key;
+$matchtime = $this->getTimelineMatchTime();
+$time2     = ($time / $matchtime) * 100;
+$tiptext   = Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE_SUBSTITUTION_MIN') . ' ';
+$tiptext   .= $key;
+$tiptext   .= ' ::';  
+$tiptext .= implode("<br>", $value);
+//$tiptext .= $value[0];  
+	
+	
+//$tiptext   .= Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE_SUBSTITUTION_MIN') . ' ';
+//$tiptext   .= $key;
+//$tiptext   .= ' ::';  
+//$tiptext .= implode("<br>", $value);
+//$tiptext   .= ' <br>';  	
+//$tiptext .= $value[1];  	
+	
+	
+$result2 .= "\n" . '<img class="hasTip" style="position: absolute; left: ' . $time2 . '%; top: 0px;"';
+//$result2 .= ' src="' . $pic_time . '" alt="' . $tiptext . '" title="' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE_SUBSTITUTION_MIN') . ' '.$key.' ::';
+$result2 .= ' src="' . $pic_time . '" alt="' . $tiptext . '" title="' . $tiptext;  
+//$result2 .= ' src="' . $pic_time . '" alt="' . $tiptext . '" title="' . '';  
+$result2 .= '" />';
+
+}	
+$this->playgroundheight = 1;
+//echo '<pre>'.print_r($tiptext,true).'</pre>';
+
+//echo '<pre>'.print_r($substitutioncounter,true).'</pre>';
+return $result2;
+		}
+
+
+
+
 		return $result;
 	}
 
