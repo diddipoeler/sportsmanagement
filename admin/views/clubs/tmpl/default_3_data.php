@@ -157,11 +157,7 @@ $joomlaicon = $params->get('show_joomla_icons');
 						<?php 
 			//echo $this->escape($row->name); 
 			?>
-<input<?php echo $inputappend; ?>
-                            type="text" size="50" class="form-control form-control-inline"
-                            name="club_name<?php echo $row->id; ?>"
-                            value="<?php echo $row->name; ?>"
-                            onchange="document.getElementById('cb<?php echo $i; ?>').checked = true"/>			
+		
 			
 			<?php 
 			?>
@@ -172,7 +168,13 @@ $joomlaicon = $params->get('show_joomla_icons');
 					<?php // echo $row->name;
 					?>
                     <div class="small">
-						<?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias)); ?></div>
+		<?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias)); ?>
+			<input<?php echo $inputappend; ?>
+                            type="text" size="40" class="form-control form-control-inline"
+                            name="club_name<?php echo $row->id; ?>"
+                            value="<?php echo $row->name; ?>"
+                            onchange="document.getElementById('cb<?php echo $i; ?>').checked = true"/>
+			</div>
                 </td>
                 <td class="center">
 					<?php
