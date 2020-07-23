@@ -945,14 +945,14 @@ $tiptext .= implode("<br>", $value);
 //$tiptext .= $value[1];  	
 	
 	
-$result2 .= "\n" . '<img class="hasTip" style="position: absolute; left: ' . $time2 . '%; top: 0px;"';
+$result2 .= "\n" . '<img class="hasTip" style="position: absolute; left: ' . $time2 . '%; top: 10px;"';
 //$result2 .= ' src="' . $pic_time . '" alt="' . $tiptext . '" title="' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE_SUBSTITUTION_MIN') . ' '.$key.' ::';
 $result2 .= ' src="' . $pic_time . '" alt="' . $tiptext . '" title="' . $tiptext;  
 //$result2 .= ' src="' . $pic_time . '" alt="' . $tiptext . '" title="' . '';  
 $result2 .= '" />';
 
 }	
-$this->playgroundheight = 1;
+$this->playgroundheight = 2;
 //echo '<pre>'.print_r($tiptext,true).'</pre>';
 
 //echo '<pre>'.print_r($substitutioncounter,true).'</pre>';
