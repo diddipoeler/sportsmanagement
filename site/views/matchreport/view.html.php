@@ -932,7 +932,7 @@ $matchtime = $this->getTimelineMatchTime();
 $time2     = ($time / $matchtime) * 100;
 $tiptext   = Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE_SUBSTITUTION_MIN') . ' ';
 $tiptext   .= $key;
-$tiptext   .= ' ::';  
+$tiptext   .= ' <br>';  
 $tiptext .= implode("<br>", $value);
 //$tiptext .= $value[0];  
 	
