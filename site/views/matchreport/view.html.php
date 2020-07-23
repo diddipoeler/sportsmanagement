@@ -859,4 +859,125 @@ if ( $first > $this->playgroundheight )
 		return $result;
 	}
 
+
+function showSubstitution_Timelines($sub = 0,$projectteam_id = 'projectteam1_id')
+	{
+		$result              = '';
+		$substitutioncounter = array();
+		$eventstimecounter   = $this->getEventsTimes();
+
+      //echo '<pre>'.print_r($eventstimecounter,true).'</pre>';
+      
+		foreach ($this->substitutes as $sub)
+		{
+			if ($sub->ptid == $this->match->$projectteam_id)
+			{
+			 $substitutioncounter2[$sub->in_out_time] += 1;
+              /*
+				if (in_array($sub->in_out_time, $eventstimecounter) || in_array($sub->in_out_time, $substitutioncounter))
+                //if (in_array($sub->in_out_time, $eventstimecounter) )
+				{
+					$result .= self::_formatTimelineSubstitution($sub, $sub->firstname, $sub->nickname, $sub->lastname, $sub->out_firstname, $sub->out_nickname, $sub->out_lastname, $substitutioncounter2[$sub->in_out_time]);
+				}
+                
+				else
+				{
+					$result .= self::_formatTimelineSubstitution($sub, $sub->firstname, $sub->nickname, $sub->lastname, $sub->out_firstname, $sub->out_nickname, $sub->out_lastname, $substitutioncounter2[$sub->in_out_time]);
+				}
+              */
+$result .= self::_formatTimelineSubstitution($sub, $sub->firstname, $sub->nickname, $sub->lastname, $sub->out_firstname, $sub->out_nickname, $sub->out_lastname, $substitutioncounter2[$sub->in_out_time]);
+				$substitutioncounter[] = $sub->in_out_time;
+			}
+		}
+        arsort($substitutioncounter2);
+        $first = array_shift($substitutioncounter2);
+        if ( $first > $this->playgroundheight )
+{
+    $this->playgroundheight = $first;
+}
+//echo '<pre>'.print_r($substitutioncounter2,true).'</pre>';
+		return $result;
+	}
+
+
+function showEvents_Timelines($eventid = 0, $projectteamid = 0,$projectteam_id = 'projectteam1_id')
+	{
+		$result       = '';
+		$eventcounter = array();
+
+		foreach ($this->eventtypes AS $event)
+		{
+			foreach ($this->matchevents AS $me)
+			{
+				if ($me->event_type_id == $event->id && $me->ptid == $this->match->$projectteam_id)
+				{
+					$placeholder = sportsmanagementHelper::getDefaultPlaceholder("player");
+					/**
+					 * set teamplayer picture
+					 */
+					if (($me->tppicture1 != $placeholder) && (!empty($me->tppicture1)))
+					{
+						$picture = $me->tppicture1;
+
+						if (!File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $picture))
+						{
+							$picture = $placeholder;
+						}
+					}
+
+					/**
+					 * when teamplayer picture is empty or a placeholder icon look for the general player picture
+					 */
+					elseif ((($me->tppicture1 == $placeholder) || (empty($me->tppicture1)))
+						&& (($me->picture1 != $placeholder) && (!empty($me->picture1)))
+					)
+					{
+						$picture = $me->picture1;
+
+						if (!File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $picture))
+						{
+							$picture = $placeholder;
+						}
+					}
+					else
+					{
+						$picture = $placeholder;
+					}
+
+					if (in_array($me->event_time, $eventcounter))
+					{
+						$result .= self::_formatTimelineEvent($me, $event, $me->firstname1, $me->nickname1, $me->lastname1, $picture, 2);
+					}
+					else
+					{
+						$result .= self::_formatTimelineEvent($me, $event, $me->firstname1, $me->nickname1, $me->lastname1, $picture, 0);
+					}
+
+					$eventcounter[] = $me->event_time;
+				}
+			}
+		}
+
+		return $result;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
