@@ -14,19 +14,8 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
 JHtml::_('bootstrap.tooltip'); 
-//echo $this->playgroundheight;
+
 ?>
-  
-<!--  
-<h2><a id="Semesterpraesentationen"></a>Semesterpräsentationen</h2> 
-<div id="semesterbilder"> 
-    <div id="bild1"><img src="/images/com_sportsmanagement/database/clubs/large/200px-logo-sc_freiburg_svg_1327138422.png" width="auto" height="20"></div> 
-    <div id="bild2"><img src="/images/com_sportsmanagement/database/clubs/large/200px-logo-sc_freiburg_svg_1327138422.png" width="auto" height="20"></div> 
-    <div id="bild3"><img src="/images/com_sportsmanagement/database/clubs/large/200px-logo-sc_freiburg_svg_1327138422.png" width="auto" height="20"></div> 
-</div> 
---> 
-  
-  
 <!-- START of match timeline -->
 <div class="<?php echo $this->divclassrow; ?> " id="matchreport-timeline" >
     <script type="text/javascript">
