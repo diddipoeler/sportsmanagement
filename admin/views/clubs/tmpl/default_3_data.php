@@ -154,7 +154,17 @@ $joomlaicon = $params->get('show_joomla_icons');
 
 						:
 						?>
-						<?php echo $this->escape($row->name); ?>
+						<?php 
+			//echo $this->escape($row->name); 
+			
+<input<?php echo $inputappend; ?>
+                            type="text" size="50" class="form-control form-control-inline"
+                            name="club_name<?php echo $row->id; ?>"
+                            value="<?php echo $row->name; ?>"
+                            onchange="document.getElementById('cb<?php echo $i; ?>').checked = true"/>			
+			
+			
+			?>
 					<?php endif;
 					?>
 					<?php // Echo $checked;
