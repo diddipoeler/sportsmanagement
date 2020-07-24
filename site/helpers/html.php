@@ -232,7 +232,6 @@ class sportsmanagementHelperHtml
 	 */
 	public static function _formatEventContainerInResults($matchevent, $event, $projectteamId, $showEventInfo,$config)
 	{
-		
 /**
  *      Meaning of $showEventInfo:
  * 		0 : do not show event as text or as icon in a list item
