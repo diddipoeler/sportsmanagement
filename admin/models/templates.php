@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
@@ -30,7 +26,6 @@ use Joomla\CMS\Factory;
 class sportsmanagementModelTemplates extends JSMModelList
 {
 	var $_identifier = "templates";
-
 	var $_project_id = 0;
 
 	/**
@@ -57,6 +52,11 @@ class sportsmanagementModelTemplates extends JSMModelList
 		parent::setDbo($getDBConnection);
 	}
 
+	/**
+	 * sportsmanagementModelTemplates::getMasterTemplates()
+	 * 
+	 * @return
+	 */
 	function getMasterTemplates()
 	{
 		$this->jsmquery->clear();
@@ -66,7 +66,6 @@ class sportsmanagementModelTemplates extends JSMModelList
 		$this->jsmquery->order('name');
 		$this->jsmdb->setQuery($this->jsmquery);
 		$options = $this->jsmdb->loadObjectList();
-
 		return $options;
 	}
 
@@ -179,15 +178,25 @@ class sportsmanagementModelTemplates extends JSMModelList
 			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . ''), '');
 		}
 
-		// Load the filter state.
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
+		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
+		$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
 
-		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string');
-		$this->setState('filter.state', $published);
+		$orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
 
-		// List state information.
-		parent::populateState('tmpl.template', 'asc');
+		if (!in_array($orderCol, $this->filter_fields))
+		{
+			$orderCol = 'a.name';
+		}
+
+		$this->setState('list.ordering', $orderCol);
+		$listOrder = $this->getUserStateFromRequest($this->context . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+
+		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		{
+			$listOrder = 'ASC';
+		}
+
+		$this->setState('list.direction', $listOrder);
 	}
 
 	/**
@@ -200,7 +209,6 @@ class sportsmanagementModelTemplates extends JSMModelList
 
 		$this->jsmquery->clear();
 
-		// $this->_project_id = $this->jsmapp->getUserState( "$this->jsmoption.pid", '0' );
 		$this->checklist($this->project_id);
 		$this->jsmquery->clear();
 		$this->jsmquery->select('tmpl.template,tmpl.title,tmpl.id,tmpl.checked_out,u.name AS editor,(0) AS isMaster,tmpl.checked_out_time,tmpl.modified,tmpl.modified_by');
