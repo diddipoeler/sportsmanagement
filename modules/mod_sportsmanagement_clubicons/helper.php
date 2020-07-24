@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_clubicons
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -31,15 +27,10 @@ use Joomla\CMS\Component\ComponentHelper;
 class modJSMClubiconsHelper
 {
 	var $project;
-
 	var $ranking;
-
 	var $teams = array();
-
 	var $params;
-
 	var $module;
-
 	var $placeholders = array(
 		'logo_big'            => 'images/com_sportsmanagement/database/placeholders/placeholder_150.png',
 		'projectteam_picture' => 'images/com_sportsmanagement/database/placeholders/placeholder_450_2.png',
@@ -125,7 +116,7 @@ class modJSMClubiconsHelper
 			{
 				$this->teams[$r->projectteamid]         = array();
 				$this->teams[$r->projectteamid]['link'] = self::getLink($r);
-				$class                                  = (!empty($this->teams[$r->projectteamid]['link'])) ? 'img-zoom' : 'img-zoom';
+				$class                                  = (!empty($this->teams[$r->projectteamid]['link'])) ? 'img-zoom img-height' : 'img-zoom img-height';
 				$this->teams[$r->projectteamid]['logo'] = self::getLogo($r, $class);
 			}
 		}
