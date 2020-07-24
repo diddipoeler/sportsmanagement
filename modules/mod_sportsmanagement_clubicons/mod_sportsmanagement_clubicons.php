@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_clubicons
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
@@ -32,10 +28,7 @@ if (!defined('JSM_PATH'))
 
 JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 
-/**
- *
- * prüft vor Benutzung ob die gewünschte Klasse definiert ist
- */
+/** prüft vor Benutzung ob die gewünschte Klasse definiert ist */
 if (!class_exists('JSMModelLegacy'))
 {
 	JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_SITE);
@@ -135,6 +128,7 @@ $doc = Factory::getDocument();
  */
 $style = '
 .img-zoom {
+width: auto;
     height: ' . $params->get('picture_height', '50') . ';
     -webkit-transition: all .2s ease-in-out;
     -moz-transition: all .2s ease-in-out;
