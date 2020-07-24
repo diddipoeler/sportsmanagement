@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage matchreport
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -46,13 +42,13 @@ if (!empty($this->matchplayerpositions))
         <div class="">
             <div class="d-flex flex-row justify-content-between p-2 mb-2 position">
                 <div class="5">
-                    Home team
+                    <?php echo $this->team1_club->name; ?>
                 </div>
                 <div class="positionid">
 					<?php echo Text::_($pos->name); ?>
                 </div>
                 <div class="">
-                    Guest team
+                    <?php echo $this->team2_club->name; ?>
                 </div>
             </div>
 
