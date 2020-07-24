@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage template
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -134,9 +130,7 @@ class sportsmanagementViewTemplate extends sportsmanagementView
 		$this->project      = $project;
 		$this->lists        = $lists;
 
-		/**
-		 * Load the language files for the contact integration
-		 */
+		/** Load the language files for the contact integration */
 		$jlang = Factory::getLanguage();
 		$jlang->load('com_contact', JPATH_ADMINISTRATOR, 'en-GB', true);
 		$jlang->load('com_contact', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);

@@ -267,7 +267,12 @@ elseif (version_compare(JSM_JVERSION, '3', 'eq'))
 										case 'id':
 											break;
 										default:
-											?>
+											switch ($field->type)
+                                            {
+                                            case 'extensionsubtitle':
+                                            break;
+                                            default:
+                                            ?>
                                             <a rel="{handler: 'iframe',size: {x: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH; ?>,y: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT; ?>}}"
                                                href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER . 'SM-Backend-Felder:' . $this->jinput->getVar("view") . '-' . $this->form->getName() . '-' . $var_onlinehelp; ?>"
                                                class="modal">
@@ -281,6 +286,9 @@ elseif (version_compare(JSM_JVERSION, '3', 'eq'))
                                             </a>
 
 											<?PHP
+                                            break;
+                                            }
+                                            
 											if ($field->name == 'jform[country]')
 											{
 												echo JSMCountries::getCountryFlag($field->value);
