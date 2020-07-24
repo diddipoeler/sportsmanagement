@@ -21,7 +21,7 @@ use Joomla\CMS\Factory;
 	if (!empty($this->matchstaffpositions))
 	{
 		?>
-        <table class="table ">
+        <table class="table">
 			<?php
 			foreach ($this->matchstaffpositions as $pos)
 			{
@@ -59,7 +59,11 @@ use Joomla\CMS\Factory;
 												$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 											}
 											echo '&nbsp;';
-											echo sportsmanagementHelperHtml::getBootstrapModalImage('matchstaff' . $player->person_id, $picture, $imgTitle, $this->config['staff_picture_width']);
+											echo sportsmanagementHelperHtml::getBootstrapModalImage('matchstaff' . $player->person_id, $picture, $imgTitle, $this->config['staff_picture_width'],
+                                            '',
+                                            $this->modalwidth,
+                                            $this->modalheight,
+                                            $this->overallconfig['use_jquery_modal']);
 											?>
 
                                         </li>
@@ -90,7 +94,11 @@ use Joomla\CMS\Factory;
 												$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 											}
 
-											echo sportsmanagementHelperHtml::getBootstrapModalImage('matchstaff' . $player->person_id, $picture, $imgTitle, $this->config['staff_picture_width']);
+											echo sportsmanagementHelperHtml::getBootstrapModalImage('matchstaff' . $player->person_id, $picture, $imgTitle, $this->config['staff_picture_width'],
+                                            '',
+                                            $this->modalwidth,
+                                            $this->modalheight,
+                                            $this->overallconfig['use_jquery_modal']);
 
 											?>
 
