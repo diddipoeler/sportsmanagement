@@ -185,7 +185,7 @@ class sportsmanagementModelTemplates extends JSMModelList
 
 		if (!in_array($orderCol, $this->filter_fields))
 		{
-			$orderCol = 'a.name';
+			$orderCol = 'tmpl.template';
 		}
 
 		$this->setState('list.ordering', $orderCol);
