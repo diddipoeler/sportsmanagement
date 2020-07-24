@@ -179,7 +179,7 @@ class sportsmanagementHelperHtml
 		}
 		else
 		{
-			$showEventInfo = ($this->config['show_events_with_icons'] == 1) ? 1 : 2;
+			$showEventInfo = ($config['show_events_with_icons'] == 1) ? 1 : 2;
 			$output        .= '<table class="matchreport" border="0">';
 			$output        .= '<tr>';
 
