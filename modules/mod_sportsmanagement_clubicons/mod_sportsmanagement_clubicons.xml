@@ -74,7 +74,7 @@
 		<option value="team_picture">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_TEAM_PICTURE</option>
 	</field>
 				
-<field 	name="picture_height" type="text" default="100"
+<field 	name="picture_height" type="text" default="50"
 	label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_ALL_LOGO_HEIGHT" 
 	description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_ALL_LOGO_HEIGHT">
 </field>
