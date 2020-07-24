@@ -145,9 +145,9 @@
 				label="Welche Position des Tooltips bei den Wechseln ?" 
 				description="Welche Position des Tooltips bei den Wechseln ?">
 			<option value="bottom">bottom</option>
-			<option value="top">top</option>
-			<option value="left">left</option>
-			<option value="right">right</option>
+			<option value="top">JGLOBAL_TOP</option>
+			<option value="left">JGLOBAL_LEFT</option>
+			<option value="right">JGLOBAL_RIGHT</option>
 		</field>
 		
 		
