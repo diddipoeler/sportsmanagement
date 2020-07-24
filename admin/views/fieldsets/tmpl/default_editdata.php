@@ -237,15 +237,15 @@ elseif (version_compare(JSM_JVERSION, '3', 'eq'))
 				case 'player':
 				?>
                 <div class="span6">
-					<?php
-					break;
-					default:
-					?>
-                    <div class="span12">
-						<?php
-						break;
-						}
-						?>
+				<?php
+				break;
+				default:
+				?>
+                <div class="span12">
+				<?php
+				break;
+				}
+				?>
 
 						<?PHP
 						foreach ($this->form->getFieldset($fieldset->name) as $field)
