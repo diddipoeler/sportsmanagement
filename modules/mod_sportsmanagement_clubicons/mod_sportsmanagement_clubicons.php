@@ -135,7 +135,7 @@ $doc = Factory::getDocument();
  */
 $style = '
 .img-zoom {
-    width: ' . $params->get('jcclubiconsglobalmaxwidth', '50') . ';
+    height: ' . $params->get('picture_height', '50') . ';
     -webkit-transition: all .2s ease-in-out;
     -moz-transition: all .2s ease-in-out;
     -o-transition: all .2s ease-in-out;
