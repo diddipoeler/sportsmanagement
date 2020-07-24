@@ -41,8 +41,6 @@ class modJSMClubiconsHelper
 	var $module;
 
 	var $placeholders = array(
-		'logo_small'          => 'images/com_sportsmanagement/database/placeholders/placeholder_small.png',
-		'logo_middle'         => 'images/com_sportsmanagement/database/placeholders/placeholder_50.png',
 		'logo_big'            => 'images/com_sportsmanagement/database/placeholders/placeholder_150.png',
 		'projectteam_picture' => 'images/com_sportsmanagement/database/placeholders/placeholder_450_2.png',
 		'team_picture'        => 'images/com_sportsmanagement/database/placeholders/placeholder_450_2.png'
@@ -83,7 +81,6 @@ class modJSMClubiconsHelper
 
 		if ($project_id)
 		{
-			// SportsmanagementModelProject::setProjectId($project_id);
 			sportsmanagementModelProject::$projectid          = $project_id;
 			sportsmanagementModelProject::$cfg_which_database = $this->params->get('cfg_which_database');
 			$this->project                                    = sportsmanagementModelProject::getProject($this->params->get('cfg_which_database'));
@@ -208,6 +205,6 @@ class modJSMClubiconsHelper
 
 		$imgtitle = Text::_('View ') . $item->name;
 
-		return HTMLHelper::image($logourl, $item->name, 'border="0" width="' . $this->params->get('jcclubiconsglobalmaxwidth') . '" class="' . $class . '" title="' . $imgtitle . '"');
+		return HTMLHelper::image($logourl, $item->name, 'border="0" width="auto" height="' . $this->params->get('picture_height') . '" class="' . $class . '" title="' . $imgtitle . '"');
 	}
 }
