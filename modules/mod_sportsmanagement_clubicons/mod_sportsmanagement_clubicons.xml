@@ -70,11 +70,15 @@
 	
 	<field name="logotype" type="list" default="logo_big" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_TYPE" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_TYPE_DESC">
 		<option value="logo_big">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_BIG</option>
-		<option value="logo_middle">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_MIDDLE</option>
-		<option value="logo_small">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_SMALL</option>
 		<option value="projectteam_picture">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_PROJECTTEAM_PICTURE</option>
 		<option value="team_picture">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_TEAM_PICTURE</option>
 	</field>
+				
+<field 	name="picture_height" type="text" default="100"
+	label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_ALL_LOGO_HEIGHT" 
+	description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_ALL_LOGO_HEIGHT">
+</field>
+				
 	<field name="jcclubiconsglobalmaxwidth" type="text" default="50" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_GLOBAL_MAX_WIDTH" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_GLOBAL_MAX_WIDTH_DESC" />
 		
 	<field name="iconsperrow" type="text" default="20" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_ICONSPERROW" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_ICONSPERROW_DESC" />
