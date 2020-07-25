@@ -126,6 +126,7 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		
 <field type="extensionsubtitle" title="" color="#2672a6" />
 		<field 	name="show_timeline" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_LABEL_SHOW_TIMELINE" 
@@ -258,6 +259,8 @@
 			<option value="1">JYES</option>
 		</field>
 
+<field type="extensionsubtitle" title="" color="#2672a6" />
+
 		<field 	name="show_match_playground" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_LABEL_SHOW_MATCH_PLAYGROUND"
 				description="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_SHOW_MATCH_PLAYGROUND">
@@ -277,6 +280,8 @@
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PLAYGROUND_PICTURE_WIDTH"
 			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PLAYGROUND_PICTURE_WIDTH">
 		</field>
+		
+		<field type="extensionsubtitle" title="" color="#2672a6" />
 		
 		<field 	name="show_match_referees" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_LABEL_SHOW_MATCH_REFEREES"
@@ -305,6 +310,8 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		
+		<field type="extensionsubtitle" title="" color="#2672a6" />
 		
 		<field 	name="show_match_crowd" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_LABEL_SHOW_MATCH_CROWD"
