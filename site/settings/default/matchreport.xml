@@ -427,14 +427,17 @@ directory="images/com_sportsmanagement/database/rosterground"
 				description="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_SHOW_PICTURE_DESC">
 			<option value="team_picture">COM_SPORTSMANAGEMENT_FES_MATCHREPORT_TEAM_PICTURE</option>
 			<option value="projectteam_picture">COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PROJECTTEAM_PICTURE</option>
-			<option value="logo_small">COM_SPORTSMANAGEMENT_FES_MATCHREPORT_CLUB_LOGO_SMALL</option>
-			<option value="logo_middle">COM_SPORTSMANAGEMENT_FES_MATCHREPORT_CLUB_LOGO_MIDDLE</option>
 			<option value="logo_big">COM_SPORTSMANAGEMENT_FES_MATCHREPORT_CLUB_LOGO_BIG</option>
 		</field>
-
+<!--
 		<field 	name="team_picture_width" type="text" default="150"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_PICTURE_WIDTH" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_PICTURE_WIDTH">
+		</field>
+		-->
+		<field 	name="team_picture_height" type="text" default="150"
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_PICTURE_HEIGHT" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_PICTURE_HEIGHT">
 		</field>
 		
 	</fieldset>		
