@@ -233,14 +233,15 @@ elseif (version_compare(JSM_JVERSION, '3', 'eq'))
 				case 'club':
 				case 'playground':
 				case 'player':
-                $class_span = 'span6';
+                $class_span1 = 'span6';
+                $class_span2 = 'span6';
 				break;
 				default:
-                $class_span = 'span12';
+                $class_span1 = 'span12';
 				break;
 				}
 				?>
-                <div class="<?php echo $class_span; ?>">
+                <div class="<?php echo $class_span1; ?>">
 						<?PHP
 						foreach ($this->form->getFieldset($fieldset->name) as $field)
 						{
@@ -328,23 +329,22 @@ elseif (version_compare(JSM_JVERSION, '3', 'eq'))
                                 </div>
                             </div>
 							<?php
-
 						}
 						?>
                     </div>
 					<?php
 					switch ($view)
 					{
-						case 'club':
-						case 'playground':
-						case 'player':
-							if (!$this->item->latitude)
-							{
-								$this->item->latitude  = '0.00000000';
-								$this->item->longitude = '0.00000000';
-							}
-							?>
-                            <div class="span6">
+					case 'club':
+    				case 'playground':
+					case 'player':
+					if (!$this->item->latitude)
+					{
+					$this->item->latitude  = '0.00000000';
+					$this->item->longitude = '0.00000000';
+					}
+					?>
+                    <div class="<?php echo $class_span2; ?>">
                                 <div class="control-group">
                                     <style type="text/css">.map_canvas {
                                             width: 100%;
