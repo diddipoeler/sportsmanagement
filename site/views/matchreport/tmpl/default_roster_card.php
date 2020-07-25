@@ -40,13 +40,13 @@ if (!empty($this->matchplayerpositions))
 		?>
         <div class="row-fluid" id="">
             <div class="col-md-12" id="position">
-                <div class="col-md-5" id="clubhomename">
+                <div class="col-md-5 text-right" id="clubhomename">
                     <?php echo $this->team1_club->name; ?>
                 </div>
-                <div class="col-md-2" id="posname">
+                <div class="col-md-2 text-center" id="posname">
 					<?php echo Text::_($pos->name); ?>
                 </div>
-                <div class="col-md-5" id="clubawayteam">
+                <div class="col-md-5 text-left" id="clubawayteam">
                     <?php echo $this->team2_club->name; ?>
                 </div>
             </div>
