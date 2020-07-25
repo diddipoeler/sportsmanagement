@@ -441,10 +441,10 @@ $two_substitutions_per_minute -= 1;
 		$tiptext   = Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE_SUBSTITUTION_MIN') . ' ';
 		$tiptext   .= $time;
 		$tiptext   .= ' ::';
-		$tiptext   .= self::getHtmlImageForTips($pic_in);
+		$tiptext   .= self::getHtmlImageForTips($pic_in,'auto',13);
 		$tiptext   .= sportsmanagementHelper::formatName(null, $firstname, $nickname, $lastname, $this->config["name_format"]);
 		$tiptext   .= ' &lt;br&gt; ';
-		$tiptext   .= self::getHtmlImageForTips($pic_out);
+		$tiptext   .= self::getHtmlImageForTips($pic_out,'auto',13);
 		$tiptext   .= sportsmanagementHelper::formatName(null, $out_firstname, $out_nickname, $out_lastname, $this->config["name_format"]);
 		$result    = '';
 
@@ -543,7 +543,7 @@ $two_substitutions_per_minute -= 1;
 	 *
 	 * @return
 	 */
-	function getHtmlImageForTips($picture, $width = 0, $height = 0)
+	function getHtmlImageForTips($picture, $width = 'auto', $height = 0)
 	{
 		$picture = Uri::root() . $picture;
 
@@ -655,10 +655,10 @@ function showSubstitution_Timelines($sub = 0,$projectteam_id = 'projectteam1_id'
 
 		if ( $this->config["show_row_timeline"] )
 		{
-		$tiptext   = self::getHtmlImageForTips($pic_in);
+		$tiptext   = self::getHtmlImageForTips($pic_in,'auto',13);
 		$tiptext   .= sportsmanagementHelper::formatName(null, $sub->firstname, $sub->nickname, $sub->lastname, $this->config["name_format"]);
 		$tiptext   .= ' &lt;br&gt; ';
-		$tiptext   .= self::getHtmlImageForTips($pic_out);
+		$tiptext   .= self::getHtmlImageForTips($pic_out,'auto',13);
 		$tiptext   .= sportsmanagementHelper::formatName(null, $sub->out_firstname, $sub->out_nickname, $sub->out_lastname, $this->config["name_format"]);
 		$substitutioncounter[$sub->in_out_time][] = $tiptext;
 		}
