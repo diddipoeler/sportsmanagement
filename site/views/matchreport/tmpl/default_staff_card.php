@@ -66,14 +66,21 @@ $routeparameter['pid']                = $player->person_slug;
 
 $player_link  = sportsmanagementHelperRoute::getSportsmanagementRoute('staff', $routeparameter);
 $match_player = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->config["name_format"]);
-
-echo HTMLHelper::link($player_link, $match_player);
-
 $imgTitle = Text::sprintf('COM_SPORTSMANAGEMENT_MATCHREPORT_PIC', $match_player);
 $picture  = $player->picture;
 if (!file_exists($picture))
 {
 $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
+}
+
+
+if ( $this->config['show_player_profile_link'] )
+{
+echo HTMLHelper::link($player_link, $match_player);
+}
+else
+{
+echo $match_player;    
 }
 echo '&nbsp;';
 echo sportsmanagementHelperHtml::getBootstrapModalImage('matchstaff' . $player->person_id, 
@@ -83,7 +90,8 @@ $this->config['staff_picture_height'],
 '',
 $this->modalwidth,
 $this->modalheight,
-$this->overallconfig['use_jquery_modal']);    
+$this->overallconfig['use_jquery_modal']);   
+ 
 }
 }
 ?>
@@ -128,7 +136,15 @@ $this->modalwidth,
 $this->modalheight,
 $this->overallconfig['use_jquery_modal']);
 echo '&nbsp;';
+
+if ( $this->config['show_player_profile_link'] )
+{
 echo HTMLHelper::link($player_link, $match_player);
+}
+else
+{
+echo $match_player;    
+}
       
 }
 }
