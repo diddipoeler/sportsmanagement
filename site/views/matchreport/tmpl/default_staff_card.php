@@ -52,13 +52,29 @@ if (!empty($this->matchstaffpositions))
 <div class="d-flex flex-row justify-content-center">
 <!-- list of home-team card-->
 <div class="list d-flex flex-row flex-wrap justify-content-start">
-
+<?php
+foreach ($this->matchstaffs as $player)
+{
+if ($player->position_id == $pos->position_id && $player->ptid == $this->match->projectteam1_id)
+{
+    
+}
+}
+?>
 </div>
 <!-- list of line -->
 <div class="line mb-2"></div>
 <!-- list of guest-team card-->
 <div class="list d-flex flex-row flex-wrap justify-content-end">
-
+<?php
+foreach ($this->matchstaffs as $player)
+{
+if ($player->position_id == $pos->position_id && $player->ptid == $this->match->projectteam2_id)
+{
+    
+}
+}
+?>
 </div>
 </div>
 </div>
