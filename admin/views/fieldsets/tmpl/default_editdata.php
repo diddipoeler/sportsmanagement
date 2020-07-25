@@ -247,10 +247,10 @@ elseif (version_compare(JSM_JVERSION, '3', 'eq'))
 						{
 							?>
                             <div class="control-group">
-                                <div class="control-label span5">
+                                <div class="control-label span3">
 									<?php echo $field->label; ?>
                                 </div>
-                                <div class="controls span7">
+                                <div class="controls span9">
 									<?php echo $field->input; ?>
 
 									<?PHP
