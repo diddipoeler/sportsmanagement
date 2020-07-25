@@ -14,24 +14,19 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 HTMLHelper::_('behavior.tooltip');
 
-// Make sure that in case extensions are written for mentioned (common) views,
-// that they are loaded i.s.o. of the template of this view
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 switch ($this->project->sport_type_name)
 {
 case 'COM_SPORTSMANAGEMENT_ST_TENNIS';
-	echo $this->loadTemplate('projectheading');
-	echo $this->loadTemplate('sectionheader');
-
-	echo $this->loadTemplate('result');
-	echo $this->loadTemplate('details');
-
-	echo $this->loadTemplate('sporttype_tennis');
-	break;
+echo $this->loadTemplate('projectheading');
+echo $this->loadTemplate('sectionheader');
+echo $this->loadTemplate('result');
+echo $this->loadTemplate('details');
+echo $this->loadTemplate('sporttype_tennis');
+break;
 default:
-
 $hasMatchPlayerStats = false;
 $hasMatchStaffStats  = false;
 

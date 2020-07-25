@@ -78,6 +78,7 @@
 				description="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_SHOW_ROSTER_CARD">
 			<option value="roster">COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_SHOW_ROSTER_CARD_1</option>
 			<option value="roster_card">COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_SHOW_ROSTER_CARD_2</option>
+			<option value="roster_diddi">COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_SHOW_ROSTER_CARD_3</option>
 		</field>
 		
 		<field 	name="show_staff_card" type="list" default="staff" 
