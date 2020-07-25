@@ -18,11 +18,10 @@ use Joomla\CMS\Factory;
 HTMLHelper::_('behavior.modal');
 
 ?>
-<link rel="stylesheet"
-      href="<?php echo Uri::base(true); ?>/components/com_sportsmanagement/assets/css/matchreport_2.css">
+<link rel="stylesheet" href="<?php echo Uri::base(true); ?>/components/com_sportsmanagement/assets/css/matchreport_2.css">
 
-<!-- START: game roster -->
-<!-- Show Match players -->
+<!-- START: game roster card -->
+<!-- Show Match players card-->
 <?php
 if (!empty($this->matchplayerpositions))
 {
@@ -32,7 +31,6 @@ if (!empty($this->matchplayerpositions))
 
 		foreach ($this->matchplayers as $player)
 		{
-			// If ($player->pposid == $pos->pposid)
 			if ($player->position_id == $pos->position_id)
 			{
 				$personCount++;
@@ -316,7 +314,7 @@ if (!empty($this->matchplayerpositions))
 	}
 }
 ?>
-<!-- END of Match players -->
+<!-- END of Match players card-->
 <br/>
 
-<!-- END: game roster -->
+<!-- END: game roster card-->

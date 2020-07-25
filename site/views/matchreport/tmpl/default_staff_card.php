@@ -15,6 +15,56 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 
 ?>
+<link rel="stylesheet" href="<?php echo Uri::base(true); ?>/components/com_sportsmanagement/assets/css/matchreport_2.css">
+
+
+<!-- START: game roster card -->
+<!-- Show Match players card-->
+<?php
+if (!empty($this->matchstaffpositions))
+{
+	foreach ($this->matchstaffpositions as $pos)
+	{
+		$personCount = 0;
+
+		//foreach ($this->matchplayers as $player)
+//		{
+//			if ($player->position_id == $pos->position_id)
+//			{
+//				$personCount++;
+//			}
+//		}
+		?>
+<div class="">
+            <div class="d-flex flex-row justify-content-between p-2 mb-2 position">
+                <div class="5">
+                    <?php echo $this->team1_club->name; ?>
+                </div>
+                <div class="positionid">
+					<?php echo Text::_($pos->name); ?>
+                </div>
+                <div class="">
+                    <?php echo $this->team2_club->name; ?>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+</div>
+<?php
+}
+}
+?>
+
+
+
+
 <!-- Show Match staff card -->
 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="matchreport-staff-card">
 	<?php
