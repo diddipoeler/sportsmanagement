@@ -58,27 +58,30 @@ foreach ($this->matchstaffs as $player)
 if ($player->position_id == $pos->position_id && $player->ptid == $this->match->projectteam1_id)
 {
 $routeparameter                       = array();
-											$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-											$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-											$routeparameter['p']                  = $this->project->slug;
-											$routeparameter['tid']                = $player->team_slug;
-											$routeparameter['pid']                = $player->person_slug;
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+$routeparameter['p']                  = $this->project->slug;
+$routeparameter['tid']                = $player->team_slug;
+$routeparameter['pid']                = $player->person_slug;
 
-											$player_link  = sportsmanagementHelperRoute::getSportsmanagementRoute('staff', $routeparameter);
-											$match_player = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->config["name_format"]);
-											echo HTMLHelper::link($player_link, $match_player);
-											$imgTitle = Text::sprintf('Picture of %1$s', $match_player);
-											$picture  = $player->picture;
-											if (!file_exists($picture))
-											{
-												$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
-											}
-											echo '&nbsp;';
-											echo sportsmanagementHelperHtml::getBootstrapModalImage('matchstaff' . $player->person_id, $picture, $imgTitle, $this->config['staff_picture_height'],
-                                            '',
-                                            $this->modalwidth,
-                                            $this->modalheight,
-                                            $this->overallconfig['use_jquery_modal']);    
+$player_link  = sportsmanagementHelperRoute::getSportsmanagementRoute('staff', $routeparameter);
+$match_player = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->config["name_format"]);
+echo HTMLHelper::link($player_link, $match_player);
+$imgTitle = Text::sprintf('COM_SPORTSMANAGEMENT_MATCHREPORT_PIC', $match_player);
+$picture  = $player->picture;
+if (!file_exists($picture))
+{
+$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
+}
+echo '&nbsp;';
+echo sportsmanagementHelperHtml::getBootstrapModalImage('matchstaff' . $player->person_id, 
+$picture, 
+$imgTitle, 
+$this->config['staff_picture_height'],
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);    
 }
 }
 ?>
@@ -93,27 +96,30 @@ foreach ($this->matchstaffs as $player)
 if ($player->position_id == $pos->position_id && $player->ptid == $this->match->projectteam2_id)
 {
 $routeparameter                       = array();
-											$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-											$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-											$routeparameter['p']                  = $this->project->slug;
-											$routeparameter['tid']                = $player->team_slug;
-											$routeparameter['pid']                = $player->person_slug;
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+$routeparameter['p']                  = $this->project->slug;
+$routeparameter['tid']                = $player->team_slug;
+$routeparameter['pid']                = $player->person_slug;
 
-											$player_link  = sportsmanagementHelperRoute::getSportsmanagementRoute('staff', $routeparameter);
-											$match_player = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->config["name_format"]);
-											echo HTMLHelper::link($player_link, $match_player);
-											$imgTitle = Text::sprintf('Picture of %1$s', $match_player);
-											$picture  = $player->picture;
-											if (!file_exists($picture))
-											{
-												$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
-											}
-											echo '&nbsp;';
-											echo sportsmanagementHelperHtml::getBootstrapModalImage('matchstaff' . $player->person_id, $picture, $imgTitle, $this->config['staff_picture_height'],
-                                            '',
-                                            $this->modalwidth,
-                                            $this->modalheight,
-                                            $this->overallconfig['use_jquery_modal']);      
+$player_link  = sportsmanagementHelperRoute::getSportsmanagementRoute('staff', $routeparameter);
+$match_player = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->config["name_format"]);
+echo HTMLHelper::link($player_link, $match_player);
+$imgTitle = Text::sprintf('COM_SPORTSMANAGEMENT_MATCHREPORT_PIC', $match_player);
+$picture  = $player->picture;
+if (!file_exists($picture))
+{
+$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
+}
+echo '&nbsp;';
+echo sportsmanagementHelperHtml::getBootstrapModalImage('matchstaff' . $player->person_id, 
+$picture, 
+$imgTitle, 
+$this->config['staff_picture_height'],
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);      
 }
 }
 ?>
