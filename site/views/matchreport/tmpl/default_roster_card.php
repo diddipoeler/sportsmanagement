@@ -38,22 +38,22 @@ if (!empty($this->matchplayerpositions))
 			}
 		}
 		?>
-        <div class="row-fluid">
-            <div class="col-md-12">
-                <div class="col-md-5">
+        <div class="row-fluid" id="">
+            <div class="col-md-12" id="position">
+                <div class="col-md-5" id="">
                     <?php echo $this->team1_club->name; ?>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2" id="">
 					<?php echo Text::_($pos->name); ?>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-5" id="">
                     <?php echo $this->team2_club->name; ?>
                 </div>
             </div>
 
-            <div class="col-md-12">
+            <div class="col-md-12" id="">
                 <!-- list of home-team -->
-                <div class="col-md-6">
+                <div class="col-md-6" id="">
 					<?php
 					foreach ($this->matchplayers as $player)
 					{
@@ -172,7 +172,7 @@ if (!empty($this->matchplayerpositions))
                 <!-- list of line -->
                 <div class="line mb-2"></div>
                 <!-- list of guest-team -->
-                <div class="col-md-6">
+                <div class="col-md-6" id="">
 					<?php
 					foreach ($this->matchplayers as $player)
 					{
