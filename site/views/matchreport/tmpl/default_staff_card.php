@@ -16,8 +16,9 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 
 ?>
+<!--
 <link rel="stylesheet" href="<?php echo Uri::base(true); ?>/components/com_sportsmanagement/assets/css/matchreport_2.css">
-
+-->
 
 <!-- START: game roster card -->
 <!-- Show Match players card-->
@@ -36,22 +37,22 @@ if (!empty($this->matchstaffpositions))
 //			}
 //		}
 		?>
-<div class="">
-            <div class="d-flex flex-row justify-content-between p-2 mb-2 position">
-                <div class="5">
+<div class="row-fluid">
+            <div class="col-md-12">
+                <div class="col-md-5">
                     <?php echo $this->team1_club->name; ?>
                 </div>
-                <div class="positionid">
+                <div class="col-md-2">
 					<?php echo Text::_($pos->name); ?>
                 </div>
-                <div class="">
+                <div class="col-md-5">
                     <?php echo $this->team2_club->name; ?>
                 </div>
             </div>
 
-<div class="d-flex flex-row justify-content-center">
+<div class="col-md-12">
 <!-- list of home-team card-->
-<div class="list d-flex flex-row flex-wrap justify-content-start">
+<div class="col-md-6">
 <?php
 foreach ($this->matchstaffs as $player)
 {
@@ -99,7 +100,7 @@ $this->overallconfig['use_jquery_modal']);
 <!-- list of line -->
 <div class="line mb-2"></div>
 <!-- list of guest-team card-->
-<div class="list d-flex flex-row flex-wrap justify-content-end">
+<div class="col-md-6">
 <?php
 foreach ($this->matchstaffs as $player)
 {
