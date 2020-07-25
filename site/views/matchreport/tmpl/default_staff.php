@@ -52,7 +52,7 @@ use Joomla\CMS\Factory;
 											$player_link  = sportsmanagementHelperRoute::getSportsmanagementRoute('staff', $routeparameter);
 											$match_player = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->config["name_format"]);
 											echo HTMLHelper::link($player_link, $match_player);
-											$imgTitle = Text::sprintf('Picture of %1$s', $match_player);
+											$imgTitle = Text::sprintf('COM_SPORTSMANAGEMENT_MATCHREPORT_PIC', $match_player);
 											$picture  = $player->picture;
 											if (!file_exists($picture))
 											{
@@ -87,7 +87,7 @@ use Joomla\CMS\Factory;
                                         <li class="list">
 											<?php
 											$match_player = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->config["name_format"]);
-											$imgTitle     = Text::sprintf('Picture of %1$s', $match_player);
+											$imgTitle     = Text::sprintf('COM_SPORTSMANAGEMENT_MATCHREPORT_PIC', $match_player);
 											$picture      = $player->picture;
 											if (!file_exists($picture))
 											{
