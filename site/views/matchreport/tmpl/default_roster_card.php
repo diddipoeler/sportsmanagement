@@ -18,9 +18,9 @@ use Joomla\CMS\Factory;
 HTMLHelper::_('behavior.modal');
 
 ?>
-  <!--
+
 <link rel="stylesheet" href="<?php echo Uri::base(true); ?>/components/com_sportsmanagement/assets/css/matchreport_2.css">
--->
+
 <!-- START: game roster card -->
 <!-- Show Match players card-->
 <?php
