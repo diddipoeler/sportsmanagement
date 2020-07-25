@@ -94,7 +94,7 @@ use Joomla\CMS\Factory;
 												$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 											}
 
-											echo sportsmanagementHelperHtml::getBootstrapModalImage('matchstaff' . $player->person_id, $picture, $imgTitle, $this->config['staff_picture_width'],
+											echo sportsmanagementHelperHtml::getBootstrapModalImage('matchstaff' . $player->person_id, $picture, $imgTitle, $this->config['staff_picture_height'],
                                             '',
                                             $this->modalwidth,
                                             $this->modalheight,
