@@ -31,7 +31,7 @@ use Joomla\CMS\Factory;
                 <tr>
                     <!-- list of guest-team -->
                     <td>
-                        <table class="playerstats">
+                        <table class="<?php echo $this->config["table_class"];?>">
                             <thead>
                             <tr>
                                 <th class="playername"><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_NAME'); ?></th>
@@ -169,7 +169,7 @@ use Joomla\CMS\Factory;
                 <tr>
                     <!-- list of guest-team -->
                     <td>
-                        <table class="playerstats">
+                        <table class="<?php echo $this->config["table_class"];?>">
                             <thead>
                             <tr>
                                 <th class="playername"><?php echo Text::_('Name'); ?></th>
