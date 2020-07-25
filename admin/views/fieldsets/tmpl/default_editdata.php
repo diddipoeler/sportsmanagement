@@ -235,18 +235,14 @@ elseif (version_compare(JSM_JVERSION, '3', 'eq'))
 				case 'club':
 				case 'playground':
 				case 'player':
-				?>
-                <div class="span6">
-				<?php
+                $class_span = 'span6';
 				break;
 				default:
-				?>
-                <div class="span12">
-				<?php
+                $class_span = 'span12';
 				break;
 				}
 				?>
-
+                <div class="<?php echo $class_span; ?>">
 						<?PHP
 						foreach ($this->form->getFieldset($fieldset->name) as $field)
 						{
