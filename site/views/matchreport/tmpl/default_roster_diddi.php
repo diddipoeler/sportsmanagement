@@ -176,8 +176,10 @@ if (!empty($this->matchplayerpositions))
                 </div>
                 <!-- list of line -->
                 <div class="col-md-2"></div>
+                <div class="col-md-<?php echo 5 - $startcolhome; ?>" id="awayplayerspace">
+                </div>
                 <!-- list of guest-team -->
-                <div class="col-md-5" id="awayplayer">
+                <div class="col-md-<?php echo $startcolhome; ?>" id="awayplayer">
 					<?php
 					foreach ($this->matchplayers as $player)
 					{
