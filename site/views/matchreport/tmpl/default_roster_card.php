@@ -40,20 +40,20 @@ if (!empty($this->matchplayerpositions))
 		?>
         <div class="row-fluid" id="">
             <div class="col-md-12" id="position">
-                <div class="col-md-5" id="">
+                <div class="col-md-5" id="clubhomename">
                     <?php echo $this->team1_club->name; ?>
                 </div>
-                <div class="col-md-2" id="">
+                <div class="col-md-2" id="posname">
 					<?php echo Text::_($pos->name); ?>
                 </div>
-                <div class="col-md-5" id="">
+                <div class="col-md-5" id="clubawayteam">
                     <?php echo $this->team2_club->name; ?>
                 </div>
             </div>
 
-            <div class="col-md-12" id="">
+            <div class="col-md-12" id="playerrow">
                 <!-- list of home-team -->
-                <div class="col-md-6" id="">
+                <div class="col-md-6" id="homeplayer">
 					<?php
 					foreach ($this->matchplayers as $player)
 					{
@@ -172,7 +172,7 @@ if (!empty($this->matchplayerpositions))
                 <!-- list of line -->
                 <div class="line mb-2"></div>
                 <!-- list of guest-team -->
-                <div class="col-md-6" id="">
+                <div class="col-md-6" id="awayplayer">
 					<?php
 					foreach ($this->matchplayers as $player)
 					{
