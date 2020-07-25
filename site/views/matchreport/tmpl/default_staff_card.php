@@ -52,7 +52,7 @@ if (!empty($this->matchstaffpositions))
 
 <div class="col-md-12" id="staffrow">
 <!-- list of home-team card-->
-<div class="col-md-6" id="homestaff">
+<div class="col-md-5" id="homestaff">
 <?php
 foreach ($this->matchstaffs as $player)
 {
@@ -98,9 +98,9 @@ $this->overallconfig['use_jquery_modal']);
 ?>
 </div>
 <!-- list of line -->
-<div class="line mb-2"></div>
+<div class="col-md-2"></div>
 <!-- list of guest-team card-->
-<div class="col-md-6" id="awaystaff">
+<div class="col-md-5" id="awaystaff">
 <?php
 foreach ($this->matchstaffs as $player)
 {

@@ -53,7 +53,7 @@ if (!empty($this->matchplayerpositions))
 
             <div class="col-md-12" id="playerrow">
                 <!-- list of home-team -->
-                <div class="col-md-6" id="homeplayer">
+                <div class="col-md-5" id="homeplayer">
 					<?php
 					foreach ($this->matchplayers as $player)
 					{
@@ -92,7 +92,7 @@ if (!empty($this->matchplayerpositions))
 							$match_player = sportsmanagementHelper::formatName($prefix, $player->firstname, $player->nickname, $player->lastname, $this->config["name_format"]);
 							$isFavTeam    = in_array($player->team_id, explode(",", $this->project->fav_team));
 							?>
-                            <div class="d-flex flex-column align-self-start align-items-center p-2">
+                            <div class="col-md-5" id="homesingleplayer">
 								<?php
 								if (($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)))
 								{
@@ -170,9 +170,9 @@ if (!empty($this->matchplayerpositions))
 
                 </div>
                 <!-- list of line -->
-                <div class="line mb-2"></div>
+                <div class="col-md-2"></div>
                 <!-- list of guest-team -->
-                <div class="col-md-6" id="awayplayer">
+                <div class="col-md-5" id="awayplayer">
 					<?php
 					foreach ($this->matchplayers as $player)
 					{
@@ -214,7 +214,7 @@ if (!empty($this->matchplayerpositions))
 
 
 							?>
-                            <div class="d-flex flex-column align-self-start align-items-center p-2">
+                            <div class="col-md-5" id="awaysingleplayer">
 								<?php
 								if (($this->config['show_player_picture'] == 1) || ($this->config['show_player_picture'] == 2))
 								{
