@@ -140,14 +140,14 @@ if (!empty($this->matchplayerpositions))
 
 									if (($this->config['show_player_picture'] == 2) && ($this->config['show_player_profile_link'] == 1))
 									{
-										echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer' . $player->person_id, $picture, $imgTitle, $this->config['player_picture_width']);
+										echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer' . $player->person_id, $picture, $imgTitle, $this->config['player_picture_height']);
 										?>
 
 										<?PHP
 									}
 									else
 									{
-										echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer' . $player->person_id, $picture, $imgTitle, $this->config['player_picture_width']);
+										echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer' . $player->person_id, $picture, $imgTitle, $this->config['player_picture_height']);
 
 										if ($this->config['show_player_profile_link_alignment'] == 1)
 										{
@@ -236,7 +236,7 @@ if (!empty($this->matchplayerpositions))
 
 									if (($this->config['show_player_picture'] == 2) && ($this->config['show_player_profile_link'] == 1))
 									{
-										echo HTMLHelper::link($player_link, HTMLHelper::image($picture, $imgTitle, array('title' => $imgTitle, 'width' => $this->config['player_picture_width'])));
+										echo HTMLHelper::link($player_link, HTMLHelper::image($picture, $imgTitle, array('title' => $imgTitle, 'width' => $this->config['player_picture_height'])));
 
 										if ($this->config['show_player_profile_link_alignment'] == 1)
 										{
@@ -246,7 +246,7 @@ if (!empty($this->matchplayerpositions))
 									}
 									else
 									{
-										echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer' . $player->person_id, $picture, $imgTitle, $this->config['player_picture_width']);
+										echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer' . $player->person_id, $picture, $imgTitle, $this->config['player_picture_height']);
 										?>
 										<?PHP
 

@@ -15,8 +15,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 
 ?>
-<!-- Show Match staff -->
-<div class="<?php echo $this->divclassrow; ?> table-responsive" id="matchreport-staff">
+<!-- Show Match staff card -->
+<div class="<?php echo $this->divclassrow; ?> table-responsive" id="matchreport-staff-card">
 	<?php
 	if (!empty($this->matchstaffpositions))
 	{
@@ -132,4 +132,4 @@ use Joomla\CMS\Factory;
 	}
 	?>
 </div>
-<!-- END of Match staff -->
+<!-- END of Match staff card-->
