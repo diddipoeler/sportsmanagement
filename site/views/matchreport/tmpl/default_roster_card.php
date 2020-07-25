@@ -136,7 +136,7 @@ if (!empty($this->matchplayerpositions))
 									}
 
 
-									if (($this->config['show_player_picture'] == 2) && ($this->config['show_player_profile_link'] == 1))
+									if ( ($this->config['show_player_picture'] == 2) && ( $this->config['show_player_profile_link'] ) )
 									{
 										echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer' . $player->person_id, $picture, $imgTitle, $this->config['player_picture_height']);
 										?>
@@ -147,7 +147,7 @@ if (!empty($this->matchplayerpositions))
 									{
 										echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer' . $player->person_id, $picture, $imgTitle, $this->config['player_picture_height']);
 
-										if ($this->config['show_player_profile_link_alignment'] == 1)
+										if ( $this->config['show_player_profile_link_alignment'] )
 										{
 											echo '<br>';
 											echo HTMLHelper::link($player_link, $match_player . HTMLHelper::image(Uri::root() . 'images/com_sportsmanagement/database/teamplayers/shirt.php?text=' . $player->jerseynumber, $player->jerseynumber, array('title' => $player->jerseynumber)));
