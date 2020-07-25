@@ -173,7 +173,7 @@
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_EVENTSOPTIONS" 
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_EVENTSOPTIONS" 
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_EVENTSOPTIONS"
-			addfieldpath="/administrator/components/com_sportsmanagement/elements">
+>
 		
 		<field 	name="show_substitutions" type="extensionradiobutton" default="1"   class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_LABEL_SHOW_SUBS" 
