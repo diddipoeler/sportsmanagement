@@ -64,6 +64,8 @@
 			description="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_SHOW_PICTURES_COLUMNS">
 		</field>
 		
+		<field type="extensionsubtitle" title="" color="#2672a6" />
+		
 		<field 	name="show_roster" type="extensionradiobutton" default="1"   class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_LABEL_SHOW_ROSTER"
 				description="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_SHOW_ROSTER">
@@ -78,6 +80,14 @@
 			<option value="roster_card">COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_SHOW_ROSTER_CARD_2</option>
 		</field>
 		
+		<field 	name="show_staff_card" type="list" default="staff" 
+				label="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_LABEL_SHOW_STAFF_CARD" 
+				description="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_SHOW_STAFF_CARD">
+			<option value="staff">COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_SHOW_STAFF_CARD_1</option>
+			<option value="staff_card">COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_SHOW_STAFF_CARD_2</option>
+		</field>
+		
+		
     <field 	name="show_roster_playground" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_LABEL_SHOW_ROSTER_PLAYGROUND"
 				description="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_SHOW_ROSTER_PLAYGROUND">
@@ -85,6 +95,8 @@
 			<option value="1">JYES</option>
 		</field>	
     
+	<field type="extensionsubtitle" title="" color="#2672a6" />
+	
 		<field 	name="show_events" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_LABEL_SHOW_EVENTS"
 				description="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_SHOW_EVENTS">

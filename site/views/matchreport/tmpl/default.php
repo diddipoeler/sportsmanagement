@@ -129,7 +129,7 @@ if (!empty($this->matchplayerpositions))
 
 		if ($this->matchstaffpositions)
 		{
-			$output['COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE_UP_STAFF'] = 'staff';
+			$output['COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE_UP_STAFF'] = $this->config['show_staff_card'];
 		}
 
 
