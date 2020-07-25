@@ -92,7 +92,7 @@ if (!empty($this->matchplayerpositions))
 							$match_player = sportsmanagementHelper::formatName($prefix, $player->firstname, $player->nickname, $player->lastname, $this->config["name_format"]);
 							$isFavTeam    = in_array($player->team_id, explode(",", $this->project->fav_team));
 							?>
-                            <div class="col-md-5" id="homesingleplayer">
+                            <div class="" id="homesingleplayer">
 								<?php
 								if (($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)))
 								{
@@ -214,7 +214,7 @@ if (!empty($this->matchplayerpositions))
 
 
 							?>
-                            <div class="col-md-5" id="awaysingleplayer">
+                            <div class="" id="awaysingleplayer">
 								<?php
 								if (($this->config['show_player_picture'] == 1) || ($this->config['show_player_picture'] == 2))
 								{
