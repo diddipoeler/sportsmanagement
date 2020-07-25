@@ -74,6 +74,9 @@ if (!file_exists($picture))
 $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 }
 
+?>
+<div class="text-right" id="homesinglestaff">
+<?php
 
 if ( $this->config['show_player_profile_link'] )
 {
@@ -92,6 +95,10 @@ $this->config['staff_picture_height'],
 $this->modalwidth,
 $this->modalheight,
 $this->overallconfig['use_jquery_modal']);   
+?>
+</div>
+<?php 
+ 
  
 }
 }
@@ -125,8 +132,9 @@ if (!file_exists($picture))
 $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 }
 
-
-
+?>
+<div class="text-left" id="awaysinglestaff">
+<?php
 
 echo sportsmanagementHelperHtml::getBootstrapModalImage('matchstaff' . $player->person_id, 
 $picture, 
@@ -146,6 +154,12 @@ else
 {
 echo $match_player;    
 }
+
+?>
+</div>
+<?php
+
+
       
 }
 }
