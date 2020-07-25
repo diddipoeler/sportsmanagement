@@ -49,14 +49,18 @@ if (!empty($this->matchstaffpositions))
                 </div>
             </div>
 
+<div class="d-flex flex-row justify-content-center">
+<!-- list of home-team card-->
+<div class="list d-flex flex-row flex-wrap justify-content-start">
 
+</div>
+<!-- list of line -->
+<div class="line mb-2"></div>
+<!-- list of guest-team card-->
+<div class="list d-flex flex-row flex-wrap justify-content-end">
 
-
-
-
-
-
-
+</div>
+</div>
 </div>
 <?php
 }
