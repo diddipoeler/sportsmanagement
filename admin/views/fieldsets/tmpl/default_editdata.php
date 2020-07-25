@@ -218,9 +218,7 @@ elseif (version_compare(JSM_JVERSION, '3', 'eq'))
 			<?php echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
 
 			<?PHP
-			foreach ($fieldsets
-
-			as $fieldset)
+			foreach ($fieldsets	as $fieldset)
 			{
 			echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));
 
