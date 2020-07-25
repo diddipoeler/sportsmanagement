@@ -547,22 +547,21 @@ $two_substitutions_per_minute -= 1;
 	{
 		$picture = Uri::root() . $picture;
 
-		if ($width > 0 && $height == 0)
-		{
-			return '&lt;img src=&quot;' . $picture . '&quot; width=&quot;' . $width . '&quot; /&gt;';
-		}
+return '&lt;img src=&quot;' . $picture . '&quot;height=&quot;' . $height . '&quot; width=&quot;' . $width . '&quot; /&gt;';
 
-		if ($height > 0 && $width == 0)
-		{
-			return '&lt;img src=&quot;' . $picture . '&quot;height=&quot;' . $height . '&quot;/&gt;';
-		}
-
-		if ($height > 0 && $width > 0)
-		{
-			return '&lt;img src=&quot;' . $picture . '&quot;height=&quot;' . $height . '&quot; width=&quot;' . $width . '&quot; /&gt;';
-		}
-
-		return '&lt;img src=&quot;' . $picture . '&quot; /&gt;';
+//		if ($width > 0 && $height == 0)
+//		{
+//			return '&lt;img src=&quot;' . $picture . '&quot; width=&quot;' . $width . '&quot; /&gt;';
+//		}
+//		if ($height > 0 && $width == 0)
+//		{
+//			return '&lt;img src=&quot;' . $picture . '&quot;height=&quot;' . $height . '&quot;/&gt;';
+//		}
+//		if ($height > 0 && $width > 0)
+//		{
+//			return '&lt;img src=&quot;' . $picture . '&quot;height=&quot;' . $height . '&quot; width=&quot;' . $width . '&quot; /&gt;';
+//		}
+//		return '&lt;img src=&quot;' . $picture . '&quot; /&gt;';
 	}
 
 	/**
@@ -594,8 +593,8 @@ $two_substitutions_per_minute -= 1;
 		{
 			$tiptext .= self::getHtmlImageForTips(
 				$picture,
-				$this->config['player_picture_width'],
-				'auto'
+                'auto',
+				$this->config['player_picture_height']
 			);
 		}
 
