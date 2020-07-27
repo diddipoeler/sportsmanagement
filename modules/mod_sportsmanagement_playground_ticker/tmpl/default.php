@@ -3,9 +3,10 @@
  *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
- * @version   1.0.05
- * @file      agegroup.php
+ * @version   1.0.06
+ * @file      default.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @modded 	  llambion (2020)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  *
@@ -42,21 +43,32 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-?>
-<div class="container-fluid">
-    <div class="row">
+
+$mode = $params->get('mode');
+
+switch ($mode)
+{
+	/**
+	 *
+	 * bootstrap mode template
+	 */
+	case 'B':
+		?>
+		
+	<div class="container-fluid">
+		<div class="row">
 
         <div class="col-md-12">
-            <!-- Controls -->
-            <div class="controls pull-right hidden-xs">
-                <a class="left fa fa-chevron-left btn btn-primary"
-                   href="#carousel-<?php echo $module->module; ?>-<?php echo $module->id; ?>"
-                   data-slide="prev"></a><a class="right fa fa-chevron-right btn btn-primary"
+				<!-- Controls -->
+				<div class="controls pull-right hidden-xs">
+					<a class="left fa fa-chevron-left btn btn-primary"
+					href="#carousel-<?php echo $module->module; ?>-<?php echo $module->id; ?>"
+					data-slide="prev"></a><a class="right fa fa-chevron-right btn btn-primary"
                                             href="#carousel-<?php echo $module->module; ?>-<?php echo $module->id; ?>"
                                             data-slide="next"></a>
-            </div>
+				</div>
 
-        </div>
+		</div> 
     </div>
 
     <div id="carousel-<?php echo $module->module; ?>-<?php echo $module->id; ?>" class="carousel slide hidden-xs"
@@ -103,12 +115,47 @@ defined('_JEXEC') or die('Restricted access');
                     <div class="info">
                         <div class="row">
                             <div class="price col-md-6">
-                                <h5><?php echo $playground->name; ?></h5>
-
+							<?php // Club
+									If ($params->get('club')==1)
+									{							
+									?> <h5><?php echo $playground->name; ?></h5>
+									<?
+									}
+							?>		
                             </div>
                             <div class="price col-md-6">
+							<?php // Visitors
+									If ($params->get('capacity')==1)
+									{
+									?>	<h5 class="price-text-color"><?php echo 'Aforo: ' . $playground->max_visitors; ?></h5>	
+									<?
+									}								
+								?>
+							<?php // Address
+									If ($params->get('address')==1)
+									{
+									?>	<h5 class="price-text-color"><?php echo 'Dirección: ' . $playground->address . '. ' . $playground->city; ?></h5>	
+									<?
+									}								
+							?>								
 
-                                <h5 class="price-text-color"><?php echo $playground->max_visitors; ?></h5>
+							<?php // Gps Location
+									If ($params->get('gps_coor')==1)
+									{
+									?>	<h5 class="price-text-color"><?php echo 'Coordenadas GPS: ' . $playground->latitude . ', ' . $playground->longitude; ?></h5>	
+									<?
+									}								
+							?>
+								
+							<?php // Web
+									If ($params->get('web')==1)
+									{
+									?>	<h5 class="price-text-color"><?php echo 'Web: ' . $playground->website; ?></h5>	
+									<?
+									}
+								
+							?>	         								
+
                             </div>
                         </div>
                     </div>
@@ -120,3 +167,120 @@ defined('_JEXEC') or die('Restricted access');
         </div>
     </div>
 </div>
+		
+		
+		
+	<?php
+	break;
+
+	/**
+	 *
+	 * html mode template
+	 */
+	case 'L':
+		?>
+
+	<div class="container-fluid">
+        <div>
+
+			<?PHP
+			$a = 0;
+
+			foreach ($playgrounds AS $playground)
+			{
+				$active = ($a == 0) ? 'active' : '';
+
+				$playground->default_picture = sportsmanagementHelper::getDefaultPlaceholder('clublogobig');
+
+				// If ($params->get('show_picture')==1)
+				// {
+				if (curl_init($module->picture_server . DIRECTORY_SEPARATOR . $playground->picture) && $playground->picture != '')
+				{
+					$thispic = $playground->picture;
+				}
+                elseif (curl_init($module->picture_server . DIRECTORY_SEPARATOR . $playground->default_picture) && $playground->default_picture != '')
+				{
+					$thispic = $playground->default_picture;
+				}
+
+				// }
+
+
+				?>
+                <div class="item <?php echo $active; ?>">
+                    <div class="row">
+							<?php // Club
+									If ($params->get('club')==1)
+									{							
+									?> <h3><?php echo $playground->name; ?></h3>
+									<?
+									}
+							?>	
+						 <!-- <h5 class="price-text-color"><?php echo 'Club, ' . $playground->club_id; ?></h5> -->
+                        <div>
+                            <div>
+                                <div class="photo">
+                                    <img src="<?php echo $thispic; ?>" class="img-responsive" alt="a"
+                                         width="<?php echo $params->get('picture_width', 50); ?>"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info">
+                        <div class="row">
+                            <div>
+                                
+                            </div>
+                            <div>
+								<?php // Visitors
+									If ($params->get('capacity')==1)
+									{
+									?>	<h5 class="price-text-color"><?php echo 'Aforo: ' . $playground->max_visitors; ?></h5>	
+									<?
+									}								
+								?>
+								<?php // Address
+									If ($params->get('address')==1)
+									{
+									?>	<h5 class="price-text-color"><?php echo 'Dirección: ' . $playground->address . '. ' . $playground->city; ?></h5>	
+									<?
+									}								
+								?>								
+
+								<?php // Gps Location
+									If ($params->get('gps_coor')==1)
+									{
+									?>	<h5 class="price-text-color"><?php echo 'Coordenadas GPS: ' . $playground->latitude . ', ' . $playground->longitude; ?></h5>	
+									<?
+									}								
+								?>
+								
+								<?php // Web
+									If ($params->get('web')==1)
+									{
+									?>	<h5 class="price-text-color"><?php echo 'Web: ' . $playground->website; ?></h5>	
+									<?
+									}
+								
+								?>	                          
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+				<?PHP
+				$a++;
+			}
+			?>
+        </div>
+
+	</div>
+	<?PHP
+	break;
+}
+
+
+
+
+
