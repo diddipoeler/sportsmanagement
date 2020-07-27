@@ -168,8 +168,12 @@ switch ($this->fieldset)
                         <tr>
                             <td>
                                 <input type="hidden" name="team_id[]" value="<?php echo $team->id; ?>"/>
+				</td>
+				    <td>
                                 <input type="text" name="team_value_id[]" size='50' maxlength='100'
                                        value="<?php echo $team->name; ?>"/>
+				</td>    
+					    <td>
 				    <input type="text" name="club_value_id[]" size='50' maxlength='50'
                                        value="<?php echo $team->club_id; ?>"/>
                             </td>
