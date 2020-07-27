@@ -159,7 +159,7 @@ switch ($this->fieldset)
 		if (isset($this->teamsofclub))
 		{
 			?>
-            <fieldset class="adminform">
+
                 <table class="table">
 					<?php
 					foreach ($this->teamsofclub as $team)
@@ -178,7 +178,7 @@ switch ($this->fieldset)
 					}
 					?>
                 </table>
-            </fieldset>
+
 			<?PHP
 		}
 		break;
