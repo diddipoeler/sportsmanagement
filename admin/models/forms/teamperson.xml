@@ -98,6 +98,7 @@
 			type="calendar"
 			required="false"
 			varname="cid"
+			showon="injury:1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURY_DATE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURY_DATE_DESC"
 			class="inputbox"/>			
@@ -106,12 +107,13 @@
 			type="calendar"
 			required="false"
 			varname="cid"
+			showon="injury:1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURY_END"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURY_END_DESC"
 			class="inputbox"/>	
 		<field
 			name="injury_detail"
-			
+			showon="injury:1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURY_TYPE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURY_TYPE_DESC"
 			type="editor"
@@ -131,6 +133,7 @@
 			type="calendar"
 			required="false"
 			varname="cid"
+			showon="suspension:1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENSION_DATE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENSION_DATE_DESC"
 			class="inputbox"/>			
@@ -139,6 +142,7 @@
 			type="calendar"
 			required="false"
 			varname="cid"
+			showon="suspension:1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENSION_END"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENSION_END_DESC"
 			class="inputbox"/>	
@@ -147,6 +151,7 @@
 			type="editor"
       width="150" 
 			filter="safehtml"
+			showon="suspension:1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENSION_TYPE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENSION_TYPE_DESC"
 			class="inputbox"/>				
@@ -164,6 +169,7 @@
 			type="calendar"
 			required="false"
 			varname="cid"
+			showon="away:1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY_DATE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY_DATE_DESC"
 			class="inputbox"/>			
@@ -172,6 +178,7 @@
 			type="calendar"
 			required="false"
 			varname="cid"
+			showon="away:1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY_END"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY_END_DESC"
 			class="inputbox"/>	
@@ -180,6 +187,7 @@
 			type="editor"
       width="150" 
 			filter="safehtml"
+			showon="away:1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY_TYPE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY_TYPE_DESC"
 			class="inputbox"/>				
