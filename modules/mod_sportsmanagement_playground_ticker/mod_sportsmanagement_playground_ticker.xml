@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="module" version="2.5" client="site" method="upgrade">
+<extension type="module" version="2.6" client="site" method="upgrade">
 	<name>MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER</name>
-	<author>diddipoeler</author>
-	<creationDate>Mai 2015</creationDate>
+	<author>diddipoeler,llambion</author>
+	<creationDate>July 2020</creationDate>
 	<copyright>(C) 2015</copyright>
 	<license>GPL2</license>
 	<authorEmail>diddipoeler@arcor.de</authorEmail>
 	<authorUrl>www.fussballineuropa.de</authorUrl>
-	<version>1.0.00</version>
+	<version>1.0.06</version>
 	<description>MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_DESC</description>
 
 	<files>
@@ -57,6 +57,88 @@
 		<field 	name="picture_width" type="text" default="150"
 						label="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_PICTURE_WIDTH_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_PICTURE_WIDTH_DESCR" />
+						
+    <field name="mode" type="list" default="L" 
+	label="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_LABEL_MODE"
+	description="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_DESC_MODE">
+	<option value="L">LIST</option>
+	<option value="B">BOOTSTRAP</option>
+	</field>						
+						
+    <field	name="s" 
+    task="seasons" 
+      type="dependsql"
+      depends="cfg_which_database"
+      value_field="cfg_which_database"
+      key_field="season_id"
+					label="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
+					required="">
+			</field>
+			
+			<field 	name="p" 
+			task="projects" 
+      type="dependsql"
+      depends="s"
+      key_field="season_id"
+			value_field="s"
+			required=""
+						label="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_PROJECT_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_PROJECT_DESC" />	
+						
+      <field name="club" 
+    type="extensionradiobutton" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_CLUB" 
+      description="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_CLUB_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>												
+
+      <field name="web" 
+    type="extensionradiobutton" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_WEBSITE" 
+      description="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_WEBSITE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+
+      <field name="capacity" 
+    type="extensionradiobutton" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_CAPACITY" 
+      description="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_CAPACITY_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+      <field name="address" 
+    type="extensionradiobutton" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_ADDRESS" 
+      description="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_ADDRESS_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+      <field name="gps_coor" 
+    type="extensionradiobutton" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_GPS" 
+      description="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_GPS_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+						
+						
+						
 			</fieldset>
 			
 			
