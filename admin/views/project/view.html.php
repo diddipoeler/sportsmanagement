@@ -1,18 +1,13 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version   1.0.05
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -163,7 +158,7 @@ class sportsmanagementViewProject extends sportsmanagementView
 	protected function addToolbar()
 	{
 
-		$isNew      = $this->item->id ? $this->title = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT', $this->project->name) : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_ADD_NEW');
+		$isNew      = $this->item->id ? $this->title = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT', $this->item->name) : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_ADD_NEW');
 		$this->icon = 'project';
 
 		$bar = Toolbar::getInstance('toolbar');
