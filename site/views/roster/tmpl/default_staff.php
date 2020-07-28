@@ -175,9 +175,7 @@ if (count($this->stafflist) > 0)
 					{
 						// Put empty column to keep vertical alignment with the player table
 						?>
-                        <!--
-                        <td width="16" nowrap="nowrap" style="text-align:center; ">&nbsp;</td>
-                        -->
+
                         <?php
 					}
 					?>
@@ -199,9 +197,7 @@ if (count($this->stafflist) > 0)
 							echo '<span class="staffname">' . $playerName . '</i>';
 						} ?>
                     </td>
-                    <!--
-                    <td width="5%" style="text-align: left;" nowrap="nowrap">&nbsp;</td>
-                    -->
+
                     <?php
 					if ($this->config['show_birthday_staff'] > 0)
 					{
