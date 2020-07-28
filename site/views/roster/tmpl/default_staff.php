@@ -111,7 +111,10 @@ if (count($this->stafflist) > 0)
 //					if ($this->config['show_player_numbers'])
 //					{
 //						?>
-//                        <td width="30" class="td_c">&nbsp;</td><?php
+<!--
+                       <td width="30" class="td_c">&nbsp;</td>
+                       -->
+                       <?php
 //					}
 					$playerName = sportsmanagementHelper::formatName(
 						null, $row->firstname,
