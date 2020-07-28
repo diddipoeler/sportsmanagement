@@ -13,6 +13,9 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+
+$this->document->addScript(Uri::root(true) . '/components/com_sportsmanagement/assets/js/table-fixer.jquery.js');	
 
 // Show team-staff as defined
 if (count($this->stafflist) > 0)
@@ -74,7 +77,7 @@ if (count($this->stafflist) > 0)
     </table>
     <br/>
     <div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultstaff">
-        <table class="<?php echo $this->config['table_class']; ?>">
+        <table class="<?php echo $this->config['table_class']; ?>" id="tablestaff">
             <thead>
             <tr class="sectiontableheader rosterheader">
                 <th width="60%" colspan="<?php echo $positionHeaderSpan; ?>">
