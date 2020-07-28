@@ -15,7 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 
-$this->document->addScript(Uri::root(true) . '/components/com_sportsmanagement/assets/js/table-fixer.jquery.js');	
+	
 
 // Show team-staff as defined
 if (count($this->stafflist) > 0)
@@ -40,11 +40,11 @@ if (count($this->stafflist) > 0)
 
 	$positionHeaderSpan = 0;
 	$dummyColumnSpan    = 0;
-	if ($this->config['show_player_numbers'])
-	{
-		$positionHeaderSpan++;
-		$dummyColumnSpan++;
-	}
+//	if ($this->config['show_player_numbers'])
+//	{
+//		$positionHeaderSpan++;
+//		$dummyColumnSpan++;
+//	}
 	if ($this->config['show_player_icon'] || $this->config['show_staff_icon'])
 	{
 		$positionHeaderSpan++;
@@ -54,7 +54,7 @@ if (count($this->stafflist) > 0)
 		$positionHeaderSpan++;
 	}
 	// Player name and injured/suspended/away columns are always there
-	$positionHeaderSpan += 2;
+	$positionHeaderSpan += 1;
 
 	?>
     <br>
@@ -77,7 +77,7 @@ if (count($this->stafflist) > 0)
     </table>
     <br/>
     <div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultstaff">
-        <table class="<?php echo $this->config['table_class']; ?>" id="tablestaff">
+        <table class="<?php echo $this->config['table_class']; ?> table-sm nowrap" id="tablestaff">
             <thead>
             <tr class="sectiontableheader rosterheader">
                 <th width="60%" colspan="<?php echo $positionHeaderSpan; ?>">
@@ -108,11 +108,11 @@ if (count($this->stafflist) > 0)
 				?>
                 <tr class="">
 					<?php
-					if ($this->config['show_player_numbers'])
-					{
-						?>
-                        <td width="30" class="td_c">&nbsp;</td><?php
-					}
+//					if ($this->config['show_player_numbers'])
+//					{
+//						?>
+//                        <td width="30" class="td_c">&nbsp;</td><?php
+//					}
 					$playerName = sportsmanagementHelper::formatName(
 						null, $row->firstname,
 						$row->nickname,

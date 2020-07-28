@@ -17,15 +17,12 @@ use Joomla\CMS\Factory;
 
 $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 ?>
-
+<!--
 <link href="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.css" rel="stylesheet">
-
 <link href="https://unpkg.com/bootstrap-table@1.17.1/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.min.css" rel="stylesheet">
-
 <script src="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.js"></script>
-
 <script src="https://unpkg.com/bootstrap-table@1.17.1/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.min.js"></script>
-
+-->
 
 <?php
 /**
@@ -121,7 +118,7 @@ if (!empty($this->rows))
 	}
 	?>
     <div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultplayers">
-        <table class="<?php echo $this->config['table_class']; ?>">
+        <table class="<?php echo $this->config['table_class']; ?> table-sm nowrap" id="tableplayer">
 			<?php
 			/**
 			 *
