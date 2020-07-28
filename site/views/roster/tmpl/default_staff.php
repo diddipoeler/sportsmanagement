@@ -175,7 +175,10 @@ if (count($this->stafflist) > 0)
 					{
 						// Put empty column to keep vertical alignment with the player table
 						?>
-                        <td width="16" nowrap="nowrap" style="text-align:center; ">&nbsp;</td><?php
+                        <!--
+                        <td width="16" nowrap="nowrap" style="text-align:center; ">&nbsp;</td>
+                        -->
+                        <?php
 					}
 					?>
                     <td class="td_l"><?php
