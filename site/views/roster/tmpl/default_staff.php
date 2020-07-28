@@ -111,9 +111,7 @@ if (count($this->stafflist) > 0)
 //					if ($this->config['show_player_numbers'])
 //					{
 //						?>
-<!--
-                       <td width="30" class="td_c">&nbsp;</td>
-                       -->
+
                        <?php
 //					}
 					$playerName = sportsmanagementHelper::formatName(
@@ -160,9 +158,7 @@ if (count($this->stafflist) > 0)
 					{
 						// Put empty column to keep vertical alignment with the player table
 						?>
-                        <!--
-                        <td width="40" class="td_c" nowrap="nowrap">&nbsp;</td>
-                        -->
+
                         <?php
 					}
 					if ($this->config['show_country_flag_staff'])
