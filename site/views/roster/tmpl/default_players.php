@@ -25,21 +25,29 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 -->
 
 <script>
-	/*
+<?php
+
+foreach ( $this->projectpositions as $positions => $position ) if( $position->persontype == 1 )
+{
+?>
+/*
 jQuery(document).ready(function ($) {
-        $('#tableplayer').DataTable({
+        $('#tableplayer<?php echo $position->id;?>').DataTable({
             scrollX: true,
             paging:         false,
             ordering: false,
             searching: false,
             info: false,
             fixedColumns: {
-                leftColumns: 1
+                leftColumns: 2
             }
         });
     });
-
 */
+<?php
+}
+?>
+
 </script>
 
 <?php
@@ -136,13 +144,17 @@ if (!empty($this->rows))
 	}
 	?>
     <div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultplayers">
-        <table class="<?php echo $this->config['table_class']; ?> table-sm nowrap" id="tableplayer">
+        <?php
+        foreach ( $this->projectpositions as $positions => $position ) if( $position->persontype == 1 )
+{
+        ?>
+        <table class="<?php echo $this->config['table_class']; ?> table-sm nowrap" id="tableplayer<?php echo $position->id;?>">
 			<?php
 			/**
 			 *
 			 * jetzt kommt die schleife über die positionen
 			 */
-			foreach ($this->rows as $position_id => $players)
+			foreach ($this->rows as $position_id => $players) if ( $position_id == $position->id )
 			{
 				$meanage     = 0;
 				$countplayer = 0;
@@ -894,6 +906,9 @@ if (!empty($this->rows))
 			}
 			?>
         </table>
+        <?php
+        }
+        ?>
     </div>
 	<?php
 }
