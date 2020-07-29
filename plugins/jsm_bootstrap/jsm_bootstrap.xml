@@ -112,9 +112,10 @@
 					<option value="1">JYES</option>
 				</field>
 
-<field name="load_bootstrap_version" type="list" default="3.3.7" 
+<field name="load_bootstrap_version" type="list" default="4.2.1" 
 	            	label="PLUGIN_JSM_BOOTSTRAP_XML_LOAD_BOOTSTRAP_VERSION" 
 	            	description="PLUGIN_JSM_BOOTSTRAP_XML_LOAD_BOOTSTRAP_VERSION_DESC">
+	<option value="4.2.1">4.2.1</option>
 	            	<option value="4.0.0">4.0.0</option>
 	            	<option value="3.3.7">3.3.7</option>
 	            	<option value="3.3.6">3.3.6</option>
