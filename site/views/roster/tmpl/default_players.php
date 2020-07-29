@@ -14,23 +14,18 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
 
 $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 ?>
-<!--
-<link href="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.css" rel="stylesheet">
-<link href="https://unpkg.com/bootstrap-table@1.17.1/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.min.css" rel="stylesheet">
-<script src="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.17.1/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.min.js"></script>
--->
-
 <script>
 <?php
-
+if (PluginHelper::isEnabled('system', 'jsm_bootstrap'))
+{
 foreach ( $this->projectpositions as $positions => $position ) if( $position->persontype == 1 )
 {
 ?>
-/*
+
 jQuery(document).ready(function ($) {
         $('#tableplayer<?php echo $position->id;?>').DataTable({
             scrollX: true,
@@ -43,8 +38,9 @@ jQuery(document).ready(function ($) {
             }
         });
     });
-*/
+
 <?php
+}
 }
 ?>
 
