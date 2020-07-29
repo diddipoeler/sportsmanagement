@@ -96,7 +96,7 @@ if (count($this->stafflist) > 0)
     </table>
     <br/>
     <div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultstaff">
-        <table class="<?php echo $this->config['table_class']; ?> table-sm nowrap" id="tablestaff">
+        <table class="<?php echo $this->config['table_class']; ?> table-sm nowrap" id="tablestaff" width="100%">
             <thead>
             <tr class="sectiontableheader rosterheader">
                 <th width="" colspan="">

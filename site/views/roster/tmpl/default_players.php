@@ -144,7 +144,7 @@ if (!empty($this->rows))
         foreach ( $this->projectpositions as $positions => $position ) if( $position->persontype == 1 )
 {
         ?>
-        <table class="<?php echo $this->config['table_class']; ?> table-sm nowrap" id="tableplayer<?php echo $position->id;?>">
+        <table class="<?php echo $this->config['table_class']; ?> table-sm nowrap" id="tableplayer<?php echo $position->id;?>" width="100%">
 			<?php
 			/**
 			 *
