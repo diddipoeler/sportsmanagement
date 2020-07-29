@@ -17,7 +17,7 @@ use Joomla\CMS\Uri\Uri;
 
 ?>	
 <script>
-	/*
+/*
 jQuery(document).ready(function ($) {
         $('#tablestaff').DataTable({
             scrollX: true,
@@ -99,10 +99,22 @@ if (count($this->stafflist) > 0)
         <table class="<?php echo $this->config['table_class']; ?> table-sm nowrap" id="tablestaff">
             <thead>
             <tr class="sectiontableheader rosterheader">
-                <th width="60%" colspan="<?php echo $positionHeaderSpan; ?>">
-					<?php echo Text::_("COM_SPORTSMANAGEMENT_ROSTER_STAFF") . '&nbsp;'; ?>
+                <th width="" colspan="">
+		<?php echo Text::_("COM_SPORTSMANAGEMENT_ROSTER_STAFF") . '&nbsp;'; ?>
                 </th>
 				<?php
+				for ($i = 1, $n = $positionHeaderSpan; $i < $n; $i++)
+			{
+				?>
+				<th>
+				</th>
+				<?php
+				}
+				
+				
+				
+				
+				
 				if ($this->config['show_birthday_staff'] > 0)
 				{ ?>
                     <th class="td_c">
