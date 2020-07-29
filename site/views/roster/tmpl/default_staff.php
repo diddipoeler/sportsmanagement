@@ -15,8 +15,27 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 
-	
+?>	
+<script>
+	/*
+jQuery(document).ready(function ($) {
+        $('#tablestaff').DataTable({
+            scrollX: true,
+            paging:         false,
+            ordering: false,
+            searching: false,
+            info: false,
+            fixedColumns: {
+                leftColumns: 1
+            }
+        });
+    });
+*/
 
+</script>
+
+
+<?php
 // Show team-staff as defined
 if (count($this->stafflist) > 0)
 {
