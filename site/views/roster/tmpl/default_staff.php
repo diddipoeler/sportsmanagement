@@ -166,7 +166,7 @@ if (count($this->stafflist) > 0)
 				 }
 						*/
 						?>
-                        <td width="40" class="td_c" nowrap="nowrap">
+                        <td class="" width="" nowrap="nowrap">
 							<?php
 
 							echo sportsmanagementHelperHtml::getBootstrapModalImage(
@@ -194,7 +194,7 @@ if (count($this->stafflist) > 0)
 					}
 					if ($this->config['show_country_flag_staff'])
 					{ ?>
-                        <td width="16" nowrap="nowrap" style="text-align:center; ">
+                        <td class="" width="" nowrap="nowrap" style="text-align:center; ">
 						<?php echo JSMCountries::getCountryFlag($row->country); ?>
                         </td><?php
 					}
@@ -206,7 +206,7 @@ if (count($this->stafflist) > 0)
                         <?php
 					}
 					?>
-                    <td class="td_l"><?php
+                    <td class="" width=""><?php
 						if ($this->config['link_staff'] == 1)
 						{
 							$routeparameter                       = array();
@@ -229,7 +229,7 @@ if (count($this->stafflist) > 0)
 					if ($this->config['show_birthday_staff'] > 0)
 					{
 						?>
-                        <td width="10%" nowrap="nowrap" style="text-align: left;"><?php
+                        <td class="" width="" nowrap="nowrap" style="text-align: left;"><?php
 						if ($row->birthday != "0000-00-00")
 						{
 							switch ($this->config['show_birthday_staff'])
@@ -269,9 +269,9 @@ if (count($this->stafflist) > 0)
                     elseif ($this->config['show_birthday'] > 0)
 					{
 						?>
-                        <td width="10%" nowrap="nowrap" style="text-align: left;">&nbsp;</td><?php
+                        <td class="" width="" nowrap="nowrap" style="text-align: left;">&nbsp;</td><?php
 					} ?>
-                    <td width="30%"><?php
+                    <td class="" width=""><?php
 						$staff_position = '';
 						switch ($this->config['staff_position_format'])
 						{
