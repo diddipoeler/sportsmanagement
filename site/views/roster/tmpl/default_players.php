@@ -24,6 +24,24 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 <script src="https://unpkg.com/bootstrap-table@1.17.1/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.min.js"></script>
 -->
 
+<script>
+	/*
+jQuery(document).ready(function ($) {
+        $('#tableplayer').DataTable({
+            scrollX: true,
+            paging:         false,
+            ordering: false,
+            searching: false,
+            info: false,
+            fixedColumns: {
+                leftColumns: 1
+            }
+        });
+    });
+*/
+
+</script>
+
 <?php
 /**
  * das sind alle projektdaten
