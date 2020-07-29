@@ -171,6 +171,14 @@ class PlgSystemjsm_bootstrap extends JPlugin
                 }
             }
             
+            if ($this->params->def('load_responsive', 0)) {
+                if (!$app->isAdmin()) {
+                    //CBootstrap::load();
+                    Factory::getDocument()->addScript('https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js');
+                    Factory::getDocument()->addStyleSheet('https://cdn.datatables.net/responsive/2.2.5/css/responsive.dataTables.min.css');
+                }
+            }
+            
             if ($this->params->def('load_datatables', 0)) {
                 if (!$app->isAdmin()) {
                     //CBootstrap::load();
