@@ -28,7 +28,7 @@ https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-carousel.js
 https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-typeahead.js
 
 https://datatables.net/download/release
-
+https://datatables.net/
 */
 
 /**
@@ -184,6 +184,14 @@ class PlgSystemjsm_bootstrap extends JPlugin
                     //CBootstrap::load();
                     Factory::getDocument()->addScript('https://cdn.datatables.net/fixedcolumns/3.3.1/js/dataTables.fixedColumns.min.js');
                     Factory::getDocument()->addStyleSheet('https://cdn.datatables.net/fixedcolumns/3.3.1/css/fixedColumns.dataTables.min.css');
+                }
+            }
+            
+            if ($this->params->def('load_fixedheader', 0)) {
+                if (!$app->isAdmin()) {
+                    //CBootstrap::load();
+                    Factory::getDocument()->addScript('https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js');
+                    Factory::getDocument()->addStyleSheet('https://cdn.datatables.net/fixedheader/3.1.7/css/fixedHeader.dataTables.min.css');
                 }
             }
           
