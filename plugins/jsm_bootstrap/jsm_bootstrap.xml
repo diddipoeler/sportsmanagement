@@ -167,6 +167,32 @@
 					<option value="1">JYES</option>
 				</field>	
   </fieldset>
+			
+<fieldset name="extensions" label="PLUGIN_JSM_BOOTSTRAP_FIELD_EXTENSIONS_LABEL">			
+<field type="jsmtitle" title="PLUGIN_JSM_DATATABLES_LABEL" imagesrc="../administrator/components/com_sportsmanagement/assets/images/bootstrap.png" color="#26a69a" />
+<field name="load_datatables" 
+type="radio" 
+default="1" 
+class="radio btn-group btn-group-yesno"
+label="PLUGIN_JSM_BOOTSTRAP_XML_LOAD_DATATABLES"
+description="PLUGIN_JSM_BOOTSTRAP_XML_LOAD_DATATABLES_DESC">
+<option value="0">JNO</option>
+<option value="1">JYES</option>
+</field>
+	
+<field type="jsmtitle" title="PLUGIN_JSM_FIXEDCOLUMNS_LABEL" imagesrc="../administrator/components/com_sportsmanagement/assets/images/bootstrap.png" color="#26a69a" />
+<field name="load_fixedcolumns" 
+type="radio" 
+default="1" 
+class="radio btn-group btn-group-yesno"
+label="PLUGIN_JSM_BOOTSTRAP_XML_LOAD_FIXEDCOLUMNS"
+description="PLUGIN_JSM_BOOTSTRAP_XML_LOAD_FIXEDCOLUMNS_DESC">
+<option value="0">JNO</option>
+<option value="1">JYES</option>
+</field>	
+	
+</fieldset>			
+			
 		</fields>
 	</config>
   
