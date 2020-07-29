@@ -38,8 +38,8 @@ jQuery(document).ready(function ($) {
             }
         });
     });
-*/
 
+*/
 </script>
 
 <?php
@@ -157,10 +157,19 @@ if (!empty($this->rows))
 				?>
                 <thead>
                 <tr class="sectiontableheader rosterheader">
-                    <th width="60%" colspan="<?php echo $positionHeaderSpan; ?>">
+                    <th width="" colspan="">
 						<?php echo '&nbsp;' . Text::_($row->position); ?>
                     </th>
 					<?php
+					
+					for ($i = 1, $n = $positionHeaderSpan; $i < $n; $i++)
+			{
+				?>
+				<th>
+				</th>
+				<?php
+				}
+					
 					if ($this->config['show_birthday'])
 					{
 						?>
@@ -774,15 +783,34 @@ if (!empty($this->rows))
 					?>
                     <tr class="">
                         <td class="td_r"></td>
-                        <td class="td_r" colspan="3">
-							<?php
-							if ($this->config['show_average_age'])
-							{
-								echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_PLAYERS_MEAN_AGE') . ' ' . $meanage;
-							}
-							?>
+                        <?php
+                        for ($a = 1, $b = 3; $a < $b; $a++)
+			{
+			?>
+			<td>
+			</td>
+			<?php
+			}
+			?>
+                        <td class="td_r" colspan="">
+			<?php
+			if ($this->config['show_average_age'])
+			{
+			echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_PLAYERS_MEAN_AGE') . ' ' . $meanage;
+			}
+			?>
                         </td>
-                        <td class="td_r" colspan="<?php echo $totalcolspan - 3; ?>">
+                        <?php
+                        for ($a = 1, $b = $totalcolspan - 3; $a < $b; $a++)
+			{
+			?>
+			<td>
+			</td>
+			<?php
+			}
+			?>
+                        
+                        <td class="td_r" colspan="">
                             <b><?php echo Text::_('COM_SPORTSMANAGEMENT_ROSTER_TOTAL'); ?>:</b></td>
 						<?php
 						if ($this->config['show_events_stats'])
