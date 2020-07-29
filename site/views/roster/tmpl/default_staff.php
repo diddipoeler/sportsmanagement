@@ -14,10 +14,12 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Plugin\PluginHelper;
 
+if (PluginHelper::isEnabled('system', 'jsm_bootstrap'))
+{
 ?>	
 <script>
-/*
 jQuery(document).ready(function ($) {
         $('#tablestaff').DataTable({
             scrollX: true,
@@ -30,12 +32,10 @@ jQuery(document).ready(function ($) {
             }
         });
     });
-*/
-
 </script>
-
-
 <?php
+}
+
 // Show team-staff as defined
 if (count($this->stafflist) > 0)
 {
