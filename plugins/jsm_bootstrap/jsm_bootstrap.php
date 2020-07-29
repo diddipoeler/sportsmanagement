@@ -26,6 +26,9 @@ https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-button.js
 https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-collapse.js
 https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-carousel.js
 https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-typeahead.js
+
+https://datatables.net/download/release
+
 */
 
 /**
@@ -165,6 +168,22 @@ class PlgSystemjsm_bootstrap extends JPlugin
                         'https://maxcdn.bootstrapcdn.com/bootstrap/' .
                         $load_bootstrap_version . '/js/bootstrap.min.js'
                     );
+                }
+            }
+            
+            if ($this->params->def('load_datatables', 0)) {
+                if (!$app->isAdmin()) {
+                    //CBootstrap::load();
+                    Factory::getDocument()->addScript('https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js');
+                    Factory::getDocument()->addStyleSheet('https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css');
+                }
+            }
+            
+            if ($this->params->def('load_fixedcolumns', 0)) {
+                if (!$app->isAdmin()) {
+                    //CBootstrap::load();
+                    Factory::getDocument()->addScript('https://cdn.datatables.net/fixedcolumns/3.3.1/js/dataTables.fixedColumns.min.js');
+                    Factory::getDocument()->addStyleSheet('https://cdn.datatables.net/fixedcolumns/3.3.1/css/fixedColumns.dataTables.min.css');
                 }
             }
           
