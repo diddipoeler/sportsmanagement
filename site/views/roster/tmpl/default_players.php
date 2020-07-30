@@ -35,7 +35,14 @@ jQuery(document).ready(function ($) {
             info: false,
             fixedColumns: {
                 leftColumns: 4
-            }
+            },
+            
+            dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+		
+		
         });
     });
 
