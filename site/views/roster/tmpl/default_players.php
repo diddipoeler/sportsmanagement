@@ -72,6 +72,26 @@ jQuery(document).ready(function ($) {
 
                 
                 customize: function ( doc ) {
+                  
+//Create a date string that we use in the footer. Format is dd-mm-yyyy
+						var now = new Date();
+						var jsDate = now.getDate()+'-'+(now.getMonth()+1)+'-'+now.getFullYear();
+doc['footer']=(function(page, pages) {
+							return {
+								columns: [
+									{
+										alignment: 'left',
+										text: ['Created on: ', { text: jsDate.toString() }]
+									},
+									{
+										alignment: 'right',
+										text: ['page ', { text: page.toString() },	' of ',	{ text: pages.toString() }]
+									}
+								],
+								margin: 20
+							}
+  });
+  
                 // Logo converted to base64 
 
 doc.content.splice( 1, 0, {
