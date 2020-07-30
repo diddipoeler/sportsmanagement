@@ -175,8 +175,8 @@
 type="radio" 
 default="3" 
 class="radio btn-group btn-group-yesno"
-label="PLUGIN_JSM_BOOTSTRAP_XML_LOAD_RESPONSIVE"
-description="PLUGIN_JSM_BOOTSTRAP_XML_LOAD_RESPONSIVE_DESC">
+label="PLUGIN_JSM_BOOTSTRAP_XML_LOAD_BOOTSTRAP_VERSION"
+description="PLUGIN_JSM_BOOTSTRAP_XML_LOAD_BOOTSTRAP_VERSION_DESC">
 <option value="0">Datatables</option>
 <option value="3">Bootstrap 3</option>
 <option value="4">Bootstrap 4</option>	
