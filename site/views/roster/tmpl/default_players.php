@@ -17,9 +17,12 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
 
 $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
+
 ?>
 <script>
 <?php
+
+
 if (PluginHelper::isEnabled('system', 'jsm_bootstrap'))
 {
 foreach ( $this->projectpositions as $positions => $position ) if( $position->persontype == 1 )
@@ -36,18 +39,92 @@ jQuery(document).ready(function ($) {
             fixedColumns: {
                 leftColumns: 4
             },
-            
             dom: 'Bfrtip',
-        buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
-        ]
+            buttons: [
+        {
+            extend: 'csvHtml5',
+            text: 'CSV',
+            exportOptions: {
+                stripHtml: false
+            }
+        },
+        {
+            extend: 'excelHtml5',
+            text: 'Excel',
+            exportOptions: {
+                stripHtml: false
+            }
+       },
+        {
+                extend: 'pdfHtml5',
+                messageTop: '<?php echo $this->project->name;?>',
+                
+               exportOptions: {
+        stripHtml: true
+    },
+
+                
+                customize: function ( doc ) {
+                // Logo converted to base64 
+
+doc.content.splice( 1, 0, {
+                        margin: [ 0, 0, 0, 12 ],
+                        alignment: 'center',
+                        image: 'data:image/png;base64,<?php echo base64_encode(file_get_contents(Uri::root() .$this->projectteam->picture));?>',
+  width: 150,
+                    } );
+
+            
+            }
+            }
+    ]
 		
 		
         });
     });
 
+
+
+/*
+// Function to convert an img URL to data URL 
+ 	function getBase64FromImageUrl(url) { 
+ 	console.log(url);
+     var img = new Image(); 
+ 		img.crossOrigin = "anonymous"; 
+     img.onload = function () { 
+         var canvas = document.createElement("canvas"); 
+         canvas.width =this.width; 
+         canvas.height =this.height; 
+         var ctx = canvas.getContext("2d"); 
+         ctx.drawImage(this, 0, 0); 
+         var dataURL = canvas.toDataURL("image/png"); 
+         return dataURL.replace(/^data:image\/(png|jpg);base64,/, ""); 
+     }; 
+     img.src = url; 
+ 	} 
+ 	
+var logo1 = getBase64FromImageUrl('<?php echo Uri::root() .$this->projectteam->picture;?>'); 
+console.log(logo1);
+*/
+
+
+
+
+
+
+
+
 <?php
+//$this->project->season_id
+//$this->team->picture
+//$this->projectteam->picture
 }
+?>
+
+
+
+
+<?php
 }
 ?>
 
@@ -62,6 +139,8 @@ jQuery(document).ready(function ($) {
  * das sind die positionen mit den spielern
  * $this->rows
  */
+//echo 'teambild '.$this->projectteam->picture.'<br>';
+//  echo base64_encode(file_get_contents(Uri::root() .$this->projectteam->picture));
 
 /**
  *
@@ -240,6 +319,7 @@ if (!empty($this->rows))
 						{
 							?>
                             <th class="" width="">
+                            
 								<?php
 								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ROSTER_STARTING_LINEUP');
 								$picture    = $picture_path_sport_type_name . '/startroster.png';
