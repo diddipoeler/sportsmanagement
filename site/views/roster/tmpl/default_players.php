@@ -41,6 +41,13 @@ jQuery(document).ready(function ($) {
             },
             dom: 'Bfrtip',
             buttons: [
+            {
+            extend: 'print',
+            text: 'Print',
+            exportOptions: {
+                stripHtml: false
+            }
+        },
         {
             extend: 'csvHtml5',
             text: 'CSV',
