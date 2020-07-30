@@ -266,23 +266,26 @@ class PlgSystemjsm_bootstrap extends JPlugin
 
 if ($this->params->def('load_buttons', 0)) {
                 if (!$app->isAdmin()) {
-					switch ($this->params->def('load_for_which_bootstrap', 0))
-			{
-				case 0:
-				Factory::getDocument()->addStyleSheet('https://cdn.datatables.net/buttons/1.6.2/css/buttons.dataTables.min.css');
-				Factory::getDocument()->addScript('https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js');
-				break;
-				case 3:
-				Factory::getDocument()->addScript('https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js');
-				Factory::getDocument()->addScript('https://cdn.datatables.net/buttons/1.6.2/js/buttons.bootstrap.min.js');
+		switch ($this->params->def('load_for_which_bootstrap', 0))
+		{
+		case 0:
+		Factory::getDocument()->addStyleSheet('https://cdn.datatables.net/buttons/1.6.2/css/buttons.dataTables.min.css');
+		Factory::getDocument()->addScript('https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js');
+		break;
+		case 3:
+		Factory::getDocument()->addScript('https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js');
+		Factory::getDocument()->addScript('https://cdn.datatables.net/buttons/1.6.2/js/buttons.bootstrap.min.js');
                 Factory::getDocument()->addStyleSheet('https://cdn.datatables.net/buttons/1.6.2/css/buttons.bootstrap.min.css');
-				break;
-				case 4:
-				Factory::getDocument()->addStyleSheet('https://cdn.datatables.net/buttons/1.6.2/css/buttons.bootstrap4.min.css');
-				Factory::getDocument()->addScript('https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js');
-				Factory::getDocument()->addScript('https://cdn.datatables.net/buttons/1.6.2/js/buttons.bootstrap4.min.js');
-				break;
-			}
+		break;
+		case 4:
+		Factory::getDocument()->addStyleSheet('https://cdn.datatables.net/buttons/1.6.2/css/buttons.bootstrap4.min.css');
+		Factory::getDocument()->addScript('https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js');
+		Factory::getDocument()->addScript('https://cdn.datatables.net/buttons/1.6.2/js/buttons.bootstrap4.min.js');
+		break;
+		}
+			Factory::getDocument()->addScript('https://cdn.datatables.net/buttons/1.6.2/js/buttons.colVis.min.js');
+			Factory::getDocument()->addScript('https://cdn.datatables.net/buttons/1.6.2/js/buttons.print.min.js');
+			Factory::getDocument()->addScript('https://cdn.datatables.net/buttons/1.6.2/js/buttons.html5.min.js');
 
                     
                 }
