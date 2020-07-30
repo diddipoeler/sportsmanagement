@@ -170,40 +170,106 @@ class PlgSystemjsm_bootstrap extends JPlugin
                     );
                 }
             }
-            
+
             if ($this->params->def('load_responsive', 0)) {
                 if (!$app->isAdmin()) {
-                    //CBootstrap::load();
-                    Factory::getDocument()->addScript('https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js');
+					switch ($this->params->def('load_for_which_bootstrap', 0))
+			{
+				case 0:
+				Factory::getDocument()->addStyleSheet('https://cdn.datatables.net/responsive/2.2.5/css/responsive.dataTables.min.css');
+				Factory::getDocument()->addScript('https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js');
+				break;
+				case 3:
+				Factory::getDocument()->addScript('https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js');
                     Factory::getDocument()->addScript('https://cdn.datatables.net/responsive/2.2.5/js/responsive.bootstrap.min.js');
                     Factory::getDocument()->addStyleSheet('https://cdn.datatables.net/responsive/2.2.5/css/responsive.bootstrap.min.css');
+				break;
+				case 4:
+				Factory::getDocument()->addStyleSheet('https://cdn.datatables.net/responsive/2.2.5/css/responsive.bootstrap4.min.css');
+				Factory::getDocument()->addScript('https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js');
+				Factory::getDocument()->addScript('https://cdn.datatables.net/responsive/2.2.5/js/responsive.bootstrap4.min.js');
+				break;
+			}
+
+                    
                 }
             }
             
             if ($this->params->def('load_datatables', 0)) {
                 if (!$app->isAdmin()) {
-                    //CBootstrap::load();
-                    Factory::getDocument()->addScript('https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js');
+					switch ($this->params->def('load_for_which_bootstrap', 0))
+			{
+				case 0:
+				Factory::getDocument()->addStyleSheet('https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css');
+				Factory::getDocument()->addScript('https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js');
+				break;
+				case 3:
+				Factory::getDocument()->addScript('https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js');
                     Factory::getDocument()->addScript('https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap.min.js');
                     Factory::getDocument()->addStyleSheet('https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap.min.css');
+				break;
+				case 4:
+				Factory::getDocument()->addStyleSheet('https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css');
+				Factory::getDocument()->addScript('https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js');
+				Factory::getDocument()->addScript('https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js');
+				break;
+			}
+
+                    
                 }
             }
             
             if ($this->params->def('load_fixedcolumns', 0)) {
                 if (!$app->isAdmin()) {
-                    //CBootstrap::load();
-                    Factory::getDocument()->addScript('https://cdn.datatables.net/fixedcolumns/3.3.1/js/dataTables.fixedColumns.min.js');
-                    Factory::getDocument()->addStyleSheet('https://cdn.datatables.net/fixedcolumns/3.3.1/css/fixedColumns.bootstrap.min.css');
+					switch ($this->params->def('load_for_which_bootstrap', 0))
+			{
+				case 0:
+				Factory::getDocument()->addStyleSheet('https://cdn.datatables.net/fixedcolumns/3.3.1/css/fixedColumns.dataTables.min.css');
+				Factory::getDocument()->addScript('https://cdn.datatables.net/fixedcolumns/3.3.1/js/dataTables.fixedColumns.min.js');
+				break;
+				case 3:
+				Factory::getDocument()->addScript('https://cdn.datatables.net/fixedcolumns/3.3.1/js/dataTables.fixedColumns.min.js');
+                Factory::getDocument()->addStyleSheet('https://cdn.datatables.net/fixedcolumns/3.3.1/css/fixedColumns.bootstrap.min.css');
+				break;
+				case 4:
+				Factory::getDocument()->addStyleSheet('https://cdn.datatables.net/fixedcolumns/3.3.1/css/fixedColumns.bootstrap4.min.css');
+				Factory::getDocument()->addScript('https://cdn.datatables.net/fixedcolumns/3.3.1/js/dataTables.fixedColumns.min.js');
+				break;
+			}
+
+                    
                 }
             }
             
             if ($this->params->def('load_fixedheader', 0)) {
                 if (!$app->isAdmin()) {
-                    //CBootstrap::load();
-                    Factory::getDocument()->addScript('https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js');
-                    Factory::getDocument()->addStyleSheet('https://cdn.datatables.net/fixedheader/3.1.7/css/fixedHeader.bootstrap.min.css');
+					switch ($this->params->def('load_for_which_bootstrap', 0))
+			{
+				case 0:
+				Factory::getDocument()->addStyleSheet('https://cdn.datatables.net/fixedheader/3.1.7/css/fixedHeader.dataTables.min.css');
+				Factory::getDocument()->addScript('https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js');
+				break;
+				case 3:
+				Factory::getDocument()->addScript('https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js');
+                Factory::getDocument()->addStyleSheet('https://cdn.datatables.net/fixedheader/3.1.7/css/fixedHeader.bootstrap.min.css');
+				break;
+				case 4:
+				Factory::getDocument()->addStyleSheet('https://cdn.datatables.net/fixedheader/3.1.7/css/fixedHeader.bootstrap4.min.css');
+				Factory::getDocument()->addScript('https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js');
+				break;
+			}
+
+                    
                 }
             }
+
+
+
+
+
+
+
+
           
             if ($this->params->def('load_bootstrap_carousel', 1)) {
                 if (!$app->isAdmin()) {
