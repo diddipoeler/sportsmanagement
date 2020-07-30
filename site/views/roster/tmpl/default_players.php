@@ -34,7 +34,7 @@ jQuery(document).ready(function ($) {
             searching: false,
             info: false,
             fixedColumns: {
-                leftColumns: 2
+                leftColumns: 4
             }
         });
     });
