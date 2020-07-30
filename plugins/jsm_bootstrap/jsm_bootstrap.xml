@@ -182,6 +182,17 @@ description="PLUGIN_JSM_BOOTSTRAP_XML_LOAD_BOOTSTRAP_VERSION_DESC">
 <option value="4">Bootstrap 4</option>	
 </field>
 	
+<field type="jsmtitle" title="PLUGIN_JSM_BUTTONS" imagesrc="../administrator/components/com_sportsmanagement/assets/images/bootstrap.png" color="#26a69a" />
+<field name="load_buttons" 
+type="radio" 
+default="1" 
+class="radio btn-group btn-group-yesno"
+label="PLUGIN_JSM_BOOTSTRAP_XML_LOAD_BUTTONS"
+description="PLUGIN_JSM_BOOTSTRAP_XML_LOAD_BUTTONS_DESC">
+<option value="0">JNO</option>
+<option value="1">JYES</option>
+</field>	
+	
 <field type="jsmtitle" title="PLUGIN_JSM_RESPONSIVE_LABEL" imagesrc="../administrator/components/com_sportsmanagement/assets/images/bootstrap.png" color="#26a69a" />
 <field name="load_responsive" 
 type="radio" 
