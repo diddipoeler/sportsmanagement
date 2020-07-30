@@ -170,31 +170,7 @@ class PlgSystemjsm_bootstrap extends JPlugin
                     );
                 }
             }
-
-            if ($this->params->def('load_responsive', 0)) {
-                if (!$app->isAdmin()) {
-					switch ($this->params->def('load_for_which_bootstrap', 0))
-			{
-				case 0:
-				Factory::getDocument()->addStyleSheet('https://cdn.datatables.net/responsive/2.2.5/css/responsive.dataTables.min.css');
-				Factory::getDocument()->addScript('https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js');
-				break;
-				case 3:
-				Factory::getDocument()->addScript('https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js');
-                    Factory::getDocument()->addScript('https://cdn.datatables.net/responsive/2.2.5/js/responsive.bootstrap.min.js');
-                    Factory::getDocument()->addStyleSheet('https://cdn.datatables.net/responsive/2.2.5/css/responsive.bootstrap.min.css');
-				break;
-				case 4:
-				Factory::getDocument()->addStyleSheet('https://cdn.datatables.net/responsive/2.2.5/css/responsive.bootstrap4.min.css');
-				Factory::getDocument()->addScript('https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js');
-				Factory::getDocument()->addScript('https://cdn.datatables.net/responsive/2.2.5/js/responsive.bootstrap4.min.js');
-				break;
-			}
-
-                    
-                }
-            }
-            
+                        
             if ($this->params->def('load_datatables', 0)) {
                 if (!$app->isAdmin()) {
 					switch ($this->params->def('load_for_which_bootstrap', 0))
@@ -212,6 +188,30 @@ class PlgSystemjsm_bootstrap extends JPlugin
 				Factory::getDocument()->addStyleSheet('https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css');
 				Factory::getDocument()->addScript('https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js');
 				Factory::getDocument()->addScript('https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js');
+				break;
+			}
+
+                    
+                }
+            }
+		
+		if ($this->params->def('load_responsive', 0)) {
+                if (!$app->isAdmin()) {
+					switch ($this->params->def('load_for_which_bootstrap', 0))
+			{
+				case 0:
+				Factory::getDocument()->addStyleSheet('https://cdn.datatables.net/responsive/2.2.5/css/responsive.dataTables.min.css');
+				Factory::getDocument()->addScript('https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js');
+				break;
+				case 3:
+				Factory::getDocument()->addScript('https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js');
+                    Factory::getDocument()->addScript('https://cdn.datatables.net/responsive/2.2.5/js/responsive.bootstrap.min.js');
+                    Factory::getDocument()->addStyleSheet('https://cdn.datatables.net/responsive/2.2.5/css/responsive.bootstrap.min.css');
+				break;
+				case 4:
+				Factory::getDocument()->addStyleSheet('https://cdn.datatables.net/responsive/2.2.5/css/responsive.bootstrap4.min.css');
+				Factory::getDocument()->addScript('https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js');
+				Factory::getDocument()->addScript('https://cdn.datatables.net/responsive/2.2.5/js/responsive.bootstrap4.min.js');
 				break;
 			}
 
