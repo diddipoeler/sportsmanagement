@@ -25,7 +25,7 @@ use Joomla\CMS\Component\ComponentHelper;
  * @version   $Id$
  * @access    public
  */
-class sportsmanagementModelProjectReferees extends ListModel
+class sportsmanagementModelProjectReferees extends JSMModelList
 {
 	var $_identifier = "preferees";
 	var $_project_id = 0;
