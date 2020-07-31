@@ -42,15 +42,6 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 
-//		if (version_compare(JSM_JVERSION, '4', 'eq'))
-//		{
-//			$uri = Uri::getInstance();
-//		}
-//		else
-//		{
-//			$uri = Factory::getURI();
-//		}
-
 		$model     = $this->getModel();
 		$starttime = microtime();
 		$tpl       = '';
@@ -83,12 +74,9 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 		$mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
 		$this->project    = $mdlProject->getProject($this->project_id);
 
-		//$this->user         = Factory::getUser();
 		$this->config       = Factory::getConfig();
 		$this->positiontool = $items;
 		$this->pagination   = $pagination;
-		//$this->request_url  = $uri->toString();
-		//$this->project      = $project;
 	}
 
 	/**
@@ -118,7 +106,7 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 
 		$items = $this->get('Items');
 
-		// Build the html select list for project assigned positions
+		/** Build the html select list for project assigned positions */
 		$ress                  = array();
 		$res1                  = array();
 		$notusedpositions      = array();
@@ -188,8 +176,6 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 		$this->lists       = $lists;
 		$this->addToolbar_Editlist();
         
-        //Log::add(Text::_('lists <pre>'.print_r($this->lists,true).'</pre>'), Log::INFO, 'jsmerror');
-
 		$this->setLayout('editlist');
 
 		unset($ress);
