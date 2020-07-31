@@ -17,9 +17,11 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
 
 $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
-
+//https://pdfmake.github.io/docs/getting-started/client-side/methods/
 ?>
+<script src="https://cdn.jsdelivr.net/npm/html-to-pdfmake/docs/browser.js"></script>
 <script>
+
 <?php
 
 
@@ -111,6 +113,8 @@ doc.content.splice( 1, 0, {
     });
 
 
+//var blob = new Blob([document.getElementById('tableplayer2_wrapper').innerHTML]);
+//console.log(blob);
 
 /*
 // Function to convert an img URL to data URL 
@@ -257,7 +261,7 @@ if (!empty($this->rows))
         foreach ( $this->projectpositions as $positions => $position ) if( $position->persontype == 1 )
 {
         ?>
-        <table class="<?php echo $this->config['table_class']; ?> table-sm nowrap" id="tableplayer<?php echo $position->id;?>" width="100%">
+        <table class="<?php echo $this->config['table_class']; ?> table-sm nowrap " id="tableplayer<?php echo $position->id;?>" width="100%">
 			<?php
 			/**
 			 *
@@ -265,6 +269,7 @@ if (!empty($this->rows))
 			 */
 			foreach ($this->rows as $position_id => $players) if ( $position_id == $position->id )
 			{
+			$positionpdf = $position->id;
 				$meanage     = 0;
 				$countplayer = 0;
 				$age         = 0;
@@ -1016,8 +1021,53 @@ if (!empty($this->rows))
 				<?php
 				$k = (1 - $k);
 			}
+			
+			//echo 'position id '.$positionpdf;
 			?>
         </table>
+        
+        <script>
+//        var blob = new Blob([document.getElementById('tableplayer2').innerHTML]);
+                var blob = '<table>' + document.getElementById('tableplayer<?php echo $positionpdf;?>').innerHTML + '</table>';
+        console.log('position id ' );
+        var docDefinition = {
+    content: [blob],
+    exportOptions: {
+                stripHtml: true
+            }
+}
+//pdfMake.createPdf(docDefinition).open();
+//var val = htmlToPdfmake(blob);
+  //  var dd = {content:val};
+    //pdfMake.createPdf(dd).download();
+
+
+
+
+/*
+pdfDocGenerator = pdfMake.createPdf(docDefinition);
+pdfDocGenerator.getDataUrl((dataUrl) => {
+	const targetElement = document.querySelector('#iframeContainer');
+	const iframe = document.createElement('iframe');
+	iframe.src = dataUrl;
+	targetElement.appendChild(iframe);
+});
+*/
+
+
+
+
+//pdfMake.createPdf(docDefinition).open();
+/*
+const pdfDocGenerator = pdfMake.createPdf(docDefinition);
+pdfDocGenerator.getBase64((data) => {
+	alert(data);
+});
+*/
+
+        </script>
+        
+        
         <?php
         }
         ?>
