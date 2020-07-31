@@ -46,10 +46,13 @@ use Joomla\CMS\HTML\HTMLHelper;
                     <td class="" width="" style="text-align:center;">
                         <input id="moveright" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_ASSIGN'); ?>"
                                onclick="move_list_items('positionslist','project_positionslist');"/>
+                               <br />
                         <input id="moverightall" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_ASSIGNALL'); ?>"
                                onclick="move_list_items_all('positionslist','project_positionslist');"/>
+                               <br />
                         <input id="moveleft" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_NOT_ASSIGN'); ?>"
                                onclick="move_list_items('project_positionslist','positionslist');"/>
+                               <br />
                         <input id="moveleftall" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_NOT_ASSIGNALL'); ?>"
                                onclick="move_list_items_all('project_positionslist','positionslist');"/>
 
