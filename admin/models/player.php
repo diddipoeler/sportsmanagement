@@ -203,9 +203,9 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 		$option      = $jinput->getCmd('option');
 		$db          = Factory::getDbo();
 		$date        = Factory::getDate();
-		$user        = Factory::getUser();
-		$modified    = Factory::getDate();
-		$modified_by = $user->get('id');
+		//$user        = Factory::getUser();
+		//$modified    = Factory::getDate();
+		//$modified_by = $user->get('id');
 
 		$this->_project_id      = $app->getUserState("$option.pid", '0');
 		$this->_team_id         = $app->getUserState("$option.team_id", '0');
@@ -233,8 +233,8 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 					$mdlTable->season_id  = $this->_season_id;
 					$mdlTable->persontype = 1;
 
-					$mdlTable->modified    = $date->toSql();
-					$mdlTable->modified_by = $modified_by;
+					$mdlTable->modified    = $this->jsmdate->toSql();
+					$mdlTable->modified_by = $this->jsmuser->get('id');
 
 					$mdlTable->picture   = $mdlPersonTable->picture;
 					$mdlTable->active    = 1;
@@ -290,7 +290,7 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 					$columns = array('person_id', 'project_id', 'project_position_id', 'persontype', 'modified', 'modified_by');
 
 					// Insert values.
-					$values = array($cid[$x], $this->_project_id, $res, 1, $db->Quote('' . $modified . ''), $modified_by);
+					$values = array($cid[$x], $this->_project_id, $res, 1, $db->Quote('' . $this->jsmdate->toSql() . ''), $this->jsmuser->get('id'));
 
 					// Prepare the insert query.
 					$insertquery
@@ -328,8 +328,8 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 					$mdlTable->season_id  = $this->_season_id;
 					$mdlTable->persontype = 2;
 
-					$mdlTable->modified    = $date->toSql();
-					$mdlTable->modified_by = $modified_by;
+					$mdlTable->modified    = $this->jsmdate->toSql();
+					$mdlTable->modified_by = $this->jsmuser->get('id');
 
 					$mdlTable->picture   = $mdlPersonTable->picture;
 					$mdlTable->active    = 1;
@@ -385,7 +385,7 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 					$columns = array('person_id', 'project_id', 'project_position_id', 'persontype', 'modified', 'modified_by');
 
 					// Insert values.
-					$values = array($cid[$x], $this->_project_id, $res, 2, $db->Quote('' . $modified . ''), $modified_by);
+					$values = array($cid[$x], $this->_project_id, $res, 2, $db->Quote('' . $this->jsmdate->toSql() . ''), $this->jsmuser->get('id'));
 
 					// Prepare the insert query.
 					$insertquery
@@ -436,8 +436,8 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 					$mdlTable->person_id   = $cid[$x];
 					$mdlTable->team_id     = 0;
 					$mdlTable->season_id   = $this->_season_id;
-					$mdlTable->modified    = $date->toSql();
-					$mdlTable->modified_by = $modified_by;
+					$mdlTable->modified    = $this->jsmdate->toSql();
+					$mdlTable->modified_by = $this->jsmuser->get('id');
 					$mdlTable->picture     = $mdlPersonTable->picture;
 					$mdlTable->persontype  = 3;
 					$mdlTable->published   = 1;
@@ -456,8 +456,8 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 					$profile->project_id  = $this->_project_id;
 					$profile->person_id   = $season_person_id;
 					$profile->published   = 1;
-					$profile->modified    = $db->Quote('' . $modified . '');
-					$profile->modified_by = $modified_by;
+					$profile->modified    = $db->Quote('' . $this->jsmdate->toSql() . '');
+					$profile->modified_by = $this->jsmuser->get('id');
 
 					try
 					{
