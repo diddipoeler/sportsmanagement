@@ -329,7 +329,7 @@ var opt = {
 html2pdf().set(opt).from(element).save();
 
 // Old monolithic-style usage:
-html2pdf(element, opt);
+//html2pdf(element, opt);
 
 
 /*
