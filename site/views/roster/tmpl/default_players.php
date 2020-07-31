@@ -1030,6 +1030,10 @@ if (!empty($this->rows))
         </table>
         
         <script>
+		
+var element = document.getElementById('tableplayer<?php echo $positionpdf;?>');
+//html2pdf(element);
+		
 //        var blob = new Blob([document.getElementById('tableplayer2').innerHTML]);
                 var blob = '<table>' + document.getElementById('tableplayer<?php echo $positionpdf;?>').innerHTML + '</table>';
         console.log('position id ' );
