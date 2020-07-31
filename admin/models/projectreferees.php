@@ -246,60 +246,52 @@ class sportsmanagementModelProjectReferees extends JSMModelList
 	 */
 	protected function getListQuery()
 	{
-		$app    = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
-
-		$this->_project_id      = $app->getUserState("$option.pid", '0');
-		$this->_season_id       = $app->getUserState("$option.season_id", '0');
+		$this->_project_id      = $this->jsmapp->getUserState("$this->jsmoption.pid", '0');
+		$this->_season_id       = $this->jsmapp->getUserState("$this->jsmoption.season_id", '0');
 		$this->_team_id         = Factory::getApplication()->input->getVar('team_id');
 		$this->_project_team_id = Factory::getApplication()->input->getVar('project_team_id');
 
 		if (!$this->_team_id)
 		{
-			$this->_team_id = $app->getUserState("$option.team_id", '0');
+			$this->_team_id = $this->jsmapp->getUserState("$this->jsmoption.team_id", '0');
 		}
 
 		if (!$this->_project_team_id)
 		{
-			$this->_project_team_id = $app->getUserState("$option.project_team_id", '0');
+			$this->_project_team_id = $this->jsmapp->getUserState("$this->jsmoption.project_team_id", '0');
 		}
 
-		// Create a new query object.
-		$query = Factory::getDbo()->getQuery(true);
-
-		// Select some fields
-		$query->select(implode(",", $this->filter_fields) . ',tp.person_id as person_id');
-
-		// From the club table
-		$query->from('#__sportsmanagement_person AS p');
-		$query->join('INNER', '#__sportsmanagement_season_person_id AS tp on tp.person_id = p.id');
-		$query->join('INNER', '#__sportsmanagement_project_referee AS pref on pref.person_id = tp.id');
-		$query->join('LEFT', '#__users AS u ON u.id = pref.checked_out');
-		$query->where('tp.persontype = 3');
-		$query->where('p.published = 1');
-		$query->where('tp.season_id = ' . $this->_season_id);
-		$query->where('pref.project_id = ' . $this->_project_id);
+		$this->jsmquery->clear();
+		$this->jsmquery->select(implode(",", $this->filter_fields) . ',tp.person_id as person_id');
+		$this->jsmquery->from('#__sportsmanagement_person AS p');
+		$this->jsmquery->join('INNER', '#__sportsmanagement_season_person_id AS tp on tp.person_id = p.id');
+		$this->jsmquery->join('INNER', '#__sportsmanagement_project_referee AS pref on pref.person_id = tp.id');
+		$this->jsmquery->join('LEFT', '#__users AS u ON u.id = pref.checked_out');
+		$this->jsmquery->where('tp.persontype = 3');
+		$this->jsmquery->where('p.published = 1');
+		$this->jsmquery->where('tp.season_id = ' . $this->_season_id);
+		$this->jsmquery->where('pref.project_id = ' . $this->_project_id);
 
 		if ($this->getState('filter.project_position_id'))
 		{
-			$query->where('pref.project_position_id = ' . $this->getState('filter.project_position_id'));
+			$this->jsmquery->where('pref.project_position_id = ' . $this->getState('filter.project_position_id'));
 		}
 
 		if ($this->getState('filter.search'))
 		{
-			$query->where(
-				'(LOWER(p.lastname) LIKE ' . Factory::getDbo()->Quote('%' . $this->getState('filter.search') . '%') .
-				'OR LOWER(p.firstname) LIKE ' . Factory::getDbo()->Quote('%' . $this->getState('filter.search') . '%') .
-				'OR LOWER(p.nickname) LIKE ' . Factory::getDbo()->Quote('%' . $this->getState('filter.search') . '%') . ')'
+			$this->jsmquery->where(
+				'(LOWER(p.lastname) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%') .
+				'OR LOWER(p.firstname) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%') .
+				'OR LOWER(p.nickname) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%') . ')'
 			);
 		}
 
-		$query->order(
-			Factory::getDbo()->escape($this->getState('list.ordering', 'p.lastname')) . ' ' .
-			Factory::getDbo()->escape($this->getState('list.direction', 'ASC'))
+		$this->jsmquery->order(
+			$this->jsmdb->escape($this->getState('list.ordering', 'p.lastname')) . ' ' .
+			$this->jsmdb->escape($this->getState('list.direction', 'ASC'))
 		);
 
-		return $query;
+		return $this->jsmquery;
 
 	}
 
