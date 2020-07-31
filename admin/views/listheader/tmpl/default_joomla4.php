@@ -56,6 +56,7 @@ case 'positions':
 case 'players':		
 case 'projects':	
 case 'leagues':	
+case 'projectreferees':
 echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 break;
 case 'githubinstall':

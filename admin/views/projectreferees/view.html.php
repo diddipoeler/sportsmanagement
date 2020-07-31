@@ -26,6 +26,21 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
  */
 class sportsmanagementViewprojectreferees extends sportsmanagementView
 {
+    /**
+	 * A \JForm instance with filter fields.
+	 *
+	 * @var    \JForm
+	 * @since  3.6.3
+	 */
+	public $filterForm;
+
+	/**
+	 * An array with active filters.
+	 *
+	 * @var    array
+	 * @since  3.6.3
+	 */
+	public $activeFilters;
 
 	/**
 	 * sportsmanagementViewprojectreferees::init()
