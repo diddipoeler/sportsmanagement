@@ -317,7 +317,21 @@ if (count($this->stafflist) > 0)
 
 <script>
 var element = document.getElementById('tablestaff');
-//html2pdf(element);
+var opt = {
+  margin:       1,
+  filename:     'tablestaff.pdf',
+  image:        { type: 'jpeg', quality: 0.98 },
+  html2canvas:  { scale: 2 },
+  jsPDF:        { unit: 'in', format: 'A3', orientation: 'landscape' }
+};
+
+// New Promise-based usage:
+html2pdf().set(opt).from(element).save();
+
+// Old monolithic-style usage:
+html2pdf(element, opt);
+
+
 /*
 var blob = '<table>' + document.getElementById('tablestaff').innerHTML + '</table>';
 
