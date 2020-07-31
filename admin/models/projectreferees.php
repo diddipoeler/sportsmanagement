@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage projectreferees
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
@@ -32,9 +28,7 @@ use Joomla\CMS\Component\ComponentHelper;
 class sportsmanagementModelProjectReferees extends ListModel
 {
 	var $_identifier = "preferees";
-
 	var $_project_id = 0;
-
 
 	/**
 	 * sportsmanagementModelProjectReferees::__construct()
@@ -223,39 +217,25 @@ class sportsmanagementModelProjectReferees extends ListModel
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-
-		// Initialise variables.
-		// $app = Factory::getApplication('administrator');
 
 		if (ComponentHelper::getParams($option)->get('show_debug_info_backend'))
 		{
 			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . $this->context . ''), '');
 			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . ''), '');
 		}
+        
+        $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array(), 'array');
 
-		// Load the filter state.
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
+		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
+		$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
+		$this->setState('filter.search_nation', $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', ''));
+		$this->setState('filter.project_position_id', $this->getUserStateFromRequest($this->context . '.filter.project_position_id', 'filter_project_position_id', ''));
+		$this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
+		$this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
 
-		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string');
-		$this->setState('filter.state', $published);
-
-		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '');
-		$this->setState('filter.search_nation', $temp_user_request);
-
-		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.project_position_id', 'filter_project_position_id', '');
-		$this->setState('filter.project_position_id', $temp_user_request);
-
-		$value = Factory::getApplication()->input->getUInt('limitstart', 0);
-		$this->setState('list.start', $value);
-
-		// List state information.
 		parent::populateState('p.lastname', 'asc');
 	}
 
