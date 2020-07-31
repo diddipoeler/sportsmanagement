@@ -44,13 +44,13 @@ use Joomla\CMS\HTML\HTMLHelper;
                 <tr>
                     <td><?php echo $this->lists['positions']; ?></td>
                     <td style="text-align:center;">
-                        <input id="moveright" type="button" value="Move Right"
+                        <input id="moveright" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_ASSIGN'); ?>"
                                onclick="move_list_items('positionslist','project_positionslist');"/>
-                        <input id="moverightall" type="button" value="Move Right All"
+                        <input id="moverightall" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_ASSIGNALL'); ?>"
                                onclick="move_list_items_all('positionslist','project_positionslist');"/>
-                        <input id="moveleft" type="button" value="Move Left"
+                        <input id="moveleft" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_NOT_ASSIGN'); ?>"
                                onclick="move_list_items('project_positionslist','positionslist');"/>
-                        <input id="moveleftall" type="button" value="Move Left All"
+                        <input id="moveleftall" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_NOT_ASSIGNALL'); ?>"
                                onclick="move_list_items_all('project_positionslist','positionslist');"/>
 
                     </td>
