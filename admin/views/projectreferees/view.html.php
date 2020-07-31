@@ -75,9 +75,13 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
 		$this->lists      = $lists;
 		$this->items      = $items;
 		$this->pagination = $pagination;
+        
+        $this->filterForm    = $this->model->getFilterForm();
+		$this->activeFilters = $this->model->getActiveFilters();
+	
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>'.print_r($this->filterForm ,true).'</pre>' ), Log::NOTICE, 'jsmerror');		
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>'.print_r($this->activeFilters ,true).'</pre>' ), Log::NOTICE, 'jsmerror');
 
-		// $this->request_url = $uri->toString();
-		//$this->project = $project;
 	}
 
 	/**
