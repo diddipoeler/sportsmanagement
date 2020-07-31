@@ -19,6 +19,8 @@ use Joomla\CMS\Plugin\PluginHelper;
 if (PluginHelper::isEnabled('system', 'jsm_bootstrap'))
 {
 ?>	
+<!-- <script src="https://cdn.jsdelivr.net/npm/html-to-pdfmake/docs/browser.js"></script> -->
+<script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
 <script>
 jQuery(document).ready(function ($) {
         $('#tablestaff').DataTable({
@@ -310,3 +312,69 @@ if (count($this->stafflist) > 0)
 	<?php
 }
 ?>
+
+<script>
+var element = document.getElementById('tablestaff');
+//html2pdf(element);
+/*
+var blob = '<table>' + document.getElementById('tablestaff').innerHTML + '</table>';
+
+var docDefinition = {
+    content: [blob],
+    exportOptions: {
+                stripHtml: true
+            }
+}
+
+pdfMake.createPdf(docDefinition).download('optionalName.pdf');
+*/
+
+/*
+var html = htmlToPdfMake('#tablestaff');
+function htmlToPdfMake(elementID)
+{
+    var fullText = "";
+    //var x = document.getElementById('htmlContent').elements;
+    //var x = $("a").parent(elementID)
+    var x = jQuery(elementID).children();
+    jQuery.each(x, function(index, value) {
+       //console.log(value);
+        fullText+=jQuery(this).context.innerText + ",";
+        console.log(jQuery(this).context.innerText);
+    });
+    
+    var dd = {
+	content: [
+		fullText
+	]
+    };
+        pdfMake.createPdf(dd).download('optionalName.pdf');
+        console.log(dd.content);
+    
+}
+*/
+
+/*
+var docDefinition = {
+  content: [
+    html
+  ],
+  pageBreakBefore: function(currentNode) {
+    return currentNode.style && currentNode.style.indexOf('pdf-pagebreak-before') > -1;
+  }
+};
+
+//var pdfDocGenerator = pdfMake.createPdf(docDefinition);
+pdfMake.createPdf(docDefinition).download();
+*/
+
+/*
+var val = htmlToPdfmake(blob);
+    var dd = {content:val};
+    pdfMake.createPdf(dd).download();
+*/    
+    </script>
+
+
+
+
