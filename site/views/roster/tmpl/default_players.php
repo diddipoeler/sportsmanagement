@@ -19,7 +19,10 @@ use Joomla\CMS\Plugin\PluginHelper;
 $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 //https://pdfmake.github.io/docs/getting-started/client-side/methods/
 ?>
-<script src="https://cdn.jsdelivr.net/npm/html-to-pdfmake/docs/browser.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/html-to-pdfmake/docs/browser.js"></script> -->
+
+<script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+
 <script>
 
 <?php
