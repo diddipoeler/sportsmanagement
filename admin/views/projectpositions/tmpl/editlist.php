@@ -35,15 +35,15 @@ use Joomla\CMS\HTML\HTMLHelper;
             <table class="<?php echo $this->table_data_class; ?>">
                 <thead>
                 <tr>
-                    <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_EDIT_AVAILABLE'); ?></th>
-                    <th width="20"></th>
-                    <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_EDIT_ASSIGNED'); ?></th>
+                    <th class="" width=""><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_EDIT_AVAILABLE'); ?></th>
+                    <th class="" width=""></th>
+                    <th class="" width=""><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_EDIT_ASSIGNED'); ?></th>
 
                 </tr>
                 </thead>
                 <tr>
-                    <td><?php echo $this->lists['positions']; ?></td>
-                    <td style="text-align:center;">
+                    <td class="" width=""><?php echo $this->lists['positions']; ?></td>
+                    <td class="" width="" style="text-align:center;">
                         <input id="moveright" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_ASSIGN'); ?>"
                                onclick="move_list_items('positionslist','project_positionslist');"/>
                         <input id="moverightall" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_ASSIGNALL'); ?>"
@@ -54,7 +54,7 @@ use Joomla\CMS\HTML\HTMLHelper;
                                onclick="move_list_items_all('project_positionslist','positionslist');"/>
 
                     </td>
-                    <td><?php echo $this->lists['project_positions']; ?></td>
+                    <td class="" width=""><?php echo $this->lists['project_positions']; ?></td>
                 </tr>
             </table>
         </fieldset>
