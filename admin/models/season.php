@@ -59,7 +59,7 @@ class sportsmanagementModelseason extends JSMModelAdmin
 		{
 			$this->jsmquery->clear();
 			$columns = array('person_id', 'season_id', 'modified', 'modified_by');
-			$values  = array($value, $season_id, $this->jsmdate->toSql(), $this->jsmuser->get('id'));
+			$values  = array($value, $season_id, $this->jsmdb->Quote('' . $this->jsmdate->toSql() . ''), $this->jsmuser->get('id'));
 			$this->jsmquery
 				->insert($this->jsmdb->quoteName('#__sportsmanagement_season_person_id'))
 				->columns($this->jsmdb->quoteName($columns))
@@ -123,7 +123,7 @@ class sportsmanagementModelseason extends JSMModelAdmin
 			{
 				$this->jsmquery->clear();
 				$columns = array('person_id', 'season_id', 'team_id', 'published', 'persontype', 'modified', 'modified_by');
-				$values  = array($value, $season_id, $teams, '1', $persontype, $this->jsmdate->toSql(), $this->jsmuser->get('id'));
+				$values  = array($value, $season_id, $teams, '1', $persontype, $this->jsmdb->Quote('' . $this->jsmdate->toSql() . ''), $this->jsmuser->get('id'));
 				$this->jsmquery
 					->insert($this->jsmdb->quoteName('#__sportsmanagement_season_team_person_id'))
 					->columns($this->jsmdb->quoteName($columns))
