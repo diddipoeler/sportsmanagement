@@ -362,6 +362,11 @@ console.log('getfolder: ' + '<?php echo $type;  ?>' );
 				//return "projectimages/".$data['pid'];
                 return "projectimages";
 				break;
+				case "matchreport":
+                //$data = Factory::getApplication()->input->getArray();
+				//return "projectimages/".$data['pid'];
+                return "matchreport";
+				break;
 			default:
 				return "events/" . $type;
 		}
