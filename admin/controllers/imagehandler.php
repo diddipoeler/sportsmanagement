@@ -80,7 +80,7 @@ $datainput = Factory::getApplication()->input->getArray();
 		$fieldid     = $this->jsmjinput->getVar('fieldid');
 		$linkaddress = $this->jsmjinput->getVar('linkaddress');
         $pid       = $this->jsmjinput->getVar('pid');
-        $mid       = $this->jsmjinput->getVar('mid');
+        $mid       = $this->jsmjinput->getVar('match_id');
         
         
         switch ($type)

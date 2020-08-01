@@ -11,7 +11,6 @@
  * https://www.jqueryscript.net/form/Drag-Drop-File-Upload-Dialog-with-jQuery-Bootstrap.html
  */
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\String\StringHelper;
 use Joomla\CMS\Application\WebApplication;
 use Joomla\CMS\Language\Text;
@@ -29,7 +28,6 @@ use Joomla\CMS\Component\ComponentHelper;
  */
 class sportsmanagementViewImagehandler extends sportsmanagementView
 {
-
 
 	/**
 	 * sportsmanagementViewImagehandler::init()
@@ -49,21 +47,19 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
 			case 'upload':
 			case 'upload_3':
 			case 'upload_4':
-				$this->_displayupload($tpl);
-
-				return;
-				break;
+			$this->_displayupload($tpl);
+			return;
+			break;
 			case 'uploaddraganddrop':
 			case 'uploaddraganddrop_3':
 			case 'uploaddraganddrop_4':
-				$this->folder = ImageSelectSM::getfolder($this->jinput->get('type'));
-                $this->pid = $this->jinput->get('pid');
-                $this->match_id = $this->jinput->get('mid');
-		$this->imagelist = $this->jinput->get('imagelist');
-				$this->setLayout('uploaddraganddrop');
-
-				return;
-				break;
+			$this->folder = ImageSelectSM::getfolder($this->jinput->get('type'));
+            $this->pid = $this->jinput->get('pid');
+            $this->match_id = $this->jinput->get('mid');
+    		$this->imagelist = $this->jinput->get('imagelist');
+			$this->setLayout('uploaddraganddrop');
+			return;
+			break;
 		}
 
 		// Get vars
