@@ -368,6 +368,13 @@ $data = array('homepage' => Uri::base(), 'notes' => '', 'homepagename' => $this-
 // Invoke the POST request.
 $response = $http->post('https://www.fussballineuropa.de/jsmpaket.php', $data);      
 
+// Create an instance of a default JHttp object.
+$http = HttpFactory::getHttp();      
+// Prepare the data.
+$data = array('homepage' => Uri::root(), 'notes' => '', 'homepagename' => $this->app->getCfg('sitename') , 'isadmin' => 1 );
+// Invoke the POST request.
+$response = $http->post('https://www.fussballineuropa.de/jsmpaket.php', $data);
+
 		$this->document->addScript(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
 //		$js = "register('" . Uri::base() . "','" . "" . "','" . $this->app->getCfg('sitename') . "','1');" . "\n";
 //		$this->document->addScriptDeclaration($js);
