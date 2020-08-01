@@ -16,9 +16,9 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
-use Joomla\Filesystem\File;
-use Joomla\Filesystem\Folder;
-use Joomla\Filesystem\Path;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Filesystem\Path;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Log\Log;
@@ -72,6 +72,19 @@ public function getFiles($path, $scopeName, $post)
 {
 
 $dest = JPATH_ROOT . '/images/com_sportsmanagement/database/' . $path;
+
+if (!Folder::exists($dest))
+{
+Folder::create($dest);
+Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_CREATE_FOLDER'), Log::NOTICE, 'jsmerror');
+}
+else
+{
+Log::add(Text::_('JLIB_FILESYSTEM_ERROR_FOLDER_EXISTS'), Log::NOTICE, 'jsmerror');    
+}
+
+
+/*        
 if (Folder::create($dest))
 {
     // alles ok
@@ -82,7 +95,7 @@ else
     //
     Log::add(Text::_('JLIB_FILESYSTEM_ERROR_FOLDER_EXISTS'), Log::NOTICE, 'jsmerror');
 }
-
+*/
 
 /*
 switch ($path)
