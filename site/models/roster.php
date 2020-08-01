@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage roster
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
@@ -30,15 +26,10 @@ use Joomla\CMS\Log\Log;
 class sportsmanagementModelRoster extends JSMModelLegacy
 {
 	static $projectid = 0;
-
 	static $projectteamid = 0;
-
 	static $teamid = 0;
-
 	static $seasonid = 0;
-
 	static $projectteam = null;
-
 	static $team = null;
 	/**
 	 * caching players
@@ -151,8 +142,6 @@ class sportsmanagementModelRoster extends JSMModelLegacy
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
-
-		// Create a new query object.
 		$db        = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query     = $db->getQuery(true);
 		$starttime = microtime();
@@ -174,8 +163,10 @@ class sportsmanagementModelRoster extends JSMModelLegacy
 			}
 
 			$query->select('t.*');
+            $query->select('c.logo_big');
 			$query->select('CONCAT_WS(\':\',t.id,t.alias) AS slug');
 			$query->from('#__sportsmanagement_team AS t');
+            $query->join('INNER', ' #__sportsmanagement_club c ON t.club_id = c.id ');
 			$query->where('t.id = ' . (int) self::$teamid);
 			$db->setQuery($query);
 
@@ -352,8 +343,6 @@ class sportsmanagementModelRoster extends JSMModelLegacy
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
-
-		// Create a new query object.
 		$db        = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query     = $db->getQuery(true);
 		$starttime = microtime();

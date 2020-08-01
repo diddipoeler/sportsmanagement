@@ -12,6 +12,9 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 
+//echo 'team <pre>'.print_r($this->team,true).'</pre>';
+//echo 'projectteam<pre>'.print_r($this->projectteam,true).'</pre>';
+
 ?>
 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="roster">
 	<?php
@@ -19,9 +22,9 @@ use Joomla\CMS\Language\Text;
 	if ($this->config['show_team_logo'])
 	{
 		?>
-        <table class="table">
+        <table class="table" id="tableteampicture" width="100%">
             <tr>
-                <td align="center">
+                <td class="" width="">
 					<?php
 
 					$picture = $this->projectteam->picture;
@@ -44,8 +47,8 @@ use Joomla\CMS\Language\Text;
 						$this->overallconfig['use_jquery_modal']
 					);
 					?>
-
-
+                </td>
+                <td class="" width="">
                 </td>
             </tr>
         </table>

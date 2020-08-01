@@ -64,7 +64,7 @@ class sportsmanagementViewRoster extends sportsmanagementView
 			$this->team = $this->model->getTeam();
 			$this->rows = $this->model->getTeamPlayers(1);
 
-			// Events
+			/** Events */
 			if ($this->config['show_events_stats'])
 			{
 				$this->positioneventtypes = $this->model->getPositionEventTypes();
@@ -80,7 +80,7 @@ class sportsmanagementViewRoster extends sportsmanagementView
 				}
 			}
 
-			// Stats
+			/** Stats */
 			if ($this->config['show_stats'])
 			{
 				$this->stats       = sportsmanagementModelProject::getProjectStats(0, 0, sportsmanagementModelRoster::$cfg_which_database);
@@ -89,19 +89,19 @@ class sportsmanagementViewRoster extends sportsmanagementView
 
 			$this->stafflist = $this->model->getTeamPlayers(2);
 
-			// Set page title
+			/** Set page title */
 			$this->document->setTitle(Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_TITLE', $this->team->name));
 		}
 		else
 		{
-			// Set page title
+			/** Set page title */
 			$this->document->setTitle(Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_TITLE', Text::_('COM_SPORTSMANAGEMENT_ROSTER_ERROR_PROJECT_TEAM')));
 		}
 
 		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/' . $this->option . '/assets/css/' . $this->view . '.css' . '" type="text/css" />' . "\n";
 		$this->document->addCustomTag($stylelink);
 
-		// Select roster view
+		/** Select roster view */
 		$opp_arr   = array();
 		$opp_arr[] = HTMLHelper::_('select.option', "player_standard", Text::_('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION1_PLAYER_STANDARD'));
 		$opp_arr[] = HTMLHelper::_('select.option', "player_card", Text::_('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION2_PLAYER_CARD'));
@@ -109,7 +109,7 @@ class sportsmanagementViewRoster extends sportsmanagementView
 
 		$lists['type'] = $opp_arr;
 
-		// Select staff view
+		/** Select staff view */
 		$opp_arr   = array();
 		$opp_arr[] = HTMLHelper::_('select.option', "staff_standard", Text::_('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION1_STAFF_STANDARD'));
 		$opp_arr[] = HTMLHelper::_('select.option', "staff_card", Text::_('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION2_STAFF_CARD'));
