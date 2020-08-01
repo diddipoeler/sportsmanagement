@@ -53,20 +53,20 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
 			case 'uploaddraganddrop':
 			case 'uploaddraganddrop_3':
 			case 'uploaddraganddrop_4':
-			$this->folder = ImageSelectSM::getfolder($this->jinput->get('type'));
-            $this->pid = $this->jinput->get('pid');
-            $this->match_id = $this->jinput->get('mid');
-    		$this->imagelist = $this->jinput->get('imagelist');
+			$this->folder = ImageSelectSM::getfolder($data['type']);
+            $this->pid = $data['pid'];
+            $this->mid = $data['mid'];
+    		$this->imagelist = $data['imagelist'];
 			$this->setLayout('uploaddraganddrop');
 			return;
 			break;
 		}
 
 		// Get vars
-		$type    = Factory::getApplication()->input->getVar('type');
+		$type    = $data['type'];
 		$folder  = ImageSelectSM::getfolder($type);
-		$field   = Factory::getApplication()->input->getVar('field');
-		$fieldid = Factory::getApplication()->input->getVar('fieldid');
+		$field   = $data['field'];
+		$fieldid = $data['fieldid'];
 		$search  = $app->getUserStateFromRequest('com_sportsmanagement.imageselect', 'search', '', 'string');
 		$search  = trim(StringHelper::strtolower($search));
 
