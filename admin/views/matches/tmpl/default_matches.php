@@ -190,7 +190,7 @@ use Joomla\CMS\Uri\Uri;
 						else
 						{
 //$pcture_link   = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sportsmanagement&author=&folder=com_sportsmanagement/database/matchreport/' . $row->id;
-$pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=component&asset=com_sportsmanagement&author=&folder=matchreport' .'&mid='. $row->id;							
+$pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=component&asset=com_sportsmanagement&author=&folder=matchreport' .'&mid='. $row->id.'&pid='.$this->project_id;							
 							//$pcture_delete = 'index.php?option=com_media&tmpl=component&asset=com_sportsmanagement&author=&folder=com_sportsmanagement/database/matchreport/' . $row->id;
 						}
 
