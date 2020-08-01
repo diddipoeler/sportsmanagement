@@ -58,9 +58,10 @@ $uri = Uri::root();
 ?>
 
     <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
+    <!--
         <legend>
 			<?php
-			echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTREFEREES_QUICKADD_REFEREE');
+			//echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTREFEREES_QUICKADD_REFEREE');
 			?>
         </legend>
         <form id="quickaddForm"
@@ -76,7 +77,7 @@ $uri = Uri::root();
             </table>
 			<?php echo HTMLHelper::_('form.token'); ?>
         </form>
-    
+    -->
     
 		<?PHP
         echo $this->loadTemplate('joomla_version');
