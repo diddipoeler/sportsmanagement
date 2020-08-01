@@ -49,8 +49,8 @@ class sportsmanagementModelseason extends JSMModelAdmin
 	 */
 	function saveshortpersons()
 	{
-		$modified    = $this->jsmdate->toSql();
-		$modified_by = $this->jsmuser->get('id');
+		//$modified    = $this->jsmdate->toSql();
+		//$modified_by = $this->jsmuser->get('id');
 
 		$pks        = $this->jsmjinput->getVar('cid', null, 'post', 'array');
 		$teams      = $this->jsmjinput->getVar('team_id', null, 'post', 'array');
@@ -62,7 +62,7 @@ class sportsmanagementModelseason extends JSMModelAdmin
 		{
 			$this->jsmquery->clear();
 			$columns = array('person_id', 'season_id', 'modified', 'modified_by');
-			$values  = array($value, $season_id, $this->jsmdb->Quote('' . $modified . ''), $modified_by);
+			$values  = array($value, $season_id, $this->jsmdate->toSql(), $this->jsmuser->get('id'));
 			$this->jsmquery
 				->insert($this->jsmdb->quoteName('#__sportsmanagement_season_person_id'))
 				->columns($this->jsmdb->quoteName($columns))
@@ -79,7 +79,50 @@ class sportsmanagementModelseason extends JSMModelAdmin
 				$row->load($season_id);
 				$this->jsmapp->enqueueMessage('Saisonzuordnung : ' . $row->name . ' schon vorhanden.', 'notice');
 
-				if ($persontype == 3)
+//				if ($persontype == 3)
+//				{
+//					$this->jsmquery->clear();
+//					$this->jsmquery->select('id');
+//					$this->jsmquery->from('#__sportsmanagement_season_person_id');
+//					$this->jsmquery->where('season_id = ' . $season_id);
+//					$this->jsmquery->where('person_id = ' . $value);
+//					$this->jsmdb->setQuery($this->jsmquery);
+//					$new_id = $this->jsmdb->loadResult();
+//
+//					$modified              = $this->jsmdate->toSql();
+//					$mdlTable              = new stdClass;
+//					$mdlTable->id          = $new_id;
+//					$mdlTable->modified    = $this->jsmdb->Quote('' . $this->jsmdate->toSql() . '');
+//					$mdlTable->modified_by = $this->jsmuser->get('id');
+//					$mdlTable->persontype  = 3;
+//					$mdlTable->published   = 1;
+//
+//					try
+//					{
+//						$resultupdate = $this->jsmdb->updateObject('#__sportsmanagement_season_person_id', $mdlTable, 'id');
+//					}
+//					catch (Exception $e)
+//					{
+//					}
+//
+//					$profile              = new stdClass;
+//					$profile->project_id  = $project_id;
+//					$profile->person_id   = $new_id;
+//					$profile->published   = 1;
+//					$profile->modified    = $this->jsmdb->Quote('' . $this->jsmdate->toSql() . '');
+//					$profile->modified_by = $this->jsmuser->get('id');
+//
+//					try
+//					{
+//						$resultproref = $this->jsmdb->insertObject('#__sportsmanagement_project_referee', $profile);
+//					}
+//					catch (Exception $e)
+//					{
+//					}
+//				}
+			}
+            
+            if ($persontype == 3)
 				{
 					$this->jsmquery->clear();
 					$this->jsmquery->select('id');
@@ -89,11 +132,11 @@ class sportsmanagementModelseason extends JSMModelAdmin
 					$this->jsmdb->setQuery($this->jsmquery);
 					$new_id = $this->jsmdb->loadResult();
 
-					$modified              = $this->jsmdate->toSql();
+					//$modified              = $this->jsmdate->toSql();
 					$mdlTable              = new stdClass;
 					$mdlTable->id          = $new_id;
-					$mdlTable->modified    = $this->jsmdb->Quote('' . $modified . '');
-					$mdlTable->modified_by = $modified_by;
+					$mdlTable->modified    = $this->jsmdate->toSql();
+					$mdlTable->modified_by = $this->jsmuser->get('id');
 					$mdlTable->persontype  = 3;
 					$mdlTable->published   = 1;
 
@@ -109,8 +152,8 @@ class sportsmanagementModelseason extends JSMModelAdmin
 					$profile->project_id  = $project_id;
 					$profile->person_id   = $new_id;
 					$profile->published   = 1;
-					$profile->modified    = $this->jsmdb->Quote('' . $modified . '');
-					$profile->modified_by = $modified_by;
+					$profile->modified    = $this->jsmdate->toSql();
+					$profile->modified_by = $this->jsmuser->get('id');
 
 					try
 					{
@@ -120,13 +163,13 @@ class sportsmanagementModelseason extends JSMModelAdmin
 					{
 					}
 				}
-			}
+            
 
 			if (isset($teams) && $persontype != 3)
 			{
 				$this->jsmquery->clear();
 				$columns = array('person_id', 'season_id', 'team_id', 'published', 'persontype', 'modified', 'modified_by');
-				$values  = array($value, $season_id, $teams, '1', $persontype, $this->jsmdb->Quote('' . $modified . ''), $modified_by);
+				$values  = array($value, $season_id, $teams, '1', $persontype, $this->jsmdate->toSql(), $this->jsmuser->get('id'));
 				$this->jsmquery
 					->insert($this->jsmdb->quoteName('#__sportsmanagement_season_team_person_id'))
 					->columns($this->jsmdb->quoteName($columns))
