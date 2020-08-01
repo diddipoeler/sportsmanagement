@@ -18,7 +18,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Log\Log;
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-$link = 'index.php?option=com_sportsmanagement&view=imagehandler&layout=uploaddraganddrop&type='.$this->folder.'&field=&fieldid=&tmpl=component&pid='.$this->pid.'&imagelist='.$this->imagelist;
+$link = 'index.php?option=com_sportsmanagement&view=imagehandler&layout=uploaddraganddrop&type='.$this->folder.'&field=&fieldid=&tmpl=component&pid='.$this->pid.'&imagelist='.$this->imagelist.'&mid='.$this->mid;
 
 //echo 'name: '.$this->app->getUserState("com_sportsmanagement.itemname", '0');
 ?>
@@ -129,7 +129,7 @@ include( dirname(__FILE__) . '/default_image.php');
 <input type="hidden" name="asset" value="com_sportsmanagement"/>
 <input type="hidden" name="folder" value="<?php echo $this->folder;?>"/>
 <input type="hidden" name="pid" value="<?php echo $this->pid ;?>"/>
-<input type="hidden" name="mid" value="<?php echo $this->match_id ;?>"/>
+<input type="hidden" name="mid" value="<?php echo $this->mid ;?>"/>
 <input type="hidden" name="author" value=""/>
 <input type="hidden" name="fieldid" value="<?php echo $this->fieldid;?>"/>
 <input type="hidden" name="type" value="<?php echo $this->type;?>"/>
