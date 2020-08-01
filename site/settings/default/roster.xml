@@ -290,6 +290,11 @@
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_TEAMOPTIONS">	
 
+<field 	name="club_picture_height" type="text" default="150"
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_CLUB_LOGO_HEIGHT" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_CLUB_LOGO_HEIGHT">
+		</field>
+		
 		<field 	name="show_team_logo" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_TEAM_LOGO" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_TEAM_LOGO">

@@ -49,6 +49,18 @@ use Joomla\CMS\Language\Text;
 					?>
                 </td>
                 <td class="" width="">
+                <?php
+					echo sportsmanagementHelperHtml::getBootstrapModalImage(
+						'rosterclub' . $this->team->name,
+						$this->team->logo_big,
+						$this->team->name,
+						$this->config['club_picture_height'],
+						'',
+						$this->modalwidth,
+						$this->modalheight,
+						$this->overallconfig['use_jquery_modal']
+					);
+					?>
                 </td>
             </tr>
         </table>
