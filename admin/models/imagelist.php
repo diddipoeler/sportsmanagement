@@ -70,6 +70,16 @@ public function __construct($config = array())
 public function getFiles($path, $scopeName, $post)
 {
 
+$dest = JPATH_ROOT . '/images/com_sportsmanagement/database/' . $path;
+if (Folder::exists($dest))
+{
+}
+else
+{
+$result = Folder::create($dest);
+}
+
+
 /*
 switch ($path)
 {

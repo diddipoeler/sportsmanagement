@@ -120,23 +120,21 @@ include( dirname(__FILE__) . '/default_image.php');
     </p>
 	<?php echo $this->pagination->getPagesLinks(); ?>
 </div>
-  </div>
-   <input type="hidden" name="limitstart" value=""/>
-  <input type="hidden" name="option" value="com_sportsmanagement"/>
-  
-  
-            <input type="hidden" name="view" value="imagelist"/>
-            <input type="hidden" name="imagelist" value="1"/>
-            <input type="hidden" name="asset" value="com_sportsmanagement"/>
-            <input type="hidden" name="folder" value="<?php echo $this->folder;?>"/>
+</div>
+
+<input type="hidden" name="limitstart" value=""/>
+<input type="hidden" name="option" value="com_sportsmanagement"/>
+<input type="hidden" name="view" value="imagelist"/>
+<input type="hidden" name="imagelist" value="1"/>
+<input type="hidden" name="asset" value="com_sportsmanagement"/>
+<input type="hidden" name="folder" value="<?php echo $this->folder;?>"/>
 <input type="hidden" name="pid" value="<?php echo $this->pid ;?>"/>
 <input type="hidden" name="mid" value="<?php echo $this->match_id ;?>"/>
-            <input type="hidden" name="author" value=""/>
-            <input type="hidden" name="fieldid" value="<?php echo $this->fieldid;?>"/>
+<input type="hidden" name="author" value=""/>
+<input type="hidden" name="fieldid" value="<?php echo $this->fieldid;?>"/>
 <input type="hidden" name="type" value="<?php echo $this->type;?>"/>
 <input type="hidden" name="fieldname" value="<?php echo $this->fieldname;?>"/>
-            <input type="hidden" name="tmpl" value="component"/>
-  
+<input type="hidden" name="tmpl" value="component"/>
   
 </form>
   </div>

@@ -78,6 +78,7 @@ switch ($this->folder)
 		break;  
         case "matchreport":
         $this->match_id = $data['mid'];
+        $this->pid = $data['pid'];
         $this->images = $this->model->getFiles($data['folder'].'/'.$data['mid'],'',$data);
 		break;
 	default:
