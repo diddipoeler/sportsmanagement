@@ -49,9 +49,6 @@ class sportsmanagementModelseason extends JSMModelAdmin
 	 */
 	function saveshortpersons()
 	{
-		//$modified    = $this->jsmdate->toSql();
-		//$modified_by = $this->jsmuser->get('id');
-
 		$pks        = $this->jsmjinput->getVar('cid', null, 'post', 'array');
 		$teams      = $this->jsmjinput->getVar('team_id', null, 'post', 'array');
 		$season_id  = $this->jsmjinput->getVar('season_id', 0, 'post', 'array');
@@ -78,48 +75,6 @@ class sportsmanagementModelseason extends JSMModelAdmin
 				$row = Table::getInstance('season', 'sportsmanagementTable');
 				$row->load($season_id);
 				$this->jsmapp->enqueueMessage('Saisonzuordnung : ' . $row->name . ' schon vorhanden.', 'notice');
-
-//				if ($persontype == 3)
-//				{
-//					$this->jsmquery->clear();
-//					$this->jsmquery->select('id');
-//					$this->jsmquery->from('#__sportsmanagement_season_person_id');
-//					$this->jsmquery->where('season_id = ' . $season_id);
-//					$this->jsmquery->where('person_id = ' . $value);
-//					$this->jsmdb->setQuery($this->jsmquery);
-//					$new_id = $this->jsmdb->loadResult();
-//
-//					$modified              = $this->jsmdate->toSql();
-//					$mdlTable              = new stdClass;
-//					$mdlTable->id          = $new_id;
-//					$mdlTable->modified    = $this->jsmdb->Quote('' . $this->jsmdate->toSql() . '');
-//					$mdlTable->modified_by = $this->jsmuser->get('id');
-//					$mdlTable->persontype  = 3;
-//					$mdlTable->published   = 1;
-//
-//					try
-//					{
-//						$resultupdate = $this->jsmdb->updateObject('#__sportsmanagement_season_person_id', $mdlTable, 'id');
-//					}
-//					catch (Exception $e)
-//					{
-//					}
-//
-//					$profile              = new stdClass;
-//					$profile->project_id  = $project_id;
-//					$profile->person_id   = $new_id;
-//					$profile->published   = 1;
-//					$profile->modified    = $this->jsmdb->Quote('' . $this->jsmdate->toSql() . '');
-//					$profile->modified_by = $this->jsmuser->get('id');
-//
-//					try
-//					{
-//						$resultproref = $this->jsmdb->insertObject('#__sportsmanagement_project_referee', $profile);
-//					}
-//					catch (Exception $e)
-//					{
-//					}
-//				}
 			}
             
             if ($persontype == 3)
@@ -132,7 +87,6 @@ class sportsmanagementModelseason extends JSMModelAdmin
 					$this->jsmdb->setQuery($this->jsmquery);
 					$new_id = $this->jsmdb->loadResult();
 
-					//$modified              = $this->jsmdate->toSql();
 					$mdlTable              = new stdClass;
 					$mdlTable->id          = $new_id;
 					$mdlTable->modified    = $this->jsmdate->toSql();
