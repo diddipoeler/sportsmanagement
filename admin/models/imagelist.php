@@ -75,10 +75,12 @@ $dest = JPATH_ROOT . '/images/com_sportsmanagement/database/' . $path;
 if (Folder::create($dest))
 {
     // alles ok
+    Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_CREATE_FOLDER'), Log::NOTICE, 'jsmerror');
 }
 else
 {
     //
+    Log::add(Text::_('JLIB_FILESYSTEM_ERROR_FOLDER_EXISTS'), Log::NOTICE, 'jsmerror');
 }
 
 
