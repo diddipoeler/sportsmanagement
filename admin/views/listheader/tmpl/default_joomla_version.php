@@ -36,7 +36,7 @@ if ($this->items)
     switch ($this->view)
     {
     case 'projectteams':
-    case 'projectreferees':
+    //case 'projectreferees':
     case 'templates':
     case 'treetos':
     break;
