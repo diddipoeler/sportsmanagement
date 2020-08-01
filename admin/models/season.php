@@ -128,7 +128,6 @@ class sportsmanagementModelseason extends JSMModelAdmin
 					->insert($this->jsmdb->quoteName('#__sportsmanagement_season_team_person_id'))
 					->columns($this->jsmdb->quoteName($columns))
 					->values(implode(',', $values));
-
 				try
 				{
 					$this->jsmdb->setQuery($this->jsmquery);
@@ -136,7 +135,8 @@ class sportsmanagementModelseason extends JSMModelAdmin
 				}
 				catch (Exception $e)
 				{
-Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()) . '<br />', Log::ERROR, 'jsmerror');
+				$this->jsmapp->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');    
+                //Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()) . '<br />', Log::ERROR, 'jsmerror');
 				}
 			}
 		}
