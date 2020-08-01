@@ -89,12 +89,13 @@ class sportsmanagementViewProjects extends sportsmanagementView
 			$row->user_field = $mdluserfields->getExtraFieldsProject($row->id);
 			$dest            = JPATH_ROOT . '/images/com_sportsmanagement/database/projectimages/' . $row->id;
 
-			if (Folder::exists($dest))
+			if (Folder::create($dest))
 			{
+				// alles ok
 			}
 			else
 			{
-				$result = Folder::create($dest);
+				//
 			}
 		}
 

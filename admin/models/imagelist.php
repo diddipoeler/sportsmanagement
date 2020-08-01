@@ -21,6 +21,7 @@ use Joomla\Filesystem\Folder;
 use Joomla\Filesystem\Path;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Pagination\Pagination;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModelimagelist
@@ -71,12 +72,13 @@ public function getFiles($path, $scopeName, $post)
 {
 
 $dest = JPATH_ROOT . '/images/com_sportsmanagement/database/' . $path;
-if (Folder::exists($dest))
+if (Folder::create($dest))
 {
+    // alles ok
 }
 else
 {
-$result = Folder::create($dest);
+    //
 }
 
 
