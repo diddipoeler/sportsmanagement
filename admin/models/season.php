@@ -39,7 +39,6 @@ class sportsmanagementModelseason extends JSMModelAdmin
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
-
 	}
 
 	/**
@@ -136,7 +135,6 @@ class sportsmanagementModelseason extends JSMModelAdmin
 				catch (Exception $e)
 				{
 				$this->jsmapp->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');    
-                //Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()) . '<br />', Log::ERROR, 'jsmerror');
 				}
 			}
 		}

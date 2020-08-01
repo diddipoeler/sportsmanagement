@@ -65,43 +65,26 @@ class sportsmanagementModelProjectReferees extends JSMModelList
 	 */
 	function storeAssigned($cid, $project_id)
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-		$db  = sportsmanagementHelper::getDBConnection();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$query  = Factory::getDbo()->getQuery(true);
-
 		if (!count($cid))
 		{
 			return 0;
 		}
 
-		// Select some fields
-		$query->select('pt.id');
+		$this->jsmquery->clear();
+		$this->jsmquery->select('pt.id');
+		$this->jsmquery->from('#__sportsmanagement_person AS pt');
+		$this->jsmquery->join('INNER', '#__sportsmanagement_project_referee AS r ON r.person_id = pt.id');
+		$this->jsmquery->where('r.project_id = ' . $project_id);
+		$this->jsmquery->where('pt.published = 1');
 
-		// From the table
-		$query->from('#__sportsmanagement_person AS pt');
-		$query->join('INNER', '#__sportsmanagement_project_referee AS r ON r.person_id = pt.id');
-		$query->where('r.project_id = ' . $project_id);
-		$query->where('pt.published = 1');
-
-		$db->setQuery($query);
+		$this->jsmdb->setQuery($this->jsmquery);
 
 		if (version_compare(JVERSION, '3.0.0', 'ge'))
 		{
 			// Joomla! 3.0 code here
-			$current = $db->loadColumn();
-		}
-		elseif (version_compare(JVERSION, '2.5.0', 'ge'))
-		{
-			// Joomla! 2.5 code here
-			$current = $db->loadResultArray();
+			$current = $this->jsmdb->loadColumn();
 		}
 
-		//		$current = Factory::getDbo()->loadResultArray();
 		$added = 0;
 
 		foreach ($cid AS $pid)
@@ -118,18 +101,14 @@ class sportsmanagementModelProjectReferees extends JSMModelList
 					continue;
 				}
 
-				// Get data from person
-				// Select some fields
-				$query->clear();
-				$query->select('pl.picture');
+				$this->jsmquery->clear();
+				$this->jsmquery->select('pl.picture');
+				$this->jsmquery->from('#__sportsmanagement_person AS pl');
+				$this->jsmquery->where('pl.id = ' . $pid);
+				$this->jsmquery->where('pl.published = 1');
 
-				// From the table
-				$query->from('#__sportsmanagement_person AS pl');
-				$query->where('pl.id = ' . $pid);
-				$query->where('pl.published = 1');
-
-				Factory::getDbo()->setQuery($query);
-				$player = Factory::getDbo()->loadObject();
+				$this->jsmdb->setQuery($this->jsmquery);
+				$player = $this->jsmdb->loadObject();
 
 				if ($player)
 				{
