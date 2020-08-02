@@ -706,8 +706,8 @@ if ( $config->get('debug') )
 
 if ( $config->get('debug') )
 {
-$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' config <pre>'.print_r($data,true).'</pre>'), '');    
-$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' config <pre>'.print_r($post,true).'</pre>'), '');
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data <pre>'.print_r($data,true).'</pre>'), '');    
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post <pre>'.print_r($post,true).'</pre>'), '');
 $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' parentsave '.$parentsave), '');
 $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getState id '.$this->getState($this->getName().'.id') ), '');
 $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$this->jsmjinput->getInt('id') ), '');
