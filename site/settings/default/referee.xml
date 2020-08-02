@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <form>
+<!-- reiter 1 -->
 	<fieldset name="details"
   label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"  
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
@@ -54,7 +55,7 @@
 		</field>
 
 	</fieldset>
-
+<!-- reiter 2 -->
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PERSONOPTIONS"
   label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PERSONOPTIONS"  
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PERSONOPTIONS"
@@ -72,17 +73,18 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-
+<!--
 		<field 	name="picture_width" type="text" default="150"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_REF_PICTURE_WIDTH" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_REF_PICTURE_WIDTH">
 		</field>
-<!--		
+		-->
+
 		<field 	name="picture_height" type="text" default="150"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_REF_PICTURE_HEIGHT" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_REF_PICTURE_HEIGHT">
 		</field>
--->		
+
 		<field 	name="show_nationality" type="extensionradiobutton" default="0" 
 		class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_REFEREE_PARAM_LABEL_SHOW_NATIONALITY" 

@@ -365,18 +365,16 @@ class sportsmanagementHelperHtml
 	 * @param   string  $target
 	 * @param   string  $picture
 	 * @param   string  $text
-	 * @param   string  $picturewidth
+	 * @param   string  $pictureheight
 	 * @param   string  $url
 	 * @param   string  $width
 	 * @param   string  $height
 	 * @param   int $use_jquery_modal
 	 * @return
 	 */
-	public static function getBootstrapModalImage($target = '', $picture = '', $text = '', $picturewidth = '20', $url = '', $width = '100', $height = '200', $use_jquery_modal = 0)
+	public static function getBootstrapModalImage($target = '', $picture = '', $text = '', $pictureheight = '20', $url = '', $width = '100', $height = '200', $use_jquery_modal = 0)
 	{
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 
 		switch ($use_jquery_modal)
@@ -402,7 +400,7 @@ class sportsmanagementHelperHtml
 					$modaltext .= ' onclick="openRequestedSinglePopup(this.href,' . $width . ',' . $height . '); return false;"';
 					$modaltext .= ' title="' . $text . '"';
 					$modaltext .= '>';
-					$modaltext .= '<img src="' . $picture . '" alt="' . $text . '" style="width: auto;height: ' . $picturewidth . 'px" />';
+					$modaltext .= '<img src="' . $picture . '" alt="' . $text . '" style="width: auto;height: ' . $pictureheight . 'px" />';
 					$modaltext .= '</a>';
 				}
 
@@ -413,21 +411,14 @@ class sportsmanagementHelperHtml
 					$modaltext .= ' onclick="openRequestedSinglePopup(this.href,' . $width . ',' . $height . '); return false;"';
 					$modaltext .= ' title="' . $text . '"';
 					$modaltext .= '>';
-					$modaltext .= '<img src="' . $picture . '" alt="' . $text . '" style="width: auto;height: ' . $picturewidth . 'px" />';
+					$modaltext .= '<img src="' . $picture . '" alt="' . $text . '" style="width: auto;height: ' . $pictureheight . 'px" />';
 					$modaltext .= '</a>';
 				}
 				break;
 			case 0:
-				//            if ($url) {
-				//                $modaltext = '<a title="' . $text . '" class="modal" href="' . $url . '">';
-				//            } else {
-				//                $modaltext = '<a title="' . $text . '" class="modal" href="' . $picture . '">';
-				//            }
-				//            $modaltext .= '<img width="' . $picturewidth . '" alt="' . $text . '" src="' . $picture . '"></a>';
-
 				$modaltext = '<a href="#' . $target . '" title="' . $text . '" data-toggle="modal" >';
-				//$modaltext .= '<img src="' . $picture . '" alt="' . $text . '" width="' . $picturewidth . '" />';
-				$modaltext .= '<img src="' . $picture . '" alt="' . $text . '" style="width: auto;height: ' . $picturewidth . 'px" />';
+				//$modaltext .= '<img src="' . $picture . '" alt="' . $text . '" width="' . $pictureheight . '" />';
+				$modaltext .= '<img src="' . $picture . '" alt="' . $text . '" style="width: auto;height: ' . $pictureheight . 'px" />';
 				$modaltext .= '</a>';
 
 				if (!$url)
