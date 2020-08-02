@@ -139,6 +139,13 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		
+		<field	name="referee_name_format" type="nameformat" default="0"
+				label="COM_SPORTSMANAGEMENT_FES_REFEREE_PARAM_LABEL_NAME_FORMAT"
+				description="COM_SPORTSMANAGEMENT_FES_REFEREE_PARAM_DESCR_NAME_FORMAT">
+		</field>
+		
+		
 
 		<field name="show_playground" type="extensionradiobutton" default="0"
 		class="radio btn-group btn-group-yesno"

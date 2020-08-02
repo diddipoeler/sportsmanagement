@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage clubplan
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -31,7 +27,6 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 class sportsmanagementModelClubPlan extends BaseDatabaseModel
 {
 	static $clubid = 0;
-
 	static $project_id = 0;
 	static $startdate = null;
 	static $enddate = null;
@@ -54,10 +49,7 @@ class sportsmanagementModelClubPlan extends BaseDatabaseModel
 	 */
 	function __construct()
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 		parent::__construct();
 		self::$clubid     = $jinput->request->get('cid', 0, 'INT');
@@ -68,14 +60,9 @@ class sportsmanagementModelClubPlan extends BaseDatabaseModel
 		self::$teamprojectssel = $jinput->request->get('teamprojectssel', 0, 'INT');
 		self::$teamseasonssel  = $jinput->request->get('teamseasonssel', 0, 'INT');
 
-		//		$this->project_id = $jinput->request->get('p', 0, 'INT');
-
 		self::setStartDate($jinput->request->get('startdate', self::$startdate, 'STR'));
 		self::setEndDate($jinput->request->get('enddate', self::$enddate, 'STR'));
 
-		// $params["points"] = $jinput->request->get('points', '3,1,0', 'STR');
-		// $this->setStartDate($jinput->getVar("startdate", $this->startdate,'request','string'));
-		// $this->setEndDate($jinput->getVar("enddate",$this->enddate,'request','string'));
 		self::$cfg_which_database = $jinput->request->get('cfg_which_database', 0, 'INT');
 	}
 
@@ -578,22 +565,14 @@ class sportsmanagementModelClubPlan extends BaseDatabaseModel
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
 
-		// Get a db connection.
 		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
-
-		$query->select('p.id,p.firstname,p.lastname,CONCAT_WS(\':\',p.id,p.alias) AS person_slug');
+		$query->select('p.id,p.firstname,p.lastname,p.nickname,CONCAT_WS(\':\',p.id,p.alias) AS person_slug');
 		$query->select('mp.project_position_id');
-
-		// From
 		$query->from('#__sportsmanagement_match_referee AS mp');
-
-		// Join
 		$query->join('LEFT', ' #__sportsmanagement_project_referee AS pref ON mp.project_referee_id = pref.id ');
 		$query->join('INNER', ' #__sportsmanagement_season_person_id AS sp ON pref.person_id = sp.id ');
 		$query->join('INNER', ' #__sportsmanagement_person AS p ON sp.person_id = p.id ');
-
-		// Where
 		$query->where('mp.match_id = ' . (int) $matchID);
 		$query->where('p.published = 1');
 
@@ -602,7 +581,6 @@ class sportsmanagementModelClubPlan extends BaseDatabaseModel
 		$result = $db->loadObjectList();
 
 		return $result;
-
 	}
 
 }
