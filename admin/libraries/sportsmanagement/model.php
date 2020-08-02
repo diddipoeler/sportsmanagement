@@ -273,6 +273,15 @@ if ( $config->get('debug') )
 				{
 					$data['picture'] = $post['copy_jform']['picture'];
 				}
+                
+                if ( !$data['founded'] )
+                {
+                    $data['founded'] = '0000-00-00';
+                }
+                if ( !$data['dissolved'] )
+                {
+                    $data['dissolved'] = '0000-00-00';
+                }
 
 				$data['sports_type_id'] = $data['request']['sports_type_id'];
 				$data['agegroup_id']    = $data['request']['agegroup_id'];
