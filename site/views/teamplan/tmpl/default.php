@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
+<script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>  
 <div class="<?php echo $this->divclasscontainer; ?>" id="teamplan">
 <button id="exportButton" class="btn btn-lg btn-danger clearfix"><span class="fa fa-file-pdf-o"></span> Export to PDF</button>
 
@@ -53,17 +54,17 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <script type="text/javascript">
     jQuery(function ($) {
         $("#exportButton").click(function () {
-var element = document.getElementById('teamplan');
+var element = document.getElementById('teamplanoutput');
 var opt = {
   margin:       1,
-  filename:     'tablestaff.pdf',
+  filename:     'teamplan.pdf',
   image:        { type: 'jpeg', quality: 0.98 },
   html2canvas:  { scale: 2 },
   jsPDF:        { unit: 'in', format: 'A3', orientation: 'landscape' }
 };
 
 // New Promise-based usage:
-//html2pdf().set(opt).from(element).save();            
+html2pdf().set(opt).from(element).save();            
         });
     });
 </script>
