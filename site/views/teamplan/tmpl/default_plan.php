@@ -30,7 +30,7 @@ if (!empty($this->matches))
 	$nbcols = 0;
 	?>
     <div class="<?php echo $this->divclassrow; ?> table-responsive" id="teamplan">
-        <table class="<?php echo $this->config['table_class']; ?>">
+        <table class="<?php echo $this->config['table_class']; ?>" id="teamplan">
             <thead>
             <tr>
 				<?php
