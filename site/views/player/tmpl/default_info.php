@@ -143,13 +143,13 @@ use Joomla\CMS\Factory;
 			{
 				case 1:  // Show Birthday and Age
 					$birthdateStr = $timestamp_birth ?
-						HTMLHelper::date($this->person->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')) : "-";
+						HTMLHelper::date($this->person->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE')) : "-";
 					$birthdateStr .= "&nbsp;(" . sportsmanagementHelper::getAge($this->person->birthday, $this->person->deathday) . ")";
 					break;
 
 				case 2:  // Show Only Birthday
 					$birthdateStr = $timestamp_birth ?
-						HTMLHelper::date($this->person->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')) : "-";
+						HTMLHelper::date($this->person->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE')) : "-";
 					break;
 
 				case 3:  // Show Only Age
