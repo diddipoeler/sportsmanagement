@@ -382,12 +382,12 @@ class sportsmanagementHelperHtml
 			case 2:
 				if ($url)
 				{
-					$modaltext = '<a class="jcepopup jcemediabox-image" title="' . $text . '" href="' . $url . '" data-mediabox="1" data-mediabox-title="' . $text . '"><img src="' . $picture . '" alt="' . $text . '" style="width: auto;height: ' . $picturewidth . 'px" />';
+					$modaltext = '<a class="jcepopup jcemediabox-image" title="' . $text . '" href="' . $url . '" data-mediabox="1" data-mediabox-title="' . $text . '"><img src="' . $picture . '" alt="' . $text . '" style="width: auto;height: ' . $pictureheight . 'px" />';
 				}
 
 				if (!$url)
 				{
-					$modaltext = '<a class="jcepopup jcemediabox-image" title="' . $text . '" href="' . $picture . '" data-mediabox="1" data-mediabox-title="' . $text . '"><img src="' . $picture . '" alt="' . $text . '" style="width: auto;height: ' . $picturewidth . 'px" />';
+					$modaltext = '<a class="jcepopup jcemediabox-image" title="' . $text . '" href="' . $picture . '" data-mediabox="1" data-mediabox-title="' . $text . '"><img src="' . $picture . '" alt="' . $text . '" style="width: auto;height: ' . $pictureheight . 'px" />';
 				}
 
 				$modaltext .= '</a>';
