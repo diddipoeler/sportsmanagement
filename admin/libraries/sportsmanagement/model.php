@@ -114,10 +114,9 @@ class JSMModelAdmin extends AdminModel
         
         $config = Factory::getConfig();
 
-if ( $config->get('offset') )
+if ( $config->get('debug') )
 {
 		$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' task '.$this->jsmjinput->get('task')), '');
-        // $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' config <pre>'.print_r($config,true).'</pre>')), '');
 }
 
 		$input_options = InputFilter::getInstance(
@@ -705,9 +704,15 @@ if ( $config->get('offset') )
 			$parentsave = false;
 		}
 
-		//    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' parentsave '.$parentsave), '');
-		//    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getState id '.$this->getState($this->getName().'.id') ), '');
-		//    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$this->jsmjinput->getInt('id') ), '');
+if ( $config->get('debug') )
+{
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' config <pre>'.print_r($data,true).'</pre>'), '');    
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' config <pre>'.print_r($post,true).'</pre>'), '');
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' parentsave '.$parentsave), '');
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getState id '.$this->getState($this->getName().'.id') ), '');
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$this->jsmjinput->getInt('id') ), '');
+}
+        
 		if ($parentsave)
 		{
 			$id         = (int) $this->getState($this->getName() . '.id');
