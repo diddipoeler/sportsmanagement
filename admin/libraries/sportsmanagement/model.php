@@ -114,8 +114,11 @@ class JSMModelAdmin extends AdminModel
         
         $config = Factory::getConfig();
 
-		// $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' task '.$this->jsmjinput->get('task')), '');
+if ( $config->get('offset') )
+{
+		$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' task '.$this->jsmjinput->get('task')), '');
         // $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' config <pre>'.print_r($config,true).'</pre>')), '');
+}
 
 		$input_options = InputFilter::getInstance(
 			array(
