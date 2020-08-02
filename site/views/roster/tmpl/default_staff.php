@@ -141,7 +141,7 @@ if (count($this->stafflist) > 0)
 				$row =& $this->stafflist[$i];
 
 				?>
-                <tr class="">
+                <tr class="" width="" onMouseOver="this.bgColor='#CCCCFF'" onMouseOut="this.bgColor='#ffffff'">
 					<?php
 //					if ($this->config['show_player_numbers'])
 //					{

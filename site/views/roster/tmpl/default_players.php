@@ -474,7 +474,7 @@ if (!empty($this->rows))
 				foreach ($players as $row)
 				{
 					?>
-                    <tr class="" width="">
+                    <tr class="" width="" onMouseOver="this.bgColor='#CCCCFF'" onMouseOut="this.bgColor='#ffffff'">
 						<?php
 						$pnr = ($row->position_number != '') ? $row->position_number : '&nbsp;';
 
