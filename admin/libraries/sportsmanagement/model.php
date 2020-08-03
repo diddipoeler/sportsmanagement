@@ -612,6 +612,10 @@ if ( $config->get('debug') )
 				{
 					$data['picture'] = $post['copy_jform']['picture'];
 				}
+				if ( $data['category_id'] == '' )
+				{
+				$data['category_id']  = 0;	
+				}
 
 				$data['start_date']         = sportsmanagementHelper::convertDate($data['start_date'], 0);
 				$data['sports_type_id']     = $data['request']['sports_type_id'];
