@@ -195,7 +195,7 @@ class JSMControllerForm extends FormController
 		$createTeam      = $this->jsmjinput->getVar('createTeam');
 		$return          = $model->save($data);
 		
-		$this->jsmapp->enqueueMessage($model->getError(), 'warning');
+		$this->jsmapp->enqueueMessage($model->getError(), 'error');
 		
 		$this->club_id   = $this->jsmapp->getUserState("$this->jsmoption.club_id", '0');
 		$this->person_id = $this->jsmapp->getUserState("$this->jsmoption.person_id", '0');
