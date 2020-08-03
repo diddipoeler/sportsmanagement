@@ -9,7 +9,14 @@
 	<authorUrl>www.fussballineuropa.de</authorUrl>
 	<version>1.0.00</version>
 	<description>MOD_SPORTSMANAGEMENT_RQUOTES_XML_DESCRIPTION</description>
-	
+
+<compatibilities>
+<compatibility with="joomla">
+<include>
+<versions from="3.0" />
+</include>
+</compatibility>
+</compatibilities>	
 	<!-- The updateservers element is required to enable the automatic update. -->
 <!-- It is used to add the rows to #__update_sites and #__update_sites_extensions tables -->
 
