@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="3.0" client="site" method="upgrade">
+<compatibility url="https://www.fussballineuropa.de">
+    <include>
+      <version if="gt">3.0</version> <!-- Ok for Joomla any version of 3.0 to less than 4 -->
+      <version>4</version> <!-- Ok for Joomla any version of 4 -->
+    </include>
+</compatibility>	
 	<name>MOD_SPORTSMANAGEMENT_RQUOTES</name>
 	<author>diddipoeler</author>
 	<creationDate>Feb 2014</creationDate>
@@ -9,13 +15,6 @@
 	<authorUrl>www.fussballineuropa.de</authorUrl>
 	<version>1.0.00</version>
 	<description>MOD_SPORTSMANAGEMENT_RQUOTES_XML_DESCRIPTION</description>
-
-<compatibility url="https://www.fussballineuropa.de">
-    <include>
-      <version if="gt">3.0</version> <!-- Ok for Joomla any version of 3.0 to less than 4 -->
-      <version>4</version> <!-- Ok for Joomla any version of 4 -->
-    </include>
-</compatibility>
 
 	<!-- The updateservers element is required to enable the automatic update. -->
 <!-- It is used to add the rows to #__update_sites and #__update_sites_extensions tables -->
