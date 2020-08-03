@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="module" version="2.5" client="site" method="upgrade">
+<extension type="module" version="3.0" client="site" method="upgrade">
+<compatibility url="https://www.fussballineuropa.de">
+    <include>
+      <version if="gt">3.0</version> <!-- Ok for Joomla any version of 3.0 to less than 4 -->
+      <version>4</version> <!-- Ok for Joomla any version of 4 -->
+    </include>
+</compatibility>	
 	<name>MOD_SPORTSMANAGEMENT_BIRTHDAY</name>
 	<creationDate>2014-03-13</creationDate>
 	<author>JSM-TEAM</author>
