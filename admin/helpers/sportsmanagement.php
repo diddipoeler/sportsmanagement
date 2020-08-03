@@ -32,6 +32,8 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Component\Actionlogs\Administrator\Model\ActionlogModel;
 //BaseDatabaseModel::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_actionlogs/models', 'ActionlogsModel');
 
+HTMLHelper::_('behavior.keepalive');
+
 if (version_compare(JVERSION, '3.0.0', 'ge'))
 {
 	jimport('joomla.html.toolbar');
@@ -2546,7 +2548,7 @@ try
 
 		if ($config['show_print_button'] == 1)
 		{
-			HTMLHelper::_('behavior.tooltip');
+			//HTMLHelper::_('behavior.tooltip');
 			$status = 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=800,height=600,directories=no,location=no';
 
 			// Checks template image directory for image, if non found default are loaded
