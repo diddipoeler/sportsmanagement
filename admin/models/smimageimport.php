@@ -19,6 +19,7 @@ use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Http\HttpFactory;
+use Joomla\CMS\Filesystem\Path;
 
 /**
  * sportsmanagementModelsmimageimport
@@ -105,6 +106,19 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel
 			$filename = $file;
 			$filepath = $base_Dir . $filename;
 
+// Try to make the template file writable.
+		if (!is_writable($base_Dir))
+		{
+			Factory::getApplication()->enqueueMessage(Text::_('COM_TEMPLATES_ERROR_SOURCE_FILE_NOT_WRITABLE'), 'warning');
+			Factory::getApplication()->enqueueMessage(Text::sprintf('COM_TEMPLATES_FILE_PERMISSIONS', Path::getPermissions($base_Dir)), 'warning');
+/*
+			if (!Path::isOwner($filePath))
+			{
+				$app->enqueueMessage(Text::_('COM_TEMPLATES_CHECK_FILE_OWNERSHIP'), 'warning');
+			}
+			return false;
+			*/
+		}
 			
 // Download the package
 		try
