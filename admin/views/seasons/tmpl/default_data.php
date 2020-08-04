@@ -21,7 +21,7 @@ if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
    
 if ($this->saveOrder && !empty($this->items))
 {
-$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task=agegroups.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';    
+$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task=seasons.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';    
 HTMLHelper::_('draggablelist.draggable');
 }    
 	

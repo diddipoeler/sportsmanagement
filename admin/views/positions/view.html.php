@@ -55,7 +55,7 @@ class sportsmanagementViewPositions extends sportsmanagementView
 
 		$this->table = Table::getInstance('position', 'sportsmanagementTable');
 
-		// Build the html options for parent position
+		/** Build the html options for parent position */
 		$parent_id[] = HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_IS_P_POSITION'));
 
 		if ($res = $this->model->getParentsPositions())
@@ -71,7 +71,7 @@ class sportsmanagementViewPositions extends sportsmanagementView
 		$lists['parent_id'] = $parent_id;
 		unset($parent_id);
 
-		// Build the html select list for sportstypes
+		/** Build the html select list for sportstypes */
 		$sportstypes[]  = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_SPORTSTYPE_FILTER'), 'id', 'name');
 		$allSportstypes = BaseDatabaseModel::getInstance('SportsTypes', 'sportsmanagementmodel')->getSportsTypes();
 		$sportstypes    = array_merge($sportstypes, $allSportstypes);
