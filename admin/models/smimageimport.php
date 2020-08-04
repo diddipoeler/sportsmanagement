@@ -109,8 +109,8 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel
 // Try to make the template file writable.
 		if (!is_writable($base_Dir))
 		{
-			Factory::getApplication()->enqueueMessage(Text::_('COM_TEMPLATES_ERROR_SOURCE_FILE_NOT_WRITABLE'), 'warning');
-			Factory::getApplication()->enqueueMessage(Text::sprintf('COM_TEMPLATES_FILE_PERMISSIONS', Path::getPermissions($base_Dir)), 'warning');
+			Factory::getApplication()->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ERROR_SOURCE_FILE_NOT_WRITABLE'), 'warning');
+			Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_PERMISSIONS', Path::getPermissions($base_Dir)), 'warning');
 /*
 			if (!Path::isOwner($filePath))
 			{
