@@ -93,7 +93,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             </tfoot>
 
 			<?PHP
-			//$k = 0;
+			$k = 0;
 			//for ($i = 0, $n = count($this->items); $i < $n; $i++)
 			//{
 foreach ($this->items as $i => $this->item)
@@ -106,7 +106,7 @@ $checked = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('i
 				//$published = HTMLHelper::_('grid.published', $row, $i, 'tick.png', 'publish_x.png', 'smimageimports.');
 	
 				?>
-                <tr class="<?php echo "row"; ?>">
+                <tr class="<?php echo "row$k"; ?>">
                     <td class="center"><?php echo $this->pagination->getRowOffset($this->count_i); ?></td>
                     <td class="center"><?php echo HTMLHelper::_('grid.id', $this->count_i, $this->item->id); ?></td>
                     <td><?php echo $this->item->name; ?></td>
@@ -137,7 +137,7 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
                     </td>
                 </tr>
 				<?php
-				//$k = 1 - $k;
+				$k = 1 - $k;
 			}
 
 			?>
