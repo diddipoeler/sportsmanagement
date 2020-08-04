@@ -101,8 +101,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 				$published = HTMLHelper::_('grid.published', $row, $i, 'tick.png', 'publish_x.png', 'smimageimports.');
 				?>
                 <tr class="<?php echo "row$k"; ?>">
-                    <td class="center"><?php echo($i + 1); ?></td>
-                    <td class="center"><?php echo $checked; ?></td>
+                    <td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
+                    <td class="center"><?php echo HTMLHelper::_('grid.id', $i, $row->id); ?></td>
                     <td><?php echo $row->name; ?></td>
                     <input type='hidden' name='picture[<?php echo $row->id; ?>]' value='<?php echo $row->name; ?>'/>
                     <td><?php echo $row->folder; ?></td>
