@@ -31,4 +31,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		<?php echo $this->table_data_div; ?>
     </form>
 <?PHP
-echo $this->loadTemplate('footer');
+<div>
+	<?PHP
+	echo $this->loadTemplate('footer');
+	?>
+</div> 
