@@ -18,6 +18,7 @@ use Joomla\CMS\Table\Table;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\Http\HttpFactory;
 
 /**
  * sportsmanagementModelsmimageimport
@@ -104,6 +105,26 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel
 			$filename = $file;
 			$filepath = $base_Dir . $filename;
 
+			
+// Download the package
+		try
+		{
+			$result = HttpFactory::getHttp([], ['curl', 'stream'])->get($servercopy);
+		}
+		catch (\RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text::_($e->getMessage()), 'Error');
+			return false;
+		}
+		if (!$result || ($result->code != 200 && $result->code != 310))
+		{
+			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text::_($result->code), 'Error');
+			return false;
+		}
+		// Write the file to disk
+		$resultwrite = File::write($filepath, $result->body);
+			
+/*			
 try
 {			
 $http = JHttpFactory::getHttp(null, array('curl', 'stream'));
@@ -116,8 +137,9 @@ Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text
 Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text::_($servercopy ), 'Error');
 Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text::_($endung ), 'Error');
 }
+*/
 			
-			if (!copy($servercopy, $filepath))
+			if (!$resultwrite)
 			{
 			}
 			else
