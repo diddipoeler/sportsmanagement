@@ -109,8 +109,8 @@ $checked = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('i
                 <tr class="<?php echo "row"; ?>">
                     <td class="center"><?php echo $this->pagination->getRowOffset($this->count_i); ?></td>
                     <td class="center"><?php echo HTMLHelper::_('grid.id', $this->count_i, $this->item->id); ?></td>
-                    <td><?php echo $row->name; ?></td>
-                    <input type='$this->item' name='picture[<?php echo $this->item->id; ?>]' value='<?php echo $this->item->name; ?>'/>
+                    <td><?php echo $this->item->name; ?></td>
+                    <input type='hidden' name='picture[<?php echo $this->item->id; ?>]' value='<?php echo $this->item->name; ?>'/>
                     <td><?php echo $this->item->folder; ?></td>
                     <input type='hidden' name='folder[<?php echo $this->item->id; ?>]' value='<?php echo $this->item->folder; ?>'/>
                     <td><?php echo $this->item->directory; ?></td>
