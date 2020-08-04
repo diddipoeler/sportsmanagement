@@ -21,17 +21,14 @@ use Joomla\CMS\Session\Session;
 
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
-?>    
-<script>
-
-</script>    
-<?php    
+   
 if ($this->saveOrder && !empty($this->items))
 {
 $saveOrderingUrl = 'index.php?option=com_sportsmanagement&task=agegroups.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';    
 HTMLHelper::_('draggablelist.draggable');
 $this->dragable_group = 'data-dragable-group="<?php echo $item->catid; ?>"';
 }    
+	
 }  
 
 ?>
