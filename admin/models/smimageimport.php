@@ -104,6 +104,10 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel
 			$filename = $file;
 			$filepath = $base_Dir . $filename;
 
+$http = JHttpFactory::getHttp(null, array('curl', 'stream'));
+$result  = $http->get($servercopy );
+File::write($filepath, $result->body);
+			
 			if (!copy($servercopy, $filepath))
 			{
 			}
