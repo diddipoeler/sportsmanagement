@@ -97,6 +97,7 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel
 			$file      = $post['file'][$value];
 			$folder = str_replace(' ', '%20', $folder);
 			$servercopy = $server . $folder . '/' . $file;
+			$endung = strtolower(File::getExt($servercopy ));
 
 			/** Set the target directory */
 			$base_Dir = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DS;
@@ -122,8 +123,9 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel
 							}
 		catch (Exception $e)
 		{
-			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
-			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($servercopy ), 'Error');
+			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text::_($e->getMessage()), 'Error');
+			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text::_($servercopy ), 'Error');
+			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text::_($endung ), 'Error');
 			$result = false;
 		}
 					}
