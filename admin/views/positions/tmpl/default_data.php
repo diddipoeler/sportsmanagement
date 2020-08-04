@@ -196,7 +196,7 @@ $this->dragable_group = 'data-dragable-group="'.$this->item->sports_type_id.'"';
 
                 <td>
 					<?php
-					echo HTMLHelper::_('select.genericlist', $this->lists['parent_id'], 'parent_id' . $this->item->id, '' . 'style="background-color:#bbffff" class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"', 'value', 'text', $row->parent_id);
+					echo HTMLHelper::_('select.genericlist', $this->lists['parent_id'], 'parent_id' . $this->item->id, '' . 'style="background-color:#bbffff" class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"', 'value', 'text', $this->item->parent_id);
 					?>
                 </td>
                 <td class="center"><?php echo Text::_(sportsmanagementHelper::getSportsTypeName($this->item->sports_type_id)); ?></td>
