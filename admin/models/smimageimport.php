@@ -102,9 +102,9 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel
 			$endung = strtolower(File::getExt($servercopy ));
 
 			/** Set the target directory */
-			$base_Dir = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DS;
+			$base_Dir = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' 
 			$filename = $file;
-			$filepath = $base_Dir . $filename;
+			$filepath = $base_Dir . DIRECTORY_SEPARATOR .$filename;
 
 // Try to make the template file writable.
 		if (!is_writable($base_Dir))
