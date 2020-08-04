@@ -103,7 +103,7 @@ $this->count_i = $i;
 			//	$row       =& $this->items[$i];
 $canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $this->item->checked_out == $this->user->get('id') || $this->item->checked_out == 0;	
 $checked = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'smimageimports.', $canCheckin);
-				$published = HTMLHelper::_('grid.published', $row, $i, 'tick.png', 'publish_x.png', 'smimageimports.');
+				//$published = HTMLHelper::_('grid.published', $row, $i, 'tick.png', 'publish_x.png', 'smimageimports.');
 	
 				?>
                 <tr class="<?php echo "row"; ?>">
