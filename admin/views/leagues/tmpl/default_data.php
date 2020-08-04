@@ -17,38 +17,17 @@ use Joomla\CMS\Session\Session;
 
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
-?>    
-<script>
-//function saveorder(n, task) {
-//console.warn('window.saveorder() is deprecated without a replacement!');
-//console.warn('n ' + n);
-//console.warn('task ' + task);
-//checkAll_button( n, task );
-//}
-//
-//function checkAll_button(n, task) {
-//console.warn('window.checkAll_button() is deprecated without a replacement!');
-//		task = task ? task : 'saveorder';
-//		var j, box;
-//		for ( j = 0; j <= n; j++ ) {
-//			box = document.adminForm[ 'cb' + j ];
-//			if ( box ) {
-//				box.checked = true;
-//			} else {
-//				alert( "You cannot change the order of items, as an item in the list is `Checked Out`" );
-//				return;
-//			}
-//		}
-//		Joomla.submitform( task );
-//}
-</script>    
-<?php    
+    
 if ($this->saveOrder && !empty($this->items))
 {
 $saveOrderingUrl = 'index.php?option=com_sportsmanagement&task=agegroups.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';    
 HTMLHelper::_('draggablelist.draggable');
-$this->dragable_group = 'data-dragable-group="<?php echo $item->catid; ?>"';
-}    
+}
+    
+}
+else
+{
+    $this->dragable_group = '';
 }  
 ?>
 <div id="editcell">
@@ -125,11 +104,9 @@ $this->dragable_group = 'data-dragable-group="<?php echo $item->catid; ?>"';
     </tfoot>
     <tbody <?php if ( $this->saveOrder && version_compare(substr(JVERSION, 0, 3), '4.0', 'ge') ) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($this->sortDirection); ?>" data-nested="true"<?php endif; ?>>
 	<?php
-	$k = 0;
-	//for ($i = 0, $n = count($this->items); $i < $n; $i++)
+
     foreach ($this->items as $i => $this->item)
 	{
-		//$row        = &$this->items[$i];
 $this->count_i = $i;
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
@@ -141,7 +118,7 @@ $this->dragable_group = 'data-dragable-group="'.$this->item->country.'"';
 		$checked    = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'leagues.', $canCheckin);
 		$canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.league.' . $this->item->id) && $canCheckin;
 		?>
-        <tr class="<?php echo "row$k"; ?>" <?php echo $this->dragable_group; ?>>
+        <tr class="row<?php echo $i % 2; ?>" <?php echo $this->dragable_group; ?>>
             <td class="center">
 				<?php
 				echo $this->pagination->getRowOffset($this->count_i);
@@ -281,7 +258,7 @@ echo $this->loadTemplate('data_order');
             <td class="center"><?php echo $this->item->id; ?></td>
         </tr>
 		<?php
-		$k = 1 - $k;
+
 	}
 	?>
     </tbody>
