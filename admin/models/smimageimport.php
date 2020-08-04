@@ -121,8 +121,17 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel
 			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text::_($result->code), 'Error');
 			return false;
 		}
+			
+		try
+		{
 		// Write the file to disk
 		$resultwrite = File::write($filepath, $result->body);
+		}
+		catch (\RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text::_($e->getMessage()), 'Error');
+			return false;
+		}
 			
 /*			
 try
