@@ -23,7 +23,6 @@ if ($this->saveOrder && !empty($this->items))
 {
 $saveOrderingUrl = 'index.php?option=com_sportsmanagement&task=agegroups.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';    
 HTMLHelper::_('draggablelist.draggable');
-$this->dragable_group = 'data-dragable-group="<?php echo $item->catid; ?>"';
 }    
 	
 }  
