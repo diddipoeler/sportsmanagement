@@ -133,7 +133,7 @@ $this->dragable_group = 'data-dragable-group="<?php echo $item->catid; ?>"';
 $this->count_i = $i;
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
-$this->dragable_group = 'data-dragable-group="'.$this->item->ordering.'"';
+$this->dragable_group = 'data-dragable-group="'.$this->item->country.'"';
 }         
 		$link       = Route::_('index.php?option=com_sportsmanagement&task=league.edit&id=' . $this->item->id);
 		$canEdit    = $this->user->authorise('core.edit', 'com_sportsmanagement');
@@ -141,7 +141,7 @@ $this->dragable_group = 'data-dragable-group="'.$this->item->ordering.'"';
 		$checked    = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'leagues.', $canCheckin);
 		$canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.league.' . $this->item->id) && $canCheckin;
 		?>
-        <tr class="<?php echo "row$k"; ?>">
+        <tr class="<?php echo "row$k"; ?>" <?php echo $this->dragable_group; ?>>
             <td class="center">
 				<?php
 				echo $this->pagination->getRowOffset($this->count_i);
