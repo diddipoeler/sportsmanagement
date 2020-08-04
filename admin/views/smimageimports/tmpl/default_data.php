@@ -131,7 +131,7 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
                     </td>
                 </tr>
 				<?php
-				$k = 1 - $k;
+				//$k = 1 - $k;
 			}
 
 			?>
