@@ -123,7 +123,15 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel
 // Download the package
 		try
 		{
+			if (version_compare(JSM_JVERSION, '4', 'eq'))
+			{
 			$result = HttpFactory::getHttp([], ['curl', 'stream'])->get($servercopy);
+			}
+			else
+			{
+			$http = JHttpFactory::getHttp(null, array('curl', 'stream'));
+			$result  = $http->get($servercopy);	
+			}
 		}
 		catch (\RuntimeException $e)
 		{
