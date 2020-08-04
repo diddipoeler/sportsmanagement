@@ -115,8 +115,17 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel
 				{
 					if (version_compare(JSM_JVERSION, '4', 'eq'))
 					{
+						try
+		{
 						$archive = new Archive;
 						$result  = $archive->extract($dest, $extractdir);
+							}
+		catch (Exception $e)
+		{
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__.' '.$e->getMessage()  ), Log::ERROR, 'jsmerror');
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__.' '.$servercopy  ), Log::ERROR, 'jsmerror');
+			$result = false;
+		}
 					}
 					else
 					{
