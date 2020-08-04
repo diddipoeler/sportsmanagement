@@ -14,9 +14,26 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Session\Session;
 
-$templatesToLoad = array('footer', 'listheader');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+//$templatesToLoad = array('footer', 'listheader');
+//sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+?>    
+<script>
+
+</script>    
+<?php    
+if ($this->saveOrder && !empty($this->items))
+{
+$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task=agegroups.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';    
+HTMLHelper::_('draggablelist.draggable');
+$this->dragable_group = 'data-dragable-group="<?php echo $item->catid; ?>"';
+}    
+}  
+
 ?>
 
 <div id="editcell">
@@ -55,7 +72,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             </td>
         </tr>
         </tfoot>
-        <tbody>
+        <tbody <?php if ( $this->saveOrder && version_compare(substr(JVERSION, 0, 3), '4.0', 'ge') ) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($this->sortDirection); ?>" data-nested="true"<?php endif; ?>>
 		<?php
 		$k = 0;
 //		for ($i = 0, $n = count($this->items); $i < $n; $i++)
@@ -140,18 +157,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						?>
                     </div>
                 </td>
-                <td class="order">
-                        <span>
-                            <?php echo $this->pagination->orderUpIcon($i, $i > 0, 'seasons.orderup', 'JLIB_HTML_MOVE_UP', 's.ordering'); ?>
-                        </span>
-                    <span>
-    <?php echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'seasons.orderdown', 'JLIB_HTML_MOVE_DOWN', 's.ordering'); ?>
-    <?php $disabled = true ? '' : 'disabled="disabled"'; ?>
-                        </span>
-                    <input type="text" name="order[]" size="5"
-                           value="<?php echo $this->item->ordering; ?>" <?php echo $disabled ?>
-                           class="form-control form-control-inline" style="text-align: center"/>
-                </td>
+<td class="order" id="defaultdataorder">
+<?php
+echo $this->loadTemplate('data_order');
+?>
+</td>                
                 <td class="center"><?php echo $this->item->id; ?></td>
             </tr>
 			<?php
