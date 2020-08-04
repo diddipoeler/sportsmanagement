@@ -122,8 +122,8 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel
 							}
 		catch (Exception $e)
 		{
-			Log::add(Text::_(__METHOD__ . ' ' . __LINE__.' '.$e->getMessage()  ), Log::ERROR, 'jsmerror');
-			Log::add(Text::_(__METHOD__ . ' ' . __LINE__.' '.$servercopy  ), Log::ERROR, 'jsmerror');
+			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($servercopy ), 'Error');
 			$result = false;
 		}
 					}
