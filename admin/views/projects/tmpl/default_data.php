@@ -16,9 +16,6 @@ use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 
-$templatesToLoad = array('footer', 'listheader');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-
 ?>
 <div class="table-responsive">
     <table class="<?php echo $this->table_data_class; ?>">
