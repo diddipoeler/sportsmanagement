@@ -23,8 +23,6 @@ else
 {
 }
 
-$templatesToLoad = array('footer', 'listheader');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <div class="table-responsive" id="editcell">
     <table class="<?php echo $this->table_data_class; ?>">
