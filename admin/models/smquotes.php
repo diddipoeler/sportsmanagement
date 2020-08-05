@@ -65,12 +65,12 @@ $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array()
 		$this->setState('filter.category_id', $this->getUserStateFromRequest($this->context . '.filter.category_id', 'filter_category_id', ''));
 		$this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
 		$this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
-		
+/*		
 		$value = $this->getUserStateFromRequest($this->context . '.list.ordering', 'ordering', $ordering, 'string');
 		$this->setState('list.ordering', $value);
 		$value = $this->getUserStateFromRequest($this->context . '.list.direction', 'direction', $direction, 'string');
 		$this->setState('list.direction', $value);
-
+*/
 		$orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
 
 		if (!in_array($orderCol, $this->filter_fields))
