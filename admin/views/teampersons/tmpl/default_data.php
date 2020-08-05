@@ -46,7 +46,7 @@ else
 				?>
             </th>
             <th width="">
-                <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/>
+                <?php echo HTMLHelper::_('grid.checkall'); ?>
             </th>
             <th width="">
                 &nbsp;

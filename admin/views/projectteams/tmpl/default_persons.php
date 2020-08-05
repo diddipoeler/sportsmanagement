@@ -33,7 +33,7 @@ $app = Factory::getApplication();
             <tr>
                 <th width="5"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
                 <th width="20">
-                    <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/>
+                    <?php echo HTMLHelper::_('grid.checkall'); ?>
                 </th>
                 <th width="20">&nbsp;</th>
                 <th>

@@ -23,7 +23,7 @@ use Joomla\CMS\Router\Route;
         <tr>
             <th width=""><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
             <th width="40" class="">
-                <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/>
+                <?php echo HTMLHelper::_('grid.checkall'); ?>
             </th>
             <th class="title">
 				<?php

@@ -49,7 +49,7 @@ use Joomla\CMS\Uri\Uri;
             <tr>
                 <th width="5"><?php echo count($this->matches) . '/' . $this->pagination->total; ?></th>
                 <th width="20">
-                    <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/>
+                    <?php echo HTMLHelper::_('grid.checkall'); ?>
                 </th>
                 <!--	<th width="20" > </th> -->
 				<?php

@@ -38,7 +38,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 				?>
             </th>
             <th width="20" style="vertical-align: top; ">
-                <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/>
+                <?php echo HTMLHelper::_('grid.checkall'); ?>
             </th>
             <th width="20" style="vertical-align: top; ">
                 &nbsp;

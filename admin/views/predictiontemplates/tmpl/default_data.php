@@ -55,7 +55,7 @@ if ($this->pred_id > 0)
 				?>
             </th>
             <th class='title' width='20'>
-                <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/>
+                <?php echo HTMLHelper::_('grid.checkall'); ?>
             </th>
             <th class='title' width='20'>
                 &nbsp;

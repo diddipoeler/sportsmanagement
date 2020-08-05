@@ -24,7 +24,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         <thead>
         <tr>
             <th width="1%"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
-            <th width="1%"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/></th>
+            <th width="1%">
+			<?php echo HTMLHelper::_('grid.checkall'); ?>
+			</th>
             <!--    <th width="20">&nbsp;</th> -->
             <th width="20"><?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ROUND_NR', 'r.roundcode', $this->sortDirection, $this->sortColumn); ?></th>
             <th width="20"><?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ROUND_TITLE', 'r.name', $this->sortDirection, $this->sortColumn); ?></th>
