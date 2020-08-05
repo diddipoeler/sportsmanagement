@@ -41,7 +41,8 @@ class sportsmanagementModelsmquotes extends JSMModelList
 			'obj.ordering',
 			'obj.author',
 			'obj.catid',
-			'obj.published'
+			'obj.published',
+			'obj.quote'
 		);
 		parent::__construct($config);
 		parent::setDbo($this->jsmdb);
