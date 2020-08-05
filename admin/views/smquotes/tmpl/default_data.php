@@ -49,7 +49,7 @@ use Joomla\CMS\Router\Route;
             </th>
             <th>
 				<?php
-				echo HTMLHelper::_('grid.sort', 'JSTATUS', 'pl.published', $this->sortDirection, $this->sortColumn);
+				echo HTMLHelper::_('grid.sort', 'JSTATUS', 'obj.published', $this->sortDirection, $this->sortColumn);
 				?>
             </th>
             <th width="20">
