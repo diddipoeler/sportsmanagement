@@ -31,9 +31,9 @@ else
         <thead>
         <tr>
             <th width="1%" class="center"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
-            <th width="1%" class="center">
-                <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/>
-            </th>
+            <td style="width:1%" class="text-center">
+									<?php echo HTMLHelper::_('grid.checkall'); ?>
+								</td>
 
             <th width="10%" class="left nowrap">
 				<?php
