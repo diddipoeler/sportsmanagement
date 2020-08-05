@@ -38,7 +38,10 @@ class sportsmanagementModelsmquotes extends JSMModelList
 		$config['filter_fields'] = array(
 			'obj.quote',
 			'obj.id',
-			'obj.ordering'
+			'obj.ordering',
+			'obj.author',
+			'obj.catid',
+			'obj.published'
 		);
 		parent::__construct($config);
 		parent::setDbo($this->jsmdb);
