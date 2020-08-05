@@ -17,8 +17,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>  
 <div class="<?php echo $this->divclasscontainer; ?>" id="teamplan">
-<button id="exportButton" class="btn btn-lg btn-danger clearfix"><span class="fa fa-file-pdf-o"></span> Export to PDF</button>
-<button id="btnPrint">Print Preview</button>
+<button id="exportButton" class="btn btn-primary clearfix"><span class="fa fa-file-pdf-o"></span> Export to PDF</button>
+<button id="btnPrint" class="btn btn-primary hidden-print"><span class="glyphicon glyphicon-print" aria-hidden="true"></span>Print Preview</button>
   
 <script>
 jQuery("#btnPrint").printPreview({ 
