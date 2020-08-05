@@ -16,8 +16,6 @@ use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 
-$templatesToLoad = array('footer', 'listheader');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 if ($this->assign)
 {
 	$this->readonly = ' readonly ';
