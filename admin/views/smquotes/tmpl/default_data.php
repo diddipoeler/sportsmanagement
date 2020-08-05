@@ -33,7 +33,7 @@ use Joomla\CMS\Router\Route;
             </th>
             <th>
 				<?php
-				echo HTMLHelper::_('grid.sort', 'JGLOBAL_ARTICLES', 'obj.author', $this->sortDirection, $this->sortColumn);
+				echo HTMLHelper::_('grid.sort', 'JGLOBAL_ARTICLES', 'obj.quote', $this->sortDirection, $this->sortColumn);
 				?>
             </th>
             <th>
