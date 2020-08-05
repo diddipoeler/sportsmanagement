@@ -31,9 +31,9 @@ else
         <thead>
         <tr>
             <th width="1%" class="center"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
-            <td style="width:1%" class="text-center">
+            <th style="width:1%" class="text-center">
 									<?php echo HTMLHelper::_('grid.checkall'); ?>
-								</td>
+								</th>
 
             <th width="10%" class="left nowrap">
 				<?php
