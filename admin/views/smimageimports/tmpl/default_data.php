@@ -14,8 +14,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
-$templatesToLoad = array('footer', 'listheader');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+
 ?>
 <div class="table-responsive" id="editcell">
 <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_EXT_IMAGES_IMPORT'); ?></legend>
@@ -58,7 +57,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             <tr>
                 <th width="5"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
                 <th width="20">
-                    <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/>
+                    <?php echo HTMLHelper::_('grid.checkall'); ?>
                 </th>
                 <th>
 					<?php
