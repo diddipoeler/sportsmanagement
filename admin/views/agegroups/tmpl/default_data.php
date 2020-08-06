@@ -28,11 +28,12 @@ HTMLHelper::_('draggablelist.draggable');
 }
 else
 {
-    $this->dragable_group = '';
+$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task=agegroups.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';    
+JHtml::_('sortablelist.sortable', 'agegrouplist', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl);
 }    
 ?>
 <div id="editcell">
-    <table class="<?php echo $this->table_data_class; ?>">
+    <table class="<?php echo $this->table_data_class; ?>" id="agegrouplist">
         <thead>
         <tr>
             <th width="5"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
