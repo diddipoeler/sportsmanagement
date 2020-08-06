@@ -27,12 +27,13 @@ HTMLHelper::_('draggablelist.draggable');
 }
 else
 {
-    $this->dragable_group = '';
+$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task=positions.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';    
+JHtml::_('sortablelist.sortable', 'positionlist', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl);
 }    
 ?>
 
 <div id="editcell">
-    <table class="<?php echo $this->table_data_class; ?>">
+    <table class="<?php echo $this->table_data_class; ?>" id = "positionlist">
         <thead>
         <tr>
             <th width="5">
