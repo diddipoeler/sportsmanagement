@@ -18,22 +18,21 @@ use Joomla\CMS\Session\Session;
 
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
-   
+    
 if ($this->saveOrder && !empty($this->items))
 {
-$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task=seasons.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';    
+$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task='.$this->view.'.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';    
 HTMLHelper::_('draggablelist.draggable');
 }    
-	
-}  
+}
 else
 {
-    $this->dragable_group = '';
-}  
+$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task='.$this->view.'.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';    
+JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl);
+}   
 ?>
-
-<div id="editcell">
-    <table class="<?php echo $this->table_data_class; ?>">
+<div class="table-responsive" id="editcell">
+<table class="<?php echo $this->table_data_class; ?>" id="<?php echo $this->view; ?>list">
         <thead>
         <tr>
             <th width="5"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
@@ -70,13 +69,12 @@ else
         </tfoot>
         <tbody <?php if ( $this->saveOrder && version_compare(substr(JVERSION, 0, 3), '4.0', 'ge') ) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($this->sortDirection); ?>" data-nested="true"<?php endif; ?>>
 		<?php
-			foreach ($this->items as $i => $this->item) 
+			foreach ($this->items as $this->count_i => $this->item) 
 			{
-
-			$this->count_i = $i;	
+//			$this->count_i = $i;	
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
-$this->dragable_group = 'data-dragable-group="'.$this->item->published.'"';
+$this->dragable_group = 'data-dragable-group="none"';
 }                     
             
 			$link = Route::_('index.php?option=com_sportsmanagement&task=season.edit&id=' . $this->item->id);
@@ -85,18 +83,18 @@ $this->dragable_group = 'data-dragable-group="'.$this->item->published.'"';
 			$assignpersons = Route::_('index.php?option=com_sportsmanagement&tmpl=component&view=players&layout=assignpersons&season_id=' . $this->item->id);
 			$canEdit       = $this->user->authorise('core.edit', 'com_sportsmanagement');
 			$canCheckin    = $this->user->authorise('core.manage', 'com_checkin') || $this->item->checked_out == $this->user->get('id') || $row->checked_out == 0;
-			$checked       = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $this->item->checked_out_time, 'seasons.', $canCheckin);
+			$checked       = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'seasons.', $canCheckin);
 			$canChange     = $this->user->authorise('core.edit.state', 'com_sportsmanagement.season.' . $this->item->id) && $canCheckin;
 			?>
-            <tr class="row<?php echo $i % 2; ?>" <?php echo $this->dragable_group; ?>>
+            <tr class="row<?php echo $this->count_i % 2; ?>" <?php echo $this->dragable_group; ?>>
                 <td class="center">
 					<?php
-					echo $this->pagination->getRowOffset($i);
+					echo $this->pagination->getRowOffset($this->count_i);
 					?>
                 </td>
                 <td class="center">
 					<?php
-					echo HTMLHelper::_('grid.id', $i, $this->item->id);
+					echo HTMLHelper::_('grid.id', $this->count_i, $this->item->id);
 					?>
                 </td>
 				<?php
@@ -125,7 +123,7 @@ $this->dragable_group = 'data-dragable-group="'.$this->item->published.'"';
 				?>
                 <td>
 					<?php if ($this->item->checked_out) : ?>
-						<?php echo HTMLHelper::_('jgrid.checkedout', $i, $this->item->editor, $this->item->checked_out_time, 'seasons.', $canCheckin); ?>
+						<?php echo HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->item->editor, $this->item->checked_out_time, 'seasons.', $canCheckin); ?>
 					<?php endif; ?>
 					<?php if ($canEdit) : ?>
                         <a href="<?php echo Route::_('index.php?option=com_sportsmanagement&task=season.edit&id=' . (int) $this->item->id); ?>">
@@ -139,13 +137,13 @@ $this->dragable_group = 'data-dragable-group="'.$this->item->published.'"';
                 </td>
                 <td class="center">
                     <div class="btn-group">
-						<?php echo HTMLHelper::_('jgrid.published', $this->item->published, $i, 'seasons.', $canChange, 'cb'); ?>
+						<?php echo HTMLHelper::_('jgrid.published', $this->item->published, $this->count_i, 'seasons.', $canChange, 'cb'); ?>
 						<?php
-						// Create dropdown items and render the dropdown list.
+						/** Create dropdown items and render the dropdown list. */
 						if ($canChange)
 						{
-							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'seasons');
-							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'seasons');
+							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === 2 ? 'un' : '') . 'archive', 'cb' . $this->count_i, 'seasons');
+							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === -2 ? 'un' : '') . 'trash', 'cb' . $this->count_i, 'seasons');
 							echo HTMLHelper::_('actionsdropdown.render', $this->escape($this->item->name));
 						}
 						?>

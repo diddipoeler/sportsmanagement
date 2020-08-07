@@ -83,9 +83,9 @@ JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($t
         </tfoot>
         <tbody <?php if ( $this->saveOrder && version_compare(substr(JVERSION, 0, 3), '4.0', 'ge') ) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($this->sortDirection); ?>" data-nested="true"<?php endif; ?>>
 		<?php
-    foreach ($this->items as $i => $this->item)
+    foreach ($this->items as $this->count_i => $this->item)
 	{
-$this->count_i = $i;
+//$this->count_i = $i;
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
 $this->dragable_group = 'data-dragable-group="none"';
@@ -97,7 +97,7 @@ $this->dragable_group = 'data-dragable-group="none"';
 			$checked    = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'eventtypes.', $canCheckin);
 			$canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.eventtype.' . $this->item->id) && $canCheckin;
 			?>
-            <tr class="row<?php echo $i % 2; ?>" <?php echo $this->dragable_group; ?>>
+            <tr class="row<?php echo $this->count_i % 2; ?>" <?php echo $this->dragable_group; ?>>
                 <td class="center">
 					<?php
 					echo $this->pagination->getRowOffset($this->count_i);
