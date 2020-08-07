@@ -22,12 +22,12 @@ if ($this->saveOrder && !empty($this->items))
 {
 $saveOrderingUrl = 'index.php?option=com_sportsmanagement&task=leagues.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';    
 HTMLHelper::_('draggablelist.draggable');
-}
-    
+}    
 }
 else
 {
-    $this->dragable_group = '';
+$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task=leagues.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';    
+JHtml::_('sortablelist.sortable', 'leagueslist', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl);
 }  
 ?>
 <div id="editcell">
@@ -110,7 +110,7 @@ else
 $this->count_i = $i;
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
-$this->dragable_group = 'data-dragable-group="'.$this->item->country.'"';
+$this->dragable_group = 'data-dragable-group="none"';
 }         
 		$link       = Route::_('index.php?option=com_sportsmanagement&task=league.edit&id=' . $this->item->id);
 		$canEdit    = $this->user->authorise('core.edit', 'com_sportsmanagement');
