@@ -32,7 +32,7 @@ $saveOrderingUrl = 'index.php?option=com_sportsmanagement&task='.$this->view.'.s
 JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl);
 }    
 ?>
-<div id="editcell">
+<div class="table-responsive" id="editcell">
     <table class="<?php echo $this->table_data_class; ?>" id="<?php echo $this->view; ?>list">
         <thead>
         <tr>

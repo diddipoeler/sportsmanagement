@@ -20,18 +20,18 @@ if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
     
 if ($this->saveOrder && !empty($this->items))
 {
-$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task=leagues.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';    
+$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task='.$this->view.'.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';    
 HTMLHelper::_('draggablelist.draggable');
 }    
 }
 else
 {
-$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task=leagues.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';    
-JHtml::_('sortablelist.sortable', 'leagueslist', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl);
-}  
+$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task='.$this->view.'.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';    
+JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl);
+}   
 ?>
 <div class="table-responsive" id="editcell">
-<table class="<?php echo $this->table_data_class; ?>">
+<table class="<?php echo $this->table_data_class; ?>" id="<?php echo $this->view; ?>list">
     <thead>
     <tr>
         <th width="5">
