@@ -352,7 +352,7 @@ img.car {
 				$this->sidebar = JHtmlSidebar::render();
 			}
 		}
-		
+	/*	
 switch ($this->view)
 {
 case 'clubs';
@@ -361,7 +361,7 @@ case 'playgrounds':
 //$this->activeFilters = $this->get('ActiveFilters');	
 break;
 }
-		
+*/		
 
 		parent::display($tpl);
 	}
@@ -398,10 +398,10 @@ break;
 				case 'jlextfederations':
 				case 'jlextassociations':
 				case 'jlextcountries':
-				case 'agegroups':
+				//case 'agegroups':
 				case 'eventtypes':
 				//case 'leagues':
-				case 'seasons':
+				//case 'seasons':
 				case 'sportstypes':
 				//case 'positions':
 				case 'clubnames':

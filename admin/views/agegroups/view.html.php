@@ -113,8 +113,16 @@ class sportsmanagementViewagegroups extends sportsmanagementView
 		}
 
 		$this->lists = $lists;
-        $this->filterForm    = $this->model->getFilterForm();
-		$this->activeFilters = $this->model->getActiveFilters();
+try
+{		
+$this->filterForm    = $this->model->getFilterForm();
+$this->activeFilters = $this->model->getActiveFilters();
+}
+catch (Exception $e)
+{
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');	
+}
 
 	}
 

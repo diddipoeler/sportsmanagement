@@ -205,6 +205,7 @@ $html = HTMLHelper::_('links.linksgroups', $groupedButtons);
 <?php
 switch ($view)
 {
+case 'agegroups':
 case 'clubs':
 case 'playgrounds':
 case 'positions':		
