@@ -22,18 +22,18 @@ if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
     
 if ($this->saveOrder && !empty($this->items))
 {
-$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task=agegroups.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';    
+$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task='.$this->view.'.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';    
 HTMLHelper::_('draggablelist.draggable');
 }    
 }
 else
 {
-$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task=agegroups.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';    
-JHtml::_('sortablelist.sortable', 'agegrouplist', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl);
+$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task='.$this->view.'.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';    
+JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl);
 }    
 ?>
 <div id="editcell">
-    <table class="<?php echo $this->table_data_class; ?>" id="agegrouplist">
+    <table class="<?php echo $this->table_data_class; ?>" id="<?php echo $this->view; ?>list">
         <thead>
         <tr>
             <th width="5"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
@@ -97,14 +97,14 @@ JHtml::_('sortablelist.sortable', 'agegrouplist', 'adminForm', strtolower($this-
             </td>
         </tr>
         </tfoot>
-        <tbody <?php if ( $this->saveOrder && version_compare(substr(JVERSION, 0, 3), '4.0', 'ge') ) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($this->sortDirection); ?>" data-nested="true"<?php endif; ?>>
+        <tbody <?php if ( $this->saveOrder && version_compare(substr(JVERSION, 0, 3), '4.0', 'ge') ) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($this->sortDirection); ?>" data-nested="false"<?php endif; ?>>
 		<?php
         foreach ($this->items as $i => $this->item)
 		{
             $this->count_i = $i;
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
-$this->dragable_group = 'data-dragable-group="'.$this->item->country.'"';
+$this->dragable_group = 'data-dragable-group="none"';
 } 
 			$link       = Route::_('index.php?option=com_sportsmanagement&task=agegroup.edit&id=' . $this->item->id);
 			$canEdit    = $this->user->authorise('core.edit', 'com_sportsmanagement');
