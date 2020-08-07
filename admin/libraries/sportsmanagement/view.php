@@ -399,7 +399,7 @@ break;
 				case 'jlextassociations':
 				case 'jlextcountries':
 				//case 'agegroups':
-				case 'eventtypes':
+				//case 'eventtypes':
 				//case 'leagues':
 				//case 'seasons':
 				case 'sportstypes':
