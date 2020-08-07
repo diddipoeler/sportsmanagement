@@ -397,7 +397,7 @@ break;
 				case 'predictiongames':
 				case 'jlextfederations':
 				case 'jlextassociations':
-				case 'jlextcountries':
+				//case 'jlextcountries':
 				//case 'agegroups':
 				//case 'eventtypes':
 				//case 'leagues':

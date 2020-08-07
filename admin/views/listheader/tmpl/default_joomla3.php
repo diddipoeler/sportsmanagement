@@ -208,6 +208,7 @@ switch ($view)
 case 'agegroups':
 case 'clubs':
 case 'eventtypes':
+case 'jlextcountries':
 case 'leagues':
 case 'playgrounds':
 		
