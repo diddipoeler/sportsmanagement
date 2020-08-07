@@ -160,23 +160,17 @@ class sportsmanagementModelagegroups extends JSMModelList
 		$this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
         
         $orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
-
 		if (!in_array($orderCol, $this->filter_fields))
 		{
 			$orderCol = 'obj.name';
 		}
-
 		$this->setState('list.ordering', $orderCol);
 		$listOrder = $this->getUserStateFromRequest($this->context . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
-
 		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
 		{
 			$listOrder = 'ASC';
 		}
-
 		$this->setState('list.direction', $listOrder);
-        
-        
         
 	}
 

@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 
@@ -67,20 +63,13 @@ class sportsmanagementModeljlextcountries extends JSMModelList
 	 */
 	function getListQuery()
 	{
-		// Create a new query object.
 		$this->jsmquery->clear();
 		$this->jsmsubquery1->clear();
 		$this->jsmsubquery2->clear();
-
-		// Select some fields
 		$this->jsmquery->select(implode(",", $this->filter_fields));
 		$this->jsmquery->select('f.name as federation_name');
-
-		// From table
 		$this->jsmquery->from('#__sportsmanagement_countries AS objcountry');
 		$this->jsmquery->join('LEFT', '#__sportsmanagement_federations AS f ON f.id = objcountry.federation');
-
-		// Join over the users for the checked out user.
 		$this->jsmquery->select('uc.name AS editor');
 		$this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = objcountry.checked_out');
 
@@ -115,11 +104,8 @@ class sportsmanagementModeljlextcountries extends JSMModelList
 	 */
 	function getFederation()
 	{
-		// Select some fields
 		$this->jsmquery->clear();
 		$this->jsmquery->select('id as value,name as text,picture as listpicture');
-
-		// From the table
 		$this->jsmquery->from('#__sportsmanagement_federations as objassoc');
 
 		try
@@ -157,26 +143,14 @@ class sportsmanagementModeljlextcountries extends JSMModelList
 			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . $this->context . ''), '');
 			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . ''), '');
 		}
+        $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array(), 'array');
 
-		// Load the filter state.
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
-		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string');
-		$this->setState('filter.state', $published);
-		$federation = $this->getUserStateFromRequest($this->context . '.filter.federation', 'filter_federation', '');
-		$this->setState('filter.federation', $federation);
-		$value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
-		$this->setState('list.limit', $value);
-		$value = $this->getUserStateFromRequest($this->context . '.list.ordering', 'ordering', $ordering, 'string');
-		$this->setState('list.ordering', $value);
-		$value = $this->getUserStateFromRequest($this->context . '.list.direction', 'direction', $direction, 'string');
-		$this->setState('list.direction', $value);
+		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search'));
+		$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
+		$this->setState('filter.federation', $this->getUserStateFromRequest($this->context . '.filter.federation', 'filter_federation', ''));
+		$this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
+		$this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
 
-		// List state information.
-		$value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
-		$this->setState('list.start', $value);
-
-		// Filter.order
 		$orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
 
 		if (!in_array($orderCol, $this->filter_fields))
