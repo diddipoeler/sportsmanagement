@@ -1560,6 +1560,7 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 		for ($i = 0; $i < count($pks); $i++)
 		{
 			$row->load((int) $pks[$i]);
+			$row->ordering = $pks[$i];
 
 			if ($row->ordering != $order[$i])
 			{
@@ -1569,7 +1570,10 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 						$row->ordering = substr($row->name, 0, 4);
 						break;
 					default:
+						if ( $order[$i] )
+						{
 						$row->ordering = $order[$i];
+						}
 						break;
 				}
 
