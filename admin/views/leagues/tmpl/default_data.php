@@ -30,7 +30,7 @@ $saveOrderingUrl = 'index.php?option=com_sportsmanagement&task=leagues.saveOrder
 JHtml::_('sortablelist.sortable', 'leagueslist', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl);
 }  
 ?>
-<div id="editcell">
+<div class="table-responsive" id="editcell">
 <table class="<?php echo $this->table_data_class; ?>">
     <thead>
     <tr>
