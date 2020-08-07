@@ -36,6 +36,7 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   00-00-2020: **3.7.00** Joomla 3 Drag & Drop Sortierung im Backend
 *   03-05-2020: **3.6.00** Neue Felder Projekt und Projektteam
 *   03-05-2020: **3.5.00** Neue Felder Verein und Liga
 *   20-04-2020: **3.4.00** Erweiterung Tippspieltabellen
