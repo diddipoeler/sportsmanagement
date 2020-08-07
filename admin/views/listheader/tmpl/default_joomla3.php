@@ -207,12 +207,16 @@ switch ($view)
 {
 case 'agegroups':
 case 'clubs':
-case 'playgrounds':
-case 'positions':		
-case 'players':
-case 'projects':
+case 'eventtypes':
 case 'leagues':
-case 'projectreferees':				
+case 'playgrounds':
+		
+case 'players':
+case 'positions':
+case 'projectreferees':
+case 'projects':
+case 'seasons':
+				
 echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 break;
 case 'githubinstall':

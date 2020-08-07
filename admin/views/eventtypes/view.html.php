@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage eventtypes
@@ -11,17 +9,12 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-
-jimport('joomla.filesystem.file');
 
 /**
  * sportsmanagementViewEventtypes
@@ -45,7 +38,7 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
 
 		$this->table = Table::getInstance('eventtype', 'sportsmanagementTable');
 
-		// Build the html select list for sportstypes
+		/** Build the html select list for sportstypes */
 		$sportstypes[]  = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_SPORTSTYPE_FILTER'), 'id', 'name');
 		$allSportstypes = BaseDatabaseModel::getInstance('SportsTypes', 'sportsmanagementmodel')->getSportsTypes();
 
@@ -64,6 +57,16 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
 		unset($sportstypes);
 
 		$this->lists = $lists;
+try
+{		
+$this->filterForm    = $this->model->getFilterForm();
+$this->activeFilters = $this->model->getActiveFilters();
+}
+catch (Exception $e)
+{
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');	
+}        
 
 	}
 
@@ -74,18 +77,14 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-		// Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_TITLE');
-
 		ToolbarHelper::publish('eventtypes.publish', 'JTOOLBAR_PUBLISH', true);
 		ToolbarHelper::unpublish('eventtypes.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 		ToolbarHelper::divider();
-
 		ToolbarHelper::addNew('eventtype.add');
 		ToolbarHelper::editList('eventtype.edit');
 		ToolbarHelper::custom('eventtype.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
 		ToolbarHelper::archiveList('eventtype.export', Text::_('JTOOLBAR_EXPORT'));
-
 		parent::addToolbar();
 	}
 }
