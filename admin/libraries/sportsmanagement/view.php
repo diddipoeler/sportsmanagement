@@ -159,6 +159,7 @@ img.car {
         
         $this->sortColumn = $this->escape($this->state->get('list.ordering'));
         $this->sortDirection  = $this->escape($this->state->get('list.direction'));
+        $this->ordering = true;
         //$this->saveOrder = $this->sortColumn == 'a.ordering';
         
 /*
