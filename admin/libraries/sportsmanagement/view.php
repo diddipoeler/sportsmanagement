@@ -154,8 +154,14 @@ img.car {
 	$this->jsmmessage     = '';
 	$this->jsmmessagetype = 'notice';
 	$this->state          = $this->get('State');
-        $this->dragable_group = '';
-
+    $this->dragable_group = '';
+        
+        
+        $this->sortColumn = $this->escape($this->state->get('list.ordering'));
+        $this->sortDirection  = $this->escape($this->state->get('list.direction'));
+        //$this->saveOrder = $this->sortColumn == 'a.ordering';
+        
+/*
 		if (isset($this->state))
 		{
 			$this->sortDirection = $this->state->get('list.direction');
@@ -165,7 +171,7 @@ img.car {
             //$ordering   = ($this->sortColumn == 'ordering');
             $this->ordering = true;
 		}
-
+*/
 		if (ComponentHelper::getParams($this->option)->get('cfg_which_database'))
 		{
 			$this->jsmmessage = 'Sie haben Zugriff auf die externe Datenbank';

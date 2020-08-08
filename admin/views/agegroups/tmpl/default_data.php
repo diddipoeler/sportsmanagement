@@ -17,6 +17,8 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 
+$this->saveOrder = $this->sortColumn == 'obj.ordering';
+
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
     
@@ -183,7 +185,7 @@ $this->dragable_group = 'data-dragable-group="none"';
                     <div class="btn-group">
 						<?php echo HTMLHelper::_('jgrid.published', $this->item->published, $this->count_i, 'agegroups.', $canChange, 'cb'); ?>
 						<?php
-						// Create dropdown items and render the dropdown list.
+						/** Create dropdown items and render the dropdown list. */
 						if ($canChange)
 						{
 							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === 2 ? 'un' : '') . 'archive', 'cb' . $this->count_i, 'agegroups');
