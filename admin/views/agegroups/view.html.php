@@ -16,6 +16,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Form\Form;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementViewagegroups

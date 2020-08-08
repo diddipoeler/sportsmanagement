@@ -252,11 +252,7 @@ else
 				$lists['association'][$row->country][] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'));
 				$lists['association'][$row->country][] = $row;
 			}
-
-			// $lists['association'] = $nation;
 		}
-
-		// $lists['association'] = $nation;
 
 		$lists['association2'] = JHtmlSelect::genericlist(
 			$nation,
@@ -277,11 +273,16 @@ else
 		$this->lists         = $lists;
 		$this->season_ids    = ComponentHelper::getParams($this->option)->get('current_season');
         
-        $this->filterForm    = $this->model->getFilterForm();
-		$this->activeFilters = $this->model->getActiveFilters();
-	
-//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>'.print_r($this->filterForm ,true).'</pre>' ), Log::NOTICE, 'jsmerror');		
-//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>'.print_r($this->activeFilters ,true).'</pre>' ), Log::NOTICE, 'jsmerror');
+try
+{		
+$this->filterForm    = $this->model->getFilterForm();
+$this->activeFilters = $this->model->getActiveFilters();
+}
+catch (Exception $e)
+{
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');	
+}
 
 	}
 
@@ -292,10 +293,8 @@ else
 	 */
 	protected function addToolbar()
 	{
-		// Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_TITLE');
 		$this->icon  = 'projects';
-
 		ToolbarHelper::publishList('projects.publish');
 		ToolbarHelper::unpublishList('projects.unpublish');
 		ToolbarHelper::divider();
@@ -305,7 +304,6 @@ else
 		ToolbarHelper::custom('project.import', 'upload', 'upload', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CSV_IMPORT'), false);
 		ToolbarHelper::archiveList('project.export', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_XML_EXPORT'));
 		ToolbarHelper::custom('projects.copy', 'copy.png', 'copy_f2.png', Text::_('JTOOLBAR_DUPLICATE'), false);
-
 		parent::addToolbar();
 	}
 }
