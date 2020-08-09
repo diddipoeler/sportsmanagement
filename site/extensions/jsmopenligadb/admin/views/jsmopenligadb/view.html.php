@@ -78,6 +78,8 @@ class sportsmanagementViewjsmopenligadb extends sportsmanagementView
 		{
 			$this->projectid = $this->app->getUserState("$this->option.pid", '0');
 		}
+        $this->projectlink = $this->model->getMatchLink($this->projectid);
+        $this->getdata = $this->model->getMatchLink($this->projectlink);
         
    }
    
@@ -88,7 +90,7 @@ class sportsmanagementViewjsmopenligadb extends sportsmanagementView
     */
    protected function addToolbar()
 	{
-
+$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_JSMOPENLIGADB_TITLE');
 		if ($this->projectid)
 		{
 			ToolBarHelper::save('jsmopenligadb.getmatches', 'COM_SPORTSMANAGEMENT_JSMOPENLIGADB_GET_MATCHES');

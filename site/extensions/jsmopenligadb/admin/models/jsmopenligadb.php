@@ -48,6 +48,64 @@ class sportsmanagementModeljsmopenligadb extends BaseDatabaseModel
 	var $success_text_teams = '';
 	var $success_text_results = '';
     
+    /**
+     * sportsmanagementModeljsmopenligadb::getMatchLink()
+     * 
+     * @param mixed $projectid
+     * @return
+     */
+    function getMatchLink($projectid)
+	{
+		$option = Factory::getApplication()->input->getCmd('option');
+		$app    = Factory::getApplication();
+		$post   = Factory::getApplication()->input->post->getArray(array());
+
+		if ($app->isClient('administrator'))
+		{
+			$view = Factory::getApplication()->input->getVar('view');
+		}
+		else
+		{
+			$view = 'jsminlinehockey';
+		}
+
+		$db    = Factory::getDBO();
+		$query = $db->getQuery(true);
+
+		$query->select('ev.fieldvalue');
+		$query->from('#__sportsmanagement_user_extra_fields_values as ev ');
+		$query->join('INNER', '#__sportsmanagement_user_extra_fields as ef ON ef.id = ev.field_id');
+		$query->where('ev.jl_id = ' . $projectid);
+		$query->where('ef.name LIKE ' . $db->Quote('' . $view . ''));
+		$query->where('ef.template_backend LIKE ' . $db->Quote('' . 'project' . ''));
+		$query->where('ef.field_type LIKE ' . $db->Quote('' . 'link' . ''));
+		$db->setQuery($query);
+		$derlink = $db->loadResult();
+
+		return $derlink;
+	}
+    
+    
+    /**
+     * sportsmanagementModeljsmopenligadb::getdata()
+     * 
+     * @param mixed $projectlink
+     * @return void
+     */
+    function getdata($projectlink)
+	{
+$http = JHttpFactory::getHttp(null, array('curl', 'stream'));
+$result  = $http->get($projectlink );
+$matches = json_decode($result->body, true);
+
+
+
+
+
+
+	}
+    
+    
 }
     
 ?>

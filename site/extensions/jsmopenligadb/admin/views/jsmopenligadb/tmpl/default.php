@@ -14,4 +14,9 @@ use Joomla\CMS\Language\Text;
 
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+
+
+echo 'getdata <pre>'.print_r($this->getdata,true).'</pre>';
+
+
 ?>
