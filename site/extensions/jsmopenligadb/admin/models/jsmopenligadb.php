@@ -86,7 +86,8 @@ try{
 catch (Exception $e)
 {
 Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
-Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');	
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>' . print_r($query->dump(),true) .'</pre>' ), Log::ERROR, 'jsmerror');	
 }
 
 		return $derlink;
