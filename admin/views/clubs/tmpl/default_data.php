@@ -37,7 +37,8 @@ JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($t
         <thead>
 
         <tr>
-            <th width="5"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?>
+            <th width="5"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
+            <th width="5">
             <?php echo HTMLHelper::_('grid.checkall'); ?>
             </th>
 
@@ -57,16 +58,7 @@ JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($t
             <th width="20">
 				<?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_CLUBS_L_LOGO', 'a.logo_big', $this->sortDirection, $this->sortColumn); ?>
             </th>
-	    <!--
-            <th width="20">
-				<?php //echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_CLUBS_M_LOGO', 'a.logo_middle', $this->sortDirection, $this->sortColumn); ?>
-            </th>
-	    -->
-	    <!--
-            <th width="20">
-				<?php //echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_CLUBS_S_LOGO', 'a.logo_small', $this->sortDirection, $this->sortColumn); ?>
-            </th>
--->
+   
             <th width="">
 				<?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_CLUB_POSTAL_CODE', 'a.zipcode', $this->sortDirection, $this->sortColumn); ?>
                 <br/>
@@ -224,28 +216,7 @@ $this->dragable_group = 'data-dragable-group="none"';
 		echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_big' . $this->item->id, Uri::root() . $this->item->logo_big, $imageTitle, '20', Uri::root() . $this->item->logo_big);
 		?>
                 </td>
-<!--
-                <td class="center">
-		<?php
-		//$picture    = ($row->logo_middle == sportsmanagementHelper::getDefaultPlaceholder("clublogomedium")) ? 'information.png' : 'ok.png';
-		//$imageTitle = ($row->logo_middle == sportsmanagementHelper::getDefaultPlaceholder("clublogomedium")) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
-		//$image_attributes['title'] = $imageTitle;
-		//echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/'.$picture,$imageTitle,$image_attributes);
-		//echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_middle' . $row->id, Uri::root() . $row->logo_middle, $imageTitle, '20', Uri::root() . $row->logo_middle);
-		?>
-                </td>
--->
-<!--
-                <td class="center">
-		<?php
-		//$picture    = ($row->logo_small == sportsmanagementHelper::getDefaultPlaceholder("clublogosmall")) ? 'information.png' : 'ok.png';
-		//$imageTitle = ($row->logo_small == sportsmanagementHelper::getDefaultPlaceholder("clublogosmall")) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
-		//$image_attributes['title'] = $imageTitle;
-		//echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/'.$picture,$imageTitle,$image_attributes);
-		//echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_small' . $row->id, Uri::root() . $row->logo_small, $imageTitle, '20', Uri::root() . $row->logo_small);
-		?>
-                </td>
--->
+
                 <td class="">
                     <input<?php echo $inputappend; ?> type="text" size="10" class="form-control form-control-inline"
                                                       name="zipcode<?php echo $this->item->id; ?>"
