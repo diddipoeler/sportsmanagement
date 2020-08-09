@@ -37,8 +37,9 @@ JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($t
         <thead>
 
         <tr>
-            <th width="5"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
+            <th width="5"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?>
             <?php echo HTMLHelper::_('grid.checkall'); ?>
+            </th>
 
             <th class="title">
 				<?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NAME_OF_CLUB', 'a.name', $this->sortDirection, $this->sortColumn); ?>
