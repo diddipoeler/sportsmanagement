@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Log\Log;
 
 $maxImportTime = 480;
 
@@ -66,12 +67,12 @@ class sportsmanagementModeljsmopenligadb extends BaseDatabaseModel
 		}
 		else
 		{
-			$view = 'jsminlinehockey';
+			$view = 'jsmopenligadb';
 		}
 
 		$db    = Factory::getDBO();
 		$query = $db->getQuery(true);
-
+try{
 		$query->select('ev.fieldvalue');
 		$query->from('#__sportsmanagement_user_extra_fields_values as ev ');
 		$query->join('INNER', '#__sportsmanagement_user_extra_fields as ef ON ef.id = ev.field_id');
@@ -81,6 +82,12 @@ class sportsmanagementModeljsmopenligadb extends BaseDatabaseModel
 		$query->where('ef.field_type LIKE ' . $db->Quote('' . 'link' . ''));
 		$db->setQuery($query);
 		$derlink = $db->loadResult();
+        }
+catch (Exception $e)
+{
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');	
+}
 
 		return $derlink;
 	}
@@ -102,7 +109,7 @@ $matches = json_decode($result->body, true);
 
 
 
-
+return $matches;
 	}
     
     
