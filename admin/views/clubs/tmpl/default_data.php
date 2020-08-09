@@ -188,9 +188,9 @@ $this->dragable_group = 'data-dragable-group="none"';
                 </td>
                 <td id="clubswebsite">
 <?php
-					if ($row->website != '')
+					if ($this->item->website != '')
 					{
-						echo '<a href="' . $row->website . '" target="_blank"><span class="label label-success" title="' . $row->website . '">' . Text::_('JYES') . '</span></a>';
+						echo '<a href="' . $this->item->website . '" target="_blank"><span class="label label-success" title="' . $this->item->website . '">' . Text::_('JYES') . '</span></a>';
 					}
 					else
 					{
@@ -200,12 +200,12 @@ $this->dragable_group = 'data-dragable-group="none"';
                 </td>
                 <td class="" id="clubsemail">
 					<?php
-					if ($row->email)
+					if ($this->item->email)
 					{
 						echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/mail.png', '', '');
 					}
 
-					if ($row->facebook)
+					if ($this->item->facebook)
 					{
 						?>
                         <br>
