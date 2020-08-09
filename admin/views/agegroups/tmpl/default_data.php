@@ -18,7 +18,6 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 
 $this->saveOrder = $this->sortColumn == 'obj.ordering';
-
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
     
@@ -31,7 +30,7 @@ HTMLHelper::_('draggablelist.draggable');
 else
 {
 $saveOrderingUrl = 'index.php?option=com_sportsmanagement&task='.$this->view.'.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';    
-JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl);
+JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl,null);
 }    
 ?>
 <div class="table-responsive" id="editcell">
