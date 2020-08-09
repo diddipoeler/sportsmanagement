@@ -79,7 +79,7 @@ class sportsmanagementViewjsmopenligadb extends sportsmanagementView
 			$this->projectid = $this->app->getUserState("$this->option.pid", '0');
 		}
         $this->projectlink = $this->model->getMatchLink($this->projectid);
-        $this->getdata = $this->model->getMatchLink($this->projectlink);
+        $this->getdata = $this->model->getdata($this->projectlink);
         
    }
    
