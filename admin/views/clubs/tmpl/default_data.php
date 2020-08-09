@@ -16,7 +16,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 
-$this->saveOrder = $this->sortColumn == 'po.ordering';
+$this->saveOrder = $this->sortColumn == 'a.ordering';
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
     
