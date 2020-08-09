@@ -91,6 +91,7 @@ class sportsmanagementViewjsmopenligadb extends sportsmanagementView
    protected function addToolbar()
 	{
 $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_JSMOPENLIGADB_TITLE');
+ToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=projects'); 
 		if ($this->projectid)
 		{
 			ToolBarHelper::save('jsmopenligadb.getmatches', 'COM_SPORTSMANAGEMENT_JSMOPENLIGADB_GET_MATCHES');
