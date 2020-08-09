@@ -104,29 +104,27 @@ JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($t
         </tfoot>
         <tbody <?php if ( $this->saveOrder && version_compare(substr(JVERSION, 0, 3), '4.0', 'ge') ) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($this->sortDirection); ?>" data-nested="true"<?php endif; ?>>
 		<?php
-
- foreach ($this->items as $i => $this->item)
+ foreach ($this->items as $this->count_i => $this->item)
 		{
-            $this->count_i = $i;
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
-$this->dragable_group = 'data-dragable-group="'.$this->item->sports_type_id.'"';
+$this->dragable_group = 'data-dragable-group="none"';
 } 
 			$link       = Route::_('index.php?option=com_sportsmanagement&task=position.edit&id=' . $this->item->id);
 			$canEdit    = $this->user->authorise('core.edit', 'com_sportsmanagement');
 			$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $this->item->checked_out == $this->user->get('id') || $this->item->checked_out == 0;
-			$checked    = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $this->item->checked_out_time, 'positions.', $canCheckin);
+			$checked    = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'positions.', $canCheckin);
 			$canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.position.' . $this->item->id) && $canCheckin;
 			?>
-            <tr class="row<?php echo $i % 2; ?>" <?php echo $this->dragable_group; ?>>
+            <tr class="row<?php echo $this->count_i % 2; ?>" <?php echo $this->dragable_group; ?>>
                 <td class="center">
 					<?php
-					echo $this->pagination->getRowOffset($i);
+					echo $this->pagination->getRowOffset($this->count_i);
 					?>
                 </td>
                 <td class="center">
 					<?php
-					echo HTMLHelper::_('grid.id', $i, $this->item->id);
+					echo HTMLHelper::_('grid.id', $this->count_i, $this->item->id);
 					?>
                 </td>
 				<?php
@@ -134,7 +132,7 @@ $this->dragable_group = 'data-dragable-group="'.$this->item->sports_type_id.'"';
 				?>
                 <td class="center">
 					<?php if ($this->item->checked_out) : ?>
-						<?php echo HTMLHelper::_('jgrid.checkedout', $i, $this->item->editor, $this->item->checked_out_time, 'positions.', $canCheckin); ?>
+						<?php echo HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->item->editor, $this->item->checked_out_time, 'positions.', $canCheckin); ?>
 					<?php endif; ?>
 					<?php if ($canEdit) : ?>
                         <a href="<?php echo Route::_('index.php?option=com_sportsmanagement&task=position.edit&id=' . (int) $this->item->id); ?>">
@@ -236,13 +234,13 @@ $this->dragable_group = 'data-dragable-group="'.$this->item->sports_type_id.'"';
                 </td>
                 <td class="center">
                     <div class="btn-group">
-						<?php echo HTMLHelper::_('jgrid.published', $this->item->published, $i, 'positions.', $canChange, 'cb'); ?>
+						<?php echo HTMLHelper::_('jgrid.published', $this->item->published, $this->count_i, 'positions.', $canChange, 'cb'); ?>
 						<?php
 						// Create dropdown items and render the dropdown list.
 						if ($canChange)
 						{
-							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'positions');
-							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'positions');
+							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === 2 ? 'un' : '') . 'archive', 'cb' . $this->count_i, 'positions');
+							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === -2 ? 'un' : '') . 'trash', 'cb' . $this->count_i, 'positions');
 							echo HTMLHelper::_('actionsdropdown.render', $this->escape($this->item->name));
 						}
 						?>
