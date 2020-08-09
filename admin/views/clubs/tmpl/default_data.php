@@ -291,19 +291,11 @@ $this->dragable_group = 'data-dragable-group="none"';
 						?>
                     </div>
                 </td>
-                <td class="order">
-			  <span>
-					<?php echo $this->pagination->orderUpIcon($this->count_i, $this->count_i > 0, 'clubs.orderup', 'JLIB_HTML_MOVE_UP', true); ?>
-							</span>
-                    <span>
-								<?php echo $this->pagination->orderDownIcon($this->count_i, $n, $this->count_i < $n, 'clubs.orderdown', 'JLIB_HTML_MOVE_DOWN', true);
-								$disabled = true ? '' : 'disabled="disabled"';
-								?>
-							</span>
-                    <input type="text" name="order[]" size="5"
-                           value="<?php echo $this->item->ordering; ?>" <?php echo $disabled; ?>
-                           class="form-control form-control-inline" style="text-align: center"/>
-                </td>
+<td class="order" id="defaultdataorder">
+<?php
+echo $this->loadTemplate('data_order');
+?>
+</td>
                 <td class="center"><?php echo $this->item->id; ?></td>
             </tr>
 			<?php
