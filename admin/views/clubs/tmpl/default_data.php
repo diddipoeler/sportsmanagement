@@ -15,6 +15,10 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
+use Joomla\CMS\Component\ComponentHelper;
+
+$params     = ComponentHelper::getParams('com_sportsmanagement');
+$joomlaicon = $params->get('show_joomla_icons');
 
 $this->saveOrder = $this->sortColumn == 'a.ordering';
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
@@ -142,12 +146,16 @@ $this->dragable_group = 'data-dragable-group="none"';
 					?>
                     <a href="<?php echo $link2; ?>">
 						<?php
-						$imageTitle       = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_SHOW_TEAMS');
-						$attribs['title'] = $imageTitle;
-						echo HTMLHelper::_(
-							'image', 'administrator/components/com_sportsmanagement/assets/images/icon-16-Teams.png',
-							$imageTitle, $attribs
-						);
+						if ($joomlaicon)
+						{
+							echo '<span class="icon-star-2 large-icon"> </span>';
+						}
+						else
+						{
+							$imageTitle       = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_SHOW_TEAMS');
+							$attribs['title'] = $imageTitle;
+							echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/icon-16-Teams.png', $imageTitle, $attribs);
+						}
 						?>
                     </a>
 
