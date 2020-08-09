@@ -52,6 +52,9 @@ JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($t
             <th>
 				<?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_CLUBS_WEBSITE', 'a.website', $this->sortDirection, $this->sortColumn); ?>
             </th>
+            <th width="1%">
+				<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_EMAIL'); ?>
+            </th>
 
             <th>
 				<?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_CLUB_UNIQUE_ID', 'a.unique_id', $this->sortDirection, $this->sortColumn); ?>
@@ -182,24 +185,38 @@ $this->dragable_group = 'data-dragable-group="none"';
 				<?php
 
 				?>
-
-
                 </td>
-                <td>
-					<?php
-					if ($this->item->website != '')
+                <td id="clubswebsite">
+<?php
+					if ($row->website != '')
 					{
-						echo '<a href="' . $this->item->website . '" target="_blank">';
+						echo '<a href="' . $row->website . '" target="_blank"><span class="label label-success" title="' . $row->website . '">' . Text::_('JYES') . '</span></a>';
 					}
-
-					echo $this->item->website;
-
-					if ($this->item->website != '')
+					else
 					{
-						echo '</a>';
+						echo '<span class="label">' . Text::_('JNO') . '</span>';
 					}
 					?>
                 </td>
+                <td class="" id="clubsemail">
+					<?php
+					if ($row->email)
+					{
+						echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/mail.png', '', '');
+					}
+
+					if ($row->facebook)
+					{
+						?>
+                        <br>
+						<?php
+						echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/facebook.png', '', '');
+					}
+
+					?>
+                </td>
+                
+                
                 <td>
 					<?php
 					// Echo $row->unique_id;
