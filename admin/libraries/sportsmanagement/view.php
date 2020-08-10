@@ -160,6 +160,12 @@ img.car {
         $this->sortColumn = $this->escape($this->state->get('list.ordering'));
         $this->sortDirection  = $this->escape($this->state->get('list.direction'));
         $this->ordering = true;
+		
+if (preg_match("/ordering/i", $this->sortColumn)) {
+   $this->saveOrderButton = false;
+} else {
+   $this->saveOrderButton = true;
+}
         //$this->saveOrder = $this->sortColumn == 'a.ordering';
         
 /*
