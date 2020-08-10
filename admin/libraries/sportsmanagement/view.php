@@ -806,6 +806,7 @@ document.getElementById("filter_season").classList.add("filter_season");
 				case 'treetomatchs';
 				case 'smextxmleditors';
 				case 'smextxmleditor';
+					case 'jsmopenligadb';
                 case 'smimageimports';
 				break;
 				default:
