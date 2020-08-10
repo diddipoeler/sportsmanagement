@@ -262,7 +262,8 @@ else
 					?>
                     <address>
                         <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_DISSOLVED'); ?></strong>
-						<?php echo sportsmanagementHelper::convertDate($this->club->dissolved, 1) ?>
+						<?php //echo sportsmanagementHelper::convertDate($this->club->dissolved, 1) ?>
+			    <?php echo HTMLHelper::date($this->club->dissolved, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE')); ?>
                     </address>
 					<?php
 				}
