@@ -106,6 +106,7 @@ $http = JHttpFactory::getHttp(null, array('curl', 'stream'));
 	   try{ 
 $result  = $http->get($projectlink );
 $matches = json_decode($result->body, true);
+Log::add(Text::_('Datei erfolgreich eingelesen'), Log::NOTICE, 'jsmerror');		   
  }
 catch (Exception $e)
 {
