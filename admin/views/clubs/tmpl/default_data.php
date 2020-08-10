@@ -179,8 +179,18 @@ $this->dragable_group = 'data-dragable-group="none"';
 						<?php echo $this->escape($this->item->name); ?>
 					<?php endif; ?>
 
-                    <p class="smallsub">
-						<?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($this->item->alias)); ?></p>
+                    <div class="small">
+		<?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($this->item->alias)); ?>
+			<input<?php echo $inputappend; ?>
+                            type="text" size="40" class="form-control form-control-inline"
+                            name="club_name<?php echo $this->item->id; ?>"
+                            value="<?php echo $this->item->name; ?>"
+                            onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked = true"/>
+			</div>
+			
+			
+			
+			
                 </td>
 				<?php
 
