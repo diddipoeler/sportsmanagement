@@ -102,7 +102,7 @@
         <menu view="teams" img="../administrator/components/com_sportsmanagement/assets/icons/transparent_schrift_16.png"
 				alt="COM_SPORTSMANAGEMENT_D_MENU_CLUBS">COM_SPORTSMANAGEMENT_D_MENU_TEAMS</menu>
 				
-        <menu view="persons" img="../administrator/components/com_sportsmanagement/assets/icons/transparent_schrift_16.png"
+        <menu view="players" img="../administrator/components/com_sportsmanagement/assets/icons/transparent_schrift_16.png"
 				alt="COM_SPORTSMANAGEMENT_D_MENU_CLUBS">COM_SPORTSMANAGEMENT_D_MENU_PERSONS</menu>
 				
         <menu view="playgrounds" img="../administrator/components/com_sportsmanagement/assets/icons/transparent_schrift_16.png"
