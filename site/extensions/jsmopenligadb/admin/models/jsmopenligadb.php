@@ -146,10 +146,19 @@ $newobject->team2_result  = $value['MatchResults']['0']['PointsTeam2'];
   
 $matchesopenliga[$value['MatchID']] = $newobject;   
   
+foreach ( $value['Goals'] as $keygoal => $valuegoal )
+{  
+$newobject = new stdClass; 
+$newobject->match_id = $value['MatchID'];  
+$newobject->person_id = $valuegoal['GoalGetterID'];  
+$newobject->person_name = $valuegoal['GoalGetterName'];    
+$newobject->minute = $valuegoal['MatchMinute'];   
+$newobject->wert = 1;     
+$newobject->notice = $valuegoal['ScoreTeam1'].'-'.$valuegoal['ScoreTeam2'];   
+$goals[$value['MatchID']][] = $newobject;   
   
   
-  
-  
+} 
   
   
 }
@@ -157,6 +166,7 @@ $matchesopenliga[$value['MatchID']] = $newobject;
       echo 'teams<pre>'.print_r($teams,true).'</pre>';
       echo 'playgrounds<pre>'.print_r($playgrounds,true).'</pre>';
       echo 'matchesopenliga<pre>'.print_r($matchesopenliga,true).'</pre>';
+      echo 'goals<pre>'.print_r($goals,true).'</pre>';
 
 return $matches;
 	}
