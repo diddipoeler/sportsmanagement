@@ -118,7 +118,7 @@ JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($t
             </td>
         </tr>
         </tfoot>
-        <tbody <?php if ( $this->saveOrder && version_compare(substr(JVERSION, 0, 3), '4.0', 'ge') ) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($this->sortDirection); ?>" data-nested="true"<?php endif; ?>>
+        <tbody <?php if ( $this->saveOrder && version_compare(substr(JVERSION, 0, 3), '4.0', 'ge') ) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($this->sortDirection); ?>" <?php endif; ?>>
 		<?php
 		 foreach ($this->items as $this->count_i => $this->item)
 	{
