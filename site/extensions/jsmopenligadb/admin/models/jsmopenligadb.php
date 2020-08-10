@@ -114,8 +114,49 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR,
 Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');
 }
 
+foreach ( $matches as $key => $value )
+{
+$newobject = new stdClass;  
+$newobject->id = $value['Team1']['TeamId'];
+$newobject->name = $value['Team1']['TeamName'];  
+$teams[$value['Team1']['TeamId']] = $newobject;  
+$newobject = new stdClass;  
+$newobject->id = $value['Team2']['TeamId'];
+$newobject->name = $value['Team2']['TeamName'];    
+$teams[$value['Team2']['TeamId']] = $newobject;    
+$newobject = new stdClass;  
+$newobject->id = $value['Location']['LocationID'];
+$newobject->name = $value['Location']['LocationStadium']; 
+$newobject->location = $value['Location']['LocationCity'];  
+$playgrounds[$value['Location']['LocationID']] = $newobject;  
+  
+  
+$newobject = new stdClass;   
+$newobject->id = $value['MatchID'];  
+$newobject->league_id = $value['LeagueId'];   
+$newobject->round_id = $value['Group']['GroupID'];  
+$newobject->round_name = $value['Group']['GroupName'];  
+$newobject->round_code = $value['Group']['GroupOrderID'];    
+  
+$newobject->home_id = $value['Team1']['TeamId'];   
+$newobject->away_id = $value['Team2']['TeamId'];   
+  
+$newobject->team1_result  = $value['MatchResults']['0']['PointsTeam1'];  
+$newobject->team2_result  = $value['MatchResults']['0']['PointsTeam2'];    
+  
+$matchesopenliga[$value['MatchID']] = $newobject;   
+  
+  
+  
+  
+  
+  
+  
+}
 
-
+      echo 'teams<pre>'.print_r($teams,true).'</pre>';
+      echo 'playgrounds<pre>'.print_r($playgrounds,true).'</pre>';
+      echo 'matchesopenliga<pre>'.print_r($matchesopenliga,true).'</pre>';
 
 return $matches;
 	}
