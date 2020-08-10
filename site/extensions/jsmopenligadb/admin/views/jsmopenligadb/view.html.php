@@ -96,6 +96,7 @@ ToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=projects
 		{
 			ToolBarHelper::save('jsmopenligadb.getmatches', 'COM_SPORTSMANAGEMENT_JSMOPENLIGADB_GET_MATCHES');
 		}
+	   parent::addToolbar();
 	}
         
         
