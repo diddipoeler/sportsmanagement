@@ -103,9 +103,15 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>' . print_r($query->d
     function getdata($projectlink)
 	{
 $http = JHttpFactory::getHttp(null, array('curl', 'stream'));
+	   try{ 
 $result  = $http->get($projectlink );
 $matches = json_decode($result->body, true);
-
+ }
+catch (Exception $e)
+{
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');
+}
 
 
 
