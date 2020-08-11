@@ -121,6 +121,7 @@ $this->item->logo_small = ComponentHelper::getParams('com_sportsmanagement')->ge
 
 		if (version_compare(JSM_JVERSION, '4', 'eq'))
 		{
+			$this->document->addScript(Uri::base() . 'components/' . $this->option . '/views/club/tmpl/edit.js');
 		}
 		else
 		{
