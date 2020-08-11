@@ -253,6 +253,7 @@ class sportsmanagementModelProjectReferees extends JSMModelList
 
 		$this->jsmquery->clear();
 		$this->jsmquery->select(implode(",", $this->filter_fields) . ',tp.person_id as person_id,tp.persontype,tp.season_id');
+		$this->jsmquery->select('tp.id as season_person_id');
 		$this->jsmquery->from('#__sportsmanagement_person AS p');
 		$this->jsmquery->join('INNER', '#__sportsmanagement_season_person_id AS tp on tp.person_id = p.id');
 		$this->jsmquery->join('INNER', '#__sportsmanagement_project_referee AS pref on pref.person_id = tp.id');
