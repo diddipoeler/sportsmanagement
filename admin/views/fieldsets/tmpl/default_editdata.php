@@ -175,6 +175,44 @@ if (version_compare(JSM_JVERSION, '4', 'eq'))
                                         <div id="map" style="height: 400px; margin-top: 50px; position: relative;">
                                         </div>
                                         <!-- leaflet map ende -->
+					    <script>
+
+                                        var planes = [
+                                            ["position",<?php echo $this->item->latitude; ?>,<?php echo $this->item->longitude; ?>]
+                                        ];
+
+                                        var map = L.map('map').setView([<?php echo $this->item->latitude; ?>,<?php echo $this->item->longitude; ?>], 15);
+                                        mapLink =
+                                            '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+                                        L.tileLayer(
+                                            'http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
+                                                attribution: '&copy; ' + mapLink + ' Contributors',
+                                                maxZoom: 20,
+                                                subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+                                            }).addTo(map);
+                                        var myIcon = L.icon({
+                                            iconUrl: 'http://maps.google.com/mapfiles/kml/pal2/icon49.png'
+                                        });
+
+                                        var layerGroup = L.layerGroup().addTo(map);
+                                        //var geocoder = new L.Control.Geocoder.Nominatim();
+                                        for (i = 0; i < planes.length; i++) {
+                                            marker = L.marker([planes[i][1], planes[i][2]]);
+                                            layerGroup.addLayer(marker);
+                                        }
+
+                                        var overlay = {'markers': layerGroup};
+                                        L.control.layers(null, overlay).addTo(map);
+
+                                        //         for (var i = 0; i < planes.length; i++) {
+                                        //             marker = new L.marker([planes[i][1],planes[i][2]], {icon: myIcon} )
+                                        //                 .bindPopup(planes[i][0])
+                                        //                 .addTo(map);
+                                        //         }
+
+                                        //L.Control.geocoder().addTo(map);
+
+                                    </script>
 
                                     </div>
                                 </div>
