@@ -92,6 +92,8 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
 		//$this->items      = $items;
 		//$this->pagination = $pagination;
         
+		//echo 'items<pre>'.print_r($this->items,true).'</pre>';
+		
 		if ( !$this->items )
 		{
 		$countreferess = $this->model->getProjectRefereesCount($this->project_id);
