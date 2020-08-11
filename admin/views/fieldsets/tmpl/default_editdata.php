@@ -58,15 +58,15 @@ if (version_compare(JSM_JVERSION, '4', 'eq'))
 		{
 			echo HTMLHelper::_('uitab.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));
 			?>
-            <div class="row">
-                <div class="col-md-12">
+            <!-- <div class="row"> -->
+                <!-- <div class="col-md-12"> -->
 					<?PHP
 					switch ($fieldset->name)
 					{
 						case 'details':
 							?>
-                            <div class="row-fluid">
-                                <div class="span6">
+                            <div class="row">
+                                <div class="col-lg-6">
 									<?PHP
 									foreach ($this->form->getFieldset($fieldset->name) as $field)
 									{
@@ -160,7 +160,7 @@ if (version_compare(JSM_JVERSION, '4', 'eq'))
 									}
 									?>
                                 </div>
-                                <div class="span6">
+                                <div class="col-lg-6">
                                     <div class="control-group">
                                         <style type="text/css">.map_canvas {
                                                 width: 100%;
@@ -193,8 +193,8 @@ if (version_compare(JSM_JVERSION, '4', 'eq'))
 							break;
 					}
 					?>
-                </div>
-            </div>
+                <!-- </div> -->
+            <!-- </div> -->
 			<?PHP
 			echo HTMLHelper::_('uitab.endTab');
 		}
