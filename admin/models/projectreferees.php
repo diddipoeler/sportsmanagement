@@ -15,6 +15,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModelProjectReferees
@@ -233,8 +234,15 @@ class sportsmanagementModelProjectReferees extends JSMModelList
 		$this->jsmquery->clear();
 $this->jsmquery = $this->getListQuery();
 		$this->jsmdb->setQuery($this->jsmquery);
-        rerturn $this->jsmdb->loadObjectList();
-
+		try{
+        rerturn Factory::getDbo()->loadObjectList();
+}
+catch (Exception $e)
+{
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');
+	rerturn false;
+}
 	}
 	/**
 	 * sportsmanagementModelProjectReferees::getListQuery()
