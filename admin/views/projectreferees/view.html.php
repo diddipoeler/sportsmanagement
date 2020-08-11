@@ -16,6 +16,7 @@ use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Log\Log;
 
 /**
  * HTML View class for the Sportsmanagement Component
@@ -91,11 +92,16 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
 		//$this->items      = $items;
 		//$this->pagination = $pagination;
         
-        $this->filterForm    = $this->model->getFilterForm();
-		$this->activeFilters = $this->model->getActiveFilters();
-	
-//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>'.print_r($this->filterForm ,true).'</pre>' ), Log::NOTICE, 'jsmerror');		
-//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>'.print_r($this->activeFilters ,true).'</pre>' ), Log::NOTICE, 'jsmerror');
+try
+{		
+$this->filterForm    = $this->model->getFilterForm();
+$this->activeFilters = $this->model->getActiveFilters();
+}
+catch (Exception $e)
+{
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');	
+}
 
 	}
 
