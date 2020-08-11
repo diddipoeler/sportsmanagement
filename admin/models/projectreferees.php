@@ -260,7 +260,10 @@ class sportsmanagementModelProjectReferees extends JSMModelList
 		$this->jsmquery->join('LEFT', '#__users AS u ON u.id = pref.checked_out');
 		$this->jsmquery->where('tp.persontype = 3');
 		$this->jsmquery->where('p.published = 1');
+		if ( $this->_season_id )
+		{
 		$this->jsmquery->where('tp.season_id = ' . $this->_season_id);
+		}
 		$this->jsmquery->where('pref.project_id = ' . $this->_project_id);
 
 		if ($this->getState('filter.project_position_id'))
