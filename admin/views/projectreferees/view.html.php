@@ -92,6 +92,14 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
 		//$this->items      = $items;
 		//$this->pagination = $pagination;
         
+		if ( !$this->items )
+		{
+		$countreferess = $this->model->getProjectRefereesCount($this->project_id);
+			if ( $countreferess )
+			{
+		Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PREF_TITLE2', '<i>' . $countreferess . '</i>'), Log::NOTICE, 'jsmerror');
+			}
+		}
 try
 {		
 $this->filterForm    = $this->model->getFilterForm();
