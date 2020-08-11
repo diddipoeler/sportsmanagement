@@ -49,13 +49,13 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
 	 */
 	public function init()
 	{
-		$this->state         = $this->get('State');
-		$this->sortDirection = $this->state->get('list.direction');
-		$this->sortColumn    = $this->state->get('list.ordering');
+		//$this->state         = $this->get('State');
+		//$this->sortDirection = $this->state->get('list.direction');
+		//$this->sortColumn    = $this->state->get('list.ordering');
 
-		$items      = $this->get('Items');
-		$total      = $this->get('Total');
-		$pagination = $this->get('Pagination');
+		//$items      = $this->get('Items');
+		//$total      = $this->get('Total');
+		//$pagination = $this->get('Pagination');
 
 		$table       = Table::getInstance('projectreferee', 'sportsmanagementTable');
 		$this->table = $table;
@@ -88,8 +88,8 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
 		$this->user       = Factory::getUser();
 		$this->config     = Factory::getConfig();
 		$this->lists      = $lists;
-		$this->items      = $items;
-		$this->pagination = $pagination;
+		//$this->items      = $items;
+		//$this->pagination = $pagination;
         
         $this->filterForm    = $this->model->getFilterForm();
 		$this->activeFilters = $this->model->getActiveFilters();
