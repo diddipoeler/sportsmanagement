@@ -229,6 +229,13 @@ class sportsmanagementModelProjectReferees extends JSMModelList
 		$this->setState('list.direction', $listOrder);
 	}
 
+	public function getItems2() {
+		$this->jsmquery->clear();
+$this->jsmquery = $this->getListQuery();
+		$this->jsmdb->setQuery($this->jsmquery);
+        rerturn $this->jsmdb->loadObjectList();
+
+	}
 	/**
 	 * sportsmanagementModelProjectReferees::getListQuery()
 	 *
@@ -241,6 +248,8 @@ class sportsmanagementModelProjectReferees extends JSMModelList
 		$this->_team_id         = Factory::getApplication()->input->getVar('team_id');
 		$this->_project_team_id = Factory::getApplication()->input->getVar('project_team_id');
 
+		//echo '_season_id<pre>'.print_r($this->_season_id,true).'</pre>';
+		
 		if (!$this->_team_id)
 		{
 			$this->_team_id = $this->jsmapp->getUserState("$this->jsmoption.team_id", '0');
