@@ -102,9 +102,9 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
 		Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PREF_TITLE2', '<i>' . $countreferess . '</i>'), Log::NOTICE, 'jsmerror');
 $this->season_id = $this->app->getUserState("$this->option.season_id", '0');				
 $this->app->setUserState("$this->option.season_id", 0);
-$this->items = $this->get('Items');				
+$this->items = $this->get('Items2');				
 $this->app->setUserState("$this->option.season_id", $this->season_id);				
-				
+//echo 'items<pre>'.print_r($this->items,true).'</pre>';				
 			}
 		}
 try
