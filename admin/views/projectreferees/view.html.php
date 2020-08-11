@@ -68,9 +68,9 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
 			$this->_persontype = $this->app->getUserState("$this->option.persontype", '0');
 		}
 
-		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
-		$mdlProject       = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
-		$this->project          = $mdlProject->getProject($this->project_id);
+		//$this->project_id = $this->app->getUserState("$this->option.pid", '0');
+		//$mdlProject       = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
+		//$this->project          = $mdlProject->getProject($this->project_id);
 
 		/** build the html options for position */
 		$position_id[]         = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REFEREE_FUNCTION'));
