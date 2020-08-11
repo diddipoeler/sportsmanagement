@@ -86,8 +86,8 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
 		$lists['project_position_id'] = $position_id;
 		unset($position_id);
 
-		$this->user       = Factory::getUser();
-		$this->config     = Factory::getConfig();
+		//$this->user       = Factory::getUser();
+		//$this->config     = Factory::getConfig();
 		$this->lists      = $lists;
 		//$this->items      = $items;
 		//$this->pagination = $pagination;
@@ -100,6 +100,11 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
 			if ( $countreferess )
 			{
 		Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PREF_TITLE2', '<i>' . $countreferess . '</i>'), Log::NOTICE, 'jsmerror');
+$this->season_id = $this->app->getUserState("$this->option.season_id", '0');				
+$this->app->setUserState("$this->option.season_id", 0);
+$this->items = $this->get('Items');				
+$this->app->setUserState("$this->option.season_id", $this->season_id);				
+				
 			}
 		}
 try
