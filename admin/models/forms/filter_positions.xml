@@ -36,10 +36,10 @@
 	name="persontype"
 	type="list"
 	default="0"	
-	onchange=""
+	onchange="this.form.submit();"
        	label="COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_PERSON_TYPE"
 	description="COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_PERSON_TYPE">
-	<option value="0">JNO</option>
+	<option value="0">JGLOBAL_SELECT_AN_OPTION</option>
 	<option value="1">COM_SPORTSMANAGEMENT_F_PLAYERS</option>
 	<option value="2">COM_SPORTSMANAGEMENT_F_TEAM_STAFF</option>
 	<option value="3">COM_SPORTSMANAGEMENT_F_REFEREES</option>
