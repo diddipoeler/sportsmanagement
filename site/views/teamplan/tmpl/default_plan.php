@@ -927,6 +927,10 @@ if (!empty($this->matches))
                         <td><?php
 							if ((isset($match->referees)) && (count($match->referees) > 0))
 							{
+								
+usort($match->referees, function ($a, $b) {
+		return $a->ordering - $b->ordering;
+	});								
 								if ($this->project->teams_as_referees)
 								{
 									$output       = '';
