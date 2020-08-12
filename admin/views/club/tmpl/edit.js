@@ -15,6 +15,24 @@ var province;
 
 var yourQuery;	
 
+
+function getbackendlatlon()
+{
+dpjQuery("#jform_geocomplete").val(getAddresString());
+dpjQuery("#jform_geocomplete").trigger("geocode");
+if ( opencagekey != '' )
+{
+geocode(dpjQuery("#jform_geocomplete").val());	
+}
+else
+{
+getlatlonopenstreet(1);
+}
+
+
+}
+
+
 function geocode(query){
       dpjQuery.ajax({
         url: 'https://api.opencagedata.com/geocode/v1/json',
@@ -96,7 +114,7 @@ city = dpjQuery("#jform_location").val();
 yourQuery = ( street + ',' + zip + ' ' + city + ',' + countryleafletsearch );
 
 console.log('ready yourQuery ' + yourQuery );
-
+/*
 dpjQuery('#jform_address,  #jform_zipcode, #jform_location,  #jform_state, #jform_country').bind('change', function(e) {
 dpjQuery("#jform_geocomplete").val(getAddresString());
 dpjQuery("#jform_geocomplete").trigger("geocode");
@@ -109,7 +127,7 @@ else
 getlatlonopenstreet(1);
 }
 	});
-    
+    */
 });
 
 
