@@ -8,8 +8,11 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 ?>
 <div id="modJLML<?php echo $module->id . '_row' . $cnt; ?>" class="<?php echo $styleclass; ?> jlmlmatchholder">
     <!--jlml-mod<?php echo $module->id . 'nr' . $cnt; ?> start-->
