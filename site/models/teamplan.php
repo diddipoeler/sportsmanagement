@@ -254,7 +254,7 @@ class sportsmanagementModelTeamPlan extends BaseDatabaseModel
 				$query->clear();
 				$query->select('mr.project_referee_id AS value');
 				$query->select('t.name AS referee_name');
-				$query->select('pos.name AS position_name');
+				$query->select('pos.name AS position_name,pos.ordering');
 				$query->from('#__sportsmanagement_match_referee AS mr ');
 				$query->join('LEFT', ' #__sportsmanagement_project_team AS pt ON pt.id = mr.project_referee_id');
 				$query->join('LEFT', ' #__sportsmanagement_season_team_id st ON st.id = pt.team_id ');
@@ -268,7 +268,7 @@ class sportsmanagementModelTeamPlan extends BaseDatabaseModel
 				$query->clear();
 				$query->select('ref.firstname AS referee_firstname,ref.lastname AS referee_lastname,ref.id as referee_id,ref.nickname AS referee_nickname');
 				$query->select('ppos.position_id');
-				$query->select('pos.name AS referee_position_name');
+				$query->select('pos.name AS referee_position_name,pos.ordering');
 				$query->from('#__sportsmanagement_person AS ref');
 				$query->join('LEFT', ' #__sportsmanagement_season_person_id AS sp ON sp.person_id = ref.id ');
 				$query->join('LEFT', ' #__sportsmanagement_project_referee AS pref ON pref.person_id = sp.id ');
