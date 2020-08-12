@@ -162,7 +162,7 @@ class PlgSystemjsm_bootstrap extends JPlugin
         if (version_compare(JVERSION, '3.0.0', 'ge')) {
             // Joomla! 3.0 code here
             if ($load_bootstrap) {
-                if (!$app->isAdmin()) {
+                if (!$app->isClient('administrator')) {
                     //CBootstrap::load();
                     Factory::getDocument()->addScript(
                         'https://maxcdn.bootstrapcdn.com/bootstrap/' .
@@ -172,7 +172,7 @@ class PlgSystemjsm_bootstrap extends JPlugin
             }
                         
             if ($this->params->def('load_datatables', 0)) {
-                if (!$app->isAdmin()) {
+                if (!$app->isClient('administrator')) {
 					switch ($this->params->def('load_for_which_bootstrap', 0))
 			{
 				case 0:
@@ -196,7 +196,7 @@ class PlgSystemjsm_bootstrap extends JPlugin
             }
 		
 		if ($this->params->def('load_responsive', 0)) {
-                if (!$app->isAdmin()) {
+                if (!$app->isClient('administrator')) {
 					switch ($this->params->def('load_for_which_bootstrap', 0))
 			{
 				case 0:
@@ -220,7 +220,7 @@ class PlgSystemjsm_bootstrap extends JPlugin
             }
             
             if ($this->params->def('load_fixedcolumns', 0)) {
-                if (!$app->isAdmin()) {
+                if (!$app->isClient('administrator')) {
 					switch ($this->params->def('load_for_which_bootstrap', 0))
 			{
 				case 0:
@@ -242,7 +242,7 @@ class PlgSystemjsm_bootstrap extends JPlugin
             }
             
             if ($this->params->def('load_fixedheader', 0)) {
-                if (!$app->isAdmin()) {
+                if (!$app->isClient('administrator')) {
 					switch ($this->params->def('load_for_which_bootstrap', 0))
 			{
 				case 0:
@@ -265,7 +265,7 @@ class PlgSystemjsm_bootstrap extends JPlugin
 
 
 if ($this->params->def('load_buttons', 0)) {
-                if (!$app->isAdmin()) {
+                if (!$app->isClient('administrator')) {
 		switch ($this->params->def('load_for_which_bootstrap', 0))
 		{
 		case 0:
@@ -304,28 +304,28 @@ if ($this->params->def('load_buttons', 0)) {
 
           
             if ($this->params->def('load_bootstrap_carousel', 1)) {
-                if (!$app->isAdmin()) {
+                if (!$app->isClient('administrator')) {
                     //CBootstrap::load();
                     Factory::getDocument()->addScript('https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-carousel.js');
                 }
             }
           
             if ($this->params->def('load_bootstrap_modal', 1)) {
-                if (!$app->isAdmin()) {
+                if (!$app->isClient('administrator')) {
                     //CBootstrap::load();
                     Factory::getDocument()->addScript('https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-modal.js');
                 }
             }
           
             if ($this->params->def('load_bootstrap_tab', 1)) {
-                if (!$app->isAdmin()) {
+                if (!$app->isClient('administrator')) {
                     //CBootstrap::load();
                     Factory::getDocument()->addScript('https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-tab.js');
                 }
             }
       
             if ($load_bootstrap_css) {
-                if (!$app->isAdmin()) {
+                if (!$app->isClient('administrator')) {
                     //CBootstrap::load();
                     Factory::getDocument()->addStyleSheet(
                         'https://maxcdn.bootstrapcdn.com/bootstrap/' .
@@ -351,7 +351,7 @@ if ($this->params->def('load_buttons', 0)) {
                 $is_enabled = $db->loadResult();
                 //if (JComponentHelper::getComponent('com_k2', true)->enabled) {
                 if ($is_enabled) {
-                    if (!$app->isAdmin()) {
+                    if (!$app->isClient('administrator')) {
                         $css = JUri::base() . 'plugins' .DIRECTORY_SEPARATOR. $this->config['type'] .DIRECTORY_SEPARATOR. $this
                             ->config['name'] .DIRECTORY_SEPARATOR. 'css/customk2.css';
                         $document->addStyleSheet($css);
@@ -364,7 +364,7 @@ if ($this->params->def('load_buttons', 0)) {
 
 
             if ($load_bootstrap) {
-                if (!$app->isAdmin()) {
+                if (!$app->isClient('administrator')) {
                     //CBootstrap::load();
                     Factory::getDocument()->addScript(
                         'https://maxcdn.bootstrapcdn.com/bootstrap/' .
@@ -374,7 +374,7 @@ if ($this->params->def('load_buttons', 0)) {
             }
           
             if ($load_bootstrap_css) {
-                if (!$app->isAdmin()) {
+                if (!$app->isClient('administrator')) {
                     //CBootstrap::load();
                     Factory::getDocument()->addStyleSheet(
                         'https://maxcdn.bootstrapcdn.com/bootstrap/' .
@@ -400,7 +400,7 @@ if ($this->params->def('load_buttons', 0)) {
                 $is_enabled = $db->loadResult();
                 //if (JComponentHelper::getComponent('com_k2', true)->enabled) {
                 if ($is_enabled) {
-                    if (!$app->isAdmin()) {
+                    if (!$app->isClient('administrator')) {
                         $css = JUri::base() . 'plugins' .DIRECTORY_SEPARATOR. $this->config['type'] .DIRECTORY_SEPARATOR. $this
                             ->config['name'] .DIRECTORY_SEPARATOR. 'css/customk2.css';
                         $document->addStyleSheet($css);
