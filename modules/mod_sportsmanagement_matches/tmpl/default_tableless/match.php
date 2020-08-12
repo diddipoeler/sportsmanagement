@@ -160,7 +160,7 @@ use Joomla\CMS\Uri\Uri;
 				)
 			) ;
        
-     $output .=  $value->lastname.','.$value->firstname.'</span><br>';  
+     $output .=  $value->firstname.','.$value->lastname.'</span><br>'; 
      }
 		$output .=  '<br>'.$match['spectators'];  
       echo $output;
