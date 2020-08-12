@@ -624,7 +624,9 @@ if (!empty($this->matches))
 								$output       = '';
 								$toolTipTitle = Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_REF_TOOLTIP');
 								$toolTipText  = '';
-
+usort($match->referees, function ($a, $b) {
+		return $a->ordering - $b->ordering;
+	});	
 								for ($i = 0; $i < count($match->referees); $i++)
 								{
 									if ($match->referees[$i]->referee_lastname != '' && $match->referees[$i]->referee_firstname)
@@ -649,12 +651,12 @@ if (!empty($this->matches))
 
 										if (($i + 1) < count($match->referees))
 										{
-											$output .= ' - ';
+											$output .= ' <br> ';
 										}
 									}
 									else
 									{
-										$output .= '-';
+										$output .= '<br>';
 									}
 								}
 
