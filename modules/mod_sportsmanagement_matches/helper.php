@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_matches
@@ -11,15 +9,14 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * modMatchesHelper
@@ -562,8 +559,10 @@ class modMatchesSportsmanagementHelper
 	{
 		$row['notice'] = ($match->match_result_detail != '' && $this->params->get('show_match_notice') == 1) ? $match->match_result_detail : '';
 
-		if ($this->params->get('show_referee', 1) == 1 && $match->refname != '')
+		//if ( $this->params->get('show_referee', 1) == 1 && $match->refname != '')
+		if ( $this->params->get('show_referee', 1) )
 		{
+			/*
 			$row['referee'] = '<span style="float:right;">';
 			$row['referee'] .= ($this->iconpath) ? HTMLHelper::_(
 				'image', $this->iconpath . 'referee.png', Text::_('MOD_SPORTSMANAGEMENT_MATCHES_REFEREE'), array(
@@ -573,6 +572,9 @@ class modMatchesSportsmanagementHelper
 				)
 			) : Text::_('MOD_SPORTSMANAGEMENT_MATCHES_REFEREE') . ': ';
 			$row['referee'] .= $this->jl_utf8_convert($match->refname, 'iso-8859-1', 'utf-8') . '</span>';
+			*/
+			$actionsModel = BaseDatabaseModel::getInstance('clubplan', 'sportsmanagementModel');
+			$row['referee'] = $actionsModel->getMatchReferees($match->id);
 		}
 		else
 		{
