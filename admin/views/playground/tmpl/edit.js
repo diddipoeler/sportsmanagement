@@ -131,6 +131,10 @@ getlatlonopenstreet(1);
 
 function getlatlonopenstreet(result)
 {
+dpjQuery("#jform_geocomplete").val(getAddresString());
+dpjQuery("#jform_geocomplete").trigger("geocode");	
+	
+	
 var inp = dpjQuery("#jform_geocomplete").val();
 console.log('jform_geocomplete ' + inp );
 //var xmlhttp = new XMLHttpRequest();
