@@ -568,7 +568,7 @@ class sportsmanagementModelClubPlan extends BaseDatabaseModel
 		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
 		$query->select('p.id,p.firstname,p.lastname,p.nickname,CONCAT_WS(\':\',p.id,p.alias) AS person_slug');
-		$query->select('mp.project_position_id');
+		$query->select('mp.project_position_id,pos.name as position_name');
 		$query->from('#__sportsmanagement_match_referee AS mp');
 		$query->join('LEFT', ' #__sportsmanagement_project_referee AS pref ON mp.project_referee_id = pref.id ');
 		$query->join('INNER', ' #__sportsmanagement_season_person_id AS sp ON pref.person_id = sp.id ');
