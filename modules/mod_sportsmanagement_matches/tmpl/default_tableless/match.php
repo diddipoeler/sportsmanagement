@@ -8,8 +8,11 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 ?>
 <div id="modJLML<?php echo $module->id . '_row' . $cnt; ?>" class="<?php echo $styleclass; ?> jlmlmatchholder">
     <!--jlml-mod<?php echo $module->id . 'nr' . $cnt; ?> start-->
@@ -143,7 +146,24 @@ defined('_JEXEC') or die('Restricted access');
 	{ ?>
         <div style="width:100%;display:block;clear:both;">
 			<?php
-			echo $match['referee'] . ' ' . $match['spectators'];
+      
+      //echo '<pre>'.print_r($match['referee'],true).'</pre>';
+     $output = '';
+     foreach( $match['referee'] as $key => $value )
+     {
+     $output .= '<span style="float:right;">';  
+       //JPATH_COMPONENT.
+       $output .= HTMLHelper::image(Uri::root().'components/com_sportsmanagement/assets/images/referee.png', Text::_($value->position_name), array(
+					'title'  => Text::_($value->position_name),
+					'height' => '16',
+					'width'  => '16'
+				)
+			) ;
+       
+     $output .=  $value->lastname.','.$value->firstname.'</span><br>';  
+     }
+      echo $output;
+			//echo $match['referee'] . ' ' . $match['spectators'];
 			?>
         </div>
 		<?php
