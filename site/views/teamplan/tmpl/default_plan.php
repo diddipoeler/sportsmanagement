@@ -993,12 +993,12 @@ usort($match->referees, function ($a, $b) {
 
 											if (($i + 1) < count($match->referees))
 											{
-												$output .= ' - ';
+												$output .= ' <br> ';
 											}
 										}
 										else
 										{
-											$output .= '-';
+											$output .= '<br>';
 										}
 									}
 
