@@ -573,8 +573,11 @@ class sportsmanagementModelClubPlan extends BaseDatabaseModel
 		$query->join('LEFT', ' #__sportsmanagement_project_referee AS pref ON mp.project_referee_id = pref.id ');
 		$query->join('INNER', ' #__sportsmanagement_season_person_id AS sp ON pref.person_id = sp.id ');
 		$query->join('INNER', ' #__sportsmanagement_person AS p ON sp.person_id = p.id ');
+		$query->join('INNER', ' #__sportsmanagement_project_position AS ppos ON ppos.id = mp.project_position_id');
+		$query->join('INNER', ' #__sportsmanagement_position AS pos ON pos.id = ppos.position_id');
 		$query->where('mp.match_id = ' . (int) $matchID);
 		$query->where('p.published = 1');
+		$query->order('pos.ordering');
 
 		$db->setQuery($query);
 
