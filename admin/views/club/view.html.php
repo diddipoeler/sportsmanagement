@@ -35,7 +35,7 @@ class sportsmanagementViewClub extends sportsmanagementView
 	 */
 	public function init()
 	{
-		$this->document->addScript('https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js');
+		//$this->document->addScript('https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js');
 		$starttime  = microtime();
 		$this->tmpl = $this->jinput->get('tmpl');
 
