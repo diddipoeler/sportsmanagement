@@ -153,7 +153,7 @@ use Joomla\CMS\Uri\Uri;
      {
      $output .= '<span style="float:right;">';  
        //JPATH_COMPONENT.
-       $output .= HTMLHelper::image(Uri::root().'components/com_sportsmanagement/assets/images/referee.png', Text::_($value->position_name), array(
+       $output .= HTMLHelper::image(Uri::root().'modules/mod_sportsmanagement_matches/assets/images/colored/referee.png', Text::_($value->position_name), array(
 					'title'  => Text::_($value->position_name),
 					'height' => '16',
 					'width'  => '16'
