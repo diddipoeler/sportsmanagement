@@ -98,6 +98,7 @@
         <field
             name="location"
             type="text"
+	       onchange="javascript:getAddresString();"
             label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY"
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY_DESC"
             class="inputbox"
