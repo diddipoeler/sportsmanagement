@@ -162,6 +162,7 @@ use Joomla\CMS\Uri\Uri;
        
      $output .=  $value->lastname.','.$value->firstname.'</span><br>';  
      }
+		$output .=  '<br>'.$match['spectators'];  
       echo $output;
 			//echo $match['referee'] . ' ' . $match['spectators'];
 			?>
