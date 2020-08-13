@@ -602,6 +602,10 @@ if ( $config->get('debug') )
 				{
 					$data['picture'] = $post['copy_jform']['picture'];
 				}
+				if ($data['max_visitors'] == '')
+				{
+					$data['max_visitors'] = 0;
+				}
 				break;
 
 			/**
