@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage round
@@ -11,10 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
 
@@ -53,8 +48,8 @@ class sportsmanagementViewRound extends sportsmanagementView
 		}
 		else
 		{
-			// $this->form->setValue('round_date_first', null, '0000-00-00');
-			// $this->form->setValue('round_date_last', null, '0000-00-00');
+			$this->form->setValue('round_date_first', null, '0000-00-00');
+			$this->form->setValue('round_date_last', null, '0000-00-00');
 			$this->form->setValue('project_id', null, $this->project_id);
 		}
 
