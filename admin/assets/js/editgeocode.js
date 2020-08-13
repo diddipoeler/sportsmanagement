@@ -1,5 +1,3 @@
-// http://bl.ocks.org/andyreagan/c81461c8a8ce52d103fc92decf9650b6
-
 var dpjQuery = jQuery.noConflict();
 var cities;
 var country;			
@@ -51,7 +49,7 @@ street = dpjQuery("#jform_address").val();
 zip = dpjQuery("#jform_zipcode").val();
 	
 if (dpjQuery('#jform_city').length == 0) {
-  //alert('Das Element mit der ID a ist nicht vorhanden.');
+console.log('Das Element mit der ID jform_city ist nicht vorhanden.');
 city = dpjQuery("#jform_location").val();
 }
 else	
@@ -147,6 +145,18 @@ function getAddresString()
 		street += ', ';
 	}
 	
+if (dpjQuery('#jform_city').length == 0) {
+console.log('Das Element mit der ID jform_city ist nicht vorhanden.');
+	if(dpjQuery("#jform_location").val()){
+		city = dpjQuery("#jform_location").val();
+		if(dpjQuery("#jform_zipcode").val()){
+			city += ' ' + dpjQuery("#jform_zipcode").val();
+		}
+		city += ', ';
+	}
+}
+	else
+	{
 	if(dpjQuery("#jform_city").val()){
 		city = dpjQuery("#jform_city").val();
 		if(dpjQuery("#jform_zipcode").val()){
@@ -154,6 +164,8 @@ function getAddresString()
 		}
 		city += ', ';
 	}
+	}
+	
 	if (dpjQuery("#jform_state").val()) {
 		province = dpjQuery("#jform_state").val() + ', ';
 	}
@@ -202,6 +214,7 @@ country = val.text;
 	
 console.log('getAddresString country alpha2 leaflet ' + countryleafletsearch );
 console.log('getAddresString country  ' + country );	
+console.log('getAddresString city  ' + city );	
 console.log('getAddresString street ' + street);
   
 	return street + city + country;
