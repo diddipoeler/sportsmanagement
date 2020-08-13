@@ -31,7 +31,16 @@ getlatlonopenstreet(1);
 */	
 
 //geocoder = new L.Control.Geocoder.Nominatim();
-countryleaflet = dpjQuery("#jform_country").val();
+if (dpjQuery('#jform_address_country').length == 0) {
+console.log('Das Element mit der ID jform_address_country ist nicht vorhanden.');	
+countryleaflet = dpjQuery("#jform_country").val();	
+}
+	else
+	{
+console.log('Das Element mit der ID jform_address_country ist vorhanden.');		
+countryleaflet = dpjQuery("#jform_address_country").val();
+	}
+	
 console.log('ready countryleaflet ' + countryleaflet);
 var url = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getCcountryAlpha2&country=' + countryleaflet;
 dpjQuery.ajax({
@@ -162,6 +171,7 @@ console.log('Das Element mit der ID jform_city ist nicht vorhanden.');
 }
 	else
 	{
+console.log('Das Element mit der ID jform_city ist vorhanden.');		
 	if(dpjQuery("#jform_city").val()){
 		city = dpjQuery("#jform_city").val();
 		if(dpjQuery("#jform_zipcode").val()){
@@ -175,7 +185,16 @@ console.log('Das Element mit der ID jform_city ist nicht vorhanden.');
 		province = dpjQuery("#jform_state").val() + ', ';
 	}
 	
-countryleaflet = dpjQuery("#jform_country").val();
+if (dpjQuery('#jform_address_country').length == 0) {
+console.log('Das Element mit der ID jform_address_country ist nicht vorhanden.');	
+countryleaflet = dpjQuery("#jform_country").val();	
+}
+	else
+	{
+console.log('Das Element mit der ID jform_address_country ist vorhanden.');		
+countryleaflet = dpjQuery("#jform_address_country").val();
+	}
+	
 console.log('getAddresString countryleaflet ' + countryleaflet);
 
 var url = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getCcountryAlpha2&country=' + countryleaflet;
