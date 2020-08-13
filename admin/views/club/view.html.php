@@ -116,8 +116,8 @@ $this->item->logo_small = ComponentHelper::getParams('com_sportsmanagement')->ge
 
 		$this->lists = $lists;
 
-		$this->document->addScript('https://maps.googleapis.com/maps/api/js?libraries=places&language=de');
-		$this->document->addScript(Uri::base() . 'components/' . $this->option . '/assets/js/geocomplete.js');
+		//$this->document->addScript('https://maps.googleapis.com/maps/api/js?libraries=places&language=de');
+		//$this->document->addScript(Uri::base() . 'components/' . $this->option . '/assets/js/geocomplete.js');
 
 		if (version_compare(JSM_JVERSION, '4', 'eq'))
 		{
