@@ -67,7 +67,7 @@
       
         <field
             name="country"
-            type="countrylist"
+            type="country"
 	       onchange="javascript:getlatlonopenstreet(1);"
             label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY"
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY_DESC"
