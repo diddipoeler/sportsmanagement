@@ -153,7 +153,7 @@ JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($t
 		<?php
 foreach ($this->items as $this->count_i => $this->item)
 		{
-            //$this->count_i = $i;
+
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
 $this->dragable_group = 'data-dragable-group="none"';
@@ -384,7 +384,7 @@ echo $this->loadTemplate('data_order');
                 <td class="center"><?php echo $this->item->username; ?></td>
             </tr>
 			<?php
-			$k = 1 - $k;
+		
 		}
 		?>
         </tbody>
