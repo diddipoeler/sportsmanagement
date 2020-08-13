@@ -1527,8 +1527,8 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 					switch ($field->DATA_TYPE)
 					{
 						case 'varchar':
-							$form->setFieldAttribute($field->COLUMN_NAME, 'size', $field->CHARACTER_MAXIMUM_LENGTH);
-							break;
+					//	$form->setFieldAttribute($field->COLUMN_NAME, 'size', $field->CHARACTER_MAXIMUM_LENGTH);
+						break;
 					}
 				}
 
