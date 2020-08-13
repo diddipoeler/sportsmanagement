@@ -167,6 +167,18 @@ if (version_compare(JSM_JVERSION, '4', 'eq'))
 									}
 									?>
                                 </div>
+				    <?php
+					switch ($view)
+					{
+					case 'club':
+    				case 'playground':
+					case 'player':
+					if (!$this->item->latitude)
+					{
+					$this->item->latitude  = '0.00000000';
+					$this->item->longitude = '0.00000000';
+					}
+					?>
                                 <div class="col-lg-6">
                                     <div class="control-group">
                                         <style type="text/css">.map_canvas {
