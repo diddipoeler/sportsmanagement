@@ -178,6 +178,8 @@ if (version_compare(JSM_JVERSION, '4', 'eq'))
 					$this->item->latitude  = '0.00000000';
 					$this->item->longitude = '0.00000000';
 					}
+							break;
+					}
 					?>
                                 <div class="col-lg-6">
                                     <div class="control-group">
