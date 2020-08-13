@@ -68,7 +68,7 @@
         <field
             name="country"
             type="countrylist"
-	       onchange="javascript:getbackendlatlon();"
+	       onchange="javascript:getlatlonopenstreet(1);"
             label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY"
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY_DESC"
             required="true"
@@ -76,7 +76,7 @@
         >
             <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
         </field>
-  
+  <!--
   <field
             name="country_geocode"
             type="countrylist"
@@ -86,7 +86,7 @@
         >
             <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
         </field>
-		
+		-->
         <field
             name="state"
             size="50"
@@ -99,7 +99,7 @@
         <field
             name="location"
             type="text"
-	       onchange="javascript:getbackendlatlon();"
+	       onchange="javascript:getlatlonopenstreet(1);"
             label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY"
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY_DESC"
             class="inputbox"
@@ -108,7 +108,7 @@
         <field
             name="zipcode"
             type="text"
-	       onchange="javascript:getbackendlatlon();"
+	       onchange="javascript:getlatlonopenstreet(1);"
             label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_POSTAL_CODE"
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_POSTAL_CODE_DESC"
             class="inputbox"
@@ -117,7 +117,7 @@
         <field
             name="address"
             type="textarea"
-	       onchange="javascript:getbackendlatlon();"
+	       onchange="javascript:getlatlonopenstreet(1);"
             label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS_DESC"
             class="inputbox"
