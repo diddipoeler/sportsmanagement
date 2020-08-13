@@ -941,11 +941,11 @@ class sportsmanagementHelperHtml
 					case 1: // Show_playground_alert should be shown as Tooltip
 						$boldStart    = '<b style="color:red; ">';
 						$boldEnd      = '</b>';
-						$toolTipTitle = Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NEW');
+						$toolTipTitle = Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NEWS');
 						break;
 
 					case 2: // Show_playground_alert should be shown as text in front of location
-						$show_playground_alert = '<b style="color:red; ">' . Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NEW') . ':</b> ';
+						$show_playground_alert = '<b style="color:red; ">' . Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NEWS') . ':</b> ';
 						break;
 					default:
 						break;
