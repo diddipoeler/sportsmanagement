@@ -49,7 +49,15 @@ console.log('ready countryleafletsearch ' + countryleafletsearch );
 
 street = dpjQuery("#jform_address").val();
 zip = dpjQuery("#jform_zipcode").val();
+	
+if (dpjQuery('#jform_city').length == 0) {
+  //alert('Das Element mit der ID a ist nicht vorhanden.');
+city = dpjQuery("#jform_location").val();
+}
+else	
+{	
 city = dpjQuery("#jform_city").val();
+}	
 yourQuery = ( street + ',' + zip + ' ' + city + ',' + countryleafletsearch );
 
 console.log('ready yourQuery ' + yourQuery );
