@@ -43,6 +43,7 @@
 			name="country"
 			type="country"
 			onchange="javascript:getlatlonopenstreet(1);"
+	size="1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_COUNTRY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_COUNTRY_DESC"
 			class="inputbox">
