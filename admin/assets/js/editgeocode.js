@@ -16,14 +16,19 @@ var yourQuery;
 dpjQuery(document).ready(function(){
 dpjQuery("#jform_geocomplete").val(getAddresString());
 
+console.log('latitude ' + dpjQuery("#jform_latitude").val() );  
+console.log('longitude ' + dpjQuery("#jform_longitude").val() );  
+getlatlonopenstreet(1);
+  /*
 if ( dpjQuery("#jform_latitude").val() )
 {
 addLayer(dpjQuery("#jform_latitude").val(),dpjQuery("#jform_longitude").val());
 }
 else
 {
-getlatlonopenstreet(0);
+getlatlonopenstreet(1);
 }	
+*/	
 
 //geocoder = new L.Control.Geocoder.Nominatim();
 countryleaflet = dpjQuery("#jform_country").val();
