@@ -121,11 +121,11 @@ $this->item->logo_small = ComponentHelper::getParams('com_sportsmanagement')->ge
 
 		if (version_compare(JSM_JVERSION, '4', 'eq'))
 		{
-			$this->document->addScript(Uri::base() . 'components/' . $this->option . '/views/club/tmpl/edit.js');
+			$this->document->addScript(Uri::base() . 'components/' . $this->option . '/assets/js/editgeocode.js');
 		}
 		else
 		{
-			$this->document->addScript(Uri::base() . 'components/' . $this->option . '/views/club/tmpl/edit.js');
+			$this->document->addScript(Uri::base() . 'components/' . $this->option . '/assets/js/editgeocode.js');
 		}
 
 		if (PluginHelper::isEnabled('system', 'jsm_soccerway'))
