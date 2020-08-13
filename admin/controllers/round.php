@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage controllers
@@ -11,10 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
@@ -42,6 +37,21 @@ class sportsmanagementControllerround extends JSMControllerForm
 	{
 		parent::__construct($config);
 	}
+
+
+/**
+ * sportsmanagementControllerround::save2()
+ * 
+ * @param mixed $key
+ * @param mixed $urlVar
+ * @return void
+ */
+function save2($key = NULL, $urlVar = NULL)
+{
+Factory::getApplication()->enqueueMessage(Text::_(print_r($this->getTask(),true)), 'Notice');    
+    
+}
+
 
 	/**
 	 * sportsmanagementControllerround::startpopulate()
