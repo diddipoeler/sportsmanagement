@@ -429,7 +429,7 @@ break;
 				//case 'clubs':
 				case 'teams':
 				//case 'playgrounds':
-				case 'rounds':
+				//case 'rounds':
 				case 'divisions':
 				case 'extrafields':
 				case 'teampersons':
