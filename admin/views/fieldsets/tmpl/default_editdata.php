@@ -417,7 +417,7 @@ elseif (version_compare(JSM_JVERSION, '3', 'eq'))
                                     </div>
                                     <!-- google map ende -->
                                     <!-- leaflet map anfang -->
-                                    <div id="map" style="height: 400px; margin-top: 50px; position: absolute;">
+                                    <div id="map" style="height: 400px; margin-top: 50px; position: relative;">
                                     </div>
                                     <!-- leaflet map ende -->
 
