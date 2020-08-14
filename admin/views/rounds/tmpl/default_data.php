@@ -56,33 +56,31 @@ use Joomla\CMS\Router\Route;
 
         <tbody>
 		<?php
-		$k = 0;
-		for ($i = 0, $n = count($this->matchday); $i < $n; $i++)
+		foreach ($this->items as $this->count_i => $this->item)
 		{
-			$row        =& $this->matchday[$i];
-			$link1      = Route::_('index.php?option=com_sportsmanagement&task=round.edit&id=' . $row->id . '&pid=' . $this->project->id);
-			$link2      = Route::_('index.php?option=com_sportsmanagement&view=matches&rid=' . $row->id . '&pid=' . $this->project->id);
+			$link1      = Route::_('index.php?option=com_sportsmanagement&task=round.edit&id=' . $this->item->id . '&pid=' . $this->project->id);
+			$link2      = Route::_('index.php?option=com_sportsmanagement&view=matches&rid=' . $this->item->id . '&pid=' . $this->project->id);
 			$canEdit    = $this->user->authorise('core.edit', 'com_sportsmanagement');
-			$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $row->checked_out == $this->user->get('id') || $row->checked_out == 0;
-			$checked    = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'rounds.', $canCheckin);
+			$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $this->item->checked_out == $this->user->get('id') || $this->item->checked_out == 0;
+			$checked    = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'rounds.', $canCheckin);
 			$canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.round.' . $row->id) && $canCheckin;
 			?>
-            <tr class="<?php echo "row$k"; ?>">
+            <tr class="row<?php echo $this->count_i % 2; ?>" >
                 <td class="center">
 					<?php
-					echo $this->pagination->getRowOffset($i); ?>
+					echo $this->pagination->getRowOffset($this->count_i); ?>
                 </td>
                 <td class="center">
-					<?php echo HTMLHelper::_('grid.id', $i, $row->id); ?>
+					<?php echo HTMLHelper::_('grid.id', $this->count_i, $this->item->id); ?>
                     <!--  </td> -->
                     <!--    <td class="center"> -->
 
 					<?php
 					if ($row->checked_out) : ?>
-						<?php echo HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'rounds.', $canCheckin); ?>
+						<?php echo HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $this->item->checked_out_time, 'rounds.', $canCheckin); ?>
 					<?php endif; ?>
 					<?php
-					if ($canEdit && !$row->checked_out) :
+					if ($canEdit && !$this->item->checked_out) :
 						$imageTitle  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_EDIT_DETAILS');
 						$imageFile   = 'administrator/components/com_sportsmanagement/assets/images/edit.png';
 						$imageParams['title'] = $imageTitle;
@@ -92,16 +90,16 @@ use Joomla\CMS\Router\Route;
                 </td>
                 <td class="center">
                     <input tabindex="1" type="text" style="text-align: center" size="5"
-                           class="form-control form-control-inline" name="roundcode<?php echo $row->id; ?>"
-                           value="<?php echo $row->roundcode; ?>"
-                           onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
+                           class="form-control form-control-inline" name="roundcode<?php echo $this->item->id; ?>"
+                           value="<?php echo $this->item->roundcode; ?>"
+                           onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
                 </td>
                 <td class="center">
                     <input tabindex="2" type="text" size="30" maxlength="64" class="form-control form-control-inline"
-                           name="name<?php echo $row->id; ?>" value="<?php echo $row->name; ?>"
-                           onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
+                           name="name<?php echo $this->item->id; ?>" value="<?php echo $this->item->name; ?>"
+                           onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
                     <p class="smallsub">
-						<?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias)); ?></p>
+						<?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($this->item->alias)); ?></p>
                 </td>
                 <td class="center">
 					<?php
@@ -123,7 +121,7 @@ use Joomla\CMS\Router\Route;
 					$attribs = array(
 						'onChange' => "document.getElementById('cb" . $i . "').checked=true",
 					);
-					$date1   = sportsmanagementHelper::convertDate($row->round_date_first, 1);
+					$date1   = sportsmanagementHelper::convertDate($this->item->round_date_first, 1);
 					$append  = '';
 					if (($date1 == '00-00-0000') || ($date1 == ''))
 					{
@@ -132,8 +130,8 @@ use Joomla\CMS\Router\Route;
 					}
 					echo HTMLHelper::calendar(
 						$date1,
-						'round_date_first' . $row->id,
-						'round_date_first' . $row->id,
+						'round_date_first' . $this->item->id,
+						'round_date_first' . $this->item->id,
 						'%d-%m-%Y',
 						$attribs
 					);
@@ -142,7 +140,7 @@ use Joomla\CMS\Router\Route;
                 <td class="center">&nbsp;-&nbsp;</td>
                 <td class="center">
 					<?php
-					$date2  = sportsmanagementHelper::convertDate($row->round_date_last, 1);
+					$date2  = sportsmanagementHelper::convertDate($this->item->round_date_last, 1);
 					$append = '';
 					if (($date2 == '00-00-0000') || ($date2 == ''))
 					{
@@ -151,8 +149,8 @@ use Joomla\CMS\Router\Route;
 					}
 					echo HTMLHelper::calendar(
 						$date2,
-						'round_date_last' . $row->id,
-						'round_date_last' . $row->id,
+						'round_date_last' . $this->item->id,
+						'round_date_last' . $this->item->id,
 						'%d-%m-%Y',
 						$attribs
 					);
@@ -167,22 +165,22 @@ use Joomla\CMS\Router\Route;
                 </td>
                 <td class="center" class="nowrap">
 					<?php
-					if (($row->countUnPublished == 0) && ($row->countMatches > 0))
+					if (($this->item->countUnPublished == 0) && ($this->item->countMatches > 0))
 					{
-						$imageTitle  = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ALL_PUBLISHED', $row->countMatches);
+						$imageTitle  = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ALL_PUBLISHED', $this->item->countMatches);
 						$imageFile   = 'administrator/components/com_sportsmanagement/assets/images/ok.png';
 						$imageParams['title'] = $imageTitle;
 						echo HTMLHelper::_('image',$imageFile, $imageTitle, $imageParams);
 					}
 					else
 					{
-						if ($row->countMatches == 0)
+						if ($this->item->countMatches == 0)
 						{
 							$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ANY_MATCHES');
 						}
 						else
 						{
-							$imageTitle = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_PUBLISHED_NR', $row->countUnPublished);
+							$imageTitle = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_PUBLISHED_NR', $this->item->countUnPublished);
 						}
 						$imageFile   = 'administrator/components/com_sportsmanagement/assets/images/error.png';
 						$imageParams['title'] = $imageTitle;
@@ -192,22 +190,22 @@ use Joomla\CMS\Router\Route;
                 </td>
                 <td class="center" class="nowrap">
 					<?php
-					if (($row->countNoResults == 0) && ($row->countMatches > 0))
+					if (($this->item->countNoResults == 0) && ($this->item->countMatches > 0))
 					{
-						$imageTitle  = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ALL_RESULTS', $row->countMatches);
+						$imageTitle  = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ALL_RESULTS', $this->item->countMatches);
 						$imageFile   = 'administrator/components/com_sportsmanagement/assets/images/ok.png';
 						$imageParams['title'] = $imageTitle;
 						echo HTMLHelper::_('image',$imageFile, $imageTitle, $imageParams);
 					}
 					else
 					{
-						if ($row->countMatches == 0)
+						if ($this->item->countMatches == 0)
 						{
 							$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ANY_MATCHES');
 						}
 						else
 						{
-							$imageTitle = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_RESULTS_MISSING', $row->countNoResults);
+							$imageTitle = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_RESULTS_MISSING', $this->item->countNoResults);
 						}
 						$imageFile   = 'administrator/components/com_sportsmanagement/assets/images/error.png';
 						$imageParams['title'] = $imageTitle;
@@ -222,34 +220,34 @@ use Joomla\CMS\Router\Route;
 					echo HTMLHelper::_(
 						'select.genericlist',
 						$this->lists['tournementround'],
-						'tournementround' . $row->id,
+						'tournementround' . $this->item->id,
 						'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
 						$i . '\').checked=true"' . $append,
-						'value', 'text', $row->tournement
+						'value', 'text', $this->item->tournement
 					);
 					?>
                 </td>
 
                 <td class="center">
                     <div class="btn-group">
-						<?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'rounds.', $canChange, 'cb'); ?>
+						<?php echo HTMLHelper::_('jgrid.published', $this->item->published, $this->count_i, 'rounds.', $canChange, 'cb'); ?>
 						<?php
 						// Create dropdown items and render the dropdown list.
 						if ($canChange)
 						{
-							HTMLHelper::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'rounds');
-							HTMLHelper::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'rounds');
-							echo HTMLHelper::_('actionsdropdown.render', $this->escape($row->name));
+							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === 2 ? 'un' : '') . 'archive', 'cb' . $this->count_i, 'rounds');
+							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === -2 ? 'un' : '') . 'trash', 'cb' . $this->count_i, 'rounds');
+							echo HTMLHelper::_('actionsdropdown.render', $this->escape($this->item->name));
 						}
 						?>
                     </div>
 
 
                 </td>
-                <td class="center"><?php echo $row->id; ?></td>
+                <td class="center"><?php echo $this->item->id; ?></td>
             </tr>
 			<?php
-			$k = 1 - $k;
+			
 		}
 		?>
         </tbody>
