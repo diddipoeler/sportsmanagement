@@ -216,7 +216,7 @@ case 'players':
 case 'positions':
 case 'projectreferees':
 case 'projects':
-		case 'rounds':
+//case 'rounds':
 case 'seasons':
 				
 echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
