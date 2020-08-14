@@ -18,7 +18,14 @@
 			>
 			<option value="">JOPTION_SELECT_PUBLISHED</option>
 		</field>
-			
+
+<field name="tournement" type="list" default="0" 
+onchange="this.form.submit();"
+required="" label="COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_TOURNEMENT" description="COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_TOURNEMENT">
+  <option value="">COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_TOURNEMENT</option>
+  <option value="0">JNO</option>
+  <option value="1">JYES</option>
+</field>		
 		
 		
 		
