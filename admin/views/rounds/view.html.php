@@ -80,16 +80,7 @@ class sportsmanagementViewRounds extends sportsmanagementView
 			return;
 		}
 		
-try
-{		
-$this->filterForm    = $this->model->getFilterForm();
-$this->activeFilters = $this->model->getActiveFilters();
-}
-catch (Exception $e)
-{
-Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
-Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');	
-}		
+	
 
 	}
 
@@ -116,6 +107,18 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERR
 		$this->lists    = $lists;
 		$this->matchday = $this->items;
 		$this->project  = $project;
+		
+try
+{		
+$this->filterForm    = $this->model->getFilterForm();
+$this->activeFilters = $this->model->getActiveFilters();
+}
+catch (Exception $e)
+{
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');	
+}
+		
 	}
 
 	/**
