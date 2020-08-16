@@ -500,7 +500,7 @@ if ($country_id)
 else
 {
 $countryassocselect[$country_federation]['assocs'] = array(HTMLHelper::_('select.option', 0, Text::_('-- Regionalverbände -- ')));
-$leagueselect[$country_federation]['leagues']      = array(HTMLHelper::_('select.option', 0, Text::_($this->getParam('leagues_text'))));    
+$leagueselect[$country_federation]['leagues']      = array(HTMLHelper::_('select.option', 0, Text::_('')));    
 }
 // Landesverband
 if ($assoc_id)
