@@ -70,25 +70,25 @@ if (version_compare(JVERSION, '3.0.0', 'ge'))
 
 	if ($jsmflex)
 	{
-		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/assets/css/flex.css' . '" type="text/css" />' . "\n";
+		$stylelink = Uri::root() . 'components/com_sportsmanagement/assets/css/flex.css';
 		$document->addStyleSheet($stylelink);
 	}
 
 	if ($jsmgrid)
 	{
-		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/assets/css/grid.css' . '" type="text/css" />' . "\n";
+		$stylelink = Uri::root() . 'components/com_sportsmanagement/assets/css/grid.css';
 		$document->addStyleSheet($stylelink);
 	}
 
 	if ($usefontawesome)
 	{
-		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/assets/css/fontawesome_extend.css' . '" type="text/css" />' . "\n";
+		$stylelink = Uri::root() . 'components/com_sportsmanagement/assets/css/fontawesome_extend.css';
 		$document->addStyleSheet($stylelink);
 	}
 
 	if ($addfontawesome)
 	{
-		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/libraries/fontawesome/css/font-awesome.min.css' . '" type="text/css" />' . "\n";
+		$stylelink = Uri::root() . 'components/com_sportsmanagement/libraries/fontawesome/css/font-awesome.min.css';
 		$document->addStyleSheet($stylelink);
 	}
 }
