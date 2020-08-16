@@ -59,37 +59,37 @@ $cssflags       = $params_com->get('cfg_flags_css');
 $usefontawesome = $params_com->get('use_fontawesome');
 $addfontawesome = $params_com->get('add_fontawesome');
 
-// Welche joomla version ?
+/** Welche joomla version ? */
 if (version_compare(JVERSION, '3.0.0', 'ge'))
 {
 	if ($cssflags)
 	{
-		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css' . '" type="text/css" />' . "\n";
-		$document->addCustomTag($stylelink);
+		$stylelink = Uri::root() . 'components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css';
+		$document->addStyleSheet($stylelink);
 	}
 
 	if ($jsmflex)
 	{
 		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/assets/css/flex.css' . '" type="text/css" />' . "\n";
-		$document->addCustomTag($stylelink);
+		$document->addStyleSheet($stylelink);
 	}
 
 	if ($jsmgrid)
 	{
 		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/assets/css/grid.css' . '" type="text/css" />' . "\n";
-		$document->addCustomTag($stylelink);
+		$document->addStyleSheet($stylelink);
 	}
 
 	if ($usefontawesome)
 	{
 		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/assets/css/fontawesome_extend.css' . '" type="text/css" />' . "\n";
-		$document->addCustomTag($stylelink);
+		$document->addStyleSheet($stylelink);
 	}
 
 	if ($addfontawesome)
 	{
 		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/libraries/fontawesome/css/font-awesome.min.css' . '" type="text/css" />' . "\n";
-		$document->addCustomTag($stylelink);
+		$document->addStyleSheet($stylelink);
 	}
 }
 elseif (version_compare(JVERSION, '2.5.0', 'ge'))
