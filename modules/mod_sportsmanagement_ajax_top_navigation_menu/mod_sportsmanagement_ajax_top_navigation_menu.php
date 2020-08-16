@@ -543,7 +543,7 @@ if ($league_id)
 }
 else
 {
-    
+    $projectselect[$country_federation]['projects'] = array(HTMLHelper::_('select.option', 0, Text::_($params->get('text_project_dropdown'))));
 }
 
 /** projekt */ 
@@ -556,6 +556,7 @@ if ($project_id)
 else
 {
     
+    $projectselect[$country_federation]['teams']       = array(HTMLHelper::_('select.option', 0, Text::_($params->get('text_project_dropdown'))));
 }
 
 if (!defined('JLTOPAM_MODULESCRIPTLOADED'))
