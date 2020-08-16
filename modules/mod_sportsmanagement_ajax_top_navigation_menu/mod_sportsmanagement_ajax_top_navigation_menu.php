@@ -18,11 +18,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-
-if (!defined('DS'))
-{
-	define('DS', DIRECTORY_SEPARATOR);
-}
+use Joomla\CMS\Language\Text;
 
 if (!defined('JSM_PATH'))
 {
