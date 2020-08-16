@@ -20,7 +20,7 @@
  *
  */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Factory;
+
 jimport('joomla.plugin.plugin');
 
 /**
@@ -54,7 +54,7 @@ class plgSystemJCEMediabox extends JPlugin
     {
         $path = __DIR__ . '/' . $relative;
         $hash = md5_file($path);
-        
+
         return JURI::base(true) . '/plugins/system/jcemediabox/' . $relative . '?' . $hash;
     }
 
@@ -64,14 +64,14 @@ class plgSystemJCEMediabox extends JPlugin
      */
     public function onAfterDispatch()
     {
-        $app = Factory::getApplication();
+        $app = JFactory::getApplication();
 
         // only in "site"
         if ($app->getClientId() !== 0) {
             return;
         }
 
-        $document = Factory::getDocument();
+        $document = JFactory::getDocument();
         $docType = $document->getType();
 
         // only in html pages
@@ -79,7 +79,7 @@ class plgSystemJCEMediabox extends JPlugin
             return;
         }
 
-        $db = Factory::getDBO();
+        $db = JFactory::getDBO();
 
         // Causes issue in Safari??
         $pop = $app->input->getInt('pop');
@@ -143,8 +143,8 @@ class plgSystemJCEMediabox extends JPlugin
         $config = array(
             'base' => JURI::base(true) . '/',
             'theme' => $theme,
-            'mediafallback' => (int) $params->get('mediafallback', 0),
-            'mediaselector' => $params->get('mediaselector', 'audio,video'),
+            //'mediafallback' => (int) $params->get('mediafallback', 0),
+            //'mediaselector' => $params->get('mediaselector', 'audio,video'),
             'width' => $params->get('width', ''),
             'height' => $params->get('height', ''),
             'lightbox' => (int) $params->get('lightbox', 0),
@@ -167,8 +167,35 @@ class plgSystemJCEMediabox extends JPlugin
         $document->addScript($this->getAssetPath('js/jcemediabox.min.js'));
         $document->addStyleSheet($this->getAssetPath('css/jcemediabox.min.css'));
 
-        $document->addScriptDeclaration('jQuery(document).ready(function(){WFMediaBox.init(' . json_encode($config) . ');});');
+        $document->addScriptDeclaration('jQuery(document).ready(function(){WfMediabox.init(' . json_encode($config) . ');});');
 
         return true;
+    }
+
+    public function onExtensionAfterInstall($installer, $eid)
+    {
+        if ($eid) {
+            // extension path
+            $path = $installer->getPath('extension_root');
+
+            // extension name
+            $name = basename($path);
+
+            // bail if not jcemediabox
+            if ($name !== 'jcemediabox') {
+                return;
+            }
+
+            jimport('joomla.filesystem.folder');
+
+            // cleanup legacy folders
+            $folders = array('fonts', 'mediaplayer');
+
+            foreach ($folders as $folder) {
+                if (is_dir($path . '/' . $folder)) {
+                    @JFolder::delete($path . '/' . $folder);
+                }
+            }
+        }
     }
 }
