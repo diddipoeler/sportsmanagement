@@ -488,7 +488,6 @@ $('ul.jsmpage').append('<li class=\'nav-item\' ><a href=\"' + data11.link + '\">
 
 $script[] = "});";
 
-// Add the script to the document head.
 Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
 
 /** Regionalverband */
@@ -500,20 +499,30 @@ if ($country_id)
 else
 {
 $countryassocselect[$country_federation]['assocs'] = array(HTMLHelper::_('select.option', 0, Text::_('-- Regionalverbände -- ')));
-$leagueselect[$country_federation]['leagues']      = array(HTMLHelper::_('select.option', 0, Text::_('')));    
+$leagueselect[$country_federation]['leagues']      = array(HTMLHelper::_('select.option', 0, Text::_('--')));    
 }
-// Landesverband
+/** Landesverband */
 if ($assoc_id)
 {
 	$countrysubassocselect[$country_federation]['assocs'] = $helper->getCountrySubAssocSelect($assoc_id);
 	$leagueselect[$country_federation]['leagues']         = $helper->getAssocLeagueSelect($country_id, $assoc_id);
 }
+else
+{
+$countrysubassocselect[$country_federation]['assocs'] = array(HTMLHelper::_('select.option', 0, Text::_('-- Kreisverbände -- ')));
+$leagueselect[$country_federation]['leagues']      = array(HTMLHelper::_('select.option', 0, Text::_('--')));    
+}
 
-// Kreisverband
+/** Kreisverband */
 if ($subassoc_id)
 {
 	$countrysubsubassocselect[$country_federation]['subassocs'] = $helper->getCountrySubSubAssocSelect($subassoc_id);
 	$leagueselect[$country_federation]['leagues']               = $helper->getAssocLeagueSelect($country_id, $subassoc_id);
+}
+else
+{
+$countrysubsubassocselect[$country_federation]['subassocs'] = array(HTMLHelper::_('select.option', 0, Text::_('-- Kreisverbände -- ')));
+$leagueselect[$country_federation]['leagues']      = array(HTMLHelper::_('select.option', 0, Text::_('--')));    
 }
 
 if ($subsubassoc_id)
@@ -521,19 +530,33 @@ if ($subsubassoc_id)
 	$countrysubsubsubassocselect[$country_federation]['subsubassocs'] = $helper->getCountrySubSubAssocSelect($subsubassoc_id);
 	$leagueselect[$country_federation]['leagues']                     = $helper->getAssocLeagueSelect($country_id, $subsubassoc_id);
 }
+else
+{
+$countrysubsubsubassocselect[$country_federation]['subsubassocs'] = array(HTMLHelper::_('select.option', 0, Text::_('-- Kreisverbände -- ')));
+$leagueselect[$country_federation]['leagues']      = array(HTMLHelper::_('select.option', 0, Text::_('--')));    
+}
 
+/** liga */
 if ($league_id)
 {
 	$projectselect[$country_federation]['projects'] = $helper->getProjectSelect($league_id);
 }
+else
+{
+    
+}
 
+/** projekt */ 
 if ($project_id)
 {
 	$helper->setProject($project_id, $team_id, $division_id);
 	$divisionsselect[$country_federation]['divisions'] = $helper->getDivisionSelect($project_id);
 	$projectselect[$country_federation]['teams']       = $helper->getTeamSelect($project_id);
 }
-
+else
+{
+    
+}
 
 if (!defined('JLTOPAM_MODULESCRIPTLOADED'))
 {
