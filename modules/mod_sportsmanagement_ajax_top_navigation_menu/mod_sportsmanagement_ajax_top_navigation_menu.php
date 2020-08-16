@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_ajax_top_navigation_menu
@@ -13,9 +11,7 @@
  *
  * https://stackoverflow.com/questions/1145208/how-to-add-li-in-an-existing-ul
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
@@ -499,13 +495,17 @@ $script[] = "});";
 // Add the script to the document head.
 Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
 
-// Regionalverband
+/** Regionalverband */
 if ($country_id)
 {
 	$countryassocselect[$country_federation]['assocs'] = $helper->getCountryAssocSelect($country_id);
 	$leagueselect[$country_federation]['leagues']      = $helper->getAssocLeagueSelect($country_id, $assoc_id);
 }
-
+else
+{
+$countryassocselect[$country_federation]['assocs'] = array(HTMLHelper::_('select.option', 0, Text::_('-- Regionalverbände -- ')));
+$leagueselect[$country_federation]['leagues']      = array(HTMLHelper::_('select.option', 0, Text::_($this->getParam('leagues_text'))));    
+}
 // Landesverband
 if ($assoc_id)
 {
