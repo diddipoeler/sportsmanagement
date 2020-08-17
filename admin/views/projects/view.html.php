@@ -232,6 +232,7 @@ else
 		unset($nation);
 		$nation[]       = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'));
 		$mdlassociation = BaseDatabaseModel::getInstance('jlextassociations', 'sportsmanagementModel');
+		$res = array();
 
 		if ($res = $mdlassociation->getAssociations())
 		{
