@@ -241,8 +241,8 @@ else
 		}
 
 		$lists['association'] = array();
-
-		foreach ($res as $row) if ($res)
+if ($res){
+		foreach ($res as $row) 
 		{
 			if (array_key_exists($row->country, $lists['association']))
 			{
@@ -254,7 +254,9 @@ else
 				$lists['association'][$row->country][] = $row;
 			}
 		}
-
+}
+		
+		
 		$lists['association2'] = JHtmlSelect::genericlist(
 			$nation,
 			'filter_search_association',
