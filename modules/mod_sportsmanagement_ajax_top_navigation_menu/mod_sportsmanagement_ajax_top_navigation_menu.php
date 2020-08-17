@@ -536,6 +536,17 @@ $countrysubsubsubassocselect[$country_federation]['subsubassocs'] = array(HTMLHe
 $leagueselect[$country_federation]['leagues']      = array(HTMLHelper::_('select.option', 0, Text::_('--')));    
 }
 
+if ($subsubsubassoc_id)
+{
+	//$countrysubsubsubassocselect[$country_federation]['subsubassocs'] = $helper->getCountrySubSubAssocSelect($subsubassoc_id);
+	//$leagueselect[$country_federation]['leagues']                     = $helper->getAssocLeagueSelect($country_id, $subsubassoc_id);
+}
+else
+{
+$countrysubsubsubassocselect[$country_federation]['subsubassocs'] = array(HTMLHelper::_('select.option', 0, Text::_('--  -- ')));
+//$leagueselect[$country_federation]['leagues']      = array(HTMLHelper::_('select.option', 0, Text::_('--')));    
+}
+
 /** liga */
 if ($league_id)
 {
