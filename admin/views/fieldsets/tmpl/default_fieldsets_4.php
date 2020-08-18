@@ -298,7 +298,7 @@ switch ($this->fieldset)
 		}
 		break;
 
-	case 'teamperson':
+	case 'teamplayer':
 		if (isset($this->extended))
 		{
 			foreach ($this->extended->getFieldsets() as $fieldset)

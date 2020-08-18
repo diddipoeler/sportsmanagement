@@ -3,7 +3,7 @@
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version    1.0.05
  * @package    Sportsmanagement
- * @subpackage teamperson
+ * @subpackage teamplayer
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
@@ -18,7 +18,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Log\Log;
 
 /**
- * sportsmanagementViewTeamPerson
+ * sportsmanagementViewteamplayer
  *
  * @package
  * @author
@@ -30,7 +30,7 @@ class sportsmanagementViewTeamPlayer extends sportsmanagementView
 {
 
 	/**
-	 * sportsmanagementViewTeamPerson::init()
+	 * sportsmanagementViewteamplayer::init()
 	 *
 	 * @return
 	 */
@@ -130,7 +130,7 @@ class sportsmanagementViewTeamPlayer extends sportsmanagementView
 			$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_TEAMPERSON_PROJECT_POSITION'), 'notice');
 		}
 
-		$extended       = sportsmanagementHelper::getExtended($this->item->extended, 'teamperson');
+		$extended       = sportsmanagementHelper::getExtended($this->item->extended, 'teamplayer');
 		$this->extended = $extended;
 		$this->lists    = $lists;
 

@@ -3,7 +3,7 @@
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version    1.0.05
  * @package    Sportsmanagement
- * @subpackage teampersons
+ * @subpackage teamplayers
  * @file       default_data.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
@@ -103,7 +103,7 @@ else
             <th width="">
 				<?php
 				echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ORDERING', 'ppl.ordering', $this->sortDirection, $this->sortColumn);
-				echo HTMLHelper::_('grid.order', $this->items, 'filesave.png', 'teampersons.saveorder');
+				echo HTMLHelper::_('grid.order', $this->items, 'filesave.png', 'teamplayers.saveorder');
 				?>
             </th>
             <th width="">
@@ -139,7 +139,7 @@ else
 			);
 			$canEdit     = $this->user->authorise('core.edit', 'com_sportsmanagement');
 			$canCheckin  = $this->user->authorise('core.manage', 'com_checkin') || $row->checked_out == $this->user->get('id') || $row->checked_out == 0;
-			$checked     = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'teampersons.', $canCheckin);
+			$checked     = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'teamplayers.', $canCheckin);
 			$inputappend = '';
 			$canChange   = $this->user->authorise('core.edit.state', 'com_sportsmanagement.teamperson.' . $row->id) && $canCheckin;
 			?>
@@ -159,7 +159,7 @@ else
 					<?php if ($row->checked_out)
 						:
 						?>
-						<?php echo HTMLHelper::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'teampersons.', $canCheckin); ?>
+						<?php echo HTMLHelper::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'teamplayers.', $canCheckin); ?>
 					<?php endif; ?>
 
 					<?php if ($canEdit && !$row->checked_out)
@@ -428,13 +428,13 @@ echo $image;
                 </td>
                 <td class="center">
                     <div class="btn-group">
-						<?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'teampersons.', $canChange, 'cb');
+						<?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'teamplayers.', $canChange, 'cb');
 						?>
 						<?php // Create dropdown items and render the dropdown list.
 						if ($canChange)
 						{
-							HTMLHelper::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'teampersons');
-							HTMLHelper::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'teampersons');
+							HTMLHelper::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'teamplayers');
+							HTMLHelper::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'teamplayers');
 							echo HTMLHelper::_('actionsdropdown.render', $this->escape($row->firstname . ' ' . $row->lastname));
 						}
 						?>
@@ -443,12 +443,12 @@ echo $image;
                 <td class="order">
 					  <span>
 				<?php
-				echo $this->pagination->orderUpIcon($i, $i > 0, 'teampersons.orderup', 'JLIB_HTML_MOVE_UP', true);
+				echo $this->pagination->orderUpIcon($i, $i > 0, 'teamplayers.orderup', 'JLIB_HTML_MOVE_UP', true);
 				?>
 					  </span>
                     <span>
 				<?php
-				echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'teampersons.orderdown', 'JLIB_HTML_MOVE_DOWN', true);
+				echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'teamplayers.orderdown', 'JLIB_HTML_MOVE_DOWN', true);
 				?>
 					  </span>
 					<?php

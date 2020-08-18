@@ -4,7 +4,7 @@
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
- * @file       teamperson.php
+ * @file       teamplayer.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
@@ -17,7 +17,7 @@ use Joomla\CMS\Table\Table;
 use Joomla\Registry\Registry;
 
 /**
- * sportsmanagementModelteamperson
+ * sportsmanagementModelteamplayer
  *
  * @package
  * @author
@@ -25,7 +25,7 @@ use Joomla\Registry\Registry;
  * @version   2014
  * @access    public
  */
-class sportsmanagementModelteamperson extends JSMModelAdmin
+class sportsmanagementModelteamplayer extends JSMModelAdmin
 {
 	static $db_num_rows = 0;
 	var $_project_id = 0;
@@ -33,7 +33,7 @@ class sportsmanagementModelteamperson extends JSMModelAdmin
 	var $_project_team_id = 0;
 
 	/**
-	 * sportsmanagementModelteamperson::assignplayerscountry()
+	 * sportsmanagementModelteamplayer::assignplayerscountry()
 	 *
 	 * @param   integer  $persontype
 	 * @param   integer  $project_team_id
@@ -75,7 +75,7 @@ class sportsmanagementModelteamperson extends JSMModelAdmin
 
 
 	/**
-	 * sportsmanagementModelteamperson::set_state()
+	 * sportsmanagementModelteamplayer::set_state()
 	 *
 	 * @param   mixed    $ids
 	 * @param   mixed    $tpids

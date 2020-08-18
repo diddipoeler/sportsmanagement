@@ -557,7 +557,7 @@ else
 <div>
     <input type="hidden" name="task" value="<?php echo $view; ?>.edit"/>
 	<?php
-	if ($view == 'teamperson')
+	if ($view == 'teamplayer')
 	{
 		?>
         <input type="hidden" name="persontype" value="<?php echo $this->_persontype; ?>"/>
