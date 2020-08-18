@@ -341,7 +341,7 @@ if (preg_match("/ordering/i", $this->sortColumn)) {
 				case 'projects';
 				case 'projectteams';
 				case 'rounds';
-				case 'teampersons';
+				case 'teamplayers';
 				case 'templates';
 				case 'projectreferees';
 				case 'projectpositions';
@@ -432,7 +432,7 @@ break;
 				//case 'rounds':
 				case 'divisions':
 				case 'extrafields':
-				case 'teampersons':
+				case 'teamplayers':
 					JHtmlSidebar::addFilter(
 						Text::_('JOPTION_SELECT_PUBLISHED'),
 						'filter_state',

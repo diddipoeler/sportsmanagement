@@ -16,7 +16,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 
 /**
- * sportsmanagementControllerteampersons
+ * sportsmanagementControllerteamplayers
  *
  * @package
  * @author

@@ -5,8 +5,8 @@
  *
  * @version    1.0.05
  * @package    Sportsmanagement
- * @subpackage teampersons
- * @file       teampersons.php
+ * @subpackage teamplayers
+ * @file       teamplayers.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
@@ -19,7 +19,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 
 /**
- * sportsmanagementModelTeamPersons
+ * sportsmanagementModelteamplayers
  *
  * @package
  * @author
@@ -27,10 +27,10 @@ use Joomla\CMS\Component\ComponentHelper;
  * @version   2013
  * @access    public
  */
-class sportsmanagementModelTeamPersons extends JSMModelList
+class sportsmanagementModelteamplayers extends JSMModelList
 {
 	static $db_num_rows = 0;
-	var $_identifier = "teampersons";
+	var $_identifier = "teamplayers";
 	var $_project_id = 0;
 	var $_season_id = 0;
 	var $_team_id = 0;
@@ -38,7 +38,7 @@ class sportsmanagementModelTeamPersons extends JSMModelList
 	var $_persontype = 0;
 
 	/**
-	 * sportsmanagementModelTeamPersons::__construct()
+	 * sportsmanagementModelteamplayers::__construct()
 	 *
 	 * @param   mixed  $config
 	 *
@@ -63,7 +63,7 @@ class sportsmanagementModelTeamPersons extends JSMModelList
 	}
 
 	/**
-	 * sportsmanagementModelTeamPersons::getListQuery()
+	 * sportsmanagementModelteamplayers::getListQuery()
 	 *
 	 * @return
 	 */
@@ -131,7 +131,7 @@ class sportsmanagementModelTeamPersons extends JSMModelList
 	}
 
 	/**
-	 * sportsmanagementModelTeamPersons::PersonProjectPosition()
+	 * sportsmanagementModelteamplayers::PersonProjectPosition()
 	 *
 	 * @return void
 	 */
@@ -171,7 +171,7 @@ class sportsmanagementModelTeamPersons extends JSMModelList
 	}
 
 	/**
-	 * sportsmanagementModelTeamPersons::checkProjectPositions()
+	 * sportsmanagementModelteamplayers::checkProjectPositions()
 	 *
 	 * @param   mixed  $project_id
 	 * @param   mixed  $persontype
@@ -306,7 +306,7 @@ class sportsmanagementModelTeamPersons extends JSMModelList
 	}
 
 	/**
-	 * sportsmanagementModelTeamPersons::getProjectTeamplayers()
+	 * sportsmanagementModelteamplayers::getProjectTeamplayers()
 	 *
 	 * @param   mixed  $project_team_id
 	 *

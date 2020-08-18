@@ -3345,7 +3345,7 @@ return $jl_dberror;
 			$query->join('INNER', '#__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
 			$dbjsm->setQuery($query);
 			$result  = $dbjsm->loadObjectList();
-			$mdl     = BaseDatabaseModel::getInstance("TeamPersons", "sportsmanagementModel");
+			$mdl     = BaseDatabaseModel::getInstance("teamplayers", "sportsmanagementModel");
 			$zaehler = 1;
 
 			foreach ($result as $row)

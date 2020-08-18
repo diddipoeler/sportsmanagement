@@ -197,7 +197,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 	}
 
 	/**
-	 * sportsmanagementModelMatch::getTeamPersons()
+	 * sportsmanagementModelMatch::getteampersons()
 	 *
 	 * @param   mixed  $projectteam_id
 	 * @param   bool   $filter
@@ -205,7 +205,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 	 *
 	 * @return
 	 */
-	public static function getTeamPersons($projectteam_id, $filter = false, $persontype)
+	public static function getteampersons($projectteam_id, $filter = false, $persontype)
 	{
 		$option            = Factory::getApplication()->input->getCmd('option');
 		$app               = Factory::getApplication();
@@ -1560,7 +1560,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 
 		if ($project->fav_team)
 		{
-			$mdl        = BaseDatabaseModel::getInstance("TeamPersons", "sportsmanagementModel");
+			$mdl        = BaseDatabaseModel::getInstance("teamplayers", "sportsmanagementModel");
 			$teamplayer = $mdl->getProjectTeamplayers($project->fav_team, $project->season_id);
 		}
 
