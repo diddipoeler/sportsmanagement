@@ -173,12 +173,13 @@ else
 
                         <a href="<?php echo $link; ?>">
 							<?php
-							$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_EDIT_DETAILS');
-							echo HTMLHelper::_(
-								'image', 'administrator/components/com_sportsmanagement/assets/images/edit.png',
-								$imageTitle,
-								'title= "' . $imageTitle . '"'
-							);
+$imageFile   = 'administrator/components/com_sportsmanagement/assets/images/edit.png';
+						$imageTitle  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_EDIT_DETAILS');
+                        $image_attributes['title'] = $imageTitle;
+						$image       = HTMLHelper::_('image',$imageFile,$imageTitle,$image_attributes);
+						echo HTMLHelper::link($link, $image);
+			
+							
 							?>
                         </a>
 
