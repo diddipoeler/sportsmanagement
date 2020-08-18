@@ -2255,8 +2255,10 @@ and ma.projectteam2_id = '$row->projectteam2_id'
 			// close the project
 			$output .= '</project>';
 			// mal als test
-			$xmlfile = utf8_encode( $output );
-			$file    = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'sportsmanagement_import.jlg';
+//			$xmlfile = utf8_encode( $output );
+
+			$xmlfile = $output ;
+            $file    = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'sportsmanagement_import.jlg';
 			File::write($file, $xmlfile);
 		}
 
