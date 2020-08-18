@@ -21,14 +21,13 @@ if ($this->restartpage)
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-// Ordering allowed ?
-// $ordering = ( $this->sortColumn == 'ppl.ordering' );
 $ordering = ($this->sortColumn == 'ppl.ordering');
 
-// $this->addTemplatePath( JPATH_COMPONENT .DIRECTORY_SEPARATOR. 'views' .DIRECTORY_SEPARATOR. 'adminmenu' );
-
-// Welche joomla version
-if (version_compare(JVERSION, '3.0.0', 'ge'))
+/** Welche joomla version */
+if (version_compare(substr(JVERSION, 0, 5), '4.0.0', 'ge'))
+{
+}	
+elseif (version_compare(substr(JVERSION, 0, 5), '3.0.0', 'ge'))
 {
 	HTMLHelper::_('behavior.framework', true);
 }
