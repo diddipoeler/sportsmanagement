@@ -20,14 +20,11 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 
-$templatesToLoad = array('footer', 'listheader');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-
-/**
- *
- * welche joomla version
- */
-if (version_compare(JVERSION, '3.0.0', 'ge'))
+/** welche joomla version */
+if (version_compare(substr(JVERSION, 0, 5), '4.0.0', 'ge'))
+{
+}	
+elseif (version_compare(substr(JVERSION, 0, 5), '4.0.0', 'ge'))
 {
 	HTMLHelper::_('behavior.framework', true);
 }
