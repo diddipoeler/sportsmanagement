@@ -354,34 +354,32 @@ echo $image;
 					// $row->away = 1;
 					if ($row->injury > 0)
 					{
-						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_INJURED');
-						echo HTMLHelper::_(
-							'image', 'administrator/components/com_sportsmanagement/assets/images/injured.gif',
-							$imageTitle,
-							'title= "' . $imageTitle . '"'
-						);
+$imageFile = 'administrator/components/com_sportsmanagement/assets/images/injured.gif';
+$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_INJURED');
+$image_attributes['title'] = $imageTitle;
+$image = HTMLHelper::_('image',$imageFile,$imageTitle,$image_attributes);
+echo $image;						
+
 					}
 
 
 					if ($row->suspension > 0)
 					{
-						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_SUSPENDED');
-						echo HTMLHelper::_(
-							'image', 'administrator/components/com_sportsmanagement/assets/images/suspension.gif',
-							$imageTitle,
-							'title= "' . $imageTitle . '"'
-						);
+$imageFile = 'administrator/components/com_sportsmanagement/assets/images/suspension.gif';
+$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_SUSPENDED');
+$image_attributes['title'] = $imageTitle;
+$image = HTMLHelper::_('image',$imageFile,$imageTitle,$image_attributes);
+echo $image;						
 					}
 
 
 					if ($row->away > 0)
 					{
-						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_AWAY');
-						echo HTMLHelper::_(
-							'image', 'administrator/components/com_sportsmanagement/assets/images/away.gif',
-							$imageTitle,
-							'title= "' . $imageTitle . '"'
-						);
+$imageFile = 'administrator/components/com_sportsmanagement/assets/images/away.gif';
+$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_AWAY');
+$image_attributes['title'] = $imageTitle;
+$image = HTMLHelper::_('image',$imageFile,$imageTitle,$image_attributes);
+echo $image;						
 					}
 
 
@@ -390,12 +388,11 @@ echo $image;
 						&& !$row->away
 					)
 					{
-						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS');
-						echo HTMLHelper::_(
-							'image', 'administrator/components/com_sportsmanagement/assets/images/players.png',
-							$imageTitle,
-							'title= "' . $imageTitle . '"'
-						);
+$imageFile = 'administrator/components/com_sportsmanagement/assets/images/players.gif';
+$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS');
+$image_attributes['title'] = $imageTitle;
+$image = HTMLHelper::_('image',$imageFile,$imageTitle,$image_attributes);
+echo $image;						
 					}
 					?>
                     &nbsp;
