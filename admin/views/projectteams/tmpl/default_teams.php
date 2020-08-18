@@ -220,8 +220,8 @@ $optteams = ' allowClear: true,
 		{
 			$row        = &$this->projectteam[$i];
 			$link1      = Route::_('index.php?option=com_sportsmanagement&task=projectteam.edit&id=' . $row->id . '&pid=' . $this->project->id . "&team_id=" . $row->team_id);
-			$link2      = Route::_('index.php?option=com_sportsmanagement&view=teampersons&persontype=1&project_team_id=' . $row->id . "&team_id=" . $row->team_id . '&pid=' . $this->project->id.'&season_team_id='.$row->season_team_id);
-			$link3      = Route::_('index.php?option=com_sportsmanagement&view=teampersons&persontype=2&project_team_id=' . $row->id . "&team_id=" . $row->team_id . '&pid=' . $this->project->id.'&season_team_id='.$row->season_team_id);
+			$link2      = Route::_('index.php?option=com_sportsmanagement&view=teamplayers&persontype=1&project_team_id=' . $row->id . "&team_id=" . $row->team_id . '&pid=' . $this->project->id.'&season_team_id='.$row->season_team_id);
+			$link3      = Route::_('index.php?option=com_sportsmanagement&view=teamplayers&persontype=2&project_team_id=' . $row->id . "&team_id=" . $row->team_id . '&pid=' . $this->project->id.'&season_team_id='.$row->season_team_id);
 			$canEdit    = $this->user->authorise('core.edit', 'com_sportsmanagement');
 			$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $row->checked_out == $this->user->get('id') || $row->checked_out == 0;
 			$checked    = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'projectteams.', $canCheckin);

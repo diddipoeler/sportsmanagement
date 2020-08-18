@@ -3,7 +3,7 @@
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version    1.0.05
  * @package    Sportsmanagement
- * @subpackage teampersons
+ * @subpackage teamplayers
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
@@ -18,7 +18,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
- * sportsmanagementViewteampersons
+ * sportsmanagementViewteamplayers
  *
  * @package
  * @author
@@ -30,7 +30,7 @@ class sportsmanagementViewteamplayers extends sportsmanagementView
 {
 
 	/**
-	 * sportsmanagementViewteampersons::init()
+	 * sportsmanagementViewteamplayers::init()
 	 *
 	 * @return void
 	 */
@@ -152,10 +152,10 @@ class sportsmanagementViewteamplayers extends sportsmanagementView
 			$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_TITLE') . ' ' . $this->project_team->name;
 		}
 
-		ToolbarHelper::apply('teampersons.saveshort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_APPLY'));
+		ToolbarHelper::apply('teamplayers.saveshort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_APPLY'));
 		ToolbarHelper::divider();
 		sportsmanagementHelper::ToolbarButton('assignpersons', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN'), 'players', 0);
-		ToolbarHelper::apply('teampersons.assignplayerscountry', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN_COUNTRY'));
+		ToolbarHelper::apply('teamplayers.assignplayerscountry', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN_COUNTRY'));
 		ToolbarHelper::divider();
 		ToolbarHelper::back('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_BACK', 'index.php?option=' . $this->option . '&view=projectteams&pid=' . $this->project_id . '&id=' . $this->project_id);
 		parent::addToolbar();
