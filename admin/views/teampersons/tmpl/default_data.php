@@ -24,7 +24,7 @@ use Joomla\CMS\Router\Route;
 if (version_compare(substr(JVERSION, 0, 5), '4.0.0', 'ge'))
 {
 }	
-elseif (version_compare(substr(JVERSION, 0, 5), '4.0.0', 'ge'))
+elseif (version_compare(substr(JVERSION, 0, 5), '3.0.0', 'ge'))
 {
 	HTMLHelper::_('behavior.framework', true);
 }
