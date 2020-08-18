@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage teamplayers
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
@@ -69,7 +65,6 @@ class sportsmanagementModelteamplayers extends JSMModelList
 	 */
 	function getListQuery()
 	{
-		// Create a new query object.
 		$this->jsmquery->clear();
 
 		$this->_project_id = $this->jsmapp->getUserState("$this->jsmoption.pid", '0');
@@ -137,29 +132,16 @@ class sportsmanagementModelteamplayers extends JSMModelList
 	 */
 	function PersonProjectPosition($project_id, $_persontype)
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
+		$this->jsmquery->clear();
 
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
+		$this->jsmquery->select('ppl.*');
+		$this->jsmquery->from('#__sportsmanagement_person_project_position AS ppl');
+		$this->jsmquery->where('ppl.project_id = ' . $project_id);
+		$this->jsmquery->where('ppl.persontype = ' . $_persontype);
 
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$this->jsmdb->setQuery($this->jsmquery);
 
-		// Select some fields
-		$query->select('ppl.*');
-
-		// From table
-		$query->from('#__sportsmanagement_person_project_position AS ppl');
-		$query->where('ppl.project_id = ' . $project_id);
-		$query->where('ppl.persontype = ' . $_persontype);
-
-		$db->setQuery($query);
-
-		// $db->query();
-		$result = $db->loadObjectList();
+		$result = $this->jsmdb->loadObjectList();
 
 		if (!$result)
 		{
