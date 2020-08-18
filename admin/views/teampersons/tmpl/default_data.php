@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage teampersons
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -173,11 +169,11 @@ else
 
                         <a href="<?php echo $link; ?>">
 							<?php
-$imageFile   = 'administrator/components/com_sportsmanagement/assets/images/edit.png';
-						$imageTitle  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_EDIT_DETAILS');
-                        $image_attributes['title'] = $imageTitle;
-						$image       = HTMLHelper::_('image',$imageFile,$imageTitle,$image_attributes);
-						echo HTMLHelper::link($link, $image);
+$imageFile = 'administrator/components/com_sportsmanagement/assets/images/edit.png';
+$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_EDIT_DETAILS');
+$image_attributes['title'] = $imageTitle;
+$image = HTMLHelper::_('image',$imageFile,$imageTitle,$image_attributes);
+echo HTMLHelper::link($link, $image);
 			
 							
 							?>
@@ -233,22 +229,21 @@ $imageFile   = 'administrator/components/com_sportsmanagement/assets/images/edit
 					<?php
 					if ($row->season_picture == '')
 					{
-						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_NO_IMAGE');
-						echo HTMLHelper::_(
-							'image', 'administrator/components/com_sportsmanagement/assets/images/delete.png',
-							$imageTitle,
-							'title= "' . $imageTitle . '"'
-						);
+$imageFile = 'administrator/components/com_sportsmanagement/assets/images/delete.png';
+$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_NO_IMAGE');
+$image_attributes['title'] = $imageTitle;
+$image = HTMLHelper::_('image',$imageFile,$imageTitle,$image_attributes);
+echo $image;					
+
 					}
                     elseif ($row->season_picture == sportsmanagementHelper::getDefaultPlaceholder("player"))
 					{
-						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_DEFAULT_IMAGE');
-						echo HTMLHelper::_(
-							'image', 'administrator/components/com_sportsmanagement/assets/images/information.png',
-							$imageTitle,
-							'title= "' . $imageTitle . '"'
-						);
-						?>
+$imageFile = 'administrator/components/com_sportsmanagement/assets/images/information.png';
+$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_DEFAULT_IMAGE');
+$image_attributes['title'] = $imageTitle;
+$image = HTMLHelper::_('image',$imageFile,$imageTitle,$image_attributes);
+echo $image;
+?>
                         <a href="<?php echo Uri::root() . $row->season_picture; ?>" title="<?php echo $imageTitle; ?>"
                            class="modal">
                             <img src="<?php echo Uri::root() . $row->season_picture; ?>"
