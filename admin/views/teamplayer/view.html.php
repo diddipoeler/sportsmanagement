@@ -26,7 +26,7 @@ use Joomla\CMS\Log\Log;
  * @version   2014
  * @access    public
  */
-class sportsmanagementViewTeamPerson extends sportsmanagementView
+class sportsmanagementViewTeamPlayer extends sportsmanagementView
 {
 
 	/**

@@ -26,7 +26,7 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
  * @version   2014
  * @access    public
  */
-class sportsmanagementViewteampersons extends sportsmanagementView
+class sportsmanagementViewteamplayers extends sportsmanagementView
 {
 
 	/**

@@ -6,18 +6,17 @@
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage tables
- * @file       teamplayer.php
+ * @file       teamperson.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Language\Text;
-
 /**
- * sportsmanagementTableTeamPlayer
+ * sportsmanagementTableTeamPerson
  *
  * @package
  * @author
@@ -25,8 +24,9 @@ use Joomla\CMS\Language\Text;
  * @version   2014
  * @access    public
  */
-class sportsmanagementTableTeamPlayer extends JSMTable
+class sportsmanagementTableTeamPerson extends JSMTable
 {
+
 	/**
 	 * Constructor
 	 *
@@ -37,34 +37,8 @@ class sportsmanagementTableTeamPlayer extends JSMTable
 	function __construct(&$db)
 	{
 		$db = sportsmanagementHelper::getDBConnection();
-		parent::__construct('#__sportsmanagement_team_player', 'id', $db);
+		parent::__construct('#__sportsmanagement_season_team_person_id', 'id', $db);
 	}
 
-	/**
-	 * Default delete method
-	 * *
-	 *
-	 * @access public
-	 * @return true if successful otherwise returns and error message
-	 */
-	function delete($oid = null)
-	{
-		// Check that there are no events and matches associated to this player
-		return true;
 
-	}
-
-	/**
-	 * sportsmanagementTableTeamPlayer::canDelete()
-	 *
-	 * @param   mixed  $id
-	 * @param   mixed  $joins
-	 *
-	 * @return
-	 */
-	function canDelete($id, $joins = null)
-	{
-
-		return true;
-	}
 }

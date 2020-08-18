@@ -17,18 +17,29 @@
 		/>
 		  <field
 			name="projectteam_id"
-			type="hidden"
+			type="number"
+			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_PROJECTTEAM_ID"
+			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_DESCR_PROJECTTEAM_ID" 
+			class="readonly" 
+			size="11" 
 			default="0"
+			readonly="true" 
 		/>
 		<field
 			name="person_id"
-			type="hidden"
+			type="number"
+			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_PERSON_ID"
+			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_DESCR_PERSON_ID" 
+			class="readonly" 
+			size="11" 
 			default="0"
+			readonly="true" 
 		/>
 		
 		<field
-			name="project_position_id"
+			name="position_id"
 			type="positionlist"
+			targettable="person"
 			class="inputbox"
 			default="0"
 			size="1"
@@ -38,7 +49,22 @@
 			<option
 				value="0">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION</option>
-		</field>			
+		</field>
+
+		<field
+			name="project_position_id"
+			type="projectpositionlist"
+			class="inputbox"
+			default="0"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_PROJECT_POS"
+			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_PROJECT_POS_DESC" >
+			
+			<option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION</option>
+		</field>
+		
 		<field
 			name="jerseynumber"
 			type="text"
@@ -62,7 +88,6 @@
 			name="injury"
 			type="extensionradiobutton"
 			default="0"
-      class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURED"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURED_DESC">
 		<option value="0">JNO</option>
@@ -73,6 +98,7 @@
 			type="calendar"
 			required="false"
 			varname="cid"
+			showon="injury:1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURY_DATE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURY_DATE_DESC"
 			class="inputbox"/>			
@@ -81,12 +107,13 @@
 			type="calendar"
 			required="false"
 			varname="cid"
+			showon="injury:1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURY_END"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURY_END_DESC"
 			class="inputbox"/>	
 		<field
 			name="injury_detail"
-			
+			showon="injury:1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURY_TYPE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURY_TYPE_DESC"
 			type="editor"
@@ -96,7 +123,6 @@
 			name="suspension"
 			type="extensionradiobutton"
 			default="0"
-      class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENDED"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENDED_DESC">
 		<option value="0">JNO</option>
@@ -107,6 +133,7 @@
 			type="calendar"
 			required="false"
 			varname="cid"
+			showon="suspension:1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENSION_DATE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENSION_DATE_DESC"
 			class="inputbox"/>			
@@ -115,6 +142,7 @@
 			type="calendar"
 			required="false"
 			varname="cid"
+			showon="suspension:1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENSION_END"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENSION_END_DESC"
 			class="inputbox"/>	
@@ -123,6 +151,7 @@
 			type="editor"
       width="150" 
 			filter="safehtml"
+			showon="suspension:1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENSION_TYPE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENSION_TYPE_DESC"
 			class="inputbox"/>				
@@ -130,7 +159,6 @@
 			name="away"
 			type="extensionradiobutton"
 			default="0"
-      class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY_DESC">
 		<option value="0">JNO</option>
@@ -141,6 +169,7 @@
 			type="calendar"
 			required="false"
 			varname="cid"
+			showon="away:1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY_DATE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY_DATE_DESC"
 			class="inputbox"/>			
@@ -149,6 +178,7 @@
 			type="calendar"
 			required="false"
 			varname="cid"
+			showon="away:1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY_END"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY_END_DESC"
 			class="inputbox"/>	
@@ -157,6 +187,7 @@
 			type="editor"
       width="150" 
 			filter="safehtml"
+			showon="away:1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY_TYPE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY_TYPE_DESC"
 			class="inputbox"/>				
@@ -175,6 +206,14 @@
 				preview="show"
 				targetfolder="teamplayers"
 				directory=""/>			
+				
+				<field
+			name="cr_picture"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_PICTURE_CR"
+			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_PICTURE_CR_DESC"
+			class="inputbox"/>	
+			
 	</fieldset>	
 	
 	<fieldset name="description"
