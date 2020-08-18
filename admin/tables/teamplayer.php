@@ -20,7 +20,7 @@ defined('_JEXEC') or die('Restricted access');
  * @version   2014
  * @access    public
  */
-class sportsmanagementTableTeamteamplayer extends JSMTable
+class sportsmanagementTableteamplayer extends JSMTable
 {
 
 	/**
