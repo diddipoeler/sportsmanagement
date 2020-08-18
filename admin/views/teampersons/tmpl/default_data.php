@@ -388,7 +388,7 @@ echo $image;
 						&& !$row->away
 					)
 					{
-$imageFile = 'administrator/components/com_sportsmanagement/assets/images/players.gif';
+$imageFile = 'administrator/components/com_sportsmanagement/assets/images/players.png';
 $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS');
 $image_attributes['title'] = $imageTitle;
 $image = HTMLHelper::_('image',$imageFile,$imageTitle,$image_attributes);
