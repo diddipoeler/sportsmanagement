@@ -1273,16 +1273,17 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 		libxml_use_internal_errors(true);
 		if (!$xmlData = $this->_getXml())
 		{
+			Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__, 'error');
 			$errorFound = false;
-			Factory::getApplication()->enqueueMessage(__METHOD__.' '__LINE__.Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', ' Load of the importfile failed:'), 'error');
+			Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', ' Load of the importfile failed:'), 'error');
 			foreach (libxml_get_errors() as $error)
 			{
-				Factory::getApplication()->enqueueMessage(__METHOD__.' '__LINE__.Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', $error->message), 'error');
+				Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', $error->message), 'error');
 				$errorFound = true;
 			}
 			if (!$errorFound)
 			{
-				Factory::getApplication()->enqueueMessage(__METHOD__.' '__LINE__.Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', ' Unknown error :-('), 'error');
+				Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', ' Unknown error :-('), 'error');
 			}
 		}
 
