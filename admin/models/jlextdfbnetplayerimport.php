@@ -990,7 +990,8 @@ and ma.projectteam2_id = '$row->projectteam2_id'
 			{
 				// tab delimited, and encoding conversion
 				$csv = new JSMparseCSV();
-				$csv->encoding('UTF-16', 'UTF-8');
+				//$csv->encoding('UTF-16', 'UTF-8');
+				$csv->encoding('ISO-8859-1', 'UTF-8');
 				// Spielerdatei des DFBNet ist seit 2013 mit einem Tabulator als Delimiter, deswegen ist eine Auswahl nicht erforderlich
 				$csv->delimiter = ";";
 				$row            = 0;
