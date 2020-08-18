@@ -258,7 +258,7 @@ if (preg_match("/ordering/i", $this->sortColumn)) {
                 case 'agegroup';
                 $this->app->setUserState('com_sportsmanagement.itemname', $this->item->name);
 				break;
-                case 'teamperson';
+                case 'teamplayer';
         case 'projectreferee';
                 $mdlPerson      = BaseDatabaseModel::getInstance("player", "sportsmanagementModel");
 		        $project_person = $mdlPerson->getPerson($this->item->person_id);

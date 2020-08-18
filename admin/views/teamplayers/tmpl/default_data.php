@@ -134,14 +134,14 @@ else
 		{
 			$row         =& $this->items[$i];
 			$link        = Route::_(
-				'index.php?option=com_sportsmanagement&task=teamperson.edit&project_team_id=' .
+				'index.php?option=com_sportsmanagement&task=teamplayer.edit&project_team_id=' .
 				$row->projectteam_id . '&person_id=' . $row->id . '&id=' . $row->tpid . '&pid=' . $this->project->id . '&team_id=' . $this->team_id . '&persontype=' . $this->_persontype
 			);
 			$canEdit     = $this->user->authorise('core.edit', 'com_sportsmanagement');
 			$canCheckin  = $this->user->authorise('core.manage', 'com_checkin') || $row->checked_out == $this->user->get('id') || $row->checked_out == 0;
 			$checked     = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'teamplayers.', $canCheckin);
 			$inputappend = '';
-			$canChange   = $this->user->authorise('core.edit.state', 'com_sportsmanagement.teamperson.' . $row->id) && $canCheckin;
+			$canChange   = $this->user->authorise('core.edit.state', 'com_sportsmanagement.teamplayer.' . $row->id) && $canCheckin;
 			?>
             <tr class="<?php echo "row$k"; ?>">
                 <td class="center">

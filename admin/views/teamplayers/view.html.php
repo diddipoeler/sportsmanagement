@@ -79,7 +79,7 @@ class sportsmanagementViewteamplayers extends sportsmanagementView
 			$this->restartpage = false;
 		}
 
-		$this->table = Table::getInstance('teamperson', 'sportsmanagementTable');
+		$this->table = Table::getInstance('teamplayer', 'sportsmanagementTable');
 		$this->app->setUserState("$this->option.pid", $project->id);
 		$this->app->setUserState("$this->option.season_id", $project->season_id);
 		$this->app->setUserState("$this->option.project_art_id", $project->project_art_id);

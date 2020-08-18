@@ -1099,7 +1099,7 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 				$form->setFieldAttribute('picture', 'directory', $joomladirectory . 'com_sportsmanagement/database/divisions');
 				$form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
 				break;
-			case 'teamperson':
+			case 'teamplayer':
 				$form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_player', ''));
 				$form->setFieldAttribute('picture', 'directory', $joomladirectory . 'com_sportsmanagement/database/teamplayers');
 				$form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
