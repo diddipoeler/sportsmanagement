@@ -300,7 +300,9 @@ echo $image;
 					if ($append != '')
 					{
 						?>
+			<!--
                         <script language="javascript">document.getElementById('cb<?php echo $i; ?>').checked = true;</script>
+			-->
 						<?php
 					}
 
