@@ -248,26 +248,31 @@ if (preg_match("/ordering/i", $this->sortColumn)) {
 
 					break;
 			}
-            switch ($this->view)
-			{
-				case 'club';
-				case 'playground';
-                case 'league';
-                case 'person';
-                case 'position';
-                case 'agegroup';
-                $this->app->setUserState('com_sportsmanagement.itemname', $this->item->name);
-				break;
-                case 'teamplayer';
-        case 'projectreferee';
-                $mdlPerson      = BaseDatabaseModel::getInstance("player", "sportsmanagementModel");
-		        $project_person = $mdlPerson->getPerson($this->item->person_id);
-                $this->app->setUserState('com_sportsmanagement.itemname', $project_person->lastname . ' - ' . $project_person->firstname);
-                break;
-                case 'player';
-                $this->app->setUserState('com_sportsmanagement.itemname', $this->item->lastname.' '.$this->item->firstname);
-                break;
-            }
+			
+/** hier wird der name für den button des bilderuploads gesetzt */			
+switch ($this->view)
+{
+case 'club';
+case 'playground';
+case 'league';
+case 'person';
+case 'position';
+case 'agegroup';
+$this->app->setUserState('com_sportsmanagement.itemname', $this->item->name);
+break;
+case 'teamplayer';
+case 'projectreferee';
+$mdlPerson      = BaseDatabaseModel::getInstance("player", "sportsmanagementModel");
+$project_person = $mdlPerson->getPerson($this->item->person_id);
+$this->app->setUserState('com_sportsmanagement.itemname', $project_person->lastname . ' - ' . $project_person->firstname);
+break;
+case 'player';
+$this->app->setUserState('com_sportsmanagement.itemname', $this->item->lastname.' '.$this->item->firstname);
+break;
+case 'smquote';
+$this->app->setUserState('com_sportsmanagement.itemname', $this->item->author);		
+break;		
+}
             
             
             
