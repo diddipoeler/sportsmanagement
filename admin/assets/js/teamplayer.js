@@ -1,3 +1,4 @@
+/*
 Joomla.submitbutton = function(pressbutton) {
 	var res = true;
 	var form = $('adminForm');
@@ -13,3 +14,4 @@ Joomla.submitbutton = function(pressbutton) {
 		return false;
 	}
 }
+*/
