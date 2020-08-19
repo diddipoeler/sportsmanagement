@@ -475,11 +475,13 @@ break;
 
 					break;
 				case 'smquotes':
+					/*
 					JHtmlSidebar::addFilter(
 						Text::_('JOPTION_SELECT_PUBLISHED'),
 						'filter_state',
 						HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
 					);
+					*/
 					JHtmlSidebar::addFilter(
 						Text::_('JOPTION_SELECT_CATEGORY'),
 						'filter_category_id',
