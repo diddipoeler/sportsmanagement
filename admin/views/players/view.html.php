@@ -61,6 +61,7 @@ class sportsmanagementViewplayers extends sportsmanagementView
 		$this->season_id  = 0;
 		$this->team_id    = 0;
 		$this->persontype = 0;
+		$this->whichview = $this->jinput->get('whichview');
 
 		switch ($this->getLayout())
 		{
