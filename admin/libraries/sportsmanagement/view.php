@@ -173,6 +173,7 @@ catch (Exception $e)
 if (ComponentHelper::getParams($this->option)->get('show_jed_link'))
 {
 Log::add(Text::_('COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JED_LINK_TEXT'), Log::NOTICE, 'jsmerror');
+$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JED_LINK_TEXT'), 'Notice');	
 }		
 		
 		
