@@ -834,6 +834,7 @@ document.getElementById("filter_season").classList.add("filter_season");
 				case 'smextxmleditor';
 					case 'jsmopenligadb';
                 case 'smimageimports';
+					case 'smquotestxt';
 				break;
 				default:
 					/**
