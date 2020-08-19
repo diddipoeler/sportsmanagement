@@ -256,19 +256,13 @@ class sportsmanagementModelteamplayer extends JSMModelAdmin
 			);
 
 			// Exit;
-
+			try
+			{
 			$this->jsmquery->clear();
 			$this->jsmquery->update($db->quoteName('#__sportsmanagement_season_team_person_id'))->set($fields)->where($conditions);
 			$this->jsmdb->setQuery($this->jsmquery);
 			$resultupdate = $this->jsmdb->execute();
 
-			// If(!$tblPerson->store())
-			if (!sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__))
-			{
-				$result = false;
-			}
-			else
-			{
 				$tblprojectposition = Table::getInstance("projectposition", "sportsmanagementTable");
 				$tblprojectposition->load((int) $post['project_position_id' . $pks[$x]]);
 
@@ -281,9 +275,10 @@ class sportsmanagementModelteamplayer extends JSMModelAdmin
 				{
 				}
 
+
 				// Alten eintrag löschen
 				// Create a new query object.
-				$query = $db->getQuery(true);
+				$this->jsmquery->clear();
 
 				// Delete all
 				$conditions = array(
@@ -291,20 +286,21 @@ class sportsmanagementModelteamplayer extends JSMModelAdmin
 					$db->quoteName('project_id') . '=' . $this->_project_id,
 					$db->quoteName('persontype') . '=' . $this->persontype
 				);
+				
+				try
+			{
+				$this->jsmquery->delete($db->quoteName('#__sportsmanagement_person_project_position'));
+				$this->jsmquery->where($conditions);
+				$this->jsmdb->setQuery($this->jsmquery);
+				//sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+				$resultupdate = $this->jsmdb->execute();
 
-				$query->delete($db->quoteName('#__sportsmanagement_person_project_position'));
-				$query->where($conditions);
-
-				$db->setQuery($query);
-				sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
-
-				if (self::$db_num_rows)
-				{
-					$app->enqueueMessage(Text::sprintf('COM_' . strtoupper('sportsmanagement_person_project_position') . '_ITEMS_DELETED', self::$db_num_rows), '');
-				}
+//				if (self::$db_num_rows)
+				//{
+//					$app->enqueueMessage(Text::sprintf('COM_' . strtoupper('sportsmanagement_person_project_position') . '_ITEMS_DELETED', self::$db_num_rows), '');
+	//			}
 
 				$profile = new stdClass;
-
 				// $profile->person_id = $post['person_id'.$pks[$x]];
 				$profile->person_id           = $pks[$x];
 				$profile->project_id          = $this->_project_id;
@@ -313,12 +309,25 @@ class sportsmanagementModelteamplayer extends JSMModelAdmin
 				$profile->published           = $post['project_published' . $pks[$x]];
 				$profile->modified            = $this->jsmdate->toSql();
 				$profile->modified_by         = $this->jsmuser->get('id');
-
+				try
+			{
 				$result = $this->jsmdb->insertObject('#__sportsmanagement_person_project_position', $profile);
-
-				if (!$result)
-				{
 				}
+			catch (Exception $e)
+			{
+				$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.' '.__LINE__.' '.$e->getMessage()), 'error');
+			}
+				
+}
+			catch (Exception $e)
+			{
+				$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.' '.__LINE__.' '.$e->getMessage()), 'error');
+			}
+				
+			}
+			catch (Exception $e)
+			{
+				$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.' '.__LINE__.' '.$e->getMessage()), 'error');
 			}
 			// ende
 		}
