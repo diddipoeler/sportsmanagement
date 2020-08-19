@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -11,19 +9,9 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
-
-
-jimport('joomla.application.component.model');
-
 use Joomla\CMS\Filesystem\Folder;
-
-jimport('joomla.filesystem.file');
-
 
 /**
  * sportsmanagementModelsmquotestxt
@@ -34,7 +22,7 @@ jimport('joomla.filesystem.file');
  * @version   2014
  * @access    public
  */
-class sportsmanagementModelsmquotestxt extends JModel
+class sportsmanagementModelsmquotestxt extends JSMModelAdmin
 {
 
 	function getTXTFiles()
@@ -42,12 +30,9 @@ class sportsmanagementModelsmquotestxt extends JModel
 		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
 		$path   = JPATH_SITE . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR . 'mod_sportsmanagement_rquotes' . DIRECTORY_SEPARATOR . 'mod_sportsmanagement_rquotes';
-
-		// Get a list of files in the search path with the given filter.
+		/** Get a list of files in the search path with the given filter. */
 		$files = Folder::files($path, '.txt$|.php$');
-
 		return $files;
-
 	}
 
 }
