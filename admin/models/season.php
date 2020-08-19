@@ -53,6 +53,7 @@ class sportsmanagementModelseason extends JSMModelAdmin
 		$season_id  = $this->jsmjinput->getVar('season_id', 0, 'post', 'array');
 		$project_id = $this->jsmjinput->getVar('project_id', 0, 'post', 'array');
 		$persontype = $this->jsmjinput->getVar('persontype', 0, 'post', 'array');
+        $whichview = $this->jsmjinput->getVar('whichview', 0, 'post', 'array');
 
 		foreach ($pks as $key => $value)
 		{
