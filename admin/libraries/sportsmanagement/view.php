@@ -169,6 +169,14 @@ catch (Exception $e)
 }
 }
 
+/** soll der link zur bewertung der komponente angezeigt werden ? */		
+if (ComponentHelper::getParams($this->option)->get('show_jed_link'))
+{
+Log::add(Text::_('COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JED_LINK_TEXT'), Log::NOTICE, 'jsmerror');
+}		
+		
+		
+		
 if (preg_match("/ordering/i", $this->sortColumn)) {
    $this->saveOrderButton = false;
 } else {
