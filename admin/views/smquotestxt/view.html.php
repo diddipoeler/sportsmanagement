@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
 
 /**
  * sportsmanagementViewsmquotestxt
