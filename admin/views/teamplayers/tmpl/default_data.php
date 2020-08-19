@@ -265,29 +265,14 @@ $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_DEFAULT_IMAGE');
 $image_attributes['title'] = $imageTitle;
 $image = HTMLHelper::_('image',$imageFile,$imageTitle,$image_attributes);
 echo $image;
-?>
-                        <a href="<?php echo Uri::root() . $this->item->season_picture; ?>" title="<?php echo $imageTitle; ?>"
-                           class="modal">
-                            <img src="<?php echo Uri::root() . $this->item->season_picture; ?>"
-                                 alt="<?php echo $imageTitle; ?>" width="20" height="30"/>
-                        </a>
-						<?PHP
-					}
-                    elseif ($this->item->season_picture == !'')
-					{
-						$playerName = sportsmanagementHelper::formatName(null, $this->item->firstname, $this->item->nickname, $this->item->lastname, 0);
-						?>
-			<!--
-                        <a href="<?php echo Uri::root() . $this->item->season_picture; ?>" title="<?php echo $playerName; ?>"
-                           class="modal">
-                            <img src="<?php echo Uri::root() . $this->item->season_picture; ?>"
-                                 alt="<?php echo $playerName; ?>" width="20" height="30"/>
-                        </a>
-			-->
-						<?PHP
+echo sportsmanagementHelper::getBootstrapModalImage('season_picture' . $this->item->id, Uri::root() . $this->item->season_picture, $imageTitle, '20', Uri::root() . $this->item->season_picture);			    			    
+}
+elseif ($this->item->season_picture == !'')
+{
+$playerName = sportsmanagementHelper::formatName(null, $this->item->firstname, $this->item->nickname, $this->item->lastname, 0);
 echo sportsmanagementHelper::getBootstrapModalImage('season_picture' . $this->item->id, Uri::root() . $this->item->season_picture, $playerName, '20', Uri::root() . $this->item->season_picture);			    
-					}
-					?>
+}
+?>
                 </td>
 				<?PHP
 				if ($this->_persontype == 1)
