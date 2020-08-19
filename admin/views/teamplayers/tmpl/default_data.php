@@ -15,8 +15,25 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Session\Session;
+
+$this->saveOrder = $this->sortColumn == 'ppl.lastname';
+
+if ($this->saveOrder && !empty($this->items))
+{
+$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task='.$this->view.'.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{    
+HTMLHelper::_('draggablelist.draggable');
+}
+else
+{
+JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl,$this->saveOrderButton);    
+}
+}
 
 /** welche joomla version */
+/*
 if (version_compare(substr(JVERSION, 0, 5), '4.0.0', 'ge'))
 {
 }	
@@ -28,6 +45,7 @@ else
 {
 	HTMLHelper::_('behavior.mootools');
 }
+*/
 ?>
 <div class="table-responsive" id="editcell">
 <table class="<?php echo $this->table_data_class; ?>" id="<?php echo $this->view; ?>list">
