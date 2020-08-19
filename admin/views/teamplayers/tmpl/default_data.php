@@ -165,7 +165,7 @@ $this->dragable_group = 'data-dragable-group="none"';
 			$inputappend = '';
 			$canChange   = $this->user->authorise('core.edit.state', 'com_sportsmanagement.teamplayer.' . $this->item->id) && $canCheckin;
 			?>
-            <tr class="<?php echo "row$k"; ?>">
+            <tr class="row<?php echo $i % 2; ?>" <?php echo $this->dragable_group; ?>>
                 <td class="center">
 					<?php
 					echo $this->pagination->getRowOffset($i);
@@ -232,7 +232,7 @@ echo HTMLHelper::link($link, $image);
 
 					echo JHtmlSelect::genericlist(
 						$this->lists['nation'],
-						'country' . $row->person_id,
+						'country' . $this->item->person_id,
 						$inputappend . ' class="form-control form-control-inline" style="width:140px; ' . $append . '" onchange="document.getElementById(\'cb' . $i . '\').checked=true"',
 						'value',
 						'text',
@@ -362,7 +362,7 @@ echo $image;
 						}
 					}
 
-					echo HTMLHelper::_('select.genericlist', $this->lists['project_position_id'], 'project_position_id' . $row->id, $inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue);
+					echo HTMLHelper::_('select.genericlist', $this->lists['project_position_id'], 'project_position_id' . $this->item->id, $inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue);
 
 					?>
                     <input type="hidden" name="position_id<?php echo $this->item->id; ?>"
@@ -435,9 +435,9 @@ echo $image;
 
 					foreach ($options as $in => $option)
 					{
-						$checked = ($option->value == $row->project_published) ? ' checked="checked"' : '';
-						$btn     = ($option->value == $row->project_published && $row->project_published) ? ' active btn-success' : ' ';
-						$btn     = ($option->value == $row->project_published && !$row->project_published) ? ' active btn-danger' : $btn;
+						$checked = ($option->value == $this->item->project_published) ? ' checked="checked"' : '';
+						$btn     = ($option->value == $this->item->project_published && $this->item->project_published) ? ' active btn-success' : ' ';
+						$btn     = ($option->value == $this->item->project_published && !$this->item->project_published) ? ' active btn-danger' : $btn;
 
 						$onchange = ' onchange="document.getElementById(\'cb' . $i . '\').checked=true"';
 						$html[]   = '<input type="radio" style="display:none;" id="project_published' . $this->item->id . $in . '" name="project_published' . $this->item->id . '" value="'
