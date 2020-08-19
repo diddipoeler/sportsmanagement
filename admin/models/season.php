@@ -77,6 +77,12 @@ class sportsmanagementModelseason extends JSMModelAdmin
 				$this->jsmapp->enqueueMessage('Saisonzuordnung : ' . $row->name . ' schon vorhanden.', 'notice');
 			}
             
+            switch ($whichview )
+            {
+                case 'teamplayers':
+                break;
+            }
+            
             if ($persontype == 3)
 				{
 					$this->jsmquery->clear();
