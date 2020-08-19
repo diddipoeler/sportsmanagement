@@ -40,6 +40,17 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+
+<field type="extensionsubtitle" title="" color="#2672a6" />		
+<field name="show_jed_link" 
+type="extensionradiobutton" 
+default="1"
+class="radio btn-group btn-group-yesno"
+label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JED_LINK" 
+description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JED_LINK_DESC">
+<option value="0">JNO</option>
+<option value="1">JYES</option>
+</field>		
 		
 <field type="extensionsubtitle" title="" color="#2672a6" />
 		
