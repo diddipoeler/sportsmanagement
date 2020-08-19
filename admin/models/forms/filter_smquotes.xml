@@ -19,7 +19,18 @@
 			<option value="">JOPTION_SELECT_PUBLISHED</option>
 		</field>
 			
-		
+<field
+			name="catid"
+			type="category"
+			extension="com_sportsmanagement"
+			class="inputbox"
+			default=""
+			label="JCATEGORY"
+			description="JFIELD_CATEGORY_DESC"
+			required="false"
+		>
+			<option value="0">JOPTION_SELECT_CATEGORY</option>
+		</field>		
 		
 		
     </fields>
