@@ -496,11 +496,13 @@ break;
 						HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
 					);
 					*/
+					/*
 					JHtmlSidebar::addFilter(
 						Text::_('JOPTION_SELECT_CATEGORY'),
 						'filter_category_id',
 						HTMLHelper::_('select.options', HTMLHelper::_('category.options', 'com_sportsmanagement'), 'value', 'text', $this->state->get('filter.category_id'))
 					);
+					*/
 					break;
 			}
 /*
