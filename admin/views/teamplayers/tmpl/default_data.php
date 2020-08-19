@@ -29,8 +29,8 @@ else
 	HTMLHelper::_('behavior.mootools');
 }
 ?>
-<div class="table-responsive">
-    <table class="<?php echo $this->table_data_class; ?>">
+<div class="table-responsive" id="editcell">
+<table class="<?php echo $this->table_data_class; ?>" id="<?php echo $this->view; ?>list">
         <thead>
         <tr>
             <th width="">
