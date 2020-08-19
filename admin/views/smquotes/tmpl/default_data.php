@@ -87,26 +87,26 @@ if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
 $this->dragable_group = 'data-dragable-group="none"';
 }           
-			$link       = Route::_('index.php?option=com_sportsmanagement&task=smquote.edit&id=' . $this->count_i->id);
+			$link       = Route::_('index.php?option=com_sportsmanagement&task=smquote.edit&id=' . $this->item->id);
 			$canEdit    = $this->user->authorise('core.edit', 'com_sportsmanagement');
-			$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $this->count_i->checked_out == $this->user->get('id') || $this->count_i->checked_out == 0;
+			$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $this->count_i->checked_out == $this->user->get('id') || $this->item->checked_out == 0;
 			$checked    = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $this->count_i->checked_out_time, 'smquotes.', $canCheckin);
-			$canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.smquote.' . $this->count_i->id) && $canCheckin;
+			$canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.smquote.' . $this->item->id) && $canCheckin;
 			?>
             <tr class="row<?php echo $this->count_i % 2; ?>" <?php echo $this->dragable_group; ?>>
                 <td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
-                <td class="center"><?php echo HTMLHelper::_('grid.id', $this->count_i, $this->count_i->id); ?></td>
+                <td class="center"><?php echo HTMLHelper::_('grid.id', $this->count_i, $this->item->id); ?></td>
 				<?php
 
 				$inputappend = '';
 				?>
                 <td class="center">
 					<?php
-					if ($this->count_i->checked_out) : ?>
-						<?php echo HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->count_i->checked_out_time, 'smquotes.', $canCheckin); ?>
+					if ($this->item->checked_out) : ?>
+						<?php echo HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'smquotes.', $canCheckin); ?>
 					<?php endif;
 
-					if ($canEdit && !$this->count_i->checked_out) :
+					if ($canEdit && !$this->item->checked_out) :
 						?>
                         <a href="<?php echo $link; ?>">
 							<?php
@@ -123,13 +123,13 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 				<?php
 
 				?>
-                <td><?php echo $this->count_i->author; ?></td>
+                <td><?php echo $this->item->author; ?></td>
 
                 <td>
 					<?php
-					if (empty($this->count_i->picture))
+					if (empty($this->item->picture))
 					{
-$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE') . COM_SPORTSMANAGEMENT_PICTURE_SERVER . $this->count_i->picture;
+$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE') . COM_SPORTSMANAGEMENT_PICTURE_SERVER . $this->item->picture;
 $image_attributes['title'] = $imageTitle;
 echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/delete.png',$imageTitle,$image_attributes);
 					}
@@ -143,10 +143,10 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 					{
 
 						?>
-                        <a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER . $row->picture; ?>"
-                           title="<?php echo $this->count_i->name; ?>" class="modal">
-                            <img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER . $row->picture; ?>"
-                                 alt="<?php echo $this->count_i->name; ?>" width="20"/>
+                        <a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER . $this->item->picture; ?>"
+                           title="<?php echo $this->item->name; ?>" class="modal">
+                            <img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER . $this->item->picture; ?>"
+                                 alt="<?php echo $this->item->name; ?>" width="20"/>
                         </a>
 						<?PHP
 					}
@@ -154,8 +154,8 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
                 </td>
 
 
-                <td><?php echo $this->count_i->quote; ?></td>
-                <td><?php echo $this->escape($this->count_i->category_title); ?></td>
+                <td><?php echo $this->item->quote; ?></td>
+                <td><?php echo $this->escape($this->item->category_title); ?></td>
 
 <td class="order" id="defaultdataorder">
 <?php
@@ -164,21 +164,21 @@ echo $this->loadTemplate('data_order');
 </td>                
                 <td class="center">
                     <div class="btn-group">
-						<?php echo HTMLHelper::_('jgrid.published', $this->count_i->published, $this->count_i, 'smquotes.', $canChange, 'cb'); ?>
+						<?php echo HTMLHelper::_('jgrid.published', $this->item->published, $this->count_i, 'smquotes.', $canChange, 'cb'); ?>
 						<?php
 						// Create dropdown items and render the dropdown list.
 						if ($canChange)
 						{
-							HTMLHelper::_('actionsdropdown.' . ((int) $this->count_i->published === 2 ? 'un' : '') . 'archive', 'cb' . $this->count_i, 'smquotes');
-							HTMLHelper::_('actionsdropdown.' . ((int) $this->count_i->published === -2 ? 'un' : '') . 'trash', 'cb' . $this->count_i, 'smquotes');
-							echo HTMLHelper::_('actionsdropdown.render', $this->escape($this->count_i->name));
+							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === 2 ? 'un' : '') . 'archive', 'cb' . $this->count_i, 'smquotes');
+							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === -2 ? 'un' : '') . 'trash', 'cb' . $this->count_i, 'smquotes');
+							echo HTMLHelper::_('actionsdropdown.render', $this->escape($this->item->name));
 						}
 						?>
                     </div>
 
 
                 </td>
-                <td class="center"><?php echo $this->count_i->id; ?></td>
+                <td class="center"><?php echo $this->item->id; ?></td>
             </tr>
 			<?php
 
