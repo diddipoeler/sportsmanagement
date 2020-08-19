@@ -78,7 +78,7 @@ $this->dragable_group = 'data-dragable-group="none"';
 			$link = Route::_('index.php?option=com_sportsmanagement&task=season.edit&id=' . $this->item->id);
 
 			$assignteams   = Route::_('index.php?option=com_sportsmanagement&tmpl=component&view=teams&layout=assignteams&season_id=' . $this->item->id);
-			$assignpersons = Route::_('index.php?option=com_sportsmanagement&tmpl=component&view=players&layout=assignpersons&season_id=' . $this->item->id);
+			$assignpersons = Route::_('index.php?option=com_sportsmanagement&tmpl=component&view=players&layout=assignpersons&season_id=' . $this->item->id.'&whichview=seasons');
 			$canEdit       = $this->user->authorise('core.edit', 'com_sportsmanagement');
 			$canCheckin    = $this->user->authorise('core.manage', 'com_checkin') || $this->item->checked_out == $this->user->get('id') || $row->checked_out == 0;
 			$checked       = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'seasons.', $canCheckin);
