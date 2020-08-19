@@ -148,9 +148,9 @@ else
 
 
 
-foreach ($this->items as $i => $this->item)
+foreach ($this->items as $this->count_i => $this->item)
 	{
-$this->count_i = $i;
+//$this->count_i = $i;
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
 $this->dragable_group = 'data-dragable-group="none"';
@@ -161,19 +161,19 @@ $this->dragable_group = 'data-dragable-group="none"';
 			);
 			$canEdit     = $this->user->authorise('core.edit', 'com_sportsmanagement');
 			$canCheckin  = $this->user->authorise('core.manage', 'com_checkin') || $this->item->checked_out == $this->user->get('id') || $this->item->checked_out == 0;
-			$checked     = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $this->item->checked_out_time, 'teamplayers.', $canCheckin);
+			$checked     = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'teamplayers.', $canCheckin);
 			$inputappend = '';
 			$canChange   = $this->user->authorise('core.edit.state', 'com_sportsmanagement.teamplayer.' . $this->item->id) && $canCheckin;
 			?>
-            <tr class="row<?php echo $i % 2; ?>" <?php echo $this->dragable_group; ?>>
+            <tr class="row<?php echo $this->count_i % 2; ?>" <?php echo $this->dragable_group; ?>>
                 <td class="center">
 					<?php
-					echo $this->pagination->getRowOffset($i);
+					echo $this->pagination->getRowOffset($this->count_i);
 					?>
                 </td>
                 <td class="center">
 					<?php
-					echo HTMLHelper::_('grid.id', $i, $this->item->id);
+					echo HTMLHelper::_('grid.id', $this->count_i, $this->item->id);
 					?>
                 </td>
 
@@ -181,7 +181,7 @@ $this->dragable_group = 'data-dragable-group="none"';
 					<?php if ($this->item->checked_out)
 						:
 						?>
-						<?php echo HTMLHelper::_('jgrid.checkedout', $i, $this->item->editor, $this->item->checked_out_time, 'teamplayers.', $canCheckin); ?>
+						<?php echo HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->item->editor, $this->item->checked_out_time, 'teamplayers.', $canCheckin); ?>
 					<?php endif; ?>
 
 					<?php if ($canEdit && !$this->item->checked_out)
@@ -233,7 +233,7 @@ echo HTMLHelper::link($link, $image);
 					echo JHtmlSelect::genericlist(
 						$this->lists['nation'],
 						'country' . $this->item->person_id,
-						$inputappend . ' class="form-control form-control-inline" style="width:140px; ' . $append . '" onchange="document.getElementById(\'cb' . $i . '\').checked=true"',
+						$inputappend . ' class="form-control form-control-inline" style="width:140px; ' . $append . '" onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true"',
 						'value',
 						'text',
 						$this->item->country
@@ -277,12 +277,15 @@ echo $image;
 					{
 						$playerName = sportsmanagementHelper::formatName(null, $this->item->firstname, $this->item->nickname, $this->item->lastname, 0);
 						?>
+			<!--
                         <a href="<?php echo Uri::root() . $this->item->season_picture; ?>" title="<?php echo $playerName; ?>"
                            class="modal">
                             <img src="<?php echo Uri::root() . $this->item->season_picture; ?>"
                                  alt="<?php echo $playerName; ?>" width="20" height="30"/>
                         </a>
+			-->
 						<?PHP
+echo sportsmanagementHelper::getBootstrapModalImage('season_picture' . $this->item->id, Uri::root() . $this->item->season_picture, $playerName, '20', Uri::root() . $this->item->season_picture);			    
 					}
 					?>
                 </td>
@@ -292,15 +295,15 @@ echo $image;
 					?>
                     <td class="center">
                         <input<?php echo $inputappend; ?> type="text" size="4" class="form-control form-control-inline"
-                                                          name="market_value<?php echo $row->id; ?>"
+                                                          name="market_value<?php echo $this->item->id; ?>"
                                                           value="<?php echo $this->item->market_value; ?>"
-                                                          onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
+                                                          onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
                     </td>
                     <td class="center">
                         <input<?php echo $inputappend; ?> type="text" size="4" class="form-control form-control-inline"
-                                                          name="jerseynumber<?php echo $row->id; ?>"
+                                                          name="jerseynumber<?php echo $this->item->id; ?>"
                                                           value="<?php echo $this->item->jerseynumber; ?>"
-                                                          onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
+                                                          onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
                     </td>
 					<?PHP
 				}
@@ -323,7 +326,7 @@ echo $image;
 					{
 						?>
 			<!--
-                        <script language="javascript">document.getElementById('cb<?php echo $i; ?>').checked = true;</script>
+                        <script language="javascript">document.getElementById('cb<?php echo $this->count_i; ?>').checked = true;</script>
 			-->
 						<?php
 					}
@@ -362,7 +365,7 @@ echo $image;
 						}
 					}
 
-					echo HTMLHelper::_('select.genericlist', $this->lists['project_position_id'], 'project_position_id' . $this->item->id, $inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue);
+					echo HTMLHelper::_('select.genericlist', $this->lists['project_position_id'], 'project_position_id' . $this->item->id, $inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue);
 
 					?>
                     <input type="hidden" name="position_id<?php echo $this->item->id; ?>"
@@ -439,7 +442,7 @@ echo $image;
 						$btn     = ($option->value == $this->item->project_published && $this->item->project_published) ? ' active btn-success' : ' ';
 						$btn     = ($option->value == $this->item->project_published && !$this->item->project_published) ? ' active btn-danger' : $btn;
 
-						$onchange = ' onchange="document.getElementById(\'cb' . $i . '\').checked=true"';
+						$onchange = ' onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true"';
 						$html[]   = '<input type="radio" style="display:none;" id="project_published' . $this->item->id . $in . '" name="project_published' . $this->item->id . '" value="'
 							. $option->value . '"' . $onchange . ' />';
 
@@ -452,13 +455,13 @@ echo $image;
                 </td>
                 <td class="center">
                     <div class="btn-group">
-						<?php echo HTMLHelper::_('jgrid.published', $this->item->published, $i, 'teamplayers.', $canChange, 'cb');
+						<?php echo HTMLHelper::_('jgrid.published', $this->item->published, $this->count_i, 'teamplayers.', $canChange, 'cb');
 						?>
 						<?php // Create dropdown items and render the dropdown list.
 						if ($canChange)
 						{
-							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'teamplayers');
-							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'teamplayers');
+							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === 2 ? 'un' : '') . 'archive', 'cb' . $this->count_i, 'teamplayers');
+							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === -2 ? 'un' : '') . 'trash', 'cb' . $this->count_i, 'teamplayers');
 							echo HTMLHelper::_('actionsdropdown.render', $this->escape($this->item->firstname . ' ' . $this->item->lastname));
 						}
 						?>
