@@ -24,6 +24,7 @@
 			type="category"
 			extension="com_sportsmanagement"
 			class="inputbox"
+       onchange="this.form.submit();"
 			default=""
 			label="JCATEGORY"
 			description="JFIELD_CATEGORY_DESC"
