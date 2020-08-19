@@ -76,29 +76,25 @@ else
     </script>
 
 
-    <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
-        <!--	<fieldset class="adminform"> -->
-
-		<?PHP
-		echo $this->loadTemplate('joomla_version');
-
-		?>
-
-        <!--	</fieldset> -->
-        <input type="hidden" name="project_team_id" value="<?php echo $this->project_team_id; ?>"/>
-        <input type="hidden" name="team_id" value="<?php echo $this->team_id; ?>"/>
-	<input type="hidden" name="season_team_id" value="<?php echo $this->season_team_id; ?>"/>
-        <input type="hidden" name="season_id" value="<?php echo $this->season_id; ?>"/>
-        <input type="hidden" name="pid" value="<?php echo $this->project_id; ?>"/>
-        <input type="hidden" name="persontype" value="<?php echo $this->_persontype; ?>"/>
-        <input type="hidden" name="search_mode" value="<?php echo $this->lists['search_mode']; ?>" id="search_mode"/>
-        <input type="hidden" name="task" value=""/>
-        <input type="hidden" name="boxchecked" value="0"/>
-        <input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>"/>
-        <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>"/>
-		<?php echo HTMLHelper::_('form.token'); ?>
-    </form>
+<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 <?PHP
-echo "<div>";
+echo $this->loadTemplate('joomla_version');
+?>
+<input type="hidden" name="project_team_id" value="<?php echo $this->project_team_id; ?>"/>
+<input type="hidden" name="team_id" value="<?php echo $this->team_id; ?>"/>
+<input type="hidden" name="season_team_id" value="<?php echo $this->season_team_id; ?>"/>
+<input type="hidden" name="season_id" value="<?php echo $this->season_id; ?>"/>
+<input type="hidden" name="pid" value="<?php echo $this->project_id; ?>"/>
+<input type="hidden" name="persontype" value="<?php echo $this->_persontype; ?>"/>
+<input type="hidden" name="search_mode" value="<?php echo $this->lists['search_mode']; ?>" id="search_mode"/>
+<input type="hidden" name="task" value=""/>
+<input type="hidden" name="boxchecked" value="0"/>
+<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>"/>
+<input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>"/>
+<?php echo HTMLHelper::_('form.token'); ?>
+</form>
+<div>
+<?PHP
 echo $this->loadTemplate('footer');
-echo "</div>";
+?>
+</div>
