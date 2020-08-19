@@ -66,7 +66,7 @@ $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array()
 		
 		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search'));
 		$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
-		$this->setState('filter.category_id', $this->getUserStateFromRequest($this->context . '.filter.category_id', 'filter_category_id', ''));
+		$this->setState('filter.catid', $this->getUserStateFromRequest($this->context . '.filter.catid', 'filter_catid', ''));
 		$this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
 		$this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
 /*		
@@ -101,22 +101,13 @@ $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array()
 	 */
 	protected function getListQuery()
 	{
-		// Create a new query object.
 		$this->jsmquery->clear();
 		$this->jsmsubquery1->clear();
 		$this->jsmsubquery2->clear();
-
-		// Select some fields
 		$this->jsmquery->select('obj.*,obj.author as name');
-
-		// From the hello table
 		$this->jsmquery->from('#__sportsmanagement_rquote as obj');
-
-		// Join over the users for the checked out user.
 		$this->jsmquery->select('uc.name AS editor');
 		$this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
-
-		// Join over the categories.
 		$this->jsmquery->select('c.title AS category_title');
 		$this->jsmquery->join('LEFT', '#__categories AS c ON c.id = obj.catid');
 
@@ -130,9 +121,9 @@ $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array()
 			$this->jsmquery->where('obj.published = ' . $this->getState('filter.state'));
 		}
 
-		if ($this->getState('filter.category_id'))
+		if ($this->getState('filter.catid'))
 		{
-			$this->jsmquery->where('obj.catid = ' . $this->getState('filter.category_id'));
+			$this->jsmquery->where('obj.catid = ' . $this->getState('filter.catid'));
 		}
 
 		$this->jsmquery->order(
