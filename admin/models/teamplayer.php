@@ -301,6 +301,10 @@ class sportsmanagementModelteamplayer extends JSMModelAdmin
 	//			}
 
 				$profile = new stdClass;
+					if ( $post['project_published' . $pks[$x]] == '' )
+					{
+					$post['project_published' . $pks[$x]] = 1;	
+					}
 				// $profile->person_id = $post['person_id'.$pks[$x]];
 				$profile->person_id           = $pks[$x];
 				$profile->project_id          = $this->_project_id;
