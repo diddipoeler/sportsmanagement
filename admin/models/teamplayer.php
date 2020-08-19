@@ -222,7 +222,7 @@ class sportsmanagementModelteamplayer extends JSMModelAdmin
 			}
 			catch (Exception $e)
 			{
-				// $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.' '.__LINE__.' '.$e->getMessage()), 'error');
+				$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.' '.__LINE__.' '.$e->getMessage()), 'error');
 			}
 		}
 
@@ -242,11 +242,11 @@ class sportsmanagementModelteamplayer extends JSMModelAdmin
 
 			// Fields to update.
 			$fields = array(
-				$db->quoteName('project_position_id') . ' = ' . $post['project_position_id' . $pks[$x]],
-				$db->quoteName('jerseynumber') . ' = ' . $post['jerseynumber' . $pks[$x]],
-				$db->quoteName('market_value') . ' = ' . $post['market_value' . $pks[$x]],
-				$db->quoteName('modified') . ' = ' . $db->Quote('' . $date->toSql() . ''),
-				$db->quoteName('modified_by') . ' = ' . $user->get('id')
+				$this->jsmdb->quoteName('project_position_id') . ' = ' . $post['project_position_id' . $pks[$x]],
+				$this->jsmdb->quoteName('jerseynumber') . ' = ' . $post['jerseynumber' . $pks[$x]],
+				$this->jsmdb->quoteName('market_value') . ' = ' . $post['market_value' . $pks[$x]],
+				$this->jsmdb->quoteName('modified') . ' = ' . $this->jsmdb->Quote('' . $date->toSql() . ''),
+				$this->jsmdb->quoteName('modified_by') . ' = ' . $user->get('id')
 
 			);
 
@@ -257,9 +257,10 @@ class sportsmanagementModelteamplayer extends JSMModelAdmin
 
 			// Exit;
 
-			$query->clear();
-			$query->update($db->quoteName('#__sportsmanagement_season_team_person_id'))->set($fields)->where($conditions);
-			$db->setQuery($query);
+			$this->jsmquery->clear();
+			$this->jsmquery->update($db->quoteName('#__sportsmanagement_season_team_person_id'))->set($fields)->where($conditions);
+			$this->jsmdb->setQuery($this->jsmquery);
+			$resultupdate = $this->jsmdb->execute();
 
 			// If(!$tblPerson->store())
 			if (!sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__))
@@ -313,12 +314,13 @@ class sportsmanagementModelteamplayer extends JSMModelAdmin
 				$profile->modified            = $this->jsmdate->toSql();
 				$profile->modified_by         = $this->jsmuser->get('id');
 
-				$result = Factory::getDbo()->insertObject('#__sportsmanagement_person_project_position', $profile);
+				$result = $this->jsmdb->insertObject('#__sportsmanagement_person_project_position', $profile);
 
 				if (!$result)
 				{
 				}
 			}
+			// ende
 		}
 
 		return $result;
