@@ -129,7 +129,7 @@ class sportsmanagementModelteamplayer extends JSMModelAdmin
 			}
 			catch (Exception $e)
 			{
-				$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
+				$this->jsmapp->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
 
 				// Return false;
 			}
@@ -222,7 +222,7 @@ class sportsmanagementModelteamplayer extends JSMModelAdmin
 			}
 			catch (Exception $e)
 			{
-				$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.' '.__LINE__.' '.$e->getMessage()), 'error');
+				$this->jsmapp->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
 			}
 		}
 
@@ -315,19 +315,19 @@ class sportsmanagementModelteamplayer extends JSMModelAdmin
 				}
 			catch (Exception $e)
 			{
-				$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.' '.__LINE__.' '.$e->getMessage()), 'error');
+				$this->jsmapp->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
 			}
 				
 }
 			catch (Exception $e)
 			{
-				$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.' '.__LINE__.' '.$e->getMessage()), 'error');
+				$this->jsmapp->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
 			}
 				
 			}
 			catch (Exception $e)
 			{
-				$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.' '.__LINE__.' '.$e->getMessage()), 'error');
+				$this->jsmapp->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
 			}
 			// ende
 		}
