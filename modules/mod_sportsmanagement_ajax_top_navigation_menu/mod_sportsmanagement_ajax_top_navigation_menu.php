@@ -509,8 +509,8 @@ if ($assoc_id)
 }
 else
 {
-$countrysubassocselect[$country_federation]['assocs'] = array(HTMLHelper::_('select.option', 0, Text::_('-- Kreisverbände -- ')));
-$leagueselect[$country_federation]['leagues']      = array(HTMLHelper::_('select.option', 0, Text::_('--')));    
+//$countrysubassocselect[$country_federation]['assocs'] = array(HTMLHelper::_('select.option', 0, Text::_('-- Kreisverbände -- ')));
+//$leagueselect[$country_federation]['leagues']      = array(HTMLHelper::_('select.option', 0, Text::_('--')));    
 }
 
 /** Kreisverband */
@@ -521,7 +521,7 @@ if ($subassoc_id)
 }
 else
 {
-$countrysubsubassocselect[$country_federation]['subassocs'] = array(HTMLHelper::_('select.option', 0, Text::_('-- Kreisverbände -- ')));
+//$countrysubsubassocselect[$country_federation]['subassocs'] = array(HTMLHelper::_('select.option', 0, Text::_('-- Kreisverbände -- ')));
 //$leagueselect[$country_federation]['leagues']      = array(HTMLHelper::_('select.option', 0, Text::_('--')));    
 }
 
@@ -532,7 +532,7 @@ if ($subsubassoc_id)
 }
 else
 {
-$countrysubsubsubassocselect[$country_federation]['subsubassocs'] = array(HTMLHelper::_('select.option', 0, Text::_('-- Kreisverbände -- ')));
+//$countrysubsubsubassocselect[$country_federation]['subsubassocs'] = array(HTMLHelper::_('select.option', 0, Text::_('-- Kreisverbände -- ')));
 //$leagueselect[$country_federation]['leagues']      = array(HTMLHelper::_('select.option', 0, Text::_('--')));    
 }
 
@@ -543,7 +543,7 @@ if ($subsubsubassoc_id)
 }
 else
 {
-$countrysubsubsubassocselect[$country_federation]['subsubassocs'] = array(HTMLHelper::_('select.option', 0, Text::_('--  -- ')));
+//$countrysubsubsubassocselect[$country_federation]['subsubassocs'] = array(HTMLHelper::_('select.option', 0, Text::_('--  -- ')));
 //$leagueselect[$country_federation]['leagues']      = array(HTMLHelper::_('select.option', 0, Text::_('--')));    
 }
 
