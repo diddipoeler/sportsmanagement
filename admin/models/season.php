@@ -76,12 +76,19 @@ class sportsmanagementModelseason extends JSMModelAdmin
 				$row->load($season_id);
 				$this->jsmapp->enqueueMessage('Saisonzuordnung : ' . $row->name . ' schon vorhanden.', 'notice');
 			}
-            
-            switch ($whichview )
-            {
-                case 'teamplayers':
-                break;
-            }
+/** hier machen wir schon mal einen insert*/
+switch ($whichview )
+{
+case 'teamplayers':
+$profile = new stdClass;
+$profile->project_id = $project_id;
+$profile->person_id = $value;
+$profile->published = 1;
+$profile->persontype = $persontype;
+$profile->modified = $this->jsmdate->toSql();
+$profile->modified_by = $this->jsmuser->get('id');
+break;
+}
             
             if ($persontype == 3)
 				{
