@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Session\Session;
 
 $this->saveOrder = $this->sortColumn == 'dv.ordering';
 if ($this->saveOrder && !empty($this->items))
