@@ -54,6 +54,7 @@ class sportsmanagementModelseason extends JSMModelAdmin
 		$project_id = $this->jsmjinput->getVar('project_id', 0, 'post', 'array');
 		$persontype = $this->jsmjinput->getVar('persontype', 0, 'post', 'array');
         $whichview = $this->jsmjinput->getVar('whichview', 0, 'post', 'array');
+		$post   = Factory::getApplication()->input->post->getArray(array());
 
 		foreach ($pks as $key => $value)
 		{
@@ -80,6 +81,7 @@ class sportsmanagementModelseason extends JSMModelAdmin
 switch ($whichview )
 {
 case 'teamplayers':
+$personposition	= $post['position' . $value];
 $profile = new stdClass;
 $profile->project_id = $project_id;
 $profile->person_id = $value;
