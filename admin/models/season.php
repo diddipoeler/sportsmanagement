@@ -82,13 +82,23 @@ switch ($whichview )
 {
 case 'teamplayers':
 $personposition	= $post['position' . $value];
+$this->jsmquery->clear();
+$this->jsmquery->select('id');
+$this->jsmquery->from('#__sportsmanagement_project_position');
+$this->jsmquery->where('project_id = ' . $project_id);
+$this->jsmquery->where('position_id = ' . $personposition);
+$this->jsmdb->setQuery($this->jsmquery);
+$project_position_id = $this->jsmdb->loadResult();		
+		
 $profile = new stdClass;
 $profile->project_id = $project_id;
 $profile->person_id = $value;
 $profile->published = 1;
+$profile->project_position_id = $project_position_id;
 $profile->persontype = $persontype;
 $profile->modified = $this->jsmdate->toSql();
 $profile->modified_by = $this->jsmuser->get('id');
+$result = $this->jsmdb->insertObject('#__sportsmanagement_person_project_position', $profile);		
 break;
 }
             
