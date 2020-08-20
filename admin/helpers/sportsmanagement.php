@@ -2240,7 +2240,7 @@ try
 			echo '<td align="center" style=""><b>' . $division->name . '</b>&nbsp;</td>';
 			$jRegistry = new Registry;
 
-			if (version_compare(JVERSION, '3.0.0', 'ge'))
+			if ( version_compare(JVERSION, '3.0.0', 'ge') && isset($division->rankingparams) )
 			{
 				$jRegistry->loadString($division->rankingparams);
 			}
