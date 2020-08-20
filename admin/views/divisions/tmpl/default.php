@@ -15,19 +15,19 @@ use Joomla\CMS\HTML\HTMLHelper;
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-
-    <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
-		<?PHP
-		echo $this->loadTemplate('joomla_version');
-		?>
-        <input type="hidden" name="pid" value="<?php echo $this->project_id; ?>"/>
-        <input type="hidden" name="task" value=""/>
-        <input type="hidden" name="boxchecked" value="0"/>
-        <input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>"/>
-        <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>"/>
-		<?php echo HTMLHelper::_('form.token'); ?>
-    </form>
+<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 <?PHP
-echo "<div>";
+echo $this->loadTemplate('joomla_version');
+?>
+<input type="hidden" name="pid" value="<?php echo $this->project_id; ?>"/>
+<input type="hidden" name="task" value=""/>
+<input type="hidden" name="boxchecked" value="0"/>
+<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>"/>
+<input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>"/>
+<?php echo HTMLHelper::_('form.token'); ?>
+</form>
+<div>
+<?PHP
 echo $this->loadTemplate('footer');
-echo "</div>";
+?>
+</div>
