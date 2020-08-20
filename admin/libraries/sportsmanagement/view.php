@@ -153,7 +153,17 @@ img.car {
 	$this->project_id     = $this->jinput->get('pid');
 	$this->jsmmessage     = '';
 	$this->jsmmessagetype = 'notice';
-	$this->state          = $this->get('State');
+		
+		
+		switch ($this->view)
+		{
+			case 'smquotetxt':
+				break;
+			default:
+				$this->state          = $this->get('State');
+				break;
+		}
+	
     $this->dragable_group = '';
         $this->ordering = true;
         if ( $this->state )
