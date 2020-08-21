@@ -132,11 +132,12 @@
 						label="MOD_SPORTSMANAGEMENT_RANKING_COLUMN_NAMES_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_RANKING_COLUMN_NAMES_DESCR" 
 						size="50"/>
-		
+		<!--
 				<field 	name="spacer2" type="spacer" default="" 
 						label="MOD_SPORTSMANAGEMENT_RANKING_SPACER2"
 						description="" />
-
+				-->
+<field type="extensionsubtitle" title="MOD_SPORTSMANAGEMENT_RANKING_SPACER2" color="#2672a6" />
 				<field 	name="nametype" type="list" default="short_name" 
 						label="MOD_SPORTSMANAGEMENT_RANKING_TEAM_NAME_LABEL"
 						description="MOD_SPORTSMANAGEMENT_RANKING_TEAM_NAME_DESCR">
