@@ -391,8 +391,6 @@
 					   label="MOD_SPORTSMANAGEMENT_MATCHES_WHICH_CLUB_LOGO_TITLE"
 					   description="MOD_SPORTSMANAGEMENT_MATCHES_WHICH_CLUB_LOGO_DESCR">
 					<option value="club_big">MOD_SPORTSMANAGEMENT_MATCHES_CLUB_LOGO_BIG</option>
-					<option value="club_middle">MOD_SPORTSMANAGEMENT_MATCHES_CLUB_LOGO_MEDIUM</option>
-					<option value="club_small">MOD_SPORTSMANAGEMENT_MATCHES_CLUB_LOGO_SMALL</option>
 					<option value="team_picture">MOD_SPORTSMANAGEMENT_MATCHES_CLUB_LOGO_TEAM</option>
 					<option value="country">MOD_SPORTSMANAGEMENT_MATCHES_CLUB_LOGO_COUNTRY</option>
 				</field>
