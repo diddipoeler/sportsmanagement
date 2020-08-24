@@ -621,8 +621,8 @@ description="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_CLUBS_DESCR" />
 				</field>
 
 <field name="referee_name_format" type="nameformat"
-label="MOD_SPORTSMANAGEMENT_BIRTHDAY_REFEREE_NAME_FORMAT_LABEL" 
-description="MOD_SPORTSMANAGEMENT_BIRTHDAY_REFEREE_NAME_FORMAT_DESCR" />				
+label="MOD_SPORTSMANAGEMENT_MATCHES_REFEREE_NAME_FORMAT_LABEL" 
+description="MOD_SPORTSMANAGEMENT_MATCHES_REFEREE_NAME_FORMAT_DESCR" />				
 				
 				<field name="show_spectators" type="extensionradiobutton" default="0"
 					   class="radio btn-group btn-group-yesno"
