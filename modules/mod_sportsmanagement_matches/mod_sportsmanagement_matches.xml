@@ -166,6 +166,9 @@ description="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_CLUBS_DESCR" />
 					   task="projectteamoptions"
 					   key_field="project_id"
 					   value_field="p"
+				           key_clubid="club_id"
+					   value_clubid="club_ids"
+				       
 					   slug="true"
 					   required="false"
 					   size="10"
