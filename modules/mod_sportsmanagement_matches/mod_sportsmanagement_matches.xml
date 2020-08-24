@@ -415,8 +415,8 @@ description="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_CLUBS_DESCR" />
 					   description="MOD_SPORTSMANAGEMENT_MATCHES_COUNTRY_FLAG_FOLDER_DESCR"/>
 
 				<field name="xsize" type="text" default="30"
-					   label="MOD_SPORTSMANAGEMENT_MATCHES_MAX_IMAGE_HIGHT_TITLE"
-					   description="MOD_SPORTSMANAGEMENT_MATCHES_MAX_IMAGE_HIGHT_DESCR"/>
+					   label="MOD_SPORTSMANAGEMENT_MATCHES_MAX_IMAGE_HEIGHT_TITLE"
+					   description="MOD_SPORTSMANAGEMENT_MATCHES_MAX_IMAGE_HEIGHT_DESCR"/>
 
 				<field name="new_line_after_logo" type="extensionradiobutton" default="1"
 					   class="radio btn-group btn-group-yesno"
