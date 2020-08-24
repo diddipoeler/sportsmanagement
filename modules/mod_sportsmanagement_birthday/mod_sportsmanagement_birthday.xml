@@ -207,9 +207,9 @@ description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_TEAM_IDS_DESCR" />
 					<option value="1">JYES</option>
 				</field>
 
-				<field 	name="picture_width" type="text" default="50"
-						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_PICTURE_WIDTH_LABEL"
-						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_PICTURE_WIDTH_DESCR" />
+				<field 	name="picture_height" type="text" default="50"
+						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_PICTURE_HEIGHT_LABEL"
+						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_PICTURE_HEIGHT_DESCR" />
 
 <!--
         <field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_BIRTHDAY_SPACER_CUSTOMIZE_MESSAGES_DESCR" />
