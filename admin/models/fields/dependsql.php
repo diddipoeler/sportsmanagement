@@ -128,7 +128,18 @@ class JFormFieldDependSQL extends FormField
 		$script[] = "				$('#jform_" . $div . '_' . $depends . "').change(function(){";
 		$script[] = "					var value = $('#jform_" . $div . '_' . $depends . "').val();";
 		$script[] = "if (window.console) console.log('json value -> ' + value);";
-		$script[] = "					var	url = 'index.php?option=com_sportsmanagement&format=json&dbase=" . $cfg_which_database . "&slug=" . $slug . "&task=ajax." . $ajaxtask . "&" . $depends . "=' + value;";
+		
+		switch ($ajaxtask)
+		{
+		case 'projectteamoptions':
+$script[] = "var url = 'index.php?option=com_sportsmanagement&format=json&dbase=" . $cfg_which_database . "&slug=" . $slug . "&task=ajax." . $ajaxtask . "&" . $depends . "=' + value . "&club_id=" .;";								
+		break;
+				
+		default:
+$script[] = "var url = 'index.php?option=com_sportsmanagement&format=json&dbase=" . $cfg_which_database . "&slug=" . $slug . "&task=ajax." . $ajaxtask . "&" . $depends . "=' + value;";				
+		break;
+		}
+		
 
 		switch ($ajaxtask)
 		{
