@@ -85,10 +85,11 @@
 				<field 	name="Itemid" type="text" default=""
 						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SELECT_ITEMID_FOR_LINKS_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SELECT_ITEMID_FOR_LINKS_DESCR" />
-
+<!--
             <field type="jsmsubtitle" title="" />
             <field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SPACER_LAYOUT_SETTINGS" />
-
+				-->
+<field type="extensionsubtitle" title="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SPACER_LAYOUT_SETTINGS" color="#2672a6" />
 <!--            
 				<field 	name="@spacer" type="spacer" default="" 
 						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SPACER_LAYOUT_SETTINGS"
