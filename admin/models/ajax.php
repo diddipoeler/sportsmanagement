@@ -1123,7 +1123,7 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 	 *
 	 * @return
 	 */
-	public static function getProjectTeamOptions($project_id, $required = false, $slug = false, $dabse = false, $club_id)
+	public static function getProjectTeamOptions($project_id, $required = false, $slug = false, $dabse = false, $club_id = NULL)
 	{
 
 		$app    = Factory::getApplication();
