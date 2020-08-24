@@ -1156,6 +1156,7 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		$query->join('INNER', ' #__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
 		$query->join('INNER', ' #__sportsmanagement_team t ON t.id = st.team_id ');
 		$query->join('INNER', ' #__sportsmanagement_project p ON p.id = pt.project_id ');
+		$query->join('INNER', ' #__sportsmanagement_club c ON c.id = t.club_id ');
 
 		// Where
 		if ($project_id)
@@ -1179,6 +1180,25 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		else
 		{
 			$query->where('pt.project_id = 0');
+		}
+		
+		if ($club_id)
+		{
+			if (!is_array($club_id))
+			{
+				$club_id = explode(",", $club_id);
+			}
+
+			// Ist es ein array ?
+			if (is_array($club_id))
+			{
+				$ids = implode(",", array_map('intval', $club_id));
+				$query->where('c.id IN (' . $ids . ')');
+			}
+			else
+			{
+				$query->where('c.id = ' . (int) $club_id);
+			}
 		}
 
 		$query->group('t.id,t.alias,t.name');
