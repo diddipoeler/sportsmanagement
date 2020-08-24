@@ -93,7 +93,7 @@ switch ($mode)
                                     <div class="col-item">
                                         <div class="photo">
                                             <img src="<?php echo $thispic; ?>" class="img-responsive" alt="a"
-                                                 width="<?php echo $params->get('picture_width'); ?>"/>
+                                                 height="<?php echo $params->get('picture_height'); ?>"/>
                                         </div>
                                     </div>
                                 </div>
@@ -191,7 +191,7 @@ switch ($mode)
 					?>
                     <div class="item <?php echo $active; ?>">
                         <img src="<?php echo $thispic; ?>" alt="<?php echo $text; ?>"
-                             width="<?php echo $params->get('picture_width'); ?>">
+                             height="<?php echo $params->get('picture_height'); ?>">
                         <div class="carousel-caption">
                             <h3><?php echo $text; ?></h3>
                             <p><?php echo $birthdaytext; ?></p>
@@ -292,9 +292,9 @@ switch ($mode)
 
 								echo '<img src="' . Uri::base() . '/' . $thispic . '" alt="' . $text . '" title="' . $text . '"';
 
-								if ($params->get('picture_width') != '')
+								if ($params->get('picture_height') != '')
 								{
-									echo ' width="' . $params->get('picture_width') . '"';
+									echo ' height="' . $params->get('picture_height') . '"';
 								}
 
 								echo ' /><br />';
