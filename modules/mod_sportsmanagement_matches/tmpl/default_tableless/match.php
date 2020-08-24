@@ -160,7 +160,7 @@ use Joomla\CMS\Uri\Uri;
 				)
 			) ;
        
-     $output .=  $value->firstname.','.$value->lastname.'</span><br>'; 
+     $output .=  htmlspecialchars(sportsmanagementHelper::formatName(null, $value->firstname, $value->nickname, $value->lastname, $params->get("referee_name_format")), ENT_QUOTES, 'UTF-8').'</span><br>'; 
      }
 		$output .=  '<br>'.$match['spectators'];  
       echo $output;
