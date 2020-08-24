@@ -147,6 +147,18 @@
 					<option value="1">JYES</option>
 				</field>
 
+<field name="club_ids" 
+type="dependsql" 
+default="0" 
+depends="p"
+task="projectcluboptions" 
+key_field="project_id"
+value_field="p"
+slug="true"
+multiple="multiple"       
+label="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_CLUBS_TITLE" 
+description="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_CLUBS_DESCR" />
+		    
 				<field name="teams"
 					   type="dependsql"
 					   default="0"
