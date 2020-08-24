@@ -109,6 +109,9 @@ class JFormFieldDependSQL extends FormField
 
 		$value     = $this->form->getValue($val, $div);
 		$key_value = $this->form->getValue($key, $div);
+		
+		$value_clubid     = $this->form->getValue($val_clubid, $div);
+		$key_value_clubid = $this->form->getValue($key_clubid, $div);
 
 		$cfg_which_database = $this->form->getValue('cfg_which_database', $div);
 
@@ -158,8 +161,6 @@ class JFormFieldDependSQL extends FormField
 		$script[] = "								jQuery('select#" . $this->id . " option').remove();";
 		$script[] = "						});";
 		$script[] = "";
-		// $script[] = " alert('r data -> ' + r.data);";
-
 		$script[] = "						$.each(r.data, function (i, val) {";
 		$script[] = "if (window.console) console.log('json value-> ' + val.value);";
 		$script[] = "if (window.console) console.log('json text-> ' + val.text);";
