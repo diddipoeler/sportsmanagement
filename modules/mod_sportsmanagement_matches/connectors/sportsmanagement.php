@@ -277,6 +277,10 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 		$query->select('p.name AS pname,p.current_round,p.id AS project_id,p.timezone,p.game_parts,p.ordering');
 		$query->select('t1.id as team1_id');
 		$query->select('t2.id as team2_id');
+		
+		$query->select('c1.id as club1_id');
+		$query->select('c2.id as club2_id');
+		
 		$query->select('IF (mref.project_referee_id > 0, concat(person.lastname, \', \', person.firstname), \'\') AS refname');
 		$query->select('IF (m.team1_result IS NULL, \'z\', \'\') AS live');
 		$query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
