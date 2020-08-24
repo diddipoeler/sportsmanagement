@@ -68,6 +68,10 @@ class JFormFieldDependSQL extends FormField
 		$required  = $this->element['required'] == "true" ? 'true' : 'false';
 		$key       = ($this->element['key_field'] ? $this->element['key_field'] : 'value');
 		$val       = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
+		
+		$key_clubid       = ($this->element['club_id'] ? $this->element['club_id'] : 'value');
+		$val_clubid       = ($this->element['club_ids'] ? $this->element['club_ids'] : $this->name);
+		
 		$ajaxtask  = $this->element['task'];
 		$depends   = $this->element['depends'];
 		$slug      = $this->element['slug'] == "true" ? 'true' : 'false';
