@@ -101,9 +101,9 @@ foreach ($persons AS $person)
 				$thispic = $person['default_picture'];
 			}
 			echo '<img class="photo" src="' . Uri::base() . '/' . $thispic . '" alt="' . $text . '" title="' . $text . '"';
-			if ($params->get('picture_width') != '')
+			if ($params->get('picture_height') != '')
 			{
-				echo ' width="' . $params->get('picture_width') . '"';
+				echo ' height="' . $params->get('picture_height') . '"';
 			}
 			echo ' /><br />';
 		}
