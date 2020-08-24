@@ -133,7 +133,7 @@ class JFormFieldDependSQL extends FormField
 		{
 		case 'projectteamoptions':
 //$script[] = "var url = 'index.php?option=com_sportsmanagement&format=json&dbase=" . $cfg_which_database . "&slug=" . $slug . "&task=ajax." . $ajaxtask . "&" . $depends . "=' + value &club_id=;";								
-$script[] = "var url = 'index.php?option=com_sportsmanagement&format=json&dbase=" . $cfg_which_database . "&slug=" . $slug . "&club_id=&task=ajax." . $ajaxtask . "&" . $depends . "=' + value;";				
+$script[] = "var url = 'index.php?option=com_sportsmanagement&format=json&dbase=" . $cfg_which_database . "&slug=" . $slug . "&club_id=".$value_clubid."&task=ajax." . $ajaxtask . "&" . $depends . "=' + value;";				
 		break;
 				
 		default:
