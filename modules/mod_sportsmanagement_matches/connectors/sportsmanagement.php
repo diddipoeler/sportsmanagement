@@ -154,22 +154,17 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 	 */
 	public function getMatches()
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
-
-		// Get a refrence of the page instance in joomla
 		$document = Factory::getDocument();
-
-		// Get a db connection.
 		$db    = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 
 		$limit = ($this->params->get('limit', 0) > 0) ? $this->params->get('limit', 0) : 1;
 
 		$p = $this->params->get('p');
+		$club_ids = $this->params->get('club_ids');
+		$usedclub = (is_array($club_ids)) ? implode(",", array_map('intval', $club_ids)) : (int) $club_ids;
 
 		/**
 		 * da wir in der tabelle mit den spielen: sportsmanagement_match den timestamp
@@ -359,6 +354,11 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 		if ($usedteams)
 		{
 			$query->where(' ( st1.team_id IN (' . $usedteams . ' ) OR st2.team_id IN (' . $usedteams . ' ) )');
+		}
+		
+		if ($usedclub)
+		{
+			$query->where(' ( c1.id IN (' . $usedclub . ' ) OR c2.id IN (' . $usedclub . ' ) )');
 		}
 
 		if ($favteams)
