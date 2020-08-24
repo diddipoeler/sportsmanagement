@@ -855,6 +855,15 @@ class sportsmanagementControllerAjax extends BaseController
 				$this->jinput->get->getString('slug'),
 				$this->jinput->get->getString('dbase')
 			);
+			
+			if (count($result) == 1)
+			{
+				$this->app->enqueueMessage('Keine Vereine gefunden', 'Error');
+			}
+			else
+			{
+				$this->app->enqueueMessage('Vereine gefunden', 'Message');
+			}
 
 			echo new JsonResponse($result);
 		}
