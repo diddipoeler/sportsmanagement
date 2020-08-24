@@ -132,7 +132,8 @@ class JFormFieldDependSQL extends FormField
 		switch ($ajaxtask)
 		{
 		case 'projectteamoptions':
-$script[] = "var url = 'index.php?option=com_sportsmanagement&format=json&dbase=" . $cfg_which_database . "&slug=" . $slug . "&task=ajax." . $ajaxtask . "&" . $depends . "=' + value &club_id=;";								
+//$script[] = "var url = 'index.php?option=com_sportsmanagement&format=json&dbase=" . $cfg_which_database . "&slug=" . $slug . "&task=ajax." . $ajaxtask . "&" . $depends . "=' + value &club_id=;";								
+$script[] = "var url = 'index.php?option=com_sportsmanagement&format=json&dbase=" . $cfg_which_database . "&slug=" . $slug . "&task=ajax." . $ajaxtask . "&" . $depends . "=' + value;";				
 		break;
 				
 		default:
