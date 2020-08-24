@@ -31,18 +31,11 @@ $templatesToLoad = array('footer', 'fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 try
 {
-	/**
-	 * Get the form fieldsets.
-	 */
 	$fieldsets = $this->form->getFieldsets();
 }
 catch (Exception $e)
 {
-	$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-	$code = $e->getCode(); // Returns
-	Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
-
-	return false;
+	Factory::getApplication()->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
 }
 $view = $this->jinput->getCmd('view', 'cpanel');
 
