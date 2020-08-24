@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage controllers
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
 
@@ -327,7 +323,7 @@ class sportsmanagementControllerAjax extends BaseController
 		$app    = Factory::getApplication();
 		$jinput = $app->input;
 		$model  = $this->getModel('ajax');
-		echo json_encode((array) $model->getProjectTeamOptions($jinput->getVar('p', '0'), $jinput->getVar('required', 'false'), $jinput->getVar('slug', 'false'), Factory::getApplication()->input->getInt('dbase')));
+		echo json_encode((array) $model->getProjectTeamOptions($jinput->getVar('p', '0'), $jinput->getVar('required', 'false'), $jinput->getVar('slug', 'false'), Factory::getApplication()->input->getInt('dbase'),$jinput->getVar('club_id', '0') ));
 		Factory::getApplication()->close();
 	}
 
