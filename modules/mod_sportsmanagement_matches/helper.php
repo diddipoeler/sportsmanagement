@@ -427,7 +427,7 @@ class modMatchesSportsmanagementHelper
 	 *
 	 * @return integer
 	 */
-	public function usedteamscheck($team_id, $project_id)
+	public function usedteamscheck($team_id, $project_id, $club_id = 0)
 	{
 		$return = 0;
 
@@ -818,8 +818,8 @@ class modMatchesSportsmanagementHelper
 		// Start ajaxifying
 		if ($this->params->get('next_last'))
 		{
-			$showhome = $this->usedteamscheck($row->team1_id, $row->project_id);
-			$showaway = $this->usedteamscheck($row->team2_id, $row->project_id);
+			$showhome = $this->usedteamscheck($row->team1_id, $row->project_id,$row->club1_id);
+			$showaway = $this->usedteamscheck($row->team2_id, $row->project_id,$row->club2_id);
 		}
 
 		$temp = '<div class="jlmlext_ajaxmenu" style="text-align:center;width:100%;display:block;clear:both;margin-top:10px;">';
