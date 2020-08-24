@@ -48,6 +48,9 @@ class modMatchesSportsmanagementHelper
 		$this->usedteams = array(
 			0 => array()
 		);
+		$this->usedclubs = array(
+			0 => array()
+		);
 		$this->addusedprojects();
 		$this->iconpath = ($params->get('use_icons') != '-1') ? _JSMMATCHLISTMODURL . 'assets/images/' .
 			$params->get('use_icons') . '/' : false;
@@ -70,6 +73,10 @@ class modMatchesSportsmanagementHelper
 				{
 					$this->usedteams[(int) $p] = array_map('intval', $this->params->get('teams'));
 				}
+				if (is_array($this->params->get('club_ids')))
+				{
+					$this->usedclubs[(int) $p] = array_map('intval', $this->params->get('club_ids'));
+				}
 			}
 		}
 		elseif (!empty($usedp))
@@ -78,6 +85,10 @@ class modMatchesSportsmanagementHelper
 			{
 				$this->usedteams[(int) $usedp] = array_map('intval', $this->params->get('teams'));
 			}
+			if (is_array($this->params->get('club_ids')))
+				{
+					$this->usedclubs[(int) $p] = array_map('intval', $this->params->get('club_ids'));
+				}
 		}
 
 		if (ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info_frontend'))
@@ -443,6 +454,16 @@ class modMatchesSportsmanagementHelper
 				{
 					$return = 1;
 				}
+			}
+			if ( $club_id )
+			{
+			foreach ($this->usedclubs[$project_id] AS $key => $value)
+			{
+				if ($value == $club_id)
+				{
+					$return = 1;
+				}
+			}
 			}
 		}
 
