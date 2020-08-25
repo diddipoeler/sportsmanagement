@@ -163,10 +163,11 @@ class sportsmanagementModelallprojectrounds extends BaseDatabaseModel
 		foreach ($favteams as $key => $value)
 		{
 			$query->clear();
-			$query->select('id');
-			$query->from('#__sportsmanagement_project_team ');
-			$query->where('project_id =' . $this->projectid);
-			$query->where('team_id =' . $value);
+			$query->select('pt.id');
+			$query->from('#__sportsmanagement_project_team as pt');
+          		$query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');
+			$query->where('pt.project_id =' . $this->projectid);
+			$query->where('st.team_id =' . $value);
 
 			try
 			{
