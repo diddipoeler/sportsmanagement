@@ -34,29 +34,8 @@ class sportsmanagementViewallprojectrounds extends sportsmanagementView
 	 */
 	function init()
 	{
-
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		//$jinput = $app->input;
-
-		// Get a refrence of the page instance in joomla
-		//$document = Factory::getDocument();
-
-		
-
-		//$model = $this->getModel();
-
-		// $this->tableclass = $jinput->getVar('table_class', 'table','request','string');
 		$this->tableclass = $this->jinput->request->get('table_class', 'table', 'STR');
-        $this->show_favteaminfo  = $this->jinput->request->get('show_favteaminfo', 0, 'INT');
-		//$option           = $jinput->getCmd('option');
-		$starttime        = microtime();
-
-		//$project = sportsmanagementModelProject::getProject();
-//		$this->project        = $project;
-
+        	$this->show_favteaminfo  = $this->jinput->request->get('show_favteaminfo', 0, 'INT');
 		$this->projectid      = $this->project->id;
 		$this->projectmatches = $this->model->getProjectMatches();
 		$this->rounds         = sportsmanagementModelProject::getRounds();
