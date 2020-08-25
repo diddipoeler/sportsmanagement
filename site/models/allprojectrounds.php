@@ -251,10 +251,10 @@ class sportsmanagementModelallprojectrounds extends BaseDatabaseModel
 				{
 					if ((int) $match->roundcode === (int) $roundcode)
 					{
-						$htmlcontent[$a]['first'] .= '<tr><td>' . $match->home_name . '</td>';
-						$htmlcontent[$a]['first'] .= '<td>' . $match->team1_result . '</td>';
-						$htmlcontent[$a]['first'] .= '<td>' . $match->team2_result . '</td>';
-						$htmlcontent[$a]['first'] .= '<td>' . $match->away_name . '</td></tr>';
+						$htmlcontent[$a]['first'] .= '<tr><td width="40%">' . $match->home_name . '</td>';
+						$htmlcontent[$a]['first'] .= '<td width="10%">' . $match->team1_result . '</td>';
+						$htmlcontent[$a]['first'] .= '<td width="10%">' . $match->team2_result . '</td>';
+						$htmlcontent[$a]['first'] .= '<td width="40%">' . $match->away_name . '</td></tr>';
 
 						foreach ($this->ProjectTeams as $key => $value)
 						{
@@ -292,10 +292,10 @@ class sportsmanagementModelallprojectrounds extends BaseDatabaseModel
 
 					if ((int) $match->roundcode === (int) $secondroundcode)
 					{
-						$htmlcontent[$a]['second'] .= '<tr><td>' . $match->home_name . '</td>';
-						$htmlcontent[$a]['second'] .= '<td>' . $match->team1_result . '</td>';
-						$htmlcontent[$a]['second'] .= '<td>' . $match->team2_result . '</td>';
-						$htmlcontent[$a]['second'] .= '<td>' . $match->away_name . '</td></tr>';
+						$htmlcontent[$a]['second'] .= '<tr><td width="40%">' . $match->home_name . '</td>';
+						$htmlcontent[$a]['second'] .= '<td width="10%">' . $match->team1_result . '</td>';
+						$htmlcontent[$a]['second'] .= '<td width="10%">' . $match->team2_result . '</td>';
+						$htmlcontent[$a]['second'] .= '<td width="40%">' . $match->away_name . '</td></tr>';
 
 						foreach ($this->ProjectTeams as $key => $value)
 						{
