@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_birthday
@@ -12,7 +10,6 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
@@ -103,7 +100,7 @@ foreach ($persons AS $person)
 			echo '<img class="photo" src="' . Uri::base() . '/' . $thispic . '" alt="' . $text . '" title="' . $text . '"';
 			if ($params->get('picture_height') != '')
 			{
-				echo ' height="' . $params->get('picture_height') . '"';
+				echo ' width="auto" height="' . $params->get('picture_height') . '"';
 			}
 			echo ' /><br />';
 		}
