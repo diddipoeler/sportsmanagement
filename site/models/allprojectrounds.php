@@ -356,23 +356,32 @@ class sportsmanagementModelallprojectrounds extends BaseDatabaseModel
 						{
 							if ((int) $match->projectteam1_id === (int) $value || (int) $match->projectteam2_id === (int) $value)
 							{
-								$htmlcontent[$a]['firstroster'] = '<b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP') . ' : </b>';
-								$this->matchid                  = $match->id;
-								$this->projectteam_id           = $value;
-								$htmlcontent[$a]['firstroster'] .= implode(",", $this->getMatchPlayers());
-								$htmlcontent[$a]['firstroster'] .= '';
+								if ($config['show_firstroster'])
+								{
+									$htmlcontent[$a]['first'] .= '<tr><td colspan="4"><b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP') . ' : </b>';
+									$this->matchid                  = $match->id;
+									$this->projectteam_id           = $value;
+									$htmlcontent[$a]['first'] .= implode(",", self::getMatchPlayers());
+									$htmlcontent[$a]['first'] .= '</td></tr>';
+								}
 
-								$htmlcontent[$a]['firstsubst'] = '<b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTES') . ' : </b>';
-								$this->matchid                 = $match->id;
-								$this->projectteam_id          = $value;
-								$htmlcontent[$a]['firstsubst'] .= implode(",", $this->getSubstitutes());
-								$htmlcontent[$a]['firstsubst'] .= '';
+								if ($config['show_firstsubst'])
+								{
+									$htmlcontent[$a]['first'] .= '<tr><td colspan="4"><b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTES') . ' : </b>';
+									$this->matchid                 = $match->id;
+									$this->projectteam_id          = $value;
+									$htmlcontent[$a]['first'] .= implode(",", self::getSubstitutes());
+									$htmlcontent[$a]['first'] .= '</td></tr>';
+								}
 
-								$htmlcontent[$a]['firstevents'] = '<b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS') . ' : </b>';
-								$this->matchid                  = $match->id;
-								$this->projectteam_id           = $value;
-								$htmlcontent[$a]['firstevents'] .= implode(",", $this->getPlayersEvents());
-								$htmlcontent[$a]['firstevents'] .= '';
+								if ($config['show_firstevents'])
+								{
+									$htmlcontent[$a]['first'] .= '<tr><td colspan="4"><b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS') . ' : </b>';
+									$this->matchid                  = $match->id;
+									$this->projectteam_id           = $value;
+									$htmlcontent[$a]['first'] .= implode(",", self::getPlayersEvents());
+									$htmlcontent[$a]['first'] .= '</td></tr>';
+								}
 							}
 						}
 					}
