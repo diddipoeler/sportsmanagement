@@ -628,6 +628,7 @@ class sportsmanagementModelallprojectrounds extends BaseDatabaseModel
 		$query->where('ev.match_id = ' . (int) $this->matchid);
 		$query->where('ev.projectteam_id = ' . $this->projectteam_id);
 		$query->group('ev.id');
+		$query->order('ev.event_time');
 
 		$db->setQuery($query);
 		$res = $db->loadObjectList();
