@@ -589,7 +589,7 @@ class sportsmanagementModelallprojectrounds extends BaseDatabaseModel
 		{
 			foreach ($result as $row)
 			{
-				$projectteamplayer[] = $row->firstname . ' ' . $row->lastname . ' (' . $row->in_out_time . ')';
+				$projectteamplayer[] = $row->firstname . ' ' . $row->lastname . ' für '. ' (' . $row->in_out_time . ')';
 			}
 		}
 
