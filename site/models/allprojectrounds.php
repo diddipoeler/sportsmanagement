@@ -634,7 +634,8 @@ class sportsmanagementModelallprojectrounds extends BaseDatabaseModel
 
 		if (!$res)
 		{
-			Log::add(Text::_('Keine Ereignisse vorhanden'), Log::WARNING, 'jsmerror');
+			//Log::add(Text::_('Keine Ereignisse vorhanden'), Log::WARNING, 'jsmerror');
+			$playersevents[] = Text::_('Keine Ereignisse vorhanden');
 		}
 
 		foreach ($res as $row)
