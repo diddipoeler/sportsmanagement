@@ -88,7 +88,7 @@ switch ($mode)
                                 <div class="col-md-12">
                                     <div class="col-item">
                                         <div class="photo">
-                                            <img src="<?php echo $thispic; ?>" class="img-responsive" alt="a"
+                                            <img src="<?php echo $thispic; ?>" class="img" alt="<?php echo $text; ?>"
                                                  width="auto" height="<?php echo $params->get('picture_height'); ?>"/>
                                         </div>
                                     </div>
