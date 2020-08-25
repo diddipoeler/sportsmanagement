@@ -495,7 +495,8 @@ class sportsmanagementModelallprojectrounds extends BaseDatabaseModel
 
 		if (!$matchplayers)
 		{
-			Log::add(Text::_('Keine Spieler vorhanden'), Log::WARNING, 'jsmerror');
+			//Log::add(Text::_('Keine Spieler vorhanden'), Log::WARNING, 'jsmerror');
+			$projectteamplayer[] = Text::_('Keine Spieler vorhanden');
 		}
 
 		foreach ($matchplayers as $row)
@@ -628,7 +629,8 @@ class sportsmanagementModelallprojectrounds extends BaseDatabaseModel
 
 		if (!$res)
 		{
-			Log::add(Text::_('Keine Ereignisse vorhanden'), Log::WARNING, 'jsmerror');
+			//Log::add(Text::_('Keine Ereignisse vorhanden'), Log::WARNING, 'jsmerror');
+			$playersevents[] = Text::_('Keine Ereignisse vorhanden');
 		}
 
 		foreach ($res as $row)
