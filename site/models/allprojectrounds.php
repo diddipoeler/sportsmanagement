@@ -532,8 +532,6 @@ class sportsmanagementModelallprojectrounds extends BaseDatabaseModel
 	function getSubstitutes()
 	{
 		$app = Factory::getApplication();
-
-		// Get a db connection.
 		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
@@ -543,10 +541,8 @@ class sportsmanagementModelallprojectrounds extends BaseDatabaseModel
 		$query->select('pt.team_id,pt.id AS ptid');
 		$query->select('p.firstname,p.nickname,p.lastname');
 
-		// $query->select('tp.person_id,tp.jerseynumber');
 		$query->select('stp1.person_id,stp1.jerseynumber');
 
-		// $query->select('tp2.person_id AS out_person_id');
 		$query->select('stp2.person_id AS out_person_id');
 		$query->select('p2.id AS out_ptid,p2.firstname AS out_firstname,p2.nickname AS out_nickname,p2.lastname AS out_lastname');
 		$query->select('pos.name AS in_position');
@@ -586,7 +582,8 @@ class sportsmanagementModelallprojectrounds extends BaseDatabaseModel
 
 		if (!$result)
 		{
-			Log::add(Text::_('Keine Auswechselungen vorhanden'), Log::WARNING, 'jsmerror');
+			//Log::add(Text::_('Keine Auswechselungen vorhanden'), Log::WARNING, 'jsmerror');
+			$projectteamplayer[] = Text::_('Keine Auswechselungen vorhanden');
 		}
 		else
 		{
@@ -608,8 +605,6 @@ class sportsmanagementModelallprojectrounds extends BaseDatabaseModel
 	function getPlayersEvents()
 	{
 		$app = Factory::getApplication();
-
-		// Get a db connection.
 		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
