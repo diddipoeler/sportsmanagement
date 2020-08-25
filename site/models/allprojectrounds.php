@@ -458,8 +458,6 @@ class sportsmanagementModelallprojectrounds extends BaseDatabaseModel
 	function getMatchPlayers()
 	{
 		$app = Factory::getApplication();
-
-		// Get a db connection.
 		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
@@ -512,11 +510,11 @@ class sportsmanagementModelallprojectrounds extends BaseDatabaseModel
 
 			if ($row->in_out_time)
 			{
-				$projectteamplayer[] = $row->firstname . ' ' . $row->lastname . ' (' . $row->in_out_time . ')';
+				$projectteamplayer[] = '(' . $row->jerseynumber . ')'.$row->firstname . ' ' . $row->lastname . ' (' . $row->in_out_time . ')';
 			}
 			else
 			{
-				$projectteamplayer[] = $row->firstname . ' ' . $row->lastname;
+				$projectteamplayer[] = '(' . $row->jerseynumber . ')'.$row->firstname . ' ' . $row->lastname;
 			}
 		}
 
