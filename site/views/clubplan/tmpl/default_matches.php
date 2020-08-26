@@ -359,10 +359,17 @@ use Joomla\CMS\Factory;
 
 				if ($game->cancel == 0)
 				{
+					if ($this->config['show_matchreport'])
+				{
+						
+					}
+					else
+					{
 					$score .= '<td align="center" id="ergebnisheim">';
 					$score .= $e1;
 					$score .= '</td><td align="center">-</td><td align="center" id="ergebnisgast">';
 					$score .= $e2;
+					}
 				}
 				else
 				{
