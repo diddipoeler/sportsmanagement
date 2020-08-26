@@ -359,7 +359,7 @@ use Joomla\CMS\Factory;
 
 				if ($game->cancel == 0)
 				{
-					if ($this->config['show_matchreport__link'])
+					if ($this->config['show_matchreport_link'])
 				{
 					$score .= '<td colspan="3" align="center" id="ergebnismatchreport">';	
 				$score .= HTMLHelper::link($matchreport_link, $e1.'-'.$e2 );		
