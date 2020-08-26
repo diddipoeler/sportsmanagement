@@ -183,11 +183,10 @@
 				description="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_DESCR_NAMES">
 		</field>
 
-    <field 	name="team_picture" type="list" default="logo_small"
+    <field 	name="team_picture" type="list" default="logo_big"
                label="COM_SPORTSMANAGEMENT_FES_TEAMS_PARAM_LABEL_SHOW_TEAM_PICTURE"
                description="COM_SPORTSMANAGEMENT_FES_TEAMS_PARAM_DESCR_SHOW_TEAM_PICTURE">
-            <option value="logo_small">COM_SPORTSMANAGEMENT_FES_TEAMS_OPTION_CLUB_LOGO_SMALL</option>
-            <option value="logo_middle">COM_SPORTSMANAGEMENT_FES_TEAMS_OPTION_CLUB_LOGO_MIDDLE</option>
+            <option value="">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_NO_LOGO</option>
             <option value="logo_big">COM_SPORTSMANAGEMENT_FES_TEAMS_OPTION_CLUB_LOGO_BIG</option>
         </field>
         
@@ -277,9 +276,16 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		
+		<field name="show_matchreport_link" type="extensionradiobutton" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_LABEL_SHOW_LINK_MATCHREPORT" description="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_LABEL_SHOW_LINK_MATCHREPORT">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 
 	</fieldset>
-
+<!-- reiter 4 -->
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS"
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS"
 		group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS"
