@@ -361,7 +361,7 @@ use Joomla\CMS\Factory;
 				{
 					if ($this->config['show_matchreport'])
 				{
-						
+				echo HTMLHelper::link($matchreport_link, '<td colspan="3" align="center" id="matchreport_link">'.$e1.'-'.$e2.'</td>'  );		
 					}
 					else
 					{
