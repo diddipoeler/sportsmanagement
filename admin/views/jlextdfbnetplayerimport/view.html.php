@@ -72,8 +72,8 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 			$nation,
 			'filter_nation',
 			'class="inputbox" style="width:220px"',
-			'id',
-			'name',
+			'value',
+			'text',
 			'DEU'
 		);
 		
