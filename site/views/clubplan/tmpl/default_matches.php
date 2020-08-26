@@ -359,16 +359,17 @@ use Joomla\CMS\Factory;
 
 				if ($game->cancel == 0)
 				{
-					$score .= '<td align="center">';
+					$score .= '<td align="center" id="ergebnisheim">';
 					$score .= $e1;
-					$score .= '</td><td align="center">-</td><td align="center">';
+					$score .= '</td><td align="center">-</td><td align="center" id="ergebnisgast">';
 					$score .= $e2;
 				}
 				else
 				{
-					$score .= '<td align="center" valign="top" colspan="3">' . $game->cancel_reason . '</td>';
+					$score .= '<td align="center" valign="top" colspan="3" id="ergebnisgrund">' . $game->cancel_reason . '</td>';
 				}
 				echo $score;
+			
 				if ($this->config['show_thumbs_picture'])
 				{
 					switch ($this->config['type_matches'])
