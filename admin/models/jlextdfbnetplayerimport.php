@@ -211,12 +211,12 @@ class sportsmanagementModeljlextdfbnetplayerimport extends BaseDatabaseModel
 		$option   = Factory::getApplication()->input->getCmd('option');
 		$app      = Factory::getApplication();
 		$document = Factory::getDocument();
-
 		$lang                = Factory::getLanguage();
 		$this->_success_text = '';
 		$my_text             = '';
-
-		$country = "DEU"; // DFBNet gibt es nur in D, also ist die eingestellte Joomla Sprache nicht relevant
+$post = Factory::getApplication()->input->post->getArray(array());
+		$country = $post['filter_nation'];
+		//$country = "DEU"; // DFBNet gibt es nur in D, also ist die eingestellte Joomla Sprache nicht relevant
 
 		$project = $app->getUserState("$option.pid", '0');
 
@@ -346,16 +346,19 @@ and ma.projectteam2_id = '$row->projectteam2_id'
 		$option   = Factory::getApplication()->input->getCmd('option');
 		$app      = Factory::getApplication();
 		$document = Factory::getDocument();
+		$post = Factory::getApplication()->input->post->getArray(array());
 
-		$country = "DEU"; // DFBNet gibt es nur in D, also ist die eingestellte Joomla Sprache nicht relevant
+		//$country = "DEU"; // DFBNet gibt es nur in D, also ist die eingestellte Joomla Sprache nicht relevant
 		$project = $app->getUserState("$option.pid", '0');
+		
+		$country = $post['filter_nation'];
 
 		$whichfile = $app->getUserState($option . 'whichfile');
 
 		$app->enqueueMessage(Text::_('Welches Land? ' . $country), '');
 		$app->enqueueMessage(Text::_('Welche Art von Datei? ' . $whichfile), '');
 
-		$post = Factory::getApplication()->input->post->getArray(array());
+		
 
 		$this->_league_new_country = $country;
 
