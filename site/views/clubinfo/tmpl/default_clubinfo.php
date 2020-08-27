@@ -143,8 +143,9 @@ else
 				{
 					?>
                     <address >
-			    <span itemprop="telephone">
+			    
                         <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_PHONE'); ?></strong>
+			    <span itemprop="telephone">
 						<?php echo $this->club->phone; ?>
 				    </span>
                     </address>
@@ -156,7 +157,9 @@ else
 					?>
                     <address>
                         <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_FAX'); ?></strong>
+			    <span itemprop="faxNumber">
 						<?php echo $this->club->fax; ?>
+				    </span>
                     </address>
 					<?php
 				}
@@ -178,7 +181,13 @@ else
 						}
 						else
 						{
+							?>
+			    <span itemprop="email">
+			    <?php
 							echo $this->club->email;
+							?>
+			    </span>
+			    <?php
 						}
 						?>
                     </address>
