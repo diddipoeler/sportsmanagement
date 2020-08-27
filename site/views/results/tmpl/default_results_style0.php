@@ -436,7 +436,7 @@ if ($this->config['show_comments_count'])
 									$this->modalheight,
 									$this->overallconfig['use_jquery_modal'],
 									'itemprop',
-									'image'
+									'logo'
 								);
 							}
 							else
@@ -465,7 +465,7 @@ if ($this->config['show_comments_count'])
 									$this->modalheight,
 									$this->overallconfig['use_jquery_modal'],
 									'itemprop',
-									'image'
+									'logo'
 								);
 							}
 							else
