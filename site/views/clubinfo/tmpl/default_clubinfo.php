@@ -119,9 +119,9 @@ else
 							echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_ADDRESS');
 							?>
 			    </strong>
-			    <span itemprop="streetAddress">
+			    
 						<?php echo $addressString; ?>
-				    </span>
+				
 
                         <span class="clubinfo_listing_value">
                             <?php
