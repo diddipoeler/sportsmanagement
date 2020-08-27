@@ -47,6 +47,7 @@ else
 	?>
     <div class="<?php echo $this->divclassrow; ?>" itemscope="" itemtype="http://schema.org/SportsClub" id="default_clubinfo">
         <div class="<?php echo $this->divclass; ?>3 center">
+		<span itemprop="priceRange"></span>
 			<?PHP ?>
             <!-- SHOW LOGO - START -->
 			<?php
