@@ -223,7 +223,7 @@ class JSMCountries
 	 */
 	public static function convertAddressString($name = '', $address = '', $state = '', $zipcode = '', $location = '', $country = '', $addressString = 'COM_SPORTSMANAGEMENT_CLUBINFO_ADDRESS_FORM')
 	{
-		$resultString = '<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">';
+		$resultString = '';
 
 		if ((!empty($address))
 			|| (!empty($state))
@@ -234,8 +234,8 @@ class JSMCountries
 			$countryFlag  = self::getCountryFlag($country);
 			$countryName  = self::getCountryName($country);
 			$dummy        = Text::_($addressString);
-			$dummy        = str_replace('%NAME%', '<span itemprop="name">'.$name.'</span>', $dummy);
-			$dummy        = str_replace('%ADDRESS%', '<span itemprop="streetAddress">'.$address.'</span>', $dummy);
+			$dummy        = str_replace('%NAME%', '<span property="name">'.$name.'</span>', $dummy);
+			$dummy        = str_replace('%ADDRESS%', '<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"><span itemprop="streetAddress">'.$address.'</span>', $dummy);
 			$dummy        = str_replace('%STATE%', '<span itemprop="addressRegion">'.$state.'</span>', $dummy);
 			$dummy        = str_replace('%ZIPCODE%', '<span itemprop="postalCode">'.$zipcode.'</span>', $dummy);
 			$dummy        = str_replace('%LOCATION%', '<span itemprop="addressLocality">'.$location.'</span>', $dummy);
