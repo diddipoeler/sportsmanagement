@@ -436,9 +436,11 @@ $modalwidth  = ComponentHelper::getParams($jinput->getCmd('option'))->get('modal
 			break;
 		case 'clubinfo':
 			?>
-
+<!--
 <div vocab="http://schema.org/" typeof="SportsTeam">
+-->
 	<span property="name">
+
             <h4>
 				<?php
 				echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_TITLE') . " " . $this->club->name;
@@ -463,8 +465,11 @@ $modalwidth  = ComponentHelper::getParams($jinput->getCmd('option'))->get('modal
 				}
 				?>
             </h4>
+	
 	</span>
+<!--
 </div>	
+-->
 			<?PHP
 			break;
 		default:
