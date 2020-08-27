@@ -88,17 +88,19 @@ else
             <!-- SHOW LOGO - END -->
             <!-- SHOW SMALL LOGO - START -->
 			<?php
+	/*
 			if (($this->config['show_club_shirt']) && ($this->club->logo_small != ''))
 			{
 				$club_trikot_title = str_replace("%CLUBNAME%", $this->club->name, Text::_("COM_SPORTSMANAGEMENT_CLUBINFO_TRIKOT_TITLE"));
 				$picture           = $this->club->logo_small;
 				echo sportsmanagementHelper::getPictureThumb($picture, $club_emblem_title, 20, 20, 3);
 			}
+	*/
 			if ($this->club->website)
 			{
 				if ($this->config['show_club_internetadress_picture'])
 				{
-					echo '<img style="" src="http://free.pagepeeker.com/v2/thumbs.php?size=m&url=' . $this->club->website . '">';
+					echo '<img itemprop="logo" style="" src="http://free.pagepeeker.com/v2/thumbs.php?size=m&url=' . $this->club->website . '">';
 				}
 			}
 			?>
