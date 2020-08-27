@@ -114,9 +114,11 @@ else
 					$addressString = JSMCountries::convertAddressString($this->club->name, $this->club->address, $this->club->state, $this->club->zipcode, $this->club->location, $this->club->country, 'COM_SPORTSMANAGEMENT_CLUBINFO_ADDRESS_FORM');
 					?>
                     <address>
-                        <strong><?php
+                        <strong>
+				<?php
 							echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_ADDRESS');
-							?></strong>
+							?>
+			    </strong>
 						<?php echo $addressString; ?>
 
                         <span class="clubinfo_listing_value">
@@ -138,7 +140,7 @@ else
 				if ($this->club->phone)
 				{
 					?>
-                    <address>
+                    <address itemprop="telephone">
                         <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_PHONE'); ?></strong>
 						<?php echo $this->club->phone; ?>
                     </address>
