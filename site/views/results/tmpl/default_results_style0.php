@@ -119,7 +119,7 @@ if ($this->config['show_comments_count'])
 			{
 				?>
                 <th id="results-header-head-column-count" colspan="<?php echo $nbcols - $nbcols_header; ?>">
-			<span itemprop="startDate">
+			<span itemprop="startDate" datetime="<?php echo $date;?>" content="<?php echo $date;?>"></span>
 					<?php
 					if ($date == "0000-00-00")
 					{
@@ -136,7 +136,7 @@ if ($this->config['show_comments_count'])
 						echo ' - ' . Text::sprintf('COM_SPORTSMANAGEMENT_RESULTS_GAMEDAY_NB', $this->roundcode);
 					}
 					?>
-			</span>
+			
                 </th>
 				<?php
 				if ($this->config['show_attendance_column'])
