@@ -234,11 +234,11 @@ class JSMCountries
 			$countryFlag  = self::getCountryFlag($country);
 			$countryName  = self::getCountryName($country);
 			$dummy        = Text::_($addressString);
-			$dummy        = str_replace('%NAME%', $name, $dummy);
-			$dummy        = str_replace('%ADDRESS%', $address, $dummy);
-			$dummy        = str_replace('%STATE%', $state, $dummy);
-			$dummy        = str_replace('%ZIPCODE%', $zipcode, $dummy);
-			$dummy        = str_replace('%LOCATION%', $location, $dummy);
+			$dummy        = str_replace('%NAME%', ''.$name.'', $dummy);
+			$dummy        = str_replace('%ADDRESS%', ''.$address.'', $dummy);
+			$dummy        = str_replace('%STATE%', ''.$state.'', $dummy);
+			$dummy        = str_replace('%ZIPCODE%', '<span itemprop="postalCode">'.$zipcode.'</span>', $dummy);
+			$dummy        = str_replace('%LOCATION%', ''.$location.'', $dummy);
 			$dummy        = str_replace('%FLAG%', $countryFlag, $dummy);
 			$dummy        = str_replace('%COUNTRY%', $countryName, $dummy);
 			$resultString .= $dummy;
