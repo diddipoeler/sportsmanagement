@@ -46,11 +46,11 @@ use Joomla\CMS\Factory;
 					{
 						if ($this->config['show_teams_shortcut_of_club'])
 						{
-							echo HTMLHelper::link($link, HTMLHelper::image($team->trikot_home, $team->team_name, $params) . $team->team_name . " (" . $team->team_shortcut . ")");
+							echo HTMLHelper::link($link, HTMLHelper::image($team->trikot_home, $team->team_name, $params) . '<span itemprop="name">'.$team->team_name . " (" . $team->team_shortcut . ")".'</span>' );
 						}
 						else
 						{
-							echo HTMLHelper::link($link, HTMLHelper::image($team->trikot_home, $team->team_name, $params) . $team->team_name);
+							echo HTMLHelper::link($link, HTMLHelper::image($team->trikot_home, $team->team_name, $params) . '<span itemprop="name">'.$team->team_name.'</span>' );
 						}
 					}
 					else
