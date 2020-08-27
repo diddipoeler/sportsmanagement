@@ -66,7 +66,9 @@ else
 				'',
 				$this->modalwidth,
 				$this->modalheight,
-				$this->overallconfig['use_jquery_modal']
+				$this->overallconfig['use_jquery_modal'],
+				'property',
+				'logo'
 			);
 
 			if ($this->config['show_club_logo_copyright'])
