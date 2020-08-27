@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage helpers
@@ -11,10 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
@@ -228,7 +223,7 @@ class JSMCountries
 	 */
 	public static function convertAddressString($name = '', $address = '', $state = '', $zipcode = '', $location = '', $country = '', $addressString = 'COM_SPORTSMANAGEMENT_CLUBINFO_ADDRESS_FORM')
 	{
-		$resultString = '';
+		$resultString = '<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">';
 
 		if ((!empty($address))
 			|| (!empty($state))
@@ -248,7 +243,7 @@ class JSMCountries
 			$dummy        = str_replace('%COUNTRY%', $countryName, $dummy);
 			$resultString .= $dummy;
 		}
-		$resultString .= '&nbsp;';
+		$resultString .= '</div>&nbsp;';
 
 		return $resultString;
 	}
