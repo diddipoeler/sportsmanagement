@@ -174,6 +174,12 @@ else
                     </address>
 					<?php
 				}
+			else
+			{
+			?>
+		    <span itemprop="faxNumber"></span>
+		    <?php
+			}
 
 				if ($this->club->email)
 				{
@@ -204,6 +210,12 @@ else
                     </address>
 					<?php
 				}
+			else
+			{
+			?>
+		    <span itemprop="email"></span>
+		    <?php
+			}
 
 				if ($this->club->website)
 				{
