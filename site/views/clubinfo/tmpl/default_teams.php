@@ -105,7 +105,8 @@ use Joomla\CMS\Factory;
 						'',
 						$this->modalwidth,
 						$this->modalheight,
-						$this->overallconfig['use_jquery_modal']
+						$this->overallconfig['use_jquery_modal'],
+						"photo"
 					);
 				}
 			}
