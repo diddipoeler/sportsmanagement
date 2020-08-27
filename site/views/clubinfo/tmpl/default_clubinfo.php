@@ -45,7 +45,7 @@ if (!isset($this->club))
 else
 {
 	?>
-    <div class="<?php echo $this->divclassrow; ?>">
+    <div class="<?php echo $this->divclassrow; ?>" vocab="http://schema.org/" typeof="SportsClub">
         <div class="<?php echo $this->divclass; ?>3 center">
 			<?PHP ?>
             <!-- SHOW LOGO - START -->
