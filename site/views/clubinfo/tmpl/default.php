@@ -34,7 +34,7 @@ else
 }
 //<div vocab="http://schema.org/" typeof="SportsTeam">
 ?>
-<div class="<?php echo $container ?>" id="clubinfo" vocab="http://schema.org/" typeof="SportsClub">
+<div class="<?php echo $container ?>" id="clubinfo" >
 	<?php
 	if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO)
 	{
