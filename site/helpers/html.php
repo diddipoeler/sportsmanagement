@@ -372,7 +372,7 @@ class sportsmanagementHelperHtml
 	 * @param   int $use_jquery_modal
 	 * @return
 	 */
-	public static function getBootstrapModalImage($target = '', $picture = '', $text = '', $pictureheight = '20', $url = '', $width = '100', $height = '200', $use_jquery_modal = 0)
+	public static function getBootstrapModalImage($target = '', $picture = '', $text = '', $pictureheight = '20', $url = '', $width = '100', $height = '200', $use_jquery_modal = 0,$itemprop = "logo")
 	{
 		$app = Factory::getApplication();
 		$jinput = $app->input;
@@ -382,12 +382,12 @@ class sportsmanagementHelperHtml
 			case 2:
 				if ($url)
 				{
-					$modaltext = '<a class="jcepopup jcemediabox-image" title="' . $text . '" href="' . $url . '" data-mediabox="1" data-mediabox-title="' . $text . '"><img itemprop="logo" src="' . $picture . '" alt="' . $text . '" style="width: auto;height: ' . $pictureheight . 'px" />';
+					$modaltext = '<a class="jcepopup jcemediabox-image" title="' . $text . '" href="' . $url . '" data-mediabox="1" data-mediabox-title="' . $text . '"><img itemprop="'.$itemprop.'" src="' . $picture . '" alt="' . $text . '" style="width: auto;height: ' . $pictureheight . 'px" />';
 				}
 
 				if (!$url)
 				{
-					$modaltext = '<a class="jcepopup jcemediabox-image" title="' . $text . '" href="' . $picture . '" data-mediabox="1" data-mediabox-title="' . $text . '"><img itemprop="logo" src="' . $picture . '" alt="' . $text . '" style="width: auto;height: ' . $pictureheight . 'px" />';
+					$modaltext = '<a class="jcepopup jcemediabox-image" title="' . $text . '" href="' . $picture . '" data-mediabox="1" data-mediabox-title="' . $text . '"><img itemprop="'.$itemprop.'" src="' . $picture . '" alt="' . $text . '" style="width: auto;height: ' . $pictureheight . 'px" />';
 				}
 
 				$modaltext .= '</a>';
@@ -400,7 +400,7 @@ class sportsmanagementHelperHtml
 					$modaltext .= ' onclick="openRequestedSinglePopup(this.href,' . $width . ',' . $height . '); return false;"';
 					$modaltext .= ' title="' . $text . '"';
 					$modaltext .= '>';
-					$modaltext .= '<img itemprop="logo" src="' . $picture . '" alt="' . $text . '" style="width: auto;height: ' . $pictureheight . 'px" />';
+					$modaltext .= '<img itemprop="'.$itemprop.'" src="' . $picture . '" alt="' . $text . '" style="width: auto;height: ' . $pictureheight . 'px" />';
 					$modaltext .= '</a>';
 				}
 
@@ -411,14 +411,14 @@ class sportsmanagementHelperHtml
 					$modaltext .= ' onclick="openRequestedSinglePopup(this.href,' . $width . ',' . $height . '); return false;"';
 					$modaltext .= ' title="' . $text . '"';
 					$modaltext .= '>';
-					$modaltext .= '<img itemprop="logo" src="' . $picture . '" alt="' . $text . '" style="width: auto;height: ' . $pictureheight . 'px" />';
+					$modaltext .= '<img itemprop="'.$itemprop.'" src="' . $picture . '" alt="' . $text . '" style="width: auto;height: ' . $pictureheight . 'px" />';
 					$modaltext .= '</a>';
 				}
 				break;
 			case 0:
 				$modaltext = '<a href="#' . $target . '" title="' . $text . '" data-toggle="modal" >';
 				//$modaltext .= '<img src="' . $picture . '" alt="' . $text . '" width="' . $pictureheight . '" />';
-				$modaltext .= '<img itemprop="logo" src="' . $picture . '" alt="' . $text . '" style="width: auto;height: ' . $pictureheight . 'px" />';
+				$modaltext .= '<img itemprop="'.$itemprop.'" src="' . $picture . '" alt="' . $text . '" style="width: auto;height: ' . $pictureheight . 'px" />';
 				$modaltext .= '</a>';
 
 				if (!$url)
