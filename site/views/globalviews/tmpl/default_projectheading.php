@@ -9,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -57,7 +55,7 @@ if (!empty($this->overallconfig))
 	if ($this->overallconfig['show_project_heading'] == 1 && $this->project)
 	{
 		?>
-        <div class="<?php echo $this->divclassrow; ?>" id="projectheading">
+        <div class="<?php echo $this->divclassrow; ?>" id="projectheading" itemscope="itemscope" itemtype="http://schema.org/SportsAssociation/Soccer">
             <table class="table">
 
 				<?php
@@ -97,7 +95,9 @@ if (!empty($this->overallconfig))
 								'',
 								$this->modalwidth,
 								$this->modalheight,
-								$this->overallconfig['use_jquery_modal']
+								$this->overallconfig['use_jquery_modal'],
+								'itemprop',
+								'image'
 							);
 							?>
 
@@ -132,7 +132,9 @@ if (!empty($this->overallconfig))
 								'',
 								$this->modalwidth,
 								$this->modalheight,
-								$this->overallconfig['use_jquery_modal']
+								$this->overallconfig['use_jquery_modal'],
+								'itemprop',
+								'image'
 							);
 
 							if ($copyright)
@@ -150,8 +152,12 @@ if (!empty($this->overallconfig))
 					{
 						?>
                         <td class="contentheading">
+				<span itemprop="name">
 							<?php
 							echo $this->project->name;
+						?>
+					</span>
+					<?php
 							if (isset($this->division))
 							{
 								echo ' - ' . $this->division->name;
