@@ -440,11 +440,13 @@ if ($this->config['show_comments_count'])
 							?>
                         </td>
                         <td>
+				<span itemprop="homeTeam">
 							<?php
 							$isFavTeam = in_array($team1->id, $this->favteams);
 							echo sportsmanagementHelper::formatTeamName($team1, 'g' . $game->id, $this->config, $isFavTeam, null, Factory::getApplication()->input->getInt('cfg_which_database', 0));
 							?>
-                        </td>
+				</span>
+	                        </td>
                         <td width='<?PHP echo $width; ?>'>
 							<?php
 							if ($this->config['club_link_logo'])
@@ -467,10 +469,12 @@ if ($this->config['show_comments_count'])
 							?>
                         </td>
                         <td>
+				<span itemprop="awayTeam">
 							<?php
 							$isFavTeam = in_array($team2->id, $this->favteams);
 							echo sportsmanagementHelper::formatTeamName($team2, 'g' . $game->id, $this->config, $isFavTeam, null, Factory::getApplication()->input->getInt('cfg_which_database', 0));
 							?>
+				</span>
                         </td>
                         <!-- show match score -->
                         <td width='' class='score'>
