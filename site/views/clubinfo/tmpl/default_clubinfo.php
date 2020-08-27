@@ -156,6 +156,12 @@ else
                     </address>
 					<?php
 				}
+			else
+			{
+			?>
+		    <span itemprop="telephone"></span>
+		    <?php
+			}
 
 				if ($this->club->fax)
 				{
