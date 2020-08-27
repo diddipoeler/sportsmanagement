@@ -80,7 +80,7 @@ if ($this->config['use_which_map'])
 		<?php echo Text::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?>
     </h4>
     <div id="map"
-         style="height: <?php echo $this->mapconfig['map_height']; ?>px; margin-top: 50px; position: relative;">
+         style="height: <?php echo $this->mapconfig['map_height']; ?>px; margin-top: 50px; position: relative;" itemscope itemtype="http://schema.org/Place">
     </div>
 	<?php
 	switch ($this->view)
