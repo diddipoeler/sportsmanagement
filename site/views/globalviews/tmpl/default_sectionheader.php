@@ -438,9 +438,9 @@ $modalwidth  = ComponentHelper::getParams($jinput->getCmd('option'))->get('modal
 			?>
 <!--
 <div vocab="http://schema.org/" typeof="SportsTeam">
--->
-	<span property="legalName">
 
+	<span property="legalName">
+-->
             <h4>
 				<?php
 				echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_TITLE') . " " . $this->club->name;
@@ -465,9 +465,9 @@ $modalwidth  = ComponentHelper::getParams($jinput->getCmd('option'))->get('modal
 				}
 				?>
             </h4>
-	
+	<!--
 	</span>
-<!--
+
 </div>	
 -->
 			<?PHP
