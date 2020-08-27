@@ -378,7 +378,9 @@ if ($this->config['show_comments_count'])
 						?>
                         <!-- show playground -->
                         <td>
+				<span itemprop="location">
 							<?php sportsmanagementHelperHtml::showMatchPlayground($game, $this->config); ?>
+				</span>
                         </td>
 						<?php
 					}
