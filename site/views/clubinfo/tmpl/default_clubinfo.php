@@ -119,7 +119,9 @@ else
 							echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_ADDRESS');
 							?>
 			    </strong>
+			    <span itemprop="streetAddress">
 						<?php echo $addressString; ?>
+				    </span>
 
                         <span class="clubinfo_listing_value">
                             <?php
@@ -140,9 +142,11 @@ else
 				if ($this->club->phone)
 				{
 					?>
-                    <address itemprop="telephone">
+                    <address >
+			    <span itemprop="telephone">(
                         <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_PHONE'); ?></strong>
 						<?php echo $this->club->phone; ?>
+				    </span>
                     </address>
 					<?php
 				}
@@ -186,9 +190,9 @@ else
 					?>
                     <address>
                         <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_WWW'); ?></strong>
-
+<span itemprop="url">
 						<?php echo HTMLHelper::_('link', $this->club->website, $this->club->website, array("target" => "_blank")); ?>
-
+</span>
                     </address>
 					<?php
 				}
