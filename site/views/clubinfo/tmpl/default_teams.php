@@ -107,7 +107,7 @@ use Joomla\CMS\Factory;
 						$this->modalheight,
 						$this->overallconfig['use_jquery_modal'],
 						'itemprop',
-						'photo'
+						'logo'
 					);
 				}
 			}
