@@ -143,7 +143,7 @@ else
 				{
 					?>
                     <address >
-			    <span itemprop="telephone">(
+			    <span itemprop="telephone">
                         <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_PHONE'); ?></strong>
 						<?php echo $this->club->phone; ?>
 				    </span>
