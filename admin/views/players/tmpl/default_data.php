@@ -61,6 +61,12 @@ else
 				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BIRTHDAY', 'pl.birthday', $this->sortDirection, $this->sortColumn);
 				?>
             </th>
+            
+            <th class="title">
+				<?php
+				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PERSON_REGISTRATION_NUMBER', 'pl.knvbnr', $this->sortDirection, $this->sortColumn);
+				?>
+            </th>
 
             <th class="title">
 				<?php
@@ -204,6 +210,10 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 						);
 						//								}
 						?>
+                    </td>
+                    
+                    <td class="center">
+                    <?php echo $row->knvbnr; ?>
                     </td>
 
                     <td class="center">
