@@ -286,8 +286,13 @@ $starttime = sportsmanagementHelperHtml::showMatchTime($game, $this->config, $th
 <span itemprop="startDate" datetime="<?php echo $date;?>T<?php echo $starttime; ?>" content="<?php echo $date;?>T<?php echo $starttime; ?>"></span>
 <?php
 $endtime = sportsmanagementHelperHtml::showMatchTime($game, $this->config, $this->overallconfig, $this->project);  
+              
+$ergebnis = date('H:i:s', strtotime('+'.$this->project->game_regular_time + $this->project->halftime.' minutes', strtotime($game->match_date)));
+              
+//echo '<pre>'.print_r($ergebnis,true).'</pre>';
+              
 ?>
-<span itemprop="endDate" datetime="<?php echo $date;?>T<?php echo $endtime; ?>" content="<?php echo $date;?>T<?php echo $endtime; ?>"></span>                  
+<span itemprop="endDate" datetime="<?php echo $date;?>T<?php echo $ergebnis; ?>" content="<?php echo $date;?>T<?php echo $ergebnis; ?>"></span>                  
                   
 <span itemprop="name" content="<?php echo $this->project->name;?>"></span>
 <span itemprop="description" content="<?php echo $this->project->round_name;?>"></span>  
