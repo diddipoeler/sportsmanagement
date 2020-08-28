@@ -262,6 +262,7 @@ if (!empty($this->rows))
 	}
 	?>
     <div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultplayers" itemscope itemtype="http://schema.org/SportsTeam">
+      <span itemprop="name" content="<?php echo Text::_($this->team->name);?>"></span> 
       <span itemprop="sport" content="<?php echo Text::_($this->project->sport_type_name);?>"></span> 
         <?php
         foreach ( $this->projectpositions as $positions => $position ) if( $position->persontype == 1 )
