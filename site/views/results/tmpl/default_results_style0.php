@@ -296,7 +296,7 @@ $ergebnis = date('H:i:s', strtotime('+'.$this->project->game_regular_time + $thi
                   
 <span itemprop="name" content="<?php echo $this->project->name;?>"></span>
 <span itemprop="description" content="<?php echo $this->project->round_name;?>"></span>  
-                  
+<span itemprop="image" content="<?php echo Uri::base() .$this->project->picture;?>"></span>                   
 <span itemprop="sport" content="<?php echo Text::_($this->project->sport_type_name);?>"></span>                  
                   
                 <tr class="team<?php echo $game->projectteam1_id; ?>  team<?php echo $game->projectteam2_id; ?> "<?php echo $favStyle; ?> >
