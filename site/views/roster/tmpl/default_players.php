@@ -520,7 +520,7 @@ if (!empty($this->rows))
                               <span itemprop="name" content="<?php echo $playerName;?>"></span> 
                               <span itemprop="birthDate" content="<?php echo $row->birthday;?>"></span>
 				   <span itemprop="deathDate" content="<?php echo $row->deathday;?>"></span>
-				    <span itemprop="nationality" content="<?php echo $row->country;?>"></span>
+				    <span itemprop="nationality" content="<?php echo JSMCountries::getCountryName($row->country);?>"></span>
                               
 								<?PHP
 								echo sportsmanagementHelperHtml::getBootstrapModalImage(
