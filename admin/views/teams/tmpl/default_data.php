@@ -24,10 +24,22 @@ else
 {
 	$this->readonly = '';
 }
+$this->saveOrder = $this->sortColumn == 't.ordering';
+if ($this->saveOrder && !empty($this->items))
+{
+$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task='.$this->view.'.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{    
+HTMLHelper::_('draggablelist.draggable');
+}
+else
+{
+JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl,$this->saveOrderButton);    
+}
+}
 ?>
-<!--	<div id="editcell"> -->
-<div class="table-responsive">
-    <table class="<?php echo $this->table_data_class; ?>">
+<div class="table-responsive" id="editcell">
+<table class="<?php echo $this->table_data_class; ?>" id="<?php echo $this->view; ?>list">
         <thead>
         <tr>
             <th width="1%" class="center"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
@@ -109,57 +121,59 @@ else
             </td>
         </tr>
         </tfoot>
-        <tbody>
+        <tbody <?php if ( $this->saveOrder && version_compare(substr(JVERSION, 0, 3), '4.0', 'ge') ) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($this->sortDirection); ?>" <?php endif; ?>>
 		<?php
-		$k = 0;
-		for ($i = 0, $n = count($this->items); $i < $n; $i++)
+		foreach ($this->items as $this->count_i => $this->item)
 		{
-			$row        = &$this->items[$i];
-			$link       = Route::_('index.php?option=com_sportsmanagement&task=team.edit&id=' . $row->id);
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+$this->dragable_group = 'data-dragable-group="none"';
+} 
+			$link       = Route::_('index.php?option=com_sportsmanagement&task=team.edit&id=' . $this->item->id);
 			$canEdit    = $this->user->authorise('core.edit', 'com_sportsmanagement');
-			$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $row->checked_out == $this->user->get('id') || $row->checked_out == 0;
-			$checked    = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'teams.', $canCheckin);
-			$canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.team.' . $row->id) && $canCheckin;
+			$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $this->item->checked_out == $this->user->get('id') || $this->item->checked_out == 0;
+			$checked    = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'teams.', $canCheckin);
+			$canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.team.' . $this->item->id) && $canCheckin;
 			?>
-            <tr class="<?php echo "row$k"; ?>">
+            <tr class="row<?php echo $this->count_i % 2; ?>" <?php echo $this->dragable_group; ?>>
                 <td class="center">
 					<?php
-					echo $this->pagination->getRowOffset($i);
+					echo $this->pagination->getRowOffset($this->count_i);
 					?>
                 </td>
                 <td class="center">
 					<?php
-					echo HTMLHelper::_('grid.id', $i, $row->id);
+					echo HTMLHelper::_('grid.id', $this->count_i, $this->item->id);
 					?>
                 </td>
 				<?php
 				$inputappend = '';
 				?>
                 <td class="center">
-					<?php if ($row->checked_out) : ?>
-						<?php echo HTMLHelper::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'teams.', $canCheckin); ?>
+					<?php if ($this->item->checked_out) : ?>
+						<?php echo HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->item->editor, $this->item->checked_out_time, 'teams.', $canCheckin); ?>
 					<?php endif; ?>
 					<?php if ($canEdit && !$this->assign) : ?>
-                        <a href="<?php echo Route::_('index.php?option=com_sportsmanagement&task=team.edit&id=' . (int) $row->id); ?>">
-							<?php echo $this->escape($row->name); ?></a>
+                        <a href="<?php echo Route::_('index.php?option=com_sportsmanagement&task=team.edit&id=' . (int) $this->item->id); ?>">
+							<?php echo $this->escape($this->item->name); ?></a>
 					<?php else : ?>
-						<?php echo $this->escape($row->name); ?>
+						<?php echo $this->escape($this->item->name); ?>
 					<?php endif; ?>
                     <div class="small">
-						<?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias)); ?>
+						<?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($this->item->alias)); ?>
                     </div>
                 </td>
 				<?php ?>
 
-                <td><?php echo (empty($row->clubname)) ? '<span style="color:red;">' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_NO_CLUB') . '</span>' : $row->clubname; ?></td>
+                <td><?php echo (empty($this->item->clubname)) ? '<span style="color:red;">' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_NO_CLUB') . '</span>' : $this->item->clubname; ?></td>
 
-                <td class="center"><?php echo JSMCountries::getCountryFlag($row->country); ?></td>
+                <td class="center"><?php echo JSMCountries::getCountryFlag($this->item->country); ?></td>
 
                 <td class="center">
 					<?php
-					if ($row->website != '')
+					if ($this->item->website != '')
 					{
-						echo '<a href="' . $row->website . '" target="_blank"><span class="label label-success" title="' . $row->website . '">' . Text::_('JYES') . '</span></a>';
+						echo '<a href="' . $row->website . '" target="_blank"><span class="label label-success" title="' . $this->item->website . '">' . Text::_('JYES') . '</span></a>';
 					}
 					else
 					{
@@ -172,7 +186,7 @@ else
 					<?php
 					if ($row->email != '')
 					{
-						echo '<a href="mailto:' . $row->email . '"><span class="label label-success" title="' . $row->email . '">' . Text::_('JYES') . '</span></a>';
+						echo '<a href="mailto:' . $this->item->email . '"><span class="label label-success" title="' . $this->item->email . '">' . Text::_('JYES') . '</span></a>';
 					}
 					else
 					{
@@ -181,7 +195,7 @@ else
 					?>
                 </td>
 
-                <td class="center"><?php echo $row->short_name; ?></td>
+                <td class="center"><?php echo $this->item->short_name; ?></td>
 
 
                 <td class="center">
@@ -189,52 +203,52 @@ else
 					$inputappend = $this->readonly;
 					$append      = ' style="background-color:#bbffff"';
 					echo HTMLHelper::_(
-						'select.genericlist', $this->lists['agegroup'], 'agegroup' . $row->id, $inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
-						$i . '\').checked=true"' . $append, 'value', 'text', $row->agegroup_id
+						'select.genericlist', $this->lists['agegroup'], 'agegroup' . $this->item->id, $inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
+						$this->count_i . '\').checked=true"' . $append, 'value', 'text', $this->item->agegroup_id
 					);
 					?>
                     </br>
-					<?php echo $row->info; ?>
+					<?php echo $this->item->info; ?>
                 </td>
 
                 <td class="center">
 					<?php
-					$append = ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" style="max-width: 100px;background-color:#bbffff"';
-					echo HTMLHelper::_('select.genericlist', $this->lists['sportstype'], 'sportstype' . $row->id, $inputappend . 'class="form-control form-control-inline" size="1"' . $append, 'id', 'name', $row->sports_type_id);
+					$append = ' onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true" style="max-width: 100px;background-color:#bbffff"';
+					echo HTMLHelper::_('select.genericlist', $this->lists['sportstype'], 'sportstype' . $this->item->id, $inputappend . 'class="form-control form-control-inline" size="1"' . $append, 'id', 'name', $this->item->sports_type_id);
 					?>
                 </td>
                 <td class="center">
 					<?php
-					if ($row->picture == '')
+					if ($this->item->picture == '')
 					{
 						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_NO_IMAGE');
                         $image_attributes['title'] = $imageTitle;
 						echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/error.png', $imageTitle, $image_attributes);
 					}
-                    elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("team"))
+                    elseif ($this->item->picture == sportsmanagementHelper::getDefaultPlaceholder("team"))
 					{
 						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_DEFAULT_IMAGE');
                         $image_attributes['title'] = $imageTitle;
 						echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/information.png', $imageTitle, $image_attributes);
 						?>
-                        <a href="<?php echo Uri::root() . $row->picture; ?>" title="<?php echo $imageTitle; ?>"
+                        <a href="<?php echo Uri::root() . $this->item->picture; ?>" title="<?php echo $imageTitle; ?>"
                            class="modal">
-                            <img src="<?php echo Uri::root() . $row->picture; ?>" alt="<?php echo $imageTitle; ?>"
+                            <img src="<?php echo Uri::root() . $this->item->picture; ?>" alt="<?php echo $imageTitle; ?>"
                                  width="20"/>
                         </a>
 						<?PHP
 					}
 					else
 					{
-						if (File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $row->picture))
+						if (File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $this->item->picture))
 						{
 							$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_CUSTOM_IMAGE');
                             $image_attributes['title'] = $imageTitle;
 							echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/ok.png', $imageTitle, $image_attributes);
 							?>
-                            <a href="<?php echo Uri::root() . $row->picture; ?>" title="<?php echo $imageTitle; ?>"
+                            <a href="<?php echo Uri::root() . $this->item->picture; ?>" title="<?php echo $imageTitle; ?>"
                                class="modal">
-                                <img src="<?php echo Uri::root() . $row->picture; ?>" alt="<?php echo $imageTitle; ?>"
+                                <img src="<?php echo Uri::root() . $this->item->picture; ?>" alt="<?php echo $imageTitle; ?>"
                                      width="20"/>
                             </a>
 							<?PHP
@@ -250,35 +264,27 @@ else
                 </td>
                 <td class="center">
                     <div class="btn-group">
-						<?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'seasons.', $canChange, 'cb'); ?>
+						<?php echo HTMLHelper::_('jgrid.published', $this->item->published, $this->count_i, 'seasons.', $canChange, 'cb'); ?>
 						<?php
-						// Create dropdown items and render the dropdown list.
+						/** Create dropdown items and render the dropdown list. */
 						if ($canChange)
 						{
-							HTMLHelper::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'seasons');
-							HTMLHelper::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'seasons');
-							echo HTMLHelper::_('actionsdropdown.render', $this->escape($row->name));
+							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === 2 ? 'un' : '') . 'archive', 'cb' . $this->count_i, 'seasons');
+							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === -2 ? 'un' : '') . 'trash', 'cb' . $this->count_i, 'seasons');
+							echo HTMLHelper::_('actionsdropdown.render', $this->escape($this->item->name));
 						}
 						?>
                     </div>
                 </td>
-                <td class="order">
-                        <span>
-                            <?php echo $this->pagination->orderUpIcon($i, $i > 0, 'teams.orderup', 'JLIB_HTML_MOVE_UP', true); ?>
-                        </span>
-                    <span>
-                            <?php echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'teams.orderdown', 'JLIB_HTML_MOVE_DOWN', true); ?>
-                            <?php $disabled = true ? '' : 'disabled="disabled"'; ?>
-                        </span>
-                    <input type="text" name="order[]" size="5"
-                           value="<?php echo $row->ordering; ?>" <?php echo $disabled; ?>
-                           class="form-control form-control-inline"
-                           style="text-align: center" <?php echo $this->readonly; ?> />
-                </td>
-                <td class="center"><?php echo $row->id; ?></td>
+                <td class="order" id="defaultdataorder">
+<?php
+echo $this->loadTemplate('data_order');
+?>
+</td>
+                <td class="center"><?php echo $this->item->id; ?></td>
             </tr>
 			<?php
-			$k = 1 - $k;
+			
 		}
 		?>
         </tbody>
