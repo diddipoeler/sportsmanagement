@@ -277,7 +277,9 @@ if ($this->config['show_comments_count'])
 					}
 				}
 				?>
-
+<div itemscope itemtype="http://schema.org/SportsEvent">
+<span itemprop="startDate" datetime="<?php echo $date;?>" content="<?php echo $date;?>"></span>
+	
                 <tr class="team<?php echo $game->projectteam1_id; ?>  team<?php echo $game->projectteam2_id; ?> "<?php echo $favStyle; ?> >
 					<?php
 					if ($this->config['show_match_number'])
@@ -712,7 +714,7 @@ if ($this->config['show_comments_count'])
 					?>
 
                 </tr>
-
+</div>
 				<?php
 				if ($hasEvents)
 				{
