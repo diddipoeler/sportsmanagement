@@ -262,6 +262,7 @@ if (!empty($this->rows))
 	}
 	?>
     <div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultplayers" itemscope itemtype="http://schema.org/SportsTeam">
+      <span itemprop="sport" content="<?php echo Text::_($this->project->sport_type_name);?>"></span> 
         <?php
         foreach ( $this->projectpositions as $positions => $position ) if( $position->persontype == 1 )
 {
@@ -516,8 +517,10 @@ if (!empty($this->rows))
 							?>
                             <td class="" width="" nowrap="nowrap">
                               <span itemprop="name" content="<?php echo $playerName;?>"></span> 
+                              <span itemprop="birthDate" content="<?php echo $row->birthday;?>"></span>
                               
 								<?PHP
+                              //$row->birthday
 								echo sportsmanagementHelperHtml::getBootstrapModalImage(
 									'player' . $row->playerid,
 									$picture,
