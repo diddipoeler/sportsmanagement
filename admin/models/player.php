@@ -172,11 +172,6 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 				return false;
 			}
 
-			// If(!$tblPerson->store())
-			//            {
-			//				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
-			//				$result = false;
-			//			}
 		}
 
 		return $result;
@@ -192,17 +187,11 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 	 */
 	function storeAssign($post)
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput      = $app->input;
 		$option      = $jinput->getCmd('option');
 		$db          = Factory::getDbo();
 		$date        = Factory::getDate();
-		//$user        = Factory::getUser();
-		//$modified    = Factory::getDate();
-		//$modified_by = $user->get('id');
 
 		$this->_project_id      = $app->getUserState("$option.pid", '0');
 		$this->_team_id         = $app->getUserState("$option.team_id", '0');
@@ -215,9 +204,7 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 
 		switch ($post['persontype'])
 		{
-			/**
-			 * spieler
-			 */
+			/** spieler */
 			case 1:
 				$mdl      = BaseDatabaseModel::getInstance("seasonteamperson", "sportsmanagementModel");
 				$mdlTable = $mdl->getTable();
@@ -280,22 +267,13 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 						$res = 0;
 					}
 
-					// Create a new query object.
 					$insertquery = $db->getQuery(true);
-
-					// Insert columns.
 					$columns = array('person_id', 'project_id', 'project_position_id', 'persontype', 'modified', 'modified_by');
-
-					// Insert values.
 					$values = array($cid[$x], $this->_project_id, $res, 1, $db->Quote('' . $this->jsmdate->toSql() . ''), $this->jsmuser->get('id'));
-
-					// Prepare the insert query.
 					$insertquery
 						->insert($db->quoteName('#__sportsmanagement_person_project_position'))
 						->columns($db->quoteName($columns))
 						->values(implode(',', $values));
-
-					// Set the query using our newly populated query object and execute it.
 					$db->setQuery($insertquery);
 
 					try
@@ -310,9 +288,7 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 					}
 				}
 				break;
-			/**
-			 * trainer
-			 */
+			/** trainer */
 			case 2:
 				$mdl      = BaseDatabaseModel::getInstance("seasonteamperson", "sportsmanagementModel");
 				$mdlTable = $mdl->getTable();
@@ -375,22 +351,13 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 						$res = 0;
 					}
 
-					// Create a new query object.
 					$insertquery = $db->getQuery(true);
-
-					// Insert columns.
 					$columns = array('person_id', 'project_id', 'project_position_id', 'persontype', 'modified', 'modified_by');
-
-					// Insert values.
 					$values = array($cid[$x], $this->_project_id, $res, 2, $db->Quote('' . $this->jsmdate->toSql() . ''), $this->jsmuser->get('id'));
-
-					// Prepare the insert query.
 					$insertquery
 						->insert($db->quoteName('#__sportsmanagement_person_project_position'))
 						->columns($db->quoteName($columns))
 						->values(implode(',', $values));
-
-					// Set the query using our newly populated query object and execute it.
 					$db->setQuery($insertquery);
 
 					try
@@ -405,9 +372,7 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 					}
 				}
 				break;
-			/**
-			 * schiedsrichter
-			 */
+			/** schiedsrichter */
 			case 3:
 				$mdl      = BaseDatabaseModel::getInstance("seasonperson", "sportsmanagementModel");
 				$mdlTable = $mdl->getTable();
@@ -418,11 +383,7 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 					$query->select('id');
 					$query->from('#__sportsmanagement_season_person_id');
 					$query->where('person_id = ' . $cid[$x]);
-
-					// $query->where('team_id = 0');
 					$query->where('season_id = ' . $this->_season_id);
-
-					// $query->where('persontype = 3');
 					$db->setQuery($query);
 					$season_person_id = $db->loadResult();
 
