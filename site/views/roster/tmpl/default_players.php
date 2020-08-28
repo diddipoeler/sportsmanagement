@@ -261,7 +261,7 @@ if (!empty($this->rows))
 		}
 	}
 	?>
-    <div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultplayers">
+    <div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultplayers" itemscope itemtype="http://schema.org/SportsTeam">
         <?php
         foreach ( $this->projectpositions as $positions => $position ) if( $position->persontype == 1 )
 {
@@ -474,7 +474,7 @@ if (!empty($this->rows))
 				foreach ($players as $row)
 				{
 					?>
-                    <tr class="" width="" onMouseOver="this.bgColor='#CCCCFF'" onMouseOut="this.bgColor='#ffffff'">
+                    <tr class="" width="" onMouseOver="this.bgColor='#CCCCFF'" onMouseOut="this.bgColor='#ffffff'" itemscope itemtype="http://schema.org/Person">
 						<?php
 						$pnr = ($row->position_number != '') ? $row->position_number : '&nbsp;';
 
