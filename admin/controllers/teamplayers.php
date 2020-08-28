@@ -4,7 +4,7 @@
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage controllers
- * @file       teampersons.php
+ * @file       teamplayers.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
@@ -16,7 +16,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 
 /**
- * sportsmanagementControllerteampersons
+ * sportsmanagementControllerteamplayers
  *
  * @package
  * @author
@@ -24,7 +24,7 @@ use Joomla\CMS\Router\Route;
  * @version   2014
  * @access    public
  */
-class sportsmanagementControllerteampersons extends JSMControllerAdmin
+class sportsmanagementControllerteamplayers extends JSMControllerAdmin
 {
 
 	/**
@@ -49,7 +49,7 @@ class sportsmanagementControllerteampersons extends JSMControllerAdmin
 
 
 	/**
-	 * sportsmanagementControllerteampersons::set_season_team_state()
+	 * sportsmanagementControllerteamplayers::set_season_team_state()
 	 *
 	 * @return void
 	 */
@@ -91,7 +91,7 @@ class sportsmanagementControllerteampersons extends JSMControllerAdmin
 	 *
 	 * @since 1.6
 	 */
-	public function getModel($name = 'teamperson', $prefix = 'sportsmanagementModel', $config = Array())
+	public function getModel($name = 'teamplayer', $prefix = 'sportsmanagementModel', $config = Array())
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 
@@ -113,7 +113,7 @@ class sportsmanagementControllerteampersons extends JSMControllerAdmin
 	}
 
 	/**
-	 * sportsmanagementControllerteampersons::assignplayerscountry()
+	 * sportsmanagementControllerteamplayers::assignplayerscountry()
 	 *
 	 * @return void
 	 */

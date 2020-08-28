@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage project
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -232,7 +228,7 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 		if (self::$projectid > 0)
 		{
 			$query->select('p.*, l.country, st.id AS sport_type_id, st.name AS sport_type_name');
-			$query->select('st.icon AS sport_type_picture, l.picture as leaguepicture, l.name as league_name, s.name as season_name  ');
+			$query->select('st.icon AS sport_type_picture, l.picture as leaguepicture, l.name as league_name, s.name as season_name,r.name as round_name  ');
 			$query->select('LOWER(SUBSTR(st.name, CHAR_LENGTH( "COM_SPORTSMANAGEMENT_ST_")+1)) AS fs_sport_type_name');
 			$query->select('CONCAT_WS( \':\', p.id, p.alias ) AS slug');
 

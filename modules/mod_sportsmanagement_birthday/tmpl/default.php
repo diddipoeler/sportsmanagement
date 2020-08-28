@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_birthday
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
@@ -92,8 +88,8 @@ switch ($mode)
                                 <div class="col-md-12">
                                     <div class="col-item">
                                         <div class="photo">
-                                            <img src="<?php echo $thispic; ?>" class="img-responsive" alt="a"
-                                                 width="<?php echo $params->get('picture_width'); ?>"/>
+                                            <img src="<?php echo $thispic; ?>" class="img" alt="<?php echo $text; ?>"
+                                                 width="auto" height="<?php echo $params->get('picture_height'); ?>"/>
                                         </div>
                                     </div>
                                 </div>
@@ -191,7 +187,7 @@ switch ($mode)
 					?>
                     <div class="item <?php echo $active; ?>">
                         <img src="<?php echo $thispic; ?>" alt="<?php echo $text; ?>"
-                             width="<?php echo $params->get('picture_width'); ?>">
+                             width="auto" height="<?php echo $params->get('picture_height'); ?>">
                         <div class="carousel-caption">
                             <h3><?php echo $text; ?></h3>
                             <p><?php echo $birthdaytext; ?></p>
@@ -292,9 +288,9 @@ switch ($mode)
 
 								echo '<img src="' . Uri::base() . '/' . $thispic . '" alt="' . $text . '" title="' . $text . '"';
 
-								if ($params->get('picture_width') != '')
+								if ($params->get('picture_height') != '')
 								{
-									echo ' width="' . $params->get('picture_width') . '"';
+									echo ' width="auto" height="' . $params->get('picture_height') . '"';
 								}
 
 								echo ' /><br />';

@@ -185,7 +185,7 @@ class JSMControllerForm extends FormController
 		// Check for request forgeries.
 		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
-		// $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' task '.$this->jsmjinput->get('task')), '');
+				
 		// Initialise variables.
 		$post            = $this->jsmjinput->post->getArray();
 		$tmpl            = $this->jsmjinput->getVar('tmpl');
@@ -193,7 +193,40 @@ class JSMControllerForm extends FormController
 		$data            = $this->jsmjinput->getVar('jform', array(), 'post', 'array');
 		$setRedirect     = '';
 		$createTeam      = $this->jsmjinput->getVar('createTeam');
+		
+		//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' task '.$this->jsmjinput->get('task')), '');
+		//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' view_list '.$this->view_list), '');
+		//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' view_item '.$this->view_item), '');
+		//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'data<pre>'.print_r($data,true).'</pre>'), '');
+		
+		if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+		
+			switch ($this->view_item)
+			{
+			case 'round':
+			switch ($this->jsmjinput->get('task'))
+			{
+			case 'save':
+			if ( !$data )
+			{
+				$data['round_date_first'] = '0000-00-00';
+				$data['round_date_last'] = '0000-00-00';
+			}	
+			break;
+			}
+				
+				
+				
+			break;
+			}
+		}
+		
+		
 		$return          = $model->save($data);
+		
+		$this->jsmapp->enqueueMessage($model->getError(), 'error');
+		
 		$this->club_id   = $this->jsmapp->getUserState("$this->jsmoption.club_id", '0');
 		$this->person_id = $this->jsmapp->getUserState("$this->jsmoption.person_id", '0');
 		$this->team_id   = $this->jsmapp->getUserState("$this->jsmoption.team_id", '0');

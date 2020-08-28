@@ -31,7 +31,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             <th width="1%"
                 class="nowrap text-center d-none d-md-table-cell"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
             <th width="1%" class="text-center">
-                <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/>
+                <?php echo HTMLHelper::_('grid.checkall'); ?>
             </th>
 
             <th class="title">

@@ -28,7 +28,6 @@ class sportsmanagementModelplayers extends JSMModelList
 {
 	var $_identifier = "players";
 
-
 	/**
 	 * sportsmanagementModelplayers::__construct()
 	 *
@@ -48,6 +47,7 @@ class sportsmanagementModelplayers extends JSMModelList
 			'pl.id',
 			'pl.picture',
 			'pl.ordering',
+            'pl.knvbnr',
 			'pl.published',
 			'pl.modified',
 			'pl.modified_by',
@@ -111,6 +111,7 @@ class sportsmanagementModelplayers extends JSMModelList
 				'OR LOWER(pl.firstname) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%') .
 				'OR LOWER(pl.nickname) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%') .
 				'OR LOWER(pl.info) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%') .
+                'OR LOWER(pl.knvbnr) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%') .
 				')'
 			);
 		}

@@ -30,7 +30,7 @@ if (!empty($this->matches))
 	$nbcols = 0;
 	?>
     <div class="<?php echo $this->divclassrow; ?> table-responsive" id="teamplan">
-        <table class="<?php echo $this->config['table_class']; ?>">
+        <table class="<?php echo $this->config['table_class']; ?>" id="teamplanoutput">
             <thead>
             <tr>
 				<?php
@@ -927,6 +927,10 @@ if (!empty($this->matches))
                         <td><?php
 							if ((isset($match->referees)) && (count($match->referees) > 0))
 							{
+								
+usort($match->referees, function ($a, $b) {
+		return $a->ordering - $b->ordering;
+	});								
 								if ($this->project->teams_as_referees)
 								{
 									$output       = '';
@@ -971,7 +975,8 @@ if (!empty($this->matches))
 										if ($match->referees[$i]->referee_lastname != '' && $match->referees[$i]->referee_firstname)
 										{
 											$output      .= '<span class="hasTip" title="' . Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_REF_FUNCTION') . '::' . Text::_($match->referees[$i]->referee_position_name) . '">';
-											$ref         = $match->referees[$i]->referee_lastname . ',' . $match->referees[$i]->referee_firstname;
+											//$ref         = $match->referees[$i]->referee_lastname . ',' . $match->referees[$i]->referee_firstname;
+                                            $ref = sportsmanagementHelper::formatName(null, $match->referees[$i]->referee_firstname, $match->referees[$i]->referee_nickname, $match->referees[$i]->referee_lastname, $this->config["referee_name_format"]);
 											$toolTipText .= $ref . ' (' . Text::_($match->referees[$i]->referee_position_name) . ')' . '&lt;br /&gt;';
 											if ($this->config['show_referee_link'])
 											{
@@ -988,12 +993,12 @@ if (!empty($this->matches))
 
 											if (($i + 1) < count($match->referees))
 											{
-												$output .= ' - ';
+												$output .= ' <br> ';
 											}
 										}
 										else
 										{
-											$output .= '-';
+											$output .= '<br>';
 										}
 									}
 

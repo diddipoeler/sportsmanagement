@@ -14,8 +14,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
-$templatesToLoad = array('footer', 'listheader');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+
 ?>
 <div class="table-responsive" id="editcell">
 <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_EXT_IMAGES_IMPORT'); ?></legend>
@@ -58,7 +57,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             <tr>
                 <th width="5"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
                 <th width="20">
-                    <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/>
+                    <?php echo HTMLHelper::_('grid.checkall'); ?>
                 </th>
                 <th>
 					<?php
@@ -93,28 +92,34 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             </tfoot>
 
 			<?PHP
-			$k = 0;
-			for ($i = 0, $n = count($this->items); $i < $n; $i++)
-			{
-				$row       =& $this->items[$i];
-				$checked   = HTMLHelper::_('grid.checkedout', $row, $i);
-				$published = HTMLHelper::_('grid.published', $row, $i, 'tick.png', 'publish_x.png', 'smimageimports.');
+			//$k = 0;
+			//for ($i = 0, $n = count($this->items); $i < $n; $i++)
+			//{
+foreach ($this->items as $i => $this->item)
+	{
+		//$row        = &$this->items[$i];
+$this->count_i = $i;				
+			//	$row       =& $this->items[$i];
+$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $this->item->checked_out == $this->user->get('id') || $this->item->checked_out == 0;	
+$checked = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'smimageimports.', $canCheckin);
+				//$published = HTMLHelper::_('grid.published', $row, $i, 'tick.png', 'publish_x.png', 'smimageimports.');
+	
 				?>
-                <tr class="<?php echo "row$k"; ?>">
-                    <td class="center"><?php echo($i + 1); ?></td>
-                    <td class="center"><?php echo $checked; ?></td>
-                    <td><?php echo $row->name; ?></td>
-                    <input type='hidden' name='picture[<?php echo $row->id; ?>]' value='<?php echo $row->name; ?>'/>
-                    <td><?php echo $row->folder; ?></td>
-                    <input type='hidden' name='folder[<?php echo $row->id; ?>]' value='<?php echo $row->folder; ?>'/>
-                    <td><?php echo $row->directory; ?></td>
-                    <input type='hidden' name='directory[<?php echo $row->id; ?>]'
-                           value='<?php echo $row->directory; ?>'/>
-                    <td><?php echo $row->file; ?></td>
-                    <input type='hidden' name='file[<?php echo $row->id; ?>]' value='<?php echo $row->file; ?>'/>
+                <tr class="row<?php echo $i % 2; ?>">
+                    <td class="center"><?php echo $this->pagination->getRowOffset($this->count_i); ?></td>
+                    <td class="center"><?php echo HTMLHelper::_('grid.id', $this->count_i, $this->item->id); ?></td>
+                    <td><?php echo $this->item->name; ?></td>
+                    <input type='hidden' name='picture[<?php echo $this->item->id; ?>]' value='<?php echo $this->item->name; ?>'/>
+                    <td><?php echo $this->item->folder; ?></td>
+                    <input type='hidden' name='folder[<?php echo $this->item->id; ?>]' value='<?php echo $this->item->folder; ?>'/>
+                    <td><?php echo $this->item->directory; ?></td>
+                    <input type='hidden' name='directory[<?php echo $this->item->id; ?>]'
+                           value='<?php echo $this->item->directory; ?>'/>
+                    <td><?php echo $this->item->file; ?></td>
+                    <input type='hidden' name='file[<?php echo $this->item->id; ?>]' value='<?php echo $this->item->file; ?>'/>
                     <td class="center">
 						<?php
-						if ($row->published)
+						if ($this->item->published)
 						{
 $imageTitle = Text::_('bereits installiert');
 $attribs['title'] = $imageTitle;              
@@ -131,7 +136,7 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
                     </td>
                 </tr>
 				<?php
-				$k = 1 - $k;
+				//$k = 1 - $k;
 			}
 
 			?>

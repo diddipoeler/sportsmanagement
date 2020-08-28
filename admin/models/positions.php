@@ -89,6 +89,11 @@ class sportsmanagementModelPositions extends JSMModelList
 		{
 			$this->jsmquery->where('po.sports_type_id = ' . $this->getState('filter.sports_type'));
 		}
+		
+		if ($this->getState('filter.persontype'))
+		{
+			$this->jsmquery->where('po.persontype = ' . $this->getState('filter.persontype'));
+		}
 
 		$this->jsmquery->order(
 			$this->jsmdb->escape($this->getState('list.ordering', 'po.name')) . ' ' .
@@ -298,6 +303,8 @@ $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array()
 		$this->setState('filter.sports_type', $this->getUserStateFromRequest($this->context . '.filter.sports_type', 'filter_sports_type', ''));
 		$this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
 		$this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
+		
+		$this->setState('filter.persontype', $this->getUserStateFromRequest($this->context . '.filter.persontype', 'filter_persontype', ''));
 
 		// Filter.order
 		$orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');

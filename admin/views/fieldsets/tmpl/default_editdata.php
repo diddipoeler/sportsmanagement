@@ -15,27 +15,27 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
-
-$this->document->addScript('https://unpkg.com/leaflet@1.3.4/dist/leaflet.js');
-$this->document->addStyleSheet('https://unpkg.com/leaflet@1.3.4/dist/leaflet.css');
+?>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+  integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+  crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+  integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+  crossorigin=""></script>
+<?php
+//$this->document->addScript('https://unpkg.com/leaflet@1.3.4/dist/leaflet.js');
+//$this->document->addStyleSheet('https://unpkg.com/leaflet@1.3.4/dist/leaflet.css');
 $this->document->addScript('https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js');
 
 $templatesToLoad = array('footer', 'fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 try
 {
-	/**
-	 * Get the form fieldsets.
-	 */
 	$fieldsets = $this->form->getFieldsets();
 }
 catch (Exception $e)
 {
-	$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-	$code = $e->getCode(); // Returns
-	Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
-
-	return false;
+	Factory::getApplication()->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
 }
 $view = $this->jinput->getCmd('view', 'cpanel');
 
@@ -58,15 +58,15 @@ if (version_compare(JSM_JVERSION, '4', 'eq'))
 		{
 			echo HTMLHelper::_('uitab.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));
 			?>
-            <div class="row">
-                <div class="col-md-12">
+            <!-- <div class="row"> -->
+                <!-- <div class="col-md-12"> -->
 					<?PHP
 					switch ($fieldset->name)
 					{
 						case 'details':
 							?>
-                            <div class="row-fluid">
-                                <div class="span6">
+                            <div class="row">
+                                <div class="col-lg-6">
 									<?PHP
 									foreach ($this->form->getFieldset($fieldset->name) as $field)
 									{
@@ -160,7 +160,20 @@ if (version_compare(JSM_JVERSION, '4', 'eq'))
 									}
 									?>
                                 </div>
-                                <div class="span6">
+				    <?php
+					switch ($view)
+					{
+					case 'club':
+    				case 'playground':
+					case 'player':
+					if (!$this->item->latitude)
+					{
+					$this->item->latitude  = '0.00000000';
+					$this->item->longitude = '0.00000000';
+					}
+					
+					?>
+                                <div class="col-lg-6">
                                     <div class="control-group">
                                         <style type="text/css">.map_canvas {
                                                 width: 100%;
@@ -172,12 +185,54 @@ if (version_compare(JSM_JVERSION, '4', 'eq'))
                                         <!-- google map ende -->
 
                                         <!-- leaflet map anfang -->
-                                        <div id="map" style="height: 400px; margin-top: 50px; position: relative;">
+                                        <div id="map" style="width: 100%;height: 400px; margin-top: 50px; position: absolute;">
                                         </div>
                                         <!-- leaflet map ende -->
+					    <script>
+
+                                        var planes = [
+                                            ["position",<?php echo $this->item->latitude; ?>,<?php echo $this->item->longitude; ?>]
+                                        ];
+
+                                        var map = L.map('map').setView([<?php echo $this->item->latitude; ?>,<?php echo $this->item->longitude; ?>], 15);
+                                        mapLink =
+                                            '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+                                        L.tileLayer(
+                                            'http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
+                                                attribution: '&copy; ' + mapLink + ' Contributors',
+                                                maxZoom: 20,
+                                                subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+                                            }).addTo(map);
+                                        var myIcon = L.icon({
+                                            iconUrl: 'http://maps.google.com/mapfiles/kml/pal2/icon49.png'
+                                        });
+
+                                        var layerGroup = L.layerGroup().addTo(map);
+                                        //var geocoder = new L.Control.Geocoder.Nominatim();
+                                        for (i = 0; i < planes.length; i++) {
+                                            marker = L.marker([planes[i][1], planes[i][2]]);
+                                            layerGroup.addLayer(marker);
+                                        }
+
+                                        var overlay = {'markers': layerGroup};
+                                        L.control.layers(null, overlay).addTo(map);
+
+                                        //         for (var i = 0; i < planes.length; i++) {
+                                        //             marker = new L.marker([planes[i][1],planes[i][2]], {icon: myIcon} )
+                                        //                 .bindPopup(planes[i][0])
+                                        //                 .addTo(map);
+                                        //         }
+
+                                        //L.Control.geocoder().addTo(map);
+
+                                    </script>
 
                                     </div>
                                 </div>
+				    <?php
+							break;
+					}		
+							?>
                             </div>
 							<?PHP
 							break;
@@ -193,8 +248,8 @@ if (version_compare(JSM_JVERSION, '4', 'eq'))
 							break;
 					}
 					?>
-                </div>
-            </div>
+                <!-- </div> -->
+            <!-- </div> -->
 			<?PHP
 			echo HTMLHelper::_('uitab.endTab');
 		}
@@ -495,7 +550,7 @@ else
 <div>
     <input type="hidden" name="task" value="<?php echo $view; ?>.edit"/>
 	<?php
-	if ($view == 'teamperson')
+	if ($view == 'teamplayer')
 	{
 		?>
         <input type="hidden" name="persontype" value="<?php echo $this->_persontype; ?>"/>

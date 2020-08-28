@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_ajax_top_navigation_menu
@@ -13,20 +11,14 @@
  *
  * https://stackoverflow.com/questions/1145208/how-to-add-li-in-an-existing-ul
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-
-if (!defined('DS'))
-{
-	define('DS', DIRECTORY_SEPARATOR);
-}
+use Joomla\CMS\Language\Text;
 
 if (!defined('JSM_PATH'))
 {
@@ -496,28 +488,41 @@ $('ul.jsmpage').append('<li class=\'nav-item\' ><a href=\"' + data11.link + '\">
 
 $script[] = "});";
 
-// Add the script to the document head.
 Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
 
-// Regionalverband
+/** Regionalverband */
 if ($country_id)
 {
 	$countryassocselect[$country_federation]['assocs'] = $helper->getCountryAssocSelect($country_id);
 	$leagueselect[$country_federation]['leagues']      = $helper->getAssocLeagueSelect($country_id, $assoc_id);
 }
-
-// Landesverband
+else
+{
+$countryassocselect[$country_federation]['assocs'] = array(HTMLHelper::_('select.option', 0, Text::_('-- Regionalverbände -- ')));
+$leagueselect[$country_federation]['leagues']      = array(HTMLHelper::_('select.option', 0, Text::_('--')));    
+}
+/** Landesverband */
 if ($assoc_id)
 {
 	$countrysubassocselect[$country_federation]['assocs'] = $helper->getCountrySubAssocSelect($assoc_id);
 	$leagueselect[$country_federation]['leagues']         = $helper->getAssocLeagueSelect($country_id, $assoc_id);
 }
+else
+{
+//$countrysubassocselect[$country_federation]['assocs'] = array(HTMLHelper::_('select.option', 0, Text::_('-- Kreisverbände -- ')));
+//$leagueselect[$country_federation]['leagues']      = array(HTMLHelper::_('select.option', 0, Text::_('--')));    
+}
 
-// Kreisverband
+/** Kreisverband */
 if ($subassoc_id)
 {
 	$countrysubsubassocselect[$country_federation]['subassocs'] = $helper->getCountrySubSubAssocSelect($subassoc_id);
 	$leagueselect[$country_federation]['leagues']               = $helper->getAssocLeagueSelect($country_id, $subassoc_id);
+}
+else
+{
+//$countrysubsubassocselect[$country_federation]['subassocs'] = array(HTMLHelper::_('select.option', 0, Text::_('-- Kreisverbände -- ')));
+//$leagueselect[$country_federation]['leagues']      = array(HTMLHelper::_('select.option', 0, Text::_('--')));    
 }
 
 if ($subsubassoc_id)
@@ -525,19 +530,45 @@ if ($subsubassoc_id)
 	$countrysubsubsubassocselect[$country_federation]['subsubassocs'] = $helper->getCountrySubSubAssocSelect($subsubassoc_id);
 	$leagueselect[$country_federation]['leagues']                     = $helper->getAssocLeagueSelect($country_id, $subsubassoc_id);
 }
+else
+{
+//$countrysubsubsubassocselect[$country_federation]['subsubassocs'] = array(HTMLHelper::_('select.option', 0, Text::_('-- Kreisverbände -- ')));
+//$leagueselect[$country_federation]['leagues']      = array(HTMLHelper::_('select.option', 0, Text::_('--')));    
+}
 
+if ($subsubsubassoc_id)
+{
+	//$countrysubsubsubassocselect[$country_federation]['subsubassocs'] = $helper->getCountrySubSubAssocSelect($subsubassoc_id);
+	//$leagueselect[$country_federation]['leagues']                     = $helper->getAssocLeagueSelect($country_id, $subsubassoc_id);
+}
+else
+{
+//$countrysubsubsubassocselect[$country_federation]['subsubassocs'] = array(HTMLHelper::_('select.option', 0, Text::_('--  -- ')));
+//$leagueselect[$country_federation]['leagues']      = array(HTMLHelper::_('select.option', 0, Text::_('--')));    
+}
+
+/** liga */
 if ($league_id)
 {
 	$projectselect[$country_federation]['projects'] = $helper->getProjectSelect($league_id);
 }
+else
+{
+    $projectselect[$country_federation]['projects'] = array(HTMLHelper::_('select.option', 0, Text::_($params->get('text_project_dropdown'))));
+}
 
+/** projekt */ 
 if ($project_id)
 {
 	$helper->setProject($project_id, $team_id, $division_id);
 	$divisionsselect[$country_federation]['divisions'] = $helper->getDivisionSelect($project_id);
 	$projectselect[$country_federation]['teams']       = $helper->getTeamSelect($project_id);
 }
-
+else
+{
+    
+    $projectselect[$country_federation]['teams']       = array(HTMLHelper::_('select.option', 0, Text::_($params->get('text_teams_dropdown'))));
+}
 
 if (!defined('JLTOPAM_MODULESCRIPTLOADED'))
 {

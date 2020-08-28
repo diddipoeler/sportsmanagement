@@ -8,16 +8,13 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 
 $cnt = 0;
 ?>
-
 <!-- START: matches -->
 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="clubplanmatchessbd">
 	<?php
@@ -273,9 +270,8 @@ $cnt = 0;
 						$routeparameter['p']                  = $game->project_id;
 						$routeparameter['pid']                = $matchReferee->id;
 						$referee_link                         = sportsmanagementHelperRoute::getSportsmanagementRoute('referee', $routeparameter);
-
-						// $referee_link=sportsmanagementHelperRoute::getRefereeRoute($game->project_id,$matchReferee->id);
-						echo HTMLHelper::link($referee_link, $matchReferee->firstname . " " . $matchReferee->lastname);
+                        $ref = sportsmanagementHelper::formatName(null, $matchReferee->firstname, $matchReferee->nickname, $matchReferee->lastname, $this->config["referee_name_format"]);
+						echo HTMLHelper::link($referee_link, $$ref);
 						echo '<br />';
 					}
 					?>

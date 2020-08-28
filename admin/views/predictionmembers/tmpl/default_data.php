@@ -25,8 +25,8 @@ use Joomla\CMS\Router\Route;
 				?>
             </th>
             <th width="20">
-                <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/>
-            </th>
+                <?php echo HTMLHelper::_('grid.checkall'); ?>
+				</th>
             <th class="title" nowrap="nowrap">
 				<?php
 				echo HTMLHelper::_('grid.sort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_USERNAME'), 'u.username', $this->sortDirection, $this->sortColumn);

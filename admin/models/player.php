@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage player
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -146,6 +142,7 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 			$tblPerson->firstname = $post['firstname' . $pks[$x]];
 			$tblPerson->lastname  = $post['lastname' . $pks[$x]];
 			$tblPerson->nickname  = $post['nickname' . $pks[$x]];
+            $tblPerson->knvbnr  = $post['knvbnr' . $pks[$x]];
 
 			if ($post['birthday' . $pks[$x]] != '0000-00-00' && $post['birthday' . $pks[$x]] != '')
 			{
@@ -175,11 +172,6 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 				return false;
 			}
 
-			// If(!$tblPerson->store())
-			//            {
-			//				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
-			//				$result = false;
-			//			}
 		}
 
 		return $result;
@@ -195,17 +187,11 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 	 */
 	function storeAssign($post)
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput      = $app->input;
 		$option      = $jinput->getCmd('option');
 		$db          = Factory::getDbo();
 		$date        = Factory::getDate();
-		$user        = Factory::getUser();
-		$modified    = Factory::getDate();
-		$modified_by = $user->get('id');
 
 		$this->_project_id      = $app->getUserState("$option.pid", '0');
 		$this->_team_id         = $app->getUserState("$option.team_id", '0');
@@ -218,9 +204,7 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 
 		switch ($post['persontype'])
 		{
-			/**
-			 * spieler
-			 */
+			/** spieler */
 			case 1:
 				$mdl      = BaseDatabaseModel::getInstance("seasonteamperson", "sportsmanagementModel");
 				$mdlTable = $mdl->getTable();
@@ -233,8 +217,8 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 					$mdlTable->season_id  = $this->_season_id;
 					$mdlTable->persontype = 1;
 
-					$mdlTable->modified    = $date->toSql();
-					$mdlTable->modified_by = $modified_by;
+					$mdlTable->modified    = $this->jsmdate->toSql();
+					$mdlTable->modified_by = $this->jsmuser->get('id');
 
 					$mdlTable->picture   = $mdlPersonTable->picture;
 					$mdlTable->active    = 1;
@@ -283,22 +267,13 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 						$res = 0;
 					}
 
-					// Create a new query object.
 					$insertquery = $db->getQuery(true);
-
-					// Insert columns.
 					$columns = array('person_id', 'project_id', 'project_position_id', 'persontype', 'modified', 'modified_by');
-
-					// Insert values.
-					$values = array($cid[$x], $this->_project_id, $res, 1, $db->Quote('' . $modified . ''), $modified_by);
-
-					// Prepare the insert query.
+					$values = array($cid[$x], $this->_project_id, $res, 1, $db->Quote('' . $this->jsmdate->toSql() . ''), $this->jsmuser->get('id'));
 					$insertquery
 						->insert($db->quoteName('#__sportsmanagement_person_project_position'))
 						->columns($db->quoteName($columns))
 						->values(implode(',', $values));
-
-					// Set the query using our newly populated query object and execute it.
 					$db->setQuery($insertquery);
 
 					try
@@ -313,9 +288,7 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 					}
 				}
 				break;
-			/**
-			 * trainer
-			 */
+			/** trainer */
 			case 2:
 				$mdl      = BaseDatabaseModel::getInstance("seasonteamperson", "sportsmanagementModel");
 				$mdlTable = $mdl->getTable();
@@ -328,8 +301,8 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 					$mdlTable->season_id  = $this->_season_id;
 					$mdlTable->persontype = 2;
 
-					$mdlTable->modified    = $date->toSql();
-					$mdlTable->modified_by = $modified_by;
+					$mdlTable->modified    = $this->jsmdate->toSql();
+					$mdlTable->modified_by = $this->jsmuser->get('id');
 
 					$mdlTable->picture   = $mdlPersonTable->picture;
 					$mdlTable->active    = 1;
@@ -378,22 +351,13 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 						$res = 0;
 					}
 
-					// Create a new query object.
 					$insertquery = $db->getQuery(true);
-
-					// Insert columns.
 					$columns = array('person_id', 'project_id', 'project_position_id', 'persontype', 'modified', 'modified_by');
-
-					// Insert values.
-					$values = array($cid[$x], $this->_project_id, $res, 2, $db->Quote('' . $modified . ''), $modified_by);
-
-					// Prepare the insert query.
+					$values = array($cid[$x], $this->_project_id, $res, 2, $db->Quote('' . $this->jsmdate->toSql() . ''), $this->jsmuser->get('id'));
 					$insertquery
 						->insert($db->quoteName('#__sportsmanagement_person_project_position'))
 						->columns($db->quoteName($columns))
 						->values(implode(',', $values));
-
-					// Set the query using our newly populated query object and execute it.
 					$db->setQuery($insertquery);
 
 					try
@@ -408,9 +372,7 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 					}
 				}
 				break;
-			/**
-			 * schiedsrichter
-			 */
+			/** schiedsrichter */
 			case 3:
 				$mdl      = BaseDatabaseModel::getInstance("seasonperson", "sportsmanagementModel");
 				$mdlTable = $mdl->getTable();
@@ -421,11 +383,7 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 					$query->select('id');
 					$query->from('#__sportsmanagement_season_person_id');
 					$query->where('person_id = ' . $cid[$x]);
-
-					// $query->where('team_id = 0');
 					$query->where('season_id = ' . $this->_season_id);
-
-					// $query->where('persontype = 3');
 					$db->setQuery($query);
 					$season_person_id = $db->loadResult();
 
@@ -436,8 +394,8 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 					$mdlTable->person_id   = $cid[$x];
 					$mdlTable->team_id     = 0;
 					$mdlTable->season_id   = $this->_season_id;
-					$mdlTable->modified    = $date->toSql();
-					$mdlTable->modified_by = $modified_by;
+					$mdlTable->modified    = $this->jsmdate->toSql();
+					$mdlTable->modified_by = $this->jsmuser->get('id');
 					$mdlTable->picture     = $mdlPersonTable->picture;
 					$mdlTable->persontype  = 3;
 					$mdlTable->published   = 1;
@@ -456,8 +414,8 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 					$profile->project_id  = $this->_project_id;
 					$profile->person_id   = $season_person_id;
 					$profile->published   = 1;
-					$profile->modified    = $db->Quote('' . $modified . '');
-					$profile->modified_by = $modified_by;
+					$profile->modified    = $db->Quote('' . $this->jsmdate->toSql() . '');
+					$profile->modified_by = $this->jsmuser->get('id');
 
 					try
 					{

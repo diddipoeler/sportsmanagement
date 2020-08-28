@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="2.5" client="administrator" method="upgrade">
-	<name>Sports Management Module Quickicon</name>
+	<name>MOD_SPORTSMANAGEMENT_QUICKICON_DESC</name>
 	<creationDate>15.01.2014</creationDate>
 	<author>JSM Team</author>
 	<authorEmail>diddipoeler@gmx.de</authorEmail>
@@ -9,6 +9,14 @@
 	<copyright>(C) 2014 JSM All rights reserved.</copyright>
 	<version>1.0</version>
 	<description>MOD_SPORTSMANAGEMENT_QUICKICON_DESC</description>
+	
+	<compatibilities>
+<compatibility with="joomla">
+<include>
+<versions from="3.0" />
+</include>
+</compatibility>
+</compatibilities>
 	
 	<files>
 		<filename  module="mod_sportsmanagement_quickicon">mod_sportsmanagement_quickicon.php</filename>

@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage listheader
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 
 if (version_compare(JSM_JVERSION, '4', 'eq'))
@@ -26,17 +22,13 @@ elseif (version_compare(JSM_JVERSION, '3', 'eq'))
 	echo $this->loadTemplate('joomla3');
 	$no_items = 'alert alert-no-items';
 }
-else
-{
-	echo $this->loadTemplate('joomla2');
-}
 
 if ($this->items)
 {
     switch ($this->view)
     {
     case 'projectteams':
-    case 'projectreferees':
+    //case 'projectreferees':
     case 'templates':
     case 'treetos':
     break;

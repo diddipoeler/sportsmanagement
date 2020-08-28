@@ -1,32 +1,27 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage tables
- * @file       teamperson.php
+ * @file       smquote.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * sportsmanagementTableTeamPerson
+ * sportsmanagementTablesmquotestxt
  *
  * @package
  * @author
  * @copyright diddi
- * @version   2014
+ * @version   2020
  * @access    public
  */
-class sportsmanagementTableTeamPerson extends JSMTable
+class sportsmanagementTablesmquotestxt extends JSMTable
 {
-
 	/**
 	 * Constructor
 	 *
@@ -37,8 +32,7 @@ class sportsmanagementTableTeamPerson extends JSMTable
 	function __construct(&$db)
 	{
 		$db = sportsmanagementHelper::getDBConnection();
-		parent::__construct('#__sportsmanagement_season_team_person_id', 'id', $db);
+		//parent::__construct('#__sportsmanagement_rquote', 'id', $db);
 	}
-
 
 }

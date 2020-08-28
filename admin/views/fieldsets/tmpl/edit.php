@@ -14,6 +14,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
 
 $templatesToLoad = array('footer', 'fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
@@ -23,12 +24,26 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
 
-$params = $this->form->getFieldsets('params');
+try
+{
+	$params = $this->form->getFieldsets('params');
+}
+catch (Exception $e)
+{
+	Factory::getApplication()->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+}
 
 /**
  * Get the form fieldsets.
  */
-$fieldsets = $this->form->getFieldsets();
+try
+{
+	$fieldsets = $this->form->getFieldsets();
+}
+catch (Exception $e)
+{
+	Factory::getApplication()->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+}
 
 ?>
 <form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view=' . $this->view . '&layout=edit&id=' . (int) $this->item->id . '&tmpl=' . $this->tmpl); ?>"

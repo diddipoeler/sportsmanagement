@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage projectreferees
@@ -11,14 +9,13 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModelProjectReferees
@@ -29,12 +26,10 @@ use Joomla\CMS\Component\ComponentHelper;
  * @version   $Id$
  * @access    public
  */
-class sportsmanagementModelProjectReferees extends ListModel
+class sportsmanagementModelProjectReferees extends JSMModelList
 {
 	var $_identifier = "preferees";
-
 	var $_project_id = 0;
-
 
 	/**
 	 * sportsmanagementModelProjectReferees::__construct()
@@ -71,43 +66,26 @@ class sportsmanagementModelProjectReferees extends ListModel
 	 */
 	function storeAssigned($cid, $project_id)
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-		$db  = sportsmanagementHelper::getDBConnection();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$query  = Factory::getDbo()->getQuery(true);
-
 		if (!count($cid))
 		{
 			return 0;
 		}
 
-		// Select some fields
-		$query->select('pt.id');
+		$this->jsmquery->clear();
+		$this->jsmquery->select('pt.id');
+		$this->jsmquery->from('#__sportsmanagement_person AS pt');
+		$this->jsmquery->join('INNER', '#__sportsmanagement_project_referee AS r ON r.person_id = pt.id');
+		$this->jsmquery->where('r.project_id = ' . $project_id);
+		$this->jsmquery->where('pt.published = 1');
 
-		// From the table
-		$query->from('#__sportsmanagement_person AS pt');
-		$query->join('INNER', '#__sportsmanagement_project_referee AS r ON r.person_id = pt.id');
-		$query->where('r.project_id = ' . $project_id);
-		$query->where('pt.published = 1');
-
-		$db->setQuery($query);
+		$this->jsmdb->setQuery($this->jsmquery);
 
 		if (version_compare(JVERSION, '3.0.0', 'ge'))
 		{
 			// Joomla! 3.0 code here
-			$current = $db->loadColumn();
-		}
-		elseif (version_compare(JVERSION, '2.5.0', 'ge'))
-		{
-			// Joomla! 2.5 code here
-			$current = $db->loadResultArray();
+			$current = $this->jsmdb->loadColumn();
 		}
 
-		//		$current = Factory::getDbo()->loadResultArray();
 		$added = 0;
 
 		foreach ($cid AS $pid)
@@ -124,18 +102,14 @@ class sportsmanagementModelProjectReferees extends ListModel
 					continue;
 				}
 
-				// Get data from person
-				// Select some fields
-				$query->clear();
-				$query->select('pl.picture');
+				$this->jsmquery->clear();
+				$this->jsmquery->select('pl.picture');
+				$this->jsmquery->from('#__sportsmanagement_person AS pl');
+				$this->jsmquery->where('pl.id = ' . $pid);
+				$this->jsmquery->where('pl.published = 1');
 
-				// From the table
-				$query->from('#__sportsmanagement_person AS pl');
-				$query->where('pl.id = ' . $pid);
-				$query->where('pl.published = 1');
-
-				Factory::getDbo()->setQuery($query);
-				$player = Factory::getDbo()->loadObject();
+				$this->jsmdb->setQuery($this->jsmquery);
+				$player = $this->jsmdb->loadObject();
 
 				if ($player)
 				{
@@ -223,42 +197,53 @@ class sportsmanagementModelProjectReferees extends ListModel
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-
-		// Initialise variables.
-		// $app = Factory::getApplication('administrator');
 
 		if (ComponentHelper::getParams($option)->get('show_debug_info_backend'))
 		{
 			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . $this->context . ''), '');
 			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . ''), '');
 		}
+        
+        $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array(), 'array');
 
-		// Load the filter state.
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
+		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
+		$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
+		$this->setState('filter.search_nation', $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', ''));
+		$this->setState('filter.project_position_id', $this->getUserStateFromRequest($this->context . '.filter.project_position_id', 'filter_project_position_id', ''));
+		$this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
+		$this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
 
-		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string');
-		$this->setState('filter.state', $published);
-
-		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '');
-		$this->setState('filter.search_nation', $temp_user_request);
-
-		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.project_position_id', 'filter_project_position_id', '');
-		$this->setState('filter.project_position_id', $temp_user_request);
-
-		$value = Factory::getApplication()->input->getUInt('limitstart', 0);
-		$this->setState('list.start', $value);
-
-		// List state information.
-		parent::populateState('p.lastname', 'asc');
+		$orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
+		if (!in_array($orderCol, $this->filter_fields))
+		{
+			$orderCol = 'p.lastname';
+		}
+		$this->setState('list.ordering', $orderCol);
+		$listOrder = $this->getUserStateFromRequest($this->context . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		{
+			$listOrder = 'ASC';
+		}
+		$this->setState('list.direction', $listOrder);
 	}
 
+	public function getItems2() {
+		$this->jsmquery->clear();
+$this->jsmquery = $this->getListQuery();
+		$this->jsmdb->setQuery($this->jsmquery);
+		try{
+        return $this->jsmdb->loadObjectList();
+}
+catch (Exception $e)
+{
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');
+	return false;
+}
+	}
 	/**
 	 * sportsmanagementModelProjectReferees::getListQuery()
 	 *
@@ -266,60 +251,58 @@ class sportsmanagementModelProjectReferees extends ListModel
 	 */
 	protected function getListQuery()
 	{
-		$app    = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
-
-		$this->_project_id      = $app->getUserState("$option.pid", '0');
-		$this->_season_id       = $app->getUserState("$option.season_id", '0');
+		$this->_project_id      = $this->jsmapp->getUserState("$this->jsmoption.pid", '0');
+		$this->_season_id       = $this->jsmapp->getUserState("$this->jsmoption.season_id", '0');
 		$this->_team_id         = Factory::getApplication()->input->getVar('team_id');
 		$this->_project_team_id = Factory::getApplication()->input->getVar('project_team_id');
 
+		//echo '_season_id<pre>'.print_r($this->_season_id,true).'</pre>';
+		
 		if (!$this->_team_id)
 		{
-			$this->_team_id = $app->getUserState("$option.team_id", '0');
+			$this->_team_id = $this->jsmapp->getUserState("$this->jsmoption.team_id", '0');
 		}
 
 		if (!$this->_project_team_id)
 		{
-			$this->_project_team_id = $app->getUserState("$option.project_team_id", '0');
+			$this->_project_team_id = $this->jsmapp->getUserState("$this->jsmoption.project_team_id", '0');
 		}
 
-		// Create a new query object.
-		$query = Factory::getDbo()->getQuery(true);
-
-		// Select some fields
-		$query->select(implode(",", $this->filter_fields) . ',tp.person_id as person_id');
-
-		// From the club table
-		$query->from('#__sportsmanagement_person AS p');
-		$query->join('INNER', '#__sportsmanagement_season_person_id AS tp on tp.person_id = p.id');
-		$query->join('INNER', '#__sportsmanagement_project_referee AS pref on pref.person_id = tp.id');
-		$query->join('LEFT', '#__users AS u ON u.id = pref.checked_out');
-		$query->where('tp.persontype = 3');
-		$query->where('p.published = 1');
-		$query->where('tp.season_id = ' . $this->_season_id);
-		$query->where('pref.project_id = ' . $this->_project_id);
+		$this->jsmquery->clear();
+		$this->jsmquery->select(implode(",", $this->filter_fields) . ',tp.person_id as person_id,tp.persontype,tp.season_id');
+		$this->jsmquery->select('tp.id as season_person_id');
+		$this->jsmquery->from('#__sportsmanagement_person AS p');
+		$this->jsmquery->join('INNER', '#__sportsmanagement_season_person_id AS tp on tp.person_id = p.id');
+		$this->jsmquery->join('INNER', '#__sportsmanagement_project_referee AS pref on pref.person_id = tp.id');
+		$this->jsmquery->join('LEFT', '#__users AS u ON u.id = pref.checked_out');
+		$this->jsmquery->where('tp.persontype = 3');
+		$this->jsmquery->where('p.published = 1');
+		if ( $this->_season_id )
+		{
+		$this->jsmquery->where('tp.season_id = ' . $this->_season_id);
+		}
+		$this->jsmquery->where('pref.project_id = ' . $this->_project_id);
 
 		if ($this->getState('filter.project_position_id'))
 		{
-			$query->where('pref.project_position_id = ' . $this->getState('filter.project_position_id'));
+			$this->jsmquery->where('pref.project_position_id = ' . $this->getState('filter.project_position_id'));
 		}
 
 		if ($this->getState('filter.search'))
 		{
-			$query->where(
-				'(LOWER(p.lastname) LIKE ' . Factory::getDbo()->Quote('%' . $this->getState('filter.search') . '%') .
-				'OR LOWER(p.firstname) LIKE ' . Factory::getDbo()->Quote('%' . $this->getState('filter.search') . '%') .
-				'OR LOWER(p.nickname) LIKE ' . Factory::getDbo()->Quote('%' . $this->getState('filter.search') . '%') . ')'
+			$this->jsmquery->where(
+				'(LOWER(p.lastname) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%') .
+				'OR LOWER(p.firstname) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%') .
+				'OR LOWER(p.nickname) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%') . ')'
 			);
 		}
 
-		$query->order(
-			Factory::getDbo()->escape($this->getState('list.ordering', 'p.lastname')) . ' ' .
-			Factory::getDbo()->escape($this->getState('list.direction', 'ASC'))
+		$this->jsmquery->order(
+			$this->jsmdb->escape($this->getState('list.ordering', 'p.lastname')) . ' ' .
+			$this->jsmdb->escape($this->getState('list.direction', 'ASC'))
 		);
 
-		return $query;
+		return $this->jsmquery;
 
 	}
 

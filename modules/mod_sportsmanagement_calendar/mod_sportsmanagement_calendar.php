@@ -107,10 +107,13 @@ if (!defined('JLC_MODULESCRIPTLOADED'))
 {
 	if (version_compare(JVERSION, '3.0.0', 'ge'))
 	{
-		// $doc->addScript( Uri::root().'/media/system/js/mootools-core.js');
-		$doc->addScript(Uri::root() . '/media/system/js/mootools-core-uncompressed.js');
-		$doc->addScript(Uri::root() . '/media/system/js/mootools-more-uncompressed.js');
-		$doc->addScript(Uri::root() . '/media/system/js/modal-uncompressed.js');
+		$mooconfig = JFactory::getConfig();
+		$moodebug = $mooconfig->get('debug');
+		$moouncompressed   = $moodebug ? '-uncompressed' : '';
+		$document = JFactory::getDocument();
+		$doc->addScript('/media/system/js/mootools-core' . $moouncompressed . '.js', array('version' => $document->getMediaVersion()));
+		$doc->addScript('/media/system/js/mootools-more' . $moouncompressed . '.js', array('version' => $document->getMediaVersion()));
+		$doc->addScript('/media/system/js/modal' . $moouncompressed . '.js', array('version' => $document->getMediaVersion()));
 		$doc->addScript(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'assets/js' . DIRECTORY_SEPARATOR . $module->module . '.js');
 	}
 	else

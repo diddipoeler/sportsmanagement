@@ -111,8 +111,13 @@ class JSMModelAdmin extends AdminModel
 		$address_parts = array();
 		$person_double = array();
 		$parentsave    = true;
+        
+        $config = Factory::getConfig();
 
-		// $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' task '.$this->jsmjinput->get('task')), '');
+if ( $config->get('debug') )
+{
+		$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' task '.$this->jsmjinput->get('task')), '');
+}
 
 		$input_options = InputFilter::getInstance(
 			array(
@@ -268,6 +273,15 @@ class JSMModelAdmin extends AdminModel
 				{
 					$data['picture'] = $post['copy_jform']['picture'];
 				}
+                
+                if ( !$data['founded'] )
+                {
+                    $data['founded'] = '0000-00-00';
+                }
+                if ( !$data['dissolved'] )
+                {
+                    $data['dissolved'] = '0000-00-00';
+                }
 
 				$data['sports_type_id'] = $data['request']['sports_type_id'];
 				$data['agegroup_id']    = $data['request']['agegroup_id'];
@@ -588,6 +602,10 @@ class JSMModelAdmin extends AdminModel
 				{
 					$data['picture'] = $post['copy_jform']['picture'];
 				}
+				if ($data['max_visitors'] == '')
+				{
+					$data['max_visitors'] = 0;
+				}
 				break;
 
 			/**
@@ -597,6 +615,10 @@ class JSMModelAdmin extends AdminModel
 				if (array_key_exists('copy_jform', $post))
 				{
 					$data['picture'] = $post['copy_jform']['picture'];
+				}
+				if ( $data['category_id'] == '' )
+				{
+				$data['category_id']  = 0;	
 				}
 
 				$data['start_date']         = sportsmanagementHelper::convertDate($data['start_date'], 0);
@@ -699,9 +721,15 @@ class JSMModelAdmin extends AdminModel
 			$parentsave = false;
 		}
 
-		//    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' parentsave '.$parentsave), '');
-		//    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getState id '.$this->getState($this->getName().'.id') ), '');
-		//    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$this->jsmjinput->getInt('id') ), '');
+if ( $config->get('debug') )
+{
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data <pre>'.print_r($data,true).'</pre>'), '');    
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post <pre>'.print_r($post,true).'</pre>'), '');
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' parentsave '.$parentsave), '');
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getState id '.$this->getState($this->getName().'.id') ), '');
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$this->jsmjinput->getInt('id') ), '');
+}
+        
 		if ($parentsave)
 		{
 			$id         = (int) $this->getState($this->getName() . '.id');
@@ -1029,9 +1057,7 @@ class JSMModelAdmin extends AdminModel
 				$this->jsmquery->select('*');
 				$this->jsmquery->from('information_schema.columns');
 				$this->jsmquery->where("TABLE_NAME LIKE '" . $prefix . "sportsmanagement_position' ");
-
 				$this->jsmdb->setQuery($this->jsmquery);
-
 				$result = $this->jsmdb->loadObjectList();
 
 				foreach ($result as $field)
@@ -1052,9 +1078,7 @@ class JSMModelAdmin extends AdminModel
 				$this->jsmquery->select('*');
 				$this->jsmquery->from('information_schema.columns');
 				$this->jsmquery->where("TABLE_NAME LIKE '" . $prefix . "sportsmanagement_statistic' ");
-
 				$this->jsmdb->setQuery($this->jsmquery);
-
 				$result = $this->jsmdb->loadObjectList();
 
 				foreach ($result as $field)
@@ -1068,8 +1092,6 @@ class JSMModelAdmin extends AdminModel
 				}
 				break;
 			case 'projectreferee':
-				// $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_player',''));
-				// $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/projectreferees');
 				$form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
 				break;
 			case 'division':
@@ -1077,7 +1099,7 @@ class JSMModelAdmin extends AdminModel
 				$form->setFieldAttribute('picture', 'directory', $joomladirectory . 'com_sportsmanagement/database/divisions');
 				$form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
 				break;
-			case 'teamperson':
+			case 'teamplayer':
 				$form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_player', ''));
 				$form->setFieldAttribute('picture', 'directory', $joomladirectory . 'com_sportsmanagement/database/teamplayers');
 				$form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
@@ -1088,21 +1110,14 @@ class JSMModelAdmin extends AdminModel
 				$form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
 				break;
 			case 'jlextfederation':
-				// $form->setFieldAttribute('assocflag', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_flags',''));
-				// $form->setFieldAttribute('assocflag', 'directory', $joomladirectory.'com_sportsmanagement/database/flags_associations');
 				$form->setFieldAttribute('assocflag', 'type', $cfg_which_media_tool);
-
-				// $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
-				// $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/associations');
 				$form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
 
 				$this->jsmquery->clear();
 				$this->jsmquery->select('*');
 				$this->jsmquery->from('information_schema.columns');
 				$this->jsmquery->where("TABLE_NAME LIKE '" . $prefix . "sportsmanagement_federations' ");
-
 				$this->jsmdb->setQuery($this->jsmquery);
-
 				$result = $this->jsmdb->loadObjectList();
 
 				foreach ($result as $field)
@@ -1149,21 +1164,14 @@ class JSMModelAdmin extends AdminModel
 
 				break;
 			case 'jlextassociation':
-				// $form->setFieldAttribute('assocflag', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_flags',''));
-				// $form->setFieldAttribute('assocflag', 'directory', $joomladirectory.'com_sportsmanagement/database/flags_associations');
 				$form->setFieldAttribute('assocflag', 'type', $cfg_which_media_tool);
-
-				// $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
-				// $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/associations');
 				$form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
 
 				$this->jsmquery->clear();
 				$this->jsmquery->select('*');
 				$this->jsmquery->from('information_schema.columns');
 				$this->jsmquery->where("TABLE_NAME LIKE '" . $prefix . "sportsmanagement_jlextassociation' ");
-
 				$this->jsmdb->setQuery($this->jsmquery);
-
 				$result = $this->jsmdb->loadObjectList();
 
 				foreach ($result as $field)
@@ -1214,14 +1222,8 @@ class JSMModelAdmin extends AdminModel
 
 				$sports_type_id = $form->getValue('sports_type_id');
 				$this->jsmquery->clear();
-
-				// Select some fields
 				$this->jsmquery->select('name');
-
-				// From table
 				$this->jsmquery->from('#__sportsmanagement_sports_type');
-
-				// Where
 				$this->jsmquery->where('id = ' . (int) $sports_type_id);
 				$this->jsmdb->setQuery($this->jsmquery);
 				$result = $this->jsmdb->loadResult();
@@ -1249,23 +1251,11 @@ class JSMModelAdmin extends AdminModel
 
 						break;
 				}
-
-				// $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
-				// $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/projects');
 				$form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
-
 				break;
 			case 'projectteam':
-				// $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
-				// $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/projectteams');
 				$form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
-
-				// $form->setFieldAttribute('trikot_home', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
-				// $form->setFieldAttribute('trikot_home', 'directory', $joomladirectory.'com_sportsmanagement/database/projectteams/trikot_home');
 				$form->setFieldAttribute('trikot_home', 'type', $cfg_which_media_tool);
-
-				// $form->setFieldAttribute('trikot_away', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
-				// $form->setFieldAttribute('trikot_away', 'directory', $joomladirectory.'com_sportsmanagement/database/projectteams/trikot_away');
 				$form->setFieldAttribute('trikot_away', 'type', $cfg_which_media_tool);
 				break;
 			case 'club':
@@ -1305,24 +1295,10 @@ class JSMModelAdmin extends AdminModel
 					$form->setFieldAttribute('merge_teams', 'type', 'hidden');
 				}
 				
-				//        $form->setFieldAttribute('logo_small', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
-				//        $form->setFieldAttribute('logo_small', 'directory', $joomladirectory.'com_sportsmanagement/database/clubs/small');
 				$form->setFieldAttribute('logo_small', 'type', $cfg_which_media_tool);
-
-				//        $form->setFieldAttribute('logo_middle', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_medium',''));
-				//        $form->setFieldAttribute('logo_middle', 'directory', $joomladirectory.'com_sportsmanagement/database/clubs/medium');
 				$form->setFieldAttribute('logo_middle', 'type', $cfg_which_media_tool);
-
-				//        $form->setFieldAttribute('logo_big', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
-				//        $form->setFieldAttribute('logo_big', 'directory', $joomladirectory.'com_sportsmanagement/database/clubs/large');
 				$form->setFieldAttribute('logo_big', 'type', $cfg_which_media_tool);
-
-				//        $form->setFieldAttribute('trikot_home', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
-				//        $form->setFieldAttribute('trikot_home', 'directory', $joomladirectory.'com_sportsmanagement/database/clubs/trikot');
 				$form->setFieldAttribute('trikot_home', 'type', $cfg_which_media_tool);
-
-				//        $form->setFieldAttribute('trikot_away', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
-				//        $form->setFieldAttribute('trikot_away', 'directory', $joomladirectory.'com_sportsmanagement/database/clubs/trikot');
 				$form->setFieldAttribute('trikot_away', 'type', $cfg_which_media_tool);
 
 				$this->jsmquery->clear();
@@ -1357,9 +1333,6 @@ class JSMModelAdmin extends AdminModel
 				{
 					$form->setFieldAttribute('merge_clubs', 'type', 'hidden');
 				}
-
-				// $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
-				// $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/teams');
 				$form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
 
 				$this->jsmquery->clear();
@@ -1389,8 +1362,6 @@ class JSMModelAdmin extends AdminModel
 
 				break;
 			case 'sportstype':
-				// $form->setFieldAttribute('icon', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
-				// $form->setFieldAttribute('icon', 'directory', $joomladirectory.'com_sportsmanagement/database/sport_types');
 				$form->setFieldAttribute('icon', 'type', $cfg_which_media_tool);
 
 				$this->jsmquery->clear();
@@ -1415,8 +1386,6 @@ class JSMModelAdmin extends AdminModel
 				break;
 
 			case 'playground':
-				// $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
-				// $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/playgrounds');
 				$form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
 
 				$this->jsmquery->clear();
@@ -1433,19 +1402,15 @@ class JSMModelAdmin extends AdminModel
 					switch ($field->DATA_TYPE)
 					{
 						case 'varchar':
-							$form->setFieldAttribute($field->COLUMN_NAME, 'size', $field->CHARACTER_MAXIMUM_LENGTH);
-							break;
+					//	$form->setFieldAttribute($field->COLUMN_NAME, 'size', $field->CHARACTER_MAXIMUM_LENGTH);
+						break;
 					}
 				}
 				break;
 			case 'agegroup':
-				// $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
-				// $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/agegroups');
 				$form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
 				break;
 			case 'league':
-				// $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
-				// $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/leagues');
 				$form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
 				break;
 			case 'predictionproject':
@@ -1499,8 +1464,8 @@ class JSMModelAdmin extends AdminModel
 					switch ($field->DATA_TYPE)
 					{
 						case 'varchar':
-							$form->setFieldAttribute($field->COLUMN_NAME, 'size', $field->CHARACTER_MAXIMUM_LENGTH);
-							break;
+					//	$form->setFieldAttribute($field->COLUMN_NAME, 'size', $field->CHARACTER_MAXIMUM_LENGTH);
+						break;
 					}
 				}
 
@@ -1536,6 +1501,7 @@ class JSMModelAdmin extends AdminModel
 		for ($i = 0; $i < count($pks); $i++)
 		{
 			$row->load((int) $pks[$i]);
+			$row->ordering = $pks[$i];
 
 			if ($row->ordering != $order[$i])
 			{
@@ -1545,7 +1511,10 @@ class JSMModelAdmin extends AdminModel
 						$row->ordering = substr($row->name, 0, 4);
 						break;
 					default:
+						if ( $order[$i] )
+						{
 						$row->ordering = $order[$i];
+						}
 						break;
 				}
 

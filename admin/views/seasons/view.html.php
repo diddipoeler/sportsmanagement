@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage seasons
@@ -11,14 +9,14 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementViewSeasons
@@ -31,7 +29,22 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
  */
 class sportsmanagementViewSeasons extends sportsmanagementView
 {
+	/**
+	 * A \JForm instance with filter fields.
+	 *
+	 * @var    \JForm
+	 * @since  3.6.3
+	 */
+	public $filterForm;
 
+	/**
+	 * An array with active filters.
+	 *
+	 * @var    array
+	 * @since  3.6.3
+	 */
+	public $activeFilters;
+	
 	/**
 	 * sportsmanagementViewSeasons::init()
 	 *
@@ -87,6 +100,16 @@ class sportsmanagementViewSeasons extends sportsmanagementView
 			$this->setLayout('assignpersons');
 			break;
 		}
+try
+{		
+$this->filterForm    = $this->model->getFilterForm();
+$this->activeFilters = $this->model->getActiveFilters();
+}
+catch (Exception $e)
+{
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');	
+}
 
 	}
 

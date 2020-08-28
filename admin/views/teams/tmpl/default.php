@@ -64,7 +64,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         <input type="hidden" name="club_id" value="<?php echo $this->club_id; ?>"/>
 		<?php echo HTMLHelper::_('form.token'); ?>
     </form>
+<div>
 <?PHP
-echo "<div>";
 echo $this->loadTemplate('footer');
-echo "</div>";
+?>
+</div>

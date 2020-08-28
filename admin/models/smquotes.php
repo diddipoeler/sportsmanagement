@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 
@@ -42,7 +38,11 @@ class sportsmanagementModelsmquotes extends JSMModelList
 		$config['filter_fields'] = array(
 			'obj.quote',
 			'obj.id',
-			'obj.ordering'
+			'obj.ordering',
+			'obj.author',
+			'obj.catid',
+			'obj.published',
+			'obj.quote'
 		);
 		parent::__construct($config);
 		parent::setDbo($this->jsmdb);
@@ -59,31 +59,22 @@ class sportsmanagementModelsmquotes extends JSMModelList
 	{
 		if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend'))
 		{
-			// $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
-			// $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
 			$this->jsmmessage .= '<br>' . Text::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . $this->context);
 			$this->jsmmessage .= '<br>' . Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . '');
 		}
-
-		// Load the filter state.
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
-		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string');
-		$this->setState('filter.state', $published);
-		$categoryId = $this->getUserStateFromRequest($this->context . '.filter.category_id', 'filter_category_id', '');
-		$this->setState('filter.category_id', $categoryId);
-		$value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
-		$this->setState('list.limit', $value);
+$list = $this->getUserStateFromRequest($this->context . '.list', 'list', array(), 'array');
+		
+		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search'));
+		$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
+		$this->setState('filter.catid', $this->getUserStateFromRequest($this->context . '.filter.catid', 'filter_catid', ''));
+		$this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
+		$this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
+/*		
 		$value = $this->getUserStateFromRequest($this->context . '.list.ordering', 'ordering', $ordering, 'string');
 		$this->setState('list.ordering', $value);
 		$value = $this->getUserStateFromRequest($this->context . '.list.direction', 'direction', $direction, 'string');
 		$this->setState('list.direction', $value);
-
-		// List state information.
-		$value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
-		$this->setState('list.start', $value);
-
-		// Filter.order
+*/
 		$orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
 
 		if (!in_array($orderCol, $this->filter_fields))
@@ -110,22 +101,13 @@ class sportsmanagementModelsmquotes extends JSMModelList
 	 */
 	protected function getListQuery()
 	{
-		// Create a new query object.
 		$this->jsmquery->clear();
 		$this->jsmsubquery1->clear();
 		$this->jsmsubquery2->clear();
-
-		// Select some fields
 		$this->jsmquery->select('obj.*,obj.author as name');
-
-		// From the hello table
 		$this->jsmquery->from('#__sportsmanagement_rquote as obj');
-
-		// Join over the users for the checked out user.
 		$this->jsmquery->select('uc.name AS editor');
 		$this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
-
-		// Join over the categories.
 		$this->jsmquery->select('c.title AS category_title');
 		$this->jsmquery->join('LEFT', '#__categories AS c ON c.id = obj.catid');
 
@@ -139,9 +121,9 @@ class sportsmanagementModelsmquotes extends JSMModelList
 			$this->jsmquery->where('obj.published = ' . $this->getState('filter.state'));
 		}
 
-		if ($this->getState('filter.category_id'))
+		if ($this->getState('filter.catid'))
 		{
-			$this->jsmquery->where('obj.catid = ' . $this->getState('filter.category_id'));
+			$this->jsmquery->where('obj.catid = ' . $this->getState('filter.catid'));
 		}
 
 		$this->jsmquery->order(

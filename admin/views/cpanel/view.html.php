@@ -368,9 +368,14 @@ $data = array('homepage' => Uri::base(), 'notes' => '', 'homepagename' => $this-
 // Invoke the POST request.
 $response = $http->post('https://www.fussballineuropa.de/jsmpaket.php', $data);      
 
+// Create an instance of a default JHttp object.
+$http = HttpFactory::getHttp();      
+// Prepare the data.
+$data = array('homepage' => Uri::root(), 'notes' => '', 'homepagename' => $this->app->getCfg('sitename') , 'isadmin' => 0 );
+// Invoke the POST request.
+$response = $http->post('https://www.fussballineuropa.de/jsmpaket.php', $data);
+
 		$this->document->addScript(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
-//		$js = "register('" . Uri::base() . "','" . "" . "','" . $this->app->getCfg('sitename') . "','1');" . "\n";
-//		$this->document->addScriptDeclaration($js);
 
 		if ($this->app->isClient('administrator'))
 		{
@@ -387,17 +392,6 @@ $response = $http->post('https://www.fussballineuropa.de/jsmpaket.php', $data);
 
 		if ($canDo->get('core.admin'))
 		{
-			/*
-			if ($this->jquery) {
-			$this->app->setUserState("$this->option.install", 'jqueryeasy');
-			sportsmanagementHelper::ToolbarButton('default', 'upload', Text::_('COM_SPORTSMANAGEMENT_INSTALL_JQUERY'), 'githubinstall', 1);
-			}
-
-			if ($this->googlemap) {
-			$this->app->setUserState("$this->option.install", 'plugin_googlemap3');
-			sportsmanagementHelper::ToolbarButton('default', 'upload', Text::_('COM_SPORTSMANAGEMENT_INSTALL_GOOGLEMAP'), 'githubinstall', 1);
-			}
-			*/
 			$bar = Toolbar::getInstance('toolbar');
 			$bar->appendButton('Link', 'upload', Text::_('COM_SPORTSMANAGEMENT_GITHUB_UPDATE'), 'index.php?option=com_sportsmanagement&&view=githubinstall');
 

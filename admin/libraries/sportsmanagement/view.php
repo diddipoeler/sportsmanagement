@@ -153,9 +153,49 @@ img.car {
 	$this->project_id     = $this->jinput->get('pid');
 	$this->jsmmessage     = '';
 	$this->jsmmessagetype = 'notice';
-	$this->state          = $this->get('State');
-        $this->dragable_group = '';
+		
+		
+		switch ($this->view)
+		{
+			case 'smquotetxt':
+				break;
+			default:
+				$this->state          = $this->get('State');
+				break;
+		}
+	
+    $this->dragable_group = '';
+        $this->ordering = true;
+        if ( $this->state )
+        {
+        try{
+        $this->sortColumn = $this->escape($this->state->get('list.ordering'));
+        $this->sortDirection  = $this->escape($this->state->get('list.direction'));
+		 }
+catch (Exception $e)
+{
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');
+}
+}
 
+/** soll der link zur bewertung der komponente angezeigt werden ? */		
+if (ComponentHelper::getParams($this->option)->get('show_jed_link'))
+{
+Log::add(Text::_('COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JED_LINK_TEXT'), Log::NOTICE, 'jsmerror');
+$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JED_LINK_TEXT'), 'Notice');	
+}		
+		
+		
+		
+if (preg_match("/ordering/i", $this->sortColumn)) {
+   $this->saveOrderButton = false;
+} else {
+   $this->saveOrderButton = true;
+}
+        //$this->saveOrder = $this->sortColumn == 'a.ordering';
+        
+/*
 		if (isset($this->state))
 		{
 			$this->sortDirection = $this->state->get('list.direction');
@@ -165,7 +205,7 @@ img.car {
             //$ordering   = ($this->sortColumn == 'ordering');
             $this->ordering = true;
 		}
-
+*/
 		if (ComponentHelper::getParams($this->option)->get('cfg_which_database'))
 		{
 			$this->jsmmessage = 'Sie haben Zugriff auf die externe Datenbank';
@@ -227,26 +267,31 @@ img.car {
 
 					break;
 			}
-            switch ($this->view)
-			{
-				case 'club';
-				case 'playground';
-                case 'league';
-                case 'person';
-                case 'position';
-                case 'agegroup';
-                $this->app->setUserState('com_sportsmanagement.itemname', $this->item->name);
-				break;
-                case 'teamperson';
-        case 'projectreferee';
-                $mdlPerson      = BaseDatabaseModel::getInstance("player", "sportsmanagementModel");
-		        $project_person = $mdlPerson->getPerson($this->item->person_id);
-                $this->app->setUserState('com_sportsmanagement.itemname', $project_person->lastname . ' - ' . $project_person->firstname);
-                break;
-                case 'player';
-                $this->app->setUserState('com_sportsmanagement.itemname', $this->item->lastname.' '.$this->item->firstname);
-                break;
-            }
+			
+/** hier wird der name für den button des bilderuploads gesetzt */			
+switch ($this->view)
+{
+case 'club';
+case 'playground';
+case 'league';
+case 'person';
+case 'position';
+case 'agegroup';
+$this->app->setUserState('com_sportsmanagement.itemname', $this->item->name);
+break;
+case 'teamplayer';
+case 'projectreferee';
+$mdlPerson      = BaseDatabaseModel::getInstance("player", "sportsmanagementModel");
+$project_person = $mdlPerson->getPerson($this->item->person_id);
+$this->app->setUserState('com_sportsmanagement.itemname', $project_person->lastname . ' - ' . $project_person->firstname);
+break;
+case 'player';
+$this->app->setUserState('com_sportsmanagement.itemname', $this->item->lastname.' '.$this->item->firstname);
+break;
+case 'smquote';
+$this->app->setUserState('com_sportsmanagement.itemname', $this->item->author);		
+break;		
+}
             
             
             
@@ -320,7 +365,7 @@ img.car {
 				case 'projects';
 				case 'projectteams';
 				case 'rounds';
-				case 'teampersons';
+				case 'teamplayers';
 				case 'templates';
 				case 'projectreferees';
 				case 'projectpositions';
@@ -352,7 +397,7 @@ img.car {
 				$this->sidebar = JHtmlSidebar::render();
 			}
 		}
-		
+	/*	
 switch ($this->view)
 {
 case 'clubs';
@@ -361,7 +406,7 @@ case 'playgrounds':
 //$this->activeFilters = $this->get('ActiveFilters');	
 break;
 }
-		
+*/		
 
 		parent::display($tpl);
 	}
@@ -397,21 +442,21 @@ break;
 				case 'predictiongames':
 				case 'jlextfederations':
 				case 'jlextassociations':
-				case 'jlextcountries':
-				case 'agegroups':
-				case 'eventtypes':
+				//case 'jlextcountries':
+				//case 'agegroups':
+				//case 'eventtypes':
 				//case 'leagues':
-				case 'seasons':
+				//case 'seasons':
 				case 'sportstypes':
 				//case 'positions':
 				case 'clubnames':
 				//case 'clubs':
 				case 'teams':
 				//case 'playgrounds':
-				case 'rounds':
+				//case 'rounds':
 				case 'divisions':
 				case 'extrafields':
-				case 'teampersons':
+				case 'teamplayers':
 					JHtmlSidebar::addFilter(
 						Text::_('JOPTION_SELECT_PUBLISHED'),
 						'filter_state',
@@ -454,16 +499,20 @@ break;
 
 					break;
 				case 'smquotes':
+					/*
 					JHtmlSidebar::addFilter(
 						Text::_('JOPTION_SELECT_PUBLISHED'),
 						'filter_state',
 						HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
 					);
+					*/
+					/*
 					JHtmlSidebar::addFilter(
 						Text::_('JOPTION_SELECT_CATEGORY'),
 						'filter_category_id',
 						HTMLHelper::_('select.options', HTMLHelper::_('category.options', 'com_sportsmanagement'), 'value', 'text', $this->state->get('filter.category_id'))
 					);
+					*/
 					break;
 			}
 /*
@@ -793,7 +842,9 @@ document.getElementById("filter_season").classList.add("filter_season");
 				case 'treetomatchs';
 				case 'smextxmleditors';
 				case 'smextxmleditor';
+					case 'jsmopenligadb';
                 case 'smimageimports';
+					case 'smquotestxt';
 				break;
 				default:
 					/**

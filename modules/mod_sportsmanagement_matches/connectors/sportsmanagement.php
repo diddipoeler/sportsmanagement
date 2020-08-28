@@ -154,22 +154,17 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 	 */
 	public function getMatches()
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
-
-		// Get a refrence of the page instance in joomla
 		$document = Factory::getDocument();
-
-		// Get a db connection.
 		$db    = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 
 		$limit = ($this->params->get('limit', 0) > 0) ? $this->params->get('limit', 0) : 1;
 
 		$p = $this->params->get('p');
+		$club_ids = $this->params->get('club_ids');
+		$usedclub = (is_array($club_ids)) ? implode(",", array_map('intval', $club_ids)) : (int) $club_ids;
 
 		/**
 		 * da wir in der tabelle mit den spielen: sportsmanagement_match den timestamp
@@ -282,6 +277,10 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 		$query->select('p.name AS pname,p.current_round,p.id AS project_id,p.timezone,p.game_parts,p.ordering');
 		$query->select('t1.id as team1_id');
 		$query->select('t2.id as team2_id');
+		
+		$query->select('c1.id as club1_id');
+		$query->select('c2.id as club2_id');
+		
 		$query->select('IF (mref.project_referee_id > 0, concat(person.lastname, \', \', person.firstname), \'\') AS refname');
 		$query->select('IF (m.team1_result IS NULL, \'z\', \'\') AS live');
 		$query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
@@ -359,6 +358,11 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 		if ($usedteams)
 		{
 			$query->where(' ( st1.team_id IN (' . $usedteams . ' ) OR st2.team_id IN (' . $usedteams . ' ) )');
+		}
+		
+		if ($usedclub)
+		{
+			$query->where(' ( c1.id IN (' . $usedclub . ' ) OR c2.id IN (' . $usedclub . ' ) )');
 		}
 
 		if ($favteams)

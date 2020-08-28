@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage roster
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -42,6 +38,7 @@ class sportsmanagementViewRoster extends sportsmanagementView
 
 		$this->projectteam    = $this->model->getProjectTeam($this->config['team_picture_which']);
 		$this->lastseasondate = $this->model->getLastSeasonDate();
+		$this->projectpositions = sportsmanagementModelProject::getProjectPositions();
 
 		$type      = $this->jinput->getVar("type", 0);
 		$typestaff = $this->jinput->getVar("typestaff", 0);
@@ -67,7 +64,7 @@ class sportsmanagementViewRoster extends sportsmanagementView
 			$this->team = $this->model->getTeam();
 			$this->rows = $this->model->getTeamPlayers(1);
 
-			// Events
+			/** Events */
 			if ($this->config['show_events_stats'])
 			{
 				$this->positioneventtypes = $this->model->getPositionEventTypes();
@@ -83,7 +80,7 @@ class sportsmanagementViewRoster extends sportsmanagementView
 				}
 			}
 
-			// Stats
+			/** Stats */
 			if ($this->config['show_stats'])
 			{
 				$this->stats       = sportsmanagementModelProject::getProjectStats(0, 0, sportsmanagementModelRoster::$cfg_which_database);
@@ -92,19 +89,19 @@ class sportsmanagementViewRoster extends sportsmanagementView
 
 			$this->stafflist = $this->model->getTeamPlayers(2);
 
-			// Set page title
+			/** Set page title */
 			$this->document->setTitle(Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_TITLE', $this->team->name));
 		}
 		else
 		{
-			// Set page title
+			/** Set page title */
 			$this->document->setTitle(Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_TITLE', Text::_('COM_SPORTSMANAGEMENT_ROSTER_ERROR_PROJECT_TEAM')));
 		}
 
 		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/' . $this->option . '/assets/css/' . $this->view . '.css' . '" type="text/css" />' . "\n";
 		$this->document->addCustomTag($stylelink);
 
-		// Select roster view
+		/** Select roster view */
 		$opp_arr   = array();
 		$opp_arr[] = HTMLHelper::_('select.option', "player_standard", Text::_('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION1_PLAYER_STANDARD'));
 		$opp_arr[] = HTMLHelper::_('select.option', "player_card", Text::_('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION2_PLAYER_CARD'));
@@ -112,7 +109,7 @@ class sportsmanagementViewRoster extends sportsmanagementView
 
 		$lists['type'] = $opp_arr;
 
-		// Select staff view
+		/** Select staff view */
 		$opp_arr   = array();
 		$opp_arr[] = HTMLHelper::_('select.option', "staff_standard", Text::_('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION1_STAFF_STANDARD'));
 		$opp_arr[] = HTMLHelper::_('select.option', "staff_card", Text::_('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION2_STAFF_CARD'));
@@ -126,6 +123,9 @@ class sportsmanagementViewRoster extends sportsmanagementView
 			$this->config['table_class'] = 'table';
 		}
 
+//$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/' . $this->option . '/assets/css/bootstrap-table-fixed-columns.css' . '" type="text/css" />' . "\n";
+//$this->document->addCustomTag($stylelink);		
+//$this->document->addScript(Uri::root(true) . '/components/com_sportsmanagement/assets/js/bootstrap-table-fixed-columns.js');		
 	}
 
 }

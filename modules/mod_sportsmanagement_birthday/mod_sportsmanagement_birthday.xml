@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="module" version="2.5" client="site" method="upgrade">
+<extension type="module" version="3.0" client="site" method="upgrade">
+<compatibility url="https://www.fussballineuropa.de">
+    <include>
+      <version if="gt">3.0</version> <!-- Ok for Joomla any version of 3.0 to less than 4 -->
+      <version>4</version> <!-- Ok for Joomla any version of 4 -->
+    </include>
+</compatibility>	
 	<name>MOD_SPORTSMANAGEMENT_BIRTHDAY</name>
 	<creationDate>2014-03-13</creationDate>
 	<author>JSM-TEAM</author>
@@ -159,9 +165,11 @@ description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_TEAM_IDS_DESCR" />
 				<field 	name="Itemid" type="text" default=""
 						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_ITEMID_FOR_LINKS_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_ITEMID_FOR_LINKS_DESCR" />
-
+<!--
             <field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_BIRTHDAY_SPACER_LAYOUT_SETTINGS" />
-			
+				-->
+<field type="extensionsubtitle" title="MOD_SPORTSMANAGEMENT_BIRTHDAY_SPACER_LAYOUT_SETTINGS" color="#2672a6" />
+				
     <field name="mode" type="list" default="L" 
 	label="MOD_SPORTSMANAGEMENT_BIRTHDAY_LABEL_MODE"
 	description="MOD_SPORTSMANAGEMENT_BIRTHDAY_DESC_MODE">
@@ -199,12 +207,15 @@ description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_TEAM_IDS_DESCR" />
 					<option value="1">JYES</option>
 				</field>
 
-				<field 	name="picture_width" type="text" default="50"
-						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_PICTURE_WIDTH_LABEL"
-						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_PICTURE_WIDTH_DESCR" />
+				<field 	name="picture_height" type="text" default="50"
+						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_PICTURE_HEIGHT_LABEL"
+						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_PICTURE_HEIGHT_DESCR" />
 
-
+<!--
         <field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_BIRTHDAY_SPACER_CUSTOMIZE_MESSAGES_DESCR" />
+				-->
+<field type="extensionsubtitle" title="MOD_SPORTSMANAGEMENT_BIRTHDAY_SPACER_CUSTOMIZE_MESSAGES_DESCR" color="#2672a6" />
+				
 				<!--
         <field 	name="@spacer" type="spacer" default=""
 						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SPACER_CUSTOMIZE_MESSAGES_LABEL" 

@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage jlextcountries
@@ -12,20 +10,34 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
-?>
+use Joomla\CMS\Session\Session;
 
-<div id="editcell">
-    <table class="<?php echo $this->table_data_class; ?>">
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+    
+if ($this->saveOrder && !empty($this->items))
+{
+$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task='.$this->view.'.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';    
+HTMLHelper::_('draggablelist.draggable');
+}    
+}
+else
+{
+$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task='.$this->view.'.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';    
+JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl,null);
+}   
+?>
+<div class="table-responsive" id="editcell">
+<table class="<?php echo $this->table_data_class; ?>" id="<?php echo $this->view; ?>list">
         <thead>
         <tr>
             <th width="5"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
             <th width="20">
-                <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/>
+                <?php echo HTMLHelper::_('grid.checkall'); ?>
             </th>
 
             <th>
@@ -106,19 +118,22 @@ use Joomla\CMS\Router\Route;
             </td>
         </tr>
         </tfoot>
-        <tbody>
+        <tbody <?php if ( $this->saveOrder && version_compare(substr(JVERSION, 0, 3), '4.0', 'ge') ) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($this->sortDirection); ?>" <?php endif; ?>>
 		<?php
-		$k = 0;
-		for ($i = 0, $n = count($this->items); $i < $n; $i++)
-		{
-			$row        = &$this->items[$i];
-			$link       = Route::_('index.php?option=com_sportsmanagement&task=jlextcountry.edit&id=' . $row->id);
+		 foreach ($this->items as $this->count_i => $this->item)
+	{
+//$this->count_i = $i;
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+$this->dragable_group = 'data-dragable-group="none"';
+}      
+			$link       = Route::_('index.php?option=com_sportsmanagement&task=jlextcountry.edit&id=' . $this->item->id);
 			$canEdit    = $this->user->authorise('core.edit', 'com_sportsmanagement');
-			$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $row->checked_out == $this->user->get('id') || $row->checked_out == 0;
-			$checked    = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'jlextcountries.', $canCheckin);
-			$canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.jlextcountry.' . $row->id) && $canCheckin;
+			$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $this->item->checked_out == $this->user->get('id') || $this->item->checked_out == 0;
+			$checked    = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $this->item->checked_out_time, 'jlextcountries.', $canCheckin);
+			$canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.jlextcountry.' . $this->item->id) && $canCheckin;
 			?>
-            <tr class="<?php echo "row$k"; ?>">
+            <tr class="row<?php echo $this->count_i % 2; ?>" <?php echo $this->dragable_group; ?>>
                 <td class="center">
 					<?php
 					echo $this->pagination->getRowOffset($i);
@@ -126,24 +141,23 @@ use Joomla\CMS\Router\Route;
                 </td>
                 <td class="center">
 					<?php
-					echo HTMLHelper::_('grid.id', $i, $row->id);
+					echo HTMLHelper::_('grid.id', $this->count_i, $this->item->id);
 					?>
                 </td>
                 <td class="center">
 
-					<?php if ($row->checked_out) : ?>
-						<?php echo HTMLHelper::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'jlextcountries.', $canCheckin); ?>
+					<?php if ($this->item->checked_out) : ?>
+						<?php echo HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->item->editor, $this->item->checked_out_time, 'jlextcountries.', $canCheckin); ?>
 					<?php endif; ?>
 					<?php if ($canEdit) : ?>
-                        <a href="<?php echo Route::_('index.php?option=com_sportsmanagement&task=jlextcountry.edit&id=' . (int) $row->id); ?>">
-							<?php echo $this->escape($row->name); ?></a>
+                        <a href="<?php echo Route::_('index.php?option=com_sportsmanagement&task=jlextcountry.edit&id=' . (int) $this->item->id); ?>">
+							<?php echo $this->escape($this->item->name); ?></a>
 					<?php else : ?>
-						<?php echo $this->escape($row->name); ?>
+						<?php echo $this->escape($this->item->name); ?>
 					<?php endif; ?>
 
 
 
-					<?php //echo $checked;  ?>
 
                 </td>
 				<?php
@@ -153,49 +167,42 @@ use Joomla\CMS\Router\Route;
 				<?php
 				?>
 
-                <td><?php echo JSMCountries::getCountryFlag($row->alpha3); ?></td>
+                <td><?php echo JSMCountries::getCountryFlag($this->item->alpha3); ?></td>
 
-                <td><?php echo Text::_($row->name); ?></td>
-                <td><?php echo $row->federation_name; ?></td>
+                <td><?php echo Text::_($this->item->name); ?></td>
+                <td><?php echo $this->item->federation_name; ?></td>
 
-                <td><?php echo $row->alpha2; ?></td>
-                <td><?php echo $row->alpha3; ?></td>
+                <td><?php echo $this->item->alpha2; ?></td>
+                <td><?php echo $this->item->alpha3; ?></td>
 
-                <td><?php echo $row->itu; ?></td>
-                <td><?php echo $row->fips; ?></td>
-                <td><?php echo $row->ioc; ?></td>
-                <td><?php echo $row->fifa; ?></td>
-                <td><?php echo $row->ds; ?></td>
-                <td><?php echo $row->wmo; ?></td>
+                <td><?php echo $this->item->itu; ?></td>
+                <td><?php echo $this->item->fips; ?></td>
+                <td><?php echo $this->item->ioc; ?></td>
+                <td><?php echo $this->item->fifa; ?></td>
+                <td><?php echo $this->item->ds; ?></td>
+                <td><?php echo $this->item->wmo; ?></td>
 
 
                 <td class="center">
                     <div class="btn-group">
-						<?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'jlextcountries.', $canChange, 'cb'); ?>
+						<?php echo HTMLHelper::_('jgrid.published', $this->item->published, $this->count_i, 'jlextcountries.', $canChange, 'cb'); ?>
 						<?php
-						// Create dropdown items and render the dropdown list.
+						/** Create dropdown items and render the dropdown list. */
 						if ($canChange)
 						{
-							HTMLHelper::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'jlextcountries');
-							HTMLHelper::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'jlextcountries');
-							echo HTMLHelper::_('actionsdropdown.render', $this->escape($row->name));
+							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === 2 ? 'un' : '') . 'archive', 'cb' . $this->count_i, 'jlextcountries');
+							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === -2 ? 'un' : '') . 'trash', 'cb' . $this->count_i, 'jlextcountries');
+							echo HTMLHelper::_('actionsdropdown.render', $this->escape($this->item->name));
 						}
 						?>
                     </div>
                 </td>
-                <td class="order">
-                        <span>
-                            <?php echo $this->pagination->orderUpIcon($i, $i > 0, 'jlextcountries.orderup', 'JLIB_HTML_MOVE_UP', 'objcountry.ordering'); ?>
-                        </span>
-                    <span>
-                            <?php echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'jlextcountries.orderdown', 'JLIB_HTML_MOVE_DOWN', 'objcountry.ordering'); ?>
-                            <?php $disabled = true ? '' : 'disabled="disabled"'; ?>
-                        </span>
-                    <input type="text" name="order[]" size="5"
-                           value="<?php echo $row->ordering; ?>" <?php echo $disabled; ?>
-                           class="form-control form-control-inline" style="text-align: center"/>
-                </td>
-                <td class="center"><?php echo $row->id; ?></td>
+                <td class="order" id="defaultdataorder">
+<?php
+echo $this->loadTemplate('data_order');
+?>
+</td>
+                <td class="center"><?php echo $this->item->id; ?></td>
             </tr>
 			<?php
 			$k = 1 - $k;

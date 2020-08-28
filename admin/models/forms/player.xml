@@ -98,6 +98,7 @@
 <field
 			name="address_country"
 			type="country"
+       onchange="javascript:getlatlonopenstreet(1);"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_COUNTRY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_COUNTRY_DESC"
 			class="inputbox">
@@ -113,12 +114,14 @@
     <field
 			name="location"
 			type="text"
+	   onchange="javascript:getlatlonopenstreet(1);"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_CITY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_CITY_DESC"
 			class="inputbox"/>	
         <field
 			name="zipcode"
 			type="text"
+	       onchange="javascript:getlatlonopenstreet(1);"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_POSTAL_CODE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_POSTAL_CODE_DESC"
 			class="inputbox"/>	
@@ -126,6 +129,7 @@
 <field
 			name="address"
 			type="textarea"
+       onchange="javascript:getlatlonopenstreet(1);"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ADDRESS"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ADDRESS_DESC"
 			class="inputbox"/>		

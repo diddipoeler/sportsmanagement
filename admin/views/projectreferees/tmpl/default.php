@@ -58,12 +58,10 @@ $uri = Uri::root();
 ?>
 
     <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
-		<?PHP
-        echo $this->loadTemplate('joomla_version');
-		?>
+    <!--
         <legend>
 			<?php
-			echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTREFEREES_QUICKADD_REFEREE');
+			//echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTREFEREES_QUICKADD_REFEREE');
 			?>
         </legend>
         <form id="quickaddForm"
@@ -79,7 +77,14 @@ $uri = Uri::root();
             </table>
 			<?php echo HTMLHelper::_('form.token'); ?>
         </form>
+    -->
+    
 		<?PHP
+        echo $this->loadTemplate('joomla_version');
+		?>
+    
+		<?PHP
+        /*
 		if ($this->items)
 		{
 			echo $this->loadTemplate('data');
@@ -90,7 +95,7 @@ $uri = Uri::root();
 			echo Text::_('JGLOBAL_NO_MATCHING_RESULTS');
 			echo '</div>';
 		}
-
+*/
 		?>
         <input type="hidden" name="search_mode" value="<?php echo $this->lists['search_mode']; ?>" id="search_mode"/>
         <input type="hidden" name="pid" value="<?php echo $this->project_id; ?>"/>

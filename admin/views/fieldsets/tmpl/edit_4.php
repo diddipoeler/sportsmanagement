@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage fieldsets
@@ -11,7 +9,6 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -29,29 +26,22 @@ jimport('joomla.html.pane');
 
 try
 {
-	$params = $this->form->getFieldsets('params');
+$params = $this->form->getFieldsets('params');
 }
 catch (Exception $e)
 {
-	$msg = $e->getMessage(); // Returns "Normally you would have other code...
-	$code = $e->getCode(); // Returns
-	Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
-
-	return false;
+Factory::getApplication()->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+return false;
 }
 
 try
 {
-	// Get the form fieldsets.
-	$fieldsets = $this->form->getFieldsets();
+$fieldsets = $this->form->getFieldsets();
 }
 catch (Exception $e)
 {
-	$msg = $e->getMessage(); // Returns "Normally you would have other code...
-	$code = $e->getCode(); // Returns
-	Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
-
-	return false;
+Factory::getApplication()->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+return false;
 }
 ?>
 <form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view=' . $this->view . '&layout=edit&id=' . (int) $this->item->id . '&tmpl=' . $this->tmpl); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">

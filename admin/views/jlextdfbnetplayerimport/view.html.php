@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage jlextdfbnetplayerimport
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -57,11 +53,31 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 
 		$revisionDate       = '2011-04-28 - 12:00';
 		$this->revisionDate = $revisionDate;
-		/**
-		 *         build the html select list for seasons
-		 */
+		/** build the html select list for seasons */
 		$seasons[]  = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'), 'id', 'name');
 		$mdlSeasons = BaseDatabaseModel::getInstance('Seasons', 'sportsmanagementModel');
+		
+		/** build the html options for nation */
+		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+
+		if ($res = JSMCountries::getCountryOptions())
+		{
+			$nation              = array_merge($nation, $res);
+			$this->search_nation = $res;
+		}
+
+		$lists['nation']  = $nation;
+		$lists['nation2'] = HTMLHelper::_(
+			'select.genericList',
+			$nation,
+			'filter_nation',
+			'class="inputbox" style="width:220px"',
+			'value',
+			'text',
+			'DEU'
+		);
+		
+		
 
 		if (ComponentHelper::getParams($this->option)->get('show_debug_info_backend'))
 		{

@@ -8,11 +8,37 @@
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ *
+ * https://github.com/eKoopmans/html2pdf.js
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Plugin\PluginHelper;
+
+if (PluginHelper::isEnabled('system', 'jsm_bootstrap'))
+{
+?>	
+<!-- <script src="https://cdn.jsdelivr.net/npm/html-to-pdfmake/docs/browser.js"></script> -->
+<script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+<script>
+jQuery(document).ready(function ($) {
+        $('#tablestaff').DataTable({
+            scrollX: true,
+            paging:         false,
+            ordering: false,
+            searching: false,
+            info: false,
+            fixedColumns: {
+                leftColumns: 1
+            }
+        });
+    });
+</script>
+<?php
+}
 
 // Show team-staff as defined
 if (count($this->stafflist) > 0)
@@ -37,11 +63,11 @@ if (count($this->stafflist) > 0)
 
 	$positionHeaderSpan = 0;
 	$dummyColumnSpan    = 0;
-	if ($this->config['show_player_numbers'])
-	{
-		$positionHeaderSpan++;
-		$dummyColumnSpan++;
-	}
+//	if ($this->config['show_player_numbers'])
+//	{
+//		$positionHeaderSpan++;
+//		$dummyColumnSpan++;
+//	}
 	if ($this->config['show_player_icon'] || $this->config['show_staff_icon'])
 	{
 		$positionHeaderSpan++;
@@ -51,7 +77,7 @@ if (count($this->stafflist) > 0)
 		$positionHeaderSpan++;
 	}
 	// Player name and injured/suspended/away columns are always there
-	$positionHeaderSpan += 2;
+	$positionHeaderSpan += 1;
 
 	?>
     <br>
@@ -74,13 +100,25 @@ if (count($this->stafflist) > 0)
     </table>
     <br/>
     <div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultstaff">
-        <table class="<?php echo $this->config['table_class']; ?>">
+        <table class="<?php echo $this->config['table_class']; ?> table-sm nowrap" id="tablestaff" width="100%">
             <thead>
             <tr class="sectiontableheader rosterheader">
-                <th width="60%" colspan="<?php echo $positionHeaderSpan; ?>">
-					<?php echo Text::_("COM_SPORTSMANAGEMENT_ROSTER_STAFF") . '&nbsp;'; ?>
+                <th width="" colspan="">
+		<?php echo Text::_("COM_SPORTSMANAGEMENT_ROSTER_STAFF") . '&nbsp;'; ?>
                 </th>
 				<?php
+				for ($i = 1, $n = $positionHeaderSpan; $i < $n; $i++)
+			{
+				?>
+				<th>
+				</th>
+				<?php
+				}
+				
+				
+				
+				
+				
 				if ($this->config['show_birthday_staff'] > 0)
 				{ ?>
                     <th class="td_c">
@@ -103,13 +141,14 @@ if (count($this->stafflist) > 0)
 				$row =& $this->stafflist[$i];
 
 				?>
-                <tr class="">
+                <tr class="" width="" onMouseOver="this.bgColor='#CCCCFF'" onMouseOut="this.bgColor='#ffffff'">
 					<?php
-					if ($this->config['show_player_numbers'])
-					{
-						?>
-                        <td width="30" class="td_c">&nbsp;</td><?php
-					}
+//					if ($this->config['show_player_numbers'])
+//					{
+//						?>
+
+                       <?php
+//					}
 					$playerName = sportsmanagementHelper::formatName(
 						null, $row->firstname,
 						$row->nickname,
@@ -131,7 +170,7 @@ if (count($this->stafflist) > 0)
 				 }
 						*/
 						?>
-                        <td width="40" class="td_c" nowrap="nowrap">
+                        <td class="" width="" nowrap="nowrap">
 							<?php
 
 							echo sportsmanagementHelperHtml::getBootstrapModalImage(
@@ -154,11 +193,12 @@ if (count($this->stafflist) > 0)
 					{
 						// Put empty column to keep vertical alignment with the player table
 						?>
-                        <td width="40" class="td_c" nowrap="nowrap">&nbsp;</td><?php
+
+                        <?php
 					}
 					if ($this->config['show_country_flag_staff'])
 					{ ?>
-                        <td width="16" nowrap="nowrap" style="text-align:center; ">
+                        <td class="" width="" nowrap="nowrap" style="text-align:center; ">
 						<?php echo JSMCountries::getCountryFlag($row->country); ?>
                         </td><?php
 					}
@@ -166,10 +206,11 @@ if (count($this->stafflist) > 0)
 					{
 						// Put empty column to keep vertical alignment with the player table
 						?>
-                        <td width="16" nowrap="nowrap" style="text-align:center; ">&nbsp;</td><?php
+
+                        <?php
 					}
 					?>
-                    <td class="td_l"><?php
+                    <td class="" width=""><?php
 						if ($this->config['link_staff'] == 1)
 						{
 							$routeparameter                       = array();
@@ -187,11 +228,12 @@ if (count($this->stafflist) > 0)
 							echo '<span class="staffname">' . $playerName . '</i>';
 						} ?>
                     </td>
-                    <td width="5%" style="text-align: left;" nowrap="nowrap">&nbsp;</td><?php
+
+                    <?php
 					if ($this->config['show_birthday_staff'] > 0)
 					{
 						?>
-                        <td width="10%" nowrap="nowrap" style="text-align: left;"><?php
+                        <td class="" width="" nowrap="nowrap" style="text-align: left;"><?php
 						if ($row->birthday != "0000-00-00")
 						{
 							switch ($this->config['show_birthday_staff'])
@@ -231,9 +273,9 @@ if (count($this->stafflist) > 0)
                     elseif ($this->config['show_birthday'] > 0)
 					{
 						?>
-                        <td width="10%" nowrap="nowrap" style="text-align: left;">&nbsp;</td><?php
+                        <td class="" width="" nowrap="nowrap" style="text-align: left;">&nbsp;</td><?php
 					} ?>
-                    <td width="30%"><?php
+                    <td class="" width=""><?php
 						$staff_position = '';
 						switch ($this->config['staff_position_format'])
 						{
@@ -272,3 +314,83 @@ if (count($this->stafflist) > 0)
 	<?php
 }
 ?>
+
+<script>
+var element = document.getElementById('tablestaff');
+var opt = {
+  margin:       1,
+  filename:     'tablestaff.pdf',
+  image:        { type: 'jpeg', quality: 0.98 },
+  html2canvas:  { scale: 2 },
+  jsPDF:        { unit: 'in', format: 'A3', orientation: 'landscape' }
+};
+
+// New Promise-based usage:
+//html2pdf().set(opt).from(element).save();
+
+// Old monolithic-style usage:
+//html2pdf(element, opt);
+
+
+/*
+var blob = '<table>' + document.getElementById('tablestaff').innerHTML + '</table>';
+
+var docDefinition = {
+    content: [blob],
+    exportOptions: {
+                stripHtml: true
+            }
+}
+
+pdfMake.createPdf(docDefinition).download('optionalName.pdf');
+*/
+
+/*
+var html = htmlToPdfMake('#tablestaff');
+function htmlToPdfMake(elementID)
+{
+    var fullText = "";
+    //var x = document.getElementById('htmlContent').elements;
+    //var x = $("a").parent(elementID)
+    var x = jQuery(elementID).children();
+    jQuery.each(x, function(index, value) {
+       //console.log(value);
+        fullText+=jQuery(this).context.innerText + ",";
+        console.log(jQuery(this).context.innerText);
+    });
+    
+    var dd = {
+	content: [
+		fullText
+	]
+    };
+        pdfMake.createPdf(dd).download('optionalName.pdf');
+        console.log(dd.content);
+    
+}
+*/
+
+/*
+var docDefinition = {
+  content: [
+    html
+  ],
+  pageBreakBefore: function(currentNode) {
+    return currentNode.style && currentNode.style.indexOf('pdf-pagebreak-before') > -1;
+  }
+};
+
+//var pdfDocGenerator = pdfMake.createPdf(docDefinition);
+pdfMake.createPdf(docDefinition).download();
+*/
+
+/*
+var val = htmlToPdfmake(blob);
+    var dd = {content:val};
+    pdfMake.createPdf(dd).download();
+*/    
+    </script>
+
+
+
+

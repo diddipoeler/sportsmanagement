@@ -211,12 +211,12 @@ class sportsmanagementModeljlextdfbnetplayerimport extends BaseDatabaseModel
 		$option   = Factory::getApplication()->input->getCmd('option');
 		$app      = Factory::getApplication();
 		$document = Factory::getDocument();
-
 		$lang                = Factory::getLanguage();
 		$this->_success_text = '';
 		$my_text             = '';
-
-		$country = "DEU"; // DFBNet gibt es nur in D, also ist die eingestellte Joomla Sprache nicht relevant
+$post = Factory::getApplication()->input->post->getArray(array());
+		$country = $post['filter_nation'];
+		//$country = "DEU"; // DFBNet gibt es nur in D, also ist die eingestellte Joomla Sprache nicht relevant
 
 		$project = $app->getUserState("$option.pid", '0');
 
@@ -346,16 +346,19 @@ and ma.projectteam2_id = '$row->projectteam2_id'
 		$option   = Factory::getApplication()->input->getCmd('option');
 		$app      = Factory::getApplication();
 		$document = Factory::getDocument();
+		$post = Factory::getApplication()->input->post->getArray(array());
 
-		$country = "DEU"; // DFBNet gibt es nur in D, also ist die eingestellte Joomla Sprache nicht relevant
+		//$country = "DEU"; // DFBNet gibt es nur in D, also ist die eingestellte Joomla Sprache nicht relevant
 		$project = $app->getUserState("$option.pid", '0');
+		
+		$country = $post['filter_nation'];
 
 		$whichfile = $app->getUserState($option . 'whichfile');
 
 		$app->enqueueMessage(Text::_('Welches Land? ' . $country), '');
 		$app->enqueueMessage(Text::_('Welche Art von Datei? ' . $whichfile), '');
 
-		$post = Factory::getApplication()->input->post->getArray(array());
+		
 
 		$this->_league_new_country = $country;
 
@@ -990,7 +993,8 @@ and ma.projectteam2_id = '$row->projectteam2_id'
 			{
 				// tab delimited, and encoding conversion
 				$csv = new JSMparseCSV();
-				$csv->encoding('UTF-16', 'UTF-8');
+				//$csv->encoding('UTF-16', 'UTF-8');
+				$csv->encoding('ISO-8859-1', 'UTF-8');
 				// Spielerdatei des DFBNet ist seit 2013 mit einem Tabulator als Delimiter, deswegen ist eine Auswahl nicht erforderlich
 				$csv->delimiter = ";";
 				$row            = 0;
@@ -2130,7 +2134,7 @@ and ma.projectteam2_id = '$row->projectteam2_id'
 			// close the project
 			$output .= '</project>';
 			// mal als test
-			$xmlfile = $output;
+			$xmlfile = utf8_encode( $output );
 			$file    = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'sportsmanagement_import.jlg';
 			File::write($file, $xmlfile);
 			$this->import_version = 'NEW';
@@ -2254,8 +2258,10 @@ and ma.projectteam2_id = '$row->projectteam2_id'
 			// close the project
 			$output .= '</project>';
 			// mal als test
-			$xmlfile = $output;
-			$file    = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'sportsmanagement_import.jlg';
+//			$xmlfile = utf8_encode( $output );
+
+			$xmlfile = $output ;
+            $file    = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'sportsmanagement_import.jlg';
 			File::write($file, $xmlfile);
 		}
 

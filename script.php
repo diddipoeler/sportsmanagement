@@ -98,7 +98,7 @@ class com_sportsmanagementInstallerScript
 	 * The release value would ideally be extracted from <version> in the manifest file,
 	 * but at preflight, the manifest file exists only in the uploaded temp folder.
 	 */
-	private $release = '3.6.00';
+	private $release = '3.7.00';
 
 	// $language_update = '';
 
@@ -395,6 +395,16 @@ class com_sportsmanagementInstallerScript
 		$j = new JVersion;
 		echo '<h1>' . sprintf(Text::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), $j->getShortVersion()) . '</h1>';
 		?>
+
+<div class="jsm-extension">
+Like this extension? 
+<a href="https://extensions.joomla.org/extension/sports-management/" target="_blank">Leave a review on the JED</a>	
+<i class="icon-star"></i>
+<i class="icon-star"></i>
+<i class="icon-star"></i>
+<i class="icon-star"></i>
+<i class="icon-star"></i>
+</div>
 <!--
 		<img
 			src="../media/com_sportsmanagement/jl_images/compat_25.png"

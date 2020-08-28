@@ -16,6 +16,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Component\ComponentHelper;
 
 $user            = Factory::getUser();
 $userId          = $user->get('id');
@@ -36,7 +37,7 @@ else
         <tr>
             <th width="5"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
             <th width="20">
-                <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/>
+                <?php echo HTMLHelper::_('grid.checkall'); ?>
             </th>
 
             <th>
@@ -61,12 +62,22 @@ else
 				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BIRTHDAY', 'pl.birthday', $this->sortDirection, $this->sortColumn);
 				?>
             </th>
-
+            
+            <?php ?>
+            <th class="title">
+				<?php
+				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PERSON_REGISTRATION_NUMBER', 'pl.knvbnr', $this->sortDirection, $this->sortColumn);
+				?>
+            </th>
+            <?php ?>
+            
+            <?php if (ComponentHelper::getParams($this->option)->get('backend_show_players_agegroup')){ ?>
             <th class="title">
 				<?php
 				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP', 'ag.name', $this->sortDirection, $this->sortColumn);
 				?>
             </th>
+            <?php } ?>
 
             <th>
 				<?php
@@ -205,7 +216,16 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 						//								}
 						?>
                     </td>
-
+                    
+                    <td class="center">
+                    <input <?php echo $inputappend; ?> type="text" size="15"
+                                                           class="form-control form-control-inline"
+                                                           name="knvbnr<?php echo $row->id; ?>"
+                                                           value="<?php echo stripslashes(htmlspecialchars($row->knvbnr)); ?>"
+                                                           onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
+                    </td>
+                    
+                    <?php if (ComponentHelper::getParams($this->option)->get('backend_show_players_agegroup')){ ?>
                     <td class="center">
 						<?php
 						$inputappend = $this->readonly;
@@ -220,6 +240,7 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 						);
 						?>
                     </td>
+                    <?php } ?>
 
                     <td class="nowrap" class="center">
 						<?php

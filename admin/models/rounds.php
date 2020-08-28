@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
@@ -557,20 +553,13 @@ class sportsmanagementModelRounds extends JSMModelList
 			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . $this->context . ''), '');
 			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . ''), '');
 		}
+		$list = $this->getUserStateFromRequest($this->context . '.list', 'list', array(), 'array');
+		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search')); 
+		$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
+		$this->setState('filter.tournement', $this->getUserStateFromRequest($this->context . '.filter.tournement', 'filter_tournement', '', 'string'));
+		$this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
+		$this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
 
-		// Load the filter state.
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
-		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string');
-		$this->setState('filter.state', $published);
-		$value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
-		$this->setState('list.limit', $value);
-
-		// List state information.
-		$value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
-		$this->setState('list.start', $value);
-
-		// Filter.order
 		$orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
 
 		if (!in_array($orderCol, $this->filter_fields))
@@ -596,52 +585,31 @@ class sportsmanagementModelRounds extends JSMModelList
 	 */
 	protected function getListQuery()
 	{
-
-		// Create a new query object.
 		$this->jsmquery->clear();
-
-		// Select some fields
 		$this->jsmquery->select('p.season_id');
-
-		// From table
 		$this->jsmquery->from('#__sportsmanagement_project AS p');
 		$this->jsmquery->where('p.id = ' . self::$_project_id);
 		$this->jsmdb->setQuery($this->jsmquery);
 		$this->_season_id = $this->jsmdb->loadResult();
 		$this->jsmapp->setUserState("$this->jsmoption.season_id", $this->_season_id);
-
-		// Create a new query object.
 		$this->jsmquery->clear();
 		$this->jsmsubquery1->clear();
 		$this->jsmsubquery2->clear();
 		$this->jsmsubquery3->clear();
-
-		// Select some fields
 		$this->jsmquery->select('r.*');
-
-		// From the rounds table
 		$this->jsmquery->from('#__sportsmanagement_round as r');
-
-		// Join match
 		$this->jsmsubquery1->select('count(published)');
 		$this->jsmsubquery1->from('#__sportsmanagement_match ');
 		$this->jsmsubquery1->where('round_id=r.id and published=0');
-
-		// Join match
 		$this->jsmsubquery2->select('count(*)');
 		$this->jsmsubquery2->from('#__sportsmanagement_match ');
 		$this->jsmsubquery2->where('round_id=r.id AND cancel=0 AND (team1_result is null OR team2_result is null)');
-
-		// Join match
 		$this->jsmsubquery3->select('count(*)');
 		$this->jsmsubquery3->from('#__sportsmanagement_match ');
 		$this->jsmsubquery3->where('round_id=r.id');
-
 		$this->jsmquery->select('(' . $this->jsmsubquery1 . ') AS countUnPublished');
 		$this->jsmquery->select('(' . $this->jsmsubquery2 . ') AS countNoResults');
 		$this->jsmquery->select('(' . $this->jsmsubquery3 . ') AS countMatches');
-
-		// $query->where(' r.project_id = '.$this->_project_id);
 		$this->jsmquery->where(' r.project_id = ' . self::$_project_id);
 
 		if ($this->getState('filter.search'))
@@ -652,6 +620,11 @@ class sportsmanagementModelRounds extends JSMModelList
 		if (is_numeric($this->getState('filter.state')))
 		{
 			$this->jsmquery->where('r.published = ' . $this->getState('filter.state'));
+		}
+		
+		if (is_numeric($this->getState('filter.tournement')))
+		{
+			$this->jsmquery->where('r.tournement = ' . $this->getState('filter.tournement'));
 		}
 
 		$this->jsmquery->order(

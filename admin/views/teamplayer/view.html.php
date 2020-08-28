@@ -3,7 +3,7 @@
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version    1.0.05
  * @package    Sportsmanagement
- * @subpackage teamperson
+ * @subpackage teamplayer
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
@@ -18,7 +18,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Log\Log;
 
 /**
- * sportsmanagementViewTeamPerson
+ * sportsmanagementViewteamplayer
  *
  * @package
  * @author
@@ -26,11 +26,11 @@ use Joomla\CMS\Log\Log;
  * @version   2014
  * @access    public
  */
-class sportsmanagementViewTeamPerson extends sportsmanagementView
+class sportsmanagementViewTeamPlayer extends sportsmanagementView
 {
 
 	/**
-	 * sportsmanagementViewTeamPerson::init()
+	 * sportsmanagementViewteamplayer::init()
 	 *
 	 * @return
 	 */
@@ -105,6 +105,16 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
 		$this->form->setValue('away_detail', null, $project_person->away_detail);
 		$this->form->setValue('away_date_start', null, $project_person->away_date_start);
 		$this->form->setValue('away_date_end', null, $project_person->away_date_end);
+		/*
+		if ( $project_person->jerseynumber )
+		{
+		$this->form->setValue('jerseynumber', null, $project_person->jerseynumber);
+		}
+		else
+		{
+			$this->form->setValue('jerseynumber', null, 0);
+		}
+		*/
 
 		$project_position_id = $this->form->getValue('project_position_id');
 
@@ -122,7 +132,7 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
 			$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_TEAMPERSON_PROJECT_POSITION'), 'notice');
 		}
 
-		$extended       = sportsmanagementHelper::getExtended($this->item->extended, 'teamperson');
+		$extended       = sportsmanagementHelper::getExtended($this->item->extended, 'teamplayer');
 		$this->extended = $extended;
 		$this->lists    = $lists;
 

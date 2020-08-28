@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage smquotestxt
@@ -11,12 +9,11 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
 
 /**
  * sportsmanagementViewsmquotestxt
@@ -40,10 +37,8 @@ class sportsmanagementViewsmquotestxt extends sportsmanagementView
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		$model  = $this->getModel();
-		$this->assign('files', $model->getTXTFiles());
-
+		$this->files = $model->getTXTFiles();
 		$this->option = $option;
-
 	}
 
 	/**
@@ -54,6 +49,7 @@ class sportsmanagementViewsmquotestxt extends sportsmanagementView
 	protected function addToolbar()
 	{
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TXT_EDITORS');
+		ToolbarHelper::back(Text::_('JPREV'), Route::_('index.php?option=com_sportsmanagement&view=smquotes'));
 		parent::addToolbar();
 	}
 

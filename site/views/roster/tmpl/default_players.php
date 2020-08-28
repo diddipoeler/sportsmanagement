@@ -8,15 +8,165 @@
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ *
+ * https://github.com/eKoopmans/html2pdf.js
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
 
 $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
+//https://pdfmake.github.io/docs/getting-started/client-side/methods/
+?>
+<!-- <script src="https://cdn.jsdelivr.net/npm/html-to-pdfmake/docs/browser.js"></script> -->
 
+<script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+
+<script>
+
+<?php
+
+
+if (PluginHelper::isEnabled('system', 'jsm_bootstrap'))
+{
+foreach ( $this->projectpositions as $positions => $position ) if( $position->persontype == 1 )
+{
+?>
+
+jQuery(document).ready(function ($) {
+        $('#tableplayer<?php echo $position->id;?>').DataTable({
+            scrollX: true,
+            paging:         false,
+            ordering: false,
+            searching: false,
+            info: false,
+            fixedColumns: {
+                leftColumns: 4
+            },
+            dom: 'Bfrtip',
+            buttons: [
+            {
+            extend: 'print',
+            text: 'Print',
+            exportOptions: {
+                stripHtml: false
+            }
+        },
+        {
+            extend: 'csvHtml5',
+            text: 'CSV',
+            exportOptions: {
+                stripHtml: false
+            }
+        },
+        {
+            extend: 'excelHtml5',
+            text: 'Excel',
+            exportOptions: {
+                stripHtml: false
+            }
+       },
+        {
+                extend: 'pdfHtml5',
+                messageTop: '<?php echo $this->project->name;?>',
+                
+               exportOptions: {
+        stripHtml: true
+    },
+
+                
+                customize: function ( doc ) {
+                  
+//Create a date string that we use in the footer. Format is dd-mm-yyyy
+						var now = new Date();
+						var jsDate = now.getDate()+'-'+(now.getMonth()+1)+'-'+now.getFullYear();
+doc['footer']=(function(page, pages) {
+							return {
+								columns: [
+									{
+										alignment: 'left',
+										text: ['Created on: ', { text: jsDate.toString() }]
+									},
+									{
+										alignment: 'right',
+										text: ['page ', { text: page.toString() },	' of ',	{ text: pages.toString() }]
+									}
+								],
+								margin: 20
+							}
+  });
+  
+                // Logo converted to base64 
+
+doc.content.splice( 1, 0, {
+                        margin: [ 0, 0, 0, 12 ],
+                        alignment: 'center',
+                        image: 'data:image/png;base64,<?php echo base64_encode(file_get_contents(Uri::root() .$this->projectteam->picture));?>',
+  width: 150,
+                    } );
+
+            
+            }
+            }
+    ]
+		
+		
+        });
+    });
+
+
+//var blob = new Blob([document.getElementById('tableplayer2_wrapper').innerHTML]);
+//console.log(blob);
+
+/*
+// Function to convert an img URL to data URL 
+ 	function getBase64FromImageUrl(url) { 
+ 	console.log(url);
+     var img = new Image(); 
+ 		img.crossOrigin = "anonymous"; 
+     img.onload = function () { 
+         var canvas = document.createElement("canvas"); 
+         canvas.width =this.width; 
+         canvas.height =this.height; 
+         var ctx = canvas.getContext("2d"); 
+         ctx.drawImage(this, 0, 0); 
+         var dataURL = canvas.toDataURL("image/png"); 
+         return dataURL.replace(/^data:image\/(png|jpg);base64,/, ""); 
+     }; 
+     img.src = url; 
+ 	} 
+ 	
+var logo1 = getBase64FromImageUrl('<?php echo Uri::root() .$this->projectteam->picture;?>'); 
+console.log(logo1);
+*/
+
+
+
+
+
+
+
+
+<?php
+//$this->project->season_id
+//$this->team->picture
+//$this->projectteam->picture
+}
+?>
+
+
+
+
+<?php
+}
+?>
+
+</script>
+
+<?php
 /**
  * das sind alle projektdaten
  * $this->project
@@ -25,6 +175,8 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
  * das sind die positionen mit den spielern
  * $this->rows
  */
+//echo 'teambild '.$this->projectteam->picture.'<br>';
+//  echo base64_encode(file_get_contents(Uri::root() .$this->projectteam->picture));
 
 /**
  *
@@ -109,15 +261,23 @@ if (!empty($this->rows))
 		}
 	}
 	?>
-    <div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultplayers">
-        <table class="<?php echo $this->config['table_class']; ?>">
+    <div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultplayers" itemscope itemtype="http://schema.org/SportsTeam">
+      <span itemprop="name" content="<?php echo Text::_($this->team->name);?>"></span> 
+      <span itemprop="sport" content="<?php echo Text::_($this->project->sport_type_name);?>"></span> 
+	    <span itemprop="description" content="<?php echo Text::_($this->project->name);?>"></span>
+        <?php
+        foreach ( $this->projectpositions as $positions => $position ) if( $position->persontype == 1 )
+{
+        ?>
+        <table class="<?php echo $this->config['table_class']; ?> table-sm nowrap " id="tableplayer<?php echo $position->id;?>" width="100%">
 			<?php
 			/**
 			 *
 			 * jetzt kommt die schleife über die positionen
 			 */
-			foreach ($this->rows as $position_id => $players)
+			foreach ($this->rows as $position_id => $players) if ( $position_id == $position->id )
 			{
+			$positionpdf = $position->id;
 				$meanage     = 0;
 				$countplayer = 0;
 				$age         = 0;
@@ -131,14 +291,23 @@ if (!empty($this->rows))
 				?>
                 <thead>
                 <tr class="sectiontableheader rosterheader">
-                    <th width="60%" colspan="<?php echo $positionHeaderSpan; ?>">
+                    <th class="" width="" colspan="">
 						<?php echo '&nbsp;' . Text::_($row->position); ?>
                     </th>
 					<?php
+					
+					for ($i = 1, $n = $positionHeaderSpan; $i < $n; $i++)
+			{
+				?>
+				<th class="" width="">
+				</th>
+				<?php
+				}
+					
 					if ($this->config['show_birthday'])
 					{
 						?>
-                        <th class="td_c">
+                        <th class="" width="">
 							<?php
 							switch ($this->config['show_birthday'])
 							{
@@ -176,7 +345,7 @@ if (!empty($this->rows))
 						if ($this->config['show_games_played'])
 						{
 							?>
-                            <th class="td_c">
+                            <th class="" width="">
 								<?php
 								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ROSTER_PLAYED');
 								$picture    = $picture_path_sport_type_name . '/played.png';
@@ -189,27 +358,28 @@ if (!empty($this->rows))
 						if ($this->config['show_substitution_stats'])
 						{
 							?>
-                            <th class="td_c">
+                            <th class="" width="">
+                            
 								<?php
 								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ROSTER_STARTING_LINEUP');
 								$picture    = $picture_path_sport_type_name . '/startroster.png';
 
 								echo HTMLHelper::image($picture, $imageTitle, array('title' => $imageTitle, 'style' => 'width: auto;height: ' . $this->config['events_picture_height'] . 'px'));
 								?></th>
-                            <th class="td_c"><?php
+                            <th class="" width=""><?php
 								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ROSTER_IN');
 								$picture    = $picture_path_sport_type_name . '/in.png';
 
 								echo HTMLHelper::image($picture, $imageTitle, array('title' => $imageTitle, 'style' => 'width: auto;height: ' . $this->config['events_picture_height'] . 'px'));
 								?></th>
-                            <th class="td_c"><?php
+                            <th class="" width=""><?php
 								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ROSTER_OUT');
 								$picture    = $picture_path_sport_type_name . '/out.png';
 
 								echo HTMLHelper::image($picture, $imageTitle, array('title' => $imageTitle, 'style' => 'width: auto;height: ' . $this->config['events_picture_height'] . 'px'));
 								?></th>
 
-                            <th class="td_c">
+                            <th class="" width="">
 								<?php
 								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PLAYED_TIME');
 								$picture    = $picture_path_sport_type_name . '/uhr.png';
@@ -256,7 +426,7 @@ if (!empty($this->rows))
 										);
 									}
 									?>
-                                    <th class="td_c">
+                                    <th class="" width="">
 										<?php echo $eventtype_header; ?>
                                     </th>
 									<?php
@@ -275,7 +445,7 @@ if (!empty($this->rows))
 								if ($stat->position_id == $row->position_id)
 								{
 									?>
-                                    <th class="td_c"><?php echo $stat->getImage($this->config['events_picture_height']); ?></th>
+                                    <th class="" width=""><?php echo $stat->getImage($this->config['events_picture_height']); ?></th>
 									<?php
 								}
 							}
@@ -289,7 +459,7 @@ if (!empty($this->rows))
 					if ($this->config['show_player_market_value'])
 					{
 						?>
-                        <th class="td_c">
+                        <th class="" width="">
 							<?php echo Text::_('COM_SPORTSMANAGEMENT_EURO_MARKET_VALUE'); ?>
                         </th>
 						<?php
@@ -301,13 +471,15 @@ if (!empty($this->rows))
                 </thead>
                 <!-- end position header -->
                 <!-- Players row-->
+<div itemprop="member" itemscope itemtype="http://schema.org/OrganizationRole"> 
+                      <span itemprop="roleName" content="<?php echo Text::_($row->position);?>"></span>
 				<?php
 				$total_market_value = 0;
 
 				foreach ($players as $row)
 				{
 					?>
-                    <tr class="">
+                    <tr class="" width="" onMouseOver="this.bgColor='#CCCCFF'" onMouseOut="this.bgColor='#ffffff'" itemprop="member" itemscope="" itemtype="http://schema.org/Person">
 						<?php
 						$pnr = ($row->position_number != '') ? $row->position_number : '&nbsp;';
 
@@ -322,7 +494,7 @@ if (!empty($this->rows))
 								$value = $pnr;
 							}
 							?>
-                            <td width="30" class="td_c"><?php echo $value; ?></td><?php
+                            <td class="" width=""><?php echo $value; ?></td><?php
 						}
 
 						$playerName = sportsmanagementHelper::formatName(
@@ -331,7 +503,10 @@ if (!empty($this->rows))
 							$row->lastname,
 							$this->config["name_format"]
 						);
-
+?>
+ 
+  <?php
+                  
 						if ($this->config['show_player_icon'])
 						{
 							$picture = $row->picture;
@@ -342,7 +517,12 @@ if (!empty($this->rows))
 							}
 
 							?>
-                            <td width="40" class="td_c" nowrap="nowrap">
+                            <td class="" width="" nowrap="nowrap">
+                              <span itemprop="name" content="<?php echo $playerName;?>"></span> 
+                              <span itemprop="birthDate" content="<?php echo $row->birthday;?>"></span>
+				   <span itemprop="deathDate" content="<?php echo $row->deathday;?>"></span>
+				    <span itemprop="nationality" content="<?php echo JSMCountries::getCountryName($row->country);?>"></span>
+                              
 								<?PHP
 								echo sportsmanagementHelperHtml::getBootstrapModalImage(
 									'player' . $row->playerid,
@@ -352,7 +532,9 @@ if (!empty($this->rows))
 									'',
 									$this->modalwidth,
 									$this->modalheight,
-									$this->overallconfig['use_jquery_modal']
+									$this->overallconfig['use_jquery_modal'],
+                                  'itemprop',
+                                  'image'
 								);
 								?>
 
@@ -366,14 +548,14 @@ if (!empty($this->rows))
 							 * Put empty column to keep vertical alignment with the staff table
 							 */
 							?>
-                            <td width="40" class="td_c" nowrap="nowrap">&nbsp;</td><?php
+                            <td class="" width="" nowrap="nowrap">&nbsp;</td><?php
 						}
 
 
 						if ($this->config['show_country_flag'])
 						{
 							?>
-                            <td width="16" nowrap="nowrap" style="text-align:center; ">
+                            <td width=""  class=""nowrap="nowrap" style="text-align:center; ">
 							<?php echo JSMCountries::getCountryFlag($row->country); ?>
                             </td><?php
 						}
@@ -384,10 +566,10 @@ if (!empty($this->rows))
 							 * Put empty column to keep vertical alignment with the staff table
 							 */
 							?>
-                            <td width="16" nowrap="nowrap" style="text-align:center; ">&nbsp;</td><?php
+                            <td class="" width="" nowrap="nowrap" style="text-align:center; ">&nbsp;</td><?php
 						}
 						?>
-                        <td class="td_l"><?php
+                        <td class="" width=""><?php
 							if ($this->config['link_player'] == 1)
 							{
 								$routeparameter                       = array();
@@ -398,14 +580,16 @@ if (!empty($this->rows))
 								$routeparameter['pid']                = $row->person_slug;
 
 								$link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
-								echo HTMLHelper::link($link, '<span class="playername">' . $playerName . '</span>');
+								//echo HTMLHelper::link($link, '<span class="playername">' . $playerName . '</span>');
+                                echo HTMLHelper::link($link, $playerName);
 							}
 							else
 							{
-								echo '<span class="playername">' . $playerName . '</span>';
+								//echo '<span class="playername">' . $playerName . '</span>';
+                                echo $playerName;
 							}
 							?></td>
-                        <td width="5%" style="text-align: left;" class="nowrap">&nbsp; <?php
+                        <td class="" width="" style="text-align: left;" >&nbsp; <?php
 							$model            = $this->getModel();
 							$this->playertool = $model->getTeamPlayer($this->project->current_round, $row->playerid);
 
@@ -442,7 +626,7 @@ if (!empty($this->rows))
 						if ($this->config['show_birthday'] > 0)
 						{
 							?>
-                            <td width="10%" nowrap="nowrap" style="text-align: center;"><?php
+                            <td class="" width="" nowrap="nowrap" style="text-align: center;"><?php
 							if ($row->birthday != "0000-00-00")
 							{
 								switch ($this->config['show_birthday'])
@@ -496,7 +680,7 @@ if (!empty($this->rows))
                         elseif ($this->config['show_birthday_staff'])
 						{
 							?>
-                            <td width="10%" nowrap="nowrap" style="text-align: left;">&nbsp;</td><?php
+                            <td class="" width="" nowrap="nowrap" style="text-align: left;">&nbsp;</td><?php
 						}
 
 
@@ -525,7 +709,7 @@ if (!empty($this->rows))
 							if ($this->config['show_games_played'])
 							{
 								?>
-                                <td class="td_c" nowrap="nowrap"><?php echo $played; ?></td>
+                                <td class="" width="" nowrap="nowrap"><?php echo $played; ?></td>
 								<?php
 							}
 
@@ -546,10 +730,10 @@ if (!empty($this->rows))
 							if ($this->config['show_substitution_stats'])
 							{
 								?>
-                                <td class="td_c"><?php echo $started; ?></td>
-                                <td class="td_c"><?php echo $subIn; ?></td>
-                                <td class="td_c"><?php echo $subOut; ?></td>
-                                <td class="td_c"><?php echo $timePlayed; ?></td>
+                                <td class="" width=""><?php echo $started; ?></td>
+                                <td class="" width=""><?php echo $subIn; ?></td>
+                                <td class="" width=""><?php echo $subOut; ?></td>
+                                <td class="" width=""><?php echo $timePlayed; ?></td>
 								<?php
 							}
 						}
@@ -564,7 +748,7 @@ if (!empty($this->rows))
 							foreach ($this->playereventstats[$row->pid] AS $eventId => $stat)
 							{
 								?>
-                                <td class="td_c"><?php
+                                <td class="" width=""><?php
 									if ($stat != '' && $stat > 0)
 									{
 										if (!isset($totalEvents[$row->pposid][$eventId]))
@@ -641,7 +825,7 @@ if (!empty($this->rows))
 										}
 									}
 									?>
-                                    <td class="td_c" class="hasTip" title="<?php echo Text::_($stat->name); ?>">
+                                    <td class="" width="" title="<?php echo Text::_($stat->name); ?>">
 										<?php echo $value; ?>
                                     </td>
 									<?php
@@ -657,7 +841,7 @@ if (!empty($this->rows))
 						{
 							$total_market_value += $row->market_value;
 							?>
-                            <td class="td_r" class="hasTip" title="">
+                            <td class="" width="" title="">
 								<?php
 								echo($row->market_value > 0 ? number_format($row->market_value, 0, ',', '.') : $this->overallconfig['zero_events_value']);
 								?>
@@ -736,6 +920,7 @@ if (!empty($this->rows))
 					$k = (1 - $k);
 				}
 				?>
+                  </div>
                 <!-- end players rows -->
                 <!-- position totals anfang -->
 				<?php
@@ -747,16 +932,35 @@ if (!empty($this->rows))
 					}
 					?>
                     <tr class="">
-                        <td class="td_r"></td>
-                        <td class="td_r" colspan="3">
-							<?php
-							if ($this->config['show_average_age'])
-							{
-								echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_PLAYERS_MEAN_AGE') . ' ' . $meanage;
-							}
-							?>
+                        <td class="" width=""></td>
+                        <?php
+                        for ($a = 1, $b = 3; $a < $b; $a++)
+			{
+			?>
+			<td>
+			</td>
+			<?php
+			}
+			?>
+                        <td class="" width="" colspan="">
+			<?php
+			if ($this->config['show_average_age'])
+			{
+			echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_PLAYERS_MEAN_AGE') . ' ' . $meanage;
+			}
+			?>
                         </td>
-                        <td class="td_r" colspan="<?php echo $totalcolspan - 3; ?>">
+                        <?php
+                        for ($a = 1, $b = $totalcolspan - 3; $a < $b; $a++)
+			{
+			?>
+			<td>
+			</td>
+			<?php
+			}
+			?>
+                        
+                        <td class="td_r" colspan="">
                             <b><?php echo Text::_('COM_SPORTSMANAGEMENT_ROSTER_TOTAL'); ?>:</b></td>
 						<?php
 						if ($this->config['show_events_stats'])
@@ -775,7 +979,7 @@ if (!empty($this->rows))
 										}
 									}
 									?>
-                                    <td class="td_c">
+                                    <td class="" width="">
 										<?php
 										echo($value > 0 ? number_format($value, 0, '', '.') : $this->overallconfig['zero_events_value']);
 										?>
@@ -805,7 +1009,7 @@ if (!empty($this->rows))
 										}
 									}
 									?>
-                                    <td class="td_c">
+                                    <td class="" width="">
 										<?php
 										echo($value > 0 ? $value : $this->overallconfig['zero_events_value']);
 										?>
@@ -822,7 +1026,7 @@ if (!empty($this->rows))
 						if ($this->config['show_player_market_value'])
 						{
 							?>
-                            <td class="td_r">
+                            <td class="" width="">
 								<?php
 								echo($total_market_value > 0 ? number_format($total_market_value, 0, ',', '.') : $this->overallconfig['zero_events_value']);
 								?>
@@ -838,8 +1042,60 @@ if (!empty($this->rows))
 				<?php
 				$k = (1 - $k);
 			}
+			
+			//echo 'position id '.$positionpdf;
 			?>
         </table>
+        
+        <script>
+		
+var element = document.getElementById('tableplayer<?php echo $positionpdf;?>');
+//html2pdf(element);
+		
+//        var blob = new Blob([document.getElementById('tableplayer2').innerHTML]);
+                var blob = '<table>' + document.getElementById('tableplayer<?php echo $positionpdf;?>').innerHTML + '</table>';
+        console.log('position id ' );
+        var docDefinition = {
+    content: [blob],
+    exportOptions: {
+                stripHtml: true
+            }
+}
+//pdfMake.createPdf(docDefinition).open();
+//var val = htmlToPdfmake(blob);
+  //  var dd = {content:val};
+    //pdfMake.createPdf(dd).download();
+
+
+
+
+/*
+pdfDocGenerator = pdfMake.createPdf(docDefinition);
+pdfDocGenerator.getDataUrl((dataUrl) => {
+	const targetElement = document.querySelector('#iframeContainer');
+	const iframe = document.createElement('iframe');
+	iframe.src = dataUrl;
+	targetElement.appendChild(iframe);
+});
+*/
+
+
+
+
+//pdfMake.createPdf(docDefinition).open();
+/*
+const pdfDocGenerator = pdfMake.createPdf(docDefinition);
+pdfDocGenerator.getBase64((data) => {
+	alert(data);
+});
+*/
+
+        </script>
+        
+        
+        <?php
+        }
+        ?>
     </div>
 	<?php
 }

@@ -2,6 +2,7 @@
 <form
 	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+<!-- reiter 1 -->	
 	<fieldset name="details"
   label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
   description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC"  >
@@ -200,6 +201,7 @@ landesverbaende zum ausgewaehlten land
           	
 	</fieldset>			
 
+<!-- reiter 2 -->
   <fields name="request">
 <fieldset name="request"
 label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
@@ -211,7 +213,7 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
 			size="1"
 			label="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE"
 			description="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE_DESC"
-			required="true"
+			required="false"
 			validate="">
 			<option
 				value="">

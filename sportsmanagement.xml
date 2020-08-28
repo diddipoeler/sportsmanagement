@@ -9,7 +9,7 @@
 	<copyright>Copyright Info</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<!--  The version string is recorded in the components table -->
-	<version>3.6.00</version>
+	<version>3.7.00</version>
 	<!-- The description is optional and defaults to the name -->
 	<description>COM_SPORTSMANAGEMENT_DESCRIPTION</description>
  
@@ -102,7 +102,7 @@
         <menu view="teams" img="../administrator/components/com_sportsmanagement/assets/icons/transparent_schrift_16.png"
 				alt="COM_SPORTSMANAGEMENT_D_MENU_CLUBS">COM_SPORTSMANAGEMENT_D_MENU_TEAMS</menu>
 				
-        <menu view="persons" img="../administrator/components/com_sportsmanagement/assets/icons/transparent_schrift_16.png"
+        <menu view="players" img="../administrator/components/com_sportsmanagement/assets/icons/transparent_schrift_16.png"
 				alt="COM_SPORTSMANAGEMENT_D_MENU_CLUBS">COM_SPORTSMANAGEMENT_D_MENU_PERSONS</menu>
 				
         <menu view="playgrounds" img="../administrator/components/com_sportsmanagement/assets/icons/transparent_schrift_16.png"

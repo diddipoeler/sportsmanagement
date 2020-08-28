@@ -74,13 +74,13 @@ $datainput = Factory::getApplication()->input->getArray();
 		$file = $this->jsmjinput->files->get('userfile');
 
 		// $task = $this->jsmjinput->getVar( 'task' );
-		$type        = $this->jsmjinput->getVar('type');
+		$type        = $datainput['type'];
 		$folder      = ImageSelectSM::getfolder($type);
-		$field       = $this->jsmjinput->getVar('field');
-		$fieldid     = $this->jsmjinput->getVar('fieldid');
-		$linkaddress = $this->jsmjinput->getVar('linkaddress');
-        $pid       = $this->jsmjinput->getVar('pid');
-        $mid       = $this->jsmjinput->getVar('mid');
+		$field       = $datainput['field'];
+		$fieldid     = $datainput['fieldid'];
+		$linkaddress = $datainput['linkaddress'];
+        $pid       = $datainput['pid'];
+        $mid       = $datainput['mid'];
         
         
         switch ($type)

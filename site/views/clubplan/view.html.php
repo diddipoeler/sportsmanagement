@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage clubplan
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
@@ -152,7 +148,7 @@ class sportsmanagementViewClubPlan extends sportsmanagementView
 		$lists['type'] = $opp_arr;
 		$this->lists   = $lists;
 
-		// Set page title
+		/** Set page title */
 		$pageTitle = Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_TITLE');
 
 		if (isset($this->club))
@@ -161,9 +157,7 @@ class sportsmanagementViewClubPlan extends sportsmanagementView
 		}
 
 		$this->document->setTitle($pageTitle);
-		/**
-		 * build feed links
-		 */
+		/** build feed links */
 		$project_id = (!empty($this->project->id)) ? '&p=' . $this->project->id : '';
 		$club_id    = (!empty($this->club->id)) ? '&cid=' . $this->club->id : '';
 		$rssVar     = (!empty($this->club->id)) ? $club_id : $project_id;
@@ -171,11 +165,9 @@ class sportsmanagementViewClubPlan extends sportsmanagementView
 		$feed = 'index.php?option=com_sportsmanagement&view=clubplan' . $rssVar . '&format=feed';
 		$rss  = array('type' => 'application/rss+xml', 'title' => Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_RSSFEED'));
 
-		// Add the links
+		/** Add the links */
 		$this->document->addHeadLink(Route::_($feed . '&type=rss'), 'alternate', 'rel', $rss);
-
 		$this->headertitle = Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_PAGE_TITLE') . ' ' . $this->club->name;
-
 		$this->config['table_class'] = isset($this->config['table_class']) ? $this->config['table_class'] : 'table';
 
 	}

@@ -35,6 +35,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 	{
 
 		$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
+		$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/printPreview.js');
 		$this->document->addStyleSheet(Uri::base() . 'components/' . $this->option . '/assets/css/modalwithoutjs.css');
 
 		sportsmanagementHelperHtml::$project = $this->project;

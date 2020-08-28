@@ -40,6 +40,17 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+
+<field type="extensionsubtitle" title="" color="#2672a6" />		
+<field name="show_jed_link" 
+type="extensionradiobutton" 
+default="1"
+class="radio btn-group btn-group-yesno"
+label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JED_LINK" 
+description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JED_LINK_DESC">
+<option value="0">JNO</option>
+<option value="1">JYES</option>
+</field>		
 		
 <field type="extensionsubtitle" title="" color="#2672a6" />
 		
@@ -726,6 +737,17 @@ class="radio btn-group btn-group-yesno"
 	label="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_BACKEND"
   	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+
+<field type="extensionsubtitle" title="Einstellungen Spielerübersicht" color="#2672a6" />
+<field name="backend_show_players_agegroup" type="extensionradiobutton" default="1"
+class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_AGEGROUP" 
+			description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_AGEGROUP">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+
 
 <field name="gh_user" type="text"
 			description="COM_SPORTSMANAGEMENT_FIELD_GH_USER_DESC"

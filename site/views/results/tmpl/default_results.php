@@ -8,9 +8,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 
@@ -21,7 +19,7 @@ if (!isset($this->project))
 else
 {
 	?>
-    <div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultresults">
+    <div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultresults" >
         <br/>
 		<?php
 		if (count($this->matches) > 0)

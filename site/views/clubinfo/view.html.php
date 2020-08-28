@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version   1.0.05
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
@@ -12,9 +10,7 @@
  * boostrap tree
  * http://jsfiddle.net/jhfrench/GpdgF/
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Component\ComponentHelper;
@@ -39,7 +35,7 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
 	function init()
 	{
 		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('frontend', sportsmanagementModelClubInfo::$cfg_which_database);
-
+		$this->mapconfig = array();
 		$this->club = sportsmanagementModelClubInfo::getClub(1);
 
 		if ($this->checkextrafields)

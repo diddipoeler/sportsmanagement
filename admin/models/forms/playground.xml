@@ -42,6 +42,8 @@
  <field
 			name="country"
 			type="country"
+			onchange="javascript:getlatlonopenstreet(1);"
+	size="1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_COUNTRY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_COUNTRY_DESC"
 			class="inputbox">
@@ -59,6 +61,7 @@
 <field
 			name="city"
 			type="text"
+       onchange="javascript:getlatlonopenstreet(1);"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_CITY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_CITY_DESC"
 			class="inputbox"/>	 
@@ -66,6 +69,7 @@
  <field
 			name="zipcode"
 			type="text"
+			onchange="javascript:getlatlonopenstreet(1);"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_ZIPCODE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_ZIPCODE_DESC"
 			class="inputbox"/>	    
@@ -73,6 +77,7 @@
 		<field
 			name="address"
 			type="textarea"
+			onchange="javascript:getlatlonopenstreet(1);"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_ADDRESS"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_ADDRESS_DESC"
 			class="inputbox"/>		

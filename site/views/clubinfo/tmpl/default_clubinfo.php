@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage clubinfo
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -49,8 +45,9 @@ if (!isset($this->club))
 else
 {
 	?>
-    <div class="<?php echo $this->divclassrow; ?>">
+    <div class="<?php echo $this->divclassrow; ?>" itemscope="" itemtype="http://schema.org/SportsClub" id="default_clubinfo">
         <div class="<?php echo $this->divclass; ?>3 center">
+		<span itemprop="priceRange"></span>
 			<?PHP ?>
             <!-- SHOW LOGO - START -->
 			<?php
@@ -70,7 +67,9 @@ else
 				'',
 				$this->modalwidth,
 				$this->modalheight,
-				$this->overallconfig['use_jquery_modal']
+				$this->overallconfig['use_jquery_modal'],
+				'itemprop',
+				'image'
 			);
 
 			if ($this->config['show_club_logo_copyright'])
@@ -90,17 +89,19 @@ else
             <!-- SHOW LOGO - END -->
             <!-- SHOW SMALL LOGO - START -->
 			<?php
+	/*
 			if (($this->config['show_club_shirt']) && ($this->club->logo_small != ''))
 			{
 				$club_trikot_title = str_replace("%CLUBNAME%", $this->club->name, Text::_("COM_SPORTSMANAGEMENT_CLUBINFO_TRIKOT_TITLE"));
 				$picture           = $this->club->logo_small;
 				echo sportsmanagementHelper::getPictureThumb($picture, $club_emblem_title, 20, 20, 3);
 			}
+	*/
 			if ($this->club->website)
 			{
 				if ($this->config['show_club_internetadress_picture'])
 				{
-					echo '<img style="" src="http://free.pagepeeker.com/v2/thumbs.php?size=m&url=' . $this->club->website . '">';
+					echo '<img itemprop="logo" style="" src="http://free.pagepeeker.com/v2/thumbs.php?size=m&url=' . $this->club->website . '">';
 				}
 			}
 			?>
@@ -118,10 +119,14 @@ else
 					$addressString = JSMCountries::convertAddressString($this->club->name, $this->club->address, $this->club->state, $this->club->zipcode, $this->club->location, $this->club->country, 'COM_SPORTSMANAGEMENT_CLUBINFO_ADDRESS_FORM');
 					?>
                     <address>
-                        <strong><?php
+                        <strong>
+				<?php
 							echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_ADDRESS');
-							?></strong>
+							?>
+			    </strong>
+			    
 						<?php echo $addressString; ?>
+				
 
                         <span class="clubinfo_listing_value">
                             <?php
@@ -142,22 +147,39 @@ else
 				if ($this->club->phone)
 				{
 					?>
-                    <address>
+                    <address >
+			    
                         <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_PHONE'); ?></strong>
+			    <span itemprop="telephone">
 						<?php echo $this->club->phone; ?>
+				    </span>
                     </address>
 					<?php
 				}
+			else
+			{
+			?>
+		    <span itemprop="telephone"></span>
+		    <?php
+			}
 
 				if ($this->club->fax)
 				{
 					?>
                     <address>
                         <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_FAX'); ?></strong>
+			    <span itemprop="faxNumber">
 						<?php echo $this->club->fax; ?>
+				    </span>
                     </address>
 					<?php
 				}
+			else
+			{
+			?>
+		    <span itemprop="faxNumber"></span>
+		    <?php
+			}
 
 				if ($this->club->email)
 				{
@@ -176,21 +198,33 @@ else
 						}
 						else
 						{
+							?>
+			    <span itemprop="email">
+			    <?php
 							echo $this->club->email;
+							?>
+			    </span>
+			    <?php
 						}
 						?>
                     </address>
 					<?php
 				}
+			else
+			{
+			?>
+		    <span itemprop="email"></span>
+		    <?php
+			}
 
 				if ($this->club->website)
 				{
 					?>
                     <address>
                         <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_WWW'); ?></strong>
-
+<span itemprop="url">
 						<?php echo HTMLHelper::_('link', $this->club->website, $this->club->website, array("target" => "_blank")); ?>
-
+</span>
                     </address>
 					<?php
 				}
@@ -262,7 +296,8 @@ else
 					?>
                     <address>
                         <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_DISSOLVED'); ?></strong>
-						<?php echo sportsmanagementHelper::convertDate($this->club->dissolved, 1) ?>
+						<?php //echo sportsmanagementHelper::convertDate($this->club->dissolved, 1) ?>
+			    <?php echo HTMLHelper::date($this->club->dissolved, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE')); ?>
                     </address>
 					<?php
 				}

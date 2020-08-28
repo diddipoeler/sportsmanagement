@@ -17,56 +17,27 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 
-//$templatesToLoad = array('footer', 'listheader');
-//sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-//$this->saveOrder = $this->sortColumn == 'ordering';
-//echo 'sortColumn<pre>'.print_r($this->sortColumn,true).'</pre>';
-//echo 'sortDirection<pre>'.print_r($this->sortDirection,true).'</pre>';
-//echo 'saveOrder<pre>'.print_r($this->saveOrder,true).'</pre>';
-//$this->dragable_group = '';
-if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
-{
-?>    
-<script>
-//function saveorder(n, task) {
-//console.warn('window.saveorder() is deprecated without a replacement!');
-//console.warn('n ' + n);
-//console.warn('task ' + task);
-//checkAll_button( n, task );
-//}
-//
-//function checkAll_button(n, task) {
-//console.warn('window.checkAll_button() is deprecated without a replacement!');
-//		task = task ? task : 'saveorder';
-//		var j, box;
-//		for ( j = 0; j <= n; j++ ) {
-//			box = document.adminForm[ 'cb' + j ];
-//			if ( box ) {
-//				box.checked = true;
-//			} else {
-//				alert( "You cannot change the order of items, as an item in the list is `Checked Out`" );
-//				return;
-//			}
-//		}
-//		Joomla.submitform( task );
-//}
-</script>    
-<?php    
+$this->saveOrder = $this->sortColumn == 'obj.ordering';
 if ($this->saveOrder && !empty($this->items))
 {
-$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task=agegroups.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';    
+$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task='.$this->view.'.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{    
 HTMLHelper::_('draggablelist.draggable');
-$this->dragable_group = 'data-dragable-group="<?php echo $item->catid; ?>"';
-}    
-}    
+}
+else
+{
+JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl,$this->saveOrderButton);    
+}
+}
 ?>
-<div id="editcell">
-    <table class="<?php echo $this->table_data_class; ?>">
+<div class="table-responsive" id="editcell">
+    <table class="<?php echo $this->table_data_class; ?>" id="<?php echo $this->view; ?>list">
         <thead>
         <tr>
             <th width="5"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
             <th width="20">
-                <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/>
+                <?php echo HTMLHelper::_('grid.checkall'); ?>
             </th>
             <th>
 				<?php
@@ -125,17 +96,14 @@ $this->dragable_group = 'data-dragable-group="<?php echo $item->catid; ?>"';
             </td>
         </tr>
         </tfoot>
-        <tbody <?php if ( $this->saveOrder && version_compare(substr(JVERSION, 0, 3), '4.0', 'ge') ) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($this->sortDirection); ?>" data-nested="true"<?php endif; ?>>
+        <tbody <?php if ( $this->saveOrder && version_compare(substr(JVERSION, 0, 3), '4.0', 'ge') ) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($this->sortDirection); ?>" <?php endif; ?>>
 		<?php
-		$k = 0;
-		//for ($this->count_i = 0, $this->pagination->total; $this->count_i < $this->pagination->total; $this->count_i++)
-        foreach ($this->items as $i => $this->item)
+        foreach ($this->items as $this->count_i => $this->item)
 		{
-			//$this->item        = &$this->items[$this->count_i];
-            $this->count_i = $i;
+            //$this->count_i = $i;
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
-$this->dragable_group = 'data-dragable-group="'.$this->item->ordering.'"';
+$this->dragable_group = 'data-dragable-group="none"';
 } 
 			$link       = Route::_('index.php?option=com_sportsmanagement&task=agegroup.edit&id=' . $this->item->id);
 			$canEdit    = $this->user->authorise('core.edit', 'com_sportsmanagement');
@@ -143,7 +111,7 @@ $this->dragable_group = 'data-dragable-group="'.$this->item->ordering.'"';
 			$checked    = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'agegroups.', $canCheckin);
 			$canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.agegroup.' . $this->item->id) && $canCheckin;
 			?>
-            <tr class="<?php echo "row$k"; ?>" <?php echo $this->dragable_group; ?>>
+            <tr class="row<?php echo $this->count_i % 2; ?>" <?php echo $this->dragable_group; ?>>
                 <td class="center">
 					<?php
 					echo $this->pagination->getRowOffset($this->count_i);
@@ -171,10 +139,6 @@ $this->dragable_group = 'data-dragable-group="'.$this->item->ordering.'"';
                            name="name<?php echo $this->item->id; ?>" value="<?php echo $this->item->name; ?>"
                            onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked = true"/>
 
-
-					<?php //echo $checked;  ?>
-
-					<?php //echo $this->item->name;  ?>
                     <p class="smallsub">
 						<?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($this->item->alias)); ?></p>
                 </td>
@@ -202,8 +166,6 @@ $this->dragable_group = 'data-dragable-group="'.$this->item->ordering.'"';
 					}
 					else
 					{
-						//$playerName = sportsmanagementHelper::formatName(null ,$this->item->firstname, $this->item->nickname, $this->item->lastname, 0);
-						//echo sportsmanagementHelper::getPictureThumb($this->item->picture, $playerName, 0, 21, 4);
 						?>
                         <a href="<?php echo Uri::root() . $this->item->picture; ?>" title="<?php echo $this->item->name; ?>"
                            class="modal">
@@ -220,7 +182,7 @@ $this->dragable_group = 'data-dragable-group="'.$this->item->ordering.'"';
                     <div class="btn-group">
 						<?php echo HTMLHelper::_('jgrid.published', $this->item->published, $this->count_i, 'agegroups.', $canChange, 'cb'); ?>
 						<?php
-						// Create dropdown items and render the dropdown list.
+						/** Create dropdown items and render the dropdown list. */
 						if ($canChange)
 						{
 							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === 2 ? 'un' : '') . 'archive', 'cb' . $this->count_i, 'agegroups');
@@ -238,7 +200,7 @@ echo $this->loadTemplate('data_order');
                 <td class="center"><?php echo $this->item->id; ?></td>
             </tr>
 			<?php
-			$k = 1 - $k;
+
 		}
 		?>
         </tbody>

@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage projectpositions
@@ -11,15 +9,12 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
-
 
 <form action="<?php echo Route::_('index.php?option=com_sportsmanagement'); ?>" id='component-form' method='post'
       style='display:inline' name='adminform'>
@@ -40,26 +35,29 @@ use Joomla\CMS\HTML\HTMLHelper;
             <table class="<?php echo $this->table_data_class; ?>">
                 <thead>
                 <tr>
-                    <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_EDIT_AVAILABLE'); ?></th>
-                    <th width="20"></th>
-                    <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_EDIT_ASSIGNED'); ?></th>
+                    <th class="" width=""><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_EDIT_AVAILABLE'); ?></th>
+                    <th class="" width=""></th>
+                    <th class="" width=""><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_EDIT_ASSIGNED'); ?></th>
 
                 </tr>
                 </thead>
                 <tr>
-                    <td><?php echo $this->lists['positions']; ?></td>
-                    <td style="text-align:center;">
-                        <input id="moveright" type="button" value="Move Right"
+                    <td class="" width=""><?php echo $this->lists['positions']; ?></td>
+                    <td class="" width="" style="text-align:center;">
+                        <input id="moveright" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_ASSIGN'); ?>"
                                onclick="move_list_items('positionslist','project_positionslist');"/>
-                        <input id="moverightall" type="button" value="Move Right All"
+                               <br />
+                        <input id="moverightall" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_ASSIGNALL'); ?>"
                                onclick="move_list_items_all('positionslist','project_positionslist');"/>
-                        <input id="moveleft" type="button" value="Move Left"
+                               <br />
+                        <input id="moveleft" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_NOT_ASSIGN'); ?>"
                                onclick="move_list_items('project_positionslist','positionslist');"/>
-                        <input id="moveleftall" type="button" value="Move Left All"
+                               <br />
+                        <input id="moveleftall" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_NOT_ASSIGNALL'); ?>"
                                onclick="move_list_items_all('project_positionslist','positionslist');"/>
 
                     </td>
-                    <td><?php echo $this->lists['project_positions']; ?></td>
+                    <td class="" width=""><?php echo $this->lists['project_positions']; ?></td>
                 </tr>
             </table>
         </fieldset>

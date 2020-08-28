@@ -31,6 +31,20 @@
                 value="">
                 COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE_SELECT</option>
         </field>
+
+<field
+	name="persontype"
+	type="list"
+	default="0"	
+	onchange="this.form.submit();"
+       	label="COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_PERSON_TYPE"
+	description="COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_PERSON_TYPE">
+	<option value="0">JGLOBAL_SELECT_AN_OPTION</option>
+	<option value="1">COM_SPORTSMANAGEMENT_F_PLAYERS</option>
+	<option value="2">COM_SPORTSMANAGEMENT_F_TEAM_STAFF</option>
+	<option value="3">COM_SPORTSMANAGEMENT_F_REFEREES</option>
+	<option value="4">COM_SPORTSMANAGEMENT_F_CLUB_STAFF</option>
+</field>			
 		
 		
     </fields>

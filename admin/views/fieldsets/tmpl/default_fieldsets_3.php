@@ -159,30 +159,33 @@ switch ($this->fieldset)
 		if (isset($this->teamsofclub))
 		{
 			?>
-
-                <table class="table">
+<div class="row-fluid">
+<div class="span12">
+<div class="row-fluid form-horizontal-desktop float-cols">
+                
 					<?php
 					foreach ($this->teamsofclub as $team)
 					{
 						?>
-                        <tr>
-                            <td>
+						<div class="control-group">
+
+
+<div class="controls">
                                 <input type="hidden" name="team_id[]" value="<?php echo $team->id; ?>"/>
-				</td>
-				    <td>
-                                <input type="text" name="team_value_id[]" size='50' maxlength='100'
+
+                                <input type="text" name="team_value_id[]" size='100' maxlength='100' style="width:400px;"
                                        value="<?php echo $team->name; ?>"/>
-				</td>    
-					    <td>
-				    <input type="text" name="club_value_id[]" size='50' maxlength='50'
+
+				    <input type="text" name="club_value_id[]" size='50' maxlength='50' style=""
                                        value="<?php echo $team->club_id; ?>"/>
-                            </td>
-                        </tr>
+</div>
+</div>
 						<?php
 					}
 					?>
-                </table>
-
+</div>
+</div>
+</div>
 			<?PHP
 		}
 		break;
@@ -299,7 +302,7 @@ switch ($this->fieldset)
 		}
 		break;
 
-	case 'teamperson':
+	case 'teamplayer':
 		if (isset($this->extended))
 		{
 			foreach ($this->extended->getFieldsets() as $fieldset)

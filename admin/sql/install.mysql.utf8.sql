@@ -371,6 +371,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_match` (
   `overtime` INT( 11 ) NOT NULL DEFAULT  '0',
   `match_timestamp` INT( 11 ) NOT NULL DEFAULT  '0',
   `next_match_id` INT(11) NOT NULL DEFAULT '0' ,
+  `openligaid` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `round_id` (`round_id`),
   KEY `projectteam1_id` (`projectteam1_id`),
@@ -641,6 +642,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_person` (
   `deathday_timestamp` INT( 11 ) NOT NULL DEFAULT  '0',
   `second_country` VARCHAR(3) NULL DEFAULT NULL,
   `gender` TINYINT(1) NOT NULL DEFAULT '0' ,
+  `openligaid` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `country` (`country`),
@@ -683,6 +685,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_playground` (
   `hits` INT(11) NOT NULL DEFAULT '0' ,
   `modified_hits` INT(11) NOT NULL DEFAULT '0' ,
   `state` VARCHAR(50) NOT NULL DEFAULT '' ,
+  `openligaid` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   KEY `club_id` (`club_id`),
   KEY `country` (`country`)
@@ -836,6 +839,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project` (
   `use_nation` tinyint(1) NOT NULL DEFAULT '0',
   `use_approved` tinyint(1) NOT NULL DEFAULT '0',
   `fast_projektteam` tinyint(1) NOT NULL DEFAULT '0',
+  `openligaid` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   KEY `league_id` (`league_id`),
   KEY `season_id` (`season_id`),
@@ -1001,6 +1005,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_round` (
   `cr_picture` varchar(255) DEFAULT NULL,
   `rdatefirst_timestamp` INT( 11 ) NOT NULL DEFAULT  '0',  
   `rdatelast_timestamp` INT( 11 ) NOT NULL DEFAULT  '0',
+  `openligaid` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   KEY `project_id` (`project_id`)
   )
@@ -1211,6 +1216,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_team` (
   `team_number` INT(11) NOT NULL DEFAULT '0' ,
   `team_stars` INT(11) NOT NULL DEFAULT '0' ,
   `email` VARCHAR(250) NULL ,
+  `openligaid` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   KEY `club_id` (`club_id`),
   KEY `sports_type_id` (`sports_type_id`)

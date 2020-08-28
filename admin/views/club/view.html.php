@@ -35,7 +35,7 @@ class sportsmanagementViewClub extends sportsmanagementView
 	 */
 	public function init()
 	{
-		$this->document->addScript('https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js');
+		//$this->document->addScript('https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js');
 		$starttime  = microtime();
 		$this->tmpl = $this->jinput->get('tmpl');
 
@@ -116,15 +116,16 @@ $this->item->logo_small = ComponentHelper::getParams('com_sportsmanagement')->ge
 
 		$this->lists = $lists;
 
-		$this->document->addScript('http://maps.googleapis.com/maps/api/js?libraries=places&language=de');
-		$this->document->addScript(Uri::base() . 'components/' . $this->option . '/assets/js/geocomplete.js');
+		//$this->document->addScript('https://maps.googleapis.com/maps/api/js?libraries=places&language=de');
+		//$this->document->addScript(Uri::base() . 'components/' . $this->option . '/assets/js/geocomplete.js');
 
 		if (version_compare(JSM_JVERSION, '4', 'eq'))
 		{
+			$this->document->addScript(Uri::base() . 'components/' . $this->option . '/assets/js/editgeocode.js');
 		}
 		else
 		{
-			$this->document->addScript(Uri::base() . 'components/' . $this->option . '/views/club/tmpl/edit.js');
+			$this->document->addScript(Uri::base() . 'components/' . $this->option . '/assets/js/editgeocode.js');
 		}
 
 		if (PluginHelper::isEnabled('system', 'jsm_soccerway'))

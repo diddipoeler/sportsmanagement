@@ -8,9 +8,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -18,7 +16,7 @@ use Joomla\CMS\Factory;
 ?>
 <!-- START: matches -->
 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="clubplanmatches">
-    <table class="<?php echo $this->config['table_class']; ?>">
+    <table class="<?php echo $this->config['table_class']; ?>" id="tableclubplanmatches">
 		<?php
 		if ($this->config['type_matches'] != 0)
 		{
@@ -102,6 +100,12 @@ use Joomla\CMS\Factory;
 			$routeparameter['p']                  = $game->project_slug;
 			$routeparameter['mid']                = $game->match_slug;
 			$nextmatch_link                       = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch', $routeparameter);
+			$routeparameter                       = array();
+			$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+			$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+			$routeparameter['p']                  = $game->project_slug;
+			$routeparameter['mid']                = $game->match_slug;
+			$matchreport_link                       = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);
 			$routeparameter                       = array();
 			$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
 			$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
@@ -326,8 +330,8 @@ use Joomla\CMS\Factory;
 							$routeparameter['p']                  = $game->project_id;
 							$routeparameter['pid']                = $matchReferee->id;
 							$referee_link                         = sportsmanagementHelperRoute::getSportsmanagementRoute('referee', $routeparameter);
-//$referee_link = sportsmanagementHelperRoute::getRefereeRoute($game->project_id,$matchReferee->id);
-							echo HTMLHelper::link($referee_link, $matchReferee->firstname . " " . $matchReferee->lastname);
+                            $ref = sportsmanagementHelper::formatName(null, $matchReferee->firstname, $matchReferee->nickname, $matchReferee->lastname, $this->config["referee_name_format"]);
+							echo HTMLHelper::link($referee_link, $ref);
 							echo '<br />';
 						}
 						?>
@@ -355,16 +359,26 @@ use Joomla\CMS\Factory;
 
 				if ($game->cancel == 0)
 				{
-					$score .= '<td align="center">';
+					if ($this->config['show_matchreport_link'])
+				{
+					$score .= '<td colspan="3" align="center" id="ergebnismatchreport">';	
+				$score .= HTMLHelper::link($matchreport_link, $e1.'-'.$e2 );		
+						$score .= '</td>';
+					}
+					else
+					{
+					$score .= '<td align="center" id="ergebnisheim">';
 					$score .= $e1;
-					$score .= '</td><td align="center">-</td><td align="center">';
+					$score .= '</td><td align="center">-</td><td align="center" id="ergebnisgast">';
 					$score .= $e2;
+					}
 				}
 				else
 				{
-					$score .= '<td align="center" valign="top" colspan="3">' . $game->cancel_reason . '</td>';
+					$score .= '<td align="center" valign="top" colspan="3" id="ergebnisgrund">' . $game->cancel_reason . '</td>';
 				}
 				echo $score;
+			
 				if ($this->config['show_thumbs_picture'])
 				{
 					switch ($this->config['type_matches'])

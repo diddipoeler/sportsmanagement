@@ -50,12 +50,21 @@ if ($this->jsmmessage)
 <?php
 switch ($view)
 {
+case 'agegroups':
 case 'clubs':
+case 'divisions':
+case 'eventtypes':
+case 'jlextcountries':
+case 'leagues':
 case 'playgrounds':
-case 'positions':	
-case 'players':		
-case 'projects':	
-case 'leagues':	
+		
+case 'players':
+case 'positions':
+case 'projectreferees':
+case 'projects':
+case 'rounds':
+case 'seasons':
+case 'smquotes':						
 echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 break;
 case 'githubinstall':

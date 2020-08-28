@@ -18,6 +18,8 @@ use Joomla\CMS\Table\Table;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\Http\HttpFactory;
+use Joomla\CMS\Filesystem\Path;
 
 /**
  * sportsmanagementModelsmimageimport
@@ -97,13 +99,78 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel
 			$file      = $post['file'][$value];
 			$folder = str_replace(' ', '%20', $folder);
 			$servercopy = $server . $folder . '/' . $file;
+			$endung = strtolower(File::getExt($servercopy ));
 
 			/** Set the target directory */
-			$base_Dir = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DS;
+			$base_Dir = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' ;
 			$filename = $file;
-			$filepath = $base_Dir . $filename;
+			$filepath = $base_Dir . DIRECTORY_SEPARATOR .$filename;
 
-			if (!copy($servercopy, $filepath))
+// Try to make the template file writable.
+		if (!is_writable($base_Dir))
+		{
+			Factory::getApplication()->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ERROR_SOURCE_FILE_NOT_WRITABLE'), 'warning');
+			Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_PERMISSIONS', Path::getPermissions($base_Dir)), 'warning');
+/*
+			if (!Path::isOwner($filePath))
+			{
+				$app->enqueueMessage(Text::_('COM_TEMPLATES_CHECK_FILE_OWNERSHIP'), 'warning');
+			}
+			return false;
+			*/
+		}
+			
+// Download the package
+		try
+		{
+			if (version_compare(JSM_JVERSION, '4', 'eq'))
+			{
+			$result = HttpFactory::getHttp([], ['curl', 'stream'])->get($servercopy);
+			}
+			else
+			{
+			$http = JHttpFactory::getHttp(null, array('curl', 'stream'));
+			$result  = $http->get($servercopy);	
+			}
+		}
+		catch (\RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text::_($e->getMessage()), 'Error');
+			return false;
+		}
+		if (!$result || ($result->code != 200 && $result->code != 310))
+		{
+			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text::_($result->code), 'Error');
+			return false;
+		}
+			
+		try
+		{
+		// Write the file to disk
+		$resultwrite = File::write($filepath, $result->body);
+		}
+		catch (\RuntimeException $e)
+		{
+			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text::_($e->getMessage()), 'Error');
+			return false;
+		}
+			
+/*			
+try
+{			
+$http = JHttpFactory::getHttp(null, array('curl', 'stream'));
+$resulthttp  = $http->get($servercopy );
+File::write($filepath, $resulthttp->body);
+}
+catch (Exception $e)
+{
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text::_($e->getMessage()), 'Error');
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text::_($servercopy ), 'Error');
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text::_($endung ), 'Error');
+}
+*/
+			
+			if (!$resultwrite)
 			{
 			}
 			else
@@ -115,8 +182,18 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel
 				{
 					if (version_compare(JSM_JVERSION, '4', 'eq'))
 					{
+						try
+		{
 						$archive = new Archive;
 						$result  = $archive->extract($dest, $extractdir);
+							}
+		catch (Exception $e)
+		{
+			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text::_($e->getMessage()), 'Error');
+			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text::_($servercopy ), 'Error');
+			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text::_($endung ), 'Error');
+			$result = false;
+		}
 					}
 					else
 					{
