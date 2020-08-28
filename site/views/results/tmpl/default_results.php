@@ -19,7 +19,7 @@ if (!isset($this->project))
 else
 {
 	?>
-    <div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultresults" itemscope="" itemtype="http://schema.org/SportsEvent">
+    <div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultresults" >
         <br/>
 		<?php
 		if (count($this->matches) > 0)
