@@ -16,6 +16,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Component\ComponentHelper;
 
 $user            = Factory::getUser();
 $userId          = $user->get('id');
@@ -62,17 +63,21 @@ else
 				?>
             </th>
             
+            <?php ?>
             <th class="title">
 				<?php
 				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PERSON_REGISTRATION_NUMBER', 'pl.knvbnr', $this->sortDirection, $this->sortColumn);
 				?>
             </th>
-
+            <?php ?>
+            
+            <?php if (ComponentHelper::getParams($this->option)->get('backend_show_players_agegroup')){ ?>
             <th class="title">
 				<?php
 				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP', 'ag.name', $this->sortDirection, $this->sortColumn);
 				?>
             </th>
+            <?php } ?>
 
             <th>
 				<?php
@@ -218,9 +223,9 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
                                                            name="knvbnr<?php echo $row->id; ?>"
                                                            value="<?php echo stripslashes(htmlspecialchars($row->knvbnr)); ?>"
                                                            onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
-                    <?php //echo $row->knvbnr; ?>
                     </td>
-
+                    
+                    <?php if (ComponentHelper::getParams($this->option)->get('backend_show_players_agegroup')){ ?>
                     <td class="center">
 						<?php
 						$inputappend = $this->readonly;
@@ -235,6 +240,7 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 						);
 						?>
                     </td>
+                    <?php } ?>
 
                     <td class="nowrap" class="center">
 						<?php
