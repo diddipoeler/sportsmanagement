@@ -468,13 +468,14 @@ if (!empty($this->rows))
                 </thead>
                 <!-- end position header -->
                 <!-- Players row-->
+<div itemprop="member" itemscope itemtype="http://schema.org/OrganizationRole">                      
 				<?php
 				$total_market_value = 0;
 
 				foreach ($players as $row)
 				{
 					?>
-                    <tr class="" width="" onMouseOver="this.bgColor='#CCCCFF'" onMouseOut="this.bgColor='#ffffff'" itemscope itemtype="http://schema.org/Person">
+                    <tr class="" width="" onMouseOver="this.bgColor='#CCCCFF'" onMouseOut="this.bgColor='#ffffff'" itemprop="member" itemscope="" itemtype="http://schema.org/Person">
 						<?php
 						$pnr = ($row->position_number != '') ? $row->position_number : '&nbsp;';
 
@@ -498,7 +499,10 @@ if (!empty($this->rows))
 							$row->lastname,
 							$this->config["name_format"]
 						);
-
+?>
+ 
+  <?php
+                  
 						if ($this->config['show_player_icon'])
 						{
 							$picture = $row->picture;
@@ -510,6 +514,8 @@ if (!empty($this->rows))
 
 							?>
                             <td class="" width="" nowrap="nowrap">
+                              <span itemprop="name" content="<?php echo $playerName;?>"></span> 
+                              <span itemprop="roleName" content="<?php echo Text::_($row->position);?>></span>
 								<?PHP
 								echo sportsmanagementHelperHtml::getBootstrapModalImage(
 									'player' . $row->playerid,
@@ -519,7 +525,9 @@ if (!empty($this->rows))
 									'',
 									$this->modalwidth,
 									$this->modalheight,
-									$this->overallconfig['use_jquery_modal']
+									$this->overallconfig['use_jquery_modal'],
+                                  'itemprop',
+                                  'image'
 								);
 								?>
 
@@ -905,6 +913,7 @@ if (!empty($this->rows))
 					$k = (1 - $k);
 				}
 				?>
+                  </div>
                 <!-- end players rows -->
                 <!-- position totals anfang -->
 				<?php
