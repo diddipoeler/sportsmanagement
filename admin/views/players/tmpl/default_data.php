@@ -213,7 +213,12 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
                     </td>
                     
                     <td class="center">
-                    <?php echo $row->knvbnr; ?>
+                    <input <?php echo $inputappend; ?> type="text" size="15"
+                                                           class="form-control form-control-inline"
+                                                           name="knvbnr<?php echo $row->id; ?>"
+                                                           value="<?php echo stripslashes(htmlspecialchars($row->knvbnr)); ?>"
+                                                           onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
+                    <?php //echo $row->knvbnr; ?>
                     </td>
 
                     <td class="center">

@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage player
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -146,6 +142,7 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 			$tblPerson->firstname = $post['firstname' . $pks[$x]];
 			$tblPerson->lastname  = $post['lastname' . $pks[$x]];
 			$tblPerson->nickname  = $post['nickname' . $pks[$x]];
+            $tblPerson->knvbnr  = $post['knvbnr' . $pks[$x]];
 
 			if ($post['birthday' . $pks[$x]] != '0000-00-00' && $post['birthday' . $pks[$x]] != '')
 			{
