@@ -15,6 +15,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 
+
+//echo '<pre>'.print_r($this->project,true).'</pre>';
 ?>
 <style>
     #sbox-window {
@@ -123,7 +125,7 @@ if ($this->config['show_comments_count'])
 					<?php
 					if ($date == "0000-00-00")
 					{
-						echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DATE_EMPTY');;
+						echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DATE_EMPTY');
 					}
 					else
 					{
@@ -278,8 +280,20 @@ if ($this->config['show_comments_count'])
 				}
 				?>
 <div itemscope itemtype="http://schema.org/SportsEvent">
-<span itemprop="startDate" datetime="<?php echo $date;?>" content="<?php echo $date;?>"></span>
-	
+<?php
+$starttime = sportsmanagementHelperHtml::showMatchTime($game, $this->config, $this->overallconfig, $this->project);                  
+?>
+<span itemprop="startDate" datetime="<?php echo $date;?>T<?php echo $starttime; ?>" content="<?php echo $date;?>T<?php echo $starttime; ?>"></span>
+<?php
+$endtime = sportsmanagementHelperHtml::showMatchTime($game, $this->config, $this->overallconfig, $this->project);  
+?>
+<span itemprop="endDate" datetime="<?php echo $date;?>T<?php echo $endtime; ?>" content="<?php echo $date;?>T<?php echo $endtime; ?>"></span>                  
+                  
+<span itemprop="name" content="<?php echo $this->project->name;?>"></span>
+<span itemprop="description" content="<?php echo $this->project->round_name;?>"></span>  
+                  
+<span itemprop="sport" content="<?php echo Text::_($this->project->sport_type_name);?>"></span>                  
+                  
                 <tr class="team<?php echo $game->projectteam1_id; ?>  team<?php echo $game->projectteam2_id; ?> "<?php echo $favStyle; ?> >
 					<?php
 					if ($this->config['show_match_number'])
