@@ -142,7 +142,12 @@ class modJSMPlaygroundTicker
 			}
 			else
 			{
-				$queryparts[] = "SELECT * FROM #__sportsmanagement_playground AS pg INNER JOIN #__sportsmanagement_club AS cl ON pg.club_id = cl.id WHERE pg.id=" . $rand . ''  ;
+				$queryparts[] = "SELECT pg.id AS id_playground, pg.name as playground_name, pg.address, pg.zipcode, pg.city, pg.country, 
+										pg.club_id, pg.extended, pg.latitude, pg.longitude, pg.state, pg.picture, pg.website, pg.max_visitors,
+										cl.name AS club_name
+										FROM #__sportsmanagement_playground AS pg 
+										INNER JOIN #__sportsmanagement_club AS cl 
+										ON pg.club_id = cl.id WHERE pg.id=" . $rand . ''  ;
 			}
 		}
 
