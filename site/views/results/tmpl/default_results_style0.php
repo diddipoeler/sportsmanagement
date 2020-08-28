@@ -401,9 +401,9 @@ $ergebnis = date('H:i:s', strtotime('+'.$this->project->game_regular_time + $thi
 						?>
                         <!-- show playground -->
                         <td>
-				<span itemprop="location">
-							<?php sportsmanagementHelperHtml::showMatchPlayground($game, $this->config); ?>
-				</span>
+				<span itemprop="location" content="<?php echo $team1->playground_name;?>"></span>
+							<?php echo sportsmanagementHelperHtml::showMatchPlayground($game, $this->config); ?>
+				
                         </td>
 						<?php
 					}
@@ -467,12 +467,16 @@ $ergebnis = date('H:i:s', strtotime('+'.$this->project->game_regular_time + $thi
 							?>
                         </td>
                         <td>
-				<span itemprop="homeTeam">
+				<span itemprop="homeTeam" content="<?php echo $team1->name;?>"></span>
 							<?php
+                              
+//echo '<pre>'.print_r($team1,true).'</pre>';
+                      
+                      
 							$isFavTeam = in_array($team1->id, $this->favteams);
 							echo sportsmanagementHelper::formatTeamName($team1, 'g' . $game->id, $this->config, $isFavTeam, null, Factory::getApplication()->input->getInt('cfg_which_database', 0));
 							?>
-				</span>
+				
 	                        </td>
                         <td width='<?PHP echo $width; ?>'>
 							<?php
@@ -496,12 +500,12 @@ $ergebnis = date('H:i:s', strtotime('+'.$this->project->game_regular_time + $thi
 							?>
                         </td>
                         <td>
-				<span itemprop="awayTeam">
+				<span itemprop="awayTeam" content="<?php echo $team2->name;?>"></span>
 							<?php
 							$isFavTeam = in_array($team2->id, $this->favteams);
 							echo sportsmanagementHelper::formatTeamName($team2, 'g' . $game->id, $this->config, $isFavTeam, null, Factory::getApplication()->input->getInt('cfg_which_database', 0));
 							?>
-				</span>
+				
                         </td>
                         <!-- show match score -->
                         <td width='' class='score'>
