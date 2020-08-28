@@ -519,9 +519,9 @@ if (!empty($this->rows))
                             <td class="" width="" nowrap="nowrap">
                               <span itemprop="name" content="<?php echo $playerName;?>"></span> 
                               <span itemprop="birthDate" content="<?php echo $row->birthday;?>"></span>
+				   <span itemprop="deathDate" content="<?php echo $row->deathday;?>"></span>
                               
 								<?PHP
-                              //$row->birthday
 								echo sportsmanagementHelperHtml::getBootstrapModalImage(
 									'player' . $row->playerid,
 									$picture,
