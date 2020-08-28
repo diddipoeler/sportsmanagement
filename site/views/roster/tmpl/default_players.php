@@ -468,7 +468,8 @@ if (!empty($this->rows))
                 </thead>
                 <!-- end position header -->
                 <!-- Players row-->
-<div itemprop="member" itemscope itemtype="http://schema.org/OrganizationRole">                      
+<div itemprop="member" itemscope itemtype="http://schema.org/OrganizationRole"> 
+                      <span itemprop="roleName" content="<?php echo Text::_($row->position);?>"></span>
 				<?php
 				$total_market_value = 0;
 
@@ -515,7 +516,7 @@ if (!empty($this->rows))
 							?>
                             <td class="" width="" nowrap="nowrap">
                               <span itemprop="name" content="<?php echo $playerName;?>"></span> 
-                              <span itemprop="roleName" content="<?php echo Text::_($row->position);?>></span>
+                              
 								<?PHP
 								echo sportsmanagementHelperHtml::getBootstrapModalImage(
 									'player' . $row->playerid,
