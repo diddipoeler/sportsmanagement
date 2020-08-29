@@ -249,6 +249,8 @@ $this->dragable_group = 'data-dragable-group="none"';
 		echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/'.$picture,$imageTitle,$image_attributes);
 		echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_big' . $this->item->id, Uri::root() . $this->item->logo_big, $imageTitle, '20', Uri::root() . $this->item->logo_big);
 		?>
+        <br />
+        
                 </td>
 
                 <td class="">
