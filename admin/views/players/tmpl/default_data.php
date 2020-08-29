@@ -63,13 +63,13 @@ else
 				?>
             </th>
             
-            <?php ?>
+            <?php if (ComponentHelper::getParams($this->option)->get('backend_show_players_knvbnr')){ ?>
             <th class="title">
 				<?php
 				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PERSON_REGISTRATION_NUMBER', 'pl.knvbnr', $this->sortDirection, $this->sortColumn);
 				?>
             </th>
-            <?php ?>
+            <?php } ?>
             
             <?php if (ComponentHelper::getParams($this->option)->get('backend_show_players_agegroup')){ ?>
             <th class="title">
@@ -216,7 +216,7 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 						//								}
 						?>
                     </td>
-                    
+                    <?php if (ComponentHelper::getParams($this->option)->get('backend_show_players_knvbnr')){ ?>
                     <td class="center">
                     <input <?php echo $inputappend; ?> type="text" size="15"
                                                            class="form-control form-control-inline"
@@ -224,7 +224,7 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
                                                            value="<?php echo stripslashes(htmlspecialchars($row->knvbnr)); ?>"
                                                            onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
                     </td>
-                    
+                    <?php } ?>
                     <?php if (ComponentHelper::getParams($this->option)->get('backend_show_players_agegroup')){ ?>
                     <td class="center">
 						<?php
