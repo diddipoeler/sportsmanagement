@@ -42,7 +42,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 
 $mode = $params->get('mode');
 
@@ -209,14 +209,14 @@ switch ($mode)
 				?>
                 <div class="item <?php echo $active; ?>">
                     <div class="row">
-							<?php // Club
-									If ($params->get('club')==1)
+							<?php // Nombre 
+									 //echo var_dump($playground);; 
+									If ($params->get('name')==1)
 									{							
-									?> <h3><?php echo $playground->name; ?></h3>
+									?> <h3><?php echo $playground->playground_name; ?></h3>
 									<?
 									}
 							?>	
-						 <!-- <h5 class="price-text-color"><?php echo 'Club, ' . $playground->club_id; ?></h5> -->
                         <div>
                             <div>
                                 <div class="photo">
@@ -233,17 +233,24 @@ switch ($mode)
                                 
                             </div>
                             <div>
+								<?php // Club
+									If ($params->get('club')==1)
+									{
+									?>	<h5 class="price-text-color"><?php echo Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_FORE_CLUB') . ', ' . $playground->club_name; ?></h5>	
+									<?
+									}								
+								?>
 								<?php // Visitors
 									If ($params->get('capacity')==1)
 									{
-									?>	<h5 class="price-text-color"><?php echo 'Aforo: ' . $playground->max_visitors; ?></h5>	
+									?>	<h5 class="price-text-color"><?php echo Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_FORE_CAPACITY') . ', ' . $playground->max_visitors; ?></h5>	
 									<?
 									}								
 								?>
 								<?php // Address
 									If ($params->get('address')==1)
 									{
-									?>	<h5 class="price-text-color"><?php echo 'Dirección: ' . $playground->address . '. ' . $playground->city; ?></h5>	
+									?>	<h5 class="price-text-color"><?php echo Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_FORE_ADDRESS') . ', ' . $playground->address . '. ' . $playground->city; ?></h5>	
 									<?
 									}								
 								?>								
@@ -251,7 +258,7 @@ switch ($mode)
 								<?php // Gps Location
 									If ($params->get('gps_coor')==1)
 									{
-									?>	<h5 class="price-text-color"><?php echo 'Coordenadas GPS: ' . $playground->latitude . ', ' . $playground->longitude; ?></h5>	
+									?>	<h5 class="price-text-color"><?php echo Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_FORE_GPS') . ', ' . $playground->latitude . ', ' . $playground->longitude; ?></h5>	
 									<?
 									}								
 								?>
@@ -259,11 +266,20 @@ switch ($mode)
 								<?php // Web
 									If ($params->get('web')==1)
 									{
-									?>	<h5 class="price-text-color"><?php echo 'Web: ' . $playground->website; ?></h5>	
+									?>	<h5 class="price-text-color"><?php echo Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_FORE_WEB') . ', ' . $playground->website; ?></h5>	
 									<?
 									}
 								
 								?>	                          
+								
+								<?php // Game Field type
+									If ($params->get('field_type')==1)
+									{
+									?>	<h5 class="price-text-color"><?php Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_FORE_SURFACE') . ', '  . PlayGround_Surface($playground->extended); ?></h5>	
+									<?
+									}
+								
+								?>	 								
 
                             </div>
                         </div>
@@ -279,6 +295,44 @@ switch ($mode)
 	<?PHP
 	break;
 }
+Function PlayGround_Surface($extended)
+{
+
+  $surface = '';
+  $pos = strpos($extended,'"COM_SPORTSMANAGEMENT_EXT_PLAYGROUND_GROUND":');
+  $pos = $pos + strlen('"COM_SPORTSMANAGEMENT_EXT_PLAYGROUND_GROUND":') + 1;
+  $end = strpos($extended,'"',$pos) ;
+  
+  $text = substr($extended, $pos, $end-$pos);
+  
+  switch ($text)
+  {
+	case 'Naturrasen':
+		  $surface = Text::_('COM_SPORTSMANAGEMENT_ST_PLAYGROUND_NATURAL_GRASS');
+		  break;
+	case 'Kunstrasen':
+		  $surface = Text::_('COM_SPORTSMANAGEMENT_ST_PLAYGROUND_SYNTHETIC_GRASS');	  
+		  break;
+	case 'Hyprid-Rasen':
+		  $surface = Text::_('COM_SPORTSMANAGEMENT_ST_PLAYGROUND_HYBRID_GRASS');
+		  break;
+	case 'TennenHartplatz':	  
+		  $surface = Text::_('COM_SPORTSMANAGEMENT_ST_PLAYGROUND_GRAND');
+		  break;
+	case 'Grand':	  
+		  $surface = Text::_('COM_SPORTSMANAGEMENT_ST_PLAYGROUND_GRAND');		  
+		  break;
+	case 'Grand':	  
+		  $surface = Text::_('COM_SPORTSMANAGEMENT_ST_PLAYGROUND_ASH');			  
+		  break;
+	case 'Gummiplatz':	  
+		  $surface = Text::_('COM_SPORTSMANAGEMENT_ST_PLAYGROUND_RUBBERIZED_COURT');				  
+		  break;
+  }  
+	
+return $surface;	
+}
+
 
 
 
