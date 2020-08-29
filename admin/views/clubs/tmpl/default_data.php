@@ -250,7 +250,12 @@ $this->dragable_group = 'data-dragable-group="none"';
 		echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_big' . $this->item->id, Uri::root() . $this->item->logo_big, $imageTitle, '20', Uri::root() . $this->item->logo_big);
 		?>
         <br />
-        
+        <?php
+$link2 = 'index.php?option=com_sportsmanagement&view=imagelist' .
+			'&imagelist=1&asset=com_sportsmanagement&folder=images/com_sportsmanagement/database/clubs/large/' . '&author=&fieldid=' . '&tmpl=component&type=clubs_large'.'&fieldname=logo_big';
+
+echo sportsmanagementHelper::getBootstrapModalImage('select' . $funcname, '', Text::_('JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE').' ', '20', Uri::base() . $link2, $modalwidth, $modalheight);        
+        ?>
                 </td>
 
                 <td class="">
