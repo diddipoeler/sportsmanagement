@@ -135,6 +135,8 @@ include( dirname(__FILE__) . '/default_image.php');
 <input type="hidden" name="type" value="<?php echo $this->type;?>"/>
 <input type="hidden" name="fieldname" value="<?php echo $this->fieldname;?>"/>
 <input type="hidden" name="tmpl" value="component"/>
+
+<input type="hidden" name="club_id" value="<?php echo $this->club_id;?>"/>
   
 </form>
   </div>
