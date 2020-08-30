@@ -18,7 +18,6 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 
 $this->saveOrder = $this->sortColumn == 'ppl.ordering';
-
 if ($this->saveOrder && !empty($this->items))
 {
 $saveOrderingUrl = 'index.php?option=com_sportsmanagement&task='.$this->view.'.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
@@ -273,6 +272,12 @@ $playerName = sportsmanagementHelper::formatName(null, $this->item->firstname, $
 echo sportsmanagementHelper::getBootstrapModalImage('season_picture' . $this->item->id, Uri::root() . $this->item->season_picture, $playerName, '20', Uri::root() . $this->item->season_picture);			    
 }
 ?>
+<br />
+ <?php
+$link2 = 'index.php?option=com_sportsmanagement&view=imagelist' .'&teamplayer_id='.$this->item->id.
+'&imagelist=1&asset=com_sportsmanagement&folder=teamplayers' . '&author=&fieldid=' . '&tmpl=component&type=teamplayers'.'&fieldname=picture';
+echo sportsmanagementHelper::getBootstrapModalImage('select' . $funcname, '', Text::_('JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE').' ', '20', Uri::base() . $link2, $this->modalwidth, $this->modalheight);        
+        ?>
                 </td>
 				<?PHP
 				if ($this->_persontype == 1)
