@@ -36,6 +36,7 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   00-00-0000: **3.7.20** #1177
 *   29-08-2020: **3.7.10** Altergruppe/Passnummer in der Stammdatenliste ein/ausblenden
 *   27-08-2020: **3.7.00** Joomla 3 Drag & Drop Sortierung im Backend
 *   03-05-2020: **3.6.00** Neue Felder Projekt und Projektteam
