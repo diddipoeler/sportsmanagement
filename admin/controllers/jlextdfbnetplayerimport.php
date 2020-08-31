@@ -119,7 +119,9 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends BaseController
 				{
 					//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . '-' . 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_CANT_UPLOAD'), Log::WARNING, 'jsmerror');
 					$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_CANT_UPLOAD'),'NOTICE');
-					return;
+					$link = 'index.php?option=' . $option . '&view=jlextdfbnetplayerimport';
+					$this->setRedirect($link, Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_CANT_UPLOAD'), 'error');
+					//return;
 				}
 				else
 				{
@@ -168,14 +170,16 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends BaseController
 							{
 								//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . '-' . 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_RENAME_FAILED'), Log::WARNING, 'jsmerror');
 								$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_RENAME_FAILED'),'NOTICE');
-								return false;
+								$link = 'index.php?option=' . $option . '&view=jlextdfbnetplayerimport';
+								$this->setRedirect($link, Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_RENAME_FAILED'), 'error');
 							}
 						}
 						else
 						{
 							//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . '-' . 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_WRONG_EXTENSION'), Log::WARNING, 'jsmerror');
 							$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_WRONG_EXTENSION'),'NOTICE');
-							return false;
+							$link = 'index.php?option=' . $option . '&view=jlextdfbnetplayerimport';
+							$this->setRedirect($link, Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_WRONG_EXTENSION'), 'error');
 						}
 					}
 				}
