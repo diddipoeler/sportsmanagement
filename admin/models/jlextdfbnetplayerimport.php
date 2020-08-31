@@ -544,8 +544,9 @@ and ma.projectteam2_id = '$row->projectteam2_id'
         'skipRecurrence'              => false, // Default value
     ));
           
-$app->enqueueMessage(__LINE__.'<pre>'.print_r($ical,true).'</pre>', '');
-          $events = $ical->eventsFromInterval('1 week');
+//$app->enqueueMessage(__LINE__.'<pre>'.print_r($ical,true).'</pre>', '');
+          //$events = $ical->eventsFromInterval('1 week');
+			$events = $ical->events();
 $app->enqueueMessage(__LINE__.'<pre>'.print_r($events,true).'</pre>', '');          
           
 			for ($a = 0; $a < sizeof($icsfile['VEVENT']); $a++)
