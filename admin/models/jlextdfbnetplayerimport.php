@@ -649,7 +649,9 @@ $projectname = $events[$a]->description;
 
 						$temp                   = new stdClass();
 		    $temp->id = $season_id;
-						$temp->name             = '';
+		    $mdl          = BaseDatabaseModel::getInstance('seasons', 'sportsmanagementModel');
+				$temp->name = $mdl->getSeasonName($season_id);
+						//$temp->name             = '';
 						$this->_datas['season'] = $temp;
 
 						$temp                       = new stdClass();
