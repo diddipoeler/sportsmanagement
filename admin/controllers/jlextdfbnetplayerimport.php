@@ -189,7 +189,7 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends BaseController
 			}
 		}
 
-		$this->setRedirect($link, $msg);
+		Factory::getApplication()->Redirect($link, $msg, 'NOTICE');
 	}
 }
 
