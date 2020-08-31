@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage jlextdfbnetplayerimport
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
@@ -45,8 +41,40 @@ if ((int) ini_get('memory_limit') < (int) $maxImportMemory)
 
 jimport('joomla.html.pane');
 
-JLoader::import('components.com_sportsmanagement.helpers.ical', JPATH_ADMINISTRATOR);
+//JLoader::import('components.com_sportsmanagement.helpers.ical', JPATH_ADMINISTRATOR);
+//JLoader::import('components.com_sportsmanagement.helpers.icaljsm', JPATH_ADMINISTRATOR);
 JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
+//JLoader::register('icaljsm', 'administrator/components/com_sportsmanagement' . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'icaljsm.php');
+
+
+// Derive the class name from the driver.
+$class_name = 'icaljsm';
+$class_file = JPATH_COMPONENT_ADMINISTRATOR . '/helpers/' . 'icaljsm.php';
+// Require the driver file
+     if (JFile::exists($class_file)) {
+         JLoader::register($class_name, $class_file);
+       //throw new RuntimeException(sprintf('Driver not load: %s', $class_file));
+     }
+
+// If the class still doesn't exist we have nothing left to do but throw an exception.  We did our best.
+     if (!class_exists($class_name)) {
+         throw new RuntimeException(sprintf('Driver not load: %s', $class_name));
+     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 jimport('joomla.utilities.utility');
 
@@ -479,17 +507,34 @@ and ma.projectteam2_id = '$row->projectteam2_id'
 			/**
 			 * kalender file vom bfv anfang
 			 */
+          /*
 			$ical = new ical();
 			$ical->parse($file);
 
 			$icsfile = $ical->get_all_data();
-
+*/
 			//
 			$lfdnumber           = 0;
 			$lfdnumberteam       = 1;
 			$lfdnumbermatch      = 1;
 			$lfdnumberplayground = 1;
-
+          
+          //$ical = new icaljsm;
+          
+          $ical = new icaljsm($file, array(
+        'defaultSpan'                 => 2,     // Default value
+        'defaultTimeZone'             => 'UTC',
+        'defaultWeekStart'            => 'MO',  // Default value
+        'disableCharacterReplacement' => false, // Default value
+        'filterDaysAfter'             => null,  // Default value
+        'filterDaysBefore'            => null,  // Default value
+        'skipRecurrence'              => false, // Default value
+    ));
+          
+$app->enqueueMessage(__LINE__.'<pre>'.print_r($ical,true).'</pre>', '');
+          $events = $ical->eventsFromInterval('1 week');
+$app->enqueueMessage(__LINE__.'<pre>'.print_r($events,true).'</pre>', '');          
+          
 			for ($a = 0; $a < sizeof($icsfile['VEVENT']); $a++)
 			{
 				// Mannschaften, die spielfrei haben werden in der ics Datei "mit fehlender Gastmannschaft", z.B.
