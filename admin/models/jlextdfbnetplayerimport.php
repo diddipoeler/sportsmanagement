@@ -393,6 +393,7 @@ and ma.projectteam2_id = '$row->projectteam2_id'
 		$project = $app->getUserState("$option.pid", '0');
 		
 		$country = $post['filter_nation'];
+      $season_id = $post['filter_season'];
 
 		$whichfile = $app->getUserState($option . 'whichfile');
 
@@ -547,7 +548,138 @@ and ma.projectteam2_id = '$row->projectteam2_id'
 //$app->enqueueMessage(__LINE__.'<pre>'.print_r($ical,true).'</pre>', '');
           //$events = $ical->eventsFromInterval('1 week');
 			$events = $ical->events();
-$app->enqueueMessage(__LINE__.'<pre>'.print_r($events,true).'</pre>', '');          
+//$app->enqueueMessage(__LINE__.'<pre>'.print_r($events,true).'</pre>', '');          
+          $convert = array(
+							'Abgesagt -'    => ''
+						);
+          
+          for ($a = 0; $a < sizeof($events); $a++)
+			{
+            $teile  = explode(":", $events[$a]->summary);
+            if ( preg_match("/Abgesagt -/i", $teile[0])	)
+						{
+							$teile[0] = str_replace(array_keys($convert), array_values($convert), $teile[0]);
+							//$teile2   = explode(":", $teile[0]);
+						}
+            
+            $exportmatchplan[$events[$a]->uid]['heim'] = trim($teile[0]);
+            $exportmatchplan[$events[$a]->uid]['gast'] = trim($teile[1]);
+            
+            $exportmatchplan[$events[$a]->uid]['heimnummer'] = $events[$a]->x_homenr;
+            $exportmatchplan[$events[$a]->uid]['gastnummer'] = $events[$a]->x_awaynr;
+            
+            $exportmatchplan[$events[$a]->uid]['spieltag'] = $events[$a]->description;
+            
+            $exportmatchplan[$events[$a]->uid]['playground'] = $events[$a]->location;
+            
+            
+            
+            // heimmannschaft
+            $valueheim = trim($teile[0]);
+            $valueplayground = $events[$a]->location;
+					if (array_key_exists(trim($teile[0]), $exportteamstemp))
+					{
+					}
+					else
+					{
+						$exportteamstemp[trim($teile[0])] = $lfdnumberteam;
+						$lfdnumberteam++;
+					}
+
+					// gastmannschaft
+					if (array_key_exists(trim($teile[1]), $exportteamstemp))
+					{
+					}
+					else
+					{
+						$exportteamstemp[trim($teile[1])] = $lfdnumberteam;
+						$lfdnumberteam++;
+					}
+            
+            
+            $exportteamplaygroundtemp[$valueheim] = $valueplayground;
+
+						if (array_key_exists($valueplayground, $exportplaygroundtemp))
+						{
+						}
+						else
+						{
+							$exportplaygroundtemp[$valueplayground] = $lfdnumberplayground;
+
+							$temp               = new stdClass();
+							$temp->id           = $lfdnumberplayground;
+							$temp->name         = $valueplayground;
+							$temp->short_name   = $valueplayground;
+							$temp->alias        = $valueplayground;
+							$temp->club_id      = $exportteamstemp[$valueheim];
+							$temp->address      = $address;
+							$temp->zipcode      = $zipcode;
+							$temp->city         = $city;
+							$temp->country      = $country;
+							$temp->max_visitors = 0;
+							$exportplayground[] = $temp;
+
+							$lfdnumberplayground++;
+						}
+            
+            
+            
+            
+            
+            if (empty($lfdnumber))
+					{
+$projectname = $events[$a]->description;
+						$temp                          = new stdClass();
+						$temp->name                    = $projectname;
+						$temp->exportRoutine           = '2010-09-19 23:00:00';
+						$this->_datas['exportversion'] = $temp;
+
+						$temp                   = new stdClass();
+						$temp->name             = '';
+						$this->_datas['season'] = $temp;
+
+						$temp                       = new stdClass();
+						$temp->id                   = 1;
+						$temp->name                 = 'COM_SPORTSMANAGEMENT_ST_SOCCER';
+						$this->_datas['sportstype'] = $temp;
+              
+              $temp                   = new stdClass();
+						$temp->name             = $projectname;
+						$temp->alias            = $projectname;
+						$temp->short_name       = $projectname;
+						$temp->middle_name      = $projectname;
+						$temp->country          = $country;
+						$this->_datas['league'] = $temp;
+
+						$temp               = new stdClass();
+						$temp->name         = $projectname;
+						$temp->serveroffset = 0;
+						$temp->project_type = 'SIMPLE_LEAGUE';
+
+						$temp->current_round_auto        = '2';
+						$temp->auto_time                 = '2880';
+						$temp->start_date                = '2013-08-08';
+						$temp->start_time                = '15:30';
+						$temp->game_regular_time         = '90';
+						$temp->game_parts                = '2';
+						$temp->halftime                  = '15';
+						$temp->points_after_regular_time = '3,1,0';
+						$temp->use_legs                  = '0';
+						$temp->allow_add_time            = '0';
+						$temp->add_time                  = '30';
+						$temp->points_after_add_time     = '3,1,0';
+						$temp->points_after_penalty      = '3,1,0';
+              $temp->season_id = $season_id;
+
+						$this->_datas['project'] = $temp;
+
+              
+            }
+            $lfdnumber++;
+					$lfdnumbermatch++;
+          }
+          
+$app->enqueueMessage(__LINE__.'<pre>'.print_r($exportmatchplan,true).'</pre>', '');                    
           
 			for ($a = 0; $a < sizeof($icsfile['VEVENT']); $a++)
 			{
