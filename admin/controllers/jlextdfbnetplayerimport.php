@@ -55,7 +55,8 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends BaseController
 		{
 			$link = 'index.php?option=' . $option . '&view=jlextdfbnetplayerimport';
 			$msg  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_PLAYERFILE_NO_SEASON');
-			Factory::getApplication()->Redirect($link, $msg, 'ERROR');
+			//Factory::getApplication()->Redirect($link, $msg, 'ERROR');
+			$this->setRedirect($link, $msg, 'error');
 		}
 
 		if ($whichfile == 'playerfile')
