@@ -62,17 +62,24 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends BaseController
 		{
 			//Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_PLAYERFILE'), Log::NOTICE, 'jsmerror');
 			$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_PLAYERFILE'),'NOTICE');
+			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_PLAYERFILE');
 		}
 		elseif ($whichfile == 'matchfile')
 		{
 			//Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_MATCHFILE'), Log::NOTICE, 'jsmerror');
 			$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_MATCHFILE'),'NOTICE');
-
+			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_MATCHFILE');
 			if (isset($post ['dfbimportupdate']))
 			{
 				//Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_MATCHFILE_UPDATE'), Log::NOTICE, 'jsmerror');
 				$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_MATCHFILE_UPDATE'),'NOTICE');
+				$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_MATCHFILE_UPDATE');
 			}
+		}
+		else
+		{
+		$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_ICSFILE'),'NOTICE');
+		$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_ICSFILE');
 		}
 
 		/**
