@@ -679,7 +679,7 @@ $projectname = $events[$a]->description;
 					$lfdnumbermatch++;
           }
           
-$app->enqueueMessage(__LINE__.'<pre>'.print_r($exportmatchplan,true).'</pre>', '');                    
+//$app->enqueueMessage(__LINE__.'<pre>'.print_r($exportmatchplan,true).'</pre>', '');                    
           
 			for ($a = 0; $a < sizeof($icsfile['VEVENT']); $a++)
 			{
