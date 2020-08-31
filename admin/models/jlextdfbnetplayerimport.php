@@ -61,6 +61,19 @@ $class_file = JPATH_COMPONENT_ADMINISTRATOR . '/helpers/' . 'icaljsm.php';
          throw new RuntimeException(sprintf('Driver not load: %s', $class_name));
      }
 
+// Derive the class name from the driver.
+$class_name = 'Event';
+$class_file = JPATH_COMPONENT_ADMINISTRATOR . '/helpers/' . 'Event.php';
+// Require the driver file
+     if (JFile::exists($class_file)) {
+         JLoader::register($class_name, $class_file);
+       //throw new RuntimeException(sprintf('Driver not load: %s', $class_file));
+     }
+
+// If the class still doesn't exist we have nothing left to do but throw an exception.  We did our best.
+     if (!class_exists($class_name)) {
+         throw new RuntimeException(sprintf('Driver not load: %s', $class_name));
+     }
 
 
 
