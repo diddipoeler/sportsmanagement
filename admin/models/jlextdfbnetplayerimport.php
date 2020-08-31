@@ -41,7 +41,7 @@ if ((int) ini_get('memory_limit') < (int) $maxImportMemory)
 
 jimport('joomla.html.pane');
 
-//JLoader::import('components.com_sportsmanagement.helpers.ical', JPATH_ADMINISTRATOR);
+JLoader::import('components.com_sportsmanagement.models.seasons', JPATH_ADMINISTRATOR);
 //JLoader::import('components.com_sportsmanagement.helpers.icaljsm', JPATH_ADMINISTRATOR);
 JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
 //JLoader::register('icaljsm', 'administrator/components/com_sportsmanagement' . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'icaljsm.php');
@@ -648,6 +648,7 @@ $projectname = $events[$a]->description;
 						$this->_datas['exportversion'] = $temp;
 
 						$temp                   = new stdClass();
+		    $temp->id = $season_id;
 						$temp->name             = '';
 						$this->_datas['season'] = $temp;
 
