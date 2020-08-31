@@ -10,12 +10,12 @@
  * @license https://opensource.org/licenses/mit-license.php MIT License
  * @version 2.1.20
  */
+defined('_JEXEC') or die('Restricted access');
+//namespace ICal;
 
-namespace ICal;
+//use Carbon\Carbon;
 
-use Carbon\Carbon;
-
-class ICal
+class icaljsm
 {
     // phpcs:disable Generic.Arrays.DisallowLongArraySyntax
 
