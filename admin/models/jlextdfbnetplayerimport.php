@@ -550,7 +550,9 @@ and ma.projectteam2_id = '$row->projectteam2_id'
 			$events = $ical->events();
 //$app->enqueueMessage(__LINE__.'<pre>'.print_r($events,true).'</pre>', '');          
           $convert = array(
-							'Abgesagt -'    => ''
+							'Abgesagt -'    => '',
+            '('    => '#',
+            ')'    => '#'
 						);
           
           for ($a = 0; $a < sizeof($events); $a++)
@@ -570,13 +572,24 @@ and ma.projectteam2_id = '$row->projectteam2_id'
             
             $exportmatchplan[$events[$a]->uid]['spieltag'] = $events[$a]->description;
             
-            $exportmatchplan[$events[$a]->uid]['playground'] = $events[$a]->location;
+            
+            $events[$a]->location = str_replace(array_keys($convert), array_values($convert), $events[$a]->location);
+            $teilelocation  = explode("#", $events[$a]->location);
+            
+            //$app->enqueueMessage(__LINE__.'<pre>'.print_r($teilelocation,true).'</pre>', '');
+            $teileadresse  = explode(",", $teilelocation[1]  );
+            //$app->enqueueMessage(__LINE__.'<pre>'.print_r($teileadresse,true).'</pre>', '');
+            $address = $teileadresse[0];
+            $zipcode = substr($teileadresse[1],0,5);
+            $city = substr($teileadresse[1],6,50);
+            
+            $exportmatchplan[$events[$a]->uid]['playground'] = $teilelocation[0];
             
             
             
             // heimmannschaft
             $valueheim = trim($teile[0]);
-            $valueplayground = $events[$a]->location;
+            $valueplayground = $teilelocation[0];
 					if (array_key_exists(trim($teile[0]), $exportteamstemp))
 					{
 					}
