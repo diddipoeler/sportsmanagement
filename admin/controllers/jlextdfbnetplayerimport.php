@@ -60,15 +60,18 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends BaseController
 
 		if ($whichfile == 'playerfile')
 		{
-			Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_PLAYERFILE'), Log::NOTICE, 'jsmerror');
+			//Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_PLAYERFILE'), Log::NOTICE, 'jsmerror');
+			$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_PLAYERFILE'),'NOTICE');
 		}
 		elseif ($whichfile == 'matchfile')
 		{
-			Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_MATCHFILE'), Log::NOTICE, 'jsmerror');
+			//Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_MATCHFILE'), Log::NOTICE, 'jsmerror');
+			$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_MATCHFILE'),'NOTICE');
 
 			if (isset($post ['dfbimportupdate']))
 			{
-				Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_MATCHFILE_UPDATE'), Log::NOTICE, 'jsmerror');
+				//Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_MATCHFILE_UPDATE'), Log::NOTICE, 'jsmerror');
+				$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_MATCHFILE_UPDATE'),'NOTICE');
 			}
 		}
 
@@ -106,8 +109,8 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends BaseController
 
 				if (!File::upload($tempFilePath, $dest))
 				{
-					Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . '-' . 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_CANT_UPLOAD'), Log::WARNING, 'jsmerror');
-
+					//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . '-' . 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_CANT_UPLOAD'), Log::WARNING, 'jsmerror');
+					$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_CANT_UPLOAD'),'NOTICE');
 					return;
 				}
 				else
@@ -118,8 +121,8 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends BaseController
 
 						if ($result === false)
 						{
-							Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . '-' . 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_EXTRACT_ERROR'), Log::WARNING, 'jsmerror');
-
+							//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . '-' . 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_EXTRACT_ERROR'), Log::WARNING, 'jsmerror');
+							$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_EXTRACT_ERROR'),'NOTICE');
 							return false;
 						}
 
@@ -155,15 +158,15 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends BaseController
 						{
 							if (!@ rename($dest, $importFile))
 							{
-								Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . '-' . 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_RENAME_FAILED'), Log::WARNING, 'jsmerror');
-
+								//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . '-' . 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_RENAME_FAILED'), Log::WARNING, 'jsmerror');
+								$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_RENAME_FAILED'),'NOTICE');
 								return false;
 							}
 						}
 						else
 						{
-							Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . '-' . 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_WRONG_EXTENSION'), Log::WARNING, 'jsmerror');
-
+							//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . '-' . 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_WRONG_EXTENSION'), Log::WARNING, 'jsmerror');
+							$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_WRONG_EXTENSION'),'NOTICE');
 							return false;
 						}
 					}
