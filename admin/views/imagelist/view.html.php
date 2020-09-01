@@ -163,6 +163,7 @@ console.log(\"fehler: \" + resp[1]);
 }
 window.parent.SqueezeBox.close();
 window.parent.jQuery('.modal.in').modal('hide');
+window.parent.location.href = window.parent.location.href;
 }
 
  ";
@@ -206,6 +207,7 @@ console.log(\"fehler: \" + resp[1]);
 }
 window.parent.SqueezeBox.close();
 window.parent.jQuery('.modal.in').modal('hide');
+window.parent.location.href = window.parent.location.href;
 }
 
  ";
@@ -249,6 +251,7 @@ console.log(\"fehler: \" + resp[1]);
 }
 window.parent.SqueezeBox.close();
 window.parent.jQuery('.modal.in').modal('hide');
+window.parent.location.href = window.parent.location.href;
 }
 
  ";
