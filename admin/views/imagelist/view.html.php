@@ -136,6 +136,9 @@ var querystring = '&player_id=' + player_id
 	+  '&picture=' + img;
 	var url = baseajaxurl + '&task=imagehandler.saveimageplayer&tmpl=component';
 console.log(\"url: \" + url);
+console.log(\"querystring: \" + querystring);
+var link = url + querystring;
+console.log(\"link: \" + link);
 jQuery.ajax({
   type: 'POST', // type of request either Get or Post
   url: url + querystring, // Url of the page where to post data and receive response 
@@ -148,6 +151,8 @@ jQuery.ajax({
 
 function imagesaved(response) 
 {
+// first line contains the status, second line contains the new row.
+var resp = response.split('&');
 if (resp[0] != '0') 
 {
 console.log(\"gesichert: \" + resp[0]);
