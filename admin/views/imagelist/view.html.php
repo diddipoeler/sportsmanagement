@@ -44,6 +44,10 @@ class sportsmanagementViewimagelist extends sportsmanagementView
 //		JHtml::_('stylesheet', 'media/popup-imagemanager.css', array(), true);
        $lang = Factory::getLanguage();
        $this->filter_search = '';
+		
+		$this->club_id = 0;
+		$this->teamplayer_id = 0;
+		$this->player_id = 0;
 
 		//JHtml::_('stylesheet', 'media/popup-imagelist.css', array(), true);
 
@@ -64,10 +68,15 @@ $this->fieldid = $data['fieldid'];
 $this->fieldname = $data['fieldname'];		
 $this->imagelist = $data['imagelist'];
 
+if (array_key_exists('club_id', $data)) {		
 $this->club_id = $data['club_id'];
+}	
+if (array_key_exists('teamplayer_id', $data)) {	
 $this->teamplayer_id = $data['teamplayer_id'];
+}	
+if (array_key_exists('player_id', $data)) {	
 $this->player_id = $data['player_id'];
-	
+}
 if (array_key_exists('filter_search', $data))
 {
 $this->filter_search = $data['filter_search'];    
