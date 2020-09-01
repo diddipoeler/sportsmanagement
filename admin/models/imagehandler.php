@@ -72,7 +72,7 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 			catch (Exception $e)
 			{
 				//$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . $e->getMessage()), 'error');
-				return false;
+				return $e->getMessage();
 			}	
 	}	
 		
@@ -94,7 +94,7 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 			catch (Exception $e)
 			{
 				//$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . $e->getMessage()), 'error');
-				return false;
+				return $e->getMessage();
 			}
 
 	}
