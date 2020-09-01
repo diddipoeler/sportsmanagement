@@ -66,7 +66,7 @@ class sportsmanagementControllerImagehandler extends JSMControllerAdmin
 		}
 		else
 		{
-			$result = $model->getDbo()->insertid() . "&" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_SAVE_IMAGE');
+			$result = 'Nachricht' . "&" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_SAVE_IMAGE');
 		}
 
 		echo json_encode($result);
