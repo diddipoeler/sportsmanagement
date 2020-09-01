@@ -135,15 +135,30 @@ var player_id = '".$this->player_id."';
 var querystring = '&player_id=' + player_id 
 	+  '&picture=' + img;
 	var url = baseajaxurl + '&task=imagehandler.saveimageplayer&tmpl=component';
-
+console.log(\"url: \" + url);
 jQuery.ajax({
   type: 'POST', // type of request either Get or Post
   url: url + querystring, // Url of the page where to post data and receive response 
   //data: data, // data to be post
-  dataType:'json'
+  dataType:'json',
+  success: imagesaved //function to be called on successful reply from server
 }); 
 
 }
+
+function imagesaved(response) 
+{
+if (resp[0] != '0') 
+{
+console.log(\"gesichert: \" + resp[0]);
+}
+else 
+{
+console.log(\"fehler: \" + resp[1]);
+}
+
+}
+
  ";
 }
 else
