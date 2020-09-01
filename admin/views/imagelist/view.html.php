@@ -124,6 +124,30 @@ $this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sport
 /** Build the script. */
 $script = array();    
 
+if ( $this->player_id )
+{
+$script[] = "
+function exportToForm(img) {
+var baseajaxurl = '" . Uri::root() . "administrator/index.php?option=com_sportsmanagement';
+var club_id = '".$this->club_id."';
+var teamplayer_id = '".$this->teamplayer_id."';
+var player_id = '".$this->player_id."';	
+var querystring = '&player_id=' + player_id 
+	+  '&picture=' + img;
+	var url = baseajaxurl + '&task=imagehandler.saveimageplayer&tmpl=component';
+
+jQuery.ajax({
+  type: 'POST', // type of request either Get or Post
+  url: url + querystring, // Url of the page where to post data and receive response 
+  //data: data, // data to be post
+  dataType:"json"
+}); 
+
+}
+ ";
+}
+else
+{
 $script[] = "
 function exportToForm(img) {
 
@@ -147,9 +171,11 @@ console.log(\"logopfad : \" + logopfad );
 window.parent.selectImage_".$this->type."(img, img,fieldname ,fieldid);
 //window.closeModal();
 window.parent.jQuery('.modal.in').modal('hide');
-     
  }
  ";
+}		
+		
+		
 /** Add the script to the document head. */
 Factory::getDocument()->addScriptDeclaration(implode("\n", $script));    
     
