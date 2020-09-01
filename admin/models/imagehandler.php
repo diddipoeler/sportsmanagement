@@ -63,7 +63,7 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 	{
 	$rowupdate          = new stdClass;
 	$rowupdate->id      = $data['club_id'];
-	$rowupdate->picture = 'images/com_sportsmanagement/database/clubs/large/'.$data['picture'];
+	$rowupdate->logo_big = 'images/com_sportsmanagement/database/clubs/large/'.$data['picture'];
 		try
 			{
 				$result             = Factory::getDbo()->updateObject('#__sportsmanagement_club', $rowupdate, 'id');
