@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage imagehandler
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\String\StringHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -63,6 +59,23 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 
 	}
 
+	
+	function saveimageplayer($data)
+	{
+	
+	
+	
+	
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * Build imagelist
 	 *
