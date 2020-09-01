@@ -161,7 +161,8 @@ else
 {
 console.log(\"fehler: \" + resp[1]);
 }
-
+window.parent.SqueezeBox.close();
+window.parent.jQuery('.modal.in').modal('hide');
 }
 
  ";
@@ -203,7 +204,8 @@ else
 {
 console.log(\"fehler: \" + resp[1]);
 }
-
+window.parent.SqueezeBox.close();
+window.parent.jQuery('.modal.in').modal('hide');
 }
 
  ";
@@ -245,7 +247,8 @@ else
 {
 console.log(\"fehler: \" + resp[1]);
 }
-
+window.parent.SqueezeBox.close();
+window.parent.jQuery('.modal.in').modal('hide');
 }
 
  ";
