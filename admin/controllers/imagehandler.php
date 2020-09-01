@@ -60,9 +60,9 @@ class sportsmanagementControllerImagehandler extends JSMControllerAdmin
 		$data['player_id']                  = Factory::getApplication()->input->getInt('player_id');
 		$data['picture']                 = Factory::getApplication()->input->get('picture');
 	$model               = $this->getModel();
-	if (!$result = $model->saveimageplayer($data))
+	if (!$resultupdate = $model->saveimageplayer($data))
 		{
-			$result = "0" . "&" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_SAVE_IMAGE_FALSE') . ': ' . $model->getError();
+			$result = "0" . "&" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_SAVE_IMAGE_FALSE') . ': ' . $resultupdate;
 		}
 		else
 		{
@@ -80,9 +80,9 @@ class sportsmanagementControllerImagehandler extends JSMControllerAdmin
 		$data['club_id']                  = Factory::getApplication()->input->getInt('club_id');
 		$data['picture']                 = Factory::getApplication()->input->get('picture');
 	$model               = $this->getModel();
-	if (!$result = $model->saveimageclub($data))
+	if (!$resultupdate = $model->saveimageclub($data))
 		{
-			$result = "0" . "&" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_SAVE_IMAGE_FALSE') . ': ' . $model->getError();
+			$result = "0" . "&" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_SAVE_IMAGE_FALSE') . ': ' . $resultupdate;
 		}
 		else
 		{
@@ -100,9 +100,9 @@ class sportsmanagementControllerImagehandler extends JSMControllerAdmin
 		$data['teamplayer_id']                  = Factory::getApplication()->input->getInt('teamplayer_id');
 		$data['picture']                 = Factory::getApplication()->input->get('picture');
 	$model               = $this->getModel();
-	if (!$result = $model->saveimageteamplayer($data))
+	if (!$resultupdate = $model->saveimageteamplayer($data))
 		{
-			$result = "0" . "&" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_SAVE_IMAGE_FALSE') . ': ' . $model->getError();
+			$result = "0" . "&" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_SAVE_IMAGE_FALSE') . ': ' . $resultupdate;
 		}
 		else
 		{
