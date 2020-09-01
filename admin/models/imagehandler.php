@@ -61,13 +61,26 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 
 	function saveimageclub($data)
 	{
-		
+	$rowupdate          = new stdClass;
+	$rowupdate->id      = $data['club_id'];
+	$rowupdate->picture = 'images/com_sportsmanagement/database/clubs/large/'.$data['picture'];
+		try
+			{
+				$result             = Factory::getDbo()->updateObject('#__sportsmanagement_club', $rowupdate, 'id');
+			return true;
+			}
+			catch (Exception $e)
+			{
+				//$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . $e->getMessage()), 'error');
+				return false;
+			}	
 	}	
 		
 	function saveimageteamplayer($data)
 	{
 		
 	}
+	
 	function saveimageplayer($data)
 	{
 	$rowupdate          = new stdClass;
@@ -83,10 +96,7 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 				//$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . $e->getMessage()), 'error');
 				return false;
 			}
-	
 
-	
-	
 	}
 	
 	
