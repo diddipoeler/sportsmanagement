@@ -83,6 +83,7 @@ $this->filter_search = $data['filter_search'];
 }	
 $this->pid = 0;
 $this->match_id = 0;		
+$this->mid = 0;
 		
 switch ($this->folder)
 		{
