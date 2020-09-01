@@ -126,6 +126,11 @@ $script = array();
 
 $script[] = "
 function exportToForm(img) {
+
+var club_id = '".$this->club_id."';
+var teamplayer_id = '".$this->teamplayer_id."';
+var player_id = '".$this->player_id."';
+
 //     alert(img);
 //     alert(\'<?php echo $this->folder; ?>\');
 var logopfad;     
