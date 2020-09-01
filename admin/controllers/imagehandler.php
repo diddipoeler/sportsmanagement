@@ -71,19 +71,48 @@ class sportsmanagementControllerImagehandler extends JSMControllerAdmin
 
 		echo json_encode($result);
 		Factory::getApplication()->close();
-	
-	
-	
-	
-	
-	
-	
-	
+
 	}
 	
+		function saveimageclub()
+	{
+	$data                        = array();
+		$data['club_id']                  = Factory::getApplication()->input->getInt('club_id');
+		$data['picture']                 = Factory::getApplication()->input->get('picture');
+	$model               = $this->getModel();
+	if (!$result = $model->saveimageclub($data))
+		{
+			$result = "0" . "&" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_SAVE_IMAGE_FALSE') . ': ' . $model->getError();
+		}
+		else
+		{
+			$result = 'Nachricht' . "&" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_SAVE_IMAGE');
+		}
+
+		echo json_encode($result);
+		Factory::getApplication()->close();
+
+	}
 	
-	
-	
+	function saveimageteamplayer()
+	{
+	$data                        = array();
+		$data['teamplayer_id']                  = Factory::getApplication()->input->getInt('teamplayer_id');
+		$data['picture']                 = Factory::getApplication()->input->get('picture');
+	$model               = $this->getModel();
+	if (!$result = $model->saveimageteamplayer($data))
+		{
+			$result = "0" . "&" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_SAVE_IMAGE_FALSE') . ': ' . $model->getError();
+		}
+		else
+		{
+			$result = 'Nachricht' . "&" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_SAVE_IMAGE');
+		}
+
+		echo json_encode($result);
+		Factory::getApplication()->close();
+
+	}
 	
 	
 	/**
