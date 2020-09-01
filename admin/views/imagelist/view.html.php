@@ -166,6 +166,93 @@ console.log(\"fehler: \" + resp[1]);
 
  ";
 }
+elseif ( $this->club_id )
+{
+$script[] = "
+function exportToForm(img) {
+var baseajaxurl = '" . Uri::root() . "administrator/index.php?option=com_sportsmanagement';
+var club_id = '".$this->club_id."';
+var teamplayer_id = '".$this->teamplayer_id."';
+var player_id = '".$this->player_id."';	
+var querystring = '&club_id=' + club_id 
+	+  '&picture=' + img;
+	var url = baseajaxurl + '&task=imagehandler.saveimageclub&tmpl=component';
+console.log(\"url: \" + url);
+console.log(\"querystring: \" + querystring);
+var link = url + querystring;
+console.log(\"link: \" + link);
+jQuery.ajax({
+  type: 'POST', // type of request either Get or Post
+  url: url + querystring, // Url of the page where to post data and receive response 
+  //data: data, // data to be post
+  dataType:'json',
+  success: imagesaved //function to be called on successful reply from server
+}); 
+
+}
+
+function imagesaved(response) 
+{
+// first line contains the status, second line contains the new row.
+var resp = response.split('&');
+if (resp[0] != '0') 
+{
+console.log(\"gesichert: \" + resp[0]);
+}
+else 
+{
+console.log(\"fehler: \" + resp[1]);
+}
+
+}
+
+ ";
+}
+elseif ( $this->teamplayer_id )
+{
+$script[] = "
+function exportToForm(img) {
+var baseajaxurl = '" . Uri::root() . "administrator/index.php?option=com_sportsmanagement';
+var club_id = '".$this->club_id."';
+var teamplayer_id = '".$this->teamplayer_id."';
+var player_id = '".$this->player_id."';	
+var querystring = '&teamplayer_id=' + teamplayer_id 
+	+  '&picture=' + img;
+	var url = baseajaxurl + '&task=imagehandler.saveimageteamplayer&tmpl=component';
+console.log(\"url: \" + url);
+console.log(\"querystring: \" + querystring);
+var link = url + querystring;
+console.log(\"link: \" + link);
+jQuery.ajax({
+  type: 'POST', // type of request either Get or Post
+  url: url + querystring, // Url of the page where to post data and receive response 
+  //data: data, // data to be post
+  dataType:'json',
+  success: imagesaved //function to be called on successful reply from server
+}); 
+
+}
+
+function imagesaved(response) 
+{
+// first line contains the status, second line contains the new row.
+var resp = response.split('&');
+if (resp[0] != '0') 
+{
+console.log(\"gesichert: \" + resp[0]);
+}
+else 
+{
+console.log(\"fehler: \" + resp[1]);
+}
+
+}
+
+ ";
+}
+
+
+
 else
 {
 $script[] = "
