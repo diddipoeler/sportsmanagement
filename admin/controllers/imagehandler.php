@@ -42,6 +42,50 @@ class sportsmanagementControllerImagehandler extends JSMControllerAdmin
 		// Register Extra task
 	}
 
+	
+	/**
+	 * Proxy for getModel.
+	 *
+	 * @since 1.6
+	 */
+	public function getModel($name = 'imagehandler', $prefix = 'sportsmanagementModel', $config = Array())
+	{
+		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
+		return $model;
+	}
+	
+	function saveimageplayer()
+	{
+	$data                        = array();
+		$data['player_id']                  = Factory::getApplication()->input->getInt('player_id');
+		$data['picture']                 = Factory::getApplication()->input->get('picture');
+	$model               = $this->getModel();
+	if (!$result = $model->saveimageplayer($data))
+		{
+			$result = "0" . "&" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_SAVE_IMAGE_FALSE') . ': ' . $model->getError();
+		}
+		else
+		{
+			$result = $model->getDbo()->insertid() . "&" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_SAVE_IMAGE');
+		}
+
+		echo json_encode($result);
+		Factory::getApplication()->close();
+	
+	
+	
+	
+	
+	
+	
+	
+	}
+	
+	
+	
+	
+	
+	
 	/**
 	 * logic for uploading an image
 	 *
