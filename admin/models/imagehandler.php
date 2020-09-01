@@ -78,7 +78,19 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 		
 	function saveimageteamplayer($data)
 	{
-		
+	$rowupdate          = new stdClass;
+	$rowupdate->id      = $data['teamplayer_id'];
+	$rowupdate->picture = 'images/com_sportsmanagement/database/teamplayers/'.$data['picture'];
+		try
+			{
+				$result             = Factory::getDbo()->updateObject('#__sportsmanagement_season_team_person_id', $rowupdate, 'id');
+			return true;
+			}
+			catch (Exception $e)
+			{
+				//$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . $e->getMessage()), 'error');
+				return $e->getMessage();
+			}	
 	}
 	
 	function saveimageplayer($data)
