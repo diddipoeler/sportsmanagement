@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="2.5" client="site" method="upgrade">
 	<name>MOD_SPORTSMANAGEMENT_TEAMPLAYERS</name>
-	<creationDate>2014-03-13</creationDate>
+	<creationDate>2020-09-03</creationDate>
 	<author>JSM-TEAM</author>
 	<authorEmail>diddipoeler@arcor.de</authorEmail>
 	<authorUrl>http://www.fussballineuropa.de</authorUrl>
 	<license>GNU/GPL</license>
 	<copyright>Copyright (c) 2014 diddipoeler</copyright>
-	<version>1.0</version>
+	<version>1.1.0</version>
 	<description>MOD_SPORTSMANAGEMENT_TEAMPLAYERS_XML_DESC</description>
 
 	<files>
@@ -114,9 +114,74 @@ description="Debug Modus">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
+				<field name="show_mins_played" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+					label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_MINS_PLAYED" 
+					description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_MINS_PLAYED_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>	
+				</field>
+				<field name="show_positions" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+					label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_POSITIONS" 
+					description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_POSITIONS_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>	
+				</field>				
 				<field name="name_format" type="nameformat"
 					label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_NAME_FORMAT" 
-					description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_NAME_FORMAT" />
+					description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_NAME_FORMAT" />							
+							
+					
+				<field name="template" type="list" default="L" 
+					label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_MODE"
+					description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_MODE_DESC">
+					<option value="L">LIST</option>
+					<option value="C">CARROUSEL</option>
+				</field>						
+
+				<field name="slider_mode" type="list" default="H" 
+					label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SLIDER_MODE"
+					description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SLIDER_MODE_DESC">
+					<option value="H">Horizontal</option>
+					<option value="V">Vertical</option>
+				</field>	
+
+				<field 	name="slider_speed" type="text" default="500"
+						label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SLIDER_SPEED" 
+						description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SLIDER_SPEED_DESC" />
+						
+				<field name="slider_auto" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+					label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SLIDER_AUTO" 
+					description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SLIDER_AUTO_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field 	name="max_slides" type="text" default="3"
+						label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_MAX_SLIDES" 
+						description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_MAX_SLIDES_DESC" />				
+				
+				<field name="slider_responsive" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+					label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SLIDER_RESPONSIVE" 
+					description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SLIDER_RESPONSIVE_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>				
+
+				<field name="slider_navigation" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+					label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_SLIDER_NAV" 
+					description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_SLIDER_NAV_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>	
+				
+				<field name="slider_pagination" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+					label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_SLIDER_PAG" 
+					description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_SLIDER_PAG_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>					
+
+					
+			
 			</fieldset>
 				<fieldset
 					name="advanced">

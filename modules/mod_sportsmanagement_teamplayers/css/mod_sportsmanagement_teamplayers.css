@@ -1,41 +1,62 @@
 @CHARSET "UTF-8";
 
-
-.modjlgteamplayers
+.modteamplayers
 {
-display: block;
-margin-left: auto;
-margin-right: auto;
-width: 100%;
-vertical-align: middle;
-text-align:center;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
+	vertical-align: middle;
+	text-align:center;
 }
 
-div.modjlteamplayers .projectname {
+.projectname {
+	font-size: 20px;
+	margin-top: 3px;
 	font-weight: bold;
-text-align: center;
 }
 
-div.modjlgteamplayers .playerlink {
-text-align: center;
-vertical-align: middle;
-}
-div.modjlgteamplayers .teamname {
-text-align: center;
-vertical-align: middle;
-}
-div.modjlgteamplayers table {
+.player_position {
+	font-size: 14px;
+	margin-top: 1px;
+	font-weight: bold;
 }
 
-div.modjlgteamplayers td {
+.player_mins {
+	font-size: 18px;
+	margin-top: 1px;
+	font-weight: bold;
 }
 
-ul.modjlgplayer{
-display: block;
-list-style: none;
+div.modteamplayers .playerlink {
+	text-align: center;
+	vertical-align: middle;
+}
+div.modteamplayers .teamname {
+	text-align: center;
+	vertical-align: middle;
 }
 
-ul.modjlgposition{
-list-style: none;
-display: block;
+div.modteamplayers table {
+}
+
+div.modteamplayers td {
+}
+
+ul.modplayer{
+	display: block;
+	list-style: none;
+}
+
+ul.modposition{
+	list-style: none;
+	display: block;
+}
+
+.bx-prev {
+    margin-left: -70px;
+}
+
+.bx-next {
+    margin-right: -70px;
 }
