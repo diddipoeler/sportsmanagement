@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage matchreport
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -299,10 +295,10 @@ use Joomla\CMS\Factory;
             <div class="row">
                 <!-- <div class="col-xs-<?php echo $this->config['extended_cols']; ?> col-sm-<?php echo $this->config['extended_cols']; ?> col-md-<?php echo $this->config['extended_cols']; ?> col-lg-<?php echo $this->config['extended_cols']; ?>"> -->
                     <div class="col-xs-<?php echo $this->config['extended_description_cols']; ?> col-sm-<?php echo $this->config['extended_description_cols']; ?> col-md-<?php echo $this->config['extended_description_cols']; ?> col-lg-<?php echo $this->config['extended_description_cols']; ?>">
-                        <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_ATTENDANCES'); ?></strong>
+                        <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_ATTENDANCES').':'; ?></strong>
                     </div>
                     <div class="col-xs-<?php echo $this->config['extended_value_cols']; ?> col-sm-<?php echo $this->config['extended_value_cols']; ?> col-md-<?php echo $this->config['extended_value_cols']; ?> col-lg-<?php echo $this->config['extended_value_cols']; ?>">
-						<?php echo ': ' . number_format($this->match->crowd, 0, ',', '.'); ?>
+						<?php echo number_format($this->match->crowd, 0, ',', '.'); ?>
                     </div>
                 <!-- </div> -->
             </div>
