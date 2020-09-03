@@ -22,6 +22,7 @@ $lang    = Factory::getLanguage();
 $locales = $lang->getLocale();
 setlocale(LC_ALL, $locales[0]);
 /** die übersetzungen laden */
+$lang->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
 $lang->load('com_sportsmanagement', JPATH_SITE, null, true);
 
 if (!defined('DS'))
