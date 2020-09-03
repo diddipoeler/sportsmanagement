@@ -249,6 +249,12 @@ $this->dragable_group = 'data-dragable-group="none"';
 		echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/'.$picture,$imageTitle,$image_attributes);
 		echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_big' . $this->item->id, Uri::root() . $this->item->logo_big, $imageTitle, '20', Uri::root() . $this->item->logo_big);
 		?>
+        <br />
+        <?php
+$link2 = 'index.php?option=com_sportsmanagement&view=imagelist' .'&club_id='.$this->item->id.
+'&imagelist=1&asset=com_sportsmanagement&folder=clubs/large/' . '&author=&fieldid=' . '&tmpl=component&type=clubs_large'.'&fieldname=logo_big';
+echo sportsmanagementHelper::getBootstrapModalImage('select'.$this->item->id, '', Text::_('JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE').' ', '20', Uri::base() . $link2, $this->modalwidth, $this->modalheight);        
+        ?>
                 </td>
 
                 <td class="">

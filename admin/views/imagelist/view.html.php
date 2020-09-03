@@ -44,6 +44,10 @@ class sportsmanagementViewimagelist extends sportsmanagementView
 //		JHtml::_('stylesheet', 'media/popup-imagemanager.css', array(), true);
        $lang = Factory::getLanguage();
        $this->filter_search = '';
+		
+		$this->club_id = 0;
+		$this->teamplayer_id = 0;
+		$this->player_id = 0;
 
 		//JHtml::_('stylesheet', 'media/popup-imagelist.css', array(), true);
 
@@ -62,13 +66,24 @@ $this->folder = $data['folder'];
 $this->type = $data['type'];		
 $this->fieldid = $data['fieldid'];		
 $this->fieldname = $data['fieldname'];		
-$this->imagelist = $data['imagelist'];	
+$this->imagelist = $data['imagelist'];
+
+if (array_key_exists('club_id', $data)) {		
+$this->club_id = $data['club_id'];
+}	
+if (array_key_exists('teamplayer_id', $data)) {	
+$this->teamplayer_id = $data['teamplayer_id'];
+}	
+if (array_key_exists('player_id', $data)) {	
+$this->player_id = $data['player_id'];
+}
 if (array_key_exists('filter_search', $data))
 {
 $this->filter_search = $data['filter_search'];    
 }	
 $this->pid = 0;
 $this->match_id = 0;		
+$this->mid = 0;
 		
 switch ($this->folder)
 		{
@@ -109,8 +124,150 @@ $this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sport
 /** Build the script. */
 $script = array();    
 
+if ( $this->player_id )
+{
 $script[] = "
 function exportToForm(img) {
+var baseajaxurl = '" . Uri::root() . "administrator/index.php?option=com_sportsmanagement';
+var club_id = '".$this->club_id."';
+var teamplayer_id = '".$this->teamplayer_id."';
+var player_id = '".$this->player_id."';	
+var querystring = '&player_id=' + player_id 
+	+  '&picture=' + img;
+	var url = baseajaxurl + '&task=imagehandler.saveimageplayer&tmpl=component';
+console.log(\"url: \" + url);
+console.log(\"querystring: \" + querystring);
+var link = url + querystring;
+console.log(\"link: \" + link);
+jQuery.ajax({
+  type: 'POST', // type of request either Get or Post
+  url: url + querystring, // Url of the page where to post data and receive response 
+  //data: data, // data to be post
+  dataType:'json',
+  success: imagesaved //function to be called on successful reply from server
+}); 
+
+}
+
+function imagesaved(response) 
+{
+// first line contains the status, second line contains the new row.
+var resp = response.split('&');
+if (resp[0] != '0') 
+{
+console.log(\"gesichert: \" + resp[0]);
+}
+else 
+{
+console.log(\"fehler: \" + resp[1]);
+}
+window.parent.SqueezeBox.close();
+window.parent.jQuery('.modal.in').modal('hide');
+window.parent.location.href = window.parent.location.href;
+}
+
+ ";
+}
+elseif ( $this->club_id )
+{
+$script[] = "
+function exportToForm(img) {
+var baseajaxurl = '" . Uri::root() . "administrator/index.php?option=com_sportsmanagement';
+var club_id = '".$this->club_id."';
+var teamplayer_id = '".$this->teamplayer_id."';
+var player_id = '".$this->player_id."';	
+var querystring = '&club_id=' + club_id 
+	+  '&picture=' + img;
+	var url = baseajaxurl + '&task=imagehandler.saveimageclub&tmpl=component';
+console.log(\"url: \" + url);
+console.log(\"querystring: \" + querystring);
+var link = url + querystring;
+console.log(\"link: \" + link);
+jQuery.ajax({
+  type: 'POST', // type of request either Get or Post
+  url: url + querystring, // Url of the page where to post data and receive response 
+  //data: data, // data to be post
+  dataType:'json',
+  success: imagesaved //function to be called on successful reply from server
+}); 
+
+}
+
+function imagesaved(response) 
+{
+// first line contains the status, second line contains the new row.
+var resp = response.split('&');
+if (resp[0] != '0') 
+{
+console.log(\"gesichert: \" + resp[0]);
+}
+else 
+{
+console.log(\"fehler: \" + resp[1]);
+}
+window.parent.SqueezeBox.close();
+window.parent.jQuery('.modal.in').modal('hide');
+window.parent.location.href = window.parent.location.href;
+}
+
+ ";
+}
+elseif ( $this->teamplayer_id )
+{
+$script[] = "
+function exportToForm(img) {
+var baseajaxurl = '" . Uri::root() . "administrator/index.php?option=com_sportsmanagement';
+var club_id = '".$this->club_id."';
+var teamplayer_id = '".$this->teamplayer_id."';
+var player_id = '".$this->player_id."';	
+var querystring = '&teamplayer_id=' + teamplayer_id 
+	+  '&picture=' + img;
+	var url = baseajaxurl + '&task=imagehandler.saveimageteamplayer&tmpl=component';
+console.log(\"url: \" + url);
+console.log(\"querystring: \" + querystring);
+var link = url + querystring;
+console.log(\"link: \" + link);
+jQuery.ajax({
+  type: 'POST', // type of request either Get or Post
+  url: url + querystring, // Url of the page where to post data and receive response 
+  //data: data, // data to be post
+  dataType:'json',
+  success: imagesaved //function to be called on successful reply from server
+}); 
+
+}
+
+function imagesaved(response) 
+{
+// first line contains the status, second line contains the new row.
+var resp = response.split('&');
+if (resp[0] != '0') 
+{
+console.log(\"gesichert: \" + resp[0]);
+}
+else 
+{
+console.log(\"fehler: \" + resp[1]);
+}
+window.parent.SqueezeBox.close();
+window.parent.jQuery('.modal.in').modal('hide');
+window.parent.location.href = window.parent.location.href;
+}
+
+ ";
+}
+
+
+
+else
+{
+$script[] = "
+function exportToForm(img) {
+
+var club_id = '".$this->club_id."';
+var teamplayer_id = '".$this->teamplayer_id."';
+var player_id = '".$this->player_id."';
+
 //     alert(img);
 //     alert(\'<?php echo $this->folder; ?>\');
 var logopfad;     
@@ -127,9 +284,11 @@ console.log(\"logopfad : \" + logopfad );
 window.parent.selectImage_".$this->type."(img, img,fieldname ,fieldid);
 //window.closeModal();
 window.parent.jQuery('.modal.in').modal('hide');
-     
  }
  ";
+}		
+		
+		
 /** Add the script to the document head. */
 Factory::getDocument()->addScriptDeclaration(implode("\n", $script));    
     

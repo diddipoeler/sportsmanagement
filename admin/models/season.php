@@ -98,7 +98,14 @@ $profile->project_position_id = $project_position_id;
 $profile->persontype = $persontype;
 $profile->modified = $this->jsmdate->toSql();
 $profile->modified_by = $this->jsmuser->get('id');
-$result = $this->jsmdb->insertObject('#__sportsmanagement_person_project_position', $profile);		
+try
+{
+$result = $this->jsmdb->insertObject('#__sportsmanagement_person_project_position', $profile);
+}
+catch (Exception $e)
+{
+//$this->jsmapp->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');    
+}
 break;
 }
             
