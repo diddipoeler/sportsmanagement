@@ -559,7 +559,8 @@ and ma.projectteam2_id = '$row->projectteam2_id'
           for ($a = 0; $a < sizeof($events); $a++)
 			{
 		  
-$timestamp = $events[$a]->dtstart_array[2] - 7200;            
+//$timestamp = $events[$a]->dtstart_array[2] - 7200;  
+$timestamp = $events[$a]->dtstart_array[2];
 $matchdate = date('Y-m-d', $timestamp) . " ".date('H:i:s', $timestamp);                        
 $exportmatchplan[$events[$a]->uid]['match_date'] = $matchdate;            
 
