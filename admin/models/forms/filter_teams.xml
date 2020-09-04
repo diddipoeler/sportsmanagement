@@ -24,7 +24,6 @@
             type="countrylist"
             label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY"
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY_DESC"
-            required="false"
        onchange="this.form.submit();"
         >
             <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
@@ -39,6 +38,17 @@
             <option
                 value="">
                 COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP_FILTER</option>
+        </field>
+		
+		<field  
+            name="sports_type"
+            type="sportstypelist"
+            label="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE"
+            description="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE_DESC"
+            onchange="this.form.submit();">
+            <option
+                value="">
+                COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE_SELECT</option>
         </field>
 		
     </fields>
