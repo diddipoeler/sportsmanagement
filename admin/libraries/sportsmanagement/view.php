@@ -451,7 +451,7 @@ break;
 				//case 'positions':
 				case 'clubnames':
 				//case 'clubs':
-				case 'teams':
+				//case 'teams':
 				//case 'playgrounds':
 				//case 'rounds':
 				case 'divisions':
