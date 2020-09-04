@@ -80,21 +80,14 @@ class sportsmanagementModelTeams extends JSMModelList
 	 */
 	function getListQuery()
 	{
-		// Select some fields
 		$this->query->select('t.*');
 		$this->query->select('st.name AS sportstype');
 		$this->query->select('ag.name AS agename');
-
-		// From table
 		$this->query->from('#__sportsmanagement_team AS t');
 		$this->query->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = t.sports_type_id');
 		$this->query->join('LEFT', '#__sportsmanagement_agegroup as ag ON ag.id = t.agegroup_id');
-
-		// Join over the clubs
 		$this->query->select('c.name As clubname,c.country');
 		$this->query->join('LEFT', '#__sportsmanagement_club AS c ON c.id = t.club_id');
-
-		// Join over the users for the checked out user.
 		$this->query->select('uc.name AS editor');
 		$this->query->join('LEFT', '#__users AS uc ON uc.id = t.checked_out');
 
@@ -111,6 +104,11 @@ class sportsmanagementModelTeams extends JSMModelList
 		if ($this->getState('filter.sports_type'))
 		{
 			$this->query->where('t.sports_type_id = ' . $this->getState('filter.sports_type'));
+		}
+		
+		if ($this->getState('filter.search_agegroup'))
+		{
+			$this->query->where('t.agegroup_id = ' . $this->getState('filter.search_agegroup'));
 		}
 
 		if (is_numeric($this->getState('filter.state')))
@@ -152,17 +150,12 @@ class sportsmanagementModelTeams extends JSMModelList
 	 */
 	public function getTeamListSelect()
 	{
-
 		$starttime = microtime();
 		$results   = array();
 
-		// Select some fields
 		$this->query->select('id,id AS value,name,club_id,short_name, middle_name,info');
-
-		// From table
 		$this->query->from('#__sportsmanagement_team');
 		$this->query->order('name');
-
 		$this->jsmdb->setQuery($this->query);
 
 		if ($results = $this->jsmdb->loadObjectList())
@@ -175,7 +168,6 @@ class sportsmanagementModelTeams extends JSMModelList
 			return $results;
 		}
 
-		// Return false;
 		return $results;
 	}
 
@@ -188,19 +180,13 @@ class sportsmanagementModelTeams extends JSMModelList
 	 */
 	function getTeams($playground_id)
 	{
-
 		$teams = array();
 
-		// $playground = self::getPlayground();
 		if ($playground_id > 0)
 		{
 			$this->jsmquery->clear();
-
-			// Select some fields
 			$this->jsmquery->select('pt.id, st.team_id, pt.project_id');
 			$this->jsmquery->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
-
-			// From table
 			$this->jsmquery->from('#__sportsmanagement_project_team as pt');
 			$this->jsmquery->join('INNER', '#__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
 			$this->jsmquery->join('INNER', '#__sportsmanagement_project as p ON p.id = pt.project_id ');
@@ -215,24 +201,16 @@ class sportsmanagementModelTeams extends JSMModelList
 			{
 				$teams[$row->id]->project_team[] = $row;
 
-				// Select some fields
 				$this->jsmquery->clear();
 				$this->jsmquery->select('t.name, t.short_name, t.notes');
 				$this->jsmquery->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
-
-				// From table
 				$this->jsmquery->from('#__sportsmanagement_team as t');
 				$this->jsmquery->where('t.id=' . (int) $row->team_id);
-
 				$starttime = microtime();
 				$this->jsmdb->setQuery($this->jsmquery);
 				$teams[$row->id]->teaminfo[] = $this->jsmdb->loadObjectList();
-
-				// Select some fields
 				$this->jsmquery->clear();
 				$this->jsmquery->select('name');
-
-				// From table
 				$this->jsmquery->from('#__sportsmanagement_project');
 				$this->jsmquery->where('id=' . $row->project_id);
 				$starttime = microtime();
@@ -253,7 +231,6 @@ class sportsmanagementModelTeams extends JSMModelList
 	 */
 	function getTeamsFromMatches(&$games)
 	{
-
 		$teams = Array();
 
 		if (!count($games))
@@ -269,14 +246,10 @@ class sportsmanagementModelTeams extends JSMModelList
 
 		$listTeamId = implode(",", array_unique($teamsId));
 
-		// Select some fields
 		$this->jsmquery->clear();
 		$this->jsmquery->select('t.id, t.name');
-
-		// From table
 		$this->jsmquery->from('#__sportsmanagement_team AS t');
 		$this->jsmquery->where('t.id IN (' . $listTeamId . ')');
-
 		$this->jsmdb->setQuery($this->jsmquery);
 		$result = $this->jsmdb->loadObjectList();
 
@@ -309,6 +282,7 @@ class sportsmanagementModelTeams extends JSMModelList
 		$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
 		$this->setState('filter.sports_type', $this->getUserStateFromRequest($this->context . '.filter.sports_type', 'filter_sports_type', ''));
 		$this->setState('filter.search_nation', $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', ''));
+		$this->setState('filter.search_agegroup', $this->getUserStateFromRequest($this->context . '.filter.search_agegroup', 'filter_search_agegroup', ''));
 		$this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
 		$this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
 
