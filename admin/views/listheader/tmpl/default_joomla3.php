@@ -220,6 +220,7 @@ case 'projects':
 case 'rounds':
 case 'seasons':
 case 'smquotes':				
+case 'teams':		
 echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 break;
 case 'githubinstall':
