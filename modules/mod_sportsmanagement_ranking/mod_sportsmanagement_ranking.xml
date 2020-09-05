@@ -162,6 +162,8 @@
 					<option value="0">MOD_SPORTSMANAGEMENT_RANKING_NO</option>
 					<option value="4">MOD_SPORTSMANAGEMENT_RANKING_CLUB_LOGO_BIG</option>
 					<option value="2">MOD_SPORTSMANAGEMENT_RANKING_COUNTRY_FLAG</option>
+					<option value="5">MOD_SPORTSMANAGEMENT_RANKING_TRIKOT_HOME</option>
+					<option value="6">MOD_SPORTSMANAGEMENT_RANKING_TRIKOT_AWAY</option>
 				</field>
 
 				<field 	name="show_rank_colors" type="extensionradiobutton" default="0"  class="radio btn-group btn-group-yesno"
