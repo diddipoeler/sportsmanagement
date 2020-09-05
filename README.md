@@ -6,7 +6,7 @@ Die neue Sports-Management Komponente für Joomla 3 / 4 ![Joomla 3.8](https://gi
 Das Team
 ================
 * Entwickler: diddipoeler
-* Entwicklungsunterstützung: appukonrad, tdittmann
+* Entwicklungsunterstützung: appukonrad, tdittmann, llambion 
 * Language manager & Wiki: stony
 * Übersetzer: sk-plehanovec, teddy
 * Tester: svdoldie

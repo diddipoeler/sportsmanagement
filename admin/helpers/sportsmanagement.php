@@ -3413,14 +3413,21 @@ try
             <div class="jsm-info-team p-1">
                 <img src="components/com_sportsmanagement/assets/icons/prochnow_hauke.jpg" alt="svdoldie" height="80px">
                 <span>svdoldie</span><br>
-            </div><div class="jsm-info-team p-1">
-                <img src="components/com_sportsmanagement/assets/icons/appu-konrad.jpg" alt="appukonrad" height="80px">
-                <span>appukonrad</span><br>
             </div>
             <div class="jsm-info-team p-1">
                 <img src="components/com_sportsmanagement/assets/icons/galun-siegfried02.png" alt="stony" height="80px">
                 <span>stony</span><br>
             </div>
+            <div class="jsm-info-team p-1">
+                <img src="components/com_sportsmanagement/assets/icons/llambion.jpg" alt="llambion" height="80px">
+                <span>llambion</span><br>
+            </div>
+            
+            <div class="jsm-info-team p-1">
+                <img src="components/com_sportsmanagement/assets/icons/appu-konrad.jpg" alt="appukonrad" height="80px">
+                <span>appukonrad</span><br>
+            </div>
+            
             <div class="jsm-info-team p-1">
                 <img src="components/com_sportsmanagement/assets/icons/dittmann-timo.png" alt="tdittmann" height="80px">
                 <span>tdittmann</span><br>

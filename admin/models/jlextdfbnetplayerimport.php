@@ -16,6 +16,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filter\OutputFilter;
 
 $option = Factory::getApplication()->input->getCmd('option');
 
@@ -558,10 +559,30 @@ and ma.projectteam2_id = '$row->projectteam2_id'
           for ($a = 0; $a < sizeof($events); $a++)
 			{
 		  
-$timestamp = $events[$a]->dtstart_array[2] - 7200;            
+//$timestamp = $events[$a]->dtstart_array[2] - 7200;  
+$timestamp = $events[$a]->dtstart_array[2];
 $matchdate = date('Y-m-d', $timestamp) . " ".date('H:i:s', $timestamp);                        
 $exportmatchplan[$events[$a]->uid]['match_date'] = $matchdate;            
-		  
+
+$spieltag = $events[$a]->description;            
+preg_match_all("/\((.*?)\)/", $spieltag, $treffer, PREG_SET_ORDER);
+//$app->enqueueMessage(__LINE__.'<pre>'.print_r($treffer,true).'</pre>', ''); 
+$exportmatchplan[$events[$a]->uid]['spieltag'] = $treffer[0][1];            
+$nr = preg_replace('![^0-9]!', '', $treffer[0][1]);    
+            
+            if ( $country == 'AUT' )
+            {
+$exportmatchplan[$events[$a]->uid]['round_id'] = $nr;            
+$temp                   = new stdClass();
+$temp->id               = $nr;
+$temp->roundcode        = $nr;
+$temp->name             = $treffer[0][1];
+$temp->alias            = OutputFilter::stringURLSafe($treffer[0][1]);
+$temp->round_date_first = '';
+$temp->round_date_last  = '';
+$exportround[$nr]        = $temp;
+            }
+            
             $teile  = explode(":", $events[$a]->summary);
             if ( preg_match("/Abgesagt -/i", $teile[0])	)
 						{
@@ -575,7 +596,7 @@ $exportmatchplan[$events[$a]->uid]['match_date'] = $matchdate;
             $exportmatchplan[$events[$a]->uid]['heimnummer'] = $events[$a]->x_homenr;
             $exportmatchplan[$events[$a]->uid]['gastnummer'] = $events[$a]->x_awaynr;
             
-            $exportmatchplan[$events[$a]->uid]['spieltag'] = $events[$a]->description;
+            //$exportmatchplan[$events[$a]->uid]['spieltag'] = $events[$a]->description;
             
             
             $events[$a]->location = str_replace(array_keys($convert), array_values($convert), $events[$a]->location);
@@ -701,6 +722,7 @@ $projectname = $events[$a]->description;
           }
           
 //$app->enqueueMessage(__LINE__.'<pre>'.print_r($exportmatchplan,true).'</pre>', '');                    
+//$app->enqueueMessage(__LINE__.'<pre>'.print_r($exportround,true).'</pre>', '');          
           
 			for ($a = 0; $a < sizeof($icsfile['VEVENT']); $a++)
 			{
@@ -957,6 +979,11 @@ $projectname = $events[$a]->description;
 
 			}
 
+           if ( $country == 'AUT' )
+            {
+           }
+          else
+          {
 			$anzahlteams = sizeof($exportteamstemp);
 			$app->enqueueMessage(Text::_('Wir haben ' . $anzahlteams . ' Teams f&uuml;r die Berechnung der Spieltage und Paarungen pro Spieltag'), '');
 
@@ -986,7 +1013,8 @@ $projectname = $events[$a]->description;
 				$temp->round_date_last  = '';
 				$exportround[$a]        = $temp;
 			}
-
+          }
+          
 			// so jetzt die spiele erstellen
 			$lfdnumbermatch    = 1;
 			$lfdnumberpaarung  = 1;
@@ -1015,7 +1043,14 @@ $projectname = $events[$a]->description;
 
 				$tempmatch->projectteam1_id = $exportteamstemp[$value['heim']];
 				$tempmatch->projectteam2_id = $exportteamstemp[$value['gast']];
+              if ( $country == 'AUT' )
+            {
+                $tempmatch->round_id        = $value['round_id'];
+              }
+              else
+              {
 				$tempmatch->round_id        = $lfdnumberspieltag;
+              }
 				$exportmatch[]              = $tempmatch;
 
 				if ($lfdnumberpaarung == $anzahlpaarungen)
