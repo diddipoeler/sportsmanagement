@@ -249,6 +249,7 @@ class modJSMRankingHelper
 	 *
 	 * @param   object ranking row
 	 * @param   int type = 1 for club small logo, 2 for country
+	 * @param   5 for home trikot, 6 for away trikot
 	 *
 	 * @return html string
 	 */
@@ -275,6 +276,21 @@ class modJSMRankingHelper
 				return HTMLHelper::image($item->team->logo_big, $item->team->short_name, 'class="teamlogo" width="20" ');
 			}
 		}
+		elseif ($type == 5) // Trikot Home
+		{
+			if (!empty($item->team->trikot_home))
+			{
+				return HTMLHelper::image($item->team->trikot_home, $item->team->short_name, 'class="teamlogo" width="20" ');
+			}
+		}
+		elseif ($type == 6) // Trikot Away
+		{
+			if (!empty($item->team->trikot_away))
+			{
+				return HTMLHelper::image($item->team->trikot_away, $item->team->short_name, 'class="teamlogo" width="20" ');
+			}
+		}		
+		
 		elseif ($type == 2 && !empty($item->team->country))
 		{
 			return JSMCountries::getCountryFlag($item->team->country, 'class="teamcountry"');
