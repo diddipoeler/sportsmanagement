@@ -918,7 +918,7 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 		$query->select('st.team_id');
 		$query->select('c.email as club_email,c.phone as club_phone,c.fax as club_fax,c.logo_small,c.logo_middle,c.logo_big,c.country,c.website,c.new_club_id,c.facebook,c.twitter');
 		$query->select('d.name AS division_name,d.shortname AS division_shortname,d.parent_id AS parent_division_id');
-		$query->select('plg.name AS playground_name,plg.short_name AS playground_short_name');
+		$query->select('plg.name AS playground_name,plg.short_name AS playground_short_name, c.trikot_home, c.trikot_away');
 		$query->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
 		$query->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
 		$query->select('CONCAT_WS(\':\',tl.id,t.alias) AS projectteam_slug');
