@@ -108,28 +108,33 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 		{
 			$query .= ' AND user_id NOT IN (' . $peids . ')';
 		}
-
-		// Echo $query . '<br />';
-		$this->_db->setQuery($query);
-
-		if (!$this->_db->execute())
-		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-			$result = false;
-		}
+       
+try
+{
+$db->setQuery($query);
+$result = $db->execute();
+}
+catch (Exception $e)
+{
+$app->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$result = false;
+}
 
 		for ($x = 0; $x < count($peid); $x++)
 		{
 			$query = "INSERT IGNORE INTO #__sportsmanagement_prediction_admin ( prediction_id, user_id ) VALUES ( '" . $data['id'] . "', '" . $peid[$x] . "' )";
 
-			// Echo $query . '<br />';
-			$this->_db->setQuery($query);
+try
+{
+$db->setQuery($query);
+$result = $db->execute();
+}
+catch (Exception $e)
+{
+$app->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$result = false;
+}
 
-			if (!$this->_db->execute())
-			{
-				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-				$result = false;
-			}
 		}
 
 		if ($result)
