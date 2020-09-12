@@ -443,8 +443,7 @@ class sportsmanagementModelPredictionEntry extends BaseDatabaseModel
 		}
 		catch (Exception $e)
 		{
-			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
-			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), 'error');
+		  $app->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
 		}
 
 		// _predictionMember
