@@ -64,8 +64,8 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_federations` (
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_club` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
-  `name` VARCHAR(100) NOT NULL DEFAULT '' ,
-  `alias` VARCHAR(100) NOT NULL DEFAULT '' ,
+  `name` VARCHAR(200) NOT NULL DEFAULT '' ,
+  `alias` VARCHAR(200) NOT NULL DEFAULT '' ,
   `admin` INT(11) NULL DEFAULT NULL ,
   `address` VARCHAR(100) NOT NULL DEFAULT '' ,
   `zipcode` VARCHAR(10) NOT NULL DEFAULT '' ,
@@ -118,6 +118,8 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_club` (
   `use_jl` tinyint(1) NOT NULL DEFAULT '0',
   `use_jsm` tinyint(1) NOT NULL DEFAULT '0',
   `country_geocode` VARCHAR(3) NULL DEFAULT NULL,
+  `instagram` VARCHAR(250) NOT NULL DEFAULT '' ,
+  `linkedin` VARCHAR(250) NOT NULL DEFAULT '' ,
   PRIMARY KEY (`id`) ,
   KEY `standard_playground` (`standard_playground`),
   KEY `country` (`country`),
@@ -643,6 +645,8 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_person` (
   `second_country` VARCHAR(3) NULL DEFAULT NULL,
   `gender` TINYINT(1) NOT NULL DEFAULT '0' ,
   `openligaid` int(11) DEFAULT NULL,
+  `instagram` VARCHAR(250) NOT NULL DEFAULT '' ,
+  `linkedin` VARCHAR(250) NOT NULL DEFAULT '' ,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `country` (`country`),
@@ -686,6 +690,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_playground` (
   `modified_hits` INT(11) NOT NULL DEFAULT '0' ,
   `state` VARCHAR(50) NOT NULL DEFAULT '' ,
   `openligaid` int(11) DEFAULT NULL,
+  `playground_size` VARCHAR(200) NOT NULL DEFAULT '' ,
   PRIMARY KEY (`id`) ,
   KEY `club_id` (`club_id`),
   KEY `country` (`country`)
@@ -769,8 +774,8 @@ AUTO_INCREMENT=1 ;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
-  `name` VARCHAR(100) NOT NULL DEFAULT '' ,
-  `alias` VARCHAR(100) NOT NULL DEFAULT '' ,
+  `name` VARCHAR(200) NOT NULL DEFAULT '' ,
+  `alias` VARCHAR(200) NOT NULL DEFAULT '' ,
   `league_id` INT(11) NOT NULL DEFAULT '0' ,
   `season_id` INT(11) NOT NULL DEFAULT '0' ,
   `admin` INT(11) NOT NULL DEFAULT '0' ,
@@ -840,6 +845,12 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project` (
   `use_approved` tinyint(1) NOT NULL DEFAULT '0',
   `fast_projektteam` tinyint(1) NOT NULL DEFAULT '0',
   `openligaid` int(11) DEFAULT NULL,
+  
+  `instagram` VARCHAR(250) NOT NULL DEFAULT '' ,
+  `linkedin` VARCHAR(250) NOT NULL DEFAULT '' ,
+  `twitter` VARCHAR(250) NOT NULL DEFAULT '' ,
+  `facebook` VARCHAR(250) NOT NULL DEFAULT '' ,
+  
   PRIMARY KEY (`id`) ,
   KEY `league_id` (`league_id`),
   KEY `season_id` (`season_id`),
