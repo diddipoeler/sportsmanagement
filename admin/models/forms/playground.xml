@@ -34,6 +34,17 @@
 			class="inputbox"
 			required="true"/>				
 
+		<field
+			name="playground_size"
+			type="text"
+			size="100"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_SIZE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_SIZE_DESC"
+			class="inputbox"/>
+
+
+
+
       <field name="geocomplete" type="geocomplete" class="inputbox"
 			size="40" label="COM_SPORTSMANAGEMENT_LOCATION_FIELD_GEOCOMPLETE_LABEL"
 			description="COM_SPORTSMANAGEMENT_LOCATION_FIELD_GEOCOMPLETE_DESC" />

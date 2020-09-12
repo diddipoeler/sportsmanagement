@@ -212,6 +212,29 @@
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FACEBOOK_DESC"
             class="inputbox"
         />
+		
+		
+		
+		
+		
+		<field
+            name="instagram"
+            size="100"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_INSTAGRAM"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_INSTAGRAM_DESC"
+            class="inputbox"
+        />
+		<field
+            name="linkedin"
+            size="100"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LINKEDIN"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LINKEDIN_DESC"
+            class="inputbox"
+        />
+		
+		
             			
         <field
             name="manager"
