@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage predictionentry
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -47,15 +43,10 @@ class sportsmanagementModelPredictionEntry extends BaseDatabaseModel
 	public $pggroup = 0;
 	public $pggrouprank = 0;
 	public $isNewMember = 0;
-
 	public $tippEntryDone = 0;
-
 	public $from = 0;
-
 	public $to = 0;
-
 	public $type = 0;
-
 	public $page = 0;
 
 	/**
@@ -65,37 +56,33 @@ class sportsmanagementModelPredictionEntry extends BaseDatabaseModel
 	 */
 	function __construct()
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
+		$this->jsmapp = Factory::getApplication();
+		$this->jsmjinput = $this->jsmapp->input;
+		$this->jsmoption = $this->jsmjinput->getCmd('option');
+        $this->jsmdb = Factory::getDBO();
+		$this->jsmquery = $this->jsmdb->getQuery(true);
+        $this->date = Factory::getDate();
+		$this->user = Factory::getUser();
 
 		$prediction = new sportsmanagementModelPrediction;
 
-		$post = $jinput->post->getArray(array());
+		$post = $this->jsmjinput->post->getArray(array());
 
-		self::$pjID = $jinput->getVar('pj', '0');
+		self::$pjID = $this->jsmjinput->getVar('pj', '0');
 
-		sportsmanagementModelPrediction::$roundID = $jinput->getVar('r', '0');
-		sportsmanagementModelPrediction::$pjID    = $jinput->getVar('pj', '0');
-		sportsmanagementModelPrediction::$from    = $jinput->getVar('from', $jinput->getVar('r', '0'));
-		sportsmanagementModelPrediction::$to      = $jinput->getVar('to', $jinput->getVar('r', '0'));
-
-		sportsmanagementModelPrediction::$predictionGameID = $jinput->getVar('prediction_id', '0');
-
-		sportsmanagementModelPrediction::$predictionMemberID = $jinput->getInt('uid', 0);
-		sportsmanagementModelPrediction::$joomlaUserID       = $jinput->getInt('juid', 0);
-
-		sportsmanagementModelPrediction::$pggroup     = $jinput->getInt('pggroup', 0);
-		sportsmanagementModelPrediction::$pggrouprank = $jinput->getInt('pggrouprank', 0);
-
-		sportsmanagementModelPrediction::$isNewMember   = $jinput->getInt('s', 0);
-		sportsmanagementModelPrediction::$tippEntryDone = $jinput->getInt('eok', 0);
-
-		sportsmanagementModelPrediction::$type = $jinput->getInt('type', 0);
-		sportsmanagementModelPrediction::$page = $jinput->getInt('page', 1);
+		sportsmanagementModelPrediction::$roundID = $this->jsmjinput->getVar('r', '0');
+		sportsmanagementModelPrediction::$pjID    = $this->jsmjinput->getVar('pj', '0');
+		sportsmanagementModelPrediction::$from    = $this->jsmjinput->getVar('from', $this->jsmjinput->getVar('r', '0'));
+		sportsmanagementModelPrediction::$to      = $this->jsmjinput->getVar('to', $this->jsmjinput->getVar('r', '0'));
+		sportsmanagementModelPrediction::$predictionGameID = $this->jsmjinput->getVar('prediction_id', '0');
+		sportsmanagementModelPrediction::$predictionMemberID = $this->jsmjinput->getInt('uid', 0);
+		sportsmanagementModelPrediction::$joomlaUserID       = $this->jsmjinput->getInt('juid', 0);
+		sportsmanagementModelPrediction::$pggroup     = $this->jsmjinput->getInt('pggroup', 0);
+		sportsmanagementModelPrediction::$pggrouprank = $this->jsmjinput->getInt('pggrouprank', 0);
+		sportsmanagementModelPrediction::$isNewMember   = $this->jsmjinput->getInt('s', 0);
+		sportsmanagementModelPrediction::$tippEntryDone = $this->jsmjinput->getInt('eok', 0);
+		sportsmanagementModelPrediction::$type = $this->jsmjinput->getInt('type', 0);
+		sportsmanagementModelPrediction::$page = $this->jsmjinput->getInt('page', 1);
 
 		sportsmanagementModelPrediction::checkRoundID(sportsmanagementModelPrediction::$pjID, sportsmanagementModelPrediction::$roundID);
 
@@ -379,11 +366,8 @@ class sportsmanagementModelPredictionEntry extends BaseDatabaseModel
 	function savePredictions($allowedAdmin = false)
 	{
 		$document = Factory::getDocument();
-		$app      = Factory::getApplication();
 
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
+
 
 		// Create a new query object.
 		$db    = Factory::getDBO();
@@ -393,36 +377,28 @@ class sportsmanagementModelPredictionEntry extends BaseDatabaseModel
 
 		$result = true;
 
-		$post = $jinput->post->getArray();
+		$post = $this->jsmjinput->post->getArray();
 
-		if (ComponentHelper::getParams($option)->get('show_debug_info_frontend'))
+		if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend'))
 		{
 			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' post <pre>' . print_r($post, true) . '</pre>', '');
 		}
 
-		$pids = $jinput->getVar('pids', null, 'post', 'array');
+		$pids = $this->jsmjinput->getVar('pids', null, 'post', 'array');
 		ArrayHelper::toInteger($pids);
 
-		$cids   = $jinput->getVar('cids', array(), 'post', 'array');
-		$prids  = $jinput->getVar('prids', array(), 'post', 'array');
-		$homes  = $jinput->getVar('homes', array(), 'post', 'array');
-		$aways  = $jinput->getVar('aways', array(), 'post', 'array');
-		$tipps  = $jinput->getVar('tipps', array(), 'post', 'array');
-		$jokers = $jinput->getVar('jokers', array(), 'post', 'array');
-
-		//        $goals	= $jinput->getVar('goals',array(),'post','array');
-		//        $penalties	= $jinput->getVar('penalties',array(),'post','array');
-		//        $yellowcards	= $jinput->getVar('yellowcards',array(),'post','array');
-		//        $yellowredcards	= $jinput->getVar('yellowredcards',array(),'post','array');
-		//        $redcards = $jinput->getVar('redcards',array(),'post','array');
-
-		$mID       = $jinput->get('memberID', 0, 'int');
-		$ptippmode = $jinput->getVar('ptippmode', array(), 'post', 'array');
-		$RoundID   = $jinput->get('r', 0, 'int');
-		$ProjectID = $jinput->get('pjID', 0, 'int');
-
-		$predictionGameID = $jinput->get('prediction_id', 0, 'int');
-		$joomlaUserID     = $jinput->get('user_id', 0, 'int');
+		$cids   = $this->jsmjinput->getVar('cids', array(), 'post', 'array');
+		$prids  = $this->jsmjinput->getVar('prids', array(), 'post', 'array');
+		$homes  = $this->jsmjinput->getVar('homes', array(), 'post', 'array');
+		$aways  = $this->jsmjinput->getVar('aways', array(), 'post', 'array');
+		$tipps  = $this->jsmjinput->getVar('tipps', array(), 'post', 'array');
+		$jokers = $this->jsmjinput->getVar('jokers', array(), 'post', 'array');
+		$mID       = $this->jsmjinput->get('memberID', 0, 'int');
+		$ptippmode = $this->jsmjinput->getVar('ptippmode', array(), 'post', 'array');
+		$RoundID   = $this->jsmjinput->get('r', 0, 'int');
+		$ProjectID = $this->jsmjinput->get('pjID', 0, 'int');
+		$predictionGameID = $this->jsmjinput->get('prediction_id', 0, 'int');
+		$joomlaUserID     = $this->jsmjinput->get('user_id', 0, 'int');
 
 		$temp                   = new stdClass;
 		$temp->goals            = $post['goals'][$ProjectID][$RoundID];
@@ -439,14 +415,44 @@ class sportsmanagementModelPredictionEntry extends BaseDatabaseModel
 
 		try
 		{
-			$resultquery = Factory::getDbo()->insertObject('#__sportsmanagement_prediction_result_round', $temp);
+		$resultquery = Factory::getDbo()->insertObject('#__sportsmanagement_prediction_result_round', $temp);
 		}
 		catch (Exception $e)
 		{
-		  $app->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+        //$this->jsmapp->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+        /** update machen */
+        $this->jsmquery->clear();
+        /** Fields to update. */
+        $fields = array(
+        $this->jsmdb->quoteName('goals') . ' = '. $post['goals'][$ProjectID][$RoundID],
+        $this->jsmdb->quoteName('penalties') . ' = '. $post['penalties'][$ProjectID][$RoundID],
+        $this->jsmdb->quoteName('yellow_cards') . ' = '. $post['yellowcards'][$ProjectID][$RoundID],
+        $this->jsmdb->quoteName('yellow_red_cards') . ' = '. $post['yellowredcards'][$ProjectID][$RoundID],
+        $this->jsmdb->quoteName('red_cards') . ' = '. $post['redcards'][$ProjectID][$RoundID],
+		$this->jsmdb->quoteName('modified') . ' = ' . $this->jsmdb->Quote('' . $this->date->toSql() . '') . '',
+		$this->jsmdb->quoteName('modified_by') . '=' . $this->user->get('id')
+		);
+/** Conditions for which records should be updated. */
+$conditions = array(
+    $this->jsmdb->quoteName('prediction_id') . ' = '.$predictionGameID,
+    $this->jsmdb->quoteName('user_id') . ' = '.$joomlaUserID,
+    $this->jsmdb->quoteName('project_id') . ' = '.$ProjectID, 
+    $this->jsmdb->quoteName('round_id') . ' = ' . $RoundID
+);        
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_prediction_result_round'))->set($fields)->where($conditions);
+
+try
+{
+$this->jsmdb->setQuery($this->jsmquery);
+$result = $this->jsmdb->execute();
+}
+catch (Exception $e)
+{
+$this->jsmapp->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+}
+        
 		}
 
-		// _predictionMember
 		$configavatar         = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
 		$predictionMemberInfo = sportsmanagementModelPrediction::getPredictionMember($configavatar);
 
