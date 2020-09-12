@@ -378,7 +378,7 @@ class sportsmanagementModelPredictionEntry extends BaseDatabaseModel
 		$result = true;
 
 		$post = $this->jsmjinput->post->getArray();
-
+      
 		if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend'))
 		{
 			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' post <pre>' . print_r($post, true) . '</pre>', '');
@@ -401,11 +401,11 @@ class sportsmanagementModelPredictionEntry extends BaseDatabaseModel
 		$joomlaUserID     = $this->jsmjinput->get('user_id', 0, 'int');
 
 		$temp                   = new stdClass;
-		$temp->goals            = $post['goals'][$ProjectID][$RoundID] ? $post['goals'][$ProjectID][$RoundID] : NULL;
-		$temp->penalties        = $post['penalties'][$ProjectID][$RoundID] ? $post['penalties'][$ProjectID][$RoundID] : NULL;
-		$temp->yellow_cards     = $post['yellowcards'][$ProjectID][$RoundID] ? $post['yellowcards'][$ProjectID][$RoundID] : NULL;
-		$temp->yellow_red_cards = $post['yellowredcards'][$ProjectID][$RoundID] ? $post['yellowredcards'][$ProjectID][$RoundID] : NULL;
-		$temp->red_cards        = $post['redcards'][$ProjectID][$RoundID] ? $post['redcards'][$ProjectID][$RoundID] : NULL;
+		$temp->goals            = $post['goals'][$ProjectID][$RoundID] ? $post['goals'][$ProjectID][$RoundID] : 0;
+		$temp->penalties        = $post['penalties'][$ProjectID][$RoundID] ? $post['penalties'][$ProjectID][$RoundID] : 0;
+		$temp->yellow_cards     = $post['yellowcards'][$ProjectID][$RoundID] ? $post['yellowcards'][$ProjectID][$RoundID] : 0;
+		$temp->yellow_red_cards = $post['yellowredcards'][$ProjectID][$RoundID] ? $post['yellowredcards'][$ProjectID][$RoundID] : 0;
+		$temp->red_cards        = $post['redcards'][$ProjectID][$RoundID] ? $post['redcards'][$ProjectID][$RoundID] : 0;
 		$temp->prediction_id    = $predictionGameID;
 		$temp->user_id          = $joomlaUserID;
 		$temp->project_id       = $ProjectID;
@@ -426,11 +426,11 @@ class sportsmanagementModelPredictionEntry extends BaseDatabaseModel
         $fields = array(
         $this->jsmdb->quoteName('goals') . ' = '. $temp->goals,
         $this->jsmdb->quoteName('penalties') . ' = '. $temp->penalties,
-        $this->jsmdb->quoteName('yellow_cards') . ' = '. $temp->yellowcards,
-        $this->jsmdb->quoteName('yellow_red_cards') . ' = '. $temp->yellowredcards,
-        $this->jsmdb->quoteName('red_cards') . ' = '. $temp->redcards,
+        $this->jsmdb->quoteName('yellow_cards') . ' = '. $temp->yellow_cards,
+        $this->jsmdb->quoteName('yellow_red_cards') . ' = '. $temp->yellow_red_cards,
+        $this->jsmdb->quoteName('red_cards') . ' = '. $temp->red_cards,
 		$this->jsmdb->quoteName('modified') . ' = ' . $this->jsmdb->Quote('' . $this->date->toSql() . '') . '',
-		$this->jsmdb->quoteName('modified_by') . '=' . $this->user->get('id')
+		$this->jsmdb->quoteName('modified_by') . ' = ' . $this->user->get('id')
 		);
 /** Conditions for which records should be updated. */
 $conditions = array(
