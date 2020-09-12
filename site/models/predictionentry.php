@@ -401,11 +401,11 @@ class sportsmanagementModelPredictionEntry extends BaseDatabaseModel
 		$joomlaUserID     = $this->jsmjinput->get('user_id', 0, 'int');
 
 		$temp                   = new stdClass;
-		$temp->goals            = $post['goals'][$ProjectID][$RoundID];
-		$temp->penalties        = $post['penalties'][$ProjectID][$RoundID];
-		$temp->yellow_cards     = $post['yellowcards'][$ProjectID][$RoundID];
-		$temp->yellow_red_cards = $post['yellowredcards'][$ProjectID][$RoundID];
-		$temp->red_cards        = $post['redcards'][$ProjectID][$RoundID];
+		$temp->goals            = $post['goals'][$ProjectID][$RoundID] ? $post['goals'][$ProjectID][$RoundID] : NULL;
+		$temp->penalties        = $post['penalties'][$ProjectID][$RoundID] ? $post['penalties'][$ProjectID][$RoundID] : NULL;
+		$temp->yellow_cards     = $post['yellowcards'][$ProjectID][$RoundID] ? $post['yellowcards'][$ProjectID][$RoundID] : NULL;
+		$temp->yellow_red_cards = $post['yellowredcards'][$ProjectID][$RoundID] ? $post['yellowredcards'][$ProjectID][$RoundID] : NULL;
+		$temp->red_cards        = $post['redcards'][$ProjectID][$RoundID] ? $post['redcards'][$ProjectID][$RoundID] : NULL;
 		$temp->prediction_id    = $predictionGameID;
 		$temp->user_id          = $joomlaUserID;
 		$temp->project_id       = $ProjectID;
@@ -424,11 +424,11 @@ class sportsmanagementModelPredictionEntry extends BaseDatabaseModel
         $this->jsmquery->clear();
         /** Fields to update. */
         $fields = array(
-        $this->jsmdb->quoteName('goals') . ' = '. $post['goals'][$ProjectID][$RoundID],
-        $this->jsmdb->quoteName('penalties') . ' = '. $post['penalties'][$ProjectID][$RoundID],
-        $this->jsmdb->quoteName('yellow_cards') . ' = '. $post['yellowcards'][$ProjectID][$RoundID],
-        $this->jsmdb->quoteName('yellow_red_cards') . ' = '. $post['yellowredcards'][$ProjectID][$RoundID],
-        $this->jsmdb->quoteName('red_cards') . ' = '. $post['redcards'][$ProjectID][$RoundID],
+        $this->jsmdb->quoteName('goals') . ' = '. $temp->goals,
+        $this->jsmdb->quoteName('penalties') . ' = '. $temp->penalties,
+        $this->jsmdb->quoteName('yellow_cards') . ' = '. $temp->yellowcards,
+        $this->jsmdb->quoteName('yellow_red_cards') . ' = '. $temp->yellowredcards,
+        $this->jsmdb->quoteName('red_cards') . ' = '. $temp->redcards,
 		$this->jsmdb->quoteName('modified') . ' = ' . $this->jsmdb->Quote('' . $this->date->toSql() . '') . '',
 		$this->jsmdb->quoteName('modified_by') . '=' . $this->user->get('id')
 		);
