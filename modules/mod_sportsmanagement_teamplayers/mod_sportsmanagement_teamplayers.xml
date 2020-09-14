@@ -144,6 +144,10 @@ description="Debug Modus">
 					<option value="H">Horizontal</option>
 					<option value="V">Vertical</option>
 				</field>	
+				
+				<field 	name="slider_width" type="text" default="250"
+						label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SLIDER_WIDTH" 
+						description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SLIDER_WIDTH_DESC" />
 
 				<field 	name="slider_speed" type="text" default="500"
 						label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SLIDER_SPEED" 
