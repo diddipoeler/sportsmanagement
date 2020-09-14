@@ -273,7 +273,7 @@ switch ($mode)
 				
 				<div class="slide">
 				
-					<div style="width: 150px;
+					<div style="width: <?php echo $params->get('slider_width') - 10;?>px;
 								height:210px;
 								padding: 10px 10px 20px 10px;
 								border: 1px solid #BFBFBF;
