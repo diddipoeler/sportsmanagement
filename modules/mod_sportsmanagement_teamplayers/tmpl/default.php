@@ -348,6 +348,12 @@ switch ($mode)
 				$slider_width = $params->get('slider_width');
 				  $slider_mode = 'horizontal';
 				}
+		elseif ($params->get('slider_mode') == 'F')
+				{	
+				  //$slider_width = $params->get('max_slides') * 65;
+				$slider_width = $params->get('slider_width');
+				  $slider_mode = 'fade';
+				}
 			else
 				{
 				  $slider_mode = 'vertical';
