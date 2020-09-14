@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage fields
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -106,6 +102,13 @@ class JFormFieldDependSQL extends FormField
 				$div = 'request';
 				break;
 		}
+      
+      switch ($view)
+		{
+		case 'predictiongame':
+          $div = '';
+          break;
+      }
 
 		$value     = $this->form->getValue($val, $div);
 		$key_value = $this->form->getValue($key, $div);
@@ -125,8 +128,18 @@ class JFormFieldDependSQL extends FormField
 
 		$script[] = "\n";
 		$script[] = "jQuery(document).ready(function ($){";
+      switch ($view)
+		{
+		case 'predictiongame':
+        $script[] = "				$('#jform" . $div . '_' . $depends . "').change(function(){";
+		$script[] = "					var value = $('#jform" . $div . '_' . $depends . "').val();";  
+          break;
+        default:
 		$script[] = "				$('#jform_" . $div . '_' . $depends . "').change(function(){";
 		$script[] = "					var value = $('#jform_" . $div . '_' . $depends . "').val();";
+          break;
+      }
+      
 		$script[] = "if (window.console) console.log('json value -> ' + value);";
 		
 		switch ($ajaxtask)
