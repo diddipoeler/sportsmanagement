@@ -143,6 +143,7 @@ description="Debug Modus">
 					description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SLIDER_MODE_DESC">
 					<option value="H">Horizontal</option>
 					<option value="V">Vertical</option>
+					<option value="F">Fade</option>
 				</field>	
 				
 				<field 	name="slider_width" type="text" default="250"
