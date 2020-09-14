@@ -344,13 +344,14 @@ switch ($mode)
 			// Calc horizontal width
 			if ($params->get('slider_mode') == 'H')
 				{	
-				  $slider_width = $params->get('max_slides') * 65;
+				  //$slider_width = $params->get('max_slides') * 65;
+				$slider_width = $params->get('slider_width');
 				  $slider_mode = 'horizontal';
 				}
 			else
 				{
 				  $slider_mode = 'vertical';
-				  $slider_width = 180;
+				  $slider_width = $params->get('slider_width');
 				}			
 					
 			// responsive
