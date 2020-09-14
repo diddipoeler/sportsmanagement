@@ -316,7 +316,7 @@ switch ($mode)
 								{
 						?>					
 									<div style="position: absolute; bottom: 25px; left: 10px; font-size: 15px;">	
-									<?	echo $sortedData[$i]['posicion'] .'<br>'; ?>
+									<?	echo Text::_($sortedData[$i]['posicion']) .'<br>'; ?>
 									</div>
 						<?
 								}
