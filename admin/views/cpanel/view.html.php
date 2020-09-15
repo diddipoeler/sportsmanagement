@@ -379,7 +379,7 @@ $response = $http->post('https://www.fussballineuropa.de/jsmpaket.php', $data);
 }
 catch (Exception $e)
 {
-$this->jsmapp->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');	
+//$this->app->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');	
 }
 		
 		$this->document->addScript(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
