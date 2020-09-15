@@ -15,16 +15,16 @@
 	<authorUrl>http://www.fussballineuropa.de</authorUrl>
 	<version>1.0</version>
 	<description>MOD_SPORTSMANAGEMENT_ACT_SEASON_DESC</description>
-	<files>
-		<filename module="mod_sportsmanagement_act_season">mod_sportsmanagement_act_season.php</filename>
-		<filename>index.html</filename>
-    <filename>helper.php</filename>
-    <folder>tmpl</folder>
-    <folder>img</folder>
-    <folder>js</folder>
-		<folder>css</folder>
-    <folder>img</folder>
-	</files>
+<files>
+<filename module="mod_sportsmanagement_act_season">mod_sportsmanagement_act_season.php</filename>
+<filename>index.html</filename>
+<filename>helper.php</filename>
+<filename>update-server.xml</filename>	
+<folder>tmpl</folder>
+<folder>img</folder>
+<folder>js</folder>
+<folder>css</folder>
+</files>
 	
 	<languages>
 		
