@@ -216,7 +216,7 @@ try
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
 
-		$updateFileList = Folder::files(JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'updates' . DS, '.php$');
+		$updateFileList = Folder::files(JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'updates' . DIRECTORY_SEPARATOR, '.php$');
 
 		// Installer for extensions
 		$extensions = Folder::folders(JPATH_COMPONENT_SITE . DIRECTORY_SEPARATOR . 'extensions');
