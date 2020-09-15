@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage extensions
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -39,7 +35,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     <div class="span9">
                         <div class="well well-small">
                             <div id="dashboard-icons" class="btn-group">
-
+ <a class="btn"
+                                               href="index.php?option=com_sportsmanagement&view=jlextlmoimports">
+                                                <img src="components/com_sportsmanagement/assets/icons/lmoimport.png"
+                                                     alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_LMO_IMPORT') ?>"/><br/>
+                                                <span><?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_LMO_IMPORT') ?></span>
+                                            </a>
 								<?php
 
 								foreach ($this->sporttypes as $key => $value)
@@ -60,12 +61,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                                                      alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_DFBKEY') ?>"/><br/>
                                                 <span><?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_DFBKEY') ?></span>
                                             </a>
-                                            <a class="btn"
-                                               href="index.php?option=com_sportsmanagement&view=jlextlmoimports">
-                                                <img src="components/com_sportsmanagement/assets/icons/lmoimport.png"
-                                                     alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_LMO_IMPORT') ?>"/><br/>
-                                                <span><?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_LMO_IMPORT') ?></span>
-                                            </a>
+                                           
                                             <a class="btn"
                                                href="index.php?option=com_sportsmanagement&view=jlextprofleagimport">
                                                 <img src="components/com_sportsmanagement/assets/icons/profleagueimport.png"
@@ -112,9 +108,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
         </div>
     </div>
-
+<div>
 	<?PHP
-	//echo "<div>";
-	//echo $this->loadTemplate('footer');
-	//echo "</div>";
+	echo $this->loadTemplate('footer');
 	?> 
+</div>
