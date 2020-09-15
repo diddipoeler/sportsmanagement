@@ -90,6 +90,8 @@ class sportsmanagementModelProject extends JSMModelAdmin
 		$query->where('id = ' . $project_id);
 		$db->setQuery($query);
 		$result = $db->loadObject();
+		
+		try{
 		$query->clear();
 		$query->select('eventtime');
 		$query->from('#__sportsmanagement_sports_type');
@@ -97,6 +99,11 @@ class sportsmanagementModelProject extends JSMModelAdmin
 		$db->setQuery($query);
 		$useeventtime         = $db->loadResult();
 		$result->useeventtime = $useeventtime;
+			}
+catch (Exception $e)
+{
+//$app->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+}
 
 		// Sports_type_id
 		return $result;
