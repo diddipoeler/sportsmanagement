@@ -234,9 +234,9 @@ class JSMControllerForm extends FormController
 //Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . 'post<pre>'.print_r($post,true).'</pre>'), Log::NOTICE, 'jsmerror');
 //Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . 'data<pre>'.print_r($data,true).'</pre>'), Log::NOTICE, 'jsmerror');
 		
-		$id = $this->jsmdb->insertid();
+		$id = $data['id'] ? $data['id'] : $this->jsmdb->insertid();
 
-		if (empty($id))
+		if ( empty($data['id']) )
 		{
 			$id = $this->jsmjinput->getInt('insert_id');
 		}
