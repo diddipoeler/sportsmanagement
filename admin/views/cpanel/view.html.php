@@ -361,6 +361,8 @@ class sportsmanagementViewcpanel extends sportsmanagementView
 	{
 		$task     = $this->jinput->getCmd('task');
 
+try
+{
 // Create an instance of a default JHttp object.
 $http = HttpFactory::getHttp();      
 // Prepare the data.
@@ -374,7 +376,12 @@ $http = HttpFactory::getHttp();
 $data = array('homepage' => Uri::root(), 'notes' => '', 'homepagename' => $this->app->getCfg('sitename') , 'isadmin' => 0 );
 // Invoke the POST request.
 $response = $http->post('https://www.fussballineuropa.de/jsmpaket.php', $data);
-
+}
+catch (Exception $e)
+{
+$this->jsmapp->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');	
+}
+		
 		$this->document->addScript(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
 
 		if ($this->app->isClient('administrator'))
