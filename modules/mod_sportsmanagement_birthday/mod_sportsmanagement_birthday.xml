@@ -21,6 +21,7 @@
 		<filename>index.html</filename>
 		<filename>helper.php</filename>
 		<filename>mod_sportsmanagement_birthday.xml</filename>
+		<filename>update-server.xml</filename>	
 		<folder>tmpl</folder>
 		<folder>css</folder>
 		<folder>js</folder>
@@ -326,4 +327,9 @@ description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_TEAM_IDS_DESCR" />
 			</fieldset>
 		</fields>
 	</config>
+	
+<updateservers>
+<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/modules/mod_sportsmanagement_birthday/update-server.xml</server>
+</updateservers>
+	
 </extension>
