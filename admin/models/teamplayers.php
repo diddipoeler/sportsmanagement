@@ -101,7 +101,7 @@ class sportsmanagementModelteamplayers extends JSMModelList
 		$this->jsmsubquery2->where('ppp.person_id = ppl.id');
 		$this->jsmsubquery2->where('ppp.project_id = ' . $this->_project_id);
 		$this->jsmsubquery2->where('ppp.persontype = ' . $this->getState('filter.persontype'));
-		$this->jsmquery->select('(' . $this->jsmsubquery2 . ') AS project_published');
+		//$this->jsmquery->select('(' . $this->jsmsubquery2 . ') AS project_published');
 
 		if (is_numeric($this->getState('filter.state')))
 		{
