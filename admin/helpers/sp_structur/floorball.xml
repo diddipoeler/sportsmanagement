@@ -11,16 +11,16 @@
 </events>
   
 <events>
-<name icon="">Assist</name>
+<name icon="">ASSIST</name>
 </events>
 <events>
-<name icon="">Strafe 2</name>
+<name icon="">STRAFE2</name>
 </events>
 <events>
-<name icon="">Strafe 5</name>
+<name icon="">STRAFE5</name>
 </events>
 <events>
-<name icon="">Strafe 10</name>
+<name icon="">STRAFE10</name>
 </events>
 
 <mainpositions>
@@ -44,20 +44,20 @@
 </parentpositions>
   
 <parentpositions>  
-<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">Center</parentname>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">CENTER</parentname>
 </parentpositions>
 
 <parentpositions>  
-<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">Verteidiger Links</parentname>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">DEFENDERLEFT</parentname>
 </parentpositions>
 <parentpositions>  
-<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">Verteidiger Rechts</parentname>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">DEFENDERRIGHT</parentname>
 </parentpositions>
 <parentpositions>  
-<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">Flügel Links</parentname>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">WINGLEFT</parentname>
 </parentpositions>
 <parentpositions>  
-<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">Flügel Rechts</parentname>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">WINGRIGHT</parentname>
 </parentpositions>  
   
   
