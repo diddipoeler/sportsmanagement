@@ -167,7 +167,7 @@ break;
 				}
 				catch (Exception $e)
 				{
-				$this->jsmapp->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');    
+				//$this->jsmapp->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');    
 				}
 			}
 		}
@@ -201,8 +201,8 @@ break;
 			}
 			catch (Exception $e)
 			{
-				$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getMessage()), 'Error');
-				$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getCode()), 'Error');
+				//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getMessage()), 'Error');
+				//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getCode()), 'Error');
 			}
 		}
 
