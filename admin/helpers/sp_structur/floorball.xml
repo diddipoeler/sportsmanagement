@@ -30,24 +30,33 @@
 <parentpositions>
 <parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">GOALKEEPER</parentname>
 </parentpositions>
+  
 <parentpositions>
 <parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">DEFENDER</parentname>
 </parentpositions>
+  
 <parentpositions>
 <parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">MIDFIELDER</parentname>
 </parentpositions>
+  
 <parentpositions>
 <parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">FORWARD</parentname>
 </parentpositions>
+  
+<parentpositions>  
 <parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">Center</parentname>
 </parentpositions>
-  
+
+<parentpositions>  
 <parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">Verteidiger Links</parentname>
 </parentpositions>
+<parentpositions>  
 <parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">Verteidiger Rechts</parentname>
 </parentpositions>
+<parentpositions>  
 <parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">Flügel Links</parentname>
 </parentpositions>
+<parentpositions>  
 <parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">Flügel Rechts</parentname>
 </parentpositions>  
   
