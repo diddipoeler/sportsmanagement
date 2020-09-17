@@ -2112,16 +2112,23 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_countries_plz` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
--- Tabellenstruktur f�r Tabelle `#__sportsmanagement_person_project_position`
+-- Tabellenstruktur für Tabelle `#__sportsmanagement_person_project_position`
 --
 CREATE TABLE IF NOT EXISTS `#__sportsmanagement_person_project_position` (
   `person_id` INT(11) NOT NULL DEFAULT '0' ,
+  
   `project_id` INT(11) NOT NULL DEFAULT '0' ,
+  
   `project_position_id` INT(11) NOT NULL DEFAULT '0' ,
+  
   `modified_by` INT NULL ,
+  
   `modified` date NOT NULL DEFAULT '0000-00-00',
+  
   `persontype` TINYINT(1) NOT NULL DEFAULT '0' ,
+  
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
+  
   UNIQUE KEY `combi` (`person_id`,`project_id`,`project_position_id`,`persontype`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
