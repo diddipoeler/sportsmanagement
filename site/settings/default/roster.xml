@@ -353,7 +353,7 @@
 			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
 		</field>
 
-<field 	name="events_picture_height" type="text" default="50"
+<field 	name="events_picture_height" type="text" default="25"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_EVENTS_HEIGHT" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_EVENTS_HEIGHT">
 		</field>
