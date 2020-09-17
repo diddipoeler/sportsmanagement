@@ -110,6 +110,12 @@ function ImportTables()
 
 	$imports = file_get_contents(JPATH_ADMINISTRATOR . '/components/' . $option . '/sql/install.mysql.utf8.sql');
 
+  $queries1      = $db->splitSql($imports);
+  //echo "<span style='color:orange; '>" . 'queries1<pre>'.print_r($queries1,true).'</pre>' . '</span>';
+  //echo "<span style='color:orange; '>" . 'imports<pre>'.print_r($imports,true).'</pre>' . '</span>';
+  
+  
+  
 	$imports = preg_replace("%/\*(.*)\*/%Us", '', $imports);
 	$imports = preg_replace("%^--(.*)\n%mU", '', $imports);
 	$imports = preg_replace("%^$\n%mU", '', $imports);
@@ -134,7 +140,11 @@ function ImportTables()
 		{
 			$DummyStr = $import;
 			$DummyStr = substr($DummyStr, strpos($DummyStr, '`') + 1);
+          //echo "<span style='color:orange; '>" . __LINE__.' DummyStr<pre>'.print_r($DummyStr,true).'</pre>' . '</span>';
 			$DummyStr = substr($DummyStr, 0, strpos($DummyStr, '`'));
+          //echo "<span style='color:orange; '>" . __LINE__.' DummyStr<pre>'.print_r($DummyStr,true).'</pre>' . '</span>';
+          $jsmtable = $DummyStr;
+          
 			$db->setQuery($import);
 			$panelName = substr(str_replace('sportsmanagement', '', str_replace('_', '', $DummyStr)), 1);
 
@@ -161,7 +171,28 @@ function ImportTables()
 
 			$DummyStr    = substr($DummyStr, strpos($DummyStr, '(') + 1);
 			$DummyStr    = substr($DummyStr, 0, strpos($DummyStr, 'ENGINE'));
-			$keysIndexes = trim(trim(substr($DummyStr, strpos($DummyStr, 'PRIMARY KEY'))), ')');
+          
+          
+          switch ($jsmtable)
+          {
+            case '#__sportsmanagement_person_project_position':
+              $keysIndexes = trim(trim(substr($DummyStr, strpos($DummyStr, 'UNIQUE KEY'))), ')');
+              break;
+	 case '#__sportsmanagement_log_entries':
+              $keysIndexes = trim(trim(substr($DummyStr, strpos($DummyStr, 'KEY'))), ')');
+              break;
+            default:
+              $keysIndexes = trim(trim(substr($DummyStr, strpos($DummyStr, 'PRIMARY KEY'))), ')');
+              break;
+          }
+          
+			
+          
+          
+          
+          //echo "<span style='color:orange; '>" . __LINE__.' keysIndexes<pre>'.print_r($keysIndexes,true).'</pre>' . '</span>';
+          
+          
 			$indexes     = explode("\r\n", $keysIndexes);
 
 			if ($indexes[0] == $keysIndexes)
@@ -174,9 +205,26 @@ function ImportTables()
 				}
 			}
 
-			$DummyStr = trim(trim(substr($DummyStr, 0, strpos($DummyStr, 'PRIMARY KEY'))), ',');
+          switch ($jsmtable)
+          {
+            case '#__sportsmanagement_person_project_position':
+                $DummyStr = trim(trim(substr($DummyStr, 0, strpos($DummyStr, 'UNIQUE KEY'))), ',');
+              break;
+	  case '#__sportsmanagement_log_entries':
+                $DummyStr = trim(trim(substr($DummyStr, 0, strpos($DummyStr, 'KEY'))), ',');
+              break;
+            default:
+              $DummyStr = trim(trim(substr($DummyStr, 0, strpos($DummyStr, 'PRIMARY KEY'))), ',');
+              break;
+          }
+			
 			$fields   = explode("\r\n", $DummyStr);
-
+// $jsmtable
+          //echo "<span style='color:orange; '>" . __LINE__.' jsmtable<pre>'.print_r($jsmtable,true).'</pre>' . '</span>';
+          //echo "<span style='color:orange; '>" . __LINE__.' DummyStr<pre>'.print_r($DummyStr,true).'</pre>' . '</span>';
+          //echo "<span style='color:orange; '>" . __LINE__.' fields<pre>'.print_r($fields,true).'</pre>' . '</span>';
+          //echo "<span style='color:orange; '>" . __LINE__.' import<pre>'.print_r($import,true).'</pre>' . '</span>';
+          
 			if ($fields[0] == $DummyStr)
 			{
 				$fields = explode("\n", $DummyStr);
@@ -220,7 +268,7 @@ function ImportTables()
 			echo Text::sprintf('Table needs following<br />keys/indexes:', $tableName);
 			echo '</th></tr>';
 			
-			//echo "<span style='color:orange; '>" . 'fields<pre>'.print_r($fields,true).'</pre>' . '</span>';
+			//echo "<span style='color:orange; '>" . __LINE__.' fields<pre>'.print_r($fields,true).'</pre>' . '</span>';
 			
 			$k = 0;
 
