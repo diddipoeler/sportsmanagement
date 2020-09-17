@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage updates
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -23,8 +19,8 @@ use Joomla\CMS\Component\ComponentHelper;
 HTMLHelper::_('bootstrap.framework');
 jimport('joomla.html.html.bootstrap');
 
-$version           = '1.0.58';
-$updateFileDate    = '2017-01-15';
+$version           = '3.8.0';
+$updateFileDate    = '2020-09-17';
 $updateFileTime    = '00:05';
 $updateDescription = '<span style="color:orange">Update all tables using the current install sql-file.</span>';
 $excludeFile       = 'false';
@@ -223,6 +219,9 @@ function ImportTables()
 			echo '<tr><th class="key" style="vertical-align:top; width:10; white-space:nowrap; " rowspan="' . $rows . '">';
 			echo Text::sprintf('Table needs following<br />keys/indexes:', $tableName);
 			echo '</th></tr>';
+			
+			//echo "<span style='color:orange; '>" . 'fields<pre>'.print_r($fields,true).'</pre>' . '</span>';
+			
 			$k = 0;
 
 			foreach ($newIndexes AS $index)
