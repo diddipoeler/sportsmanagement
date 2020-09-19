@@ -768,4 +768,9 @@ description="MOD_SPORTSMANAGEMENT_MATCHES_REFEREE_NAME_FORMAT_DESCR" />
 			</fieldset>
 		</fields>
 	</config>
+	
+	<updateservers>
+<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/modules/mod_sportsmanagement_matches/update-server.xml</server>
+</updateservers>
+
 </extension>

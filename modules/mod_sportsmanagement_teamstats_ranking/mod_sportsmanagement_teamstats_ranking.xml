@@ -189,5 +189,10 @@
 				</fieldset>
 		</fields>
 	</config>
+	
+	<updateservers>
+<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/modules/mod_sportsmanagement_teamstats_ranking/update-server.xml</server>
+</updateservers>
+
 </extension>
 		
