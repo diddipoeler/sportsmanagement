@@ -9,7 +9,7 @@
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	
 	
-	<version>1.1.0</version>
+	<version>3.8.0</version>
 	<description>MOD_SPORTSMANAGEMENT_GOOGLE_CALENDAR_DESCRIPTION</description>
 	<files>
 		<filename module="mod_sportsmanagement_google_calendar">mod_sportsmanagement_google_calendar.php</filename>

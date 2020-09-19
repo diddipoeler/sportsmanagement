@@ -7,7 +7,7 @@
 	<license>GNU/GPL</license>
 	<authorEmail>diddipoeler@arcor.de</authorEmail>
 	<authorUrl>http://www.fussballineuropa.de</authorUrl>
-	<version>1.0</version>
+	<version>3.8.0</version>
 	<description>MOD_SPORTSMANAGEMENT_NEW_PROJECT_DESC</description>
 	<files>
 		<filename module="mod_sportsmanagement_new_project">mod_sportsmanagement_new_project.php</filename>
