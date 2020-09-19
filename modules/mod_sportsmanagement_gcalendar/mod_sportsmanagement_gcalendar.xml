@@ -12,9 +12,9 @@
 	<version>3.1.5</version>
 	<description>MOD_SPORTSMANAGEMENT_GCALENDAR_XML_DESCRIPTION</description>
 	<files>
-		<filename module="mod_sportsmanagement_gcalendar">mod_sportsmanagement_gcalendar.php
-		</filename>
+		<filename module="mod_sportsmanagement_gcalendar">mod_sportsmanagement_gcalendar.php</filename>
 		<filename>index.html</filename>
+		<filename>update-server.xml</filename>
 		<filename>helper.php</filename>
 		<folder>tmpl</folder>
 	</files>

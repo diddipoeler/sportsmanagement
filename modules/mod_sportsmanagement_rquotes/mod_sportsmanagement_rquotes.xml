@@ -30,6 +30,7 @@
 		<filename module="mod_sportsmanagement_rquotes">mod_sportsmanagement_rquotes.php</filename>
 		<filename>index.html</filename>
 		<filename>helper.php</filename>
+		<filename>update-server.xml</filename>
 		<folder>assets</folder>
 		<folder>elements</folder>
 		

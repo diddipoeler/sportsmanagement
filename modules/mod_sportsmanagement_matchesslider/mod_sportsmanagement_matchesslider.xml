@@ -15,6 +15,7 @@
 		<filename>index.html</filename>
 		<filename>helper.php</filename>
 		<filename>mod_sportsmanagement_matchesslider.xml</filename>
+		<filename>update-server.xml</filename>
 		<folder>connectors</folder>
 		<folder>fields</folder>
 		<folder>tmpl</folder>

@@ -11,6 +11,7 @@
 	<description>MOD_SPORTSMANAGEMENT_COUNT_REKORD_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_sportsmanagement_count_rekord">mod_sportsmanagement_count_rekord.php</filename>
+		<filename>update-server.xml</filename>
 		<folder>tmpl</folder>
 		<folder>css</folder>
 		<folder>images</folder>

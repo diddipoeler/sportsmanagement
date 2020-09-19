@@ -13,6 +13,7 @@
 	<description>MOD_SPORTSMANAGEMENT_GOOGLE_CALENDAR_DESCRIPTION</description>
 	<files>
 		<filename module="mod_sportsmanagement_google_calendar">mod_sportsmanagement_google_calendar.php</filename>
+		<filename>update-server.xml</filename>
 		<folder>media</folder>
 		<folder>tmpl</folder>
 		<filename>helper.php</filename>

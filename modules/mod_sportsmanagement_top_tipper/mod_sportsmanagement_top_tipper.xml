@@ -14,6 +14,7 @@
         <filename module="mod_sportsmanagement_top_tipper">mod_sportsmanagement_top_tipper.php</filename>
         <filename>index.html</filename>
         <filename>helper.php</filename>
+		<filename>update-server.xml</filename>
         <folder>tmpl</folder>
         <folder>css</folder>
     </files>

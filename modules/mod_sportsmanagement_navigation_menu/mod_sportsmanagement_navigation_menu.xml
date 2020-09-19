@@ -14,6 +14,7 @@
 		<filename module="mod_sportsmanagement_navigation_menu">mod_sportsmanagement_navigation_menu.php</filename>
 		<filename>helper.php</filename>
 		<filename>index.html</filename>
+		<filename>update-server.xml</filename>
 		<folder>css</folder>
 		<folder>fields</folder>
 		<folder>js</folder>

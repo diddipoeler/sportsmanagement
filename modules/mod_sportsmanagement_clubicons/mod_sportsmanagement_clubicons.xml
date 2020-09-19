@@ -11,6 +11,7 @@
 		<filename module="mod_sportsmanagement_clubicons">mod_sportsmanagement_clubicons.php</filename>
 		<filename>index.html</filename>
 		<filename>helper.php</filename>
+		<filename>update-server.xml</filename>
 		<folder>tmpl</folder>
     <folder>css</folder>
     <folder>js</folder>
