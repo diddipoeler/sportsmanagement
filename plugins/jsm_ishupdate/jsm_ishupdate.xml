@@ -7,7 +7,7 @@
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail>diddipoeler@arcor.det</authorEmail>
 	<authorUrl>http://www.fussballineuropa.de</authorUrl>
-	<version>1.0</version>
+	<version>1.0.0</version>
 	<description>PLUGIN_JSM_ISHUPDATE_DESC</description>
 	
 	<files>
@@ -37,13 +37,7 @@
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-				
-			
-			
-				
-				
-			
-				
+
 			
   </fieldset>
 		</fields>

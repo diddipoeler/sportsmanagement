@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <updates>
    <update>
-      <name>PLG_SEARCH_SPORTSMANAGEMENT_XML</name>
-      <description>PLG_SEARCH_SPORTSMANAGEMENT_XML</description>
-      <element>search_sportsmanagement</element>
+      <name>PLG_CONTENT_SPORTSMANAGEMENT_COMMENTS</name>
+      <description>PLG_CONTENT_SPORTSMANAGEMENT_COMMENTS</description>
+      <element>sportsmanagement_comments</element>
       <type>plugins</type>
       <version>1.0.0</version>
       <infourl title="Sports-Management URL">http://fussballineuropa.de</infourl>
