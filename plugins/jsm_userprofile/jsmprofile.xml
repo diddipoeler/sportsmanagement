@@ -23,5 +23,8 @@
 		
 	</languages> 
 	
- 
+ <updateservers>
+<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/plugins/jsm_userprofile/update-server.xml</server>
+</updateservers>
+
 </extension>

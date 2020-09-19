@@ -24,4 +24,9 @@
 		<language tag="de-DE">language/de-DE/de-DE.plg_jsm_siscron.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.plg_jsm_siscron.sys.ini</language>
 	</languages> 
+	
+<updateservers>
+<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/plugins/jsm_siscron/update-server.xml</server>
+</updateservers>
+	
 </extension>	
