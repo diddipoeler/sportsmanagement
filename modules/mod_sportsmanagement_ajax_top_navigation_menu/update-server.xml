@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <updates>
    <update>
-      <name>MOD_SPORTSMANAGEMENT_GOOGLE_CALENDAR</name>
-      <description>MOD_SPORTSMANAGEMENT_GOOGLE_CALENDAR</description>
-      <element>mod_sportsmanagement_google_calendar</element>
+      <name>MOD_SPORTSMANAGEMENT_AJAX_TOP_NAVIGATION_MENU</name>
+      <description>MOD_SPORTSMANAGEMENT_AJAX_TOP_NAVIGATION_MENU</description>
+      <element>mod_sportsmanagement_ajax_top_navigation_menu</element>
       <type>modules</type>
       <version>3.8.0</version>
       <infourl title="Sports-Management URL">http://fussballineuropa.de</infourl>

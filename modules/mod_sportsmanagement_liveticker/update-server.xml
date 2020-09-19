@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <updates>
    <update>
-      <name>MOD_SPORTSMANAGEMENT_ACT_SEASON</name>
-      <description>MOD_SPORTSMANAGEMENT_ACT_SEASON</description>
-      <element>mod_sportsmanagement_act_season</element>
+      <name>MOD_SPORTSMANAGEMENT_LIVETICKER_MODUL_NAME</name>
+      <description>MOD_SPORTSMANAGEMENT_LIVETICKER_MODUL_NAME</description>
+      <element>mod_sportsmanagement_liveticker</element>
       <type>modules</type>
       <version>3.8.0</version>
       <infourl title="Sports-Management URL">http://fussballineuropa.de</infourl>

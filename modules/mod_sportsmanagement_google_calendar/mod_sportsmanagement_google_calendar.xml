@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="1.0" client="site" method="upgrade">
-	<name>mod_sportsmanagement_google_calendar</name>
+	<name>MOD_SPORTSMANAGEMENT_GOOGLE_CALENDAR</name>
 	<creationDate>2015-01-05</creationDate>
 	<author>JSM-TEAM</author>
 	<authorEmail>diddipoeler@arcor.de</authorEmail>
