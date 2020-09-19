@@ -13,6 +13,7 @@
 	<files>
         <filename plugin="jsm_siscron">jsm_siscron.php</filename>
         <filename>index.html</filename>
+		<filename>update-server.xml</filename>	
         <folder>language</folder>
 		<folder>sql</folder>
     </files>

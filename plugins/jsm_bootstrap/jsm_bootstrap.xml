@@ -19,6 +19,7 @@
 	<files>
         <filename plugin="jsm_bootstrap">jsm_bootstrap.php</filename>
         <filename>index.html</filename>
+		<filename>update-server.xml</filename>	
         <folder>language</folder>
         <folder>css</folder>
     </files>
@@ -251,5 +252,9 @@ description="PLUGIN_JSM_BOOTSTRAP_XML_LOAD_FIXEDHEADER_DESC">
 			
 		</fields>
 	</config>
+
+<updateservers>
+<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/plugins/jsm_bootstrap/update-server.xml</server>
+</updateservers>
   
 </extension>        	

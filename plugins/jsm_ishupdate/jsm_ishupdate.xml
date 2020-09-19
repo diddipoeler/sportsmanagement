@@ -13,6 +13,7 @@
 	<files>
         <filename plugin="jsm_ishupdate">jsm_ishupdate.php</filename>
         <filename>index.html</filename>
+		<filename>update-server.xml</filename>	
         <folder>language</folder>
         <folder>css</folder>
     </files>
@@ -47,5 +48,8 @@
   </fieldset>
 		</fields>
 	</config>
+<updateservers>
+<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/plugins/jsm_ishupdate/update-server.xml</server>
+</updateservers>
   
 </extension>        	

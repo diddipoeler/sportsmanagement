@@ -13,6 +13,7 @@
 	<files>
 		<filename plugin="sportsmanagement_comments">sportsmanagement_comments.php</filename>
 		<filename>index.html</filename>
+		<filename>update-server.xml</filename>	
 		<folder>language</folder>
 	</files>
 
@@ -38,4 +39,8 @@
 			</fieldset>
 		</fields>
 	</config>
+	
+<updateservers>
+<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/plugins/jsm_jcomments/update-server.xml</server>
+</updateservers>	
 </extension>
