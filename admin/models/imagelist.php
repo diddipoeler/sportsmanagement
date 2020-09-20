@@ -191,6 +191,7 @@ $fileMeta->dateM = $fileDate;
 }
 //echo '<pre>'.print_r($filesOutput,true).'</pre>';    
   
+  /*
 $directoriesOutput = [];
 			foreach ($directories as $value)
 			{
@@ -200,6 +201,8 @@ $directoriesOutput = [];
 					'is_empty' => (int)self::dirIisEmpty($directory . DIRECTORY_SEPARATOR . $value)
 				];
 			}  
+            */
+            
 //  echo '<pre>'.print_r($directoriesOutput,true).'</pre>'; 
   /*
   return json_encode([
