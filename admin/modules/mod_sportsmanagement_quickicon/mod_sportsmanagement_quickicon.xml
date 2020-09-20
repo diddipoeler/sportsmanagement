@@ -22,6 +22,7 @@
 		<filename  module="mod_sportsmanagement_quickicon">mod_sportsmanagement_quickicon.php</filename>
 		<filename>helper.php</filename>
 		<filename>index.html</filename>
+		<filename>update-server.xml</filename>	
 		<folder>tmpl</folder>
 	</files>
 	
@@ -39,5 +40,9 @@
         <language tag="pl-PL">language/pl-PL/pl-PL.mod_sportsmanagement_quickicon.sys.ini</language>
 		
 	</languages>
+	
+<updateservers>
+<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/admin/modules/mod_sportsmanagement_quickicon/update-server.xml</server>
+</updateservers>
 	
 </extension>
