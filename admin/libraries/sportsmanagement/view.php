@@ -281,7 +281,7 @@ $this->app->setUserState('com_sportsmanagement.itemname', $this->item->name);
 break;
 case 'teamplayer';
 case 'projectreferee';
-$mdlPerson      = BaseDatabaseModel::getInstance("player", "sportsmanagementModel");
+$mdlPerson = BaseDatabaseModel::getInstance("player", "sportsmanagementModel");
 $project_person = $mdlPerson->getPerson($this->item->person_id);
 $this->app->setUserState('com_sportsmanagement.itemname', $project_person->lastname . ' - ' . $project_person->firstname);
 break;
@@ -290,6 +290,16 @@ $this->app->setUserState('com_sportsmanagement.itemname', $this->item->lastname.
 break;
 case 'smquote';
 $this->app->setUserState('com_sportsmanagement.itemname', $this->item->author);		
+break;
+
+case 'projectteam';
+$team_id = $this->item->team_id;
+$season_team = Table::getInstance('seasonteam', 'sportsmanagementTable');
+$season_team->load($team_id);
+$mdlTeam = BaseDatabaseModel::getInstance('Team', 'sportsmanagementModel');
+$this->project_team = $mdlTeam->getTeam($season_team->team_id, 0);
+$this->app->setUserState('com_sportsmanagement.itemname', $this->project_team->name);
+
 break;		
 }
             
