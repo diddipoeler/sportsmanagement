@@ -36,7 +36,7 @@ $bootstrap_fileinput_version = '5.1.2';
 ?>
 
 <!-- bootstrap 4.x is supported. You can also use the bootstrap css 3.3.x versions -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
       crossorigin="anonymous">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/<?php echo $bootstrap_fileinput_version; ?>/css/fileinput.min.css" media="all"
       rel="stylesheet" type="text/css"/>
