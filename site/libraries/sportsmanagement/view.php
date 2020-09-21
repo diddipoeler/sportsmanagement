@@ -121,16 +121,15 @@ else
 class sportsmanagementView extends HtmlView
 {
 	protected $icon = '';
-
 	protected $title = '';
-
 	protected $layout = '';
-
 	protected $tmpl = '';
-
 	protected $table_data_class = '';
-
 	protected $table_data_div = '';
+	
+	public $bootstrap_fileinput_version = '5.1.2';
+	public $bootstrap_fileinput_bootstrapversion = '4.3.1';
+	public $bootstrap_fileinput_popperversion = '1.14.7';
 
 	/**
 	 * sportsmanagementView::display()
