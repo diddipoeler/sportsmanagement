@@ -68,6 +68,8 @@ class sportsmanagementView extends BaseHtmlView
 	protected $table_data_class = '';
 	protected $table_data_div = '';
     public $itemname;
+	
+	public $bootstrap_fileinput_version = '5.1.2';
 
 	/**
 	 * sportsmanagementView::display()
