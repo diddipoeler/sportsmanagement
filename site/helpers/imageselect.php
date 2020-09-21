@@ -212,7 +212,7 @@ $img.attr("src", "' . Uri::root() . '" + select);
 		}
 
 		$link = 'index.php?option=com_sportsmanagement&amp;view=imagehandler&amp;layout=' . $layoutdrag . '&amp;type=' .
-			$type . '&amp;field=' . $fieldname . '&amp;fieldid=' . $fieldid . '&amp;tmpl=component&pid=0&mid=0';
+			$type . '&amp;field=' . $fieldname . '&amp;fieldid=' . $fieldid . '&amp;tmpl=component&pid=0&mid=0&imagelist=';
 
 		//        $link2 = 'index.php?option=com_sportsmanagement&amp;view=imagehandler&amp;type=' .
 		//		$type . '&amp;field=' . $fieldname . '&amp;fieldid=' . $fieldid .'&amp;tmpl=component';
