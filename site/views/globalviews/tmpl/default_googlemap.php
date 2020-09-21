@@ -39,16 +39,17 @@ if ($this->config['use_which_map'])
 <link rel="stylesheet" href="https://unpkg.com/leaflet@<?php echo $this->leaflet_version;?>/dist/leaflet.css"
   integrity="<?php echo $this->leaflet_css_integrity;?>"
   crossorigin=""/>
+<?php  
+$this->document->addStyleSheet('https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@'.$this->leaflet_locatecontrol.'/dist/L.Control.Locate.min.css');  
+$this->document->addStyleSheet('https://unpkg.com/leaflet-routing-machine@'.$this->leaflet_routing_machine.'/dist/leaflet-routing-machine.css');   
+?>
 <script src="https://unpkg.com/leaflet@<?php echo $this->leaflet_version;?>/dist/leaflet.js"
   integrity="<?php echo $this->leaflet_js_integrity;?>"
   crossorigin=""></script>
 
 <?php	
-
-$this->document->addStyleSheet('https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@'.$this->leaflet_locatecontrol.'/dist/L.Control.Locate.min.css'); 
-$this->document->addScript('https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@'.$this->leaflet_locatecontrol.'/dist/L.Control.Locate.min.js');
  
-$this->document->addStyleSheet('https://unpkg.com/leaflet-routing-machine@'.$this->leaflet_routing_machine.'/dist/leaflet-routing-machine.css'); 
+$this->document->addScript('https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@'.$this->leaflet_locatecontrol.'/dist/L.Control.Locate.min.js');
 $this->document->addScript('https://unpkg.com/leaflet-routing-machine@'.$this->leaflet_routing_machine.'/dist/leaflet-routing-machine.js');
 
 
