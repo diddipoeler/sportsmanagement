@@ -48,8 +48,10 @@ if ($this->config['use_which_map'])
 $this->document->addScript('https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@'.$this->leaflet_locatecontrol.'/dist/L.Control.Locate.min.js');
 $this->document->addStyleSheet('https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@'.$this->leaflet_locatecontrol.'/dist/L.Control.Locate.min.css');
 
-$this->document->addScript('https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/'.$this->leaflet_routing_machine.'/leaflet-routing-machine.js');
-$this->document->addStyleSheet('https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/'.$this->leaflet_routing_machine.'/leaflet-routing-machine.css');
+ 
+$this->document->addStyleSheet('https://unpkg.com/leaflet-routing-machine@'.$this->leaflet_routing_machine.'/dist/leaflet-routing-machine.css'); 
+$this->document->addScript('https://unpkg.com/leaflet-routing-machine@'.$this->leaflet_routing_machine.'/dist/leaflet-routing-machine.js');
+
 
 	/**
 	 * geocoderscript
