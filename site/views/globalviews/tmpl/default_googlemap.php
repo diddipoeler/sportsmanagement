@@ -45,11 +45,11 @@ if ($this->config['use_which_map'])
 
 <?php	
 
-	$this->document->addScript('https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.63.0/dist/L.Control.Locate.min.js');
-	$this->document->addStyleSheet('https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.63.0/dist/L.Control.Locate.min.css');
+$this->document->addScript('https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@'.$this->leaflet_locatecontrol.'/dist/L.Control.Locate.min.js');
+$this->document->addStyleSheet('https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@'.$this->leaflet_locatecontrol.'/dist/L.Control.Locate.min.css');
 
-	$this->document->addScript('https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.2.12/leaflet-routing-machine.js');
-	$this->document->addStyleSheet('https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.2.12/leaflet-routing-machine.css');
+$this->document->addScript('https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/'.$this->leaflet_routing_machine.'/leaflet-routing-machine.js');
+$this->document->addStyleSheet('https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/'.$this->leaflet_routing_machine.'/leaflet-routing-machine.css');
 
 	/**
 	 * geocoderscript
