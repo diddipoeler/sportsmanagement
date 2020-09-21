@@ -70,6 +70,8 @@ class sportsmanagementView extends BaseHtmlView
     public $itemname;
 	
 	public $bootstrap_fileinput_version = '5.1.2';
+	public $bootstrap_fileinput_bootstrapversion = '4.3.1';
+	public $bootstrap_fileinput_popperversion = '1.14.7';
 
 	/**
 	 * sportsmanagementView::display()
