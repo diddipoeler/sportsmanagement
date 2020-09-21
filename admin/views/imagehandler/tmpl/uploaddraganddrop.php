@@ -36,7 +36,7 @@ $languageCode = substr($lang->getTag(),0,2);
 ?>
 
 <!-- bootstrap 4.x is supported. You can also use the bootstrap css 3.3.x versions -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/<?php echo $this->bootstrap_fileinput_bootstrapversion; ?>/css/bootstrap.min.css"
       crossorigin="anonymous">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/<?php echo $this->bootstrap_fileinput_version; ?>/css/fileinput.min.css" media="all"
       rel="stylesheet" type="text/css"/>
@@ -60,11 +60,11 @@ $languageCode = substr($lang->getTag(),0,2);
 
 <!-- popper.min.js below is needed if you use bootstrap 4.x. You can also use the bootstrap js 
    3.3.x versions without popper.min.js. -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/<?php echo $this->bootstrap_fileinput_popperversion; ?>/umd/popper.min.js"></script>
 
 <!-- bootstrap.min.js below is needed if you wish to zoom and preview file content in a detail modal
     dialog. bootstrap 4.x is supported. You can also use the bootstrap js 3.3.x versions. -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/<?php echo $this->bootstrap_fileinput_bootstrapversion; ?>/js/bootstrap.min.js" type="text/javascript"></script>
 
 <!-- the main fileinput plugin file -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/<?php echo $this->bootstrap_fileinput_version; ?>/js/fileinput.min.js"></script>
