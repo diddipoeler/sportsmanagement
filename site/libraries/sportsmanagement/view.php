@@ -133,6 +133,9 @@ class sportsmanagementView extends HtmlView
 	public $leaflet_version = '1.7.1';
 	public $leaflet_css_integrity = 'sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==';
 	public $leaflet_js_integrity = 'sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==';
+	
+	public $leaflet_locatecontrol = '0.63.0';
+	public $leaflet_routing_machine = '3.2.12';
 
 	/**
 	 * sportsmanagementView::display()
