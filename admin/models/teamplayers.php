@@ -60,6 +60,20 @@ class sportsmanagementModelteamplayers extends JSMModelList
 	
 	function getprojectpublished($items = NULL)
 	{
+		//echo '<pre>'.print_r($items,true).'</pre>';
+      
+      foreach ($items as $count_i => $item)
+	{
+        $this->jsmquery->clear();
+        $this->jsmquery->select('ppp.published');
+		$this->jsmquery->from('#__sportsmanagement_person_project_position AS ppp');
+		$this->jsmquery->where('ppp.person_id = '. $item->person_id);
+		$this->jsmquery->where('ppp.project_id = ' . $this->_project_id);
+		$this->jsmquery->where('ppp.persontype = ' . $this->getState('filter.persontype'));
+        $this->jsmdb->setQuery($this->jsmquery);
+		$item->project_published = $this->jsmdb->loadResult();
+        
+      }
 		
 	return $items;	
 	}
