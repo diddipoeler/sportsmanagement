@@ -57,6 +57,12 @@ class sportsmanagementModelteamplayers extends JSMModelList
 		$getDBConnection = sportsmanagementHelper::getDBConnection();
 		parent::setDbo($getDBConnection);
 	}
+	
+	function getprojectpublished($items = NULL)
+	{
+		
+	return $items;	
+	}
 
 	/**
 	 * sportsmanagementModelteamplayers::getListQuery()
