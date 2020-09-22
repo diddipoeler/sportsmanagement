@@ -180,7 +180,7 @@ class sportsmanagementModelteamplayer extends JSMModelAdmin
 		// build the html options for position
 		$position_ids          = array();
 		$mdlPositions          = BaseDatabaseModel::getInstance('Positions', 'sportsmanagementModel');
-		$project_ref_positions = $mdlPositions->getProjectPositions($this->project_id, 1);
+		$project_ref_positions = $mdlPositions->getProjectPositions($this->project_id, $this->persontype);
 
 		if ($project_ref_positions)
 		{
@@ -208,15 +208,40 @@ class sportsmanagementModelteamplayer extends JSMModelAdmin
 				$this->jsmdb->quoteName('project_position_id') . ' = ' . $results
 			);
 
-			// Conditions for which records should be updated.
+switch ($this->persontype)
+              {
+                case 1:    
+                  // Conditions for which records should be updated.
 			$conditions = array(
 				$this->jsmdb->quoteName('project_position_id') . ' = 0',
 				$this->jsmdb->quoteName('teamplayer_id') . ' = ' . $team_player_id
 			);
+                  break;
+                case 2:
+                  // Conditions for which records should be updated.
+			$conditions = array(
+				$this->jsmdb->quoteName('project_position_id') . ' = 0',
+				$this->jsmdb->quoteName('team_staff_id') . ' = ' . $team_player_id
+			);
+                  break;
+                  
+              }
+          
+			
 
 			try
 			{
-				$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_match_player'))->set($fields)->where($conditions);
+              switch ($this->persontype)
+              {
+                case 1:    
+                  $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_match_player'))->set($fields)->where($conditions);
+                  break;
+                case 2:
+                  $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_match_staff'))->set($fields)->where($conditions);
+                  break;
+                  
+              }
+				
 				$this->jsmdb->setQuery($this->jsmquery);
 				$resultupdate = $this->jsmdb->execute();
 			}
@@ -224,6 +249,8 @@ class sportsmanagementModelteamplayer extends JSMModelAdmin
 			{
 				$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
                 $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+              
+              $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($this->jsmquery->dump(),true).'</pre>'), 'error');
 			}
 		}
 
