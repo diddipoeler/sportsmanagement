@@ -1375,6 +1375,7 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 			$query->from('#__sportsmanagement_project_position AS ppos');
 			$query->join('INNER', '#__sportsmanagement_position AS pos ON ppos.position_id = pos.id');
 			$query->where('ppos.project_id = ' . (int) self::$projectid);
+			$query->order('pos.persontype,pos.ordering');
 
 			try
 			{
