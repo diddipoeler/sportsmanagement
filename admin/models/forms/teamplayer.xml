@@ -86,7 +86,8 @@
   			
 		<field
 			name="injury"
-			type="extensionradiobutton"
+			type="radio"
+			class="btn-group btn-group-yesno"
 			default="0"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURED"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURED_DESC">
