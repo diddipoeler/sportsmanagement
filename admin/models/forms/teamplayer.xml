@@ -86,8 +86,8 @@
   			
 		<field
 			name="injury"
-			type="radio"
-			class="btn-group btn-group-yesno"
+			type="extensionradiobutton"
+			class="radio btn-group btn-group-yesno"
 			default="0"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURED"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURED_DESC">
@@ -102,7 +102,8 @@
 			showon="injury:1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURY_DATE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURY_DATE_DESC"
-			class="inputbox"/>			
+			class="inputbox"
+			format="%d-%m-%Y"/>			
 		<field
 			name="injury_date_end"
 			type="calendar"
@@ -111,7 +112,8 @@
 			showon="injury:1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURY_END"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURY_END_DESC"
-			class="inputbox"/>	
+			class="inputbox"
+			format="%d-%m-%Y"/>	
 		<field
 			name="injury_detail"
 			showon="injury:1"
@@ -123,6 +125,7 @@
 		<field
 			name="suspension"
 			type="extensionradiobutton"
+			class="radio btn-group btn-group-yesno"
 			default="0"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENDED"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENDED_DESC">
@@ -159,6 +162,7 @@
 		<field
 			name="away"
 			type="extensionradiobutton"
+			class="radio btn-group btn-group-yesno"
 			default="0"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY_DESC">
