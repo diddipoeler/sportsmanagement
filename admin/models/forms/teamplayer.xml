@@ -80,124 +80,131 @@
 			class="inputbox"/>
 </fieldset>
 
-<fieldset name="persondetails"
-  label="COM_SPORTSMANAGEMENT_TABS_PERSON_DETAILS"
-  description="COM_SPORTSMANAGEMENT_TABS_PERSON_DETAILS_DESC">
-  			
-		<field
-			name="injury"
+<fieldset name="injury" 
+label="COM_SPORTSMANAGEMENT_TABS_INJURY"
+description="COM_SPORTSMANAGEMENT_TABS_INJURY_DESC">		
+<field
+name="injury"
+type="extensionradiobutton"
+default="0"
+class="radio btn-group btn-group-yesno"
+label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURED"
+description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURED_DESC">
+<option value="0">JNO</option>
+<option value="1">JYES</option>
+</field>	
+<field
+name="injury_detail"
+showon="injury:1"
+type="editor"
+label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURY_TYPE"
+description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURY_TYPE_DESC"
+width="450" 
+filter="safehtml"/>	
+<field
+name="injury_date_start"
+showon="injury:1"
+type="calendar"
+label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURY_START"
+description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURY_START_DESC"
+class="inputbox"
+format="%d-%m-%Y"/>
+<field
+name="injury_date_end"
+showon="injury:1"
+type="calendar"
+label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURY_END"
+description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURY_END_DESC"
+class="inputbox"
+format="%d-%m-%Y"/>		
+</fieldset>
+
+<fieldset name="suspension" 
+  label="COM_SPORTSMANAGEMENT_TABS_SUSPENSION"
+  description="COM_SPORTSMANAGEMENT_TABS_SUSPENSION_DESC">		
+  <field
+			name="suspension"
 			type="extensionradiobutton"
-			class="radio btn-group btn-group-yesno"
 			default="0"
-			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURED"
-			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURED_DESC">
+      class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SUSPENDED"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SUSPENDED_DESC">
+		<option value="0">JNO</option>
+		<option value="1">JYES</option>
+		</field>		
+  <field
+				name="suspension_detail"
+				showon="suspension:1"
+				type="editor"
+				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SUSPENSION_TYPE"
+				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SUSPENSION_TYPE_DESC"
+				width="450" 
+				filter="safehtml"/>	
+  <field
+			name="susp_date_start"
+			showon="suspension:1"
+			type="calendar"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SUSP_START"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SUSP_START_DESC"
+			class="inputbox"
+			format="%d-%m-%Y"/>
+	<field
+			name="susp_date_end"
+			showon="suspension:1"
+			type="calendar"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SUSP_END"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SUSP_END_DESC"
+			class="inputbox"
+			format="%d-%m-%Y"/>		
+
+	</fieldset>
+
+<fieldset name="away" 
+  label="COM_SPORTSMANAGEMENT_TABS_AWAY"
+  description="COM_SPORTSMANAGEMENT_TABS_AWAY_DESC">		
+  <field
+			name="away"
+			type="extensionradiobutton"
+			default="0"
+      class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AWAY"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AWAY_DESC">
 		<option value="0">JNO</option>
 		<option value="1">JYES</option>
 		</field>	
-		<field
-			name="injury_date_start"
-			type="calendar"
-			required="false"
-			varname="cid"
-			showon="injury:1"
-			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURY_DATE"
-			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURY_DATE_DESC"
-			class="inputbox"
-			format="%d-%m-%Y"/>			
-		<field
-			name="injury_date_end"
-			type="calendar"
-			required="false"
-			varname="cid"
-			showon="injury:1"
-			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURY_END"
-			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURY_END_DESC"
-			class="inputbox"
-			format="%d-%m-%Y"/>	
-		<field
-			name="injury_detail"
-			showon="injury:1"
-			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURY_TYPE"
-			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURY_TYPE_DESC"
-			type="editor"
-      width="150" 
-			filter="safehtml"/>				
-		<field
-			name="suspension"
-			type="extensionradiobutton"
-			class="radio btn-group btn-group-yesno"
-			default="0"
-			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENDED"
-			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENDED_DESC">
-		<option value="0">JNO</option>
-		<option value="1">JYES</option>
-		</field>				
-		<field
-			name="susp_date_start"
-			type="calendar"
-			required="false"
-			varname="cid"
-			showon="suspension:1"
-			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENSION_DATE"
-			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENSION_DATE_DESC"
-			class="inputbox"/>			
-		<field
-			name="susp_date_end"
-			type="calendar"
-			required="false"
-			varname="cid"
-			showon="suspension:1"
-			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENSION_END"
-			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENSION_END_DESC"
-			class="inputbox"/>	
-		<field
-			name="suspension_detail"
-			type="editor"
-      width="150" 
-			filter="safehtml"
-			showon="suspension:1"
-			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENSION_TYPE"
-			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENSION_TYPE_DESC"
-			class="inputbox"/>				
-		<field
-			name="away"
-			type="extensionradiobutton"
-			class="radio btn-group btn-group-yesno"
-			default="0"
-			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY"
-			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY_DESC">
-		<option value="0">JNO</option>
-		<option value="1">JYES</option>
-		</field>			
-		<field
+  <field
+				name="away_detail"
+				showon="away:1"
+				type="editor"
+				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION"
+				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION_DESC"
+				width="450" 
+				filter="safehtml"/>	
+  <field
 			name="away_date_start"
-			type="calendar"
-			required="false"
-			varname="cid"
 			showon="away:1"
-			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY_DATE"
-			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY_DATE_DESC"
-			class="inputbox"/>			
-		<field
+			type="calendar"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AWAY_START"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AWAY_START_DESC"
+			class="inputbox"
+			format="%d-%m-%Y"/>
+	<field
 			name="away_date_end"
+			showon="away:1"
 			type="calendar"
-			required="false"
-			varname="cid"
-			showon="away:1"
-			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY_END"
-			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY_END_DESC"
-			class="inputbox"/>	
-		<field
-			name="away_detail"
-			type="editor"
-      width="150" 
-			filter="safehtml"
-			showon="away:1"
-			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY_TYPE"
-			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY_TYPE_DESC"
-			class="inputbox"/>				
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AWAY_END"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AWAY_END_DESC"
+			class="inputbox"
+			format="%d-%m-%Y"/>		
+
+	</fieldset>
+	<!--
+<fieldset name="persondetails"
+  label="COM_SPORTSMANAGEMENT_TABS_PERSON_DETAILS"
+  description="COM_SPORTSMANAGEMENT_TABS_PERSON_DETAILS_DESC">
+
 	</fieldset>			
-	
+-->	
   <fieldset name="picture"
   label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
   description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">		
