@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage player
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
@@ -29,7 +25,6 @@ use Joomla\CMS\Uri\Uri;
 class sportsmanagementViewPlayer extends sportsmanagementView
 {
 
-
 	/**
 	 * sportsmanagementViewPlayer::init()
 	 *
@@ -37,7 +32,6 @@ class sportsmanagementViewPlayer extends sportsmanagementView
 	 */
 	function init()
 	{
-
 		$model                = $this->model;
 		$model::$projectid    = $this->jinput->getInt('p', 0);
 		$model::$personid     = $this->jinput->getInt('pid', 0);
@@ -65,9 +59,7 @@ class sportsmanagementViewPlayer extends sportsmanagementView
 
 		if (isset($this->overallconfig['person_events']))
 		{
-			/**
-			 *              alles ok
-			 */
+			/** alles ok */
 		}
 		else
 		{
@@ -89,9 +81,7 @@ class sportsmanagementViewPlayer extends sportsmanagementView
 			$this->extrafields = sportsmanagementHelper::getUserExtraFields($person->id, 'frontend', $model::$cfg_which_database);
 		}
 
-		/**
-		 * Select the teamplayer that is currently published (in case the player played in multiple teams in the project)
-		 */
+		/** Select the teamplayer that is currently published (in case the player played in multiple teams in the project) */
 		$teamPlayer = null;
 
 		if (count($this->teamPlayers))
@@ -122,9 +112,7 @@ class sportsmanagementViewPlayer extends sportsmanagementView
 		$this->showediticon       = sportsmanagementModelPerson::getAllowed($this->config['edit_own_player']);
 		$this->stats              = sportsmanagementModelProject::getProjectStats(0, 0, $model::$cfg_which_database);
 
-		/**
-		 * Get events and stats for current project
-		 */
+		/** Get events and stats for current project */
 		if ($this->config['show_gameshistory'])
 		{
 			$this->games       = $model->getGames();
@@ -133,9 +121,7 @@ class sportsmanagementViewPlayer extends sportsmanagementView
 			$this->gamesstats  = $model->getPlayerStatsByGame();
 		}
 
-		/**
-		 * Get events and stats for all projects where player played in (possibly restricted to sports type of current project)
-		 */
+		/** Get events and stats for all projects where player played in (possibly restricted to sports type of current project) */
 		if ($this->config['show_career_stats'])
 		{
 			$this->stats        = $model->getStats();
@@ -150,9 +136,7 @@ class sportsmanagementViewPlayer extends sportsmanagementView
 			$form_value = $this->extended->getValue('COM_SPORTSMANAGEMENT_EXT_PERSON_PARENT_POSITIONS');
 		}
 
-		/**
-		 * nebenposition vorhanden ?
-		 */
+		/** nebenposition vorhanden ? */
 		$this->person_parent_positions = $form_value;
 
 		unset($form_value);
@@ -167,9 +151,7 @@ class sportsmanagementViewPlayer extends sportsmanagementView
 		}
 		else
 		{
-			/**
-			 * wenn beim spieler noch nichts gesetzt wurde dann nehmen wir die standards
-			 */
+			/** wenn beim spieler noch nichts gesetzt wurde dann nehmen wir die standards */
 			switch ($this->teamPlayer->position_name)
 			{
 				case 'COM_SPORTSMANAGEMENT_SOCCER_P_DEFENDER':
