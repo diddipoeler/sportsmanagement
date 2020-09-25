@@ -28,7 +28,6 @@ use Joomla\CMS\HTML\HTMLHelper;
           enableZoom: true,
           showTooltip: true,
           scaleColors: ['#C8EEFF', '#006491'],
-          values: sample_data,
           normalizeFunction: 'polynomial'
         });
       });
