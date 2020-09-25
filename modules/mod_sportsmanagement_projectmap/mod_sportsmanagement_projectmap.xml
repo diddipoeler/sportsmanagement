@@ -22,7 +22,7 @@
 <filename>mod_sportsmanagement_projectmap.xml</filename>	
 <filename>update-server.xml</filename>	
 <folder>dist</folder>
-
+<folder>tmpl</folder>
 </files>
 	
 	<languages>
