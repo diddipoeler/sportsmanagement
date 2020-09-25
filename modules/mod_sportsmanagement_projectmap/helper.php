@@ -15,10 +15,25 @@ use Joomla\CMS\Factory;
 JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 
 
+/**
+ * modJSMprojectmaphelper
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2020
+ * @version $Id$
+ * @access public
+ */
 class modJSMprojectmaphelper
 {
 
 	
+	/**
+	 * modJSMprojectmaphelper::getData()
+	 * 
+	 * @param mixed $season_ids
+	 * @return void
+	 */
 	public static function getData($season_ids)
 	{
     
