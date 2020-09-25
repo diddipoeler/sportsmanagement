@@ -16,7 +16,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
-
+<!--
 <script>
       jQuery(document).ready(function () {
         jQuery('#vmap').vectorMap({
@@ -34,3 +34,6 @@ use Joomla\CMS\HTML\HTMLHelper;
     </script>
 
     <div id="vmap" style="width: 600px; height: 400px;"></div>
+-->
+
+<div id="map"></div>

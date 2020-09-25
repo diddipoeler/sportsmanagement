@@ -23,6 +23,7 @@
 <filename>update-server.xml</filename>	
 <folder>dist</folder>
 <folder>tmpl</folder>
+<folder>htmlworldmap</folder>
 </files>
 	
 	<languages>
