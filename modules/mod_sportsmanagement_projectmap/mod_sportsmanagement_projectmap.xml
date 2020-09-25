@@ -1,1 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="3.0" client="site" method="upgrade">
+<compatibility url="https://www.fussballineuropa.de">
+    <include>
+      <version if="gt">3.0</version> <!-- Ok for Joomla any version of 3.0 to less than 4 -->
+      <version>4</version> <!-- Ok for Joomla any version of 4 -->
+    </include>
+</compatibility>	
+	<name>MOD_SPORTSMANAGEMENT_PROJECTMAP</name>
+	<author>diddipoeler</author>
+	<creationDate>2016-03-31</creationDate>
+	<copyright>JSM-TEAM</copyright>
+	<license>GNU/GPL</license>
+	<authorEmail>diddipoeler@arcor.de</authorEmail>
+	<authorUrl>http://www.fussballineuropa.de</authorUrl>
+	<version>3.8.0</version>
+	<description>MOD_SPORTSMANAGEMENT_PROJECTMAP_DESC</description>
+<files>
+<filename module="mod_sportsmanagement_projectmap">mod_sportsmanagement_projectmap.php</filename>
+<filename>index.html</filename>
+<filename>helper.php</filename>
+<filename>mod_sportsmanagement_projectmap.xml</filename>	
+<filename>update-server.xml</filename>	
+<folder>dist</folder>
 
+</files>
+	
+	<languages>
+		
+		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_projectmap.ini</language>
+		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_projectmap.sys.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_projectmap.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_projectmap.sys.ini</language>
+	
+	</languages>
+
+  
+  
+  
+<updateservers>
+<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/modules/mod_sportsmanagement_projectmap/update-server.xml</server>
+</updateservers>
+	
+</extension>  
