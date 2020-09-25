@@ -68,7 +68,7 @@ $list = modJSMprojectmaphelper::getData($season_ids);
 /** add css file */
 $document->addStyleSheet(Uri::base().'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR .'dist/jqvmap.css');
 $document->addScript(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'dist/jquery.vmap.js');
-$document->addScript(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'dist/jquery.vmap.world.js');
+$document->addScript(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'dist/maps/jquery.vmap.world.js');
 
 /** Layout */
 ?>
