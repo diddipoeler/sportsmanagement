@@ -66,11 +66,11 @@ $list = modJSMprojectmaphelper::getData($season_ids);
 
 
 /** add css file */
-$document->addStyleSheet(Uri::base().'modules/mod_sportsmanagement_projectmap/dist/jqvmap.css');
+$document->addStyleSheet(Uri::base().'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR .'dist/jqvmap.css');
+$document->addScript(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'dist/jquery.vmap.js');
+$document->addScript(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'dist/jquery.vmap.world.js');
 
-/**
- * Layout
- */
+/** Layout */
 ?>
 <div class="<?php echo $params->get('moduleclass_sfx'); ?>"
      id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
