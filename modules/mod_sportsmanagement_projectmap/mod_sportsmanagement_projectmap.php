@@ -9,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
@@ -67,10 +65,8 @@ $season_ids = ComponentHelper::getParams('com_sportsmanagement')->get('current_s
 $list = modJSMprojectmaphelper::getData($season_ids);
 
 
-/**
- * add css file
- */
-// $document->addStyleSheet(Uri::base().'modules/mod_sportsmanagement_new_project/css/mod_sportsmanagement_new_project.css');
+/** add css file */
+$document->addStyleSheet(Uri::base().'modules/mod_sportsmanagement_projectmap/dist/jqvmap.css');
 
 /**
  * Layout
