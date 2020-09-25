@@ -195,6 +195,9 @@
 <module module="mod_sportsmanagement_trainingsdata" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_sports_type_statistics" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_teamstatistics_counter" client="site"  position="" published=""/>
+	
+<module module="mod_sportsmanagement_projectmap" client="site"  position="" published=""/>
+	
 </modules>
 
 <plugins>
