@@ -62,8 +62,8 @@ $language->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
 
 $season_ids = ComponentHelper::getParams('com_sportsmanagement')->get('current_season');
 
-$list = modJSMprojectmaphelper::getData($season_ids);
-
+$projects = modJSMprojectmaphelper::getData($season_ids);
+$regions = modJSMprojectmaphelper::createregions($projects);
 
 /** add css file */
 //$document->addStyleSheet(Uri::base().'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR .'dist/jqvmap.css');

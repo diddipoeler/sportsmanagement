@@ -69,10 +69,24 @@ class modJSMprojectmaphelper
 //echo '<pre>'.print_r($result,true).'</pre>';
 
 		return $result;
-        
-        
-    
   }
+
+
+/**
+ * modJSMprojectmaphelper::createregions()
+ * 
+ * @param mixed $projects
+ * @return void
+ */
+function createregions($projects)
+{
+    
+    
+    
+    
+    
+    
+}
   
   
 }
