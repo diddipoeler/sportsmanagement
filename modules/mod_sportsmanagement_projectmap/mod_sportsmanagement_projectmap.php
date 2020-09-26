@@ -62,9 +62,10 @@ $language->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
 
 $season_ids = ComponentHelper::getParams('com_sportsmanagement')->get('current_season');
 
+$main_settings = modJSMprojectmaphelper::getmain_settings();
 $projects = modJSMprojectmaphelper::getData($season_ids);
 $regions = modJSMprojectmaphelper::createregions($projects);
-$state_specific = modJSMprojectmaphelper::state_specific($projects);
+$state_specific = modJSMprojectmaphelper::createstate_specific($projects);
 /** add css file */
 //$document->addStyleSheet(Uri::base().'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR .'dist/jqvmap.css');
 //$document->addScript(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'dist/jquery.vmap.js');
