@@ -11,6 +11,9 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
 
 JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 
@@ -116,17 +119,34 @@ return implode(",",$regions);
  */
 function state_specific($projects)
 {
-    
+//echo '<pre>'.print_r($projects,true).'</pre>';    
 foreach ($projects as $count_i => $project)
 {    
-$regionsname[$project->country_federation] = $project->federation_name;
-$regionscountry[$project->country_federation][] = $project->country_alpha2;  
- 
+//$regionsname[$project->country_federation] = $project->federation_name;
+//$regionscountry[$project->country_federation][] = $project->country_alpha2;  
+$routeparameter                       = array();
+$routeparameter['cfg_which_database'] = 0;
+$routeparameter['s']                  = 0;
+$routeparameter['p']                  = $project->project_slug;
+$routeparameter['type']               = 0;
+$routeparameter['r']                  = 0;
+$routeparameter['from']               = 0;
+$routeparameter['to']                 = 0;
+$routeparameter['division']           = 0;
+$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);  
+$state_specific[] = $project->country_alpha2.': {
+      name: "'.Text::_($project->country_name).'",
+      description: "default",
+      color: "default",
+      hover_color: "default",
+      url: "'.Uri::base() .$link.'"
+    }'; 
   
 }    
     
-    
-    
+//echo '<pre>'.print_r($state_specific,true).'</pre>';    
+//echo '<pre>'.print_r(implode(",",$state_specific),true).'</pre>';  
+return implode(",",$state_specific);  
 }
 
 
