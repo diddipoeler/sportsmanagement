@@ -82,11 +82,55 @@ function createregions($projects)
 {
     
     
+foreach ($projects as $count_i => $project)
+{    
+$regionsname[$project->country_federation] = $project->federation_name;
+$regionscountry[$project->country_federation][] = $project->country_alpha2;  
+ 
+  
+}
+ksort($regionsname);
+ksort($regionscountry);  
+//echo '<pre>'.print_r($regionsname,true).'</pre>';
+//echo '<pre>'.print_r($regionscountry,true).'</pre>';  
+
+  
+foreach ($regionsname as $count_i => $name)
+{   
+//echo '<pre>'.print_r($name,true).'</pre>';  
+$regions[] = $count_i.': { name: "'.$name.'", states: ["'.implode("\",\"", $regionscountry[$count_i]).'"] }';   
+}  
+  
+//echo '<pre>'.print_r($regions,true).'</pre>';    
+//echo '<pre>'.print_r(implode(",",$regions),true).'</pre>';      
+  
+return implode(",",$regions);  
+}
+
+
+/**
+ * modJSMprojectmaphelper::state_specific()
+ * 
+ * @param mixed $projects
+ * @return void
+ */
+function state_specific($projects)
+{
     
+foreach ($projects as $count_i => $project)
+{    
+$regionsname[$project->country_federation] = $project->federation_name;
+$regionscountry[$project->country_federation][] = $project->country_alpha2;  
+ 
+  
+}    
     
     
     
 }
+
+
+
   
   
 }
