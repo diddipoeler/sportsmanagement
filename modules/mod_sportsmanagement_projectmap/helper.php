@@ -175,18 +175,21 @@ foreach ($projects as $count_i => $project)
 {    
 $regionsname[$project->country_federation] = $project->federation_name;
 $regionscountry[$project->country_federation][] = $project->country_alpha2;  
- 
+$regionsimage[$project->country_federation] = $project->federation_picture; 
   
 }
 ksort($regionsname);
 ksort($regionscountry);  
 //echo '<pre>'.print_r($regionsname,true).'</pre>';
 //echo '<pre>'.print_r($regionscountry,true).'</pre>';  
-
+//echo '<pre>'.print_r($regionsimage,true).'</pre>';
+  
+  
+  
 //HTMLHelper::image(Uri::root() . 'media/com_sportsmanagement/jl_images/discuss.gif', $imgTitle, array(' title' => $imgTitle, ' border' => 0, ' style' => 'vertical-align: middle'));  
 foreach ($regionsname as $count_i => $name)
 {   
-$image = "<img src='https://simplemaps.com/static/img/frog.png' style='width: 75px' >";  
+$image = "<img src='".$regionsimage[$count_i]."' style='width: 75px' >";  
   
 //echo '<pre>'.print_r($image,true).'</pre>';  
 $regions[] = $count_i.': { name: "'.$name.'", description: "'.$image.'", states: ["'.implode("\",\"", $regionscountry[$count_i]).'"] }';   
