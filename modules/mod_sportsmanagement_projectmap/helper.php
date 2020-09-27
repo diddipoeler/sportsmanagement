@@ -224,7 +224,7 @@ $state_specific[] = $project->country_alpha2.': {
       description: "default",
       color: "default",
       hover_color: "default",
-      url: "'.Uri::base() .$link.'"
+      url: "'.$link.'"
     }'; 
   
 }    
