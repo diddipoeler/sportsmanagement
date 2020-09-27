@@ -15,6 +15,7 @@ use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Filesystem\File;
 
 if (!defined('JSM_PATH'))
 {
@@ -82,6 +83,15 @@ $javascript .= 'labels: {' . "\n";
 $javascript .= '}' . "\n";
 $javascript .= '};' . "\n";
 
+try
+{
+File::write( 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'htmlworldmap/mapdatatest.js', $javascript);
+}
+catch (Exception $e)
+{
+Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
+}
+                    
 //echo '<pre>'.print_r($javascript,true).'</pre>';
 //$document->addScriptDeclaration($javascript);
             
