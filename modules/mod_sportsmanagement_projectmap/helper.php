@@ -223,6 +223,9 @@ foreach ($projects as $count_i => $project)
 {    
 //$regionsname[$project->country_federation] = $project->federation_name;
 //$regionscountry[$project->country_federation][] = $project->country_alpha2;  
+  
+$image = "<img src='".$project->country_picture."' >";
+  
 $routeparameter                       = array();
 $routeparameter['cfg_which_database'] = 0;
 $routeparameter['s']                  = 0;
@@ -234,7 +237,7 @@ $routeparameter['to']                 = 0;
 $routeparameter['division']           = 0;
 $link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);  
 $state_specific[] = $project->country_alpha2.': {
-      name: "'.Text::_($project->country_name).'",
+      name: "'.$image.Text::_($project->country_name).'",
       description: "'.Text::_($project->liganame).' :<br>'.Text::_($project->name).'",
       color: "default",
       hover_color: "default",
