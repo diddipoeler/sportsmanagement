@@ -38,25 +38,18 @@ if (!class_exists('JSMCountries'))
 
 if (!class_exists('sportsmanagementHelper'))
 {
-	/**
-	 * add the classes for handling
-	 */
+	/** add the classes for handling */
 	$classpath = JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'sportsmanagement.php';
 	JLoader::register('sportsmanagementHelper', $classpath);
 	BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
-/**
- *
- * Include the functions only once
- */
+/** Include the functions only once */
 JLoader::register('modJSMprojectmaphelper', __DIR__ . '/helper.php');
 
 $document = Factory::getDocument();
 
-/**
- * die übersetzungen der länder laden
- */
+/** die übersetzungen der länder laden */
 $language = Factory::getLanguage();
 $language->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
 
@@ -66,6 +59,31 @@ $main_settings = modJSMprojectmaphelper::getmain_settings();
 $projects = modJSMprojectmaphelper::getData($season_ids);
 $regions = modJSMprojectmaphelper::createregions($projects);
 $state_specific = modJSMprojectmaphelper::createstate_specific($projects);
+
+$javascript = "\n";
+$javascript .= 'var simplemaps_worldmap_mapdata={
+  main_settings: {' . "\n";
+$javascript .= modJSMprojectmaphelper::getmain_settings(). "\n";  
+$javascript .= '},' . "\n";
+$javascript .= "\n";
+
+$javascript .= 'state_specific: {' . "\n";
+$javascript .= modJSMprojectmaphelper::createstate_specific($projects). "\n";
+$javascript .= '},' . "\n";
+
+$javascript .= 'regions: {' . "\n";
+$javascript .= modJSMprojectmaphelper::createregions($projects). "\n";
+$javascript .= '},' . "\n";
+
+$javascript .= 'locations: {' . "\n";
+$javascript .= '},' . "\n";
+
+$javascript .= 'labels: {' . "\n";
+$javascript .= '}' . "\n";
+$javascript .= '};' . "\n";
+
+//$document->addScriptDeclaration($javascript);
+            
 /** add css file */
 //$document->addStyleSheet(Uri::base().'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR .'dist/jqvmap.css');
 //$document->addScript(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'dist/jquery.vmap.js');
