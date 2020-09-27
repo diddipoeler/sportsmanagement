@@ -14,6 +14,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
 
 JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 
@@ -182,11 +183,13 @@ ksort($regionscountry);
 //echo '<pre>'.print_r($regionsname,true).'</pre>';
 //echo '<pre>'.print_r($regionscountry,true).'</pre>';  
 
-  
+//HTMLHelper::image(Uri::root() . 'media/com_sportsmanagement/jl_images/discuss.gif', $imgTitle, array(' title' => $imgTitle, ' border' => 0, ' style' => 'vertical-align: middle'));  
 foreach ($regionsname as $count_i => $name)
 {   
-//echo '<pre>'.print_r($name,true).'</pre>';  
-$regions[] = $count_i.': { name: "'.$name.'", states: ["'.implode("\",\"", $regionscountry[$count_i]).'"] }';   
+$image = "<img src='https://simplemaps.com/static/img/frog.png' style='width: 75px' >";  
+  
+//echo '<pre>'.print_r($image,true).'</pre>';  
+$regions[] = $count_i.': { name: "'.$name.'", description: "'.$image.'", states: ["'.implode("\",\"", $regionscountry[$count_i]).'"] }';   
 }  
   
 //echo '<pre>'.print_r($regions,true).'</pre>';    
@@ -204,6 +207,14 @@ return implode(",\n",$regions);
  */
 function createstate_specific($projects)
 {
+/*    
+league_picture
+project_picture
+country_picture
+federation_picture
+*/
+
+
 //echo '<pre>'.print_r($projects,true).'</pre>';    
 foreach ($projects as $count_i => $project)
 {    
