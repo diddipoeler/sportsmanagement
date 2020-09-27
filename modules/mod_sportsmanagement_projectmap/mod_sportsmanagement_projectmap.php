@@ -82,6 +82,7 @@ $javascript .= 'labels: {' . "\n";
 $javascript .= '}' . "\n";
 $javascript .= '};' . "\n";
 
+//echo '<pre>'.print_r($javascript,true).'</pre>';
 //$document->addScriptDeclaration($javascript);
             
 /** add css file */

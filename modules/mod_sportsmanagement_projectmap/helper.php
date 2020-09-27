@@ -192,7 +192,7 @@ $regions[] = $count_i.': { name: "'.$name.'", states: ["'.implode("\",\"", $regi
 //echo '<pre>'.print_r($regions,true).'</pre>';    
 //echo '<pre>'.print_r(implode(",",$regions),true).'</pre>';      
   
-return implode(",",$regions);  
+return implode(",\n",$regions);  
 }
 
 
@@ -231,7 +231,7 @@ $state_specific[] = $project->country_alpha2.': {
     
 //echo '<pre>'.print_r($state_specific,true).'</pre>';    
 //echo '<pre>'.print_r(implode(",",$state_specific),true).'</pre>';  
-return implode(",",$state_specific);  
+return implode(",\n",$state_specific);  
 }
 
 
