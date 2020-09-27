@@ -221,7 +221,7 @@ $routeparameter['division']           = 0;
 $link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);  
 $state_specific[] = $project->country_alpha2.': {
       name: "'.Text::_($project->country_name).'",
-      description: "default",
+      description: "'.Text::_($project->liganame).' :<br>'.Text::_($project->name).'",
       color: "default",
       hover_color: "default",
       url: "'.$link.'"
@@ -233,9 +233,6 @@ $state_specific[] = $project->country_alpha2.': {
 //echo '<pre>'.print_r(implode(",",$state_specific),true).'</pre>';  
 return implode(",\n",$state_specific);  
 }
-
-
-
-  
+ 
   
 }
