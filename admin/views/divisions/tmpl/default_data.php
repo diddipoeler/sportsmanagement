@@ -128,10 +128,10 @@ $this->dragable_group = 'data-dragable-group="none"';
 			?>
             <tr class="row<?php echo $this->count_i % 2; ?>" <?php echo $this->dragable_group; ?>>
                 <td style="text-align:center; ">
-					<?php echo $this->pagination->getRowOffset($i); ?>
+					<?php echo $this->pagination->getRowOffset($this->count_i); ?>
                 </td>
                 <td style="text-align:center; ">
-					<?php echo HTMLHelper::_('grid.id', $i, $this->item->id); ?>
+					<?php echo HTMLHelper::_('grid.id', $this->count_i, $this->item->id); ?>
                 </td>
 				<?php
 
@@ -176,9 +176,9 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
                 </td>
                 <td>
 					<?php
-					if (empty($row->picture) || !File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $this->item->picture))
+					if (empty($this->item->picture) || !File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $this->item->picture))
 					{
-$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE') . $row->picture;
+$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE') . $this->item->picture;
 $image_attributes['title'] = $imageTitle;
 echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/delete.png',$imageTitle,$image_attributes);
 					}
@@ -191,9 +191,9 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 					else
 					{
 						?>
-                        <a href="<?php echo Uri::root() . $row->picture; ?>" title="<?php echo $row->name; ?>"
+                        <a href="<?php echo Uri::root() . $this->item->picture; ?>" title="<?php echo $this->item->name; ?>"
                            class="modal">
-                            <img src="<?php echo Uri::root() . $row->picture; ?>" alt="<?php echo $row->name; ?>"
+                            <img src="<?php echo Uri::root() . $this->item->picture; ?>" alt="<?php echo $this->item->name; ?>"
                                  width="20"/>
                         </a>
 						<?PHP
