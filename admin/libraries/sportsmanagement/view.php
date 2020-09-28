@@ -172,6 +172,8 @@ img.car {
 		}
 	
     $this->dragable_group = '';
+		$this->sortColumn = '';
+		$this->sortDirection = '';
         $this->ordering = true;
         if ( $this->state )
         {
