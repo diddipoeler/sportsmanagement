@@ -139,7 +139,7 @@ $this->dragable_group = 'data-dragable-group="none"';
 				?>
                 <td style="text-align:center; ">
 					<?php
-					if ($row->checked_out) : ?>
+					if ($this->item->checked_out) : ?>
 						<?php echo HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'divisions.', $canCheckin); ?>
 					<?php else: ?>
                         <a href="<?php echo $link; ?>">
