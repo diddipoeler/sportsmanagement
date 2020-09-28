@@ -225,7 +225,7 @@ foreach ($projects as $count_i => $project)
 //$regionscountry[$project->country_federation][] = $project->country_alpha2;  
   
 $image = "<img src='".$project->country_picture."' >";
-$leagueimage = "<img src='".$project->league_picture."' >";
+$leagueimage = "<img src='".$project->league_picture."' style='width: 50px' >";
   
 $routeparameter                       = array();
 $routeparameter['cfg_which_database'] = 0;
