@@ -77,8 +77,8 @@ $this->saveOrder = $this->sortColumn == 'r.ordering';
                     <!--    <td class="center"> -->
 
 					<?php
-					if ($row->checked_out) : ?>
-						<?php echo HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $this->item->checked_out_time, 'rounds.', $canCheckin); ?>
+					if ($this->item->checked_out) : ?>
+						<?php echo HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'rounds.', $canCheckin); ?>
 					<?php endif; ?>
 					<?php
 					if ($canEdit && !$this->item->checked_out) :
@@ -120,7 +120,7 @@ $this->saveOrder = $this->sortColumn == 'r.ordering';
 
 
 					$attribs = array(
-						'onChange' => "document.getElementById('cb" . $i . "').checked=true",
+						'onChange' => "document.getElementById('cb" . $this->count_i . "').checked=true",
 					);
 					$date1   = sportsmanagementHelper::convertDate($this->item->round_date_first, 1);
 					$append  = '';
