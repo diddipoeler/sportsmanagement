@@ -64,7 +64,7 @@ $this->saveOrder = $this->sortColumn == 'r.ordering';
 			$canEdit    = $this->user->authorise('core.edit', 'com_sportsmanagement');
 			$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $this->item->checked_out == $this->user->get('id') || $this->item->checked_out == 0;
 			$checked    = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'rounds.', $canCheckin);
-			$canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.round.' . $row->id) && $canCheckin;
+			$canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.round.' . $this->item->id) && $canCheckin;
 			?>
             <tr class="row<?php echo $this->count_i % 2; ?>" >
                 <td class="center">
@@ -223,7 +223,7 @@ $this->saveOrder = $this->sortColumn == 'r.ordering';
 						$this->lists['tournementround'],
 						'tournementround' . $this->item->id,
 						'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
-						$i . '\').checked=true"' . $append,
+						$this->count_i . '\').checked=true"' . $append,
 						'value', 'text', $this->item->tournement
 					);
 					?>
