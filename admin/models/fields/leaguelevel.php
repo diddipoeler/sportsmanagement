@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage fields
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -22,7 +18,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
-
 
 /**
  * FormFieldLeague_Level
@@ -53,12 +48,14 @@ class JFormFieldLeagueLevel extends \JFormFieldList
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
-		/**
-		 * Initialize variables.
-		 */
+		/** Initialize variables. */
 		for ($a = 1; $a < 21; $a++)
 		{
 			$options[] = HTMLHelper::_('select.option', $a, Text::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LEVEL') . ' - ' . $a);
+		}
+		for ($a = 21; $a < 41; $a++)
+		{
+			$options[] = HTMLHelper::_('select.option', $a, Text::_('COM_SPORTSMANAGEMENT_ADMIN_TOURNEMENT_LEVEL') . ' - ' . $a);
 		}
 
 		/**
