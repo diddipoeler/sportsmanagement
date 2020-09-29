@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage match
@@ -12,9 +10,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * https://hotexamples.com/de/examples/-/Google_Service_Calendar_EventDateTime/-/php-google_service_calendar_eventdatetime-class-examples.html
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
@@ -2838,13 +2834,12 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 		if ($match_number != $teile[0])
 		{
 			$app->enqueueMessage(Text::_('Spielnummer der Datei passt nicht zur Spielnummer im Projekt.'), 'Error');
-
+			$app->enqueueMessage(Text::_($teile[0]), 'Error');
 			return false;
 		}
 		else
 		{
 			$app->enqueueMessage(Text::_('Spielnummern sind identisch. Datei wird verarbeitet'), 'Notice');
-
 			return true;
 		}
 
