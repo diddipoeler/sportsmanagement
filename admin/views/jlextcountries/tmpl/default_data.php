@@ -122,7 +122,7 @@ JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($t
 		<?php
 		 foreach ($this->items as $this->count_i => $this->item)
 	{
-//$this->count_i = $i;
+
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
 $this->dragable_group = 'data-dragable-group="none"';
@@ -136,7 +136,7 @@ $this->dragable_group = 'data-dragable-group="none"';
             <tr class="row<?php echo $this->count_i % 2; ?>" <?php echo $this->dragable_group; ?>>
                 <td class="center">
 					<?php
-					echo $this->pagination->getRowOffset($i);
+					echo $this->pagination->getRowOffset($this->count_i);
 					?>
                 </td>
                 <td class="center">
@@ -205,7 +205,7 @@ echo $this->loadTemplate('data_order');
                 <td class="center"><?php echo $this->item->id; ?></td>
             </tr>
 			<?php
-			$k = 1 - $k;
+
 		}
 		?>
         </tbody>
