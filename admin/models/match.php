@@ -3192,6 +3192,8 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 
 			foreach ($mannschaftsverantwortlichePositionen as $mannschaftsverantwortlichePosition)
 			{
+				if array_key_exists($find_csv.'-'$mannschaftsverantwortlichePosition, $csv_file->data[0]);
+				{
 				if (!isset($this->csv_staff[$i]))
 				{
 					$this->csv_staff[$i] = new stdClass;
@@ -3209,11 +3211,10 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 				$this->csv_staff[$i]->project_position_id = 0;
 				$this->csv_staff[$i]->position_id         = 0;
 
-				// Falls es den Staff gibt, ein paar Felder selektieren
+				/** Falls es den Staff gibt, ein paar Felder selektieren */
 				if ($lastname)
 				{
 					$person_id = $this->getPersonId($firstname, $lastname);
-
 					if ($person_id)
 					{
 						$this->csv_staff[$i]->person_id           = $person_id;
@@ -3223,8 +3224,8 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 						$this->csv_staff[$i]->position_id         = $projectpersonid->position_id;
 					}
 				}
-
 				$i++;
+			}
 			}
 		}
 
