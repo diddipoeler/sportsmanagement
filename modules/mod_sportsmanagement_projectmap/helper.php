@@ -146,7 +146,7 @@ class modJSMprojectmaphelper
       $query->join('INNER', '#__sportsmanagement_federations as f on f.id = c.federation');
         
 		$query->where('le.published_act_season = 1 ');
-      $query->where('le.league_level = 1 ');
+      $query->where('(le.league_level = 1 OR le.league_level = 21 )');
 		$query->where('pro.season_id IN (' . $seasons . ')');
 		$query->order('le.country ASC, pro.name ASC');
       $query->group('le.country');
