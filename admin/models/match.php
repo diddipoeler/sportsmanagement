@@ -2860,6 +2860,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 		$query  = $db->getQuery(true);
 
 		$csv_player_count = 40;
+		$find_csv = '';
 		$project_id       = $app->getUserState("$option.pid", '0');
 		$match_id         = Factory::getApplication()->input->getVar('match_id');
 		$tblmatch         = Table::getInstance("match", "sportsmanagementTable");
