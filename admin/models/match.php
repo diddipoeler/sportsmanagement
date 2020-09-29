@@ -3192,7 +3192,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 
 			foreach ($mannschaftsverantwortlichePositionen as $mannschaftsverantwortlichePosition)
 			{
-				if array_key_exists( $find_csv.'-'.$mannschaftsverantwortlichePosition, $csv_file->data[0] );
+				if ( array_key_exists( $find_csv.'-'.$mannschaftsverantwortlichePosition, $csv_file->data[0] ) );
 				{
 				if (!isset($this->csv_staff[$i]))
 				{
