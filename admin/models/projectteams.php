@@ -9,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -1048,7 +1046,6 @@ class sportsmanagementModelProjectteams extends JSMModelList
 			$this->jsmquery->where('LOWER(t.name) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%'));
 		}
 
-		// Join over the users for the checked out user.
 		$this->jsmquery->select('u.name AS editor,u.email AS email');
 		$this->jsmquery->join('LEFT', '#__users AS u on tl.admin = u.id');
 
@@ -1067,6 +1064,21 @@ class sportsmanagementModelProjectteams extends JSMModelList
 		if (is_numeric($this->getState('filter.state')))
 		{
 			$this->jsmquery->where('tl.published = ' . $this->getState('filter.state'));
+		}
+		
+		if (is_numeric($this->getState('filter.is_in_score')))
+		{
+			$this->jsmquery->where('tl.is_in_score = ' . $this->getState('filter.is_in_score'));
+		}
+		
+		if (is_numeric($this->getState('filter.use_finally')))
+		{
+			$this->jsmquery->where('tl.use_finally = ' . $this->getState('filter.use_finally'));
+		}
+		
+		if (is_numeric($this->getState('filter.playground_id')))
+		{
+			$this->jsmquery->where('tl.standard_playground <> 0 ' );
 		}
 
 		$this->jsmquery->order(
