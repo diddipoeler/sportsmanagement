@@ -287,6 +287,7 @@ case 'person';
 case 'position';
 case 'agegroup';
 case 'sportstype';		
+case 'eventtype';
 $this->app->setUserState('com_sportsmanagement.itemname', Text::_($this->item->name) );
 break;
 case 'teamplayer';
