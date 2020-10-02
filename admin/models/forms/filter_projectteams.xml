@@ -9,7 +9,16 @@
 			description="JGLOBAL_LOOKING_FOR"
 			hint="JSEARCH_FILTER"
 		/>
-    
+ <field
+			name="state"
+			type="status"
+			label="JOPTION_SELECT_PUBLISHED"
+			description="JOPTION_SELECT_PUBLISHED_DESC"
+			onchange="this.form.submit();"
+			>
+			<option value="">JOPTION_SELECT_PUBLISHED</option>
+		</field>
+		
 <field
 	name="is_in_score"
 	type="list"
