@@ -216,6 +216,7 @@ case 'playgrounds':
 case 'players':
 case 'positions':
 case 'projectreferees':
+case 'projectteams':		
 case 'projects':
 case 'rounds':
 case 'seasons':
