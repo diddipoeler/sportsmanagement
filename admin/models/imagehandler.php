@@ -17,7 +17,6 @@ use Joomla\CMS\Filesystem\Folder;
 
 jimport('joomla.filesystem.file');
 
-
 /**
  * sportsmanagementModelImagehandler
  *
@@ -59,6 +58,12 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 
 	}
 
+	/**
+	 * sportsmanagementModelImagehandler::saveimageclub()
+	 * 
+	 * @param mixed $data
+	 * @return
+	 */
 	function saveimageclub($data)
 	{
 	$rowupdate          = new stdClass;
@@ -76,6 +81,12 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 			}	
 	}	
 		
+	/**
+	 * sportsmanagementModelImagehandler::saveimageteamplayer()
+	 * 
+	 * @param mixed $data
+	 * @return
+	 */
 	function saveimageteamplayer($data)
 	{
 	$rowupdate          = new stdClass;
@@ -93,6 +104,12 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 			}	
 	}
 	
+	/**
+	 * sportsmanagementModelImagehandler::saveimageplayer()
+	 * 
+	 * @param mixed $data
+	 * @return
+	 */
 	function saveimageplayer($data)
 	{
 	$rowupdate          = new stdClass;
@@ -305,9 +322,13 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 	 */
 	function _imageResize($width, $height, $target)
 	{
-		// Takes the larger size of the width and height and applies the
-		// formula accordingly...this is so this script will work
-		// dynamically with any size image
+		
+/**
+ *      Takes the larger size of the width and height and applies the
+ * 		formula accordingly...this is so this script will work
+ * 		dynamically with any size image
+ */
+        
 		if ($width > $height)
 		{
 			$percentage = ($target / $width);
@@ -317,7 +338,7 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 			$percentage = ($target / $height);
 		}
 
-		// Gets the new value and applies the percentage, then rounds the value
+		/** Gets the new value and applies the percentage, then rounds the value */
 		$width  = round($width * $percentage);
 		$height = round($height * $percentage);
 
