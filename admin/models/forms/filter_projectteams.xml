@@ -17,7 +17,7 @@
 	onchange="this.form.submit();"
        	label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_INSCORE"
 	description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_INSCORE_DESC">
-	<option value="">JGLOBAL_SELECT_AN_OPTION</option>
+	<option value="">COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_INSCORE</option>
 	<option value="0">JNO</option>
 	<option value="1">JYES</option>
 </field>				
@@ -29,8 +29,8 @@
        onchange="this.form.submit();"
 			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_USE_FINALLY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_USE_FINALLY_DESC"
-			class="radio btn-group btn-group-yesno">
-  <option value="">JGLOBAL_SELECT_AN_OPTION</option>
+			>
+  <option value="">COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_USE_FINALLY</option>
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>		
