@@ -216,10 +216,23 @@ $valuelimit = $this->getUserStateFromRequest($this->context . '.limit', 'limit',
 //echo __METHOD__.' '.__LINE__.' limit <pre>'.print_r($value,true).'</pre>';
 $valuestart = Factory::getApplication()->input->getUInt('limitstart', 0);
 //echo __METHOD__.' '.__LINE__.' limitstart <pre>'.print_r($value,true).'</pre>';
+
+if ( empty($valuelimit) )
+{
+for ($x = 0; $x < sizeof(self::$filesOutput); $x++)
+{
+$this->items[] = self::$filesOutput[$x];	
+}    
+}
+else
+{
 for ($x = $valuestart; $x < ($valuestart + $valuelimit); $x++) if ( $x < sizeof(self::$filesOutput) )
 {
 $this->items[] = self::$filesOutput[$x];	
 }
+}
+
+
   //$this->items = self::$filesOutput;
   $this->getTotal();
   
