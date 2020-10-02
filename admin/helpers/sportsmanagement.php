@@ -1440,7 +1440,7 @@ try
 
 			case "player": // Player
 			case "persons":
-            case "teamplayer":
+            case "teamplayers":
 				return $ph_player;
 				break;
 
