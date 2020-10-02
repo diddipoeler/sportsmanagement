@@ -1,1 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fields name="filter" addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+		<field
+			name="search"
+			type="text"
+			inputmode="search"
+			label="JGLOBAL_LOOKING_FOR"
+			description="JGLOBAL_LOOKING_FOR"
+			hint="JSEARCH_FILTER"
+		/>
+    
+<field
+	name="is_in_score"
+	type="list"
+	default=""	
+	onchange="this.form.submit();"
+       	label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_INSCORE"
+	description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_INSCORE_DESC">
+	<option value="">JGLOBAL_SELECT_AN_OPTION</option>
+	<option value="0">JNO</option>
+	<option value="1">JYES</option>
+</field>				
 
+<field
+			name="use_finally"
+			type="list"
+			default=""
+       onchange="this.form.submit();"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_USE_FINALLY"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_USE_FINALLY_DESC"
+			class="radio btn-group btn-group-yesno">
+  <option value="">JGLOBAL_SELECT_AN_OPTION</option>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>		
+	
+		
+		
+		
+		
+    </fields>
+	
+<fields name="list">	
+	
+<field
+			name="limit"
+			type="limitbox"
+			label="COM_SPORTSMANAGEMENT_LIST_LIMIT"
+			description="COM_SPORTSMANAGEMENT_LIST_LIMIT_DESC"
+			class="input-mini"
+			default="25"
+			onchange="this.form.submit();"
+		/>
+	
+</fields>	
+</form>    
