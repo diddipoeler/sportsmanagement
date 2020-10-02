@@ -1078,7 +1078,15 @@ class sportsmanagementModelProjectteams extends JSMModelList
 		
 		if (is_numeric($this->getState('filter.playground_id')))
 		{
-			$this->jsmquery->where('tl.standard_playground <> 0 ' );
+			if ( $this->getState('filter.playground_id') == 1 )
+			{
+			$this->jsmquery->where('tl.standard_playground <> 0 ' );	
+			}
+			else
+			{
+			$this->jsmquery->where('tl.standard_playground = 0 ' );
+			}
+			
 		}
 
 		$this->jsmquery->order(
