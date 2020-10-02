@@ -18,6 +18,7 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementViewprojectteams
@@ -30,6 +31,21 @@ use Joomla\CMS\Component\ComponentHelper;
  */
 class sportsmanagementViewprojectteams extends sportsmanagementView
 {
+	/**
+	 * A \JForm instance with filter fields.
+	 *
+	 * @var    \JForm
+	 * @since  3.6.3
+	 */
+	public $filterForm;
+
+	/**
+	 * An array with active filters.
+	 *
+	 * @var    array
+	 * @since  3.6.3
+	 */
+	public $activeFilters;
 
 	/**
 	 * sportsmanagementViewprojectteams::init()
@@ -269,6 +285,17 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 			$this->setLayout('changeteams');
 			break;
 		}
+		
+try
+{		
+$this->filterForm    = $this->model->getFilterForm();
+$this->activeFilters = $this->model->getActiveFilters();
+}
+catch (Exception $e)
+{
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');	
+}		
 
 	}
 
