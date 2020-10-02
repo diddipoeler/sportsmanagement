@@ -153,7 +153,7 @@ pictureprev = '" . Uri::root() . sportsmanagementHelper::getDefaultPlaceholder('
   }
 }
 
-console.log('picture : ' + picture );
+console.log('picture standard : ' + picture );
 console.log('pictureprev : ' + pictureprev );
 console.log('1.clear type: ' + '" . $type . "' );
 console.log('2.clear fieldname: ' + '" . $fieldname . "' );
