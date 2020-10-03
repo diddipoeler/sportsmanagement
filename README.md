@@ -36,7 +36,8 @@ Extensions ?
 
 Änderungen
 ---------------------
-*   00-00-0000: **3.8.00** Neue Felder Spielstätte, Personen und Vereine
+*   03-10-2020: **3.8.10** Neue Felder Countries
+*   12-09-2020: **3.8.00** Neue Felder Spielstätte, Personen und Vereine
 *   29-08-2020: **3.7.10** Altergruppe/Passnummer in der Stammdatenliste ein/ausblenden
 *   27-08-2020: **3.7.00** Joomla 3 Drag & Drop Sortierung im Backend
 *   03-05-2020: **3.6.00** Neue Felder Projekt und Projektteam
