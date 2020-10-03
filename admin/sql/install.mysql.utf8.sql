@@ -170,6 +170,9 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_countries` (
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
+  `countrymap_mapdata` TEXT NULL DEFAULT NULL,
+  `countrymap_mapinfo` TEXT NULL DEFAULT NULL,
+  `country_picture` varchar(255) NOT NULL DEFAULT 'images/com_sportsmanagement/database/placeholders/placeholder_wappen_50.png',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`,`alpha3`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
