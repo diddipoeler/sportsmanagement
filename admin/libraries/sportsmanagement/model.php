@@ -166,14 +166,10 @@ if ( $config->get('debug') )
 		$data['checked_out']      = 0;
 		$data['checked_out_time'] = $this->jsmdb->getNullDate();
 
-		/**
-		 * differenzierung zwischen den views
-		 */
+		/** differenzierung zwischen den views */
 		switch ($this->jsmview)
 		{
-			/**
-			 * gruppen
-			 */
+			/** gruppen */
 			case 'division':
 				if (!$data['id'])
 				{
@@ -182,16 +178,13 @@ if ( $config->get('debug') )
 
 				if (isset($post['extended']) && is_array($post['extended']))
 				{
-					// Convert the extended field to a string.
 					$parameter = new Registry;
 					$parameter->loadArray($post['extended']);
 					$data['rankingparams'] = (string) $parameter;
 				}
 
 				break;
-			/**
-			 * runde
-			 */
+			/** runde */
 			case 'round':
 				if ($data['round_date_first'] != '00-00-0000' && $data['round_date_first'] != '')
 				{
@@ -203,9 +196,7 @@ if ( $config->get('debug') )
 					$data['round_date_last'] = sportsmanagementHelper::convertDate($data['round_date_last'], 0);
 				}
 				break;
-			/**
-			 * runden
-			 */
+			/** runden */
 			case 'rounds':
 				$data['round_date_first'] = sportsmanagementHelper::convertDate($data['round_date_first'], 0);
 				$data['round_date_last']  = sportsmanagementHelper::convertDate($data['round_date_last'], 0);
@@ -217,9 +208,7 @@ if ( $config->get('debug') )
 					$data['roundcode']  = $post['next_roundcode'];
 				}
 				break;
-			/**
-			 * projektteam
-			 */
+			/** projektteam */
 			case 'projectteam':
 				if (array_key_exists('copy_jform', $post))
 				{
@@ -252,22 +241,15 @@ if ( $config->get('debug') )
 				 * das mannschaftsfoto wird zusätzlich abgespeichert,
 				 * damit man die historischen kader sieht
 				 */
-				// Create an object for the record we are going to update.
 				$object = new stdClass;
-
-				// Must be a valid primary key value.
 				$object->id          = (int) $post['jform']['team_id'];
 				$object->picture     = $data['picture'];
 				$object->modified    = $this->jsmdate->toSql();
 				$object->modified_by = $this->jsmuser->get('id');
-
-				// Update their details in the table using id as the primary key.
 				$result = Factory::getDbo()->updateObject('#__sportsmanagement_season_team_id', $object, 'id');
 
 				break;
-			/**
-			 * liga
-			 */
+			/** liga */
 			case 'league':
 				if (array_key_exists('copy_jform', $post))
 				{
@@ -294,9 +276,7 @@ if ( $config->get('debug') )
 					$data['dissolved'] = sportsmanagementHelper::convertDate($data['dissolved'], 0);
 				}
 				break;
-			/**
-			 * person
-			 */
+			/** person */
 			case 'player':
 				if ($data['height'] == '')
 				{
@@ -386,9 +366,7 @@ if ( $config->get('debug') )
 						break;
 				}
 
-				/**
-				 * hat der user die bildfelder geleert, werden die standards gesichert.
-				 */
+				/** hat der user die bildfelder geleert, werden die standards gesichert. */
 				if (empty($data['picture']))
 				{
 					switch ($data['gender'])
@@ -445,9 +423,7 @@ if ( $config->get('debug') )
 					$data['away_date_end'] = sportsmanagementHelper::convertDate($data['away_date_end'], 0);
 				}
 				break;
-			/**
-			 * template
-			 */
+			/** template */
 			case 'template':
 				if (isset($post['params']['colors_ranking']) && is_array($post['params']['colors_ranking']))
 				{
@@ -464,13 +440,9 @@ if ( $config->get('debug') )
 					$post['params']['colors'] = implode(";", $colors);
 				}
 				break;
-			/**
-			 * verein
-			 */
+			/** verein */
 			case 'club':
-				/**
-				 * gibt es vereinsnamen zum ändern ?
-				 */
+				/** gibt es vereinsnamen zum ändern ? */
 				if (isset($post['team_id']) && is_array($post['team_id']))
 				{
 					foreach ($post['team_id'] as $key => $value)
@@ -479,23 +451,16 @@ if ( $config->get('debug') )
 						$team_name = $post['team_value_id'][$key];
 						$club_id = $post['club_value_id'][$key];
 
-						// Create an object for the record we are going to update.
 						$object = new stdClass;
-
-						// Must be a valid primary key value.
 						$object->id    = $team_id;
 						$object->name  = $team_name;
 						$object->club_id    = $club_id;
 						$object->alias = OutputFilter::stringURLSafe($team_name);
-
-						// Update their details in the table using id as the primary key.
 						$result = Factory::getDbo()->updateObject('#__sportsmanagement_team', $object, 'id');
 					}
 				}
 
-				/**
-				 * hat der user die bildfelder geleert, werden die standards gesichert.
-				 */
+				/** hat der user die bildfelder geleert, werden die standards gesichert. */
 				if (array_key_exists('copy_jform', $post))
 				{
 					$data['logo_big']    = $post['copy_jform']['logo_big'];
@@ -520,9 +485,7 @@ if ( $config->get('debug') )
 					$data['logo_small'] = ComponentHelper::getParams($option)->get('ph_logo_small', '');
 				}
 
-				/**
-				 * wurden jahre mitgegeben ?
-				 */
+				/** wurden jahre mitgegeben ? */
 				if ($data['founded'] != '0000-00-00' && $data['founded'] != '')
 				{
 					$data['founded'] = sportsmanagementHelper::convertDate($data['founded'], 0);
@@ -569,9 +532,7 @@ if ( $config->get('debug') )
             }
 				
 				break;
-			/**
-			 * mannschaft
-			 */
+			/** mannschaft */
 			case 'team':
 				if (array_key_exists('copy_jform', $post))
 				{
@@ -594,9 +555,7 @@ if ( $config->get('debug') )
 				}
 				break;
 
-			/**
-			 * playground
-			 */
+			/** playground */
 			case 'playground':
 				if (array_key_exists('copy_jform', $post))
 				{
@@ -608,9 +567,7 @@ if ( $config->get('debug') )
 				}
 				break;
 
-			/**
-			 * projekt
-			 */
+			/** projekt */
 			case 'project':
 				if (array_key_exists('copy_jform', $post))
 				{
@@ -635,9 +592,7 @@ if ( $config->get('debug') )
 					$data['fav_team'] = implode(',', $post['jform']['fav_team']);
 				}
 				break;
-			/**
-			 * tippspiel
-			 */
+			/** tippspiel */
 			case 'predictiongame':
 				$data['alias'] = OutputFilter::stringURLSafe($data['name']);
 
@@ -655,37 +610,27 @@ if ( $config->get('debug') )
 
 		if (isset($post['params']) && is_array($post['params']))
 		{
-			/**
-			 *              Convert the params field to a string.
-			 */
+			/** Convert the params field to a string. */
 			$paramsString   = json_encode($post['params']);
 			$data['params'] = $paramsString;
 		}
 
-		/**
-		 * Alter the title for Save as Copy
-		 */
+		/** Alter the title for Save as Copy */
 		if ($this->jsmjinput->get('task') == 'save2copy')
 		{
 			$orig_table = $this->getTable();
 			$orig_table->load((int) $this->jsmjinput->getInt('id'));
 			$data['id'] = 0;
-			/**
-			 * differenzierung zwischen den views
-			 */
+			/** differenzierung zwischen den views */
 			switch ($this->jsmview)
 			{
-				/**
-				 * template
-				 */
+				/** template */
 				case 'template':
 					$data['project_id'] = $this->jsmapp->getUserState("$this->jsmoption.pid", '0');
 					$data['title']      = $post['title'];
 					$data['template']   = $post['template'];
 					break;
-				/**
-				 * projekt
-				 */
+				/** projekt */
 				case 'project':
 					$data['current_round'] = 0;
 					$project_old           = (int) $this->jsmjinput->getInt('id');
@@ -753,16 +698,12 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 			
 			if ($isNew)
 			{
-				/**
-				 * Here you can do other tasks with your newly saved record...
-				 */
+				/** Here you can do other tasks with your newly saved record... */
 				$this->jsmapp->enqueueMessage(Text::plural(strtoupper($this->jsmoption) . '_N_ITEMS_CREATED', $id), '');
 
 				if ($this->jsmjinput->get('task') == 'save2copy')
 				{
-					/**
-					 * differenzierung zwischen den views
-					 */
+					/** differenzierung zwischen den views */
 					switch ($this->jsmview)
 					{
 						case 'project':
@@ -775,7 +716,6 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 
 							foreach ($result as $field)
 							{
-								// Create and populate an object.
 								$profile             = new stdClass;
 								$profile->project_id = $id;
 								$profile->name       = $field->name;
@@ -783,8 +723,6 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 								$profile->shortname  = $field->shortname;
 								$profile->published  = $field->published;
 								$profile->ordering   = $field->ordering;
-
-								// Insert the object into the user profile table.
 								$insertresult = $this->jsmdb->insertObject('#__sportsmanagement_division', $profile);
 							}
 
@@ -795,14 +733,10 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 				}
 			}
 
-			/**
-			 * differenzierung zwischen den views
-			 */
+			/** differenzierung zwischen den views */
 			switch ($this->jsmview)
 			{
-				/**
-				 * person
-				 */
+				/** person */
 				case 'player':
 					if (isset($data['season_ids']) && is_array($data['season_ids']))
 					{
@@ -824,14 +758,8 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 							if (!$res)
 							{
 								$this->jsmquery->clear();
-
-								// Insert columns.
 								$columns = array('person_id', 'season_id', 'modified', 'modified_by');
-
-								// Insert values.
 								$values = array($data['id'], $value, $this->jsmdb->Quote('' . $data['modified'] . ''), $data['modified_by']);
-
-								// Prepare the insert query.
 								$this->jsmquery
 									->insert($this->jsmdb->quoteName('#__sportsmanagement_season_person_id'))
 									->columns($this->jsmdb->quoteName($columns))
@@ -854,7 +782,6 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 							}
 						}
 
-						// Delete all custom keys
 						$this->jsmquery->clear();
 						$this->jsmquery->delete()->from('#__sportsmanagement_season_person_id')->where('season_id NOT IN (' . implode(",", $delete_season) . ') AND person_id = ' . $data['id']);
 						$this->jsmdb->setQuery($this->jsmquery);
@@ -863,20 +790,13 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 						$this->jsmapp->enqueueMessage($message, 'message');
 					}
 
-					/**
-					 *
-					 * -------extra fields-----------
-					 */
+					/** -------extra fields----------- */
 					sportsmanagementHelper::saveExtraFields($post, $data['id']);
 
 					break;
-				/**
-				 * position
-				 */
+				/** position */
 				case 'position':
-					/**
-					 * ereignisse der positionen speichern
-					 */
+					/** ereignisse der positionen speichern	 */
 					if (isset($post['position_eventslist']) && is_array($post['position_eventslist']))
 					{
 						if ($data['id'])
@@ -886,9 +806,7 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 						}
 					}
 
-					/**
-					 * statistiken der positionen speichern
-					 */
+					/** statistiken der positionen speichern */
 					if (isset($post['position_statistic']) && is_array($post['position_statistic']))
 					{
 						if ($data['id'])
@@ -898,22 +816,16 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 						}
 					}
 					break;
-				/**
-				 * verein
-				 */
+				/** verein */
 				case 'club':
 					sportsmanagementHelper::saveExtraFields($post, $data['id']);
 					$this->jsmapp->setUserState("$this->jsmoption.club_id", $data['id']);
 					break;
-				/**
-				 * projekt
-				 */
+				/** projekt */
 				case 'project':
 					sportsmanagementHelper::saveExtraFields($post, $data['id']);
 					break;
-				/**
-				 * mannschaft
-				 */
+				/** mannschaft */
 				case 'team':
 					$delete_season = array();
 
@@ -933,22 +845,14 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 							if (!$result)
 							{
 								$this->jsmquery->clear();
-
-								// Insert columns.
 								$modified    = $this->jsmdate->toSql();
 								$modified_by = $this->jsmuser->get('id');
 								$columns     = array('team_id', 'season_id', 'modified', 'modified_by');
-
-								// Insert values.
 								$values = array($data['id'], $value, $this->jsmdb->Quote('' . $modified . ''), $modified_by);
-
-								// Prepare the insert query.
 								$this->jsmquery
 									->insert($this->jsmdb->quoteName('#__sportsmanagement_season_team_id'))
 									->columns($this->jsmdb->quoteName($columns))
 									->values(implode(',', $values));
-
-								// Set the query using our newly populated query object and execute it.
 								$this->jsmdb->setQuery($this->jsmquery);
 
 								if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
@@ -957,7 +861,6 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 							}
 						}
 
-						// Delete all custom keys
 						$this->jsmquery->clear();
 						$this->jsmquery->delete()->from('#__sportsmanagement_season_team_id')->where('season_id NOT IN (' . implode(",", $delete_season) . ') AND team_id = ' . $data['id']);
 						$this->jsmdb->setQuery($this->jsmquery);
@@ -976,14 +879,10 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 		else
 		{
 			$id = $this->jsmjinput->getInt('id');
-
-			//        $isNew = $this->getState($this->getName() . '.new');
-			//        $data['id'] = $id;
 			$this->jsmapp->setUserState("$this->jsmoption.club_id", $id);
 			$this->jsmapp->setUserState("$this->jsmoption.person_id", $id);
 			$this->jsmjinput->set('insert_id', $id);
 			$this->jsmjinput->set('person_id', $id);
-
 			return false;
 		}
 	}
