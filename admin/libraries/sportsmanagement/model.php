@@ -119,6 +119,9 @@ if ( $config->get('debug') )
 		$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' task '.$this->jsmjinput->get('task')), '');
 }
 
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post <pre>'.print_r($post,true).'</pre>'  ), '');      
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data <pre>'.print_r($data,true).'</pre>'  ), '');      
+
 		$input_options = InputFilter::getInstance(
 			array(
 				'img', 'p', 'a', 'u', 'i', 'b', 'strong', 'span', 'div', 'ul', 'li', 'ol', 'h1', 'h2', 'h3', 'h4', 'h5',
@@ -140,9 +143,7 @@ if ( $config->get('debug') )
 
 		if (isset($post['extended']) && is_array($post['extended']))
 		{
-			/**
-			 *              Convert the extended field to a string.
-			 */
+			/** Convert the extended field to a string. */
 			$parameter = new Registry;
 			$parameter->loadArray($post['extended']);
 			$data['extended'] = (string) $parameter;
@@ -150,17 +151,13 @@ if ( $config->get('debug') )
 
 		if (isset($post['extendeduser']) && is_array($post['extendeduser']))
 		{
-			/**
-			 *              Convert the extended field to a string.
-			 */
+			/** Convert the extended field to a string. */
 			$parameter = new Registry;
 			$parameter->loadArray($post['extendeduser']);
 			$data['extendeduser'] = (string) $parameter;
 		}
 
-		/**
-		 *         Set the values
-		 */
+		/** Set the values */
 		$data['modified']         = $this->jsmdate->toSql();
 		$data['modified_by']      = $this->jsmuser->get('id');
 		$data['checked_out']      = 0;
@@ -276,6 +273,13 @@ if ( $config->get('debug') )
 					$data['dissolved'] = sportsmanagementHelper::convertDate($data['dissolved'], 0);
 				}
 				break;
+                case 'teamplayer':
+                if (array_key_exists('copy_jform', $post))
+				{
+					$data['picture'] = $post['copy_jform']['picture'];
+				}
+                
+                break;
 			/** person */
 			case 'player':
 				if ($data['height'] == '')
