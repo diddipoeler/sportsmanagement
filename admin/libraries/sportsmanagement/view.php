@@ -477,7 +477,7 @@ break;
 				//case 'rounds':
 				case 'divisions':
 				case 'extrafields':
-				case 'teamplayers':
+				//case 'teamplayers':
 					JHtmlSidebar::addFilter(
 						Text::_('JOPTION_SELECT_PUBLISHED'),
 						'filter_state',

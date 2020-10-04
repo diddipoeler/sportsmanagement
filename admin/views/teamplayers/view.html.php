@@ -16,6 +16,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementViewteamplayers
@@ -28,6 +29,21 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
  */
 class sportsmanagementViewteamplayers extends sportsmanagementView
 {
+    /**
+	 * A \JForm instance with filter fields.
+	 *
+	 * @var    \JForm
+	 * @since  3.6.3
+	 */
+	public $filterForm;
+
+	/**
+	 * An array with active filters.
+	 *
+	 * @var    array
+	 * @since  3.6.3
+	 */
+	public $activeFilters;
 
 	/**
 	 * sportsmanagementViewteamplayers::init()
@@ -90,9 +106,7 @@ class sportsmanagementViewteamplayers extends sportsmanagementView
 		$mdlProjectTeam = BaseDatabaseModel::getInstance('ProjectTeam', 'sportsmanagementModel');
 		$project_team   = $mdlProjectTeam->getProjectTeam($this->team_id);
 
-		/**
-		 * build the html options for position
-		 */
+		/** build the html options for position */
 		$position_id   = array();
 		$position_id[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER_FUNCTION'));
 		$mdlPositions  = BaseDatabaseModel::getInstance('Positions', 'sportsmanagementModel');
@@ -115,9 +129,7 @@ class sportsmanagementViewteamplayers extends sportsmanagementView
 		$lists['project_position_id'] = $position_id;
 		unset($position_id);
 
-		/**
-		 * build the html options for nation
-		 */
+		/** build the html options for nation */
 		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 
 		if ($res = JSMCountries::getCountryOptions())
@@ -130,6 +142,18 @@ class sportsmanagementViewteamplayers extends sportsmanagementView
 		$this->lists        = $lists;
 		$this->project      = $project;
 		$this->project_team = $project_team;
+        
+try
+{		
+$this->filterForm    = $this->model->getFilterForm();
+$this->activeFilters = $this->model->getActiveFilters();
+}
+catch (Exception $e)
+{
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');	
+}
+        
 	}
 
 	/**

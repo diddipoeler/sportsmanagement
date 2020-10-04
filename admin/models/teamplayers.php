@@ -404,15 +404,9 @@ class sportsmanagementModelteamplayers extends JSMModelList
 
 		$this->setState('filter.pid', $this->jsmapp->getUserState("$this->jsmoption.pid", '0'));
 		$this->setState('filter.season_id', $this->jsmapp->getUserState("$this->jsmoption.season_id", '0'));
-
 		$this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
-
-		// List state information.
-		//parent::populateState($ordering, $direction);
-		
 		$this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
 
-		// Filter.order
 		$orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
 
 		if (!in_array($orderCol, $this->filter_fields))
