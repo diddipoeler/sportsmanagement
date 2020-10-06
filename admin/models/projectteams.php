@@ -33,7 +33,6 @@ class sportsmanagementModelProjectteams extends JSMModelList
 	var $_identifier = "pteams";
 	var $_season_id = 0;
 	var $project_art_id = 0;
-
 	var $sports_type_id = 0;
 
 	/**
@@ -1007,7 +1006,7 @@ class sportsmanagementModelProjectteams extends JSMModelList
 			$this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on tl.team_id = st.id');
 			$this->jsmquery->join('LEFT', '#__sportsmanagement_season AS se on se.id = st.season_id');
 
-			// Count team player
+			/** Count team player */
 			$this->jsmsubquery1->select('count(tp.id)');
 			$this->jsmsubquery1->from('#__sportsmanagement_season_team_person_id AS tp');
 			$this->jsmsubquery1->where('tp.published = 1');
@@ -1016,7 +1015,7 @@ class sportsmanagementModelProjectteams extends JSMModelList
 			$this->jsmsubquery1->where('tp.season_id = ' . $this->_season_id);
 			$this->jsmquery->select('(' . $this->jsmsubquery1 . ') AS playercount');
 
-			// Count team staff
+			/** Count team staff */
 			$this->jsmsubquery2->select('count(tp.id)');
 			$this->jsmsubquery2->from('#__sportsmanagement_season_team_person_id AS tp');
 			$this->jsmsubquery2->where('tp.published = 1');
@@ -1025,19 +1024,19 @@ class sportsmanagementModelProjectteams extends JSMModelList
 			$this->jsmsubquery2->where('tp.season_id = ' . $this->_season_id);
 			$this->jsmquery->select('(' . $this->jsmsubquery2 . ') AS staffcount');
 
-			// Join over the team
+			/** Join over the team */
 			$this->jsmquery->select('t.name,t.club_id');
 			$this->jsmquery->select('plg.picture as playground_picture');
 			$this->jsmquery->join('LEFT', '#__sportsmanagement_team AS t on st.team_id = t.id');
 
-			// Join over the club
+			/** Join over the club */
 			$this->jsmquery->select('c.email AS club_email,c.logo_big as club_logo,c.country,c.latitude,c.longitude,c.location,c.founded_year,c.unique_id');
 			$this->jsmquery->join('LEFT', '#__sportsmanagement_club AS c on t.club_id = c.id');
 
-			// Join over the playground
+			/** Join over the playground */
 			$this->jsmquery->join('LEFT', '#__sportsmanagement_playground AS plg on plg.id = tl.standard_playground');
 
-			// Join over the division
+			/** Join over the division */
 			$this->jsmquery->join('LEFT', '#__sportsmanagement_division AS d on d.id = tl.division_id');
 		}
 
