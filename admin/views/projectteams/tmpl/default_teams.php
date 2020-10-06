@@ -647,7 +647,10 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
                     <br>
 					<?php echo $row->seasonname; ?>
                 </td>
-                <td class="center"><?php echo $row->team_id; ?></td>
+                <td class="center"><?php echo $row->team_id; ?>
+			<br>
+		    <?php echo $row->club_id; ?>
+		    </td>
                 <td class="center"><?php echo $row->id; ?></td>
             </tr>
 			<?php
