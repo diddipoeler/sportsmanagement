@@ -3,23 +3,26 @@
 <version>1.0.00</version>
 
 <events>
-<name icon="wpgoal.png">GOAL</name>
+<name icon="tor.png">GOAL</name>
 </events>
 <events>
-<name icon="wpred_card.png">RED_CARD</name>
+<name icon="red_card.png">RED_CARD</name>
 </events>
 <events>
-<name icon="wpyellow.png">YELLOW_CARD</name>
+<name icon="yellow.png">YELLOW_CARD</name>
 </events>
 <events>
-<name icon="wpexclusion.png">EXCLUSION</name>
+<name icon="ausschluss.png">EXCLUSION</name>
 </events>  
 <events>
-<name icon="wp5m.png">FIVE_METER</name>
+<name icon="5m.png">FIVE_METER</name>
 </events>
 <events>
-<name icon="wprole.png">ROLE</name>
+<name icon="rolle.png">ROLE</name>
 </events>
+<events>
+<name icon="einsatz.png">EINSATZ</name>
+</events>  
   
 <mainpositions>
 <mainname switch="persontype" parent="0" content="1">PLAYERS</mainname>
