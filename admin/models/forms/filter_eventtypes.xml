@@ -18,7 +18,21 @@
 			>
 			<option value="">JOPTION_SELECT_PUBLISHED</option>
 		</field>
-			
+		
+		<field  
+            name="sports_type"
+            type="sportstypelist"
+            default="0"
+            size="1"
+            label="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE"
+            description="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE_DESC"
+            onchange="this.form.submit();">
+            <option
+                value="">
+                COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE_SELECT</option>
+        </field>
+		
+		<!--
 		<field
             name="search_nation"
             type="countrylist"
@@ -29,7 +43,7 @@
         >
             <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
         </field>
-		
+		-->
 		
     </fields>
 	
