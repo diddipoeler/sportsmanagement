@@ -1,1 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<structur>
+<version>1.0.00</version>
 
+<events>
+<name icon="wpgoal.png">GOAL</name>
+</events>
+<events>
+<name icon="wpred_card.png">RED_CARD</name>
+</events>
+<events>
+<name icon="wpyellow.png">YELLOW_CARD</name>
+</events>
+<events>
+<name icon="wpexclusion.png">EXCLUSION</name>
+</events>  
+<events>
+<name icon="wp5m.png">FIVE_METER</name>
+</events>
+<events>
+<name icon="wprole.png">ROLE</name>
+</events>
+  
+<mainpositions>
+<mainname switch="persontype" parent="0" content="1">PLAYERS</mainname>
+</mainpositions>
+
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">GOALKEEPER</parentname>
+</parentpositions>
+  
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">FIELDPLAYER</parentname>
+</parentpositions>
+
+</structur>
