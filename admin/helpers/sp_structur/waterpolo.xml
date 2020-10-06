@@ -9,7 +9,7 @@
 <name icon="red_card.png">RED_CARD</name>
 </events>
 <events>
-<name icon="yellow.png">YELLOW_CARD</name>
+<name icon="yellow_card.png">YELLOW_CARD</name>
 </events>
 <events>
 <name icon="ausschluss.png">EXCLUSION</name>
