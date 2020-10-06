@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 
+$this->saveOrder = $this->sortColumn == 'obj.ordering';
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
     
