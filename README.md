@@ -36,6 +36,7 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   06-10-2020: **3.8.20** Sportart Wasserball hinzugefügt
 *   03-10-2020: **3.8.10** Neue Felder Countries
 *   12-09-2020: **3.8.00** Neue Felder Spielstätte, Personen und Vereine
 *   29-08-2020: **3.7.10** Altergruppe/Passnummer in der Stammdatenliste ein/ausblenden
