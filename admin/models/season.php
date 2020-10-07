@@ -106,7 +106,7 @@ $result = $this->jsmdb->insertObject('#__sportsmanagement_person_project_positio
 catch (Exception $e)
 {
 	$msg = Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage());
-	$msg .= Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__);
+	$msg .= '<br>'.Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__);
 }
 break;
 }
@@ -135,7 +135,7 @@ break;
 					catch (Exception $e)
 					{
 						$msg = Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage());
-						$msg .= Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__);
+						$msg .= '<br>'.Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__);
 					}
 
 					$profile              = new stdClass;
@@ -152,7 +152,7 @@ break;
 					catch (Exception $e)
 					{
 						$msg = Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage());
-						$msg .= Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__);
+						$msg .= '<br>'.Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__);
 					}
 				}
             
@@ -174,7 +174,7 @@ break;
 				catch (Exception $e)
 				{
 					$msg = Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage());
-					$msg .= Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__);
+					$msg .= '<br>'.Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__);
 				}
 			}
 		}
