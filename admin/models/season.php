@@ -140,6 +140,17 @@ break;
 						$msg .= '<br>'.Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__);
 					}
 
+		    			$this->jsmquery->clear();
+					$this->jsmquery->select('id');
+					$this->jsmquery->from('#__sportsmanagement_project_referee');
+					$this->jsmquery->where('project_id = ' . $project_id);
+					$this->jsmquery->where('person_id = ' . $new_id);
+					$this->jsmdb->setQuery($this->jsmquery);
+					$ref_id = $this->jsmdb->loadResult();
+		    
+		    
+		    if ( !$ref_id )
+		    {
 					$profile              = new stdClass;
 					$profile->project_id  = $project_id;
 					$profile->person_id   = $new_id;
@@ -156,6 +167,11 @@ break;
 						$msg .= '<br>'.Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage());
 						$msg .= '<br>'.Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__);
 					}
+		    
+	    }
+		    
+		    
+		    
 				}
             
 
