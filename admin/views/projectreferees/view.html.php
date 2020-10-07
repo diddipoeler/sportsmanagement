@@ -54,6 +54,8 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
 		$this->table = $table;
 
 		$this->_persontype = $this->jinput->get('persontype');
+		$mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
+		$this->project    = $mdlProject->getProject($this->project_id);
 
 		if (empty($this->_persontype))
 		{
