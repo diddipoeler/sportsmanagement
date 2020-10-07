@@ -57,6 +57,8 @@ class sportsmanagementModelseason extends JSMModelAdmin
         $whichview = $this->jsmjinput->getVar('whichview', 0, 'post', 'array');
 		$post   = Factory::getApplication()->input->post->getArray(array());
 
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>'.print_r($teams,true).'</pre>'  , 'Error');
+		
 		foreach ($pks as $key => $value)
 		{
 			$this->jsmquery->clear();
