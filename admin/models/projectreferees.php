@@ -275,7 +275,7 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERR
 		$this->jsmquery->join('INNER', '#__sportsmanagement_season_person_id AS tp on tp.person_id = p.id');
 		$this->jsmquery->join('INNER', '#__sportsmanagement_project_referee AS pref on pref.person_id = tp.id');
 		$this->jsmquery->join('LEFT', '#__users AS u ON u.id = pref.checked_out');
-		$this->jsmquery->where('tp.persontype = 3');
+		//$this->jsmquery->where('tp.persontype = 3');
 		$this->jsmquery->where('p.published = 1');
 		if ( $this->_season_id )
 		{
