@@ -2640,7 +2640,7 @@ try
 				$zusatz .= '&team_id=' . $jinput->get('team_id');
 				$zusatz .= '&persontype=' . $jinput->get('persontype');
 				$zusatz .= '&season_id=' . $app->getUserState("$option.season_id", '0');
-                $zusatz .= '&whichview=teamplayers';
+                $zusatz .= '&whichview='.$view;
 				break;
 		}
 
