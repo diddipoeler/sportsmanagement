@@ -48,6 +48,7 @@ class sportsmanagementModelseason extends JSMModelAdmin
 	 */
 	function saveshortpersons()
 	{
+		$msg = '';
 		$pks        = $this->jsmjinput->getVar('cid', null, 'post', 'array');
 		$teams      = $this->jsmjinput->getVar('team_id', null, 'post', 'array');
 		$season_id  = $this->jsmjinput->getVar('season_id', 0, 'post', 'array');
@@ -104,7 +105,8 @@ $result = $this->jsmdb->insertObject('#__sportsmanagement_person_project_positio
 }
 catch (Exception $e)
 {
-//$this->jsmapp->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');    
+//$this->jsmapp->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+	$msg = Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage());
 }
 break;
 }
@@ -132,6 +134,7 @@ break;
 					}
 					catch (Exception $e)
 					{
+						$msg = Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage());
 					}
 
 					$profile              = new stdClass;
@@ -147,6 +150,7 @@ break;
 					}
 					catch (Exception $e)
 					{
+						$msg = Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage());
 					}
 				}
             
@@ -168,10 +172,11 @@ break;
 				catch (Exception $e)
 				{
 				//$this->jsmapp->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');    
+					$msg = Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage());
 				}
 			}
 		}
-
+return $msg;
 	}
 
 	/**
