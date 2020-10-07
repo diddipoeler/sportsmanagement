@@ -15,8 +15,21 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 
-$templatesToLoad = array('footer', 'listheader');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+$this->saveOrder = $this->sortColumn == 'pref.ordering';
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+    
+if ($this->saveOrder && !empty($this->items))
+{
+$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task='.$this->view.'.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';    
+HTMLHelper::_('draggablelist.draggable');
+}    
+}
+else
+{
+$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task='.$this->view.'.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';    
+JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl,null);
+} 
 ?>
 <legend>
 	<?php
@@ -24,8 +37,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	?>
 </legend>
 
-<div id="editcell">
-    <table class="<?php echo $this->table_data_class; ?>">
+<div class="table-responsive" id="editcell">
+<table class="<?php echo $this->table_data_class; ?>" id="<?php echo $this->view; ?>list">
         <thead>
         <tr>
             <th width="5">
@@ -87,38 +100,41 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             </td>
         </tr>
         </tfoot>
-        <tbody>
+        <tbody <?php if ( $this->saveOrder && version_compare(substr(JVERSION, 0, 3), '4.0', 'ge') ) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($this->sortDirection); ?>" <?php endif; ?>>
 		<?php
-		$k = 0;
-		for ($i = 0, $n = count($this->items); $i < $n; $i++)
-		{
-			$row        =& $this->items[$i];
-			$link       = Route::_('index.php?option=com_sportsmanagement&task=projectreferee.edit&id=' . $row->id . '&pid=' . $row->project_id . '&person_id=' . $row->person_id);
+    foreach ($this->items as $this->count_i => $this->item)
+	{
+//$this->count_i = $i;
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+$this->dragable_group = 'data-dragable-group="none"';
+}        
+			$link       = Route::_('index.php?option=com_sportsmanagement&task=projectreferee.edit&id=' . $this->item->id . '&pid=' . $this->item->project_id . '&person_id=' . $this->item->person_id);
 			$canEdit    = $this->user->authorise('core.edit', 'com_sportsmanagement');
-			$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $row->checked_out == $this->user->get('id') || $row->checked_out == 0;
-			$checked    = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'projectreferees.', $canCheckin);
+			$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $this->item->checked_out == $this->user->get('id') || $this->item->checked_out == 0;
+			$checked    = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $this->item->checked_out_time, 'projectreferees.', $canCheckin);
 
 			$inputappend = '';
 			?>
-            <tr class="<?php echo "row$k"; ?>">
+            <tr class="row<?php echo $this->count_i % 2; ?>" <?php echo $this->dragable_group; ?>>
                 <td class="center">
 					<?php
-					echo $this->pagination->getRowOffset($i);
+					echo $this->pagination->getRowOffset($this->count_i);
 					?>
                 </td>
                 <td class="center">
 					<?php
-					echo HTMLHelper::_('grid.id', $i, $row->id);
+					echo HTMLHelper::_('grid.id', $this->count_i, $this->item->id);
 					?>
                 </td>
 
                 <td class="center">
 					<?php
 					if ($row->checked_out) : ?>
-						<?php echo HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'projectreferees.', $canCheckin); ?>
+						<?php echo HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'projectreferees.', $canCheckin); ?>
 					<?php
 					endif;
-					if ($canEdit && !$row->checked_out) :
+					if ($canEdit && !$this->item->checked_out) :
 						?>
                         <a href="<?php echo $link; ?>">
 							<?php
@@ -135,16 +151,16 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 
 				?>
                 <td>
-					<?php echo sportsmanagementHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, 1) ?>
+					<?php echo sportsmanagementHelper::formatName(null, $this->item->firstname, $this->item->nickname, $this->item->lastname, 1) ?>
                 </td>
                 <td class="center">
 					<?php
-					echo $row->person_id;
+					echo $this->item->person_id;
 					?>
                 </td>
                 <td class="center">
 					<?php
-					if ($row->picture == '')
+					if ($this->item->picture == '')
 					{
 $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_NO_IMAGE');
 $image_attributes['title'] = $imageTitle;
@@ -159,17 +175,17 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 					}
 					else
 					{
-						$playerName = sportsmanagementHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, 0);
-						$picture    = Uri::root() . $row->picture;
-						echo sportsmanagementHelper::getBootstrapModalImage('collapseModalplayerpicture' . $row->id, $picture, $playerName, '20', $picture);
+						$playerName = sportsmanagementHelper::formatName(null, $this->item->firstname, $this->item->nickname, $this->item->lastname, 0);
+						$picture    = Uri::root() . $this->item->picture;
+						echo sportsmanagementHelper::getBootstrapModalImage('collapseModalplayerpicture' . $this->item->id, $picture, $playerName, '20', $picture);
 					}
 					?>
                 </td>
                 <td class="center">
 					<?php
-					if ($row->project_position_id != 0)
+					if ($this->item->project_position_id != 0)
 					{
-						$selectedvalue = $row->project_position_id;
+						$selectedvalue = $this->item->project_position_id;
 						$append        = '';
 					}
 					else
@@ -181,51 +197,37 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 					if ($append != '')
 					{
 						?>
-                        <script language="javascript">document.getElementById('cb<?php echo $i; ?>').checked = true;</script>
+                        <script language="javascript">document.getElementById('cb<?php echo $this->count_i; ?>').checked = true;</script>
 						<?php
 					}
 
-					if ($row->project_position_id == 0)
+					if ($this->item->project_position_id == 0)
 					{
 						$append = ' style="background-color:#FFCCCC"';
 					}
 
 					echo HTMLHelper::_(
 						'select.genericlist',
-						$this->lists['project_position_id'], 'project_position_id' . $row->id,
-						$inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append,
+						$this->lists['project_position_id'], 'project_position_id' . $this->item->id,
+						$inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true"' . $append,
 						'value', 'text', $selectedvalue
 					);
 					?>
                 </td>
                 <td class="center">
 					<?php
-					echo HTMLHelper::_('grid.published', $row, $i, 'tick.png', 'publish_x.png', 'projectreferees.');
+					echo HTMLHelper::_('grid.published', $this->item, $this->count_i, 'tick.png', 'publish_x.png', 'projectreferees.');
 					?>
                 </td>
-                <td class="order">
-              <span>
-                <?php
-                echo $this->pagination->orderUpIcon($i, $i > 0, 'projectreferees.orderup', 'JLIB_HTML_MOVE_UP', true);
-                ?>
-              </span>
-                    <span>
-                <?php
-                echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'projectreferees.orderdown', 'JLIB_HTML_MOVE_DOWN', true);
-                ?>
-              </span>
-					<?php
-					$disabled = true ? '' : 'disabled="disabled"';
-					?>
-                    <input type="text" name="order[]" size="5"
-                           value="<?php echo $row->ordering; ?>" <?php echo $disabled; ?>
-                           class="form-control form-control-inline"
-                           style="text-align: center; "/>
-                </td>
-                <td class="center"><?php echo $row->id; ?></td>
+                <td class="order" id="defaultdataorder">
+<?php
+echo $this->loadTemplate('data_order');
+?>
+</td>
+                <td class="center"><?php echo $this->item->id; ?></td>
             </tr>
 			<?php
-			$k = 1 - $k;
+			
 		}
 		?>
         </tbody>
