@@ -49,6 +49,7 @@ class sportsmanagementModelProjectReferees extends JSMModelList
 			'p.mobile',
 			'pref.*',
 			'pref.project_position_id',
+			'pref.ordering',
 			'u.name AS editor',
 			'pref.picture'
 		);
