@@ -669,17 +669,12 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 	 */
 	function getTeamPlayers($cfg_which_database = 0)
 	{
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
 		$query = $db->getQuery(true);
 
 		$query->select('tp.*');
+        $query->select('pe.notes');
 		$query->select('pt.project_id,pt.team_id,pt.id as projectteam_id,pt.picture as team_picture');
 		$query->select('pos.name AS position_name');
 		$query->select('ppos.position_id,pos.picture AS position_image');
@@ -715,8 +710,8 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 		}
 		catch (Exception $e)
 		{
-			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
-			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
 			$result = false;
 		}
 

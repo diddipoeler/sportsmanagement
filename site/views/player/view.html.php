@@ -228,4 +228,3 @@ class sportsmanagementViewPlayer extends sportsmanagementView
 	}
 
 }
-
