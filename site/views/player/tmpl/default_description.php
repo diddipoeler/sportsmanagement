@@ -23,13 +23,18 @@ use Joomla\CMS\HTML\HTMLHelper;
 	{
 		$description = $this->teamPlayer->notes;
 	}
-	else
+    if (isset($this->person) && !empty($this->person->notes))
 	{
-		if (!empty($this->person->notes))
-		{
-			$description = $this->person->notes;
-		}
+		$description .= '<br />'.$this->person->notes;
 	}
+    
+//	else
+//	{
+//		if (!empty($this->person->notes))
+//		{
+//			$description = $this->person->notes;
+//		}
+//	}
 
 	if (!empty($description))
 	{
