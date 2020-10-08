@@ -14,9 +14,9 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
-<div class="<?php echo $this->divclassrow; ?> table-responsive" id="roster">
+<div class="<?php echo $this->divclassrow; ?> table-responsive" id="rosterdescription">
 	<?php
-	// Show team-description if defined.
+	/** Show team-description if defined. */
 	if (!isset($this->projectteam->notes))
 	{
 		$description = "";

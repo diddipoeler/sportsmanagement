@@ -85,7 +85,7 @@ class sportsmanagementModelRoster extends JSMModelLegacy
 			{
 				$query = $db->getQuery(true);
 				$query->clear();
-				$query->select('pt.project_id,pt.id,st.team_id as season_team_id');
+				$query->select('pt.project_id,pt.id,st.team_id as season_team_id,pt.notes');
 				$query->select("" . $team_picture_which . ".picture as picture");
 				$query->from('#__sportsmanagement_project_team AS pt');
 				$query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');
