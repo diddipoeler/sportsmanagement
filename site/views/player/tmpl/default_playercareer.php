@@ -15,7 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 
 ?>
-<div class="<?php echo $this->divclassrow; ?> table-responsive" id="player">
+<div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultplayercareer">
 	<?php
 	if (count($this->historyPlayer) > 0)
 	{

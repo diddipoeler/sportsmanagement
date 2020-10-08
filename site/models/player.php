@@ -669,12 +669,11 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 	 */
 	function getTeamPlayers($cfg_which_database = 0)
 	{
-		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
 		$query = $db->getQuery(true);
 
 		$query->select('tp.*');
-        $query->select('pe.notes');
+        //$query->select('pe.notes');
 		$query->select('pt.project_id,pt.team_id,pt.id as projectteam_id,pt.picture as team_picture');
 		$query->select('pos.name AS position_name');
 		$query->select('ppos.position_id,pos.picture AS position_image');

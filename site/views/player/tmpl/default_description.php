@@ -15,7 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
 <!-- Team Player Description START -->
-<div class="<?php echo $this->divclassrow; ?> table-responsive" id="player">
+<div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultplayerdescription">
 	<?php
 	$description = "";
 
