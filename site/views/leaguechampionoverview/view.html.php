@@ -47,6 +47,19 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
           $mdlRanking::$projectid = $this->project_id;
           $mdlRanking::computeRanking(0);
         $this->currentRanking = $mdlRanking::$currentRanking;
+        
+        foreach ($this->currentRanking[0] as $this->count_i => $this->champion)
+		{
+        
+        if ( $this->champion->rank == 1 )
+        {
+        echo '<pre>'.print_r($this->champion->rank->_name,true).'</pre>';    
+            
+            
+        }
+        
+        }
+        
 //        echo '<pre>'.print_r($this->currentRanking,true).'</pre>';
           }
         
