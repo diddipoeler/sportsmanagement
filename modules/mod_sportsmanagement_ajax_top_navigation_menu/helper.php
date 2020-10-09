@@ -1146,6 +1146,15 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 				$routeparameter['p']                  = $this->_project_slug;
 				$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute($view, $routeparameter);
 				break;
+                
+            case "leaguechampionoverview":
+				$routeparameter                       = array();
+				$routeparameter['cfg_which_database'] = $this->_app->input->getInt('cfg_which_database', ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0));
+				$routeparameter['l']                  = $this->_league_id;
+				$routeparameter['s']                  = 0;
+				$routeparameter['p']                  = $this->_project_slug;
+				$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute($view, $routeparameter);
+				break;    
 
 			case "resultsrankingmatrix":
 				$link = sportsmanagementHelperRoute::getResultsRankingMatrixRoute($this->_project_slug, $this->_round_slug, $this->_division_id);
