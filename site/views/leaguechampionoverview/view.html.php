@@ -40,11 +40,16 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
 		$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
 		$this->projectids     = $mdlRankingAllTime->getAllProject();
 		$this->projectnames   = $mdlRankingAllTime->getAllProjectNames();
-		$this->project_ids           = implode(",", $this->projectids);
+        
+        $mdlRanking::computeRanking(0);
+        $this->currentRanking = $mdlRanking::$currentRanking;
+
+
+//		$this->project_ids           = implode(",", $this->projectids);
 //		$this->project_ids    = $project_ids;
-		$this->teams          = $mdlRankingAllTime->getAllTeamsIndexedByPtid($this->project_ids );
-		$this->matches        = $mdlRankingAllTime->getAllMatches($this->project_ids );
-		$this->ranking        = $mdlRankingAllTime->getAllTimeRanking();
+//		$this->teams          = $mdlRankingAllTime->getAllTeamsIndexedByPtid($this->project_ids );
+//		$this->matches        = $mdlRankingAllTime->getAllMatches($this->project_ids );
+//		$this->ranking        = $mdlRankingAllTime->getAllTimeRanking();
 //		$this->tableconfig    = $mdlRankingAllTime->getAllTimeParams();
 //		$this->config         = $mdlRankingAllTime->getAllTimeParams();
 //		$this->currentRanking = $mdlRankingAllTime->getCurrentRanking();
