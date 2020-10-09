@@ -86,7 +86,7 @@
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_STRING_LENGHT_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_STRING_LENGHT_DESC" />
 
-				<field type="spacer" hr="true" />
+				<field type="extensionsubtitle" title="" color="#2672a6" />	
 
 				<field name="show_project_dropdown"
 					class="radio btn-group btn-group-yesno"
@@ -104,7 +104,7 @@
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_PROJECT_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_PROJECT_DESC" />
 
-				<field type="spacer" hr="true" />
+				<field type="extensionsubtitle" title="" color="#2672a6" />	
 				<field name="show_season_dropdown"
 					class="radio btn-group btn-group-yesno"
 					type="extensionradiobutton" default="1"
@@ -120,7 +120,7 @@
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_SEASON_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_SEASON_DESC" />
 
-				<field type="spacer" hr="true" />
+				<field type="extensionsubtitle" title="" color="#2672a6" />	
 
 				<field name="show_league_dropdown"
 					class="radio btn-group btn-group-yesno"
@@ -137,7 +137,7 @@
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_LEAGUE_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_LEAGUE_DESC" />
 
-				<field type="spacer" hr="true" />
+				<field type="extensionsubtitle" title="" color="#2672a6" />	
 
 				<field name="show_division_dropdown"
 					class="radio btn-group btn-group-yesno"
@@ -155,7 +155,7 @@
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_DIVISIONS_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_DIVISIONS_DESC" />
 
-				<field type="spacer" hr="true" />
+				<field type="extensionsubtitle" title="" color="#2672a6" />	
 
 				<field name="show_teams_dropdown" class="radio btn-group btn-group-yesno"
 					type="extensionradiobutton"
@@ -171,7 +171,7 @@
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_TEAMS_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_TEAMS_DESC" />
 
-				<field type="spacer" hr="true" />
+				<field type="extensionsubtitle" title="" color="#2672a6" />	
 
 
 				<field name="default_project_id"
@@ -189,7 +189,7 @@
 					<option value="calendar">MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_CALENDAR</option>
 				</field>
 
-				<field type="spacer" hr="true" />
+				<field type="extensionsubtitle" title="" color="#2672a6" />	
 
 				<field name="link_teams_dropdown"
 					type="list" default="roster"
@@ -206,7 +206,7 @@
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_TEAM_LABEL_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_TEAM_LABEL_DESC" />
 
-				<field type="spacer" hr="true" />
+				<field type="extensionsubtitle" title="" color="#2672a6" />	
 
 				<field name="show_only_subdivisions"
 					class="radio btn-group btn-group-yesno"
