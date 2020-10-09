@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage fields
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -22,7 +18,6 @@ use Joomla\CMS\Form\FormHelper;
 
 jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
-
 
 /**
  * FormFieldJSMMenuItems
@@ -51,7 +46,7 @@ class JFormFieldJSMMenuItems extends \JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		// Initialize variables.
+
 		$options = array(
 			HTMLHelper::_('select.option', '', Text::_('JNONE')),
 			HTMLHelper::_('select.option', 'separator', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_SEPARATOR')),
@@ -80,11 +75,10 @@ class JFormFieldJSMMenuItems extends \JFormFieldList
 			HTMLHelper::_('select.option', 'treetonode', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_TREETONODE')),
 			HTMLHelper::_('select.option', 'jlallprojectrounds', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_JLALLPROJECTROUNDS')),
 			HTMLHelper::_('select.option', 'jlxmlexports', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_XMLEXPORT')),
+            HTMLHelper::_('select.option', 'leaguechampionoverview', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_LEAGUECHAMPIONOVERVIEW')),
 		);
 
-		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);
-
 		return $options;
 	}
 }

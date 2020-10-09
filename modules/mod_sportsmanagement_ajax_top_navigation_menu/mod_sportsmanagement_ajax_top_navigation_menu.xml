@@ -217,7 +217,7 @@
 					<option value="1">JYES</option>
 				</field>
 
-				<field type="spacer" hr="true" />
+				<field type="extensionsubtitle" title="" color="#2672a6" />	
 
 				<field name="show_favteams_nav_links"
 					class="radio btn-group btn-group-yesno"
@@ -228,7 +228,7 @@
 					<option value="1">JYES</option>
 				</field>
 
-				<field type="spacer" hr="true" />
+				<field type="extensionsubtitle" title="" color="#2672a6" />	
 
 				<field type="jsmmessage"
 					style="info"
@@ -249,7 +249,7 @@
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_TOURNAMENT_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_TOURNAMENT_DESC" />
 
-				<field type="spacer" hr="true" />
+				<field type="extensionsubtitle" title="" color="#2672a6" />	
 
 				<field type="jsmmessage"
 					style="info"
@@ -277,7 +277,7 @@
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_ALLTIMETABLE_POINTS_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_ALLTIMETABLE_POINTS_DESCR" size="10"/>
 
-				<field type="spacer" hr="true" />
+				<field type="extensionsubtitle" title="" color="#2672a6" />	
 
 				<field type="jsmmessage"
 					style="info"
