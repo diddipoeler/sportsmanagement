@@ -767,7 +767,15 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 			$query->where('id = ' . $projekt);
 			$query->order('name ');
 			$db->setQuery($query);
+            try
+            {
 			$league = $db->loadResult();
+            }
+catch (Exception $e)
+{
+    Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), Log::INFO, 'jsmerror');
+    Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), Log::INFO, 'jsmerror');
+}
 		}
 
 		$query->clear();
@@ -778,7 +786,15 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 		$query->where('p.league_id = ' . $league);
 		$query->order('s.name DESC ');
 		$db->setQuery($query);
+        try
+        {
 		$result = $db->loadObjectList();
+        }
+catch (Exception $e)
+{
+    Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), Log::INFO, 'jsmerror');
+    Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), Log::INFO, 'jsmerror');
+}
 
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
