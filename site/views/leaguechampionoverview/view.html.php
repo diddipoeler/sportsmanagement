@@ -41,9 +41,18 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
 		$this->projectids     = $mdlRankingAllTime->getAllProject();
 		$this->projectnames   = $mdlRankingAllTime->getAllProjectNames();
         
-        $mdlRanking::computeRanking(0);
+        foreach ($this->projectids as $this->count_i => $this->project_id)
+		{
+//		echo '<pre>'.print_r($this->project_id,true).'</pre>';
+          $mdlRanking::$projectid = $this->project_id;
+          $mdlRanking::computeRanking(0);
         $this->currentRanking = $mdlRanking::$currentRanking;
+//        echo '<pre>'.print_r($this->currentRanking,true).'</pre>';
+          }
+        
 
+      //echo '<pre>'.print_r($this->projectids,true).'</pre>';
+      //echo '<pre>'.print_r($this->currentRanking,true).'</pre>';
 
 //		$this->project_ids           = implode(",", $this->projectids);
 //		$this->project_ids    = $project_ids;
