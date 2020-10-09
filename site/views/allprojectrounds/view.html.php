@@ -25,7 +25,6 @@ use Joomla\CMS\Factory;
  */
 class sportsmanagementViewallprojectrounds extends sportsmanagementView
 {
-
 	
 	/**
 	 * sportsmanagementViewallprojectrounds::init()
@@ -35,7 +34,7 @@ class sportsmanagementViewallprojectrounds extends sportsmanagementView
 	function init()
 	{
 		$this->tableclass = $this->jinput->request->get('table_class', 'table', 'STR');
-        	$this->show_favteaminfo  = $this->jinput->request->get('show_favteaminfo', 0, 'INT');
+       	$this->show_favteaminfo  = $this->jinput->request->get('show_favteaminfo', 0, 'INT');
 		$this->projectid      = $this->project->id;
 		$this->projectmatches = $this->model->getProjectMatches();
 		$this->rounds         = sportsmanagementModelProject::getRounds();
@@ -48,4 +47,3 @@ class sportsmanagementViewallprojectrounds extends sportsmanagementView
 	}
 
 }
-

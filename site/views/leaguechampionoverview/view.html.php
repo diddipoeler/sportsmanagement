@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementViewleaguechampionoverview
@@ -34,19 +34,21 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
 	 */
 	function init()
 	{
+	   $mdlRankingAllTime = BaseDatabaseModel::getInstance("RankingAllTime", "sportsmanagementModel");
+       
 		$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
-		$this->projectids     = $this->model->getAllProject();
-		$this->projectnames   = $this->model->getAllProjectNames();
+		$this->projectids     = $mdlRankingAllTime->getAllProject();
+		$this->projectnames   = $mdlRankingAllTime->getAllProjectNames();
 		$project_ids          = implode(",", $this->projectids);
 		$this->project_ids    = $project_ids;
-		$this->teams          = $this->model->getAllTeamsIndexedByPtid($project_ids);
-		$this->matches        = $this->model->getAllMatches($project_ids);
-		$this->ranking        = $this->model->getAllTimeRanking();
-		$this->tableconfig    = $this->model->getAllTimeParams();
-		$this->config         = $this->model->getAllTimeParams();
-		$this->currentRanking = $this->model->getCurrentRanking();
+		$this->teams          = $mdlRankingAllTime->getAllTeamsIndexedByPtid($project_ids);
+		$this->matches        = $mdlRankingAllTime->getAllMatches($project_ids);
+		$this->ranking        = $mdlRankingAllTime->getAllTimeRanking();
+		$this->tableconfig    = $mdlRankingAllTime->getAllTimeParams();
+		$this->config         = $mdlRankingAllTime->getAllTimeParams();
+		$this->currentRanking = $mdlRankingAllTime->getCurrentRanking();
 		$this->action         = $this->uri->toString();
-		$this->colors         = $this->model->getColors($this->config['colors']);
+		$this->colors         = $mdlRankingAllTime->getColors($this->config['colors']);
 		/** Set page title */
 		$pageTitle = Text::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE');
 		$this->document->setTitle($pageTitle);

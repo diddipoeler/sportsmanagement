@@ -64,6 +64,8 @@ class sportsmanagementHelperRoute
 		'player'           => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'pid' => ''),
 
 		'playground' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'pgid' => ''),
+        
+        'leaguechampionoverview'    => array('cfg_which_database' => '', 'l' => '', 's' => '', 'p' => ''),
 
 		'ranking'           => array('cfg_which_database' => '', 's' => '', 'p' => '', 'type' => '', 'r' => '', 'from' => '', 'to' => '', 'division' => ''),
 		'rankingalltime'    => array('cfg_which_database' => '', 'l' => '', 'points' => '', 'type' => '', 'order' => '', 'dir' => '', 's' => '', 'p' => ''),
