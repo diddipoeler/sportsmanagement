@@ -35,6 +35,7 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
 	function init()
 	{
 	   $mdlRankingAllTime = BaseDatabaseModel::getInstance("RankingAllTime", "sportsmanagementModel");
+       $mdlRanking = BaseDatabaseModel::getInstance("Ranking", "sportsmanagementModel");
        
 		$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
 		$this->projectids     = $mdlRankingAllTime->getAllProject();
