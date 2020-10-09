@@ -503,7 +503,7 @@
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
 
-				<field type="spacer" hr="true" />
+				<field type="extensionsubtitle" title="" color="#2672a6" />
 
 				<field type="jsmmessage"
 					style="info"
