@@ -92,6 +92,7 @@ switch ($view)
 		break;
 	case 'ranking':
 	case 'curve':
+    case 'leaguechampionoverview':
 		JLoader::import('components.com_sportsmanagement.helpers.ranking', JPATH_SITE);
 		JLoader::import('components.com_sportsmanagement.models.clubnames', JPATH_ADMINISTRATOR);
 		JLoader::import('components.com_sportsmanagement.models.rounds', JPATH_ADMINISTRATOR);
@@ -149,7 +150,6 @@ switch ($view)
 	case 'eventsranking':
 	case 'stats':
 	case 'about':
-
 		break;
 	case 'editclub':
 		JLoader::import('components.com_sportsmanagement.models.clubinfo', JPATH_SITE);
