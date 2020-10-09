@@ -53,7 +53,7 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         
         if ( $this->champion->rank == 1 )
         {
-        echo '<pre>'.print_r($this->champion->rank->_name,true).'</pre>';    
+        echo '<pre>'.print_r($this->champion->_name,true).'</pre>';    
             
             
         }
