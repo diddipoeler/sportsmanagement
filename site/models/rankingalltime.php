@@ -245,11 +245,16 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 			$query->join('LEFT', '#__sportsmanagement_project AS p ON p.id = tl.project_id');
 
 			$query->where('tl.project_id IN (' . $project_ids . ')');
-
-			// $query->group('st.team_id' );
-
+try
+{
 			$db->setQuery($query);
 			$this->_teams = $db->loadObjectList();
+            }
+catch (Exception $e)
+{
+    Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), Log::INFO, 'jsmerror');
+    Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), Log::INFO, 'jsmerror');
+}
 
 			if (!$this->_teams)
 			{
