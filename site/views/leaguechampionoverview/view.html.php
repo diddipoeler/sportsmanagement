@@ -43,7 +43,7 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         
         foreach ($this->projectids as $this->count_i => $this->project_id)
 		{
-//		echo '<pre>'.print_r($this->project_id,true).'</pre>';
+		echo '<pre>'.print_r($this->project_id,true).'</pre>';
           $mdlRanking::$projectid = $this->project_id;
           $mdlRanking::computeRanking(0);
         $this->currentRanking = $mdlRanking::$currentRanking;
