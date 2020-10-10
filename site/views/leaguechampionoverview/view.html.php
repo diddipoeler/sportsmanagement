@@ -79,6 +79,8 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
 //        echo '<pre>'.print_r($this->currentRanking,true).'</pre>';
           }
         
+         ksort($this->leaguechampions);
+      krsort($this->leaguechampions);
         echo '<pre>'.print_r($this->leaguechampions,true).'</pre>';
 
       //echo '<pre>'.print_r($this->projectids,true).'</pre>';
