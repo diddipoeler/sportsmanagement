@@ -73,6 +73,7 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         $object->ptid = $this->champion->_ptid;
         $object->teamid = $this->champion->_teamid;
         
+        $mdlTeaminfo::$team = null;
         $teaminfo = $mdlTeaminfo::getTeam(0,$this->champion->_teamid);
         $object->clubid = $teaminfo->club_id;
         
