@@ -35,8 +35,8 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
 	function init()
 	{
 	   $this->leaguechampions = array();
-       
-       
+       $this->teamsaisons = array();
+       $this->leagueteamchampions = array();
        
        
        $mdlRankingAllTime = BaseDatabaseModel::getInstance("RankingAllTime", "sportsmanagementModel");
@@ -70,8 +70,12 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         $object->ptid = $this->champion->_ptid;
         $object->teamid = $this->champion->_teamid;
         
-        
-        $this->leaguechampions[$project->season_name][] = $object;   
+        /** welche saison zu welchem team */
+        $this->teamsaisons[$object->teamid][] = $project->season_name;
+        /** in welcher saison hat welches team gewonnen */
+        $this->leaguechampions[$project->season_name][] = $object;  
+        /** team details */
+        $this->leagueteamchampions[$object->teamid][] = $object; 
         }
         
         }
@@ -81,7 +85,9 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         
          ksort($this->leaguechampions);
       krsort($this->leaguechampions);
-        echo '<pre>'.print_r($this->leaguechampions,true).'</pre>';
+        echo 'in welcher saison hat welches team gewonnen <pre>'.print_r($this->leaguechampions,true).'</pre>';
+        echo 'welche saison zu welchem team <pre>'.print_r($this->teamsaisons,true).'</pre>';
+        echo 'team details <pre>'.print_r($this->leagueteamchampions,true).'</pre>';
 
       //echo '<pre>'.print_r($this->projectids,true).'</pre>';
       //echo '<pre>'.print_r($this->currentRanking,true).'</pre>';
