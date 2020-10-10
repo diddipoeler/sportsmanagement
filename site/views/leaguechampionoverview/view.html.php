@@ -35,7 +35,7 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
 	function init()
 	{
 	   $this->leaguechampions = array();
-       $this->teamsaisons = array();
+       $this->teamseason = array();
        $this->leagueteamchampions = array();
        
        
@@ -71,7 +71,8 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         $object->teamid = $this->champion->_teamid;
         
         /** welche saison zu welchem team */
-        $this->teamsaisons[$object->teamid][] = $project->season_name;
+        $this->teamseason[$object->teamid]['season'][] = $project->season_name;
+        $this->teamseason[$object->teamid]['title'] += 1;
         /** in welcher saison hat welches team gewonnen */
         $this->leaguechampions[$project->season_name][] = $object;  
         /** team details */
@@ -89,7 +90,7 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
          ksort($this->leaguechampions);
       krsort($this->leaguechampions);
         echo 'in welcher saison hat welches team gewonnen <pre>'.print_r($this->leaguechampions,true).'</pre>';
-        echo 'welche saison zu welchem team <pre>'.print_r($this->teamsaisons,true).'</pre>';
+        echo 'welche saison zu welchem team <pre>'.print_r($this->teamseason,true).'</pre>';
         echo 'team details <pre>'.print_r($this->leagueteamchampions,true).'</pre>';
 
       //echo '<pre>'.print_r($this->projectids,true).'</pre>';
