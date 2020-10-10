@@ -43,6 +43,9 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
        $mdlRanking = BaseDatabaseModel::getInstance("Ranking", "sportsmanagementModel");
        $mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
        
+       $mdlTeaminfo = BaseDatabaseModel::getInstance("TeamInfo", "sportsmanagementModel");
+       $mdlClubinfo = BaseDatabaseModel::getInstance("ClubInfo", "sportsmanagementModel");
+       
 		$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
 		$this->projectids     = $mdlRankingAllTime->getAllProject();
 		$this->projectnames   = $mdlRankingAllTime->getAllProjectNames();
@@ -69,6 +72,9 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         $object->ptid_slug = $this->champion->ptid_slug;
         $object->ptid = $this->champion->_ptid;
         $object->teamid = $this->champion->_teamid;
+        
+        $teaminfo = $mdlTeaminfo::getTeam(0,$this->champion->_teamid);
+        $object->clubid = $teaminfo->club_id;
         
         /** welche saison zu welchem team */
         $this->teamseason[$object->teamid]['season'][] = $project->season_name;
