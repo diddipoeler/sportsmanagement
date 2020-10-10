@@ -71,7 +71,7 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         $object->teamid = $this->champion->_teamid;
         
         
-        $this->leaguechampions[$project->season_name][] = $object->teamname;   
+        $this->leaguechampions[$project->season_name][] = $object;   
         }
         
         }
