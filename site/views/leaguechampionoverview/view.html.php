@@ -34,7 +34,7 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
 	 */
 	function init()
 	{
-	   $this->leaguechampions = '';
+	   $this->leaguechampions = array();
        
        
        
@@ -66,6 +66,9 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
 //        echo '<pre>'.print_r($this->champion->_name,true).'</pre>';
         $object = new stdClass;
 		$object->teamname = $this->champion->_name;
+        $object->ptid_slug = $this->champion->ptid_slug;
+        $object->ptid = $this->champion->_ptid;
+        $object->teamid = $this->champion->_teamid;
         
         
         $this->leaguechampions[$project->season_name][] = $object->teamname;   
