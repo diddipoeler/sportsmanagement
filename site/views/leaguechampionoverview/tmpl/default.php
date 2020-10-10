@@ -14,8 +14,30 @@ $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <div class="<?php echo $this->divclasscontainer; ?>" id="defaultleaguechampionoverview">
-	<?php
-	echo $this->loadTemplate('projectheading');
+<?php
+echo $this->loadTemplate('projectheading');
+
+foreach ($this->teamseason as $this->team => $this->seasons)
+{
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //	echo $this->loadTemplate('ranking');
-	?>
+?>
 </div>
