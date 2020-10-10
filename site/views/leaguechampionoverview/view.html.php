@@ -34,7 +34,12 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
 	 */
 	function init()
 	{
-	   $mdlRankingAllTime = BaseDatabaseModel::getInstance("RankingAllTime", "sportsmanagementModel");
+	   $this->leaguechampions = '';
+       
+       
+       
+       
+       $mdlRankingAllTime = BaseDatabaseModel::getInstance("RankingAllTime", "sportsmanagementModel");
        $mdlRanking = BaseDatabaseModel::getInstance("Ranking", "sportsmanagementModel");
        $mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
        
@@ -57,9 +62,13 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         
         if ( $this->champion->rank == 1 )
         {
-        echo '<pre>'.print_r($project->season_name,true).'</pre>';    
-        echo '<pre>'.print_r($this->champion->_name,true).'</pre>';
-            
+//        echo '<pre>'.print_r($project->season_name,true).'</pre>';    
+//        echo '<pre>'.print_r($this->champion->_name,true).'</pre>';
+        $object = new stdClass;
+		$object->teamname = $this->champion->_name;
+        
+        
+        $this->leaguechampions[$project->season_name][] = $object->teamname;   
         }
         
         }
@@ -67,6 +76,7 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
 //        echo '<pre>'.print_r($this->currentRanking,true).'</pre>';
           }
         
+        echo '<pre>'.print_r($this->leaguechampions,true).'</pre>';
 
       //echo '<pre>'.print_r($this->projectids,true).'</pre>';
       //echo '<pre>'.print_r($this->currentRanking,true).'</pre>';
