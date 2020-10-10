@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage ranking
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -30,31 +26,18 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 class sportsmanagementModelRanking extends BaseDatabaseModel
 {
 	static $projectid = 0;
-
 	static $round = 0;
-
 	static $rounds = array(0);
-
 	static $part = 0;
-
 	static $type = 0;
-
 	static $last = 0;
-
 	static $from = 0;
-
 	static $to = 0;
-
 	static $divLevel = 0;
-
 	static $currentRanking = array();
-
 	static $paramconfig = array();
-
 	static $previousRanking = array();
-
 	static $homeRank = array();
-
 	static $awayRank = array();
 	static $current_round = 0;
 	static $viewName = '';
@@ -62,8 +45,6 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 	static $season = 0;
 	var $colors = array();
 	var $result = array();
-
-	// Static $cfg_which_database = 0;
 	var $pageNav = array();
 
 	/**
@@ -283,7 +264,7 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 			$firstRound = sportsmanagementModelRounds::getFirstRound($project->id, $cfg_which_database);
 			$lastRound  = sportsmanagementModelRounds::getLastRound($project->id, $cfg_which_database);
 
-			// Url if no sef link comes along (ranking form)
+			/** Url if no sef link comes along (ranking form) */
 			$routeparameter                       = array();
 			$routeparameter['cfg_which_database'] = $cfg_which_database;
 			$routeparameter['s']                  = $s;
@@ -299,15 +280,10 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 			if (self::$part == 1)
 			{
 				self::$from = $firstRound['id'];
-
-				// Diddipoeler: das ist ein bug
-				// $this->to = $this->rounds[intval(count($this->rounds)/2)]->id;
 				self::$to = self::$rounds[intval(count(self::$rounds) / 2) - 1]->id;
 			}
 			elseif (self::$part == 2)
 			{
-				// Diddipoeler: das ist ein bug
-				// $this->from = $this->rounds[intval(count($this->rounds)/2)+1]->id;
 				self::$from = self::$rounds[intval(count(self::$rounds) / 2)]->id;
 				self::$to   = $lastRound['id'];
 			}
@@ -335,7 +311,7 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 
 			self::$divLevel = 0;
 
-			// For sub division ranking tables
+			/** For sub division ranking tables */
 			if ($project->project_type == 'DIVISIONS_LEAGUE')
 			{
 				$selDivision    = $input->getInt('division', 0);
@@ -348,7 +324,7 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 				}
 				else
 				{
-					// Check if division level view is allowed. if not, replace with default
+					/** Check if division level view is allowed. if not, replace with default */
 					if ((self::$divLevel == 0 && $tableconfig['show_project_table'] == 0)
 						|| (self::$divLevel == 1 && $tableconfig['show_level1_table'] == 0)
 						|| (self::$divLevel == 2 && $tableconfig['show_level2_table'] == 0)
@@ -388,25 +364,23 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 				$app->redirect(Route::_($url));
 			}
 
-			/**
-			 * create ranking object
-			 */
+			/** create ranking object */
 			$ranking = JSMRanking::getInstance($project, $cfg_which_database);
 			$ranking->setProjectId(self::$projectid, $cfg_which_database);
 
 			foreach ($divisions as $division)
 			{
-				// Away rank
+				/** Away rank */
 				if (self::$type == 2)
 				{
 					self::$currentRanking[$division] = $ranking->getRankingAway(self::$from, self::$to, $division, $cfg_which_database);
 				}
-				// Home rank
+				/** Home rank */
 				elseif (self::$type == 1)
 				{
 					self::$currentRanking[$division] = $ranking->getRankingHome(self::$from, self::$to, $division, $cfg_which_database);
 				}
-				// Total rank
+				/** Total rank */
 				else
 				{
 					self::$currentRanking[$division] = $ranking->getRanking(self::$from, self::$to, $division, $cfg_which_database);
@@ -427,7 +401,7 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 					self::$to = sportsmanagementModelProject::getCurrentRound(null, sportsmanagementModelProject::$cfg_which_database);
 				}
 
-				// Previous rank
+				/** Previous rank */
 				if ($tableconfig['last_ranking'])
 				{
 					if (self::$to == 1 || (self::$to == self::$from))
@@ -436,17 +410,17 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 					}
 					else
 					{
-						// Away rank
+						/** Away rank */
 						if (self::$type == 2)
 						{
 							self::$previousRanking[$division] = $ranking->getRankingAway(self::$from, self::_getPreviousRoundId(self::$to, $cfg_which_database), $division, $cfg_which_database);
 						}
-						// Home rank
+						/** Home rank */
 						elseif (self::$type == 1)
 						{
 							self::$previousRanking[$division] = $ranking->getRankingHome(self::$from, self::_getPreviousRoundId(self::$to, $cfg_which_database), $division, $cfg_which_database);
 						}
-						// Total rank
+						/** Total rank */
 						else
 						{
 							self::$previousRanking[$division] = $ranking->getRanking(self::$from, self::_getPreviousRoundId(self::$to, $cfg_which_database), $division, $cfg_which_database);

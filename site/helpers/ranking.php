@@ -9,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
@@ -120,10 +118,13 @@ class JSMRanking
 	 */
 	var $_roundcodes = null;
 
+	
 	/**
-	 * get instance of ranking. Looks into extension folder too.
-	 *
-	 * @param   string  $type
+	 * JSMRanking::getInstance()
+	 * 
+	 * @param mixed $project
+	 * @param integer $cfg_which_database
+	 * @return
 	 */
 	public static function getInstance($project = null, $cfg_which_database = 0)
 	{

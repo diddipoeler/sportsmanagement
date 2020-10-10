@@ -36,6 +36,7 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
 	{
 	   $mdlRankingAllTime = BaseDatabaseModel::getInstance("RankingAllTime", "sportsmanagementModel");
        $mdlRanking = BaseDatabaseModel::getInstance("Ranking", "sportsmanagementModel");
+       $mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
        
 		$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
 		$this->projectids     = $mdlRankingAllTime->getAllProject();
@@ -44,17 +45,20 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         foreach ($this->projectids as $this->count_i => $this->project_id)
 		{
 		echo '<pre>'.print_r($this->project_id,true).'</pre>';
-          $mdlRanking::$projectid = $this->project_id;
-          $mdlRanking::computeRanking(0);
+        $mdlRanking::$projectid = $this->project_id;
+        $mdlRanking::computeRanking(0);
         $this->currentRanking = $mdlRanking::$currentRanking;
+        
+        $mdlProject::$projectid = $this->project_id;
+        $project = $mdlProject::getProject();
         
         foreach ($this->currentRanking[0] as $this->count_i => $this->champion)
 		{
         
         if ( $this->champion->rank == 1 )
         {
-        echo '<pre>'.print_r($this->champion->_name,true).'</pre>';    
-            
+        echo '<pre>'.print_r($project->season_name,true).'</pre>';    
+        echo '<pre>'.print_r($this->champion->_name,true).'</pre>';
             
         }
         
