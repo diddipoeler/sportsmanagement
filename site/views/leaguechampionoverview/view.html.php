@@ -74,7 +74,7 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         $this->teamseason[$object->teamid]['season'][] = $project->season_name;
         $this->teamseason[$object->teamid]['title'] += 1;
         /** in welcher saison hat welches team gewonnen */
-        $this->leaguechampions[$project->season_name][] = $object;  
+        $this->leaguechampions[$project->season_name] = $object;  
         /** team details */
         if ( !array_key_exists($object->teamid, $this->leagueteamchampions) ) {
         $this->leagueteamchampions[$object->teamid] = $object;
