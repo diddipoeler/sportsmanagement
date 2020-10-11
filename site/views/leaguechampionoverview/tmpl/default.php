@@ -10,18 +10,50 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <div class="<?php echo $this->divclasscontainer; ?>" id="defaultleaguechampionoverview">
 <?php
 echo $this->loadTemplate('projectheading');
+?>
+<h1 class="componentheading">
+<?php echo Text::_('Übersicht nach Mannschaft'); ?>
+</h1>
+<table>
+<thead>
+<th>
+<?php echo Text::_('Mannschaft'); ?>
+</th>
+<th>
+<?php echo Text::_('Titel'); ?>
+</th>
+<th>
+<?php echo Text::_('Saisons'); ?>
+</th>
+</thead>
 
+<?php
 foreach ($this->teamseason as $this->team => $this->seasons)
 {
+?>
+<td>
 
-
+</td>
+<td>
+<?php echo $this->seasons['title']; ?>
+</td>
+<td>
+<?php echo implode(",",$this->seasons['season']); ?>
+</td>
+<?php
 }
+?>
+</table>
+
+<?php
 
 
 
@@ -34,10 +66,6 @@ foreach ($this->teamseason as $this->team => $this->seasons)
 
 
 
-
-
-
-
-//	echo $this->loadTemplate('ranking');
+echo $this->loadTemplate('jsminfo');
 ?>
 </div>

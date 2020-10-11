@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage clubplan
@@ -11,13 +9,8 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
-
-// Make sure that in case extensions are written for mentioned (common) views,
-// that they are loaded i.s.o. of the template of this view
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
@@ -34,7 +27,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 	switch ($this->config['type_matches'])
 	{
-		case 0 : // All matches
+		case 0 : /** All matches */
 			if (!empty($this->allmatches))
 			{
 				$tm = count($this->allmatches);
@@ -48,7 +41,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 			}
 			break;
 
-		case 1 : // Home matches
+		case 1 : /** Home matches */
 			if (!empty($this->homematches))
 			{
 				$tm = count($this->homematches);
@@ -62,7 +55,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 			}
 			break;
 
-		case 2 : // Away matches
+		case 2 : /** Away matches */
 			if (!empty($this->awaymatches))
 			{
 				$tm = count($this->awaymatches);
@@ -76,7 +69,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 			}
 			break;
 
-		case 4 : // Matches sorted by date
+		case 4 : /** Matches sorted by date */
 			if (!empty($this->allmatches))
 			{
 				$tm = count($this->allmatches);
@@ -90,7 +83,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 			}
 			break;
 
-		default : // Home+Away matches
+		default : /** Home+Away matches */
 			if (!empty($this->homematches))
 			{
 				$tm = count($this->homematches);
