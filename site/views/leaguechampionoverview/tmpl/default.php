@@ -15,14 +15,14 @@ use Joomla\CMS\Language\Text;
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<div class="<?php echo $this->divclasscontainer; ?>" id="defaultleaguechampionoverview">
+<div class="<?php echo $this->divclasscontainer; ?> table-responsive" id="defaultleaguechampionoverview">
 <?php
 echo $this->loadTemplate('projectheading');
 ?>
 <h1 class="componentheading">
 <?php echo Text::_('Übersicht nach Mannschaft'); ?>
 </h1>
-<table>
+<table class="table">
 <thead>
 <th>
 <?php echo Text::_('Mannschaft'); ?>
@@ -39,6 +39,7 @@ echo $this->loadTemplate('projectheading');
 foreach ($this->teamseason as $this->team => $this->seasons)
 {
 ?>
+<tr>
 <td>
 
 </td>
@@ -48,6 +49,7 @@ foreach ($this->teamseason as $this->team => $this->seasons)
 <td>
 <?php echo implode(",",$this->seasons['season']); ?>
 </td>
+</tr>
 <?php
 }
 ?>
