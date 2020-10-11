@@ -91,6 +91,16 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         
         }
         
+        /** nach titel sortieren */
+        //$this->teamseason
+        // Hole eine Liste von Spalten
+		foreach ($this->teamseason as $key => $row)
+		{
+			$total[$key] = $row['title'];
+		}
+
+		array_multisort($total, SORT_DESC, $this->teamseason);
+        
 //        echo '<pre>'.print_r($this->currentRanking,true).'</pre>';
           }
         
