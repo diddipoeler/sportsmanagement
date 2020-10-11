@@ -94,16 +94,44 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         /** nach titel sortieren */
         //$this->teamseason
         // Hole eine Liste von Spalten
-		foreach ($this->teamseason as $key => $row)
+          
+                  
+          }
+
+      
+$this->teamstotal = array();
+
+		foreach ((array) $this->teamseason as $rows => $value)
 		{
-			$total[$key] = $row['title'];
+          
+          echo 'value<pre>'.print_r($value['title'],true).'</pre>'; 
+          
+			//foreach ($value AS $row)
+			//{
+              
+              //echo 'row<pre>'.print_r($row,true).'</pre>'; 
+              
+              
+				$this->teamstotal[$rows][team_id] = $rows;
+				$this->teamstotal[$rows][total]   = $value['title'];
+				//$teamstotal[$rows][$rows]   = $row->total;
+			//}
+		}
+        // Hole eine Liste von Spalten
+		foreach ($this->teamstotal as $key => $row)
+		{
+			$total[$key] = $row['total'];
 		}
 
-		array_multisort($total, SORT_DESC, $this->teamseason);
-        
-//        echo '<pre>'.print_r($this->currentRanking,true).'</pre>';
-          }
-        
+		array_multisort($total, SORT_DESC, $this->teamstotal);  
+        echo '<pre>'.print_r($this->teamstotal,true).'</pre>';      
+      
+      
+      
+      
+      
+      
+      
          ksort($this->leaguechampions);
       krsort($this->leaguechampions);
         echo 'in welcher saison hat welches team gewonnen <pre>'.print_r($this->leaguechampions,true).'</pre>';

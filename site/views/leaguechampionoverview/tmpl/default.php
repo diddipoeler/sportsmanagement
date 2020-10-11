@@ -36,18 +36,18 @@ echo $this->loadTemplate('projectheading');
 </thead>
 
 <?php
-foreach ($this->teamseason as $this->team => $this->seasons)
+foreach ($this->teamstotal as $this->count_i => $this->team)
 {
 ?>
 <tr>
 <td>
-<?php echo $this->leagueteamchampions[$this->team]->teamname; ?>
+<?php echo $this->leagueteamchampions[$this->team['team_id']]->teamname; ?>
 </td>
 <td>
-<?php echo $this->seasons['title']; ?>
+<?php echo $this->teamseason[$this->team['team_id']]['title']; ?>
 </td>
 <td>
-<?php echo implode(",",$this->seasons['season']); ?>
+<?php echo implode(",",$this->teamseason[$this->team['team_id']]['season']); ?>
 </td>
 </tr>
 <?php
