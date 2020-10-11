@@ -41,7 +41,7 @@ foreach ($this->teamseason as $this->team => $this->seasons)
 ?>
 <tr>
 <td>
-<?php echo $this->leagueteamchampions[$this->team]['teamname']; ?>
+<?php echo $this->leagueteamchampions[$this->team]->teamname; ?>
 </td>
 <td>
 <?php echo $this->seasons['title']; ?>
