@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
@@ -52,7 +53,9 @@ $routeparameter['ptid']               = $this->leagueteamchampions[$this->team['
 $teaminfo1_link                       = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);  
 // echo $teaminfo1_link ;  
 ?>  
-<?php echo $this->leagueteamchampions[$this->team['team_id']]->teamname; ?>
+<?php 
+echo HTMLHelper::link($teaminfo1_link, $this->leagueteamchampions[$this->team['team_id']]->teamname);  
+//echo $this->leagueteamchampions[$this->team['team_id']]->teamname; ?>
 </td>
 <td>
 <?php echo $this->teamseason[$this->team['team_id']]['title']; ?>
