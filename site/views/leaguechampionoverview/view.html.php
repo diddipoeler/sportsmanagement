@@ -40,7 +40,7 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
        
        
        $mdlRankingAllTime = BaseDatabaseModel::getInstance("RankingAllTime", "sportsmanagementModel");
-       $mdlRanking = BaseDatabaseModel::getInstance("Ranking", "sportsmanagementModel");
+       //$mdlRanking = BaseDatabaseModel::getInstance("Ranking", "sportsmanagementModel");
        $mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
        
        $mdlTeaminfo = BaseDatabaseModel::getInstance("TeamInfo", "sportsmanagementModel");
@@ -52,19 +52,30 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         
         foreach ($this->projectids as $this->count_i => $this->project_id)
 		{
+          $mdlProject::$projectid = $this->project_id;
+        $project = $mdlProject::getProject();
+          //echo '<pre>'.print_r($project,true).'</pre>';
+          
+          $mdlRanking = BaseDatabaseModel::getInstance("Ranking", "sportsmanagementModel");
 		//echo '<pre>'.print_r($this->project_id,true).'</pre>';
         $mdlRanking::$projectid = $this->project_id;
+          
+          $mdlRanking::$round = $project->current_round;
+          
+          $mdlRanking::$currentRanking = array();
         $mdlRanking::computeRanking(0);
         $this->currentRanking = $mdlRanking::$currentRanking;
         
-        $mdlProject::$projectid = $this->project_id;
-        $project = $mdlProject::getProject();
+        
         
         foreach ($this->currentRanking[0] as $this->count_i => $this->champion)
 		{
         
-        if ( $this->champion->rank == 1 )
-        {
+          switch ( $this->champion->rank )
+          {
+            case 1:
+        //if ( $this->champion->rank == 1 )
+        //{
 //        echo '<pre>'.print_r($project->season_name,true).'</pre>';    
 //        echo '<pre>'.print_r($this->champion->_name,true).'</pre>';
         $object = new stdClass;
@@ -86,7 +97,7 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         if ( !array_key_exists($object->teamid, $this->leagueteamchampions) ) {
         $this->leagueteamchampions[$object->teamid] = $object;
         }
-         
+         break;
         }
         
         }
