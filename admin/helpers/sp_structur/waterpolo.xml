@@ -36,4 +36,29 @@
 <parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">FIELDPLAYER</parentname>
 </parentpositions>
 
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">CENTER</parentname>
+</parentpositions>  
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">LA</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">RA</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">LH</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">MITTE</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">RH</parentname>
+</parentpositions>  
+  
+  
+  
+  
+  
+  
+  
 </structur>
