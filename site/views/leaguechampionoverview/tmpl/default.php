@@ -54,7 +54,7 @@ $teaminfo1_link                       = sportsmanagementHelperRoute::getSportsma
 // echo $teaminfo1_link ;  
 ?>  
 <?php 
-echo HTMLHelper::_('image', $this->leagueteamchampions[$this->team['team_id']]->logo_big, $this->leagueteamchampions[$this->team['team_id']]->teamname, array('width' => '50'))  
+echo HTMLHelper::_('image', $this->leagueteamchampions[$this->team['team_id']]->logo_big, $this->leagueteamchampions[$this->team['team_id']]->teamname, array('width' => '50'));  
 echo HTMLHelper::link($teaminfo1_link, $this->leagueteamchampions[$this->team['team_id']]->teamname);  
 //echo $this->leagueteamchampions[$this->team['team_id']]->teamname; ?>
 </td>
