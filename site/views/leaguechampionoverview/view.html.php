@@ -88,7 +88,11 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         $mdlTeaminfo::$team = null;
         $teaminfo = $mdlTeaminfo::getTeam(0,$this->champion->_teamid);
         $object->clubid = $teaminfo->club_id;
-        
+			  
+	$mdlClubinfo::$club = null;		  
+        $clubinfo = $mdlClubinfo::getClub(0,$teaminfo->club_id);
+		$object->logo_big = $clubinfo->logo_big;	  
+			  
         /** welche saison zu welchem team */
         $this->teamseason[$object->teamid]['season'][] = $project->season_name;
         $this->teamseason[$object->teamid]['title'] += 1;
