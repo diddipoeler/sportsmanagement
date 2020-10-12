@@ -104,7 +104,7 @@ $this->teamstotal = array();
 		foreach ((array) $this->teamseason as $rows => $value)
 		{
           
-          echo 'value<pre>'.print_r($value['title'],true).'</pre>'; 
+          //echo 'value<pre>'.print_r($value['title'],true).'</pre>'; 
           
 			//foreach ($value AS $row)
 			//{
@@ -124,7 +124,7 @@ $this->teamstotal = array();
 		}
 
 		array_multisort($total, SORT_DESC, $this->teamstotal);  
-        echo '<pre>'.print_r($this->teamstotal,true).'</pre>';      
+        //echo '<pre>'.print_r($this->teamstotal,true).'</pre>';      
       
       
       
@@ -132,11 +132,12 @@ $this->teamstotal = array();
       
       
       
-         ksort($this->leaguechampions);
+        // ksort($this->leaguechampions);
       krsort($this->leaguechampions);
-        echo 'in welcher saison hat welches team gewonnen <pre>'.print_r($this->leaguechampions,true).'</pre>';
-        echo 'welche saison zu welchem team <pre>'.print_r($this->teamseason,true).'</pre>';
-        echo 'team details <pre>'.print_r($this->leagueteamchampions,true).'</pre>';
+		
+        //echo 'in welcher saison hat welches team gewonnen <pre>'.print_r($this->leaguechampions,true).'</pre>';
+        //echo 'welche saison zu welchem team <pre>'.print_r($this->teamseason,true).'</pre>';
+        //echo 'team details <pre>'.print_r($this->leagueteamchampions,true).'</pre>';
 
       //echo '<pre>'.print_r($this->projectids,true).'</pre>';
       //echo '<pre>'.print_r($this->currentRanking,true).'</pre>';
