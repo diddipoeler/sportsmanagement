@@ -46,7 +46,7 @@ foreach ($this->teamstotal as $this->count_i => $this->team)
 <td>
 <?php echo $this->teamseason[$this->team['team_id']]['title']; ?>
 </td>
-<td>
+<td style="word-break:break-all;word-wrap:break-word">
 <?php echo implode(",",$this->teamseason[$this->team['team_id']]['season']); ?>
 </td>
 </tr>
