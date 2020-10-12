@@ -42,6 +42,7 @@ ksort($this->leaguechampions);
 <h1 class="componentheading">
 <?php echo Text::_('Übersicht nach Saisons'); ?>
 </h1>   
+    <div class="row">
     <ul>
 <?php    
 foreach ($this->leaguechampions as $this->season => $this->team)
@@ -67,7 +68,7 @@ echo HTMLHelper::link($teaminfo1_link, $this->team->teamname);
 }    
 ?>
         </ul>
-    
+    </div>
 <h1 class="componentheading">
 <?php echo Text::_('Übersicht nach Mannschaft'); ?>
 </h1>
