@@ -36,7 +36,15 @@ li.hm2 {
 <div class="<?php echo $this->divclasscontainer; ?> table-responsive" id="defaultleaguechampionoverview">
 <?php
 echo $this->loadTemplate('projectheading');
+    
+ksort($this->leaguechampions);
 ?>
+<h1 class="componentheading">
+<?php echo Text::_('Übersicht nach Saisons'); ?>
+</h1>    
+    
+    
+
 <h1 class="componentheading">
 <?php echo Text::_('Übersicht nach Mannschaft'); ?>
 </h1>
