@@ -41,10 +41,18 @@ ksort($this->leaguechampions);
 ?>
 <h1 class="componentheading">
 <?php echo Text::_('Übersicht nach Saisons'); ?>
-</h1>    
+</h1>   
+    <ul>
+<?php    
+foreach ($this->leaguechampions as $this->season => $this->team)
+{
+?>    
+<li class="hm2">Punkt 1</li>
+<?php
+}    
+?>
+        </ul>
     
-    
-
 <h1 class="componentheading">
 <?php echo Text::_('Übersicht nach Mannschaft'); ?>
 </h1>
