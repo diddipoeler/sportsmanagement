@@ -11,6 +11,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
@@ -41,6 +42,16 @@ foreach ($this->teamstotal as $this->count_i => $this->team)
 ?>
 <tr>
 <td>
+<?php  
+$routeparameter                       = array();
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+$routeparameter['p']                  = $this->leagueteamchampions[$this->team['team_id']]->project_id;
+$routeparameter['tid']                = $this->leagueteamchampions[$this->team['team_id']]->teamid;
+$routeparameter['ptid']               = $this->leagueteamchampions[$this->team['team_id']]->ptid_slug;
+$teaminfo1_link                       = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);  
+// echo $teaminfo1_link ;  
+?>  
 <?php echo $this->leagueteamchampions[$this->team['team_id']]->teamname; ?>
 </td>
 <td>
