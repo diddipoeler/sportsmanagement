@@ -47,7 +47,22 @@ ksort($this->leaguechampions);
 foreach ($this->leaguechampions as $this->season => $this->team)
 {
 ?>    
-<li class="hm2">Punkt 1</li>
+<li class="hm2">
+<?php        
+echo $this->season.' : ';     
+$routeparameter                       = array();
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+$routeparameter['p']                  = $this->team->project_id;
+$routeparameter['tid']                = $this->team->teamid;
+$routeparameter['ptid']               = $this->team->ptid_slug;
+$teaminfo1_link                       = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);      
+    
+echo HTMLHelper::_('image', $this->team->logo_big, $this->team->teamname, array('width' => 'auto','height' => '25'));  
+echo HTMLHelper::link($teaminfo1_link, $this->team->teamname);      
+    
+?>    
+        </li>
 <?php
 }    
 ?>
