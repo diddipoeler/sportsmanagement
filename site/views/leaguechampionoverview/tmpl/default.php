@@ -17,6 +17,22 @@ use Joomla\CMS\HTML\HTMLHelper;
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
+
+<style>
+li.hm2 {
+    /* Textfluss ändern */
+    float:left;
+    /* Aufzählungspunkte entfernen */
+    list-style-type:none;
+    /* Abstand */
+    margin-right:15px;
+}
+ 
+</style>
+
+
+
+
 <div class="<?php echo $this->divclasscontainer; ?> table-responsive" id="defaultleaguechampionoverview">
 <?php
 echo $this->loadTemplate('projectheading');
