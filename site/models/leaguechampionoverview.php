@@ -31,6 +31,51 @@ use Joomla\CMS\Log\Log;
 class sportsmanagementModelleaguechampionoverview extends BaseDatabaseModel
 {
 
+function _getRankingCriteria()
+	{
+		$app = Factory::getApplication();
+
+		if (empty($this->_criteria))
+		{
+			// Get the values from ranking template setting
+			$values = explode(',', $this->_params['ranking_order']);
+			$crit   = array();
+
+			foreach ($values as $v)
+			{
+				$v = ucfirst(str_replace("jl_", "", strtolower(trim($v))));
+
+				if (method_exists($this, '_cmp' . $v))
+				{
+					$crit[] = '_cmp' . $v;
+				}
+				else
+				{
+					Log::add(Text::_('COM_SPORTSMANAGEMENT_RANKING_NOT_VALID_CRITERIA') . ': ' . $v, Log::WARNING, 'jsmerror');
+				}
+			}
+
+			// Set a default criteria if empty
+			if (!count($crit))
+			{
+				$crit[] = '_cmpPoints';
+			}
+
+			$this->_criteria = $crit;
+		}
+
+		if ($this->debug_info)
+		{
+			$this->dump_header("models function _getRankingCriteria");
+			$this->dump_variable("this->_criteria", $this->_criteria);
+		}
+
+		return $this->_criteria;
+	}	
+	
+	
+	
+	
 function _sortRanking(&$ranking,$order='',$order_dir='DESC')
 	{
 		// Reference global application object
