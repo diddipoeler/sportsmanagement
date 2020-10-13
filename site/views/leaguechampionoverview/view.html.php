@@ -64,9 +64,14 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
           
           $mdlRanking::$currentRanking = array();
         $mdlRanking::computeRanking(0);
-        $this->currentRanking = $mdlRanking::$currentRanking;
+        $currentRanking = $mdlRanking::$currentRanking;
+	$this->currentRanking = $this->model->_sortRanking($currentRanking);
         
-        
+        if ( $project->season_name == '2019/20' )
+        {
+        //echo '<pre>'.print_r($this->currentRanking,true).'</pre>';  
+          
+        }
         
         foreach ($this->currentRanking[0] as $this->count_i => $this->champion)
 		{
