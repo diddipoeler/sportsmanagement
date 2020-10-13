@@ -76,7 +76,7 @@ function _getRankingCriteria()
 	
 	
 	
-function _sortRanking(&$ranking,$order='',$order_dir='DESC')
+function _sortRanking(&$ranking,$order='points',$order_dir='DESC')
 	{
 		// Reference global application object
 		$app       = Factory::getApplication();
