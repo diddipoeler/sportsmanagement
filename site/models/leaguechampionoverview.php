@@ -232,7 +232,58 @@ function _sortRanking(&$ranking,$order='',$order_dir='DESC')
 
 	}
 
+function array_msort($array, $cols)
+	{
+		$colarr = array();
 
+		foreach ($cols as $col => $order)
+		{
+			$colarr[$col] = array();
+
+			foreach ($array as $k => $row)
+			{
+				$colarr[$col]['_' . $k] = strtolower($row[$col]);
+			}
+		}
+
+		$params = array();
+
+		foreach ($cols as $col => $order)
+		{
+			$params[] = &$colarr[$col];
+			$params   = array_merge($params, (array) $order);
+		}
+
+		call_user_func_array('array_multisort', $params);
+		$ret   = array();
+		$keys  = array();
+		$first = true;
+
+		foreach ($colarr as $col => $arr)
+		{
+			foreach ($arr as $k => $v)
+			{
+				if ($first)
+				{
+					$keys[$k] = substr($k, 1);
+				}
+
+				$k = $keys[$k];
+
+				if (!isset($ret[$k]))
+				{
+					$ret[$k] = $array[$k];
+				}
+
+				$ret[$k][$col] = $array[$k][$col];
+			}
+
+			$first = false;
+		}
+
+		return $ret;
+
+	}
 
 
 }
