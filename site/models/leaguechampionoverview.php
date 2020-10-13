@@ -221,10 +221,13 @@ function _sortRanking(&$ranking,$order='points',$order_dir='DESC')
 			$arr2 = $this->array_msort($arr2, $sortarray);
 
 			unset($ranking);
+			$rank = 1;
 
 			foreach ($arr2 as $key => $row)
 			{
 				$ranking[$key] = ArrayHelper::toObject($row, 'JSMRankingTeamClass');
+				$ranking[$key]->rank = $rank;
+				$rank++;
 			}
 		}
 
