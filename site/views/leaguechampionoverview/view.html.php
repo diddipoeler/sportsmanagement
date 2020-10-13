@@ -54,6 +54,8 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
 		{
           $mdlProject::$projectid = $this->project_id;
         $project = $mdlProject::getProject();
+		$rankinghelper = JSMRanking::getInstance($project, 0);
+		$rankinghelper->setProjectId($project->id, 0);
           //echo '<pre>'.print_r($project,true).'</pre>';
           
           $mdlRanking = BaseDatabaseModel::getInstance("Ranking", "sportsmanagementModel");
