@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage nextmatch
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -520,10 +516,6 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
 	{
 		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
-		/**
-		 *
-		 * Create a new query object.
-		 */
 		$db                  = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query               = $db->getQuery(true);
 		$not_used_project_id = array();
@@ -535,13 +527,7 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
 			return null;
 		}
 
-		/**
-		 *
-		 * Select some fields
-		 */
-		/**
-		 * schritt 1
-		 */
+		/** schritt 1 */
 		$query->clear();
 		$query->select('m.id,m.match_date,m.team1_result,m.team2_result,m.show_report,m.projectteam1_id,m.projectteam2_id');
 		$query->select('DATE_FORMAT(m.time_present, "%H:%i") time_present');
@@ -571,8 +557,14 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
 		$query->where('m.published = 1');
 		$query->order('s.name DESC, m.match_date ASC');
 		$db->setQuery($query);
+		try{
 		$result1 = $db->loadObjectList();
-
+}
+			catch (Exception $e)
+			{
+				$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+                $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+			}
 		/**
 		 * schritt 2
 		 */
@@ -605,7 +597,14 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
 		$query->where('m.published = 1');
 		$query->order('s.name DESC, m.match_date ASC');
 		$db->setQuery($query);
+		try{
 		$result2 = $db->loadObjectList();
+}
+			catch (Exception $e)
+			{
+				$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+                $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+			}
 
 		foreach ($result1 as $key => $val)
 		{
@@ -661,7 +660,14 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
 		$query->where('pt2.project_id not in (' . $not_used_project . ')');
 		$query->order('s.name DESC');
 		$db->setQuery($query);
+		try{
 		$result3 = $db->loadObjectList();
+}
+			catch (Exception $e)
+			{
+				$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+                $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+			}
 
 		$result = array_merge($result1, $result2, $result3);
 		$prod   = usort(
