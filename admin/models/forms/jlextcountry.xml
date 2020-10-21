@@ -2,6 +2,7 @@
 <form
     addrulepath="/administrator/components/com_sportsmanagement/models/rules"
     addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+	<!--- reiter 1 -->
     <fieldset 
         name="details"
         label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
@@ -103,7 +104,7 @@
         />	
         
     </fieldset>			
-
+<!-- reiter 2 -->
     <fieldset 
         name="picture"
         label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
@@ -123,4 +124,33 @@
         
     </fieldset>	
 	  	
+	<!-- reiter 3 -->
+<fieldset name="countrymap_mapdata"
+  label="COM_SPORTSMANAGEMENT_TABS_COUNTRYMAP_MAPDATA"
+  description="COM_SPORTSMANAGEMENT_TABS_COUNTRYMAP_MAPDATA">		
+			<field
+				name="countrymap_mapdata"
+				type="editor"
+				label="COM_SPORTSMANAGEMENT_TABS_COUNTRYMAP_MAPDATA"
+				description="COM_SPORTSMANAGEMENT_TABS_COUNTRYMAP_MAPDATA"
+				width="450" 
+				filter="JComponentHelper::filterText"/>			
+	</fieldset>		
+	
+<!-- reiter 4 -->
+<fieldset name="countrymap_mapinfo"
+  label="COM_SPORTSMANAGEMENT_TABS_COUNTRYMAP_MAPINFO"
+  description="COM_SPORTSMANAGEMENT_TABS_COUNTRYMAP_MAPINFO">		
+			<field
+				name="countrymap_mapinfo"
+				type="editor"
+				label="COM_SPORTSMANAGEMENT_TABS_COUNTRYMAP_MAPINFO"
+				description="COM_SPORTSMANAGEMENT_TABS_COUNTRYMAP_MAPINFO"
+				width="450" 
+				filter="JComponentHelper::filterText"/>			
+	</fieldset>	
+	
+	
+	
+	
 </form>
