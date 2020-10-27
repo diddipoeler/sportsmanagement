@@ -230,11 +230,11 @@ class JSMControllerForm extends FormController
 		$this->club_id   = $this->jsmapp->getUserState("$this->jsmoption.club_id", '0');
 		$this->person_id = $this->jsmapp->getUserState("$this->jsmoption.person_id", '0');
 		$this->team_id   = $this->jsmapp->getUserState("$this->jsmoption.team_id", '0');
-
+$this->insert_id   =      $this->jsmjinput->getInt('insert_id');
 //Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . 'post<pre>'.print_r($post,true).'</pre>'), Log::NOTICE, 'jsmerror');
 //Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . 'data<pre>'.print_r($data,true).'</pre>'), Log::NOTICE, 'jsmerror');
 		
-		$id = $data['id'] ? $data['id'] : $this->jsmdb->insertid();
+		$id = $this->insert_id ? $this->insert_id : $data['id'];
 
 		if ( empty($data['id']) )
 		{
