@@ -9,6 +9,12 @@
     
 		<field name="ergebnismatrix" type="textarea" rows="25" cols="250" label="ergebnismatrix" description="ergebnismatrix">
 		</field>
+	  
+	  <field name="ergebnisspielplan" type="textarea" rows="25" cols="250" label="ergebnisspielplan" description="ergebnisspielplan">
+		</field>
+	  
+	  <field name="ergebnistabelle" type="textarea" rows="25" cols="250" label="ergebnistabelle" description="ergebnistabelle">
+		</field>
     
     <field name="weltfussballlink" type="textarea" rows="1" cols="100" label="weltfussballlink" description="weltfussballlink">
 		</field>
