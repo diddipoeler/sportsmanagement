@@ -194,6 +194,12 @@ echo HTMLHelper::_('sliders.end');
 */ 
 echo HTMLHelper::_('bootstrap.startAccordion', 'slide-group-'.$this->item->id, $slidesOptions);   
 echo HTMLHelper::_('bootstrap.addSlide', 'slide-group-'.$this->item->id,  'Teams: ' . $this->item->name, 'slide' . $this->item->id . '_id');   
+$teams = $this->modelclub->teamsofclub($this->item->id);
+//echo '<pre>'.print_r($teams,true).'</pre>';   
+foreach ( $teams as $key => $value )   
+{
+  echo $value->name.' ('.$value->id.')<br>';
+}	 
 echo HTMLHelper::_('bootstrap.endSlide');
 echo HTMLHelper::_('bootstrap.endAccordion');
    
