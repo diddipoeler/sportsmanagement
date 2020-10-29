@@ -185,7 +185,22 @@ $this->dragable_group = 'data-dragable-group="none"';
                             onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked = true"/>
 			</div>
 			
-			
+			<div class="small">
+              <?php
+/*              
+echo HTMLHelper::_('sliders.start', $this->item->id, array('useCookie' => 0));
+echo HTMLHelper::_('sliders.panel', Text::_('Teams ').$this->item->name, $this->item->id);
+echo HTMLHelper::_('sliders.end');
+*/ 
+echo HTMLHelper::_('bootstrap.startAccordion', 'slide-group-'.$this->item->id, $slidesOptions);   
+echo HTMLHelper::_('bootstrap.addSlide', 'slide-group-'.$this->item->id,  'Teams: ' . $this->item->name, 'slide' . $this->item->id . '_id');   
+echo HTMLHelper::_('bootstrap.endSlide');
+echo HTMLHelper::_('bootstrap.endAccordion');
+   
+   
+   
+   ?>
+              </div>			
 			
 			
                 </td>
