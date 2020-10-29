@@ -54,7 +54,7 @@ class sportsmanagementViewClubs extends sportsmanagementView
 	 */
 	public function init()
 	{
-
+$this->modelclub   = BaseDatabaseModel::getInstance('club', 'sportsmanagementModel');
 		$inputappend         = '';
 		$this->search_nation = '';
 		$this->association   = '';
