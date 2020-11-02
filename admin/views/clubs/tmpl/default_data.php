@@ -16,6 +16,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Component\ComponentHelper;
+jimport('joomla.html.html.bootstrap');
 
 $params     = ComponentHelper::getParams('com_sportsmanagement');
 $joomlaicon = $params->get('show_joomla_icons');
@@ -113,6 +114,9 @@ JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($t
         </tfoot>
         <tbody <?php if ( $this->saveOrder && version_compare(substr(JVERSION, 0, 3), '4.0', 'ge') ) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($this->sortDirection); ?>" <?php endif; ?>>
 		<?php
+          
+//          echo JHtml::_('sliders.start');
+echo HTMLHelper::_('bootstrap.startAccordion', 'slider', array('useCookie' => 0));
  foreach ($this->items as $this->count_i => $this->item)
 		{
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
@@ -187,23 +191,27 @@ $this->dragable_group = 'data-dragable-group="none"';
 			
 			<div class="small">
               <?php
+              //echo JHtml::_('sliders.panel', 'Teams: ' . $this->item->name, $this->item->id);
 /*              
 echo HTMLHelper::_('sliders.start', $this->item->id, array('useCookie' => 0));
 echo HTMLHelper::_('sliders.panel', Text::_('Teams ').$this->item->name, $this->item->id);
 echo HTMLHelper::_('sliders.end');
 */ 
-echo HTMLHelper::_('bootstrap.startAccordion', 'slide-group-'.$this->item->id, $slidesOptions);   
-echo HTMLHelper::_('bootstrap.addSlide', 'slide-group-'.$this->item->id,  'Teams: ' . $this->item->name, 'slide' . $this->item->id . '_id');   
+   //echo HTMLHelper::_('sliders.panel', Text::_('Teams ').$this->item->name, $this->item->id);
+//echo HTMLHelper::_('bootstrap.startAccordion', 'slide-group-'.$this->item->id, $slidesOptions);   
+echo HTMLHelper::_('bootstrap.addSlide', 'slider',  'Teams: ' . $this->item->name, 'slide' . $this->item->id . '_id');   
+   
+   
 $teams = $this->modelclub->teamsofclub($this->item->id);
 //echo '<pre>'.print_r($teams,true).'</pre>';   
 foreach ( $teams as $key => $value )   
 {
   echo $value->name.' ('.$value->id.')<br>';
 }	 
-echo HTMLHelper::_('bootstrap.endSlide');
-echo HTMLHelper::_('bootstrap.endAccordion');
-   
-   
+//echo HTMLHelper::_('bootstrap.endSlide');
+//echo HTMLHelper::_('bootstrap.endAccordion');
+//echo HTMLHelper::_('sliders.end');   
+HTMLHelper::_('bootstrap.endSlide');   
    
    ?>
               </div>			
@@ -333,6 +341,8 @@ echo $this->loadTemplate('data_order');
             </tr>
 			<?php
 		}
+//echo JHtml::_('sliders.end');
+echo HTMLHelper::_('bootstrap.endAccordion');
 		?>
         </tbody>
     </table>
