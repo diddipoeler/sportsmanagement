@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
@@ -203,6 +199,8 @@ class sportsmanagementModeltemplate extends JSMModelAdmin
 
 			if ($table_row->load($pk))
 			{
+				try
+				{
 				// Make sure the item is valid
 				if (!$table_row->check())
 				{
@@ -251,6 +249,13 @@ class sportsmanagementModeltemplate extends JSMModelAdmin
 				}
 
 				$form->reset();
+					}
+			catch (Exception $e)
+			{
+		$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+                $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+		$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', 'Template', $table_row->template), 'notice');
+			}
 			}
 		}
 
