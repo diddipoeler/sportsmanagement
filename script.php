@@ -20,7 +20,8 @@
  *
  * https://www.spiralscripts.co.uk/Joomla-Tips/modal-windows-in-joomla-3.html
  *
- *
+ * toolbar icons
+ * https://docs.joomla.org/J3.x:Joomla_Standard_Icomoon_Fonts/de
  */
 
 /**
