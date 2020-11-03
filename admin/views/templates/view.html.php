@@ -107,8 +107,8 @@ class sportsmanagementViewTemplates extends sportsmanagementView
 		}
 		else
 		{
-			ToolbarHelper::custom('template.reset', 'restore.png', 'restore.png', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_RESET'));
-			ToolbarHelper::custom('template.update', 'update.png', 'update.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_UPDATE'));
+			ToolbarHelper::custom('template.reset', 'unblock', 'unblock', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_RESET'));
+			ToolbarHelper::custom('template.update', 'wand', 'wand', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_UPDATE'));
 		}
 
 		ToolbarHelper::checkin('templates.checkin');
