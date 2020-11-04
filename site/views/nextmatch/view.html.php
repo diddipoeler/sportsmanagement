@@ -176,7 +176,9 @@ $this->gesamtspiele[$game->leaguename]->minustore = 0;
 						$this->gesamtspiele[$game->leaguename]->minustore += $game->team1_result;
 					}
 				}
-
+                
+                if ( isset($game->team1_result) && isset($game->team2_result) )
+				{
 				if (!isset($this->statgames['home'][$game->team1_result . '-' . $game->team2_result]))
 				{
 					$this->statgames['home'][$game->team1_result . '-' . $game->team2_result] = 0;
@@ -207,6 +209,7 @@ $this->gesamtspiele[$game->leaguename]->minustore = 0;
 					$this->statgames['away'][$game->team1_result . '-' . $game->team2_result]   += 1;
 					$this->statgames['gesamt'][$game->team2_result . '-' . $game->team1_result] += 1;
 				}
+                }
 			}
 		}
 
