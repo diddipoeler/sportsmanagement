@@ -220,11 +220,17 @@ if ($this->games)
 										echo $away->name;
 										?></td>
                                     <td class="nowrap"><?php
+                                    if ( isset($game->team1_result) )
+                                    {
 										echo $game->team1_result;
+                                        }
 										?></td>
                                     <td class="nowrap"><?php echo $this->overallconfig['seperator']; ?></td>
                                     <td class="nowrap"><?php
+                                    if ( isset($game->team2_result) )
+                                    {
 										echo $game->team2_result;
+                                        }
 										?></td>
                                     <td class="nowrap"><?php
 										if ($game->show_report == 1)
