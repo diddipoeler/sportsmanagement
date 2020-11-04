@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage nextmatch
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -114,16 +110,23 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
 			$this->matchcommentary = sportsmanagementModelMatch::getMatchCommentary($this->match->id);
 		}
 
-		if ($this->games)
+		$this->gesamtspiele = array();
+        if ($this->games)
 		{
-			$this->gesamtspiele = array();
 
 			foreach ($this->games as $game)
 			{
-				if (!isset($this->gesamtspiele[$game->leaguename]))
-				{
-					$this->gesamtspiele[$game->leaguename] = new stdClass;
-				}
+
+if ( !array_key_exists($game->leaguename, $this->gesamtspiele)) {
+$this->gesamtspiele[$game->leaguename] = new stdClass;
+$this->gesamtspiele[$game->leaguename]->gesamtspiele = 0;
+$this->gesamtspiele[$game->leaguename]->gewonnen = 0;
+$this->gesamtspiele[$game->leaguename]->verloren = 0;
+$this->gesamtspiele[$game->leaguename]->unentschieden = 0;
+
+$this->gesamtspiele[$game->leaguename]->plustore = 0;
+$this->gesamtspiele[$game->leaguename]->minustore = 0;
+}
 
 				$this->gesamtspiele[$game->leaguename]->gesamtspiele += 1;
 
