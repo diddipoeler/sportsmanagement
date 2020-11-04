@@ -132,6 +132,8 @@ $this->gesamtspiele[$game->leaguename]->minustore = 0;
 
 				if ($game->team1_id == $this->teams[0]->id)
 				{
+				    if ( isset($game->team1_result) && isset($game->team2_result) )
+				{
 					if ($game->team1_result != null && $game->team2_result != null)
 					{
 						if ($game->team1_result > $game->team2_result)
@@ -152,8 +154,11 @@ $this->gesamtspiele[$game->leaguename]->minustore = 0;
 						$this->gesamtspiele[$game->leaguename]->plustore  += $game->team1_result;
 						$this->gesamtspiele[$game->leaguename]->minustore += $game->team2_result;
 					}
+                    }
 				}
 				elseif ($game->team2_id == $this->teams[0]->id)
+				{
+				    if ( isset($game->team1_result) && isset($game->team2_result) )
 				{
 					if ($game->team1_result != null && $game->team2_result != null)
 					{
@@ -175,6 +180,7 @@ $this->gesamtspiele[$game->leaguename]->minustore = 0;
 						$this->gesamtspiele[$game->leaguename]->plustore  += $game->team2_result;
 						$this->gesamtspiele[$game->leaguename]->minustore += $game->team1_result;
 					}
+                    }
 				}
                 
                 if ( isset($game->team1_result) && isset($game->team2_result) )
