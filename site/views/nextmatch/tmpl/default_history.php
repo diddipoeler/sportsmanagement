@@ -233,6 +233,8 @@ if ($this->games)
                                         }
 										?></td>
                                     <td class="nowrap"><?php
+                                    if ( isset($game->show_report) )
+                                    {
 										if ($game->show_report == 1)
 										{
 											$desc = HTMLHelper::image(
@@ -242,6 +244,7 @@ if ($this->games)
 											);
 											echo HTMLHelper::link($report_link, $desc);
 										}
+                                        }
 
 										$k = 1 - $k;
 										?></td>
