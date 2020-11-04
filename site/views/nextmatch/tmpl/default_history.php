@@ -91,8 +91,16 @@ if ($this->games)
                                         if ($this->config['show_events'])
 					{
 						
+                            if ( isset($game->id) )
+                            {
 							$events = sportsmanagementModelProject::getMatchEvents($game->id, 0, 0, Factory::getApplication()->input->getInt('cfg_which_database', 0));
 							$subs   = sportsmanagementModelProject::getMatchSubstitutions($game->id, Factory::getApplication()->input->getInt('cfg_which_database', 0));
+                            }
+                            else
+                            {
+                            $events = array(); 
+                            $subs = array();   
+                            }
 
 							if ($this->config['use_tabs_events'])
 							{
