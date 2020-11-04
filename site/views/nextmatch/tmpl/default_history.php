@@ -165,8 +165,16 @@ if ($this->games)
 											$home->picture = sportsmanagementHelper::getDefaultPlaceholder('logo_big');
 										}
 
-										echo sportsmanagementHelperHtml::getBootstrapModalImage(
-											'nextmatchprevh' . $game->id . '-' . $game->projectteam1_id,
+										if ( isset($game->id) )
+                                        {
+                                        $target = 'nextmatchprevh' . $game->id . '-' . $game->projectteam1_id;    
+                                        }
+                                        else
+                                        {
+                                        $target = 'nextmatchprevh' . $game->projectteam1_id . '-' . $game->projectteam1_id;    
+                                        }
+                                        echo sportsmanagementHelperHtml::getBootstrapModalImage(
+											$target,
 											$home->picture,
 											$home->name,
 											'20',
@@ -187,9 +195,16 @@ if ($this->games)
 										{
 											$away->picture = sportsmanagementHelper::getDefaultPlaceholder('logo_big');
 										}
-
+                                        if ( isset($game->id) )
+                                        {
+                                        $target = 'nextmatchpreva' . $game->id . '-' . $game->projectteam2_id;    
+                                        }
+                                        else
+                                        {
+                                        $target = 'nextmatchpreva' . $game->projectteam2_id . '-' . $game->projectteam2_id;    
+                                        }
 										echo sportsmanagementHelperHtml::getBootstrapModalImage(
-											'nextmatchprevh' . $game->id . '-' . $game->projectteam2_id,
+											$target,
 											$away->picture,
 											$away->name,
 											'20',
