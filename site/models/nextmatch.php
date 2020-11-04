@@ -674,7 +674,10 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
 			$result, function ($a, $b) {
 			$c = strcmp($b->seasonname, $a->seasonname);
 			$c .= strcmp($a->project_name, $b->project_name);
+            if ( isset($a->roundcode) )
+            {
 			$c .= $a->roundcode - $b->roundcode;
+            }
 
 			return $c;
 		}
