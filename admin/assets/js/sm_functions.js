@@ -75,7 +75,7 @@ function changePlayground()
 {
 
 var selected = jQuery( "#jform_picture" ).val();
-//alert(selected);
+console.log('background image = ' + selected);
 jQuery('#roster').css("background-image", "url(../images/com_sportsmanagement/database/rosterground/"+selected+")");
 }
 
