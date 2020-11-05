@@ -133,15 +133,29 @@ if (!empty($league_assoc_id) && !$ende_if)
 
 foreach ($points as $row)
 {
-	$federationselect[$row->name] = $helper->getFederationSelect($row->name, $row->id);
-	?>
-    <script>
-        console.log('tabpoints = ' + '<?php echo $row->name;?>');
-    </script>
-	<?php
+$federationselect[$row->name] = $helper->getFederationSelect($row->name, $row->id);
+$countryassocselect[$row->name] = array();
+$leagueselect[$row->name] = array();
+$countrysubassocselect[$row->name] = array();
+$countrysubsubassocselect[$row->name] = array();
+$countrysubsubsubassocselect[$row->name] = array();
+$projectselect[$row->name] = array();
+$divisionsselect[$row->name] = array();
+?>
+<script>
+console.log('tabpoints = ' + '<?php echo $row->name;?>');
+</script>
+<?php
 }
 
 $federationselect['NON'] = $helper->getFederationSelect('NON', 0);
+$countryassocselect['NON'] = array();
+$leagueselect['NON'] = array();
+$countrysubassocselect['NON'] = array();
+$countrysubsubassocselect['NON'] = array();
+$countrysubsubsubassocselect['NON'] = array();
+$projectselect['NON'] = array();
+$divisionsselect['NON'] = array();
 
 $country_federation = $helper->getCountryFederation($country_id);
 
