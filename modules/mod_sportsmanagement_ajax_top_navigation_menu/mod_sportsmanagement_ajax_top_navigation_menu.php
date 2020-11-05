@@ -504,6 +504,30 @@ $script[] = "});";
 
 Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
 
+/** php fehler unterbinden */
+if ( !array_key_exists('assocs', $countryassocselect[$country_federation]) ) {
+$countryassocselect[$country_federation]['assocs'] = array();
+}
+if ( !array_key_exists('subassocs', $countrysubsubassocselect[$country_federation]) ) {
+$countrysubsubassocselect[$country_federation]['subassocs'] = array();
+}
+if ( !array_key_exists('leagues', $leagueselect[$country_federation]) ) {
+$leagueselect[$country_federation]['leagues'] = array();
+}
+
+if ( !array_key_exists('subsubassocs', $countrysubsubsubassocselect[$country_federation]) ) {
+$countrysubsubsubassocselect[$country_federation]['subsubassocs'] = array();
+}
+
+if ( !array_key_exists('divisions', $divisionsselect[$country_federation]) ) {
+$divisionsselect[$country_federation]['divisions'] = array();
+}
+
+if ( !array_key_exists('teams', $projectselect[$country_federation]) ) {
+$projectselect[$country_federation]['teams'] = array();
+}
+
+
 /** Regionalverband */
 if ($country_id)
 {
