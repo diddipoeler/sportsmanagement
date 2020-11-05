@@ -20,7 +20,8 @@ switch ($this->fieldset)
 	 * für die spielfeldpositionen
 	 */
 	case 'playground_jquery':
-		$backgroundimage = Uri::root() . 'media/com_sportsmanagement/rosterground/' . $this->item->picture;
+		//$backgroundimage = Uri::root() . 'media/com_sportsmanagement/rosterground/' . $this->item->picture;
+        $backgroundimage = '../images/com_sportsmanagement/database/rosterground/' . $this->item->picture;
 		list($width, $height, $type, $attr) = getimagesize($backgroundimage);
 		$picture = Uri::root() . 'images/com_sportsmanagement/database/placeholders/placeholder_150_2.png';
 		?>
