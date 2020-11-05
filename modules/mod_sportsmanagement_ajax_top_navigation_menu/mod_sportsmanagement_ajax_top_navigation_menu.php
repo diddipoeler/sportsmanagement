@@ -150,13 +150,21 @@ console.log('tabpoints = ' + '<?php echo $row->name;?>');
 
 $federationselect['NON'] = $helper->getFederationSelect('NON', 0);
 $countryassocselect['NON'] = array();
+$countryassocselect['NON']['assocs'] = array();
 $leagueselect['NON'] = array();
 $countrysubassocselect['NON'] = array();
+$countrysubassocselect['NON']['assocs'] = array();
 $countrysubsubassocselect['NON'] = array();
 $countrysubsubsubassocselect['NON'] = array();
 $projectselect['NON'] = array();
 $divisionsselect['NON'] = array();
 
+$countrysubsubassocselect['NON']['subassocs'] = array();
+$countrysubsubsubassocselect['NON']['subsubassocs'] = array();
+$leagueselect['NON']['leagues'] = array();
+$projectselect['NON']['projects'] = array();
+$projectselect['NON']['teams'] = array();	
+	
 $country_federation = $helper->getCountryFederation($country_id);
 
 if (!$country_federation)
