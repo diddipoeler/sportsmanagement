@@ -141,6 +141,15 @@ $countrysubsubassocselect[$row->name] = array();
 $countrysubsubsubassocselect[$row->name] = array();
 $projectselect[$row->name] = array();
 $divisionsselect[$row->name] = array();
+	
+$countryassocselect[$row->name]['assocs'] = array();	
+$countrysubassocselect[$row->name]['assocs'] = array();	
+$countrysubsubassocselect[$row->name]['subassocs'] = array();
+$countrysubsubsubassocselect[$row->name]['subsubassocs'] = array();
+$leagueselect[$row->name]['leagues'] = array();
+$projectselect[$row->name]['projects'] = array();
+$projectselect[$row->name]['teams'] = array();	
+	
 ?>
 <script>
 console.log('tabpoints = ' + '<?php echo $row->name;?>');
