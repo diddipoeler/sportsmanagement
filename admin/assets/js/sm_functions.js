@@ -71,6 +71,7 @@ function move_down(sourceid)
         selected.detach().insertAfter(next);
 }
 
+/*
 function changePlayground()
 {
 
@@ -88,7 +89,7 @@ console.log('height image = ' + height);
 
 
 }
-
+*/
 
 var modjlnav = {
 updateProjects : function(response)
