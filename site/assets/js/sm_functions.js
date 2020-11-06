@@ -143,7 +143,7 @@ width = x.width;
 height = x.height;
 console.log('width image = ' + width);
 console.log('height image = ' + height);
-
+console.log('src image = ' + x.src);
 
 
 }
