@@ -24,12 +24,14 @@ foreach ($this->extended->getFieldsets() as $fieldset)
 		{
 			echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
 		}
-
+echo $this->extended->renderFieldset($fieldset->name);
+/*
 		foreach ($fields as $field)
 		{
 			echo $field->label;
 			echo $field->input;
 		}
+        */
 		?>
     </fieldset>
 	<?php
