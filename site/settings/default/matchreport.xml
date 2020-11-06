@@ -49,6 +49,14 @@
 			<option value="1">JYES</option>
 		</field>
 
+<field name="show_extreportlink" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_EXT_MATCH_LINK_MATCHREPORT"
+			description="COM_SPORTSMANAGEMENT_EXT_MATCH_LINK_MATCHREPORT_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+
 		<field name="show_pictures" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_LABEL_SHOW_PICTURES"
 			description="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_SHOW_PICTURES">
