@@ -47,9 +47,9 @@ class sportsmanagementViewrosterpositions extends sportsmanagementView
 		ToolbarHelper::custom('rosterpositions.addhome', 'new', 'new', Text::_('COM_SPORTSMAMAGEMENT_ADMIN_ROSTERPOSITIONS_HOME'), false);
 		ToolbarHelper::custom('rosterpositions.addaway', 'new', 'new', Text::_('COM_SPORTSMAMAGEMENT_ADMIN_ROSTERPOSITIONS_AWAY'), false);
 		ToolbarHelper::editList('rosterposition.edit');
-		ToolbarHelper::trash('rosterpositions.trash');
-		ToolbarHelper::deleteList('', 'rosterpositions.delete', 'JTOOLBAR_DELETE');
-		ToolbarHelper::checkin('rosterpositions.checkin');
+//		ToolbarHelper::trash('rosterpositions.trash');
+//		ToolbarHelper::deleteList('', 'rosterpositions.delete', 'JTOOLBAR_DELETE');
+//		ToolbarHelper::checkin('rosterpositions.checkin');
 		parent::addToolbar();
 	}
 
