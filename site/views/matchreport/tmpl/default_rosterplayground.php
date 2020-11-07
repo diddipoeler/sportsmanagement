@@ -80,7 +80,7 @@ for ($a = 0; $a < sizeof($favteams1); $a++)
 					$schemaguest = $this->formation2;
 				}
 
-				$backgroundimage = 'media/com_sportsmanagement/rosterground/' . $this->config['roster_playground_select'];
+				$backgroundimage = 'images/com_sportsmanagement/rosterground/' . $this->config['roster_playground_select'];
 
 				list($width, $height, $type, $attr) = getimagesize($backgroundimage);
 				$spielfeldhaelfte = $height / 2;
