@@ -910,7 +910,7 @@ action="https://www.fussballineuropa.de/administrator/index.php?option=com_sport
 		$modal_params['url']    = 'index.php?option=com_sportsmanagement&view=imagelist&author=&fieldid=&tmpl=component&imagelist=1&asset=com_sportsmanagement&folder=rosterground/';
 		$modal_params['height'] = $this->modalheight;
 		$modal_params['width']  = $this->modalwidth;
-		echo HTMLHelper::_('bootstrap.renderModal', 'collapseModal', $modal_params);
+		echo HTMLHelper::_('bootstrap.renderModal', 'rosterpositions', $modal_params);
 		break;
         }
 
@@ -924,7 +924,7 @@ action="https://www.fussballineuropa.de/administrator/index.php?option=com_sport
 		$modal_params['url']    = 'index.php?option=com_sportsmanagement&view=github&layout=addissue&tmpl=component&issuelayout=' . $this->layout . '&issueview=' . $this->view;
 		$modal_params['height'] = $this->modalheight;
 		$modal_params['width']  = $this->modalwidth;
-		echo HTMLHelper::_('bootstrap.renderModal', 'collapseModal', $modal_params);
+		echo HTMLHelper::_('bootstrap.renderModal', 'newissue', $modal_params);
 
 	}
 }
