@@ -895,22 +895,24 @@ document.getElementById("filter_season").classList.add("filter_season");
 			ToolbarHelper::help('JHELP_COMPONENTS_SPORTSMANAGEMENT_CPANEL', false, $cfg_help_server . 'SM-Backend:' . $view);
 			ToolbarHelper::divider();
 		}
-        
-        
+  /*      
+action="https://www.fussballineuropa.de/administrator/index.php?option=com_sportsmanagement&view=imagelist&club_id=40
+&imagelist=1&asset=com_sportsmanagement&folder=clubs/large/&author=&fieldid=&tmpl=component&type=clubs_large&fieldname=logo_big"        
+*/
         switch ($this->view)
-			{
-			 	case 'rosterpositions';
-                $title  = Text::_('JTOOLBAR_BATCH');
+		{
+		case 'rosterpositions';
+        $title  = Text::_('JTOOLBAR_BATCH');
 		$layout = new JLayoutFile('rosterpositions', JPATH_ROOT . '/components/com_sportsmanagement/layouts');
 		$html   = $layout->render();
 		Toolbar::getInstance('toolbar')->appendButton('Custom', $html, 'batch');
         $modal_params           = array();
-		$modal_params['url']    = 'index.php?option=com_sportsmanagement&view=imagelist';
+		$modal_params['url']    = 'index.php?option=com_sportsmanagement&view=imagelist&author=&fieldid=&tmpl=component&imagelist=1&asset=com_sportsmanagement&folder=rosterground/';
 		$modal_params['height'] = $this->modalheight;
 		$modal_params['width']  = $this->modalwidth;
 		echo HTMLHelper::_('bootstrap.renderModal', 'collapseModal', $modal_params);
-				break;
-             }
+		break;
+        }
 
 		/** test */
 		$title  = Text::_('JTOOLBAR_BATCH');
