@@ -895,10 +895,7 @@ document.getElementById("filter_season").classList.add("filter_season");
 			ToolbarHelper::help('JHELP_COMPONENTS_SPORTSMANAGEMENT_CPANEL', false, $cfg_help_server . 'SM-Backend:' . $view);
 			ToolbarHelper::divider();
 		}
-  /*      
-action="https://www.fussballineuropa.de/administrator/index.php?option=com_sportsmanagement&view=imagelist&club_id=40
-&imagelist=1&asset=com_sportsmanagement&folder=clubs/large/&author=&fieldid=&tmpl=component&type=clubs_large&fieldname=logo_big"        
-*/
+        
         switch ($this->view)
 		{
 		case 'rosterpositions';
@@ -907,6 +904,7 @@ action="https://www.fussballineuropa.de/administrator/index.php?option=com_sport
 		$html   = $layout->render();
 		Toolbar::getInstance('toolbar')->appendButton('Custom', $html, 'batch');
         $modal_params           = array();
+        $modal_params['title']  = Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE');
 		$modal_params['url']    = 'index.php?option=com_sportsmanagement&view=imagelist&author=&fieldid=&tmpl=component&imagelist=1&asset=com_sportsmanagement&folder=rosterground&type=rosterground';
 		$modal_params['height'] = $this->modalheight;
 		$modal_params['width']  = $this->modalwidth;
@@ -921,6 +919,7 @@ action="https://www.fussballineuropa.de/administrator/index.php?option=com_sport
 		Toolbar::getInstance('toolbar')->appendButton('Custom', $html, 'batch');
 
 		$modal_params           = array();
+        $modal_params['title']  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_ADD_ISSUE');
 		$modal_params['url']    = 'index.php?option=com_sportsmanagement&view=github&layout=addissue&tmpl=component&issuelayout=' . $this->layout . '&issueview=' . $this->view;
 		$modal_params['height'] = $this->modalheight;
 		$modal_params['width']  = $this->modalwidth;
