@@ -907,7 +907,7 @@ action="https://www.fussballineuropa.de/administrator/index.php?option=com_sport
 		$html   = $layout->render();
 		Toolbar::getInstance('toolbar')->appendButton('Custom', $html, 'batch');
         $modal_params           = array();
-		$modal_params['url']    = 'index.php?option=com_sportsmanagement&view=imagelist&author=&fieldid=&tmpl=component&imagelist=1&asset=com_sportsmanagement&folder=rosterground/';
+		$modal_params['url']    = 'index.php?option=com_sportsmanagement&view=imagelist&author=&fieldid=&tmpl=component&imagelist=1&asset=com_sportsmanagement&folder=rosterground/&type=rosterground';
 		$modal_params['height'] = $this->modalheight;
 		$modal_params['width']  = $this->modalwidth;
 		echo HTMLHelper::_('bootstrap.renderModal', 'rosterpositions', $modal_params);

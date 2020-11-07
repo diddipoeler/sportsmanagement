@@ -354,6 +354,9 @@ console.log('getfolder: ' + '<?php echo $type;  ?>' );
 			case "rounds":
 				return "rounds";
 				break;
+                case "rosterground":
+				return "rosterground";
+				break;
 			case "agegroups":
 				return "agegroups";
 				break;
