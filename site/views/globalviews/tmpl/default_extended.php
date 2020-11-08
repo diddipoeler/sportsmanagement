@@ -32,7 +32,25 @@ use Joomla\CMS\Language\Text;
 foreach($this->extended2->getFieldset('COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERENCES') as $field) : ?>
 <div class="row">            
 <div class="col-sm-3"><label for="<?php echo $field->name; ?>"><?php echo $field->label; ?></label></div>
-<div class="col-sm-9"><?php echo $field->value; ?></div>  
+
+
+<?php
+switch ( $field->type )
+{
+    
+default:
+?>
+<div class="col-sm-9"><?php echo $field->value; ?></div>
+<?php
+break;    
+}
+
+
+
+
+?>
+
+  
   
   </div>
   <?php
