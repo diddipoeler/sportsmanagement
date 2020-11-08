@@ -38,7 +38,7 @@ foreach($this->extended2->getFieldset('COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERE
 <?php
 switch ( $field->type )
 {
-case 'url':
+case 'Url':
 echo HTMLHelper::_('link', $field->value, $field->value, array("target" => "_blank"));
 break;    
 default:
