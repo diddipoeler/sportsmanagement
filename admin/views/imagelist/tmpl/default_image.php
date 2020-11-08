@@ -33,7 +33,6 @@ $dispatcher->trigger('onContentBeforeDisplay', array('com_media.file', &$this->_
 
 //echo '<pre>'.print_r($this->_tmp_img,true).'</pre>';
 
-
 ?>
 
 <script>
@@ -41,7 +40,7 @@ $dispatcher->trigger('onContentBeforeDisplay', array('com_media.file', &$this->_
 </script>
 
 <li class="imgOutline thumbnail height-80 width-80 center">
-  <div class="height-50">
+<div class="height-50">
 <?php
 
 echo sportsmanagementHelper::getBootstrapModalImage(
@@ -53,12 +52,22 @@ $this->_tmp_img->width_60,
 $this->modalwidth,
 $this->modalheight
 );
-$image_attributes['title'] = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_ADD');
-$image_attributes['id'] = $this->_tmp_img->file;		  
-$image_attributes['onclick'] = "javascript:exportToForm('".$this->_tmp_img->file."')";
-echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/ok.png', '', $image_attributes);	  
+
+switch ( $this->folder )
+{
+    case 'rosterground':
+    break;
+    default:
+    $image_attributes = array();
+    $image_attributes['title'] = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_ADD');
+    $image_attributes['id'] = $this->_tmp_img->file;		  
+    $image_attributes['onclick'] = "javascript:exportToForm('".$this->_tmp_img->file."')";
+    echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/ok.png', '', $image_attributes);
+    break;
+}
+	  
 ?>
-  </div>
+</div>
 <div class="small">
 <?php
 echo Text::sprintf('COM_MEDIA_IMAGE_TITLE', JHtml::_('string.truncate', $this->_tmp_img->name, 10, false), JHtml::_('number.bytes', $this->_tmp_img->size));
