@@ -11,6 +11,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
     <h4>
@@ -37,7 +38,9 @@ foreach($this->extended2->getFieldset('COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERE
 <?php
 switch ( $field->type )
 {
-    
+case 'url':
+echo HTMLHelper::_('link', $field->value, $field->value, array("target" => "_blank"));
+break;    
 default:
 ?>
 <div class="col-sm-9"><?php echo $field->value; ?></div>
