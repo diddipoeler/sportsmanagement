@@ -27,7 +27,9 @@ use Joomla\CMS\HTML\HTMLHelper;
           
 ?>
 
-<?php          
+<?php      
+if ( $this->extended2 )
+{
 //echo 'extended2<pre>'.print_r($this->extended2,true).'</pre>';          
 //echo $this->extended2->renderFieldset('COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERENCES');          
 foreach($this->extended2->getFieldset('COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERENCES') as $field) : ?>
@@ -57,7 +59,8 @@ break;
   
   </div>
   <?php
-endforeach;          
+endforeach;  
+endif;
      ?>
   
 <?php
