@@ -60,7 +60,7 @@ break;
   </div>
   <?php
 endforeach;  
-endif;
+}
      ?>
   
 <?php
