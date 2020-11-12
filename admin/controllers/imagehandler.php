@@ -54,6 +54,11 @@ class sportsmanagementControllerImagehandler extends JSMControllerAdmin
 		return $model;
 	}
 	
+	/**
+	 * sportsmanagementControllerImagehandler::saveimageplayer()
+	 * 
+	 * @return void
+	 */
 	function saveimageplayer()
 	{
 	$data                        = array();
@@ -74,6 +79,11 @@ class sportsmanagementControllerImagehandler extends JSMControllerAdmin
 
 	}
 	
+		/**
+		 * sportsmanagementControllerImagehandler::saveimageclub()
+		 * 
+		 * @return void
+		 */
 		function saveimageclub()
 	{
 	$data                        = array();
@@ -94,6 +104,11 @@ class sportsmanagementControllerImagehandler extends JSMControllerAdmin
 
 	}
 	
+	/**
+	 * sportsmanagementControllerImagehandler::saveimageteamplayer()
+	 * 
+	 * @return void
+	 */
 	function saveimageteamplayer()
 	{
 	$data                        = array();
