@@ -72,7 +72,13 @@ switch ( $this->folder )
 <?php
 echo Text::sprintf('COM_MEDIA_IMAGE_TITLE', JHtml::_('string.truncate', $this->_tmp_img->name, 10, false), JHtml::_('number.bytes', $this->_tmp_img->size));
 ?>
-</div>  
+</div> 
+
+<div class="small">  
+<button onclick="exportToForm('<?php echo $this->_tmp_img->file;?> ')"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_ADD'); ?></button>
+</div> 
+
+ 
 </li>
           
 <?php
