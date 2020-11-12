@@ -15,6 +15,13 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+
+switch ( $this->view )
+{
+case 'projectteam':
+break;
+default:
+
 ?>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@<?php echo $this->leaflet_version;?>/dist/leaflet.css"
   integrity="<?php echo $this->leaflet_css_integrity;?>"
@@ -25,7 +32,8 @@ use Joomla\CMS\Factory;
 <?php
 
 $this->document->addScript('https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js');
-
+break;
+}
 $templatesToLoad = array('footer', 'fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 try
