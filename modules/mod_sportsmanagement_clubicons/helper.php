@@ -178,7 +178,7 @@ class modJSMClubiconsHelper
 	{
 		$app = Factory::getApplication();
 
-		$imgtype = $this->params->get('logotype', 'logo_middle');
+		$imgtype = $this->params->get('logotype', 'logo_big');
 		$logourl = $item->$imgtype;
 
 		if (!$logourl)

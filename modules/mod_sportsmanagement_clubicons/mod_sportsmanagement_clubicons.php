@@ -16,10 +16,10 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 
-if (!defined('DS'))
-{
-	define('DS', DIRECTORY_SEPARATOR);
-}
+//if (!defined('DS'))
+//{
+//	define('DS', DIRECTORY_SEPARATOR);
+//}
 
 if (!defined('JSM_PATH'))
 {
@@ -100,18 +100,12 @@ $data = new modJSMClubiconsHelper($params, $module);
 $cnt = count($data->teams);
 $cnt = ($cnt < $params->get('iconsperrow', 20)) ? $cnt : $params->get('iconsperrow', 20);
 
-/**
- *
- * die übersetzungen laden
- */
+/** die übersetzungen laden */
 $language = Factory::getLanguage();
 $language->load('com_sportsmanagement', JPATH_SITE, null, true);
 
 
-/**
- *
- * welche joomla version ?
- */
+/** welche joomla version ? */
 if (version_compare(JVERSION, '3.0.0', 'ge'))
 {
 	HTMLHelper::_('behavior.framework', true);
@@ -122,10 +116,7 @@ else
 }
 
 $doc = Factory::getDocument();
-/**
- *
- * Add styles
- */
+/** Add styles */
 $style = '
 .img-zoom {
 width: auto;
