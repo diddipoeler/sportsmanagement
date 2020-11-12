@@ -53,18 +53,18 @@ $this->modalwidth,
 $this->modalheight
 );
 
-switch ( $this->folder )
-{
-    case 'rosterground':
-    break;
-    default:
-    $image_attributes = array();
-    $image_attributes['title'] = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_ADD');
-    $image_attributes['id'] = $this->_tmp_img->file;		  
-    $image_attributes['onclick'] = "javascript:exportToForm('".$this->_tmp_img->file."')";
-    echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/ok.png', '', $image_attributes);
-    break;
-}
+//switch ( $this->folder )
+//{
+//    case 'rosterground':
+//    break;
+//    default:
+//    $image_attributes = array();
+//    $image_attributes['title'] = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_ADD');
+//    $image_attributes['id'] = $this->_tmp_img->file;		  
+//    $image_attributes['onclick'] = "javascript:exportToForm('".$this->_tmp_img->file."')";
+//    echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/ok.png', '', $image_attributes);
+//    break;
+//}
 	  
 ?>
 </div>
@@ -74,11 +74,20 @@ echo Text::sprintf('COM_MEDIA_IMAGE_TITLE', JHtml::_('string.truncate', $this->_
 ?>
 </div> 
 
+<?php
+switch ( $this->folder )
+{
+    case 'rosterground':
+    break;
+    default:
+?>
 <div class="small">  
 <button onclick="exportToForm('<?php echo $this->_tmp_img->file;?> ')"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_ADD'); ?></button>
 </div> 
-
- 
+<?php
+ break;
+} 
+?> 
 </li>
           
 <?php
