@@ -51,10 +51,7 @@ JLoader::import('components.com_sportsmanagement.models.project', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.models.ranking', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.helpers.ranking', JPATH_SITE);
 
-/**
- *
- * welche tabelle soll genutzt werden
- */
+/** welche tabelle soll genutzt werden */
 $paramscomponent       = ComponentHelper::getParams('com_sportsmanagement');
 $database_table        = $paramscomponent->get('cfg_which_database_table');
 $show_debug_info       = $paramscomponent->get('show_debug_info');
@@ -76,16 +73,10 @@ if (!defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
 	DEFINE('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE', ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database'));
 }
 
-/**
- *
- * Include the functions only once
- */
+/** Include the functions only once */
 JLoader::register('modJSMClubiconsHelper', __DIR__ . '/helper.php');
 
-/**
- *
- * soll die externe datenbank genutzt werden ?
- */
+/** soll die externe datenbank genutzt werden ? */
 if (ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database'))
 {
 	$module->picture_server = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database_server');
