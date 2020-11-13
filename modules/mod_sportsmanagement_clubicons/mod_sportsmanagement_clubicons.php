@@ -119,10 +119,10 @@ width: auto;
 }
 
 .transition {
-    -webkit-transform: scale(' . $params->get('max_width_after_mouse_over', '10') . ');
-    -moz-transform: scale(' . $params->get('max_width_after_mouse_over', '10') . ');
-    -o-transform: scale(' . $params->get('max_width_after_mouse_over', '10') . ');
-    transform: scale(' . $params->get('max_width_after_mouse_over', '10') . ');
+    -webkit-transform: scale(1.' . $params->get('max_width_after_mouse_over', '10') . ');
+    -moz-transform: scale(1.' . $params->get('max_width_after_mouse_over', '10') . ');
+    -o-transform: scale(1.' . $params->get('max_width_after_mouse_over', '10') . ');
+    transform: scale(1.' . $params->get('max_width_after_mouse_over', '10') . ');
 }
 ';
 $doc->addStyleDeclaration($style);
