@@ -19,6 +19,7 @@ use Joomla\CMS\Factory;
 switch ( $this->view )
 {
 case 'projectteam':
+case 'team':
 break;
 default:
 
