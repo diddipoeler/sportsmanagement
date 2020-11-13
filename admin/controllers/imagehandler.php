@@ -358,7 +358,7 @@ echo "<script>console.log('Debug Objects base_dir: " . $base_Dir . "' );</script
 
 			// $app->close();
 		}
-
+/*
 		// Check the image
 		$check = ImageSelectSM::check($file);
 
@@ -366,7 +366,7 @@ echo "<script>console.log('Debug Objects base_dir: " . $base_Dir . "' );</script
 		{
 			$app->redirect($_SERVER['HTTP_REFERER']);
 		}
-
+*/
 		// Sanitize the image filename
 		$filename = ImageSelectSM::sanitize($base_Dir, $file['name']);
 		$filepath = $base_Dir . $filename;
