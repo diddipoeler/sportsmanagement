@@ -71,15 +71,17 @@ abstract class ImageSelectSM
 		$baseFolder = Uri::root();// .'images/com_sportsmanagement/database/'.ImageSelect::getfolder($type);
 		$funcname   = preg_replace("/^[.]*/", '', $fieldid);
 
-		switch (self::$_view)
-		{
-			case 'projectteam':
-				$typefolder = $type;
-				break;
-			default:
-				$typefolder = $type;
-				break;
-		}
+$typefolder = $type;
+
+//		switch (self::$_view)
+//		{
+//			case 'projectteam':
+//				$typefolder = $type;
+//				break;
+//			default:
+//				$typefolder = $type;
+//				break;
+//		}
 
 		/**
 		 *
