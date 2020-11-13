@@ -149,6 +149,8 @@ $datainput = Factory::getApplication()->input->getArray();
 		$type = '';
 		$msg  = '';
         $updatemodal  = true;
+        
+echo "<script>console.log('Debug Objects type: " . $datainput['type'] . "' );</script>";
 
 		if ( $datainput['imagelist'] )
 		{
