@@ -20,6 +20,7 @@ switch ( $this->view )
 {
 case 'projectteam':
 case 'team':
+case 'project':
 break;
 default:
 

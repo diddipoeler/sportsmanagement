@@ -84,8 +84,25 @@ $languageCode = substr($lang->getTag(),0,2);
             </div>
         </div>
 
-        <input type="hidden" name="option" value="com_sportsmanagement"/>
-        <input type="hidden" name="task" value="imagehandler.upload"/>
+        <input type="hidden" name="option" value="<?php echo $this->option; ?>"/>
+        
+<?php        
+switch ($this->folder)
+{
+case 'projectteams':
+?>
+<input type="hidden" name="task" value="imagehandler.upload<?php echo $this->folder; ?>"/>
+<?php
+break;
+default:
+?>
+<input type="hidden" name="task" value="imagehandler.upload"/>
+<?php
+break;
+}        
+?>        
+        
+        
         <input type="hidden" name="folder" value="<?php echo $this->folder; ?>"/>
         <input type="hidden" name="pid" value="<?php echo $this->pid; ?>"/>
         <input type="hidden" name="mid" value="<?php echo $this->mid; ?>"/>

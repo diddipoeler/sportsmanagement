@@ -43,6 +43,122 @@ class sportsmanagementControllerImagehandler extends JSMControllerAdmin
 	}
 
 	
+    
+    /**
+     * sportsmanagementControllerImagehandler::uploadprojectteams()
+     * 
+     * @return void
+     */
+    function uploadprojectteams()
+	{
+		// Reference global application object
+		$app = Factory::getApplication();
+$datainput = Factory::getApplication()->input->getArray();
+	
+		$type = '';
+		$msg  = '';
+        $updatemodal  = true;
+        
+echo "<script>console.log('uploadprojectteams type: " . $datainput['type'] . "' );</script>";
+
+if ( $datainput['imagelist'] )
+		{
+			$updatemodal  = false;
+		}
+
+		// Check for request forgeries
+		//Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
+
+		// $file = $this->jsmjinput->getVar( 'userfile', '', 'files', 'array' );
+		$file = $this->jsmjinput->files->get('userfile');
+
+		// $task = $this->jsmjinput->getVar( 'task' );
+		$type        = $datainput['type'];
+		$folder      = ImageSelectSM::getfolder($type);
+		$field       = $datainput['field'];
+		$fieldid     = $datainput['fieldid'];
+		$linkaddress = $datainput['linkaddress'];
+        $pid       = $datainput['pid'];
+        $mid       = $datainput['mid'];
+        
+        // Set FTP credentials, if given
+		ClientHelper::setCredentialsFromRequest('ftp');
+		echo "<script> window.closeModal = function(){
+    jQuery('upload" . $fieldid . "').modal('hide');
+}; </script>\n";
+		$base_Dir = JPATH_SITE . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $this->jsmoption . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . $folder . DIRECTORY_SEPARATOR;
+
+echo "<script>console.log('Debug Objects type: " . $type . "' );</script>";
+echo "<script>console.log('Debug Objects folder: " . $folder . "' );</script>";
+echo "<script>console.log('Debug Objects pid: " . $pid . "' );</script>";
+echo "<script>console.log('Debug Objects mid: " . $mid . "' );</script>";
+echo "<script>console.log('Debug Objects base_dir: " . $base_Dir . "' );</script>";
+        
+if (empty($file['name']))
+		{
+			echo "<script> alert('" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_IMAGE_EMPTY') . "'); window.history.go(-1); </script>\n";
+
+			// $app->close();
+		}
+
+/*
+		// Check the image
+		$check = ImageSelectSM::check($file);
+
+		if ($check === false)
+		{
+			$app->redirect($_SERVER['HTTP_REFERER']);
+		}
+*/
+		// Sanitize the image filename
+		$filename = ImageSelectSM::sanitize($base_Dir, $file['name']);
+		$filepath = $base_Dir . $filename;
+
+		// Upload the image
+		if (!File::upload($file['tmp_name'], $filepath))
+		{
+			echo "<script> alert('" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_FAILED') . "'); window.history.go(-1); </script>\n";
+
+			// $app->close();
+			$msg  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_FAILED');
+			$type = 'error';
+		}
+		else
+		{
+			$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE'), '');
+
+			//			echo "<script> alert('" . Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE'.'-'.$folder.'-'.$type.'-'.$filename.'-'.$field ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
+			//			echo "<script> alert('" . Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE' ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
+			if ( $updatemodal )
+            {
+            echo "<script>window.parent.selectImage_" . $type . "('$filename', '$filename','$field','$fieldid');window.closeModal();window.parent.jQuery('.modal.in').modal('hide'); </script>\n";
+			}
+            else
+            {
+            echo "<script>window.closeModal();window.parent.jQuery('.modal.in').modal('hide');parent.location.reload(); </script>\n";    
+            }
+            $msg  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE');
+			$type = 'notice';
+
+			// $app->close();
+		}        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+              
+    }
+    
+    
+    
+    
+    
+    
 	/**
 	 * Proxy for getModel.
 	 *
