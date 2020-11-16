@@ -1413,6 +1413,9 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 					case 'season':
 						$row->ordering = substr($row->name, 0, 4);
 						break;
+						case 'division':
+						$row->ordering = $order[$i];
+						break;
 					default:
 						if ( $order[$i] )
 						{
