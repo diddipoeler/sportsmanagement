@@ -135,7 +135,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 			}
             elseif ($cols == 0)
 			{
-				$text = sprintf("<td align=\"left\" nowrap>%s</td>", $trow->text); // Named rows
+				$text = sprintf("<td align=\"left\" width=\"10\" nowrap>%s</td>", $trow->text); // Named rows
 			}
             elseif ($rows == $cols)
 			{
