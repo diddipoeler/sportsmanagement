@@ -79,7 +79,7 @@ use Joomla\CMS\Uri\Uri;
 						echo '<br>' . HTMLHelper::_('select.genericlist',
 								$this->lists['divisions'],
 								'filter_division',
-								'class="inputbox" size="1" onchange="window.location.href=window.location.href.split(\'&division=\')[0]+\'&division=\'+this.value"',
+								'class="inputbox" size="1" onchange="this.form.submit()"',
 								'value', 'text', $this->state->get('filter.division')
 							);
 
