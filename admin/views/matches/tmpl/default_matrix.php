@@ -83,7 +83,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 	<?php
 
 	$mdlProject = BaseDatabaseModel::getInstance("Projectteams", "sportsmanagementModel");
-	$teams      = $mdlProject->getProjectTeams($this->project_id);
+	$teams      = $mdlProject->getProjectTeams($this->project_id, false, $this->state->get('filter.division') );
 	$matrix     = '';
 
 	// Diddipoeler
