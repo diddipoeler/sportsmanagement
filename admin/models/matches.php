@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\Folder;
@@ -31,9 +27,7 @@ use Joomla\CMS\Component\ComponentHelper;
 class sportsmanagementModelMatches extends JSMModelList
 {
 	var $_identifier = "matches";
-
 	var $_rid = 0;
-
 	var $_season_id = 0;
 
 	/**
@@ -270,34 +264,49 @@ class sportsmanagementModelMatches extends JSMModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
+		/*
 		// Reference global application object
 		$app = Factory::getApplication();
 
 		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-
+*/
 		if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info'))
 		{
 			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . $this->context . ''), '');
 			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . ''), '');
 		}
+		
+		$list = $this->getUserStateFromRequest($this->context . '.list', 'list', array(), 'array');
 
-		// Load the filter state.
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
+$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
+$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string'));
+$this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
+$this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
+$this->setState('filter.division', $this->getUserStateFromRequest($this->context . '.filter.division', 'filter_division', 0, 'int'));
+		
+$orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
 
-		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string');
-		$this->setState('filter.state', $published);
-		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.division', 'filter_division', '');
-		$this->setState('filter.division', $temp_user_request);
-		$value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $app->get('list_limit'), 'int');
-		$this->setState('list.limit', $value);
+		if (!in_array($orderCol, $this->filter_fields))
+		{
+			$orderCol = 'mc.match_date';
+		}
 
+		$this->setState('list.ordering', $orderCol);
+		$listOrder = $this->getUserStateFromRequest($this->context . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+
+		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		{
+			$listOrder = 'ASC';
+		}
+
+		$this->setState('list.direction', $listOrder);
+		
+/*
 		// List state information.
 		parent::populateState('mc.match_date', 'asc');
-		$value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
-		$this->setState('list.start', $value);
+		*/
 	}
 
 	/**
