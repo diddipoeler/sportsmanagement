@@ -681,7 +681,7 @@ class sportsmanagementModelProjectteams extends JSMModelList
 	 *
 	 * @return
 	 */
-	function getProjectTeams($project_id = 0, $in_used = false)
+	function getProjectTeams($project_id = 0, $in_used = false, $divisionid = 0)
 	{
 		$this->_season_id     = $this->jsmapp->getUserState("$this->jsmoption.season_id", '0');
 		$this->project_art_id = $this->jsmapp->getUserState("$this->jsmoption.project_art_id", '0');
@@ -716,6 +716,10 @@ class sportsmanagementModelProjectteams extends JSMModelList
 			$this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
 			$this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
 			$this->jsmquery->where('pt.project_id = ' . $project_id);
+			if ( $divisionid )
+			{
+				$this->jsmquery->where('pt.division_id = ' . $divisionid);
+			}
 
 			if ($in_used && isset(self::$_pro_teams_in_used))
 			{
