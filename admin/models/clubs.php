@@ -170,6 +170,7 @@ $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array()
 			a.id,
 			a.published,
 			a.unique_id,
+            a.founded_year
 			a.new_club_id,
 			a.ordering,
 			a.checked_out,
