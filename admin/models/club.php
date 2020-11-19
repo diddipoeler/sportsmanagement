@@ -68,6 +68,7 @@ class sportsmanagementModelclub extends JSMModelAdmin
 			$tblClub->location = $post['location' . $pks[$x]];
 			$tblClub->address  = $post['address' . $pks[$x]];
 			$tblClub->country  = $post['country' . $pks[$x]];
+            $tblClub->founded_year  = $post['founded_year' . $pks[$x]];
 
 			$tblClub->unique_id   = $post['unique_id' . $pks[$x]];
 			$tblClub->new_club_id = $post['new_club_id' . $pks[$x]];
