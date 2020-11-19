@@ -57,7 +57,9 @@ JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($t
             <th>
 				<?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_CLUB_UNIQUE_ID', 'a.unique_id', $this->sortDirection, $this->sortColumn); ?>
                 <br/>
-				<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_NEW_CLIB_ID'); ?></th>
+				<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_NEW_CLIB_ID'); ?>
+		    <br/>
+				<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED_YEAR'); ?>
             </th>
 
             <th width="20">
