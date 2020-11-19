@@ -270,6 +270,11 @@ HTMLHelper::_('bootstrap.endSlide');
                                                       value="<?php echo $this->item->new_club_id; ?>"
                                                       onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
 			<br/>
+			<input<?php echo $inputappend; ?> type="text" size="10" class="form-control form-control-inline"
+                                                      name="founded_year<?php echo $this->item->id; ?>"
+                                                      value="<?php echo $this->item->founded_year; ?>"
+                                                      onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
+			<br/>
 					<?php echo $this->escape($this->item->state); ?>
                 </td>
                 <td class="center">
