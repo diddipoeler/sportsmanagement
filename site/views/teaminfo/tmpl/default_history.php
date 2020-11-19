@@ -8,9 +8,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -130,7 +128,7 @@ use Joomla\CMS\Factory;
 		?>
         <tr class="">
             <td><?php echo $season->season; ?></td>
-            <td><?php echo $season->league; ?></td>
+            <td><?php echo JSMCountries::getCountryFlag($season->leaguecountry).''.$season->league; ?></td>
             <td><?php
 
 				$picture = !$season->season_picture ? sportsmanagementHelper::getDefaultPlaceholder('team') : $season->season_picture;
