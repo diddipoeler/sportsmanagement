@@ -509,13 +509,16 @@ if (!empty($this->rows))
                   
 						if ($this->config['show_player_icon'])
 						{
-							$picture = $row->picture;
-
+							$picture = $row->ppic;
+/*
 							if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player")))
 							{
 								$picture = $row->ppic;
 							}
-
+                          */
+if (preg_match("/placeholder/i", $picture)) {
+$picture = $row->picture;
+}  
 							?>
                             <td class="" width="" nowrap="nowrap">
                               <span itemprop="name" content="<?php echo $playerName;?>"></span> 
