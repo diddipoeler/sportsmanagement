@@ -25,6 +25,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 
 if ( ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('show_jsm_errors', 0) 
+&& ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('show_jsm_errors_foruser', 0)
 && ( ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('show_jsm_errors_foruser', 0) == Factory::getUser()->get('id') )
 )
 {
