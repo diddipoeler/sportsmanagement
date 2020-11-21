@@ -1328,7 +1328,7 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_OPENCAGEDATA_API_CLIENTID_DESC" />
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-
+<!--
 <field name="show_jsm_errors_level" 
 type="list" 
 default="" 
@@ -1340,7 +1340,7 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_ERRORS_LEVEL_DESC">
   <option value="E_WARNING">Warning</option>
   <option value="E_ERROR">Error</option>
 </field>
-
+-->
 
 
 
