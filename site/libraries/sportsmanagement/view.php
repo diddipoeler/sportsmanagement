@@ -30,8 +30,19 @@ if ( ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option
 )
 {
 ini_set('display_errors', ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('show_jsm_errors_front', 0));
-ini_set('display_startup_errors', ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('show_jsm_errors_front', 0));    
-error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);    
+ini_set('display_startup_errors', ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('show_jsm_errors_front', 0));  
+
+if ( !ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('show_jsm_errors_level', "") )
+{
+error_reporting(E_ALL);
+}
+else
+{
+$usedlevel = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('show_jsm_errors_level', "");
+$levels = (is_array($usedlevel)) ? implode(" | ", $usedlevel) : $usedlevel;
+error_reporting($levels);    
+}  
+    
 
 if ( ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('show_jsm_errors_file', 0) )
 {

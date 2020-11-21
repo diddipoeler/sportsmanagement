@@ -1329,6 +1329,22 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_OPENCAGEDATA_API_CLIENTID_DESC" />
 			<option value="1">JYES</option>
 		</field>
 
+<field name="show_jsm_errors_level" 
+type="list" 
+default="" 
+multiple=true
+label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_ERRORS_LEVEL" 
+description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_ERRORS_LEVEL_DESC">
+  <option value="">Please Select</option>
+  <option value="E_NOTICE">Notice</option>
+  <option value="E_WARNING">Warning</option>
+  <option value="E_ERROR">Error</option>
+</field>
+
+
+
+
+
 <field name="show_jsm_errors_foruser" 
     type="user" 
     
