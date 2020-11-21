@@ -40,7 +40,8 @@ else
 {
 $usedlevel = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('show_jsm_errors_level', "");
 $levels = (is_array($usedlevel)) ? implode(" | ", $usedlevel) : $usedlevel;
-error_reporting($levels);    
+//error_reporting($levels);
+error_reporting(E_NOTICE);     
 }  
     
 
