@@ -23,6 +23,22 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\HTML\HTMLHelper;
 
+
+if ( ComponentHelper::getParams($this->jinput->getCmd('option'))->get('show_jsm_errors', 0) )
+{
+ini_set('display_errors', ComponentHelper::getParams($this->jinput->getCmd('option'))->get('show_jsm_errors_front', 0));
+ini_set('display_startup_errors', ComponentHelper::getParams($this->jinput->getCmd('option'))->get('show_jsm_errors_front', 0));    
+error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);    
+
+if ( ComponentHelper::getParams($this->jinput->getCmd('option'))->get('show_jsm_errors_file', 0) )
+{
+ini_set('error_log', "jsm-errors.log");    
+}
+
+    
+}
+
+
 /**
  *
  * welche joomla version ?

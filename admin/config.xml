@@ -1310,6 +1310,61 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_OPENCAGEDATA_API_CLIENTID_DESC" />
 			section="component"
 		/>
 	</fieldset>
+
+
+<!-- fehler anzeige frontend -->			
+	<fieldset
+		name="jsmerrorlogs"
+		label="COM_SPORTSMANAGEMENT_SETTINGS_ERRORS"
+		description="COM_SPORTSMANAGEMENT_SETTINGS_ERRORS_DESC"
+	>
+
+<field name="show_jsm_errors" 
+    type="extensionradiobutton" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_ERRORS" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_ERRORS_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+<field name="show_jsm_errors_foruser" 
+    type="user" 
+    
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_ERRORS_FORUSER" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_ERRORS_FORUSER_DESC">
+	
+		</field>
+
+
+		
+<field name="show_jsm_errors_front" 
+    type="extensionradiobutton" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_ERRORS_FRONT" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_ERRORS_FRONT_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+<field name="show_jsm_errors_file" 
+    type="extensionradiobutton" 
+    default="1"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_ERRORS_FILE" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_ERRORS_FILE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>		
+		
+		
+	</fieldset>
+	
+	
+	
+	
 </config>
 <!--
 ########################################################################################
