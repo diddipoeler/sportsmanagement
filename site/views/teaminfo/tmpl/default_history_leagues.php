@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage teaminfo
@@ -12,28 +10,21 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 
 $this->columns  = 4;
 $this->divclass = '';
 ?>
-
 <h4>
-
-	<?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_HISTORY_OVERVIEW_SUMMARY'); ?>
-
+<?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_HISTORY_OVERVIEW_SUMMARY'); ?>
 </h4>
 <?php
-/**
- * tabelle oder bootstrap ansicht
- */
+/** tabelle oder bootstrap ansicht */
 if ($this->overallconfig['use_table_or_bootstrap'])
 {
 	?>
     <table class="<?PHP echo $this->config['table_class']; ?>">
-
         <thead>
         <tr class="sectiontableheader">
             <th class="" nowrap="" style="background:#BDBDBD;">
@@ -49,16 +40,13 @@ if ($this->overallconfig['use_table_or_bootstrap'])
             <th class="" nowrap="" style="background:#BDBDBD;">
 				<?PHP echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GOALS'); ?>
             </th>
-
         </tr>
         </thead>
-
 		<?php
 		foreach ($this->leaguerankoverviewdetail as $league => $summary)
 		{
 			?>
-            <tr
-                    class="<?php echo ($k == 0) ? 'sectiontableentry1' : 'sectiontableentry2'; ?>">
+            <tr class="">
                 <td><?php echo $league; ?></td>
                 <td><?php echo $summary->match; ?></td>
 
@@ -74,7 +62,6 @@ if ($this->overallconfig['use_table_or_bootstrap'])
 					echo ' : ';
 					?>
 					<?php echo $summary->goalsagain; ?></td>
-
             </tr>
 			<?php
 		}
@@ -85,9 +72,7 @@ if ($this->overallconfig['use_table_or_bootstrap'])
 }
 else
 {
-	/**
-	 * welche bootstrap version
-	 */
+	/** welche bootstrap version */
 	$params = ComponentHelper::getParams('com_sportsmanagement');
 
 	if (version_compare(JSM_JVERSION, '4', 'eq') || $params->get('use_jsmgrid'))

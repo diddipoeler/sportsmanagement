@@ -280,11 +280,24 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 			if (self::$part == 1)
 			{
 				self::$from = $firstRound['id'];
+                if ( !array_key_exists(intval(count(self::$rounds) / 2) - 1, self::$rounds) ) {
+                    self::$to = 0;
+                }
+                else
+                {
 				self::$to = self::$rounds[intval(count(self::$rounds) / 2) - 1]->id;
+                }
 			}
 			elseif (self::$part == 2)
 			{
-				self::$from = self::$rounds[intval(count(self::$rounds) / 2)]->id;
+			 if ( !array_key_exists(intval(count(self::$rounds) / 2), self::$rounds) ) {
+                    self::$from = 0;
+                }
+                else
+                {
+                self::$from = self::$rounds[intval(count(self::$rounds) / 2)]->id;    
+                }
+				
 				self::$to   = $lastRound['id'];
 			}
 			else
