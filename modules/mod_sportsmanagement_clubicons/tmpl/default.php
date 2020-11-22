@@ -25,7 +25,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php
 		$cnt   = 0;
 		$after = 0;
-		$rest  = count($data);
+		$rest  = count((array)$data);
 		foreach ($data->ranking AS $k => $value)
 		{
 		$val    = $data->teams[$k];
