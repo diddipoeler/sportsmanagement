@@ -184,19 +184,15 @@ class sportsmanagementView extends HtmlView
 		 * JLog::INFO, JLog::WARNING, JLog::ERROR, JLog::ALL, JLog::EMERGENCY or JLog::CRITICAL
 		 */
 		Log::addLogger(array('logger' => 'messagequeue'), Log::ALL, array('jsmerror'));
-		/**
-		 * fehlermeldungen datenbankabfragen
-		 */
+		/** fehlermeldungen datenbankabfragen */
 		Log::addLogger(array('logger' => 'database', 'db_table' => '#__sportsmanagement_log_entries'), Log::ALL, array('dblog'));
-		/**
-		 * laufzeit datenbankabfragen
-		 */
+		/** laufzeit datenbankabfragen */
 		Log::addLogger(array('logger' => 'database', 'db_table' => '#__sportsmanagement_log_entries'), Log::ALL, array('dbperformance'));
 
-		// Reference global application object
+		/** Reference global application object */
 		$this->app = Factory::getApplication();
 
-		// JInput object
+		/** JInput object */
 		$this->jinput = $this->app->input;
 
 		$this->modalheight = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_height', 600);
@@ -213,8 +209,10 @@ class sportsmanagementView extends HtmlView
 
 		$this->action = $this->uri->toString();
 		$this->params = $this->app->getParams();
+        $this->extended = array();
+        $this->extended2 = array();
 
-		// Get a refrence of the page instance in joomla
+		/** Get a refrence of the page instance in joomla */
 		$this->document           = Factory::getDocument();
 		$this->option             = $this->jinput->getCmd('option');
 		$this->user               = Factory::getUser();
