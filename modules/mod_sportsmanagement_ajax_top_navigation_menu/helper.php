@@ -822,6 +822,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 	 */
 	public function getLeagueSelect($season)
 	{
+	   $options = array();
 		$app   = Factory::getApplication();
 		$db    = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
@@ -858,6 +859,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 	 */
 	public function getProjectSelect($league_id)
 	{
+	   $options = array();
 		$app   = Factory::getApplication();
 		$db    = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
@@ -893,6 +895,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 	public function getTeamSelect($project_id)
 	{
 		$res = $this->getTeamsOptions($project_id);
+        $options = array();
 
 		if ($res)
 		{

@@ -42,6 +42,8 @@ $app = Factory::getApplication();
 
 // JInput object
 $jinput = $app->input;
+$ajax    = $jinput->getVar('ajax', 0, 'default', 'POST');
+$ajaxmod = $jinput->getVar('ajaxmodid', 0, 'default', 'POST');
 
 $document = Factory::getDocument();
 /**
