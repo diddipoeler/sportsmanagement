@@ -46,7 +46,6 @@ class sportsmanagementViewClubPlan extends sportsmanagementView
 
 		$this->favteams = sportsmanagementModelProject::getFavTeams(sportsmanagementModelClubPlan::$cfg_which_database);
 		$this->club     = sportsmanagementModelClubInfo::getClub();
-
 		$this->type            = sportsmanagementModelClubPlan::$type;
 		$this->teamartsel      = sportsmanagementModelClubPlan::$teamartsel;
 		$this->teamprojectssel = sportsmanagementModelClubPlan::$teamprojectssel;
@@ -81,21 +80,21 @@ class sportsmanagementViewClubPlan extends sportsmanagementView
 		{
 			case 0 :
 			case 3 :
-			case 4 : // All matches
+			case 4 : /** All matches */
 				$this->allmatches = $this->model->getAllMatches($this->config['MatchesOrderBy'], $this->config['type_matches']);
 				break;
 
-			case 1 : // Home matches
+			case 1 : /** Home matches */
 				$this->homematches = $this->model->getAllMatches($this->config['MatchesOrderBy'], $this->config['type_matches']);
 
 				break;
 
-			case 2 : // Away matches
+			case 2 : /** Away matches */
 				$this->awaymatches = $this->model->getAllMatches($this->config['MatchesOrderBy'], $this->config['type_matches']);
 
 				break;
 
-			default: // Home+away matches
+			default: /** Home+away matches */
 				$this->homematches = $this->model->getAllMatches($this->confignfig['MatchesOrderBy'], $this->config['type_matches']);
 				$this->awaymatches = $this->model->getAllMatches($this->config['MatchesOrderBy'], $this->config['type_matches']);
 
@@ -105,7 +104,6 @@ class sportsmanagementViewClubPlan extends sportsmanagementView
 		$this->startdate = $this->model->getStartDate();
 		$this->enddate   = $this->model->getEndDate();
 		$this->teams     = $this->model->getTeams();
-
 		$this->teamart      = $this->model->getTeamsArt();
 		$this->teamprojects = $this->model->getTeamsProjects();
 		$this->teamseasons  = $this->model->getTeamsSeasons();
