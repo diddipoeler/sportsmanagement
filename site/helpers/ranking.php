@@ -784,7 +784,7 @@ class JSMRanking
 			$query->select('pt.id AS ptid, pt.is_in_score, pt.start_points, pt.division_id');
 			$query->select('t.name, t.id as teamid, pt.neg_points_finally');
 			$query->select('pt.use_finally, pt.points_finally,pt.matches_finally,pt.won_finally,pt.draws_finally,pt.lost_finally');
-			$query->select('pt.homegoals_finally, pt.guestgoals_finally,pt.diffgoals_finally,pt.penalty_points');
+			$query->select('pt.homegoals_finally, pt.guestgoals_finally,pt.diffgoals_finally,pt.penalty_points,pt.finaltablerank');
 			$query->select('CONCAT_WS(\':\',pt.id,t.alias) AS ptid_slug');
 			$query->from('#__sportsmanagement_project_team AS pt ');
 			$query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.id = pt.team_id');
