@@ -245,6 +245,7 @@ class sportsmanagementView extends HtmlView
           case 'predictionresults':
           case 'predictionranking':
           case 'predictionusers':
+          case 'predictionentry':
           $this->config        = sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
 		$this->overallconfig = sportsmanagementModelPrediction::getPredictionOverallConfig();
           $this->config        = array_merge($this->overallconfig, $this->config);
