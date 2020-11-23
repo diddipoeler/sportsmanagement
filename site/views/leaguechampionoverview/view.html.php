@@ -135,8 +135,8 @@ $this->teamstotal = array();
               //echo 'row<pre>'.print_r($row,true).'</pre>'; 
               
               
-				$this->teamstotal[$rows][team_id] = $rows;
-				$this->teamstotal[$rows][total]   = $value['title'];
+				$this->teamstotal[$rows]['team_id'] = $rows;
+				$this->teamstotal[$rows]['total']   = $value['title'];
 				//$teamstotal[$rows][$rows]   = $row->total;
 			//}
 		}
