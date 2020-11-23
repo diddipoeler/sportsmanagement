@@ -16,7 +16,7 @@ use Joomla\CMS\Language\Text;
 /** Check if any player returned */
 if ( array_key_exists('player', $list) )
 {
-$items = count($list['player']);
+$items = 1;
 }
 else
 {
