@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage predictionusers
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -62,20 +58,20 @@ class sportsmanagementViewPredictionUsers extends sportsmanagementView
 
 		if (isset($this->predictionGame))
 		{
-			$config            = sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
-			$overallConfig     = sportsmanagementModelPrediction::getPredictionOverallConfig();
+//			$config            = sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
+//			$overallConfig     = sportsmanagementModelPrediction::getPredictionOverallConfig();
 			$tipprankingconfig = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionranking');
 
 			// $flashconfig      = sportsmanagementModelPrediction::getPredictionTemplateConfig( "predictionflash" );
 
-			$configavatar   = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
+//			$configavatar   = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
 			$this->roundID  = sportsmanagementModelPrediction::$roundID;
-			$this->config   = array_merge($overallConfig, $tipprankingconfig, $config);
+			$this->config   = array_merge($tipprankingconfig, $this->config);
 			$model::$config = $this->config;
 
-			$this->configavatar = $configavatar;
+			$this->configavatar = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
 
-			$this->predictionMember = sportsmanagementModelPrediction::getPredictionMember($configavatar);
+			$this->predictionMember = sportsmanagementModelPrediction::getPredictionMember($this->configavatar);
 
 			if (!isset($this->predictionMember->id))
 			{
