@@ -90,8 +90,8 @@ class sportsmanagementViewPredictionUsers extends sportsmanagementView
 				$this->showediticon = sportsmanagementModelPrediction::getAllowed($this->predictionMember->user_id);
 			}
 
-			$this->_setPointsChartdata(array_merge($config));
-			$this->_setRankingChartdata(array_merge($config));
+			$this->_setPointsChartdata(array_merge($this->config));
+			$this->_setRankingChartdata(array_merge($this->config));
 
 			$lists = array();
 
