@@ -241,6 +241,12 @@ class sportsmanagementView extends HtmlView
 
 		switch ($this->view)
 		{
+		  case 'predictionrules':
+          case 'predictionresults':
+          $this->config        = sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
+		$this->overallconfig = sportsmanagementModelPrediction::getPredictionOverallConfig();
+          $this->config        = array_merge($this->overallconfig, $this->config);
+          break;
 			case 'jltournamenttree':
 				$this->project       = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
 				$this->overallconfig = sportsmanagementModelProject::getOverallConfig(sportsmanagementModelProject::$cfg_which_database);
