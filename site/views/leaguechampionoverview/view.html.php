@@ -67,7 +67,7 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
           $mdlRanking::$currentRanking = array();
         $mdlRanking::computeRanking(0);
         $currentRanking = $mdlRanking::$currentRanking;
-	$this->currentRanking = $this->model->_sortRanking($currentRanking[0]);
+        $this->currentRanking = $this->model->_sortRanking($currentRanking[0]);
         
         if ( $project->season_name == '2019/20' )
         {
@@ -96,15 +96,19 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         $teaminfo = $mdlTeaminfo::getTeam(0,$this->champion->_teamid);
         $object->clubid = $teaminfo->club_id;
 			  
-	$mdlClubinfo::$club = null;		  
+        $mdlClubinfo::$club = null;
         $clubinfo = $mdlClubinfo::getClub(0,$teaminfo->club_id);
-		$object->logo_big = $clubinfo->logo_big;	  
+		$object->logo_big = $clubinfo->logo_big;
 			  
         /** welche saison zu welchem team */
         $this->teamseason[$object->teamid]['season'][] = $project->season_name;
+        /* wenn nötig, array variabel initialisieren */
+        if (empty($this->teamseason[$object->teamid]['title'])) {
+        $this->teamseason[$object->teamid]['title'] = 0;
+        }
         $this->teamseason[$object->teamid]['title'] += 1;
         /** in welcher saison hat welches team gewonnen */
-        $this->leaguechampions[$project->season_name] = $object;  
+        $this->leaguechampions[$project->season_name] = $object;
         /** team details */
         if ( !array_key_exists($object->teamid, $this->leagueteamchampions) ) {
         $this->leagueteamchampions[$object->teamid] = $object;
@@ -116,18 +120,16 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         
         /** nach titel sortieren */
         //$this->teamseason
-        // Hole eine Liste von Spalten
+        /* Hole eine Liste von Spalten */
           
-                  
           }
 
-      
 $this->teamstotal = array();
 
 		foreach ((array) $this->teamseason as $rows => $value)
 		{
           
-          //echo 'value<pre>'.print_r($value['title'],true).'</pre>'; 
+          /* echo 'value<pre>'.print_r($value['title'],true).'</pre>'; */
           
 			//foreach ($value AS $row)
 			//{
@@ -140,23 +142,17 @@ $this->teamstotal = array();
 				//$teamstotal[$rows][$rows]   = $row->total;
 			//}
 		}
-        // Hole eine Liste von Spalten
+        /* Hole eine Liste von Spalten */
 		foreach ($this->teamstotal as $key => $row)
 		{
 			$total[$key] = $row['total'];
 		}
 
-		array_multisort($total, SORT_DESC, $this->teamstotal);  
+		array_multisort($total, SORT_DESC, $this->teamstotal);
         //echo '<pre>'.print_r($this->teamstotal,true).'</pre>';      
       
-      
-      
-      
-      
-      
-      
         // ksort($this->leaguechampions);
-      krsort($this->leaguechampions);
+		krsort($this->leaguechampions);
 		
         //echo 'in welcher saison hat welches team gewonnen <pre>'.print_r($this->leaguechampions,true).'</pre>';
         //echo 'welche saison zu welchem team <pre>'.print_r($this->teamseason,true).'</pre>';
