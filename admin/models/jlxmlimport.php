@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage jlxmlimport
@@ -4119,11 +4117,11 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 			$oldID              = $this->_getDataFromObject($import_projectteam, 'id');
 			$p_projectteam      = $this->_importDataForSave($import_projectteam, 'project_team');
 
-			if (array_key_exists('description', $import_projectteam))
+			if (property_exists($import_projectteam, 'description'))
 			{
 				$p_projectteam->notes = $this->_getDataFromObject($projectteam, 'description');
 			}
-			if (array_key_exists('info', $import_projectteam))
+			if (property_exists($import_projectteam, 'info'))
 			{
 				$p_projectteam->reason = $this->_getDataFromObject($projectteam, 'info');
 			}
@@ -4654,7 +4652,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 			$p_round->alias      = OutputFilter::stringURLSafe($p_round->name);
 			$p_round->project_id = $this->_project_id;
 			// if the roundcode field is empty,it is an old .jlg-Import file
-			if (array_key_exists('matchcode', $import_round))
+			if (property_exists($import_round, 'matchcode'))
 			{
 				$p_round->roundcode = $this->_getDataFromObject($round, 'matchcode');
 			}
@@ -4746,63 +4744,63 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 				$p_match->division_id = $this->_convertDivisionID[$this->_getDataFromObject($match, 'division_id')];
 			}
 
-			if (array_key_exists('matchpart1', $import_match))
+			if (property_exists($import_match, 'matchpart1'))
 			{
 				$p_match->projectteam1_id = $this->_convertProjectTeamID[intval($match->matchpart1)];
 			}
-			if (array_key_exists('matchpart2', $import_match))
+			if (property_exists($import_match, 'matchpart2'))
 			{
 				$p_match->projectteam2_id = $this->_convertProjectTeamID[intval($match->matchpart2)];
 			}
-			if (array_key_exists('matchpart1_result', $import_match))
+			if (property_exists($import_match, 'matchpart1_result'))
 			{
 				$p_match->team1_result = $this->_getDataFromObject($match, 'matchpart1_result');
 			}
-			if (array_key_exists('matchpart2_result', $import_match))
+			if (property_exists($import_match, 'matchpart2_result'))
 			{
 				$p_match->team2_result = $this->_getDataFromObject($match, 'matchpart2_result');
 			}
 
-			if (array_key_exists('matchpart1_bonus', $import_match))
+			if (property_exists($import_match, 'matchpart1_bonus'))
 			{
 				$p_match->team1_bonus = $this->_getDataFromObject($match, 'matchpart1_bonus');
 			}
-			if (array_key_exists('matchpart2_bonus', $import_match))
+			if (property_exists($import_match, 'matchpart2_bonus'))
 			{
 				$p_match->team2_bonus = $this->_getDataFromObject($match, 'matchpart2_bonus');
 			}
-			if (array_key_exists('matchpart1_legs', $import_match))
+			if (property_exists($import_match, 'matchpart1_legs'))
 			{
 				$p_match->team1_legs = $this->_getDataFromObject($match, 'matchpart1_legs');
 			}
-			if (array_key_exists('matchpart2_legs', $import_match))
+			if (property_exists($import_match, 'matchpart2_legs'))
 			{
 				$p_match->team2_legs = $this->_getDataFromObject($match, 'matchpart2_legs');
 			}
 
-			if (array_key_exists('matchpart1_result_split', $import_match))
+			if (property_exists($import_match, 'matchpart1_result_split'))
 			{
 				$p_match->team1_result_split = $this->_getDataFromObject($match, 'matchpart1_result_split');
 			}
-			if (array_key_exists('matchpart2_result_split', $import_match))
+			if (property_exists($import_match, 'matchpart2_result_split'))
 			{
 				$p_match->team2_result_split = $this->_getDataFromObject($match, 'matchpart2_result_split');
 			}
 
-			if (array_key_exists('matchpart1_result_ot', $import_match))
+			if (property_exists($import_match, 'matchpart1_result_ot'))
 			{
 				$p_match->team1_result_ot = $this->_getDataFromObject($match, 'matchpart1_result_ot');
 			}
-			if (array_key_exists('matchpart2_result_ot', $import_match))
+			if (property_exists($import_match, 'matchpart2_result_ot'))
 			{
 				$p_match->team2_result_ot = $this->_getDataFromObject($match, 'matchpart2_result_ot');
 			}
 
-			if (array_key_exists('matchpart1_result_decision', $import_match))
+			if (property_exists($import_match, 'matchpart1_result_decision'))
 			{
 				$p_match->team1_result_decision = $this->_getDataFromObject($match, 'matchpart1_result_decision');
 			}
-			if (array_key_exists('matchpart2_result_decision', $import_match))
+			if (property_exists($import_match, 'matchpart2_result_decision'))
 			{
 				$p_match->team2_result_decision = $this->_getDataFromObject($match, 'matchpart2_result_decision');
 			}

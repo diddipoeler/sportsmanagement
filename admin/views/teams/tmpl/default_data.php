@@ -184,7 +184,7 @@ $this->dragable_group = 'data-dragable-group="none"';
 
                 <td class="center">
 					<?php
-					if ($row->email != '')
+					if ($this->item->email != '')
 					{
 						echo '<a href="mailto:' . $this->item->email . '"><span class="label label-success" title="' . $this->item->email . '">' . Text::_('JYES') . '</span></a>';
 					}
