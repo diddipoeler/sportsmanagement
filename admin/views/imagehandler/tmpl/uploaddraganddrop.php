@@ -117,7 +117,7 @@ break;
     jQuery("#userfile").fileinput({
         theme: 'fas',
         language: 'de',
-        allowedFileExtensions: ['jpg', 'png', 'gif'],
+        allowedFileExtensions: ['jpg', 'jpeg', 'png', 'gif'],
         overwriteInitial: false,
         maxFileSize: 8000,
         maxFilesNum: 10,
