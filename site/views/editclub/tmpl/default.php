@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage editclub
@@ -11,21 +9,19 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 
-// Get the form fieldsets.
+/** Get the form fieldsets. */
 $fieldsets = $this->form->getFieldsets();
 
 ?>
 <form name="adminForm" id="adminForm" method="post" action="<?php echo $this->uri->toString(); ?>">
 
 	<?php
-	// Save and close
+	/** Save and close */
 	$close = Factory::getApplication()->input->getInt('close', 0);
 
 	if ($close == 1)

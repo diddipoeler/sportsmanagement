@@ -315,6 +315,29 @@
         label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO"
         description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_DESC"
     >
+	
+	<field
+            name="logo_big"
+            type="media"
+            default="images/com_sportsmanagement/database/clubs/large/placeholder_wappen_150.png"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_LARGE"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_LARGE_DESC"
+            class="inputbox"
+            preview="show"
+            targetfolder="clubs_large"
+			showon="show_info:1[AND]show_image:1"
+            directory="images/com_sportsmanagement/database/clubs/large"
+        />				
+		  
+        <field
+            name="cr_logo_big"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_BIG_CR"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_BIG_CR_DESC"
+            class="inputbox"
+        />
+		
+	<!--
         <field
             name="logo_small"
             type="media"
@@ -398,7 +421,7 @@
             targetfolder="clubs_trikot_away"
             directory=""
         />	
-        
+        -->
     </fieldset>	
 
     <fieldset 
