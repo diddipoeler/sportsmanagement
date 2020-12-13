@@ -172,6 +172,10 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 					$this->teams[$r->team_id]->sum_team2_result  = 0;
 					$this->teams[$r->team_id]->sum_away_for      = 0;
 					$this->teams[$r->team_id]->diff_team_results = 0;
+                    
+                    $this->teams[$r->team_id]->sum_team1_legs = 0;
+                    $this->teams[$r->team_id]->sum_team2_legs = 0;
+                    
 				}
 
 				if ($r->use_finally)
