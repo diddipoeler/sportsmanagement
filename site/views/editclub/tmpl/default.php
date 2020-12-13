@@ -54,6 +54,16 @@ $fieldsets = $this->form->getFieldsets();
 
 	<?php
 
+/*
+echo HTMLHelper::_('bootstrap.startTabSet', 'defaulttabsranking', array('active' => 'show_table_1')); // Start tab set
+echo HTMLHelper::_('bootstrap.addTab', 'defaulttabsranking', 'show_table_1', Text::_('Details') );
+echo $this->loadTemplate('details');
+echo HTMLHelper::_('bootstrap.endTab');
+echo HTMLHelper::_('bootstrap.addTab', 'defaulttabsranking', 'show_table_2', Text::_('Bilder') );
+echo $this->loadTemplate('picture');
+echo HTMLHelper::_('bootstrap.endTab'); 
+*/
+
 	echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'details'));
 
 	foreach ($fieldsets as $fieldset)

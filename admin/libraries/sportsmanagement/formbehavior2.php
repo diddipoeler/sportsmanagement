@@ -58,9 +58,9 @@ abstract class JHtmlFormbehavior2
 		//HTMLHelper::_('script', 'jui/select2.min.js', false, true, false, false, $debug);
 		//HTMLHelper::_('script', 'jui/select2_locale_cs.js', false, true, false, false, $debug);
 		//HTMLHelper::_('stylesheet', 'jui/select2.css', false, true);
-Factory::getDocument()->addScript(Uri::base() . 'components/com_sportsmanagement/assets/js/select2.min.js');		
-Factory::getDocument()->addScript(Uri::base() . 'components/com_sportsmanagement/assets/js/select2_locale_cs.js');				
-Factory::getDocument()->addStylesheet(URI::base() . 'components/com_sportsmanagement/assets/css/select2.css');		
+Factory::getDocument()->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/select2.min.js');		
+Factory::getDocument()->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/select2_locale_cs.js');				
+Factory::getDocument()->addStylesheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/select2.css');		
 		Factory::getDocument()->addScriptDeclaration(
 			"
 				jQuery(document).ready(function (){
