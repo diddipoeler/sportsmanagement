@@ -159,6 +159,19 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 				if (!array_key_exists($r->team_id, $this->teams))
 				{
 					$this->teams[$r->team_id] = $r;
+                    $this->teams[$r->team_id]->cnt_matches       = 0;
+					$this->teams[$r->team_id]->sum_points        = 0;
+					$this->teams[$r->team_id]->neg_points        = 0;
+					$this->teams[$r->team_id]->cnt_won_home      = 0;
+					$this->teams[$r->team_id]->cnt_draw_home     = 0;
+					$this->teams[$r->team_id]->cnt_lost_home     = 0;
+					$this->teams[$r->team_id]->cnt_won           = 0;
+					$this->teams[$r->team_id]->cnt_draw          = 0;
+					$this->teams[$r->team_id]->cnt_lost          = 0;
+					$this->teams[$r->team_id]->sum_team1_result  = 0;
+					$this->teams[$r->team_id]->sum_team2_result  = 0;
+					$this->teams[$r->team_id]->sum_away_for      = 0;
+					$this->teams[$r->team_id]->diff_team_results = 0;
 				}
 
 				if ($r->use_finally)
