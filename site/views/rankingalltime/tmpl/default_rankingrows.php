@@ -203,13 +203,13 @@ foreach ($current as $ptid => $team)
 			switch ($pic)
 			{
 				case 'logo_small';
-					echo HTMLHelper::image($team->team->$pic, $imgTitle, array('title' => $team->team->name, 'width' => '20'));
+					echo HTMLHelper::image($team->team->$pic, $team->team->name, array('title' => $team->team->name, 'width' => '20'));
 					break;
 				case 'logo_middle';
-					echo HTMLHelper::image($team->team->$pic, $imgTitle, array('title' => $team->team->name, 'width' => '20'));
+					echo HTMLHelper::image($team->team->$pic, $team->team->name, array('title' => $team->team->name, 'width' => '20'));
 					break;
 				case 'logo_big';
-					echo HTMLHelper::image($team->team->$pic, $imgTitle, array('title' => $team->team->name, 'width' => '20'));
+					echo HTMLHelper::image($team->team->$pic, $team->team->name, array('title' => $team->team->name, 'width' => '20'));
 					break;
 			}
 		}
