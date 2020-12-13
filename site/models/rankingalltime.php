@@ -72,7 +72,6 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 	 */
 	function __construct()
 	{
-		// Reference global application object
 		$app                 = Factory::getApplication();
 		$jinput              = $app->input;
 		$this->alltimepoints = $jinput->request->get('points', '3,1,0', 'STR');
@@ -82,6 +81,14 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 
 		$menu = JMenu::getInstance('site');
 		$item = $menu->getActive();
+        if ( !property_exists($item, 'query') )
+		{
+		$item->query['view'] = '';  
+		}
+        if ( !property_exists($item, 'id') )
+		{
+		$item->id = 0;  
+		}
 
 		$params = $menu->getParams($item->id);
 
@@ -110,15 +117,10 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 		}
 		else
 		{
-			// $strXmlFile = JPATH_SITE.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'settings'.DIRECTORY_SEPARATOR.'default'.DIRECTORY_SEPARATOR.'rankingalltime.xml';
 			$strXmlFile = JPATH_SITE . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'rankingalltime' . DIRECTORY_SEPARATOR . 'tmpl' . DIRECTORY_SEPARATOR . 'default.xml';
-
-			// $xml = simplexml_load_file($strXmlFile);
-
 			$xml      = Factory::getXML($strXmlFile);
 			$children = $xml->document->children();
-
-			// We can now step through each element of the file
+			/** We can now step through each element of the file */
 			foreach ($xml->children() as $field)
 			{
 				foreach ($field->fieldset as $fieldset)
