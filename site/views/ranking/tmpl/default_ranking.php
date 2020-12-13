@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung fűr alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage ranking
@@ -11,14 +9,10 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\Registry\Registry;
 
-/**
- * es wird als erstes die farblegende der divisionen/gruppen gelesen
- */
+/** es wird als erstes die farblegende der divisionen/gruppen gelesen */
 foreach ($this->currentRanking as $division => $cu_rk)
 {
 	if ($division)
