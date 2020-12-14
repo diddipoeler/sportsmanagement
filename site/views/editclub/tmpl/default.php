@@ -71,7 +71,7 @@ echo HTMLHelper::_('bootstrap.endTab');
 		switch ($fieldset->name)
 		{
 			case 'details':
-				// Case 'picture':
+			case 'picture':
 				// case 'extended':
 				echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));
 				echo $this->loadTemplate($fieldset->name);
