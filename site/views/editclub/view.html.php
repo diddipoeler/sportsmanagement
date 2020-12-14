@@ -64,7 +64,7 @@ class sportsmanagementViewEditClub extends sportsmanagementView
 		$this->extended = $extended;
 		$this->lists    = $lists;
 		$this->cfg_which_media_tool = ComponentHelper::getParams($this->option)->get('cfg_which_media_tool', 0);
-		//$this->document->addScript(Uri::root() . 'administrator/components/' . $this->option . '/assets/js/editgeocode.js');
+		//$this->document->addScript(Uri::root() . 'components/' . $this->option . '/assets/js/editgeocode.js');
 
 	}
 

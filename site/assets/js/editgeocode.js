@@ -14,31 +14,21 @@ var province;
 var yourQuery;	
 	
 dpjQuery(document).ready(function(){
-dpjQuery("#jform_geocomplete").val(getAddresString());
+dpjQuery("#geocomplete").val(getAddresString());
 
-console.log('latitude ' + dpjQuery("#jform_latitude").val() );  
-console.log('longitude ' + dpjQuery("#jform_longitude").val() );  
+console.log('latitude ' + dpjQuery("#latitude").val() );  
+console.log('longitude ' + dpjQuery("#longitude").val() );  
 getlatlonopenstreet(1);
-  /*
-if ( dpjQuery("#jform_latitude").val() )
-{
-addLayer(dpjQuery("#jform_latitude").val(),dpjQuery("#jform_longitude").val());
-}
-else
-{
-getlatlonopenstreet(1);
-}	
-*/	
 
 //geocoder = new L.Control.Geocoder.Nominatim();
-if (dpjQuery('#jform_address_country').length == 0) {
-console.log('Das Element mit der ID jform_address_country ist nicht vorhanden.');	
-countryleaflet = dpjQuery("#jform_country").val();	
+if (dpjQuery('#address_country').length == 0) {
+console.log('Das Element mit der ID address_country ist nicht vorhanden.');	
+countryleaflet = dpjQuery("#country").val();	
 }
 	else
 	{
-console.log('Das Element mit der ID jform_address_country ist vorhanden.');		
-countryleaflet = dpjQuery("#jform_address_country").val();
+console.log('Das Element mit der ID address_country ist vorhanden.');		
+countryleaflet = dpjQuery("#address_country").val();
 	}
 	
 console.log('ready countryleaflet ' + countryleaflet);
@@ -59,16 +49,16 @@ countryleafletsearch = val.text;
 console.log('ready url ' + url );
 console.log('ready countryleafletsearch ' + countryleafletsearch );
 
-street = dpjQuery("#jform_address").val();
-zip = dpjQuery("#jform_zipcode").val();
+street = dpjQuery("#address").val();
+zip = dpjQuery("#zipcode").val();
 	
-if (dpjQuery('#jform_city').length == 0) {
-console.log('Das Element mit der ID jform_city ist nicht vorhanden.');
-city = dpjQuery("#jform_location").val();
+if (dpjQuery('#city').length == 0) {
+console.log('Das Element mit der ID city ist nicht vorhanden.');
+city = dpjQuery("#location").val();
 }
 else	
 {	
-city = dpjQuery("#jform_city").val();
+city = dpjQuery("#city").val();
 }	
 yourQuery = ( street + ',' + zip + ' ' + city + ',' + countryleafletsearch );
 
@@ -80,12 +70,12 @@ console.log('ready yourQuery ' + yourQuery );
 
 function getlatlonopenstreet(result)
 {
-dpjQuery("#jform_geocomplete").val(getAddresString());
-dpjQuery("#jform_geocomplete").trigger("geocode");	
+dpjQuery("#geocomplete").val(getAddresString());
+dpjQuery("#geocomplete").trigger("geocode");	
 	
 	
-var inp = dpjQuery("#jform_geocomplete").val();
-console.log('jform_geocomplete ' + inp );
+var inp = dpjQuery("#geocomplete").val();
+console.log('geocomplete ' + inp );
 //var xmlhttp = new XMLHttpRequest();
 var url = "https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=1&q=" + inp ;
 console.log('openstreetmap url ' + url );
@@ -125,7 +115,7 @@ console.log('neighbourhood ' + val.address.neighbourhood);
 state = val.address.state;
 
 dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME").val(state);
-dpjQuery("#jform_state").val(state);	
+dpjQuery("#state").val(state);	
 
 if ( val.address.county )
 {
@@ -136,8 +126,8 @@ if ( val.address.state_district )
 dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_LONG_NAME").val(val.address.state_district);	
 }	
 	
-dpjQuery("#jform_latitude").val(val.lat);
-dpjQuery("#jform_longitude").val(val.lon);
+dpjQuery("#latitude").val(val.lat);
+dpjQuery("#longitude").val(val.lon);
 if ( result )
 {
 addLayer(val.lat,val.lon);
@@ -154,45 +144,45 @@ function getAddresString()
 	street = '';
 	city = '';
 	country = '';
-	if(dpjQuery("#jform_address").val()){
-		street = dpjQuery("#jform_address").val();
+	if(dpjQuery("#address").val()){
+		street = dpjQuery("#address").val();
 		street += ', ';
 	}
 	
-if (dpjQuery('#jform_city').length == 0) {
-console.log('Das Element mit der ID jform_city ist nicht vorhanden.');
-	if(dpjQuery("#jform_location").val()){
-		city = dpjQuery("#jform_location").val();
-		if(dpjQuery("#jform_zipcode").val()){
-			city += ' ' + dpjQuery("#jform_zipcode").val();
+if (dpjQuery('#city').length == 0) {
+console.log('Das Element mit der ID city ist nicht vorhanden.');
+	if(dpjQuery("#location").val()){
+		city = dpjQuery("#location").val();
+		if(dpjQuery("#zipcode").val()){
+			city += ' ' + dpjQuery("#zipcode").val();
 		}
 		city += ', ';
 	}
 }
 	else
 	{
-console.log('Das Element mit der ID jform_city ist vorhanden.');		
-	if(dpjQuery("#jform_city").val()){
-		city = dpjQuery("#jform_city").val();
-		if(dpjQuery("#jform_zipcode").val()){
-			city += ' ' + dpjQuery("#jform_zipcode").val();
+console.log('Das Element mit der ID city ist vorhanden.');		
+	if(dpjQuery("#city").val()){
+		city = dpjQuery("#city").val();
+		if(dpjQuery("#zipcode").val()){
+			city += ' ' + dpjQuery("#zipcode").val();
 		}
 		city += ', ';
 	}
 	}
 	
-	if (dpjQuery("#jform_state").val()) {
-		province = dpjQuery("#jform_state").val() + ', ';
+	if (dpjQuery("#state").val()) {
+		province = dpjQuery("#state").val() + ', ';
 	}
 	
-if (dpjQuery('#jform_address_country').length == 0) {
-console.log('Das Element mit der ID jform_address_country ist nicht vorhanden.');	
-countryleaflet = dpjQuery("#jform_country").val();	
+if (dpjQuery('#address_country').length == 0) {
+console.log('Das Element mit der ID address_country ist nicht vorhanden.');	
+countryleaflet = dpjQuery("#country").val();	
 }
 	else
 	{
-console.log('Das Element mit der ID jform_address_country ist vorhanden.');		
-countryleaflet = dpjQuery("#jform_address_country").val();
+console.log('Das Element mit der ID address_country ist vorhanden.');		
+countryleaflet = dpjQuery("#address_country").val();
 	}
 	
 console.log('getAddresString countryleaflet ' + countryleaflet);
@@ -249,24 +239,24 @@ function setGeoResult(result)
 var street_number = '';
 var route = '';
 	
-	dpjQuery('#location-form #details input:not("#jform_title")').removeAttr('value');
+	dpjQuery('#location-form #details input:not("#title")').removeAttr('value');
 	
 	for(var i=0;i<result.address_components.length;i++){
 		switch(result.address_components[i].types[0]){
 
 			case 'route':
-				dpjQuery("#jform_address").val(result.address_components[i].long_name);
+				dpjQuery("#address").val(result.address_components[i].long_name);
 				route = result.address_components[i].long_name;
 			break;
 			case 'locality':
-				dpjQuery("#jform_city").val(result.address_components[i].long_name);
+				dpjQuery("#city").val(result.address_components[i].long_name);
 			break;
 			case 'street_number':
 			street_number = result.address_components[i].long_name;
 			break;
 
 		  case 'administrative_area_level_1':
-			dpjQuery("#jform_state").val(result.address_components[i].long_name);
+			dpjQuery("#state").val(result.address_components[i].long_name);
       dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME").val(result.address_components[i].long_name);
       dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_SHORT_NAME").val(result.address_components[i].short_name);
 			break;
@@ -276,32 +266,32 @@ var route = '';
 			break;
       
 			case 'postal_code':
-				dpjQuery("#jform_zipcode").val(result.address_components[i].long_name);
+				dpjQuery("#zipcode").val(result.address_components[i].long_name);
 			break;
 		}
 	}
 
 route += ' ';
 route += street_number;
-dpjQuery("#jform_address").val(route);
+dpjQuery("#address").val(route);
 	
 	if (typeof result.geometry.location.lat === 'function')
 	{
-		dpjQuery("#jform_latitude").val(result.geometry.location.lat());
-		dpjQuery("#jform_longitude").val(result.geometry.location.lng());
+		dpjQuery("#latitude").val(result.geometry.location.lat());
+		dpjQuery("#longitude").val(result.geometry.location.lng());
 	} else
 	{		
-		dpjQuery("#jform_latitude").val(result.geometry.location.lat);
-		dpjQuery("#jform_longitude").val(result.geometry.location.lng);
+		dpjQuery("#latitude").val(result.geometry.location.lat);
+		dpjQuery("#longitude").val(result.geometry.location.lng);
 	}
 
-var lat = dpjQuery("#jform_latitude").val();
-var lng = dpjQuery("#jform_longitude").val();	
+var lat = dpjQuery("#latitude").val();
+var lng = dpjQuery("#longitude").val();	
 console.log('lat ' + lat );
 console.log('lng ' + lng );
 addLayer(lat,lng);
 	
-	dpjQuery("#jform_geocomplete").val(result.formatted_address);
+	dpjQuery("#geocomplete").val(result.formatted_address);
 }
 
 function addLayer(lat,lng) {
