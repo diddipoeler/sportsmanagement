@@ -63,8 +63,17 @@ abstract class ImageSelectSM
 	{
 		$document          = Factory::getDocument();
 		$app               = Factory::getApplication();
+		if ($app->isSite())
+		{
+		$link = 'administrator/';
+		$link2 = 'administrator/';
+		}
+		else
+		{
 		$link = '';
 		$link2 = '';
+		}
+		
 		self::$_foldertype = $type;
 
 		$modalheight = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('modal_popup_height', 600);
