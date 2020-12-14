@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewEditClub
@@ -63,6 +64,7 @@ class sportsmanagementViewEditClub extends sportsmanagementView
 		$this->extended = $extended;
 		$this->lists    = $lists;
 		$this->cfg_which_media_tool = ComponentHelper::getParams($this->option)->get('cfg_which_media_tool', 0);
+		$this->document->addScript(Uri::root() . 'administrator/components/' . $this->option . '/assets/js/editgeocode.js');
 
 	}
 
