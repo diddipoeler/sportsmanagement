@@ -63,6 +63,8 @@ abstract class ImageSelectSM
 	{
 		$document          = Factory::getDocument();
 		$app               = Factory::getApplication();
+		$link = '';
+		$link2 = '';
 		self::$_foldertype = $type;
 
 		$modalheight = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('modal_popup_height', 600);
@@ -213,7 +215,7 @@ $img.attr("src", "' . Uri::root() . '" + select);
 			$layoutdrag = 'upload';
 		}
 
-		$link = 'index.php?option=com_sportsmanagement&amp;view=imagehandler&amp;layout=' . $layoutdrag . '&amp;type=' .
+		$link .= 'index.php?option=com_sportsmanagement&amp;view=imagehandler&amp;layout=' . $layoutdrag . '&amp;type=' .
 			$type . '&amp;field=' . $fieldname . '&amp;fieldid=' . $fieldid . '&amp;tmpl=component&pid=0&mid=0&imagelist=';
 
 		//        $link2 = 'index.php?option=com_sportsmanagement&amp;view=imagehandler&amp;type=' .
@@ -222,7 +224,7 @@ $img.attr("src", "' . Uri::root() . '" + select);
 		$link2 = 'index.php?option=com_media&amp;view=images' .
 			'&amp;asset=com_sportsmanagement&amp;folder=com_sportsmanagement/database/' . self::getfolder($typefolder) . '&author=&amp;fieldid=' . $fieldid . '&amp;tmpl=component';
 */
-$link2 = 'index.php?option=com_sportsmanagement&view=imagelist' .
+$link2 .= 'index.php?option=com_sportsmanagement&view=imagelist' .
 			'&imagelist=1&asset=com_sportsmanagement&folder=' . self::getfolder($typefolder) . '&author=&fieldid=' . $fieldid . '&tmpl=component&type='.$type.'&fieldname=' . $fieldname;
 
 		$document->addScriptDeclaration($js);
