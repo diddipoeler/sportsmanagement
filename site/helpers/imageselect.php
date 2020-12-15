@@ -63,15 +63,18 @@ abstract class ImageSelectSM
 	{
 		$document          = Factory::getDocument();
 		$app               = Factory::getApplication();
+        
 		if ($app->isSite())
 		{
 		$link = 'administrator/';
 		$link2 = 'administrator/';
+        $use_jquery_modal = 2;
 		}
 		else
 		{
 		$link = '';
 		$link2 = '';
+        $use_jquery_modal = 0;
 		}
 		
 		self::$_foldertype = $type;
@@ -243,11 +246,11 @@ $link2 .= 'index.php?option=com_sportsmanagement&view=imagelist' .
 		$imageselect .= "\n&nbsp;<table><tr><td><input style=\"background: #ffffff;\" type=\"text\" id=\"" . $fieldid . "\" name=\"" . $fieldname . "\"  value=\"" .
 			$value . "\" disabled=\"disabled\" size=\"100\" /></td></tr>";
 		$imageselect .= "<tr><td><div class=\"button2-left\"><div class=\"blank\">";
-		$imageselect .= sportsmanagementHelper::getBootstrapModalImage('upload' . $funcname, '', Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE'), '20', Uri::base() . $link, $modalwidth, $modalheight);
+		$imageselect .= sportsmanagementHelper::getBootstrapModalImage('upload' . $funcname, '', Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE'), '20', Uri::base() . $link, $modalwidth, $modalheight,$use_jquery_modal);
 		$imageselect .= "</div></div>\n";
 
 		$imageselect .= "<div class=\"button2-left\"><div class=\"blank\">";
-		$imageselect .= sportsmanagementHelper::getBootstrapModalImage('select' . $funcname, '', Text::_('JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE').' '.Factory::getApplication()->getUserState("com_sportsmanagement.itemname", ''), '20', Uri::base() . $link2, $modalwidth, $modalheight);
+		$imageselect .= sportsmanagementHelper::getBootstrapModalImage('select' . $funcname, '', Text::_('JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE').' '.Factory::getApplication()->getUserState("com_sportsmanagement.itemname", ''), '20', Uri::base() . $link2, $modalwidth, $modalheight,$use_jquery_modal);
 		$imageselect .= "</div></div>\n";
 
 		$imageselect .= "<div class=\"button2-left\"><div class=\"blank\"><a class=\"btn btn-primary\" title=\"" .
