@@ -15,13 +15,9 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 
-// Reference global application object
 $app = Factory::getApplication();
-// JInput object
 $jinput      = $app->input;
 $view        = $jinput->getVar("view");
-$modalheight = ComponentHelper::getParams($jinput->getCmd('option'))->get('modal_popup_height', 600);
-$modalwidth  = ComponentHelper::getParams($jinput->getCmd('option'))->get('modal_popup_width', 900);
 ?>
 <!-- START: Contentheading -->
 <div class="<?php echo $this->divclassrow; ?>" id="sectionheader">
