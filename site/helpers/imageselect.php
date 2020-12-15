@@ -63,12 +63,15 @@ abstract class ImageSelectSM
 	{
 		$document          = Factory::getDocument();
 		$app               = Factory::getApplication();
+        $modalheight = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('modal_popup_height', 600);
+		$modalwidth  = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('modal_popup_width', 900);
         
 		if ($app->isSite())
 		{
 		$link = 'administrator/';
 		$link2 = 'administrator/';
         $use_jquery_modal = 2;
+        $modalheight = 500;
 		}
 		else
 		{
@@ -79,8 +82,7 @@ abstract class ImageSelectSM
 		
 		self::$_foldertype = $type;
 
-		$modalheight = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('modal_popup_height', 600);
-		$modalwidth  = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('modal_popup_width', 900);
+		
 
 		$baseFolder = Uri::root();// .'images/com_sportsmanagement/database/'.ImageSelect::getfolder($type);
 		$funcname   = preg_replace("/^[.]*/", '', $fieldid);
