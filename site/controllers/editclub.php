@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage editclubs
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\Language\Text;
@@ -119,7 +115,7 @@ class sportsmanagementControllerEditClub extends FormController
 		// $this->setRedirect('index.php?option=com_sportsmanagement&tmpl=component&view=editclub&cid='.$post['id'].'&id='.$post['id'].'&p='.$post['p'], $msg, $type);
 		// $post['id'] = (int) $cid[0];
 		$model = $this->getModel('editclub');
-
+/*
 		if (!empty($post['address']))
 		{
 			$address_parts[] = $post['address'];
@@ -157,7 +153,7 @@ class sportsmanagementControllerEditClub extends FormController
 
 		$post['latitude']  = $coords['latitude'];
 		$post['longitude'] = $coords['longitude'];
-
+*/
 		if (isset($post['merge_teams']))
 		{
 			if (count($post['merge_teams']) > 0)
