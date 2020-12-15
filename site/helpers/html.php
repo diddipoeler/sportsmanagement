@@ -343,22 +343,6 @@ class sportsmanagementHelperHtml
 		return $output;
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	/**
 	 * sportsmanagementHelperHtml::getBootstrapModalImage()
 	 *
@@ -382,7 +366,7 @@ class sportsmanagementHelperHtml
 			case 2:
 				if ($url)
 				{
-					$modaltext = '<a class="jcepopup jcemediabox-image" title="' . $text . '" href="' . $url . '" data-mediabox="1" data-mediabox-title="' . $text . '"><img '.$schemaorg.'="'.$schemaorgvalue.'" src="' . $picture . '" alt="' . $text . '" style="width: auto;height: ' . $pictureheight . 'px" />';
+					$modaltext = '<a class="jcepopup" title="' . $text . '" href="' . $url . '" data-mediabox-width="" data-mediabox-height="" target="_blank" data-mediabox-title="' . $text . '"><img '.$schemaorg.'="'.$schemaorgvalue.'" src="' . $picture . '" alt="' . $text . '" style="width: auto;height: ' . $pictureheight . 'px" />';
 				}
 
 				if (!$url)
