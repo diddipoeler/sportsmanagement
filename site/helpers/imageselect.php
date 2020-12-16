@@ -70,7 +70,7 @@ abstract class ImageSelectSM
 		{
 		$link = 'administrator/';
 		$link2 = 'administrator/';
-        $use_jquery_modal = 2;
+        $use_jquery_modal = 0;
         $modalheight = 500;
 		}
 		else
