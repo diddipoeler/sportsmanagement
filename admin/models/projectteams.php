@@ -170,9 +170,8 @@ class sportsmanagementModelProjectteams extends JSMModelList
 		}
 		catch (Exception $e)
 		{
-			$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-			$code = $e->getCode(); // Returns '500';
-			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 		}
 
 	}
