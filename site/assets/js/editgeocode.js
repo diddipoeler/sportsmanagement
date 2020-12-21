@@ -16,7 +16,7 @@ var yourQuery;
 
 dpjQuery(document).ready(function(){
 dpjQuery("#geocomplete").val(getAddresString());
-  
+getlatlonopenstreet(1);  
 }); 
 
 
