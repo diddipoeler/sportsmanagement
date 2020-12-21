@@ -183,7 +183,7 @@ console.log('Das Element mit der ID city ist vorhanden.');
 	if (dpjQuery("#state").val()) {
 		province = dpjQuery("#state").val() + ', ';
 	}
-	
+	/*
 if (dpjQuery('#address_country').length == 0) {
 console.log('Das Element mit der ID address_country ist nicht vorhanden.');	
 countryleaflet = dpjQuery("#country").val();	
@@ -193,7 +193,8 @@ countryleaflet = dpjQuery("#country").val();
 console.log('Das Element mit der ID address_country ist vorhanden.');		
 countryleaflet = dpjQuery("#address_country").val();
 	}
-	
+*/
+countryleaflet = dpjQuery("#country").val();	
 console.log('getAddresString countryleaflet ' + countryleaflet);
 
 var url = 'administrator/index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getCcountryAlpha2&country=' + countryleaflet;
