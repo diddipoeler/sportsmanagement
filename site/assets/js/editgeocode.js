@@ -12,6 +12,15 @@ var zip;
 var province;
 
 var yourQuery;	
+
+
+dpjQuery(document).ready(function(){
+dpjQuery("#geocomplete").val(getAddresString());
+  
+}); 
+
+
+
 	/*
 dpjQuery(document).ready(function(){
 dpjQuery("#geocomplete").val(getAddresString());
