@@ -21,8 +21,8 @@
 			type="text"
 			label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
 			description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
-			size="68"
-			maxlength="100"
+			size="200"
+			maxlength="200"
 			class="input-xxlarge"
 			required="true"/>
 			
@@ -31,9 +31,10 @@
 			type="text"
 			label="COM_SPORTSMANAGEMENT_GLOBAL_ALIAS"
 			description="COM_SPORTSMANAGEMENT_GLOBAL_ALIAS_DESC"
-			size="68"
-			maxlength="100"
-			class="form-control form-control-inline"/>
+			size="200"
+			maxlength="200"
+			readonly="true"
+			class="input-xxlarge readonly"/>
 		
     <field
 			name="staffel_id"
