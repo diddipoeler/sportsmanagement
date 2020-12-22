@@ -23,7 +23,7 @@
 			description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
 			size="68"
 			maxlength="100"
-			class="text_area"
+			class="input-xxlarge"
 			required="true"/>
 			
 		<field
