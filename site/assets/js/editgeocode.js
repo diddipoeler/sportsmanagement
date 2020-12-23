@@ -15,8 +15,16 @@ var yourQuery;
 
 
 dpjQuery(document).ready(function(){
+console.log("editgeocode document.location.origin : "+document.location.origin);  
+var baseurl = document.location.origin;  
 dpjQuery("#geocomplete").val(getAddresString());
 getlatlonopenstreet(1);  
+  
+  
+
+//dpjQuery(this).attr("href");
+//console.log('href ' + dpjQuery(this).attr("href") );
+  
 }); 
 
 
@@ -197,7 +205,7 @@ countryleaflet = dpjQuery("#address_country").val();
 countryleaflet = dpjQuery("#country").val();	
 console.log('getAddresString countryleaflet ' + countryleaflet);
 
-var url = 'administrator/index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getCcountryAlpha2&country=' + countryleaflet;
+var url = baseurl + '/administrator/index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getCcountryAlpha2&country=' + countryleaflet;
 dpjQuery.ajax({
 url: url,
 dataType: 'json',
@@ -216,7 +224,7 @@ countryleafletsearch = val.text;
 
 });	
 
-var url2 = 'administrator/index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getCcountryName&country=' + countryleaflet;
+var url2 = baseurl +'/administrator/index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getCcountryName&country=' + countryleaflet;
 dpjQuery.ajax({
 url: url2,
 dataType: 'json',
@@ -304,6 +312,7 @@ addLayer(lat,lng);
 	dpjQuery("#geocomplete").val(result.formatted_address);
 }
 
+/*
 function addLayer(lat,lng) {
 	
 var markerLocation = new L.LatLng(lat,lng);
@@ -323,4 +332,4 @@ map.setView(new L.LatLng(lat, lng), 15);
 //layerGroup.addLayer(marker);
 
 }
-			
+	*/		
