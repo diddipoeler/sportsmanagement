@@ -145,10 +145,12 @@ dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_LONG_NAME")
 	
 dpjQuery("#latitude").val(val.lat);
 dpjQuery("#longitude").val(val.lon);
+/*
 if ( result )
 {
 addLayer(val.lat,val.lon);
 }
+*/
 }); 
 }
 });
@@ -307,7 +309,7 @@ var lat = dpjQuery("#latitude").val();
 var lng = dpjQuery("#longitude").val();	
 console.log('lat ' + lat );
 console.log('lng ' + lng );
-addLayer(lat,lng);
+//addLayer(lat,lng);
 	
 	dpjQuery("#geocomplete").val(result.formatted_address);
 }
