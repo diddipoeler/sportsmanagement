@@ -10,13 +10,13 @@ var state;
 var city;
 var zip;
 var province;
-
+var baseurl;
 var yourQuery;	
 
 
 dpjQuery(document).ready(function(){
 console.log("editgeocode document.location.origin : "+document.location.origin);  
-var baseurl = document.location.origin;  
+baseurl = document.location.origin;  
 dpjQuery("#geocomplete").val(getAddresString());
 getlatlonopenstreet(1);  
   
