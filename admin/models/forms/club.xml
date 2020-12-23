@@ -30,21 +30,24 @@
 		
         <field
             name="name"
-            size="100"
+            size="200"
+			maxlength="200"
             type="text"
             label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
             description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
-            class="inputbox"
+            class="input-xxlarge"
             required="true"
         />
         
         <field
             name="alias"
-            size="100"
+            size="200"
+			maxlength="200"
             type="text"
             label="JFIELD_ALIAS_LABEL"
             description="JFIELD_ALIAS_DESC"
-            class="inputbox"
+			readonly="true"
+            class="input-xxlarge readonly"
         />
         
         <field
@@ -59,8 +62,10 @@
         <field 
             name="geocomplete"
             type="geocomplete"
-            class="inputbox"
-            size="40" 
+            readonly="true"
+            class="input-xxlarge readonly"
+            size="200" 
+			maxlength="200"
             label="COM_SPORTSMANAGEMENT_LOCATION_FIELD_GEOCOMPLETE_LABEL"
             description="COM_SPORTSMANAGEMENT_LOCATION_FIELD_GEOCOMPLETE_DESC" 
         />
