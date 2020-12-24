@@ -66,6 +66,17 @@
  *
  */
 
+
+/**
+ * You can use a different css class to change the size. The extension use twitter bootstrap, so you can use the following css classes to control the size of the input :
+ * input-mini
+ * input-small
+ * input-medium
+ * input-large
+ * input-xlarge
+ * input-xxlarge
+ */
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
