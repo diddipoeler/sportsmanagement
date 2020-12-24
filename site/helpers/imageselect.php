@@ -251,7 +251,7 @@ $link2 .= 'index.php?option=com_sportsmanagement&view=imagelist' .
 		
 if ($app->isSite())
 {
-$imageselect .= sportsmanagementHelperHtml::getBootstrapModalImage('upload' . $funcname, '', Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE'), '20', Uri::base() . $link, $modalwidth, $modalheight,$use_jquery_modal);		
+$imageselect .= sportsmanagementHelperHtml::getBootstrapModalImage('upload' . $funcname, 'up.png', Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE'), '20', Uri::base() . $link, $modalwidth, $modalheight,$use_jquery_modal);		
 }
 else
 {
@@ -263,7 +263,7 @@ $imageselect .= sportsmanagementHelper::getBootstrapModalImage('upload' . $funcn
 		
 if ($app->isSite())
 {
-$imageselect .= sportsmanagementHelperHtml::getBootstrapModalImage('select' . $funcname, '', Text::_('JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE').' '.Factory::getApplication()->getUserState("com_sportsmanagement.itemname", ''), '20', Uri::base() . $link2, $modalwidth, $modalheight,$use_jquery_modal);	
+$imageselect .= sportsmanagementHelperHtml::getBootstrapModalImage('select' . $funcname, 'zoom.png', Text::_('JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE').' '.Factory::getApplication()->getUserState("com_sportsmanagement.itemname", ''), '20', Uri::base() . $link2, $modalwidth, $modalheight,$use_jquery_modal);	
 }
 else
 {		
