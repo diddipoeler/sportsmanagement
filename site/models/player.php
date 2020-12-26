@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage player
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -31,24 +27,12 @@ use Joomla\CMS\Log\Log;
 class sportsmanagementModelPlayer extends BaseDatabaseModel
 {
 	static $projectid = 0;
-
 	static $personid = 0;
-
 	static $teamplayerid = 0;
-
-	/**
-	 * data array for player history
-	 *
-	 * @var array
-	 */
 	static $_playerhistory = null;
-
 	static $_playerhistorystaff = null;
-
 	static $_teamplayers = null;
-
 	static $_inproject = null;
-
 	static $cfg_which_database = 0;
 
 	/**
@@ -58,9 +42,7 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 	 */
 	function __construct()
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
 		parent::__construct();
 		self::$projectid                                  = Factory::getApplication()->input->get('p', 0, 'INT');
 		self::$personid                                   = Factory::getApplication()->input->get('pid', 0, 'INT');
@@ -461,7 +443,8 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 			$query->where('p.sports_type_id = ' . $sportstype);
 		}
 
-		$query->order('s.ordering ' . $order . ',l.ordering ASC,p.name ASC ');
+		//$query->order('s.ordering ' . $order . ',l.ordering ASC,p.name ASC ');
+        $query->order('s.name DESC ');
 
 		try
 		{
@@ -686,17 +669,11 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 	 */
 	function getTeamPlayers($cfg_which_database = 0)
 	{
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
 		$query = $db->getQuery(true);
 
 		$query->select('tp.*');
+        //$query->select('pe.notes');
 		$query->select('pt.project_id,pt.team_id,pt.id as projectteam_id,pt.picture as team_picture');
 		$query->select('pos.name AS position_name');
 		$query->select('ppos.position_id,pos.picture AS position_image');
@@ -732,8 +709,8 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 		}
 		catch (Exception $e)
 		{
-			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
-			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
 			$result = false;
 		}
 

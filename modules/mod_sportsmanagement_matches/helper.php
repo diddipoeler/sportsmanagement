@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_matches
@@ -11,15 +9,14 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * modMatchesHelper
@@ -51,6 +48,9 @@ class modMatchesSportsmanagementHelper
 		$this->usedteams = array(
 			0 => array()
 		);
+		$this->usedclubs = array(
+			0 => array()
+		);
 		$this->addusedprojects();
 		$this->iconpath = ($params->get('use_icons') != '-1') ? _JSMMATCHLISTMODURL . 'assets/images/' .
 			$params->get('use_icons') . '/' : false;
@@ -73,6 +73,10 @@ class modMatchesSportsmanagementHelper
 				{
 					$this->usedteams[(int) $p] = array_map('intval', $this->params->get('teams'));
 				}
+				if (is_array($this->params->get('club_ids')))
+				{
+					$this->usedclubs[(int) $p] = array_map('intval', $this->params->get('club_ids'));
+				}
 			}
 		}
 		elseif (!empty($usedp))
@@ -81,6 +85,10 @@ class modMatchesSportsmanagementHelper
 			{
 				$this->usedteams[(int) $usedp] = array_map('intval', $this->params->get('teams'));
 			}
+			if (is_array($this->params->get('club_ids')))
+				{
+					$this->usedclubs[(int) $p] = array_map('intval', $this->params->get('club_ids'));
+				}
 		}
 
 		if (ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info_frontend'))
@@ -430,7 +438,7 @@ class modMatchesSportsmanagementHelper
 	 *
 	 * @return integer
 	 */
-	public function usedteamscheck($team_id, $project_id)
+	public function usedteamscheck($team_id, $project_id, $club_id = 0)
 	{
 		$return = 0;
 
@@ -446,6 +454,16 @@ class modMatchesSportsmanagementHelper
 				{
 					$return = 1;
 				}
+			}
+			if ( $club_id )
+			{
+			foreach ($this->usedclubs[$project_id] AS $key => $value)
+			{
+				if ($value == $club_id)
+				{
+					$return = 1;
+				}
+			}
 			}
 		}
 
@@ -562,8 +580,10 @@ class modMatchesSportsmanagementHelper
 	{
 		$row['notice'] = ($match->match_result_detail != '' && $this->params->get('show_match_notice') == 1) ? $match->match_result_detail : '';
 
-		if ($this->params->get('show_referee', 1) == 1 && $match->refname != '')
+		//if ( $this->params->get('show_referee', 1) == 1 && $match->refname != '')
+		if ( $this->params->get('show_referee', 1) )
 		{
+			/*
 			$row['referee'] = '<span style="float:right;">';
 			$row['referee'] .= ($this->iconpath) ? HTMLHelper::_(
 				'image', $this->iconpath . 'referee.png', Text::_('MOD_SPORTSMANAGEMENT_MATCHES_REFEREE'), array(
@@ -573,6 +593,9 @@ class modMatchesSportsmanagementHelper
 				)
 			) : Text::_('MOD_SPORTSMANAGEMENT_MATCHES_REFEREE') . ': ';
 			$row['referee'] .= $this->jl_utf8_convert($match->refname, 'iso-8859-1', 'utf-8') . '</span>';
+			*/
+			$actionsModel = BaseDatabaseModel::getInstance('clubplan', 'sportsmanagementModel');
+			$row['referee'] = $actionsModel->getMatchReferees($match->match_id);
 		}
 		else
 		{
@@ -816,8 +839,8 @@ class modMatchesSportsmanagementHelper
 		// Start ajaxifying
 		if ($this->params->get('next_last'))
 		{
-			$showhome = $this->usedteamscheck($row->team1_id, $row->project_id);
-			$showaway = $this->usedteamscheck($row->team2_id, $row->project_id);
+			$showhome = $this->usedteamscheck($row->team1_id, $row->project_id,$row->club1_id);
+			$showaway = $this->usedteamscheck($row->team2_id, $row->project_id,$row->club2_id);
 		}
 
 		$temp = '<div class="jlmlext_ajaxmenu" style="text-align:center;width:100%;display:block;clear:both;margin-top:10px;">';

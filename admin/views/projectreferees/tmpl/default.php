@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage projectreferees
@@ -11,16 +9,13 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-
 ?>
     <style>
         .search-item {
@@ -63,20 +58,10 @@ $uri = Uri::root();
 ?>
 
     <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
-		<?PHP
-		if (version_compare(JVERSION, '3.0.0', 'ge'))
-		{
-			echo $this->loadTemplate('joomla3');
-		}
-		else
-		{
-			echo $this->loadTemplate('joomla2');
-		}
-		?>
-        <!-- <fieldset class="adminform"> -->
+    <!--
         <legend>
 			<?php
-			echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTREFEREES_QUICKADD_REFEREE');
+			//echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTREFEREES_QUICKADD_REFEREE');
 			?>
         </legend>
         <form id="quickaddForm"
@@ -92,9 +77,14 @@ $uri = Uri::root();
             </table>
 			<?php echo HTMLHelper::_('form.token'); ?>
         </form>
-        <!-- </fieldset> -->
-
+    -->
+    
 		<?PHP
+        echo $this->loadTemplate('joomla_version');
+		?>
+    
+		<?PHP
+        /*
 		if ($this->items)
 		{
 			echo $this->loadTemplate('data');
@@ -105,7 +95,7 @@ $uri = Uri::root();
 			echo Text::_('JGLOBAL_NO_MATCHING_RESULTS');
 			echo '</div>';
 		}
-
+*/
 		?>
         <input type="hidden" name="search_mode" value="<?php echo $this->lists['search_mode']; ?>" id="search_mode"/>
         <input type="hidden" name="pid" value="<?php echo $this->project_id; ?>"/>
@@ -115,7 +105,8 @@ $uri = Uri::root();
         <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>"/>
 		<?php echo HTMLHelper::_('form.token'); ?>
     </form>
+    <div>
 <?PHP
-echo "<div>";
 echo $this->loadTemplate('footer');
-echo "</div>";
+?>
+</div>

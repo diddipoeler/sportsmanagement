@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage matchreport
@@ -11,15 +9,13 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
 <!-- START of match events -->
-<div class="<?php echo $this->divclassrow; ?> table-responsive" id="matchreport">
+<div class="<?php echo $this->divclassrow; ?> table-responsive" id="matchreport-events">
     <h2>
 		<?php
 		echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS');
@@ -32,7 +28,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 		echo $this->loadTemplate('timeline');
 	}
 	?>
-    <table class="table ">
+    <table class="table " id="events">
 		<?php
 		foreach ($this->eventtypes as $event)
 		{

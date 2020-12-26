@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="module" version="2.5" client="site" method="upgrade">
+<extension type="module" version="3.0" client="site" method="upgrade">
+<compatibility url="https://www.fussballineuropa.de">
+    <include>
+      <version if="gt">3.0</version> <!-- Ok for Joomla any version of 3.0 to less than 4 -->
+      <version>4</version> <!-- Ok for Joomla any version of 4 -->
+    </include>
+</compatibility>	
 	<name>MOD_SPORTSMANAGEMENT_AJAX_TOP_NAVIGATION_MENU</name>
 	<creationDate>2014-03-13</creationDate>
 	<author>JSM-TEAM</author>
@@ -7,13 +13,14 @@
 	<authorUrl>http://www.fussballineuropa.de</authorUrl>
 	<license>GNU/GPL</license>
 	<copyright>Copyright (c) 2014 diddipoeler</copyright>
-	<version>1.0</version>
+	<version>3.8.0</version>
 	<description>MOD_SPORTSMANAGEMENT_AJAX_TOP_NAVIGATION_MENU_XML_DESC</description>
 
 	<files>
 		<filename module="mod_sportsmanagement_ajax_top_navigation_menu">mod_sportsmanagement_ajax_top_navigation_menu.php</filename>
 		<filename>helper.php</filename>
 		<filename>index.html</filename>
+		<filename>update-server.xml</filename>	
 		<folder>css</folder>
 		<folder>fields</folder>
 		<folder>js</folder>
@@ -79,7 +86,7 @@
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_STRING_LENGHT_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_STRING_LENGHT_DESC" />
 
-				<field type="spacer" hr="true" />
+				<field type="extensionsubtitle" title="" color="#2672a6" />	
 
 				<field name="show_project_dropdown"
 					class="radio btn-group btn-group-yesno"
@@ -97,7 +104,7 @@
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_PROJECT_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_PROJECT_DESC" />
 
-				<field type="spacer" hr="true" />
+				<field type="extensionsubtitle" title="" color="#2672a6" />	
 				<field name="show_season_dropdown"
 					class="radio btn-group btn-group-yesno"
 					type="extensionradiobutton" default="1"
@@ -113,7 +120,7 @@
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_SEASON_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_SEASON_DESC" />
 
-				<field type="spacer" hr="true" />
+				<field type="extensionsubtitle" title="" color="#2672a6" />	
 
 				<field name="show_league_dropdown"
 					class="radio btn-group btn-group-yesno"
@@ -130,7 +137,7 @@
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_LEAGUE_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_LEAGUE_DESC" />
 
-				<field type="spacer" hr="true" />
+				<field type="extensionsubtitle" title="" color="#2672a6" />	
 
 				<field name="show_division_dropdown"
 					class="radio btn-group btn-group-yesno"
@@ -148,7 +155,7 @@
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_DIVISIONS_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_DIVISIONS_DESC" />
 
-				<field type="spacer" hr="true" />
+				<field type="extensionsubtitle" title="" color="#2672a6" />	
 
 				<field name="show_teams_dropdown" class="radio btn-group btn-group-yesno"
 					type="extensionradiobutton"
@@ -164,7 +171,7 @@
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_TEAMS_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_TEAMS_DESC" />
 
-				<field type="spacer" hr="true" />
+				<field type="extensionsubtitle" title="" color="#2672a6" />	
 
 
 				<field name="default_project_id"
@@ -182,7 +189,7 @@
 					<option value="calendar">MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_CALENDAR</option>
 				</field>
 
-				<field type="spacer" hr="true" />
+				<field type="extensionsubtitle" title="" color="#2672a6" />	
 
 				<field name="link_teams_dropdown"
 					type="list" default="roster"
@@ -199,7 +206,7 @@
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_TEAM_LABEL_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_TEAM_LABEL_DESC" />
 
-				<field type="spacer" hr="true" />
+				<field type="extensionsubtitle" title="" color="#2672a6" />	
 
 				<field name="show_only_subdivisions"
 					class="radio btn-group btn-group-yesno"
@@ -210,7 +217,7 @@
 					<option value="1">JYES</option>
 				</field>
 
-				<field type="spacer" hr="true" />
+				<field type="extensionsubtitle" title="" color="#2672a6" />	
 
 				<field name="show_favteams_nav_links"
 					class="radio btn-group btn-group-yesno"
@@ -221,7 +228,7 @@
 					<option value="1">JYES</option>
 				</field>
 
-				<field type="spacer" hr="true" />
+				<field type="extensionsubtitle" title="" color="#2672a6" />	
 
 				<field type="jsmmessage"
 					style="info"
@@ -242,7 +249,7 @@
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_TOURNAMENT_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_TOURNAMENT_DESC" />
 
-				<field type="spacer" hr="true" />
+				<field type="extensionsubtitle" title="" color="#2672a6" />	
 
 				<field type="jsmmessage"
 					style="info"
@@ -270,7 +277,7 @@
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_ALLTIMETABLE_POINTS_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_ALLTIMETABLE_POINTS_DESCR" size="10"/>
 
-				<field type="spacer" hr="true" />
+				<field type="extensionsubtitle" title="" color="#2672a6" />	
 
 				<field type="jsmmessage"
 					style="info"
@@ -496,7 +503,7 @@
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
 
-				<field type="spacer" hr="true" />
+				<field type="extensionsubtitle" title="" color="#2672a6" />
 
 				<field type="jsmmessage"
 					style="info"
@@ -579,7 +586,7 @@
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />        
 
-				<field type="spacer" hr="true" />
+				<field type="extensionsubtitle" title="" color="#2672a6" />
 
 		</fieldset>
 
@@ -628,4 +635,9 @@
 				
 			</fields>
 		</config>
+		
+		<updateservers>
+<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/modules/mod_sportsmanagement_ajax_top_navigation_menu/update-server.xml</server>
+</updateservers>
+
 </extension>

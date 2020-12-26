@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -11,14 +9,12 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModelUpdates
@@ -32,6 +28,24 @@ use Joomla\CMS\Filesystem\Folder;
 class sportsmanagementModelUpdates extends BaseDatabaseModel
 {
 
+/**
+	 * sportsmanagementModelagegroups::__construct()
+	 *
+	 * @param   mixed  $config
+	 *
+	 * @return void
+	 */
+	public function __construct($config = array())
+	{
+		$this->jsmdb = sportsmanagementHelper::getDBConnection();
+		parent::setDbo($this->jsmdb);
+		$this->jsmquery = $this->jsmdb->getQuery(true);
+		parent::__construct($config);
+//		$getDBConnection = sportsmanagementHelper::getDBConnection();
+//		parent::setDbo($getDBConnection);
+
+	}
+    
 	/**
 	 * sportsmanagementModelUpdates::loadUpdateFile()
 	 *
@@ -46,7 +60,6 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 		$data        = array();
 		$updateArray = array();
 		$file_name   = $file;
-		$this->app   = Factory::getApplication();
 
 		if ($file == 'jl_upgrade-0_93b_to_1_5.php')
 		{
@@ -57,9 +70,9 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 		$data['count'] = 0;
 
 		$query = 'SELECT id,count FROM #__sportsmanagement_version where file LIKE ' . $this->_db->Quote($file);
-		$this->_db->setQuery($query);
+		Factory::getDbo()->setQuery($query);
 
-		if (!$result = $this->_db->loadObject())
+		if (!$result = Factory::getDbo()->loadObject())
 		{
 			$this->setError($this->_db->getErrorMsg());
 		}
@@ -72,9 +85,9 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 		$data['file'] = $file_name;
 
 		$query = "SELECT * FROM #__sportsmanagement_version where file LIKE 'sportsmanagement'";
-		$this->_db->setQuery($query);
+		Factory::getDbo()->setQuery($query);
 
-		if (!$result = $this->_db->loadObject())
+		if (!$result = Factory::getDbo()->loadObject())
 		{
 			$this->setError($this->_db->getErrorMsg());
 		}
@@ -102,7 +115,7 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 			$object->count = 1;
 
 			// Insert the object into the table.
-			$result = $this->_db->insertObject('#__sportsmanagement_version', $object);
+			$result = Factory::getDbo()->insertObject('#__sportsmanagement_version', $object);
 		}
 
 		return '';
@@ -116,15 +129,19 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 	function getVersions()
 	{
 		$query = 'SELECT id, version, DATE_FORMAT(date,"%Y-%m-%d %H:%i") date FROM #__sportsmanagement_version';
-		$this->_db->setQuery($query);
+		Factory::getDbo()->setQuery($query);
 
-		if (!$result = $this->_db->loadObjectList())
+try
 		{
-			$this->setError($this->_db->getErrorMsg());
-
-			return false;
+		 $result = Factory::getDbo()->loadObjectList(); 
+          }
+		catch (Exception $e)
+		{
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');
+			$result = false;
 		}
-
+        
 		return $result;
 	}
 
@@ -184,9 +201,8 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 	function getVersionHistory()
 	{
 		$query = 'SELECT * FROM #__sportsmanagement_version_history order by date DESC';
-		$this->_db->setQuery($query);
-		$result = $this->_db->loadObjectList();
-
+		Factory::getDbo()->setQuery($query);
+		$result = Factory::getDbo()->loadObjectList();
 		return $result;
 	}
 
@@ -200,8 +216,7 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
 
-		// $updateFileList=Folder::files(JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'updates'.DS,'.php$',false,true,array('',''));
-		$updateFileList = Folder::files(JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'updates' . DS, '.php$');
+		$updateFileList = Folder::files(JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'updates' . DIRECTORY_SEPARATOR, '.php$');
 
 		// Installer for extensions
 		$extensions = Folder::folders(JPATH_COMPONENT_SITE . DIRECTORY_SEPARATOR . 'extensions');
@@ -235,8 +250,17 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 				$filepath = JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'updates' . DIRECTORY_SEPARATOR . $path[0];
 			}
 
-			if ($fileContent = File::read($filepath))
-			{
+			try{
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+$fileContent = file_get_contents($filepath);    
+}
+elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
+{
+$fileContent = File::read($filepath);
+}
+    
+			 
 				$version           = '';
 				$updateDescription = '';
 				$lastVersion       = '';
@@ -336,9 +360,29 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 				$updateFiles[$i]['date']              = '';
 				$updateFiles[$i]['count']             = 0;
 				$query                                = "SELECT date,count FROM #__sportsmanagement_version where file=" . $this->_db->Quote($updateFile);
-				$this->_db->setQuery($query);
+				Factory::getDbo()->setQuery($query);
 
-				if (!$result = $this->_db->loadObject())
+try{
+
+    if ( $result = Factory::getDbo()->loadObject() )
+    {
+    $updateFiles[$i]['date']  = $result->date;
+$updateFiles[$i]['count'] = $result->count;
+}
+else
+{
+        $updateFiles[$i]['date']  = '';
+$updateFiles[$i]['count'] = '';
+}
+
+    }
+            catch (Exception $e)
+		{
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');
+		}
+/*
+				if (!$result = Factory::getDbo()->loadObject())
 				{
 					$this->setError($this->_db->getErrorMsg());
 				}
@@ -347,9 +391,15 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 					$updateFiles[$i]['date']  = $result->date;
 					$updateFiles[$i]['count'] = $result->count;
 				}
-
+*/
 				$i++;
 			}
+            catch (Exception $e)
+		{
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');
+		}
+            
 		}
 
 		$filter_order     = $app->getUserState($option . 'updates_filter_order', 'filter_order', 'dates', 'cmd');

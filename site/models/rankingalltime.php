@@ -72,7 +72,6 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 	 */
 	function __construct()
 	{
-		// Reference global application object
 		$app                 = Factory::getApplication();
 		$jinput              = $app->input;
 		$this->alltimepoints = $jinput->request->get('points', '3,1,0', 'STR');
@@ -82,6 +81,14 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 
 		$menu = JMenu::getInstance('site');
 		$item = $menu->getActive();
+        if ( !property_exists($item, 'query') )
+		{
+		$item->query['view'] = '';  
+		}
+        if ( !property_exists($item, 'id') )
+		{
+		$item->id = 0;  
+		}
 
 		$params = $menu->getParams($item->id);
 
@@ -110,15 +117,10 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 		}
 		else
 		{
-			// $strXmlFile = JPATH_SITE.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'settings'.DIRECTORY_SEPARATOR.'default'.DIRECTORY_SEPARATOR.'rankingalltime.xml';
 			$strXmlFile = JPATH_SITE . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'rankingalltime' . DIRECTORY_SEPARATOR . 'tmpl' . DIRECTORY_SEPARATOR . 'default.xml';
-
-			// $xml = simplexml_load_file($strXmlFile);
-
 			$xml      = Factory::getXML($strXmlFile);
 			$children = $xml->document->children();
-
-			// We can now step through each element of the file
+			/** We can now step through each element of the file */
 			foreach ($xml->children() as $field)
 			{
 				foreach ($field->fieldset as $fieldset)
@@ -157,6 +159,30 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 				if (!array_key_exists($r->team_id, $this->teams))
 				{
 					$this->teams[$r->team_id] = $r;
+                    $this->teams[$r->team_id]->cnt_matches       = 0;
+					$this->teams[$r->team_id]->sum_points        = 0;
+					$this->teams[$r->team_id]->neg_points        = 0;
+					$this->teams[$r->team_id]->cnt_won_home      = 0;
+					$this->teams[$r->team_id]->cnt_draw_home     = 0;
+					$this->teams[$r->team_id]->cnt_lost_home     = 0;
+					$this->teams[$r->team_id]->cnt_won           = 0;
+					$this->teams[$r->team_id]->cnt_draw          = 0;
+					$this->teams[$r->team_id]->cnt_lost          = 0;
+					$this->teams[$r->team_id]->sum_team1_result  = 0;
+					$this->teams[$r->team_id]->sum_team2_result  = 0;
+					$this->teams[$r->team_id]->sum_away_for      = 0;
+					$this->teams[$r->team_id]->diff_team_results = 0;
+                    
+                    $this->teams[$r->team_id]->sum_team1_legs = 0;
+                    $this->teams[$r->team_id]->sum_team2_legs = 0;
+                    
+                    $this->teams[$r->team_id]->cnt_lost_away = 0;
+                    $this->teams[$r->team_id]->bonus_points = 0;
+                    $this->teams[$r->team_id]->cnt_won_away = 0;
+                    $this->teams[$r->team_id]->cnt_draw_away = 0;
+                    $this->teams[$r->team_id]->projectteam_slug = '';
+                    $this->teams[$r->team_id]->previousRanking = '';
+                    
 				}
 
 				if ($r->use_finally)
@@ -245,11 +271,16 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 			$query->join('LEFT', '#__sportsmanagement_project AS p ON p.id = tl.project_id');
 
 			$query->where('tl.project_id IN (' . $project_ids . ')');
-
-			// $query->group('st.team_id' );
-
+try
+{
 			$db->setQuery($query);
 			$this->_teams = $db->loadObjectList();
+            }
+catch (Exception $e)
+{
+    Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), Log::INFO, 'jsmerror');
+    Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), Log::INFO, 'jsmerror');
+}
 
 			if (!$this->_teams)
 			{
@@ -743,6 +774,11 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 	}
 
 
+	/**
+	 * sportsmanagementModelRankingAllTime::getAllProjectNames()
+	 * 
+	 * @return
+	 */
 	function getAllProjectNames()
 	{
 		$app    = Factory::getApplication();
@@ -762,7 +798,15 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 			$query->where('id = ' . $projekt);
 			$query->order('name ');
 			$db->setQuery($query);
+            try
+            {
 			$league = $db->loadResult();
+            }
+catch (Exception $e)
+{
+    Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), Log::INFO, 'jsmerror');
+    Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), Log::INFO, 'jsmerror');
+}
 		}
 
 		$query->clear();
@@ -773,7 +817,15 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 		$query->where('p.league_id = ' . $league);
 		$query->order('s.name DESC ');
 		$db->setQuery($query);
+        try
+        {
 		$result = $db->loadObjectList();
+        }
+catch (Exception $e)
+{
+    Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), Log::INFO, 'jsmerror');
+    Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), Log::INFO, 'jsmerror');
+}
 
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
@@ -793,7 +845,6 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 		$jinput = $app->input;
 		$league = $jinput->request->get('l', 0, 'INT');
 
-		// Create a new query object.
 		$db    = Factory::getDBO();
 		$query = Factory::getDbo()->getQuery(true);
 
@@ -801,10 +852,7 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 		{
 			$projekt = $jinput->request->get('p', 0, 'INT');
 			$query->clear();
-
 			$query->select('league_id');
-
-			// From the rounds table
 			$query->from('#__sportsmanagement_project');
 			$query->where('id = ' . $projekt);
 			$query->order('name ');
@@ -813,35 +861,29 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 		}
 
 		$query->clear();
-
 		$query->select('id');
-
-		// From the rounds table
 		$query->from('#__sportsmanagement_project');
 		$query->where('league_id = ' . $league);
 		$query->order('name ');
 		$db->setQuery($query);
-
-		if (version_compare(JVERSION, '3.0.0', 'ge'))
-		{
-			// Joomla! 3.0 code here
-			$result = $db->loadColumn(0);
-		}
-		elseif (version_compare(JVERSION, '2.5.0', 'ge'))
-		{
-			// Joomla! 2.5 code here
-			$result = $db->loadResultArray(0);
-		}
+try{
+		$result = $db->loadColumn(0);
 
 		$this->project_ids       = implode(",", $result);
 		$this->project_ids_array = $result;
 
 		$count_project = count($result);
 		Log::add(Text::_('Wir verarbeiten ' . $count_project . ' Projekte/Saisons !'), Log::INFO, 'jsmerror');
+        
+        }
+catch (Exception $e)
+{
+    Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), Log::INFO, 'jsmerror');
+    Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), Log::INFO, 'jsmerror');
+}
+        
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
 		return $result;
-
 	}
 
 	/**

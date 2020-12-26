@@ -8,19 +8,13 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-
-
 ?>
-
-
 <div id="editcell">
     <!--		<fieldset class="adminform"> -->
     <legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_LEGEND', '<i>' . $this->project->name . '</i>'); ?></legend>
@@ -47,15 +41,6 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             <th width="20">
 				<?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_CLUBSTAFF_POSITION', 'persontype', $this->sortDirection, $this->sortColumn); ?>
             </th>
-			<?php
-			/*
-			?>
-			<th class="title">
-				<?php echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_SPORTSTYPE','po.sports_type_id',$this->sortDirection,$this->sortColumn); ?>
-			</th>
-			<?php
-			*/
-			?>
             <th width="5%"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_HAS_EVENTS'); ?></th>
             <th width="5%"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_HAS_STATS'); ?></th>
             <th width="1%">
@@ -91,8 +76,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					if ($row->persontype == 1)
 					{
 						$imageTitle  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_PLAYER_POSITION');
-						$imageParams = 'title= "' . $imageTitle . '"';
-						echo HTMLHelper::image($imageFileOk, $imageTitle, $imageParams);
+						$imageParams['title'] = $imageTitle;
+						echo HTMLHelper::_('image',$imageFileOk, $imageTitle, $imageParams);
 					}
 					?>
                 </td>
@@ -101,8 +86,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					if ($row->persontype == 2)
 					{
 						$imageTitle  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_STAFF_POSITION');
-						$imageParams = 'title= "' . $imageTitle . '"';
-						echo HTMLHelper::image($imageFileOk, $imageTitle, $imageParams);
+						$imageParams['title'] = $imageTitle;
+						echo HTMLHelper::_('image',$imageFileOk, $imageTitle, $imageParams);
 					}
 					?>
                 </td>
@@ -111,8 +96,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					if ($row->persontype == 3)
 					{
 						$imageTitle  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_REFEREE_POSITION');
-						$imageParams = 'title= "' . $imageTitle . '"';
-						echo HTMLHelper::image($imageFileOk, $imageTitle, $imageParams);
+						$imageParams['title'] = $imageTitle;
+						echo HTMLHelper::_('image',$imageFileOk, $imageTitle, $imageParams);
 					}
 					?>
                 </td>
@@ -121,8 +106,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					if ($row->persontype == 4)
 					{
 						$imageTitle  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_CLUBSTAFF_POSITION');
-						$imageParams = 'title= "' . $imageTitle . '"';
-						echo HTMLHelper::image($imageFileOk, $imageTitle, $imageParams);
+						$imageParams['title'] = $imageTitle;
+						echo HTMLHelper::_('image',$imageFileOk, $imageTitle, $imageParams);
 					}
 					?>
                 </td>
@@ -139,14 +124,14 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					{
 						$imageFile   = 'administrator/components/com_sportsmanagement/assets/images/error.png';
 						$imageTitle  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_NO_EVENTS');
-						$imageParams = 'title= "' . $imageTitle . '"';
-						echo HTMLHelper::image($imageFile, $imageTitle, $imageParams);
+						$imageParams['title'] = $imageTitle;
+						echo HTMLHelper::_('image',$imageFile, $imageTitle, $imageParams);
 					}
 					else
 					{
 						$imageTitle  = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_NR_EVENTS', $row->countEvents);
-						$imageParams = 'title= "' . $imageTitle . '"';
-						echo HTMLHelper::image($imageFileOk, $imageTitle, $imageParams);
+						$imageParams['title'] = $imageTitle;
+						echo HTMLHelper::_('image',$imageFileOk, $imageTitle, $imageParams);
 					}
 					?>
                 </td>
@@ -156,14 +141,14 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					{
 						$imageFile   = 'administrator/components/com_sportsmanagement/assets/images/error.png';
 						$imageTitle  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_NO_STATISTICS');
-						$imageParams = 'title= "' . $imageTitle . '"';
-						echo HTMLHelper::image($imageFile, $imageTitle, $imageParams);
+						$imageParams['title'] = $imageTitle;
+						echo HTMLHelper::_('image',$imageFile, $imageTitle, $imageParams);
 					}
 					else
 					{
 						$imageTitle  = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_NR_STATISTICS', $row->countStats);
-						$imageParams = 'title= "' . $imageTitle . '"';
-						echo HTMLHelper::image($imageFileOk, $imageTitle, $imageParams);
+						$imageParams['title'] = $imageTitle;
+						echo HTMLHelper::_('image',$imageFileOk, $imageTitle, $imageParams);
 					}
 					?>
                 </td>

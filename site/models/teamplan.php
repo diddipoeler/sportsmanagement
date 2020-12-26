@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage teamplan
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -30,11 +26,8 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 class sportsmanagementModelTeamPlan extends BaseDatabaseModel
 {
 	static $projectid = 0;
-
 	static $teamid = 0;
-
 	static $projectteamid = 0;
-
 	static $pro_teamid = 0;
 	static $divisionid = 0;
 	static $mode = 0;
@@ -248,8 +241,6 @@ class sportsmanagementModelTeamPlan extends BaseDatabaseModel
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
-
-		// Get a db connection.
 		$db        = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query     = $db->getQuery(true);
 		$starttime = microtime();
@@ -261,41 +252,31 @@ class sportsmanagementModelTeamPlan extends BaseDatabaseModel
 			if ($projekt->teams_as_referees)
 			{
 				$query->clear();
-
 				$query->select('mr.project_referee_id AS value');
 				$query->select('t.name AS referee_name');
-				$query->select('pos.name AS position_name');
+				$query->select('pos.name AS position_name,pos.ordering');
 				$query->from('#__sportsmanagement_match_referee AS mr ');
 				$query->join('LEFT', ' #__sportsmanagement_project_team AS pt ON pt.id = mr.project_referee_id');
 				$query->join('LEFT', ' #__sportsmanagement_season_team_id st ON st.id = pt.team_id ');
 				$query->join('LEFT', ' #__sportsmanagement_team AS t ON t.id = st.team_id');
 				$query->join('LEFT', ' #__sportsmanagement_position AS pos ON mr.project_position_id = pos.id');
-
 				$query->where('mr.match_id = ' . (int) $matches[$index]->id);
 				$query->order('pos.name,mr.ordering ASC');
 			}
 			else
 			{
 				$query->clear();
-
-				$query->select('ref.firstname AS referee_firstname,ref.lastname AS referee_lastname,ref.id as referee_id');
+				$query->select('ref.firstname AS referee_firstname,ref.lastname AS referee_lastname,ref.id as referee_id,ref.nickname AS referee_nickname');
 				$query->select('ppos.position_id');
-				$query->select('pos.name AS referee_position_name');
-
-				// From
+				$query->select('pos.name AS referee_position_name,pos.ordering');
 				$query->from('#__sportsmanagement_person AS ref');
 				$query->join('LEFT', ' #__sportsmanagement_season_person_id AS sp ON sp.person_id = ref.id ');
 				$query->join('LEFT', ' #__sportsmanagement_project_referee AS pref ON pref.person_id = sp.id ');
 				$query->join('LEFT', ' #__sportsmanagement_match_referee AS link ON link.project_referee_id = pref.id ');
-
 				$query->join('INNER', ' #__sportsmanagement_project_position AS ppos ON ppos.id = link.project_position_id');
 				$query->join('INNER', ' #__sportsmanagement_position AS pos ON pos.id = ppos.position_id');
-
-				// Where
 				$query->where('link.match_id = ' . $matches[$index]->id);
 				$query->where('ref.published = 1');
-
-				// Order
 				$query->order('link.ordering');
 			}
 
@@ -355,8 +336,6 @@ class sportsmanagementModelTeamPlan extends BaseDatabaseModel
 	{
 		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
-
-		// Get a db connection.
 		$db        = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query     = $db->getQuery(true);
 		$query2    = $db->getQuery(true);
@@ -368,26 +347,15 @@ class sportsmanagementModelTeamPlan extends BaseDatabaseModel
 		if (self::$divisionid > 0)
 		{
 			$query->clear();
-
 			$query->select('id');
-
-			// From
 			$query->from('#__sportsmanagement_division');
-
-			// Where
 			$query->where('parent_id = ' . self::$divisionid);
-
 			$db->setquery($query);
 
 			if (version_compare(JVERSION, '3.0.0', 'ge'))
 			{
 				// Joomla! 3.0 code here
 				$div_for_teams = $db->loadColumn();
-			}
-			elseif (version_compare(JVERSION, '2.5.0', 'ge'))
-			{
-				// Joomla! 2.5 code here
-				$div_for_teams = $db->loadResultArray();
 			}
 
 			$div_for_teams[] = self::getDivision()->id;
@@ -396,7 +364,6 @@ class sportsmanagementModelTeamPlan extends BaseDatabaseModel
 		try
 		{
 			$query->clear();
-
 			$query->select('m.*,DATE_FORMAT(m.time_present,"%H:%i") time_present,r.roundcode,r.id roundid,r.project_id,r.name');
 			$query->select('t1.id AS team1');
 			$query->select('t2.id AS team2');
@@ -404,46 +371,29 @@ class sportsmanagementModelTeamPlan extends BaseDatabaseModel
 			$query->select('CONCAT_WS(\':\',r.id,r.alias) AS round_slug');
 			$query->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
 			$query->select('CONCAT_WS(\':\',d.id,d.alias) AS division_slug');
-
-			// From
 			$query->from('#__sportsmanagement_match AS m');
-
-			// Join
 			$query->join('INNER', ' #__sportsmanagement_round AS r ON m.round_id = r.id ');
 			$query->join('INNER', ' #__sportsmanagement_project AS p ON p.id = r.project_id ');
 			$query->join('LEFT', ' #__sportsmanagement_division AS d ON d.id = m.division_id ');
-
 			$query->join('LEFT', ' #__sportsmanagement_project_team as pt1 ON pt1.id = m.projectteam1_id ');
 			$query->join('LEFT', ' #__sportsmanagement_season_team_id as st1 ON st1.id = pt1.team_id ');
 			$query->join('LEFT', ' #__sportsmanagement_team as t1 ON st1.team_id = t1.id ');
-
 			$query->join('LEFT', ' #__sportsmanagement_project_team as pt2 ON pt2.id = m.projectteam2_id ');
 			$query->join('LEFT', ' #__sportsmanagement_season_team_id as st2 ON st2.id = pt2.team_id ');
 			$query->join('LEFT', ' #__sportsmanagement_team as t2 ON st2.team_id = t2.id ');
-
-			// Where
 			$query->where('m.published=1');
 
-			/**
-			 * win matches
-			 */
+			/** win matches */
 			if ((self::$mode) == 1)
 			{
-				// $query->where('( (m.projectteam1_id= ' .$team. ' AND m.team1_result > m.team2_result)'.' OR (m.projectteam2_id= ' .$team. ' AND m.team1_result < m.team2_result) )');
 				$query->where('( (m.projectteam1_id = ' . self::$projectteamid . ' AND m.team1_result > m.team2_result)' . ' OR (m.projectteam2_id = ' . self::$projectteamid . ' AND m.team1_result < m.team2_result) )');
 			}
-
-			/**
-			 * draw matches
-			 */
+			/** draw matches */
 			if ((self::$mode) == 2)
 			{
 				$query->where('m.team1_result = m.team2_result');
 			}
-
-			/**
-			 * lost matches
-			 */
+			/** lost matches */
 			if ((self::$mode) == 3)
 			{
 				$query->where('( (m.projectteam1_id = ' . self::$projectteamid . ' AND m.team1_result < m.team2_result)' . ' OR (m.projectteam2_id = ' . self::$projectteamid . ' AND m.team1_result > m.team2_result) )');
@@ -511,8 +461,6 @@ class sportsmanagementModelTeamPlan extends BaseDatabaseModel
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
-
-		// Get a db connection.
 		$db        = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query     = $db->getQuery(true);
 		$starttime = microtime();
@@ -522,11 +470,7 @@ class sportsmanagementModelTeamPlan extends BaseDatabaseModel
 		if (self::$divisionid > 0)
 		{
 			$query->select('d.*,CONCAT_WS(\':\',id,alias) AS slug');
-
-			// From
 			$query->from('#__sportsmanagement_division AS d');
-
-			// Where
 			$query->where('d.id = ' . self::$divisionid);
 			$db->setQuery($query, 0, 1);
 

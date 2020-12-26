@@ -7,7 +7,7 @@
 	<authorUrl>http://www.llambion.com</authorUrl>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<copyright>(C) 2018</copyright>
-	<version>0.0.1</version>
+	<version>3.8.0</version>
 	<description>MOD_SPORTSMANAGEMENT_EVENTSRANKING_XML_DESC</description>
 
 	<files>
@@ -15,6 +15,7 @@
 		<filename>index.html</filename>
 		<filename>helper.php</filename>
 		<filename>mod_sportsmanagement_eventsranking.xml</filename>
+		<filename>update-server.xml</filename>
 		<folder>tmpl</folder>
 		<folder>css</folder>
 	</files>
@@ -258,4 +259,9 @@ value_field="p"
 
 		</fields>
 	</config>
+	
+	<updateservers>
+<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/modules/mod_sportsmanagement_eventsranking/update-server.xml</server>
+</updateservers>
+
 </extension>

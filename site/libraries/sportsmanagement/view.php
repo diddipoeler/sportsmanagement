@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage libraries
@@ -17,15 +15,44 @@
  * http://eddify.me/posts/logging-in-joomla-with-jlog.html
  * https://github.com/joomla-framework/log/blob/master/src/Logger/Database.php
  */
-
 defined('_JEXEC') or die();
-
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\HTML\HTMLHelper;
+
+
+if ( ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('show_jsm_errors', 0) 
+&& ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('show_jsm_errors_foruser', 0)
+&& ( ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('show_jsm_errors_foruser', 0) == Factory::getUser()->get('id') )
+)
+{
+ini_set('display_errors', ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('show_jsm_errors_front', 0));
+ini_set('display_startup_errors', ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('show_jsm_errors_front', 0));  
+
+if ( !ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('show_jsm_errors_level', "") )
+{
+error_reporting(E_ALL);
+}
+else
+{
+$usedlevel = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('show_jsm_errors_level', "");
+$levels = (is_array($usedlevel)) ? implode(" | ", $usedlevel) : $usedlevel;
+//error_reporting($levels);
+error_reporting(E_NOTICE);     
+}  
+    
+
+if ( ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('show_jsm_errors_file', 0) )
+{
+ini_set('error_log', "jsm-errors.log");    
+}
+
+    
+}
+
 
 /**
  *
@@ -63,37 +90,37 @@ $cssflags       = $params_com->get('cfg_flags_css');
 $usefontawesome = $params_com->get('use_fontawesome');
 $addfontawesome = $params_com->get('add_fontawesome');
 
-// Welche joomla version ?
+/** Welche joomla version ? */
 if (version_compare(JVERSION, '3.0.0', 'ge'))
 {
 	if ($cssflags)
 	{
-		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css' . '" type="text/css" />' . "\n";
-		$document->addCustomTag($stylelink);
+		$stylelink = Uri::root() . 'components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css';
+		$document->addStyleSheet($stylelink);
 	}
 
 	if ($jsmflex)
 	{
-		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/assets/css/flex.css' . '" type="text/css" />' . "\n";
-		$document->addCustomTag($stylelink);
+		$stylelink = Uri::root() . 'components/com_sportsmanagement/assets/css/flex.css';
+		$document->addStyleSheet($stylelink);
 	}
 
 	if ($jsmgrid)
 	{
-		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/assets/css/grid.css' . '" type="text/css" />' . "\n";
-		$document->addCustomTag($stylelink);
+		$stylelink = Uri::root() . 'components/com_sportsmanagement/assets/css/grid.css';
+		$document->addStyleSheet($stylelink);
 	}
 
 	if ($usefontawesome)
 	{
-		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/assets/css/fontawesome_extend.css' . '" type="text/css" />' . "\n";
-		$document->addCustomTag($stylelink);
+		$stylelink = Uri::root() . 'components/com_sportsmanagement/assets/css/fontawesome_extend.css';
+		$document->addStyleSheet($stylelink);
 	}
 
 	if ($addfontawesome)
 	{
-		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/libraries/fontawesome/css/font-awesome.min.css' . '" type="text/css" />' . "\n";
-		$document->addCustomTag($stylelink);
+		$stylelink = Uri::root() . 'components/com_sportsmanagement/libraries/fontawesome/css/font-awesome.min.css';
+		$document->addStyleSheet($stylelink);
 	}
 }
 elseif (version_compare(JVERSION, '2.5.0', 'ge'))
@@ -125,16 +152,21 @@ else
 class sportsmanagementView extends HtmlView
 {
 	protected $icon = '';
-
 	protected $title = '';
-
 	protected $layout = '';
-
 	protected $tmpl = '';
-
 	protected $table_data_class = '';
-
 	protected $table_data_div = '';
+	
+	public $bootstrap_fileinput_version = '5.1.2';
+	public $bootstrap_fileinput_bootstrapversion = '4.3.1';
+	public $bootstrap_fileinput_popperversion = '1.14.7';
+	public $leaflet_version = '1.7.1';
+	public $leaflet_css_integrity = 'sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==';
+	public $leaflet_js_integrity = 'sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==';
+	
+	public $leaflet_locatecontrol = '0.72.0';
+	public $leaflet_routing_machine = '3.2.12';
 
 	/**
 	 * sportsmanagementView::display()
@@ -152,19 +184,15 @@ class sportsmanagementView extends HtmlView
 		 * JLog::INFO, JLog::WARNING, JLog::ERROR, JLog::ALL, JLog::EMERGENCY or JLog::CRITICAL
 		 */
 		Log::addLogger(array('logger' => 'messagequeue'), Log::ALL, array('jsmerror'));
-		/**
-		 * fehlermeldungen datenbankabfragen
-		 */
+		/** fehlermeldungen datenbankabfragen */
 		Log::addLogger(array('logger' => 'database', 'db_table' => '#__sportsmanagement_log_entries'), Log::ALL, array('dblog'));
-		/**
-		 * laufzeit datenbankabfragen
-		 */
+		/** laufzeit datenbankabfragen */
 		Log::addLogger(array('logger' => 'database', 'db_table' => '#__sportsmanagement_log_entries'), Log::ALL, array('dbperformance'));
 
-		// Reference global application object
+		/** Reference global application object */
 		$this->app = Factory::getApplication();
 
-		// JInput object
+		/** JInput object */
 		$this->jinput = $this->app->input;
 
 		$this->modalheight = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_height', 600);
@@ -181,8 +209,10 @@ class sportsmanagementView extends HtmlView
 
 		$this->action = $this->uri->toString();
 		$this->params = $this->app->getParams();
+        $this->extended = array();
+        $this->extended2 = array();
 
-		// Get a refrence of the page instance in joomla
+		/** Get a refrence of the page instance in joomla */
 		$this->document           = Factory::getDocument();
 		$this->option             = $this->jinput->getCmd('option');
 		$this->user               = Factory::getUser();
@@ -211,6 +241,15 @@ class sportsmanagementView extends HtmlView
 
 		switch ($this->view)
 		{
+		  case 'predictionrules':
+          case 'predictionresults':
+          case 'predictionranking':
+          case 'predictionusers':
+          case 'predictionentry':
+          $this->config        = sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
+		$this->overallconfig = sportsmanagementModelPrediction::getPredictionOverallConfig();
+          $this->config        = array_merge($this->overallconfig, $this->config);
+          break;
 			case 'jltournamenttree':
 				$this->project       = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
 				$this->overallconfig = sportsmanagementModelProject::getOverallConfig(sportsmanagementModelProject::$cfg_which_database);

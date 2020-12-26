@@ -1,8 +1,6 @@
 <?php
 /**
- *
- * SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
- *
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage allteams
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -22,10 +18,8 @@ if (!defined('JSM_PATH'))
 	DEFINE('JSM_PATH', 'components/com_sportsmanagement');
 }
 
-// Pr�ft vor Benutzung ob die gew�nschte Klasse definiert ist
 if (!class_exists('sportsmanagementHelperHtml'))
 {
-	// Add the classes for handling
 	$classpath = JPATH_SITE . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'html.php';
 	JLoader::register('sportsmanagementHelperHtml', $classpath);
 }
@@ -42,13 +36,9 @@ if (!class_exists('sportsmanagementHelperHtml'))
 class sportsmanagementViewallteams extends sportsmanagementView
 {
 	protected $state = null;
-
 	protected $item = null;
-
 	protected $items = null;
-
 	protected $pagination = null;
-
 
 	/**
 	 * sportsmanagementViewallteams::init()
@@ -57,7 +47,6 @@ class sportsmanagementViewallteams extends sportsmanagementView
 	 */
 	function init()
 	{
-
 		$inputappend            = '';
 		$this->tableclass       = $this->jinput->getVar('table_class', 'table', 'request', 'string');
 		$this->use_jquery_modal = $this->jinput->getVar('use_jquery_modal', '2', 'request', 'string');
@@ -68,7 +57,7 @@ class sportsmanagementViewallteams extends sportsmanagementView
 
 		$this->pagination = $this->get('Pagination');
 
-		// Build the html options for nation
+		/** Build the html options for nation */
 		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 
 		if ($res = JSMCountries::getCountryOptions())
@@ -86,14 +75,12 @@ class sportsmanagementViewallteams extends sportsmanagementView
 			$this->state->get('filter.search_nation')
 		);
 
-		// Set page title
 		$this->document->setTitle(Text::_('COM_SPORTSMANAGEMENT_ALLTEAMS_PAGE_TITLE'));
 
 		$form             = new stdClass;
 		$form->limitField = $this->pagination->getLimitBox();
 		$this->filter     = $this->state->get('filter.search');
 		$this->form       = $form;
-
 		$this->sortDirection = $this->state->get('filter_order_Dir');
 		$this->sortColumn    = $this->state->get('filter_order');
 		$this->lists         = $lists;

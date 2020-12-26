@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage player
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -42,7 +38,7 @@ use Joomla\CMS\Factory;
 				'playerinfo' . $this->person->id,
 				$picture,
 				$imgTitle,
-				$this->config['picture_width'],
+				$this->config['picture_height'],
 				'',
 				$this->modalwidth,
 				$this->modalheight,
@@ -147,13 +143,13 @@ use Joomla\CMS\Factory;
 			{
 				case 1:  // Show Birthday and Age
 					$birthdateStr = $timestamp_birth ?
-						HTMLHelper::date($this->person->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')) : "-";
+						HTMLHelper::date($this->person->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE')) : "-";
 					$birthdateStr .= "&nbsp;(" . sportsmanagementHelper::getAge($this->person->birthday, $this->person->deathday) . ")";
 					break;
 
 				case 2:  // Show Only Birthday
 					$birthdateStr = $timestamp_birth ?
-						HTMLHelper::date($this->person->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')) : "-";
+						HTMLHelper::date($this->person->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE')) : "-";
 					break;
 
 				case 3:  // Show Only Age

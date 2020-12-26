@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage rankingalltime
@@ -11,15 +9,21 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 
-HTMLHelper::_('behavior.tooltip');
+/** welche joomla version ? */
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+	HTMLHelper::_('behavior.keepalive');
+}
+elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
+{
+	HTMLHelper::_('behavior.tooltip');
+}
 
 $current  = $this->current;
 $previous = $this->previousRanking[$this->division];
@@ -199,13 +203,13 @@ foreach ($current as $ptid => $team)
 			switch ($pic)
 			{
 				case 'logo_small';
-					echo HTMLHelper::image($team->team->$pic, $imgTitle, array('title' => $team->team->name, 'width' => '20'));
+					echo HTMLHelper::image($team->team->$pic, $team->team->name, array('title' => $team->team->name, 'width' => '20'));
 					break;
 				case 'logo_middle';
-					echo HTMLHelper::image($team->team->$pic, $imgTitle, array('title' => $team->team->name, 'width' => '20'));
+					echo HTMLHelper::image($team->team->$pic, $team->team->name, array('title' => $team->team->name, 'width' => '20'));
 					break;
 				case 'logo_big';
-					echo HTMLHelper::image($team->team->$pic, $imgTitle, array('title' => $team->team->name, 'width' => '20'));
+					echo HTMLHelper::image($team->team->$pic, $team->team->name, array('title' => $team->team->name, 'width' => '20'));
 					break;
 			}
 		}

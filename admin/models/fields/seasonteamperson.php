@@ -96,7 +96,7 @@ class JFormFieldseasonteamperson extends FormField
 				$html .= '<tr>';
 				$html .= '<td>' . $option->seasonname . '</td>';
 
-				$html .= '<td>' . HTMLHelper::image($option->clublogo, '', $attribs) . '</td>';
+				$html .= '<td>' . HTMLHelper::_('image',$option->clublogo, '', $attribs) . '</td>';
 				$html .= '<td>' . $option->teamname . '</td>';
 
 				$html .= '</tr>';

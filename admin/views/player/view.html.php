@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage player
@@ -11,14 +9,11 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Environment\Browser;
 use Joomla\CMS\Factory;
-
 
 /**
  * sportsmanagementViewplayer
@@ -31,7 +26,6 @@ use Joomla\CMS\Factory;
  */
 class sportsmanagementViewplayer extends sportsmanagementView
 {
-
 
 	/**
 	 * sportsmanagementViewplayer::init()
@@ -147,9 +141,10 @@ class sportsmanagementViewplayer extends sportsmanagementView
 		$jlang->load('com_contact', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
 		$jlang->load('com_contact', JPATH_ADMINISTRATOR, null, true);
 
-		$this->document->addScript('https://maps.googleapis.com/maps/api/js?libraries=places&language=de');
-		$this->document->addScript(Uri::base() . 'components/' . $this->option . '/assets/js/geocomplete.js');
-		$this->document->addScript(Uri::base() . 'components/' . $this->option . '/views/person/tmpl/edit.js');
+		//$this->document->addScript('https://maps.googleapis.com/maps/api/js?libraries=places&language=de');
+		//$this->document->addScript(Uri::base() . 'components/' . $this->option . '/assets/js/geocomplete.js');
+		//$this->document->addScript(Uri::base() . 'components/' . $this->option . '/views/person/tmpl/edit.js');
+		$this->document->addScript(Uri::base() . 'components/' . $this->option . '/assets/js/editgeocode.js');
 
 	}
 

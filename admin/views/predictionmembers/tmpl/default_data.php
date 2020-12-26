@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage predictionmembers
@@ -11,16 +9,12 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
 
-HTMLHelper::_('behavior.tooltip');
 ?>
-
 <div id="editcell">
     <table class="<?php echo $this->table_data_class; ?>">
         <thead>
@@ -31,8 +25,8 @@ HTMLHelper::_('behavior.tooltip');
 				?>
             </th>
             <th width="20">
-                <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/>
-            </th>
+                <?php echo HTMLHelper::_('grid.checkall'); ?>
+				</th>
             <th class="title" nowrap="nowrap">
 				<?php
 				echo HTMLHelper::_('grid.sort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_USERNAME'), 'u.username', $this->sortDirection, $this->sortColumn);
@@ -245,7 +239,7 @@ HTMLHelper::_('behavior.tooltip');
 							$imgtitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_NOT_ALLOWED');
 						}
 
-						echo HTMLHelper::image(
+						echo HTMLHelper::_('image',
 							'administrator/components/com_sportsmanagement/assets/images/' . $imgfile,
 							$imgtitle, 'title= "' . $imgtitle . '"'
 						);

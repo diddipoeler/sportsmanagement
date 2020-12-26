@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage player
@@ -11,15 +9,13 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
 <!-- Team Player Description START -->
-<div class="<?php echo $this->divclassrow; ?> table-responsive" id="player">
+<div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultplayerdescription">
 	<?php
 	$description = "";
 
@@ -27,13 +23,18 @@ use Joomla\CMS\HTML\HTMLHelper;
 	{
 		$description = $this->teamPlayer->notes;
 	}
-	else
+    if (isset($this->person) && !empty($this->person->notes))
 	{
-		if (!empty($this->person->notes))
-		{
-			$description = $this->person->notes;
-		}
+		$description .= '<br />'.$this->person->notes;
 	}
+    
+//	else
+//	{
+//		if (!empty($this->person->notes))
+//		{
+//			$description = $this->person->notes;
+//		}
+//	}
 
 	if (!empty($description))
 	{

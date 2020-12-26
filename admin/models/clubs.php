@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 
@@ -39,31 +35,36 @@ class sportsmanagementModelClubs extends JSMModelList
 	 */
 	public function __construct($config = array())
 	{
+		if (empty($config['filter_fields']))
+		{
 		$config['filter_fields'] = array(
-			'a.name',
-			'a.website',
-			'a.twitter',
-			'a.facebook',
-			'a.email',
-			'a.logo_big',
-			'a.logo_middle',
-			'a.logo_small',
-			'a.country',
-			'a.state',
-			'a.alias',
-			'a.zipcode',
-			'a.location',
-			'a.address',
-			'a.latitude',
-			'a.longitude',
-			'a.id',
-			'a.published',
-			'a.unique_id',
-			'a.new_club_id',
-			'a.ordering',
-			'a.checked_out',
-			'a.checked_out_time'
+			'a.name','name',
+			'a.website','website',
+			'a.twitter','twitter',
+			'a.facebook','facebook',
+			'a.email','email',
+			'a.logo_big','logo_big',
+			'a.logo_middle','logo_middle',
+			'a.logo_small','logo_small',
+			'a.country','country',
+			'a.state','state',
+			'a.alias','alias',
+			'a.zipcode','zipcode',
+			'a.location','location',
+			'a.address','address',
+			'a.latitude','latitude',
+			'a.longitude','longitude',
+			'a.id','id',
+			'a.published','published',
+			'a.unique_id','unique_id',
+			'a.new_club_id','new_club_id',
+			'a.ordering','ordering',
+			'a.checked_out','checked_out',
+			'a.checked_out_time','checked_out_time',
+			'search_nation','geo_daten','standard_picture',
 		);
+		}
+        // 'state','search_nation','geo_daten','standard_picture',
 		parent::__construct($config);
 		parent::setDbo($this->jsmdb);
 
@@ -76,15 +77,9 @@ class sportsmanagementModelClubs extends JSMModelList
 	 */
 	public function getClubListSelect()
 	{
-
-		$starttime = microtime();
 		$results   = array();
-
-		// Select some fields
 		$this->jsmquery->clear();
 		$this->jsmquery->select('id,name,id AS value,name AS text,country,standard_playground');
-
-		// From table
 		$this->jsmquery->from('#__sportsmanagement_club');
 		$this->jsmquery->order('name');
 
@@ -92,13 +87,11 @@ class sportsmanagementModelClubs extends JSMModelList
 		{
 			$this->jsmdb->setQuery($this->jsmquery);
 			$results = $this->jsmdb->loadObjectList();
-
 			return $results;
 		}
 		catch (Exception $e)
 		{
 			$this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
-
 			return false;
 		}
 	}
@@ -119,29 +112,19 @@ class sportsmanagementModelClubs extends JSMModelList
 			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . ''), '');
 		}
 
-		// Load the filter state.
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
-
-		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string');
-		$this->setState('filter.state', $published);
-		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '');
-		$this->setState('filter.search_nation', $temp_user_request);
-		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.association', 'filter_association', '');
-		$this->setState('filter.association', $temp_user_request);
-
-		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.season', 'filter_season', '');
-		$this->setState('filter.season', $temp_user_request);
-		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.geo_daten', 'filter_geo_daten', '');
-		$this->setState('filter.geo_daten', $temp_user_request);
-		$value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
-		$this->setState('list.limit', $value);
-
-		// List state information.
-		$value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
-		$this->setState('list.start', $value);
-
-		// Filter.order
+$list = $this->getUserStateFromRequest($this->context . '.list', 'list', array(), 'array');
+//echo 'jsmapp<pre>'.print_r($list,true).'</pre>';
+//echo 'state<pre>'.print_r($this->state,true).'</pre>';      
+		
+      $this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
+		$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
+		$this->setState('filter.search_nation', $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', ''));
+		$this->setState('filter.association', $this->getUserStateFromRequest($this->context . '.filter.association', 'filter_association', ''));
+		$this->setState('filter.season', $this->getUserStateFromRequest($this->context . '.filter.season', 'filter_season', ''));
+		$this->setState('filter.geo_daten', $this->getUserStateFromRequest($this->context . '.filter.geo_daten', 'filter_geo_daten', ''));
+		$this->setState('filter.standard_picture', $this->getUserStateFromRequest($this->context . '.filter.standard_picture', 'filter_standard_picture', ''));
+		$this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
+		$this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
 		$orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
 
 		if (!in_array($orderCol, $this->filter_fields))
@@ -167,29 +150,42 @@ class sportsmanagementModelClubs extends JSMModelList
 	 */
 	protected function getListQuery()
 	{
-
-		// Select some fields
 		$this->jsmquery->clear();
-		$this->jsmquery->select(implode(",", $this->filter_fields));
-
-		// From the club table
+		$this->jsmquery->select('a.name,
+			a.website,
+			a.twitter,
+			a.facebook,
+			a.email,
+			a.logo_big,
+			a.logo_middle,
+			a.logo_small,
+			a.country,
+			a.state,
+			a.alias,
+			a.zipcode,
+			a.location,
+			a.address,
+			a.latitude,
+			a.longitude,
+			a.id,
+			a.published,
+			a.unique_id,
+            a.founded_year,
+			a.new_club_id,
+			a.ordering,
+			a.checked_out,
+			a.checked_out_time');
 		$this->jsmquery->from('#__sportsmanagement_club as a');
-
-		// Join over the users for the checked out user.
 		$this->jsmquery->select('uc.name AS editor');
 		$this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = a.checked_out');
 
-		/**
-		 * keine geodaten gesetzt
-		 */
+		/** keine geodaten gesetzt */
 		if ($this->getState('filter.geo_daten') == 1)
 		{
 			$this->jsmquery->where(' ( a.latitude IS NULL OR a.latitude = 0.00000000 )');
 		}
 
-		/**
-		 * geo daten gesetzt
-		 */
+		/** geo daten gesetzt */
 		if ($this->getState('filter.geo_daten') == 2)
 		{
 			$this->jsmquery->where(' a.latitude > 0.00000000 ');
@@ -221,6 +217,11 @@ class sportsmanagementModelClubs extends JSMModelList
 		{
 			$this->jsmquery->where('a.associations = ' . $this->getState('filter.association'));
 		}
+        
+        if ( $this->getState('filter.standard_picture') )
+		{
+		$this->jsmquery->where('a.logo_big LIKE ' . $this->jsmdb->Quote('%' . 'placeholder' . '%'));  
+        }
 
 		$this->jsmquery->order(
 			$this->jsmdb->escape($this->getState('list.ordering', 'a.name')) . ' ' .
@@ -229,6 +230,5 @@ class sportsmanagementModelClubs extends JSMModelList
 
 		return $this->jsmquery;
 	}
-
 
 }

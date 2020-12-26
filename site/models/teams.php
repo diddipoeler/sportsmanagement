@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage teams
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
@@ -29,15 +25,10 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 class sportsmanagementModelTeams extends BaseDatabaseModel
 {
 	static $projectid = 0;
-
 	static $divisionid = 0;
-
 	static $cfg_which_database = 0;
-
 	var $teamid = 0;
-
 	var $team = null;
-
 	var $club = null;
 
 	/**
@@ -47,7 +38,6 @@ class sportsmanagementModelTeams extends BaseDatabaseModel
 	 */
 	function __construct()
 	{
-		// Reference global application object
 		$app    = Factory::getApplication();
 		$jinput = $app->input;
 		parent::__construct();

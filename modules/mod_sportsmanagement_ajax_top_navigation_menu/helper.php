@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_ajax_top_navigation_menu
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -826,6 +822,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 	 */
 	public function getLeagueSelect($season)
 	{
+	   $options = array();
 		$app   = Factory::getApplication();
 		$db    = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
@@ -862,6 +859,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 	 */
 	public function getProjectSelect($league_id)
 	{
+	   $options = array();
 		$app   = Factory::getApplication();
 		$db    = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
@@ -897,6 +895,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 	public function getTeamSelect($project_id)
 	{
 		$res = $this->getTeamsOptions($project_id);
+        $options = array();
 
 		if ($res)
 		{
@@ -1150,6 +1149,15 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 				$routeparameter['p']                  = $this->_project_slug;
 				$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute($view, $routeparameter);
 				break;
+                
+            case "leaguechampionoverview":
+				$routeparameter                       = array();
+				$routeparameter['cfg_which_database'] = $this->_app->input->getInt('cfg_which_database', ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0));
+				$routeparameter['l']                  = $this->_league_id;
+				$routeparameter['s']                  = 0;
+				$routeparameter['p']                  = $this->_project_slug;
+				$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute($view, $routeparameter);
+				break;    
 
 			case "resultsrankingmatrix":
 				$link = sportsmanagementHelperRoute::getResultsRankingMatrixRoute($this->_project_slug, $this->_round_slug, $this->_division_id);

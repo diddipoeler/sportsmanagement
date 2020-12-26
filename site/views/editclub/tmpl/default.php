@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage editclub
@@ -11,21 +9,19 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 
-// Get the form fieldsets.
+/** Get the form fieldsets. */
 $fieldsets = $this->form->getFieldsets();
 
 ?>
 <form name="adminForm" id="adminForm" method="post" action="<?php echo $this->uri->toString(); ?>">
 
 	<?php
-	// Save and close
+	/** Save and close */
 	$close = Factory::getApplication()->input->getInt('close', 0);
 
 	if ($close == 1)
@@ -58,6 +54,16 @@ $fieldsets = $this->form->getFieldsets();
 
 	<?php
 
+/*
+echo HTMLHelper::_('bootstrap.startTabSet', 'defaulttabsranking', array('active' => 'show_table_1')); // Start tab set
+echo HTMLHelper::_('bootstrap.addTab', 'defaulttabsranking', 'show_table_1', Text::_('Details') );
+echo $this->loadTemplate('details');
+echo HTMLHelper::_('bootstrap.endTab');
+echo HTMLHelper::_('bootstrap.addTab', 'defaulttabsranking', 'show_table_2', Text::_('Bilder') );
+echo $this->loadTemplate('picture');
+echo HTMLHelper::_('bootstrap.endTab'); 
+*/
+
 	echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'details'));
 
 	foreach ($fieldsets as $fieldset)
@@ -65,7 +71,7 @@ $fieldsets = $this->form->getFieldsets();
 		switch ($fieldset->name)
 		{
 			case 'details':
-				// Case 'picture':
+			case 'picture':
 				// case 'extended':
 				echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));
 				echo $this->loadTemplate($fieldset->name);

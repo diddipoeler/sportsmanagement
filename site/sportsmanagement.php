@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @file       sportsmanagement.php
@@ -10,50 +8,47 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Component\ComponentHelper;
 
-/**
- * zur unterscheidung von joomla 3 und 4
- */
+/** zur unterscheidung von joomla 3 und 4 */
 JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.view', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.controller', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.table', JPATH_ADMINISTRATOR);
+JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.formbehavior2', JPATH_ADMINISTRATOR);
 
-// Get the base version
+/** Get the base version */
 $baseVersion = substr(JVERSION, 0, 3);
 
 if (version_compare($baseVersion, '4.0', 'ge'))
 {
-	// Joomla! 4.0 code here
+	/** Joomla! 4.0 code here */
 	defined('JSM_JVERSION') or define('JSM_JVERSION', 4);
 }
 
 
 if (version_compare($baseVersion, '3.0', 'ge'))
 {
-	// Joomla! 3.0 code here
+	/** Joomla! 3.0 code here */
 	defined('JSM_JVERSION') or define('JSM_JVERSION', 3);
 }
 
 
 if (version_compare($baseVersion, '2.5', 'ge'))
 {
-	// Joomla! 2.5 code here
+	/** Joomla! 2.5 code here */
 	defined('JSM_JVERSION') or define('JSM_JVERSION', 2);
 }
 
-if (!defined('DS'))
-{
-	define('DS', DIRECTORY_SEPARATOR);
-}
+//if (!defined('DS'))
+//{
+//	define('DS', DIRECTORY_SEPARATOR);
+//}
 
 if (!defined('JSM_PATH'))
 {
@@ -97,6 +92,7 @@ switch ($view)
 		break;
 	case 'ranking':
 	case 'curve':
+    case 'leaguechampionoverview':
 		JLoader::import('components.com_sportsmanagement.helpers.ranking', JPATH_SITE);
 		JLoader::import('components.com_sportsmanagement.models.clubnames', JPATH_ADMINISTRATOR);
 		JLoader::import('components.com_sportsmanagement.models.rounds', JPATH_ADMINISTRATOR);
@@ -154,7 +150,6 @@ switch ($view)
 	case 'eventsranking':
 	case 'stats':
 	case 'about':
-
 		break;
 	case 'editclub':
 		JLoader::import('components.com_sportsmanagement.models.clubinfo', JPATH_SITE);

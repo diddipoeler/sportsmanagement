@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage seasons
@@ -11,12 +9,11 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModelSeasons
@@ -30,7 +27,6 @@ use Joomla\CMS\Factory;
 class sportsmanagementModelSeasons extends JSMModelList
 {
 	var $_identifier = "seasons";
-
 	var $_order = "s.name";
 
 	/**
@@ -42,14 +38,7 @@ class sportsmanagementModelSeasons extends JSMModelList
 	 */
 	public function __construct($config = array())
 	{
-		// Reference global application object
-		$this->app = Factory::getApplication();
-
-		// JInput object
-		$this->jinput = $this->app->input;
-
-		$layout = $this->jinput->getVar('layout');
-
+		$layout = Factory::getApplication()->input->getVar('layout');
 		switch ($layout)
 		{
 			case 'assignteams':
@@ -105,8 +94,8 @@ class sportsmanagementModelSeasons extends JSMModelList
 		}
 		catch (Exception $e)
 		{
-			$this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
-
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');
 			return false;
 		}
 	}
@@ -134,8 +123,9 @@ class sportsmanagementModelSeasons extends JSMModelList
 		}
 		catch (Exception $e)
 		{
-			$this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
-
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');
+            Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $this->jsmquery->dump()), Log::ERROR, 'jsmerror');
 			return false;
 		}
 	}
@@ -185,8 +175,8 @@ class sportsmanagementModelSeasons extends JSMModelList
 		}
 		catch (Exception $e)
 		{
-			$this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
-
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');
 			return false;
 		}
 	}
@@ -202,9 +192,6 @@ class sportsmanagementModelSeasons extends JSMModelList
 	{
 
 		$layout = $this->jsmjinput->getVar('layout');
-
-		// Initialise variables.
-		// $app = Factory::getApplication('administrator');
 		$order = '';
 
 		if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info'))
@@ -212,22 +199,14 @@ class sportsmanagementModelSeasons extends JSMModelList
 			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . $this->context . ''), '');
 			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . ''), '');
 		}
-
-		// Load the filter state.
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
-		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string');
-		$this->setState('filter.state', $published);
-		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '');
-		$this->setState('filter.search_nation', $temp_user_request);
-		$value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
-		$this->setState('list.limit', $value);
-
-		// List state information.
-		$value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
-		$this->setState('list.start', $value);
-
-		// Filter.order
+        $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array(), 'array');
+		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search'));
+		$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
+		$this->setState('filter.search_nation', $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', ''));
+		
+		$this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
+		$this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
+		
 		$orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
 
 		if (!in_array($orderCol, $this->filter_fields))
@@ -254,59 +233,51 @@ class sportsmanagementModelSeasons extends JSMModelList
 	 */
 	protected function getListQuery()
 	{
-
 		$layout    = $this->jsmjinput->getVar('layout');
 		$season_id = $this->jsmjinput->getVar('id');
-
+        if ( $season_id )
+        {
+        $season_name = substr($this->getSeasonName($season_id),0,4);
+        $birthday = $season_name.'-01-01';
+        }
 		$this->setState('list.ordering', $this->_order);
-
 		switch ($layout)
 		{
 			case 'assignteams':
 				$this->jsmquery->clear();
-
-				// Select some fields
 				$this->jsmquery->select('t.*');
-
-				// From the seasons table
 				$this->jsmquery->from('#__sportsmanagement_team as t');
 				$this->jsmquery->join('LEFT', '#__sportsmanagement_club AS c ON c.id = t.club_id');
 				$this->jsmsubquery1->select('stp.team_id');
 				$this->jsmsubquery1->from('#__sportsmanagement_season_team_id AS stp  ');
 				$this->jsmsubquery1->where('stp.season_id = ' . $season_id);
 				$this->jsmquery->where('t.id NOT IN (' . $this->jsmsubquery1 . ')');
-
 				if ($this->getState('filter.search_nation'))
 				{
-					$this->jsmquery->where('c.country LIKE ' . $this->jsmdb->Quote('' . $this->getState('filter.search_nation') . ''));
+					$this->jsmquery->where('c.country LIKE ' . $this->jsmdb->Quote('' . $this->getState('filter.search_nation') . '') );
 				}
-
 				if ($this->getState('filter.search'))
 				{
-					$this->jsmquery->where(' LOWER(t.name) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%'));
+					$this->jsmquery->where(' LOWER(t.name) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%') );
 				}
-
-				// $order = 't.name';
 				break;
-
 			case 'assignpersons':
 				$this->jsmquery->clear();
-
-				// Select some fields
 				$this->jsmquery->select('p.*');
-
-				// From the seasons table
 				$this->jsmquery->from('#__sportsmanagement_person as p');
 				$this->jsmsubquery1->select('stp.person_id');
-				$this->jsmsubquery1->from('#__sportsmanagement_season_person_id AS stp  ');
+				$this->jsmsubquery1->from('#__sportsmanagement_season_person_id AS stp');
 				$this->jsmsubquery1->where('stp.season_id = ' . $season_id);
 				$this->jsmquery->where('p.id NOT IN (' . $this->jsmsubquery1 . ')');
+                if ( $season_id )
+                {
+                $this->jsmquery->where('p.birthday < ' . $this->jsmdb->Quote('' . $birthday . '') );
+                }
 
 				if ($this->getState('filter.search_nation'))
 				{
-					$this->jsmquery->where('p.country LIKE ' . $this->jsmdb->Quote('' . $this->getState('filter.search_nation') . ''));
+					$this->jsmquery->where('p.country LIKE ' . $this->jsmdb->Quote('' . $this->getState('filter.search_nation') . '') );
 				}
-
 				if ($this->getState('filter.search'))
 				{
 					$this->jsmquery->where(
@@ -317,26 +288,17 @@ class sportsmanagementModelSeasons extends JSMModelList
 						')'
 					);
 				}
-
-				// $order = 'p.lastname';
 				break;
-
 			default:
 				$this->jsmquery->clear();
-
-				// Select some fields
 				$this->jsmquery->select(implode(",", $this->filter_fields));
 				$this->jsmquery->select('uc.name AS editor');
-
-				// From the seasons table
 				$this->jsmquery->from('#__sportsmanagement_season as s');
 				$this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = s.checked_out');
-
 				if ($this->getState('filter.search'))
 				{
 					$this->jsmquery->where(' LOWER(s.name) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%'));
 				}
-
 				if (is_numeric($this->getState('filter.state')))
 				{
 					$this->jsmquery->where('s.published = ' . $this->getState('filter.state'));
@@ -348,9 +310,10 @@ class sportsmanagementModelSeasons extends JSMModelList
 			$this->jsmdb->escape($this->getState('list.ordering', $this->_order)) . ' ' .
 			$this->jsmdb->escape($this->getState('list.direction', 'ASC'))
 		);
+        
+        //Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $this->jsmquery->dump()), Log::NOTICE, 'jsmerror');
 
 		return $this->jsmquery;
 	}
-
 
 }

@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage allprojects
@@ -11,17 +9,14 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
-
 ?>
 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="allprojects">
     <table class="<?php echo $this->tableclass; ?>">
-
         <thead>
         <tr>
             <th class="" id="">
@@ -41,7 +36,6 @@ use Joomla\CMS\Filesystem\File;
             <th class="" id="">
 				<?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_COUNTRY', 'v.country', $this->sortDirection, $this->sortColumn); ?>
             </th>
-
         </tr>
         </thead>
 

@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage cpanel
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -25,6 +21,8 @@ use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\Http\HttpFactory;
+use Joomla\Registry\Registry;
 
 /**
  * sportsmanagementViewcpanel
@@ -361,13 +359,30 @@ class sportsmanagementViewcpanel extends sportsmanagementView
 	 */
 	protected function addToolBar()
 	{
-		// Get a refrence of the page instance in joomla
-		$document = Factory::getDocument();
 		$task     = $this->jinput->getCmd('task');
 
-		$document->addScript(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
-		$js = "register('" . Uri::base() . "','" . "" . "','" . $this->app->getCfg('sitename') . "','1');" . "\n";
-		$document->addScriptDeclaration($js);
+try
+{
+// Create an instance of a default JHttp object.
+$http = HttpFactory::getHttp();      
+// Prepare the data.
+$data = array('homepage' => Uri::base(), 'notes' => '', 'homepagename' => $this->app->getCfg('sitename') , 'isadmin' => 1 );
+// Invoke the POST request.
+$response = $http->post('https://www.fussballineuropa.de/jsmpaket.php', $data);      
+
+// Create an instance of a default JHttp object.
+$http = HttpFactory::getHttp();      
+// Prepare the data.
+$data = array('homepage' => Uri::root(), 'notes' => '', 'homepagename' => $this->app->getCfg('sitename') , 'isadmin' => 0 );
+// Invoke the POST request.
+$response = $http->post('https://www.fussballineuropa.de/jsmpaket.php', $data);
+}
+catch (Exception $e)
+{
+//$this->app->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');	
+}
+		
+		$this->document->addScript(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
 
 		if ($this->app->isClient('administrator'))
 		{
@@ -384,17 +399,6 @@ class sportsmanagementViewcpanel extends sportsmanagementView
 
 		if ($canDo->get('core.admin'))
 		{
-			/*
-			if ($this->jquery) {
-			$this->app->setUserState("$this->option.install", 'jqueryeasy');
-			sportsmanagementHelper::ToolbarButton('default', 'upload', Text::_('COM_SPORTSMANAGEMENT_INSTALL_JQUERY'), 'githubinstall', 1);
-			}
-
-			if ($this->googlemap) {
-			$this->app->setUserState("$this->option.install", 'plugin_googlemap3');
-			sportsmanagementHelper::ToolbarButton('default', 'upload', Text::_('COM_SPORTSMANAGEMENT_INSTALL_GOOGLEMAP'), 'githubinstall', 1);
-			}
-			*/
 			$bar = Toolbar::getInstance('toolbar');
 			$bar->appendButton('Link', 'upload', Text::_('COM_SPORTSMANAGEMENT_GITHUB_UPDATE'), 'index.php?option=com_sportsmanagement&&view=githubinstall');
 

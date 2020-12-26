@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage clubname
@@ -11,10 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 
 /**
@@ -39,7 +34,6 @@ class sportsmanagementViewclubname extends sportsmanagementView
 
 	}
 
-
 	/**
 	 * sportsmanagementViewagegroup::addToolBar()
 	 *
@@ -47,7 +41,7 @@ class sportsmanagementViewclubname extends sportsmanagementView
 	 */
 	protected function addToolBar()
 	{
-		$this->jinput->setVar('hidemainmenu', true);
+		$this->jinput->set('hidemainmenu', true);
 		$isNew      = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBNAME_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBNAME_NEW');
 		$this->icon = 'clubname';
 		parent::addToolbar();

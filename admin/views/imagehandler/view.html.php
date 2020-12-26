@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage imagehandler
@@ -12,9 +10,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * https://www.jqueryscript.net/form/Drag-Drop-File-Upload-Dialog-with-jQuery-Bootstrap.html
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\String\StringHelper;
 use Joomla\CMS\Application\WebApplication;
 use Joomla\CMS\Language\Text;
@@ -33,7 +29,6 @@ use Joomla\CMS\Component\ComponentHelper;
 class sportsmanagementViewImagehandler extends sportsmanagementView
 {
 
-
 	/**
 	 * sportsmanagementViewImagehandler::init()
 	 *
@@ -45,31 +40,33 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
 		$document = Factory::getDocument();
 		$jinput   = $app->input;
 		$tpl      = '';
+        $data = Factory::getApplication()->input->getArray();
 
 		switch ($this->getLayout())
 		{
 			case 'upload':
 			case 'upload_3':
 			case 'upload_4':
-				$this->_displayupload($tpl);
-
-				return;
-				break;
+			$this->_displayupload($tpl);
+			return;
+			break;
 			case 'uploaddraganddrop':
 			case 'uploaddraganddrop_3':
 			case 'uploaddraganddrop_4':
-				$this->folder = ImageSelectSM::getfolder($this->jinput->get('type'));
-				$this->setLayout('uploaddraganddrop');
-
-				return;
-				break;
+			$this->folder = ImageSelectSM::getfolder($data['type']);
+            $this->pid = $data['pid'];
+            $this->mid = $data['mid'];
+    		$this->imagelist = $data['imagelist'];
+			$this->setLayout('uploaddraganddrop');
+			return;
+			break;
 		}
 
 		// Get vars
-		$type    = Factory::getApplication()->input->getVar('type');
+		$type    = $data['type'];
 		$folder  = ImageSelectSM::getfolder($type);
-		$field   = Factory::getApplication()->input->getVar('field');
-		$fieldid = Factory::getApplication()->input->getVar('fieldid');
+		$field   = $data['field'];
+		$fieldid = $data['fieldid'];
 		$search  = $app->getUserStateFromRequest('com_sportsmanagement.imageselect', 'search', '', 'string');
 		$search  = trim(StringHelper::strtolower($search));
 

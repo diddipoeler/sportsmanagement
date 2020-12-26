@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -11,10 +9,10 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
+use Joomla\Database\Exception\ExecutionFailureException;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModelPlaygrounds
@@ -39,15 +37,16 @@ class sportsmanagementModelPlaygrounds extends JSMModelList
 	public function __construct($config = array())
 	{
 		$config['filter_fields'] = array(
-			'v.name',
-			'v.alias',
-			'v.short_name',
-			'v.max_visitors',
-			'v.picture',
-			'v.country',
+			'v.name','name',
+			'v.alias','alias',
+			'v.short_name','short_name',
+			'v.max_visitors','max_visitors',
+			'v.picture','picture',
+			'v.country','country',
 			'club',
-			'v.id',
-			'v.ordering'
+			'v.id','id',
+			'v.ordering','ordering',
+			'state','search_nation',
 		);
 		parent::__construct($config);
 		parent::setDbo($this->jsmdb);
@@ -100,13 +99,16 @@ class sportsmanagementModelPlaygrounds extends JSMModelList
 	 * @return array
 	 * @since  0.1
 	 */
-	function getPlaygrounds()
+	function getPlaygrounds($picture=false)
 	{
 		$starttime = microtime();
 		$results   = array();
 		$this->jsmquery->clear();
 		$this->jsmquery->select('id AS value, name AS text');
-
+if ( $picture )
+{
+$this->jsmquery->select('picture as playgroundpicture');	
+}
 		// From table
 		$this->jsmquery->from('#__sportsmanagement_playground');
 		$this->jsmquery->order('text ASC');
@@ -135,12 +137,8 @@ class sportsmanagementModelPlaygrounds extends JSMModelList
 	{
 		$starttime = microtime();
 		$results   = array();
-
-		// Select some fields
 		$this->jsmquery->clear();
 		$this->jsmquery->select('id,name,id AS value,name AS text,short_name,club_id');
-
-		// From table
 		$this->jsmquery->from('#__sportsmanagement_playground');
 		$this->jsmquery->order('name');
 
@@ -148,13 +146,11 @@ class sportsmanagementModelPlaygrounds extends JSMModelList
 		{
 			$this->jsmdb->setQuery($this->jsmquery);
 			$results = $this->jsmdb->loadObjectList();
-
 			return $results;
 		}
-		catch (Exception $e)
+		catch (ExecutionFailureException $databaseException)
 		{
-			$this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
-
+            Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $databaseException->getCode(), $databaseException->getMessage()) . '<br />', Log::ERROR, 'jsmerror');
 			return false;
 		}
 	}
@@ -168,21 +164,14 @@ class sportsmanagementModelPlaygrounds extends JSMModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		// Load the filter state.
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
-		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string');
-		$this->setState('filter.state', $published);
-		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '');
-		$this->setState('filter.search_nation', $temp_user_request);
-		$value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
-		$this->setState('list.limit', $value);
+	   $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array(), 'array');
 
-		// List state information.
-		$value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
-		$this->setState('list.start', $value);
+        $this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
+		$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
+		$this->setState('filter.search_nation', $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', ''));
+		$this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
+		$this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
 
-		// Filter.order
 		$orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
 
 		if (!in_array($orderCol, $this->filter_fields))
@@ -201,6 +190,5 @@ class sportsmanagementModelPlaygrounds extends JSMModelList
 		$this->setState('list.direction', $listOrder);
 
 	}
-
 
 }

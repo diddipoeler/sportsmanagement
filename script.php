@@ -20,7 +20,8 @@
  *
  * https://www.spiralscripts.co.uk/Joomla-Tips/modal-windows-in-joomla-3.html
  *
- *
+ * toolbar icons
+ * https://docs.joomla.org/J3.x:Joomla_Standard_Icomoon_Fonts/de
  */
 
 /**
@@ -65,6 +66,17 @@
  *
  */
 
+
+/**
+ * You can use a different css class to change the size. The extension use twitter bootstrap, so you can use the following css classes to control the size of the input :
+ * input-mini
+ * input-small
+ * input-medium
+ * input-large
+ * input-xlarge
+ * input-xxlarge
+ */
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -98,7 +110,7 @@ class com_sportsmanagementInstallerScript
 	 * The release value would ideally be extracted from <version> in the manifest file,
 	 * but at preflight, the manifest file exists only in the uploaded temp folder.
 	 */
-	private $release = '3.5.00';
+	private $release = '3.8.20';
 
 	// $language_update = '';
 
@@ -395,6 +407,16 @@ class com_sportsmanagementInstallerScript
 		$j = new JVersion;
 		echo '<h1>' . sprintf(Text::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), $j->getShortVersion()) . '</h1>';
 		?>
+
+<div class="jsm-extension">
+Like this extension? 
+<a href="https://extensions.joomla.org/extension/sports-management/" target="_blank">Leave a review on the JED</a>	
+<i class="icon-star"></i>
+<i class="icon-star"></i>
+<i class="icon-star"></i>
+<i class="icon-star"></i>
+<i class="icon-star"></i>
+</div>
 <!--
 		<img
 			src="../media/com_sportsmanagement/jl_images/compat_25.png"
@@ -439,6 +461,82 @@ class com_sportsmanagementInstallerScript
 	{
 		$mainframe = Factory::getApplication();
 		$db = Factory::getDbo();
+        
+        /** benutzeraktionen */
+        $extension = 'com_sportsmanagement';
+        
+        $query = $db->getQuery(true);
+		$query->select($db->quoteName('id'))
+			->from('#__action_logs_extensions')
+			->where($db->quoteName('extension') . ' = ' . $db->quote($extension)   );
+		$db->setQuery($query);
+        if (!$eid = $db->loadResult())
+		{
+        $db->setQuery(' INSERT into #__action_logs_extensions (extension) VALUES ('.$db->Quote($extension).') ' );
+	    try {
+	        // If it fails, it will throw a RuntimeException
+	        $result = $db->execute();
+	    } catch (RuntimeException $e) {
+	        //Factory::getApplication()->enqueueMessage($e->getMessage());
+	        $result = false;
+	    }
+        }
+        
+        
+        $query->clear();
+		$query->select($db->quoteName('id'))
+			->from('#__action_log_config')
+			->where($db->quoteName('type_alias') . ' = ' . $db->quote($extension.''). ' AND ' . $db->quoteName('type_title') . ' = ' . $db->quote('club')   );
+		$db->setQuery($query);
+        if (!$eid = $db->loadResult())
+		{
+        $logConf = new stdClass();
+		$logConf->id = 0;
+		$logConf->type_title = 'club';
+		$logConf->type_alias = $extension.'';
+		$logConf->id_holder = 'id';
+		$logConf->title_holder = 'club';
+		$logConf->table_name = '#__sportsmanagement_club';
+		$logConf->text_prefix = 'COM_SPORTSMANAGEMENT_TRANSACTION';
+
+	    try {
+	       	// If it fails, it will throw a RuntimeException
+			// Insert the object into the table.
+			$result = Factory::getDbo()->insertObject('#__action_log_config', $logConf);
+	    } catch (RuntimeException $e) {
+	        //Factory::getApplication()->enqueueMessage($e->getMessage());
+	        $result = false;
+	    }
+        }
+        
+        $query->clear();
+		$query->select($db->quoteName('id'))
+			->from('#__action_log_config')
+			->where($db->quoteName('type_alias') . ' = ' . $db->quote($extension.''). ' AND ' . $db->quoteName('type_title') . ' = ' . $db->quote('league')   );
+		$db->setQuery($query);
+        if (!$eid = $db->loadResult())
+		{
+        $logConf = new stdClass();
+		$logConf->id = 0;
+		$logConf->type_title = 'league';
+		$logConf->type_alias = $extension.'';
+		$logConf->id_holder = 'id';
+		$logConf->title_holder = 'league';
+		$logConf->table_name = '#__sportsmanagement_league';
+		$logConf->text_prefix = 'COM_SPORTSMANAGEMENT_TRANSACTION';
+
+	    try {
+	       	// If it fails, it will throw a RuntimeException
+			// Insert the object into the table.
+			$result = Factory::getDbo()->insertObject('#__action_log_config', $logConf);
+	    } catch (RuntimeException $e) {
+	        //Factory::getApplication()->enqueueMessage($e->getMessage());
+	        $result = false;
+	    }
+        }
+        
+        
+        
 
 		// Sicherheitshalber dateien löschen, die ich falsch angelegt habe.
 		// Aber nur wenn sie vorhanden sind
@@ -750,6 +848,7 @@ class com_sportsmanagementInstallerScript
 				{
 					case 'persons':
 					case 'projectreferees':
+                    case 'teamplayers':
 						File::copy(JPATH_ROOT . '/images/com_sportsmanagement/database/placeholders/men_small.png', JPATH_ROOT . '/images/com_sportsmanagement/database/' . $folder . '/men_small.png');
 						File::copy(JPATH_ROOT . '/images/com_sportsmanagement/database/placeholders/men_large.png', JPATH_ROOT . '/images/com_sportsmanagement/database/' . $folder . '/men_large.png');
 						File::copy(JPATH_ROOT . '/images/com_sportsmanagement/database/placeholders/woman_small.png', JPATH_ROOT . '/images/com_sportsmanagement/database/' . $folder . '/woman_small.png');

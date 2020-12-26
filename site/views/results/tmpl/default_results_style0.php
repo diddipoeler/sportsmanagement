@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage results
@@ -11,14 +9,14 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 
+
+//echo '<pre>'.print_r($this->project,true).'</pre>';
 ?>
 <style>
     #sbox-window {
@@ -123,10 +121,11 @@ if ($this->config['show_comments_count'])
 			{
 				?>
                 <th id="results-header-head-column-count" colspan="<?php echo $nbcols - $nbcols_header; ?>">
+			<span itemprop="startDate" datetime="<?php echo $date;?>" content="<?php echo $date;?>"></span>
 					<?php
 					if ($date == "0000-00-00")
 					{
-						echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DATE_EMPTY');;
+						echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DATE_EMPTY');
 					}
 					else
 					{
@@ -139,6 +138,7 @@ if ($this->config['show_comments_count'])
 						echo ' - ' . Text::sprintf('COM_SPORTSMANAGEMENT_RESULTS_GAMEDAY_NB', $this->roundcode);
 					}
 					?>
+			
                 </th>
 				<?php
 				if ($this->config['show_attendance_column'])
@@ -162,6 +162,7 @@ if ($this->config['show_comments_count'])
 			{
 				?>
                 <th id="results-header-head" colspan="<?php echo $nbcols; ?>">
+			<span itemprop="startDate">
 					<?php
 					if ($date == "0000-00-00")
 					{
@@ -178,6 +179,7 @@ if ($this->config['show_comments_count'])
 						echo ' - ' . Text::sprintf('COM_SPORTSMANAGEMENT_RESULTS_GAMEDAY_NB', $this->roundcode);
 					}
 					?>
+			</span>
                 </th>
 				<?php
 			}
@@ -277,7 +279,26 @@ if ($this->config['show_comments_count'])
 					}
 				}
 				?>
-
+<div itemscope itemtype="http://schema.org/SportsEvent">
+<?php
+$starttime = sportsmanagementHelperHtml::showMatchTime($game, $this->config, $this->overallconfig, $this->project);                  
+?>
+<span itemprop="startDate" datetime="<?php echo $date;?>T<?php echo $starttime; ?>" content="<?php echo $date;?>T<?php echo $starttime; ?>"></span>
+<?php
+$endtime = sportsmanagementHelperHtml::showMatchTime($game, $this->config, $this->overallconfig, $this->project);  
+              
+$ergebnis = date('H:i:s', strtotime('+'.$this->project->game_regular_time + $this->project->halftime.' minutes', strtotime($game->match_date)));
+              
+//echo '<pre>'.print_r($ergebnis,true).'</pre>';
+              
+?>
+<span itemprop="endDate" datetime="<?php echo $date;?>T<?php echo $ergebnis; ?>" content="<?php echo $date;?>T<?php echo $ergebnis; ?>"></span>                  
+                  
+<span itemprop="name" content="<?php echo $this->project->name;?>"></span>
+<span itemprop="description" content="<?php echo $this->project->round_name;?>"></span>  
+<span itemprop="image" content="<?php echo Uri::base() .$this->project->picture;?>"></span>                   
+<span itemprop="sport" content="<?php echo Text::_($this->project->sport_type_name);?>"></span>                  
+                  
                 <tr class="team<?php echo $game->projectteam1_id; ?>  team<?php echo $game->projectteam2_id; ?> "<?php echo $favStyle; ?> >
 					<?php
 					if ($this->config['show_match_number'])
@@ -380,7 +401,9 @@ if ($this->config['show_comments_count'])
 						?>
                         <!-- show playground -->
                         <td>
-							<?php sportsmanagementHelperHtml::showMatchPlayground($game, $this->config); ?>
+				<span itemprop="location" content="<?php echo $team1->playground_name;?>"></span>
+							<?php echo sportsmanagementHelperHtml::showMatchPlayground($game, $this->config); ?>
+				
                         </td>
 						<?php
 					}
@@ -432,7 +455,9 @@ if ($this->config['show_comments_count'])
 									array('class' => 'teamlogo'),
 									$this->modalwidth,
 									$this->modalheight,
-									$this->overallconfig['use_jquery_modal']
+									$this->overallconfig['use_jquery_modal'],
+									'itemprop',
+									'logo'
 								);
 							}
 							else
@@ -442,11 +467,17 @@ if ($this->config['show_comments_count'])
 							?>
                         </td>
                         <td>
+				<span itemprop="homeTeam" content="<?php echo $team1->name;?>"></span>
 							<?php
+                              
+//echo '<pre>'.print_r($team1,true).'</pre>';
+                      
+                      
 							$isFavTeam = in_array($team1->id, $this->favteams);
 							echo sportsmanagementHelper::formatTeamName($team1, 'g' . $game->id, $this->config, $isFavTeam, null, Factory::getApplication()->input->getInt('cfg_which_database', 0));
 							?>
-                        </td>
+				
+	                        </td>
                         <td width='<?PHP echo $width; ?>'>
 							<?php
 							if ($this->config['club_link_logo'])
@@ -457,7 +488,9 @@ if ($this->config['show_comments_count'])
 									array('class' => 'teamlogo'),
 									$this->modalwidth,
 									$this->modalheight,
-									$this->overallconfig['use_jquery_modal']
+									$this->overallconfig['use_jquery_modal'],
+									'itemprop',
+									'logo'
 								);
 							}
 							else
@@ -467,10 +500,12 @@ if ($this->config['show_comments_count'])
 							?>
                         </td>
                         <td>
+				<span itemprop="awayTeam" content="<?php echo $team2->name;?>"></span>
 							<?php
 							$isFavTeam = in_array($team2->id, $this->favteams);
 							echo sportsmanagementHelper::formatTeamName($team2, 'g' . $game->id, $this->config, $isFavTeam, null, Factory::getApplication()->input->getInt('cfg_which_database', 0));
 							?>
+				
                         </td>
                         <!-- show match score -->
                         <td width='' class='score'>
@@ -702,7 +737,7 @@ if ($this->config['show_comments_count'])
 					?>
 
                 </tr>
-
+</div>
 				<?php
 				if ($hasEvents)
 				{

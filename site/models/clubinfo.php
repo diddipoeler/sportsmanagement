@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage clubinfo
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
@@ -34,17 +30,11 @@ use Joomla\CMS\Component\ComponentHelper;
 class sportsmanagementModelClubInfo extends BaseDatabaseModel
 {
 	static $projectid = 0;
-
 	static $clubid = 0;
-
 	static $club = null;
-
 	static $new_club_id = 0;
-
 	static $first_club_id = 0;
-
 	static $historyhtml = '';
-
 	static $historyobj = array();
 	static $jgcat_rows = array();
 	static $jgcat_rows_sorted = Array();
@@ -63,15 +53,11 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 	 */
 	function __construct()
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 
 		self::$projectid = $jinput->getInt("p", 0);
 		self::$clubid    = $jinput->getInt("cid", 0);
-
 		sportsmanagementModelProject::$projectid          = self::$projectid;
 		self::$cfg_which_database                         = $jinput->getInt('cfg_which_database', 0);
 		sportsmanagementModelProject::$cfg_which_database = self::$cfg_which_database;
@@ -529,17 +515,12 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 	 */
 	static function getClub($inserthits = 0, $club_id = 0)
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 
-		// Get a db connection.
 		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
-
 		self::$projectid = $jinput->getInt("p", 0);
 
 		if (empty(self::$projectid))
@@ -563,20 +544,14 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 			if (self::$clubid > 0)
 			{
 				$query->select('c.*');
-
-				// From
 				$query->from('#__sportsmanagement_club AS c');
-
-				// Where
 				$query->where('c.id = ' . $db->Quote(self::$clubid));
-
 				$db->setQuery($query);
 				self::$club = $db->loadObject();
 			}
 		}
 
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
 		return self::$club;
 	}
 
@@ -718,14 +693,10 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 	 */
 	public static function getClubHistory($clubid)
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 
-		// Get a db connection.
 		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
 		$query->select('c.id, c.name, c.new_club_id');
@@ -741,11 +712,8 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 		}
 		catch (Exception $e)
 		{
-			$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-			$code = $e->getCode(); // Returns
 			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
-
+			Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()) . '<br />', Log::ERROR, 'jsmerror');
 			return false;
 		}
 
@@ -779,14 +747,10 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 	 */
 	public static function getClubHistoryHTML($clubid)
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 
-		// Get a db connection.
 		$db       = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query    = $db->getQuery(true);
 		$subquery = $db->getQuery(true);
@@ -803,11 +767,8 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 		}
 		catch (Exception $e)
 		{
-			$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-			$code = $e->getCode(); // Returns
 			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
-
+			Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()) . '<br />', Log::ERROR, 'jsmerror');
 			return false;
 		}
 

@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage season
@@ -11,9 +9,8 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
@@ -42,7 +39,6 @@ class sportsmanagementModelseason extends JSMModelAdmin
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
-
 	}
 
 	/**
@@ -52,20 +48,22 @@ class sportsmanagementModelseason extends JSMModelAdmin
 	 */
 	function saveshortpersons()
 	{
-		$modified    = $this->jsmdate->toSql();
-		$modified_by = $this->jsmuser->get('id');
-
+		$msg = '';
 		$pks        = $this->jsmjinput->getVar('cid', null, 'post', 'array');
 		$teams      = $this->jsmjinput->getVar('team_id', null, 'post', 'array');
 		$season_id  = $this->jsmjinput->getVar('season_id', 0, 'post', 'array');
 		$project_id = $this->jsmjinput->getVar('project_id', 0, 'post', 'array');
 		$persontype = $this->jsmjinput->getVar('persontype', 0, 'post', 'array');
+        $whichview = $this->jsmjinput->getVar('whichview', 0, 'post', 'array');
+		$post   = Factory::getApplication()->input->post->getArray(array());
 
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>'.print_r($teams,true).'</pre>'  , 'Error');
+		
 		foreach ($pks as $key => $value)
 		{
 			$this->jsmquery->clear();
 			$columns = array('person_id', 'season_id', 'modified', 'modified_by');
-			$values  = array($value, $season_id, $this->jsmdb->Quote('' . $modified . ''), $modified_by);
+			$values  = array($value, $season_id, $this->jsmdb->Quote('' . $this->jsmdate->toSql() . ''), $this->jsmuser->get('id'));
 			$this->jsmquery
 				->insert($this->jsmdb->quoteName('#__sportsmanagement_season_person_id'))
 				->columns($this->jsmdb->quoteName($columns))
@@ -81,8 +79,41 @@ class sportsmanagementModelseason extends JSMModelAdmin
 				$row = Table::getInstance('season', 'sportsmanagementTable');
 				$row->load($season_id);
 				$this->jsmapp->enqueueMessage('Saisonzuordnung : ' . $row->name . ' schon vorhanden.', 'notice');
-
-				if ($persontype == 3)
+			}
+/** hier machen wir schon mal einen insert*/
+switch ($whichview )
+{
+case 'teamplayers':
+$personposition	= $post['position' . $value];
+$this->jsmquery->clear();
+$this->jsmquery->select('id');
+$this->jsmquery->from('#__sportsmanagement_project_position');
+$this->jsmquery->where('project_id = ' . $project_id);
+$this->jsmquery->where('position_id = ' . $personposition);
+$this->jsmdb->setQuery($this->jsmquery);
+$project_position_id = $this->jsmdb->loadResult();		
+		
+$profile = new stdClass;
+$profile->project_id = $project_id;
+$profile->person_id = $value;
+$profile->published = 1;
+$profile->project_position_id = $project_position_id;
+$profile->persontype = $persontype;
+$profile->modified = $this->jsmdate->toSql();
+$profile->modified_by = $this->jsmuser->get('id');
+try
+{
+$result = $this->jsmdb->insertObject('#__sportsmanagement_person_project_position', $profile);
+}
+catch (Exception $e)
+{
+	$msg .= '<br>'.Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage());
+	$msg .= '<br>'.Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__);
+}
+break;
+}
+            
+            if ($persontype == 3)
 				{
 					$this->jsmquery->clear();
 					$this->jsmquery->select('id');
@@ -92,11 +123,10 @@ class sportsmanagementModelseason extends JSMModelAdmin
 					$this->jsmdb->setQuery($this->jsmquery);
 					$new_id = $this->jsmdb->loadResult();
 
-					$modified              = $this->jsmdate->toSql();
 					$mdlTable              = new stdClass;
 					$mdlTable->id          = $new_id;
-					$mdlTable->modified    = $this->jsmdb->Quote('' . $modified . '');
-					$mdlTable->modified_by = $modified_by;
+					$mdlTable->modified    = $this->jsmdate->toSql();
+					$mdlTable->modified_by = $this->jsmuser->get('id');
 					$mdlTable->persontype  = 3;
 					$mdlTable->published   = 1;
 
@@ -106,14 +136,27 @@ class sportsmanagementModelseason extends JSMModelAdmin
 					}
 					catch (Exception $e)
 					{
+						$msg .= '<br>'.Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage());
+						$msg .= '<br>'.Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__);
 					}
 
+		    			$this->jsmquery->clear();
+					$this->jsmquery->select('id');
+					$this->jsmquery->from('#__sportsmanagement_project_referee');
+					$this->jsmquery->where('project_id = ' . $project_id);
+					$this->jsmquery->where('person_id = ' . $new_id);
+					$this->jsmdb->setQuery($this->jsmquery);
+					$ref_id = $this->jsmdb->loadResult();
+		    
+		    
+		    if ( !$ref_id )
+		    {
 					$profile              = new stdClass;
 					$profile->project_id  = $project_id;
 					$profile->person_id   = $new_id;
 					$profile->published   = 1;
-					$profile->modified    = $this->jsmdb->Quote('' . $modified . '');
-					$profile->modified_by = $modified_by;
+					$profile->modified    = $this->jsmdate->toSql();
+					$profile->modified_by = $this->jsmuser->get('id');
 
 					try
 					{
@@ -121,20 +164,26 @@ class sportsmanagementModelseason extends JSMModelAdmin
 					}
 					catch (Exception $e)
 					{
+						$msg .= '<br>'.Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage());
+						$msg .= '<br>'.Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__);
 					}
+		    
+	    }
+		    
+		    
+		    
 				}
-			}
+            
 
 			if (isset($teams) && $persontype != 3)
 			{
 				$this->jsmquery->clear();
 				$columns = array('person_id', 'season_id', 'team_id', 'published', 'persontype', 'modified', 'modified_by');
-				$values  = array($value, $season_id, $teams, '1', $persontype, $this->jsmdb->Quote('' . $modified . ''), $modified_by);
+				$values  = array($value, $season_id, $teams, '1', $persontype, $this->jsmdb->Quote('' . $this->jsmdate->toSql() . ''), $this->jsmuser->get('id'));
 				$this->jsmquery
 					->insert($this->jsmdb->quoteName('#__sportsmanagement_season_team_person_id'))
 					->columns($this->jsmdb->quoteName($columns))
 					->values(implode(',', $values));
-
 				try
 				{
 					$this->jsmdb->setQuery($this->jsmquery);
@@ -142,12 +191,12 @@ class sportsmanagementModelseason extends JSMModelAdmin
 				}
 				catch (Exception $e)
 				{
-					$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getMessage()), 'Error');
-					$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getCode()), 'Error');
+					$msg .= '<br>'.Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage());
+					$msg .= '<br>'.Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__);
 				}
 			}
 		}
-
+return $msg;
 	}
 
 	/**
@@ -177,8 +226,8 @@ class sportsmanagementModelseason extends JSMModelAdmin
 			}
 			catch (Exception $e)
 			{
-				$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getMessage()), 'Error');
-				$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getCode()), 'Error');
+				//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getMessage()), 'Error');
+				//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getCode()), 'Error');
 			}
 		}
 

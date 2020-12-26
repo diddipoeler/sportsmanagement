@@ -21,7 +21,7 @@ use Joomla\CMS\Language\Text;
 <p><?php
 	if ($this->actJoomlaUser->id < 62)
 	{
-		echo Text::sprintf('COM_SPORTSMANAGEMENT_PRED_RULES_INFO_01_02', '<a href="index.php?option=com_user&view=register"><b><i>', '</i></b></a>');
+		echo Text::sprintf('COM_SPORTSMANAGEMENT_PRED_RULES_INFO_01_02', '<a href="index.php?option=com_users&view=registration"><b><i>', '</i></b></a>');
 	}
 	else
 	{

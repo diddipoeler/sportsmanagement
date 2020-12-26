@@ -144,10 +144,15 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		
+		<!--
 		<field 	name="player_picture_width" type="text" default="40"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PLAYER_PICTURE_WIDTH" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PLAYER_PICTURE_WIDTH">
+		</field>
+		-->
+		<field 	name="player_picture_height" type="text" default="40"
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PLAYER_PICTURE_HEIGHT" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PLAYER_PICTURE_HEIGHT">
 		</field>
 		
 		<field name="player_picture_style" type="list" default=""
@@ -235,10 +240,15 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-
+<!--
 		<field 	name="staff_picture_width" type="text" default="40"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STAFF_PICTURE_WIDTH" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_STAFF_PICTURE_WIDTH">
+		</field>
+		-->
+		<field 	name="staff_picture_height" type="text" default="40"
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STAFF_PICTURE_HEIGHT" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_STAFF_PICTURE_HEIGHT">
 		</field>
 		
 		<field name="staff_picture_style" type="list" default=""
@@ -280,16 +290,26 @@
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_TEAMOPTIONS">	
 
+<field 	name="club_picture_height" type="text" default="150"
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_CLUB_LOGO_HEIGHT" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_CLUB_LOGO_HEIGHT">
+		</field>
+		
 		<field 	name="show_team_logo" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_TEAM_LOGO" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_TEAM_LOGO">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-
+<!--
 		<field 	name="team_picture_width" type="text" default="150"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_PICTURE_WIDTH" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_PICTURE_WIDTH">
+		</field>
+		-->
+		<field 	name="team_picture_height" type="text" default="150"
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_PICTURE_HEIGHT" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_PICTURE_HEIGHT">
 		</field>
 		
 		<field name="team_picture_which" type="list" default="project_team"
@@ -331,7 +351,11 @@
 			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
 			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
 			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
-			
+		</field>
+
+<field 	name="events_picture_height" type="text" default="25"
+				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_EVENTS_HEIGHT" 
+				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_EVENTS_HEIGHT">
 		</field>
 					
 	</fieldset>	

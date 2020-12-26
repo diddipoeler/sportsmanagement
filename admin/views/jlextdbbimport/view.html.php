@@ -79,10 +79,6 @@ class sportsmanagementViewjlextdbbimport extends sportsmanagementView
 		$uri    = Factory::getURI();
 		$user   = Factory::getUser();
 
-		// $model = $this->getModel('project') ;
-		// $projectdata = $this->get('Data');
-		// $this->assignRef( 'name', $projectdata->name);
-
 		$model         = $this->getModel();
 		$project       = $app->getUserState($option . 'project');
 		$this->project = $project;

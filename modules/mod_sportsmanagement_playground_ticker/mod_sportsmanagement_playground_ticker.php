@@ -71,7 +71,7 @@ else
 	$module->picture_server = Uri::root();
 }
 
-$playgrounds = modJSMPlaygroundTicker::getData($params);
+$playgrounds = modJSMPlaygroundTicker::getData($params);	
 
 $document = Factory::getDocument();
 

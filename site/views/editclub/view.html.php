@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage editclub
@@ -11,11 +9,10 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewEditClub
@@ -43,7 +40,7 @@ class sportsmanagementViewEditClub extends sportsmanagementView
 
 		if ($this->item->id)
 		{
-			// Alles ok
+			/** Alles ok */
 			if ($this->item->founded == '0000-00-00')
 			{
 				$this->item->founded = '';
@@ -63,14 +60,12 @@ class sportsmanagementViewEditClub extends sportsmanagementView
 		}
 
 		$this->item->merge_teams = explode(",", $this->item->merge_teams);
-
 		$extended       = sportsmanagementHelper::getExtended($this->item->extended, 'club');
 		$this->extended = $extended;
 		$this->lists    = $lists;
-
 		$this->cfg_which_media_tool = ComponentHelper::getParams($this->option)->get('cfg_which_media_tool', 0);
+		$this->document->addScript(Uri::root() . 'components/' . $this->option . '/assets/js/editgeocode.js');
 
 	}
-
 
 }

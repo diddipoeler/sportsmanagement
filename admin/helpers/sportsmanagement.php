@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage helpers
@@ -14,9 +12,7 @@
  * toolbar
  * https://issues.joomla.org/tracker/joomla-cms/19670
  */
-
 defined('_JEXEC') or die;
-
 use Joomla\CMS\Router\Route;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -32,6 +28,11 @@ use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\Component\Actionlogs\Administrator\Model\ActionlogModel;
+//BaseDatabaseModel::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_actionlogs/models', 'ActionlogsModel');
+
+HTMLHelper::_('behavior.keepalive');
 
 if (version_compare(JVERSION, '3.0.0', 'ge'))
 {
@@ -73,13 +74,143 @@ if (version_compare($baseVersion, '2.5', 'ge'))
 abstract class sportsmanagementHelper
 {
 	static $latitude = '';
-
 	static $longitude = '';
-
 	static $_jsm_db = '';
-
 	static $_success_text = array();
 
+	/**
+	 * Record transaction details in log record
+	 * @param   object  $user    Saves getting the current user again.
+	 * @param   int     $tran_id  The transaction id just created or updated
+	 * @param   int     $id  Passed id reference from the form to identify if new record
+	 * @return  boolean	True
+	 */
+    public static function recordActionLog($user = null, $tran = null, $id = 0)
+	{
+	// get the component details such as the id
+	//$extension =  MycomponentHelper::getExtensionDetails('com_sportsmanagement');
+	$extension = 'com_sportsmanagement';
+	// get the transaction details for use in the log for easy reference
+        //$tran = MycomponentHelper::getTransaction($tran_id);
+        $con_type = Factory::getApplication()->input->getCmd('view', 'cpanel');
+        if ($id === 0) { $type = Text::_('JTOOLBAR_NEW'); } else { $type = Text::_('JLIB_INSTALLER_UPDATE'); }
+
+		$message = array();
+		$message['action'] = $con_type;
+	    switch ( $con_type )
+	    {
+		    case 'player':
+		$message['type'] = $type .' '. $tran['firstname'].' '. $tran['lastname'];	    
+			    break;
+		    default:
+		$message['type'] = $type .' '. $tran['name'];	    
+			    break;
+	    }
+		$message['id'] = $tran['id'];
+		$message['title'] = $extension;
+		$message['extension_name'] = $extension;
+		$message['itemlink'] = "index.php?option=com_sportsmanagement&task=".$con_type.".edit&id=".$tran['id'];
+		$message['userid'] = $user->id;
+		$message['username'] = $user->username;
+		$message['accountlink'] = "index.php?option=com_users&task=user.edit&id=".$user->id;
+		
+		$messages = array($message);
+		
+		$messageLanguageKey = Text::_('COM_SPORTSMANAGEMENT_TRANSACTION_LINK');
+		$context = $extension.'.'.$con_type;
+		
+/** welche joomla version ? */
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+/** @var ActionlogModel $model */
+		$fmodel = new ActionlogModel;	
+}
+	    elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
+{
+	        /** @var ActionlogsModelActionlog $model **/
+		    BaseDatabaseModel::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_actionlogs/models', 'ActionlogsModel');
+		$fmodel = BaseDatabaseModel::getInstance('Actionlog', 'ActionlogsModel');
+	    }
+		//$model->addLog($messages, strtoupper($messageLanguageKey), $context, $userId);
+	    try{
+		$fmodel->addLog($messages, $messageLanguageKey, $context, $user->id);
+	    }
+		    catch (Exception $e)
+			{
+		    }
+
+		return true;
+	}
+
+	/**
+	 * Get the Model from another component for use
+	 * @param   string  $name    The model name. Optional. Default to my own for safety.
+	 * @param   string  $prefix  The class prefix. Optional
+	 * @param   array   $config  Configuration array for model. Optional
+	 * @return object	The model
+	 */
+	public function getForeignModel($name = 'Transaction', $prefix = 'MycomponentModel', $config = array('ignore_request' => true))
+	{
+		\Joomla\CMS\MVC\Model\ItemModel::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_actionlogs/models', 'ActionlogsModelActionlog');
+		$fmodel = \Joomla\CMS\MVC\Model\ItemModel::getInstance($name, $prefix, $config);
+
+		return $fmodel;
+	}
+    
+    
+	/**
+	 * sportsmanagementHelper::formatselect2output()
+	 * 
+	 * @param mixed $daten
+	 * @param string $placeholder
+	 * @param string $class
+	 * @return
+	 */
+	function formatselect2output($daten=array(),$placeholder='',$class='' )
+	{
+?>
+<script type="text/javascript">
+   // (function () {
+        // altered decision fields management
+        //toggle_altdecision();
+//	jQuery('#jform_alt_decision0').change(toggle_altdecision);
+//    jQuery('#jform_alt_decision1').change(toggle_altdecision);
+   // });
+var <?php echo $placeholder; ?> = new Array;
+			<?php
+			foreach ($daten as $key => $value)
+			{
+				if (!$value->itempicture)
+				{
+					$value->itempicture = sportsmanagementHelper::getDefaultPlaceholder($placeholder);
+				}
+
+				echo $placeholder.'[' . ($key) . ']=\'' . $value->itempicture . "';\n";
+			}
+			?>
+</script>
+<?php		
+	// String $opt - second parameter of formbehavior2::select2
+	// for details http://ivaynberg.github.io/select2/
+	$opt = ' allowClear: true,
+   width: "100%",
+   formatResult: function format(state)
+   {
+   var originalOption = state.element;
+   var picture;
+   picture = '.$placeholder.'[state.id];
+   if (!state.id)
+   return state.text;
+   return "<img class=\'item car\' src=\'' . Uri::root() . '" + picture + "\' />" + state.text;
+   },
+ 
+   escapeMarkup: function(m) { return m; }
+';
+	
+	return $opt;
+	}
+	
+	
 	/**
 	 * sportsmanagementHelper::getBootstrapModalImage()
 	 *
@@ -93,7 +224,7 @@ abstract class sportsmanagementHelper
 	 *
 	 * @return
 	 */
-	public static function getBootstrapModalImage($target = '', $picture = '', $text = '', $picturewidth = '20', $url = '', $width = '100', $height = '200')
+	public static function getBootstrapModalImage($target = '', $picture = '', $text = '', $picturewidth = '20', $url = '', $width = '100', $height = '200', $extrabutton = '')
 	{
 		$app = Factory::getApplication();
 
@@ -104,7 +235,9 @@ abstract class sportsmanagementHelper
 
 		if ($picture)
 		{
-			$modaltext .= '<img src="' . $picture . '" alt="' . $text . '" width="' . $picturewidth . '" />';
+			//$modaltext .= '<img src="' . $picture . '" alt="' . $text . '" width="' . $picturewidth . '" class"sportsmanagement-img-preview" />';
+			//$modaltext .= '<img src="' . $picture . '" alt="' . $text . '" class"sportsmanagement-img-preview" />';
+			$modaltext .= '<img src="' . $picture . '" alt="' . $text . '" style="width: auto;height: ' . $picturewidth . 'px" />';
 		}
 		else
 		{
@@ -124,7 +257,7 @@ abstract class sportsmanagementHelper
 				'url'    => $url,
 				'height' => $height,
 				'width'  => $width,
-				'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">' . Text::_('JCANCEL') . '</button>'
+				'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">' . Text::_('JCANCEL') . '</button> '.$extrabutton
 			)
 		);
 
@@ -332,11 +465,17 @@ abstract class sportsmanagementHelper
 				$query->where('up.user_id = ' . $user_id);
 				$query->where('up.profile_key LIKE ' . $db->Quote('' . 'jsmprofile.%' . ''));
 
-				// $query->where('up.profile_value LIKE ' . $db->Quote('' . Uri::root() . ''));
+try
+		{
 				$db->setQuery($query);
-
 				$row = $db->loadAssocList('profile_key');
-
+ }
+		catch (Exception $e)
+		{
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');
+			return Factory::getDbo();
+		}
 				// Log::add(Text::_('row <pre>'.print_r($row,true).'</pre>'), Log::INFO, 'jsmerror');
 
 				if ($row['jsmprofile.databaseaccess']['profile_value'])
@@ -1301,6 +1440,7 @@ abstract class sportsmanagementHelper
 
 			case "player": // Player
 			case "persons":
+            case "teamplayers":
 				return $ph_player;
 				break;
 
@@ -1630,12 +1770,14 @@ abstract class sportsmanagementHelper
 		}
 	}
 
+	
 	/**
 	 * sportsmanagementHelper::showTeamIcons()
-	 *
-	 * @param   mixed  $team
-	 * @param   mixed  $config
-	 *
+	 * 
+	 * @param mixed $team
+	 * @param mixed $config
+	 * @param integer $cfg_which_database
+	 * @param integer $s
 	 * @return
 	 */
 	public static function showTeamIcons(&$team, &$config, $cfg_which_database = 0, $s = 0)
@@ -1643,6 +1785,7 @@ abstract class sportsmanagementHelper
 		$app    = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
+        $default_width = 20;
 
 		if (!isset($team->projectteamid))
 		{
@@ -1666,11 +1809,11 @@ abstract class sportsmanagementHelper
 			$routeparameter['p']                  = $projectSlug;
 			$routeparameter['tid']                = $teamSlug;
 			$routeparameter['ptid']               = $projectteamid;
-
 			$link    = sportsmanagementHelperRoute::getSportsmanagementRoute('roster', $routeparameter);
 			$title   = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_ROSTER_LINK') . '&nbsp;' . $teamname;
-			$picture = 'media/com_sportsmanagement/jl_images/team_icon.png';
-			$desc    = self::getPictureThumb($picture, $title, 0, 0, 4);
+			//$picture = 'media/com_sportsmanagement/jl_images/team_icon.png';
+            $picture = 'media/com_sportsmanagement/jl_images/user_32x32.png';
+			$desc    = self::getPictureThumb($picture, $title, $default_width, 0, 4);
 			$output  .= '<li class="list-inline-item">';
 			$output  .= HTMLHelper::link($link, $desc);
 			$output  .= '</li>';
@@ -1683,8 +1826,6 @@ abstract class sportsmanagementHelper
 			$routeparameter['s']                  = $s;
 			$routeparameter['p']                  = $projectSlug;
 			$routeparameter['tid']                = $teamSlug;
-			//$routeparameter['ptid']               = $projectteamid;
-
 			$link    = sportsmanagementHelperRoute::getSportsmanagementRoute('rosteralltime', $routeparameter);
 			$title   = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_ALLTIME_ROSTER_LINK') . '&nbsp;' . $teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/team_icon.png';
@@ -1706,8 +1847,9 @@ abstract class sportsmanagementHelper
 			$routeparameter['ptid']               = $projectteamid;
 			$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan', $routeparameter);
 			$title                                = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMPLAN_LINK') . '&nbsp;' . $teamname;
-			$picture                              = 'media/com_sportsmanagement/jl_images/calendar_icon.gif';
-			$desc                                 = self::getPictureThumb($picture, $title, 0, 0, 4);
+			//$picture                              = 'media/com_sportsmanagement/jl_images/calendar_icon.gif';
+            $picture                              = 'media/com_sportsmanagement/jl_images/cal_32x32.png';
+			$desc                                 = self::getPictureThumb($picture, $title, $default_width, 0, 4);
 			$output                               .= '<li class="list-inline-item">';
 			$output                               .= HTMLHelper::link($link, $desc);
 			$output                               .= '</li>';
@@ -1722,11 +1864,11 @@ abstract class sportsmanagementHelper
 			$routeparameter['tid1']               = $teamSlug;
 			$routeparameter['tid2']               = 0;
 			$routeparameter['division']           = $division_slug;
-
 			$link    = sportsmanagementHelperRoute::getSportsmanagementRoute('curve', $routeparameter);
 			$title   = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_CURVE_LINK') . '&nbsp;' . $teamname;
-			$picture = 'media/com_sportsmanagement/jl_images/curve_icon.gif';
-			$desc    = self::getPictureThumb($picture, $title, 0, 0, 4);
+			//$picture = 'media/com_sportsmanagement/jl_images/curve_icon.gif';
+            $picture = 'media/com_sportsmanagement/jl_images/line_graph_32x32.png';
+			$desc    = self::getPictureThumb($picture, $title, $default_width, 0, 4);
 			$output  .= '<li class="list-inline-item">';
 			$output  .= HTMLHelper::link($link, $desc);
 			$output  .= '</li>';
@@ -1743,8 +1885,9 @@ abstract class sportsmanagementHelper
 
 			$link    = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);
 			$title   = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMINFO_LINK') . '&nbsp;' . $teamname;
-			$picture = 'media/com_sportsmanagement/jl_images/teaminfo_icon.png';
-			$desc    = self::getPictureThumb($picture, $title, 0, 0, 4);
+			//$picture = 'media/com_sportsmanagement/jl_images/teaminfo_icon.png';
+            $picture = 'media/com_sportsmanagement/jl_images/workflow_32x32.png';
+			$desc    = self::getPictureThumb($picture, $title, $default_width, 0, 4);
 			$output  .= '<li class="list-inline-item">';
 			$output  .= HTMLHelper::link($link, $desc);
 			$output  .= '</li>';
@@ -1761,8 +1904,9 @@ abstract class sportsmanagementHelper
 
 			$link    = sportsmanagementHelperRoute::getSportsmanagementRoute('clubinfo', $routeparameter);
 			$title   = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_CLUBINFO_LINK') . '&nbsp;' . $teamname;
-			$picture = 'media/com_sportsmanagement/jl_images/mail.gif';
-			$desc    = self::getPictureThumb($picture, $title, 0, 0, 4);
+			//$picture = 'media/com_sportsmanagement/jl_images/mail.gif';
+            $picture = 'media/com_sportsmanagement/jl_images/mail_32x32.png';
+			$desc    = self::getPictureThumb($picture, $title, $default_width, 0, 4);
 			$output  .= '<li class="list-inline-item">';
 			$output  .= HTMLHelper::link($link, $desc);
 			$output  .= '</li>';
@@ -1778,8 +1922,9 @@ abstract class sportsmanagementHelper
 
 			$link    = sportsmanagementHelperRoute::getSportsmanagementRoute('teamstats', $routeparameter);
 			$title   = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMSTATS_LINK') . '&nbsp;' . $teamname;
-			$picture = 'media/com_sportsmanagement/jl_images/teamstats_icon.png';
-			$desc    = self::getPictureThumb($picture, $title, 0, 0, 4);
+			//$picture = 'media/com_sportsmanagement/jl_images/teamstats_icon.png';
+            $picture = 'media/com_sportsmanagement/jl_images/line_chart_32x32.png';
+			$desc    = self::getPictureThumb($picture, $title, $default_width, 0, 4);
 			$output  .= '<li class="list-inline-item">';
 			$output  .= HTMLHelper::link($link, $desc);
 			$output  .= '</li>';
@@ -1796,8 +1941,9 @@ abstract class sportsmanagementHelper
 
 			$link    = sportsmanagementHelperRoute::getSportsmanagementRoute('clubplan', $routeparameter);
 			$title   = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_CLUBPLAN_LINK') . '&nbsp;' . $teamname;
-			$picture = 'media/com_sportsmanagement/jl_images/clubplan_icon.png';
-			$desc    = self::getPictureThumb($picture, $title, 0, 0, 4);
+			//$picture = 'media/com_sportsmanagement/jl_images/clubplan_icon.png';
+            $picture = 'media/com_sportsmanagement/jl_images/clock_32x32.png';
+			$desc    = self::getPictureThumb($picture, $title, $default_width, 0, 4);
 			$output  .= '<li class="list-inline-item">';
 			$output  .= HTMLHelper::link($link, $desc);
 			$output  .= '</li>';
@@ -1813,8 +1959,9 @@ abstract class sportsmanagementHelper
 
 			$link    = sportsmanagementHelperRoute::getSportsmanagementRoute('rivals', $routeparameter);
 			$title   = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_RIVALS_LINK') . '&nbsp;' . $teamname;
-			$picture = 'media/com_sportsmanagement/jl_images/rivals.png';
-			$desc    = self::getPictureThumb($picture, $title, 0, 0, 4);
+			//$picture = 'media/com_sportsmanagement/jl_images/rivals.png';
+            $picture = 'media/com_sportsmanagement/jl_images/calculator_32x32.png';
+			$desc    = self::getPictureThumb($picture, $title, $default_width, 0, 4);
 			$output  .= '<li class="list-inline-item">';
 			$output  .= HTMLHelper::link($link, $desc);
 			$output  .= '</li>';
@@ -2008,7 +2155,7 @@ abstract class sportsmanagementHelper
 		{
 			if ($team->logo_small != '')
 			{
-				echo HTMLHelper::image($team->logo_small, '', array(' title' => '', ' width' => 20));
+				echo HTMLHelper::_('image',$team->logo_small, '', array(' title' => '', ' width' => 20));
 
 				if ($with_space == 1)
 				{
@@ -2024,7 +2171,7 @@ abstract class sportsmanagementHelper
 		{
 			if ($team->logo_middle != '')
 			{
-				echo HTMLHelper::image($team->logo_middle, '', array(' title' => '', ' width' => 20));
+				echo HTMLHelper::_('image',$team->logo_middle, '', array(' title' => '', ' width' => 20));
 
 				if ($with_space == 1)
 				{
@@ -2040,7 +2187,7 @@ abstract class sportsmanagementHelper
 		{
 			if ($team->logo_big != '')
 			{
-				echo HTMLHelper::image($team->logo_big, '', array(' title' => '', ' width' => 20));
+				echo HTMLHelper::_('image',$team->logo_big, '', array(' title' => '', ' width' => 20));
 
 				if ($with_space == 1)
 				{
@@ -2094,7 +2241,7 @@ abstract class sportsmanagementHelper
 			echo '<td align="center" style=""><b>' . $division->name . '</b>&nbsp;</td>';
 			$jRegistry = new Registry;
 
-			if (version_compare(JVERSION, '3.0.0', 'ge'))
+			if ( version_compare(JVERSION, '3.0.0', 'ge') )
 			{
 				$jRegistry->loadString($division->rankingparams);
 			}
@@ -2402,13 +2549,13 @@ abstract class sportsmanagementHelper
 
 		if ($config['show_print_button'] == 1)
 		{
-			HTMLHelper::_('behavior.tooltip');
+			//HTMLHelper::_('behavior.tooltip');
 			$status = 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=800,height=600,directories=no,location=no';
 
 			// Checks template image directory for image, if non found default are loaded
 			if ($config['show_icons'] == 1)
 			{
-				$image = HTMLHelper::image('media/com_sportsmanagement/jl_images/printButton.png', Text::_('Print'));
+				$image = HTMLHelper::_('image','media/com_sportsmanagement/jl_images/printButton.png', Text::_('Print'));
 			}
 			else
 			{
@@ -2492,7 +2639,8 @@ abstract class sportsmanagementHelper
 			case 'assignpersons':
 				$zusatz .= '&team_id=' . $jinput->get('team_id');
 				$zusatz .= '&persontype=' . $jinput->get('persontype');
-				$zusatz .= '&season_id=' . $app->getUserState("$option.season_id", '0');;
+				$zusatz .= '&season_id=' . $app->getUserState("$option.season_id", '0');
+                $zusatz .= '&whichview='.$jinput->get('view');
 				break;
 		}
 
@@ -3266,14 +3414,21 @@ abstract class sportsmanagementHelper
             <div class="jsm-info-team p-1">
                 <img src="components/com_sportsmanagement/assets/icons/prochnow_hauke.jpg" alt="svdoldie" height="80px">
                 <span>svdoldie</span><br>
-            </div><div class="jsm-info-team p-1">
-                <img src="components/com_sportsmanagement/assets/icons/appu-konrad.jpg" alt="appukonrad" height="80px">
-                <span>appukonrad</span><br>
             </div>
             <div class="jsm-info-team p-1">
                 <img src="components/com_sportsmanagement/assets/icons/galun-siegfried02.png" alt="stony" height="80px">
                 <span>stony</span><br>
             </div>
+            <div class="jsm-info-team p-1">
+                <img src="components/com_sportsmanagement/assets/icons/llambion.jpg" alt="llambion" height="80px">
+                <span>llambion</span><br>
+            </div>
+            
+            <div class="jsm-info-team p-1">
+                <img src="components/com_sportsmanagement/assets/icons/appu-konrad.jpg" alt="appukonrad" height="80px">
+                <span>appukonrad</span><br>
+            </div>
+            
             <div class="jsm-info-team p-1">
                 <img src="components/com_sportsmanagement/assets/icons/dittmann-timo.png" alt="tdittmann" height="80px">
                 <span>tdittmann</span><br>
@@ -3609,7 +3764,7 @@ abstract class sportsmanagementHelper
 
 		for ($i = 0; $i < $length; $i++)
 		{
-			$current = ord($value{$i});
+			$current = ord($value[$i]);
 
 			if (($current == 0x9)
 				|| ($current == 0xA)

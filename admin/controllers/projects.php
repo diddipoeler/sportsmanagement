@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage controllers
@@ -37,6 +35,13 @@ class sportsmanagementControllerprojects extends JSMControllerAdmin
 	{
 		$model = $this->getModel();
 		$msg   = $model->saveshort();
+		$this->setRedirect('index.php?option=com_sportsmanagement&view=projects', $msg);
+	}
+	
+	function copy()
+	{
+		$model = $this->getModel();
+		//$msg   = $model->saveshort();
 		$this->setRedirect('index.php?option=com_sportsmanagement&view=projects', $msg);
 	}
 

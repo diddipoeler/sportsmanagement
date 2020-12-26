@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -174,6 +172,7 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
 
 			$tblProjectteam->is_in_score = $post['is_in_score' . $pks[$x]];
 			$tblProjectteam->use_finally = $post['use_finally' . $pks[$x]];
+			$tblProjectteam->finaltablerank = $post['finaltablerank' . $pks[$x]];
 
 			$tblProjectteam->points_finally     = $post['points_finally' . $pks[$x]];
 			$tblProjectteam->neg_points_finally = $post['neg_points_finally' . $pks[$x]];

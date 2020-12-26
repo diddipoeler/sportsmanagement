@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage treetos
@@ -11,10 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -38,14 +33,13 @@ class sportsmanagementViewTreetos extends sportsmanagementView
 	 */
 	public function init()
 	{
-
 		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
 		$mdlProject       = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
 		$projectws        = $mdlProject->getProject($this->project_id);
 
 		$division = $this->app->getUserStateFromRequest($this->option . 'tt_division', 'division', '', 'string');
 
-		// Build the html options for divisions
+		/** Build the html options for divisions */
 		$divisions[]  = JHtmlSelect::option('0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
 		$mdlDivisions = BaseDatabaseModel::getInstance("divisions", "sportsmanagementModel");
 
@@ -82,17 +76,14 @@ class sportsmanagementViewTreetos extends sportsmanagementView
 	protected function addToolbar()
 	{
 		ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_TITLE'), 'Tree');
-
+        ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=project&layout=panel&id='.$this->project_id);
 		ToolbarHelper::apply('treeto.saveshort');
 		ToolbarHelper::publishList('treetos.publish');
 		ToolbarHelper::unpublishList('treetos.unpublish');
 		ToolbarHelper::divider();
-
 		ToolbarHelper::addNew('treetos.save');
 		ToolbarHelper::deleteList(Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_WARNING'), 'treeto.remove');
 		ToolbarHelper::divider();
-
 		parent::addToolbar();
-
 	}
 }

@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="2.5" type="plugin" group="system" method="upgrade">
-	<name>System - SportsManagement SIS Cronjob</name>
+	<name>PLUGIN_JSM_SIS_CRONJOB</name>
 	<author>diddipoeler</author>
 	<creationDate>Januar 2014</creationDate>
 	<copyright>(C) 2014 diddipoeler</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail>diddipoeler@arcor.de</authorEmail>
 	<authorUrl>http://www.fussballineuropa.de</authorUrl>
-	<version>1.0</version>
+	<version>1.0.0</version>
 	<description>PLUGIN_JSM_SIS_CRONJOB_XML_DESCRIPTION</description>
 	
 	<files>
         <filename plugin="jsm_siscron">jsm_siscron.php</filename>
         <filename>index.html</filename>
+		<filename>update-server.xml</filename>	
         <folder>language</folder>
 		<folder>sql</folder>
     </files>
@@ -23,4 +24,9 @@
 		<language tag="de-DE">language/de-DE/de-DE.plg_jsm_siscron.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.plg_jsm_siscron.sys.ini</language>
 	</languages> 
+	
+<updateservers>
+<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/plugins/jsm_siscron/update-server.xml</server>
+</updateservers>
+	
 </extension>	

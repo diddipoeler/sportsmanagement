@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage clubnames
@@ -11,25 +9,14 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-HTMLHelper::_('behavior.tooltip');
-
-$templatesToLoad = array('footer', 'listheader');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-
 ?>
-
-<!--	<fieldset class="adminform"> -->
-
-
 <div class="table-responsive">
     <table class="<?php echo $this->table_data_class; ?>">
         <thead>
@@ -40,7 +27,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 				?>
             </th>
             <th width="20" style="vertical-align: top; ">
-                <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/>
+                <?php echo HTMLHelper::_('grid.checkall'); ?>
             </th>
             <th width="20" style="vertical-align: top; ">
                 &nbsp;
@@ -126,12 +113,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					<?php else: ?>
                         <a href="<?php echo $link; ?>">
 							<?php
-							$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBNAME_EDIT_DETAILS');
-							echo HTMLHelper::_(
-								'image', 'administrator/components/com_sportsmanagement/assets/images/edit.png',
-								$imageTitle,
-								'title= "' . $imageTitle . '"'
-							);
+$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBNAME_EDIT_DETAILS');
+$image_attributes['title'] = $imageTitle;
+echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/edit.png',$imageTitle,$image_attributes);
 							?>
                         </a>
 					<?php endif; ?>
@@ -180,12 +164,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                 <td class="order">
                                 <span>
                     <?php
-                    echo $this->pagination->orderUpIcon($i, $i > 0, 'clubnames.orderup', 'COM_SPORTSMANAGEMENT_GLOBAL_ORDER_UP', true);
+                    echo $this->pagination->orderUpIcon($i, $i > 0, 'clubnames.orderup', 'JLIB_HTML_MOVE_UP', true);
                     ?>
                                 </span>
                     <span>
                     <?php
-                    echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'clubnames.orderdown', 'COM_SPORTSMANAGEMENT_GLOBAL_ORDER_DOWN', true);
+                    echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'clubnames.orderdown', 'JLIB_HTML_MOVE_DOWN', true);
                     $disabled = true ? '' : 'disabled="disabled"';
                     ?>
                                 </span>

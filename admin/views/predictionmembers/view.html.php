@@ -163,7 +163,7 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
 
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_TITLE');
 
-		ToolbarHelper::custom('predictionmembers.reminder', 'send.png', 'send_f2.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_SEND_REMINDER'), true);
+		ToolbarHelper::custom('predictionmembers.reminder', 'mail', 'mail-2', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_SEND_REMINDER'), true);
 		ToolbarHelper::divider();
 
 		if ($this->prediction_id)

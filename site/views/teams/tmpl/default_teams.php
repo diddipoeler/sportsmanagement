@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage teams
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -100,7 +96,8 @@ usort(
 				if ((is_null($picture)) || (!file_exists($picture)))
 				{
 					$picture = sportsmanagementHelper::getDefaultPlaceholder("team_picture");
-					$image   = HTMLHelper::image($picture, $teamTitle, array('title' => $teamTitle, ' border' => 0, ' width' => $this->config['team_picture_width']));
+//$image   = HTMLHelper::image($picture, $teamTitle, array('title' => $teamTitle, ' border' => 0, ' width' => $this->config['team_picture_width']));
+$image = HTMLHelper::image($picture, $teamTitle, array('title' => $teamTitle, ' border' => 0, ' style' => 'width: auto;height:'.$this->config['team_picture_width'].'px'  ) );					
 				}
 				else
 				{
@@ -125,7 +122,8 @@ usort(
 					$picture = sportsmanagementHelper::getDefaultPlaceholder("clublogomedium");
 				}
 
-				$image              = HTMLHelper::image($picture, $clubTitle, array('title' => $clubTitle, ' border' => 0, ' width' => $this->config['team_logo_width']));
+//$image = HTMLHelper::image($picture, $clubTitle, array('title' => $clubTitle, ' border' => 0, ' width' => $this->config['team_logo_width']));
+$image = HTMLHelper::image($picture, $clubTitle, array('title' => $clubTitle, ' border' => 0, ' style' => 'width: auto;height:'.$this->config['team_logo_width'].'px'  ) );				
 				$mediumClubLogoLink = HTMLHelper::link($clubinfo_link, $image);
 			}
 			?>

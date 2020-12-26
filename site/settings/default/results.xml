@@ -3,12 +3,16 @@
 <!-- register 1 -->
 	<fieldset name= "details"
 	label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
-			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
+	description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS"
+	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
+	addfieldpath="/administrator/components/com_sportsmanagement/models/fields"		
+			
+			>
 
 <field name="show_historylink" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_HISTORY"
-			description="COM_SPORTSMANAGEMENT_HISTORY">
+			description="COM_SPORTSMANAGEMENT_PARAM_DESCR_HISTORY">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
@@ -435,7 +439,8 @@
 <!-- register 7 -->
 	<fieldset name= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS"
 	label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS"
-	description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_TEAMOPTIONS2">
+	description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_TEAMOPTIONS2"
+	>
 
 	<field	name="show_logo_small" type="list" default="6"
 	label="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_LABEL_SHOW_LOGO_SMALL"
@@ -479,8 +484,7 @@
 			<option value="2">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION2_SHOW_LINK_MATCHREPORT</option>
 		</field>		
 
-		<field type="spacer">
-		</field>
+		<field type="extensionsubtitle" title="Testzeile" color="#2672A6" />
 		
 		<field	name="show_info_link" type="list" default="1"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_INFO_LINK"

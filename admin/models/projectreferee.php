@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage projectreferee
@@ -11,15 +9,20 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
+
 /**
- * SportsManagement Model
+ * sportsmanagementModelprojectreferee
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2020
+ * @version $Id$
+ * @access public
  */
 class sportsmanagementModelprojectreferee extends JSMModelAdmin
 {
@@ -32,24 +35,27 @@ class sportsmanagementModelprojectreferee extends JSMModelAdmin
 	 */
 	function saveshort()
 	{
-		$app = Factory::getApplication();
-
-		// Get the input
-		$pks  = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
-		$post = Factory::getApplication()->input->post->getArray(array());
+		$pks  = $this->jsmjinput->getVar('cid', null, 'post', 'array');
+		$post = $this->jsmjinput->post->getArray(array());
 
 		$result = true;
 
 		for ($x = 0; $x < count($pks); $x++)
 		{
-			$tblPerson                      = &$this->getTable();
+			$tblPerson                      = new stdClass;
 			$tblPerson->id                  = $pks[$x];
 			$tblPerson->project_position_id = $post['project_position_id' . $pks[$x]];
-
-			if (!$tblPerson->store())
+            $tblPerson->modified    = $this->jsmdate->toSql();
+			$tblPerson->modified_by = $this->jsmuser->get('id');
+            
+            try
 			{
-				$result = false;
+			$result = $this->jsmdb->updateObject('#__sportsmanagement_project_referee', $tblPerson, 'id');
+    		}
+			catch (Exception $e)
+			{
 			}
+
 		}
 
 		return $result;

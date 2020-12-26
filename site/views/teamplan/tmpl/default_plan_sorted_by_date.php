@@ -8,9 +8,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -626,13 +624,16 @@ if (!empty($this->matches))
 								$output       = '';
 								$toolTipTitle = Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_REF_TOOLTIP');
 								$toolTipText  = '';
-
+usort($match->referees, function ($a, $b) {
+		return $a->ordering - $b->ordering;
+	});	
 								for ($i = 0; $i < count($match->referees); $i++)
 								{
 									if ($match->referees[$i]->referee_lastname != '' && $match->referees[$i]->referee_firstname)
 									{
 										$output      .= '<span class="hasTip" title="' . Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_REF_FUNCTION') . '::' . $match->referees[$i]->referee_position_name . '">';
-										$ref         = $match->referees[$i]->referee_lastname . ',' . $match->referees[$i]->referee_firstname;
+										//$ref         = $match->referees[$i]->referee_lastname . ',' . $match->referees[$i]->referee_firstname;
+                                        $ref = sportsmanagementHelper::formatName(null, $match->referees[$i]->referee_firstname, $match->referees[$i]->referee_nickname, $match->referees[$i]->referee_lastname, $this->config["referee_name_format"]);
 										$toolTipText .= $ref . ' (' . $match->referees[$i]->referee_position_name . ')' . '&lt;br /&gt;';
 										if ($this->config['show_referee_link'])
 										{
@@ -650,12 +651,12 @@ if (!empty($this->matches))
 
 										if (($i + 1) < count($match->referees))
 										{
-											$output .= ' - ';
+											$output .= ' <br> ';
 										}
 									}
 									else
 									{
-										$output .= '-';
+										$output .= '<br>';
 									}
 								}
 
@@ -745,12 +746,13 @@ if (!empty($this->matches))
                                 <tr>
                                     <td>
 										<?php
-										echo $this->showEventsContainerInResults(
+										echo sportsmanagementHelperHtml::showEventsContainerInResults(
 											$match,
 											$this->projectevents,
 											$events,
 											$subs,
-											$this->config);
+											$this->config,
+										$this->project);
 										?>
                                     </td>
                                 </tr>

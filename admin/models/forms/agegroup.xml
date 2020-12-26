@@ -45,9 +45,8 @@
         </field>
 	
         <field
-            addfieldpath="/administrator/components/com_sportsmanagement/elements"
             name="sportstype_id"
-            type="sportstypes"
+            type="sportstypelist"
             default="0"
             size="1"
             label="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE"
@@ -117,18 +116,17 @@
         description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC"
     >
         
-        <field
-            name="picture"
-				type="media"
-				default="images/com_sportsmanagement/database/agegroups/placeholder_21.png"				
-            label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_EDIT_PICTURE"
-            description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_EDIT_PICTURE_DESC"
-            class="inputbox"
-				preview="show"	
-        targetfolder="agegroups"	
+<field
+name="picture"
+type="media"
+default="images/com_sportsmanagement/database/agegroups/placeholder_21.png"				
+label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_EDIT_PICTURE"
+description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_EDIT_PICTURE_DESC"
+class="inputbox"
+preview="show"	
+targetfolder="agegroups"	
 showon="show_info:1[AND]show_image:1"		
-				directory="images/com_sportsmanagement/database/agegroups"
-        />	
+directory="images/com_sportsmanagement/database/agegroups"/>	
         
         <field
             name="cr_picture"

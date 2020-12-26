@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage predictionentry
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -32,7 +28,6 @@ use Joomla\CMS\Log\Log;
 class sportsmanagementViewPredictionEntry extends sportsmanagementView
 {
 
-
 	/**
 	 * sportsmanagementViewPredictionEntry::init()
 	 *
@@ -46,13 +41,12 @@ class sportsmanagementViewPredictionEntry extends sportsmanagementView
 
 		if (isset($this->predictionGame))
 		{
-			$config        = sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
-			$overallConfig = sportsmanagementModelPrediction::getPredictionOverallConfig();
-
-			$this->config             = array_merge($overallConfig, $config);
-			$configavatar             = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
-			$this->configavatar       = $configavatar;
-			$this->predictionMember   = sportsmanagementModelPrediction::getPredictionMember($configavatar);
+//			$config        = sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
+//			$overallConfig = sportsmanagementModelPrediction::getPredictionOverallConfig();
+//			$this->config             = array_merge($overallConfig, $config);
+//			$configavatar             = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
+			$this->configavatar       = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
+			$this->predictionMember   = sportsmanagementModelPrediction::getPredictionMember($this->configavatar);
 			$this->predictionProjectS = sportsmanagementModelPrediction::getPredictionProjectS();
 			$this->actJoomlaUser      = Factory::getUser();
 

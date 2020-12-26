@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage imagehandler
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Filesystem\Path;
@@ -119,40 +115,25 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 		$app    = Factory::getApplication();
 		static $list;
 
-		/**
-		 *
-		 * Only process the list once per request
-		 */
+		/** Only process the list once per request */
 		if (is_array($list))
 		{
 			return $list;
 		}
 
-		/**
-		 *
-		 * Get folder from request
-		 */
+		/** Get folder from request */
 		$folder = $this->getState('folder');
 		$search = $this->getState('search');
 
-		/**
-		 *
-		 * Initialize variables
-		 */
+		/** Initialize variables */
 		$basePath = JPATH_SITE . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $option . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . $folder;
 
 		$images = array();
 
-		/**
-		 *
-		 * Get the list of files and folders from the given folder
-		 */
+		/** Get the list of files and folders from the given folder */
 		$fileList = Folder::files($basePath);
 
-		/**
-		 *
-		 * Iterate over the files if they exist
-		 */
+		/** Iterate over the files if they exist */
 		if ($fileList !== false)
 		{
 			foreach ($fileList as $file)

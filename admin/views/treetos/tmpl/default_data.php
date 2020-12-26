@@ -30,7 +30,7 @@ use Joomla\CMS\HTML\HTMLHelper;
             <th id="thtreetos-total" width="5"
                 style="vertical-align: top; "><?php echo count($this->items) . '/' . $this->pagination->total; ?></th>
             <th id="thtreetos-checkall" width="20" style="vertical-align: top; ">
-                <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/>
+                <?php echo HTMLHelper::_('grid.checkall'); ?>
             </th>
             <th id="thtreetos-name" class="title" nowrap="nowrap"
                 style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_NAME'); ?></th>

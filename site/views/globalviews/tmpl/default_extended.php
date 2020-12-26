@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage globalviews
@@ -11,10 +9,9 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
     <h4>
@@ -27,6 +24,47 @@ use Joomla\CMS\Language\Text;
     </h4>
 
 <?php
+          
+?>
+
+<?php      
+if ( $this->extended2 )
+{
+//echo 'extended2<pre>'.print_r($this->extended2,true).'</pre>';          
+//echo $this->extended2->renderFieldset('COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERENCES');          
+foreach($this->extended2->getFieldset('COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERENCES') as $field) : ?>
+<div class="row">            
+<div class="col-sm-3"><label for="<?php echo $field->name; ?>"><?php echo $field->label; ?></label></div>
+
+
+<?php
+switch ( $field->type )
+{
+case 'Url':
+echo HTMLHelper::_('link', $field->value, $field->value, array("target" => "_blank"));
+break;    
+default:
+?>
+<div class="col-sm-9"><?php echo $field->value; ?></div>
+<?php
+break;    
+}
+
+
+
+
+?>
+
+  
+  
+  </div>
+  <?php
+endforeach;  
+}
+     ?>
+  
+<?php
+/*          
 foreach ($this->extended as $key => $value)
 {
 	if ($value)
@@ -103,7 +141,7 @@ foreach ($this->extended as $key => $value)
 		<?php
 	}
 }
-
+*/
 
 return;
 ?>

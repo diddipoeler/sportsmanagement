@@ -30,21 +30,24 @@
 		
         <field
             name="name"
-            size="100"
+            size="200"
+			maxlength="200"
             type="text"
             label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
             description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
-            class="inputbox"
+            class="input-xxlarge"
             required="true"
         />
         
         <field
             name="alias"
-            size="100"
+            size="200"
+			maxlength="200"
             type="text"
             label="JFIELD_ALIAS_LABEL"
             description="JFIELD_ALIAS_DESC"
-            class="inputbox"
+			readonly="true"
+            class="input-xxlarge readonly"
         />
         
         <field
@@ -59,8 +62,10 @@
         <field 
             name="geocomplete"
             type="geocomplete"
-            class="inputbox"
-            size="40" 
+            readonly="true"
+            class="input-xxlarge readonly"
+            size="200" 
+			maxlength="200"
             label="COM_SPORTSMANAGEMENT_LOCATION_FIELD_GEOCOMPLETE_LABEL"
             description="COM_SPORTSMANAGEMENT_LOCATION_FIELD_GEOCOMPLETE_DESC" 
         />
@@ -68,6 +73,7 @@
         <field
             name="country"
             type="country"
+	       onchange="javascript:getlatlonopenstreet(1);"
             label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY"
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY_DESC"
             required="true"
@@ -75,7 +81,17 @@
         >
             <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
         </field>
-  
+  <!--
+  <field
+            name="country_geocode"
+            type="countrylist"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY_GEOCODE"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY_GEOCODE_DESC"
+            class="form-control form-control-inline"
+        >
+            <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
+        </field>
+		-->
         <field
             name="state"
             size="50"
@@ -88,6 +104,7 @@
         <field
             name="location"
             type="text"
+	       onchange="javascript:getlatlonopenstreet(1);"
             label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY"
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY_DESC"
             class="inputbox"
@@ -96,6 +113,7 @@
         <field
             name="zipcode"
             type="text"
+	       onchange="javascript:getlatlonopenstreet(1);"
             label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_POSTAL_CODE"
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_POSTAL_CODE_DESC"
             class="inputbox"
@@ -104,6 +122,7 @@
         <field
             name="address"
             type="textarea"
+	       onchange="javascript:getlatlonopenstreet(1);"
             label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS_DESC"
             class="inputbox"
@@ -198,6 +217,29 @@
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FACEBOOK_DESC"
             class="inputbox"
         />
+		
+		
+		
+		
+		
+		<field
+            name="instagram"
+            size="100"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_INSTAGRAM"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_INSTAGRAM_DESC"
+            class="inputbox"
+        />
+		<field
+            name="linkedin"
+            size="100"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LINKEDIN"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LINKEDIN_DESC"
+            class="inputbox"
+        />
+		
+		
             			
         <field
             name="manager"
@@ -237,7 +279,7 @@
       	
         <field
             name="standard_playground"
-            type="playgroundlist"
+            type="playgroundlist2"
             class="inputbox"
             default="0"
             size="1"
@@ -337,6 +379,7 @@
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_BIG_CR_DESC"
             class="inputbox"
         />
+	    <!--
 	  <field
             name="logo_middle"
             type="media"
@@ -357,6 +400,9 @@
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_MIDDLE_CR_DESC"
             class="inputbox"
         />   
+	    -->
+	    
+	    <!--
         <field
             name="logo_small"
             type="media"
@@ -377,7 +423,7 @@
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_SMALL_CR_DESC"
             class="inputbox"
         />  
-       
+       -->
         <field
             name="trikot_home"
             type="media"

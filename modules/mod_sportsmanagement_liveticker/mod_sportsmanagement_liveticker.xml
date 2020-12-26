@@ -7,7 +7,7 @@
 	<creationDate>Februar 2014</creationDate>
 	<copyright>(C) 2014 </copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-	<version>1.00</version>
+	<version>3.8.0</version>
 	<description>MOD_SPORTSMANAGEMENT_LIVETICKER_DESC</description>
 
 	<files>
@@ -16,6 +16,7 @@
 		<filename>index.html</filename>
 		<filename>helper.php</filename>
 		<filename>readme.txt</filename>
+		<filename>update-server.xml</filename>
 		<filename>tmpl/default.php</filename>
 		<filename>tmpl/index.html</filename>
 		<filename>js/jquery-1.2.3.pack.js</filename>
@@ -191,4 +192,10 @@
 
 		</fields>
 	</config>
+	
+	<updateservers>
+<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/modules/mod_sportsmanagement_liveticker/update-server.xml</server>
+</updateservers>
+
+
 </extension>

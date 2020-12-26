@@ -221,7 +221,7 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 						$result->home_logo_big = 'images/com_sportsmanagement/database/placeholders/placeholder_150.png';
 					}
 
-					$body .= HTMLHelper::image(Uri::root() . $result->home_logo_big, $imgTitle, array(' title' => $imgTitle, ' width' => 30));
+					$body .= HTMLHelper::_('image',Uri::root() . $result->home_logo_big, $imgTitle, array(' title' => $imgTitle, ' width' => 30));
 					$body .= ' ';
 					$body .= "</td>";
 					$body .= "<td nowrap='nowrap' class='td_c'>";
@@ -240,7 +240,7 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 						$result->away_logo_big = 'images/com_sportsmanagement/database/placeholders/placeholder_150.png';
 					}
 
-					$body .= HTMLHelper::image(Uri::root() . $result->away_logo_big, $imgTitle, array(' title' => $imgTitle, ' width' => 30));
+					$body .= HTMLHelper::_('image',Uri::root() . $result->away_logo_big, $imgTitle, array(' title' => $imgTitle, ' width' => 30));
 					$body .= "</td>";
 					$body .= "<td nowrap='nowrap' class='td_l'>";
 					$body .= $result->away_name;

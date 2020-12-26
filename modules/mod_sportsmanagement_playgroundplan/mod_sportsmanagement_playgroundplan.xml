@@ -7,13 +7,14 @@
 	<authorUrl>http://www.fussballineuropa.de</authorUrl>
 	<license>GNU/GPL</license>
 	<copyright>Copyright (c) 2014 diddipoeler</copyright>
-	<version>1.0</version>
+	<version>3.8.0</version>
 	<description>MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_XML_DESC</description>
 
 	<files>
 		<filename module="mod_sportsmanagement_playgroundplan">mod_sportsmanagement_playgroundplan.php</filename>
 		<filename>index.html</filename>
 		<filename>helper.php</filename>
+		<filename>update-server.xml</filename>
 		<folder>css</folder>
 		<folder>js</folder>
 		<folder>tmpl</folder>
@@ -252,4 +253,9 @@ description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_DIVCLASS_ROW">
 				</fieldset>
 		</fields>
 	</config>
+	
+	<updateservers>
+<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/modules/mod_sportsmanagement_playgroundplan/update-server.xml</server>
+</updateservers>
+
 </extension>

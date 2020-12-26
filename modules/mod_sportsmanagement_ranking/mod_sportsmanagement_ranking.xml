@@ -7,7 +7,7 @@
 	<authorUrl>http://www.fussballineuropa.de</authorUrl>
 	<license>GNU/GPL</license>
 	<copyright>Copyright (c) 2014 diddipoeler</copyright>
-	<version>1.0</version>
+	<version>3.8.0</version>
 	<description>MOD_SPORTSMANAGEMENT_RANKING_XML_DESC</description>
 	
 	<files>
@@ -15,6 +15,7 @@
 		<filename>index.html</filename>
 		<filename>helper.php</filename>
 		<filename>mod_sportsmanagement_ranking.xml</filename>
+		<filename>update-server.xml</filename>
 		<folder>tmpl</folder>
 		<folder>css</folder>
 	</files>
@@ -110,11 +111,12 @@
 					<option value="1">JYES</option>
 				</field>
 
-
+<!--
 				<field 	name="spacer1" type="spacer" default="" 
 						label="MOD_SPORTSMANAGEMENT_RANKING_SPACER1"
 						description="" />
-
+				-->
+<field type="extensionsubtitle" title="MOD_SPORTSMANAGEMENT_RANKING_SPACER1" color="#2672a6" />
 				<field 	name="showRankColumn" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_RANKING_SHOW_RANKCOLUMN_LABEL"
 						description="MOD_SPORTSMANAGEMENT_RANKING_SHOW_RANKCOLUMN_DESCR">
@@ -131,11 +133,12 @@
 						label="MOD_SPORTSMANAGEMENT_RANKING_COLUMN_NAMES_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_RANKING_COLUMN_NAMES_DESCR" 
 						size="50"/>
-		
+		<!--
 				<field 	name="spacer2" type="spacer" default="" 
 						label="MOD_SPORTSMANAGEMENT_RANKING_SPACER2"
 						description="" />
-
+				-->
+<field type="extensionsubtitle" title="MOD_SPORTSMANAGEMENT_RANKING_SPACER2" color="#2672a6" />
 				<field 	name="nametype" type="list" default="short_name" 
 						label="MOD_SPORTSMANAGEMENT_RANKING_TEAM_NAME_LABEL"
 						description="MOD_SPORTSMANAGEMENT_RANKING_TEAM_NAME_DESCR">
@@ -158,10 +161,10 @@
 						label="MOD_SPORTSMANAGEMENT_RANKING_SHOW_LOGO_LABEL"
 						description="MOD_SPORTSMANAGEMENT_RANKING_SHOW_LOGO_DESCR">
 					<option value="0">MOD_SPORTSMANAGEMENT_RANKING_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_RANKING_CLUB_LOGO_SMALL</option>
-					<option value="3">MOD_SPORTSMANAGEMENT_RANKING_CLUB_LOGO_MIDDLE</option>
 					<option value="4">MOD_SPORTSMANAGEMENT_RANKING_CLUB_LOGO_BIG</option>
 					<option value="2">MOD_SPORTSMANAGEMENT_RANKING_COUNTRY_FLAG</option>
+					<option value="5">MOD_SPORTSMANAGEMENT_RANKING_TRIKOT_HOME</option>
+					<option value="6">MOD_SPORTSMANAGEMENT_RANKING_TRIKOT_AWAY</option>
 				</field>
 
 				<field 	name="show_rank_colors" type="extensionradiobutton" default="0"  class="radio btn-group btn-group-yesno"
@@ -242,4 +245,9 @@
 			</fieldset>
 		</fields>
 	</config>
+	
+	<updateservers>
+<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/modules/mod_sportsmanagement_ranking/update-server.xml</server>
+</updateservers>
+
 </extension>

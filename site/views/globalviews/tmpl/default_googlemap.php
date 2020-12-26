@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage globalviews
@@ -23,7 +21,6 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -37,14 +34,24 @@ $map_type      = 'http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}';
 
 if ($this->config['use_which_map'])
 {
-	$this->document->addScript('https://unpkg.com/leaflet@1.3.4/dist/leaflet.js');
-	$this->document->addStyleSheet('https://unpkg.com/leaflet@1.3.4/dist/leaflet.css');
+?>
 
-	$this->document->addScript('https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.63.0/dist/L.Control.Locate.min.js');
-	$this->document->addStyleSheet('https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.63.0/dist/L.Control.Locate.min.css');
+<link rel="stylesheet" href="https://unpkg.com/leaflet@<?php echo $this->leaflet_version;?>/dist/leaflet.css"
+  integrity="<?php echo $this->leaflet_css_integrity;?>"
+  crossorigin=""/>
+<?php  
+$this->document->addStyleSheet('https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@'.$this->leaflet_locatecontrol.'/dist/L.Control.Locate.min.css');  
+$this->document->addStyleSheet('https://unpkg.com/leaflet-routing-machine@'.$this->leaflet_routing_machine.'/dist/leaflet-routing-machine.css');   
+?>
+<script src="https://unpkg.com/leaflet@<?php echo $this->leaflet_version;?>/dist/leaflet.js"
+  integrity="<?php echo $this->leaflet_js_integrity;?>"
+  crossorigin=""></script>
 
-	$this->document->addScript('https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.2.12/leaflet-routing-machine.js');
-	$this->document->addStyleSheet('https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.2.12/leaflet-routing-machine.css');
+<?php	
+ 
+$this->document->addScript('https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@'.$this->leaflet_locatecontrol.'/dist/L.Control.Locate.min.js');
+$this->document->addScript('https://unpkg.com/leaflet-routing-machine@'.$this->leaflet_routing_machine.'/dist/leaflet-routing-machine.js');
+
 
 	/**
 	 * geocoderscript
@@ -73,7 +80,7 @@ if ($this->config['use_which_map'])
 		<?php echo Text::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?>
     </h4>
     <div id="map"
-         style="height: <?php echo $this->mapconfig['map_height']; ?>px; margin-top: 50px; position: relative;">
+         style="height: <?php echo $this->mapconfig['map_height']; ?>px; margin-top: 50px; position: relative;" itemscope itemtype="http://schema.org/Place">
     </div>
 	<?php
 	switch ($this->view)
@@ -153,6 +160,11 @@ if ($this->config['use_which_map'])
 			{
 				$this->showmap = true;
 				?>
+<span itemprop="name"><?php echo $this->club->name; ?></span>
+<div itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
+    <meta itemprop="latitude" content="<?php echo $this->club->latitude; ?>" />
+    <meta itemprop="longitude" content="<?php echo $this->club->longitude; ?>" />
+  </div>
                 <script>
 
                     var planes = [

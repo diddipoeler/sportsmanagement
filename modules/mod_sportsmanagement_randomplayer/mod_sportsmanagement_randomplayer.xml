@@ -7,13 +7,14 @@
 	<authorUrl>http://www.fussballineuropa.de</authorUrl>
 	<license>GNU/GPL</license>
 	<copyright>Copyright (c) 2014 diddipoeler</copyright>
-	<version>1.0</version>
+	<version>3.8.0</version>
 	<description>MOD_SPORTSMANAGEMENT_RANDOMPLAYER_XML_DESC</description>
 
 	<files>
 		<filename module="mod_sportsmanagement_randomplayer">mod_sportsmanagement_randomplayer.php</filename>
 		<filename>index.html</filename>
 		<filename>helper.php</filename>
+		<filename>update-server.xml</filename>
 		<folder>css</folder>
 		<folder>tmpl</folder>
 	</files>
@@ -206,6 +207,11 @@ description="Debug Modus">
 			</fieldset>
 		</fields>
 	</config>
+	
+	<updateservers>
+<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/modules/mod_sportsmanagement_randomplayer/update-server.xml</server>
+</updateservers>
+
 </extension>
 
  

@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage project
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -232,14 +228,12 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 		if (self::$projectid > 0)
 		{
 			$query->select('p.*, l.country, st.id AS sport_type_id, st.name AS sport_type_name');
-			$query->select('st.icon AS sport_type_picture, l.picture as leaguepicture, l.name as league_name, s.name as season_name  ');
+			$query->select('st.icon AS sport_type_picture, l.picture as leaguepicture, l.name as league_name, s.name as season_name,r.name as round_name');
 			$query->select('LOWER(SUBSTR(st.name, CHAR_LENGTH( "COM_SPORTSMANAGEMENT_ST_")+1)) AS fs_sport_type_name');
 			$query->select('CONCAT_WS( \':\', p.id, p.alias ) AS slug');
-
 			$query->select('CONCAT_WS( \':\', l.id, l.alias ) AS league_slug');
 			$query->select('CONCAT_WS( \':\', s.id, s.alias ) AS season_slug');
 			$query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
-
 			$query->select('l.cr_picture as cr_leaguepicture');
 			$query->from('#__sportsmanagement_project AS p ');
 			$query->join('INNER', '#__sportsmanagement_sports_type AS st ON p.sports_type_id = st.id ');
@@ -922,7 +916,7 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 		$query->select('st.team_id');
 		$query->select('c.email as club_email,c.phone as club_phone,c.fax as club_fax,c.logo_small,c.logo_middle,c.logo_big,c.country,c.website,c.new_club_id,c.facebook,c.twitter');
 		$query->select('d.name AS division_name,d.shortname AS division_shortname,d.parent_id AS parent_division_id');
-		$query->select('plg.name AS playground_name,plg.short_name AS playground_short_name');
+		$query->select('plg.name AS playground_name,plg.short_name AS playground_short_name, c.trikot_home, c.trikot_away');
 		$query->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
 		$query->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
 		$query->select('CONCAT_WS(\':\',tl.id,t.alias) AS projectteam_slug');
@@ -1379,6 +1373,7 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 			$query->from('#__sportsmanagement_project_position AS ppos');
 			$query->join('INNER', '#__sportsmanagement_position AS pos ON ppos.position_id = pos.id');
 			$query->where('ppos.project_id = ' . (int) self::$projectid);
+			$query->order('pos.persontype,pos.ordering');
 
 			try
 			{

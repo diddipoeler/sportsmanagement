@@ -91,7 +91,7 @@ class sportsmanagementModelComments
 
 		if ($match_id > 0)
 		{
-			$database = JFactory::getDBO();
+			$database = Factory::getDBO();
 			$query    = $database->getQuery(true);
 			$query->clear();
 
@@ -256,7 +256,7 @@ class sportsmanagementModelCommentsKunena extends sportsmanagementModelComments
 
 	function __construct(&$config)
 	{
-		$database = JFactory::getDBO();
+		$database = Factory::getDBO();
 
 		$this->sbItemid = 0;
 
@@ -308,7 +308,7 @@ class sportsmanagementModelCommentsKunena extends sportsmanagementModelComments
 		$title      = sprintf("%s - %s", addslashes($match_home), addslashes($match_away));
 
 		$query    = sprintf("SELECT id, posts FROM #__kunena_topics WHERE category_id = %s AND subject = '%s'", $project->sb_catid, $title);
-		$database = JFactory::getDBO();
+		$database = Factory::getDBO();
 		$database->setQuery($query);
 		$result = $database->loadAssoc();
 

@@ -115,7 +115,7 @@ $n = 1;
 
 			$textdiv .= '<div class="jlplplanedate">';
 			$textdiv .= HTMLHelper::date($match->match_date, $dateformat);
-			$textdiv .= " " . Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_JL_START_TIME') . " ";
+			$textdiv .= " " . Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_JSM_START_TIME') . " ";
 			list($date, $time) = explode(" ", $match->match_date);
 			$time    = strftime("%H:%M", strtotime($time));
 			$textdiv .= $time;

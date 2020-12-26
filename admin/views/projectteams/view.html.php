@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage projectteams
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
@@ -22,6 +18,7 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementViewprojectteams
@@ -34,6 +31,21 @@ use Joomla\CMS\Component\ComponentHelper;
  */
 class sportsmanagementViewprojectteams extends sportsmanagementView
 {
+	/**
+	 * A \JForm instance with filter fields.
+	 *
+	 * @var    \JForm
+	 * @since  3.6.3
+	 */
+	public $filterForm;
+
+	/**
+	 * An array with active filters.
+	 *
+	 * @var    array
+	 * @since  3.6.3
+	 */
+	public $activeFilters;
 
 	/**
 	 * sportsmanagementViewprojectteams::init()
@@ -99,10 +111,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 
 		$lists['divisions'] = $projectdivisions;
 
-		/**
-		 *
-		 * build the html select list for project assigned teams
-		 */
+		/** build the html select list for project assigned teams */
 		$ress         = array();
 		$res1         = array();
 		$notusedteams = array();
@@ -181,10 +190,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 			$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ADD_TEAM'), 'Notice');
 		}
 
-		/**
-		 *
-		 * build the html select list for teams
-		 */
+		/** build the html select list for teams */
 		if (count($notusedteams) > 0)
 		{
 			$lists['teams'] = JHtmlSelect::genericlist(
@@ -204,10 +210,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		unset($res1);
 		unset($notusedteams);
 
-		/**
-		 *
-		 * build the html options for nation
-		 */
+		/** build the html options for nation */
 		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 
 		if ($res = JSMCountries::getCountryOptions())
@@ -226,16 +229,19 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 			$this->state->get('filter.search_nation')
 		);
 
-		if (ComponentHelper::getParams($this->option)->get('show_option_projectteams_quickadd', 0))
+		if ( $project->fast_projektteam )
 		{
 			$lists['country_teams']         = $this->model->getCountryTeams();
 			$lists['country_teams_picture'] = $this->model->getCountryTeamsPicture();
 		}
+		$finaltablerank    = array();
+		for ($a = 0; $a < 41; $a++)
+		{
+			$finaltablerank[] = HTMLHelper::_('select.option', $a, $a);
+		}
+		$lists['finaltablerank'] = $finaltablerank;
 
-		/**
-		 *
-		 * build the html select list for all teams
-		 */
+		/** build the html select list for all teams */
 		$allTeams    = array();
 		$all_teams[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
 
@@ -267,14 +273,29 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 			case 'editlist';
 			case 'editlist_3';
 			case 'editlist_4';
-				$this->setLayout('editlist');
-				break;
+			$this->setLayout('editlist');
+			break;
 			case 'changeteams';
 			case 'changeteams_3';
 			case 'changeteams_4';
-				$this->setLayout('changeteams');
-				break;
+				foreach ($this->projectteam as $teams)
+		{
+				$teams->name = $teams->name.' ('.$teams->seasonname.')';	
+				}
+			$this->setLayout('changeteams');
+			break;
 		}
+		
+try
+{		
+$this->filterForm    = $this->model->getFilterForm();
+$this->activeFilters = $this->model->getActiveFilters();
+}
+catch (Exception $e)
+{
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');	
+}		
 
 	}
 
@@ -285,16 +306,12 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-
 		$this->app->setUserState("$this->option.pid", $this->project_id);
 		$this->app->setUserState("$this->option.season_id", $this->season_id);
 		$this->app->setUserState("$this->option.project_art_id", $this->project_art_id);
 		$this->app->setUserState("$this->option.sports_type_id", $this->sports_type_id);
 
-		/**
-		 *
-		 * Set toolbar items for the page
-		 */
+		/** Set toolbar items for the page */
 		if ($this->project_art_id != 3)
 		{
 			$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_TITLE');
@@ -303,6 +320,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		{
 			$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTPERSONS_TITLE');
 		}
+        ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=project&layout=panel&id='.$this->project_id);
 
 		ToolbarHelper::custom('projectteams.setseasonid', 'purge.png', 'purge_f2.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_SET_SEASON_ID'), true);
 		ToolbarHelper::custom('projectteams.matchgroups', 'purge.png', 'purge_f2.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_CHANGE_MATCH_GROUPS'), true);

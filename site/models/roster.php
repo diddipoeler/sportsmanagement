@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage roster
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
@@ -30,15 +26,10 @@ use Joomla\CMS\Log\Log;
 class sportsmanagementModelRoster extends JSMModelLegacy
 {
 	static $projectid = 0;
-
 	static $projectteamid = 0;
-
 	static $teamid = 0;
-
 	static $seasonid = 0;
-
 	static $projectteam = null;
-
 	static $team = null;
 	/**
 	 * caching players
@@ -94,7 +85,7 @@ class sportsmanagementModelRoster extends JSMModelLegacy
 			{
 				$query = $db->getQuery(true);
 				$query->clear();
-				$query->select('pt.project_id,pt.id,st.team_id as season_team_id');
+				$query->select('pt.project_id,pt.id,st.team_id as season_team_id,pt.notes');
 				$query->select("" . $team_picture_which . ".picture as picture");
 				$query->from('#__sportsmanagement_project_team AS pt');
 				$query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');
@@ -119,7 +110,7 @@ class sportsmanagementModelRoster extends JSMModelLegacy
 
 				$query = $db->getQuery(true);
 				$query->clear();
-				$query->select('pt.project_id,pt.id,st.team_id as season_team_id');
+				$query->select('pt.project_id,pt.id,st.team_id as season_team_id,pt.notes');
 				$query->select("" . $team_picture_which . ".picture as picture");
 				$query->from('#__sportsmanagement_project_team AS pt');
 				$query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');
@@ -151,8 +142,6 @@ class sportsmanagementModelRoster extends JSMModelLegacy
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
-
-		// Create a new query object.
 		$db        = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query     = $db->getQuery(true);
 		$starttime = microtime();
@@ -174,8 +163,10 @@ class sportsmanagementModelRoster extends JSMModelLegacy
 			}
 
 			$query->select('t.*');
+            $query->select('c.logo_big');
 			$query->select('CONCAT_WS(\':\',t.id,t.alias) AS slug');
 			$query->from('#__sportsmanagement_team AS t');
+            $query->join('INNER', ' #__sportsmanagement_club c ON t.club_id = c.id ');
 			$query->where('t.id = ' . (int) self::$teamid);
 			$db->setQuery($query);
 
@@ -311,8 +302,8 @@ class sportsmanagementModelRoster extends JSMModelLegacy
 		}
 		catch (Exception $e)
 		{
-			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' fehlertext<br><pre>' . $e->getMessage() . '</pre>'), Log::ERROR, 'jsmerror');
-			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' query<br><pre>' . $query->dump() . '</pre>'), Log::ERROR, 'jsmerror');
+			Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), Log::ERROR, 'jsmerror');
+			Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), Log::ERROR, 'jsmerror');
 		}
 
 		switch ($persontype)
@@ -352,8 +343,6 @@ class sportsmanagementModelRoster extends JSMModelLegacy
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
-
-		// Create a new query object.
 		$db        = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query     = $db->getQuery(true);
 		$starttime = microtime();

@@ -9,12 +9,12 @@
 		GNU/GPL</license>
 	<authorEmail>info@digital-peak.com</authorEmail>
 	<authorUrl>g4j.digital-peak.com</authorUrl>
-	<version>3.1.5</version>
+	<version>3.8.0</version>
 	<description>MOD_SPORTSMANAGEMENT_GCALENDAR_XML_DESCRIPTION</description>
 	<files>
-		<filename module="mod_sportsmanagement_gcalendar">mod_sportsmanagement_gcalendar.php
-		</filename>
+		<filename module="mod_sportsmanagement_gcalendar">mod_sportsmanagement_gcalendar.php</filename>
 		<filename>index.html</filename>
+		<filename>update-server.xml</filename>
 		<filename>helper.php</filename>
 		<folder>tmpl</folder>
 	</files>
@@ -64,4 +64,9 @@
 			</fieldset>
 		</fields>
 	</config>
+	
+	<updateservers>
+<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/modules/mod_sportsmanagement_gcalendar/update-server.xml</server>
+</updateservers>
+
 </extension>

@@ -28,6 +28,12 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		<field 	name="project_logo_height" type="text" default="40"
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PROJECT_PICTURE_HEIGHT" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PROJECT_PICTURE_HEIGHT">
+		</field>
+		
+		
 		
 			<field 	name="show_team_logo" 
     type="extensionradiobutton" 
@@ -38,6 +44,12 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+<field 	name="team_logo_height" type="text" default="40"
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_LOGO_HEIGHT" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_LOGO_HEIGHT">
+		</field>
+
+
 
 		<field 	name="show_team_picture" 
     type="extensionradiobutton" 
@@ -48,6 +60,14 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+<field 	name="team_picture_height" type="text" default="40"
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_PICTURE_HEIGHT" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_PICTURE_HEIGHT">
+		</field>
+
+
+
+
 		
 		<field 	name="show_players_layout" type="extensionradiobutton" default="no_tabs" 
     class="radio btn-group btn-group-yesno"
@@ -165,11 +185,18 @@
     type="extensionradiobutton" 
     default="1"  
     class="radio btn-group btn-group-yesno"
-				label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_SHOW_PL_CAREER_PPICTURE"
-				description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_SHOW_PL_CAREER_PPICTURE">
+				label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_SHOW_PL_CAREER_STATS_PPICTURE"
+				description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_SHOW_PL_CAREER_STATS_PPICTURE">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		
+		<field 	name="plstats_ppicture_height" type="text" default="40"
+				label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_SHOW_PL_CAREER_PPICTURE_STATS_HEIGHT" 
+				description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_SHOW_PL_CAREER_PPICTURE_STATS_HEIGHT">
+		</field>
+		
+		
 <!-- spielerstatistiken  -->
 		<field	name="show_career_stats" 
     type="extensionradiobutton" 
@@ -226,6 +253,14 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+				<field 	name="plcareer_ppicture_height" type="text" default="40"
+				label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_SHOW_PL_CAREER_PPICTURE_HEIGHT" 
+				description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_SHOW_PL_CAREER_PPICTURE_HEIGHT">
+		</field>
+		
+		
+		
+		
 <!-- karriere als mannschaftsmitarbeiter  -->
 		<field	name="show_stcareer" 
     type="extensionradiobutton" 
@@ -347,10 +382,15 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		
+		<!--
 		<field 	name="picture_width" type="text" default="150"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PLAYER_PICTURE_WIDTH" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PLAYER_PICTURE_WIDTH">
+		</field>
+		-->
+		<field 	name="picture_height" type="text" default="150"
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PLAYER_PICTURE_HEIGHT" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PLAYER_PICTURE_HEIGHT">
 		</field>
 		
 		<field name="player_picture_style" type="list" default=""

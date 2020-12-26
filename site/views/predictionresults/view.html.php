@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage predictionresults
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -50,14 +46,14 @@ class sportsmanagementViewPredictionResults extends sportsmanagementView
 
 		if (isset($this->predictionGame))
 		{
-			$config        = sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
+//			$config        = sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
 			$configavatar  = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
 			$configentry   = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionentry');
-			$config        = array_merge($configentry, $config);
-			$overallConfig = sportsmanagementModelPrediction::getPredictionOverallConfig();
+			$this->config        = array_merge($configentry, $this->config);
+//			$overallConfig = sportsmanagementModelPrediction::getPredictionOverallConfig();
 
 			$this->roundID             = sportsmanagementModelPredictionResults::$roundID;
-			$this->config              = array_merge($overallConfig, $config);
+//			$this->config              = array_merge($overallConfig, $config);
 			$this->model->config       = $this->config;
 			$this->configavatar        = $configavatar;
 			$this->model->configavatar = $this->configavatar;

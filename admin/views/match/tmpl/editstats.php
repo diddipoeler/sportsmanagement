@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage match
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -76,7 +72,6 @@ if ($close == 1)
 	?>
 
     <input type="hidden" name="view" value=""/>
-
     <input type="hidden" name="close" id="close" value="0"/>
     <input type="hidden" name="task" id="" value=""/>
     <input type="hidden" name="project_id" value="<?php echo $this->project_id; ?>"/>

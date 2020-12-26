@@ -1034,11 +1034,17 @@ class JInstallationHelper
 			$query = trim($query);
 			if ($query != '' && $query{0} != '#')
 			{
+			 try{
 				$db->setQuery($query);
-				//echo $query .'<br />';
-				$db->execute() or die($db->getErrorMsg());
+				$db->execute();
+                }
+		catch (Exception $e)
+		{
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');
+		}
 
-				JInstallationHelper::getDBErrors($errors, $db);
+				//JInstallationHelper::getDBErrors($errors, $db);
 			}
 		}
 

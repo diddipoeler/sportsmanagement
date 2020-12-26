@@ -2,7 +2,7 @@
 <form
 	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
-	
+	<!-- reiter 1 --> 
 	<fieldset name="details"
   label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
   description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
@@ -21,9 +21,9 @@
 			type="text"
 			label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
 			description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
-			size="68"
-			maxlength="100"
-			class="text_area"
+			size="200"
+			maxlength="200"
+			class="input-xxlarge"
 			required="true"/>
 			
 		<field
@@ -31,9 +31,10 @@
 			type="text"
 			label="COM_SPORTSMANAGEMENT_GLOBAL_ALIAS"
 			description="COM_SPORTSMANAGEMENT_GLOBAL_ALIAS_DESC"
-			size="68"
-			maxlength="100"
-			class="form-control form-control-inline"/>
+			size="200"
+			maxlength="200"
+			readonly="true"
+			class="input-xxlarge readonly"/>
 		
     <field
 			name="staffel_id"
@@ -168,6 +169,18 @@ JARCHIVED</option>
 			<option value="1">JYES</option>
 		</field>
 		
+		<field name="fast_projektteam" 
+    type="extensionradiobutton" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_PROJECTTEAMS_QUICKADD" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_PROJECTTEAMS_QUICKADD_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+		
+		
 		<field
 			name="admin"
 			type="user"
@@ -253,12 +266,23 @@ JARCHIVED</option>
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EXTENSION_DESC"/>
 
       <!-- http://docs.joomla.org/Category_form_field_type -->
+	  <!--
       <field name="category_id" 
       type="media" 
       extension="" 
       label="JCATEGORIES" 
-      description="JGLOBAL_CHOOSE_CATEGORY_DESC" />
-
+      description="JGLOBAL_CHOOSE_CATEGORY_DESC" /> 
+	  -->
+<field
+			name="category_id"
+			type="category"
+			label="JGLOBAL_CHOOSE_CATEGORY_DESC"
+			description="JGLOBAL_CHOOSE_CATEGORY_DESC"
+			extension="com_content"
+			>
+			<option value="">JOPTION_SELECT_CATEGORY</option>
+		</field>
+		
 <field name="gcalendar_id" 
 type="gcalendar" 
 default="" 
@@ -292,7 +316,7 @@ description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SELECT_CALE
 		</field>
     		
 	</fieldset>
-
+<!-- reiter 2 --> 
       	<fieldset name="description"
   label="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION"
   description="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION_DESC">		
@@ -304,7 +328,8 @@ description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SELECT_CALE
 				width="450" 
 				filter="JComponentHelper::filterText"/>			
 	</fieldset>	
-	
+
+<!-- reiter 3 --> 	
 <fields name="request">
 <fieldset name="request"
 label="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP"
@@ -344,7 +369,7 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP"
 	
 </fieldset>
 </fields>		
-		
+		<!-- reiter 4 --> 
 	<fieldset name="date"
   label="COM_SPORTSMANAGEMENT_TABS_DATE"
   description="COM_SPORTSMANAGEMENT_TABS_DATE_DESC">
@@ -376,7 +401,7 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP"
 			class="inputbox"
 			default="Europe/Amsterdam"/>		
 	</fieldset>
-	
+	<!-- reiter 5 --> 
 	<fieldset name="project"
   label="COM_SPORTSMANAGEMENT_TABS_PROJECT"
   description="COM_SPORTSMANAGEMENT_TABS_PROJECT_DESC">	
@@ -423,7 +448,7 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP"
 			default="7200"/>
 			
 	</fieldset>
-	
+	<!-- reiter 6 --> 
 	<fieldset name="competition"
   label="COM_SPORTSMANAGEMENT_TABS_COMPETITION"
   description="COM_SPORTSMANAGEMENT_TABS_COMPETITION_DESC">
@@ -535,6 +560,7 @@ default="2"/>
 		<field
 			name="add_time"
 			type="text"
+		       showon="allow_add_time:1" 
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_LENGTH_EXTRA_TIME"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_LENGTH_EXTRA_TIME_DESC"
 			class="inputbox validate-numeric"
@@ -543,6 +569,7 @@ default="2"/>
 			
 		<field
 			name="points_after_add_time"
+		       showon="allow_add_time:1" 
 			type="text"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_POINTS_AFTER_EXTRA_TIME"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_POINTS_AFTER_EXTRA_TIME_DESC"
@@ -552,6 +579,7 @@ default="2"/>
 			
 		<field
 			name="points_after_penalty"
+		       showon="allow_add_time:1" 
 			type="text"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_POINTS_AFTER_PENALTY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_POINTS_AFTER_PENALTY_DESC"

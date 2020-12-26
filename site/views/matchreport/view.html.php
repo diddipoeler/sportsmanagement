@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage matchreport
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -41,6 +37,8 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 	 */
 	public function init()
 	{
+	   $this->playgroundheight = 0;
+       
 		$this->model->matchid = $this->jinput->getInt('mid', 0);
 		sportsmanagementModelProject::setProjectID($this->jinput->getInt('p', 0));
 		$project           = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
@@ -57,9 +55,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 			$this->oldmatchtext = $ret->text;
 		}
 
-		/**
-		 * hole den artikel zum spiel
-		 */
+		/** hole den artikel zum spiel */
 		$this->match_article         = $this->model->getMatchArticle($this->match->content_id, $this->model->matchid, $project->category_id);
 		$this->round                 = $this->model->getRound();
 		$this->team1                 = sportsmanagementModelProject::getTeaminfo($this->match->projectteam1_id, sportsmanagementModelProject::$cfg_which_database);
@@ -82,13 +78,6 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 		$this->playerstats           = $this->model->getMatchStats();
 		$this->staffstats            = $this->model->getMatchStaffStats();
 
-		/*
-		$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'extended'.DIRECTORY_SEPARATOR.'match.xml';
-		$jRegistry = new Registry;
-		$jRegistry->loadString($this->match->extended, 'ini');
-		$extended = Form::getInstance('extended', $xmlfile, array('control'=> 'extended'), false, '/config');
-		$extended->bind($jRegistry);
-		*/
 		$this->extended = sportsmanagementHelper::getExtended($this->match->extended, 'match', 'ini', true);
 
 		$this->extended2  = sportsmanagementHelper::getExtended($this->match->extended, 'match');
@@ -111,9 +100,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 
 		if ($this->config['show_pictures'])
 		{
-			/**
-			 * die bilder zum spiel
-			 */
+			/** die bilder zum spiel */
 			$dest   = JPATH_ROOT . '/images/com_sportsmanagement/database/matchreport/' . $this->match->id;
 			$folder = 'matchreport/' . $this->match->id;
 			$images = $this->model->getMatchPictures($folder);
@@ -124,9 +111,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 			}
 		}
 
-		/**
-		 * Set page title
-		 */
+		/** Set page title */
 		$pageTitle = Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_PAGE_TITLE');
 
 		if ((isset($this->team1)) && (isset($this->team1)))
@@ -408,38 +393,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 		return $result;
 	}
 
-	/**
-	 * sportsmanagementViewMatchReport::showSubstitution_Timelines1()
-	 *
-	 * @param   integer  $sub
-	 *
-	 * @return
-	 */
-	function showSubstitution_Timelines1($sub = 0)
-	{
-		$result              = '';
-		$substitutioncounter = array();
-		$eventstimecounter   = $this->getEventsTimes();
-
-		foreach ($this->substitutes as $sub)
-		{
-			if ($sub->ptid == $this->match->projectteam1_id)
-			{
-				if (in_array($sub->in_out_time, $eventstimecounter) || in_array($sub->in_out_time, $substitutioncounter))
-				{
-					$result .= self::_formatTimelineSubstitution($sub, $sub->firstname, $sub->nickname, $sub->lastname, $sub->out_firstname, $sub->out_nickname, $sub->out_lastname, 1);
-				}
-				else
-				{
-					$result .= self::_formatTimelineSubstitution($sub, $sub->firstname, $sub->nickname, $sub->lastname, $sub->out_firstname, $sub->out_nickname, $sub->out_lastname, 0);
-				}
-
-				$substitutioncounter[] = $sub->in_out_time;
-			}
-		}
-
-		return $result;
-	}
+	
 
 	/**
 	 * sportsmanagementViewMatchReport::getEventsTimes()
@@ -474,7 +428,9 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 	 */
 	function _formatTimelineSubstitution($sub, $firstname, $nickname, $lastname, $out_firstname, $out_nickname, $out_lastname, $two_substitutions_per_minute = 0)
 	{
-
+$two_substitutions_per_minute -= 1;
+      $pixeltop = $two_substitutions_per_minute * 25;
+      
 		$pic_out  = 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/out.png';
 		$pic_in   = 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/in.png';
 		$pic_time = 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/change.png';
@@ -485,26 +441,28 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 		$tiptext   = Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE_SUBSTITUTION_MIN') . ' ';
 		$tiptext   .= $time;
 		$tiptext   .= ' ::';
-		$tiptext   .= self::getHtmlImageForTips($pic_in);
+		$tiptext   .= self::getHtmlImageForTips($pic_in,'auto',13);
 		$tiptext   .= sportsmanagementHelper::formatName(null, $firstname, $nickname, $lastname, $this->config["name_format"]);
 		$tiptext   .= ' &lt;br&gt; ';
-		$tiptext   .= self::getHtmlImageForTips($pic_out);
+		$tiptext   .= self::getHtmlImageForTips($pic_out,'auto',13);
 		$tiptext   .= sportsmanagementHelper::formatName(null, $out_firstname, $out_nickname, $out_lastname, $this->config["name_format"]);
 		$result    = '';
 
+      $result .= "\n" . '<img class="hasTip" style="position: absolute; left: ' . $time2 . '%; top: ' . $pixeltop . 'px;"';
+      /*
 		if ($two_substitutions_per_minute == 1) // There were two substitutions in one minute in timelinetop
 		{
-			$result .= "\n" . '<img class="hasTip" style="position: absolute; left: ' . $time2 . '%; top: -25px;"';
+			$result .= "\n" . '<img class="hasTip" style="position: absolute; left: ' . $time2 . '%; top: 25px;"';
 		}
 		elseif ($two_substitutions_per_minute == 2) // There were two substitutions in one minute in timelinebottom
 		{
-			$result .= "\n" . '<img class="hasTip" style="position: absolute; left: ' . $time2 . '%; top: 25px;"';
+			$result .= "\n" . '<img class="hasTip" style="position: absolute; left: ' . $time2 . '%; top: 50px;"';
 		}
 		else
 		{
 			$result .= "\n" . '<img class="hasTip" style="position: absolute; left: ' . $time2 . '%;"';
 		}
-
+*/
 		$result .= ' src="' . $pic_time . '" alt="' . $tiptext . '" title="' . $tiptext;
 		$result .= '" />';
 
@@ -585,135 +543,25 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 	 *
 	 * @return
 	 */
-	function getHtmlImageForTips($picture, $width = 0, $height = 0)
+	function getHtmlImageForTips($picture, $width = 'auto', $height = 0)
 	{
 		$picture = Uri::root() . $picture;
 
-		if ($width > 0 && $height == 0)
-		{
-			return '&lt;img src=&quot;' . $picture . '&quot; width=&quot;' . $width . '&quot; /&gt;';
-		}
+return '&lt;img src=&quot;' . $picture . '&quot;height=&quot;' . $height . '&quot; width=&quot;' . $width . '&quot; /&gt;';
 
-		if ($height > 0 && $width == 0)
-		{
-			return '&lt;img src=&quot;' . $picture . '&quot;height=&quot;' . $height . '&quot;/&gt;';
-		}
-
-		if ($height > 0 && $width > 0)
-		{
-			return '&lt;img src=&quot;' . $picture . '&quot;height=&quot;' . $height . '&quot; width=&quot;' . $width . '&quot; /&gt;';
-		}
-
-		return '&lt;img src=&quot;' . $picture . '&quot; /&gt;';
-	}
-
-	/**
-	 * sportsmanagementViewMatchReport::showSubstitution_Timelines2()
-	 *
-	 * @param   integer  $sub
-	 *
-	 * @return
-	 */
-	function showSubstitution_Timelines2($sub = 0)
-	{
-		$result              = '';
-		$substitutioncounter = array();
-		$eventstimecounter   = $this->getEventsTimes();
-
-		foreach ($this->substitutes as $sub)
-		{
-			if ($sub->ptid == $this->match->projectteam2_id)
-			{
-				if (in_array($sub->in_out_time, $eventstimecounter) || in_array($sub->in_out_time, $substitutioncounter))
-				{
-					$result .= self::_formatTimelineSubstitution($sub, $sub->firstname, $sub->nickname, $sub->lastname, $sub->out_firstname, $sub->out_nickname, $sub->out_lastname, 2);
-				}
-				else
-				{
-					$result .= self::_formatTimelineSubstitution($sub, $sub->firstname, $sub->nickname, $sub->lastname, $sub->out_firstname, $sub->out_nickname, $sub->out_lastname, 0);
-				}
-
-				$substitutioncounter[] = $sub->in_out_time;
-			}
-		}
-
-		return $result;
-	}
-
-	/**
-	 * sportsmanagementViewMatchReport::showEvents_Timelines1()
-	 *
-	 * @param   integer  $eventid
-	 * @param   integer  $projectteamid
-	 *
-	 * @return
-	 */
-	function showEvents_Timelines1($eventid = 0, $projectteamid = 0)
-	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		$result       = '';
-		$eventcounter = array();
-
-		foreach ($this->eventtypes AS $event)
-		{
-			foreach ($this->matchevents AS $me)
-			{
-				if ($me->event_type_id == $event->id && $me->ptid == $this->match->projectteam1_id)
-				{
-					$placeholder = sportsmanagementHelper::getDefaultPlaceholder("player");
-					/**
-					 * set teamplayer picture
-					 */
-					if (($me->tppicture1 != $placeholder) && (!empty($me->tppicture1)))
-					{
-						$picture = $me->tppicture1;
-
-						if (!File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $picture))
-						{
-							$picture = $placeholder;
-						}
-					}
-
-					/**
-					 * when teamplayer picture is empty or a placeholder icon look for the general player picture
-					 */
-					elseif ((($me->tppicture1 == $placeholder) || (empty($me->tppicture1)))
-						&& (($me->picture1 != $placeholder) && (!empty($me->picture1)))
-					)
-					{
-						$picture = $me->picture1;
-
-						if (!File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $picture))
-						{
-							$picture = $placeholder;
-						}
-					}
-					else
-					{
-						$picture = $placeholder;
-					}
-
-					if (in_array($me->event_time, $eventcounter))
-					{
-						$result .= self::_formatTimelineEvent($me, $event, $me->firstname1, $me->nickname1, $me->lastname1, $picture, 1);
-					}
-					else
-					{
-						$result .= self::_formatTimelineEvent($me, $event, $me->firstname1, $me->nickname1, $me->lastname1, $picture, 0);
-					}
-
-					$eventcounter[] = $me->event_time;
-				}
-			}
-		}
-
-		return $result;
+//		if ($width > 0 && $height == 0)
+//		{
+//			return '&lt;img src=&quot;' . $picture . '&quot; width=&quot;' . $width . '&quot; /&gt;';
+//		}
+//		if ($height > 0 && $width == 0)
+//		{
+//			return '&lt;img src=&quot;' . $picture . '&quot;height=&quot;' . $height . '&quot;/&gt;';
+//		}
+//		if ($height > 0 && $width > 0)
+//		{
+//			return '&lt;img src=&quot;' . $picture . '&quot;height=&quot;' . $height . '&quot; width=&quot;' . $width . '&quot; /&gt;';
+//		}
+//		return '&lt;img src=&quot;' . $picture . '&quot; /&gt;';
 	}
 
 	/**
@@ -745,8 +593,8 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 		{
 			$tiptext .= self::getHtmlImageForTips(
 				$picture,
-				$this->config['player_picture_width'],
-				'auto'
+                'auto',
+				$this->config['player_picture_height']
 			);
 		}
 
@@ -776,15 +624,104 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 		return $result;
 	}
 
-	/**
-	 * sportsmanagementViewMatchReport::showEvents_Timelines2()
-	 *
-	 * @param   integer  $eventid
-	 * @param   integer  $projectteamid
-	 *
-	 * @return
-	 */
-	function showEvents_Timelines2($eventid = 0, $projectteamid = 0)
+
+
+
+/**
+ * sportsmanagementViewMatchReport::showSubstitution_Timelines()
+ * 
+ * @param integer $sub
+ * @param string $projectteam_id
+ * @return
+ */
+function showSubstitution_Timelines($sub = 0,$projectteam_id = 'projectteam1_id')
+	{
+		$result              = '';
+		$tiptext              = '';
+		$substitutioncounter = array();
+		$eventstimecounter   = $this->getEventsTimes();
+		
+		$pic_out  = 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/out.png';
+		$pic_in   = 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/in.png';
+		$pic_time = 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/change.png';
+
+      //echo '<pre>'.print_r($eventstimecounter,true).'</pre>';
+      
+		foreach ($this->substitutes as $sub)
+		{
+			if ($sub->ptid == $this->match->$projectteam_id)
+			{
+			 $substitutioncounter2[$sub->in_out_time] += 1;
+
+		if ( $this->config["show_row_timeline"] )
+		{
+		$tiptext   = self::getHtmlImageForTips($pic_in,'auto',13);
+		$tiptext   .= sportsmanagementHelper::formatName(null, $sub->firstname, $sub->nickname, $sub->lastname, $this->config["name_format"]);
+		$tiptext   .= ' &lt;br&gt; ';
+		$tiptext   .= self::getHtmlImageForTips($pic_out,'auto',13);
+		$tiptext   .= sportsmanagementHelper::formatName(null, $sub->out_firstname, $sub->out_nickname, $sub->out_lastname, $this->config["name_format"]);
+		$substitutioncounter[$sub->in_out_time][] = $tiptext;
+		}
+		else
+		{
+		$result .= self::_formatTimelineSubstitution($sub, $sub->firstname, $sub->nickname, $sub->lastname, $sub->out_firstname, $sub->out_nickname, $sub->out_lastname, $substitutioncounter2[$sub->in_out_time]);	
+		}
+		
+		
+			}
+		}
+        arsort($substitutioncounter2);
+        $first = array_shift($substitutioncounter2);
+        if ( $first > $this->playgroundheight )
+{
+    $this->playgroundheight = $first;
+}
+
+if ( $this->config["show_row_timeline"] )
+		{
+$result2    = '';
+foreach( $substitutioncounter as $key => $value )
+{
+$time = $key;
+$matchtime = $this->getTimelineMatchTime();
+$time2     = ($time / $matchtime) * 100;
+$tiptext   = Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE_SUBSTITUTION_MIN') . ' ';
+$tiptext   .= $key;
+$tiptext   .= ' <br>';  
+$tiptext .= implode("<br>", $value);
+
+	
+	
+	
+$result2 .= "\n" . '<img class="hasTooltip" style="position: absolute; left: ' . $time2 . '%; top: 10px;"';	
+$result2 .= ' src="' . $pic_time . '" alt="' . $tiptext . '" title="' . $tiptext;  
+$result2 .= '" />';
+
+}	
+$this->playgroundheight = 2;
+
+//echo '<pre>'.print_r($tiptext,true).'</pre>';
+//echo '<pre>'.print_r($substitutioncounter,true).'</pre>';
+
+return $result2;
+		}
+
+
+
+
+		return $result;
+	}
+
+
+/**
+ * sportsmanagementViewMatchReport::showEvents_Timelines()
+ * 
+ * @param integer $eventid
+ * @param integer $projectteamid
+ * @param string $projectteam_id
+ * @return
+ */
+function showEvents_Timelines($eventid = 0, $projectteamid = 0,$projectteam_id = 'projectteam1_id')
 	{
 		$result       = '';
 		$eventcounter = array();
@@ -793,7 +730,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 		{
 			foreach ($this->matchevents AS $me)
 			{
-				if ($me->event_type_id == $event->id && $me->ptid == $this->match->projectteam2_id)
+				if ($me->event_type_id == $event->id && $me->ptid == $this->match->$projectteam_id)
 				{
 					$placeholder = sportsmanagementHelper::getDefaultPlaceholder("player");
 					/**
@@ -844,5 +781,24 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 
 		return $result;
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

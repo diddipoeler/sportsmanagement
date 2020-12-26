@@ -2,11 +2,12 @@ Sports-Management
 ================
 
 Die neue Sports-Management Komponente für Joomla 3 / 4 ![Joomla 3.8](https://github.com/diddipoeler/sportsmanagement/blob/master/media/com_sportsmanagement/jl_images/Compat_icon_3_8_long.png) ![Joomla 4](https://github.com/diddipoeler/sportsmanagement/blob/master/media/com_sportsmanagement/jl_images/Compat_icon_4_0_long.png) 
+Auch im Extension zu finden: https://extensions.joomla.org/extension/sports-management/
 
 Das Team
 ================
 * Entwickler: diddipoeler
-* Entwicklungsunterstützung: appukonrad, tdittmann
+* Entwicklungsunterstützung: appukonrad, tdittmann, llambion 
 * Language manager & Wiki: stony
 * Übersetzer: sk-plehanovec, teddy
 * Tester: svdoldie
@@ -36,6 +37,13 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   31-10-2020: **3.8.30** Alle Meister einer Liga
+*   06-10-2020: **3.8.20** Sportart Wasserball hinzugefügt
+*   03-10-2020: **3.8.10** Neue Felder Countries
+*   12-09-2020: **3.8.00** Neue Felder Spielstätte, Personen und Vereine
+*   29-08-2020: **3.7.10** Altergruppe/Passnummer in der Stammdatenliste ein/ausblenden
+*   27-08-2020: **3.7.00** Joomla 3 Drag & Drop Sortierung im Backend
+*   03-05-2020: **3.6.00** Neue Felder Projekt und Projektteam
 *   03-05-2020: **3.5.00** Neue Felder Verein und Liga
 *   20-04-2020: **3.4.00** Erweiterung Tippspieltabellen
 *   25-12-2019: **3.3.00** Anpassungen Joomla 4

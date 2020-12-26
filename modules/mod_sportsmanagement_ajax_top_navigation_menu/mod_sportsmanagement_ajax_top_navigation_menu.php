@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_ajax_top_navigation_menu
@@ -13,20 +11,14 @@
  *
  * https://stackoverflow.com/questions/1145208/how-to-add-li-in-an-existing-ul
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-
-if (!defined('DS'))
-{
-	define('DS', DIRECTORY_SEPARATOR);
-}
+use Joomla\CMS\Language\Text;
 
 if (!defined('JSM_PATH'))
 {
@@ -50,6 +42,8 @@ $app = Factory::getApplication();
 
 // JInput object
 $jinput = $app->input;
+$ajax    = $jinput->getVar('ajax', 0, 'default', 'POST');
+$ajaxmod = $jinput->getVar('ajaxmodid', 0, 'default', 'POST');
 
 $document = Factory::getDocument();
 /**
@@ -141,16 +135,47 @@ if (!empty($league_assoc_id) && !$ende_if)
 
 foreach ($points as $row)
 {
-	$federationselect[$row->name] = $helper->getFederationSelect($row->name, $row->id);
-	?>
-    <script>
-        console.log('tabpoints = ' + '<?php echo $row->name;?>');
-    </script>
-	<?php
+$federationselect[$row->name] = $helper->getFederationSelect($row->name, $row->id);
+$countryassocselect[$row->name] = array();
+$leagueselect[$row->name] = array();
+$countrysubassocselect[$row->name] = array();
+$countrysubsubassocselect[$row->name] = array();
+$countrysubsubsubassocselect[$row->name] = array();
+$projectselect[$row->name] = array();
+$divisionsselect[$row->name] = array();
+	
+$countryassocselect[$row->name]['assocs'] = array();	
+$countrysubassocselect[$row->name]['assocs'] = array();	
+$countrysubsubassocselect[$row->name]['subassocs'] = array();
+$countrysubsubsubassocselect[$row->name]['subsubassocs'] = array();
+$leagueselect[$row->name]['leagues'] = array();
+$projectselect[$row->name]['projects'] = array();
+$projectselect[$row->name]['teams'] = array();	
+	
+?>
+<script>
+console.log('tabpoints = ' + '<?php echo $row->name;?>');
+</script>
+<?php
 }
 
 $federationselect['NON'] = $helper->getFederationSelect('NON', 0);
+$countryassocselect['NON'] = array();
+$countryassocselect['NON']['assocs'] = array();
+$leagueselect['NON'] = array();
+$countrysubassocselect['NON'] = array();
+$countrysubassocselect['NON']['assocs'] = array();
+$countrysubsubassocselect['NON'] = array();
+$countrysubsubsubassocselect['NON'] = array();
+$projectselect['NON'] = array();
+$divisionsselect['NON'] = array();
 
+$countrysubsubassocselect['NON']['subassocs'] = array();
+$countrysubsubsubassocselect['NON']['subsubassocs'] = array();
+$leagueselect['NON']['leagues'] = array();
+$projectselect['NON']['projects'] = array();
+$projectselect['NON']['teams'] = array();	
+	
 $country_federation = $helper->getCountryFederation($country_id);
 
 if (!$country_federation)
@@ -218,6 +243,8 @@ foreach ($points as $row)
 	$script[] = "}).done(function(data2) {";
 	$script[] = "$('#jlamtopleagues" . $row->name . $module->id . " option').each(function() {";
 	$script[] = "jQuery('select#jlamtopleagues" . $row->name . $module->id . " option').remove();";
+	$script[] = "jQuery('select#jlamtopprojects" . $row->name . $module->id . " option').remove();";
+  	$script[] = "jQuery('select#jlamtopteams" . $row->name . $module->id . " option').remove();";
 	$script[] = "console.log(data2);";
 	$script[] = "});";
 	$script[] = "";
@@ -494,28 +521,65 @@ $('ul.jsmpage').append('<li class=\'nav-item\' ><a href=\"' + data11.link + '\">
 
 $script[] = "});";
 
-// Add the script to the document head.
 Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
 
-// Regionalverband
+/** php fehler unterbinden */
+if ( !array_key_exists('assocs', $countryassocselect[$country_federation]) ) {
+$countryassocselect[$country_federation]['assocs'] = array();
+}
+if ( !array_key_exists('subassocs', $countrysubsubassocselect[$country_federation]) ) {
+$countrysubsubassocselect[$country_federation]['subassocs'] = array();
+}
+if ( !array_key_exists('leagues', $leagueselect[$country_federation]) ) {
+$leagueselect[$country_federation]['leagues'] = array();
+}
+
+if ( !array_key_exists('subsubassocs', $countrysubsubsubassocselect[$country_federation]) ) {
+$countrysubsubsubassocselect[$country_federation]['subsubassocs'] = array();
+}
+
+if ( !array_key_exists('divisions', $divisionsselect[$country_federation]) ) {
+$divisionsselect[$country_federation]['divisions'] = array();
+}
+
+if ( !array_key_exists('teams', $projectselect[$country_federation]) ) {
+$projectselect[$country_federation]['teams'] = array();
+}
+
+
+/** Regionalverband */
 if ($country_id)
 {
 	$countryassocselect[$country_federation]['assocs'] = $helper->getCountryAssocSelect($country_id);
 	$leagueselect[$country_federation]['leagues']      = $helper->getAssocLeagueSelect($country_id, $assoc_id);
 }
-
-// Landesverband
+else
+{
+$countryassocselect[$country_federation]['assocs'] = array(HTMLHelper::_('select.option', 0, Text::_('-- Regionalverbände -- ')));
+$leagueselect[$country_federation]['leagues']      = array(HTMLHelper::_('select.option', 0, Text::_('--')));    
+}
+/** Landesverband */
 if ($assoc_id)
 {
 	$countrysubassocselect[$country_federation]['assocs'] = $helper->getCountrySubAssocSelect($assoc_id);
 	$leagueselect[$country_federation]['leagues']         = $helper->getAssocLeagueSelect($country_id, $assoc_id);
 }
+else
+{
+//$countrysubassocselect[$country_federation]['assocs'] = array(HTMLHelper::_('select.option', 0, Text::_('-- Kreisverbände -- ')));
+//$leagueselect[$country_federation]['leagues']      = array(HTMLHelper::_('select.option', 0, Text::_('--')));    
+}
 
-// Kreisverband
+/** Kreisverband */
 if ($subassoc_id)
 {
 	$countrysubsubassocselect[$country_federation]['subassocs'] = $helper->getCountrySubSubAssocSelect($subassoc_id);
 	$leagueselect[$country_federation]['leagues']               = $helper->getAssocLeagueSelect($country_id, $subassoc_id);
+}
+else
+{
+//$countrysubsubassocselect[$country_federation]['subassocs'] = array(HTMLHelper::_('select.option', 0, Text::_('-- Kreisverbände -- ')));
+//$leagueselect[$country_federation]['leagues']      = array(HTMLHelper::_('select.option', 0, Text::_('--')));    
 }
 
 if ($subsubassoc_id)
@@ -523,19 +587,45 @@ if ($subsubassoc_id)
 	$countrysubsubsubassocselect[$country_federation]['subsubassocs'] = $helper->getCountrySubSubAssocSelect($subsubassoc_id);
 	$leagueselect[$country_federation]['leagues']                     = $helper->getAssocLeagueSelect($country_id, $subsubassoc_id);
 }
+else
+{
+//$countrysubsubsubassocselect[$country_federation]['subsubassocs'] = array(HTMLHelper::_('select.option', 0, Text::_('-- Kreisverbände -- ')));
+//$leagueselect[$country_federation]['leagues']      = array(HTMLHelper::_('select.option', 0, Text::_('--')));    
+}
 
+if ($subsubsubassoc_id)
+{
+	//$countrysubsubsubassocselect[$country_federation]['subsubassocs'] = $helper->getCountrySubSubAssocSelect($subsubassoc_id);
+	//$leagueselect[$country_federation]['leagues']                     = $helper->getAssocLeagueSelect($country_id, $subsubassoc_id);
+}
+else
+{
+//$countrysubsubsubassocselect[$country_federation]['subsubassocs'] = array(HTMLHelper::_('select.option', 0, Text::_('--  -- ')));
+//$leagueselect[$country_federation]['leagues']      = array(HTMLHelper::_('select.option', 0, Text::_('--')));    
+}
+
+/** liga */
 if ($league_id)
 {
 	$projectselect[$country_federation]['projects'] = $helper->getProjectSelect($league_id);
 }
+else
+{
+    $projectselect[$country_federation]['projects'] = array(HTMLHelper::_('select.option', 0, Text::_($params->get('text_project_dropdown'))));
+}
 
+/** projekt */ 
 if ($project_id)
 {
 	$helper->setProject($project_id, $team_id, $division_id);
 	$divisionsselect[$country_federation]['divisions'] = $helper->getDivisionSelect($project_id);
 	$projectselect[$country_federation]['teams']       = $helper->getTeamSelect($project_id);
 }
-
+else
+{
+    
+    $projectselect[$country_federation]['teams']       = array(HTMLHelper::_('select.option', 0, Text::_($params->get('text_teams_dropdown'))));
+}
 
 if (!defined('JLTOPAM_MODULESCRIPTLOADED'))
 {

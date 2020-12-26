@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage matches
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
@@ -165,8 +161,10 @@ class sportsmanagementControllermatches extends JSMControllerAdmin
 		$data['projecttime']  = Factory::getApplication()->input->getVar('projecttime', '');
 		$data['useeventtime'] = Factory::getApplication()->input->getVar('useeventtime', '');
 		$model                = $this->getModel();
+		
+		$resultsave = $model->saveevent($data);
 
-		if (!$result = $model->saveevent($data))
+		if (!$resultsave)
 		{
 			$result = "0" . "&" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_EVENT') . ': ' . $model->getError();
 		}

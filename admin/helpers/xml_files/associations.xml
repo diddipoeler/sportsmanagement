@@ -147,6 +147,7 @@
 <associations><assocname country="DEU" icon="fk_mecklenburg_vorpommern_vorpommern.gif" flag="" website="" shortname="Vorpommern" main="135" parentmain="21">Kreis Vorpommern</assocname></associations>
 <associations><assocname country="DEU" icon="fk_mecklenburg_vorpommern_warnow.gif" flag="" website="" shortname="Warnow" main="136" parentmain="21">Kreis Warnow</assocname></associations>
 <associations><assocname country="DEU" icon="fk_mecklenburg_vorpommern_westmecklenburg.gif" flag="" website="" shortname="Westmecklenburg" main="137" parentmain="21">Kreis Westmecklenburg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_mecklenburg_vorpommern_vorpommern_greifswald.gif" flag="" website="" shortname="VorpommernGreifswald" main="135" parentmain="21">Kreis Vorpommern-Greifswald</assocname></associations>
 
 <associations><assocname country="DEU" icon="fk_mittelrhein_aachen.gif" flag="" website="" shortname="Aachen" main="138" parentmain="11">Kreis Aachen</assocname></associations>
 <associations><assocname country="DEU" icon="fk_mittelrhein_berg.gif" flag="" website="" shortname="Berg" main="139" parentmain="11">Kreis Berg</assocname></associations>

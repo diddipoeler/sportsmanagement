@@ -9,7 +9,7 @@
 	<copyright>Copyright Info</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<!--  The version string is recorded in the components table -->
-	<version>3.5.00</version>
+	<version>3.8.20</version>
 	<!-- The description is optional and defaults to the name -->
 	<description>COM_SPORTSMANAGEMENT_DESCRIPTION</description>
  
@@ -102,7 +102,7 @@
         <menu view="teams" img="../administrator/components/com_sportsmanagement/assets/icons/transparent_schrift_16.png"
 				alt="COM_SPORTSMANAGEMENT_D_MENU_CLUBS">COM_SPORTSMANAGEMENT_D_MENU_TEAMS</menu>
 				
-        <menu view="persons" img="../administrator/components/com_sportsmanagement/assets/icons/transparent_schrift_16.png"
+        <menu view="players" img="../administrator/components/com_sportsmanagement/assets/icons/transparent_schrift_16.png"
 				alt="COM_SPORTSMANAGEMENT_D_MENU_CLUBS">COM_SPORTSMANAGEMENT_D_MENU_PERSONS</menu>
 				
         <menu view="playgrounds" img="../administrator/components/com_sportsmanagement/assets/icons/transparent_schrift_16.png"
@@ -195,6 +195,9 @@
 <module module="mod_sportsmanagement_trainingsdata" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_sports_type_statistics" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_teamstatistics_counter" client="site"  position="" published=""/>
+	
+<module module="mod_sportsmanagement_projectmap" client="site"  position="" published=""/>
+	
 </modules>
 
 <plugins>

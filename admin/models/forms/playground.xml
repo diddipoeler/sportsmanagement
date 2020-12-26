@@ -34,6 +34,17 @@
 			class="inputbox"
 			required="true"/>				
 
+		<field
+			name="playground_size"
+			type="text"
+			size="100"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_SIZE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_SIZE_DESC"
+			class="inputbox"/>
+
+
+
+
       <field name="geocomplete" type="geocomplete" class="inputbox"
 			size="40" label="COM_SPORTSMANAGEMENT_LOCATION_FIELD_GEOCOMPLETE_LABEL"
 			description="COM_SPORTSMANAGEMENT_LOCATION_FIELD_GEOCOMPLETE_DESC" />
@@ -42,6 +53,8 @@
  <field
 			name="country"
 			type="country"
+			onchange="javascript:getlatlonopenstreet(1);"
+	size="1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_COUNTRY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_COUNTRY_DESC"
 			class="inputbox">
@@ -59,6 +72,7 @@
 <field
 			name="city"
 			type="text"
+       onchange="javascript:getlatlonopenstreet(1);"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_CITY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_CITY_DESC"
 			class="inputbox"/>	 
@@ -66,6 +80,7 @@
  <field
 			name="zipcode"
 			type="text"
+			onchange="javascript:getlatlonopenstreet(1);"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_ZIPCODE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_ZIPCODE_DESC"
 			class="inputbox"/>	    
@@ -73,6 +88,7 @@
 		<field
 			name="address"
 			type="textarea"
+			onchange="javascript:getlatlonopenstreet(1);"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_ADDRESS"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_ADDRESS_DESC"
 			class="inputbox"/>		

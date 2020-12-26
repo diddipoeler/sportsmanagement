@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage githubinstall
@@ -11,33 +9,16 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-HTMLHelper::_('behavior.tooltip');
-
-
 ?>
-
     <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 		<?PHP
-		// Welche joomla version ?
-		if (version_compare(JVERSION, '3.0.0', 'ge'))
-		{
-			echo $this->loadTemplate('joomla3');
-		}
-		else
-		{
-			echo $this->loadTemplate('joomla2');
-		}
-
-		// Echo $this->loadTemplate('data');
-
+		echo $this->loadTemplate('joomla_version');
 		foreach ($this->_success_text as $key => $value)
 		{
 			?>
@@ -51,8 +32,6 @@ HTMLHelper::_('behavior.tooltip');
             </fieldset>
 			<?php
 		}
-
-
 		?>
         <input type="hidden" name="task" value=""/>
         <input type="hidden" name="boxchecked" value="0"/>
@@ -60,7 +39,8 @@ HTMLHelper::_('behavior.tooltip');
         <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>"/>
 		<?php echo HTMLHelper::_('form.token'); ?>
     </form>
+<div>
 <?PHP
-echo "<div>";
 echo $this->loadTemplate('footer');
-echo "</div>";
+?>
+</div>

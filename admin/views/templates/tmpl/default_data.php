@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage templates
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
@@ -49,7 +45,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     <tr>
         <th width="5"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
         <th width="20">
-            <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/>
+            <?php echo HTMLHelper::_('grid.checkall'); ?>
         </th>
         <th width="20">&nbsp;</th>
         <th>
@@ -118,8 +114,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					<?php
 					$imageFile   = 'administrator/components/com_sportsmanagement/assets/images/edit.png';
 					$imageTitle  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_EDIT_DETAILS');
-					$imageParams = 'title= "' . $imageTitle . '"';
-					$image       = HTMLHelper::image($imageFile, $imageTitle, $imageParams);
+					$imageParams['title'] = $imageTitle;
+					$image       = HTMLHelper::_('image',$imageFile, $imageTitle, $imageParams);
 					$linkParams  = '';
 					echo HTMLHelper::link($link1, $image);
 				endif;

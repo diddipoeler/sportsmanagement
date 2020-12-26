@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -37,7 +33,6 @@ class sportsmanagementModelProjectteams extends JSMModelList
 	var $_identifier = "pteams";
 	var $_season_id = 0;
 	var $project_art_id = 0;
-
 	var $sports_type_id = 0;
 
 	/**
@@ -175,9 +170,8 @@ class sportsmanagementModelProjectteams extends JSMModelList
 		}
 		catch (Exception $e)
 		{
-			$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-			$code = $e->getCode(); // Returns '500';
-			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 		}
 
 	}
@@ -624,12 +618,13 @@ class sportsmanagementModelProjectteams extends JSMModelList
 			$teamresult = $db->loadColumn();
 
 			$query->clear();
-			$query->select('st.id as value, concat(t.name,\' [\',t.info,\']\' ) as text');
+			$query->select('st.id as value, concat(t.name,\' [\',t.info,\']\' ) as text, s.name as season_name' );
 
 			// From table
 			$query->from('#__sportsmanagement_team as t');
 			$query->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
 			$query->join('INNER', '#__sportsmanagement_club AS c ON c.id = t.club_id');
+			$query->join('INNER', '#__sportsmanagement_season AS s on s.id = st.season_id');
 			$query->where('st.season_id = ' . $this->_season_id);
 
 			if ($teamresult)
@@ -670,6 +665,7 @@ class sportsmanagementModelProjectteams extends JSMModelList
 		foreach ($result as $teams)
 		{
 			$teams->name = Text::_($teams->text);
+			$teams->text = $teams->text.' ('.$teams->season_name.')';
 		}
 
 		return $result;
@@ -684,7 +680,7 @@ class sportsmanagementModelProjectteams extends JSMModelList
 	 *
 	 * @return
 	 */
-	function getProjectTeams($project_id = 0, $in_used = false)
+	function getProjectTeams($project_id = 0, $in_used = false, $divisionid = 0)
 	{
 		$this->_season_id     = $this->jsmapp->getUserState("$this->jsmoption.season_id", '0');
 		$this->project_art_id = $this->jsmapp->getUserState("$this->jsmoption.project_art_id", '0');
@@ -719,6 +715,10 @@ class sportsmanagementModelProjectteams extends JSMModelList
 			$this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
 			$this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
 			$this->jsmquery->where('pt.project_id = ' . $project_id);
+			if ( $divisionid )
+			{
+				$this->jsmquery->where('pt.division_id = ' . $divisionid);
+			}
 
 			if ($in_used && isset(self::$_pro_teams_in_used))
 			{
@@ -927,22 +927,15 @@ class sportsmanagementModelProjectteams extends JSMModelList
 			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . $this->context . ''), '');
 			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . ''), '');
 		}
+		$list = $this->getUserStateFromRequest($this->context . '.list', 'list', array(), 'array');
 
-		// Load the filter state.
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
-		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '');
-		$this->setState('filter.search_nation', $temp_user_request);
-		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string');
-		$this->setState('filter.state', $published);
-		$value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
-		$this->setState('list.limit', $value);
+		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
+		$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
+		$this->setState('filter.search_nation', $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', ''));
+		$this->setState('filter.playground_id', $this->getUserStateFromRequest($this->context . '.filter.playground_id', 'filter_playground_id', ''));
+		$this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
+		$this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
 
-		// List state information.
-		$value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
-		$this->setState('list.start', $value);
-
-		// Filter.order
 		$orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
 
 		if (!in_array($orderCol, $this->filter_fields))
@@ -1016,7 +1009,7 @@ class sportsmanagementModelProjectteams extends JSMModelList
 			$this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on tl.team_id = st.id');
 			$this->jsmquery->join('LEFT', '#__sportsmanagement_season AS se on se.id = st.season_id');
 
-			// Count team player
+			/** Count team player */
 			$this->jsmsubquery1->select('count(tp.id)');
 			$this->jsmsubquery1->from('#__sportsmanagement_season_team_person_id AS tp');
 			$this->jsmsubquery1->where('tp.published = 1');
@@ -1025,7 +1018,7 @@ class sportsmanagementModelProjectteams extends JSMModelList
 			$this->jsmsubquery1->where('tp.season_id = ' . $this->_season_id);
 			$this->jsmquery->select('(' . $this->jsmsubquery1 . ') AS playercount');
 
-			// Count team staff
+			/** Count team staff */
 			$this->jsmsubquery2->select('count(tp.id)');
 			$this->jsmsubquery2->from('#__sportsmanagement_season_team_person_id AS tp');
 			$this->jsmsubquery2->where('tp.published = 1');
@@ -1034,19 +1027,19 @@ class sportsmanagementModelProjectteams extends JSMModelList
 			$this->jsmsubquery2->where('tp.season_id = ' . $this->_season_id);
 			$this->jsmquery->select('(' . $this->jsmsubquery2 . ') AS staffcount');
 
-			// Join over the team
+			/** Join over the team */
 			$this->jsmquery->select('t.name,t.club_id');
 			$this->jsmquery->select('plg.picture as playground_picture');
 			$this->jsmquery->join('LEFT', '#__sportsmanagement_team AS t on st.team_id = t.id');
 
-			// Join over the club
+			/** Join over the club */
 			$this->jsmquery->select('c.email AS club_email,c.logo_big as club_logo,c.country,c.latitude,c.longitude,c.location,c.founded_year,c.unique_id');
 			$this->jsmquery->join('LEFT', '#__sportsmanagement_club AS c on t.club_id = c.id');
 
-			// Join over the playground
+			/** Join over the playground */
 			$this->jsmquery->join('LEFT', '#__sportsmanagement_playground AS plg on plg.id = tl.standard_playground');
 
-			// Join over the division
+			/** Join over the division */
 			$this->jsmquery->join('LEFT', '#__sportsmanagement_division AS d on d.id = tl.division_id');
 		}
 
@@ -1055,7 +1048,6 @@ class sportsmanagementModelProjectteams extends JSMModelList
 			$this->jsmquery->where('LOWER(t.name) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%'));
 		}
 
-		// Join over the users for the checked out user.
 		$this->jsmquery->select('u.name AS editor,u.email AS email');
 		$this->jsmquery->join('LEFT', '#__users AS u on tl.admin = u.id');
 
@@ -1074,6 +1066,29 @@ class sportsmanagementModelProjectteams extends JSMModelList
 		if (is_numeric($this->getState('filter.state')))
 		{
 			$this->jsmquery->where('tl.published = ' . $this->getState('filter.state'));
+		}
+		
+		if (is_numeric($this->getState('filter.is_in_score')))
+		{
+			$this->jsmquery->where('tl.is_in_score = ' . $this->getState('filter.is_in_score'));
+		}
+		
+		if (is_numeric($this->getState('filter.use_finally')))
+		{
+			$this->jsmquery->where('tl.use_finally = ' . $this->getState('filter.use_finally'));
+		}
+		
+		if (is_numeric($this->getState('filter.playground_id')))
+		{
+			if ( $this->getState('filter.playground_id') == 1 )
+			{
+			$this->jsmquery->where('tl.standard_playground IS NOT NULL ' );	
+			}
+			else
+			{
+			$this->jsmquery->where('tl.standard_playground IS NULL ' );
+			}
+			
 		}
 
 		$this->jsmquery->order(

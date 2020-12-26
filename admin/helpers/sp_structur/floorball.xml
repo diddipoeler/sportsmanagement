@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<structur>
+<version>1.0.00</version>
+
+
+<events>
+<name icon="red_card.png">RED_CARD</name>
+</events>
+<events>
+<name icon="goal.png">GOAL</name>
+</events>
+  
+<events>
+<name icon="">ASSIST</name>
+</events>
+<events>
+<name icon="">STRAFE2</name>
+</events>
+<events>
+<name icon="">STRAFE5</name>
+</events>
+<events>
+<name icon="">STRAFE10</name>
+</events>
+
+<mainpositions>
+<mainname switch="persontype" parent="0" content="1">PLAYERS</mainname>
+</mainpositions>
+
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">GOALKEEPER</parentname>
+</parentpositions>
+  
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">DEFENDER</parentname>
+</parentpositions>
+  
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">MIDFIELDER</parentname>
+</parentpositions>
+  
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">FORWARD</parentname>
+</parentpositions>
+  
+<parentpositions>  
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">CENTER</parentname>
+</parentpositions>
+
+<parentpositions>  
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">DEFENDERLEFT</parentname>
+</parentpositions>
+<parentpositions>  
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">DEFENDERRIGHT</parentname>
+</parentpositions>
+<parentpositions>  
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">WINGLEFT</parentname>
+</parentpositions>
+<parentpositions>  
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">WINGRIGHT</parentname>
+</parentpositions>  
+  
+  
+  
+  
+
+</structur>

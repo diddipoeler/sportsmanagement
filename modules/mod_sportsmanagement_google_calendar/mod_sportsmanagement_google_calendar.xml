@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="1.0" client="site" method="upgrade">
-	<name>mod_sportsmanagement_google_calendar</name>
+	<name>MOD_SPORTSMANAGEMENT_GOOGLE_CALENDAR</name>
 	<creationDate>2015-01-05</creationDate>
 	<author>JSM-TEAM</author>
 	<authorEmail>diddipoeler@arcor.de</authorEmail>
@@ -9,10 +9,11 @@
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	
 	
-	<version>1.1.0</version>
+	<version>3.8.0</version>
 	<description>MOD_SPORTSMANAGEMENT_GOOGLE_CALENDAR_DESCRIPTION</description>
 	<files>
 		<filename module="mod_sportsmanagement_google_calendar">mod_sportsmanagement_google_calendar.php</filename>
+		<filename>update-server.xml</filename>
 		<folder>media</folder>
 		<folder>tmpl</folder>
 		<filename>helper.php</filename>
@@ -125,4 +126,8 @@
 			</fieldset>
 		</fields>
 	</config>
+	<updateservers>
+<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/modules/mod_sportsmanagement_google_calendar/update-server.xml</server>
+</updateservers>
+
 </extension>

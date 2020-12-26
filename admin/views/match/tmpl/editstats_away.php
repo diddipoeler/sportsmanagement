@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage match
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 
 //row index
@@ -34,13 +30,7 @@ $j = 0;
 				foreach ($this->stats as $stat)
 				{
 					?>
-                    <th style="text-align: center;"><?php
-						//                    echo 'getCalculated -> '.$stat->getCalculated().'<br>';
-						//                    echo 'position_id -> '.$stat->position_id.'<br>';
-						//                    echo 'value -> '.$position->value;
-						//                    echo 'posid -> '.$position->posid;
-						?>
-                    </th>
+                   
 					<?php
 
 					if (!$stat->getCalculated() && $stat->position_id == $position->posid)

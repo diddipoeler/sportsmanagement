@@ -7,13 +7,14 @@
 	<license>GPL2</license>
 	<authorEmail>diddipoeler@arcor.de</authorEmail>
 	<authorUrl>www.fussballineuropa.de</authorUrl>
-	<version>1.0.00</version>
+	<version>3.8.0</version>
 	<description>MOD_SPORTSMANAGEMENT_TRAININGSDATA_DESC</description>
 
 	<files>
 		<filename module="mod_sportsmanagement_trainingsdata">mod_sportsmanagement_trainingsdata.php</filename>
 		<filename>index.html</filename>
 		<filename>helper.php</filename>
+		<filename>update-server.xml</filename>
 		<folder>tmpl</folder>
 		<folder>css</folder>
 	</files>
@@ -140,4 +141,9 @@ depends="p"
 			
 		</fields>
 	</config>		
+	
+	<updateservers>
+<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/modules/mod_sportsmanagement_trainingsdata/update-server.xml</server>
+</updateservers>
+
 </extension>

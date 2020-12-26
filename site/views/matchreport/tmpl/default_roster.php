@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage matchreport
@@ -11,16 +9,12 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
-
 HTMLHelper::_('behavior.modal');
-
 
 ?>
 <!-- START: game roster -->
@@ -55,7 +49,7 @@ HTMLHelper::_('behavior.modal');
                     <tr>
                         <!-- list of home-team -->
                         <td class="list">
-                            <div style="text-align: right; ">
+                            <div style="text-align: left; ">
                                 <ul style="list-style-type: none;">
 									<?php
 									foreach ($this->matchplayers as $player)
@@ -137,7 +131,7 @@ HTMLHelper::_('behavior.modal');
 													}
 													if (($this->config['show_player_picture'] == 2) && ($this->config['show_player_profile_link'] == 1))
 													{
-														echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer' . $player->person_id, $picture, $imgTitle, $this->config['player_picture_width'],
+														echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer' . $player->person_id, $picture, $imgTitle, $this->config['player_picture_height'],
 										'',
 										$this->modalwidth,
 										$this->modalheight,
@@ -148,7 +142,7 @@ HTMLHelper::_('behavior.modal');
 													}
 													else
 													{
-														echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer' . $player->person_id, $picture, $imgTitle, $this->config['player_picture_width'],
+														echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer' . $player->person_id, $picture, $imgTitle, $this->config['player_picture_height'],
 										'',
 										$this->modalwidth,
 										$this->modalheight,
@@ -174,7 +168,7 @@ HTMLHelper::_('behavior.modal');
                         </td>
                         <!-- list of guest-team -->
                         <td class="list">
-                            <div style="text-align: left;">
+                            <div style="text-align: right;">
                                 <ul style="list-style-type: none;">
 									<?php
 									foreach ($this->matchplayers as $player)
@@ -223,7 +217,7 @@ HTMLHelper::_('behavior.modal');
 													}
 													if (($this->config['show_player_picture'] == 2) && ($this->config['show_player_profile_link'] == 1))
 													{
-														echo HTMLHelper::link($player_link, HTMLHelper::image($picture, $imgTitle, array('title' => $imgTitle, 'width' => $this->config['player_picture_width'])));
+														echo HTMLHelper::link($player_link, HTMLHelper::image($picture, $imgTitle, array('title' => $imgTitle, 'width' => $this->config['player_picture_height'])));
 														if ($this->config['show_player_profile_link_alignment'] == 1)
 														{
 															echo '<br>';
@@ -232,7 +226,7 @@ HTMLHelper::_('behavior.modal');
 													}
 													else
 													{
-														echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer' . $player->person_id, $picture, $imgTitle, $this->config['player_picture_width'],
+														echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer' . $player->person_id, $picture, $imgTitle, $this->config['player_picture_height'],
 										'',
 										$this->modalwidth,
 										$this->modalheight,

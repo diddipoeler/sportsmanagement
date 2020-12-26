@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage playground
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -37,12 +33,12 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 	 */
 	function init()
 	{
-
 		sportsmanagementModelProject::setProjectID($this->jinput->getInt("p", 0), $this->jinput->getInt('cfg_which_database', 0));
 		$mdlJSMTeams          = BaseDatabaseModel::getInstance("teams", "sportsmanagementModel");
 		$this->playground     = sportsmanagementModelPlayground::getPlayground($this->jinput->getInt("pgid", 0), 1);
 		$this->address_string = $this->model->getAddressString();
 		$this->teams          = $mdlJSMTeams->getTeams($this->playground->id);
+		$this->mapconfig = array();
 
 		if ($this->config['show_matches'])
 		{

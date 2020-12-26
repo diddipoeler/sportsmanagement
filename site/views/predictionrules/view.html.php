@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage predictionrules
@@ -11,14 +9,10 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
-
-jimport('joomla.application.component.view');
 
 /**
  * sportsmanagementViewPredictionRules
@@ -29,20 +23,18 @@ jimport('joomla.application.component.view');
  * @version   2014
  * @access    public
  */
-class sportsmanagementViewPredictionRules extends JViewLegacy
+class sportsmanagementViewPredictionRules extends sportsmanagementView
 {
+
 	/**
-	 * sportsmanagementViewPredictionRules::display()
-	 *
-	 * @param   mixed  $tpl
-	 *
-	 * @return
+	 * sportsmanagementViewPredictionRules::init()
+	 * 
+	 * @return void
 	 */
-	function display($tpl = null)
+	function init()
 	{
-		// Get a refrence of the page instance in joomla
-		$document = Factory::getDocument();
-		$model    = $this->getModel();
+
+//		$model    = $this->getModel();
 		$option   = Factory::getApplication()->input->getCmd('option');
 
 		$app = Factory::getApplication();
@@ -53,11 +45,11 @@ class sportsmanagementViewPredictionRules extends JViewLegacy
 
 		if (isset($this->predictionGame))
 		{
-			$config        = sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
-			$overallConfig = sportsmanagementModelPrediction::getPredictionOverallConfig();
+//			$config        = sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
+//			$overallConfig = sportsmanagementModelPrediction::getPredictionOverallConfig();
 
-			$this->model              = $model;
-			$this->config             = array_merge($overallConfig, $config);
+//			$this->model              = $model;
+//			$this->config             = array_merge($overallConfig, $config);
 			$configavatar             = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
 			$this->configavatar       = $configavatar;
 			$this->predictionMember   = sportsmanagementModelPrediction::getPredictionMember($configavatar);
@@ -67,9 +59,8 @@ class sportsmanagementViewPredictionRules extends JViewLegacy
 			// Set page title
 			$pageTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_TITLE'); // 'Tippspiel Regeln'
 
-			$document->setTitle($pageTitle);
+			$this->document->setTitle($pageTitle);
 
-			parent::display($tpl);
 		}
 		else
 		{

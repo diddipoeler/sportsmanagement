@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage imagehandler
@@ -11,16 +9,13 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\String\StringHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Filesystem\Folder;
 
 jimport('joomla.filesystem.file');
-
 
 /**
  * sportsmanagementModelImagehandler
@@ -63,6 +58,84 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 
 	}
 
+	/**
+	 * sportsmanagementModelImagehandler::saveimageclub()
+	 * 
+	 * @param mixed $data
+	 * @return
+	 */
+	function saveimageclub($data)
+	{
+	$rowupdate          = new stdClass;
+	$rowupdate->id      = $data['club_id'];
+	$rowupdate->logo_big = 'images/com_sportsmanagement/database/clubs/large/'.$data['picture'];
+		try
+			{
+				$result             = Factory::getDbo()->updateObject('#__sportsmanagement_club', $rowupdate, 'id');
+			return true;
+			}
+			catch (Exception $e)
+			{
+				//$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . $e->getMessage()), 'error');
+				return $e->getMessage();
+			}	
+	}	
+		
+	/**
+	 * sportsmanagementModelImagehandler::saveimageteamplayer()
+	 * 
+	 * @param mixed $data
+	 * @return
+	 */
+	function saveimageteamplayer($data)
+	{
+	$rowupdate          = new stdClass;
+	$rowupdate->id      = $data['teamplayer_id'];
+	$rowupdate->picture = 'images/com_sportsmanagement/database/teamplayers/'.$data['picture'];
+		try
+			{
+				$result             = Factory::getDbo()->updateObject('#__sportsmanagement_season_team_person_id', $rowupdate, 'id');
+			return true;
+			}
+			catch (Exception $e)
+			{
+				//$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . $e->getMessage()), 'error');
+				return $e->getMessage();
+			}	
+	}
+	
+	/**
+	 * sportsmanagementModelImagehandler::saveimageplayer()
+	 * 
+	 * @param mixed $data
+	 * @return
+	 */
+	function saveimageplayer($data)
+	{
+	$rowupdate          = new stdClass;
+	$rowupdate->id      = $data['player_id'];
+	$rowupdate->picture = 'images/com_sportsmanagement/database/persons/'.$data['picture'];
+		try
+			{
+				$result             = Factory::getDbo()->updateObject('#__sportsmanagement_person', $rowupdate, 'id');
+			return true;
+			}
+			catch (Exception $e)
+			{
+				//$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . $e->getMessage()), 'error');
+				return $e->getMessage();
+			}
+
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * Build imagelist
 	 *
@@ -249,9 +322,13 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 	 */
 	function _imageResize($width, $height, $target)
 	{
-		// Takes the larger size of the width and height and applies the
-		// formula accordingly...this is so this script will work
-		// dynamically with any size image
+		
+/**
+ *      Takes the larger size of the width and height and applies the
+ * 		formula accordingly...this is so this script will work
+ * 		dynamically with any size image
+ */
+        
 		if ($width > $height)
 		{
 			$percentage = ($target / $width);
@@ -261,7 +338,7 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 			$percentage = ($target / $height);
 		}
 
-		// Gets the new value and applies the percentage, then rounds the value
+		/** Gets the new value and applies the percentage, then rounds the value */
 		$width  = round($width * $percentage);
 		$height = round($height * $percentage);
 

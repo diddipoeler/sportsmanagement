@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage jlextdfbnetplayerimport
@@ -11,15 +9,14 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filter\OutputFilter;
 
 $option = Factory::getApplication()->input->getCmd('option');
 
@@ -45,8 +42,53 @@ if ((int) ini_get('memory_limit') < (int) $maxImportMemory)
 
 jimport('joomla.html.pane');
 
-JLoader::import('components.com_sportsmanagement.helpers.ical', JPATH_ADMINISTRATOR);
+JLoader::import('components.com_sportsmanagement.models.seasons', JPATH_ADMINISTRATOR);
+//JLoader::import('components.com_sportsmanagement.helpers.icaljsm', JPATH_ADMINISTRATOR);
 JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
+//JLoader::register('icaljsm', 'administrator/components/com_sportsmanagement' . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'icaljsm.php');
+
+
+// Derive the class name from the driver.
+$class_name = 'icaljsm';
+$class_file = JPATH_COMPONENT_ADMINISTRATOR . '/helpers/' . 'icaljsm.php';
+// Require the driver file
+     if (JFile::exists($class_file)) {
+         JLoader::register($class_name, $class_file);
+       //throw new RuntimeException(sprintf('Driver not load: %s', $class_file));
+     }
+
+// If the class still doesn't exist we have nothing left to do but throw an exception.  We did our best.
+     if (!class_exists($class_name)) {
+         throw new RuntimeException(sprintf('Driver not load: %s', $class_name));
+     }
+
+// Derive the class name from the driver.
+$class_name = 'Event';
+$class_file = JPATH_COMPONENT_ADMINISTRATOR . '/helpers/' . 'Event.php';
+// Require the driver file
+     if (JFile::exists($class_file)) {
+         JLoader::register($class_name, $class_file);
+       //throw new RuntimeException(sprintf('Driver not load: %s', $class_file));
+     }
+
+// If the class still doesn't exist we have nothing left to do but throw an exception.  We did our best.
+     if (!class_exists($class_name)) {
+         throw new RuntimeException(sprintf('Driver not load: %s', $class_name));
+     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 jimport('joomla.utilities.utility');
 
@@ -211,12 +253,12 @@ class sportsmanagementModeljlextdfbnetplayerimport extends BaseDatabaseModel
 		$option   = Factory::getApplication()->input->getCmd('option');
 		$app      = Factory::getApplication();
 		$document = Factory::getDocument();
-
 		$lang                = Factory::getLanguage();
 		$this->_success_text = '';
 		$my_text             = '';
-
-		$country = "DEU"; // DFBNet gibt es nur in D, also ist die eingestellte Joomla Sprache nicht relevant
+$post = Factory::getApplication()->input->post->getArray(array());
+		$country = $post['filter_nation'];
+		//$country = "DEU"; // DFBNet gibt es nur in D, also ist die eingestellte Joomla Sprache nicht relevant
 
 		$project = $app->getUserState("$option.pid", '0');
 
@@ -346,16 +388,20 @@ and ma.projectteam2_id = '$row->projectteam2_id'
 		$option   = Factory::getApplication()->input->getCmd('option');
 		$app      = Factory::getApplication();
 		$document = Factory::getDocument();
+		$post = Factory::getApplication()->input->post->getArray(array());
 
-		$country = "DEU"; // DFBNet gibt es nur in D, also ist die eingestellte Joomla Sprache nicht relevant
+		//$country = "DEU"; // DFBNet gibt es nur in D, also ist die eingestellte Joomla Sprache nicht relevant
 		$project = $app->getUserState("$option.pid", '0');
+		
+		$country = $post['filter_nation'];
+      $season_id = $post['filter_season'];
 
 		$whichfile = $app->getUserState($option . 'whichfile');
 
 		$app->enqueueMessage(Text::_('Welches Land? ' . $country), '');
 		$app->enqueueMessage(Text::_('Welche Art von Datei? ' . $whichfile), '');
 
-		$post = Factory::getApplication()->input->post->getArray(array());
+		
 
 		$this->_league_new_country = $country;
 
@@ -476,17 +522,208 @@ and ma.projectteam2_id = '$row->projectteam2_id'
 			/**
 			 * kalender file vom bfv anfang
 			 */
+          /*
 			$ical = new ical();
 			$ical->parse($file);
 
 			$icsfile = $ical->get_all_data();
-
+*/
 			//
 			$lfdnumber           = 0;
 			$lfdnumberteam       = 1;
 			$lfdnumbermatch      = 1;
 			$lfdnumberplayground = 1;
+          
+          //$ical = new icaljsm;
+          
+          $ical = new icaljsm($file, array(
+        'defaultSpan'                 => 2,     // Default value
+        'defaultTimeZone'             => 'UTC',
+        'defaultWeekStart'            => 'MO',  // Default value
+        'disableCharacterReplacement' => false, // Default value
+        'filterDaysAfter'             => null,  // Default value
+        'filterDaysBefore'            => null,  // Default value
+        'skipRecurrence'              => false, // Default value
+    ));
+          
+//$app->enqueueMessage(__LINE__.'<pre>'.print_r($ical,true).'</pre>', '');
+          //$events = $ical->eventsFromInterval('1 week');
+			$events = $ical->events();
+//$app->enqueueMessage(__LINE__.'<pre>'.print_r($events,true).'</pre>', '');          
+          $convert = array(
+							'Abgesagt -'    => '',
+            '('    => '#',
+            ')'    => '#'
+						);
+          
+          for ($a = 0; $a < sizeof($events); $a++)
+			{
+		  
+//$timestamp = $events[$a]->dtstart_array[2] - 7200;  
+$timestamp = $events[$a]->dtstart_array[2];
+$matchdate = date('Y-m-d', $timestamp) . " ".date('H:i:s', $timestamp);                        
+$exportmatchplan[$events[$a]->uid]['match_date'] = $matchdate;            
 
+$spieltag = $events[$a]->description;            
+preg_match_all("/\((.*?)\)/", $spieltag, $treffer, PREG_SET_ORDER);
+//$app->enqueueMessage(__LINE__.'<pre>'.print_r($treffer,true).'</pre>', ''); 
+$exportmatchplan[$events[$a]->uid]['spieltag'] = $treffer[0][1];            
+$nr = preg_replace('![^0-9]!', '', $treffer[0][1]);    
+            
+            if ( $country == 'AUT' )
+            {
+$exportmatchplan[$events[$a]->uid]['round_id'] = $nr;            
+$temp                   = new stdClass();
+$temp->id               = $nr;
+$temp->roundcode        = $nr;
+$temp->name             = $treffer[0][1];
+$temp->alias            = OutputFilter::stringURLSafe($treffer[0][1]);
+$temp->round_date_first = '';
+$temp->round_date_last  = '';
+$exportround[$nr]        = $temp;
+            }
+            
+            $teile  = explode(":", $events[$a]->summary);
+            if ( preg_match("/Abgesagt -/i", $teile[0])	)
+						{
+							$teile[0] = str_replace(array_keys($convert), array_values($convert), $teile[0]);
+							//$teile2   = explode(":", $teile[0]);
+						}
+            
+            $exportmatchplan[$events[$a]->uid]['heim'] = trim($teile[0]);
+            $exportmatchplan[$events[$a]->uid]['gast'] = trim($teile[1]);
+            
+            $exportmatchplan[$events[$a]->uid]['heimnummer'] = $events[$a]->x_homenr;
+            $exportmatchplan[$events[$a]->uid]['gastnummer'] = $events[$a]->x_awaynr;
+            
+            //$exportmatchplan[$events[$a]->uid]['spieltag'] = $events[$a]->description;
+            
+            
+            $events[$a]->location = str_replace(array_keys($convert), array_values($convert), $events[$a]->location);
+            $teilelocation  = explode("#", $events[$a]->location);
+            
+            //$app->enqueueMessage(__LINE__.'<pre>'.print_r($teilelocation,true).'</pre>', '');
+            $teileadresse  = explode(",", $teilelocation[1]  );
+            //$app->enqueueMessage(__LINE__.'<pre>'.print_r($teileadresse,true).'</pre>', '');
+            $address = $teileadresse[0];
+            $zipcode = substr($teileadresse[1],0,5);
+            $city = substr($teileadresse[1],6,50);
+            
+            $exportmatchplan[$events[$a]->uid]['playground'] = $teilelocation[0];
+            
+            
+            
+            // heimmannschaft
+            $valueheim = trim($teile[0]);
+            $valueplayground = $teilelocation[0];
+					if (array_key_exists(trim($teile[0]), $exportteamstemp))
+					{
+					}
+					else
+					{
+						$exportteamstemp[trim($teile[0])] = $lfdnumberteam;
+						$lfdnumberteam++;
+					}
+
+					// gastmannschaft
+					if (array_key_exists(trim($teile[1]), $exportteamstemp))
+					{
+					}
+					else
+					{
+						$exportteamstemp[trim($teile[1])] = $lfdnumberteam;
+						$lfdnumberteam++;
+					}
+            
+            
+            $exportteamplaygroundtemp[$valueheim] = $valueplayground;
+
+						if (array_key_exists($valueplayground, $exportplaygroundtemp))
+						{
+						}
+						else
+						{
+							$exportplaygroundtemp[$valueplayground] = $lfdnumberplayground;
+
+							$temp               = new stdClass();
+							$temp->id           = $lfdnumberplayground;
+							$temp->name         = $valueplayground;
+							$temp->short_name   = $valueplayground;
+							$temp->alias        = $valueplayground;
+							$temp->club_id      = $exportteamstemp[$valueheim];
+							$temp->address      = $address;
+							$temp->zipcode      = $zipcode;
+							$temp->city         = $city;
+							$temp->country      = $country;
+							$temp->max_visitors = 0;
+							$exportplayground[] = $temp;
+
+							$lfdnumberplayground++;
+						}
+            
+            
+            
+            
+            
+            if (empty($lfdnumber))
+					{
+$projectname = $events[$a]->description;
+						$temp                          = new stdClass();
+						$temp->name                    = $projectname;
+						$temp->exportRoutine           = '2010-09-19 23:00:00';
+						$this->_datas['exportversion'] = $temp;
+
+						$temp                   = new stdClass();
+		    $temp->id = $season_id;
+		    $mdl          = BaseDatabaseModel::getInstance('seasons', 'sportsmanagementModel');
+				$temp->name = $mdl->getSeasonName($season_id);
+						//$temp->name             = '';
+						$this->_datas['season'] = $temp;
+
+						$temp                       = new stdClass();
+						$temp->id                   = 1;
+						$temp->name                 = 'COM_SPORTSMANAGEMENT_ST_SOCCER';
+						$this->_datas['sportstype'] = $temp;
+              
+              $temp                   = new stdClass();
+						$temp->name             = $projectname;
+						$temp->alias            = $projectname;
+						$temp->short_name       = $projectname;
+						$temp->middle_name      = $projectname;
+						$temp->country          = $country;
+						$this->_datas['league'] = $temp;
+
+						$temp               = new stdClass();
+						$temp->name         = $projectname;
+						$temp->serveroffset = 0;
+						$temp->project_type = 'SIMPLE_LEAGUE';
+
+						$temp->current_round_auto        = '2';
+						$temp->auto_time                 = '2880';
+						$temp->start_date                = '2013-08-08';
+						$temp->start_time                = '15:30';
+						$temp->game_regular_time         = '90';
+						$temp->game_parts                = '2';
+						$temp->halftime                  = '15';
+						$temp->points_after_regular_time = '3,1,0';
+						$temp->use_legs                  = '0';
+						$temp->allow_add_time            = '0';
+						$temp->add_time                  = '30';
+						$temp->points_after_add_time     = '3,1,0';
+						$temp->points_after_penalty      = '3,1,0';
+              $temp->season_id = $season_id;
+
+						$this->_datas['project'] = $temp;
+
+              
+            }
+            $lfdnumber++;
+					$lfdnumbermatch++;
+          }
+          
+//$app->enqueueMessage(__LINE__.'<pre>'.print_r($exportmatchplan,true).'</pre>', '');                    
+//$app->enqueueMessage(__LINE__.'<pre>'.print_r($exportround,true).'</pre>', '');          
+          
 			for ($a = 0; $a < sizeof($icsfile['VEVENT']); $a++)
 			{
 				// Mannschaften, die spielfrei haben werden in der ics Datei "mit fehlender Gastmannschaft", z.B.
@@ -742,6 +979,11 @@ and ma.projectteam2_id = '$row->projectteam2_id'
 
 			}
 
+           if ( $country == 'AUT' )
+            {
+           }
+          else
+          {
 			$anzahlteams = sizeof($exportteamstemp);
 			$app->enqueueMessage(Text::_('Wir haben ' . $anzahlteams . ' Teams f&uuml;r die Berechnung der Spieltage und Paarungen pro Spieltag'), '');
 
@@ -771,7 +1013,8 @@ and ma.projectteam2_id = '$row->projectteam2_id'
 				$temp->round_date_last  = '';
 				$exportround[$a]        = $temp;
 			}
-
+          }
+          
 			// so jetzt die spiele erstellen
 			$lfdnumbermatch    = 1;
 			$lfdnumberpaarung  = 1;
@@ -800,7 +1043,14 @@ and ma.projectteam2_id = '$row->projectteam2_id'
 
 				$tempmatch->projectteam1_id = $exportteamstemp[$value['heim']];
 				$tempmatch->projectteam2_id = $exportteamstemp[$value['gast']];
+              if ( $country == 'AUT' )
+            {
+                $tempmatch->round_id        = $value['round_id'];
+              }
+              else
+              {
 				$tempmatch->round_id        = $lfdnumberspieltag;
+              }
 				$exportmatch[]              = $tempmatch;
 
 				if ($lfdnumberpaarung == $anzahlpaarungen)
@@ -990,7 +1240,8 @@ and ma.projectteam2_id = '$row->projectteam2_id'
 			{
 				// tab delimited, and encoding conversion
 				$csv = new JSMparseCSV();
-				$csv->encoding('UTF-16', 'UTF-8');
+				//$csv->encoding('UTF-16', 'UTF-8');
+				$csv->encoding('ISO-8859-1', 'UTF-8');
 				// Spielerdatei des DFBNet ist seit 2013 mit einem Tabulator als Delimiter, deswegen ist eine Auswahl nicht erforderlich
 				$csv->delimiter = ";";
 				$row            = 0;
@@ -2130,7 +2381,7 @@ and ma.projectteam2_id = '$row->projectteam2_id'
 			// close the project
 			$output .= '</project>';
 			// mal als test
-			$xmlfile = $output;
+			$xmlfile = utf8_encode( $output );
 			$file    = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'sportsmanagement_import.jlg';
 			File::write($file, $xmlfile);
 			$this->import_version = 'NEW';
@@ -2254,8 +2505,10 @@ and ma.projectteam2_id = '$row->projectteam2_id'
 			// close the project
 			$output .= '</project>';
 			// mal als test
-			$xmlfile = $output;
-			$file    = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'sportsmanagement_import.jlg';
+//			$xmlfile = utf8_encode( $output );
+
+			$xmlfile = $output ;
+            $file    = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'sportsmanagement_import.jlg';
 			File::write($file, $xmlfile);
 		}
 

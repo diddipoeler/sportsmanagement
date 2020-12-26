@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage nextmatch
@@ -11,16 +9,14 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 
 ?>
-    <!-- Start of show matches through all projects -->
+<!-- Start of show matches through all projects -->
 <?php
 if ($this->games)
 {
@@ -79,7 +75,10 @@ if ($this->games)
 								$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
 								$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
 								$routeparameter['p']                  = $game->project_slug;
+                                if ( isset($game->match_slug) )
+                                {
 								$routeparameter['mid']                = $game->match_slug;
+                                }
 								$report_link                          = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);
 
 								$home = $this->gamesteams[$game->projectteam1_id];
@@ -92,8 +91,16 @@ if ($this->games)
                                         if ($this->config['show_events'])
 					{
 						
+                            if ( isset($game->id) )
+                            {
 							$events = sportsmanagementModelProject::getMatchEvents($game->id, 0, 0, Factory::getApplication()->input->getInt('cfg_which_database', 0));
 							$subs   = sportsmanagementModelProject::getMatchSubstitutions($game->id, Factory::getApplication()->input->getInt('cfg_which_database', 0));
+                            }
+                            else
+                            {
+                            $events = array(); 
+                            $subs = array();   
+                            }
 
 							if ($this->config['use_tabs_events'])
 							{
@@ -158,8 +165,16 @@ if ($this->games)
 											$home->picture = sportsmanagementHelper::getDefaultPlaceholder('logo_big');
 										}
 
-										echo sportsmanagementHelperHtml::getBootstrapModalImage(
-											'nextmatchprevh' . $game->id . '-' . $game->projectteam1_id,
+										if ( isset($game->id) )
+                                        {
+                                        $target = 'nextmatchprevh' . $game->id . '-' . $game->projectteam1_id;    
+                                        }
+                                        else
+                                        {
+                                        $target = 'nextmatchprevh' . $game->projectteam1_id . '-' . $game->projectteam1_id;    
+                                        }
+                                        echo sportsmanagementHelperHtml::getBootstrapModalImage(
+											$target,
 											$home->picture,
 											$home->name,
 											'20',
@@ -180,9 +195,16 @@ if ($this->games)
 										{
 											$away->picture = sportsmanagementHelper::getDefaultPlaceholder('logo_big');
 										}
-
+                                        if ( isset($game->id) )
+                                        {
+                                        $target = 'nextmatchpreva' . $game->id . '-' . $game->projectteam2_id;    
+                                        }
+                                        else
+                                        {
+                                        $target = 'nextmatchpreva' . $game->projectteam2_id . '-' . $game->projectteam2_id;    
+                                        }
 										echo sportsmanagementHelperHtml::getBootstrapModalImage(
-											'nextmatchprevh' . $game->id . '-' . $game->projectteam2_id,
+											$target,
 											$away->picture,
 											$away->name,
 											'20',
@@ -198,13 +220,21 @@ if ($this->games)
 										echo $away->name;
 										?></td>
                                     <td class="nowrap"><?php
+                                    if ( isset($game->team1_result) )
+                                    {
 										echo $game->team1_result;
+                                        }
 										?></td>
                                     <td class="nowrap"><?php echo $this->overallconfig['seperator']; ?></td>
                                     <td class="nowrap"><?php
+                                    if ( isset($game->team2_result) )
+                                    {
 										echo $game->team2_result;
+                                        }
 										?></td>
                                     <td class="nowrap"><?php
+                                    if ( isset($game->show_report) )
+                                    {
 										if ($game->show_report == 1)
 										{
 											$desc = HTMLHelper::image(
@@ -214,6 +244,7 @@ if ($this->games)
 											);
 											echo HTMLHelper::link($report_link, $desc);
 										}
+                                        }
 
 										$k = 1 - $k;
 										?></td>

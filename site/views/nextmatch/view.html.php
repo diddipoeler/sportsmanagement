@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage nextmatch
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -114,20 +110,29 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
 			$this->matchcommentary = sportsmanagementModelMatch::getMatchCommentary($this->match->id);
 		}
 
-		if ($this->games)
+		$this->gesamtspiele = array();
+        if ($this->games)
 		{
-			$this->gesamtspiele = array();
 
 			foreach ($this->games as $game)
 			{
-				if (!isset($this->gesamtspiele[$game->leaguename]))
-				{
-					$this->gesamtspiele[$game->leaguename] = new stdClass;
-				}
+
+if ( !array_key_exists($game->leaguename, $this->gesamtspiele)) {
+$this->gesamtspiele[$game->leaguename] = new stdClass;
+$this->gesamtspiele[$game->leaguename]->gesamtspiele = 0;
+$this->gesamtspiele[$game->leaguename]->gewonnen = 0;
+$this->gesamtspiele[$game->leaguename]->verloren = 0;
+$this->gesamtspiele[$game->leaguename]->unentschieden = 0;
+
+$this->gesamtspiele[$game->leaguename]->plustore = 0;
+$this->gesamtspiele[$game->leaguename]->minustore = 0;
+}
 
 				$this->gesamtspiele[$game->leaguename]->gesamtspiele += 1;
 
 				if ($game->team1_id == $this->teams[0]->id)
+				{
+				    if ( isset($game->team1_result) && isset($game->team2_result) )
 				{
 					if ($game->team1_result != null && $game->team2_result != null)
 					{
@@ -149,8 +154,11 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
 						$this->gesamtspiele[$game->leaguename]->plustore  += $game->team1_result;
 						$this->gesamtspiele[$game->leaguename]->minustore += $game->team2_result;
 					}
+                    }
 				}
 				elseif ($game->team2_id == $this->teams[0]->id)
+				{
+				    if ( isset($game->team1_result) && isset($game->team2_result) )
 				{
 					if ($game->team1_result != null && $game->team2_result != null)
 					{
@@ -172,8 +180,11 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
 						$this->gesamtspiele[$game->leaguename]->plustore  += $game->team2_result;
 						$this->gesamtspiele[$game->leaguename]->minustore += $game->team1_result;
 					}
+                    }
 				}
-
+                
+                if ( isset($game->team1_result) && isset($game->team2_result) )
+				{
 				if (!isset($this->statgames['home'][$game->team1_result . '-' . $game->team2_result]))
 				{
 					$this->statgames['home'][$game->team1_result . '-' . $game->team2_result] = 0;
@@ -204,6 +215,7 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
 					$this->statgames['away'][$game->team1_result . '-' . $game->team2_result]   += 1;
 					$this->statgames['gesamt'][$game->team2_result . '-' . $game->team1_result] += 1;
 				}
+                }
 			}
 		}
 

@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_clubicons
@@ -11,19 +9,17 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 
-if (!defined('DS'))
-{
-	define('DS', DIRECTORY_SEPARATOR);
-}
+//if (!defined('DS'))
+//{
+//	define('DS', DIRECTORY_SEPARATOR);
+//}
 
 if (!defined('JSM_PATH'))
 {
@@ -32,10 +28,7 @@ if (!defined('JSM_PATH'))
 
 JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 
-/**
- *
- * prüft vor Benutzung ob die gewünschte Klasse definiert ist
- */
+/** prüft vor Benutzung ob die gewünschte Klasse definiert ist */
 if (!class_exists('JSMModelLegacy'))
 {
 	JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_SITE);
@@ -58,10 +51,7 @@ JLoader::import('components.com_sportsmanagement.models.project', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.models.ranking', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.helpers.ranking', JPATH_SITE);
 
-/**
- *
- * welche tabelle soll genutzt werden
- */
+/** welche tabelle soll genutzt werden */
 $paramscomponent       = ComponentHelper::getParams('com_sportsmanagement');
 $database_table        = $paramscomponent->get('cfg_which_database_table');
 $show_debug_info       = $paramscomponent->get('show_debug_info');
@@ -83,16 +73,10 @@ if (!defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
 	DEFINE('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE', ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database'));
 }
 
-/**
- *
- * Include the functions only once
- */
+/** Include the functions only once */
 JLoader::register('modJSMClubiconsHelper', __DIR__ . '/helper.php');
 
-/**
- *
- * soll die externe datenbank genutzt werden ?
- */
+/** soll die externe datenbank genutzt werden ? */
 if (ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database'))
 {
 	$module->picture_server = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database_server');
@@ -107,18 +91,12 @@ $data = new modJSMClubiconsHelper($params, $module);
 $cnt = count($data->teams);
 $cnt = ($cnt < $params->get('iconsperrow', 20)) ? $cnt : $params->get('iconsperrow', 20);
 
-/**
- *
- * die übersetzungen laden
- */
+/** die übersetzungen laden */
 $language = Factory::getLanguage();
 $language->load('com_sportsmanagement', JPATH_SITE, null, true);
 
 
-/**
- *
- * welche joomla version ?
- */
+/** welche joomla version ? */
 if (version_compare(JVERSION, '3.0.0', 'ge'))
 {
 	HTMLHelper::_('behavior.framework', true);
@@ -129,13 +107,11 @@ else
 }
 
 $doc = Factory::getDocument();
-/**
- *
- * Add styles
- */
+/** Add styles */
 $style = '
 .img-zoom {
-    width: ' . $params->get('jcclubiconsglobalmaxwidth', '50') . ';
+width: auto;
+    height: ' . $params->get('picture_height', '50') . ';
     -webkit-transition: all .2s ease-in-out;
     -moz-transition: all .2s ease-in-out;
     -o-transition: all .2s ease-in-out;
@@ -143,10 +119,10 @@ $style = '
 }
 
 .transition {
-    -webkit-transform: scale(' . $params->get('max_width_after_mouse_over', '10') . ');
-    -moz-transform: scale(' . $params->get('max_width_after_mouse_over', '10') . ');
-    -o-transform: scale(' . $params->get('max_width_after_mouse_over', '10') . ');
-    transform: scale(' . $params->get('max_width_after_mouse_over', '10') . ');
+    -webkit-transform: scale(1.' . $params->get('max_width_after_mouse_over', '10') . ');
+    -moz-transform: scale(1.' . $params->get('max_width_after_mouse_over', '10') . ');
+    -o-transform: scale(1.' . $params->get('max_width_after_mouse_over', '10') . ');
+    transform: scale(1.' . $params->get('max_width_after_mouse_over', '10') . ');
 }
 ';
 $doc->addStyleDeclaration($style);

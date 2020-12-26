@@ -71,6 +71,9 @@
 <parentpositions>
 <parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">FORWARD</parentname>
 </parentpositions>
+<parentpositions>  
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">REPLACEMENT_BENCH</parentname>
+</parentpositions>  
 
 <parentpositions>
 <parentname switch="persontype" parent="0" content="2" art="F" events="0" main="MAINTAINER_TEAM">MAINTAINER</parentname>

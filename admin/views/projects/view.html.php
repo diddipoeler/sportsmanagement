@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage projects
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -21,6 +17,8 @@ use Joomla\CMS\Table\Table;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementViewProjects
@@ -34,6 +32,22 @@ use Joomla\CMS\Component\ComponentHelper;
 class sportsmanagementViewProjects extends sportsmanagementView
 {
 
+    /**
+	 * A \JForm instance with filter fields.
+	 *
+	 * @var    \JForm
+	 * @since  3.6.3
+	 */
+	public $filterForm;
+
+	/**
+	 * An array with active filters.
+	 *
+	 * @var    array
+	 * @since  3.6.3
+	 */
+	public $activeFilters;
+    
 	/**
 	 * sportsmanagementViewProjects::init()
 	 *
@@ -42,7 +56,7 @@ class sportsmanagementViewProjects extends sportsmanagementView
 	public function init()
 	{
 		$inputappend = '';
-
+		$res = array();
 		$starttime = microtime();
 
 		Table::addIncludePath(JPATH_COMPONENT . DIRECTORY_SEPARATOR . 'tables');
@@ -51,7 +65,7 @@ class sportsmanagementViewProjects extends sportsmanagementView
 
 		$javascript = "onchange=\"$('adminForm').submit();\"";
 
-		// Build the html select list for userfields
+		/** Build the html select list for userfields */
 		$userfields[]  = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_USERFIELD_FILTER'), 'id', 'name');
 		$mdluserfields = BaseDatabaseModel::getInstance('extrafields', 'sportsmanagementModel');
 		$alluserfields = $mdluserfields->getExtraFields('project');
@@ -75,16 +89,18 @@ class sportsmanagementViewProjects extends sportsmanagementView
 			$row->user_field = $mdluserfields->getExtraFieldsProject($row->id);
 			$dest            = JPATH_ROOT . '/images/com_sportsmanagement/database/projectimages/' . $row->id;
 
-			if (Folder::exists($dest))
-			{
-			}
-			else
-			{
-				$result = Folder::create($dest);
-			}
+			if (!Folder::exists($dest))
+{
+Folder::create($dest);
+//Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_CREATE_FOLDER'), Log::NOTICE, 'jsmerror');
+}
+else
+{
+//Log::add(Text::_('JLIB_FILESYSTEM_ERROR_FOLDER_EXISTS'), Log::NOTICE, 'jsmerror');    
+}
 		}
 
-		// Build the html select list for leagues
+		/** Build the html select list for leagues */
 		$leagues[]  = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER'), 'id', 'name');
 		$mdlLeagues = BaseDatabaseModel::getInstance('Leagues', 'sportsmanagementModel');
 		$allLeagues = $mdlLeagues->getLeagues();
@@ -103,7 +119,7 @@ class sportsmanagementViewProjects extends sportsmanagementView
 		);
 		unset($leagues);
 
-		// Build the html select list for sportstypes
+		/** Build the html select list for sportstypes */
 		$sportstypes[]  = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'), 'id', 'name');
 		$mdlSportsTypes = BaseDatabaseModel::getInstance('SportsTypes', 'sportsmanagementModel');
 		$allSportstypes = $mdlSportsTypes->getSportsTypes();
@@ -123,7 +139,7 @@ class sportsmanagementViewProjects extends sportsmanagementView
 		);
 		unset($sportstypes);
 
-		// Build the html select list for seasons
+		/** Build the html select list for seasons */
 		$seasons[]  = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'), 'id', 'name');
 		$mdlSeasons = BaseDatabaseModel::getInstance('Seasons', 'sportsmanagementModel');
 		$allSeasons = $mdlSeasons->getSeasons();
@@ -143,7 +159,7 @@ class sportsmanagementViewProjects extends sportsmanagementView
 
 		unset($seasons);
 
-		// Build the html options for nation
+		/** Build the html options for nation */
 		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 
 		if ($res = JSMCountries::getCountryOptions())
@@ -216,6 +232,7 @@ class sportsmanagementViewProjects extends sportsmanagementView
 		unset($nation);
 		$nation[]       = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'));
 		$mdlassociation = BaseDatabaseModel::getInstance('jlextassociations', 'sportsmanagementModel');
+		$res = array();
 
 		if ($res = $mdlassociation->getAssociations())
 		{
@@ -224,26 +241,22 @@ class sportsmanagementViewProjects extends sportsmanagementView
 		}
 
 		$lists['association'] = array();
-
-		foreach ($res as $row)
+if ($res){
+		foreach ($res as $row) 
 		{
 			if (array_key_exists($row->country, $lists['association']))
 			{
 				$lists['association'][$row->country][] = $row;
-
-				// Echo "Das Element 'erstes' ist in dem Array vorhanden";
 			}
 			else
 			{
 				$lists['association'][$row->country][] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'));
 				$lists['association'][$row->country][] = $row;
 			}
-
-			// $lists['association'] = $nation;
 		}
-
-		// $lists['association'] = $nation;
-
+}
+		
+		
 		$lists['association2'] = JHtmlSelect::genericlist(
 			$nation,
 			'filter_search_association',
@@ -262,6 +275,17 @@ class sportsmanagementViewProjects extends sportsmanagementView
 		$this->modelmatches  = $mdlMatches;
 		$this->lists         = $lists;
 		$this->season_ids    = ComponentHelper::getParams($this->option)->get('current_season');
+        
+try
+{		
+$this->filterForm    = $this->model->getFilterForm();
+$this->activeFilters = $this->model->getActiveFilters();
+}
+catch (Exception $e)
+{
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');	
+}
 
 	}
 
@@ -272,10 +296,8 @@ class sportsmanagementViewProjects extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-		// Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_TITLE');
 		$this->icon  = 'projects';
-
 		ToolbarHelper::publishList('projects.publish');
 		ToolbarHelper::unpublishList('projects.unpublish');
 		ToolbarHelper::divider();
@@ -284,8 +306,7 @@ class sportsmanagementViewProjects extends sportsmanagementView
 		ToolbarHelper::editList('project.edit');
 		ToolbarHelper::custom('project.import', 'upload', 'upload', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CSV_IMPORT'), false);
 		ToolbarHelper::archiveList('project.export', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_XML_EXPORT'));
-		ToolbarHelper::custom('project.copy', 'copy.png', 'copy_f2.png', Text::_('JTOOLBAR_DUPLICATE'), false);
-
+		ToolbarHelper::custom('projects.copy', 'copy.png', 'copy_f2.png', Text::_('JTOOLBAR_DUPLICATE'), false);
 		parent::addToolbar();
 	}
 }

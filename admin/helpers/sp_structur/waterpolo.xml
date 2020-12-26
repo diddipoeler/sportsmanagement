@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<structur>
+<version>1.0.00</version>
+
+<events>
+<name icon="tor.png">GOAL</name>
+</events>
+<events>
+<name icon="red_card.png">RED_CARD</name>
+</events>
+<events>
+<name icon="yellow_card.png">YELLOW_CARD</name>
+</events>
+<events>
+<name icon="ausschluss.png">EXCLUSION</name>
+</events>  
+<events>
+<name icon="5m.png">FIVE_METER</name>
+</events>
+<events>
+<name icon="rolle.png">ROLE</name>
+</events>
+<events>
+<name icon="einsatz.png">EINSATZ</name>
+</events>  
+  
+<mainpositions>
+<mainname switch="persontype" parent="0" content="1">PLAYERS</mainname>
+</mainpositions>
+
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">GOALKEEPER</parentname>
+</parentpositions>
+  
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">FIELDPLAYER</parentname>
+</parentpositions>
+
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">CENTER</parentname>
+</parentpositions>  
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">LA</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">RA</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">LH</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">MITTE</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">RH</parentname>
+</parentpositions>  
+  
+  
+  
+  
+  
+  
+  
+</structur>

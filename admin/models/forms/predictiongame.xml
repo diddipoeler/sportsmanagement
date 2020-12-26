@@ -73,6 +73,19 @@
 				value="">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
 		</field>	
+		
+		
+<field
+            name="season"
+            type="seasonlist"
+            label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER"
+            description="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER"
+            required="false"
+        >
+            <option value="">COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER</option>
+        </field>		
+		
+		
 <field
 			name="project_ids"
 			type="projectlist"

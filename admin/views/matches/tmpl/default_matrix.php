@@ -60,7 +60,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
     .rotated_cell {
         height: 400px;
         background-color: grey;
-        color: white;
+        color: black;
         padding-bottom: 3px;
         padding-left: 5px;
         padding-right: 5px;
@@ -83,14 +83,14 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 	<?php
 
 	$mdlProject = BaseDatabaseModel::getInstance("Projectteams", "sportsmanagementModel");
-	$teams      = $mdlProject->getProjectTeams($this->project_id);
+	$teams      = $mdlProject->getProjectTeams($this->project_id, false, $this->state->get('filter.division') );
 	$matrix     = '';
 
 	// Diddipoeler
 	// warum <= 20 blödsinn
 	// kann man anders regeln
 	// if (count($teams) <= 200) {
-	$matrix = "<table width=\"100%\" class=\"adminlist\">";
+	$matrix = "<table width=\"100%\" class=\"adminlist table-striped\">";
 
 	$k = 0;
 
@@ -135,7 +135,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 			}
             elseif ($cols == 0)
 			{
-				$text = sprintf("<td align=\"left\" nowrap>%s</td>", $trow->text); // Named rows
+				$text = sprintf("<td align=\"left\" width=\"10\" nowrap>%s</td>", $trow->text); // Named rows
 			}
             elseif ($rows == $cols)
 			{

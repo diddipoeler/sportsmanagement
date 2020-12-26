@@ -39,8 +39,7 @@ if (!is_array($this->onlineItems))
         <thead>
         <tr>
             <th width="1%" class="hidden-phone">
-                <input type="checkbox" name="checkall-toggle" value=""
-                       title="<?php echo Text::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)"/>
+                <?php echo HTMLHelper::_('grid.checkall'); ?>
             </th>
             <th class="title">
 				<?php echo Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_NAME_LABEL'); ?>

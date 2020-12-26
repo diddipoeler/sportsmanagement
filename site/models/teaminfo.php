@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage teaminfo
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -53,6 +49,56 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 		self::$cfg_which_database                = Factory::getApplication()->input->get('cfg_which_database', 0, 'INT');
 		sportsmanagementModelProject::$projectid = self::$projectid;
 		parent::__construct();
+	}
+    
+    
+    /**
+     * sportsmanagementModelTeamInfo::getTeam()
+     * 
+     * @param integer $inserthits
+     * @param integer $teamid
+     * @return
+     */
+    static function getTeam($inserthits = 0, $teamid = 0)
+	{
+		$app = Factory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+
+		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
+		$query = $db->getQuery(true);
+		self::$projectid = $jinput->getInt("p", 0);
+
+		if (empty(self::$projectid))
+		{
+			Log::add(Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO'), Log::ERROR, 'jsmerror');
+		}
+
+		if ($teamid)
+		{
+			self::$teamid = $teamid;
+		}
+		else
+		{
+			self::$teamid = $jinput->getInt("cid", 0);
+		}
+
+		self::updateHits(self::$teamid, $inserthits);
+
+		if (is_null(self::$team))
+		{
+			if (self::$teamid > 0)
+			{
+				$query->select('t.*');
+				$query->from('#__sportsmanagement_team AS t');
+				$query->where('t.id = ' . $db->Quote(self::$teamid));
+				$db->setQuery($query);
+				self::$team = $db->loadObject();
+			}
+		}
+
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		return self::$team;
 	}
 
 	/**
@@ -241,14 +287,9 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 	 */
 	public static function getSeasons($config, $history = 0)
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
 		$db        = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query     = $db->getQuery(true);
 		$starttime = microtime();
@@ -270,7 +311,7 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 		$query->select('s.name as season');
 		$query->select('t.id as team_id');
 		$query->select('st.picture as season_picture');
-		$query->select('l.name as league, t.extended as teamextended');
+		$query->select('l.name as league, t.extended as teamextended, l.country as leaguecountry');
 		$query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
 		$query->select('CONCAT_WS( \':\', t.id, t.alias ) AS team_slug');
 		$query->from('#__sportsmanagement_project_team AS pt ');

@@ -7,7 +7,7 @@
 	<authorUrl>http://www.fussballineuropa.de</authorUrl>
 	<license>GNU/GPL</license>
 	<copyright>Copyright (c) 2014 diddipoeler</copyright>
-	<version>1.0</version>
+	<version>3.8.0</version>
 	<description>MOD_SPORTSMANAGEMENT_MATCHESSLIDER_XML_DESC</description>
 
 	<files>
@@ -15,6 +15,7 @@
 		<filename>index.html</filename>
 		<filename>helper.php</filename>
 		<filename>mod_sportsmanagement_matchesslider.xml</filename>
+		<filename>update-server.xml</filename>
 		<folder>connectors</folder>
 		<folder>fields</folder>
 		<folder>tmpl</folder>
@@ -235,4 +236,9 @@ description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_USE_THESE_TEAMS_DESCR" />
 			</fieldset>
 		</fields>
 	</config>
+	
+	<updateservers>
+<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/modules/mod_sportsmanagement_matchesslider/update-server.xml</server>
+</updateservers>
+
 </extension>

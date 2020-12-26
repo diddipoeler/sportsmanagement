@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage statistics
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -33,9 +29,7 @@ use Joomla\CMS\Log\Log;
 class SMStatistic extends JObject
 {
 	var $_name = 'default';
-
 	var $_calculated = 0;
-
 	var $_showinsinglematchreports = 1;
 
 	/**
@@ -439,8 +433,7 @@ class SMStatistic extends JObject
 
 		if (!count($stat_ids))
 		{
-			Log::add(Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
-
+//			Log::add(Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return (array(0));
 		}
 
@@ -534,8 +527,7 @@ class SMStatistic extends JObject
 
 		if (!count($event_ids))
 		{
-			Log::add(Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
-
+//			Log::add(Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return (array(0));
 		}
 
@@ -664,8 +656,7 @@ class SMStatistic extends JObject
 
 		if (!count($statistic_views))
 		{
-			Log::add(get_class($this) . ' ' . __FUNCTION__ . ' ' . __LINE__ . ' ' . Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
-
+//			Log::add(get_class($this) . ' ' . __FUNCTION__ . ' ' . __LINE__ . ' ' . Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return (array(0));
 		}
 
@@ -694,8 +685,7 @@ class SMStatistic extends JObject
 
 		if (!count($statistic_views))
 		{
-			Log::add(get_class($this) . ' ' . __FUNCTION__ . ' ' . __LINE__ . ' ' . Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
-
+//			Log::add(get_class($this) . ' ' . __FUNCTION__ . ' ' . __LINE__ . ' ' . Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return (array(0));
 		}
 
@@ -724,8 +714,7 @@ class SMStatistic extends JObject
 
 		if (!count($statistic_views))
 		{
-			Log::add(get_class($this) . ' ' . __FUNCTION__ . ' ' . __LINE__ . ' ' . Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
-
+//			Log::add(get_class($this) . ' ' . __FUNCTION__ . ' ' . __LINE__ . ' ' . Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return (array(0));
 		}
 
@@ -739,12 +728,14 @@ class SMStatistic extends JObject
 		}
 	}
 
+	
 	/**
-	 * return stat <img> html tag
-	 *
-	 * @return string
+	 * SMStatistic::getImage()
+	 * 
+	 * @param integer $events_picture_height
+	 * @return
 	 */
-	function getImage()
+	function getImage($events_picture_height = 30)
 	{
 		if (!empty($this->icon))
 		{
@@ -755,7 +746,7 @@ class SMStatistic extends JObject
 				$iconPath = "images/com_sportsmanagement/database/statistics/" . $iconPath;
 			}
 
-			return HTMLHelper::image($iconPath, Text::_($this->name), array("title" => Text::_($this->name), "width" => 30));
+			return HTMLHelper::_('image',$iconPath, Text::_($this->name), array("title" => Text::_($this->name), "style" => 'width: auto;height: ' . $events_picture_height . 'px'));
 		}
 
 		return '<span class="stat-alternate hasTip" title="' . Text::_($this->name) . '">' . Text::_($this->short) . '</span>';
@@ -771,8 +762,7 @@ class SMStatistic extends JObject
 	 */
 	function getMatchPlayerStat(&$gamemodel, $teamplayer_id)
 	{
-		Log::add($this->_name . ': ' . Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
-
+//		Log::add($this->_name . ': ' . Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return 0;
 	}
 
@@ -799,8 +789,7 @@ class SMStatistic extends JObject
 	 */
 	function getPlayerStatsByGame($teamplayer_id, $project_id)
 	{
-		Log::add($this->_name . ': ' . Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
-
+//		Log::add($this->_name . ': ' . Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return 0;
 	}
 
@@ -813,8 +802,7 @@ class SMStatistic extends JObject
 	 */
 	function getPlayerStatsByProject($person_id, $projectteam_id = 0, $project_id = 0, $sports_type_id = 0)
 	{
-		Log::add($this->_name . ': ' . Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
-
+//		Log::add($this->_name . ': ' . Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return 0;
 	}
 
@@ -829,8 +817,7 @@ class SMStatistic extends JObject
 	 */
 	function getRosterStats($team_id, $project_id, $position_id)
 	{
-		Log::add($this->_name . ': ' . Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
-
+//		Log::add($this->_name . ': ' . Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return 0;
 	}
 
@@ -846,8 +833,7 @@ class SMStatistic extends JObject
 	 */
 	function getPlayersRanking($project_id, $division_id, $team_id, $limit = 20, $limitstart = 0, $order = null)
 	{
-		Log::add($this->_name . ': ' . Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
-
+//		Log::add($this->_name . ': ' . Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return array();
 	}
 
@@ -902,8 +888,7 @@ class SMStatistic extends JObject
 	 */
 	function getMatchStaffStat(&$gamemodel, $team_staff_id)
 	{
-		Log::add($this->_name . ': ' . Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
-
+//		Log::add($this->_name . ': ' . Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return 0;
 	}
 
@@ -917,8 +902,7 @@ class SMStatistic extends JObject
 	 */
 	function getStaffStats($person_id, $team_id, $project_id)
 	{
-		Log::add($this->_name . ': ' . Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
-
+//		Log::add($this->_name . ': ' . Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return 0;
 	}
 
@@ -932,8 +916,7 @@ class SMStatistic extends JObject
 	 */
 	function getHistoryStaffStats($person_id)
 	{
-		Log::add($this->_name . ': ' . Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
-
+//		Log::add($this->_name . ': ' . Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return 0;
 	}
 

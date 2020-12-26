@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 
@@ -76,10 +72,6 @@ class sportsmanagementModeljlextassociations extends JSMModelList
 			$search_nation = $this->getState('filter.search_nation');
 		}
 
-		/**
-		 *
-		 * Create a new query object
-		 */
 		$this->jsmquery->clear();
 		$this->jsmquery->select('id,name,id as value,name as text,country');
 		$this->jsmquery->from('#__sportsmanagement_associations');
@@ -101,13 +93,13 @@ class sportsmanagementModeljlextassociations extends JSMModelList
 			$this->jsmdb->setQuery($this->jsmquery);
 			$result = $this->jsmdb->loadObjectList();
 
-			foreach ($result as $association)
+			foreach ($result as $association) if ($result)
 			{
 				$association->name = '( ' . $association->country . ' ) ' . Text::_($association->name);
 				$association->text = $association->name;
 			}
 
-			return $result;
+			//return $result;
 		}
 		catch (Exception $e)
 		{
@@ -115,6 +107,15 @@ class sportsmanagementModeljlextassociations extends JSMModelList
 
 			return false;
 		}
+        
+        if ($result)
+      {
+        return $result;
+      }
+      else
+      {
+        return false;
+      }
 	}
 
 	/**
@@ -132,7 +133,6 @@ class sportsmanagementModeljlextassociations extends JSMModelList
 			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . ''), '');
 		}
 
-		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
 		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string');
@@ -143,12 +143,8 @@ class sportsmanagementModeljlextassociations extends JSMModelList
 		$this->setState('filter.federation', $temp_user_request);
 		$value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
 		$this->setState('list.limit', $value);
-
-		// List state information.
 		$value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);
-
-		// Filter.order
 		$orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
 
 		if (!in_array($orderCol, $this->filter_fields))
@@ -174,16 +170,9 @@ class sportsmanagementModeljlextassociations extends JSMModelList
 	 */
 	protected function getListQuery()
 	{
-		// Create a new query object.
 		$this->jsmquery->clear();
-
-		// Select some fields
 		$this->jsmquery->select(implode(",", $this->filter_fields));
-
-		// From the _associations table
 		$this->jsmquery->from('#__sportsmanagement_associations as objassoc');
-
-		// Join over the users for the checked out user.
 		$this->jsmquery->select('uc.name AS editor');
 		$this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = objassoc.checked_out');
 
@@ -191,17 +180,14 @@ class sportsmanagementModeljlextassociations extends JSMModelList
 		{
 			$this->jsmquery->where('LOWER(objassoc.name) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%'));
 		}
-
 		if ($this->getState('filter.search_nation'))
 		{
 			$this->jsmquery->where("objassoc.country LIKE '" . $this->getState('filter.search_nation') . "'");
 		}
-
 		if ($this->getState('filter.federation'))
 		{
 			$this->jsmquery->where("objassoc.parent_id = " . $this->getState('filter.federation'));
 		}
-
 		if (is_numeric($this->getState('filter.state')))
 		{
 			$this->jsmquery->where('objassoc.published = ' . $this->getState('filter.state'));
@@ -214,6 +200,5 @@ class sportsmanagementModeljlextassociations extends JSMModelList
 
 		return $this->jsmquery;
 	}
-
 
 }

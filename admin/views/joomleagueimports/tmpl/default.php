@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage joomleagueimports
@@ -11,31 +9,32 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
+HTMLHelper::_('jquery.framework');
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 if ($this->jl_table_import_step != 'ENDE')
 {
-	?>
-
-    <script>
-
-        jQuery(document).ready(function () {
-            document.getElementById('delayMsg').innerHTML = '';
-
+?>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+   console.log('document is ready. I can sleep now');
+   document.getElementById('delayMsg').innerHTML = '';
             delayRedirect();
-
             const stepsuccess = Joomla.getOptions('success');
             console.log('stepsuccess ' + stepsuccess);
-
-        });
+});
+//        jQuery(document).ready(function () {
+//            document.getElementById('delayMsg').innerHTML = '';
+//            delayRedirect();
+//            const stepsuccess = Joomla.getOptions('success');
+//            console.log('stepsuccess ' + stepsuccess);
+//        });
 
         function delayRedirect() {
             document.getElementById('delayMsg').innerHTML = '<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP'); ?>';
@@ -49,29 +48,27 @@ if ($this->jl_table_import_step != 'ENDE')
                 }
             }, 1000);
         }
-
-    </script>
-
-	<?PHP
+</script>
+<?PHP
 }
 
 if ($this->jl_table_import_step === 'ENDE')
 {
-	?>
-
-    <script>
-
-        jQuery(document).ready(function () {
-            document.getElementById('delayMsg').innerHTML = '';
-
+?>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+   console.log('document is ready. I can sleep now');
+   document.getElementById('delayMsg').innerHTML = '';
             delayRedirect();
-            // Handler for .ready() called.
-//    window.setTimeout(function () {
-//        location.href = "<?php echo $this->request_url . '&task=joomleagueimports.importjoomleaguenew'; ?>";
-//    }, 2000);
-
-
-        });
+});
+//        jQuery(document).ready(function () {
+//            document.getElementById('delayMsg').innerHTML = '';
+//            delayRedirect();
+//            // Handler for .ready() called.
+////    window.setTimeout(function () {
+////        location.href = "<?php echo $this->request_url . '&task=joomleagueimports.importjoomleaguenew'; ?>";
+////    }, 2000);
+//        });
 
         function delayRedirect() {
             document.getElementById('delayMsg').innerHTML = '<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP'); ?>';
@@ -85,10 +82,8 @@ if ($this->jl_table_import_step === 'ENDE')
                 }
             }, 1000);
         }
-
     </script>
-
-	<?PHP
+<?PHP
 }
 
 ?>
@@ -111,6 +106,7 @@ if ($this->jl_table_import_step === 'ENDE')
                 </td>
                 <td class="nowrap" align="center">
                     <div id="delayMsg"></div>
+                    <div id="countDown"></div>
                 </td>
                 <td class="nowrap" align="center">
                     <img src="<?php echo Uri::base(true) ?>/components/com_sportsmanagement/assets/icons/logo_transparent.png"
@@ -159,7 +155,4 @@ if ($this->jl_table_import_step === 'ENDE')
 
 		<?php echo HTMLHelper::_('form.token') . "\n"; ?>
     </form>
-<?PHP
-echo "<div>";
-echo $this->loadTemplate('footer');
-echo "</div>";
+<div><?PHP echo $this->loadTemplate('footer');?></div>

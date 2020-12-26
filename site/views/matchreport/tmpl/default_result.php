@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage matchreport
@@ -11,17 +9,14 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Filesystem\File;
 
 ?>
 <!-- START: game result -->
-<div class="<?php echo $this->divclassrow; ?> table-responsive" id="matchreport-result">
+<div class="<?php echo $this->divclassrow; ?> " id="matchreport-result">
     <table class="table">
-
 		<?php
 		if ($this->config['show_team_logo'])
 		{
@@ -48,7 +43,7 @@ use Joomla\CMS\Filesystem\File;
 						'team2mare' . $this->team1->id,
 						$picture,
 						$this->team1->name,
-						$this->config['team_picture_width'],
+						$this->config['team_picture_height'],
 						'',
 						$this->modalwidth,
 						$this->modalheight,
@@ -79,7 +74,7 @@ use Joomla\CMS\Filesystem\File;
 						'team2mare' . $this->team2->id,
 						$picture,
 						$this->team2->name,
-						$this->config['team_picture_width'],
+						$this->config['team_picture_height'],
 						'',
 						$this->modalwidth,
 						$this->modalheight,
@@ -271,7 +266,14 @@ use Joomla\CMS\Filesystem\File;
 
 	if ($this->config['show_timeline'] && $this->config['show_timeline_under_results'])
 	{
+		if ( $this->config['show_which_timeline'] )
+		{
+		echo $this->loadTemplate('timeline_graph');
+		}
+		else
+		{
 		echo $this->loadTemplate('timeline');
+		}
 	}
 	?>
 

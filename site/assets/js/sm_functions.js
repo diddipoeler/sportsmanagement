@@ -135,8 +135,23 @@ function changePlayground()
 {
 
 var selected = jQuery( "#jform_picture" ).val();
-//alert(selected);
+console.log('background image = ' + selected);
 jQuery('#roster').css("background-image", "url(../images/com_sportsmanagement/database/rosterground/"+selected+")");
+var x = new Image();
+x.src = "/images/com_sportsmanagement/database/rosterground/"+selected+"";
+width = x.width;
+height = x.height;
+console.log('width image = ' + width);
+console.log('height image = ' + height);
+console.log('src image = ' + x.src);
+
+var bBreite = jQuery("#roster").width();
+var bHoehe = jQuery("#roster").height();  
+console.log('bBreite image = ' + bBreite);  
+console.log('bHoehe image = ' + bHoehe);  
+
+jQuery('#roster').css({'width' : width + 'px' , 'height' : height + 'px'});
+  
 }
 
 

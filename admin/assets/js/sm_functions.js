@@ -71,14 +71,25 @@ function move_down(sourceid)
         selected.detach().insertAfter(next);
 }
 
+/*
 function changePlayground()
 {
 
 var selected = jQuery( "#jform_picture" ).val();
-//alert(selected);
+console.log('background image = ' + selected);
 jQuery('#roster').css("background-image", "url(../images/com_sportsmanagement/database/rosterground/"+selected+")");
-}
 
+var x = new Image();
+x.src = "/images/com_sportsmanagement/database/rosterground/"+selected+"";
+width = x.width;
+height = x.height;
+console.log('width image = ' + width);
+console.log('height image = ' + height);
+
+
+
+}
+*/
 
 var modjlnav = {
 updateProjects : function(response)
@@ -171,25 +182,39 @@ if (selected == 2)
 
 function registerproject(homepage,project,homepagename,isadmin)
 	{
-var url='http://www.fussballineuropa.de/jsmprojectexport.php';		
+var url='https://www.fussballineuropa.de/jsmprojectexport.php';		
 var data = 'homepage='+homepage+'&project_id='+project+'&homepagename='+homepagename+'&isadmin='+isadmin;
-var url2='http://www.fussballineuropa.de/jsmprojectexport.php?'+'homepage='+homepage+'&project_id='+project+'&homepagename='+homepagename+'&isadmin='+isadmin;
-var request = new Request({
-                        url: url2,
-                        method:'post',
-                        data: data
-                        }).send();
-                        		
+var url2='https://www.fussballineuropa.de/jsmprojectexport.php?'+'homepage='+homepage+'&project_id='+project+'&homepagename='+homepagename+'&isadmin='+isadmin;
+//var request = new Request({
+//                        url: url2,
+//                        method:'post',
+//                        data: data
+//                        }).send();
+
+var xhttp = new XMLHttpRequest();
+xhttp.open("POST", url2, true);
+//xhttp.setRequestHeader('Access-Control-Allow-Headers', '*');
+//xhttp.setRequestHeader('Content-type', 'application/ecmascript');
+xhttp.setRequestHeader('Access-Control-Allow-Origin', '*');
+xhttp.send(data);    
+                    		
 		}
 
 function register(homepage,notes,homepagename,isadmin)
 	{
 var data = 'homepage='+homepage+'&notes='+notes+'&homepagename='+homepagename+'&isadmin='+isadmin;
-var url2='http://www.fussballineuropa.de/jsmpaket.php?'+'homepage='+homepage+'&notes='+notes+'&homepagename='+homepagename+'&isadmin='+isadmin;
-var request = new Request({
-                        url: url2,
-                        method:'post',
-                        data: data
-                        }).send();
+var url2='https://www.fussballineuropa.de/jsmpaket.php?'+'homepage='+homepage+'&notes='+notes+'&homepagename='+homepagename+'&isadmin='+isadmin;
+//var request = new Request({
+//                        url: url2,
+//                        method:'post',
+//                        data: data
+//                        }).send();
+
+var xhttp = new XMLHttpRequest();
+xhttp.open("POST", url2, true);
+//xhttp.setRequestHeader('Access-Control-Allow-Headers', '*');
+//xhttp.setRequestHeader('Content-type', 'application/ecmascript');
+xhttp.setRequestHeader('Access-Control-Allow-Origin', '*');
+xhttp.send(data);
                         		
 		}

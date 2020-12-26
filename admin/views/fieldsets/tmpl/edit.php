@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage fieldsets
@@ -11,13 +9,12 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
 
 $templatesToLoad = array('footer', 'fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
@@ -27,12 +24,26 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
 
-$params = $this->form->getFieldsets('params');
+try
+{
+	$params = $this->form->getFieldsets('params');
+}
+catch (Exception $e)
+{
+	Factory::getApplication()->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+}
 
 /**
  * Get the form fieldsets.
  */
-$fieldsets = $this->form->getFieldsets();
+try
+{
+	$fieldsets = $this->form->getFieldsets();
+}
+catch (Exception $e)
+{
+	Factory::getApplication()->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+}
 
 ?>
 <form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view=' . $this->view . '&layout=edit&id=' . (int) $this->item->id . '&tmpl=' . $this->tmpl); ?>"
@@ -73,10 +84,10 @@ $fieldsets = $this->form->getFieldsets();
                                    href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER . 'SM-Backend-Felder:' . Factory::getApplication()->input->getVar("view") . '-' . $this->form->getName() . '-' . $var_onlinehelp; ?>"
                                    class="modal">
 									<?php
+                                    $image_attributes['title'] = 'title= "'.Text::_('COM_SPORTSMANAGEMENT_HELP_LINK') . '"';
 									echo HTMLHelper::_(
 										'image', 'media/com_sportsmanagement/jl_images/help.png',
-										Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'), 'title= "' .
-										Text::_('COM_SPORTSMANAGEMENT_HELP_LINK') . '"'
+										Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'), $image_attributes
 									);
 									?>
                                 </a>

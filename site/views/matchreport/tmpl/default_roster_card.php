@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage matchreport
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -22,11 +18,11 @@ use Joomla\CMS\Factory;
 HTMLHelper::_('behavior.modal');
 
 ?>
-<link rel="stylesheet"
-      href="<?php echo Uri::base(true); ?>/components/com_sportsmanagement/assets/css/matchreport_2.css">
 
-<!-- START: game roster -->
-<!-- Show Match players -->
+<link rel="stylesheet" href="<?php echo Uri::base(true); ?>/components/com_sportsmanagement/assets/css/matchreport_2.css">
+
+<!-- START: game roster card -->
+<!-- Show Match players card-->
 <?php
 if (!empty($this->matchplayerpositions))
 {
@@ -36,29 +32,28 @@ if (!empty($this->matchplayerpositions))
 
 		foreach ($this->matchplayers as $player)
 		{
-			// If ($player->pposid == $pos->pposid)
 			if ($player->position_id == $pos->position_id)
 			{
 				$personCount++;
 			}
 		}
 		?>
-        <div class="">
-            <div class="d-flex flex-row justify-content-between p-2 mb-2 position">
-                <div class="5">
-                    Home team
+        <div class="row-fluid" id="">
+            <div class="col-md-12" id="position">
+                <div class="col-md-5 text-right" id="clubhomename">
+                    <?php echo $this->team1_club->name; ?>
                 </div>
-                <div class="positionid">
+                <div class="col-md-2 text-center" id="posname">
 					<?php echo Text::_($pos->name); ?>
                 </div>
-                <div class="">
-                    Guest team
+                <div class="col-md-5 text-left" id="clubawayteam">
+                    <?php echo $this->team2_club->name; ?>
                 </div>
             </div>
 
-            <div class="d-flex flex-row justify-content-center">
+            <div class="col-md-12" id="playerrow">
                 <!-- list of home-team -->
-                <div class="list d-flex flex-row flex-wrap justify-content-start">
+                <div class="col-md-5" id="homeplayer">
 					<?php
 					foreach ($this->matchplayers as $player)
 					{
@@ -97,7 +92,7 @@ if (!empty($this->matchplayerpositions))
 							$match_player = sportsmanagementHelper::formatName($prefix, $player->firstname, $player->nickname, $player->lastname, $this->config["name_format"]);
 							$isFavTeam    = in_array($player->team_id, explode(",", $this->project->fav_team));
 							?>
-                            <div class="d-flex flex-column align-self-start align-items-center p-2">
+                            <div class="text-right" id="homesingleplayer">
 								<?php
 								if (($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)))
 								{
@@ -142,18 +137,18 @@ if (!empty($this->matchplayerpositions))
 									}
 
 
-									if (($this->config['show_player_picture'] == 2) && ($this->config['show_player_profile_link'] == 1))
+									if ( ($this->config['show_player_picture'] == 2) && ( $this->config['show_player_profile_link'] ) )
 									{
-										echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer' . $player->person_id, $picture, $imgTitle, $this->config['player_picture_width']);
+										echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer' . $player->person_id, $picture, $imgTitle, $this->config['player_picture_height']);
 										?>
 
 										<?PHP
 									}
 									else
 									{
-										echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer' . $player->person_id, $picture, $imgTitle, $this->config['player_picture_width']);
+										echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer' . $player->person_id, $picture, $imgTitle, $this->config['player_picture_height']);
 
-										if ($this->config['show_player_profile_link_alignment'] == 1)
+										if ( $this->config['show_player_profile_link_alignment'] )
 										{
 											echo '<br>';
 											echo HTMLHelper::link($player_link, $match_player . HTMLHelper::image(Uri::root() . 'images/com_sportsmanagement/database/teamplayers/shirt.php?text=' . $player->jerseynumber, $player->jerseynumber, array('title' => $player->jerseynumber)));
@@ -175,9 +170,9 @@ if (!empty($this->matchplayerpositions))
 
                 </div>
                 <!-- list of line -->
-                <div class="line mb-2"></div>
+                <div class="col-md-2"></div>
                 <!-- list of guest-team -->
-                <div class="list d-flex flex-row flex-wrap justify-content-end">
+                <div class="col-md-5" id="awayplayer">
 					<?php
 					foreach ($this->matchplayers as $player)
 					{
@@ -219,7 +214,7 @@ if (!empty($this->matchplayerpositions))
 
 
 							?>
-                            <div class="d-flex flex-column align-self-start align-items-center p-2">
+                            <div class="text-left" id="awaysingleplayer">
 								<?php
 								if (($this->config['show_player_picture'] == 1) || ($this->config['show_player_picture'] == 2))
 								{
@@ -240,7 +235,7 @@ if (!empty($this->matchplayerpositions))
 
 									if (($this->config['show_player_picture'] == 2) && ($this->config['show_player_profile_link'] == 1))
 									{
-										echo HTMLHelper::link($player_link, HTMLHelper::image($picture, $imgTitle, array('title' => $imgTitle, 'width' => $this->config['player_picture_width'])));
+										echo HTMLHelper::link($player_link, HTMLHelper::image($picture, $imgTitle, array('title' => $imgTitle, 'width' => $this->config['player_picture_height'])));
 
 										if ($this->config['show_player_profile_link_alignment'] == 1)
 										{
@@ -250,7 +245,7 @@ if (!empty($this->matchplayerpositions))
 									}
 									else
 									{
-										echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer' . $player->person_id, $picture, $imgTitle, $this->config['player_picture_width']);
+										echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer' . $player->person_id, $picture, $imgTitle, $this->config['player_picture_height']);
 										?>
 										<?PHP
 
@@ -320,7 +315,7 @@ if (!empty($this->matchplayerpositions))
 	}
 }
 ?>
-<!-- END of Match players -->
+<!-- END of Match players card-->
 <br/>
 
-<!-- END: game roster -->
+<!-- END: game roster card-->

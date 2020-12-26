@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage referee
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -164,12 +160,12 @@ use Joomla\CMS\Factory;
 				{
 					case 1:     // show Birthday and Age
 						$birthdateStr = $this->referee->birthday != "0000-00-00" ?
-							HTMLHelper::date($this->referee->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')) : "-";
+							HTMLHelper::date($this->referee->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE')) : "-";
 						$birthdateStr .= "&nbsp;(" . sportsmanagementHelper::getAge($this->referee->birthday, $this->referee->deathday) . ")";
 						break;
 					case 2:     // show Only Birthday
 						$birthdateStr = $this->referee->birthday != "0000-00-00" ?
-							HTMLHelper::date($this->referee->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')) : "-";
+							HTMLHelper::date($this->referee->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE')) : "-";
 						break;
 					case 3:     // show Only Age
 						$birthdateStr = sportsmanagementHelper::getAge($this->referee->birthday, $this->referee->deathday);

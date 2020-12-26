@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage match
@@ -12,9 +10,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * https://hotexamples.com/de/examples/-/Google_Service_Calendar_EventDateTime/-/php-google_service_calendar_eventdatetime-class-examples.html
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
@@ -197,7 +193,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 	}
 
 	/**
-	 * sportsmanagementModelMatch::getTeamPersons()
+	 * sportsmanagementModelMatch::getteampersons()
 	 *
 	 * @param   mixed  $projectteam_id
 	 * @param   bool   $filter
@@ -205,7 +201,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 	 *
 	 * @return
 	 */
-	public static function getTeamPersons($projectteam_id, $filter = false, $persontype)
+	public static function getteampersons($projectteam_id, $filter = false, $persontype)
 	{
 		$option            = Factory::getApplication()->input->getCmd('option');
 		$app               = Factory::getApplication();
@@ -1560,7 +1556,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 
 		if ($project->fav_team)
 		{
-			$mdl        = BaseDatabaseModel::getInstance("TeamPersons", "sportsmanagementModel");
+			$mdl        = BaseDatabaseModel::getInstance("teamplayers", "sportsmanagementModel");
 			$teamplayer = $mdl->getProjectTeamplayers($project->fav_team, $project->season_id);
 		}
 
@@ -1689,7 +1685,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 		$data['team2_legs']          = $post['team2_legs'];
 		$data['match_result_detail'] = $post['match_result_detail'];
 
-		// $data['count_result'] = $post['count_result'];
+		$data['playground_id'] = $post['playground_id'];
 		// $data['alt_decision'] = $post['alt_decision'];
 		$data['team1_result_decision'] = $post['team1_result_decision'];
 		$data['team2_result_decision'] = $post['team2_result_decision'];
@@ -2646,7 +2642,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 			if (empty($data['event_time']))
 			{
 				Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_EVENT_NO_TIME')), Log::ERROR, 'jsmerror');
-
+				$this->setError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_EVENT_NO_TIME'));
 				return false;
 			}
 		}
@@ -2654,7 +2650,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 		if (empty($data['event_sum']))
 		{
 			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_EVENT_NO_EVENT_SUM')), Log::ERROR, 'jsmerror');
-
+			$this->setError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_EVENT_NO_EVENT_SUM'));
 			return false;
 		}
 
@@ -2663,7 +2659,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 			if ((int) $data['event_time'] > (int) $data['projecttime'])
 			{
 				Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_EVENT_TIME_OVER_PROJECTTIME', $data['event_time'], $data['projecttime'])), Log::ERROR, 'jsmerror');
-
+				$this->setError(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_EVENT_TIME_OVER_PROJECTTIME', $data['event_time'], $data['projecttime']));
 				return false;
 			}
 		}
@@ -2838,13 +2834,12 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 		if ($match_number != $teile[0])
 		{
 			$app->enqueueMessage(Text::_('Spielnummer der Datei passt nicht zur Spielnummer im Projekt.'), 'Error');
-
+			$app->enqueueMessage(Text::_($teile[0]), 'Error');
 			return false;
 		}
 		else
 		{
 			$app->enqueueMessage(Text::_('Spielnummern sind identisch. Datei wird verarbeitet'), 'Notice');
-
 			return true;
 		}
 
@@ -2865,6 +2860,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 		$query  = $db->getQuery(true);
 
 		$csv_player_count = 40;
+		$find_csv = '';
 		$project_id       = $app->getUserState("$option.pid", '0');
 		$match_id         = Factory::getApplication()->input->getVar('match_id');
 		$tblmatch         = Table::getInstance("match", "sportsmanagementTable");
@@ -3196,6 +3192,8 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 
 			foreach ($mannschaftsverantwortlichePositionen as $mannschaftsverantwortlichePosition)
 			{
+				if ( array_key_exists( $find_csv.'-'.$mannschaftsverantwortlichePosition, $csv_file->data[0] ) );
+				{
 				if (!isset($this->csv_staff[$i]))
 				{
 					$this->csv_staff[$i] = new stdClass;
@@ -3213,11 +3211,10 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 				$this->csv_staff[$i]->project_position_id = 0;
 				$this->csv_staff[$i]->position_id         = 0;
 
-				// Falls es den Staff gibt, ein paar Felder selektieren
+				/** Falls es den Staff gibt, ein paar Felder selektieren */
 				if ($lastname)
 				{
 					$person_id = $this->getPersonId($firstname, $lastname);
-
 					if ($person_id)
 					{
 						$this->csv_staff[$i]->person_id           = $person_id;
@@ -3227,8 +3224,8 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 						$this->csv_staff[$i]->position_id         = $projectpersonid->position_id;
 					}
 				}
-
 				$i++;
+			}
 			}
 		}
 

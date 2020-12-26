@@ -7,10 +7,11 @@
 	<license>GNU/GPL</license>
 	<authorEmail>diddipoeler@arcor.de</authorEmail>
 	<authorUrl>http://www.fussballineuropa.de</authorUrl>
-	<version>1.0</version>
+	<version>3.8.0</version>
 	<description>MOD_SPORTSMANAGEMENT_COUNT_REKORD_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_sportsmanagement_count_rekord">mod_sportsmanagement_count_rekord.php</filename>
+		<filename>update-server.xml</filename>
 		<folder>tmpl</folder>
 		<folder>css</folder>
 		<folder>images</folder>
@@ -120,4 +121,8 @@ default="itemid">
 </fields>    
 </config>
       
+	  <updateservers>
+<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/modules/mod_sportsmanagement_count_rekord/update-server.xml</server>
+</updateservers>
+
 </extension>

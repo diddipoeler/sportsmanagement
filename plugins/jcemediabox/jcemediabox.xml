@@ -2,12 +2,12 @@
 <extension version="2.5" type="plugin" group="system" method="upgrade">
     <name>plg_system_jcemediabox</name>
     <author>Ryan Demmer</author>
-    <creationDate>03-04-2020</creationDate>
+    <creationDate>28-04-2020</creationDate>
     <copyright>Copyright (C) 2006 - 2020 Ryan Demmer. All rights reserved</copyright>
     <license>GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html</license>
     <authorEmail>info@joomlacontenteditor.net</authorEmail>
     <authorUrl>www.joomlacontenteditor.net</authorUrl>
-    <version>2.1.0</version>
+    <version>2.1.1</version>
     <description>PLG_SYSTEM_JCEMEDIABOX_XML_DESC</description>
 
     <config>
@@ -67,12 +67,12 @@
                     <option value="0">JNO</option>
                 </field>
 
-                <field name="mediafallback" type="radio" default="0" label="PLG_SYSTEM_JCEMEDIABOX_MEDIAFALLBACK" class="btn-group btn-group-yesno" description="PLG_SYSTEM_JCEMEDIABOX_MEDIAFALLBACK_DESC">
+                <!--field name="mediafallback" type="radio" default="0" label="PLG_SYSTEM_JCEMEDIABOX_MEDIAFALLBACK" class="btn-group btn-group-yesno" description="PLG_SYSTEM_JCEMEDIABOX_MEDIAFALLBACK_DESC">
                     <option value="1">JYES</option>
                     <option value="0">JNO</option>
-                </field>
+                </field-->
 
-                <field name="mediaselector" type="text" size="50" default="audio,video" label="PLG_SYSTEM_JCEMEDIABOX_MEDIASELECTOR" description="PLG_SYSTEM_JCEMEDIABOX_MEDIASELECTOR_DESC"/>
+                <!--field name="mediaselector" type="text" size="50" default="audio,video" label="PLG_SYSTEM_JCEMEDIABOX_MEDIASELECTOR" description="PLG_SYSTEM_JCEMEDIABOX_MEDIASELECTOR_DESC"/-->
             </fieldset>
         </fields>
     </config>
@@ -81,10 +81,8 @@
         <file plugin="jcemediabox">jcemediabox.php</file>
         <folder>css</folder>
         <folder>fields</folder>
-        <folder>fonts</folder>
         <folder>img</folder>
         <folder>js</folder>
-        <folder>mediaplayer</folder>
     </files>
 
     <languages folder="plugins/system/jcemediabox/language/en-GB">

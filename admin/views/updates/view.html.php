@@ -56,7 +56,8 @@ class sportsmanagementViewUpdates extends sportsmanagementView
 		}
 
 		$model       = $this->getModel();
-		$versions    = $model->getVersions();
+		$this->versions    = $model->getVersions();
+        $this->versionhistory    = $model->getVersionHistory();
 		$updateFiles = array();
 		$lists       = array();
 		$updateFiles = $model->loadUpdateFiles();

@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
@@ -21,6 +17,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModeljlextindividualsport
@@ -31,7 +28,7 @@ use Joomla\CMS\Log\Log;
  * @version   2014
  * @access    public
  */
-class sportsmanagementModeljlextindividualsport extends AdminModel
+class sportsmanagementModeljlextindividualsport extends JSMModelAdmin
 {
 
 	/**
@@ -461,8 +458,16 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
 		$query->clear();
 		$query->delete()->from('#__sportsmanagement_match_event')->where('match_id = ' . $match_id . ' AND teamplayer_id = ' . $teamplayer1_id . ' AND event_type_id = ' . $event_id);
 		$db->setQuery($query);
+		try{
 		$resultdel = $db->execute();
-
+}
+			catch (Exception $e)
+			{
+				$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+                $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+              //$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($this->jsmquery->dump(),true).'</pre>'), 'error');
+			}
+	
 		if (!$resultdel)
 		{
 		}

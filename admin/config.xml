@@ -40,6 +40,17 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+
+<field type="extensionsubtitle" title="" color="#2672a6" />		
+<field name="show_jed_link" 
+type="extensionradiobutton" 
+default="1"
+class="radio btn-group btn-group-yesno"
+label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JED_LINK" 
+description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JED_LINK_DESC">
+<option value="0">JNO</option>
+<option value="1">JYES</option>
+</field>		
 		
 <field type="extensionsubtitle" title="" color="#2672a6" />
 		
@@ -92,7 +103,7 @@
 		
   <field name="cfg_help_server" 
   type="text" 
-  default="http://jsm-wiki.diddipoeler.de/index.php/" 
+  default="https://jsm-wiki.diddipoeler.de/index.php/" 
 		size="100"
     label="COM_SPORTSMANAGEMENT_SETTINGS_HELPSERVER"
 		description="COM_SPORTSMANAGEMENT_SETTINGS_HELPSERVER_DESC">
@@ -133,6 +144,7 @@
 		<field name="cfg_which_media_tool" 
     type="extensionradiobutton"
 			default="imageselect" 
+			class="radio btn-group btn-group-yesno"
       label="COM_SPORTSMANAGEMENT_SETTINGS_MEDIA_TOOL_TITLE"
 			description="COM_SPORTSMANAGEMENT_SETTINGS_MEDIA_TOOL_DESC">
 			<option value="media">COM_SPORTSMANAGEMENT_JOOMLA_MEDIA_KOMPONENT</option>
@@ -387,27 +399,31 @@ size="29" />
 			
 		</field>
     
-    <field name="cfg_sport_types" 
-    type="list"
-    multiple="true"  
-    default=""
-    size="10"
-			label="COM_SPORTSMANAGEMENT_SETTINGS_SPORT_TYPES" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_SPORT_TYPES_DESC">
-			<option value="soccer">COM_SPORTSMANAGEMENT_ST_SOCCER</option>
-			<option value="hockey">COM_SPORTSMANAGEMENT_ST_HOCKEY</option>
-			<option value="skaterhockey">COM_SPORTSMANAGEMENT_ST_SKATER_HOCKEY</option>
-			<option value="american_football">COM_SPORTSMANAGEMENT_ST_AMERICAN_FOOTBALL</option>
-			<option value="icehockey">COM_SPORTSMANAGEMENT_ST_ICEHOCKEY</option>
-			<option value="volleyball">COM_SPORTSMANAGEMENT_ST_VOLLEYBALL</option>
-			<option value="korfball">COM_SPORTSMANAGEMENT_ST_KORFBALL</option>
-			<option value="handball">COM_SPORTSMANAGEMENT_ST_HANDBALL</option>
-			<option value="tennis">COM_SPORTSMANAGEMENT_ST_TENNIS</option>
-			<option value="tabletennis">COM_SPORTSMANAGEMENT_ST_TABLETENNIS</option>
-			<option value="basketball">COM_SPORTSMANAGEMENT_ST_BASKETBALL</option>
-			<option value="australien_rules_football">COM_SPORTSMANAGEMENT_ST_AUSTRALIEN_RULES_FOOTBALL</option>
-			<option value="dart">COM_SPORTSMANAGEMENT_ST_DART</option>
-		</field>
+<field name="cfg_sport_types" 
+type="list"
+multiple="true"  
+default=""
+size="10"
+label="COM_SPORTSMANAGEMENT_SETTINGS_SPORT_TYPES" 
+description="COM_SPORTSMANAGEMENT_SETTINGS_SPORT_TYPES_DESC">
+<option value="soccer">COM_SPORTSMANAGEMENT_ST_SOCCER</option>
+<option value="tablesoccer">COM_SPORTSMANAGEMENT_ST_TABLESOCCER</option>
+<option value="hockey">COM_SPORTSMANAGEMENT_ST_HOCKEY</option>
+<option value="floorball">COM_SPORTSMANAGEMENT_ST_FLOORBALL</option>
+<option value="skaterhockey">COM_SPORTSMANAGEMENT_ST_SKATER_HOCKEY</option>
+<option value="american_football">COM_SPORTSMANAGEMENT_ST_AMERICAN_FOOTBALL</option>
+<option value="icehockey">COM_SPORTSMANAGEMENT_ST_ICEHOCKEY</option>
+<option value="volleyball">COM_SPORTSMANAGEMENT_ST_VOLLEYBALL</option>
+<option value="korfball">COM_SPORTSMANAGEMENT_ST_KORFBALL</option>
+<option value="handball">COM_SPORTSMANAGEMENT_ST_HANDBALL</option>
+<option value="tennis">COM_SPORTSMANAGEMENT_ST_TENNIS</option>
+<option value="tabletennis">COM_SPORTSMANAGEMENT_ST_TABLETENNIS</option>
+<option value="basketball">COM_SPORTSMANAGEMENT_ST_BASKETBALL</option>
+<option value="australien_rules_football">COM_SPORTSMANAGEMENT_ST_AUSTRALIEN_RULES_FOOTBALL</option>
+<option value="dart">COM_SPORTSMANAGEMENT_ST_DART</option>
+<option value="waterpolo">COM_SPORTSMANAGEMENT_ST_WATERPOLO</option>	
+</field>
+		
 	</fieldset>
   
 <!-- register 2 -->
@@ -723,10 +739,27 @@ class="radio btn-group btn-group-yesno"
 <!-- backend -->	
 	<fieldset name="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_BACKEND"
 	label="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_BACKEND"
-		
   	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 
+<field type="extensionsubtitle" title="Einstellungen Spielerübersicht" color="#2672a6" />
+<field name="backend_show_players_agegroup" type="extensionradiobutton" default="1"
+class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_AGEGROUP" 
+			description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_AGEGROUP">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+<field name="backend_show_players_knvbnr" type="extensionradiobutton" default="1"
+class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_KNVBNR" 
+			description="COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_KNVBNR">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+<field type="extensionsubtitle" title="" color="#2672a6" />
 <field name="gh_user" type="text"
 			description="COM_SPORTSMANAGEMENT_FIELD_GH_USER_DESC"
 			label="COM_SPORTSMANAGEMENT_FIELD_GH_USER_LABEL"
@@ -741,7 +774,7 @@ class="radio btn-group btn-group-yesno"
 			description="COM_SPORTSMANAGEMENT_FIELD_GH_TOKEN_DESC"
 			label="COM_SPORTSMANAGEMENT_FIELD_GH_TOKEN_LABEL"
 		/>
-			
+<field type="extensionsubtitle" title="Joomleague Import" color="#2672a6" />			
 		<field
 			name="jl_dbtype"
 			type="databaseconnection"
@@ -1012,7 +1045,17 @@ multiple="true"
 			<option value="1">JYES</option>
 		</field>		
 
-
+<field name="auto_completion_club_name" 
+    type="extensionradiobutton" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_AUTO_COMPLETION_CLUB_NAME" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_AUTO_COMPLETION_CLUB_NAME_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+<!--
 <field name="show_option_projectteams_quickadd" 
     type="extensionradiobutton" 
     default="0"
@@ -1022,7 +1065,7 @@ multiple="true"
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-	
+	-->
 <field name="show_option_projectteam_change" 
     type="extensionradiobutton" 
     default="0"
@@ -1267,6 +1310,78 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_OPENCAGEDATA_API_CLIENTID_DESC" />
 			section="component"
 		/>
 	</fieldset>
+
+
+<!-- fehler anzeige frontend -->			
+	<fieldset
+		name="jsmerrorlogs"
+		label="COM_SPORTSMANAGEMENT_SETTINGS_ERRORS"
+		description="COM_SPORTSMANAGEMENT_SETTINGS_ERRORS_DESC"
+	>
+
+<field name="show_jsm_errors" 
+    type="extensionradiobutton" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_ERRORS" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_ERRORS_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+<!--
+<field name="show_jsm_errors_level" 
+type="list" 
+default="" 
+multiple="true"
+label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_ERRORS_LEVEL" 
+description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_ERRORS_LEVEL_DESC">
+  <option value="">Please Select</option>
+  <option value="E_NOTICE">Notice</option>
+  <option value="E_WARNING">Warning</option>
+  <option value="E_ERROR">Error</option>
+</field>
+-->
+
+
+
+
+<field name="show_jsm_errors_foruser" 
+    type="user" 
+    
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_ERRORS_FORUSER" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_ERRORS_FORUSER_DESC">
+	
+		</field>
+
+
+		
+<field name="show_jsm_errors_front" 
+    type="extensionradiobutton" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_ERRORS_FRONT" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_ERRORS_FRONT_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+<field name="show_jsm_errors_file" 
+    type="extensionradiobutton" 
+    default="1"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_ERRORS_FILE" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_ERRORS_FILE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>		
+		
+		
+	</fieldset>
+	
+	
+	
+	
 </config>
 <!--
 ########################################################################################

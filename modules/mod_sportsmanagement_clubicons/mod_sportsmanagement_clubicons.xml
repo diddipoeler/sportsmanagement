@@ -3,7 +3,7 @@
 	<name>MOD_SPORTSMANAGEMENT_CLUBICONS</name>
 	<author>Carsten Kühn</author>
 	<authorUrl>http://www.yourlife.de</authorUrl> 
-	<version>1.5b.2</version>
+	<version>3.8.0</version>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<description>MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_NAME_DESC</description>
 	<files>
@@ -11,6 +11,7 @@
 		<filename module="mod_sportsmanagement_clubicons">mod_sportsmanagement_clubicons.php</filename>
 		<filename>index.html</filename>
 		<filename>helper.php</filename>
+		<filename>update-server.xml</filename>
 		<folder>tmpl</folder>
     <folder>css</folder>
     <folder>js</folder>
@@ -70,13 +71,15 @@
 	
 	<field name="logotype" type="list" default="logo_big" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_TYPE" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_TYPE_DESC">
 		<option value="logo_big">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_BIG</option>
-		<option value="logo_middle">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_MIDDLE</option>
-		<option value="logo_small">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_SMALL</option>
 		<option value="projectteam_picture">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_PROJECTTEAM_PICTURE</option>
 		<option value="team_picture">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_TEAM_PICTURE</option>
 	</field>
-	<field name="jcclubiconsglobalmaxwidth" type="text" default="50" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_GLOBAL_MAX_WIDTH" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_GLOBAL_MAX_WIDTH_DESC" />
-		
+				
+<field 	name="picture_height" type="text" default="50"
+	label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_ALL_LOGO_HEIGHT" 
+	description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_ALL_LOGO_HEIGHT">
+</field>
+				
 	<field name="iconsperrow" type="text" default="20" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_ICONSPERROW" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_ICONSPERROW_DESC" />
 	<field name="iconpos" type="list" default="middle" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_ICONPOS" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_ICONPOS_DESC">
 		<option value="top">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_ICONPOS_TOP</option>
@@ -146,4 +149,9 @@
 			</fieldset>
  </fields>
  </config>
+ 
+ <updateservers>
+<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/modules/mod_sportsmanagement_clubicons/update-server.xml</server>
+</updateservers>
+
  </extension>

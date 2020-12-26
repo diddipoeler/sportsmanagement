@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage matches
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -163,13 +159,16 @@ class sportsmanagementViewMatches extends sportsmanagementView
 			{
 				$teams = array_merge($teams, $projectteams);
 			}
+            else
+            {
+                $teams = array();
+            }
 
 			$lists['teams_' . $divhomeid] = $teams;
 			$lists['projectteams']        = $teams;
 			unset($teams);
 
-			// Sind die verzeichnisse vorhanden ?
-			// $dest = JPATH_ROOT.'/media/com_sportsmanagement/database/matchreport/'.$row->id;
+			/** Sind die verzeichnisse vorhanden ? */
 			$dest = JPATH_ROOT . '/images/com_sportsmanagement/database/matchreport/' . $row->id;
 
 			if (Folder::exists($dest))
@@ -181,14 +180,14 @@ class sportsmanagementViewMatches extends sportsmanagementView
 			}
 		}
 
-		// Build the html options for extratime
+		/** Build the html options for extratime */
 		$match_result_type[]        = JHtmlSelect::option('0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RT'));
 		$match_result_type[]        = JHtmlSelect::option('1', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_OT'));
 		$match_result_type[]        = JHtmlSelect::option('2', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SO'));
 		$lists['match_result_type'] = $match_result_type;
 		unset($match_result_type);
 
-		// Build the html options for article
+		/** Build the html options for article */
 		$articles[] = JHtmlSelect::option('0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ARTICLE'));
 
 		if ($res = sportsmanagementHelper::getArticleList($projectws->category_id))
@@ -199,7 +198,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
 		$lists['articles'] = $articles;
 		unset($articles);
 
-		// Build the html options for divisions
+		/** Build the html options for divisions */
 		$divisions[]  = JHtmlSelect::option('0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
 		$mdlDivisions = BaseDatabaseModel::getInstance('divisions', 'sportsmanagementModel');
 
@@ -246,7 +245,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
 			case 'massadd':
 			case 'massadd_3':
 			case 'massadd_4':
-				// Build the html options for massadd create type
+				/** Build the html options for massadd create type */
 				$createTypes = array(0 => Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD'),
 				                     1 => Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_1'),
 				                     2 => Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_2')
@@ -261,7 +260,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
 				$lists['createTypes'] = JHtmlSelect::genericlist($ctOptions, 'ct[]', 'class="inputbox" onchange="javascript:displayTypeView();"', 'value', 'text', 1, 'ct');
 				unset($createTypes);
 
-				// Build the html radio for adding into one round / all rounds
+				/** Build the html radio for adding into one round / all rounds */
 				$createYesNo = array(0 => Text::_('JNO'), 1 => Text::_('JYES'));
 				$ynOptions   = array();
 
@@ -272,7 +271,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
 
 				$lists['addToRound'] = JHtmlSelect::radiolist($ynOptions, 'addToRound', 'class="inputbox"', 'value', 'text', 0);
 
-				// Build the html radio for auto publish new matches
+				/** Build the html radio for auto publish new matches */
 				$lists['autoPublish'] = JHtmlSelect::radiolist($ynOptions, 'autoPublish', 'class="inputbox"', 'value', 'text', 0);
 				$this->lists          = $lists;
 				$this->setLayout('massadd');

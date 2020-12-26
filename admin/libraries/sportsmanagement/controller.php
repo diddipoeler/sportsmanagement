@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage libraries
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\MVC\Controller\AdminController;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\Language\Text;
@@ -22,6 +18,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Log\Log;
 
 /**
  * JSMControllerAdmin
@@ -52,6 +49,26 @@ class JSMControllerAdmin extends AdminController
 		$this->jsmjinput = $this->jsmapp->input;
 		$this->jsmoption = $this->jsmjinput->getCmd('option');
 
+	}
+    
+    /**
+	 * Method to save the submitted ordering values for records.
+	 *
+	 * Overrides JControllerAdmin::saveorder to check the core.admin permission.
+	 *
+	 * @return  boolean  True on success
+	 *
+	 * @since   1.6
+	 */
+	public function saveorder()
+	{
+		if (!JFactory::getUser()->authorise('core.admin', $this->option))
+		{
+			JError::raiseError(500, JText::_('JERROR_ALERTNOAUTHOR'));
+			jexit();
+		}
+
+		return parent::saveorder();
 	}
 
 	/**
@@ -168,7 +185,7 @@ class JSMControllerForm extends FormController
 		// Check for request forgeries.
 		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
-		// $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' task '.$this->jsmjinput->get('task')), '');
+				
 		// Initialise variables.
 		$post            = $this->jsmjinput->post->getArray();
 		$tmpl            = $this->jsmjinput->getVar('tmpl');
@@ -176,14 +193,50 @@ class JSMControllerForm extends FormController
 		$data            = $this->jsmjinput->getVar('jform', array(), 'post', 'array');
 		$setRedirect     = '';
 		$createTeam      = $this->jsmjinput->getVar('createTeam');
+		
+		//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' task '.$this->jsmjinput->get('task')), '');
+		//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' view_list '.$this->view_list), '');
+		//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' view_item '.$this->view_item), '');
+		//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'data<pre>'.print_r($data,true).'</pre>'), '');
+		
+		if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+		
+			switch ($this->view_item)
+			{
+			case 'round':
+			switch ($this->jsmjinput->get('task'))
+			{
+			case 'save':
+			if ( !$data )
+			{
+				$data['round_date_first'] = '0000-00-00';
+				$data['round_date_last'] = '0000-00-00';
+			}	
+			break;
+			}
+				
+				
+				
+			break;
+			}
+		}
+		
+		
 		$return          = $model->save($data);
+		
+		$this->jsmapp->enqueueMessage($model->getError(), 'error');
+		
 		$this->club_id   = $this->jsmapp->getUserState("$this->jsmoption.club_id", '0');
 		$this->person_id = $this->jsmapp->getUserState("$this->jsmoption.person_id", '0');
 		$this->team_id   = $this->jsmapp->getUserState("$this->jsmoption.team_id", '0');
+$this->insert_id   =      $this->jsmjinput->getInt('insert_id');
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . 'post<pre>'.print_r($post,true).'</pre>'), Log::NOTICE, 'jsmerror');
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . 'data<pre>'.print_r($data,true).'</pre>'), Log::NOTICE, 'jsmerror');
+		
+		$id = $this->insert_id ? $this->insert_id : $data['id'];
 
-		$id = $this->jsmdb->insertid();
-
-		if (empty($id))
+		if ( empty($data['id']) )
 		{
 			$id = $this->jsmjinput->getInt('insert_id');
 		}
@@ -215,6 +268,13 @@ class JSMControllerForm extends FormController
 					break;
 				case 'rounds':
 					$setRedirect = '&pid=' . $post['pid'];
+					break;
+				case 'projects':
+					$setRedirect = '&pid=' . $id;
+					break;
+				case 'project':
+					$id = $this->jsmjinput->getInt('insert_project_id');
+					$setRedirect = '&pid=' . $id;
 					break;
 				case 'projectteam':
 					$setRedirect = '&pid=' . $data['project_id'];

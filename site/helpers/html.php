@@ -1,7 +1,6 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage helpers
@@ -10,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -33,12 +30,8 @@ use Joomla\CMS\Component\ComponentHelper;
 class sportsmanagementHelperHtml
 {
 	static $roundid = 0;
-
 	static $project = array();
-
 	static $teams = array();
-
-
 
 	/**
 	 * sportsmanagementHelperHtml::showEventsContainerInResults()
@@ -186,7 +179,7 @@ class sportsmanagementHelperHtml
 		}
 		else
 		{
-			$showEventInfo = ($this->config['show_events_with_icons'] == 1) ? 1 : 2;
+			$showEventInfo = ($config['show_events_with_icons'] == 1) ? 1 : 2;
 			$output        .= '<table class="matchreport" border="0">';
 			$output        .= '<tr>';
 
@@ -239,7 +232,6 @@ class sportsmanagementHelperHtml
 	 */
 	public static function _formatEventContainerInResults($matchevent, $event, $projectteamId, $showEventInfo,$config)
 	{
-		
 /**
  *      Meaning of $showEventInfo:
  * 		0 : do not show event as text or as icon in a list item
@@ -351,40 +343,22 @@ class sportsmanagementHelperHtml
 		return $output;
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	/**
 	 * sportsmanagementHelperHtml::getBootstrapModalImage()
 	 *
 	 * @param   string  $target
 	 * @param   string  $picture
 	 * @param   string  $text
-	 * @param   string  $picturewidth
+	 * @param   string  $pictureheight
 	 * @param   string  $url
 	 * @param   string  $width
 	 * @param   string  $height
 	 * @param   int $use_jquery_modal
 	 * @return
 	 */
-	public static function getBootstrapModalImage($target = '', $picture = '', $text = '', $picturewidth = '20', $url = '', $width = '100', $height = '200', $use_jquery_modal = 0)
+	public static function getBootstrapModalImage($target = '', $picture = '', $text = '', $pictureheight = '20', $url = '', $width = '100', $height = '200', $use_jquery_modal = 0,$schemaorg = "itemprop",$schemaorgvalue = "logo")
 	{
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 
 		switch ($use_jquery_modal)
@@ -392,12 +366,12 @@ class sportsmanagementHelperHtml
 			case 2:
 				if ($url)
 				{
-					$modaltext = '<a class="jcepopup jcemediabox-image" title="' . $text . '" href="' . $url . '" data-mediabox="1" data-mediabox-title="' . $text . '"><img src="' . $picture . '" alt="' . $text . '" width="' . $picturewidth . '" />';
+					$modaltext = '<a class="jcepopup" title="' . $text . '" href="' . $url . '" data-mediabox-width="" data-mediabox-height="" target="" data-mediabox-title="' . $text . '"><img '.$schemaorg.'="'.$schemaorgvalue.'" src="' . $picture . '" alt="' . $text . '" style="width: auto;height: ' . $pictureheight . 'px" />';
 				}
 
 				if (!$url)
 				{
-					$modaltext = '<a class="jcepopup jcemediabox-image" title="' . $text . '" href="' . $picture . '" data-mediabox="1" data-mediabox-title="' . $text . '"><img src="' . $picture . '" alt="' . $text . '" width="' . $picturewidth . '" />';
+					$modaltext = '<a class="jcepopup jcemediabox-image" title="' . $text . '" href="' . $picture . '" data-mediabox="1" data-mediabox-title="' . $text . '"><img '.$schemaorg.'="'.$schemaorgvalue.'" src="' . $picture . '" alt="' . $text . '" style="width: auto;height: ' . $pictureheight . 'px" />';
 				}
 
 				$modaltext .= '</a>';
@@ -410,7 +384,7 @@ class sportsmanagementHelperHtml
 					$modaltext .= ' onclick="openRequestedSinglePopup(this.href,' . $width . ',' . $height . '); return false;"';
 					$modaltext .= ' title="' . $text . '"';
 					$modaltext .= '>';
-					$modaltext .= '<img src="' . $picture . '" alt="' . $text . '" width="' . $picturewidth . '" />';
+					$modaltext .= '<img '.$schemaorg.'="'.$schemaorgvalue.'" src="' . $picture . '" alt="' . $text . '" style="width: auto;height: ' . $pictureheight . 'px" />';
 					$modaltext .= '</a>';
 				}
 
@@ -421,20 +395,14 @@ class sportsmanagementHelperHtml
 					$modaltext .= ' onclick="openRequestedSinglePopup(this.href,' . $width . ',' . $height . '); return false;"';
 					$modaltext .= ' title="' . $text . '"';
 					$modaltext .= '>';
-					$modaltext .= '<img src="' . $picture . '" alt="' . $text . '" width="' . $picturewidth . '" />';
+					$modaltext .= '<img '.$schemaorg.'="'.$schemaorgvalue.'" src="' . $picture . '" alt="' . $text . '" style="width: auto;height: ' . $pictureheight . 'px" />';
 					$modaltext .= '</a>';
 				}
 				break;
 			case 0:
-				//            if ($url) {
-				//                $modaltext = '<a title="' . $text . '" class="modal" href="' . $url . '">';
-				//            } else {
-				//                $modaltext = '<a title="' . $text . '" class="modal" href="' . $picture . '">';
-				//            }
-				//            $modaltext .= '<img width="' . $picturewidth . '" alt="' . $text . '" src="' . $picture . '"></a>';
-
 				$modaltext = '<a href="#' . $target . '" title="' . $text . '" data-toggle="modal" >';
-				$modaltext .= '<img src="' . $picture . '" alt="' . $text . '" width="' . $picturewidth . '" />';
+				//$modaltext .= '<img src="' . $picture . '" alt="' . $text . '" width="' . $pictureheight . '" />';
+				$modaltext .= '<img '.$schemaorg.'="'.$schemaorgvalue.'" src="' . $picture . '" alt="' . $text . '" style="width: auto;height: ' . $pictureheight . 'px" />';
 				$modaltext .= '</a>';
 
 				if (!$url)
@@ -957,11 +925,11 @@ class sportsmanagementHelperHtml
 					case 1: // Show_playground_alert should be shown as Tooltip
 						$boldStart    = '<b style="color:red; ">';
 						$boldEnd      = '</b>';
-						$toolTipTitle = Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NEW');
+						$toolTipTitle = Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NEWS');
 						break;
 
 					case 2: // Show_playground_alert should be shown as text in front of location
-						$show_playground_alert = '<b style="color:red; ">' . Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NEW') . ':</b> ';
+						$show_playground_alert = '<b style="color:red; ">' . Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NEWS') . ':</b> ';
 						break;
 					default:
 						break;

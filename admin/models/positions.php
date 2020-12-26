@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage positions
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
@@ -40,18 +36,21 @@ class sportsmanagementModelPositions extends JSMModelList
 	 */
 	public function __construct($config = array())
 	{
+	   if (empty($config['filter_fields']))
+		{
 		$config['filter_fields'] = array(
-			'po.name',
-			'po.picture',
-			'po.parent_id',
-			'po.sports_type_id',
-			'po.persontype',
-			'po.id',
-			'po.published',
-			'po.modified',
-			'po.modified_by',
-			'po.ordering'
+			'po.name','name',
+			'po.picture','picture',
+			'po.parent_id','parent_id',
+			'po.sports_type_id','sports_type',
+			'po.persontype','persontype',
+			'po.id','id',
+			'po.published','published',
+			'po.modified','modified',
+			'po.modified_by','modified_by',
+			'po.ordering','ordering',
 		);
+        }
 		parent::__construct($config);
 		$getDBConnection = sportsmanagementHelper::getDBConnection();
 		parent::setDbo($getDBConnection);
@@ -89,6 +88,11 @@ class sportsmanagementModelPositions extends JSMModelList
 		if ($this->getState('filter.sports_type'))
 		{
 			$this->jsmquery->where('po.sports_type_id = ' . $this->getState('filter.sports_type'));
+		}
+		
+		if ($this->getState('filter.persontype'))
+		{
+			$this->jsmquery->where('po.persontype = ' . $this->getState('filter.persontype'));
 		}
 
 		$this->jsmquery->order(
@@ -293,20 +297,14 @@ class sportsmanagementModelPositions extends JSMModelList
 			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . $this->context . ''), '');
 			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . ''), '');
 		}
-
-		// Load the filter state.
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
-		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string');
-		$this->setState('filter.state', $published);
-		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.sports_type', 'filter_sports_type', '');
-		$this->setState('filter.sports_type', $temp_user_request);
-		$value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
-		$this->setState('list.limit', $value);
-
-		// List state information.
-		$value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
-		$this->setState('list.start', $value);
+$list = $this->getUserStateFromRequest($this->context . '.list', 'list', array(), 'array');
+		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
+		$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
+		$this->setState('filter.sports_type', $this->getUserStateFromRequest($this->context . '.filter.sports_type', 'filter_sports_type', ''));
+		$this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
+		$this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
+		
+		$this->setState('filter.persontype', $this->getUserStateFromRequest($this->context . '.filter.persontype', 'filter_persontype', ''));
 
 		// Filter.order
 		$orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');

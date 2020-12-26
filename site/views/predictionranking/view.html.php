@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage predictionranking
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -57,17 +53,17 @@ class sportsmanagementViewpredictionranking extends sportsmanagementView
 
 		if (isset($this->predictionGame))
 		{
-			$config        = sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
-			$overallConfig = sportsmanagementModelPrediction::getPredictionOverallConfig();
-			$configavatar  = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
-			$configentries = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionentry');
+//			$config        = sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
+//			$overallConfig = sportsmanagementModelPrediction::getPredictionOverallConfig();
+//			$configavatar  = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
+//			$configentries = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionentry');
 
 			$this->roundID       = sportsmanagementModelPrediction::$roundID;
-			$this->configavatar  = $configavatar;
-			$this->configentries = $configentries;
-			$this->config        = array_merge($overallConfig, $config);
+			$this->configavatar  = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
+			$this->configentries = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionentry');
+//			$this->config        = array_merge($overallConfig, $config);
 
-			$this->predictionMember   = sportsmanagementModelPrediction::getPredictionMember($configavatar);
+			$this->predictionMember   = sportsmanagementModelPrediction::getPredictionMember($this->configavatar);
 			$this->predictionProjectS = sportsmanagementModelPrediction::getPredictionProjectS();
 			$this->actJoomlaUser      = Factory::getUser();
 

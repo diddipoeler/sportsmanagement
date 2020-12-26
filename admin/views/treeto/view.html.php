@@ -97,20 +97,11 @@ class sportsmanagementViewTreeto extends sportsmanagementView
 
 		$this->treeto = $this->get('Item');
 		$projectws    = $this->get('Data', 'project');
-
-		// $this->assignRef('form'   ,$this->get('form'));
 		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
 		$mdlProject       = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
 		$this->projectws  = $mdlProject->getProject($this->project_id);
-
-		// $this->assignRef('projectws',$projectws);
 		$this->lists = $lists;
-
-		// $this->assignRef('treeto',$treeto);
-
 		$this->addToolBar_Gennode();
-
-		// Parent::display($tpl);
 		$this->setLayout('gennode');
 	}
 

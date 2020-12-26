@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage positions
@@ -11,15 +9,14 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementViewPositions
@@ -33,6 +30,22 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 class sportsmanagementViewPositions extends sportsmanagementView
 {
 	/**
+	 * A \JForm instance with filter fields.
+	 *
+	 * @var    \JForm
+	 * @since  3.6.3
+	 */
+	public $filterForm;
+
+	/**
+	 * An array with active filters.
+	 *
+	 * @var    array
+	 * @since  3.6.3
+	 */
+	public $activeFilters;
+	
+	/**
 	 * sportsmanagementViewPositions::init()
 	 *
 	 * @return void
@@ -42,7 +55,7 @@ class sportsmanagementViewPositions extends sportsmanagementView
 
 		$this->table = Table::getInstance('position', 'sportsmanagementTable');
 
-		// Build the html options for parent position
+		/** Build the html options for parent position */
 		$parent_id[] = HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_IS_P_POSITION'));
 
 		if ($res = $this->model->getParentsPositions())
@@ -58,7 +71,7 @@ class sportsmanagementViewPositions extends sportsmanagementView
 		$lists['parent_id'] = $parent_id;
 		unset($parent_id);
 
-		// Build the html select list for sportstypes
+		/** Build the html select list for sportstypes */
 		$sportstypes[]  = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_SPORTSTYPE_FILTER'), 'id', 'name');
 		$allSportstypes = BaseDatabaseModel::getInstance('SportsTypes', 'sportsmanagementmodel')->getSportsTypes();
 		$sportstypes    = array_merge($sportstypes, $allSportstypes);
@@ -77,6 +90,11 @@ class sportsmanagementViewPositions extends sportsmanagementView
 		unset($sportstypes);
 
 		$this->lists = $lists;
+		$this->filterForm    = $this->model->getFilterForm();
+		$this->activeFilters = $this->model->getActiveFilters();
+	
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>'.print_r($this->filterForm ,true).'</pre>' ), Log::NOTICE, 'jsmerror');		
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>'.print_r($this->activeFilters ,true).'</pre>' ), Log::NOTICE, 'jsmerror');	
 
 	}
 

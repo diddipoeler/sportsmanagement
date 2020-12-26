@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage fieldsets
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -24,7 +20,8 @@ switch ($this->fieldset)
 	 * für die spielfeldpositionen
 	 */
 	case 'playground_jquery':
-		$backgroundimage = Uri::root() . 'media/com_sportsmanagement/rosterground/' . $this->item->picture;
+		//$backgroundimage = Uri::root() . 'media/com_sportsmanagement/rosterground/' . $this->item->picture;
+        $backgroundimage = '../images/com_sportsmanagement/database/rosterground/' . $this->item->picture;
 		list($width, $height, $type, $attr) = getimagesize($backgroundimage);
 		$picture = Uri::root() . 'images/com_sportsmanagement/database/placeholders/placeholder_150_2.png';
 		?>
@@ -163,24 +160,33 @@ switch ($this->fieldset)
 		if (isset($this->teamsofclub))
 		{
 			?>
-            <fieldset class="adminform">
-                <table class="table">
+<div class="row-fluid">
+<div class="span12">
+<div class="row-fluid form-horizontal-desktop float-cols">
+                
 					<?php
 					foreach ($this->teamsofclub as $team)
 					{
 						?>
-                        <tr>
-                            <td>
+						<div class="control-group">
+
+
+<div class="controls">
                                 <input type="hidden" name="team_id[]" value="<?php echo $team->id; ?>"/>
-                                <input type="text" name="team_value_id[]" size='50' maxlength='100'
+
+                                <input type="text" name="team_value_id[]" size='100' maxlength='100' style="width:400px;"
                                        value="<?php echo $team->name; ?>"/>
-                            </td>
-                        </tr>
+
+				    <input type="text" name="club_value_id[]" size='50' maxlength='50' style=""
+                                       value="<?php echo $team->club_id; ?>"/>
+</div>
+</div>
 						<?php
 					}
 					?>
-                </table>
-            </fieldset>
+</div>
+</div>
+</div>
 			<?PHP
 		}
 		break;
@@ -297,7 +303,7 @@ switch ($this->fieldset)
 		}
 		break;
 
-	case 'teamperson':
+	case 'teamplayer':
 		if (isset($this->extended))
 		{
 			foreach ($this->extended->getFieldsets() as $fieldset)
@@ -477,9 +483,9 @@ switch ($this->fieldset)
                                    href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER . 'SM-Backend-Felder:' . $this->jinput->getVar("view") . '-' . $this->form->getName() . '-' . $this->form->getName() . '-' . $var_onlinehelp; ?>"
                                    class="modal">
 									<?php
+                                    $image_attributes['title'] = 'title= "'.Text::_('COM_SPORTSMANAGEMENT_HELP_LINK') . '"';
 									echo HTMLHelper::_(
-										'image', 'media/com_sportsmanagement/jl_images/help.png', Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'), 'title= "' .
-										Text::_('COM_SPORTSMANAGEMENT_HELP_LINK') . '"'
+										'image', 'media/com_sportsmanagement/jl_images/help.png', Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'), $image_attributes
 									);
 									?>
                                 </a>

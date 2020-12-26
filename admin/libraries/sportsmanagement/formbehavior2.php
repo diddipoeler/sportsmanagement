@@ -6,11 +6,10 @@
  * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
-
 defined('JPATH_PLATFORM') or die;
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * Utility class for form related behaviors
@@ -18,6 +17,7 @@ use Joomla\CMS\HTML\HTMLHelper;
  * @package    Joomla.Libraries
  * @subpackage HTML
  * @since      3.0
+ * https://www.joomy.net/en/using-select2-in-joomla-3-example-codes-syntax
  */
 abstract class JHtmlFormbehavior2
 {
@@ -55,9 +55,12 @@ abstract class JHtmlFormbehavior2
 			$debug  = (boolean) $config->get('debug');
 		}
 
-		HTMLHelper::_('script', 'jui/select2.min.js', false, true, false, false, $debug);
-		HTMLHelper::_('script', 'jui/select2_locale_cs.js', false, true, false, false, $debug);
-		HTMLHelper::_('stylesheet', 'jui/select2.css', false, true);
+		//HTMLHelper::_('script', 'jui/select2.min.js', false, true, false, false, $debug);
+		//HTMLHelper::_('script', 'jui/select2_locale_cs.js', false, true, false, false, $debug);
+		//HTMLHelper::_('stylesheet', 'jui/select2.css', false, true);
+Factory::getDocument()->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/select2.min.js');		
+Factory::getDocument()->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/select2_locale_cs.js');				
+Factory::getDocument()->addStylesheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/select2.css');		
 		Factory::getDocument()->addScriptDeclaration(
 			"
 				jQuery(document).ready(function (){

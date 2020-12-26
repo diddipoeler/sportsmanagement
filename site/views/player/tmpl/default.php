@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage player
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 
 /**
@@ -28,7 +24,7 @@ if (isset($this->person))
 	?>
 
     <!-- player anfang -->
-    <div class="<?php echo $this->divclasscontainer; ?>" id="player">
+    <div class="<?php echo $this->divclasscontainer; ?>" id="defaultplayer">
 		<?php
 		if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO)
 		{
@@ -42,9 +38,7 @@ if (isset($this->person))
 			echo $this->loadTemplate('sectionheader');
 		}
 
-		/**
-		 * Person view START
-		 */
+		/** player view start */
 		$this->output = array();
 		echo $this->loadTemplate('info');
 
@@ -95,7 +89,7 @@ if (isset($this->person))
 
 		/**
 		 * das array muss noch sortiert werden, sonst macht
-		 *  die user vorgabe keinen sinn
+		 * die user vorgabe keinen sinn
 		 */
 		ksort($this->output);
 		echo $this->loadTemplate($this->config['show_players_layout']);

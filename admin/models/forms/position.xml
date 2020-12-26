@@ -31,9 +31,8 @@ description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC" >
 			class="inputbox"/>
 		
 		<field
-		  addfieldpath="/administrator/components/com_sportsmanagement/elements"
 			name="sports_type_id"
-			type="sportstypes"
+			type="sportstypelist"
 			default="0"
 			size="1"
 			label="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE"

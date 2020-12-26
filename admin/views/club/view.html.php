@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage club
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Environment\Browser;
@@ -39,7 +35,7 @@ class sportsmanagementViewClub extends sportsmanagementView
 	 */
 	public function init()
 	{
-		$this->document->addScript('https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js');
+		//$this->document->addScript('https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js');
 		$starttime  = microtime();
 		$this->tmpl = $this->jinput->get('tmpl');
 
@@ -52,9 +48,25 @@ class sportsmanagementViewClub extends sportsmanagementView
 			$this->googlemap = false;
 		}
 
+if ( $this->item->logo_big == 'images/com_sportsmanagement/database/clubs/large/placeholder_150.png' )
+{
+$this->form->setValue('logo_big','',ComponentHelper::getParams('com_sportsmanagement')->get('ph_logo_big',''));	
+$this->item->logo_big = ComponentHelper::getParams('com_sportsmanagement')->get('ph_logo_big','');  
+}
+if ( $this->item->logo_middle == 'images/com_sportsmanagement/database/clubs/medium/placeholder_50.png' )
+{
+$this->form->setValue('logo_middle','',ComponentHelper::getParams('com_sportsmanagement')->get('ph_logo_medium',''));	
+$this->item->logo_middle = ComponentHelper::getParams('com_sportsmanagement')->get('ph_logo_medium','');  
+}		
+if ( $this->item->logo_small == 'images/com_sportsmanagement/database/clubs/small/placeholder_small.gif' )
+{
+$this->form->setValue('logo_small','',ComponentHelper::getParams('com_sportsmanagement')->get('ph_logo_small',''));	
+$this->item->logo_small = ComponentHelper::getParams('com_sportsmanagement')->get('ph_logo_small','');  
+}		
+		
 		if ($this->item->id)
 		{
-			// Alles ok
+			/** Alles ok */
 			if ($this->item->founded == '0000-00-00')
 			{
 				$this->item->founded = '';
@@ -96,9 +108,7 @@ class sportsmanagementViewClub extends sportsmanagementView
 			$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id);
 		}
 
-		/**
-		 * die mannschaften zum verein
-		 */
+		/** die mannschaften zum verein */
 		if ($this->item->id)
 		{
 			$this->teamsofclub = $this->model->teamsofclub($this->item->id);
@@ -106,15 +116,16 @@ class sportsmanagementViewClub extends sportsmanagementView
 
 		$this->lists = $lists;
 
-		$this->document->addScript('http://maps.googleapis.com/maps/api/js?libraries=places&language=de');
-		$this->document->addScript(Uri::base() . 'components/' . $this->option . '/assets/js/geocomplete.js');
+		//$this->document->addScript('https://maps.googleapis.com/maps/api/js?libraries=places&language=de');
+		//$this->document->addScript(Uri::base() . 'components/' . $this->option . '/assets/js/geocomplete.js');
 
 		if (version_compare(JSM_JVERSION, '4', 'eq'))
 		{
+			$this->document->addScript(Uri::base() . 'components/' . $this->option . '/assets/js/editgeocode.js');
 		}
 		else
 		{
-			$this->document->addScript(Uri::base() . 'components/' . $this->option . '/views/club/tmpl/edit.js');
+			$this->document->addScript(Uri::base() . 'components/' . $this->option . '/assets/js/editgeocode.js');
 		}
 
 		if (PluginHelper::isEnabled('system', 'jsm_soccerway'))
@@ -124,6 +135,29 @@ class sportsmanagementViewClub extends sportsmanagementView
 
 		$params          = ComponentHelper::getParams($this->option);
 		$opencagedataapi = $params->get('opencagedata_api_clientid');
+        $auto_completion_club_name = $params->get('auto_completion_club_name');
+        
+        if ( $auto_completion_club_name && $this->item->founded_year && is_numeric($this->item->founded_year) )
+		{
+		if (preg_match("/".$this->item->founded_year."/i", $this->item->name ))
+		{
+		/** Es wurde eine Übereinstimmung gefunden */
+		}
+        else
+        {
+        $this->item->name = $this->item->name.' '.$this->item->founded_year.' e.V.'; 
+        $this->form->setValue('name','', $this->item->name);   
+        }  
+        }
+        
+        if ( !$this->item->founded_year )
+        {
+            $this->item->founded_year = 'kein';
+            $this->form->setValue('founded_year','', 'kein');
+        }
+
+//$this->app->enqueueMessage(Text::_($this->item->name), 'Error');
+//$this->app->enqueueMessage(Text::_($this->item->founded_year), 'Error');
 
 		if ($opencagedataapi)
 		{
@@ -143,7 +177,6 @@ class sportsmanagementViewClub extends sportsmanagementView
 		}
 	}
 
-
 	/**
 	 * sportsmanagementViewClub::addToolBar()
 	 *
@@ -156,6 +189,5 @@ class sportsmanagementViewClub extends sportsmanagementView
 		$this->icon = 'club';
 		parent::addToolbar();
 	}
-
 
 }

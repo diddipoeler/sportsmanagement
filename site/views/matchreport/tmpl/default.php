@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage matchreport
@@ -11,31 +9,24 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 
-HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.keepalive');
 
-// Make sure that in case extensions are written for mentioned (common) views,
-// that they are loaded i.s.o. of the template of this view
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 switch ($this->project->sport_type_name)
 {
 case 'COM_SPORTSMANAGEMENT_ST_TENNIS';
-	echo $this->loadTemplate('projectheading');
-	echo $this->loadTemplate('sectionheader');
-
-	echo $this->loadTemplate('result');
-	echo $this->loadTemplate('details');
-
-	echo $this->loadTemplate('sporttype_tennis');
-	break;
+echo $this->loadTemplate('projectheading');
+echo $this->loadTemplate('sectionheader');
+echo $this->loadTemplate('result');
+echo $this->loadTemplate('details');
+echo $this->loadTemplate('sporttype_tennis');
+break;
 default:
-
 $hasMatchPlayerStats = false;
 $hasMatchStaffStats  = false;
 
@@ -133,7 +124,7 @@ if (!empty($this->matchplayerpositions))
 
 		if ($this->matchstaffpositions)
 		{
-			$output['COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE_UP_STAFF'] = 'staff';
+			$output['COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE_UP_STAFF'] = $this->config['show_staff_card'];
 		}
 
 

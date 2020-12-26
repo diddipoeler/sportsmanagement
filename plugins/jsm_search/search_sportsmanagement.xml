@@ -8,11 +8,12 @@
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<copyright>(C) 2014 sportsmanagement.fussballineuropa.de. All rights reserved.
 	</copyright>
-	<version>1.0.00</version>
+	<version>1.0.0</version>
 	<description>PLG_SEARCH_SPORTSMANAGEMENT_XML_DESC</description>
 	<files>
 		<filename plugin="search_sportsmanagement">search_sportsmanagement.php</filename>
 		<filename>index.html</filename>
+		<filename>update-server.xml</filename>	
 		<folder>language</folder>
 	</files>
 
@@ -92,4 +93,9 @@
 			</fieldset>
 		</fields>
 	</config>
+	
+<updateservers>
+<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/plugins/jsm_search/update-server.xml</server>
+</updateservers>
+	
 </extension>

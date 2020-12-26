@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage helpers
@@ -11,10 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
@@ -239,16 +234,16 @@ class JSMCountries
 			$countryFlag  = self::getCountryFlag($country);
 			$countryName  = self::getCountryName($country);
 			$dummy        = Text::_($addressString);
-			$dummy        = str_replace('%NAME%', $name, $dummy);
-			$dummy        = str_replace('%ADDRESS%', $address, $dummy);
-			$dummy        = str_replace('%STATE%', $state, $dummy);
-			$dummy        = str_replace('%ZIPCODE%', $zipcode, $dummy);
-			$dummy        = str_replace('%LOCATION%', $location, $dummy);
+			$dummy        = str_replace('%NAME%', '<span itemprop="name">'.$name.'</span>', $dummy);
+			$dummy        = str_replace('%ADDRESS%', '<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"><span itemprop="streetAddress">'.$address.'</span>', $dummy);
+			$dummy        = str_replace('%STATE%', '<span itemprop="addressRegion">'.$state.'</span>', $dummy);
+			$dummy        = str_replace('%ZIPCODE%', '<span itemprop="postalCode">'.$zipcode.'</span>', $dummy);
+			$dummy        = str_replace('%LOCATION%', '<span itemprop="addressLocality">'.$location.'</span>', $dummy);
 			$dummy        = str_replace('%FLAG%', $countryFlag, $dummy);
 			$dummy        = str_replace('%COUNTRY%', $countryName, $dummy);
 			$resultString .= $dummy;
 		}
-		$resultString .= '&nbsp;';
+		$resultString .= '</div>&nbsp;';
 
 		return $resultString;
 	}
