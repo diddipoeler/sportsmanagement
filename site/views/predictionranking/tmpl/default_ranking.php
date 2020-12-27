@@ -443,7 +443,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 					{
 						$final4_tip = array();
 						$final4_tip['final4_tipp'] = explode(',', $value);
-						$final4_tip['final4_tipp_result'] = $p; $p+=5;// sportsmanagementModelPrediction::getFinal4Points($value);
+						$final4_tip['final4_tipp_result'] = sportsmanagementModelPrediction::getFinal4Points($value);
 						if ($final4_tip['final4_tipp_result'] !== false) {
 							$Final4Points += $final4_tip['final4_tipp_result'];
 						}
