@@ -98,34 +98,37 @@
             type="text"
             label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_STATE"
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_STATE_DESC"
-            class="inputbox"
+            class="input-xxlarge"
         />	
       
         <field
             name="location"
+			size="50"
             type="text"
 	       onchange="javascript:getlatlonopenstreet(1);"
             label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY"
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY_DESC"
-            class="inputbox"
+            class="input-xxlarge"
         />	 
       
         <field
             name="zipcode"
+			size="10"
             type="text"
 	       onchange="javascript:getlatlonopenstreet(1);"
             label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_POSTAL_CODE"
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_POSTAL_CODE_DESC"
-            class="inputbox"
+            class="input-xxlarge"
         />	
                           
         <field
             name="address"
-            type="textarea"
+			size="100"
+            type="text"
 	       onchange="javascript:getlatlonopenstreet(1);"
             label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS_DESC"
-            class="inputbox"
+            class="input-xxlarge"
         />
 
         <field
@@ -134,7 +137,8 @@
             type="text"
             label="COM_SPORTSMANAGEMENT_GLOBAL_LATITUDE"
             description="COM_SPORTSMANAGEMENT_GLOBAL_LATITUDE_DESC"
-            class="inputbox"
+			readonly="true"
+            class="input-xxlarge readonly"
         />  
         
         <field
@@ -143,7 +147,8 @@
             type="text"
             label="COM_SPORTSMANAGEMENT_GLOBAL_LONGITUDE"
             description="COM_SPORTSMANAGEMENT_GLOBAL_LONGITUDE_DESC"
-            class="inputbox"
+			readonly="true"
+            class="input-xxlarge readonly"
         />
 
         <field
