@@ -137,6 +137,7 @@
             type="text"
             label="COM_SPORTSMANAGEMENT_GLOBAL_LATITUDE"
             description="COM_SPORTSMANAGEMENT_GLOBAL_LATITUDE_DESC"
+			readonly="true"
             class="input-xxlarge readonly"
         />  
         
@@ -146,6 +147,7 @@
             type="text"
             label="COM_SPORTSMANAGEMENT_GLOBAL_LONGITUDE"
             description="COM_SPORTSMANAGEMENT_GLOBAL_LONGITUDE_DESC"
+			readonly="true"
             class="input-xxlarge readonly"
         />
 
