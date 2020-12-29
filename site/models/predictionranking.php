@@ -277,8 +277,8 @@ class sportsmanagementModelPredictionRanking extends JSMModelList
 		}
 
 	}
-
-	/**
+	
+    /**
 	 * sportsmanagementModelPredictionRanking::createMatchdayList()
 	 *
 	 * @param   mixed  $project_id

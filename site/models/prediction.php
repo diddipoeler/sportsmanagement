@@ -197,7 +197,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 	 *
 	 * @param   mixed  $champ_tipp
 	 *
-	 * @return
+	 * @return  champion points or false, if no champion was set
 	 */
 	static function getChampionPoints($champ_tipp)
 	{
@@ -231,8 +231,13 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 		$db->setQuery($query);
 		$result = $db->loadObject();
 
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+
 		if ($result)
 		{
+			if ($result->league_champ == 0) {
+				return false;
+			}
 			$resultchamp       = $result->league_champ;
 			$resultchamppoints = $result->points_tipp_champ;
 		}
@@ -261,9 +266,92 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 			}
 		}
 
+		return $ChampPoints;
+	}
+
+	/**
+	 * sportsmanagementModelPrediction::getFinal4Points()
+	 *
+	 * @param   mixed  $final4_tipp
+	 *
+	 * @return  final4 points or false, if no final4 was set
+	 */
+	static function getFinal4Points($final4_tipp)
+	{
+		// Reference global application object
+		$app = Factory::getApplication();
+
+		// JInput object
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+
+		// Create a new query object.
+		$db    = sportsmanagementHelper::getDBConnection();
+		$query = $db->getQuery(true);
+
+		$Final4Points = 0;
+
+		$resultfinal4TeamsList = array();
+		$resultfinal4points = 0;
+
+		$sFinal4TeamsList = array();
+		$dFinal4TeamsList = array();
+		$final4TeamsList  = array();
+
+		// Select final4 teams from project
+
+		$query->select('league_final4,points_tipp_final4');
+		$query->from('#__sportsmanagement_prediction_project');
+		$query->where('prediction_id = ' . (int) self::$predictionGameID);
+		$query->where('project_id = ' . (int) self::$pjID);
+		$query->where('final4 = 1');
+		$db->setQuery($query);
+		$result = $db->loadObject();
+
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
-		return $ChampPoints;
+		if ($result)
+		{
+			if ($result->league_final4 == 0) {
+				return false;
+			}
+			$resultfinal4TeamsList = explode(',', $result->league_final4);
+			$resultfinal4points    = $result->points_tipp_final4;
+		}
+
+		if (count($resultfinal4TeamsList) != 4)
+		{
+			// final 4 not evaluated yet
+			return false;
+		}
+		// User hat auch final4 tipps abgegeben
+		if ($final4_tipp)
+		{
+			$sFinal4TeamsList = explode(';', $final4_tipp);
+
+			foreach ($sFinal4TeamsList AS $key => $value)
+			{
+				$dFinal4TeamsList[] = explode(',', $value);
+			}
+
+			foreach ($dFinal4TeamsList AS $key => $value)
+			{
+				$final4TeamsList[$value[0]] = $value[1];
+			}
+
+			if (isset($final4TeamsList[(int) self::$pjID]))
+			{
+				foreach ($resultfinal4TeamsList as $final4_team)
+				{
+					if ($final4TeamsList[(int) self::$pjID] == $final4_team)
+					{
+                        $Final4Points = $resultfinal4points;
+                    }
+                }
+			}
+		}
+
+		return $Final4Points;
 	}
 
 	/**
@@ -2428,7 +2516,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 			$nameType = 'name';
 		}
 
-		$query->select('pm.id AS pmID,pm.user_id AS user_id,pm.picture AS avatar,pm.show_profile AS show_profile,pm.champ_tipp AS champ_tipp,pm.aliasName as aliasName');
+		$query->select('pm.id AS pmID,pm.user_id AS user_id,pm.picture AS avatar,pm.show_profile AS show_profile,pm.champ_tipp AS champ_tipp,pm.final4_tipp AS final4_tipp,pm.aliasName as aliasName');
 		$query->select('u.' . $nameType . ' AS name');
 		$query->select('pg.id as pg_group_id,pg.name as pg_group_name');
 		$query->from('#__sportsmanagement_prediction_member AS pm');

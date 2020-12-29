@@ -305,6 +305,58 @@ $document->addScript(Uri::root() . 'includes/js/joomla.javascript.js');
 			}
 			?>
         </tr>
+		<?php if ($this->config['show_final4_tip']) { ?>
+        <tr>
+			<?php
+			$rowspan = count($this->predictionProjectS);
+
+
+			echo sportsmanagementModelPrediction::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_FINAL4', 'COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_FINAL4', $rowspan);
+
+			foreach ($this->predictionProjectS AS $predictionProject)
+			{
+			?>
+            <td width='10%' style='text-align:right; '><?php
+
+
+				echo $this->lists['final4_tipp_1'][$predictionProject->project_id];
+				echo '<br>';
+				echo $this->lists['final4_tipp_2'][$predictionProject->project_id];
+				echo '<br>';
+				echo $this->lists['final4_tipp_3'][$predictionProject->project_id];
+				echo '<br>';
+				echo $this->lists['final4_tipp_4'][$predictionProject->project_id];
+				echo '<br>';
+
+				if (!$this->tippallowed)
+				{
+					echo '<font size="2" color="red">' . Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_NO_GROUP_CHANGE') . '</font><br>';
+				}
+				?><?php
+
+				?><?php
+				if ($rowspan > 1)
+				{
+					if ($predictionProjectSettings = sportsmanagementModelPrediction::getPredictionProject($predictionProject->project_id))
+					{
+						echo Text::sprintf('COM_SPORTSMANAGEMENT_PRED_USERS_CHAMPION_IN_PROJECT', '<b>' . $predictionProjectSettings->name . '</b>');
+					}
+					else
+					{
+						echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_GETPROJECT_ERROR');
+					}
+				}
+				else
+				{
+					echo '&nbsp;';
+				}
+				?></td>
+		</tr>
+		<?php } ?>
+        <tr><?php
+			}
+			?>
+		</tr>
 		<?php
 		if ($this->config['edit_avatar_upload'])
 		{

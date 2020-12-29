@@ -134,6 +134,9 @@ $fieldsets = $this->form->getFieldsets();
 				case 'predchamp':
 					echo $this->form->renderFieldset('predchamp');
 					break;
+				case 'predfinal4':
+					echo $this->form->renderFieldset('predfinal4');
+					break;
 				case 'predjoker':
 					echo $this->form->renderFieldset('predjoker');
 					break;

@@ -220,6 +220,42 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_TIPP_CHAMP_DESC"
 />    	
 </fieldset>
 	
+<fieldset name="predfinal4"
+label="COM_SPORTSMANAGEMENT_TABS_FINAL4TIPPS"
+description="COM_SPORTSMANAGEMENT_TABS_FINAL4TIPPS_DESC">  
+<!-- alles für die Halbfinalisten -->    
+<field 
+name="final4" 
+type="extensionradiobutton" 
+default="0"
+class="radio btn-group btn-group-yesno"
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_FINAL4" 
+description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_FINAL4_DESC">
+<option value="0">JNO</option>
+<option value="1">JYES</option>
+</field>
+		
+<field
+name="league_final4"
+showon="final4:1"        
+type="projectteamlist"
+varname="cid"
+label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_SELECT_TEAM"
+description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_SELECT_TEAM_DESC"
+multiple="true"
+size="10"
+class="inputbox"/>	
+			
+<field 
+name="points_tipp_final4" 
+showon="final4:1"        
+type="text" 
+default="0"
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_TIPP_FINAL4" 
+description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_TIPP_FINAL4_DESC"
+/>    	
+</fieldset>
+	
 <fieldset name="predjoker"
 label="COM_SPORTSMANAGEMENT_TABS_PRED_JOKER"
 description="COM_SPORTSMANAGEMENT_TABS_PRED_JOKER_DESC">  

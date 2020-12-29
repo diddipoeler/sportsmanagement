@@ -549,6 +549,8 @@ return $jl_dberror;
 		$my_text              = '';
 		$starttime            = sportsmanagementModeldatabasetool::getRunTime();
 		$jl_table_import_step = $jinput->get('jl_table_import_step', 0);
+		
+
 		$jinput->set('filter_sports_type', $sports_type_id);
 
 //		$db    = Factory::getDbo();
@@ -3618,11 +3620,6 @@ return $jl_dberror;
 
 			foreach ($result as $row)
 			{
-				if ($row->id == 165)
-				{
-					$ttt = 0;
-				}
-
 				$fav_teams   = array();
 				$champ_teams = array();
 
@@ -3701,6 +3698,152 @@ return $jl_dberror;
 			return self::$_success;
 		}
 
+		/**
+		 * importschritt 101, special importstep for tippgames, which consist of 4 champ_tipps ("i.e. jst's predicitongame)
+		 * Step has to be called explicilty!!!!
+		 */
+		if ($jl_table_import_step == 101)
+		{
+			/**
+			 * port champ_tipps _2/3/4 from _prediction_member to final4_tipp
+			 */
+			$my_text = '';
+
+			/**
+			 * now update champ tipps_2,3,4 to final4_tipp ( <project_id>,<project_tem_id>[;<project_id>,<project_tem_id>;....] )
+			 */
+			// Create mappings for ids
+			$mapped_project_id[0]      = 0;
+			$mapped_project_team_id[0] = 0;
+
+			$query->clear();
+			$query->select('id,import_id');
+			$query->from('#__sportsmanagement_project');
+			$query->where('import_id != 0');
+			$db->setQuery($query);
+			$result = $db->loadObjectList();
+
+			foreach ($result as $row)
+			{
+				$mapped_project_id[$row->import_id] = $row->id;
+			}
+
+			$query->clear();
+			$query->select('id,import_id');
+			$query->from('#__sportsmanagement_project_team');
+			$query->where('import_id != 0');
+			$db->setQuery($query);
+			$result = $db->loadObjectList();
+
+			foreach ($result as $row)
+			{
+				$mapped_project_team_id[$row->import_id] = $row->id;
+			}
+
+			// Now iterate trough member table and update ids
+			$query->clear();
+			$query->select('id,champ_tipp,champ_tipp2,champ_tipp3,champ_tipp4');
+			$query->from('#__joomleague_prediction_member');
+			$db->setQuery($query);
+			$result = $db->loadObjectList();
+
+			foreach ($result as $row)
+			{
+				$champ_teams = array();
+
+				if ($row->champ_tipp)
+				{
+					$dChampTeamsList = array();
+					$sChampTeamsList = explode(';', $row->champ_tipp);
+
+					foreach ($sChampTeamsList AS $key => $value)
+					{
+						$dChampTeamsList[] = explode(',', $value);
+					}
+
+					foreach ($dChampTeamsList AS $key => $value)
+					{
+						$champ_teams[][$value[0]] = $value[1];
+					}
+				}
+				if ($row->champ_tipp2)
+				{
+					$dChampTeamsList = array();
+					$sChampTeamsList = explode(';', $row->champ_tipp2);
+
+					foreach ($sChampTeamsList AS $key => $value)
+					{
+						$dChampTeamsList[] = explode(',', $value);
+					}
+
+					foreach ($dChampTeamsList AS $key => $value)
+					{
+						$champ_teams[][$value[0]] = $value[1];
+					}
+				}				
+				if ($row->champ_tipp3)
+				{
+					$dChampTeamsList = array();
+					$sChampTeamsList = explode(';', $row->champ_tipp3);
+
+					foreach ($sChampTeamsList AS $key => $value)
+					{
+						$dChampTeamsList[] = explode(',', $value);
+					}
+
+					foreach ($dChampTeamsList AS $key => $value)
+					{
+						$champ_teams[][$value[0]] = $value[1];
+					}
+				}				
+				if ($row->champ_tipp4)
+				{
+					$dChampTeamsList = array();
+					$sChampTeamsList = explode(';', $row->champ_tipp4);
+
+					foreach ($sChampTeamsList AS $key => $value)
+					{
+						$dChampTeamsList[] = explode(',', $value);
+					}
+
+					foreach ($dChampTeamsList AS $key => $value)
+					{
+						$champ_teams[][$value[0]] = $value[1];
+					}
+				}
+				$dChampTeams = '';
+
+				foreach ($champ_teams AS $outer_key => $outer_value)
+				{
+                    foreach ($outer_value as $key => $value) {
+                        $dChampTeams .= $mapped_project_id[$key] . ',' . $mapped_project_team_id[$value] . ';';
+                    }
+				}
+
+				$dChampTeams = trim($dChampTeams, ';');
+
+				// Fields to update.
+				$fields = array(
+					$db->quoteName('final4_tipp') . ' = ' . $db->quote($dChampTeams)
+				);
+
+				// Conditions for which records should be updated.
+				$conditions = array(
+					$db->quoteName('import_id') . ' = ' . $row->id
+				);
+
+				$query->clear();
+				$query->update($db->quoteName('#__sportsmanagement_prediction_member'))->set($fields)->where($conditions);
+				$db->setQuery($query);
+				sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+			}
+
+			$jl_table_import_step++;
+			$jinput->set('jl_table_import_step', 'ENDE');
+			Factory::getDocument()->addScriptOptions('success', self::$_success);
+
+			return self::$_success;
+		}
 	}
 
 }

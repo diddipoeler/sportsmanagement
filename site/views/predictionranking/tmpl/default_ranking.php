@@ -241,6 +241,11 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 						?>
                         <th style='text-align:center; vertical-align:top; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_CHAMPION_TIP'); ?></th><?php
 					}
+					if ($this->config['show_final4_tip'])
+					{
+						?>
+                        <th style='text-align:center; vertical-align:top; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_FINAL4_TIP'); ?></th><?php
+					}
 
 					if ($this->config['show_tip_details'])
 					{
@@ -422,13 +427,34 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 						}
 					}
 
-					$ChampPoints = sportsmanagementModelPrediction::getChampionPoints($member->champ_tipp);
+					$ChampPoints = 0;
+					$membersDataArray[$member->pmID]['champ_tipp']        = $member->champ_tipp;
+					$membersDataArray[$member->pmID]['champ_tipp_result'] = sportsmanagementModelPrediction::getChampionPoints($member->champ_tipp);
+					// if a champion was already set
+					if ($membersDataArray[$member->pmID]['champ_tipp_result'] !== false) {
+						// get the points for member
+						$ChampPoints = $membersDataArray[$member->pmID]['champ_tipp_result'];
+					}
+					$Final4Points = 0;
+					$membersDataArray[$member->pmID]['final4_tipps'] = array();
+					$sFinal4TeamsList = explode(';', $member->final4_tipp);
+					$p = 0;
+					foreach ($sFinal4TeamsList AS $key => $value)
+					{
+						$final4_tip = array();
+						$final4_tip['final4_tipp'] = explode(',', $value);
+						$final4_tip['final4_tipp_result'] = sportsmanagementModelPrediction::getFinal4Points($value);
+						if ($final4_tip['final4_tipp_result'] !== false) {
+							$Final4Points += $final4_tip['final4_tipp_result'];
+						}
+						$membersDataArray[$member->pmID]['final4_tipps'][] = $final4_tip;
+					}
 
 					$membersResultsArray[$member->pmID]['pg_group_name']    = $member->pg_group_name;
 					$membersResultsArray[$member->pmID]['pg_group_id']      = $member->pg_group_id;
 					$membersResultsArray[$member->pmID]['rank']             = 0;
 					$membersResultsArray[$member->pmID]['predictionsCount'] = $predictionsCount;
-					$membersResultsArray[$member->pmID]['totalPoints']      = $totalPoints + $ChampPoints;
+					$membersResultsArray[$member->pmID]['totalPoints']      = $totalPoints + $ChampPoints + $Final4Points;
 					$membersResultsArray[$member->pmID]['totalTop']         = $totalTop;
 					$membersResultsArray[$member->pmID]['totalDiff']        = $totalDiff;
 					$membersResultsArray[$member->pmID]['totalTend']        = $totalTend;
@@ -529,7 +555,6 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 					}
 
 					$membersDataArray[$member->pmID]['show_tip_details'] = $output;
-					$membersDataArray[$member->pmID]['champ_tipp']       = $member->champ_tipp;
 
 					if ((int) sportsmanagementModelPrediction::$pggrouprank)
 					{
@@ -660,6 +685,9 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                                             <td <?php echo $tdStyleStr; ?> >
 												<?PHP
 												echo $imgFile;
+                                                if ($this->config['show_champion_tip_result'] && ($membersDataArray[$key]['champ_tipp_result'] !== false)) {
+													echo "<sub style='color:#7D0204;font-weight:bold;'>".$membersDataArray[$key]['champ_tipp_result']."</sub>";
+                                                }
 												?>
                                             </td>
 											<?PHP
@@ -671,9 +699,49 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                                             </td>
 											<?PHP
 										}
-
 									}
 									// soll der meistertipp angezeigt werden ? ende
+									if ($this->config['show_final4_tip'])
+									{
+										if (is_array($membersDataArray[$key]['final4_tipps'])) {?>
+											<td <?php echo $tdStyleStr; ?> ><?php
+                                            foreach ($membersDataArray[$key]['final4_tipps'] as $final4_tip) {
+                                                if ($this->config['show_final4_tip_club_logo']) {
+                                                    if ($showProjectID) {
+                                                        $final4Logo = sportsmanagementModelProject::getTeaminfo( $final4_tip['final4_tipp'][1], 0);
+
+                                                        if (isset($final4Logo->name)) {
+                                                            $imgTitle           = $final4Logo->name;
+                                                            $final4_logo_size   = $this->config['final4_logo_size'];
+                                                            $imgFile            = sportsmanagementHelperHtml::getBootstrapModalImage('predranking' . $key, $final4Logo->$final4_logo_size, $imgTitle, '20');
+                                                        } else {
+                                                            $imgFile = '';
+                                                        }
+                                                    } else {
+                                                        $imgTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_FINAL4_TIP');
+                                                        $imgFile  = HTMLHelper::image("media/com_sportsmanagement/event_icons/goal2.png", $imgTitle, array('title' => $imgTitle));
+                                                    }
+                                                } else {
+                                                    $imgTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_FINAL4_TIP');
+                                                    $imgFile  = HTMLHelper::image("media/com_sportsmanagement/event_icons/goal2.png", $imgTitle, array('title' => $imgTitle));
+                                                } 
+                                                echo $imgFile;
+                                                if ($this->config['show_final4_tip_result'] && ($final4_tip['final4_tipp_result'] !== false)) {
+                                                    echo "<sub style='color:#7D0204;font-weight:bold;'>".$final4_tip['final4_tipp_result']."</sub>";
+												}
+												echo " ";
+                                            }?>
+											</td>
+											<?php
+										}
+										else
+										{
+											?>
+                                            <td>
+                                            </td>
+											<?PHP
+										}
+									}
 									if (!sportsmanagementModelPrediction::$pggrouprank)
 									{
 										if ($this->config['show_tip_details'])

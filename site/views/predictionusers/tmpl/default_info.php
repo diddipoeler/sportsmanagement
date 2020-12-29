@@ -29,6 +29,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 	{
 		$outputUserName = $this->predictionMember->username;
 	}
+
 	if (sportsmanagementModelPrediction::$pjID > 0)
 	{
 		$showProjectID = sportsmanagementModelPrediction::$pjID;
@@ -87,7 +88,10 @@ use Joomla\CMS\HTML\HTMLHelper;
             <td class='picture'>
 				<?php
 				// das userbild
-				sportsmanagementModelPredictionUsers::showMemberPicture($outputUserName, $this->predictionMember->user_id);
+				sportsmanagementModelPredictionUsers::showMemberPicture($outputUserName,
+																		$this->config['show_photo'],
+																		$this->config['show_image_from'],
+																		$this->predictionMember->user_id);
 				?>
             </td>
             <td class='info'>
@@ -179,11 +183,11 @@ use Joomla\CMS\HTML\HTMLHelper;
                             <td class='data'><?php
 								foreach ($this->predictionProjectS AS $predictionProject)
 								{
-									if ((sportsmanagementModelPrediction::$pjID == 0) || (sportsmanagementModelPrediction::$pjID == $predictionProject->project_id))
+									if (((int)sportsmanagementModelPrediction::$pjID == 0) || ((int)sportsmanagementModelPrediction::$pjID == $predictionProject->project_id))
 									{
 										if ($predictionProjectSettings = sportsmanagementModelPrediction::getPredictionProject($predictionProject->project_id))
 										{
-											if ($res = $this->model->getPredictionProjectTeams($predictionProject->project_id))
+											if ($res = sportsmanagementModelPredictionUsers::getPredictionProjectTeams($predictionProject->project_id))
 											{
 												foreach ($res AS $team)
 												{
@@ -218,9 +222,13 @@ use Joomla\CMS\HTML\HTMLHelper;
 					?>
 
                     <tr>
-                        <td class='label'><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_CHAMPIONS'); /*Meistertipp*/ ?></td>
+                        <td class='label'><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_CHAMPIONS'); /**
+							 *
+							 * Meistertipp
+							 */ ?></td>
                         <td class='data'><?php
 							$found = false;
+
 							if (!isset($this->predictionMember->champ_tipp))
 							{
 								$this->predictionMember->champ_tipp = Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_NO_CHAMP');
@@ -230,7 +238,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 							$dummyOutputShown = false;
 							foreach ($this->predictionProjectS AS $predictionProject)
 							{
-								if ((sportsmanagementModelPrediction::$pjID == 0) || (sportsmanagementModelPrediction::$pjID == $predictionProject->project_id))
+								if (((int)sportsmanagementModelPrediction::$pjID == 0) || ((int)sportsmanagementModelPrediction::$pjID == $predictionProject->project_id))
 								{
 									if ($predictionProjectSettings = sportsmanagementModelPrediction::getPredictionProject($predictionProject->project_id))
 									{
@@ -249,7 +257,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 										if (($showChamp))
 										{
-											if ($res = $this->model->getPredictionProjectTeams($predictionProject->project_id))
+											if ($res = sportsmanagementModelPredictionUsers::getPredictionProjectTeams($predictionProject->project_id))
 											{
 												foreach ($res AS $team)
 												{
@@ -288,7 +296,63 @@ use Joomla\CMS\HTML\HTMLHelper;
 								echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_NO_CHAMP');
 							}
 							?></td>
-                    </tr>
+					</tr>
+					<?php
+					if ($this->config['show_final4_tip'])
+					{
+                    ?>
+                    <tr>
+                        <td class='label'><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_FINAL4'); /**
+                             *
+                             * Final 4 tipp
+                             */ ?></td>
+                        <td class='data'><?php
+                            $found = false;
+
+                        $final4Shown       = false;
+                        $dummyOutputShown = false;
+                        foreach ($this->predictionProjectS as $predictionProject) {
+                            if (((int)sportsmanagementModelPrediction::$pjID == 0) || ((int)sportsmanagementModelPrediction::$pjID == $predictionProject->project_id)) {
+                                if ($predictionProjectSettings = sportsmanagementModelPrediction::getPredictionProject($predictionProject->project_id)) {
+                                    $time     = strtotime($predictionProjectSettings->start_date);
+                                    $time     += 86400; // Ein Tag in Sekunden
+                                    $showDate = date("Y-m-d", $time);
+
+                                    $thisTimeDate             = sportsmanagementHelper::getTimestamp(date("Y-m-d H:i:s"), 1, $predictionProjectSettings->timezone);
+                                    $competitionStartTimeDate = sportsmanagementHelper::getTimestamp($showDate, 1, $predictionProjectSettings->timezone);
+                                    $showFinal4                = ($thisTimeDate > $competitionStartTimeDate);
+
+                                    if (($showFinal4)) {
+                                        if ($res = sportsmanagementModelPredictionUsers::getPredictionProjectTeams($predictionProject->project_id)) {
+											foreach ($this->final4Teams[$predictionProject->project_id] as $key => $value) {
+												foreach ($res as $team) {
+                                                    if ($team->value == $value) {
+                                                        $found      = true;
+                                                        $final4Shown = true; ?>
+                                                            <span class='hasTip' title="<?php
+                                                            echo Text::sprintf('COM_SPORTSMANAGEMENT_PRED_USERS_CHAMPION_IN_PROJECT', $predictionProjectSettings->name); ?>"><?php
+                                                                echo $team->text . '<br />'; ?></span>
+															<?php
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        if (!$dummyOutputShown) {
+                                            echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_SHOW_AFTER_START') . '<br />';
+                                        }
+                                        $dummyOutputShown = true;
+                                    }
+                                }
+                            }
+                        }
+                        if ((!$found) && ($final4Shown)) {
+                            echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_NO_FINAL4TEAM');
+                        } ?></td>
+					</tr>
+					<?php
+                    }
+					?>
                 </table>
             </td>
             <td class='info'>
@@ -303,10 +367,11 @@ use Joomla\CMS\HTML\HTMLHelper;
                                     <input type='hidden' name='prediction_id'
                                            value='<?php echo (int) $this->predictionGame->id; ?>'/>
                                     <input type='hidden' name='project_id'
-                                           value='<?php echo (int) $this->model->pjID; ?>'/>
+                                           value='<?php echo (int) sportsmanagementModelPrediction::$pjID; ?>'/>
                                     <input type='hidden' name='uid'
                                            value='<?php echo (int) $this->predictionMember->pmID; ?>'/>
-                                    <input type='hidden' name='pjID' value='<?php echo (int) $this->model->pjID; ?>'/>
+                                    <input type='hidden' name='pjID'
+                                           value='<?php echo (int) sportsmanagementModelPrediction::$pjID; ?>'/>
                                     <input type='hidden' name='task' value='predictionusers.selectprojectround'/>
                                     <input type='hidden' name='option' value='com_sportsmanagement'/>
 

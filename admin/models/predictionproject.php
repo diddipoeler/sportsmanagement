@@ -157,7 +157,14 @@ class sportsmanagementModelpredictionproject extends AdminModel
 			$parameter->loadArray($post['extended']);
 			$data['extended'] = (string) $parameter;
 		}
-
+		// special case final4 Club IDs, save as CSV list
+		if (!isset($data['league_final4'])) {
+			$data['league_final4'] = "0";
+		} else {
+			if (is_array($data['league_final4'])) {
+				$data['league_final4'] = implode(",", $data['league_final4']);
+			}
+		}
 		// Proceed with the save
 		return parent::save($data);
 	}
@@ -205,6 +212,8 @@ class sportsmanagementModelpredictionproject extends AdminModel
 		if (empty($data))
 		{
 			$data = $this->getItem();
+			// Prepare Multiple selection list for final 4 which was stored as CSV string
+			$data->league_final4 = explode(",", $data->league_final4);	
 		}
 
 		return $data;
