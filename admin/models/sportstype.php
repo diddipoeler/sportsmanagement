@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -11,17 +9,17 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-
-// Import Joomla modelform library
-jimport('joomla.application.component.modeladmin');
 
 /**
- * SportsManagement Model
+ * sportsmanagementModelsportstype
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2020
+ * @version $Id$
+ * @access public
  */
 class sportsmanagementModelsportstype extends JSMModelAdmin
 {
@@ -54,9 +52,7 @@ class sportsmanagementModelsportstype extends JSMModelAdmin
 		$this->jsmquery->from('#__sportsmanagement_sports_type');
 		$this->jsmquery->where('id = ' . $sportstype_id);
 		$this->jsmdb->setQuery($this->jsmquery);
-
 		return $this->jsmdb->loadObject();
 	}
-
 
 }
