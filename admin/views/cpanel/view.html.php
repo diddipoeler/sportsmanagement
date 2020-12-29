@@ -55,7 +55,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView
 		$jl_table_import = $databasetool->getJoomleagueTables();
 
 		$params             = ComponentHelper::getParams($this->option);
-		$sporttypes         = $params->get('cfg_sport_types');
+		$this->sporttypes         = $params->get('cfg_sport_types');
 		$sm_quotes          = $params->get('cfg_quotes');
 		$country            = $params->get('cfg_country_associations');
 		$install_agegroup   = ComponentHelper::getParams($this->option)->get('install_agegroup', 0);
@@ -63,7 +63,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView
 
 		if ($cfg_which_database)
 		{
-			$sporttypes       = '';
+			$this->sporttypes       = '';
 			$sm_quotes        = '';
 			$country          = '';
 			$install_agegroup = '';
@@ -102,9 +102,9 @@ class sportsmanagementViewcpanel extends sportsmanagementView
 			$model->_success_text[Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_QUOTES_SUCCESS_TEXT')] = $result;
 		}
 
-		if ($sporttypes)
+		if ($this->sporttypes)
 		{
-			foreach ($sporttypes as $key => $type)
+			foreach ($this->sporttypes as $key => $type)
 			{
 				$checksporttype        = $model->checksporttype($type);
 				$checksporttype_strukt = $databasetool->checkSportTypeStructur($type);
@@ -285,7 +285,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView
 		{
 		}
 
-		$this->sporttypes = $sporttypes;
+		//$this->sporttypes = $sporttypes;
 		$this->version    = $model->getVersion();
 
 		/**

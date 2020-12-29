@@ -22,6 +22,14 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		<?php echo $this->sidebar; ?>
     </div>
     <div class="col-md-8">
+    <?php
+            if ( ComponentHelper::getParams('com_sportsmanagement')->get('start_install_helper') && !$this->sporttypes )
+            {
+            echo $this->loadTemplate('startinstallhelper');    
+                
+            }
+            ?>
+            
         <strong><i class="fa fa-2x fa-lightbulb-o"></i> <?php echo Text::_('COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA') ?>
         </strong>
         <hr>

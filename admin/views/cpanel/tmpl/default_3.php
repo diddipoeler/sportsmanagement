@@ -33,7 +33,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         <div id="j-main-container">
 			<?php endif; ?>
             <?php
-            if (ComponentHelper::getParams('com_sportsmanagement')->get('start_install_helper'))
+            if ( ComponentHelper::getParams('com_sportsmanagement')->get('start_install_helper') && !$this->sporttypes )
             {
             echo $this->loadTemplate('startinstallhelper');    
                 
