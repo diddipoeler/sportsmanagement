@@ -32,6 +32,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		?>
         <div id="j-main-container">
 			<?php endif; ?>
+            <?php
+            if (ComponentHelper::getParams('com_sportsmanagement')->get('start_install_helper'))
+            {
+            echo $this->loadTemplate('startinstallhelper');    
+                
+            }
+            ?>
             <section class="content-block" role="main">
                 <div class="row-fluid">
                     <div class="span9">
