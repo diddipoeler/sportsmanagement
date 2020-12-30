@@ -89,6 +89,7 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERR
 		ToolbarHelper::checkin('divisions.checkin');
 		ToolbarHelper::apply('divisions.saveshort');
 		ToolbarHelper::divider();
+        sportsmanagementHelper::ToolbarButton('massadd', 'new', Text::_('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_MASSADD_BUTTON'));
 		ToolbarHelper::addNew('division.add');
 		ToolbarHelper::editList('division.edit');
 
