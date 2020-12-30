@@ -400,6 +400,7 @@ break;
 				case 'predictiongroups';
 				case 'predictionmembers';
 				case 'predictiontemplates';
+				case 'predictionrounds';
 					sportsmanagementHelper::addSubmenu('predictions');
 					break;
 				default:
@@ -853,6 +854,7 @@ document.getElementById("filter_season").classList.add("filter_season");
 				case 'predictionmembers':
 				case 'templates':
 				case 'predictiongroups':
+				case 'predictionrounds':
 				case 'jlextdfbkeyimport':
 				case 'transifex';
 				case 'predictions';
@@ -863,9 +865,9 @@ document.getElementById("filter_season").classList.add("filter_season");
 				case 'treetomatchs';
 				case 'smextxmleditors';
 				case 'smextxmleditor';
-					case 'jsmopenligadb';
+				case 'jsmopenligadb';
                 case 'smimageimports';
-					case 'smquotestxt';
+				case 'smquotestxt';
 				break;
 				default:
 					/**

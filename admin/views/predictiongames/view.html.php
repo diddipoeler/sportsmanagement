@@ -17,6 +17,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Table\Table;
 
@@ -88,6 +89,12 @@ class sportsmanagementViewPredictionGames extends sportsmanagementView
 			$this->predictionProjects = $this->getModel()->getChilds($this->prediction_id);
 		}
 
+		// Get 
+		$mdlRounds            = BaseDatabaseModel::getInstance('Rounds', 'sportsmanagementModel');
+		$mdlPredRounds        = BaseDatabaseModel::getInstance('predictionrounds', 'sportsmanagementModel');
+
+		$this->modelround     = $mdlRounds;
+		$this->modelpredround = $mdlPredRounds;
 	}
 
 	/**

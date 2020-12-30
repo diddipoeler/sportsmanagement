@@ -231,12 +231,13 @@ if ($this->dPredictionID > 0)
             <th><?php echo Text::_('NUM'); ?></th>
             <th>&nbsp;</th>
             <th class='title'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_PROJ_NAME'); ?></th>
+            <th class='title'><?php echo Text::_('JSTATUS'); ?></th>
             <th class='title'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_MODE'); ?></th>
             <th class='title'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_OVERVIEW'); ?></th>
             <th class='title'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_JOKER'); ?></th>
             <th class='title'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_CHAMP'); ?></th>
             <th class='title'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_FINAL4'); ?></th>
-            <th class='title'><?php echo Text::_('JSTATUS'); ?></th>
+            <th class='title'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_PREDROUNDS'); ?></th>
 
             <th class='title'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_CARDS'); ?></th>
             <th class='title'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_PENALTIES'); ?></th>
@@ -258,7 +259,7 @@ if ($this->dPredictionID > 0)
 				'' .
 				'task=predictionproject.edit&tmpl=component&id=' . $pred_project['id'] . '&project_id=' . $pred_project['project_id']
 			);
-
+			$link2tipprounds    = Route::_('index.php?option=com_sportsmanagement&view=predictionrounds&id=' . $pred_project['id'] . '&project_id=' . $pred_project['project_id']);
 
 			?>
             <tr class='<?php echo "row$k"; ?>'>
@@ -286,6 +287,22 @@ if ($this->dPredictionID > 0)
 		<?php echo $pred_project['project_name']; ?>
 	   </a>
 	   -->
+                </td>
+                <td style='text-align:center; '>
+					<?php
+					if ($pred_project['published'])
+					{
+						$imageTitle = Text::_('JENABLED');
+						$imageFile  = 'administrator/components/com_sportsmanagement/assets/images/ok.png';
+					}
+					else
+					{
+						$imageTitle = Text::_('JDISABLED');
+						$imageFile  = 'administrator/components/com_sportsmanagement/assets/images/delete.png';
+					}
+
+					echo HTMLHelper::_('image', $imageFile, $imageTitle, 'title= "' . $imageTitle . '"');
+					?>
                 </td>
                 <td style='text-align:center; '><?php
 					if ($pred_project['mode'] == '0')
@@ -358,9 +375,10 @@ if ($this->dPredictionID > 0)
 
 					echo HTMLHelper::_('image', $imageFile, $imageTitle, 'title= "' . $imageTitle . '"');
 					?></td>
-                <td style='text-align:center; '>
+                <td style='text-align:center; '><a href="<?php echo $link2tipprounds; ?>">
 					<?php
-					if ($pred_project['published'])
+					$pred_rounds = $this->modelpredround->getAcivePredictionRoundsCount($pred_project['id']);
+					if ($pred_rounds > 0)
 					{
 						$imageTitle = Text::_('JENABLED');
 						$imageFile  = 'administrator/components/com_sportsmanagement/assets/images/ok.png';
@@ -372,8 +390,9 @@ if ($this->dPredictionID > 0)
 					}
 
 					echo HTMLHelper::_('image', $imageFile, $imageTitle, 'title= "' . $imageTitle . '"');
+					echo ' ('. $pred_rounds . '/'.$this->modelround->getRoundsCount($pred_project['project_id']). ')';
 					?>
-                </td>
+                </a></td>
 
                 <td style=""><?php
 					if ($pred_project['use_cards'])
