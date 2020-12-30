@@ -143,13 +143,9 @@ class sportsmanagementModeldivision extends JSMModelAdmin
      */
     function massadd()
 	{
-		//$option = Factory::getApplication()->input->getCmd('option');
-		//$app    = Factory::getApplication();
-
 		$post            = Factory::getApplication()->input->post->getArray(array());
 		$project_id      = $this->jsmapp->getUserState("$this->jsmoption.pid", '0');
 		$add_division_count = (int) $post['add_division_count'];
-
 		$max = 0;
 
 		if ($add_division_count > 0) // Only MassAdd a number of new and empty rounds

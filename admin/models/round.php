@@ -195,13 +195,9 @@ class sportsmanagementModelround extends JSMModelAdmin
 	 */
 	function massadd()
 	{
-		//$option = Factory::getApplication()->input->getCmd('option');
-		//$app    = Factory::getApplication();
-
 		$post            = Factory::getApplication()->input->post->getArray(array());
 		$project_id      = $this->jsmapp->getUserState("$this->jsmoption.pid", '0');
 		$add_round_count = (int) $post['add_round_count'];
-
 		$max = 0;
 
 		if ($add_round_count > 0) // Only MassAdd a number of new and empty rounds
@@ -217,6 +213,9 @@ class sportsmanagementModelround extends JSMModelAdmin
 				$tblRound->project_id = $project_id;
 				$tblRound->roundcode  = $max;
 				$tblRound->name       = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_CTRL_ROUND_NAME', $max);
+                $tblRound->alias = OutputFilter::stringURLSafe($tblRound->name);
+                $tblRound->modified         = $this->jsmdate->toSql();
+		        $tblRound->modified_by      = $this->jsmuser->get('id');
 
 				if ($tblRound->store())
 				{
@@ -244,25 +243,16 @@ class sportsmanagementModelround extends JSMModelAdmin
 	 */
 	function getMaxRound($project_id)
 	{
-		// Get a db connection.
-		$db    = Factory::getDbo();
-		$query = $db->getQuery(true);
-
-		// Select some fields
-		$query->select('COUNT(roundcode)');
-
-		// From table
-		$query->from('#__sportsmanagement_round');
-
-		// Where
-		$query->where('project_id = ' . (int) $project_id);
-
+        $this->jsmquery->clear();
+		$this->jsmquery->select('COUNT(roundcode)');
+		$this->jsmquery->from('#__sportsmanagement_round');
+		$this->jsmquery->where('project_id = ' . (int) $project_id);
 		$result = 0;
 
 		if ($project_id > 0)
 		{
-			$db->setQuery($query);
-			$result = $db->loadResult();
+			$this->jsmdb->setQuery($this->jsmquery);
+			$result = $this->jsmdb->loadResult();
 		}
 
 		return $result;
