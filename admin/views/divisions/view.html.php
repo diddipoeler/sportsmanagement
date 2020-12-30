@@ -66,7 +66,21 @@ catch (Exception $e)
 {
 Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
 Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');	
-}        
+}       
+
+
+switch ($this->getLayout())
+		{
+            case 'massadd':
+			case 'massadd_3':
+			case 'massadd_4':
+            $this->project = $this->projectws;
+		$this->setLayout('massadd');
+//			$this->_displayMassadd($tpl);
+			return;
+		}
+
+ 
 	}
 
 	/**
