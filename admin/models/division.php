@@ -164,7 +164,7 @@ class sportsmanagementModeldivision extends JSMModelAdmin
 				$tblDivision             =& $this->getTable();
 				$tblDivision->project_id = $project_id;
 				$tblDivision->ordering  = $max;
-				$tblDivision->name       = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_CTRL_ROUND_NAME', $max);
+				$tblDivision->name       = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_CTRL_DIVISION_NAME', $max);
                 $tblDivision->alias = OutputFilter::stringURLSafe($tblDivision->name);
                 $tblDivision->modified         = $this->jsmdate->toSql();
 		        $tblDivision->modified_by      = $this->jsmuser->get('id');
