@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage controllers
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -49,6 +45,11 @@ class sportsmanagementControllerrounds extends JSMControllerAdmin
 	}
 
 
+	/**
+	 * sportsmanagementControllerrounds::cancel()
+	 * 
+	 * @return void
+	 */
 	function cancel()
 	{
 		$msg = '';
@@ -63,10 +64,7 @@ class sportsmanagementControllerrounds extends JSMControllerAdmin
 	 */
 	function massadd()
 	{
-
-		// Check for request forgeries
 		Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
-
 		$model = $this->getModel();
 		$msg   = $model->massadd();
 		$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);
@@ -80,7 +78,6 @@ class sportsmanagementControllerrounds extends JSMControllerAdmin
 	public function getModel($name = 'Round', $prefix = 'sportsmanagementModel', $config = Array())
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
-
 		return $model;
 	}
 
@@ -97,8 +94,6 @@ class sportsmanagementControllerrounds extends JSMControllerAdmin
 		$pks   = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
 		$msg   = $model->deleteRoundMatches($pks);
 		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false));
-
-		// $this->setRedirect('index.php?option=com_sportsmanagement&view=rounds',$msg);
 	}
 
 	/**

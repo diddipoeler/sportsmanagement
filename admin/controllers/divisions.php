@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage controllers
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 
 /**
@@ -42,10 +38,37 @@ class sportsmanagementControllerdivisions extends JSMControllerAdmin
 		$this->app    = Factory::getApplication();
 		$this->jinput = $this->app->input;
 		$this->option = $this->jinput->getCmd('option');
-
-		// $this->registerTask('saveshort',  'saveshort');
+	}
+    
+    /**
+     * sportsmanagementControllerdivisions::cancel()
+     * 
+     * @return void
+     */
+    function cancel()
+	{
+		$msg = '';
+		$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);
+	}
+    
+    /**
+     * sportsmanagementControllerdivisions::massadd()
+     * 
+     * @return void
+     */
+    function massadd()
+	{
+		Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
+		$model = $this->getModel();
+		$msg   = $model->massadd();
+		$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);
 	}
 
+	/**
+	 * sportsmanagementControllerdivisions::divisiontoproject()
+	 * 
+	 * @return void
+	 */
 	function divisiontoproject()
 	{
 		$model = $this->getModel();
@@ -73,15 +96,9 @@ class sportsmanagementControllerdivisions extends JSMControllerAdmin
 	public function saveOrder()
 	{
 		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
-
 		$model = $this->getModel();
-
-		// $pks = Factory::getApplication()->input->getInt( 'cid', array() );  //is sanitized
-		//  $order = Factory::getApplication()->input->getInt('order', array() );
-
 		$pks   = $this->jinput->get('cid', array(), 'array');
 		$order = $this->jinput->get('order', array(), 'array');
-
 		$msg = $model->saveorder($pks, $order);
 		$this->setRedirect('index.php?option=com_sportsmanagement&view=divisions&pid=' . $this->project_id, $msg);
 	}

@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage division
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
@@ -137,6 +133,80 @@ class sportsmanagementModeldivision extends JSMModelAdmin
 			}
 		}
 
+	}
+    
+    
+    /**
+     * sportsmanagementModeldivision::massadd()
+     * 
+     * @return
+     */
+    function massadd()
+	{
+		//$option = Factory::getApplication()->input->getCmd('option');
+		//$app    = Factory::getApplication();
+
+		$post            = Factory::getApplication()->input->post->getArray(array());
+		$project_id      = $this->jsmapp->getUserState("$this->jsmoption.pid", '0');
+		$add_division_count = (int) $post['add_division_count'];
+
+		$max = 0;
+
+		if ($add_division_count > 0) // Only MassAdd a number of new and empty rounds
+		{
+			$max = $this->getMaxDivision($project_id);
+			$max++;
+			$i = 0;
+
+			for ($x = 0; $x < $add_division_count; $x++)
+			{
+				$i++;
+				$tblDivision             =& $this->getTable();
+				$tblDivision->project_id = $project_id;
+				$tblDivision->ordering  = $max;
+				$tblDivision->name       = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_CTRL_ROUND_NAME', $max);
+                $tblDivision->alias = OutputFilter::stringURLSafe($tblDivision->name);
+                $tblDivision->modified         = $this->jsmdate->toSql();
+		        $tblDivision->modified_by      = $this->jsmuser->get('id');
+
+				if ($tblDivision->store())
+				{
+					$msg = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_CTRL_ROUNDS_ADDED', $i);
+				}
+				else
+				{
+					$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_CTRL_ERROR_ADD') . $this->_db->getErrorMsg();
+				}
+
+				$max++;
+			}
+		}
+
+		return $msg;
+
+	}
+    
+    /**
+     * sportsmanagementModeldivision::getMaxDivision()
+     * 
+     * @param mixed $project_id
+     * @return
+     */
+    function getMaxDivision($project_id)
+	{
+        $this->jsmquery->clear();
+		$this->jsmquery->select('COUNT(ordering)');
+		$this->jsmquery->from('#__sportsmanagement_division');
+		$this->jsmquery->where('project_id = ' . (int) $project_id);
+		$result = 0;
+
+		if ($project_id > 0)
+		{
+			$this->jsmdb->setQuery($this->jsmquery);
+			$result = $this->jsmdb->loadResult();
+		}
+
+		return $result;
 	}
 
 	/**
