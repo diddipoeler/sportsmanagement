@@ -141,8 +141,10 @@ class sportsmanagementViewProject extends sportsmanagementView
 		$this->count_projectteams     = $iProjectTeamsCount;
 		$this->count_matchdays        = $iMatchDaysCount;
 
-		// Store the variable that we would like to keep for next time
-		// function syntax is setUserState( $key, $value );
+/**
+ * 		Store the variable that we would like to keep for next time
+ * 		function syntax is setUserState( $key, $value );
+ */
 		$this->app->setUserState("$this->option.pid", $this->item->id);
 		$this->app->setUserState("$this->option.season_id", $this->item->season_id);
 		$this->app->setUserState("$this->option.project_art_id", $this->item->project_art_id);
