@@ -42,30 +42,4 @@ class sportsmanagementTablePredictionRound extends JSMTable
 		parent::__construct('#__sportsmanagement_prediction_tippround', 'id', $db);
 	}
 
-	/**
-	 * Overloaded check method to ensure data integrity
-	 *
-	 * @access public
-	 * @return boolean True on success
-	 * @since  1.0
-	 */
-	function check()
-	{
-		if (trim($this->name) == '')
-		{
-			$this->setError(Text::_('CHECK FAILED - Empty name of prediction game'));
-
-			return false;
-		}
-
-		$alias = OutputFilter::stringURLSafe($this->name);
-
-		if (empty($this->alias) || $this->alias === $alias)
-		{
-			$this->alias = $alias;
-		}
-
-		return true;
-	}
-
 }

@@ -462,6 +462,7 @@ break;
 				//case 'projects':
 				//case 'players':
 				case 'predictiongames':
+				case 'predictionrounds':
 				case 'jlextfederations':
 				case 'jlextassociations':
 				//case 'jlextcountries':

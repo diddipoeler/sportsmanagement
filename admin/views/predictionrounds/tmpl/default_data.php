@@ -15,12 +15,9 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 
-//Ordering allowed ?
-$this->saveOrder = ($this->sortColumn == 's.ordering');
-
-
 ?>
-<div id="editcell">
+<div class="table-responsive">
+    <legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PREDICITIONROUNDS_LEGEND', '<i>' . $this->pred_project->name . '</i>'); ?></legend>
     <table class="<?php echo $this->table_data_class; ?>">
         <thead>
         <tr>
@@ -30,11 +27,10 @@ $this->saveOrder = ($this->sortColumn == 's.ordering');
             </th>
             <th width="5">&nbsp;</th>
 
-            <th width="10"><?php echo HTMLHelper::_('grid.sort', 'prediction_id', 's.prediction_id', $this->sortDirection, $this->sortColumn); ?></th>
-            <th width="10"><?php echo HTMLHelper::_('grid.sort', 'project_id', 's.project_id', $this->sortDirection, $this->sortColumn); ?></th>
-            <th width="10"><?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ROUND_NR', 's.round_id', $this->sortDirection, $this->sortColumn); ?></th>
+            <th width="10"><?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ROUND_NR', 'roundcode', $this->sortDirection, $this->sortColumn); ?></th>
+            <th width="10"><?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ROUND_TITLE', 'roundname', $this->sortDirection, $this->sortColumn); ?></th>
 
-            <th width="20"><?php echo HTMLHelper::_('grid.sort', 'rien_ne_va_plus', 's.rien_ne_va_plus', $this->sortDirection, $this->sortColumn); ?></th>
+            <th width="20"><?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PREDICITIONROUNDS_RIEN_NE_VA_PLUS', 's.rien_ne_va_plus', $this->sortDirection, $this->sortColumn); ?></th>
 
             <th width="20"><?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_WRONG_PREDICTION', 's.points_tipp', $this->sortDirection, $this->sortColumn); ?></th>
             <th width="20"><?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_PREDICTION', 's.points_correct_result', $this->sortDirection, $this->sortColumn); ?></th>
@@ -49,11 +45,8 @@ $this->saveOrder = ($this->sortColumn == 's.ordering');
         </thead>
         <tfoot>
         <tr>
-            <td colspan="6"><?php echo $this->pagination->getListFooter(); ?>
-            </td>
-            </td>
-            <td colspan="2"><?php echo $this->pagination->getResultsCounter(); ?>
-            </td>
+            <td colspan="10"><?php echo $this->pagination->getListFooter(); ?></td>
+            <td colspan="3"><?php echo $this->pagination->getResultsCounter(); ?></td>
         </tr>
         </tfoot>
         <tbody>
@@ -81,7 +74,7 @@ $this->saveOrder = ($this->sortColumn == 's.ordering');
 					<?php endif; ?>
                     <a href="<?php echo $link; ?>">
 						<?php
-						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAME_PROUNDS_EDIT_DETAILS');
+						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICITIONROUNDS_EDIT_DETAILS');
 						echo HTMLHelper::_(
 							'image', 'administrator/components/com_sportsmanagement/assets/images/edit.png',
 							$imageTitle, 'title= "' . $imageTitle . '"'
@@ -93,9 +86,8 @@ $this->saveOrder = ($this->sortColumn == 's.ordering');
 
 				?>
 
-                <td class="center"><?php echo $row->prediction_id; ?></td>
-                <td class="center"><?php echo $row->project_id; ?></td>
-                <td class="center"><?php echo $row->round_id; ?></td>
+                <td class="center"><?php echo $row->roundcode; ?></td>
+                <td class="center"><?php echo $row->roundname; ?></td>
 
                 <td class="center"><?php
 					$append = ' style="background-color:#bbffff"';

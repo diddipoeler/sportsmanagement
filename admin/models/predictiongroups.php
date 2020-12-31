@@ -93,7 +93,7 @@ class sportsmanagementModelpredictiongroups extends JSMModelList
 		if ($this->jsmjinput->getInt('prediction_id'))
 		{
 			$this->setState('filter.prediction_id', $this->jsmjinput->getInt('prediction_id'));
-			$this->jsmapp->setUserState("com_sportsmanagement.prediction_id", $temp_user_request);
+			$this->jsmapp->setUserState("com_sportsmanagement.prediction_id", $this->jsmjinput->getInt('prediction_id'));
 		}
 		else
 		{

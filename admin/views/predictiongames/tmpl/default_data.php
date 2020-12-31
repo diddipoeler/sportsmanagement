@@ -27,7 +27,7 @@ if ($this->dPredictionID > 0)
 	?>
     <legend>
 		<?php
-		echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TITLE2', '<i>' . $this->items[0]->name . '</i>');
+		echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TITLE2', '<i>' . $this->pred_project->name . '</i>');
 		?>
     </legend>
 	<?php
@@ -259,7 +259,7 @@ if ($this->dPredictionID > 0)
 				'' .
 				'task=predictionproject.edit&tmpl=component&id=' . $pred_project['id'] . '&project_id=' . $pred_project['project_id']
 			);
-			$link2tipprounds    = Route::_('index.php?option=com_sportsmanagement&view=predictionrounds&id=' . $pred_project['id'] . '&project_id=' . $pred_project['project_id']);
+			$link2tipprounds    = Route::_('index.php?option=com_sportsmanagement&view=predictionrounds&prediction_id=' . $pred_project['id']);
 
 			?>
             <tr class='<?php echo "row$k"; ?>'>
@@ -390,7 +390,7 @@ if ($this->dPredictionID > 0)
 					}
 
 					echo HTMLHelper::_('image', $imageFile, $imageTitle, 'title= "' . $imageTitle . '"');
-					echo ' ('. $pred_rounds . '/'.$this->modelround->getRoundsCount($pred_project['project_id']). ')';
+					echo ' ('. $pred_rounds . '/'.$this->modelround->getRoundsCount($pred_project['id']). ')';
 					?>
                 </a></td>
 

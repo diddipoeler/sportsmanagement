@@ -43,13 +43,10 @@ class sportsmanagementViewPredictionRounds extends sportsmanagementView
 		$tpl            = null;
 
 		$this->prediction_id = $this->state->get('filter.prediction_id');
-
-		if ($this->prediction_id != 0)
-		{
-		}
-		else
+		if ($this->prediction_id == 0)
 		{
 			$this->prediction_id = $this->jinput->request->get('prediction_id', 0);
+			$this->state->set('filter.prediction_id', $this->prediction_id);
 		}
 		
 		switch ($this->getLayout())
@@ -82,13 +79,42 @@ class sportsmanagementViewPredictionRounds extends sportsmanagementView
 		{
 			$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_PREDICTION_TIPPROUNDS'), 'Error');
 		}
+
+		// get needed Models
+		$mdlPredGames             = BaseDatabaseModel::getInstance('PredictionGames', 'sportsmanagementModel');
+		$mdlPredGame              = BaseDatabaseModel::getInstance('PredictionGame', 'sportsmanagementModel');
+		
+		// Build the html select list for prediction games
+		$predictions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME'), 'value', 'text');
+
+		if ($res = $mdlPredGames->getPredictionGames())
+		{
+			$predictions          = array_merge($predictions, $res);
+			$this->prediction_ids = $res;
+		}
+
+		$lists['predictions'] = HTMLHelper::_(
+			'select.genericlist',
+			$predictions,
+			'filter_prediction_id',
+			'class="inputbox" onChange="this.form.submit();" ',
+			'value',
+			'text',
+			$this->state->get('filter.prediction_id')
+		);
+		unset($res);
+
+		$pred_project             = $mdlPredGame->getPredictionGame($this->prediction_id);
+
 		$myoptions                = array();
-		$myoptions[]              = HTMLHelper::_('select.option', 'FIRSTMATCH_OF_TIPPGAME', Text::_('FIRSTMATCH_OF_TIPPGAME'));
-		$myoptions[]              = HTMLHelper::_('select.option', 'FIRSTMATCH_OF_TIPPROUND', Text::_('FIRSTMATCH_OF_TIPPROUND'));
-		$myoptions[]              = HTMLHelper::_('select.option', 'BEGIN_OF_MATCH', Text::_('BEGIN_OF_MATCH'));
+		$myoptions[]              = HTMLHelper::_('select.option', 'FIRSTMATCH_OF_TIPPGAME', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICITIONROUNDS_RIEN_NE_VA_PLUS_FIRSTMATCH_OF_TIPPGAME'));
+		$myoptions[]              = HTMLHelper::_('select.option', 'FIRSTMATCH_OF_TIPPROUND', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICITIONROUNDS_RIEN_NE_VA_PLUS_FIRSTMATCH_OF_TIPPROUND'));
+		$myoptions[]              = HTMLHelper::_('select.option', 'BEGIN_OF_MATCH', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICITIONROUNDS_RIEN_NE_VA_PLUS_BEGIN_OF_MATCH'));
 		$lists['rien_ne_va_plus'] = $myoptions;
 
-		$this->lists    = $lists;
+		// Attach fetched info to this 
+		$this->lists         = $lists;
+		$this->pred_project  = $pred_project;
 	}
 
 	/**
@@ -138,7 +164,7 @@ class sportsmanagementViewPredictionRounds extends sportsmanagementView
 	protected function addToolbar()
 	{
 		// Set toolbar items for the page
-		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAME_PROUNDS_TITLE');
+		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICITIONROUNDS_TITLE');
         ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=predictiongames&prediction_id='.$this->prediction_id);
 
 		if ($this->populate)
@@ -155,7 +181,7 @@ class sportsmanagementViewPredictionRounds extends sportsmanagementView
 			ToolbarHelper::unpublishList('rounds.unpublish');
 			ToolbarHelper::divider();
 		
-			sportsmanagementHelper::ToolbarButton('predictionround.populate', 'new', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAME_PROUNDS_IMPORT_BUTTON'));
+			sportsmanagementHelper::ToolbarButton('predictionround.populate', 'new', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICITIONROUNDS_IMPORT_BUTTON'));
 		    ToolbarHelper::divider();
 			ToolbarHelper::archiveList('predictionround.export', Text::_('JTOOLBAR_EXPORT'));
 			ToolbarHelper::divider();

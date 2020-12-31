@@ -61,7 +61,7 @@ class sportsmanagementViewPredictionRound extends sportsmanagementView
 		$jinput = Factory::getApplication()->input;
 		$jinput->set('hidemainmenu', true);
 
-		$isNew      = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_PREDICTION_ROUND_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAME_PROUND_NEW');
+		$isNew      = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_PREDICTION_ROUND_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICITIONROUND_NEW');
 		$this->icon = 'pgame';
 
 		parent::addToolbar();
