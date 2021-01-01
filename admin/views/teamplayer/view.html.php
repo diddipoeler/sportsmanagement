@@ -176,11 +176,11 @@ class sportsmanagementViewTeamPlayer extends sportsmanagementView
 		$isNew  = $this->item->id == 0;
 		$canDo  = sportsmanagementHelper::getActions($this->item->id);
 
-		if ($this->_persontype == 1)
+		if ($this->item->persontype == 1)
 		{
 			ToolbarHelper::title($isNew ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_NEW') : Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_EDIT', $this->item->name ), 'teamplayer');
 		}
-		elseif ($this->_persontype == 2)
+		elseif ($this->item->persontype == 2)
 		{
 			ToolbarHelper::title($isNew ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_NEW') : Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_EDIT', $this->item->name ), 'teamstaff');
 		}
