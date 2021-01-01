@@ -40,7 +40,7 @@ class sportsmanagementViewTeamPlayer extends sportsmanagementView
 
 		$this->team_id         = $this->app->getUserState("$this->option.team_id", '0');
 		//$this->_persontype     = $this->app->getUserState("$this->option.persontype", '0');
-        $this->_persontype     = $this->jinput->get('persontype');
+        //$this->_persontype     = $this->jinput->get('persontype');
 		$this->project_team_id = $this->app->getUserState("$this->option.project_team_id", '0');
 
 		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
@@ -160,11 +160,13 @@ class sportsmanagementViewTeamPlayer extends sportsmanagementView
 
 		if ($this->_persontype == 1)
 		{
-			ToolbarHelper::title($isNew ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_NEW') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_EDIT'), 'teamplayer');
+		  //Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_EDIT', $this->item->name );
+			ToolbarHelper::title($isNew ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_NEW') : Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_EDIT', $this->item->name ), 'teamplayer');
 		}
 		elseif ($this->_persontype == 2)
 		{
-			ToolbarHelper::title($isNew ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_NEW') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_EDIT'), 'teamstaff');
+		  //Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_EDIT', $this->item->name );
+			ToolbarHelper::title($isNew ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_NEW') : Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_EDIT', $this->item->name ), 'teamstaff');
 		}
 
 		parent::addToolbar();
