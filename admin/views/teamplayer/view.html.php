@@ -47,8 +47,8 @@ class sportsmanagementViewTeamPlayer extends sportsmanagementView
 		$this->season_id  = $this->app->getUserState("$this->option.season_id", '0');
 
 		$mdlProject    = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
-		$project       = $mdlProject->getProject($this->project_id);
-		$this->project = $project;
+		$this->project       = $mdlProject->getProject($this->project_id);
+		//$this->project = $project;
 
 		if (isset($this->item->projectteam_id))
 		{
@@ -103,8 +103,8 @@ class sportsmanagementViewTeamPlayer extends sportsmanagementView
 		$this->form->setValue('away_date_start', null, $this->project_person->away_date_start);
 		$this->form->setValue('away_date_end', null, $this->project_person->away_date_end);
         
-        $this->form->setValue('contract_from', null, null);
-        $this->form->setValue('contract_to', null, null);
+        $this->form->setValue('contract_from', null, $this->item->contract_from);
+        $this->form->setValue('contract_to', null, $this->item->contract_to);
 
 		$project_position_id = $this->form->getValue('project_position_id');
 
@@ -161,12 +161,10 @@ class sportsmanagementViewTeamPlayer extends sportsmanagementView
 
 		if ($this->_persontype == 1)
 		{
-		  //Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_EDIT', $this->item->name );
 			ToolbarHelper::title($isNew ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_NEW') : Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_EDIT', $this->item->name ), 'teamplayer');
 		}
 		elseif ($this->_persontype == 2)
 		{
-		  //Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_EDIT', $this->item->name );
 			ToolbarHelper::title($isNew ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_NEW') : Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_EDIT', $this->item->name ), 'teamstaff');
 		}
 
