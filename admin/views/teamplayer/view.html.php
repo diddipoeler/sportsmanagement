@@ -103,8 +103,26 @@ class sportsmanagementViewTeamPlayer extends sportsmanagementView
 		$this->form->setValue('away_date_start', null, $this->project_person->away_date_start);
 		$this->form->setValue('away_date_end', null, $this->project_person->away_date_end);
         
-        $this->form->setValue('contract_from', null, $this->item->contract_from);
-        $this->form->setValue('contract_to', null, $this->item->contract_to);
+        if ($this->item->id)
+		{
+			/** Alles ok */
+			if ($this->item->contract_from == '0000-00-00')
+			{
+				$this->item->contract_from = '';
+				$this->form->setValue('contract_from', '');
+			}
+
+			if ($this->item->contract_to == '0000-00-00')
+			{
+				$this->item->contract_to = '';
+				$this->form->setValue('contract_to', '');
+			}
+		}
+		else
+		{
+			$this->form->setValue('contract_from', '');
+			$this->form->setValue('contract_to', '');
+		}
 
 		$project_position_id = $this->form->getValue('project_position_id');
 
@@ -122,8 +140,7 @@ class sportsmanagementViewTeamPlayer extends sportsmanagementView
 			$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_TEAMPERSON_PROJECT_POSITION'), 'notice');
 		}
 
-		$extended       = sportsmanagementHelper::getExtended($this->item->extended, 'teamplayer');
-		$this->extended = $extended;
+		$this->extended       = sportsmanagementHelper::getExtended($this->item->extended, 'teamplayer');
 		$this->lists    = $lists;
 
 		if (ComponentHelper::getParams($this->option)->get('show_debug_info_backend'))
@@ -139,20 +156,20 @@ class sportsmanagementViewTeamPlayer extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-		$app    = Factory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
+//		$app    = Factory::getApplication();
+//		$jinput = $app->input;
+//		$option = $jinput->getCmd('option');
 
-		$jinput->set('hidemainmenu', true);
+		$this->jinput->set('hidemainmenu', true);
 
 		if (isset($this->item->projectteam_id))
 		{
-			$app->setUserState("$option.project_team_id", $this->item->projectteam_id);
+			$app->setUserState("$this->option.project_team_id", $this->item->projectteam_id);
 		}
 
-		$app->setUserState("$option.pid", $this->project_id);
-		$app->setUserState("$option.team_id", $this->team_id);
-		$app->setUserState("$option.season_id", $this->season_id);
+		$app->setUserState("$this->option.pid", $this->project_id);
+		$app->setUserState("$this->option.team_id", $this->team_id);
+		$app->setUserState("$this->option.season_id", $this->season_id);
 
 		$user   = Factory::getUser();
 		$userId = $user->id;
