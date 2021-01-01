@@ -261,8 +261,8 @@ class sportsmanagementModelteamplayer extends JSMModelAdmin
 				$this->jsmdb->quoteName('project_position_id') . ' = ' . $post['project_position_id' . $pks[$x]],
 				$this->jsmdb->quoteName('jerseynumber') . ' = ' . $post['jerseynumber' . $pks[$x]],
 				$this->jsmdb->quoteName('market_value') . ' = ' . $post['market_value' . $pks[$x]],
-				$this->jsmdb->quoteName('modified') . ' = ' . $this->jsmdb->Quote('' . $date->toSql() . ''),
-				$this->jsmdb->quoteName('modified_by') . ' = ' . $user->get('id')
+				$this->jsmdb->quoteName('modified') . ' = ' . $this->jsmdb->Quote('' . $this->jsmdate->toSql() . ''),
+				$this->jsmdb->quoteName('modified_by') . ' = ' . $this->jsmuser->get('id')
 
 			);
 
