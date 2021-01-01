@@ -156,20 +156,20 @@ class sportsmanagementViewTeamPlayer extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-//		$app    = Factory::getApplication();
-//		$jinput = $app->input;
-//		$option = $jinput->getCmd('option');
+		$app    = Factory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 
-		$this->jinput->set('hidemainmenu', true);
+		$jinput->set('hidemainmenu', true);
 
 		if (isset($this->item->projectteam_id))
 		{
-			$app->setUserState("$this->option.project_team_id", $this->item->projectteam_id);
+			$app->setUserState("$option.project_team_id", $this->item->projectteam_id);
 		}
 
-		$app->setUserState("$this->option.pid", $this->project_id);
-		$app->setUserState("$this->option.team_id", $this->team_id);
-		$app->setUserState("$this->option.season_id", $this->season_id);
+		$app->setUserState("$option.pid", $this->project_id);
+		$app->setUserState("$option.team_id", $this->team_id);
+		$app->setUserState("$option.season_id", $this->season_id);
 
 		$user   = Factory::getUser();
 		$userId = $user->id;
