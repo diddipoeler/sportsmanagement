@@ -39,7 +39,20 @@
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION</option>
 		</field>	
     		
-		
+		<field
+name="contract_from"
+type="calendar"
+label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_CONTRACT_FROM"
+description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_CONTRACT_FROM_DESC"
+class="inputbox"
+format="%d-%m-%Y"/>
+<field
+name="contract_to"
+type="calendar"
+label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_CONTRACT_TO"
+description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_CONTRACT_TO_DESC"
+class="inputbox"
+format="%d-%m-%Y"/>		
 				
 	
 	
