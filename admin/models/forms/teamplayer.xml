@@ -78,6 +78,24 @@
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_MARKET_VALUE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_MARKET_VALUE_DESC"
 			class="inputbox"/>
+			
+			
+<field
+name="contract_from"
+type="calendar"
+label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_CONTRACT_FROM"
+description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_CONTRACT_FROM_DESC"
+class="inputbox"
+format="%d-%m-%Y"/>
+<field
+name="contract_to"
+type="calendar"
+label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_CONTRACT_TO"
+description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_CONTRACT_TO_DESC"
+class="inputbox"
+format="%d-%m-%Y"/>			
+			
+			
 </fieldset>
 
 <fieldset name="injury" 
