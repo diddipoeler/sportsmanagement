@@ -10,7 +10,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\MVC\Controller\FormController;
+//use Joomla\CMS\MVC\Controller\FormController;
 
 /**
  * sportsmanagementControllerteamplayer
@@ -21,8 +21,19 @@ use Joomla\CMS\MVC\Controller\FormController;
  * @version   2014
  * @access    public
  */
-class sportsmanagementControllerteamplayer extends FormController
+class sportsmanagementControllerteamplayer extends JSMControllerForm
 {
 
+   /**
+	 * sportsmanagementControllerteamplayer::__construct()
+	 *
+	 * @param   mixed  $config
+	 *
+	 * @return void
+	 */
+	function __construct($config = array())
+	{
+		parent::__construct($config);
+	}
 
 }
