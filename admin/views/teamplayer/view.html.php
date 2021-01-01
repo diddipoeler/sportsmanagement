@@ -104,6 +104,9 @@ class sportsmanagementViewTeamPlayer extends sportsmanagementView
 		$this->form->setValue('away_detail', null, $project_person->away_detail);
 		$this->form->setValue('away_date_start', null, $project_person->away_date_start);
 		$this->form->setValue('away_date_end', null, $project_person->away_date_end);
+        
+        $this->form->setValue('contract_from', null, null);
+        $this->form->setValue('contract_to', null, null);
 
 		$project_position_id = $this->form->getValue('project_position_id');
 
