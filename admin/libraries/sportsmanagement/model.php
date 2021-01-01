@@ -288,6 +288,16 @@ if ( $config->get('debug') )
 					$data['contract_to'] = '0000-00-00';
 				}
                 
+                if ($data['contract_from'] != '0000-00-00' && $data['contract_from'] != '')
+				{
+					$data['contract_from'] = sportsmanagementHelper::convertDate($data['contract_from'], 0);
+				}
+                
+                if ($data['contract_to'] != '0000-00-00' && $data['contract_to'] != '')
+				{
+					$data['contract_to'] = sportsmanagementHelper::convertDate($data['contract_to'], 0);
+				}
+                
                 break;
 			/** person */
 			case 'player':
