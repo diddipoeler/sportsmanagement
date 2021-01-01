@@ -178,11 +178,13 @@ class sportsmanagementViewTeamPlayer extends sportsmanagementView
 
 		if ($this->item->persontype == 1)
 		{
-			ToolbarHelper::title($isNew ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_NEW') : Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_EDIT', $this->item->name ), 'teamplayer');
+			//ToolbarHelper::title($isNew ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_NEW') : Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_EDIT', $this->item->name ), 'teamplayer');
+            $this->title = $isNew ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_NEW') : Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_EDIT', $this->item->name );
 		}
 		elseif ($this->item->persontype == 2)
 		{
-			ToolbarHelper::title($isNew ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_NEW') : Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_EDIT', $this->item->name ), 'teamstaff');
+			//ToolbarHelper::title($isNew ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_NEW') : Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_EDIT', $this->item->name ), 'teamstaff');
+            $this->title = $isNew ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_NEW') : Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_EDIT', $this->item->name );
 		}
 
 		parent::addToolbar();
