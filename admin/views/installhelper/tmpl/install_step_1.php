@@ -57,6 +57,29 @@ $this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sport
                     </div>
                </div>
 <!--End:Tip Box-->
+
+<!--Note box-->
+				<div class="color-box">
+					<div class="shadow">
+						<div class="info-tab note-icon" title="Important Notes"><i></i></div>
+						<div class="note-box">
+							<p><strong>Note:</strong></p>
+						</div>
+					</div>
+				</div>
+<!--End:Note box-->
+
+<!--Warning box-->
+<div class="color-box">
+					<div class="shadow">
+						<div class="info-tab warning-icon" title="Important Warning"><i></i></div>
+						<div class="warning-box">
+							<p><strong>Warning:</strong></p>
+						</div>
+					</div>
+				</div>  
+<!--End:Warning box-->
+                
     <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 		<?PHP
 
