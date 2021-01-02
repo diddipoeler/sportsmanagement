@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
@@ -29,9 +25,7 @@ use Joomla\CMS\Factory;
 class sportsmanagementModelProjectpositions extends JSMModelList
 {
 	var $_identifier = "pposition";
-
 	var $_project_id = 0;
-
 
 	/**
 	 * sportsmanagementModelProjectpositions::__construct()
@@ -91,13 +85,9 @@ class sportsmanagementModelProjectpositions extends JSMModelList
 			foreach ($items as $item)
 			{
 				$this->jsmquery->clear();
-
-				// Fields to update.
 				$fields = array(
 					$this->jsmdb->quoteName('project_position_id') . ' = ' . $item->position_id
 				);
-
-				// Conditions for which records should be updated.
 				$conditions = array(
 					$this->jsmdb->quoteName('project_position_id') . ' = ' . $item->positiontoolid,
 					$this->jsmdb->quoteName('match_id') . ' IN (' . $match_ids . ')'
@@ -112,7 +102,6 @@ class sportsmanagementModelProjectpositions extends JSMModelList
 				catch (Exception $e)
 				{
 					$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
-
 					return false;
 				}
 			}

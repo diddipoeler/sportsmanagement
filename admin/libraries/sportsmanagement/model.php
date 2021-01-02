@@ -273,10 +273,29 @@ if ( $config->get('debug') )
 					$data['dissolved'] = sportsmanagementHelper::convertDate($data['dissolved'], 0);
 				}
 				break;
-                case 'teamplayer':
+    case 'teamplayer':
                 if (array_key_exists('copy_jform', $post))
 				{
 					$data['picture'] = $post['copy_jform']['picture'];
+				}
+                if ($data['contract_from'] == '')
+				{
+					$data['contract_from'] = '0000-00-00';
+				}
+
+				if ($data['contract_to'] == '')
+				{
+					$data['contract_to'] = '0000-00-00';
+				}
+                
+                if ($data['contract_from'] != '0000-00-00' && $data['contract_from'] != '')
+				{
+					$data['contract_from'] = sportsmanagementHelper::convertDate($data['contract_from'], 0);
+				}
+                
+                if ($data['contract_to'] != '0000-00-00' && $data['contract_to'] != '')
+				{
+					$data['contract_to'] = sportsmanagementHelper::convertDate($data['contract_to'], 0);
 				}
                 
                 break;

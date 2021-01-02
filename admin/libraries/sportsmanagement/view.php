@@ -158,6 +158,7 @@ img.car {
 	$this->modalheight    = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_height', 600);
 	$this->modalwidth     = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_width', 900);
 	$this->project_id     = $this->jinput->get('pid');
+    $this->_persontype     = $this->jinput->get('persontype');
 	$this->jsmmessage     = '';
 	$this->jsmmessagetype = 'notice';
 		
@@ -866,9 +867,10 @@ document.getElementById("filter_season").classList.add("filter_season");
 				case 'treetomatchs';
 				case 'smextxmleditors';
 				case 'smextxmleditor';
-				case 'jsmopenligadb';
+					case 'jsmopenligadb';
                 case 'smimageimports';
-				case 'smquotestxt';
+					case 'smquotestxt';
+                    case 'installhelper';
 				break;
 				default:
 					/**

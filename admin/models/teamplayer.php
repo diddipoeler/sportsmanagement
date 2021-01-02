@@ -67,7 +67,7 @@ class sportsmanagementModelteamplayer extends JSMModelAdmin
 			$rowInsert          = new stdClass;
 			$rowInsert->id      = $row->person_id;
 			$rowInsert->country = $this->country;
-			$result             = Factory::getDbo()->updateObject('#__sportsmanagement_person', $rowInsert, 'id');
+			$result             = $this->jsmdb->updateObject('#__sportsmanagement_person', $rowInsert, 'id');
 		}
 
 		return true;
@@ -94,28 +94,19 @@ class sportsmanagementModelteamplayer extends JSMModelAdmin
 			$person_id             = $ids[$x];
 			$season_team_person_id = $tpids[$person_id];
 
-			// Create an object for the record we are going to update.
 			$object = new stdClass;
-
-			// Must be a valid primary key value.
 			$object->id          = $season_team_person_id;
 			$object->published   = $state;
 			$object->modified    = $this->jsmdate->toSql();
 			$object->modified_by = $this->jsmuser->get('id');
-
-			// Update their details in the table using id as the primary key.
-			$result = Factory::getDbo()->updateObject('#__sportsmanagement_season_team_person_id', $object, 'id');
+			$result = $this->jsmdb->updateObject('#__sportsmanagement_season_team_person_id', $object, 'id');
 
 			$this->jsmquery->clear();
-
-			// Fields to update.
 			$fields = array(
 				$this->jsmdb->quoteName('published') . ' = ' . $state,
 				$this->jsmdb->quoteName('modified') . ' = ' . $this->jsmdb->Quote('' . $this->jsmdate->toSql() . ''),
 				$this->jsmdb->quoteName('modified_by') . ' = ' . $this->jsmuser->get('id')
 			);
-
-			// Conditions for which records should be updated.
 			$conditions = array(
 				$this->jsmdb->quoteName('person_id') . ' = ' . $person_id,
 				$this->jsmdb->quoteName('project_id') . ' = ' . $pid
@@ -129,9 +120,8 @@ class sportsmanagementModelteamplayer extends JSMModelAdmin
 			}
 			catch (Exception $e)
 			{
-				$this->jsmapp->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
-
-				// Return false;
+				$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+                $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 			}
 		}
 
@@ -145,6 +135,7 @@ class sportsmanagementModelteamplayer extends JSMModelAdmin
 	 */
 	function saveshort()
 	{
+	   /*
 		$app  = Factory::getApplication();
 		$date = Factory::getDate();
 		$user = Factory::getUser();
@@ -157,12 +148,12 @@ class sportsmanagementModelteamplayer extends JSMModelAdmin
 		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-
+*/
 		// Get the input
-		$pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
+		$pks = $this->jsmjinput->getVar('cid', null, 'post', 'array');
 
 		// $post = Factory::getApplication()->input->post->getArray(array());
-		$post              = $jinput->post->getArray(array());
+		$post              = $this->jsmjinput->post->getArray(array());
 		$this->_project_id = $post['pid'];
 		$this->persontype  = $post['persontype'];
 
@@ -208,17 +199,15 @@ class sportsmanagementModelteamplayer extends JSMModelAdmin
 				$this->jsmdb->quoteName('project_position_id') . ' = ' . $results
 			);
 
-switch ($this->persontype)
+          switch ($this->persontype)
               {
                 case 1:    
-                  // Conditions for which records should be updated.
 			$conditions = array(
 				$this->jsmdb->quoteName('project_position_id') . ' = 0',
 				$this->jsmdb->quoteName('teamplayer_id') . ' = ' . $team_player_id
 			);
                   break;
                 case 2:
-                  // Conditions for which records should be updated.
 			$conditions = array(
 				$this->jsmdb->quoteName('project_position_id') . ' = 0',
 				$this->jsmdb->quoteName('team_staff_id') . ' = ' . $team_player_id
@@ -249,7 +238,6 @@ switch ($this->persontype)
 			{
 				$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
                 $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
-              
               $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($this->jsmquery->dump(),true).'</pre>'), 'error');
 			}
 		}
@@ -273,21 +261,21 @@ switch ($this->persontype)
 				$this->jsmdb->quoteName('project_position_id') . ' = ' . $post['project_position_id' . $pks[$x]],
 				$this->jsmdb->quoteName('jerseynumber') . ' = ' . $post['jerseynumber' . $pks[$x]],
 				$this->jsmdb->quoteName('market_value') . ' = ' . $post['market_value' . $pks[$x]],
-				$this->jsmdb->quoteName('modified') . ' = ' . $this->jsmdb->Quote('' . $date->toSql() . ''),
-				$this->jsmdb->quoteName('modified_by') . ' = ' . $user->get('id')
+				$this->jsmdb->quoteName('modified') . ' = ' . $this->jsmdb->Quote('' . $this->jsmdate->toSql() . ''),
+				$this->jsmdb->quoteName('modified_by') . ' = ' . $this->jsmuser->get('id')
 
 			);
 
 			// Conditions for which records should be updated.
 			$conditions = array(
-				$db->quoteName('id') . ' = ' . $post['person_id' . $pks[$x]]
+				$this->jsmdb->quoteName('id') . ' = ' . $post['person_id' . $pks[$x]]
 			);
 
 			// Exit;
 			try
 			{
 			$this->jsmquery->clear();
-			$this->jsmquery->update($db->quoteName('#__sportsmanagement_season_team_person_id'))->set($fields)->where($conditions);
+			$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_season_team_person_id'))->set($fields)->where($conditions);
 			$this->jsmdb->setQuery($this->jsmquery);
 			$resultupdate = $this->jsmdb->execute();
 
@@ -310,14 +298,14 @@ switch ($this->persontype)
 
 				// Delete all
 				$conditions = array(
-					$db->quoteName('person_id') . '=' . $pks[$x],
-					$db->quoteName('project_id') . '=' . $this->_project_id,
-					$db->quoteName('persontype') . '=' . $this->persontype
+					$this->jsmdb->quoteName('person_id') . '=' . $pks[$x],
+					$this->jsmdb->quoteName('project_id') . '=' . $this->_project_id,
+					$this->jsmdb->quoteName('persontype') . '=' . $this->persontype
 				);
 				
 				try
 			{
-				$this->jsmquery->delete($db->quoteName('#__sportsmanagement_person_project_position'));
+				$this->jsmquery->delete($this->jsmdb->quoteName('#__sportsmanagement_person_project_position'));
 				$this->jsmquery->where($conditions);
 				$this->jsmdb->setQuery($this->jsmquery);
 				//sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
@@ -542,14 +530,16 @@ switch ($this->persontype)
 	 */
 	public function save($data)
 	{
-		$app       = Factory::getApplication();
-		$option    = Factory::getApplication()->input->getCmd('option');
-		$season_id = $app->getUserState("$option.season_id");
-		$post      = Factory::getApplication()->input->post->getArray(array());
-		$db        = $this->getDbo();
-		$query     = $db->getQuery(true);
-		$date      = Factory::getDate();
-		$user      = Factory::getUser();
+//		$app       = Factory::getApplication();
+//		$option    = Factory::getApplication()->input->getCmd('option');
+        
+		$season_id = $this->jsmapp->getUserState("$this->jsmoption.season_id");
+		$post      = $this->jsmapp->input->post->getArray(array());
+        
+//		$db        = $this->getDbo();
+//		$query     = $db->getQuery(true);
+//		$date      = Factory::getDate();
+//		$user      = Factory::getUser();
 
 		// $query2 = $db->getQuery(true);
 		if (isset($post['extended']) && is_array($post['extended']))
@@ -563,35 +553,36 @@ switch ($this->persontype)
 		// Update personendaten
 		// Fields to update.
 		$fields = array(
-			$db->quoteName('injury') . '=\'' . $data['injury'] . '\'',
-			$db->quoteName('injury_date') . '=\'' . $data['injury_date'] . '\'',
-			$db->quoteName('injury_end') . '=\'' . $data['injury_end'] . '\'',
-			$db->quoteName('injury_detail') . '=\'' . $data['injury_detail'] . '\'',
-			$db->quoteName('injury_date_start') . '=\'' . $data['injury_date_start'] . '\'',
-			$db->quoteName('injury_date_end') . '=\'' . $data['injury_date_end'] . '\'',
-			$db->quoteName('suspension') . '=\'' . $data['suspension'] . '\'',
-			$db->quoteName('suspension_date') . '=\'' . $data['suspension_date'] . '\'',
-			$db->quoteName('suspension_end') . '=\'' . $data['suspension_end'] . '\'',
-			$db->quoteName('suspension_detail') . '=\'' . $data['suspension_detail'] . '\'',
-			$db->quoteName('susp_date_start') . '=\'' . $data['susp_date_start'] . '\'',
-			$db->quoteName('susp_date_end') . '=\'' . $data['susp_date_end'] . '\'',
-			$db->quoteName('away') . '=\'' . $data['away'] . '\'',
-			$db->quoteName('away_date') . '=\'' . $data['away_date'] . '\'',
-			$db->quoteName('away_end') . '=\'' . $data['away_end'] . '\'',
-			$db->quoteName('away_detail') . '=\'' . $data['away_detail'] . '\'',
-			$db->quoteName('away_date_start') . '=\'' . $data['away_date_start'] . '\'',
-			$db->quoteName('away_date_end') . '=\'' . $data['away_date_end'] . '\'',
+			$this->jsmdb->quoteName('injury') . '=\'' . $data['injury'] . '\'',
+			$this->jsmdb->quoteName('injury_date') . '=\'' . $data['injury_date'] . '\'',
+			$this->jsmdb->quoteName('injury_end') . '=\'' . $data['injury_end'] . '\'',
+			$this->jsmdb->quoteName('injury_detail') . '=\'' . $data['injury_detail'] . '\'',
+			$this->jsmdb->quoteName('injury_date_start') . '=\'' . $data['injury_date_start'] . '\'',
+			$this->jsmdb->quoteName('injury_date_end') . '=\'' . $data['injury_date_end'] . '\'',
+			$this->jsmdb->quoteName('suspension') . '=\'' . $data['suspension'] . '\'',
+			$this->jsmdb->quoteName('suspension_date') . '=\'' . $data['suspension_date'] . '\'',
+			$this->jsmdb->quoteName('suspension_end') . '=\'' . $data['suspension_end'] . '\'',
+			$this->jsmdb->quoteName('suspension_detail') . '=\'' . $data['suspension_detail'] . '\'',
+			$this->jsmdb->quoteName('susp_date_start') . '=\'' . $data['susp_date_start'] . '\'',
+			$this->jsmdb->quoteName('susp_date_end') . '=\'' . $data['susp_date_end'] . '\'',
+			$this->jsmdb->quoteName('away') . '=\'' . $data['away'] . '\'',
+			$this->jsmdb->quoteName('away_date') . '=\'' . $data['away_date'] . '\'',
+			$this->jsmdb->quoteName('away_end') . '=\'' . $data['away_end'] . '\'',
+			$this->jsmdb->quoteName('away_detail') . '=\'' . $data['away_detail'] . '\'',
+			$this->jsmdb->quoteName('away_date_start') . '=\'' . $data['away_date_start'] . '\'',
+			$this->jsmdb->quoteName('away_date_end') . '=\'' . $data['away_date_end'] . '\'',
 			// $db->quoteName('extended') .'=\''.$data['extended'].'\'',
-			$db->quoteName('modified') . ' = ' . $db->Quote('' . $date->toSql() . '') . '',
-			$db->quoteName('modified_by') . '=' . $user->get('id')
+			$this->jsmdb->quoteName('modified') . ' = ' . $this->jsmdb->Quote('' . $this->jsmdate->toSql() . '') . '',
+			$this->jsmdb->quoteName('modified_by') . '=' . $this->jsmuser->get('id')
 		);
 
 		// Conditions for which records should be updated.
+        $this->jsmquery->clear();
 		$conditions = array(
-			$db->quoteName('id') . '=' . $data['person_id']
+			$this->jsmdb->quoteName('id') . '=' . $data['person_id']
 		);
-		$query->update($db->quoteName('#__sportsmanagement_person'))->set($fields)->where($conditions);
-		$db->setQuery($query);
+		$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_person'))->set($fields)->where($conditions);
+		$this->jsmdb->setQuery($this->jsmquery);
 
 		try
 		{
@@ -602,24 +593,22 @@ switch ($this->persontype)
 			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
 		}
 
-		// Update personendaten pro saison
-		// Fields to update.
+		/** Update personendaten pro saison */
 		unset($fields);
 		unset($conditions);
-		$query->clear();
+		$this->jsmquery->clear();
 		$fields = array(
-			$db->quoteName('picture') . '=\'' . $data['picture'] . '\'',
-			$db->quoteName('modified') . '=\'' . $date->toSql() . '\'',
-			$db->quoteName('modified_by') . '=' . $user->get('id')
+			$this->jsmdb->quoteName('picture') . '=\'' . $data['picture'] . '\'',
+			$this->jsmdb->quoteName('modified') . '=\'' . $this->jsmdb->Quote('' . $this->jsmdate->toSql() . '') . '\'',
+			$this->jsmdb->quoteName('modified_by') . '=' . $this->jsmuser->get('id')
 		);
 
-		// Conditions for which records should be updated.
 		$conditions = array(
-			$db->quoteName('person_id') . '=' . $data['person_id'],
-			$db->quoteName('season_id') . '=' . $season_id
+			$this->jsmdb->quoteName('person_id') . '=' . $data['person_id'],
+			$this->jsmdb->quoteName('season_id') . '=' . $season_id
 		);
-		$query->update($db->quoteName('#__sportsmanagement_season_person_id'))->set($fields)->where($conditions);
-		$db->setQuery($query);
+		$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_season_person_id'))->set($fields)->where($conditions);
+		$this->jsmdb->setQuery($this->jsmquery);
 
 		try
 		{
@@ -627,23 +616,21 @@ switch ($this->persontype)
 		}
 		catch (Exception $e)
 		{
-			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+                $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 		}
 
-		// Alten eintrag löschen
-		// Create a new query object.
-		$query = $db->getQuery(true);
-
-		// Delete all
+		/** Alten eintrag löschen */
+		$this->jsmquery->clear();
 		$conditions = array(
-			$db->quoteName('person_id') . '=' . $data['person_id'],
-			$db->quoteName('project_id') . '=' . $post['pid'],
-			$db->quoteName('persontype') . '=' . $post['persontype']
+			$this->jsmdb->quoteName('person_id') . '=' . $data['person_id'],
+			$this->jsmdb->quoteName('project_id') . '=' . $post['pid'],
+			$this->jsmdb->quoteName('persontype') . '=' . $post['persontype']
 		);
 
-		$query->delete($db->quoteName('#__sportsmanagement_person_project_position'));
-		$query->where($conditions);
-		$db->setQuery($query);
+		$this->jsmquery->delete($this->jsmdb->quoteName('#__sportsmanagement_person_project_position'));
+		$this->jsmquery->where($conditions);
+		$this->jsmdb->setQuery($this->jsmquery);
 
 		try
 		{
@@ -651,7 +638,8 @@ switch ($this->persontype)
 		}
 		catch (Exception $e)
 		{
-			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+                $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 		}
 
 		$profile = new stdClass;
@@ -664,7 +652,7 @@ switch ($this->persontype)
 
 		try
 		{
-			$result = Factory::getDbo()->insertObject('#__sportsmanagement_person_project_position', $profile);
+			$result = $this->jsmdb->insertObject('#__sportsmanagement_person_project_position', $profile);
 		}
 		catch (Exception $e)
 		{

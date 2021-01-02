@@ -9,6 +9,15 @@
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields"
   >
 
+<field type="extensionsubtitle" title="Installationshelfer starten ?" color="#2672a6" />
+<field name="start_install_helper" type="extensionradiobutton" default="1"
+class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_START_INSTALL_HELPER" 
+			description="COM_SPORTSMANAGEMENT_SETTINGS_START_INSTALL_HELPER">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
 <field type="extensionsubtitle" title="" color="#2672a6" />
 <field type="extensionmessage" style="example" text="COM_SPORTSMANAGEMENT_SETTINGS_JSM_DEINSTALL_DESC" label="COM_SPORTSMANAGEMENT_SETTINGS_JSM_DEINSTALL" />		
 <field name="jsm_deinstall_module" 

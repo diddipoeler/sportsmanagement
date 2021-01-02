@@ -39,15 +39,16 @@ class sportsmanagementViewTeamPlayer extends sportsmanagementView
 		$lists = array();
 
 		$this->team_id         = $this->app->getUserState("$this->option.team_id", '0');
-		$this->_persontype     = $this->app->getUserState("$this->option.persontype", '0');
+		//$this->_persontype     = $this->app->getUserState("$this->option.persontype", '0');
+        //$this->_persontype     = $this->jinput->get('persontype');
 		$this->project_team_id = $this->app->getUserState("$this->option.project_team_id", '0');
 
 		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
 		$this->season_id  = $this->app->getUserState("$this->option.season_id", '0');
 
 		$mdlProject    = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
-		$project       = $mdlProject->getProject($this->project_id);
-		$this->project = $project;
+		$this->project       = $mdlProject->getProject($this->project_id);
+		//$this->project = $project;
 
 		if (isset($this->item->projectteam_id))
 		{
@@ -56,7 +57,7 @@ class sportsmanagementViewTeamPlayer extends sportsmanagementView
 		}
 
 		$mdlPerson      = BaseDatabaseModel::getInstance("player", "sportsmanagementModel");
-		$project_person = $mdlPerson->getPerson($this->item->person_id);
+		$this->project_person = $mdlPerson->getPerson($this->item->person_id);
 
 		/** Build the html options for position */
 		$position_id           = array();
@@ -76,45 +77,52 @@ class sportsmanagementViewTeamPlayer extends sportsmanagementView
 		}
 
 		/** name für titel setzen */
-		$this->item->name = $project_person->lastname . ' - ' . $project_person->firstname;
+		$this->item->name = $this->project_person->lastname . ' - ' . $this->project_person->firstname;
 
-		$this->project_person = $project_person;
-
-		/**
-		 * personendaten setzen
-		 */
-		$this->form->setValue('position_id', null, $project_person->position_id);
+		/** personendaten setzen */
+		$this->form->setValue('position_id', null, $this->project_person->position_id);
 		$this->form->setValue('projectteam_id', null, $this->project_team_id);
-		$this->form->setValue('injury', null, $project_person->injury);
-		$this->form->setValue('injury_date', null, $project_person->injury_date);
-		$this->form->setValue('injury_end', null, $project_person->injury_end);
-		$this->form->setValue('injury_detail', null, $project_person->injury_detail);
-		$this->form->setValue('injury_date_start', null, $project_person->injury_date_start);
-		$this->form->setValue('injury_date_end', null, $project_person->injury_date_end);
+		$this->form->setValue('injury', null, $this->project_person->injury);
+		$this->form->setValue('injury_date', null, $this->project_person->injury_date);
+		$this->form->setValue('injury_end', null, $this->project_person->injury_end);
+		$this->form->setValue('injury_detail', null, $this->project_person->injury_detail);
+		$this->form->setValue('injury_date_start', null, $this->project_person->injury_date_start);
+		$this->form->setValue('injury_date_end', null, $this->project_person->injury_date_end);
 
-		$this->form->setValue('suspension', null, $project_person->suspension);
-		$this->form->setValue('suspension_date', null, $project_person->suspension_date);
-		$this->form->setValue('suspension_end', null, $project_person->suspension_end);
-		$this->form->setValue('suspension_detail', null, $project_person->suspension_detail);
-		$this->form->setValue('susp_date_start', null, $project_person->susp_date_start);
-		$this->form->setValue('susp_date_end', null, $project_person->susp_date_end);
+		$this->form->setValue('suspension', null, $this->project_person->suspension);
+		$this->form->setValue('suspension_date', null, $this->project_person->suspension_date);
+		$this->form->setValue('suspension_end', null, $this->project_person->suspension_end);
+		$this->form->setValue('suspension_detail', null, $this->project_person->suspension_detail);
+		$this->form->setValue('susp_date_start', null, $this->project_person->susp_date_start);
+		$this->form->setValue('susp_date_end', null, $this->project_person->susp_date_end);
 
-		$this->form->setValue('away', null, $project_person->away);
-		$this->form->setValue('away_date', null, $project_person->away_date);
-		$this->form->setValue('away_end', null, $project_person->away_end);
-		$this->form->setValue('away_detail', null, $project_person->away_detail);
-		$this->form->setValue('away_date_start', null, $project_person->away_date_start);
-		$this->form->setValue('away_date_end', null, $project_person->away_date_end);
-		/*
-		if ( $project_person->jerseynumber )
+		$this->form->setValue('away', null, $this->project_person->away);
+		$this->form->setValue('away_date', null, $this->project_person->away_date);
+		$this->form->setValue('away_end', null, $this->project_person->away_end);
+		$this->form->setValue('away_detail', null, $this->project_person->away_detail);
+		$this->form->setValue('away_date_start', null, $this->project_person->away_date_start);
+		$this->form->setValue('away_date_end', null, $this->project_person->away_date_end);
+        
+        if ($this->item->id)
 		{
-		$this->form->setValue('jerseynumber', null, $project_person->jerseynumber);
+			/** Alles ok */
+			if ($this->item->contract_from == '0000-00-00')
+			{
+				$this->item->contract_from = '';
+				$this->form->setValue('contract_from', '');
+			}
+
+			if ($this->item->contract_to == '0000-00-00')
+			{
+				$this->item->contract_to = '';
+				$this->form->setValue('contract_to', '');
+			}
 		}
 		else
 		{
-			$this->form->setValue('jerseynumber', null, 0);
+			$this->form->setValue('contract_from', '');
+			$this->form->setValue('contract_to', '');
 		}
-		*/
 
 		$project_position_id = $this->form->getValue('project_position_id');
 
@@ -122,7 +130,7 @@ class sportsmanagementViewTeamPlayer extends sportsmanagementView
 		{
 			foreach ($position_id as $items => $item)
 			{
-				if ($item->position_id == $project_person->position_id)
+				if ($item->position_id == $this->project_person->position_id)
 				{
 					$results = $item->value;
 				}
@@ -132,8 +140,7 @@ class sportsmanagementViewTeamPlayer extends sportsmanagementView
 			$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_TEAMPERSON_PROJECT_POSITION'), 'notice');
 		}
 
-		$extended       = sportsmanagementHelper::getExtended($this->item->extended, 'teamplayer');
-		$this->extended = $extended;
+		$this->extended       = sportsmanagementHelper::getExtended($this->item->extended, 'teamplayer');
 		$this->lists    = $lists;
 
 		if (ComponentHelper::getParams($this->option)->get('show_debug_info_backend'))
@@ -169,13 +176,15 @@ class sportsmanagementViewTeamPlayer extends sportsmanagementView
 		$isNew  = $this->item->id == 0;
 		$canDo  = sportsmanagementHelper::getActions($this->item->id);
 
-		if ($this->_persontype == 1)
+		if ($this->item->persontype == 1)
 		{
-			ToolbarHelper::title($isNew ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_NEW') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_EDIT'), 'teamplayer');
+			//ToolbarHelper::title($isNew ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_NEW') : Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_EDIT', $this->item->name ), 'teamplayer');
+            $this->title = $isNew ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_NEW') : Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_EDIT', $this->item->name );
 		}
-		elseif ($this->_persontype == 2)
+		elseif ($this->item->persontype == 2)
 		{
-			ToolbarHelper::title($isNew ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_NEW') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_EDIT'), 'teamstaff');
+			//ToolbarHelper::title($isNew ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_NEW') : Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_EDIT', $this->item->name ), 'teamstaff');
+            $this->title = $isNew ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_NEW') : Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_EDIT', $this->item->name );
 		}
 
 		parent::addToolbar();
