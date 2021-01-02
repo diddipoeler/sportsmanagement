@@ -15,3 +15,25 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Component\ComponentHelper;
 
 ?>
+    <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
+		<?PHP
+
+		?>
+
+        <table>
+            <tr>
+                <td class="nowrap" align="right"><?php echo $this->lists['sportstypes'] . '&nbsp;&nbsp;'; ?></td>
+            </tr>
+        </table>
+
+       
+       
+
+        <input type="hidden" name="task" value=""/>
+        <input type="hidden" name="boxchecked" value="0"/>
+        <input type="hidden" name="filter_order" value=""/>
+        <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>"/>
+
+		<?php echo HTMLHelper::_('form.token') . "\n"; ?>
+    </form>
+<div><?PHP echo $this->loadTemplate('footer');?></div>
