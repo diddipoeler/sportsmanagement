@@ -38,28 +38,21 @@ class sportsmanagementModelPredictionRounds extends JSMModelList
 	public function __construct($config = array())
 	{
 		$config['filter_fields'] = array(
-			's.id',
-			's.points_tipp',
-			's.points_correct_result',
-			's.points_correct_diff',
-			's.points_correct_draw',
-			's.points_correct_tendence',
-			'r.name',
-			'r.roundcode',
-			
+			'roundname',
+			'roundcode',
 		);
 		parent::__construct($config);
 		parent::setDbo($this->jsmdb);
 	}
 
 	/**
-	 * return count of acive prediction tipprounds
+	 * return count of active prediction tipprounds
 	 *
 	 * @param   int prediction_id
 	 *
 	 * @return integer
 	 */
-	function getAcivePredictionRoundsCount($prediction_id)
+	function getActivePredictionRoundsCount($prediction_id)
 	{
 		// Create a new query object.
 		$this->jsmquery->clear();
@@ -85,7 +78,40 @@ class sportsmanagementModelPredictionRounds extends JSMModelList
 			return false;
 		}
 	}
+	
+	/**
+	 * getPredGamesPredictionRounds: return ids of existant prediction tipprounds
+	 *
+	 * @param   int prediction_id
+	 *
+	 * @return integer
+	 */
+	function getPredGamesPredictionRoundsIds($prediction_id)
+	{
+		// Create a new query object.
+		$this->jsmquery->clear();
 
+		// Select some fields
+		$this->jsmquery->select('round_id AS roundcode');
+
+		// From the table
+		$this->jsmquery->from('#__sportsmanagement_prediction_tippround');
+		$this->jsmquery->where('prediction_id = ' . $prediction_id);
+
+		try
+		{
+			$this->jsmdb->setQuery($this->jsmquery);
+
+			return $this->jsmdb->loadColumn();
+		}
+		catch (Exception $e)
+		{
+			$this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
+
+			return false;
+		}
+	}
+	
 	/**
 	 * Method to auto-populate the model state.
 	 *
@@ -106,10 +132,8 @@ class sportsmanagementModelPredictionRounds extends JSMModelList
 		if (!$temp_user_request)
 		{
 			$temp_user_request = $this->jsmjinput->getInt('prediction_id');
-            if ($temp_user_request) {
-				$this->jsmapp->setUserState("com_sportsmanagement.prediction_id", $temp_user_request);
-            }
 		}
+		$this->jsmapp->setUserState("com_sportsmanagement.prediction_id", $temp_user_request);
 		$this->setState('filter.prediction_id', $temp_user_request);
 
 		// List state information.
@@ -121,7 +145,7 @@ class sportsmanagementModelPredictionRounds extends JSMModelList
 
 		if (!in_array($orderCol, $this->filter_fields))
 		{
-			$orderCol = 'roundname';
+			$orderCol = 'roundcode';
 		}
 
 		$this->setState('list.ordering', $orderCol);
@@ -169,7 +193,7 @@ class sportsmanagementModelPredictionRounds extends JSMModelList
 		}
 
 		$this->jsmquery->order(
-			$this->jsmdb->escape($this->getState('list.ordering', 'roundname')) . ' ' .
+			$this->jsmdb->escape($this->getState('list.ordering', 'roundcode')) . ' ' .
 			$this->jsmdb->escape($this->getState('list.direction', 'ASC'))
 		);
 

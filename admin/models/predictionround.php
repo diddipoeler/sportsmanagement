@@ -33,42 +33,81 @@ jimport('joomla.application.component.modeladmin');
  */
 class sportsmanagementModelPredictionRound extends JSMModelAdmin
 {
-
 	/**
-	 * Method to save the form data.
+	 * Method to update checked PredictionRound from admin form (POST data)
 	 *
-	 * @param   array    The form data.
-	 *
-	 * @return boolean    True on success.
-	 * @since  1.6
+	 * @access public
+     * @param mixed $pks: array of items to be updated
+ 	 * @param mixed $post: updated form data
+ 	 * @return string  message to display as notification
 	 */
-	public function save($data)
+	public function saveshort(&$pks, &$post)
 	{
-		$app  = Factory::getApplication();
+		// Reference global application object
 		$date = Factory::getDate();
 		$user = Factory::getUser();
-		$post = Factory::getApplication()->input->post->getArray(array());
 
-		// Set the values
-		$data['modified']    = $date->toSql();
-		$data['modified_by'] = $user->get('id');
-
-		// Zuerst sichern, damit wir bei einer neuanlage die id haben
-		if (parent::save($data))
+		for ($x = 0; $x < count($pks); $x++)
 		{
-			$id         = (int) $this->getState($this->getName() . '.id');
-			$isNew      = $this->getState($this->getName() . '.new');
-			$data['id'] = $id;
+			$tblRound                           = $this->getTable();
+			$tblRound->id                       = $pks[$x];
+			$tblRound->rien_ne_va_plus          = $post['rien_ne_va_plus' . $pks[$x]];
+			$tblRound->points_tipp              = $post['points_tipp' . $pks[$x]];
+			$tblRound->points_correct_result    = $post['points_correct_result' . $pks[$x]];
+			$tblRound->points_correct_diff      = $post['points_correct_diff' . $pks[$x]];
+			$tblRound->points_correct_draw      = $post['points_correct_draw' . $pks[$x]];
+			$tblRound->points_correct_tendence  = $post['points_correct_tendence' . $pks[$x]];
 
-			if ($isNew)
+			// Set the values
+			$tblRound->modified    = $date->toSql();
+			$tblRound->modified_by = $user->get('id');
+
+			if (!$tblRound->store())
 			{
-				// Here you can do other tasks with your newly saved record...
-				$app->enqueueMessage(Text::plural(strtoupper($this->jsmoption) . '_N_ITEMS_CREATED', $id), '');
+				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+				return false;
 			}
 		}
-
-		return true;
+		return Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICITIONROUNDS_SAVE');
 	}
 
+	/**
+	 * Method to add predrounds from parent JSM Project
+	 * New Items will be added unpublished and using default parameters
+	 *
+	 * @access public
+     * @param array $predRoundsIdsToAdd: array of proj rounds t be added
+ 	 * @param int $prediction_id: id of parents prediction project
+ 	 * @param int $project_id: id of parents JS; project
+ 	 * @return string  message to display as notification
+	 */
+	public function addPredRoundIds($projRoundsIdsToAdd, $prediction_id, $project_id)
+	{
+		// Reference global application object
+		$date = Factory::getDate();
+		$user = Factory::getUser();
 
+		$cnt = 0;
+
+		foreach ($projRoundsIdsToAdd AS $projRoundsIdToAdd)
+		{
+			$tblRound                = $this->getTable();
+			$tblRound->prediction_id = $prediction_id;
+			$tblRound->project_id    = $project_id;
+			$tblRound->round_id      = $projRoundsIdToAdd;
+
+			// Set the values
+			$tblRound->modified    = $date->toSql();
+			$tblRound->modified_by = $user->get('id');
+			$tblRound->published = 0;
+			
+			if (!$tblRound->store())
+			{
+				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+				return false;
+			}
+			$cnt++;
+		}
+		return Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PREDICITIONROUNDS_ADDED', $cnt);
+	}
 }

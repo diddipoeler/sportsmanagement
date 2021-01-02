@@ -39,45 +39,26 @@ class sportsmanagementViewPredictionRounds extends sportsmanagementView
 	 */
 	public function init()
 	{
-		$this->populate = 0;
-		$tpl            = null;
-
 		$this->prediction_id = $this->state->get('filter.prediction_id');
 		if ($this->prediction_id == 0)
 		{
 			$this->prediction_id = $this->jinput->request->get('prediction_id', 0);
 			$this->state->set('filter.prediction_id', $this->prediction_id);
 		}
-		
-		switch ($this->getLayout())
-		{
-			case 'default':
-			case 'default_3':
-			case 'default_4':
-				$this->_displayDefault($tpl);
-				return;
-            case 'populate':
-			case 'populate_3':
-			case 'populate_4':
-				$this->_displayPopulate($tpl);
-				return;
-		}
-	}
 
-	/**
-	 * sportsmanagementViewRounds::_displayDefault()
-	 *
-	 * @param   mixed  $tpl
-	 *
-	 * @return void
-	 */
-	function _displayDefault($tpl)
-	{
 		$this->table = Table::getInstance('predictionround', 'sportsmanagementTable');
 		
 		if (!$this->items)
 		{
-			$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_PREDICTION_TIPPROUNDS'), 'Error');
+			if ($this->prediction_id == 0)
+			{
+				$this->app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_PREDICTION_ID',
+				                                 Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME')), 'Error');
+            }
+			else
+			{
+                $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_PREDICTION_TIPPROUNDS'), 'Error');
+            }
 		}
 
 		// get needed Models
@@ -118,45 +99,6 @@ class sportsmanagementViewPredictionRounds extends sportsmanagementView
 	}
 
 	/**
-	 * sportsmanagementViewRounds::_displayPopulate()
-	 *
-	 * @param   mixed  $tpl
-	 *
-	 * @return void
-	 */
-	function _displayPopulate($tpl)
-	{
-
-		$this->document->setTitle(Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TITLE'));
-		$lists = array();
-
-		$options             = array(HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TYPE_SINGLE_ROUND_ROBIN')),
-			HTMLHelper::_('select.option', 1, Text::_('COM_SPORTSMANAGEMENTADMIN_ROUNDS_POPULATE_TYPE_DOUBLE_ROUND_ROBIN')),
-			HTMLHelper::_('select.option', 2, Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TYPE_TOURNAMENT_ROUND_ROBIN'))
-		);
-		$lists['scheduling'] = HTMLHelper::_('select.genericlist', $options, 'scheduling', '', 'value', 'text');
-
-		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
-		$mdlProject       = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
-		$teams            = $mdlProject->getProjectTeamsOptions($this->project_id);
-		$projectws        = $mdlProject->getProject($this->project_id);
-
-		$options = array();
-
-		foreach ($teams as $t)
-		{
-			$options[] = HTMLHelper::_('select.option', $t->value, $t->text);
-		}
-
-		$lists['teamsorder'] = HTMLHelper::_('select.genericlist', $options, 'teamsorder[]', 'multiple="multiple" size="20"');
-
-		$this->projectws = $projectws;
-		$this->lists     = $lists;
-		$this->populate  = 1;
-		$this->setLayout('populate');
-	}
-
-	/**
 	 * Add the page title and toolbar.
 	 *
 	 * @since 1.7
@@ -165,29 +107,18 @@ class sportsmanagementViewPredictionRounds extends sportsmanagementView
 	{
 		// Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICITIONROUNDS_TITLE');
-        ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=predictiongames&prediction_id='.$this->prediction_id);
 
-		if ($this->populate)
-		{
-			$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TITLE');
-			ToolbarHelper::apply('predictionround.startpopulate');
-			ToolbarHelper::back();
-			parent::addToolbar();
-		}
-		else
-		{
-			ToolbarHelper::editList('predictionround.edit');
-			ToolbarHelper::publishList('rounds.publish');
-			ToolbarHelper::unpublishList('rounds.unpublish');
-			ToolbarHelper::divider();
-		
-			sportsmanagementHelper::ToolbarButton('predictionround.populate', 'new', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICITIONROUNDS_IMPORT_BUTTON'));
-		    ToolbarHelper::divider();
-			ToolbarHelper::archiveList('predictionround.export', Text::_('JTOOLBAR_EXPORT'));
-			ToolbarHelper::divider();
-			ToolbarHelper::deleteList('', 'predictionrounds.delete', 'JTOOLBAR_DELETE');
-			parent::addToolbar();
-		}
-
+		ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=predictiongames&prediction_id='.$this->prediction_id);
+		// PredicitionRounds should not be editable standalone ToolbarHelper::editList('predictionround.edit');
+		ToolbarHelper::publishList('predictionrounds.publish');
+		ToolbarHelper::unpublishList('predictionrounds.unpublish');
+		ToolbarHelper::divider();
+		ToolbarHelper::apply('predictionrounds.saveshort');
+		ToolbarHelper::divider();
+	
+		ToolbarHelper::addNew('predictionrounds.populateFromProjectRounds', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICITIONROUNDS_IMPORT_BUTTON'));
+		ToolbarHelper::divider();
+		ToolbarHelper::deleteList('', 'predictionrounds.delete', 'JTOOLBAR_DELETE');
+		parent::addToolbar();
 	}
 }

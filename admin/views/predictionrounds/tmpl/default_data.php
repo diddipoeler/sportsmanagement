@@ -29,6 +29,7 @@ use Joomla\CMS\Router\Route;
 
             <th width="10"><?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ROUND_NR', 'roundcode', $this->sortDirection, $this->sortColumn); ?></th>
             <th width="10"><?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ROUND_TITLE', 'roundname', $this->sortDirection, $this->sortColumn); ?></th>
+            <th width="5"><?php echo Text::_('JSTATUS'); ?></th>
 
             <th width="20"><?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PREDICITIONROUNDS_RIEN_NE_VA_PLUS', 's.rien_ne_va_plus', $this->sortDirection, $this->sortColumn); ?></th>
 
@@ -72,6 +73,7 @@ use Joomla\CMS\Router\Route;
 					if ($row->checked_out) : ?>
 						<?php echo HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'predictionrounds.', $canCheckin); ?>
 					<?php endif; ?>
+                    <?php /* PredicitionRounds should not be editable standalone 
                     <a href="<?php echo $link; ?>">
 						<?php
 						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICITIONROUNDS_EDIT_DETAILS');
@@ -81,13 +83,27 @@ use Joomla\CMS\Router\Route;
 						);
 						?>
                     </a>
+                    */ ?>
                 </td>
-				<?php
-
-				?>
 
                 <td class="center"><?php echo $row->roundcode; ?></td>
                 <td class="center"><?php echo $row->roundname; ?></td>
+                <td style='text-align:center; '>
+					<?php
+					if ($row->published)
+					{
+						$imageTitle = Text::_('JENABLED');
+						$imageFile  = 'administrator/components/com_sportsmanagement/assets/images/ok.png';
+					}
+					else
+					{
+						$imageTitle = Text::_('JDISABLED');
+						$imageFile  = 'administrator/components/com_sportsmanagement/assets/images/delete.png';
+					}
+
+					echo HTMLHelper::_('image', $imageFile, $imageTitle, 'title= "' . $imageTitle . '"');
+					?>
+                </td>
 
                 <td class="center"><?php
 					$append = ' style="background-color:#bbffff"';

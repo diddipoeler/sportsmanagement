@@ -289,6 +289,39 @@ class sportsmanagementModelRounds extends JSMModelList
 			return false;
 		}
 	}
+	
+	/**
+	 * return count of  project rounds
+	 *
+	 * @param   int project_id
+	 *
+	 * @return integer
+	 */
+	function getRoundsIds($project_id)
+	{
+		// Create a new query object.
+		$this->jsmquery->clear();
+
+		// Select some fields
+		$this->jsmquery->select('id');
+
+		// From the table
+		$this->jsmquery->from('#__sportsmanagement_round');
+		$this->jsmquery->where('project_id = ' . $project_id);
+
+		try
+		{
+			$this->jsmdb->setQuery($this->jsmquery);
+
+			return $this->jsmdb->loadColumn();
+		}
+		catch (Exception $e)
+		{
+			$this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
+
+			return false;
+		}
+	}
 
 	/**
 	 * Get the next round by todays date

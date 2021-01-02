@@ -377,7 +377,7 @@ if ($this->dPredictionID > 0)
 					?></td>
                 <td style='text-align:center; '><a href="<?php echo $link2tipprounds; ?>">
 					<?php
-					$pred_rounds = $this->modelpredround->getAcivePredictionRoundsCount($pred_project['id']);
+					$pred_rounds = $this->modelpredround->getActivePredictionRoundsCount($pred_project['id']);
 					if ($pred_rounds > 0)
 					{
 						$imageTitle = Text::_('JENABLED');
