@@ -16,6 +16,8 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * sportsmanagementViewinstallhelper
@@ -37,11 +39,46 @@ class sportsmanagementViewinstallhelper extends sportsmanagementView
 	public function init()
 	{
 $this->install_step     = $this->jinput->get('step');
+
+/** Build the html select list for sportstypes */
+		$sportstypes[]  = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'), 'id', 'name');
+		$mdlSportsTypes = BaseDatabaseModel::getInstance('SportsTypes', 'sportsmanagementModel');
+		$allSportstypes = $mdlSportsTypes->getSportsTypes();
+		$sportstypes    = array_merge($sportstypes, $allSportstypes);
+
+		$variable = $this->jinput->get('filter_sports_type', 0);
+
+		$lists['sportstype']  = $sportstypes;
+		$lists['sportstypes'] = HTMLHelper::_(
+			'select.genericList',
+			$sportstypes,
+			'filter_sports_type',
+			'class="inputbox" onChange="" style="width:120px"',
+			'id',
+			'name',
+			$variable
+		);
+		unset($sportstypes);
+
+		$this->lists   = $lists;
+        
     $this->setLayout('install_step_'.$this->install_step);
     
     	
   }
   
+  
+    /**
+	 * Add the page title and toolbar.
+	 *
+	 * @since 1.6
+	 */
+	protected function addToolbar()
+	{
+            $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_INSTALLHELPER_'.$this->install_step);
+ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement');
+		parent::addToolbar();
+	}
 
 	
   }

@@ -867,6 +867,7 @@ document.getElementById("filter_season").classList.add("filter_season");
 					case 'jsmopenligadb';
                 case 'smimageimports';
 					case 'smquotestxt';
+                    case 'installhelper';
 				break;
 				default:
 					/**
