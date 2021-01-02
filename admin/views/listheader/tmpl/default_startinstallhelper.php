@@ -19,10 +19,11 @@ use Joomla\CMS\Component\ComponentHelper;
 <div class="row-fluid">
 <div class="span9">
 <div class="well well-small">
-
+<div class="module-title nav-header"><?php echo Text::_('COM_SPORTSMANAGEMENT_D_HEADING_INSTALL_TOOLS') ?>
+                            </div>
 <div id="dashboard-icons" class="btn-group">
                                 <a class="btn" href="index.php?option=com_sportsmanagement&view=installhelper&step=1">
-                                    <img src="components/com_sportsmanagement/assets/icons/wizard-1.png"
+                                    <img src="components/com_sportsmanagement/assets/icons/wizard-1.png" height="80"
                                          alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_INSTALLHELPER_STEP1') ?>"/><br/>
                                     <span><?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_INSTALLHELPER_STEP1') ?></span>
                                 </a>
