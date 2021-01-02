@@ -50,8 +50,7 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
 	 */
 	public function init()
 	{
-		$table       = Table::getInstance('projectreferee', 'sportsmanagementTable');
-		$this->table = $table;
+		$this->table       = Table::getInstance('projectreferee', 'sportsmanagementTable');
 
 		$this->_persontype = $this->jinput->get('persontype');
 		$mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
@@ -77,8 +76,6 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
 		unset($position_id);
 
 		$this->lists      = $lists;
-       
-		//echo 'items<pre>'.print_r($this->items,true).'</pre>';
 		
 		if ( !$this->items )
 		{

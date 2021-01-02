@@ -14,19 +14,24 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 
+$step = $this->jinput->get('step') ? $this->jinput->get('step') : 1;
+
+
 ?>
 <section class="content-block" role="main">
 <div class="row-fluid">
 <div class="span9">
 <div class="well well-small">
 <div class="module-title nav-header"><?php echo Text::_('COM_SPORTSMANAGEMENT_D_HEADING_INSTALL_TOOLS') ?>
-                            </div>
+</div>
 <div id="dashboard-icons" class="btn-group">
-                                <a class="btn" href="index.php?option=com_sportsmanagement&view=installhelper&step=1">
-                                    <img src="components/com_sportsmanagement/assets/icons/wizard-1.png" height="80"
-                                         alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_INSTALLHELPER_STEP1') ?>"/><br/>
-                                    <span><?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_INSTALLHELPER_STEP1') ?></span>
-                                </a>
+
+<a class="btn" href="index.php?option=com_sportsmanagement&view=installhelper&step=<?php echo $step; ?>">
+<img src="components/com_sportsmanagement/assets/icons/wizard-<?php echo $step; ?>.png" height="80" width="auto"
+alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_INSTALLHELPER_STEP'.$step) ?>"/><br/>
+<span><?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_INSTALLHELPER_STEP'.$step) ?></span>
+</a>
+
 </div>                                
 
 </div>

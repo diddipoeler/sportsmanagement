@@ -64,7 +64,6 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 		$this->pagination = $this->get('Pagination');
 
 		$this->table       = Table::getInstance('projectposition', 'sportsmanagementTable');
-		//$this->table = $table;
 
 		$this->project_id = $this->jinput->get('pid');
 		$this->jinput->set('pid', $this->project_id);
@@ -76,7 +75,6 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 
 		$this->config       = Factory::getConfig();
 		$this->positiontool = $items;
-		//$this->pagination   = $pagination;
 	}
 
 	/**
