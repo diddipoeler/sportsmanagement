@@ -18,6 +18,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewinstallhelper
