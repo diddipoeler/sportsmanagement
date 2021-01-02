@@ -401,6 +401,7 @@ break;
 				case 'predictiongroups';
 				case 'predictionmembers';
 				case 'predictiontemplates';
+				case 'predictionrounds';
 					sportsmanagementHelper::addSubmenu('predictions');
 					break;
 				default:
@@ -462,6 +463,7 @@ break;
 				//case 'projects':
 				//case 'players':
 				case 'predictiongames':
+				case 'predictionrounds':
 				case 'jlextfederations':
 				case 'jlextassociations':
 				//case 'jlextcountries':
@@ -854,6 +856,7 @@ document.getElementById("filter_season").classList.add("filter_season");
 				case 'predictionmembers':
 				case 'templates':
 				case 'predictiongroups':
+				case 'predictionrounds':
 				case 'jlextdfbkeyimport':
 				case 'transifex';
 				case 'predictions';

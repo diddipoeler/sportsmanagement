@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form addrulepath="/administrator/components/com_sportsmanagement/models/rules"
+	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+	<fieldset name="details"
+    label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
+  description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
+	<field
+			name="id" 
+			type="number" 
+			label="JGLOBAL_FIELD_ID_LABEL"
+			description="JGLOBAL_FIELD_ID_DESC" 
+			class="readonly" 
+			size="11" 
+			default="0"
+			readonly="true"
+		/>
+		<field
+			name="prediction_id"
+			type="number"
+		    label="prediction_id"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_PROJECTID_ADMIN_DESC" 
+			class="readonly" 
+			size="11" 
+			default="0"
+			readonly="true"
+		/>
+		<field
+			name="project_id"
+			type="number"
+		        label="project_id"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_PROJECTID_ADMIN_DESC" 
+			class="readonly" 
+			size="11" 
+			default="0"
+			readonly="true"
+		/>	
+		<field
+			name="round_id"
+			type="number"
+		        label="round_id"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_PROJECTID_ADMIN_DESC" 
+			class="readonly" 
+			size="11" 
+			default="0"
+			readonly="true"
+		/>
+
+		<field
+			name="rien_ne_va_plus"
+			type="extensionradiobutton"
+			default="0"
+			class="radio btn-group btn-group-yesno"
+			label="rien_ne_va_plus"
+			description="rien_ne_va_plus_DESC"
+			>
+			<option value="FIRSTMATCH_OF_TIPPGAME">FIRSTMATCH_OF_TIPPGAME</option>
+			<option value="FIRSTMATCH_OF_TIPPROUND">FIRSTMATCH_OF_TIPPROUND</option>
+			<option value="BEGIN_OF_MATCH">BEGIN_OF_MATCH</option>
+		</field>
+				
+<!-- punkte  -->
+<field 
+name="points_tipp" 
+type="text" 
+default="0"
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_WRONG_PREDICTION" 
+description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_WRONG_PREDICTION_DESC"
+/>
+
+<field 
+name="points_correct_result" 
+type="text" 
+default="0"
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_PREDICTION" 
+description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_PREDICTION_DESC"
+/>
+
+<field 
+name="points_correct_diff" 
+type="text" 
+default="0"
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_MARGIN" 
+description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_MARGIN_DESC"
+/>
+
+<field 
+name="points_correct_draw" 
+type="text" 
+default="0"
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_DRAW_DIFFERENCE" 
+description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_DRAW_DIFFERENCE_DESC"
+/>
+
+<field 
+name="points_correct_tendence" 
+type="text" 
+default="0"
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_TENDENCY" 
+description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_TENDENCY_DESC"
+/>
+
+            	
+	</fieldset>				
+</form>

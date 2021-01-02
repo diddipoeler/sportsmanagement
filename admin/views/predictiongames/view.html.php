@@ -17,6 +17,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Table\Table;
 
@@ -60,6 +61,11 @@ class sportsmanagementViewPredictionGames extends sportsmanagementView
 			$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_GAMES'), 'Error');
 		}
 
+		// get needed Models
+		$mdlPredGame              = BaseDatabaseModel::getInstance('PredictionGame', 'sportsmanagementModel');
+		$mdlRounds            = BaseDatabaseModel::getInstance('Rounds', 'sportsmanagementModel');
+		$mdlPredRounds        = BaseDatabaseModel::getInstance('predictionrounds', 'sportsmanagementModel');
+		
 		// Build the html select list for prediction games
 		$predictions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME'), 'value', 'text');
 
@@ -80,14 +86,20 @@ class sportsmanagementViewPredictionGames extends sportsmanagementView
 		);
 		unset($res);
 
-		$this->lists         = $lists;
 		$this->dPredictionID = $this->prediction_id;
 
 		if ($this->prediction_id > 0)
 		{
 			$this->predictionProjects = $this->getModel()->getChilds($this->prediction_id);
 		}
+		
+		$pred_project             = $mdlPredGame->getPredictionGame($this->prediction_id);
 
+		// Attach fetched info to this 
+		$this->lists         = $lists;
+		$this->pred_project  = $pred_project;
+		$this->modelround     = $mdlRounds;
+		$this->modelpredround = $mdlPredRounds;
 	}
 
 	/**
