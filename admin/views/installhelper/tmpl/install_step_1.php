@@ -14,6 +14,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Component\ComponentHelper;
 
+$templatesToLoad = array('footer', 'listheader');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
     <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 		<?PHP
