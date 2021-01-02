@@ -40,8 +40,9 @@ $this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sport
 //.tip-icon{background:#47ADE0}                   
 .warning-icon{background:#AD3C3C}           
           
-          
-          
+.note-box,.warning-box,.tip-box{padding:8px 8px 3px 26px}          
+.info-tab{float:left;margin-left:-23px}
+              
   </style>
 
 
@@ -51,7 +52,7 @@ $this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sport
                     <div class="shadow">
                         <div class="info-tab tip-icon" title="Useful Tips"><i></i></div>
                         <div class="tip-box">
-                            <p><strong>Tip:</strong></p>
+<p><strong>Tip:</strong></p>
                         </div>
                     </div>
                </div>
