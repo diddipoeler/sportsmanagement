@@ -60,9 +60,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 		?>
 
-        <table>
+        <table class="table">
             <tr>
                 <td class="nowrap" align="right"><?php echo $this->lists['sportstypes'] . '&nbsp;&nbsp;'; ?></td>
+                <td><button type="button" onclick="Joomla.submitform('installhelper.savesportstype', this.form);">
+						<?php echo Text::_('JSAVE'); ?></button></td>
             </tr>
         </table>
 
