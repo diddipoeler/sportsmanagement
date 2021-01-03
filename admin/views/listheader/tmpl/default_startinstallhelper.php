@@ -25,31 +25,7 @@ $step = $this->jinput->get('step') ? $this->jinput->get('step') : 1;
 <div class="module-title nav-header"><?php echo Text::_('COM_SPORTSMANAGEMENT_D_HEADING_INSTALL_TOOLS'); ?>
 </div>
 
-<?php
-if ( $this->jinput->get('error') )
-{
-$errors = implode("<br>",sportsmanagementHelper::getWarnings());  
-?>
-<!--Warning box rot -->
-<div class="color-box">
-					<div class="shadow">
-						<div class="info-tab warning-icon" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_WARNING'); ?>"><i></i></div>
-						<div class="warning-box">
-							<p><strong><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_WARNING'); ?></strong>
-                            <?php echo $errors; ?>
-                            
-                            </p>
-						</div>
-					</div>
-</div>
-<!--End:Warning box-->
 
-
-
-<?php  
-}
-
-?>
 <!--Note box blau -->
 <div class="color-box">
 <div class="shadow">
