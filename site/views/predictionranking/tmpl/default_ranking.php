@@ -387,7 +387,8 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 									$memberPredictionPoint->prAwayTipp,
 									$memberPredictionPoint->prJoker,
 									$memberPredictionPoint->homeDecision,
-									$memberPredictionPoint->awayDecision
+									$memberPredictionPoint->awayDecision,
+									$memberPredictionPoint->matchRoundId
 								);
 								// neue punkte berechnen
 								$newPoints = sportsmanagementModelPrediction::getMemberPredictionPointsForSelectedMatch($predictionProject, $result);
@@ -399,6 +400,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 									{
 										// this check also should be done if the result is not displayed
 										$memberPredictionPoint = sportsmanagementModelPrediction::savePredictionPoints(
+											$newPoints,
 											$memberPredictionPoint,
 											$predictionProject,
 											true
