@@ -259,7 +259,7 @@ if ($this->dPredictionID > 0)
 				'' .
 				'task=predictionproject.edit&tmpl=component&id=' . $pred_project['id'] . '&project_id=' . $pred_project['project_id']
 			);
-			$link2tipprounds    = Route::_('index.php?option=com_sportsmanagement&view=predictionrounds&prediction_id=' . $pred_project['id']);
+			$link2tipprounds    = Route::_('index.php?option=com_sportsmanagement&view=predictionrounds&prediction_id=' . $pred_project['prediction_id']);
 
 			?>
             <tr class='<?php echo "row$k"; ?>'>

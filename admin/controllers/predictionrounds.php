@@ -101,38 +101,42 @@ class sportsmanagementControllerPredictionRounds extends JSMControllerAdmin
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
 
-		$prediction_id   = $app->getUserState("$option.prediction_id", '0');
+		// setup of prediction id was done during populate of controller!
+		$prediction_id = $app->getUserStateFromRequest($this->option . '.filter.prediction_id', 'filter_prediction_id', '');
 		if ($prediction_id == 0)
 		{
 			$msg  	= Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_PREDICTION_ID',
 						    Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME'));
 			$msgType = 'error';
 		}
-		$project_ids = $mdlPredGame->getPredictionProjectIDs($prediction_id);
-		if (count($project_ids) < 1)
-		{
-			$msg  	 = "INTERNAL ERROR: Unable to find out Project ID!!!";
-			$msgType = 'error';
-		}
 		else
 		{
-			// get existing Predrounds in tippgame
-			$existingPredRoundsIds = $mdlPredRounds->getPredGamesPredictionRoundsIds($prediction_id);
-			// get existing Predrounds in depending JSM Project
-			$existingProjRoundsIds = $mdlProjRounds->getRoundsIds($project_ids[0]);
+            $project_ids = $mdlPredGame->getPredictionProjectIDs($prediction_id);
+            if (count($project_ids) < 1)
+	    {
+                $msg  	 = "INTERNAL ERROR: Unable to find out Project ID!!!";
+                $msgType = 'error';
+            }
+	    else 
+	    {
+                // get existing Predrounds in tippgame
+                $existingPredRoundsIds = $mdlPredRounds->getPredGamesPredictionRoundsIds($prediction_id);
+                // get existing Predrounds in depending JSM Project
+                $existingProjRoundsIds = $mdlProjRounds->getRoundsIds($project_ids[0]);
 
-			$projRoundsIdsToAdd = array_diff($existingProjRoundsIds, $existingPredRoundsIds);
+                $projRoundsIdsToAdd = array_diff($existingProjRoundsIds, $existingPredRoundsIds);
 
-			if (count($projRoundsIdsToAdd) > 0) 
-			{
-				$msg   = $mdlPredRound->addPredRoundIds($projRoundsIdsToAdd, $prediction_id, $project_ids[0]);
-			}		
-			else
-			{
-				$msg   = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICITIONROUNDS_ALL_AVAILABLE');
-				$msgType = 'warning';
-			}
-		}
+                if (count($projRoundsIdsToAdd) > 0)
+		{
+                    $msg   = $mdlPredRound->addPredRoundIds($projRoundsIdsToAdd, $prediction_id, $project_ids[0]);
+                }
+		else
+		{
+                    $msg   = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICITIONROUNDS_ALL_AVAILABLE');
+                    $msgType = 'warning';
+                }
+            }
+        }
 		$this->setRedirect('index.php?option=com_sportsmanagement&view=predictionrounds', $msg, $msgType);
 	}
 }

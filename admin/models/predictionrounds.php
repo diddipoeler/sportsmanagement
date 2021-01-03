@@ -14,7 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Factory;
 /**
  * sportsmanagementModelPredictionRounds
  *
@@ -43,6 +43,8 @@ class sportsmanagementModelPredictionRounds extends JSMModelList
 		);
 		parent::__construct($config);
 		parent::setDbo($this->jsmdb);
+
+		$this->prediction_id = 0;
 	}
 
 	/**
@@ -84,7 +86,7 @@ class sportsmanagementModelPredictionRounds extends JSMModelList
 	 *
 	 * @param   int prediction_id
 	 *
-	 * @return integer
+	 * @return array integer
 	 */
 	function getPredGamesPredictionRoundsIds($prediction_id)
 	{
@@ -111,7 +113,7 @@ class sportsmanagementModelPredictionRounds extends JSMModelList
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Method to auto-populate the model state.
 	 *
@@ -121,20 +123,32 @@ class sportsmanagementModelPredictionRounds extends JSMModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
+		// Evaluate prediction_id in coordination with current filter settings
+		$app = Factory::getApplication();
+		$old_filter_prediction_id = $app->getUserState($this->option . '.filter.prediction_id');
+		$new_filter_prediction_id = $this->getUserStateFromRequest($this->option . '.filter.prediction_id', 'filter_prediction_id', '');
+		$get_prediction_id     = $this->jsmjinput->get('prediction_id');
+
+		// assume to use filter version
+		$this->prediction_id = $new_filter_prediction_id;
+		// user requesed a (new) setting via GET param
+        if ($get_prediction_id) {
+            // if filter is unset OR unchanged
+            if ((!$new_filter_prediction_id) || ($old_filter_prediction_id == $new_filter_prediction_id)) {
+                // it's fine
+                $this->prediction_id = $get_prediction_id;
+            } else {
+				// we have to remove the ?prediction_id=xx from URL, because it doesn't match the request by user (filter)
+                $app->redirect('index.php?option='.$this->option.'&view='.$this->name);
+            }
+        }
+		$this->setState('filter.prediction_id', $this->prediction_id);
+
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
 		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string');
 		$this->setState('filter.state', $published);
-
-		// prefer session variable
-		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.prediction_id', 'filter_prediction_id', '');
-		if (!$temp_user_request)
-		{
-			$temp_user_request = $this->jsmjinput->getInt('prediction_id');
-		}
-		$this->jsmapp->setUserState("com_sportsmanagement.prediction_id", $temp_user_request);
-		$this->setState('filter.prediction_id', $temp_user_request);
 
 		// List state information.
 		$value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
@@ -166,21 +180,14 @@ class sportsmanagementModelPredictionRounds extends JSMModelList
 	 */
 	function getListQuery()
 	{
-		$prediction_id = $this->state->get('filter.prediction_id');
-
 		// Create a new query object.
 		$this->jsmquery->clear();
 		$this->jsmquery->select(array('s.*', 'u.name AS editor', 'u1.username', 'r.name AS roundname', 'r.roundcode'))
 			->from('#__sportsmanagement_prediction_tippround AS s')
-			->where('s.prediction_id = ' . $prediction_id)
+			->where('s.prediction_id = ' . $this->prediction_id)
 			->join('LEFT', '#__users AS u ON u.id = s.checked_out')
 			->join('LEFT', '#__users AS u1 ON u1.id = s.modified_by')
 			->join('LEFT', '#__sportsmanagement_round AS r ON r.id = s.round_id');
-
-		if ($prediction_id > 0)
-		{
-			$this->jsmquery->where('s.prediction_id = ' . $prediction_id);
-		}
 
 		if ($this->getState('filter.search'))
 		{

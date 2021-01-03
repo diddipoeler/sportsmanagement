@@ -39,15 +39,10 @@ class sportsmanagementViewPredictionRounds extends sportsmanagementView
 	 */
 	public function init()
 	{
+		// setup of prediction id was done during populate of controller!
 		$this->prediction_id = $this->state->get('filter.prediction_id');
-		if ($this->prediction_id == 0)
-		{
-			$this->prediction_id = $this->jinput->request->get('prediction_id', 0);
-			$this->state->set('filter.prediction_id', $this->prediction_id);
-		}
-
-		$this->table = Table::getInstance('predictionround', 'sportsmanagementTable');
 		
+		$this->table = Table::getInstance('predictionround', 'sportsmanagementTable');
 		if (!$this->items)
 		{
 			if ($this->prediction_id == 0)
@@ -108,7 +103,7 @@ class sportsmanagementViewPredictionRounds extends sportsmanagementView
 		// Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICITIONROUNDS_TITLE');
 
-		ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=predictiongames&prediction_id='.$this->prediction_id);
+		ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=predictiongames');
 		// PredicitionRounds should not be editable standalone ToolbarHelper::editList('predictionround.edit');
 		ToolbarHelper::publishList('predictionrounds.publish');
 		ToolbarHelper::unpublishList('predictionrounds.unpublish');
