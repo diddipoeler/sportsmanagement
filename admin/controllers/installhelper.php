@@ -10,7 +10,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementControllerinstallhelper
@@ -48,9 +48,19 @@ class sportsmanagementControllerinstallhelper extends JSMControllerForm
         $msg = '';
         $model = $this->getModel();
         $post = $this->jsmjinput->post->getArray(array());
-		//$msg   = $model->saveshort();
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <pre>'.print_r($post,true) .'</pre>'), '');
+		$msg   = $model->savesportstype($post);
+        
+        if ( !$msg )
+        {
+        $this->setRedirect('index.php?option=com_sportsmanagement&step=1&error=1', $msg);    
+        }
+        else
+        {
+        $this->setRedirect('index.php?option=com_sportsmanagement&step=2', $msg);    
+        }
 		//$this->setRedirect('index.php?option=com_sportsmanagement&view=installhelper&step=2', $msg);
-        $this->setRedirect('index.php?option=com_sportsmanagement&step=2', $msg);
+        
         
         
     }

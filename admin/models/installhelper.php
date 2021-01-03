@@ -43,10 +43,32 @@ class sportsmanagementModelinstallhelper extends JSMModelAdmin
 	{
 		parent::__construct($config);
 	}
-
-
-
-
+    
+    
+    /**
+     * sportsmanagementModelinstallhelper::savesportstype()
+     * 
+     * @param mixed $post
+     * @return void
+     */
+    function savesportstype($post = array() )
+    {
+    
+    if ( !$post['filter_sports_type'] )
+    {
+    JSMModelAdmin::setWarning(Text::_('COM_SPORTSMANAGEMENT_ADMIN_INSTALLHELPER_ERROR_1'));
+    return false;    
+    }   
+    else
+    {
+        
+        
+        
+    return true;     
+    } 
+        
+       
+    }
 
 
 
