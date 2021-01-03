@@ -3,7 +3,7 @@
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage installhelper
- * @file       install_step_1.php
+ * @file       install_step_2.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
@@ -37,7 +37,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <div class="info-tab note-icon" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NOTE') ?>"><i></i></div>
 <div class="note-box">
 <p><strong><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NOTE') ?></strong>
-<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_INSTALLHELPER_0') ?>
+<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_INSTALLHELPER_2') ?>
 </p>
 </div>
 </div>
@@ -62,8 +62,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
         <table class="table">
             <tr>
-                <td class="nowrap" align="right"><?php echo $this->lists['sportstypes'] . '&nbsp;&nbsp;'; ?></td>
-                <td><button type="button" onclick="Joomla.submitform('installhelper.savesportstype', this.form);">
+                <td class="nowrap" align="right"></td>
+                <td><button type="button" onclick="Joomla.submitform('installhelper.insertexample', this.form);">
 						<?php echo Text::_('JAPPLY'); ?></button></td>
             </tr>
         </table>
