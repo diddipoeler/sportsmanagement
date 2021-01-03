@@ -37,7 +37,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <div class="info-tab note-icon" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NOTE') ?>"><i></i></div>
 <div class="note-box">
 <p><strong><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NOTE') ?></strong>
-<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_INSTALLHELPER_2') ?>
+<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_INSTALLHELPER_C') ?>
 </p>
 </div>
 </div>
