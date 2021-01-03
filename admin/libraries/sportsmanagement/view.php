@@ -195,6 +195,7 @@ img.car {
 		switch ($this->view)
 		{
 			case 'smquotetxt':
+            case 'installhelper':
 				break;
 			default:
 				$this->state          = $this->get('State');
