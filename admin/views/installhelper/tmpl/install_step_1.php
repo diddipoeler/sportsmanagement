@@ -25,7 +25,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 
 
-<!--Tip Box-->
+<!--Tip Box grün -->
                 <div class="color-box space">
                     <div class="shadow">
                         <div class="info-tab tip-icon" title="Useful Tips"><i></i></div>
@@ -36,7 +36,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                </div>
 <!--End:Tip Box-->
 
-<!--Note box-->
+<!--Note box blau -->
 				<div class="color-box">
 					<div class="shadow">
 						<div class="info-tab note-icon" title="Important Notes"><i></i></div>
@@ -47,10 +47,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 				</div>
 <!--End:Note box-->
 
-<!--Warning box-->
+<!--Warning box rot -->
 <div class="color-box">
 					<div class="shadow">
-						<div class="info-tab warning-icon" title="Important Warning"><i></i></div>
+						<div class="info-tab warning-icon" title="Important Warnings"><i></i></div>
 						<div class="warning-box">
 							<p><strong>Warning:</strong></p>
 						</div>

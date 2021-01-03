@@ -35,7 +35,13 @@ use Joomla\CMS\Log\Log;
 class JSMModelAdmin extends AdminModel
 {
 
-
+    /** @var    array    An array of tips */
+	static $_tips = array();
+	/** @var    array    An array of warnings */
+	static $_warnings = array();
+    /** @var    array    An array of notes */
+	static $_notes = array();
+    
 	/**
 	 * JSMModelAdmin::__construct()
 	 *
@@ -95,6 +101,69 @@ class JSMModelAdmin extends AdminModel
 		if ($this->jsmapp->isClient('site'))
 		{
 		}
+	}
+    
+    
+    /**
+     * JSMModelAdmin::getTips()
+     * 
+     * @return
+     */
+    public static function getTips()
+	{
+		return self::$_tips;
+	}
+    
+    /**
+     * JSMModelAdmin::getWarnings()
+     * 
+     * @return
+     */
+    public static function getWarnings()
+	{
+		return self::$_warnings;
+	}
+    
+    /**
+     * JSMModelAdmin::getNotes()
+     * 
+     * @return
+     */
+    public static function getNotes()
+	{
+		return self::$_notes;
+	}
+    
+    /**
+     * JSMModelAdmin::setTip()
+     * 
+     * @param mixed $tip
+     * @return void
+     */
+    public static function setTip($tip)
+	{
+		self::$_tips[] = $tip;
+	}
+    
+    /**
+     * JSMModelAdmin::setWarning()
+     * 
+     * @param mixed $warning
+     * @return void
+     */
+    public static function setWarning($warning)
+	{
+		self::$_warnings[] = $warning;
+	}
+    /**
+     * JSMModelAdmin::setNote()
+     * 
+     * @param mixed $note
+     * @return void
+     */
+    public static function setNote($note)
+	{
+		self::$_notes[] = $note;
 	}
 
 	/**
@@ -1538,6 +1607,13 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
  */
 class JSMModelList extends ListModel
 {
+    
+    /** @var    array    An array of tips */
+	static $_tips = array();
+	/** @var    array    An array of warnings */
+	static $_warnings = array();
+    /** @var    array    An array of notes */
+	static $_notes = array();
 
 	/**
 	 * JSMModelList::__construct()
@@ -1600,6 +1676,68 @@ class JSMModelList extends ListModel
 		Log::addLogger(array('logger' => 'messagequeue'), Log::ALL, array('jsmerror'));
 
 	}
+    
+        /**
+     * JSMModelAdmin::getTips()
+     * 
+     * @return
+     */
+    public static function getTips()
+	{
+		return self::$_tips;
+	}
+    
+    /**
+     * JSMModelAdmin::getWarnings()
+     * 
+     * @return
+     */
+    public static function getWarnings()
+	{
+		return self::$_warnings;
+	}
+    
+    /**
+     * JSMModelAdmin::getNotes()
+     * 
+     * @return
+     */
+    public static function getNotes()
+	{
+		return self::$_notes;
+	}
+    
+    /**
+     * JSMModelAdmin::setTip()
+     * 
+     * @param mixed $tip
+     * @return void
+     */
+    public static function setTip($tip)
+	{
+		self::$_tips[] = $tip;
+	}
+    
+    /**
+     * JSMModelAdmin::setWarning()
+     * 
+     * @param mixed $warning
+     * @return void
+     */
+    public static function setWarning($warning)
+	{
+		self::$_warnings[] = $warning;
+	}
+    /**
+     * JSMModelAdmin::setNote()
+     * 
+     * @param mixed $note
+     * @return void
+     */
+    public static function setNote($note)
+	{
+		self::$_notes[] = $note;
+	}
 
 }
 
@@ -1615,6 +1753,13 @@ class JSMModelList extends ListModel
  */
 class JSMModelLegacy extends BaseDatabaseModel
 {
+    
+    /** @var    array    An array of tips */
+	static $_tips = array();
+	/** @var    array    An array of warnings */
+	static $_warnings = array();
+    /** @var    array    An array of notes */
+	static $_notes = array();
 
 	/**
 	 * JSMModelLegacy::__construct()
@@ -1663,6 +1808,68 @@ class JSMModelLegacy extends BaseDatabaseModel
 	   }
 		*/
 
+	}
+    
+        /**
+     * JSMModelAdmin::getTips()
+     * 
+     * @return
+     */
+    public static function getTips()
+	{
+		return self::$_tips;
+	}
+    
+    /**
+     * JSMModelAdmin::getWarnings()
+     * 
+     * @return
+     */
+    public static function getWarnings()
+	{
+		return self::$_warnings;
+	}
+    
+    /**
+     * JSMModelAdmin::getNotes()
+     * 
+     * @return
+     */
+    public static function getNotes()
+	{
+		return self::$_notes;
+	}
+    
+    /**
+     * JSMModelAdmin::setTip()
+     * 
+     * @param mixed $tip
+     * @return void
+     */
+    public static function setTip($tip)
+	{
+		self::$_tips[] = $tip;
+	}
+    
+    /**
+     * JSMModelAdmin::setWarning()
+     * 
+     * @param mixed $warning
+     * @return void
+     */
+    public static function setWarning($warning)
+	{
+		self::$_warnings[] = $warning;
+	}
+    /**
+     * JSMModelAdmin::setNote()
+     * 
+     * @param mixed $note
+     * @return void
+     */
+    public static function setNote($note)
+	{
+		self::$_notes[] = $note;
 	}
 
 }
