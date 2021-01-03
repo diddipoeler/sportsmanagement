@@ -20,6 +20,31 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 //$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/extended-1.1.css', 'text/css');
 //$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/style.css', 'text/css');
 ?>
+<?php
+if ( $this->jinput->get('error') )
+{
+$errors = implode("<br>",sportsmanagementHelper::getWarnings());  
+?>
+<!--Warning box rot -->
+<div class="color-box">
+					<div class="shadow">
+						<div class="info-tab warning-icon" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_WARNING'); ?>"><i></i></div>
+						<div class="warning-box">
+							<p><strong><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_WARNING'); ?></strong>
+                            <?php echo $errors; ?>
+                            
+                            </p>
+						</div>
+					</div>
+</div>
+<!--End:Warning box-->
+
+
+
+<?php  
+}
+
+?>
 <!--Tip Box grün -->
 <!--                <div class="color-box space">
                     <div class="shadow">

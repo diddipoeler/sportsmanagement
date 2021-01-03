@@ -77,6 +77,75 @@ abstract class sportsmanagementHelper
 	static $longitude = '';
 	static $_jsm_db = '';
 	static $_success_text = array();
+    
+    /** @var    array    An array of tips */
+	static $_tips = array();
+	/** @var    array    An array of warnings */
+	static $_warnings = array();
+    /** @var    array    An array of notes */
+	static $_notes = array();
+    
+    /**
+     * sportsmanagementHelper::getTips()
+     * 
+     * @return
+     */
+    public static function getTips()
+	{
+		return self::$_tips;
+	}
+    
+    /**
+     * sportsmanagementHelper::getWarnings()
+     * 
+     * @return
+     */
+    public static function getWarnings()
+	{
+		return self::$_warnings;
+	}
+    
+    /**
+     * sportsmanagementHelper::getNotes()
+     * 
+     * @return
+     */
+    public static function getNotes()
+	{
+		return self::$_notes;
+	}
+    
+    /**
+     * sportsmanagementHelper::setTip()
+     * 
+     * @param mixed $tip
+     * @return void
+     */
+    public static function setTip($tip)
+	{
+		self::$_tips[] = $tip;
+	}
+    
+    /**
+     * sportsmanagementHelper::setWarning()
+     * 
+     * @param mixed $warning
+     * @return void
+     */
+    public static function setWarning($warning)
+	{
+		self::$_warnings[] = $warning;
+	}
+    /**
+     * sportsmanagementHelper::setNote()
+     * 
+     * @param mixed $note
+     * @return void
+     */
+    public static function setNote($note)
+	{
+		self::$_notes[] = $note;
+	}
 
 	/**
 	 * Record transaction details in log record

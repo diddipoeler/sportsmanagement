@@ -48,12 +48,12 @@ class sportsmanagementControllerinstallhelper extends JSMControllerForm
         $msg = '';
         $model = $this->getModel();
         $post = $this->jsmjinput->post->getArray(array());
-        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <pre>'.print_r($post,true) .'</pre>'), '');
+        //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <pre>'.print_r($post,true) .'</pre>'), '');
 		$msg   = $model->savesportstype($post);
         
         if ( !$msg )
         {
-        $this->setRedirect('index.php?option=com_sportsmanagement&step=1&error=1', $msg);    
+        $this->setRedirect('index.php?option=com_sportsmanagement&view=installhelper&step=1&error=1', $msg);    
         }
         else
         {

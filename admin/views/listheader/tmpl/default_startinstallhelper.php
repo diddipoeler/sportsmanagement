@@ -28,7 +28,7 @@ $step = $this->jinput->get('step') ? $this->jinput->get('step') : 1;
 <?php
 if ( $this->jinput->get('error') )
 {
-$errors = implode("<br>",JSMModelAdmin::getWarnings());  
+$errors = implode("<br>",sportsmanagementHelper::getWarnings());  
 ?>
 <!--Warning box rot -->
 <div class="color-box">
