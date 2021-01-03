@@ -47,6 +47,7 @@ class sportsmanagementControllerinstallhelper extends JSMControllerForm
     {
         $msg = '';
         $model = $this->getModel();
+        $post = $this->jsmjinput->post->getArray(array());
 		//$msg   = $model->saveshort();
 		//$this->setRedirect('index.php?option=com_sportsmanagement&view=installhelper&step=2', $msg);
         $this->setRedirect('index.php?option=com_sportsmanagement&step=2', $msg);

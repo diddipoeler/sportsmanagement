@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage controllers
@@ -11,15 +9,11 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\MVC\Controller\FormController;
-
 
 /**
  * sportsmanagementControllergithub
@@ -49,8 +43,6 @@ class sportsmanagementControllergithub extends FormController
 		$this->option = $this->jinput->getCmd('option');
 		$this->model  = $this->getModel();
 		$this->post   = $this->jinput->post->getArray(array());
-
-		// $this->registerTask('saveshort',  'saveshort');
 	}
 
 	/**
@@ -61,7 +53,6 @@ class sportsmanagementControllergithub extends FormController
 	public function getModel($name = 'github', $prefix = 'sportsmanagementModel', $config = Array())
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
-
 		return $model;
 	}
 
@@ -75,10 +66,7 @@ class sportsmanagementControllergithub extends FormController
 	function cancel($key = null)
 	{
 		$msg = Text::_('JLIB_HTML_BEHAVIOR_CLOSE');
-
 		$link = 'index.php?option=' . $this->option . '&view=close&tmpl=component';
-
-		// Echo $link.'<br />';
 		$this->setRedirect($link, $msg);
 	}
 
@@ -89,12 +77,9 @@ class sportsmanagementControllergithub extends FormController
 	 */
 	function addissue()
 	{
-		// Check for request forgeries
 		Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
-
 		$msg = $this->model->addissue();
 		$this->setRedirect('index.php?option=com_sportsmanagement&view=github&tmpl=component&layout=github_result', $msg);
-
 	}
 
 }
