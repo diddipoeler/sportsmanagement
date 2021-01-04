@@ -78,11 +78,11 @@ class sportsmanagementView extends BaseHtmlView
 
 	
         /** @var    array    An array of tips */
-	public $_tips = array();
+	public $tips = array();
 	/** @var    array    An array of warnings */
-	public $_warnings = array();
+	public $warnings = array();
         /** @var    array    An array of notes */
-	public $_notes = array();
+	public $notes = array();
 	
 	
 	/**
