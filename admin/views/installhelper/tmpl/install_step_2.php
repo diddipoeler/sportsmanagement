@@ -1,11 +1,11 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage installhelper
  * @file       install_step_2.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -17,10 +17,11 @@ use Joomla\CMS\Component\ComponentHelper;
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
+
 //$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/extended-1.1.css', 'text/css');
 //$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/style.css', 'text/css');
 ?>
-<!--Tip Box grün -->
+<!--Tip Box grÃ¼n -->
 <!--                <div class="color-box space">
                     <div class="shadow">
                         <div class="info-tab tip-icon" title="Useful Tips"><i></i></div>
