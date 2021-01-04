@@ -51,9 +51,9 @@ class sportsmanagementControllerinstallhelper extends JSMControllerForm
         //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <pre>'.print_r($post,true) .'</pre>'), '');
 		$msg   = $model->savesportstype($post);
         
-        if ( !$msg )
+        if ( $msg )
         {
-        $this->setRedirect('index.php?option=com_sportsmanagement&view=installhelper&step=1&error=1', $msg);    
+        $this->setRedirect('index.php?option=com_sportsmanagement&view=installhelper&step=1&error=1&errors='.$msg);        
         }
         else
         {
