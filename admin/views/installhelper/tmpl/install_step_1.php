@@ -17,15 +17,15 @@ use Joomla\CMS\Component\ComponentHelper;
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-echo 'errors <pre>'.print_r($this->warnings,true).'</pre>';
+//echo 'errors <pre>'.print_r($this->warnings,true).'</pre>';
 
 //$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/extended-1.1.css', 'text/css');
 //$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/style.css', 'text/css');
 ?>
 <?php
-if ( $this->jinput->get('error') )
+if ( $this->warnings )
 {
-$errors = implode("<br>",$this->jinput->get('errors'));  
+$errors = implode("<br>",$this->warnings);  
 ?>
 <!--Warning box rot -->
 <div class="color-box">
