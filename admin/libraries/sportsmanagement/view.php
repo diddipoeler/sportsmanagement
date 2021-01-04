@@ -76,6 +76,15 @@ class sportsmanagementView extends BaseHtmlView
 	public $leaflet_css_integrity = 'sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==';
 	public $leaflet_js_integrity = 'sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==';
 
+	
+        /** @var    array    An array of tips */
+	public $_tips = array();
+	/** @var    array    An array of warnings */
+	public $_warnings = array();
+        /** @var    array    An array of notes */
+	public $_notes = array();
+	
+	
 	/**
 	 * sportsmanagementView::display()
 	 *
