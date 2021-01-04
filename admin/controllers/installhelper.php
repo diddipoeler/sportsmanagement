@@ -11,6 +11,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementControllerinstallhelper
@@ -50,7 +51,7 @@ class sportsmanagementControllerinstallhelper extends JSMControllerForm
         $post = $this->jsmjinput->post->getArray(array());
         //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <pre>'.print_r($post,true) .'</pre>'), '');
 		$msg   = $model->savesportstype($post);
-        
+        Factory::getApplication()->input->setVar('errors',$msg);
         if ( $msg )
         {
         $this->setRedirect('index.php?option=com_sportsmanagement&view=installhelper&step=1&error=1&errors='.$msg);        
