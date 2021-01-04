@@ -56,8 +56,10 @@ class sportsmanagementModelinstallhelper extends JSMModelAdmin
     
     if ( !$post['filter_sports_type'] )
     {
-    sportsmanagementHelper::setWarning(Text::_('COM_SPORTSMANAGEMENT_ADMIN_INSTALLHELPER_ERROR_1'));
-    return false;    
+    JSMModelAdmin::setWarning(Text::_('COM_SPORTSMANAGEMENT_ADMIN_INSTALLHELPER_ERROR_1'));
+    //Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' warning <pre>'.print_r(JSMModelAdmin::$_warnings,true).'</pre>' ), '');
+    //  $this->setMessage($model->getError(), 'error');
+    return JSMModelAdmin::$_warnings;    
     }   
     else
     {
