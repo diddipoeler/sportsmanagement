@@ -55,6 +55,8 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 			return;
 		}
 
+		$this->notes[] = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_LEGEND', '<i>' . $this->project->name . '</i>');
+		
 		$this->state         = $this->get('State');
 		$this->sortDirection = $this->state->get('list.direction');
 		$this->sortColumn    = $this->state->get('list.ordering');
