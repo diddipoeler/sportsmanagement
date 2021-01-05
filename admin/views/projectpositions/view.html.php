@@ -54,8 +54,6 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 			$this->_displayEditlist($tpl);
 			return;
 		}
-
-		$this->notes[] = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_LEGEND', '<i>' . $this->project->name . '</i>');
 		
 		$this->state         = $this->get('State');
 		$this->sortDirection = $this->state->get('list.direction');
@@ -74,6 +72,7 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 
 		$mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
 		$this->project    = $mdlProject->getProject($this->project_id);
+		$this->notes[] = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_LEGEND', '<i>' . $this->project->name . '</i>');
 
 		$this->config       = Factory::getConfig();
 		$this->positiontool = $items;
