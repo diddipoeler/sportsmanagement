@@ -1,17 +1,13 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version   1.0.05
  * @file      panel.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -39,7 +35,11 @@ ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_CONTROL_PANEL_
 
                 <div class="row-fluid">
                     <div class="span7">
-
+<?php
+echo $this->loadTemplate('jsm_warnings');
+echo $this->loadTemplate('jsm_notes');			    
+echo $this->loadTemplate('jsm_tips');			    
+?>	
                         <div class="well well-small">
                             <div id="dashboard-icons" class="btn-group">
                                 <div id="element-box">
