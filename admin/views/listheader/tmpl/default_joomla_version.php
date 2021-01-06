@@ -50,11 +50,19 @@ else
         default:
         echo '<div class="' . $no_items . '">';
 	$this->warnings[] = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_MATCHING_RESULTS');	    
-		    echo $this->loadTemplate('jsm_warnings');
-	    //echo Text::_('JGLOBAL_NO_MATCHING_RESULTS');
-	    echo '</div>';
+    echo $this->loadTemplate('jsm_warnings');
+    echo '</div>';
         break;
     }
+	
+	switch ($this->view)
+    {
+        case 'projectreferees':
+	$this->tips[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_NO_REFEREES');	    
+        break;
+			
+	}
+	echo $this->loadTemplate('jsm_tips');
 	
 }
 
