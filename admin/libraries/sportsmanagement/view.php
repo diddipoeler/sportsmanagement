@@ -76,6 +76,15 @@ class sportsmanagementView extends BaseHtmlView
 	public $leaflet_css_integrity = 'sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==';
 	public $leaflet_js_integrity = 'sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==';
 
+	
+    /** @var    array    An array of tips */
+	public $tips = array();
+	/** @var    array    An array of warnings */
+	public $warnings = array();
+    /** @var    array    An array of notes */
+	public $notes = array();
+	
+	
 	/**
 	 * sportsmanagementView::display()
 	 *
@@ -131,6 +140,35 @@ class sportsmanagementView extends BaseHtmlView
         //$this->document->addScript(Uri::root() . 'media/system/js/searchtools.js');
         }
 		
+        
+$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/extended-1.1.css', 'text/css');
+$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/style.css', 'text/css');        
+?>        
+<style>  
+.color-box{margin:15px 0;padding-left:20px}  
+.space{margin-bottom:25px!important}
+
+
+.shadow{background:#F7F8F9;padding:3px;margin:10px 0}
+        
+.tip-box{color:#2e5014;background:#d5efc2}        
+.info-tab{width:40px;height:40px;display:inline-block;position:relative;top:8px}
+.info-tab::before,.info-tab::after{display:inline-block;color:#fff;line-height:normal;font-family:"icomoon";position:absolute}
+.info-tab i::before,.info-tab i::after{content:"";display:inline-block;position:absolute;left:0;bottom:-15px;transform:rotateX(60deg)}
+.info-tab i::before{width:20px;height:20px;box-shadow:inset 12px 0 13px rgba(0,0,0,0.5)}
+.info-tab i::after{width:0;height:0;border:12px solid transparent;border-bottom-color:#fff;border-left-color:#fff;bottom:-18px}
+                   
+.tip-icon{background:#92CD59}
+//.note-icon{background:#47ADE0}
+//.tip-icon{background:#47ADE0}                   
+.warning-icon{background:#AD3C3C}           
+          
+.note-box,.warning-box,.tip-box{padding:8px 8px 3px 26px}          
+.info-tab{float:left;margin-left:-23px}
+              
+</style>        
+        
+<?php        
 // css parameter of formbehavior2::select2
 // for details http://ivaynberg.github.io/select2/		
 $this->document->addStyleDeclaration(
@@ -166,6 +204,7 @@ img.car {
 		switch ($this->view)
 		{
 			case 'smquotetxt':
+            case 'installhelper':
 				break;
 			default:
 				$this->state          = $this->get('State');

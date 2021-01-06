@@ -17,7 +17,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <div id="editcell">
     <!--		<fieldset class="adminform"> -->
-    <legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_LEGEND', '<i>' . $this->project->name . '</i>'); ?></legend>
+<?php
+echo $this->loadTemplate('jsm_warnings');
+echo $this->loadTemplate('jsm_notes');			    
+echo $this->loadTemplate('jsm_tips');			    
+?>	
+	
     <table class="<?php echo $this->table_data_class; ?>">
         <thead>
         <tr>

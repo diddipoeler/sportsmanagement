@@ -15,12 +15,14 @@ use Joomla\CMS\Language\Text;
 if (version_compare(JSM_JVERSION, '4', 'eq'))
 {
 	echo $this->loadTemplate('joomla4');
-	$no_items = 'alert alert-warning alert-no-items';
+	//$no_items = 'alert alert-warning alert-no-items';
+	$no_items = '';
 }
 elseif (version_compare(JSM_JVERSION, '3', 'eq'))
 {
 	echo $this->loadTemplate('joomla3');
 	$no_items = 'alert alert-no-items';
+	$no_items = '';
 }
 
 if ($this->items)
@@ -47,10 +49,26 @@ else
         break;
         default:
         echo '<div class="' . $no_items . '">';
-	    echo Text::_('JGLOBAL_NO_MATCHING_RESULTS');
-	    echo '</div>';
+	$this->warnings[] = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_MATCHING_RESULTS');	    
+    echo $this->loadTemplate('jsm_warnings');
+    echo '</div>';
         break;
     }
+	
+	switch ($this->view)
+    {
+        case 'projectreferees':
+	$this->tips[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_NO_REFEREES');	    
+        break;
+	case 'rounds':
+	$this->tips[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_NO_ROUNDS');	    
+        break;
+	case 'divisions':
+	$this->tips[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_NO_GROUPS');	    
+        break;
+			
+	}
+	echo $this->loadTemplate('jsm_tips');
 	
 }
 

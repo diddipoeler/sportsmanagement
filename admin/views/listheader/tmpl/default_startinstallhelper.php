@@ -22,8 +22,39 @@ $step = $this->jinput->get('step') ? $this->jinput->get('step') : 1;
 <div class="row-fluid">
 <div class="span9">
 <div class="well well-small">
-<div class="module-title nav-header"><?php echo Text::_('COM_SPORTSMANAGEMENT_D_HEADING_INSTALL_TOOLS') ?>
+<div class="module-title nav-header"><?php echo Text::_('COM_SPORTSMANAGEMENT_D_HEADING_INSTALL_TOOLS'); ?>
 </div>
+
+
+<!--Note box blau -->
+<div class="color-box">
+<div class="shadow">
+<div class="info-tab note-icon" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NOTE'); ?>"><i></i></div>
+<div class="note-box">
+<p><strong><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NOTE'); ?></strong>
+<?php 
+switch ( $step )
+{
+case 1:
+echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_INSTALLHELPER');
+break;
+case 2:
+echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_INSTALLHELPER_B');
+break;     
+}
+ 
+
+?>
+</p>
+</div>
+</div>
+</div>
+<!--End:Note box-->
+
+
+
+
+
 <div id="dashboard-icons" class="btn-group">
 
 <a class="btn" href="index.php?option=com_sportsmanagement&view=installhelper&step=<?php echo $step; ?>">
