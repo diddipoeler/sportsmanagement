@@ -60,6 +60,12 @@ else
         case 'projectreferees':
 	$this->tips[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_NO_REFEREES');	    
         break;
+	case 'rounds':
+	$this->tips[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_NO_ROUNDS');	    
+        break;
+	case 'divisions':
+	$this->tips[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_NO_GROUPS');	    
+        break;
 			
 	}
 	echo $this->loadTemplate('jsm_tips');
