@@ -7,7 +7,7 @@ Auch im Extension zu finden: https://extensions.joomla.org/extension/sports-mana
 Das Team
 ================
 * Entwickler: diddipoeler
-* Entwicklungsunterstützung: appukonrad, tdittmann, llambion 
+* Entwicklungsunterstützung: jst71, appukonrad, tdittmann, llambion 
 * Language manager & Wiki: stony
 * Übersetzer: sk-plehanovec, teddy
 * Tester: svdoldie

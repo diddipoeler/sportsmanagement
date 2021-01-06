@@ -11,6 +11,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 
 if (version_compare(JSM_JVERSION, '4', 'eq'))
 {
@@ -21,7 +22,7 @@ if (version_compare(JSM_JVERSION, '4', 'eq'))
 elseif (version_compare(JSM_JVERSION, '3', 'eq'))
 {
 	echo $this->loadTemplate('joomla3');
-	$no_items = 'alert alert-no-items';
+	//$no_items = 'alert alert-no-items';
 	$no_items = '';
 }
 
