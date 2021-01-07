@@ -74,6 +74,7 @@ else
 			
 	}
 }
+	echo $this->loadTemplate('jsm_notes');
 	echo $this->loadTemplate('jsm_tips');
 	
 }
