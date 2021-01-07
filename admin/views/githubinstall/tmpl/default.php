@@ -19,8 +19,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 		<?PHP
 		echo $this->loadTemplate('joomla_version');
-	    echo $this->loadTemplate('jsm_notes');
-	echo $this->loadTemplate('jsm_tips');
+	    //echo $this->loadTemplate('jsm_notes');
+	//echo $this->loadTemplate('jsm_tips');
 	    /*
 		foreach ($this->_success_text as $key => $value)
 		{
