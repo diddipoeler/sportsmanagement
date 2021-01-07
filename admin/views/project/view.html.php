@@ -45,7 +45,10 @@ class sportsmanagementViewProject extends sportsmanagementView
 
 		if ($this->getLayout() == 'panel' || $this->getLayout() == 'panel_3' || $this->getLayout() == 'panel_4')
 		{
+			if (ComponentHelper::getParams($this->option)->get('show_jsm_tips'))
+		{
 			$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_NOTES');
+			}
 			$this->_displayPanel($tpl);
 
 			return;
