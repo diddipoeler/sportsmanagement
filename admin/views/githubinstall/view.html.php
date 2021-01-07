@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage githubinstall
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
@@ -40,6 +36,10 @@ class sportsmanagementViewgithubinstall extends sportsmanagementView
 		$github_link         = ComponentHelper::getParams($this->option)->get('cfg_update_server_file', '');
 		$this->github_link   = $github_link;
 		$this->_success_text = $this->model->CopyGithubLink($github_link);
+		foreach ($this->_success_text as $key => $value)
+		{
+		$this->notes[] = $value;		
+		}
 		$this->setDocument();
 	}
 
