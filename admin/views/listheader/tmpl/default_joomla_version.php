@@ -49,6 +49,7 @@ else
         echo $this->loadTemplate('data');
         break;
 		case 'githubinstall':    
+		    case 'templates':  
 		    break;
         default:
         echo '<div class="' . $no_items . '">';
