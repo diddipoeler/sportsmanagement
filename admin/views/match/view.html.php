@@ -280,6 +280,8 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		$option              = $jinput->getCmd('option');
 		$model               = $this->getModel();
 		$default_name_format = '';
+		$lists             = Array();
+		$projectpositions = Array();
 
 		$this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/sm_functions.js');
 		$this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/startinglineup.js');
