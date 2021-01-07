@@ -302,6 +302,10 @@ class sportsmanagementViewMatch extends sportsmanagementView
 				$inroster[] = $referee->value;
 			}
 		}
+		else
+		{
+		//$this->notes[] = $value;		
+		}
 
 		// Projekt positionen
 		$selectpositions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REF_FUNCTION'));
@@ -310,6 +314,12 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		{
 			$selectpositions = array_merge($selectpositions, $projectpositions);
 		}
+		/*
+		if ( !$selectpositions )
+		{
+		$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');	
+		}
+		*/
 
 		$lists['projectpositions'] = HTMLHelper::_('select.genericlist', $selectpositions, 'project_position_id', 'class="inputbox" size="1"', 'value', 'text');
 
@@ -358,8 +368,8 @@ class sportsmanagementViewMatch extends sportsmanagementView
 
 			if (!$projectpositions)
 			{
-				Log::add('<br />' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS') . '<br /><br />', Log::WARNING, 'jsmerror');
-
+			//	Log::add('<br />' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS') . '<br /><br />', Log::WARNING, 'jsmerror');
+$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 				return;
 			}
 
