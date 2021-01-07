@@ -292,7 +292,8 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 								$memberPredictionPoint->prAwayTipp,
 								$memberPredictionPoint->prJoker,
 								$memberPredictionPoint->homeDecision,
-								$memberPredictionPoint->awayDecision
+								$memberPredictionPoint->awayDecision,
+								$memberPredictionPoint->matchRoundId
 							);
 							$newPoints = sportsmanagementModelPrediction::getMemberPredictionPointsForSelectedMatch($predictionProject, $result);
 							if (!is_null($memberPredictionPoint->prPoints))
@@ -302,6 +303,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 								{
 									// this check also should be done if the result is not displayed
 									$memberPredictionPoint = sportsmanagementModelPrediction::savePredictionPoints(
+										$newPoints,
 										$memberPredictionPoint,
 										$predictionProject,
 										true

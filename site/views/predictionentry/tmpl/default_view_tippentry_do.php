@@ -41,6 +41,7 @@ else
 			sportsmanagementModelPredictionEntry::$pjID = sportsmanagementModelPrediction::$pjID;
 			$this->model->predictionProject             = $predictionProject;
 			$actualProjectCurrentRound                  = sportsmanagementModelPrediction::getProjectSettings(sportsmanagementModelPrediction::$pjID);
+			$rien_ne_va_plus_times = sportsmanagementModelPrediction::getPredictionTippRoundsRienNeVaPlusTimes($predictionProject, $predictionProjectSettings->timezone);
 
 			if (!isset(sportsmanagementModelPrediction::$roundID) || ((int) sportsmanagementModelPrediction::$roundID < 1))
 			{
@@ -328,12 +329,20 @@ else
 									$resultAway = $result->team2_result_decision;
 								}
 
+								// get data to check, if betting is still allowed
 								$closingtime   = $this->config['closing_time'];// 3600=1 hour
-								$matchTimeDate = sportsmanagementHelper::getTimestamp($result->match_date, 1, $predictionProjectSettings->timezone);
+								// the default latestTimeToBet is $matchTimeDate
+								$latestTimeToBet = sportsmanagementHelper::getTimestamp($result->match_date, 1, $predictionProjectSettings->timezone);
 								$thisTimeDate  = sportsmanagementHelper::getTimestamp(date("Y-m-d H:i:s"), 1, $predictionProjectSettings->timezone);
 
-								$matchTimeDate = $matchTimeDate - $closingtime;
-								$tippAllowed   = (($thisTimeDate < $matchTimeDate) &&
+								if (isset($rien_ne_va_plus_times[$result->round_id]->latestTimeToBet))
+								{
+									// override latest time to bet, if configured for this round_id
+									$latestTimeToBet = $rien_ne_va_plus_times[$result->round_id]->latestTimeToBet;
+								}
+
+								$latestTimeToBet = $latestTimeToBet - $closingtime;
+								$tippAllowed   = (($thisTimeDate < $latestTimeToBet) &&
 										($resultHome == '-') &&
 										($resultAway == '-')) || (($this->allowedAdmin) && ($this->predictionMember->admintipp));
 

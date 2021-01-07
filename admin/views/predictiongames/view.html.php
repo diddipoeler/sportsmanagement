@@ -20,6 +20,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Table\Table;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewPredictionGames
@@ -40,9 +41,9 @@ class sportsmanagementViewPredictionGames extends sportsmanagementView
 	 */
 	public function init()
 	{
-
 		$lists = array();
 
+		// setup of prediction id was done during populate of controller!
 		$this->prediction_id = $this->state->get('filter.prediction_id');
 
 		if ($this->prediction_id != 0)

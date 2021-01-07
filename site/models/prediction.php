@@ -573,6 +573,102 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 	}
 
 	/**
+	 * sportsmanagementModelPrediction::getPredictionTippRoundsRatingCharts()
+	 *
+	 * @param   object  $predictionProject
+	 *
+	 * @return array of predition rounds Rating Charts for requested preditionproject
+	 */
+	static function getPredictionTippRoundsRatingCharts($predictionProject)
+	{
+		// Create a new query object.
+		$db    = sportsmanagementHelper::getDBConnection();
+		$query = $db->getQuery(true);
+
+		if ($predictionProject->prediction_id > 0)
+		{
+			$query->select('round_id, points_tipp, points_correct_result, points_correct_diff, points_correct_draw, points_correct_tendence');
+			$query->from('#__sportsmanagement_prediction_tippround as ptr');
+			$query->where('ptr.prediction_id = ' . (int) $predictionProject->prediction_id);
+			$query->where('ptr.published = 1');
+
+			$db->setQuery($query);
+			$result = $db->loadObjectList('round_id');
+
+			return $result;
+		}
+		return false;
+	}
+
+	/**
+	 * sportsmanagementModelPrediction::getPredictionTippRoundsRienNeVaPlusTimes()
+	 *
+	 * @param   object  $predictionProject
+	 * @param   int $timezone
+	 *
+	 * @return array of predition rounds latest times to change bets ("rien ne va plus") for requested preditionproject
+	 */
+	static function getPredictionTippRoundsRienNeVaPlusTimes($predictionProject, $timezone)
+	{
+		// Create a new query object.
+		$db    = sportsmanagementHelper::getDBConnection();
+		$query = $db->getQuery(true);
+
+		if ($predictionProject->prediction_id > 0)
+		{
+			$query->select('round_id, rien_ne_va_plus');
+			$query->from('#__sportsmanagement_prediction_tippround as ptr');
+			$query->where('ptr.prediction_id = ' . (int) $predictionProject->prediction_id);
+			$query->where('ptr.published = 1');
+
+			$db->setQuery($query);
+			$result = $db->loadObjectList('round_id');
+
+			// prepare special times to avoid to many db queries
+			if ($result && is_array($result))
+			{
+				foreach ($result AS $r)
+				{
+					switch ($r->rien_ne_va_plus)
+					{
+						case 'FIRSTMATCH_OF_TIPPGAME':
+							$query->clear();
+							$query->select('min(match_date)');
+							$query->from('#__sportsmanagement_match AS m');
+							$query->join('INNER', '#__sportsmanagement_round AS r ON m.round_id = r.id');
+							$query->where('r.project_id = ' . (int) $predictionProject->project_id);
+							$query->where('m.published = 1');
+							$db->setQuery($query);
+
+							$proj_first_match_start_datetime = $db->loadResult();
+							$proj_first_match_start_time  = strtotime($proj_first_match_start_datetime);
+							$result[$r->round_id]->latestTimeToBet  = sportsmanagementHelper::getTimestamp(date("Y-m-d", $proj_first_match_start_time), 1, $timezone);
+							break;
+						case 'FIRSTMATCH_OF_TIPPROUND':
+							$query->clear();
+							$query->select('min(match_date)');
+							$query->from('#__sportsmanagement_match');
+							$query->where('round_id = ' . (int) $r->round_id);
+							$query->where('published = 1');
+							$db->setQuery($query);
+
+							$round_first_match_start_datetime = $db->loadResult();
+							$round_first_match_start_time  = strtotime($round_first_match_start_datetime);
+							$result[$r->round_id]->latestTimeToBet  = sportsmanagementHelper::getTimestamp(date("Y-m-d", $round_first_match_start_time), 1, $timezone);
+							break;
+						case 'BEGIN_OF_MATCH':
+						default:
+							// noting to change, we use match date as latestTimeToBet already
+							break;
+					}
+				}
+			}			
+			return $result;
+		}
+		return false;
+	}
+
+	/**
 	 * sportsmanagementModelPrediction::getProjectSettings()
 	 *
 	 * @param   integer  $pid
@@ -1661,6 +1757,58 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 	}
 
 	/**
+	 * sportsmanagementModelPrediction::createRatingObject()
+	 *
+	 * @param   int    $points_tipp
+	 * @param   int    $points_correct_result
+	 * @param   int    $points_correct_diff
+	 * @param   int    $points_correct_draw
+	 * @param   int    $points_correct_tendence
+	 *
+	 * @return
+	 */
+	static function createRatingObject($points_tipp, $points_correct_result, $points_correct_diff, $points_correct_draw, $points_correct_tendence)
+	{
+		$rating_obj                          = new stdClass;
+		$rating_obj->points_tipp             = $points_tipp;
+		$rating_obj->points_correct_result   = $points_correct_result;
+		$rating_obj->points_correct_diff     = $points_correct_diff;
+		$rating_obj->points_correct_draw     = $points_correct_draw;
+		$rating_obj->points_correct_tendence = $points_correct_tendence;
+		return $rating_obj;
+	}
+
+	/**
+	 * sportsmanagementModelPrediction::createRatingChart()
+	 * 
+	 * creates the rating chart (prediction points for match tipps) depending on joker or specific tournament settings
+	 *
+	 * @param   mixed  $predictionProject
+	 * @param   mixed  $createRatingChart 
+	 *
+	 * @return
+	 */
+	static function createRatingChart(&$predictionProject)
+	{
+		// setup predition points information
+		$ratingChart = sportsmanagementModelPrediction::getPredictionTippRoundsRatingCharts($predictionProject);
+		if (!$ratingChart) {
+			$ratingChart = array();
+		}
+		$ratingChart['default'] = sportsmanagementModelPrediction::createRatingObject($predictionProject->points_tipp,
+																					  $predictionProject->points_correct_result,
+																					  $predictionProject->points_correct_diff,
+																					  $predictionProject->points_correct_draw,
+																					  $predictionProject->points_correct_tendence);
+		$ratingChart['joker'] = sportsmanagementModelPrediction::createRatingObject($predictionProject->points_tipp_joker,
+																					$predictionProject->points_correct_result_joker,
+																					$predictionProject->points_correct_diff_joker,
+																					$predictionProject->points_correct_draw_joker,
+																					$predictionProject->points_correct_tendence_joker);
+		return $ratingChart;
+	}
+	
+	/**
 	 * sportsmanagementModelPrediction::getMemberPredictionPointsForSelectedMatch()
 	 *
 	 * @param   mixed  $predictionProject
@@ -1670,6 +1818,12 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 	 */
 	static function getMemberPredictionPointsForSelectedMatch(&$predictionProject, &$result)
 	{
+		static $ratingChart = null;
+		if (!$ratingChart)
+		{
+			// setup predition points information
+			$ratingChart = sportsmanagementModelPrediction::createRatingChart($predictionProject);
+ 		}
 		if ($predictionProject->mode == 0)    // Standard prediction Mode
 		{
 			if ((!isset($result->team1_result)) || (!isset($result->team2_result)) || (!isset($result->tipp_home)) || (!isset($result->tipp_away)))
@@ -1679,73 +1833,16 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
 			if (!$result->joker)    // No Joker was used for this prediction
 			{
-				// Prediction Result is the same as the match result / Top Tipp
-				if (($result->team1_result == $result->tipp_home) && ($result->team2_result == $result->tipp_away))
+				// check, if special predition Round settings available
+				if (isset($ratingChart[$result->matchRoundId]))
 				{
-					return $predictionProject->points_correct_result;
+					return sportsmanagementModelPrediction::scoreMatchPredictionPoints($ratingChart[$result->matchRoundId], $result);
 				}
-
-				// Prediction Result is not the same as the match result but the correct difference between home and
-				// away result was tipped and the matchresult is draw
-				if (($result->team1_result == $result->team2_result)
-					&& ($result->team1_result - $result->team2_result) == ($result->tipp_home - $result->tipp_away)
-				)
-				{
-					return $predictionProject->points_correct_draw;
-				}
-
-				// Prediction Result is not the same as the match result but the correct difference between home and
-				// away result was tipped
-				if (($result->team1_result - $result->team2_result) == ($result->tipp_home - $result->tipp_away))
-				{
-					return $predictionProject->points_correct_diff;
-				}
-
-				// Prediction Result is not the same as the match result but the tendence of the result is correct
-				if (((($result->team1_result - $result->team2_result) > 0) && (($result->tipp_home - $result->tipp_away) > 0))
-					|| ((($result->team1_result - $result->team2_result) < 0) && (($result->tipp_home - $result->tipp_away) < 0))
-				)
-				{
-					return $predictionProject->points_correct_tendence;
-				}
-
-				// Prediction Result is totally wrong but we check if there is at least one point to give ;-)
-				return $predictionProject->points_tipp;
+				return sportsmanagementModelPrediction::scoreMatchPredictionPoints($ratingChart['default'], $result);
 			}
 			else    // Member took a Joker for this prediction
 			{
-				// With Joker - Prediction Result is the same as the match result / Top Tipp
-				if (($result->team1_result == $result->tipp_home) && ($result->team2_result == $result->tipp_away))
-				{
-					return $predictionProject->points_correct_result_joker;
-				}
-
-				// With Joker - Prediction Result is not the same as the match result but the correct difference between home and
-				// away result was tipped and the matchresult is draw
-				if (($result->team1_result == $result->team2_result)
-					&& ($result->team1_result - $result->team2_result) == ($result->tipp_home - $result->tipp_away)
-				)
-				{
-					return $predictionProject->points_correct_draw_joker;
-				}
-
-				// With Joker - Prediction Result is not the same as the match result but the correct difference between home and
-				// away result was tipped
-				if (($result->team1_result - $result->team2_result) == ($result->tipp_home - $result->tipp_away))
-				{
-					return $predictionProject->points_correct_diff_joker;
-				}
-
-				// Prediction Result is not the same as the match result but the tendence of the result is correct
-				if (((($result->team1_result - $result->team2_result) > 0) && (($result->tipp_home - $result->tipp_away) > 0))
-					|| ((($result->team1_result - $result->team2_result) < 0) && (($result->tipp_home - $result->tipp_away) < 0))
-				)
-				{
-					return $predictionProject->points_correct_tendence_joker;
-				}
-
-				// With Joker - Prediction Result is totally wrong but we check if there is a point to give
-				return $predictionProject->points_tipp_joker;
+				return sportsmanagementModelPrediction::scoreMatchPredictionPoints($ratingChart['joker'], $result);
 			}
 		}
 		else    // Toto Mode - No Joker is used here
@@ -1774,6 +1871,53 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 		}
 
 		return 'ERROR';
+	}
+
+
+	/**
+	 * sportsmanagementModelPrediction::scoreMatchPredictionPoints()
+	 * Scores a single match with given ratingObject
+	 * Keep in mind, that caller may use joker settigs or RedictionRound Settings as well
+	 * 
+	 * @param   object    $ratingChart
+	 * @param   object    $result
+	 *
+	 * @return  int score
+	 */
+	public static function scoreMatchPredictionPoints(&$ratingObject, &$result)
+	{
+		// Prediction Result is the same as the match result / Top Tipp
+		if (($result->team1_result == $result->tipp_home) && ($result->team2_result == $result->tipp_away))
+		{
+			return $ratingObject->points_correct_result;
+		}
+
+		// Prediction Result is not the same as the match result but the correct difference between home and
+		// away result was tipped and the matchresult is draw
+		if (($result->team1_result == $result->team2_result)
+			&& ($result->team1_result - $result->team2_result) == ($result->tipp_home - $result->tipp_away)
+		)
+		{
+			return $ratingObject->points_correct_draw;
+		}
+
+		// Prediction Result is not the same as the match result but the correct difference between home and
+		// away result was tipped
+		if (($result->team1_result - $result->team2_result) == ($result->tipp_home - $result->tipp_away))
+		{
+			return $ratingObject->points_correct_diff;
+		}
+
+		// Prediction Result is not the same as the match result but the tendence of the result is correct
+		if (((($result->team1_result - $result->team2_result) > 0) && (($result->tipp_home - $result->tipp_away) > 0))
+			|| ((($result->team1_result - $result->team2_result) < 0) && (($result->tipp_home - $result->tipp_away) < 0))
+		)
+		{
+			return $ratingObject->points_correct_tendence;
+		}
+
+		// Prediction Result is totally wrong but we check if there is at least one point to give ;-)
+		return $ratingObject->points_tipp;
 	}
 
 	/**
@@ -1921,10 +2065,11 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 	 * @param   mixed    $joker
 	 * @param   integer  $homeDecision
 	 * @param   integer  $awayDecision
+	 * @param   mixed    $matchRoundId == JSM Project RoundID  of match to override specific predition settings of round
 	 *
 	 * @return
 	 */
-	static function createResultsObject($home, $away, $tipp, $tippHome, $tippAway, $joker, $homeDecision = 0, $awayDecision = 0)
+	static function createResultsObject($home, $away, $tipp, $tippHome, $tippAway, $joker, $homeDecision = 0, $awayDecision = 0, $matchRoundId = 0)
 	{
 		$result                        = new stdClass;
 		$result->team1_result          = $home;
@@ -1935,6 +2080,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 		$result->tipp_home             = $tippHome;
 		$result->tipp_away             = $tippAway;
 		$result->joker                 = $joker;
+		$result->matchRoundId          = $matchRoundId;
 
 		return $result;
 	}
@@ -1980,6 +2126,10 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 		$query->select('m.team1_result_so AS homeResultSO,m.team2_result_so AS awayResultSO');
 		$query->select('pr.id AS prID,pr.user_id AS prUserID,pr.tipp AS prTipp,pr.tipp_home AS prHomeTipp,pr.tipp_away AS prAwayTipp,pr.joker AS prJoker,pr.points AS prPoints,pr.top AS prTop,pr.diff AS prDiff,pr.tend AS prTend');
 		$query->select('pm.id AS pmID');
+
+		// Need round_id for round specific predition settings
+		$query->select('m.round_id AS matchRoundId');
+
 		$query->from('#__sportsmanagement_match AS m');
 		$query->join('INNER', '#__sportsmanagement_round AS r ON r.id = m.round_id');
 
@@ -2106,13 +2256,14 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 	/**
 	 * sportsmanagementModelPrediction::savePredictionPoints()
 	 *
+	 * @param   int  $newPoints 
 	 * @param   mixed  $memberResult
 	 * @param   mixed  $predictionProject
 	 * @param   bool   $returnArray
 	 *
 	 * @return
 	 */
-	public static function savePredictionPoints(&$memberResult, &$predictionProject, $returnArray = false)
+	public static function savePredictionPoints($newPoints, &$memberResult, &$predictionProject, $returnArray = false)
 	{
 		// Reference global application object
 		$app = Factory::getApplication();
@@ -2157,7 +2308,6 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 		$tipp  = $memberResult->prTipp;
 		$joker = $memberResult->prJoker;
 
-		$points = $memberResult->prPoints;
 		$top    = $memberResult->prTop;
 		$diff   = $memberResult->prDiff;
 		$tend   = $memberResult->prTend;
@@ -2185,120 +2335,46 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 			}
 		}
 
-		$points = 0;
 		$top    = 0;
 		$diff   = 0;
 		$tend   = 0;
 
-		if ($predictionProject->mode == 1)    // TOTO prediction Mode
-		{
-			// $points = $tipp;
-			if (($result_home > $result_away) && ($tipp == '1'))
-			{
-				$points = 1;
-			}
-
-			if (($result_home < $result_away) && ($tipp == '2'))
-			{
-				$points = 1;
-			}
-
-			if (($result_home == $result_away) && ($tipp == '0'))
-			{
-				$points = 1;
-			}
-
-			if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO)
-			{
-				$app->enqueueMessage(Text::_('toto points -> ' . $points . '<br>'), 'Notice');
-			}
-		}
+		// Do not reimplement calculation of points here, it was done by getMemberPredictionPointsForSelectedMatch
+		// Bad enough, that we have to duplicate evaluation of result class (correct_result|draw|...) here :-(
 
 		if (!is_null($tipp_home) && !is_null($tipp_away))
 		{
 			if ($predictionProject->mode == 1)    // TOTO prediction Mode
 			{
-				// $points = $tipp;
 			}
 			else    // Standard prediction Mode
 			{
-				if ($joker)    // Member took a Joker for this prediction
+				if (($result_home == $tipp_home) && ($result_away == $tipp_away))
 				{
-					if (($result_home == $tipp_home) && ($result_away == $tipp_away))
-					{
-						// Prediction Result is the same as the match result / Top Tipp
-						$points = $predictionProject->points_correct_result_joker;
-						$top    = 1;
-					}
-                    elseif (($result_home == $result_away) && ($result_home - $result_away) == ($tipp_home - $tipp_away))
-					{
-						// Prediction Result is not the same as the match result but the correct difference between home and
-						// away result was tipped and the matchresult is draw
-						$points = $predictionProject->points_correct_draw_joker;
-
-						// $diff = 1;
-						// "$tend=1" should be used instead as "Prediction Result is not the same as the match result but the tendence of the result is correct"
-						$tend = 1; // updated 2018-08-25
-					}
-                    elseif (($result_home - $result_away) == ($tipp_home - $tipp_away))
-					{
-						// Prediction Result is not the same as the match result but the correct difference between home and
-						// away result was tipped
-						$points = $predictionProject->points_correct_diff_joker;
-						$diff   = 1;
-					}
-                    elseif (((($result_home - $result_away) > 0) && (($tipp_home - $tipp_away) > 0))
-						|| ((($result_home - $result_away) < 0) && (($tipp_home - $tipp_away) < 0))
-					)
-					{
-						// Prediction Result is not the same as the match result but the tendence of the result is correct
-						$points = $predictionProject->points_correct_tendence_joker;
-						$tend   = 1;
-					}
-					else
-					{
-						// Prediction Result is totally wrong but we check if there is a point to give
-						$points = $predictionProject->points_tipp_joker;
-					}
+					// Prediction Result is the same as the match result / Top Tipp
+					$top    = 1;
 				}
-				else    // No Joker was used for this prediction
+				elseif (($result_home == $result_away) && ($result_home - $result_away) == ($tipp_home - $tipp_away))
 				{
-					if (($result_home == $tipp_home) && ($result_away == $tipp_away))
-					{
-						// Prediction Result is the same as the match result / Top Tipp
-						$points = $predictionProject->points_correct_result;
-						$top    = 1;
-					}
-                    elseif (($result_home == $result_away) && ($result_home - $result_away) == ($tipp_home - $tipp_away))
-					{
-						// Prediction Result is not the same as the match result but the correct difference between home and
-						// away result was tipped and the matchresult is draw
-						$points = $predictionProject->points_correct_draw;
+					// Prediction Result is not the same as the match result but the correct difference between home and
+					// away result was tipped and the matchresult is draw
 
-						// $diff = 1;
-						// "$tend=1" should be used instead as "Prediction Result is not the same as the match result but the tendence of the result is correct"
-						$tend = 1; // updated 2018-08-25
-					}
-                    elseif (($result_home - $result_away) == ($tipp_home - $tipp_away))
-					{
-						// Prediction Result is not the same as the match result but the correct difference between home and
-						// away result was tipped
-						$points = $predictionProject->points_correct_diff;
-						$diff   = 1;
-					}
-                    elseif (((($result_home - $result_away) > 0) && (($tipp_home - $tipp_away) > 0))
-						|| ((($result_home - $result_away) < 0) && (($tipp_home - $tipp_away) < 0))
-					)
-					{
-						// Prediction Result is not the same as the match result but the tendence of the result is correct
-						$points = $predictionProject->points_correct_tendence;
-						$tend   = 1;
-					}
-					else
-					{
-						// Prediction Result is totally wrong but we check if there is a point to give
-						$points = $predictionProject->points_tipp;
-					}
+					// $diff = 1;
+					// "$tend=1" should be used instead as "Prediction Result is not the same as the match result but the tendence of the result is correct"
+					$tend = 1; // updated 2018-08-25
+				}
+				elseif (($result_home - $result_away) == ($tipp_home - $tipp_away))
+				{
+					// Prediction Result is not the same as the match result but the correct difference between home and
+					// away result was tipped
+					$diff   = 1;
+				}
+				elseif (((($result_home - $result_away) > 0) && (($tipp_home - $tipp_away) > 0))
+					|| ((($result_home - $result_away) < 0) && (($tipp_home - $tipp_away) < 0))
+				)
+				{
+					// Prediction Result is not the same as the match result but the tendence of the result is correct
+					$tend   = 1;
 				}
 			}
 		}
@@ -2310,7 +2386,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 		$object->tipp_away = $tipp_away;
 		$object->tipp      = $tipp;
 		$object->joker     = $joker;
-		$object->points    = $points;
+		$object->points    = $newPoints;
 		$object->top       = $top;
 		$object->diff      = $diff;
 		$object->tend      = $tend;
@@ -2321,7 +2397,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 		if ($returnArray)
 		{
 			$memberResult->tipp   = $tipp;
-			$memberResult->points = $points;
+			$memberResult->points = $newPoints;
 			$memberResult->top    = $top;
 			$memberResult->diff   = $diff;
 			$memberResult->tend   = $tend;
