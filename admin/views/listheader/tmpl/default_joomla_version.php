@@ -56,6 +56,8 @@ else
         break;
     }
 	
+	if (ComponentHelper::getParams($this->option)->get('show_jsm_tips'))
+		{
 	switch ($this->view)
     {
         case 'projectreferees':
@@ -69,6 +71,7 @@ else
         break;
 			
 	}
+}
 	echo $this->loadTemplate('jsm_tips');
 	
 }
