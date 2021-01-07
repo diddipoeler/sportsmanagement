@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage match
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -42,6 +38,8 @@ if ($close == 1)
     </script>
 	<?php
 }
+
+echo $this->loadTemplate('jsm_notes');
 ?>
 <div id="lineup">
     <form action="<?php echo Route::_('index.php?option=com_sportsmanagement'); ?>" id='component-form' method='post'
@@ -54,9 +52,11 @@ if ($close == 1)
                 <button type="button"
                         onclick="$('close').value=1; jQuery('select.position-starters option').prop('selected', 'selected'); Joomla.submitform('matches.saveReferees', this.form);">
 					<?php echo Text::_('JSAVE'); ?></button>
+		    <!--
                 <button id="cancel" type="button"
                         onclick="<?php echo Factory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : ''; ?>  window.parent.SqueezeBox.close();">
 					<?php echo Text::_('JCANCEL'); ?></button>
+		    -->
             </div>
             <div class="configuration">
 				<?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ER_TITLE'); ?>
