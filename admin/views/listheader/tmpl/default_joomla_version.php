@@ -48,6 +48,8 @@ else
         case 'databasetools':
         echo $this->loadTemplate('data');
         break;
+		case 'githubinstall':    
+		    break;
         default:
         echo '<div class="' . $no_items . '">';
 	$this->warnings[] = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_MATCHING_RESULTS');	    
