@@ -37,7 +37,7 @@ Extensions ?
 
 Änderungen
 ---------------------
-*   01-01-2021: **3.8.30** Alle Meister einer Liga, Tippspiel:4 Halbfinalsten tippbar mit konfigurierbare Punkte
+*   01-01-2021: **3.8.30** Alle Meister einer Liga, Tippspiel:4 Halbfinalisten tippbar mit konfigurierbare Punkte
 *   06-10-2020: **3.8.20** Sportart Wasserball hinzugefügt
 *   03-10-2020: **3.8.10** Neue Felder Countries
 *   12-09-2020: **3.8.00** Neue Felder Spielstätte, Personen und Vereine
