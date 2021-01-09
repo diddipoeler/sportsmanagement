@@ -68,17 +68,24 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		}
 
 		$mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
-		$project    = $mdlProject->getProject($this->project_id);
+		$this->project    = $mdlProject->getProject($this->project_id);
+        
+		if ( $this->project->fast_projektteam )
+		{
+			$lists['country_teams']         = $this->model->getCountryTeams();
+			$lists['country_teams_picture'] = $this->model->getCountryTeamsPicture();
+            $this->tips[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_QUICKADD_DESCR');
+		}        
 
-		$this->project_art_id         = $project->project_art_id;
-		$this->season_id              = $project->season_id;
-		$this->league_id              = $project->league_id;
-		$this->sports_type_id         = $project->sports_type_id;
+		$this->project_art_id         = $this->project->project_art_id;
+		$this->season_id              = $this->project->season_id;
+		$this->league_id              = $this->project->league_id;
+		$this->sports_type_id         = $this->project->sports_type_id;
 		$this->projectsbyleagueseason = $mdlProject->getProjectsbyCurrentProjectLeagueSeason($this->season_id, $this->league_id);
-		$this->app->setUserState("$this->option.pid", $project->id);
-		$this->app->setUserState("$this->option.season_id", $project->season_id);
-		$this->app->setUserState("$this->option.project_art_id", $project->project_art_id);
-		$this->app->setUserState("$this->option.sports_type_id", $project->sports_type_id);
+		$this->app->setUserState("$this->option.pid", $this->project->id);
+		$this->app->setUserState("$this->option.season_id", $this->project->season_id);
+		$this->app->setUserState("$this->option.project_art_id", $this->project->project_art_id);
+		$this->app->setUserState("$this->option.sports_type_id", $this->project->sports_type_id);
 
 		$starttime = microtime();
 		$items     = $this->get('Items');
@@ -229,11 +236,11 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 			$this->state->get('filter.search_nation')
 		);
 
-		if ( $project->fast_projektteam )
-		{
-			$lists['country_teams']         = $this->model->getCountryTeams();
-			$lists['country_teams_picture'] = $this->model->getCountryTeamsPicture();
-		}
+//		if ( $this->project->fast_projektteam )
+//		{
+//			$lists['country_teams']         = $this->model->getCountryTeams();
+//			$lists['country_teams_picture'] = $this->model->getCountryTeamsPicture();
+//		}
 		$finaltablerank    = array();
 		for ($a = 0; $a < 41; $a++)
 		{
@@ -264,7 +271,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		$this->divisions      = $projectdivisions;
 		$this->projectteam    = $items;
 		$this->pagination     = $pagination;
-		$this->project        = $project;
+//		$this->project        = $project;
 		$this->project_art_id = $this->project_art_id;
 		$this->lists          = $lists;
 
@@ -320,12 +327,11 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERR
 		{
 			$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTPERSONS_TITLE');
 		}
+        
         ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=project&layout=panel&id='.$this->project_id);
-
 		ToolbarHelper::custom('projectteams.setseasonid', 'purge.png', 'purge_f2.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_SET_SEASON_ID'), true);
 		ToolbarHelper::custom('projectteams.matchgroups', 'purge.png', 'purge_f2.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_CHANGE_MATCH_GROUPS'), true);
 		ToolbarHelper::deleteList('', 'projectteams.delete');
-
 		ToolbarHelper::apply('projectteams.saveshort');
 
 		$layout = new JLayoutFile('changeteams', JPATH_ROOT . '/components/com_sportsmanagement/layouts');
@@ -348,10 +354,8 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERR
 
 		ToolbarHelper::custom('projectteam.copy', 'copy', 'copy', Text::_('JTOOLBAR_DUPLICATE'), true);
 		ToolbarHelper::checkin('projectteams.checkin');
-
 		ToolbarHelper::publish('projectteams.use_table_yes', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_SET_USE_TABLE_YES', true);
 		ToolbarHelper::unpublish('projectteams.use_table_no', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_SET_USE_TABLE_NO', true);
-
 		ToolbarHelper::publish('projectteams.use_table_points_yes', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_SET_USE_TABLE_POINTS_YES', true);
 		ToolbarHelper::unpublish('projectteams.use_table_points_no', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_SET_USE_TABLE_POINTS_NO', true);
 		ToolbarHelper::unpublish('projectteams.set_playground', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_SET_PLAYGROUND', true);
