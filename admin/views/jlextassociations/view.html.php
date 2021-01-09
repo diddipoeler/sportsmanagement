@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage jlextassociastions
@@ -11,14 +9,13 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementViewjlextassociations
@@ -31,6 +28,21 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
  */
 class sportsmanagementViewjlextassociations extends sportsmanagementView
 {
+    /**
+	 * A \JForm instance with filter fields.
+	 *
+	 * @var    \JForm
+	 * @since  3.6.3
+	 */
+	public $filterForm;
+
+	/**
+	 * An array with active filters.
+	 *
+	 * @var    array
+	 * @since  3.6.3
+	 */
+	public $activeFilters;
 
 	/**
 	 * sportsmanagementViewjlextassociations::init()
@@ -42,10 +54,7 @@ class sportsmanagementViewjlextassociations extends sportsmanagementView
 
 		$this->table = Table::getInstance('jlextassociation', 'sportsmanagementTable');
 
-		/**
-		 *
-		 * build the html options for nation
-		 */
+		/** build the html options for nation */
 		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 
 		if ($res = JSMCountries::getCountryOptions())
@@ -74,6 +83,17 @@ class sportsmanagementViewjlextassociations extends sportsmanagementView
 
 		$this->lists = $lists;
 
+try
+{		
+$this->filterForm    = $this->model->getFilterForm();
+$this->activeFilters = $this->model->getActiveFilters();
+}
+catch (Exception $e)
+{
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');	
+}
+
 	}
 
 	/**
@@ -83,10 +103,7 @@ class sportsmanagementViewjlextassociations extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-		/**
-		 *
-		 * Set toolbar items for the page
-		 */
+		/** Set toolbar items for the page		 */
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_TITLE');
 
 		ToolbarHelper::addNew('jlextassociation.add');
