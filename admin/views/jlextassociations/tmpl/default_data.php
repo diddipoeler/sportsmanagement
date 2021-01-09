@@ -16,10 +16,21 @@ use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 
-$templatesToLoad = array('footer', 'listheader');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+$this->saveOrder = $this->sortColumn == 'objassoc.ordering';
+if ($this->saveOrder && !empty($this->items))
+{
+$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task='.$this->view.'.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{    
+HTMLHelper::_('draggablelist.draggable');
+}
+else
+{
+JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl,$this->saveOrderButton);    
+}
+}
 ?>
-<div id="editcell">
+<div class="table-responsive" id="editcell">
     <table class="<?php echo $this->table_data_class; ?>">
         <thead>
         <tr>
@@ -74,27 +85,28 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             </td>
         </tr>
         </tfoot>
-        <tbody>
+        <tbody <?php if ( $this->saveOrder && version_compare(substr(JVERSION, 0, 3), '4.0', 'ge') ) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($this->sortDirection); ?>" <?php endif; ?>>
 		<?php
-		$k = 0;
-		for ($i = 0, $n = count($this->items); $i < $n; $i++)
+//		$k = 0;
+//		for ($i = 0, $n = count($this->items); $i < $n; $i++)
+        foreach ($this->items as $this->count_i => $this->item)
 		{
-			$row        =& $this->items[$i];
-			$link       = Route::_('index.php?option=com_sportsmanagement&task=jlextassociation.edit&id=' . $row->id);
+//			$row        =& $this->items[$i];
+			$link       = Route::_('index.php?option=com_sportsmanagement&task=jlextassociation.edit&id=' . $this->item->id);
 			$canEdit    = $this->user->authorise('core.edit', 'com_sportsmanagement');
-			$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $row->checked_out == $this->user->get('id') || $row->checked_out == 0;
-			$checked    = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'jlextassociations.', $canCheckin);
-			$canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.jlextassociation.' . $row->id) && $canCheckin;
+			$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $this->item->checked_out == $this->user->get('id') || $this->item->checked_out == 0;
+			$checked    = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'jlextassociations.', $canCheckin);
+			$canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.jlextassociation.' . $this->item->id) && $canCheckin;
 			?>
-            <tr class="<?php echo "row$k"; ?>">
+            <tr class="row<?php echo $this->count_i % 2; ?>" <?php echo $this->dragable_group; ?>>
                 <td class="center">
 					<?php
-					echo $this->pagination->getRowOffset($i);
+					echo $this->pagination->getRowOffset($this->count_i);
 					?>
                 </td>
                 <td class="center">
 					<?php
-					echo HTMLHelper::_('grid.id', $i, $row->id);
+					echo HTMLHelper::_('grid.id', $this->count_i, $this->item->id);
 					?>
                 </td>
 				<?php
@@ -102,22 +114,22 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 				$inputappend = '';
 				?>
                 <td style="text-align:center; ">
-					<?php if ($row->checked_out) : ?>
-						<?php echo HTMLHelper::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'jlextassociations.', $canCheckin); ?>
+					<?php if ($this->item->checked_out) : ?>
+						<?php echo HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->item->editor, $this->item->checked_out_time, 'jlextassociations.', $canCheckin); ?>
 					<?php endif; ?>
 					<?php if ($canEdit) : ?>
-                        <a href="<?php echo Route::_('index.php?option=com_sportsmanagement&task=jlextassociation.edit&id=' . (int) $row->id); ?>">
-							<?php echo $this->escape($row->name); ?></a>
+                        <a href="<?php echo Route::_('index.php?option=com_sportsmanagement&task=jlextassociation.edit&id=' . (int) $this->item->id); ?>">
+							<?php echo $this->escape($this->item->name); ?></a>
 					<?php else : ?>
-						<?php echo $this->escape($row->name); ?>
+						<?php echo $this->escape($this->item->name); ?>
 					<?php endif; ?>
 
 
 
 					<?php
-					if ($row->website != '')
+					if ($this->item->website != '')
 					{
-						echo '<a href="' . $row->website . '" target="_blank"><span class="label label-success" title="' . $row->website . '">' . Text::_('JYES') . '</span></a>';
+						echo '<a href="' . $this->item->website . '" target="_blank"><span class="label label-success" title="' . $this->item->website . '">' . Text::_('JYES') . '</span></a>';
 					}
 					else
 					{
@@ -125,26 +137,22 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					}
 					?>
 
-					<?php //echo $row->name;
+					<?php
 					?>
                     <p class="smallsub">
-						<?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias)); ?></p>
+						<?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($this->item->alias)); ?></p>
                 </td>
 				<?php
 
 				?>
 
-                <td><?php echo $row->short_name; ?></td>
-                <td style="text-align:center; "><?php echo JSMCountries::getCountryFlag($row->country); ?></td>
+                <td><?php echo $this->item->short_name; ?></td>
+                <td style="text-align:center; "><?php echo JSMCountries::getCountryFlag($this->item->country); ?></td>
                 <td style="text-align:center; ">
 					<?php
-					//            $path = Uri::root().$row->assocflag;
-					//          $attributes='';
-					//		      $html .= 'title="'.$row->name.'" '.$attributes.' />';
-					//					echo $html;
-					if (empty($row->assocflag) || !File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $row->assocflag))
+					if (empty($this->item->assocflag) || !File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $this->item->assocflag))
 					{
-						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE') . $row->assocflag;
+						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE') . $this->item->assocflag;
 						echo HTMLHelper::_(
 							'image', 'administrator/components/com_sportsmanagement/assets/images/delete.png',
 							$imageTitle, 'title= "' . $imageTitle . '"'
@@ -153,9 +161,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					else
 					{
 						?>
-                        <a href="<?php echo Uri::root() . $row->assocflag; ?>" title="<?php echo $row->name; ?>"
+                        <a href="<?php echo Uri::root() . $this->item->assocflag; ?>" title="<?php echo $this->item->name; ?>"
                            class="modal">
-                            <img src="<?php echo Uri::root() . $row->assocflag; ?>" alt="<?php echo $row->name; ?>"
+                            <img src="<?php echo Uri::root() . $this->item->assocflag; ?>" alt="<?php echo $this->item->name; ?>"
                                  width="20"/>
                         </a>
 						<?PHP
@@ -164,13 +172,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                 </td>
                 <td style="text-align:center; ">
 					<?php
-					//            $path = Uri::root().$row->assocflag;
-					//          $attributes='';
-					//		      $html .= 'title="'.$row->name.'" '.$attributes.' />';
-					//					echo $html;
-					if (empty($row->picture) || !File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $row->picture))
+					if (empty($this->item->picture) || !File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $this->item->picture))
 					{
-						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE') . $row->picture;
+						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE') . $this->item->picture;
 						echo HTMLHelper::_(
 							'image', 'administrator/components/com_sportsmanagement/assets/images/delete.png',
 							$imageTitle, 'title= "' . $imageTitle . '"'
@@ -179,9 +183,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					else
 					{
 						?>
-                        <a href="<?php echo Uri::root() . $row->picture; ?>" title="<?php echo $row->name; ?>"
+                        <a href="<?php echo Uri::root() . $this->item->picture; ?>" title="<?php echo $this->item->name; ?>"
                            class="modal">
-                            <img src="<?php echo Uri::root() . $row->picture; ?>" alt="<?php echo $row->name; ?>"
+                            <img src="<?php echo Uri::root() . $this->item->picture; ?>" alt="<?php echo $this->item->name; ?>"
                                  width="20"/>
                         </a>
 						<?PHP
@@ -190,31 +194,25 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                 </td>
                 <td class="center">
                     <div class="btn-group">
-						<?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'jlextassociations.', $canChange, 'cb'); ?>
-						<?php // Create dropdown items and render the dropdown list.
+						<?php echo HTMLHelper::_('jgrid.published', $this->item->published, $this->count_i, 'jlextassociations.', $canChange, 'cb'); ?>
+						<?php 
+                        /** Create dropdown items and render the dropdown list. */
 						if ($canChange)
 						{
-							HTMLHelper::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'jlextassociations');
-							HTMLHelper::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'jlextassociations');
-							echo HTMLHelper::_('actionsdropdown.render', $this->escape($row->name));
+							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === 2 ? 'un' : '') . 'archive', 'cb' . $this->count_i, 'jlextassociations');
+							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === -2 ? 'un' : '') . 'trash', 'cb' . $this->count_i, 'jlextassociations');
+							echo HTMLHelper::_('actionsdropdown.render', $this->escape($this->item->name));
 						}
 						?>
                     </div>
 
                 </td>
-                <td class="order">
-                            <span>
-                                <?php echo $this->pagination->orderUpIcon($i, $i > 0, 'jlextassociations.orderup', 'JLIB_HTML_MOVE_UP', true); ?>
-                            </span>
-                    <span>
-                                <?php echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'jlextassociations.orderdown', 'JLIB_HTML_MOVE_DOWN', true); ?>
-                                <?php $disabled = true ? '' : 'disabled="disabled"'; ?>
-                            </span>
-                    <input type="text" name="order[]" size="5"
-                           value="<?php echo $row->ordering; ?>" <?php echo $disabled; ?>
-                           class="form-control form-control-inline" style="text-align: center"/>
-                </td>
-                <td style="text-align:center; "><?php echo $row->id; ?></td>
+<td class="order" id="defaultdataorder">
+<?php
+echo $this->loadTemplate('data_order');
+?>
+</td>
+                <td style="text-align:center; "><?php echo $this->item->id; ?></td>
             </tr>
 			<?php
 			$k = 1 - $k;

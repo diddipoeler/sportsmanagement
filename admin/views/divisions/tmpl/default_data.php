@@ -115,7 +115,6 @@ JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($t
 		<?php
 		foreach ($this->items as $this->count_i => $this->item)
 		{
-            //$this->count_i = $i;
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
 $this->dragable_group = 'data-dragable-group="none"';
@@ -216,7 +215,7 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
                     </div>
 
                 </td>
-                <td class="order" id="defaultdataorder">
+<td class="order" id="defaultdataorder">
 <?php
 echo $this->loadTemplate('data_order');
 ?>

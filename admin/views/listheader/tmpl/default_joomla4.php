@@ -55,6 +55,7 @@ case 'clubs':
 case 'divisions':
 case 'eventtypes':
 case 'jlextcountries':
+case 'jlextassociations':
 case 'leagues':
 case 'playgrounds':
 		
