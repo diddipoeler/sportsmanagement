@@ -91,7 +91,7 @@ JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($t
 			$checked    = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'jlextfederations.', $canCheckin);
 			$canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.jlextfederation.' . $this->item->id) && $canCheckin;
 			?>
-            <tr class="<?php echo "row$k"; ?>">
+            <tr class="row<?php echo $this->count_i % 2; ?>" <?php echo $this->dragable_group; ?>>
                 <td class="center">
 					<?php
 					echo $this->pagination->getRowOffset($this->count_i);
@@ -117,13 +117,6 @@ JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($t
 						<?php echo $this->escape($this->item->name); ?>
 					<?php endif; ?>
 
-
-
-					<?php //echo $checked;
-					?>
-
-					<?php //echo $row->name;
-					?>
                     <p class="smallsub">
 						<?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($this->item->alias)); ?></p>
                 </td>
@@ -199,7 +192,7 @@ echo $this->loadTemplate('data_order');
                 <td style="text-align:center; "><?php echo $this->item->id; ?></td>
             </tr>
 			<?php
-			$k = 1 - $k;
+
 		}
 		?>
         </tbody>

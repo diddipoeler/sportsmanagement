@@ -212,7 +212,7 @@ echo $this->loadTemplate('data_order');
                 <td style="text-align:center; "><?php echo $this->item->id; ?></td>
             </tr>
 			<?php
-			$k = 1 - $k;
+
 		}
 		?>
         </tbody>
