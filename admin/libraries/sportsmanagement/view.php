@@ -603,14 +603,14 @@ break;
              break;
              }
 
-			if (isset($this->federation))
-			{
-				JHtmlSidebar::addFilter(
-					Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_FEDERATION'),
-					'filter_federation',
-					HTMLHelper::_('select.options', $this->federation, 'value', 'text', $this->state->get('filter.federation'), true)
-				);
-			}
+//			if (isset($this->federation))
+//			{
+//				JHtmlSidebar::addFilter(
+//					Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_FEDERATION'),
+//					'filter_federation',
+//					HTMLHelper::_('select.options', $this->federation, 'value', 'text', $this->state->get('filter.federation'), true)
+//				);
+//			}
 
 			if (isset($this->unique_id))
 			{
