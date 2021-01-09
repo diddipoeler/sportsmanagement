@@ -503,8 +503,8 @@ break;
 				//case 'players':
 				case 'predictiongames':
 				case 'predictionrounds':
-				case 'jlextfederations':
-				case 'jlextassociations':
+				//case 'jlextfederations':
+				//case 'jlextassociations':
 				//case 'jlextcountries':
 				//case 'agegroups':
 				//case 'eventtypes':
@@ -517,7 +517,7 @@ break;
 				//case 'teams':
 				//case 'playgrounds':
 				//case 'rounds':
-				case 'divisions':
+				//case 'divisions':
 				case 'extrafields':
 				//case 'teamplayers':
 					JHtmlSidebar::addFilter(
