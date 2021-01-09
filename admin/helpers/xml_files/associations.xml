@@ -578,26 +578,7 @@
 <associations><assocname country="ESP" icon="" flag="" website="" shortname="" main="17" parentmain="0">Melilla</assocname></associations>
 <associations><assocname country="ESP" icon="" flag="" website="" shortname="" main="18" parentmain="0">Murcia</assocname></associations>
 <associations><assocname country="ESP" icon="" flag="" website="" shortname="" main="19" parentmain="0">Navarra</assocname></associations>
-
-<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="1" parentmain="0">Level 1</assocname></associations>
-<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="2" parentmain="0">Level 2</assocname></associations>
-<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="3" parentmain="0">Level 3</assocname></associations>
-<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="4" parentmain="0">Level 4</assocname></associations>
-<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="5" parentmain="0">Level 5</assocname></associations>
-<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="6" parentmain="0">Level 6</assocname></associations>
-<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="7" parentmain="0">Level 7</assocname></associations>
-<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="8" parentmain="0">Level 8</assocname></associations>
-<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="9" parentmain="0">Level 9</assocname></associations>
-<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="10" parentmain="0">Level 10</assocname></associations>
-<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="11" parentmain="0">Level 11</assocname></associations>
-<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="12" parentmain="0">Level 12</assocname></associations>
-<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="13" parentmain="0">Level 13</assocname></associations>
-<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="14" parentmain="0">Aufgelöst</assocname></associations>
-<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="15" parentmain="0">Level 14</assocname></associations>
-<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="16" parentmain="0">Level 15</assocname></associations>
-<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="17" parentmain="0">Level 16</assocname></associations>
-<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="18" parentmain="0">Level 17</assocname></associations>
-  
+ 
 <associations><assocname country="NOR" icon="" flag="" website="" shortname="" main="1" parentmain="0">Agder</assocname></associations>
 <associations><assocname country="NOR" icon="" flag="" website="" shortname="" main="2" parentmain="0">Akershus</assocname></associations>
 <associations><assocname country="NOR" icon="" flag="" website="" shortname="" main="3" parentmain="0">Buskerud</assocname></associations>
@@ -974,6 +955,49 @@
 <associations><assocname country="GRC" icon="" flag="" website="" shortname="" main="52" parentmain="0">Trikala Football Clubs Association</assocname></associations>
 <associations><assocname country="GRC" icon="" flag="" website="" shortname="" main="53" parentmain="0">Xanthi Football Clubs Association</assocname></associations>
 <associations><assocname country="GRC" icon="" flag="" website="" shortname="" main="54" parentmain="0">Zakynthos Football Clubs Association</assocname></associations>
+
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="1" parentmain="0">Aufgelöst</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="2" parentmain="0">Anglian</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="3" parentmain="0">Bedfordshire County</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="4" parentmain="0">Cambridgeshire County</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="5" parentmain="0">Cheshire</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="6" parentmain="0">Devon</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="7" parentmain="0">Dorset</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="8" parentmain="0">Essex & Suffolk</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="9" parentmain="0">Essex</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="10" parentmain="0">Gloucestershire County</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="11" parentmain="0">Hampshire</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="12" parentmain="0">Hertfordshire County</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="13" parentmain="0">Humber</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="14" parentmain="0">Kent County</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="15" parentmain="0">Leicestershire</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="16" parentmain="0">Liverpool</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="17" parentmain="0">Manchester</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="18" parentmain="0">Mid-Sussex</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="19" parentmain="0">Middlesex County</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="20" parentmain="0">North Riding</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="21" parentmain="0">Northamptonshire</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="22" parentmain="0">Nottinghamshire</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="23" parentmain="0">Oxfordshire</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="24" parentmain="0">Peterborough & District</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="25" parentmain="0">Sheffield & Hallamshire County</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="26" parentmain="0">Shropshire County</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="27" parentmain="0">Somerset County</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="28" parentmain="0">Southern Combination</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="29" parentmain="0">Spartan South Midlands</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="30" parentmain="0">St Piran</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="31" parentmain="0">Staffordshire County</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="32" parentmain="0">Suffolk & Ipswich</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="33" parentmain="0">Surrey</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="34" parentmain="0">Thames Valley</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="35" parentmain="0">Wearside</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="36" parentmain="0">West Cheshire</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="37" parentmain="0">West Lancashire</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="38" parentmain="0">West Midlands</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="39" parentmain="0">West Yorkshire</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="40" parentmain="0">Wiltshire</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="41" parentmain="0">York</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="42" parentmain="0">Yorkshire</assocname></associations>
   
   
 </structur>
