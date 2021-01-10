@@ -1162,6 +1162,26 @@ $message['message'] = $getmessage;
         //echo __METHOD__.' '.__LINE__.' response<pre>'.print_r($response->body ,true).'</pre>';
         $xmlstring = simplexml_load_string($response->body);
         //echo __METHOD__.' '.__LINE__.' xmlstring<pre>'.print_r($xmlstring,true).'</pre>';
+  
+/*        
+libxml_use_internal_errors(TRUE);
+ 
+$objXmlDocument = simplexml_load_file(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/associations.xml');
+ 
+if ($objXmlDocument === FALSE) {
+    echo "There were errors parsing the XML file.\n";
+    foreach(libxml_get_errors() as $error) {
+        echo $error->message;
+        $error->line;
+        $error->column;
+    }
+    exit;
+}
+ 
+$objJsonDocument = json_encode($objXmlDocument);
+$arrOutput = json_decode($objJsonDocument, TRUE);        
+*/        
+        
 
 		$params        = ComponentHelper::getParams($this->jsmoption);
 		$country_assoc = $params->get('cfg_country_associations');
