@@ -19,6 +19,7 @@ use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Installer\Installer;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementModeldatabasetool
