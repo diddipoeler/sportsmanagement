@@ -17,6 +17,8 @@ use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\Http\HttpFactory;
+use Joomla\CMS\Installer\Installer;
 
 /**
  * sportsmanagementModeldatabasetool
@@ -1153,6 +1155,7 @@ $message['message'] = $getmessage;
 
 		$params        = ComponentHelper::getParams($this->jsmoption);
 		$country_assoc = $params->get('cfg_country_associations');
+        $country_assoc = array_merge( array_filter($country_assoc) );
 
 		if ($country_assoc)
 		{
