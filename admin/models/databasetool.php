@@ -1142,16 +1142,25 @@ $message['message'] = $getmessage;
 			$xml      = simplexml_load_file(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/associations.xml');
 			$document = 'associations';
 		}
-		else
-		{
-			$xml      = Factory::getXML(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/associations.xml');
-			$document = 'associations';
-		}
+//		else
+//		{
+//			$xml      = Factory::getXML(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/associations.xml');
+//			$document = 'associations';
+//		}
 
 		if (!File::exists(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/associations.xml'))
 		{
 			return false;
 		}
+        
+        
+        
+        $url = Uri::root() . '/administrator/components/' . $this->jsmoption . '/helpers/xml_files/associations.xml';
+        $http = HttpFactory::getHttp();
+		$response = $http->get($url);
+        //echo __METHOD__.' '.__LINE__.' response<pre>'.print_r($response->body ,true).'</pre>';
+        $xmlstring = simplexml_load_string($response->body);
+        //echo __METHOD__.' '.__LINE__.' xmlstring<pre>'.print_r($xmlstring,true).'</pre>';
 
 		$params        = ComponentHelper::getParams($this->jsmoption);
 		$country_assoc = $params->get('cfg_country_associations');
