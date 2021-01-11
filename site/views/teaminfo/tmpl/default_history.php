@@ -130,7 +130,8 @@ use Joomla\CMS\Factory;
             <td><?php echo $season->season; ?></td>
             <td><?php echo JSMCountries::getCountryFlag($season->leaguecountry).''.$season->league; ?></td>
             <td><?php
-
+		if ( $this->config['show_team_hist_picture'] )
+		{
 				$picture = !$season->season_picture ? sportsmanagementHelper::getDefaultPlaceholder('team') : $season->season_picture;
 
 				echo sportsmanagementHelperHtml::getBootstrapModalImage('teaminfohistory' . $season->ptid . '-' . $season->projectid,
@@ -142,6 +143,7 @@ use Joomla\CMS\Factory;
 					$this->modalheight,
 					$this->overallconfig['use_jquery_modal']
 				);
+	}
 				?></td>
 			<?php if ($this->project->project_type == 'DIVISIONS_LEAGUE')
 			{
