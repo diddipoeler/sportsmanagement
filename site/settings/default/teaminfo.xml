@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <form>
+	<!-- reiter 1 -->
 	<fieldset name="details" 
   label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
   description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
@@ -88,7 +89,7 @@
 		
 	</fieldset>
 
-
+<!-- reiter 2 -->
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS" 
   label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS" description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
 
@@ -137,11 +138,18 @@
 -->
 		
 	</fieldset>
-
+<!-- reiter 3 -->
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_HISTORY_OPTIONS"
   label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_HISTORY_OPTIONS"  
   description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_HISTORY_OPTIONS">
 
+<field name="show_team_hist_picture" type="extensionradiobutton" default="0"   class="radio btn-group btn-group-yesno"
+label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_PICTURE" 
+description="COM_SPORTSMANAGEMENT_FES_PARAM_DESC_SHOW_PICTURE">
+<option value="0">JNO</option>
+<option value="1">JYES</option>
+</field>
+		
 		<field name="ordering_teams_seasons" type="extensionradiobutton" default="1"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_TEAMINFO_PARAM_LABEL_ORDERING_TEAMS" 
