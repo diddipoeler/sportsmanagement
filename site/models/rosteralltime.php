@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\ListModel;
@@ -31,15 +27,10 @@ use Joomla\CMS\Log\Log;
 class sportsmanagementModelRosteralltime extends ListModel
 {
 	static $projectid = 0;
-
 	static $projectteamid = 0;
-
 	static $projectteam = 0;
-
 	static $teamid = 0;
-
 	static $cfg_which_database = 0;
-
 	var $team = null;
 
 	/**
@@ -79,7 +70,7 @@ class sportsmanagementModelRosteralltime extends ListModel
 		self::$teamid             = (int) $jinput->get('tid', 0);
 		self::$projectteamid      = (int) $jinput->get('ttid', 0);
 		self::$cfg_which_database = Factory::getApplication()->input->get('cfg_which_database', 0, 'INT');
-		$this->limitstart         = $jinput->getVar('limitstart', 0, '', 'int');
+		$this->limitstart         = $jinput->getVar('start', 0, '', 'int');
         
 //Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' projectid<br><pre>' . print_r(self::$projectid,true) . '</pre>'), Log::INFO, 'jsmerror');
 //Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' teamid<br><pre>' . print_r(self::$teamid,true) . '</pre>'), Log::INFO, 'jsmerror');
