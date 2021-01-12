@@ -25,11 +25,14 @@ usort(
     <table class="<?php echo $this->config['table_class']; ?> ">
         <thead>
         <tr>
-			<?php if ($this->config['show_small_logo'])
-			{
+			<?php 
+		//if ($this->config['show_small_logo'])
+		//	{
 				?>
                 <th><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMS_LOGO_TEAM'); ?></th>
-			<?php } ?>
+			<?php 
+//} 
+		?>
             <th><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMS_NAME_TEAM'); ?></th>
             <th><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMS_NAME_CLUB'); ?></th>
 			<?php
@@ -112,6 +115,17 @@ $image = HTMLHelper::image($picture, $teamTitle, array('title' => $teamTitle, ' 
 
 				$smallTeamLogoLink = HTMLHelper::link($teaminfo_link, $image);
 			}
+			else
+			{
+			$image = sportsmanagementHelper::getPictureThumb(
+						'media/com_sportsmanagement/jl_images/icon_copyright_2.png',
+						$team->team_name,
+						$this->config['team_picture_width'],
+						'auto',
+						1
+					);
+				$smallTeamLogoLink = HTMLHelper::link($teaminfo_link, $image);
+			}
 
 			if ($this->config['show_medium_logo'])
 			{
@@ -128,17 +142,14 @@ $image = HTMLHelper::image($picture, $clubTitle, array('title' => $clubTitle, ' 
 			}
 			?>
             <tr>
-				<?php if ($this->config['show_small_logo'])
-				{
+				<?php 
+			//if ($this->config['show_small_logo'])
+			//	{
 					?>
                     <td name="show_small_logo"><?php echo $smallTeamLogoLink; ?></td>
-				<?php } 
-		    else
-		    {
-			    ?>
-		     <td name="show_small_logo"><?php echo HTMLHelper::image('media/com_sportsmanagement/jl_images/icon_copyright_2.png', '', 'height="30"'); ?></td>
-		    <?php
-		    }
+				<?php 
+			//} 
+
 		    ?>
                 <td name="which_link1">
 					<?php
