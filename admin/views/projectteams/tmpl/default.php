@@ -27,7 +27,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     {
     echo $this->loadTemplate('jsm_tips');    
     }
-    
+    echo $this->loadTemplate('jsm_notes');
 	?>
     <div>
         <script type="text/javascript">
