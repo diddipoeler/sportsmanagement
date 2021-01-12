@@ -132,7 +132,14 @@ $image = HTMLHelper::image($picture, $clubTitle, array('title' => $clubTitle, ' 
 				{
 					?>
                     <td name="show_small_logo"><?php echo $smallTeamLogoLink; ?></td>
-				<?php } ?>
+				<?php } 
+		    else
+		    {
+			    ?>
+		     <td name="show_small_logo"><?php echo HTMLHelper::image('media/com_sportsmanagement/jl_images/icon_copyright_2.png', '', 'height="30"'); ?></td>
+		    <?php
+		    }
+		    ?>
                 <td name="which_link1">
 					<?php
 					if ($this->config['which_link1'] == 0)
