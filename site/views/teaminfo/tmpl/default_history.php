@@ -144,6 +144,10 @@ use Joomla\CMS\Factory;
 					$this->overallconfig['use_jquery_modal']
 				);
 	}
+else
+      {
+        echo HTMLHelper::image('media/com_sportsmanagement/jl_images/icon_copyright_2.png', '', 'height="30"');
+      }		
 				?></td>
 			<?php if ($this->project->project_type == 'DIVISIONS_LEAGUE')
 			{
