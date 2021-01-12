@@ -256,6 +256,10 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		{
 			$all_teams = array_merge($all_teams, $allTeams);
 		}
+		else
+		{
+		$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_CHANGE_TEAMS');	
+		}
 
 		$lists['all_teams'] = $all_teams;
 		unset($all_teams);
