@@ -19,22 +19,25 @@
 		<field
 			name="name"
 			type="text"
-			size="100"
+			size="75"
+		       maxlength="75"
 			label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
 			description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
-			class="form-control form-control-inline"
+			class="input-xxlarge"
 			required="true"/>
 	<field
 			name="middle_name"
 			type="text"
-			size="100"
+			size="25"
+	       maxlength="25"
 			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_MIDDLE_NAME"
 			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_MIDDLE_NAME_DESC"
 			class="form-control form-control-inline"/>
 	<field
 			name="short_name"
 			type="text"
-			size="100"
+			size="15"
+	       maxlength="15"
 			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_SHORT_NAME"
 			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_SHORT_NAME_DESC"
 			class="form-control form-control-inline"
@@ -42,10 +45,12 @@
 	<field
 			name="alias"
 			type="text"
-			size="100"
+			size="75"
+	       maxlength="75"
 			label="JFIELD_ALIAS_LABEL"
 			description="JFIELD_ALIAS_DESC"
-			class="form-control form-control-inline"/>	
+	       readonly="true"
+            class="input-xxlarge readonly"/>	
 			
 			<field
 			name="website"
