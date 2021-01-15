@@ -9,8 +9,11 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Log\Log;
 
 if ($this->familytree)
 					{
