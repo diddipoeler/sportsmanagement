@@ -16,6 +16,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Log\Log;
 
 ?>
+<div class="row-fluid" id="default_fusion">  
 <div class="panel-group" id="<?php echo $this->club->name; ?>">  
   
 <div class="panel panel-default">
@@ -53,7 +54,7 @@ echo $this->familytree;
   
 </div>  
   
-  
+</div>    
   
   
   
