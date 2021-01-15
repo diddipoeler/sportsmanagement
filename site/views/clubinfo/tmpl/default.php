@@ -61,6 +61,10 @@ else
     <!-- <div class="row"> -->
 	<?PHP
 	echo $this->loadTemplate('clubinfo');
+	if ($this->config['show_fusion'])
+	{
+	echo $this->loadTemplate('fusion');
+	}
 	?>
     <!-- </div> -->
 	<?PHP
