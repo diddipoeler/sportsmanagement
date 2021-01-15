@@ -61,10 +61,7 @@ else
     <!-- <div class="row"> -->
 	<?PHP
 	echo $this->loadTemplate('clubinfo');
-	if ($this->config['show_fusion'])
-	{
-	echo $this->loadTemplate('fusion');
-	}
+	
 	?>
     <!-- </div> -->
 	<?PHP
@@ -74,6 +71,11 @@ else
 	 */
 	$this->output = array();
 
+	if ($this->config['show_fusion'])
+	{
+	$this->output['COM_SPORTSMANAGEMENT_TABS_EXTRA_FUSION'] = 'fusion';
+	}
+	
 	if ($this->config['show_extra_fields'])
 	{
 		$this->output['COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS'] = 'extrafields';
