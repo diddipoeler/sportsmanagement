@@ -16,40 +16,39 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Log\Log;
 
 if ($this->familytree)
-					{
-						$class_collapse = 'collapse in';
-					}
-					else
-					{
-						$class_collapse = 'collapse';
-					}
-					?>
-<div class="<?php echo $this->divclassrow; ?>" itemscope="" itemtype="http://schema.org/SportsClub" id="default_clubinfo">
-                    <a href="#fusion" class="btn btn-info btn-block" data-toggle="collapse">
-                        <strong>
-							<?php echo Text::_('Fusionen'); ?>
-                        </strong>
-                    </a>
-                    <div id="fusion" class="<?PHP echo $class_collapse; ?>">
-                        <div class="tree">
-
-                            <ul>
-                                <li>
-									<?php
-									if (!$this->config['show_bootstrap_tree'])
-									{
-										?>
-                                        <span><i class="icon-folder-open"></i> aktueller Verein</span>
-										<?php
-									}
-									?>
-                                    <a href="#"><?PHP echo HTMLHelper::image($this->club->logo_big, $this->club->name, 'width="30"') . ' ' . $this->club->name; ?></a>
-									<?php
-									echo $this->familytree;
-									?>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-  </div>
-					<?php
+{
+$class_collapse = 'collapse in';
+}
+else
+{
+$class_collapse = 'collapse';
+}
+?>
+<div class="row" itemscope="" itemtype="http://schema.org/SportsClub" id="default_fusion">
+<a href="#clubinfofusion" class="btn btn-info btn-block" data-toggle="collapse">
+<strong>
+<?php echo Text::_('Fusionen'); ?>
+</strong>
+</a>
+<div id="clubinfofusion" class="<?PHP echo $class_collapse; ?>">
+<div class="tree">
+<ul>
+<li>
+<?php
+if (!$this->config['show_bootstrap_tree'])
+{
+?>
+<span><i class="icon-folder-open"></i> aktueller Verein</span>
+<?php
+}
+?>
+<a href="#"><?PHP echo HTMLHelper::image($this->club->logo_big, $this->club->name, 'width="30"') . ' ' . $this->club->name; ?></a>
+<?php
+echo $this->familytree;
+?>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<?php
