@@ -15,23 +15,21 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Log\Log;
 
-if ($this->familytree)
-{
-$class_collapse = 'collapse in';
-}
-else
-{
-$class_collapse = 'collapse';
-}
-?>
-<div class="row" itemscope="" itemtype="http://schema.org/SportsClub" id="default_fusion">
-<a href="#clubinfofusion" class="btn btn-info btn-block" data-toggle="collapse">
-<strong>
-<?php echo Text::_('Fusionen'); ?>
-</strong>
-</a>
-<div id="clubinfofusion" class="<?PHP echo $class_collapse; ?>">
-<div class="tree">
+<div class="panel-group" id="<?php echo $this->club->name; ?>">  
+  
+<div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse"
+                           data-parent="#<?php echo $this->club->name; ?>"
+                           href="#<?php echo $this->club->id; ?>"><?php echo Text::_('Fusionen') ; ?></a>
+                    </h4>
+                </div>  
+  
+<div id="<?php echo $this->club->id; ?>" class="panel-collapse collapse in">
+                    <div class="panel-body">  
+  
+                             <div class="tree">
 <ul>
 <li>
 <?php
@@ -42,13 +40,25 @@ if (!$this->config['show_bootstrap_tree'])
 <?php
 }
 ?>
-<a href="#"><?PHP echo HTMLHelper::image($this->club->logo_big, $this->club->name, 'width="30"') . ' ' . $this->club->name; ?></a>
+<a href="#"><?PHP echo HTMLHelper::image($this->club->logo_big, $this->club->name, 'width="30"') . ' ' . $this->club->name; ?></a>                             
 <?php
 echo $this->familytree;
-?>
-</li>
+?> 
+  </li>
 </ul>
-</div>
-</div>
-</div>
-<?php
+</div>   
+  
+</div>   
+  
+</div>  
+  
+  
+  
+  
+  
+</div>   
+  
+</div>  
+  
+  
+  
