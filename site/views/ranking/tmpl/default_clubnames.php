@@ -67,6 +67,9 @@ use Joomla\CMS\Language\Text;
 	else
 	{
 		?>
+        <table class="<?PHP echo $this->config['table_class']; ?>">
+        <tr>
+                                    <td>
 <!--Tip Box grün -->
 <div class="color-box">
 					<div class="shadow">
@@ -77,7 +80,10 @@ use Joomla\CMS\Language\Text;
 						</div>
 					</div>
 </div>
-<!--Tip Box grün -->        
+<!--Tip Box grün -->  
+ </td>
+                                </tr> 
+     </table>
 		<?PHP
 	}
 	?>

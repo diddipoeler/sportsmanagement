@@ -25,7 +25,6 @@ use Joomla\CMS\Language\Text;
 					</div>
 </div>
 <!--Note box blau -->
-
     <table class="<?PHP echo $this->config['table_class']; ?>">
         <tr>
             <td align="left">
@@ -33,7 +32,19 @@ use Joomla\CMS\Language\Text;
 				<?php
 				if ($this->ranking_notes)
 				{
-					echo $this->ranking_notes;
+?>
+<!--Tip Box grün -->
+<div class="color-box">
+					<div class="shadow">
+						<div class="info-tab tip-icon" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_RANKING_NOTES'); ?>"><i></i></div>
+						<div class="tip-box">
+							<p><strong><?php echo $this->ranking_notes; ?></strong>
+                            </p>
+						</div>
+					</div>
+</div>
+<!--Tip Box grün -->                      
+					<?PHP				    
 				}
 				else
 				{
@@ -49,7 +60,6 @@ use Joomla\CMS\Language\Text;
 					</div>
 </div>
 <!--Tip Box grün -->                      
-
 					<?PHP
 				}
 				?>
