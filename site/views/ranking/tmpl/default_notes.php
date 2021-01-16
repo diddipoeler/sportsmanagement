@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung fűr alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage ranking
@@ -12,14 +10,24 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 
 ?>
 <div class="<?php echo $this->divclassrow; ?>" id="notes">
-    <h4>
-		<?php echo Text::_('COM_SPORTSMANAGEMENT_RANKING_NOTES'); ?>
-    </h4>
+  
+<!--Note box blau -->
+<div class="color-box">
+					<div class="shadow">
+						<div class="info-tab note-icon" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_RANKING_NOTES'); ?>"><i></i></div>
+						<div class="note-box">
+							<p><strong><?php echo Text::_('COM_SPORTSMANAGEMENT_RANKING_NOTES'); ?></strong>
+                            <?php echo $notes; ?>
+                            
+                            </p>
+						</div>
+					</div>
+</div>
+<!--Note box blau -->
 
     <table class="<?PHP echo $this->config['table_class']; ?>">
         <tr>
@@ -33,11 +41,20 @@ use Joomla\CMS\Language\Text;
 				else
 				{
 					?>
-                    <div class="alert alert-warning" role="alert">
-						<?PHP
-						echo Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_NOTES');
-						?>
-									</div>
+<!--Tip Box grün -->
+<div class="color-box">
+					<div class="shadow">
+						<div class="info-tab tip-icon" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_NOTES'); ?>"><i></i></div>
+						<div class="tip-box">
+							<p><strong><?php echo Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_NOTES'); ?></strong>
+                            <?php echo $tips; ?>
+                            
+                            </p>
+						</div>
+					</div>
+</div>
+<!--Tip Box grün -->                      
+
 					<?PHP
 				}
 				?>
