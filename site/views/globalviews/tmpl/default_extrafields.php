@@ -43,10 +43,10 @@ $ausgabe .= '<td>'.Text::_($field->name).'</td>';
 switch ($field_type)
 					{
 						case 'link':
-							$this->tips[] = '<td>'. HTMLHelper::_('link', $field->fvalue, $title, array("target" => "_blank")).'</td>';
+							$ausgabe .= '<td>'. HTMLHelper::_('link', $field->fvalue, $title, array("target" => "_blank")).'</td>';
 							break;
 						default:
-							$this->tips[] = '<td>'. Text::_($field->fvalue).'</td>';
+							$ausgabe .= '<td>'. Text::_($field->fvalue).'</td>';
 							break;
 					}          
           
