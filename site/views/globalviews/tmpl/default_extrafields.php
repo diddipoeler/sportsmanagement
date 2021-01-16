@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage globalviews
@@ -11,22 +9,17 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 
-?>
+unset($this->notes);
+$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_EXTRA_FIELDS');
+echo $this->loadTemplate('jsm_notes');
 
-    <div class="row-fluid">
-        <h4>
-			<?php echo Text::_('COM_SPORTSMANAGEMENT_EXTRA_FIELDS'); ?>
-        </h4>
-    </div>
 
-<?php
+
 if (isset($this->extrafields))
 {
 	foreach ($this->extrafields as $field)
