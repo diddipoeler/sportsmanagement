@@ -326,9 +326,10 @@ unset($this->notes);
 
             <br/>
 			<?PHP
-			break;
 $this->notes[] = $ausgabe;
 echo $this->loadTemplate('jsm_notes');            
+			break;
+            
             
 		case 'roster':
 			?>
