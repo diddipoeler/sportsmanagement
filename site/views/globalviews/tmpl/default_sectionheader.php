@@ -311,19 +311,20 @@ $view        = $jinput->getVar("view");
 			<?PHP
 			break;
 		case 'matrix':
+unset($this->notes);        
 			?>
             <table class="table">
                 <tr>
                     <td class="contentheading">
 						<?php
-						echo '&nbsp;' . Text::_('COM_SPORTSMANAGEMENT_MATRIX');
+						$ausgabe = '&nbsp;' . Text::_('COM_SPORTSMANAGEMENT_MATRIX');
 						if ($this->divisionid)
 						{
-							echo " " . $this->division->name;
+							$ausgabe .= " " . $this->division->name;
 						}
 						if ($this->roundid)
 						{
-							echo " - " . $this->round->name;
+							$ausgabe .= " - " . $this->round->name;
 						}
 						?>
                     </td>
@@ -332,6 +333,9 @@ $view        = $jinput->getVar("view");
             <br/>
 			<?PHP
 			break;
+$this->notes[] = $ausgabe;
+echo $this->loadTemplate('jsm_notes');            
+            
 		case 'roster':
 			?>
             <table class="table">
