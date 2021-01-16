@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung fűr alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage ranking
@@ -12,7 +10,6 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 
 $actualItems     = count($this->matchimages);
@@ -30,9 +27,17 @@ else
 }
 ?>
 <div class="<?php echo $this->divclassrow; ?>" id="projectimages">
-    <h4>
-		<?php echo Text::_('COM_SPORTSMANAGEMENT_PROJECTIMAGES'); ?>
-    </h4>
+<!--Note box blau -->
+<div class="color-box">
+					<div class="shadow">
+						<div class="info-tab note-icon" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_PROJECTIMAGES'); ?>"><i></i></div>
+						<div class="note-box">
+							<p><strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PROJECTIMAGES'); ?></strong>
+                            </p>
+						</div>
+					</div>
+</div>
+<!--Note box blau -->
     <table class="table ">
 		<?php
 		$j = 0;
