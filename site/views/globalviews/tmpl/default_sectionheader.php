@@ -312,11 +312,7 @@ $view        = $jinput->getVar("view");
 			break;
 		case 'matrix':
 unset($this->notes);        
-			?>
-            <table class="table">
-                <tr>
-                    <td class="contentheading">
-						<?php
+
 						$ausgabe = '&nbsp;' . Text::_('COM_SPORTSMANAGEMENT_MATRIX');
 						if ($this->divisionid)
 						{
@@ -327,9 +323,7 @@ unset($this->notes);
 							$ausgabe .= " - " . $this->round->name;
 						}
 						?>
-                    </td>
-                </tr>
-            </table>
+
             <br/>
 			<?PHP
 			break;
