@@ -15,11 +15,11 @@ use Joomla\CMS\Component\ComponentHelper;
 
 $this->columns  = 4;
 $this->divclass = '';
-?>
-<h4>
-<?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_HISTORY_OVERVIEW_SUMMARY'); ?>
-</h4>
-<?php
+
+unset($this->notes);
+$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_HISTORY_OVERVIEW_SUMMARY');
+echo $this->loadTemplate('jsm_notes');
+
 /** tabelle oder bootstrap ansicht */
 if ($this->overallconfig['use_table_or_bootstrap'])
 {

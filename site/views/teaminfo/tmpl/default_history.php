@@ -13,15 +13,10 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 
+unset($this->notes);
+$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_HISTORY');
+echo $this->loadTemplate('jsm_notes');
 ?>
-
-
-<h4>
-
-	<?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_HISTORY'); ?>
-
-</h4>
-
 <table class="<?PHP echo $this->config['table_class']; ?>">
     <thead>
     <tr class="sectiontableheader">

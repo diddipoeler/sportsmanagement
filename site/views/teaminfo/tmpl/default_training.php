@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage teaminfo
@@ -12,15 +10,12 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 
+unset($this->notes);
+$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING');
+echo $this->loadTemplate('jsm_notes');
 ?>
-
-<h4>
-	<?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING'); ?>
-</h4>
-
 <table class="table table-striped">
     <thead>
     <tr class="sectiontableheader">
