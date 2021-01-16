@@ -470,18 +470,17 @@ $view        = $jinput->getVar("view");
 			break;
 		default:
 			?>
-
-            <table class="table" id="sectionheader">
-                <tr>
-                    <td class="contentheading">
-
-						<?php
-						echo $this->headertitle;
-						?>
-                    </td>
-                </tr>
-            </table>
-
+<!--Note box blau -->
+<div class="color-box" id="sectionheader">
+					<div class="shadow">
+						<div class="info-tab note-icon" title="sectionheader"><i></i></div>
+						<div class="note-box">
+							<p><strong><?php echo $this->headertitle; ?></strong>
+                            </p>
+						</div>
+					</div>
+</div>
+<!--Note box blau -->
             <br/>
 			<?PHP
 			break;
