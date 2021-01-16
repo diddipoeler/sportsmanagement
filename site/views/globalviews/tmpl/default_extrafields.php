@@ -19,10 +19,10 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_EXTRA_FIELDS');
 echo $this->loadTemplate('jsm_notes');
 
 unset($this->tips);
-$ausgabe = '<table class="table">';
 
 if (isset($this->extrafields))
 {
+    $ausgabe = '<table class="table">';
 	foreach ($this->extrafields as $field)
 	{
 		$value      = $field->fvalue;
@@ -88,8 +88,9 @@ $ausgabe .= '</tr>';
                       */
 		}
 	}
+$ausgabe .= '</table>';
+$this->tips[] = $ausgabe;    
 }
 
-$ausgabe .= '</table>';
-$this->tips[] = $ausgabe;
+
 echo $this->loadTemplate('jsm_tips');
