@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage stats
@@ -11,12 +9,13 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
+unset($this->tips);
+$this->tips[] = Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_STATISTIC');
+echo $this->loadTemplate('jsm_tips');
 ?>
 <script>
     window.chartColors = {
@@ -30,9 +29,6 @@ use Joomla\CMS\Uri\Uri;
     };
 </script>
 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="flashchart">
-    <h4>
-		<?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_STATISTIC'); ?>
-    </h4>
     <canvas id="jsmchartcurve"></canvas>
     <script>
         var ctx = document.getElementById('jsmchartcurve').getContext('2d');

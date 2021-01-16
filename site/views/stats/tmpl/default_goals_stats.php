@@ -12,9 +12,9 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 
-unset($this->notes);
-$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_STATS_GOALS');
-echo $this->loadTemplate('jsm_notes');
+unset($this->tips);
+$this->tips[] = Text::_('COM_SPORTSMANAGEMENT_STATS_GOALS');
+echo $this->loadTemplate('jsm_tips');
 ?>
 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="goalsstats">
 
