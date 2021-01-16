@@ -431,22 +431,15 @@ $view        = $jinput->getVar("view");
 			<?PHP
 			break;
 		case 'clubinfo':
-			?>
-<!--
-<div vocab="http://schema.org/" typeof="SportsTeam">
+unset($this->notes);
+$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_TITLE') . " " . $this->club->name;
 
-	<span property="legalName">
--->
-            <h4>
-				<?php
-				echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_TITLE') . " " . $this->club->name;
+			//	echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_TITLE') . " " . $this->club->name;
 
 				if ($this->showediticon)
 				{
-
 					$link = sportsmanagementHelperRoute::getClubInfoRoute($this->project->id, $this->club->id, "club.edit");
-
-					echo sportsmanagementHelperHtml::getBootstrapModalImage(
+					$this->notes[] = sportsmanagementHelperHtml::getBootstrapModalImage(
 						'clubedit' . $this->club->id,
 						'administrator/components/com_sportsmanagement/assets/images/edit.png',
 						Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBINFO_EDIT_DETAILS'),
@@ -456,17 +449,9 @@ $view        = $jinput->getVar("view");
 						$this->modalheight,
 						$this->overallconfig['use_jquery_modal']
 					);
-
-
 				}
-				?>
-            </h4>
-	<!--
-	</span>
 
-</div>	
--->
-			<?PHP
+echo $this->loadTemplate('jsm_notes');            
 			break;
 		default:
 			?>
