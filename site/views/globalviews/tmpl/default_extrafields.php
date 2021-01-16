@@ -19,7 +19,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_EXTRA_FIELDS');
 echo $this->loadTemplate('jsm_notes');
 
 unset($this->tips);
-$this->tips[] = '<table class="table">';
+$ausgabe = '<table class="table">';
 
 if (isset($this->extrafields))
 {
@@ -38,8 +38,8 @@ if (isset($this->extrafields))
 							break;
 					}
           
-$this->tips[] = '<tr>';          
-$this->tips[] = '<td>'.Text::_($field->name).'</td>';
+$ausgabe .= '<tr>';          
+$ausgabe .= '<td>'.Text::_($field->name).'</td>';
 switch ($field_type)
 					{
 						case 'link':
@@ -52,7 +52,7 @@ switch ($field_type)
           
           
         
-$this->tips[] = '</tr>';          
+$ausgabe .= '</tr>';          
           
           /*
 			?>
@@ -90,5 +90,6 @@ $this->tips[] = '</tr>';
 	}
 }
 
-$this->tips[] = '</table>';
+$ausgabe .= '</table>';
+$this->tips[] = $ausgabe;
 echo $this->loadTemplate('jsm_tips');
