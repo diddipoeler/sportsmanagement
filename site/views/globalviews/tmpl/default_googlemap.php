@@ -76,9 +76,17 @@ $this->document->addScript('https://unpkg.com/leaflet-routing-machine@'.$this->l
 	}
 
 	?>
-    <h4>
-		<?php echo Text::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?>
-    </h4>
+<!--Note box blau -->
+<div class="color-box">
+					<div class="shadow">
+						<div class="info-tab note-icon" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?>"><i></i></div>
+						<div class="note-box">
+							<p><strong><?php echo Text::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?></strong>
+                            </p>
+						</div>
+					</div>
+</div>
+<!--Note box blau -->    
     <div id="map"
          style="height: <?php echo $this->mapconfig['map_height']; ?>px; margin-top: 50px; position: relative;" itemscope itemtype="http://schema.org/Place">
     </div>
