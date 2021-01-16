@@ -197,6 +197,13 @@ class sportsmanagementView extends HtmlView
 	
 	public $leaflet_locatecontrol = '0.72.0';
 	public $leaflet_routing_machine = '3.2.12';
+    
+    /** @var    array    An array of tips */
+	public $tips = array();
+	/** @var    array    An array of warnings */
+	public $warnings = array();
+    /** @var    array    An array of notes */
+	public $notes = array();
 
 	/**
 	 * sportsmanagementView::display()
