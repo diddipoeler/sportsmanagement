@@ -390,13 +390,16 @@ $view        = $jinput->getVar("view");
 			<?PHP
 			break;
 		case 'teaminfo':
+unset($this->notes);
 			?>
-            <h4>
-				<?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_PAGE_TITLE') . " - " . $this->team->tname;
+            <!-- <h4> -->
+				<?php 
+                $ausgabe = Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_PAGE_TITLE') . " - " . $this->team->tname;
+                //echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_PAGE_TITLE') . " - " . $this->team->tname;
 				if ($this->showediticon)
 				{
 					$link = "index.php?option=com_sportsmanagement&tmpl=component&view=editprojectteam&ptid=" . $this->projectteamid . "&tid=" . $this->teamid . "&p=" . $this->project->id;
-					echo sportsmanagementHelperHtml::getBootstrapModalImage(
+					$ausgabe .= sportsmanagementHelperHtml::getBootstrapModalImage(
 						'projectteamedit' . $this->projectteamid,
 						'administrator/components/com_sportsmanagement/assets/images/edit.png',
 						Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMINFO_EDIT_DETAILS'),
@@ -408,7 +411,7 @@ $view        = $jinput->getVar("view");
 					);
 
 					$link = "index.php?option=com_sportsmanagement&tmpl=component&view=editteam&ptid=" . $this->projectteamid . "&tid=" . $this->teamid . "&p=" . $this->project->id;
-					echo sportsmanagementHelperHtml::getBootstrapModalImage(
+					$ausgabe .= sportsmanagementHelperHtml::getBootstrapModalImage(
 						'teamedit' . $this->projectteamid,
 						'administrator/components/com_sportsmanagement/assets/images/teams.png',
 						Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMINFO_EDIT_DETAILS'),
@@ -425,10 +428,11 @@ $view        = $jinput->getVar("view");
 					//echo "no permission";
 				}
 				?>
-            </h4>
-
+            <!-- </h4> -->
 
 			<?PHP
+$this->notes[] = $ausgabe;
+echo $this->loadTemplate('jsm_notes');
 			break;
 		case 'clubinfo':
 unset($this->notes);
