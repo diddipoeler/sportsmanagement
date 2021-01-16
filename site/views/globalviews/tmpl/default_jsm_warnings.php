@@ -25,7 +25,8 @@ $warnings = implode("<br>",$this->warnings);
 					<div class="shadow">
 						<div class="info-tab warning-icon" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_WARNING'); ?>"><i></i></div>
 						<div class="warning-box">
-							<p><strong><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_WARNING'); ?></strong>
+							<p>
+                            <!-- <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_WARNING'); ?></strong> -->
                             <?php echo $warnings; ?>
                             
                             </p>

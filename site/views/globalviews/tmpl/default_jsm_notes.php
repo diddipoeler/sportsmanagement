@@ -25,7 +25,8 @@ $notes = implode("<br>",$this->notes);
 					<div class="shadow">
 						<div class="info-tab note-icon" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NOTE'); ?>"><i></i></div>
 						<div class="note-box">
-							<p><strong><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NOTE'); ?></strong>
+							<p>
+                            <!-- <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NOTE'); ?></strong> -->
                             <?php echo $notes; ?>
                             
                             </p>

@@ -18,7 +18,8 @@ unset($this->notes);
 $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_EXTRA_FIELDS');
 echo $this->loadTemplate('jsm_notes');
 
-
+unset($this->tips);
+$this->tips[] = '<table class="table">';
 
 if (isset($this->extrafields))
 {
@@ -30,6 +31,30 @@ if (isset($this->extrafields))
 
 		if (!empty($value)) // && !$field->backendonly)
 		{
+          switch (Factory::getApplication()->input->getVar('view'))
+					{
+						case 'clubinfo':
+							$title = $this->club->name;
+							break;
+					}
+          
+$this->tips[] = '<tr>';          
+$this->tips[] = '<td>'.Text::_($field->name).'</td>';
+switch ($field_type)
+					{
+						case 'link':
+							$this->tips[] = '<td>'. HTMLHelper::_('link', $field->fvalue, $title, array("target" => "_blank")).'</td>';
+							break;
+						default:
+							$this->tips[] = '<td>'. Text::_($field->fvalue).'</td>';
+							break;
+					}          
+          
+          
+        
+$this->tips[] = '</tr>';          
+          
+          /*
 			?>
             <div class="col-xs-<?php echo $this->config['extended_cols']; ?> col-sm-<?php echo $this->config['extended_cols']; ?> col-md-<?php echo $this->config['extended_cols']; ?> col-lg-<?php echo $this->config['extended_cols']; ?>">
                 <div class="col-xs-<?php echo $this->config['extended_description_cols']; ?> col-sm-<?php echo $this->config['extended_description_cols']; ?> col-md-<?php echo $this->config['extended_description_cols']; ?> col-lg-<?php echo $this->config['extended_description_cols']; ?>">
@@ -60,6 +85,10 @@ if (isset($this->extrafields))
                 </div>
             </div>
 			<?php
+                      */
 		}
 	}
 }
+
+$this->tips[] = '</table>';
+echo $this->loadTemplate('jsm_tips');

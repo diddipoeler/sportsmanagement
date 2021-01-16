@@ -25,7 +25,8 @@ $tips = implode("<br>",$this->tips);
 					<div class="shadow">
 						<div class="info-tab tip-icon" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_TIP'); ?>"><i></i></div>
 						<div class="tip-box">
-							<p><strong><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_TIP'); ?></strong>
+							<p>
+                            <!-- <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_TIP'); ?></strong> -->
                             <?php echo $tips; ?>
                             
                             </p>
