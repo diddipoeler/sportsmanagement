@@ -13,21 +13,13 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
-?>
-    <h4>
-		<?php
-		if ($this->config['show_extended_text'])
-		{
-			echo Text::_('COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERENCES');
-		}
-		?>
-    </h4>
-
-<?php
-          
-?>
-
-<?php      
+if ($this->config['show_extended_text'])
+{
+unset($this->notes);
+$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERENCES');
+echo $this->loadTemplate('jsm_notes');		  
+}
+ 
 if ( $this->extended2 )
 {
 //echo 'extended2<pre>'.print_r($this->extended2,true).'</pre>';          
