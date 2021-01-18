@@ -82,6 +82,26 @@ function getlatlonopenstreet(result)
 {
 dpjQuery("#jform_geocomplete").val(getAddresString());
 dpjQuery("#jform_geocomplete").trigger("geocode");	
+
+// es muss mindestens die stadt angegeben werden  
+if (dpjQuery('#jform_city').length == 0) {
+city = dpjQuery("#jform_location").val();
+}
+else	
+{	
+city = dpjQuery("#jform_city").val();
+}	  
+  
+if (city.length == 0) {  
+dpjQuery("#jform_latitude").val('0.00000000');
+dpjQuery("#jform_longitude").val('0.00000000');	
+addLayer('0.00000000','0.00000000');  
+return '';  
+}
+
+
+
+
 	
 	
 var inp = dpjQuery("#jform_geocomplete").val();
