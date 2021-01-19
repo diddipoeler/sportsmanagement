@@ -216,6 +216,43 @@ foreach ($points as $row)
 	$script[] = "var url = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getcountryassoc&country=' + value;";
 	$script[] = "console.log('".__LINE__." country value = ' + value );";
 	$script[] = "console.log('".__LINE__." country url = ' + url );";
+    
+    /** sollte man überlegen */
+    /*
+    $script[] = "
+  ajaxRequest = $.ajax({
+    method: 'POST',
+    crossDomain: true,
+    dataType: 'json',
+    crossOrigin: true,
+    async: true,
+    contentType: 'application/json',
+    //data: data,
+    headers: {
+        'Access-Control-Allow-Methods': '*',
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Headers' : 'Access-Control-Allow-Headers, Origin, X-Requested-With, Content-Type, Accept, Authorization',
+        'Access-Control-Allow-Origin': '*',
+        'Control-Allow-Origin': '*',
+        'cache-control': 'no-cache',
+        'Content-Type': 'application/json'
+    },
+    url: url,
+    success: function(response){
+        console.log('Respond was: ', response);
+    },
+    error: function (request, status, error) {
+        console.log('There was an error: ', request.responseText);
+    }
+  })
+
+  ";
+  */
+    
+    
+    
+    
+    
 	$script[] = "ajaxRequest = $.ajax({";
 	$script[] = "url: url,";
 	$script[] = "dataType: 'json',
