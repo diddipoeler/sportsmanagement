@@ -38,10 +38,13 @@ li.hm2 {
 echo $this->loadTemplate('projectheading');
     
 ksort($this->leaguechampions);
+
+unset($this->notes);
+$this->notes[] = Text::_('Übersicht nach Saisons');
+echo $this->loadTemplate('jsm_notes');
+
 ?>
-<h1 class="componentheading">
-<?php echo Text::_('Übersicht nach Saisons'); ?>
-</h1>   
+
     <div class="row">
     <ul>
 <?php    
@@ -69,9 +72,16 @@ echo HTMLHelper::link($teaminfo1_link, $this->team->teamname);
 ?>
         </ul>
     </div>
-<h1 class="componentheading">
-<?php echo Text::_('Übersicht nach Mannschaft'); ?>
-</h1>
+
+<?php
+unset($this->notes);
+$this->notes[] = Text::_('Übersicht nach Mannschaft');
+echo $this->loadTemplate('jsm_notes');
+
+
+
+ ?>
+
 <table class="table">
 <thead>
 <th>
