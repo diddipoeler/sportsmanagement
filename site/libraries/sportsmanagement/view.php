@@ -96,7 +96,7 @@ if (version_compare(JVERSION, '3.0.0', 'ge'))
 /** css für die nachrichten */
 $document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/extended-1.1.css', 'text/css');
 $document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/style.css', 'text/css');   
-$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/stylebox.css', 'text/css');        
+$document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/stylebox.css', 'text/css');        
 ?>        
         
         
