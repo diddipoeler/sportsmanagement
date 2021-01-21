@@ -41,9 +41,9 @@ JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($t
                 <?php echo HTMLHelper::_('grid.checkall'); ?>
             </th>
             <th class="title">
-				<?php
-				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_NAME_OF_PROJECT', 'p.name', $this->sortDirection, $this->sortColumn);
-				?>
+	<?php
+	echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_NAME_OF_PROJECT', 'p.name', $this->sortDirection, $this->sortColumn);
+	?>
             </th>
             <th class="title">
 				<?php
@@ -70,9 +70,13 @@ JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($t
 				?>
             </th>
             <th class="title">
-				<?php
-				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP', 'ag.name', $this->sortDirection, $this->sortColumn);
-				?>
+	<?php
+	echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP', 'ag.name', $this->sortDirection, $this->sortColumn);
+	?>
+	<br>
+	<?php
+	echo Text::_('COM_SPORTSMANAGEMENT_SETTINGS_PROJECTTEAMS_QUICKADD');
+	?>	    
             </th>
             <th class="title">
 				<?php
