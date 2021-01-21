@@ -168,7 +168,7 @@ $this->document->addScript('https://unpkg.com/leaflet-routing-machine@'.$this->l
 			{
 				$this->showmap = true;
 				?>
-<span itemprop="name"><?php echo $this->club->name; ?></span>
+<span style="visibility: hidden" itemprop="name"><?php echo $this->club->name; ?></span>
 <div itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
     <meta itemprop="latitude" content="<?php echo $this->club->latitude; ?>" />
     <meta itemprop="longitude" content="<?php echo $this->club->longitude; ?>" />
