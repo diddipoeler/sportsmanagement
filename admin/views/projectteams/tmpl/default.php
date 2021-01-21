@@ -23,11 +23,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 	<?PHP
     echo $this->loadTemplate('joomla_version');
+    /*
     if ( $this->project->fast_projektteam )
     {
     echo $this->loadTemplate('jsm_tips');    
     }
     echo $this->loadTemplate('jsm_notes');
+    */
 	?>
     <div>
         <script type="text/javascript">
