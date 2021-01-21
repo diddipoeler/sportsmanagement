@@ -464,6 +464,7 @@ catch (Exception $e)
 			$tblProject->project_type    = $post['project_type' . $pks[$x]];
 			$tblProject->agegroup_id     = $post['agegroup' . $pks[$x]];
 			$tblProject->master_template = $post['master_template' . $pks[$x]];
+			$tblProject->fast_projektteam = $post['fast_projektteam' . $pks[$x]];
 
 			if ($post['league' . $pks[$x]])
 			{
