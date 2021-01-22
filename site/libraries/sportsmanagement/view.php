@@ -98,10 +98,7 @@ $document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanag
 $document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/style.css', 'text/css');   
 $document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/stylebox.css', 'text/css');        
 ?>        
-<!-- https://icons.getbootstrap.com/
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-<i class="bi-alarm" style="font-size: 2rem; color: cornflowerblue;"></i>          
--->
+
 <?php       
     
 	if ($cssflags)
