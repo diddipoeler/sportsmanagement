@@ -16,7 +16,11 @@ use Joomla\CMS\Factory;
 
 ?>
 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="nextmatch">
-    <h4><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_H2H'); ?></h4>
+<?php
+unset($this->notes);
+$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_H2H');
+echo $this->loadTemplate('jsm_notes'); 
+?>
     <table class="table">
         <thead>
         <tr class="" align="center">
