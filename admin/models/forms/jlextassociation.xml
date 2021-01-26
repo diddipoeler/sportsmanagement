@@ -23,6 +23,8 @@
         <field
             name="name"
             type="text"
+			size="255"
+		       maxlength="255"
             label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
             description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
             class="inputbox"
@@ -31,6 +33,8 @@
         
         <field
             name="middle_name"
+			size="75"
+		       maxlength="75"
             type="text"
             label="COM_SPORTSMANAGEMENT_ADMIN_ASSOC_MIDDLE_NAME"
             description="COM_SPORTSMANAGEMENT_ADMIN_ASSOC_MIDDLE_NAME_DESC"
@@ -39,6 +43,8 @@
         
         <field
             name="short_name"
+			size="75"
+		       maxlength="75"
             type="text"
             label="COM_SPORTSMANAGEMENT_ADMIN_ASSOC_SHORT_NAME"
             description="COM_SPORTSMANAGEMENT_ADMIN_ASSOC_SHORT_NAME_DESC"
@@ -48,10 +54,13 @@
         
         <field
             name="alias"
+			size="255"
+		       maxlength="255"
             type="text"
             label="JFIELD_ALIAS_LABEL"
             description="JFIELD_ALIAS_DESC"
-            class="inputbox"
+            readonly="true"
+            class="input-xxlarge readonly"
         />	
 		
         <field
