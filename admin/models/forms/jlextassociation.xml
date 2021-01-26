@@ -27,7 +27,7 @@
 		       maxlength="255"
             label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
             description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
-            class="inputbox"
+            class="input-xxlarge"
             required="true"
         />
         
