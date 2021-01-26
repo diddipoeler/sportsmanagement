@@ -999,5 +999,9 @@
 <associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="41" parentmain="0">York</assocname></associations>
 <associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="42" parentmain="0">Yorkshire</assocname></associations>
   
+<associations><assocname country="NZL" icon="" flag="" website="" shortname="" main="1" parentmain="0">Central</assocname></associations>  
+<associations><assocname country="NZL" icon="" flag="" website="" shortname="" main="2" parentmain="0">Southern</assocname></associations>  
+<associations><assocname country="NZL" icon="" flag="" website="" shortname="" main="3" parentmain="0">Northern</assocname></associations>  
+  
   
 </structur>
