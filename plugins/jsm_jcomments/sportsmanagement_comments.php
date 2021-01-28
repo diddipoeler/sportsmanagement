@@ -43,7 +43,7 @@ class plgContentSportsmanagement_Comments extends JPlugin
         $app = Factory::getApplication();
         $jcomments_exists = file_exists(JPATH_SITE.'/components/com_jcomments/jcomments.php');
       
-        if (!$jcomments_exists && $app->isSite()) {
+        if (!$jcomments_exists && $app->isClient('administrator')) {
             return false;
         }
       
