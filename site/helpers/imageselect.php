@@ -66,7 +66,7 @@ abstract class ImageSelectSM
         $modalheight = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('modal_popup_height', 600);
 		$modalwidth  = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('modal_popup_width', 900);
         
-		if ($app->isSite())
+		if ($app->isClient('administrator'))
 		{
 		$link = 'administrator/';
 		$link2 = 'administrator/';
@@ -249,7 +249,7 @@ $link2 .= 'index.php?option=com_sportsmanagement&view=imagelist' .
 			$value . "\" disabled=\"disabled\" size=\"100\" /></td></tr>";
 		$imageselect .= "<tr><td><div class=\"button2-left\"><div class=\"blank\">";
 		
-if ($app->isSite())
+if ($app->isClient('site'))
 {
 $imageselect .= sportsmanagementHelperHtml::getBootstrapModalImage('upload' . $funcname, 'images/com_sportsmanagement/database/jl_images/up.png', Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE'), '20', Uri::base() . $link, $modalwidth, $modalheight,$use_jquery_modal);		
 }
@@ -261,7 +261,7 @@ $imageselect .= sportsmanagementHelper::getBootstrapModalImage('upload' . $funcn
 
 		$imageselect .= "<div class=\"button2-left\"><div class=\"blank\">";
 		
-if ($app->isSite())
+if ($app->isClient('site'))
 {
 $imageselect .= sportsmanagementHelperHtml::getBootstrapModalImage('select' . $funcname, 'images/com_sportsmanagement/database/jl_images/zoom.png', Text::_('JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE').' '.Factory::getApplication()->getUserState("com_sportsmanagement.itemname", ''), '20', Uri::base() . $link2, $modalwidth, $modalheight,$use_jquery_modal);	
 }
