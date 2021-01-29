@@ -66,7 +66,7 @@ abstract class ImageSelectSM
         $modalheight = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('modal_popup_height', 600);
 		$modalwidth  = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('modal_popup_width', 900);
         
-		if ($app->isClient('administrator'))
+		if ($app->isClient('site'))
 		{
 		$link = 'administrator/';
 		$link2 = 'administrator/';
