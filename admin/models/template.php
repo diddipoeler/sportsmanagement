@@ -36,35 +36,24 @@ class sportsmanagementModeltemplate extends JSMModelAdmin
 	 */
 	function getAllTemplatesList($project_id, $master_id)
 	{
-
-		$app    = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
-
-		// Create a new query object.
-		$db      = $this->getDbo();
-		$query1  = $db->getQuery(true);
-		$query2  = $db->getQuery(true);
-		$query3  = $db->getQuery(true);
 		$result1 = array();
 		$result2 = array();
 
-		// Select some fields
-		$query1->select('template');
-
-		// From table
-		$query1->from('#__sportsmanagement_template_config');
-		$query1->where('project_id = ' . $project_id);
-		$db->setQuery($query1);
+		$this->jsmquery->clear();
+		$this->jsmquery->select('template');
+		$this->jsmquery->from('#__sportsmanagement_template_config');
+		$this->jsmquery->where('project_id = ' . $project_id);
+		$this->jsmdb->setQuery($this->jsmquery);
 
 		if (version_compare(JVERSION, '3.0.0', 'ge'))
 		{
 			// Joomla! 3.0 code here
-			$current = $db->loadColumn();
+			$current = $this->jsmdb->loadColumn();
 		}
 		elseif (version_compare(JVERSION, '2.5.0', 'ge'))
 		{
 			// Joomla! 2.5 code here
-			$current = $db->loadResultArray();
+			$current = $this->jsmdb->loadResultArray();
 		}
 
 		if ($current)
@@ -72,35 +61,31 @@ class sportsmanagementModeltemplate extends JSMModelAdmin
 			$current = implode("','", $current);
 		}
 
-		// Select some fields
-		$query2->select('id as value, title as text');
-
-		// From table
-		$query2->from('#__sportsmanagement_template_config');
-		$query2->where('project_id = ' . $master_id);
+		$this->jsmquery->clear();
+		$this->jsmquery->select('id as value, title as text');
+		$this->jsmquery->from('#__sportsmanagement_template_config');
+		$this->jsmquery->where('project_id = ' . $master_id);
 
 		if ($current)
 		{
-			$query2->where('template NOT IN (\'' . $current . '\') ');
+			$this->jsmquery->where('template NOT IN (\'' . $current . '\') ');
 		}
 
-		$db->setQuery($query2);
-		$result1 = $db->loadObjectList();
+		$this->jsmdb->setQuery($this->jsmquery);
+		$result1 = $this->jsmdb->loadObjectList();
 
 		foreach ($result1 as $template)
 		{
 			$template->text = Text::_($template->text);
 		}
 
-		// Select some fields
-		$query3->select('id as value, title as text');
-
-		// From table
-		$query3->from('#__sportsmanagement_template_config');
-		$query3->where('project_id = ' . $project_id);
-		$query3->order('title');
-		$db->setQuery($query3);
-		$result2 = $db->loadObjectList();
+		$this->jsmquery->clear();
+		$this->jsmquery->select('id as value, title as text');
+		$this->jsmquery->from('#__sportsmanagement_template_config');
+		$this->jsmquery->where('project_id = ' . $project_id);
+		$this->jsmquery->order('title');
+		$this->jsmdb->setQuery($this->jsmquery);
+		$result2 = $this->jsmdb->loadObjectList();
 
 		foreach ($result2 as $template)
 		{
