@@ -18,32 +18,37 @@
         <field
             name="name"
             type="text"
-            size="100"
+            size="75"
+	       maxlength="75"
             label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
             description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
-            class="inputbox"
+            class="input-xxlarge"
             required="true"/>
         <field
             name="alias"
             type="text"
-            size="100"
+            size="75"
+	       maxlength="75"
+	       readonly="true"
             label="JFIELD_ALIAS_LABEL"
             description="JFIELD_ALIAS_DESC"
-            class="inputbox"/>	
+            class="input-xxlarge readonly"/>	
         <field
             name="middle_name"
             type="text"
-            size="100"
+            size="25"
+	       maxlength="25"
             label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_MID_NAME"
             description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_MID_NAME_DESC"
-            class="inputbox"/>	
+            class="input-xxlarge"/>	
         <field
             name="short_name"
             type="text"
-            size="100"
+            size="15"
+	       maxlength="15"
             label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_SHORT_NAME"
             description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_SHORT_NAME_DESC"
-            class="inputbox"
+            class="input-xxlarge"
             required="true"/>		
         <field
             name="website"
