@@ -280,6 +280,8 @@ switch ($this->fieldset)
                 <fieldset class="adminform">
 
 					<?php
+echo $this->extendeduser->renderFieldset($fieldset->name);
+				/*
 					$fields = $this->extendeduser->getFieldset($fieldset->name);
 
 					if (!count($fields))
@@ -292,6 +294,7 @@ switch ($this->fieldset)
 						echo $field->label;
 						echo $field->input;
 					}
+				*/
 					?>
                 </fieldset>
 				<?php
