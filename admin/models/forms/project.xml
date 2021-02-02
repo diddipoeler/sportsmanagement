@@ -326,6 +326,7 @@ description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SELECT_CALE
 				label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_DESCRIPTION"
 				description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_DESCRIPTION_DESC"
 				width="450" 
+			       class="span12"
 				filter="JComponentHelper::filterText"/>			
 	</fieldset>	
 
