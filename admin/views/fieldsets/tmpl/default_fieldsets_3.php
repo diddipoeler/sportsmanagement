@@ -457,6 +457,67 @@ echo $this->extendeduser->renderFieldset($fieldset->name);
 		echo $this->form->renderFieldset('competition');
 		break;
 
+	case 'picture':
+		?>
+		<table class="table">
+			<?php
+			foreach ($this->form->getFieldset($this->fieldset) as $field)
+				:
+				?>
+                <tr>
+                    <td class="key"><?php echo $field->label; ?></td>
+                    <td><?php echo $field->input; ?></td>
+                    <td>
+						<?PHP
+						// Echo 'field_name -> '.$field->name;
+						$suchmuster     = array("params[", "]", "request[");
+						$ersetzen       = array('', '', '');
+						$var_onlinehelp = str_replace($suchmuster, $ersetzen, $field->name);
+
+						switch ($var_onlinehelp)
+						{
+							case 'id':
+								break;
+							default:
+								?>
+                                <a rel="{handler: 'iframe',size: {x: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH; ?>,y: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT; ?>}}"
+                                   href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER . 'SM-Backend-Felder:' . $this->jinput->getVar("view") . '-' . $this->form->getName() . '-' . $this->form->getName() . '-' . $var_onlinehelp; ?>"
+                                   class="modal">
+									<?php
+                                    $image_attributes['title'] = 'title= "'.Text::_('COM_SPORTSMANAGEMENT_HELP_LINK') . '"';
+									echo HTMLHelper::_(
+										'image', 'media/com_sportsmanagement/jl_images/help.png', Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'), $image_attributes
+									);
+									?>
+                                </a>
+
+								<?PHP
+								break;
+						}
+						?>
+                    </td>
+                </tr>
+			<?php endforeach; ?>
+
+            <tr>
+				<?PHP
+				if ($this->fieldset === 'request')
+				{
+					?>
+                    <!-- vielleicht für die zukunft-->
+                    <script type="text/javascript">
+                    </script>
+
+                    </div>
+                    </div>
+					<?PHP
+				}
+				?>
+            </tr>
+        </table>
+
+<?php
+		break;
 	// Das ist der standard
 	default:
 		?>
