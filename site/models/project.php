@@ -78,16 +78,14 @@ if (!class_exists('sportsmanagementModeldatabasetool'))
 class sportsmanagementModelProject extends BaseDatabaseModel
 {
 	static $_project = null;
-
 	static $projectid = 0;
-
 	static $matchid = 0;
-
 	static $_round_from;
-
 	static $_round_to;
-
 	static $_match = null;
+	static $projectnotes = array();
+	static $projectwarnings = array();
+	static $projecterrors = array();
 	/**
 	 * data array for teams
 	 *
@@ -1177,6 +1175,10 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 
 					if (!$result)
 					{
+self:$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING') . " " . $template;
+self:$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING_PID') . $project->master_template;
+self:$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT');
+						
 						Log::add(Text::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING') . " " . $template, Log::WARNING, 'jsmerror');
 						Log::add(Text::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING_PID') . $project->master_template, Log::WARNING, 'jsmerror');
 						Log::add(Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT'), Log::WARNING, 'jsmerror');
