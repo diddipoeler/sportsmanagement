@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage rankingalltime
@@ -11,12 +9,11 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementViewRankingAllTime
@@ -37,6 +34,7 @@ class sportsmanagementViewRankingAllTime extends sportsmanagementView
 	 */
 	function init()
 	{
+	   $mdlRankingAllTime = BaseDatabaseModel::getInstance("RankingAllTime", "sportsmanagementModel");
 		$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
 		$this->projectids     = $this->model->getAllProject();
 		$this->projectnames   = $this->model->getAllProjectNames();
@@ -50,12 +48,14 @@ class sportsmanagementViewRankingAllTime extends sportsmanagementView
 		$this->currentRanking = $this->model->getCurrentRanking();
 		$this->action         = $this->uri->toString();
 		$this->colors         = $this->model->getColors($this->config['colors']);
-		/**
-		 *
-		 * Set page title
-		 */
+		/** Set page title */
 		$pageTitle = Text::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE');
 		$this->document->setTitle($pageTitle);
+        
+        $this->warnings = $mdlRankingAllTime::$rankingalltimewarnings;
+        $this->tips = $mdlRankingAllTime::$rankingalltimetips;
+        $this->notes = $mdlRankingAllTime::$rankingalltimenotes;
+        
 
 	}
 

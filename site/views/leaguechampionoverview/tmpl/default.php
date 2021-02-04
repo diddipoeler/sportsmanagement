@@ -17,7 +17,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 echo $this->loadTemplate('jsm_warnings');
-
+echo $this->loadTemplate('jsm_tips');
+echo $this->loadTemplate('jsm_notes');
     
 ?>
 
