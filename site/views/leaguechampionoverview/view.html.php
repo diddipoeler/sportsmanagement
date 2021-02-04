@@ -174,7 +174,7 @@ $this->teamstotal = array();
 		/** Set page title */
 		$pageTitle = Text::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE');
 		$this->document->setTitle($pageTitle);
-		$this->warnings = $mdlProject::projectwarnings;
+		$this->warnings = $mdlProject::$projectwarnings;
 
 	}
 
