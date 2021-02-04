@@ -52,6 +52,9 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 	var $debug_info = false;
 	var $projectid = 0;
 	var $leagueid = 0;
+	static $rankingalltimenotes = array();
+	static $rankingalltimewarnings = array();
+	static $rankingalltimetips = array();
 	/**
 	 * ranking parameters
 	 * @var array
