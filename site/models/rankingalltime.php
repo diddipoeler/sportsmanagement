@@ -223,7 +223,8 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 		}
 
 		$count_teams = count($this->teams);
-		Log::add(Text::_('Wir verarbeiten ' . $count_teams . ' Vereine !'), Log::INFO, 'jsmerror');
+		self::$rankingalltimetips[] = Text::_('Wir verarbeiten ' . $count_teams . ' Vereine !');
+		//Log::add(Text::_('Wir verarbeiten ' . $count_teams . ' Vereine !'), Log::INFO, 'jsmerror');
 
 		// Echo 'result <pre>'.print_r($result,true).'</pre>';
 		// echo 'teams <pre>'.print_r($this->teams,true).'</pre>';
@@ -355,7 +356,8 @@ catch (Exception $e)
 			$this->_matches = $res;
 
 			$count_matches = count($res);
-			Log::add(Text::_('Wir verarbeiten ' . $count_matches . ' Spiele !'), Log::INFO, 'jsmerror');
+			self::$rankingalltimetips[] = ('Wir verarbeiten ' . $count_matches . ' Spiele !');
+			//Log::add(Text::_('Wir verarbeiten ' . $count_matches . ' Spiele !'), Log::INFO, 'jsmerror');
 		}
 		else
 		{
@@ -876,7 +878,8 @@ try{
 		$this->project_ids_array = $result;
 
 		$count_project = count($result);
-		Log::add(Text::_('Wir verarbeiten ' . $count_project . ' Projekte/Saisons !'), Log::INFO, 'jsmerror');
+	self::$rankingalltimetips[] = Text::_('Wir verarbeiten ' . $count_project . ' Projekte/Saisons !');
+		//Log::add(Text::_('Wir verarbeiten ' . $count_project . ' Projekte/Saisons !'), Log::INFO, 'jsmerror');
         
         }
 catch (Exception $e)
