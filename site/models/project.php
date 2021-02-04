@@ -85,7 +85,7 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 	static $_match = null;
 	static $projectnotes = array();
 	static $projectwarnings = array();
-	static $projecterrors = array();
+	static $projecttips = array();
 	/**
 	 * data array for teams
 	 *
