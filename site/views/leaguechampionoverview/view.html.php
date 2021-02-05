@@ -177,7 +177,9 @@ $this->teamstotal = array();
 		$this->warnings = $mdlProject::$projectwarnings;
         $this->tips = $mdlProject::$projecttips;
         $this->notes = $mdlProject::$projectnotes;
-
+$this->notes = array_merge($this->notes, $mdlRankingAllTime::$rankingalltimenotes);
+      $this->tips = array_merge($this->tips, $mdlRankingAllTime::$rankingalltimetips);
+      $this->warnings = array_merge($this->warnings, $mdlRankingAllTime::$rankingalltimewarnings);
 	}
 
 }
