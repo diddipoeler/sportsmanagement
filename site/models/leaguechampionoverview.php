@@ -30,7 +30,10 @@ use Joomla\CMS\Log\Log;
  */
 class sportsmanagementModelleaguechampionoverview extends BaseDatabaseModel
 {
-
+static $rankingalltimenotes = array();
+	static $rankingalltimewarnings = array();
+	static $rankingalltimetips = array();
+	
 function _getRankingCriteria()
 	{
 		$app = Factory::getApplication();
