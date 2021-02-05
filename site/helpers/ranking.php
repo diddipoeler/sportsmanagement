@@ -25,6 +25,10 @@ use Joomla\CMS\Log\Log;
  */
 class JSMRanking
 {
+	static $rankingalltimenotes = array();
+	static $rankingalltimewarnings = array();
+	static $rankingalltimetips = array();
+	
 	/**
 	 * project id
 	 *
