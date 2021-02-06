@@ -54,6 +54,8 @@ JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($t
 			<?php
 			echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_COUNTRY', 'obj.country', $this->sortDirection, $this->sortColumn);
 			?>
+            <br />
+            <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LEVEL'); ?>
         </th>
         <th class="title">
 			<?php
@@ -153,6 +155,8 @@ $this->dragable_group = 'data-dragable-group="none"';
 				$append = ' onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true" style="width:150px;background-color:#bbffff" size="1" ';
 				echo HTMLHelper::_('select.genericlist', $this->lists['nation'], 'country' . $this->item->id, 'class="form-control form-control-inline" ' . $append, 'value', 'text', $this->item->country);
 				?>
+                <br />
+                <?php echo $this->item->league_level; ?></td>
             </td>
             <td class="center"><?php echo Text::_($this->item->sportstype); ?></td>
             <td class="center">

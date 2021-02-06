@@ -149,39 +149,22 @@ class sportsmanagementModelLeagues extends JSMModelList
 
 
 	/**
-	 * Method to return a leagues array (id,name)
-	 *
-	 * @access public
-	 * @return array seasons
-	 * @since  1.5.0a
-	 */
-	// Public static function getLeagues()
-	/**
 	 * sportsmanagementModelLeagues::getListQuery()
 	 *
 	 * @return
 	 */
 	protected function getListQuery()
 	{
-		// Create a new query object.
 		$this->jsmquery->clear();
-
-		// Select some fields
 		$this->jsmquery->select('obj.name,obj.short_name,obj.alias,obj.associations,obj.country,obj.ordering,obj.id,obj.picture,obj.checked_out,obj.checked_out_time,obj.agegroup_id');
-		$this->jsmquery->select('obj.published,obj.modified,obj.modified_by,obj.published_act_season');
+		$this->jsmquery->select('obj.published,obj.modified,obj.modified_by,obj.published_act_season,obj.league_level');
 		$this->jsmquery->select('st.name AS sportstype');
-
-		// From table
 		$this->jsmquery->from('#__sportsmanagement_league as obj');
 		$this->jsmquery->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = obj.sports_type_id');
-
-		// Join over the users for the checked out user.
 		$this->jsmquery->select('uc.name AS editor');
 		$this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
-
 		$this->jsmquery->select('ag.name AS agegroup');
 		$this->jsmquery->join('LEFT', '#__sportsmanagement_agegroup AS ag ON ag.id = obj.agegroup_id');
-
 		$this->jsmquery->select('fed.name AS fedname');
 		$this->jsmquery->join('LEFT', '#__sportsmanagement_associations AS fed ON fed.id = obj.associations');
 
