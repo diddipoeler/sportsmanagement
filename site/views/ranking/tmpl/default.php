@@ -180,6 +180,14 @@ else
 						echo $this->loadTemplate('pagnav');
 					}
 				}
+				
+				if (array_key_exists('show_help', $this->config))
+				{
+					if ($this->config['show_help'])
+					{
+						echo $this->loadTemplate('hint');
+					}
+				}
 
 
 				if (array_key_exists('show_projectinfo', $this->config))
@@ -216,13 +224,7 @@ else
 				}
 
 
-				if (array_key_exists('show_help', $this->config))
-				{
-					if ($this->config['show_help'])
-					{
-						echo $this->loadTemplate('hint');
-					}
-				}
+				
 
 
 				if (array_key_exists('show_project_rss_feed', $this->overallconfig))
