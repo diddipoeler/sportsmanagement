@@ -176,7 +176,7 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
 		$model = $this->getModel();
 		$post  = Factory::getApplication()->input->post->getArray(array());
 		$model->saveshort();
-		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list . '&pid=' . $post['pid'], false));
+		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list . '&pid=' . $post['pid']. '&division=' . $post['division'], false));
 	}
 
 }
