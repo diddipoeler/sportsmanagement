@@ -76,7 +76,7 @@ class sportsmanagementModelLeagues extends JSMModelList
 		//        $db = sportsmanagementHelper::getDBConnection();
 		//        // Create a new query object.
 		//        $query = $db->getQuery(true);
-		$this->jsmquery->select('id,name');
+		$this->jsmquery->select('id,name,league_level');
 		$this->jsmquery->from('#__sportsmanagement_league');
 
 		if ($search_nation)
@@ -97,7 +97,7 @@ class sportsmanagementModelLeagues extends JSMModelList
 
 		foreach ($result as $league)
 		{
-			$league->name = Text::_($league->name);
+			$league->name = Text::_($league->name).' ('.$league->league_level.')';
 		}
 
 		return $result;
