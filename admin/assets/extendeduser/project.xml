@@ -10,7 +10,7 @@
 		<field name="ergebnismatrix" type="textarea" rows="25" cols="80" class="span12" label="ergebnismatrix" description="ergebnismatrix">
 		</field>
 	  
-	  <field name="ergebnisspielplan" type="textarea" rows="25" cols="250" label="ergebnisspielplan" description="ergebnisspielplan">
+	  <field name="ergebnisspielplan" default="28/58" type="textarea" rows="25" cols="250" label="ergebnisspielplan" description="ergebnisspielplan">
 		</field>
 	  
 	  <field name="ergebnistabelle" type="textarea" rows="25" cols="250" label="ergebnistabelle" description="ergebnistabelle">
