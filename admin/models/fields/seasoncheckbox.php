@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage fields
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -81,8 +77,19 @@ class JFormFieldseasoncheckbox extends FormField
 			$query->where($targetid . '=' . $select_id);
 			$query->group('season_id');
 			$starttime = microtime();
+            try
+		{
 			Factory::getDbo()->setQuery($query);
 			$this->value = Factory::getDbo()->loadColumn();
+            }
+		catch (Exception $e)
+		{
+		$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+        $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+		$this->value = '';
+		}
+            
+            
 		}
 		else
 		{
