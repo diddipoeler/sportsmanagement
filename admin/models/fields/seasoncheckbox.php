@@ -72,7 +72,7 @@ class JFormFieldseasoncheckbox extends FormField
 			$query = Factory::getDbo()->getQuery(true);
 
 			// Saisons selektieren
-			$query->select('season_id');
+			$query->select('season_id,kaderlink');
 			$query->from('#__sportsmanagement_' . $targettable);
 			$query->where($targetid . '=' . $select_id);
 			$query->group('season_id');
@@ -81,6 +81,7 @@ class JFormFieldseasoncheckbox extends FormField
 		{
 			Factory::getDbo()->setQuery($query);
 			$this->value = Factory::getDbo()->loadColumn();
+              $this->teamvalue = Factory::getDbo()->loadAssocList('season_id');
             }
 		catch (Exception $e)
 		{
@@ -88,7 +89,8 @@ class JFormFieldseasoncheckbox extends FormField
         $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 		$this->value = '';
 		}
-            
+        
+          //echo '<pre>'.print_r($this->teamvalue,true).'</pre>';
             
 		}
 		else
@@ -106,7 +108,7 @@ class JFormFieldseasoncheckbox extends FormField
 		$html[] = '<fieldset id="' . $this->id . '"' . $class . '>';
 
 		// Build the checkbox field output.
-		$html[] = '<ul>';
+		$html[] = '<table>';
 
 		foreach ($options as $i => $option)
 		{
@@ -117,15 +119,23 @@ class JFormFieldseasoncheckbox extends FormField
 
 			// Initialize some JavaScript option attributes.
 			$onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
-			$html[]  = '<li>';
+			$html[]  = '<tr><td>';
 			$html[]  = '<input type="checkbox" id="' . $this->id . $i . '" name="' . $this->name . '[]"' . ' value="'
 				. htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"' . $checked . $class . $onclick . $disabled . '/>';
-
+$html[] = '</td>';
+          $html[]  = '<td>';
 			$html[] = '<label for="' . $this->id . $i . '"' . $class . '>' . Text::_($option->text) . '</label>';
-			$html[] = '</li>';
+			$html[] = '</td>';
+          
+          $html[]  = '<td>';
+          $html[]  = '<input type="text" id="' . $this->id . $i . '" name="' . $this->name . '[teamvalue]['.$option->value.']"' . ' value="'
+				. $this->teamvalue[$option->value]['kaderlink']. '"' .  '/>';
+          $html[] = '</td>';
+          $html[] = '</tr>';
+          
 		}
 
-		$html[] = '</ul>';
+		$html[] = '</table>';
 
 		// End the checkbox field output.
 		$html[] = '</fieldset>';
