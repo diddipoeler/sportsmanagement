@@ -128,7 +128,7 @@ $html[] = '</td>';
 			$html[] = '</td>';
           
           $html[]  = '<td>';
-          $html[]  = '<input type="text" id="' . $this->id . $i . '" name="' . $this->name . '[teamvalue]['.$option->value.']"' . ' value="'
+          $html[]  = '<input type="text" id="' . $this->id . $i . '" name="' . '[teamvalue]['.$option->value.']"' . ' value="'
 				. $this->teamvalue[$option->value]['kaderlink']. '"' .  '/>';
           $html[] = '</td>';
           $html[] = '</tr>';
