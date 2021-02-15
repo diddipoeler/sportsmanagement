@@ -72,7 +72,7 @@ class JFormFieldseasoncheckbox extends FormField
 			$query = Factory::getDbo()->getQuery(true);
 
 			// Saisons selektieren
-			$query->select('season_id,kaderlink');
+			$query->select('season_id,teamname');
 			$query->from('#__sportsmanagement_' . $targettable);
 			$query->where($targetid . '=' . $select_id);
 			$query->group('season_id');
@@ -129,7 +129,7 @@ $html[] = '</td>';
           
           $html[]  = '<td>';
           $html[]  = '<input type="text" id="' . 'jform_teamvalue' . $i . '" name="' . 'jform[teamvalue]['.$option->value.']"' . ' value="'
-				. $this->teamvalue[$option->value]['kaderlink']. '"' .  '/>';
+				. $this->teamvalue[$option->value]['teamname']. '"' .  '/>';
           $html[] = '</td>';
           $html[] = '</tr>';
           

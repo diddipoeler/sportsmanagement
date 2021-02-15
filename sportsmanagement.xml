@@ -9,7 +9,7 @@
 	<copyright>Copyright Info</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<!--  The version string is recorded in the components table -->
-	<version>3.8.30</version>
+	<version>3.8.40</version>
 	<!-- The description is optional and defaults to the name -->
 	<description>COM_SPORTSMANAGEMENT_DESCRIPTION</description>
  

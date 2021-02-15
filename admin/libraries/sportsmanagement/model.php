@@ -933,7 +933,7 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 							$this->jsmquery->where('team_id =' . $data['id']);
 							$this->jsmquery->where('season_id =' . $value);
 							$this->jsmdb->setQuery($this->jsmquery);
-							$result          = $this->jsmdb->loadObjectList();
+							$result          = $this->jsmdb->loadResult();
 							$delete_season[] = $value;
 
 							if (!$result)
@@ -953,6 +953,17 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 								{
 								}
 							}
+                            else
+                            {
+                            $teamname = $data['teamvalue'][$value];  
+                            $object = new stdClass;
+				$object->id          = $result;
+                $object->teamname          = $teamname;
+				$object->modified    = $this->jsmdate->toSql();
+				$object->modified_by = $this->jsmuser->get('id');
+				$resultupdate = $this->jsmdb->updateObject('#__sportsmanagement_season_team_id', $object, 'id');  
+                                
+                            }
 						}
 
 						$this->jsmquery->clear();
