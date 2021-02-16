@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage playground
@@ -11,9 +9,7 @@
  * @copyright  Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 
 $this->document->addScript('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true');
@@ -21,10 +17,12 @@ $latitude  = $this->playground->latitude;
 $longitude = $this->playground->longitude;
 ?>
 
-
-<?php echo Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_GOOGLE_ROUTE'); ?>
+<?php  
+unset($this->notes);
+$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_GOOGLE_ROUTE');
+echo $this->loadTemplate('jsm_notes');
+?>   
 <div class="row-fluid">
-
 
     <div id="divlos">
         <button id="los">Los!</button>

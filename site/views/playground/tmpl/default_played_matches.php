@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage playground
@@ -12,7 +10,6 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -25,7 +22,11 @@ if ($this->playedgames)
 {
 	?>
     <!-- Playground played games -->
-    <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_PREV_GAMES'); ?></h2>
+<?php  
+unset($this->notes);
+$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_PREV_GAMES');
+echo $this->loadTemplate('jsm_notes');
+?>       
     <div class="<?php echo $this->divclassrow; ?> table-responsive" id="playground_played_matches">
         <table class="<?php echo $this->config['matches_table_class']; ?>">
 			<?php

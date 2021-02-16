@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage playground
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -22,7 +18,12 @@ use Joomla\CMS\HTML\HTMLHelper;
 if ($this->playground->notes)
 {
 	?>
-    <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NOTES'); ?></h2>
+
+<?php  
+unset($this->notes);
+$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NOTES');
+echo $this->loadTemplate('jsm_notes');
+?>       
     <div class="<?php echo $this->divclassrow; ?> table-responsive" id="playground_description">
 		<?php
 		$description = $this->playground->notes;
