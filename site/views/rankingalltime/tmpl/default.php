@@ -19,8 +19,9 @@ echo $this->loadTemplate('jsm_notes');
 
 ?>
 <div class="<?php echo $this->divclasscontainer; ?>" id="defaultrankingalltime">
-	<?php
-	echo $this->loadTemplate('projectheading');
-	echo $this->loadTemplate('ranking');
-	?>
+<?php
+echo $this->loadTemplate('projectheading');
+echo $this->loadTemplate('ranking');
+echo $this->loadTemplate('jsminfo');
+?>
 </div>
