@@ -1384,7 +1384,7 @@ $arrOutput = json_decode($objJsonDocument, TRUE);
 							 */
 							$this->jsmquery = $this->jsmdb->getQuery(true);
 							$fields         = array(
-								$this->jsmdb->quoteName('picture') . '=' . '\'' . $icon . '\'',
+								//$this->jsmdb->quoteName('picture') . '=' . '\'' . $icon . '\'',
 								$this->jsmdb->quoteName('short_name') . '=' . '\'' . $shortname . '\'',
 								$this->jsmdb->quoteName('middle_name') . '=' . '\'' . $middlename . '\'',
 								$this->jsmdb->quoteName('alias') . '=' . '\'' . $aliasname . '\''
