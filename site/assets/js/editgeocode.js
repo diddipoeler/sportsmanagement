@@ -118,7 +118,7 @@ console.log(val);
 console.log('latitude ' + val.lat);
 console.log('longitude ' + val.lon);
 
-console.log('county ' + val.address.county);
+console.log('121 county ' + val.address.county);
 console.log('state_district ' + val.address.state_district);
 console.log('state ' + val.address.state);
 console.log('city_district ' + val.address.city_district);
