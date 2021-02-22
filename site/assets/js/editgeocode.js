@@ -137,6 +137,7 @@ dpjQuery("#state").val(state);
 if ( val.address.county )
 {
 dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME").val(val.address.county);	
+dpjQuery("#state").val(val.address.county);	
 }	
 if ( val.address.state_district )
 {
