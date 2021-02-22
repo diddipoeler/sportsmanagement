@@ -266,7 +266,7 @@ $meta_keys = array();
 
 if (version_compare(JVERSION, '3.0.0', 'ge'))
 {
-	$meta_keys[] = $config->get('config.MetaKeys');
+	$meta_keys[] = $config->get('MetaKeys');
 }
 else
 {
