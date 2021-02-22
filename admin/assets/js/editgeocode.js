@@ -7,6 +7,7 @@ var countryleaflet;
 var address;
 var street;
 var state;
+var municipality;
 var city;
 var zip;
 var province;
@@ -132,6 +133,9 @@ console.log('latitude ' + val.lat);
 console.log('longitude ' + val.lon);
 
 console.log('134 county ' + val.address.county);
+	
+console.log('136 municipality ' + val.address.municipality);
+	
 console.log('state_district ' + val.address.state_district);
 console.log('state ' + val.address.state);
 console.log('city_district ' + val.address.city_district);
@@ -143,14 +147,15 @@ console.log('neighbourhood ' + val.address.neighbourhood);
 
 
 state = val.address.state;
+municipality = val.address.municipality;	
 
 dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME").val(state);
-dpjQuery("#jform_state").val(state);	
+dpjQuery("#jform_state").val(municipality);	
 
 if ( val.address.county )
 {
 dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME").val(val.address.county);	
-dpjQuery("#jform_state").val(val.address.county);	
+//dpjQuery("#jform_state").val(val.address.county);	
 }	
 if ( val.address.state_district )
 {
