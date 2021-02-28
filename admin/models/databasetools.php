@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -11,15 +9,12 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
-
 
 /**
  * sportsmanagementModelDatabaseTools
@@ -42,11 +37,8 @@ class sportsmanagementModelDatabaseTools extends BaseDatabaseModel
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app    = Factory::getApplication();
+		$app = Factory::getApplication('administrator');
 		$option = Factory::getApplication()->input->getCmd('option');
-
-		// Initialise variables.
-		$app   = Factory::getApplication('administrator');
 		$value = Factory::getApplication()->input->getUInt('limitstart', 0);
 		$this->setState('list.start', $value);
 	}

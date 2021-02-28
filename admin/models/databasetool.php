@@ -1137,6 +1137,7 @@ $message['message'] = $getmessage;
 	function checkAssociations()
 	{
 		$country_assoc_del = '';
+        $country_assoc = array();
 
 		if (version_compare(JVERSION, '3.0.0', 'ge'))
 		{
