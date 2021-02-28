@@ -1186,8 +1186,10 @@ $arrOutput = json_decode($objJsonDocument, TRUE);
 
 		$params        = ComponentHelper::getParams($this->jsmoption);
 		$country_assoc = $params->get('cfg_country_associations');
+        if( is_array($country_assoc) ){
         $country_assoc = array_merge( array_filter($country_assoc) );
-
+        }
+        
 		if ($country_assoc)
 		{
 			$country_assoc_del = "'" . implode("','", $country_assoc) . "'";

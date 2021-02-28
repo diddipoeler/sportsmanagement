@@ -59,7 +59,9 @@ class sportsmanagementViewcpanel extends sportsmanagementView
 		$this->sporttypes         = $params->get('cfg_sport_types');
 		$sm_quotes          = $params->get('cfg_quotes');
 		$country            = $params->get('cfg_country_associations');
+        if( is_array($country) ){
         $country = array_merge( array_filter($country) );
+        }
 		$install_agegroup   = ComponentHelper::getParams($this->option)->get('install_agegroup', 0);
 		$cfg_which_database = $params->get('cfg_which_database');
 
@@ -67,7 +69,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView
 		{
 			$this->sporttypes       = '';
 			$sm_quotes        = '';
-			$country          = '';
+			$country = array();
 			$install_agegroup = '';
 		}
 
