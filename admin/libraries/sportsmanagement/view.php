@@ -141,6 +141,9 @@ class sportsmanagementView extends BaseHtmlView
         if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
         {
         $this->document->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/joomla4functions.js');
+		$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/extended-1.1.css', 'text/css');
+			//$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/style.css', 'text/css'); 
+			$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/stylebox.css', 'text/css');
         //$this->document->addScript(Uri::root() . 'media/system/js/searchtools.js');
         }
 	else	
