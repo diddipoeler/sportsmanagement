@@ -19,7 +19,7 @@ $boxicon = 'icon-info-circle icon-fw';
 }
 else	
 {
-$boxicon = 'warning-icon';	
+$boxicon = 'info-tab warning-icon';	
 }
 ?>
 
@@ -31,7 +31,7 @@ $warnings = implode("<br>",$this->warnings);
 <!--Warning box rot -->
 <div class="color-box">
 <div class="shadow">
-<div class="info-tab <?php echo $boxicon;?>" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_WARNING'); ?>"><i></i></div>
+<div class="<?php echo $boxicon;?>" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_WARNING'); ?>"><i></i></div>
 <div class="warning-box">
 <p><strong><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_WARNING'); ?></strong>
 <?php echo $warnings; ?>
