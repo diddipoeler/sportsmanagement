@@ -13,6 +13,14 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+$boxicon = 'icon-info-circle icon-fw';
+}
+else	
+{
+$boxicon = 'info-tab note-icon';	
+}
 ?>
 
 <?php
@@ -22,15 +30,14 @@ $notes = implode("<br>",$this->notes);
 ?>
 <!--Note box blau -->
 <div class="color-box">
-					<div class="shadow">
-						<div class="info-tab note-icon" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NOTE'); ?>"><i></i></div>
-						<div class="note-box">
-							<p><strong><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NOTE'); ?></strong>
-                            <?php echo $notes; ?>
-                            
-                            </p>
-						</div>
-					</div>
+<div class="shadow">
+<div class="<?php echo $boxicon;?>" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NOTE'); ?>"><i></i></div>
+<div class="note-box">
+<p><strong><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NOTE'); ?></strong>
+<?php echo $notes; ?>
+</p>
+</div>
+</div>
 </div>
 <!--Note box blau -->
 
