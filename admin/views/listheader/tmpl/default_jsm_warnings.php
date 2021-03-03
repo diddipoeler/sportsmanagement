@@ -15,7 +15,7 @@ use Joomla\CMS\Language\Text;
 
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
-$boxicon = 'icon-fw';
+$boxicon = 'icon-info-circle';
 }
 else	
 {
