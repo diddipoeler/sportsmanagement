@@ -15,7 +15,7 @@ use Joomla\CMS\Language\Text;
 
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
-$boxicon = 'icon-info-circle icon-fw';
+$boxicon = 'fas fa-exclamation-triangle fa-2x fa-pull-left';
 }
 else	
 {
