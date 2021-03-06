@@ -27,17 +27,6 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 echo $this->loadTemplate('jsm_warnings');
 ?>
 
-<!--Tip Box grün -->
-<!--                <div class="color-box space">
-                    <div class="shadow">
-                        <div class="info-tab tip-icon" title="Useful Tips"><i></i></div>
-                        <div class="tip-box">
-<p><strong>Tip:</strong></p>
-                        </div>
-                    </div>
-               </div> -->
-<!--End:Tip Box-->
-
 <!--Note box blau -->
 <div class="color-box">
 <div class="shadow">
@@ -50,18 +39,7 @@ echo $this->loadTemplate('jsm_warnings');
 </div>
 </div>
 <!--End:Note box-->
-
-<!--Warning box rot -->
-<!-- <div class="color-box">
-					<div class="shadow">
-						<div class="info-tab warning-icon" title="Important Warnings"><i></i></div>
-						<div class="warning-box">
-							<p><strong>Warning:</strong></p>
-						</div>
-					</div>
-				</div>  -->
-<!--End:Warning box-->
-                
+               
     <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 		<?PHP
 

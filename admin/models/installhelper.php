@@ -18,7 +18,6 @@ use Joomla\CMS\Filter\OutputFilter;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Log\Log;
 
-
 /**
  * sportsmanagementModelinstallhelper
  * 
@@ -63,7 +62,16 @@ class sportsmanagementModelinstallhelper extends JSMModelAdmin
     }   
     else
     {
+        $this->jsmquery->clear();
+        $profile = new stdClass;
+		$profile->name = 'COM_SPORTSMANAGEMENT_ST_'.strtoupper($post['filter_sports_type']);
         
+        $profile->modified         = $this->jsmdate->toSql();
+		$profile->modified_by      = $this->jsmuser->get('id');
+		$profile->checked_out      = 0;
+		$profile->checked_out_time = $this->jsmdb->getNullDate();
+        
+		$insertresult = $this->jsmdb->insertObject('#__sportsmanagement_sports_type', $profile);
         
         
     return true;     

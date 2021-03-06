@@ -42,13 +42,12 @@ class sportsmanagementViewinstallhelper extends sportsmanagementView
 $this->install_step     = $this->jinput->get('step');
 
 /** Build the html select list for sportstypes */
-		$sportstypes[]  = HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'));
-        
+$sportstypes[]  = HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'));
 $sportstypes[]  = HTMLHelper::_('select.option', 'soccer', Text::_('COM_SPORTSMANAGEMENT_ST_SOCCER') );
 $sportstypes[]  = HTMLHelper::_('select.option', 'tablesoccer', Text::_('COM_SPORTSMANAGEMENT_ST_TABLESOCCER') );
 $sportstypes[]  = HTMLHelper::_('select.option', 'hockey', Text::_('COM_SPORTSMANAGEMENT_ST_HOCKEY') );
 $sportstypes[]  = HTMLHelper::_('select.option', 'floorball', Text::_('COM_SPORTSMANAGEMENT_ST_FLOORBALL') );
-$sportstypes[]  = HTMLHelper::_('select.option', 'skaterhockey', Text::_('COM_SPORTSMANAGEMENT_ST_SKATER_HOCKEY') );
+$sportstypes[]  = HTMLHelper::_('select.option', 'skater_hockey', Text::_('COM_SPORTSMANAGEMENT_ST_SKATER_HOCKEY') );
 $sportstypes[]  = HTMLHelper::_('select.option', 'american_football', Text::_('COM_SPORTSMANAGEMENT_ST_AMERICAN_FOOTBALL') );
 $sportstypes[]  = HTMLHelper::_('select.option', 'icehockey', Text::_('COM_SPORTSMANAGEMENT_ST_ICEHOCKEY') );
 $sportstypes[]  = HTMLHelper::_('select.option', 'volleyball', Text::_('COM_SPORTSMANAGEMENT_ST_VOLLEYBALL') );
