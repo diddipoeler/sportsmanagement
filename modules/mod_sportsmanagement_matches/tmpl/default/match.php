@@ -40,7 +40,7 @@ use Joomla\CMS\Uri\Uri;
 				<?php
 				if (!empty($match['location'])) echo '<span style="white-space:nowrap;">' . $match['location'] . '</span> ';
 				echo ' <span style="white-space:nowrap;">' . $match['date'] . '</span> '
-					. ' <span style="white-space:nowrap;">' . $match['time'] . ' Uhr</span> ';
+					. ' <span style="white-space:nowrap;">' . $match['time'] . Text::_('MOD_SPORTSMANAGEMENT_MATCHES_CLOCK') . '</span> ';
 				if (isset($match['meeting'])) echo ' <span style="white-space:nowrap;">' . $match['meeting'] . '</span> ';
 				?>
 

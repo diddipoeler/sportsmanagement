@@ -415,21 +415,21 @@ description="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_CLUBS_DESCR" />
 					   label="MOD_SPORTSMANAGEMENT_MATCHES_COUNTRY_FLAG_FOLDER_TITLE"
 					   description="MOD_SPORTSMANAGEMENT_MATCHES_COUNTRY_FLAG_FOLDER_DESCR"/>
 
-				<field name="xsize" type="text" default="30"
+				<field name="xsize" type="text" default="auto"
+					   label="MOD_SPORTSMANAGEMENT_MATCHES_MAX_IMAGE_WIDTH_TITLE"
+					   description="MOD_SPORTSMANAGEMENT_MATCHES_MAX_IMAGE_WIDTH_DESCR"/>
+
+				<field name="ysize" type="text" default="30"
 					   label="MOD_SPORTSMANAGEMENT_MATCHES_MAX_IMAGE_HEIGHT_TITLE"
 					   description="MOD_SPORTSMANAGEMENT_MATCHES_MAX_IMAGE_HEIGHT_DESCR"/>
-
-				<field name="new_line_after_logo" type="extensionradiobutton" default="1"
+                       
+                <field name="new_line_after_logo" type="extensionradiobutton" default="1"
 					   class="radio btn-group btn-group-yesno"
 					   label="MOD_SPORTSMANAGEMENT_MATCHES_NEWLINE_AFTER_LOGO_TITLE"
 					   description="MOD_SPORTSMANAGEMENT_MATCHES_NEWLINE_AFTER_LOGO_DESCR">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-
-				<field name="ysize" type="text" default="auto"
-					   label="MOD_SPORTSMANAGEMENT_MATCHES_MAX_IMAGE_HEIGHT_TITLE"
-					   description="MOD_SPORTSMANAGEMENT_MATCHES_MAX_IMAGE_HEIGHT_DESCR"/>
 
 				<field name="show_names" type="extensionradiobutton" default="1"
 					   class="radio btn-group btn-group-yesno"
