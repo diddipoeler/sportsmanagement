@@ -431,6 +431,8 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_SPORT_TYPES_DESC">
 <option value="australien_rules_football">COM_SPORTSMANAGEMENT_ST_AUSTRALIEN_RULES_FOOTBALL</option>
 <option value="dart">COM_SPORTSMANAGEMENT_ST_DART</option>
 <option value="waterpolo">COM_SPORTSMANAGEMENT_ST_WATERPOLO</option>	
+
+<option value="small_bore_rifle_association">COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION</option>
 </field>
 		
 	</fieldset>
