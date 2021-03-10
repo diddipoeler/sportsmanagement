@@ -377,6 +377,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_match` (
   `match_timestamp` INT( 11 ) NOT NULL DEFAULT  '0',
   `next_match_id` INT(11) NOT NULL DEFAULT '0' ,
   `openligaid` int(11) DEFAULT NULL,
+  `ringetotal` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `round_id` (`round_id`),
   KEY `projectteam1_id` (`projectteam1_id`),
@@ -1626,6 +1627,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_match_single` (
   `double_team1_player2` int(11) NOT NULL DEFAULT '0',
   `double_team2_player1` int(11) NOT NULL DEFAULT '0',
   `double_team2_player2` int(11) NOT NULL DEFAULT '0',
+  `ringetotal` int(11) DEFAULT NULL,
   
   PRIMARY KEY (`id`),
   KEY `round_id` (`round_id`),
