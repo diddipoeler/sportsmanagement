@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage matches
@@ -12,14 +10,13 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
 <form name="projectteamForm" id="projectteamForm" method="post">
-
-	<?php
-	// Echo $this->lists['projectteams'];
-	echo "" . HTMLHelper::_('select.genericlist', $this->lists['projectteams'], 'projectteam', 'class="inputbox" size="1" onchange="this.form.submit();" ', 'value', 'text', $this->projectteamsel) . "";
-	?>
+<?php
+if (array_key_exists('projectteams', $this->lists)) {
+echo "" . HTMLHelper::_('select.genericlist', $this->lists['projectteams'], 'projectteam', 'class="inputbox" size="1" onchange="this.form.submit();" ', 'value', 'text', $this->projectteamsel) . "";
+}
+?>
 </form>
