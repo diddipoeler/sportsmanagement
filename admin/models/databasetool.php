@@ -1546,6 +1546,8 @@ $arrOutput = json_decode($objJsonDocument, TRUE);
 	{
 		$app = Factory::getApplication();
 
+if (File::exists(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/sp_structur/' . $type . '.xml'))
+		{
 		if (version_compare(JVERSION, '3.0.0', 'ge'))
 		{
 			$xml = simplexml_load_file(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/sp_structur/' . $type . '.xml');
@@ -1554,8 +1556,8 @@ $arrOutput = json_decode($objJsonDocument, TRUE);
 		{
 			$xml = Factory::getXML(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/sp_structur/' . $type . '.xml');
 		}
-
-		if (!File::exists(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/sp_structur/' . $type . '.xml'))
+}
+elseif(!File::exists(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/sp_structur/' . $type . '.xml'))
 		{
 			return false;
 		}
