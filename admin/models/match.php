@@ -1324,6 +1324,24 @@ class sportsmanagementModelMatch extends JSMModelAdmin
             {
                 $object->team2_single_matchpoint = NULL;
             }
+            
+            if ( !$object->team1_single_sets )
+            {
+                $object->team1_single_sets = NULL;
+            }
+            if ( !$object->team2_single_sets )
+            {
+                $object->team2_single_sets = NULL;
+            }
+            
+            if ( !$object->team1_single_games )
+            {
+                $object->team1_single_games = NULL;
+            }
+            if ( !$object->team2_single_games )
+            {
+                $object->team2_single_games = NULL;
+            }
 
 			/** handelt es sich um eine turnierrunde ? */
 			$this->jsmquery->clear();
