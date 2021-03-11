@@ -82,14 +82,11 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERR
 	 */
 	protected function addToolbar()
 	{
-
-		// Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_TITLE');
 		ToolbarHelper::addNew('sportstype.add');
 		ToolbarHelper::editList('sportstype.edit');
 		ToolbarHelper::custom('sportstype.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
 		ToolbarHelper::archiveList('sportstype.export', Text::_('JTOOLBAR_EXPORT'));
-
 		parent::addToolbar();
 	}
 }

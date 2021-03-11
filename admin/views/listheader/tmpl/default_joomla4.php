@@ -70,6 +70,7 @@ case 'seasons':
 case 'smquotes':
 case 'teamplayers':
 case 'teams':
+case 'sportstypes':
 echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 break;
 case 'githubinstall':
