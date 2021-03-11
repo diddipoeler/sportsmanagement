@@ -5,6 +5,8 @@
  * @param string
  *            from which field
  */
+ 
+ /*
 window
 		.addEvent(
 				'domready',
@@ -61,7 +63,7 @@ window
 
 									});
 				});
-
+*/
 function switchMenu(obj) {
 	var el = document.getElementById(obj);
 	if (el.style.display != "none") {
