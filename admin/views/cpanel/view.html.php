@@ -47,6 +47,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView
 		$project_id = $this->app->getUserState("$this->option.pid", '0');
 		$model      = $this->getModel();
 		$my_text    = '';
+        $type_sport_type = '';
         $country = array();
 
 		$databasetool = BaseDatabaseModel::getInstance("databasetool", "sportsmanagementModel");
@@ -175,6 +176,11 @@ class sportsmanagementViewcpanel extends sportsmanagementView
 				case 'dart':
 				$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_DART');
 				break;
+                
+                case 'small_bore_rifle_association':
+				$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION');
+				break;
+                
 				default:
 				break;
 				}
