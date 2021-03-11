@@ -1305,14 +1305,25 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 
 			$object->projectteam1_id         = $post['projectteam1_id' . $pks[$x]];
 			$object->projectteam2_id         = $post['projectteam2_id' . $pks[$x]];
+
 			$object->team1_single_matchpoint = $post['team1_single_matchpoint' . $pks[$x]];
 			$object->team2_single_matchpoint = $post['team2_single_matchpoint' . $pks[$x]];
+            
 			$object->team1_single_sets       = $post['team1_single_sets' . $pks[$x]];
 			$object->team2_single_sets       = $post['team2_single_sets' . $pks[$x]];
 			$object->team1_single_games      = $post['team1_single_games' . $pks[$x]];
 			$object->team2_single_games      = $post['team2_single_games' . $pks[$x]];
 			$object->content_id              = $post['content_id' . $pks[$x]];
 			$object->match_timestamp         = sportsmanagementHelper::getTimestamp($object->match_date);
+            
+            if ( !$object->team1_single_matchpoint )
+            {
+                $object->team1_single_matchpoint = NULL;
+            }
+            if ( !$object->team2_single_matchpoint )
+            {
+                $object->team2_single_matchpoint = NULL;
+            }
 
 			/** handelt es sich um eine turnierrunde ? */
 			$this->jsmquery->clear();
