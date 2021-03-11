@@ -1246,10 +1246,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 
 		for ($x = 0; $x < count($pks); $x++)
 		{
-			/**
-			 *
-			 * änderungen im datum oder der uhrzeit
-			 */
+			/** änderungen im datum oder der uhrzeit */
 			$tblMatch = $this->getTable();;
 			$tblMatch->load((int) $pks[$x]);
 
@@ -1317,9 +1314,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 			$object->content_id              = $post['content_id' . $pks[$x]];
 			$object->match_timestamp         = sportsmanagementHelper::getTimestamp($object->match_date);
 
-			/**
-			 * handelt es sich um eine turnierrunde ?
-			 */
+			/** handelt es sich um eine turnierrunde ? */
 			$this->jsmquery->clear();
 			$this->jsmquery->select('tournement');
 			$this->jsmquery->from('#__sportsmanagement_round');
@@ -1329,10 +1324,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 
 			if ($tournement_round)
 			{
-				/**
-				 *
-				 * roundcode für die nächste runde
-				 */
+				/** roundcode für die nächste runde */
 				$this->jsmquery->clear();
 				$this->jsmquery->select('roundcode,project_id');
 				$this->jsmquery->from('#__sportsmanagement_round');
@@ -1346,8 +1338,9 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 				}
 				catch (RuntimeException $e)
 				{
-					$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
-					$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($this->jsmquery->dump(), true) . '</pre>', 'Error');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($this->jsmquery->dump(), true) . '</pre>', 'Error');
 				}
 
 				$round_code--;
@@ -1365,14 +1358,12 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 				}
 				catch (RuntimeException $e)
 				{
-					$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
-					$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($this->jsmquery->dump(), true) . '</pre>', 'Error');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($this->jsmquery->dump(), true) . '</pre>', 'Error');
 				}
 
-				/**
-				 *
-				 * update
-				 */
+				/** update */
 				$this->jsmquery->clear();
 				$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_match'))
 					->set('next_match_id = ' . $object->id)
@@ -1385,8 +1376,8 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 				}
 				catch (RuntimeException $e)
 				{
-					//            $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
-					//	    $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($this->jsmquery->dump(),true).'</pre>', 'Error');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 				}
 
 				$this->jsmquery->clear();
@@ -1401,8 +1392,8 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 				}
 				catch (RuntimeException $e)
 				{
-					//            $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
-					//	    $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($this->jsmquery->dump(),true).'</pre>', 'Error');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 				}
 			}
 
@@ -1521,13 +1512,11 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 			try
 			{
 				$result_update = Factory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id', true);
-
-				//                sprintf(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'), $pks[$x]);
-				//                $this->jsmapp->enqueueMessage(sprintf(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'), $pks[$x]), 'Notice');
 			}
 			catch (Exception $e)
 			{
-				$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+        $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+        $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 				$result = false;
 			}
 		}
