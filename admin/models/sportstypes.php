@@ -68,11 +68,7 @@ class sportsmanagementModelSportsTypes extends JSMModelList
 	function getListQuery()
 	{
 		$this->jsmquery->clear();
-
-		// Select some fields
 		$this->jsmquery->select(implode(",", $this->filter_fields));
-
-		// From table
 		$this->jsmquery->from('#__sportsmanagement_sports_type AS s');
 		$this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = s.checked_out');
 
