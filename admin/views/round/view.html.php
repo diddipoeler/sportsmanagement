@@ -42,14 +42,23 @@ class sportsmanagementViewRound extends sportsmanagementView
 
 		if ($this->item->id)
 		{
-			/**
-			 * alles ok
-			 */
+			/** alles ok */
+            if ($this->item->round_date_first == '0000-00-00')
+			{
+				$this->item->round_date_first = '';
+				$this->form->setValue('round_date_first', '');
+			}
+
+			if ($this->item->round_date_last == '0000-00-00')
+			{
+				$this->item->round_date_last = '';
+				$this->form->setValue('round_date_last', '');
+			}
 		}
 		else
 		{
-			$this->form->setValue('round_date_first', null, '0000-00-00');
-			$this->form->setValue('round_date_last', null, '0000-00-00');
+			$this->form->setValue('round_date_first','');
+			$this->form->setValue('round_date_last', '');
 			$this->form->setValue('project_id', null, $this->project_id);
 		}
 
