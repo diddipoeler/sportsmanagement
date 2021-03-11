@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage sportstypes
@@ -11,17 +9,26 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Session\Session;
 
-
-$templatesToLoad = array('footer', 'listheader');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+$this->saveOrder = $this->sortColumn == 's.ordering';
+if ($this->saveOrder && !empty($this->items))
+{
+$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task='.$this->view.'.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{    
+HTMLHelper::_('draggablelist.draggable');
+}
+else
+{
+JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl,$this->saveOrderButton);    
+}
+}
 ?>
 
 <div id="editcell">
@@ -73,27 +80,29 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             </td>
         </tr>
         </tfoot>
-        <tbody>
+        <tbody <?php if ( $this->saveOrder && version_compare(substr(JVERSION, 0, 3), '4.0', 'ge') ) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($this->sortDirection); ?>" <?php endif; ?>>
 		<?php
-		$k = 0;
-		for ($i = 0, $n = count($this->items); $i < $n; $i++)
-		{
-			$row        = &$this->items[$i];
-			$link       = Route::_('index.php?option=com_sportsmanagement&task=sportstype.edit&id=' . $row->id);
+		foreach ($this->items as $this->count_i => $this->item) 
+			{
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+$this->dragable_group = 'data-dragable-group="none"';
+}                     
+			$link       = Route::_('index.php?option=com_sportsmanagement&task=sportstype.edit&id=' . $this->item->id);
 			$canEdit    = $this->user->authorise('core.edit', 'com_sportsmanagement');
-			$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $row->checked_out == $this->user->get('id') || $row->checked_out == 0;
-			$checked    = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'sportstypes.', $canCheckin);
-			$canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.sportstype.' . $row->id) && $canCheckin;
+			$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $this->item->checked_out == $this->user->get('id') || $this->item->checked_out == 0;
+			$checked    = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'sportstypes.', $canCheckin);
+			$canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.sportstype.' . $this->item->id) && $canCheckin;
 			?>
             <tr class="<?php echo "row$k"; ?>">
                 <td class="center">
 					<?php
-					echo $this->pagination->getRowOffset($i);
+					echo $this->pagination->getRowOffset($this->count_i);
 					?>
                 </td>
                 <td class="center">
 					<?php
-					echo HTMLHelper::_('grid.id', $i, $row->id);
+					echo HTMLHelper::_('grid.id', $this->count_i, $this->item->id);
 					?>
                 </td>
 
@@ -101,14 +110,14 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 				$inputappend = '';
 				?>
                 <td class="center">
-					<?php if ($row->checked_out) : ?>
-						<?php echo HTMLHelper::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'sportstypes.', $canCheckin); ?>
+					<?php if ($this->item->checked_out) : ?>
+						<?php echo HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->item->editor, $this->item->checked_out_time, 'sportstypes.', $canCheckin); ?>
 					<?php endif; ?>
 					<?php if ($canEdit) : ?>
-                        <a href="<?php echo Route::_('index.php?option=com_sportsmanagement&task=sportstype.edit&id=' . (int) $row->id); ?>">
-							<?php echo $this->escape($row->name); ?></a>
+                        <a href="<?php echo Route::_('index.php?option=com_sportsmanagement&task=sportstype.edit&id=' . (int) $this->item->id); ?>">
+							<?php echo $this->escape($this->item->name); ?></a>
 					<?php else : ?>
-						<?php echo $this->escape($row->name); ?>
+						<?php echo $this->escape($this->item->name); ?>
 					<?php endif; ?>
 
 
@@ -116,59 +125,50 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					<?php //echo $checked;  ?>
                 </td>
 				<?php ?>
-                <td><?php echo Text::_($row->name); ?></td>
+                <td><?php echo Text::_($this->item->name); ?></td>
 
                 <td class="center">
 					<?php
-					$picture = JPATH_SITE . DIRECTORY_SEPARATOR . $row->icon;
-					$desc    = Text::_($row->name);
+					$picture = JPATH_SITE . DIRECTORY_SEPARATOR . $this->item->icon;
+					$desc    = Text::_($this->item->name);
 					//echo sportsmanagementHelper::getPictureThumb($picture, $desc, 0, 21, 4);
 					?>
-                    <a href="<?php echo Uri::root() . $row->icon; ?>" title="<?php echo $desc; ?>" class="modal">
-                        <img src="<?php echo Uri::root() . $row->icon; ?>" alt="<?php echo $desc; ?>" width="20"/>
+                    <a href="<?php echo Uri::root() . $this->item->icon; ?>" title="<?php echo $desc; ?>" class="modal">
+                        <img src="<?php echo Uri::root() . $this->item->icon; ?>" alt="<?php echo $desc; ?>" width="20"/>
                     </a>
 					<?PHP
 					?>
                 </td>
                 <td>
 					<?php
-					$append = ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" style="background-color:#bbffff"';
-					echo HTMLHelper::_('select.genericlist', $this->lists['sportart'], 'sportstype_id' . $row->id, 'class="form-control form-control-inline" size="1"' . $append, 'value', 'text', $row->sportsart);
+					$append = ' onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true" style="background-color:#bbffff"';
+					echo HTMLHelper::_('select.genericlist', $this->lists['sportart'], 'sportstype_id' . $this->item->id, 'class="form-control form-control-inline" size="1"' . $append, 'value', 'text', $this->item->sportsart);
 					?>
                 </td>
                 <td class="center">
                     <div class="btn-group">
-						<?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'sportstypes.', $canChange, 'cb'); ?>
+						<?php echo HTMLHelper::_('jgrid.published', $this->item->published, $this->count_i, 'sportstypes.', $canChange, 'cb'); ?>
 						<?php
 						// Create dropdown items and render the dropdown list.
 						if ($canChange)
 						{
-							HTMLHelper::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'sportstypes');
-							HTMLHelper::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'sportstypes');
-							echo HTMLHelper::_('actionsdropdown.render', $this->escape($row->name));
+							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === 2 ? 'un' : '') . 'archive', 'cb' . $this->count_i, 'sportstypes');
+							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === -2 ? 'un' : '') . 'trash', 'cb' . $this->count_i, 'sportstypes');
+							echo HTMLHelper::_('actionsdropdown.render', $this->escape($this->item->name));
 						}
 						?>
                     </div>
                 </td>
 
-                <td class="order">
-                        <span>
-                            <?php echo $this->pagination->orderUpIcon($i, $i > 0, 'sportstype.orderup', 'JLIB_HTML_MOVE_UP', 's.ordering'); ?>
-                        </span>
-                    <span>
-    <?php
-    echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'sportstype.orderdown', 'JLIB_HTML_MOVE_DOWN', 's.ordering');
-    ?>
-    <?php $disabled = true ? '' : 'disabled="disabled"'; ?>
-                        </span>
-                    <input type="text" name="order[]" size="5"
-                           value="<?php echo $row->ordering; ?>" <?php echo $disabled ?>
-                           class="form-control form-control-inline" style="text-align: center"/>
-                </td>
-                <td class="center"><?php echo $row->id; ?></td>
+                <td class="order" id="defaultdataorder">
+<?php
+echo $this->loadTemplate('data_order');
+?>
+</td> 
+                <td class="center"><?php echo $this->item->id; ?></td>
             </tr>
 			<?php
-			$k = 1 - $k;
+
 		}
 		?>
         </tbody>
