@@ -58,6 +58,10 @@ class sportsmanagementModeljlextindividualsportes extends JSMModelList
 	 */
 	function checkGames($project, $match_id, $rid, $projectteam1_id, $projectteam2_id)
 	{
+	   
+       //echo __LINE__.' projekt <pre>'.print_r($project,true).'</pre>';
+       
+       
 		$this->jsmquery->clear();
 		$this->jsmquery->select('COUNT(mc.id)');
 		$this->jsmquery->from('#__sportsmanagement_match_single AS mc');
