@@ -212,6 +212,26 @@ $pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=compon
 							?>
 
 							<?php
+						/*	
+$html = '<a href="#' . '" title="' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SINGLE_SPORT') . '" data-bs-toggle="modal"' .'data-bs-target="#ModalSelect' . $row->id . '">'.      'starten '.'</a>';
+
+$html .= HTMLHelper::_(
+				'bootstrap.renderModal',
+				'ModalSelect' . $row->id,
+				array(
+					'title'       => 'einzelsportart',
+					'url'         => $pcture_link,
+					'height'      => '400px',
+					'width'       => '800px',
+					'bodyHeight'  => 70,
+					'modalWidth'  => 80,
+					'footer'      => '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">'
+										. Text::_('JLIB_HTML_BEHAVIOR_CLOSE') . '</button>',
+				)
+			);
+echo $html;							
+	*/						
+							
 						}
 						?>
 
