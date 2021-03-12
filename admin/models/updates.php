@@ -41,6 +41,7 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 		parent::setDbo($this->jsmdb);
 		$this->jsmquery = $this->jsmdb->getQuery(true);
 		parent::__construct($config);
+        $this->jsmapp = Factory::getApplication();
 //		$getDBConnection = sportsmanagementHelper::getDBConnection();
 //		parent::setDbo($getDBConnection);
 
@@ -70,17 +71,30 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 		$data['count'] = 0;
 
 		$query = 'SELECT id,count FROM #__sportsmanagement_version where file LIKE ' . $this->_db->Quote($file);
-		Factory::getDbo()->setQuery($query);
-
-		if (!$result = Factory::getDbo()->loadObject())
+		$this->jsmdb->setQuery($query);
+        
+        
+        try
 		{
-			$this->setError($this->_db->getErrorMsg());
-		}
-		else
-		{
-			$data['id']    = $result->id;
+		  $result = Factory::getDbo()->loadObject();
+          $data['id']    = $result->id;
 			$data['count'] = (int) $result->count + 1;
-		}
+          }
+		catch (Exception $e)
+		{
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');		  
+          }
+
+//		if (!$result = Factory::getDbo()->loadObject())
+//		{
+//			$this->setError($this->_db->getErrorMsg());
+//		}
+//		else
+//		{
+//			$data['id']    = $result->id;
+//			$data['count'] = (int) $result->count + 1;
+//		}
 
 		$data['file'] = $file_name;
 
@@ -137,8 +151,8 @@ try
           }
 		catch (Exception $e)
 		{
-			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
-			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');		  
 			$result = false;
 		}
         
@@ -378,8 +392,8 @@ $updateFiles[$i]['count'] = '';
     }
             catch (Exception $e)
 		{
-			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
-			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 		}
 /*
 				if (!$result = Factory::getDbo()->loadObject())
@@ -396,8 +410,8 @@ $updateFiles[$i]['count'] = '';
 			}
             catch (Exception $e)
 		{
-			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
-			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 		}
             
 		}
