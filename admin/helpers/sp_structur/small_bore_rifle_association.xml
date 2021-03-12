@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<structur>
+<version>1.0.00</version>
+
+
+<mainpositions>
+<mainname switch="persontype" parent="0" content="1">SPORTS_SHOOTER</mainname>
+</mainpositions>
+
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">SMALL_CALIBER</parentname>
+</parentpositions>
+
+
+</structur>
