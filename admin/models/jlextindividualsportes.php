@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
@@ -30,7 +26,7 @@ use Joomla\CMS\Log\Log;
  * @version   2014
  * @access    public
  */
-class sportsmanagementModeljlextindividualsportes extends ListModel
+class sportsmanagementModeljlextindividualsportes extends JSMModelList
 {
 	var $_identifier = "jlextindividualsportes";
 
@@ -62,22 +58,13 @@ class sportsmanagementModeljlextindividualsportes extends ListModel
 	 */
 	function checkGames($project, $match_id, $rid, $projectteam1_id, $projectteam2_id)
 	{
-		$option = Factory::getApplication()->input->getCmd('option');
-		$app    = Factory::getApplication();
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-
-		// Select some fields
-		$query->select('COUNT(mc.id)');
-
-		// From the hello table
-		$query->from('#__sportsmanagement_match_single AS mc');
-		$query->where('mc.match_id = ' . $match_id);
-		$query->where('mc.match_type = "SINGLE" ');
-		$db->setQuery($query);
-		$singleresult = $db->loadResult();
+		$this->jsmquery->clear();
+		$this->jsmquery->select('COUNT(mc.id)');
+		$this->jsmquery->from('#__sportsmanagement_match_single AS mc');
+		$this->jsmquery->where('mc.match_id = ' . $match_id);
+		$this->jsmquery->where('mc.match_type = "SINGLE" ');
+		$this->jsmdb->setQuery($this->jsmquery);
+		$singleresult = $this->jsmdb->loadResult();
 
 		if ($singleresult < $project->tennis_single_matches)
 		{
@@ -92,24 +79,20 @@ class sportsmanagementModeljlextindividualsportes extends ListModel
 				$temp->match_id        = $match_id;
 				$temp->match_type      = 'SINGLE';
 				$temp->published       = 1;
+                $temp->teamplayer1_id = 0;
+                $temp->teamplayer2_id = 0;
 
-				// Insert the object
-				$result = Factory::getDbo()->insertObject('#__sportsmanagement_match_single', $temp);
+				$result = $this->jsmdb->insertObject('#__sportsmanagement_match_single', $temp);
 			}
 		}
 
-		$query = $db->getQuery(true);
-		$query->clear();
-
-		// Select some fields
-		$query->select('COUNT(mc.id)');
-
-		// From the hello table
-		$query->from('#__sportsmanagement_match_single AS mc');
-		$query->where('mc.match_id = ' . $match_id);
-		$query->where('mc.match_type = "DOUBLE" ');
-		$db->setQuery($query);
-		$doubleresult = $db->loadResult();
+		$this->jsmquery->clear();
+		$this->jsmquery->select('COUNT(mc.id)');
+		$this->jsmquery->from('#__sportsmanagement_match_single AS mc');
+		$this->jsmquery->where('mc.match_id = ' . $match_id);
+		$this->jsmquery->where('mc.match_type = "DOUBLE" ');
+		$this->jsmdb->setQuery($this->jsmquery);
+		$doubleresult = $this->jsmdb->loadResult();
 
 		if ($doubleresult < $project->tennis_double_matches)
 		{
@@ -124,9 +107,10 @@ class sportsmanagementModeljlextindividualsportes extends ListModel
 				$temp->match_id        = $match_id;
 				$temp->match_type      = 'DOUBLE';
 				$temp->published       = 1;
+                $temp->teamplayer1_id = 0;
+                $temp->teamplayer2_id = 0;
 
-				// Insert the object
-				$result = Factory::getDbo()->insertObject('#__sportsmanagement_match_single', $temp);
+				$result = $this->jsmdb->insertObject('#__sportsmanagement_match_single', $temp);
 			}
 		}
 
