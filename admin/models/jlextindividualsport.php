@@ -469,9 +469,9 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
               //$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($this->jsmquery->dump(),true).'</pre>'), 'error');
 			}
 	
-		if (!$resultdel)
-		{
-		}
+//		if (!$resultdel)
+//		{
+//		}
 
 	}
 
@@ -497,12 +497,18 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 		$event->event_type_id  = $event_id;
 		$event->event_sum      = 1;
 
-		// Insert the object into the user profile table.
-		$resultins = $this->jsmapp->insertObject('#__sportsmanagement_match_event', $event);
-
-		if (!$resultins)
-		{
-		}
+try{
+		$resultins = $this->jsmdb->insertObject('#__sportsmanagement_match_event', $event);
+}
+			catch (Exception $e)
+			{
+				$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+                $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+              //$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($this->jsmquery->dump(),true).'</pre>'), 'error');
+			}
+//		if (!$resultins)
+//		{
+//		}
 
 	}
 
