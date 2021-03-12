@@ -2,6 +2,10 @@
 <structur>
 <version>1.0.00</version>
 
+<events>
+<name icon="">SMALL_CALIBER_RINGS</name>
+</events>
+
 
 <mainpositions>
 <mainname switch="persontype" parent="0" content="1">SPORTS_SHOOTER</mainname>
