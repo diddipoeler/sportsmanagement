@@ -103,8 +103,9 @@ class sportsmanagementModeljlextindividualsport extends JSMModelAdmin
 		{
 		case 'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION':
         
-        echo __LINE__.' pks<pre>'.print_r($pks,true).'</pre>';
-        echo __LINE__.' post<pre>'.print_r($post,true).'</pre>';
+        
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($pks,true).'</pre>'), 'error');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($post,true).'</pre>'), 'error');
 
 
 
