@@ -303,12 +303,13 @@ var <?php echo $placeholder; ?> = new Array;
 		
 		if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
-
 		$modaltext = '<a href="#' . $target . '" title="' . $text . '" data-bs-toggle="modal" ' .'data-bs-target="#' . $target . '">';	
+		$footer = '<button type="button" class="btn btn-default" data-bs-dismiss="modal">' . Text::_('JCANCEL') . '</button> '.$extrabutton;
 		}
 		else
 		{
 		$modaltext = '<a href="#' . $target . '" title="' . $text . '" data-toggle="modal" >';
+		$footer = '<button type="button" class="btn btn-default" data-dismiss="modal">' . Text::_('JCANCEL') . '</button> '.$extrabutton;
 		}
 
 		if ($picture)
@@ -335,7 +336,7 @@ var <?php echo $placeholder; ?> = new Array;
 				'url'    => $url,
 				'height' => $height,
 				'width'  => $width,
-				'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">' . Text::_('JCANCEL') . '</button> '.$extrabutton
+				'footer' => $footer
 			)
 		);
 
