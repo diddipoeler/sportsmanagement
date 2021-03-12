@@ -296,11 +296,20 @@ var <?php echo $placeholder; ?> = new Array;
 	public static function getBootstrapModalImage($target = '', $picture = '', $text = '', $picturewidth = '20', $url = '', $width = '100', $height = '200', $extrabutton = '')
 	{
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
+		
+		
+		
+		
+		if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
 
+		$modaltext = '<a href="#' . $target . '" title="' . $text . '" data-bs-toggle="modal" ' .'data-bs-target="#' . $target . '">';	
+		}
+		else
+		{
 		$modaltext = '<a href="#' . $target . '" title="' . $text . '" data-toggle="modal" >';
+		}
 
 		if ($picture)
 		{
