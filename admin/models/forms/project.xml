@@ -500,6 +500,31 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP"
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+
+
+<field 
+name="use_smallcaliber" 
+type="extensionradiobutton" 
+default="0"
+class="radio btn-group btn-group-yesno"
+label="COM_SPORTSMANAGEMENT_SMALL_BORE_RIFLE_ASSOCIATION_F_SPORTS_SHOOTER" 
+description="COM_SPORTSMANAGEMENT_SMALL_BORE_RIFLE_ASSOCIATION_F_SPORTS_SHOOTER">
+<option value="0">JNO</option>
+<option value="1">JYES</option>
+</field>
+<field
+name="smallcaliber_single_matches"
+showon="use_smallcaliber:1"       
+type="text"
+label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_SPORTS_SHOOTER_SINGLE_MATCHES"
+description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_SPORTS_SHOOTER_SINGLE_MATCHES_DESC"
+class="inputbox validate-numeric"
+size="4" 
+maxlength="6"
+default="4"/>
+
+
+
 					
 <field 
 name="use_legs" 
