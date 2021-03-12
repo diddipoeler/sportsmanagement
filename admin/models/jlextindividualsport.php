@@ -112,6 +112,8 @@ class sportsmanagementModeljlextindividualsport extends JSMModelAdmin
 		$rowmatch->id                      = $pks[$x];
           $rowmatch->teamplayer1_id       = $post['teamplayer1_id' . $pks[$x]];
           $rowmatch->ringetotal       = $post['team1_result' . $pks[$x]];
+          $rowmatch->modified    = $this->jsmdate->toSql();
+				$rowmatch->modified_by = $this->jsmuser->get('id');
           try
 		{
 			$result_update = $this->jsmdb->updateObject('#__sportsmanagement_match_single', $rowmatch, 'id', true);
