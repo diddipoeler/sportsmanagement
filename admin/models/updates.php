@@ -76,7 +76,7 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
         
         try
 		{
-		  $result = Factory::getDbo()->loadObject();
+		  $result = $this->jsmdb->loadObject();
           $data['id']    = $result->id;
 			$data['count'] = (int) $result->count + 1;
           }
@@ -100,7 +100,22 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 
 		$query = "SELECT * FROM #__sportsmanagement_version where file LIKE 'sportsmanagement'";
 		Factory::getDbo()->setQuery($query);
-
+        try
+		{
+		  $result = Factory::getDbo()->loadObject();
+          $data['version']  = !empty($version) ? $version : $result->version;
+			$data['major']    = !empty($major) ? $major : $result->major;
+			$data['minor']    = !empty($minor) ? $minor : $result->minor;
+			$data['build']    = !empty($build) ? $build : $result->build;
+			$data['revision'] = !empty($revision) ? $revision : $result->revision;
+           }
+		catch (Exception $e)
+		{
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');		  
+          }
+        
+/*
 		if (!$result = Factory::getDbo()->loadObject())
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -113,7 +128,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 			$data['build']    = !empty($build) ? $build : $result->build;
 			$data['revision'] = !empty($revision) ? $revision : $result->revision;
 		}
-
+*/
 		$object        = new stdClass;
 		$object->id    = $data['id'];
 		$object->count = $data['count'];
