@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage jlextindividualsportes
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -51,11 +47,6 @@ if ($close == 1)
 
                     <button type="button" onclick="Joomla.submitform('jlextindividualsportes.delete', this.form);">
 						<?php echo Text::_('JACTION_DELETE'); ?></button>
-
-                    <button id="cancel" type="button"
-                            onclick="<?php echo Factory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : ''; ?>  window.parent.SqueezeBox.close();">
-						<?php echo Text::_('JCANCEL'); ?></button>
-
 
                 </div>
 
