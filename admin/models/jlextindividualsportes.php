@@ -71,9 +71,9 @@ class sportsmanagementModeljlextindividualsportes extends JSMModelList
 		$this->jsmquery->where('mc.match_type = "SINGLE" ');
 		$this->jsmdb->setQuery($this->jsmquery);
 		$singleresult = $this->jsmdb->loadResult();
-        if ($singleresult < $project->smallcaliber_single_matches)
+        if ($singleresult < $project->single_matches)
 		{
-			$insertmatch = $project->smallcaliber_single_matches - $singleresult;
+			$insertmatch = $project->single_matches - $singleresult;
 
 			for ($i = 0; $i < $insertmatch; $i++)
 			{
