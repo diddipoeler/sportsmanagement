@@ -133,18 +133,25 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 		$object->id    = $data['id'];
 		$object->count = $data['count'];
 		$object->file  = $data['file'];
+        
+        $object->major  = 0;
+        $object->minor  = 0;
+        $object->build  = 0;
+        
+        $object->revision  = '';
+        $object->version  = '';
 
 		if ($data['id'])
 		{
 			// Update their details in the table using id as the primary key.
-			$result = Factory::getDbo()->updateObject('#__sportsmanagement_version', $object, 'id');
+			$result = $this->jsmdb->updateObject('#__sportsmanagement_version', $object, 'id');
 		}
 		else
 		{
 			$object->count = 1;
 
 			// Insert the object into the table.
-			$result = Factory::getDbo()->insertObject('#__sportsmanagement_version', $object);
+			$result = $this->jsmdb->insertObject('#__sportsmanagement_version', $object);
 		}
 
 		return '';
