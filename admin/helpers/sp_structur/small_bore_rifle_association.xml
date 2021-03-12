@@ -8,7 +8,7 @@
 </mainpositions>
 
 <parentpositions>
-<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">SMALL_CALIBER</parentname>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="SPORTS_SHOOTER">SMALL_CALIBER</parentname>
 </parentpositions>
 
 
