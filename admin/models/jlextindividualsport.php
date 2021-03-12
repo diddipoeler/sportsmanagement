@@ -447,19 +447,20 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 	 */
 	function deleteevents($match_id, $teamplayer1_id, $event_id)
 	{
-		$app = Factory::getApplication();
 
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-
-		// Alte ereignisse löschen
-		$query = $db->getQuery(true);
-		$query->clear();
-		$query->delete()->from('#__sportsmanagement_match_event')->where('match_id = ' . $match_id . ' AND teamplayer_id = ' . $teamplayer1_id . ' AND event_type_id = ' . $event_id);
-		$db->setQuery($query);
+//		// Create a new query object.
+//		$db    = sportsmanagementHelper::getDBConnection();
+//		$query = $db->getQuery(true);
+//
+//		// Alte ereignisse löschen
+//		$query = $db->getQuery(true);
+        
+		$this->jsmquery->clear();
+		$this->jsmquery->delete()->from('#__sportsmanagement_match_event')->where('match_id = ' . $match_id . ' AND teamplayer_id = ' . $teamplayer1_id . ' AND event_type_id = ' . $event_id);
+		
 		try{
-		$resultdel = $db->execute();
+		  $this->jsmdb->setQuery($this->jsmquery);
+		$resultdel = $this->jsmdb->execute();
 }
 			catch (Exception $e)
 			{
@@ -486,9 +487,9 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 	 */
 	function insertevents($match_id, $projectteam1_id, $teamplayer1_id, $event_id)
 	{
-		$app                   = Factory::getApplication();
-		$db                    = sportsmanagementHelper::getDBConnection();
-		$query                 = $db->getQuery(true);
+//		$app                   = Factory::getApplication();
+//		$db                    = sportsmanagementHelper::getDBConnection();
+//		$query                 = $db->getQuery(true);
 		$event                 = new stdClass;
 		$event->match_id       = $match_id;
 		$event->projectteam_id = $projectteam1_id;
@@ -497,7 +498,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 		$event->event_sum      = 1;
 
 		// Insert the object into the user profile table.
-		$resultins = Factory::getDbo()->insertObject('#__sportsmanagement_match_event', $event);
+		$resultins = $this->jsmapp->insertObject('#__sportsmanagement_match_event', $event);
 
 		if (!$resultins)
 		{
