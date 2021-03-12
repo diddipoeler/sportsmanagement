@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
@@ -91,6 +92,9 @@ $this->endPanel = 'endPanel';
 					$params['width']  = "100%";
 					echo $html .= HTMLHelper::_('bootstrap.renderModal', 'modal-' . $i, $params);
 */
+$link = 'index.php?option=com_sportsmanagement&tmpl=component&view=update&task=update.save&file_name=' . $row['file_name'];
+echo sportsmanagementHelper::getBootstrapModalImage('ModalSelect' . $i, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/players_add.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_MAKE_UPDATE'), '20', Uri::base() . $link, $this->modalwidth, $this->modalheight);
+/*
 $html = '<a href="#' . '" title="' . Text::_('') . '" data-bs-toggle="modal"' .'data-bs-target="#ModalSelect' . $i . '">'.      'starten '.'</a>';
 
 $html .= HTMLHelper::_(
@@ -108,7 +112,7 @@ $html .= HTMLHelper::_(
 				)
 			);
 echo $html;		
-
+*/
 
 
 
