@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -48,13 +44,19 @@ class sportsmanagementModelProject extends JSMModelAdmin
 
 	}
 
+	/**
+	 * sportsmanagementModelProject::getProjectsbyCurrentProjectLeagueSeason()
+	 * 
+	 * @param mixed $season_id
+	 * @param mixed $league_id
+	 * @return
+	 */
 	public static function getProjectsbyCurrentProjectLeagueSeason($season_id, $league_id)
 	{
 		$app    = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		$db     = sportsmanagementHelper::getDBConnection();
-		$query  = $db->getQuery(true);
 		$query  = $db->getQuery(true);
 		$query->select('id as value,name as text,name as info,picture as picture');
 		$query->from('#__sportsmanagement_project');
@@ -77,12 +79,9 @@ class sportsmanagementModelProject extends JSMModelAdmin
 	public static function getProject($project_id)
 	{
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 
-		//  Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 		$query->select('*');
@@ -93,19 +92,19 @@ class sportsmanagementModelProject extends JSMModelAdmin
 		
 		try{
 		$query->clear();
-		$query->select('eventtime');
+		$query->select('eventtime,name as sports_type_name');
 		$query->from('#__sportsmanagement_sports_type');
 		$query->where('id = ' . $result->sports_type_id);
 		$db->setQuery($query);
-		$useeventtime         = $db->loadResult();
-		$result->useeventtime = $useeventtime;
+		$usesportstype         = $db->loadObject();
+		$result->useeventtime = $usesportstype->eventtime;
+        $result->sports_type_name = $usesportstype->sports_type_name;
 			}
 catch (Exception $e)
 {
 //$app->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
 }
 
-		// Sports_type_id
 		return $result;
 	}
 
