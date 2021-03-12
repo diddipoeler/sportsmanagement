@@ -45,11 +45,8 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		$this->config = ComponentHelper::getParams('com_media');
 
 		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
-
-		//        $this->project_id = $project_id;
 		$default_name_format = '';
 
-		// Get the Data
 		$this->form   = $this->get('Form');
 		$this->item   = $this->get('Item');
 		$this->script = $this->get('Script');
@@ -57,7 +54,6 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		$mdlProject      = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
 		$this->projectws = $mdlProject->getProject($this->project_id);
 
-		//        $this->projectws = $projectws;
 		$this->eventsprojecttime = $this->projectws->game_regular_time;
 
 		$this->match                = $this->model->getMatchData($this->item->id);
@@ -859,7 +855,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 	 */
 	public function initEdit()
 	{
-
+//echo __LINE__.' matchdetails <pre>'.print_r($this->match,true).'</pre>';
 		// Match relation tab
 		$oldmatches [] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_OLD_MATCH'));
 		$res           = array();

@@ -81,6 +81,8 @@ class sportsmanagementModeljlextindividualsportes extends JSMModelList
 				$temp->published       = 1;
                 $temp->teamplayer1_id = 0;
                 $temp->teamplayer2_id = 0;
+                $temp->summary      = '';
+                $temp->preview      = '';
 
 				$result = $this->jsmdb->insertObject('#__sportsmanagement_match_single', $temp);
 			}
@@ -109,6 +111,8 @@ class sportsmanagementModeljlextindividualsportes extends JSMModelList
 				$temp->published       = 1;
                 $temp->teamplayer1_id = 0;
                 $temp->teamplayer2_id = 0;
+                $temp->summary      = '';
+                $temp->preview      = '';
 
 				$result = $this->jsmdb->insertObject('#__sportsmanagement_match_single', $temp);
 			}
