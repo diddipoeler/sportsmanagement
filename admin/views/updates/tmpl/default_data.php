@@ -82,18 +82,8 @@ $this->endPanel = 'endPanel';
                 <td class="center" nowrap="nowrap">
                    
 					<?PHP
-                    /*
-					$name             = "myModal";
-					$html             = '<a href="#modal-' . $i . '" data-toggle="modal" class="btn">' . $row['file_name'] . '</a>';
-					$params           = array();
-					$params['title']  = "test";
-					$params['url']    = 'index.php?option=com_sportsmanagement&tmpl=component&view=update&task=update.save&file_name=' . $row['file_name'];
-					$params['height'] = 400;
-					$params['width']  = "100%";
-					echo $html .= HTMLHelper::_('bootstrap.renderModal', 'modal-' . $i, $params);
-*/
 $link = 'index.php?option=com_sportsmanagement&tmpl=component&view=update&task=update.save&file_name=' . $row['file_name'];
-echo sportsmanagementHelper::getBootstrapModalImage('ModalSelect' . $i, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/players_add.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_MAKE_UPDATE'), '20', Uri::base() . $link, $this->modalwidth, $this->modalheight);
+echo sportsmanagementHelper::getBootstrapModalImage('ModalSelect' . $i, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/link.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_MAKE_UPDATE'), '20', Uri::base() . $link, $this->modalwidth, $this->modalheight);
 /*
 $html = '<a href="#' . '" title="' . Text::_('') . '" data-bs-toggle="modal"' .'data-bs-target="#ModalSelect' . $i . '">'.      'starten '.'</a>';
 

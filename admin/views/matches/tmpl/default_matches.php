@@ -185,13 +185,10 @@ use Joomla\CMS\Uri\Uri;
 						if (version_compare(JSM_JVERSION, '4', 'eq'))
 						{
 							$pcture_link   = 'index.php?option=com_media&tmpl=component&path=local-0:/com_sportsmanagement/database/matchreport/' . $row->id;
-							//$pcture_delete = 'index.php?option=com_media&tmpl=component&path=local-0:/com_sportsmanagement/database/matchreport/' . $row->id;
 						}
 						else
 						{
-//$pcture_link   = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sportsmanagement&author=&folder=com_sportsmanagement/database/matchreport/' . $row->id;
 $pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=component&asset=com_sportsmanagement&author=&folder=matchreport' .'&mid='. $row->id.'&pid='.$this->project_id;							
-							//$pcture_delete = 'index.php?option=com_media&tmpl=component&asset=com_sportsmanagement&author=&folder=com_sportsmanagement/database/matchreport/' . $row->id;
 						}
 
 						?>
@@ -202,8 +199,6 @@ $pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=compon
 						?>
                         <br>
 						<?php
-						//echo sportsmanagementHelper::getBootstrapModalImage('matchpicturedelete' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/delete.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_DELETE_MATCHPICTURE'), '20', Uri::base() . $pcture_delete, $this->modalwidth, $this->modalheight);
-
 						// Diddipoeler einzelsportart
 						if ($this->projectws->project_art_id == 2)
 						{
@@ -212,25 +207,6 @@ $pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=compon
 							?>
 
 							<?php
-						/*	
-$html = '<a href="#' . '" title="' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SINGLE_SPORT') . '" data-bs-toggle="modal"' .'data-bs-target="#ModalSelect' . $row->id . '">'.      'starten '.'</a>';
-
-$html .= HTMLHelper::_(
-				'bootstrap.renderModal',
-				'ModalSelect' . $row->id,
-				array(
-					'title'       => 'einzelsportart',
-					'url'         => $pcture_link,
-					'height'      => '400px',
-					'width'       => '800px',
-					'bodyHeight'  => 70,
-					'modalWidth'  => 80,
-					'footer'      => '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">'
-										. Text::_('JLIB_HTML_BEHAVIOR_CLOSE') . '</button>',
-				)
-			);
-echo $html;							
-	*/						
 							
 						}
 						?>
