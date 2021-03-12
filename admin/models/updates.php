@@ -69,6 +69,9 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 
 		$data['id']    = 0;
 		$data['count'] = 0;
+        $data['major'] = 0;
+        $data['minor'] = 0;
+        $data['build'] = 0;
 
 		$query = 'SELECT id,count FROM #__sportsmanagement_version where file LIKE ' . $this->_db->Quote($file);
 		$this->jsmdb->setQuery($query);

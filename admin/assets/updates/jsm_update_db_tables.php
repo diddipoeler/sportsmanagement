@@ -19,8 +19,8 @@ use Joomla\CMS\Component\ComponentHelper;
 HTMLHelper::_('bootstrap.framework');
 jimport('joomla.html.html.bootstrap');
 
-$version           = '3.8.0';
-$updateFileDate    = '2020-09-17';
+$version           = '3.8.8';
+$updateFileDate    = '2021-03-12';
 $updateFileTime    = '00:05';
 $updateDescription = '<span style="color:orange">Update all tables using the current install sql-file.</span>';
 $excludeFile       = 'false';
