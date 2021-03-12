@@ -85,12 +85,32 @@ class sportsmanagementModeljlextindividualsport extends JSMModelAdmin
 
 		$result_tie_break = 0;
 
-		$this->jsmquery->select('use_tie_break,game_parts,sports_type_id');
-		$this->jsmquery->from('#__sportsmanagement_project');
-		$this->jsmquery->where('id = ' . (int) $post['project_id']);
+		$this->jsmquery->select('p.use_tie_break,p.game_parts,p.sports_type_id');
+		$this->jsmquery->from('#__sportsmanagement_project as p');
+		$this->jsmquery->where('p.id = ' . (int) $post['project_id']);
 		$this->jsmdb->setQuery($this->jsmquery);
 		$use_tie_break    = $this->jsmdb->loadObject();
 		$result_tie_break = $use_tie_break->game_parts;
+        
+        $this->jsmquery->clear();
+        $this->jsmquery->select('*');
+        $this->jsmquery->from('#__sportsmanagement_sports_type as p');
+        $this->jsmquery->where('p.id = ' . $use_tie_break->sports_type_id);
+		$this->jsmdb->setQuery($this->jsmquery);
+		$sports_type_id_name   = $this->jsmdb->loadObject();
+
+        switch ($sports_type_id_name->name)
+		{
+		case 'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION':
+        
+        echo __LINE__.' pks<pre>'.print_r($pks,true).'</pre>';
+        echo __LINE__.' post<pre>'.print_r($post,true).'</pre>';
+
+
+
+
+        break;
+        case 'COM_SPORTSMANAGEMENT_ST_TENNIS':
 
 		if ($use_tie_break->use_tie_break)
 		{
@@ -413,6 +433,8 @@ class sportsmanagementModeljlextindividualsport extends JSMModelAdmin
 $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
 $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 		}
+        break;
+        }
 
 		// Proceed with the save
 		// return parent::save($data);
