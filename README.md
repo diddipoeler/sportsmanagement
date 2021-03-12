@@ -37,6 +37,7 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   12-03-2021: **3.8.70** Neue Felder für Kleinkaliber Schützenvereine
 *   10-03-2021: **3.8.60** Neue Felder für Kleinkaliber Schützenvereine
 *   03-03-2021: **3.8.50** Anpassungen Joomla 4
 *   15-02-2021: **3.8.40** Historische Namen einer Mannschaft hinterlegen

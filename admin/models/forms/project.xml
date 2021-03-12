@@ -513,7 +513,7 @@ description="COM_SPORTSMANAGEMENT_SMALL_BORE_RIFLE_ASSOCIATION_F_SPORTS_SHOOTER"
 <option value="1">JYES</option>
 </field>
 <field
-name="smallcaliber_single_matches"
+name="single_matches"
 showon="use_smallcaliber:1"       
 type="text"
 label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_SPORTS_SHOOTER_SINGLE_MATCHES"
