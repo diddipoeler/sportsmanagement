@@ -106,6 +106,23 @@ class sportsmanagementModeljlextindividualsport extends JSMModelAdmin
         
         $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($pks,true).'</pre>'), 'error');
         $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($post,true).'</pre>'), 'error');
+        for ($x = 0; $x < count($pks); $x++)
+		{
+		$rowmatch                          = new stdClass;
+		$rowmatch->id                      = $pks[$x];
+          $rowmatch->teamplayer1_id       = $post['teamplayer1_id' . $pks[$x]];
+          $rowmatch->ringetotal       = $post['team1_result' . $pks[$x]];
+          try
+		{
+			$result_update = $this->jsmdb->updateObject('#__sportsmanagement_match_single', $rowmatch, 'id', true);
+		}
+		catch (Exception $e)
+		{
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+		}
+          
+          }
 
 
 
