@@ -855,6 +855,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project` (
   `twitter` VARCHAR(250) NOT NULL DEFAULT '' ,
   `facebook` VARCHAR(250) NOT NULL DEFAULT '' ,
   `single_matches` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `use_smallcaliber` TINYINT(1)  NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
   KEY `league_id` (`league_id`),
   KEY `season_id` (`season_id`),
