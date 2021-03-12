@@ -72,10 +72,12 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
         $data['major'] = 0;
         $data['minor'] = 0;
         $data['build'] = 0;
-
-		$query = 'SELECT id,count FROM #__sportsmanagement_version where file LIKE ' . $this->_db->Quote($file);
-		$this->jsmdb->setQuery($query);
         
+        $this->jsmquery->clear();
+        $this->jsmquery->select('*');
+		$this->jsmquery->from('#__sportsmanagement_version');
+        $this->jsmquery->where('file LIKE ' . $this->jsmdb->Quote($file));
+		$this->jsmdb->setQuery($this->jsmquery);
         
         try
 		{
@@ -100,12 +102,15 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 //		}
 
 		$data['file'] = $file_name;
-
-		$query = "SELECT * FROM #__sportsmanagement_version where file LIKE 'sportsmanagement'";
-		Factory::getDbo()->setQuery($query);
+        
+        $this->jsmquery->clear();
+        $this->jsmquery->select('*');
+		$this->jsmquery->from('#__sportsmanagement_version');
+        $this->jsmquery->where('file LIKE ' . $this->jsmdb->Quote('sportsmanagement'));
+		$this->jsmdb->setQuery($this->jsmquery);
         try
 		{
-		  $result = Factory::getDbo()->loadObject();
+		  $result = $this->jsmdb->loadObject();
           $data['version']  = !empty($version) ? $version : $result->version;
 			$data['major']    = !empty($major) ? $major : $result->major;
 			$data['minor']    = !empty($minor) ? $minor : $result->minor;
