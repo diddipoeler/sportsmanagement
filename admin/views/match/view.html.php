@@ -459,7 +459,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		$javascript .= "\n";
 
 		// Mannschaften der paarung
-		$teams = $model->getMatchTeams($this->item->id);
+		$teams = $model->getMatchTeams($this->item->id,$this->item->projectteam1_id,$this->item->projectteam2_id,$this->projectws->sports_type_name);
 
 		$teamlist       = array();
 		$teamlist[]     = HTMLHelper::_('select.option', $teams->projectteam1_id, $teams->team1);
@@ -581,7 +581,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 
 		$this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/sm_functions.js');
 		$this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/editmatchstats.js');
-		$teams = $model->getMatchTeams($this->item->id);
+		$teams = $model->getMatchTeams($this->item->id,$this->item->projectteam1_id,$this->item->projectteam2_id,$this->projectws->sports_type_name);
 
 		$positions      = $model->getProjectPositionsOptions(0, 1, $this->project_id);
 		$staffpositions = $model->getProjectPositionsOptions(0, 2, $this->project_id);
@@ -648,7 +648,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		$this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/sm_functions.js');
 		$this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/diddioeler.js');
 		$tid                       = Factory::getApplication()->input->getVar('team', '0');
-		$match                     = $model->getMatchTeams($this->item->id);
+		$match                     = $model->getMatchTeams($this->item->id,$this->item->projectteam1_id,$this->item->projectteam2_id,$this->projectws->sports_type_name);
         if ( $match )
         {
 		$teamname                  = ($tid == $match->projectteam1_id) ? $match->team1 : $match->team2;
