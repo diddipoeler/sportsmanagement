@@ -84,6 +84,7 @@ class sportsmanagementModeljlextindividualsport extends JSMModelAdmin
 		$match_id = $post['match_id'];
 
 		$result_tie_break = 0;
+        $save_match = false;
 
 		$this->jsmquery->select('p.use_tie_break,p.game_parts,p.sports_type_id');
 		$this->jsmquery->from('#__sportsmanagement_project as p');
@@ -108,6 +109,7 @@ class sportsmanagementModeljlextindividualsport extends JSMModelAdmin
         $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($post,true).'</pre>'), 'error');
         for ($x = 0; $x < count($pks); $x++)
 		{
+		$save_match = true;  
 		$rowmatch                          = new stdClass;
 		$rowmatch->id                      = $pks[$x];
         $rowmatch->teamplayer1_id       = $post['teamplayer1_id' . $pks[$x]];
@@ -130,17 +132,19 @@ class sportsmanagementModeljlextindividualsport extends JSMModelAdmin
 		$rowmatch->modified_by = $this->jsmuser->get('id');
         try
 		{
-			$result_update = $this->jsmdb->updateObject('#__sportsmanagement_match_single', $rowmatch, 'id', true);
-            $ringetotal += $rowmatch->ringetotal;
+		$result_update = $this->jsmdb->updateObject('#__sportsmanagement_match_single', $rowmatch, 'id', true);
+        $ringetotal += $rowmatch->ringetotal;
 		}
 		catch (Exception $e)
 		{
-$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
-$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+        $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+        $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 		}
           
         }
         
+        if ( $save_match )
+        {
         $rowmatch = new stdClass;
         $rowmatch->id = $match_id;
         $rowmatch->team1_result = $ringetotal;
@@ -149,14 +153,15 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 		$rowmatch->modified_by = $this->jsmuser->get('id');
         try
 		{
-			$result_update = $this->jsmdb->updateObject('#__sportsmanagement_match', $rowmatch, 'id', true);
-            $ringetotal += $rowmatch->ringetotal;
+		$result_update = $this->jsmdb->updateObject('#__sportsmanagement_match', $rowmatch, 'id', true);
+        //$ringetotal += $rowmatch->ringetotal;
 		}
 		catch (Exception $e)
 		{
-$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
-$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+        $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+        $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 		}
+        }
 
 
 
