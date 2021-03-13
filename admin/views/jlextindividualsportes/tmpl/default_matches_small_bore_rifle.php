@@ -22,7 +22,7 @@ if ($close == 1)
 {
 	?>
     <script>
-        jQuery(document).ready(function(){
+        jQuery(document).ready(function($){
             $('cancel').onclick();
         });
     </script>

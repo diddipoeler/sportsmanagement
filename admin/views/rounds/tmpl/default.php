@@ -17,8 +17,8 @@ $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <script language="javascript">
-    window.addEvent('domready', function () {
-        $$('table.adminlist tr').each(function (el) {
+    jQuery(document).ready(function($){
+        $('table.adminlist tr').each(function (el) {
             var cb;
             if (cb = el.getElement("input[name^=cid]")) {
                 el.getElement("input[name^=roundcode]").addEvent('change', function () {

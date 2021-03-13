@@ -8,9 +8,9 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-jQuery(document).ready(function(){
+jQuery(document).ready(function($){
 	// check row box when a value is updated
-	$$('tr.statrow').each(function(row){
+	$('tr.statrow').each(function(row){
 		row.getElements('.stat').each(function(stat){
 			stat.addEvent('change', function(){
 				row.getElement('.statcheck').setProperty('checked', 'true');
@@ -19,7 +19,7 @@ jQuery(document).ready(function(){
 	});
 
 	// check row box when a value is updated
-	$$('tr.staffstatrow').each(function(row){
+	$('tr.staffstatrow').each(function(row){
 		row.getElements('.staffstat').each(function(stat){
 			stat.addEvent('change', function(){
 				row.getElement('.staffstatcheck').setProperty('checked', 'true');
