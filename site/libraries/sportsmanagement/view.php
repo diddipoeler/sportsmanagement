@@ -54,15 +54,10 @@ ini_set('error_log', "jsm-errors.log");
 }
 
 
-/**
- *
- * welche joomla version ?
- */
+/** welche joomla version ? */
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
-	/**
-	 * Include the component HTML helpers.
-	 */
+	/** Include the component HTML helpers. */
 	HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 	HTMLHelper::_('behavior.formvalidator');
 	HTMLHelper::_('behavior.keepalive');
@@ -256,47 +251,47 @@ class sportsmanagementView extends HtmlView
 
 		switch ($this->view)
 		{
-		  case 'predictionrules':
-          case 'predictionresults':
-          case 'predictionranking':
-          case 'predictionusers':
-          case 'predictionentry':
-          $this->config        = sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
+		case 'predictionrules':
+        case 'predictionresults':
+        case 'predictionranking':
+        case 'predictionusers':
+        case 'predictionentry':
+        $this->config        = sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
 		$this->overallconfig = sportsmanagementModelPrediction::getPredictionOverallConfig();
-          $this->config        = array_merge($this->overallconfig, $this->config);
-          break;
-			case 'jltournamenttree':
-				$this->project       = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
-				$this->overallconfig = sportsmanagementModelProject::getOverallConfig(sportsmanagementModelProject::$cfg_which_database);
-				$this->config        = sportsmanagementModelProject::getTemplateConfig('treetonode', sportsmanagementModelProject::$cfg_which_database);
-				$this->config        = array_merge($this->overallconfig, $this->config);
-				break;
-			case 'ical':
-				$this->project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
-				break;
-			case 'scoresheet':
-				$this->project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
-				break;
-			case 'resultsranking':
-			case 'resultsmatrix':
-				$this->project       = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
-				$this->overallconfig = sportsmanagementModelProject::getOverallConfig(sportsmanagementModelProject::$cfg_which_database);
-				break;
-			case 'curve':
-			case 'stats':
-			case 'teamstats':
-				$this->project       = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
-				$this->overallconfig = sportsmanagementModelProject::getOverallConfig(sportsmanagementModelProject::$cfg_which_database);
-				$this->config        = sportsmanagementModelProject::getTemplateConfig($this->getName(), sportsmanagementModelProject::$cfg_which_database);
-				$this->flashconfig   = sportsmanagementModelProject::getTemplateConfig('flash', sportsmanagementModelProject::$cfg_which_database);
-				$this->config        = array_merge($this->overallconfig, $this->config);
-				break;
-			default:
-				$this->project       = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
-				$this->overallconfig = sportsmanagementModelProject::getOverallConfig(sportsmanagementModelProject::$cfg_which_database);
-				$this->config        = sportsmanagementModelProject::getTemplateConfig($this->getName(), sportsmanagementModelProject::$cfg_which_database);
-				$this->config        = array_merge($this->overallconfig, $this->config);
-				break;
+        $this->config        = array_merge($this->overallconfig, $this->config);
+        break;
+		case 'jltournamenttree':
+		$this->project       = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
+		$this->overallconfig = sportsmanagementModelProject::getOverallConfig(sportsmanagementModelProject::$cfg_which_database);
+		$this->config        = sportsmanagementModelProject::getTemplateConfig('treetonode', sportsmanagementModelProject::$cfg_which_database);
+		$this->config        = array_merge($this->overallconfig, $this->config);
+		break;
+		case 'ical':
+		$this->project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
+		break;
+		case 'scoresheet':
+		$this->project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
+		break;
+		case 'resultsranking':
+		case 'resultsmatrix':
+		$this->project       = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
+		$this->overallconfig = sportsmanagementModelProject::getOverallConfig(sportsmanagementModelProject::$cfg_which_database);
+		break;
+		case 'curve':
+		case 'stats':
+		case 'teamstats':
+		$this->project       = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
+		$this->overallconfig = sportsmanagementModelProject::getOverallConfig(sportsmanagementModelProject::$cfg_which_database);
+		$this->config        = sportsmanagementModelProject::getTemplateConfig($this->getName(), sportsmanagementModelProject::$cfg_which_database);
+		$this->flashconfig   = sportsmanagementModelProject::getTemplateConfig('flash', sportsmanagementModelProject::$cfg_which_database);
+		$this->config        = array_merge($this->overallconfig, $this->config);
+		break;
+		default:
+		$this->project       = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
+		$this->overallconfig = sportsmanagementModelProject::getOverallConfig(sportsmanagementModelProject::$cfg_which_database);
+		$this->config        = sportsmanagementModelProject::getTemplateConfig($this->getName(), sportsmanagementModelProject::$cfg_which_database);
+		$this->config        = array_merge($this->overallconfig, $this->config);
+		break;
 		}
 
 		/**
