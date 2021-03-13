@@ -102,20 +102,21 @@ if ($close == 1)
 
                 <tbody>
 				<?php
-				$k = 0;
+				//$k = 0;
 
-				for ($i = 0, $n = count($this->matches); $i < $n; $i++)
+				//for ($i = 0, $n = count($this->matches); $i < $n; $i++)
+                foreach ($this->matches as $this->count_i => $this->item)
 				{
-					$row       =& $this->matches[$i];
-					$checked   = HTMLHelper::_('grid.checkedout', $row, $i, 'id');
-					$published = HTMLHelper::_('grid.published', $row, $i, 'tick.png', 'publish_x.png', 'jlextindividualsportes.');
+					//$row       =& $this->matches[$i];
+					$checked   = HTMLHelper::_('grid.checkedout', $this->item, $this->count_i, 'id');
+					$published = HTMLHelper::_('grid.published', $row, $this->count_i, 'tick.png', 'publish_x.png', 'jlextindividualsportes.');
 
-					list($date, $time) = explode(" ", $row->match_date);
+					list($date, $time) = explode(" ", $this->item->match_date);
 					$time = strftime("%H:%M", strtotime($time));
 					?>
                     <tr class="<?php echo "row$k"; ?>">
 						<?php
-						if (($row->cancel) > 0)
+						if (($this->item->cancel) > 0)
 						{
 							$style = "text-align:center;  background-color: #FF9999;";
 						}
@@ -126,7 +127,7 @@ if ($close == 1)
 						?>
                         <td style="<?php echo $style; ?>">
 							<?php
-							echo $this->pagination->getRowOffset($i);
+							echo $this->pagination->getRowOffset($this->count_i);
 							?>
                         </td>
                         <td style="text-align:center; ">
@@ -135,13 +136,13 @@ if ($close == 1)
 							?>
                         </td>
                         <td class="center">
-                            <input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" type="text"
-                                   name="match_number<?php echo $row->id; ?>"
-                                   value="<?php echo $row->match_number; ?>" size="6" tabindex="1" class="inputbox"/>
+                            <input onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true" type="text"
+                                   name="match_number<?php echo $this->item->id; ?>"
+                                   value="<?php echo $this->item->match_number; ?>" size="6" tabindex="1" class="inputbox"/>
                         </td>
                         <td style="text-align:center; ">
 							<?php
-							echo Text::_('COM_SPORTSMANAGEMENT_' . $row->match_type);
+							echo Text::_('COM_SPORTSMANAGEMENT_' . $this->item->match_type);
 							?>
                         </td>
 
@@ -150,48 +151,48 @@ if ($close == 1)
 
 							<?php
 
-							if ($row->match_type == 'SINGLE')
+							if ($this->item->match_type == 'SINGLE')
 							{
 								$append = '';
 
-								if ($row->teamplayer1_id == 0)
+								if ($this->item->teamplayer1_id == 0)
 								{
 									$append = ' style="background-color:#bbffff"';
 								}
 
-								$append .= ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" ';
+								$append .= ' onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true" ';
 								echo HTMLHelper::_(
-									'select.genericlist', $this->lists['homeplayer'], 'teamplayer1_id' . $row->id,
-									'class="inputbox select-hometeam" size="1"' . $append, 'value', 'text', $row->teamplayer1_id
+									'select.genericlist', $this->lists['homeplayer'], 'teamplayer1_id' . $this->item->id,
+									'class="inputbox select-hometeam" size="1"' . $append, 'value', 'text', $this->item->teamplayer1_id
 								);
 							}
-                            elseif ($row->match_type == 'DOUBLE')
+                            elseif ($this->item->match_type == 'DOUBLE')
 							{
 								$append = '';
 
-								if ($row->double_team1_player1 == 0)
+								if ($this->item->double_team1_player1 == 0)
 								{
 									$append = ' style="background-color:#bbffff"';
 								}
 
-								$append .= ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" ';
+								$append .= ' onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true" ';
 								echo HTMLHelper::_(
-									'select.genericlist', $this->lists['homeplayer'], 'double_team1_player1' . $row->id,
-									'class="inputbox select-hometeam" size="1"' . $append, 'value', 'text', $row->double_team1_player1
+									'select.genericlist', $this->lists['homeplayer'], 'double_team1_player1' . $this->item->id,
+									'class="inputbox select-hometeam" size="1"' . $append, 'value', 'text', $this->item->double_team1_player1
 								);
 								echo '<br />';
 
 								$append = '';
 
-								if ($row->double_team1_player2 == 0)
+								if ($this->item->double_team1_player2 == 0)
 								{
 									$append = ' style="background-color:#bbffff"';
 								}
 
-								$append .= ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" ';
+								$append .= ' onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true" ';
 								echo HTMLHelper::_(
-									'select.genericlist', $this->lists['homeplayer'], 'double_team1_player2' . $row->id,
-									'class="inputbox select-hometeam" size="1"' . $append, 'value', 'text', $row->double_team1_player2
+									'select.genericlist', $this->lists['homeplayer'], 'double_team1_player2' . $this->item->id,
+									'class="inputbox select-hometeam" size="1"' . $append, 'value', 'text', $this->item->double_team1_player2
 								);
 							}
 
@@ -200,48 +201,48 @@ if ($close == 1)
                         </td>
                         <td style="" nowrap="">
 							<?php
-							if ($row->match_type == 'SINGLE')
+							if ($this->item->match_type == 'SINGLE')
 							{
 								$append = '';
 
-								if ($row->teamplayer2_id == 0)
+								if ($this->item->teamplayer2_id == 0)
 								{
 									$append = ' style="background-color:#bbffff"';
 								}
 
-								$append .= ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" ';
+								$append .= ' onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true" ';
 								echo HTMLHelper::_(
-									'select.genericlist', $this->lists['awayplayer'], 'teamplayer2_id' . $row->id,
-									'class="inputbox select-awayteam" size="1"' . $append, 'value', 'text', $row->teamplayer2_id
+									'select.genericlist', $this->lists['awayplayer'], 'teamplayer2_id' . $this->item->id,
+									'class="inputbox select-awayteam" size="1"' . $append, 'value', 'text', $this->item->teamplayer2_id
 								);
 							}
-                            elseif ($row->match_type == 'DOUBLE')
+                            elseif ($this->item->match_type == 'DOUBLE')
 							{
 								$append = '';
 
-								if ($row->double_team2_player1 == 0)
+								if ($this->item->double_team2_player1 == 0)
 								{
 									$append = ' style="background-color:#bbffff"';
 								}
 
-								$append .= ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" ';
+								$append .= ' onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true" ';
 								echo HTMLHelper::_(
-									'select.genericlist', $this->lists['awayplayer'], 'double_team2_player1' . $row->id,
-									'class="inputbox select-hometeam" size="1"' . $append, 'value', 'text', $row->double_team2_player1
+									'select.genericlist', $this->lists['awayplayer'], 'double_team2_player1' . $this->item->id,
+									'class="inputbox select-hometeam" size="1"' . $append, 'value', 'text', $this->item->double_team2_player1
 								);
 								echo '<br />';
 
 								$append = '';
 
-								if ($row->double_team2_player2 == 0)
+								if ($this->item->double_team2_player2 == 0)
 								{
 									$append = ' style="background-color:#bbffff"';
 								}
 
-								$append .= ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" ';
+								$append .= ' onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true" ';
 								echo HTMLHelper::_(
-									'select.genericlist', $this->lists['awayplayer'], 'double_team2_player2' . $row->id,
-									'class="inputbox select-hometeam" size="1"' . $append, 'value', 'text', $row->double_team2_player2
+									'select.genericlist', $this->lists['awayplayer'], 'double_team2_player2' . $this->item->id,
+									'class="inputbox select-hometeam" size="1"' . $append, 'value', 'text', $this->item->double_team2_player2
 								);
 							}
 
@@ -250,28 +251,28 @@ if ($close == 1)
 
                         </td>
                         <td nowrap="nowrap" style="text-align: right; ">
-                            <input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if ($row->alt_decision == 1)
+                            <input onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true" <?php if ($this->item->alt_decision == 1)
 							{
 								echo "class=\"subsequentdecision\" title=\"" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION') . "\"";
-							} ?> type="text" name="team1_result<?php echo $row->id; ?>"
-                                   value="<?php echo $row->team1_result; ?>" size="2" tabindex="4" class="inputbox"/> :
-                            <input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if ($row->alt_decision == 1)
+							} ?> type="text" name="team1_result<?php echo $this->item->id; ?>"
+                                   value="<?php echo $this->item->team1_result; ?>" size="2" tabindex="4" class="inputbox"/> :
+                            <input onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true" <?php if ($this->item->alt_decision == 1)
 							{
 								echo "class=\"subsequentdecision\" title=\"" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION') . "\"";
-							} ?> type="text" name="team2_result<?php echo $row->id; ?>"
-                                   value="<?php echo $row->team2_result; ?>" size="2" tabindex="4" class="inputbox"/>
+							} ?> type="text" name="team2_result<?php echo $this->item->id; ?>"
+                                   value="<?php echo $this->item->team2_result; ?>" size="2" tabindex="4" class="inputbox"/>
 
 
                             <br/>
 
-                            <span id="part<?php echo $row->id; ?>" style="">
+                            <span id="part<?php echo $this->item->id; ?>" style="">
 					   <br/>
 											<table>
 											<tr>
 						<?php
                         /*
-						$partresults1 = explode(";", $row->team1_result_split);
-						$partresults2 = explode(";", $row->team2_result_split);
+						$partresults1 = explode(";", $this->item->team1_result_split);
+						$partresults2 = explode(";", $this->item->team2_result_split);
 
 						for ($x = 0; $x < ($this->projectws->game_parts); $x++)
 						{
@@ -287,7 +288,7 @@ if ($close == 1)
 										 <input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"
                                                 onchange="document.getElementById(\'cb'<?php echo $i; ?>'\').checked=true"
                                                 type="text" style="font-size: 9px;"
-                                                name="team1_result_split<?php echo $row->id; ?>[]"
+                                                name="team1_result_split<?php echo $this->item->id; ?>[]"
                                                 value="<?php echo (isset($partresults1[$x])) ? $partresults1[$x] : ''; ?>"
                                                 size="3" tabindex="1" class="inputbox"/>
 										 </td>
@@ -295,7 +296,7 @@ if ($close == 1)
 										<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"
                                                onchange="document.getElementById(\'cb'<?php echo $i; ?>'\').checked=true"
                                                type="text" style="font-size: 9px;"
-                                               name="team2_result_split<?php echo $row->id; ?>[]"
+                                               name="team2_result_split<?php echo $this->item->id; ?>[]"
                                                value="<?php echo (isset($partresults2[$x])) ? $partresults2[$x] : ''; ?>"
                                                size="3" tabindex="1" class="inputbox"/>
 										 </td>
@@ -307,39 +308,41 @@ if ($close == 1)
 									</tr>
 									</table>
 									<?PHP
+                                    /*
 									if ($this->projectws->allow_add_time == 1)
 									{
 										echo 'OT:'; ?>
 
-                                        <input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"
+                                        <input onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"
                                                type="text" style="font-size: 9px;"
-                                               name="team1_result_ot<?php echo $row->id; ?>"
-                                               value="<?php echo (isset($row->team1_result_ot)) ? $row->team1_result_ot : ''; ?>"
+                                               name="team1_result_ot<?php echo $this->item->id; ?>"
+                                               value="<?php echo (isset($this->item->team1_result_ot)) ? $this->item->team1_result_ot : ''; ?>"
                                                size="3" tabindex="1" class="inputbox"/> :
 															 <input
-                                            onchange="document.getElementById('cb'<?php echo $i; ?>').checked=true"
+                                            onchange="document.getElementById('cb'<?php echo $this->count_i; ?>').checked=true"
                                             type="text" style="font-size: 9px;"
-                                            name="team2_result_ot<?php echo $row->id; ?>"
-                                            value="<?php echo (isset($row->team2_result_ot)) ? $row->team2_result_ot : ''; ?>"
+                                            name="team2_result_ot<?php echo $this->item->id; ?>"
+                                            value="<?php echo (isset($this->item->team2_result_ot)) ? $this->item->team2_result_ot : ''; ?>"
                                             size="3" tabindex="1" class="inputbox"/>
                                         <br/>
 																<?php echo 'SO:'; ?>
 
 															 <input
-                                            onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"
+                                            onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"
                                             type="text" style="font-size: 9px;"
-                                            name="team1_result_so<?php echo $row->id; ?>"
-                                            value="<?php echo (isset($row->team1_result_so)) ? $row->team1_result_so : ''; ?>"
+                                            name="team1_result_so<?php echo $this->item->id; ?>"
+                                            value="<?php echo (isset($this->item->team1_result_so)) ? $this->item->team1_result_so : ''; ?>"
                                             size="3" tabindex="1" class="inputbox"/> :
 															 <input
-                                            onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"
+                                            onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"
                                             type="text" style="font-size: 9px;"
-                                            name="team2_result_so<?php echo $row->id; ?>"
-                                            value="<?php echo (isset($row->team2_result_so)) ? $row->team2_result_so : ''; ?>"
+                                            name="team2_result_so<?php echo $this->item->id; ?>"
+                                            value="<?php echo (isset($this->item->team2_result_so)) ? $this->item->team2_result_so : ''; ?>"
                                             size="3" tabindex="1" class="inputbox"/>
                                         <br/>
 										<?php
 									}
+                                    */
 									?>
 					  </span>
                         </td>
@@ -351,8 +354,8 @@ if ($close == 1)
 								<?php
 								echo HTMLHelper::_(
 									'select.genericlist', $this->lists['match_result_type'],
-									'match_result_type' . $row->id, 'class="inputbox" size="1"', 'value', 'text',
-									$row->match_result_type
+									'match_result_type' . $this->item->id, 'class="inputbox" size="1"', 'value', 'text',
+									$this->item->match_result_type
 								);
 								?>
                             </td>
@@ -368,12 +371,12 @@ if ($close == 1)
                         </td>
                         <td style="text-align:center; ">
 							<?php
-							echo $row->id;
+							echo $this->item->id;
 							?>
                         </td>
                     </tr>
 					<?php
-					$k = 1 - $k;
+					//$k = 1 - $k;
 				}
 				?>
                 </tbody>
