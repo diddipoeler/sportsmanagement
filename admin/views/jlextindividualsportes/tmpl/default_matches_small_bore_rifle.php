@@ -372,9 +372,9 @@ if ($close == 1)
 						/** Create dropdown items and render the dropdown list. */
 //						if ($canChange)
 //						{
-							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === 2 ? 'un' : '') . 'archive', 'cb' . $this->count_i, 'clubs');
-							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === -2 ? 'un' : '') . 'trash', 'cb' . $this->count_i, 'clubs');
-							echo HTMLHelper::_('actionsdropdown.render', $this->escape($this->item->name));
+							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === 2 ? 'un' : '') . 'archive', 'cb' . $this->count_i, 'jlextindividualsportes');
+							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === -2 ? 'un' : '') . 'trash', 'cb' . $this->count_i, 'jlextindividualsportes');
+							echo HTMLHelper::_('actionsdropdown.render', $this->escape($this->item->id));
 //						}
 						?>
                     </div>
@@ -394,24 +394,21 @@ if ($close == 1)
 
 			<?php $dValue = $this->roundws->round_date_first . ' ' . $this->projectws->start_time; ?>
 
-            <input type='hidden' name='match_date' value='<?php echo $dValue; ?>'/>
-            <input type='hidden' name='act' value='' id='short_act'/>
-
-            <input type='hidden' name='boxchecked' value='0'/>
-            <input type='hidden' name='search_mode' value='<?php echo $this->lists['search_mode']; ?>'/>
-            <input type='hidden' name='filter_order' value='<?php echo $this->sortColumn; ?>'/>
-            <input type='hidden' name='filter_order_Dir' value='<?php echo $this->sortDirection; ?>'/>
-            <input type='hidden' name='rid' value='<?php echo $this->roundws->id; ?>'/>
-            <input type='hidden' name='project_id' value='<?php echo $this->roundws->project_id; ?>'/>
-            <input type="hidden" name="close" id="close" value="0"/>
-            <input type='hidden' name='match_id' value='<?php echo $this->match_id; ?>'/>
-            <input type='hidden' name='projectteam1_id' value='<?php echo $this->projectteam1_id; ?>'/>
-            <input type='hidden' name='projectteam2_id' value='<?php echo $this->projectteam2_id; ?>'/>
-
-
-            <input type='hidden' name='act' value=''/>
-            <input type='hidden' name='task' value='' id='task'/>
-			<?php echo HTMLHelper::_('form.token') . "\n"; ?>
-        </form>
+<input type='hidden' name='match_date' value='<?php echo $dValue; ?>'/>
+<input type='hidden' name='act' value='' id='short_act'/>
+<input type='hidden' name='boxchecked' value='0'/>
+<input type='hidden' name='search_mode' value='<?php echo $this->lists['search_mode']; ?>'/>
+<input type='hidden' name='filter_order' value='<?php echo $this->sortColumn; ?>'/>
+<input type='hidden' name='filter_order_Dir' value='<?php echo $this->sortDirection; ?>'/>
+<input type='hidden' name='rid' value='<?php echo $this->roundws->id; ?>'/>
+<input type='hidden' name='project_id' value='<?php echo $this->roundws->project_id; ?>'/>
+<input type="hidden" name="close" id="close" value="0"/>
+<input type='hidden' name='match_id' value='<?php echo $this->match_id; ?>'/>
+<input type='hidden' name='projectteam1_id' value='<?php echo $this->projectteam1_id; ?>'/>
+<input type='hidden' name='projectteam2_id' value='<?php echo $this->projectteam2_id; ?>'/>
+<input type='hidden' name='act' value=''/>
+<input type='hidden' name='task' value='' id='task'/>
+<?php echo HTMLHelper::_('form.token') . "\n"; ?>
+</form>
     </fieldset>
 </div>
