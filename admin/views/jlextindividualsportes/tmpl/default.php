@@ -12,7 +12,6 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 
-
 ?>
     <script type="text/javascript">
         <!--
@@ -100,11 +99,20 @@ use Joomla\CMS\HTML\HTMLHelper;
             background-color: #BBB;
         }
     </style>
-    <div id="alt_decision_enter" style="display:<?php echo ($massadd == 0) ? 'none' : 'block'; ?>">
+<div id="alt_decision_enter" style="display:<?php echo ($massadd == 0) ? 'none' : 'block'; ?>">
+</div>
 
+<?php
 
-		<?php
-		// Echo $this->loadTemplate('massadd'); ?>
-    </div>
-<?php echo $this->loadTemplate('matches'); ?>
-<?php echo $this->loadTemplate('matrix');
+switch ($this->projectws->sports_type_name)
+{
+case 'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION': 
+echo $this->loadTemplate('matches_small_bore_rifle');
+break;
+default:
+echo $this->loadTemplate('matches');
+echo $this->loadTemplate('matrix');
+break;
+}
+
+?>

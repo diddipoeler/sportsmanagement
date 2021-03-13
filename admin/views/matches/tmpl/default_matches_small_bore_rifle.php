@@ -4,7 +4,7 @@
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage matches
- * @file       defaul_matches.php
+ * @file       defaul_matches_small_bore_rifle.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
@@ -261,7 +261,7 @@ $pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=compon
                                name="match_time<?php echo $row->id; ?>"
                                value="<?php echo $time; ?>" size="4" maxlength="5" tabindex="3"
                                class="form-control form-control-inline"/>
-
+<!--
                         <a href="javascript:void(0)"
                            onclick="switchMenu('present<?php echo $row->id; ?>')">&nbsp;
 							<?php 
@@ -281,6 +281,7 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
                                                title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PRESENT'); ?>"/>
 							<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PRESENT_SHORT'); ?>
 								</span>
+                                -->
                     </td>
                     <td id="crowd" class="center">
                         <input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" type="text"
