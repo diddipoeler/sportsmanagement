@@ -1,5 +1,19 @@
 // ajax save substitution
 jQuery(document).ready(function($){
+	
+	
+$( "#save-new-comment" ).click(function() {
+  //alert( "Handler for .click() called." );
+  save_new_comment();
+});	
+
+$( "#save-new-event" ).click(function() {
+  //alert( "Handler for .click() called." );
+  save_new_event();
+});	
+	
+	
+	/*
 // neuen wechsel speichern     
 $(".button-save-subst").addEvent('click', save_new_subst);
 // neues ereignis speichern  
@@ -16,7 +30,7 @@ $(".button-delete-commentary").addEvent('click', button_delete_commentary);
 // hier wird die funktion für das löschen der
 // ereignis hinzugefügt
 //$$(".button-delete-event").addEvent('click', button_delete_event);
-	
+	*/
 });
 
 // hier sind die funktionen
