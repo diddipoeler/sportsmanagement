@@ -1951,6 +1951,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 		{
 			$db->setQuery($query);
 			$result = $db->loadObject();
+            $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' result<pre>' . print_r($result, true) . '</pre>', 'Error');
             if ( !property_exists($result, "projectteam1_id") )
             {
                 $result->projectteam1_id = 0;
