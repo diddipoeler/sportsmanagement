@@ -317,7 +317,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('select'.$this->item->id, ''
                     <div class="btn-group">
 						<?php echo HTMLHelper::_('jgrid.published', $this->item->published, $this->count_i, 'clubs.', $canChange, 'cb'); ?>
 						<?php
-						// Create dropdown items and render the dropdown list.
+						/** Create dropdown items and render the dropdown list. */
 						if ($canChange)
 						{
 							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === 2 ? 'un' : '') . 'archive', 'cb' . $this->count_i, 'clubs');

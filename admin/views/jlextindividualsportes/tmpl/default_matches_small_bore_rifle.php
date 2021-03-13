@@ -16,6 +16,7 @@ use Joomla\CMS\Factory;
 
 // Save and close
 $close = Factory::getApplication()->input->getInt('close', 0);
+$canChange = true;
 
 if ($close == 1)
 {
@@ -109,7 +110,7 @@ if ($close == 1)
 				{
 					//$row       =& $this->matches[$i];
 					$checked   = HTMLHelper::_('grid.checkedout', $this->item, $this->count_i, 'id');
-					$published = HTMLHelper::_('grid.published', $this->item, $this->count_i, 'tick.png', 'publish_x.png', 'jlextindividualsportes.');
+					//$published = HTMLHelper::_('grid.published', $this->item, $this->count_i, 'tick.png', 'publish_x.png', 'jlextindividualsportes.');
 
 					list($date, $time) = explode(" ", $this->item->match_date);
 					$time = strftime("%H:%M", strtotime($time));
@@ -364,11 +365,20 @@ if ($close == 1)
 						?>
 
 
-                        <td style="text-align:center; ">
-							<?php
-							echo $published;
-							?>
-                        </td>
+                        <td class="center">
+                    <div class="btn-group">
+						<?php echo HTMLHelper::_('jgrid.published', $this->item->published, $this->count_i, 'jlextindividualsportes.', $canChange, 'cb'); ?>
+						<?php
+						/** Create dropdown items and render the dropdown list. */
+//						if ($canChange)
+//						{
+							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === 2 ? 'un' : '') . 'archive', 'cb' . $this->count_i, 'clubs');
+							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === -2 ? 'un' : '') . 'trash', 'cb' . $this->count_i, 'clubs');
+							echo HTMLHelper::_('actionsdropdown.render', $this->escape($this->item->name));
+//						}
+						?>
+                    </div>
+                </td>
                         <td style="text-align:center; ">
 							<?php
 							echo $this->item->id;
