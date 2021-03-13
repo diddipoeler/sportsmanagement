@@ -305,7 +305,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		//$this->notes[] = $value;		
 		}
 
-		// Projekt positionen
+		/** Projekt positionen */
 		$selectpositions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REF_FUNCTION'));
 
 		if ($projectpositions = $model->getProjectPositionsOptions(0, 3, $this->project_id))
@@ -528,7 +528,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		$default_name_format = $params->get("name_format");
 
 		$model = $this->getModel();
-		$teams = $model->getMatchTeams($this->item->id);
+		$teams = $model->getMatchTeams($this->item->id,$this->item->projectteam1_id,$this->item->projectteam2_id,$this->projectws->sports_type_name);
 
 		$homeRoster = $model->getTeamPersons($teams->projectteam1_id, false, 1);
 		$awayRoster = $model->getTeamPersons($teams->projectteam2_id, false, 1);
@@ -560,13 +560,10 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 	 */
 	protected function addToolbar_Editeventsbb()
 	{
-		// Set toolbar items for the page
 		ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EEBB_TITLE'), 'events');
 		ToolbarHelper::apply('match.saveeventbb');
 		ToolbarHelper::divider();
 		ToolbarHelper::back('back', 'index.php?option=com_sportsmanagement&view=matches&task=match.display');
-
-		// JLToolBarHelper::onlinehelp();
 	}
 
 	/**
@@ -644,6 +641,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		$option              = $jinput->getCmd('option');
 		$model               = $this->getModel();
 		$default_name_format = '';
+        $teamname = '';
 		$lists               = array();
 
 		$this->document->addStyleSheet(Uri::base() . '/components/' . $option . '/assets/css/sportsmanagement.css');

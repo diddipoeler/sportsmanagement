@@ -1921,37 +1921,84 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 		return true;
 	}
 
+	
 	/**
-	 * Method to return teams and match data
-	 *
-	 * @access public
-	 * @return array
-	 * @since  0.1
+	 * sportsmanagementModelMatch::getMatchTeams()
+	 * 
+	 * @param integer $match_id
+	 * @param integer $projectteam1_id
+	 * @param integer $projectteam1_id
+	 * @param string $sports_type_name
+	 * @return
 	 */
-	public static function getMatchTeams($match_id)
+	public static function getMatchTeams($match_id=0,$projectteam1_id=0,$projectteam1_id=0,$sports_type_name='')
 	{
 		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
 		$db     = sportsmanagementHelper::getDBConnection();
 		$query  = $db->getQuery(true);
-		$query->select('mc.*');
+        
+        $query->select('mc.*');
+        $query->select('u.name AS editor');
+        $query->from('#__sportsmanagement_match AS mc ');
+        $query->join('LEFT', '#__users u ON u.id = mc.checked_out');
+		$query->where('mc.id = ' . $match_id);
+        switch ($sports_type_name)
+		{
+		case 'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION':
+        if ( $projectteam1_id && $projectteam2_id )
+        {
+        $query->select('t1.name as team1,t2.name as team2');    
+        $query->join('INNER', '#__sportsmanagement_project_team AS pt1 ON mc.projectteam1_id = pt1.id ');
+		$query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id ');
+		$query->join('INNER', '#__sportsmanagement_team AS t1 ON t1.id = st1.team_id ');
+		$query->join('INNER', '#__sportsmanagement_project_team AS pt2 ON mc.projectteam2_id = pt2.id ');
+		$query->join('INNER', '#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id ');
+		$query->join('INNER', '#__sportsmanagement_team AS t2 ON t2.id = st2.team_id ');    
+        }
+        elseif ( $projectteam1_id && !$projectteam2_id )
+        {
+        $query->select('t1.name as team1');    
+        $query->join('INNER', '#__sportsmanagement_project_team AS pt1 ON mc.projectteam1_id = pt1.id ');
+		$query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id ');
+		$query->join('INNER', '#__sportsmanagement_team AS t1 ON t1.id = st1.team_id ');
+        }
+        elseif ( !$projectteam1_id && $projectteam2_id )
+        {
+        $query->select('t2.name as team2');    
+		$query->join('INNER', '#__sportsmanagement_project_team AS pt2 ON mc.projectteam2_id = pt2.id ');
+		$query->join('INNER', '#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id ');
+		$query->join('INNER', '#__sportsmanagement_team AS t2 ON t2.id = st2.team_id ');
+        }
+        
+        
+        
+        
+        
+        
+        
+        break;
+        default:
+		//$query->select('mc.*');
 		$query->select('t1.name as team1,t2.name as team2');
-		$query->select('u.name AS editor');
-		$query->from('#__sportsmanagement_match AS mc ');
+		//$query->select('u.name AS editor');
+//		$query->from('#__sportsmanagement_match AS mc ');
 		$query->join('INNER', '#__sportsmanagement_project_team AS pt1 ON mc.projectteam1_id = pt1.id ');
 		$query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id ');
 		$query->join('INNER', '#__sportsmanagement_team AS t1 ON t1.id = st1.team_id ');
 		$query->join('INNER', '#__sportsmanagement_project_team AS pt2 ON mc.projectteam2_id = pt2.id ');
 		$query->join('INNER', '#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id ');
 		$query->join('INNER', '#__sportsmanagement_team AS t2 ON t2.id = st2.team_id ');
-		$query->join('LEFT', '#__users u ON u.id = mc.checked_out');
-		$query->where('mc.id = ' . $match_id);
+//		$query->join('LEFT', '#__users u ON u.id = mc.checked_out');
+//		$query->where('mc.id = ' . $match_id);
+        break;
+        }
 
 		try
 		{
 			$db->setQuery($query);
 			$result = $db->loadObject();
-            //$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' result<pre>' . print_r($result, true) . '</pre>', 'Error');
+
             if ( $result )
             {
             if ( !property_exists($result, "projectteam1_id") )
