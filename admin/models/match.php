@@ -1951,11 +1951,28 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 		{
 			$db->setQuery($query);
 			$result = $db->loadObject();
+            if ( !property_exists($result, "projectteam1_id") )
+            {
+                $result->projectteam1_id = 0;
+            }
+            if ( !property_exists($result, "projectteam2_id") )
+            {
+                $result->projectteam2_id = 0;
+            }
+            if ( !property_exists($result, "team1") )
+            {
+                $result->team1 = '';
+            }
+            if ( !property_exists($result, "team2") )
+            {
+                $result->team2 = '';
+            }
+            
 		}
 		catch (Exception $e)
 		{
-			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
-			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), 'error');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');		  
 			$result = false;
 		}
 

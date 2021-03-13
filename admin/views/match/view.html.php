@@ -665,11 +665,11 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		$playersoptionsin          = array();
 		$playersoptionsin[]        = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER_IN'));
 
-		// Get starters
+		/** Get starters */
 		$starters    = $model->getMatchPersons($tid, 0, $this->item->id, 'player');
 		$starters_id = array_keys($starters);
 
-		// Get players not already assigned to starter
+		/** Get players not already assigned to starter */
 		$not_assigned = $model->getTeamPersons($tid, $starters_id, 1);
 
 		if (!$not_assigned && !$starters_id)
@@ -694,7 +694,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 			return;
 		}
 
-		// Build select list for not assigned players
+		/** Build select list for not assigned players */
 		$not_assigned_options = array();
 
 		foreach ((array) $not_assigned AS $p)
@@ -712,13 +712,12 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 			'value', 'text'
 		);
 
-		// Build position select
+		/** Build position select */
 		$selectpositions[]         = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_IN_POSITION'));
 		$selectpositions           = array_merge($selectpositions, $model->getProjectPositionsOptions(0, 1, $this->project_id));
 		$lists['projectpositions'] = HTMLHelper::_('select.genericlist', $selectpositions, 'project_position_id', 'class="inputbox" size="1"', 'posid', 'text', null, false, true);
 
-		// Build player select
-		// $allplayers = $model->getTeamPlayers($tid);
+		/** Build player select */
 		$allplayers = $model->getTeamPersons($tid, false, 1);
 
 		foreach ((array) $starters AS $player) // Foreach ((array)$allplayers AS $player)
@@ -737,12 +736,12 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 			);
 		}
 
-		// Generate selection list for each position
+		/** Generate selection list for each position */
 		$starters = array();
 
 		foreach ($projectpositions AS $position_id => $pos)
 		{
-			// Get players assigned to this position
+			/** Get players assigned to this position */
 			$starters[$position_id] = $model->getRoster($tid, $pos->value, $this->item->id, $pos->text);
 		}
 
@@ -767,19 +766,17 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 
 		$substitutions = $model->getSubstitutions($tid, $this->item->id);
 
-		/**
-		 * staff positions
-		 */
+		/** staff positions */
 		$staffpositions = $model->getProjectPositionsOptions(0, 2, $this->project_id);    // Get staff not already assigned to starter
 
-		// Assigned staff
+		/** Assigned staff */
 		$assigned    = $model->getMatchPersons($tid, 0, $this->item->id, 'staff');
 		$assigned_id = array_keys($assigned);
 
-		// Not assigned staff
+		/** Not assigned staff */
 		$not_assigned = $model->getTeamPersons($tid, $assigned_id, 2);
 
-		// Build select list for not assigned
+		/** Build select list for not assigned */
 		$not_assigned_options = array();
 
 		foreach ((array) $not_assigned AS $p)
@@ -796,12 +793,12 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 			'value', 'text'
 		);
 
-		// Generate selection list for each position
+		/** Generate selection list for each position */
 		$options = array();
 
 		foreach ($staffpositions AS $position_id => $pos)
 		{
-			// Get players assigned to this position
+			/** Get players assigned to this position */
 			$options = array();
 
 			foreach ($assigned as $staff)
@@ -822,7 +819,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 			);
 		}
 
-		// Build the html select booleanlist
+		/** Build the html select booleanlist */
 		$myoptions        = array();
 		$myoptions[]      = HTMLHelper::_('select.option', '0', Text::_('JNO'));
 		$myoptions[]      = HTMLHelper::_('select.option', '1', Text::_('JYES'));
@@ -835,7 +832,6 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		$this->playersoptionsout = $playersoptionsout;
 		$this->tid               = $tid;
 
-		// $this->teamname   = $teamname;
 		$this->starters = $starters;
 		$this->lists    = $lists;
 
