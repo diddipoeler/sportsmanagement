@@ -104,17 +104,27 @@ class sportsmanagementModeljlextindividualsport extends JSMModelAdmin
 		case 'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION':
         $ringetotal = 0;
         
-        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($pks,true).'</pre>'), 'error');
-        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($post,true).'</pre>'), 'error');
+//        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($pks,true).'</pre>'), 'error');
+//        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($post,true).'</pre>'), 'error');
         for ($x = 0; $x < count($pks); $x++)
 		{
 		$rowmatch                          = new stdClass;
 		$rowmatch->id                      = $pks[$x];
         $rowmatch->teamplayer1_id       = $post['teamplayer1_id' . $pks[$x]];
-        $rowmatch->ringetotal       = $post['team1_result' . $pks[$x]];
         
         $rowmatch->team1_result       = $post['team1_result' . $pks[$x]];
         $rowmatch->team2_result       = $post['team2_result' . $pks[$x]];
+        
+        if ( !$rowmatch->team1_result )
+        {
+            $rowmatch->team1_result = 0;
+        }
+        if ( !$rowmatch->team2_result )
+        {
+            $rowmatch->team2_result = 0;
+        }
+        
+        $rowmatch->ringetotal       = $rowmatch->team1_result;
         
         $rowmatch->modified    = $this->jsmdate->toSql();
 		$rowmatch->modified_by = $this->jsmuser->get('id');
