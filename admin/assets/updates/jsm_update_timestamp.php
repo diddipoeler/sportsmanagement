@@ -14,10 +14,11 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
 
 jimport('joomla.filter.output');
 
-// Prüft vor Benutzung ob die gewünschte Klasse definiert ist
+/** Prüft vor Benutzung ob die gewünschte Klasse definiert ist */
 if (!class_exists('sportsmanagementHelper'))
 {
 	// Add the classes for handling
@@ -46,7 +47,7 @@ $link = $uri->toString();
 $version           = '1.0.53';
 $updateFileDate    = '2016-02-01';
 $updateFileTime    = '00:05';
-$updateDescription = '<span style="color:orange">Update Timestamp Fields.</span>';
+$updateDescription = '<span style="color:orange">'.Text::_('COM_SPORTSMANAGEMENT_GLOBAL_UPDATES_TIMESTAMP').'</span>';
 $excludeFile       = 'false';
 
 $maxImportTime = ComponentHelper::getParams('com_sportsmanagement')->get('max_import_time', 0);

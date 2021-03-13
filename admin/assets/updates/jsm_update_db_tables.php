@@ -22,7 +22,7 @@ jimport('joomla.html.html.bootstrap');
 $version           = '3.8.8';
 $updateFileDate    = '2021-03-12';
 $updateFileTime    = '00:05';
-$updateDescription = '<span style="color:orange">Update all tables using the current install sql-file.</span>';
+$updateDescription = '<span style="color:orange">'.Text::_('COM_SPORTSMANAGEMENT_GLOBAL_UPDATES_DB_TABLES').'</span>';
 $excludeFile       = 'false';
 $option            = Factory::getApplication()->input->getCmd('option');
 

@@ -17,7 +17,7 @@ use Joomla\CMS\Language\Text;
 $version           = '1.0.68';
 $updateFileDate    = '2018-09-3';
 $updateFileTime    = '00:05';
-$updateDescription = '<span style="color:orange">Update Picture Path.</span>';
+$updateDescription = '<span style="color:orange">'.Text::_('COM_SPORTSMANAGEMENT_GLOBAL_UPDATES_PICTURE_PATH').'</span>';
 $excludeFile       = 'false';
 
 $maxImportTime = ComponentHelper::getParams('com_sportsmanagement')->get('max_import_time', 0);
