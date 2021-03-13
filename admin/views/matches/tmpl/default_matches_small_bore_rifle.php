@@ -199,11 +199,17 @@ $pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=compon
 						?>
                         <br>
 						<?php
-						// Diddipoeler einzelsportart
+						/** Diddipoeler einzelsportart */
 						if ($this->projectws->project_art_id == 2)
 						{
 							$pcture_link = "index.php?option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&id=" . $row->id . "&team1=" . $row->projectteam1_id . "&team2=" . $row->projectteam2_id . "&rid=" . $row->round_id;
-							echo sportsmanagementHelper::getBootstrapModalImage('einzelsportart' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/players_add.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SINGLE_SPORT'), '20', Uri::base() . $pcture_link, $this->modalwidth, $this->modalheight);
+							echo sportsmanagementHelper::getBootstrapModalImage('einzelsportart' . $row->id,
+                            Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/players_add.png',
+                            Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SINGLE_SPORT'),
+                            '20',
+                            Uri::base() . $pcture_link,
+                            $this->modalwidth,
+                            $this->modalheight);
 							?>
 
 							<?php
@@ -410,9 +416,10 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
                                class="form-control form-control-inline"/>
 
 						<?PHP
+                        echo $row->ringetotal;
 
 						?>
-
+<!--
                         <a href="javascript:void(0)"
                            onclick="switchMenu('part<?php echo $row->id; ?>')">&nbsp;
 							<?php 
@@ -421,6 +428,7 @@ $image_attributes['title'] = $imageTitle;
 echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/arrow_open.png',$imageTitle,$image_attributes);
 							?>
                         </a>
+                        -->
 
 						<?PHP
 						if ($row->alt_decision == 1)
@@ -436,59 +444,6 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
                         <span id="part<?php echo $row->id; ?>" style="display: none">
 									<br/>
 							<?php
-
-							if ($this->projectws->use_legs)
-							{
-								$partresults1 = explode(";", $row->team1_result_split);
-								$partresults2 = explode(";", $row->team2_result_split);
-
-								for ($x = 0; $x < ($this->projectws->game_parts); $x++)
-								{
-									?>
-
-                                    <input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"
-                                           onchange="document.getElementById(\'cb'<?php echo $i; ?>'\').checked=true"
-                                           type="text" style="font-size: 9px;"
-                                           name="team1_result_split<?php echo $row->id; ?>[]"
-                                           value="<?php echo (isset($partresults1[$x])) ? $partresults1[$x] : ''; ?>"
-                                           size="2" tabindex="6" class="form-control form-control-inline"/> :
-										<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"
-                                               onchange="document.getElementById(\'cb'<?php echo $i; ?>'\').checked=true"
-                                               type="text" style="font-size: 9px;"
-                                               name="team2_result_split<?php echo $row->id; ?>[]"
-                                               value="<?php echo (isset($partresults2[$x])) ? $partresults2[$x] : ''; ?>"
-                                               size="2" tabindex="6" class="form-control form-control-inline"/>
-									<?php
-									echo '&nbsp;&nbsp;' . ($x + 1) . ".<br />";
-								}
-							}
-							else
-							{
-								$partresults1 = explode(";", $row->team1_result_split);
-								$partresults2 = explode(";", $row->team2_result_split);
-
-								for ($x = 0; $x < ($this->projectws->game_parts); $x++)
-								{
-									?>
-
-                                    <input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"
-                                           onchange="document.getElementById(\'cb'<?php echo $i; ?>'\').checked=true"
-                                           type="text" style="font-size: 9px;"
-                                           name="team1_result_split<?php echo $row->id; ?>[]"
-                                           value="<?php echo (isset($partresults1[$x])) ? $partresults1[$x] : ''; ?>"
-                                           size="2" tabindex="6" class="form-control form-control-inline"/> :
-										<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"
-                                               onchange="document.getElementById(\'cb'<?php echo $i; ?>'\').checked=true"
-                                               type="text" style="font-size: 9px;"
-                                               name="team2_result_split<?php echo $row->id; ?>[]"
-                                               value="<?php echo (isset($partresults2[$x])) ? $partresults2[$x] : ''; ?>"
-                                               size="2" tabindex="6" class="form-control form-control-inline"/>
-									<?php
-									echo '&nbsp;&nbsp;' . ($x + 1) . ".<br />";
-								}
-							}
-
-
 							if ($this->projectws->allow_add_time == 1)
 							{
 								?>
