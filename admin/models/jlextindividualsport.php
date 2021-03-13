@@ -112,6 +112,10 @@ class sportsmanagementModeljlextindividualsport extends JSMModelAdmin
 		$rowmatch->id                      = $pks[$x];
         $rowmatch->teamplayer1_id       = $post['teamplayer1_id' . $pks[$x]];
         $rowmatch->ringetotal       = $post['team1_result' . $pks[$x]];
+        
+        $rowmatch->team1_result       = $post['team1_result' . $pks[$x]];
+        $rowmatch->team2_result       = $post['team2_result' . $pks[$x]];
+        
         $rowmatch->modified    = $this->jsmdate->toSql();
 		$rowmatch->modified_by = $this->jsmuser->get('id');
         try
