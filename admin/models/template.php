@@ -174,7 +174,15 @@ class sportsmanagementModeltemplate extends JSMModelAdmin
 	 */
 	public function update(&$pks)
 	{
-		$dispatcher = \JEventDispatcher::getInstance();
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+//Factory::getApplication()->triggerEvent(‘’);
+}
+elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
+{
+$dispatcher = \JEventDispatcher::getInstance();
+}
+		
 		$pks        = (array) $pks;
 
 		// Iterate the items to delete each one.
