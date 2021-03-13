@@ -166,12 +166,13 @@ class JSMRanking
 		return $obj;
 	}
 
+	
 	/**
-	 * set project id.
-	 *
-	 * inits project object and parameters
-	 *
-	 * @param   int  $id
+	 * JSMRanking::setProjectId()
+	 * 
+	 * @param mixed $id
+	 * @param integer $cfg_which_database
+	 * @return void
 	 */
 	function setProjectId($id, $cfg_which_database = 0)
 	{
@@ -183,14 +184,18 @@ class JSMRanking
 		$this->_data = null;
 	}
 
+	
 	/**
-	 * returns ranking
-	 *
-	 * @param   int roundid from
-	 * @param   int roundid to
-	 * @param   int division id
+	 * JSMRanking::getRanking()
+	 * 
+	 * @param mixed $from
+	 * @param mixed $to
+	 * @param mixed $division
+	 * @param integer $cfg_which_database
+	 * @param string $sports_type_name
+	 * @return
 	 */
-	function getRanking($from = null, $to = null, $division = null, $cfg_which_database = 0)
+	function getRanking($from = null, $to = null, $division = null, $cfg_which_database = 0,$sports_type_name='')
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
@@ -1162,14 +1167,18 @@ class JSMRanking
 		return $this->_criteria;
 	}
 
+	
 	/**
-	 * returns home ranking
-	 *
-	 * @param   int roundid from
-	 * @param   int roundid to
-	 * @param   int division id
+	 * JSMRanking::getRankingHome()
+	 * 
+	 * @param mixed $from
+	 * @param mixed $to
+	 * @param mixed $division
+	 * @param integer $cfg_which_database
+	 * @param string $sports_type_name
+	 * @return
 	 */
-	function getRankingHome($from = null, $to = null, $division = null, $cfg_which_database = 0)
+	function getRankingHome($from = null, $to = null, $division = null, $cfg_which_database = 0,$sports_type_name='')
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
@@ -1191,14 +1200,18 @@ class JSMRanking
 		return $rankings;
 	}
 
+
 	/**
-	 * returns away ranking
-	 *
-	 * @param   int roundid from
-	 * @param   int roundid to
-	 * @param   int division id
+	 * JSMRanking::getRankingAway()
+	 * 
+	 * @param mixed $from
+	 * @param mixed $to
+	 * @param mixed $division
+	 * @param integer $cfg_which_database
+	 * @param string $sports_type_name
+	 * @return
 	 */
-	function getRankingAway($from = null, $to = null, $division = null, $cfg_which_database = 0)
+	function getRankingAway($from = null, $to = null, $division = null, $cfg_which_database = 0,$sports_type_name='')
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');

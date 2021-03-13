@@ -1,8 +1,6 @@
 <?php
 /**
- *
- * SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
- *
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage ranking
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -43,9 +39,7 @@ class sportsmanagementViewRanking extends sportsmanagementView
 
 		if ($this->config['show_pictures'])
 		{
-			/**
-			 * die bilder zum spiel
-			 */
+			/** die bilder zum spiel */
 			$mdlMatchReport = BaseDatabaseModel::getInstance("MatchReport", "sportsmanagementModel");
 			$dest           = JPATH_ROOT . '/images/com_sportsmanagement/database/projectimages/' . $this->project->id;
 			$folder         = 'projectimages/' . $this->project->id;
@@ -83,9 +77,7 @@ class sportsmanagementViewRanking extends sportsmanagementView
 
 		if (!empty($this->config))
 		{
-			/**
-			 * sollen die vereinskürzel ersetzt und/oder angezeigt werden ?
-			 */
+			/** sollen die vereinskürzel ersetzt und/oder angezeigt werden ? */
 			if ($this->config['show_club_short_names'] || $this->config['show_replace_club_short_names'])
 			{
 				$mdlClubnames    = BaseDatabaseModel::getInstance("clubnames", "sportsmanagementModel");
@@ -121,7 +113,7 @@ class sportsmanagementViewRanking extends sportsmanagementView
 					sportsmanagementModelRanking::$part = 1;
 					sportsmanagementModelRanking::$from = 0;
 					sportsmanagementModelRanking::$to   = 0;
-					sportsmanagementModelRanking::computeRanking(sportsmanagementModelProject::$cfg_which_database);
+					sportsmanagementModelRanking::computeRanking(sportsmanagementModelProject::$cfg_which_database,0,$this->project->sport_type_name);
 					$this->firstRank = sportsmanagementModelRanking::$currentRanking;
 				}
 
@@ -130,7 +122,7 @@ class sportsmanagementViewRanking extends sportsmanagementView
 					sportsmanagementModelRanking::$part = 2;
 					sportsmanagementModelRanking::$from = 0;
 					sportsmanagementModelRanking::$to   = 0;
-					sportsmanagementModelRanking::computeRanking(sportsmanagementModelProject::$cfg_which_database);
+					sportsmanagementModelRanking::computeRanking(sportsmanagementModelProject::$cfg_which_database,0,$this->project->sport_type_name);
 					$this->secondRank = sportsmanagementModelRanking::$currentRanking;
 				}
 
@@ -138,7 +130,7 @@ class sportsmanagementViewRanking extends sportsmanagementView
 			}
 		}
 
-		sportsmanagementModelRanking::computeRanking(sportsmanagementModelProject::$cfg_which_database);
+		sportsmanagementModelRanking::computeRanking(sportsmanagementModelProject::$cfg_which_database,0,$this->project->sport_type_name);
 
 		$this->round = sportsmanagementModelRanking::$round;
 		$this->part  = sportsmanagementModelRanking::$part;
@@ -176,9 +168,7 @@ class sportsmanagementViewRanking extends sportsmanagementView
 
 		if (!empty($this->config))
 		{
-			/**
-			 * wenn keine reiter ausgewählt wurden, dann nur die standardtabelle übergeben
-			 */
+			/** wenn keine reiter ausgewählt wurden, dann nur die standardtabelle übergeben */
 			if (!$this->config['show_table_1']
 				|| !$this->config['show_table_2']
 				|| !$this->config['show_table_3']
@@ -265,39 +255,29 @@ class sportsmanagementViewRanking extends sportsmanagementView
 
 		if ($this->project)
 		{
-			/**
-			 * wir holen uns alle mannschaften die dem projekt zugeordnet wurden
-			 */
+			/** wir holen uns alle mannschaften die dem projekt zugeordnet wurden */
 			$this->allteams = $mdlProjectteams->getAllProjectTeams($this->project->id, 0, null, sportsmanagementModelProject::$cfg_which_database);
 		}
 
 		if (!empty($this->config))
 		{
-			/**
-			 * möchte der anwender die vereinskürzel ausgeschrieben sehen ?
-			 */
+			/** möchte der anwender die vereinskürzel ausgeschrieben sehen ? */
 			if ($this->config['show_replace_club_short_names'])
 			{
-				/**
-				 * als erstes holen wir uns die vereinskürzel des landes im projekt
-				 */
+				/** als erstes holen wir uns die vereinskürzel des landes im projekt */
 				$short_names = $mdlClubnames->getClubNames($this->project->country);
 			}
 
 			if ($this->config['show_ranking_maps'])
 			{
 				$this->mapconfig = array();
-				/**
-				 * leaflet benutzen
-				 */
+				/** leaflet benutzen */
 				if ($this->config['use_which_map'])
 				{
 					$this->mapconfig = sportsmanagementModelProject::getTemplateConfig('map', $this->jinput->getInt('cfg_which_database', 0));
 				}
 
-				/**
-				 * kml file generieren
-				 */
+				/** kml file generieren */
 				if (isset($this->mapconfig['map_kmlfile']) && $this->mapconfig['map_kmlfile'])
 				{
 					$this->geo = new JSMsimpleGMapGeocoder;

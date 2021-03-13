@@ -116,14 +116,15 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 		parent::__construct();
 	}
 
+
 	/**
 	 * sportsmanagementModelRanking::getPreviousGames()
-	 *
-	 * @param   integer  $cfg_which_database
-	 *
+	 * 
+	 * @param integer $cfg_which_database
+	 * @param string $sports_type_name
 	 * @return
 	 */
-	public static function getPreviousGames($cfg_which_database = 0)
+	public static function getPreviousGames($cfg_which_database = 0,$sports_type_name='')
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
@@ -245,12 +246,16 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 		return $res;
 	}
 
+	
 	/**
 	 * sportsmanagementModelRanking::computeRanking()
-	 *
+	 * 
+	 * @param integer $cfg_which_database
+	 * @param integer $s
+	 * @param string $sports_type_name
 	 * @return
 	 */
-	public static function computeRanking($cfg_which_database = 0, $s = 0)
+	public static function computeRanking($cfg_which_database = 0, $s = 0,$sports_type_name='')
 	{
 		$app   = Factory::getApplication();
 		$input = $app->input;
@@ -386,19 +391,19 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 				/** Away rank */
 				if (self::$type == 2)
 				{
-					self::$currentRanking[$division] = $ranking->getRankingAway(self::$from, self::$to, $division, $cfg_which_database);
+					self::$currentRanking[$division] = $ranking->getRankingAway(self::$from, self::$to, $division, $cfg_which_database,$sports_type_name);
 				}
 				/** Home rank */
 				elseif (self::$type == 1)
 				{
-					self::$currentRanking[$division] = $ranking->getRankingHome(self::$from, self::$to, $division, $cfg_which_database);
+					self::$currentRanking[$division] = $ranking->getRankingHome(self::$from, self::$to, $division, $cfg_which_database,$sports_type_name);
 				}
 				/** Total rank */
 				else
 				{
-					self::$currentRanking[$division] = $ranking->getRanking(self::$from, self::$to, $division, $cfg_which_database);
-					self::$homeRank[$division]       = $ranking->getRankingHome(self::$from, self::$to, $division, $cfg_which_database);
-					self::$awayRank[$division]       = $ranking->getRankingAway(self::$from, self::$to, $division, $cfg_which_database);
+					self::$currentRanking[$division] = $ranking->getRanking(self::$from, self::$to, $division, $cfg_which_database,$sports_type_name);
+					self::$homeRank[$division]       = $ranking->getRankingHome(self::$from, self::$to, $division, $cfg_which_database,$sports_type_name);
+					self::$awayRank[$division]       = $ranking->getRankingAway(self::$from, self::$to, $division, $cfg_which_database,$sports_type_name);
 				}
 
 				self::_sortRanking(self::$currentRanking[$division]);
