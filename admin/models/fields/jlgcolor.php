@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage fields
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Uri\Uri;
@@ -49,20 +45,20 @@ class JFormFieldJLGColor extends FormField
 		$document = Factory::getDocument();
 		$document->addScript(Uri::base() . 'components/com_sportsmanagement/assets/js/301a.js');
 
-		// Initialize some field attributes.
+		/** Initialize some field attributes. */
 		$size     = $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
 		$classes  = (string) $this->element['class'];
 		$disabled = ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
 
-		// Initialize JavaScript field attributes.
+		/** Initialize JavaScript field attributes. */
 		$onchange = $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
 
 		$class = $classes ? ' class="' . trim($classes) . '"' : '';
 
 		$document->addScriptDeclaration(
 			"
-				window.addEvent('domready', function() {
-					$$('.pickerbutton').addEvent('click', function(){
+				jQuery(document).ready(function($){
+					$('.pickerbutton').on('click', function(event){
 						var field = this.id.substr(12);
 						showColorGrid3(field,'sample_'+field);
 						return overlib(document.id('colorpicker301').innerHTML,
