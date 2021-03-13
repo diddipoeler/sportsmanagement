@@ -114,7 +114,7 @@ if ($close == 1)
 					list($date, $time) = explode(" ", $this->item->match_date);
 					$time = strftime("%H:%M", strtotime($time));
 					?>
-                    <tr class="<?php echo "row$k"; ?>">
+                    <tr class="row<?php echo $this->count_i % 2; ?>">
 						<?php
 						if (($this->item->cancel) > 0)
 						{
