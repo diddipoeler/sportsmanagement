@@ -520,31 +520,24 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 
                     <td class="center">
 						<?php
-
 						$appendselect = 'style="background-color:white" onchange="document.getElementById(\'cb' . $i . '\').checked=true" ';
 						echo HTMLHelper::_('select.genericlist', $this->lists['articles'],
 							'content_id' . $row->id, 'class="form-control form-control-inline" size="1" ' . $appendselect, 'value', 'text',
 							$row->content_id
 						);
-
-
 						?>
                     </td>
 
                     <td class="center">
-
 						<?php
-						echo sportsmanagementHelper::getBootstrapModalImage('pressebericht' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/link.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_PRESSEBERICHT'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=pressebericht&id=' . $row->id, $this->modalwidth, $this->modalheight);
 						echo sportsmanagementHelper::getBootstrapModalImage('editevents' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/events.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_EVENTS'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editevents&id=' . $row->id . '&useeventtime=' . $this->projectws->useeventtime, $this->modalwidth, $this->modalheight);
 						echo sportsmanagementHelper::getBootstrapModalImage('editeventsbb' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/teams.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SBBEVENTS'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editeventsbb&id=' . $row->id . '&useeventtime=' . $this->projectws->useeventtime, $this->modalwidth, $this->modalheight);
-
 						?>
-
 						<?php
-
 						// End several events
 						?>
                     </td>
+                    
                     <td class="center">
 						<?php
 						echo sportsmanagementHelper::getBootstrapModalImage('editstats' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/calc16.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_STATS'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editstats&id=' . $row->id, $this->modalwidth, $this->modalheight);
