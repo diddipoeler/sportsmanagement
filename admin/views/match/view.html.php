@@ -651,7 +651,10 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		$this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/diddioeler.js');
 		$tid                       = Factory::getApplication()->input->getVar('team', '0');
 		$match                     = $model->getMatchTeams($this->item->id);
+        if ( $match )
+        {
 		$teamname                  = ($tid == $match->projectteam1_id) ? $match->team1 : $match->team2;
+        }
 		$this->teamname            = $teamname;
 		$this->preFillSuccess      = false;
 		$this->positions           = false;
