@@ -56,7 +56,7 @@ if ($close == 1)
 			<?php
 			$colspan = ($this->projectws->allow_add_time) ? 16 : 15;
 			?>
-            <table class='adminlist' border='0'>
+            <table class="table adminlist" >
                 <thead>
                 <tr>
                     <th width="5"><?php echo count($this->matches) . '/' . $this->pagination->total; ?></th>
@@ -109,7 +109,7 @@ if ($close == 1)
 				{
 					//$row       =& $this->matches[$i];
 					$checked   = HTMLHelper::_('grid.checkedout', $this->item, $this->count_i, 'id');
-					$published = HTMLHelper::_('grid.published', $row, $this->count_i, 'tick.png', 'publish_x.png', 'jlextindividualsportes.');
+					$published = HTMLHelper::_('grid.published', $this->item, $this->count_i, 'tick.png', 'publish_x.png', 'jlextindividualsportes.');
 
 					list($date, $time) = explode(" ", $this->item->match_date);
 					$time = strftime("%H:%M", strtotime($time));
