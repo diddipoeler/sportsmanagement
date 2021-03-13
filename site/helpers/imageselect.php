@@ -187,8 +187,7 @@ document.getElementById('" . $fieldid . "_preview').src = pictureprev;
 			
 			
 		//window.addEvent('domready', function()
-        jQuery(document).ready(function()
-		{
+        jQuery(document).ready(function(){
 		console.log('fieldid: " . $fieldid . "');	
 		select = document.getElementById('" . $fieldid . "').value;
 		console.log('select : ' + select  );

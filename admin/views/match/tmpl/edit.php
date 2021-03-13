@@ -39,7 +39,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 			{
 				?>
                 <script>
-                    window.addEvent('domready', function () {
+                    jQuery(document).ready(function(){
                         $('cancel').onclick();
                     });
                 </script>

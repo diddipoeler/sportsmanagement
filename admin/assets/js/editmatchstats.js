@@ -8,7 +8,7 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-window.addEvent('domready', function() {
+jQuery(document).ready(function(){
 	// check row box when a value is updated
 	$$('tr.statrow').each(function(row){
 		row.getElements('.stat').each(function(stat){
