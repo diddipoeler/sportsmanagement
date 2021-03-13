@@ -47,6 +47,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
 		$default_name_format = '';
         $this->lists = array();
+        $this->positions = array();
 
 		$this->form   = $this->get('Form');
 		$this->item   = $this->get('Item');
