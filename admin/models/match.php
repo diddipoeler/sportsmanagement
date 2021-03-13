@@ -1999,25 +1999,25 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 			$db->setQuery($query);
 			$result = $db->loadObject();
 
-            if ( $result )
-            {
-            if ( !property_exists($result, "projectteam1_id") )
-            {
-                $result->projectteam1_id = 0;
-            }
-            if ( !property_exists($result, "projectteam2_id") )
-            {
-                $result->projectteam2_id = 0;
-            }
-            if ( !property_exists($result, "team1") )
-            {
-                $result->team1 = '';
-            }
-            if ( !property_exists($result, "team2") )
-            {
-                $result->team2 = '';
-            }
-            }
+//            if ( $result )
+//            {
+//            if ( !property_exists($result, "projectteam1_id") )
+//            {
+//                $result->projectteam1_id = 0;
+//            }
+//            if ( !property_exists($result, "projectteam2_id") )
+//            {
+//                $result->projectteam2_id = 0;
+//            }
+//            if ( !property_exists($result, "team1") )
+//            {
+//                $result->team1 = '';
+//            }
+//            if ( !property_exists($result, "team2") )
+//            {
+//                $result->team2 = '';
+//            }
+//            }
             
 		}
 		catch (Exception $e)
