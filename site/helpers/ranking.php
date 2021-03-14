@@ -1392,6 +1392,23 @@ class JSMRanking
 
 		return (int) $res;
 	}
+    
+    
+    /**
+     * JSMRanking::_cmpShooterrings()
+     * 
+     * @param mixed $a
+     * @param mixed $b
+     * @return
+     */
+    function _cmpShooterrings($a, $b)
+	{
+		$res = -($b->shooterrings - $a->shooterrings);
+
+		return (int) $res;
+	}
+    
+    
 
 	/**
 	 * Point comparison
