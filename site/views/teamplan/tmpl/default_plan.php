@@ -16,8 +16,6 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 
 $history_link = '';
-$away = '';
-$home = '';
 
 if ($this->config['show_comments_count'] == 1 || $this->config['show_comments_count'] == 2)
 {
@@ -271,6 +269,10 @@ if (!empty($this->matches))
 			$k          = 0;
 			$counter    = 1;
 			$round_date = '';
+            $away = '';
+            $home = '';
+            $homeclub = 0;
+			$awayclub = 0;
 
 			foreach ($this->matches as $match)
 			{
@@ -316,6 +318,10 @@ if (!empty($this->matches))
 						$home = sprintf('%s', $hometeam->name);
 					}
 				}
+                $homeclub = $hometeam->club_id;
+                
+                if ( property_exists($guestteam, "id") )
+                {
 
 				if (!empty($this->ptid))
 				{
@@ -334,8 +340,9 @@ if (!empty($this->matches))
 					}
 				}
 
-				$homeclub = $hometeam->club_id;
+				//$homeclub = $hometeam->club_id;
 				$awayclub = $guestteam->club_id;
+                }
 
 				$favStyle = '';
 				if ($this->config['highlight_fav'] && !$teamid)
@@ -699,9 +706,10 @@ if (!empty($this->matches))
 					}
 
 					$seperator = '<td width="10" id="teamplan-sepeator">' . $this->config['seperator'] . '</td>';
-					$isFavTeam = in_array($guestteam->id, $this->favteams);
-                    if ( $guestteam )
+					//$isFavTeam = in_array($guestteam->id, $this->favteams);
+                    if ( property_exists($guestteam, "id") )
                     {
+					$isFavTeam = in_array($guestteam->id, $this->favteams);
 					$away      = sportsmanagementHelper::formatTeamName($guestteam, "g" . $match->id . "t" . $guestteam->id, $this->config, $isFavTeam, $awaylink, Factory::getApplication()->input->getInt('cfg_which_database', 0));
                     }
 					$teamB .= '<td class="' . $class2 . '" id="teamplan-spielgast">' . $away . '</td>';
