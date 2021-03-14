@@ -258,8 +258,16 @@ class JSMRanking
 		{
         $homeId = $match->projectteam1_id;
 			$awayId = $match->projectteam2_id;
-            $home = new JSMRankingTeamClass(0);
-            $away = new JSMRankingTeamClass(0);
+            if ( property_exists($data->_teams, $homeId) )
+            {
+            $home = $data->_teams[$homeId];
+            }
+            if ( property_exists($data->_teams, $awayId) )
+            {
+			$away = $data->_teams[$awayId];
+            }
+//            $home = new JSMRankingTeamClass(0);
+//            $away = new JSMRankingTeamClass(0);
             $home->sum_team1_result  += $match->home_score;
 			$home->sum_team2_result  += $match->away_score;
             
