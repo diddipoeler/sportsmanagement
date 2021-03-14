@@ -264,6 +264,7 @@ class JSMRanking
             $home->sum_team1_result  += $match->home_score;
 			$home->sum_team2_result  += $match->away_score;
             $home->shooterrings  += $match->home_score;
+            $home->shooterringsperround[$match->roundcode] = $match->home_score;
             }
             if ( array_key_exists($awayId, $data->_teams) )
             {
@@ -1876,7 +1877,7 @@ class JSMRankingTeamClass
 	var $round = 0;
 	var $rank = 0;
     var $shooterrings = 0;
-    
+    var $shooterringsperround = array();
     
 
 	/**

@@ -288,6 +288,17 @@ $column_names = explode(',', $this->config['ordered_columns_names']);
 				break;
 		}
 	}
+    
+    
+    switch ( $this->project->sport_type_name )
+    {
+        case 'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION':
+        
+        break;
+    }
+    
+    
+    
 	?>
 </tr>
 </thead>

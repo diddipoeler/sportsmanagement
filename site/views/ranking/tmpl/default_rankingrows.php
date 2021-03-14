@@ -914,6 +914,20 @@ foreach ($current as $ptid => $team)
 		}
 	}
 
+switch ( $this->project->sport_type_name )
+    {
+        case 'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION':
+        foreach ($team->$shooterringsperround as $count_i => $item)
+		{
+		  echo '<td>';
+          printf($format, $item);
+          echo '</td>';
+          }
+
+        break;
+    }
+
+
 	echo '</tr>';
 	echo "\n";
 	$k = 1 - $k;
