@@ -279,8 +279,8 @@ if (!empty($this->matches))
 			$awayclub = 0;
             $home_projectteam_id = 0;
             $guest_projectteam_id = 0;
-            $hometeam = array();
-            $guestteam = array();
+            $hometeam = new stdclass;
+            $guestteam = new stdclass;
 
 				if ($this->config['show_historylink'])
 				{
