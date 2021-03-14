@@ -602,6 +602,8 @@ if (!empty($this->matches))
 									);
 								$teamA .= '</td>';
 								$teamB .= '<td class="' . $class2 . '"  id="teamplan-spielgastlogo">';
+                                if ( property_exists($guestteam, "id") )
+                    {
 								$teamB .= sportsmanagementModelProject::getClubIconHtml(
 										$guestteam,
 										1,
@@ -613,6 +615,7 @@ if (!empty($this->matches))
 										$this->modalheight,
 										$this->overallconfig['use_jquery_modal']
 									) . ' ';
+                                    }
 								$teamB .= '</td>';
 							}
 							break;
@@ -633,6 +636,8 @@ if (!empty($this->matches))
 									);
 								$teamA .= '</td>';
 								$teamB .= '<td class="' . $class2 . '" id="teamplan-spielgastlogo">';
+                                if ( property_exists($guestteam, "id") )
+                    {
 								$teamB .= sportsmanagementModelProject::getClubIconHtml(
 										$guestteam,
 										1,
@@ -644,6 +649,7 @@ if (!empty($this->matches))
 										$this->modalheight,
 										$this->overallconfig['use_jquery_modal']
 									) . ' ';
+                                    }
 								$teamB .= '</td>';
 							}
 							break;
@@ -664,6 +670,8 @@ if (!empty($this->matches))
 									);
 								$teamA .= '</td>';
 								$teamB .= '<td class="' . $class2 . '" id="teamplan-spielgastlogo">';
+                                if ( property_exists($guestteam, "id") )
+                    {
 								$teamB .= sportsmanagementModelProject::getClubIconHtml(
 										$guestteam,
 										1,
@@ -675,6 +683,7 @@ if (!empty($this->matches))
 										$this->modalheight,
 										$this->overallconfig['use_jquery_modal']
 									) . ' ';
+                                    }
 								$teamB .= '</td>';
 							}
 							break;
@@ -685,7 +694,10 @@ if (!empty($this->matches))
 								$teamA .= JSMCountries::getCountryFlag($hometeam->country);
 								$teamA .= '</td>';
 								$teamB .= '<td class="' . $class2 . '" id="teamplan-spielgastlogo">';
+                                if ( property_exists($guestteam, "id") )
+                    {
 								$teamB .= JSMCountries::getCountryFlag($guestteam->country);
+                                }
 								$teamB .= '</td>';
 							}
 							break;
@@ -702,12 +714,15 @@ if (!empty($this->matches))
 
 								$teamA .= '</td>';
 								$teamB .= '<td class="' . $class2 . '" id="teamplan-spielgastlogo">';
+                                if ( property_exists($guestteam, "id") )
+                    {
 								$teamB .= sportsmanagementHelper::getPictureThumb(
 									$guestteam->picture,
 									$guestteam->name,
 									$this->config['team_picture_width'],
 									'auto', 1
 								);
+                                }
 								$teamB .= '</td>';
 							}
 							break;
