@@ -273,7 +273,7 @@ $column_names = explode(',', $this->config['ordered_columns_names']);
 				echo '</span></th>';
 				break;
                 
-                case 'SHOOTERRINGS':
+            case 'SHOOTERRINGS':
 				echo '<th class="headers">';
 				echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';
 				echo $column_names[$k];
@@ -293,7 +293,13 @@ $column_names = explode(',', $this->config['ordered_columns_names']);
     switch ( $this->project->sport_type_name )
     {
         case 'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION':
-        
+        foreach ($this->rounds as $count_i => $item)
+		{
+		  echo '<th class="headers">';
+          echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';
+				echo $item->roundcode;
+          echo '</span></th>';
+          }
         break;
     }
     
