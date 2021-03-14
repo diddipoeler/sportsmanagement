@@ -269,13 +269,16 @@ if (!empty($this->matches))
 			$k          = 0;
 			$counter    = 1;
 			$round_date = '';
+            
+			foreach ($this->matches as $match)
+			{
+			 
             $away = '';
             $home = '';
             $homeclub = 0;
 			$awayclub = 0;
-
-			foreach ($this->matches as $match)
-			{
+            $home_projectteam_id = 0;
+            $guest_projectteam_id = 0;
 
 				if ($this->config['show_historylink'])
 				{
@@ -290,8 +293,11 @@ if (!empty($this->matches))
 				$hometeam            = $this->teams[$match->projectteam1_id];
 				$home_projectteam_id = $hometeam->projectteamid;
 
-				$guestteam            = $this->teams[$match->projectteam2_id];
+				if ( $match->projectteam2_id )
+                {
+                $guestteam            = $this->teams[$match->projectteam2_id];
 				$guest_projectteam_id = $guestteam->projectteamid;
+                }
 
 				if ($match->team1 == $this->favteams)
 				{
