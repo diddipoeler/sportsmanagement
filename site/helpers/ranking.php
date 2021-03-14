@@ -250,20 +250,24 @@ class JSMRanking
 // echo __METHOD__.' '.__LINE__ .' data <pre>'.print_r($data,true).'</pre>';
 
 
-		foreach ((array) $data->_matches as $match)
-		{
+	
 		  switch ($sports_type_name)
 		{
 		case 'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION':
+        foreach ((array) $data->_matches as $match)
+		{
         $homeId = $match->projectteam1_id;
 			$awayId = $match->projectteam2_id;
             $home = new JSMRankingTeamClass(0);
             $away = new JSMRankingTeamClass(0);
             $home->sum_team1_result  += $match->home_score;
 			$home->sum_team2_result  += $match->away_score;
+            
+            }
         break;
         default:
-          
+    	foreach ((array) $data->_matches as $match)
+		{      
 			if (!isset($data->_teams[$match->projectteam1_id]) || $data->_teams[$match->projectteam1_id]->_is_in_score === 0
 				|| !isset($data->_teams[$match->projectteam2_id]) || $data->_teams[$match->projectteam2_id]->_is_in_score === 0
 			)
@@ -389,16 +393,12 @@ class JSMRanking
 						case 1:
 							$home->cnt_wot++;
 							$home->cnt_wot_home++;
-							/**
-							 * keine summierung für hockey
-							 */
+							/** keine summierung für hockey */
 							//						$home->cnt_won++;
 							//						$home->cnt_won_home++;
 							$away->cnt_lot++;
 							$away->cnt_lot_away++;
-							/**
-							 * keine summierung für hockey
-							 */
+							/** keine summierung für hockey */
 							// $away->cnt_lost++;
 							// $away->cnt_lost_home++;
 							break;
@@ -695,12 +695,12 @@ class JSMRanking
 			$away->diff_team_games      = $away->sum_team1_games - $away->sum_team2_games;
 
 			$away->sum_away_for += $away_score;
-            
+        }    
             break;
             }
             
             
-		}
+		
 
 		return $data->_teams;
 	}
