@@ -258,18 +258,25 @@ class JSMRanking
 		{
         $homeId = $match->projectteam1_id;
 			$awayId = $match->projectteam2_id;
-            if ( property_exists($data->_teams, $homeId) )
+            if ( array_key_exists($homeId, $data->_teams) )
             {
             $home = $data->_teams[$homeId];
+            $home->sum_team1_result  += $match->home_score;
+			$home->sum_team2_result  += $match->away_score;
+            $home->shooterrings  += $match->home_score;
             }
-            if ( property_exists($data->_teams, $awayId) )
+            if ( array_key_exists($awayId, $data->_teams) )
             {
 			$away = $data->_teams[$awayId];
+            $away->sum_team1_result  += $match->away_score;
+			$away->sum_team2_result  += $match->home_score;
+            $away->shooterrings  += $match->away_score;
+            
+            
             }
 //            $home = new JSMRankingTeamClass(0);
 //            $away = new JSMRankingTeamClass(0);
-            $home->sum_team1_result  += $match->home_score;
-			$home->sum_team2_result  += $match->away_score;
+            
             
             }
         break;
@@ -1851,6 +1858,9 @@ class JSMRankingTeamClass
 	var $diff_team_legs = 0;
 	var $round = 0;
 	var $rank = 0;
+    var $shooterrings = 0;
+    
+    
 
 	/**
 	 * JSMRankingTeamClass::JSMRankingTeam()
