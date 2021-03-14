@@ -832,6 +832,24 @@ foreach ($current as $ptid => $team)
 				echo '</td>';
 				echo "\n";
 				break;
+                
+                
+                case 'SHOOTERRINGS':
+                	echo '<td class="rankingrow"';
+
+				if ($color != '' && $config['use_background_row_color'])
+				{
+					echo ' style="background-color:' . $color . '"';
+				}
+
+				echo '>';
+				printf($format, $team->shooterrings);
+
+				echo '</td>';
+				echo "\n";
+                
+                
+                break;
 
 			case 'LASTGAMES':
 				echo '<td class="rankingrow lastgames"';
