@@ -1403,7 +1403,7 @@ class JSMRanking
      */
     function _cmpShooterrings($a, $b)
 	{
-		$res = -($b->shooterrings - $a->shooterrings);
+		$res = -($a->shooterrings - $b->shooterrings);
 
 		return (int) $res;
 	}
