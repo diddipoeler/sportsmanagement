@@ -16,6 +16,9 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 
 $history_link = '';
+$away = '';
+$home = '';
+
 if ($this->config['show_comments_count'] == 1 || $this->config['show_comments_count'] == 2)
 {
 	$commmentsInstance = sportsmanagementModelComments::CreateInstance($this->config);
@@ -697,7 +700,10 @@ if (!empty($this->matches))
 
 					$seperator = '<td width="10" id="teamplan-sepeator">' . $this->config['seperator'] . '</td>';
 					$isFavTeam = in_array($guestteam->id, $this->favteams);
+                    if ( $guestteam )
+                    {
 					$away      = sportsmanagementHelper::formatTeamName($guestteam, "g" . $match->id . "t" . $guestteam->id, $this->config, $isFavTeam, $awaylink, Factory::getApplication()->input->getInt('cfg_which_database', 0));
+                    }
 					$teamB .= '<td class="' . $class2 . '" id="teamplan-spielgast">' . $away . '</td>';
 
 					if (!$match->cancel)

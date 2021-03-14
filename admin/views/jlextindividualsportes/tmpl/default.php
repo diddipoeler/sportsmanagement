@@ -15,8 +15,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 ?>
     <script type="text/javascript">
         <!--
-        window.addEvent('domready', function () {
-            $$('tr.row-result').each(function (row) {
+        jQuery(document).ready(function($){
+            $('tr.row-result').each(function (row) {
                 var matchid = row.id.substr(7);
                 var cb = row.getElement('input[id^=cb]');
                 if (cb) {

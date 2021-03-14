@@ -20,7 +20,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <script type="text/javascript">
     <!--
-    window.addEvent('domready', function () {
+    jQuery(document).ready(function($){
         $('templateid').addEvent('change', function () {
             if (this.value) {
                 $('importform').submit();

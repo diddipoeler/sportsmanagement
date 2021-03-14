@@ -17,7 +17,7 @@ use Joomla\CMS\Language\Text;
 
 <script type="text/javascript">
     <!--
-    window.addEvent('domready', function () {
+    jQuery(document).ready(function($){
         // altered decision fields management
         toggle_altdecision();
         $('alt_decision').addEvent('change', toggle_altdecision);
