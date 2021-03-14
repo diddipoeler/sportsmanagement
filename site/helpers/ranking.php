@@ -211,7 +211,7 @@ class JSMRanking
 
 		self::setDivisionId($division, $cfg_which_database);
 
-		$teams = self::_collect(null, $cfg_which_database);
+		$teams = self::_collect(null, $cfg_which_database,$sports_type_name);
 
 		$rankings = self::_buildRanking($teams, $cfg_which_database);
 
@@ -235,7 +235,7 @@ class JSMRanking
 	 *
 	 * @param   array int project team ids: only collect for games between specified teams (usefull for head to head)
 	 */
-	function _collect($ptids = null, $cfg_which_database = 0)
+	function _collect($ptids = null, $cfg_which_database = 0,$sports_type_name='')
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
@@ -247,7 +247,7 @@ class JSMRanking
 
 		//		$project  	= $this->_project->getProject();
 		$project = sportsmanagementModelProject::getProject($cfg_which_database, __METHOD__);
-		$data    = self::_initData($cfg_which_database);
+		$data    = self::_initData($cfg_which_database,$sports_type_name);
 
 		foreach ((array) $data->_matches as $match)
 		{
@@ -692,7 +692,7 @@ class JSMRanking
 	 *
 	 * @return object with properties _teams and _matches
 	 */
-	function _initData($cfg_which_database = 0)
+	function _initData($cfg_which_database = 0,$sports_type_name='')
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
@@ -706,12 +706,12 @@ class JSMRanking
 
 		if (version_compare(JSM_JVERSION, '4', 'eq'))
 		{
-			$data = self::_cachedGetData($this->_projectid, $this->_division, $cfg_which_database);
+			$data = self::_cachedGetData($this->_projectid, $this->_division, $cfg_which_database,$sports_type_name);
 		}
 
 		if (version_compare(JSM_JVERSION, '3', 'eq'))
 		{
-			$data = self::_cachedGetData($this->_projectid, $this->_division, $cfg_which_database);
+			$data = self::_cachedGetData($this->_projectid, $this->_division, $cfg_which_database,$sports_type_name);
 		}
 
 		return $data;
@@ -722,12 +722,12 @@ class JSMRanking
 	 *
 	 * @param   int project id
 	 */
-	public static function _cachedGetData($pid, $division, $cfg_which_database = 0)
+	public static function _cachedGetData($pid, $division, $cfg_which_database = 0,$sports_type_name='')
 	{
 		$data = new stdclass;
 
-		$data->_teams   = self::_initTeams($pid, $division, $cfg_which_database);
-		$data->_matches = self::_getMatches($pid, $division, $cfg_which_database);
+		$data->_teams   = self::_initTeams($pid, $division, $cfg_which_database,$sports_type_name);
+		$data->_matches = self::_getMatches($pid, $division, $cfg_which_database,$sports_type_name);
 
  //echo '<pre>'.print_r($data->_teams,true).'</pre>';
  //echo '<pre>'.print_r($data->_matches,true).'</pre>';
@@ -752,7 +752,7 @@ class JSMRanking
 	 *
 	 * @return array of JSMRankingTeam objects
 	 */
-	public static function _initTeams($pid, $division, $cfg_which_database = 0)
+	public static function _initTeams($pid, $division, $cfg_which_database = 0,$sports_type_name='')
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
@@ -870,17 +870,28 @@ class JSMRanking
 	 *
 	 * @return array
 	 */
-	public static function _getMatches($pid, $division, $cfg_which_database = 0)
+	public static function _getMatches($pid, $division, $cfg_which_database = 0,$sports_type_name='')
 	{
 		$app       = Factory::getApplication();
 		$option    = $app->input->getCmd('option');
 		$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
 		$query     = $db->getQuery(true);
 		$starttime = microtime();
-
 		$viewName = $app->input->getVar("view");
 
-		//		$query =
+
+        switch ($sports_type_name)
+		{
+		case 'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION':
+        
+        break;
+        default:
+        $query->where('m.projectteam1_id > 0 AND m.projectteam2_id > 0');
+        break;
+        }
+
+
+
 		$query->select('m.id');
 		$query->select('m.projectteam1_id');
 		$query->select('m.projectteam2_id');
@@ -925,15 +936,20 @@ class JSMRanking
 		}
 
 		$query->where('(m.cancel IS NULL OR m.cancel = 0)');
-		$query->where('m.projectteam1_id > 0 AND m.projectteam2_id > 0');
+//		$query->where('m.projectteam1_id > 0 AND m.projectteam2_id > 0');
+
+
+
+
+
 
 		switch ($viewName)
 		{
-			case 'rankingalltime':
-				break;
-			default:
-				$query->where('m.count_result');
-				break;
+		case 'rankingalltime':
+		break;
+		default:
+		$query->where('m.count_result');
+		break;
 		}
 
 		$db->setQuery($query);
