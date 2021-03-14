@@ -886,6 +886,7 @@ class JSMRanking
         
         break;
         default:
+        $query->where('( (m.team1_result IS NOT NULL AND m.team2_result IS NOT NULL) OR (m.alt_decision=1) ) ');
         $query->where('m.projectteam1_id > 0 AND m.projectteam2_id > 0');
         break;
         }
@@ -925,7 +926,7 @@ class JSMRanking
 		$query->join('INNER', '#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
 		$query->join('INNER', '#__sportsmanagement_round AS r ON m.round_id = r.id');
 
-		$query->where('( (m.team1_result IS NOT NULL AND m.team2_result IS NOT NULL) OR (m.alt_decision=1) ) ');
+//		$query->where('( (m.team1_result IS NOT NULL AND m.team2_result IS NOT NULL) OR (m.alt_decision=1) ) ');
 		$query->where('m.published = 1');
 		$query->where('r.published = 1');
 		$query->where('pt1.project_id = ' . $db->Quote($pid));
