@@ -212,7 +212,6 @@ class JSMRanking
 		self::setDivisionId($division, $cfg_which_database);
 
 		$teams = self::_collect(null, $cfg_which_database,$sports_type_name);
-
 		$rankings = self::_buildRanking($teams, $cfg_which_database);
 
 		return $rankings;
@@ -245,12 +244,26 @@ class JSMRanking
 		$to       = $this->_to;
 		$division = $this->_division;
 
-		//		$project  	= $this->_project->getProject();
 		$project = sportsmanagementModelProject::getProject($cfg_which_database, __METHOD__);
 		$data    = self::_initData($cfg_which_database,$sports_type_name);
 
+// echo __METHOD__.' '.__LINE__ .' data <pre>'.print_r($data,true).'</pre>';
+
+
 		foreach ((array) $data->_matches as $match)
 		{
+		  switch ($sports_type_name)
+		{
+		case 'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION':
+        $homeId = $match->projectteam1_id;
+			$awayId = $match->projectteam2_id;
+            $home = new JSMRankingTeamClass(0);
+            $away = new JSMRankingTeamClass(0);
+            $home->sum_team1_result  += $match->home_score;
+			$home->sum_team2_result  += $match->away_score;
+        break;
+        default:
+          
 			if (!isset($data->_teams[$match->projectteam1_id]) || $data->_teams[$match->projectteam1_id]->_is_in_score === 0
 				|| !isset($data->_teams[$match->projectteam2_id]) || $data->_teams[$match->projectteam2_id]->_is_in_score === 0
 			)
@@ -682,6 +695,11 @@ class JSMRanking
 			$away->diff_team_games      = $away->sum_team1_games - $away->sum_team2_games;
 
 			$away->sum_away_for += $away_score;
+            
+            break;
+            }
+            
+            
 		}
 
 		return $data->_teams;
@@ -956,12 +974,15 @@ class JSMRanking
 		$db->setQuery($query);
 
 		$res     = $db->loadObjectList();
+//echo __METHOD__.' '.__LINE__ .' res <pre>'.print_r($res,true).'</pre>';        
 		$matches = array();
 
 		foreach ((array) $res as $r)
 		{
 			$matches[$r->id] = $r;
 		}
+
+//echo __METHOD__ .' '.__LINE__. ' matches <pre>'.print_r($matches,true).'</pre>';
 
 		return $matches;
 	}
