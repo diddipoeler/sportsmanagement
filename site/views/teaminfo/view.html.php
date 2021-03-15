@@ -31,7 +31,10 @@ class sportsmanagementViewTeamInfo extends sportsmanagementView
 	 */
 	function init()
 	{
-
+    $this->warnings = array();
+    $this->tips = array();
+    $this->notes = array();
+       
 		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('frontend', sportsmanagementModelTeamInfo::$cfg_which_database);
 
 		if ($this->project->id)
@@ -65,18 +68,15 @@ class sportsmanagementViewTeamInfo extends sportsmanagementView
 				$this->merge_clubs = sportsmanagementModelTeamInfo::getMergeClubs($this->team->merge_clubs);
 			}
 
-			//	if ( $this->config['show_history_leagues'] )
-			//	{
 			$this->seasons                  = sportsmanagementModelTeamInfo::getSeasons($this->config, 1);
 			$this->leaguerankoverview       = sportsmanagementModelTeamInfo::getLeagueRankOverview($this->seasons);
 			$this->leaguerankoverviewdetail = sportsmanagementModelTeamInfo::getLeagueRankOverviewDetail($this->seasons);
 
-			//	}
 		}
 
 		$this->extended = sportsmanagementHelper::getExtended($this->team->teamextended, 'team');
 
-		// Set page title
+		/** Set page title */
 		$pageTitle = Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_PAGE_TITLE');
 
 		if (isset($this->team))

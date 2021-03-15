@@ -64,7 +64,6 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
 			$mod_name     = "mod_jw_srfr";
 			$rssfeeditems = '';
 
-			// $rssfeedlink = $this->extended->getValue('COM_SPORTSMANAGEMENT_CLUB_RSS_FEED');
 			$rssfeedlink = $this->extended['COM_SPORTSMANAGEMENT_CLUB_RSS_FEED'];
 
 			if ($rssfeedlink)
@@ -79,17 +78,13 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
 
 		if ($this->config['show_maps'])
 		{
-			/**
-			 * leaflet benutzen
-			 */
+			/** leaflet benutzen */
 			if ($this->config['use_which_map'])
 			{
 				$this->mapconfig = sportsmanagementModelProject::getTemplateConfig('map', $this->jinput->getInt('cfg_which_database', 0));
 			}
 
-			/**
-			 * kml file generieren
-			 */
+			/** kml file generieren */
 			if ($this->mapconfig['map_kmlfile'])
 			{
 				$this->geo = new JSMsimpleGMapGeocoder;
@@ -107,9 +102,7 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
 		}
 
 		$this->modid = $this->club->id;
-		/**
-		 * clubhistory
-		 */
+		/** clubhistory	 */
 		$this->clubhistory     = sportsmanagementModelClubInfo::getClubHistory($this->club->id);
 		$this->clubhistoryhtml = sportsmanagementModelClubInfo::getClubHistoryHTML($this->club->id);
 
@@ -117,9 +110,7 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
 		$this->genfamilytree         = sportsmanagementModelClubInfo::generateTree($this->club->id, $this->config['show_bootstrap_tree']);
 		$this->familytree            = sportsmanagementModelClubInfo::$historyhtmltree;
 
-		/**
-		 * clubhistorytree
-		 */
+		/** clubhistorytree	 */
 		$this->clubhistorytree     = sportsmanagementModelClubInfo::getClubHistoryTree($this->club->id, $this->club->new_club_id);
 		$this->clubhistorysorttree = sportsmanagementModelClubInfo::getSortClubHistoryTree($this->clubhistorytree, $this->club->id, $this->club->name);
 

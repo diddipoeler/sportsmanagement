@@ -166,8 +166,6 @@ class sportsmanagementViewRanking extends sportsmanagementView
 			}
 		}
 
-//echo __METHOD__.' '.__LINE__ .' res <pre>'.print_r($this->currentRanking,true).'</pre>';
-
 		if (!empty($this->config))
 		{
 			/** wenn keine reiter ausgewählt wurden, dann nur die standardtabelle übergeben */

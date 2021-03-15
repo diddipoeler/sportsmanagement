@@ -32,6 +32,10 @@ class sportsmanagementViewPlayer extends sportsmanagementView
 	 */
 	function init()
 	{
+	   $this->warnings = array();
+       $this->tips = array();
+       $this->notes = array();
+        
 		$model                = $this->model;
 		$model::$projectid    = $this->jinput->getInt('p', 0);
 		$model::$personid     = $this->jinput->getInt('pid', 0);

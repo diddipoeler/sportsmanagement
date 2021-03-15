@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage stats
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
@@ -78,7 +74,7 @@ class sportsmanagementViewStats extends sportsmanagementView
 			$this->_setChartdata(array_merge(sportsmanagementModelProject::getTemplateConfig("flash", $this->jinput->getint("cfg_which_database", 0)), $this->config));
 		}
 
-		// Set page title
+		/** Set page title */
 		$pageTitle = Text::_('COM_SPORTSMANAGEMENT_STATS_PAGE_TITLE');
 
 		if (isset($this->project))
@@ -112,7 +108,7 @@ class sportsmanagementViewStats extends sportsmanagementView
 	{
 		$data = $this->get('ChartData');
 
-		// Calculate Values for Chart Object
+		/** Calculate Values for Chart Object */
 		$homeSum               = array();
 		$awaySum               = array();
 		$matchDayGoalsCount    = array();
@@ -133,7 +129,7 @@ class sportsmanagementViewStats extends sportsmanagementView
 			$homeSum[] = (int) $rw->homegoalspd;
 			$awaySum[] = (int) $rw->guestgoalspd;
 
-			// Check, if both results are missing and avoid drawing the flatline of "0" goals for not played games yet
+			/** Check, if both results are missing and avoid drawing the flatline of "0" goals for not played games yet */
 			if ((!$rw->homegoalspd) && (!$rw->guestgoalspd))
 			{
 				$matchDayGoalsCount[] = null;
