@@ -1638,7 +1638,7 @@ $this->jsmquery->where('projectteam1_id = '.$projectteam1_id);
 $this->jsmquery->where('round_id = '.$rid);
 $this->jsmdb->setQuery($this->jsmquery);
 $result_single1 = $this->jsmdb->loadObjectList();
-$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' result_single <pre>' . print_r($result_single1, true) . '</pre>', 'notice');
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' result_single <pre>' . print_r($result_single1, true) . '</pre>', 'notice');
 
 foreach ($result_single1 as $single1)
 {
