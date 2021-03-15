@@ -246,7 +246,7 @@ if (!empty($this->rows))
 		$totalcolspan++;
 	}
 
-
+/*
 	if ($this->overallconfig['use_jl_substitution'])
 	{
 		if ($this->config['show_games_played'])
@@ -260,6 +260,7 @@ if (!empty($this->rows))
 			$totalcolspan += 3;
 		}
 	}
+	*/
 	?>
     <div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultplayers" itemscope itemtype="http://schema.org/SportsTeam">
       <span itemprop="name" content="<?php echo Text::_($this->team->name);?>"></span> 
@@ -339,7 +340,7 @@ if (!empty($this->rows))
 						?>
                         <th class="td_c">&nbsp;</th><?php
 					}
-
+/*
 					if ($this->overallconfig['use_jl_substitution'])
 					{
 						if ($this->config['show_games_played'])
@@ -390,7 +391,7 @@ if (!empty($this->rows))
 							<?php
 						}
 					}
-
+*/
 					if ($this->config['show_events_stats'])
 					{
 						if ($this->positioneventtypes)
@@ -456,6 +457,7 @@ if (!empty($this->rows))
 					 *
 					 * diddipoeler marktwert
 					 */
+					 /*
 					if ($this->config['show_player_market_value'])
 					{
 						?>
@@ -464,7 +466,7 @@ if (!empty($this->rows))
                         </th>
 						<?php
 					}
-
+*/
 
 					?>
                 </tr>
@@ -593,6 +595,7 @@ $picture = $row->picture;
 							}
 							?></td>
                         <td class="" width="" style="text-align: left;" >&nbsp; <?php
+						/*
 							$model            = $this->getModel();
 							$this->playertool = $model->getTeamPlayer($this->project->current_round, $row->playerid);
 
@@ -624,6 +627,7 @@ $picture = $row->picture;
 									$imageTitle, array('title' => $imageTitle, 'style' => 'width: auto;height: ' . $this->config['events_picture_height'] . 'px')
 								);
 							}
+							*/
 							?></td>
 						<?php
 						if ($this->config['show_birthday'] > 0)
@@ -686,7 +690,7 @@ $picture = $row->picture;
                             <td class="" width="" nowrap="nowrap" style="text-align: left;">&nbsp;</td><?php
 						}
 
-
+/*
 						if ($this->overallconfig['use_jl_substitution'])
 						{
 							$model = $this->getModel();
@@ -716,10 +720,8 @@ $picture = $row->picture;
 								<?php
 							}
 
-							/**
-							 *
-							 * spielzeit des spielers
-							 */
+							
+							
 							$timePlayed = 0;
 
 							if (!isset($this->overallconfig['person_events']))
@@ -740,7 +742,7 @@ $picture = $row->picture;
 								<?php
 							}
 						}
-
+*/
 
 						if ($this->config['show_events_stats'] && count($this->playereventstats) > 0)
 						{
@@ -840,6 +842,7 @@ $picture = $row->picture;
 						 *
 						 * diddipoeler marktwert
 						 */
+						 /*
 						if ($this->config['show_player_market_value'])
 						{
 							$total_market_value += $row->market_value;
@@ -851,7 +854,7 @@ $picture = $row->picture;
                             </td>
 							<?php
 						}
-
+*/
 
 						?>
                     </tr>
@@ -860,6 +863,7 @@ $picture = $row->picture;
 					 *
 					 * dartanzeige
 					 */
+					 /*
 					if ($this->project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART')
 					{
 						?>
@@ -919,7 +923,7 @@ $picture = $row->picture;
                         </tr>
 						<?php
 					}
-
+*/
 					$k = (1 - $k);
 				}
 				?>
@@ -937,13 +941,15 @@ $picture = $row->picture;
                     <tr class="">
                         <td class="" width=""></td>
                         <?php
-                        for ($a = 1, $b = 3; $a < $b; $a++)
+						
+                        for ($a = 1, $b = 2; $a < $b; $a++)
 			{
 			?>
 			<td>
 			</td>
 			<?php
 			}
+			
 			?>
                         <td class="" width="" colspan="">
 			<?php
@@ -954,6 +960,7 @@ $picture = $row->picture;
 			?>
                         </td>
                         <?php
+						
                         for ($a = 1, $b = $totalcolspan - 3; $a < $b; $a++)
 			{
 			?>
@@ -961,6 +968,7 @@ $picture = $row->picture;
 			</td>
 			<?php
 			}
+			
 			?>
                         
                         <td class="td_r" colspan="">
@@ -1026,6 +1034,7 @@ $picture = $row->picture;
 						 *
 						 * diddipoeler marktwert
 						 */
+						 /*
 						if ($this->config['show_player_market_value'])
 						{
 							?>
@@ -1036,6 +1045,7 @@ $picture = $row->picture;
                             </td>
 							<?php
 						}
+						*/
 						?>
                     </tr>
 					<?php
