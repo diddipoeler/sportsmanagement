@@ -258,6 +258,11 @@ if (empty($file['name']))
 		// Reference global application object
 		$app = Factory::getApplication();
 $datainput = Factory::getApplication()->input->getArray();
+
+if ( !array_key_exists( 'linkaddress', $datainput ) );
+{
+$datainput['linkaddress'] = '';    
+}
 		// JInput object
 		// $jinput = $app->input;
 		// $option = $this->jsmjinput->getCmd('option');
