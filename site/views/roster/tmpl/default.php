@@ -155,6 +155,13 @@ if ($this->config['show_staff_layout'] == 'staff_johncage'
 			echo $this->loadTemplate('description');
 		}
 
+switch ($this->project->sport_type_name )
+{
+case 'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION':
+echo $this->loadTemplate('players_small_bore_rifle');
+
+break;
+default:
 		if ($this->config['show_players'])
 		{
 			if (($this->config['show_players_layout']) == 'player_standard')
@@ -206,6 +213,9 @@ if ($this->config['show_staff_layout'] == 'staff_johncage'
 				//            echo $this->loadTemplate('person_staff');
 			}
 		}
+        break;
+        }
+        
 	}
 	else
 	{
