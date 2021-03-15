@@ -534,7 +534,7 @@ $this->LeaguehistoryPlayer[$player_hist->league_id][$eventtype->name] = 0;
         <thead>
         <tr class="sectiontableheader">
             <th class="td_l" class="nowrap"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_COMPETITION'); ?></th>              
-<th class="td_c">
+            <th class="td_c">
 				<?php
 				$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_PLAYED');
 				$picture    = $picture_path_sport_type_name . '/played.png';
@@ -545,7 +545,12 @@ $this->LeaguehistoryPlayer[$player_hist->league_id][$eventtype->name] = 0;
 
 				echo HTMLHelper::image($picture, $imageTitle, array(' title' => $imageTitle));
 				?></th>
-<th class="td_c"><?php
+                
+                <?php
+                if ((isset($this->overallconfig['use_jl_substitution'])) && ($this->overallconfig['use_jl_substitution'] == 1))
+				{
+                ?>
+                <th class="td_c"><?php
 						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_STARTROSTER');
 						$picture    = $picture_path_sport_type_name . '/startroster.png';
 						if (!curl_init($picture))
@@ -573,7 +578,7 @@ $this->LeaguehistoryPlayer[$player_hist->league_id][$eventtype->name] = 0;
 						echo HTMLHelper::image($picture, $imageTitle, array(' title' => $imageTitle));
 						?></th>
 
- <th class="td_c"><?php
+                    <th class="td_c"><?php
 						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PLAYED_TIME');
 						$picture    = $picture_path_sport_type_name . '/uhr.png';
 						if (!curl_init($picture))
@@ -582,7 +587,12 @@ $this->LeaguehistoryPlayer[$player_hist->league_id][$eventtype->name] = 0;
 						}
 						echo HTMLHelper::image($picture, $imageTitle, array('title' => $imageTitle, 'height' => 11));
 						?></th>
+                        
+                        
+                        
 <?php
+}
+
 if (count($this->AllEvents))
 				{
 					foreach ($this->AllEvents as $eventtype)
