@@ -1560,22 +1560,67 @@ switch ($post['sports_type_name'] )
 case 'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION':
 $mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
 $mdlteamplayers = BaseDatabaseModel::getInstance("teamplayers", "sportsmanagementModel");
+$mdljlextindividualsportes = BaseDatabaseModel::getInstance("jlextindividualsportes", "sportsmanagementModel");
+
 $project = $mdlProject->getProject($post['project_id']);
+$rid = $post['rid'];
 for ($x = 0; $x < count($pks); $x++)
 {
 $projectteam1_id = $post['projectteam1_id' . $pks[$x]];
 $projectteam2_id = $post['projectteam2_id' . $pks[$x]];
 $match_id = $pks[$x];
+
+$mdljlextindividualsportes->checkGames($project, $match_id, $rid, $projectteam1_id, $projectteam2_id);
+
+
+
+
 if ( $projectteam1_id )
 {
 $teamplayer = $mdlteamplayers->getProjectTeamplayers(0, $project->season_id,$projectteam1_id);
-
-
-
 $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($teamplayer, true) . '</pre>', 'Error');
 }
 /** schützen dem spiel zuordnen */
+foreach ($teamplayer as $player)
+{
+$teamplayer_id = $player->season_team_person_id;
+$this->jsmquery->clear();
+$this->jsmquery->select('id');
+$this->jsmquery->from('#__sportsmanagement_match_player');
+$this->jsmquery->where('match_id = ' . $match_id);
+$this->jsmquery->where('teamplayer_id = '.$teamplayer_id);
+$this->jsmdb->setQuery($this->jsmquery);
+try
+{
+$match_player_id = $this->jsmdb->loadResult();
+}
+catch (RuntimeException $e)
+{
+//$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+//$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($this->jsmquery->dump(), true) . '</pre>', 'Error');
+$profile = new stdClass;
+$profile->match_id = $match_id;
+$profile->teamplayer_id  = $teamplayer_id;
+try
+{
+$result = $this->jsmdb->insertObject('#__sportsmanagement_match_player', $profile);
+}
+catch (RuntimeException $e)
+{
+//$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+//$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($this->jsmquery->dump(), true) . '</pre>', 'Error');
+}
 
+}
+
+
+
+
+
+		  
+}          
 
 /** einzelschützen anlegen */
 

@@ -326,9 +326,14 @@ class sportsmanagementModelteamplayers extends JSMModelList
 	 */
 	function getProjectTeamplayers($team_id = 0, $season_id = 0, $projectteam_id = 0)
 	{
+	   
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' team_id -> ' . $team_id . ''), '');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' season_id -> ' . $season_id . ''), '');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' projectteam_id -> ' . $projectteam_id . ''), '');
+        	   
         $this->jsmquery->clear();
-		$this->jsmquery->select('ppl.*');
-		$this->jsmquery->from('#__sportsmanagement_person AS ppl,tp.id as season_team_person_id');
+		$this->jsmquery->select('ppl.*,tp.id as season_team_person_id');
+		$this->jsmquery->from('#__sportsmanagement_person AS ppl');
 		$this->jsmquery->join('INNER', '#__sportsmanagement_season_team_person_id AS tp on tp.person_id = ppl.id');
 		$this->jsmquery->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = tp.team_id');
         if ( $team_id )
@@ -342,7 +347,9 @@ class sportsmanagementModelteamplayers extends JSMModelList
         $this->jsmquery->where('pt.id = ' . $projectteam_id);    
         }
 		$this->jsmquery->where('st.season_id = ' . $season_id);
-		$this->jsmquery->where('tp.team_id = ' . $season_id);
+		$this->jsmquery->where('tp.season_id = ' . $season_id);
+
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' jsmquery -> ' . $this->jsmquery->dump() . ''), '');
 
 		try
 		{
