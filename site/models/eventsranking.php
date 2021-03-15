@@ -264,7 +264,10 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 			$query->where("me.event_type_id IN (" . self::$eventid . ")");
 		}
         
+        if ( $sports_type_id )
+        {
         $query->where('et.sports_type_id = ' . $sports_type_id);
+        }
 
 		$query->order('et.ordering');
 

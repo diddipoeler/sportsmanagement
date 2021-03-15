@@ -42,7 +42,7 @@ class sportsmanagementViewEventsRanking extends sportsmanagementView
 		$this->teamid     = $this->model->getTeamId();
 		$this->teams      = sportsmanagementModelProject::getTeamsIndexedById(0, 'name', $this->jinput->getInt('cfg_which_database', 0));
 		$this->favteams   = sportsmanagementModelProject::getFavTeams($this->jinput->getInt('cfg_which_database', 0));
-		$this->eventtypes = sportsmanagementModelProject::getEventTypes(sportsmanagementModelEventsRanking::$eventid, $this->jinput->getInt('cfg_which_database', 0));
+		$this->eventtypes = sportsmanagementModelProject::getEventTypes(sportsmanagementModelEventsRanking::$eventid, $this->jinput->getInt('cfg_which_database', 0), $this->project->sports_type_id );
 		$this->limit      = $this->model->getLimit();
 		$this->limitstart = $this->model->getLimitStart();
 		$this->pagination = $this->get('Pagination');
@@ -50,22 +50,12 @@ class sportsmanagementViewEventsRanking extends sportsmanagementView
         switch ( $this->project->sport_type_name )
         {
         case 'COM_SPORTSMANAGEMENT_ST_DART':
-        //case 'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION':
         $this->eventranking = $this->model->getEventRankings($this->limit, $this->limitstart, null, true,$this->project->sports_type_id);
         break;
         default:
         $this->eventranking = $this->model->getEventRankings($this->limit, $this->limitstart, null, false,$this->project->sports_type_id);
         break;    
         }
-
-//		if ($this->project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART')
-//		{
-//			$this->eventranking = $this->model->getEventRankings($this->limit, $this->limitstart, null, true);
-//		}
-//		else
-//		{
-//			$this->eventranking = $this->model->getEventRankings($this->limit, $this->limitstart, null, false);
-//		}
 
 		$this->multiple_events = count($this->eventtypes) > 1;
 

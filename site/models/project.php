@@ -1024,19 +1024,20 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 		}
 	}
 
+	
 	/**
 	 * sportsmanagementModelProject::getEventTypes()
-	 *
-	 * @param   integer  $evid
-	 *
+	 * 
+	 * @param string $evid
+	 * @param integer $cfg_which_database
+	 * @param integer $sports_type_id
 	 * @return
 	 */
-	public static function getEventTypes($evid = '', $cfg_which_database = 0)
+	public static function getEventTypes($evid = '', $cfg_which_database = 0, $sports_type_id = 0)
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 
-		// Get a db connection.
 		$db    = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
 		$query = $db->getQuery(true);
 
@@ -1048,8 +1049,12 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 
 		if ($evid)
 		{
-			$query->where("me.event_type_id IN (" . $evid . ")");
+		$query->where("me.event_type_id IN (" . $evid . ")");
 		}
+        if ( $sports_type_id )
+        {
+        $query->where('et.sports_type_id = ' . $sports_type_id);
+        }
 
 		$db->setQuery($query);
 		$result = $db->loadObjectList('etid');
