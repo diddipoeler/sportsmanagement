@@ -388,14 +388,18 @@ $this->LeaguehistoryPlayer[$player_hist->league_id]['playedtime'] = 0;
               
 					if ($this->config['show_career_events_stats'])
 					{
-						/**
-						 *                    stats per project
-						 */
+						/** stats per project */
 						if (count($this->AllEvents))
 						{
 							foreach ($this->AllEvents as $eventtype)
 							{
 								$stat = $player->getPlayerEvents($eventtype->id, $player_hist->project_id, $player_hist->ptid);
+                                
+                                
+if ( !array_key_exists( $eventtype->name, $this->LeaguehistoryPlayer[$player_hist->league_id] ) );
+{              
+$this->LeaguehistoryPlayer[$player_hist->league_id][$eventtype->name] = 0;              
+}                                
                               $this->LeaguehistoryPlayer[$player_hist->league_id][$eventtype->name] += $stat;
 								?>
 
