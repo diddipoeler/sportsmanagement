@@ -24,7 +24,7 @@ console.log("title : "+jQuery("title").text());
 console.log("current window width : "+windowWidth );
 console.log("current window height : "+windowHeight );
 console.log("jquery version : "+jQuery().jquery);
-console.log("bootstrap version : "+jQuery.fn.tooltip.Constructor.VERSION);
+//console.log("bootstrap version : "+jQuery.fn.tooltip.Constructor.VERSION);
 
 //    alert("Embedded block of JS here");
 });
