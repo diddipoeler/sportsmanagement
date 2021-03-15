@@ -50,11 +50,11 @@ class sportsmanagementViewEventsRanking extends sportsmanagementView
         switch ( $this->project->sport_type_name )
         {
         case 'COM_SPORTSMANAGEMENT_ST_DART':
-        case 'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION':
-        $this->eventranking = $this->model->getEventRankings($this->limit, $this->limitstart, null, true);
+        //case 'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION':
+        $this->eventranking = $this->model->getEventRankings($this->limit, $this->limitstart, null, true,$this->project->sports_type_id);
         break;
         default:
-        $this->eventranking = $this->model->getEventRankings($this->limit, $this->limitstart, null, false);
+        $this->eventranking = $this->model->getEventRankings($this->limit, $this->limitstart, null, false,$this->project->sports_type_id);
         break;    
         }
 
@@ -77,14 +77,14 @@ class sportsmanagementViewEventsRanking extends sportsmanagementView
 		}
 		else
 		{
-			// Next query will result in an array with exactly 1 statistic id
+			/** Next query will result in an array with exactly 1 statistic id */
 			$evid = array_keys($this->eventtypes);
 
-			// Selected one valid eventtype, so show its name
+			/** Selected one valid eventtype, so show its name */
 			$prefix .= " - " . Text::_($this->eventtypes[$evid[0]]->name);
 		}
 
-		// Set page title
+		/** Set page title */
 		$titleInfo = sportsmanagementHelper::createTitleInfo($prefix);
 
 		if (!empty($this->teamid) && array_key_exists($this->teamid, $this->teams))

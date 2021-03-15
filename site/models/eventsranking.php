@@ -8,9 +8,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -27,19 +25,12 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 {
 	static $projectid = 0;
-
 	static $divisionid = 0;
-
 	static $teamid = 0;
-
 	static $eventid = 0;
-
 	static $matchid = 0;
-
 	static $limit = 20;
-
 	static $limitstart = 0;
-
 	static $cfg_which_database = 0;
 
 	/**
@@ -208,20 +199,21 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 		return self::$limit;
 	}
 
+
 	/**
 	 * sportsmanagementModelEventsRanking::getEventRankings()
-	 *
-	 * @param   integer  $limit
-	 * @param   integer  $limitstart
-	 * @param   mixed    $order
-	 * @param   bool     $dart
-	 *
+	 * 
+	 * @param integer $limit
+	 * @param integer $limitstart
+	 * @param mixed $order
+	 * @param bool $dart
+	 * @param integer $sports_type_id
 	 * @return
 	 */
-	function getEventRankings($limit = 0, $limitstart = 0, $order = null, $dart = false)
+	function getEventRankings($limit = 0, $limitstart = 0, $order = null, $dart = false, $sports_type_id = 0)
 	{
 		$order      = ($order ? $order : $this->order);
-		$eventtypes = self::getEventTypes();
+		$eventtypes = self::getEventTypes($sports_type_id);
 
 		if (array_keys($eventtypes))
 		{
@@ -239,12 +231,14 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 		return $eventrankings;
 	}
 
+
 	/**
 	 * sportsmanagementModelEventsRanking::getEventTypes()
-	 *
+	 * 
+	 * @param integer $sports_type_id
 	 * @return
 	 */
-	public static function getEventTypes()
+	public static function getEventTypes($sports_type_id = 0)
 	{
 		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
@@ -269,6 +263,8 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 		{
 			$query->where("me.event_type_id IN (" . self::$eventid . ")");
 		}
+        
+        $query->where('et.sports_type_id = ' . $sports_type_id);
 
 		$query->order('et.ordering');
 
@@ -390,9 +386,7 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 			return false;
 		}
 
-		/**
-		 *        get ranks
-		 */
+		/** get ranks */
 		$previousval = 0;
 		$currentrank = 1 + $limitstart;
 
