@@ -1558,11 +1558,22 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 switch ($post['sports_type_name'] )
 {
 case 'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION':
+$mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
+$mdlteamplayers = BaseDatabaseModel::getInstance("teamplayers", "sportsmanagementModel");
+$project = $mdlProject->getProject($post['project_id']);
 for ($x = 0; $x < count($pks); $x++)
 {
 $projectteam1_id = $post['projectteam1_id' . $pks[$x]];
 $projectteam2_id = $post['projectteam2_id' . $pks[$x]];
 $match_id = $pks[$x];
+if ( $projectteam1_id )
+{
+$teamplayer = $mdlteamplayers->getProjectTeamplayers(0, $project->season_id,$projectteam1_id);
+
+
+
+$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($teamplayer, true) . '</pre>', 'Error');
+}
 /** schützen dem spiel zuordnen */
 
 

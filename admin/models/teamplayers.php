@@ -315,21 +315,32 @@ class sportsmanagementModelteamplayers extends JSMModelList
 	}
 
 	
+	
 	/**
 	 * sportsmanagementModelteamplayers::getProjectTeamplayers()
 	 * 
 	 * @param integer $team_id
 	 * @param integer $season_id
+	 * @param integer $projectteam_id
 	 * @return
 	 */
-	function getProjectTeamplayers($team_id = 0, $season_id = 0)
+	function getProjectTeamplayers($team_id = 0, $season_id = 0, $projectteam_id = 0)
 	{
         $this->jsmquery->clear();
 		$this->jsmquery->select('ppl.*');
-		$this->jsmquery->from('#__sportsmanagement_person AS ppl');
+		$this->jsmquery->from('#__sportsmanagement_person AS ppl,tp.id as season_team_person_id');
 		$this->jsmquery->join('INNER', '#__sportsmanagement_season_team_person_id AS tp on tp.person_id = ppl.id');
 		$this->jsmquery->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = tp.team_id');
+        if ( $team_id )
+        {
 		$this->jsmquery->where('st.team_id IN (' . $team_id . ')');
+        }
+        
+        if ( $projectteam_id )
+        {
+        $this->jsmquery->join('INNER', '#__sportsmanagement_project_team AS pt on pt.team_id = st.id');
+        $this->jsmquery->where('pt.id = ' . $projectteam_id);    
+        }
 		$this->jsmquery->where('st.season_id = ' . $season_id);
 		$this->jsmquery->where('tp.team_id = ' . $season_id);
 
