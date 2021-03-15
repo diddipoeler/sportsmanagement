@@ -135,6 +135,7 @@ echo HTMLHelper::_('bootstrap.' . $this->endPanel);
 echo HTMLHelper::_('bootstrap.' . $this->endPane, 'myTab');
 */
 ?>
+<!--
     <div class="<?php echo $this->divclasscontainer; ?>">
         <div class="<?php echo $this->divclassrow; ?>">
 			<?PHP
@@ -142,4 +143,5 @@ echo HTMLHelper::_('bootstrap.' . $this->endPane, 'myTab');
 			?>
         </div>
     </div>
+    -->
 <?PHP
