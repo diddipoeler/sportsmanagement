@@ -173,7 +173,11 @@ $this->LeaguehistoryPlayer = array();
 			{
 				$model           = $this->getModel();
 				$this->inoutstat = $model->getInOutStats($player_hist->project_id, $player_hist->ptid, $player_hist->tpid);
-
+                
+if ( !property_exists($this->inoutstat, "played") )
+{                
+$this->inoutstat->played = 0;
+}
 				// gespielte zeit
 				if (!isset($this->overallconfig['person_events']))
 				{
