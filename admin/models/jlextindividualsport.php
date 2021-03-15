@@ -171,6 +171,7 @@ class sportsmanagementModeljlextindividualsport extends JSMModelAdmin
         $profile->teamplayer_id = $post['teamplayer1_id' . $pks[$x]];
         $profile->projectteam_id = $projectteam1_id;
         $profile->match_id = $match_id;
+        $profile->event_sum = $rowmatch->ringetotal;
         $result = $this->jsmdb->insertObject('#__sportsmanagement_match_event', $profile);    
             
         }
