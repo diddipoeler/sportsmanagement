@@ -1243,6 +1243,9 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 		$post = $this->jsmapp->input->post->getArray(array());
 
 		$result = true;
+        $projectteam1_id = 0;
+        $projectteam2_id = 0;
+        $match_id = 0;
 
 		for ($x = 0; $x < count($pks); $x++)
 		{
@@ -1555,10 +1558,18 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 switch ($post['sports_type_name'] )
 {
 case 'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION':
+for ($x = 0; $x < count($pks); $x++)
+{
+$projectteam1_id = $post['projectteam1_id' . $pks[$x]];
+$projectteam2_id = $post['projectteam2_id' . $pks[$x]];
+$match_id = $pks[$x];
 /** schützen dem spiel zuordnen */
 
 
 /** einzelschützen anlegen */
+
+
+}
 break;
 }
 

@@ -58,6 +58,12 @@ class sportsmanagementModelteamplayers extends JSMModelList
 		parent::setDbo($getDBConnection);
 	}
 	
+	/**
+	 * sportsmanagementModelteamplayers::getprojectpublished()
+	 * 
+	 * @param mixed $items
+	 * @return
+	 */
 	function getprojectpublished($items = NULL)
 	{
 		//echo '<pre>'.print_r($items,true).'</pre>';
@@ -145,22 +151,22 @@ class sportsmanagementModelteamplayers extends JSMModelList
 		return $this->jsmquery;
 	}
 
+	
 	/**
 	 * sportsmanagementModelteamplayers::PersonProjectPosition()
-	 *
-	 * @return void
+	 * 
+	 * @param mixed $project_id
+	 * @param mixed $_persontype
+	 * @return
 	 */
 	function PersonProjectPosition($project_id, $_persontype)
 	{
 		$this->jsmquery->clear();
-
 		$this->jsmquery->select('ppl.*');
 		$this->jsmquery->from('#__sportsmanagement_person_project_position AS ppl');
 		$this->jsmquery->where('ppl.project_id = ' . $project_id);
 		$this->jsmquery->where('ppl.persontype = ' . $_persontype);
-
 		$this->jsmdb->setQuery($this->jsmquery);
-
 		$result = $this->jsmdb->loadObjectList();
 
 		if (!$result)
@@ -172,14 +178,15 @@ class sportsmanagementModelteamplayers extends JSMModelList
 
 	}
 
+
 	/**
 	 * sportsmanagementModelteamplayers::checkProjectPositions()
-	 *
-	 * @param   mixed  $project_id
-	 * @param   mixed  $persontype
-	 * @param   mixed  $team_id
-	 * @param   mixed  $season_id
-	 *
+	 * 
+	 * @param mixed $project_id
+	 * @param mixed $persontype
+	 * @param mixed $team_id
+	 * @param mixed $season_id
+	 * @param integer $insert
 	 * @return
 	 */
 	function checkProjectPositions($project_id, $persontype, $team_id, $season_id, $insert = 1)
@@ -307,50 +314,33 @@ class sportsmanagementModelteamplayers extends JSMModelList
 
 	}
 
+	
 	/**
 	 * sportsmanagementModelteamplayers::getProjectTeamplayers()
-	 *
-	 * @param   mixed  $project_team_id
-	 *
+	 * 
+	 * @param integer $team_id
+	 * @param integer $season_id
 	 * @return
 	 */
 	function getProjectTeamplayers($team_id = 0, $season_id = 0)
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-		$user  = Factory::getUser();
-
-		// Select some fields
-		$query->select('ppl.*');
-
-		// From table
-		$query->from('#__sportsmanagement_person AS ppl');
-		$query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp on tp.person_id = ppl.id');
-		$query->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = tp.team_id');
-		$query->where('st.team_id IN (' . $team_id . ')');
-		$query->where('st.season_id = ' . $season_id);
-		$query->where('tp.team_id = ' . $season_id);
+        $this->jsmquery->clear();
+		$this->jsmquery->select('ppl.*');
+		$this->jsmquery->from('#__sportsmanagement_person AS ppl');
+		$this->jsmquery->join('INNER', '#__sportsmanagement_season_team_person_id AS tp on tp.person_id = ppl.id');
+		$this->jsmquery->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = tp.team_id');
+		$this->jsmquery->where('st.team_id IN (' . $team_id . ')');
+		$this->jsmquery->where('st.season_id = ' . $season_id);
+		$this->jsmquery->where('tp.team_id = ' . $season_id);
 
 		try
 		{
-			$db->setQuery($query);
-			$result = $db->loadObjectList();
+			$this->jsmdb->setQuery($this->jsmquery);
+			$result = $this->jsmdb->loadObjectList();
 		}
 		catch (Exception $e)
 		{
-			// Catch any database errors.
 			$result = false;
-
-			//    $db->transactionRollback();
-			//    JErrorPage::render($e);
 		}
 
 		return $result;

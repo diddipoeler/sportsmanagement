@@ -236,6 +236,12 @@ class sportsmanagementViewMatches extends sportsmanagementView
 		$this->roundws    = $roundws;
 		$this->prefill    = $params->get('use_prefilled_match_roster', 0);
 
+
+if ( !array_key_exists('search_mode', $this->lists) )
+{
+$this->lists['search_mode'] = '';
+}
+
 		switch ($this->getLayout())
 		{
 			case 'massadd':
