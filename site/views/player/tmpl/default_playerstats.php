@@ -305,6 +305,15 @@ $this->inoutstat->playedtime = 0;
 						<?PHP
 					}
               
+if ( !array_key_exists( 'played', $this->LeaguehistoryPlayer[$player_hist->league_id] ) );
+{              
+$this->LeaguehistoryPlayer[$player_hist->league_id]['played'] = 0;              
+}              
+              
+              
+              
+              
+              
               $this->LeaguehistoryPlayer[$player_hist->league_id]['league'] = $player_hist->league_name;
               $this->LeaguehistoryPlayer[$player_hist->league_id]['played'] += $this->inoutstat->played;
               $this->LeaguehistoryPlayer[$player_hist->league_id]['started'] += $this->inoutstat->started;
