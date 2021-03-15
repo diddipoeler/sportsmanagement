@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage eventsranking
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
@@ -50,15 +46,26 @@ class sportsmanagementViewEventsRanking extends sportsmanagementView
 		$this->limit      = $this->model->getLimit();
 		$this->limitstart = $this->model->getLimitStart();
 		$this->pagination = $this->get('Pagination');
+        
+        switch ( $this->project->sport_type_name )
+        {
+        case 'COM_SPORTSMANAGEMENT_ST_DART':
+        case 'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION':
+        $this->eventranking = $this->model->getEventRankings($this->limit, $this->limitstart, null, true);
+        break;
+        default:
+        $this->eventranking = $this->model->getEventRankings($this->limit, $this->limitstart, null, false);
+        break;    
+        }
 
-		if ($this->project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART')
-		{
-			$this->eventranking = $this->model->getEventRankings($this->limit, $this->limitstart, null, true);
-		}
-		else
-		{
-			$this->eventranking = $this->model->getEventRankings($this->limit, $this->limitstart, null, false);
-		}
+//		if ($this->project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART')
+//		{
+//			$this->eventranking = $this->model->getEventRankings($this->limit, $this->limitstart, null, true);
+//		}
+//		else
+//		{
+//			$this->eventranking = $this->model->getEventRankings($this->limit, $this->limitstart, null, false);
+//		}
 
 		$this->multiple_events = count($this->eventtypes) > 1;
 
