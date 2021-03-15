@@ -1558,6 +1558,9 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 switch ($post['sports_type_name'] )
 {
 case 'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION':
+$match_single_free = array();
+$match_single_player = array();
+
 $mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
 $mdlteamplayers = BaseDatabaseModel::getInstance("teamplayers", "sportsmanagementModel");
 $mdljlextindividualsportes = BaseDatabaseModel::getInstance("jlextindividualsportes", "sportsmanagementModel");
@@ -1577,13 +1580,12 @@ $mdljlextindividualsportes->checkGames($project, $match_id, $rid, $projectteam1_
 
 if ( $projectteam1_id )
 {
-$teamplayer = $mdlteamplayers->getProjectTeamplayers(0, $project->season_id,$projectteam1_id);
-//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($teamplayer, true) . '</pre>', 'Error');
+$teamplayer1 = $mdlteamplayers->getProjectTeamplayers(0, $project->season_id,$projectteam1_id);
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($teamplayer1, true) . '</pre>', 'Error');
 }
 /** schützen dem spiel zuordnen */
-foreach ($teamplayer as $player)
+foreach ($teamplayer1 as $player)
 {
-//$teamplayer_id = $player->season_team_person_id;
 $this->jsmquery->clear();
 $this->jsmquery->select('id');
 $this->jsmquery->from('#__sportsmanagement_match_player');
@@ -1625,6 +1627,9 @@ catch (RuntimeException $e)
 }          
 
 /** einzelschützen anlegen */
+unset($match_single_free);
+unset($match_single_player);
+
 $this->jsmquery->clear();
 $this->jsmquery->select('*');
 $this->jsmquery->from('#__sportsmanagement_match_single');
@@ -1632,12 +1637,34 @@ $this->jsmquery->where('match_id = ' . $match_id);
 $this->jsmquery->where('projectteam1_id = '.$projectteam1_id);
 $this->jsmquery->where('round_id = '.$rid);
 $this->jsmdb->setQuery($this->jsmquery);
-$result_single = $this->jsmdb->loadObjectList();
-$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' result_single <pre>' . print_r($result_single, true) . '</pre>', 'notice');
+$result_single1 = $this->jsmdb->loadObjectList();
+$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' result_single <pre>' . print_r($result_single1, true) . '</pre>', 'notice');
 
+foreach ($result_single1 as $single1)
+{
+$match_single_player[$single1->teamplayer1_id] = $single1->teamplayer1_id;
+if ( !$single1->teamplayer1_id )
+{
+$match_single_free[$single1->id] = $single1->id;    
+}
 
+}
 
+foreach ($teamplayer1 as $player)
+{
 
+if ( !array_key_exists( $player->season_team_person_id, $match_single_player ) );
+{
+$match_single_id = array_pop($match_single_free);
+$object = new stdClass;
+$object->id = $match_single_id;
+$object->teamplayer1_id = $player->season_team_person_id;
+$result_update = $this->jsmdb->updateObject('#__sportsmanagement_match_single', $object, 'id', true);
+
+    
+}
+
+}
 
 
 
