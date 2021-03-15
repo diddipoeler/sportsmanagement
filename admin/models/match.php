@@ -1578,7 +1578,7 @@ $mdljlextindividualsportes->checkGames($project, $match_id, $rid, $projectteam1_
 if ( $projectteam1_id )
 {
 $teamplayer = $mdlteamplayers->getProjectTeamplayers(0, $project->season_id,$projectteam1_id);
-$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($teamplayer, true) . '</pre>', 'Error');
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($teamplayer, true) . '</pre>', 'Error');
 }
 /** schützen dem spiel zuordnen */
 foreach ($teamplayer as $player)
@@ -1625,6 +1625,21 @@ catch (RuntimeException $e)
 }          
 
 /** einzelschützen anlegen */
+$this->jsmquery->clear();
+$this->jsmquery->select('*');
+$this->jsmquery->from('#__sportsmanagement_match_single');
+$this->jsmquery->where('match_id = ' . $match_id);
+$this->jsmquery->where('projectteam1_id = '.$projectteam1_id);
+$this->jsmquery->where('round_id = '.$rid);
+$this->jsmdb->setQuery($this->jsmquery);
+$result_single = $this->jsmdb->loadObjectList();
+$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' result_single <pre>' . print_r($result_single, true) . '</pre>', 'notice');
+
+
+
+
+
+
 
 
 }
