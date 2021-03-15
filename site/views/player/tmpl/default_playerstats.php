@@ -178,6 +178,24 @@ if ( !property_exists($this->inoutstat, "played") )
 {                
 $this->inoutstat->played = 0;
 }
+if ( !property_exists($this->inoutstat, "started") )
+{                
+$this->inoutstat->started = 0;
+}
+if ( !property_exists($this->inoutstat, "in") )
+{                
+$this->inoutstat->in = 0;
+}
+if ( !property_exists($this->inoutstat, "out") )
+{                
+$this->inoutstat->out = 0;
+}
+if ( !property_exists($this->inoutstat, "playedtime") )
+{                
+$this->inoutstat->playedtime = 0;
+}
+
+
 				// gespielte zeit
 				if (!isset($this->overallconfig['person_events']))
 				{
