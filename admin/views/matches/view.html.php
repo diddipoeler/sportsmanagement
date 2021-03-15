@@ -79,7 +79,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
 		}
 
 		$mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
-		$projectws  = $mdlProject->getProject($this->project_id);
+		$this->projectws  = $mdlProject->getProject($this->project_id);
 
 		$mdlRound = BaseDatabaseModel::getInstance('Round', 'sportsmanagementModel');
 		$roundws  = $mdlRound->getRound($this->rid);
@@ -186,7 +186,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
 		/** Build the html options for article */
 		$articles[] = JHtmlSelect::option('0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ARTICLE'));
 
-		if ($res = sportsmanagementHelper::getArticleList($projectws->category_id))
+		if ($res = sportsmanagementHelper::getArticleList($this->projectws->category_id))
 		{
 			$articles = array_merge($articles, $res);
 		}
@@ -232,7 +232,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
 		$this->option     = $option;
 		$this->matches    = $this->model->prepareItems($this->items);
 		$this->ress       = $ress;
-		$this->projectws  = $projectws;
+//		$this->projectws  = $projectws;
 		$this->roundws    = $roundws;
 		$this->prefill    = $params->get('use_prefilled_match_roster', 0);
 

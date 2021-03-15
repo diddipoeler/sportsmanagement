@@ -588,25 +588,25 @@ echo HTMLHelper::_('image', $imageFile, $imageTitle,$image_attributes);
                     </td>
                 </tr>
 				<?php
-				$k = 1 - $k;
+				$k = 1 - $k; //sports_type_name
 			}
 			?>
             </tbody>
         </table>
 
-		<?php $dValue = $this->roundws->round_date_first . ' ' . $this->projectws->start_time; ?>
-
-        <input type='hidden' name='match_date' value='<?php echo $dValue; ?>'/>
-        <input type='hidden' name='use_legs' value='<?php echo $this->projectws->use_legs; ?>'/>
-        <input type='hidden' name='calendar_id' value='<?php echo $this->projectws->gcalendar_id; ?>'/>
-        <input type='hidden' name='boxchecked' value='0'/>
-        <input type='hidden' name='search_mode' value='<?php echo $this->lists['search_mode']; ?>'/>
-        <input type='hidden' name='filter_order' value='<?php echo $this->sortColumn; ?>'/>
-        <input type='hidden' name='filter_order_Dir' value='<?php echo $this->sortDirection; ?>'/>
-        <input type='hidden' name='rid' value='<?php echo $this->roundws->id; ?>'/>
-        <input type='hidden' name='project_id' value='<?php echo $this->roundws->project_id; ?>'/>
-        <input type='hidden' name='act' value=''/>
-        <input type='hidden' name='task' value=''/>
-		<?php echo HTMLHelper::_('form.token') . "\n"; ?>
-    </form>
+<?php $dValue = $this->roundws->round_date_first . ' ' . $this->projectws->start_time; ?>
+<input type='hidden' name='sports_type_name' value='<?php echo $this->projectws->sports_type_name; ?>'/>
+<input type='hidden' name='match_date' value='<?php echo $dValue; ?>'/>
+<input type='hidden' name='use_legs' value='<?php echo $this->projectws->use_legs; ?>'/>
+<input type='hidden' name='calendar_id' value='<?php echo $this->projectws->gcalendar_id; ?>'/>
+<input type='hidden' name='boxchecked' value='0'/>
+<input type='hidden' name='search_mode' value='<?php echo $this->lists['search_mode']; ?>'/>
+<input type='hidden' name='filter_order' value='<?php echo $this->sortColumn; ?>'/>
+<input type='hidden' name='filter_order_Dir' value='<?php echo $this->sortDirection; ?>'/>
+<input type='hidden' name='rid' value='<?php echo $this->roundws->id; ?>'/>
+<input type='hidden' name='project_id' value='<?php echo $this->roundws->project_id; ?>'/>
+<input type='hidden' name='act' value=''/>
+<input type='hidden' name='task' value=''/>
+<?php echo HTMLHelper::_('form.token') . "\n"; ?>
+</form>
 </div>

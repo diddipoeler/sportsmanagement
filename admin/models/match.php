@@ -1552,6 +1552,20 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 			}
 		}
 
+switch ($post['sports_type_name'] )
+{
+case 'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION':
+/** schützen dem spiel zuordnen */
+
+
+/** einzelschützen anlegen */
+break;
+}
+
+
+
+
+
 		return $result;
 
 	}
