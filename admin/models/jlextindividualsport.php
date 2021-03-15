@@ -83,7 +83,7 @@ class sportsmanagementModeljlextindividualsport extends JSMModelAdmin
 		$post     = Factory::getApplication()->input->post->getArray(array());
 		$match_id = $post['match_id'];
         $projectteam1_id = $post['projectteam1_id'];
-        $projectteam1_id = $post['projectteam2_id'];
+        $projectteam2_id = $post['projectteam2_id'];
 
 		$result_tie_break = 0;
         $save_match = false;
