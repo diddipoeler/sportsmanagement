@@ -547,6 +547,8 @@ $this->LeaguehistoryPlayer[$player_hist->league_id][$eventtype->name] = 0;
 				?></th>
                 
                 <?php
+                if ($this->config['show_substitution_stats'])
+			{
                 if ((isset($this->overallconfig['use_jl_substitution'])) && ($this->overallconfig['use_jl_substitution'] == 1))
 				{
                 ?>
@@ -592,7 +594,7 @@ $this->LeaguehistoryPlayer[$player_hist->league_id][$eventtype->name] = 0;
                         
 <?php
 }
-
+}
 if (count($this->AllEvents))
 				{
 					foreach ($this->AllEvents as $eventtype)
@@ -638,6 +640,10 @@ echo $player_hist_league['league'];
 echo $player_hist_league['played'];
 ?>                    
 </td>
+<?php
+if ($this->config['show_substitution_stats'])
+{
+?>
 <td class="td_l" nowrap="nowrap">
 <?php
 echo $player_hist_league['started'];
@@ -659,6 +665,9 @@ echo $player_hist_league['playedtime'];
 ?>                    
 </td>
 <?php
+}
+
+
 if (count($this->AllEvents))
 				{
 					foreach ($this->AllEvents as $eventtype)
