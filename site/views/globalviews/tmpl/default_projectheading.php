@@ -20,15 +20,15 @@ $document = Factory::getDocument();
 ?>
 <script>
     console.log("jquery version : " + jQuery().jquery);
-    console.log("bootstrap version : " + jQuery.fn.tooltip.Constructor.VERSION);
-
-    if (typeof jQuery.fn.tooltip.Constructor.VERSION === 'undefined' || jQuery.fn.tooltip.Constructor.VERSION === null) {
-        console.log("bootstrap version ist nicht vorhanden");
-		<?php
-		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/assets/css/jsmbootstrap.css' . '" type="text/css" />' . "\n";
-		$document->addCustomTag($stylelink);
-		?>
-    }
+//    console.log("bootstrap version : " + jQuery.fn.tooltip.Constructor.VERSION);
+//
+//    if (typeof jQuery.fn.tooltip.Constructor.VERSION === 'undefined' || jQuery.fn.tooltip.Constructor.VERSION === null) {
+//        console.log("bootstrap version ist nicht vorhanden");
+//		<?php
+//		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/assets/css/jsmbootstrap.css' . '" type="text/css" />' . "\n";
+//		$document->addCustomTag($stylelink);
+//		?>
+//    }
 
 </script>
 <?php
