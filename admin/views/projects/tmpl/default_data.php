@@ -340,12 +340,9 @@ echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/asset
 					}
 					else
 					{
+echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_picture' . $this->item->id, Uri::root() . $this->item->picture, $this->item->name, '20', Uri::root() . $this->item->picture);					   
 						?>
-                        <a href="<?php echo Uri::root() . $this->item->picture; ?>" title="<?php echo $this->item->name; ?>"
-                           class="modal">
-                            <img src="<?php echo Uri::root() . $this->item->picture; ?>" alt="<?php echo $this->item->name; ?>"
-                                 width="20"/>
-                        </a>
+
 						<?PHP
 					}
 					?>

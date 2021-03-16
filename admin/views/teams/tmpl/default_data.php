@@ -230,12 +230,9 @@ $this->dragable_group = 'data-dragable-group="none"';
 						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_DEFAULT_IMAGE');
                         $image_attributes['title'] = $imageTitle;
 						echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/information.png', $imageTitle, $image_attributes);
+echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_picture' . $this->item->id, Uri::root() . $this->item->picture, $imageTitle, '20', Uri::root() . $this->item->picture);                        
 						?>
-                        <a href="<?php echo Uri::root() . $this->item->picture; ?>" title="<?php echo $imageTitle; ?>"
-                           class="modal">
-                            <img src="<?php echo Uri::root() . $this->item->picture; ?>" alt="<?php echo $imageTitle; ?>"
-                                 width="20"/>
-                        </a>
+
 						<?PHP
 					}
 					else
@@ -245,12 +242,9 @@ $this->dragable_group = 'data-dragable-group="none"';
 							$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_CUSTOM_IMAGE');
                             $image_attributes['title'] = $imageTitle;
 							echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/ok.png', $imageTitle, $image_attributes);
+echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_picture' . $this->item->id, Uri::root() . $this->item->picture, $imageTitle, '20', Uri::root() . $this->item->picture);                            
 							?>
-                            <a href="<?php echo Uri::root() . $this->item->picture; ?>" title="<?php echo $imageTitle; ?>"
-                               class="modal">
-                                <img src="<?php echo Uri::root() . $this->item->picture; ?>" alt="<?php echo $imageTitle; ?>"
-                                     width="20"/>
-                            </a>
+
 							<?PHP
 						}
 						else
