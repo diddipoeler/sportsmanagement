@@ -100,7 +100,7 @@ JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($t
 		<?php
         foreach ($this->items as $this->count_i => $this->item)
 		{
-            //$this->count_i = $i;
+
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
 $this->dragable_group = 'data-dragable-group="none"';
@@ -166,12 +166,9 @@ $this->dragable_group = 'data-dragable-group="none"';
 					}
 					else
 					{
+echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_picture' . $this->item->id, Uri::root() . $this->item->picture, $this->item->name, '20', Uri::root() . $this->item->picture);					   
 						?>
-                        <a href="<?php echo Uri::root() . $this->item->picture; ?>" title="<?php echo $this->item->name; ?>"
-                           class="modal">
-                            <img src="<?php echo Uri::root() . $this->item->picture; ?>" alt="<?php echo $this->item->name; ?>"
-                                 width="20"/>
-                        </a>
+
 						<?PHP
 					}
 					?>
