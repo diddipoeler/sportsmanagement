@@ -93,8 +93,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		$total      = $this->get('Total');
 		$pagination = $this->get('Pagination');
 
-		$table       = Table::getInstance('projectteam', 'sportsmanagementTable');
-		$this->table = $table;
+		$this->table       = Table::getInstance('projectteam', 'sportsmanagementTable');
 
 		if ($this->project_art_id == 3)
 		{
@@ -345,6 +344,7 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERR
 		$modal_params['url']    = 'index.php?option=com_sportsmanagement&view=projectteams&layout=changeteams&tmpl=component&pid=' . $this->project_id;
 		$modal_params['height'] = $this->modalheight;
 		$modal_params['width']  = $this->modalwidth;
+        $modal_params['modalWidth']  = '60';
 		echo HTMLHelper::_('bootstrap.renderModal', 'collapseModalchangeTeams', $modal_params);
 
 		$layout = new JLayoutFile('assignteams', JPATH_ROOT . '/components/com_sportsmanagement/layouts');
@@ -354,6 +354,7 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERR
 		$modal_params['url']    = 'index.php?option=com_sportsmanagement&view=projectteams&layout=editlist&tmpl=component&pid=' . $this->project_id;
 		$modal_params['height'] = $this->modalheight;
 		$modal_params['width']  = $this->modalwidth;
+        $modal_params['modalWidth']  = '60';
 		echo HTMLHelper::_('bootstrap.renderModal', 'collapseModalassignTeams', $modal_params);
 
 		ToolbarHelper::custom('projectteam.copy', 'copy', 'copy', Text::_('JTOOLBAR_DUPLICATE'), true);
