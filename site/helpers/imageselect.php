@@ -277,7 +277,10 @@ $imageselect .= sportsmanagementHelper::getBootstrapModalImage('select' . $funcn
 			Text::_('JCLEAR') . "\" href=\"#\" onclick=\"clear_" . $fieldid . "();\">" . Text::_('JCLEAR') . "</a></div></div>";
 
 		$imageselect .= "</td></tr>\n";
-		$imageselect .= "\n<tr><td><input type=\"hidden\" id=\"a_" . $fieldname . "\" name=\"" . $fieldname . "\" value=\"" . $value . "\" /></td></tr></table>";
+		$imageselect .= "\n<tr><td><input type=\"hidden\" id=\"a_" . $fieldname . "\" name=\"" . $fieldname . "\" value=\"" . $value . "\" /></td></tr>";
+        
+        $imageselect .= "\n<tr><td><input type=\"hidden\" id=\"copy_" . $fieldname . "\" name=\"" . $fieldname . "\" value=\"" . $value . "\" /></td></tr>";
+        $imageselect .= "\n</table>";
 
 		return $imageselect;
 	}
