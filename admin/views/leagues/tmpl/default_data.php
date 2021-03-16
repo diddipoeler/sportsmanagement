@@ -14,6 +14,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
+use Joomla\CMS\Uri\Uri;
 
 $this->saveOrder = $this->sortColumn == 'obj.ordering';
 
@@ -187,6 +188,9 @@ $this->dragable_group = 'data-dragable-group="none"';
             </td>
             <td class="center">
 				<?php
+                
+                echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_picture' . $this->item->id, Uri::root() . $this->item->picture, $imageTitle, '20', Uri::root() . $this->item->picture);
+                /*
 				if (empty($this->item->picture))
 				{
 					$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE') . COM_SPORTSMANAGEMENT_PICTURE_SERVER . $this->item->picture;
@@ -209,6 +213,7 @@ $this->dragable_group = 'data-dragable-group="none"';
                     </a>
 					<?PHP
 				}
+                */
 				?>
             </td>
             <td class="center">
