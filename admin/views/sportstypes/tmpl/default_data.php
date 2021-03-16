@@ -31,8 +31,8 @@ JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($t
 }
 ?>
 
-<div id="editcell">
-    <table class="<?php echo $this->table_data_class; ?>">
+<div class="table-responsive" id="editcell">
+<table class="<?php echo $this->table_data_class; ?>" id="<?php echo $this->view; ?>list">
         <thead>
         <tr>
             <th width="5"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
