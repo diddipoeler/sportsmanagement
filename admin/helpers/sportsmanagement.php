@@ -336,6 +336,8 @@ var <?php echo $placeholder; ?> = new Array;
 				'url'    => $url,
 				'height' => $height,
 				'width'  => $width,
+                'bodyHeight'  => '60',
+				'modalWidth'  => '80',
 				'footer' => $footer
 			)
 		);

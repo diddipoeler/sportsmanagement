@@ -35,6 +35,9 @@ $dispatcher->trigger('onContentBeforeDisplay', array('com_media.file', &$this->_
 
 ?>
 <script>
+var currentModal = window.parent.Joomla.Modal.getCurrent();
+console.log("modal: " + currentModal);
+
 function exportToForm(img) {
 //     alert(img);
 //     alert('<?php echo $this->folder; ?>');
@@ -51,8 +54,8 @@ logopfad = 'images/com_sportsmanagement/database/<?php echo $this->folder; ?>/' 
 console.log("logopfad : " + logopfad );	
 window.parent.selectImage_<?php echo $this->type; ?>(img, img,fieldname ,fieldid);
 //window.closeModal();
-window.parent.jQuery('.modal.in').modal('hide');
-     
+//window.parent.jQuery('.modal.in').modal('hide');
+window.parent.Joomla.Modal.getCurrent().close();     
  }
 
 </script>
