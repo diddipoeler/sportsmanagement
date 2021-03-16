@@ -393,11 +393,29 @@ echo "<script>console.log('Debug Objects base_dir: " . $base_Dir . "' );</script
 			//			echo "<script> alert('" . Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE' ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
 			if ( $updatemodal )
             {
-            echo "<script>window.parent.selectImage_" . $type . "('$filename', '$filename','$field','$fieldid');window.closeModal();window.parent.jQuery('.modal.in').modal('hide'); </script>\n";
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+echo "<script>window.parent.selectImage_" . $type . "('$filename', '$filename','$field','$fieldid');window.parent.Joomla.Modal.getCurrent().close(); </script>\n";                
+}               
+else
+{
+echo "<script>window.parent.selectImage_" . $type . "('$filename', '$filename','$field','$fieldid');window.closeModal();window.parent.jQuery('.modal.in').modal('hide'); </script>\n";
+}
+            
 			}
             else
             {
-            echo "<script>window.closeModal();window.parent.jQuery('.modal.in').modal('hide');parent.location.reload(); </script>\n";    
+                
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+echo "<script>window.closeModal();window.parent.Joomla.Modal.getCurrent().close();parent.location.reload(); </script>\n";    
+}
+else
+{
+echo "<script>window.closeModal();window.parent.jQuery('.modal.in').modal('hide');parent.location.reload(); </script>\n";        
+}
+                
+                
             }
             $msg  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE');
 			$type = 'notice';
