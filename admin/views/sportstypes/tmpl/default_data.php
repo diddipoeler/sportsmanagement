@@ -129,13 +129,11 @@ $this->dragable_group = 'data-dragable-group="none"';
 
                 <td class="center">
 					<?php
-					$picture = JPATH_SITE . DIRECTORY_SEPARATOR . $this->item->icon;
+
 					$desc    = Text::_($this->item->name);
-					//echo sportsmanagementHelper::getPictureThumb($picture, $desc, 0, 21, 4);
+echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_icon' . $this->item->id, Uri::root() . $this->item->icon, $desc, '20', Uri::root() . $this->item->icon);
 					?>
-                    <a href="<?php echo Uri::root() . $this->item->icon; ?>" title="<?php echo $desc; ?>" class="modal">
-                        <img src="<?php echo Uri::root() . $this->item->icon; ?>" alt="<?php echo $desc; ?>" width="20"/>
-                    </a>
+
 					<?PHP
 					?>
                 </td>

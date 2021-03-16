@@ -188,33 +188,8 @@ $this->dragable_group = 'data-dragable-group="none"';
             </td>
             <td class="center">
 				<?php
-                
                 echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_picture' . $this->item->id, Uri::root() . $this->item->picture, $imageTitle, '20', Uri::root() . $this->item->picture);
-                /*
-				if (empty($this->item->picture))
-				{
-					$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE') . COM_SPORTSMANAGEMENT_PICTURE_SERVER . $this->item->picture;
-                    $image_attributes['title'] = $imageTitle;
-					echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/delete.png', $imageTitle, $image_attributes);
-				}
-                elseif ($this->item->picture == sportsmanagementHelper::getDefaultPlaceholder("player"))
-				{
-					$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
-                    $image_attributes['title'] = $imageTitle;
-					echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/information.png', $imageTitle, $image_attributes);
-				}
-				else
-				{
-					?>
-                    <a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER . $this->item->picture; ?>"
-                       title="<?php echo $this->item->name; ?>" class="modal">
-                        <img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER . $this->item->picture; ?>"
-                             alt="<?php echo $this->item->name; ?>" width="20"/>
-                    </a>
-					<?PHP
-				}
-                */
-				?>
+ 				?>
             </td>
             <td class="center">
 				<?php
