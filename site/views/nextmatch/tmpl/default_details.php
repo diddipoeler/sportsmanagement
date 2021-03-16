@@ -18,7 +18,7 @@ use Joomla\CMS\Factory;
 <!-- START of match details -->
 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="nextmatch">
 <?php
-unset($this->notes);
+$this->notes = array();
 $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DETAILS') . " " . $this->club->name;
 echo $this->loadTemplate('jsm_notes'); 
 ?>

@@ -17,7 +17,7 @@ use Joomla\CMS\Factory;
 ?>
 
 <?php  
-unset($this->notes);
+$this->notes = array();
 $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_CLUB_TEAMS');
 echo $this->loadTemplate('jsm_notes');
 ?>   

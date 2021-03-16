@@ -20,7 +20,7 @@ if (($this->playground->picture))
 	?>
 
 <?php  
-unset($this->notes);
+$this->notes = array();
 $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_CLUB_PICTURE');
 echo $this->loadTemplate('jsm_notes');
 ?>    

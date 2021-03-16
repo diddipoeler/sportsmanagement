@@ -15,7 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 if ($this->config['show_extended_text'])
 {
-unset($this->notes);
+$this->notes = array();
 $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERENCES');
 echo $this->loadTemplate('jsm_notes');		  
 }

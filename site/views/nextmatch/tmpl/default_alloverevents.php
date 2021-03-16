@@ -19,7 +19,7 @@ use Joomla\CMS\Factory;
 ?>
 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="nextmatchalloverevents">
 <?php
-unset($this->notes);
+$this->notes = array();
 $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_ALLOVEREVENTS') . " " . $this->club->name;
 echo $this->loadTemplate('jsm_notes'); 
 ?>

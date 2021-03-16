@@ -25,7 +25,7 @@ use Joomla\CMS\Factory;
 		<?php if (isset($this->previousx[$currentteam->id])) : ?>
         <!-- Start of last 5 matches -->
     <?php
-unset($this->notes);
+$this->notes = array();
 $this->notes[] = Text::sprintf('COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIOUS', $this->allteams[$currentteam->id]->name) . " " . $this->club->name;
 echo $this->loadTemplate('jsm_notes'); 
 ?>

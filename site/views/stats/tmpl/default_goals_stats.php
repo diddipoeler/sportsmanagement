@@ -12,7 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 
-unset($this->tips);
+$this->tips = array();
 $this->tips[] = Text::_('COM_SPORTSMANAGEMENT_STATS_GOALS');
 echo $this->loadTemplate('jsm_tips');
 ?>

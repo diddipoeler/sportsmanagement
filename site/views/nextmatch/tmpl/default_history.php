@@ -23,7 +23,7 @@ if ($this->games)
 	?>
     <div class="<?php echo $this->divclassrow; ?> table-responsive" id="nextmatch">
     <?php
-unset($this->notes);
+$this->notes = array();
 $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY') . " " . $this->club->name;
 echo $this->loadTemplate('jsm_notes'); 
 ?>

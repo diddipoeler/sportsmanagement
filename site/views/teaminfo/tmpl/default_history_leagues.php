@@ -16,7 +16,7 @@ use Joomla\CMS\Component\ComponentHelper;
 $this->columns  = 4;
 $this->divclass = '';
 
-unset($this->notes);
+$this->notes = array();
 $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_HISTORY_OVERVIEW_SUMMARY');
 echo $this->loadTemplate('jsm_notes');
 

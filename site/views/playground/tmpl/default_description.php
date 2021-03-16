@@ -20,7 +20,7 @@ if ($this->playground->notes)
 	?>
 
 <?php  
-unset($this->notes);
+$this->notes = array();
 $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NOTES');
 echo $this->loadTemplate('jsm_notes');
 ?>       

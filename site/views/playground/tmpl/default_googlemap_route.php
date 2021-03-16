@@ -18,7 +18,7 @@ $longitude = $this->playground->longitude;
 ?>
 
 <?php  
-unset($this->notes);
+$this->notes = array();
 $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_GOOGLE_ROUTE');
 echo $this->loadTemplate('jsm_notes');
 ?>   

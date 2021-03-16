@@ -43,7 +43,7 @@ echo $this->loadTemplate('projectheading');
     
 ksort($this->leaguechampions);
 
-unset($this->notes);
+$this->notes = array();
 $this->notes[] = Text::_('Übersicht nach Saisons');
 echo $this->loadTemplate('jsm_notes');
 
@@ -78,7 +78,7 @@ echo HTMLHelper::link($teaminfo1_link, $this->team->teamname);
     </div>
 
 <?php
-unset($this->notes);
+$this->notes = array();
 $this->notes[] = Text::_('Übersicht nach Mannschaft');
 echo $this->loadTemplate('jsm_notes');
 

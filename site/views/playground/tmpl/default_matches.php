@@ -23,7 +23,7 @@ if ($this->games)
 	?>
     <!-- Playground next games -->
 <?php  
-unset($this->notes);
+$this->notes = array();
 $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NEXT_GAMES');
 echo $this->loadTemplate('jsm_notes');
 ?>

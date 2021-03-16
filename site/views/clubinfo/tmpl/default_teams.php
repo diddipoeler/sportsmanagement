@@ -16,7 +16,7 @@ use Joomla\CMS\Factory;
 <div class="<?php echo $this->divclassrow; ?>" id="default_teams" itemscope itemtype="http://schema.org/SportsTeam/Soccer">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 		<?php
-unset($this->notes);
+$this->notes = array();
 $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_TEAMS');
 echo $this->loadTemplate('jsm_notes');
         

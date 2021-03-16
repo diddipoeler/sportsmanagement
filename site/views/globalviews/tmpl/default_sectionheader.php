@@ -311,7 +311,7 @@ $view        = $jinput->getVar("view");
 			<?PHP
 			break;
 		case 'matrix':
-unset($this->notes);        
+$this->notes = array();        
 
 						$ausgabe = '&nbsp;' . Text::_('COM_SPORTSMANAGEMENT_MATRIX');
 						if ($this->divisionid)
@@ -389,7 +389,7 @@ echo $this->loadTemplate('jsm_notes');
 			<?PHP
 			break;
 		case 'teaminfo':
-unset($this->notes);
+$this->notes = array();
 			?>
             <!-- <h4> -->
 				<?php 
@@ -434,7 +434,7 @@ $this->notes[] = $ausgabe;
 echo $this->loadTemplate('jsm_notes');
 			break;
 		case 'clubinfo':
-unset($this->notes);
+$this->notes = array();
 $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_TITLE') . " " . $this->club->name;
 
 			//	echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_TITLE') . " " . $this->club->name;
