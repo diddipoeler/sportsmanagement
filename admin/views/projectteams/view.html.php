@@ -122,7 +122,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		$res1         = array();
 		$notusedteams = array();
 
-		if ($ress = $this->model->getProjectTeams($this->project_id, false))
+		if ( $ress = $this->model->getProjectTeams($this->project_id, false) )
 		{
 			$teamslist = array();
 
@@ -150,27 +150,27 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 			$lists['project_teams'] = '<select name="project_teamslist[]" id="project_teamslist" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
 		}
 
-		if ($ress1 = $this->model->getTeams())
+		if ( $ress1 = $this->model->getTeams() )
 		{
-			if ($ress = $this->model->getProjectTeams($this->project_id, false))
+			if ( $ress = $this->model->getProjectTeams($this->project_id, false) )
 			{
-				foreach ($ress1 as $res1)
+				foreach ( $ress1 as $res1 )
 				{
 					$used = 0;
 
-					foreach ($ress as $res)
+					foreach ( $ress as $res )
 					{
-						if ($res1->value == $res->season_team_id)
+						if ( $res1->value == $res->season_team_id )
 						{
 							$used = 1;
 						}
 					}
 
-					if ($used == 0 && !empty($res1->info))
+					if ( $used == 0 && !empty($res1->info) )
 					{
 						$notusedteams[] = JHtmlSelect::option($res1->value, $res1->text . ' (' . $res1->info . ')');
 					}
-					elseif ($used == 0 && empty($res1->info))
+					elseif ( $used == 0 && empty($res1->info) )
 					{
 						$notusedteams[] = JHtmlSelect::option($res1->value, $res1->text);
 					}
@@ -178,9 +178,9 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 			}
 			else
 			{
-				foreach ($ress1 as $res1)
+				foreach ( $ress1 as $res1 )
 				{
-					if (empty($res1->info))
+					if ( empty($res1->info) )
 					{
 						$notusedteams[] = JHtmlSelect::option($res1->value, $res1->text);
 					}

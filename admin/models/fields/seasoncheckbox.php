@@ -112,6 +112,15 @@ class JFormFieldseasoncheckbox extends FormField
 
 		foreach ($options as $i => $option)
 		{
+		  
+            if ( !array_key_exists($option->value, $this->teamvalue) ) {
+            $this->teamvalue[$option->value] = array();
+            }
+            if ( !array_key_exists('teamname', $this->teamvalue[$option->value]) ) {
+            $this->teamvalue[$option->value]['teamname'] = '';
+            }
+            
+            
 			// Initialize some option attributes.
 			$checked  = (in_array((string) $option->value, (array) $this->value) ? ' checked="checked"' : '');
 			$class    = !empty($option->class) ? ' class="' . $option->class . '"' : '';
