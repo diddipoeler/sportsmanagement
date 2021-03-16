@@ -74,8 +74,11 @@ $this->modalheight
 $image_attributes['title'] = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_ADD');
 $image_attributes['id'] = $this->_tmp_img->file;		  
 $image_attributes['onclick'] = "javascript:exportToForm('".$this->_tmp_img->file."')";
-echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/ok.png', '', $image_attributes);	  	
+//echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/ok.png', '', $image_attributes);	  	
 ?>
+<div class="small">  
+<button onclick="exportToForm('<?php echo $this->_tmp_img->file;?> ')"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_ADD'); ?></button>
+</div> 
 </div>
 <div class="media-browser-item-info">
 <?php

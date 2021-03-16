@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version   1.0.58
  * @file
  * @author    diddipoeler, stony, svdoldie (diddipoeler@gmx.de)
@@ -12,10 +10,7 @@
  * https://docs.joomla.org/Creating_a_custom_form_field_type
  * https://hotexamples.com/examples/-/FormFieldRadio/-/php-FormFieldradio-class-examples.html
  */
-
-
 defined('_JEXEC') or die;
-
 use Joomla\CMS\Form\Field\RadioField;
 
 /**
@@ -77,6 +72,7 @@ class JFormFieldExtensionRadioButton extends JSMFormField
 		if (version_compare(substr(JVERSION, 0, 1), '4', 'eq'))
 		{
 			// $this->class = "switcher btn-group btn-group-yesno";
+            $this->layout = "joomla.form.field.radio.switcher";
 			$this->type = "radio";
 		}
 		else
