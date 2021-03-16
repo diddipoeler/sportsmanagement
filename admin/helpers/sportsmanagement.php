@@ -280,20 +280,22 @@ var <?php echo $placeholder; ?> = new Array;
 	}
 	
 	
+
 	/**
 	 * sportsmanagementHelper::getBootstrapModalImage()
-	 *
-	 * @param   string  $target
-	 * @param   string  $picture
-	 * @param   string  $text
-	 * @param   string  $picturewidth
-	 * @param   string  $url
-	 * @param   string  $width
-	 * @param   string  $height
-	 *
+	 * 
+	 * @param string $target
+	 * @param string $picture
+	 * @param string $text
+	 * @param string $picturewidth
+	 * @param string $url
+	 * @param string $width
+	 * @param string $height
+	 * @param string $extrabutton
+	 * @param string $modalWidth
 	 * @return
 	 */
-	public static function getBootstrapModalImage($target = '', $picture = '', $text = '', $picturewidth = '20', $url = '', $width = '100', $height = '200', $extrabutton = '')
+	public static function getBootstrapModalImage($target = '', $picture = '', $text = '', $picturewidth = '20', $url = '', $width = '100', $height = '200', $extrabutton = '',$modalWidth = '80')
 	{
 		$app = Factory::getApplication();
 		$jinput = $app->input;
@@ -337,7 +339,7 @@ var <?php echo $placeholder; ?> = new Array;
 				'height' => $height,
 				'width'  => $width,
                 'bodyHeight'  => '60',
-				'modalWidth'  => '80',
+				'modalWidth'  => $modalWidth,
 				'footer' => $footer
 			)
 		);
