@@ -15,7 +15,13 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+}
+elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
+{	
 HTMLHelper::_('behavior.tooltip');
+}
 
 
 ?>

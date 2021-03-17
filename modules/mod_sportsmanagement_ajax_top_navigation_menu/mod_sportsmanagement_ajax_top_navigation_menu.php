@@ -64,7 +64,13 @@ $lang->load($extension, $base_dir, $language_tag, $reload);
  */
 JLoader::register('modSportsmanagementAjaxTopNavigationMenuHelper', __DIR__ . '/helper.php');
 
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+}
+elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
+{	
 HTMLHelper::_('behavior.tooltip');
+}
 
 $helper = new modSportsmanagementAjaxTopNavigationMenuHelper($params);
 
@@ -199,7 +205,7 @@ if (!$country_federation)
     console.log('subsubassoc_id = ' + '<?php echo $subsubassoc_id;?>');
 
     console.log("jquery version : " + jQuery().jquery);
-    console.log("bootstrap version : " + jQuery.fn.tooltip.Constructor.VERSION);
+    //console.log("bootstrap version : " + jQuery.fn.tooltip.Constructor.VERSION);
 
 </script>
 <?php
