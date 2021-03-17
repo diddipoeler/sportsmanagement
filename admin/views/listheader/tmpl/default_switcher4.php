@@ -15,15 +15,13 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Uri\Uri;
 
-$this->document->addStyleSheet(Uri::root() . 'media/system/css/fields/switcher.css', 'text/css');    
+$this->document->addStyleSheet(Uri::root() . 'media/system/css/fields/switcher.css');    
 $attr = 'id="' . $this->item->id . '"';
 $readonly = false;
 $disabled = false;
-//$value = $this->item->fast_projektteam;
-//$name = 'fast_projektteam' . $this->item->id;
 $input = '<input type="radio" id="%1$s" name="%2$s" value="%3$s" %4$s '.$this->switcher_onchange.'   >';
 ?>    			
-			<fieldset <?php echo $attr; ?>>
+<fieldset <?php echo $attr; ?>>
 	<legend class="visually-hidden">
 		<?php echo $label; ?>
 	</legend>
