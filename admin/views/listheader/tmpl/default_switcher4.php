@@ -36,7 +36,7 @@ $input = '<input type="radio" id="%1$s" name="%2$s" value="%3$s" %4$s '.$this->s
 
 		// Initialize some option attributes.
 		$optionValue = (string) $option->value;
-		$optionId    = $this->item->id  . $i;
+		$optionId    = $this->switcher_item_id  . $i;
 		$attributes  = $optionValue == $this->switcher_value ? 'checked class="active"' : '';
 		$attributes  .= $optionValue != $this->switcher_value && $readonly || $disabled ? ' disabled' : '';
 		?>
