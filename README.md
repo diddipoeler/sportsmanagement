@@ -37,6 +37,7 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   17-03-2021: **3.8.81** Neue Felder für Kleinkaliber Schützenvereine
 *   12-03-2021: **3.8.80** Neue Felder für Kleinkaliber Schützenvereine
 *   12-03-2021: **3.8.70** Neue Felder für Kleinkaliber Schützenvereine
 *   10-03-2021: **3.8.60** Neue Felder für Kleinkaliber Schützenvereine
