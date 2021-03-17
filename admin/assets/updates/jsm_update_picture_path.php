@@ -15,6 +15,12 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
 $version           = '1.0.68';
+
+$minor = 0;
+$major = 0;
+$build = 0;
+$revision = '';
+
 $updateFileDate    = '2018-09-3';
 $updateFileTime    = '00:05';
 $updateDescription = '<span style="color:orange">'.Text::_('COM_SPORTSMANAGEMENT_GLOBAL_UPDATES_PICTURE_PATH').'</span>';

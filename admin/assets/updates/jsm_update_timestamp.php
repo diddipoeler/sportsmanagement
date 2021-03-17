@@ -45,6 +45,12 @@ $link = $uri->toString();
 <?PHP
 
 $version           = '1.0.53';
+
+$minor = 0;
+$major = 0;
+$build = 0;
+$revision = '';
+
 $updateFileDate    = '2016-02-01';
 $updateFileTime    = '00:05';
 $updateDescription = '<span style="color:orange">'.Text::_('COM_SPORTSMANAGEMENT_GLOBAL_UPDATES_TIMESTAMP').'</span>';
