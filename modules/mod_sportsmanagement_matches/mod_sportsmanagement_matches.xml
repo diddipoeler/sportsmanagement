@@ -415,7 +415,7 @@ description="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_CLUBS_DESCR" />
 					   label="MOD_SPORTSMANAGEMENT_MATCHES_COUNTRY_FLAG_FOLDER_TITLE"
 					   description="MOD_SPORTSMANAGEMENT_MATCHES_COUNTRY_FLAG_FOLDER_DESCR"/>
 
-				<field name="xsize" type="text" default="auto"
+				<field name="xsize" type="text" default=""
 					   label="MOD_SPORTSMANAGEMENT_MATCHES_MAX_IMAGE_WIDTH_TITLE"
 					   description="MOD_SPORTSMANAGEMENT_MATCHES_MAX_IMAGE_WIDTH_DESCR"/>
 
