@@ -91,16 +91,6 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');		  
           }
 
-//		if (!$result = Factory::getDbo()->loadObject())
-//		{
-//			$this->setError($this->_db->getErrorMsg());
-//		}
-//		else
-//		{
-//			$data['id']    = $result->id;
-//			$data['count'] = (int) $result->count + 1;
-//		}
-
 		$data['file'] = $file_name;
         
         $this->jsmquery->clear();
@@ -111,11 +101,14 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
         try
 		{
 		  $result = $this->jsmdb->loadObject();
+          if ( $result )
+          {
           $data['version']  = !empty($version) ? $version : $result->version;
 			$data['major']    = !empty($major) ? $major : $result->major;
 			$data['minor']    = !empty($minor) ? $minor : $result->minor;
 			$data['build']    = !empty($build) ? $build : $result->build;
 			$data['revision'] = !empty($revision) ? $revision : $result->revision;
+            }
            }
 		catch (Exception $e)
 		{
@@ -123,20 +116,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');		  
           }
         
-/*
-		if (!$result = Factory::getDbo()->loadObject())
-		{
-			$this->setError($this->_db->getErrorMsg());
-		}
-		else
-		{
-			$data['version']  = !empty($version) ? $version : $result->version;
-			$data['major']    = !empty($major) ? $major : $result->major;
-			$data['minor']    = !empty($minor) ? $minor : $result->minor;
-			$data['build']    = !empty($build) ? $build : $result->build;
-			$data['revision'] = !empty($revision) ? $revision : $result->revision;
-		}
-*/
+
 		$object        = new stdClass;
 		$object->id    = $data['id'];
 		$object->count = $data['count'];
