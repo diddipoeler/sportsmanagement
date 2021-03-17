@@ -277,7 +277,8 @@ $this->switcher_options = array(
 					);
                     
 $this->switcher_value = $this->item->fast_projektteam;    
-$this->switcher_name = 'fast_projektteam' . $this->item->id;                
+$this->switcher_name = 'fast_projektteam' . $this->item->id;   
+$this->switcher_attr = 'id="' . $this->item->id . '"';             
 /** welche joomla version ? */
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {

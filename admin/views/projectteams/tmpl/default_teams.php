@@ -613,7 +613,8 @@ $this->switcher_options = array(
 					);
                     
 $this->switcher_value = $row->is_in_score;    
-$this->switcher_name = 'is_in_score' . $row->id;                
+$this->switcher_name = 'is_in_score' . $row->id;        
+$this->switcher_attr = 'id="' . $row->id . '"';        
 /** welche joomla version ? */
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
