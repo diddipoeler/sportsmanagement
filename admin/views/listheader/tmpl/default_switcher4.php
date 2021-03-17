@@ -11,7 +11,9 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Uri\Uri;
 
 $this->document->addStyleSheet(Uri::root() . 'media/system/css/fields/switcher.css', 'text/css');    
 $attr = 'id="' . $this->item->id . '"';

@@ -11,7 +11,9 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Uri\Uri;
 
 
 $class   = "btn-group btn-group-yesno";
