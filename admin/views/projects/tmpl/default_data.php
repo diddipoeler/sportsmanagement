@@ -278,6 +278,7 @@ $options = array(
 /** welche joomla version ? */
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
+$this->document->addStyleSheet(Uri::root() . 'media/system/css/fields/switcher.css', 'text/css');    
 $attr = 'id="' . $this->item->id . '"';
 $readonly = false;
 $disabled = false;
