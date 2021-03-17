@@ -270,12 +270,53 @@ echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/asset
                     <br>  
 <?php
 
-					$class   = "btn-group btn-group-yesno";
-					$options = array(
+$onchange = ' onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true"';
+$options = array(
 						HTMLHelper::_('select.option', '0', Text::_('JNO')),
 						HTMLHelper::_('select.option', '1', Text::_('JYES'))
 					);
+/** welche joomla version ? */
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+$attr = 'id="' . $this->item->id . '"';
+$readonly = false;
+$disabled = false;
+$value = $this->item->fast_projektteam;
+$name = 'fast_projektteam' . $this->item->id;
+$input = '<input type="radio" id="%1$s" name="%2$s" value="%3$s" %4$s '.$onchange.'   >';
+					?>    			
+			<fieldset <?php echo $attr; ?>>
+	<legend class="visually-hidden">
+		<?php echo $label; ?>
+	</legend>
+	<div class="switcher<?php echo ($readonly || $disabled ? ' disabled' : ''); ?>">
+	<?php foreach ($options as $i => $option) : ?>
+		<?php
+		// False value casting as string returns an empty string so assign it 0
+		if (empty($value) && $option->value == '0')
+		{
+			$value = '0';
+		}
 
+		// Initialize some option attributes.
+		$optionValue = (string) $option->value;
+		$optionId    = $this->item->id  . $i;
+		$attributes  = $optionValue == $value ? 'checked class="active"' : '';
+		$attributes  .= $optionValue != $value && $readonly || $disabled ? ' disabled' : '';
+		?>
+		<?php echo sprintf($input, $optionId, $name, $this->escape($optionValue), $attributes); ?>
+		<?php echo '<label for="' . $optionId . '">' . $option->text . '</label>'; ?>
+	<?php endforeach; ?>
+	<span class="toggle-outside"><span class="toggle-inside"></span></span>
+	</div>
+</fieldset>    
+    
+<?php    
+}
+elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
+{    
+
+					$class   = "btn-group btn-group-yesno";
 					$html   = array();
 					$html[] = '<fieldset id="fast_projektteam' . $this->item->id . '" class="' . $class . '" >';
 
@@ -285,7 +326,6 @@ echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/asset
 						$btn     = ($option->value == $this->item->fast_projektteam && $this->item->fast_projektteam) ? ' active btn-success' : ' ';
 						$btn     = ($option->value == $this->item->fast_projektteam && !$this->item->fast_projektteam) ? ' active btn-danger' : $btn;
 
-						$onchange = ' onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true"';
 						$html[]   = '<input type="radio" style="display:none;" id="fast_projektteam' . $this->item->id . $in . '" name="fast_projektteam' . $this->item->id . '" value="'
 							. $option->value . '"' . $onchange . ' />';
 
@@ -294,9 +334,13 @@ echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/asset
 					}
 
 					echo implode($html);
+}                    
+                    
+                    
+                    
+                    
+                    
 					?>    			
-			
-			
                 </td>
 
                 <td class="center">
