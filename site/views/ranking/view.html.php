@@ -345,6 +345,8 @@ class sportsmanagementViewRanking extends sportsmanagementView
 		}
         
         $this->tips = sportsmanagementModelProject::$tips;
+        $this->warnings = sportsmanagementModelProject::$warnings;
+        $this->notes = sportsmanagementModelProject::$notes;
         
 	}
 
