@@ -16,8 +16,8 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Log\Log;
 
-jimport('joomla.utilities.array');
-jimport('joomla.utilities.arrayhelper');
+//jimport('joomla.utilities.array');
+//jimport('joomla.utilities.arrayhelper');
 
 if (!defined('JSM_PATH'))
 {
@@ -76,12 +76,17 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 		$app                 = Factory::getApplication();
 		$jinput              = $app->input;
 		$this->alltimepoints = $jinput->request->get('points', '3,1,0', 'STR');
+        $params = array();
 
 		$file = JPATH_SITE . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'ranking.php';
 		require_once $file;
 
-		$menu = JMenu::getInstance('site');
+		//$menu = JMenu::getInstance('site');
+        $menu = Factory::getApplication()->getMenu();
 		$item = $menu->getActive();
+        
+        //$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($item,true).'</pre>'), 'error');
+        
         if ( !property_exists($item, 'query') )
 		{
 		$item->query['view'] = '';  
@@ -92,6 +97,8 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 		}
 
 		$params = $menu->getParams($item->id);
+        
+        
 
 		if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO)
 		{
@@ -101,27 +108,32 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 		{
 			$this->debug_info = false;
 		}
+        
+        
+        //$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($params,true).'</pre>'), 'error');
 
 		if ($item->query['view'] == 'rankingalltime')
 		{
 			// Diddipoeler
 			// menueeintrag vorhanden
 
-			$registry = new Registry;
-			$registry->loadArray($params);
-			$newparams = $registry->toArray();
+			//$registry = new Registry;
+			//$registry->loadArray($params);
+			//$newparams = $registry->toArray();
+			$newparams = $params->toArray();
 
-			foreach ($newparams['data'] as $key => $value)
+			foreach ($newparams as $key => $value)
 			{
 				$this->_params[$key] = $value;
 			}
 		}
 		else
 		{
+		  /*
 			$strXmlFile = JPATH_SITE . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'rankingalltime' . DIRECTORY_SEPARATOR . 'tmpl' . DIRECTORY_SEPARATOR . 'default.xml';
 			$xml      = Factory::getXML($strXmlFile);
 			$children = $xml->document->children();
-			/** We can now step through each element of the file */
+			
 			foreach ($xml->children() as $field)
 			{
 				foreach ($field->fieldset as $fieldset)
@@ -134,6 +146,7 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 					}
 				}
 			}
+            */
 		}
 
 		parent::__construct();

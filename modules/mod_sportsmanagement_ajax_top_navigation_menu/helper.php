@@ -73,11 +73,11 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 
 		if (self::$_project_id)
 		{
-			$this->_app->input->setVar('jlamtopseason', $this->getSeasonId());
-			$this->_app->input->setVar('jlamtopleague', $this->getLeagueId());
-			$this->_app->input->setVar('jlamtopproject', self::$_project_id);
-			$this->_app->input->setVar('jlamtopteam', $this->_team_id);
-			$this->_app->input->setVar('jlamtopdivisionid', $this->_division_id);
+			$this->_app->input->set('jlamtopseason', $this->getSeasonId());
+			$this->_app->input->set('jlamtopleague', $this->getLeagueId());
+			$this->_app->input->set('jlamtopproject', self::$_project_id);
+			$this->_app->input->set('jlamtopteam', $this->_team_id);
+			$this->_app->input->set('jlamtopdivisionid', $this->_division_id);
 		}
 
 	}
@@ -169,10 +169,10 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 		$this->_team_id  = $team_id;
 		$this->_project  = $this->getProject();
 		$this->_round_id = $this->getCurrentRoundId();
-		$this->_app->input->setVar('jlamtopseason', $this->getSeasonId());
-		$this->_app->input->setVar('jlamtopleague', $this->getLeagueId());
-		$this->_app->input->setVar('jlamtopproject', self::$_project_id);
-		$this->_app->input->setVar('jlamtopteam', $this->_team_id);
+		$this->_app->input->set('jlamtopseason', $this->getSeasonId());
+		$this->_app->input->set('jlamtopleague', $this->getLeagueId());
+		$this->_app->input->set('jlamtopproject', self::$_project_id);
+		$this->_app->input->set('jlamtopteam', $this->_team_id);
 
 	}
 
