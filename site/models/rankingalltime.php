@@ -129,6 +129,27 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 		}
 		else
 		{
+		  
+$strXmlFile = JPATH_SITE . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'rankingalltime' . DIRECTORY_SEPARATOR . 'tmpl' . DIRECTORY_SEPARATOR . 'default.xml';
+$xml = simplexml_load_file($strXmlFile);
+//$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($xml,true).'</pre>'), 'error');
+foreach ($xml->fields as $field)
+			{
+//$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($field,true).'</pre>'), 'error');
+foreach ($field->fieldset as $fieldset)
+				{
+					foreach ($fieldset->field as $param)
+					{
+						$attributes = $param->attributes();
+
+						$this->_params[(string) $param->attributes()->name[0]] = (string) $param->attributes()->default[0];
+					}
+				}
+
+
+			}          
+          
+          
 		  /*
 			$strXmlFile = JPATH_SITE . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'rankingalltime' . DIRECTORY_SEPARATOR . 'tmpl' . DIRECTORY_SEPARATOR . 'default.xml';
 			$xml      = Factory::getXML($strXmlFile);
