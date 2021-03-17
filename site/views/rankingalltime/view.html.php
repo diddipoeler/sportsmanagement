@@ -38,10 +38,9 @@ class sportsmanagementViewRankingAllTime extends sportsmanagementView
 		$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
 		$this->projectids     = $this->model->getAllProject();
 		$this->projectnames   = $this->model->getAllProjectNames();
-		$project_ids          = implode(",", $this->projectids);
-		$this->project_ids    = $project_ids;
-		$this->teams          = $this->model->getAllTeamsIndexedByPtid($project_ids);
-		$this->matches        = $this->model->getAllMatches($project_ids);
+		$this->project_ids          = implode(",", $this->projectids);
+		$this->teams          = $this->model->getAllTeamsIndexedByPtid($this->project_ids);
+		$this->matches        = $this->model->getAllMatches($this->project_ids);
 		$this->ranking        = $this->model->getAllTimeRanking();
 		$this->tableconfig    = $this->model->getAllTimeParams();
 		$this->config         = $this->model->getAllTimeParams();
@@ -55,6 +54,10 @@ class sportsmanagementViewRankingAllTime extends sportsmanagementView
         $this->warnings = $mdlRankingAllTime::$rankingalltimewarnings;
         $this->tips = $mdlRankingAllTime::$rankingalltimetips;
         $this->notes = $mdlRankingAllTime::$rankingalltimenotes;
+        
+        $this->warnings = array_merge($this->warnings, sportsmanagementModelProject::$warnings);
+        $this->tips = array_merge($this->tips, sportsmanagementModelProject::$tips);
+        $this->notes = array_merge($this->notes, sportsmanagementModelProject::$notes);
         
 
 	}
