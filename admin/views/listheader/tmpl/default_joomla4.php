@@ -46,7 +46,7 @@ if ($this->jsmmessage)
 	echo $this->loadTemplate('info_message');
 }
 ?>
-<!-- <div id="filter-bar" class="btn-toolbar"> -->
+
 <?php
 switch ($view)
 {
@@ -71,7 +71,9 @@ case 'smquotes':
 case 'teamplayers':
 case 'teams':
 case 'sportstypes':
-echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+/** such und filterfunktionen */
+//echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this, 'options' => array('filterButton' => true)));
 break;
 case 'githubinstall':
 case 'updates':
@@ -112,7 +114,7 @@ break;
 	    
 <?PHP
 ?>
-<!-- </div> -->
+
 
 
 
