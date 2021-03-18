@@ -151,7 +151,15 @@ div.tool-tip div.tool-title a.sticky_close{
 }
 '
 );
+
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+}
+elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
+{	
 HTMLHelper::_('behavior.tooltip');
+}
+
 $doc->addScriptDeclaration(
 	'
   window.addEvent(\'domready\', function() {

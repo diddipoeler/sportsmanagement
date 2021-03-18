@@ -605,28 +605,63 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 
                 <td class="center">
 					<?php
-					$append = ' style="background-color:#bbffff"';
-					echo HTMLHelper::_(
-						'select.genericlist',
-						$this->lists['is_in_score'],
-						'is_in_score' . $row->id,
-						$inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
-						$i . '\').checked=true"' . $append,
-						'value', 'text', $row->is_in_score
+                    
+$this->switcher_onchange = ' onchange="document.getElementById(\'cb' . $i . '\').checked=true"';
+$this->switcher_options = array(
+						HTMLHelper::_('select.option', '0', Text::_('JNO')),
+						HTMLHelper::_('select.option', '1', Text::_('JYES'))
 					);
+                    
+$this->switcher_value = $row->is_in_score;    
+$this->switcher_name = 'is_in_score' . $row->id;        
+$this->switcher_attr = 'id="' . $row->id . '"';     
+$this->switcher_item_id = $row->id;   
+/** welche joomla version ? */
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+echo $this->loadTemplate('switcher4');    
+}
+elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
+{    
+echo $this->loadTemplate('switcher3');
+}                     
+                    
+//					$append = ' style="background-color:#bbffff"';
+//					echo HTMLHelper::_(
+//						'select.genericlist',
+//						$this->lists['is_in_score'],
+//						'is_in_score' . $row->id,
+//						$inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
+//						$i . '\').checked=true"' . $append,
+//						'value', 'text', $row->is_in_score
+//					);
 					?>
                 </td>
                 <td class="center">
 					<?php
-					$append = ' style="background-color:#bbffff"';
-					echo HTMLHelper::_(
-						'select.genericlist',
-						$this->lists['use_finally'],
-						'use_finally' . $row->id,
-						$inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
-						$i . '\').checked=true"' . $append,
-						'value', 'text', $row->use_finally
-					);
+$this->switcher_value = $row->use_finally;    
+$this->switcher_name = 'use_finally' . $row->id;                
+/** welche joomla version ? */
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+echo $this->loadTemplate('switcher4');    
+}
+elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
+{    
+echo $this->loadTemplate('switcher3');
+}                                         
+                    
+                    
+                    
+//					$append = ' style="background-color:#bbffff"';
+//					echo HTMLHelper::_(
+//						'select.genericlist',
+//						$this->lists['use_finally'],
+//						'use_finally' . $row->id,
+//						$inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
+//						$i . '\').checked=true"' . $append,
+//						'value', 'text', $row->use_finally
+//					);
 					?>
                 </td>
 		<td class="center">

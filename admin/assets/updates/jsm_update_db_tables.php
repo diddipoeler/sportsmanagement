@@ -20,6 +20,13 @@ HTMLHelper::_('bootstrap.framework');
 jimport('joomla.html.html.bootstrap');
 
 $version           = '3.8.8';
+
+$minor = 0;
+$major = 0;
+$build = 0;
+$revision = '';
+
+
 $updateFileDate    = '2021-03-12';
 $updateFileTime    = '00:05';
 $updateDescription = '<span style="color:orange">'.Text::_('COM_SPORTSMANAGEMENT_GLOBAL_UPDATES_DB_TABLES').'</span>';

@@ -110,7 +110,8 @@ class com_sportsmanagementInstallerScript
 	 * The release value would ideally be extracted from <version> in the manifest file,
 	 * but at preflight, the manifest file exists only in the uploaded temp folder.
 	 */
-	private $release = '3.8.80';
+	private $release = '3.8.81';
+    private $old_release = '3.8.80';
 
 	// $language_update = '';
 
@@ -327,20 +328,31 @@ class com_sportsmanagementInstallerScript
 
 					if ($eid = $db->loadResult())
 					{
+					   // Delete old row.
+		$db = $this->getDbo();
+		$query = $db->getQuery(true)
+			->delete($db->quoteName('#__schemas'))
+			->where($db->quoteName('extension_id') . ' = '.$eid);
+		$db->setQuery($query);
+		$db->execute();
+                       
+                       
+                       
 						$query->clear();
 						$query->insert($db->quoteName('#__schemas'));
 						$query->columns(array($db->quoteName('extension_id'), $db->quoteName('version_id')));
 						$query->values($eid . ', ' . $db->quote($this->oldRelease));
 						$db->setQuery($query);
+                        $db->execute();
 
-						if (version_compare(JVERSION, '3.0.0', 'ge'))
-						{
-							$db->execute();
-						}
-						else
-						{
-										$db->query();
-						}
+//						if (version_compare(JVERSION, '3.0.0', 'ge'))
+//						{
+//							$db->execute();
+//						}
+//						else
+//						{
+//										$db->query();
+//						}
 					}
 				}
 				catch (Exception $e)

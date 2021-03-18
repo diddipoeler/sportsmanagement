@@ -270,33 +270,27 @@ echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/asset
                     <br>  
 <?php
 
-					$class   = "btn-group btn-group-yesno";
-					$options = array(
+$this->switcher_onchange = ' onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true"';
+$this->switcher_options = array(
 						HTMLHelper::_('select.option', '0', Text::_('JNO')),
 						HTMLHelper::_('select.option', '1', Text::_('JYES'))
 					);
-
-					$html   = array();
-					$html[] = '<fieldset id="fast_projektteam' . $this->item->id . '" class="' . $class . '" >';
-
-					foreach ($options as $in => $option)
-					{
-						$checked = ($option->value == $this->item->fast_projektteam) ? ' checked="checked"' : '';
-						$btn     = ($option->value == $this->item->fast_projektteam && $this->item->fast_projektteam) ? ' active btn-success' : ' ';
-						$btn     = ($option->value == $this->item->fast_projektteam && !$this->item->fast_projektteam) ? ' active btn-danger' : $btn;
-
-						$onchange = ' onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true"';
-						$html[]   = '<input type="radio" style="display:none;" id="fast_projektteam' . $this->item->id . $in . '" name="fast_projektteam' . $this->item->id . '" value="'
-							. $option->value . '"' . $onchange . ' />';
-
-						$html[] = '<label for="fast_projektteam' . $this->item->id . $in . '"' . $checked . ' class="btn' . $btn . '" >'
-							. Text::_($option->text) . '</label>';
-					}
-
-					echo implode($html);
+                    
+$this->switcher_value = $this->item->fast_projektteam;    
+$this->switcher_name = 'fast_projektteam' . $this->item->id;   
+$this->switcher_attr = 'id="' . $this->item->id . '"';             
+$this->switcher_item_id = $this->item->id;
+/** welche joomla version ? */
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+echo $this->loadTemplate('switcher4');    
+}
+elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
+{    
+echo $this->loadTemplate('switcher3');
+}                    
+                    
 					?>    			
-			
-			
                 </td>
 
                 <td class="center">

@@ -103,7 +103,7 @@ $html .= HTMLHelper::_(
 			);
 echo $html;		
 */
-
+echo $row['file_name'];
 
 
 

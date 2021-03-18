@@ -31,6 +31,11 @@ if (!empty($this->mapconfig))
 	}
 }
 
+
+echo $this->loadTemplate('jsm_warnings');
+echo $this->loadTemplate('jsm_tips');
+echo $this->loadTemplate('jsm_notes');
+
 if (version_compare(JSM_JVERSION, '4', 'eq'))
 {
 	echo $this->loadTemplate('joomla_vier');

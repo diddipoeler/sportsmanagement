@@ -11,10 +11,10 @@
     <fieldset	name="request"
 					label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
            >
-            <field type="sql" name="l" label="COM_SPORTSMANAGEMENT_XML_RANKINGALLTIME_SELECT_LEAGUE_LABEL" description="COM_SPORTSMANAGEMENT_XML_RANKINGALLTIME_SELECT_LEAGUE_DESCR"
+            <field type="sql" name="l" label="COM_SPORTSMANAGEMENT_XML_RANKINGALLTIME_SELECT_LEAGUE_LABEL" description="COM_SPORTSMANAGEMENT_XML_RANKINGALLTIME_SELECT_LEAGUE_LABEL_DESCR"
                 query="SELECT id AS value, name AS l FROM #__sportsmanagement_league ORDER BY name" />
         
-        <field name="points" type="text" default="3,1,0" label="COM_SPORTSMANAGEMENT_XML_RANKINGALLTIME_POINTS_LABEL" description="COM_SPORTSMANAGEMENT_XML_RANKINGALLTIME_POINTS_DESCR" size="10"/>
+        <field name="points" type="text" default="3,1,0" label="COM_SPORTSMANAGEMENT_XML_RANKINGALLTIME_POINTS_LABEL" description="COM_SPORTSMANAGEMENT_XML_RANKINGALLTIME_POINTS_LABEL_DESCR" size="10"/>
 </fieldset>
 	</fields>    
     

@@ -343,6 +343,11 @@ class sportsmanagementViewRanking extends sportsmanagementView
 		{
 			$this->config['show_result_tabs'] = 'no_tabs';
 		}
+        
+        $this->tips = sportsmanagementModelProject::$tips;
+        $this->warnings = sportsmanagementModelProject::$warnings;
+        $this->notes = sportsmanagementModelProject::$notes;
+        
 	}
 
 }

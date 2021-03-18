@@ -194,30 +194,26 @@ $this->dragable_group = 'data-dragable-group="none"';
             <td class="center">
 				<?php
 
-				$class   = "btn-group btn-group-yesno";
-				$options = array(
-					HTMLHelper::_('select.option', '0', Text::_('JNO')),
-					HTMLHelper::_('select.option', '1', Text::_('JYES'))
-				);
 
-				$html   = array();
-				$html[] = '<fieldset id="published_act_season' . $this->item->id . '" class="' . $class . '" >';
-				foreach ($options as $in => $option)
-				{
-					$checked = ($option->value == $this->item->published_act_season) ? ' checked="checked"' : '';
-					$btn     = ($option->value == $this->item->published_act_season && $this->item->published_act_season) ? ' active btn-success' : ' ';
-					$btn     = ($option->value == $this->item->published_act_season && !$this->item->published_act_season) ? ' active btn-danger' : $btn;
-
-					$onchange = ' onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true"';
-					$html[]   = '<input type="radio" style="display:none;" id="published_act_season' . $this->item->id . $in . '" name="published_act_season' . $this->item->id . '" value="'
-						. $option->value . '"' . $onchange . ' />';
-
-					$html[] = '<label for="published_act_season' . $this->item->id . $in . '"' . $checked . ' class="btn' . $btn . '" >'
-						. Text::_($option->text) . '</label>';
-
-				}
-
-				echo implode($html);
+$this->switcher_onchange = ' onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true"';
+$this->switcher_options = array(
+						HTMLHelper::_('select.option', '0', Text::_('JNO')),
+						HTMLHelper::_('select.option', '1', Text::_('JYES'))
+					);
+                    
+$this->switcher_value = $this->item->published_act_season;    
+$this->switcher_name = 'published_act_season' . $this->item->id;    
+$this->switcher_attr = 'id="' . $this->item->id . '"'; 
+$this->switcher_item_id = $this->item->id;           
+/** welche joomla version ? */
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+echo $this->loadTemplate('switcher4');    
+}
+elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
+{    
+echo $this->loadTemplate('switcher3');
+}   
 				?>
             </td>
             <td class="center">

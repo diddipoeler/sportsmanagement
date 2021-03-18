@@ -16,13 +16,11 @@ use Joomla\CMS\Component\ComponentHelper;
 if (version_compare(JSM_JVERSION, '4', 'eq'))
 {
 	echo $this->loadTemplate('joomla4');
-	//$no_items = 'alert alert-warning alert-no-items';
 	$no_items = '';
 }
 elseif (version_compare(JSM_JVERSION, '3', 'eq'))
 {
 	echo $this->loadTemplate('joomla3');
-	//$no_items = 'alert alert-no-items';
 	$no_items = '';
 }
 
