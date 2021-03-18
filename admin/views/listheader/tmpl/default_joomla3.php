@@ -201,7 +201,7 @@ $html = HTMLHelper::_('links.linksgroups', $groupedButtons);
 	<?php else : ?>
     <div id="j-main-container">
 		<?php endif; ?>
-<!-- <div id="filter-bar" class="btn-toolbar"> -->
+
 <?php
 switch ($view)
 {
@@ -271,4 +271,4 @@ break;
 	    
 <?PHP
 ?>
-<!-- </div> -->
+

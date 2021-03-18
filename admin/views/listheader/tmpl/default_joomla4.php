@@ -27,6 +27,11 @@ $view = $jinput->getCmd('view', 'cpanel');
  * retrieve the value of the state variable. If no value is specified,
  * the specified default value will be returned.
  * function syntax is getUserState( $key, $default );
+ * 
+ * 
+ * Joomla 4.x-Tutorial - Entwicklung von Erweiterungen - Filtern, Sortieren, Suchen
+ * https://blog.astrid-guenther.de/joomla-filtern-sortieren-suchen/
+ * 
  */
 
 $project_id = $app->getUserState("$option.pid", '0');
@@ -72,8 +77,8 @@ case 'teamplayers':
 case 'teams':
 case 'sportstypes':
 /** such und filterfunktionen */
-//echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
-echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this, 'options' => array('filterButton' => true)));
+echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+//echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this), JPATH_COMPONENT_ADMINISTRATOR . '/layouts');
 break;
 case 'githubinstall':
 case 'updates':
