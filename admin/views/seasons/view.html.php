@@ -90,7 +90,7 @@ console.log('hallo zurücksetzen');
     //your code here
 
 $('.js-stools-container-filters').removeClass('js-stools-container-filters-visible');
-
+this.form.submit();
 
  });
 
