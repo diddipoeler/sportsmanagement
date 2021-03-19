@@ -53,7 +53,8 @@ class sportsmanagementModelSportsTypes extends JSMModelList
 			's.modified',
 			's.modified_by',
 			's.checked_out',
-			's.checked_out_time'
+			's.checked_out_time',
+            'state'
 		);
 		parent::__construct($config);
 		parent::setDbo($this->jsmdb);
@@ -68,7 +69,7 @@ class sportsmanagementModelSportsTypes extends JSMModelList
 	function getListQuery()
 	{
 		$this->jsmquery->clear();
-		$this->jsmquery->select(implode(",", $this->filter_fields));
+		$this->jsmquery->select('s.*');
 		$this->jsmquery->from('#__sportsmanagement_sports_type AS s');
 		$this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = s.checked_out');
 
