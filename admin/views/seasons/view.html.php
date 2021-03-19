@@ -72,6 +72,7 @@ if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
 $this->document->addScriptDeclaration(
 						"
+$('.js-stools-btn-clear').addClass('disabled');                        
 $(document).on('click','.js-stools-btn-filter', function(){
 console.log('hallo filter options');
     //your code here
@@ -89,15 +90,28 @@ $('.js-stools-container-filters').toggleClass('js-stools-container-filters-visib
 console.log('hallo zurücksetzen');
     //your code here
 
-$('.js-stools-container-filters').removeClass('js-stools-container-filters-visible');
-this.form.submit();
-
+//$('.js-stools-container-filters').removeClass('js-stools-container-filters-visible');
+//this.form.submit();
+Joomla.resetFilters(this);
  });
 
 
 
 "
 					);
+                    
+                    
+if ( $this->activeFilters )
+{
+$this->document->addScriptDeclaration(
+						"
+$('.js-stools-btn-clear').removeClass('disabled');						
+						");
+
+}                    
+                    
+                    
+                    
 }                    
                     
                     
