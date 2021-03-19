@@ -287,6 +287,24 @@ if (preg_match("/ordering/i", $this->sortColumn)) {
 			case 'seasons';
             case 'leagues';
             case 'sportstypes':
+//            case 'jlextfederations':
+//            case 'jlextcountries':
+//            case 'jlextassociations':
+//            case 'positions':
+//            case 'eventtypes':
+//            case 'agegroups':
+
+//            case 'clubs':
+//            case 'teams':
+//            case 'players':
+//            case 'playgrounds':
+//            case 'rosterpositions':
+
+//            case '':
+//            case '':
+//            case '':
+//            case '':
+            
             $this->filterForm    = $this->model->getFilterForm();
             $this->activeFilters = $this->model->getActiveFilters();
             
