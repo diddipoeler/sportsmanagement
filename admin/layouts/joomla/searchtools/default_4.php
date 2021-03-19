@@ -101,7 +101,7 @@ HTMLHelper::_('searchtools.form', $data['options']['formSelector'], $data['optio
 	</div>
 	<!-- Filters div -->
 	<div class="js-stools-container-filters clearfix<?php echo $filtersActiveClass; ?>">
-		<?php if ($customOptions['filtersHidden']) : ?>
+		<?php if ( !$customOptions['filtersHidden'] ) : ?>
 		<?php echo $this->sublayout('filters', $data); ?>
 		<?php endif; ?>
 	</div>

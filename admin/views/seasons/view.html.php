@@ -67,6 +67,9 @@ class sportsmanagementViewSeasons extends sportsmanagementView
 		$this->lists     = $lists;
 //		$this->season_id = $season_id;
 
+/** welche joomla version ? */
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
 $this->document->addScriptDeclaration(
 						"
 $(document).on('click','.js-stools-btn-filter', function(){
@@ -95,7 +98,7 @@ $('.js-stools-container-filters').removeClass('js-stools-container-filters-visib
 
 "
 					);
-                    
+}                    
                     
                     
 		switch ($this->getLayout())
@@ -126,6 +129,10 @@ $('.js-stools-container-filters').removeClass('js-stools-container-filters-visib
 //Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
 //Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');	
 //}
+
+
+//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post <pre>'.print_r($this->filterForm ,true).'</pre>'  ), ''); 
+//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post <pre>'.print_r($this->activeFilters ,true).'</pre>'  ), ''); 
 
 	}
 
