@@ -279,8 +279,6 @@ if (preg_match("/ordering/i", $this->sortColumn)) {
 			break;
 			default:
 			$this->model = $this->getModel();
-            $this->filterForm    = $this->model->getFilterForm();
-            $this->activeFilters = $this->model->getActiveFilters();
 			break;
 		}
         
