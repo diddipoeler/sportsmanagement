@@ -79,7 +79,7 @@ case 'sportstypes':
 /** such und filterfunktionen */
 //echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 //echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this), JPATH_COMPONENT_ADMINISTRATOR . '/layouts');
-echo LayoutHelper::render('joomla.searchtools.default_4', array('view' => $this , 'options' => array('filterButton' => false,'filtersHidden' => false) ), JPATH_COMPONENT_ADMINISTRATOR . '/layouts');
+echo LayoutHelper::render('joomla.searchtools.defaultjsm', array('view' => $this , 'options' => array('filterButton' => false,'filtersHidden' => false) ), JPATH_COMPONENT_ADMINISTRATOR . '/layouts');
 break;
 case 'githubinstall':
 case 'updates':
