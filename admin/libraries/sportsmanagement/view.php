@@ -276,7 +276,6 @@ if (preg_match("/ordering/i", $this->sortColumn)) {
 		{
 			case 'predictions';
 			case 'extensions';
-			// Case 'github';
 			break;
 			default:
 			$this->model = $this->getModel();
@@ -285,6 +284,13 @@ if (preg_match("/ordering/i", $this->sortColumn)) {
 			break;
 		}
         
+        switch ($this->view)
+		{
+			case 'seasons';
+            $this->filterForm    = $this->model->getFilterForm();
+            $this->activeFilters = $this->model->getActiveFilters();
+			break;
+		}
         
 
 		/** bei der einzelverarbeitung */
