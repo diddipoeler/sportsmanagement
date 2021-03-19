@@ -68,6 +68,22 @@ class sportsmanagementView extends BaseHtmlView
 	protected $table_data_class = '';
 	protected $table_data_div = '';
     public $itemname;
+    
+    /**
+	 * A \JForm instance with filter fields.
+	 *
+	 * @var    \JForm
+	 * @since  3.6.3
+	 */
+	public $filterForm;
+
+	/**
+	 * An array with active filters.
+	 *
+	 * @var    array
+	 * @since  3.6.3
+	 */
+	public $activeFilters;
 	
     /** https://cdnjs.com/libraries/bootstrap-fileinput */
 	public $bootstrap_fileinput_version = '5.1.4';
@@ -260,13 +276,16 @@ if (preg_match("/ordering/i", $this->sortColumn)) {
 		{
 			case 'predictions';
 			case 'extensions';
-
-				// Case 'github';
-				break;
+			// Case 'github';
+			break;
 			default:
-				$this->model = $this->getModel();
-				break;
+			$this->model = $this->getModel();
+            $this->filterForm    = $this->model->getFilterForm();
+            $this->activeFilters = $this->model->getActiveFilters();
+			break;
 		}
+        
+        
 
 		/** bei der einzelverarbeitung */
 		if ($this->layout == 'edit'

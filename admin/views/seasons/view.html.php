@@ -29,21 +29,7 @@ use Joomla\CMS\Log\Log;
  */
 class sportsmanagementViewSeasons extends sportsmanagementView
 {
-	/**
-	 * A \JForm instance with filter fields.
-	 *
-	 * @var    \JForm
-	 * @since  3.6.3
-	 */
-	public $filterForm;
-
-	/**
-	 * An array with active filters.
-	 *
-	 * @var    array
-	 * @since  3.6.3
-	 */
-	public $activeFilters;
+	
 	
 	/**
 	 * sportsmanagementViewSeasons::init()
@@ -53,8 +39,7 @@ class sportsmanagementViewSeasons extends sportsmanagementView
 	public function init()
 	{
 
-		$season_id = $this->jinput->getVar('id');
-
+		$this->season_id = $this->jinput->getVar('id');
 		$this->table = Table::getInstance('season', 'sportsmanagementTable');
 		$lists       = array();
 
@@ -80,8 +65,39 @@ class sportsmanagementViewSeasons extends sportsmanagementView
 		);
 
 		$this->lists     = $lists;
-		$this->season_id = $season_id;
+//		$this->season_id = $season_id;
 
+$this->document->addScriptDeclaration(
+						"
+$(document).on('click','.js-stools-btn-filter', function(){
+console.log('hallo filter options');
+    //your code here
+
+$('.js-stools-container-filters').toggleClass('js-stools-container-filters-visible');
+
+
+
+
+ });
+
+
+
+ $(document).on('click','.js-stools-btn-clear', function(){
+console.log('hallo zurücksetzen');
+    //your code here
+
+$('.js-stools-container-filters').removeClass('js-stools-container-filters-visible');
+
+
+ });
+
+
+
+"
+					);
+                    
+                    
+                    
 		switch ($this->getLayout())
 		{
 			case 'assignteams':
@@ -100,16 +116,16 @@ class sportsmanagementViewSeasons extends sportsmanagementView
 			$this->setLayout('assignpersons');
 			break;
 		}
-try
-{		
-$this->filterForm    = $this->model->getFilterForm();
-$this->activeFilters = $this->model->getActiveFilters();
-}
-catch (Exception $e)
-{
-Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
-Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');	
-}
+//try
+//{		
+//$this->filterForm    = $this->model->getFilterForm();
+//$this->activeFilters = $this->model->getActiveFilters();
+//}
+//catch (Exception $e)
+//{
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');	
+//}
 
 	}
 

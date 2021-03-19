@@ -63,6 +63,8 @@ class sportsmanagementModelSeasons extends JSMModelList
 			's.modified',
 			's.modified_by',
 			's.checked_out',
+            'state',
+            'search_nation',
 			's.checked_out_time'
 		);
 		parent::__construct($config);
