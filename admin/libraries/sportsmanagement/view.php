@@ -285,6 +285,7 @@ if (preg_match("/ordering/i", $this->sortColumn)) {
         switch ($this->view)
 		{
 			case 'seasons';
+            case 'leagues';
             $this->filterForm    = $this->model->getFilterForm();
             $this->activeFilters = $this->model->getActiveFilters();
             

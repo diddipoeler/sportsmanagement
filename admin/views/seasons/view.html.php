@@ -88,17 +88,6 @@ class sportsmanagementViewSeasons extends sportsmanagementView
 			$this->setLayout('assignpersons');
 			break;
 		}
-//try
-//{		
-//$this->filterForm    = $this->model->getFilterForm();
-//$this->activeFilters = $this->model->getActiveFilters();
-//}
-//catch (Exception $e)
-//{
-//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
-//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');	
-//}
-
 
 //Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' filterForm <pre>'.print_r($this->filterForm ,true).'</pre>'  ), ''); 
 //Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' activeFilters <pre>'.print_r($this->activeFilters ,true).'</pre>'  ), ''); 
