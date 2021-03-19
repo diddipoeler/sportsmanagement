@@ -291,7 +291,7 @@ class sportsmanagementModelSeasons extends JSMModelList
 				break;
 			default:
 				$this->jsmquery->clear();
-				$this->jsmquery->select(implode(",", $this->filter_fields));
+				$this->jsmquery->select('s.*');
 				$this->jsmquery->select('uc.name AS editor');
 				$this->jsmquery->from('#__sportsmanagement_season as s');
 				$this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = s.checked_out');

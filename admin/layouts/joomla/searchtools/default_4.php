@@ -74,6 +74,9 @@ $customOptions = array(
 	'formSelector'        => !empty($data['options']['formSelector']) ? $data['options']['formSelector'] : '#adminForm',
 );
 
+//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' customOptions <pre>'.print_r($customOptions ,true).'</pre>'  ), '');
+
+
 // Merge custom options in the options array.
 $data['options'] = array_merge($customOptions, $data['options']);
 

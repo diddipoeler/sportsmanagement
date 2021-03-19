@@ -131,8 +131,9 @@ $('.js-stools-container-filters').removeClass('js-stools-container-filters-visib
 //}
 
 
-//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post <pre>'.print_r($this->filterForm ,true).'</pre>'  ), ''); 
-//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post <pre>'.print_r($this->activeFilters ,true).'</pre>'  ), ''); 
+//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' filterForm <pre>'.print_r($this->filterForm ,true).'</pre>'  ), ''); 
+//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' activeFilters <pre>'.print_r($this->activeFilters ,true).'</pre>'  ), ''); 
+//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' state <pre>'.print_r($this->state ,true).'</pre>'  ), ''); 
 
 	}
 
