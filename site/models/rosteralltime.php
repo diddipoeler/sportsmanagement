@@ -46,11 +46,8 @@ class sportsmanagementModelRosteralltime extends ListModel
 	 * @var array
 	 */
 	var $_players = null;
-
 	var $_identifier = "rosteralltime";
-
 	var $limitstart = 0;
-
 	var $limit = 0;
 
 	/**
@@ -63,14 +60,15 @@ class sportsmanagementModelRosteralltime extends ListModel
 		parent::__construct();
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
-
-		// JInput object
 		$jinput                   = $app->input;
 		self::$projectid          = (int) $jinput->get('p', 0);
 		self::$teamid             = (int) $jinput->get('tid', 0);
 		self::$projectteamid      = (int) $jinput->get('ttid', 0);
 		self::$cfg_which_database = Factory::getApplication()->input->get('cfg_which_database', 0, 'INT');
 		$this->limitstart         = $jinput->getVar('start', 0, '', 'int');
+        $this->jsmapp = Factory::getApplication();
+        $this->jsmdb = sportsmanagementHelper::getDBConnection();
+        $this->jsmquery = $this->jsmdb->getQuery(true);
         
 //Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' projectid<br><pre>' . print_r(self::$projectid,true) . '</pre>'), Log::INFO, 'jsmerror');
 //Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' teamid<br><pre>' . print_r(self::$teamid,true) . '</pre>'), Log::INFO, 'jsmerror');
@@ -175,19 +173,25 @@ class sportsmanagementModelRosteralltime extends ListModel
 	 */
 	function getPlayerPosition()
 	{
-		$option = Factory::getApplication()->input->getCmd('option');
-		$app    = Factory::getApplication();
-		$db     = Factory::getDbo();
-		$query  = $db->getQuery(true);
+        $this->jsmquery->clear();
+		$this->jsmquery->select('po.*');
+		$this->jsmquery->from('#__sportsmanagement_position as po');
+		$this->jsmquery->where('po.parent_id != 0 ');
+		$this->jsmquery->where('po.persontype = 1 ');
 
-		$query->select('po.*');
-		$query->from('#__sportsmanagement_position as po');
-		$query->where('po.parent_id != 0 ');
-		$query->where('po.persontype = 1 ');
-
-		$db->setQuery($query);
-
-		return $db->loadObjectList();
+try
+{
+$this->jsmdb->setQuery($this->jsmquery);
+return $this->jsmdb->loadObjectList();
+}
+catch (RuntimeException $e)
+{
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($this->jsmquery->dump(), true) . '</pre>', 'Error');
+return false;
+}
+		
 
 	}
 
