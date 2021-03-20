@@ -74,11 +74,18 @@ $customOptions = array(
 	'formSelector'        => !empty($data['options']['formSelector']) ? $data['options']['formSelector'] : '#adminForm',
 );
 
+//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' customOptions <pre>'.print_r($customOptions ,true).'</pre>'  ), '');
+
+
 // Merge custom options in the options array.
 $data['options'] = array_merge($customOptions, $data['options']);
 
+//$customOptions['filterButton'] = 0;
+//$customOptions['filtersHidden'] = 0;   
+
 // Add class to hide the active filters if needed.
-$filtersActiveClass = $hideActiveFilters ? '' : ' js-stools-container-filters-visible';
+//$filtersActiveClass = $hideActiveFilters ? '' : ' js-stools-container-filters-visible';
+$filtersActiveClass = $hideActiveFilters ? ' js-stools-container-filters-visible' : ' js-stools-container-filters-visible';    
 
 // Load search tools
 HTMLHelper::_('searchtools.form', $data['options']['formSelector'], $data['options']);
@@ -97,7 +104,7 @@ HTMLHelper::_('searchtools.form', $data['options']['formSelector'], $data['optio
 	</div>
 	<!-- Filters div -->
 	<div class="js-stools-container-filters clearfix<?php echo $filtersActiveClass; ?>">
-		<?php if ($data['options']['filterButton']) : ?>
+		<?php if ( !$customOptions['filtersHidden'] ) : ?>
 		<?php echo $this->sublayout('filters', $data); ?>
 		<?php endif; ?>
 	</div>

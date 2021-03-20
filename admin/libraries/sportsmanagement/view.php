@@ -68,6 +68,22 @@ class sportsmanagementView extends BaseHtmlView
 	protected $table_data_class = '';
 	protected $table_data_div = '';
     public $itemname;
+    
+    /**
+	 * A \JForm instance with filter fields.
+	 *
+	 * @var    \JForm
+	 * @since  3.6.3
+	 */
+	public $filterForm;
+
+	/**
+	 * An array with active filters.
+	 *
+	 * @var    array
+	 * @since  3.6.3
+	 */
+	public $activeFilters;
 	
     /** https://cdnjs.com/libraries/bootstrap-fileinput */
 	public $bootstrap_fileinput_version = '5.1.4';
@@ -260,13 +276,83 @@ if (preg_match("/ordering/i", $this->sortColumn)) {
 		{
 			case 'predictions';
 			case 'extensions';
-
-				// Case 'github';
-				break;
+			break;
 			default:
-				$this->model = $this->getModel();
-				break;
+			$this->model = $this->getModel();
+			break;
 		}
+        
+        switch ($this->view)
+		{
+			case 'seasons';
+            case 'leagues';
+            case 'sportstypes':
+            case 'jlextfederations':
+            case 'jlextcountries':
+            case 'jlextassociations':
+            case 'positions':
+            case 'eventtypes':
+            case 'agegroups':
+
+//            case 'clubs':
+//            case 'teams':
+//            case 'players':
+//            case 'playgrounds':
+//            case 'rosterpositions':
+
+//            case '':
+//            case '':
+//            case '':
+//            case '':
+            
+            $this->filterForm    = $this->model->getFilterForm();
+            $this->activeFilters = $this->model->getActiveFilters();
+            
+/** welche joomla version ? */
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+$this->document->addScriptDeclaration(
+"
+$('.js-stools-btn-clear').addClass('disabled');                        
+$(document).on('click','.js-stools-btn-filter', function(){
+console.log('hallo filter options');
+    //your code here
+$('.js-stools-container-filters').toggleClass('js-stools-container-filters-visible');
+ });
+
+ $(document).on('click','.js-stools-btn-clear', function(){
+console.log('hallo zurücksetzen');
+    //your code here
+
+//$('.js-stools-container-filters').removeClass('js-stools-container-filters-visible');
+//this.form.submit();
+Joomla.resetFilters(this);
+ });
+"
+);
+                    
+                    
+if ( $this->activeFilters )
+{
+$this->document->addScriptDeclaration(
+						"
+$('.js-stools-btn-clear').removeClass('disabled');						
+						");
+
+}                    
+                    
+                    
+                    
+}                      
+            
+            
+            
+            
+            
+            
+			break;
+		}
+        
 
 		/** bei der einzelverarbeitung */
 		if ($this->layout == 'edit'

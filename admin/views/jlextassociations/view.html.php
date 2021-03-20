@@ -28,21 +28,6 @@ use Joomla\CMS\Log\Log;
  */
 class sportsmanagementViewjlextassociations extends sportsmanagementView
 {
-    /**
-	 * A \JForm instance with filter fields.
-	 *
-	 * @var    \JForm
-	 * @since  3.6.3
-	 */
-	public $filterForm;
-
-	/**
-	 * An array with active filters.
-	 *
-	 * @var    array
-	 * @since  3.6.3
-	 */
-	public $activeFilters;
 
 	/**
 	 * sportsmanagementViewjlextassociations::init()
@@ -82,17 +67,6 @@ class sportsmanagementViewjlextassociations extends sportsmanagementView
 		}
 
 		$this->lists = $lists;
-
-try
-{		
-$this->filterForm    = $this->model->getFilterForm();
-$this->activeFilters = $this->model->getActiveFilters();
-}
-catch (Exception $e)
-{
-Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
-Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');	
-}
 
 	}
 

@@ -48,7 +48,10 @@ class sportsmanagementModelLeagues extends JSMModelList
 			'obj.modified',
 			'obj.modified_by',
 			'ag.name',
-			'fed.name'
+			'fed.name',
+            'state',
+            'search_agegroup',
+            'search_nation'
 		);
 		parent::__construct($config);
 		parent::setDbo($this->jsmdb);
@@ -68,14 +71,9 @@ class sportsmanagementModelLeagues extends JSMModelList
 		if ($this->jsmapp->isClient('administrator'))
 		{
 			$search_nation = $this->getState('filter.search_nation');
-
-			// $search_nation    = self::getState('filter.search_nation');
 		}
 
-		//        // Get a db connection.
-		//        $db = sportsmanagementHelper::getDBConnection();
-		//        // Create a new query object.
-		//        $query = $db->getQuery(true);
+        $this->jsmquery->clear();
 		$this->jsmquery->select('id,name,league_level');
 		$this->jsmquery->from('#__sportsmanagement_league');
 
@@ -90,8 +88,6 @@ class sportsmanagementModelLeagues extends JSMModelList
 
 		if (!$result = $this->jsmdb->loadObjectList())
 		{
-			// SportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->jsmdb->getErrorMsg(), __LINE__);
-
 			return array();
 		}
 
@@ -142,11 +138,6 @@ class sportsmanagementModelLeagues extends JSMModelList
 
 		$this->setState('list.direction', $listOrder);
 	}
-
-
-
-
-
 
 	/**
 	 * sportsmanagementModelLeagues::getListQuery()
