@@ -21,14 +21,17 @@ if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 }
 elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
 {
-	HTMLHelper::_('behavior.tooltip');
-	HTMLHelper::_('behavior.framework');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.framework');
 HTMLHelper::_('behavior.modal');
 }
 
-
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+
+echo $this->loadTemplate('jsm_warnings');
+echo $this->loadTemplate('jsm_tips');
+echo $this->loadTemplate('jsm_notes');
 
 ?>
 <script language="javascript" type="text/javascript">

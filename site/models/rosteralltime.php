@@ -32,6 +32,13 @@ class sportsmanagementModelRosteralltime extends ListModel
 	static $teamid = 0;
 	static $cfg_which_database = 0;
 	var $team = null;
+    
+    /** @var    array    An array of tips */
+	static $_tips = array();
+	/** @var    array    An array of warnings */
+	static $_warnings = array();
+    /** @var    array    An array of notes */
+	static $_notes = array();
 
 	/**
 	 * caching for team in out stats
@@ -294,6 +301,14 @@ return false;
 	 */
 	function getTeamPlayers($persontype = 1, $positioneventtypes = array(), $items = array())
 	{
+	   
+       if ( !$items )
+       {
+        self::$_notes[] = Text::_('COM_SPORTSMANAGEMENT_ROSTERALLTIME_NO_PERSON');
+        return false;
+       }
+       
+       
 		$person_range = array();
 		foreach ($items as $row)
 		{
