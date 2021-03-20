@@ -40,7 +40,9 @@ class sportsmanagementModelEventtypes extends JSMModelList
 			'obj.modified',
 			'obj.modified_by',
 			'obj.id',
-			'obj.ordering'
+			'obj.ordering',
+            'state',
+            'sports_type'
 		);
 		parent::__construct($config);
 		$getDBConnection = sportsmanagementHelper::getDBConnection();

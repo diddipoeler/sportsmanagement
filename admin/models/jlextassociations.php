@@ -49,7 +49,8 @@ class sportsmanagementModeljlextassociations extends JSMModelList
 			'objassoc.checked_out',
 			'objassoc.checked_out_time',
 			'objassoc.assocflag',
-			'objassoc.picture'
+			'objassoc.picture',
+            'state','search_nation','federation'
 		);
 		parent::__construct($config);
 		parent::setDbo($this->jsmdb);
@@ -168,7 +169,7 @@ class sportsmanagementModeljlextassociations extends JSMModelList
 	protected function getListQuery()
 	{
 		$this->jsmquery->clear();
-		$this->jsmquery->select(implode(",", $this->filter_fields));
+		$this->jsmquery->select('objassoc.*');
 		$this->jsmquery->from('#__sportsmanagement_associations as objassoc');
 		$this->jsmquery->select('uc.name AS editor');
 		$this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = objassoc.checked_out');

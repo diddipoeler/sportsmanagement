@@ -50,7 +50,7 @@ class sportsmanagementModeljlextcountries extends JSMModelList
 			'objcountry.ordering',
 			'objcountry.checked_out',
 			'objcountry.published',
-			'objcountry.checked_out_time'
+			'objcountry.checked_out_time','state','search_nation'
 		);
 		parent::__construct($config);
 		parent::setDbo($this->jsmdb);
@@ -66,7 +66,7 @@ class sportsmanagementModeljlextcountries extends JSMModelList
 		$this->jsmquery->clear();
 		$this->jsmsubquery1->clear();
 		$this->jsmsubquery2->clear();
-		$this->jsmquery->select(implode(",", $this->filter_fields));
+		$this->jsmquery->select('objcountry.*');
 		$this->jsmquery->select('f.name as federation_name');
 		$this->jsmquery->from('#__sportsmanagement_countries AS objcountry');
 		$this->jsmquery->join('LEFT', '#__sportsmanagement_federations AS f ON f.id = objcountry.federation');

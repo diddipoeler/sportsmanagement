@@ -45,7 +45,7 @@ class sportsmanagementModelPositions extends JSMModelList
 			'po.sports_type_id','sports_type',
 			'po.persontype','persontype',
 			'po.id','id',
-			'po.published','published',
+			'po.published','published','state',
 			'po.modified','modified',
 			'po.modified_by','modified_by',
 			'po.ordering','ordering',
@@ -63,10 +63,7 @@ class sportsmanagementModelPositions extends JSMModelList
 	 */
 	function getListQuery()
 	{
-		// Create a new query object.
 		$this->jsmquery->clear();
-
-		// Select some fields
 		$this->jsmquery->select('po.*,pop.name AS parent_name,st.name AS sportstype,u.name AS editor');
 		$this->jsmquery->select('(select count(*) FROM #__sportsmanagement_position_eventtype WHERE position_id = po.id) countEvents');
 		$this->jsmquery->select('(select count(*) FROM #__sportsmanagement_position_statistic WHERE position_id = po.id) countStats');
@@ -112,11 +109,8 @@ class sportsmanagementModelPositions extends JSMModelList
 	 */
 	function getParentsPositions()
 	{
-		// Select some fields
 		$this->jsmquery->clear();
 		$this->jsmquery->select('pos.id,pos.name,pos.id AS value,pos.name AS text,pos.alias,pos.parent_id,pos.persontype,pos.sports_type_id');
-
-		// From the table
 		$this->jsmquery->from('#__sportsmanagement_position AS pos');
 		$this->jsmquery->where('pos.parent_id = 0');
 		$this->jsmquery->order('pos.ordering ASC ');
@@ -141,23 +135,17 @@ class sportsmanagementModelPositions extends JSMModelList
 	 */
 	function getProjectPositions($project_id, $persontype = 1)
 	{
-		$option = Factory::getApplication()->input->getCmd('option');
-		$app    = Factory::getApplication();
-		$query  = Factory::getDbo()->getQuery(true);
-
-		// Select some fields
-		$query->select('ppos.id AS value, pos.name AS text, ppos.position_id as position_id');
-
-		// From the table
-		$query->from('#__sportsmanagement_position AS pos');
-		$query->join('INNER', '#__sportsmanagement_project_position AS ppos ON ppos.position_id = pos.id');
-		$query->where('ppos.project_id = ' . (int) $project_id);
-		$query->where('pos.persontype = ' . (int) $persontype);
-		$query->order('pos.ordering');
+        $this->jsmquery->clear();
+		$this->jsmquery->select('ppos.id AS value, pos.name AS text, ppos.position_id as position_id');
+		$this->jsmquery->from('#__sportsmanagement_position AS pos');
+		$this->jsmquery->join('INNER', '#__sportsmanagement_project_position AS ppos ON ppos.position_id = pos.id');
+		$this->jsmquery->where('ppos.project_id = ' . (int) $project_id);
+		$this->jsmquery->where('pos.persontype = ' . (int) $persontype);
+		$this->jsmquery->order('pos.ordering');
 
 		try
 		{
-			Factory::getDbo()->setQuery($query);
+			Factory::getDbo()->setQuery($this->jsmquery);
 			$result = Factory::getDbo()->loadObjectList();
 
 			foreach ($result as $position)
@@ -167,8 +155,8 @@ class sportsmanagementModelPositions extends JSMModelList
 		}
 		catch (Exception $e)
 		{
-			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
-			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), 'error');
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+            $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 			$result = false;
 		}
 
@@ -184,20 +172,14 @@ class sportsmanagementModelPositions extends JSMModelList
 	 */
 	function getPositions($project_id)
 	{
-		$option = Factory::getApplication()->input->getCmd('option');
-		$app    = Factory::getApplication();
-		$query  = Factory::getDbo()->getQuery(true);
+        $this->jsmquery->clear();
+		$this->jsmquery->select('pp.id AS value,name AS text');
+		$this->jsmquery->from('#__sportsmanagement_position AS p');
+		$this->jsmquery->join('LEFT', '#__sportsmanagement_project_position AS pp ON pp.position_id = p.id');
+		$this->jsmquery->where('pp.project_id = ' . $project_id);
+		$this->jsmquery->order('p.ordering');
 
-		// Select some fields
-		$query->select('pp.id AS value,name AS text');
-
-		// From the table
-		$query->from('#__sportsmanagement_position AS p');
-		$query->join('LEFT', '#__sportsmanagement_project_position AS pp ON pp.position_id = p.id');
-		$query->where('pp.project_id = ' . $project_id);
-		$query->order('p.ordering');
-
-		Factory::getDbo()->setQuery($query);
+		Factory::getDbo()->setQuery($this->jsmquery);
 
 		if (!$result = Factory::getDbo()->loadObjectList())
 		{

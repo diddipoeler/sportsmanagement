@@ -50,7 +50,9 @@ class sportsmanagementModelagegroups extends JSMModelList
 			'obj.modified',
 			'obj.modified_by',
 			'obj.checked_out',
-			'obj.checked_out_time'
+			'obj.checked_out_time',
+            'state',
+            'search_nation'
 		);
 		parent::__construct($config);
 		$getDBConnection = sportsmanagementHelper::getDBConnection();
@@ -65,7 +67,7 @@ class sportsmanagementModelagegroups extends JSMModelList
 	function getListQuery()
 	{
 		$this->jsmquery->clear();
-		$this->jsmquery->select(implode(",", $this->filter_fields));
+		$this->jsmquery->select('obj.*');
 		$this->jsmquery->select('uc.name AS editor');
 		$this->jsmquery->from('#__sportsmanagement_agegroup as obj');
 		$this->jsmquery->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = obj.sportstype_id');
