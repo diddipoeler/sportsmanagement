@@ -60,9 +60,9 @@ class sportsmanagementViewRosteralltime extends sportsmanagementView
 		$this->sortDirection = $this->state->get('filter_order_Dir');
 		$this->sortColumn    = $this->state->get('filter_order');
         
-        $this->tips = sportsmanagementModelRosteralltime::$tips;
-        $this->warnings = sportsmanagementModelRosteralltime::$warnings;
-        $this->notes = sportsmanagementModelRosteralltime::$notes;
+        $this->tips = sportsmanagementModelRosteralltime::$_tips;
+        $this->warnings = sportsmanagementModelRosteralltime::$_warnings;
+        $this->notes = sportsmanagementModelRosteralltime::$_notes;
 
 	}
 
