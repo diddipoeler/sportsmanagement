@@ -51,7 +51,7 @@ class sportsmanagementModelteamplayers extends JSMModelList
 			'ppl.picture',
 			'ppl.id',
 			'tp.market_value',
-			'tp.jerseynumber'
+			'tp.jerseynumber','state'
 		);
 		parent::__construct($config);
 		$getDBConnection = sportsmanagementHelper::getDBConnection();

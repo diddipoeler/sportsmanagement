@@ -41,7 +41,7 @@ class sportsmanagementModelDivisions extends JSMModelList
 			'dv.alias',
 			'dv.id',
 			'dv.ordering',
-			'dv.picture'
+			'dv.picture','state'
 		);
 		parent::__construct($config);
 		$getDBConnection = sportsmanagementHelper::getDBConnection();

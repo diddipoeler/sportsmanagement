@@ -45,7 +45,7 @@ class sportsmanagementModelRounds extends JSMModelList
 			'r.round_date_first',
 			'r.round_date_last',
 			'r.id',
-			'r.ordering'
+			'r.ordering','state','tournement'
 		);
 		parent::__construct($config);
 		parent::setDbo($this->jsmdb);

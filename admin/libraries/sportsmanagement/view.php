@@ -305,6 +305,12 @@ if (preg_match("/ordering/i", $this->sortColumn)) {
             case 'clubnames':
 
 //            case 'smquotes':
+
+case 'divisions':
+case 'projectreferees':
+case 'projectteams':				
+case 'rounds':
+case 'teamplayers':
             
             $this->filterForm    = $this->model->getFilterForm();
             $this->activeFilters = $this->model->getActiveFilters();
