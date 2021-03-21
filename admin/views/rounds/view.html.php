@@ -44,7 +44,7 @@ class sportsmanagementViewRounds extends sportsmanagementView
 		$this->populate = 0;
 		$tpl            = null;
 		/** dadurch werden die spaltenbreiten optimiert */
-		$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/form_control.css', 'text/css');
+		$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/form_control.css');
         
         switch ($this->getLayout())
 		{
