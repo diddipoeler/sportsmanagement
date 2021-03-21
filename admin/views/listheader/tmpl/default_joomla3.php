@@ -226,6 +226,8 @@ case 'smquotes':
 case 'teamplayers':				
 case 'teams':		
 case 'sportstypes':
+case 'rosterpositions':
+case 'clubnames':
 echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 break;
 case 'githubinstall':

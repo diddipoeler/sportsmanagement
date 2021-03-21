@@ -302,7 +302,7 @@ if (preg_match("/ordering/i", $this->sortColumn)) {
 
 //            case 'extrafields':
 //            case 'statistics':
-//            case 'clubnames':
+            case 'clubnames':
 
 //            case 'smquotes':
             

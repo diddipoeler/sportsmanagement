@@ -76,6 +76,9 @@ case 'smquotes':
 case 'teamplayers':
 case 'teams':
 case 'sportstypes':
+
+case 'rosterpositions':
+case 'clubnames':
 /** such und filterfunktionen */
 echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 //echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this), JPATH_COMPONENT_ADMINISTRATOR . '/layouts');

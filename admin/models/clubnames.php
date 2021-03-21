@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 
@@ -50,7 +46,7 @@ class sportsmanagementModelclubnames extends JSMModelList
 			'obj.modified_by',
 			'obj.ordering',
 			'obj.checked_out',
-			'obj.checked_out_time'
+			'obj.checked_out_time','state','search_nation'
 		);
 		parent::__construct($config);
 		parent::setDbo($this->jsmdb);
@@ -64,13 +60,8 @@ class sportsmanagementModelclubnames extends JSMModelList
 	 */
 	function getListQuery()
 	{
-		// Create a new query object.
 		$this->jsmquery->clear();
-
-		// Select some fields
-		$this->jsmquery->select(implode(",", $this->filter_fields));
-
-		// From table
+		$this->jsmquery->select('obj.*');
 		$this->jsmquery->from('#__sportsmanagement_club_names as obj');
 		$this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
 
@@ -107,18 +98,11 @@ class sportsmanagementModelclubnames extends JSMModelList
 	 */
 	function getClubNames($country = '')
 	{
-		// Create a new query object.
 		$this->jsmquery->clear();
-
-		// Select some fields
 		$this->jsmquery->select('name,name_long');
-
-		// From table
 		$this->jsmquery->from('#__sportsmanagement_club_names');
 
-		/**
-		 * wenn das land mitegegeben wurde
-		 */
+		/** wenn das land mitegegeben wurde */
 		if ($country)
 		{
 			$this->jsmquery->where('country LIKE ' . $this->jsmdb->Quote('%' . $country . '%'));
@@ -153,22 +137,13 @@ class sportsmanagementModelclubnames extends JSMModelList
 			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . $this->context . ''), '');
 			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . ''), '');
 		}
-
-		// Load the filter state.
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
-		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string');
-		$this->setState('filter.state', $published);
-		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '');
-		$this->setState('filter.search_nation', $temp_user_request);
-		$value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
-		$this->setState('list.limit', $value);
-
-		// List state information.
-		$value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
-		$this->setState('list.start', $value);
-
-		// Filter.order
+        $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array(), 'array');
+        
+        $this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
+		$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
+		$this->setState('filter.search_nation', $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', ''));
+        $this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
+		$this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
 		$orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
 
 		if (!in_array($orderCol, $this->filter_fields))
