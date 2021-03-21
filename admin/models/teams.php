@@ -50,7 +50,7 @@ class sportsmanagementModelTeams extends JSMModelList
 			't.checked_out',
 			't.checked_out_time',
 			't.agegroup_id',
-			'ag.name'
+			'ag.name','state','search_nation','search_agegroup','sports_type'
 		);
 		parent::__construct($config);
 

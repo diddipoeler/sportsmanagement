@@ -294,16 +294,17 @@ if (preg_match("/ordering/i", $this->sortColumn)) {
             case 'eventtypes':
             case 'agegroups':
 
-//            case 'clubs':
-//            case 'teams':
-//            case 'players':
-//            case 'playgrounds':
-//            case 'rosterpositions':
+            case 'clubs':
+            case 'teams':
+            case 'players':
+            case 'playgrounds':
+            case 'rosterpositions':
 
-//            case '':
-//            case '':
-//            case '':
-//            case '':
+//            case 'extrafields':
+//            case 'statistics':
+//            case 'clubnames':
+
+//            case 'smquotes':
             
             $this->filterForm    = $this->model->getFilterForm();
             $this->activeFilters = $this->model->getActiveFilters();
