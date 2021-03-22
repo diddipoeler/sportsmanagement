@@ -4,7 +4,7 @@
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage fields
- * @file       projectpositionlist.php
+ * @file       projectdivisionlist.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
@@ -20,7 +20,7 @@ use Joomla\CMS\Filesystem\Folder;
 FormHelper::loadFieldClass('list');
 
 /**
- * FormFieldprojectpositionlist
+ * JFormFieldprojectdivisionlist
  *
  * @package
  * @author    Dieter Plöger
@@ -28,14 +28,14 @@ FormHelper::loadFieldClass('list');
  * @version   $Id$
  * @access    public
  */
-class JFormFieldprojectpositionlist extends \JFormFieldList
+class JFormFieldprojectdivisionlist extends \JFormFieldList
 {
 	/**
 	 * field type
 	 *
 	 * @var string
 	 */
-	public $type = 'projectpositionlist';
+	public $type = 'projectdivisionlist';
 
 	/**
 	 * Method to get the field options.
@@ -50,21 +50,21 @@ class JFormFieldprojectpositionlist extends \JFormFieldList
 		$this->jsmjinput = $this->jsmapp->input;
 		$this->jsmoption = $this->jsmjinput->getCmd('option');
 
-		$team_id         = $this->jsmapp->getUserState("$this->jsmoption.team_id", '0');
-		$persontype      = $this->jsmapp->getUserState("$this->jsmoption.persontype", '0');
-		$project_team_id = $this->jsmapp->getUserState("$this->jsmoption.project_team_id", '0');
+//		$team_id         = $this->jsmapp->getUserState("$this->jsmoption.team_id", '0');
+//		$persontype      = $this->jsmapp->getUserState("$this->jsmoption.persontype", '0');
+//		$project_team_id = $this->jsmapp->getUserState("$this->jsmoption.project_team_id", '0');
 		$pid             = $this->jsmapp->getUserState("$this->jsmoption.pid", '0');
 
 		$options   = array();
 		$select_id = Factory::getApplication()->input->getVar('id');
 		$db        = Factory::getDbo();
 		$query     = $db->getQuery(true);
-		$query->select('pp.id AS value, pos.name AS text');
-		$query->from('#__sportsmanagement_position as pos');
-		$query->join('INNER', '#__sportsmanagement_project_position AS pp ON pp.position_id = pos.id');
-		$query->join('INNER', '#__sportsmanagement_sports_type AS s ON s.id = pos.sports_type_id');
-		$query->join('INNER', '#__sportsmanagement_person_project_position AS ppp ON pp.project_id = ppp.project_id');
-		$query->where('pp.project_id = ' . $pid);
+		$query->select('pos.id AS value, pos.name AS text');
+		$query->from('#__sportsmanagement_division as pos');
+//		$query->join('INNER', '#__sportsmanagement_project_position AS pp ON pp.position_id = pos.id');
+//		$query->join('INNER', '#__sportsmanagement_sports_type AS s ON s.id = pos.sports_type_id');
+//		$query->join('INNER', '#__sportsmanagement_person_project_position AS ppp ON pp.project_id = ppp.project_id');
+		$query->where('pos.project_id = ' . $pid);
 		$query->order('pos.ordering,pos.name');
 		$query->group('pos.id');
 		$db->setQuery($query);
