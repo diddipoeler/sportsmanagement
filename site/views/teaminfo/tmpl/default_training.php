@@ -1,6 +1,6 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage teaminfo
@@ -95,11 +95,7 @@ echo $this->loadTemplate('jsm_tips');
 	else
 	{
 		?>
-        <div class="bg-warning alert alert-warning">
-			<?php
-			//echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_NODATA');
-			?>
-        </div>
+
 		<?php
 	}
 	?>
