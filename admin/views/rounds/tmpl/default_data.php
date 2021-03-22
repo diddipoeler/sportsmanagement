@@ -56,6 +56,12 @@ JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($t
 				echo HTMLHelper::_('grid.sort', 'JSTATUS', 'r.published', $this->sortDirection, $this->sortColumn);
 				?>
             </th>
+<th width="10%">
+			<?php
+			echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ORDERING', 'obj.ordering', $this->sortDirection, $this->sortColumn);
+			echo HTMLHelper::_('grid.order', $this->items, 'filesave.png', 'rounds.saveorder');
+			?>
+        </th>		
             <th width="5%"><?php echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ID', 'r.id', $this->sortDirection, $this->sortColumn); ?></th>
         </tr>
         </thead>
@@ -257,6 +263,11 @@ JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($t
 
 
                 </td>
+<td class="order" id="defaultdataorder">
+<?php
+echo $this->loadTemplate('data_order');
+?>
+</td>		    
                 <td class="center"><?php echo $this->item->id; ?></td>
             </tr>
 			<?php
