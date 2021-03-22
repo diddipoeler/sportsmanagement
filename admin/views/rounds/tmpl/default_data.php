@@ -58,7 +58,7 @@ JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($t
             </th>
 <th width="10%">
 			<?php
-			echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ORDERING', 'obj.ordering', $this->sortDirection, $this->sortColumn);
+			echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ORDERING', 'r.ordering', $this->sortDirection, $this->sortColumn);
 			echo HTMLHelper::_('grid.order', $this->items, 'filesave.png', 'rounds.saveorder');
 			?>
         </th>		
