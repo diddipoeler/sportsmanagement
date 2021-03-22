@@ -150,7 +150,15 @@ state = val.address.state;
 municipality = val.address.municipality;	
 
 dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME").val(state);
+
+if ( municipality )
+{
 dpjQuery("#jform_state").val(municipality);	
+}
+if ( state )
+{
+dpjQuery("#jform_state").val(state);	
+}	
 
 if ( val.address.county )
 {
