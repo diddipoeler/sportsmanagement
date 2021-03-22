@@ -15,6 +15,11 @@ use Joomla\CMS\Language\Text;
 $this->notes = array();
 $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING');
 echo $this->loadTemplate('jsm_notes');
+if ( empty($this->trainingData) )
+{
+$this->tips[] = Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_NODATA');	
+}
+echo $this->loadTemplate('jsm_tips');
 ?>
 <table class="table table-striped">
     <thead>
@@ -92,7 +97,7 @@ echo $this->loadTemplate('jsm_notes');
 		?>
         <div class="bg-warning alert alert-warning">
 			<?php
-			echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_NODATA');
+			//echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_NODATA');
 			?>
         </div>
 		<?php
