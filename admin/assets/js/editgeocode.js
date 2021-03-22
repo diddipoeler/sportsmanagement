@@ -151,11 +151,11 @@ municipality = val.address.municipality;
 
 dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME").val(state);
 
-if ( municipality )
+if ( typeof municipality != 'undefined' )
 {
 dpjQuery("#jform_state").val(municipality);	
 }
-if ( state )
+if ( typeof state != 'undefined' )
 {
 dpjQuery("#jform_state").val(state);	
 }	
