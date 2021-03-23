@@ -279,6 +279,8 @@ if ( $config->get('debug') )
 					$data['id']         = 0;
 					$data['project_id'] = $post['pid'];
 					$data['roundcode']  = $post['next_roundcode'];
+					$data['name'] = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_MATCHES');
+					$data['alias'] = OutputFilter::stringURLSafe($data['name']);
 				}
 				break;
 			/** projektteam */
