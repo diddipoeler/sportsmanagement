@@ -56,11 +56,16 @@ class sportsmanagementViewProject extends sportsmanagementView
 		}
 		
 $endung = strtolower(File::getExt($this->item->picture));
-$name = File::stripExt($this->item->picture);
-$safefilename = File::makeSafe($this->item->picture);		
+$name = File::getName($this->item->picture);
+//$safefilename = File::makeSafe($this->item->picture);		
 //echo ' endung <br><pre>'.print_r($endung ,true).'</pre>';
-//echo ' $name <br><pre>'.print_r($name ,true).'</pre>';
-//echo ' $safefilename <br><pre>'.print_r($safefilename ,true).'</pre>';
+//echo ' name <br><pre>'.print_r($name ,true).'</pre>';
+//echo ' safefilename <br><pre>'.print_r($safefilename ,true).'</pre>';
+      if ( !$name )
+      {
+      $this->item->picture = 'images/com_sportsmanagement/database/placeholders/placeholder_450_2.png';  
+        $this->form->setValue('picture', null, $this->item->picture);
+      }
 		
 		Factory::getApplication()->input->set('hidemainmenu', true);
 
