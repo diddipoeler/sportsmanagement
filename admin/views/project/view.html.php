@@ -13,6 +13,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Filesystem\File;
 
 jimport('joomla.html.parameter.element.timezones');
 
@@ -53,7 +54,14 @@ class sportsmanagementViewProject extends sportsmanagementView
 
 			return;
 		}
-
+		
+$endung = strtolower(File::getExt($this->item->picture));
+$name = File::stripExt($this->item->picture);
+$safefilename = File::makeSafe($this->item->picture);		
+//echo ' endung <br><pre>'.print_r($endung ,true).'</pre>';
+//echo ' $name <br><pre>'.print_r($name ,true).'</pre>';
+//echo ' $safefilename <br><pre>'.print_r($safefilename ,true).'</pre>';
+		
 		Factory::getApplication()->input->set('hidemainmenu', true);
 
 		$this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
