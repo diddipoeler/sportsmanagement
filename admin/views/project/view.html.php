@@ -66,17 +66,24 @@ $name = File::getName($this->item->picture);
       $this->item->picture = 'images/com_sportsmanagement/database/placeholders/placeholder_450_2.png';  
         $this->form->setValue('picture', null, $this->item->picture);
       }
+if ( !$this->item->admin )
+{
+$this->form->setValue('admin', null, $this->user->id);
+}
+if ( !$this->item->editor )
+{
+$this->form->setValue('editor', null, $this->user->id);
+}
+		
 		
 		Factory::getApplication()->input->set('hidemainmenu', true);
 
 		$this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
 		$this->form->setValue('agegroup_id', 'request', $this->item->agegroup_id);
 
-		$extended       = sportsmanagementHelper::getExtended($this->item->extended, 'project');
-		$this->extended = $extended;
+		$this->extended       = sportsmanagementHelper::getExtended($this->item->extended, 'project');
+		$this->extendeduser       = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'project');
 
-		$extendeduser       = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'project');
-		$this->extendeduser = $extendeduser;
 
 		$isNew = $this->item->id == 0;
 
