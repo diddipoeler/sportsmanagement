@@ -309,6 +309,10 @@ class com_sportsmanagementInstallerScript
 	function preflight($route,  $adapter)
 	{
 
+echo '<p> Aktion ' .  $route . '</p>';
+echo '<p> neue Version' .  $this->release . '</p>';
+echo '<p> alte Version' .  $this->oldRelease . '</p>';
+
 		if ($route == 'update')
 		{
 			$this->oldRelease = $this->getParam('version');
