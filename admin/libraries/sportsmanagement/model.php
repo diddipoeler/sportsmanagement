@@ -254,16 +254,21 @@ if ( $config->get('debug') )
 				break;
 			/** runde */
 			case 'round':
-				if ($data['round_date_first'] != '00-00-0000' && $data['round_date_first'] != '')
-				{
-					$data['round_date_first'] = sportsmanagementHelper::convertDate($data['round_date_first'], 0);
-				}
+			if ($data['round_date_first'] != '00-00-0000' && $data['round_date_first'] != '')
+			{
+			$data['round_date_first'] = sportsmanagementHelper::convertDate($data['round_date_first'], 0);
+			}
 
-				if ($data['round_date_last'] != '00-00-0000' && $data['round_date_last'] != '')
-				{
-					$data['round_date_last'] = sportsmanagementHelper::convertDate($data['round_date_last'], 0);
-				}
-				break;
+			if ($data['round_date_last'] != '00-00-0000' && $data['round_date_last'] != '')
+			{
+			$data['round_date_last'] = sportsmanagementHelper::convertDate($data['round_date_last'], 0);
+			}
+			if ( !$data['name'] )
+			{
+			$data['name'] = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_MATCHES');
+			$data['alias'] = OutputFilter::stringURLSafe($data['name']);
+			}
+			break;
 			/** runden */
 			case 'rounds':
 				$data['round_date_first'] = sportsmanagementHelper::convertDate($data['round_date_first'], 0);
@@ -274,6 +279,8 @@ if ( $config->get('debug') )
 					$data['id']         = 0;
 					$data['project_id'] = $post['pid'];
 					$data['roundcode']  = $post['next_roundcode'];
+					$data['name'] = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_MATCHES');
+					$data['alias'] = OutputFilter::stringURLSafe($data['name']);
 				}
 				break;
 			/** projektteam */
@@ -797,34 +804,36 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 
 				if ($this->jsmjinput->get('task') == 'save2copy')
 				{
-					/** differenzierung zwischen den views */
-					switch ($this->jsmview)
-					{
-						case 'project':
-							$this->jsmquery->clear();
-							$this->jsmquery->select('*');
-							$this->jsmquery->from('#__sportsmanagement_division');
-							$this->jsmquery->where('project_id =' . $project_old);
-							$this->jsmdb->setQuery($this->jsmquery);
-							$result = $this->jsmdb->loadObjectList();
+				/** differenzierung zwischen den views */
+				switch ($this->jsmview)
+				{
+				case 'project':
+				if ( $data["project_type"] == 'DIVISIONS_LEAGUE' )
+				{
+				$this->jsmquery->clear();
+				$this->jsmquery->select('*');
+				$this->jsmquery->from('#__sportsmanagement_division');
+				$this->jsmquery->where('project_id =' . $project_old);
+				$this->jsmdb->setQuery($this->jsmquery);
+				$result = $this->jsmdb->loadObjectList();
 
-							foreach ($result as $field)
-							{
-								$profile             = new stdClass;
-								$profile->project_id = $id;
-								$profile->name       = $field->name;
-								$profile->alias      = $field->alias;
-								$profile->shortname  = $field->shortname;
-								$profile->published  = $field->published;
-								$profile->ordering   = $field->ordering;
-								$insertresult = $this->jsmdb->insertObject('#__sportsmanagement_division', $profile);
-							}
-
-							break;
-						default:
-							break;
-					}
+				foreach ($result as $field)
+				{
+				$profile             = new stdClass;
+				$profile->project_id = $id;
+				$profile->name       = $field->name;
+				$profile->alias      = $field->alias;
+				$profile->shortname  = $field->shortname;
+				$profile->published  = $field->published;
+				$profile->ordering   = $field->ordering;
+				$insertresult = $this->jsmdb->insertObject('#__sportsmanagement_division', $profile);
 				}
+				}
+				break;
+				default:
+				break;
+				}
+			}
 			}
 
 			/** differenzierung zwischen den views */

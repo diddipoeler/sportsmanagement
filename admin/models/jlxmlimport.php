@@ -52,7 +52,8 @@ require_once JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'components' . DIRECTOR
  * @version   2013
  * @access    public
  */
-class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
+//class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
+class sportsmanagementModelJLXMLImport extends JSMModelAdmin
 {
 	var $_datas = array();
 	var $_success_text = array();

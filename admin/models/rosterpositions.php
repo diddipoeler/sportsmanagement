@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -11,10 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
 
@@ -45,13 +40,18 @@ class sportsmanagementModelrosterpositions extends ListModel
 			'obj.country',
 			'obj.alias',
 			'obj.id',
-			'obj.ordering'
+			'obj.ordering','state'
 		);
 		parent::__construct($config);
 		$getDBConnection = sportsmanagementHelper::getDBConnection();
 		parent::setDbo($getDBConnection);
 	}
 
+	/**
+	 * sportsmanagementModelrosterpositions::getRosterHome()
+	 * 
+	 * @return
+	 */
 	function getRosterHome()
 	{
 		$bildpositionenhome                                  = array();
@@ -81,6 +81,11 @@ class sportsmanagementModelrosterpositions extends ListModel
 		return $bildpositionenhome;
 	}
 
+	/**
+	 * sportsmanagementModelrosterpositions::getRosterAway()
+	 * 
+	 * @return
+	 */
 	function getRosterAway()
 	{
 		$bildpositionenaway                                  = array();
@@ -136,6 +141,11 @@ class sportsmanagementModelrosterpositions extends ListModel
 		parent::populateState('obj.name', 'asc');
 	}
 
+	/**
+	 * sportsmanagementModelrosterpositions::getListQuery()
+	 * 
+	 * @return
+	 */
 	protected function getListQuery()
 	{
 		$app    = Factory::getApplication();

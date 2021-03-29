@@ -51,7 +51,7 @@ class sportsmanagementModelProjectReferees extends JSMModelList
 			'pref.project_position_id',
 			'pref.ordering',
 			'u.name AS editor',
-			'pref.picture'
+			'pref.picture','state','search_nation'
 		);
 		parent::__construct($config);
 		$getDBConnection = sportsmanagementHelper::getDBConnection();
@@ -256,9 +256,7 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERR
 		$this->_season_id       = $this->jsmapp->getUserState("$this->jsmoption.season_id", '0');
 		$this->_team_id         = Factory::getApplication()->input->getVar('team_id');
 		$this->_project_team_id = Factory::getApplication()->input->getVar('project_team_id');
-
-		//echo '_season_id<pre>'.print_r($this->_season_id,true).'</pre>';
-		
+	
 		if (!$this->_team_id)
 		{
 			$this->_team_id = $this->jsmapp->getUserState("$this->jsmoption.team_id", '0');
@@ -270,13 +268,12 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERR
 		}
 
 		$this->jsmquery->clear();
-		$this->jsmquery->select(implode(",", $this->filter_fields) . ',tp.person_id as person_id,tp.persontype,tp.season_id');
+		$this->jsmquery->select('p.*,tp.person_id as person_id,tp.persontype,tp.season_id');
 		$this->jsmquery->select('tp.id as season_person_id');
 		$this->jsmquery->from('#__sportsmanagement_person AS p');
 		$this->jsmquery->join('INNER', '#__sportsmanagement_season_person_id AS tp on tp.person_id = p.id');
 		$this->jsmquery->join('INNER', '#__sportsmanagement_project_referee AS pref on pref.person_id = tp.id');
 		$this->jsmquery->join('LEFT', '#__users AS u ON u.id = pref.checked_out');
-		//$this->jsmquery->where('tp.persontype = 3');
 		$this->jsmquery->where('p.published = 1');
 		if ( $this->_season_id )
 		{

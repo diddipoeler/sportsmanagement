@@ -31,22 +31,6 @@ class sportsmanagementViewPlaygrounds extends sportsmanagementView
 {
 
 	/**
-	 * A \JForm instance with filter fields.
-	 *
-	 * @var    \JForm
-	 * @since  3.6.3
-	 */
-	public $filterForm;
-
-	/**
-	 * An array with active filters.
-	 *
-	 * @var    array
-	 * @since  3.6.3
-	 */
-	public $activeFilters;
-	
-	/**
 	 * sportsmanagementViewPlaygrounds::init()
 	 *
 	 * @return void
@@ -75,11 +59,6 @@ class sportsmanagementViewPlaygrounds extends sportsmanagementView
 		);
 
 		$this->lists = $lists;
-		$this->filterForm    = $this->model->getFilterForm();
-		$this->activeFilters = $this->model->getActiveFilters();
-	
-//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>'.print_r($this->filterForm ,true).'</pre>' ), Log::NOTICE, 'jsmerror');		
-//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>'.print_r($this->activeFilters ,true).'</pre>' ), Log::NOTICE, 'jsmerror');		
 
 	}
 
@@ -96,20 +75,6 @@ class sportsmanagementViewPlaygrounds extends sportsmanagementView
 		ToolbarHelper::addNew('playground.add');
 		ToolbarHelper::custom('playground.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
 		ToolbarHelper::archiveList('playground.export', Text::_('JTOOLBAR_EXPORT'));
-
-/*
-		$toolbar = Toolbar::getInstance('toolbar');
-        $dropdown = $toolbar->dropdownButton('status-group')
-				->text('JTOOLBAR_CHANGE_STATUS')
-				->toggleSplit(false)
-				->icon('fas fa-ellipsis-h')
-				->buttonClass('btn btn-action')
-				->listCheck(true);
-
-			$childBar = $dropdown->getChildToolbar();
-        $childBar->publish('users.activate', 'COM_USERS_TOOLBAR_ACTIVATE', true);
-			$childBar->unpublish('users.block', 'COM_USERS_TOOLBAR_BLOCK', true);
-*/
 		parent::addToolbar();
 	}
 }

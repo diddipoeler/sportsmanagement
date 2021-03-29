@@ -131,23 +131,21 @@ class sportsmanagementModelclub extends JSMModelAdmin
 	 */
 	function teamsofclub($club_id)
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$db     = sportsmanagementHelper::getDBConnection();
-		$query  = $db->getQuery(true);
-
-		$query->clear();
-		$query->select('t.id,t.name,t.club_id');
-		$query->from('#__sportsmanagement_team AS t');
-		$query->where('t.club_id = ' . $club_id);
-		$db->setQuery($query);
-		$teamsofclub = $db->loadObjectList();
-
-		return $teamsofclub;
+		$this->jsmquery->clear();
+		$this->jsmquery->select('t.id,t.name,t.club_id');
+		$this->jsmquery->from('#__sportsmanagement_team AS t');
+		$this->jsmquery->where('t.club_id = ' . $club_id);
+		$this->jsmdb->setQuery($this->jsmquery);
+        try{
+		$teamsofclub = $this->jsmdb->loadObjectList();
+        return $teamsofclub;
+        }
+		catch (Exception $e)
+		{
+        $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+        $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+        return false;
+		}
 
 	}
 

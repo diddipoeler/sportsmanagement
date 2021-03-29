@@ -31,21 +31,6 @@ use Joomla\CMS\Log\Log;
  */
 class sportsmanagementViewRounds extends sportsmanagementView
 {
-	/**
-	 * A \JForm instance with filter fields.
-	 *
-	 * @var    \JForm
-	 * @since  3.6.3
-	 */
-	public $filterForm;
-
-	/**
-	 * An array with active filters.
-	 *
-	 * @var    array
-	 * @since  3.6.3
-	 */
-	public $activeFilters;
 
 	/**
 	 * sportsmanagementViewRounds::init()
@@ -59,7 +44,7 @@ class sportsmanagementViewRounds extends sportsmanagementView
 		$this->populate = 0;
 		$tpl            = null;
 		/** dadurch werden die spaltenbreiten optimiert */
-		$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/form_control.css', 'text/css');
+		$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/form_control.css');
         
         switch ($this->getLayout())
 		{
@@ -107,17 +92,6 @@ class sportsmanagementViewRounds extends sportsmanagementView
 		$this->lists    = $lists;
 		$this->matchday = $this->items;
 		$this->project  = $project;
-		
-try
-{		
-$this->filterForm    = $this->model->getFilterForm();
-$this->activeFilters = $this->model->getActiveFilters();
-}
-catch (Exception $e)
-{
-Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
-Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');	
-}
 		
 	}
 

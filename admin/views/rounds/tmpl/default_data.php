@@ -14,12 +14,26 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Uri\Uri;
 
 $this->saveOrder = $this->sortColumn == 'r.ordering';
+if ($this->saveOrder && !empty($this->items))
+{
+$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task='.$this->view.'.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{    
+HTMLHelper::_('draggablelist.draggable');
+}
+else
+{
+JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl,$this->saveOrderButton);    
+}
+}
 ?>
-<div class="table-responsive">
+<div class="table-responsive" id="editcell">
     <legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_LEGEND', '<i>' . $this->project->name . '</i>'); ?></legend>
-    <table class="<?php echo $this->table_data_class; ?>">
+    <table class="<?php echo $this->table_data_class; ?>" id="<?php echo $this->view; ?>list">
         <thead>
         <tr>
             <th width="1%"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
@@ -44,6 +58,12 @@ $this->saveOrder = $this->sortColumn == 'r.ordering';
 				echo HTMLHelper::_('grid.sort', 'JSTATUS', 'r.published', $this->sortDirection, $this->sortColumn);
 				?>
             </th>
+<th width="10%">
+			<?php
+			echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ORDERING', 'r.ordering', $this->sortDirection, $this->sortColumn);
+			echo HTMLHelper::_('grid.order', $this->items, 'filesave.png', 'rounds.saveorder');
+			?>
+        </th>		
             <th width="5%"><?php echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ID', 'r.id', $this->sortDirection, $this->sortColumn); ?></th>
         </tr>
         </thead>
@@ -55,8 +75,8 @@ $this->saveOrder = $this->sortColumn == 'r.ordering';
         </tr>
         </tfoot>
 
-        <tbody>
-		<?php
+         <tbody <?php if ( $this->saveOrder && version_compare(substr(JVERSION, 0, 3), '4.0', 'ge') ) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($this->sortDirection); ?>" <?php endif; ?>>
+	<?php
 		foreach ($this->items as $this->count_i => $this->item)
 		{
 			$link1      = Route::_('index.php?option=com_sportsmanagement&task=round.edit&id=' . $this->item->id . '&pid=' . $this->project->id);
@@ -66,7 +86,7 @@ $this->saveOrder = $this->sortColumn == 'r.ordering';
 			$checked    = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'rounds.', $canCheckin);
 			$canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.round.' . $this->item->id) && $canCheckin;
 			?>
-            <tr class="row<?php echo $this->count_i % 2; ?>" >
+            <tr class="row<?php echo $this->count_i % 2; ?>" <?php echo $this->dragable_group; ?>>
                 <td class="center">
 					<?php
 					echo $this->pagination->getRowOffset($this->count_i); ?>
@@ -245,6 +265,11 @@ $this->saveOrder = $this->sortColumn == 'r.ordering';
 
 
                 </td>
+<td class="order" id="defaultdataorder">
+<?php
+echo $this->loadTemplate('data_order');
+?>
+</td>		    
                 <td class="center"><?php echo $this->item->id; ?></td>
             </tr>
 			<?php

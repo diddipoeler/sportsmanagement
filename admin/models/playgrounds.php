@@ -59,17 +59,10 @@ class sportsmanagementModelPlaygrounds extends JSMModelList
 	 */
 	function getListQuery()
 	{
-		// Select some fields
 		$this->jsmquery->select('v.*');
-
-		// From table
 		$this->jsmquery->from('#__sportsmanagement_playground as v');
-
-		// Join over the clubs
 		$this->jsmquery->select('c.name As club');
 		$this->jsmquery->join('LEFT', '#__sportsmanagement_club AS c ON c.id = v.club_id');
-
-		// Join over the users for the checked out user.
 		$this->jsmquery->select('uc.name AS editor');
 		$this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = v.checked_out');
 
@@ -109,7 +102,7 @@ if ( $picture )
 {
 $this->jsmquery->select('picture as playgroundpicture');	
 }
-		// From table
+
 		$this->jsmquery->from('#__sportsmanagement_playground');
 		$this->jsmquery->order('text ASC');
 

@@ -156,7 +156,10 @@ $optteams = ' allowClear: true,
 				$cell_count++;
 				?>
                 <th>
-				<?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DIVISION', 'd.name', $this->sortDirection, $this->sortColumn);
+				<?php 
+                
+                echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DIVISION', 'd.name', $this->sortDirection, $this->sortColumn);
+                /*
 				echo '<br>' . HTMLHelper::_(
 						'select.genericlist',
 						$this->lists['divisions'],
@@ -164,6 +167,7 @@ $optteams = ' allowClear: true,
 						'class="inputbox" size="1" onchange="window.location.href=window.location.href.split(\'&division=\')[0]+\'&division=\'+this.value"',
 						'value', 'text', $this->division
 					);
+                    */
 				?>
                 </th><?php
 			}

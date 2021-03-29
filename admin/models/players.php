@@ -54,7 +54,7 @@ class sportsmanagementModelplayers extends JSMModelList
 			'pl.checked_out',
 			'pl.checked_out_time',
 			'pl.agegroup_id',
-			'ag.name'
+			'ag.name','state','sports_type','search_agegroup','search_nation'
 		);
 
 		parent::__construct($config);
@@ -82,9 +82,6 @@ class sportsmanagementModelplayers extends JSMModelList
         $birthday = $season_name.'-01-01';  
         }
         
-        //Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $this->_season_id), Log::NOTICE, 'jsmerror');
-        //Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $birthday), Log::NOTICE, 'jsmerror');
-
 		$this->jsmquery->clear();
 		$this->jsmsubquery1->clear();
 		$this->jsmquery->select('pl.*');

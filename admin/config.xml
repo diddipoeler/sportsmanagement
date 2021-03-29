@@ -679,6 +679,34 @@ filter="safehtml"/>
 <fieldset name="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_FRONTEND"
   label="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_FRONTEND">
 
+<field type="extensionsubtitle" title="Tips/Warnungen/Fehler anzeigen" color="#2672a6" />
+<field name="show_jsm_tips_front" type="extensionradiobutton" default="1"
+class="radio btn-group btn-group-yesno"
+label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_TIPS" 
+description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_TIPS_DESC">
+	<option value="0">JNO</option>
+	<option value="1">JYES</option>
+</field>
+<field name="show_jsm_notes_front" type="extensionradiobutton" default="1"
+class="radio btn-group btn-group-yesno"
+label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_NOTES" 
+description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_NOTES_DESC">
+	<option value="0">JNO</option>
+	<option value="1">JYES</option>
+</field>
+<field name="show_jsm_warnings_front" type="extensionradiobutton" default="1"
+class="radio btn-group btn-group-yesno"
+label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_WARNINGS" 
+description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_WARNINGS_DESC">
+	<option value="0">JNO</option>
+	<option value="1">JYES</option>
+</field>
+
+
+
+
+
+
 <field name="force_ranking_cache" type="extensionradiobutton" default="0"
 class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_FORCE_RANKING_CACHE" description="COM_SPORTSMANAGEMENT_SETTINGS_FORCE_RANKING_CACHE_DESC">

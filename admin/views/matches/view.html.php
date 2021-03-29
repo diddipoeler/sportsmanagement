@@ -88,7 +88,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
 		$ress = sportsmanagementHelper::getRoundsOptions($this->project_id, 'ASC', true);
 
 		/** dadurch werden die spaltenbreiten optimiert */
-		$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/form_control.css', 'text/css');
+		$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/form_control.css');
 
 		foreach ($ress as $res)
 		{

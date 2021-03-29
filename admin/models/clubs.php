@@ -64,7 +64,6 @@ class sportsmanagementModelClubs extends JSMModelList
 			'search_nation','geo_daten','standard_picture',
 		);
 		}
-        // 'state','search_nation','geo_daten','standard_picture',
 		parent::__construct($config);
 		parent::setDbo($this->jsmdb);
 
@@ -113,8 +112,7 @@ class sportsmanagementModelClubs extends JSMModelList
 		}
 
 $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array(), 'array');
-//echo 'jsmapp<pre>'.print_r($list,true).'</pre>';
-//echo 'state<pre>'.print_r($this->state,true).'</pre>';      
+     
 		
       $this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
 		$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
