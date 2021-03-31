@@ -9,7 +9,7 @@ var windowObjectReference = null; // global variable
 var PreviousUrl; /* global variable which will store the
                     url currently in the secondary window */
 var projectname;
-
+var seasonnamealt;
 $.urlParam = function(name){
 	var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
 	return results[1] || 0;
@@ -35,7 +35,9 @@ console.log( "siteview : " +  siteview );
 if ( siteview == 'project' )  
 {
 projectname = jQuery("#jform_name").val();  
-console.log("projectname : " + projectname);	  
+console.log("projectname : " + projectname);	
+seasonnamealt = jQuery( "#jform_season_id option:selected" ).text();	
+console.log("seasonnamealt : " + seasonnamealt);	
 }
 	
 //console.log("bootstrap version : "+jQuery.fn.tooltip.Constructor.VERSION);
