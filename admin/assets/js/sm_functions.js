@@ -6,6 +6,15 @@ var vScrollPosition = jQuery(document).scrollTop(); //retrieve the document scro
 var hScrollPosition = jQuery(document).scrollLeft(); //retrieve the document scroll Left position
 
 
+function setseasonname()
+{
+var seasonname = jQuery( "#jform_season_id option:selected" ).text();
+console.log("seasonname : " + seasonname);
+	
+	
+}
+
+
 function change_alt_decision()
 {
 alert('hallo');	
