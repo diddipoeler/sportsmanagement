@@ -96,7 +96,7 @@ JARCHIVED</option>
 			label="COM_SPORTSMANAGEMENT_GLOBAL_SEASON"
 			description="COM_SPORTSMANAGEMENT_GLOBAL_SEASON_DESC"
 			required="true"
-			
+			onchange=""
 			validate="superiorzero">
 			<option
 				value="0">
