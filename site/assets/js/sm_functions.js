@@ -53,6 +53,7 @@ console.log("seasonname : " + seasonname);
 console.log("projectname : " + projectname);	
 var res = projectname.replace(seasonnamealt, seasonname);   
 console.log("res : " + res);  	
+jQuery("#jform_name").val(res); 	
 }
 
 
