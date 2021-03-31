@@ -51,7 +51,8 @@ var seasonname = jQuery( "#jform_season_id option:selected" ).text();
 //var projectname = jQuery("#jform_name").val();
 console.log("seasonname : " + seasonname);
 console.log("projectname : " + projectname);	
-	
+var res = projectname.replace(seasonnamealt, seasonname);   
+console.log("res : " + res);  	
 }
 
 
