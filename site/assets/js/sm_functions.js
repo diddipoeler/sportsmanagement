@@ -29,6 +29,15 @@ console.log("jquery version : "+jQuery().jquery);
 //    alert("Embedded block of JS here");
 });
 
+function setseasonname()
+{
+var seasonname = jQuery( "#jform_season_id option:selected" ).text();
+console.log("seasonname : " + seasonname);
+	
+	
+}
+
+
 function openRequestedSinglePopup(strUrl,Width,Height) {
 
 Width = (screen.width/2);
