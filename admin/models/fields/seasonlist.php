@@ -105,6 +105,9 @@ class JFormFieldseasonlist extends FormField
               case 'projects':
 			  $attribs .= 'onchange="this.form.submit();"';
 			  break;
+			case 'project':
+			$attribs .= 'onchange="javascript:setseasonname();"';
+			break;
 		  default:
 			  $attribs .= '';
 			  break;
