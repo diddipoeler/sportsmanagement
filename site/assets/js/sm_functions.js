@@ -9,6 +9,10 @@ var windowObjectReference = null; // global variable
 var PreviousUrl; /* global variable which will store the
                     url currently in the secondary window */
 
+$.urlParam = function(name){
+	var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+	return results[1] || 0;
+}
 
 jQuery(document).ready(function(){
 var windowWidth = jQuery(window).width(); //retrieve current window width
@@ -24,6 +28,10 @@ console.log("title : "+jQuery("title").text());
 console.log("current window width : "+windowWidth );
 console.log("current window height : "+windowHeight );
 console.log("jquery version : "+jQuery().jquery);
+
+var siteview = $.urlParam('view');	
+console.log( "siteview : " +  siteview );
+	
 //console.log("bootstrap version : "+jQuery.fn.tooltip.Constructor.VERSION);
 
 //    alert("Embedded block of JS here");
