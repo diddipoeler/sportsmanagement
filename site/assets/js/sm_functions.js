@@ -10,6 +10,7 @@ var PreviousUrl; /* global variable which will store the
                     url currently in the secondary window */
 var projectname;
 var seasonnamealt;
+var siteview ;
 $.urlParam = function(name){
 	var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
 	return results[1] || 0;
@@ -30,7 +31,8 @@ console.log("current window width : "+windowWidth );
 console.log("current window height : "+windowHeight );
 console.log("jquery version : "+jQuery().jquery);
 
-var siteview = $.urlParam('view');	
+//var siteview = $.urlParam('view');	
+siteview = GetUrlParameter('view');  
 console.log( "siteview : " +  siteview );
 if ( siteview == 'project' )  
 {
@@ -44,6 +46,21 @@ console.log("seasonnamealt : " + seasonnamealt);
 
 //    alert("Embedded block of JS here");
 });
+
+function GetUrlParameter(sParam)
+{
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i++)
+    {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam)
+        {
+            return sParameterName[1];
+        }
+    }
+}
+
 
 function setseasonname()
 {
