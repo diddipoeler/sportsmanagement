@@ -147,6 +147,7 @@ use Joomla\CMS\Uri\Uri;
 		 
 		 //echo '<pre>'.print_r($match['referee'],true).'</pre>';
      $output = '';
+if (array_key_exists('referee', $match)) {
      foreach( $match['referee'] as $key => $value )
      {
      $output .= '<span style="float:right;">';  
@@ -160,6 +161,7 @@ use Joomla\CMS\Uri\Uri;
        
      $output .=  htmlspecialchars(sportsmanagementHelper::formatName(null, $value->firstname, $value->nickname, $value->lastname, $params->get("referee_name_format")), ENT_QUOTES, 'UTF-8').'</span><br>';
      }
+		}
 		 $output .=  '<br>'.$match['spectators'];  
       echo $output;
 		 
