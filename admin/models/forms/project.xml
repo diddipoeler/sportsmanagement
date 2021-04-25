@@ -96,7 +96,6 @@ JARCHIVED</option>
 			label="COM_SPORTSMANAGEMENT_GLOBAL_SEASON"
 			description="COM_SPORTSMANAGEMENT_GLOBAL_SEASON_DESC"
 			required="true"
-			
 			validate="superiorzero">
 			<option
 				value="0">

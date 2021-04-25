@@ -181,6 +181,14 @@
             directory="images/com_sportsmanagement/database/projectteams"
 				/>
 				
+			<field
+				name="picturenotes"
+				type="editor"
+				label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_DESCRIPTION"
+				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_DESCRIPTION_DESC"
+				width="450" 
+				filter="safehtml"/>		
+				
 				<field
 			name="cr_picture"
 			type="text"

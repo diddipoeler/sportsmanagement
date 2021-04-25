@@ -86,6 +86,42 @@
             description="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_WEBSITE_DESC"
         />  
   	
+	<field
+            name="founded"
+            type="calendar"
+            format="%d-%m-%Y"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED_DESC"
+            class="inputbox"
+        />
+
+<field
+            name="founded_year"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED_YEAR"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED_YEAR_DESC"
+            class="inputbox"
+        />
+    	
+        <field
+            name="dissolved"
+            type="calendar"
+            format="%d-%m-%Y"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED_DESC"
+            class="inputbox"
+        />
+	
+        <field
+            name="dissolved_year"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED_YEAR"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED_YEAR_DESC"
+            class="inputbox"
+        />
+	
+	
+	
     </fieldset>
 			
     <fieldset 	

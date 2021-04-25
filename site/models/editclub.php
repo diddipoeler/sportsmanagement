@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage editclub
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\AdminModel;
@@ -38,13 +34,9 @@ class sportsmanagementModelEditClub extends AdminModel
 	 * interfaces
 	 */
 	var $latitude = null;
-
 	var $longitude = null;
-
 	var $projectid = 0;
-
 	var $clubid = 0;
-
 	var $club = null;
 
 	/**
@@ -72,7 +64,52 @@ class sportsmanagementModelEditClub extends AdminModel
 	function updItem($data)
 	{
 		$app = Factory::getApplication();
+/** wurden jahre mitgegeben ? */
+				if ($data['founded'] != '0000-00-00' && $data['founded'] != '')
+				{
+					$data['founded'] = sportsmanagementHelper::convertDate($data['founded'], 0);
+				}
 
+				if ($data['dissolved'] != '0000-00-00' && $data['dissolved'] != '')
+				{
+					$data['dissolved'] = sportsmanagementHelper::convertDate($data['dissolved'], 0);
+				}
+
+				if ($data['founded'] == '0000-00-00' || $data['founded'] == '')
+				{
+					$data['founded'] = '0000-00-00';
+				}
+
+				if ($data['founded'] != '0000-00-00' && $data['founded'] != '')
+				{
+					$data['founded_year']      = date('Y', strtotime($data['founded']));
+					$data['founded_timestamp'] = sportsmanagementHelper::getTimestamp($data['founded']);
+				}
+				else
+				{
+					$data['founded_year'] = $data['founded_year'];
+				}
+
+				if ($data['dissolved'] == '0000-00-00' || $data['dissolved'] == '')
+				{
+					$data['dissolved'] = '0000-00-00';
+				}
+
+				if ($data['dissolved'] != '0000-00-00' && $data['dissolved'] != '')
+				{
+					$data['dissolved_year']      = date('Y', strtotime($data['dissolved']));
+					$data['dissolved_timestamp'] = sportsmanagementHelper::getTimestamp($data['dissolved']);
+				}
+				else
+				{
+					$data['dissolved_year'] = $data['dissolved_year'];
+				}
+		if ( !$data['founded_year'] )
+            {
+            $data['founded_year'] = 'kein';
+            }
+		
+		
 		foreach ($data['request'] as $key => $value)
 		{
 			$data[$key] = $value;

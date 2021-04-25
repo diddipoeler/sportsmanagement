@@ -8,7 +8,13 @@
 var windowObjectReference = null; // global variable
 var PreviousUrl; /* global variable which will store the
                     url currently in the secondary window */
-
+var projectname;
+var seasonnamealt;
+var siteview ;
+$.urlParam = function(name){
+	var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+	return results[1] || 0;
+}
 
 jQuery(document).ready(function(){
 var windowWidth = jQuery(window).width(); //retrieve current window width
@@ -24,10 +30,49 @@ console.log("title : "+jQuery("title").text());
 console.log("current window width : "+windowWidth );
 console.log("current window height : "+windowHeight );
 console.log("jquery version : "+jQuery().jquery);
+
+//var siteview = $.urlParam('view');	
+siteview = GetUrlParameter('view');  
+console.log( "siteview : " +  siteview );
+if ( siteview == 'project' )  
+{
+projectname = jQuery("#jform_name").val();  
+console.log("projectname : " + projectname);	
+seasonnamealt = jQuery( "#jform_season_id option:selected" ).text();	
+console.log("seasonnamealt : " + seasonnamealt);	
+}
+	
 //console.log("bootstrap version : "+jQuery.fn.tooltip.Constructor.VERSION);
 
 //    alert("Embedded block of JS here");
 });
+
+function GetUrlParameter(sParam)
+{
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i++)
+    {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam)
+        {
+            return sParameterName[1];
+        }
+    }
+}
+
+
+function setseasonname()
+{
+var seasonname = jQuery( "#jform_season_id option:selected" ).text();
+//var projectname = jQuery("#jform_name").val();
+console.log("seasonname : " + seasonname);
+console.log("projectname : " + projectname);	
+var res = projectname.replace(seasonnamealt, seasonname);   
+console.log("res : " + res);  	
+jQuery("#jform_name").val(res); 	
+}
+
 
 function openRequestedSinglePopup(strUrl,Width,Height) {
 

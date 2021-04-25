@@ -55,17 +55,7 @@ class sportsmanagementViewProject extends sportsmanagementView
 			return;
 		}
 		
-$endung = strtolower(File::getExt($this->item->picture));
-$name = File::getName($this->item->picture);
-//$safefilename = File::makeSafe($this->item->picture);		
-//echo ' endung <br><pre>'.print_r($endung ,true).'</pre>';
-//echo ' name <br><pre>'.print_r($name ,true).'</pre>';
-//echo ' safefilename <br><pre>'.print_r($safefilename ,true).'</pre>';
-      if ( !$name )
-      {
-      $this->item->picture = 'images/com_sportsmanagement/database/placeholders/placeholder_450_2.png';  
-        $this->form->setValue('picture', null, $this->item->picture);
-      }
+
 if ( !$this->item->admin )
 {
 $this->form->setValue('admin', null, $this->user->id);
@@ -93,6 +83,20 @@ $this->form->setValue('editor', null, $this->user->id);
 			$this->form->setValue('start_time', null, '18:00');
 			$this->form->setValue('admin', null, $this->user->id);
 			$this->form->setValue('editor', null, $this->user->id);
+		}
+		else
+		{
+$endung = strtolower(File::getExt($this->item->picture));
+$name = File::getName($this->item->picture);
+//$safefilename = File::makeSafe($this->item->picture);		
+//echo ' endung <br><pre>'.print_r($endung ,true).'</pre>';
+//echo ' name <br><pre>'.print_r($name ,true).'</pre>';
+//echo ' safefilename <br><pre>'.print_r($safefilename ,true).'</pre>';
+      if ( !$name )
+      {
+      $this->item->picture = 'images/com_sportsmanagement/database/placeholders/placeholder_450_2.png';  
+        $this->form->setValue('picture', null, $this->item->picture);
+      }			
 		}
 
 		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields();
