@@ -23,6 +23,12 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_associations` (
   `zipcode` VARCHAR(10) NOT NULL DEFAULT '' ,
   `location` VARCHAR(50) NOT NULL DEFAULT '' ,
   `state` VARCHAR(50) NOT NULL DEFAULT '' ,
+  
+  `founded` DATE NOT NULL DEFAULT '0000-00-00' ,
+  `dissolved` DATE NOT NULL DEFAULT '0000-00-00' ,
+  `dissolved_year` VARCHAR(4) NULL DEFAULT NULL,
+  `founded_year` VARCHAR(4) NULL DEFAULT NULL,
+  
   PRIMARY KEY (`id`),
   KEY `country` (`country`),
   KEY `parent_id` (`parent_id`),
@@ -55,6 +61,12 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_federations` (
   `zipcode` VARCHAR(10) NOT NULL DEFAULT '' ,
   `location` VARCHAR(50) NOT NULL DEFAULT '' ,
   `state` VARCHAR(50) NOT NULL DEFAULT '' ,
+  
+  `founded` DATE NOT NULL DEFAULT '0000-00-00' ,
+  `dissolved` DATE NOT NULL DEFAULT '0000-00-00' ,
+  `dissolved_year` VARCHAR(4) NULL DEFAULT NULL,
+  `founded_year` VARCHAR(4) NULL DEFAULT NULL,
+  
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
@@ -963,6 +975,8 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project_team` (
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   `cr_picture` varchar(255) DEFAULT NULL,
   `finaltablerank` tinyint(1) NOT NULL DEFAULT '0',
+  `picturenotes` TEXT NULL DEFAULT NULL ,
+  
   PRIMARY KEY (`id`) ,
   KEY `project_id` (`project_id`),
   KEY `team_id` (`team_id`),

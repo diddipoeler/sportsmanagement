@@ -633,6 +633,103 @@ if ( $config->get('debug') )
             }
 				
 				break;
+                case 'jlextfederation':
+                /** wurden jahre mitgegeben ? */
+				if ($data['founded'] != '0000-00-00' && $data['founded'] != '')
+				{
+					$data['founded'] = sportsmanagementHelper::convertDate($data['founded'], 0);
+				}
+
+				if ($data['dissolved'] != '0000-00-00' && $data['dissolved'] != '')
+				{
+					$data['dissolved'] = sportsmanagementHelper::convertDate($data['dissolved'], 0);
+				}
+
+				if ($data['founded'] == '0000-00-00' || $data['founded'] == '')
+				{
+					$data['founded'] = '0000-00-00';
+				}
+
+				if ($data['founded'] != '0000-00-00' && $data['founded'] != '')
+				{
+					$data['founded_year']      = date('Y', strtotime($data['founded']));
+					$data['founded_timestamp'] = sportsmanagementHelper::getTimestamp($data['founded']);
+				}
+				else
+				{
+					$data['founded_year'] = $data['founded_year'];
+				}
+
+				if ($data['dissolved'] == '0000-00-00' || $data['dissolved'] == '')
+				{
+					$data['dissolved'] = '0000-00-00';
+				}
+
+				if ($data['dissolved'] != '0000-00-00' && $data['dissolved'] != '')
+				{
+					$data['dissolved_year']      = date('Y', strtotime($data['dissolved']));
+					$data['dissolved_timestamp'] = sportsmanagementHelper::getTimestamp($data['dissolved']);
+				}
+				else
+				{
+					$data['dissolved_year'] = $data['dissolved_year'];
+				}
+				
+				if ( !$data['founded_year'] )
+            {
+            $data['founded_year'] = 'kein';
+            }
+                
+                break;
+                
+                case 'jlextassociation':
+                /** wurden jahre mitgegeben ? */
+				if ($data['founded'] != '0000-00-00' && $data['founded'] != '')
+				{
+					$data['founded'] = sportsmanagementHelper::convertDate($data['founded'], 0);
+				}
+
+				if ($data['dissolved'] != '0000-00-00' && $data['dissolved'] != '')
+				{
+					$data['dissolved'] = sportsmanagementHelper::convertDate($data['dissolved'], 0);
+				}
+
+				if ($data['founded'] == '0000-00-00' || $data['founded'] == '')
+				{
+					$data['founded'] = '0000-00-00';
+				}
+
+				if ($data['founded'] != '0000-00-00' && $data['founded'] != '')
+				{
+					$data['founded_year']      = date('Y', strtotime($data['founded']));
+					$data['founded_timestamp'] = sportsmanagementHelper::getTimestamp($data['founded']);
+				}
+				else
+				{
+					$data['founded_year'] = $data['founded_year'];
+				}
+
+				if ($data['dissolved'] == '0000-00-00' || $data['dissolved'] == '')
+				{
+					$data['dissolved'] = '0000-00-00';
+				}
+
+				if ($data['dissolved'] != '0000-00-00' && $data['dissolved'] != '')
+				{
+					$data['dissolved_year']      = date('Y', strtotime($data['dissolved']));
+					$data['dissolved_timestamp'] = sportsmanagementHelper::getTimestamp($data['dissolved']);
+				}
+				else
+				{
+					$data['dissolved_year'] = $data['dissolved_year'];
+				}
+				
+				if ( !$data['founded_year'] )
+            {
+            $data['founded_year'] = 'kein';
+            }
+                
+                break;
 			/** mannschaft */
 			case 'team':
 				if (array_key_exists('copy_jform', $post))
