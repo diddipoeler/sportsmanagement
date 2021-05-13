@@ -54,9 +54,14 @@ class JFormFieldjsmcolorsranking extends FormField
 		$select_id = Factory::getApplication()->input->getVar('id');
 
 		// $this->value = explode(",", $this->value);
-		$rankingteams  = (string)$this->element['rankingteams'];
+		$rankingteams  = (int)$this->element['rankingteams'];
 		$templatename  = (string)$this->element['templatename'];
 		$templatefield = (string)$this->element['name'];
+
+		//$rankingteam  = (int)$this->element['rankingteams'];
+
+//$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' this->name -> ' . TVarDumper::dump($rankingteams, 10, true) . ''), '');
+
 
 		// Initialize variables.
 		$html = array();
@@ -104,8 +109,19 @@ class JFormFieldjsmcolorsranking extends FormField
 			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' rankingteams -> ' . TVarDumper::dump($rankingteams, 10, true) . ''), '');
 		}
 
+//$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' this->value -> ' . TVarDumper::dump($this->value, 10, true) . ''), '');
+
 		for ($a = 1; $a <= $rankingteams; $a++)
 		{
+
+			if (array_key_exists($a, $this->value)) {
+$this->value[$a]['von']   = '';
+				$this->value[$a]['bis']   = '';
+				$this->value[$a]['text']  = '';
+				$this->value[$a]['color'] = '';
+			}
+			
+/*
 			if (!isset($this->value[$a]))
 			{
 				$this->value[$a]['von']   = '';
@@ -113,7 +129,7 @@ class JFormFieldjsmcolorsranking extends FormField
 				$this->value[$a]['text']  = '';
 				$this->value[$a]['color'] = '';
 			}
-
+*/
 			$html[] = '<tr>';
 			$html[] = '<td>';
 			$html[] = HTMLHelper::_(
@@ -150,7 +166,9 @@ class JFormFieldjsmcolorsranking extends FormField
 
 			$html[] = '</td>';
 			$html[] = '</tr>';
+			
 		}
+		
 
 		$html[] = '</table>';
 
