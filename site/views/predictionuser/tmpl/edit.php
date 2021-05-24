@@ -109,6 +109,7 @@ $document->addScript(Uri::root() . 'includes/js/joomla.javascript.js');
             </td>
         </tr>
 
+        <?php if(isset($this->lists['grouplist'])) { ?>
         <tr>
 			<?php
 			echo sportsmanagementModelPrediction::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_GROUP', 'COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_GROUP');
@@ -125,6 +126,7 @@ $document->addScript(Uri::root() . 'includes/js/joomla.javascript.js');
 				?>
             </td>
         </tr>
+		<?php } ?>
 
 		<?php
 		if ($this->config['allow_alias'])
