@@ -402,41 +402,6 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 	}
 
 	/**
-	 * sportsmanagementModelpredictionmember::getPredictionMemberEMailAdress()
-	 *
-	 * @param   mixed  $predictionMemberID
-	 *
-	 * @return
-	 */
-	function getPredictionMemberEMailAdress($predictionMemberID)
-	{
-		// Select some fields
-		$this->jsmquery->clear();
-		$this->jsmquery->select('user_id');
-		$this->jsmquery->from('#__sportsmanagement_prediction_member');
-		$this->jsmquery->where('id = ' . $predictionMemberID);
-
-		$this->jsmdb->setQuery($this->jsmquery);
-
-		if (!$user_id = $this->jsmdb->loadResult())
-		{
-			return false;
-		}
-
-		// Select some fields
-		$this->jsmquery->clear();
-		$this->jsmquery->select('email,username,id as user_id');
-		$this->jsmquery->from('#__users AS u');
-		$this->jsmquery->where('u.block = 0');
-		$this->jsmquery->where('u.id = ' . $user_id);
-		$this->jsmquery->order('u.email');
-
-		$this->jsmdb->setQuery($this->jsmquery);
-
-		return $this->jsmdb->loadObject();
-	}
-
-	/**
 	 * sportsmanagementModelpredictionmember::getPredictionGroups()
 	 *
 	 * @return
@@ -490,13 +455,12 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 			}
 
 			// Create and send mail about approving member here
-			$systemAdminsMails          = $this->getSystemAdminsEMailAdresses();
-			$predictionGameAdminsMails  = $this->getPredictionGameAdminsEMailAdresses($predictionGameID);
-			$predictionGameMembersMails = $this->getPredictionMembersEMailAdresses($cids);
+			$systemAdminsMails          = sportsmanagementModelPrediction::getSystemAdminsEMailAdresses();
+			$predictionGameAdminsMails  = sportsmanagementModelPrediction::getPredictionGameAdminsEMailAdresses($predictionGameID);
 
 			foreach ($cid as $predictionMemberID)
 			{
-				$predictionGameMemberMail = $this->getPredictionMemberEMailAdress($predictionMemberID);
+				$predictionGameMemberMail = sportsmanagementModelPrediction::getPredictionMemberEMailAdress($predictionMemberID);
 
 				if (count($predictionGameMemberMail) > 0)
 				{
@@ -505,7 +469,7 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 
 					// Set a sender
 					$config = Factory::getConfig();
-					$sender = array($config->getValue('config.mailfrom'), $config->getValue('config.fromname'));
+					$sender = array($config->get('mailfrom'), $config->get('fromname'));
 					$mailer->setSender($sender);
 
 					// Set Member as recipient
@@ -595,127 +559,6 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 	}
 
 	/**
-	 * sportsmanagementModelpredictionmember::getSystemAdminsEMailAdresses()
-	 *
-	 * @return
-	 */
-	function getSystemAdminsEMailAdresses()
-	{
-		$app    = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
-		$db     = sportsmanagementHelper::getDBConnection();
-		$query  = '	SELECT u.email
-						FROM #__users AS u
-						WHERE	u.sendEmail = 1 AND
-								u.block = 0 AND
-								u.usertype = "Super Administrator"
-						ORDER BY u.email';
-
-		// Echo $query . '<br />';
-		$this->_db->setQuery($query);
-
-		if (version_compare(JVERSION, '3.0.0', 'ge'))
-		{
-			// Joomla! 3.0 code here
-			$records = $db->loadColumn();
-		}
-		elseif (version_compare(JVERSION, '2.5.0', 'ge'))
-		{
-			// Joomla! 2.5 code here
-			$records = $db->loadResultArray();
-		}
-
-		return $records;
-	}
-
-	/**
-	 * sportsmanagementModelpredictionmember::getPredictionGameAdminsEMailAdresses()
-	 *
-	 * @param   mixed  $predictionGameID
-	 *
-	 * @return
-	 */
-	function getPredictionGameAdminsEMailAdresses($predictionGameID)
-	{
-		$app    = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
-		$db     = sportsmanagementHelper::getDBConnection();
-
-		$query = '	SELECT u.email
-						FROM #__users AS u
-						INNER JOIN #__sportsmanagement_prediction_admin AS pa ON	pa.prediction_id = ' . (int) $predictionGameID . ' AND
-																			pa.user_id = u.id
-						WHERE	u.sendEmail = 1 AND
-								u.block = 0
-						ORDER BY u.email';
-
-		// Echo $query . '<br />';
-		$this->_db->setQuery($query);
-
-		if (version_compare(JVERSION, '3.0.0', 'ge'))
-		{
-			// Joomla! 3.0 code here
-			$records = $db->loadColumn();
-		}
-		elseif (version_compare(JVERSION, '2.5.0', 'ge'))
-		{
-			// Joomla! 2.5 code here
-			$records = $db->loadResultArray();
-		}
-
-		return $records;
-	}
-
-	/**
-	 * sportsmanagementModelpredictionmember::getPredictionMembersEMailAdresses()
-	 *
-	 * @param   mixed  $cids
-	 *
-	 * @return
-	 */
-	function getPredictionMembersEMailAdresses($cids)
-	{
-		$app    = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
-		$db     = sportsmanagementHelper::getDBConnection();
-
-		$query = '	SELECT user_id
-						FROM #__sportsmanagement_prediction_member
-						WHERE	id IN (' . $cids . ')';
-
-		$db->setQuery($query);
-
-		if (!$cids = $this->_db->loadResultArray())
-		{
-			return false;
-		}
-
-		ArrayHelper::toInteger($cids);
-		$cids  = implode(',', $cids);
-		$query = '	SELECT u.email
-						FROM #__users AS u
-						WHERE	
-								u.block = 0 AND
-								u.id IN (' . $cids . ')
-						ORDER BY u.email';
-
-		$db->setQuery($query);
-
-		if (version_compare(JVERSION, '3.0.0', 'ge'))
-		{
-			// Joomla! 3.0 code here
-			$records = $db->loadColumn();
-		}
-		elseif (version_compare(JVERSION, '2.5.0', 'ge'))
-		{
-			// Joomla! 2.5 code here
-			$records = $db->loadResultArray();
-		}
-
-		return $records;
-	}
-
-	/**
 	 * sportsmanagementModelpredictionmember::deletePredictionMembers()
 	 *
 	 * @param   mixed  $cid
@@ -742,7 +585,6 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 
 		return true;
 	}
-
 
 	/**
 	 * sportsmanagementModelpredictionmember::deletePredictionResults()

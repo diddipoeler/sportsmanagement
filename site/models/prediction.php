@@ -2803,7 +2803,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 	 *
 	 * @return
 	 */
-	function getSystemAdminsEMailAdresses()
+	static function getSystemAdminsEMailAdresses()
 	{
 		// Reference global application object
 		$app = Factory::getApplication();
@@ -2857,7 +2857,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 	 *
 	 * @return
 	 */
-	function getPredictionGameAdminsEMailAdresses()
+	static function getPredictionGameAdminsEMailAdresses()
 	{
 		// Reference global application object
 		$app = Factory::getApplication();
