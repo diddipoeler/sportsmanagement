@@ -261,9 +261,10 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 					if ($res = sportsmanagementModelPrediction::getPredictionGroupList())
 					{
 						$predictionMembers = array_merge($predictionMembers, $res);
+						// Create selector only in case of having groups. View will hide selector automatically, if empty
+						$lists['grouplist'] = HTMLHelper::_('select.genericList', $predictionMembers, 'group_id', 'class="inputbox" ' . $disabled . 'onchange=""', 'value', 'text', $this->predictionMember->group_id);
 					}
 
-					$lists['grouplist'] = HTMLHelper::_('select.genericList', $predictionMembers, 'group_id', 'class="inputbox" ' . $disabled . 'onchange=""', 'value', 'text', $this->predictionMember->group_id);
 					unset($res);
 					unset($predictionMembers);
 

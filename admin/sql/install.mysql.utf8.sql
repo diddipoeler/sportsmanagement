@@ -666,6 +666,14 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_person` (
   `openligaid` int(11) DEFAULT NULL,
   `instagram` VARCHAR(250) NOT NULL DEFAULT '' ,
   `linkedin` VARCHAR(250) NOT NULL DEFAULT '' ,
+  
+`bank_code_number` VARCHAR( 100 ) NULL DEFAULT  '',
+`bank_account_number` VARCHAR( 100 ) NULL DEFAULT  '',
+`iban` VARCHAR( 100 ) NULL DEFAULT  '',
+`bank_identifier_code` VARCHAR( 100 ) NULL DEFAULT  '',
+  
+  
+  
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `country` (`country`),

@@ -87,7 +87,16 @@ $this->form->setValue('editor', null, $this->user->id);
 		else
 		{
 $endung = strtolower(File::getExt($this->item->picture));
+
+
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+$name = basename($this->item->picture);    
+}
+else
+{
 $name = File::getName($this->item->picture);
+}
 //$safefilename = File::makeSafe($this->item->picture);		
 //echo ' endung <br><pre>'.print_r($endung ,true).'</pre>';
 //echo ' name <br><pre>'.print_r($name ,true).'</pre>';

@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage fields
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -21,13 +17,8 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 
-// Jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
 jimport('joomla.html.html');
-
-// Jimport('joomla.form.formfield');
-// Get the pane and slider class
-// jimport('joomla.html.pane');
 
 /**
  * FormFieldjsmcolorsranking
@@ -63,9 +54,14 @@ class JFormFieldjsmcolorsranking extends FormField
 		$select_id = Factory::getApplication()->input->getVar('id');
 
 		// $this->value = explode(",", $this->value);
-		$rankingteams  = $this->element['rankingteams'];
-		$templatename  = $this->element['templatename'];
-		$templatefield = $this->element['name'];
+		$rankingteams  = (int)$this->element['rankingteams'];
+		$templatename  = (string)$this->element['templatename'];
+		$templatefield = (string)$this->element['name'];
+
+		//$rankingteam  = (int)$this->element['rankingteams'];
+
+//$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' this->name -> ' . TVarDumper::dump($rankingteams, 10, true) . ''), '');
+
 
 		// Initialize variables.
 		$html = array();
@@ -113,8 +109,19 @@ class JFormFieldjsmcolorsranking extends FormField
 			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' rankingteams -> ' . TVarDumper::dump($rankingteams, 10, true) . ''), '');
 		}
 
+//$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' this->value -> ' . TVarDumper::dump($this->value, 10, true) . ''), '');
+
 		for ($a = 1; $a <= $rankingteams; $a++)
 		{
+
+			if (array_key_exists($a, $this->value)) {
+$this->value[$a]['von']   = '';
+				$this->value[$a]['bis']   = '';
+				$this->value[$a]['text']  = '';
+				$this->value[$a]['color'] = '';
+			}
+			
+/*
 			if (!isset($this->value[$a]))
 			{
 				$this->value[$a]['von']   = '';
@@ -122,7 +129,7 @@ class JFormFieldjsmcolorsranking extends FormField
 				$this->value[$a]['text']  = '';
 				$this->value[$a]['color'] = '';
 			}
-
+*/
 			$html[] = '<tr>';
 			$html[] = '<td>';
 			$html[] = HTMLHelper::_(
@@ -159,7 +166,9 @@ class JFormFieldjsmcolorsranking extends FormField
 
 			$html[] = '</td>';
 			$html[] = '</tr>';
+			
 		}
+		
 
 		$html[] = '</table>';
 
