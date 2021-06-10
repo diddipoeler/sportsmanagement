@@ -7,14 +7,16 @@
 			<option value="1">Ja</option>
 		</field>
     
+	  <field name="ergebnistabelle" type="textarea" rows="25" cols="250" label="ergebnistabelle" description="ergebnistabelle">
+		</field>
+	  
 		<field name="ergebnismatrix" type="textarea" rows="25" cols="80" class="span12" label="ergebnismatrix" description="ergebnismatrix">
 		</field>
 	  
 	  <field name="ergebnisspielplan" default="28/58" type="textarea" rows="25" cols="250" label="ergebnisspielplan" description="ergebnisspielplan">
 		</field>
 	  
-	  <field name="ergebnistabelle" type="textarea" rows="25" cols="250" label="ergebnistabelle" description="ergebnistabelle">
-		</field>
+	  
     
     <field name="weltfussballlink" type="textarea" rows="1" cols="100" label="weltfussballlink" description="weltfussballlink">
 		</field>
