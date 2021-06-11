@@ -2605,7 +2605,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 			case 'com_cbe':
 
 				$query->select('cbeu.latitude,cbeu.longitude');
-				$query->join('INNER', '#__cbe_users AS cbeu ON cbeu.userid = u.id');
+				$query->join('LEFT', '#__cbe_users AS cbeu ON cbeu.userid = u.id');
 				break;
 			case 'com_users':
 			case 'prediction':
@@ -2613,10 +2613,10 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
 			case 'com_comprofiler':
 				$query->select('cf.cb_streetaddress,cf.cb_city,cf.cb_state,cf.cb_zip,cf.cb_country');
-				$query->join('INNER', '#__comprofiler AS cf ON cf.user_id = u.id');
+				$query->join('LEFT', '#__comprofiler AS cf ON cf.user_id = u.id');
 				break;
 			case 'com_kunena':
-				$query->join('INNER', '#__kunena_users AS cf ON cf.userid = u.id');
+				$query->join('LEFT', '#__kunena_users AS cf ON cf.userid = u.id');
 				break;
 		}
 
