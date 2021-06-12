@@ -182,6 +182,8 @@ $optteams = ' allowClear: true,
 				<?php
 				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MA', 'tl.matches_finally', $this->sortDirection, $this->sortColumn);
 				?>
+                <br />
+                <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_GAMES'); ?>
             </th>
             <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_PLUS_P'); ?></th>
             <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MINUS_P'); ?></th>
