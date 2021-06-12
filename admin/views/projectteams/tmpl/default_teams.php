@@ -247,12 +247,11 @@ $optteams = ' allowClear: true,
 					<?php
 					echo HTMLHelper::_('grid.id', $i, $row->id);
 					?>
-                    <!--  </td> -->
+
 					<?php
 
 					$inputappend = '';
 					?>
-                    <!--            <td style="text-align:center; "> -->
 
 					<?php if ($row->checked_out) : ?>
 						<?php echo HTMLHelper::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'projectteams.', $canCheckin); ?>
@@ -268,7 +267,6 @@ $optteams = ' allowClear: true,
 					<?php else : ?>
 						<?php //echo $this->escape($row->name); ?>
 					<?php endif;
-
 
 					?>
 
@@ -557,6 +555,11 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
                                                       name="matches_finally<?php echo $row->id; ?>"
                                                       value="<?php echo $row->matches_finally; ?>"
                                                       onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
+                                                      
+<br>
+<?php echo $this->modelmatches->getMatchesCount($this->project_id,$row->id); ?>
+
+                                                                          
                 </td>
                 <td class="center">
                     <input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"

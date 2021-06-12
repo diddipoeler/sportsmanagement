@@ -254,6 +254,8 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		$lists['is_in_score'] = $myoptions;
 		$lists['use_finally'] = $myoptions;
 
+$this->modelmatches = BaseDatabaseModel::getInstance('Matches', 'sportsmanagementModel');
+
 		$this->config         = Factory::getConfig();
 		$this->lists          = $lists;
 		$this->divisions      = $projectdivisions;
