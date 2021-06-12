@@ -33,7 +33,9 @@ $cfg_bugtracker_server = ComponentHelper::getParams($this->jinput->getCmd('optio
 	?>
 </script>
 <?php
-// some CSS
+/**
+ * some CSS
+ */
 $this->document->addStyleDeclaration(
 	'
 img.item {
@@ -44,8 +46,11 @@ img.car {
     height: 25px;
 }'
 );
-// string $opt - second parameter of formbehavior2::select2
-// for details http://ivaynberg.github.io/select2/
+
+/**
+ * string $opt - second parameter of formbehavior2::select2
+ * for details http://ivaynberg.github.io/select2/
+ */
 $optteams = ' allowClear: true,
    width: "100%",
    formatResult: function format(state)
