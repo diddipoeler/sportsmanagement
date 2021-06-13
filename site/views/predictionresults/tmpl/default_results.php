@@ -49,6 +49,8 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 		sportsmanagementModelPrediction::$pjID = $predictionProject->project_id;
 		$this->model->predictionProject        = $predictionProject;
 		$actualProjectCurrentRound             = sportsmanagementModelPrediction::getProjectSettings($predictionProject->project_id);
+		$rien_ne_va_plus_times = sportsmanagementModelPrediction::getPredictionTippRoundsRienNeVaPlusTimes($predictionProject, $predictionProjectSettings->timezone);
+
 		if (!isset(sportsmanagementModelPrediction::$roundID) || ((int) sportsmanagementModelPrediction::$roundID < 1))
 		{
 			$this->roundID = $actualProjectCurrentRound;
@@ -313,11 +315,11 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 								case 'country_flag':
 									//if ( $this->config['show_logo_small_overview'] == 2 )
 									//{
-									echo '<br />' . JSMCountries::getCountryFlag($match->awayCountry);
 									if ($this->config['show_team_names'] == 1)
 									{
 										echo $match->awayCountry . '<br />';
 									}
+									echo  JSMCountries::getCountryFlag($match->awayCountry) . '<br />';
 									break;
 							}
 
@@ -441,10 +443,16 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 
 							$memberPredictionOutput = Text::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_NOT_AVAILABLE');
 
-							$matchTimeDate = sportsmanagementHelper::getTimestamp($memberPredictionPoint->match_date, 1, $predictionProjectSettings->timezone);
+							$latestTimeToBet = sportsmanagementHelper::getTimestamp($memberPredictionPoint->match_date, 1, $predictionProjectSettings->timezone);
 							$thisTimeDate  = sportsmanagementHelper::getTimestamp(date("Y-m-d H:i:s"), 1, $predictionProjectSettings->timezone);
 							$predMemberId  = explode(":", $this->predictionMember->pmID);
 
+							if (isset($rien_ne_va_plus_times[$memberPredictionPoint->matchRoundId]->latestTimeToBet))
+							{
+								// override latest time to bet, if configured for this round_id
+								$latestTimeToBet = $rien_ne_va_plus_times[$memberPredictionPoint->matchRoundId]->latestTimeToBet;
+							}
+							
 							/*$showAllowed = (($thisTimeDate >= $matchTimeDate) ||
 							 (!is_null($memberPredictionPoint->homeResult)) ||
 							 (!is_null($memberPredictionPoint->awayResult)) ||
@@ -452,7 +460,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 							 (!is_null($memberPredictionPoint->awayDecision)) ||
 							 ($this->predictionMember->pmID==$member->pmID));*/
 
-							$showAllowed = (($thisTimeDate >= $matchTimeDate) ||
+							$showAllowed = (($thisTimeDate >= $latestTimeToBet) ||
 								(!is_null($memberPredictionPoint->homeResult)) ||
 								(!is_null($memberPredictionPoint->awayResult)) ||
 								(!is_null($memberPredictionPoint->homeDecision)) ||

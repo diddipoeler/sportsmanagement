@@ -601,6 +601,21 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 	}
 
 	/**
+	 * sportsmanagementModelPrediction::isProjectStarted($predictionProject)
+	 *
+	 * @param   object  $predictionProject
+	 *
+	 * @return bool true, if project already started, flase otherwise
+	 */
+	static function isProjectStarted($predictionProject)
+	{
+		$startDate                 = $predictionProject->start_date . " " . $predictionProject->start_time;
+		$thisTimeDate              = sportsmanagementHelper::getTimestamp(date("Y-m-d H:i:s"), 1, $predictionProject->timezone);
+		$competitionStartTimeDate  = sportsmanagementHelper::getTimestamp($startDate, 1, $predictionProject->timezone);
+		return (($thisTimeDate > $competitionStartTimeDate));
+	}
+
+	/**
 	 * sportsmanagementModelPrediction::getPredictionTippRoundsRienNeVaPlusTimes()
 	 *
 	 * @param   object  $predictionProject
@@ -632,17 +647,9 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 					switch ($r->rien_ne_va_plus)
 					{
 						case 'FIRSTMATCH_OF_TIPPGAME':
-							$query->clear();
-							$query->select('min(match_date)');
-							$query->from('#__sportsmanagement_match AS m');
-							$query->join('INNER', '#__sportsmanagement_round AS r ON m.round_id = r.id');
-							$query->where('r.project_id = ' . (int) $predictionProject->project_id);
-							$query->where('m.published = 1');
-							$db->setQuery($query);
-
-							$proj_first_match_start_datetime = $db->loadResult();
-							$proj_first_match_start_time  = strtotime($proj_first_match_start_datetime);
-							$result[$r->round_id]->latestTimeToBet  = sportsmanagementHelper::getTimestamp(date("Y-m-d", $proj_first_match_start_time), 1, $timezone);
+							// for first match, actually project start date and time are used
+							// to be consistent to champion / final 4 tipps
+							$result[$r->round_id]->latestTimeToBet  = sportsmanagementHelper::getTimestamp($predictionProject->start_date . " " . $predictionProject->start_time, 1, $timezone);
 							break;
 						case 'FIRSTMATCH_OF_TIPPROUND':
 							$query->clear();
@@ -1536,7 +1543,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 			{
 				$query->clear();
 				$query->select('pp.*');
-				$query->select('p.name AS projectName, p.start_date');
+				$query->select('p.name AS projectName, p.start_date, p.start_time, p.timezone');
 				$query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
 				$query->from('#__sportsmanagement_prediction_project AS pp');
 				$query->join('LEFT', '#__sportsmanagement_project AS p ON p.id = pp.project_id');

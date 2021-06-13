@@ -231,16 +231,9 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 						{
 							/**
 							 *
-							 * ist die saison beendet ?
+							 * Wenn die Saison noch nicht angefangen hat, ist tippen erlaubt
 							 */
-							$predictionProjectSettings = sportsmanagementModelPrediction::getPredictionProject($predictionProject->project_id);
-							$time                      = strtotime($predictionProject->start_date);
-							$time                      += 86400; // Ein Tag in Sekunden
-							$showDate                  = date("Y-m-d", $time);
-							$thisTimeDate              = sportsmanagementHelper::getTimestamp(date("Y-m-d H:i:s"), 1, $predictionProjectSettings->timezone);
-							$competitionStartTimeDate  = sportsmanagementHelper::getTimestamp($showDate, 1, $predictionProjectSettings->timezone);
-							$tippAllowed               = (($thisTimeDate < $competitionStartTimeDate));
-
+							$tippAllowed = !sportsmanagementModelPrediction::isProjectStarted($predictionProject);
 							if (!$tippAllowed)
 							{
 								$disabled = ' disabled="disabled" ';

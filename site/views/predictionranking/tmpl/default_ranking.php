@@ -721,7 +721,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                                                             $final4_logo_size   = $this->config['final4_logo_size'];
                                                             $imgFile            = sportsmanagementHelperHtml::getBootstrapModalImage('predranking' . $key, $final4Logo->$final4_logo_size, $imgTitle, '20');
                                                         } else {
-                                                            $imgFile = 'n/a';
+                                                            $imgFile = Text::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_NOT_AVAILABLE');;
                                                         }
                                                     } else {
                                                         $imgTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_FINAL4_TIP');
