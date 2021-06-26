@@ -164,7 +164,7 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
                     
                     Log::add(Text::_($procountry), Log::WARNING, 'jsmerror');
                     
-					$this->app->redirect('index.php?option=' . $this->option . '&view=projects');
+					$this->app->redirect('index.php?option=' . $this->option . '&view=projects&return=jlextdfbkeyimport6');
 				}
 
 				unset($projectteams);
