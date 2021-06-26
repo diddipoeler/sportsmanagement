@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 
 $maxImportTime = 480;
@@ -78,10 +74,8 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
 		}
 		catch (Exception $e)
 		{
-			$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-			$code = $e->getCode(); // Returns '500';
-			$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
-
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+        $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 			return false;
 		}
 
@@ -128,10 +122,8 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
 		}
 		catch (Exception $e)
 		{
-			$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-			$code = $e->getCode(); // Returns '500';
-			$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
-
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+        $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 			return false;
 		}
 
@@ -149,7 +141,7 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
 	{
 		$project_id = $this->jsmapp->getUserState("$this->jsmoption.pid", '0');
 
-		// Gibt es zum land der liga schlüssel ?
+		/** Gibt es zum land der liga schlüssel ? */
 		$country = $this->getCountry($project_id);
 		$this->jsmquery->clear();
 
@@ -184,10 +176,8 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
 		}
 		catch (Exception $e)
 		{
-			$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-			$code = $e->getCode(); // Returns '500';
-			$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
-
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+        $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 			return false;
 		}
 
@@ -212,15 +202,12 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
 		{
 			$this->jsmdb->setQuery($this->jsmquery);
 			$country = $this->jsmdb->loadResult();
-
 			return $country;
 		}
 		catch (Exception $e)
 		{
-			$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-			$code = $e->getCode(); // Returns '500';
-			$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
-
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+        $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 			return false;
 		}
 
@@ -249,10 +236,8 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
 		}
 		catch (Exception $e)
 		{
-			$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-			$code = $e->getCode(); // Returns '500';
-			$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
-
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+        $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 			return false;
 		}
 
@@ -301,10 +286,8 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
 		}
 		catch (Exception $e)
 		{
-			$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-			$code = $e->getCode(); // Returns '500';
-			$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
-
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+        $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 			return false;
 		}
 
