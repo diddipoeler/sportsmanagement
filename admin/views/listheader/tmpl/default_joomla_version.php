@@ -29,9 +29,13 @@ if ($this->items)
     switch ($this->view)
     {
     case 'projectteams':
-    //case 'projectreferees':
     case 'templates':
     case 'treetos':
+    break;
+    case 'projects':
+    echo $this->loadTemplate('jsm_notes');
+	echo $this->loadTemplate('jsm_tips');
+    echo $this->loadTemplate('data');
     break;
     default:    
 	echo $this->loadTemplate('data');
