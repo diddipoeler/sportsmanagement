@@ -33,6 +33,14 @@ if ($this->items)
     case 'treetos':
     break;
     case 'projects':
+    switch ($this->return)
+    {
+    case 'jlextdfbkeyimporterror6':
+    $this->tips[] = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_6', $this->jinput->getCmd('dfbteams'), JSMCountries::getCountryFlag($this->jinput->getCmd('dfbcountry')), $this->jinput->getCmd('dfbcountry'));
+    break;
+    
+    
+    }
     echo $this->loadTemplate('jsm_notes');
 	echo $this->loadTemplate('jsm_tips');
     echo $this->loadTemplate('data');

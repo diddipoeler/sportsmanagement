@@ -194,6 +194,7 @@ img.car {
 	$this->document->addScript(Uri::root() . '/components/com_sportsmanagement/assets/js/sm_functions.js');
 	$this->jinput         = $this->app->input;
 	$this->option         = $this->jinput->getCmd('option');
+    $this->return         = $this->jinput->getCmd('return');
 	$this->format         = $this->jinput->getCmd('format');
 	$this->view           = $this->jinput->getCmd('view', 'cpanel');
 	$this->tmpl           = $this->jinput->getCmd('tmpl', '');
