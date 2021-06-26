@@ -159,9 +159,9 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 				else
 				{
 					$procountry = $this->model->getCountry($this->project_id);
-					Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_6', $dfbteams, JSMCountries::getCountryFlag($procountry), $procountry), Log::WARNING, 'jsmerror');
-                    $this->tips[] = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_6', $dfbteams, JSMCountries::getCountryFlag($procountry), $procountry);
-                    Log::add(Text::_($procountry), Log::WARNING, 'jsmerror');
+//					Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_6', $dfbteams, JSMCountries::getCountryFlag($procountry), $procountry), Log::WARNING, 'jsmerror');
+//                    $this->tips[] = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_6', $dfbteams, JSMCountries::getCountryFlag($procountry), $procountry);
+//                    Log::add(Text::_($procountry), Log::WARNING, 'jsmerror');
                     
 					$this->app->redirect('index.php?option=' . $this->option . '&view=projects&return=jlextdfbkeyimporterror6&dfbteams='.$dfbteams.'&dfbcountry='.$procountry);
 				}
