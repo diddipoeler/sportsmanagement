@@ -12,6 +12,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+$templatesToLoad = array('footer', 'listheader');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 $this->tips[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_3');
 $this->tips[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_4');
 echo $this->loadTemplate('jsm_notes');
