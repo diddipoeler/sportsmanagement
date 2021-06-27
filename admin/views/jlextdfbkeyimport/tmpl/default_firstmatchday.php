@@ -108,6 +108,7 @@ $logo             = HTMLHelper::_('image', $url, $alt, $attribs);
 
     <input type="hidden" name="sent" value="1"/>
     <input type="hidden" name="task" value=""/>
+    <input type="hidden" name="projectid" value="<?php echo $this->project_id; ?> "/>
     <input type="hidden" name="divisionid" value="<?php echo $this->division_id; ?> "/>
 </form>
 <?php
