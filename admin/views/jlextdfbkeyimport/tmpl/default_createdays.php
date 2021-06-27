@@ -12,7 +12,11 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-
+$this->tips[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_3');
+$this->tips[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_4');
+echo $this->loadTemplate('jsm_notes');
+echo $this->loadTemplate('jsm_tips');
+    
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm">
     <div id="editcell">
