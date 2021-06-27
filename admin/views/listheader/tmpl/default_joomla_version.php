@@ -59,7 +59,7 @@ else
         echo $this->loadTemplate('data');
         break;
         case 'jlextdfbkeyimport':
-    switch ($this->layout)
+    switch ($this->jinput->getCmd('layout'))
     {
     case 'default_createdays';
     $this->tips[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_3');
