@@ -144,6 +144,8 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
 		/** Gibt es zum land der liga schlüssel ? */
 		$country = $this->getCountry($project_id);
 		$this->jsmquery->clear();
+        
+        $this->jsmapp->enqueueMessage($country, 'notice');
 
 		if ($number % 2 == 0)
 		{
@@ -171,7 +173,6 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
 		{
 			$this->jsmdb->setQuery($this->jsmquery);
 			$result = $this->jsmdb->loadObjectList();
-
 			return $result;
 		}
 		catch (Exception $e)
