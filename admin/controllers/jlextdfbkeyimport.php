@@ -69,7 +69,7 @@ class sportsmanagementControllerjlextdfbkeyimport extends BaseController
 		//$msg    = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_20');
         $msg = '';
 		$link   = 'index.php?option=' . $option . '&view=jlextdfbkeyimport&layout=default&divisionid=' . $post['divisionid'];
-		$this->setRedirect($link, $msg);
+		$this->setRedirect($link);
 	}
 
 	/**
@@ -146,7 +146,8 @@ class sportsmanagementControllerjlextdfbkeyimport extends BaseController
 			}
 		}
 
-		$msg  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_2');
+		//$msg  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_2');
+        $msg  = ''; 
 		$link = 'index.php?option=' . $option . '&view=jlextdfbkeyimport&layout=default_firstmatchday';
 		$this->setRedirect($link, $msg);
 	}
