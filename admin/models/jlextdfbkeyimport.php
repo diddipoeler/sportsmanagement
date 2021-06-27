@@ -145,7 +145,13 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
 		$country = $this->getCountry($project_id);
 		$this->jsmquery->clear();
         
-        $this->jsmapp->enqueueMessage($country, 'notice');
+        switch ($country)
+        {
+        case 'ENG':
+        $country = 'DEU';
+        break;    
+        }
+        //$this->jsmapp->enqueueMessage($country, 'notice');
 
 		if ($number % 2 == 0)
 		{
