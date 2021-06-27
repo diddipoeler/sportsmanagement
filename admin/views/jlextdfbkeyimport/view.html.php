@@ -151,8 +151,8 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 					}
 					else
 					{
-						Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_3'), Log::WARNING, 'jsmerror');
-						Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_4'), Log::WARNING, 'jsmerror');
+//						Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_3'), Log::WARNING, 'jsmerror');
+//						Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_4'), Log::WARNING, 'jsmerror');
 						$this->app->redirect('index.php?option=' . $this->option . '&view=jlextdfbkeyimport&layout=default_createdays&divisionid=' . $this->division_id);
 					}
 				}
