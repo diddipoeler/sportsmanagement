@@ -13,6 +13,13 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
+$templatesToLoad = array('footer', 'listheader');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+$this->tips[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_2');
+
+echo $this->loadTemplate('jsm_notes');
+echo $this->loadTemplate('jsm_tips');
+
 $url = 'administrator/components/com_sportsmanagement/assets/images/dfb-key.jpg';
 $alt = 'Lmo Logo';
 // $attribs['width'] = '170px';

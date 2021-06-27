@@ -66,7 +66,8 @@ class sportsmanagementControllerjlextdfbkeyimport extends BaseController
 	{
 		$post   = Factory::getApplication()->input->post->getArray(array());
 		$option = Factory::getApplication()->input->getCmd('option');
-		$msg    = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_20');
+		//$msg    = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_20');
+        $msg = '';
 		$link   = 'index.php?option=' . $option . '&view=jlextdfbkeyimport&layout=default&divisionid=' . $post['divisionid'];
 		$this->setRedirect($link, $msg);
 	}

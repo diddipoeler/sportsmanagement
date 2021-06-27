@@ -60,6 +60,7 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 			case 'default_firstmatchday':
 			case 'default_firstmatchday_3':
 			case 'default_firstmatchday_4':
+            ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_1'), 'dfbkey');
 				$this->setLayout('default_firstmatchday');
 				$this->_displayDefaultFirstMatchday($tpl);
 
@@ -207,7 +208,7 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 		$this->document->addCustomTag($stylelink);
 
 		// Set toolbar items for the page
-		ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_1'), 'dfbkey');
+//		ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_1'), 'dfbkey');
 		ToolbarHelper::back('JPREV', 'index.php?option=' . $this->option . '&view=projects');
 		ToolbarHelper::save('jlextdfbkeyimport.save', 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INSERT_ROUNDS');
 		ToolbarHelper::divider();
