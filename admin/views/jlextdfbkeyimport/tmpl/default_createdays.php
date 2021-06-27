@@ -25,11 +25,11 @@ echo $this->loadTemplate('jsm_tips');
         <fieldset class="adminform">
             <legend>
 				<?php
-				echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_2', $this->projectid);
+				echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_2', $this->project_id);
 				?>
             </legend>
 
-            <table class="adminlist">
+            <table class="<?php echo $this->table_data_class; ?>" id="<?php echo $this->view; ?>list">
                 <thead>
                 <tr>
                     <th class="title" nowrap="nowrap" style="vertical-align:top; ">
