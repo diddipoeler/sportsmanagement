@@ -58,17 +58,17 @@ else
         case 'databasetools':
         echo $this->loadTemplate('data');
         break;
-        case 'jlextdfbkeyimport':
-    switch ($this->jinput->getCmd('layout'))
-    {
-    case 'default_createdays';
-    $this->tips[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_3');
-    $this->tips[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_4');
-    echo $this->loadTemplate('jsm_notes');
-	echo $this->loadTemplate('jsm_tips');
-    break;    
-    }
-    break;
+//        case 'jlextdfbkeyimport':
+//    switch ($this->jinput->getCmd('layout'))
+//    {
+//    case 'default_createdays';
+//    $this->tips[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_3');
+//    $this->tips[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_4');
+//    echo $this->loadTemplate('jsm_notes');
+//	echo $this->loadTemplate('jsm_tips');
+//    break;    
+//    }
+//    break;
 		case 'githubinstall':    
 		    case 'templates':  
 		    break;

@@ -98,7 +98,7 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 		$this->division_id = $this->jinput->get('divisionid');
 		$project_type      = $this->model->getProjectType($this->project_id);
 
-		$this->app->enqueueMessage($project_type, 'notice');
+		//$this->app->enqueueMessage($project_type, 'notice');
 
 		if ($project_type == 'DIVISIONS_LEAGUE')
 		{
