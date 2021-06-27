@@ -86,7 +86,8 @@ class sportsmanagementControllerjlextdfbkeyimport extends BaseController
 		// function syntax is setUserState( $key, $value );
 		Factory::getApplication()->setUserState("$option.first_post", $post);
 
-		$msg  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_12');
+		//$msg  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_12');
+        $msg  = '';
 		$link = 'index.php?option=' . $option . '&view=jlextdfbkeyimport&layout=default_savematchdays';
 		$this->setRedirect($link, $msg);
 

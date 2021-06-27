@@ -14,6 +14,12 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
+$templatesToLoad = array('footer', 'listheader');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+$this->tips[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_12');
+
+echo $this->loadTemplate('jsm_notes');
+echo $this->loadTemplate('jsm_tips');
 ?>
 
 <form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm">
