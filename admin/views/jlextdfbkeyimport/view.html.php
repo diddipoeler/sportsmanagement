@@ -316,11 +316,21 @@ $this->addToolbardefault_savematchdays();
 $this->addToolbardefault_getdivision();
 	}
     
+    /**
+     * sportsmanagementViewjlextdfbkeyimport::addToolbardefault()
+     * 
+     * @return void
+     */
     protected function addToolbardefault()
 	{
 	   
        }
        
+       /**
+        * sportsmanagementViewjlextdfbkeyimport::addToolbardefault_createdays()
+        * 
+        * @return void
+        */
        protected function addToolbardefault_createdays()
 	{
 	   $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_1');
@@ -331,6 +341,11 @@ $this->addToolbardefault_getdivision();
 		ToolbarHelper::divider();
        }
        
+       /**
+        * sportsmanagementViewjlextdfbkeyimport::addToolbardefault_firstmatchday()
+        * 
+        * @return void
+        */
        protected function addToolbardefault_firstmatchday()
 	{
 	    $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_1');
@@ -341,6 +356,11 @@ $this->addToolbardefault_getdivision();
 		ToolbarHelper::divider();
        }
        
+       /**
+        * sportsmanagementViewjlextdfbkeyimport::addToolbardefault_savematchdays()
+        * 
+        * @return void
+        */
        protected function addToolbardefault_savematchdays()
 	{
 	   $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_1');
@@ -351,6 +371,11 @@ $this->addToolbardefault_getdivision();
 		ToolbarHelper::divider();
        }
        
+       /**
+        * sportsmanagementViewjlextdfbkeyimport::addToolbardefault_getdivision()
+        * 
+        * @return void
+        */
        protected function addToolbardefault_getdivision()
 	{
 	   $this->title = Text::_('');
@@ -361,15 +386,7 @@ ToolbarHelper::back('JPREV', 'index.php?option=' . $this->option . '&view=projec
        
        
        
-	/**
-	 * Add the page title and toolbar.
-	 *
-	 * @since 1.6
-	 */
-//	protected function addToolbar()
-//	{
-////		parent::addToolbar();
-//	}    
+  
 
 }
 
