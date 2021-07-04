@@ -1055,7 +1055,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 			$round_ids
 		);
 
-		$predictionGameMemberMail = self::getPredictionMemberEMailAdress($predictionMemberID);
+		$predictionGameMemberMail = self::getPredictionMemberEMailAdress($predictionMemberID)->email;
 
 		// Fetch the mail object
 		$mailer = Factory::getMailer();
@@ -1608,6 +1608,8 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
 		$query->clear();
 		$query->select('u.email');
+		$query->select('u.username');
+		$query->select('u.id as user_id');
 		$query->from('#__users AS u');
 		$query->where('u.block = 0');
 		$query->where('u.id = ' . $user_id);
@@ -1618,7 +1620,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 		if (version_compare(JVERSION, '3.0.0', 'ge'))
 		{
 			// Joomla! 3.0 code here
-			$res = $db->loadColumn();
+			$res = $db->loadObject();
 		}
         elseif (version_compare(JVERSION, '2.5.0', 'ge'))
 		{
@@ -2697,9 +2699,9 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
 			foreach ($cid as $predictionMemberID)
 			{
-				$predictionGameMemberMail = self::getPredictionMemberEMailAdress($predictionMemberID);
+				$predictionGameMember_EMail = self::getPredictionMemberEMailAdress($predictionMemberID)->email;
 
-				if (count($predictionGameMemberMail) > 0)
+				//if (count($predictionGameMemberMail) > 0)
 				{
 					// Fetch the mail object
 					$mailer = Factory::getMailer();
@@ -2724,7 +2726,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 					$lastMailAdress = '';
 					$recipient      = array();
 
-					foreach ($predictionGameMemberMail AS $predictionGameMember_EMail)
+					//foreach ($predictionGameMemberMail AS $predictionGameMember_EMail)
 					{
 						if ($lastMailAdress != $predictionGameMember_EMail)
 						{
@@ -2786,12 +2788,12 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
 					echo '<br /><br />';
 				}
-				else
-				{
-					// Joomla_user is blocked or has set sendEmail to off
-					// can't send email
-					return false;
-				}
+				//else
+				//{
+				//	// Joomla_user is blocked or has set sendEmail to off
+				//	// can't send email
+				//	return false;
+				//}
 			}
 		}
 

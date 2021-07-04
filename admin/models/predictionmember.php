@@ -159,7 +159,7 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 			 * jetzt die ergebnisse
 			 */
 			$body           .= "<html>";
-			$member_email   = $this->getPredictionMemberEMailAdress($value);
+			$member_email   = sportsmanagementModelPrediction::getPredictionMemberEMailAdress($value);
 			$fromdate       = '';
 			$predictionlink = '';
 			$projectcount   = 0;
