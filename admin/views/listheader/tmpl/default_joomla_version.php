@@ -29,9 +29,21 @@ if ($this->items)
     switch ($this->view)
     {
     case 'projectteams':
-    //case 'projectreferees':
     case 'templates':
     case 'treetos':
+    break;
+    case 'projects':
+    switch ($this->return)
+    {
+    case 'jlextdfbkeyimporterror6':
+    $this->tips[] = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_6', $this->jinput->getCmd('dfbteams'), JSMCountries::getCountryFlag($this->jinput->getCmd('dfbcountry')), $this->jinput->getCmd('dfbcountry'));
+    break;
+    
+    
+    }
+    echo $this->loadTemplate('jsm_notes');
+	echo $this->loadTemplate('jsm_tips');
+    echo $this->loadTemplate('data');
     break;
     default:    
 	echo $this->loadTemplate('data');
@@ -46,6 +58,17 @@ else
         case 'databasetools':
         echo $this->loadTemplate('data');
         break;
+//        case 'jlextdfbkeyimport':
+//    switch ($this->jinput->getCmd('layout'))
+//    {
+//    case 'default_createdays';
+//    $this->tips[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_3');
+//    $this->tips[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_4');
+//    echo $this->loadTemplate('jsm_notes');
+//	echo $this->loadTemplate('jsm_tips');
+//    break;    
+//    }
+//    break;
 		case 'githubinstall':    
 		    case 'templates':  
 		    break;

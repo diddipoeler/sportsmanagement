@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage jlextdfbkeyimport
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
@@ -64,6 +60,7 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 			case 'default_firstmatchday':
 			case 'default_firstmatchday_3':
 			case 'default_firstmatchday_4':
+            //ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_1'), 'dfbkey');
 				$this->setLayout('default_firstmatchday');
 				$this->_displayDefaultFirstMatchday($tpl);
 
@@ -102,7 +99,7 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 		$this->division_id = $this->jinput->get('divisionid');
 		$project_type      = $this->model->getProjectType($this->project_id);
 
-		$this->app->enqueueMessage($project_type, 'notice');
+		//$this->app->enqueueMessage($project_type, 'notice');
 
 		if ($project_type == 'DIVISIONS_LEAGUE')
 		{
@@ -155,16 +152,19 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 					}
 					else
 					{
-						Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_3'), Log::WARNING, 'jsmerror');
-						Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_4'), Log::WARNING, 'jsmerror');
+//						Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_3'), Log::WARNING, 'jsmerror');
+//						Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_4'), Log::WARNING, 'jsmerror');
 						$this->app->redirect('index.php?option=' . $this->option . '&view=jlextdfbkeyimport&layout=default_createdays&divisionid=' . $this->division_id);
 					}
 				}
 				else
 				{
 					$procountry = $this->model->getCountry($this->project_id);
-					Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_6', $dfbteams, JSMCountries::getCountryFlag($procountry), $procountry), Log::WARNING, 'jsmerror');
-					$this->app->redirect('index.php?option=' . $this->option . '&view=projects');
+//					Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_6', $dfbteams, JSMCountries::getCountryFlag($procountry), $procountry), Log::WARNING, 'jsmerror');
+//                    $this->tips[] = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_6', $dfbteams, JSMCountries::getCountryFlag($procountry), $procountry);
+//                    Log::add(Text::_($procountry), Log::WARNING, 'jsmerror');
+                    
+					$this->app->redirect('index.php?option=' . $this->option . '&view=projects&return=jlextdfbkeyimporterror6&dfbteams='.$dfbteams.'&dfbcountry='.$procountry);
 				}
 
 				unset($projectteams);
@@ -208,10 +208,12 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 		$this->document->addCustomTag($stylelink);
 
 		// Set toolbar items for the page
-		ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_1'), 'dfbkey');
-		ToolbarHelper::back('JPREV', 'index.php?option=' . $this->option . '&view=projects');
-		ToolbarHelper::save('jlextdfbkeyimport.save', 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INSERT_ROUNDS');
-		ToolbarHelper::divider();
+//		ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_1'));
+//		ToolbarHelper::back('JPREV', 'index.php?option=' . $this->option . '&view=projects');
+//		ToolbarHelper::save('jlextdfbkeyimport.save', 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INSERT_ROUNDS');
+//		ToolbarHelper::divider();
+$this->addToolbardefault_createdays();
+
 	}
 
 	/**
@@ -251,10 +253,11 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 		$this->document->addCustomTag($stylelink);
 
 		// Set toolbar items for the page
-		ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_1'), 'dfbkey');
-		ToolbarHelper::back('JPREV', 'index.php?option=' . $this->option . '&view=projects');
-		ToolbarHelper::apply('jlextdfbkeyimport.apply', 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INSERT_FIRST_DAY');
-		ToolbarHelper::divider();
+//		ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_1'));
+//		ToolbarHelper::back('JPREV', 'index.php?option=' . $this->option . '&view=projects');
+//		ToolbarHelper::apply('jlextdfbkeyimport.apply', 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INSERT_FIRST_DAY');
+//		ToolbarHelper::divider();
+$this->addToolbardefault_firstmatchday();
 	}
 
 	/**
@@ -279,11 +282,11 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 		$this->document->addCustomTag($stylelink);
 
 		// Set toolbar items for the page
-		ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_1'), 'dfbkey');
-		ToolbarHelper::back('JPREV', 'index.php?option=' . $this->option . '&view=projects');
-		ToolbarHelper::save('jlextdfbkeyimport.insert', 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INSERT_MATCHDAYS');
-		ToolbarHelper::divider();
-
+//		ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_1'));
+//		ToolbarHelper::back('JPREV', 'index.php?option=' . $this->option . '&view=projects');
+//		ToolbarHelper::save('jlextdfbkeyimport.insert', 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INSERT_MATCHDAYS');
+//		ToolbarHelper::divider();
+$this->addToolbardefault_savematchdays();
 	}
 
 	/**
@@ -308,10 +311,82 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 
 		$lists['divisions'] = $projectdivisions;
 		$this->lists        = $lists;
-		ToolbarHelper::back('JPREV', 'index.php?option=' . $this->option . '&view=projects');
-		ToolbarHelper::save('jlextdfbkeyimport.getdivisionfirst', 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_USE_DIVISION');
-
+//		ToolbarHelper::back('JPREV', 'index.php?option=' . $this->option . '&view=projects');
+//		ToolbarHelper::save('jlextdfbkeyimport.getdivisionfirst', 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_USE_DIVISION');
+$this->addToolbardefault_getdivision();
 	}
+    
+    /**
+     * sportsmanagementViewjlextdfbkeyimport::addToolbardefault()
+     * 
+     * @return void
+     */
+    protected function addToolbardefault()
+	{
+	   
+       }
+       
+       /**
+        * sportsmanagementViewjlextdfbkeyimport::addToolbardefault_createdays()
+        * 
+        * @return void
+        */
+       protected function addToolbardefault_createdays()
+	{
+	   $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_1');
+		$this->icon  = 'dfbkey';
+		//ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_1'));
+		ToolbarHelper::back('JPREV', 'index.php?option=' . $this->option . '&view=projects');
+		ToolbarHelper::save('jlextdfbkeyimport.save', 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INSERT_ROUNDS');
+		ToolbarHelper::divider();
+       }
+       
+       /**
+        * sportsmanagementViewjlextdfbkeyimport::addToolbardefault_firstmatchday()
+        * 
+        * @return void
+        */
+       protected function addToolbardefault_firstmatchday()
+	{
+	    $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_1');
+		$this->icon  = 'dfbkey';
+		//ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_1'));
+		ToolbarHelper::back('JPREV', 'index.php?option=' . $this->option . '&view=projects');
+		ToolbarHelper::apply('jlextdfbkeyimport.apply', 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INSERT_FIRST_DAY');
+		ToolbarHelper::divider();
+       }
+       
+       /**
+        * sportsmanagementViewjlextdfbkeyimport::addToolbardefault_savematchdays()
+        * 
+        * @return void
+        */
+       protected function addToolbardefault_savematchdays()
+	{
+	   $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_1');
+		$this->icon  = 'dfbkey';
+		//ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_1'));
+		ToolbarHelper::back('JPREV', 'index.php?option=' . $this->option . '&view=projects');
+		ToolbarHelper::save('jlextdfbkeyimport.insert', 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INSERT_MATCHDAYS');
+		ToolbarHelper::divider();
+       }
+       
+       /**
+        * sportsmanagementViewjlextdfbkeyimport::addToolbardefault_getdivision()
+        * 
+        * @return void
+        */
+       protected function addToolbardefault_getdivision()
+	{
+	   $this->title = Text::_('');
+		$this->icon  = 'dfbkey';
+ToolbarHelper::back('JPREV', 'index.php?option=' . $this->option . '&view=projects');
+		ToolbarHelper::save('jlextdfbkeyimport.getdivisionfirst', 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_USE_DIVISION');
+       }
+       
+       
+       
+  
 
 }
 

@@ -955,13 +955,8 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 		self::$_project_id  = $this->jsmjinput->getVar('pid');
 		self::$_division_id = $this->jsmjinput->getInt('division', 0);
 
-		// Create a new query object.
 		$this->jsmquery->clear();
-
-		// Select some fields
 		$this->jsmquery->select('p.season_id');
-
-		// From table
 		$this->jsmquery->from('#__sportsmanagement_project AS p');
 		$this->jsmquery->where('p.id = ' . self::$_project_id);
 		$this->jsmdb->setQuery($this->jsmquery);
@@ -976,17 +971,13 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 		$this->project_art_id = $this->jsmapp->getUserState("$this->jsmoption.project_art_id", '0');
 		$this->sports_type_id = $this->jsmapp->getUserState("$this->jsmoption.sports_type_id", '0');
 
-		// Create a new query object.
 		$this->jsmquery->clear();
 		$this->jsmsubquery1->clear();
 		$this->jsmsubquery2->clear();
 		$this->jsmsubquery3->clear();
 
-		// Select some fields
 		$this->jsmquery->select('tl.id AS projectteamid,tl.*,st.team_id as team_id,st.id as season_team_id');
 		$this->jsmquery->select('se.name as seasonname');
-
-		// From table
 		$this->jsmquery->from('#__sportsmanagement_project_team AS tl');
 
 		if ($this->project_art_id == 3)

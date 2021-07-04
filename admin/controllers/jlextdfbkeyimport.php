@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage controllers
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -70,9 +66,10 @@ class sportsmanagementControllerjlextdfbkeyimport extends BaseController
 	{
 		$post   = Factory::getApplication()->input->post->getArray(array());
 		$option = Factory::getApplication()->input->getCmd('option');
-		$msg    = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_20');
+		//$msg    = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_20');
+        $msg = '';
 		$link   = 'index.php?option=' . $option . '&view=jlextdfbkeyimport&layout=default&divisionid=' . $post['divisionid'];
-		$this->setRedirect($link, $msg);
+		$this->setRedirect($link);
 	}
 
 	/**
@@ -89,7 +86,8 @@ class sportsmanagementControllerjlextdfbkeyimport extends BaseController
 		// function syntax is setUserState( $key, $value );
 		Factory::getApplication()->setUserState("$option.first_post", $post);
 
-		$msg  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_12');
+		//$msg  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_12');
+        $msg  = '';
 		$link = 'index.php?option=' . $option . '&view=jlextdfbkeyimport&layout=default_savematchdays';
 		$this->setRedirect($link, $msg);
 
@@ -144,12 +142,13 @@ class sportsmanagementControllerjlextdfbkeyimport extends BaseController
 			}
 			catch (Exception $e)
 			{
-				Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
-				Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');
+				$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+        $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 			}
 		}
 
-		$msg  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_2');
+		//$msg  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_2');
+        $msg  = ''; 
 		$link = 'index.php?option=' . $option . '&view=jlextdfbkeyimport&layout=default_firstmatchday';
 		$this->setRedirect($link, $msg);
 	}

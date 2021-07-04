@@ -200,25 +200,32 @@ class sportsmanagementModelMatches extends JSMModelList
 
 	}
 
+	
 	/**
 	 * sportsmanagementModelMatches::getMatchesCount()
-	 *
-	 * @param   mixed  $project_id
-	 *
+	 * 
+	 * @param integer $project_id
+	 * @param integer $projectteam_id
 	 * @return
 	 */
-	function getMatchesCount($project_id)
+	function getMatchesCount($project_id=0,$projectteam_id=0)
 	{
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-		$query->select('count(m.id)');
-		$query->from('#__sportsmanagement_match as m');
-		$query->join('INNER', '#__sportsmanagement_round as r ON r.id = m.round_id');
-		$query->where('r.project_id = ' . $project_id);
+//		$db    = sportsmanagementHelper::getDBConnection();
+//		$query = $db->getQuery(true);
+        
+        $this->jsmquery->clear();
+		$this->jsmquery->select('count(m.id)');
+		$this->jsmquery->from('#__sportsmanagement_match as m');
+		$this->jsmquery->join('INNER', '#__sportsmanagement_round as r ON r.id = m.round_id');
+		$this->jsmquery->where('r.project_id = ' . $project_id);
 
-		$db->setQuery($query);
+if ( $projectteam_id )
+{
+$this->jsmquery->where('(m.projectteam1_id = ' . $this->jsmdb->Quote($projectteam_id) . ' OR m.projectteam2_id = ' . $this->jsmdb->Quote($projectteam_id) . ')');    
+}
+		$this->jsmdb->setQuery($this->jsmquery);
 
-		return $db->loadResult();
+		return $this->jsmdb->loadResult();
 
 	}
 

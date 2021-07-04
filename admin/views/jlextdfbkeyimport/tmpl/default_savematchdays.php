@@ -14,6 +14,12 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
+$templatesToLoad = array('footer', 'listheader');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+$this->tips[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_12');
+
+echo $this->loadTemplate('jsm_notes');
+echo $this->loadTemplate('jsm_tips');
 ?>
 
 <form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm">
@@ -21,11 +27,11 @@ use Joomla\CMS\HTML\HTMLHelper;
         <fieldset class="adminform">
             <legend>
 				<?php
-				echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_2', $this->projectid);
+				echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_2', $this->project_id);
 				?>
             </legend>
 
-            <table class="<?php echo $this->table_data_class; ?>">
+            <table class="<?php echo $this->table_data_class; ?>" id="<?php echo $this->view; ?>list">
                 <thead>
                 <tr>
                     <th class="title" nowrap="nowrap" style="vertical-align:top; ">
@@ -113,7 +119,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 
     </fieldset>
     <input type="hidden" name="sent" value="3"/>
-    <input type="hidden" name="projectid" value="<?php echo $this->projectid; ?> "/>
+    <input type="hidden" name="projectid" value="<?php echo $this->project_id; ?> "/>
     <input type="hidden" name="task" value=""/>
 </form>
 
