@@ -60,7 +60,7 @@ class JFormFieldprojectteamlist extends \JFormFieldList
 		{
 			$db    = Factory::getDbo();
 			$query = $db->getQuery(true);
-			$query->select('pt.team_id AS value, t.name AS text');
+			$query->select('pt.id AS value, t.name AS text');
 			$query->from('#__sportsmanagement_team AS t');
 			$query->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
 			$query->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
