@@ -467,30 +467,6 @@ class sportsmanagementModelPredictionUsers extends BaseDatabaseModel
 	}
 
 	/**
-	 * sportsmanagementModelPredictionUsers::getChampTippAllowed()
-	 *
-	 * @return
-	 */
-	function getChampTippAllowed()
-	{
-		$allowed = false;
-		$user    = &Factory::getUser();
-
-		if ($user->id > 0)
-		{
-			$auth      = &Factory::getACL();
-			$aro_group = $auth->getAroGroup($user->id);
-
-			if ((strtolower($aro_group->name) == 'super administrator') || (strtolower($aro_group->name) == 'administrator'))
-			{
-				$allowed = true;
-			}
-		}
-
-		return $allowed;
-	}
-
-	/**
 	 * Method to get the data that should be injected in the form.
 	 *
 	 * @return mixed    The data for the form.

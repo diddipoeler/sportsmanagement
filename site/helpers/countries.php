@@ -300,7 +300,12 @@ class JSMCountries
 		}
 		else
 		{
-			$countrycode = self::convertIso3to2($countrycode);
+			switch ($countrycode) {
+			case "WAL":  $countrycode = "gb-wls"; break;
+			case "SCO":  $countrycode = "gb-sct"; break;
+			case "GBR":  $countrycode = "gb-eng"; break;
+			default: $countrycode = self::convertIso3to2($countrycode); break;
+			}
 			$countrycode = strtolower($countrycode);
 			$html        = '<span class="flag-icon flag-icon-' . $countrycode . '"></span>';
 		}

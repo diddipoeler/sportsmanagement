@@ -601,6 +601,21 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 	}
 
 	/**
+	 * sportsmanagementModelPrediction::isProjectStarted($predictionProject)
+	 *
+	 * @param   object  $predictionProject
+	 *
+	 * @return bool true, if project already started, flase otherwise
+	 */
+	static function isProjectStarted($predictionProject)
+	{
+		$startDate                 = $predictionProject->start_date . " " . $predictionProject->start_time;
+		$thisTimeDate              = sportsmanagementHelper::getTimestamp(date("Y-m-d H:i:s"), 1, $predictionProject->timezone);
+		$competitionStartTimeDate  = sportsmanagementHelper::getTimestamp($startDate, 1, $predictionProject->timezone);
+		return (($thisTimeDate > $competitionStartTimeDate));
+	}
+
+	/**
 	 * sportsmanagementModelPrediction::getPredictionTippRoundsRienNeVaPlusTimes()
 	 *
 	 * @param   object  $predictionProject
@@ -632,17 +647,9 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 					switch ($r->rien_ne_va_plus)
 					{
 						case 'FIRSTMATCH_OF_TIPPGAME':
-							$query->clear();
-							$query->select('min(match_date)');
-							$query->from('#__sportsmanagement_match AS m');
-							$query->join('INNER', '#__sportsmanagement_round AS r ON m.round_id = r.id');
-							$query->where('r.project_id = ' . (int) $predictionProject->project_id);
-							$query->where('m.published = 1');
-							$db->setQuery($query);
-
-							$proj_first_match_start_datetime = $db->loadResult();
-							$proj_first_match_start_time  = strtotime($proj_first_match_start_datetime);
-							$result[$r->round_id]->latestTimeToBet  = sportsmanagementHelper::getTimestamp(date("Y-m-d", $proj_first_match_start_time), 1, $timezone);
+							// for first match, actually project start date and time are used
+							// to be consistent to champion / final 4 tipps
+							$result[$r->round_id]->latestTimeToBet  = sportsmanagementHelper::getTimestamp($predictionProject->start_date . " " . $predictionProject->start_time, 1, $timezone);
 							break;
 						case 'FIRSTMATCH_OF_TIPPROUND':
 							$query->clear();
@@ -1048,7 +1055,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 			$round_ids
 		);
 
-		$predictionGameMemberMail = self::getPredictionMemberEMailAdress($predictionMemberID);
+		$predictionGameMemberMail = self::getPredictionMemberEMailAdress($predictionMemberID)->email;
 
 		// Fetch the mail object
 		$mailer = Factory::getMailer();
@@ -1536,7 +1543,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 			{
 				$query->clear();
 				$query->select('pp.*');
-				$query->select('p.name AS projectName, p.start_date');
+				$query->select('p.name AS projectName, p.start_date, p.start_time, p.timezone');
 				$query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
 				$query->from('#__sportsmanagement_prediction_project AS pp');
 				$query->join('LEFT', '#__sportsmanagement_project AS p ON p.id = pp.project_id');
@@ -1601,6 +1608,8 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
 		$query->clear();
 		$query->select('u.email');
+		$query->select('u.username');
+		$query->select('u.id as user_id');
 		$query->from('#__users AS u');
 		$query->where('u.block = 0');
 		$query->where('u.id = ' . $user_id);
@@ -1611,7 +1620,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 		if (version_compare(JVERSION, '3.0.0', 'ge'))
 		{
 			// Joomla! 3.0 code here
-			$res = $db->loadColumn();
+			$res = $db->loadObject();
 		}
         elseif (version_compare(JVERSION, '2.5.0', 'ge'))
 		{
@@ -2605,7 +2614,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 			case 'com_cbe':
 
 				$query->select('cbeu.latitude,cbeu.longitude');
-				$query->join('INNER', '#__cbe_users AS cbeu ON cbeu.userid = u.id');
+				$query->join('LEFT', '#__cbe_users AS cbeu ON cbeu.userid = u.id');
 				break;
 			case 'com_users':
 			case 'prediction':
@@ -2613,10 +2622,10 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
 			case 'com_comprofiler':
 				$query->select('cf.cb_streetaddress,cf.cb_city,cf.cb_state,cf.cb_zip,cf.cb_country');
-				$query->join('INNER', '#__comprofiler AS cf ON cf.user_id = u.id');
+				$query->join('LEFT', '#__comprofiler AS cf ON cf.user_id = u.id');
 				break;
 			case 'com_kunena':
-				$query->join('INNER', '#__kunena_users AS cf ON cf.userid = u.id');
+				$query->join('LEFT', '#__kunena_users AS cf ON cf.userid = u.id');
 				break;
 		}
 
@@ -2690,9 +2699,9 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
 			foreach ($cid as $predictionMemberID)
 			{
-				$predictionGameMemberMail = self::getPredictionMemberEMailAdress($predictionMemberID);
+				$predictionGameMember_EMail = self::getPredictionMemberEMailAdress($predictionMemberID)->email;
 
-				if (count($predictionGameMemberMail) > 0)
+				//if (count($predictionGameMemberMail) > 0)
 				{
 					// Fetch the mail object
 					$mailer = Factory::getMailer();
@@ -2717,7 +2726,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 					$lastMailAdress = '';
 					$recipient      = array();
 
-					foreach ($predictionGameMemberMail AS $predictionGameMember_EMail)
+					//foreach ($predictionGameMemberMail AS $predictionGameMember_EMail)
 					{
 						if ($lastMailAdress != $predictionGameMember_EMail)
 						{
@@ -2779,12 +2788,12 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
 					echo '<br /><br />';
 				}
-				else
-				{
-					// Joomla_user is blocked or has set sendEmail to off
-					// can't send email
-					return false;
-				}
+				//else
+				//{
+				//	// Joomla_user is blocked or has set sendEmail to off
+				//	// can't send email
+				//	return false;
+				//}
 			}
 		}
 
