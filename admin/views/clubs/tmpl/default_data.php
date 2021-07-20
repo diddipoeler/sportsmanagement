@@ -211,7 +211,7 @@ HTMLHelper::_('bootstrap.endSlide');
 				<?php
 
 				?>
-                </td>
+
                 <td id="clubswebsite">
 <?php
 					if ($this->item->website != '')
@@ -312,7 +312,10 @@ echo sportsmanagementHelper::getBootstrapModalImage('select'.$this->item->id, ''
 					);
 					?>
                 </td>
-                <td class="center"><?php echo JSMCountries::getCountryFlag($this->item->country); ?></td>
+                <td class="center"><?php echo JSMCountries::getCountryFlag($this->item->country); ?>
+                <br />
+                <?php echo $this->item->country; ?>
+                </td>
                 <td class="center">
                     <div class="btn-group">
 						<?php echo HTMLHelper::_('jgrid.published', $this->item->published, $this->count_i, 'clubs.', $canChange, 'cb'); ?>
