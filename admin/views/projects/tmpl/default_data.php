@@ -238,10 +238,12 @@ $pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=compon
 						echo $this->item->league . '<br>';
 					}
 					?>
+                    <br />
+                    <?php echo $this->item->league_id; ?>
                 </td>
                 <td class="center"><?php echo JSMCountries::getCountryFlag($this->item->country); ?></td>
                 <td class="center"><?php echo $this->item->season; ?>
-                    <br>
+                <br />
 <?php
 $picture = $this->model->existcurrentseason($this->season_ids, $this->item->league_id) ? 'ok.png' : 'error.png';
 $image_attributes['title'] = 'title= "' . '' . '"';			
