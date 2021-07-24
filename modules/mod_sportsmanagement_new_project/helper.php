@@ -54,6 +54,7 @@ class modJSMNewProjectHelper
 		$query->from('#__sportsmanagement_project as pro');
 		$query->join('INNER', '#__sportsmanagement_league as le on le.id = pro.league_id');
 		$query->where('pro.modified BETWEEN ' . $db->Quote('' . $heutestart . '') . ' AND ' . $db->Quote('' . $heuteende . ''));
+        $query->where('pro.published = 1');
 		$query->order('pro.name ASC');
 
 		$db->setQuery($query);
