@@ -26,19 +26,19 @@
 		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_new_project.sys.ini</language>
 	</languages>
 <config>
-		<fields name="params">
-			<fieldset 	name="basic"
-						addfieldpath="/administrator/components/com_sportsmanagement/elements">  
+		<fields name="params"
+			addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+			<fieldset name="basic" description="MOD_SPORTSMANAGEMENT_BASIC_DESC">  
 
 <field type="extensionversion" version="1.1.0" />
 <field type="extensionauthor" />
 <field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
 <field type="extensionlink" linktype="translate" link="https://www.transifex.com/jsm/sportsmanagement/" />	
 <field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:New_Project" />
-<field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
-<field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
+<field type="extensionlink" linktype="forum" link="https://www.fussballineuropa.de/" />	            	
+<field type="extensionlink" linktype="support" link="https://www.fussballineuropa.de/" />
 <field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />	
-<field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />	 
+<field type="extensionlink" linktype="donate" link="https://www.fussballineuropa.de/" />	 
 						
      <field name="new_project_article" 
     type="extensionradiobutton" 

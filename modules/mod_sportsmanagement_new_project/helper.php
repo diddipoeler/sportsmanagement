@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.00
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_new_project
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 
@@ -31,7 +27,6 @@ JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
  */
 class modJSMNewProjectHelper
 {
-
 
 	/**
 	 * modJSMNewProjectHelper::getData()
@@ -91,9 +86,7 @@ class modJSMNewProjectHelper
 			$result[]      = $temp;
 			$result        = array_merge($result);
 
-			/**
-			 * soll ein artikel erstellt werden ?
-			 */
+			/** soll ein artikel erstellt werden ? */
 			if ($new_project_article)
 			{
 				$query->clear();
