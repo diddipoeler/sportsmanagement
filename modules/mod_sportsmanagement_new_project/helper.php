@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Component\ComponentHelper;
 
 JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
@@ -117,7 +118,7 @@ class modJSMNewProjectHelper
 					$profile->created_by  = $user->get('id');
 					$profile->modified    = $date->toSql();
 					$profile->modified_by = $user->get('id');
-
+/*
 					$createroute = array("option"             => "com_sportsmanagement",
 					                     "view"               => "resultsranking",
 					                     "cfg_which_database" => 0,
@@ -127,6 +128,21 @@ class modJSMNewProjectHelper
 
 					$query = sportsmanagementHelperRoute::buildQuery($createroute);
 					$link  = Route::_('index.php?' . $query, false);
+                    */
+$routeparameter                       = array();
+				$routeparameter['cfg_which_database'] = $app->input->getInt('cfg_which_database', ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0));
+				$routeparameter['s']                  = $app->input->getInt('s', 0);
+				$routeparameter['p']                  = $row->id;
+				$routeparameter['r']                  = $row->roundcode;
+				$routeparameter['division']           = 0;
+				$routeparameter['mode']               = 0;
+				$routeparameter['order']              = 0;
+				$routeparameter['layout']             = 0;
+				$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute("resultsranking", $routeparameter);                    
+                    
+                    
+                    
+                    
 
 					$profile->introtext = '<p><a href="' . $link . '">
 <img src="' . $row->league_picture . '" alt="' . $row->liganame . '" style="float: left;" width="200" height="auto" />

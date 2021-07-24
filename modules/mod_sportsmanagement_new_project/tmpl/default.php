@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_new_project
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
@@ -65,7 +61,7 @@ echo HTMLHelper::_('sliders.panel', Text::_('Neue Ligen'), 'neueligen');
 					echo '</td>';
 
 					echo '<td>';
-
+/*
 					$createroute = array("option"             => "com_sportsmanagement",
 					                     "view"               => "resultsranking",
 					                     "cfg_which_database" => 0,
@@ -75,6 +71,19 @@ echo HTMLHelper::_('sliders.panel', Text::_('Neue Ligen'), 'neueligen');
 
 					$query = sportsmanagementHelperRoute::buildQuery($createroute);
 					$link  = Route::_('index.php?' . $query, false);
+                    */
+$routeparameter                       = array();
+				$routeparameter['cfg_which_database'] = $app->input->getInt('cfg_which_database', ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0));
+				$routeparameter['s']                  = $app->input->getInt('s', 0);
+				$routeparameter['p']                  = $row->id;
+				$routeparameter['r']                  = $row->roundcode;
+				$routeparameter['division']           = 0;
+				$routeparameter['mode']               = 0;
+				$routeparameter['order']              = 0;
+				$routeparameter['layout']             = 0;
+				$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute("resultsranking", $routeparameter);                    
+                    
+                    
 					echo HTMLHelper::link($link, Text::_($row->name . ' - ( ' . $row->liganame . ' )'));
 					echo '</td>';
 					$zeile++;
