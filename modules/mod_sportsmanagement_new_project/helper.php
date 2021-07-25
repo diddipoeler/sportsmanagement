@@ -13,9 +13,21 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Filter\OutputFilter;
 
 JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
+
+/**
+ * Check for component
+ */
+if ( ComponentHelper::getComponent('com_autotweet', true)->enabled )
+{
+include_once JPATH_ADMINISTRATOR . '/components/com_autotweet/helpers/autotweetbase.php';
+
+
+}  
+
 
 /**
  * modJSMNewProjectHelper
@@ -107,7 +119,7 @@ class modJSMNewProjectHelper
 					// Create and populate an object.
 					$profile           = new stdClass;
 					$profile->title    = $row->name;
-					$profile->alias    = JFilterOutput::stringURLSafe($row->name);
+					$profile->alias    = OutputFilter::stringURLSafe($row->name);
 					$profile->catid    = $mycategory;
 					$profile->state    = 1;
 					$profile->access   = 1;
@@ -161,6 +173,14 @@ $routeparameter                       = array();
 						$profile->content_id = $db->insertid();
 						$profile->ordering   = $db->insertid();
 						$resultfrontpage     = Factory::getDbo()->insertObject('#__content_frontpage', $profile);
+                        
+                      
+                        
+                        
+                        
+                        
+                        
+                        
 					}
 				}
 			}
