@@ -167,7 +167,10 @@ $routeparameter                       = array();
 				$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute("resultsranking", $routeparameter);                    
                     
                     
-                    
+if ( !$row->project_picture )
+{
+$row->project_picture = ComponentHelper::getParams('com_sportsmanagement')->get('ph_project', '');	
+}
                     
 
 					$profile->introtext = '<p><a href="' . $link . '">
