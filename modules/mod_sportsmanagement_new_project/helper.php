@@ -171,6 +171,10 @@ if ( !$row->project_picture )
 {
 $row->project_picture = ComponentHelper::getParams('com_sportsmanagement')->get('ph_project', '');	
 }
+if ( !$row->league_picture )
+{
+$row->league_picture = ComponentHelper::getParams('com_sportsmanagement')->get('ph_project', '');	
+}					
                     
 
 					$profile->introtext = '<p><a href="' . $link . '">
