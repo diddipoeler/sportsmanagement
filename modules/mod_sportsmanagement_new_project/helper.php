@@ -14,6 +14,9 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filter\OutputFilter;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Uri\Uri;
 
 JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
@@ -24,8 +27,13 @@ JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 if ( ComponentHelper::getComponent('com_autotweet', true)->enabled )
 {
 include_once JPATH_ADMINISTRATOR . '/components/com_autotweet/helpers/autotweetbase.php';
-
-
+//include_once JPATH_SITE . '/plugins/system/autotweetcontent/autotweetcontent.php';
+//$mdl     = BaseDatabaseModel::getInstance("AutotweetContent", "PlgSystem");  
+$plugin = PluginHelper::getPlugin('system', 'autotweetcontent');  
+  
+  
+//Factory::getApplication()->enqueueMessage( '<pre>'. print_r($plugin,true) . '</pre>', 'notice');      
+  
 }  
 
 
@@ -75,6 +83,10 @@ class modJSMNewProjectHelper
 
 		foreach ($anzahl as $row)
 		{
+          
+          //$app->enqueueMessage($row->roundcode, 'notice');
+          //$app->enqueueMessage( 'komponente '.   ComponentHelper::getComponent('com_autotweet', true)->enabled, 'notice');
+          
 			if ($row->roundcode)
 			{
 				$query->clear();
@@ -113,6 +125,7 @@ class modJSMNewProjectHelper
 
 				if ($article)
 				{
+                 // $app->enqueueMessage($article->id, 'notice');
 				}
 				else
 				{
@@ -127,7 +140,8 @@ class modJSMNewProjectHelper
 					$profile->language = '*';
 
 					$profile->created     = $date->toSql();
-					$profile->created_by  = $user->get('id');
+					//$profile->created_by  = $user->get('id');
+                  $profile->created_by  = 62;
 					$profile->modified    = $date->toSql();
 					$profile->modified_by = $user->get('id');
 /*
@@ -157,9 +171,9 @@ $routeparameter                       = array();
                     
 
 					$profile->introtext = '<p><a href="' . $link . '">
-<img src="' . $row->league_picture . '" alt="' . $row->liganame . '" style="float: left;" width="200" height="auto" />
+<img src="' . $row->league_picture . '" alt="' . $row->liganame . '" style="float: left;" width="100" height="auto" />
 ' . $row->name . ' - ( ' . $row->liganame . ' )</a> neu angelegt/aktualisiert.
-<img src="' . $row->project_picture . '" alt="' . $row->name . '" style="float: right;" width="200" height="auto" />
+<img src="' . $row->project_picture . '" alt="' . $row->name . '" style="float: right;" width="100" height="auto" />
 </p>';
 
 					$profile->publish_up = $date->toSql();
@@ -169,17 +183,66 @@ $routeparameter                       = array();
 					if ($resultinsert)
 					{
 						// Create and populate an object.
+                      $article_id = $db->insertid();
+                      //$app->enqueueMessage( '<pre>'. print_r($article_id,true) . '</pre>', 'notice');                        
 						$profile             = new stdClass;
-						$profile->content_id = $db->insertid();
-						$profile->ordering   = $db->insertid();
+						$profile->content_id = $article_id;
+						$profile->ordering   = $article_id;
 						$resultfrontpage     = Factory::getDbo()->insertObject('#__content_frontpage', $profile);
                         
                       
-                        
-                        
-                        
-                        
-                        
+if ( ComponentHelper::getComponent('com_autotweet', true)->enabled )
+{                        
+$query->clear();
+$query->select('*');
+$query->from('#__content');
+$query->where('id = ' . $article_id );
+$db->setQuery($query);
+$article = $db->loadObject();                        
+//$app->enqueueMessage( '<pre>'. print_r($article,true) . '</pre>', 'notice');    
+  
+//$mdl     = BaseDatabaseModel::getInstance("AutotweetContent", "PlgSystem");  
+Factory::getApplication()->triggerEvent('onContentAfterSave', array('com_content.article',$article,1) ); // postArticle
+//Factory::getApplication()->triggerEvent('postArticle', array($article) );
+  
+  /*
+$autotweet_insert             = new stdClass;
+$autotweet_insert->ref_id = $article_id; 
+$autotweet_insert->plugin = 'autotweetcontent';
+$autotweet_insert->message = $article->title;
+$autotweet_insert->title = $article->title;  
+$autotweet_insert->fulltext = $article->introtext;
+$autotweet_insert->postdate = $date->toSql();  
+$autotweet_insert->channel_id = 1;
+$result_tweet_insert     = Factory::getDbo()->insertObject('#__autotweet_posts', $autotweet_insert);  
+  */
+  
+  
+  /*
+$autotweet_insert = new stdClass;
+$autotweet_insert->ref_id = $article_id; 
+$autotweet_insert->plugin = 'autotweetcontent';  
+$autotweet_insert->priority = 9;  
+$autotweet_insert->publish_up = $date->toSql();   
+$autotweet_insert->description = $article->title;
+$autotweet_insert->typeinfo = 1;
+//$autotweet_insert->url = ;
+$autotweet_insert->image_url = Uri::root().$row->league_picture;
+$autotweet_insert->native_object = json_encode($article);
+$autotweet_insert->created = $date->toSql();
+$autotweet_insert->created_by = 62;
+$autotweet_insert->published = 1;
+$autotweet_insert->checked_out_time = '0000-00-00 00:00:00';
+  
+$result_tweet_insert = Factory::getDbo()->insertObject('#__autotweet_requests', $autotweet_insert);    
+*/  
+  
+/*
+  parent::onContentAfterSave($context, $article, $isNew);
+
+		if ((($context == 'com_content.article'
+  */
+}                       
                         
 					}
 				}
