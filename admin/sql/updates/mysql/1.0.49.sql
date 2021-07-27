@@ -1,4 +1,4 @@
-ALTER TABLE  `#__sportsmanagement_rquote` ADD  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00';
+-- ALTER TABLE  `#__sportsmanagement_rquote` ADD  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00';
 
 
 INSERT INTO `#__sportsmanagement_version_history` (`id`, `date`, `text`, `version`) VALUES
