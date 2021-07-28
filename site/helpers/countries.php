@@ -53,6 +53,19 @@ class JSMCountries
 
 	}
 
+	public static function getCountry($countrycode = '')
+	{
+	$db = sportsmanagementHelper::getDBConnection();
+	$query = $db->getQuery(true);
+		$query->select('*');
+		$query->from('#__sportsmanagement_countries');
+		$query->where('alpha3 LIKE \'' . $countrycode . '\'');
+		$db->setQuery($query);
+		$res = $db->loadObject();
+		return $res;
+		
+	}
+	
 	// Hints:
 	// http://en.wikipedia.org/wiki/List_of_FIFA_country_codes
 	// http://en.wikipedia.org/wiki/Comparison_of_IOC,_FIFA,_and_ISO_3166_country_codes
