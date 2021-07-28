@@ -16,7 +16,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 
 $document = Factory::getDocument();
-$document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps.js');
+//$document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps.js');
 ?>
 <script>
     console.log("jquery version : " + jQuery().jquery);
@@ -69,6 +69,14 @@ if (!empty($this->overallconfig))
 							echo JSMCountries::getCountryFlag($country) . ' ' . JSMCountries::getCountryName($country);
 
 $country_info = JSMCountries::getCountry($country);
+$javascript = "\n";
+$javascript .= $country_info->countrymap_mapdata;                  					
+$document->addScriptDeclaration($javascript);					
+$document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps1.js');
+$javascript = "\n";
+$javascript .= $country_info->countrymap_mapinfo;                  
+$document->addScriptDeclaration($javascript);					
+$document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps2.js');					
 					
 							?>
                         </td>
