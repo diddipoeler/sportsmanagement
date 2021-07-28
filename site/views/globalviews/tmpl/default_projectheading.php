@@ -68,6 +68,8 @@ if (!empty($this->overallconfig))
 							$country = $this->project->country;
 							echo JSMCountries::getCountryFlag($country) . ' ' . JSMCountries::getCountryName($country);
 
+$country_info = JSMCountries::getCountry($country);
+					
 							?>
                         </td>
                     </tr>
