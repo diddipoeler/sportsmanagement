@@ -16,7 +16,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 
 $document = Factory::getDocument();
-
+$document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps.js');
 ?>
 <script>
     console.log("jquery version : " + jQuery().jquery);
