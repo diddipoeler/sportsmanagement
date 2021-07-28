@@ -118,7 +118,8 @@ class modJSMNewProjectHelper
 				$query->clear();
 				$query->select('id');
 				$query->from('#__content');
-				$query->where('title LIKE ' . $db->Quote('' . $row->name . ''));
+				//$query->where('title LIKE ' . $db->Quote('' . $row->name . '') );
+				$query->where('xreference = ' . $row->id );
 				$query->where('created BETWEEN ' . $db->Quote('' . $heutestart . '') . ' AND ' . $db->Quote('' . $heuteende . ''));
 				$db->setQuery($query);
 				$article = $db->loadObject();
@@ -134,6 +135,7 @@ class modJSMNewProjectHelper
 					$profile->title    = $row->name;
 					$profile->alias    = OutputFilter::stringURLSafe($row->name);
 					$profile->catid    = $mycategory;
+					$profile->xreference = $row->id;
 					$profile->state    = 1;
 					$profile->access   = 1;
 					$profile->featured = 1;
