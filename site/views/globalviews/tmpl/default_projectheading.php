@@ -16,7 +16,8 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 
 $document = Factory::getDocument();
-//$document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps.js');
+//$document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/mapdata.js');
+//$document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/countrymap.js');
 ?>
 <script>
     console.log("jquery version : " + jQuery().jquery);
@@ -68,18 +69,45 @@ if (!empty($this->overallconfig))
 							$country = $this->project->country;
 							echo JSMCountries::getCountryFlag($country) . ' ' . JSMCountries::getCountryName($country);
 
+                  
 $country_info = JSMCountries::getCountry($country);
+                  
+//echo '<pre>'.print_r($country_info,true).'</pre>';
+                  
+                  
 $javascript = "\n";
 $javascript .= $country_info->countrymap_mapdata;                  					
-$document->addScriptDeclaration($javascript);					
+$document->addScriptDeclaration($javascript);
+
+$javascript = "\n";
+$javascript .= file_get_contents('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps1.js');
+$document->addScriptDeclaration($javascript);                  
+
+//$document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps1.js');
+                  
+$javascript = "\n";
+$javascript .= $country_info->countrymap_mapinfo;                  					
+$document->addScriptDeclaration($javascript);	
+                  
+//$document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps2.js');					
+                  
+$javascript = "\n";
+$javascript .= file_get_contents('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps2.js');
+$document->addScriptDeclaration($javascript);                                    
+        
+          
+/*                  
 $document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps1.js');
 $javascript = "\n";
 $javascript .= $country_info->countrymap_mapinfo;                  
 $document->addScriptDeclaration($javascript);					
 $document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps2.js');					
-					
+*/					
 							?>
                         </td>
+                              
+                        <td><div id="map"></div>      </td>
+                              
                     </tr>
 					<?php
 				}
