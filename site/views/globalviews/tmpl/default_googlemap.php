@@ -87,7 +87,7 @@ $this->document->addScript('https://unpkg.com/leaflet-routing-machine@'.$this->l
 					</div>
 </div>
 <!--Note box blau -->    
-    <div id="map"
+    <div id="mapjsm"
          style="height: <?php echo $this->mapconfig['map_height']; ?>px; margin-top: 50px; position: relative;" itemscope itemtype="http://schema.org/Place">
     </div>
 	<?php
@@ -104,7 +104,7 @@ $this->document->addScript('https://unpkg.com/leaflet-routing-machine@'.$this->l
                         ["<?php echo $this->playground->name; ?>",<?php echo $this->playground->latitude; ?>,<?php echo $this->playground->longitude; ?>]
                     ];
 
-                    var map = L.map('map').setView([<?php echo $this->playground->latitude; ?>,<?php echo $this->playground->longitude; ?>], 16);
+                    var map = L.map('mapjsm').setView([<?php echo $this->playground->latitude; ?>,<?php echo $this->playground->longitude; ?>], 16);
                     mapLink =
                         '<a href="http://openstreetmap.org">OpenStreetMap</a>';
                     L.tileLayer(
@@ -157,7 +157,7 @@ $this->document->addScript('https://unpkg.com/leaflet-routing-machine@'.$this->l
 			{
 				?>
                 <script>
-                    jQuery("#map").width(50).height(50);
+                    jQuery("#mapjsm").width(50).height(50);
                 </script>
 				<?php
 			}
@@ -179,7 +179,7 @@ $this->document->addScript('https://unpkg.com/leaflet-routing-machine@'.$this->l
                         ["<?php echo $this->club->name; ?>",<?php echo $this->club->latitude; ?>,<?php echo $this->club->longitude; ?>]
                     ];
 
-                    var map = L.map('map').setView([<?php echo $this->club->latitude; ?>,<?php echo $this->club->longitude; ?>], 16);
+                    var map = L.map('mapjsm').setView([<?php echo $this->club->latitude; ?>,<?php echo $this->club->longitude; ?>], 16);
                     mapLink =
                         '<a href="http://openstreetmap.org">OpenStreetMap</a>';
                     L.tileLayer(
@@ -232,7 +232,7 @@ $this->document->addScript('https://unpkg.com/leaflet-routing-machine@'.$this->l
 			{
 				?>
                 <script>
-                    jQuery("#map").width(50).height(50);
+                    jQuery("#mapjsm").width(50).height(50);
                 </script>
 				<?php
 			}
@@ -271,7 +271,7 @@ $this->document->addScript('https://unpkg.com/leaflet-routing-machine@'.$this->l
 					<?php echo $comma_separated; ?>
                 ];
 
-                var map = L.map('map').setView([<?php echo $setlatitude; ?>,<?php echo $setlongitude; ?>], 8);
+                var map = L.map('mapjsm').setView([<?php echo $setlatitude; ?>,<?php echo $setlongitude; ?>], 8);
                 mapLink =
                     '<a href="http://openstreetmap.org">OpenStreetMap</a>';
                 L.tileLayer(
@@ -372,7 +372,7 @@ else
 			if ($this->showmap)
 			{
 				?>
-                <div id="map" style="width:50%;height:600px;float: left;"></div>
+                <div id="mapjsm" style="width:50%;height:600px;float: left;"></div>
                 <div id="pano" style="width:50%;height:600px;float: left;"></div>
 				<?php
 			}
@@ -417,7 +417,7 @@ else
 
 
                         var fenway2 = {lat: <?PHP echo $latitude; ?>, lng: <?PHP echo $longitude; ?>};
-                        var map = new google.maps.Map(document.getElementById('map'), {
+                        var map = new google.maps.Map(document.getElementById('mapjsm'), {
                             center: fenway2,
                             mapTypeControl: true,
                             mapTypeId: 'satellite',
@@ -441,9 +441,9 @@ else
                                 //alert('Street View data not found for this location.');
                                 //jQuery('#pano').hide();
                                 jQuery("#pano").remove();
-                                jQuery("#map").css("width", "100%");
+                                jQuery("#mapjsm").css("width", "100%");
                                 //jQuery("#pano").css("width", "");
-                                jQuery("#map").css("float", "");
+                                jQuery("#mapjsm").css("float", "");
                                 //jQuery("#pano").css("height", "");
                             }
                         }
