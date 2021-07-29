@@ -37,6 +37,7 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   29-07-2021: **3.8.84** Anpassungen Joomla 4
 *   25-04-2021: **3.8.83** Anpassungen Joomla 4
 *   30-03-2021: **3.8.82** Anpassungen Joomla 4
 *   17-03-2021: **3.8.81** Neue Felder für Kleinkaliber Schützenvereine
