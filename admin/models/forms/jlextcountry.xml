@@ -130,11 +130,11 @@
   description="COM_SPORTSMANAGEMENT_TABS_COUNTRYMAP_MAPDATA">		
 			<field
 				name="countrymap_mapdata"
-				type="editor"
+				type="textarea"
 				label="COM_SPORTSMANAGEMENT_TABS_COUNTRYMAP_MAPDATA"
 				description="COM_SPORTSMANAGEMENT_TABS_COUNTRYMAP_MAPDATA"
-				width="450" 
-				filter="JComponentHelper::filterText"/>			
+				rows="40" cols="20"
+				filter="raw"/>			
 	</fieldset>		
 	
 <!-- reiter 4 -->
@@ -143,11 +143,11 @@
   description="COM_SPORTSMANAGEMENT_TABS_COUNTRYMAP_MAPINFO">		
 			<field
 				name="countrymap_mapinfo"
-				type="editor"
+				type="textarea"
 				label="COM_SPORTSMANAGEMENT_TABS_COUNTRYMAP_MAPINFO"
 				description="COM_SPORTSMANAGEMENT_TABS_COUNTRYMAP_MAPINFO"
-				width="450" 
-				filter="JComponentHelper::filterText"/>			
+				rows="40" cols="20"
+				filter="raw"/>			
 	</fieldset>	
 	
 	
