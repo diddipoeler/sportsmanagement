@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\Registry\Registry;
 
 /** es wird als erstes die farblegende der divisionen/gruppen gelesen */
-foreach ($this->currentRanking as $division => $cu_rk)
+foreach ($this->currentRanking as $division => $cu_rk) if ( $this->currentRanking )
 {
 	if ($division)
 	{
