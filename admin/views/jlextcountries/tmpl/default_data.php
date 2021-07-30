@@ -184,7 +184,20 @@ $this->dragable_group = 'data-dragable-group="none"';
                 <td><?php echo $this->item->wmo; ?></td>
 
 <td>
-	mapdata
+	<?php
+		if ( $this->item->countrymap_mapdata )
+		{
+echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/ok.png',
+$imageTitle,'title= "'.$imageTitle.'"');    
+		}
+			 else
+			 {
+echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/error.png',
+$imageTitle,'title= "'.$imageTitle.'"');      			 
+			 }
+			 
+			 ?>
+	
 		    </td>
 		    <td>
 	
