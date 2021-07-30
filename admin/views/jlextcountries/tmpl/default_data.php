@@ -92,6 +92,9 @@ JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($t
 				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_WMO', 'objcountry.wmo', $this->sortDirection, $this->sortColumn);
 				?>
             </th>
+		<th width=""
+                style="vertical-align: top; "><?php echo Text::_('MAPDATA'); ?></th>
+            <th>
             <th width="" class="nowrap center">
 				<?php
 				echo HTMLHelper::_('grid.sort', 'JSTATUS', 's.published', $this->sortDirection, $this->sortColumn);
@@ -180,7 +183,9 @@ $this->dragable_group = 'data-dragable-group="none"';
                 <td><?php echo $this->item->ds; ?></td>
                 <td><?php echo $this->item->wmo; ?></td>
 
-
+<td>
+	mapdata
+		    </td>
                 <td class="center">
                     <div class="btn-group">
 						<?php echo HTMLHelper::_('jgrid.published', $this->item->published, $this->count_i, 'jlextcountries.', $canChange, 'cb'); ?>
