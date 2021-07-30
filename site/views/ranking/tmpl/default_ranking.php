@@ -12,8 +12,10 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\Registry\Registry;
 
+if ( $this->currentRanking )
+{	
 /** es wird als erstes die farblegende der divisionen/gruppen gelesen */
-foreach ($this->currentRanking as $division => $cu_rk) if ( $this->currentRanking )
+foreach ($this->currentRanking as $division => $cu_rk) 
 {
 	if ($division)
 	{
@@ -94,6 +96,7 @@ foreach ($this->currentRanking as $division => $cu_rk) if ( $this->currentRankin
         <br/>
 		<?php
 	}
+}
 }
 ?>
 <!-- ranking END -->
