@@ -186,6 +186,9 @@ $this->dragable_group = 'data-dragable-group="none"';
 <td>
 	mapdata
 		    </td>
+		    <td>
+	
+		    </td>
                 <td class="center">
                     <div class="btn-group">
 						<?php echo HTMLHelper::_('jgrid.published', $this->item->published, $this->count_i, 'jlextcountries.', $canChange, 'cb'); ?>
