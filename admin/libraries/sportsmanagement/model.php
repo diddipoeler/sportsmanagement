@@ -237,6 +237,16 @@ if ( $config->get('debug') )
 		/** differenzierung zwischen den views */
 		switch ($this->jsmview)
 		{
+		  case 'jlextcountry':
+          if (!$data['countrymap_mapdata'])
+				{
+					$data['countrymap_mapdata'] = NULL;
+				}
+                if (!$data['countrymap_mapinfo'])
+				{
+					$data['countrymap_mapinfo'] = NULL;
+				}
+          break;
 			/** gruppen */
 			case 'division':
 				if (!$data['id'])
