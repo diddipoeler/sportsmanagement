@@ -238,11 +238,11 @@ if ( $config->get('debug') )
 		switch ($this->jsmview)
 		{
 		  case 'jlextcountry':
-          if (!$data['countrymap_mapdata'])
+          if ( $data['countrymap_mapdata'] == '' )
 				{
 					$data['countrymap_mapdata'] = NULL;
 				}
-                if (!$data['countrymap_mapinfo'])
+                if ( $data['countrymap_mapinfo'] == '' )
 				{
 					$data['countrymap_mapinfo'] = NULL;
 				}
