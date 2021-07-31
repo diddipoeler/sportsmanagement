@@ -30,6 +30,14 @@
             <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
         </field>
 		
+		<field name="geo_daten" type="list" default="" 
+onchange="this.form.submit();"
+required="" label="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRYMAP" description="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRYMAP">
+  <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRYMAP</option>
+  <option value="IS NULL">JNO</option>
+  <option value="IS NOT NULL">JYES</option>
+</field>
+
 		
     </fields>
 	
