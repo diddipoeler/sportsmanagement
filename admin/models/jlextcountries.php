@@ -85,7 +85,7 @@ class sportsmanagementModeljlextcountries extends JSMModelList
         
         if ($this->getState('filter.search_countrymap'))
 		{
-			$this->jsmquery->where('objcountry.countrymap_mapdata ' . $this->jsmdb->Quote($this->getState('filter.search_countrymap'))  );
+			$this->jsmquery->where('objcountry.countrymap_mapdata ' . $this->getState('filter.search_countrymap') );
 		}
 
 		if (is_numeric($this->getState('filter.state')))
