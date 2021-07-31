@@ -82,6 +82,11 @@ class sportsmanagementModeljlextcountries extends JSMModelList
 		{
 			$this->jsmquery->where('objcountry.federation = ' . $this->getState('filter.federation'));
 		}
+        
+        if ($this->getState('filter.search_countrymap'))
+		{
+			$this->jsmquery->where('objcountry.countrymap_mapdata ' . $this->jsmdb->Quote($this->getState('filter.search_countrymap'))  );
+		}
 
 		if (is_numeric($this->getState('filter.state')))
 		{
@@ -146,6 +151,7 @@ class sportsmanagementModeljlextcountries extends JSMModelList
         $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array(), 'array');
 
 		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search'));
+        $this->setState('filter.search_countrymap', $this->getUserStateFromRequest($this->context . '.filter.search_countrymap', 'filter_search_countrymap'));
 		$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
 		$this->setState('filter.federation', $this->getUserStateFromRequest($this->context . '.filter.federation', 'filter_federation', ''));
 		$this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
