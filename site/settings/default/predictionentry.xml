@@ -143,6 +143,10 @@
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTION_SELECT_PROTEAM_DESCR">
 	</field>
 
+	  <field 	name="club_logo_height" type="text" default="20"
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_CLUB_LOGO_HEIGHT" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_CLUB_LOGO_HEIGHT">
+		</field>
   			
   </fieldset>
 
