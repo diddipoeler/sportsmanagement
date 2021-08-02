@@ -241,7 +241,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 										'predresult' . $match->homeid,
 										$match->homeLogo,
 										$match->homeName,
-										'20',
+										$this->config['club_logo_height'],
 										'',
 										$this->modalwidth,
 										$this->modalheight,
@@ -291,11 +291,12 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 										$match->awayLogo = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
 									}
 									//echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult'.$match->awayid,$match->awayLogo,$match->awayName,'20');
+// club_logo_height	$this->config['club_logo_height']								
 									echo sportsmanagementHelperHtml::getBootstrapModalImage(
 										'predresult' . $match->awayid,
 										$match->awayLogo,
 										$match->awayName,
-										'20',
+										$this->config['club_logo_height'],
 										'',
 										$this->modalwidth,
 										$this->modalheight,
