@@ -1020,7 +1020,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
 		// Reference global application object
 		$app = Factory::getApplication();
-
+$recipient = array();
 		// JInput object
 		$jinput   = $app->input;
 		$option   = $jinput->getCmd('option');
@@ -1082,7 +1082,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 		// $sender = array($config->getValue('config.mailfrom'),$config->getValue('config.fromname'));
 		$mailer->setSender($sender);
 
-		$recipient = $predictionGameMemberMail;
+		$recipient[] = $predictionGameMemberMail;
 
 		/**
 		 * zur sicherheit die tipeingaben auch dem admin zusenden
@@ -1091,8 +1091,8 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 		 */
 		if ($configprediction['send_admin_user_tipentry'])
 		{
-			//$recipient[] = $sender[0];
-			$recipient = $sender[0];
+			$recipient[] = $sender[0];
+			//$recipient = $sender[0];
 			
 		}
 
@@ -1347,7 +1347,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 		}
 		else
 		{
-			$emailadresses = implode(",", $predictionGameMemberMail);
+			$emailadresses = implode(",", $recipient);
 			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_MAIL_SEND_OK', $emailadresses), 'notice');
 		}
 
