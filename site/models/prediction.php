@@ -1091,7 +1091,9 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 		 */
 		if ($configprediction['send_admin_user_tipentry'])
 		{
-			$recipient[] = $sender[0];
+			//$recipient[] = $sender[0];
+			$recipient = $sender[0];
+			
 		}
 
 		// $mailer->addRecipient($predictionGameMemberMail);
