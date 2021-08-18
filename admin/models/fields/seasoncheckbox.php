@@ -72,8 +72,18 @@ class JFormFieldseasoncheckbox extends FormField
 			$query = Factory::getDbo()->getQuery(true);
 
 			// Saisons selektieren
-			$query->select('season_id,teamname');
+			switch ( $targettable )
+			{
+				case 'season_team_id':
+				$query->select('season_id,teamname');
 			$query->from('#__sportsmanagement_' . $targettable);
+				break;
+				case 'season_person_id':
+					$query->select('season_id');
+			$query->from('#__sportsmanagement_' . $targettable);
+				break;
+			}
+			
 			$query->where($targetid . '=' . $select_id);
 			$query->group('season_id');
 			$starttime = microtime();
