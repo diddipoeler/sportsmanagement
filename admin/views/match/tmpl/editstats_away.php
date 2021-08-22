@@ -12,7 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 
-//row index
+/* row index */
 $i = 0;
 $j = 0;
 ?>
@@ -81,7 +81,7 @@ $j = 0;
 	<?php if (count($this->awayStaff)) : ?>
         <hr/>
 		<?php foreach ($this->staffpositions as $position): ?>
-            <h3><?php echo $position->text; ?></h3>
+            <h3><?php echo Text::_($position->text); ?></h3>
             <table>
                 <thead>
                 <tr>
