@@ -1311,14 +1311,14 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 
 			$object->team1_single_matchpoint = $post['team1_single_matchpoint' . $pks[$x]];
 			$object->team2_single_matchpoint = $post['team2_single_matchpoint' . $pks[$x]];
-            
+
 			$object->team1_single_sets       = $post['team1_single_sets' . $pks[$x]];
 			$object->team2_single_sets       = $post['team2_single_sets' . $pks[$x]];
 			$object->team1_single_games      = $post['team1_single_games' . $pks[$x]];
 			$object->team2_single_games      = $post['team2_single_games' . $pks[$x]];
 			$object->content_id              = $post['content_id' . $pks[$x]];
 			$object->match_timestamp         = sportsmanagementHelper::getTimestamp($object->match_date);
-            
+
             if ( !$object->team1_single_matchpoint )
             {
                 $object->team1_single_matchpoint = NULL;
@@ -1327,7 +1327,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
             {
                 $object->team2_single_matchpoint = NULL;
             }
-            
+
             if ( !$object->team1_single_sets )
             {
                 $object->team1_single_sets = NULL;
@@ -1336,7 +1336,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
             {
                 $object->team2_single_sets = NULL;
             }
-            
+
             if ( !$object->team1_single_games )
             {
                 $object->team1_single_games = NULL;
@@ -1550,7 +1550,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
         $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
         $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
         //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($object, true) . '</pre>', 'Error');
-        
+
 				$result = false;
 			}
 		}
@@ -1623,8 +1623,8 @@ catch (RuntimeException $e)
 }
 
 
-		  
-}          
+
+}
 
 /** einzelschützen anlegen */
 unset($match_single_free);
@@ -1645,7 +1645,7 @@ foreach ($result_single1 as $single1)
 $match_single_player[$single1->teamplayer1_id] = $single1->teamplayer1_id;
 if ( !$single1->teamplayer1_id )
 {
-$match_single_free[$single1->id] = $single1->id;    
+$match_single_free[$single1->id] = $single1->id;
 }
 
 }
@@ -1661,7 +1661,7 @@ $object->id = $match_single_id;
 $object->teamplayer1_id = $player->season_team_person_id;
 $result_update = $this->jsmdb->updateObject('#__sportsmanagement_match_single', $object, 'id', true);
 
-    
+
 }
 
 }
@@ -2046,10 +2046,10 @@ break;
 		return true;
 	}
 
-	
+
 	/**
 	 * sportsmanagementModelMatch::getMatchTeams()
-	 * 
+	 *
 	 * @param integer $match_id
 	 * @param integer $projectteam1_id
 	 * @param integer $projectteam2_id
@@ -2062,7 +2062,7 @@ break;
 		$option = Factory::getApplication()->input->getCmd('option');
 		$db     = sportsmanagementHelper::getDBConnection();
 		$query  = $db->getQuery(true);
-        
+
         $query->select('mc.*');
         $query->select('u.name AS editor');
         $query->from('#__sportsmanagement_match AS mc ');
@@ -2073,35 +2073,35 @@ break;
 		case 'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION':
         if ( $projectteam1_id && $projectteam2_id )
         {
-        $query->select('t1.name as team1,t2.name as team2');    
+        $query->select('t1.name as team1,t2.name as team2');
         $query->join('INNER', '#__sportsmanagement_project_team AS pt1 ON mc.projectteam1_id = pt1.id ');
 		$query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id ');
 		$query->join('INNER', '#__sportsmanagement_team AS t1 ON t1.id = st1.team_id ');
 		$query->join('INNER', '#__sportsmanagement_project_team AS pt2 ON mc.projectteam2_id = pt2.id ');
 		$query->join('INNER', '#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id ');
-		$query->join('INNER', '#__sportsmanagement_team AS t2 ON t2.id = st2.team_id ');    
+		$query->join('INNER', '#__sportsmanagement_team AS t2 ON t2.id = st2.team_id ');
         }
         elseif ( $projectteam1_id && !$projectteam2_id )
         {
-        $query->select('t1.name as team1');    
+        $query->select('t1.name as team1');
         $query->join('INNER', '#__sportsmanagement_project_team AS pt1 ON mc.projectteam1_id = pt1.id ');
 		$query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id ');
 		$query->join('INNER', '#__sportsmanagement_team AS t1 ON t1.id = st1.team_id ');
         }
         elseif ( !$projectteam1_id && $projectteam2_id )
         {
-        $query->select('t2.name as team2');    
+        $query->select('t2.name as team2');
 		$query->join('INNER', '#__sportsmanagement_project_team AS pt2 ON mc.projectteam2_id = pt2.id ');
 		$query->join('INNER', '#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id ');
 		$query->join('INNER', '#__sportsmanagement_team AS t2 ON t2.id = st2.team_id ');
         }
-        
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
+
         break;
         default:
 		//$query->select('mc.*');
@@ -2143,12 +2143,12 @@ break;
                 $result->team2 = '';
             }
             }
-            
+
 		}
 		catch (Exception $e)
 		{
 $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');		  
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 			$result = false;
 		}
 
@@ -3092,8 +3092,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		{
 			foreach ($key2 as $key3 => $value)
 			{
-				$key3        = utf8_encode($key3);
-				$key4[$key3] = utf8_encode($value);
+				$key4[$key3] = $value;
 			}
 
 			$csv_file->data[$key] = $key4;
@@ -3589,7 +3588,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 	/**
 	 * sportsmanagementModelMatch::getEventType()
-	 * 
+	 *
 	 * @param string $event_type_name
 	 * @return
 	 */
@@ -3632,6 +3631,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$csv_referee_project_referee_id  = $post['refereeprojectrefereeid'];
 
 		$csv_player_number                    = $post['player'];
+        $csv_player_csvname                   = $post['csvname'];
 		$csv_player_firstname                 = $post['playerfirstname'];
 		$csv_player_lastname                  = $post['playerlastname'];
 		$csv_player_person_id                 = $post['playerpersonid'];
@@ -3691,9 +3691,10 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		}
 
 		// Spieler verarbeiten
-		foreach ($csv_player_lastname as $player_key => $player_lastname)
+		foreach ($csv_player_csvname as $player_key => $player_csvname)
 		{
 			$player_firstname           = $csv_player_firstname[$player_key];
+            $player_lastname            = $csv_player_lastname[$player_key];
 			$player_person_id           = $csv_player_person_id[$player_key];
 			$player_project_position_id = $csv_player_project_position_id[$player_key];
 			$player_startaufstellung    = $csv_player_startaufstellung[$player_key];
@@ -3740,7 +3741,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 						foreach ($this->csv_in_out as $player_inout_key => $player_inout_object)
 						{
 							// Überprüfen ob der eingewechselte Spieler zum aktuellen Spieler passt (Nachname + Nummer muss stimmen)
-							if ($player_inout_object->spieler == $player_lastname && $player_inout_object->in == $player_jerseynumber)
+							if ($player_inout_object->spieler == $player_csvname && $player_inout_object->in == $player_jerseynumber)
 							{
 								// Hat der Benutzer eine Position beim Import ausgewählt? Wenn nicht wird die selbe Position verwendet, wie der ausgewechselte Spieler
 								if ($csv_player_inout_project_position_id[$player_inout_object->in])
@@ -3749,7 +3750,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 								}
 
 								// Die ID des ausgewechselten Spielers suchen (Nachname + Nummer muss stimmen)
-								foreach ($csv_player_lastname as $player_out_key => $player_out_object)
+								foreach ($csv_player_csvname as $player_out_key => $player_out_object)
 								{
 									if ($csv_player_number[$player_out_key] == $player_inout_object->out && $player_out_object == $player_inout_object->spielerout)
 									{
@@ -3784,7 +3785,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 					foreach ($this->csv_cards as $event_key => $event_object)
 					{
 						// Überprüfen ob das Event zum aktuellen Spieler passt (Nachname + Nummer muss stimmen)
-						if ($event_object->spieler == $player_lastname && $event_object->spielernummer == $player_jerseynumber)
+						if ($event_object->spieler == $csv_player_csvname && $event_object->spielernummer == $player_jerseynumber)
 						{
 							$player_event_time   = $event_object->event_time;
 							$player_event_type   = $csv_player_project_events_id[$event_key];
@@ -3854,7 +3855,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 	/**
 	 * sportsmanagementModelMatch::getProjectPosition()
-	 * 
+	 *
 	 * @param integer $project_position_id
 	 * @return
 	 */
@@ -3874,7 +3875,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 	/**
 	 * sportsmanagementModelMatch::createPerson()
-	 * 
+	 *
 	 * @param string $firstname
 	 * @param string $lastname
 	 * @param integer $position_id
@@ -3924,7 +3925,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 	/**
 	 * sportsmanagementModelMatch::createSeasonPersonAssignment()
-	 * 
+	 *
 	 * @param integer $person_id
 	 * @param integer $season_id
 	 * @param integer $person_type
@@ -3972,7 +3973,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 	/**
 	 * sportsmanagementModelMatch::createProjectReferee()
-	 * 
+	 *
 	 * @param integer $project_id
 	 * @param integer $season_person_id
 	 * @param integer $position_id
@@ -4011,7 +4012,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 	/**
 	 * sportsmanagementModelMatch::createMatchReferee()
-	 * 
+	 *
 	 * @param integer $match_id
 	 * @param integer $project_referee_id
 	 * @param integer $position_id
@@ -4057,7 +4058,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 	/**
 	 * sportsmanagementModelMatch::getMatchReferee()
-	 * 
+	 *
 	 * @param integer $match_id
 	 * @param integer $project_referee_id
 	 * @param integer $position_id
@@ -4081,7 +4082,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 	/**
 	 * sportsmanagementModelMatch::createPersonProjektPositionAssignment()
-	 * 
+	 *
 	 * @param integer $person_id
 	 * @param integer $project_id
 	 * @param integer $person_type
@@ -4126,7 +4127,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 	/**
 	 * sportsmanagementModelMatch::getPersonProjektPositionAssignment()
-	 * 
+	 *
 	 * @param integer $person_id
 	 * @param integer $project_id
 	 * @param integer $person_type
@@ -4152,7 +4153,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 	/**
 	 * sportsmanagementModelMatch::createSeasonTeamPersonAssignment()
-	 * 
+	 *
 	 * @param integer $person_id
 	 * @param integer $season_id
 	 * @param integer $team_id
@@ -4199,7 +4200,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 	/**
 	 * sportsmanagementModelMatch::getSeasonTeamPersonAssignment()
-	 * 
+	 *
 	 * @param integer $person_id
 	 * @param integer $season_id
 	 * @param integer $team_id
@@ -4231,7 +4232,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 	/**
 	 * sportsmanagementModelMatch::createMatchPlayer()
-	 * 
+	 *
 	 * @param integer $match_id
 	 * @param integer $season_team_person_id
 	 * @param integer $project_position_id
@@ -4280,7 +4281,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 	/**
 	 * sportsmanagementModelMatch::getMatchPlayer()
-	 * 
+	 *
 	 * @param integer $match_id
 	 * @param integer $season_team_person_id
 	 * @param integer $project_position_id
@@ -4304,7 +4305,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 	/**
 	 * sportsmanagementModelMatch::createMatchEvent()
-	 * 
+	 *
 	 * @param integer $match_id
 	 * @param integer $project_team_id
 	 * @param integer $season_team_person_id
@@ -4351,7 +4352,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 	/**
 	 * sportsmanagementModelMatch::getMatchEvent()
-	 * 
+	 *
 	 * @param integer $match_id
 	 * @param integer $project_team_id
 	 * @param integer $season_team_person_id
@@ -4379,7 +4380,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 	/**
 	 * sportsmanagementModelMatch::createMatchStaff()
-	 * 
+	 *
 	 * @param integer $match_id
 	 * @param integer $team_staff_id
 	 * @param integer $project_position_id
@@ -4423,7 +4424,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 	/**
 	 * sportsmanagementModelMatch::getMatchStaff()
-	 * 
+	 *
 	 * @param integer $match_id
 	 * @param integer $team_staff_id
 	 * @param integer $project_position_id
