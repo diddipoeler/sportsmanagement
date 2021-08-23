@@ -126,6 +126,8 @@ $lfdnummer = 0;
 				?>
                 <tr>
                     <td><?php echo $value->nummer; ?>
+                        <input type='hidden' name='csvname[<?php echo $lfdnummer; ?>]'
+                               value='<?php echo $value->name; ?>'/>
                         <input type='hidden' name='player[<?php echo $lfdnummer; ?>]'
                                value='<?php echo $value->nummer; ?>'/>
                         <input type='hidden' name='playerpersonid[<?php echo $lfdnummer; ?>]'
