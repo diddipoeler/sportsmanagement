@@ -79,12 +79,12 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 	 */
 	function joomleaguesetagegroup()
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$post   = $jinput->post->getArray(array());
+//		// Reference global application object
+//		$app = Factory::getApplication();
+//
+//		// JInput object
+//		$jinput = $app->input;
+		$post   = $this->jsmjinput->post->getArray(array());
 		$db     = Factory::getDbo();
 		$query  = $db->getQuery(true);
 		$a      = 0;
