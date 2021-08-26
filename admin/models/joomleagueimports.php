@@ -55,6 +55,23 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 	static $project_referee = array();
 	static $team_staff = array();
 
+
+	/**
+	 * sportsmanagementModeljoomleagueimports::__construct()
+	 * 
+	 * @param mixed $config
+	 * @return void
+	 */
+	public function __construct($config = array())
+	{
+		$this->jsmapp = Factory::getApplication();
+		$this->jsmjinput = $this->jsmapp->input;
+		parent::__construct($config);
+        
+        
+        }
+        
+        
 	/**
 	 * sportsmanagementModeljoomleagueimports::joomleaguesetagegroup()
 	 *
