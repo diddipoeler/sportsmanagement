@@ -2805,14 +2805,11 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 				$query = "ALTER TABLE `" . $jsm_table . "` ADD `import_id` INT(11) NOT NULL DEFAULT '0' ";
 				$dbjsm->setQuery($query);
 				$dbjsm->execute();
-
-				// $result = $dbjsm->execute();
 			}
 			catch (Exception $e)
 			{
-				//    // catch any database errors.
-				//    $dbjsm->transactionRollback();
-				//    JErrorPage::render($e);
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 			}
 
 			$query = $dbjsm->getQuery(true);
@@ -2827,7 +2824,15 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 			$query->where($conditions);
 
 			$dbjsm->setQuery($query);
-			$dbjsm->execute();
+			try
+				{
+					$dbjsm->execute();
+				}
+				catch (Exception $e)
+				{
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+				}
 
 			/**
 			 * tabelle: sportsmanagement_season_person_id
@@ -2845,9 +2850,8 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 			}
 			catch (Exception $e)
 			{
-				//    // catch any database errors.
-				//    $dbjsm->transactionRollback();
-				//    JErrorPage::render($e);
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 			}
 
 			$query = $dbjsm->getQuery(true);
@@ -2860,7 +2864,15 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 			$query->where($conditions);
 
 			$dbjsm->setQuery($query);
-			$dbjsm->execute();
+			try
+				{
+					$dbjsm->execute();
+				}
+				catch (Exception $e)
+				{
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+				}
 
 			/**
 			 * tabelle: sportsmanagement_season_team_person_id
@@ -2878,9 +2890,8 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 			}
 			catch (Exception $e)
 			{
-				//    // catch any database errors.
-				//    $dbjsm->transactionRollback();
-				//    JErrorPage::render($e);
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 			}
 
 			$query = $dbjsm->getQuery(true);
@@ -2893,7 +2904,15 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 			$query->where($conditions);
 
 			$dbjsm->setQuery($query);
-			$dbjsm->execute();
+			try
+				{
+					$dbjsm->execute();
+				}
+				catch (Exception $e)
+				{
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+				}
 
 			/**
 			 * tabelle: sportsmanagement_person_project_position
@@ -2911,9 +2930,8 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 			}
 			catch (Exception $e)
 			{
-				//    // catch any database errors.
-				//    $dbjsm->transactionRollback();
-				//    JErrorPage::render($e);
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 			}
 
 			$query = $dbjsm->getQuery(true);
@@ -2928,7 +2946,15 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 			$query->where($conditions);
 
 			$dbjsm->setQuery($query);
-			$dbjsm->execute();
+			try
+				{
+					$dbjsm->execute();
+				}
+				catch (Exception $e)
+				{
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+				}
 
 			/**
 			 * jetzt als erstes die mannschaften umsetzen
@@ -2944,14 +2970,11 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 				$query = "ALTER TABLE `#__sportsmanagement_project_team` DROP INDEX combi ";
 				$dbjsm->setQuery($query);
 				$dbjsm->execute();
-
-				// $result = $dbjsm->execute();
 			}
 			catch (Exception $e)
 			{
-				//    // catch any database errors.
-				//    $dbjsm->transactionRollback();
-				//    JErrorPage::render($e);
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 			}
 
 			$query = $dbjsm->getQuery(true);

@@ -1056,7 +1056,7 @@ class JInstallationHelper
 	 * @param string $nexttask
 	 * @return
 	 */
-	static function populateDatabase(&$db, $sqlfile, &$errors, $nexttask = 'mainconfig')
+	static function populateDatabase(&$db, $sqlfile, $errors = array() , $nexttask = 'mainconfig')
 	{
 		if (!($buffer = file_get_contents($sqlfile)))
 		{
