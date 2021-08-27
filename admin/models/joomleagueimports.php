@@ -1163,6 +1163,7 @@ return $jl_dberror;
 			$table_copy[] = 'prediction_member';
 			$table_copy[] = 'prediction_project';
 			$table_copy[] = 'prediction_result';
+            $table_copy[] = 'prediction_result_round';
 			$table_copy[] = 'prediction_template';
 			$tables = $db->getTableList();
 
@@ -1851,9 +1852,8 @@ return $jl_dberror;
 				}
 				catch (Exception $e)
 				{
-					//    // catch any database errors.
-					//    $db->transactionRollback();
-					//    JErrorPage::render($e);
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 				}
 
 				$query->clear();
@@ -1866,9 +1866,8 @@ return $jl_dberror;
 				}
 				catch (Exception $e)
 				{
-					//    // catch any database errors.
-					//    $db->transactionRollback();
-					//    JErrorPage::render($e);
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 				}
 
 				$query->clear();
@@ -1881,27 +1880,58 @@ return $jl_dberror;
 				}
 				catch (Exception $e)
 				{
-					//    // catch any database errors.
-					//    $db->transactionRollback();
-					//    JErrorPage::render($e);
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 				}
 
 				$query->clear();
 				$query->update($dbjsm->quoteName('#__sportsmanagement_template_config'))->set($fields)->where($conditions);
 				$dbjsm->setQuery($query);
-				$dbjsm->execute();
+				try
+				{
+					$dbjsm->execute();
+				}
+				catch (Exception $e)
+				{
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+				}
 				$query->clear();
 				$query->update($dbjsm->quoteName('#__sportsmanagement_prediction_project'))->set($fields)->where($conditions);
 				$dbjsm->setQuery($query);
-				$dbjsm->execute();
+				try
+				{
+					$dbjsm->execute();
+				}
+				catch (Exception $e)
+				{
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+				}
 				$query->clear();
 				$query->update($dbjsm->quoteName('#__sportsmanagement_prediction_result'))->set($fields)->where($conditions);
 				$dbjsm->setQuery($query);
-				$dbjsm->execute();
+				try
+				{
+					$dbjsm->execute();
+				}
+				catch (Exception $e)
+				{
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+				}
 				$query->clear();
 				$query->update($dbjsm->quoteName('#__sportsmanagement_prediction_result_round'))->set($fields)->where($conditions);
 				$dbjsm->setQuery($query);
-				$dbjsm->execute();
+				try
+				{
+					$dbjsm->execute();
+				}
+				catch (Exception $e)
+				{
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+				}
 				$my_text .= '<span style="color:' . self::$storeSuccessColor . '"<strong>Projekt ' . $row->name . ' im Runden/Gruppen/Projektpositionen/Projektschiedsrichter/Projektmannschaft aktualisiert !</strong>' . '</span>';
 				$my_text .= '<br />';
 			}
