@@ -1422,6 +1422,24 @@ return $jl_dberror;
                 }
                 */
 			}
+            
+            /** division_id hinzufügen*/
+            $jsm_table = '#__sportsmanagement_prediction_result_round';
+            try
+						{
+							$queryjsm = $dbjsm->getQuery(true);
+							//$queryjsm->clear();
+							$queryjsm = "ALTER TABLE `" . $jsm_table . "` ADD `division_id` INT(11) NOT NULL DEFAULT '0' ";
+							$dbjsm->setQuery($queryjsm);
+							//sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+                            $dbjsm->execute();
+						}
+						catch (Exception $e)
+						{
+						//Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()) . '<br />', Log::ERROR, 'jsmerror');
+						}
+            
+            
 
 			// $mtime = microtime();
 			// $mtime = explode(" ",$mtime);
@@ -2664,31 +2682,87 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 				$query->clear();
 				$query->update($dbjsm->quoteName('#__sportsmanagement_match_player'))->set($fields)->where($conditions);
 				$dbjsm->setQuery($query);
-				$dbjsm->execute();
+				try
+				{
+					$dbjsm->execute();
+				}
+				catch (Exception $e)
+				{
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+				}
 				$query->clear();
 				$query->update($dbjsm->quoteName('#__sportsmanagement_match_staff'))->set($fields)->where($conditions);
 				$dbjsm->setQuery($query);
-				$dbjsm->execute();
+				try
+				{
+					$dbjsm->execute();
+				}
+				catch (Exception $e)
+				{
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+				}
 				$query->clear();
 				$query->update($dbjsm->quoteName('#__sportsmanagement_match_staff_statistic'))->set($fields)->where($conditions);
 				$dbjsm->setQuery($query);
-				$dbjsm->execute();
+				try
+				{
+					$dbjsm->execute();
+				}
+				catch (Exception $e)
+				{
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+				}
 				$query->clear();
 				$query->update($dbjsm->quoteName('#__sportsmanagement_match_statistic'))->set($fields)->where($conditions);
 				$dbjsm->setQuery($query);
-				$dbjsm->execute();
+				try
+				{
+					$dbjsm->execute();
+				}
+				catch (Exception $e)
+				{
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+				}
 				$query->clear();
 				$query->update($dbjsm->quoteName('#__sportsmanagement_match_referee'))->set($fields)->where($conditions);
 				$dbjsm->setQuery($query);
-				$dbjsm->execute();
+				try
+				{
+					$dbjsm->execute();
+				}
+				catch (Exception $e)
+				{
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+				}
 				$query->clear();
 				$query->update($dbjsm->quoteName('#__sportsmanagement_match_event'))->set($fields)->where($conditions);
 				$dbjsm->setQuery($query);
-				$dbjsm->execute();
+				try
+				{
+					$dbjsm->execute();
+				}
+				catch (Exception $e)
+				{
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+				}
 				$query->clear();
 				$query->update($dbjsm->quoteName('#__sportsmanagement_prediction_result'))->set($fields)->where($conditions);
 				$dbjsm->setQuery($query);
-				$dbjsm->execute();
+				try
+				{
+					$dbjsm->execute();
+				}
+				catch (Exception $e)
+				{
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+				}
 				$zaehler++;
 
 				// $my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Spiel-ID '.$row->name.' in den Match-Player/Match-Staff/Match-Referee/Match-Event aktualisiert !</strong>'.'</span>';

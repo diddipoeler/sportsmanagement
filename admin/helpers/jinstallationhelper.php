@@ -889,7 +889,7 @@ class JInstallationHelper
 		}
 		$buffer    = '';
 		$newPrefix = $args['DBPrefix'];
-		/*
+		/**
 		 * search and replace table prefixes
 		 */
 		$oldPrefix   = trim($args['oldPrefix']);
@@ -917,7 +917,7 @@ class JInstallationHelper
 		}
 		else
 		{
-			/*
+			/**
 			 * read script file into buffer
 			 */
 			if (is_file($scriptName))
@@ -935,7 +935,7 @@ class JInstallationHelper
 			}
 			JInstallationHelper::replaceBuffer($buffer, $oldPrefix, $newPrefix, $srcEncoding);
 
-			/*
+			/**
 			 * write to file
 			 */
 			//$newFile = dirname( $scriptName ).DIRECTORY_SEPARATOR.'converted.sql';
@@ -945,7 +945,7 @@ class JInstallationHelper
 			File::delete($scriptName);
 		}
 
-		/*
+		/**
 		 * Create two empty temporary tables
 		 */
 
@@ -972,6 +972,12 @@ class JInstallationHelper
 		return $newFile;
 	}
 
+	/**
+	 * JInstallationHelper::return_bytes()
+	 * 
+	 * @param mixed $val
+	 * @return
+	 */
 	function return_bytes($val)
 	{
 		$val  = trim($val);
@@ -990,6 +996,15 @@ class JInstallationHelper
 		return $val;
 	}
 
+	/**
+	 * JInstallationHelper::replaceBuffer()
+	 * 
+	 * @param mixed $buffer
+	 * @param mixed $oldPrefix
+	 * @param mixed $newPrefix
+	 * @param mixed $srcEncoding
+	 * @return void
+	 */
 	function replaceBuffer(&$buffer, $oldPrefix, $newPrefix, $srcEncoding)
 	{
 
@@ -1010,6 +1025,13 @@ class JInstallationHelper
 		}
 	}
 
+	/**
+	 * JInstallationHelper::appendFile()
+	 * 
+	 * @param mixed $buffer
+	 * @param mixed $filename
+	 * @return void
+	 */
 	function appendFile(&$buffer, $filename)
 	{
 		$fh = fopen($filename, 'a');
@@ -1017,8 +1039,15 @@ class JInstallationHelper
 		fclose($fh);
 	}
 
+	
 	/**
-	 *
+	 * JInstallationHelper::populateDatabase()
+	 * 
+	 * @param mixed $db
+	 * @param mixed $sqlfile
+	 * @param mixed $errors
+	 * @param string $nexttask
+	 * @return
 	 */
 	static function populateDatabase(&$db, $sqlfile, &$errors, $nexttask = 'mainconfig')
 	{
@@ -1096,6 +1125,13 @@ class JInstallationHelper
 		return ($ret);
 	}
 
+	/**
+	 * JInstallationHelper::getDBErrors()
+	 * 
+	 * @param mixed $errors
+	 * @param mixed $db
+	 * @return void
+	 */
 	static function getDBErrors(&$errors, $db)
 	{
 		if ($db->getErrorNum() > 0)
@@ -1521,6 +1557,13 @@ class JInstallationHelper
 		return count($errors);
 	}
 
+	/**
+	 * JInstallationHelper::isValidItem()
+	 * 
+	 * @param mixed $link
+	 * @param mixed $lookup
+	 * @return
+	 */
 	function isValidItem($link, $lookup)
 	{
 		foreach ($lookup as $component)
