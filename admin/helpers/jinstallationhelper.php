@@ -691,7 +691,7 @@ class JInstallationHelper
 
 		$db = &JInstallationHelper::getDBO($args['DBtype'], $args['DBhostname'], $args['DBuserName'], $args['DBpassword'], $args['DBname'], $args['DBPrefix']);
 
-		/*
+		/**
 		 * If migration perform manipulations on script file before population
 		 */
 		if ($migration)
@@ -703,11 +703,11 @@ class JInstallationHelper
 			}
 		}
 
-		$errors = null;
+		$errors = array();
 		$msg    = '';
 		$result = JInstallationHelper::populateDatabase($db, $script, $errors);
 
-		/*
+		/**
 		 * If migration, perform post population manipulations (menu table construction)
 		 */
 		$migErrors = null;
@@ -717,7 +717,7 @@ class JInstallationHelper
 
 			if ($migResult != 0)
 			{
-				/*
+				/**
 				 * Merge populate and migrate processing errors
 				 */
 				if ($result == 0)
@@ -734,7 +734,7 @@ class JInstallationHelper
 		}
 
 
-		/*
+		/**
 		 * prepare sql error messages if returned from populate and migrate
 		 */
 		if (!is_null($errors))
@@ -753,7 +753,7 @@ class JInstallationHelper
 			$txt = '<input size="50" value="' . $msg . '" readonly="readonly" />';
 		}
 
-		/*
+		/**
 		 * Clean up
 		 */
 		if ($archive)
@@ -769,6 +769,13 @@ class JInstallationHelper
 		return $txt;
 	}
 
+	/**
+	 * JInstallationHelper::_chmod()
+	 * 
+	 * @param mixed $path
+	 * @param mixed $mode
+	 * @return
+	 */
 	function _chmod($path, $mode)
 	{
 		global $app;
