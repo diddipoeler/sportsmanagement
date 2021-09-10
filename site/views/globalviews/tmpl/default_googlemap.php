@@ -31,6 +31,8 @@ use Joomla\Registry\Registry;
 $this->view    = Factory::getApplication()->input->getCmd('view');
 $this->showmap = false;
 $map_type      = 'http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}';
+$comma_separated = '';
+$comma_bounds = '';
 
 if ($this->config['use_which_map'])
 {
@@ -262,8 +264,14 @@ $this->document->addScript('https://unpkg.com/leaflet-routing-machine@'.$this->l
 				}
 			}
 
+			if ( $map_markes )
+			{
 			$comma_separated = implode(",", $map_markes);
+			}
+			if ( $map_bounds )
+			{
 			$comma_bounds    = implode(",", $map_bounds);
+			}
 			?>
             <script>
 
