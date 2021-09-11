@@ -9,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
@@ -136,7 +134,6 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
 		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
 
-		// Get the input
 		$pks  = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
 		$post = Factory::getApplication()->input->post->getArray(array());
 
@@ -202,10 +199,7 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
 				$associations = '';
 			}
 
-			// Create an object for the record we are going to update.
 			$object = new stdClass;
-
-			// Must be a valid primary key value.
 			$object->id           = $post['club_id' . $pks[$x]];
 			$object->location     = $post['location' . $pks[$x]];
 			$object->founded_year = $post['founded_year' . $pks[$x]];
@@ -216,7 +210,6 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
 				$object->associations = $associations;
 			}
 
-			// Update their details in the users table using id as the primary key.
 			$result = Factory::getDbo()->updateObject('#__sportsmanagement_club', $object, 'id');
 		}
 
