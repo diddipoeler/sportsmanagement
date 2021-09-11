@@ -218,7 +218,8 @@ $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array()
         
         if ( $this->getState('filter.standard_picture') )
 		{
-		$this->jsmquery->where('a.logo_big LIKE ' . $this->jsmdb->Quote('%' . 'placeholder' . '%'));  
+		//$this->jsmquery->where('a.logo_big LIKE ' . $this->jsmdb->Quote('%' . 'placeholder' . '%'));
+        $this->jsmquery->where(' ( a.logo_big LIKE ' . $this->jsmdb->Quote('%' . 'placeholder' . '%') . ' OR a.logo_big LIKE ' . $this->jsmdb->Quote('') . ')');  
         }
 
 		$this->jsmquery->order(
