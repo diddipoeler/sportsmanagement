@@ -406,6 +406,8 @@ if (!empty($this->rows))
 									{
 										$iconPath = $eventtype->icon;
 
+echo 'iconPath -> '.$iconPath.'<br>';
+
 										if (!strpos(' ' . $iconPath, '/'))
 										{
 											$iconPath = 'images/com_sportsmanagement/database/events/' . $iconPath;
