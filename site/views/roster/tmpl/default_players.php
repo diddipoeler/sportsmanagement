@@ -290,7 +290,7 @@ if (!empty($this->rows))
 				$k        = 0;
 				?>
                 <thead>
-                <tr class="sectiontableheader rosterheader">
+                <tr class="sectiontableheader rosterheader" id="rosterheader">
                     <th class="" width="" colspan="">
 						<?php echo '&nbsp;' . Text::_($row->position); ?>
                     </th>
@@ -307,7 +307,7 @@ if (!empty($this->rows))
 					if ($this->config['show_birthday'])
 					{
 						?>
-                        <th class="" width="">
+                        <th class="" width="" id="show_birthday">
 							<?php
 							switch ($this->config['show_birthday'])
 							{
@@ -337,7 +337,7 @@ if (!empty($this->rows))
 					{
 						/** Put empty column to keep vertical alignment with the staff table */
 						?>
-                        <th class="td_c">&nbsp;</th><?php
+                        <th class="td_c" id="show_birthday_staff">&nbsp;</th><?php
 					}
 
 					if ($this->overallconfig['use_jl_substitution'])
@@ -345,7 +345,7 @@ if (!empty($this->rows))
 						if ($this->config['show_games_played'])
 						{
 							?>
-                            <th class="" width="">
+                            <th class="" width="" id="show_games_played">
 								<?php
 								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ROSTER_PLAYED');
 								$picture    = $picture_path_sport_type_name . '/played.png';
@@ -358,32 +358,27 @@ if (!empty($this->rows))
 						if ($this->config['show_substitution_stats'])
 						{
 							?>
-                            <th class="" width="">
-                            
+                            <th class="" width="" id="show_substitution_stats_startroster">
 								<?php
 								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ROSTER_STARTING_LINEUP');
 								$picture    = $picture_path_sport_type_name . '/startroster.png';
-
 								echo HTMLHelper::image($picture, $imageTitle, array('title' => $imageTitle, 'style' => 'width: auto;height: ' . $this->config['events_picture_height'] . 'px'));
 								?></th>
-                            <th class="" width=""><?php
+                            <th class="" width="" id="show_substitution_stats_in"><?php
 								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ROSTER_IN');
 								$picture    = $picture_path_sport_type_name . '/in.png';
-
 								echo HTMLHelper::image($picture, $imageTitle, array('title' => $imageTitle, 'style' => 'width: auto;height: ' . $this->config['events_picture_height'] . 'px'));
 								?></th>
-                            <th class="" width=""><?php
+                            <th class="" width="" id="show_substitution_stats_out"><?php
 								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ROSTER_OUT');
 								$picture    = $picture_path_sport_type_name . '/out.png';
-
 								echo HTMLHelper::image($picture, $imageTitle, array('title' => $imageTitle, 'style' => 'width: auto;height: ' . $this->config['events_picture_height'] . 'px'));
 								?></th>
 
-                            <th class="" width="">
+                            <th class="" width="" id="show_substitution_stats_uhr">
 								<?php
 								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PLAYED_TIME');
 								$picture    = $picture_path_sport_type_name . '/uhr.png';
-
 								echo HTMLHelper::image($picture, $imageTitle, array('title' => $imageTitle, 'style' => 'width: auto;height: ' . $this->config['events_picture_height'] . 'px'));
 								?></th>
 
@@ -426,7 +421,7 @@ if (!empty($this->rows))
 										);
 									}
 									?>
-                                    <th class="" width="">
+                                    <th class="" width="" id="show_events_stats_<?php echo $row->position_id; ?>">
 										<?php echo $eventtype_header; ?>
                                     </th>
 									<?php
@@ -445,7 +440,7 @@ if (!empty($this->rows))
 								if ($stat->position_id == $row->position_id)
 								{
 									?>
-                                    <th class="" width=""><?php echo $stat->getImage($this->config['events_picture_height']); ?></th>
+                                    <th class="" width="" id="show_stats_<?php echo $stat->position_id; ?>"><?php echo $stat->getImage($this->config['events_picture_height']); ?></th>
 									<?php
 								}
 							}
@@ -459,7 +454,7 @@ if (!empty($this->rows))
 					if ($this->config['show_player_market_value'])
 					{
 						?>
-                        <th class="" width="">
+                        <th class="" width="" id="show_player_market_value">
 							<?php echo Text::_('COM_SPORTSMANAGEMENT_EURO_MARKET_VALUE'); ?>
                         </th>
 						<?php
