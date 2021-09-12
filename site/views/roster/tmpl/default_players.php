@@ -424,7 +424,32 @@ if (!empty($this->rows))
 									}
 									?>
                                     <th class="" width="" id="show_events_stats_<?php echo $row->position_id; ?>">
-										<?php echo $eventtype_header; ?>
+										<?php 
+//                                        echo $eventtype_header; 
+                                        
+//echo HTMLHelper ::_(
+//    'image',
+//    $iconPath,
+//    Text::_($eventtype->name),
+//    null,
+//    false
+//);
+
+//echo '<img src="'.$iconPath.'">';                                        
+echo sportsmanagementHelperHtml::getBootstrapModalImage(
+									'show_events_stats' . $row->position_id,
+									$iconPath,
+									Text::_($eventtype->name),
+									$this->config['events_picture_height'],
+									'',
+									$this->modalwidth,
+									$this->modalheight,
+									$this->overallconfig['use_jquery_modal'],
+                                  'itemprop',
+                                  'image'
+								);
+                                                                        
+                                        ?>
                                     </th>
 									<?php
 								}
