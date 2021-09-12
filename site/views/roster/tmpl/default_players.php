@@ -406,12 +406,12 @@ if (!empty($this->rows))
 									{
 										$iconPath = $eventtype->icon;
 
-echo 'iconPath -> '.$iconPath.'<br>';
+//echo 'iconPath -> '.$iconPath.'<br>';
 
-										if (!strpos(' ' . $iconPath, '/'))
-										{
-											$iconPath = 'images/com_sportsmanagement/database/events/' . $iconPath;
-										}
+//										if (!strpos(' ' . $iconPath, '/'))
+//										{
+//											$iconPath = 'images/com_sportsmanagement/database/events/' . $iconPath;
+//										}
 
 										$eventtype_header = HTMLHelper::image(
 											$iconPath,
