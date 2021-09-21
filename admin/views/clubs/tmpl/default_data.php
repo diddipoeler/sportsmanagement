@@ -49,6 +49,8 @@ JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($t
             </th>
             <th>
 				<?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_CLUBS_WEBSITE', 'a.website', $this->sortDirection, $this->sortColumn); ?>
+		    <br/>
+		    <?php echo Text::_('SOCCERWAY'); ?>
             </th>
             <th width="1%">
 				<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_EMAIL'); ?>
