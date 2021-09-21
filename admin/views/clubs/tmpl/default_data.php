@@ -225,6 +225,19 @@ HTMLHelper::_('bootstrap.endSlide');
 						echo '<span class="label">' . Text::_('JNO') . '</span>';
 					}
 					?>
+			<br/>
+			<?php
+	 if ( $this->modelclub->getuserextrafieldvalue((int) $this->item->id,'soccerway' )  )
+	 {
+	echo '<span class="label">' . Text::_('JYES') . '</span>';	 
+	 }
+	 else
+					{
+						echo '<span class="label">' . Text::_('JNO') . '</span>';
+					}
+	 
+	 
+			?>
                 </td>
                 <td class="" id="clubsemail">
 					<?php
