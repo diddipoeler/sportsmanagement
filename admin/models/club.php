@@ -40,6 +40,36 @@ class sportsmanagementModelclub extends JSMModelAdmin
 
 	}
 
+	
+	function getuserextrafieldvalue($club_id = 0,$fieldtext = '' )
+	{
+	if ( $club_id && $fieldtext )
+	{
+	$this->jsmquery->clear();
+		$this->jsmquery->select('uefv.fieldvalue');
+		$this->jsmquery->from('#__sportsmanagement_user_extra_fields_values AS uefv');
+		$this->jsmquery->join('INNER', '#__sportsmanagement_user_extra_fields AS uef ON uef.id = uefv.field_id');
+		$this->jsmquery->where('uefv.jl_id = ' . $club_id);
+		$this->jsmquery->where('uef.name LIKE ' . $this->jsmdb->Quote('%' . $fieldtext . '%'));
+		$this->jsmquery->where('uef.template_backend LIKE ' . $this->jsmdb->Quote('' . 'club' . ''));
+		$this->jsmdb->setQuery($this->jsmquery);
+		
+	try{
+		$clubfieldvalue = $this->jsmdb->loadResult();
+        return $clubfieldvalue;
+        }
+		catch (Exception $e)
+		{
+        $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+        $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+        return false;
+		}	
+		
+	}
+		
+	}
+	
+	
 	/**
 	 * Method to update checked clubs
 	 *
