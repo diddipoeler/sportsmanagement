@@ -229,7 +229,7 @@ HTMLHelper::_('bootstrap.endSlide');
 			<?php
 	 if ( $this->modelclub->getuserextrafieldvalue((int) $this->item->id,'soccerway' )  )
 	 {
-	echo '<span class="label">' . Text::_('JYES') . '</span>';	 
+	echo '<span class="label label-success">' . Text::_('JYES') . '</span>';	 
 	 }
 	 else
 					{
