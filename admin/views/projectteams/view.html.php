@@ -51,7 +51,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		{
 			$this->project_id = $this->app->getUserState("$this->option.pid", '0');
 		}
-
+$this->modelclub   = BaseDatabaseModel::getInstance('club', 'sportsmanagementModel');
 		$mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
 		$this->project    = $mdlProject->getProject($this->project_id);
         
