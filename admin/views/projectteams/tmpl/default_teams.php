@@ -391,6 +391,14 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 						);
 					}
 					?>
+			<br>
+			<?php
+if ( $this->modelclub->getuserextrafieldvalue((int) $row->club_id,'soccerway' )  )
+	 {
+	echo '<span class="label label-success">' . Text::_('JYES') . '</span>';	 
+	 }			
+			
+			?>
                 </td>
                 <td class="center">
 					<?php
