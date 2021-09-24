@@ -290,7 +290,7 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
                 }
                 else
                 {
-				self::$to = self::$rounds[intval(count(self::$rounds) / 2) - 1]->id;
+				self::$to = self::$rounds[intval(count(self::$rounds) / 2) ]->id;
                 }
 			}
 			elseif (self::$part == 2)
@@ -300,7 +300,7 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
                 }
                 else
                 {
-                self::$from = self::$rounds[intval(count(self::$rounds) / 2)]->id;    
+                self::$from = self::$rounds[intval(count(self::$rounds) / 2) -1]->id;    
                 }
 				
 				self::$to   = $lastRound['id'];
