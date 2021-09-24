@@ -4,7 +4,9 @@ Sports-Management
 Die neue Sports-Management Komponente für Joomla 3 / 4 ![Joomla 3.8](https://github.com/diddipoeler/sportsmanagement/blob/master/media/com_sportsmanagement/jl_images/Compat_icon_3_8_long.png) ![Joomla 4](https://github.com/diddipoeler/sportsmanagement/blob/master/media/com_sportsmanagement/jl_images/Compat_icon_4_0_long.png) 
 Auch im Extension zu finden: https://extensions.joomla.org/extension/sports-management/
 
-(https://github.com/diddipoeler/sportsmanagement/blob/master/media/com_sportsmanagement/jl_images/baumblatt.png) CO2-neutral seit 2016.
+
+
+![co2](https://github.com/diddipoeler/sportsmanagement/blob/master/media/com_sportsmanagement/jl_images/baumblatt.png) CO2-neutral seit 2016.
 
 Das Team
 ================
