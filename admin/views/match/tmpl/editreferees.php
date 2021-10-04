@@ -116,7 +116,7 @@ echo $this->loadTemplate('jsm_notes');
                                                value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_UP'); ?>"/><br/>
                                         <input type="button" id="movedown-<?php echo $key; ?>"
                                                class="inputbox move-down"
-                                               value="<?php echo Text::_('JGLOBAL_DOWN'); ?>"/>
+                                               value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DOWN'); ?>"/>
                                     </td>
                                 </tr>
 								<?php
