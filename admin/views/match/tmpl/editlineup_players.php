@@ -84,7 +84,7 @@ use Joomla\CMS\Language\Text;
                                            value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_UP'); ?>"/><br/>
                                     <input type="button" onclick="move_down('position<?php echo $position_id; ?>');"
                                            class="inputbox move-down"
-                                           value="<?php echo Text::_('JGLOBAL_DOWN'); ?>"/>
+                                           value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DOWN'); ?>"/>
                                 </td>
                             </tr>
 							<?php
