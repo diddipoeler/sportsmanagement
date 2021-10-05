@@ -45,7 +45,71 @@ else
 }
 
 // Joomla versionen
-if (version_compare(JVERSION, '3.0.0', 'ge') && $position == 'icon')
+if (version_compare(JVERSION, '4.0.0', 'ge')
+{
+	?>
+    <nav class="quick-icons px-3 pb-3" aria-label="Schnellstartlinks Sportspamangement">
+		<ul class="nav flex-wrap">
+			<li class="quickicon quickicon-single">
+				<a title="<?php echo Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_PANEL_LINK') ?>"
+				   href="index.php?option=com_sportsmanagement">
+					<div class="quickicon-icon">
+						<img src="<?php echo JURI::base(false) ?>/components/com_sportsmanagement/assets/icons/transparent_schrift_48.png">
+					</div>
+					<div class="quickicon-name d-flex align-items-end">
+						<?php echo Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_PANEL_LABEL') ?>             
+					</div>
+				</a>
+			</li>
+			<li class="quickicon quickicon-single">
+				<a title="<?php echo Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_EXTENSIONS_LINK') ?>"
+				   href="index.php?option=com_sportsmanagement&view=extensions">
+					<div class="quickicon-icon">
+						<img src="<?php echo JURI::base(false) ?>/components/com_sportsmanagement/assets/icons/extensions.png">
+					</div>
+					<div class="quickicon-name d-flex align-items-end">
+						<?php echo Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_EXTENSIONS_LABEL') ?>             
+					</div>
+				</a>
+			</li>
+			<li class="quickicon quickicon-single">
+				<a title="<?php echo Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_PROJECTS_LINK') ?>"
+				   href="index.php?option=com_sportsmanagement&view=projects">
+					<div class="quickicon-icon">
+						<img src="<?php echo JURI::base(false) ?>/components/com_sportsmanagement/assets/icons/projekte.png">
+					</div>
+					<div class="quickicon-name d-flex align-items-end">
+						<?php echo Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_PROJECTS_LABEL') ?>             
+					</div>
+				</a>
+			</li>
+			<li class="quickicon quickicon-single">
+				<a title="<?php echo Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_PREDICTIONS_LINK') ?>"
+				   href="index.php?option=com_sportsmanagement&view=predictions">
+					<div class="quickicon-icon">
+						<img src="<?php echo JURI::base(false) ?>/components/com_sportsmanagement/assets/icons/tippspiele.png">
+					</div>
+					<div class="quickicon-name d-flex align-items-end">
+						<?php echo Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_PREDICTIONS_LABEL') ?>             
+					</div>
+				</a>
+			</li>
+			<li class="quickicon quickicon-single">
+				<a title="<?php echo Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_CURRENT_SAISON_LINK') ?>"
+				   href="index.php?option=com_sportsmanagement&view=currentseasons">
+					<div class="quickicon-icon">
+						<img src="<?php echo JURI::base(false) ?>/components/com_sportsmanagement/assets/icons/aktuellesaison.png">
+					</div>
+					<div class="quickicon-name d-flex align-items-end">
+						<?php echo Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_CURRENT_SAISON_LABEL') ?>             
+					</div>
+				</a>
+			</li>
+		</ul>
+    </nav>
+	<?PHP
+}
+else if (version_compare(JVERSION, '3.0.0', 'ge') && $position == 'icon')
 {
 	// Require_once __DIR__ . '/helper.php';
 	$buttons = ModSportsmanagementQuickIconHelper::getButtons($params);
