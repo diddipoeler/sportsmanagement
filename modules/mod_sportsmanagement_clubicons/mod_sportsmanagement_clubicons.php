@@ -97,7 +97,11 @@ $language->load('com_sportsmanagement', JPATH_SITE, null, true);
 
 
 /** welche joomla version ? */
-if (version_compare(JVERSION, '3.0.0', 'ge'))
+if (version_compare(JVERSION, '4.0.0', 'ge'))
+{
+	//HTMLHelper::_('behavior.framework', true);
+}
+else if (version_compare(JVERSION, '3.0.0', 'ge'))
 {
 	HTMLHelper::_('behavior.framework', true);
 }
@@ -116,6 +120,13 @@ width: auto;
     -moz-transition: all .2s ease-in-out;
     -o-transition: all .2s ease-in-out;
     -ms-transition: all .2s ease-in-out;
+}
+
+.img-zoom:hover {
+    -webkit-transform: scale(1.' . $params->get('max_width_after_mouse_over', '10') . ');
+    -moz-transform: scale(1.' . $params->get('max_width_after_mouse_over', '10') . ');
+    -o-transform: scale(1.' . $params->get('max_width_after_mouse_over', '10') . ');
+    transform: scale(1.' . $params->get('max_width_after_mouse_over', '10') . ');
 }
 
 .transition {

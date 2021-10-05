@@ -18,7 +18,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Log\Log;
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-$link = 'index.php?option=com_sportsmanagement&view=imagehandler&layout=uploaddraganddrop&type='.$this->folder.'&field=&fieldid=&tmpl=component&pid='.$this->pid.'&imagelist='.$this->imagelist.'&mid='.$this->mid;
+$link = 'index.php?option=com_sportsmanagement&view=imagehandler&layout=uploaddraganddrop&type='.rtrim($this->folder, "/").'&field=&fieldid=&tmpl=component&pid='.$this->pid.'&imagelist='.$this->imagelist.'&mid='.$this->mid;
 
 //echo 'name: '.$this->app->getUserState("com_sportsmanagement.itemname", '0');
 ?>

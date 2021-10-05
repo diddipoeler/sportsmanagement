@@ -368,7 +368,41 @@ echo '<p> alte Version ' .  $this->oldRelease . '</p>';
 			}
 		}
 
-		if (version_compare(JVERSION, '3.0.0', 'ge'))
+		if (version_compare(JVERSION, '4.0.0', 'ge'))
+		{
+			// Define tabs options for version of Joomla! 4.0
+			$tabsOptions = array(
+			"active" => "tab1_id" // It is the ID of the active tab.
+			);
+			$image1 = '<img src="../media/com_sportsmanagement/jl_images/ext_com.png">';
+			$image2 = '<img src="../media/com_sportsmanagement/jl_images/ext_mod.png">';
+			$image3 = '<img src="../media/com_sportsmanagement/jl_images/ext_plugin.png">';
+			$image4 = '<img src="../media/com_sportsmanagement/jl_images/ext_esp.png">';
+			?>
+		 <!-- This is a list with tabs names. -->
+		 <ul class="nav nav-tabs" id="ID-Tabs-Group">
+		 <li class="active">
+			<a data-bs-toggle="tab" href="#tab1_id"><?php echo $image1 . Text::_(' Component'); ?></a>
+			</li>
+			<li>
+				<a data-bs-toggle="tab" href="#tab2_id"><?php echo $image2 . Text::_(' Modules'); ?></a>
+			</li>
+			<li>
+				<a data-bs-toggle="tab" href="#tab3_id"><?php echo $image3 . Text::_(' Plugins'); ?></a>
+			</li>
+			<li>
+				<a data-bs-toggle="tab" href="#tab4_id"><?php echo $image4 . Text::_(' Create/Update Images Folders'); ?></a>
+			</li>
+
+			   </ul>
+
+					<?PHP
+					echo HTMLHelper::_('bootstrap.' . $this->startPane, 'ID-Tabs-Group', $tabsOptions);
+					echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab1_id', Text::_(' Component'));
+					echo '<h2>' . Text::_('COM_SPORTSMANAGEMENT_DESCRIPTION') . '</h2>';
+					echo HTMLHelper::_('bootstrap.' . $this->endPanel);
+		}
+		else if (version_compare(JVERSION, '3.0.0', 'ge'))
 		{
 			// Define tabs options for version of Joomla! 3.0
 			$tabsOptions = array(
