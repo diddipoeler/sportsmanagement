@@ -65,7 +65,7 @@ class sportsmanagementModelScoresheet extends BaseDatabaseModel
 		$result = array();
 
 		$query->select('m.match_number as match_number, m.match_date as match_date, m.projectteam1_id as projectteam1_id, m.projectteam2_id as projectteam2_id');
-		$query->select('x.game_parts as game_parts, s1.team_id as team1_id, t1.name as team1_name, s2.team_id as team2_id, t2.name as team2_name');
+		$query->select('x.game_parts as game_parts, x.season_id as season_id, s1.team_id as team1_id, t1.name as team1_name, s2.team_id as team2_id, t2.name as team2_name');
 		$query->select('j.name as projectname, j.timezone as timezone, g.name as playgroundname');
 
 		// From
@@ -118,7 +118,7 @@ class sportsmanagementModelScoresheet extends BaseDatabaseModel
 		return $result;
 	}
 
-	function getTeamPlayer($teamid = 0, $cfg_which_database = 0)
+	function getTeamPlayer($teamid = 0, $seasonid = 0, $cfg_which_database = 0)
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
@@ -139,7 +139,7 @@ class sportsmanagementModelScoresheet extends BaseDatabaseModel
 		$query->order('b.lastname');
 
 		// Where
-		$query->where('team_id = ' . $teamid);
+		$query->where('team_id = ' . $teamid . ' AND season_id = ' . $seasonid);
 
 		try
 		{
