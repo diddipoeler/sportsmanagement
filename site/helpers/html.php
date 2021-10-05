@@ -400,7 +400,14 @@ class sportsmanagementHelperHtml
 				}
 				break;
 			case 0:
-				$modaltext = '<a href="#' . $target . '" title="' . $text . '" data-toggle="modal" >';
+				if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+				{
+					$modaltext = '<a href="#' . $target . '" title="' . $text . '" data-bs-toggle="modal" >';
+				}
+				else
+				{
+					$modaltext = '<a href="#' . $target . '" title="' . $text . '" data-toggle="modal" >';
+				}
 				//$modaltext .= '<img src="' . $picture . '" alt="' . $text . '" width="' . $pictureheight . '" />';
 				$modaltext .= '<img '.$schemaorg.'="'.$schemaorgvalue.'" src="' . $picture . '" alt="' . $text . '" style="width: auto;height: ' . $pictureheight . 'px" />';
 				$modaltext .= '</a>';
@@ -410,16 +417,30 @@ class sportsmanagementHelperHtml
 					$url = $picture;
 				}
 
-				$modaltext .= HTMLHelper::_(
-					'bootstrap.renderModal', $target, array(
-						'title'  => $text,
-						'url'    => $url,
-						'height' => $height,
-						'width'  => $width,
-						'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">' . Text::_('JCANCEL') . '</button>'
-					)
-				);
-
+				if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+				{
+					$modaltext .= HTMLHelper::_(
+						'bootstrap.renderModal', $target, array(
+							'title'  => $text,
+							'url'    => $url,
+							'height' => $height,
+							'width'  => $width,
+							'footer' => '<button type="button" class="btn btn-default" data-bs-dismiss="modal">' . Text::_('JCANCEL') . '</button>'
+						)
+					);
+				}
+				else
+				{
+					$modaltext .= HTMLHelper::_(
+						'bootstrap.renderModal', $target, array(
+							'title'  => $text,
+							'url'    => $url,
+							'height' => $height,
+							'width'  => $width,
+							'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">' . Text::_('JCANCEL') . '</button>'
+						)
+					);					
+				}
 				break;
 		}
 
