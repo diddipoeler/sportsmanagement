@@ -99,9 +99,9 @@ if (version_compare(JSM_JVERSION, '4', 'eq'))
 														?>
                                                         <a href="#<?php echo $var_onlinehelp; ?>"
                                                            title="<?php echo $var_onlinehelp; ?>" class=""
-                                                           data-toggle="modal">
+                                                           data-bs-toggle="modal">
 															<?php
-                                                            $image_attributes['title'] = 'title= "'.Text::_('COM_SPORTSMANAGEMENT_HELP_LINK') . '"';
+                                                            $image_attributes['title'] = Text::_('COM_SPORTSMANAGEMENT_HELP_LINK');
 															echo HTMLHelper::_(
 																'image', 'media/com_sportsmanagement/jl_images/help.png',
 																Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'), $image_attributes
