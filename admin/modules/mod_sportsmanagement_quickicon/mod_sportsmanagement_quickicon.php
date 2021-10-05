@@ -45,7 +45,7 @@ else
 }
 
 // Joomla versionen
-if (version_compare(JVERSION, '4.0.0', 'ge')
+if (version_compare(JVERSION, '4.0.0', 'ge'))
 {
 	?>
     <nav class="quick-icons px-3 pb-3" aria-label="Schnellstartlinks Sportspamangement">
