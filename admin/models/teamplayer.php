@@ -599,7 +599,7 @@ class sportsmanagementModelteamplayer extends JSMModelAdmin
 		$this->jsmquery->clear();
 		$fields = array(
 			$this->jsmdb->quoteName('picture') . '=\'' . $data['picture'] . '\'',
-			$this->jsmdb->quoteName('modified') . '=\'' . $this->jsmdb->Quote('' . $this->jsmdate->toSql() . '') . '\'',
+			$this->jsmdb->quoteName('modified') . '=' . $this->jsmdb->Quote('' . $this->jsmdate->toSql() . '') . '',
 			$this->jsmdb->quoteName('modified_by') . '=' . $this->jsmuser->get('id')
 		);
 
@@ -625,7 +625,7 @@ class sportsmanagementModelteamplayer extends JSMModelAdmin
 		$conditions = array(
 			$this->jsmdb->quoteName('person_id') . '=' . $data['person_id'],
 			$this->jsmdb->quoteName('project_id') . '=' . $post['pid'],
-			$this->jsmdb->quoteName('persontype') . '=' . $post['persontype']
+			$this->jsmdb->quoteName('persontype') . '=' . $data['persontype']
 		);
 
 		$this->jsmquery->delete($this->jsmdb->quoteName('#__sportsmanagement_person_project_position'));
@@ -639,7 +639,7 @@ class sportsmanagementModelteamplayer extends JSMModelAdmin
 		catch (Exception $e)
 		{
 			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
-                $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+            $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 		}
 
 		$profile = new stdClass;

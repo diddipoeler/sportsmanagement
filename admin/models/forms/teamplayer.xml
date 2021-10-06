@@ -255,13 +255,21 @@ format="%d-%m-%Y"/>
 				label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_DESCR"
 				description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_DESCR_DESC"
 				width="450" 
-				filter="safehtml"/>			
+				filter="safehtml"/>
+	<field
+		name="persontype"
+		type="hidden"
+		class="readonly"
+		size="11"
+		default="0"
+		readonly="true"
+	/>
+				
 	</fieldset>	
 
 <fieldset name="extended"
   label="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
   description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC">
   
-  </fieldset>
-    	
+  </fieldset>    	
 </form>
