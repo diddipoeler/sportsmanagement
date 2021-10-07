@@ -156,7 +156,7 @@ if ($this->items)
                         </a>
 
                         <a class="btn"
-                           href="index.php?option=com_sportsmanagement&view=jlxmlexports&pid=<?PHP echo $item->project->id; ?>">
+                           href="index.php?option=com_sportsmanagement&view=jlxmlexports&pid=<?PHP echo $item->id; ?>">
                             <img src="components/com_sportsmanagement/assets/icons/xmlexport.png"
                                  alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_P_PANEL_XML_EXPORT') ?>"/><br/>
                             <span><?php echo Text::_('COM_SPORTSMANAGEMENT_P_PANEL_XML_EXPORT') ?></span>
