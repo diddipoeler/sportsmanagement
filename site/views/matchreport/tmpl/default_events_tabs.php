@@ -20,13 +20,12 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 
 ?>
-    <!-- START of match events -->
-
-    <h2>
-		<?php
-		echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS');
-		?>
-    </h2>
+<!-- START of match events -->
+<h2>
+	<?php
+	echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS');
+	?>
+</h2>
 <?php
 if ($this->config['show_timeline'] && !$this->config['show_timeline_under_results'])
 {
@@ -52,12 +51,12 @@ if (version_compare(JVERSION, '3.0.0', 'ge'))
 	$idxTab = 0;
 
 	?>
-    <!-- This is a list with tabs names. anfang -->
-    <div class="panel with-nav-tabs panel-default">
-        <!-- Tabs-heading anfang -->
-        <div class="panel-heading">
-            <!-- Tabs-Navs anfang -->
-            <ul class="nav nav-tabs" role="tablist">
+	<!-- This is a list with tabs names. anfang -->
+	<div class="panel with-nav-tabs panel-default">
+		<!-- Tabs-heading anfang -->
+		<div class="panel-heading">
+			<!-- Tabs-Navs anfang -->
+			<ul class="nav nav-tabs" role="tablist">
 				<?PHP
 				foreach ($this->eventtypes AS $event)
 				{
@@ -68,37 +67,48 @@ if (version_compare(JVERSION, '3.0.0', 'ge'))
 					if ($pic_tab == '/events/event.gif')
 					{
 						$text_bild = '';
-						$text      = Text::_($event->name);
+						$text	  = Text::_($event->name);
 					}
 					else
 					{
 						$imgTitle  = Text::_($event->name);
 						$imgTitle2 = array(' title' => $imgTitle, ' alt' => $imgTitle, ' style' => 'max-height:40px;');
 						$text_bild = HTMLHelper::image(Uri::root() . $pic_tab, $imgTitle, $imgTitle2);
-						$text      = Text::_($event->name);
+						$text	  = Text::_($event->name);
 					}
 
 
-					?>
-                    <li role="presentation" class="<?PHP echo $active; ?>"><a href="#event<?PHP echo $event->id; ?>"
-                                                                              role="tab"
-                                                                              data-toggle="tab"><?PHP echo $text_bild . $text; ?></a>
-                    </li>
-
-					<?PHP
+					if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+					{
+						?>
+						<li role="presentation" class="<?PHP echo $active; ?>"><a href="#event<?PHP echo $event->id; ?>"
+																				  role="tab"
+																				  data-bs-toggle="tab"><?PHP echo $text_bild . $text; ?></a>
+						</li>
+						<?PHP
+					}
+					elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
+					{
+						?>
+						<li role="presentation" class="<?PHP echo $active; ?>"><a href="#event<?PHP echo $event->id; ?>"
+																				  role="tab"
+																				  data-toggle="tab"><?PHP echo $text_bild . $text; ?></a>
+						</li>
+						<?PHP
+					}
 					$idxTab++;
 				}
 				?>
-                <!-- Tabs-Navs ende -->
-            </ul>
-            <!-- Tabs-heading ende -->
-        </div>
+				<!-- Tabs-Navs ende -->
+			</ul>
+			<!-- Tabs-heading ende -->
+		</div>
 
 
-        <!-- Tab-Inhalte anfang-->
-        <div class="panel-body">
-            <!-- Tab-content anfang-->
-            <div class="tab-content">
+		<!-- Tab-Inhalte anfang-->
+		<div class="panel-body">
+			<!-- Tab-content anfang-->
+			<div class="tab-content">
 				<?PHP
 				$idxTab = 0;
 
@@ -108,9 +118,9 @@ if (version_compare(JVERSION, '3.0.0', 'ge'))
 					$text   = Text::_($event->name);
 
 					?>
-                    <!-- Tab-event anfang-->
-                    <div role="tabpanel" class="tab-pane fade <?PHP echo $active; ?>"
-                         id="event<?PHP echo $event->id; ?>">
+					<!-- Tab-event anfang-->
+					<div role="tabpanel" class="tab-pane fade <?PHP echo $active; ?>"
+						 id="event<?PHP echo $event->id; ?>">
 						<?PHP
 						$idxTab++;
 
@@ -133,14 +143,14 @@ if (version_compare(JVERSION, '3.0.0', 'ge'))
 
 								if ($this->config['event_link_player'] == 1 && $me->playerid != 0)
 								{
-									$routeparameter                       = array();
+									$routeparameter					   = array();
 									$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-									$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-									$routeparameter['p']                  = $this->project->slug;
-									$routeparameter['tid']                = $me->team_id;
-									$routeparameter['pid']                = $me->playerid;
-									$player_link                          = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
-									$match_player                         = HTMLHelper::link($player_link, $match_player);
+									$routeparameter['s']				  = Factory::getApplication()->input->getInt('s', 0);
+									$routeparameter['p']				  = $this->project->slug;
+									$routeparameter['tid']				= $me->team_id;
+									$routeparameter['pid']				= $me->playerid;
+									$player_link						  = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
+									$match_player						 = HTMLHelper::link($player_link, $match_player);
 								}
 
 								echo $match_player;
@@ -181,19 +191,19 @@ if (version_compare(JVERSION, '3.0.0', 'ge'))
 							}
 						}
 						?>
-                        <!-- Tab-event ende-->
-                    </div>
+						<!-- Tab-event ende-->
+					</div>
 
 					<?php
 				}
 				?>
 
-                <!-- Tab-content ende-->
-            </div>
-            <!-- Tab-Inhalte ende-->
-        </div>
-        <!-- This is a list with tabs names. ende -->
-    </div>
+				<!-- Tab-content ende-->
+			</div>
+			<!-- Tab-Inhalte ende-->
+		</div>
+		<!-- This is a list with tabs names. ende -->
+	</div>
 
 	<?PHP
 }

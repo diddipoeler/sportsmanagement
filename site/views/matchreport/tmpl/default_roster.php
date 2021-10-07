@@ -14,19 +14,26 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
-HTMLHelper::_('behavior.modal');
+
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+}
+elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
+{
+	HTMLHelper::_('behavior.modal');
+}
 
 ?>
 <!-- START: game roster -->
 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="matchreport">
-    <!-- Show Match players -->
+	<!-- Show Match players -->
 	<?php
 	if (!empty($this->matchplayerpositions))
 	{
 		?>
 
-        <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP'); ?></h2>
-        <table class="table ">
+		<h2><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP'); ?></h2>
+		<table class="table ">
 			<?php
 			foreach ($this->matchplayerpositions as $pos)
 			{
@@ -43,14 +50,14 @@ HTMLHelper::_('behavior.modal');
 				if ($personCount > 0)
 				{
 					?>
-                    <tr>
-                        <td colspan="2" class="positionid"><?php echo Text::_($pos->name); ?></td>
-                    </tr>
-                    <tr>
-                        <!-- list of home-team -->
-                        <td class="list">
-                            <div style="text-align: left; ">
-                                <ul style="list-style-type: none;">
+					<tr>
+						<td colspan="2" class="positionid"><?php echo Text::_($pos->name); ?></td>
+					</tr>
+					<tr>
+						<!-- list of home-team -->
+						<td class="list">
+							<div style="text-align: left; ">
+								<ul style="list-style-type: none;">
 									<?php
 									foreach ($this->matchplayers as $player)
 									{
@@ -62,7 +69,7 @@ HTMLHelper::_('behavior.modal');
 										if ($player->position_id == $pos->position_id && $player->ptid == $this->match->projectteam1_id)
 										{
 											?>
-                                            <li <?php echo($this->config['show_player_picture'] == 2 ? 'class="list_pictureonly_left"' : 'class="list"') ?>>
+											<li <?php echo($this->config['show_player_picture'] == 2 ? 'class="list_pictureonly_left"' : 'class="list"') ?>>
 												<?php
 												/**
 												 * ist der spieler ein spielführer ?
@@ -72,13 +79,13 @@ HTMLHelper::_('behavior.modal');
 													echo ' ' . '&copy;';
 												}
 
-												$routeparameter                       = array();
+												$routeparameter					   = array();
 												$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-												$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-												$routeparameter['p']                  = $this->project->slug;
-												$routeparameter['tid']                = $player->team_slug;
-												$routeparameter['pid']                = $player->person_slug;
-												$player_link                          = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
+												$routeparameter['s']				  = Factory::getApplication()->input->getInt('s', 0);
+												$routeparameter['p']				  = $this->project->slug;
+												$routeparameter['tid']				= $player->team_slug;
+												$routeparameter['pid']				= $player->person_slug;
+												$player_link						  = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
 												if ($this->config['show_player_profile_name_trikotnumber'])
 												{
 													$prefix = $player->jerseynumber ? $player->jerseynumber . "." : null;
@@ -88,7 +95,7 @@ HTMLHelper::_('behavior.modal');
 													$prefix = null;
 												}
 												$match_player = sportsmanagementHelper::formatName($prefix, $player->firstname, $player->nickname, $player->lastname, $this->config["name_format"]);
-												$isFavTeam    = in_array($player->team_id, explode(",", $this->project->fav_team));
+												$isFavTeam	= in_array($player->team_id, explode(",", $this->project->fav_team));
 
 												if (($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)))
 												{
@@ -132,10 +139,10 @@ HTMLHelper::_('behavior.modal');
 													if (($this->config['show_player_picture'] == 2) && ($this->config['show_player_profile_link'] == 1))
 													{
 														echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer' . $player->person_id, $picture, $imgTitle, $this->config['player_picture_height'],
-										'',
-										$this->modalwidth,
-										$this->modalheight,
-										$this->overallconfig['use_jquery_modal']);
+														'',
+														$this->modalwidth,
+														$this->modalheight,
+														$this->overallconfig['use_jquery_modal']);
 														?>
 
 														<?PHP
@@ -143,10 +150,10 @@ HTMLHelper::_('behavior.modal');
 													else
 													{
 														echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer' . $player->person_id, $picture, $imgTitle, $this->config['player_picture_height'],
-										'',
-										$this->modalwidth,
-										$this->modalheight,
-										$this->overallconfig['use_jquery_modal']);
+														'',
+														$this->modalwidth,
+														$this->modalheight,
+														$this->overallconfig['use_jquery_modal']);
 
 														if ($this->config['show_player_profile_link_alignment'] == 1)
 														{
@@ -158,18 +165,18 @@ HTMLHelper::_('behavior.modal');
 
 												}
 												?>
-                                            </li>
+											</li>
 											<?php
 										}
 									}
 									?>
-                                </ul>
-                            </div>
-                        </td>
-                        <!-- list of guest-team -->
-                        <td class="list">
-                            <div style="text-align: right;">
-                                <ul style="list-style-type: none;">
+								</ul>
+							</div>
+						</td>
+						<!-- list of guest-team -->
+						<td class="list">
+							<div style="text-align: right;">
+								<ul style="list-style-type: none;">
 									<?php
 									foreach ($this->matchplayers as $player)
 									{
@@ -182,16 +189,16 @@ HTMLHelper::_('behavior.modal');
 										if ($player->position_id == $pos->position_id && $player->ptid == $this->match->projectteam2_id)
 										{
 											?>
-                                            <li <?php echo($this->config['show_player_picture'] == 2 ? 'class="list_pictureonly_right"' : 'class="list"') ?>>
+											<li <?php echo($this->config['show_player_picture'] == 2 ? 'class="list_pictureonly_right"' : 'class="list"') ?>>
 												<?php
 
-												$routeparameter                       = array();
+												$routeparameter					   = array();
 												$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-												$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-												$routeparameter['p']                  = $this->project->slug;
-												$routeparameter['tid']                = $player->team_slug;
-												$routeparameter['pid']                = $player->person_slug;
-												$player_link                          = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
+												$routeparameter['s']				  = Factory::getApplication()->input->getInt('s', 0);
+												$routeparameter['p']				  = $this->project->slug;
+												$routeparameter['tid']				= $player->team_slug;
+												$routeparameter['pid']				= $player->person_slug;
+												$player_link						  = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
 												if ($this->config['show_player_profile_name_trikotnumber'])
 												{
 													$prefix = $player->jerseynumber ? $player->jerseynumber . "." : null;
@@ -201,7 +208,7 @@ HTMLHelper::_('behavior.modal');
 													$prefix = null;
 												}
 												$match_player = sportsmanagementHelper::formatName($prefix, $player->firstname, $player->nickname, $player->lastname, $this->config["name_format"]);
-												$isFavTeam    = in_array($player->team_id, explode(",", $this->project->fav_team));
+												$isFavTeam	= in_array($player->team_id, explode(",", $this->project->fav_team));
 
 												if (($this->config['show_player_picture'] == 1) || ($this->config['show_player_picture'] == 2))
 												{
@@ -227,10 +234,10 @@ HTMLHelper::_('behavior.modal');
 													else
 													{
 														echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer' . $player->person_id, $picture, $imgTitle, $this->config['player_picture_height'],
-										'',
-										$this->modalwidth,
-										$this->modalheight,
-										$this->overallconfig['use_jquery_modal']);
+														'',
+														$this->modalwidth,
+														$this->modalheight,
+														$this->overallconfig['use_jquery_modal']);
 														?>
 														<?PHP
 
@@ -282,24 +289,24 @@ HTMLHelper::_('behavior.modal');
 													echo ' ' . '&copy;';
 												}
 												?>
-                                            </li>
+											</li>
 											<?php
 										}
 									}
 									?>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
+								</ul>
+							</div>
+						</td>
+					</tr>
 					<?php
 				}
 			}
 			?>
-        </table>
+		</table>
 		<?php
 	}
 	?>
-    <!-- END of Match players -->
-    <br/>
+	<!-- END of Match players -->
+	<br/>
 </div>
 <!-- END: game roster -->

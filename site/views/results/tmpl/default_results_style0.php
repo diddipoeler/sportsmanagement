@@ -19,9 +19,13 @@ use Joomla\CMS\Factory;
 //echo '<pre>'.print_r($this->project,true).'</pre>';
 ?>
 <style>
-    #sbox-window {
-        background-color: transparent;
-    }
+  #sbox-window {
+    background-color: transparent;
+  }
+  .ex1 {
+    width: auto;
+    text-align: center !important;
+  }
 
 </style>
 <script>
@@ -166,7 +170,7 @@ if ($this->config['show_comments_count'])
 					<?php
 					if ($date == "0000-00-00")
 					{
-						echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DATE_EMPTY');;
+						echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DATE_EMPTY');
 					}
 					else
 					{
@@ -424,7 +428,7 @@ $ergebnis = date('H:i:s', strtotime('+'.$this->project->game_regular_time + $thi
 							case 5:
 							case 6:
 							case 7:
-								$width = '20';
+								$width = 'auto';
 								break;
 							case 3:
 							case 4:
@@ -450,7 +454,7 @@ $ergebnis = date('H:i:s', strtotime('+'.$this->project->game_regular_time + $thi
 
 						?>
                         <!-- show team-icons and/or -names -->
-                        <td width='<?PHP echo $width; ?>'>
+                        <td class="ex1">
 							<?php
 							if ($this->config['club_link_logo'])
 							{
@@ -467,7 +471,7 @@ $ergebnis = date('H:i:s', strtotime('+'.$this->project->game_regular_time + $thi
 							}
 							else
 							{
-								echo ' ' . sportsmanagementHelper::getPictureThumb($pic1, $team1->name, '20', 'auto', 3);
+								echo ' ' . sportsmanagementHelper::getPictureThumb($pic1, $team1->name, 'auto', '20', 3);
 							}
 							?>
                         </td>
@@ -483,7 +487,7 @@ $ergebnis = date('H:i:s', strtotime('+'.$this->project->game_regular_time + $thi
 							?>
 				
 	                        </td>
-                        <td width='<?PHP echo $width; ?>'>
+                        <td class="ex1">
 							<?php
 							if ($this->config['club_link_logo'])
 							{
@@ -500,7 +504,7 @@ $ergebnis = date('H:i:s', strtotime('+'.$this->project->game_regular_time + $thi
 							}
 							else
 							{
-								echo ' ' . sportsmanagementHelper::getPictureThumb($pic2, $team2->name, '20', 'auto', 3);
+								echo ' ' . sportsmanagementHelper::getPictureThumb($pic2, $team2->name, 'auto', '20', 3);
 							}
 							?>
                         </td>
@@ -542,7 +546,7 @@ $ergebnis = date('H:i:s', strtotime('+'.$this->project->game_regular_time + $thi
 					{
 						?>
                         <!-- show team-icons and/or -names -->
-                        <td class=''>
+                        <td class='ex1'>
 							<?php
 							$isFavTeam = in_array($team1->id, $this->favteams);
 							echo sportsmanagementHelper::formatTeamName($team1, 'g' . $game->id, $this->config, $isFavTeam);
@@ -578,7 +582,7 @@ $ergebnis = date('H:i:s', strtotime('+'.$this->project->game_regular_time + $thi
 							}
 							?>
                         </td>
-                        <td width=''>
+                        <td class="ex1">
 							<?php echo sportsmanagementViewResults::getTeamClubIcon(
 								$team2, $this->config['show_logo_small'], array('class' => 'teamlogo'),
 								$this->modalwidth,

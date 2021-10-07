@@ -15,7 +15,14 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 
-HTMLHelper::_('behavior.modal');
+/** welche joomla version ? */
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+}
+elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
+{
+	HTMLHelper::_('behavior.modal');
+}
 
 ?>
 
@@ -38,22 +45,22 @@ if (!empty($this->matchplayerpositions))
 			}
 		}
 		?>
-        <div class="row-fluid" id="">
-            <div class="col-md-12" id="position">
-                <div class="col-md-5 text-right" id="clubhomename">
-                    <?php echo $this->team1_club->name; ?>
-                </div>
-                <div class="col-md-2 text-center" id="posname">
+		<div class="row-fluid" id="">
+			<div class="col-md-12" id="position">
+				<div class="col-md-5 text-right" id="clubhomename">
+					<?php echo $this->team1_club->name; ?>
+				</div>
+				<div class="col-md-2 text-center" id="posname">
 					<?php echo Text::_($pos->name); ?>
-                </div>
-                <div class="col-md-5 text-left" id="clubawayteam">
-                    <?php echo $this->team2_club->name; ?>
-                </div>
-            </div>
+				</div>
+				<div class="col-md-5 text-left" id="clubawayteam">
+					<?php echo $this->team2_club->name; ?>
+				</div>
+			</div>
 
-            <div class="col-md-12" id="playerrow">
-                <!-- list of home-team -->
-                <div class="col-md-5" id="homeplayer">
+			<div class="col-md-12" id="playerrow">
+				<!-- list of home-team -->
+				<div class="col-md-5" id="homeplayer">
 					<?php
 					foreach ($this->matchplayers as $player)
 					{
@@ -72,13 +79,13 @@ if (!empty($this->matchplayerpositions))
 								echo ' ' . '&copy;';
 							}
 
-							$routeparameter                       = array();
+							$routeparameter					   = array();
 							$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-							$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-							$routeparameter['p']                  = $this->project->slug;
-							$routeparameter['tid']                = $player->team_slug;
-							$routeparameter['pid']                = $player->person_slug;
-							$player_link                          = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
+							$routeparameter['s']				  = Factory::getApplication()->input->getInt('s', 0);
+							$routeparameter['p']				  = $this->project->slug;
+							$routeparameter['tid']				= $player->team_slug;
+							$routeparameter['pid']				= $player->person_slug;
+							$player_link						  = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
 
 							if ($this->config['show_player_profile_name_trikotnumber'])
 							{
@@ -90,9 +97,9 @@ if (!empty($this->matchplayerpositions))
 							}
 
 							$match_player = sportsmanagementHelper::formatName($prefix, $player->firstname, $player->nickname, $player->lastname, $this->config["name_format"]);
-							$isFavTeam    = in_array($player->team_id, explode(",", $this->project->fav_team));
+							$isFavTeam	= in_array($player->team_id, explode(",", $this->project->fav_team));
 							?>
-                            <div class="text-right" id="homesingleplayer">
+							<div class="text-right" id="homesingleplayer">
 								<?php
 								if (($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)))
 								{
@@ -159,7 +166,7 @@ if (!empty($this->matchplayerpositions))
 								}
 
 								?>
-                            </div>
+							</div>
 
 
 							<?php
@@ -168,11 +175,11 @@ if (!empty($this->matchplayerpositions))
 					?>
 
 
-                </div>
-                <!-- list of line -->
-                <div class="col-md-2"></div>
-                <!-- list of guest-team -->
-                <div class="col-md-5" id="awayplayer">
+				</div>
+				<!-- list of line -->
+				<div class="col-md-2"></div>
+				<!-- list of guest-team -->
+				<div class="col-md-5" id="awayplayer">
 					<?php
 					foreach ($this->matchplayers as $player)
 					{
@@ -192,13 +199,13 @@ if (!empty($this->matchplayerpositions))
 								echo ' ' . '&copy;';
 							}
 
-							$routeparameter                       = array();
+							$routeparameter					   = array();
 							$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-							$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-							$routeparameter['p']                  = $this->project->slug;
-							$routeparameter['tid']                = $player->team_slug;
-							$routeparameter['pid']                = $player->person_slug;
-							$player_link                          = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
+							$routeparameter['s']				  = Factory::getApplication()->input->getInt('s', 0);
+							$routeparameter['p']				  = $this->project->slug;
+							$routeparameter['tid']				= $player->team_slug;
+							$routeparameter['pid']				= $player->person_slug;
+							$player_link						  = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
 
 							if ($this->config['show_player_profile_name_trikotnumber'])
 							{
@@ -210,11 +217,11 @@ if (!empty($this->matchplayerpositions))
 							}
 
 							$match_player = sportsmanagementHelper::formatName($prefix, $player->firstname, $player->nickname, $player->lastname, $this->config["name_format"]);
-							$isFavTeam    = in_array($player->team_id, explode(",", $this->project->fav_team));
+							$isFavTeam	= in_array($player->team_id, explode(",", $this->project->fav_team));
 
 
 							?>
-                            <div class="text-left" id="awaysingleplayer">
+							<div class="text-left" id="awaysingleplayer">
 								<?php
 								if (($this->config['show_player_picture'] == 1) || ($this->config['show_player_picture'] == 2))
 								{
@@ -297,7 +304,7 @@ if (!empty($this->matchplayerpositions))
 								}
 
 								?>
-                            </div>
+							</div>
 
 
 							<?php
@@ -306,11 +313,11 @@ if (!empty($this->matchplayerpositions))
 					?>
 
 
-                </div>
-            </div>
+				</div>
+			</div>
 
 
-        </div>
+		</div>
 		<?php
 	}
 }
