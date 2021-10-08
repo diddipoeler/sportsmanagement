@@ -359,7 +359,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('select'.$this->item->id, ''
 
 					?>
                     <input type="hidden" name="position_id<?php echo $this->item->id; ?>"
-                           value="<?php echo $this->item->position_id; ?>"/>
+                           value="<?php echo $this->item->project_position_id; ?>"/>
                     <input type="hidden" name="person_id<?php echo $this->item->id; ?>" value="<?php echo $this->item->tpid; ?>"/>
                     <input type="hidden" name="tpid[<?php echo $this->item->id; ?>]" value="<?php echo $this->item->tpid; ?>"/>
 

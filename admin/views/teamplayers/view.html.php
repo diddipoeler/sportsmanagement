@@ -49,6 +49,7 @@ class sportsmanagementViewteamplayers extends sportsmanagementView
 		}
 		
 		$this->items = $this->model->getprojectpublished($this->items);
+		$this->items = $this->model->getprojectposition($this->items);
 
 		$this->project_team_id = $this->jinput->getVar('project_team_id');
 		$this->team_id = $this->jinput->getInt('team_id');
