@@ -197,7 +197,7 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 					endif;
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {			
-$pcture_link = 'index.php?option=com_media&tmpl=component&asset=com_sportsmanagement&author=&path=local-0:/com_sportsmanagement/database/projectimages/'.$this->item->id;
+$pcture_link = 'index.php?option=com_media&tmpl=component&asset=com_sportsmanagement&author=&path=local-images:/com_sportsmanagement/database/projectimages/'.$this->item->id;
 }	
 elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
 {

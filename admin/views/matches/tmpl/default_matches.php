@@ -184,7 +184,7 @@ use Joomla\CMS\Uri\Uri;
 
 						if (version_compare(JSM_JVERSION, '4', 'eq'))
 						{
-							$pcture_link   = 'index.php?option=com_media&tmpl=component&path=local-0:/com_sportsmanagement/database/matchreport/' . $row->id;
+							$pcture_link   = 'index.php?option=com_media&tmpl=component&path=local-images:/com_sportsmanagement/database/matchreport/' . $row->id;
 						}
 						else
 						{
