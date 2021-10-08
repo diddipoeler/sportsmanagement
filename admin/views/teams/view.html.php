@@ -91,8 +91,11 @@ class sportsmanagementViewTeams extends sportsmanagementView
 
 		$this->club_id = $this->jinput->get->get('club_id');
 		$this->lists   = $lists;
-		
-				
+
+		if (!array_key_exists('search_mode', $this->lists))
+		{
+			$this->lists['search_mode'] = '';
+		}
 	}
 
 	/**

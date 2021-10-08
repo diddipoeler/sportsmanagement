@@ -128,8 +128,11 @@ class sportsmanagementViewteamplayers extends sportsmanagementView
 		$this->lists        = $lists;
 		$this->project      = $project;
 		$this->project_team = $project_team;
-        
-        
+
+		if (!array_key_exists('search_mode', $this->lists))
+		{
+			$this->lists['search_mode'] = '';
+		}
 	}
 
 	/**
