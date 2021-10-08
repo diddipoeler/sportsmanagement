@@ -160,18 +160,23 @@ class sportsmanagementViewjoomleagueimport extends sportsmanagementView
 		$whichtable[] = HTMLHelper::_('select.option', 'person', Text::_('person'));
 
 		$lists['whichtable'] = HTMLHelper::Select::genericlist(
-		$whichtable,
-		'filter_which_table',
-		$inputappend . 'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
-		'value',
-		'text',
-		$which_table
-	);
+			$whichtable,
+			'filter_which_table',
+			$inputappend . 'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+			'value',
+			'text',
+			$which_table
+		);
 		$lists['position'] = $nation;
 
-			  $this->lists = $lists;
+		$this->lists = $lists;
 
-			  ToolbarHelper::custom('joomleagueimports.updatepositions', 'upload', 'upload', Text::_('COM_SPORTSMANAGEMENT_JL_IMPORT_POSITION_UPDATE'), false);
+		if (!array_key_exists('search_mode', $this->lists))
+		{
+			$this->lists['search_mode'] = '';
+		}
+
+		ToolbarHelper::custom('joomleagueimports.updatepositions', 'upload', 'upload', Text::_('COM_SPORTSMANAGEMENT_JL_IMPORT_POSITION_UPDATE'), false);
 		ToolbarHelper::custom('joomleagueimports.updateplayerproposition', 'upload', 'upload', Text::_('COM_SPORTSMANAGEMENT_JL_IMPORT_PLAYER_PRO_POSITION_UPDATE'), false);
 		ToolbarHelper::custom('joomleagueimports.updatestaffproposition', 'upload', 'upload', Text::_('COM_SPORTSMANAGEMENT_JL_IMPORT_STAFF_PRO_POSITION_UPDATE'), false);
 

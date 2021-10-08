@@ -61,20 +61,25 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
 		unset($position_id);
 
 		$this->lists      = $lists;
-		
-		if ( !$this->items )
+
+		if (!$this->items)
 		{
-		$countreferess = $this->model->getProjectRefereesCount($this->project_id);
-			if ( $countreferess )
+			$countreferess = $this->model->getProjectRefereesCount($this->project_id);
+
+			if ($countreferess)
 			{
-		Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PREF_TITLE2', '<i>' . $countreferess . '</i>'), Log::NOTICE, 'jsmerror');
-$this->season_id = $this->app->getUserState("$this->option.season_id", '0');				
-$this->app->setUserState("$this->option.season_id", 0);
-$this->items = $this->get('Items2');				
-$this->app->setUserState("$this->option.season_id", $this->season_id);				
+				Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PREF_TITLE2', '<i>' . $countreferess . '</i>'), Log::NOTICE, 'jsmerror');
+				$this->season_id = $this->app->getUserState("$this->option.season_id", '0');				
+				$this->app->setUserState("$this->option.season_id", 0);
+				$this->items = $this->get('Items2');				
+				$this->app->setUserState("$this->option.season_id", $this->season_id);				
 			}
 		}
 
+		if (!array_key_exists('search_mode', $this->lists))
+		{
+			$this->lists['search_mode'] = '';
+		}
 	}
 
 	/**

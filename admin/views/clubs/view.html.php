@@ -30,7 +30,6 @@ use Joomla\CMS\Log\Log;
  */
 class sportsmanagementViewClubs extends sportsmanagementView
 {
-   
 	/**
 	 * sportsmanagementViewClubs::init()
 	 *
@@ -38,7 +37,7 @@ class sportsmanagementViewClubs extends sportsmanagementView
 	 */
 	public function init()
 	{
-$this->modelclub   = BaseDatabaseModel::getInstance('club', 'sportsmanagementModel');
+		$this->modelclub   = BaseDatabaseModel::getInstance('club', 'sportsmanagementModel');
 		$inputappend         = '';
 		$this->search_nation = '';
 		$this->association   = '';
@@ -88,8 +87,11 @@ $this->modelclub   = BaseDatabaseModel::getInstance('club', 'sportsmanagementMod
 		}
 
 		$this->lists = $lists;
-			
-		
+
+		if (!array_key_exists('search_mode', $this->lists))
+		{
+			$this->lists['search_mode'] = '';
+		}
 	}
 
 	/**

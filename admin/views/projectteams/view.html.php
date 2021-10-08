@@ -51,16 +51,16 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		{
 			$this->project_id = $this->app->getUserState("$this->option.pid", '0');
 		}
-$this->modelclub   = BaseDatabaseModel::getInstance('club', 'sportsmanagementModel');
+		$this->modelclub   = BaseDatabaseModel::getInstance('club', 'sportsmanagementModel');
 		$mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
 		$this->project    = $mdlProject->getProject($this->project_id);
-        
-		if ( $this->project->fast_projektteam )
+
+		if ($this->project->fast_projektteam)
 		{
 			$lists['country_teams']         = $this->model->getCountryTeams();
 			$lists['country_teams_picture'] = $this->model->getCountryTeamsPicture();
-            $this->tips[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_QUICKADD_DESCR');
-		}        
+			$this->tips[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_QUICKADD_DESCR');
+		}
 
 		$this->project_art_id         = $this->project->project_art_id;
 		$this->season_id              = $this->project->season_id;
@@ -107,7 +107,7 @@ $this->modelclub   = BaseDatabaseModel::getInstance('club', 'sportsmanagementMod
 		$res1         = array();
 		$notusedteams = array();
 
-		if ( $ress = $this->model->getProjectTeams($this->project_id, false) )
+		if ($ress = $this->model->getProjectTeams($this->project_id, false))
 		{
 			$teamslist = array();
 
@@ -135,27 +135,27 @@ $this->modelclub   = BaseDatabaseModel::getInstance('club', 'sportsmanagementMod
 			$lists['project_teams'] = '<select name="project_teamslist[]" id="project_teamslist" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
 		}
 
-		if ( $ress1 = $this->model->getTeams() )
+		if ($ress1 = $this->model->getTeams())
 		{
-			if ( $ress = $this->model->getProjectTeams($this->project_id, false) )
+			if ($ress = $this->model->getProjectTeams($this->project_id, false))
 			{
-				foreach ( $ress1 as $res1 )
+				foreach ($ress1 as $res1)
 				{
 					$used = 0;
 
-					foreach ( $ress as $res )
+					foreach ($ress as $res)
 					{
-						if ( $res1->value == $res->season_team_id )
+						if ($res1->value == $res->season_team_id)
 						{
 							$used = 1;
 						}
 					}
 
-					if ( $used == 0 && !empty($res1->info) )
+					if ($used == 0 && !empty($res1->info))
 					{
 						$notusedteams[] = JHtmlSelect::option($res1->value, $res1->text . ' (' . $res1->info . ')');
 					}
-					elseif ( $used == 0 && empty($res1->info) )
+					elseif ($used == 0 && empty($res1->info))
 					{
 						$notusedteams[] = JHtmlSelect::option($res1->value, $res1->text);
 					}
@@ -163,9 +163,9 @@ $this->modelclub   = BaseDatabaseModel::getInstance('club', 'sportsmanagementMod
 			}
 			else
 			{
-				foreach ( $ress1 as $res1 )
+				foreach ($ress1 as $res1)
 				{
-					if ( empty($res1->info) )
+					if (empty($res1->info))
 					{
 						$notusedteams[] = JHtmlSelect::option($res1->value, $res1->text);
 					}
@@ -226,10 +226,12 @@ $this->modelclub   = BaseDatabaseModel::getInstance('club', 'sportsmanagementMod
 //			$lists['country_teams_picture'] = $this->model->getCountryTeamsPicture();
 //		}
 		$finaltablerank    = array();
+
 		for ($a = 0; $a < 41; $a++)
 		{
 			$finaltablerank[] = HTMLHelper::_('select.option', $a, $a);
 		}
+
 		$lists['finaltablerank'] = $finaltablerank;
 
 		/** build the html select list for all teams */
@@ -242,7 +244,7 @@ $this->modelclub   = BaseDatabaseModel::getInstance('club', 'sportsmanagementMod
 		}
 		else
 		{
-		$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_CHANGE_TEAMS');	
+			$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_CHANGE_TEAMS');	
 		}
 
 		$lists['all_teams'] = $all_teams;
@@ -254,7 +256,7 @@ $this->modelclub   = BaseDatabaseModel::getInstance('club', 'sportsmanagementMod
 		$lists['is_in_score'] = $myoptions;
 		$lists['use_finally'] = $myoptions;
 
-$this->modelmatches = BaseDatabaseModel::getInstance('Matches', 'sportsmanagementModel');
+		$this->modelmatches = BaseDatabaseModel::getInstance('Matches', 'sportsmanagementModel');
 
 		$this->config         = Factory::getConfig();
 		$this->lists          = $lists;
@@ -263,28 +265,28 @@ $this->modelmatches = BaseDatabaseModel::getInstance('Matches', 'sportsmanagemen
 		$this->pagination     = $pagination;
 //		$this->project        = $project;
 		$this->project_art_id = $this->project_art_id;
-		$this->lists          = $lists;
 
 		switch ($this->getLayout())
 		{
 			case 'editlist';
 			case 'editlist_3';
 			case 'editlist_4';
-			$this->setLayout('editlist');
-			break;
+				$this->setLayout('editlist');
+				break;
 			case 'changeteams';
 			case 'changeteams_3';
 			case 'changeteams_4';
 				foreach ($this->projectteam as $teams)
-		{
-				$teams->name = $teams->name.' ('.$teams->seasonname.')';	
+				{
+					$teams->name = $teams->name . ' (' . $teams->seasonname . ')';
 				}
-			$this->setLayout('changeteams');
-			break;
+				$this->setLayout('changeteams');
+				break;
 		}
-		
-	
-
+		if (!array_key_exists('search_mode', $this->lists))
+		{
+			$this->lists['search_mode'] = '';
+		}
 	}
 
 	/**
@@ -308,8 +310,8 @@ $this->modelmatches = BaseDatabaseModel::getInstance('Matches', 'sportsmanagemen
 		{
 			$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTPERSONS_TITLE');
 		}
-        
-        ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=project&layout=panel&id='.$this->project_id);
+
+		ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=project&layout=panel&id=' . $this->project_id);
 		ToolbarHelper::custom('projectteams.setseasonid', 'purge.png', 'purge_f2.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_SET_SEASON_ID'), true);
 		ToolbarHelper::custom('projectteams.matchgroups', 'purge.png', 'purge_f2.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_CHANGE_MATCH_GROUPS'), true);
 		ToolbarHelper::deleteList('', 'projectteams.delete');
@@ -322,7 +324,7 @@ $this->modelmatches = BaseDatabaseModel::getInstance('Matches', 'sportsmanagemen
 		$modal_params['url']    = 'index.php?option=com_sportsmanagement&view=projectteams&layout=changeteams&tmpl=component&pid=' . $this->project_id;
 		$modal_params['height'] = $this->modalheight;
 		$modal_params['width']  = $this->modalwidth;
-        $modal_params['modalWidth']  = '60';
+		$modal_params['modalWidth']  = '60';
 		echo HTMLHelper::_('bootstrap.renderModal', 'collapseModalchangeTeams', $modal_params);
 
 		$layout = new JLayoutFile('assignteams', JPATH_ROOT . '/components/com_sportsmanagement/layouts');
@@ -332,7 +334,7 @@ $this->modelmatches = BaseDatabaseModel::getInstance('Matches', 'sportsmanagemen
 		$modal_params['url']    = 'index.php?option=com_sportsmanagement&view=projectteams&layout=editlist&tmpl=component&pid=' . $this->project_id;
 		$modal_params['height'] = $this->modalheight;
 		$modal_params['width']  = $this->modalwidth;
-        $modal_params['modalWidth']  = '60';
+		$modal_params['modalWidth']  = '60';
 		echo HTMLHelper::_('bootstrap.renderModal', 'collapseModalassignTeams', $modal_params);
 
 		ToolbarHelper::custom('projectteam.copy', 'copy', 'copy', Text::_('JTOOLBAR_DUPLICATE'), true);

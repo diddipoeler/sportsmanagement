@@ -282,14 +282,14 @@ class sportsmanagementModelteamplayer extends JSMModelAdmin
 				$tblprojectposition = Table::getInstance("projectposition", "sportsmanagementTable");
 				$tblprojectposition->load((int) $post['project_position_id' . $pks[$x]]);
 
-				$tblperson = Table::getInstance("player", "sportsmanagementTable");
-				$tblperson->load((int) $pks[$x]);
-				$tblperson->position_id = $tblprojectposition->position_id;
-				$tblperson->country     = $post['country' . $pks[$x]];
+				// $tblperson = Table::getInstance("player", "sportsmanagementTable");
+				// $tblperson->load((int) $pks[$x]);
+				// $tblperson->position_id = $tblprojectposition->position_id;
+				// $tblperson->country     = $post['country' . $pks[$x]];
 
-				if (!$tblperson->store())
-				{
-				}
+				// if (!$tblperson->store())
+				// {
+				// }
 
 
 				// Alten eintrag löschen
@@ -648,7 +648,10 @@ class sportsmanagementModelteamplayer extends JSMModelAdmin
 		$profile->person_id           = $data['person_id'];
 		$profile->project_id          = $post['pid'];
 		$profile->project_position_id = $data['project_position_id'];
-		$profile->persontype          = $post['persontype'];
+		$profile->persontype          = $data['persontype'];
+		$profile->published           = 1;
+		$profile->modified            = $this->jsmdate->toSql();
+		$profile->modified_by         = $this->jsmuser->get('id');
 
 		try
 		{

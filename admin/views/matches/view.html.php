@@ -206,6 +206,11 @@ class sportsmanagementViewMatches extends sportsmanagementView
 		$lists['divisions'] = $divisions;
 		unset($divisions);
 
+		$playground[]  = JHtmlSelect::option('0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYGROUND'));
+		$mdlPlayground      = BaseDatabaseModel::getInstance("Playgrounds", "sportsmanagementModel");
+		$res = $mdlPlayground->getPlaygrounds(true);
+		$this->playgrounds = array_merge($playground, $res);
+		
 		$this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/matches.js');
 
 		$selectlist = array();
@@ -237,10 +242,10 @@ class sportsmanagementViewMatches extends sportsmanagementView
 		$this->prefill    = $params->get('use_prefilled_match_roster', 0);
 
 
-if ( !array_key_exists('search_mode', $this->lists) )
-{
-$this->lists['search_mode'] = '';
-}
+		if (!array_key_exists('search_mode', $this->lists))
+		{
+			$this->lists['search_mode'] = '';
+		}
 
 		switch ($this->getLayout())
 		{

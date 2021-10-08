@@ -60,6 +60,10 @@ class sportsmanagementViewPlaygrounds extends sportsmanagementView
 
 		$this->lists = $lists;
 
+		if (!array_key_exists('search_mode', $this->lists))
+		{
+			$this->lists['search_mode'] = '';
+		}
 	}
 
 

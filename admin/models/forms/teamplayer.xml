@@ -44,6 +44,7 @@
 			default="0"
 			size="1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_POS"
+			readonly="true"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_POS_DESC" >
 			
 			<option

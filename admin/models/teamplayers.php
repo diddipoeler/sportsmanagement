@@ -84,6 +84,22 @@ class sportsmanagementModelteamplayers extends JSMModelList
 	return $items;	
 	}
 
+	function getprojectposition($items = NULL)
+	{
+		foreach ($items as $count_i => $item)
+		{
+			$this->jsmquery->clear();
+			$this->jsmquery->select('ppp.project_position_id');
+			$this->jsmquery->from('#__sportsmanagement_person_project_position AS ppp');
+			$this->jsmquery->where('ppp.person_id = '. $item->person_id);
+			$this->jsmquery->where('ppp.project_id = ' . $this->_project_id);
+			//$this->jsmquery->where('ppp.persontype = ' . $this->getState('filter.persontype'));
+			$this->jsmdb->setQuery($this->jsmquery);
+			$item->project_position_id = $this->jsmdb->loadResult();
+		}
+		return $items;	
+	}
+
 	/**
 	 * sportsmanagementModelteamplayers::getListQuery()
 	 *
