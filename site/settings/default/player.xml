@@ -167,8 +167,8 @@
     type="extensionradiobutton" 
     default="1"  
     class="radio btn-group btn-group-yesno"
-				label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_SHOW_PL_CAREER"
-				description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_SHOW_PL_CAREER">
+				label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_SHOW_PL_CAREER_STATS"
+				description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_SHOW_PL_CAREER_STATS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
@@ -527,11 +527,8 @@
      
 		</field>
 
-
-      
 	</fieldset>
 
-  
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS" 
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS" 
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_TEAMOPTIONS">	
@@ -666,5 +663,5 @@
 			
 		</field>
 		
-	</fieldset>		
+	</fieldset>
 </form>
