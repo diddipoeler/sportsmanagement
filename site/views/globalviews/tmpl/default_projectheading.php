@@ -1,4 +1,5 @@
 <?php
+
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version    1.0.05
@@ -10,114 +11,118 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Uri\Uri;
+
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
 $document = Factory::getDocument();
 //$document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/mapdata.js');
 //$document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/countrymap.js');
 ?>
 <script>
-    console.log("jquery version : " + jQuery().jquery);
-//    console.log("bootstrap version : " + jQuery.fn.tooltip.Constructor.VERSION);
-//
-//    if (typeof jQuery.fn.tooltip.Constructor.VERSION === 'undefined' || jQuery.fn.tooltip.Constructor.VERSION === null) {
-//        console.log("bootstrap version ist nicht vorhanden");
-//		<?php
-//		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/assets/css/jsmbootstrap.css' . '" type="text/css" />' . "\n";
-//		$document->addCustomTag($stylelink);
-//		?>
-//    }
-
+	console.log("jquery version : " + jQuery().jquery);
+	//    console.log("bootstrap version : " + jQuery.fn.tooltip.Constructor.VERSION);
+	//
+	//    if (typeof jQuery.fn.tooltip.Constructor.VERSION === 'undefined' || jQuery.fn.tooltip.Constructor.VERSION === null) {
+	//        console.log("bootstrap version ist nicht vorhanden");
+	//		<?php
+				//		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/assets/css/jsmbootstrap.css' . '" type="text/css" />' . "\n";
+				//		$document->addCustomTag($stylelink);
+				//		
+				?>
+	//    }
 </script>
 <?php
 
 $nbcols = 2;
+
 if (!empty($this->overallconfig))
 {
 	if ($this->overallconfig['show_project_sporttype_picture'] && isset($this->overallconfig['show_project_sporttype_picture']))
 	{
 		$nbcols++;
 	}
+
 	if ($this->overallconfig['show_project_kunena_link'])
 	{
 		$nbcols++;
 	}
+
 	if ($this->overallconfig['show_project_picture'])
 	{
 		$nbcols++;
 	}
+
 	if ($this->overallconfig['show_project_staffel_id'])
 	{
 		$nbcols++;
 	}
+
 	if ($this->overallconfig['show_project_heading'] == 1 && $this->project)
 	{
 		?>
-        <div class="<?php echo $this->divclassrow; ?>" id="projectheading" itemscope="itemscope" itemtype="http://schema.org/SportsAssociation/Soccer">
-            <table class="table">
-
+		<div class="<?php echo $this->divclassrow; ?>" id="projectheading" itemscope="itemscope" itemtype="http://schema.org/SportsOrganization">
+			<table class="table">
 				<?php
 				if ($this->overallconfig['show_project_country'])
 				{
-					?>
-                    <tr class="contentheading">
-                        <td colspan="<?php echo $nbcols; ?>">
+				?>
+					<tr class="contentheading">
+						<td colspan="<?php echo $nbcols; ?>">
 							<?php
 							$country = $this->project->country;
 							echo JSMCountries::getCountryFlag($country) . ' ' . JSMCountries::getCountryName($country);
 
-                  
-$country_info = JSMCountries::getCountry($country);
-                  
-//echo '<pre>'.print_r($country_info,true).'</pre>';
-                  
-                  
-$javascript = "\n";
-$javascript .= $country_info->countrymap_mapdata;                  					
-$document->addScriptDeclaration($javascript);
+							$country_info = JSMCountries::getCountry($country);
 
-$javascript = "\n";
-$javascript .= file_get_contents('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps1.js');
-$document->addScriptDeclaration($javascript);                  
+							//echo '<pre>'.print_r($country_info,true).'</pre>';
 
-//$document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps1.js');
-                  
-$javascript = "\n";
-$javascript .= $country_info->countrymap_mapinfo;                  					
-$document->addScriptDeclaration($javascript);	
-                  
-//$document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps2.js');					
-                  
-$javascript = "\n";
-$javascript .= file_get_contents('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps2.js');
-$document->addScriptDeclaration($javascript);                                    
-        
-          
-/*                  
-$document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps1.js');
-$javascript = "\n";
-$javascript .= $country_info->countrymap_mapinfo;                  
-$document->addScriptDeclaration($javascript);					
-$document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps2.js');					
-*/					
+							$javascript = "\n";
+							$javascript .= $country_info->countrymap_mapdata;
+							$document->addScriptDeclaration($javascript);
+
+							$javascript = "\n";
+							$javascript .= file_get_contents('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps1.js');
+							$document->addScriptDeclaration($javascript);
+
+							//$document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps1.js');
+
+							$javascript = "\n";
+							$javascript .= $country_info->countrymap_mapinfo;
+							$document->addScriptDeclaration($javascript);
+
+							//$document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps2.js');
+
+							$javascript = "\n";
+							$javascript .= file_get_contents('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps2.js');
+							$document->addScriptDeclaration($javascript);
+
+							/*
+							$document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps1.js');
+							$javascript = "\n";
+							$javascript .= $country_info->countrymap_mapinfo;
+							$document->addScriptDeclaration($javascript);
+							$document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps2.js');
+							*/
 							?>
-                        </td>
-                              
-                        <td><div id="map"></div>      </td>
-                              
-                    </tr>
-					<?php
+						</td>
+
+						<td>
+							<div id="map"></div>
+						</td>
+
+					</tr>
+				<?php
 				}
 				?>
-                <tr class="contentheading">
+				<tr class="contentheading">
 					<?php
 					if ($this->overallconfig['show_project_sporttype_picture'])
 					{
-						?>
-                        <td>
+					?>
+						<td>
 
 							<?PHP
 							if (!sportsmanagementHelper::existPicture($this->project->sport_type_picture))
@@ -140,8 +145,8 @@ $document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/sim
 							?>
 
 
-                        </td>
-						<?php
+						</td>
+					<?php
 					}
 					if ($this->overallconfig['show_project_picture'])
 					{
@@ -153,8 +158,8 @@ $document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/sim
 							$copyright = $this->project->cr_leaguepicture;
 						}
 
-						?>
-                        <td>
+					?>
+						<td>
 
 
 							<?php
@@ -181,44 +186,44 @@ $document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/sim
 							}
 							?>
 
-                        </td>
-						<?php
+						</td>
+					<?php
 					}
 					?>
 					<?php
 					if ($this->overallconfig['show_project_text'])
 					{
-						?>
-                        <td class="contentheading">
-				<span itemprop="name">
+					?>
+						<td class="contentheading">
+							<span itemprop="name">
+								<?php
+								echo $this->project->name;
+								?>
+							</span>
 							<?php
-							echo $this->project->name;
-						?>
-					</span>
-					<?php
 							if (isset($this->division))
 							{
 								echo ' - ' . $this->division->name;
 							}
 							?>
-                        </td>
-						<?php
+						</td>
+					<?php
 					}
 
 					if ($this->overallconfig['show_project_staffel_id'])
 					{
-						?>
-                        <td>
+					?>
+						<td>
 							<?php
 							//echo $this->project->staffel_id;
 							echo Text::sprintf('COM_SPORTSMANAGEMENT_PROJECT_INFO_STAFFEL_ID', '<i>' . $this->project->staffel_id . '</i>');
 							?>
-                        </td>
-						<?php
+						</td>
+					<?php
 					}
 
 					?>
-                    <td class="buttonheading" align="right">
+					<td class="buttonheading" align="right">
 						<?php
 						if (Factory::getApplication()->input->getVar('print') != 1)
 						{
@@ -226,10 +231,10 @@ $document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/sim
 							echo sportsmanagementHelper::printbutton(null, $overallconfig);
 						}
 						?>
-                        &nbsp;
-                    </td>
+						&nbsp;
+					</td>
 
-                    <td class="buttonheading" align="right">
+					<td class="buttonheading" align="right">
 						<?php
 						if ($this->overallconfig['show_project_kunena_link'] == 1 && $this->project->sb_catid)
 						{
@@ -240,39 +245,38 @@ $document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/sim
 							echo HTMLHelper::link($link, $desc);
 						}
 						?>
-                        &nbsp;
-                    </td>
+						&nbsp;
+					</td>
 
-                </tr>
-                <!--                </tbody> -->
-            </table>
-        </div>
+				</tr>
+				<!--                </tbody> -->
+			</table>
+		</div>
 		<?php
 	}
 	else
 	{
 		if ($this->overallconfig['show_print_button'])
 		{
-			?>
-            <div class="<?php echo $this->divclassrow; ?>">
-                <table class="table">
-                    <!--                <tbody> -->
-                    <tr class="contentheading">
-                        <td class="buttonheading" align="right">
+		?>
+			<div class="<?php echo $this->divclassrow; ?>">
+				<table class="table">
+					<!--                <tbody> -->
+					<tr class="contentheading">
+						<td class="buttonheading" align="right">
 							<?php
 							if (Factory::getApplication()->input->getVar('print') != 1)
 							{
 								echo sportsmanagementHelper::printbutton(null, $this->overallconfig);
 							}
 							?>
-                            &nbsp;
-                        </td>
-                    </tr>
-                    <!--            </tbody> -->
-                </table>
-            </div>
-			<?php
+							&nbsp;
+						</td>
+					</tr>
+					<!--            </tbody> -->
+				</table>
+			</div>
+		<?php
 		}
 	}
 }
-?>

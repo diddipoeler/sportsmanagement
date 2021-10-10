@@ -1404,7 +1404,7 @@ self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT')
 	 *
 	 * @return
 	 */
-	public static function getClubIconHtml(&$team, $type = 1, $with_space = 0, $club_icon = 'logo_small', $cfg_which_database = 0, $roundcode = 0, $modalwidth = '100', $modalheight = '200', $use_jquery_modal = 0)
+	public static function getClubIconHtml(&$team, $type = 1, $with_space = 0, $club_icon = 'logo_big', $cfg_which_database = 0, $roundcode = 0, $modalwidth = '100', $modalheight = '200', $use_jquery_modal = 0)
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
