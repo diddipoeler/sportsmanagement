@@ -1,4 +1,5 @@
 <?php
+
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version    1.0.05
@@ -10,6 +11,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -58,7 +60,7 @@ class sportsmanagementViewResults extends sportsmanagementView
 		{
 			$output .= '<b>' . Text::sprintf('COM_SPORTSMANAGEMENT_RESULTS_TEAMS_NOT_PLAYING', $not_playing) . '</b> ';
 
-			foreach ($teams AS $id => $team)
+			foreach ($teams as $id => $team)
 			{
 				if (isset($team->projectteamid) && in_array($team->projectteamid, $playing_teams))
 				{
@@ -127,20 +129,9 @@ class sportsmanagementViewResults extends sportsmanagementView
 
 		if ($team)
 		{
-			if (!File::exists($team->logo_small))
-			{
-				$team->logo_small = sportsmanagementHelper::getDefaultPlaceholder('logo_small');
-			}
-
-			if (!File::exists($team->logo_middle))
-			{
-				$team->logo_middle = sportsmanagementHelper::getDefaultPlaceholder('logo_middle');
-			}
-
-			if (!File::exists($team->logo_big))
-			{
-				$team->logo_big = sportsmanagementHelper::getDefaultPlaceholder('logo_big');
-			}
+			$team->logo_small = empty($team->logo_small) ? sportsmanagementHelper::getDefaultPlaceholder('logo_small') : $team->logo_small;
+			$team->logo_middle = empty($team->logo_middle) ? sportsmanagementHelper::getDefaultPlaceholder('logo_middle') : $team->logo_small;
+			$team->logo_big   = empty($team->logo_big) ? sportsmanagementHelper::getDefaultPlaceholder('logo_big') : $team->logo_big;
 
 			if (!isset($team->name))
 			{
@@ -157,7 +148,7 @@ class sportsmanagementViewResults extends sportsmanagementView
 
 				$image = sportsmanagementHelperHtml::getBootstrapModalImage(
 					'resultsteam' . $team->projectteamid,
-					$team->logo_small,
+					COM_SPORTSMANAGEMENT_PICTURE_SERVER . $team->logo_small,
 					$title,
 					$attribs['width'],
 					'',
@@ -166,13 +157,13 @@ class sportsmanagementViewResults extends sportsmanagementView
 					$use_jquery_modal
 				);
 			}
-            elseif ($type == 5)
+			elseif ($type == 5)
 			{
 				$attribs = array_merge(array('width' => '20', $attribs));
 
 				$image = sportsmanagementHelperHtml::getBootstrapModalImage(
 					'resultsteam' . $team->projectteamid,
-					$team->logo_middle,
+					COM_SPORTSMANAGEMENT_PICTURE_SERVER . $team->logo_middle,
 					$title,
 					$attribs['width'],
 					'',
@@ -181,13 +172,13 @@ class sportsmanagementViewResults extends sportsmanagementView
 					$use_jquery_modal
 				);
 			}
-            elseif ($type == 6)
+			elseif ($type == 6)
 			{
 				$attribs = array_merge(array('width' => '20', $attribs));
 
 				$image = sportsmanagementHelperHtml::getBootstrapModalImage(
 					'resultsteam' . $team->projectteamid,
-					$team->logo_big,
+					COM_SPORTSMANAGEMENT_PICTURE_SERVER . $team->logo_big,
 					$title,
 					$attribs['width'],
 					'',
@@ -196,17 +187,17 @@ class sportsmanagementViewResults extends sportsmanagementView
 					$use_jquery_modal
 				);
 			}
-            elseif ($type == 2)
+			elseif ($type == 2)
 			{
 				$image = JSMCountries::getCountryFlag($team->country);
 			}
 
-            elseif ($type == 7)
+			elseif ($type == 7)
 			{
 				$attribs = array_merge(array('width' => '20', $attribs));
 				$image   = sportsmanagementHelperHtml::getBootstrapModalImage(
 					'resultsteam' . $team->projectteamid,
-					$team->logo_big,
+					COM_SPORTSMANAGEMENT_PICTURE_SERVER . $team->logo_big,
 					$title,
 					$attribs['width'],
 					'',
@@ -216,13 +207,13 @@ class sportsmanagementViewResults extends sportsmanagementView
 				);
 				$image   .= ' ' . JSMCountries::getCountryFlag($team->country);
 			}
-            elseif ($type == 8)
+			elseif ($type == 8)
 			{
 				$attribs = array_merge(array('width' => '20', $attribs));
 				$image   = JSMCountries::getCountryFlag($team->country) . ' ';
 				$image   .= sportsmanagementHelperHtml::getBootstrapModalImage(
 					'resultsteam' . $team->projectteamid,
-					$team->logo_big,
+					COM_SPORTSMANAGEMENT_PICTURE_SERVER . $team->logo_big,
 					$title,
 					$attribs['width'],
 					'',
@@ -231,12 +222,12 @@ class sportsmanagementViewResults extends sportsmanagementView
 					$use_jquery_modal
 				);
 			}
-            elseif ($type == 3)
+			elseif ($type == 3)
 			{
 				$attribs = array_merge(array('width' => '20', $attribs));
 				$image   = sportsmanagementHelperHtml::getBootstrapModalImage(
 					'resultsteam' . $team->projectteamid,
-					$team->logo_small,
+					COM_SPORTSMANAGEMENT_PICTURE_SERVER . $team->logo_small,
 					$title,
 					$attribs['width'],
 					'',
@@ -246,13 +237,13 @@ class sportsmanagementViewResults extends sportsmanagementView
 				);
 				$image   .= ' ' . JSMCountries::getCountryFlag($team->country);
 			}
-            elseif ($type == 4)
+			elseif ($type == 4)
 			{
 				$attribs = array_merge(array('width' => '20', $attribs));
 				$image   = JSMCountries::getCountryFlag($team->country) . ' ';
 				$image   .= sportsmanagementHelperHtml::getBootstrapModalImage(
 					'resultsteam' . $team->projectteamid,
-					$team->logo_small,
+					COM_SPORTSMANAGEMENT_PICTURE_SERVER . $team->logo_small,
 					$title,
 					$attribs['width'],
 					'',
@@ -270,7 +261,6 @@ class sportsmanagementViewResults extends sportsmanagementView
 		}
 
 		return false;
-
 	}
 
 	/**
@@ -314,11 +304,11 @@ class sportsmanagementViewResults extends sportsmanagementView
 		{
 			if ($project->teams_as_referees)
 			{
-				$referees = sportsmanagementModelResults::getMatchRefereeTeams($game->id);
+				$referees = sportsmanagementModelResults::getMatchRefereeTeams($game->id, Factory::getApplication()->input->getInt('cfg_which_database', 0));
 			}
 			else
 			{
-				$referees = sportsmanagementModelResults::getMatchReferees($game->id);
+				$referees = sportsmanagementModelResults::getMatchReferees($game->id, Factory::getApplication()->input->getInt('cfg_which_database', 0));
 			}
 
 			if (!empty($referees))
@@ -341,30 +331,26 @@ class sportsmanagementViewResults extends sportsmanagementView
 				switch ($config['show_referee'])
 				{
 					case 1:
-						?>
-                        <!-- Referee tooltip -->
-                        <span class="hasTip"
-                              title="<?php echo $toolTipTitle; ?> :: <?php echo $toolTipText; ?>">
-					<?php
-					if ($project->teams_as_referees)
-					{
-						echo $ref->teamname;
-					}
-					else
-					{
-						echo $ref->firstname . ' ' . $ref->lastname . ' (' . $ref->position_name . ')';
-					}
 					?>
-					</span>
+						<!-- Referee tooltip -->
+						<span class="hasTip" title="<?php echo $toolTipTitle; ?> :: <?php echo $toolTipText; ?>">
+							<?php
+							if ($project->teams_as_referees)
+							{
+								echo $ref->teamname;
+							}
+							else
+							{
+								echo $ref->firstname . ' ' . $ref->lastname . ' (' . $ref->position_name . ')';
+							}
+							?>
+						</span>
 						<?php
 						break;
 					case 2:
 						?>
-                        <!-- Referee tooltip -->
-                        <span class="hasTip"
-                              title="<?php echo $toolTipTitle; ?> :: <?php echo $toolTipText; ?>"> <img
-                                    src="<?php echo Uri::root(); ?>media/com_sportsmanagement/jl_images/icon-16-Referees.png"
-                                    alt="" title=""/> </span>
+						<!-- Referee tooltip -->
+						<span class="hasTip" title="<?php echo $toolTipTitle; ?> :: <?php echo $toolTipText; ?>"> <img src="<?php echo Uri::root(); ?>media/com_sportsmanagement/jl_images/icon-16-Referees.png" alt="" title="" /> </span>
 
 						<?php
 						break;
@@ -451,7 +437,7 @@ class sportsmanagementViewResults extends sportsmanagementView
 			{
 				$start = 1;
 
-				foreach ($projectevents AS $event)
+				foreach ($projectevents as $event)
 				{
 					if ($start == 1)
 					{
@@ -487,12 +473,12 @@ class sportsmanagementViewResults extends sportsmanagementView
 
 			$cnt = 0;
 
-			foreach ($projectevents AS $event)
+			foreach ($projectevents as $event)
 			{
 				/**
 				 * display only tabs with events
 				 */
-				foreach ($matchevents AS $me)
+				foreach ($matchevents as $me)
 				{
 					$cnt = 0;
 
@@ -539,7 +525,7 @@ class sportsmanagementViewResults extends sportsmanagementView
 				$output .= '<td class="list">';
 				$output .= '<ul>';
 
-				foreach ($matchevents AS $me)
+				foreach ($matchevents as $me)
 				{
 					$output .= self::_formatEventContainerInResults($me, $event, $matchInfo->projectteam1_id, $showEventInfo, $config);
 				}
@@ -553,7 +539,7 @@ class sportsmanagementViewResults extends sportsmanagementView
 				$output .= '<td class="list">';
 				$output .= '<ul>';
 
-				foreach ($matchevents AS $me)
+				foreach ($matchevents as $me)
 				{
 					$output .= self::_formatEventContainerInResults($me, $event, $matchInfo->projectteam2_id, $showEventInfo, $config);
 				}
@@ -610,7 +596,7 @@ class sportsmanagementViewResults extends sportsmanagementView
 				$output .= '<td class="list">';
 				$output .= '<ul class="" id="">';
 
-				foreach ($substitutions AS $subs)
+				foreach ($substitutions as $subs)
 				{
 					$output .= self::_formatSubstitutionContainerInResults($subs, $matchInfo->projectteam1_id, $imgTime, $imgOut, $imgIn, $config);
 				}
@@ -620,7 +606,7 @@ class sportsmanagementViewResults extends sportsmanagementView
 				$output .= '<td class="list">';
 				$output .= '<ul class="" id="">';
 
-				foreach ($substitutions AS $subs)
+				foreach ($substitutions as $subs)
 				{
 					$output .= self::_formatSubstitutionContainerInResults($subs, $matchInfo->projectteam2_id, $imgTime, $imgOut, $imgIn, $config);
 				}
@@ -661,7 +647,7 @@ class sportsmanagementViewResults extends sportsmanagementView
 			$output .= '<td class="list-left">';
 			$output .= '<ul>';
 
-			foreach ((array) $matchevents AS $me)
+			foreach ((array) $matchevents as $me)
 			{
 				if ($me->ptid == $matchInfo->projectteam1_id)
 				{
@@ -678,7 +664,7 @@ class sportsmanagementViewResults extends sportsmanagementView
 			$output .= '<td class="list-right">';
 			$output .= '<ul>';
 
-			foreach ($matchevents AS $me)
+			foreach ($matchevents as $me)
 			{
 				if ($me->ptid == $matchInfo->projectteam2_id)
 				{
@@ -853,7 +839,8 @@ class sportsmanagementViewResults extends sportsmanagementView
 		if ($config['show_link_matchreport'] == 1 || ($config['show_link_matchreport'] == 2 && $fav))
 		{
 			$output = HTMLHelper::_(
-				'link', $reportLink,
+				'link',
+				$reportLink,
 				'<span class="score0">' . self::showMatchState($game, $config) . '</span>',
 				array("title" => Text::_('COM_SPORTSMANAGEMENT_RESULTS_SHOW_MATCHREPORT'))
 			);
@@ -886,7 +873,6 @@ class sportsmanagementViewResults extends sportsmanagementView
 		}
 
 		return $output;
-
 	}
 
 	/**
@@ -1198,7 +1184,6 @@ class sportsmanagementViewResults extends sportsmanagementView
 
 				break;
 		}
-
 	}
 
 	/**
@@ -1216,7 +1201,8 @@ class sportsmanagementViewResults extends sportsmanagementView
 		$imgTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_EDIT_MATRIX_ROUNDS_PART_RESULT');
 		$desc     = HTMLHelper::image(
 			Uri::root() . "media/com_sportsmanagement/jl_images/sort01.gif",
-			$imgTitle, array("border" => 0, "title" => $imgTitle)
+			$imgTitle,
+			array("border" => 0, "title" => $imgTitle)
 		);
 		echo HTMLHelper::link($link, $desc, $params);
 
@@ -1337,13 +1323,13 @@ class sportsmanagementViewResults extends sportsmanagementView
 	function showMatchSummaryAsSqueezeBox(&$game)
 	{
 		/*
-        $output = '<script language="JavaScript">';
-        $output .= 'var options = {size: {x: 300, y: 250}}';
-        $output .= 'SqueezeBox.initialize(options)';
-        $output .= "SqueezeBox.setContent('string','nummer:')";
-        $output .= '</script>';
-        echo $output;
-        */
+		$output = '<script language="JavaScript">';
+		$output .= 'var options = {size: {x: 300, y: 250}}';
+		$output .= 'SqueezeBox.initialize(options)';
+		$output .= "SqueezeBox.setContent('string','nummer:')";
+		$output .= '</script>';
+		echo $output;
+		*/
 		return $game->summary;
 	}
 }
