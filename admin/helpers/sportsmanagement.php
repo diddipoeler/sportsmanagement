@@ -3506,7 +3506,10 @@ try
                 <img src="components/com_sportsmanagement/assets/icons/llambion.jpg" alt="llambion" height="80px">
                 <span>llambion</span><br>
             </div>
-            
+            <div class="jsm-info-team p-1">
+                <img src="components/com_sportsmanagement/assets/icons/Andreas_Haunold.jpg" alt="ortwinn2000" height="80px">
+                <span>ortwin2000</span><br>
+            </div>
             <div class="jsm-info-team p-1">
                 <img src="components/com_sportsmanagement/assets/icons/appu-konrad.jpg" alt="appukonrad" height="80px">
                 <span>appukonrad</span><br>
