@@ -1,5 +1,4 @@
 <?php
-
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
@@ -9,19 +8,22 @@
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 ?>
 <div class="<?php echo $this->divclassrow; ?>" id="default_teams" itemscope itemtype="http://schema.org/SportsTeam">
-	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 		<?php
-		$this->notes = array();
-		$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_TEAMS');
-		echo $this->loadTemplate('jsm_notes');
-
+		if (ComponentHelper::getParams($option)->get('show_jsm_notes_front', 0) == 1)
+		{
+			$this->notes = array();
+			$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_TEAMS');
+			echo $this->loadTemplate('jsm_notes');
+		}
+        
 		$params          = array();
 		$params['width'] = "30";
 
@@ -37,50 +39,50 @@ use Joomla\CMS\Factory;
 				$routeparameter['ptid']               = $team->ptid;
 				$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);
 				?>
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-					<?php
+				<?php
 
-					if ($team->team_shortcut)
+				if ($team->team_shortcut)
+				{
+					// Echo "(" . $team->team_shortcut . ")";
+					if ($this->config['show_teams_trikot_of_club'])
 					{
-						// Echo "(" . $team->team_shortcut . ")";
-						if ($this->config['show_teams_trikot_of_club'])
+						if ($this->config['show_teams_shortcut_of_club'])
 						{
-							if ($this->config['show_teams_shortcut_of_club'])
-							{
-								echo HTMLHelper::link($link, HTMLHelper::image($team->trikot_home, $team->team_name, $params) . '<span itemprop="name">' . $team->team_name . " (" . $team->team_shortcut . ")" . '</span>');
-							}
-							else
-							{
-								echo HTMLHelper::link($link, HTMLHelper::image($team->trikot_home, $team->team_name, $params) . '<span itemprop="name">' . $team->team_name . '</span>');
-							}
+							echo HTMLHelper::link($link, HTMLHelper::image($team->trikot_home, $team->team_name, $params) . '<span itemprop="name">'.$team->team_name . " (" . $team->team_shortcut . ")".'</span>' );
 						}
 						else
 						{
-							if ($this->config['show_teams_shortcut_of_club'])
-							{
-								echo HTMLHelper::link($link, '<span itemprop="name">' . $team->team_name . " (" . $team->team_shortcut . ")" . '</span>');
-							}
-							else
-							{
-								echo HTMLHelper::link($link, '<span itemprop="name">' . $team->team_name . '</span>');
-							}
+							echo HTMLHelper::link($link, HTMLHelper::image($team->trikot_home, $team->team_name, $params) . '<span itemprop="name">'.$team->team_name.'</span>' );
 						}
 					}
 					else
 					{
-						if ($this->config['show_teams_trikot_of_club'])
+						if ($this->config['show_teams_shortcut_of_club'])
 						{
-							echo HTMLHelper::link($link, HTMLHelper::image($team->trikot_home, $team->team_name, $params) . $team->team_name);
+							echo HTMLHelper::link($link, '<span itemprop="name">'.$team->team_name . " (" . $team->team_shortcut . ")".'</span>' );
 						}
 						else
 						{
-							echo HTMLHelper::link($link, $team->team_name);
+							echo HTMLHelper::link($link, '<span itemprop="name">'.$team->team_name.'</span>' );
 						}
 					}
+				}
+				else
+				{
+					if ($this->config['show_teams_trikot_of_club'])
+					{
+						echo HTMLHelper::link($link, HTMLHelper::image($team->trikot_home, $team->team_name, $params) . $team->team_name);
+					}
+					else
+					{
+						echo HTMLHelper::link($link, $team->team_name);
+					}
+				}
 
-					echo "&nbsp;";
-					?>
+				echo "&nbsp;";
+				?>
 
 				<?php
 				if ($team->team_description && $this->config['show_teams_description_of_club'])
@@ -112,11 +114,13 @@ use Joomla\CMS\Factory;
 						'image'
 					);
 				}
-				?>
-				</div>
-				<?PHP
 			}
+			?>
+            </div>
+			<?PHP
 		}
 		?>
-	</div>
+
+
+    </div>
 </div>
