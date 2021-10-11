@@ -1334,11 +1334,11 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 				$form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
 				break;
 			case 'project':
-				if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
-				{
-					$form->setFieldAttribute('use_legs', 'type', 'radio');
-					$form->setFieldAttribute('use_legs', 'class', 'switcher');
-				}
+				// if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+				// {
+				// 	$form->setFieldAttribute('use_legs', 'type', 'radio');
+				// 	$form->setFieldAttribute('use_legs', 'class', 'switcher');
+				// }
 
 				$sports_type_id = $form->getValue('sports_type_id');
 				$this->jsmquery->clear();
