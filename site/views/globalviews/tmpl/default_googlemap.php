@@ -27,6 +27,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Registry\Registry;
+use Joomla\CMS\Component\ComponentHelper;
 
 $this->view    = Factory::getApplication()->input->getCmd('view');
 $this->showmap = false;
@@ -77,18 +78,23 @@ $this->document->addScript('https://unpkg.com/leaflet-routing-machine@'.$this->l
 			break;
 	}
 
+	if (ComponentHelper::getParams($option)->get('show_jsm_notes_front', 0) == 1)
+	{
+		?>
+		<!--Note box blau -->
+		<div class="color-box">
+							<div class="shadow">
+								<div class="info-tab note-icon" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?>"><i></i></div>
+								<div class="note-box">
+									<p><strong><?php echo Text::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?></strong>
+									</p>
+								</div>
+							</div>
+		</div>
+		<!--Note box blau -->
+	<?php
+	}
 	?>
-<!--Note box blau -->
-<div class="color-box">
-					<div class="shadow">
-						<div class="info-tab note-icon" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?>"><i></i></div>
-						<div class="note-box">
-							<p><strong><?php echo Text::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?></strong>
-                            </p>
-						</div>
-					</div>
-</div>
-<!--Note box blau -->    
     <div id="mapjsm"
          style="height: <?php echo $this->mapconfig['map_height']; ?>px; margin-top: 50px; position: relative;" itemscope itemtype="http://schema.org/Place">
     </div>

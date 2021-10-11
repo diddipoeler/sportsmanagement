@@ -13,14 +13,18 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 ?>
 <div class="<?php echo $this->divclassrow; ?>" id="default_teams" itemscope itemtype="http://schema.org/SportsTeam">
 	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 		<?php
-		$this->notes = array();
-		$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_TEAMS');
-		echo $this->loadTemplate('jsm_notes');
+		if (ComponentHelper::getParams($option)->get('show_jsm_notes_front', 0) == 1)
+		{
+			$this->notes = array();
+			$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_TEAMS');
+			echo $this->loadTemplate('jsm_notes');
+		}
 
 		$params          = array();
 		$params['width'] = "30";
