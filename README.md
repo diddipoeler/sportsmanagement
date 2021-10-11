@@ -11,7 +11,7 @@ Auch im Extension zu finden: https://extensions.joomla.org/extension/sports-mana
 Das Team
 ================
 * Entwickler: diddipoeler
-* Entwicklungsunterstützung: jst71, appukonrad, tdittmann, llambion, ortwin2000 
+* Entwicklungsunterstützung: jst71, appukonrad, tdittmann, llambion, ortwin20000 
 * Language manager & Wiki: stony
 * Übersetzer: sk-plehanovec, teddy
 * Tester: svdoldie
@@ -41,6 +41,7 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   11-10-2021: **3.8.85** Anpassungen Joomla 4
 *   29-07-2021: **3.8.84** Anpassungen Joomla 4
 *   25-04-2021: **3.8.83** Anpassungen Joomla 4
 *   30-03-2021: **3.8.82** Anpassungen Joomla 4
