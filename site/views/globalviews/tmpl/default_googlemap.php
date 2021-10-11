@@ -1,5 +1,4 @@
 <?php
-
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version    1.0.05
@@ -22,14 +21,12 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Registry\Registry;
-use Joomla\CMS\Component\ComponentHelper;
 
 $this->view    = Factory::getApplication()->input->getCmd('view');
 $this->showmap = false;
@@ -41,17 +38,21 @@ if ($this->config['use_which_map'])
 {
 ?>
 
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@<?php echo $this->leaflet_version; ?>/dist/leaflet.css" integrity="<?php echo $this->leaflet_css_integrity; ?>" crossorigin="" />
-	<?php
-	$this->document->addStyleSheet('https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@' . $this->leaflet_locatecontrol . '/dist/L.Control.Locate.min.css');
-	$this->document->addStyleSheet('https://unpkg.com/leaflet-routing-machine@' . $this->leaflet_routing_machine . '/dist/leaflet-routing-machine.css');
-	?>
-	<script src="https://unpkg.com/leaflet@<?php echo $this->leaflet_version; ?>/dist/leaflet.js" integrity="<?php echo $this->leaflet_js_integrity; ?>" crossorigin=""></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@<?php echo $this->leaflet_version;?>/dist/leaflet.css"
+  integrity="<?php echo $this->leaflet_css_integrity;?>"
+  crossorigin=""/>
+<?php  
+$this->document->addStyleSheet('https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@'.$this->leaflet_locatecontrol.'/dist/L.Control.Locate.min.css');  
+$this->document->addStyleSheet('https://unpkg.com/leaflet-routing-machine@'.$this->leaflet_routing_machine.'/dist/leaflet-routing-machine.css');   
+?>
+<script src="https://unpkg.com/leaflet@<?php echo $this->leaflet_version;?>/dist/leaflet.js"
+  integrity="<?php echo $this->leaflet_js_integrity;?>"
+  crossorigin=""></script>
 
-	<?php
-
-	$this->document->addScript('https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@' . $this->leaflet_locatecontrol . '/dist/L.Control.Locate.min.js');
-	$this->document->addScript('https://unpkg.com/leaflet-routing-machine@' . $this->leaflet_routing_machine . '/dist/leaflet-routing-machine.js');
+<?php	
+ 
+$this->document->addScript('https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@'.$this->leaflet_locatecontrol.'/dist/L.Control.Locate.min.js');
+$this->document->addScript('https://unpkg.com/leaflet-routing-machine@'.$this->leaflet_routing_machine.'/dist/leaflet-routing-machine.js');
 
 
 	/**
@@ -76,25 +77,21 @@ if ($this->config['use_which_map'])
 			break;
 	}
 
-	if (ComponentHelper::getParams($option)->get('show_jsm_notes_front', 0) == 1)
-	{
 	?>
-		<!--Note box blau -->
-		<div class="color-box">
-			<div class="shadow">
-				<div class="info-tab note-icon" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?>"><i></i></div>
-				<div class="note-box">
-					<p><strong><?php echo Text::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?></strong>
-					</p>
-				</div>
-			</div>
-		</div>
-		<!--Note box blau -->
-	<?php
-	}
-	?>
-	<div id="mapjsm" style="height: <?php echo $this->mapconfig['map_height']; ?>px; margin-top: 50px; position: relative;" itemscope itemtype="http://schema.org/Place">
-	</div>
+<!--Note box blau -->
+<div class="color-box">
+					<div class="shadow">
+						<div class="info-tab note-icon" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?>"><i></i></div>
+						<div class="note-box">
+							<p><strong><?php echo Text::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?></strong>
+                            </p>
+						</div>
+					</div>
+</div>
+<!--Note box blau -->    
+    <div id="mapjsm"
+         style="height: <?php echo $this->mapconfig['map_height']; ?>px; margin-top: 50px; position: relative;" itemscope itemtype="http://schema.org/Place">
+    </div>
 	<?php
 	switch ($this->view)
 	{
@@ -102,68 +99,69 @@ if ($this->config['use_which_map'])
 			if ($this->playground->latitude && $this->playground->longitude)
 			{
 				$this->showmap = true;
-	?>
-				<script>
-					var planes = [
-						["<?php echo $this->playground->name; ?>", <?php echo $this->playground->latitude; ?>, <?php echo $this->playground->longitude; ?>]
-					];
+				?>
+                <script>
 
-					var map = L.map('mapjsm').setView([<?php echo $this->playground->latitude; ?>, <?php echo $this->playground->longitude; ?>], 16);
-					mapLink =
-						'<a href="http://openstreetmap.org">OpenStreetMap</a>';
-					L.tileLayer(
-						'<?php echo $map_type; ?>', {
-							attribution: '&copy; ' + mapLink + ' Contributors',
-							maxZoom: <?php echo $this->mapconfig['map_zoom']; ?>,
-							subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-						}).addTo(map);
-					var myIcon = L.icon({
-						iconUrl: '<?php echo $this->mapconfig['map_icon']; ?>'
-					});
-					for (var i = 0; i < planes.length; i++) {
-						marker = new L.marker([planes[i][1], planes[i][2]], {
-								icon: myIcon
-							})
-							.bindPopup(planes[i][0])
-							.addTo(map);
-					}
-					//L.Control.geocoder().addTo(map);
-					L.control.locate().addTo(map);
+                    var planes = [
+                        ["<?php echo $this->playground->name; ?>",<?php echo $this->playground->latitude; ?>,<?php echo $this->playground->longitude; ?>]
+                    ];
 
-					jQuery.getJSON('https://ipinfo.io/geo', function(response) {
-						var loc = response.loc.split(',');
-						console.log(response.loc);
-						marker = new L.marker([loc[0], loc[1]]).addTo(map);
+                    var map = L.map('mapjsm').setView([<?php echo $this->playground->latitude; ?>,<?php echo $this->playground->longitude; ?>], 16);
+                    mapLink =
+                        '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+                    L.tileLayer(
+                        '<?php echo $map_type; ?>', {
+                            attribution: '&copy; ' + mapLink + ' Contributors',
+                            maxZoom: <?php echo $this->mapconfig['map_zoom']; ?>,
+                            subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+                        }).addTo(map);
+                    var myIcon = L.icon({
+                        iconUrl: '<?php echo $this->mapconfig['map_icon']; ?>'
+                    });
+                    for (var i = 0; i < planes.length; i++) {
+                        marker = new L.marker([planes[i][1], planes[i][2]], {icon: myIcon})
+                            .bindPopup(planes[i][0])
+                            .addTo(map);
+                    }
+                    //L.Control.geocoder().addTo(map);
+                    L.control.locate().addTo(map);
 
-						L.Routing.control({
-							waypoints: [
-								L.latLng(loc[0], loc[1]),
-								L.latLng(<?php echo $this->playground->latitude; ?>, <?php echo $this->playground->longitude; ?>)
-							]
-						}).addTo(map);
+                    jQuery.getJSON('https://ipinfo.io/geo', function (response) {
+                        var loc = response.loc.split(',');
+                        console.log(response.loc);
+                        marker = new L.marker([loc[0], loc[1]]).addTo(map);
+
+                        L.Routing.control({
+                            waypoints: [
+                                L.latLng(loc[0], loc[1]),
+                                L.latLng(<?php echo $this->playground->latitude; ?>,<?php echo $this->playground->longitude; ?>)
+                            ]
+                        }).addTo(map);
 
 
-						console.log(loc);
-						var coords = {
-							latitude: loc[0],
-							longitude: loc[1]
-						};
-						console.log(coords);
-					});
+                        console.log(loc);
+                        var coords = {
+                            latitude: loc[0],
+                            longitude: loc[1]
+                        };
+                        console.log(coords);
+                    });
 
-					jQuery.get("https://ipinfo.io", function(response) {
-						console.log(response.ip, response.country);
-					}, "jsonp");
-				</script>
-			<?php
+                    jQuery.get("https://ipinfo.io", function (response) {
+                        console.log(response.ip, response.country);
+                    }, "jsonp");
+
+
+                </script>
+				<?php
 			}
 			else
 			{
-			?>
-				<script>
-					jQuery("#mapjsm").width(50).height(50);
-				</script>
-			<?php
+				?>
+                <script>
+                    jQuery("#mapjsm").width(50).height(50);
+                </script>
+				<?php
 			}
 			break;
 
@@ -171,73 +169,74 @@ if ($this->config['use_which_map'])
 			if ($this->club->latitude && $this->club->longitude)
 			{
 				$this->showmap = true;
-			?>
-				<span style="visibility: hidden" itemprop="name"><?php echo $this->club->name; ?></span>
-				<div itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
-					<meta itemprop="latitude" content="<?php echo $this->club->latitude; ?>" />
-					<meta itemprop="longitude" content="<?php echo $this->club->longitude; ?>" />
-				</div>
-				<script>
-					var planes = [
-						["<?php echo $this->club->name; ?>", <?php echo $this->club->latitude; ?>, <?php echo $this->club->longitude; ?>]
-					];
+				?>
+<span style="visibility: hidden" itemprop="name"><?php echo $this->club->name; ?></span>
+<div itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
+    <meta itemprop="latitude" content="<?php echo $this->club->latitude; ?>" />
+    <meta itemprop="longitude" content="<?php echo $this->club->longitude; ?>" />
+  </div>
+                <script>
 
-					var map = L.map('mapjsm').setView([<?php echo $this->club->latitude; ?>, <?php echo $this->club->longitude; ?>], 16);
-					mapLink =
-						'<a href="http://openstreetmap.org">OpenStreetMap</a>';
-					L.tileLayer(
-						'<?php echo $map_type; ?>', {
-							attribution: '&copy; ' + mapLink + ' Contributors',
-							maxZoom: <?php echo $this->mapconfig['map_zoom']; ?>,
-							subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-						}).addTo(map);
-					var myIcon = L.icon({
-						iconUrl: '<?php echo $this->mapconfig['map_icon']; ?>'
-					});
-					for (var i = 0; i < planes.length; i++) {
-						marker = new L.marker([planes[i][1], planes[i][2]], {
-								icon: myIcon
-							})
-							.bindPopup(planes[i][0])
-							.addTo(map);
-					}
-					//L.Control.geocoder().addTo(map);
-					L.control.locate().addTo(map);
+                    var planes = [
+                        ["<?php echo $this->club->name; ?>",<?php echo $this->club->latitude; ?>,<?php echo $this->club->longitude; ?>]
+                    ];
 
-					jQuery.getJSON('https://ipinfo.io/geo', function(response) {
-						var loc = response.loc.split(',');
-						console.log(response.loc);
-						marker = new L.marker([loc[0], loc[1]]).addTo(map);
+                    var map = L.map('mapjsm').setView([<?php echo $this->club->latitude; ?>,<?php echo $this->club->longitude; ?>], 16);
+                    mapLink =
+                        '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+                    L.tileLayer(
+                        '<?php echo $map_type; ?>', {
+                            attribution: '&copy; ' + mapLink + ' Contributors',
+                            maxZoom: <?php echo $this->mapconfig['map_zoom']; ?>,
+                            subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+                        }).addTo(map);
+                    var myIcon = L.icon({
+                        iconUrl: '<?php echo $this->mapconfig['map_icon']; ?>'
+                    });
+                    for (var i = 0; i < planes.length; i++) {
+                        marker = new L.marker([planes[i][1], planes[i][2]], {icon: myIcon})
+                            .bindPopup(planes[i][0])
+                            .addTo(map);
+                    }
+                    //L.Control.geocoder().addTo(map);
+                    L.control.locate().addTo(map);
 
-						L.Routing.control({
-							waypoints: [
-								L.latLng(loc[0], loc[1]),
-								L.latLng(<?php echo $this->club->latitude; ?>, <?php echo $this->club->longitude; ?>)
-							]
-						}).addTo(map);
+                    jQuery.getJSON('https://ipinfo.io/geo', function (response) {
+                        var loc = response.loc.split(',');
+                        console.log(response.loc);
+                        marker = new L.marker([loc[0], loc[1]]).addTo(map);
+
+                        L.Routing.control({
+                            waypoints: [
+                                L.latLng(loc[0], loc[1]),
+                                L.latLng(<?php echo $this->club->latitude; ?>,<?php echo $this->club->longitude; ?>)
+                            ]
+                        }).addTo(map);
 
 
-						console.log(loc);
-						var coords = {
-							latitude: loc[0],
-							longitude: loc[1]
-						};
-						console.log(coords);
-					});
+                        console.log(loc);
+                        var coords = {
+                            latitude: loc[0],
+                            longitude: loc[1]
+                        };
+                        console.log(coords);
+                    });
 
-					jQuery.get("https://ipinfo.io", function(response) {
-						console.log(response.ip, response.country);
-					}, "jsonp");
-				</script>
-			<?php
+                    jQuery.get("https://ipinfo.io", function (response) {
+                        console.log(response.ip, response.country);
+                    }, "jsonp");
+
+
+                </script>
+				<?php
 			}
 			else
 			{
-			?>
-				<script>
-					jQuery("#mapjsm").width(50).height(50);
-				</script>
-			<?php
+				?>
+                <script>
+                    jQuery("#mapjsm").width(50).height(50);
+                </script>
+				<?php
 			}
 			break;
 		case 'ranking':
@@ -265,69 +264,68 @@ if ($this->config['use_which_map'])
 				}
 			}
 
-			if ($map_markes)
+			if ( $map_markes )
 			{
-				$comma_separated = implode(",", $map_markes);
+			$comma_separated = implode(",", $map_markes);
 			}
-			if ($map_bounds)
+			if ( $map_bounds )
 			{
-				$comma_bounds    = implode(",", $map_bounds);
+			$comma_bounds    = implode(",", $map_bounds);
 			}
 			?>
-			<script>
-				var planes = [
+            <script>
+
+                var planes = [
 					<?php echo $comma_separated; ?>
-				];
+                ];
 
-				var map = L.map('mapjsm').setView([<?php echo $setlatitude; ?>, <?php echo $setlongitude; ?>], 8);
-				mapLink =
-					'<a href="http://openstreetmap.org">OpenStreetMap</a>';
-				L.tileLayer(
-					'<?php echo $map_type; ?>', {
-						attribution: '&copy; ' + mapLink + ' Contributors',
-						maxZoom: <?php echo $this->mapconfig['map_zoom']; ?>,
-						subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-					}).addTo(map);
+                var map = L.map('mapjsm').setView([<?php echo $setlatitude; ?>,<?php echo $setlongitude; ?>], 8);
+                mapLink =
+                    '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+                L.tileLayer(
+                    '<?php echo $map_type; ?>', {
+                        attribution: '&copy; ' + mapLink + ' Contributors',
+                        maxZoom: <?php echo $this->mapconfig['map_zoom']; ?>,
+                        subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+                    }).addTo(map);
 
-				for (var i = 0; i < planes.length; i++) {
+                for (var i = 0; i < planes.length; i++) {
 					<?php
 					if ($this->mapconfig['map_ranking_club_icon'])
 					{
 					?>
-						console.log("wappen : " + planes[i][4]);
-						var myIcon = L.icon({
-							iconUrl: planes[i][4],
-							iconSize: [<?php echo $this->mapconfig['map_ranking_club_icon_width']; ?>, <?php echo $this->mapconfig['map_ranking_club_icon_width']; ?>]
-						});
+                    console.log("wappen : " + planes[i][4]);
+                    var myIcon = L.icon({
+                        iconUrl: planes[i][4],
+                        iconSize: [<?php echo $this->mapconfig['map_ranking_club_icon_width']; ?>, <?php echo $this->mapconfig['map_ranking_club_icon_width']; ?>]
+                    });
 					<?php
 					}
 					else
 					{
 					?>
-						var myIcon = L.icon({
-							iconUrl: '<?php echo $this->mapconfig['map_icon']; ?>'
-						});
+                    var myIcon = L.icon({
+                        iconUrl: '<?php echo $this->mapconfig['map_icon']; ?>'
+                    });
 					<?php
 					}
 					?>
 
-					marker = new L.marker([planes[i][1], planes[i][2]], {
-							icon: myIcon
-						})
-						.bindPopup(planes[i][0])
-						.addTo(map);
-				}
-				map.fitBounds([<?php echo $comma_bounds; ?>]);
-				//L.Control.geocoder().addTo(map);
-			</script>
-	<?php
+                    marker = new L.marker([planes[i][1], planes[i][2]], {icon: myIcon})
+                        .bindPopup(planes[i][0])
+                        .addTo(map);
+                }
+                map.fitBounds([<?php echo $comma_bounds; ?>]);
+                //L.Control.geocoder().addTo(map);
+            </script>
+			<?php
 
 			break;
 	}
 	?>
 
 
-<?php
+	<?php
 }
 else
 {
@@ -348,13 +346,13 @@ else
 			break;
 	}
 
-?>
+	?>
 
-	<div class="<?php echo $this->divclassrow; ?>" id="jsmgooglemap">
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-			<h4>
+    <div class="<?php echo $this->divclassrow; ?>" id="jsmgooglemap">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <h4>
 				<?php echo Text::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?>
-			</h4>
+            </h4>
 
 			<?php
 			/**
@@ -375,203 +373,193 @@ else
 				$this->document->addScript('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places');
 				$this->document->addScript(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/js/gmap3.min.js');
 
-				switch ($this->view)
-				{
-					case 'clubinfo':
-					case 'playground':
-						if ($this->showmap)
-						{
-			?>
-							<div id="mapjsm" style="width:50%;height:600px;float: left;"></div>
-							<div id="pano" style="width:50%;height:600px;float: left;"></div>
-						<?php
-						}
-						break;
-					default:
-						?>
-						<div id="map-canvas" style="width:100%;height:800px;"></div>
-				<?php
-						break;
-				}
-
-
+			switch ($this->view)
+			{
+				case 'clubinfo':
+			case 'playground':
+			if ($this->showmap)
+			{
 				?>
+                <div id="mapjsm" style="width:50%;height:600px;float: left;"></div>
+                <div id="pano" style="width:50%;height:600px;float: left;"></div>
+				<?php
+			}
+				break;
+			default:
+				?>
+                <div id="map-canvas" style="width:100%;height:800px;"></div>
+			<?php
+			break;
+			}
 
 
-				<script type="text/javascript">
+			?>
+
+
+                <script type="text/javascript">
 					<?PHP
 					switch ($this->view)
 					{
-						case 'clubinfo':
-						case 'playground':
+					case 'clubinfo':
+					case 'playground':
 					?>
 
-							//var fenway = new google.maps.LatLng(<?PHP echo $latitude; ?>,<?PHP echo $longitude; ?>);
+                    //var fenway = new google.maps.LatLng(<?PHP echo $latitude; ?>,<?PHP echo $longitude; ?>);
 
 
-							/*
+                    /*
 					https://developers.google.com/maps/documentation/javascript/3.exp/reference#StreetViewPanoramaOptions
 					https://developers.google.com/maps/documentation/javascript/3.exp/reference#StreetViewPov
 					https://developers.google.com/maps/documentation/javascript/examples/streetview-embed?hl=de
 					*/
-							jQuery(document).ready(function() {
+                    jQuery(document).ready(function () {
 
-								// Create a StreetViewService to be able to check
-								// if a given LatLng has a corresponding panorama.
-								var streetviewService = new google.maps.StreetViewService();
-								streetviewService.getPanorama({
-									location: {
-										lat: <?PHP echo $latitude; ?>,
-										lng: <?PHP echo $longitude; ?>
-									},
-									radius: 50
-								}, processSVData);
+                        // Create a StreetViewService to be able to check
+                        // if a given LatLng has a corresponding panorama.
+                        var streetviewService = new google.maps.StreetViewService();
+                        streetviewService.getPanorama({
+                            location: {
+                                lat:<?PHP echo $latitude; ?>,
+                                lng:<?PHP echo $longitude; ?>}, radius: 50
+                        }, processSVData);
 
 
-								var fenway2 = {
-									lat: <?PHP echo $latitude; ?>,
-									lng: <?PHP echo $longitude; ?>
-								};
-								var map = new google.maps.Map(document.getElementById('mapjsm'), {
-									center: fenway2,
-									mapTypeControl: true,
-									mapTypeId: 'satellite',
-									zoom: 14
-								});
+                        var fenway2 = {lat: <?PHP echo $latitude; ?>, lng: <?PHP echo $longitude; ?>};
+                        var map = new google.maps.Map(document.getElementById('mapjsm'), {
+                            center: fenway2,
+                            mapTypeControl: true,
+                            mapTypeId: 'satellite',
+                            zoom: 14
+                        });
 
-								function processSVData(data, status) {
-									if (status === google.maps.StreetViewStatus.OK) {
-										//alert('ok');
-										var panorama = new google.maps.StreetViewPanorama(
-											document.getElementById('pano'), {
-												position: fenway2,
-												pov: {
-													heading: 34,
-													pitch: 10
-												}
-											});
-										map.setStreetView(panorama);
+                        function processSVData(data, status) {
+                            if (status === google.maps.StreetViewStatus.OK) {
+                                //alert('ok');
+                                var panorama = new google.maps.StreetViewPanorama(
+                                    document.getElementById('pano'), {
+                                        position: fenway2,
+                                        pov: {
+                                            heading: 34,
+                                            pitch: 10
+                                        }
+                                    });
+                                map.setStreetView(panorama);
 
-									} else {
-										//alert('Street View data not found for this location.');
-										//jQuery('#pano').hide();
-										jQuery("#pano").remove();
-										jQuery("#mapjsm").css("width", "100%");
-										//jQuery("#pano").css("width", "");
-										jQuery("#mapjsm").css("float", "");
-										//jQuery("#pano").css("height", "");
-									}
-								}
+                            } else {
+                                //alert('Street View data not found for this location.');
+                                //jQuery('#pano').hide();
+                                jQuery("#pano").remove();
+                                jQuery("#mapjsm").css("width", "100%");
+                                //jQuery("#pano").css("width", "");
+                                jQuery("#mapjsm").css("float", "");
+                                //jQuery("#pano").css("height", "");
+                            }
+                        }
 
-							});
+                    });
 
 
-						<?PHP
-							break;
-						default:
-							$map_markes = array();
+					<?PHP
+					break;
+					default:
+					$map_markes = array();
 
-							$zaehler = 1;
-							$find[] = "'";
-							$replace[] = " ";
+					$zaehler = 1;
+					$find[] = "'";
+					$replace[] = " ";
 
-							foreach ($this->allteams as $row)
-							{
-								$latitude  = $row->latitude;
-								$longitude = $row->longitude;
+					foreach ($this->allteams as $row)
+					{
+						$latitude  = $row->latitude;
+						$longitude = $row->longitude;
 
-								if (!empty($latitude) && $latitude != '0.00000000')
-								{
-									$row->team_name = str_replace($find, $replace, $row->team_name);
+						if (!empty($latitude) && $latitude != '0.00000000')
+						{
+							$row->team_name = str_replace($find, $replace, $row->team_name);
 
-									// Logo_big
-									$map_markes[] = "[" . $zaehler . "," . $latitude . "," . $longitude . ",'" . $row->team_name . "','" . $row->logo_big . "']";
-									$zaehler++;
-								}
-							}
+							// Logo_big
+							$map_markes[] = "[" . $zaehler . "," . $latitude . "," . $longitude . ",'" . $row->team_name . "','" . $row->logo_big . "']";
+							$zaehler++;
+						}
+					}
 
 
-							$comma_separated = implode(",", $map_markes);
+					$comma_separated = implode(",", $map_markes);
 
 
 
-						?>
+					?>
 
-							var locations = [<?PHP echo $comma_separated; ?>];
+                    var locations = [<?PHP echo $comma_separated;?>];
 
-							var map;
-							var str = '[';
-							for (i = 0; i < locations.length; i++) {
-								str += '{ "lat" :"' + locations[i][1] + '","lng" :"' + locations[i][2] + '","data" :"<div class=Your_Class><h4><a href=Your_Link_To_Marker>' + locations[i][3] +
-									'</a></h4><img src=/' + locations[i][4] + ' width=50></div>"},';
-							}
-							str = str.substring(0, str.length - 1);
-							str += ']';
-							str = JSON.parse(str);
-							jQuery(document).ready(function() {
-								jQuery('#map-canvas').gmap3({
-									marker: {
-										values: str,
-										options: {
-											icon: 'http://maps.google.com/mapfiles/kml/pal2/icon49.png',
-											//icon: new google.maps.MarkerImage("marker.png"),
-										},
-										events: {
-											click: function(marker, event, context) {
-												map = jQuery('#map-canvas').gmap3("get"),
-													infowindow = jQuery('#map-canvas').gmap3({
-														get: {
-															name: "infowindow"
-														}
-													});
-												if (infowindow) {
-													infowindow.open(map, marker);
-													infowindow.setContent(context.data);
-												} else {
-													jQuery('#map-canvas').gmap3({
-														infowindow: {
-															anchor: marker,
-															options: {
-																content: context.data
-															}
-														}
-													});
-												}
-											},
-										}
-									},
-									map: {
-										options: {
-											//zoom: 14,
-											//mapTypeId: google.maps.MapTypeId.ROADMAP,
-											draggable: true,
-											mapTypeId: google.maps.MapTypeId.HYBRID,
-											scrollwheel: true, //Make It false To Stop Map Zooming By Scroll
-											streetViewControl: true
-										},
-									},
-									autofit: {}
-								});
-							});
+                    var map;
+                    var str = '[';
+                    for (i = 0; i < locations.length; i++) {
+                        str += '{ "lat" :"' + locations[i][1] + '","lng" :"' + locations[i][2] + '","data" :"<div class=Your_Class><h4><a href=Your_Link_To_Marker>' + locations[i][3] +
+                            '</a></h4><img src=/' + locations[i][4] + ' width=50></div>"},';
+                    }
+                    str = str.substring(0, str.length - 1);
+                    str += ']';
+                    str = JSON.parse(str);
+                    jQuery(document).ready(function () {
+                        jQuery('#map-canvas').gmap3({
+                            marker: {
+                                values: str,
+                                options: {
+                                    icon: 'http://maps.google.com/mapfiles/kml/pal2/icon49.png',
+                                    //icon: new google.maps.MarkerImage("marker.png"),
+                                },
+                                events: {
+                                    click: function (marker, event, context) {
+                                        map = jQuery('#map-canvas').gmap3("get"),
+                                            infowindow = jQuery('#map-canvas').gmap3({get: {name: "infowindow"}});
+                                        if (infowindow) {
+                                            infowindow.open(map, marker);
+                                            infowindow.setContent(context.data);
+                                        } else {
+                                            jQuery('#map-canvas').gmap3({
+                                                infowindow: {
+                                                    anchor: marker,
+                                                    options: {content: context.data}
+                                                }
+                                            });
+                                        }
+                                    },
+                                }
+                            },
+                            map: {
+                                options: {
+                                    //zoom: 14,
+                                    //mapTypeId: google.maps.MapTypeId.ROADMAP,
+                                    draggable: true,
+                                    mapTypeId: google.maps.MapTypeId.HYBRID,
+                                    scrollwheel: true,//Make It false To Stop Map Zooming By Scroll
+                                    streetViewControl: true
+                                },
+                            },
+                            autofit: {}
+                        });
+                    });
 
 
 
 
 					<?PHP
 
-							break;
+					break;
 					}
 					?>
-				</script>
-				<style>
-					.gmap3 {
-						width: 100%;
-						height: 570px;
-					}
-				</style>
+
+                </script>
+                <style>
+                    .gmap3 {
+                        width: 100%;
+                        height: 570px;
+                    }
+                </style>
 
 
-			<?PHP
+				<?PHP
 			}
 			else
 			{
@@ -582,7 +570,7 @@ else
 			}
 
 			?>
-		</div>
-	</div>
-<?php
+        </div>
+    </div>
+	<?php
 }
