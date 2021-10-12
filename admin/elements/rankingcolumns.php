@@ -83,6 +83,8 @@ class JFormFieldrankingcolumns extends FormField
 			$mitems[] = HTMLHelper::_('select.option', 'PPG', Text::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_PPG'));
 			$mitems[] = HTMLHelper::_('select.option', 'PPP', Text::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_PPP'));
 			$mitems[] = HTMLHelper::_('select.option', 'LASTGAMES', Text::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_LASTGAMES'));
+			$mitems[] = HTMLHelper::_('select.option', 'BALLS', Text::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_BALLS'));
+			$mitems[] = HTMLHelper::_('select.option', 'BALLS_DIFF', Text::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_BALLS_DIFF'));
 		}
 		else
 		{

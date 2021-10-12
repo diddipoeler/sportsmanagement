@@ -408,34 +408,35 @@ size="29" />
 			
 		</field>
     
-<field name="cfg_sport_types" 
-type="list"
-multiple="true"  
-default=""
-size="10"
-label="COM_SPORTSMANAGEMENT_SETTINGS_SPORT_TYPES" 
-description="COM_SPORTSMANAGEMENT_SETTINGS_SPORT_TYPES_DESC">
-<option value="soccer">COM_SPORTSMANAGEMENT_ST_SOCCER</option>
-<option value="tablesoccer">COM_SPORTSMANAGEMENT_ST_TABLESOCCER</option>
-<option value="hockey">COM_SPORTSMANAGEMENT_ST_HOCKEY</option>
-<option value="floorball">COM_SPORTSMANAGEMENT_ST_FLOORBALL</option>
-<option value="skaterhockey">COM_SPORTSMANAGEMENT_ST_SKATER_HOCKEY</option>
-<option value="american_football">COM_SPORTSMANAGEMENT_ST_AMERICAN_FOOTBALL</option>
-<option value="icehockey">COM_SPORTSMANAGEMENT_ST_ICEHOCKEY</option>
-<option value="volleyball">COM_SPORTSMANAGEMENT_ST_VOLLEYBALL</option>
-<option value="korfball">COM_SPORTSMANAGEMENT_ST_KORFBALL</option>
-<option value="handball">COM_SPORTSMANAGEMENT_ST_HANDBALL</option>
-<option value="tennis">COM_SPORTSMANAGEMENT_ST_TENNIS</option>
-<option value="tabletennis">COM_SPORTSMANAGEMENT_ST_TABLETENNIS</option>
-<option value="basketball">COM_SPORTSMANAGEMENT_ST_BASKETBALL</option>
-<option value="australien_rules_football">COM_SPORTSMANAGEMENT_ST_AUSTRALIEN_RULES_FOOTBALL</option>
-<option value="dart">COM_SPORTSMANAGEMENT_ST_DART</option>
-<option value="waterpolo">COM_SPORTSMANAGEMENT_ST_WATERPOLO</option>	
-
-<option value="small_bore_rifle_association">COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION</option>
-</field>
-		
+		<field name="cfg_sport_types" 
+		type="list"
+		multiple="true"  
+		default=""
+		size="10"
+		label="COM_SPORTSMANAGEMENT_SETTINGS_SPORT_TYPES" 
+		description="COM_SPORTSMANAGEMENT_SETTINGS_SPORT_TYPES_DESC">
+		<option value="soccer">COM_SPORTSMANAGEMENT_ST_SOCCER</option>
+		<option value="tablesoccer">COM_SPORTSMANAGEMENT_ST_TABLESOCCER</option>
+		<option value="hockey">COM_SPORTSMANAGEMENT_ST_HOCKEY</option>
+		<option value="floorball">COM_SPORTSMANAGEMENT_ST_FLOORBALL</option>
+		<option value="skaterhockey">COM_SPORTSMANAGEMENT_ST_SKATER_HOCKEY</option>
+		<option value="american_football">COM_SPORTSMANAGEMENT_ST_AMERICAN_FOOTBALL</option>
+		<option value="icehockey">COM_SPORTSMANAGEMENT_ST_ICEHOCKEY</option>
+		<option value="volleyball">COM_SPORTSMANAGEMENT_ST_VOLLEYBALL</option>
+		<option value="korfball">COM_SPORTSMANAGEMENT_ST_KORFBALL</option>
+		<option value="handball">COM_SPORTSMANAGEMENT_ST_HANDBALL</option>
+		<option value="tennis">COM_SPORTSMANAGEMENT_ST_TENNIS</option>
+		<option value="tabletennis">COM_SPORTSMANAGEMENT_ST_TABLETENNIS</option>
+		<option value="basketball">COM_SPORTSMANAGEMENT_ST_BASKETBALL</option>
+		<option value="australien_rules_football">COM_SPORTSMANAGEMENT_ST_AUSTRALIEN_RULES_FOOTBALL</option>
+		<option value="dart">COM_SPORTSMANAGEMENT_ST_DART</option>
+		<option value="waterpolo">COM_SPORTSMANAGEMENT_ST_WATERPOLO</option>	
+		<option value="small_bore_rifle_association">COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION</option>
+		<option value="fistball">COM_SPORTSMANAGEMENT_ST_FAUSTBALL</option>
+		</field>
 	</fieldset>
+
+		
   
 <!-- register 2 -->
 <!-- sis parameter -->

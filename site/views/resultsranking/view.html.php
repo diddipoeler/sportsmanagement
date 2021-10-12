@@ -58,7 +58,7 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
 		$rankingconfig       = sportsmanagementModelProject::getTemplateConfig('ranking', $this->jinput->getInt('cfg_which_database', 0));
 		$rankingmodel::$from = 0;
 		$rankingmodel::$to   = 0;
-		$rankingmodel->computeRanking($this->jinput->getInt('cfg_which_database', 0));
+		$rankingmodel->computeRanking($this->jinput->getInt('cfg_which_database', 0), 0, $project->sport_type_name);
 
 		$mdlProjectteams = BaseDatabaseModel::getInstance("Projectteams", "sportsmanagementModel");
 
@@ -168,14 +168,14 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
 			if ($this->config['show_table_4'])
 			{
 				$rankingmodel::$part = 1;
-				$rankingmodel::computeRanking(sportsmanagementModelProject::$cfg_which_database);
+				$rankingmodel::computeRanking(sportsmanagementModelProject::$cfg_which_database, 0, $project->sport_type_name);
 				$this->firstRank = $rankingmodel::$currentRanking;
 			}
 
 			if ($this->config['show_table_5'])
 			{
 				$rankingmodel::$part = 2;
-				$rankingmodel::computeRanking(sportsmanagementModelProject::$cfg_which_database);
+				$rankingmodel::computeRanking(sportsmanagementModelProject::$cfg_which_database, 0, $project->sport_type_name);
 				$this->secondRank = $rankingmodel::$currentRanking;
 			}
 		}
