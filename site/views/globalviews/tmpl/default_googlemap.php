@@ -78,7 +78,7 @@ $this->document->addScript('https://unpkg.com/leaflet-routing-machine@'.$this->l
 			break;
 	}
 
-	if (ComponentHelper::getParams($option)->get('show_jsm_notes_front', 0) == 1)
+	if (ComponentHelper::getParams('com_sportsmanagement')->get('show_jsm_notes_front', 0) == 1)
 	{
 		?>
 		<!--Note box blau -->
