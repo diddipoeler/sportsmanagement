@@ -708,13 +708,37 @@ class sportsmanagementModelResults extends JSMModelList
 					}
 				}
 
-				$query->clear();
-				$query->select('c.id');
-				$query->from('#__content as c');
-				$query->where('xreference = ' . $match->id);
-				$query->where('catid = ' . $cat_id);
-				$db->setQuery($query);
-				$this->matches[$k]->content_id = $db->loadResult();
+				// $query->clear();
+				// $query->select('c.id');
+				// $query->from('#__content as c');
+				// $query->where('xreference = ' . $match->id);
+				// $query->where('catid = ' . $cat_id);
+				// $db->setQuery($query);
+				// $this->matches[$k]->content_id = $db->loadResult();
+
+				if (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
+				{
+					$query->clear();
+					$query->select('c.id');
+					$query->from('#__content as c');
+					$query->join('INNER', '#__fields_values AS fv ON fv.item_id = c.id ');
+					$query->join('INNER', '#__fields AS f ON f.id = fv.field_id ');
+					$query->where("f.title LIKE 'jsmmatchid' ");
+					$query->where('fv.value = ' . $match->id);
+					$query->where('c.catid = ' . $cat_id);
+				}
+
+				try
+				{
+					$db->setQuery($query);
+					$this->matches[$k]->content_id = $db->loadResult();
+				}
+				catch (Exception $e)
+				{
+					$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
+					$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $this->jsmquery->dump()), 'error');
+					$this->_data[$k]->content_id = 0;
+				}				
 			}
 		}
 
@@ -734,7 +758,7 @@ class sportsmanagementModelResults extends JSMModelList
 	 *
 	 * @return
 	 */
-	public static function getMatchRefereeTeams($match_id = 0, $cfg_which_database = 0)
+	function getMatchRefereeTeams($match_id = 0, $cfg_which_database = 0)
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
