@@ -1,4 +1,5 @@
 <?php
+
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version    1.0.05
@@ -10,36 +11,38 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
-$boxicon = 'fas fa-edit fa-2x fa-pull-left';
+	$boxicon = 'fas fa-edit fa-2x fa-pull-left';
 }
-else	
+else
 {
-$boxicon = 'info-tab note-icon';	
+	$boxicon = 'info-tab note-icon';
 }
 ?>
 
 <?php
-if ( $this->notes )
+if (ComponentHelper::getParams('com_sportsmanagement')->get('show_jsm_notes_front', 0) == 1 && $this->notes)
 {
-$notes = implode("<br>",$this->notes);  
+	$notes = implode("<br>", $this->notes);
 ?>
-<!--Note box blau -->
-<div class="color-box">
-<div class="shadow">
-<div class="<?php echo $boxicon;?>" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NOTE'); ?>"><i></i></div>
-<div class="note-box">
-<p><strong><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NOTE'); ?></strong>
-<?php echo $notes; ?>
-</p>
-</div>
-</div>
-</div>
-<!--Note box blau -->
+	<!--Note box blau -->
+	<div class="color-box">
+		<div class="shadow">
+			<div class="<?php echo $boxicon; ?>" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NOTE'); ?>"><i></i></div>
+			<div class="note-box">
+				<p><strong><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NOTE'); ?></strong>
+					<?php echo $notes; ?>
+				</p>
+			</div>
+		</div>
+	</div>
+	<!--Note box blau -->
 
-<?php  
+<?php
 }
