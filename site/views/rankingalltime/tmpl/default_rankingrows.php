@@ -466,6 +466,34 @@ foreach ($current as $ptid => $team)
 				echo "\n";
 				break;
 
+			case 'BALLS':
+				echo '<td class="rankingrow"';
+
+				if ($color != '' && $config['use_background_row_color'])
+				{
+					echo 'style="background-color:' . $color . '"';
+				}
+
+				echo '>';
+				printf($format, sprintf("%s:%s", $team->sum_team1_balls, $team->sum_team2_balls));
+				echo '</td>';
+				echo "\n";
+				break;
+
+			case 'BALLS_DIFF':
+				echo '<td class="rankingrow"';
+
+				if ($color != '' && $config['use_background_row_color'])
+				{
+					echo 'style="background-color:' . $color . '"';
+				}
+
+				echo '>';
+				printf($format, $team->diff_team_balls);
+				echo '</td>';
+				echo "\n";
+				break;
+
 			case 'LEGS_RATIO':
 				echo '<td class="rankingrow"';
 

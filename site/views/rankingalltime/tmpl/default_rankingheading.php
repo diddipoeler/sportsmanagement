@@ -136,6 +136,20 @@ $column_names = explode(',', $this->config['ordered_columns_names']);
 				echo '</th>';
 				break;
 
+			case 'BALLS':
+				echo '<th class="headers">';
+				echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';
+				echo $column_names[$k];
+				echo '</th>';
+				break;
+
+			case 'BALLS_DIFF':
+				echo '<th class="headers">';
+				echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';
+				sportsmanagementHelperHtml::printColumnHeadingSortAllTimeRanking($column_names[$k], "ballsdiff", $this->config);
+				echo '</th>';
+				break;
+
 			case 'LEGS_RATIO':
 				echo '<th class="headers">';
 				echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';

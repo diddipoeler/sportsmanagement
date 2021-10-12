@@ -361,6 +361,12 @@ class JSMRanking
 				$leg2       = 0;
 			}
 
+			if ($sports_type_name == 'COM_SPORTSMANAGEMENT_ST_FAUSTBALL')
+			{
+				$balls1 = array_sum(explode(';',$match->ls1));
+				$balls2 = array_sum(explode(';',$match->ls2));
+			}
+			
 			$home->cnt_matches++;
 			$away->cnt_matches++;
 
@@ -682,6 +688,13 @@ class JSMRanking
 			$home->sum_team1_legs    += $leg1;
 			$home->sum_team2_legs    += $leg2;
 			$home->diff_team_legs    = $home->sum_team1_legs - $home->sum_team2_legs;
+			
+			if ($sports_type_name == 'COM_SPORTSMANAGEMENT_ST_FAUSTBALL')
+			{
+				$home->sum_team1_balls   += $balls1;
+				$home->sum_team2_balls   += $balls2;
+				$home->diff_team_balls   = $home->sum_team1_balls - $home->sum_team2_balls;
+			}
 
 			$home->sum_team1_matchpoint += $mp1;
 			$home->sum_team2_matchpoint += $mp2;
@@ -699,6 +712,13 @@ class JSMRanking
 			$away->sum_team1_legs    += $leg2;
 			$away->sum_team2_legs    += $leg1;
 			$away->diff_team_legs    = $away->sum_team1_legs - $away->sum_team2_legs;
+			
+			if ($sports_type_name == 'COM_SPORTSMANAGEMENT_ST_FAUSTBALL')
+			{
+				$away->sum_team1_balls    += $balls2;
+				$away->sum_team2_balls    += $balls1;
+				$away->diff_team_balls   = $away->sum_team1_balls - $away->sum_team2_balls;
+			}
 
 			$away->sum_team1_matchpoint += $mp1;
 			$away->sum_team2_matchpoint += $mp1;
@@ -936,6 +956,8 @@ class JSMRanking
 		$query->select('m.team2_bonus AS away_bonus');
 		$query->select('m.team1_legs AS l1');
 		$query->select('m.team2_legs AS l2');
+		$query->select('m.team1_result_split AS ls1');
+		$query->select('m.team2_result_split AS ls2');
 
 		$query->select('m.team1_single_matchpoint AS mp1');
 		$query->select('m.team2_single_matchpoint AS mp2');
@@ -1878,6 +1900,9 @@ class JSMRankingTeamClass
 	var $rank = 0;
     var $shooterrings = 0;
     var $shooterringsperround = array();
+	var $sum_team1_balls = 0;
+	var $sum_team2_balls = 0;
+	var $diff_team_balls = 0;
     
 
 	/**

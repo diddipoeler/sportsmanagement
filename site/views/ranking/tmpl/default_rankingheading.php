@@ -133,6 +133,20 @@ $column_names = explode(',', $this->config['ordered_columns_names']);
 				echo '</span></th>';
 				break;
 
+			case 'BALLS':
+				echo '<th class="headers">';
+				echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';
+				echo $column_names[$k];
+				echo '</span></th>';
+				break;
+
+			case 'BALLS_DIFF':
+				echo '<th class="headers">';
+				echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';
+				sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "ballsdiff", $this->config, Factory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
+				echo '</span></th>';
+				break;
+
 			case 'LEGS_RATIO':
 				echo '<th class="headers">';
 				echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';

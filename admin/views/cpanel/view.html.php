@@ -176,7 +176,10 @@ class sportsmanagementViewcpanel extends sportsmanagementView
 				case 'dart':
 				$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_DART');
 				break;
-                
+				case 'fistball':
+					$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_FAUSTBALL');
+					break;
+					
                 case 'small_bore_rifle_association':
 				$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION');
 				break;
