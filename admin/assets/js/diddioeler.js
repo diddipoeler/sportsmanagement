@@ -327,7 +327,7 @@ jQuery("#table-substitutions").last().append('<tr id="sub-'
     + jQuery("#in option:selected").text() + '</td><td>' 
     + jQuery("#project_position_id option:selected").text() + '</td><td>' 
     + jQuery("#in_out_time").val() + '</td><td><input	id="deletesubst-' + resp[0] 
-    + '" type="button" class="inputbox button-delete-subst" value="' 
+    + '" type="button" class="inputbox button-delete-subst" value="  onClick="deletesubst(' + resp[0] + ')"  ' 
     + str_delete + '"</td></tr>');
 		
 jQuery("#ajaxresponse").addClass("ajaxsuccess");
