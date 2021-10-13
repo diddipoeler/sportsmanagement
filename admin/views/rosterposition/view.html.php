@@ -48,7 +48,11 @@ class sportsmanagementViewrosterposition extends sportsmanagementView
 	{
 		//$this->document->addScript('http://code.jquery.com/ui/1.10.3/jquery-ui.js');
         $this->document->addScript('https://code.jquery.com/ui/1.12.1/jquery-ui.js');
-
+		
+if ($this->item->picture == '')
+{
+    $this->item->picture = 'spielfeld_578x1050.png';				
+}
 		$bildpositionenhome                                  = array();
 		$bildpositionenhome['HOME_POS'][0]['heim']['oben']   = 5;
 		$bildpositionenhome['HOME_POS'][0]['heim']['links']  = 233;
