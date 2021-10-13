@@ -86,9 +86,9 @@ class sportsmanagementView extends BaseHtmlView
 	public $activeFilters;
 	
     /** https://cdnjs.com/libraries/bootstrap-fileinput */
-	public $bootstrap_fileinput_version = '5.1.4';
+	public $bootstrap_fileinput_version = '5.2.6';
     /** https://cdnjs.com/libraries/popper.js */
-    public $bootstrap_fileinput_popperversion = '2.8.2';
+    public $bootstrap_fileinput_popperversion = '2.10.2';
     
 	public $bootstrap_fileinput_bootstrapversion = '4.3.1';
 	/** https://cdnjs.com/libraries/leaflet */
