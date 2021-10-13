@@ -25,9 +25,9 @@ $(".button-delete-commentary").on('click', function(event){
 });		
 // hier wird die funktion für das löschen der
 // ereignis hinzugefügt	
-$(".button-delete-event").on('click', function(event){
-    button_delete_event();
-});			
+//$(".button-delete-event").on('click', function(event){
+//    button_delete_event();
+//});			
 
 	
 
@@ -222,6 +222,11 @@ jQuery("#ajaxresponse").text(resp[1]);
 }
 }
 
+function deletecommentary(commentaryid)
+{
+	
+}
+
 function button_delete_commentary()
 {
 jQuery("#ajaxresponse").html(baseajaxurl);
@@ -320,6 +325,11 @@ else
 jQuery("#ajaxresponse").addClass("ajaxerror");
 jQuery("#ajaxresponse").text(resp[1]);
 }
+}
+
+function deletesubst(substid)
+{
+	
 }
 
 function button_delete_subst()
