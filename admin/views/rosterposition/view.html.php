@@ -16,7 +16,16 @@ use Joomla\Registry\Registry;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
+/** welche joomla version ? */
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+
+}
+elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
+{
 HTMLHelper::_('jquery.ui');
+}
+
 
 /**
  * sportsmanagementViewrosterposition
