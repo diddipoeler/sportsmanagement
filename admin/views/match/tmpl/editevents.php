@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage match
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -291,6 +287,7 @@ if ($close == 1)
                             <td style='text-align:center; '>
                                 <input id="deletecomment-<?php echo $event->id; ?>" type="button"
                                        class="inputbox button-delete-commentary"
+                                       onClick="deletecommentary(<?php echo $event->id; ?>)"
                                        value="<?php echo Text::_('JACTION_DELETE'); ?>"/>
                             </td>
                         </tr>

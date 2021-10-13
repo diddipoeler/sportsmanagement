@@ -32,7 +32,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
               id="adminForm" method="post" name="adminForm">
             <!-- Score Table START -->
 			<?php
-			// Save and close
+			/**  Save and close */
 			$close = Factory::getApplication()->input->getInt('close', 0);
 
 			if ($close == 1)

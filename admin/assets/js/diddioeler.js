@@ -15,14 +15,14 @@ $(".button-save-event").on('click', function(event){
 });	
 // hier wird die funktion für das löschen der
 // wechsel hinzugefügt
-$(".button-delete-subst").on('click', function(event){
-    button_delete_subst();
-});	
+//$(".button-delete-subst").on('click', function(event){
+//    button_delete_subst();
+//});	
 // hier wird die funktion für das löschen der
 // kommentare hinzugefügt	
-$(".button-delete-commentary").on('click', function(event){
-    button_delete_commentary();
-});		
+//$(".button-delete-commentary").on('click', function(event){
+//    button_delete_commentary();
+//});		
 // hier wird die funktion für das löschen der
 // ereignis hinzugefügt	
 //$(".button-delete-event").on('click', function(event){
@@ -224,9 +224,27 @@ jQuery("#ajaxresponse").text(resp[1]);
 
 function deletecommentary(commentaryid)
 {
-	
-}
+jQuery("#ajaxresponse").html(baseajaxurl);
+jQuery("#ajaxresponse").addClass('ajax-loading');
+//var eventid = this.id.substr(14);  
+var token = jQuery("#token").val();       
+var url = baseajaxurl + '&task=matches.removeCommentary&tmpl=component';
+var querystring = '&event_id=' + commentaryid;
 
+jQuery.ajax({
+ type: 'POST', // type of request either Get or Post
+ url: url + querystring, // Url of the page where to post data and receive response 
+ dataType:"json",
+ success: commentarydeleted,   //function to be called on successful reply from server
+ error: function (xhr, ajaxOptions, thrownError) 
+ {
+       jQuery("#ajaxresponse").html(xhr);
+       alert(xhr.status);
+       alert(thrownError);
+     }
+});         	
+}
+/*
 function button_delete_commentary()
 {
 jQuery("#ajaxresponse").html(baseajaxurl);
@@ -251,7 +269,7 @@ jQuery.ajax({
     
     
 }
-
+*/
 function commentarydeleted(response) 
 {
 jQuery("#ajaxresponse").removeClass('ajax-loading');
@@ -318,7 +336,7 @@ jQuery("#in_out_time").val('');
 jQuery('#in option:selected').removeAttr('selected')
 jQuery('#out option:selected').removeAttr('selected')	
 jQuery('#project_position_id option:selected').removeAttr('selected')
-$$(".button-delete-subst").addEvent('click', button_delete_subst);				
+//$$(".button-delete-subst").addEvent('click', button_delete_subst);				
 }
 else 
 {
@@ -329,9 +347,34 @@ jQuery("#ajaxresponse").text(resp[1]);
 
 function deletesubst(substid)
 {
-	
-}
+jQuery("#ajaxresponse").html(baseajaxurl);
+jQuery("#ajaxresponse").addClass('ajax-loading');
 
+//var substid = this.id.substr(12); 
+var token = jQuery("#token").val();       
+var url = baseajaxurl + '&task=matches.removeSubst&tmpl=component';
+var querystring = '&substid=' + substid;
+
+jQuery.ajax({
+ type: 'POST', // type of request either Get or Post
+ url: url + querystring, // Url of the page where to post data and receive response 
+ data: {
+            'token': '1' // <-- THIS IS IMPORTANT
+            
+        }, // data to be post
+ //data: jQuery("#component-form").serialize(),
+ dataType:"json",
+ success: substdeleted,   //function to be called on successful reply from server
+ error: function (xhr, ajaxOptions, thrownError) 
+ {
+       jQuery("#ajaxresponse").html(xhr);
+       //alert(xhr);
+       alert(xhr.status);
+       alert(thrownError);
+     }
+});  	
+}
+/*
 function button_delete_subst()
 {
 jQuery("#ajaxresponse").html(baseajaxurl);
@@ -361,7 +404,7 @@ jQuery.ajax({
      }
 });      
 }
-
+*/
 function substdeleted(response) 
 {
 jQuery("#ajaxresponse").removeClass('ajax-loading');
