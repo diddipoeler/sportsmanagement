@@ -850,7 +850,17 @@ if ( $config->get('debug') )
 			if ($data['name'] == $orig_table->name)
 			{
 				$data['name']  .= ' ' . Text::_('JGLOBAL_COPY');
-				$data['alias'] = OutputFilter::stringURLSafe($data['name']);
+				
+				switch ($this->jsmview)
+		{
+					case 'rosterposition':
+				break;
+						default:
+						$data['alias'] = OutputFilter::stringURLSafe($data['name']);
+					break;
+				}
+				
+				
 			}
 		}
 
