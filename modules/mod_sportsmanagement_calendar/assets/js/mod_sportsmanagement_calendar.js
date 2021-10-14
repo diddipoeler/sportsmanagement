@@ -5,12 +5,12 @@ var jlcmodal = new Array();
 //	SqueezeBox.initialize({});
 //});
 
-jQuery(function ($) {
-    SqueezeBox.initialize({});
-    SqueezeBox.assign($("a.modal").get(), {
-        parse: "rel",
-    });
-});
+// jQuery(function ($) {
+//     SqueezeBox.initialize({});
+//     SqueezeBox.assign($("a.modal").get(), {
+//         parse: "rel",
+//     });
+// });
 
 function jlCalmod_setTitle(targetid, sourceids, thistitle, modid) {
     var titleid = sourceids.replace("jlcal_", "jlcaltitte_");
@@ -91,9 +91,9 @@ function jlCalmod_showhide(targetid, sourceids, thistitle, inject, modid) {
         if (jQuery(incont) && inject > 0) {
             jlCalmod_injectContent(tempcontentid, incont, modid);
         }
-        if (jlcmodal[modid] == 1) {
-            SqueezeBox.setContent("string", sourcecontent);
-        }
+        // if (jlcmodal[modid] == 1) {
+        //     SqueezeBox.setContent("string", sourcecontent);
+        // }
     }
 }
 function jlcnewAjax() {
@@ -204,18 +204,18 @@ function jlcnewDate(month, year, modid, day) {
             if (dd < 10) dd = "0" + dd;
             var sc = "jlCalList-" + modid;
             var tc = "jlcal_" + yy + "-" + mm + "-" + dd + "-" + modid;
-            if (jQuery(tc))
-                if (jlcmodal[modid] == 1) {
-                    //jlCalmod_showhide(sc, tc, dd + '.' + mm + '.' + yy, 1, modid);
-                    SqueezeBox.initialize({});
+            // if (jQuery(tc))
+            //     if (jlcmodal[modid] == 1) {
+            //         //jlCalmod_showhide(sc, tc, dd + '.' + mm + '.' + yy, 1, modid);
+            //         SqueezeBox.initialize({});
 
-                    jQuery("a.jlcmodal" + modid).each(function (el) {
-                        el.addEvent("click", function (e) {
-                            new Event(e).stop();
-                            SqueezeBox.fromElement(el);
-                        });
-                    });
-                }
+            //         jQuery("a.jlcmodal" + modid).each(function (el) {
+            //             el.addEvent("click", function (e) {
+            //                 new Event(e).stop();
+            //                 SqueezeBox.fromElement(el);
+            //             });
+            //         });
+            //     }
             var JTooltips = new Tips(
                 jQuery("#jlccalendar-" + modid + " .hasTip"),
                 {

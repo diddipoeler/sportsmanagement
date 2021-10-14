@@ -18,6 +18,7 @@ use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 
 if (version_compare(JVERSION, '4.0.0', 'ge'))
 {
@@ -110,7 +111,11 @@ $inject_container = ($params->get('inject', 0) == 1) ? $params->get('inject_cont
 
 if (!defined('JLC_MODULESCRIPTLOADED'))
 {
-	if (version_compare(JVERSION, '3.0.0', 'ge'))
+	if (version_compare(JVERSION, '4.0.0', 'ge'))
+	{
+		HTMLHelper::_('script', 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'assets/js' . DIRECTORY_SEPARATOR . $module->module . '.js');
+	}
+	elseif (version_compare(JVERSION, '3.0.0', 'ge'))
 	{
 		$mooconfig = JFactory::getConfig();
 		$moodebug = $mooconfig->get('debug');
