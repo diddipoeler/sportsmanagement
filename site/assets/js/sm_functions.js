@@ -197,7 +197,8 @@ console.log('bBreite image = ' + bBreite);
 console.log('bHoehe image = ' + bHoehe);  
 
 jQuery('#roster').css({'width' : width + 'px' , 'height' : height + 'px'});
-  
+bBreite = jQuery("#roster").width();
+bHoehe = jQuery("#roster").height();
 }
 
 
