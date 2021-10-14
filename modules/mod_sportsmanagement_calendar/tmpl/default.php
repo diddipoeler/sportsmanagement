@@ -27,21 +27,21 @@ $display = ($params->get('update_module') == 1) ? 'block' : 'none';
 	jlcinjectcontainer['<?php echo $module->id ?>'] = '<?php echo $inject_container ?>';
 	jlcmodal['<?php echo $module->id ?>'] = '<?php echo $lightbox ?>';
 	var calendar_baseurl = '<?php echo Uri::base() ?>';
-	<?PHP
-	if ($lightbox == 1 && (Factory::getApplication()->input->getVar('format') != 'pdf'))
-	{
-	?>
-		window.addEvent('domready', function() {
-			$$('a.jlcmodal<?php echo $module->id ?>').each(function(el) {
-				el.addEvent('click', function(e) {
-					new Event(e).stop();
-					SqueezeBox.fromElement(el);
-				});
-			});
-		});
-	<?PHP
-	}
-	?>
+	// <?PHP
+	// if ($lightbox == 1 && (Factory::getApplication()->input->getVar('format') != 'pdf'))
+	// {
+	// ?>		
+	// 	window.addEvent('domready', function() {
+	// 		$$('a.jlcmodal<?php echo $module->id ?>').each(function(el) {
+	// 			el.addEvent('click', function(e) {
+	// 				new Event(e).stop();
+	// 				SqueezeBox.fromElement(el);
+	// 			});
+	// 		});
+	// 	});
+	// <?PHP
+	// }
+	// ?>
 </script>
 
 <!-- Trigger the modal with a button -->
