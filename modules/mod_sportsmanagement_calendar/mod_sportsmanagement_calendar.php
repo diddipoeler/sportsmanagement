@@ -19,6 +19,11 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 
+if (version_compare(JVERSION, '4.0.0', 'ge'))
+{
+	JHtml::_('jquery.framework');
+}
+
 $app = Factory::getApplication();
 
 if (!defined('DS'))
