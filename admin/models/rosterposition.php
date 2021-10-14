@@ -57,6 +57,7 @@ class sportsmanagementModelrosterposition extends JSMModelAdmin
 		// Set the values
 		$data['modified']    = $date->toSql();
 		$data['modified_by'] = $user->get('id');
+		$data['alias']       = $data['short_name'];
 		//$data['alias']       = OutputFilter::stringURLSafe($data['name']);
 
 		// Zuerst sichern, damit wir bei einer neuanlage die id haben
