@@ -527,7 +527,19 @@ break;
 				case 'predictionrounds';
 					sportsmanagementHelper::addSubmenu('predictions');
 					break;
-				default:
+				case 'currentseasons';
+					sportsmanagementHelper::addSubmenu('currentseasons');
+					break;
+				case 'jsmgcalendars';
+					sportsmanagementHelper::addSubmenu('googlecalendar');
+					break;
+				case 'extensions';
+					sportsmanagementHelper::addSubmenu('extensions');
+					break;
+				case 'specialextensions';
+					sportsmanagementHelper::addSubmenu('specialextensions');
+					break;
+					default:
 					sportsmanagementHelper::addSubmenu('cpanel');
 					break;
 			}

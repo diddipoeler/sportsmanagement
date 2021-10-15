@@ -178,27 +178,34 @@ function move_down(sourceid)
 
 function changePlayground()
 {
-
-var selected = jQuery( "#jform_picture" ).val();
-console.log('background image = ' + selected);
-jQuery('#roster').css("background-image", "url(../images/com_sportsmanagement/database/rosterground/"+selected+")");
-var x = new Image();
-//x.src = "/images/com_sportsmanagement/database/rosterground/"+selected+"";
-x.src = "../images/com_sportsmanagement/database/rosterground/"+selected+"";
-width = x.width;
-height = x.height;
-console.log('width image = ' + width);
-console.log('height image = ' + height);
-console.log('src image = ' + x.src);
-
-var bBreite = jQuery("#roster").width();
-var bHoehe = jQuery("#roster").height();  
-console.log('bBreite image = ' + bBreite);  
-console.log('bHoehe image = ' + bHoehe);  
-
-jQuery('#roster').css({'width' : width + 'px' , 'height' : height + 'px'});
-bBreite = jQuery("#roster").width();
-bHoehe = jQuery("#roster").height();
+	var selected = jQuery( "#jform_picture" ).val();
+	if (selected == "")
+	{
+		selected = 'spielfeld_578x1050.png'
+	}
+	else if (selected == -1)
+	{
+		jQuery('#roster').css({'display' : 'none'});
+		return;
+	}
+	console.log('background image = ' + selected);
+	jQuery('#roster').css("background-image", "url(../images/com_sportsmanagement/database/rosterground/"+selected+")");
+	var x = new Image();
+	//x.src = "/images/com_sportsmanagement/database/rosterground/"+selected+"";
+	x.onload = function(){
+		width = x.width;
+		height = x.height;	
+		console.log('width image = ' + width);
+		console.log('height image = ' + height);
+		console.log('src image = ' + x.src);
+		
+		var bBreite = jQuery("#roster").width();
+		var bHoehe = jQuery("#roster").height();  
+		console.log('bBreite image = ' + bBreite);  
+		console.log('bHoehe image = ' + bHoehe);  
+		jQuery('#roster').css({'display' : 'block', 'width' : width + 'px' , 'height' : height + 'px'});
+	}	
+	x.src = "../images/com_sportsmanagement/database/rosterground/"+selected+"";
 }
 
 
