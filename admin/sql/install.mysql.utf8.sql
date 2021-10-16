@@ -833,6 +833,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project` (
   `fav_team_color` VARCHAR(7) NOT NULL DEFAULT '' ,
   `fav_team_text_color` VARCHAR(7) NOT NULL DEFAULT '' ,
   `fav_team_text_bold` VARCHAR(7) NOT NULL DEFAULT '' ,
+  `fav_team_send_mail` TINYINT(4) NOT NULL DEFAULT '0' ,
   `template` VARCHAR(32) NOT NULL DEFAULT 'default' ,
   `enable_sb` TINYINT(4) NOT NULL DEFAULT '0' ,
   `sb_catid` INT(11) NOT NULL DEFAULT '0' ,
@@ -879,6 +880,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project` (
   `facebook` VARCHAR(250) NOT NULL DEFAULT '' ,
   `single_matches` SMALLINT(6) NOT NULL DEFAULT '0' ,
   `use_smallcaliber` TINYINT(1)  NULL DEFAULT NULL ,
+
   PRIMARY KEY (`id`) ,
   KEY `league_id` (`league_id`),
   KEY `season_id` (`season_id`),

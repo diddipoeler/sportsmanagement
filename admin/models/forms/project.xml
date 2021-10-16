@@ -4,9 +4,9 @@
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 	<!-- reiter 1 --> 
 	<fieldset name="details"
-  label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
-  description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
-	<field
+		label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
+		description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
+		<field
 			name="id" 
 			type="number" 
 			label="JGLOBAL_FIELD_ID_LABEL"
@@ -36,7 +36,7 @@
 			readonly="true"
 			class="input-xxlarge readonly"/>
 		
-    <field
+    	<field
 			name="staffel_id"
 			type="text"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_STAFFEL_ID"
@@ -61,16 +61,13 @@
 				JUNPUBLISHED</option>
 			<option
 				value="-2">
-JTRASH</option>
+				JTRASH</option>
 
-				<option
+			<option
 				value="2">
-JARCHIVED</option>
-
+				JARCHIVED</option>
 		</field>
 		
-
-    		
 		<field
 			name="league_id"
 			type="leaguelist"
@@ -133,23 +130,16 @@ JARCHIVED</option>
 			size="1"
 			label="COM_SPORTSMANAGEMENT_GLOBAL_PROJECT_ART"
 			description="COM_SPORTSMANAGEMENT_GLOBAL_PROJECT_ART_DESC">
-			<option
-				value="1">
-				COM_SPORTSMANAGEMENT_TEAMS_ONLY</option>
-			<option
-				value="2">
-				COM_SPORTSMANAGEMENT_TEAMS_PLAYER</option>
-			<option
-				value="3">
-				COM_SPORTSMANAGEMENT_PLAYER_ONLY</option>
-			
+			<option value="1">COM_SPORTSMANAGEMENT_TEAMS_ONLY</option>
+			<option value="2">COM_SPORTSMANAGEMENT_TEAMS_PLAYER</option>
+			<option value="3">COM_SPORTSMANAGEMENT_PLAYER_ONLY</option>		
 		</field>
 		
 		<field 
 			name="project_live_update" 
 			type="extensionradiobutton" 
 			default="0"   
-      class="radio btn-group btn-group-yesno"
+      		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_LIVE_UPDATE" 
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_LIVE_UPDATE_DESC">
 			<option value="0">JNO</option>
@@ -161,7 +151,7 @@ JARCHIVED</option>
 			name="use_nation" 
 			type="extensionradiobutton" 
 			default="1"   
-      class="radio btn-group btn-group-yesno"
+      		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_NATION" 
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_NATION_DESC">
 			<option value="0">JNO</option>
@@ -169,16 +159,14 @@ JARCHIVED</option>
 		</field>
 		
 		<field name="fast_projektteam" 
-    type="extensionradiobutton" 
-    default="0"
-    class="radio btn-group btn-group-yesno"
+			type="extensionradiobutton" 
+			default="0"
+			class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_PROJECTTEAMS_QUICKADD" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_PROJECTTEAMS_QUICKADD_DESC">
+		    description="COM_SPORTSMANAGEMENT_SETTINGS_PROJECTTEAMS_QUICKADD_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		
-		
 		
 		<field
 			name="admin"
@@ -202,19 +190,19 @@ JARCHIVED</option>
 			validate="superiorzero">
 		</field>
 		
-    <field
-	name="editorgroup"
-	type="usergroup"
-	default=""
-	label="COM_SPORTSMANAGEMENT_EDITOR_GROUP_PROJECT_EDITOR"
-	description="COM_SPORTSMANAGEMENT_EDITOR_GROUP_PROJECT_EDITOR_DESC" >
+		<field
+			name="editorgroup"
+			type="usergroup"
+			default=""
+			label="COM_SPORTSMANAGEMENT_EDITOR_GROUP_PROJECT_EDITOR"
+			description="COM_SPORTSMANAGEMENT_EDITOR_GROUP_PROJECT_EDITOR_DESC" >
 		 </field>
 
-<field 
+		<field 
 			name="use_approved" 
 			type="extensionradiobutton" 
 			default="0"   
-      class="radio btn-group btn-group-yesno"
+      		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_APPROVED" 
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_APPROVED_DESC">
 			<option value="0">JNO</option>
@@ -228,18 +216,17 @@ JARCHIVED</option>
 			default="0"
 			size="1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TEMPLATES"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TEMPLATES_DESC"
-			>
+			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TEMPLATES_DESC">
 			<option
 				value="0">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEMPLATE</option>
 		</field>
 		
-    <field 
+    	<field 
 			name="enable_sb" 
 			type="extensionradiobutton" 
 			default="0"  
-      class="radio btn-group btn-group-yesno"
+      		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_KUNENA_FORUM" 
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_KUNENA_FORUM_DESC">
 			<option value="0">JNO</option>
@@ -272,42 +259,43 @@ JARCHIVED</option>
       label="JCATEGORIES" 
       description="JGLOBAL_CHOOSE_CATEGORY_DESC" /> 
 	  -->
-<field
+		<field
 			name="category_id"
 			type="category"
 			label="JGLOBAL_CHOOSE_CATEGORY_DESC"
 			description="JGLOBAL_CHOOSE_CATEGORY_DESC"
-			extension="com_content"
-			>
+			extension="com_content">
 			<option value="">JOPTION_SELECT_CATEGORY</option>
 		</field>
 		
-<field name="gcalendar_id" 
-type="gcalendar" 
-default="" 
-multiple=""
-size="10"
-label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SELECT_CALENDARS_LABEL" 
-description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SELECT_CALENDARS_DESC" >
-<option
+		<field name="gcalendar_id" 
+			type="gcalendar" 
+			default="" 
+			multiple=""
+			size="10"
+			label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SELECT_CALENDARS_LABEL" 
+			description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SELECT_CALENDARS_DESC" >
+			<option
 				value="0">
 				COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SELECT_CALENDARS_LABEL</option>
 		</field>
 
-<field 
+		<field 
 			name="approved_gcalendar" 
 			type="extensionradiobutton" 
-			default="0"  class="radio btn-group btn-group-yesno"
+			default="0"
+			class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_CALENDAR" 
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_CALENDAR_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-<field 
+		<field 
 			name="gcalendar_use_fav_teams" 
 			type="extensionradiobutton" 
-			default="0"    class="radio btn-group btn-group-yesno"
+			default="0"
+			class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_CALENDAR_FAV_TEAMS" 
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_CALENDAR_FAV_TEAMS_DESC">
 			<option value="0">JNO</option>
@@ -316,63 +304,64 @@ description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SELECT_CALE
     		
 	</fieldset>
 <!-- reiter 2 --> 
-      	<fieldset name="description"
-  label="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION"
-  description="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION_DESC">		
-			<field
-				name="projectinfo"
-				type="editor"
-				label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_DESCRIPTION"
-				description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_DESCRIPTION_DESC"
-				width="450" 
-			       class="span12"
-				filter="JComponentHelper::filterText"/>			
+	<fieldset name="description"
+		label="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION"
+		description="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION_DESC">		
+		<field
+			name="projectinfo"
+			type="editor"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_DESCRIPTION"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_DESCRIPTION_DESC"
+			width="100%" 
+			class="span12"
+			filter="JComponentHelper::filterText"/>			
 	</fieldset>	
 
 <!-- reiter 3 --> 	
-<fields name="request">
-<fieldset name="request"
-label="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP"
-  description="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP_DESC">  
-  
-    <field
-			name="sports_type_id"
-			type="sportstypelist"
-			size="1"
-			label="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE"
-			description="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE_DESC"
-			required="true"
-			validate="">
-			<option
-				value="">
-				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SPORTSTYPE</option>
-		</field>
-    
-		<field
-			name="agegroup_id"
-			type="dependsql"
-			depends="sports_type_id"
-			task="personagegroupoptions" 
-      size="10"
-      key_field="sports_type_id"
-			value_field="sports_type_id"
+	<fields name="request">
+		<fieldset name="request"
+		label="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP"
+		description="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP_DESC">  
+		
+			<field
+				name="sports_type_id"
+				type="sportstypelist"
+				size="1"
+				label="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE"
+				description="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE_DESC"
+				required="true"
+				validate="">
+				<option
+					value="">
+					COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SPORTSTYPE</option>
+			</field>
 			
-      varname="id"
-      targettable="person"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AGEGROUP"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AGEGROUP_DESC"
-			class="inputbox">
-      <option
-				value="0">
-				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
-		</field>
-	
-</fieldset>
-</fields>		
+			<field
+				name="agegroup_id"
+				type="dependsql"
+				depends="sports_type_id"
+				task="personagegroupoptions" 
+				size="10"
+				key_field="sports_type_id"
+				value_field="sports_type_id"					
+				varname="id"
+				targettable="person"
+				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AGEGROUP"
+				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AGEGROUP_DESC"
+				class="inputbox">
+				<option
+					value="0">
+					COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE
+				</option>
+			</field>
+			
+		</fieldset>
+	</fields>		
 		<!-- reiter 4 --> 
 	<fieldset name="date"
-  label="COM_SPORTSMANAGEMENT_TABS_DATE"
-  description="COM_SPORTSMANAGEMENT_TABS_DATE_DESC">
+		label="COM_SPORTSMANAGEMENT_TABS_DATE"
+		description="COM_SPORTSMANAGEMENT_TABS_DATE_DESC">
+
 		<field
 			name="start_date"
 			size="10"
@@ -393,6 +382,7 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP"
 			required="true"
 			size="5"
 			validate="time"/>
+		
 		<field
 			name="timezone"
 			type="timezone"
@@ -400,11 +390,13 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TIMEZONE_DESC"
 			class="inputbox"
 			default="Europe/Amsterdam"/>		
+	
 	</fieldset>
 	<!-- reiter 5 --> 
 	<fieldset name="project"
-  label="COM_SPORTSMANAGEMENT_TABS_PROJECT"
-  description="COM_SPORTSMANAGEMENT_TABS_PROJECT_DESC">	
+		label="COM_SPORTSMANAGEMENT_TABS_PROJECT"
+		description="COM_SPORTSMANAGEMENT_TABS_PROJECT_DESC">	
+
 		<field
 			name="current_round_auto"
 			type="list"
@@ -450,8 +442,8 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP"
 	</fieldset>
 	<!-- reiter 6 --> 
 	<fieldset name="competition"
-  label="COM_SPORTSMANAGEMENT_TABS_COMPETITION"
-  description="COM_SPORTSMANAGEMENT_TABS_COMPETITION_DESC">
+		label="COM_SPORTSMANAGEMENT_TABS_COMPETITION"
+		description="COM_SPORTSMANAGEMENT_TABS_COMPETITION_DESC">
 	
 		<field
 			name="game_regular_time"
@@ -493,84 +485,80 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP"
 			name="teams_as_referees" 
 			type="extensionradiobutton" 
 			default="0"   
-      class="radio btn-group btn-group-yesno"
+      		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TEAM_AS_REFEREE" 
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TEAM_AS_REFEREE_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-
-<field 
-name="use_smallcaliber" 
-type="extensionradiobutton" 
-default="0"
-class="radio btn-group btn-group-yesno"
-label="COM_SPORTSMANAGEMENT_SMALL_BORE_RIFLE_ASSOCIATION_F_SPORTS_SHOOTER" 
-description="COM_SPORTSMANAGEMENT_SMALL_BORE_RIFLE_ASSOCIATION_F_SPORTS_SHOOTER">
-<option value="0">JNO</option>
-<option value="1">JYES</option>
-</field>
-<field
-name="single_matches"
-showon="use_smallcaliber:1"       
-type="text"
-label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_SPORTS_SHOOTER_SINGLE_MATCHES"
-description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_SPORTS_SHOOTER_SINGLE_MATCHES_DESC"
-class="inputbox validate-numeric"
-size="4" 
-maxlength="6"
-default="4"/>
-
-
-
-					
-<field 
-name="use_legs" 
-type="extensionradiobutton" 
-default="0"
-class="radio btn-group btn-group-yesno"
-label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_SETS" 
-description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_SETS_DESC">
-<option value="0">JNO</option>
-<option value="1">JYES</option>
-</field>
+		<field 
+			name="use_smallcaliber" 
+			type="extensionradiobutton" 
+			default="0"
+			class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SMALL_BORE_RIFLE_ASSOCIATION_F_SPORTS_SHOOTER" 
+			description="COM_SPORTSMANAGEMENT_SMALL_BORE_RIFLE_ASSOCIATION_F_SPORTS_SHOOTER">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 		
-<field 
-name="use_tie_break" 
-showon="use_legs:1"
-type="extensionradiobutton" 
-default="0"
-class="radio btn-group btn-group-yesno"
-label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_TIE_BREAK" 
-description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_TIE_BREAK_DESC">
-<option value="0">JNO</option>
-<option value="1">JYES</option>
-</field>
-		
-<field
-name="tennis_single_matches"
-showon="use_legs:1"       
-type="text"
-label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TENNIS_SINGLE_MATCHES"
-description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TENNIS_SINGLE_MATCHES_DESC"
-class="inputbox validate-numeric"
-size="4" 
-maxlength="6"
-default="4"/>
-      
-<field
-name="tennis_double_matches"
-showon="use_legs:1"       
-type="text"
-label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TENNIS_DOUBLE_MATCHES"
-description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TENNIS_DOUBLE_MATCHES_DESC"
-class="inputbox validate-numeric"
-size="4" 
-maxlength="6"
-default="2"/>
-        
-      	
+		<field
+			name="single_matches"
+			showon="use_smallcaliber:1"       
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_SPORTS_SHOOTER_SINGLE_MATCHES"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_SPORTS_SHOOTER_SINGLE_MATCHES_DESC"
+			class="inputbox validate-numeric"
+			size="4" 
+			maxlength="6"
+			default="4"/>
+							
+		<field 
+			name="use_legs" 
+			type="extensionradiobutton" 
+			default="0"
+			class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_SETS" 
+			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_SETS_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+				
+		<field 
+			name="use_tie_break" 
+			showon="use_legs:1"
+			type="extensionradiobutton" 
+			default="0"
+			class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_TIE_BREAK" 
+			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_TIE_BREAK_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+				
+		<field
+			name="tennis_single_matches"
+			showon="use_legs:1"       
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TENNIS_SINGLE_MATCHES"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TENNIS_SINGLE_MATCHES_DESC"
+			class="inputbox validate-numeric"
+			size="4" 
+			maxlength="6"
+			default="4"/>
+			
+		<field
+			name="tennis_double_matches"
+			showon="use_legs:1"       
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TENNIS_DOUBLE_MATCHES"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TENNIS_DOUBLE_MATCHES_DESC"
+			class="inputbox validate-numeric"
+			size="4" 
+			maxlength="6"
+			default="2"/>
+				      	
 		<field 
 			name="allow_add_time" 
 			type="extensionradiobutton" 
@@ -585,37 +573,40 @@ default="2"/>
 		<field
 			name="add_time"
 			type="text"
-		       showon="allow_add_time:1" 
+		    showon="allow_add_time:1" 
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_LENGTH_EXTRA_TIME"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_LENGTH_EXTRA_TIME_DESC"
 			class="inputbox validate-numeric"
-			size="4" maxlength="6"
+			size="4"
+			maxlength="6"
 			default="15"/>
 			
 		<field
 			name="points_after_add_time"
-		       showon="allow_add_time:1" 
+		    showon="allow_add_time:1" 
 			type="text"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_POINTS_AFTER_EXTRA_TIME"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_POINTS_AFTER_EXTRA_TIME_DESC"
 			class="inputbox"
-			size="8" maxlength="20"
+			size="8"
+			maxlength="20"
 			default="3,1,0"/>
 			
 		<field
 			name="points_after_penalty"
-		       showon="allow_add_time:1" 
+		    showon="allow_add_time:1" 
 			type="text"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_POINTS_AFTER_PENALTY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_POINTS_AFTER_PENALTY_DESC"
 			class="inputbox"
-			size="8" maxlength="20"
+			size="8"
+			maxlength="20"
 			default="3,1,0"/>
 	</fieldset>
 	
 	<fieldset name="favorite"
-  label="COM_SPORTSMANAGEMENT_TABS_FAVORITE"
-  description="COM_SPORTSMANAGEMENT_TABS_FAVORITE_DESC">
+		label="COM_SPORTSMANAGEMENT_TABS_FAVORITE"
+		description="COM_SPORTSMANAGEMENT_TABS_FAVORITE_DESC">
 	
 		<field
 			name="fav_team"
@@ -662,25 +653,44 @@ default="2"/>
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+
+		<field
+			name="fav_team_send_mail"
+			type="list"
+			class="form-control form-control-inline"
+			default="0"
+			size="1"
+			label="Spieländerungen benachrichtigen"
+			description="Spieländerungen an Teamspieler per E-Mail benachrichtigen">
+			<option
+				value="0">
+				Keine</option>
+			<option
+				value="1">
+				Alle Spiele</option>
+			<option
+				value="2">
+				Nur eigene Spiele</option>
+		</field>
 	</fieldset>	
 	
-		<fieldset name="picture"
-    label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
-  description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
-<field
-name="picture"
-type="media"
-default="images/com_sportsmanagement/database/projects/"				
-label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT_PICTURE"
-description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT_PICTURE"
-class="inputbox"
-preview="show"	
-targetfolder="projects"				
-directory="images/com_sportsmanagement/database/projects"
-showon="show_info:1[AND]show_image:1"
-/>
+	<fieldset name="picture"
+		label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
+		description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
+
+		<field
+			name="picture"
+			type="media"
+			default="images/com_sportsmanagement/database/projects/"				
+			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT_PICTURE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT_PICTURE"
+			class="inputbox"
+			preview="show"	
+			targetfolder="projects"				
+			directory="images/com_sportsmanagement/database/projects"
+			showon="show_info:1[AND]show_image:1" />
 				
-			<field
+		<field
 			name="cr_picture"
 			type="text"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_PICTURE_CR"
@@ -689,22 +699,19 @@ showon="show_info:1[AND]show_image:1"
       	
 	</fieldset>
 	
-<fieldset name="extended"
-  label="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
-  description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC">
+	<fieldset name="extended"
+		label="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
+		description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC">  
+	</fieldset>
   
-  </fieldset>
-  
-<fieldset name="extendeduser"
-  label="COM_SPORTSMANAGEMENT_TABS_EXTENDEDUSER"
-  description="COM_SPORTSMANAGEMENT_TABS_EXTENDEDUSER_DESC">
-  
-  </fieldset>	
+	<fieldset name="extendeduser"
+		label="COM_SPORTSMANAGEMENT_TABS_EXTENDEDUSER"
+		description="COM_SPORTSMANAGEMENT_TABS_EXTENDEDUSER_DESC">
+    </fieldset>	
 
- <fieldset name="extra_fields"
-  label="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS"
-  description="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS_DESC">
-  
-  </fieldset>
+	<fieldset name="extra_fields"
+		label="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS"
+		description="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS_DESC">  
+	</fieldset>
       	
 </form>
