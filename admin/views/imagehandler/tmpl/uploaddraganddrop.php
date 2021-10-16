@@ -45,7 +45,7 @@ $languageCode = substr($lang->getTag(),0,2);
 <!-- link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.min.css" rel="stylesheet" crossorigin="anonymous">
 <!-- the fileinput plugin styling CSS file -->
-<link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.6/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />  
+<link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@<?php echo $this->bootstrap_fileinput_version; ?>/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />  
   
   
   
