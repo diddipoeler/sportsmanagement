@@ -1269,8 +1269,28 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 
 			if ($post['match_date' . $pks[$x]] != $tblMatch->match_date)
 			{
-				$this->jsmapp->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_ADMIN_CHANGE'), 'Notice');
-				self::sendEmailtoPlayers();
+				$this->jsmquery->clear();
+				$this->jsmquery->select('t1.id as hometeam,t2.id as awayteam');
+				$this->jsmquery->select('p.fav_team, p.fav_team_send_mail');
+				$this->jsmquery->select('CASE WHEN CHAR_LENGTH(t1.alias) AND CHAR_LENGTH(t2.alias) THEN CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) ELSE m.id END AS slug ');
+				$this->jsmquery->from('#__sportsmanagement_match AS m');
+				$this->jsmquery->join('INNER', '#__sportsmanagement_round AS r ON m.round_id = r.id ');
+				$this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id');
+				$this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id');
+				$this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id ');
+				$this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id ');
+				$this->jsmquery->join('LEFT', '#__sportsmanagement_team AS t1 ON t1.id = st1.team_id');
+				$this->jsmquery->join('LEFT', '#__sportsmanagement_team AS t2 ON t2.id = st2.team_id');
+				$this->jsmquery->join('LEFT', '#__sportsmanagement_project AS p ON p.id = pt1.project_id');
+				$this->jsmquery->where('m.id = ' . $object->id);
+				$this->jsmdb->setQuery($this->jsmquery);
+				$result = $this->jsmdb->loadObject();
+
+				if ($result->fav_team_send_mail == 1 || ($result->fav_team_send_mail == 2 && ($result->fav_team == $result->hometeam || $result->fav_team == $result->awayteam)))
+				{
+					$this->jsmapp->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_ADMIN_CHANGE'), 'Notice');
+					self::sendEmailtoPlayers();
+				}
 			}
 
 			$object->match_number = $post['match_number' . $pks[$x]];
@@ -1707,7 +1727,7 @@ break;
 
 		foreach ($teamplayer as $player)
 		{
-			if ($player->email)
+			if (trim($player->email))
 			{
 				// Add the sender Information.
 				$sender = array(
