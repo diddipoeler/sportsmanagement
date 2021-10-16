@@ -31,6 +31,14 @@ $languageCode = substr($lang->getTag(),0,2);
 //echo 'getTag <pre>'.print_r($lang->getTag(),true).'</pre>';
 //echo 'languageCode <pre>'.print_r($languageCode,true).'</pre>';
 
+
+/** https://cdnjs.com/libraries/bootstrap-fileinput */
+//$this->bootstrap_fileinput_version = '5.2.6';
+/** https://cdnjs.com/libraries/popper.js */
+//$this->bootstrap_fileinput_popperversion = '2.10.2';
+//$this->bootstrap_fileinput_bootstrapversion = '5.1.1';
+
+
 //$bootstrap_fileinput_version = '5.1.2';
 
 ?>
