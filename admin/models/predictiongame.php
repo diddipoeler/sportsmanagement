@@ -261,7 +261,7 @@ $result = false;
 	}
 
 	/**
-	 * Method to return a prediction project array
+	 * Method to return a prediction project array IDs!
 	 *
 	 * @access public
 	 * @return array
