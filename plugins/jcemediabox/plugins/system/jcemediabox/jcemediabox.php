@@ -88,7 +88,12 @@ class plgSystemJCEMediabox extends JPlugin
         $tmpl = $app->input->getWord('tmpl');
 
         // don't load mediabox on certain pages
-        if ($pop || $print || $tmpl == 'component' || $task == 'new' || $task == 'edit') {
+        if ($pop || $task == 'new' || $task == 'edit') {
+            return;
+        }
+
+        // load in print
+        if ($tmpl == 'component' && !$print) {
             return;
         }
 

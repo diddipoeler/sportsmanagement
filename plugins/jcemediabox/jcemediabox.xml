@@ -2,12 +2,12 @@
 <extension version="2.5" type="plugin" group="system" method="upgrade">
     <name>plg_system_jcemediabox</name>
     <author>Ryan Demmer</author>
-    <creationDate>28-04-2020</creationDate>
-    <copyright>Copyright (C) 2006 - 2020 Ryan Demmer. All rights reserved</copyright>
+    <creationDate>23-09-2021</creationDate>
+    <copyright>Copyright (C) 2006 - 2021 Ryan Demmer. All rights reserved</copyright>
     <license>GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html</license>
     <authorEmail>info@joomlacontenteditor.net</authorEmail>
     <authorUrl>www.joomlacontenteditor.net</authorUrl>
-    <version>2.1.1</version>
+    <version>2.1.2</version>
     <description>PLG_SYSTEM_JCEMEDIABOX_XML_DESC</description>
 
     <config>
@@ -49,9 +49,12 @@
                     <option value="0">JNO</option>
                 </field>
 
-                <field name="components" type="components" multiple="true" default="" label="PLG_SYSTEM_JCEMEDIABOX_COMPONENTS" description="PLG_SYSTEM_JCEMEDIABOX_COMPONENTS_DESC" />
+                <field name="components" type="components" multiple="true" default="" label="PLG_SYSTEM_JCEMEDIABOX_COMPONENTS" description="PLG_SYSTEM_JCEMEDIABOX_COMPONENTS_DESC" layout="joomla.form.field.list-fancy-select" />
+                
                 <field name="menu" type="menuitem" state="1" default="" multiple="multiple" size="10" label="PLG_SYSTEM_JCEMEDIABOX_MENU" description="PLG_SYSTEM_JCEMEDIABOX_MENU_DESC" />
+                
                 <field name="menu_exclude" type="menuitem" state="1" default="" multiple="multiple" size="10" label="PLG_SYSTEM_JCEMEDIABOX_MENU_EXCLUDE" description="PLG_SYSTEM_JCEMEDIABOX_MENU_EXCLUDE_DESC" />
+                
                 <field name="dynamic_themes" type="radio" default="0" label="PLG_SYSTEM_JCEMEDIABOX_DYNAMICTHEMES" description="PLG_SYSTEM_JCEMEDIABOX_DYNAMICTHEMES_DESC" class="btn-group btn-group-yesno">
                     <option value="1">JYES</option>
                     <option value="0">JNO</option>
