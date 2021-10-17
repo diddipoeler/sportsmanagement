@@ -67,7 +67,15 @@ use Joomla\CMS\Uri\Uri;
 					<?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_MATCHES_DATE', 'mc.match_date', $this->sortDirection, $this->sortColumn); ?>
                 </th>
                 <th class="title"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TIME'); ?></th>
-                <th class="title"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_ATT'); ?></th>
+				<?php
+				if($this->projectws->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_FAUSTBALL')
+				{
+				?>
+                	<th class="title"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_VENUE'); ?></th>
+				<?php
+				}
+				?>
+				<th class="title"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_ATT'); ?></th>
 				<?php
 				if ($this->projectws->project_type == 'DIVISIONS_LEAGUE')
 				{
@@ -259,9 +267,9 @@ $pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=compon
                         <a href="javascript:void(0)"
                            onclick="switchMenu('present<?php echo $row->id; ?>')">&nbsp;
 							<?php 
-$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PRESENT');
-$image_attributes['title'] = $imageTitle;                            
-echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/arrow_open.png',$imageTitle,$image_attributes);
+							$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PRESENT');
+							$image_attributes['title'] = $imageTitle;                            
+							echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/arrow_open.png', $imageTitle, $image_attributes);
 							?>
                         </a><br/>
                         <span id="present<?php echo $row->id; ?>" style="display: none">
@@ -276,7 +284,22 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 							<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PRESENT_SHORT'); ?>
 								</span>
                     </td>
-                    <td id="crowd" class="center">
+                    <?php
+					if($this->projectws->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_FAUSTBALL')
+					{
+					?>
+						<td id="crowd" class="center">
+							<?php 
+							$append = '';
+							$append .= ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" ';
+							echo HTMLHelper::_('select.genericlist', $this->playgrounds, 'playground_id' . $row->id,
+								'class="form-control form-control-inline" size="1"' . $append, 'value', 'text', $row->playground_id 
+							); ?>
+						</td>
+					<?php
+					}
+					?>
+					<td id="crowd" class="center">
                         <input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" type="text"
                                name="crowd<?php echo $row->id; ?>"
                                value="<?php echo $row->crowd; ?>" size="4" maxlength="5" tabindex="4"
