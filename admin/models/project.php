@@ -84,9 +84,10 @@ class sportsmanagementModelProject extends JSMModelAdmin
 
 		$db    = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
-		$query->select('*');
-		$query->from('#__sportsmanagement_project');
-		$query->where('id = ' . $project_id);
+		$query->select('p.*, st.name AS sport_type_name');
+		$query->from('#__sportsmanagement_project as p');
+		$query->join('INNER', '#__sportsmanagement_sports_type AS st ON p.sports_type_id = st.id ');
+		$query->where('p.id = ' . $project_id);
 		$db->setQuery($query);
 		$result = $db->loadObject();
 		
