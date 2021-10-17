@@ -852,18 +852,14 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project` (
   `project_art_id` TINYINT(1) NOT NULL DEFAULT '1' ,
   `project_live_update` TINYINT(1) NOT NULL DEFAULT '0' ,
   `use_tie_break` TINYINT(1)  NULL DEFAULT '0' ,
-  
   `tennis_single_matches` SMALLINT(6) NOT NULL DEFAULT '0' ,
   `tennis_double_matches` SMALLINT(6) NOT NULL DEFAULT '0' ,
-  
   `approved_gcalendar` TINYINT(1)  NOT NULL DEFAULT '0' ,
   `gcalendar_id` INT( 11 ) NOT NULL DEFAULT  '0',
-  
   `gcalendar_use_fav_teams` INT( 11 ) NOT NULL DEFAULT  '0',
   `agegroup_id` INT( 11 ) NOT NULL DEFAULT  '0',
   `projectinfo` TEXT NULL DEFAULT NULL ,
   `category_id` INT( 11 ) NOT NULL DEFAULT  '0',
-  
   `hits` INT(11) NOT NULL DEFAULT '0' ,
   `modified_hits` INT(11) NOT NULL DEFAULT '0' ,
   `cr_picture` varchar(255) DEFAULT NULL,
@@ -873,13 +869,13 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project` (
   `use_approved` tinyint(1) NOT NULL DEFAULT '0',
   `fast_projektteam` tinyint(1) NOT NULL DEFAULT '0',
   `openligaid` int(11) DEFAULT NULL,
-  
   `instagram` VARCHAR(250) NOT NULL DEFAULT '' ,
   `linkedin` VARCHAR(250) NOT NULL DEFAULT '' ,
   `twitter` VARCHAR(250) NOT NULL DEFAULT '' ,
   `facebook` VARCHAR(250) NOT NULL DEFAULT '' ,
   `single_matches` SMALLINT(6) NOT NULL DEFAULT '0' ,
   `use_smallcaliber` TINYINT(1)  NULL DEFAULT NULL ,
+  `fav_team_send_mail` TINYINT(4) NOT NULL DEFAULT '1'`,
 
   PRIMARY KEY (`id`) ,
   KEY `league_id` (`league_id`),
