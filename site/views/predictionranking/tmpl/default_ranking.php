@@ -430,6 +430,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 					}
 
 					$ChampPoints = 0;
+					$membersDataArray[$member->pmID]['show_tipps'] = sportsmanagementModelPrediction::isProjectStarted($predictionProject) || sportsmanagementModelPrediction::getAllowed($member->user_id);
 					$membersDataArray[$member->pmID]['champ_tipp']        = $member->champ_tipp;
 					$membersDataArray[$member->pmID]['champ_tipp_result'] = sportsmanagementModelPrediction::getChampionPoints($member->champ_tipp);
 					// if a champion was already set
@@ -688,10 +689,14 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 											?>
                                             <td <?php echo $tdStyleStr; ?> >
 												<?PHP
-												echo $imgFile;
-                                                if ($this->config['show_champion_tip_result'] && ($membersDataArray[$key]['champ_tipp_result'] !== false)) {
-													echo "<sub style='color:#7D0204;font-weight:bold;'>".$membersDataArray[$key]['champ_tipp_result']."</sub>";
-                                                }
+                                                if ($membersDataArray[$key]['show_tipps']) {
+                                                    echo $imgFile;
+                                                    if ($this->config['show_champion_tip_result'] && ($membersDataArray[$key]['champ_tipp_result'] !== false)) {
+                                                        echo "<sub style='color:#7D0204;font-weight:bold;'>".$membersDataArray[$key]['champ_tipp_result']."</sub>";
+                                                    }
+                                                } else {
+													echo "--";
+												}
 												?>
                                             </td>
 											<?PHP
@@ -730,11 +735,16 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                                                 } else {
                                                     $imgTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_FINAL4_TIP');
                                                     $imgFile  = HTMLHelper::image("media/com_sportsmanagement/event_icons/goal2.png", $imgTitle, array('title' => $imgTitle));
-                                                } 
-                                                echo $imgFile;
-                                                if ($this->config['show_final4_tip_result'] && ($final4_tip['final4_tipp_result'] !== false)) {
-                                                    echo "<sub style='color:#7D0204;font-weight:bold;'>".$final4_tip['final4_tipp_result']."</sub>";
-												}?>
+                                                }
+												if ($membersDataArray[$key]['show_tipps']) {
+													echo $imgFile;
+													if ($this->config['show_final4_tip_result'] && ($final4_tip['final4_tipp_result'] !== false)) {
+														echo "<sub style='color:#7D0204;font-weight:bold;'>".$final4_tip['final4_tipp_result']."</sub>";
+													}
+                                                } else {
+													echo "--";
+												}
+												?>
 												</span></td>
 												<?php
                                             }
