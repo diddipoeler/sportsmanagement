@@ -41,6 +41,7 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   19-10-2021: **3.8.87** Anpassungen JSM Installation
 *   17-10-2021: **3.8.86** Anpassungen #1269
 *   11-10-2021: **3.8.85** Anpassungen Joomla 4
 *   29-07-2021: **3.8.84** Anpassungen Joomla 4
