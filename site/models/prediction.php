@@ -1845,7 +1845,7 @@ $recipient = array();
 			if (!$result->joker)    // No Joker was used for this prediction
 			{
 				// check, if special predition Round settings available
-				if (isset($ratingChart[$result->matchRoundId]))
+				if (isset($result->matchRoundId) && isset($ratingChart[$result->matchRoundId]))
 				{
 					return sportsmanagementModelPrediction::scoreMatchPredictionPoints($ratingChart[$result->matchRoundId], $result);
 				}

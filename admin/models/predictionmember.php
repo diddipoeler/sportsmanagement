@@ -136,12 +136,16 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 				$config->getValue('config.fromname'));
 		}
 
-		$mdlPredictionGame  = BaseDatabaseModel::getInstance('PredictionGame', 'sportsmanagementModel');
-		$mdlPredictionGames = BaseDatabaseModel::getInstance('PredictionGames', 'sportsmanagementModel');
+		$mdlPredictionProject = BaseDatabaseModel::getInstance('predictionproject', 'sportsmanagementModel');
+		$mdlPredictionGame    = BaseDatabaseModel::getInstance('PredictionGame', 'sportsmanagementModel');
+		$mdlPredictionGames   = BaseDatabaseModel::getInstance('PredictionGames', 'sportsmanagementModel');
+		$mdlPrediction        = BaseDatabaseModel::getInstance('Prediction', 'sportsmanagementModel');
 
-		$predictiongame    = $mdlPredictionGame->getPredictionGame($prediction_id);
-		$predictionproject = $mdlPredictionGame->getPredictionProjectIDs($prediction_id);
+		$predictionproject    = $mdlPredictionProject->getPredictionProject($prediction_id);
+		$predictiongame       = $mdlPredictionGame->getPredictionGame($prediction_id);
+		$predictionprojectIDs = $mdlPredictionGame->getPredictionProjectIDs($prediction_id);
 
+		$reminderfound = 0;
 		/**
 		 * schleife über die tippspieler anfang
 		 */
@@ -163,22 +167,26 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 			$fromdate       = '';
 			$predictionlink = '';
 			$projectcount   = 0;
-
-			foreach ($predictionproject as $project_key => $project_value)
+			
+			foreach ($predictionprojectIDs as $project_key => $project_value)
 			{
-				$predictiongamematches = $mdlPredictionGames->getPredictionGamesMatches($prediction_id, $project_value, $member_email->user_id);
+				$totalPoints    = 0;
+
+				$predictionProjectSettings = $mdlPrediction->getPredictionProject($project_value);
+				$predictiongamematches     = $mdlPredictionGames->getPredictionGamesMatches($prediction_id, $project_value, $member_email->user_id);
 
 				$body .= "<table class='table' width='100%' cellpadding='0' cellspacing='0'>";
 				$body .= "<tr>";
-				$body .= "<th class='sectiontableheader' style='text-align:center;'>" . Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_DATE_TIME') . "</th>";
-				$body .= "<th class='sectiontableheader' style='text-align:center;' colspan='5' >" . Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_MATCH') . "</th>";
-				$body .= "<th class='sectiontableheader' style='text-align:center;'>" . Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_RESULT') . "</th>";
-				$body .= "<th class='sectiontableheader' style='text-align:center;'>" . Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_YOURS') . "</th>";
-				$body .= "<th class='sectiontableheader' style='text-align:center;'>" . Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_POINTS') . "</th>";
+				$body .= "<th class='sectiontableheader' style='text-align:left;'>" . Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_DATE_TIME') . "</th>";
+				$body .= "<th class='sectiontableheader' style='text-align:left;' colspan='5' >" . Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_MATCH') . "</th>";
+				$body .= "<th class='sectiontableheader' style='text-align:left;'>" . Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_RESULT') . "</th>";
+				$body .= "<th class='sectiontableheader' style='text-align:left;'>" . Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_YOURS') . "</th>";
+				$body .= "<th class='sectiontableheader' style='text-align:left;'>" . Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_POINTS') . "</th>";
 				$body .= "</tr>";
 				/**
 				 * schleife über die ergebnisse in der runde
 				 */
+				$k = 0;
 				foreach ($predictiongamematches AS $result)
 				{
 					$class = ($k == 0) ? 'sectiontableentry1' : 'sectiontableentry2';
@@ -196,6 +204,23 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 					{
 						$resultAway = $result->team2_result_decision;
 					}
+
+					// --------------------------------------------------------------------------------------
+					// Filter already passed matches and matches which are already tipped by the tippmember
+					if ($resultHome != '-' || $resultAway != '-')
+					{
+						// match already ended, there is no tippreminder to send :-)
+						continue;
+					}
+					if (  ($predictionproject->mode == '0' && (isset($result->tipp_home) || isset($result->tipp_away)))
+					    ||($predictionproject->mode == '1' && isset($result->tipp))
+						)
+					{
+						// Tippmember tipped already => skip this game
+						continue;
+					}
+					$reminderfound++;
+					// --------------------------------------------------------------------------------------
 
 					$closingtime   = $configprediction['closing_time'];// 3600=1 hour
 					$matchTimeDate = sportsmanagementHelper::getTimestamp($result->match_date, 1, $predictionProjectSettings->timezone);
@@ -249,7 +274,7 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 					 * spielergebnisse
 					 */
 					$body .= "<td class='td_c'>";
-					$body .= $result->tipp_home . '-' . $result->tipp_away;
+					$body .= $resultHome . '-' . $resultAway;
 					$body .= "</td>";
 					/**
 					 * tippergebnisse
@@ -258,7 +283,7 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 					/**
 					 * Tipp in normal mode
 					 */
-					if ($predictionProject->mode == '0')
+					if ($predictionproject->mode == '0')
 					{
 						$body .= $result->tipp_home . $configprediction['seperator'] . $result->tipp_away;
 					}
@@ -266,7 +291,7 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 					/**
 					 * Tipp in toto mode
 					 */
-					if ($predictionProject->mode == '1')
+					if ($predictionproject->mode == '1')
 					{
 						$body .= $result->tipp;
 					}
@@ -277,7 +302,7 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 					 * punkte
 					 */
 					$body        .= "<td class='td_c'>";
-					$points      = sportsmanagementModelPrediction::getMemberPredictionPointsForSelectedMatch($predictionProject, $result);
+					$points      = sportsmanagementModelPrediction::getMemberPredictionPointsForSelectedMatch($predictionproject, $result);
 					$totalPoints = $totalPoints + $points;
 					$body        .= $points;
 					$body        .= "</td>";
@@ -383,16 +408,15 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 				$message = str_replace('[PREDICTIONADMIN]', $config->getValue('sitename'), $message);
 			}
 
-			$mailer->setBody($message);
-			$send = $mailer->Send();
+            if ($reminderfound > 0) {
+				$mailer->setBody($message);
+                $send = $mailer->Send();
 
-			if ($send !== true)
-			{
-			}
-			else
-			{
-				$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_MAIL_SEND_OK', $member_email->email), 'notice');
-			}
+                if ($send !== true) {
+                } else {
+                    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_MAIL_SEND_OK', $member_email->email), 'notice');
+                }
+            }
 		}
 
 		/**

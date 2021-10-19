@@ -219,5 +219,42 @@ class sportsmanagementModelpredictionproject extends AdminModel
 		return $data;
 	}
 
+	/**
+	 * Method to return a prediction project object
+	 *
+	 * @access public
+	 * @return array
+	 * @since  0.1
+	 */
+	function getPredictionProject($prediction_id = 0)
+	{
+		$db     = Factory::getDbo();
+		$query  = $db->getQuery(true);
+		if ($prediction_id)
+		{
+			// Select some fields
+			$query->clear();
+			$query->select('*');
+			$query->from('#__sportsmanagement_prediction_project');
+			$query->where('prediction_id = ' . $prediction_id);
 
+			$db->setQuery($query);
+
+			if (!$result = $db->loadObject())
+			{
+				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
+
+				return false;
+			}
+			else
+			{
+				return $result;
+			}
+		}
+		else
+		{
+			return false;
+		}
+
+	}
 }
