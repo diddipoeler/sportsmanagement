@@ -3510,6 +3510,12 @@ try
                 <img src="components/com_sportsmanagement/assets/icons/Andreas_Haunold.jpg" alt="ortwinn20000" height="80px">
                 <span>ortwin20000</span><br>
             </div>
+	    
+	    <div class="jsm-info-team p-1">
+                <img src="components/com_sportsmanagement/assets/icons/joerg-stelter.jpg" alt="jst" height="80px">
+                <span>jst</span><br>
+            </div>
+	    
             <div class="jsm-info-team p-1">
                 <img src="components/com_sportsmanagement/assets/icons/appu-konrad.jpg" alt="appukonrad" height="80px">
                 <span>appukonrad</span><br>
