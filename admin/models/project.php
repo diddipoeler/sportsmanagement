@@ -14,6 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Log\Log;
+use Joomla\Registry\Registry;
 
 /**
  * sportsmanagementModelProject
@@ -38,6 +39,117 @@ class sportsmanagementModelProject extends JSMModelAdmin
 	 * @see   BaseDatabaseModel
 	 * @since 3.2
 	 */
+
+	public static function getTemplateConfig($project_id, $template, $cfg_which_database = 0, $call_function = '')
+	{
+		$app           = Factory::getApplication();
+		$option        = $app->input->getCmd('option');
+		$view          = $app->input->getVar("view");
+		$db            = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
+		$query         = $db->getQuery(true);
+		$checktemplate = false;
+
+		switch ($view)
+		{
+			case 'editmatch':
+			case 'editprojectteam':
+			case 'editteam':
+			case 'editperson':
+			case 'editclub':
+			case 'jltournamenttree':
+				break;
+			default:
+				$checktemplate = true;
+				break;
+		}
+
+		/**
+		 *
+		 * first load the default settings from the default <template>.xml file
+		 */
+		$paramsdata          = "";
+		$arrStandardSettings = array();
+
+		$xmlfile = JPATH_COMPONENT_SITE . DIRECTORY_SEPARATOR . 'settings' . DIRECTORY_SEPARATOR . 'default' . DIRECTORY_SEPARATOR . $template . '.xml';
+
+		if ($project_id == 0)
+		{
+			return $arrStandardSettings;
+		}
+
+		$query->select('t.params');
+		$query->from('#__sportsmanagement_template_config AS t');
+		$query->join('INNER', '#__sportsmanagement_project AS p ON p.id = t.project_id');
+		$query->where('t.template LIKE ' . $db->Quote($template));
+		$query->where('p.id = ' . (int) $project_id);
+
+		$starttime = microtime();
+		$db->setQuery($query);
+		$result = $db->loadResult();
+
+		if ($checktemplate)
+		{
+			if (!$result)
+			{
+				$project = self::getProject($project_id);
+
+				if (!empty($project) && $project->master_template > 0)
+				{
+					$query->clear();
+					$query->select('t.params');
+					$query->from('#__sportsmanagement_template_config AS t');
+					$query->join('INNER', '#__sportsmanagement_project AS p ON p.id = t.project_id');
+					$query->where('t.template LIKE ' . $db->Quote($template));
+					$query->where('p.id = ' . $project->master_template);
+
+					$starttime = microtime();
+					$db->setQuery($query);
+					$result = $db->loadResult();
+
+					if (!$result)
+					{
+						// self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING') . " " . $template;
+						// self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING_PID') . $project->master_template;
+						// self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT');
+					
+						return $arrStandardSettings;
+					}
+				}
+				else
+				{
+					/**
+					 *
+					 * there are no saved settings found, use the standard xml file default values
+					 */
+					return $arrStandardSettings;
+				}
+			}
+		}
+
+		$jRegistry = new Registry;
+
+		if (version_compare(JVERSION, '3.0.0', 'ge'))
+		{
+			$jRegistry->loadString($result);
+		}
+		else
+		{
+			$jRegistry->loadJSON($result);
+		}
+
+		$configvalues = $jRegistry->toArray();
+
+		/**
+		 *
+		 * merge and overwrite standard settings with individual view settings
+		 */
+		$settings = array_merge($arrStandardSettings, $configvalues);
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+
+		return $settings;
+
+	}
+	
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
