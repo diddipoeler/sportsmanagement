@@ -69,7 +69,7 @@
 
 
 		
-		<field 	name="show_players_layout" type="extensionradiobutton" default="no_tabs" 
+		<field 	name="show_players_layout" type="list" default="no_tabs" 
     class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_SHOW_PLAYERS_LAYOUT" 
 				description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_SHOW_PLAYERS_LAYOUT">

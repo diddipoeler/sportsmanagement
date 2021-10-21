@@ -74,7 +74,7 @@ label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 		</field>
 		
     <field name="which_internetadress_picture_provider" 
-    type="extensionradiobutton" 
+    type="list" 
     default="thumbsniper"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_INTERNETADRESS_PICTURE_PROVIDER"
@@ -82,6 +82,7 @@ label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 			<option value="thumbshots">thumbshots</option>
 			<option value="thumbsniper">thumbsniper</option>
 			<option value="pagepeeker">pagepeeker</option>
+	    <option value="miniature">miniature</option>
 		</field>
     
     <field name="internetadress_picture_thumbsniper_preview" 
@@ -95,7 +96,7 @@ label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 		</field>
     
 <field name="pagepeeker_size" 
-    type="extensionradiobutton" 
+    type="list" 
     default="m"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_INTERNETADRESS_PICTURE_PAGEPEEKER_SIZE"
