@@ -17,7 +17,7 @@
 			<option value="1">JYES</option>
 		</field>
     
-    <field name="show_teaminfo_tabs" type="extensionradiobutton" default="no_tabs"
+    <field name="show_teaminfo_tabs" type="list" default="no_tabs"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_TEAMINFO_PARAM_LABEL_SHOW_RESULT_TABS"
 			description="COM_SPORTSMANAGEMENT_FES_TEAMINFO_PARAM_DESCR_SHOW_RESULT_TABS">

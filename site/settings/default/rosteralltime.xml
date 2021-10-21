@@ -40,7 +40,7 @@
 			<option value="1">JYES</option>
 		</field>
 
-		<field 	name="show_players_layout" type="extensionradiobutton" default="player_standard" 
+		<field 	name="show_players_layout" type="list" default="player_standard" 
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_PLAYERS_LAYOUT" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_PLAYERS_LAYOUT">
 			<option value="player_standard">COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION1_PLAYER_STANDARD</option>
@@ -55,7 +55,7 @@
 			<option value="1">JYES</option>
 		</field>
 
-		<field 	name="show_staff_layout" type="extensionradiobutton" default="staff_standard" 
+		<field 	name="show_staff_layout" type="list" default="staff_standard" 
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_STAFF_LAYOUT" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_STAFF_LAYOUT">
 			<option value="staff_standard">COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION1_STAFF_STANDARD</option>
