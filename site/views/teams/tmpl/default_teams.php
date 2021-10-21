@@ -217,6 +217,9 @@ $image = HTMLHelper::image($picture, $clubTitle, array('title' => $clubTitle, ' 
 							case 'pagepeeker':
 								echo '<img style="" src="http://free.pagepeeker.com/v2/thumbs.php?size=' . $this->config['pagepeeker_size'] . '&url=' . $team->club_www . '">';
 								break;
+								case 'miniature':
+echo '<img style="" src="https://api.miniature.io/?width=100&height=50url=' . $team->club_www . '">';								
+								break;
 						}
 						?>
                     </td>
