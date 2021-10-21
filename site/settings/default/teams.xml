@@ -82,6 +82,7 @@ label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 			<option value="thumbshots">thumbshots</option>
 			<option value="thumbsniper">thumbsniper</option>
 			<option value="pagepeeker">pagepeeker</option>
+	    <option value="miniature">miniature</option>
 		</field>
     
     <field name="internetadress_picture_thumbsniper_preview" 
