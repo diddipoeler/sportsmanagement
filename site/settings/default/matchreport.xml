@@ -12,7 +12,7 @@
 			<option value="1">JYES</option>
 		</field>
 
-    <field name="show_result_tabs" type="extensionradiobutton" default="no_tabs"
+    <field name="show_result_tabs" type="list" default="no_tabs"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_LABEL_SHOW_RESULT_TABS"
 			description="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_SHOW_RESULT_TABS">
@@ -163,7 +163,7 @@
 			<option value="1">JYES</option>
 		</field>
 
-		<field 	name="which_position_tooltip_subst" type="extensionradiobutton" default="bottom" class="radio btn-group btn-group-yesno"
+		<field 	name="which_position_tooltip_subst" type="list" default="bottom" class="radio btn-group btn-group-yesno"
 				label="Welche Position des Tooltips bei den Wechseln ?" 
 				description="Welche Position des Tooltips bei den Wechseln ?">
 			<option value="bottom">bottom</option>
