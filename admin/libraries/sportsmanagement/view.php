@@ -204,7 +204,9 @@ img.car {
     $this->_persontype     = $this->jinput->get('persontype');
 	$this->jsmmessage     = '';
 	$this->jsmmessagetype = 'notice';
-		
+	
+	$mdlProject               = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
+	$this->templateConfig = $mdlProject->getTemplateConfig($this->project_id, 'backend_' . $this->getName());		
 		
 		switch ($this->view)
 		{
