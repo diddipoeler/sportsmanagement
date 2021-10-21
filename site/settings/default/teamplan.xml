@@ -14,6 +14,16 @@
 			<option value="DESC">COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_OPTION1_PLAN_ORDER</option>
 		</field>
 
+<field name="show_teamplan_print_option" type="extensionradiobutton" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PRINT_OPTION"
+			description="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PRINT_OPTION_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+
+
 	</fieldset>
 	
 <!-- reiter 2-->

@@ -14,6 +14,9 @@ use Joomla\CMS\Language\Text;
 
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+
+if ( $this->config['show_teamplan_print_option'] )
+{
 ?>
 <script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>  
 <div class="<?php echo $this->divclasscontainer; ?>" id="teamplan">
@@ -25,8 +28,10 @@ jQuery("#btnPrint").printPreview({
   obj2print:'#teamplanoutput' 
 }); 
 </script>  
-	
-	<?php
+<?php
+}
+
+
 	if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO)
 	{
 		echo $this->loadTemplate('debug');
@@ -58,6 +63,10 @@ jQuery("#btnPrint").printPreview({
 	echo $this->loadTemplate('jsminfo');
 	?>
 </div>
+<?php
+if ( $this->config['show_teamplan_print_option'] )
+{
+?>
 <script type="text/javascript">
     jQuery(function ($) {
         $("#exportButton").click(function () {
@@ -75,3 +84,6 @@ html2pdf().set(opt).from(element).save();
         });
     });
 </script>
+<?php
+}
+?>
