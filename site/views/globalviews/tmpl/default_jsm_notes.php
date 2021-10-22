@@ -16,14 +16,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 
-if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
-{
-	$boxicon = 'fas fa-edit fa-2x fa-pull-left';
-}
-else
-{
-	$boxicon = 'info-tab note-icon';
-}
+$boxicon = 'info-tab note-icon';
 ?>
 
 <?php
@@ -36,8 +29,11 @@ if (ComponentHelper::getParams('com_sportsmanagement')->get('show_jsm_notes_fron
 		<div class="shadow">
 			<div class="<?php echo $boxicon; ?>" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NOTE'); ?>"><i></i></div>
 			<div class="note-box">
-				<p><strong><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NOTE'); ?></strong>
-					<?php echo $notes; ?>
+				<p>
+					<strong>
+						<!-- <?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NOTE'); ?> -->
+						<?php echo $notes; ?>
+					</strong>
 				</p>
 			</div>
 		</div>
