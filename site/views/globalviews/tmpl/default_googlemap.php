@@ -78,22 +78,10 @@ $this->document->addScript('https://unpkg.com/leaflet-routing-machine@'.$this->l
 			break;
 	}
 
-	if (ComponentHelper::getParams('com_sportsmanagement')->get('show_jsm_notes_front', 0) == 1)
-	{
-		?>
-		<!--Note box blau -->
-		<div class="color-box">
-							<div class="shadow">
-								<div class="info-tab note-icon" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?>"><i></i></div>
-								<div class="note-box">
-									<p><strong><?php echo Text::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?></strong>
-									</p>
-								</div>
-							</div>
-		</div>
-		<!--Note box blau -->
-	<?php
-	}
+	$this->notes = array();
+	$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS');
+	echo $this->loadTemplate('jsm_notes');
+
 	?>
     <div id="mapjsm"
          style="height: <?php echo $this->mapconfig['map_height']; ?>px; margin-top: 50px; position: relative;" itemscope itemtype="http://schema.org/Place">
