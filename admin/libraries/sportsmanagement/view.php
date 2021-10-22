@@ -23,6 +23,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use sportsmanagementView as GlobalSportsmanagementView;
 
 /** welche joomla version ? */
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
@@ -130,6 +131,7 @@ class sportsmanagementView extends BaseHtmlView
 
 		$this->app       = Factory::getApplication();
 		$this->starttime = microtime();
+
 		/**
 		 * Check for errors.
 		 */
@@ -156,11 +158,13 @@ class sportsmanagementView extends BaseHtmlView
 		//$this->document->addStyleSheet(Uri::root() . 'components/com_sportsmanagement/assets/css/flex.css');
         if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
         {
-        $this->document->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/joomla4functions.js');
-		$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/extended-1.1.css');
+			$this->document->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/joomla4functions.js');
+			$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/extended-1.1.css');
+			$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/extended_4.css');
 			//$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/style.css'); 
 			$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/stylebox.css');
-        //$this->document->addScript(Uri::root() . 'media/system/js/searchtools.js');
+			$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/stylebox_4.css');
+			//$this->document->addScript(Uri::root() . 'media/system/js/searchtools.js');
         }
 	else	
 	{
@@ -206,7 +210,8 @@ img.car {
 	$this->jsmmessagetype = 'notice';
 	
 	$mdlProject               = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
-	$this->templateConfig = $mdlProject->getTemplateConfig($this->project_id, 'backend_' . $this->getName());		
+	$this->templateConfig = $mdlProject->getTemplateConfig($this->project_id, 'backend_' . $this->getName());
+		
 		
 		switch ($this->view)
 		{

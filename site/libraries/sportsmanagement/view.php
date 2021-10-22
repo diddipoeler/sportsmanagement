@@ -92,6 +92,12 @@ if (version_compare(JVERSION, '3.0.0', 'ge'))
 $document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/extended-1.1.css');
 $document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/style.css');   
 $document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/stylebox.css');        
+
+if (version_compare(JVERSION, '4.0.0', 'ge'))
+{
+	$document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/extended_4.css');
+	$document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/stylebox_4.css');        
+}
 ?>        
 
 <?php       
