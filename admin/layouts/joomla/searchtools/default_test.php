@@ -87,7 +87,7 @@ $data['options'] = array_merge($customOptions, $data['options']);
 $filtersActiveClass = $hideActiveFilters ? '' : ' js-stools-container-filters-visible';
  
 // Load search tools
-JHtml::_('searchtools.form', $data['options']['formSelector'], $data['options']);
+HTMLHelper::_('searchtools.form', $data['options']['formSelector'], $data['options']);
 ?>
 <div class="js-stools clearfix">
     <div class="clearfix">

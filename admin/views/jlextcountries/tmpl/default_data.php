@@ -25,7 +25,7 @@ HTMLHelper::_('draggablelist.draggable');
 }
 else
 {
-JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl,$this->saveOrderButton);    
+HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl,$this->saveOrderButton);    
 }
 }
 ?>
@@ -187,12 +187,12 @@ $this->dragable_group = 'data-dragable-group="none"';
 	<?php
 		if ( $this->item->countrymap_mapdata )
 		{
-echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/ok.png',
+echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/ok.png',
 $imageTitle,'title= "'.$imageTitle.'"');    
 		}
 			 else
 			 {
-echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/error.png',
+echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/error.png',
 $imageTitle,'title= "'.$imageTitle.'"');      			 
 			 }
 			 

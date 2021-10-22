@@ -20,15 +20,15 @@ use Joomla\CMS\Uri\Uri;
 $this->saveOrder = $this->sortColumn == 'r.ordering';
 if ($this->saveOrder && !empty($this->items))
 {
-	$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task='.$this->view.'.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
-	if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
-	{    
-		HTMLHelper::_('draggablelist.draggable');
-	}
-	else
-	{
-		JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl,$this->saveOrderButton);    
-	}
+$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task='.$this->view.'.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{    
+HTMLHelper::_('draggablelist.draggable');
+}
+else
+{
+HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl,$this->saveOrderButton);    
+}
 }
 $columns = 6;
 if ($this->templateConfig == null)

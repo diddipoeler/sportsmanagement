@@ -70,7 +70,7 @@ $this->modalheight
 </div>
 <div class="small">
 <?php
-echo Text::sprintf('COM_MEDIA_IMAGE_TITLE', JHtml::_('string.truncate', $this->_tmp_img->name, 10, false), JHtml::_('number.bytes', $this->_tmp_img->size));
+echo Text::sprintf('COM_MEDIA_IMAGE_TITLE', HTMLHelper::_('string.truncate', $this->_tmp_img->name, 10, false), HTMLHelper::_('number.bytes', $this->_tmp_img->size));
 ?>
 </div> 
 
