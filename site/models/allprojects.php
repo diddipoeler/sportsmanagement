@@ -51,7 +51,7 @@ class sportsmanagementModelallprojects extends ListModel
 		// JInput object
 		$jinput                   = $app->input;
 		$this->use_current_season = $jinput->getVar('use_current_season', '0', 'request', 'string');
-		$this->season             = $jinput->request->get('s', 0, 'INT');
+		$this->season             = $jinput->get('s', 0, 'INT');
 
 		$this->limitstart        = $jinput->getVar('limitstart', 0, '', 'int');
 		$config['filter_fields'] = array(
