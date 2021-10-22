@@ -134,7 +134,7 @@
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_referee" type="extensionradiobutton" default="0"
+		<field name="show_referee" type="list" default="0"
 			label="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_LABEL_SHOW_REFEREE" description="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_DESCR_SHOW_REFEREE">
 			<option value="0">JNO</option>
 			<option value="1">COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_OPTION1_SHOW_REFEREE</option>
@@ -169,7 +169,7 @@
 			<option value="shortname">COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_OPTION1_SHOW_PLAYGROUND_NAME</option>
 		</field>
 
-		<field name="show_playground_alert" type="extensionradiobutton" default="0"
+		<field name="show_playground_alert" type="list" default="0"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_LABEL_SHOW_PLAYGROUND_ALERT" description="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_DESCR_SHOW_PLAYGROUND_ALERT">
 			<option value="0">JNO</option>
@@ -230,7 +230,7 @@
             <option value="1">JYES</option>
         </field>
         
-        <field name="show_comments_count" type="extensionradiobutton" default="0"
+        <field name="show_comments_count" type="list" default="0"
         class="radio btn-group btn-group-yesno"
             label="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_LABEL_SHOW_COMMENTS" description="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_DESCR_SHOW_COMMENTS">
             <option value="0">JNO</option>

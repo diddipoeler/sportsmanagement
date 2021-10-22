@@ -587,7 +587,7 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 	 *
 	 * @return
 	 */
-	public static function getTeamsByClubId()
+	public static function getTeamsByClubId($show_teams_of_club = 1)
 	{
 		// Reference global application object
 		$app = Factory::getApplication();
@@ -618,6 +618,14 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 			);
 			$query->from('#__sportsmanagement_team as t ');
 			$query->where('t.club_id = ' . (int) self::$clubid);
+			$query->order('pid');
+			
+			if ($show_teams_of_club == 2)
+			{
+				$filter_season = ComponentHelper::getParams($option)->get('current_season', 0);
+				$query->join('LEFT', '#__sportsmanagement_season_team_id as st on t.id = st.team_id');
+				$query->where('st.season_id IN (' . implode(',', $filter_season) . ')');
+			}
 
 			try
 			{
@@ -634,26 +642,30 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 					$subquery1->where('st.team_id = ' . $team->id);
 					$db->setQuery($subquery1);
 					$result                     = $db->loadObject();
-					$team->ptid                 = $result->ptid;
-					$team->project_team_picture = $result->project_team_picture;
-					$team->trikot_home          = $result->trikot_home;
-					$team->trikot_away          = $result->trikot_away;
-					$subquery1->clear();
-					$subquery1->select('CONCAT_WS( \':\', p.id , p.alias )');
-					$subquery1->from('#__sportsmanagement_project AS p');
-					$subquery1->where('p.id = ' . $team->pid);
 
-					try
+					if ($result != null)
 					{
-						$db->setQuery($subquery1);
-						$team->pid = $db->loadResult();
-					}
-					catch (Exception $e)
-					{
-						$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-						$code = $e->getCode(); // Returns
-						Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
-						$team->pid = 0;
+						$team->ptid                 = $result->ptid;
+						$team->project_team_picture = $result->project_team_picture;
+						$team->trikot_home          = $result->trikot_home;
+						$team->trikot_away          = $result->trikot_away;
+						$subquery1->clear();
+						$subquery1->select('CONCAT_WS( \':\', p.id , p.alias )');
+						$subquery1->from('#__sportsmanagement_project AS p');
+						$subquery1->where('p.id = ' . $team->pid);
+
+						try
+						{
+							$db->setQuery($subquery1);
+							$team->pid = $db->loadResult();
+						}
+						catch (Exception $e)
+						{
+							$msg  = $e->getMessage(); // Returns "Normally you would have other code...
+							$code = $e->getCode(); // Returns
+							Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+							$team->pid = 0;
+						}
 					}
 				}
 			}

@@ -1,0 +1,5 @@
+a.previous-page,a.next-page{font-family:'Font Awesome 5 Free'!important}
+.info-tab::before,.info-tab::after{font-family:'Font Awesome 5 Free'}
+.download-btn::before{font-family:'Font Awesome 5 Free'}
+.note-icon::before{content:"\f044"}
+.note-icon::after{content:""}
