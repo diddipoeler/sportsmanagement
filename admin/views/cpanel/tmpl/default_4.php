@@ -30,7 +30,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             }
             ?>
             
-        <strong><i class="fa fa-2x fa-lightbulb-o"></i> <?php echo Text::_('COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA') ?>
+        <strong><i class="fa fa-2x fa-lightbulb"></i> <?php echo Text::_('COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA') ?>
         </strong>
         <hr>
         <div id="dashboard-iconss" class="dashboard-icons">
