@@ -12,9 +12,9 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
-//JHtml::_('bootstrap.tooltip'); 
-JHtml::_('bootstrap.tooltip', '.hasTooltip', ['placement' => $this->config["which_position_tooltip_subst"] ]);
+HTMLHelper::_('bootstrap.tooltip', '.hasTooltip', ['placement' => $this->config["which_position_tooltip_subst"] ]);
 ?>
 <!-- START of match timeline -->
 <div class="<?php echo $this->divclassrow; ?> " id="matchreport-timeline" >

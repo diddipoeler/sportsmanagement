@@ -27,24 +27,10 @@ HTMLHelper::_('draggablelist.draggable');
 }
 else
 {
-JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl,$this->saveOrderButton);    
+HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl,$this->saveOrderButton);    
 }
 }
 
-/** welche joomla version */
-/*
-if (version_compare(substr(JVERSION, 0, 5), '4.0.0', 'ge'))
-{
-}	
-elseif (version_compare(substr(JVERSION, 0, 5), '3.0.0', 'ge'))
-{
-	HTMLHelper::_('behavior.framework', true);
-}
-else
-{
-	HTMLHelper::_('behavior.mootools');
-}
-*/
 ?>
 <div class="table-responsive" id="editcell">
 <table class="<?php echo $this->table_data_class; ?>" id="<?php echo $this->view; ?>list">
