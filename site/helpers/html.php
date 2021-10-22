@@ -1385,7 +1385,14 @@ class sportsmanagementHelperHtml
 
 		if ($res == 0)
 		{
-			if ($usefontawesome)
+			if (version_compare(JVERSION, '4.0.0', 'ge'))
+			{
+				$icon       = 'fa-handshake';
+				$alt        = Text::_('COM_SPORTSMANAGEMENT_LOST');
+				$title      = $alt;
+				$icon_color = '" style="color:yellow';
+			}
+			elseif ($usefontawesome)
 			{
 				$icon       = 'fa-handshake-o';
 				$alt        = Text::_('COM_SPORTSMANAGEMENT_DRAW');
@@ -1401,7 +1408,14 @@ class sportsmanagementHelperHtml
 		}
         elseif ($res < 0)
 		{
-			if ($usefontawesome)
+			if (version_compare(JVERSION, '4.0.0', 'ge'))
+			{
+				$icon       = 'fa-thumbs-down';
+				$alt        = Text::_('COM_SPORTSMANAGEMENT_LOST');
+				$title      = $alt;
+				$icon_color = '" style="color:red';
+			}
+			elseif ($usefontawesome)
 			{
 				$icon       = 'fa-thumbs-down';
 				$alt        = Text::_('COM_SPORTSMANAGEMENT_LOST');
@@ -1417,7 +1431,14 @@ class sportsmanagementHelperHtml
 		}
 		else
 		{
-			if ($usefontawesome)
+			if (version_compare(JVERSION, '4.0.0', 'ge'))
+			{
+				$icon       = 'fa-thumbs-up';
+				$alt        = Text::_('COM_SPORTSMANAGEMENT_WON');
+				$title      = $alt;
+				$icon_color = '" style="color:green';
+			}
+			elseif($usefontawesome)
 			{
 				$icon       = 'fa-thumbs-up';
 				$alt        = Text::_('COM_SPORTSMANAGEMENT_WON');
@@ -1444,7 +1465,7 @@ class sportsmanagementHelperHtml
 			$attributes = $def_attribs;
 		}
 
-		if ($usefontawesome)
+		if (version_compare(JVERSION, '4.0.0', 'ge') || $usefontawesome)
 		{
 			return '<span class="fa-stack fa-xs ' . $icon_color . '">
                     <i class="fa fa-square fa-stack-2x"></i>
