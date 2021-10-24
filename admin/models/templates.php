@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
 
 /**
  * sportsmanagementModelTemplates
@@ -356,7 +357,7 @@ class sportsmanagementModelTemplates extends JSMModelList
 							if (file_exists($xmlfile))
 							{
 								$strXmlFile = $xmlfile;
-								$form       = JForm::getInstance($template, $strXmlFile, array('control' => ''));
+								$form       = Form::getInstance($template, $strXmlFile, array('control' => ''));
 								$fieldsets  = $form->getFieldsets();
 
 								foreach ($fieldsets as $fieldset)

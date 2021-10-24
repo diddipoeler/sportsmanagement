@@ -6687,7 +6687,7 @@ where m.round_id = '$rounddate->round_id'
 							if (file_exists($xmlfile))
 							{
 								$strXmlFile = $xmlfile;
-								$form       = JForm::getInstance($template, $strXmlFile, array('control' => ''));
+								$form       = Form::getInstance($template, $strXmlFile, array('control' => ''));
 								$fieldsets  = $form->getFieldsets();
 								foreach ($fieldsets as $fieldset)
 								{
