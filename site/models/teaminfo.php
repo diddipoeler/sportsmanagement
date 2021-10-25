@@ -321,6 +321,13 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 		$db->setQuery($query);
 		$seasons = $db->loadObjectList();
 
+if ( Factory::getConfig()->get('debug') )
+{
+		$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data <pre>'.print_r($query->dump(),true).'</pre>'  ), ''); 
+}
+
+
+
 		foreach ($seasons as $k => $season)
 		{
 			$seasons[$k]->division_slug       = null;
