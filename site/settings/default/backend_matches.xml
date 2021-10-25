@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<form>
+<!-- register 1 -->
+	<fieldset name="details"
+		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS"
+    label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS">
+	
+
+		<field name="show_number" type="extensionradiobutton" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MATCHNR"
+			description="COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MATCHNR_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_ad_incl" type="extensionradiobutton" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_INCL"
+			description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_INCL_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_change_round" type="extensionradiobutton" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_MATCHES_CHANGE_ROUNDLIST"
+			description="COM_SPORTSMANAGEMENT_ADMIN_MATCHES_CHANGE_ROUNDLIST_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_playground" type="extensionradiobutton" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_VENUE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_VENUE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_attendance" type="extensionradiobutton" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_ATT"
+			description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_ATT_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_result_type" type="extensionradiobutton" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT_TYPE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT_TYPE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_article" type="extensionradiobutton" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT_ARTICLE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT_ARTICLE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_events" type="extensionradiobutton" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EVENTS"
+			description="COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EVENTS_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_statistics" type="extensionradiobutton" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_MATCHES_STATISTICS"
+			description="COM_SPORTSMANAGEMENT_ADMIN_MATCHES_STATISTICS_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_id" type="extensionradiobutton" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="JGRID_HEADING_ID"
+			description="JGRID_HEADING_ID_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+	</fieldset>
+</form>
