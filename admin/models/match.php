@@ -1846,8 +1846,8 @@ break;
 			$data['extended'] = (string) $parameter;
 		}
 
-		$data['team1_bonus']         = $post['team1_bonus'];
-		$data['team2_bonus']         = $post['team2_bonus'];
+		$data['team1_bonus']         = $post['team1_bonus'] == "" ? null : $post['team1_bonus'];
+		$data['team2_bonus']         = $post['team2_bonus'] == "" ? null : $post['team2_bonus'];
 		$data['team1_legs']          = $post['team1_legs'];
 		$data['team2_legs']          = $post['team2_legs'];
 		$data['match_result_detail'] = $post['match_result_detail'];
