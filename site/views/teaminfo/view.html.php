@@ -41,7 +41,7 @@ class sportsmanagementViewTeamInfo extends sportsmanagementView
 		{
 			$this->team          = sportsmanagementModelTeamInfo::getTeamByProject(1);
 			$this->club          = sportsmanagementModelTeamInfo::getClub();
-			$this->seasons       = sportsmanagementModelTeamInfo::getSeasons($this->config, 0);
+			//$this->seasons       = sportsmanagementModelTeamInfo::getSeasons($this->config, 0);
 			$this->showediticon  = sportsmanagementModelProject::hasEditPermission('projectteam.edit');
 			$this->projectteamid = sportsmanagementModelTeamInfo::$projectteamid;
 			$this->teamid        = sportsmanagementModelTeamInfo::$teamid;
