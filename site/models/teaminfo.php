@@ -64,7 +64,6 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 		$app = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-
 		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
 		self::$projectid = $jinput->getInt("p", 0);
@@ -110,17 +109,11 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 	 */
 	public static function getTrainigData($projectid)
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
+    	$app = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
-
 		$trainingData = array();
 
 		if (self::$projectteamid == 0)
@@ -134,12 +127,8 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 
 		$query->select('*');
 		$query->from('#__sportsmanagement_team_trainingdata');
-
-		// $query->where('project_id = '. $projectid);
-		// $query->where('project_team_id = '. $projectTeamID);
 		$query->where('team_id = ' . self::$teamid);
 		$query->order('dayofweek ASC');
-
 		$db->setQuery($query);
 		$trainingData = $db->loadObjectList();
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
@@ -154,14 +143,9 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 	 */
 	public static function getClub()
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
 		$db        = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query     = $db->getQuery(true);
 		$starttime = microtime();
@@ -196,14 +180,9 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 	 */
 	public static function getTeamByProject($inserthits = 0)
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
 		$db        = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query     = $db->getQuery(true);
 		$starttime = microtime();
@@ -425,17 +404,11 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 	 */
 	public static function getTeamRanking($projectid, $division_id)
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
-
 		$rank = array();
 
 		sportsmanagementModelProject::setProjectID($projectid, self::$cfg_which_database);
@@ -447,15 +420,6 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 
 		foreach ($temp_ranking as $ptid => $value)
 		{
-			//			if ($value->getPtid() == self::$projectteamid)
-			//			{
-			//				$rank['rank']   = $value->rank;
-			//				$rank['games']  = $value->cnt_matches;
-			//				$rank['points'] = $value->getPoints();
-			//				$rank['series'] = $value->cnt_won . "/" . $value->cnt_draw . "/" . $value->cnt_lost;
-			//				$rank['goals']  = $value->sum_team1_result . ":" . $value->sum_team2_result;
-			//				break;
-			//			}
 			if ($value->getTeamId() == self::$teamid)
 			{
 				$rank['rank']   = $value->rank;
@@ -466,8 +430,6 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 				break;
 			}
 		}
-
-		// }
 
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
@@ -483,22 +445,15 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 	 */
 	public static function getLeague($projectid)
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
 		$query->select('l.name AS league');
 		$query->from('#__sportsmanagement_project AS p');
 		$query->join('INNER', '#__sportsmanagement_league AS l ON l.id = p.league_id');
 		$query->where('p.id =' . $projectid);
-
-		//		$query = 'SELECT l.name AS league FROM #__sportsmanagement_project AS p, #__sportsmanagement_league AS l WHERE p.id=' . $projectid . ' AND l.id=p.league_id ';
 
 		$db->setQuery($query, 0, 1);
 		$league = $db->loadResult();
@@ -518,14 +473,9 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 	 */
 	public static function getPlayerCount($projectid, $projectteamid, $season_id)
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
 
@@ -561,18 +511,12 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 	 */
 	public static function getPlayerMeanAge($projectid, $projectteamid, $season_id)
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
 
-		// $player = array();
 		$meanage     = 0;
 		$countplayer = 0;
 		$age         = 0;
@@ -602,8 +546,8 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 			}
 		}
 
-		// Diddipoeler
-		// damit kein fehler hochkommt: Warning: Division by zero
+		/** Diddipoeler */
+		/** damit kein fehler hochkommt: Warning: Division by zero */
 		if ($age != 0)
 		{
 			$meanage = round($age / $countplayer, 2);
@@ -625,14 +569,9 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 	 */
 	public static function getPlayerMarketValue($projectid, $projectteamid, $season_id)
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
 		$db        = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query     = $db->getQuery(true);
 		$starttime = microtime();
@@ -666,13 +605,9 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 	 */
 	public static function getLeagueRankOverviewDetail($seasonsranking)
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-
 		$leaguesoverviewdetail = array();
 
 		foreach ($seasonsranking as $season)
@@ -724,10 +659,7 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 	 */
 	public static function getLeagueRankOverview($seasonsranking)
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 
@@ -764,14 +696,10 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 	 */
 	function getMergeClubs($merge_clubs)
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 
-		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
 		$query->select('*, CONCAT_WS( \':\', id, alias ) AS slug');
@@ -795,19 +723,14 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 	 */
 	function hasEditPermission($task = null)
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
-
-		// Check for ACL permsission and project admin/editor
 		$allowed = parent::hasEditPermission($task);
 		$user    = Factory::getUser();
 
 		if ($user->id > 0 && !$allowed)
 		{
-			// Check if user is the projectteam admin
+			/** Check if user is the projectteam admin */
 			$team = self::getTeamByProject();
 
 			if ($user->id == $team->admin)

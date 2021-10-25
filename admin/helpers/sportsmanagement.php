@@ -30,6 +30,7 @@ use Joomla\CMS\Table\Table;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Component\Actionlogs\Administrator\Model\ActionlogModel;
+use Joomla\CMS\Form\Form;
 //BaseDatabaseModel::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_actionlogs/models', 'ActionlogsModel');
 
 HTMLHelper::_('behavior.keepalive');
@@ -1166,7 +1167,7 @@ try
 		$app          = Factory::getApplication();
 		$templatepath = JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'statistics';
 		$xmlfile      = $templatepath . DIRECTORY_SEPARATOR . $file . '.xml';
-		$extended     = JForm::getInstance('params', $xmlfile, array('control' => 'params'), false, '/config');
+		$extended     = Form::getInstance('params', $xmlfile, array('control' => 'params'), false, '/config');
 		$extended->bind($data);
 
 		return $extended;
@@ -1205,7 +1206,7 @@ try
 					}
 				}
 
-				$extended = JForm::getInstance('extended', $xmlfile, array('control' => 'extended'), false, '/config');
+				$extended = Form::getInstance('extended', $xmlfile, array('control' => 'extended'), false, '/config');
 				$extended->bind($jRegistry);
 
 				if ($frontend)
@@ -1268,7 +1269,7 @@ try
 					}
 				}
 
-				$extended = JForm::getInstance('extendeduser', $xmlfile, array('control' => 'extendeduser'), false, '/config');
+				$extended = Form::getInstance('extendeduser', $xmlfile, array('control' => 'extendeduser'), false, '/config');
 				$extended->bind($jRegistry);
 
 				return $extended;
