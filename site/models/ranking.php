@@ -117,6 +117,17 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 	}
 
 
+	public static function setFinalStanding($current_ranking = array() )
+	{
+		$app    = Factory::getApplication();
+		$option = $app->input->getCmd('option');
+		$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
+		$query     = $db->getQuery(true);
+		
+		
+		
+	}
+	
 	/**
 	 * sportsmanagementModelRanking::getPreviousGames()
 	 * 
