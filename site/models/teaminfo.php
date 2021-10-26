@@ -286,6 +286,7 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 
 		$query->clear();
 		$query->select('pt.id as ptid, pt.team_id as season_team_id, pt.picture, pt.info, pt.project_id AS projectid');
+		$query->select('pt.points_finally,pt.neg_points_finally,pt.finaltablerank,pt.matches_finally,pt.won_finally,pt.draws_finally,pt.lost_finally,pt.homegoals_finally,pt.guestgoals_finally');
 		$query->select('p.name as projectname,p.season_id,p.current_round, pt.division_id');
 		$query->select('s.name as season');
 		$query->select('t.id as team_id');
@@ -334,6 +335,23 @@ if ( Factory::getConfig()->get('debug') )
 			$seasons[$k]->division_name       = null;
 			$seasons[$k]->division_short_name = null;
 			$seasons[$k]->round_slug          = null;
+			
+			/** noch nicht freigeschaltet */
+			/*
+			$seasons[$k]->rank          = $season->finaltablerank;
+          		$seasons[$k]->games          = $season->matches_finally;
+          		$seasons[$k]->playercnt      = self::getPlayerCount($season->projectid, $season->ptid, $season->season_id);
+			$seasons[$k]->playermeanage  = self::getPlayerMeanAge($season->projectid, $season->ptid, $season->season_id);
+			$seasons[$k]->market_value   = self::getPlayerMarketValue($season->projectid, $season->ptid, $season->season_id);
+          		$seasons[$k]->goals          = $season->homegoals_finally.':'.$season->guestgoals_finally;
+          		$seasons[$k]->series          = $season->won_finally.'/'.$season->draws_finally.'/'.$season->lost_finally;
+          		$seasons[$k]->points         = $season->points_finally;
+			$seasons[$k]->leaguename     = self::getLeague($season->projectid);
+			$seasons[$k]->season_picture = $season->season_picture;
+			$seasons[$k]->ptid           = $season->ptid;
+			*/
+			
+			
 			$query->clear();
 
 			if ($season->division_id)
