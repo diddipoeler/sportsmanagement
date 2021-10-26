@@ -124,7 +124,39 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 		$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
 		$query     = $db->getQuery(true);
 		
-		
+//echo '<pre>'.print_r($current_ranking,true).'</pre>';
+      foreach ($current_ranking as $division => $cu_rk) 
+{
+        foreach ($cu_rk as $key => $value) 
+{
+          //echo '<pre>'.print_r($key,true).'</pre>';
+          //echo '<pre>'.print_r($value,true).'</pre>';
+          // Create an object for the record we are going to update.
+				$object = new stdClass;
+
+				// Must be a valid primary key value.
+				$object->id      = $key;
+				$object->matches_finally = $value->cnt_matches;
+          $object->won_finally = $value->cnt_won;
+            $object->draws_finally = $value->cnt_draw;
+            $object->lost_finally = $value->cnt_lost;
+            $object->points_finally = $value->sum_points;
+            $object->neg_points_finally = $value->neg_points;
+            $object->homegoals_finally = $value->sum_team1_result;
+            $object->guestgoals_finally = $value->sum_team2_result;
+            $object->diffgoals_finally = $value->diff_team_results;
+            $object->finaltablerank = $value->rank;
+
+				// Update their details in the users table using id as the primary key.
+				$result_update = Factory::getDbo()->updateObject('#__sportsmanagement_project_team', $object, 'id');
+          
+          
+          
+        }
+      
+      
+      
+      }		
 		
 	}
 	
