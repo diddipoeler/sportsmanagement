@@ -337,8 +337,9 @@ if ( Factory::getConfig()->get('debug') )
 			$seasons[$k]->division_short_name = null;
 			$seasons[$k]->round_slug          = null;
 			
+			if ( ComponentHelper::getParams('com_sportsmanagement')->get('force_ranking_cache', 0) )
+			{
 			/** noch nicht freigeschaltet */
-			/*
 			$seasons[$k]->rank          = $season->finaltablerank;
           		$seasons[$k]->games          = $season->matches_finally;
           		$seasons[$k]->playercnt      = self::getPlayerCount($season->projectid, $season->ptid, $season->season_id);
@@ -350,7 +351,8 @@ if ( Factory::getConfig()->get('debug') )
 			$seasons[$k]->leaguename     = self::getLeague($season->projectid);
 			$seasons[$k]->season_picture = $season->season_picture;
 			$seasons[$k]->ptid           = $season->ptid;
-			*/
+
+		}
 			
 			
 			$query->clear();
@@ -383,8 +385,12 @@ if ( Factory::getConfig()->get('debug') )
 				$seasons[$k]->round_slug = $result->round_slug;
 			}
 
+			if ( ComponentHelper::getParams('com_sportsmanagement')->get('force_ranking_cache', 0) )
+			{
+			}
+			else
+			{
 			$ranking = self::getTeamRanking($season->projectid, $season->division_id);
-
 			if (!empty($ranking))
 			{
 				$seasons[$k]->rank           = $ranking['rank'];
@@ -413,6 +419,7 @@ if ( Factory::getConfig()->get('debug') )
 				$seasons[$k]->playermeanage  = 0;
 				$seasons[$k]->market_value   = 0;
 			}
+		}
 		}
 
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
