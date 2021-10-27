@@ -19,7 +19,8 @@ use Joomla\CMS\Factory;
 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="nextmatch">
 <?php
 $this->notes = array();
-$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DETAILS') . " " . $this->newmatchtext;
+//$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DETAILS') . " " . $this->club->name;
+$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DETAILS');
 echo $this->loadTemplate('jsm_notes'); 
 ?>
     <table class="table">
