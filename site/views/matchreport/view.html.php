@@ -152,16 +152,16 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 
 				if ($legresult)
 				{
-					if ($team == 1)
-					{
-						$string = "(" . $legresult[0];
-					}
-					else
-					{
-						$string = $legresult[0] . ")";
+					$string = '';
+					for ($x = 0; $x < ($this->project->game_parts); $x++)
+					{		
+						if ($legresult[$x] != null)
+						{
+							$string .= $legresult[$x];
+							$string .= '<br/>';
+						}
 					}
 				}
-
 				return $string;
 			}
 			else
