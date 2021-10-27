@@ -26,7 +26,7 @@ use Joomla\CMS\Component\ComponentHelper;
 
 		foreach ($this->teams as $team)
 		{
-			if ($team->team_name && property_exists('ptid', $team))
+			if ($team->team_name && property_exists($team,'ptid'))
 			{
 				$routeparameter                       = array();
 				$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
