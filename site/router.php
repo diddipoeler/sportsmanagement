@@ -95,6 +95,8 @@ class SportsmanagementRouter extends RouterBase
 			$defaults = sportsmanagementHelperRoute::$views[$view];
 		}
 
+//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' .'<pre>'.print_r($query,true).'</pre>'    ), 'error');
+		
 		$segments [] = $view;
 		unset($query['view']);
 		/**
