@@ -64,7 +64,7 @@ class SportsmanagementRouter extends RouterBase
 					 *
 					 * Itemid doesn't exist or is invalid
 					 */
-					unset($query ['Itemid']);
+					//unset($query ['Itemid']);
 				}
 			}
 
