@@ -188,23 +188,19 @@ for ($a = 0; $a < sizeof($favteams1); $a++)
 
 							if ($schemaguest)
 							{
+                                echo "<div style=\"position:absolute; width:103px; left:0px; top:" . $height . "px; text-align:center;\">";
+
+								echo sportsmanagementHelperHtml::getBootstrapModalImage(
+									'rosterplaygroundteamaway',
+									$this->team2_club->logo_big,
+									$this->team2_club->name,
+									'50',
+									'',
+									$this->modalwidth,
+									$this->modalheight,
+									$this->overallconfig['use_jquery_modal']
+								);
 								?>
-                                <div style="position:absolute; width:103px; left:0px; top:950px; text-align:center;">
-
-
-									<?PHP
-
-									echo sportsmanagementHelperHtml::getBootstrapModalImage(
-										'rosterplaygroundteamaway',
-										$this->team2_club->logo_big,
-										$this->team2_club->name,
-										'50',
-										'',
-										$this->modalwidth,
-										$this->modalheight,
-										$this->overallconfig['use_jquery_modal']
-									);
-									?>
 
 
                                 </div>
