@@ -41,7 +41,7 @@ class sportsmanagementHelperRoute
 		'calendar' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'division' => '', 'mode' => '', 'ptid' => ''),
 		'clubinfo' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'cid' => ''),
 		'clubplan' => array('cfg_which_database' => '', 's' => '', 'p' => ''),
-		'curve'    => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid1' => '',, 'tid2' => '','division' => ''),
+		'curve'    => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid1' => '', 'tid2' => '','division' => ''),
 
 		'editprojectteam' => array('tmpl' => '', 'ptid' => '', 'tid' => '', 'p' => ''),
 		'editteam'        => array('tmpl' => '', 'ptid' => '', 'tid' => '', 'p' => ''),
