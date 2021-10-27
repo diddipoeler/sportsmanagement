@@ -1,4 +1,5 @@
 <?php
+
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version    1.0.05
@@ -10,6 +11,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
@@ -64,16 +66,16 @@ $state_specific = modJSMprojectmaphelper::createstate_specific($projects);
 $javascript = "\n";
 $javascript .= 'var simplemaps_worldmap_mapdata={
   main_settings: {' . "\n";
-$javascript .= modJSMprojectmaphelper::getmain_settings(). "\n";  
+$javascript .= modJSMprojectmaphelper::getmain_settings() . "\n";
 $javascript .= '},' . "\n";
 $javascript .= "\n";
 
 $javascript .= 'state_specific: {' . "\n";
-$javascript .= modJSMprojectmaphelper::createstate_specific($projects). "\n";
+$javascript .= modJSMprojectmaphelper::createstate_specific($projects) . "\n";
 $javascript .= '},' . "\n";
 
 $javascript .= 'regions: {' . "\n";
-$javascript .= modJSMprojectmaphelper::createregions($projects). "\n";
+$javascript .= modJSMprojectmaphelper::createregions($projects) . "\n";
 $javascript .= '},' . "\n";
 
 $javascript .= 'locations: {' . "\n";
@@ -85,16 +87,16 @@ $javascript .= '};' . "\n";
 
 try
 {
-File::write( 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'htmlworldmap/mapdatatest.js', $javascript);
+	File::write('modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'htmlworldmap/mapdatatest.js', $javascript);
 }
 catch (Exception $e)
 {
-Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
+	Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
 }
-                    
+
 //echo '<pre>'.print_r($javascript,true).'</pre>';
 //$document->addScriptDeclaration($javascript);
-            
+
 /** add css file */
 //$document->addStyleSheet(Uri::base().'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR .'dist/jqvmap.css');
 //$document->addScript(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'dist/jquery.vmap.js');
@@ -105,8 +107,7 @@ Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . 
 
 /** Layout */
 ?>
-<div class="<?php echo $params->get('moduleclass_sfx'); ?>"
-     id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+<div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 	<?PHP
 	require ModuleHelper::getLayoutPath($module->module);
 	?>
