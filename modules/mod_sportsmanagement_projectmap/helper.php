@@ -1,4 +1,5 @@
 <?php
+
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version    1.0.05
@@ -10,6 +11,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
@@ -29,15 +31,15 @@ JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
  */
 class modJSMprojectmaphelper
 {
-	
-    /**
-     * modJSMprojectmaphelper::getmain_settings()
-     * 
-     * @return void
-     */
-    function getmain_settings()
-    {
-    $main_settings = '
+
+	/**
+	 * modJSMprojectmaphelper::getmain_settings()
+	 * 
+	 * @return void
+	 */
+	static function getmain_settings()
+	{
+		$main_settings = '
         //General settings
 		//width: "700", //or "responsive"
 		
@@ -111,10 +113,10 @@ class modJSMprojectmaphelper
     fade_time: 0.1,
     link_text: "View Website"
     
-    ';    
-        
-    return $main_settings;    
-    }
+    ';
+
+		return $main_settings;
+	}
 	/**
 	 * modJSMprojectmaphelper::getData()
 	 * 
@@ -134,83 +136,82 @@ class modJSMprojectmaphelper
 		$query->select('MAX( pro.id ) as id,pro.name,CONCAT_WS(\':\',pro.id,pro.alias) AS project_slug,le.name as liganame,le.country');
 		$query->select('le.picture as league_picture,pro.picture as project_picture');
 		$query->select('CONCAT_WS(\':\',r.id,r.alias) AS roundcode');
-        
-        $query->select('c.alpha2 as country_alpha2,c.name as country_name,c.picture as country_picture,c.federation as country_federation');
-        $query->select('f.name as federation_name,f.picture as federation_picture');
-      
+
+		$query->select('c.alpha2 as country_alpha2,c.name as country_name,c.picture as country_picture,c.federation as country_federation');
+		$query->select('f.name as federation_name,f.picture as federation_picture');
+
 		$query->from('#__sportsmanagement_project as pro');
 		$query->join('INNER', '#__sportsmanagement_league as le on le.id = pro.league_id');
 		$query->join('INNER', '#__sportsmanagement_round as r on r.id = pro.current_round');
-        $query->join('INNER', '#__sportsmanagement_countries as c on c.alpha3 = le.country');
-      
-      $query->join('INNER', '#__sportsmanagement_federations as f on f.id = c.federation');
-        
+		$query->join('INNER', '#__sportsmanagement_countries as c on c.alpha3 = le.country');
+
+		$query->join('INNER', '#__sportsmanagement_federations as f on f.id = c.federation');
+
 		$query->where('le.published_act_season = 1 ');
-      $query->where('(le.league_level = 1 OR le.league_level = 21 )');
+		$query->where('(le.league_level = 1 OR le.league_level = 21 )');
 		$query->where('pro.season_id IN (' . $seasons . ')');
 		$query->order('le.country ASC, pro.name ASC');
-      $query->group('le.country');
+		$query->group('le.country');
 
 		$db->setQuery($query);
 		$result = $db->loadObjectList();
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
-//echo '<pre>'.print_r($result,true).'</pre>';
+		//echo '<pre>'.print_r($result,true).'</pre>';
 
 		return $result;
-  }
+	}
 
 
-/**
- * modJSMprojectmaphelper::createregions()
- * 
- * @param mixed $projects
- * @return void
- */
-function createregions($projects)
-{
-    
-    
-foreach ($projects as $count_i => $project)
-{    
-$regionsname[$project->country_federation] = $project->federation_name;
-$regionscountry[$project->country_federation][] = $project->country_alpha2;  
-$regionsimage[$project->country_federation] = $project->federation_picture; 
-  
-}
-ksort($regionsname);
-ksort($regionscountry);  
-//echo '<pre>'.print_r($regionsname,true).'</pre>';
-//echo '<pre>'.print_r($regionscountry,true).'</pre>';  
-//echo '<pre>'.print_r($regionsimage,true).'</pre>';
-  
-  
-  
-//HTMLHelper::image(Uri::root() . 'media/com_sportsmanagement/jl_images/discuss.gif', $imgTitle, array(' title' => $imgTitle, ' border' => 0, ' style' => 'vertical-align: middle'));  
-foreach ($regionsname as $count_i => $name)
-{   
-$image = "<img src='".$regionsimage[$count_i]."' style='width: 75px' >";  
-  
-//echo '<pre>'.print_r($image,true).'</pre>';  
-$regions[] = $count_i.': { name: "'.$name.'", description: "'.$image.'", states: ["'.implode("\",\"", $regionscountry[$count_i]).'"] }';   
-}  
-  
-//echo '<pre>'.print_r($regions,true).'</pre>';    
-//echo '<pre>'.print_r(implode(",",$regions),true).'</pre>';      
-  
-return implode(",\n",$regions);  
-}
+	/**
+	 * modJSMprojectmaphelper::createregions()
+	 * 
+	 * @param mixed $projects
+	 * @return void
+	 */
+	static function createregions($projects)
+	{
 
 
-/**
- * modJSMprojectmaphelper::state_specific()
- * 
- * @param mixed $projects
- * @return void
- */
-function createstate_specific($projects)
-{
-/*    
+		foreach ($projects as $count_i => $project)
+		{
+			$regionsname[$project->country_federation] = $project->federation_name;
+			$regionscountry[$project->country_federation][] = $project->country_alpha2;
+			$regionsimage[$project->country_federation] = $project->federation_picture;
+		}
+		ksort($regionsname);
+		ksort($regionscountry);
+		//echo '<pre>'.print_r($regionsname,true).'</pre>';
+		//echo '<pre>'.print_r($regionscountry,true).'</pre>';  
+		//echo '<pre>'.print_r($regionsimage,true).'</pre>';
+
+
+
+		//HTMLHelper::image(Uri::root() . 'media/com_sportsmanagement/jl_images/discuss.gif', $imgTitle, array(' title' => $imgTitle, ' border' => 0, ' style' => 'vertical-align: middle'));  
+		foreach ($regionsname as $count_i => $name)
+		{
+			$image = "<img src='" . $regionsimage[$count_i] . "' style='width: 75px' >";
+
+			//echo '<pre>'.print_r($image,true).'</pre>';  
+			$regions[] = $count_i . ': { name: "' . $name . '", description: "' . $image . '", states: ["' . implode("\",\"", $regionscountry[$count_i]) . '"] }';
+		}
+
+		//echo '<pre>'.print_r($regions,true).'</pre>';    
+		//echo '<pre>'.print_r(implode(",",$regions),true).'</pre>';      
+
+		return implode(",\n", $regions);
+	}
+
+
+	/**
+	 * modJSMprojectmaphelper::state_specific()
+	 * 
+	 * @param mixed $projects
+	 * @return void
+	 */
+	static function createstate_specific($projects)
+	{
+		/*    
 league_picture
 project_picture
 country_picture
@@ -218,39 +219,36 @@ federation_picture
 */
 
 
-//echo '<pre>'.print_r($projects,true).'</pre>';    
-foreach ($projects as $count_i => $project)
-{    
-//$regionsname[$project->country_federation] = $project->federation_name;
-//$regionscountry[$project->country_federation][] = $project->country_alpha2;  
-  
-$image = "<img src='".$project->country_picture."' >";
-$leagueimage = "<img src='".$project->league_picture."' style='width: 50px' >";
-  
-$routeparameter                       = array();
-$routeparameter['cfg_which_database'] = 0;
-$routeparameter['s']                  = 0;
-$routeparameter['p']                  = $project->project_slug;
-$routeparameter['type']               = 0;
-$routeparameter['r']                  = 0;
-$routeparameter['from']               = 0;
-$routeparameter['to']                 = 0;
-$routeparameter['division']           = 0;
-$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);  
-$state_specific[] = $project->country_alpha2.': {
-      name: "'.$image.Text::_($project->country_name).'",
-      description: "'.$leagueimage.Text::_($project->liganame).' :<br>'.Text::_($project->name).'",
+		//echo '<pre>'.print_r($projects,true).'</pre>';    
+		foreach ($projects as $count_i => $project)
+		{
+			//$regionsname[$project->country_federation] = $project->federation_name;
+			//$regionscountry[$project->country_federation][] = $project->country_alpha2;  
+
+			$image = "<img src='" . $project->country_picture . "' >";
+			$leagueimage = "<img src='" . $project->league_picture . "' style='width: 50px' >";
+
+			$routeparameter                       = array();
+			$routeparameter['cfg_which_database'] = 0;
+			$routeparameter['s']                  = 0;
+			$routeparameter['p']                  = $project->project_slug;
+			$routeparameter['type']               = 0;
+			$routeparameter['r']                  = 0;
+			$routeparameter['from']               = 0;
+			$routeparameter['to']                 = 0;
+			$routeparameter['division']           = 0;
+			$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);
+			$state_specific[] = $project->country_alpha2 . ': {
+      name: "' . $image . Text::_($project->country_name) . '",
+      description: "' . $leagueimage . Text::_($project->liganame) . ' :<br>' . Text::_($project->name) . '",
       color: "default",
       hover_color: "default",
-      url: "'.$link.'"
-    }'; 
-  
-}    
-    
-//echo '<pre>'.print_r($state_specific,true).'</pre>';    
-//echo '<pre>'.print_r(implode(",",$state_specific),true).'</pre>';  
-return implode(",\n",$state_specific);  
-}
- 
-  
+      url: "' . $link . '"
+    }';
+		}
+
+		//echo '<pre>'.print_r($state_specific,true).'</pre>';    
+		//echo '<pre>'.print_r(implode(",",$state_specific),true).'</pre>';  
+		return implode(",\n", $state_specific);
+	}
 }

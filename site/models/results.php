@@ -758,7 +758,7 @@ class sportsmanagementModelResults extends JSMModelList
 	 *
 	 * @return
 	 */
-	function getMatchRefereeTeams($match_id = 0, $cfg_which_database = 0)
+	public static function getMatchRefereeTeams($match_id = 0, $cfg_which_database = 0)
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
