@@ -69,6 +69,10 @@ $player_link  = sportsmanagementHelperRoute::getSportsmanagementRoute('staff', $
 $match_player = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->config["name_format"]);
 $imgTitle = Text::sprintf('COM_SPORTSMANAGEMENT_MATCHREPORT_PIC', $match_player);
 $picture  = $player->picture;
+if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player")) || !curl_init($picture))
+{
+	$picture = $player->ppic;
+}
 if (!file_exists($picture))
 {
 $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
@@ -127,6 +131,10 @@ $match_player = sportsmanagementHelper::formatName(null, $player->firstname, $pl
 
 $imgTitle = Text::sprintf('COM_SPORTSMANAGEMENT_MATCHREPORT_PIC', $match_player);
 $picture  = $player->picture;
+if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player")) || !curl_init($picture))
+{
+	$picture = $player->ppic;
+}
 if (!file_exists($picture))
 {
 $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
