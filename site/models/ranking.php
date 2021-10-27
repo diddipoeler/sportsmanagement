@@ -121,7 +121,8 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
-		$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
+		$jinput                 = $app->input;
+		$db        = sportsmanagementHelper::getDBConnection(true, $jinput->get('cfg_which_database', 0, '') );
 		$query     = $db->getQuery(true);
 		
 //echo '<pre>'.print_r($current_ranking,true).'</pre>';
