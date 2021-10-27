@@ -680,6 +680,14 @@ filter="safehtml"/>
 <fieldset name="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_FRONTEND"
   label="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_FRONTEND">
 
+<field name="default_itemid" type="text" default="0"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_DEFAULT_ITEMID" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_DEFAULT_ITEMID_DESC">
+		</field>	
+	
+	
+	
+	
 <field type="extensionsubtitle" title="Tips/Warnungen/Fehler anzeigen" color="#2672a6" />
 <field name="show_jsm_tips_front" type="extensionradiobutton" default="1"
 class="radio btn-group btn-group-yesno"
