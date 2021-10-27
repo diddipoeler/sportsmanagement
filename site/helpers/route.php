@@ -16,6 +16,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Router\Router;
 use Joomla\CMS\Component\Router\RouterBase;
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementHelperRoute
@@ -136,6 +137,14 @@ class sportsmanagementHelperRoute
 	 */
 	public static function buildQuery($parts)
 	{
+if ( !array_key_exists('Itemid', $parts) ) {
+    $params = ComponentHelper::getParams('com_sportsmanagement');
+				$parts['Itemid'] = intval($params->get('default_itemid'));
+}
+
+//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' parts' .'<pre>'.print_r($parts,true).'</pre>'    ), '');		
+		
+		
 		if ($item = self::_findItem($parts))
 		{
 			$parts['Itemid'] = $item->id;
