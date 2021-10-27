@@ -372,7 +372,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView
 	protected function addToolBar()
 	{
 		$task     = $this->jinput->getCmd('task');
-
+/*
 try
 {
 // Create an instance of a default JHttp object.
@@ -393,7 +393,7 @@ catch (Exception $e)
 {
 //$this->app->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');	
 }
-		
+*/		
 		$this->document->addScript(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
 
 		if ($this->app->isClient('administrator'))
