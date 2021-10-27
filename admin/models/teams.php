@@ -199,6 +199,7 @@ class sportsmanagementModelTeams extends JSMModelList
 
 			foreach ($rows as $row)
 			{
+				$teams[$row->id] = new stdClass();
 				$teams[$row->id]->project_team[] = $row;
 
 				$this->jsmquery->clear();
