@@ -155,32 +155,20 @@ class sportsmanagementModelClubPlan extends BaseDatabaseModel
 	 */
 	function getTeamsArt()
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 
-		// Get a db connection.
 		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
 
 		if (self::$clubid > 0)
 		{
 			$query->select('ag.id as value,ag.name as text');
-
-			// From
 			$query->from('#__sportsmanagement_team as t');
 			$query->join('INNER', '#__sportsmanagement_agegroup as ag ON ag.id = t.agegroup_id');
-
-			// Where
 			$query->where('t.club_id = ' . (int) self::$clubid);
-
-			// Group
 			$query->group('ag.id');
-
-			// Order
 			$query->order('ag.name ASC');
 
 			try
@@ -193,7 +181,7 @@ class sportsmanagementModelClubPlan extends BaseDatabaseModel
 				$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
 			}
 		}
-
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $teamsart;
 	}
 
@@ -206,8 +194,6 @@ class sportsmanagementModelClubPlan extends BaseDatabaseModel
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
-
-		// Get a db connection.
 		$db        = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query     = $db->getQuery(true);
 		$starttime = microtime();
@@ -215,28 +201,18 @@ class sportsmanagementModelClubPlan extends BaseDatabaseModel
 		if (self::$clubid > 0)
 		{
 			$query->select('p.id as value,p.name as text');
-
-			// From
 			$query->from('#__sportsmanagement_team as t');
 			$query->join('INNER', ' #__sportsmanagement_season_team_id as st ON st.team_id = t.id ');
 			$query->join('INNER', ' #__sportsmanagement_season as s ON s.id = st.season_id ');
 			$query->join('INNER', ' #__sportsmanagement_project_team as pt ON pt.team_id = st.id ');
 			$query->join('INNER', ' #__sportsmanagement_project as p ON p.id = pt.project_id ');
-
-			// Where
 			$query->where('t.club_id = ' . (int) self::$clubid);
-
-			// Group
 			$query->group('p.id,p.name');
-
-			// Order
 			$query->order('p.name DESC');
-
 			$db->setQuery($query);
-
 			$teamsprojects = $db->loadObjectList();
 		}
-
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $teamsprojects;
 
 	}
@@ -250,33 +226,22 @@ class sportsmanagementModelClubPlan extends BaseDatabaseModel
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
-
-		// Get a db connection.
 		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
 
 		if (self::$clubid > 0)
 		{
 			$query->select('s.id as value,s.name as text');
-
-			// From
 			$query->from('#__sportsmanagement_team as t');
 			$query->join('INNER', ' #__sportsmanagement_season_team_id as st ON st.team_id = t.id ');
 			$query->join('INNER', ' #__sportsmanagement_season as s ON s.id = st.season_id ');
-
-			// Where
 			$query->where('t.club_id = ' . (int) self::$clubid);
-
-			// Group
 			$query->group('s.id,s.name');
-
-			// Order
 			$query->order('s.name DESC');
-
 			$db->setQuery($query);
 			$teamsseasons = $db->loadObjectList();
 		}
-
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $teamsseasons;
 
 	}
@@ -293,11 +258,8 @@ class sportsmanagementModelClubPlan extends BaseDatabaseModel
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
-
 		$project           = sportsmanagementModelProject::getProject(self::$cfg_which_database);
 		$this->teamseasons = $project->season_id;
-
-		// Get a db connection.
 		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
 
@@ -461,7 +423,7 @@ class sportsmanagementModelClubPlan extends BaseDatabaseModel
 		{
 			$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_MATCHES'), 'Error');
 		}
-
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $this->allmatches;
 	}
 
@@ -474,23 +436,15 @@ class sportsmanagementModelClubPlan extends BaseDatabaseModel
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
-
-		// Get a db connection.
 		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
-
 		$teams = array(0);
 
 		if (self::$clubid > 0)
 		{
 			$query->select('id,name as team_name,short_name as team_shortcut,info as team_description');
-
-			// From
 			$query->from('#__sportsmanagement_team');
-
-			// Where
 			$query->where('club_id = ' . (int) self::$clubid);
-
 			$db->setQuery($query);
 			$teams = $db->loadObjectList();
 		}
@@ -498,7 +452,7 @@ class sportsmanagementModelClubPlan extends BaseDatabaseModel
 		if (!$teams)
 		{
 		}
-
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $teams;
 	}
 
