@@ -60,6 +60,11 @@ echo $this->loadTemplate('jsm_notes');
 		<?php
 		if ($this->config['show_chances'])
 		{
+if ( !$this->chances )
+{
+$this->chances[0] = '';
+$this->chances[1] = '';	
+}			
 			?>
             <tr class="sectiontableentry1">
                 <td class="valueleft">
