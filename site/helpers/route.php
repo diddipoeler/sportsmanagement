@@ -59,7 +59,7 @@ class sportsmanagementHelperRoute
 		'nextmatch'        => array('cfg_which_database' => '', 's' => '', 'p' => '', 'mid' => ''),
 		'player'           => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'pid' => ''),
 
-		'playground' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'pgid' => ''),
+		'playground' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'pgid' => '', 'Itemid' => '0'),
         
         'leaguechampionoverview'    => array('cfg_which_database' => '', 'l' => '', 's' => '', 'p' => ''),
 
