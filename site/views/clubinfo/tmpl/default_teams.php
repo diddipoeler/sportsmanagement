@@ -1,5 +1,4 @@
 <?php
-
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
@@ -9,7 +8,6 @@
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -28,7 +26,7 @@ use Joomla\CMS\Component\ComponentHelper;
 
 		foreach ($this->teams as $team)
 		{
-			if ($team->team_name && array_key_exists('ptid', $team))
+			if ($team->team_name && property_exists($team,'ptid'))
 			{
 				$routeparameter                       = array();
 				$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
