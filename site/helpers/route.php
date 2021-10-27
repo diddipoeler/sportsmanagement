@@ -152,11 +152,7 @@ if ( !array_key_exists('Itemid', $parts) ) {
 		else
 		{
 			$params = ComponentHelper::getParams('com_sportsmanagement');
-
-			if ($params->get('default_itemid'))
-			{
-				$parts['Itemid'] = intval($params->get('default_itemid'));
-			}
+			$parts['Itemid'] = intval($params->get('default_itemid'));
 		}
 
 		return Uri::buildQuery($parts);
