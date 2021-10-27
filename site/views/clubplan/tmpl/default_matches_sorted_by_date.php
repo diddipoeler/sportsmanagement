@@ -260,7 +260,7 @@ $cnt = 0;
 				?>
                 <td>
 					<?php
-					$matchReferees =& $this->model->getMatchReferees($game->id);
+					$matchReferees = $this->model->getMatchReferees($game->id);
 
 					foreach ($matchReferees AS $matchReferee)
 					{
@@ -271,7 +271,7 @@ $cnt = 0;
 						$routeparameter['pid']                = $matchReferee->id;
 						$referee_link                         = sportsmanagementHelperRoute::getSportsmanagementRoute('referee', $routeparameter);
                         $ref = sportsmanagementHelper::formatName(null, $matchReferee->firstname, $matchReferee->nickname, $matchReferee->lastname, $this->config["referee_name_format"]);
-						echo HTMLHelper::link($referee_link, $$ref);
+						echo HTMLHelper::link($referee_link, $ref);
 						echo '<br />';
 					}
 					?>
