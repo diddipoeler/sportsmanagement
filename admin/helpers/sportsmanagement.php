@@ -97,7 +97,7 @@ public static function getMatchReferees($match_id = 0, $cfg_which_database = 0)
 		$query     = $db->getQuery(true);
 		$starttime = microtime();
 		$query->select('p.id,pref.id AS person_id,p.firstname,p.lastname,pos.name AS position_name,CONCAT_WS(\':\',p.id,p.alias) AS person_slug');
-		$query->select('mp.project_position_id,pos.name as position_name');
+		$query->select('mr.project_position_id,pos.name as position_name');
 		$query->from('#__sportsmanagement_match_referee AS mr');
 		$query->join('LEFT', '#__sportsmanagement_project_referee AS pref ON mr.project_referee_id=pref.id');
 		$query->join('INNER', '#__sportsmanagement_season_person_id AS spi ON pref.person_id=spi.id');
