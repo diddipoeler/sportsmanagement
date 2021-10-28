@@ -505,20 +505,20 @@ class modMatchesSportsmanagementHelper
 				$size       = getimagesize($matchpart_pic);
 				$pic_width  = $size[0];
 				$pic_height = $size[1];
-				$whichparam = ($pic_width > $pic_height) ? ' width' : ' height';
+				$whichparam = ($pic_width > $pic_height) ? 'width' : 'height';
 
 				if ($this->params->get('xsize') > 0)
 				{
-					$appendimage .= $whichparam . '="' . $this->params->get('xsize') . '"';
+					$appendimage .= 'style="' . $whichparam . ':' . $this->params->get('xsize') . 'px"';
 				}
 				elseif ($this->params->get('ysize') > 0)
 				{
-					$appendimage .= $whichparam . '="' . $this->params->get('ysize') . '"';
+					$appendimage .= 'style="' . $whichparam . ':"' . $this->params->get('ysize') . 'px"';
 				}
 			}
 			else
 			{
-				$appendimage .= 'width="' . $this->params->get('xsize') . '"';
+				$appendimage .= 'style="width:' . $this->params->get('xsize') . 'px"';
 			}
 
 			$pic['src'] = trim($matchpart_pic) != "" ? $matchpart_pic : $defaultlogos[$pt];
