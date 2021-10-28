@@ -321,7 +321,7 @@ use Joomla\CMS\Factory;
 				<?php if ($this->config['show_referee']) { ?>
                     <td>
 						<?php
-						$matchReferees = $this->model->getMatchReferees($game->match_id);
+						$matchReferees = sportsmanagementHelper::getMatchReferees($game->match_id,Factory::getApplication()->input->getInt('cfg_which_database', 0) );
 						foreach ($matchReferees AS $matchReferee)
 						{
 							$routeparameter                       = array();
