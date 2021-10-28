@@ -67,7 +67,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 		$this->matchstaffpositions   = $this->model->getMatchPositions('staff');
 		$this->matchstaffs           = $this->model->getMatchPersons('staff');
 		$this->matchrefereepositions = $this->model->getMatchPositions('referee');
-		$this->matchreferees         = $this->model->getMatchReferees();
+		$this->matchreferees         = sportsmanagementHelper::getMatchReferees($this->match->id);
 		$this->matchcommentary       = sportsmanagementModelMatch::getMatchCommentary($this->match->id);
 		$this->substitutes           = sportsmanagementModelProject::getMatchSubstitutions($this->model->matchid, sportsmanagementModelProject::$cfg_which_database);
 		$this->eventtypes            = $this->model->getEventTypes();
