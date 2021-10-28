@@ -283,7 +283,8 @@ class JSMCountries
 		// Get a db connection.
 		$db = sportsmanagementHelper::getDBConnection();
 
-		$src = self::getIso3Flag($countrycode);
+		$iso2 = self::convertIso3to2($countrycode);
+		$src = self::getIso2Flag($countrycode);
 		if (!$src)
 		{
 			// Create a new query object.
@@ -317,7 +318,7 @@ class JSMCountries
 			case "WAL":  $countrycode = "gb-wls"; break;
 			case "SCO":  $countrycode = "gb-sct"; break;
 			case "GBR":  $countrycode = "gb-eng"; break;
-			default: $countrycode = self::convertIso3to2($countrycode); break;
+			default: $countrycode = $iso2; break;
 			}
 			$countrycode = strtolower($countrycode);
 			$html        = '<span class="flag-icon flag-icon-' . $countrycode . '"></span>';
@@ -339,6 +340,25 @@ class JSMCountries
 		if ($iso2)
 		{
 			$path = 'images/com_sportsmanagement/database/flags/' . strtolower($iso2) . '.png';
+
+			return $path;
+		}
+
+		return null;
+	}
+
+	/**
+	 * JSMCountries::getIso2Flag()
+	 *
+	 * @param   mixed  $iso_code_2
+	 *
+	 * @return
+	 */
+	public static function getIso2Flag($iso_code_2)
+	{
+		if ($iso_code_2)
+		{
+			$path = 'images/com_sportsmanagement/database/flags/' . strtolower($iso_code_2) . '.png';
 
 			return $path;
 		}
