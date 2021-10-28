@@ -594,8 +594,8 @@ class modMatchesSportsmanagementHelper
 			) : Text::_('MOD_SPORTSMANAGEMENT_MATCHES_REFEREE') . ': ';
 			$row['referee'] .= $this->jl_utf8_convert($match->refname, 'iso-8859-1', 'utf-8') . '</span>';
 			*/
-			$actionsModel = BaseDatabaseModel::getInstance('clubplan', 'sportsmanagementModel');
-			$row['referee'] = $actionsModel->getMatchReferees($match->match_id);
+			//$actionsModel = BaseDatabaseModel::getInstance('clubplan', 'sportsmanagementModel');
+			$row['referee'] = sportsmanagementHelper::getMatchReferees($match->match_id);
 		}
 		else
 		{
