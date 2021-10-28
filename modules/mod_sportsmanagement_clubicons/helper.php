@@ -196,6 +196,6 @@ class modJSMClubiconsHelper
 
 		$imgtitle = Text::_('View ') . $item->name;
 
-		return HTMLHelper::image($logourl, $item->name, 'border="0" width="auto" height="' . $this->params->get('picture_height') . '" class="' . $class . '" title="' . $imgtitle . '"');
+		return HTMLHelper::image($logourl, $item->name, 'border="0" style="width:auto; height:' . $this->params->get('picture_height') . 'px" class="' . $class . '" title="' . $imgtitle . '"');
 	}
 }
