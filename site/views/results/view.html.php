@@ -1,5 +1,4 @@
 <?php
-
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version    1.0.05
@@ -11,7 +10,6 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -308,7 +306,7 @@ class sportsmanagementViewResults extends sportsmanagementView
 			}
 			else
 			{
-				$referees = sportsmanagementModelResults::getMatchReferees($game->id, Factory::getApplication()->input->getInt('cfg_which_database', 0));
+				$referees = sportsmanagementHelper::getMatchReferees($game->id, Factory::getApplication()->input->getInt('cfg_which_database', 0));
 			}
 
 			if (!empty($referees))
