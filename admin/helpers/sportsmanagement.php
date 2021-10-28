@@ -1850,6 +1850,7 @@ $jinput = $app->input;
 		$query = $db->getQuery(true);
 		$query->select('fav_team');
 		$query->from('#__sportsmanagement_project');
+		$query->where('id = ' . (int) $project_id);
 		$db->setQuery($query);
 		$row = $db->loadObject();
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
