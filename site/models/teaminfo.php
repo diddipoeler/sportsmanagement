@@ -325,7 +325,9 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 
 if ( Factory::getConfig()->get('debug') )
 {
-		$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data <pre>'.print_r($query->dump(),true).'</pre>'  ), ''); 
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data <pre>'.print_r($query->dump(),true).'</pre>'  ), ''); 
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' projectteamid <pre>'.print_r($projectteamid,true).'</pre>'  ), '');
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' teamid <pre>'.print_r($teamid,true).'</pre>'  ), '');
 }
 
 
