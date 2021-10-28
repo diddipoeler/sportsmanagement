@@ -1840,11 +1840,22 @@ try
 	 */
 	public static function getProjectFavTeams($project_id)
 	{
+$app    = Factory::getApplication();
+$jinput = $app->input;
 
+		
 		if ($project_id)
 		{
-			$row = Table::getInstance('project', 'sportsmanagementTable');
-			$row->load($project_id);
+		$db    = sportsmanagementHelper::getDBConnection(true, $jinput->get('cfg_which_database', 0, '') );	
+		$query = $db->getQuery(true);
+		$query->select('fav_team');
+		$query->from('#__sportsmanagement_project');
+		$db->setQuery($query);
+		$row = $db->loadObject();
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+			
+			//$row = Table::getInstance('project', 'sportsmanagementTable');
+			//$row->load($project_id);
 
 			return $row;
 		}
