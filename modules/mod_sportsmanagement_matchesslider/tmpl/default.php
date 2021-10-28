@@ -54,11 +54,11 @@ use Joomla\CMS\HTML\HTMLHelper;
                     </h1>
                     <p style="text-align: center;">
 						<?PHP
-						echo '<img style="float: left;" src="' . $module->picture_server . $match->logohome . '" alt="' . $match->teamhome . '"  width="' . $params->get('xsize') . '" title="' . $match->teamhome . '" ' . $match->teamhome . ' />';
+						echo '<img style="float: left;width:' . $params->get('xsize') . 'px" src="' . $module->picture_server . $match->logohome . '" alt="' . $match->teamhome . '"  title="' . $match->teamhome . '" ' . $match->teamhome . ' />';
 						echo '' . $match->team1_result;
 						echo ' - ';
 						echo $match->team2_result . '';
-						echo '<img style="float: right;" src="' . $module->picture_server . $match->logoaway . '" alt="' . $match->teamaway . '" width="' . $params->get('xsize') . '" title="' . $match->teamaway . '" ' . $match->teamaway . ' />';
+						echo '<img style="float: right;width:' . $params->get('xsize') . 'px" src="' . $module->picture_server . $match->logoaway . '" alt="' . $match->teamaway . '" title="' . $match->teamaway . '" ' . $match->teamaway . ' />';
 						?>
                     </p>
 
