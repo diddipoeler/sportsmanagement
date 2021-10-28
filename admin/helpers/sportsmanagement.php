@@ -1884,7 +1884,7 @@ $jinput = $app->input;
 		{
 		$db    = sportsmanagementHelper::getDBConnection(true, $jinput->get('cfg_which_database', 0, '') );	
 		$query = $db->getQuery(true);
-		$query->select('fav_team');
+		$query->select('fav_team, fav_team_text_bold, fav_team_text_color, fav_team_color');
 		$query->from('#__sportsmanagement_project');
 		$query->where('id = ' . (int) $project_id);
 		$db->setQuery($query);
