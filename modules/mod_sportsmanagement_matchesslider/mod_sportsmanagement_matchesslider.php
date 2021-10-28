@@ -88,7 +88,11 @@ JLoader::register('modMatchesSliderHelper', __DIR__ . '/helper.php');
 JLoader::register('MatchesSliderSportsmanagementConnector', __DIR__ . '/connectors/sportsmanagement.php');
 
 // Welche joomla version ?
-if (version_compare(JVERSION, '3.0.0', 'ge'))
+if (version_compare(JVERSION, '4.0.0', 'ge'))
+{
+	//HTMLHelper::_('behavior.framework', true);
+}
+else if (version_compare(JVERSION, '3.0.0', 'ge'))
 {
 	HTMLHelper::_('behavior.framework', true);
 }

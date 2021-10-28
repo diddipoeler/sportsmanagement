@@ -28,7 +28,16 @@ if (!defined('JSM_PATH'))
 // Get helper
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'helper.php';
 
-HTMLHelper::_('behavior.framework');
+// Welche joomla version ?
+if (version_compare(JVERSION, '4.0.0', 'ge'))
+{
+	//HTMLHelper::_('behavior.framework', true);
+}
+else if (version_compare(JVERSION, '3.0.0', 'ge'))
+{
+	HTMLHelper::_('behavior.framework', true);
+}
+
 $document = Factory::getDocument();
 
 // Add css file
