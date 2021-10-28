@@ -295,7 +295,7 @@ $view        = $jinput->getVar("view");
 			?>
             <table class="table">
                 <tr>
-                    <td class="contentheading"><a name="division<?php echo $this->divisions; ?>"></a>
+                    <td class="contentheading"><a name="division<?php echo $this->divisions[0]->name; ?>"></a>
 
 						<?php
 						echo Text::_('COM_SPORTSMANAGEMENT_CURVE_TITLE');

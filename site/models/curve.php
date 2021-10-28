@@ -77,7 +77,7 @@ var $ranking = array();
 		self::$season_id                         = $jinput->get('s', 0, 'INT');
 		$post                                    = $jinput->post->getArray(array());
 
-		if ($post) if ( isset($post['division']) )
+		if ($post) if ( isset($post['division']) && self::$division > 0 )
 		{
 			self::$teamid1 = $post['tid1_' . $post['division']];
 			self::$teamid2 = $post['tid2_' . $post['division']];

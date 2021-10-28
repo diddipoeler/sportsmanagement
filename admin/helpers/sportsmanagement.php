@@ -2369,45 +2369,48 @@ $jinput = $app->input;
 
 		foreach ($divisions as $division)
 		{
-			echo '<tr>';
-			echo '<td align="center" style=""><b>' . $division->name . '</b>&nbsp;</td>';
-			$jRegistry = new Registry;
-
-			if ( version_compare(JVERSION, '3.0.0', 'ge') )
+			if (isset($division->rankingparams))
 			{
-				$jRegistry->loadString($division->rankingparams);
-			}
-			else
-			{
-				$jRegistry->loadJSON($division->rankingparams);
-			}
-
-			$configvalues = $jRegistry->toArray();
-			$colors       = array();
-
-			if (isset($configvalues['rankingparams']))
-			{
-				for ($a = 1; $a <= sizeof($configvalues['rankingparams']); $a++)
+				echo '<tr>';
+				echo '<td align="center" style=""><b>' . $division->name . '</b>&nbsp;</td>';
+				$jRegistry = new Registry;
+	
+				if ( version_compare(JVERSION, '3.0.0', 'ge') )
 				{
-					$colors[] = implode(",", $configvalues['rankingparams'][$a]);
+					$jRegistry->loadString($division->rankingparams);
 				}
-			}
-
-			$configvalues = implode(";", $colors);
-			$colors       = sportsmanagementModelProject::getColors($configvalues, sportsmanagementModelProject::$cfg_which_database);
-
-			foreach ($colors as $color)
-			{
-				if (trim($color['description']) != '')
+				else
 				{
-					// Echo '<tr>';
-					echo '<td align="center" style="background-color:' . $color['color'] . ';"><b>' . $color['description'] . '</b>&nbsp;</td>';
-
-					// Echo '</tr>';
+					$jRegistry->loadJSON($division->rankingparams);
 				}
+	
+				$configvalues = $jRegistry->toArray();
+				$colors       = array();
+	
+				if (isset($configvalues['rankingparams']))
+				{
+					for ($a = 1; $a <= sizeof($configvalues['rankingparams']); $a++)
+					{
+						$colors[] = implode(",", $configvalues['rankingparams'][$a]);
+					}
+				}
+	
+				$configvalues = implode(";", $colors);
+				$colors       = sportsmanagementModelProject::getColors($configvalues, sportsmanagementModelProject::$cfg_which_database);
+	
+				foreach ($colors as $color)
+				{
+					if (trim($color['description']) != '')
+					{
+						// Echo '<tr>';
+						echo '<td align="center" style="background-color:' . $color['color'] . ';"><b>' . $color['description'] . '</b>&nbsp;</td>';
+	
+						// Echo '</tr>';
+					}
+				}
+	
+				echo '</tr>';
 			}
-
-			echo '</tr>';
 		}
 	}
 
