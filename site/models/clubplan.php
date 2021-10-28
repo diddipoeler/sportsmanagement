@@ -507,37 +507,6 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 		return self::$enddate;
 	}
 
-	/**
-	 * sportsmanagementModelClubPlan::getMatchReferees()
-	 *
-	 * @param   mixed  $matchID
-	 *
-	 * @return
-	 */
-	function getMatchReferees($matchID)
-	{
-		$option = Factory::getApplication()->input->getCmd('option');
-		$app    = Factory::getApplication();
-
-		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
-		$query = $db->getQuery(true);
-		$query->select('p.id,p.firstname,p.lastname,p.nickname,CONCAT_WS(\':\',p.id,p.alias) AS person_slug');
-		$query->select('mp.project_position_id,pos.name as position_name');
-		$query->from('#__sportsmanagement_match_referee AS mp');
-		$query->join('LEFT', ' #__sportsmanagement_project_referee AS pref ON mp.project_referee_id = pref.id ');
-		$query->join('INNER', ' #__sportsmanagement_season_person_id AS sp ON pref.person_id = sp.id ');
-		$query->join('INNER', ' #__sportsmanagement_person AS p ON sp.person_id = p.id ');
-		$query->join('INNER', ' #__sportsmanagement_project_position AS ppos ON ppos.id = mp.project_position_id');
-		$query->join('INNER', ' #__sportsmanagement_position AS pos ON pos.id = ppos.position_id');
-		$query->where('mp.match_id = ' . (int) $matchID);
-		$query->where('p.published = 1');
-		$query->order('pos.ordering');
-
-		$db->setQuery($query);
-
-		$result = $db->loadObjectList();
-
-		return $result;
-	}
+	
 
 }
