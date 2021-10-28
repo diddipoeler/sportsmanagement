@@ -376,50 +376,6 @@ class sportsmanagementModelMatchReport extends JSMModelLegacy
 		return $result;
 	}
 
-
-	/**
-	 * sportsmanagementModelMatchReport::getMatchReferees()
-	 *
-	 * @return
-	 */
-	function getMatchReferees()
-	{
-		$option = Factory::getApplication()->input->getCmd('option');
-		$app    = Factory::getApplication();
-		$db     = sportsmanagementHelper::getDBConnection(true, sportsmanagementModelProject::$cfg_which_database);
-		$query  = $db->getQuery(true);
-
-		$query->select('p.id,p.firstname,p.nickname,p.lastname,CONCAT_WS(\':\',p.id,p.alias) AS person_slug,p.picture');
-		$query->select('ppos.position_id,ppos.id AS pposid');
-		$query->select('pos.name AS position_name');
-		$query->from('#__sportsmanagement_match_referee AS mr');
-		$query->join('INNER', '#__sportsmanagement_project_referee AS pref ON mr.project_referee_id=pref.id ');
-		$query->join('INNER', '#__sportsmanagement_season_person_id AS tp on tp.id = pref.person_id');
-
-		$query->join('INNER', '#__sportsmanagement_person AS p ON tp.person_id=p.id');
-		$query->join('LEFT', '#__sportsmanagement_project_position AS ppos ON ppos.id=mr.project_position_id');
-		$query->join('LEFT', '#__sportsmanagement_position AS pos ON ppos.position_id=pos.id');
-		$query->where('mr.match_id=' . (int) $this->matchid);
-		$query->where('p.published = 1');
-		$query->where('tp.persontype = 3');
-
-		try
-		{
-			$db->setQuery($query);
-			$result = $db->loadObjectList();
-		}
-		catch (Exception $e)
-		{
-			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
-			$result = false;
-		}
-
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
-		return $result;
-	}
-
-
 	/**
 	 * sportsmanagementModelMatchReport::getEventTypes()
 	 *
