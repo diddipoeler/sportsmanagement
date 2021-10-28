@@ -260,7 +260,7 @@ $cnt = 0;
 				?>
                 <td>
 					<?php
-					$matchReferees = $this->model->getMatchReferees($game->id);
+					$matchReferees = sportsmanagementHelper::getMatchReferees($game->id,Factory::getApplication()->input->getInt('cfg_which_database', 0) );
 
 					foreach ($matchReferees AS $matchReferee)
 					{
