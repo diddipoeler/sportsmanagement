@@ -446,9 +446,9 @@ if ( Factory::getConfig()->get('debug') )
 
 		sportsmanagementModelProject::setProjectID($projectid, self::$cfg_which_database);
 		$project     = sportsmanagementModelProject::getProject(self::$cfg_which_database);
-		$tableconfig = sportsmanagementModelProject::getTemplateConfig("ranking", self::$cfg_which_database);
+		//$tableconfig = sportsmanagementModelProject::getTemplateConfig("ranking", self::$cfg_which_database);
 		$ranking     = JSMRanking::getInstance($project, self::$cfg_which_database);
-		$ranking->setProjectId($project->id, self::$cfg_which_database);
+		//$ranking->setProjectId($project->id, self::$cfg_which_database);
 		$temp_ranking = $ranking->getRanking(0, sportsmanagementModelProject::getCurrentRound(null, self::$cfg_which_database), $division_id, self::$cfg_which_database);
 
 		foreach ($temp_ranking as $ptid => $value)
@@ -554,7 +554,7 @@ if ( Factory::getConfig()->get('debug') )
 		$countplayer = 0;
 		$age         = 0;
 
-		$query->select('ps.*');
+		$query->select('ps.birthday, ps.deathday');
 		$query->from('#__sportsmanagement_person AS ps');
 		$query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp ON tp.person_id = ps.id');
 		$query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id AND st.season_id = tp.season_id');

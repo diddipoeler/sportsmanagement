@@ -215,72 +215,74 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 	 */
 	public static function getProject($cfg_which_database = 0, $call_function = '', $inserthits = 0)
 	{
-		$app    = Factory::getApplication();
-		$option = $app->input->getCmd('option');
+		if (self::$_project == null || self::$projectid != self::$_project->id)
+		{			
+			$app    = Factory::getApplication();
+			$option = $app->input->getCmd('option');
 
-		// Get a db connection.
-		$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query     = $db->getQuery(true);
-		$starttime = microtime();
+			// Get a db connection.
+			$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
+			$query     = $db->getQuery(true);
+			$starttime = microtime();
 
-		if (!self::$projectid)
-		{
-			self::$projectid = $app->input->getInt('p', 0);
+			if (!self::$projectid)
+			{
+				self::$projectid = $app->input->getInt('p', 0);
+			}
+
+			self::updateHits(self::$projectid, $inserthits);
+
+			if (self::$projectid > 0)
+			{
+				$query->select('p.*, l.country, st.id AS sport_type_id, st.name AS sport_type_name');
+				$query->select('st.icon AS sport_type_picture, st.eventtime as useeventtime, l.picture as leaguepicture, l.name as league_name, s.name as season_name,r.name as round_name');
+				$query->select('LOWER(SUBSTR(st.name, CHAR_LENGTH( "COM_SPORTSMANAGEMENT_ST_")+1)) AS fs_sport_type_name');
+				$query->select('CONCAT_WS( \':\', p.id, p.alias ) AS slug');
+				$query->select('CONCAT_WS( \':\', l.id, l.alias ) AS league_slug');
+				$query->select('CONCAT_WS( \':\', s.id, s.alias ) AS season_slug');
+				$query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
+				$query->select('l.cr_picture as cr_leaguepicture');
+				$query->from('#__sportsmanagement_project AS p ');
+				$query->join('INNER', '#__sportsmanagement_sports_type AS st ON p.sports_type_id = st.id ');
+				$query->join('LEFT', '#__sportsmanagement_league AS l ON p.league_id = l.id ');
+				$query->join('LEFT', '#__sportsmanagement_season AS s ON p.season_id = s.id ');
+				$query->join('LEFT', '#__sportsmanagement_round AS r ON p.current_round = r.id ');
+				$query->where('p.id = ' . (int) self::$projectid);
+
+				$db->setQuery($query, 0, 1);
+
+				self::$_project = $db->loadObject();
+				// $query->clear();
+				// $query->select('eventtime');
+				// $query->from('#__sportsmanagement_sports_type');
+				// $query->where('id = ' . self::$_project->sports_type_id);
+				// $db->setQuery($query);
+
+				// try
+				// {
+				// 	$useeventtime                 = $db->loadResult();
+				// 	self::$_project->useeventtime = $useeventtime;
+				// }
+				// catch (Exception $e)
+				// {
+				// 	$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
+				// 	$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), 'error');
+				// 	self::$_project->useeventtime = false;
+				// }
+
+				if (self::$_project)
+				{
+					self::$projectslug = self::$_project->slug;
+				}
+
+				if (!self::$seasonid && self::$_project)
+				{
+					self::$seasonid = self::$_project->season_id;
+				}
+			}
+
+			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		}
-
-		self::updateHits(self::$projectid, $inserthits);
-
-		if (self::$projectid > 0)
-		{
-			$query->select('p.*, l.country, st.id AS sport_type_id, st.name AS sport_type_name');
-			$query->select('st.icon AS sport_type_picture, l.picture as leaguepicture, l.name as league_name, s.name as season_name,r.name as round_name');
-			$query->select('LOWER(SUBSTR(st.name, CHAR_LENGTH( "COM_SPORTSMANAGEMENT_ST_")+1)) AS fs_sport_type_name');
-			$query->select('CONCAT_WS( \':\', p.id, p.alias ) AS slug');
-			$query->select('CONCAT_WS( \':\', l.id, l.alias ) AS league_slug');
-			$query->select('CONCAT_WS( \':\', s.id, s.alias ) AS season_slug');
-			$query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
-			$query->select('l.cr_picture as cr_leaguepicture');
-			$query->from('#__sportsmanagement_project AS p ');
-			$query->join('INNER', '#__sportsmanagement_sports_type AS st ON p.sports_type_id = st.id ');
-			$query->join('LEFT', '#__sportsmanagement_league AS l ON p.league_id = l.id ');
-			$query->join('LEFT', '#__sportsmanagement_season AS s ON p.season_id = s.id ');
-			$query->join('LEFT', '#__sportsmanagement_round AS r ON p.current_round = r.id ');
-			$query->where('p.id = ' . (int) self::$projectid);
-
-			$db->setQuery($query, 0, 1);
-
-			self::$_project = $db->loadObject();
-			$query->clear();
-			$query->select('eventtime');
-			$query->from('#__sportsmanagement_sports_type');
-			$query->where('id = ' . self::$_project->sports_type_id);
-			$db->setQuery($query);
-
-			try
-			{
-				$useeventtime                 = $db->loadResult();
-				self::$_project->useeventtime = $useeventtime;
-			}
-			catch (Exception $e)
-			{
-				$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
-				$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), 'error');
-				self::$_project->useeventtime = false;
-			}
-
-			if (self::$_project)
-			{
-				self::$projectslug = self::$_project->slug;
-			}
-
-			if (!self::$seasonid && self::$_project)
-			{
-				self::$seasonid = self::$_project->season_id;
-			}
-		}
-
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
 		return self::$_project;
 	}
 
