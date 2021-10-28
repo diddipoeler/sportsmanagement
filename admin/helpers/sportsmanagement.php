@@ -86,6 +86,42 @@ abstract class sportsmanagementHelper
     /** @var    array    An array of notes */
 	static $_notes = array();
     
+	
+public static function getMatchReferees($match_id = 0, $cfg_which_database = 0)
+	{
+		$app    = Factory::getApplication();
+		$option = $app->input->getCmd('option');
+
+		// Get a db connection.
+		$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
+		$query     = $db->getQuery(true);
+		$starttime = microtime();
+		$query->select('p.id,pref.id AS person_id,p.firstname,p.lastname,pos.name AS position_name,CONCAT_WS(\':\',p.id,p.alias) AS person_slug');
+		$query->select('mp.project_position_id,pos.name as position_name');
+		$query->from('#__sportsmanagement_match_referee AS mr');
+		$query->join('LEFT', '#__sportsmanagement_project_referee AS pref ON mr.project_referee_id=pref.id');
+		$query->join('INNER', '#__sportsmanagement_season_person_id AS spi ON pref.person_id=spi.id');
+		$query->join('INNER', '#__sportsmanagement_person AS p ON spi.person_id=p.id');
+		$query->join('LEFT', '#__sportsmanagement_project_position AS ppos ON mr.project_position_id=ppos.id');
+		$query->join('LEFT', '#__sportsmanagement_position AS pos ON ppos.position_id=pos.id');
+		$query->where('mr.match_id = ' . (int) $match_id);
+		$query->where('p.published = 1');
+		$query->order('pos.name,mr.ordering');
+
+		$db->setQuery($query);
+
+		$result = $db->loadObjectList();
+
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+
+		return $result;
+
+	}
+	
+	
+	
+	
+	
     /**
      * sportsmanagementHelper::getTips()
      * 
