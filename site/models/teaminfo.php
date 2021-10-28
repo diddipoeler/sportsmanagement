@@ -527,7 +527,12 @@ if ( Factory::getConfig()->get('debug') )
 
 		$db->setQuery($query);
 		$player = $db->loadResult();
-
+		
+if ( Factory::getConfig()->get('debug') )
+{
+		$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data <pre>'.print_r($query->dump(),true).'</pre>'  ), ''); 
+}
+		
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return $player;
@@ -570,6 +575,11 @@ if ( Factory::getConfig()->get('debug') )
 		$db->setQuery($query);
 		$players = $db->loadObjectList();
 
+if ( Factory::getConfig()->get('debug') )
+{
+		$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data <pre>'.print_r($query->dump(),true).'</pre>'  ), ''); 
+}
+		
 		foreach ($players as $player)
 		{
 			if ($player->birthday != '0000-00-00')
@@ -624,6 +634,12 @@ if ( Factory::getConfig()->get('debug') )
 		$db->setQuery($query);
 
 		$player = $db->loadResult();
+		
+if ( Factory::getConfig()->get('debug') )
+{
+		$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data <pre>'.print_r($query->dump(),true).'</pre>'  ), ''); 
+}
+		
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return $player;
