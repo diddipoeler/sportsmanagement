@@ -112,6 +112,8 @@ else
 
 $doc = Factory::getDocument();
 /** Add styles */
+$percent = $params->get('max_width_after_mouse_over', '10');
+$transition = (100 + $percent)/100;
 $style = '
 .img-zoom {
 width: auto;
@@ -123,17 +125,17 @@ width: auto;
 }
 
 .img-zoom:hover {
-    -webkit-transform: scale(1.' . $params->get('max_width_after_mouse_over', '10') . ');
-    -moz-transform: scale(1.' . $params->get('max_width_after_mouse_over', '10') . ');
-    -o-transform: scale(1.' . $params->get('max_width_after_mouse_over', '10') . ');
-    transform: scale(1.' . $params->get('max_width_after_mouse_over', '10') . ');
+    -webkit-transform: scale(' . $transition . ');
+    -moz-transform: scale(' . $transition . ');
+    -o-transform: scale(' . $transition . ');
+    transform: scale(' . $transition . ');
 }
 
 .transition {
-    -webkit-transform: scale(1.' . $params->get('max_width_after_mouse_over', '10') . ');
-    -moz-transform: scale(1.' . $params->get('max_width_after_mouse_over', '10') . ');
-    -o-transform: scale(1.' . $params->get('max_width_after_mouse_over', '10') . ');
-    transform: scale(1.' . $params->get('max_width_after_mouse_over', '10') . ');
+    -webkit-transform: scale(' . $transition . ');
+    -moz-transform: scale(' . $transition . ');
+    -o-transform: scale(' . $transition . ');
+    transform: scale(' . $transition . ');
 }
 ';
 $doc->addStyleDeclaration($style);
