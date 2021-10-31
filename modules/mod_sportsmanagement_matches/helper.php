@@ -44,7 +44,7 @@ class modMatchesSportsmanagementHelper
 		$this->app       = Factory::getApplication();
         $params_component = ComponentHelper::getParams('com_sportsmanagement');
 		$itemid          = intval($params_component->get('default_itemid'));
-		$this->itemid    = (!empty($itemid)) ? '&amp;Itemid=' . $itemid : '';
+		$this->itemid    = (!empty($itemid)) ? '&Itemid=' . $itemid : '&Itemid=0';
 		$this->id        = $match_id;
 		$this->usedteams = array(
 			0 => array()
