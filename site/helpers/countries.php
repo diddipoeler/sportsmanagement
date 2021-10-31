@@ -284,7 +284,8 @@ class JSMCountries
 		$db = sportsmanagementHelper::getDBConnection();
 
 		$iso2 = self::convertIso3to2($countrycode);
-		$src = self::getIso2Flag($countrycode);
+		//$src = self::getIso2Flag($countrycode);
+		$src = self::getIso3Flag($countrycode);
 		if (!$src)
 		{
 			// Create a new query object.
