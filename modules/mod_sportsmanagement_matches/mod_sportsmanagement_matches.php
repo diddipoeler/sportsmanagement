@@ -38,9 +38,7 @@ if (!defined('JSM_PATH'))
 	DEFINE('JSM_PATH', 'components/com_sportsmanagement');
 }
 
-/**
- * prüft vor Benutzung ob die gewünschte Klasse definiert ist
- */
+/** prüft vor Benutzung ob die gewünschte Klasse definiert ist */
 if (!class_exists('JSMModelLegacy'))
 {
 	JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_SITE);
@@ -55,7 +53,7 @@ if (!class_exists('JSMCountries'))
 
 if (!class_exists('sportsmanagementHelper'))
 {
-	// Add the classes for handling
+	/** Add the classes for handling */
 	$classpath = JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'sportsmanagement.php';
 	JLoader::register('sportsmanagementHelper', $classpath);
 	BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
@@ -73,10 +71,7 @@ if (!defined('_JSMMATCHLISTMODURL'))
 
 JLoader::import('components.com_sportsmanagement.models.clubplan', JPATH_SITE);
 
-/**
- *
- * Include the functions only once
- */
+/** Include the functions only once */
 JLoader::register('modMatchesSportsmanagementHelper', __DIR__ . '/helper.php');
 JLoader::register('MatchesSportsmanagementConnector', __DIR__ . '/connectors/sportsmanagement.php');
 
@@ -127,15 +122,9 @@ if ($params->get('mootools'))
 
 if (version_compare(JVERSION, '3.0.0', 'ge'))
 {
-	// Joomla! 3.0 code here
+	/** Joomla! 3.0 code here */
 	$doc->addScript(_JSMMATCHLISTMODURL . 'assets/js/' . $module->module . '_joomla_3.js');
 }
-elseif (version_compare(JVERSION, '2.5.0', 'ge'))
-{
-	// Joomla! 2.5 code here
-	$doc->addScript(_JSMMATCHLISTMODURL . 'assets/js/' . $module->module . '_joomla_2.js');
-}
-
 
 $doc->addStyleSheet(_JSMMATCHLISTMODURL . 'tmpl/' . $template . DIRECTORY_SEPARATOR . $module->module . '.css');
 $cssimgurl = ($params->get('use_icons') != '-1') ? _JSMMATCHLISTMODURL . 'assets/images/' . $params->get('use_icons') . '/'
@@ -184,7 +173,6 @@ $cnt = ($nr >= 0) ? $nr : 0;
 
 if (count($matches) > 0)
 {
-	// $user = Factory::getUser();
 	foreach ($matches AS $key => $match)
 	{
 		if (!isset($match['project_id']))

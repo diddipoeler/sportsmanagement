@@ -217,7 +217,6 @@ class modMatchesSportsmanagementHelper
 	 */
 	public function formatMatches(&$matches)
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
 
 		if ($this->params->get('lastsortorder') == 'desc')
@@ -580,21 +579,8 @@ class modMatchesSportsmanagementHelper
 	{
 		$row['notice'] = ($match->match_result_detail != '' && $this->params->get('show_match_notice') == 1) ? $match->match_result_detail : '';
 
-		//if ( $this->params->get('show_referee', 1) == 1 && $match->refname != '')
 		if ( $this->params->get('show_referee', 1) )
 		{
-			/*
-			$row['referee'] = '<span style="float:right;">';
-			$row['referee'] .= ($this->iconpath) ? HTMLHelper::_(
-				'image', $this->iconpath . 'referee.png', Text::_('MOD_SPORTSMANAGEMENT_MATCHES_REFEREE'), array(
-					'title'  => Text::_('MOD_SPORTSMANAGEMENT_MATCHES_REFEREE'),
-					'height' => '16',
-					'width'  => '16'
-				)
-			) : Text::_('MOD_SPORTSMANAGEMENT_MATCHES_REFEREE') . ': ';
-			$row['referee'] .= $this->jl_utf8_convert($match->refname, 'iso-8859-1', 'utf-8') . '</span>';
-			*/
-			//$actionsModel = BaseDatabaseModel::getInstance('clubplan', 'sportsmanagementModel');
 			$row['referee'] = sportsmanagementHelper::getMatchReferees($match->match_id);
 		}
 		else
@@ -740,7 +726,6 @@ class modMatchesSportsmanagementHelper
 
 		$row['partresults'] = $partresults;
 
-		// Print_r($row);
 		if ($row['cancel'] == 1)
 		{
 			$row['result'] = $row['cancel_reason'];
@@ -750,17 +735,13 @@ class modMatchesSportsmanagementHelper
 			$row['result'] = $row['homescore'] . $this->params->get('team_separator') . $row['awayscore'];
 		}
 
-		/**
-		 * verlängerung
-		 */
+		/** verlängerung */
 		if ($this->params->get('show_text_overtime') && $match->team1_result_ot)
 		{
 			$row['resultovertime'] = Text::_('IET') . ' ' . $match->team1_result_ot . $this->params->get('team_separator') . $match->team2_result_ot;
 		}
 
-		/**
-		 * elfmeter/penalty
-		 */
+		/** elfmeter/penalty */
 		if ($this->params->get('show_text_penalty') && $match->team1_result_so)
 		{
 			$row['resultpenalty'] = Text::_('INP') . ' ' . $match->team1_result_so . $this->params->get('team_separator') . $match->team2_result_so;
@@ -836,7 +817,7 @@ class modMatchesSportsmanagementHelper
 			'style'   => 'cursor:pointer;'
 		);
 
-		// Start ajaxifying
+		/** Start ajaxifying */
 		if ($this->params->get('next_last'))
 		{
 			$showhome = $this->usedteamscheck($row->team1_id, $row->project_id,$row->club1_id);
