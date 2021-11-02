@@ -996,20 +996,15 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 			}
 			$start = new Google_Service_Calendar_EventDateTime;
 
-			// Setze das Datum und verwende das RFC 3339 Format.
-			list($date2, $time) = explode(" ", $row->match_date);
-
-			// $anstoss = date('H:i', $row->match_date);
-			$anstoss = $time;
-			$abpfiff = date('H:i', strtotime($time) + ($gcalendar_id->game_regular_time + $gcalendar_id->halftime) * 60);
-
-			$start->setDateTime($date2 . 'T' . $anstoss . date("P", strtotime($row->match_date)));
-			$start->setTimeZone($row->timezone);
+			$dtTmp = new DateTime($row->match_date, new DateTimeZone($gcalendar_id->timezone));
+			$start->setDateTime($dtTmp->format("c"));
+			$start->setTimeZone($gcalendar_id->timezone);
 			$event->setStart($start);
 
+			$dtTmp->add(new DateInterval('PT' . ($gcalendar_id->game_regular_time + $gcalendar_id->halftime) . 'M'));
 			$end = new Google_Service_Calendar_EventDateTime;
-			$end->setDateTime($date2 . 'T' . $abpfiff . ':00' . date("P", strtotime($date2 . ' ' . $abpfiff . ':00')));
-			$end->setTimeZone($row->timezone);
+			$end->setDateTime($dtTmp->format("c"));
+			$end->setTimeZone($gcalendar_id->timezone);
 			$event->setEnd($end);
 
 			if ($row->gcal_event_id)
