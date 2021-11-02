@@ -52,10 +52,11 @@ static $rankingalltimenotes = array();
         
         $query->select('pt.id AS _ptid, pt.is_in_score, pt.division_id, pt.finaltablerank as rank');
         $query->select('CONCAT_WS(\':\',pt.id,t.alias) AS ptid_slug');
-        $query->select('t.name as _name, t.id as _teamid');
+        $query->select('t.name as _name, t.id as _teamid, t.club_id, c.logo_big');
         $query->from('#__sportsmanagement_project_team AS pt ');
         $query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.id = pt.team_id');
 		$query->join('INNER', '#__sportsmanagement_team AS t ON st1.team_id = t.id ');
+        $query->join('INNER', '#__sportsmanagement_club AS c ON c.id = t.club_id ');
         $query->where('pt.project_id = ' . $project_id);
 		$query->where('pt.is_in_score = 1');
         $query->where('pt.finaltablerank = 1');

@@ -92,7 +92,7 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         
           switch ( $this->champion->rank )
           {
-            case 1:
+          case 1:
         //if ( $this->champion->rank == 1 )
         //{
 //        echo '<pre>'.print_r($project->season_name,true).'</pre>';    
@@ -102,19 +102,35 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         $object->ptid_slug = $this->champion->ptid_slug;
         $object->ptid = $this->champion->_ptid;
         $object->teamid = $this->champion->_teamid;
-			  $object->project_id = $project->slug;
+		$object->project_id = $project->slug;
         
+        if ( $this->champion->club_id )
+        {
+        $object->clubid = $this->champion->club_id;    
+        }
+        else
+        {
         $mdlTeaminfo::$team = null;
         $teaminfo = $mdlTeaminfo::getTeam(0,$this->champion->_teamid);
         $object->clubid = $teaminfo->club_id;
-			  
+        }
+        
+        if ( $this->champion->logo_big )
+        {
+        $object->logo_big = $this->champion->logo_big;    
+        }
+        else
+        {
         $mdlClubinfo::$club = null;
         $clubinfo = $mdlClubinfo::getClub(0,$teaminfo->club_id);
 		$object->logo_big = $clubinfo->logo_big;
+        }
+			  
+        
 			  
         /** welche saison zu welchem team */
         $this->teamseason[$object->teamid]['season'][] = $project->season_name;
-        /* wenn nötig, array variabel initialisieren */
+        /** wenn nötig, array variabel initialisieren */
         if (empty($this->teamseason[$object->teamid]['title'])) {
         $this->teamseason[$object->teamid]['title'] = 0;
         }

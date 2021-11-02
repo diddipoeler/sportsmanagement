@@ -492,18 +492,12 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 	{
 		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
-
-		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
 
 		$query->select('SUM(me.event_sum) as total');
 		$query->from('#__sportsmanagement_match_event AS me');
 		$query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp1 ON tp1.id = me.teamplayer_id');
-
-		// $query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.team_id = tp1.team_id');
-		// $query->join('INNER','#__sportsmanagement_project_team AS pt ON st1.id = pt.team_id');
-
 		$query->where('me.event_type_id = ' . (int) $eventid);
 		$query->where('tp1.person_id = ' . (int) self::$personid);
 
@@ -512,10 +506,6 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 			$query->where('me.projectteam_id = ' . (int) $projectteamid);
 		}
 
-		//				if ($projectid)
-		//				{
-		//                    $query->where('pt.project_id =' . (int) $projectid);
-		//				}
 		$query->group('tp1.person_id');
 
 		$db->setQuery($query);
