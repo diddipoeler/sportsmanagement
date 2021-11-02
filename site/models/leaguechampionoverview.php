@@ -54,6 +54,7 @@ static $rankingalltimenotes = array();
         $query->from('#__sportsmanagement_project_team AS pt ');
         $query->where('pt.project_id = ' . $project_id);
 		$query->where('pt.is_in_score = 1');
+        $query->where('pt.finaltablerank = 1');
         $db->setQuery($query);
 		$res = $db->loadObjectList();
         
