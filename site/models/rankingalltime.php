@@ -221,7 +221,7 @@ foreach ($field->fieldset as $fieldset)
                     
 				}
 
-				if ($r->use_finally)
+				if ( $r->use_finally || ComponentHelper::getParams('com_sportsmanagement')->get('force_ranking_cache', 0) )
 				{
 					$this->teams[$r->team_id]->sum_points        += $r->points_finally;
 					$this->teams[$r->team_id]->neg_points        += $r->neg_points_finally;
