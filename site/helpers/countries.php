@@ -87,16 +87,12 @@ class JSMCountries
 	public static function getCountryOptions($value_tag = 'value', $text_tag = 'text', $useflag = 0)
 	{
 		$app = Factory::getApplication();
-		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		$db     = sportsmanagementHelper::getDBConnection();
 
-		// Create a new query object.
 		$query = $db->getQuery(true);
-
 		$query->select('alpha3,name');
-		// From table
 		$query->from('#__sportsmanagement_countries');
 		$db->setQuery($query);
 		$countries = $db->loadAssocList();
@@ -148,20 +144,14 @@ class JSMCountries
 	public static function convertIso2to3($iso_code_2)
 	{
 		$app = Factory::getApplication();
-		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		$db     = sportsmanagementHelper::getDBConnection();
 
-		// Create a new query object.
 		$query = $db->getQuery(true);
-
 		$query->select('alpha3');
-		// From table
 		$query->from('#__sportsmanagement_countries');
 		$query->where('alpha2 LIKE \'' . $iso_code_2 . '\'');
-
-
 		$db->setQuery($query);
 		$res = $db->loadResult();
 		if ($res)
@@ -198,20 +188,14 @@ class JSMCountries
 	public static function getCountryName($iso3)
 	{
 		$app = Factory::getApplication();
-		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		$db     = sportsmanagementHelper::getDBConnection();
 
-		// Create a new query object.
 		$query = $db->getQuery(true);
-
 		$query->select('name');
-		// From table
 		$query->from('#__sportsmanagement_countries');
 		$query->where('alpha3 LIKE \'' . $iso3 . '\'');
-
-
 		$db->setQuery($query);
 		$res = $db->loadResult();
 
@@ -271,28 +255,22 @@ class JSMCountries
 	 */
 	public static function getCountryFlag($countrycode, $attributes = '')
 	{
-
-
 		$app = Factory::getApplication();
-		// JInput object
 		$jinput   = $app->input;
 		$option   = $jinput->getCmd('option');
 		$params   = ComponentHelper::getParams('com_sportsmanagement');
 		$cssflags = $params->get('cfg_flags_css');
 
-		// Get a db connection.
 		$db = sportsmanagementHelper::getDBConnection();
 
 		$iso2 = self::convertIso3to2($countrycode);
 		//$src = self::getIso2Flag($countrycode);
-		$src = self::getIso3Flag($countrycode);
+		//$src = self::getIso3Flag($countrycode);
+		$src = self::getIso2Flag($iso2);
 		if (!$src)
 		{
-			// Create a new query object.
 			$query = $db->getQuery(true);
-
 			$query->select('picture');
-			// From table
 			$query->from('#__sportsmanagement_countries');
 			$query->where('alpha3 LIKE \'' . $countrycode . '\'');
 			$db->setQuery($query);
