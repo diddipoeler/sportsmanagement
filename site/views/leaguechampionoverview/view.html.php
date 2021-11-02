@@ -61,18 +61,11 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
 			$this->currentRanking = $this->model->getProjectWinner($this->project_id); 
             
             
-            if ( $project->season_name == '2019/20' )
-        {
-        //echo '<pre>'.print_r($this->currentRanking,true).'</pre>';  
-          
-        }
+           
              }
              else
              {
-                
-                }
-        
-		$rankinghelper = JSMRanking::getInstance($project, 0);
+    	$rankinghelper = JSMRanking::getInstance($project, 0);
 		$rankinghelper->setProjectId($project->id, 0);
           //echo '<pre>'.print_r($project,true).'</pre>';
           
@@ -83,7 +76,10 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         $mdlRanking::$currentRanking = array();
         $mdlRanking::computeRanking(0);
         $currentRanking = $mdlRanking::$currentRanking;
-        $this->currentRanking = $this->model->_sortRanking($currentRanking[0]);
+        $this->currentRanking = $this->model->_sortRanking($currentRanking[0]);            
+                }
+        
+	
         
         if ( $project->season_name == '2019/20' )
         {
