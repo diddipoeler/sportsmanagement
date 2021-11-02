@@ -87,15 +87,31 @@ abstract class sportsmanagementHelper
 	static $_notes = array();
     
 	
+/**
+ * sportsmanagementHelper::getMatchReferees()
+ * 
+ * @param integer $match_id
+ * @param integer $cfg_which_database
+ * @return
+ */
 public static function getMatchReferees($match_id = 0, $cfg_which_database = 0)
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 
-		// Get a db connection.
 		$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
 		$query     = $db->getQuery(true);
 		$starttime = microtime();
+        
+        $query->clear();
+        $query->select('COUNT(DISTINCT(mr.match_id)) as count_referees');
+        $query->from('#__sportsmanagement_match_referee AS mr');
+        $query->where('mr.match_id = ' . (int) $match_id);
+        $db->setQuery($query);
+        $total_referees = $db->loadResult();
+        if ( $total_referees )
+        {
+        $query->clear();
 		$query->select('p.id,pref.id AS person_id,p.firstname,p.lastname,pos.name AS position_name,CONCAT_WS(\':\',p.id,p.alias) AS person_slug');
 		$query->select('mr.project_position_id,pos.name as position_name');
 		$query->from('#__sportsmanagement_match_referee AS mr');
@@ -107,10 +123,9 @@ public static function getMatchReferees($match_id = 0, $cfg_which_database = 0)
 		$query->where('mr.match_id = ' . (int) $match_id);
 		$query->where('p.published = 1');
 		$query->order('pos.name,mr.ordering');
-
 		$db->setQuery($query);
-
 		$result = $db->loadObjectList();
+        }
 
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
