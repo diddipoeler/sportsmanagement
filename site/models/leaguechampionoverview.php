@@ -35,6 +35,11 @@ static $rankingalltimenotes = array();
 	static $rankingalltimewarnings = array();
 	static $rankingalltimetips = array();
 	
+/**
+ * sportsmanagementModelleaguechampionoverview::_getRankingCriteria()
+ * 
+ * @return
+ */
 function _getRankingCriteria()
 	{
 		$app = Factory::getApplication();
@@ -80,6 +85,14 @@ function _getRankingCriteria()
 	
 	
 	
+/**
+ * sportsmanagementModelleaguechampionoverview::_sortRanking()
+ * 
+ * @param mixed $ranking
+ * @param string $order
+ * @param string $order_dir
+ * @return
+ */
 function _sortRanking(&$ranking,$order='points',$order_dir='DESC')
 	{
 		// Reference global application object
@@ -239,6 +252,13 @@ function _sortRanking(&$ranking,$order='points',$order_dir='DESC')
 
 	}
 
+/**
+ * sportsmanagementModelleaguechampionoverview::array_msort()
+ * 
+ * @param mixed $array
+ * @param mixed $cols
+ * @return
+ */
 function array_msort($array, $cols)
 	{
 		$colarr = array();
