@@ -35,6 +35,32 @@ static $rankingalltimenotes = array();
 	static $rankingalltimewarnings = array();
 	static $rankingalltimetips = array();
 	
+    
+    
+    /**
+     * sportsmanagementModelleaguechampionoverview::getProjectWinner()
+     * 
+     * @param integer $project_id
+     * @return void
+     */
+    function getProjectWinner($project_id = 0)
+    {
+    $app = Factory::getApplication();  
+    $jinput = $app->input;  
+        $db        = sportsmanagementHelper::getDBConnection(true, Factory::getApplication()->input->get('cfg_which_database', 0, 'INT'));
+		$query     = $db->getQuery(true);
+        
+        $query->select('pt.id AS _ptid, pt.is_in_score, pt.division_id, pt.finaltablerank as rank');
+        $query->from('#__sportsmanagement_project_team AS pt ');
+        $query->where('pt.project_id = ' . $project_id);
+		$query->where('pt.is_in_score = 1');
+        $db->setQuery($query);
+		$res = $db->loadObjectList();
+        
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+        return $res;
+    }
+    
 /**
  * sportsmanagementModelleaguechampionoverview::_getRankingCriteria()
  * 

@@ -53,17 +53,25 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         
         foreach ($this->projectids as $this->count_i => $this->project_id)
 		{
-		  
+		  $mdlProject::$projectid = $this->project_id;
+        $project = $mdlProject::getProject();
+        
           if ( ComponentHelper::getParams('com_sportsmanagement')->get('force_ranking_cache', 0) )
 			{
-			 
+			$this->currentRanking = $this->model->getProjectWinner($this->project_id); 
+            
+            
+            if ( $project->season_name == '2019/20' )
+        {
+        //echo '<pre>'.print_r($this->currentRanking,true).'</pre>';  
+          
+        }
              }
              else
              {
                 
                 }
-        $mdlProject::$projectid = $this->project_id;
-        $project = $mdlProject::getProject();
+        
 		$rankinghelper = JSMRanking::getInstance($project, 0);
 		$rankinghelper->setProjectId($project->id, 0);
           //echo '<pre>'.print_r($project,true).'</pre>';
