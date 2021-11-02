@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\Component\ComponentHelper;
 
 //jimport('joomla.utilities.array');
 //jimport('joomla.utilities.arrayhelper');
