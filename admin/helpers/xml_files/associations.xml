@@ -1003,5 +1003,6 @@
 <associations><assocname country="NZL" icon="" flag="" website="" shortname="" main="2" parentmain="0">Southern</assocname></associations>  
 <associations><assocname country="NZL" icon="" flag="" website="" shortname="" main="3" parentmain="0">Northern</assocname></associations>  
   
+<associations><assocname country="USA" icon="" flag="" website="" shortname="" main="1" parentmain="0">Alaska</assocname></associations> 
   
 </structur>
