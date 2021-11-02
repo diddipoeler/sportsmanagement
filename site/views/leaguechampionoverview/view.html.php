@@ -14,6 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementViewleaguechampionoverview
@@ -52,19 +53,26 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         
         foreach ($this->projectids as $this->count_i => $this->project_id)
 		{
-          $mdlProject::$projectid = $this->project_id;
+		  
+          if ( ComponentHelper::getParams('com_sportsmanagement')->get('force_ranking_cache', 0) )
+			{
+			 
+             }
+             else
+             {
+                
+                }
+        $mdlProject::$projectid = $this->project_id;
         $project = $mdlProject::getProject();
 		$rankinghelper = JSMRanking::getInstance($project, 0);
 		$rankinghelper->setProjectId($project->id, 0);
           //echo '<pre>'.print_r($project,true).'</pre>';
           
-          $mdlRanking = BaseDatabaseModel::getInstance("Ranking", "sportsmanagementModel");
+        $mdlRanking = BaseDatabaseModel::getInstance("Ranking", "sportsmanagementModel");
 		//echo '<pre>'.print_r($this->project_id,true).'</pre>';
         $mdlRanking::$projectid = $this->project_id;
-          
-          $mdlRanking::$round = $project->current_round;
-          
-          $mdlRanking::$currentRanking = array();
+        $mdlRanking::$round = $project->current_round;
+        $mdlRanking::$currentRanking = array();
         $mdlRanking::computeRanking(0);
         $currentRanking = $mdlRanking::$currentRanking;
         $this->currentRanking = $this->model->_sortRanking($currentRanking[0]);
