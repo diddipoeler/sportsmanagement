@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage teamstats
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -32,37 +28,21 @@ use Joomla\CMS\Log\Log;
 class sportsmanagementModelTeamStats extends BaseDatabaseModel
 {
 	static $projectid = 0;
-
 	static $teamid = 0;
-
 	static $projectteamid = 0;
-
 	static $highest_home = null;
-
 	static $highest_away = null;
-
 	static $highestdef_home = null;
-
 	static $highestdef_away = null;
-
 	static $highestdraw_home = null;
-
 	static $highestdraw_away = null;
-
 	static $totalshome = null;
-
 	static $totalsaway = null;
-
 	static $matchdaytotals = null;
-
 	static $totalrounds = null;
-
 	static $attendanceranking = null;
-
 	static $team = null;
-
 	static $nogoals_against = 0;
-
 	static $cfg_which_database = 0;
 
 	/**
@@ -73,11 +53,7 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
 	function __construct()
 	{
 		parent::__construct();
-
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput                                  = $app->input;
 		self::$projectid                         = Factory::getApplication()->input->get('p', 0, 'INT');
 		self::$teamid                            = Factory::getApplication()->input->get('tid', 0, 'INT');
@@ -85,7 +61,6 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
 		sportsmanagementModelProject::$projectid = self::$projectid;
 		self::$cfg_which_database                = Factory::getApplication()->input->get('cfg_which_database', 0, 'INT');
 
-		// Preload the team;
 		self::getTeam();
 	}
 
@@ -129,7 +104,6 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
 		}
 
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
 		return self::$team;
 	}
 
@@ -142,8 +116,6 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
-
-		// Get a db connection.
 		$db        = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query     = $db->getQuery(true);
 		$starttime = microtime();
@@ -255,8 +227,6 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
-
-		// Get a db connection.
 		$db        = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query     = $db->getQuery(true);
 		$starttime = microtime();
@@ -296,7 +266,6 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
 		}
 
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
 		return self::$nogoals_against;
 	}
 
@@ -312,16 +281,12 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
-
-		// Get a db connection.
 		$db        = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query     = $db->getQuery(true);
 		$starttime = microtime();
 
 		$query->select('COUNT(matches.id) AS totalmatches ');
 		$query->select('COUNT(team1_result) AS playedmatches ');
-
-		//	    $query->select('IFNULL(SUM(team1_result),0) AS goalsfor,IFNULL(SUM(team2_result),0) AS goalsagainst,IFNULL(SUM(team1_result + team2_result),0) AS totalgoals,IFNULL(SUM(IF(team1_result=team2_result,1,0)),0) AS totaldraw,IFNULL(SUM(IF(team1_result<team2_result,1,0)),0) AS totalloss,IFNULL(SUM(IF(team1_result>team2_result,1,0)),0) AS totalwin  ');
 		$query->select('COUNT(crowd) AS attendedmatches ');
 		$query->select('SUM(crowd) AS sumspectators ');
 		$query->from('#__sportsmanagement_match AS matches');
@@ -366,7 +331,6 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
 					{
 						self::$totalsaway = $db->loadObject();
 						$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
 						return self::$totalsaway;
 					}
 					break;
@@ -377,7 +341,6 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
 			$msg  = $e->getMessage(); // Returns "Normally you would have other code...
 			$code = $e->getCode(); // Returns
 			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
 			return false;
 		}
 
@@ -392,8 +355,6 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
-
-		// Get a db connection.
 		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
 
@@ -437,7 +398,6 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
 		}
 
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
 		return self::$matchdaytotals;
 	}
 
@@ -450,8 +410,6 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
-
-		// Get a db connection.
 		$db        = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query     = $db->getQuery(true);
 		$starttime = microtime();
@@ -495,8 +453,6 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
-
-		// Get a db connection.
 		$db        = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query     = $db->getQuery(true);
 		$starttime = microtime();
@@ -540,7 +496,6 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
 		}
 
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
 		return self::$attendanceranking;
 	}
 
@@ -602,8 +557,6 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
-
-		// Get a db connection.
 		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
 
@@ -613,7 +566,7 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
 		$query->where('teams.id = ' . self::$teamid);
 		$db->setQuery($query);
 		$logo = Uri::root() . $db->loadResult();
-
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $logo;
 	}
 
@@ -626,8 +579,6 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
-
-		// Get a db connection.
 		$db        = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query     = $db->getQuery(true);
 		$starttime = microtime();
@@ -771,7 +722,7 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
 				}
 			}
 		}
-
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $results;
 	}
 
@@ -784,8 +735,6 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
-
-		// Get a db connection.
 		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
 
@@ -826,7 +775,6 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
 		}
 
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
 		return self::$matchdaytotals;
 	}
 
