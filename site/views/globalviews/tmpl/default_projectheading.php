@@ -125,14 +125,15 @@ if (!empty($this->overallconfig))
 						<td>
 
 							<?PHP
-							if (!sportsmanagementHelper::existPicture($this->project->sport_type_picture))
+							//if (!sportsmanagementHelper::existPicture($this->project->sport_type_picture))
+							if (!curl_init(COM_SPORTSMANAGEMENT_PICTURE_SERVER . $this->project->sport_type_picture))
 							{
 								$this->project->sport_type_picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
 							}
 
 							echo sportsmanagementHelperHtml::getBootstrapModalImage(
 								'sporttype_picture',
-								$this->project->sport_type_picture,
+								COM_SPORTSMANAGEMENT_PICTURE_SERVER . $this->project->sport_type_picture,
 								Text::_($this->project->sport_type_name),
 								$this->overallconfig['picture_width'],
 								'',
@@ -164,14 +165,13 @@ if (!empty($this->overallconfig))
 
 							<?php
 							//if (!sportsmanagementHelper::existPicture($picture))
-							$picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER . $picture;
-							if (!curl_init($picture))
+							if (!curl_init(COM_SPORTSMANAGEMENT_PICTURE_SERVER . $picture))
 							{
 								$picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
 							}
 							echo sportsmanagementHelperHtml::getBootstrapModalImage(
 								'project_picture',
-								$picture,
+								COM_SPORTSMANAGEMENT_PICTURE_SERVER . $picture,
 								$this->project->name,
 								$this->overallconfig['picture_width'],
 								'',
