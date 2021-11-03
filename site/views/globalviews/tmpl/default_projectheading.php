@@ -163,7 +163,9 @@ if (!empty($this->overallconfig))
 
 
 							<?php
-							if (!sportsmanagementHelper::existPicture($picture))
+							//if (!sportsmanagementHelper::existPicture($picture))
+							$picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER . $picture;
+							if (!curl_init($picture))
 							{
 								$picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
 							}
