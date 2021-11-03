@@ -22,6 +22,11 @@ JLoader::import('components.com_sportsmanagement.helpers.sportsmanagement', JPAT
 
 jimport('joomla.form.helper');
 
+if (version_compare(JVERSION, '4.0.0', 'ge'))
+{
+	HTMLHelper::_('jquery.framework');
+}
+
 // JFormHelper::loadFieldClass('list');
 
 /**
@@ -51,7 +56,7 @@ class JFormFieldDependSQL extends JFormField
 	 * @return
 	 */
 	protected function getInput()
-	{
+	{		
 		// Reference global application object
 		$app = Factory::getApplication();
 
