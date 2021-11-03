@@ -20,6 +20,11 @@ require_once JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'components' . DIRECTOR
 
 jimport('joomla.form.helper');
 
+if (version_compare(JVERSION, '4.0.0', 'ge'))
+{
+	HTMLHelper::_('jquery.framework');
+}
+
 /**
  * Renders a Dynamic SQL field
  *
