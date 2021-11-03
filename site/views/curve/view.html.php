@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage curve
@@ -17,9 +15,7 @@
  *
  * https://www.chartjs.org/samples/latest/charts/line/basic.html
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -48,7 +44,9 @@ class sportsmanagementViewCurve extends sportsmanagementView
 
 		if ($this->config['which_curve'])
 		{
-			$js = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js';
+			//$js = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js';
+			//$js = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/'.$this->chart_version.'/chart.min.js';
+			$js = 'https://cdn.jsdelivr.net/npm/chart.js@'.$this->chart_version.'/dist/chart.min.js';
 			$this->document->addScript($js);
 		}
 
