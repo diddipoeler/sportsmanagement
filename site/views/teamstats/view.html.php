@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage teamstats
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 
 /**
@@ -37,7 +33,7 @@ class sportsmanagementViewTeamStats extends sportsmanagementView
 	{
 		if ($this->config['show_goals_stats_flash'])
 		{
-			$js = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js';
+			$js = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/'.$this->chart_version.'/Chart.js';
 			$this->document->addScript($js);
 		}
 
