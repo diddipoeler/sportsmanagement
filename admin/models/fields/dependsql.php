@@ -216,7 +216,19 @@ $script[] = "var url = 'index.php?option=com_sportsmanagement&format=json&dbase=
 		Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
 
 		$ajaxtask = 'get' . $ajaxtask;
-		$result   = sportsmanagementModelAjax::$ajaxtask($value, $required, $slug);
+		switch($ajaxtask)
+		{
+			case 'getprojects':
+			case 'getprojectdivisionsoptions':
+				$result   = sportsmanagementModelAjax::$ajaxtask($value, $required, $slug, $cfg_which_database);
+				break;
+			case 'getprojectroundoptions':
+				$result   = sportsmanagementModelAjax::$ajaxtask($value, $required, $slug, null, null, $cfg_which_database);
+				break;
+			default:
+				$result   = sportsmanagementModelAjax::$ajaxtask($value, $required, $slug);
+				break;
+		}
 
 		if ($result)
 		{
