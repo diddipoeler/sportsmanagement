@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage rivals
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die;
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
@@ -38,19 +34,14 @@ class sportsmanagementViewRivals extends sportsmanagementView
 	{
 		$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
 
-		// $this->project = sportsmanagementModelProject::getProject();
-		// $this->overallconfig = sportsmanagementModelProject::getOverallConfig();
-
 		if (!isset($this->overallconfig['seperator']))
 		{
 			$this->overallconfig['seperator'] = "-";
 		}
 
-		// $this->config = $config;
 		$this->opos = $this->model->getOpponents();
 		$this->team = $this->model->getTeam();
 
-		// Set page title
 		$titleInfo = sportsmanagementHelper::createTitleInfo(Text::_('COM_SPORTSMANAGEMENT_RIVALS_PAGE_TITLE'));
 
 		if (!empty($this->team))
