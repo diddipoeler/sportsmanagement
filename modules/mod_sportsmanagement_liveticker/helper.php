@@ -111,7 +111,8 @@ class modTurtushoutHelper
 		$query->select('jco.alpha2');
 		$query->select('jco.picture as country_picture');
 		$query->select('jco.alpha3 as countries_iso_code_3');
-		$query->select('jm.id as match_id,jm.match_date,jm.projectteam1_id,jm.projectteam2_id,jm.team1_result,jm.team2_result');
+		$query->select('jm.id as match_id,jm.match_date,jm.projectteam1_id,jm.projectteam2_id,jm.team1_result,jm.team2_result');		
+		$query->select('jm.team1_result_split,jm.team2_result_split');
 		$query->select('jt1.name as heim,jt1.short_name as heim_short_name,jt1.middle_name as heim_middle_name');
 		$query->select('jt2.name as gast,jt2.short_name as gast_short_name,jt2.middle_name as gast_middle_name');
 		$query->select('jc1.logo_big as wappenheim');
@@ -135,13 +136,14 @@ class modTurtushoutHelper
 		$query->where('( jm.match_timestamp >= ' . $timestampvon . ' AND jm.match_timestamp <= ' . $timestampbis . ' )');
 
 		$db->setQuery($query, 0, $limit);
-		$rows = $db->loadObjectList();
-
-		if ($db->getErrorMsg())
+		try
 		{
-			//			 modTurtushoutHelper::install();
+			$rows = $db->loadObjectList();
 		}
+		catch (\InvalidArgumentException $e)
+		{
 
+		}
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return $rows;

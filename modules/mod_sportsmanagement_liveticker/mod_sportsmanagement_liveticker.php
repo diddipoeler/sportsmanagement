@@ -95,6 +95,7 @@ $display_anstoss    = $params->get('display_anstoss', 0);
 $display_abpfiff    = $params->get('display_abpfiff', 0);
 $display_liganame   = $params->get('display_liganame', 0);
 $display_ligaflagge = $params->get('display_ligaflagge', 0);
+$display_legs       = $params->get('display_legs', 0);
 
 $table_class = $params->get('table_class', 'table');
 
@@ -196,61 +197,70 @@ if (!$is_ajaxed || ($action == "turtushout_shouts"))
 	$date->setTimezone(new DateTimeZone($config->get('offset')));
 	$list_html .= "<td colspan=\"8\" align=\"left\" >" . $date->format('H:i:s') . "</td>";
 	$list_html .= "</tr>";
-	$list_html .= "<tr>";
-
-	if ($display_liganame && $display_ligaflagge)
+	if ($display_title)
 	{
-		$list_html .= "<td colspan=\"2\">" . "Liga" . "</td>";
-	}
 
-	if ((!$display_liganame && $display_ligaflagge) || ($display_liganame && !$display_ligaflagge))
-	{
-		$list_html .= "<td colspan=\"1\">" . "Liga" . "</td>";
+		$list_html .= "<tr>";
+		
+		if ($display_liganame && $display_ligaflagge)
+		{
+			$list_html .= "<td colspan=\"2\">" . "Liga" . "</td>";
+		}
+		
+		if ((!$display_liganame && $display_ligaflagge) || ($display_liganame && !$display_ligaflagge))
+		{
+			$list_html .= "<td colspan=\"1\">" . "Liga" . "</td>";
+		}
+		
+		if ($display_anstoss)
+		{
+			$list_html .= "<td>" . "Anpfiff" . "</td>";
+		}
+		
+		if ($display_abpfiff)
+		{
+			$list_html .= "<td>" . "Abpfiff" . "</td>";
+		}
+		
+		/**
+		 * wappen und teamname
+		 */
+		if ($display_teamwappen && $display_teamname < 3)
+		{
+			$list_html .= "<td colspan=\"4\" align=\"middle\" >" . "Paarung" . "</td>";
+		}
+		
+		/**
+		 * kein wappen und teamname
+		 */
+		if (!$display_teamwappen && $display_teamname < 3)
+		{
+			$list_html .= "<td colspan=\"2\" align=\"middle\" >" . "Paarung" . "</td>";
+		}
+		
+		/**
+		 * wappen und kein teamname
+		 */
+		if ($display_teamwappen && $display_teamname == 3)
+		{
+			$list_html .= "<td colspan=\"2\" align=\"middle\" >" . "Paarung" . "</td>";
+		}
+		
+		/**
+		 * kein wappen und kein teamname
+		 */
+		if (!$display_teamwappen && $display_teamname == 3)
+		{
+		}
+		
+		$list_html .= "<td colspan=\"2\">" . "Ergebnis" . "</td>";
+		
+		if ($display_legs)
+		{
+			$list_html .= '<td>Sätze</td>';
+		}
+		$list_html .= "</tr>";
 	}
-
-	if ($display_anstoss)
-	{
-		$list_html .= "<td>" . "Anpfiff" . "</td>";
-	}
-
-	if ($display_abpfiff)
-	{
-		$list_html .= "<td>" . "Abpfiff" . "</td>";
-	}
-
-	/**
-	 * wappen und teamname
-	 */
-	if ($display_teamwappen && $display_teamname < 3)
-	{
-		$list_html .= "<td colspan=\"4\" align=\"middle\" >" . "Paarung" . "</td>";
-	}
-
-	/**
-	 * kein wappen und teamname
-	 */
-	if (!$display_teamwappen && $display_teamname < 3)
-	{
-		$list_html .= "<td colspan=\"2\" align=\"middle\" >" . "Paarung" . "</td>";
-	}
-
-	/**
-	 * wappen und kein teamname
-	 */
-	if ($display_teamwappen && $display_teamname == 3)
-	{
-		$list_html .= "<td colspan=\"2\" align=\"middle\" >" . "Paarung" . "</td>";
-	}
-
-	/**
-	 * kein wappen und kein teamname
-	 */
-	if (!$display_teamwappen && $display_teamname == 3)
-	{
-	}
-
-	$list_html .= "<td colspan=\"2\">" . "Ergebnis" . "</td>";
-	$list_html .= "</tr>";
 	$list_html .= "</thead>";
 
 	for ($i = 0, $ic = count($list); $i < $ic; $i++)
@@ -351,6 +361,30 @@ if (!$is_ajaxed || ($action == "turtushout_shouts"))
 
 		$list_html .= "<td>" . $list[$i]->team1_result . "</td>";
 		$list_html .= "<td>" . $list[$i]->team2_result . "</td>";
+		
+		if ($display_legs)
+		{
+			$part_results_left  = explode(";", $list[$i]->team1_result_split);
+			$part_results_right = explode(";", $list[$i]->team2_result_split);
+			$part_results_count = count($part_results_left);
+			if (count($part_results_right) > $part_results_count)
+			{
+				$part_results_count = count($part_results_right);
+			}
+			if ($part_results_count > 0)
+			{
+				$list_html .= '<td>';
+				for ($x = 0; $x < $part_results_count; $x++)
+				{
+					if ($part_results_left[$x] != null || $part_results_right[$x] != null)
+					{
+						$list_html .= ' ' . ($part_results_left[$x] != null ? $part_results_left[$x] : 0) . ':' . ($part_results_right[$x] != null ? $part_results_right[$x] : 0) . ' ';
+					}
+				}
+				$list_html .= '</td>';
+			}
+		}
+
 		$list_html .= "</tr>";
 
 		if (isset($listcomment[$list[$i]->match_id]))
