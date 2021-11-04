@@ -1570,6 +1570,32 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 
 				$result = false;
 			}
+
+			$mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
+			$project    = $mdlProject->getProject($post['project_id']);
+			if($project->teams_as_referees == 1)
+			{
+				$postReferee = array();
+				$modelMatches = BaseDatabaseModel::getInstance("Match", "sportsmanagementModel");
+				$postReferee['id'] = $object->id;
+				
+				$positions              = $modelMatches->getProjectPositionsOptions(0, 3, $post['project_id']);
+				$position = array();
+				
+				if ($post['referee_id' . $pks[$x]] != null && $post['referee_id' . $pks[$x]] > 0)
+				{
+					$position['0'] = $post['referee_id' . $pks[$x]];
+					foreach ($positions AS $key => $pos)
+					{
+						$postReferee['position' . $key] = $position;
+					}
+				}
+				
+				$postReferee['positions'] = $positions;
+				$postReferee['project_id'] = $post['project_id'];
+				$this->jsmquery->clear();
+				$this->updateReferees($postReferee);
+			}
 		}
 
 switch ($post['sports_type_name'] )

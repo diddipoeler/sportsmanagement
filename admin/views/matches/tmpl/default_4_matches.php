@@ -713,16 +713,33 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 					<?php } ?>
                     <td class="center">
 						<?php
-						if ($row->referees_count == 0)
+						if ($this->projectws->teams_as_referees == 1)
 						{
-							$image = 'players_add.png';
+							$append = 'style="background-color:white"';
+
+							if ($row->projectteam2_id == 0)
+							{
+								$append = ' ';
+							}
+	
+							$append .= ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" ';
+							echo HTMLHelper::_('select.genericlist', $this->lists['teams_' . $row->divhomeid], 'referee_id' . $row->id,
+								'class="form-control form-control-inline" size="1"' . $append, 'value', 'text', $row->referee_id
+							);	
 						}
 						else
 						{
-							$image = 'icon-16-Referees.png';
+							if ($row->referees_count == 0)
+							{
+								$image = 'players_add.png';
+							}
+							else
+							{
+								$image = 'icon-16-Referees.png';
+							}
+	
+							echo sportsmanagementHelper::getBootstrapModalImage('editreferees' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/' . $image, Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_REFEREES'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editreferees&id=' . $row->id, $this->modalwidth, $this->modalheight);
 						}
-
-						echo sportsmanagementHelper::getBootstrapModalImage('editreferees' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/' . $image, Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_REFEREES'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editreferees&id=' . $row->id, $this->modalwidth, $this->modalheight);
 						?>
 
                     </td>

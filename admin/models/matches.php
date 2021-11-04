@@ -172,6 +172,15 @@ class sportsmanagementModelMatches extends JSMModelList
 			$this->jsmquery->where('mr.match_id = ' . $item->id);
 			$this->jsmdb->setQuery($this->jsmquery);
 			$item->referees_count = $this->jsmdb->loadResult();
+
+			$this->jsmquery->clear();
+
+			// Get match referee
+			$this->jsmquery->select('mr.project_referee_id');
+			$this->jsmquery->from('#__sportsmanagement_match_referee AS mr ');
+			$this->jsmquery->where('mr.match_id = ' . $item->id);
+			$this->jsmdb->setQuery($this->jsmquery);
+			$item->referee_id = $this->jsmdb->loadResult();
 		}
 
 		return $items;
