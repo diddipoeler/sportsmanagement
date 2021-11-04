@@ -43,12 +43,37 @@ use Joomla\CMS\Uri\Uri;
         </div>
 		<?php
 		$colspan = ($this->projectws->allow_add_time) ? 20 : 19;
+		if ($this->templateConfig == null)
+		{
+			$this->templateConfig = array('show_number' => 1,
+				'show_ad_incl' => 1,
+				'show_id' => 1,
+				'show_change_round' => 1,
+				'show_playground' => 1,
+				'show_attendance' => 1,
+				'show_result_type' => 1,
+				'show_article' => 1,
+				'show_events' => 1,
+				'show_statistics' => 1);
+		}
+		if ($this->templateConfig['show_change_round'] == 0) $colspan--;
+		if ($this->templateConfig['show_playground'] == 0) $colspan--;
+		if ($this->templateConfig['show_attendance'] == 0) $colspan--;
+		if ($this->templateConfig['show_result_type'] == 0) $colspan--;
+		if ($this->templateConfig['show_id'] == 0) $colspan--;
+		if ($this->templateConfig['show_article'] == 0) $colspan--;
+		if ($this->templateConfig['show_events'] == 0) $colspan--;
+		if ($this->templateConfig['show_statistics'] == 0) $colspan--;
+		if ($this->templateConfig['show_ad_incl'] == 0) $colspan--;
+		if ($this->templateConfig['show_number'] == 0) $colspan--;		
 		?>
         <table class="<?php echo $this->table_data_class; ?>">
             <thead>
             <tr>
-                <th width="5"><?php echo count($this->matches) . '/' . $this->pagination->total; ?></th>
-                <th width="20">
+				<?php if ($this->templateConfig['show_number'] == 1) { ?>
+					<th width="5"><?php echo count($this->matches) . '/' . $this->pagination->total; ?></th>
+                <?php } ?>
+				<th width="20">
                     <?php echo HTMLHelper::_('grid.checkall'); ?>
                 </th>
                 <!--	<th width="20" > </th> -->
@@ -67,15 +92,12 @@ use Joomla\CMS\Uri\Uri;
 					<?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_MATCHES_DATE', 'mc.match_date', $this->sortDirection, $this->sortColumn); ?>
                 </th>
                 <th class="title"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TIME'); ?></th>
-				<?php
-				if($this->projectws->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_FAUSTBALL')
-				{
-				?>
-                	<th class="title"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_VENUE'); ?></th>
-				<?php
-				}
-				?>
-				<th class="title"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_ATT'); ?></th>
+				<?php if ($this->templateConfig['show_playground'] == 1) { ?>
+					<th class="title"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_VENUE'); ?></th>
+				<?php } ?>
+				<?php if ($this->templateConfig['show_attendance'] == 1) { ?>
+					<th class="title"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_ATT'); ?></th>
+				<?php } ?>
 				<?php
 				if ($this->projectws->project_type == 'DIVISIONS_LEAGUE')
 				{
@@ -96,9 +118,11 @@ use Joomla\CMS\Uri\Uri;
 					<?php
 				}
 				?>
-                <th class="title"
-                    nowrap="nowrap"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_CHANGE_ROUNDLIST'); ?></th>
-                <th class="title"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_HOME_TEAM'); ?></th>
+                <?php if ($this->templateConfig['show_change_round'] == 1) { ?>
+					<th class="title"
+						nowrap="nowrap"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_CHANGE_ROUNDLIST'); ?></th>
+				<?php } ?>
+				<th class="title"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_HOME_TEAM'); ?></th>
                 <th class="title"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_AWAY_TEAM'); ?></th>
                 <th style="  "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT'); ?></th>
 				<?php
@@ -109,19 +133,29 @@ use Joomla\CMS\Uri\Uri;
 					<?php
 				}
 				?>
-                <th class="title"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT_TYPE'); ?></th>
-
-                <th class="title"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT_ARTICLE'); ?></th>
-
-                <th class="title"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EVENTS'); ?></th>
-                <th class="title"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_STATISTICS'); ?></th>
+                <?php if ($this->templateConfig['show_result_type'] == 1) { ?>
+					<th class="title"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT_TYPE'); ?></th>
+				<?php } ?>
+                <?php if ($this->templateConfig['show_article'] == 1) { ?>
+					<th class="title"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT_ARTICLE'); ?></th>
+				<?php } ?>
+				<?php if ($this->templateConfig['show_events'] == 1) { ?>
+                	<th class="title"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EVENTS'); ?></th>
+				<?php } ?>
+				<?php if ($this->templateConfig['show_statistics'] == 1) { ?>
+	                <th class="title"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_STATISTICS'); ?></th>
+				<?php } ?>
                 <th class="title"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_REFEREE'); ?></th>
-                <th class="title"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_INCL'); ?></th>
+				<?php if ($this->templateConfig['show_ad_incl'] == 1) { ?>
+					<th class="title"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_INCL'); ?></th>
+				<?php } ?>
                 <th width="1%"><?php echo Text::_('JSTATUS'); ?></th>
-                <th width="1%" class="title">
-					<?php echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ID', 'mc.id', $this->sortDirection, $this->sortColumn); ?>
-                </th>
-            </tr>
+				<?php if ($this->templateConfig['show_id'] == 1) { ?>
+					<th width="1%" class="title">
+						<?php echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ID', 'mc.id', $this->sortDirection, $this->sortColumn); ?>
+					</th>
+				<?php } ?>
+	            </tr>
             </thead>
 
             <tfoot>
@@ -163,11 +197,13 @@ use Joomla\CMS\Uri\Uri;
 						$style = "text-align:center; ";
 					}
 					?>
-                    <td style="<?php echo $style; ?>">
-						<?php
-						echo $this->pagination->getRowOffset($i);
-						?>
-                    </td>
+					<?php if ($this->templateConfig['show_number'] == 1) { ?>
+						<td style="<?php echo $style; ?>">
+							<?php
+							echo $this->pagination->getRowOffset($i);
+							?>
+						</td>
+					<?php } ?>
                     <td class="">
 						<?php
 						echo HTMLHelper::_('grid.id', $i, $row->id);
@@ -284,10 +320,7 @@ $pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=compon
 							<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PRESENT_SHORT'); ?>
 								</span>
                     </td>
-                    <?php
-					if($this->projectws->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_FAUSTBALL')
-					{
-					?>
+					<?php if ($this->templateConfig['show_playground'] == 1) { ?>
 						<td id="crowd" class="center">
 							<?php 
 							$append = '';
@@ -296,15 +329,15 @@ $pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=compon
 								'class="form-control form-control-inline" size="1"' . $append, 'value', 'text', $row->playground_id 
 							); ?>
 						</td>
-					<?php
-					}
-					?>
-					<td id="crowd" class="center">
-                        <input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" type="text"
-                               name="crowd<?php echo $row->id; ?>"
-                               value="<?php echo $row->crowd; ?>" size="4" maxlength="5" tabindex="4"
-                               class="form-control form-control-inline"/>
-                    </td>
+					<?php } ?>
+					<?php if ($this->templateConfig['show_attendance'] == 1) { ?>
+						<td id="crowd" class="center">
+							<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" type="text"
+								name="crowd<?php echo $row->id; ?>"
+								value="<?php echo $row->crowd; ?>" size="4" maxlength="5" tabindex="4"
+								class="form-control form-control-inline"/>
+						</td>
+					<?php } ?>
 					<?php
 					if ($this->projectws->project_type == 'DIVISIONS_LEAGUE')
 					{
@@ -329,14 +362,15 @@ $pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=compon
 					$append = 'style="background-color:white"';
 					$append .= ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" ';
 					?>
-                    <td id="round_id" style="text-align:center; ">
-						<?php
-						echo HTMLHelper::_('select.genericlist', $this->lists['project_change_rounds'], 'round_id' . $row->id,
-							'class="form-control form-control-inline" size="1"' . $append, 'value', 'text', $row->round_id
-						);
-						?>
-                    </td>
-
+					<?php if ($this->templateConfig['show_change_round'] == 1) { ?>
+						<td id="round_id" style="text-align:center; ">
+							<?php
+							echo HTMLHelper::_('select.genericlist', $this->lists['project_change_rounds'], 'round_id' . $row->id,
+								'class="form-control form-control-inline" size="1"' . $append, 'value', 'text', $row->round_id
+							);
+							?>
+						</td>
+					<?php } ?>
                     <td id="projectteam1_id" class="right" nowrap="">
 						<?php
 						if ($row->homeplayers_count == 0 || $row->homestaff_count == 0)
@@ -612,97 +646,123 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 					}
 					?>
 
-                    <td class="center">
-						<?php
-						if ($this->selectlist)
-						{
-							if (array_key_exists('result_type', $this->selectlist))
+					<?php if ($this->templateConfig['show_result_type'] == 1) { ?>
+						<td class="center">
+							<?php
+							if ($this->selectlist)
 							{
-								$appendselect = ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" ';
-								echo HTMLHelper::_('select.genericlist', $this->selectlist['result_type'],
-									'result_type' . $row->id, 'class="form-control form-control-inline" size="1" ' . $appendselect, 'value', 'text',
-									$row->result_type
-								);
+								if (array_key_exists('result_type', $this->selectlist))
+								{
+									$appendselect = ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" ';
+									echo HTMLHelper::_('select.genericlist', $this->selectlist['result_type'],
+										'result_type' . $row->id, 'class="form-control form-control-inline" size="1" ' . $appendselect, 'value', 'text',
+										$row->result_type
+									);
+								}
+								else
+								{
+									echo $row->result_type;
+								}
 							}
 							else
 							{
 								echo $row->result_type;
 							}
+							?>
+
+						</td>
+					<?php } ?>
+					<?php if ($this->templateConfig['show_article'] == 1) { ?>
+						<td class="center">
+							<?php
+
+							$appendselect = 'style="background-color:white" onchange="document.getElementById(\'cb' . $i . '\').checked=true" ';
+							echo HTMLHelper::_('select.genericlist', $this->lists['articles'],
+								'content_id' . $row->id, 'class="form-control form-control-inline" size="1" ' . $appendselect, 'value', 'text',
+								$row->content_id
+							);
+
+
+							?>
+						</td>
+					<?php } ?>
+					<?php if ($this->templateConfig['show_events'] == 1) { ?>
+						<td class="center">
+
+							<?php
+							echo sportsmanagementHelper::getBootstrapModalImage('pressebericht' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/link.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_PRESSEBERICHT'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=pressebericht&id=' . $row->id, $this->modalwidth, $this->modalheight);
+							echo sportsmanagementHelper::getBootstrapModalImage('editevents' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/events.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_EVENTS'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editevents&id=' . $row->id . '&useeventtime=' . $this->projectws->useeventtime, $this->modalwidth, $this->modalheight);
+							echo sportsmanagementHelper::getBootstrapModalImage('editeventsbb' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/teams.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SBBEVENTS'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editeventsbb&id=' . $row->id . '&useeventtime=' . $this->projectws->useeventtime, $this->modalwidth, $this->modalheight);
+
+							?>
+
+							<?php
+
+							// End several events
+							?>
+						</td>
+					<?php } ?>
+
+					<?php if ($this->templateConfig['show_statistics'] == 1) { ?>
+						<td class="center">
+							<?php
+							echo sportsmanagementHelper::getBootstrapModalImage('editstats' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/calc16.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_STATS'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editstats&id=' . $row->id, $this->modalwidth, $this->modalheight);
+
+							// Start statistics:
+							?>
+
+						</td>
+					<?php } ?>
+                    <td class="center">
+						<?php
+						if ($this->projectws->teams_as_referees == 1)
+						{
+							$append = 'style="background-color:white"';
+
+							if ($row->projectteam2_id == 0)
+							{
+								$append = ' ';
+							}
+	
+							$append .= ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" ';
+							echo HTMLHelper::_('select.genericlist', $this->lists['teams_' . $row->divhomeid], 'referee_id' . $row->id,
+								'class="form-control form-control-inline" size="1"' . $append, 'value', 'text', $row->referee_id
+							);	
 						}
 						else
 						{
-							echo $row->result_type;
+							if ($row->referees_count == 0)
+							{
+								$image = 'players_add.png';
+							}
+							else
+							{
+								$image = 'icon-16-Referees.png';
+							}
+
+							echo sportsmanagementHelper::getBootstrapModalImage('editreferees' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/' . $image, Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_REFEREES'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editreferees&id=' . $row->id, $this->modalwidth, $this->modalheight);
 						}
 						?>
 
                     </td>
-
-                    <td class="center">
-						<?php
-
-						$appendselect = 'style="background-color:white" onchange="document.getElementById(\'cb' . $i . '\').checked=true" ';
-						echo HTMLHelper::_('select.genericlist', $this->lists['articles'],
-							'content_id' . $row->id, 'class="form-control form-control-inline" size="1" ' . $appendselect, 'value', 'text',
-							$row->content_id
-						);
-
-
-						?>
-                    </td>
-
-                    <td class="center">
-
-						<?php
-						echo sportsmanagementHelper::getBootstrapModalImage('pressebericht' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/link.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_PRESSEBERICHT'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=pressebericht&id=' . $row->id, $this->modalwidth, $this->modalheight);
-						echo sportsmanagementHelper::getBootstrapModalImage('editevents' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/events.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_EVENTS'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editevents&id=' . $row->id . '&useeventtime=' . $this->projectws->useeventtime, $this->modalwidth, $this->modalheight);
-						echo sportsmanagementHelper::getBootstrapModalImage('editeventsbb' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/teams.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SBBEVENTS'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editeventsbb&id=' . $row->id . '&useeventtime=' . $this->projectws->useeventtime, $this->modalwidth, $this->modalheight);
-
-						?>
-
-						<?php
-
-						// End several events
-						?>
-                    </td>
-                    <td class="center">
-						<?php
-						echo sportsmanagementHelper::getBootstrapModalImage('editstats' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/calc16.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_STATS'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editstats&id=' . $row->id, $this->modalwidth, $this->modalheight);
-
-						// Start statistics:
-						?>
-
-                    </td>
-                    <td class="center">
-						<?php
-						if ($row->referees_count == 0)
-						{
-							$image = 'players_add.png';
-						}
-						else
-						{
-							$image = 'icon-16-Referees.png';
-						}
-
-						echo sportsmanagementHelper::getBootstrapModalImage('editreferees' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/' . $image, Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_REFEREES'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editreferees&id=' . $row->id, $this->modalwidth, $this->modalheight);
-						?>
-
-                    </td>
-                    <td style='text-align:center; '>
-						<?php
-						if ($row->count_result)
-						{
-							$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_PUBLISHED');
-							$imageFile  = 'administrator/components/com_sportsmanagement/assets/images/ok.png';
-						}
-						else
-						{
-							$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_UNPUBLISHED');
-							$imageFile  = 'administrator/components/com_sportsmanagement/assets/images/delete.png';
-						}
-$image_attributes['title'] = $imageTitle;
-echo HTMLHelper::_('image', $imageFile, $imageTitle,$image_attributes);
-						?>
-                    </td>
+					<?php if ($this->templateConfig['show_ad_incl'] == 1) { ?>
+						<td style='text-align:center; '>
+							<?php
+							if ($row->count_result)
+							{
+								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_PUBLISHED');
+								$imageFile  = 'administrator/components/com_sportsmanagement/assets/images/ok.png';
+							}
+							else
+							{
+								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_UNPUBLISHED');
+								$imageFile  = 'administrator/components/com_sportsmanagement/assets/images/delete.png';
+							}
+	$image_attributes['title'] = $imageTitle;
+	echo HTMLHelper::_('image', $imageFile, $imageTitle,$image_attributes);
+							?>
+						</td>
+					<?php } ?>
 
                     <td class="center">
                         <div class="btn-group">
@@ -720,11 +780,13 @@ echo HTMLHelper::_('image', $imageFile, $imageTitle,$image_attributes);
 
 
                     </td>
-                    <td class="center">
-						<?php
-						echo $row->id;
-						?>
-                    </td>
+					<?php if ($this->templateConfig['show_id'] == 1) { ?>
+						<td class="center">
+							<?php
+							echo $row->id;
+							?>
+						</td>
+					<?php } ?>
                 </tr>
 				<?php
 				$k = 1 - $k;
