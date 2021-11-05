@@ -47,7 +47,6 @@ class sportsmanagementViewTeams extends sportsmanagementView
 		}
 
 		$this->document->setTitle($pageTitle);
-
 		$this->headertitle = Text::_('COM_SPORTSMANAGEMENT_TEAMS_TITLE');
 
 	}

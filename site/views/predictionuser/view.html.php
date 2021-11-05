@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage predictionuser
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -67,9 +63,6 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 			$config            = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
 			$overallConfig     = sportsmanagementModelPrediction::getPredictionOverallConfig();
 			$tipprankingconfig = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionranking');
-
-			// $flashconfig      = sportsmanagementModelPrediction::getPredictionTemplateConfig( "predictionflash" );
-
 			$configavatar = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
 
 			$this->model        = $mdlPredUsers;
@@ -135,7 +128,7 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 			unset($res);
 			unset($predictionMembers);
 
-			// Prepare FAV Team ---------------------------------------------------
+			/** Prepare FAV Team */
 			if (empty($this->predictionMember->fav_team))
 			{
 				$this->predictionMember->fav_team = '0,0';
@@ -153,7 +146,7 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 				$favTeamsList[$value[0]] = $value[1];
 			}
 
-			// Prepare Champ Team ---------------------------------------------------
+			/** Prepare Champ Team */
 			if (empty($this->predictionMember->champ_tipp))
 			{
 				$this->predictionMember->champ_tipp = '0,0';
@@ -171,7 +164,7 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 				$champTeamsList[$value[0]] = $value[1];
 			}
 
-			// Prepare Final4 Team ---------------------------------------------------
+			/** Prepare Final4 Team */
 			if (empty($this->predictionMember->final4_tipp))
 			{
 				$this->predictionMember->final4_tipp = '0,0';
@@ -191,10 +184,7 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 
 			if ($this->getLayout() == 'edit')
 			{
-				/**
-				 *
-				 * schleife über die projekte
-				 */
+				/** schleife über die projekte */
 				foreach ($this->predictionProjectS AS $predictionProject)
 				{
 					$projectteams[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_SELECT_TEAM'), 'value', 'text');
@@ -211,17 +201,11 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 
 					$lists['fav_team'][$predictionProject->project_id] = HTMLHelper::_('select.genericList', $projectteams, 'fav_team[' . $predictionProject->project_id . ']', 'class="inputbox"', 'value', 'text', $favTeamsList[$predictionProject->project_id]);
 
-					/**
-					 *
-					 * kann champion ausgewaehlt werden ?
-					 */
+					/** kann champion ausgewaehlt werden ? */
 					if ($predictionProject->champ)
 					{
 						$disabled = '';
-						/**
-						 *
-						 * ist überhaupt das startdatum gesetzt ?
-						 */
+						/** ist überhaupt das startdatum gesetzt ? */
 						if ($predictionProject->start_date == '0000-00-00')
 						{
 							$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING_STARTDATE'), 'Error');
@@ -229,10 +213,7 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 						}
 						else
 						{
-							/**
-							 *
-							 * Wenn die Saison noch nicht angefangen hat, ist tippen erlaubt
-							 */
+							/** Wenn die Saison noch nicht angefangen hat, ist tippen erlaubt */
 							$tippAllowed = !sportsmanagementModelPrediction::isProjectStarted($predictionProject);
 							if (!$tippAllowed)
 							{
@@ -254,7 +235,7 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 					if ($res = sportsmanagementModelPrediction::getPredictionGroupList())
 					{
 						$predictionMembers = array_merge($predictionMembers, $res);
-						// Create selector only in case of having groups. View will hide selector automatically, if empty
+						/** Create selector only in case of having groups. View will hide selector automatically, if empty */
 						$lists['grouplist'] = HTMLHelper::_('select.genericList', $predictionMembers, 'group_id', 'class="inputbox" ' . $disabled . 'onchange=""', 'value', 'text', $this->predictionMember->group_id);
 					}
 
@@ -306,7 +287,7 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 			$this->lists       = $lists;
 			$this->tippallowed = $tippAllowed;
 
-			// Set page title
+			/** Set page title */
 			$pageTitle         = Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_TITLE');
 			$this->headertitle = Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_TITLE');
 
@@ -330,7 +311,7 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 	{
 		$data = sportsmanagementModelPredictionUsers::getPointsChartData();
 
-		// Calculate Values for Chart Object
+		/** Calculate Values for Chart Object */
 		$userpoints     = array();
 		$PointsCountMax = 0;
 

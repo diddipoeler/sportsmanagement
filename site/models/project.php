@@ -587,8 +587,6 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
-
-		// Get a db connection.
 		$db    = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
 		$query = $db->getQuery(true);
 
@@ -601,11 +599,7 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 				if (empty(self::$_divisions))
 				{
 					$query->select('*');
-
-					// From
 					$query->from('#__sportsmanagement_division');
-
-					// Where
 					$query->where('project_id = ' . (int) self::$projectid);
 
 					$db->setQuery($query);
@@ -624,14 +618,15 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 							$res[] = $d;
 						}
 					}
-
+                    $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 					return $res;
 				}
-
+                $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 				return self::$_divisions;
 			}
 		}
-
+        
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return array();
 	}
 
@@ -647,7 +642,6 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
-
 		$db    = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
 		$query = $db->getQuery(true);
 
@@ -674,10 +668,10 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 
 		if (count($res) == 0)
 		{
-			//echo Text::_('COM_SPORTSMANAGEMENT_RANKING_NO_SUBLEVEL_DIVISION_FOUND') . $divLevel;
             self::$warnings[] = Text::_('COM_SPORTSMANAGEMENT_RANKING_NO_SUBLEVEL_DIVISION_FOUND') . $divLevel;
 		}
-
+        
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $res;
 	}
 
@@ -692,8 +686,6 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
-
-		// Get a db connection.
 		$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
 		$query     = $db->getQuery(true);
 		$starttime = microtime();
@@ -715,14 +707,8 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 			}
 
 			$query->select('round_date_first,round_date_last,CASE LENGTH(name) when 0 then roundcode else name END as name,roundcode');
-
-			// From
 			$query->from('#__sportsmanagement_round');
-
-			// Where
 			$query->where('project_id = ' . (int) self::$projectid);
-
-			// Order
 			$query->order('roundcode ASC');
 
 			try
@@ -738,9 +724,10 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 
 		if ($ordering == 'DESC')
 		{
+            $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 			return array_reverse(self::$_rounds);
 		}
-
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return self::$_rounds;
 	}
 
@@ -757,8 +744,6 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
-
-		// Get a db connection.
 		$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
 		$query     = $db->getQuery(true);
 		$starttime = microtime();
@@ -778,10 +763,10 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 		$query->from('#__sportsmanagement_round ');
 		$query->where('project_id = ' . (int) self::$projectid);
 		$query->order('roundcode ' . $ordering);
-
 		$db->setQuery($query);
 		$result = $db->loadObjectList();
 
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
 	}
 
@@ -865,7 +850,6 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 	public static function getTeams($division = 0, $teamname = 'name', $cfg_which_database = 0, $call_function = '', $playground = 0)
 	{
 		$app = Factory::getApplication();
-
 		$teams = array();
 
 		if ($division != 0)
@@ -926,7 +910,6 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 			$query->select('CONCAT_WS( \':\', plg.id, plg.alias ) AS playground_slug');
 		}
 
-		// Für die anzeige der teams im frontend
 		$query->select('t.name as team_name,t.short_name,t.middle_name,t.club_id,t.website AS team_www,t.picture as team_picture,c.name as club_name,c.address as club_address');
 		$query->select('c.zipcode as club_zipcode,c.state as club_state,c.location as club_location,c.unique_id,c.country as club_country,c.website AS club_www');
 
@@ -1036,10 +1019,8 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
-
 		$db    = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
 		$query = $db->getQuery(true);
-
 		$query->select('et.id AS etid,et.name,et.icon');
 		$query->select('me.event_type_id AS id');
 		$query->select('CONCAT_WS( \':\', et.id, et.alias ) AS event_slug');
@@ -1057,8 +1038,8 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 
 		$db->setQuery($query);
 		$result = $db->loadObjectList('etid');
+        
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
 		return $result;
 	}
 
@@ -1079,18 +1060,16 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 			self::$projectid = Factory::getApplication()->input->getInt('p', 0);
 		}
 
-		// Get a db connection.
 		$db    = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
 		$query = $db->getQuery(true);
-
 		$query->select('id');
 		$query->from('#__sportsmanagement_project_team');
 		$query->where('team_id = ' . (int) $teamid);
 		$query->where('project_id = ' . (int) self::$projectid);
 		$db->setQuery($query);
 		$result = $db->loadResult();
+        
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
 		return $result;
 	}
 
