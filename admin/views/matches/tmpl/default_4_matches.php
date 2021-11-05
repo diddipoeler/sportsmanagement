@@ -229,7 +229,7 @@ if ($this->templateConfig['show_number'] == 0) $colspan--;
 						}
 						else
 						{
-$pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=component&asset=com_sportsmanagement&author=&folder=matchreport' .'&mid='. $row->id.'&pid='.$this->project_id;							
+							$pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=component&asset=com_sportsmanagement&author=&folder=matchreport' .'&mid='. $row->id.'&pid='.$this->project_id;							
 						}
 
 						?>
@@ -319,7 +319,7 @@ $pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=compon
 								</span>
                     </td>
 					<?php if ($this->templateConfig['show_playground'] == 1) { ?>
-						<td id="crowd" class="center">
+						<td id="playground" class="center">
 							<?php 
 							$append = '';
 							$append .= ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" ';
@@ -327,6 +327,9 @@ $pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=compon
 								'class="form-control form-control-inline" size="1"' . $append, 'value', 'text', $row->playground_id 
 							); ?>
 						</td>
+					<?php }
+					else { ?>
+						<input type='hidden' name='playground_id<?php echo $row->id; ?>' value='<?php echo $row->playground_id; ?>'/>
 					<?php } ?>
 					<?php if ($this->templateConfig['show_attendance'] == 1) { ?>
 						<td id="crowd" class="center">
@@ -335,6 +338,9 @@ $pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=compon
 								value="<?php echo $row->crowd; ?>" size="4" maxlength="5" tabindex="4"
 								class="form-control form-control-inline"/>
 						</td>
+					<?php }
+					else { ?>
+						<input type='hidden' name='crowd<?php echo $row->id; ?>' value='<?php echo $row->crowd; ?>'/>
 					<?php } ?>
 					<?php
 					if ($this->projectws->project_type == 'DIVISIONS_LEAGUE')
@@ -368,6 +374,9 @@ $pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=compon
 							);
 							?>
 						</td>
+					<?php }
+					else { ?>
+						<input type='hidden' name='round_id<?php echo $row->id; ?>' value='<?php echo $row->round_id; ?>'/>
 					<?php } ?>
                     <td id="projectteam1_id" class="right" nowrap="">
 						<?php
@@ -669,6 +678,9 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 							?>
 
 						</td>
+					<?php }
+					else { ?>
+						<input type='hidden' name='result_type<?php echo $row->id; ?>' value='<?php echo $row->result_type; ?>'/>
 					<?php } ?>
 					<?php if ($this->templateConfig['show_article'] == 1) { ?>
 						<td class="center">
@@ -683,6 +695,9 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 
 							?>
 						</td>
+					<?php }
+					else { ?>
+						<input type='hidden' name='content_id<?php echo $row->id; ?>' value='<?php echo $row->content_id; ?>'/>
 					<?php } ?>
 					<?php if ($this->templateConfig['show_events'] == 1) { ?>
 						<td class="center">
