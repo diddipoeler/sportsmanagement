@@ -90,7 +90,7 @@ if ($this->templateConfig['show_id'] == 1) $columns++;
 
         <tfoot>
         <tr>
-            <td colspan="11"><?php echo $this->pagination->getListFooter(); ?></td>
+			<td colspan="<?php echo $columns; ?>"><?php echo $this->pagination->getListFooter(); ?></td>
             <td colspan="3"><?php echo $this->pagination->getResultsCounter(); ?></td>
         </tr>
         </tfoot>
