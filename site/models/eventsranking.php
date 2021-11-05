@@ -40,20 +40,14 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 	 */
 	function __construct()
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 
 		parent::__construct();
 		self::$projectid  = $jinput->get('p', 0, 'INT');
 		self::$divisionid = $jinput->get('division', 0, 'INT');
 		self::$teamid     = $jinput->get('tid', 0, 'INT');
-
-		// Self::setEventid($jinput->get('evid'));
 		self::$matchid = $jinput->get('mid', 0, 'INT');
-
 		self::$eventid = (is_array($jinput->get('evid'))) ? implode(",", array_map('intval', $jinput->get('evid'))) : (int) $jinput->get('evid');
 
 		$config           = sportsmanagementModelProject::getTemplateConfig($this->getName());
@@ -61,10 +55,8 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 		self::$limit      = $jinput->getInt('limit', $defaultLimit);
 		self::$limitstart = $jinput->getInt('start', 0);
 		self::setOrder($jinput->getVar('order', 'desc'));
-
 		self::$cfg_which_database                = $jinput->getInt('cfg_which_database', 0);
 		sportsmanagementModelProject::$projectid = self::$projectid;
-
 	}
 
 	/**
@@ -121,16 +113,12 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 	{
 		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
-
-		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
 
 		if (empty($this->_total))
 		{
-			//          $eventids = is_array(self::$eventid) ? self::$eventid : array(self::$eventid);
-
-			// Make sure the same restrictions are used here as in statistics/basic.php in getPlayersRanking()
+			/** Make sure the same restrictions are used here as in statistics/basic.php in getPlayersRanking() */
 			$query->select('COUNT(DISTINCT(teamplayer_id)) as count_player');
 			$query->from('#__sportsmanagement_match_event AS me ');
 			$query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp ON me.teamplayer_id = tp.id');
@@ -175,7 +163,8 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 				return false;
 			}
 		}
-
+		
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $this->_total;
 	}
 
@@ -242,11 +231,8 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 	{
 		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
-
-		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
-
 		$query->select('et.id as etid,me.event_type_id as id,et.*');
 		$query->select('CONCAT_WS( \':\', et.id, et.alias ) AS event_slug');
 		$query->from('#__sportsmanagement_eventtype as et');
@@ -276,13 +262,13 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 		try
 		{
 			$result = $db->loadObjectList('etid');
-
+			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 			return $result;
 		}
 		catch (Exception $e)
 		{
 			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
-
+			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 			return false;
 		}
 	}
@@ -305,8 +291,6 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 	{
 		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
-
-		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
 
@@ -399,7 +383,8 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 			$previousval    = $row->p;
 			$currentrank    = $row->rank;
 		}
-
+		
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $rows;
 	}
 
