@@ -53,7 +53,7 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         
         foreach ($this->projectids as $this->count_i => $this->project_id)
 		{
-		  $mdlProject::$projectid = $this->project_id;
+		$mdlProject::$projectid = $this->project_id;
         $project = $mdlProject::getProject();
         /** aus performancegründen lesen wir den tabellenplatz direkt vom projektteam aus */
           if ( ComponentHelper::getParams('com_sportsmanagement')->get('force_ranking_cache', 0) )
@@ -141,9 +141,19 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         }
        
          
-          }
+        }
+        
+        /** jetzt noch die saisons, bei denen der sieger nicht bekannt ist */
+        foreach ($this->projectnames as $this->count_i => $this->project_id)
+		{
+		  
+          
+          
+          
+		  
+        }
 
-$this->teamstotal = array();
+        $this->teamstotal = array();
 
 		foreach ((array) $this->teamseason as $rows => $value)
 		{
