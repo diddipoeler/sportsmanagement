@@ -254,6 +254,9 @@ INSERT INTO `#__sportsmanagement_countries` (`id`, `name`, `alpha2`, `alpha3`, `
 (NULL, 'ZIMBABWE__REPUBLIC_OF', 'ZW', 'ZWE', 0, 0, '0000-00-00 00:00:00', 'ZWE', 'ZI', 'ZIM', 'images/com_sportsmanagement/database/flags/zw.png', 'ZIM', 'ZW', 'ZW'),
 (NULL, 'WALES', '', 'WAL', 0, 0, '2013-02-18 14:19:03', '', '', '', 'images/com_sportsmanagement/database/flags/22px-flag_of_wales_2_svg_1361191015.png', 'WAL', '', ''),
 (NULL, 'SCOTLAND', 'KS', 'SCO', 0, 0, '2013-02-18 14:18:51', '', '', '', 'images/com_sportsmanagement/database/flags/22px-flag_of_scotland_svg_1361191116.png', 'SCO', '', ''),
+
+(NULL, 'ORKNEY__ISLANDS', 'YO', 'YOJ', 0, 0, '2013-02-18 14:18:51', '', '', '', 'images/com_sportsmanagement/database/flags/yo.png', 'YOJ', '', ''),
+
 (NULL, 'EAST__GERMANY', '', 'DDR', 0, 0, '2013-02-18 14:18:40', '', '', 'GDR', 'images/com_sportsmanagement/database/flags/22px-flag_of_east_germany_svg_1361191203.png', 'GDR', '', ''),
 (NULL, 'CZECHOSLOVAKIA', '', 'CSK', 0, 0, '2013-02-18 14:18:27', '', '', 'TCH', 'images/com_sportsmanagement/database/flags/22px-flag_of_czechoslovakia_svg_1361191420.png', 'TCH', '', ''),
 (NULL, 'SOVIET__UNION', '', 'SUN', 0, 0, '2013-02-18 14:18:08', '', '', 'URS', 'images/com_sportsmanagement/database/flags/22px-flag_of_the_soviet_union_svg_1361191541.png', 'URS', '', ''),
