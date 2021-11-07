@@ -143,23 +143,30 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
          
         }
         
+      
+      //echo '<pre>'.print_r($this->projectnames,true).'</pre>';
+      
         /** jetzt noch die saisons, bei denen der sieger nicht bekannt ist */
         foreach ($this->projectnames as $this->count_i => $this->project_id)
 		{
-		if ( !array_key_exists($this->project_id->seasonname, $this->leagueteamchampions) ) {
+          
+		if ( !array_key_exists($this->project_id->seasonname, $this->leaguechampions) ) {
 		$object = new stdClass;
 		$object->teamname = $this->project_id->projectinfo;
         $object->ptid_slug = '';
         $object->ptid = 0;
         $object->teamid = 0;
 		$object->project_id = $this->project_id->slug;  
-        $this->leaguechampions[$project->season_name] = $object;
+        $this->leaguechampions[$this->project_id->seasonname] = $object;
         }  
-          
-          
-          
-		  
+
         }
+      
+      
+      //echo '<pre>'.print_r($this->leaguechampions,true).'</pre>';
+      
+      
+      
 
         $this->teamstotal = array();
 
