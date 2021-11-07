@@ -8,6 +8,7 @@
  */
 
 defined('JPATH_PLATFORM') or die;
+use Joomla\CMS\Date\Date;
 
 /**
  * GitHub API Activity Events class for the Joomla Platform.
@@ -34,7 +35,7 @@ class JGithubPackageActivityNotifications extends JGithubPackage
 	 * @since 3.3 (CMS)
 	 *
 	 */
-	public function getList($all = true, $participating = true, JDate $since = null)
+	public function getList($all = true, $participating = true, Date $since = null)
 	{
 		// Build the request path.
 		$path = '/notifications?';
@@ -65,7 +66,7 @@ class JGithubPackageActivityNotifications extends JGithubPackage
 	 * @since 3.3 (CMS)
 	 *
 	 */
-	public function getListRepository($owner, $repo, $all = true, $participating = true, JDate $since = null)
+	public function getListRepository($owner, $repo, $all = true, $participating = true, Date $since = null)
 	{
 		// Build the request path.
 		$path = '/repos/' . $owner . '/' . $repo . '/notifications?';
@@ -93,7 +94,7 @@ class JGithubPackageActivityNotifications extends JGithubPackage
 	 * @since 3.3 (CMS)
 	 *
 	 */
-	public function markRead($unread = true, $read = true, JDate $last_read_at = null)
+	public function markRead($unread = true, $read = true, Date $last_read_at = null)
 	{
 		// Build the request path.
 		$path = '/notifications';
@@ -130,7 +131,7 @@ class JGithubPackageActivityNotifications extends JGithubPackage
 	 * @since 3.3 (CMS)
 	 *
 	 */
-	public function markReadRepository($owner, $repo, $unread, $read, JDate $last_read_at = null)
+	public function markReadRepository($owner, $repo, $unread, $read, Date $last_read_at = null)
 	{
 		// Build the request path.
 		$path = '/repos/' . $owner . '/' . $repo . '/notifications';

@@ -10,6 +10,8 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -18,12 +20,12 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Toolbar\Toolbar;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use sportsmanagementView as GlobalSportsmanagementView;
+
 
 /** welche joomla version ? */
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
@@ -1047,7 +1049,7 @@ document.getElementById("filter_season").classList.add("filter_season");
 		{
 		case 'rosterpositions';
         $title  = Text::_('JTOOLBAR_BATCH');
-		$layout = new JLayoutFile('rosterpositions', JPATH_ROOT . '/components/com_sportsmanagement/layouts');
+		$layout = new FileLayout('rosterpositions', JPATH_ROOT . '/components/com_sportsmanagement/layouts');
 		$html   = $layout->render();
 		Toolbar::getInstance('toolbar')->appendButton('Custom', $html, 'batch');
         $modal_params           = array();
@@ -1061,7 +1063,7 @@ document.getElementById("filter_season").classList.add("filter_season");
 
 		/** test */
 		$title  = Text::_('JTOOLBAR_BATCH');
-		$layout = new JLayoutFile('newissue', JPATH_ROOT . '/components/com_sportsmanagement/layouts');
+		$layout = new FileLayout('newissue', JPATH_ROOT . '/components/com_sportsmanagement/layouts');
 		$html   = $layout->render();
 		Toolbar::getInstance('toolbar')->appendButton('Custom', $html, 'batch');
 

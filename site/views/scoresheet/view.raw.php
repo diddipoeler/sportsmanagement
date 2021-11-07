@@ -13,12 +13,13 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
 
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 JLoader::import('joomla.application.component.view');
 
-class sportsmanagementViewScoresheet extends JViewLegacy
+class sportsmanagementViewScoresheet extends HtmlView
 {
 
 	public function display($tpl = null)

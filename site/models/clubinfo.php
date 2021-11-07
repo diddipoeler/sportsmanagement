@@ -10,6 +10,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Feed\FeedFactory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
@@ -255,7 +256,7 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 			{
 				try
 				{
-					$feed = new \JFeedFactory;
+					$feed = new \FeedFactory;
 
 					// $feeds = new stdclass();
 					$rssDoc = $feed->getFeed($rssId);

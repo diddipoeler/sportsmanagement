@@ -15,6 +15,7 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Plugin\CMSPlugin;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
@@ -29,7 +30,7 @@ use Joomla\Utilities\ArrayHelper;
  * @version   $Id$
  * @access    public
  */
-class plgUserjsmprofile extends JPlugin
+class plgUserjsmprofile extends CMSPlugin
 {
 	/**
 	 * plgUserjsmprofile::onContentPrepareData()

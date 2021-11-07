@@ -12,6 +12,8 @@
  * https://octicons.github.com/
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\CMS\Date\Date;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
@@ -150,7 +152,7 @@ class sportsmanagementModelgithub extends BaseDatabaseModel
 	{
 		$option       = Factory::getApplication()->input->getCmd('option');
 		$app          = Factory::getApplication();
-		$this->client = JApplicationHelper::getClientInfo();
+		$this->client = ApplicationHelper::getClientInfo();
 		$github_user  = ComponentHelper::getParams($option)->get('cfg_github_username', '');
 		$github_repo  = ComponentHelper::getParams($option)->get('cfg_github_repository', '');
 
@@ -225,7 +227,7 @@ class sportsmanagementModelgithub extends BaseDatabaseModel
 		$labels    = ':label1,:label2';
 		$sort      = 'created|updated|comments';
 		$direction = 'asc|desc';
-		$since     = new JDate('2012-12-12');
+		$since     = new Date('2012-12-12');
 
 		$page    = 0;
 		$perPage = 20;

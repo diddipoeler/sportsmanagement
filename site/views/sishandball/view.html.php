@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\MVC\View\HtmlView;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
@@ -28,7 +29,7 @@ jimport('joomla.application.component.view');
  * @version   $Id$
  * @access    public
  */
-class sportsmanagementViewsishandball extends JViewLegacy
+class sportsmanagementViewsishandball extends HtmlView
 {
 
 

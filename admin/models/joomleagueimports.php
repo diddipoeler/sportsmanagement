@@ -10,6 +10,8 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\Data\DataObject;
+use Joomla\CMS\Exception\ExceptionHandler;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
@@ -3016,7 +3018,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					{
 						// Catch any database errors.
 						//    $dbjsm->transactionRollback();
-						JErrorPage::render($e);
+						ExceptionHandler::render($e);
 					}
 
 					if ($result_insert)
@@ -3268,7 +3270,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					{
 						// Catch any database errors.
 						//    $dbjsm->transactionRollback();
-						JErrorPage::render($e);
+						ExceptionHandler::render($e);
 					}
 
 					if ($result_insert)

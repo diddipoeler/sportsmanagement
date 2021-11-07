@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Pagination\Pagination;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -221,7 +222,7 @@ if ($this->config['show_icons'] == 1)
 	else
 	{
 		jimport('joomla.html.pagination');
-		$pagination = new JPagination($this->playersstats[$rows->id]->pagination_total, $this->limitstart, $this->limit);
+		$pagination = new Pagination($this->playersstats[$rows->id]->pagination_total, $this->limitstart, $this->limit);
 		?>
         <div class="pageslinks">
 			<?php echo $pagination->getPagesLinks(); ?>

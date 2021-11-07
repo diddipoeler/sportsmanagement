@@ -11,6 +11,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -317,7 +318,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		ToolbarHelper::deleteList('', 'projectteams.delete');
 		ToolbarHelper::apply('projectteams.saveshort');
 
-		$layout = new JLayoutFile('changeteams', JPATH_ROOT . '/components/com_sportsmanagement/layouts');
+		$layout = new FileLayout('changeteams', JPATH_ROOT . '/components/com_sportsmanagement/layouts');
 		$html   = $layout->render();
 		Toolbar::getInstance('toolbar')->appendButton('Custom', $html, 'batch');
 		$modal_params           = array();
@@ -327,7 +328,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		$modal_params['modalWidth']  = '60';
 		echo HTMLHelper::_('bootstrap.renderModal', 'collapseModalchangeTeams', $modal_params);
 
-		$layout = new JLayoutFile('assignteams', JPATH_ROOT . '/components/com_sportsmanagement/layouts');
+		$layout = new FileLayout('assignteams', JPATH_ROOT . '/components/com_sportsmanagement/layouts');
 		$html   = $layout->render();
 		Toolbar::getInstance('toolbar')->appendButton('Custom', $html, 'batch');
 		$modal_params           = array();

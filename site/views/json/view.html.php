@@ -14,6 +14,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\MVC\View\HtmlView;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
@@ -25,7 +26,7 @@ jimport('joomla.application.component.view');
 jimport('joomla.html.html');
 
 
-class sportsmanagementViewjson extends JViewLegacy
+class sportsmanagementViewjson extends HtmlView
 {
 	// Overwriting JViewLegacy display method
 	function display($tpl = null)

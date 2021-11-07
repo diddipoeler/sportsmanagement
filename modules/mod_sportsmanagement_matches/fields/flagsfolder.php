@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Form\FormField;
 
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -32,7 +33,7 @@ jimport('joomla.form.formfield');
  * @version   $Id$
  * @access    public
  */
-class JFormFieldFlagsFolder extends JFormField
+class JFormFieldFlagsFolder extends FormField
 {
 	protected $type = 'FlagsFolder';
 

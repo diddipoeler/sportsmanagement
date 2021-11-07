@@ -23,7 +23,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             if (cb = el.getElement("input[name^=cid]")) {
                 el.getElement("input[name^=roundcode]").addEvent('change', function () {
                     if (isNaN(this.value)) {
-                        alert(Joomla.JText._('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_CSJS_MSG_NOTANUMBER'));
+                        alert(Joomla.Text._('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_CSJS_MSG_NOTANUMBER'));
                         return false;
                     }
                 });

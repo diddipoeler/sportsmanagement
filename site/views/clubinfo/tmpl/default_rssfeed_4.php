@@ -12,6 +12,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Filter\OutputFilter;
 
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -80,7 +81,7 @@ $this->rssDoc = $this->rssfeeditems;
 					?>
                     <div class="feed-item-description">
 
-						<?php $text = JFilterOutput::stripImages($text); ?>
+						<?php $text = OutputFilter::stripImages($text); ?>
 
 						<?php $text = HTMLHelper::_('string.truncate', $text, 200); ?>
 						<?php echo str_replace('&apos;', "'", $text); ?>

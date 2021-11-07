@@ -14,12 +14,13 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\MVC\View\HtmlView;
 
 use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.view');
 
-class sportsmanagementViewjlxmlexports extends JViewLegacy
+class sportsmanagementViewjlxmlexports extends HtmlView
 {
 	function display($tpl = null)
 	{

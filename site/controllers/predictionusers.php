@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Session\Session;
 
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -64,7 +65,7 @@ class sportsmanagementControllerPredictionUsers extends BaseController
 	 */
 	function select()
 	{
-		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
 		// Reference global application object
 		$app = Factory::getApplication();
@@ -83,7 +84,7 @@ class sportsmanagementControllerPredictionUsers extends BaseController
 	 */
 	function savememberdata()
 	{
-		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 		$option     = Factory::getApplication()->input->getCmd('option');
 		$optiontext = strtoupper(Factory::getApplication()->input->getCmd('option') . '_');
 		$app        = Factory::getApplication();
@@ -143,7 +144,7 @@ class sportsmanagementControllerPredictionUsers extends BaseController
 	 */
 	function selectprojectround()
 	{
-		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
 		// Reference global application object
 		$app = Factory::getApplication();

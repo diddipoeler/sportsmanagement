@@ -13,14 +13,15 @@
  */
 
 defined('_JEXEC') or die;
+use Joomla\CMS\Date\Date;
 ?>
 <ul class="next-events">
 	<?php foreach ($events AS $event)
 		:
 		?>
         <li class="event" itemscope itemtype="http://schema.org/Event">
-            <meta itemprop="startDate" content="<?php echo JDate::getInstance($event->startDate)->toISO8601(true); ?>">
-            <meta itemprop="endDate" content="<?php echo JDate::getInstance($event->endDate)->toISO8601(true); ?>">
+            <meta itemprop="startDate" content="<?php echo Date::getInstance($event->startDate)->toISO8601(true); ?>">
+            <meta itemprop="endDate" content="<?php echo Date::getInstance($event->endDate)->toISO8601(true); ?>">
             <div class="event-name">
 				<?php if ($params->get('show_link', true))
 				:

@@ -10,9 +10,9 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Router\Route;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 
@@ -627,7 +627,7 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 		if ($this->params->get('show_act_report_link', 0) == 1 && $match->show_report == 1)
 		{
 			$uri               = 'index.php?option=com_sportsmanagement' . $this->arrayToUri($linkstructure['report']) . $this->itemid;
-			$row['reportlink'] = '<a href="' . JRoute::_($uri) . '" title="' . $this->params->get('show_act_report_text') . '">';
+			$row['reportlink'] = '<a href="' . Route::_($uri) . '" title="' . $this->params->get('show_act_report_text') . '">';
 			$row['reportlink'] .= ($useicons) ? HTMLHelper::_(
 				'image', $this->iconpath . 'report.png', $this->params->get('show_act_report_text'), array(
 					'title'  => $this->params->get('show_act_report_text'),

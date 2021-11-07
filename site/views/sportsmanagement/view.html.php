@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\MVC\View\HtmlView;
 
 use Joomla\CMS\Log\Log;
 
@@ -22,7 +23,7 @@ jimport('joomla.application.component.view');
 /**
  * HTML View class for the HelloWorld Component
  */
-class sportsmanagementViewsportsmanagement extends JViewLegacy
+class sportsmanagementViewsportsmanagement extends HtmlView
 {
 	// Overwriting JViewLegacy display method
 	function display($tpl = null)

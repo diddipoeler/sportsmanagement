@@ -13,6 +13,9 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\User\UserHelper;
+use Joomla\Data\DataObject;
+use Joomla\CMS\Filesystem\Path;
 
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
@@ -20,7 +23,6 @@ use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
-use Joomla\CMS\Client\FtpClient;
 
 /**
  * @package        Joomla
@@ -213,8 +215,8 @@ class JInstallationHelper
 		jimport('joomla.user.helper');
 
 		// Create random salt/password for the admin user
-		$salt      = JUserHelper::genRandomPassword(32);
-		$crypt     = JUserHelper::getCryptedPassword($adminPassword, $salt);
+		$salt      = UserHelper::genRandomPassword(32);
+		$crypt     = UserHelper::getCryptedPassword($adminPassword, $salt);
 		$cryptpass = $crypt . ':' . $salt;
 
 		$vars['adminLogin'] = 'admin';
@@ -541,7 +543,7 @@ class JInstallationHelper
 		/*
 		 * First we need to determine if the path is chmodable
 		 */
-		if (!JPath::canChmod(JPath::clean(JPATH_SITE . DIRECTORY_SEPARATOR . $dir)))
+		if (!Path::canChmod(Path::clean(JPATH_SITE . DIRECTORY_SEPARATOR . $dir)))
 		{
 			$ftpFlag = true;
 		}
@@ -559,7 +561,7 @@ class JInstallationHelper
 			$ftp->login($srv['ftpUser'], $srv['ftpPassword']);
 
 			//Translate path for the FTP account
-			$path = JPath::clean($ftpRoot . "/" . $dir);
+			$path = Path::clean($ftpRoot . "/" . $dir);
 
 			/*
 			 * chmod using ftp
@@ -575,7 +577,7 @@ class JInstallationHelper
 		else
 		{
 
-			$path = JPath::clean(JPATH_SITE . DIRECTORY_SEPARATOR . $dir);
+			$path = Path::clean(JPATH_SITE . DIRECTORY_SEPARATOR . $dir);
 
 			if (!@ chmod($path, octdec('0755')))
 			{
@@ -798,7 +800,7 @@ class JInstallationHelper
 			$ftp->login($app->getCfg('ftp_user'), $app->getCfg('ftp_pass'));
 
 			//Translate the destination path for the FTP account
-			$path = JPath::clean(str_replace(JPATH_SITE, $ftpRoot, $path), '/');
+			$path = Path::clean(str_replace(JPATH_SITE, $ftpRoot, $path), '/');
 
 			// do the ftp chmod
 			if (!$ftp->chmod($path, $mode))
@@ -840,8 +842,8 @@ class JInstallationHelper
 
 
 		// Clean the paths to use for archive extraction
-		$extractdir  = JPath::clean(dirname($p_filename) . DIRECTORY_SEPARATOR . $tmpdir);
-		$archivename = JPath::clean($archivename);
+		$extractdir  = Path::clean(dirname($p_filename) . DIRECTORY_SEPARATOR . $tmpdir);
+		$archivename = Path::clean($archivename);
 		jimport('joomla.filesystem.archive');
 		$result = JArchive::extract($archivename, $extractdir);
 

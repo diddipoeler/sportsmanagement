@@ -22,6 +22,11 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 
@@ -42,10 +47,10 @@ if (!class_exists('sportsmanagementHelper') ) {
     //add the classes for handling
     $classpath = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'sportsmanagement.php';
     JLoader::register('sportsmanagementHelper', $classpath);
-    JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
+    BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
-$paramscomponent = JComponentHelper::getParams('com_sportsmanagement');
+$paramscomponent = ComponentHelper::getParams('com_sportsmanagement');
 
 if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE')) {
     DEFINE('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE', $paramscomponent->get('cfg_which_database'));
@@ -80,7 +85,7 @@ else
  * @version   2014
  * @access    public
  */
-class plgSearchsearch_sportsmanagement extends JPlugin
+class plgSearchsearch_sportsmanagement extends CMSPlugin
 {
 
 
@@ -110,7 +115,7 @@ class plgSearchsearch_sportsmanagement extends JPlugin
         static $areas = array();
 
         if (empty($areas)) {
-            $areas['search_sportsmanagement'] = JText::_('PLG_SEARCH_SPORTSMANAGEMENT_XML');
+            $areas['search_sportsmanagement'] = Text::_('PLG_SEARCH_SPORTSMANAGEMENT_XML');
         }
 
         return $areas;
@@ -135,7 +140,7 @@ class plgSearchsearch_sportsmanagement extends JPlugin
         $user    = Factory::getUser();
         $country = '';
         // load plugin params info
-        $plugin            = JPluginHelper::getPlugin('search', 'search_sportsmanagement');
+        $plugin            = PluginHelper::getPlugin('search', 'search_sportsmanagement');
         $search_clubs         = $this->params->def('search_clubs',         1);
         $search_teams         = $this->params->def('search_teams',         1);
         $search_players     = $this->params->def('search_players',     1);

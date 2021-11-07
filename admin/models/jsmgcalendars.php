@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Http\HttpFactory;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
@@ -88,7 +89,7 @@ class sportsmanagementModeljsmGCalendars extends ListModel
 				 */
 				try
 				{
-					$http = JHttpFactory::getHttp(null, array('curl', 'stream'));
+					$http = HttpFactory::getHttp(null, array('curl', 'stream'));
 				}
 				catch (RuntimeException $e)
 				{

@@ -10,6 +10,7 @@
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Registry\Registry;
+use Joomla\CMS\Filesystem\File;
 
 /**
  * Google Picasa data class for the Joomla Platform.
@@ -389,7 +390,7 @@ class JGoogleDataPicasaAlbum extends JGoogleData
 		if ($this->isAuthenticated())
 		{
 			jimport('joomla.filesystem.file');
-			$title = $title != '' ? $title : JFile::getName($file);
+			$title = $title != '' ? $title : File::getName($file);
 
 			if (!($type = $this->getMime($file)))
 			{
@@ -439,7 +440,7 @@ class JGoogleDataPicasaAlbum extends JGoogleData
 	 */
 	protected function getMime($file)
 	{
-		switch (strtolower(JFile::getExt($file)))
+		switch (strtolower(File::getExt($file)))
 		{
 			case 'bmp':
 			case 'bm':

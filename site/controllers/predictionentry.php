@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Session\Session;
 
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\Utilities\ArrayHelper;
@@ -82,7 +83,7 @@ class sportsmanagementControllerPredictionEntry extends BaseController
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 
-		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
 		$msg  = '';
 		$link = '';
@@ -181,7 +182,7 @@ class sportsmanagementControllerPredictionEntry extends BaseController
 		// JInput object
 		$jinput = $app->input;
 
-		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 		$pID = Factory::getApplication()->input->getVar('prediction_id', '', 'post', 'int');
 		$uID = Factory::getApplication()->input->getVar('uid', null, 'post', 'int');
 
@@ -208,7 +209,7 @@ class sportsmanagementControllerPredictionEntry extends BaseController
 		// JInput object
 		$jinput = $app->input;
 
-		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 		$pID     = $jinput->get('prediction_id', 0, '');
 		$groupID = $jinput->get('pggroup', 0, '');
 		$pjID    = $jinput->get('pj', 0, '');
@@ -225,7 +226,7 @@ class sportsmanagementControllerPredictionEntry extends BaseController
 	 */
 	function addtipp()
 	{
-		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
 		$app      = Factory::getApplication();
 		$document = Factory::getDocument();

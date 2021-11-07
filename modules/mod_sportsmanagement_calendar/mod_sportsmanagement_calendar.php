@@ -10,9 +10,10 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Date\Date;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -79,7 +80,7 @@ if (!$params->get('cal_start_date'))
 }
 else
 {
-	$startDate = new JDate($params->get('cal_start_date'));
+	$startDate = new Date($params->get('cal_start_date'));
 
 	if (version_compare(JVERSION, '3.0.0', 'ge'))
 	{
@@ -113,10 +114,10 @@ if (!defined('JLC_MODULESCRIPTLOADED'))
 	}
 	elseif (version_compare(JVERSION, '3.0.0', 'ge'))
 	{
-		$mooconfig = JFactory::getConfig();
+		$mooconfig = Factory::getConfig();
 		$moodebug = $mooconfig->get('debug');
 		$moouncompressed   = $moodebug ? '-uncompressed' : '';
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$doc->addScript('/media/system/js/mootools-core' . $moouncompressed . '.js', array('version' => $document->getMediaVersion()));
 		$doc->addScript('/media/system/js/mootools-more' . $moouncompressed . '.js', array('version' => $document->getMediaVersion()));
 		$doc->addScript('/media/system/js/modal' . $moouncompressed . '.js', array('version' => $document->getMediaVersion()));

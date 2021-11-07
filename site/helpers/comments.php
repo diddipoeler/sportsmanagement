@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Router\Route;
 
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Log\Log;
@@ -324,11 +325,11 @@ class sportsmanagementModelCommentsKunena extends sportsmanagementModelComments
 
 		if (!is_array($result))
 		{
-			$showlink = JRoute::_("index.php?option=com_kunena&view=topic&&catid=" . $project->sb_catid . "&Itemid=" . $this->sbItemid . "&layout=create&CommentMatchID=" . $match->id);
+			$showlink = Route::_("index.php?option=com_kunena&view=topic&&catid=" . $project->sb_catid . "&Itemid=" . $this->sbItemid . "&layout=create&CommentMatchID=" . $match->id);
 		}
 		else
 		{
-			$showlink = JRoute::_("index.php?option=com_kunena&view=topic&catid=" . $project->sb_catid . "&Itemid=" . $this->sbItemid . "&id=" . $result['id']);
+			$showlink = Route::_("index.php?option=com_kunena&view=topic&catid=" . $project->sb_catid . "&Itemid=" . $this->sbItemid . "&id=" . $result['id']);
 		}
 
 		$viewComment = HTMLHelper::link($showlink, $href_text);

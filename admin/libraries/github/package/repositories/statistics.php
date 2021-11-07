@@ -8,6 +8,7 @@
  */
 
 defined('JPATH_PLATFORM') or die;
+use Joomla\CMS\Http\Response;
 
 /**
  * GitHub API class for the Joomla Platform.
@@ -63,7 +64,7 @@ class JGithubPackageRepositoriesStatistics extends JGithubPackage
 	 * @throws  \DomainException
 	 * @since   1.0
 	 */
-	protected function processResponse(JHttpResponse $response, $expectedCode = 200, $decode = true)
+	protected function processResponse(Response $response, $expectedCode = 200, $decode = true)
 	{
 		if (202 == $response->code)
 		{

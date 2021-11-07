@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\MVC\Model\FormModel;
 
 use Joomla\CMS\Factory;
 
@@ -34,7 +35,7 @@ jimport('joomla.event.dispatcher');
  * @version   2014
  * @access    public
  */
-class sportsmanagementModelPredictionUser extends JModelForm
+class sportsmanagementModelPredictionUser extends FormModel
 {
 	var $predictionGameID = 0;
 

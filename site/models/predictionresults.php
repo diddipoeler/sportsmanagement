@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Pagination\Pagination;
 
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -273,7 +274,7 @@ class sportsmanagementModelPredictionResults extends JSMModelList
         // Load the content if it doesn't already exist
         if (empty($this->_pagination)) {
             jimport('joomla.html.pagination');
-            $this->_pagination = new JPagination($this->getTotal(), $this->getState('limitstart'), $this->getState('limit'));
+            $this->_pagination = new Pagination($this->getTotal(), $this->getState('limitstart'), $this->getState('limit'));
         }
         return $this->_pagination;
     }

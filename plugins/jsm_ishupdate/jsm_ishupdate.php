@@ -26,6 +26,9 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
 //if (!defined('DS')) {
@@ -51,7 +54,7 @@ jimport('joomla.html.parameter');
  * @version   $Id$
  * @access    public
  */
-class PlgSystemjsm_ishupdate extends JPlugin
+class PlgSystemjsm_ishupdate extends CMSPlugin
 {
 
     var $config;
@@ -148,7 +151,7 @@ class PlgSystemjsm_ishupdate extends JPlugin
         if (self::$projectid ) {
             $this->getmatchestoupdate(1);
             if (self::$matchestoupdate ) {
-                 $actionsModel = JModelLegacy::getInstance('jsminlinehockey', 'sportsmanagementModel');  
+                 $actionsModel = BaseDatabaseModel::getInstance('jsminlinehockey', 'sportsmanagementModel');  
                   $actionsModel->getmatches(self::$projectid);
             }
         }
@@ -227,12 +230,12 @@ class PlgSystemjsm_ishupdate extends JPlugin
         {
         case 1:
             self::$matchestoupdate = $result;
-            $app->enqueueMessage(JText::sprintf('Es müssen [ %1$s ] Spiele aktualisiert werden !', "<strong>".self::$matchestoupdate."</strong>"), 'Notice');
+            $app->enqueueMessage(Text::sprintf('Es müssen [ %1$s ] Spiele aktualisiert werden !', "<strong>".self::$matchestoupdate."</strong>"), 'Notice');
             break;
         case 2:
             self::$matchesafterupdate = $result;
             $dif = self::$matchestoupdate - self::$matchesafterupdate;
-            $app->enqueueMessage(JText::sprintf('Es wurden [ %1$s ] Spiele aktualisiert !', "<strong>".$dif."</strong>"), 'Notice');
+            $app->enqueueMessage(Text::sprintf('Es wurden [ %1$s ] Spiele aktualisiert !', "<strong>".$dif."</strong>"), 'Notice');
             break;
         }
   

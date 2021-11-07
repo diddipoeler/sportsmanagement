@@ -10,6 +10,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Environment\Browser;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
@@ -41,7 +42,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 	 */
 	public function init()
 	{
-		$browser      = JBrowser::getInstance();
+		$browser      = Browser::getInstance();
 		$this->config = ComponentHelper::getParams('com_media');
 
 		$this->project_id = $this->app->getUserState("$this->option.pid", '0');

@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\MVC\Model\FormModel;
 
 use Joomla\CMS\Factory;
 
@@ -36,7 +37,7 @@ jimport('joomla.event.dispatcher');
  * @version   $Id$
  * @access    public
  */
-class sportsmanagementModelUpdsportsmanagement extends JModelForm
+class sportsmanagementModelUpdsportsmanagement extends FormModel
 {
 	/**
 	 * @var object item

@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Table\Table;
 
 use Joomla\Registry\Registry;
 
@@ -27,7 +28,7 @@ JLoader::import('joomla.database.table');
  * @version   2014
  * @access    public
  */
-class  sportsmanagementTablejsmgcalendarComment extends JTable
+class  sportsmanagementTablejsmgcalendarComment extends Table
 {
 
 	/**

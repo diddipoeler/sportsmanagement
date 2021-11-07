@@ -14,6 +14,7 @@
  */
 
 defined('_JEXEC') or die;
+use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Factory;
 
@@ -26,7 +27,7 @@ use Joomla\CMS\Factory;
  * @version   $Id$
  * @access    public
  */
-class plgContentSportsmanagement_Comments extends JPlugin
+class plgContentSportsmanagement_Comments extends CMSPlugin
 {
 
     public $params = null;
@@ -60,7 +61,7 @@ class plgContentSportsmanagement_Comments extends JPlugin
             }
         }
       
-        JPlugin::loadLanguage('plg_sportsmanagement_comments', JPATH_ADMINISTRATOR);
+        CMSPlugin::loadLanguage('plg_sportsmanagement_comments', JPATH_ADMINISTRATOR);
     }
 
     /**

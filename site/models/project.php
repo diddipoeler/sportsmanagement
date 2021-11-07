@@ -10,6 +10,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\User\UserHelper;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -1755,7 +1756,7 @@ self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT')
 		$user    = Factory::getUser();
 
 		// Ist der user der einer gruppe zugeordnet ?
-		$groups = JUserHelper::getUserGroups($user->get('id'));
+		$groups = UserHelper::getUserGroups($user->get('id'));
 
 		if ($user->id > 0)
 		{

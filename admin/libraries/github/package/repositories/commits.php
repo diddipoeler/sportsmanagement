@@ -8,6 +8,7 @@
  */
 
 defined('JPATH_PLATFORM') or die;
+use Joomla\CMS\Date\Date;
 
 /**
  * GitHub API Repositories Commits class for the Joomla Platform.
@@ -40,7 +41,7 @@ class JGithubPackageRepositoriesCommits extends JGithubPackage
 	 * @since    12.1
 	 *
 	 */
-	public function getList($user, $repo, $sha = '', $path = '', $author = '', JDate $since = null, JDate $until = null)
+	public function getList($user, $repo, $sha = '', $path = '', $author = '', Date $since = null, Date $until = null)
 	{
 		// Build the request path.
 		$rPath = '/repos/' . $user . '/' . $repo . '/commits?';

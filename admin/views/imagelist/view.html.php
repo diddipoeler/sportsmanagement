@@ -11,8 +11,8 @@
  * https://www.jqueryscript.net/form/Drag-Drop-File-Upload-Dialog-with-jQuery-Bootstrap.html
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Object\CMSObject;
 use Joomla\String\StringHelper;
-use Joomla\CMS\Application\WebApplication;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
@@ -308,7 +308,7 @@ Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
 		}
 		else
 		{
-			$this->_tmp_img = new JObject;
+			$this->_tmp_img = new CMSObject;
 		}
 	}
 	
