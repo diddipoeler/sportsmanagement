@@ -146,7 +146,9 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         /** jetzt noch die saisons, bei denen der sieger nicht bekannt ist */
         foreach ($this->projectnames as $this->count_i => $this->project_id)
 		{
-		  
+		if ( !array_key_exists($this->project_id->seasonname, $this->leagueteamchampions) ) {
+        //$this->leaguechampions[$project->season_name] = $object;
+        }  
           
           
           
