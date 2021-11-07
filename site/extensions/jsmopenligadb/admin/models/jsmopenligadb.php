@@ -10,6 +10,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -102,7 +103,7 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>' . print_r($query->d
      */
     function getdata($projectlink)
 	{
-$http = JHttpFactory::getHttp(null, array('curl', 'stream'));
+$http = HttpFactory::getHttp(null, array('curl', 'stream'));
 	   try{ 
 $result  = $http->get($projectlink );
 $matches = json_decode($result->body, true);

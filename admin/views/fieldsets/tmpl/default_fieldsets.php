@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Plugin\PluginHelper;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -291,7 +292,7 @@ switch ($this->fieldset)
 
 	// Für google maps
 	case 'maps1':
-		$plugin       = JPluginHelper::getPlugin('system', 'plugin_googlemap3');
+		$plugin       = PluginHelper::getPlugin('system', 'plugin_googlemap3');
 		$paramsPlugin = new Registry($plugin->params);
 
 		$arrPluginParams = array();

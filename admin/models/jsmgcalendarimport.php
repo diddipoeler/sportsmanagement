@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Http\HttpFactory;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -59,7 +60,7 @@ class sportsmanagementModeljsmgcalendarImport extends BaseDatabaseModel
 		$app    = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-		$http   = JHttpFactory::getHttp();
+		$http   = HttpFactory::getHttp();
 
 		// $google = new Google;
 		$this->jsmdb    = sportsmanagementHelper::getDBConnection();

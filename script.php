@@ -78,6 +78,8 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Version;
+use Joomla\CMS\Form\Form;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -454,7 +456,7 @@ echo '<p> alte Version ' .  $this->oldRelease . '</p>';
 			src="../administrator/components/com_sportsmanagement/assets/icons/logo_transparent.png"
 			alt="SportsManagement" title="SportsManagement" width="180"/>
 		<?php
-		$j = new JVersion;
+		$j = new Version;
 		echo '<h1>' . sprintf(Text::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), $j->getShortVersion()) . '</h1>';
 		?>
 
@@ -694,7 +696,7 @@ Like this extension?
 				// $form =& JForm::getInstance('com_sportsmanagement', $xmlfile, array('control'=> 'params'), false, "/config");
 				$newparams = array();
 
-				$form = JForm::getInstance('com_sportsmanagement', $xmlfile, array('control' => ''), false, "/config");
+				$form = Form::getInstance('com_sportsmanagement', $xmlfile, array('control' => ''), false, "/config");
 				$form->bind($jRegistry);
 
 				// Foreach($form->getFieldset($fieldset->name) as $field)

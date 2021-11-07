@@ -14,6 +14,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Session\Session;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\FormController;
@@ -60,7 +61,7 @@ class sportsmanagementControllerPredictionUsers extends FormController
 	 */
 	function select()
 	{
-		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 		$pID = Factory::getApplication()->input->getVar('prediction_id', '', 'post', 'int');
 		$uID = Factory::getApplication()->input->getVar('uid', null, 'post', 'int');
 
@@ -82,7 +83,7 @@ class sportsmanagementControllerPredictionUsers extends FormController
 	 */
 	function savememberdata()
 	{
-		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 		$option     = Factory::getApplication()->input->getCmd('option');
 		$optiontext = strtoupper(Factory::getApplication()->input->getCmd('option') . '_');
 		$app        = Factory::getApplication();
@@ -140,7 +141,7 @@ class sportsmanagementControllerPredictionUsers extends FormController
 	 */
 	function selectprojectround()
 	{
-		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
 		// Reference global application object
 		$app = Factory::getApplication();

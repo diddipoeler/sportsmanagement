@@ -45,6 +45,8 @@ https://datatables.net/
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 
 if (!defined('DS')) {
@@ -64,7 +66,7 @@ jimport('joomla.html.parameter');
  * @version   $Id$
  * @access    public
  */
-class PlgSystemjsm_bootstrap extends JPlugin
+class PlgSystemjsm_bootstrap extends CMSPlugin
 {
 
     var $config;
@@ -352,7 +354,7 @@ if ($this->params->def('load_buttons', 0)) {
                 //if (JComponentHelper::getComponent('com_k2', true)->enabled) {
                 if ($is_enabled) {
                     if (!$app->isClient('administrator')) {
-                        $css = JUri::base() . 'plugins' .DIRECTORY_SEPARATOR. $this->config['type'] .DIRECTORY_SEPARATOR. $this
+                        $css = Uri::base() . 'plugins' .DIRECTORY_SEPARATOR. $this->config['type'] .DIRECTORY_SEPARATOR. $this
                             ->config['name'] .DIRECTORY_SEPARATOR. 'css/customk2.css';
                         $document->addStyleSheet($css);
                     }
@@ -401,7 +403,7 @@ if ($this->params->def('load_buttons', 0)) {
                 //if (JComponentHelper::getComponent('com_k2', true)->enabled) {
                 if ($is_enabled) {
                     if (!$app->isClient('administrator')) {
-                        $css = JUri::base() . 'plugins' .DIRECTORY_SEPARATOR. $this->config['type'] .DIRECTORY_SEPARATOR. $this
+                        $css = Uri::base() . 'plugins' .DIRECTORY_SEPARATOR. $this->config['type'] .DIRECTORY_SEPARATOR. $this
                             ->config['name'] .DIRECTORY_SEPARATOR. 'css/customk2.css';
                         $document->addStyleSheet($css);
                     }

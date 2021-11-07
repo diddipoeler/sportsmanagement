@@ -20,12 +20,13 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 
-class GCalendarView extends JViewLegacy
+class GCalendarView extends HtmlView
 {
 	protected $state;
 

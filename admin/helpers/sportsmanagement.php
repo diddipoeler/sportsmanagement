@@ -13,9 +13,15 @@
  * https://issues.joomla.org/tracker/joomla-cms/19670
  */
 defined('_JEXEC') or die;
+use Joomla\Data\DataObject;
+use Joomla\CMS\Date\Date;
+use Joomla\CMS\Version;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Object\CMSObject;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\Utilities\ArrayHelper;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -895,7 +901,7 @@ try
 					$timezone = $user->getParam('timezone', $match->timezone);
 				}
 
-				$matchDate = new JDate($match->match_date);
+				$matchDate = new Date($match->match_date);
 
 				if ($timezone)
 				{
@@ -934,7 +940,7 @@ try
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 
-		$j = new JVersion;
+		$j = new Version;
 
 		if (!defined('COM_SPORTSMANAGEMENT_JOOMLAVERSION'))
 		{
@@ -1183,7 +1189,7 @@ try
 	public static function getActions($messageId = 0)
 	{
 		$user   = Factory::getUser();
-		$result = new JObject;
+		$result = new CMSObject;
 
 		if (empty($messageId))
 		{
@@ -2133,7 +2139,7 @@ $jinput = $app->input;
 	public static function getPictureThumb($picture, $alttext, $width = 40, $height = 40, $type = 0)
 	{
 		$ret            = "";
-		$picturepath    = JPath::clean(JPATH_SITE . DIRECTORY_SEPARATOR . str_replace(JPATH_SITE . DIRECTORY_SEPARATOR, '', $picture));
+		$picturepath    = Path::clean(JPATH_SITE . DIRECTORY_SEPARATOR . str_replace(JPATH_SITE . DIRECTORY_SEPARATOR, '', $picture));
 		$params         = ComponentHelper::getParams('com_sportsmanagement');
 		$ph_player      = $params->get('ph_player', 0);
 		$ph_logo_big    = $params->get('ph_logo_big', 0);
@@ -4168,9 +4174,9 @@ $jinput = $app->input;
 	 */
 	function isMootools12()
 	{
-		$version = new JVersion;
+		$version = new Version;
 
-		if ($version->RELEASE == '1.5' && $version->DEV_LEVEL >= 19 && JPluginHelper::isEnabled('system', 'mtupgrade'))
+		if ($version->RELEASE == '1.5' && $version->DEV_LEVEL >= 19 && PluginHelper::isEnabled('system', 'mtupgrade'))
 		{
 			return true;
 		}

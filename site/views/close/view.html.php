@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die;
+use Joomla\CMS\MVC\View\HtmlView;
 
 use Joomla\CMS\Factory;
 
@@ -25,7 +26,7 @@ jimport('joomla.application.component.view');
  * @package    Joomla.Administrator
  * @subpackage com_config
  */
-class sportsmanagementViewClose extends JViewLegacy
+class sportsmanagementViewClose extends HtmlView
 {
 	/**
 	 * Display the view

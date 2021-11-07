@@ -41,6 +41,8 @@
  */
 
 defined('_JEXEC') or die;
+use Joomla\CMS\Date\Date;
+use Joomla\CMS\Http\HttpFactory;
 
 use Joomla\Registry\Registry;
 
@@ -119,7 +121,7 @@ class ModJSMGoogleCalendarHelper
 	public function nextEvents($maxEvents)
 	{
 		$options = array(
-			'timeMin'    => JDate::getInstance()->toISO8601(),
+			'timeMin'    => Date::getInstance()->toISO8601(),
 			'orderBy'    => 'startTime',
 			'maxResults' => $maxEvents,
 		);
@@ -145,7 +147,7 @@ class ModJSMGoogleCalendarHelper
 		$options = array_merge($defaultOptions, $options);
 
 		// Create an instance of a default Http object.
-		$http = JHttpFactory::getHttp();
+		$http = HttpFactory::getHttp();
 		$url  = 'https://www.googleapis.com/calendar/v3/calendars/'
 			. urlencode($this->calendarId) . '/events?key=' . urlencode($this->apiKey)
 			. '&' . http_build_query($options);
@@ -213,9 +215,9 @@ class ModJSMGoogleCalendarHelper
 
 		if (isset($date->dateTime))
 		{
-			return JDate::getInstance($date->dateTime, $timeZone);
+			return Date::getInstance($date->dateTime, $timeZone);
 		}
 
-		return JDate::getInstance($date->date, $timeZone);
+		return Date::getInstance($date->date, $timeZone);
 	}
 }

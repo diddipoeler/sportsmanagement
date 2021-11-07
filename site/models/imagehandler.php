@@ -10,6 +10,8 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Object\CMSObject;
+use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Filesystem\Path;
@@ -146,7 +148,7 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 				{
 					if ($search == '')
 					{
-						$tmp       = new JObject;
+						$tmp       = new CMSObject;
 						$tmp->name = $file;
 						$tmp->path = Path::clean($basePath . DIRECTORY_SEPARATOR . $file);
 
@@ -154,7 +156,7 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 					}
 					elseif (stristr($file, $search))
 					{
-						$tmp       = new JObject;
+						$tmp       = new CMSObject;
 						$tmp->name = $file;
 						$tmp->path = Path::clean($basePath . DIRECTORY_SEPARATOR . $file);
 
@@ -267,7 +269,7 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 		if (empty($this->_pagination))
 		{
 			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination($this->getState('total'), $this->getState('limitstart'), $this->getState('limit'));
+			$this->_pagination = new Pagination($this->getState('total'), $this->getState('limitstart'), $this->getState('limit'));
 		}
 
 		return $this->_pagination;

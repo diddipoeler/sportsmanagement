@@ -12,6 +12,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Session\Session;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
@@ -61,7 +62,7 @@ class sportsmanagementControllerImagehandler extends BaseController
 		$option = Factory::getApplication()->input->getCmd('option');
 
 		// Check for request forgeries
-		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
 		$file        = Factory::getApplication()->input->getVar('userfile', '', 'files', 'array');
 		$type        = Factory::getApplication()->input->getVar('type');

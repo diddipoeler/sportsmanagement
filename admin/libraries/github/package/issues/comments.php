@@ -8,6 +8,7 @@
  */
 
 defined('JPATH_PLATFORM') or die;
+use Joomla\CMS\Date\Date;
 
 /**
  * GitHub API Comments class for the Joomla Platform.
@@ -62,7 +63,7 @@ class JGithubPackageIssuesComments extends JGithubPackage
 	 * @since   11.3
 	 *
 	 */
-	public function getRepositoryList($owner, $repo, $sort = 'created', $direction = 'asc', JDate $since = null)
+	public function getRepositoryList($owner, $repo, $sort = 'created', $direction = 'asc', Date $since = null)
 	{
 		// Build the request path.
 		$path = '/repos/' . $owner . '/' . $repo . '/issues/comments';

@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\MVC\View\HtmlView;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -29,7 +30,7 @@ jimport('joomla.application.component.view');
  * @version   2014
  * @access    public
  */
-class sportsmanagementViewStaff extends JViewLegacy
+class sportsmanagementViewStaff extends HtmlView
 {
 
 	/**

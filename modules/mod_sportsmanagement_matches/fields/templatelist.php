@@ -23,6 +23,7 @@ use Joomla\CMS\Filesystem\Folder;
 jimport('joomla.form.formfield');
 
 defined('JPATH_BASE') or die();
+use Joomla\CMS\Form\FormField;
 
 /**
  * JFormFieldTemplatelist
@@ -33,7 +34,7 @@ defined('JPATH_BASE') or die();
  * @version   $Id$
  * @access    public
  */
-class JFormFieldTemplatelist extends JFormField
+class JFormFieldTemplatelist extends FormField
 {
 	protected $type = 'Templatelist';
 

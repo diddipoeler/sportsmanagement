@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Object\CMSObject;
 
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
@@ -171,7 +172,7 @@ class sportsmanagementViewImagehandler extends HtmlView
 		}
 		else
 		{
-			$this->_tmp_img = new JObject;
+			$this->_tmp_img = new CMSObject;
 		}
 	}
 

@@ -13,6 +13,8 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Access\Access;
+use Joomla\Registry\Registry;
 
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -859,7 +861,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 		// JUserobjekt holen
 		$user = Factory::getUser();
 
-		$authorised = JAccess::getAuthorisedViewLevels(Factory::getUser()->get('id'));
+		$authorised = Access::getAuthorisedViewLevels(Factory::getUser()->get('id'));
 
 		$authorisedgroups = $user->getAuthorisedGroups();
 
@@ -875,7 +877,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 			$groupNames .= '<br/>';
 		}
 
-		$groups = JAccess::getGroupsByUser($user->id, false);
+		$groups = Access::getGroupsByUser($user->id, false);
 
 		if ($user->id > 0)
 		{
@@ -1412,7 +1414,7 @@ $recipient = array();
 			}
 		}
 
-		$jRegistry = new JRegistry;
+		$jRegistry = new Registry;
 
 		if (version_compare(JVERSION, '3.0.0', 'ge'))
 		{

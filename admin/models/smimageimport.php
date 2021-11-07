@@ -10,6 +10,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\Archive\Archive;
@@ -18,7 +19,6 @@ use Joomla\CMS\Table\Table;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Log\Log;
-use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Filesystem\Path;
 
 /**
@@ -129,7 +129,7 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel
 			}
 			else
 			{
-			$http = JHttpFactory::getHttp(null, array('curl', 'stream'));
+			$http = HttpFactory::getHttp(null, array('curl', 'stream'));
 			$result  = $http->get($servercopy);	
 			}
 		}
@@ -158,7 +158,7 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel
 /*			
 try
 {			
-$http = JHttpFactory::getHttp(null, array('curl', 'stream'));
+$http = HttpFactory::getHttp(null, array('curl', 'stream'));
 $resulthttp  = $http->get($servercopy );
 File::write($filepath, $resulthttp->body);
 }

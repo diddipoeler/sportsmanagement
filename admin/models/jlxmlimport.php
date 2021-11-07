@@ -11,6 +11,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\Registry\Registry;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -6815,7 +6816,7 @@ where m.round_id = '$rounddate->round_id'
 					$t_params      = $this->_getDataFromObject($value, 'params');
 					$defaultvalues = array();
 					$defaultvalues = explode('\n', $t_params);
-					$parameter     = new JRegistry;
+					$parameter     = new Registry;
 
 					if (version_compare(JVERSION, '3.0.0', 'ge'))
 					{

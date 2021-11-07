@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Date\Date;
 
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -124,7 +125,7 @@ class modJSMCalendarHelper
 
 		foreach ($cal::$matches as $row)
 		{
-			$created = new JDate($row['date'], $offset);
+			$created = new Date($row['date'], $offset);
 
 			if (version_compare(JVERSION, '3.0.0', 'ge'))
 			{
@@ -225,7 +226,7 @@ class modJSMCalendarHelper
 		$row = $db->loadObjectList();
 
 		jimport('joomla.utilities.date');
-		$created = new JDate($row[0]->match_date, $offset);
+		$created = new Date($row[0]->match_date, $offset);
 
 		if (version_compare(JVERSION, '3.0.0', 'ge'))
 		{
@@ -271,7 +272,7 @@ class modJSMCalendarHelper
 
 		foreach ($results as $key => $result)
 		{
-			$created = new JDate($results[$key]->match_date);
+			$created = new Date($results[$key]->match_date);
 
 			if (version_compare(JVERSION, '3.0.0', 'ge'))
 			{
@@ -661,7 +662,7 @@ class JSMCalendar extends PHPCalendar
 		$todaystring = '';
 		$matches     = self::$matches;
 		$div         = '';
-		$now         = new JDate;
+		$now         = new Date;
 
 		$today = $now->$dateformat($dateoutformat);
 
@@ -688,7 +689,7 @@ class JSMCalendar extends PHPCalendar
 			$row    = $matches[$x];
 			$thispm = $row['project_id'] . '_' . $row['matchcode'] . '_' . $row['type'];
 
-			$da = new JDate($row['date'], $offset);
+			$da = new Date($row['date'], $offset);
 
 			if ($div != $da->$dateformat($dateoutformat))
 			{
@@ -710,7 +711,7 @@ class JSMCalendar extends PHPCalendar
 
 			if (isset($matches[$x + 1]))
 			{
-				$nd = new JDate($matches[$x + 1]['date'], $offset);
+				$nd = new Date($matches[$x + 1]['date'], $offset);
 			}
 			else
 			{

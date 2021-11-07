@@ -10,6 +10,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -26,7 +27,7 @@ use Joomla\CMS\Log\Log;
  * @version   $Id$
  * @access    public
  */
-class SMStatistic extends JObject
+class SMStatistic extends CMSObject
 {
 	var $_name = 'default';
 	var $_calculated = 0;

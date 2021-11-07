@@ -20,6 +20,7 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
 
 // JLoader::import('components.com_gcalendar.libraries.gcalendar.view', JPATH_SITE);
 JLoader::import('joomla.application.component.view');
@@ -27,7 +28,7 @@ JLoader::import('components.com_sportsmanagement.libraries.GCalendar.GCalendarZe
 JLoader::import('components.com_sportsmanagement.libraries.dbutil', JPATH_ADMINISTRATOR);
 JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINISTRATOR);
 
-class sportsmanagementViewEvent extends JViewLegacy
+class sportsmanagementViewEvent extends HtmlView
 {
 	public function display($tpl = null)
 	{

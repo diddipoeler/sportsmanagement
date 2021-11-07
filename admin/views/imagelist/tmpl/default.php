@@ -10,8 +10,8 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
@@ -77,7 +77,7 @@ include( dirname(__FILE__) . '/default_image_4.php');
 	
 <?php else : ?>
 	<div id="media-noimages">
-		<div class="alert alert-info"><?php echo JText::_('COM_MEDIA_NO_IMAGES_FOUND'); ?></div>
+		<div class="alert alert-info"><?php echo Text::_('COM_MEDIA_NO_IMAGES_FOUND'); ?></div>
 	</div>
 <?php endif; ?>
 </div>
@@ -102,7 +102,7 @@ include( dirname(__FILE__) . '/default_image.php');
 	</ul>
 <?php else : ?>
 	<div id="media-noimages">
-		<div class="alert alert-info"><?php echo JText::_('COM_MEDIA_NO_IMAGES_FOUND'); ?></div>
+		<div class="alert alert-info"><?php echo Text::_('COM_MEDIA_NO_IMAGES_FOUND'); ?></div>
 	</div>
 <?php endif; ?>
 </div>

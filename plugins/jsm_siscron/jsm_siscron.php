@@ -55,6 +55,9 @@
 
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
 jimport('joomla.plugin.plugin');
@@ -69,7 +72,7 @@ jimport('joomla.html.parameter');
  * @version   2014
  * @access    public
  */
-class PlgSystemjsm_siscron extends JPlugin
+class PlgSystemjsm_siscron extends CMSPlugin
 {
     var $_sis_art = 1;
 
@@ -77,7 +80,7 @@ class PlgSystemjsm_siscron extends JPlugin
     {
         parent::__construct($subject, $params);
         // load language file for frontend
-        JPlugin::loadLanguage('plg_jsm_siscron', JPATH_ADMINISTRATOR);
+        CMSPlugin::loadLanguage('plg_jsm_siscron', JPATH_ADMINISTRATOR);
     }
   
   
@@ -89,7 +92,7 @@ class PlgSystemjsm_siscron extends JPlugin
       
       
       
-        $params = JComponentHelper::getParams('com_sportsmanagement');
+        $params = ComponentHelper::getParams('com_sportsmanagement');
         $show_debug_info = $params->get('show_debug_info');
         $sis_xmllink = $params->get('sis_xmllink');
         $sis_nummer    = $params->get('sis_meinevereinsnummer');
@@ -197,7 +200,7 @@ class PlgSystemjsm_siscron extends JPlugin
                 else
                 {
                     //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
-                    $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'), 'Error');
+                    $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'), 'Error');
                 }
 
                 //Parsen
@@ -232,7 +235,7 @@ class PlgSystemjsm_siscron extends JPlugin
             }
             else
             {
-                $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'), 'Error');
+                $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'), 'Error');
             }
           
             //Parsen

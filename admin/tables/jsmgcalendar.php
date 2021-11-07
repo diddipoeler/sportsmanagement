@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Table\Table;
 
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\Registry\Registry;
@@ -30,7 +31,7 @@ JLoader::import('joomla.database.table');
  * @version   2014
  * @access    public
  */
-class  sportsmanagementTablejsmGCalendar extends JTable
+class  sportsmanagementTablejsmGCalendar extends Table
 {
 	/**
 	 * sportsmanagementTablejsmGCalendar::__construct()

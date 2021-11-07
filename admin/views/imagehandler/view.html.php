@@ -11,8 +11,9 @@
  * https://www.jqueryscript.net/form/Drag-Drop-File-Upload-Dialog-with-jQuery-Bootstrap.html
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Client\ClientHelper;
+use Joomla\CMS\Object\CMSObject;
 use Joomla\String\StringHelper;
-use Joomla\CMS\Application\WebApplication;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
@@ -135,7 +136,7 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
 		$task = $jinput->get('task');
 
 		jimport('joomla.client.helper');
-		$ftp = JClientHelper::setCredentialsFromRequest('ftp');
+		$ftp = ClientHelper::setCredentialsFromRequest('ftp');
 
 		// Assign data to template
 		$this->params = $params;
@@ -166,7 +167,7 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
 		}
 		else
 		{
-			$this->_tmp_img = new JObject;
+			$this->_tmp_img = new CMSObject;
 		}
 	}
 }

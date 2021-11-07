@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
 
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
@@ -22,7 +23,7 @@ JLoader::import('components.com_sportsmanagement.libraries.GCalendar.GCalendarZe
 JLoader::import('components.com_sportsmanagement.libraries.dbutil', JPATH_ADMINISTRATOR);
 JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINISTRATOR);
 
-class sportsmanagementViewIcal extends JViewLegacy
+class sportsmanagementViewIcal extends HtmlView
 {
 
 	public function display($tpl = null)

@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Http\HttpFactory;
 
 use Joomla\CMS\Language\Text;
 use Joomla\Archive\Archive;
@@ -87,7 +88,7 @@ class sportsmanagementModelgithubinstall extends JSMModelLegacy
 				 */
 				try
 				{
-					$http = JHttpFactory::getHttp(null, array('curl', 'stream'));
+					$http = HttpFactory::getHttp(null, array('curl', 'stream'));
 				}
 				catch (RuntimeException $e)
 				{

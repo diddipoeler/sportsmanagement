@@ -10,6 +10,8 @@
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Registry\Registry;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Http\Response;
 
 /**
  * GitHub API object class for the Joomla Platform.
@@ -61,7 +63,7 @@ abstract class JGithubObject
 	protected function fetchUrl($path, $page = 0, $limit = 0)
 	{
 		// Get a new JUri object fousing the api url and given path.
-		$uri = new JUri($this->options->get('api.url') . $path);
+		$uri = new Uri($this->options->get('api.url') . $path);
 
 		if ($this->options->get('gh.token', false))
 		{
@@ -113,7 +115,7 @@ abstract class JGithubObject
 	 * @since  12.4
 	 *
 	 */
-	protected function processResponse(JHttpResponse $response, $expectedCode = 200, $decode = true)
+	protected function processResponse(Response $response, $expectedCode = 200, $decode = true)
 	{
 		// Validate the response code.
 		if ($response->code == $expectedCode)

@@ -10,6 +10,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Table;
@@ -224,7 +225,7 @@ class sportsmanagementModelMatchReport extends JSMModelLegacy
 					{
 						if ($search == '')
 						{
-							$tmp           = new JObject;
+							$tmp           = new CMSObject;
 							$tmp->name     = $file;
 							$tmp->sitepath = $sitePath;
 							$tmp->path     = Path::clean($basePath . DIRECTORY_SEPARATOR . $file);
@@ -233,7 +234,7 @@ class sportsmanagementModelMatchReport extends JSMModelLegacy
 						}
 						elseif (stristr($file, $search))
 						{
-							$tmp           = new JObject;
+							$tmp           = new CMSObject;
 							$tmp->name     = $file;
 							$tmp->sitepath = $sitePath;
 							$tmp->path     = Path::clean($basePath . DIRECTORY_SEPARATOR . $file);

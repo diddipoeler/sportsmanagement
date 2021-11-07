@@ -13,6 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Filter\OutputFilter;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -270,7 +271,7 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
 					$profile->name    = $temp->club_name_home;
 					$profile->country = 'DEU';
 					$profile->website = $temp->club_website_home;
-					$profile->alias   = JFilterOutput::stringURLSafe($temp->club_name_home);;
+					$profile->alias   = OutputFilter::stringURLSafe($temp->club_name_home);;
 
 					// Insert the object into the user profile table.
 					$result = Factory::getDbo()->insertObject('#__sportsmanagement_club', $profile);
@@ -299,7 +300,7 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
 						$profile->middle_name    = $temp->team_name_home;
 						$profile->info           = $temp->team_info_home;
 						$profile->sports_type_id = $sports_type_id;
-						$profile->alias          = JFilterOutput::stringURLSafe($temp->team_name_home);;
+						$profile->alias          = OutputFilter::stringURLSafe($temp->team_name_home);;
 
 						// Insert the object into the user profile table.
 						$result = Factory::getDbo()->insertObject('#__sportsmanagement_team', $profile);
@@ -368,7 +369,7 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
 					$profile->name    = $temp->club_name_away;
 					$profile->country = 'DEU';
 					$profile->website = $temp->club_website_away;
-					$profile->alias   = JFilterOutput::stringURLSafe($temp->club_name_away);;
+					$profile->alias   = OutputFilter::stringURLSafe($temp->club_name_away);;
 
 					// Insert the object into the user profile table.
 					$result = Factory::getDbo()->insertObject('#__sportsmanagement_club', $profile);
@@ -397,7 +398,7 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
 						$profile->middle_name    = $temp->team_name_away;
 						$profile->info           = $temp->team_info_away;
 						$profile->sports_type_id = $sports_type_id;
-						$profile->alias          = JFilterOutput::stringURLSafe($temp->team_name_away);;
+						$profile->alias          = OutputFilter::stringURLSafe($temp->team_name_away);;
 
 						// Insert the object into the table.
 						$result = Factory::getDbo()->insertObject('#__sportsmanagement_team', $profile);
@@ -625,7 +626,7 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
 						$profile->zipcode    = $playground_postal_code;
 						$profile->city       = $playground_city;
 						$profile->country    = 'DEU';
-						$profile->alias      = JFilterOutput::stringURLSafe($playground_name);;
+						$profile->alias      = OutputFilter::stringURLSafe($playground_name);;
 
 						// Insert the object into the table.
 						$result = Factory::getDbo()->insertObject('#__sportsmanagement_playground', $profile);
@@ -932,7 +933,7 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
 							$profile->id      = $club_id;
 							$profile->name    = $club_name;
 							$profile->country = 'DEU';
-							$profile->alias   = JFilterOutput::stringURLSafe($club_name);;
+							$profile->alias   = OutputFilter::stringURLSafe($club_name);;
 
 							// Insert the object into the user profile table.
 
@@ -1004,7 +1005,7 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
 							$profile->middle_name    = $team;
 							$profile->info           = $team_name;
 							$profile->sports_type_id = $sports_type_id;
-							$profile->alias          = JFilterOutput::stringURLSafe($team);;
+							$profile->alias          = OutputFilter::stringURLSafe($team);;
 							$result = Factory::getDbo()->insertObject('#__sportsmanagement_team', $profile);
 						}
 						else
@@ -1019,7 +1020,7 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
 							$object->middle_name    = $team;
 							$object->info           = $team_name;
 							$object->sports_type_id = $sports_type_id;
-							$object->alias          = JFilterOutput::stringURLSafe($team);;
+							$object->alias          = OutputFilter::stringURLSafe($team);;
 
 							// Update their details in the users table using id as the primary key.
 							$result = Factory::getDbo()->updateObject('#__sportsmanagement_team', $object, 'id');
@@ -1093,7 +1094,7 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
 							$profile->knvbnr    = $player_license_number;
 							$profile->published = 1;
 							$parts              = array(trim($player_first_name), trim($player_last_name));
-							$profile->alias     = JFilterOutput::stringURLSafe(implode(' ', $parts));
+							$profile->alias     = OutputFilter::stringURLSafe(implode(' ', $parts));
 							$result             = Factory::getDbo()->insertObject('#__sportsmanagement_person', $profile);
 						}
 						else
@@ -1134,7 +1135,7 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
 					$profile->id      = $club_id;
 					$profile->name    = $club_name;
 					$profile->country = 'DEU';
-					$profile->alias   = JFilterOutput::stringURLSafe($club_name);;
+					$profile->alias   = OutputFilter::stringURLSafe($club_name);;
 					$result = Factory::getDbo()->insertObject('#__sportsmanagement_club', $profile);
 					$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' club_name angelegt<br><pre>' . $club_name . '</pre>'), '');
 				}
@@ -1185,7 +1186,7 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
 						$profile->club_id = $club_id;
 						$profile->name    = $team_name;
 						$profile->info    = $team;
-						$profile->alias   = JFilterOutput::stringURLSafe($team_name);;
+						$profile->alias   = OutputFilter::stringURLSafe($team_name);;
 						$result = Factory::getDbo()->insertObject('#__sportsmanagement_team', $profile);
 
 						$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' team_name angelegt -> ' . $team_name . '-' . $team . '-' . $club_id), '');
@@ -1250,7 +1251,7 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
 									$profile->knvbnr    = $player_licence_number;
 									$profile->published = 1;
 									$parts              = array(trim($player_first_name), trim($player_last_name));
-									$profile->alias     = JFilterOutput::stringURLSafe(implode(' ', $parts));
+									$profile->alias     = OutputFilter::stringURLSafe(implode(' ', $parts));
 
 									$result = Factory::getDbo()->insertObject('#__sportsmanagement_person', $profile);
 									$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' spieler angelegt -> ' . $player_last_name . ''), 'Notice');
