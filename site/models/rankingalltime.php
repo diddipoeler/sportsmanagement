@@ -840,15 +840,15 @@ catch (Exception $e)
             {
 			$league = $db->loadResult();
             }
-catch (Exception $e)
-{
-    Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), Log::INFO, 'jsmerror');
-    Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), Log::INFO, 'jsmerror');
-}
+            catch (Exception $e)
+            {
+            Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), Log::INFO, 'jsmerror');
+            Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), Log::INFO, 'jsmerror');
+            }
 		}
 
 		$query->clear();
-		$query->select('p.id,p.name,s.name as seasonname');
+		$query->select('p.id,p.name,s.name as seasonname,p.projectinfo');
 		$query->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
 		$query->from('#__sportsmanagement_project as p');
 		$query->join('INNER', '#__sportsmanagement_season AS s ON p.season_id = s.id ');
@@ -859,16 +859,14 @@ catch (Exception $e)
         {
 		$result = $db->loadObjectList();
         }
-catch (Exception $e)
-{
-    Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), Log::INFO, 'jsmerror');
-    Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), Log::INFO, 'jsmerror');
-}
+        catch (Exception $e)
+        {
+        Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), Log::INFO, 'jsmerror');
+        Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), Log::INFO, 'jsmerror');
+        }
 
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
 		return $result;
-
 	}
 
 	/**
