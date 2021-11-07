@@ -55,13 +55,10 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
 		{
 		  $mdlProject::$projectid = $this->project_id;
         $project = $mdlProject::getProject();
-        
+        /** aus performancegründen lesen wir den tabellenplatz direkt vom projektteam aus */
           if ( ComponentHelper::getParams('com_sportsmanagement')->get('force_ranking_cache', 0) )
 			{
 			$this->currentRanking = $this->model->getProjectWinner($this->project_id); 
-            
-            
-           
              }
              else
              {
@@ -80,21 +77,18 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
                 }
         
 	
-        
+        /*
         if ( $project->season_name == '2019/20' )
         {
         //echo '<pre>'.print_r($this->currentRanking,true).'</pre>';  
-          
         }
-        
+        */
         foreach ($this->currentRanking as $this->count_i => $this->champion)
 		{
         
           switch ( $this->champion->rank )
           {
           case 1:
-        //if ( $this->champion->rank == 1 )
-        //{
 //        echo '<pre>'.print_r($project->season_name,true).'</pre>';    
 //        echo '<pre>'.print_r($this->champion->_name,true).'</pre>';
         $object = new stdClass;
@@ -145,32 +139,18 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         }
         
         }
-        
-        /** nach titel sortieren */
-        //$this->teamseason
-        /* Hole eine Liste von Spalten */
-          
+       
+         
           }
 
 $this->teamstotal = array();
 
 		foreach ((array) $this->teamseason as $rows => $value)
 		{
-          
-          /* echo 'value<pre>'.print_r($value['title'],true).'</pre>'; */
-          
-			//foreach ($value AS $row)
-			//{
-              
-              //echo 'row<pre>'.print_r($row,true).'</pre>'; 
-              
-              
 				$this->teamstotal[$rows]['team_id'] = $rows;
 				$this->teamstotal[$rows]['total']   = $value['title'];
-				//$teamstotal[$rows][$rows]   = $row->total;
-			//}
 		}
-        /* Hole eine Liste von Spalten */
+        /** Hole eine Liste von Spalten */
 		foreach ($this->teamstotal as $key => $row)
 		{
 			$total[$key] = $row['total'];
@@ -182,23 +162,7 @@ $this->teamstotal = array();
         // ksort($this->leaguechampions);
 		krsort($this->leaguechampions);
 		
-        //echo 'in welcher saison hat welches team gewonnen <pre>'.print_r($this->leaguechampions,true).'</pre>';
-        //echo 'welche saison zu welchem team <pre>'.print_r($this->teamseason,true).'</pre>';
-        //echo 'team details <pre>'.print_r($this->leagueteamchampions,true).'</pre>';
 
-      //echo '<pre>'.print_r($this->projectids,true).'</pre>';
-      //echo '<pre>'.print_r($this->currentRanking,true).'</pre>';
-
-//		$this->project_ids           = implode(",", $this->projectids);
-//		$this->project_ids    = $project_ids;
-//		$this->teams          = $mdlRankingAllTime->getAllTeamsIndexedByPtid($this->project_ids );
-//		$this->matches        = $mdlRankingAllTime->getAllMatches($this->project_ids );
-//		$this->ranking        = $mdlRankingAllTime->getAllTimeRanking();
-//		$this->tableconfig    = $mdlRankingAllTime->getAllTimeParams();
-//		$this->config         = $mdlRankingAllTime->getAllTimeParams();
-//		$this->currentRanking = $mdlRankingAllTime->getCurrentRanking();
-//		$this->action         = $this->uri->toString();
-//		$this->colors         = $mdlRankingAllTime->getColors($this->config['colors']);
 		/** Set page title */
 		$pageTitle = Text::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE');
 		$this->document->setTitle($pageTitle);
