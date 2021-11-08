@@ -366,10 +366,11 @@ echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_picture' 
                 </td>
                 <td class="center">
 					<?php
-					echo $this->item->user_field;
+					//echo $this->item->user_field;
 					$teile = explode("<br>", $this->item->user_field);
 					for ($a = 0; $a < sizeof($teile); $a++)
 					{
+						echo $teile[$a];
 						echo HTMLHelper::link(
 								'index.php?option=com_sportsmanagement&view=' . $teile[$a] . '&pid=' . $this->item->id,
 								HTMLHelper::_('image',Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/information.png', Text::_($teile[$a]))
