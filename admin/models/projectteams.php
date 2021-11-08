@@ -370,28 +370,20 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 		$this->project_art_id = $this->jsmapp->getUserState("$this->jsmoption.project_art_id", '0');
 		$this->sports_type_id = $this->jsmapp->getUserState("$this->jsmoption.sports_type_id", '0');
 
-		// Noch das land der liga
+		/** Noch das land der liga */
 		$this->jsmquery->clear();
 		$this->jsmquery->select('l.country,p.season_id,p.project_type');
 		$this->jsmquery->from('#__sportsmanagement_league as l');
 		$this->jsmquery->join('INNER', '#__sportsmanagement_project as p on p.league_id = l.id');
 		$this->jsmquery->where('p.id = ' . self::$_project_id);
-
 		$this->jsmdb->setQuery($this->jsmquery);
 		$result = $this->jsmdb->loadObject();
 
 		$this->jsmquery->clear();
-
-		// Select some fields
-		$this->jsmquery->select('t.id AS value,t.name AS text,a.name as info,c.logo_big as picture');
-
-		// From table
+		$this->jsmquery->select('t.id AS value,t.name AS text,t.short_name, a.name as info,c.logo_big as picture');
 		$this->jsmquery->from('#__sportsmanagement_team AS t');
 		$this->jsmquery->join('INNER', '#__sportsmanagement_club AS c ON c.id = t.club_id');
-		/**
-		 *
-		 * mit alter
-		 */
+		/** mit alter */
 		$this->jsmquery->join('LEFT', '#__sportsmanagement_agegroup AS a ON a.id = t.agegroup_id');
 
 		if ($result->country)
@@ -408,15 +400,13 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 
 			foreach ($result as $key => $value)
 			{
-				$value->text = $value->text . ' (' . $value->info . ')';
+				$value->text = $value->text .' ['.$value->short_name.']'.' (' . $value->info . ')';
 			}
-
 			return $result;
 		}
 		catch (Exception $e)
 		{
 			$this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
-
 			return false;
 		}
 
