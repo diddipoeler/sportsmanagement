@@ -156,7 +156,7 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         $object->ptid_slug = '';
         $object->ptid = 0;
         $object->teamid = 0;
-		$object->project_id = $this->project_id->slug;  
+		$object->project_id = $this->project_id->project_slug;  
         $this->leaguechampions[$this->project_id->seasonname] = $object;
         }  
 
