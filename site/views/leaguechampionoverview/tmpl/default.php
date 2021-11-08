@@ -82,7 +82,7 @@ echo $this->team->teamname;
 $routeparameter                       = array();
 			$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
 			$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-			$routeparameter['p']                  = $this->team->project_slug;
+			$routeparameter['p']                  = $this->team->project_id;
 			$routeparameter['type']               = 0;
 			$routeparameter['r']                  = 0;
 			$routeparameter['from']               = 0;
