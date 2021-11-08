@@ -73,7 +73,28 @@ echo HTMLHelper::link($teaminfo1_link, $this->team->teamname);
 }
 else
 {
-echo $this->team->teamname;
+    if ( $this->team->teamname )
+    {
+echo $this->team->teamname;        
+    }
+    else
+    {
+$routeparameter                       = array();
+			$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+			$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+			$routeparameter['p']                  = $this->team->project_slug;
+			$routeparameter['type']               = 0;
+			$routeparameter['r']                  = 0;
+			$routeparameter['from']               = 0;
+			$routeparameter['to']                 = 0;
+			$routeparameter['division']           = 0;
+			$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);    
+        echo HTMLHelper::link($link, $this->season);
+    }
+    
+    
+    
+
 }   
 ?>    
         </li>
