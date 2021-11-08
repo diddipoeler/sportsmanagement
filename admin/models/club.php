@@ -162,7 +162,7 @@ class sportsmanagementModelclub extends JSMModelAdmin
 	function teamsofclub($club_id)
 	{
 		$this->jsmquery->clear();
-		$this->jsmquery->select('t.id,t.name,t.club_id');
+		$this->jsmquery->select('t.id,t.name,t.club_id,t.short_name');
 		$this->jsmquery->from('#__sportsmanagement_team AS t');
 		$this->jsmquery->where('t.club_id = ' . $club_id);
 		$this->jsmdb->setQuery($this->jsmquery);
