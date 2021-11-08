@@ -176,6 +176,9 @@ switch ($this->fieldset)
 
                                 <input type="text" name="team_value_id[]" size='100' maxlength='100' style="width:400px;"
                                        value="<?php echo $team->name; ?>"/>
+	
+	<input type="text" name="team_short_name[]" size='100' maxlength='100' style="width:400px;"
+                                       value="<?php echo $team->short_name; ?>"/>
 
 				    <input type="text" name="club_value_id[]" size='50' maxlength='50' style=""
                                        value="<?php echo $team->club_id; ?>"/>
