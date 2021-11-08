@@ -560,11 +560,13 @@ if ( $config->get('debug') )
 					{
 						$team_id   = $post['team_id'][$key];
 						$team_name = $post['team_value_id'][$key];
+						$short_name = $post['team_short_name'][$key];
 						$club_id = $post['club_value_id'][$key];
 
 						$object = new stdClass;
 						$object->id    = $team_id;
 						$object->name  = $team_name;
+						$object->short_name  = $short_name;
 						$object->club_id    = $club_id;
 						$object->alias = OutputFilter::stringURLSafe($team_name);
 						$result = Factory::getDbo()->updateObject('#__sportsmanagement_team', $object, 'id');
