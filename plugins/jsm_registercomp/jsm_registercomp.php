@@ -27,6 +27,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Http\HttpFactory;
+use Joomla\CMS\Uri\Uri;
 
 if (! defined('JSM_PATH')) {
     DEFINE('JSM_PATH', 'components/com_sportsmanagement');
