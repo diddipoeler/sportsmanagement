@@ -14,6 +14,9 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
+
+//echo 'config<pre>'.print_r($this->config,true).'</pre>';
+
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 echo $this->loadTemplate('jsm_warnings');
@@ -48,17 +51,13 @@ $this->notes[] = Text::_('Übersicht nach Saisons');
 echo $this->loadTemplate('jsm_notes');
 
 ?>
-
-    <div class="row">
-    <ul>
-<?php    
+<div class="row">
+  
+<?php  
+  $output = array();
 foreach ($this->leaguechampions as $this->season => $this->team)
-{
-?>    
-<li class="hm2">
-<?php        
-echo $this->season.' : ';
-
+{  
+$output[$this->season][] = $this->season.' : ';
 if ( $this->team->teamid )
 {     
 $routeparameter                       = array();
@@ -68,41 +67,81 @@ $routeparameter['p']                  = $this->team->project_id;
 $routeparameter['tid']                = $this->team->teamid;
 $routeparameter['ptid']               = $this->team->ptid_slug;
 $teaminfo1_link                       = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);      
-echo HTMLHelper::_('image', $this->team->logo_big, $this->team->teamname, array('width' => 'auto','height' => '25'));  
-echo HTMLHelper::link($teaminfo1_link, $this->team->teamname);      
+$output[$this->season][] =  HTMLHelper::_('image', $this->team->logo_big, $this->team->teamname, array('width' => 'auto','height' => '25'));  
+$output[$this->season][] =  HTMLHelper::link($teaminfo1_link, $this->team->teamname);      
 }
 else
 {
-    if ( $this->team->teamname )
-    {
-echo $this->team->teamname;        
-    }
-    else
-    {
+if ( $this->team->teamname )
+{
+$output[$this->season][] =  $this->team->teamname;        
+}
+else
+{
 $routeparameter                       = array();
-			$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-			$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-			$routeparameter['p']                  = $this->team->project_id;
-			$routeparameter['type']               = 0;
-			$routeparameter['r']                  = 0;
-			$routeparameter['from']               = 0;
-			$routeparameter['to']                 = 0;
-			$routeparameter['division']           = 0;
-			$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);    
-        echo HTMLHelper::link($link, $this->season);
-    }
-    
-    
-    
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+$routeparameter['p']                  = $this->team->project_id;
+$routeparameter['type']               = 0;
+$routeparameter['r']                  = 0;
+$routeparameter['from']               = 0;
+$routeparameter['to']                 = 0;
+$routeparameter['division']           = 0;
+$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);    
+$output[$this->season][] =  HTMLHelper::link($link, $this->season);
+}
+}  
+}  
 
-}   
-?>    
-        </li>
-<?php
-}    
+
+//echo 'output<pre>'.print_r($output,true).'</pre>';
+
+if ( $this->config['show_leaguechampionoverview_season'] )  
+{
 ?>
-        </ul>
-    </div>
+<ul>  
+<?php
+  foreach ($output as $season => $printoutput)
+{  
+ ?>
+<li class="hm2">   
+<?php   
+ echo implode("", $printoutput);  
+   
+   ?>
+</li>   
+   <?php
+  }
+  ?>
+</ul>  
+  <?php
+}  
+else
+{
+ foreach ($output as $season => $printoutput)
+{   
+echo implode("", $printoutput).'<br>';   
+  
+  
+ }
+}
+  
+  
+  
+  
+  
+  
+?>  
+  
+  
+  
+  
+  
+  
+  
+  
+
+</div>
 
 <?php
 $this->notes = array();
@@ -113,7 +152,7 @@ echo $this->loadTemplate('jsm_notes');
 
  ?>
 
-<table class="table">
+<table class="<?php echo $this->config['table_class'];?> ">
 <thead>
 <th>
 <?php echo Text::_('Mannschaft'); ?>
@@ -160,17 +199,6 @@ echo HTMLHelper::link($teaminfo1_link, $this->leagueteamchampions[$this->team['t
 </table>
 
 <?php
-
-
-
-
-
-
-
-
-
-
-
 
 echo $this->loadTemplate('jsminfo');
 ?>
