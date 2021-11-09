@@ -128,14 +128,14 @@ try
 // Create an instance of a default JHttp object.
 $http = HttpFactory::getHttp();      
 // Prepare the data.
-$data = array('homepage' => Uri::base(), 'notes' => '', 'homepagename' => $this->app->getCfg('sitename') , 'isadmin' => 1 );
+$data = array('homepage' => Uri::base(), 'notes' => '', 'homepagename' => $app->getCfg('sitename') , 'isadmin' => 1 );
 // Invoke the POST request.
 $response = $http->post('https://www.fussballineuropa.de/jsmpaket.php', $data);      
 
 // Create an instance of a default JHttp object.
 $http = HttpFactory::getHttp();      
 // Prepare the data.
-$data = array('homepage' => Uri::root(), 'notes' => '', 'homepagename' => $this->app->getCfg('sitename') , 'isadmin' => 0 );
+$data = array('homepage' => Uri::root(), 'notes' => '', 'homepagename' => $app->getCfg('sitename') , 'isadmin' => 0 );
 // Invoke the POST request.
 $response = $http->post('https://www.fussballineuropa.de/jsmpaket.php', $data);
 }
