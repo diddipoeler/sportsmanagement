@@ -67,12 +67,15 @@ window.parent.Joomla.Modal.getCurrent().close();
 
 echo sportsmanagementHelper::getBootstrapModalImage(
 $this->_tmp_img->name,
-Uri::root() . 'images/com_sportsmanagement/database/'.$this->_tmp_img->path_relative.'/'.$this->_tmp_img->file,
-Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
+Uri::root() . 'images/com_sportsmanagement/database/' . $this->_tmp_img->path_relative . $this->_tmp_img->file,
+Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAM_PIC_DESC'),
 $this->_tmp_img->width_60,
 '',
 $this->modalwidth,
-$this->modalheight
+$this->modalheight,
+'',
+80,
+'<img src="' . Uri::root() . 'images/com_sportsmanagement/database/' . $this->_tmp_img->path_relative . $this->_tmp_img->file . '">'
 );
 $image_attributes['title'] = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_ADD');
 $image_attributes['id'] = $this->_tmp_img->file;		  
