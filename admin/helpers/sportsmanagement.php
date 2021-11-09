@@ -353,7 +353,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 * @param string $modalWidth
 	 * @return
 	 */
-	public static function getBootstrapModalImage($target = '', $picture = '', $text = '', $picturewidth = '20', $url = '', $width = '100', $height = '200', $extrabutton = '',$modalWidth = '80')
+	public static function getBootstrapModalImage($target = '', $picture = '', $text = '', $picturewidth = '20', $url = '', $width = '100', $height = '200', $extrabutton = '',$modalWidth = '80', $body = '')
 	{
 		$app = Factory::getApplication();
 		$jinput = $app->input;
@@ -399,7 +399,8 @@ var <?php echo $placeholder; ?> = new Array;
                 'bodyHeight'  => '60',
 				'modalWidth'  => $modalWidth,
 				'footer' => $footer
-			)
+			),
+			$body
 		);
 
 		return $modaltext;
