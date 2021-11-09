@@ -208,6 +208,7 @@
 <plugin plugin="jsm_ishupdate" group="system" />
 <plugin plugin="jcemediabox" group="system" />
 <plugin plugin="jsm_siscron" group="system" />	
+<plugin plugin="jsm_registercomp" group="system" />
 </plugins>
 
 <plugins3>
@@ -218,6 +219,7 @@
 <plugin plugin="jsm_ishupdate" group="system" />
 <plugin plugin="jcemediabox" group="system" />
 <plugin plugin="jsm_siscron" group="system" />	
+<plugin plugin="jsm_registercomp" group="system" />
 </plugins3>
      
 </extension>
