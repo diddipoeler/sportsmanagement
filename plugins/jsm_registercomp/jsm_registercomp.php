@@ -106,6 +106,7 @@ class PlgSystemjsm_registercomp extends CMSPlugin
      */
     public function onAfterRoute()
     {
+        $app = Factory::getApplication();
 //$option = JRequest::getCmd('option');
 $jsmjinput = $app->input;
 //$query = $db->getQuery(true);
