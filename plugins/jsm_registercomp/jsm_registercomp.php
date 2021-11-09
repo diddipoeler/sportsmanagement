@@ -21,13 +21,12 @@
  * This event is triggered in 'JApplication' class in file 'application.php' at location
  * 'Joomla_base\libraries\joomla\application'.
  */
-
 defined('_JEXEC') or die();
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Http\HttpFactory;
 
 if (! defined('JSM_PATH')) {
     DEFINE('JSM_PATH', 'components/com_sportsmanagement');
@@ -107,7 +106,51 @@ class PlgSystemjsm_registercomp extends CMSPlugin
      */
     public function onAfterRoute()
     {
-        $app = Factory::getApplication();
+//$option = JRequest::getCmd('option');
+$jsmjinput = $app->input;
+//$query = $db->getQuery(true);
+
+//$view = JRequest::get('view');
+$option = $jsmjinput->getCmd('option');
+
+switch ( $option )
+{
+  case 'com_sportsmanagement':
+    if ($app->isClient('administrator'))
+				{
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' option <br><pre>'.print_r($option ,true).'</pre>'   ),'');    
+      if ($this->params->get('load_debug', 1) ) {
+      //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params <br><pre>'.print_r($this->params ,true).'</pre>'   ),'');    
+try
+{
+// Create an instance of a default JHttp object.
+$http = HttpFactory::getHttp();      
+// Prepare the data.
+$data = array('homepage' => Uri::base(), 'notes' => '', 'homepagename' => $this->app->getCfg('sitename') , 'isadmin' => 1 );
+// Invoke the POST request.
+$response = $http->post('https://www.fussballineuropa.de/jsmpaket.php', $data);      
+
+// Create an instance of a default JHttp object.
+$http = HttpFactory::getHttp();      
+// Prepare the data.
+$data = array('homepage' => Uri::root(), 'notes' => '', 'homepagename' => $this->app->getCfg('sitename') , 'isadmin' => 0 );
+// Invoke the POST request.
+$response = $http->post('https://www.fussballineuropa.de/jsmpaket.php', $data);
+}
+catch (Exception $e)
+{
+//$this->app->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');	
+}      
+        
+      }
+    }
+    break;
+}
+        
+
+        
+    
+      
     
     
       
