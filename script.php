@@ -707,6 +707,14 @@ Like this extension?
 					$newparams[$field->name] = $field->value;
 			}
 
+$plugin_id = PluginHelper::getPlugin('system','jsm_registercomp')->id;
+$object = new stdClass();            
+$object->extension_id = $plugin_id;
+$object->enabled = 1;            
+$result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_id');      
+
+
+
 			switch ($route)
 			{
 				case "install":
