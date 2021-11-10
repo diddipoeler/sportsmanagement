@@ -28,6 +28,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Plugin\PluginHelper;
 
 if (! defined('JSM_PATH')) {
     DEFINE('JSM_PATH', 'components/com_sportsmanagement');
@@ -115,12 +116,14 @@ $jsmjinput = $app->input;
 //$view = JRequest::get('view');
 $option = $jsmjinput->getCmd('option');
 
+$plugin_id = PluginHelper::getPlugin('system','jsm_registercomp')->id;
 switch ( $option )
 {
   case 'com_sportsmanagement':
     if ($app->isClient('administrator'))
 				{
     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' option <br><pre>'.print_r($option ,true).'</pre>'   ),'');    
+     // $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' plugin_id <br><pre>'.print_r($plugin_id ,true).'</pre>'   ),'');
       if ($this->params->get('load_debug', 1) ) {
       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params <br><pre>'.print_r($this->params ,true).'</pre>'   ),'');    
 try
