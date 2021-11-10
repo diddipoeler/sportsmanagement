@@ -51,13 +51,13 @@ $this->notes[] = Text::_('Übersicht nach Saisons');
 echo $this->loadTemplate('jsm_notes');
 
 ?>
-<div class="row">
+
   
 <?php  
-  $output = array();
+$output = array();
 foreach ($this->leaguechampions as $this->season => $this->team)
 {  
-$output[$this->season][] = $this->season.' : ';
+$output[$this->season][] = $this->config['show_leaguechampionoverview_season'] ? $this->season.' : ' : '<div class="col-sm-4">'.$this->season.' : '.'</div>'   ;
 if ( $this->team->teamid )
 {     
 $routeparameter                       = array();
@@ -66,15 +66,24 @@ $routeparameter['s']                  = Factory::getApplication()->input->getInt
 $routeparameter['p']                  = $this->team->project_id;
 $routeparameter['tid']                = $this->team->teamid;
 $routeparameter['ptid']               = $this->team->ptid_slug;
-$teaminfo1_link                       = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);      
+$teaminfo1_link                       = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);  
+if ( !$this->config['show_leaguechampionoverview_season']  )  
+{
+$output[$this->season][] = '<div class="col-sm-8">';
+}  
 $output[$this->season][] =  HTMLHelper::_('image', $this->team->logo_big, $this->team->teamname, array('width' => 'auto','height' => '25'));  
-$output[$this->season][] =  HTMLHelper::link($teaminfo1_link, $this->team->teamname);      
+$output[$this->season][] =  HTMLHelper::link($teaminfo1_link, $this->team->teamname);  
+if ( !$this->config['show_leaguechampionoverview_season']  )  
+{
+$output[$this->season][] = '</div>';
+}
+  
 }
 else
 {
 if ( $this->team->teamname )
 {
-$output[$this->season][] =  $this->team->teamname;        
+$output[$this->season][] =  $this->config['show_leaguechampionoverview_season'] ? $this->team->teamname : '<div class="col-sm-8">'.$this->team->teamname.'</div>';        
 }
 else
 {
@@ -88,7 +97,7 @@ $routeparameter['from']               = 0;
 $routeparameter['to']                 = 0;
 $routeparameter['division']           = 0;
 $link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);    
-$output[$this->season][] =  HTMLHelper::link($link, $this->season);
+$output[$this->season][] =  $this->config['show_leaguechampionoverview_season'] ? HTMLHelper::link($link, $this->season) : '<div class="col-sm-8">'.HTMLHelper::link($link, $this->season).'</div>';
 }
 }  
 }  
@@ -99,49 +108,34 @@ $output[$this->season][] =  HTMLHelper::link($link, $this->season);
 if ( $this->config['show_leaguechampionoverview_season'] )  
 {
 ?>
+  <div class="row">
 <ul>  
 <?php
-  foreach ($output as $season => $printoutput)
+foreach ($output as $season => $printoutput)
 {  
- ?>
+?>
 <li class="hm2">   
 <?php   
- echo implode("", $printoutput);  
-   
-   ?>
+echo implode("", $printoutput);  
+?>
 </li>   
-   <?php
-  }
-  ?>
+<?php
+}
+?>
 </ul>  
-  <?php
+  </div>
+<?php
 }  
 else
 {
- foreach ($output as $season => $printoutput)
+foreach ($output as $season => $printoutput)
 {   
-echo implode("", $printoutput).'<br>';   
-  
-  
- }
+echo '<div class="row">'.implode("", $printoutput).'</div>';   
 }
-  
-  
-  
-  
-  
+}
   
 ?>  
   
-  
-  
-  
-  
-  
-  
-  
-
-</div>
 
 <?php
 $this->notes = array();
@@ -151,7 +145,7 @@ echo $this->loadTemplate('jsm_notes');
 
 
  ?>
-
+<div class="row">
 <table class="<?php echo $this->config['table_class'];?> ">
 <thead>
 <th>
@@ -197,7 +191,7 @@ echo HTMLHelper::link($teaminfo1_link, $this->leagueteamchampions[$this->team['t
 }
 ?>
 </table>
-
+<div>
 <?php
 
 echo $this->loadTemplate('jsminfo');
