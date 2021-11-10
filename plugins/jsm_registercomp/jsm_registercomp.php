@@ -147,6 +147,14 @@ catch (Exception $e)
 //$this->app->enqueueMessage(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');	
 }      
         
+        if ( $plugin_id )
+        {
+$object = new stdClass();            
+$object->extension_id = $plugin_id;
+$object->enabled = 0;            
+$result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_id');          
+        }
+        
       }
     }
     break;

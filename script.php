@@ -91,6 +91,8 @@ use Joomla\Registry\Registry;
 use Joomla\CMS\Installer\Installer;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\Plugin\PluginHelper;
+
 
 if (version_compare(JVERSION, '3.0.0', 'ge'))
 {
@@ -1113,6 +1115,13 @@ Like this extension?
 				$result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_id');
 				*/
 			}
+            
+$plugin_id = PluginHelper::getPlugin('system','jsm_registercomp')->id;
+$object = new stdClass();            
+$object->extension_id = $plugin_id;
+$object->enabled = 1;            
+$result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_id');            
+            
 		}
 
 	}
