@@ -239,7 +239,7 @@ class SportsmanagementConnector extends JSMCalendar
 		$where .= $limitingcondition;
 
 		$query->group('m.id');
-		$query->order('m.match_date ' . $ordering);
+		$query->order('m.match_date ' . $ordering . ',p.id ' . $ordering);
 
 		$db->setQuery($query, 0, $limit);
 
