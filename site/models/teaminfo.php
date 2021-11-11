@@ -287,7 +287,22 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 
 		$query->clear();
 		$query->select('pt.id as ptid, pt.team_id as season_team_id, pt.picture, pt.info, pt.project_id AS projectid');
+        if ( ComponentHelper::getParams('com_sportsmanagement')->get('force_ranking_cache', 0) )
+			{
+			 $query->select('pt.cache_points_finally as points_finally,
+             pt.cache_neg_points_finally as neg_points_finally,
+             pt.finaltablerank,
+             pt.cache_matches_finally as matches_finally,
+             pt.cache_won_finally as won_finally,
+             pt.cache_draws_finally as draws_finally,
+             pt.cache_lost_finally as lost_finally,
+             pt.cache_homegoals_finally as homegoals_finally,
+             pt.cache_guestgoals_finally as guestgoals_finally');
+			}
+			else
+			{
 		$query->select('pt.points_finally,pt.neg_points_finally,pt.finaltablerank,pt.matches_finally,pt.won_finally,pt.draws_finally,pt.lost_finally,pt.homegoals_finally,pt.guestgoals_finally');
+        }
 		$query->select('p.name as projectname,p.season_id,p.current_round, pt.division_id');
 		$query->select('s.name as season');
 		$query->select('t.id as team_id');
