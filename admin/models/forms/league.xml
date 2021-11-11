@@ -113,7 +113,21 @@
         />	  
 
 
-
+<field
+			name="champions_complete"
+			type="extensionradiobutton"
+			class="radio btn-group btn-group-yesno"
+			default="0"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_CHAMPIONS_COMPLETE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_CHAMPIONS_COMPLETE_DESC">
+			<option
+				value="1">
+				JYES</option>
+			<option
+				value="0">
+				JNO</option>
+		</field>
 
 
 
