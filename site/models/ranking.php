@@ -118,6 +118,12 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 	}
 
 
+	/**
+	 * sportsmanagementModelRanking::setFinalStanding()
+	 * 
+	 * @param mixed $current_ranking
+	 * @return void
+	 */
 	public static function setFinalStanding($current_ranking = array() )
 	{
 		$app    = Factory::getApplication();
@@ -138,15 +144,18 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 
 				// Must be a valid primary key value.
 				$object->id      = $key;
-				$object->matches_finally = $value->cnt_matches;
-          $object->won_finally = $value->cnt_won;
-            $object->draws_finally = $value->cnt_draw;
-            $object->lost_finally = $value->cnt_lost;
-            $object->points_finally = $value->sum_points;
-            $object->neg_points_finally = $value->neg_points;
-            $object->homegoals_finally = $value->sum_team1_result;
-            $object->guestgoals_finally = $value->sum_team2_result;
-            $object->diffgoals_finally = $value->diff_team_results;
+                
+                $object->cache_points_finally = $value->sum_points;
+                $object->cache_neg_points_finally = $value->neg_points;
+                $object->cache_matches_finally = $value->cnt_matches;
+                $object->cache_won_finally = $value->cnt_won;
+                $object->cache_draws_finally = $value->cnt_draw;
+                $object->cache_lost_finally = $value->cnt_lost;
+				$object->cache_homegoals_finally = $value->sum_team1_result;
+                $object->cache_guestgoals_finally = $value->sum_team2_result;
+                $object->cache_diffgoals_finally = $value->diff_team_results;
+  
+            
             $object->finaltablerank = $value->rank;
 
 				// Update their details in the users table using id as the primary key.
