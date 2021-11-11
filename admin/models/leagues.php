@@ -41,6 +41,7 @@ class sportsmanagementModelLeagues extends JSMModelList
 			'obj.short_name',
 			'obj.country',
 			'obj.published_act_season',
+            'obj.champions_complete',
 			'st.name',
 			'obj.id',
 			'obj.ordering',

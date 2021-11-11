@@ -132,6 +132,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_club` (
   `country_geocode` VARCHAR(3) NULL DEFAULT NULL,
   `instagram` VARCHAR(250) NOT NULL DEFAULT '' ,
   `linkedin` VARCHAR(250) NOT NULL DEFAULT '' ,
+  `complete_address` VARCHAR(200) NOT NULL DEFAULT '' ,
   PRIMARY KEY (`id`) ,
   KEY `standard_playground` (`standard_playground`),
   KEY `country` (`country`),
@@ -313,6 +314,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_league` (
 `founded_year` VARCHAR(4) NULL DEFAULT NULL,
 `dissolved` DATE NOT NULL DEFAULT '0000-00-00',
 `dissolved_year` VARCHAR(4) NULL DEFAULT NULL,
+`champions_complete` TINYINT(1) NOT NULL DEFAULT '0' ,
   PRIMARY KEY (`id`) ,
   KEY `country` (`country`),
   KEY `sports_type_id` (`sports_type_id`)
@@ -875,7 +877,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project` (
   `facebook` VARCHAR(250) NOT NULL DEFAULT '' ,
   `single_matches` SMALLINT(6) NOT NULL DEFAULT '0' ,
   `use_smallcaliber` TINYINT(1)  NULL DEFAULT NULL ,
-  
+  `cr_project` varchar(255) DEFAULT NULL,
 
   PRIMARY KEY (`id`) ,
   KEY `league_id` (`league_id`),
@@ -982,6 +984,16 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project_team` (
   `cr_picture` varchar(255) DEFAULT NULL,
   `finaltablerank` tinyint(1) NOT NULL DEFAULT '0',
   `picturenotes` TEXT NULL DEFAULT NULL ,
+  
+  `cache_points_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `cache_neg_points_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `cache_matches_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `cache_won_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `cache_draws_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `cache_lost_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `cache_homegoals_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `cache_guestgoals_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `cache_diffgoals_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
   
   PRIMARY KEY (`id`) ,
   KEY `project_id` (`project_id`),

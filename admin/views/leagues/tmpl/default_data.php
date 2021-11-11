@@ -79,6 +79,9 @@ HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolow
         <th>
 			<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ACT_SEASON_MOD'); ?>
         </th>
+        <th>
+			<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_CHAMPIONS_COMPLETE'); ?>
+        </th>
         <th width="" class="nowrap center">
 			<?php
 			echo HTMLHelper::_('grid.sort', 'JSTATUS', 'objassoc.published', $this->sortDirection, $this->sortColumn);
@@ -214,6 +217,24 @@ elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
 {    
 echo $this->loadTemplate('switcher3');
 }   
+
+$this->switcher_value = $this->item->champions_complete;    
+$this->switcher_name = 'champions_complete' . $this->item->id;
+/** welche joomla version ? */
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+echo $this->loadTemplate('switcher4');    
+}
+elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
+{    
+echo $this->loadTemplate('switcher3');
+}  
+
+
+
+
+
+
 				?>
             </td>
             <td class="center">
