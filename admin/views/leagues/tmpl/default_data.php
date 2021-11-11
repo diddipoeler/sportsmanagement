@@ -218,6 +218,17 @@ elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
 echo $this->loadTemplate('switcher3');
 }   
 
+
+
+
+
+
+
+
+				?>
+            </td>
+            <td class="center">
+				<?php
 $this->switcher_value = $this->item->champions_complete;    
 $this->switcher_name = 'champions_complete' . $this->item->id;
 /** welche joomla version ? */
@@ -228,15 +239,11 @@ echo $this->loadTemplate('switcher4');
 elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
 {    
 echo $this->loadTemplate('switcher3');
-}  
-
-
-
-
-
-
-				?>
+}                  
+                
+                ?>
             </td>
+            
             <td class="center">
                 <div class="btn-group">
 					<?php echo HTMLHelper::_('jgrid.published', $this->item->published, $this->count_i, 'leagues.', $canChange, 'cb'); ?>
