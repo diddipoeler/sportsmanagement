@@ -242,7 +242,7 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 				$query->select('CONCAT_WS( \':\', l.id, l.alias ) AS league_slug');
 				$query->select('CONCAT_WS( \':\', s.id, s.alias ) AS season_slug');
 				$query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
-				$query->select('l.cr_picture as cr_leaguepicture');
+				$query->select('l.cr_picture as cr_leaguepicture,l.champions_complete');
 				$query->from('#__sportsmanagement_project AS p ');
 				$query->join('INNER', '#__sportsmanagement_sports_type AS st ON p.sports_type_id = st.id ');
 				$query->join('LEFT', '#__sportsmanagement_league AS l ON p.league_id = l.id ');
