@@ -311,9 +311,11 @@
 <field
 			name="cr_project"
 			type="text"
+       size="75"
+		       maxlength="75"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_CR_PROJECT"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_CR_PROJECT_DESC"
-			class="inputbox"
+			class="input-xxlarge"
 			default=""/>		
 		
 		
