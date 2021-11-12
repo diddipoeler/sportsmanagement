@@ -48,6 +48,11 @@ ksort($this->leaguechampions);
 
 $this->notes = array();
 $this->notes[] = Text::_('Übersicht nach Saisons');
+
+    if ( $this->project->champions_complete )
+    {
+        $this->notes[] = Text::_('Alle Meister/Erstplazierte Mannschaften der Saisons vorhanden.');
+    }
 echo $this->loadTemplate('jsm_notes');
 
 ?>
