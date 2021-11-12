@@ -68,6 +68,7 @@ class sportsmanagementViewRanking extends sportsmanagementView
 			$rounds                 = sportsmanagementHelper::getRoundsOptions($this->project->id, 'ASC', true, null, sportsmanagementModelProject::$cfg_which_database);
 			sportsmanagementModelProject::setProjectId($this->project->id, sportsmanagementModelProject::$cfg_which_database);
 			$this->projectinfo = $this->project->projectinfo;
+			$this->cr_project = $this->project->cr_project;
 			$extended          = sportsmanagementHelper::getExtended($this->project->extended, 'project');
 			$this->extended    = $extended;
 		}
