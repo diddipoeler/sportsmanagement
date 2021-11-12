@@ -286,7 +286,25 @@ foreach ($field->fieldset as $fieldset)
 		{
 			$query->select('tl.id AS projectteamid,tl.division_id');
 			$query->select('tl.standard_playground,tl.admin,tl.start_points');
-			$query->select('tl.use_finally,tl.points_finally,tl.neg_points_finally,tl.matches_finally,tl.won_finally,tl.draws_finally,tl.lost_finally,tl.homegoals_finally,tl.guestgoals_finally,tl.diffgoals_finally');
+			
+if ( ComponentHelper::getParams('com_sportsmanagement')->get('force_ranking_cache', 0) )			
+{
+$query->select('tl.use_finally,
+tl.cache_points_finally as points_finally,
+tl.cache_neg_points_finally as neg_points_finally,
+tl.cache_matches_finally as matches_finally,
+tl.cache_won_finally as won_finally,
+tl.cache_draws_finally as draws_finally,
+tl.cache_lost_finally as lost_finally,
+tl.cache_homegoals_finally as homegoals_finally,
+tl.cache_guestgoals_finally as guestgoals_finally,
+tl.cache_diffgoals_finally as diffgoals_finally');	
+}
+else
+{
+$query->select('tl.use_finally,tl.points_finally,tl.neg_points_finally,tl.matches_finally,tl.won_finally,tl.draws_finally,tl.lost_finally,tl.homegoals_finally,tl.guestgoals_finally,tl.diffgoals_finally');
+}
+			
 			$query->select('tl.is_in_score,tl.info,st.team_id,tl.checked_out,tl.checked_out_time');
 			$query->select('tl.picture,tl.project_id');
 			$query->select('t.id,t.name,t.short_name,t.middle_name,t.notes,t.club_id');
