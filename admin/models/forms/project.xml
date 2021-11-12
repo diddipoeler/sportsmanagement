@@ -306,7 +306,17 @@
 <!-- reiter 2 --> 
 	<fieldset name="description"
 		label="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION"
-		description="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION_DESC">		
+		description="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION_DESC">	
+		
+<field
+			name="cr_project"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_CR_PROJECT"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_CR_PROJECT_DESC"
+			class="inputbox"
+			default=""/>		
+		
+		
 		<field
 			name="projectinfo"
 			type="editor"
