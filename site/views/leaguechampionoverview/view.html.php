@@ -47,7 +47,7 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
        
 		$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
 		$this->projectids     = $mdlRankingAllTime->getAllProject(1);
-		$this->projectnames   = $mdlRankingAllTime->getAllProjectNames();
+		$this->projectnames   = $mdlRankingAllTime->getAllProjectNames(1);
         
         foreach ($this->projectids as $this->count_i => $this->project_id)
 		{
