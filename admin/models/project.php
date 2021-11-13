@@ -577,6 +577,7 @@ catch (Exception $e)
 			$tblProject->agegroup_id     = $post['agegroup' . $pks[$x]];
 			$tblProject->master_template = $post['master_template' . $pks[$x]];
 			$tblProject->fast_projektteam = $post['fast_projektteam' . $pks[$x]];
+            $tblProject->use_leaguechampion = $post['use_leaguechampion' . $pks[$x]];
 
 			if ($post['league' . $pks[$x]])
 			{
