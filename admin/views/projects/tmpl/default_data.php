@@ -77,6 +77,10 @@ HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolow
 	<?php
 	echo Text::_('COM_SPORTSMANAGEMENT_SETTINGS_PROJECTTEAMS_QUICKADD');
 	?>	    
+    <br>
+	<?php
+	echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_LEAGUECHAMPION');
+	?>
             </th>
             <th class="title">
 				<?php
@@ -291,9 +295,24 @@ elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
 {    
 echo $this->loadTemplate('switcher3');
 }                    
+					?>
+                    <br>
+<?php                    
+$this->switcher_value = $this->item->use_leaguechampion;    
+$this->switcher_name = 'use_leaguechampion' . $this->item->id;
+/** welche joomla version ? */
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+echo $this->loadTemplate('switcher4');    
+}
+elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
+{    
+echo $this->loadTemplate('switcher3');
+}                    
+
                     
-					?>    			
-                </td>
+                        			
+     ?>           </td>
 
                 <td class="center">
 					<?php

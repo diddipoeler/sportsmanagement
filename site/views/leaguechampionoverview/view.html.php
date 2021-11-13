@@ -41,14 +41,12 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
        
        
        $mdlRankingAllTime = BaseDatabaseModel::getInstance("RankingAllTime", "sportsmanagementModel");
-       //$mdlRanking = BaseDatabaseModel::getInstance("Ranking", "sportsmanagementModel");
        $mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
-       
        $mdlTeaminfo = BaseDatabaseModel::getInstance("TeamInfo", "sportsmanagementModel");
        $mdlClubinfo = BaseDatabaseModel::getInstance("ClubInfo", "sportsmanagementModel");
        
 		$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
-		$this->projectids     = $mdlRankingAllTime->getAllProject();
+		$this->projectids     = $mdlRankingAllTime->getAllProject(1);
 		$this->projectnames   = $mdlRankingAllTime->getAllProjectNames();
         
         foreach ($this->projectids as $this->count_i => $this->project_id)
@@ -77,12 +75,6 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
                 }
         
 	
-        /*
-        if ( $project->season_name == '2019/20' )
-        {
-        //echo '<pre>'.print_r($this->currentRanking,true).'</pre>';  
-        }
-        */
         foreach ($this->currentRanking as $this->count_i => $this->champion)
 		{
         

@@ -1,3 +1,3 @@
 <extensionset name="sportsmanagement" description="JSM">
-<extension name="sportsmanagement" element="com_sportsmanagement" type="component" version="3.9.00" detailsurl="https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/sportsmanagement-update.xml"/>
+<extension name="sportsmanagement" element="com_sportsmanagement" type="component" version="3.9.10" detailsurl="https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/sportsmanagement-update.xml"/>
 </extensionset>

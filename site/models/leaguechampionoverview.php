@@ -17,9 +17,6 @@ use Joomla\Registry\Registry;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Component\ComponentHelper;
 
-//jimport('joomla.utilities.array');
-//jimport('joomla.utilities.arrayhelper');
-
 /**
  * sportsmanagementModelleaguechampionoverview
  * 
@@ -34,8 +31,6 @@ class sportsmanagementModelleaguechampionoverview extends BaseDatabaseModel
 static $rankingalltimenotes = array();
 	static $rankingalltimewarnings = array();
 	static $rankingalltimetips = array();
-	
-    
     
     /**
      * sportsmanagementModelleaguechampionoverview::getProjectWinner()

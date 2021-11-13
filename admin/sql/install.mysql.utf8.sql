@@ -878,6 +878,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project` (
   `single_matches` SMALLINT(6) NOT NULL DEFAULT '0' ,
   `use_smallcaliber` TINYINT(1)  NULL DEFAULT NULL ,
   `cr_project` varchar(255) DEFAULT NULL,
+  `use_leaguechampion` tinyint(1) NOT NULL DEFAULT '0',
 
   PRIMARY KEY (`id`) ,
   KEY `league_id` (`league_id`),

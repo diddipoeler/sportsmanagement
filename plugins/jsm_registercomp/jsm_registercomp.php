@@ -152,7 +152,7 @@ catch (Exception $e)
 $object = new stdClass();            
 $object->extension_id = $plugin_id;
 $object->enabled = 0;            
-$result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_id');          
+//$result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_id');          
         }
         
       }

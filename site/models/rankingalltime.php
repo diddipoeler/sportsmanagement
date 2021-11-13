@@ -830,12 +830,14 @@ catch (Exception $e)
 	}
 
 
+
 	/**
 	 * sportsmanagementModelRankingAllTime::getAllProjectNames()
 	 * 
+	 * @param integer $use_leaguechampion
 	 * @return
 	 */
-	function getAllProjectNames()
+	function getAllProjectNames($use_leaguechampion = 0)
 	{
 		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
@@ -871,6 +873,10 @@ catch (Exception $e)
 		$query->from('#__sportsmanagement_project as p');
 		$query->join('INNER', '#__sportsmanagement_season AS s ON p.season_id = s.id ');
 		$query->where('p.league_id = ' . $league);
+        if ( $use_leaguechampion )
+        {
+            $query->where('p.use_leaguechampion = ' . $use_leaguechampion);
+        }
 		$query->order('s.name DESC ');
 		$db->setQuery($query);
         try
@@ -887,12 +893,14 @@ catch (Exception $e)
 		return $result;
 	}
 
+	
 	/**
 	 * sportsmanagementModelRankingAllTime::getAllProject()
-	 *
+	 * 
+	 * @param integer $use_leaguechampion
 	 * @return
 	 */
-	function getAllProject()
+	function getAllProject($use_leaguechampion = 0)
 	{
 		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
@@ -918,18 +926,21 @@ catch (Exception $e)
 		$query->select('id');
 		$query->from('#__sportsmanagement_project');
 		$query->where('league_id = ' . $league);
+        if ( $use_leaguechampion )
+        {
+            $query->where('use_leaguechampion = ' . $use_leaguechampion);
+        }
 		$query->order('name ');
 		$db->setQuery($query);
-try{
+        try{
 		$result = $db->loadColumn(0);
 
 		$this->project_ids       = implode(",", $result);
 		$this->project_ids_array = $result;
 
 		$count_project = count($result);
-	self::$rankingalltimetips[] = Text::_('Wir verarbeiten ' . $count_project . ' Projekte/Saisons !');
-		//Log::add(Text::_('Wir verarbeiten ' . $count_project . ' Projekte/Saisons !'), Log::INFO, 'jsmerror');
-        
+	   self::$rankingalltimetips[] = Text::_('Wir verarbeiten ' . $count_project . ' Projekte/Saisons !');
+       
         }
 catch (Exception $e)
 {
