@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage fields
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -51,12 +47,47 @@ class JFormFieldleaguelist extends \JFormFieldList
 	{
 		// Initialize variables.
 		$options = array();
-
-		$db    = Factory::getDbo();
+$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
-
+      
+      // JInput object
+      $app = Factory::getApplication();
+		$jinput                 = $app->input;
+		$projectid        = (int) $jinput->get('id', 0, '');
+      $view = $jinput->getVar("view");
+      
+     // echo '<pre>'.print_r($view,true).'</pre>';
+      //echo '<pre>'.print_r($projectid,true).'</pre>';
+      switch ($view)
+{
+	case 'project':
+          if ( $projectid )
+          {
+// Holen wir uns das land der liga
+		$query->clear();
+		$query->select('l.country');
+		$query->from('#__sportsmanagement_league as l');
+		$query->join('INNER', '#__sportsmanagement_project as p on p.league_id = l.id');
+		$query->where('p.id = ' . $projectid);  
+        $db->setQuery($query);
+			$country_result = $db->loadResult();    
+            //echo '<pre>'.print_r($country_result,true).'</pre>';
+           
+          }
+          break;
+      }
+      
+      
+      
+		
+$query->clear();
 		$query->select('l.id AS value, l.name AS text');
 		$query->from('#__sportsmanagement_league as l');
+       if ( $country_result )
+            {
+            $query->where('l.country LIKE ' . $db->Quote('' . $country_result . ''));  
+              
+            }
 		$query->order('l.name');
 		$db->setQuery($query);
 		$options = $db->loadObjectList();
