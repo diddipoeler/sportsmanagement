@@ -33,7 +33,7 @@ class sportsmanagementModelProject extends JSMModelAdmin
 
 	
 	
-	function leaguechampion()
+	public function setleaguechampion()
 	{
 		$app   = Factory::getApplication();
 		$date  = Factory::getDate();
@@ -53,7 +53,7 @@ class sportsmanagementModelProject extends JSMModelAdmin
 		}
 
 		$post = Factory::getApplication()->input->post->getArray(array());
-		
+		// $app->enqueueMessage('<pre>'.print_r($post,true).'</pre>'   , 'notice');
 for ($x = 0; $x < count($pks); $x++)
 		{
 			$tblProject                  = &$this->getTable();
