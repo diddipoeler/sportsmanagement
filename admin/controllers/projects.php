@@ -9,8 +9,6 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
 
 /**
@@ -25,11 +23,11 @@ defined('_JEXEC') or die('Restricted access');
 class sportsmanagementControllerprojects extends JSMControllerAdmin
 {
 
+	
 	/**
-	 * Method to update checked projects
-	 *
-	 * @access public
-	 * @return boolean    True on success
+	 * sportsmanagementControllerprojects::saveshort()
+	 * 
+	 * @return void
 	 */
 	function saveshort()
 	{
@@ -37,7 +35,25 @@ class sportsmanagementControllerprojects extends JSMControllerAdmin
 		$msg   = $model->saveshort();
 		$this->setRedirect('index.php?option=com_sportsmanagement&view=projects', $msg);
 	}
+    
+    
+    /**
+     * sportsmanagementControllerprojects::setleaguechampion()
+     * 
+     * @return void
+     */
+    function setleaguechampion()
+	{
+		$model = $this->getModel();
+		$msg   = $model->setleaguechampion();
+		$this->setRedirect('index.php?option=com_sportsmanagement&view=projects', $msg);
+	}
 	
+	/**
+	 * sportsmanagementControllerprojects::copy()
+	 * 
+	 * @return void
+	 */
 	function copy()
 	{
 		$model = $this->getModel();

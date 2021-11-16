@@ -9,12 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
-
-//use Joomla\CMS\MVC\Controller\FormController;
-
 
 /**
  * sportsmanagementControllerproject
