@@ -306,6 +306,9 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERR
 		ToolbarHelper::editList('project.edit');
 		ToolbarHelper::custom('project.import', 'upload', 'upload', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CSV_IMPORT'), false);
 		ToolbarHelper::archiveList('project.export', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_XML_EXPORT'));
+		
+		ToolbarHelper::archiveList('project.leaguechampion', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_LEAGUECHAMPION'));
+		
 		ToolbarHelper::custom('projects.copy', 'copy.png', 'copy_f2.png', Text::_('JTOOLBAR_DUPLICATE'), false);
 		parent::addToolbar();
 	}
