@@ -33,6 +33,11 @@ class sportsmanagementModelProject extends JSMModelAdmin
 
 	
 	
+	/**
+	 * sportsmanagementModelProject::setleaguechampion()
+	 * 
+	 * @return
+	 */
 	public function setleaguechampion()
 	{
 		$app   = Factory::getApplication();
@@ -81,13 +86,15 @@ $tblProject->use_leaguechampion = $post['use_leaguechampion' . $pks[$x]] ? 0 : 1
 		
 	}
 	
+	
 	/**
-	 * Override parent constructor.
-	 *
-	 * @param   array  $config  An optional associative array of configuration settings.
-	 *
-	 * @see   BaseDatabaseModel
-	 * @since 3.2
+	 * sportsmanagementModelProject::getTemplateConfig()
+	 * 
+	 * @param mixed $project_id
+	 * @param mixed $template
+	 * @param integer $cfg_which_database
+	 * @param string $call_function
+	 * @return
 	 */
 	public static function getTemplateConfig($project_id, $template, $cfg_which_database = 0, $call_function = '')
 	{
@@ -199,6 +206,12 @@ $tblProject->use_leaguechampion = $post['use_leaguechampion' . $pks[$x]] ? 0 : 1
 
 	}
 	
+	/**
+	 * sportsmanagementModelProject::__construct()
+	 * 
+	 * @param mixed $config
+	 * @return void
+	 */
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
@@ -270,12 +283,12 @@ catch (Exception $e)
 		return $result;
 	}
 
+	
 	/**
-	 * return
-	 *
-	 * @param   int team_id
-	 *
-	 * @return integer
+	 * sportsmanagementModelProject::getProjectTeam()
+	 * 
+	 * @param mixed $projectteam_id
+	 * @return
 	 */
 	function getProjectTeam($projectteam_id)
 	{
@@ -298,11 +311,13 @@ catch (Exception $e)
 		return $db->loadObject();
 	}
 
+	
 	/**
-	 * @param   int iDivisionId
-	 * return project teams as options
-	 *
-	 * @return unknown_type
+	 * sportsmanagementModelProject::getProjectTeamsOptions()
+	 * 
+	 * @param mixed $project_id
+	 * @param integer $iDivisionId
+	 * @return
 	 */
 	function getProjectTeamsOptions($project_id, $iDivisionId = 0)
 	{
@@ -360,12 +375,12 @@ catch (Exception $e)
 	}
 
 
+	
 	/**
-	 * Method to remove projects
-	 *
-	 * @access public
-	 * @return boolean    True on success
-	 * @since  0.1
+	 * sportsmanagementModelProject::delete()
+	 * 
+	 * @param mixed $pks
+	 * @return
 	 */
 	public function delete(&$pks)
 	{
@@ -385,18 +400,16 @@ catch (Exception $e)
 
 	}
 
+
 	/**
-	 * Method to remove all project datas
-	 *
-	 * @access public
-	 * @return boolean    True on success
-	 * @since  0.1
+	 * sportsmanagementModelProject::deleteProjectsData()
+	 * 
+	 * @param mixed $pk
+	 * @return
 	 */
 	function deleteProjectsData($pk = array())
 	{
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 
@@ -409,7 +422,7 @@ catch (Exception $e)
 		{
 			$cids = implode(',', $pk);
 
-			// Rounds
+			/** Rounds */
 			$query->clear();
 			$query->select('r.id');
 			$query->from('#__sportsmanagement_round as r');
@@ -417,7 +430,7 @@ catch (Exception $e)
 			Factory::getDBO()->setQuery($query);
 			$rounds = Factory::getDbo()->loadColumn();
 
-			// Matches
+			/** Matches */
 			if ($rounds)
 			{
 				$query->clear();
@@ -547,7 +560,7 @@ catch (Exception $e)
 
 			$this->_tables_to_delete = array_merge($export);
 
-			// Jetzt starten wir das löschen
+			/** Jetzt starten wir das löschen */
 			foreach ($this->_tables_to_delete as $row_to_delete)
 			{
 				$query->clear();
@@ -565,11 +578,11 @@ catch (Exception $e)
 		return true;
 	}
 
+
 	/**
-	 * Method to update checked project
-	 *
-	 * @access public
-	 * @return boolean    True on success
+	 * sportsmanagementModelProject::saveshort()
+	 * 
+	 * @return
 	 */
 	public function saveshort()
 	{
@@ -577,12 +590,8 @@ catch (Exception $e)
 		$date  = Factory::getDate();
 		$db    = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
-
-		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-
-		// Get the input
 		$pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
 
 		if (!$pks)
@@ -605,9 +614,7 @@ catch (Exception $e)
 				$temp           = new stdClass;
 				$temp->field_id = $value->id;
 				$temp->jl_id    = $pks[$x];
-				/**
-				 * Insert the object into the table.
-				 */
+				/** Insert the object into the table. */
 				try
 				{
 					$resultinsert = $db->insertObject('#__sportsmanagement_user_extra_fields_values', $temp);
@@ -645,14 +652,9 @@ catch (Exception $e)
 
 			if ($post['user_field_id' . $pks[$x]])
 			{
-				// Create an object for the record we are going to update.
 				$object = new stdClass;
-
-				// Must be a valid primary key value.
 				$object->id         = $post['user_field_id' . $pks[$x]];
 				$object->fieldvalue = $post['user_field' . $pks[$x]];
-
-				// Update their details in the users table using id as the primary key.
 				$result = Factory::getDbo()->updateObject('#__sportsmanagement_user_extra_fields_values', $object, 'id');
 			}
 		}
