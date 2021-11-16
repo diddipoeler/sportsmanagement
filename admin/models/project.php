@@ -31,6 +31,56 @@ class sportsmanagementModelProject extends JSMModelAdmin
 
 	var $_tables_to_delete = array();
 
+	
+	
+	function leaguechampion()
+	{
+		$app   = Factory::getApplication();
+		$date  = Factory::getDate();
+		$db    = sportsmanagementHelper::getDBConnection();
+		$query = $db->getQuery(true);
+
+		// JInput object
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+
+		// Get the input
+		$pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
+
+		if (!$pks)
+		{
+			return Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SAVE_NO_SELECT');
+		}
+
+		$post = Factory::getApplication()->input->post->getArray(array());
+		
+for ($x = 0; $x < count($pks); $x++)
+		{
+			$tblProject                  = &$this->getTable();
+			$tblProject->id              = $pks[$x];
+
+$tblProject->use_leaguechampion = $post['use_leaguechampion' . $pks[$x]] ? 0 : 1;
+
+			$tblProject->modified           = $date->toSql();
+			$tblProject->modified_timestamp = sportsmanagementHelper::getTimestamp($date->toSql());
+
+			if (!$tblProject->store())
+			{
+				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+
+				return false;
+			}
+
+			
+		}
+
+		return Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SAVE');		
+		
+		
+		
+		
+	}
+	
 	/**
 	 * Override parent constructor.
 	 *
@@ -39,7 +89,6 @@ class sportsmanagementModelProject extends JSMModelAdmin
 	 * @see   BaseDatabaseModel
 	 * @since 3.2
 	 */
-
 	public static function getTemplateConfig($project_id, $template, $cfg_which_database = 0, $call_function = '')
 	{
 		$app           = Factory::getApplication();
