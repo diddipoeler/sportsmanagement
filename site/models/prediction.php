@@ -2625,7 +2625,7 @@ $recipient = array();
 				break;
 
 			case 'com_comprofiler':
-				$query->select('cf.cb_streetaddress,cf.cb_city,cf.cb_state,cf.cb_zip,cf.cb_country');
+				//$query->select('cf.cb_streetaddress,cf.cb_city,cf.cb_state,cf.cb_zip,cf.cb_country');
 				$query->join('LEFT', '#__comprofiler AS cf ON cf.user_id = u.id');
 				break;
 			case 'com_kunena':
