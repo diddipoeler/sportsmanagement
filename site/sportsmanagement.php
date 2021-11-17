@@ -251,7 +251,7 @@ else
  * sprachdatei aus dem backend laden
  */
 $lang         = Factory::getLanguage();
-$extension    = 'com_sportsmanagement';
+$extension    = 'com_sportsmanagement_countries';
 $base_dir     = JPATH_ADMINISTRATOR;
 $language_tag = $lang->getTag();
 $reload       = true;
