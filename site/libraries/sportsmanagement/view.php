@@ -177,6 +177,10 @@ class sportsmanagementView extends HtmlView
 	
 	public $leaflet_locatecontrol = '0.72.0';
 	public $leaflet_routing_machine = '3.2.12';
+	
+	public $jsmstartzeit = 0;
+	public $jsmendzeit = 0;
+	public $jsmseitenaufbau = 0;
     
     /** @var    array    An array of tips */
 	public $tips = array();
@@ -185,6 +189,21 @@ class sportsmanagementView extends HtmlView
     /** @var    array    An array of notes */
 	public $notes = array();
 
+	
+	public function getStartzeit()
+	{
+	$this->jsmstartzeit = explode(" ", microtime());
+	$this->jsmstartzeit = $startzeit[0]+$startzeit[1];	
+	}
+	
+	public function getEndzeit()
+	{
+	$this->jsmendzeit = explode(" ", microtime());
+	$this->jsmendzeit = $endzeit[0]+$endzeit[1];	
+	$this->jsmseitenaufbau = round($this->jsmendzeit - $this->jsmstartzeit,6);	
+	}
+	
+	
 	/**
 	 * sportsmanagementView::display()
 	 *
