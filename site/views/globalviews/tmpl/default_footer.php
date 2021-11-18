@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage globalviews
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -98,6 +94,10 @@ $logo_width            = ComponentHelper::getParams($option)->get('logo_picture_
 	echo sprintf('%1$s (diddipoeler)', sportsmanagementHelper::getVersion());
 	?>
     <br/>
+
+<div class="center">
+<?php echo Text::sprintf('COM_SPORTSMANAGEMENT_FOOTER_TIME', $this->jsmseitenaufbau); ?>
+</div>
 
 	<?PHP
 	/**
