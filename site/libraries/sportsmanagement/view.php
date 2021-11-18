@@ -192,14 +192,14 @@ class sportsmanagementView extends HtmlView
 	
 	public function getStartzeit()
 	{
-	$this->jsmstartzeit = explode(" ", microtime());
+	$startzeit = explode(" ", microtime());
 	$this->jsmstartzeit = $startzeit[0]+$startzeit[1];	
 		return $this->jsmstartzeit;
 	}
 	
 	public function getEndzeit()
 	{
-	$this->jsmendzeit = explode(" ", microtime());
+	$endzeit = explode(" ", microtime());
 	$this->jsmendzeit = $endzeit[0]+$endzeit[1];	
 		return $this->jsmendzeit;
 	//$this->jsmseitenaufbau = round($this->jsmendzeit - $this->jsmstartzeit,6);	
