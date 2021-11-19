@@ -363,7 +363,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_match` (
   `match_result_detail` VARCHAR(64) NOT NULL DEFAULT '' ,
   `new_match_id` INT(11) NOT NULL DEFAULT '0' ,
   `old_match_id` INT(11) NOT NULL DEFAULT '0' ,
-  `extended` TEXT NULL ,
+  `extended` TEXT NULL DEFAULT NULL,
   `published` TINYINT(4) NOT NULL DEFAULT '1' ,
   `checked_out` INT(11) NOT NULL DEFAULT '0' ,
   `checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ,

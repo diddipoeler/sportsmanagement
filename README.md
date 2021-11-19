@@ -41,6 +41,7 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   19-11-2021: **3.9.20** Anpassungen Joomla 4
 *   13-11-2021: **3.9.10** Meister im Project nutzen
 *   11-11-2021: **3.9.00** Anpassungen Joomla 4
 *   19-10-2021: **3.8.87** Anpassungen JSM Installation

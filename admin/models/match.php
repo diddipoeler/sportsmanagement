@@ -1334,7 +1334,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 			$object->content_id              = $post['content_id' . $pks[$x]];
 			$object->match_timestamp         = sportsmanagementHelper::getTimestamp($object->match_date);
 
-			$object->playground_id           = $post['playground_id' . $pks[$x]];
+			$object->playground_id           = $post['playground_id' . $pks[$x]] ? $post['playground_id' . $pks[$x]] : NULL ;
 
             if ( !$object->team1_single_matchpoint )
             {
