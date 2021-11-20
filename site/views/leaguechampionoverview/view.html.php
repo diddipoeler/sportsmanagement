@@ -35,6 +35,7 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
 	 */
 	function init()
 	{
+		$this->jsmstartzeit = $this->getStartzeit();
 	   $this->leaguechampions = array();
        $this->teamseason = array();
        $this->leagueteamchampions = array();

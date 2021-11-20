@@ -32,6 +32,7 @@ class sportsmanagementViewPlayer extends sportsmanagementView
 	 */
 	function init()
 	{
+		$this->jsmstartzeit = $this->getStartzeit();
 	   $this->warnings = array();
        $this->tips = array();
        $this->notes = array();

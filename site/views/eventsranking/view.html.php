@@ -32,7 +32,7 @@ class sportsmanagementViewEventsRanking extends sportsmanagementView
 	 */
 	function init()
 	{
-
+$this->jsmstartzeit = $this->getStartzeit();
 		$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
 
 		sportsmanagementModelProject::setProjectID($this->jinput->getInt('p', 0), $this->jinput->getInt('cfg_which_database', 0));

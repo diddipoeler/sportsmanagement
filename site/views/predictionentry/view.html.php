@@ -35,7 +35,7 @@ class sportsmanagementViewPredictionEntry extends sportsmanagementView
 	 */
 	function init()
 	{
-
+$this->jsmstartzeit = $this->getStartzeit();
 		$this->headertitle    = Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_SECTION_TITLE');
 		$this->predictionGame = sportsmanagementModelPrediction::getPredictionGame();
 

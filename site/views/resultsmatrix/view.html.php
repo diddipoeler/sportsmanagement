@@ -44,7 +44,7 @@ class sportsmanagementViewResultsmatrix extends sportsmanagementView
 	 */
 	function init()
 	{
-
+$this->jsmstartzeit = $this->getStartzeit();
 		$params = $this->app->getParams();
 
 		$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');

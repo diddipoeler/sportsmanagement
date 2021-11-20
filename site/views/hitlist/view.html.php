@@ -34,6 +34,7 @@ class sportsmanagementViewhitlist extends sportsmanagementView
 	 */
 	function init()
 	{
+		$this->jsmstartzeit = $this->getStartzeit();
 		$model = $this->getModel();
 
 		$this->tableclass      = $this->jinput->getVar('table_class', 'table', 'request', 'string');

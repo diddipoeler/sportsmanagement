@@ -35,7 +35,7 @@ class sportsmanagementViewReferees extends sportsmanagementView
 	 */
 	function init()
 	{
-
+$this->jsmstartzeit = $this->getStartzeit();
 		if (!$this->config)
 		{
 			$this->config = sportsmanagementModelProject::getTemplateConfig('players', $this->jinput->getInt('cfg_which_database', 0));

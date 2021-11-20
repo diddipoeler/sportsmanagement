@@ -36,7 +36,7 @@ class sportsmanagementViewMatrix extends sportsmanagementView
 	 */
 	function init()
 	{
-
+$this->jsmstartzeit = $this->getStartzeit();
 		$this->divisionid = sportsmanagementModelMatrix::$divisionid;
 		$this->roundid    = sportsmanagementModelMatrix::$roundid;
 		$this->division   = $this->model->getDivision();

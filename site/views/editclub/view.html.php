@@ -33,7 +33,7 @@ class sportsmanagementViewEditClub extends sportsmanagementView
 	 */
 	function init()
 	{
-
+$this->jsmstartzeit = $this->getStartzeit();
 		$this->item = $this->model->getData();
 		$lists      = array();
 		$this->form = $this->get('Form');

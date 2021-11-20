@@ -46,6 +46,7 @@ class sportsmanagementViewRosteralltime extends sportsmanagementView
 	 */
 	function init()
 	{
+		$this->jsmstartzeit = $this->getStartzeit();
 		$this->state = $this->get('State');
 		$this->items = $this->get('Items');
 		$this->pagination = $this->get('Pagination');

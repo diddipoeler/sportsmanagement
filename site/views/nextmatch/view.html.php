@@ -35,6 +35,7 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
 	 */
 	function init()
 	{
+		$this->jsmstartzeit = $this->getStartzeit();
 		$this->statgames = array();
 		$model           = $this->getModel();
 		$match           = $model->getMatch();

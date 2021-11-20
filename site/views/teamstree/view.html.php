@@ -36,7 +36,7 @@ class sportsmanagementViewTeamsTree extends sportsmanagementView
 	 */
 	function init()
 	{
-
+$this->jsmstartzeit = $this->getStartzeit();
 		$this->teams = sportsmanagementModelProject::getTeams($this->jinput->getInt("division", 0), 'name', $this->jinput->getInt('cfg_which_database', 0));
 
 		foreach ($this->teams as $rowclub)
