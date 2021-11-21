@@ -36,7 +36,6 @@ class sportsmanagementViewRanking extends sportsmanagementView
 	function init()
 	{
 		$this->matchimages = array();
-		$this->jsmstartzeit = $this->getStartzeit();
 
 		if ($this->config['show_pictures'])
 		{
@@ -350,8 +349,7 @@ class sportsmanagementViewRanking extends sportsmanagementView
         $this->tips = sportsmanagementModelProject::$tips;
         $this->warnings = sportsmanagementModelProject::$warnings;
         $this->notes = sportsmanagementModelProject::$notes;
-        $this->jsmendzeit  = $this->getEndzeit();
-	$this->jsmseitenaufbau = round($this->jsmendzeit - $this->jsmstartzeit,6);
+       
 		
 	}
 

@@ -215,6 +215,7 @@ class sportsmanagementView extends HtmlView
 	 */
 	public function display($tpl = null)
 	{
+	   $this->jsmstartzeit = $this->getStartzeit();
 
 		/**
 		 * alle fehlermeldungen online ausgeben
@@ -334,6 +335,9 @@ class sportsmanagementView extends HtmlView
 
 		$this->addToolbar();
 
+ $this->jsmendzeit  = $this->getEndzeit();
+	$this->jsmseitenaufbau = round($this->jsmendzeit - $this->jsmstartzeit,6);
+    
 		parent::display($tpl);
 	}
 
