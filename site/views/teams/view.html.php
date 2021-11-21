@@ -31,7 +31,7 @@ class sportsmanagementViewTeams extends sportsmanagementView
 	 */
 	function init()
 	{
-		$this->jsmstartzeit = $this->getStartzeit();
+		
 		$this->division = sportsmanagementModelProject::getDivision($this->jinput->getInt("division", 0), $this->jinput->getInt('cfg_which_database', 0));
 		$this->teams    = sportsmanagementModelProject::getTeams($this->jinput->getInt("division", 0), 'name', $this->jinput->getInt('cfg_which_database', 0), '', $this->config['show_club_playground']);
 

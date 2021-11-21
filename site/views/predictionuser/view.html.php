@@ -39,7 +39,7 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 	 */
 	function init()
 	{
-		$this->jsmstartzeit = $this->getStartzeit();
+		
 		$js = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js';
 		$this->document->addScript($js);
 		sportsmanagementModelProject::$projectid = $this->jinput->getint("pj", 0);

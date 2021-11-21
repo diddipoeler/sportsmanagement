@@ -33,7 +33,7 @@ class sportsmanagementViewPredictionRules extends sportsmanagementView
 	 */
 	function init()
 	{
-$this->jsmstartzeit = $this->getStartzeit();
+
 //		$model    = $this->getModel();
 		$option   = Factory::getApplication()->input->getCmd('option');
 

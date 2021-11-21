@@ -39,7 +39,7 @@ class sportsmanagementViewjltournamenttree extends sportsmanagementView
 	 */
 	function init()
 	{
-$this->jsmstartzeit = $this->getStartzeit();
+
 		if ($this->project->project_type == 'TOURNAMENT_MODE'
 			|| $this->project->project_type == 'DIVISIONS_LEAGUE'
 		)

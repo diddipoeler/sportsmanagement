@@ -48,7 +48,7 @@ class sportsmanagementViewEditMatch extends sportsmanagementView
 	 */
 	function init()
 	{
-$this->jsmstartzeit = $this->getStartzeit();
+
 		$option   = Factory::getApplication()->input->getCmd('option');
 		$app      = Factory::getApplication();
 		$document = Factory::getDocument();

@@ -34,7 +34,7 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
 	 */
 	function init()
 	{
-	   $this->jsmstartzeit = $this->getStartzeit();
+	   
 		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('frontend', sportsmanagementModelClubInfo::$cfg_which_database);
 		$this->mapconfig = array();
 		$this->club = sportsmanagementModelClubInfo::getClub(1);
@@ -159,8 +159,6 @@ jQuery(function ($) {
 			$this->config['table_class'] = 'table';
 		}
         
-        $this->jsmendzeit  = $this->getEndzeit();
-	   $this->jsmseitenaufbau = round($this->jsmendzeit - $this->jsmstartzeit,6);
 
 	}
 }

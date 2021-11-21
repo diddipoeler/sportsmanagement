@@ -32,7 +32,7 @@ class sportsmanagementViewRivals extends sportsmanagementView
 	 */
 	function init()
 	{
-		$this->jsmstartzeit = $this->getStartzeit();
+		
 		$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
 
 		if (!isset($this->overallconfig['seperator']))

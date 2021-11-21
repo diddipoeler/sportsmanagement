@@ -38,7 +38,7 @@ class sportsmanagementViewical extends sportsmanagementView
 	 */
 	function init()
 	{
-$this->jsmstartzeit = $this->getStartzeit();
+
 		$this->matches   = $this->model->getResultsPlan($this->jinput->getInt('p', 0), $this->jinput->getInt('tid', 0), 0, 0, 'ASC', $this->jinput->getInt('cfg_which_database', 0));
 		$mdlJSMNextMatch = BaseDatabaseModel::getInstance("nextmatch", "sportsmanagementModel");
 		$this->teams     = $mdlJSMNextMatch->getTeamsFromMatches($this->matches);;

@@ -60,7 +60,7 @@ class sportsmanagementViewallprojects extends sportsmanagementView
 	 */
 	function init()
 	{
-$this->jsmstartzeit = $this->getStartzeit();
+
 		$user                   = Factory::getUser();
 		$starttime              = microtime();
 		$inputappend            = '';

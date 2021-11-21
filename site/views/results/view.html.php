@@ -1014,7 +1014,7 @@ class sportsmanagementViewResults extends sportsmanagementView
 	 */
 	function init()
 	{
-	   $this->jsmstartzeit = $this->getStartzeit();
+	   
 		$this->layout        = $this->jinput->getCmd('layout');
 		$roundcode           = 0;
 		$default_name_format = '';
@@ -1184,8 +1184,6 @@ class sportsmanagementViewResults extends sportsmanagementView
 				break;
 		}
         
-        $this->jsmendzeit  = $this->getEndzeit();
-	$this->jsmseitenaufbau = round($this->jsmendzeit - $this->jsmstartzeit,6);
 	}
 
 	/**

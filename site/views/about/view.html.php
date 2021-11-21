@@ -35,7 +35,7 @@ class sportsmanagementViewAbout extends sportsmanagementView
 	 */
 	function init()
 	{
-$this->jsmstartzeit = $this->getStartzeit();
+
 		$about       = $this->model->getAbout();
 		$this->about = $about;
 

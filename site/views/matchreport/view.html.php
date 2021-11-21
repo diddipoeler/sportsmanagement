@@ -37,7 +37,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 	 */
 	public function init()
 	{
-		$this->jsmstartzeit = $this->getStartzeit();
+		
 	   $this->playgroundheight = 0;
        
 		$this->model->matchid = $this->jinput->getInt('mid', 0);

@@ -35,7 +35,7 @@ class sportsmanagementViewpredictionranking extends sportsmanagementView
 	 */
 	function init()
 	{
-$this->jsmstartzeit = $this->getStartzeit();
+
 		$this->predictionGame = sportsmanagementModelPrediction::getPredictionGame();
 		$this->allowedAdmin   = sportsmanagementModelPrediction::getAllowed();
 

@@ -36,7 +36,7 @@ class sportsmanagementViewClubPlan extends sportsmanagementView
 	 */
 	function init()
 	{
-$this->jsmstartzeit = $this->getStartzeit();
+
 		$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
 
 		$js = "window.addEvent('domready', function() {" . "\n";

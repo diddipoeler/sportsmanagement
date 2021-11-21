@@ -39,7 +39,7 @@ class sportsmanagementViewCurve extends sportsmanagementView
 	 */
 	function init()
 	{
-$this->jsmstartzeit = $this->getStartzeit();
+
 		$this->teamranking = array();
 
 		if ($this->config['which_curve'])

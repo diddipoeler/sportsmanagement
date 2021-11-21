@@ -190,6 +190,11 @@ class sportsmanagementView extends HtmlView
 	public $notes = array();
 
 	
+	/**
+	 * sportsmanagementView::getStartzeit()
+	 * 
+	 * @return
+	 */
 	public function getStartzeit()
 	{
 	$startzeit = explode(" ", microtime());
@@ -197,6 +202,11 @@ class sportsmanagementView extends HtmlView
 		return $this->jsmstartzeit;
 	}
 	
+	/**
+	 * sportsmanagementView::getEndzeit()
+	 * 
+	 * @return
+	 */
 	public function getEndzeit()
 	{
 	$endzeit = explode(" ", microtime());

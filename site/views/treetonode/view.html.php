@@ -36,7 +36,7 @@ class sportsmanagementViewTreetonode extends sportsmanagementView
 	 */
 	function init()
 	{
-		$this->jsmstartzeit = $this->getStartzeit();
+		
 		$config = sportsmanagementModelProject::getTemplateConfig('treetonode');
 
 		$this->project       = sportsmanagementModelProject::getProject();

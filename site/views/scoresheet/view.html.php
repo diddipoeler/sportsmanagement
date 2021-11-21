@@ -38,7 +38,7 @@ class sportsmanagementViewScoresheet extends sportsmanagementView
 	 */
 	function init()
 	{
-		$this->jsmstartzeit = $this->getStartzeit();
+		
 		$this->match       = $this->model->getMatch($this->jinput->getInt('mid', 0), $this->jinput->getInt('cfg_which_database', 0));
 		$this->teamplayer1 = $this->model->getTeamPlayer($this->match[0]->team1_id, $this->match[0]->season_id, $this->jinput->getInt('cfg_which_database', 0));
 		$this->teamplayer2 = $this->model->getTeamPlayer($this->match[0]->team2_id, $this->match[0]->season_id, $this->jinput->getInt('cfg_which_database', 0));

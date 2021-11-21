@@ -36,7 +36,7 @@ class sportsmanagementViewEditprojectteam extends sportsmanagementView
 	 */
 	function init()
 	{
-		$this->jsmstartzeit = $this->getStartzeit();
+		
 		$this->item = $this->model->getData();
 
 		if ($this->item->id)

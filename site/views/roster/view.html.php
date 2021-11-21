@@ -33,7 +33,7 @@ class sportsmanagementViewRoster extends sportsmanagementView
 	 */
 	function init()
 	{
-$this->jsmstartzeit = $this->getStartzeit();
+
 		sportsmanagementModelRoster::$seasonid = $this->project->season_id;
 
 		$this->projectteam    = $this->model->getProjectTeam($this->config['team_picture_which']);

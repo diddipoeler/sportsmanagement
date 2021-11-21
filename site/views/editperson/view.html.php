@@ -36,7 +36,7 @@ class sportsmanagementViewEditPerson extends sportsmanagementView
 	 */
 	function init()
 	{
-$this->jsmstartzeit = $this->getStartzeit();
+
 		$this->item = $this->model->getData();
 		$this->form = $this->get('Form');
 

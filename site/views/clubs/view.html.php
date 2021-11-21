@@ -35,7 +35,7 @@ class sportsmanagementViewClubs extends sportsmanagementView
 	 */
 	function init()
 	{
-$this->jsmstartzeit = $this->getStartzeit();
+
 		$division = sportsmanagementModelProject::getDivision(sportsmanagementModelClubs::$divisionid, sportsmanagementModelClubs::$cfg_which_database);
 		$clubs    = $this->model->getClubs();
 

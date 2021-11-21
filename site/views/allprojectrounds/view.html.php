@@ -33,7 +33,7 @@ class sportsmanagementViewallprojectrounds extends sportsmanagementView
 	 */
 	function init()
 	{
-		$this->jsmstartzeit = $this->getStartzeit();
+		
 		$this->tableclass = $this->jinput->request->get('table_class', 'table', 'STR');
        	$this->show_favteaminfo  = $this->jinput->request->get('show_favteaminfo', 0, 'INT');
 		$this->projectid      = $this->project->id;
