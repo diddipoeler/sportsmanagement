@@ -547,12 +547,9 @@ class sportsmanagementModelRounds extends JSMModelList
 		$db     = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
 		$query  = $db->getQuery(true);
 
-		// Select some fields
 		$query->select('CONCAT_WS( \':\', id, alias ) AS value');
 		$query->select('name AS text');
 		$query->select('id, name, round_date_first, round_date_last, roundcode');
-
-		// From the table
 		$query->from('#__sportsmanagement_round');
 		$query->where('project_id = ' . $project_id);
 		$query->order('roundcode ' . $ordering);
@@ -564,8 +561,7 @@ class sportsmanagementModelRounds extends JSMModelList
 		}
 		catch (Exception $e)
 		{
-			$this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
-
+			$app->enqueueMessage(Text::_($e->getMessage()), 'error');
 			return false;
 		}
 
