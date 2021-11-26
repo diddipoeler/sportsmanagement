@@ -1411,6 +1411,8 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($this->jsmquery->dump(), true) . '</pre>', 'Error');
 				}
 
+				if ( $object->projectteam2_id )
+				{
 				/** update */
 				$this->jsmquery->clear();
 				$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_match'))
@@ -1425,8 +1427,12 @@ $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($t
 				{
 $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
 $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($this->jsmquery->dump(), true) . '</pre>', 'Error');					
 				}
+			}
 
+				if ( $object->projectteam2_id )
+				{
 				$this->jsmquery->clear();
 				$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_match'))
 					->set('next_match_id = ' . $object->id)
@@ -1440,7 +1446,9 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 				{
 $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
 $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($this->jsmquery->dump(), true) . '</pre>', 'Error');					
 				}
+			}
 			}
 
 			if ($post['use_legs'])
