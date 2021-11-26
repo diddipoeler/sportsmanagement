@@ -1399,10 +1399,9 @@ $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($t
 				$this->jsmquery->where('roundcode <= ' . $round_code);
 				$this->jsmquery->where('tournement = 1');
 				$this->jsmquery->where('project_id = ' . $round_object->project_id);
-				$this->jsmdb->setQuery($this->jsmquery);
-
 				try
 				{
+					$this->jsmdb->setQuery($this->jsmquery);
 					$prev_round_id = $this->jsmdb->loadResult();
 				}
 				catch (RuntimeException $e)
@@ -1417,10 +1416,9 @@ $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($t
 				$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_match'))
 					->set('next_match_id = ' . $object->id)
 					->where('round_id = ' . $prev_round_id . ' AND ( projectteam1_id = ' . $object->projectteam1_id . ' OR projectteam2_id = ' . $object->projectteam1_id . ')');
-				$this->jsmdb->setQuery($this->jsmquery);
-
 				try
 				{
+					$this->jsmdb->setQuery($this->jsmquery);
 					$this->jsmdb->execute();
 				}
 				catch (RuntimeException $e)
@@ -1433,10 +1431,9 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 				$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_match'))
 					->set('next_match_id = ' . $object->id)
 					->where('round_id = ' . $prev_round_id . ' AND ( projectteam1_id = ' . $object->projectteam2_id . ' OR projectteam2_id = ' . $object->projectteam2_id . ')');
-				$this->jsmdb->setQuery($this->jsmquery);
-
 				try
 				{
+					$this->jsmdb->setQuery($this->jsmquery);
 					$this->jsmdb->execute();
 				}
 				catch (RuntimeException $e)
