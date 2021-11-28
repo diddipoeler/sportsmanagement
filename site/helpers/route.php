@@ -38,6 +38,61 @@ class sportsmanagementHelperRoute
 	static $cfg_which_database = 0;
 
 	public static $views = array(
+		'about'    => array('cfg_which_database' => '', 's' => '', 'p' => '' ),
+		'calendar' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'division' => '', 'mode' => '', 'ptid' => ''),
+		'clubinfo' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'cid' => ''),
+		'clubplan' => array('cfg_which_database' => '', 's' => '', 'p' => ''),
+		'curve'    => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid1' => '', 'tid2' => '','division' => ''),
+
+		'editprojectteam' => array('tmpl' => '', 'ptid' => '', 'tid' => '', 'p' => ''),
+		'editteam'        => array('tmpl' => '', 'ptid' => '', 'tid' => '', 'p' => ''),
+		'editperson'      => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'pid' => ''),
+
+		'editclub'      => array('cfg_which_database' => '', 's' => '', 'p' => '', 'cid' => '', 'id' => '', 'tmpl' => ''),
+		'editmatch'     => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'division' => '', 'mode' => '', 'order' => '', 'layout' => '', 'matchid' => '', 'tmpl' => '', 'oldlayout' => '', 'team' => '', 'pteam' => ''),
+		'eventsranking' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'evid' => '', 'mid' => ''),
+		'ical'          => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'division' => '', 'mode' => '', 'ptid' => ''),
+		'scoresheet'    => array('cfg_which_database' => '', 'p' => '', 'mid' => ''),
+
+		'jltournamenttree' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => ''),
+		'matchreport'      => array('cfg_which_database' => '', 's' => '', 'p' => '', 'mid' => ''),
+		'matrix'           => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'r' => ''),
+		'nextmatch'        => array('cfg_which_database' => '', 's' => '', 'p' => '', 'mid' => ''),
+		'player'           => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'pid' => ''),
+
+		'playground' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'pgid' => ''),
+        
+        'leaguechampionoverview'    => array('cfg_which_database' => '', 'l' => '', 's' => '', 'p' => ''),
+
+		'ranking'           => array('cfg_which_database' => '', 's' => '', 'p' => '', 'type' => '', 'r' => '', 'from' => '', 'to' => '', 'division' => ''),
+		'rankingalltime'    => array('cfg_which_database' => '', 'l' => '', 'points' => '', 'type' => '', 'order' => '', 'dir' => '', 's' => '', 'p' => ''),
+		'referee'           => array('cfg_which_database' => '', 's' => '', 'p' => '', 'pid' => ''),
+		'referees'          => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'r' => ''),
+		'results'           => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'division' => '', 'mode' => '', 'order' => '', 'layout' => ''),
+		'resultsranking'    => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'mode' => '', 'order' => '', 'layout' => '', 'division' => ''),
+		'rivals'            => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => ''),
+		'roster'            => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'ptid' => ''),
+        'rosteralltime'     => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'start' => ''),
+        
+		'staff'             => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'pid' => ''),
+		'stats'             => array('cfg_which_database' => '', 's' => '', 'p' => ''),
+		'statsranking'      => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'tid' => '', 'sid' => '', 'order' => ''),
+		'teaminfo'          => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'ptid' => ''),
+		'teamplan'          => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'division' => '', 'mode' => '', 'ptid' => ''),
+		'teams'             => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => ''),
+		'teamstats'         => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => ''),
+		'teamstree'         => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => ''),
+		'treetonode'        => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tnid' => ''),
+		'predictionentry'   => array('cfg_which_database' => '', 'prediction_id' => '', 'pggroup' => '', 'pj' => '', 'r' => '', 'uid' => ''),
+		'predictionresults' => array('cfg_which_database' => '', 'prediction_id' => '', 'pggroup' => '', 'pj' => '', 'r' => '', 'uid' => ''),
+		'predictionranking' => array('cfg_which_database' => '', 'prediction_id' => '', 'pggroup' => '', 'pj' => '', 'r' => '', 'pggrouprank' => '', 'type' => '', 'from' => '', 'to' => ''),
+		'predictionuser'    => array('cfg_which_database' => '', 'prediction_id' => '', 'pggroup' => '', 'pj' => '', 'r' => '', 'uid' => '', 'layout' => 'edit'),
+		'predictionusers'   => array('cfg_which_database' => '', 'prediction_id' => '', 'pggroup' => '', 'pj' => '', 'r' => '', 'uid' => ''),
+		'predictionrules'   => array('cfg_which_database' => '', 'prediction_id' => ''),
+
+	);
+    
+    	public static $views4 = array(
 		'about'    => array('cfg_which_database' => '', 's' => '', 'p' => '', 'Itemid' => '' ),
 		'calendar' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'division' => '', 'mode' => '', 'ptid' => '', 'Itemid' => ''),
 		'clubinfo' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'cid' => '', 'Itemid' => ''),
