@@ -1,6 +1,3 @@
-use Joomla\CMS\Form\FormHelper;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Language\Text;
 <?php
 
 /**
@@ -11,6 +8,9 @@ use Joomla\CMS\Language\Text;
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 defined('JPATH_PLATFORM') or die;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 JFormHelper::loadFieldClass('list');
 
