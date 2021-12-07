@@ -1086,26 +1086,36 @@ $result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_i
 
 				switch ($name)
 				{
-					case 'jqueryeasy';
-
-						if ($plugin_id)
-						{
-							// Plugin ist vorhanden
-							// wurde vielleicht schon aktualisiert
-						}
-						else
-						{
-							// Plugin ist nicht vorhanden
-							// also installieren
-							$path = $src . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . $name . '_3';
-							$installer = new Installer;
-							$result = $installer->install($path);
-						}
+				case 'jqueryeasy';
+				if ($plugin_id)
+				{
+				// Plugin ist vorhanden
+				// wurde vielleicht schon aktualisiert
+				}
+				else
+				{
+				// Plugin ist nicht vorhanden
+				// also installieren
+				$path = $src . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . $name . '_3';
+				$installer = new Installer;
+				$result = $installer->install($path);
+				}
 				break;
-					default:
-						$path = $src . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . $name;
-						$installer = new Installer;
-						$result = $installer->install($path);
+//                case 'jsm_registercomp';
+//                $path = $src . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . $name . '_3';
+//				$installer = new Installer;
+//				$result = $installer->install($path);
+//                
+//                $object = new stdClass();            
+//                $object->extension_id = $plugin_id;
+//                $object->enabled = 1;            
+//                $result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_id');
+//                
+//                break;
+				default:
+				$path = $src . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . $name;
+				$installer = new Installer;
+				$result = $installer->install($path);
 				break;
 				}
 
@@ -1123,19 +1133,32 @@ $result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_i
 				$result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_id');
 				*/
 			}
-            
+  
+/*            
 $plugin_id = PluginHelper::getPlugin('system','jsm_registercomp')->id;
 $plugin = PluginHelper::getPlugin('system','jsm_registercomp');
-
 echo '<p>' . Text::_('Plugin : ') . $plugin_id . ' registercomp installiert!</p>';
-
 echo '<p>' . Text::_('Plugin : ') . '<pre>'.print_r($plugin,true) .'</pre>' . ' registercomp installiert!</p>';
-
+*/
+$name = 'jsm_registercomp';
+$group = 'system';
+$query = $db->getQuery(true);
+$query->clear();
+$query->select('extension_id');
+$query->from('#__extensions');
+$query->where("type = 'plugin' ");
+$query->where("element = '" . $name . "' ");
+$query->where("folder = '" . $group . "' ");
+$db->setQuery($query);
+$plugin_id = $db->loadResult();
+if ($plugin_id)
+{
 $object = new stdClass();            
 $object->extension_id = $plugin_id;
 $object->enabled = 1;            
 $result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_id');            
-            
+}
+
 		}
 
 	}
