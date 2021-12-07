@@ -1125,6 +1125,9 @@ $result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_i
 			}
             
 $plugin_id = PluginHelper::getPlugin('system','jsm_registercomp')->id;
+
+echo '<p>' . Text::_('Plugin : ') . $plugin_id . ' registercomp installiert!</p>';
+
 $object = new stdClass();            
 $object->extension_id = $plugin_id;
 $object->enabled = 1;            
