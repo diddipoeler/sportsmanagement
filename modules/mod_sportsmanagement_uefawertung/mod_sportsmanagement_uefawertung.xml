@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="2.5" client="site" method="upgrade">
+	<name>MOD_SPORTSMANAGEMENT_UEFAWERTUNG</name>
+	<author>diddipoeler</author>
+	<creationDate>Mai 2015</creationDate>
+	<copyright>(C) 2015</copyright>
+	<license>GPL2</license>
+	<authorEmail>diddipoeler@arcor.de</authorEmail>
+	<authorUrl>www.fussballineuropa.de</authorUrl>
+	<version>3.8.0</version>
+	<description>MOD_SPORTSMANAGEMENT_UEFAWERTUNG_DESC</description>
+
+	<files>
+		<filename module="mod_sportsmanagement_uefawertung">mod_sportsmanagement_uefawertung.php</filename>
+		<filename>index.html</filename>
+		<filename>helper.php</filename>
+		<filename>update-server.xml</filename>
+		<folder>tmpl</folder>
+		<folder>css</folder>
+	</files>
+
+	<languages>
+		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_uefawertung.ini</language>
+		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_uefawertung.sys.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_uefawertung.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_uefawertung.sys.ini</language>
+	</languages>
+	
+	<config>
+		<fields name="params">
+			<fieldset	name="basic"
+			description="MOD_SPORTSMANAGEMENT_BASIC_DESC"
+						addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+
+						<field type="extensionversion" version="1.1.0" />
+<field type="extensionauthor" />
+<field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
+<field type="extensionlink" linktype="translate" link="https://www.transifex.com/jsm/sportsmanagement/" />	
+<field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Uefawertung" />
+<field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
+<field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
+<field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />	
+<field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />	 
+      
+      <field name="cfg_which_database" 
+    type="extensionradiobutton" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+		<field	name="s" 
+    task="seasons" 
+      type="dependsql"
+      depends="cfg_which_database"
+      value_field="cfg_which_database"
+      key_field="season_id"
+					label="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
+					required="">
+			</field>
+			
+		 
+
+
+
+
+
+
+    
+
+
+          	
+			</fieldset>
+			
+			<fieldset name="advanced">
+
+      <field 	name="table_class" 
+      type="list" 
+      default="table" 
+		class=""
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
+			<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
+			<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
+			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
+			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
+			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
+			
+		</field>
+		
+				<field name="moduleclass_sfx"
+				default="container-fluid"
+						type="text"
+						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+						description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+			</fieldset>
+			
+		</fields>
+	</config>		
+	
+	<updateservers>
+<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/modules/mod_sportsmanagement_uefawertung/update-server.xml</server>
+</updateservers>
+
+</extension>
