@@ -172,7 +172,7 @@ uasort($uefawertungneu,function($first,$second){
 
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
-		return $result;
+		return $uefawertungneu;
 
 	}
 
