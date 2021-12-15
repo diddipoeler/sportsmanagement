@@ -31,7 +31,25 @@ use Joomla\CMS\Language\Text;
 
         </thead>
 		<?php
+foreach( $uefapoints as $key => $value )
+{
+?>    
+<tr>
+<td>
+<?php
+echo $value->team;
+?>
+</td>
 
+<td>
+<?php
+echo $value->total;
+?>
+</td>
+</tr>  
+  
+<?php    
+}
 
 		?>
     </table>

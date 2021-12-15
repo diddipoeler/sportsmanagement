@@ -164,7 +164,7 @@ uasort($uefawertungneu,function($first,$second){
   //return strcmp($second->total, $first->total);
 });
 
-echo __LINE__.' points sortiert  <br><pre>'.print_r($uefawertungneu  ,true).'</pre>';
+//echo __LINE__.' points sortiert  <br><pre>'.print_r($uefawertungneu  ,true).'</pre>';
 
 
 
