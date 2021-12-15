@@ -80,8 +80,8 @@ $query->order('season ASC');
 $db->setQuery($query);
 $row = $db->loadObjectList();
 
-echo __LINE__.' query  <br><pre>'.print_r($query->dump()  ,true).'</pre>';
-echo __LINE__.' points  <br><pre>'.print_r($row  ,true).'</pre>';
+//echo __LINE__.' query  <br><pre>'.print_r($query->dump()  ,true).'</pre>';
+//echo __LINE__.' points  <br><pre>'.print_r($row  ,true).'</pre>';
 
 $uefawertungneu = array();
 $uefawertung = array();
