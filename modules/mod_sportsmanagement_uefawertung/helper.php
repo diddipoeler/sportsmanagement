@@ -42,7 +42,10 @@ class modJSMUefaWERTUNG
 		$query->from('#__sportsmanagement_season');
 		$query->where('id = ' . (int) $params->get('s'));
 		$db->setQuery($query);
-		$result = $db->loadResult();
+		$season_name = $db->loadResult();
+      
+//echo __LINE__.' params  <br><pre>'.print_r($params  ,true).'</pre>';      
+//echo __LINE__.' season_name  <br><pre>'.print_r($season_name  ,true).'</pre>';
 
 $query->clear();
 
@@ -52,26 +55,19 @@ $query->where('season <= ' . $db->Quote('' . $season_name . ''));
 
 $query->order('season DESC');
 $query->group('season');
-//$query->where('ev.jl_id = ' . $projectid);
-//$query->where('ef.name LIKE ' . $db->Quote('' . 'jsmnonleaguematters' . ''));
-//$query->where('ef.template_backend LIKE ' . $db->Quote('' . 'project' . ''));
-//$query->where('ef.field_type LIKE ' . $db->Quote('' . 'link' . ''));
-//$db->setQuery($query);
 $query->setLimit('5');
 $db->setQuery($query);
 
 $row = $db->loadAssocList();
 
-//echo __LINE__.' query  <br><pre>'.print_r($query->dump()  ,true).'</pre>';
-echo __LINE__.' row  <br><pre>'.print_r($row  ,true).'</pre>';
+//echo __LINE__.' row  <br><pre>'.print_r($row  ,true).'</pre>';
 
 $column = $db->loadColumn();
-echo __LINE__.' column  <br><pre>'.print_r($column  ,true).'</pre>';
+//echo __LINE__.' column  <br><pre>'.print_r($column  ,true).'</pre>';
 
-//echo implode ( ',', $column ) . '<br>';
 $season_names = "'" . implode("','", $column) . "'";
 
-echo __LINE__.' season_names  <br><pre>'.print_r($season_names  ,true).'</pre>';
+//echo __LINE__.' season_names  <br><pre>'.print_r($season_names  ,true).'</pre>';
 
 $query->clear();
 $query->select('*');
@@ -81,7 +77,6 @@ $query->where('season IN (' . $season_names . ')' );
 $query->order('season ASC');
 
 
-//$query->setLimit('5');
 $db->setQuery($query);
 $row = $db->loadObjectList();
 
@@ -159,26 +154,10 @@ $start++;
 
 
 
-echo __LINE__.' points  <br><pre>'.print_r($uefawertung  ,true).'</pre>';
-//echo __LINE__.' points neu  <br><pre>'.print_r($uefawertungneu  ,true).'</pre>';
+//echo __LINE__.' points  <br><pre>'.print_r($uefawertung  ,true).'</pre>';
 
-/*
-$marks = array();
-foreach ($uefawertungneu as $key => $row)
-{
-    $marks[$key] = $row->total;
-    
-}
-echo __LINE__.' marks  <br><pre>'.print_r($marks  ,true).'</pre>';
-*/
 
-// Asc sort
-/*
-usort($uefawertungneu,function($first,$second){
-    //return $first->total > $second->total;
-  return strcmp($first->total, $second->total);
-});
-*/
+
 // desc sort
 uasort($uefawertungneu,function($first,$second){
     return $first->total < $second->total;
