@@ -51,7 +51,8 @@ if (!class_exists('sportsmanagementHelper'))
 JLoader::register('modJSMUefawertung', __DIR__ . '/helper.php');
 
 $uefapoints = modJSMUefawertung::getData($params);
-
+$seasonnames = modJSMUefawertung::getSeasonNames($params);
+asort($seasonnames);
 /**
  * wenn die komponente im frontend nicht geladen oder aufgerufen wurde,
  * dann muss die sprachdatei aus dem backend geladen werden.
