@@ -14,13 +14,11 @@ use Joomla\CMS\Language\Text;
 
 ?>
 <div class="">
-    <legend class="scheduler-border">
-        <strong>
+
 			<?php
 echo Text::_('MOD_SPORTSMANAGEMENT_UEFAWERTUNG_BERECHNUNG');			
 			?>
-        </strong>
-    </legend>
+
 
 	<?php
 
