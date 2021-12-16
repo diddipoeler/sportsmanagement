@@ -24,6 +24,38 @@ use Joomla\CMS\Factory;
 class modJSMUefaWERTUNG
 {
 
+	 public static function getSeasonNames($params)
+	{
+		$app = Factory::getApplication();
+		$jinput = $app->input;
+		$db = sportsmanagementHelper::getDBConnection();
+		$query = $db->getQuery(true);
+        $query->clear();
+        $query->select('name');
+		$query->from('#__sportsmanagement_season');
+		$query->where('id = ' . (int) $params->get('s'));
+		$db->setQuery($query);
+		$season_name = $db->loadResult();
+    $query->clear();
+
+$query->select('season');
+$query->from('#__sportsmanagement_uefawertung ');
+$query->where('season <= ' . $db->Quote('' . $season_name . ''));
+
+$query->order('season DESC');
+$query->group('season');
+$query->setLimit('5');
+$db->setQuery($query);
+
+$row = $db->loadAssocList();
+
+//echo __LINE__.' row  <br><pre>'.print_r($row  ,true).'</pre>';
+
+$column = $db->loadColumn();
+      return $column;
+    
+  }
+	
 	/**
 	 * modJSMUefaWERTUNG::getData()
 	 *
