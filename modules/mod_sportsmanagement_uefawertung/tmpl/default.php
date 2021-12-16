@@ -17,7 +17,7 @@ use Joomla\CMS\Language\Text;
     <legend class="scheduler-border">
         <strong>
 			<?php
-			
+echo Text::_('MOD_SPORTSMANAGEMENT_UEFAWERTUNG_BERECHNUNG');			
 			?>
         </strong>
     </legend>
