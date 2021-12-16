@@ -28,7 +28,26 @@ use Joomla\CMS\Language\Text;
 
     <table class="<?php echo $params->get('table_class'); ?>">
         <thead>
-
+  <tr>
+  <td>
+  </td>
+<?php
+  foreach( $seasonnames as $key => $value )
+{
+    ?>
+    <td>
+<?php
+echo $value;
+?>
+</td>  
+      
+      <?php
+  }
+  
+  ?>
+     <td>
+  </td>
+    </tr>  
         </thead>
 		<?php
 foreach( $uefapoints as $key => $value )
@@ -41,6 +60,26 @@ echo $value->team;
 ?>
 </td>
 
+  
+ <?php
+  foreach( $seasonnames as $key1 => $value1 )
+{
+    ?>
+    <td>
+<?php
+echo $value->$value1;
+?>
+</td>  
+      
+      <?php
+  }
+  
+  ?> 
+  
+  
+  
+  
+  
 <td>
 <?php
 echo $value->total;
