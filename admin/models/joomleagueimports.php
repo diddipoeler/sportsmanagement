@@ -1363,6 +1363,7 @@ $this->jsmapp->enqueueMessage(__LINE__.' '.$queryjsm, 'notice');
 							}
 							catch (Exception $e)
 							{
+$this->jsmapp->enqueueMessage(__LINE__.' '.Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()));								
 							Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
 		                    Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror'); 
                             $infocolor = self::$storeFailedColor;
