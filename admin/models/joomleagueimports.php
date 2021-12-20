@@ -1198,7 +1198,8 @@ $jsm_table = $jsm_prefix.'sportsmanagement_' . $value;
 						}
 						catch (Exception $e)
 						{
-						//Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()) . '<br />', Log::ERROR, 'jsmerror');
+//$this->jsmapp->enqueueMessage(__LINE__.' '.Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()));						  
+
 						}
 
 						try
@@ -1329,6 +1330,8 @@ $jsm_table = $jsm_prefix.'sportsmanagement_' . $value;
 									case 'modified_by':
 									case 'out':
 									case 'double':
+                                    case 'founded':
+                                    case 'dissolved':
 										break;
 									case 'id':
 										if (array_key_exists($key2, $jsm_field_array))
@@ -1352,7 +1355,7 @@ $jsm_table = $jsm_prefix.'sportsmanagement_' . $value;
 							$queryjsm = $dbjsm->getQuery(true);
 							//$queryjsm->clear();
 							$queryjsm = 'INSERT INTO ' . $jsm_table . ' (' . $select_fields_1 . ') SELECT ' . $select_fields_2 . ' FROM ' . $jl_table;
-$this->jsmapp->enqueueMessage(__LINE__.' '.$queryjsm, 'notice');
+//$this->jsmapp->enqueueMessage(__LINE__.' '.$queryjsm, 'notice');
 							try
 							{
 							//sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
@@ -2990,6 +2993,11 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 			$dbjsm->setQuery($query);
 			$result = $dbjsm->loadObjectList();
 
+
+//$this->jsmapp->enqueueMessage(__LINE__.' <pre>'.print_r($result,true).'</pre>' );
+
+
+
 			foreach ($result as $row)
 			{
 				$new_id = 0;
@@ -3008,8 +3016,8 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					$temp->team_id     = $row->team_id;
 					$temp->import_id   = 1;
 					$temp->published   = 1;
-					$temp->modified    = $dbjsm->Quote('' . $modified . '');
-					$temp->modified_by = $modified_by;
+					//$temp->modified    = $dbjsm->Quote('' . $modified . '');
+					//$temp->modified_by = $modified_by;
 
 					try
 					{
@@ -3017,9 +3025,11 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					}
 					catch (Exception $e)
 					{
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');					   
 						// Catch any database errors.
 						//    $dbjsm->transactionRollback();
-						ExceptionHandler::render($e);
+					//	ExceptionHandler::render($e);
 					}
 
 					if ($result_insert)
