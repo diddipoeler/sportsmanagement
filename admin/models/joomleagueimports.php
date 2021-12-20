@@ -3392,8 +3392,8 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					$temp->persontype  = 3;
 					$temp->import_id   = 1;
 					$temp->published   = 1;
-					$temp->modified    = $dbjsm->Quote('' . $modified . '');
-					$temp->modified_by = $modified_by;
+//					$temp->modified    = $dbjsm->Quote('' . $modified . '');
+//					$temp->modified_by = $modified_by;
 
 					try
 					{
