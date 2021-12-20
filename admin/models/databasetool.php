@@ -435,7 +435,15 @@ $message['message'] = $getmessage;
 			if (file_exists($xmlfile))
 			{
 				$newparams = array();
+                // Joomla versionen
+				if (version_compare(JVERSION, '3.0.0', 'ge'))
+				{
+					$xml      = simplexml_load_file(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/quote_' . $temp[0] . '.xml');
+                    }
+                    else
+                    {
 				$xml       = Factory::getXML($xmlfile, true);
+                }
 
 				foreach ($xml->fieldset as $paramGroup)
 				{
