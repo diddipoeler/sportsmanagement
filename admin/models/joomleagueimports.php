@@ -611,7 +611,7 @@ return $jl_dberror;
 			{
 				$query = $db->getQuery(true);
 				$query->clear();
-				$query = "ALTER TABLE #__joomleague_match_player ADD INDEX `match_id` (`match_id`) ";
+				$query = "ALTER TABLE ".$jl_dbprefix."joomleague_match_player ADD INDEX `match_id` (`match_id`) ";
 				$db->setQuery($query);
                 $db->execute();
                 $infocolor = self::$storeSuccessColor;
@@ -631,7 +631,7 @@ return $jl_dberror;
 			{
 				$query = $db->getQuery(true);
 				$query->clear();
-				$query = "ALTER TABLE #__joomleague_match_staff ADD INDEX `match_id` (`match_id`) ";
+				$query = "ALTER TABLE ".$jl_dbprefix."joomleague_match_staff ADD INDEX `match_id` (`match_id`) ";
 				$db->setQuery($query);
                 $db->execute();
                 $infocolor = self::$storeSuccessColor;
