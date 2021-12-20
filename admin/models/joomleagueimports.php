@@ -1352,7 +1352,7 @@ $jsm_table = $jsm_prefix.'sportsmanagement_' . $value;
 							$queryjsm = $dbjsm->getQuery(true);
 							//$queryjsm->clear();
 							$queryjsm = 'INSERT INTO ' . $jsm_table . ' (' . $select_fields_1 . ') SELECT ' . $select_fields_2 . ' FROM ' . $jl_table;
-
+$this->jsmapp->enqueueMessage(__LINE__.' '.$queryjsm, 'notice');
 							try
 							{
 							//sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
