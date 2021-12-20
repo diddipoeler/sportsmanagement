@@ -1184,7 +1184,7 @@ $jsm_table = $jsm_prefix.'sportsmanagement_' . $value;
 				
 				/** hier überprüfen wir noch sicherheitshalber ob die jl tabelle existiert */
 				//$prefix    = $db->getPrefix();
-				$key_table = array_search($jl_dbprefix . 'joomleague_' . $value, $tables);
+				$key_table = in_array($jl_table, $tables);
                 
                 /** feld import_id einfügen */
 						try
@@ -1229,8 +1229,8 @@ $jsm_table = $jsm_prefix.'sportsmanagement_' . $value;
 						/** Joomla! 3.0 code here */
 //						$jl_fields              = $db->getTableColumns('#__joomleague_' . $value);
 //						$jsm_fields             = $dbjsm->getTableColumns('#__sportsmanagement_' . $value);
-						$jl_fields              = $db->getTableColumns($jl_table . $value);
-						$jsm_fields             = $dbjsm->getTableColumns($jsm_table . $value);
+						$jl_fields              = $db->getTableColumns($jl_table);
+						$jsm_fields             = $dbjsm->getTableColumns($jsm_table);
 						
 						$jl_fields[$jl_table]   = $jl_fields;
 						$jsm_fields[$jsm_table] = $jsm_fields;
