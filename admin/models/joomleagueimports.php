@@ -1177,12 +1177,14 @@ return $jl_dberror;
 
 			foreach ($table_copy as $key => $value)
 			{
-				$jl_table  = '#__joomleague_' . $value;
-				$jsm_table = '#__sportsmanagement_' . $value;
-
+//				$jl_table  = '#__joomleague_' . $value;
+//				$jsm_table = '#__sportsmanagement_' . $value;
+$jl_table  = $jl_dbprefix.'joomleague_' . $value;
+$jsm_table = $jsm_prefix.'sportsmanagement_' . $value;
+				
 				/** hier überprüfen wir noch sicherheitshalber ob die jl tabelle existiert */
-				$prefix    = $db->getPrefix();
-				$key_table = array_search($prefix . 'joomleague_' . $value, $tables);
+				//$prefix    = $db->getPrefix();
+				$key_table = array_search($jl_dbprefix . 'joomleague_' . $value, $tables);
                 
                 /** feld import_id einfügen */
 						try
@@ -1225,17 +1227,14 @@ return $jl_dberror;
 					if (version_compare(JVERSION, '3.0.0', 'ge'))
 					{
 						/** Joomla! 3.0 code here */
-						$jl_fields              = $db->getTableColumns('#__joomleague_' . $value);
-						$jsm_fields             = $dbjsm->getTableColumns('#__sportsmanagement_' . $value);
+//						$jl_fields              = $db->getTableColumns('#__joomleague_' . $value);
+//						$jsm_fields             = $dbjsm->getTableColumns('#__sportsmanagement_' . $value);
+						$jl_fields              = $db->getTableColumns($jl_table . $value);
+						$jsm_fields             = $dbjsm->getTableColumns($jsm_table . $value);
+						
 						$jl_fields[$jl_table]   = $jl_fields;
 						$jsm_fields[$jsm_table] = $jsm_fields;
 					}
-//					elseif (version_compare(JVERSION, '2.5.0', 'ge'))
-//					{
-//						/** Joomla! 2.5 code here */
-//						$jl_fields  = $db->getTableFields('#__joomleague_' . $value);
-//						$jsm_fields = $db->getTableFields('#__sportsmanagement_' . $value);
-//					}
 
 					/** importschritt 0 */
 					if (count($jl_fields[$jl_table]) === 0)
