@@ -159,6 +159,7 @@ $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array()
 		switch ($this->getState('filter.unique_id'))
 		{
 			case 0:
+				case '':
 				$this->jsmsubquery1->select('count(pt.id)');
 				$this->jsmsubquery1->from('#__sportsmanagement_project_team AS pt');
 				$this->jsmsubquery1->where('pt.project_id = p.id');
