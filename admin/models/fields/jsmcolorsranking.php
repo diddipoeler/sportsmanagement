@@ -124,6 +124,7 @@ if ( is_array($this->value) )
 		}
 if ( !$this->value )
 {
+$this->value = array();	
 $this->value[$a]['von']   = '';
 $this->value[$a]['bis']   = '';
 $this->value[$a]['text']  = '';
