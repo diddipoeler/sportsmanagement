@@ -122,7 +122,13 @@ if ( is_array($this->value) )
 				$this->value[$a]['color'] = '';
 			}
 		}
-
+if ( !$this->value )
+{
+$this->value[$a]['von']   = '';
+$this->value[$a]['bis']   = '';
+$this->value[$a]['text']  = '';
+$this->value[$a]['color'] = '';	
+}
 			$html[] = '<tr>';
 			$html[] = '<td>';
 			$html[] = HTMLHelper::_(
