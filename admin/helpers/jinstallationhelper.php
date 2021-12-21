@@ -1061,9 +1061,10 @@ class JInstallationHelper
 	 */
 	static function populateDatabase(&$db, $sqlfile, $errors = array() , $nexttask = 'mainconfig')
 	{
+		$return = true;
 		if (!($buffer = file_get_contents($sqlfile)))
 		{
-			return -1;
+			return false;
 		}
 
 		$queries = JInstallationHelper::splitSql($buffer);
@@ -1089,7 +1090,7 @@ class JInstallationHelper
 			}
 		}
 
-		return count($errors);
+		return $return;
 	}
 
 	/**
