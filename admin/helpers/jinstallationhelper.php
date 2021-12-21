@@ -1061,7 +1061,7 @@ class JInstallationHelper
 	 */
 	static function populateDatabase(&$db, $sqlfile, $errors = array() , $nexttask = 'mainconfig')
 	{
-		$return = true;
+		//$return = true;
 		$buffer = file_get_contents($sqlfile);
 		/*
 		if (!($buffer = file_get_contents($sqlfile)))
@@ -1075,8 +1075,8 @@ class JInstallationHelper
 		{
 			$query = trim($query);
 			// If the query isn't empty and is not a MySQL or PostgreSQL comment, execute it.
-			if (!empty($query) && ($query[0] != '#') && ($query[0] != '-'))
-			//if ($query != '' && $query{0} != '#')
+			//if (!empty($query) && ($query[0] != '#') && ($query[0] != '-'))
+			if ($query != '' && $query[0] != '#')
 			{
 			 try{
 				$db->setQuery($query);
@@ -1092,7 +1092,7 @@ class JInstallationHelper
 			}
 		}
 
-		return $return;
+		return true;
 	}
 
 	/**
