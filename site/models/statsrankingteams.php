@@ -184,8 +184,10 @@ class sportsmanagementModelStatsRankingTeams extends BaseDatabaseModel
 		{
 			$total[$key] = $row['total'];
 		}
-
+if ( $total )
+{
 		array_multisort($total, SORT_DESC, $teamstotal);
+}
 
 		return $teamstotal;
 	}
