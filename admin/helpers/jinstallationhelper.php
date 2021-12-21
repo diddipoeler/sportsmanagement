@@ -1071,7 +1071,9 @@ class JInstallationHelper
 		foreach ($queries as $query)
 		{
 			$query = trim($query);
-			if ($query != '' && $query{0} != '#')
+			// If the query isn't empty and is not a MySQL or PostgreSQL comment, execute it.
+			if (!empty($query) && ($query[0] != '#') && ($query[0] != '-'))
+			//if ($query != '' && $query{0} != '#')
 			{
 			 try{
 				$db->setQuery($query);
