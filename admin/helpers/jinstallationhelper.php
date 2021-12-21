@@ -1062,11 +1062,13 @@ class JInstallationHelper
 	static function populateDatabase(&$db, $sqlfile, $errors = array() , $nexttask = 'mainconfig')
 	{
 		$return = true;
+		$buffer = file_get_contents($sqlfile);
+		/*
 		if (!($buffer = file_get_contents($sqlfile)))
 		{
 			return false;
 		}
-
+*/
 		$queries = JInstallationHelper::splitSql($buffer);
 
 		foreach ($queries as $query)
