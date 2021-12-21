@@ -113,14 +113,15 @@ class JFormFieldjsmcolorsranking extends FormField
 
 		for ($a = 1; $a <= $rankingteams; $a++)
 		{
-
+if ( is_array($this->value) )
+			{
 			if (!array_key_exists($a, $this->value)) {
                 $this->value[$a]['von']   = '';
 				$this->value[$a]['bis']   = '';
 				$this->value[$a]['text']  = '';
 				$this->value[$a]['color'] = '';
 			}
-			
+		}
 
 			$html[] = '<tr>';
 			$html[] = '<td>';
