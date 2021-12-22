@@ -496,7 +496,7 @@ $message['message'] = $getmessage;
         $this->jsmquery = $this->jsmdb->getQuery(true);
 		$this->jsmquery->select('template,params');
 		$this->jsmquery->from('#__sportsmanagement_template_config');
-		$this->jsmquery->where('params LIKE ' . $this->jsmdb->Quote('' . ''));
+		$this->jsmquery->where('params LIKE ' . $this->jsmdb->Quote('' .'[]'. ''));
 		$this->jsmquery->where('import_id != 0');
 		$this->jsmquery->group('template');
 		$this->jsmdb->setQuery($this->jsmquery);
