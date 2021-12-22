@@ -401,8 +401,6 @@ $message['message'] = $getmessage;
 	{
 		$this->jsmquery = $this->jsmdb->getQuery(true);
 		$this->jsmquery->select('template,params');
-
-		// From table
 		$this->jsmquery->from('#__sportsmanagement_template_config');
 		$this->jsmquery->where('params not LIKE ' . $this->jsmdb->Quote('' . ''));
 		$this->jsmquery->where('import_id != 0');
@@ -493,6 +491,90 @@ $message['message'] = $getmessage;
 			$this->jsmdb->setQuery($this->jsmquery);
 			self::runJoomlaQuery(__CLASS__, $this->jsmdb);
 		}
+        
+        
+        $this->jsmquery = $this->jsmdb->getQuery(true);
+		$this->jsmquery->select('template,params');
+		$this->jsmquery->from('#__sportsmanagement_template_config');
+		$this->jsmquery->where('params LIKE ' . $this->jsmdb->Quote('' . ''));
+		$this->jsmquery->where('import_id != 0');
+		$this->jsmquery->group('template');
+		$this->jsmdb->setQuery($this->jsmquery);
+		$record_jl   = $this->jsmdb->loadObjectList();
+        
+        
+        	foreach ($record_jl as $row)
+		{
+        $parameter     = new Registry;
+        $xmlfile = $defaultpath . DIRECTORY_SEPARATOR . $row->template . '.xml';
+
+			if (file_exists($xmlfile))
+			{
+				$newparams = array();
+                // Joomla versionen
+				if (version_compare(JVERSION, '3.0.0', 'ge'))
+				{
+					$xml      = simplexml_load_file(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/quote_' . $temp[0] . '.xml');
+                    }
+                    else
+                    {
+				$xml       = Factory::getXML($xmlfile, true);
+                }
+
+				foreach ($xml->fieldset as $paramGroup)
+				{
+					foreach ($paramGroup->field as $param)
+					{
+						$newparams[(string) $param->attributes()->name] = (string) $param->attributes()->default;
+					}
+				}
+
+				foreach ($newparams as $key => $value)
+				{
+					if (version_compare(JVERSION, '3.0.0', 'ge'))
+					{
+						$value = $ini->get($key);
+					}
+					else
+					{
+						// $value = $ini->getValue($key);
+					}
+
+					if (isset($value))
+					{
+						$newparams[$key] = $value;
+					}
+				}
+
+				$t_params = json_encode($newparams);
+			}
+			else
+			{
+				$ini      = $parameter->toArray($ini);
+				$t_params = json_encode($ini);
+			}
+        $this->jsmquery = $this->jsmdb->getQuery(true);
+
+			// Fields to update.
+			$fields = array(
+				$this->jsmdb->quoteName('params') . ' = ' . $this->jsmdb->Quote('' . $t_params . '')
+			);
+
+			// Conditions for which records should be updated.
+			$conditions = array(
+				$this->jsmdb->quoteName('template') . ' LIKE ' . $this->jsmdb->Quote('' . $row->template . '')
+			);
+			$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_template_config'))->set($fields)->where($conditions);
+			$this->jsmdb->setQuery($this->jsmquery);
+			self::runJoomlaQuery(__CLASS__, $this->jsmdb);
+        
+        
+        
+        
+        
+        
+        
+        }
 	}
 
 	/**
