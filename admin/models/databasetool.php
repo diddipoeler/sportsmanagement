@@ -510,48 +510,61 @@ $message['message'] = $getmessage;
 
 			if (file_exists($xmlfile))
 			{
-				$newparams = array();
-                // Joomla versionen
-				if (version_compare(JVERSION, '3.0.0', 'ge'))
-				{
-					$xml      = simplexml_load_file(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/quote_' . $temp[0] . '.xml');
-                    }
-                    else
-                    {
-				$xml       = Factory::getXML($xmlfile, true);
-                }
+			 $strXmlFile = $xmlfile;
+								$form       = Form::getInstance($row->template, $strXmlFile, array('control' => ''));
+								$fieldsets  = $form->getFieldsets();
 
-				foreach ($xml->fieldset as $paramGroup)
-				{
-					foreach ($paramGroup->field as $param)
-					{
-						$newparams[(string) $param->attributes()->name] = (string) $param->attributes()->default;
-					}
-				}
-
-				foreach ($newparams as $key => $value)
-				{
-					if (version_compare(JVERSION, '3.0.0', 'ge'))
-					{
-						$value = $ini->get($key);
-					}
-					else
-					{
-						// $value = $ini->getValue($key);
-					}
-
-					if (isset($value))
-					{
-						$newparams[$key] = $value;
-					}
-				}
-
-				$t_params = json_encode($newparams);
+								foreach ($fieldsets as $fieldset)
+								{
+									foreach ($form->getFieldset($fieldset->name) as $field)
+									{
+										$arrStandardSettings[$field->name] = $field->value;
+									}
+								}
+                                
+                                $t_params = json_encode($arrStandardSettings);
+			//	$newparams = array();
+//                // Joomla versionen
+//				if (version_compare(JVERSION, '3.0.0', 'ge'))
+//				{
+//					$xml      = simplexml_load_file(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/quote_' . $temp[0] . '.xml');
+//                    }
+//                    else
+//                    {
+//				$xml       = Factory::getXML($xmlfile, true);
+//                }
+//
+//				foreach ($xml->fieldset as $paramGroup)
+//				{
+//					foreach ($paramGroup->field as $param)
+//					{
+//						$newparams[(string) $param->attributes()->name] = (string) $param->attributes()->default;
+//					}
+//				}
+//
+//				foreach ($newparams as $key => $value)
+//				{
+//					if (version_compare(JVERSION, '3.0.0', 'ge'))
+//					{
+//						$value = $ini->get($key);
+//					}
+//					else
+//					{
+//						// $value = $ini->getValue($key);
+//					}
+//
+//					if (isset($value))
+//					{
+//						$newparams[$key] = $value;
+//					}
+//				}
+//
+//				$t_params = json_encode($newparams);
 			}
 			else
 			{
-				$ini      = $parameter->toArray($ini);
-				$t_params = json_encode($ini);
+//				$ini      = $parameter->toArray($ini);
+//				$t_params = json_encode($ini);
 			}
         $this->jsmquery = $this->jsmdb->getQuery(true);
 
