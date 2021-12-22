@@ -18,7 +18,7 @@ HTMLHelper::_('jquery.framework');
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-if ($this->jl_table_import_step != 'ENDE')
+if ( $this->jl_table_import_step != 'ENDE' && is_numeric($this->jl_table_import_step) )
 {
 ?>
 <script>
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         function delayRedirect() {
             document.getElementById('delayMsg').innerHTML = '<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP'); ?>';
-            var count = 5;
+            var count = 3;
             setInterval(function () {
                 count--;
                 document.getElementById('countDown').innerHTML = count;
