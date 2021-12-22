@@ -18,7 +18,9 @@ HTMLHelper::_('jquery.framework');
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-if ( $this->jl_table_import_step != 'ENDE' && is_numeric($this->jl_table_import_step) )
+if ( $this->jl_table_import_step != 0 )
+{
+if ( $this->jl_table_import_step != 'ENDE' )
 {
 ?>
 <script>
@@ -85,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </script>
 <?PHP
 }
-
+}
 ?>
     <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 		<?PHP
