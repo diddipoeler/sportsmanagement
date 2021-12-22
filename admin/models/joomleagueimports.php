@@ -163,6 +163,8 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		$app    = Factory::getApplication();
 		$params = ComponentHelper::getParams('com_sportsmanagement');
         $jl_dberror = 0;
+        $jl_dbprefix   = $params->get('jl_dbprefix');
+		$jsm_prefix = $app->get('dbprefix');
 		//$db     = Factory::getDbo();
 		//$query  = $db->getQuery(true);
 
