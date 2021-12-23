@@ -409,16 +409,69 @@ $message['message'] = $getmessage;
 		$record_jl   = $this->jsmdb->loadObjectList();
 		$defaultpath = JPATH_COMPONENT_SITE . DIRECTORY_SEPARATOR . 'settings' . DIRECTORY_SEPARATOR . 'default';
 
-$this->jsmapp->enqueueMessage(__LINE__.' templates<pre>'.print_r($record_jl,true).'</pre>'       ,'Notice');
+
+//$this->jsmapp->enqueueMessage(__LINE__.' templates<pre>'.print_r($record_jl,true).'</pre>'       ,'Notice');
 foreach ($record_jl as $row)
 {
-$this->jsmapp->enqueueMessage(__LINE__.' params<pre>'.print_r($row->params,true).'</pre>'       ,'Notice');
+$parameter     = new Registry;	
+//$this->jsmapp->enqueueMessage(__LINE__.' params<pre>'.print_r($row->params,true).'</pre>'       ,'Notice');
+$defaultvalues = explode('\n', $row->params);
+//$this->jsmapp->enqueueMessage(__LINE__.' defaultvalues<pre>'.print_r($defaultvalues,true).'</pre>'       ,'Notice');
+$ini = $parameter->loadString($defaultvalues[0]);
+//$this->jsmapp->enqueueMessage(__LINE__.' ini<pre>'.print_r($ini,true).'</pre>'       ,'Notice');
+$ini      = $parameter->toArray($ini);
+$t_params = json_encode($ini);
+//$this->jsmapp->enqueueMessage(__LINE__.' t_params<pre>'.print_r($t_params,true).'</pre>'       ,'Notice');
+
+
 
 $xmlfile = $defaultpath . DIRECTORY_SEPARATOR . $row->template . '.xml';
-$this->jsmapp->enqueueMessage(__LINE__.' xmlfile<pre>'.print_r($xmlfile,true).'</pre>'       ,'Notice');
+//$this->jsmapp->enqueueMessage(__LINE__.' xmlfile<pre>'.print_r($xmlfile,true).'</pre>'       ,'Notice');
+
+if (file_exists($xmlfile))
+{
+$newparams = array();
+$xml      = simplexml_load_file($xmlfile);
+				foreach ($xml->fieldset as $paramGroup)
+				{
+					foreach ($paramGroup->field as $param)
+					{
+						$newparams[(string) $param->attributes()->name] = (string) $param->attributes()->default;
+					}
+				}
+
+//$this->jsmapp->enqueueMessage(__LINE__.' '.$xmlfile.' newparams<pre>'.print_r($newparams,true).'</pre>'       ,'Notice');
+
+$t_params = json_encode($newparams);
+//$this->jsmapp->enqueueMessage(__LINE__.' '.$xmlfile.' t_params<pre>'.print_r($t_params,true).'</pre>'       ,'Notice');
 
 
 }
+else
+{
+//$this->jsmapp->enqueueMessage(__LINE__.' xmlfile nicht vorhanden<pre>'.print_r($xmlfile,true).'</pre>'       ,'Error');
+
+
+}
+
+
+
+$this->jsmquery = $this->jsmdb->getQuery(true);
+$fields = array(
+	$this->jsmdb->quoteName('params') . ' = ' . $this->jsmdb->Quote('' . $t_params . '')
+);
+$conditions = array(
+	$this->jsmdb->quoteName('template') . ' LIKE ' . $this->jsmdb->Quote('' . $row->template . '')
+);
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_template_config'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->jsmquery);
+self::runJoomlaQuery(__CLASS__, $this->jsmdb);
+
+
+}
+
+
+
 
 //		foreach ($record_jl as $row)
 //		{
