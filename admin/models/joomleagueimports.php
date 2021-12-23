@@ -653,7 +653,7 @@ return $jl_dberror;
 			{
 				$query = $db->getQuery(true);
 				$query->clear();
-				$query = "ALTER TABLE #__joomleague_match_referee ADD INDEX `match_id` (`match_id`) ";
+				$query = "ALTER TABLE ".$jl_dbprefix."joomleague_match_referee ADD INDEX `match_id` (`match_id`) ";
 				$db->setQuery($query);
                 $db->execute();
                 $infocolor = self::$storeSuccessColor;
@@ -673,7 +673,7 @@ return $jl_dberror;
 			{
 				$query = $db->getQuery(true);
 				$query->clear();
-				$query = "ALTER TABLE #__joomleague_match ADD INDEX `round_id` (`round_id`) ";
+				$query = "ALTER TABLE ".$jl_dbprefix."joomleague_match ADD INDEX `round_id` (`round_id`) ";
 				$db->setQuery($query);
                 $db->execute();
                 $infocolor = self::$storeSuccessColor;
@@ -700,7 +700,7 @@ return $jl_dberror;
 				$db->quoteName('published') . ' = 0'
 			);
 
-			$query->update($db->quoteName('#__joomleague_person'))->set($fields)->where($conditions);
+			$query->update($db->quoteName($jl_dbprefix.'joomleague_person'))->set($fields)->where($conditions);
 
 			try
 			{
@@ -2997,7 +2997,8 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 
 
 //$this->jsmapp->enqueueMessage(__LINE__.' <pre>'.print_r($result,true).'</pre>' );
-
+//$dbjsm->quoteName('modified') . ' = ' . $dbjsm->Quote('' . $date->toSql() . ''),
+//$dbjsm->quoteName('modified_by') . ' = ' . $user->get('id')
 
 
 			foreach ($result as $row)
@@ -3018,8 +3019,8 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					$temp->team_id     = $row->team_id;
 					$temp->import_id   = 1;
 					$temp->published   = 1;
-					//$temp->modified    = $dbjsm->Quote('' . $modified . '');
-					//$temp->modified_by = $modified_by;
+					$temp->modified    = $dbjsm->Quote('' . $date->toSql() . '');
+					$temp->modified_by = $user->get('id');
 
 					try
 					{
