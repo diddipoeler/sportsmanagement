@@ -8,10 +8,10 @@
 
     <field name="button_style" 
     type="list" 
-    default="btn btn-default" 
+    default="-" 
 					label="COM_SPORTSMANAGEMENT_FES_CURVE_PARAM_LABEL_BUTTON_STYLE"
 					description="COM_SPORTSMANAGEMENT_FES_CURVE_PARAM_LABEL_BUTTON_STYLE_DESC">
-					<option value="">-</option>
+					<option value="-">-</option>
 					<option value="btn btn-default">Default</option> 
 					<option value="btn btn-primary">Primary</option>
 					<option value="btn btn-success">Success</option>
