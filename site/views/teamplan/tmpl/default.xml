@@ -45,17 +45,7 @@
           slug="true">
 			</field>
 
- 			<field	name="division" 
-       type="dependsql" 
-       depends="p" 
-       task="projectdivisionsoptions"
- 			key_field="project_id"
-			value_field="p"
-					label="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_LABEL"
-					description="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_DESCR"
-					required="false"
-          slug="true">
-			</field>
+ 			
 			<field	name="tid" 
       type="dependsql" 
       depends="p" 
@@ -64,6 +54,18 @@
 			value_field="p"
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_TEAM_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_TEAM_DESCR"
+					required="false"
+          slug="true">
+			</field>
+			
+			<field	name="division" 
+       type="dependsql" 
+       depends="p" 
+       task="projectdivisionsoptions"
+ 			key_field="project_id"
+			value_field="p"
+					label="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_DESCR"
 					required="false"
           slug="true">
 			</field>
