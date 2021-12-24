@@ -11,9 +11,10 @@
     default="btn btn-default" 
 					label="COM_SPORTSMANAGEMENT_FES_CURVE_PARAM_LABEL_BUTTON_STYLE"
 					description="COM_SPORTSMANAGEMENT_FES_CURVE_PARAM_LABEL_BUTTON_STYLE_DESC">
+					<option value="">-</option>
 					<option value="btn btn-default">Default</option> 
 					<option value="btn btn-primary">Primary</option>
-					<option value="btn btn-success">Success</option> -->
+					<option value="btn btn-success">Success</option>
 					<option value="btn btn-info">Info</option>
 					<option value="btn btn-warning">Warning</option>
 					<option value="btn btn-danger">Danger</option>
