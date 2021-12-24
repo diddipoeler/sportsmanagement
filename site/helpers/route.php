@@ -96,7 +96,7 @@ class sportsmanagementHelperRoute
 		'about'    => array('cfg_which_database' => '', 's' => '', 'p' => '', 'Itemid' => '' ),
 		'calendar' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'division' => '', 'mode' => '', 'ptid' => '', 'Itemid' => ''),
 		'clubinfo' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'cid' => '', 'Itemid' => ''),
-		'clubplan' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'Itemid' => ''),
+		'clubplan' => array('cfg_which_database' => '', 's' => '', 'cid' => '', 'p' => '', 'startdate' => '', 'enddate' => '', 'Itemid' => ''),
 		'curve'    => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid1' => '', 'tid2' => '','division' => '', 'Itemid' => ''),
 
 		'editprojectteam' => array('tmpl' => '', 'ptid' => '', 'tid' => '', 'p' => '', 'Itemid' => ''),
