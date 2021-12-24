@@ -33,12 +33,7 @@
 					required="">
 			</field>
 		
-			<field	name="cid" 
-      type="clublist"
-					label="COM_SPORTSMANAGEMENT_XML_SELECT_CLUB_LABEL"
-					description="COM_SPORTSMANAGEMENT_XML_SELECT_CLUB_DESCR"
-					required="false">
-			</field>
+	
 			
 			<field	name="p" 
       type="dependsql" 
@@ -50,6 +45,14 @@
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_DESCR"
 					required="false">
 			</field>
+
+<field	name="cid" 
+      type="clublist"
+					label="COM_SPORTSMANAGEMENT_XML_SELECT_CLUB_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_SELECT_CLUB_DESCR"
+					required="false">
+			</field>
+
 			
 			<field	type="spacer">
 			</field>

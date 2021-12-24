@@ -135,9 +135,7 @@ class sportsmanagementViewClubPlan extends sportsmanagementView
 
 		$lists['fromteamseasons'] = $fromteamseasons;
 
-		/**
-		 * auswahl welche spiele
-		 */
+		/** auswahl welche spiele */
 		$opp_arr   = array();
 		$opp_arr[] = HTMLHelper::_('select.option', "0", Text::_('COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_ALL'));
 		$opp_arr[] = HTMLHelper::_('select.option', "1", Text::_('COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_HOME'));
