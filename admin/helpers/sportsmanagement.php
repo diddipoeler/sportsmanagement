@@ -2089,8 +2089,8 @@ $jinput = $app->input;
 			$routeparameter                       = array();
 			$routeparameter['cfg_which_database'] = $cfg_which_database;
 			$routeparameter['s']                  = $s;
+            $routeparameter['cid']                = $clubSlug;
 			$routeparameter['p']                  = $projectSlug;
-			$routeparameter['cid']                = $clubSlug;
 			$routeparameter['task']               = null;
 
 			$link    = sportsmanagementHelperRoute::getSportsmanagementRoute('clubplan', $routeparameter);
