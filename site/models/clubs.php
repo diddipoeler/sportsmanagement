@@ -47,9 +47,9 @@ class sportsmanagementModelClubs extends BaseDatabaseModel
 		$jinput = $app->input;
 		parent::__construct();
 
-		self::$projectid          = $jinput->request->get('p', 0, 'INT');
-		self::$divisionid         = $jinput->request->get('division', 0, 'INT');
-		self::$cfg_which_database = $jinput->request->get('cfg_which_database', 0, 'INT');
+		self::$projectid          = $jinput->get('p', 0, 'INT');
+		self::$divisionid         = $jinput->get('division', 0, 'INT');
+		self::$cfg_which_database = $jinput->get('cfg_which_database', 0, 'INT');
 
 		sportsmanagementModelProject::$projectid = self::$projectid;
 

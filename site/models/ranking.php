@@ -521,8 +521,8 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 		// Reference global application object
 		$app       = Factory::getApplication();
 		$jinput    = $app->input;
-		$order     = $jinput->request->get('order', '', 'STR');
-		$order_dir = $jinput->request->get('dir', 'ASC', 'STR');
+		$order     = $jinput->get('order', '', 'STR');
+		$order_dir = $jinput->get('dir', 'ASC', 'STR');
 
 		//		$order     = Factory::getApplication()->input->getVar( 'order', '' );
 		//		$order_dir = Factory::getApplication()->input->getVar( 'dir', 'ASC' );

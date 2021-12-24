@@ -125,8 +125,6 @@ function _sortRanking(&$ranking,$order='points',$order_dir='DESC')
 		// Reference global application object
 		$app       = Factory::getApplication();
 		$jinput    = $app->input;
-		//$order     = $jinput->request->get('order', '', 'STR');
-		//$order_dir = $jinput->request->get('dir', 'DESC', 'STR');
 
 		$arr2 = array();
 

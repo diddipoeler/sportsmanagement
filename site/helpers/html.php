@@ -1114,14 +1114,14 @@ class sportsmanagementHelperHtml
 		{
 			$params                       = array("option" => "com_sportsmanagement",
 			                                      "view"   => "rankingalltime");
-			$params["cfg_which_database"] = $jinput->request->get('cfg_which_database', 0, 'INT');
-			$params["l"]                  = $jinput->request->get('l', 0, 'INT');
-			$params["points"]             = $jinput->request->get('points', '3,1,0', 'STR');
+			$params["cfg_which_database"] = $jinput->get('cfg_which_database', 0, 'INT');
+			$params["l"]                  = $jinput->get('l', 0, 'INT');
+			$params["points"]             = $jinput->get('points', '3,1,0', 'STR');
 			$params["type"]               = Factory::getApplication()->input->getInt("type", 0);
 
-			// $params["order"] = $jinput->request->get('order', '', 'STR');
-			// $params["dir"] = $jinput->request->get('dir', 'DESC', 'STR');
-			if ($jinput->request->get('order', '', 'STR') == $paramName)
+			// $params["order"] = $jinput->get('order', '', 'STR');
+			// $params["dir"] = $jinput->get('dir', 'DESC', 'STR');
+			if ($jinput->get('order', '', 'STR') == $paramName)
 			{
 				$params["order"] = $paramName;
 				$params["dir"]   = (Factory::getApplication()->input->getVar('dir', '') == 'ASC') ? 'DESC' : 'ASC';
@@ -1134,8 +1134,8 @@ class sportsmanagementHelperHtml
 				$params["dir"]   = $default;
 			}
 
-			$params["s"] = $jinput->request->get('s');
-			$params["p"] = $jinput->request->get('p');
+			$params["s"] = $jinput->get('s');
+			$params["p"] = $jinput->get('p');
 
 			$query = Uri::buildQuery($params);
 			echo HTMLHelper::link(
@@ -1171,9 +1171,9 @@ class sportsmanagementHelperHtml
 		{
 			$params                       = array("option" => "com_sportsmanagement",
 			                                      "view"   => "ranking");
-			$params["cfg_which_database"] = $jinput->request->get('cfg_which_database', 0, 'INT');
+			$params["cfg_which_database"] = $jinput->get('cfg_which_database', 0, 'INT');
 
-			$params['s'] = $jinput->request->get('s', 0, 'INT');
+			$params['s'] = $jinput->get('s', 0, 'INT');
 
 			if (isset($paramconfig['p']))
 			{
@@ -1181,10 +1181,10 @@ class sportsmanagementHelperHtml
 			}
 			else
 			{
-				$params['p'] = $jinput->request->get('p', '0', 'STR');
+				$params['p'] = $jinput->get('p', '0', 'STR');
 			}
 
-			$params['type'] = $jinput->request->get('type', '0', 'STR');
+			$params['type'] = $jinput->get('type', '0', 'STR');
 
 			if (isset($paramconfig['r']))
 			{
@@ -1192,7 +1192,7 @@ class sportsmanagementHelperHtml
 			}
 			else
 			{
-				$params['r'] = $jinput->request->get('r', '0', 'STR');
+				$params['r'] = $jinput->get('r', '0', 'STR');
 			}
 
 			if (isset($paramconfig['from']))
@@ -1201,7 +1201,7 @@ class sportsmanagementHelperHtml
 			}
 			else
 			{
-				$params['from'] = $jinput->request->get('from', '0', 'STR');
+				$params['from'] = $jinput->get('from', '0', 'STR');
 			}
 
 			if (isset($paramconfig['to']))
@@ -1210,12 +1210,12 @@ class sportsmanagementHelperHtml
 			}
 			else
 			{
-				$params['to'] = $jinput->request->get('to', '0', 'STR');
+				$params['to'] = $jinput->get('to', '0', 'STR');
 			}
 
-			$params['division'] = $jinput->request->get('division', '0', 'STR');
+			$params['division'] = $jinput->get('division', '0', 'STR');
 
-			if ($jinput->request->get('order', '', 'STR') == $paramName)
+			if ($jinput->get('order', '', 'STR') == $paramName)
 			{
 				$params["order"] = $paramName;
 				$params["dir"]   = (Factory::getApplication()->input->getVar('dir', '') == 'ASC') ? 'DESC' : 'ASC';

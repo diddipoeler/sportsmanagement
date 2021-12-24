@@ -49,8 +49,8 @@ class sportsmanagementModelScoresheet extends BaseDatabaseModel
 		parent::__construct();
 
 		self::$matchid                           = (int) $jinput->get('mid', 0, '');
-		self::$cfg_which_database                = $jinput->request->get('cfg_which_database', 0, 'INT');
-		self::$projectid                         = $jinput->request->get('p', 0, 'INT');
+		self::$cfg_which_database                = $jinput->get('cfg_which_database', 0, 'INT');
+		self::$projectid                         = $jinput->get('p', 0, 'INT');
 		sportsmanagementModelProject::$projectid = self::$projectid;
 	}
 

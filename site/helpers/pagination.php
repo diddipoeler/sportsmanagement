@@ -60,7 +60,7 @@ class sportsmanagementModelPagination extends BaseDatabaseModel
 		$layout     = $app->input->getVar('layout', '', 'request', 'word');
 		$controller = $app->input->getVar('controller');
 		$divLevel   = $app->input->getInt('divLevel', 0);
-		$division   = $jinput->request->get('division', '0', 'STR');
+		$division   = $jinput->get('division', '0', 'STR');
 		$firstlink  = '';
 		$lastlink   = '';
 

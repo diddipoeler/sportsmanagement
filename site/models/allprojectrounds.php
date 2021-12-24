@@ -62,28 +62,28 @@ class sportsmanagementModelallprojectrounds extends BaseDatabaseModel
 
 		// JInput object
 		$jinput                                    = $app->input;
-		$this->projectid                           = $jinput->request->get('p', 0, 'INT');
+		$this->projectid                           = $jinput->get('p', 0, 'INT');
 		sportsmanagementModelProject::$projectid   = $this->projectid;
 		sportsmanagementModelProject::$projectslug = $this->projectid;
 
-		$this->_params['Itemid']             = $jinput->request->get('Itemid', 0, 'INT');
-		$this->_params['show_columns']       = $jinput->request->get('show_columns', 0, 'INT');
-		$this->_params['show_sectionheader'] = $jinput->request->get('show_sectionheader', 0, 'INT');
+		$this->_params['Itemid']             = $jinput->get('Itemid', 0, 'INT');
+		$this->_params['show_columns']       = $jinput->get('show_columns', 0, 'INT');
+		$this->_params['show_sectionheader'] = $jinput->get('show_sectionheader', 0, 'INT');
 
-		$this->_params['show_firstroster']  = $jinput->request->get('show_firstroster', 0, 'INT');
-		$this->_params['show_firstsubst']   = $jinput->request->get('show_firstsubst', 0, 'INT');
-		$this->_params['show_firstevents']  = $jinput->request->get('show_firstevents', 0, 'INT');
-		$this->_params['show_secondroster'] = $jinput->request->get('show_secondroster', 0, 'INT');
-		$this->_params['show_secondsubst']  = $jinput->request->get('show_secondsubst', 0, 'INT');
-		$this->_params['show_secondevents'] = $jinput->request->get('show_secondevents', 0, 'INT');
-        $this->_params['show_favteaminfo'] = $jinput->request->get('show_favteaminfo', 0, 'INT');
+		$this->_params['show_firstroster']  = $jinput->get('show_firstroster', 0, 'INT');
+		$this->_params['show_firstsubst']   = $jinput->get('show_firstsubst', 0, 'INT');
+		$this->_params['show_firstevents']  = $jinput->get('show_firstevents', 0, 'INT');
+		$this->_params['show_secondroster'] = $jinput->get('show_secondroster', 0, 'INT');
+		$this->_params['show_secondsubst']  = $jinput->get('show_secondsubst', 0, 'INT');
+		$this->_params['show_secondevents'] = $jinput->get('show_secondevents', 0, 'INT');
+        $this->_params['show_favteaminfo'] = $jinput->get('show_favteaminfo', 0, 'INT');
 
-		$this->_params['s']           = $jinput->request->get('s', 0, 'INT');
-		$this->_params['p']           = $jinput->request->get('p', 0, 'INT');
-		$this->_params['table_class'] = $jinput->request->get('table_class', 'table', 'STR');
+		$this->_params['s']           = $jinput->get('s', 0, 'INT');
+		$this->_params['p']           = $jinput->get('p', 0, 'INT');
+		$this->_params['table_class'] = $jinput->get('table_class', 'table', 'STR');
 
-		$this->_params['view']   = $jinput->request->get('view', 'allprojectrounds', 'STR');
-		$this->_params['option'] = $jinput->request->get('option', 'com_sportsmanagement', 'STR');
+		$this->_params['view']   = $jinput->get('view', 'allprojectrounds', 'STR');
+		$this->_params['option'] = $jinput->get('option', 'com_sportsmanagement', 'STR');
 
 		parent::__construct();
 	}

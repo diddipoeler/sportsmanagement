@@ -60,9 +60,9 @@ class sportsmanagementModelical extends BaseDatabaseModel
 		self::$teamid        = (int) $jinput->get('tid', 0, '');
 		self::$projectteamid = (int) $jinput->get('ptid', 0, '');
 
-		self::$projectid                         = $jinput->request->get('p', 0, 'INT');
-		self::$divisionid                        = $jinput->request->get('division', 0, 'INT');
-		self::$cfg_which_database                = $jinput->request->get('cfg_which_database', 0, 'INT');
+		self::$projectid                         = $jinput->get('p', 0, 'INT');
+		self::$divisionid                        = $jinput->get('division', 0, 'INT');
+		self::$cfg_which_database                = $jinput->get('cfg_which_database', 0, 'INT');
 		sportsmanagementModelProject::$projectid = self::$projectid;
 
 		// SportsmanagementModelResults::$projectid = self::$projectid;

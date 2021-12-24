@@ -76,7 +76,7 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 	{
 		$app                 = Factory::getApplication();
 		$jinput              = $app->input;
-		$this->alltimepoints = $jinput->request->get('points', '3,1,0', 'STR');
+		$this->alltimepoints = $jinput->get('points', '3,1,0', 'STR');
         $params = array();
 
 		$file = JPATH_SITE . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'ranking.php';
@@ -842,14 +842,14 @@ catch (Exception $e)
 		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
 		$jinput = $app->input;
-		$league = $jinput->request->get('l', 0, 'INT');
+		$league = $jinput->get('l', 0, 'INT');
 
 		$db    = Factory::getDBO();
 		$query = Factory::getDbo()->getQuery(true);
 
 		if (!$league)
 		{
-			$projekt = $jinput->request->get('p', 0, 'INT');
+			$projekt = $jinput->get('p', 0, 'INT');
 			$query->clear();
 			$query->select('league_id');
 			$query->from('#__sportsmanagement_project');
@@ -905,14 +905,14 @@ catch (Exception $e)
 		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
 		$jinput = $app->input;
-		$league = $jinput->request->get('l', 0, 'INT');
+		$league = $jinput->get('l', 0, 'INT');
 
 		$db    = Factory::getDBO();
 		$query = Factory::getDbo()->getQuery(true);
 
 		if (!$league)
 		{
-			$projekt = $jinput->request->get('p', 0, 'INT');
+			$projekt = $jinput->get('p', 0, 'INT');
 			$query->clear();
 			$query->select('league_id');
 			$query->from('#__sportsmanagement_project');
@@ -1037,8 +1037,8 @@ catch (Exception $e)
 		// Reference global application object
 		$app       = Factory::getApplication();
 		$jinput    = $app->input;
-		$order     = $jinput->request->get('order', '', 'STR');
-		$order_dir = $jinput->request->get('dir', 'DESC', 'STR');
+		$order     = $jinput->get('order', '', 'STR');
+		$order_dir = $jinput->get('dir', 'DESC', 'STR');
 
 		$arr2 = array();
 
