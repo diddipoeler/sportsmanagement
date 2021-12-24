@@ -49,13 +49,13 @@
 			<field	name="tid" 
       type="dependsql" 
       depends="p" 
-      task="projectteamsbydivisionoptions"
-			key_field="project_id"
+      key_field="project_id"
 			value_field="p"
+      task="projectteamoptions"
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_TEAM_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_TEAM_DESCR"
 					required="false"
-          slug="true">
+					slug="true">
 			</field>
 			
 			<field	name="division" 
