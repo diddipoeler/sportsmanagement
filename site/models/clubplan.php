@@ -52,18 +52,16 @@ class sportsmanagementModelClubPlan extends BaseDatabaseModel
 		$app = Factory::getApplication();
 		$jinput = $app->input;
 		parent::__construct();
-		self::$clubid     = $jinput->request->get('cid', 0, 'INT');
-		self::$project_id = $jinput->request->get('p', 0, 'INT');
-
-		self::$teamartsel      = $jinput->request->get('teamartsel', 0, 'INT');
-		self::$type            = $jinput->request->get('type', 0, 'INT');
-		self::$teamprojectssel = $jinput->request->get('teamprojectssel', 0, 'INT');
-		self::$teamseasonssel  = $jinput->request->get('teamseasonssel', 0, 'INT');
-
-		self::setStartDate($jinput->request->get('startdate', self::$startdate, 'STR'));
-		self::setEndDate($jinput->request->get('enddate', self::$enddate, 'STR'));
-
-		self::$cfg_which_database = $jinput->request->get('cfg_which_database', 0, 'INT');
+		self::$clubid     = $jinput->get('cid', 0, 'INT');
+		self::$project_id = $jinput->get('p', 0, 'INT');
+		self::$teamartsel      = $jinput->get('teamartsel', 0, 'INT');
+		self::$type            = $jinput->get('type', 0, 'INT');
+		self::$teamprojectssel = $jinput->get('teamprojectssel', 0, 'INT');
+		self::$teamseasonssel  = $jinput->get('teamseasonssel', 0, 'INT');
+		self::setStartDate($jinput->get('startdate', self::$startdate, 'STR'));
+		self::setEndDate($jinput->get('enddate', self::$enddate, 'STR'));
+		self::$cfg_which_database = $jinput->get('cfg_which_database', 0, 'INT');
+        //Factory::getApplication()->enqueueMessage(__LINE__.' clubid<pre>'.print_r(self::$clubid,true).'</pre>'   , 'error');
 	}
 
 	/**
