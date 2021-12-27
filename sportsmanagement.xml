@@ -198,6 +198,7 @@
 	
 <module module="mod_sportsmanagement_projectmap" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_uefawertung" client="site"  position="" published=""/>
+<module module="mod_sportsmanagement_firstleagueoverview" client="site"  position="" published=""/>
 	
 </modules>
 
