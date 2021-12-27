@@ -12,6 +12,14 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 
+
+
+echo '<pre>'.print_r($firstleagueoverview,true).'</pre>';
+
+
+
+
+
 ?>
 <div class="">
 

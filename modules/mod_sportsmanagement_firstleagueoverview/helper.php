@@ -13,6 +13,15 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 
 
+/**
+ * modjsmfirstleagueoverview
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2021
+ * @version $Id$
+ * @access public
+ */
 class modjsmfirstleagueoverview
 {
 
@@ -23,28 +32,9 @@ class modjsmfirstleagueoverview
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $query->clear();
-        $query->select('name');
-		$query->from('#__sportsmanagement_season');
-		$query->where('id = ' . (int) $params->get('s'));
-		$db->setQuery($query);
-		$season_name = $db->loadResult();
-    $query->clear();
 
-$query->select('season');
-$query->from('#__sportsmanagement_uefawertung ');
-$query->where('season <= ' . $db->Quote('' . $season_name . ''));
-
-$query->order('season DESC');
-$query->group('season');
-$query->setLimit('5');
-$db->setQuery($query);
-
-$row = $db->loadAssocList();
-
-//echo __LINE__.' row  <br><pre>'.print_r($row  ,true).'</pre>';
-
-$column = $db->loadColumn();
-      return $column;
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+      return $result;
     
   }
 	
@@ -56,21 +46,30 @@ $column = $db->loadColumn();
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
-        $query->clear();
-        $query->select('name');
-		$query->from('#__sportsmanagement_season');
-		$query->where('id = ' . (int) $params->get('s'));
+        $query->select('p.*, l.country, st.id AS sport_type_id, st.name AS sport_type_name');
+		$query->select('st.icon AS sport_type_picture, st.eventtime as useeventtime, l.picture as leaguepicture, l.name as league_name, s.name as season_name,r.name as round_name');
+		$query->select('LOWER(SUBSTR(st.name, CHAR_LENGTH( "COM_SPORTSMANAGEMENT_ST_")+1)) AS fs_sport_type_name');
+		$query->select('CONCAT_WS( \':\', p.id, p.alias ) AS slug');
+		$query->select('CONCAT_WS( \':\', l.id, l.alias ) AS league_slug');
+		$query->select('CONCAT_WS( \':\', s.id, s.alias ) AS season_slug');
+		$query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
+		$query->select('l.cr_picture as cr_leaguepicture,l.champions_complete');
+		$query->from('#__sportsmanagement_project AS p ');
+		$query->join('INNER', '#__sportsmanagement_sports_type AS st ON p.sports_type_id = st.id ');
+		$query->join('LEFT', '#__sportsmanagement_league AS l ON p.league_id = l.id ');
+		$query->join('LEFT', '#__sportsmanagement_season AS s ON p.season_id = s.id ');
+		$query->join('LEFT', '#__sportsmanagement_round AS r ON p.current_round = r.id ');
+		$query->where('l.champions_complete = 1');
+        $query->where('l.league_level = 1');
+
 		$db->setQuery($query);
-		$season_name = $db->loadResult();
+		$result = $db->loadObject();
       
 
 
-
-		
-
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
-		return $uefawertungneu;
+		return $result;
 
 	}
 

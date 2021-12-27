@@ -50,7 +50,7 @@ if (!class_exists('sportsmanagementHelper'))
 /** Include the functions only once */
 JLoader::register('modjsmfirstleagueoverview', __DIR__ . '/helper.php');
 
-//$uefapoints = modjsmfirstleagueoverview::getData($params);
+$firstleagueoverview = modjsmfirstleagueoverview::getData($params);
 //$seasonnames = modjsmfirstleagueoverview::getSeasonNames($params);
 //asort($seasonnames);
 
