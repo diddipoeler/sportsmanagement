@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<updates>
+   <update>
+      <name>MOD_SPORTSMANAGEMENT_FIRSTLEAGUEOVERVIEW</name>
+      <description>MOD_SPORTSMANAGEMENT_FIRSTLEAGUEOVERVIEW</description>
+      <element>mod_sportsmanagement_firstleagueoverview</element>
+      <type>modules</type>
+      <version>3.8.0</version>
+      <infourl title="Sports-Management URL">http://fussballineuropa.de</infourl>
+      <downloads>
+         <downloadurl type="full" format="zip">https://github.com/diddipoeler/sportsmanagement/archive/master.zip</downloadurl>
+      </downloads>
+      <tags>
+         <tag>some-tag</tag>
+      </tags>
+      <maintainer>Sports-Management Inc.</maintainer>
+      <maintainerurl>http://fussballineuropa.de</maintainerurl>
+      <section>some-section</section>
+      <targetplatform name="joomla" version=".*" />
+   </update>
+</updates>   
