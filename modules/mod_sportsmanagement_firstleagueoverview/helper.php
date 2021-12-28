@@ -65,7 +65,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         $query->where('l.league_level = 1');
         $db->setQuery($query);
 		$result_league = $db->loadObjectList();
-        echo '<pre>'.print_r($result_league,true).'</pre>';
+        //echo '<pre>'.print_r($result_league,true).'</pre>';
         
         foreach($result_league as $key => $value)
         {

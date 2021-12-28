@@ -14,7 +14,7 @@ use Joomla\CMS\Language\Text;
 
 
 
-echo '<pre>'.print_r($firstleagueoverview,true).'</pre>';
+//echo '<pre>'.print_r($firstleagueoverview,true).'</pre>';
 
 
 
