@@ -57,6 +57,7 @@ $link                                 = sportsmanagementHelperRoute::getSportsma
 
 
 //echo $value->name.' '.$link;
+echo JSMCountries::getCountryFlag($value->country);
 echo HTMLHelper::link($link, $value->name);
 ?>
 </td>  
