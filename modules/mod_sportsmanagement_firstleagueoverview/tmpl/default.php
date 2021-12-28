@@ -35,8 +35,7 @@ echo Text::_('MOD_SPORTSMANAGEMENT_FIRSTLEAGUEOVERVIEW_DESCRIPTION');
     <table class="<?php echo $params->get('table_class'); ?>">
         <thead>
   <tr>
-  <td>
-  </td>
+
 <?php
   foreach( $firstleagueoverview as $key => $value )
 {
@@ -51,8 +50,7 @@ echo $value->name;
   }
   
   ?>
-     <td>
-  </td>
+
     </tr>  
         </thead>
 	
