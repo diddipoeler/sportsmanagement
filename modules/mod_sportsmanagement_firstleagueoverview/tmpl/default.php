@@ -3,7 +3,7 @@
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version    1.0.05
  * @package    Sportsmanagement
- * @subpackage mod_sportsmanagement_uefawertung
+ * @subpackage mod_sportsmanagement_firstleagueoverview
  * @file       default.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
@@ -24,7 +24,7 @@ echo '<pre>'.print_r($firstleagueoverview,true).'</pre>';
 <div class="">
 
 			<?php
-echo Text::_('MOD_SPORTSMANAGEMENT_UEFAWERTUNG_BERECHNUNG');			
+echo Text::_('MOD_SPORTSMANAGEMENT_FIRSTLEAGUEOVERVIEW_DESC');			
 			?>
 
 

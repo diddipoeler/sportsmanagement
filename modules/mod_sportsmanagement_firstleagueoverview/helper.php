@@ -25,6 +25,12 @@ use Joomla\CMS\Factory;
 class modjsmfirstleagueoverview
 {
 
+	 /**
+	  * modjsmfirstleagueoverview::getSeasonNames()
+	  * 
+	  * @param mixed $params
+	  * @return
+	  */
 	 public static function getSeasonNames($params)
 	{
 		$app = Factory::getApplication();
@@ -39,6 +45,12 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
   }
 	
 
+	/**
+	 * modjsmfirstleagueoverview::getData()
+	 * 
+	 * @param mixed $params
+	 * @return
+	 */
 	public static function getData($params)
 	{
 		$app = Factory::getApplication();
@@ -63,9 +75,16 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         $query->where('l.league_level = 1');
 
 		$db->setQuery($query);
-		$result = $db->loadObject();
+		$result = $db->loadObjectList();
       
+  /*    
+    SELECT p.*, l.country, l.picture as leaguepicture, l.name as league_name, MAX(s.name) as season_name,r.name as round_name,CONCAT_WS( ':', p.id, p.alias ) AS slug,CONCAT_WS( ':', l.id, l.alias ) AS league_slug,CONCAT_WS( ':', s.id, s.alias ) AS season_slug,CONCAT_WS( ':', r.id, r.alias ) AS round_slug,l.cr_picture as cr_leaguepicture,l.champions_complete
+FROM h4roi_sportsmanagement_project AS p 
+INNER JOIN h4roi_sportsmanagement_league AS l ON p.league_id = l.id 
 
+WHERE l.champions_complete = 1 AND l.league_level = 1  
+      
+*/
 
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
