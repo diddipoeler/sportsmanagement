@@ -57,6 +57,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 		$jinput = $app->input;
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
+        $result = array();
         
         $query->select('l.id,l.country, l.name as league_name');
         $query->from('#__sportsmanagement_league AS l');
@@ -65,6 +66,19 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         $db->setQuery($query);
 		$result_league = $db->loadObjectList();
         echo '<pre>'.print_r($result_league,true).'</pre>';
+        
+        foreach($result_league as $key => $value)
+        {
+        $query->clear();    
+        $query->select('p.*');
+        $query->from('#__sportsmanagement_project AS p ');
+        $query->where('p.league_id = '.$value->id);
+        $query->order('p.name DESC');
+        $db->setQuery($query,0,1);
+        $result_project = $db->loadObject();
+        $result[] = $result_project;
+            
+        }
         
 //        $query->select('p.*, l.country, st.id AS sport_type_id, st.name AS sport_type_name');
 //		$query->select('st.icon AS sport_type_picture, st.eventtime as useeventtime, l.picture as leaguepicture, l.name as league_name, s.name as season_name,r.name as round_name');
