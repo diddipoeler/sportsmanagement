@@ -58,33 +58,34 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
-        $query->select('p.*, l.country, st.id AS sport_type_id, st.name AS sport_type_name');
-		$query->select('st.icon AS sport_type_picture, st.eventtime as useeventtime, l.picture as leaguepicture, l.name as league_name, s.name as season_name,r.name as round_name');
-		$query->select('LOWER(SUBSTR(st.name, CHAR_LENGTH( "COM_SPORTSMANAGEMENT_ST_")+1)) AS fs_sport_type_name');
-		$query->select('CONCAT_WS( \':\', p.id, p.alias ) AS slug');
-		$query->select('CONCAT_WS( \':\', l.id, l.alias ) AS league_slug');
-		$query->select('CONCAT_WS( \':\', s.id, s.alias ) AS season_slug');
-		$query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
-		$query->select('l.cr_picture as cr_leaguepicture,l.champions_complete');
-		$query->from('#__sportsmanagement_project AS p ');
-		$query->join('INNER', '#__sportsmanagement_sports_type AS st ON p.sports_type_id = st.id ');
-		$query->join('LEFT', '#__sportsmanagement_league AS l ON p.league_id = l.id ');
-		$query->join('LEFT', '#__sportsmanagement_season AS s ON p.season_id = s.id ');
-		$query->join('LEFT', '#__sportsmanagement_round AS r ON p.current_round = r.id ');
-		$query->where('l.champions_complete = 1');
+        $query->select('l.id,l.country, l.name as league_name');
+        $query->from('#__sportsmanagement_league AS l');
+        $query->where('l.champions_complete = 1');
         $query->where('l.league_level = 1');
+        $db->setQuery($query);
+		$result_league = $db->loadObjectList();
+        echo '<pre>'.print_r($result_league,true).'</pre>';
+        
+//        $query->select('p.*, l.country, st.id AS sport_type_id, st.name AS sport_type_name');
+//		$query->select('st.icon AS sport_type_picture, st.eventtime as useeventtime, l.picture as leaguepicture, l.name as league_name, s.name as season_name,r.name as round_name');
+//		$query->select('LOWER(SUBSTR(st.name, CHAR_LENGTH( "COM_SPORTSMANAGEMENT_ST_")+1)) AS fs_sport_type_name');
+//		$query->select('CONCAT_WS( \':\', p.id, p.alias ) AS slug');
+//		$query->select('CONCAT_WS( \':\', l.id, l.alias ) AS league_slug');
+//		$query->select('CONCAT_WS( \':\', s.id, s.alias ) AS season_slug');
+//		$query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
+//		$query->select('l.cr_picture as cr_leaguepicture,l.champions_complete');
+//		$query->from('#__sportsmanagement_project AS p ');
+//		$query->join('INNER', '#__sportsmanagement_sports_type AS st ON p.sports_type_id = st.id ');
+//		$query->join('LEFT', '#__sportsmanagement_league AS l ON p.league_id = l.id ');
+//		$query->join('LEFT', '#__sportsmanagement_season AS s ON p.season_id = s.id ');
+//		$query->join('LEFT', '#__sportsmanagement_round AS r ON p.current_round = r.id ');
+//		$query->where('l.champions_complete = 1');
+//        $query->where('l.league_level = 1');
 
-		$db->setQuery($query);
-		$result = $db->loadObjectList();
+//		$db->setQuery($query);
+//		$result = $db->loadObjectList();
       
-  /*    
-    SELECT p.*, l.country, l.picture as leaguepicture, l.name as league_name, MAX(s.name) as season_name,r.name as round_name,CONCAT_WS( ':', p.id, p.alias ) AS slug,CONCAT_WS( ':', l.id, l.alias ) AS league_slug,CONCAT_WS( ':', s.id, s.alias ) AS season_slug,CONCAT_WS( ':', r.id, r.alias ) AS round_slug,l.cr_picture as cr_leaguepicture,l.champions_complete
-FROM h4roi_sportsmanagement_project AS p 
-INNER JOIN h4roi_sportsmanagement_league AS l ON p.league_id = l.id 
 
-WHERE l.champions_complete = 1 AND l.league_level = 1  
-      
-*/
 
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
