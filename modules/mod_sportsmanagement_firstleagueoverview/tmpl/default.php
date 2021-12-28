@@ -24,7 +24,7 @@ echo '<pre>'.print_r($firstleagueoverview,true).'</pre>';
 <div class="">
 
 			<?php
-echo Text::_('MOD_SPORTSMANAGEMENT_FIRSTLEAGUEOVERVIEW_DESC');			
+echo Text::_('MOD_SPORTSMANAGEMENT_FIRSTLEAGUEOVERVIEW_DESCRIPTION');			
 			?>
 
 
