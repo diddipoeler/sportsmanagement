@@ -70,9 +70,10 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         foreach($result_league as $key => $value)
         {
         $query->clear();    
-        $query->select('p.*,l.country');
+        $query->select('p.*,l.country,c.federation');
         $query->from('#__sportsmanagement_project AS p ');
-        $query->join('INNER', '#__sportsmanagement_league AS l ON p.league_id = l.id ');
+        $query->join('INNER', '#__sportsmanagement_league AS l ON l.id = p.league_id ');
+        $query->join('INNER', '#__sportsmanagement_countries AS c ON c.alpha3 = l.country ');
         $query->where('p.league_id = '.$value->id);
         $query->order('p.name DESC');
         $db->setQuery($query,0,1);
