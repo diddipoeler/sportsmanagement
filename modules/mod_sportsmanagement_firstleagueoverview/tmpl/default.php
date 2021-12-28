@@ -38,12 +38,12 @@ echo Text::_('MOD_SPORTSMANAGEMENT_FIRSTLEAGUEOVERVIEW_DESCRIPTION');
   <td>
   </td>
 <?php
-  foreach( $seasonnames as $key => $value )
+  foreach( $firstleagueoverview as $key => $value )
 {
     ?>
     <td>
 <?php
-echo $value;
+echo $value->name;
 ?>
 </td>  
       
@@ -55,48 +55,8 @@ echo $value;
   </td>
     </tr>  
         </thead>
-		<?php
-foreach( $uefapoints as $key => $value )
-{
-?>    
-<tr>
-<td>
-<?php
-echo $value->team;
-?>
-</td>
+	
 
-  
- <?php
-  foreach( $seasonnames as $key1 => $value1 )
-{
-    ?>
-    <td>
-<?php
-echo $value->$value1;
-?>
-</td>  
-      
-      <?php
-  }
-  
-  ?> 
-  
-  
-  
-  
-  
-<td>
-<?php
-echo $value->total;
-?>
-</td>
-</tr>  
-  
-<?php    
-}
-
-		?>
     </table>
     <br/>
 	<?php
