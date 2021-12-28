@@ -12,7 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\HTML\HTMLHelper;
 
 //echo '<pre>'.print_r($firstleagueoverview,true).'</pre>';
 
@@ -56,7 +56,8 @@ $link                                 = sportsmanagementHelperRoute::getSportsma
 
 
 
-echo $value->name.' '.$link;
+//echo $value->name.' '.$link;
+echo HTMLHelper::link($link, $value->name);
 ?>
 </td>  
       
