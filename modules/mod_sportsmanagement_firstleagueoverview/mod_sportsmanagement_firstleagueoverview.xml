@@ -63,22 +63,19 @@
 					required="">
 			</field>
 			
-		 
-
-
-
-
-
-
-    
-
-
           	
 			</fieldset>
 			
 			<fieldset name="advanced">
-
-      <field 	name="table_class" 
+<field name="display_div_table" type="extensionradiobutton" default="0"
+		class="radio btn-group btn-group-yesno"
+			label="MOD_SPORTSMANAGEMENT_FIRSTLEAGUEOVERVIEW_DISPLAY_DIV_TABLE"
+			description="MOD_SPORTSMANAGEMENT_FIRSTLEAGUEOVERVIEW_DISPLAY_DIV_TABLE_DESCR">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+      <field name="table_class" 
       type="list" 
       default="table" 
 		class=""
@@ -103,7 +100,7 @@
 	</config>		
 	
 	<updateservers>
-<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/modules/mod_sportsmanagement_uefawertung/update-server.xml</server>
+<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/modules/mod_sportsmanagement_firstleagueoverview/update-server.xml</server>
 </updateservers>
 
 </extension>
