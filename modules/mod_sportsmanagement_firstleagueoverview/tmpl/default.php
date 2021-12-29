@@ -23,16 +23,20 @@ use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <div class="">
 
+<div class="">
 			<?php
 echo Text::_('MOD_SPORTSMANAGEMENT_FIRSTLEAGUEOVERVIEW_DESCRIPTION');			
 			?>
-
+</div>
 
 	<?php
 
 
 if ( $params->get('display_div_table') )
 {
+?>
+<div class="">
+<?php    
 foreach( $firstleagueoverview as $key => $value )
 {
 $routeparameter                       = array();
@@ -51,6 +55,9 @@ echo JSMCountries::getCountryFlag($value->country).' '.HTMLHelper::link($link, $
     
     
 }
+?>
+</div>
+<?php
 }
 else
 {

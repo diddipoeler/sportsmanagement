@@ -67,7 +67,7 @@
 			</fieldset>
 			
 			<fieldset name="advanced">
-<field name="display_div_table" type="extensionradiobutton" default="0"
+<field name="display_div_table" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="MOD_SPORTSMANAGEMENT_FIRSTLEAGUEOVERVIEW_DISPLAY_DIV_TABLE"
 			description="MOD_SPORTSMANAGEMENT_FIRSTLEAGUEOVERVIEW_DISPLAY_DIV_TABLE_DESCR">
