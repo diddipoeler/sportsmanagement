@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 
 //echo '<pre>'.print_r($firstleagueoverview,true).'</pre>';
 ?>
@@ -39,7 +40,12 @@ foreach ($federations as $key => $value)
                     <h4 class="panel-title">
                         <a data-toggle="collapse"
                            data-parent="#<?php echo $module->module; ?>-<?php echo $module->id . '-' . $module->id; ?>"
-                           href="#<?php echo $key; ?>"><?php echo $value->name; ?></a>
+                           href="#<?php echo $key; ?>">
+				<?php 
+ echo HTMLHelper::_('image',Uri::root() . $value->picture, $value->name, array(' title' => $value->name, ' width' => 50));
+ echo $value->name; 
+				?>
+			    </a>
                     </h4>
                 </div>
                 <div id="<?php echo $key; ?>" class="panel-collapse collapse <?php echo $collapse; ?>">
