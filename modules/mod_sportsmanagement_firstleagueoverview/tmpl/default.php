@@ -50,8 +50,27 @@ foreach ($federations as $key => $value)
                 </div>
                 <div id="<?php echo $key; ?>" class="panel-collapse collapse <?php echo $collapse; ?>">
                     <div class="panel-body">
-	
-	
+	<?php
+	foreach( $firstleagueoverview as $key2 => $value2 ) if ( $value->id == $value2->federation )
+{
+$routeparameter                       = array();
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+$routeparameter['s']                  = $value2->season_id;
+$routeparameter['p']                  = $value2->id;
+$routeparameter['type']               = 0;
+$routeparameter['r']                  = 0;
+$routeparameter['from']               = 0;
+$routeparameter['to']                 = 0;
+$routeparameter['division']           = 0;
+$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);
+
+//echo $value->name.' '.$link;
+echo JSMCountries::getCountryFlag($value2->country).' '.HTMLHelper::link($link, $value2->name);    
+    
+    
+}
+                  
+                  ?>
 		    </div>
 		</div>
 	
@@ -85,7 +104,7 @@ $routeparameter['division']           = 0;
 $link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);
 
 //echo $value->name.' '.$link;
-echo JSMCountries::getCountryFlag($value->country).' '.HTMLHelper::link($link, $value->name);    
+//echo JSMCountries::getCountryFlag($value->country).' '.HTMLHelper::link($link, $value->name);    
     
     
 }
