@@ -310,7 +310,7 @@ $routeparameter['to']                 = 0;
 $routeparameter['division']           = 0;
 $link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);  
     ?>
-<a href="<?php echo $link; ?>" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">< <?php echo $prevproject->name; ?></a> 
+<a href="<?php echo $link; ?>" class="btn btn-primary btn-sm active" role="button" aria-pressed="true"><< <?php echo $prevproject->name; ?></a> 
   <?php
     }
   if ( $nextproject )
@@ -326,7 +326,7 @@ $routeparameter['to']                 = 0;
 $routeparameter['division']           = 0;
 $link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);  
     ?>
-<a href="<?php echo $link; ?>" class="btn btn-primary btn-sm active" role="button" aria-pressed="true"><?php echo $nextproject->name; ?> ></a> 
+<a href="<?php echo $link; ?>" class="btn btn-primary btn-sm active" role="button" aria-pressed="true"><?php echo $nextproject->name; ?> >></a> 
   <?php
     }
 }
