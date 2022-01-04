@@ -39,7 +39,7 @@ foreach ($federations as $key => $value)
                     <h4 class="panel-title">
                         <a data-toggle="collapse"
                            data-parent="#<?php echo $module->module; ?>-<?php echo $module->id . '-' . $module->id; ?>"
-                           href="#<?php echo $key; ?>"><?php echo JSMCountries::getCountryFlag($key) . ' ' . $value; ?></a>
+                           href="#<?php echo $key; ?>"><?php echo $value->name; ?></a>
                     </h4>
                 </div>
                 <div id="<?php echo $key; ?>" class="panel-collapse collapse <?php echo $collapse; ?>">
