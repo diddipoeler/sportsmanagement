@@ -128,13 +128,37 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 
 	public static function getnextproject($name = '', $league_id = 0)
 	{
-		
+$app    = Factory::getApplication();
+	$option = $app->input->getCmd('option');
+	$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
+	$query     = $db->getQuery(true);	
+$query->select('p.*');
+$query->select('CONCAT_WS( \':\', p.id, p.alias ) AS slug');
+$query->from('#__sportsmanagement_project AS p ');
+$query->where('p.league_id = ' . $league_id);
+$query->where('p.name > ' . $db->Quote($name));
+$db->setQuery($query, 0, 1);
+$result = $db->loadObject();		
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect		
+		return $result;		
 		
 	}
 	
 	public static function getprevproject($name = '', $league_id = 0)
 	{
-		
+$app    = Factory::getApplication();
+	$option = $app->input->getCmd('option');
+	$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
+	$query     = $db->getQuery(true);
+$query->select('p.*');
+$query->select('CONCAT_WS( \':\', p.id, p.alias ) AS slug');
+$query->from('#__sportsmanagement_project AS p ');
+$query->where('p.league_id = ' . $league_id);
+$query->where('p.name < ' . $db->Quote($name));
+$db->setQuery($query, 0, 1);
+$result = $db->loadObject();		
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect		
+		return $result;		
 		
 	}
 	
