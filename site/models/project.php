@@ -137,6 +137,7 @@ $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS slug');
 $query->from('#__sportsmanagement_project AS p ');
 $query->where('p.league_id = ' . $league_id);
 $query->where('p.name > ' . $db->Quote($name));
+		$query->order('p.name ASC '); 
 $db->setQuery($query, 0, 1);
 $result = $db->loadObject();		
 $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect		
@@ -155,6 +156,7 @@ $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS slug');
 $query->from('#__sportsmanagement_project AS p ');
 $query->where('p.league_id = ' . $league_id);
 $query->where('p.name < ' . $db->Quote($name));
+		$query->order('p.name DESC '); 
 $db->setQuery($query, 0, 1);
 $result = $db->loadObject();		
 $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect		
