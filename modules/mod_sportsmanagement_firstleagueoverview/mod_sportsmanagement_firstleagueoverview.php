@@ -51,6 +51,7 @@ if (!class_exists('sportsmanagementHelper'))
 JLoader::register('modjsmfirstleagueoverview', __DIR__ . '/helper.php');
 
 $firstleagueoverview = modjsmfirstleagueoverview::getData($params);
+$federations = modjsmfirstleagueoverview::getfederations();
 //$seasonnames = modjsmfirstleagueoverview::getSeasonNames($params);
 //asort($seasonnames);
 
