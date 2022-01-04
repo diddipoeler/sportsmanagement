@@ -15,11 +15,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
 //echo '<pre>'.print_r($firstleagueoverview,true).'</pre>';
-
-
-
-
-
 ?>
 <div class="">
 
@@ -31,7 +26,40 @@ echo Text::_('MOD_SPORTSMANAGEMENT_FIRSTLEAGUEOVERVIEW_DESCRIPTION');
 
 	<?php
 
-
+//$federations
+	
+?>
+<div class="panel-group" id="<?php echo $module->module; ?>-<?php echo $module->id . '-' . $module->id; ?>">
+<?php	
+foreach ($federations as $key => $value)
+{
+?>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse"
+                           data-parent="#<?php echo $module->module; ?>-<?php echo $module->id . '-' . $module->id; ?>"
+                           href="#<?php echo $key; ?>"><?php echo JSMCountries::getCountryFlag($key) . ' ' . $value; ?></a>
+                    </h4>
+                </div>
+                <div id="<?php echo $key; ?>" class="panel-collapse collapse <?php echo $collapse; ?>">
+                    <div class="panel-body">
+	
+	
+		    </div>
+		</div>
+	
+	
+	
+	
+	</div>
+	<?php
+}	
+?>
+</div>
+<?php	
+	
+	
 if ( $params->get('display_div_table') )
 {
 ?>
