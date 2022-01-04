@@ -25,6 +25,23 @@ use Joomla\CMS\Factory;
 class modjsmfirstleagueoverview
 {
 
+ public static function getfederations()
+	{
+		$app = Factory::getApplication();
+		$jinput = $app->input;
+		$db = sportsmanagementHelper::getDBConnection();
+		$query = $db->getQuery(true);
+        $query->clear();
+$query->select('objassoc.*');
+$query->from('#__sportsmanagement_federations as objassoc');
+$db->setQuery($query);
+$result = $db->loadObjectList();
+	 
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+      return $result;
+    
+  }
+	
 	 /**
 	  * modjsmfirstleagueoverview::getSeasonNames()
 	  * 
