@@ -87,41 +87,11 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 	static $projectnotes = array();
 	static $projectwarnings = array();
 	static $projecttips = array();
-	/**
-	 * data array for teams
-	 *
-	 * @var array
-	 */
 	static $_teams = null;
-	/**
-	 * data array for rounds
-	 *
-	 * @var array
-	 */
 	static $_rounds = null;
-	/**
-	 * data project stats
-	 *
-	 * @var array
-	 */
 	static $_stats = null;
-	/**
-	 * data project positions
-	 *
-	 * @var array
-	 */
 	static $_positions = null;
-	/**
-	 * cache for project divisions
-	 *
-	 * @var array
-	 */
 	static $_divisions = null;
-	/**
-	 * caching for current round
-	 *
-	 * @var object
-	 */
 	static $_current_round;
 	static $seasonid = 0;
 	static $cfg_which_database = 0;
@@ -130,24 +100,10 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 	static $divisionslug = '';
 	static $roundslug = '';
 	static $layout = '';
-	/**
-	 * project league country
-	 *
-	 * @var string
-	 */
 	var $country = null;
-	/**
-	 * data array for matches
-	 *
-	 * @var array
-	 */
 	var $_matches = null;
-    
-    /** @var    array    An array of tips */
 	static $tips = array();
-	/** @var    array    An array of warnings */
 	static $warnings = array();
-    /** @var    array    An array of notes */
 	static $notes = array();
 
 	/**
@@ -170,6 +126,18 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 		parent::__construct();
 	}
 
+	public static function getnextproject($name = '', $league_id = 0)
+	{
+		
+		
+	}
+	
+	public static function getprevproject($name = '', $league_id = 0)
+	{
+		
+		
+	}
+	
 	/**
 	 * sportsmanagementModelProject::setProjectID()
 	 *
