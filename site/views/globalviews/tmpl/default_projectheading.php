@@ -284,7 +284,8 @@ if (!empty($this->overallconfig))
 	
 ?>
 <div class="<?php echo $this->divclassrow; ?>">
-<table class="table">  
+
+<div class="col-sm-6 text-left">
 <?php  
 //echo 'navigation <pre>'. print_r($this->config['show_project_navigation'],true) .'</pre>';  
 $this->config['show_project_navigation'] = $this->config['show_project_navigation'] = '' ? 1 : $this->config['show_project_navigation'];  
@@ -313,6 +314,12 @@ $link                                 = sportsmanagementHelperRoute::getSportsma
 <a href="<?php echo $link; ?>" class="btn btn-primary btn-sm active" role="button" aria-pressed="true"><< <?php echo $prevproject->name; ?></a> 
   <?php
     }
+  ?>
+  
+  
+  </div>
+  <div class="col-sm-6 text-right">
+  <?php
   if ( $nextproject )
   {
     $routeparameter                       = array();
@@ -336,7 +343,7 @@ $link                                 = sportsmanagementHelperRoute::getSportsma
   
 ?>
   
-</table>
+</div>
 </div>
 <?php  	
 	
