@@ -281,4 +281,67 @@ if (!empty($this->overallconfig))
 		<?php
 		}
 	}
+	
+?>
+<div class="<?php echo $this->divclassrow; ?>">
+<table class="table">  
+<?php  
+//echo 'navigation <pre>'. print_r($this->config['show_project_navigation'],true) .'</pre>';  
+  
+if ( $this->config['show_project_navigation'] )  
+{
+//echo 'name <pre>'. print_r($this->project->name,true) .'</pre>';    
+//echo 'league_id <pre>'. print_r($this->project->league_id,true) .'</pre>';   
+  
+$nextproject = sportsmanagementModelProject::getnextproject($this->project->name, $this->project->league_id);  
+//echo 'league_id <pre>'. print_r($nextproject,true) .'</pre>';   
+$prevproject = sportsmanagementModelProject::getprevproject($this->project->name, $this->project->league_id);  
+//echo 'league_id <pre>'. print_r($prevproject,true) .'</pre>';   
+if ( $prevproject )
+  {
+$routeparameter                       = array();
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+$routeparameter['s']                  = $prevproject->season_id;
+$routeparameter['p']                  = $prevproject->slug;
+$routeparameter['type']               = 0;
+$routeparameter['r']                  = 0;
+$routeparameter['from']               = 0;
+$routeparameter['to']                 = 0;
+$routeparameter['division']           = 0;
+$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);  
+    ?>
+<a href="<?php echo $link; ?>" class="btn btn-primary btn-sm active" role="button" aria-pressed="true"><?php echo $prevproject->name; ?></a> 
+  <?php
+    }
+  if ( $nextproject )
+  {
+    $routeparameter                       = array();
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+$routeparameter['s']                  = $nextproject->season_id;
+$routeparameter['p']                  = $nextproject->slug;
+$routeparameter['type']               = 0;
+$routeparameter['r']                  = 0;
+$routeparameter['from']               = 0;
+$routeparameter['to']                 = 0;
+$routeparameter['division']           = 0;
+$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);  
+    ?>
+<a href="<?php echo $link; ?>" class="btn btn-primary btn-sm active" role="button" aria-pressed="true"><?php echo $nextproject->name; ?></a> 
+  <?php
+    }
+}
+  
+  
+  
+  
+?>
+  
+</table>
+</div>
+<?php  	
+	
+	
+	
+	
+	
 }
