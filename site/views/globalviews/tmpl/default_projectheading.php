@@ -282,6 +282,9 @@ if (!empty($this->overallconfig))
 		}
 	}
 	
+	switch ( $this->view )
+	{
+		case 'ranking':
 ?>
 <div class="<?php echo $this->divclassrow; ?>">
 
@@ -338,15 +341,13 @@ $link                                 = sportsmanagementHelperRoute::getSportsma
     }
 }
   
-  
-  
-  
 ?>
   
 </div>
 </div>
 <?php  	
-	
+break;
+}	
 	
 	
 	
