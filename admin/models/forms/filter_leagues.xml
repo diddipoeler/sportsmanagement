@@ -49,8 +49,8 @@
 			type="leaguelevel"
 			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LEVEL"
 			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LEVEL_DESC"
-			class="form-control form-control-inline"
-      required="">
+      required=""
+       onchange="this.form.submit();">
 		<option value="0">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_LEAGUE_LEVEL</option>
 	</field>
 		
