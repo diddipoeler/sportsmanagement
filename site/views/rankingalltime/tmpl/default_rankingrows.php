@@ -200,6 +200,10 @@ foreach ($current as $ptid => $team)
 		{
 			$pic = $config['show_logo_small_table'];
 
+			if ( !$team->team->$pic )
+			{
+			$team->team->$pic = '/images/com_sportsmanagement/database/clubs/large/placeholder_wappen_150.png';	
+			}
 			switch ($pic)
 			{
 				case 'logo_small';
