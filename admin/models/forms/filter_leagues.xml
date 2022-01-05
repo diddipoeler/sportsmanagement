@@ -44,6 +44,15 @@
             <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
         </field>
 		
+<field
+			name="search_league_level"
+			type="leaguelevel"
+			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LEVEL"
+			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LEVEL_DESC"
+			class="form-control form-control-inline"
+      required="">
+		<option value="0">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_LEAGUE_LEVEL</option>
+	</field>
 		
     </fields>
 	
