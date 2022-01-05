@@ -9,7 +9,7 @@
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields"
   >
 
-<field type="extensionsubtitle" title="Installationshelfer starten ?" color="#2672a6" />
+<field type="extensionsubtitle" title="COM_SPORTSMANAGEMENT_SETTINGS_DEFAULT_EXTENSIONSUBTITLE_START_INSTALL_HELPER" color="#2672a6" />
 <field name="start_install_helper" type="extensionradiobutton" default="1"
 class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_START_INSTALL_HELPER" 
@@ -688,7 +688,7 @@ filter="safehtml"/>
 	
 	
 	
-<field type="extensionsubtitle" title="Tips/Warnungen/Fehler anzeigen" color="#2672a6" />
+<field type="extensionsubtitle" title="COM_SPORTSMANAGEMENT_SETTINGS_DEFAULT_EXTENSIONSUBTITLE_WARNINGS" color="#2672a6" />
 <field name="show_jsm_tips_front" type="extensionradiobutton" default="1"
 class="radio btn-group btn-group-yesno"
 label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_TIPS" 
@@ -757,7 +757,7 @@ class="radio btn-group btn-group-yesno"
                     name="testing" 
                     type="note" 
                     label="Testing - only for testing !!!!" 
-                    description="Deault state is off" 
+                    description="Default state is off" 
                     class="alert-error" 
                      
                 />
@@ -790,7 +790,7 @@ class="radio btn-group btn-group-yesno"
   	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 
-<field type="extensionsubtitle" title="Tips/Warnungen/Fehler anzeigen" color="#2672a6" />
+<field type="extensionsubtitle" title="COM_SPORTSMANAGEMENT_SETTINGS_DEFAULT_EXTENSIONSUBTITLE_WARNINGS" color="#2672a6" />
 <field name="show_jsm_tips" type="extensionradiobutton" default="1"
 class="radio btn-group btn-group-yesno"
 label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_TIPS" 
@@ -847,7 +847,7 @@ class="radio btn-group btn-group-yesno"
 			description="COM_SPORTSMANAGEMENT_FIELD_GH_TOKEN_DESC"
 			label="COM_SPORTSMANAGEMENT_FIELD_GH_TOKEN_LABEL"
 		/>
-<field type="extensionsubtitle" title="Joomleague Import" color="#2672a6" />			
+<field type="extensionsubtitle" title="COM_SPORTSMANAGEMENT_SETTINGS_JL_IMPORT" color="#2672a6" />			
 		<field
 			name="jl_dbtype"
 			type="databaseconnection"
