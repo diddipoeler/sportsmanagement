@@ -120,6 +120,9 @@ class sportsmanagementModelLeagues extends JSMModelList
 		$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
 		$this->setState('filter.search_nation', $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', ''));
 		$this->setState('filter.search_agegroup', $this->getUserStateFromRequest($this->context . '.filter.search_agegroup', 'filter_search_agegroup', ''));
+		
+		$this->setState('filter.search_league_level', $this->getUserStateFromRequest($this->context . '.filter.search_league_level', 'filter_search_league_level', ''));
+		
 		$this->setState('filter.search_association', $this->getUserStateFromRequest($this->context . '.filter.search_association', 'filter_search_association', ''));
 		$this->setState('filter.federation', $this->getUserStateFromRequest($this->context . '.filter.federation', 'filter_federation', ''));
 		$this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
