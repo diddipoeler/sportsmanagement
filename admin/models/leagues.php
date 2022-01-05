@@ -187,6 +187,11 @@ class sportsmanagementModelLeagues extends JSMModelList
 		{
 			$this->jsmquery->where('obj.agegroup_id = ' . $this->getState('filter.search_agegroup'));
 		}
+		
+		if ($this->getState('filter.search_league_level'))
+		{
+			$this->jsmquery->where('obj.league_level = ' . $this->getState('filter.search_league_level'));
+		}
 
 		if (is_numeric($this->getState('filter.state')))
 		{
