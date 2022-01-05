@@ -202,7 +202,7 @@ foreach ($current as $ptid => $team)
 
 			if ( !$team->team->$pic )
 			{
-			$team->team->$pic = '/images/com_sportsmanagement/database/clubs/large/placeholder_wappen_150.png';	
+			$team->team->$pic = 'images/com_sportsmanagement/database/clubs/large/placeholder_wappen_150.png';	
 			}
 			switch ($pic)
 			{
