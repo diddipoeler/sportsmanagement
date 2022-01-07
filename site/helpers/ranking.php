@@ -1346,8 +1346,9 @@ class JSMRanking
 		{
 			$query->select('id');
 			$query->from('#__sportsmanagement_division ');
-			$query->where('project_id = ' . $db->Quote($this->_projectid));
-			$query->where('parent_id = ' . $db->Quote($this->_division));
+			$query->where('project_id = ' . $db->Quote($this->_projectid) );
+			$query->where('parent_id = ' . $db->Quote($this->_division) );
+            $query->where('published = 1');
 
 			$db->setQuery($query);
 
@@ -1356,11 +1357,11 @@ class JSMRanking
 				// Joomla! 3.0 code here
 				$res = $db->loadColumn();
 			}
-			elseif (version_compare(JVERSION, '2.5.0', 'ge'))
-			{
-				// Joomla! 2.5 code here
-				$res = $db->loadResultArray();
-			}
+//			elseif (version_compare(JVERSION, '2.5.0', 'ge'))
+//			{
+//				// Joomla! 2.5 code here
+//				$res = $db->loadResultArray();
+//			}
 
 			$res[]            = $this->_division;
 			$this->_divisions = $res;
