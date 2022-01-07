@@ -15,7 +15,7 @@ use Joomla\Registry\Registry;
 if ( $this->currentRanking )
 {	
 /** es wird als erstes die farblegende der divisionen/gruppen gelesen */
-foreach ($this->currentRanking as $division => $cu_rk) 
+foreach ($this->currentRanking as $division => $cu_rk) if (array_key_exists($division, $this->divisions))
 {
 	if ($division)
 	{
