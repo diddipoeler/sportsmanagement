@@ -59,10 +59,11 @@ class JFormFieldLeagueLevel extends \JFormFieldList
 			$options[] = HTMLHelper::_('select.option', $a, Text::_('COM_SPORTSMANAGEMENT_ADMIN_POKAL_LEVEL') . ' - ' . $b);
 			$b++;
 		}
+		$c = 1;
 		for ($a = 41; $a < 51; $a++)
 		{
-			$options[] = HTMLHelper::_('select.option', $a, Text::_('COM_SPORTSMANAGEMENT_ADMIN_TOURNEMENT_LEVEL') . ' - ' . $b);
-			$b++;
+			$options[] = HTMLHelper::_('select.option', $a, Text::_('COM_SPORTSMANAGEMENT_ADMIN_TOURNEMENT_LEVEL') . ' - ' . $c);
+			$c++;
 		}
 
 		/**
