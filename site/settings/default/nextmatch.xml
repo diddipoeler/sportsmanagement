@@ -26,8 +26,8 @@
 			<option value="1">JYES</option>
 		</field>
 
-    <field name="show_nextmatch_tabs" type="list" default="no_tabs"
-    class="radio btn-group btn-group-yesno"
+    <field name="show_nextmatch_tabs" type="list" default="no_tabs" 
+            class=""
 			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_RESULT_TABS"
 			description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_RESULT_TABS">
 			<option value="no_tabs">COM_SPORTSMANAGEMENT_FES_NEXTMATCH_NO_TABS</option>
@@ -282,7 +282,7 @@
 		
 		<field 	name="show_team_picture" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_TEAM_PICTURE" 
-				description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_TEAM_PICTURE">
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_CLUB_LOGO_WIDTH">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
