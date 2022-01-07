@@ -596,6 +596,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 					$query->select('*');
 					$query->from('#__sportsmanagement_division');
 					$query->where('project_id = ' . (int) self::$projectid);
+                    $query->where('published = 1');
 
 					$db->setQuery($query);
 					self::$_divisions = $db->loadObjectList('id');
