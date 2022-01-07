@@ -79,7 +79,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         $query->select('l.id,l.country, l.name as league_name');
         $query->from('#__sportsmanagement_league AS l');
         $query->where('l.champions_complete = 1');
-        $query->where('l.league_level = 1');
+        $query->where('l.league_level = 1 OR l.league_level = 41');
         $db->setQuery($query);
 		$result_league = $db->loadObjectList();
         //echo '<pre>'.print_r($result_league,true).'</pre>';
