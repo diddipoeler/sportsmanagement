@@ -295,10 +295,29 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 			/** Get last x games $nb_games = 5; */
 			$config     = sportsmanagementModelProject::getTemplateConfig('ranking', $cfg_which_database, __METHOD__);
 			$nb_games   = $config['nb_previous'];
-			$res[$ptid] = array_slice($teamgames, -$nb_games);
+            $res[$ptid] = $teamgames;
+			//$res[$ptid] = array_slice($teamgames, -$nb_games);
 		}
         
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+        
+        foreach ($res as $ptid => $value )
+		{
+        //$ptid[0] = array_slice($ptid[0], -$nb_games); 
+        foreach ($value as $g => $neu)
+        {
+        $neu = array_slice($neu, -$nb_games);   
+          //echo __LINE__.'<pre>'.print_r($g,true).'</pre>';  
+          $prevgames[$ptid][$g] = $neu;
+        }
+       
+      }
+      
+      //echo __LINE__.'<pre>'.print_r($prevgames,true).'</pre>'; 
+        
+        
+        
+        
 		return $res;
 	}
 
