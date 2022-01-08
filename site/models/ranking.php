@@ -251,19 +251,15 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 		$query->select('m.*, r.roundcode');
 		$query->select('CASE WHEN CHAR_LENGTH(t1.alias) AND CHAR_LENGTH(t2.alias) THEN CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) ELSE m.id END AS slug');
 		$query->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
-
 		$query->from('#__sportsmanagement_match AS m ');
 		$query->join('INNER', '#__sportsmanagement_round AS r ON r.id = m.round_id ');
 		$query->join('INNER', '#__sportsmanagement_project AS p ON p.id = r.project_id ');
 		$query->join('INNER', '#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
 		$query->join('INNER', '#__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id ');
-
 		$query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id');
 		$query->join('INNER', '#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id');
-
 		$query->join('INNER', '#__sportsmanagement_team AS t1 ON st1.team_id = t1.id ');
 		$query->join('INNER', '#__sportsmanagement_team AS t2 ON st2.team_id = t2.id ');
-
 		$query->where('r.project_id = ' . self::$projectid);
 		$query->where('r.roundcode <= ' . $db->Quote($current->roundcode));
 		$query->where('m.team1_result IS NOT NULL');
@@ -275,7 +271,7 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 
 		$teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0, 'name', $cfg_which_database, __METHOD__);
 
-		// Get games per team
+		/** Get games per team */
 		$res = array();
 
 		foreach ($teams as $ptid => $team)
@@ -296,8 +292,7 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 				continue;
 			}
 
-			// Get last x games
-			// $nb_games = 5;
+			/** Get last x games $nb_games = 5; */
 			$config     = sportsmanagementModelProject::getTemplateConfig('ranking', $cfg_which_database, __METHOD__);
 			$nb_games   = $config['nb_previous'];
 			$res[$ptid] = array_slice($teamgames, -$nb_games);
