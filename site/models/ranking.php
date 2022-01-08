@@ -182,12 +182,18 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
-
-		// Create a new query object.
 		$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
 		$query     = $db->getQuery(true);
 		$starttime = microtime();
+        $division = array();
 
+        $query->select('*');
+		$query->from('#__sportsmanagement_division');
+		$query->where('project_id = ' . (int) self::$projectid);
+        $query->where('published = 1');
+		$db->setQuery($query);
+		$divisions = $db->loadObjectList();
+                    
 		if (!self::$round)
 		{
 			sportsmanagementModelProject::$_current_round = 0;
@@ -296,7 +302,8 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 			$nb_games   = $config['nb_previous'];
 			$res[$ptid] = array_slice($teamgames, -$nb_games);
 		}
-
+        
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $res;
 	}
 

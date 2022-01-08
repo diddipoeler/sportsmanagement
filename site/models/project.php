@@ -126,6 +126,13 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 		parent::__construct();
 	}
 
+	/**
+	 * sportsmanagementModelProject::getnextproject()
+	 * 
+	 * @param string $name
+	 * @param integer $league_id
+	 * @return
+	 */
 	public static function getnextproject($name = '', $league_id = 0)
 	{
 $app    = Factory::getApplication();
@@ -145,6 +152,13 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 		
 	}
 	
+	/**
+	 * sportsmanagementModelProject::getprevproject()
+	 * 
+	 * @param string $name
+	 * @param integer $league_id
+	 * @return
+	 */
 	public static function getprevproject($name = '', $league_id = 0)
 	{
 $app    = Factory::getApplication();
