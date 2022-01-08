@@ -11,7 +11,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\Registry\Registry;
-
+//echo '<pre>'.print_r($this->previousgames,true).'</pre>';
 if ( $this->currentRanking )
 {	
 /** es wird als erstes die farblegende der divisionen/gruppen gelesen */
