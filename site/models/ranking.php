@@ -282,7 +282,7 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 			{
 				if ($g->projectteam1_id == $team->projectteamid || $g->projectteam2_id == $team->projectteamid)
 				{
-					$teamgames[] = $g;
+					$teamgames[$g->division_id] = $g;
 				}
 			}
 
