@@ -318,7 +318,7 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
         
         
         
-		return $res;
+		return $prevgames;
 	}
 
 	
