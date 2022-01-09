@@ -91,17 +91,17 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		}
 
 		$mdlDivisions     = BaseDatabaseModel::getInstance("divisions", "sportsmanagementModel");
-		$projectdivisions = array();
-		$projectdivisions = $mdlDivisions->getDivisions($this->project_id);
+		$this->divisions = array();
+		$this->divisions = $mdlDivisions->getDivisions($this->project_id);
 
 		$divisionsList[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
 
-		if ($projectdivisions)
+		if ($this->divisions)
 		{
-			$projectdivisions = array_merge($divisionsList, $projectdivisions);
+			$this->divisions = array_merge($divisionsList, $this->divisions);
 		}
 
-		$lists['divisions'] = $projectdivisions;
+		$lists['divisions'] = $this->divisions;
 
 		/** build the html select list for project assigned teams */
 		$ress         = array();
@@ -261,7 +261,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 
 		$this->config         = Factory::getConfig();
 		$this->lists          = $lists;
-		$this->divisions      = $projectdivisions;
+		//$this->divisions      = $projectdivisions;
 		$this->projectteam    = $items;
 		$this->pagination     = $pagination;
 //		$this->project        = $project;

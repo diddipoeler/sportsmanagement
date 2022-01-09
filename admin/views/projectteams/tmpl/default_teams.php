@@ -162,17 +162,7 @@ $optteams = ' allowClear: true,
 				?>
                 <th>
 				<?php 
-                
                 echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DIVISION', 'd.name', $this->sortDirection, $this->sortColumn);
-                /*
-				echo '<br>' . HTMLHelper::_(
-						'select.genericlist',
-						$this->lists['divisions'],
-						'division',
-						'class="inputbox" size="1" onchange="window.location.href=window.location.href.split(\'&division=\')[0]+\'&division=\'+this.value"',
-						'value', 'text', $this->division
-					);
-                    */
 				?>
                 </th><?php
 			}
@@ -487,6 +477,13 @@ if ( $this->modelclub->getuserextrafieldvalue((int) $row->club_id,'soccerway' ) 
 							'value', 'text', $row->division_id
 						);
 						?>
+                        <br />
+                        <?php
+                        foreach ($this->divisions as $d)
+					{
+					  echo $d->text.'<br />';
+                       }
+                        ?>
                     </td>
 					<?php
 				}
@@ -647,16 +644,6 @@ elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
 {    
 echo $this->loadTemplate('switcher3');
 }                     
-                    
-//					$append = ' style="background-color:#bbffff"';
-//					echo HTMLHelper::_(
-//						'select.genericlist',
-//						$this->lists['is_in_score'],
-//						'is_in_score' . $row->id,
-//						$inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
-//						$i . '\').checked=true"' . $append,
-//						'value', 'text', $row->is_in_score
-//					);
 					?>
                 </td>
                 <td class="center">
@@ -672,18 +659,6 @@ elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
 {    
 echo $this->loadTemplate('switcher3');
 }                                         
-                    
-                    
-                    
-//					$append = ' style="background-color:#bbffff"';
-//					echo HTMLHelper::_(
-//						'select.genericlist',
-//						$this->lists['use_finally'],
-//						'use_finally' . $row->id,
-//						$inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
-//						$i . '\').checked=true"' . $append,
-//						'value', 'text', $row->use_finally
-//					);
 					?>
                 </td>
 		<td class="center">
