@@ -1064,7 +1064,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project_team_division` (
   KEY `division_id` (`division_id`),
   KEY `import` (`import`),
   KEY `standard_playground` (`standard_playground`),
-  UNIQUE INDEX `combi` (`project_id` ASC, `team_id` ASC)
+  UNIQUE INDEX `combi` (`project_id` ASC, `team_id` ASC, `division_id` ASC)
   )
 ENGINE = MyISAM
 DEFAULT CHARSET = utf8;
