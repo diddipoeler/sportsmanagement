@@ -107,8 +107,17 @@ function checkProjectTeamDivision($projectteamid = 0,$id = 0,$project_id = 0,$te
 				$temp->project_id = $project_id;
 				$temp->team_id = $projectteamid;
                 $temp->division_id = $d->id;
+                try
+		{
 				$result = Factory::getDbo()->insertObject('#__sportsmanagement_project_team_division', $temp);
-
+}
+		catch (Exception $e)
+		{
+//			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+//			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');
+//			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $query->dump()), Log::ERROR, 'jsmerror');
+//			return false;
+		}
 
 					}
 
