@@ -219,9 +219,34 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
         //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>'.print_r($division_points,true).'</pre>', 'error');
         for ($x = 0; $x < count($pks); $x++)
 		{
-		foreach ( $division_points[$pks[$x]] as $set_division_point )  
+          //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>'.print_r($pks[$x],true).'</pre>', 'error');
+		foreach ( $division_points[$pks[$x]] as $division_id => $value )  
           {
-            
+            //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>'.print_r($division_id,true).'</pre>', 'error');
+          //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>'.print_r($value,true).'</pre>', 'error');
+// Fields to update.
+$fields = array(
+    $this->jsmdb->quoteName('start_points') . ' = ' . $value['start_points'],
+    $this->jsmdb->quoteName('matches_finally') . ' = '.$value['matches_finally'],
+    $this->jsmdb->quoteName('points_finally') . ' = '.$value['points_finally'],
+    $this->jsmdb->quoteName('neg_points_finally') . ' = '.$value['neg_points_finally'],
+    $this->jsmdb->quoteName('won_finally') . ' = '.$value['won_finally'],
+    $this->jsmdb->quoteName('draws_finally') . ' = '.$value['draws_finally'],
+    $this->jsmdb->quoteName('lost_finally') . ' = '.$value['lost_finally'],
+    $this->jsmdb->quoteName('diffgoals_finally') . ' = '.$value['diffgoals_finally'],
+    $this->jsmdb->quoteName('guestgoals_finally') . ' = '.$value['guestgoals_finally']
+);
+   
+// Conditions for which records should be updated.
+$conditions = array(
+    $this->jsmdb->quoteName('team_id') . ' = ' . $pks[$x],
+    $this->jsmdb->quoteName('division_id') . ' = ' . $division_id
+);       
+$this->jsmquery->clear();    
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_project_team_division'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->jsmquery);
+$resultupdate = $this->jsmdb->execute();           
+           
             
           }
           
