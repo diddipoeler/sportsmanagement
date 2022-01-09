@@ -1,4 +1,4 @@
-ALTER TABLE `d00b716f`.`h4roi_sportsmanagement_project_team_division` DROP INDEX `combi`, ADD UNIQUE `combi` (`project_id`, `team_id`, `division_id`) ;
+ALTER TABLE `#__sportsmanagement_project_team_division` DROP INDEX `combi`, ADD UNIQUE `combi` (`project_id`, `team_id`, `division_id`) ;
 
 
 
