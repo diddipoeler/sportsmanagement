@@ -477,7 +477,7 @@ if ( $this->modelclub->getuserextrafieldvalue((int) $row->club_id,'soccerway' ) 
 							'value', 'text', $row->division_id
 						);
 						?>
-                        <br />
+                        <br /><br />
                         <?php
                         foreach ($this->divisions as $d) if ( $d->value )
 					{
