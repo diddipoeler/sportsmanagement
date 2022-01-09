@@ -139,6 +139,9 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
 
 		$project_id     = $post['pid'];
 		$new_project_id = $post['all_project_id'];
+        
+        $division_points = $post['division_points'];
+        
 		$this->jsmquery->clear();
 		$this->jsmquery->select('l.associations');
 		$this->jsmquery->from('#__sportsmanagement_league as l');
@@ -212,6 +215,17 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
 
 			$result = Factory::getDbo()->updateObject('#__sportsmanagement_club', $object, 'id');
 		}
+        
+        
+        for ($x = 0; $x < count($pks); $x++)
+		{
+		foreach ( $division_points[$pks[$x]] as $set_division_point )  
+          {
+            
+            
+          }
+          
+          }
 
 		return $result;
 	}
