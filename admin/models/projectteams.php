@@ -79,6 +79,35 @@ class sportsmanagementModelProjectteams extends JSMModelList
 
 	}
 
+
+
+/**
+ * sportsmanagementModelProjectteams::getProjectTeamDivisionPoints()
+ * 
+ * @param integer $project_id
+ * @param integer $projectteamid
+ * @param integer $division_id
+ * @param string $field
+ * @return void
+ */
+function getProjectTeamDivisionPoints($project_id = 0,$projectteamid = 0,$division_id = 0,$field = '')
+	{
+		$db             = Factory::getDBO();
+		$query          = $db->getQuery(true);
+		$app            = Factory::getApplication();
+        $query->select($field);
+		$query->from('#__sportsmanagement_project_team_division');
+		$query->where('project_id = ' . $project_id);
+        $query->where('team_id = ' . $projectteamid);
+        $query->where('division_id = ' . $division_id);
+        //$query->where('published = 1');
+		$db->setQuery($query);
+		$result = $db->loadResult();
+        
+        return $result;
+        }
+        
+        
 /**
  * sportsmanagementModelProjectteams::checkProjectTeamDivision()
  * 

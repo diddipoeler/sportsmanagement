@@ -561,10 +561,22 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
                                                       value="<?php echo $row->matches_finally; ?>"
                                                       onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
                                                       
-<br>
+<br />
 <?php echo $this->modelmatches->getMatchesCount($this->project_id,$row->id); ?>
-
-                                                                          
+<br />
+ <?php
+foreach ($this->divisions as $d) if ( $d->value )
+{
+$result = $this->model->getProjectTeamDivisionPoints($this->project_id,$row->id,$d->value,'start_points');
+?>
+<input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
+      name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]"
+      value="<?php echo $result; ?>"
+      onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
+      <br />
+<?php
+}
+?>                                                     
                 </td>
                 <td class="center">
                     <input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
