@@ -243,10 +243,17 @@ $conditions = array(
     $this->jsmdb->quoteName('division_id') . ' = ' . $division_id
 );       
 $this->jsmquery->clear();    
+try
+		{
 $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_project_team_division'))->set($fields)->where($conditions);
 $this->jsmdb->setQuery($this->jsmquery);
 $resultupdate = $this->jsmdb->execute();           
-           
+        	}
+		catch (Exception $e)
+		{
+//$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+//$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+		}   
             
           }
           
