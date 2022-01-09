@@ -554,6 +554,20 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
                                                       name="start_points<?php echo $row->id; ?>"
                                                       value="<?php echo $row->start_points; ?>"
                                                       onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
+                                                      <br /><br />
+                                                       <?php
+foreach ($this->divisions as $d) if ( $d->value )
+{
+$result = $this->model->getProjectTeamDivisionPoints($this->project_id,$row->id,$d->value,'start_points');
+?>
+<input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
+      name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]"
+      value="<?php echo $result; ?>"
+      onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
+      <br />
+<?php
+}
+?>   
                 </td>
                 <td class="center">
                     <input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
@@ -567,7 +581,7 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
  <?php
 foreach ($this->divisions as $d) if ( $d->value )
 {
-$result = $this->model->getProjectTeamDivisionPoints($this->project_id,$row->id,$d->value,'start_points');
+$result = $this->model->getProjectTeamDivisionPoints($this->project_id,$row->id,$d->value,'matches_finally');
 ?>
 <input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
       name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]"
@@ -583,12 +597,40 @@ $result = $this->model->getProjectTeamDivisionPoints($this->project_id,$row->id,
                                                       name="points_finally<?php echo $row->id; ?>"
                                                       value="<?php echo $row->points_finally; ?>"
                                                       onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
+                                                       <br /><br />
+                                                       <?php
+foreach ($this->divisions as $d) if ( $d->value )
+{
+$result = $this->model->getProjectTeamDivisionPoints($this->project_id,$row->id,$d->value,'points_finally');
+?>
+<input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
+      name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]"
+      value="<?php echo $result; ?>"
+      onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
+      <br />
+<?php
+}
+?>   
                 </td>
                 <td class="center">
                     <input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
                                                       name="neg_points_finally<?php echo $row->id; ?>"
                                                       value="<?php echo $row->neg_points_finally; ?>"
                                                       onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
+                                                       <br /><br />
+                                                       <?php
+foreach ($this->divisions as $d) if ( $d->value )
+{
+$result = $this->model->getProjectTeamDivisionPoints($this->project_id,$row->id,$d->value,'neg_points_finally');
+?>
+<input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
+      name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]"
+      value="<?php echo $result; ?>"
+      onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
+      <br />
+<?php
+}
+?>   
                 </td>
                 <td class="center">
                     <input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
@@ -602,36 +644,120 @@ $result = $this->model->getProjectTeamDivisionPoints($this->project_id,$row->id,
                                                       name="won_finally<?php echo $row->id; ?>"
                                                       value="<?php echo $row->won_finally; ?>"
                                                       onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
+                                                       <br /><br />
+                                                       <?php
+foreach ($this->divisions as $d) if ( $d->value )
+{
+$result = $this->model->getProjectTeamDivisionPoints($this->project_id,$row->id,$d->value,'won_finally');
+?>
+<input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
+      name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]"
+      value="<?php echo $result; ?>"
+      onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
+      <br />
+<?php
+}
+?>   
                 </td>
                 <td class="center">
                     <input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
                                                       name="draws_finally<?php echo $row->id; ?>"
                                                       value="<?php echo $row->draws_finally; ?>"
                                                       onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
+                                                       <br /><br />
+                                                       <?php
+foreach ($this->divisions as $d) if ( $d->value )
+{
+$result = $this->model->getProjectTeamDivisionPoints($this->project_id,$row->id,$d->value,'draws_finally');
+?>
+<input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
+      name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]"
+      value="<?php echo $result; ?>"
+      onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
+      <br />
+<?php
+}
+?>   
                 </td>
                 <td class="center">
                     <input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
                                                       name="lost_finally<?php echo $row->id; ?>"
                                                       value="<?php echo $row->lost_finally; ?>"
                                                       onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
+                                                       <br /><br />
+                                                       <?php
+foreach ($this->divisions as $d) if ( $d->value )
+{
+$result = $this->model->getProjectTeamDivisionPoints($this->project_id,$row->id,$d->value,'lost_finally');
+?>
+<input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
+      name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]"
+      value="<?php echo $result; ?>"
+      onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
+      <br />
+<?php
+}
+?>   
                 </td>
                 <td class="center">
                     <input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
                                                       name="homegoals_finally<?php echo $row->id; ?>"
                                                       value="<?php echo $row->homegoals_finally; ?>"
                                                       onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
+                                                       <br /><br />
+                                                       <?php
+foreach ($this->divisions as $d) if ( $d->value )
+{
+$result = $this->model->getProjectTeamDivisionPoints($this->project_id,$row->id,$d->value,'homegoals_finally');
+?>
+<input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
+      name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]"
+      value="<?php echo $result; ?>"
+      onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
+      <br />
+<?php
+}
+?>   
                 </td>
                 <td class="center">
                     <input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
                                                       name="guestgoals_finally<?php echo $row->id; ?>"
                                                       value="<?php echo $row->guestgoals_finally; ?>"
                                                       onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
+                                                       <br /><br />
+                                                       <?php
+foreach ($this->divisions as $d) if ( $d->value )
+{
+$result = $this->model->getProjectTeamDivisionPoints($this->project_id,$row->id,$d->value,'guestgoals_finally');
+?>
+<input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
+      name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]"
+      value="<?php echo $result; ?>"
+      onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
+      <br />
+<?php
+}
+?>   
                 </td>
                 <td class="center">
                     <input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
                                                       name="diffgoals_finally<?php echo $row->id; ?>"
                                                       value="<?php echo $row->diffgoals_finally; ?>"
                                                       onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
+                                                       <br /><br />
+                                                       <?php
+foreach ($this->divisions as $d) if ( $d->value )
+{
+$result = $this->model->getProjectTeamDivisionPoints($this->project_id,$row->id,$d->value,'diffgoals_finally');
+?>
+<input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
+      name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]"
+      value="<?php echo $result; ?>"
+      onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
+      <br />
+<?php
+}
+?>   
                 </td>
 
                 <td class="center">
