@@ -216,7 +216,7 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
 			$result = Factory::getDbo()->updateObject('#__sportsmanagement_club', $object, 'id');
 		}
         
-        
+        //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>'.print_r($division_points,true).'</pre>', 'error');
         for ($x = 0; $x < count($pks); $x++)
 		{
 		foreach ( $division_points[$pks[$x]] as $set_division_point )  

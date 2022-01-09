@@ -561,7 +561,7 @@ foreach ($this->divisions as $d) if ( $d->value )
 $result = $this->model->getProjectTeamDivisionPoints($this->project_id,$row->id,$d->value,'start_points');
 ?>
 <input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
-      name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]"
+      name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]['start_points']"
       value="<?php echo $result; ?>"
       onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
       <br />
@@ -584,7 +584,7 @@ foreach ($this->divisions as $d) if ( $d->value )
 $result = $this->model->getProjectTeamDivisionPoints($this->project_id,$row->id,$d->value,'matches_finally');
 ?>
 <input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
-      name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]"
+      name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]['matches_finally']"
       value="<?php echo $result; ?>"
       onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
       <br />
@@ -604,7 +604,7 @@ foreach ($this->divisions as $d) if ( $d->value )
 $result = $this->model->getProjectTeamDivisionPoints($this->project_id,$row->id,$d->value,'points_finally');
 ?>
 <input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
-      name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]"
+      name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]['points_finally']"
       value="<?php echo $result; ?>"
       onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
       <br />
@@ -624,7 +624,7 @@ foreach ($this->divisions as $d) if ( $d->value )
 $result = $this->model->getProjectTeamDivisionPoints($this->project_id,$row->id,$d->value,'neg_points_finally');
 ?>
 <input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
-      name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]"
+      name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]['neg_points_finally']"
       value="<?php echo $result; ?>"
       onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
       <br />
@@ -651,7 +651,7 @@ foreach ($this->divisions as $d) if ( $d->value )
 $result = $this->model->getProjectTeamDivisionPoints($this->project_id,$row->id,$d->value,'won_finally');
 ?>
 <input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
-      name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]"
+      name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]['won_finally']"
       value="<?php echo $result; ?>"
       onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
       <br />
@@ -671,7 +671,7 @@ foreach ($this->divisions as $d) if ( $d->value )
 $result = $this->model->getProjectTeamDivisionPoints($this->project_id,$row->id,$d->value,'draws_finally');
 ?>
 <input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
-      name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]"
+      name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]['draws_finally']"
       value="<?php echo $result; ?>"
       onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
       <br />
@@ -691,7 +691,7 @@ foreach ($this->divisions as $d) if ( $d->value )
 $result = $this->model->getProjectTeamDivisionPoints($this->project_id,$row->id,$d->value,'lost_finally');
 ?>
 <input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
-      name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]"
+      name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]['lost_finally']"
       value="<?php echo $result; ?>"
       onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
       <br />
@@ -711,7 +711,7 @@ foreach ($this->divisions as $d) if ( $d->value )
 $result = $this->model->getProjectTeamDivisionPoints($this->project_id,$row->id,$d->value,'homegoals_finally');
 ?>
 <input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
-      name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]"
+      name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]['diffgoals_finally']"
       value="<?php echo $result; ?>"
       onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
       <br />
@@ -731,7 +731,7 @@ foreach ($this->divisions as $d) if ( $d->value )
 $result = $this->model->getProjectTeamDivisionPoints($this->project_id,$row->id,$d->value,'guestgoals_finally');
 ?>
 <input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
-      name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]"
+      name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]['guestgoals_finally']"
       value="<?php echo $result; ?>"
       onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
       <br />
@@ -751,7 +751,7 @@ foreach ($this->divisions as $d) if ( $d->value )
 $result = $this->model->getProjectTeamDivisionPoints($this->project_id,$row->id,$d->value,'diffgoals_finally');
 ?>
 <input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
-      name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]"
+      name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]['diffgoals_finally']"
       value="<?php echo $result; ?>"
       onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
       <br />
