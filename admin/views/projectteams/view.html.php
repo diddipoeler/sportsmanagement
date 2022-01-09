@@ -267,6 +267,15 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 //		$this->project        = $project;
 		$this->project_art_id = $this->project_art_id;
 
+/** pro division die punkte hinterlegen*/
+if ($this->project->project_type == 'DIVISIONS_LEAGUE')
+{
+foreach ($this->projectteam as $teams)
+{
+$this->model->checkProjectTeamDivision($teams->projectteamid,$teams->id,$teams->project_id,$teams->team_id);			
+}
+
+}
 		switch ($this->getLayout())
 		{
 			case 'editlist';

@@ -79,6 +79,42 @@ class sportsmanagementModelProjectteams extends JSMModelList
 
 	}
 
+/**
+ * sportsmanagementModelProjectteams::checkProjectTeamDivision()
+ * 
+ * @param integer $projectteamid
+ * @param integer $id
+ * @param integer $project_id
+ * @param integer $team_id
+ * @return void
+ */
+function checkProjectTeamDivision($projectteamid = 0,$id = 0,$project_id = 0,$team_id = 0)
+	{
+		$db             = Factory::getDBO();
+		$query          = $db->getQuery(true);
+		$app            = Factory::getApplication();
+        
+        $query->select('*');
+		$query->from('#__sportsmanagement_division');
+		$query->where('project_id = ' . (int) self::$projectid);
+        //$query->where('published = 1');
+		$db->setQuery($query);
+		$divisions = $db->loadObjectList();
+        
+        foreach ($divisions as $d)
+					{
+        $temp = new stdClass;
+				$temp->project_id = $project_id;
+				$temp->team_id = $projectteamid;
+                $temp->division_id = $d->id;
+				$result = Factory::getDbo()->insertObject('#__sportsmanagement_project_team_division', $temp);
+
+
+					}
+
+        
+        
+        }
 	/**
 	 * sportsmanagementModelProjectteams::addNewProjectTeam()
 	 *
@@ -94,7 +130,7 @@ class sportsmanagementModelProjectteams extends JSMModelList
 		$app            = Factory::getApplication();
 		$season_team_id = 0;
 
-		// Holen wir uns das land der liga
+		/** Holen wir uns das land der liga */
 		$query->clear();
 		$query->select('l.country,p.season_id,p.project_type,p.master_template,p.extendeduser,p.points_after_regular_time');
 		$query->from('#__sportsmanagement_league as l');
