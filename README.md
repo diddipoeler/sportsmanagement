@@ -41,6 +41,7 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   09-01-2022: **3.10.00** Anpassungen Joomla 4, richtige Anzeige der letzten Spiele in den Gruppen
 *   19-11-2021: **3.9.20** Anpassungen Joomla 4
 *   13-11-2021: **3.9.10** Meister im Project nutzen
 *   11-11-2021: **3.9.00** Anpassungen Joomla 4
