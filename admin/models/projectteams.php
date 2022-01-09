@@ -96,7 +96,7 @@ function checkProjectTeamDivision($projectteamid = 0,$id = 0,$project_id = 0,$te
         
         $query->select('*');
 		$query->from('#__sportsmanagement_division');
-		$query->where('project_id = ' . (int) self::$projectid);
+		$query->where('project_id = ' . $project_id);
         //$query->where('published = 1');
 		$db->setQuery($query);
 		$divisions = $db->loadObjectList();
