@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_associations` (
   `dissolved` DATE NOT NULL DEFAULT '0000-00-00' ,
   `dissolved_year` VARCHAR(4) NULL DEFAULT NULL,
   `founded_year` VARCHAR(4) NULL DEFAULT NULL,
-  
+  `notes` TEXT NULL DEFAULT NULL ,
   PRIMARY KEY (`id`),
   KEY `country` (`country`),
   KEY `parent_id` (`parent_id`),
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_federations` (
   `dissolved` DATE NOT NULL DEFAULT '0000-00-00' ,
   `dissolved_year` VARCHAR(4) NULL DEFAULT NULL,
   `founded_year` VARCHAR(4) NULL DEFAULT NULL,
-  
+  `notes` TEXT NULL DEFAULT NULL ,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
@@ -133,6 +133,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_club` (
   `instagram` VARCHAR(250) NOT NULL DEFAULT '' ,
   `linkedin` VARCHAR(250) NOT NULL DEFAULT '' ,
   `complete_address` VARCHAR(200) NOT NULL DEFAULT '' ,
+  `notes` TEXT NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
   KEY `standard_playground` (`standard_playground`),
   KEY `country` (`country`),
@@ -315,6 +316,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_league` (
 `dissolved` DATE NOT NULL DEFAULT '0000-00-00',
 `dissolved_year` VARCHAR(4) NULL DEFAULT NULL,
 `champions_complete` TINYINT(1) NOT NULL DEFAULT '0' ,
+`notes` TEXT NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
   KEY `country` (`country`),
   KEY `sports_type_id` (`sports_type_id`)
