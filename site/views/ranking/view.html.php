@@ -184,6 +184,17 @@ class sportsmanagementViewRanking extends sportsmanagementView
 		$this->current_round = sportsmanagementModelProject::getCurrentRound(__METHOD__ . ' ' . $this->jinput->getVar("view"), sportsmanagementModelProject::$cfg_which_database);
 		$this->teams         = sportsmanagementModelProject::getTeamsIndexedByPtid(0, 'name', sportsmanagementModelProject::$cfg_which_database, __METHOD__);
 
+		//echo 'currentRanking<pre>'.print_r($this->currentRanking,true).'</pre>';
+      //echo 'currentRanking<pre>'.print_r($this->divisions,true).'</pre>';
+      foreach ($this->divisions as $division_key => $division_value)
+      {
+      
+        if ( !$this->currentRanking[$division_value->id] )
+        {
+        //echo 'keine tabelle vorhanden<br>';  
+        }
+      }
+		
 		$no_ranking_reason = '';
 		$ranking_reason    = array();
 
