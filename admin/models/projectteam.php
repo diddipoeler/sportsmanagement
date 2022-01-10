@@ -232,7 +232,7 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
           {
            
             //$fields_neu[] = $this->jsmdb->quoteName($key) . ' = ' . $this->jsmdb->Quote($value);
-            $fields_neu[] = $this->jsmdb->quoteName($key) . ' = ' . $value;
+            $fields_neu[] = $this->jsmdb->quoteName(str_replace('\'', '', $key)) . ' = ' . $value;
           }
           //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . 'fields_neu<pre>'.print_r($fields_neu,true).'</pre>', 'error');
           
