@@ -216,44 +216,67 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
 			$result = Factory::getDbo()->updateObject('#__sportsmanagement_club', $object, 'id');
 		}
         
-        //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>'.print_r($division_points,true).'</pre>', 'error');
+      //  Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . 'division_points<pre>'.print_r($division_points,true).'</pre>', 'error');
+      
         for ($x = 0; $x < count($pks); $x++)
 		{
-          //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>'.print_r($pks[$x],true).'</pre>', 'error');
-		foreach ( $division_points[$pks[$x]] as $division_id => $value )  
+         // Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . 'ptid '.$pks[$x].'', 'error');
+		foreach ( $division_points[$pks[$x]] as $division_id => $division_value )  
           {
-            //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>'.print_r($division_id,true).'</pre>', 'error');
-          //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>'.print_r($value,true).'</pre>', 'error');
+           // Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . 'division_id '.$division_id.'', 'error');
+          //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . 'division value<pre>'.print_r($division_value,true).'</pre>', 'error');
+          //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . 'matches_finally '.$division_value['matches_finally'].'', 'error');
+          
+          $fields_neu = array(); 
+          foreach ( $division_value as $key => $value ) if ( $value ) 
+          {
+           
+            //$fields_neu[] = $this->jsmdb->quoteName($key) . ' = ' . $this->jsmdb->Quote($value);
+            $fields_neu[] = $this->jsmdb->quoteName($key) . ' = ' . $value;
+          }
+          //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . 'fields_neu<pre>'.print_r($fields_neu,true).'</pre>', 'error');
+          
+          /*
 // Fields to update.
 $fields = array(
-    $this->jsmdb->quoteName('start_points') . ' = ' . $value['start_points'],
-    $this->jsmdb->quoteName('matches_finally') . ' = '.$value['matches_finally'],
-    $this->jsmdb->quoteName('points_finally') . ' = '.$value['points_finally'],
-    $this->jsmdb->quoteName('neg_points_finally') . ' = '.$value['neg_points_finally'],
-    $this->jsmdb->quoteName('won_finally') . ' = '.$value['won_finally'],
-    $this->jsmdb->quoteName('draws_finally') . ' = '.$value['draws_finally'],
-    $this->jsmdb->quoteName('lost_finally') . ' = '.$value['lost_finally'],
-    $this->jsmdb->quoteName('diffgoals_finally') . ' = '.$value['diffgoals_finally'],
-    $this->jsmdb->quoteName('guestgoals_finally') . ' = '.$value['guestgoals_finally']
+    $this->jsmdb->quoteName('start_points') . ' = ' . $division_value['start_points'],
+    $this->jsmdb->quoteName('matches_finally') . ' = '.$division_value['matches_finally'],
+    $this->jsmdb->quoteName('points_finally') . ' = '.$division_value['points_finally'],
+    $this->jsmdb->quoteName('neg_points_finally') . ' = '.$division_value['neg_points_finally'],
+    $this->jsmdb->quoteName('won_finally') . ' = '.$division_value['won_finally'],
+    $this->jsmdb->quoteName('draws_finally') . ' = '.$division_value['draws_finally'],
+    $this->jsmdb->quoteName('lost_finally') . ' = '.$division_value['lost_finally'],
+    $this->jsmdb->quoteName('diffgoals_finally') . ' = '.$division_value['diffgoals_finally'],
+    $this->jsmdb->quoteName('guestgoals_finally') . ' = '.$division_value['guestgoals_finally']
 );
    
+          Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . 'fields<pre>'.print_r($fields,true).'</pre>', 'error');
+          */
+          
+          
+          if ( $fields_neu )
+          {
 // Conditions for which records should be updated.
 $conditions = array(
     $this->jsmdb->quoteName('team_id') . ' = ' . $pks[$x],
     $this->jsmdb->quoteName('division_id') . ' = ' . $division_id
 );       
+            
+            
 $this->jsmquery->clear();    
 try
 		{
-$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_project_team_division'))->set($fields)->where($conditions);
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_project_team_division'))->set($fields_neu)->where($conditions);
 $this->jsmdb->setQuery($this->jsmquery);
 $resultupdate = $this->jsmdb->execute();           
         	}
 		catch (Exception $e)
 		{
+//          Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . 'dump<pre>'.print_r($this->jsmquery->dump(),true).'</pre>', 'error');
 //$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
 //$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
-		}   
+		}  
+        }
             
           }
           
