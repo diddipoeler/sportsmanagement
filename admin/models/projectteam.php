@@ -228,7 +228,7 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
           //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . 'matches_finally '.$division_value['matches_finally'].'', 'error');
           
           $fields_neu = array(); 
-          foreach ( $division_value as $key => $value ) if ( $value ) 
+          foreach ( $division_value as $key => $value ) 
           {
            
             //$fields_neu[] = $this->jsmdb->quoteName($key) . ' = ' . $this->jsmdb->Quote($value);
