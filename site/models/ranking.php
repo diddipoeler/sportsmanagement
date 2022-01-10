@@ -480,6 +480,12 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 					self::$homeRank[$division]       = $ranking->getRankingHome(self::$from, self::$to, $division, $cfg_which_database,$sports_type_name);
 					self::$awayRank[$division]       = $ranking->getRankingAway(self::$from, self::$to, $division, $cfg_which_database,$sports_type_name);
 				}
+				
+				
+				if ( $division && !self::$currentRanking[$division] )
+				{
+					//echo 'gruppentabelle ist leer <br>';
+				}
 
 				self::_sortRanking(self::$currentRanking[$division]);
 
