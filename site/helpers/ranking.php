@@ -801,6 +801,33 @@ class JSMRanking
 		return $data;
 	}
 
+
+	/**
+	 * JSMRanking::getProjectTeamsDivision()
+	 * 
+	 * @param integer $division_id
+	 * @param integer $project_team_id
+	 * @return
+	 */
+	public static function getProjectTeamsDivision($division_id = 0,$project_team_id = 0)
+	{
+	$app = Factory::getApplication();
+	$jinput = $app->input;	
+	$db = sportsmanagementHelper::getDBConnection(true, $jinput->get('cfg_which_database', 0, '') );
+	$query = $db->getQuery(true);
+	$query->select('*');
+	$query->from('#__sportsmanagement_project_team_division');
+	$query->where('division_id = ' . (int) $division_id);
+    $query->where('team_id = ' . (int) $project_team_id);
+    $query->where('is_in_score = 1');
+	$query->where('use_finally = 1');
+	$db->setQuery($query);
+	$division_points = $db->loadObject();	
+		
+	return $division_points;	
+		
+	}
+    
 	/**
 	 * gets team info from db
 	 *
@@ -839,7 +866,7 @@ class JSMRanking
 
 		/**
 		 * es kann aber auch vorkommen, dass nur abschlusstabellen zu den gruppen vorhanden sind.
-		 * deshalb muss die komponente auch in der lage das darzustellen.
+		 * deshalb muss die komponente auch in der lage sein das darzustellen.
 		 */
 		if (!$res && $division)
 		{
@@ -866,7 +893,7 @@ class JSMRanking
 			$t->setTeamid($r->teamid);
 			$t->setPtid($r->ptid);
 
-			// Diddipoeler
+			/** Diddipoeler */
 			$t->ptid_slug = $r->ptid_slug;
 
 			if ($division && !$r->division_id)
@@ -882,11 +909,11 @@ class JSMRanking
 			$t->setNegpoints($r->neg_points_finally);
 			$t->setName($r->name);
 
-			// New for is_in_score
+			/** New for is_in_score */
 			$t->setIs_In_Score($r->is_in_score);
 			$t->setuse_finaltablerank($r->finaltablerank);
 
-			// New for use_finally
+			/** New for use_finally */
 			$t->setuse_finally($r->use_finally);
 			$t->setpoints_finally($r->points_finally);
 			$t->setneg_points_finally($r->neg_points_finally);
@@ -900,7 +927,7 @@ class JSMRanking
 
 			$t->penalty_points = $r->penalty_points;
 
-			if ($r->use_finally)
+			if ( $r->use_finally && !$division )
 			{
 				$t->sum_points        = $r->points_finally;
 				$t->neg_points        = $r->neg_points_finally;
@@ -912,6 +939,24 @@ class JSMRanking
 				$t->sum_team2_result  = $r->guestgoals_finally;
 				$t->diff_team_results = $r->diffgoals_finally;
 			}
+            elseif ( $r->use_finally && $division )
+			{
+			$division_points = getProjectTeamsDivision($division,$r->ptid); 
+				$t->sum_points        = $division_points->points_finally;
+				$t->neg_points        = $division_points->neg_points_finally;
+				$t->cnt_matches       = $division_points->matches_finally;
+				$t->cnt_won           = $division_points->won_finally;
+				$t->cnt_draw          = $division_points->draws_finally;
+				$t->cnt_lost          = $division_points->lost_finally;
+				$t->sum_team1_result  = $division_points->homegoals_finally;
+				$t->sum_team2_result  = $division_points->guestgoals_finally;
+				$t->diff_team_results = $division_points->diffgoals_finally;
+			}
+            
+            
+            
+            
+            
 
 			$teams[$r->ptid] = $t;
 		}
