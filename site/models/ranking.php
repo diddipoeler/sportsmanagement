@@ -540,7 +540,7 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 	public static function getProjectTeamsDivision($division_id = 0)
 	{
 	$app = Factory::getApplication();
-	$input = $app->input;	
+	$jinput = $app->input;	
 	$db = sportsmanagementHelper::getDBConnection(true, $jinput->get('cfg_which_database', 0, '') );
 	$query = $db->getQuery(true);
 	$query->select('*');
