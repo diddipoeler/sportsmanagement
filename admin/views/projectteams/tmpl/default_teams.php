@@ -481,7 +481,12 @@ if ( $this->modelclub->getuserextrafieldvalue((int) $row->club_id,'soccerway' ) 
                         <?php
                         foreach ($this->divisions as $d) if ( $d->value )
 					{
-					  echo $d->text.'<br />';
+				 ?>
+                            <input type="text" class="readonly" readonly value="<?php echo $d->text;?>">
+                            <br />
+                            <?php
+				
+					  //echo $d->text.'<br />';
                        }
                         ?>
                     </td>
