@@ -871,19 +871,24 @@ class JSMRanking
 		if (!$res && $division)
 		{
 			$query->clear();
-			$query->select('pt.id AS ptid, pt.is_in_score, pt.start_points, pt.division_id');
+			$query->select('pt.id AS ptid, pt.is_in_score, ptd.start_points, ptd.division_id');
 			$query->select('t.name, t.id as teamid, pt.neg_points_finally');
-			$query->select('pt.use_finally, pt.points_finally,pt.matches_finally,pt.won_finally,pt.draws_finally,pt.lost_finally');
-			$query->select('pt.homegoals_finally, pt.guestgoals_finally,pt.diffgoals_finally,pt.penalty_points,pt.finaltablerank');
+			$query->select('ptd.use_finally, ptd.points_finally,ptd.matches_finally,ptd.won_finally,ptd.draws_finally,ptd.lost_finally');
+			$query->select('ptd.homegoals_finally, ptd.guestgoals_finally,ptd.diffgoals_finally,ptd.penalty_points,ptd.finaltablerank');
 			$query->select('CONCAT_WS(\':\',pt.id,t.alias) AS ptid_slug');
 			$query->from('#__sportsmanagement_project_team AS pt ');
 			$query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.id = pt.team_id');
 			$query->join('INNER', '#__sportsmanagement_team AS t ON st1.team_id = t.id ');
+          $query->join('INNER', '#__sportsmanagement_project_team_division AS ptd ON ptd.team_id = pt.id and ptd.project_id = pt.project_id');
 			$query->where('pt.project_id = ' . $pid);
-			$query->where('pt.is_in_score = 1');
+			$query->where('ptd.is_in_score = 1');
+          $query->where('ptd.use_finally = 1');
+          $query->where('ptd.division_id = ' . $division);
 			$db->setQuery($query);
 			$res = $db->loadObjectList();
 		}
+
+//echo __LINE__.'<pre>'.print_r($res,true).'</pre>';
 
 		$teams = array();
 
@@ -927,7 +932,7 @@ class JSMRanking
 
 			$t->penalty_points = $r->penalty_points;
 
-			if ( $r->use_finally && !$division )
+			if ( $r->use_finally )
 			{
 				$t->sum_points        = $r->points_finally;
 				$t->neg_points        = $r->neg_points_finally;
@@ -939,19 +944,19 @@ class JSMRanking
 				$t->sum_team2_result  = $r->guestgoals_finally;
 				$t->diff_team_results = $r->diffgoals_finally;
 			}
-            elseif ( $r->use_finally && $division )
-			{
-			$division_points = self::getProjectTeamsDivision($division,$r->ptid); 
-				$t->sum_points        = $division_points->points_finally;
-				$t->neg_points        = $division_points->neg_points_finally;
-				$t->cnt_matches       = $division_points->matches_finally;
-				$t->cnt_won           = $division_points->won_finally;
-				$t->cnt_draw          = $division_points->draws_finally;
-				$t->cnt_lost          = $division_points->lost_finally;
-				$t->sum_team1_result  = $division_points->homegoals_finally;
-				$t->sum_team2_result  = $division_points->guestgoals_finally;
-				$t->diff_team_results = $division_points->diffgoals_finally;
-			}
+//            elseif ( $r->use_finally && $division )
+//			{
+//			$division_points = self::getProjectTeamsDivision($division,$r->ptid); 
+//				$t->sum_points        = $division_points->points_finally;
+//				$t->neg_points        = $division_points->neg_points_finally;
+//				$t->cnt_matches       = $division_points->matches_finally;
+//				$t->cnt_won           = $division_points->won_finally;
+//				$t->cnt_draw          = $division_points->draws_finally;
+//				$t->cnt_lost          = $division_points->lost_finally;
+//				$t->sum_team1_result  = $division_points->homegoals_finally;
+//				$t->sum_team2_result  = $division_points->guestgoals_finally;
+//				$t->diff_team_results = $division_points->diffgoals_finally;
+//			}
             
             
             
