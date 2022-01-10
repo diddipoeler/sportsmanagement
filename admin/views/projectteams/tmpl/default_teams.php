@@ -803,6 +803,23 @@ elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
 echo $this->loadTemplate('switcher3');
 }                                         
 					?>
+ <br /><br />
+                                                       <?php
+foreach ($this->divisions as $d) if ( $d->value )
+{
+$result = $this->model->getProjectTeamDivisionPoints($this->project_id,$row->id,$d->value,'use_finally');
+?>
+<input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
+      name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]['use_finally']"
+      value="<?php echo $result; ?>"
+      onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
+      <br />
+<?php
+}
+?>                       
+                    
+                    
+                    
                 </td>
 		<td class="center">
 		<?php
