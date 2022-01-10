@@ -808,11 +808,31 @@ echo $this->loadTemplate('switcher3');
 foreach ($this->divisions as $d) if ( $d->value )
 {
 $result = $this->model->getProjectTeamDivisionPoints($this->project_id,$row->id,$d->value,'use_finally');
+
+$this->switcher_value = $result;    
+$this->switcher_name = "division_points[".$row->id."][".$d->value."]['use_finally']";                
+/** welche joomla version ? */
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+echo $this->loadTemplate('switcher4');    
+}
+elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
+{    
+echo $this->loadTemplate('switcher3');
+}                                         
+
+
+
+
+
+
 ?>
+<!--
 <input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
       name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]['use_finally']"
       value="<?php echo $result; ?>"
       onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
+      -->
       <br />
 <?php
 }
