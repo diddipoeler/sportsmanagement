@@ -716,7 +716,7 @@ foreach ($this->divisions as $d) if ( $d->value )
 $result = $this->model->getProjectTeamDivisionPoints($this->project_id,$row->id,$d->value,'homegoals_finally');
 ?>
 <input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
-      name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]['diffgoals_finally']"
+      name="division_points[<?php echo $row->id; ?>][<?php echo $d->value; ?>]['homegoals_finally']"
       value="<?php echo $result; ?>"
       onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"/>
       <br />
