@@ -485,7 +485,7 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 				if ( $division && !self::$currentRanking[$division] )
 				{
 					//echo 'gruppentabelle ist leer <br>';
-					self::$currentRanking[$division] = self::getProjectTeamsDivision($division);
+					//self::$currentRanking[$division] = self::getProjectTeamsDivision($division);
 				}
 
 				self::_sortRanking(self::$currentRanking[$division]);
