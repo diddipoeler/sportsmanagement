@@ -941,7 +941,7 @@ class JSMRanking
 			}
             elseif ( $r->use_finally && $division )
 			{
-			$division_points = getProjectTeamsDivision($division,$r->ptid); 
+			$division_points = self::getProjectTeamsDivision($division,$r->ptid); 
 				$t->sum_points        = $division_points->points_finally;
 				$t->neg_points        = $division_points->neg_points_finally;
 				$t->cnt_matches       = $division_points->matches_finally;
