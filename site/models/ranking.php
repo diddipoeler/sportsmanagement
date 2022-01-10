@@ -485,6 +485,7 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 				if ( $division && !self::$currentRanking[$division] )
 				{
 					//echo 'gruppentabelle ist leer <br>';
+					self::$currentRanking[$division] = self::getProjectTeamsDivision($division);
 				}
 
 				self::_sortRanking(self::$currentRanking[$division]);
@@ -536,6 +537,24 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 		return;
 	}
 
+	public static function getProjectTeamsDivision($division_id = 0)
+	{
+	$app = Factory::getApplication();
+	$input = $app->input;	
+	$db = sportsmanagementHelper::getDBConnection(true, $jinput->get('cfg_which_database', 0, '') );
+	$query = $db->getQuery(true);
+	$query->select('*');
+	$query->from('#__sportsmanagement_project_team_division');
+	$query->where('division_id = ' . (int) $division_id);
+        $query->where('is_in_score = 1');
+	$query->where('use_finally = 1');
+	$db->setQuery($query);
+	$division_points = $db->loadObjectList('team_id');	
+		
+	return $division_points;	
+		
+	}
+	
 	/**
 	 * sportsmanagementModelRanking::_sortRanking()
 	 *
