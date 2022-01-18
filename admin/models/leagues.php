@@ -194,7 +194,7 @@ class sportsmanagementModelLeagues extends JSMModelList
 			$this->jsmquery->where('obj.league_level = ' . $this->getState('filter.search_league_level'));
 		}
 		
-		if ($this->getState('filter.search_champions_complete'))
+		if ( $this->getState('filter.search_champions_complete') != '' )
 		{
 			$this->jsmquery->where('obj.champions_complete = ' . $this->getState('filter.search_champions_complete'));
 		}
