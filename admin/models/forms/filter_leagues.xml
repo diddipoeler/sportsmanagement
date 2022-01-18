@@ -4,6 +4,7 @@
 		<field
 			name="search"
 			type="text"
+		       class="select2-container"
 			inputmode="search"
 			label="JGLOBAL_LOOKING_FOR"
 			description="JGLOBAL_LOOKING_FOR"
@@ -47,6 +48,7 @@
 <field
 			name="search_league_level"
 			type="leaguelevel"
+       class="select2-container"
 			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LEVEL"
 			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LEVEL_DESC"
       required=""
@@ -55,6 +57,7 @@
 	</field>
 
 <field name="search_champions_complete" type="list" default="" 
+       class="select2-container"
 onchange="this.form.submit();"
 required="" label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_CHAMPIONS_COMPLETE" description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_CHAMPIONS_COMPLETE">
   <option value="">COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_CHAMPIONS_COMPLETE</option>
