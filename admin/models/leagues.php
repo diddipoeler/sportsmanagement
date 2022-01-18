@@ -122,6 +122,7 @@ class sportsmanagementModelLeagues extends JSMModelList
 		$this->setState('filter.search_agegroup', $this->getUserStateFromRequest($this->context . '.filter.search_agegroup', 'filter_search_agegroup', ''));
 		
 		$this->setState('filter.search_league_level', $this->getUserStateFromRequest($this->context . '.filter.search_league_level', 'filter_search_league_level', ''));
+		$this->setState('filter.search_champions_complete', $this->getUserStateFromRequest($this->context . '.filter.search_champions_complete', 'filter_search_champions_complete', ''));
 		
 		$this->setState('filter.search_association', $this->getUserStateFromRequest($this->context . '.filter.search_association', 'filter_search_association', ''));
 		$this->setState('filter.federation', $this->getUserStateFromRequest($this->context . '.filter.federation', 'filter_federation', ''));
@@ -191,6 +192,11 @@ class sportsmanagementModelLeagues extends JSMModelList
 		if ($this->getState('filter.search_league_level'))
 		{
 			$this->jsmquery->where('obj.league_level = ' . $this->getState('filter.search_league_level'));
+		}
+		
+		if ($this->getState('filter.search_champions_complete'))
+		{
+			$this->jsmquery->where('obj.champions_complete = ' . $this->getState('filter.search_champions_complete'));
 		}
 
 		if (is_numeric($this->getState('filter.state')))
