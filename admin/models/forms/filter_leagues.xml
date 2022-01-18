@@ -4,7 +4,6 @@
 		<field
 			name="search"
 			type="text"
-		       class="select2-container"
 			inputmode="search"
 			label="JGLOBAL_LOOKING_FOR"
 			description="JGLOBAL_LOOKING_FOR"
@@ -13,6 +12,7 @@
     <field
 			name="state"
 			type="status"
+	   class="select2-container"
 			label="JOPTION_SELECT_PUBLISHED"
 			description="JOPTION_SELECT_PUBLISHED_DESC"
 			onchange="this.form.submit();"
