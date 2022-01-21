@@ -35,11 +35,9 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
 	 */
 	function init()
 	{
-		
 	   $this->leaguechampions = array();
        $this->teamseason = array();
        $this->leagueteamchampions = array();
-       
        
        $mdlRankingAllTime = BaseDatabaseModel::getInstance("RankingAllTime", "sportsmanagementModel");
        $mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");

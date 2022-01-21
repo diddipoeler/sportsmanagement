@@ -126,6 +126,39 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 		parent::__construct();
 	}
 
+
+	/**
+	 * sportsmanagementModelProject::getProjectCountMatches()
+	 * 
+	 * @param integer $project_id
+	 * @return void
+	 */
+	public static function getProjectCountMatches($project_id = 0)
+	{
+$app    = Factory::getApplication();
+	$option = $app->input->getCmd('option');
+    $totalresult = 0;
+	$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
+	$query     = $db->getQuery(true);	
+    $query->select('COUNT(distinct m.match_id) as totalmatch');
+    $query->from('#__sportsmanagement_match as m');
+    $query->join('INNER', '#__sportsmanagement_round as r ON r.id = m.round_id');
+	$query->where('r.project_id = ' . $project_id);
+    try
+    {
+    $db->setQuery($query);
+	$totalresult = $db->loadObject();
+    }
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+
+		}
+    $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+    return $totalresult;
+    }
+    
 	/**
 	 * sportsmanagementModelProject::getnextproject()
 	 * 
