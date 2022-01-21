@@ -86,7 +86,7 @@ $output[$this->season][] =  HTMLHelper::link($teaminfo1_link, $this->team->teamn
 $output[$this->season][] = !$this->config['show_leaguechampionoverview_season'] ? '</div>' : ''   ;  
   
 $output[$this->season][] = !$this->config['show_leaguechampionoverview_season'] ? '<div class="col-sm-2">' : ''   ;  
-$output[$this->season][] = Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHES');  
+$output[$this->season][] = Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHES').':'.$this->team->project_count_matches;  
 $output[$this->season][] = !$this->config['show_leaguechampionoverview_season'] ? '</div>' : ''   ;    
   
   /*
