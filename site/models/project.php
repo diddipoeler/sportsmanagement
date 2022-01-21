@@ -140,7 +140,7 @@ $app    = Factory::getApplication();
     $totalresult = 0;
 	$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
 	$query     = $db->getQuery(true);	
-    $query->select('COUNT(distinct m.match_id) as totalmatch');
+    $query->select('COUNT(distinct m.id) as totalmatch');
     $query->from('#__sportsmanagement_match as m');
     $query->join('INNER', '#__sportsmanagement_round as r ON r.id = m.round_id');
 	$query->where('r.project_id = ' . $project_id);
