@@ -147,7 +147,7 @@ $app    = Factory::getApplication();
     try
     {
     $db->setQuery($query);
-	$totalresult = $db->loadObject();
+	$totalresult = $db->loadResult();
     }
 		catch (Exception $e)
 		{
