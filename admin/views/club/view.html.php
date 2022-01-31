@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Environment\Browser;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewClub
@@ -83,6 +84,7 @@ $this->item->logo_small = ComponentHelper::getParams('com_sportsmanagement')->ge
 		{
 			$this->form->setValue('founded', '');
 			$this->form->setValue('dissolved', '');
+            $this->form->setValue('country',null, Factory::getApplication()->getUserState("com_sportsmanagement.clubnation", ''));
 		}
 
 		if ($this->item->latitude == 255)

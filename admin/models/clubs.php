@@ -137,6 +137,8 @@ $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array()
 		{
 			$listOrder = 'ASC';
 		}
+        
+        $this->jsmapp->setUserState("$this->jsmoption.clubnation", $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '') );
 
 		$this->setState('list.direction', $listOrder);
 	}

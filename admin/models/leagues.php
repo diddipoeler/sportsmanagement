@@ -141,7 +141,7 @@ class sportsmanagementModelLeagues extends JSMModelList
 			$listOrder = 'ASC';
 		}
 
-		$this->jsmjinput->set('leaguenation', $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '') );
+		//$this->jsmjinput->set('leaguenation', $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '') );
 		$this->jsmapp->setUserState("$this->jsmoption.leaguenation", $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '') );
 		$this->setState('list.direction', $listOrder);
 	}
