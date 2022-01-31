@@ -54,7 +54,7 @@ class sportsmanagementViewLeague extends sportsmanagementView
 		{
 			$this->form->setValue('founded', '');
 			$this->form->setValue('dissolved', '');
-			$this->form->setValue('country', Factory::getApplication()->getUserState("com_sportsmanagement.leaguenation", ''));
+			$this->form->setValue('country',null, Factory::getApplication()->getUserState("com_sportsmanagement.leaguenation", ''));
 		}
         
         $this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
