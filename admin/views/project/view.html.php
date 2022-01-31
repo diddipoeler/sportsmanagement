@@ -83,7 +83,7 @@ $this->form->setValue('editor', null, $this->user->id);
 			$this->form->setValue('start_time', null, '18:00');
 			$this->form->setValue('admin', null, $this->user->id);
 			$this->form->setValue('editor', null, $this->user->id);
-            $this->form->setValue('country',null, Factory::getApplication()->getUserState("com_sportsmanagement.projectnation", ''));
+            //$this->form->setValue('country',null, Factory::getApplication()->getUserState("com_sportsmanagement.projectnation", ''));
 		}
 		else
 		{
