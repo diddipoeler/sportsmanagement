@@ -9,11 +9,9 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewLeague
@@ -35,6 +33,8 @@ class sportsmanagementViewLeague extends sportsmanagementView
 	public function init()
 	{
 
+		//echo '<pre>'.print_r($this->jsmapp->getUserState("$this->jsmoption.leaguenation", ''),true).'</pre>';
+		
 		if ($this->item->id)
 		{
 			// Alles ok
