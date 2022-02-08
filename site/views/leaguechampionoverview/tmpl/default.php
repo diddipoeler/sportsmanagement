@@ -62,7 +62,18 @@ echo $this->loadTemplate('jsm_notes');
 $output = array();
 foreach ($this->leaguechampions as $this->season => $this->team)
 {  
-$output[$this->season][] = $this->config['show_leaguechampionoverview_season'] ? $this->season.' : ' : '<div class="col-sm-4">'.$this->season.' : '.'</div>'   ;
+$routeparameter                       = array();
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+$routeparameter['p']                  = $this->team->project_id;
+$routeparameter['type']               = 0;
+$routeparameter['r']                  = 0;
+$routeparameter['from']               = 0;
+$routeparameter['to']                 = 0;
+$routeparameter['division']           = 0;
+$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);   
+  
+$output[$this->season][] = $this->config['show_leaguechampionoverview_season'] ? HTMLHelper::link($link, $this->season).' : ' : '<div class="col-sm-4" id="seasonname">'.HTMLHelper::link($link, $this->season).' : '.'</div>'   ;
 if ( $this->team->teamid )
 {     
 $routeparameter                       = array();
