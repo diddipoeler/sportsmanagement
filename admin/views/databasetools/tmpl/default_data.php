@@ -50,7 +50,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					$link = Route::_('index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.truncate');
 					?>
 
-                    <a href="<?php echo $link;?>" 
+                    <a href="<?php echo $link; ?>" 
 		       class="btn btn-outline-primary"
                        title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATE2'); ?>">
 						<?php
