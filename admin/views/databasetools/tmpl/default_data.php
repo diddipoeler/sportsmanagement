@@ -50,7 +50,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					$link = Route::_('index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.truncate');
 					?>
 
-                    <a href="<?php echo $link; ?>"
+                    <a href="<?php echo $link;?>" 
+		       class="btn btn-outline-primary"
                        title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATE2'); ?>">
 						<?php
 						echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATE');
@@ -58,9 +59,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     </a>
                 </td>
                 <td>
+			<div class="alert alert-warning">
 					<?php
 					echo Text::_("COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATE_DESCR");
 					?>
+			</div>
                 </td>
             </tr>
 
@@ -71,6 +74,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					?>
 
                     <a href="<?php echo $link; ?>"
+		       class="btn btn-outline-primary"
                        title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATE2JL'); ?>">
 						<?php
 						echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATEJL');
@@ -78,9 +82,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     </a>
                 </td>
                 <td>
+			<div class="alert alert-warning">
 					<?php
 					echo Text::_("COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATEJL_DESCR");
 					?>
+			</div>
                 </td>
             </tr>
 
@@ -90,6 +96,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					$link = Route::_('index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.optimize');
 					?>
                     <a href="<?php echo $link; ?>"
+		       class="btn btn-outline-primary"
                        title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_OPTIMIZE2'); ?>">
 						<?php
 						echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_OPTIMIZE');
@@ -97,9 +104,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     </a>
                 </td>
                 <td>
+			<div class="alert alert-warning">
 					<?php
 					echo Text::_("COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_OPTIMIZE_DESCR");
 					?>
+			</div>
                 </td>
             </tr>
 
@@ -110,6 +119,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					?>
 
                     <a href="<?php echo $link; ?>"
+		       class="btn btn-outline-primary"
                        title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_REPAIR2'); ?>">
 						<?php
 						echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_REPAIR');
@@ -117,9 +127,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     </a>
                 </td>
                 <td>
+			<div class="alert alert-warning">
 					<?php
 					echo Text::_("COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_REPAIR_DESCR");
 					?>
+			</div>
                 </td>
             </tr>
 
@@ -130,6 +142,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					?>
 
                     <a href="<?php echo $link; ?>"
+		       class="btn btn-outline-primary"
                        title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_PICTURE_PATH_MIGRATION2'); ?>">
 						<?php
 						echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_PICTURE_PATH_MIGRATION');
@@ -137,9 +150,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     </a>
                 </td>
                 <td>
+			<div class="alert alert-warning">
 					<?php
 					echo Text::_("COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_PICTURE_PATH_MIGRATION_DESCR");
 					?>
+			</div>
                 </td>
             </tr>
 
@@ -150,6 +165,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					?>
 
                     <a href="<?php echo $link; ?>"
+		       class="btn btn-outline-primary"
                        title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_UPDATE_TEMPLATE_MASTERS2'); ?>">
 						<?php
 						echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_UPDATE_TEMPLATE_MASTERS');
@@ -157,9 +173,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     </a>
                 </td>
                 <td>
+			<div class="alert alert-warning">
 					<?php
 					echo Text::_("COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_UPDATE_TEMPLATE_MASTERS_DESCR");
 					?>
+			</div>
                 </td>
             </tr>
 
