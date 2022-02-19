@@ -22,7 +22,7 @@ use Joomla\CMS\Log\Log;
 // Make sure Sportsmanagement is enabled
 if (!ComponentHelper::isEnabled('com_sportsmanagement', true))
 {
-	Log::add(Text('SM_NOT_ENABLED'), Log::ERROR, 'jsmerror');
+	Log::add(Text::_('SM_NOT_ENABLED'), Log::ERROR, 'jsmerror');
 
 	return;
 }
