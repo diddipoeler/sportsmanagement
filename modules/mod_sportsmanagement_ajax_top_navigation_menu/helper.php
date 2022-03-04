@@ -414,6 +414,9 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 
 		if ($country_id)
 		{
+			if ( !array_key_exists($country_id, self::$_country_fed)) {
+    self::$_country_fed[$country_id];
+}
 			$result = self::$_country_fed[$country_id];
 		}
 
