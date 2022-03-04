@@ -415,7 +415,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 		if ($country_id)
 		{
 			if ( !in_array($country_id, self::$_country_fed)) {
-    self::$_country_fed[$country_id];
+    self::$_country_fed[$country_id] = '';
 }
 			$result = self::$_country_fed[$country_id];
 		}
