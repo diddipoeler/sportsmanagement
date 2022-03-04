@@ -189,7 +189,7 @@ $country_federation = $helper->getCountryFederation($country_id);
 
 if (!$country_federation)
 {
-//	$country_federation = 'NON';
+//	$country_federation = 'NONFED';
 }
 
 ?>
@@ -613,29 +613,34 @@ if ( !array_key_exists($country_federation, $countryassocselect) ) {
 $countryassocselect[$country_federation] = array();
 }
 
-if ( !is_array($countrysubsubassocselect) )
-{
-$countrysubsubassocselect = array();
-}
-if ( !array_key_exists($country_federation, $countryassocselect) ) {
+
+if ( !array_key_exists($country_federation, $countrysubsubassocselect) ) {
 $countrysubsubassocselect[$country_federation] = array();
 }
 
 
-if ( !array_key_exists($country_federation, $countryassocselect) ) {
+if ( !array_key_exists($country_federation, $countrysubsubsubassocselect) ) {
 $countrysubsubsubassocselect[$country_federation] = array();
 }
 
-
-
-
+if ( !array_key_exists($country_federation, $leagueselect) ) {
+$leagueselect[$country_federation] = array();
+}
+if ( !array_key_exists($country_federation, $divisionsselect) ) {
+$divisionsselect[$country_federation] = array();
+}
+if ( !array_key_exists($country_federation, $projectselect) ) {
+$projectselect[$country_federation] = array();
+}
 
 
 if ( !array_key_exists('assocs', $countryassocselect[$country_federation]) ) {
 $countryassocselect[$country_federation]['assocs'] = array();
 }
 
-
+//echo __LINE__.'<pre>'.print_r($country_federation,true).'</pre>';
+//echo __LINE__.'<pre>'.print_r($countrysubsubassocselect,true).'</pre>';
+//echo __LINE__.'<pre>'.print_r($countrysubsubassocselect[$country_federation],true).'</pre>';
 
 if ( !array_key_exists('subassocs', $countrysubsubassocselect[$country_federation]) ) {
 $countrysubsubassocselect[$country_federation]['subassocs'] = array();
