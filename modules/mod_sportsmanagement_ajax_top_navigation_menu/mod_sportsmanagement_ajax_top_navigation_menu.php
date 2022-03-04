@@ -612,9 +612,16 @@ Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
 if ( !array_key_exists($country_federation, $countryassocselect) ) {
 $countryassocselect[$country_federation] = array();
 }
+
+if ( !is_array($countrysubsubassocselect) )
+{
+$countrysubsubassocselect = array();
+}
 if ( !array_key_exists($country_federation, $countryassocselect) ) {
 $countrysubsubassocselect[$country_federation] = array();
 }
+
+
 if ( !array_key_exists($country_federation, $countryassocselect) ) {
 $countrysubsubsubassocselect[$country_federation] = array();
 }
@@ -628,10 +635,7 @@ if ( !array_key_exists('assocs', $countryassocselect[$country_federation]) ) {
 $countryassocselect[$country_federation]['assocs'] = array();
 }
 
-//if ( !is_array($countrysubsubassocselect) )
-//{
-//$countrysubsubassocselect = array();
-//}
+
 
 if ( !array_key_exists('subassocs', $countrysubsubassocselect[$country_federation]) ) {
 $countrysubsubassocselect[$country_federation]['subassocs'] = array();
