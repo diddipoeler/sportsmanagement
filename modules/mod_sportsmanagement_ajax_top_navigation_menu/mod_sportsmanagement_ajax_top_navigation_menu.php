@@ -58,7 +58,9 @@ $language_tag = $langtag->getTag();
 $reload       = true;
 $lang->load($extension, $base_dir, $language_tag, $reload);
 $countryassocselect = array();
-
+$leagueselect = array();
+$divisionsselect = array();
+$projectselect = array();
 /**
  *
  * Include the functions only once
