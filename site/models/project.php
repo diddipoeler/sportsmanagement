@@ -170,7 +170,7 @@ $app    = Factory::getApplication();
 	{
 $app    = Factory::getApplication();
 	$option = $app->input->getCmd('option');
-	$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
+	$db        = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 	$query     = $db->getQuery(true);	
 $query->select('p.*');
 $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS slug');
@@ -196,7 +196,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	{
 $app    = Factory::getApplication();
 	$option = $app->input->getCmd('option');
-	$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
+	$db        = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 	$query     = $db->getQuery(true);
 $query->select('p.*');
 $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS slug');
