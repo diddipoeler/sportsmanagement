@@ -616,6 +616,8 @@ $countryassocselect[$country_federation] = array();
 if ( !array_key_exists('assocs', $countryassocselect[$country_federation]) ) {
 $countryassocselect[$country_federation]['assocs'] = array();
 }
+
+
 if ( !array_key_exists('subassocs', $countrysubsubassocselect[$country_federation]) ) {
 $countrysubsubassocselect[$country_federation]['subassocs'] = array();
 }
