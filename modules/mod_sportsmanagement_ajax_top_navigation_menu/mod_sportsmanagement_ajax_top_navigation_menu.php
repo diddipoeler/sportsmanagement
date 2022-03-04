@@ -607,6 +607,10 @@ $script[] = "});";
 Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
 
 /** php fehler unterbinden */
+if ( !array_key_exists($country_federation, $countryassocselect) ) {
+$countryassocselect[$country_federation] = array();
+}
+
 if ( !array_key_exists('assocs', $countryassocselect[$country_federation]) ) {
 $countryassocselect[$country_federation]['assocs'] = array();
 }
