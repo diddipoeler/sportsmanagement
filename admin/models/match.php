@@ -1566,9 +1566,17 @@ $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($t
 				}
 			}
 
+			try
+			{
 			$object->team1_result_split = implode(";", $post['team1_result_split' . $pks[$x]]);
 			$object->team2_result_split = implode(";", $post['team2_result_split' . $pks[$x]]);
-
+}
+			catch (Exception $e)
+			{
+        $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+        $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+			}
+			
 			try
 			{
 				$result_update = Factory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id', true);
