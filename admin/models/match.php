@@ -1568,8 +1568,11 @@ $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($t
 
 			try
 			{
-			$object->team1_result_split = implode(";", $post['team1_result_split' . $pks[$x]]);
+			if ( is_array($post['team1_result_split' . $pks[$x]]) )
+				{
+$object->team1_result_split = implode(";", $post['team1_result_split' . $pks[$x]]);
 			$object->team2_result_split = implode(";", $post['team2_result_split' . $pks[$x]]);
+				}
 }
 			catch (Exception $e)
 			{
