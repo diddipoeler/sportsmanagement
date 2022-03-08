@@ -1368,9 +1368,17 @@ $config = Factory::getConfig();
 			$this->jsmquery->select('tournement');
 			$this->jsmquery->from('#__sportsmanagement_round');
 			$this->jsmquery->where('id = ' . $object->round_id);
+			try{
 			$this->jsmdb->setQuery($this->jsmquery);
 			$tournement_round = $this->jsmdb->loadResult();
-
+			}
+catch (RuntimeException $e)
+				{
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($this->jsmquery->dump(), true) . '</pre>', 'Error');
+				}
+				
 			if ($tournement_round)
 			{
 				/** roundcode für die nächste runde */
