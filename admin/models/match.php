@@ -1311,6 +1311,11 @@ $config = Factory::getConfig();
 
 			$object->crowd    = $post['crowd' . $pks[$x]];
 			$object->round_id = $post['round_id' . $pks[$x]];
+			
+			if ( !$object->round_id )
+			{
+			$object->round_id = $post['rid'];	
+			}
 
 			if (isset($post['division_id' . $pks[$x]]))
 			{
