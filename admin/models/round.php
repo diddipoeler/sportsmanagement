@@ -288,13 +288,7 @@ class sportsmanagementModelround extends JSMModelAdmin
 	public function deleteRoundMatches($pks = array())
 	{
 		$app = Factory::getApplication();
-
-		// Ein Datenbankobjekt beziehen
-
 		$db = Factory::getDbo();
-
-		// Ein JDatabaseQuery Objekt beziehen
-
 		$query = $db->getQuery(true);
 
 		if (count($pks))
@@ -348,7 +342,7 @@ class sportsmanagementModelround extends JSMModelAdmin
 				$temp->field = $field;
 				$temp->id    = $id;
 				$export[]    = $temp;
-			}
+			
 
 			$this->_tables_to_delete = array_merge($export);
 
@@ -356,7 +350,7 @@ class sportsmanagementModelround extends JSMModelAdmin
 			foreach ($this->_tables_to_delete as $row_to_delete)
 			{
 				$query->clear();
-				$query->delete()->from('#__' . COM_SPORTSMANAGEMENT_TABLE . $row_to_delete->table)->where($row_to_delete->field . ' IN (' . $row_to_delete->id . ')');
+				$query->delete()->from('#__sportsmanagement' . $row_to_delete->table)->where($row_to_delete->field . ' IN (' . $row_to_delete->id . ')');
 				Factory::getDbo()->setQuery($query);
 				sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 
@@ -365,6 +359,7 @@ class sportsmanagementModelround extends JSMModelAdmin
 					$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT' . strtoupper($row_to_delete->table) . '_ITEMS_DELETED', self::$db_num_rows), '');
 				}
 			}
+				}
 		}
 
 		return true;
