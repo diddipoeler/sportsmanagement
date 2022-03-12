@@ -564,7 +564,7 @@ catch (Exception $e)
 			foreach ($this->_tables_to_delete as $row_to_delete)
 			{
 				$query->clear();
-				$query->delete()->from('#__' . COM_SPORTSMANAGEMENT_TABLE . $row_to_delete->table)->where($row_to_delete->field . ' IN (' . $row_to_delete->id . ')');
+				$query->delete()->from('#__sportsmanagement' . $row_to_delete->table)->where($row_to_delete->field . ' IN (' . $row_to_delete->id . ')');
 				$db->setQuery($query);
 				sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 
