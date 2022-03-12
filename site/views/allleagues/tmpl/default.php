@@ -18,12 +18,14 @@ use Joomla\CMS\Component\ComponentHelper;
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
 	HTMLHelper::_('behavior.keepalive');
+	HTMLHelper::_('jquery.framework');
 }
 elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
 {
 	HTMLHelper::_('behavior.tooltip');
+	HTMLHelper::_('behavior.framework');
 }
-HTMLHelper::_('behavior.framework');
+
 HTMLHelper::_('behavior.modal');
 
 $templatesToLoad = array('globalviews');

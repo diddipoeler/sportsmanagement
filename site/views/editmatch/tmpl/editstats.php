@@ -18,7 +18,16 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 
-HTMLHelper::_('behavior.framework');
+/** welche joomla version ? */
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+	HTMLHelper::_('jquery.framework');
+}
+elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
+{
+	HTMLHelper::_('jquery.framework');
+	HTMLHelper::_('behavior.framework', true);
+}
 $params = $this->form->getFieldsets('params');
 
 ?>

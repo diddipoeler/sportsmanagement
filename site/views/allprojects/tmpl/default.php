@@ -18,6 +18,7 @@ use Joomla\CMS\Uri\Uri;
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
 	HTMLHelper::_('behavior.keepalive');
+	HTMLHelper::_('jquery.framework');
 }
 else if (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
 {

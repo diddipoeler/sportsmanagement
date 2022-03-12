@@ -20,13 +20,16 @@ use Joomla\CMS\Uri\Uri;
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
 	HTMLHelper::_('behavior.keepalive');
+	HTMLHelper::_('jquery.framework');
 }
 elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
 {
 	HTMLHelper::_('behavior.tooltip');
+	HTMLHelper::_('behavior.framework');
 }
-HTMLHelper::_('behavior.framework');
+
 HTMLHelper::_('behavior.modal');
+
 
 // Make sure that in case extensions are written for mentioned (common) views,
 // that they are loaded i.s.o. of the template of this view

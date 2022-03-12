@@ -20,7 +20,17 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 
-HTMLHelper::_('behavior.framework');
+/** welche joomla version ? */
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+	HTMLHelper::_('jquery.framework');
+}
+elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
+{
+	HTMLHelper::_('jquery.framework');
+	HTMLHelper::_('behavior.framework', true);
+}
+
 $savenewcomment   = array();
 $savenewcomment[] = $this->match->id;
 $savenewcomment[] = $this->eventsprojecttime;
