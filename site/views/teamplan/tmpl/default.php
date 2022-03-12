@@ -14,12 +14,14 @@ use Joomla\CMS\Language\Text;
 
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-
+?>
+<div class="<?php echo $this->divclasscontainer; ?>" id="teamplan">
+<?php
 if ( $this->config['show_teamplan_print_option'] )
 {
 ?>
 <script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>  
-<div class="<?php echo $this->divclasscontainer; ?>" id="teamplan">
+
 <button id="exportButton" class="btn btn-primary clearfix"><span class="fa fa-file-pdf-o"></span> Export to PDF</button>
 <button id="btnPrint" class="btn btn-primary hidden-print"><span class="glyphicon glyphicon-print" aria-hidden="true"></span>Print Preview</button>
   
