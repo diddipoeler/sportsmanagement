@@ -27,22 +27,28 @@ $tabsOptions = array(
     "active" => "tab1id" // It is the ID of the active tab.
 );
 */
-// Make sure that in case extensions are written for mentioned (common) views,
-// that they are loaded i.s.o. of the template of this view
+
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 echo $this->loadTemplate('projectheading');
 
 ?>
-    <div class="<?php echo $this->divclasscontainer; ?>">
+   <!-- <div class="<?php echo $this->divclasscontainer; ?>"> -->
         <div class="<?php echo $this->divclassrow; ?>">
 			<?PHP
+            if ($this->config['show_result_tabs'] == 'show_tabs')
+			{
+				echo $this->loadTemplate('tabs');
+			}
+            else
+            {
 			echo $this->loadTemplate('ranking');
 			echo $this->loadTemplate('jsminfo');
+            }
 			?>
         </div>
-    </div>
+    <!-- </div> -->
 	<?PHP
     
 /*

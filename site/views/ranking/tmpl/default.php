@@ -31,7 +31,9 @@ if (!empty($this->mapconfig))
 	}
 }
 
-
+?>
+<div class="<?php echo $this->divclasscontainer; ?>" id="defaultranking">
+<?php
 echo $this->loadTemplate('jsm_warnings');
 echo $this->loadTemplate('jsm_tips');
 echo $this->loadTemplate('jsm_notes');
@@ -47,7 +49,7 @@ else
 
     </script>
 
-    <div class="<?php echo $this->divclasscontainer; ?>" id="defaultranking">
+    
 		<?php
 
 		if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO)
