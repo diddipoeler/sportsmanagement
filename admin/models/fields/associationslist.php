@@ -52,26 +52,47 @@ class JFormFieldAssociationsList extends \JFormFieldList
 		$options   = array();
 		$vartable  = (string) $this->element['targettable'];
 		$select_id = Factory::getApplication()->input->getVar('id');
+        $post = Factory::getApplication()->input->post->getArray();
         
         //Factory::getApplication()->enqueueMessage('<pre>'.print_r($view,true)      .'</pre>', 'error');
+        //Factory::getApplication()->enqueueMessage('<pre>'.print_r($post,true)      .'</pre>', 'error');
 
 		if (is_array($select_id))
 		{
 			$select_id = $select_id[0];
 		}
 
-		if ($select_id)
+switch ($view)
+{
+    case 'leagues':
+    $country = $post['filter']['search_nation'];
+    if ( $country )
+    {
+        $query->clear();
+    $query->select('t.id AS value, t.name AS text');
+			$query->from('#__sportsmanagement_associations AS t');
+			$query->where("t.country = '" . $country . "'");
+			$query->where('t.parent_id = 0');
+			$query->order('t.name');
+			$db->setQuery($query);
+			$options = $db->loadObjectList();    
+        
+    }
+    
+    break;
+    default:
+    if ($select_id)
 		{
 			$db    = Factory::getDbo();
 			$query = $db->getQuery(true);
+            $query->clear();
 			$query->select('country');
 			$query->from('#__sportsmanagement_' . $vartable . ' AS t');
 			$query->where('t.id = ' . $select_id);
 			$db->setQuery($query);
 			$country = $db->loadResult();
 
-			$db    = Factory::getDbo();
-			$query = $db->getQuery(true);
+			$query->clear();
 
 			$query->select('t.id AS value, t.name AS text');
 			$query->from('#__sportsmanagement_associations AS t');
@@ -99,6 +120,10 @@ class JFormFieldAssociationsList extends \JFormFieldList
 				$options [] = HTMLHelper::_('select.option', $item->id, $item->treename, 'value', 'text', !$sections && $item->section);
 			}
 		}
+    break;
+    
+}
+		
 
 		/** Merge any additional options in the XML definition. */
 		$options = array_merge(parent::getOptions(), $options);
