@@ -117,7 +117,7 @@ $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array()
 		$this->setState('filter.season', $this->getUserStateFromRequest($this->context . '.filter.season', 'filter_season', ''));
 		$this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
 		$this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
-		$this->setState('filter.league', $this->getUserStateFromRequest($this->context . '.filter.league', 'filter_league', ''));
+		$this->setState('filter.search_league', $this->getUserStateFromRequest($this->context . '.filter.search_league', 'filter_search_league', ''));
 		$this->setState('filter.sports_type', $this->getUserStateFromRequest($this->context . '.filter.sports_type', 'filter_sports_type', ''));
 		$this->setState('filter.search_association', $this->getUserStateFromRequest($this->context . '.filter.search_association', 'filter_search_association', ''));
 		$this->setState('filter.project_type', $this->getUserStateFromRequest($this->context . '.filter.project_type', 'filter_project_type', ''));
@@ -232,9 +232,9 @@ $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array()
 			$this->jsmquery->where('LOWER(p.name) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%'));
 		}
 
-		if ($this->getState('filter.league'))
+		if ($this->getState('filter.search_league'))
 		{
-			$this->jsmquery->where('p.league_id = ' . $this->getState('filter.league'));
+			$this->jsmquery->where('p.league_id = ' . $this->getState('filter.search_league'));
 		}
 
 		if ($this->getState('filter.sports_type'))
