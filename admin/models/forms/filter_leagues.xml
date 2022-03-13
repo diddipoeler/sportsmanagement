@@ -58,7 +58,8 @@
       norequest="1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ASSOCIATION"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ASSOCIATION_DESC"
-			class="form-control form-control-inline">
+			class="form-control form-control-inline"
+			onchange="this.form.submit();">
       <option
 				value="0">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
