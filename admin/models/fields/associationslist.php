@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage fields
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -21,7 +17,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
-
 
 /**
  * FormFieldAssociationsList
@@ -53,8 +48,6 @@ class JFormFieldAssociationsList extends \JFormFieldList
 		$app      = Factory::getApplication();
 		$option   = Factory::getApplication()->input->getCmd('option');
 		$selected = 0;
-
-		// Initialize variables.
 		$options   = array();
 		$vartable  = (string) $this->element['targettable'];
 		$select_id = Factory::getApplication()->input->getVar('id');
@@ -104,7 +97,7 @@ class JFormFieldAssociationsList extends \JFormFieldList
 			}
 		}
 
-		// Merge any additional options in the XML definition.
+		/** Merge any additional options in the XML definition. */
 		$options = array_merge(parent::getOptions(), $options);
 
 		return $options;
@@ -121,18 +114,21 @@ class JFormFieldAssociationsList extends \JFormFieldList
 	function JJ_categoryArray($admin = 0, $country)
 	{
 		$db = sportsmanagementHelper::getDBConnection();
+        $query     = $db->getQuery(true);
+        $query->clear();
+        
+        $query->select('*');
+        $query->from('#__sportsmanagement_associations');
+        $query->where('country LIKE ' . $db->Quote('' . $country . ''));
+        $query->order('ordering, name');
 
-		// Get a list of the menu items
-		$query = "SELECT * FROM #__sportsmanagement_associations where country = '" . $country . "'";
-
-		$query .= " ORDER BY ordering, name";
 		$db->setQuery($query);
 		$items = $db->loadObjectList();
 
-		// Establish the hierarchy of the menu
+		/** Establish the hierarchy of the menu */
 		$children = array();
 
-		// First pass - collect children
+		/** First pass - collect children */
 		foreach ($items as $v)
 		{
 			$pt   = $v->parent_id;
@@ -141,7 +137,7 @@ class JFormFieldAssociationsList extends \JFormFieldList
 			$children[$pt] = $list;
 		}
 
-		// Second pass - get an indent list of the items
+		/** Second pass - get an indent list of the items */
 		$array = $this->fbTreeRecurse(0, '', array(), $children, 10, 0, 1);
 
 		return $array;
