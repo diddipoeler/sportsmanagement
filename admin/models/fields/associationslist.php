@@ -48,6 +48,8 @@ class JFormFieldAssociationsList extends \JFormFieldList
 		$app      = Factory::getApplication();
 		$option   = Factory::getApplication()->input->getCmd('option');
         $view   = Factory::getApplication()->input->getCmd('view');
+        $db    = Factory::getDbo();
+		$query = $db->getQuery(true);
 		$selected = 0;
 		$options   = array();
 		$vartable  = (string) $this->element['targettable'];
@@ -83,8 +85,7 @@ switch ($view)
     default:
     if ($select_id)
 		{
-			$db    = Factory::getDbo();
-			$query = $db->getQuery(true);
+			
             $query->clear();
 			$query->select('country');
 			$query->from('#__sportsmanagement_' . $vartable . ' AS t');
