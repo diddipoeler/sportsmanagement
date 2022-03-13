@@ -51,6 +51,7 @@ class JFormFieldAssociationsList extends \JFormFieldList
         $db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$selected = 0;
+        $country = '';
 		$options   = array();
 		$vartable  = (string) $this->element['targettable'];
 		$select_id = Factory::getApplication()->input->getVar('id');

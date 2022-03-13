@@ -45,25 +45,22 @@ class JFormFieldleaguelist extends \JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		// Initialize variables.
 		$options = array();
 $db    = Factory::getDbo();
 		$query = $db->getQuery(true);
-      
-      // JInput object
       $app = Factory::getApplication();
 		$jinput                 = $app->input;
 		$projectid        = (int) $jinput->get('id', 0, '');
       $view = $jinput->getVar("view");
+      $country_result = '';
+      $post = Factory::getApplication()->input->post->getArray();
       
-     // echo '<pre>'.print_r($view,true).'</pre>';
-      //echo '<pre>'.print_r($projectid,true).'</pre>';
       switch ($view)
 {
 	case 'project':
           if ( $projectid )
           {
-// Holen wir uns das land der liga
+/** Holen wir uns das land der liga */
 		$query->clear();
 		$query->select('l.country');
 		$query->from('#__sportsmanagement_league as l');
@@ -74,6 +71,9 @@ $db    = Factory::getDbo();
             //echo '<pre>'.print_r($country_result,true).'</pre>';
            
           }
+          break;
+          case 'projects':
+          $country_result = $post['filter']['search_nation'];
           break;
       }
       
