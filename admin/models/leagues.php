@@ -183,9 +183,9 @@ class sportsmanagementModelLeagues extends JSMModelList
 			$this->jsmquery->where('obj.country LIKE ' . $this->jsmdb->Quote('' . $this->getState('filter.search_nation') . ''));
 		}
 
-		if ($this->getState('filter.search_association'))
+		if ($this->getState('filter.search_associations'))
 		{
-			$this->jsmquery->where('obj.associations = ' . $this->getState('filter.search_association'));
+			$this->jsmquery->where('obj.associations = ' . $this->getState('filter.search_associations'));
 		}
 
 		if ($this->getState('filter.federation'))
