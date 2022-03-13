@@ -68,10 +68,12 @@ class sportsmanagementModelLeagues extends JSMModelList
 	{
 
 		$search_nation = '';
+        $search_associations = '';
 
 		if ($this->jsmapp->isClient('administrator'))
 		{
 			$search_nation = $this->getState('filter.search_nation');
+            $search_associations = $this->getState('filter.search_associations');
 		}
 
         $this->jsmquery->clear();
@@ -82,6 +84,11 @@ class sportsmanagementModelLeagues extends JSMModelList
 		{
 			$this->jsmquery->where('country LIKE ' . $this->jsmdb->Quote('' . $search_nation . ''));
 		}
+        if ( $search_associations )
+        {
+            $this->jsmquery->where('associations = ' . $search_associations );
+            
+        }
 
 		$this->jsmquery->order('name ASC');
 
@@ -124,7 +131,7 @@ class sportsmanagementModelLeagues extends JSMModelList
 		$this->setState('filter.search_league_level', $this->getUserStateFromRequest($this->context . '.filter.search_league_level', 'filter_search_league_level', ''));
 		$this->setState('filter.search_champions_complete', $this->getUserStateFromRequest($this->context . '.filter.search_champions_complete', 'filter_search_champions_complete', ''));
 		
-		$this->setState('filter.search_association', $this->getUserStateFromRequest($this->context . '.filter.search_association', 'filter_search_association', ''));
+		$this->setState('filter.search_associations', $this->getUserStateFromRequest($this->context . '.filter.search_associations', 'filter_search_associations', ''));
 		$this->setState('filter.federation', $this->getUserStateFromRequest($this->context . '.filter.federation', 'filter_federation', ''));
 		$this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
 		$this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));

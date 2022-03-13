@@ -46,7 +46,7 @@
         </field>
 		
  <field
-			name="associations"
+			name="search_associations"
 			type="dependsql" 
       size="10"
       
