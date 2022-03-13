@@ -14,6 +14,7 @@
 			type="status"
 			label="JOPTION_SELECT_PUBLISHED"
 			description="JOPTION_SELECT_PUBLISHED_DESC"
+			class="select2-container"
 			onchange="this.form.submit();"
 			>
 			<option value="">JOPTION_SELECT_PUBLISHED</option>
@@ -24,6 +25,7 @@
             type="sportstypelist"
             default="0"
             size="1"
+			class="select2-container"
             label="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE"
             description="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE_DESC"
             onchange="this.form.submit();">
@@ -56,9 +58,15 @@
             <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
         </field>
 		
+		
+		
+		
+		
+		
 		<field
             name="season"
             type="seasonlist"
+			class="select2-container"
             label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER"
             description="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER"
             required="false"
