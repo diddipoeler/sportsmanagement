@@ -58,9 +58,26 @@
             <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
         </field>
 		
+		<field  
+            name="search_league"
+            type="leaguelist"
+            default="0"
+            size="1"
+			class="select2-container"
+            label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER"
+            description="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER"
+            onchange="this.form.submit();">
+            <option
+                value="">
+                COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER</option>
+        </field>
 		
 		
-		
+
+
+
+
+
 		
 		
 		<field
