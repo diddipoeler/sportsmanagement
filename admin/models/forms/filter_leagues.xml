@@ -44,7 +44,21 @@
         >
             <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
         </field>
-		
+	
+<field
+			name="search_associations"
+			type="associationslist" 
+      size="1"
+			default="0"
+      
+			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ASSOCIATION"
+			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ASSOCIATION_DESC"
+			class="inputbox">
+      <option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
+		</field>
+<!-- 	
  <field
 			name="search_associations"
 			type="dependsql" 
@@ -64,7 +78,7 @@
 				value="0">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
 		</field>
-
+-->
 
 
 		
