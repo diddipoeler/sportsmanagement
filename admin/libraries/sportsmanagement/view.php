@@ -734,7 +734,7 @@ break;
 					HTMLHelper::_('select.options', $this->userfields, 'id', 'name', $this->state->get('filter.userfields'), true)
 				);
 			}
-
+/*
 			if (isset($this->league))
 			{
 				JHtmlSidebar::addFilter(
@@ -743,6 +743,7 @@ break;
 					HTMLHelper::_('select.options', $this->league, 'id', 'name', $this->state->get('filter.league'), true)
 				);
 			}
+			*/
 /*
 			if (isset($this->sports_type))
 			{
