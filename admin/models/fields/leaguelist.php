@@ -55,6 +55,8 @@ $db    = Factory::getDbo();
       $country_result = '';
       $post = Factory::getApplication()->input->post->getArray();
       
+      //Factory::getApplication()->enqueueMessage('<pre>'.print_r($post,true)      .'</pre>', 'error');
+      
       switch ($view)
 {
 	case 'project':
