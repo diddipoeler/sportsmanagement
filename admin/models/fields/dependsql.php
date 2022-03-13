@@ -57,6 +57,8 @@ class JFormFieldDependSQL extends FormField
 		$jinput = $app->input;
 		$view   = $jinput->getCmd('view');
 		$option = $jinput->getCmd('option');
+        
+        //Factory::getApplication()->enqueueMessage('<pre>'.print_r($view,true)      .'</pre>', 'error');
 
 		$lang = Factory::getLanguage();
 		$lang->load("com_sportsmanagement", JPATH_ADMINISTRATOR);

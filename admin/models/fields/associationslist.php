@@ -47,10 +47,13 @@ class JFormFieldAssociationsList extends \JFormFieldList
 	{
 		$app      = Factory::getApplication();
 		$option   = Factory::getApplication()->input->getCmd('option');
+        $view   = Factory::getApplication()->input->getCmd('view');
 		$selected = 0;
 		$options   = array();
 		$vartable  = (string) $this->element['targettable'];
 		$select_id = Factory::getApplication()->input->getVar('id');
+        
+        //Factory::getApplication()->enqueueMessage('<pre>'.print_r($view,true)      .'</pre>', 'error');
 
 		if (is_array($select_id))
 		{
