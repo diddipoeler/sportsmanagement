@@ -123,10 +123,10 @@ class sportsmanagementModelLeagues extends JSMModelList
 		}
         $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array(), 'array');
 
-		$this->setState('filter.leag_search', $this->getUserStateFromRequest($this->context . '.filter.leag_search', 'filter_leag_search'));
-		$this->setState('filter.leag_state', $this->getUserStateFromRequest($this->context . '.filter.leag_state', 'filter_leag_state', '', 'string'));
-		$this->setState('filter.leag_search_nation', $this->getUserStateFromRequest($this->context . '.filter.leag_search_nation', 'filter_leag_search_nation', ''));
-		$this->setState('filter.leag_search_agegroup', $this->getUserStateFromRequest($this->context . '.filter.leag_search_agegroup', 'filter_leag_search_agegroup', ''));
+		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search'));
+		$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
+		$this->setState('filter.search_nation', $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', ''));
+		$this->setState('filter.search_agegroup', $this->getUserStateFromRequest($this->context . '.filter.search_agegroup', 'filter_search_agegroup', ''));
 		
 		$this->setState('filter.search_league_level', $this->getUserStateFromRequest($this->context . '.filter.search_league_level', 'filter_search_league_level', ''));
 		$this->setState('filter.search_champions_complete', $this->getUserStateFromRequest($this->context . '.filter.search_champions_complete', 'filter_search_champions_complete', ''));
@@ -149,7 +149,7 @@ class sportsmanagementModelLeagues extends JSMModelList
 		}
 
 		//$this->jsmjinput->set('leaguenation', $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '') );
-		$this->jsmapp->setUserState("$this->jsmoption.leaguenation", $this->getUserStateFromRequest($this->context . '.filter.leag_search_nation', 'filter_leag_search_nation', '') );
+		$this->jsmapp->setUserState("$this->jsmoption.leaguenation", $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '') );
 		$this->setState('list.direction', $listOrder);
 	}
 
@@ -173,14 +173,14 @@ class sportsmanagementModelLeagues extends JSMModelList
 		$this->jsmquery->select('fed.name AS fedname');
 		$this->jsmquery->join('LEFT', '#__sportsmanagement_associations AS fed ON fed.id = obj.associations');
 
-		if ($this->getState('filter.leag_search'))
+		if ($this->getState('filter.search'))
 		{
-			$this->jsmquery->where('LOWER(obj.name) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.leag_search') . '%'));
+			$this->jsmquery->where('LOWER(obj.name) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%'));
 		}
 
-		if ($this->getState('filter.leag_search_nation'))
+		if ($this->getState('filter.search_nation'))
 		{
-			$this->jsmquery->where('obj.country LIKE ' . $this->jsmdb->Quote('' . $this->getState('filter.leag_search_nation') . ''));
+			$this->jsmquery->where('obj.country LIKE ' . $this->jsmdb->Quote('' . $this->getState('filter.search_nation') . ''));
 		}
 
 		if ($this->getState('filter.search_associations'))
@@ -193,9 +193,9 @@ class sportsmanagementModelLeagues extends JSMModelList
 			$this->jsmquery->where('obj.associations = ' . $this->getState('filter.federation'));
 		}
 
-		if ($this->getState('filter.leag_search_agegroup'))
+		if ($this->getState('filter.search_agegroup'))
 		{
-			$this->jsmquery->where('obj.agegroup_id = ' . $this->getState('filter.leag_search_agegroup'));
+			$this->jsmquery->where('obj.agegroup_id = ' . $this->getState('filter.search_agegroup'));
 		}
 		
 		if ($this->getState('filter.search_league_level'))
@@ -208,9 +208,9 @@ class sportsmanagementModelLeagues extends JSMModelList
 			$this->jsmquery->where('obj.champions_complete = ' . $this->getState('filter.search_champions_complete'));
 		}
 
-		if (is_numeric($this->getState('filter.leag_state')))
+		if (is_numeric($this->getState('filter.state')))
 		{
-			$this->jsmquery->where('obj.published = ' . $this->getState('filter.leag_state'));
+			$this->jsmquery->where('obj.published = ' . $this->getState('filter.state'));
 		}
 
 		$this->jsmquery->order(
