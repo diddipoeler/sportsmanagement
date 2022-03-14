@@ -2,7 +2,7 @@
 <form>
 	<fields name="filter" addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 		<field
-			name="search"
+			name="leag_search"
 			type="text"
 			inputmode="search"
 			label="JGLOBAL_LOOKING_FOR"
@@ -10,7 +10,7 @@
 			hint="JSEARCH_FILTER"
 		/>
     <field
-			name="state"
+			name="leag_state"
 			type="status"
 	   class="select2-container"
 			label="JOPTION_SELECT_PUBLISHED"
@@ -22,7 +22,7 @@
 		
 	
 		<field  
-            name="search_agegroup"
+            name="leag_search_agegroup"
             type="agegrouplist"
             default="0"
             size="1"
@@ -35,7 +35,7 @@
         </field>
 		
 		<field
-            name="search_nation"
+            name="leag_search_nation"
             type="countrylist"
             label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY"
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY_DESC"
