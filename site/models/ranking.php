@@ -186,6 +186,7 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 		$query     = $db->getQuery(true);
 		$starttime = microtime();
         $division = array();
+        $prevgames = array();
 
         $query->select('*');
 		$query->from('#__sportsmanagement_division');
@@ -197,7 +198,7 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 		if (!self::$round)
 		{
 			sportsmanagementModelProject::$_current_round = 0;
-			self::$round                                  = sportsmanagementModelProject::getCurrentRound(__METHOD__ . ' ' . self::$viewName, $cfg_which_database);
+			self::$round = sportsmanagementModelProject::getCurrentRound(__METHOD__ . ' ' . self::$viewName, $cfg_which_database);
 		}
 		else
 		{
@@ -314,10 +315,7 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
       }
       
       //echo __LINE__.'<pre>'.print_r($prevgames,true).'</pre>'; 
-        
-        
-        
-        
+
 		return $prevgames;
 	}
 
