@@ -189,7 +189,7 @@ $country_federation = $helper->getCountryFederation($country_id);
 
 if (!$country_federation)
 {
-//	$country_federation = 'NONFED';
+	$country_federation = 'NONFED';
 }
 
 ?>
