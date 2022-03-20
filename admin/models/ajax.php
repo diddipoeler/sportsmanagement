@@ -284,12 +284,13 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 	 */
 	static function getcountryleagueoptions($country = '', $required = false, $slug = false, $dbase = false)
 	{
-	   $app = Factory::getApplication();
-		$option = $app->input->getCmd('option');
+	   //$app = Factory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+        $post = Factory::getApplication()->input->post->getArray();
         
       $country = $app->input->getCmd('search_nation');
-//      $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_( $country   ), 'Error');
-//      $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_( '<pre>'.print_r($app->input,true).'</pre>'   ), 'Error');
+//      Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_( $country   ), 'Error');
+//      Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_( '<pre>'.print_r($app->input,true).'</pre>'   ), 'Error');
       
        if (!$dbase)
 		{
