@@ -79,7 +79,7 @@
             default="0"
             size="1"
   depends="search_nation" 
-  task="projectdivisionsoptions"
+  task="countryleagueoptions"
 			class="select2-container"
             label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER"
             description="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER"
