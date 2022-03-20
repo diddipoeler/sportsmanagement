@@ -58,6 +58,7 @@
             <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
         </field>
 		
+		<!--
 		<field  
             name="search_league"
             type="leaguelist"
@@ -71,8 +72,20 @@
                 value="">
                 COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER</option>
         </field>
-		
-		
+		-->
+		<field  
+            name="search_league"
+            type="dependsql"
+            default="0"
+            size="1"
+  depends="search_nation" 
+  task="projectdivisionsoptions"
+			class="select2-container"
+            label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER"
+            description="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER"
+            onchange="this.form.submit();">
+            
+        </field>
 
 
 

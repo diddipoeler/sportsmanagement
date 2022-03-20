@@ -274,6 +274,51 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 
 
 	/**
+	 * sportsmanagementModelAjax::getcountryleagueoptions()
+	 * 
+	 * @param string $country
+	 * @param bool $required
+	 * @param bool $slug
+	 * @param bool $dbase
+	 * @return void
+	 */
+	static function getcountryleagueoptions($country = '', $required = false, $slug = false, $dbase = false)
+	{
+	   $app = Factory::getApplication();
+		$option = $app->input->getCmd('option');
+       if (!$dbase)
+		{
+			$db = sportsmanagementHelper::getDBConnection();
+		}
+		else
+		{
+			$db = sportsmanagementHelper::getDBConnection(true, true);
+		}
+
+		$query = $db->getQuery(true);
+        
+        
+		$query->select('l.id AS value,l.name AS text');
+		$query->from('#__sportsmanagement_league AS l');
+		if ($country)
+		{
+			$query->where('country LIKE ' . $db->Quote('' . $country . ''));
+			$db->setQuery($query);
+
+			return self::addGlobalSelectElement($db->loadObjectList(), $required);
+		}
+		else
+		{
+			$temp        = new stdClass;
+			$temp->value = 0;
+			$temp->text  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER');
+			$export[]    = $temp;
+
+			return self::addGlobalSelectElement($export, $required);
+		}
+       
+       }
+	/**
 	 * sportsmanagementModelAjax::getcountryclubagegroupoptions()
 	 *
 	 * @param   integer  $club_id
@@ -285,10 +330,7 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 	 */
 	static function getcountryclubagegroupoptions($club_id = 0, $required = false, $slug = false, $dbase = false)
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$option = $app->input->getCmd('option');
 
 		// Get a db connection.
