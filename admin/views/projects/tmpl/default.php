@@ -23,6 +23,9 @@ echo $this->loadTemplate('joomla_version');
 <input type="hidden" name="boxchecked" value="0"/>
 <input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>"/>
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>"/>
+
+<input type="hidden" name="search_nation" value="<?php echo $this->state->get('filter.search_nation') ? $this->state->get('filter.search_nation') : '' ; ?>"/>
+
 <?php echo HTMLHelper::_('form.token'); ?>
 <?php echo $this->table_data_div; ?>
 </form>
