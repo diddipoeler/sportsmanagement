@@ -80,7 +80,7 @@ class JFormFieldDependSQL extends FormField
 
 		$project_id = $this->form->getValue('id');
 
-		if ($v = $this->element['size'])
+		if ( $v = $this->element['size'] )
 		{
 			$attribs .= ' size="' . $v . '"';
 		}
@@ -89,6 +89,13 @@ class JFormFieldDependSQL extends FormField
 		{
 			$attribs .= ' multiple="' . $v . '"';
 		}
+        
+        switch ( $depends )
+        {
+            case 'search_nation':
+            $attribs .= ' onchange="this.form.submit();"';
+            break;
+        }
 
 		switch ($option)
 		{
