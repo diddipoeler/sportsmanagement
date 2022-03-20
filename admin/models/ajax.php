@@ -286,6 +286,11 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 	{
 	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
+        
+//      $country = $app->input->getCmd('search_nation');
+//      $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_( $country   ), 'Error');
+//      $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_( '<pre>'.print_r($app->input,true).'</pre>'   ), 'Error');
+      
        if (!$dbase)
 		{
 			$db = sportsmanagementHelper::getDBConnection();

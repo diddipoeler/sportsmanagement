@@ -105,7 +105,7 @@ class sportsmanagementControllerAjax extends BaseController
 		$app    = Factory::getApplication();
 		$jinput = $app->input;
 		$model  = $this->getModel('ajax');
-        echo json_encode((array) $model->getcountryleagueoptions(Factory::getApplication()->input->getVar('search_nation'), $jinput->getVar('required', 'false'), Factory::getApplication()->input->getInt('slug'), Factory::getApplication()->input->getInt('dbase')));
+        echo json_encode((array) $model->getcountryleagueoptions(Factory::getApplication()->input->getCmd('search_nation'), $jinput->getVar('required', 'false'), Factory::getApplication()->input->getInt('slug'), Factory::getApplication()->input->getInt('dbase')));
 		Factory::getApplication()->close();
         }
         
