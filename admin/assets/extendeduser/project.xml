@@ -7,7 +7,7 @@
 			<option value="1">Ja</option>
 		</field>
     
-	  <field name="ergebnistabelle" type="textarea" rows="25" cols="250" label="ergebnistabelle" description="ergebnistabelle">
+	  <field name="ergebnistabelle" type="textarea" rows="25" cols="250" class="span12" label="ergebnistabelle" description="ergebnistabelle">
 		</field>
 	  
 		<field name="ergebnismatrix" type="textarea" rows="25" cols="80" class="span12" label="ergebnismatrix" description="ergebnismatrix">
