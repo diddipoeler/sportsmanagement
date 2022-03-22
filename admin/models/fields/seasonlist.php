@@ -55,14 +55,10 @@ class JFormFieldseasonlist extends FormField
 	 *
 	 * @since 11.1
 	 */
-	//protected function getOptions()
 	protected function getInput()
 	{
-		// Initialize variables.
 		$options = array();
-		// Reference global application object
 		$app = Factory::getApplication();
-		// JInput object
 		$jinput = $app->input;
 		$view   = $jinput->getCmd('view');
 		$option = $jinput->getCmd('option');
@@ -86,32 +82,33 @@ class JFormFieldseasonlist extends FormField
 
 		switch ($option)
 		{
-			case 'com_modules':
-				$div = 'params';
-				break;
-			default:
-				$div = 'request';
-				break;
+		case 'com_modules':
+		$div = 'params';
+		break;
+		default:
+		$div = 'request';
+		break;
 		}
 
-		if ($v = $this->element['size'])
+		$attribs   .= ' class="select2-container"';
+        if ($v = $this->element['size'])
 		{
 			$attribs .= ' size="' . $v . '"';
 		}
         
-        switch ( Factory::getApplication()->input->getCmd('view', '') )
-	  {
-			  case 'clubs':
-              case 'projects':
-			  $attribs .= 'onchange="this.form.submit();"';
-			  break;
-			case 'project':
-			$attribs .= 'onchange="javascript:setseasonname();"';
-			break;
-		  default:
-			  $attribs .= '';
-			  break;
-	  }
+switch ( Factory::getApplication()->input->getCmd('view', '') )
+{
+case 'clubs':
+case 'projects':
+$attribs .= 'onchange="this.form.submit();"';
+break;
+case 'project':
+$attribs .= 'onchange="javascript:setseasonname();"';
+break;
+default:
+$attribs .= '';
+break;
+}
 
 		$cfg_which_database = $this->form->getValue('cfg_which_database', $div);
 
