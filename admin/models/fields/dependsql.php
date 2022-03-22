@@ -80,7 +80,8 @@ class JFormFieldDependSQL extends FormField
 
 		$project_id = $this->form->getValue('id');
 
-		if ( $v = $this->element['size'] )
+		$attribs   .= ' class="select2-container"';
+        if ( $v = $this->element['size'] )
 		{
 			$attribs .= ' size="' . $v . '"';
 		}
@@ -99,30 +100,30 @@ class JFormFieldDependSQL extends FormField
 
 		switch ($option)
 		{
-			case 'com_modules':
-				$div = 'params';
-				break;
-			case 'com_sportsmanagement':
-				if ($norequest)
-				{
-					$div = '';
-				}
-				else
-				{
-					$div = 'request';
-				}
-				break;
-			default:
-				$div = 'request';
-				break;
+		case 'com_modules':
+		$div = 'params';
+		break;
+		case 'com_sportsmanagement':
+		if ($norequest)
+		{
+			$div = '';
+		}
+		else
+		{
+			$div = 'request';
+		}
+		break;
+		default:
+		$div = 'request';
+		break;
 		}
       
-      switch ($view)
-		{
-		case 'predictiongame':
-          $div = '';
-          break;
-      }
+    switch ($view)
+	{
+	case 'predictiongame':
+    $div = '';
+    break;
+    }
 
 		$value     = $this->form->getValue($val, $div);
 		$key_value = $this->form->getValue($key, $div);
