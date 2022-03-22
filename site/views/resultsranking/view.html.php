@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage resultsranking
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -47,14 +43,13 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
 
 		$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
 
-		/**
-		 * add the ranking model
-		 */
+//$menu = Factory::getApplication()->getMenu()->getActive()->id;
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_(' menu: ' . $menu   ), 'Error');
+
+		/** add the ranking model */
 		$rankingmodel = new sportsmanagementModelRanking;
 		$project      = sportsmanagementModelProject::getProject($this->jinput->getInt('cfg_which_database', 0), __METHOD__, 1);
-		/**
-		 * add the ranking config file
-		 */
+		/** add the ranking config file */
 		$rankingconfig       = sportsmanagementModelProject::getTemplateConfig('ranking', $this->jinput->getInt('cfg_which_database', 0));
 		$rankingmodel::$from = 0;
 		$rankingmodel::$to   = 0;
@@ -62,13 +57,9 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
 
 		$mdlProjectteams = BaseDatabaseModel::getInstance("Projectteams", "sportsmanagementModel");
 
-		/**
-		 * add the results model
-		 */
+		/** add the results model */
 		$resultsmodel = new sportsmanagementModelResults;
-		/**
-		 * add the results config file
-		 */
+		/** add the results config file */
 		$mdlRound          = BaseDatabaseModel::getInstance("Round", "sportsmanagementModel");
 		$roundcode         = $mdlRound->getRoundcode($rankingmodel::$round, $this->jinput->getInt('cfg_which_database', 0));
 		$this->paramconfig = $rankingmodel::$paramconfig;
@@ -95,9 +86,7 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
 			$resultsconfig['show_results_ranking'] = 0;
 		}
 
-		/**
-		 * merge the 2 config files
-		 */
+		/** merge the 2 config files */
 		$config = array_merge($rankingconfig, $resultsconfig);
 
 		$this->config = array_merge($this->overallconfig, $config);
@@ -189,9 +178,7 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
 		$this->teams         = sportsmanagementModelProject::getTeamsIndexedByPtid(0, 'name', $this->jinput->getInt('cfg_which_database', 0));
 		$this->previousgames = $rankingmodel->getPreviousGames($this->jinput->getInt('cfg_which_database', 0));
 
-		/**
-		 * rankingcolors
-		 */
+		/** rankingcolors */
 		if (!isset($this->config['colors']))
 		{
 			$this->config['colors'] = "";
@@ -199,9 +186,7 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
 
 		$this->colors = sportsmanagementModelProject::getColors($this->config['colors'], $this->jinput->getInt('cfg_which_database', 0));
 
-		/**
-		 * Set page title
-		 */
+		/** Set page title */
 		$pageTitle = ($this->params->get('what_to_show_first', 0) == 0)
 			? Text::_('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE') . ' & ' . Text::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE')
 			: Text::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE') . ' & ' . Text::_('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE');
@@ -216,9 +201,7 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
 		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/' . $this->option . '/assets/css/' . $this->view . '.css' . '" type="text/css" />' . "\n";
 		$this->document->addCustomTag($stylelink);
 
-		/**
-		 * diddipoeler
-		 */
+		/** diddipoeler */
 		if ($project)
 		{
 			$this->allteams = $mdlProjectteams->getAllProjectTeams($project->id, 0, null, $this->jinput->getInt('cfg_which_database', 0));
