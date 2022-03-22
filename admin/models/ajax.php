@@ -246,7 +246,7 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		$option = Factory::getApplication()->input->getCmd('option');
         $post = Factory::getApplication()->input->post->getArray();
         
-      $country = Factory::getApplication()->input->getCmd('search_nation');
+      $country = Factory::getApplication()->input->getCmd('search_nation_projects');
 //      Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_( $country   ), 'Error');
 //      Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_( '<pre>'.print_r($app->input,true).'</pre>'   ), 'Error');
       
