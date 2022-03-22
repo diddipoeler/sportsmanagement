@@ -199,16 +199,16 @@ if ( !array_key_exists('Itemid', $parts) ) {
 
 //Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' parts' .'<pre>'.print_r($parts,true).'</pre>'    ), '');		
 		
-		
-		if ($item = self::_findItem($parts))
-		{
-			$parts['Itemid'] = $item->id;
-		}
-		else
-		{
-			$params = ComponentHelper::getParams('com_sportsmanagement');
-			$parts['Itemid'] = intval($params->get('default_itemid'));
-		}
+		$parts['Itemid'] = Factory::getApplication()->getMenu()->getActive()->id;
+//		if ($item = self::_findItem($parts))
+//		{
+//			$parts['Itemid'] = $item->id;
+//		}
+//		else
+//		{
+//			$params = ComponentHelper::getParams('com_sportsmanagement');
+//			$parts['Itemid'] = intval($params->get('default_itemid'));
+//		}
 
 		return Uri::buildQuery($parts);
 	}
