@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementModelProjects
@@ -108,7 +109,7 @@ class sportsmanagementModelProjects extends JSMModelList
 			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . $this->context . ''), '');
 			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . ''), '');
 		}
-$list = $this->getUserStateFromRequest($this->context . '.list', 'list', array(), 'array');
+        $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array(), 'array');
 
         $this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
 		$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
@@ -126,6 +127,8 @@ $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array()
 		$this->setState('filter.unique_id', $this->getUserStateFromRequest($this->context . '.filter.unique_id', 'filter_unique_id', ''));
 
 		$orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
+        
+        Factory::getApplication()->input->set('search_nation_projects', $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', ''));
 
 		if (!in_array($orderCol, $this->filter_fields))
 		{
@@ -153,7 +156,6 @@ $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array()
 	 */
 	protected function getListQuery()
 	{
-		// Create a new query object.
 		$this->jsmquery->clear();
 		$this->jsmsubquery1->clear();
 		$this->jsmsubquery2->clear();
@@ -161,29 +163,29 @@ $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array()
 		switch ($this->getState('filter.unique_id'))
 		{
 			case 0:
-				case '':
-				$this->jsmsubquery1->select('count(pt.id)');
-				$this->jsmsubquery1->from('#__sportsmanagement_project_team AS pt');
-				$this->jsmsubquery1->where('pt.project_id = p.id');
-				break;
+			case '':
+			$this->jsmsubquery1->select('count(pt.id)');
+			$this->jsmsubquery1->from('#__sportsmanagement_project_team AS pt');
+			$this->jsmsubquery1->where('pt.project_id = p.id');
+			break;
 			case 1:
-				$this->jsmsubquery1->select('count(pt.id)');
-				$this->jsmsubquery1->from('#__sportsmanagement_project_team AS pt');
-				$this->jsmsubquery1->join('INNER', '#__sportsmanagement_season_team_id as st ON st.id = pt.team_id');
-				$this->jsmsubquery1->join('INNER', '#__sportsmanagement_team as t ON t.id = st.team_id');
-				$this->jsmsubquery1->join('INNER', '#__sportsmanagement_club as c ON c.id = t.club_id');
-				$this->jsmsubquery1->where('pt.project_id = p.id');
-				$this->jsmsubquery1->where('( c.unique_id IS NULL OR c.unique_id LIKE ' . $this->jsmdb->Quote('' . '') . ' )');
-				break;
+			$this->jsmsubquery1->select('count(pt.id)');
+			$this->jsmsubquery1->from('#__sportsmanagement_project_team AS pt');
+			$this->jsmsubquery1->join('INNER', '#__sportsmanagement_season_team_id as st ON st.id = pt.team_id');
+			$this->jsmsubquery1->join('INNER', '#__sportsmanagement_team as t ON t.id = st.team_id');
+			$this->jsmsubquery1->join('INNER', '#__sportsmanagement_club as c ON c.id = t.club_id');
+			$this->jsmsubquery1->where('pt.project_id = p.id');
+			$this->jsmsubquery1->where('( c.unique_id IS NULL OR c.unique_id LIKE ' . $this->jsmdb->Quote('' . '') . ' )');
+			break;
 			case 2:
-				$this->jsmsubquery1->select('count(pt.id)');
-				$this->jsmsubquery1->from('#__sportsmanagement_project_team AS pt');
-				$this->jsmsubquery1->join('INNER', '#__sportsmanagement_season_team_id as st ON st.id = pt.team_id');
-				$this->jsmsubquery1->join('INNER', '#__sportsmanagement_team as t ON t.id = st.team_id');
-				$this->jsmsubquery1->join('INNER', '#__sportsmanagement_club as c ON c.id = t.club_id');
-				$this->jsmsubquery1->where('pt.project_id = p.id');
-				$this->jsmsubquery1->where('( c.unique_id NOT LIKE ' . $this->jsmdb->Quote('' . '') . ' )');
-				break;
+			$this->jsmsubquery1->select('count(pt.id)');
+			$this->jsmsubquery1->from('#__sportsmanagement_project_team AS pt');
+			$this->jsmsubquery1->join('INNER', '#__sportsmanagement_season_team_id as st ON st.id = pt.team_id');
+			$this->jsmsubquery1->join('INNER', '#__sportsmanagement_team as t ON t.id = st.team_id');
+			$this->jsmsubquery1->join('INNER', '#__sportsmanagement_club as c ON c.id = t.club_id');
+			$this->jsmsubquery1->where('pt.project_id = p.id');
+			$this->jsmsubquery1->where('( c.unique_id NOT LIKE ' . $this->jsmdb->Quote('' . '') . ' )');
+			break;
 		}
 
 		$this->jsmsubquery2->select('ef.name');
