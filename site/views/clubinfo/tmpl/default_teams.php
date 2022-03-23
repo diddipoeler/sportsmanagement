@@ -37,7 +37,7 @@ use Joomla\CMS\Component\ComponentHelper;
 				$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);
 				?>
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
+<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
 					<?php
 
 					if ($team->team_shortcut)
@@ -80,7 +80,8 @@ use Joomla\CMS\Component\ComponentHelper;
 
 					echo "&nbsp;";
 					?>
-
+                      </div>
+<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
 				<?php
 				if ($team->team_description && $this->config['show_teams_description_of_club'])
 				{
@@ -90,7 +91,10 @@ use Joomla\CMS\Component\ComponentHelper;
 				{
 					echo "&nbsp;";
 				}
-
+?>
+                      </div>
+  <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+  <?php
 				if ($this->config['show_teams_picture'])
 				{
 					if (empty($team->project_team_picture))
@@ -112,6 +116,7 @@ use Joomla\CMS\Component\ComponentHelper;
 					);
 				}
 				?>
+                  </div>
 				</div>
 				<?PHP
 			}
