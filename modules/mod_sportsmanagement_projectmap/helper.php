@@ -1,5 +1,4 @@
 <?php
-
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version    1.0.05
@@ -11,7 +10,6 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
@@ -237,6 +235,7 @@ federation_picture
 			$routeparameter['from']               = 0;
 			$routeparameter['to']                 = 0;
 			$routeparameter['division']           = 0;
+			$routeparameter['Itemid']           = -1;
 			$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);
 			$state_specific[] = $project->country_alpha2 . ': {
       name: "' . $image . Text::_($project->country_name) . '",
