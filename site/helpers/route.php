@@ -199,7 +199,8 @@ if ( !array_key_exists('Itemid', $parts) ) {
 
 //Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' parts' .'<pre>'.print_r($parts,true).'</pre>'    ), '');		
 		
-		$parts['Itemid'] = Factory::getApplication()->getMenu()->getActive()->id;
+$parts['Itemid'] = $parts['Itemid'] < 0 ? $parts['Itemid'] : Factory::getApplication()->getMenu()->getActive()->id;
+		
 //		if ($item = self::_findItem($parts))
 //		{
 //			$parts['Itemid'] = $item->id;
