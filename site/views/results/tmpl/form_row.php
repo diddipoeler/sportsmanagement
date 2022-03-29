@@ -17,10 +17,10 @@ use Joomla\CMS\Table\Table;
 
 if ($this->overallconfig['use_jquery_modal'])
 {
-	?>
+?>
 
 
-	<?php
+<?php
 }
 
 $match     = $this->game;
@@ -62,6 +62,10 @@ foreach ($teams AS $team)
 
 $user       = Factory::getUser();
 $canEdit    = $user->authorise('core.edit', 'com_sportsmanagement');
+
+$saveshortall    = $user->authorise('editmatch.saveshortall', 'com_sportsmanagement');
+$saveshortresults    = $user->authorise('editmatch.saveshortresults', 'com_sportsmanagement');
+
 $canCheckin = $user->authorise('core.manage', 'com_checkin') || $thismatch->checked_out == $user->get('id') || $thismatch->checked_out == 0;
 $checked    = HTMLHelper::_('jgrid.checkedout', $i, $user->get('id'), $thismatch->checked_out_time, 'matches.', $canCheckin);
 
