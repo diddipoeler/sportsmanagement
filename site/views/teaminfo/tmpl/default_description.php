@@ -19,6 +19,40 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
 
+
+
+<?php  
+$this->notes = array();
+$this->notes[] = Text::_('Projekt');
+echo $this->loadTemplate('jsm_notes');
+?>       
+    <div class="<?php echo $this->divclassrow; ?> table-responsive" id="playground_description">
+		<?php
+		$description = $this->team->notes;
+		$description = HTMLHelper::_('content.prepare', $description);
+		echo $description;
+		?>
+    </div>
+	
+<?php  
+$this->notes = array();
+$this->notes[] = Text::_('Team');
+echo $this->loadTemplate('jsm_notes');
+?>       
+    <div class="<?php echo $this->divclassrow; ?> table-responsive" id="playground_description">
+		<?php
+		$description = $this->team->teamnotes;
+		$description = HTMLHelper::_('content.prepare', $description);
+		echo $description;
+		?>
+    </div>
+
+
+
+
+
+
+
 <?php
 // Show team-description if defined.
 if (!isset($this->team->notes))
