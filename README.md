@@ -41,6 +41,7 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   30-03-2022: **3.13.00** Anpassungen Joomla 4
 *   10-01-2022: **3.12.00** Korrektur der Installation
 *   09-01-2022: **3.11.00** Anpassungen
 *   09-01-2022: **3.10.00** Anpassungen Joomla 4, richtige Anzeige der letzten Spiele in den Gruppen
