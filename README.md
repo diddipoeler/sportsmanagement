@@ -41,6 +41,7 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   30-03-2022: **3.15.00** Anpassungen Joomla 4
 *   30-03-2022: **3.14.00** Anpassungen Joomla 4
 *   30-03-2022: **3.13.00** Anpassungen Joomla 4
 *   10-01-2022: **3.12.00** Korrektur der Installation
