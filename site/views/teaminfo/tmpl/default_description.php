@@ -54,43 +54,8 @@ echo $this->loadTemplate('jsm_notes');
 
 
 <?php
-// Show team-description if defined.
-if (!isset($this->team->notes))
-{
-	$description = "";
-}
-else
-{
-	$description = $this->team->notes;
-}
 
-if (trim($description != ""))
-{
-	?>
-    <div class="<?php echo $this->divclassrow; ?> table-responsive" id="teamdescription">
-        <br/>
-        <table class="table">
-            <tr class="sectiontableheader">
-                <td>
-					<?php
-					echo '&nbsp;' . Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TEAMINFORMATION');
-					?>
-                </td>
-            </tr>
-        </table>
 
-        <table class="table">
-            <tr>
-                <td>
-					<?php
-					$description = HTMLHelper::_('content.prepare', $description);
-					echo stripslashes($description);
-					?>
-                </td>
-            </tr>
-        </table>
-    </div>
-	<?php
-}
+
 ?>
 <br/>
