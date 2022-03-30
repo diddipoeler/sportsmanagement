@@ -23,7 +23,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 <?php  
 $this->notes = array();
-$this->notes[] = Text::_('Projekt');
+$this->notes[] = Text::_('Beschreibung Projektteam');
 echo $this->loadTemplate('jsm_notes');
 ?>       
     <div class="<?php echo $this->divclassrow; ?> table-responsive" id="playground_description">
@@ -36,7 +36,7 @@ echo $this->loadTemplate('jsm_notes');
 	
 <?php  
 $this->notes = array();
-$this->notes[] = Text::_('Team');
+$this->notes[] = Text::_('Beschreibung Stammdaten Team');
 echo $this->loadTemplate('jsm_notes');
 ?>       
     <div class="<?php echo $this->divclassrow; ?> table-responsive" id="playground_description">
