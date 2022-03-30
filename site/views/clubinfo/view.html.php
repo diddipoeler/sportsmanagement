@@ -158,6 +158,8 @@ jQuery(function ($) {
 		{
 			$this->config['table_class'] = 'table';
 		}
+		
+		
         
 
 	}
