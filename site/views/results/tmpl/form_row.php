@@ -86,7 +86,7 @@ $time = strftime("%H:%M", strtotime($time));
 			$db->setQuery($query);
 			$username = $db->loadResult();
 			?>
-            <acronym title="CHECKED OUT BY <?php echo $username; ?>">X</acronym>';
+            <acronym title="CHECKED OUT BY <?php echo $username; ?>">X</acronym>;
 			<?php
 		}
 		else
