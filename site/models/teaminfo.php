@@ -195,7 +195,7 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 			$query->select('t.*,t.name AS tname, t.website AS team_website, t.email AS team_email, pt.*, pt.notes AS notes, pt.info AS info');
 			$query->select('t.extended AS teamextended, t.picture AS team_picture, pt.picture AS projectteam_picture,pt.cr_picture AS cr_projectteam_picture, c.*');
 			$query->select('CONCAT_WS( \':\', t.id, t.alias ) AS slug ');
-			$query->select('pt.id as projectteamid');
+			$query->select('pt.id as projectteamid, t.notes as teamnotes');
 			$query->from('#__sportsmanagement_team t ');
 			$query->join('LEFT', '#__sportsmanagement_club c ON t.club_id = c.id ');
 			$query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = t.id');
