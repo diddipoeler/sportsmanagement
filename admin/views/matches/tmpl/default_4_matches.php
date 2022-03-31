@@ -255,13 +255,13 @@ if ($this->templateConfig['show_number'] == 0) $colspan--;
 
                     </td>
 
-                    <td id="match_number" class="center">
+                    <td id="match_number_4" class="center">
                         <input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" type="text"
                                name="match_number<?php echo $row->id; ?>"
                                value="<?php echo $row->match_number; ?>" size="6" tabindex="1"
                                class="form-control form-control-inline"/>
                     </td>
-					<td class="center" nowrap="nowrap">
+					<td class="center" nowrap="nowrap" id="match_date_4">
 						<?php
 
 						/**
