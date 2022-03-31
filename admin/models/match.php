@@ -3863,7 +3863,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 					foreach ($this->csv_cards as $event_key => $event_object)
 					{
 						// Überprüfen ob das Event zum aktuellen Spieler passt (Nachname + Nummer muss stimmen)
-						if ($event_object->spieler == $csv_player_csvname && $event_object->spielernummer == $player_jerseynumber)
+						if ($event_object->spieler == $player_csvname && $event_object->spielernummer == $player_jerseynumber)
 						{
 							$player_event_time   = $event_object->event_time;
 							$player_event_type   = $csv_player_project_events_id[$event_key];
