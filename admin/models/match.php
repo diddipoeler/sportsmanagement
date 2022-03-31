@@ -3568,7 +3568,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 	}
 
-	function getSeasonPersonAssignment($person_id = 0, $season_id = 0, $person_type = 0, $position_id = 0)
+	function getSeasonPersonAssignment($person_id = 0, $season_id = 0, $person_type = 0)
 	{
 		$db = Factory::getDbo();
 
@@ -3578,11 +3578,6 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$query->where('person_id = ' . $person_id);
 		$query->where('season_id = ' . $season_id);
 		$query->where('persontype = ' . $person_type);
-
-		if ($position_id > 0)
-		{
-			$query->where('position_id = ' . $position_id);
-		}
 
 		$db->setQuery($query);
 
@@ -4013,7 +4008,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	function createSeasonPersonAssignment($person_id = 0, $season_id = 0, $person_type = 0, $position_id = 0)
 	{
 		// Zu Beginn überprüfen, ob es diesen Datensatz bereits gibt, falls ja geben wir die ID davon zurück
-		$existing = $this->getSeasonPersonAssignment($person_id, $season_id, $person_type, $position_id);
+		$existing = $this->getSeasonPersonAssignment($person_id, $season_id, $person_type);
 
 		if ($existing)
 		{
