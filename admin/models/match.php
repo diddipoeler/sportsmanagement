@@ -3279,9 +3279,9 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r
             }
             $this->csv_staff[$i]->position = $mannschaftsverantwortlichePosition;
             $this->csv_staff[$i]->name = $csv_file->data[0][$find_csv . '-' . $mannschaftsverantwortlichePosition];
-            $teile = explode(",", $this->csv_staff[$i]->name);
-            $firstname = htmlspecialchars(trim($teile[1]), ENT_QUOTES);
-            $lastname = htmlspecialchars(trim($teile[0]), ENT_QUOTES);
+            $teile = explode(" ", $this->csv_staff[$i]->name);
+            $firstname = htmlspecialchars(trim($teile[0]), ENT_QUOTES);
+            $lastname = htmlspecialchars(trim($teile[1]), ENT_QUOTES);
             $this->csv_staff[$i]->lastname = $lastname;
             $this->csv_staff[$i]->firstname = $firstname;
             $this->csv_staff[$i]->person_id = 0;
