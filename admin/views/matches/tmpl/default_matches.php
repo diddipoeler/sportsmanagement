@@ -258,13 +258,13 @@ $pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=compon
 
                     </td>
 
-                    <td id="match_number" class="center">
+                    <td id="match_number_3" class="center">
                         <input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" type="text"
                                name="match_number<?php echo $row->id; ?>"
                                value="<?php echo $row->match_number; ?>" size="6" tabindex="1"
                                class="form-control form-control-inline"/>
                     </td>
-                    <td class="center" nowrap="nowrap">
+                    <td class="center" nowrap="nowrap" id="match_date_3">
 						<?php
 
 						/**
