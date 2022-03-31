@@ -158,10 +158,15 @@ if ($this->templateConfig['show_id'] == 1) $columns++;
 						 * echo HTMLHelper::_('calendar', Factory::getDate()->format('Y-m-d'), 'date', 'date', '%Y-%m-%d', $attribs); ?>
 						 */
 
-
+/*
 						$attribs = array(
 							'onChange' => "document.getElementById('cb" . $this->count_i . "').checked=true",
 						);
+				*/
+$attribs['class'] = 'input-small';
+$attribs['size'] = '10';
+$attribs['maxlength'] = '10';
+$attribs['onChange'] = "document.getElementById('cb" . $this->count_i . "').checked=true";				
 						$date1   = sportsmanagementHelper::convertDate($this->item->round_date_first, 1);
 						$append  = '';
 						if (($date1 == '00-00-0000') || ($date1 == ''))
