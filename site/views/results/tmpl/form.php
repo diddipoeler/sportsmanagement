@@ -16,6 +16,8 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 
 $user = Factory::getUser();
+$saveshortall = $user->authorise('editmatch.saveshortall', 'com_sportsmanagement');
+$saveshortresults = $user->authorise('editmatch.saveshortresults', 'com_sportsmanagement');
 
 if (version_compare(JSM_JVERSION, '4', 'eq'))
 {
@@ -269,6 +271,9 @@ else
         <input type='hidden' name='order' value='<?php echo sportsmanagementModelResults::$order; ?>'/>
         <input type='hidden' name='layout' value='form'/>
         <input type='hidden' name='task' value='results.saveshort'/>
+	    
+	    <input type='hidden' name='saveshortall' value='<?php echo $saveshortall; ?>'/>
+	    
         <input type='hidden' name='sel_r' value='<?php echo sportsmanagementModelProject::$roundslug; ?>'/>
         <input type='hidden' name='Itemid'
                value='<?php echo Factory::getApplication()->input->getInt('Itemid', 1, 'get'); ?>'/>
