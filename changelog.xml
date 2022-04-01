@@ -6,6 +6,26 @@
 		<note>
 			<item>Initial Version</item>
 		</note>
+		<security>
+			<item><![CDATA[<p>No security issues.</p>]]></item>
+		</security>
+		<fix>
+			<item>No fix</item>
+		</fix>
+		<language>
+			<item>German</item>
+		</language>
+		<addition>
+			<item>Change log Server added.</item>
+		</addition>
+		<change>
+			<item>No change</item>
+		</change>
+		<remove>
+			<item>No remove</item>
+		</remove>
+		
+		
 	</changelog>
 	<changelog>
 		<element>com_sportsmanagement</element>
