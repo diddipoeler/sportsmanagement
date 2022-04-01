@@ -43,7 +43,96 @@ echo $this->loadTemplate('projectheading');
 			}
             else
             {
+			//echo $this->loadTemplate('ranking');
+echo HTMLHelper::_('bootstrap.' . $this->startPane, 'myTab', array('active' => 'tab1id'));
+
+if ($this->config['show_table_1'])
+{
+	echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab1id', Text::_($this->config['table_text_1']));
+
+	?>
+    <div class="<?php echo $this->divclasscontainer; ?>">
+        <div class="<?php echo $this->divclassrow; ?>">
+			<?PHP
 			echo $this->loadTemplate('ranking');
+			?>
+        </div>
+    </div>
+	<?PHP
+	echo HTMLHelper::_('bootstrap.' . $this->endPanel);
+}
+
+
+if ($this->config['show_table_2'])
+{
+	echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab2id', Text::_($this->config['table_text_2']));
+
+	?>
+    <div class="<?php echo $this->divclasscontainer; ?>">
+        <div class="<?php echo $this->divclassrow; ?>">
+			<?PHP
+			echo $this->loadTemplate('ranking_home');
+			?>
+        </div>
+    </div>
+	<?PHP
+	echo HTMLHelper::_('bootstrap.' . $this->endPanel);
+}
+
+
+if ($this->config['show_table_3'])
+{
+	echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab3id', Text::_($this->config['table_text_3']));
+
+	?>
+    <div class="<?php echo $this->divclasscontainer; ?>">
+        <div class="<?php echo $this->divclassrow; ?>">
+			<?PHP
+			echo $this->loadTemplate('ranking_away');
+			?>
+        </div>
+    </div>
+	<?PHP
+	echo HTMLHelper::_('bootstrap.' . $this->endPanel);
+}
+
+
+if ($this->config['show_table_4'])
+{
+	echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab4id', Text::_($this->config['table_text_4']));
+
+	?>
+    <div class="<?php echo $this->divclasscontainer; ?>">
+        <div class="<?php echo $this->divclassrow; ?>">
+			<?PHP
+			echo $this->loadTemplate('ranking_first');
+			?>
+        </div>
+    </div>
+	<?PHP
+	echo HTMLHelper::_('bootstrap.' . $this->endPanel);
+}
+
+
+if ($this->config['show_table_5'])
+{
+	echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab5id', Text::_($this->config['table_text_5']));
+
+	?>
+    <div class="<?php echo $this->divclasscontainer; ?>">
+        <div class="<?php echo $this->divclassrow; ?>">
+			<?PHP
+			echo $this->loadTemplate('ranking_second');
+			?>
+        </div>
+    </div>
+	<?PHP
+}
+
+echo HTMLHelper::_('bootstrap.' . $this->endPanel);
+echo HTMLHelper::_('bootstrap.' . $this->endPane, 'myTab');		    
+		    
+		    
 			echo $this->loadTemplate('jsminfo');
             }
 			?>
