@@ -157,6 +157,8 @@
 		
 	</administration>
  
+ 
+ <changelogurl>https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/changelog.xml</changelogurl>
 	<!-- UPDATESERVER DEFINITION -->
 	<updateservers>
 		<!-- Note: No spaces or linebreaks allowed between the server tags -->
