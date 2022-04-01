@@ -110,19 +110,19 @@ class sportsmanagementViewTeamPlayer extends sportsmanagementView
 			if ($this->item->contract_from == '0000-00-00')
 			{
 				$this->item->contract_from = '';
-				$this->form->setValue('contract_from', '');
+				$this->form->setValue('contract_from',null, '');
 			}
 
 			if ($this->item->contract_to == '0000-00-00')
 			{
 				$this->item->contract_to = '';
-				$this->form->setValue('contract_to', '');
+				$this->form->setValue('contract_to',null, '');
 			}
 		}
 		else
 		{
-			$this->form->setValue('contract_from', '');
-			$this->form->setValue('contract_to', '');
+			$this->form->setValue('contract_from',null, '');
+			$this->form->setValue('contract_to',null, '');
 		}
 
 		$project_position_id = $this->form->getValue('project_position_id');
