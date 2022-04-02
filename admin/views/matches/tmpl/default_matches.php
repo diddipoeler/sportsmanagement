@@ -280,10 +280,15 @@ $pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=compon
 						 * echo HTMLHelper::_('calendar', Factory::getDate()->format('Y-m-d'), 'date', 'date', '%Y-%m-%d', $attribs); ?>
 						 */
 
-
+/*
 						$attribs = array(
 							'onChange' => "document.getElementById('cb" . $i . "').checked=true",
 						);
+                        */
+$attribs['class'] = 'input-large';
+$attribs['size'] = '10';
+$attribs['maxlength'] = '10';
+$attribs['onChange'] = "document.getElementById('cb" . $i . "').checked=true";                        
 						echo HTMLHelper::calendar(sportsmanagementHelper::convertDate($date),
 							'match_date' . $row->id,
 							'match_date' . $row->id,
