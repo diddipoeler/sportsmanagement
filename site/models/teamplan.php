@@ -87,9 +87,10 @@ class sportsmanagementModelTeamPlan extends BaseDatabaseModel
 		{
 			self::$pro_teamid = 0;
 
-			return 0;
-			$app->enqueueMessage(Text::_($e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+                $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+            return 0;
 		}
 
 		self::$pro_teamid    = $result;
@@ -192,7 +193,8 @@ class sportsmanagementModelTeamPlan extends BaseDatabaseModel
 		}
 		catch (Exception $e)
 		{
-			$app->enqueueMessage(Text::_($e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+                $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		}
 
@@ -264,7 +266,8 @@ class sportsmanagementModelTeamPlan extends BaseDatabaseModel
 			}
 			catch (Exception $e)
 			{
-				$app->enqueueMessage(Text::_($e->getMessage()), 'error');
+				$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+                $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 				$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 			}
 
@@ -332,7 +335,6 @@ class sportsmanagementModelTeamPlan extends BaseDatabaseModel
 				$div_for_teams = $db->loadColumn();
 			}
 
-			$div_for_teams[] = self::getDivision()->id;
 		}
 
 		try
@@ -411,7 +413,8 @@ class sportsmanagementModelTeamPlan extends BaseDatabaseModel
 		}
 		catch (Exception $e)
 		{
-			$app->enqueueMessage(Text::_($e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+                $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		}
 
@@ -452,7 +455,8 @@ class sportsmanagementModelTeamPlan extends BaseDatabaseModel
 			}
 			catch (Exception $e)
 			{
-				$app->enqueueMessage(Text::_($e->getMessage()), 'error');
+				$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+                $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 				$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 			}
 		}
@@ -532,7 +536,8 @@ class sportsmanagementModelTeamPlan extends BaseDatabaseModel
 		}
 		catch (Exception $e)
 		{
-			$app->enqueueMessage(Text::_($e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+                $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		}
 
