@@ -277,11 +277,16 @@ if ($this->templateConfig['show_number'] == 0) $colspan--;
 						 * echo HTMLHelper::_('calendar', Factory::getDate()->format('Y-m-d'), 'date', 'date', '%Y-%m-%d', $attribs); ?>
 						 */
 
-
+$attribs['class'] = 'input-large';
+$attribs['size'] = '10';
+$attribs['maxlength'] = '10';
+$attribs['onChange'] = "document.getElementById('cb" . $i . "').checked=true";
+/*
 						$attribs = array(
 							'onChange' => "document.getElementById('cb" . $i . "').checked=true",
 							'class' => 'center'
 						);
+                        */
 						echo HTMLHelper::calendar(sportsmanagementHelper::convertDate($date),
 							'match_date' . $row->id,
 							'match_date' . $row->id,
