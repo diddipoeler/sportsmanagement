@@ -375,7 +375,7 @@ class sportsmanagementModelTeamPlan extends BaseDatabaseModel
 				$query->where('( (m.projectteam1_id = ' . self::$projectteamid . ' AND m.team1_result < m.team2_result)' . ' OR (m.projectteam2_id = ' . self::$projectteamid . ' AND m.team1_result > m.team2_result) )');
 			}
 
-			if (self::$divisionid > 0)
+			if ( self::$divisionid > 0 && $div_for_teams )
 			{
 				$query->where('(pt1.division_id IN (' . (implode(',', $div_for_teams)) . ') OR pt2.division_id IN (' . (implode(',', $div_for_teams)) . ')  OR m.division_id IN (' . (implode(',', $div_for_teams)) . ')   )');
 			}
