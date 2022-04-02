@@ -43,10 +43,7 @@ class sportsmanagementModelTeamPlan extends BaseDatabaseModel
 	function __construct()
 	{
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
-
 		self::$projectid          = (int) $jinput->get('p', 0, '');
 		self::$teamid             = (int) $jinput->get('tid', 0, '');
 		self::$projectteamid      = (int) $jinput->get('ptid', 0, '');
@@ -55,7 +52,6 @@ class sportsmanagementModelTeamPlan extends BaseDatabaseModel
 		self::$mode               = (int) $jinput->get('mode', 0, '');
 		self::$cfg_which_database = (int) $jinput->get('cfg_which_database', 0, '');
 
-		//        sportsmanagementModelProject::setProjectID($jinput->getInt('p',0),self::$cfg_which_database);
 		sportsmanagementModelProject::$projectid          = self::$projectid;
 		sportsmanagementModelProject::$cfg_which_database = self::$cfg_which_database;
 		parent::__construct();
@@ -70,20 +66,14 @@ class sportsmanagementModelTeamPlan extends BaseDatabaseModel
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
-
-		// Get a db connection.
 		$db        = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query     = $db->getQuery(true);
 		$starttime = microtime();
 
 		$query->select('pt.id');
-
-		// From
 		$query->from('#__sportsmanagement_project_team as pt');
 		$query->join('INNER', ' #__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
 		$query->join('INNER', ' #__sportsmanagement_team as t ON t.id = st.team_id ');
-
-		// Where
 		$query->where('pt.project_id = ' . self::$projectid);
 		$query->where('t.id=' . self::$teamid);
 		$db->setQuery($query, 0, 1);
@@ -154,44 +144,29 @@ class sportsmanagementModelTeamPlan extends BaseDatabaseModel
 	{
 		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
-
-		// Get a db connection.
 		$db        = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query     = $db->getQuery(true);
 		$starttime = microtime();
-
 		$matches = array();
-
 		$project = sportsmanagementModelProject::getProject(self::$cfg_which_database);
 
 		$query->select('matches.*');
-
-		// From
 		$query->from('#__sportsmanagement_match AS matches');
-
-		// Join
 		$query->join('INNER', ' #__sportsmanagement_round AS r ON matches.round_id = r.id ');
-
-		// Where
 		$query->where('r.project_id = ' . self::$projectid);
 		$query->where('r.roundcode = ' . $roundcode);
 
 		if ($teamId)
 		{
-			// $query->where("(matches.projectteam1_id=".$teamId." OR matches.projectteam2_id=".$teamId.")");
 			$query->where("(matches.projectteam1_id = " . self::$projectteamid . " OR matches.projectteam2_id = " . self::$projectteamid . ")");
 		}
 
-		// Group
-		// $query->group('matches.id');
-		// Order
 		$query->order('matches.match_date ' . $ordering . ',matches.match_number');
 
 		if (self::$divisionid > 0)
 		{
 			$query->join('LEFT', ' #__sportsmanagement_project_team as pt1 ON pt1.id = matches.projectteam1_id ');
 			$query->join('LEFT', ' #__sportsmanagement_project_team as pt2 ON pt2.id = matches.projectteam2_id ');
-
 			$query->join('LEFT', ' #__sportsmanagement_division AS d1 ON pt1.division_id = d1.id ');
 			$query->join('LEFT', ' #__sportsmanagement_division AS d2 ON pt2.division_id = d2.id ');
 			$query->where("(d1.id = " . self::$divisionid . " OR d1.parent_id = " . self::$divisionid . " OR d2.id = " . self::$divisionid . " OR d2.parent_id = " . self::$divisionid . " OR matches.division_id = " . self::$divisionid . " )");
@@ -354,7 +329,6 @@ class sportsmanagementModelTeamPlan extends BaseDatabaseModel
 
 			if (version_compare(JVERSION, '3.0.0', 'ge'))
 			{
-				// Joomla! 3.0 code here
 				$div_for_teams = $db->loadColumn();
 			}
 
@@ -421,9 +395,6 @@ class sportsmanagementModelTeamPlan extends BaseDatabaseModel
 				$query->where("(m.projectteam1_id = " . self::$projectteamid . " OR m.projectteam2_id = " . self::$projectteamid . ")");
 			}
 
-			// Group
-			// $query->group('m.id');
-			// Order
 			$query->order("r.roundcode " . $ordering . ",m.match_date,m.match_number");
 
 			if ($getplayground)
@@ -541,23 +512,15 @@ class sportsmanagementModelTeamPlan extends BaseDatabaseModel
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
-
-		// Get a db connection.
 		$db     = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query  = $db->getQuery(true);
 		$result = null;
 
 		$query->select('et.id as etid,me.event_type_id as id,et.*');
-
-		// From
 		$query->from('#__sportsmanagement_eventtype as et');
 		$query->join('INNER', ' #__sportsmanagement_match_event as me ON et.id = me.event_type_id ');
 		$query->join('INNER', ' #__sportsmanagement_match as m ON m.id = me.match_id ');
-
-		// Where
 		$query->where('me.match_id = ' . $match_id);
-
-		// Order
 		$query->order('et.ordering');
 
 		$db->setQuery($query);
