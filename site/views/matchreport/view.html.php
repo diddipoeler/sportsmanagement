@@ -640,6 +640,7 @@ function showSubstitution_Timelines($sub = 0,$projectteam_id = 'projectteam1_id'
 		$result              = '';
 		$tiptext              = '';
 		$substitutioncounter = array();
+        $substitutioncounter2 = array();
 		$eventstimecounter   = $this->getEventsTimes();
         $first = 0;
 		
