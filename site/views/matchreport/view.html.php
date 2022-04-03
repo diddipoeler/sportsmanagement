@@ -641,6 +641,7 @@ function showSubstitution_Timelines($sub = 0,$projectteam_id = 'projectteam1_id'
 		$tiptext              = '';
 		$substitutioncounter = array();
 		$eventstimecounter   = $this->getEventsTimes();
+        $first = 0;
 		
 		$pic_out  = 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/out.png';
 		$pic_in   = 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/in.png';
@@ -671,11 +672,15 @@ function showSubstitution_Timelines($sub = 0,$projectteam_id = 'projectteam1_id'
 		
 			}
 		}
+        
+if ( $substitutioncounter2 )
+{        
         arsort($substitutioncounter2);
         $first = array_shift($substitutioncounter2);
         if ( $first > $this->playgroundheight )
 {
     $this->playgroundheight = $first;
+}
 }
 
 if ( $this->config["show_row_timeline"] )
