@@ -23,7 +23,7 @@ use Joomla\CMS\Factory;
 	if (version_compare(JSM_JVERSION, '4', 'eq'))
 	{
 ?>
-<?php echo HTMLHelper::_('bootstrap.startAccordion', 'collapseTypes', array('active' => 'collapse0')); 
+<?php echo HTMLHelper::_('bootstrap.startAccordion', 'collapseTypes', array('active' => 'collapse0', 'parent' => 'collapseTypes' )); 
 $i = 1;
 $view   = Factory::getApplication()->input->getCmd('view');
 foreach ($this->output as $key => $templ)
