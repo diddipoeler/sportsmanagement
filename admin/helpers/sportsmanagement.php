@@ -118,8 +118,8 @@ public static function getMatchReferees($match_id = 0, $cfg_which_database = 0)
         if ( $total_referees )
         {
         $query->clear();
-		$query->select('p.id,pref.id AS person_id,p.firstname,p.lastname,pos.name AS position_name,CONCAT_WS(\':\',p.id,p.alias) AS person_slug');
-		$query->select('mr.project_position_id,pos.name as position_name');
+		$query->select('p.id,pref.id AS person_id,p.firstname,p.lastname,pos.name AS position_name,CONCAT_WS(\':\',p.id,p.alias) AS person_slug,p.nickname ');
+		$query->select('mr.project_position_id,pos.name as position_name,pref.picture');
 		$query->from('#__sportsmanagement_match_referee AS mr');
 		$query->join('LEFT', '#__sportsmanagement_project_referee AS pref ON mr.project_referee_id=pref.id');
 		$query->join('INNER', '#__sportsmanagement_season_person_id AS spi ON pref.person_id=spi.id');
