@@ -3464,9 +3464,11 @@ $jinput = $app->input;
 		{
 			case 'com_content':
 				$query->from('#__content as c');
+				$query->order('created DESC');
 				break;
 			case 'com_k2':
 				$query->from('#__k2_items as c');
+				$query->order('created DESC');
 				break;
 			default:
 				$query->from('#__content as c');
