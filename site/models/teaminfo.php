@@ -192,7 +192,7 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 
 		if (is_null(self::$team))
 		{
-			$query->select('t.*,t.name AS tname, t.website AS team_website, t.email AS team_email, pt.*, pt.notes AS notes, pt.info AS info');
+			$query->select('t.*,t.name AS tname, t.website AS team_website, t.email AS team_email, pt.*, pt.notes AS projectteamnotes');
 			$query->select('t.extended AS teamextended, t.picture AS team_picture, pt.picture AS projectteam_picture,pt.cr_picture AS cr_projectteam_picture, c.*');
 			$query->select('CONCAT_WS( \':\', t.id, t.alias ) AS slug ');
 			$query->select('pt.id as projectteamid, t.notes as teamnotes');
@@ -226,7 +226,7 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 		}
 
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
+//echo '<pre>'.print_r(self::$team,true).'</pre>';
 		return self::$team;
 	}
 
