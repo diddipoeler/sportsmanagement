@@ -60,6 +60,19 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		$this->eventsprojecttime = $this->projectws->game_regular_time;
 
 		$this->match                = $this->model->getMatchData($this->item->id);
+        if ( !property_exists($this->match, "hometeam") )
+        {
+        $this->match->hometeam = '';
+        }
+        if ( !property_exists($this->match, "awayteam") )
+        {
+        $this->match->awayteam = '';
+        }
+        if ( !property_exists($this->match, "playground_id") )
+        {
+        $this->match->playground_id = 0;
+        }
+        
 		$this->extended             = sportsmanagementHelper::getExtended($this->item->extended, 'match');
 		$this->cfg_which_media_tool = ComponentHelper::getParams($this->option)->get('cfg_which_media_tool', 0);
 
