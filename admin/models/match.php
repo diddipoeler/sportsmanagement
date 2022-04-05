@@ -2235,12 +2235,13 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		return $result;
 	}
 
+	
 	/**
-	 * Method to load content matchday data
-	 *
-	 * @access private
-	 * @return boolean    True on success
-	 * @since  1.5
+	 * sportsmanagementModelMatch::getMatchData()
+	 * 
+	 * @param mixed $match_id
+	 * @param integer $cfg_which_database
+	 * @return
 	 */
 	public static function getMatchData($match_id, $cfg_which_database = 0)
 	{
@@ -2259,9 +2260,9 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$query->join('INNER', '#__sportsmanagement_project_team AS pt1 ON pt1.id = m.projectteam1_id ');
 		$query->join('INNER', '#__sportsmanagement_season_team_id as st1 ON st1.id = pt1.team_id ');
 		$query->join('INNER', '#__sportsmanagement_team AS t1 ON t1.id = st1.team_id ');
-		$query->join('INNER', '#__sportsmanagement_project_team AS pt2 ON pt2.id = m.projectteam2_id ');
-		$query->join('INNER', '#__sportsmanagement_season_team_id as st2 ON st2.id = pt2.team_id ');
-		$query->join('INNER', '#__sportsmanagement_team AS t2 ON t2.id = st2.team_id ');
+		$query->join('LEFT', '#__sportsmanagement_project_team AS pt2 ON pt2.id = m.projectteam2_id ');
+		$query->join('LEFT', '#__sportsmanagement_season_team_id as st2 ON st2.id = pt2.team_id ');
+		$query->join('LEFT', '#__sportsmanagement_team AS t2 ON t2.id = st2.team_id ');
 		$query->join('LEFT', '#__sportsmanagement_playground AS pg ON pg.id = m.playground_id ');
 		$query->where('m.id = ' . (int) $match_id);
 

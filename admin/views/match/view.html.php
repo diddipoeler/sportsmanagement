@@ -60,6 +60,10 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		$this->eventsprojecttime = $this->projectws->game_regular_time;
 
 		$this->match                = $this->model->getMatchData($this->item->id);
+        
+//$this->app->enqueueMessage(Text::_('item id <pre>'.print_r($this->item->id ,true).'</pre>'), 'Error');
+//$this->app->enqueueMessage(Text::_('match <pre>'.print_r($this->match ,true).'</pre>'), 'Error');        
+        
         if ( !property_exists($this->match, "hometeam") )
         {
         $this->match->hometeam = '';
