@@ -47,7 +47,7 @@
 			
 		<field
 			name="published"
-			type="extensionradiobutton"
+			type="radio"
 			class="radio btn-group btn-group-yesno"
 			default="1"
 			size="1"
