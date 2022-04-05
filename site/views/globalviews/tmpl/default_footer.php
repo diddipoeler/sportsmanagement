@@ -99,6 +99,26 @@ $logo_width            = ComponentHelper::getParams($option)->get('logo_picture_
 <?php echo Text::sprintf('COM_SPORTSMANAGEMENT_FOOTER_TIME', $this->jsmseitenaufbau); ?>
 </div>
 
+<?php
+$link_onlinehelp = $cfg_help_server . 'SM-Frontend:' . $view ;                                                
+$cmd = "Joomla.popupWindow('$link_onlinehelp', '" . Text::_('COM_SPORTSMANAGEMENT_HELP_LINK', true) . "',". $modal_popup_width." ,". $modal_popup_height.", 1)";
+?>
+<div class="center">
+<button onclick="<?php echo $cmd; ?>">
+<?php
+echo HTMLHelper::_(
+'image', 'media/com_sportsmanagement/jl_images/help.png',
+Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'), 'title= "' .
+Text::_('COM_SPORTSMANAGEMENT_HELP_LINK') . '"'
+);
+echo ' '.Text::_('COM_SPORTSMANAGEMENT_HELP_LINK');
+?>                      
+</button>
+</div>
+
+
+
+
 	<?PHP
 	/**
 	 *
