@@ -323,7 +323,7 @@ $attribs['onChange'] = "document.getElementById('cb" . $i . "').checked=true";
             jQuery(function ($) {
                 $('#datepicker<?php echo $row->id; ?>').datetimepicker(
                 {
-                    format: 'd-m-Y'
+                    format: 'DD-MM-YYYY'
                 }
                 );
             });
@@ -372,7 +372,7 @@ $attribs['onChange'] = "document.getElementById('cb" . $i . "').checked=true";
             jQuery(function ($) {
                 $('#timepicker<?php echo $row->id; ?>').datetimepicker(
                 {
-                    format: 'H:i'
+                    format: 'HH:mm'
                 }
                 );
             });
