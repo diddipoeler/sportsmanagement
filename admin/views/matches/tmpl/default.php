@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Uri\Uri;
 
 $massadd         = Factory::getApplication()->input->getInt('massadd', 0);
 $templatesToLoad = array('footer', 'listheader');
@@ -23,12 +24,7 @@ if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO)
 	echo $this->loadTemplate('debug');
 }
 ?>
-<script>
-  jQuery('#timepicker').datetimepicker({
-  datepicker:false,
-  format:'H:i'
-});
-</script>
+
 <div id="alt_decision_enter" style="display:<?php echo ($massadd == 0) ? 'none' : 'block'; ?>">
 <?php
 echo $this->loadTemplate('massadd');
@@ -53,7 +49,7 @@ break;
 }
 
 
-
+$this->document->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/jquery.datetimepicker.js');
 ?>
 <div>
 <?PHP
