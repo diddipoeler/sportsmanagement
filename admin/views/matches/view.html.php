@@ -44,6 +44,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
 		$option = $jinput->getCmd('option');
 		$model  = $this->getModel();
 		$params = ComponentHelper::getParams($option);
+		$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/jquery.datetimepicker.css');
 		$this->document->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/jquery.datetimepicker.js');
 
 		$view = $jinput->get('view');
