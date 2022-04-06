@@ -300,13 +300,14 @@ $attribs['onChange'] = "document.getElementById('cb" . $i . "').checked=true";
 							'class' => 'center'
 						);
                         */
+  /*                      
 						echo HTMLHelper::calendar(sportsmanagementHelper::convertDate($date),
 							'match_date' . $row->id,
 							'match_date' . $row->id,
 							'%d-%m-%Y',
 							$attribs
 						);
-
+*/
 						?>
                         
 <div class="input-group date" id="datepicker<?php echo $row->id; ?>" data-target-input="nearest">
@@ -314,7 +315,7 @@ $attribs['onChange'] = "document.getElementById('cb" . $i . "').checked=true";
                     name="match_date<?php echo $row->id; ?>"
                     onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"
                     size="10" maxlength="10"
-                    class="form-control datetimepicker-input" data-target="#datepicker<?php echo $row->id; ?>" value="<?php echo sportsmanagementHelper::convertDate($date); ?>"  />
+                    class="datetimepicker-input" data-target="#datepicker<?php echo $row->id; ?>" value="<?php echo sportsmanagementHelper::convertDate($date); ?>"  />
                     <div class="input-group-append" data-target="#datepicker<?php echo $row->id; ?>" data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
@@ -363,7 +364,7 @@ $attribs['onChange'] = "document.getElementById('cb" . $i . "').checked=true";
                     name="match_time<?php echo $row->id; ?>"
                     onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"
                     size="5" maxlength="5"
-                    class="form-control datetimepicker-input" data-target="#timepicker<?php echo $row->id; ?>" value="<?php echo $time; ?>"  />
+                    class="datetimepicker-input" data-target="#timepicker<?php echo $row->id; ?>" value="<?php echo $time; ?>"  />
                     <div class="input-group-append" data-target="#timepicker<?php echo $row->id; ?>" data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
                     </div>
