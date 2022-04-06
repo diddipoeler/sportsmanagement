@@ -303,7 +303,8 @@ $attribs['onChange'] = "document.getElementById('cb" . $i . "').checked=true";
                                onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" type="text"
                                name="match_time<?php echo $row->id; ?>"
                                value="<?php echo $time; ?>" size="4" maxlength="5" tabindex="3"
-                               class="form-control form-control-inline"/>
+                               class="form-control form-control-inline"
+			       id="timepicker" />
 
                         <a href="javascript:void(0)"
                            onclick="switchMenu('present<?php echo $row->id; ?>')">&nbsp;
