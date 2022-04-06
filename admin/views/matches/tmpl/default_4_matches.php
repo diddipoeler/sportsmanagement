@@ -316,7 +316,7 @@ $attribs['onChange'] = "document.getElementById('cb" . $i . "').checked=true";
                     size="10" maxlength="10"
                     class="form-control datetimepicker-input" data-target="#datepicker<?php echo $row->id; ?>" value="<?php echo sportsmanagementHelper::convertDate($date); ?>"  />
                     <div class="input-group-append" data-target="#datepicker<?php echo $row->id; ?>" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar-o"></i></div>
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
 </div>                                               
 <script type="text/javascript">
