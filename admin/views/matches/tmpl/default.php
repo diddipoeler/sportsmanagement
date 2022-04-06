@@ -49,7 +49,7 @@ break;
 }
 
 
-$this->document->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/jquery.datetimepicker.js');
+//$this->document->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/jquery.datetimepicker.js');
 ?>
 <div>
 <?PHP
