@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
-jimport('joomla.application.component.controller');
+//jimport('joomla.application.component.controller');
 
 
 /**
@@ -25,7 +25,7 @@ jimport('joomla.application.component.controller');
  * @version   $Id$
  * @access    public
  */
-class sportsmanagementControllerjlextindividualsport extends JController
+class sportsmanagementControllerjlextindividualsport extends JSMControllerAdmin
 {
 
 	/**
