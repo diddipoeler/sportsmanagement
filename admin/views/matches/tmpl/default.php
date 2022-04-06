@@ -23,7 +23,12 @@ if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO)
 	echo $this->loadTemplate('debug');
 }
 ?>
-
+<script>
+  jQuery('#timepicker').datetimepicker({
+  datepicker:false,
+  format:'H:i'
+});
+</script>
 <div id="alt_decision_enter" style="display:<?php echo ($massadd == 0) ? 'none' : 'block'; ?>">
 <?php
 echo $this->loadTemplate('massadd');
