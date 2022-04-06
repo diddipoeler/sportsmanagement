@@ -309,7 +309,7 @@ $attribs['onChange'] = "document.getElementById('cb" . $i . "').checked=true";
 
 						?>
                         
-<div class="input-group date" id="timepicker<?php echo $row->id; ?>" data-target-input="nearest">
+<div class="input-group date" id="datepicker<?php echo $row->id; ?>" data-target-input="nearest">
                     <input type="text" 
                     name="match_date<?php echo $row->id; ?>"
                     onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"
@@ -323,7 +323,7 @@ $attribs['onChange'] = "document.getElementById('cb" . $i . "').checked=true";
             jQuery(function ($) {
                 $('#datepicker<?php echo $row->id; ?>').datetimepicker(
                 {
-                    format: '%d-%m-%Y'
+                    format: 'd-m-Y'
                 }
                 );
             });
