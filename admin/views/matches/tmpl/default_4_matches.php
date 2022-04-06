@@ -306,7 +306,30 @@ $attribs['onChange'] = "document.getElementById('cb" . $i . "').checked=true";
 							'%d-%m-%Y',
 							$attribs
 						);
+
 						?>
+                        
+<div class="input-group date" id="timepicker<?php echo $row->id; ?>" data-target-input="nearest">
+                    <input type="text" 
+                    name="match_date<?php echo $row->id; ?>"
+                    onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"
+                    size="10" maxlength="10"
+                    class="form-control datetimepicker-input" data-target="#datepicker<?php echo $row->id; ?>" value="<?php echo sportsmanagementHelper::convertDate($date); ?>"  />
+                    <div class="input-group-append" data-target="#datepicker<?php echo $row->id; ?>" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar-o"></i></div>
+                    </div>
+</div>                                               
+<script type="text/javascript">
+            jQuery(function ($) {
+                $('#datepicker<?php echo $row->id; ?>').datetimepicker(
+                {
+                    format: '%d-%m-%Y'
+                }
+                );
+            });
+</script>    
+
+                        
 					</td>
                     <td class="left" nowrap="nowrap">
 
@@ -335,20 +358,19 @@ $attribs['onChange'] = "document.getElementById('cb" . $i . "').checked=true";
                                                title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PRESENT'); ?>"/>
                                                	<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PRESENT_SHORT'); ?>
 								</span>
-<div class="input-group date" id="datetimepicker<?php echo $row->id; ?>" data-target-input="nearest">
+<div class="input-group date" id="timepicker<?php echo $row->id; ?>" data-target-input="nearest">
                     <input type="text" 
-                    name="time_present<?php echo $row->id; ?>"
-                    ondblclick="copyValue('time_present')"
+                    name="match_time<?php echo $row->id; ?>"
                     onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"
                     size="5" maxlength="5"
-                    class="form-control datetimepicker-input" data-target="#datetimepicker<?php echo $row->id; ?>" value="<?php echo $time; ?>"  />
-                    <div class="input-group-append" data-target="#datetimepicker<?php echo $row->id; ?>" data-toggle="datetimepicker">
+                    class="form-control datetimepicker-input" data-target="#timepicker<?php echo $row->id; ?>" value="<?php echo $time; ?>"  />
+                    <div class="input-group-append" data-target="#timepicker<?php echo $row->id; ?>" data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
                     </div>
 </div>                                               
 <script type="text/javascript">
             jQuery(function ($) {
-                $('#datetimepicker<?php echo $row->id; ?>').datetimepicker(
+                $('#timepicker<?php echo $row->id; ?>').datetimepicker(
                 {
                     format: 'H:i'
                 }
