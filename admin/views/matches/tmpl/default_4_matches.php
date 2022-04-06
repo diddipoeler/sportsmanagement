@@ -333,14 +333,36 @@ $attribs['onChange'] = "document.getElementById('cb" . $i . "').checked=true";
                         
 					</td>
                     <td class="left" nowrap="nowrap">
-
+<!--
                         <input ondblclick="copyValue('match_time')"
                                onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" type="text"
                                name="match_time<?php echo $row->id; ?>"
                                value="<?php echo $time; ?>" size="4" maxlength="5" tabindex="3"
                                class="form-control form-control-inline"/>
-
-                        <a href="javascript:void(0)"
+-->
+                        
+                        
+<div class="input-group date" id="timepicker<?php echo $row->id; ?>" data-target-input="nearest">
+                    <input type="text" 
+                    name="match_time<?php echo $row->id; ?>"
+                    onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"
+                    ondblclick="copyValue('match_time')"
+                    size="5" maxlength="5"
+                    class="datetimepicker-input" data-target="#timepicker<?php echo $row->id; ?>" value="<?php echo $time; ?>"  />
+                    <div class="input-group-append" data-target="#timepicker<?php echo $row->id; ?>" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
+                    </div>
+</div>                                               
+<script type="text/javascript">
+            jQuery(function ($) {
+                $('#timepicker<?php echo $row->id; ?>').datetimepicker(
+                {
+                    format: 'HH:mm'
+                }
+                );
+            });
+</script>                                               
+						<a href="javascript:void(0)"
                            onclick="switchMenu('present<?php echo $row->id; ?>')">
 							<?php 
 							$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PRESENT');
@@ -359,26 +381,7 @@ $attribs['onChange'] = "document.getElementById('cb" . $i . "').checked=true";
                                                title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PRESENT'); ?>"/>
                                                	<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PRESENT_SHORT'); ?>
 								</span>
-<div class="input-group date" id="timepicker<?php echo $row->id; ?>" data-target-input="nearest">
-                    <input type="text" 
-                    name="match_time<?php echo $row->id; ?>"
-                    onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"
-                    size="5" maxlength="5"
-                    class="datetimepicker-input" data-target="#timepicker<?php echo $row->id; ?>" value="<?php echo $time; ?>"  />
-                    <div class="input-group-append" data-target="#timepicker<?php echo $row->id; ?>" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
-                    </div>
-</div>                                               
-<script type="text/javascript">
-            jQuery(function ($) {
-                $('#timepicker<?php echo $row->id; ?>').datetimepicker(
-                {
-                    format: 'HH:mm'
-                }
-                );
-            });
-</script>                                               
-						
+                                
                     </td>
 					<?php if ($this->templateConfig['show_playground'] == 1) { ?>
 						<td id="playground" class="center">
