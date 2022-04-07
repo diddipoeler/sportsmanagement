@@ -111,6 +111,7 @@ if ($this->templateConfig['show_id'] == 1) $columns++;
 	<?php
 		foreach ($this->items as $this->count_i => $this->item)
 		{
+			$append = '';
 			$link1      = Route::_('index.php?option=com_sportsmanagement&task=round.edit&id=' . $this->item->id . '&pid=' . $this->project->id);
 			$link2      = Route::_('index.php?option=com_sportsmanagement&view=matches&rid=' . $this->item->id . '&pid=' . $this->project->id);
 			$canEdit    = $this->user->authorise('core.edit', 'com_sportsmanagement');
@@ -178,7 +179,7 @@ if ($this->templateConfig['show_id'] == 1) $columns++;
 $date1   = sportsmanagementHelper::convertDate($this->item->round_date_first, 1);
 if (($date1 == '00-00-0000') || ($date1 == ''))
 					{
-						$append = ' style="background-color:#FFCCCC;" ';
+						$append = ' background-color:#FFCCCC; ';
 						$date1  = '';
 					}
 
@@ -207,7 +208,7 @@ $attribs['onChange'] = "document.getElementById('cb" . $this->count_i . "').chec
 <div class="input-group date" id="round_date_first<?php echo $this->item->id; ?>" data-target-input="nearest"  >
                     <input type="text" 
                     name="round_date_first<?php echo $this->item->id; ?>"
-style="width: 120px;" 
+style="width: 120px; <?php echo $append; ?>" 
                     data-toggle="datetimepicker"
                     class="form-control datetimepicker-input " data-target="#round_date_first<?php echo $this->item->id; ?>" value="<?php echo $date1; ?>"  />
 <!--
@@ -244,7 +245,7 @@ style="width: 120px;"
 					$append = '';
 					if (($date2 == '00-00-0000') || ($date2 == ''))
 					{
-						$append = ' style="background-color:#FFCCCC;"';
+						$append = ' background-color:#FFCCCC;';
 						$date2  = '';
 					}
 /*
@@ -261,7 +262,7 @@ style="width: 120px;"
 <div class="input-group date" id="round_date_last<?php echo $this->item->id; ?>" data-target-input="nearest"  >
                     <input type="text" 
                     name="round_date_last<?php echo $this->item->id; ?>"
-style="width: 120px;" 
+style="width: 120px; <?php echo $append; ?>" 
                     data-toggle="datetimepicker"
                     class="form-control datetimepicker-input " data-target="#round_date_last<?php echo $this->item->id; ?>" value="<?php echo $date2; ?>"  />
 <!--
