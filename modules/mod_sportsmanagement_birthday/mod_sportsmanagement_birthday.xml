@@ -179,7 +179,7 @@ description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_TEAM_IDS_DESCR" />
 	<option value="J">Jssor Slider</option>
 	</field>
      
-<field name="load_bootstrap" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+<field name="load_bootstrap" type="extensionradiobutton" default="0"  class="radio btn-group btn-group-yesno"
 	label="MOD_SPORTSMANAGEMENT_BIRTHDAY_LOAD_BOOTSTRAP" 
 	description="MOD_SPORTSMANAGEMENT_BIRTHDAY_LOAD_BOOTSTRAP_DESCR">
 	<option value="0">JNO</option>

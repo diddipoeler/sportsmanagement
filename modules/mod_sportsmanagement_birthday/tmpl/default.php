@@ -96,7 +96,7 @@ $text = htmlspecialchars(sportsmanagementHelper::formatName(null, $person['first
     ?>
     
     <div class="carousel-item <?php echo $active; ?>">
-      <img class="d-block w-100" src="<?php echo $thispic; ?>" alt="<?php echo $text; ?>" >
+      <img class="d-block w-100" src="<?php echo $thispic; ?>" width="auto" height="<?php echo $params->get('picture_height'); ?>" alt="<?php echo $text; ?>" />
     <div class="carousel-caption d-none d-md-block">
     <h5><?php echo $text; ?></h5>
     <p><?php echo $birthdaytext; ?></p>
@@ -123,19 +123,6 @@ $text = htmlspecialchars(sportsmanagementHelper::formatName(null, $person['first
 </div>
 
 </div>        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
 
 		<?PHP
