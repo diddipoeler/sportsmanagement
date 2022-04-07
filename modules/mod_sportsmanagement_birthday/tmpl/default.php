@@ -8,6 +8,9 @@
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * 
+ * https://getbootstrap.com/docs/4.0/components/carousel/
+ * 
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
@@ -17,12 +20,70 @@ use Joomla\CMS\Factory;
 
 switch ($mode)
 {
-	/**
-	 *
-	 * bootstrap mode template
-	 */
+	/** bootstrap mode template */
 	case 'B':
+    if ( $params->def("load_bootstrap") )
+    {
+?>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">	
+<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>	    
+<?php
+    }
 		?>
+        
+<div class="row">
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+  <ol class="carousel-indicators">
+  <?php
+  $a = 0;
+foreach ($persons AS $person)
+{
+    $active = ($a == 0) ? 'active' : '';
+  ?>
+    <li data-target="#carouselExampleIndicators" data-slide-to="<?php echo $a; ?>" class="<?php echo $active; ?>"></li>
+    <?php
+    $a++;
+}    
+    ?>
+  </ol>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img class="d-block w-100" src="images/com_sportsmanagement/database/placeholders/placeholder_450_2.png" alt="First slide">
+    </div>
+    <div class="carousel-item">
+       <img class="d-block w-100" src="images/com_sportsmanagement/database/placeholders/placeholder_450_2.png" alt="Second slide"> 
+    </div>
+    <div class="carousel-item">
+       <img class="d-block w-100" src="images/com_sportsmanagement/database/placeholders/placeholder_450_2.png" alt="Third slide"> 
+    </div>
+  </div>
+  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+
+</div>        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         <div class="row">
             <!-- Controls -->
             <div class="controls pull-right hidden-xs">
@@ -117,102 +178,7 @@ switch ($mode)
         </div>
 		<?PHP
 		break;
-	/**
-	 *
-	 * bootstrap mode template
-	 */
-	case 'B2':
-		?>
-        <div id="myBirthday<?php echo $module->id; ?>" class="carousel slide" data-interval="3000" data-ride="carousel">
-            <!-- Indicators -->
-            <ol class="carousel-indicators">
-				<?PHP
-				for ($a = 0; $a < count($persons); $a++)
-				{
-					$active = ($a == 0) ? 'class="active"' : '';
-					?>
-                    <li data-target="#myBirthday<?php echo $module->id; ?>"
-                        data-slide-to="<?php echo $a; ?>" <?php echo $active; ?> ></li></li>
-					<?PHP
-				}
-				?>
-            </ol>
 
-            <!-- Wrapper for slides -->
-            <div class="carousel-inner" role="listbox">
-				<?PHP
-				$a = 0;
-
-				foreach ($persons AS $person)
-				{
-					$active  = ($a == 0) ? 'active' : '';
-					$thispic = "";
-					$text    = htmlspecialchars(sportsmanagementHelper::formatName(null, $person['firstname'], $person['nickname'], $person['lastname'], $params->get("name_format")), ENT_QUOTES, 'UTF-8');
-
-					if ($params->get('show_picture') == 1)
-					{
-						if (file_exists(JPATH_BASE . '/' . $person['picture']) && $person['picture'] != '')
-						{
-							$thispic = $person['picture'];
-						}
-                        elseif (file_exists(JPATH_BASE . '/' . $person['default_picture']) && $person['default_picture'] != '')
-						{
-							$thispic = $person['default_picture'];
-						}
-					}
-
-					switch ($person['days_to_birthday'])
-					{
-						case 0:
-							$whenmessage = $params->get('todaymessage');
-							break;
-						case 1:
-							$whenmessage = $params->get('tomorrowmessage');
-							break;
-						default:
-							$whenmessage = str_replace('%DAYS_TO%', $person['days_to_birthday'], trim($params->get('futuremessage')));
-							break;
-					}
-
-					$birthdaytext   = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
-					$dayformat      = htmlentities(trim($params->get('dayformat')));
-					$birthdayformat = htmlentities(trim($params->get('birthdayformat')));
-					$birthdaytext   = str_replace('%WHEN%', $whenmessage, $birthdaytext);
-					$birthdaytext   = str_replace('%AGE%', $person['age'], $birthdaytext);
-					$birthdaytext   = str_replace('%DATE%', strftime($dayformat, strtotime($person['year'] . '-' . $person['daymonth'])), $birthdaytext);
-					$birthdaytext   = str_replace('%DATE_OF_BIRTH%', strftime($birthdayformat, strtotime($person['date_of_birth'])), $birthdaytext);
-					$birthdaytext   = str_replace('%BR%', '<br />', $birthdaytext);
-					$birthdaytext   = str_replace('%BOLD%', '<b>', $birthdaytext);
-					$birthdaytext   = str_replace('%BOLDEND%', '</b>', $birthdaytext);
-					?>
-                    <div class="item <?php echo $active; ?>">
-                        <img src="<?php echo $thispic; ?>" alt="<?php echo $text; ?>"
-                             width="auto" height="<?php echo $params->get('picture_height'); ?>">
-                        <div class="carousel-caption">
-                            <h3><?php echo $text; ?></h3>
-                            <p><?php echo $birthdaytext; ?></p>
-                        </div>
-                    </div>
-					<?PHP
-					$a++;
-				}
-				?>
-
-            </div>
-            <!-- Left and right controls -->
-            <a class="left carousel-control" href="#myBirthday<?php echo $module->id; ?>" role="button"
-               data-slide="prev">
-                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="right carousel-control" href="#myBirthday<?php echo $module->id; ?>" role="button"
-               data-slide="next">
-                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
-        </div>
-		<?PHP
-		break;
 	default:
 		?>
 
