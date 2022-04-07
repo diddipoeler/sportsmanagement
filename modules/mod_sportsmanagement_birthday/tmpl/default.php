@@ -49,62 +49,11 @@ foreach ($persons AS $person)
     ?>
   </ol>
   <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img class="d-block w-100" src="images/com_sportsmanagement/database/placeholders/placeholder_450_2.png" alt="First slide">
-    </div>
-    <div class="carousel-item">
-       <img class="d-block w-100" src="images/com_sportsmanagement/database/placeholders/placeholder_450_2.png" alt="Second slide"> 
-    </div>
-    <div class="carousel-item">
-       <img class="d-block w-100" src="images/com_sportsmanagement/database/placeholders/placeholder_450_2.png" alt="Third slide"> 
-    </div>
-  </div>
-  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
-  </a>
-</div>
-
-</div>        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        <div class="row">
-            <!-- Controls -->
-            <div class="controls pull-right hidden-xs">
-                <a class="left fa fa-chevron-left btn btn-primary"
-                   href="#carousel-<?php echo $module->module; ?>-<?php echo $module->id; ?>"
-                   data-slide="prev"></a><a class="right fa fa-chevron-right btn btn-primary"
-                                            href="#carousel-<?php echo $module->module; ?>-<?php echo $module->id; ?>"
-                                            data-slide="next"></a>
-            </div>
-
-            <div id="carousel-<?php echo $module->module; ?>-<?php echo $module->id; ?>"
-                 class="carousel slide hidden-xs" data-ride="carousel">
-                <!-- Wrapper for slides -->
-                <div class="carousel-inner">
-
-					<?PHP
-					$a = 0;
-
-					foreach ($persons AS $person)
-					{
-						$text = htmlspecialchars(sportsmanagementHelper::formatName(null, $person['firstname'], $person['nickname'], $person['lastname'], $params->get("name_format")), ENT_QUOTES, 'UTF-8');
+    <?php
+    $a = 0;
+foreach ($persons AS $person)
+{
+$text = htmlspecialchars(sportsmanagementHelper::formatName(null, $person['firstname'], $person['nickname'], $person['lastname'], $params->get("name_format")), ENT_QUOTES, 'UTF-8');
 
 						$active = ($a == 0) ? 'active' : '';
 
@@ -143,39 +92,52 @@ foreach ($persons AS $person)
 						$birthdaytext   = str_replace('%BR%', '<br />', $birthdaytext);
 						$birthdaytext   = str_replace('%BOLD%', '<b>', $birthdaytext);
 						$birthdaytext   = str_replace('%BOLDEND%', '</b>', $birthdaytext);
-						?>
-                        <div class="item <?php echo $active; ?>">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="col-item">
-                                        <div class="photo">
-                                            <img src="<?php echo $thispic; ?>" class="img" alt="<?php echo $text; ?>"
-                                                 width="auto" height="<?php echo $params->get('picture_height'); ?>"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+    
+    ?>
+    
+    <div class="carousel-item <?php echo $active; ?>">
+      <img class="d-block w-100" src="<?php echo $thispic; ?>" alt="<?php echo $text; ?>" >
+    <div class="carousel-caption d-none d-md-block">
+    <h5><?php echo $text; ?></h5>
+    <p><?php echo $birthdaytext; ?></p>
+  </div>
+    
+    
+    </div>
+    
+    <?php
+    $a++;
+    }
+    ?>
+  </div>
+  
+  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+  
+</div>
 
-                            <div class="info">
-                                <div class="row">
-                                    <div class="price col-md-6">
-                                        <h5><?php echo $text; ?></h5>
+</div>        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
-                                    </div>
-                                    <div class="price col-md-6">
-
-                                        <h5 class="price-text-color"><?php echo $birthdaytext; ?></h5>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-						<?PHP
-						$a++;
-					}
-					?>
-                </div>
-            </div>
-        </div>
 		<?PHP
 		break;
 
