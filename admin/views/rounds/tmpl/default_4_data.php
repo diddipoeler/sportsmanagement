@@ -175,6 +175,14 @@ if ($this->templateConfig['show_id'] == 1) $columns++;
 						'onChange' => "document.getElementById('cb" . $this->count_i . "').checked=true",
 					);
 			*/
+$date1   = sportsmanagementHelper::convertDate($this->item->round_date_first, 1);
+if (($date1 == '00-00-0000') || ($date1 == ''))
+					{
+						$append = ' style="background-color:#FFCCCC;" ';
+						$date1  = '';
+					}
+
+			/*
 $attribs['class'] = 'input-large';
 $attribs['size'] = '10';
 $attribs['maxlength'] = '10';
@@ -193,18 +201,53 @@ $attribs['onChange'] = "document.getElementById('cb" . $this->count_i . "').chec
 						'%d-%m-%Y',
 						$attribs
 					);
+					*/
 					?>
+
+<div class="input-group date" id="round_date_first<?php echo $this->item->id; ?>" data-target-input="nearest"  >
+                    <input type="text" 
+                    name="round_date_first<?php echo $this->item->id; ?>"
+style="width: 120px;" 
+                    data-toggle="datetimepicker"
+                    class="form-control datetimepicker-input " data-target="#round_date_first<?php echo $this->item->id; ?>" value="<?php echo $date1; ?>"  />
+<!--
+                    <div class="input-group-append" data-target="#datepicker<?php echo $row->id; ?>" data-toggle="datetimepicker">
+                       <div class="input-group-text" style="position:relative"><i class="fa fa-calendar"></i></div>
+                    </div>
+					 -->
+</div>  
+
+
+<script type="text/javascript">
+            jQuery(function ($) {
+                $('#round_date_first<?php echo $this->item->id; ?>').datetimepicker(
+                {
+                    format: 'DD-MM-YYYY'
+                }
+                );
+		$("#round_date_first<?php echo $this->item->id; ?>").on("change.datetimepicker", ({date, oldDate}) => {
+              console.log("New date", date);
+              console.log("Old date", oldDate);
+			  document.getElementById('cb<?php echo $this->count_i; ?>').checked=true
+              //alert("Changed date")
+      })    
+            });
+</script>    
+
+
                 </td>
                 <td class="center">&nbsp;-&nbsp;</td>
                 <td class="center" id="round_date_last4">
-					<?php
+				<?php
 					$date2  = sportsmanagementHelper::convertDate($this->item->round_date_last, 1);
+
 					$append = '';
 					if (($date2 == '00-00-0000') || ($date2 == ''))
 					{
 						$append = ' style="background-color:#FFCCCC;"';
 						$date2  = '';
 					}
+/*
 					echo HTMLHelper::calendar(
 						$date2,
 						'round_date_last' . $this->item->id,
@@ -213,6 +256,38 @@ $attribs['onChange'] = "document.getElementById('cb" . $this->count_i . "').chec
 						$attribs
 					);
 					?>
+*/
+?>
+<div class="input-group date" id="round_date_last<?php echo $this->item->id; ?>" data-target-input="nearest"  >
+                    <input type="text" 
+                    name="round_date_last<?php echo $this->item->id; ?>"
+style="width: 120px;" 
+                    data-toggle="datetimepicker"
+                    class="form-control datetimepicker-input " data-target="#round_date_last<?php echo $this->item->id; ?>" value="<?php echo $date2; ?>"  />
+<!--
+                    <div class="input-group-append" data-target="#datepicker<?php echo $row->id; ?>" data-toggle="datetimepicker">
+                       <div class="input-group-text" style="position:relative"><i class="fa fa-calendar"></i></div>
+                    </div>
+					 -->
+</div>  
+
+
+<script type="text/javascript">
+            jQuery(function ($) {
+                $('#round_date_last<?php echo $this->item->id; ?>').datetimepicker(
+                {
+                    format: 'DD-MM-YYYY'
+                }
+                );
+		$("#round_date_last<?php echo $this->item->id; ?>").on("change.datetimepicker", ({date, oldDate}) => {
+              console.log("New date", date);
+              console.log("Old date", oldDate);
+			  document.getElementById('cb<?php echo $this->count_i; ?>').checked=true
+              //alert("Changed date")
+      })    
+            });
+</script>   
+
                 </td>
                 <td class="center" class="nowrap">
 					<?php
