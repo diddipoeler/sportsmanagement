@@ -329,6 +329,12 @@ $attribs['onChange'] = "document.getElementById('cb" . $i . "').checked=true";
                     format: 'DD-MM-YYYY'
                 }
                 );
+		$("#datepicker<?php echo $row->id; ?>").on("change.datetimepicker", ({date, oldDate}) => {
+              console.log("New date", date);
+              console.log("Old date", oldDate);
+			  document.getElementById('cb<?php echo $i; ?>').checked=true
+              //alert("Changed date")
+      })    
             });
 </script>    
 
@@ -362,6 +368,13 @@ $attribs['onChange'] = "document.getElementById('cb" . $i . "').checked=true";
                     format: 'HH:mm'
                 }
                 );
+		    
+		$("#timepicker<?php echo $row->id; ?>").on("change.datetimepicker", ({date, oldDate}) => {
+              console.log("New date", date);
+              console.log("Old date", oldDate);
+			  document.getElementById('cb<?php echo $i; ?>').checked=true
+              //alert("Changed date")
+      })    
             });
 </script>                                               
 						<a href="javascript:void(0)"
