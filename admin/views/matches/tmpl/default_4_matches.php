@@ -312,16 +312,20 @@ $attribs['onChange'] = "document.getElementById('cb" . $i . "').checked=true";
 */
 						?>
                         
-<div class="input-group date" id="datepicker<?php echo $row->id; ?>" data-target-input="nearest">
+<div class="input-group date" id="datepicker<?php echo $row->id; ?>" data-target-input="nearest"  >
                     <input type="text" 
                     name="match_date<?php echo $row->id; ?>"
-                    onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"
-                    size="10" maxlength="10"
-                    class="datetimepicker-input" data-target="#datepicker<?php echo $row->id; ?>" value="<?php echo sportsmanagementHelper::convertDate($date); ?>"  />
+style="width: 120px;" 
+                    data-toggle="datetimepicker"
+                    class="form-control datetimepicker-input " data-target="#datepicker<?php echo $row->id; ?>" value="<?php echo sportsmanagementHelper::convertDate($date); ?>"  />
+<!--
                     <div class="input-group-append" data-target="#datepicker<?php echo $row->id; ?>" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                       <div class="input-group-text" style="position:relative"><i class="fa fa-calendar"></i></div>
                     </div>
-</div>                                               
+					 -->
+</div>  
+
+
 <script type="text/javascript">
             jQuery(function ($) {
                 $('#datepicker<?php echo $row->id; ?>').datetimepicker(
@@ -353,13 +357,15 @@ $attribs['onChange'] = "document.getElementById('cb" . $i . "').checked=true";
 <div class="input-group date" id="timepicker<?php echo $row->id; ?>" data-target-input="nearest">
                     <input type="text" 
                     name="match_time<?php echo $row->id; ?>"
-                    onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"
+data-toggle="datetimepicker"
                     ondblclick="copyValue('match_time')"
-                    size="5" maxlength="5"
-                    class="datetimepicker-input" data-target="#timepicker<?php echo $row->id; ?>" value="<?php echo $time; ?>"  />
+                    style="width: 80px;" 
+                    class="form-control datetimepicker-input" data-target="#timepicker<?php echo $row->id; ?>" value="<?php echo $time; ?>"  />
+					<!--
                     <div class="input-group-append" data-target="#timepicker<?php echo $row->id; ?>" data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
                     </div>
+					-->
 </div>                                               
 <script type="text/javascript">
             jQuery(function ($) {
