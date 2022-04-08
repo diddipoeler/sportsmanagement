@@ -40,7 +40,16 @@
 			label="COM_SPORTSMANAGEMENT_ADMIN_STAT_CALCULATED"
 			description="COM_SPORTSMANAGEMENT_ADMIN_STAT_CALCULATED_DESC"
 			class="inputbox"
-			required=""/>
+			required="false"/>
+			<field
+			name="baseparams"
+			type="hidden"
+			size="100"
+			maxlength="100"
+			label="COM_SPORTSMANAGEMENT_ADMIN_STAT_BASEPARAMS"
+			description="COM_SPORTSMANAGEMENT_ADMIN_STAT_BASEPARAMS_DESC"
+			class="inputbox"
+			required="false"/>
 			
 			
 		<field
