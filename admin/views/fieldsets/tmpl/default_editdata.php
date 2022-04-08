@@ -97,7 +97,12 @@ if (version_compare(JSM_JVERSION, '4', 'eq'))
 													case 'ids':
 														break;
 													default:
-														
+														switch ($field->type)
+                                            {
+                                            case 'extensionsubtitle':
+                                            case 'Hidden':
+                                            break;
+                                            default:
 $link_onlinehelp = COM_SPORTSMANAGEMENT_HELP_SERVER . 'SM-Backend-Felder:' . $this->jinput->getVar("view") . '-' . $this->form->getName() . '-' . $var_onlinehelp;                                                
 $cmd = "Joomla.popupWindow('$link_onlinehelp', '" . Text::_('COM_SPORTSMANAGEMENT_HELP_LINK', true) . "',". COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH." ,". COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT.", 1)";
 ?>
@@ -110,8 +115,10 @@ Text::_('COM_SPORTSMANAGEMENT_HELP_LINK') . '"'
 );
 ?>                      
 </button>
-
-														<?PHP
+<?PHP
+                                            break;
+                                            }
+											
 														if ($field->name == 'jform[country]')
 														{
 															echo JSMCountries::getCountryFlag($field->value);
@@ -320,7 +327,7 @@ elseif (version_compare(JSM_JVERSION, '3', 'eq'))
 											switch ($field->type)
                                             {
                                             case 'extensionsubtitle':
-                                            case 'hidden':
+                                            case 'Hidden':
                                             break;
                                             default:
 $link_onlinehelp = COM_SPORTSMANAGEMENT_HELP_SERVER . 'SM-Backend-Felder:' . $this->jinput->getVar("view") . '-' . $this->form->getName() . '-' . $var_onlinehelp;                                                
