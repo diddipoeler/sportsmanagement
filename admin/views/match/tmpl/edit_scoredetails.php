@@ -50,14 +50,14 @@ use Joomla\CMS\Language\Text;
             <tr>
                 <td>
 					<?php
-					if ($this->table_config['alternative_legs'] == '')
-					{
+//					if ($this->table_config['alternative_legs'] == '')
+//					{
 						echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_SD_SETS');
-					}
-					else
-					{
-						echo $this->table_config['alternative_legs'];
-					}
+//					}
+//					else
+//					{
+//						echo $this->table_config['alternative_legs'];
+//					}
 					?>:
                 </td>
                 <td>
