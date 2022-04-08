@@ -94,9 +94,14 @@ $text = htmlspecialchars(sportsmanagementHelper::formatName(null, $person['first
 						$birthdaytext   = str_replace('%BOLDEND%', '</b>', $birthdaytext);
     
     ?>
-    
+<style>
+.w-100 {
+  width: <?php echo $params->get('picture_width'); ?px !important;
+  height: auto;
+}	    
+</style>
     <div class="carousel-item <?php echo $active; ?>">
-      <img class="d-block w-<?php echo $params->get('picture_width'); ?>" src="<?php echo $thispic; ?>" width="<?php echo $params->get('picture_width'); ?>" height="auto" alt="<?php echo $text; ?>" />
+      <img class="d-block w-100" src="<?php echo $thispic; ?>" style="width:<?php echo $params->get('picture_width'); ?>px;height:auto" alt="<?php echo $text; ?>" />
     <div class="carousel-caption d-none d-md-block">
     <h5><?php echo $text; ?></h5>
     <p><?php echo $birthdaytext; ?></p>
