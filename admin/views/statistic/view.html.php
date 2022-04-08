@@ -58,8 +58,8 @@ class sportsmanagementViewstatistic extends sportsmanagementView
 
 		if ($isNew)
 		{
-			$item->class = 'basic';
-            $item->calculated = 0;
+			$this->item->class = 'basic';
+            $this->item->calculated = 0;
             
             $this->form->setValue('class', null, 'basic');
             $this->form->setValue('calculated', null, 0);
@@ -71,8 +71,10 @@ class sportsmanagementViewstatistic extends sportsmanagementView
 			// $this->setLayout('edit');
 		}
 
-		$formparams       = sportsmanagementHelper::getExtendedStatistic($item->params, $item->class);
+		$formparams       = sportsmanagementHelper::getExtendedStatistic($this->item->params, $this->item->class);
 		$this->formparams = $formparams;
+
+//$this->app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' <pre>' . print_r($this->item,true).'</pre>', 'error');
 
 	}
 
