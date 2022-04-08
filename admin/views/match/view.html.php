@@ -56,10 +56,12 @@ class sportsmanagementViewMatch extends sportsmanagementView
 
 		$mdlProject      = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
 		$this->projectws = $mdlProject->getProject($this->project_id);
-
 		$this->eventsprojecttime = $this->projectws->game_regular_time;
-
 		$this->match                = $this->model->getMatchData($this->item->id);
+        
+        
+        $this->match->team1_legs = $this->match->team1_legs ? $this->match->team1_legs : 0;
+        $this->match->team2_legs = $this->match->team2_legs ? $this->match->team2_legs : 0;
         
 //$this->app->enqueueMessage(Text::_('item id <pre>'.print_r($this->item->id ,true).'</pre>'), 'Error');
 //$this->app->enqueueMessage(Text::_('match <pre>'.print_r($this->match ,true).'</pre>'), 'Error');        
