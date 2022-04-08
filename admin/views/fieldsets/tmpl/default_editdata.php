@@ -80,11 +80,7 @@ if (version_compare(JSM_JVERSION, '4', 'eq'))
 									<?PHP
 									foreach ($this->form->getFieldset($fieldset->name) as $field)
 									{
-									   switch ($field->type)
-                                            {
-                                                case 'Hidden':
-                                            break;
-                                                default:
+									  
 										?>
                                         <div class="control-group">
                                             <div class="control-label">
@@ -168,8 +164,7 @@ Text::_('COM_SPORTSMANAGEMENT_HELP_LINK') . '"'
                                             </div>
                                         </div>
 										<?php
-break;
-}
+
 									}
 									?>
                                 </div>
