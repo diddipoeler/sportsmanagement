@@ -32,6 +32,17 @@
 			class="inputbox"
 			required="true"/>
 			
+			<field
+			name="calculated"
+			type="hidden"
+			size="4"
+			maxlength="4"
+			label="COM_SPORTSMANAGEMENT_ADMIN_STAT_CALCULATED"
+			description="COM_SPORTSMANAGEMENT_ADMIN_STAT_CALCULATED_DESC"
+			class="inputbox"
+			required=""/>
+			
+			
 		<field
 			name="alias"
 			type="text"
