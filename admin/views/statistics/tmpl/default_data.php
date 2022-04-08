@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage statistics
@@ -11,17 +9,31 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Session\Session;
+
+$this->saveOrder = $this->sortColumn == 'obj.ordering';
+if ($this->saveOrder && !empty($this->items))
+{
+$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task='.$this->view.'.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{    
+HTMLHelper::_('draggablelist.draggable');
+}
+else
+{
+HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl,$this->saveOrderButton);    
+}
+}
 
 
 ?>
 
-<div id="editcell">
+<div class="table-responsive" id="editcell">
     <table class="<?php echo $this->table_data_class; ?>">
         <thead>
         <tr>
@@ -69,42 +81,47 @@ use Joomla\CMS\Router\Route;
         </thead>
         <tfoot>
         <tr>
-            <td colspan="12"><?php echo $this->pagination->getListFooter(); ?></td>
+            <td colspan="12"><?php echo $this->pagination->getListFooter(); ?>
+				<?php echo $this->pagination->getResultsCounter(); ?>
+                </td>
         </tr>
         </tfoot>
-        <tbody>
+        <tbody <?php if ( $this->saveOrder && version_compare(substr(JVERSION, 0, 3), '4.0', 'ge') ) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($this->sortDirection); ?>" <?php endif; ?>>
 		<?php
-		$k = 0;
-		for ($i = 0, $n = count($this->items); $i < $n; $i++)
-		{
-			$row        =& $this->items[$i];
-			$link       = Route::_('index.php?option=com_sportsmanagement&task=statistic.edit&id=' . $row->id);
+		foreach ($this->items as $this->count_i => $this->item) 
+			{
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+$this->dragable_group = 'data-dragable-group="none"';
+}         
+		//	$row        =& $this->items[$i];
+			$link       = Route::_('index.php?option=com_sportsmanagement&task=statistic.edit&id=' . $this->item->id);
 			$canEdit    = $this->user->authorise('core.edit', 'com_sportsmanagement');
-			$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $row->checked_out == $this->user->get('id') || $row->checked_out == 0;
-			$checked    = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'statistics.', $canCheckin);
-			$published  = HTMLHelper::_('grid.published', $row, $i, 'tick.png', 'publish_x.png', 'statistics.');
+			$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $this->item->checked_out == $this->user->get('id') || $this->item->checked_out == 0;
+			$checked    = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'statistics.', $canCheckin);
+			$published  = HTMLHelper::_('grid.published', $this->item, $this->count_i, 'tick.png', 'publish_x.png', 'statistics.');
 			?>
             <tr class="<?php echo "row$k"; ?>">
                 <td class="center">
 					<?php
-					echo $this->pagination->getRowOffset($i);
+					echo $this->pagination->getRowOffset($this->count_i);
 					?>
                 </td>
                 <td class="center">
 					<?php
-					echo HTMLHelper::_('grid.id', $i, $row->id);
+					echo HTMLHelper::_('grid.id', $this->count_i, $this->item->id);
 					?>
                 </td>
 
                 <td class="center">
-					<?php if ($row->checked_out) : ?>
-						<?php echo HTMLHelper::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'statistics.', $canCheckin); ?>
+					<?php if ($this->item->checked_out) : ?>
+						<?php echo HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->item->editor, $this->item->checked_out_time, 'statistics.', $canCheckin); ?>
 					<?php endif; ?>
 					<?php if ($canEdit) : ?>
-                        <a href="<?php echo Route::_('index.php?option=com_sportsmanagement&task=statistic.edit&id=' . (int) $row->id); ?>">
-							<?php echo $this->escape($row->name); ?></a>
+                        <a href="<?php echo Route::_('index.php?option=com_sportsmanagement&task=statistic.edit&id=' . (int) $this->item->id); ?>">
+							<?php echo $this->escape($this->item->name); ?></a>
 					<?php else : ?>
-						<?php echo $this->escape($row->name); ?>
+						<?php echo $this->escape($this->item->name); ?>
 					<?php endif; ?>
 
 
@@ -115,35 +132,45 @@ use Joomla\CMS\Router\Route;
 					<?php //echo $row->name;
 					?>
                     <p class="smallsub">
-						<?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->name)); ?></p>
+						<?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($this->item->name)); ?></p>
                 </td>
 
-                <td><?php echo $row->short; ?></td>
+                <td><?php echo $this->item->short; ?></td>
                 <td class="center">
 					<?php
-					$picture = JPATH_SITE . DIRECTORY_SEPARATOR . $row->icon;
-					$desc    = Text::_($row->name);
+					$picture = JPATH_SITE . DIRECTORY_SEPARATOR . $this->item->icon;
+					$desc    = Text::_($this->item->name);
 					echo sportsmanagementHelper::getPictureThumb($picture, $desc, 0, 21, 4);
 					?>
                 </td>
                 <td class="center">
 					<?php
-					echo Text::_(sportsmanagementHelper::getSportsTypeName($row->sports_type_id));
+					echo Text::_(sportsmanagementHelper::getSportsTypeName($this->item->sports_type_id));
 					?>
                 </td>
-                <td><?php echo $row->note; ?></td>
-                <td><?php echo Text::_($row->class); ?></td>
-                <td class="center"><?php echo $published; ?>
+                <td><?php echo $this->item->note; ?></td>
+                <td><?php echo Text::_($this->item->class); ?></td>
+                <td class="center">
+                <div class="btn-group">
+						<?php echo HTMLHelper::_('jgrid.published', $this->item->published, $this->count_i, 'statistics.', $canChange, 'cb'); ?>
+						<?php
+						/** Create dropdown items and render the dropdown list. */
+						if ($canChange)
+						{
+							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === 2 ? 'un' : '') . 'archive', 'cb' . $this->count_i, 'statistics');
+							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === -2 ? 'un' : '') . 'trash', 'cb' . $this->count_i, 'statistics');
+							echo HTMLHelper::_('actionsdropdown.render', $this->escape($this->item->name));
+						}
+						?>
+                    </div>
+                
                 </td>
-                <td class="order">
-                    <span><?php echo $this->pagination->orderUpIcon($i, $i > 0, 'statistics.orderup', 'COM_SPORTSMANAGEMENT_GLOBAL_ORDER_UP', true); ?></span>
-                    <span><?php echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'statistics.orderdown', 'COM_SPORTSMANAGEMENT_GLOBAL_ORDER_DOWN', true); ?>
-						<?php $disabled = true ? '' : 'disabled="disabled"'; ?></span>
-                    <input type="text" name="order[]" size="5"
-                           value="<?php echo $row->ordering; ?>" <?php echo $disabled; ?>
-                           class="form-control form-control-inline" style="text-align: center"/>
-                </td>
-                <td class="center"><?php echo $row->id; ?></td>
+                <td class="order" id="defaultdataorder">
+<?php
+echo $this->loadTemplate('data_order');
+?>
+</td> 
+                <td class="center"><?php echo $this->item->id; ?></td>
             </tr>
 			<?php
 			$k = 1 - $k;
