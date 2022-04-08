@@ -96,7 +96,7 @@ $text = htmlspecialchars(sportsmanagementHelper::formatName(null, $person['first
     ?>
 <style>
 .w-100 {
-  width: <?php echo $params->get('picture_width'); ?px !important;
+  width: <?php echo $params->get('picture_width'); ?>px !important;
   height: auto;
 }	    
 </style>
