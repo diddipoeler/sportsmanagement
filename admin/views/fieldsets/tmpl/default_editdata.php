@@ -320,6 +320,7 @@ elseif (version_compare(JSM_JVERSION, '3', 'eq'))
 											switch ($field->type)
                                             {
                                             case 'extensionsubtitle':
+                                            case 'hidden':
                                             break;
                                             default:
 $link_onlinehelp = COM_SPORTSMANAGEMENT_HELP_SERVER . 'SM-Backend-Felder:' . $this->jinput->getVar("view") . '-' . $this->form->getName() . '-' . $var_onlinehelp;                                                
