@@ -22,20 +22,27 @@ $cfg_help_server       = ComponentHelper::getParams($this->jinput->getCmd('optio
 $cfg_bugtracker_server = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('cfg_bugtracker_server', '');
 ?>
 
-<div id="j-main-container" class="j-toggle-main span12 center">
-
+<!-- <div id="j-main-container" class="j-toggle-main span12 center"> -->
+<div class="container text-center d-flex align-items-center justify-content-center">
+<div>
+<div>
     <a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SITE_LINK') ?>" target="_blank"
        href="http://www.fussballineuropa.de">
         <img src="<?php echo Uri::base(true) ?>/components/com_sportsmanagement/assets/icons/logo_transparent.png"
              width="180" height="auto" </a>
-    <br/>
+             </div>
+    <div>
 	<?php echo Text::_("COM_SPORTSMANAGEMENT_DESC"); ?>
-    <br/>
+    </div>
+    <div>
 	<?php echo Text::_("COM_SPORTSMANAGEMENT_COPYRIGHT"); ?> : &copy;
     <a href="http://www.fussballineuropa.de" target="_blank">Fussball in Europa</a>
-    <br/>
+    </div>
+    <div>
 	<?php echo Text::_("COM_SPORTSMANAGEMENT_VERSION"); ?> :
+</div>
+    <div>
 	<?php echo Text::sprintf('%1$s', sportsmanagementHelper::getVersion()); ?>
-    <br/>
-
+    </div>
+</div>
 </div>      
