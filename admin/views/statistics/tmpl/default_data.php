@@ -100,6 +100,7 @@ $this->dragable_group = 'data-dragable-group="none"';
 			$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $this->item->checked_out == $this->user->get('id') || $this->item->checked_out == 0;
 			$checked    = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'statistics.', $canCheckin);
 			$published  = HTMLHelper::_('grid.published', $this->item, $this->count_i, 'tick.png', 'publish_x.png', 'statistics.');
+            $canChange     = $this->user->authorise('core.edit.state', 'com_sportsmanagement.statistic.' . $this->item->id) && $canCheckin;
 			?>
             <tr class="<?php echo "row$k"; ?>">
                 <td class="center">
@@ -173,7 +174,7 @@ echo $this->loadTemplate('data_order');
                 <td class="center"><?php echo $this->item->id; ?></td>
             </tr>
 			<?php
-			$k = 1 - $k;
+			
 		}
 		?>
         </tbody>
