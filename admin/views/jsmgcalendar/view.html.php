@@ -44,6 +44,8 @@ class sportsmanagementViewjsmgcalendar extends sportsmanagementView
 			$this->form->setValue('username', null, ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_account', ''));
 			$this->form->setValue('password', null, ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_password', ''));
 		}
+        
+        $this->extended = sportsmanagementHelper::getExtended($this->item->params, 'jsmgcalendar');
 
 	}
 
