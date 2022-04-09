@@ -12,7 +12,6 @@
 defined('_JEXEC') or die();
 use Joomla\CMS\MVC\Controller\FormController;
 
-
 /**
  * sportsmanagementControllerjsmgcalendar
  *
@@ -22,7 +21,7 @@ use Joomla\CMS\MVC\Controller\FormController;
  * @version   $Id$
  * @access    public
  */
-class sportsmanagementControllerjsmgcalendar extends FormController
+class sportsmanagementControllerjsmgcalendar extends JSMControllerForm
 {
 
 	/**

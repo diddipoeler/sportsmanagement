@@ -37,6 +37,7 @@ class sportsmanagementViewjsmgcalendar extends sportsmanagementView
 	 */
 	public function init()
 	{
+	   $this->description = '';
 
 		/** Bei neuanlage user und passwort aus der konfiguration der komponente nehmen */
 		if ($this->item->id < 1)
