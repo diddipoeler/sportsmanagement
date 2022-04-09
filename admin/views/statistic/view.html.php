@@ -71,8 +71,8 @@ class sportsmanagementViewstatistic extends sportsmanagementView
 			// $this->setLayout('edit');
 		}
 
-		$formparams       = sportsmanagementHelper::getExtendedStatistic($this->item->params, $this->item->class);
-		$this->formparams = $formparams;
+		$this->formparams = sportsmanagementHelper::getExtendedStatistic($this->item->params, $this->item->class);
+
 
 //$this->app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' <pre>' . print_r($this->item,true).'</pre>', 'error');
 
