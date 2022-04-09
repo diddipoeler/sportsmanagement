@@ -86,8 +86,17 @@
 		<fieldset
 			name="params"
 			label="COM_SPORTSMANAGEMENT_TABS_PARAMS"
+			description="COM_SPORTSMANAGEMENT_TABS_PARAMS_DESC">
+			
+			<field
+			name="params"
+			type="hidden"
+			size="100"
+			maxlength="100"
+			label="COM_SPORTSMANAGEMENT_TABS_PARAMS"
 			description="COM_SPORTSMANAGEMENT_TABS_PARAMS_DESC"
-		>
+			class="inputbox"
+			required="false"/>
 		
 		</fieldset>
 		
