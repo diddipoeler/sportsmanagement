@@ -90,7 +90,7 @@ $i = 1;
 </form>
 
 <?PHP
-echo "<div>";
+
 echo $this->loadTemplate('footer');
-echo "</div>";
+
 ?> 

@@ -93,8 +93,8 @@ echo $this->loadTemplate('joomla_version');
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>"/>
 <?php echo HTMLHelper::_('form.token'); ?>
 </form>
-<div>
+
 <?PHP
 echo $this->loadTemplate('footer');
 ?>
-</div>
+

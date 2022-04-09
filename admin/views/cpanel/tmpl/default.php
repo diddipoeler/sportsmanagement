@@ -403,8 +403,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 </div>
 <!-- FOOTER INFO DASHBOARD TODO ALL PAGES -->
 
-<div>
+
 	<?PHP
 	echo $this->loadTemplate('footer');
 	?>
-</div>
+

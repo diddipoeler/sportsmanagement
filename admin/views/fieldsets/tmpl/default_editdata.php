@@ -582,8 +582,8 @@ else
 	?>
 </div>
 </form>
-<div>
+
 	<?PHP
 	echo $this->loadTemplate('footer');
 	?>
-</div>
+

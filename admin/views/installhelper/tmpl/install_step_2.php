@@ -79,4 +79,4 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 		<?php echo HTMLHelper::_('form.token') . "\n"; ?>
     </form>
-<div><?PHP echo $this->loadTemplate('footer');?></div>
+<?PHP echo $this->loadTemplate('footer');?>

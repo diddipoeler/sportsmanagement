@@ -168,7 +168,7 @@ $attribs['align']  = 'left';
     </form>
 </div>
 <?PHP
-echo "<div>";
+
 echo $this->loadTemplate('footer');
-echo "</div>";
+
 ?> 

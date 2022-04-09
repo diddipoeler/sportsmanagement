@@ -171,8 +171,8 @@ img.car {
     <input type="hidden" name="search_mode" value="<?php echo $this->lists['search_mode']; ?>"/>
 	<?php echo HTMLHelper::_('form.token') . "\n"; ?>
 </form>
-<div>
+
 	<?PHP
 	echo $this->loadTemplate('footer');
 	?>
-</div>	
+

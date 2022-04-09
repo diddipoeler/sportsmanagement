@@ -2240,7 +2240,7 @@ if (isset($this->xml) && is_array($this->xml))
 }
 ?>
 <?PHP
-echo "<div>";
+
 echo $this->loadTemplate('footer');
-echo "</div>";
+
 ?> 

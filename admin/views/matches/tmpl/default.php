@@ -51,8 +51,8 @@ break;
 
 //$this->document->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/jquery.datetimepicker.js');
 ?>
-<div>
+
 <?PHP
 echo $this->loadTemplate('footer');
 ?>
-</div>
+

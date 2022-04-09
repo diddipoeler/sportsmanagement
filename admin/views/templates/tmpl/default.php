@@ -39,8 +39,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     <input type="hidden" name="pid" value="<?php echo $this->projectws->id; ?>"/>
 	<?php echo HTMLHelper::_('form.token') . "\n"; ?>
 </form>
-<div>
+
 	<?PHP
 	echo $this->loadTemplate('footer');
 	?>
-</div>
+

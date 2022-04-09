@@ -178,7 +178,7 @@ echo $this->loadTemplate('jsm_tips');
     </div>
 </div>
 <?PHP
-echo "<div>";
+
 echo $this->loadTemplate('footer');
-echo "</div>";
+
 ?> 

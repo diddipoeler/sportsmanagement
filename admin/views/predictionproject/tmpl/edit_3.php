@@ -168,8 +168,8 @@ $fieldsets = $this->form->getFieldsets();
 <script type="text/javascript">
     //change_published();
 </script>
-<div>
+
 	<?PHP
 	echo $this->loadTemplate('footer');
 	?>
-</div>
+
