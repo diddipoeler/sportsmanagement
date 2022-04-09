@@ -37,7 +37,7 @@ class sportsmanagementViewLeague extends sportsmanagementView
 		
 		if ($this->item->id)
 		{
-			// Alles ok
+			/** Alles ok */
 			if ($this->item->founded == '0000-00-00')
 			{
 				$this->item->founded = '';
@@ -60,10 +60,8 @@ class sportsmanagementViewLeague extends sportsmanagementView
         $this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
 		$this->form->setValue('agegroup_id', 'request', $this->item->agegroup_id);
 
-		$extended           = sportsmanagementHelper::getExtended($this->item->extended, 'league');
-		$this->extended     = $extended;
-		$extendeduser       = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'league');
-		$this->extendeduser = $extendeduser;
+		$this->extended           = sportsmanagementHelper::getExtended($this->item->extended, 'league');
+		$this->extendeduser       = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'league');
 
 	}
 
