@@ -17,6 +17,7 @@ use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\Registry\Registry;
 
 JLoader::import('joomla.application.component.modeladmin');
 JLoader::import('joomla.utilities.simplecrypt');
