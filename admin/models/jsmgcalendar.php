@@ -87,6 +87,15 @@ class sportsmanagementModeljsmGCalendar extends AdminModel
 		$db = Factory::getDbo();
 
 		$timezone = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('timezone', '');
+        
+        if (isset($post['extended']) && is_array($post['extended']))
+		{
+			/** Convert the extended field to a string. */
+			$parameter = new Registry;
+			$parameter->loadArray($post['extended']);
+			//$data['extended'] = (string) $parameter;
+			$data['params'] = (string) $parameter;
+		}
 
 		if (empty($data['id']))
 		{
