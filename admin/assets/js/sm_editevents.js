@@ -22,6 +22,7 @@ jQuery(document).ready(function($){
 					var team = $('team_id').value;
 					//var token = $('token').value;
 					var time = $('event_time').value;
+					var doubleevents = $('double_events').value;
                     //var projecttime = $('projecttime').value;
           var notice = encodeURIComponent($('notice').value);
 					var querystring = 'teamplayer_id=' + player +
@@ -32,7 +33,7 @@ jQuery(document).ready(function($){
           '&projecttime=' + projecttime + 
 					'&event_sum=' + $('event_sum').value +
 					'&notice=' + notice + 
-					'&double_events=' + $('double_events').value
+					'&doubleevents=' + doubleevents
 					//+ '&'
 					//+ token
 					;
