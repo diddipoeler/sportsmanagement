@@ -189,7 +189,7 @@ if ($close == 1)
                     <td style='text-align:center; '>
                     <input type="text" size="3" value="" id="event_sum" name="event_sum" class="inputbox"/>
                     
-                    <input type="hidden" size="3" value="" id="double_events" name="double_events" class="inputbox"/>
+                    <input type="hidden" size="3" value="<?php echo $this->projectws->double_events; ?>" id="double_events" name="double_events" class="inputbox"/>
                     
                     </td>
 					<?php
