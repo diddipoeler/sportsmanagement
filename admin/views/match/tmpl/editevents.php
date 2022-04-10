@@ -186,8 +186,12 @@ if ($close == 1)
                     <td><?php echo $this->lists['teams']; ?></td>
                     <td id="cell-player">&nbsp;</td>
                     <td><?php echo $this->lists['events']; ?></td>
-                    <td style='text-align:center; '><input type="text" size="3" value="" id="event_sum" name="event_sum"
-                                                           class="inputbox"/></td>
+                    <td style='text-align:center; '>
+                    <input type="text" size="3" value="" id="event_sum" name="event_sum" class="inputbox"/>
+                    
+                    <input type="hidden" size="3" value="" id="double_events" name="double_events" class="inputbox"/>
+                    
+                    </td>
 					<?php
 					if ($this->useeventtime)
 					{

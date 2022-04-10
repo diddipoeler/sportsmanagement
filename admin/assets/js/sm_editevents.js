@@ -31,7 +31,8 @@ jQuery(document).ready(function($){
 					'&match_id=' + matchid +
           '&projecttime=' + projecttime + 
 					'&event_sum=' + $('event_sum').value +
-					'&notice=' + notice 
+					'&notice=' + notice + 
+					'&double_events=' + $('double_events').value
 					//+ '&'
 					//+ token
 					;
