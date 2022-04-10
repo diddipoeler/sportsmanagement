@@ -302,13 +302,14 @@ if ($close == 1)
             </table>
 
         </fieldset>
-    </div>
+    </div> $this->projectws->game_regular_time
     <div style="clear: both"></div>
     <input type="hidden" name="task" value=""/>
     <input type="hidden" name="useeventtime" value="<?php echo $this->useeventtime; ?>"/>
     <input type="hidden" name="view" value=""/>
     <input type="hidden" name="close" id="close" value="0"/>
     <input type="hidden" name="project_id" value="<?php echo $this->project_id; ?>"/>
+    <input type="hidden" name="double_events" value="<?php echo $this->projectws->double_events; ?>"/>
     <input type="hidden" name="component" value="com_sportsmanagement"/>
 	<?php
 	echo HTMLHelper::_('form.token'); ?>
