@@ -232,7 +232,8 @@ echo sportsmanagementHelper::getBootstrapModalImage('select'.$this->item->id, ''
 							'%d-%m-%Y',
 							$attribs
 						);
-						*/								}
+						*/								
+                        //}
 						?>
 
 <div class="input-group date" id="birthday<?php echo $this->item->id; ?>" data-target-input="nearest"  >
