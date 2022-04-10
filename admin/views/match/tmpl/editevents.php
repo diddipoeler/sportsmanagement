@@ -189,7 +189,7 @@ if ($close == 1)
                     <td style='text-align:center; '>
                     <input type="text" size="3" value="" id="event_sum" name="event_sum" class="inputbox"/>
                     
-                    <input type="hidden" size="3" value="<?php echo $this->projectws->double_events; ?>" id="double_events" name="double_events" class="inputbox"/>
+                    
                     
                     </td>
 					<?php
@@ -313,7 +313,7 @@ if ($close == 1)
     <input type="hidden" name="view" value=""/>
     <input type="hidden" name="close" id="close" value="0"/>
     <input type="hidden" name="project_id" value="<?php echo $this->project_id; ?>"/>
-    <input type="hidden" name="double_events" value="<?php echo $this->projectws->double_events; ?>"/>
+    <input type="hidden" name="doubleevents" value="<?php echo $this->doubleevents ; ?>"/>
     <input type="hidden" name="component" value="com_sportsmanagement"/>
 	<?php
 	echo HTMLHelper::_('form.token'); ?>

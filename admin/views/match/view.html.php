@@ -456,6 +456,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		$jinput                           = $app->input;
 		$option                           = $jinput->getCmd('option');
 		$this->useeventtime               = $jinput->get('useeventtime');
+        $this->doubleevents               = $jinput->get('doubleevents');
 		$model                            = $this->getModel();
 		$params                           = ComponentHelper::getParams($option);
 		$default_name_dropdown_list_order = $params->get("cfg_be_name_dropdown_list_order", "lastname");
@@ -469,6 +470,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		$javascript .= "var baseajaxurl = '" . Uri::root() . "administrator/index.php?option=com_sportsmanagement';" . "\n";
 		$javascript .= "var matchid = " . $this->item->id . ";" . "\n";
 		$javascript .= "var useeventtime = " . $this->useeventtime . ";" . "\n";
+        $javascript .= "var doubleevents = " . $this->doubleevents . ";" . "\n";
 		$javascript .= "var projecttime = " . $this->eventsprojecttime . ";" . "\n";
 		$javascript .= "var str_delete = '" . Text::_('JACTION_DELETE') . "';" . "\n";
 

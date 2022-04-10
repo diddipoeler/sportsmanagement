@@ -164,8 +164,8 @@ class sportsmanagementControllermatches extends JSMControllerAdmin
 		$model                = $this->getModel();
 		
         //Factory::getApplication()->enqueueMessage('<pre>'.print_r($post,true).'</pre>', 'error');
-        $double_events = Factory::getApplication()->input->getInt('doubleevents');
-		$resultsave = $model->saveevent($data,$double_events );
+        $doubleevents = Factory::getApplication()->input->getVar('doubleevents');
+		$resultsave = $model->saveevent($data,$doubleevents );
 
 		if (!$resultsave)
 		{
