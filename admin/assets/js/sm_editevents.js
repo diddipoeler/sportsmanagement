@@ -35,6 +35,9 @@ jQuery(document).ready(function($){
 					//+ '&'
 					//+ token
 					;
+					console.log('baseajaxurl ' + baseajaxurl);
+					console.log('url ' + url);
+					console.log('querystring ' + querystring);
 					if (team != 0 && event != 0) {
 						var myXhr = new Request.JSON( {
 							url: url + querystring,
