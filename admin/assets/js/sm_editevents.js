@@ -22,7 +22,7 @@ jQuery(document).ready(function($){
 					var team = $('team_id').value;
 					//var token = $('token').value;
 					var time = $('event_time').value;
-					var doubleevents = $('double_events').value;
+					//var doubleevents = $('double_events').value;
                     //var projecttime = $('projecttime').value;
           var notice = encodeURIComponent($('notice').value);
 					var querystring = 'teamplayer_id=' + player +
