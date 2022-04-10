@@ -302,7 +302,7 @@ if ($close == 1)
             </table>
 
         </fieldset>
-    </div> $this->projectws->game_regular_time
+    </div> 
     <div style="clear: both"></div>
     <input type="hidden" name="task" value=""/>
     <input type="hidden" name="useeventtime" value="<?php echo $this->useeventtime; ?>"/>

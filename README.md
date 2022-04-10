@@ -42,6 +42,7 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   10-04-2022: **3.16.00** Anpassungen Dart
 *   30-03-2022: **3.15.00** Anpassungen Joomla 4
 *   30-03-2022: **3.14.00** Anpassungen Joomla 4
 *   30-03-2022: **3.13.00** Anpassungen Joomla 4

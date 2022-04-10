@@ -2916,14 +2916,15 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 	}
 
+
 	/**
 	 * sportsmanagementModelMatch::saveevent()
-	 *
-	 * @param   mixed  $data
-	 *
+	 * 
+	 * @param mixed $data
+	 * @param integer $double_events
 	 * @return
 	 */
-	function saveevent($data)
+	function saveevent($data,$double_events = 0)
 	{
 		$date = Factory::getDate();
 		$user = Factory::getUser();
@@ -2958,8 +2959,10 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
-
-		$query->clear();
+        
+        if ( !$double_events )
+        {
+        $query->clear();
 		$query->select('mp.id');
 		$query->from('#__sportsmanagement_match_event as mp');
 		$query->where('mp.match_id = ' . $data['match_id']);
@@ -2973,7 +2976,10 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		if ($match_event_id)
 		{
 			return false;
-		}
+		}    
+        }
+
+		
 
 		$temp                 = new stdClass;
 		$temp->match_id       = $data['match_id'];
@@ -2986,16 +2992,12 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$temp->notes          = $data['notes'];
 		$temp->modified       = $date->toSql();
 		$temp->modified_by    = $user->get('id');
-		/**
-		 * Insert the object into the table.
-		 */
+		/** Insert the object into the table. */
 		try
 		{
 			$resultinsert = $db->insertObject('#__sportsmanagement_match_event', $temp);
 			$result       = $db->insertid();
-			/**
-			 * jetzt schauen wir nach, ob es statistiken zu dem event in der position gibt
-			 */
+			/** jetzt schauen wir nach, ob es statistiken zu dem event in der position gibt */
 			$query->clear();
 			$query->select('st.id,st.params,st.class');
 			$query->from('#__sportsmanagement_statistic as st');
@@ -3020,9 +3022,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 				}
 			}
 
-			/**
-			 * Überprüfen und anlegen
-			 */
+			/** Überprüfen und anlegen */
 			if ($statsvalue && $statsid)
 			{
 				$query->clear();
