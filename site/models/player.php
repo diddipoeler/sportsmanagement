@@ -1071,7 +1071,7 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 				$quoted_tpids[] = $this->jsmdb->Quote($teamplayer->id);
 			}
             
-            $this->jsmquery->cleas(); 
+            $this->jsmquery->clear(); 
 
 if ( $show_events_as_sum )
 {
