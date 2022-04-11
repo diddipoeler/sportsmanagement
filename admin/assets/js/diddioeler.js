@@ -78,6 +78,9 @@ jQuery.ajax({
   error: function (xhr, ajaxOptions, thrownError) {
         alert(xhr.status);
         alert(thrownError);
+		console.log("useeventtime : " + useeventtime);
+		console.log("projecttime : " + projecttime);
+		console.log("doubleevents : " + doubleevents);
       }
 });
         
