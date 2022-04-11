@@ -235,60 +235,44 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 	 */
 	function _getProjectTeamIds4UserId($userId)
 	{
-		$app    = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
+		/** Team player */
+        $this->jsmquery->clear(); 
+		$this->jsmquery->select('tp.projectteam_id');
+		$this->jsmquery->from('#__sportsmanagement_person AS pr');
+		$this->jsmquery->join('INNER', '#__sportsmanagement_season_team_person_id AS tp ON tp.person_id = pr.id');
+		$this->jsmquery->where('pr.user_id = ' . $userId);
+		$this->jsmquery->where('pr.published = 1');
+		$this->jsmquery->where('tp.persontype = 1');
 
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
-		$query = $db->getQuery(true);
-
-		// Team_player
-		$query->select('tp.projectteam_id');
-		$query->from('#__sportsmanagement_person AS pr');
-		$query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp ON tp.person_id = pr.id');
-		$query->where('pr.user_id = ' . $userId);
-		$query->where('pr.published = 1');
-		$query->where('tp.persontype = 1');
-
-		$db->setQuery($query);
+		$this->jsmdb->setQuery($this->jsmquery);
 
 		$projectTeamIds = array();
 
 		if (version_compare(JVERSION, '3.0.0', 'ge'))
 		{
-			// Joomla! 3.0 code here
-			$projectTeamIds = $db->loadColumn();
-		}
-		elseif (version_compare(JVERSION, '2.5.0', 'ge'))
-		{
-			// Joomla! 2.5 code here
-			$projectTeamIds = $db->loadResultArray();
+			/** Joomla! 3.0 code here */
+			$projectTeamIds = $this->jsmdb->loadColumn();
 		}
 
-		// Team_staff
-		$query->select('tp.projectteam_id');
-		$query->from('#__sportsmanagement_person AS pr');
-		$query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp ON tp.person_id = pr.id');
-		$query->where('pr.user_id = ' . $userId);
-		$query->where('pr.published = 1');
-		$query->where('tp.persontype = 2');
+		/** Team_staff */
+        $this->jsmquery->clear(); 
+		$this->jsmquery->select('tp.projectteam_id');
+		$this->jsmquery->from('#__sportsmanagement_person AS pr');
+		$this->jsmquery->join('INNER', '#__sportsmanagement_season_team_person_id AS tp ON tp.person_id = pr.id');
+		$this->jsmquery->where('pr.user_id = ' . $userId);
+		$this->jsmquery->where('pr.published = 1');
+		$this->jsmquery->where('tp.persontype = 2');
 
-		$db->setQuery($query);
+		$this->jsmdb->setQuery($this->jsmquery);
 
 		if (version_compare(JVERSION, '3.0.0', 'ge'))
 		{
-			// Joomla! 3.0 code here
-			$res = $db->loadColumn();
+			/** Joomla! 3.0 code here */
+			$res = $this->jsmdb->loadColumn();
 		}
-		elseif (version_compare(JVERSION, '2.5.0', 'ge'))
-		{
-			// Joomla! 2.5 code here
-			$res = $db->loadResultArray();
-		}
-
+		
 		$projectTeamIds = array_merge($projectTeamIds, $res);
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
+		$this->jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $projectTeamIds;
 	}
 
@@ -439,12 +423,6 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 	 */
 	function getAllEvents()
 	{
-//		$app    = Factory::getApplication();
-//		$option = Factory::getApplication()->input->getCmd('option');
-//		// Create a new query object.
-//		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
-//		$query = $db->getQuery(true);
-
 		$history         = sportsmanagementModelPlayer::getPlayerHistory();
 		$positionhistory = array();
 
@@ -489,21 +467,15 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 	 */
 	function getPlayerEvents($eventid, $projectid = null, $projectteamid = null,$show_events_as_sum = 1)
 	{
-//		$app    = Factory::getApplication();
-//		$option = Factory::getApplication()->input->getCmd('option');
-//		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
-//		$query = $db->getQuery(true);
-
 		$this->jsmquery->clear(); 
-if ( $show_events_as_sum )
-{
-$this->jsmquery->select('SUM(me.event_sum) as total');    
-}
-else
-{
-$this->jsmquery->select('COUNT(me.event_sum) as total');    
-}        
-        
+        if ( $show_events_as_sum )
+        {
+        $this->jsmquery->select('SUM(me.event_sum) as total');    
+        }
+        else
+        {
+        $this->jsmquery->select('COUNT(me.event_sum) as total');    
+        }        
         
 		$this->jsmquery->from('#__sportsmanagement_match_event AS me');
 		$this->jsmquery->join('INNER', '#__sportsmanagement_season_team_person_id AS tp1 ON tp1.id = me.teamplayer_id');
@@ -516,7 +488,6 @@ $this->jsmquery->select('COUNT(me.event_sum) as total');
 		}
 
 		$this->jsmquery->group('tp1.person_id');
-
 		$this->jsmdb->setQuery($this->jsmquery);
 		$result = $this->jsmdb->loadResult();
 
