@@ -48,7 +48,18 @@ $logo_width            = ComponentHelper::getParams($option)->get('logo_picture_
 </style>
 
 <script type="text/javascript">
+Joomla.popupWindow = function(mypage, myname, w, h, scroll) {
+		var winl = (screen.width - w) / 2,
+		    wint = (screen.height - h) / 2,
+		    winprops = 'height=' + h +
+			    ',width=' + w +
+			    ',top=' + wint +
+			    ',left=' + winl +
+			    ',scrollbars=' + scroll +
+			    ',resizable';
 
+		window.open(mypage, myname, winprops).window.focus();
+	};
     function openLink(url) {
         var width = get_windowPopUpWidth();
         var heigth = get_windowPopUpHeight();
