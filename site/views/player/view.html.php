@@ -118,16 +118,16 @@ class sportsmanagementViewPlayer extends sportsmanagementView
 		$this->stats              = sportsmanagementModelProject::getProjectStats(0, 0, $model::$cfg_which_database);
 
 		/** Get events and stats for current project */
-		if ($this->config['show_gameshistory'])
+		if ( $this->config['show_gameshistory'] )
 		{
 			$this->games       = $model->getGames();
 			$this->teams       = sportsmanagementModelProject::getTeamsIndexedByPtid(0, 'name', $model::$cfg_which_database);
-			$this->gamesevents = $model->getGamesEvents();
+			$this->gamesevents = $model->getGamesEvents($this->config['show_events_as_sum']);
 			$this->gamesstats  = $model->getPlayerStatsByGame();
 		}
 
 		/** Get events and stats for all projects where player played in (possibly restricted to sports type of current project) */
-		if ($this->config['show_career_stats'])
+		if ( $this->config['show_career_stats'] )
 		{
 			$this->stats        = $model->getStats();
 			$this->projectstats = $model->getPlayerStatsByProject($sportstype);

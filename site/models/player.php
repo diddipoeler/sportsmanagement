@@ -42,15 +42,21 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 	 */
 	function __construct()
 	{
-		$app = Factory::getApplication();
+
 		parent::__construct();
 		self::$projectid                                  = Factory::getApplication()->input->get('p', 0, 'INT');
 		self::$personid                                   = Factory::getApplication()->input->get('pid', 0, 'INT');
 		self::$teamplayerid                               = Factory::getApplication()->input->get('pt', 0, 'INT');
 		self::$cfg_which_database                         = Factory::getApplication()->input->get('cfg_which_database', 0, 'INT');
 		sportsmanagementModelProject::$cfg_which_database = self::$cfg_which_database;
-		$getDBConnection                                  = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
-		parent::setDbo($getDBConnection);
+        $this->jsmapp    = Factory::getApplication('site');
+		$this->jsmjinput = $this->jsmapp->input;
+		$this->jsmoption = $this->jsmjinput->getCmd('option');
+		$this->jsmview   = $this->jsmjinput->getCmd('view');
+		$this->jsmdb     = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
+		$this->jsmquery  = $this->jsmdb->getQuery(true);
+		//$getDBConnection                                  = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
+		parent::setDbo($this->jsmdb);
 	}
 
 	/**
@@ -1037,19 +1043,21 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 		return $inoutstat;
 	}
 
+	
 	/**
 	 * sportsmanagementModelPlayer::getGamesEvents()
-	 *
+	 * 
+	 * @param integer $show_events_as_sum
 	 * @return
 	 */
-	function getGamesEvents()
+	function getGamesEvents($show_events_as_sum = 1)
 	{
-		$app    = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
+//		$app    = Factory::getApplication();
+//		$option = Factory::getApplication()->input->getCmd('option');
 
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
-		$query = $db->getQuery(true);
+//		// Create a new query object.
+//		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
+//		$query = $db->getQuery(true);
 
 		$teamplayers = self::getTeamPlayers();
 		$gameevents  = array();
@@ -1060,23 +1068,33 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 
 			foreach ($teamplayers as $teamplayer)
 			{
-				$quoted_tpids[] = $this->_db->Quote($teamplayer->id);
+				$quoted_tpids[] = $this->jsmdb->Quote($teamplayer->id);
 			}
+            
+            $this->jsmquery->cleas(); 
 
-			$query->select('SUM(me.event_sum) as value,me.match_id, me.event_type_id');
-			$query->from('#__sportsmanagement_match_event AS me ');
-			$query->where('me.teamplayer_id IN (' . implode(',', $quoted_tpids) . ')');
-			$query->group('me.match_id, me.event_type_id');
+if ( $show_events_as_sum )
+{
+$this->jsmquery->select('SUM(me.event_sum) as value,me.match_id, me.event_type_id');    
+}
+else
+{
+$this->jsmquery->select('COUNT(me.event_type_id) as value,me.match_id, me.event_type_id');    
+}
+			
+			$this->jsmquery->from('#__sportsmanagement_match_event AS me ');
+			$this->jsmquery->where('me.teamplayer_id IN (' . implode(',', $quoted_tpids) . ')');
+			$this->jsmquery->group('me.match_id, me.event_type_id');
 
 			try
 			{
-				$db->setQuery($query);
-				$events = $db->loadObjectList();
+				$this->jsmdb ->setQuery($this->jsmquery );
+				$events = $this->jsmdb ->loadObjectList();
 			}
 			catch (Exception $e)
 			{
-				$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
-				$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), 'error');
+				$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
+				$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), 'error');
 				$events = false;
 			}
 
@@ -1093,7 +1111,7 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 			}
 		}
 
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		$this->jsmdb ->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return $gameevents;
 	}
