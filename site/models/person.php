@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage player
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -57,17 +53,18 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 	 */
 	function __construct()
 	{
-		$option = Factory::getApplication()->input->getCmd('option');
-		$app    = Factory::getApplication();
+		$this->jsmapp    = Factory::getApplication('site');
+		$this->jsmjinput = $this->jsmapp->input;
+		$this->jsmoption = $this->jsmjinput->getCmd('option');
+		$this->jsmview   = $this->jsmjinput->getCmd('view');
 
-		// JInput object
-		$jinput = $app->input;
 		parent::__construct();
-		self::$projectid          = (int) $jinput->get('p', 0);
-		self::$personid           = (int) $jinput->get('pid', 0);
-		$this->teamplayerid       = (int) $jinput->get('pt', 0);
-		self::$cfg_which_database = (int) $jinput->get('cfg_which_database', 0);
-
+		self::$projectid          = (int) $this->jsmjinput->get('p', 0);
+		self::$personid           = (int) $this->jsmjinput->get('pid', 0);
+		$this->teamplayerid       = (int) $this->jsmjinput->get('pt', 0);
+		self::$cfg_which_database = (int) $this->jsmjinput->get('cfg_which_database', 0);
+        $this->jsmdb     = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
+		$this->jsmquery  = $this->jsmdb->getQuery(true);
 	}
 
 	/**
@@ -480,46 +477,56 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 		return $info;
 	}
 
+	
 	/**
-	 * get player events total, global or per project
-	 *
-	 * @param   int  $eventid
-	 * @param   int  $projectid  , all projects if null (default)
-	 *
-	 * @return array
+	 * sportsmanagementModelPerson::getPlayerEvents()
+	 * 
+	 * @param mixed $eventid
+	 * @param mixed $projectid
+	 * @param mixed $projectteamid
+	 * @param integer $show_events_as_sum
+	 * @return
 	 */
-	function getPlayerEvents($eventid, $projectid = null, $projectteamid = null)
+	function getPlayerEvents($eventid, $projectid = null, $projectteamid = null,$show_events_as_sum = 1)
 	{
-		$app    = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
-		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
-		$query = $db->getQuery(true);
+//		$app    = Factory::getApplication();
+//		$option = Factory::getApplication()->input->getCmd('option');
+//		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
+//		$query = $db->getQuery(true);
 
-		$query->select('SUM(me.event_sum) as total');
-		$query->from('#__sportsmanagement_match_event AS me');
-		$query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp1 ON tp1.id = me.teamplayer_id');
-		$query->where('me.event_type_id = ' . (int) $eventid);
-		$query->where('tp1.person_id = ' . (int) self::$personid);
+		$this->jsmquery->clear(); 
+if ( $show_events_as_sum )
+{
+$this->jsmquery->select('SUM(me.event_sum) as total');    
+}
+else
+{
+$this->jsmquery->select('COUNT(me.event_sum) as total');    
+}        
+        
+        
+		$this->jsmquery->from('#__sportsmanagement_match_event AS me');
+		$this->jsmquery->join('INNER', '#__sportsmanagement_season_team_person_id AS tp1 ON tp1.id = me.teamplayer_id');
+		$this->jsmquery->where('me.event_type_id = ' . (int) $eventid);
+		$this->jsmquery->where('tp1.person_id = ' . (int) self::$personid);
 
 		if ($projectteamid)
 		{
-			$query->where('me.projectteam_id = ' . (int) $projectteamid);
+			$this->jsmquery->where('me.projectteam_id = ' . (int) $projectteamid);
 		}
 
-		$query->group('tp1.person_id');
+		$this->jsmquery->group('tp1.person_id');
 
-		$db->setQuery($query);
-		$result = $db->loadResult();
+		$this->jsmdb->setQuery($this->jsmquery);
+		$result = $this->jsmdb->loadResult();
 
 		if (empty($result))
 		{
-			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
+			$this->jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 			return 0;
 		}
 
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
+		$this->jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
 	}
 

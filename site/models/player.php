@@ -1088,8 +1088,8 @@ $this->jsmquery->select('COUNT(me.event_type_id) as value,me.match_id, me.event_
 
 			try
 			{
-				$this->jsmdb ->setQuery($this->jsmquery );
-				$events = $this->jsmdb ->loadObjectList();
+				$this->jsmdb->setQuery($this->jsmquery );
+				$events = $this->jsmdb->loadObjectList();
 			}
 			catch (Exception $e)
 			{
@@ -1111,7 +1111,7 @@ $this->jsmquery->select('COUNT(me.event_type_id) as value,me.match_id, me.event_
 			}
 		}
 
-		$this->jsmdb ->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		$this->jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return $gameevents;
 	}
