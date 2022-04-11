@@ -1,6 +1,6 @@
 var windowWidth = jQuery(window).width(); //retrieve current window width
 var windowHeight = jQuery(window).height(); //retrieve current window height
-var documentWidth = jQuery(document).width(); //retrieve current document width
+//var documentWidth = jQuery(document).width(); //retrieve current document width
 var documentHeight = jQuery(document).height(); //retrieve current document height
 var vScrollPosition = jQuery(document).scrollTop(); //retrieve the document scroll ToP position
 var hScrollPosition = jQuery(document).scrollLeft(); //retrieve the document scroll Left position
