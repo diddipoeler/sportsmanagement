@@ -439,12 +439,11 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 	 */
 	function getAllEvents()
 	{
-		$app    = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
-		$query = $db->getQuery(true);
+//		$app    = Factory::getApplication();
+//		$option = Factory::getApplication()->input->getCmd('option');
+//		// Create a new query object.
+//		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
+//		$query = $db->getQuery(true);
 
 		$history         = sportsmanagementModelPlayer::getPlayerHistory();
 		$positionhistory = array();
@@ -461,18 +460,19 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 		{
 			return array();
 		}
+        
+        $this->jsmquery->clear(); 
+		$this->jsmquery->select('et.*');
+		$this->jsmquery->from('#__sportsmanagement_eventtype AS et');
+		$this->jsmquery->join('INNER', '#__sportsmanagement_position_eventtype AS pet ON pet.eventtype_id = et.id');
+		$this->jsmquery->where('published = 1');
+		$this->jsmquery->where('pet.position_id IN (' . implode(',', $positionhistory) . ')');
+		$this->jsmquery->order('et.ordering');
 
-		$query->select('et.*');
-		$query->from('#__sportsmanagement_eventtype AS et');
-		$query->join('INNER', '#__sportsmanagement_position_eventtype AS pet ON pet.eventtype_id = et.id');
-		$query->where('published = 1');
-		$query->where('pet.position_id IN (' . implode(',', $positionhistory) . ')');
-		$query->order('et.ordering');
+		$this->jsmdb->setQuery($this->jsmquery);
 
-		$db->setQuery($query);
-
-		$info = $db->loadObjectList();
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		$info = $this->jsmdb->loadObjectList();
+		$this->jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return $info;
 	}
