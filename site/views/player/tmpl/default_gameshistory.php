@@ -8,9 +8,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -92,14 +90,12 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 							{
 								foreach ($this->gamesstats as $stat)
 								{
-									/**
-									 *                            do not show statheader when there are no stats
-									 */
+									/**	do not show statheader when there are no stats */
 									if (!empty($stat))
 									{
 										try
 										{
-											if ($stat->showInPlayer())
+											if ( $stat->showInPlayer() )
 											{
 												?>
                                                 <th class=""><?php echo $stat->getImage(); ?></th>
@@ -239,19 +235,19 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 								if ($this->config['show_substitution_stats'] && $this->overallconfig['use_jl_substitution'] == 1)
 								{
 									?>
-                                    <td class=""><?php
+                                    <td class="" id="startRoster"><?php
 										$total['startRoster'] += $game->started;
 										echo($game->started > 0 ? $game->started : $this->overallconfig['zero_events_value']);
 										?></td>
-                                    <td class=""><?php
+                                    <td class="" id="in"><?php
 										$total['in'] += $game->sub_in;
 										echo($game->sub_in > 0 ? $game->sub_in : $this->overallconfig['zero_events_value']);
 										?></td>
-                                    <td class=""><?php
+                                    <td class="" id="out"><?php
 										$total['out'] += $game->sub_out;
 										echo($game->sub_out > 0 ? $game->sub_out : $this->overallconfig['zero_events_value']);
 										?></td>
-                                    <td class=""><?php
+                                    <td class="" id="playedtime"><?php
 										$total['playedtime'] += $timePlayed;
 										echo($timePlayed);
 										?></td>
@@ -275,9 +271,7 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 											}
 											else
 											{
-												/**
-												 *                        as only matches are shown here where the player was part of, output a 0 i.s.o. a '-'
-												 */
+												/** as only matches are shown here where the player was part of, output a 0 i.s.o. a '-' */
 												echo $this->overallconfig['zero_events_value'];
 											}
 											?></td>
@@ -288,9 +282,7 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 								{
 									foreach ($this->gamesstats as $stat)
 									{
-										/**
-										 *                            do not show statheader when there are no stats
-										 */
+										/** do not show statheader when there are no stats */
 										if (!empty($stat))
 										{
 											if ($stat->showInPlayer())
@@ -303,9 +295,7 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 													}
 													else
 													{
-														/**
-														 *                                    as only matches are shown here where the player was part of, output a 0 i.s.o. a '-'
-														 */
+														/** as only matches are shown here where the player was part of, output a 0 i.s.o. a '-' */
 														echo $this->overallconfig['zero_events_value'];
 													}
 													?></td>
@@ -356,9 +346,7 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 							{
 								foreach ($this->gamesstats as $stat)
 								{
-									/**
-									 *                            do not show statheader when there are no stats
-									 */
+									/** do not show statheader when there are no stats */
 									if (!empty($stat))
 									{
 										if ($stat->showInPlayer() && isset($stat->gamesstats['totals']))
