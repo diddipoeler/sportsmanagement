@@ -161,11 +161,13 @@ class sportsmanagementControllermatches extends JSMControllerAdmin
 		/** Diddipoeler */
 		$data['projecttime']  = Factory::getApplication()->input->getVar('projecttime', '');
 		$data['useeventtime'] = Factory::getApplication()->input->getVar('useeventtime', '');
+        $data['doubleevents'] = Factory::getApplication()->input->getVar('doubleevents', '');
+        
 		$model                = $this->getModel();
 		
         //Factory::getApplication()->enqueueMessage('<pre>'.print_r($post,true).'</pre>', 'error');
-        $doubleevents = Factory::getApplication()->input->getVar('doubleevents','');
-		$resultsave = $model->saveevent($data,$doubleevents );
+        //$doubleevents = Factory::getApplication()->input->getVar('doubleevents','');
+		$resultsave = $model->saveevent($data );
 
 		if (!$resultsave)
 		{

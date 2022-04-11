@@ -2917,14 +2917,14 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	}
 
 
+	
 	/**
 	 * sportsmanagementModelMatch::saveevent()
 	 * 
 	 * @param mixed $data
-	 * @param integer $doubleevents
 	 * @return
 	 */
-	function saveevent($data,$doubleevents = 0)
+	function saveevent($data)
 	{
 		$date = Factory::getDate();
 		$user = Factory::getUser();
@@ -2960,7 +2960,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
         
-        if ( !$doubleevents )
+        if ( !$data['doubleevents'] )
         {
         $query->clear();
 		$query->select('mp.id');
