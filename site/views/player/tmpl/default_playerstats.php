@@ -413,7 +413,7 @@ $this->LeaguehistoryPlayer[$player_hist->league_id][$eventtype->name] = 0;
 
                                 <td ptid="<?php echo $player_hist->ptid; ?>" id="<?php echo $eventtype->id; ?>"
                                     title="<?php echo $player_hist->project_id; ?>"
-                                    class="td_c"><?php echo ($stat > 0) ? $stat : $this->overallconfig['zero_events_value']; ?></td>
+                                    class=""><?php echo ($stat > 0) ? $stat : $this->overallconfig['zero_events_value']; ?></td>
 								<?php
 							}
 						}
@@ -428,7 +428,7 @@ $this->LeaguehistoryPlayer[$player_hist->league_id][$eventtype->name] = 0;
 								if ($stat->showInPlayer())
 								{
 									?>
-                                    <td class="td_c hasTip" title="<?php echo Text::_($stat->name); ?>">
+                                    <td class=" hasTip" title="<?php echo Text::_($stat->name); ?>">
 									<?php
 									if (isset($this->projectstats[$stat->id][$player_hist->project_id][$player_hist->ptid]))
 									{
