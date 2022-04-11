@@ -146,6 +146,7 @@ class sportsmanagementControllermatches extends JSMControllerAdmin
 	function saveevent()
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
+        $result = '';
         //$post   = Factory::getApplication()->input->post->getArray(array());
 
 		$data                   = array();

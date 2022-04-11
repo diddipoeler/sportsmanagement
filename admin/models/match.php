@@ -2929,6 +2929,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$date = Factory::getDate();
 		$user = Factory::getUser();
 		$app  = Factory::getApplication();
+        $statsvalue = 0;
 
 		if ($data['useeventtime'])
 		{
