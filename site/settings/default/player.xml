@@ -528,7 +528,7 @@
 		</field>
 
 	</fieldset>
-
+<!-- reiter 4 -->
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS" 
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS" 
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_TEAMOPTIONS">	
@@ -562,7 +562,7 @@
 		</field>
 						
 	</fieldset>
-	
+	<!-- reiter 5 -->
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_EDIT_ELEMENTS"
   label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_EDIT_ELEMENTS"  
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_EDIT_ELEMENTS">	
@@ -602,11 +602,19 @@
 		</field>
 		
 	</fieldset>
-	
+	<!-- reiter 6 -->
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS"
   label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS"  
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_ADVANCED_OPTIONS">	
 			
+		<field	name="show_events_as_sum" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_SHOW_PL_CAREER_EVENT_AS_SUM"
+				description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_SHOW_PL_CAREER_EVENT_AS_SUM">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		
 		<field	name="show_career_events_stats" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_SHOW_PL_CAREER_EVENT_STATS"
 				description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_SHOW_PL_CAREER_EVENT_STATS">

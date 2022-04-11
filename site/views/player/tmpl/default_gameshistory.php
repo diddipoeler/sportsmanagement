@@ -235,36 +235,45 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 								if ($this->config['show_substitution_stats'] && $this->overallconfig['use_jl_substitution'] == 1)
 								{
 									?>
-                                    <td class="" id="startRoster"><?php
+                                    <td class="" id="startRoster">
+                                    <?php
 										$total['startRoster'] += $game->started;
 										echo($game->started > 0 ? $game->started : $this->overallconfig['zero_events_value']);
-										?></td>
-                                    <td class="" id="in"><?php
+										?>
+                                        </td>
+                                    <td class="" id="in">
+                                    <?php
 										$total['in'] += $game->sub_in;
 										echo($game->sub_in > 0 ? $game->sub_in : $this->overallconfig['zero_events_value']);
-										?></td>
-                                    <td class="" id="out"><?php
+										?>
+                                        </td>
+                                    <td class="" id="out">
+                                    <?php
 										$total['out'] += $game->sub_out;
 										echo($game->sub_out > 0 ? $game->sub_out : $this->overallconfig['zero_events_value']);
-										?></td>
-                                    <td class="" id="playedtime"><?php
+										?>
+                                        </td>
+                                    <td class="" id="playedtime">
+                                    <?php
 										$total['playedtime'] += $timePlayed;
 										echo($timePlayed);
-										?></td>
+										?>
+                                        </td>
 
 									<?php
 								}
-								if ($this->config['show_career_events_stats'] && isset($this->AllEvents))
+								if ( $this->config['show_career_events_stats'] && isset($this->AllEvents) )
 								{
 									foreach ($this->AllEvents as $eventtype)
 									{
 										?>
-                                        <td class=""><?php
-											if (!isset($total_event_stats[$eventtype->id]))
+                                        <td class="" id="<?php echo $eventtype->name; ?>">
+                                        <?php
+											if ( !isset($total_event_stats[$eventtype->id]) )
 											{
 												$total_event_stats[$eventtype->id] = 0;
 											}
-											if (isset($this->gamesevents[$game->id][$eventtype->id]))
+											if ( isset($this->gamesevents[$game->id][$eventtype->id]) )
 											{
 												$total_event_stats[$eventtype->id] += $this->gamesevents[$game->id][$eventtype->id];
 												echo $this->gamesevents[$game->id][$eventtype->id];
@@ -274,7 +283,8 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 												/** as only matches are shown here where the player was part of, output a 0 i.s.o. a '-' */
 												echo $this->overallconfig['zero_events_value'];
 											}
-											?></td>
+											?>
+                                            </td>
 										<?php
 									}
 								}
