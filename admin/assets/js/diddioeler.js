@@ -67,7 +67,8 @@ var querystring = 'teamplayer_id=' + player +
 	'&useeventtime=' + useeventtime +
     '&projecttime=' + projecttime + 
 	'&event_sum=' + event_sum +
-	'&notice=' + notice;
+	'&notice=' + notice +
+    '&doubleevents=' + doubleevents;
 
 jQuery.ajax({
   type: 'POST', // type of request either Get or Post
