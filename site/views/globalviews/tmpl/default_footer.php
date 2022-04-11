@@ -64,11 +64,7 @@ $logo_width            = ComponentHelper::getParams($option)->get('logo_picture_
 
 <div class="<?php echo $this->divclassrow; ?>" style="text-align:center; clear:both">
     <br/>
-    <!--
-<a title= "<?php echo Text::_('COM_SPORTSMANAGEMENT_SITE_LINK') ?>" target="_blank" href="http://www.fussballineuropa.de">
-<img src= "<?php echo Uri::root(true); ?>/components/com_sportsmanagement/assets/images/logo_transparent.png" width="<?PHP echo $logo_width; ?>" height="auto">
-</a>
--->
+   
     <br/>
 	<?php echo Text::_("COM_SPORTSMANAGEMENT_DESC"); ?>
     <br/>
@@ -116,31 +112,5 @@ echo ' '.Text::_('COM_SPORTSMANAGEMENT_HELP_LINK');
 </button>
 </div>
 
-
-
-
-	<?PHP
-	/**
-	 *
-	 * welche joomla version ?
-	 */
-	if (version_compare(JVERSION, '3.0.0', 'ge'))
-	{
-	}
-    elseif (version_compare(JVERSION, '2.5.0', 'ge'))
-	{
-		/**
-		 * Joomla! 2.5 code here
-		 */
-		?>
-        <!-- Button HTML (to Trigger Modal) -->
-        <a href="<?php echo $cfg_bugtracker_server; ?>" rel="modaljsm:open">Bug-Tracker</a>
-        <br/>
-        <a href="<?php echo $cfg_help_server; ?>" rel="modaljsm:open">Online-Help</a>
-        <br/>
-		<?PHP
-	}
-
-	?>
 
 </div>
