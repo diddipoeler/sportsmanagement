@@ -235,25 +235,25 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 								if ($this->config['show_substitution_stats'] && $this->overallconfig['use_jl_substitution'] == 1)
 								{
 									?>
-                                    <td class="" id="startRoster">
+                                    <td class="" id="startRoster-gameshistory">
                                     <?php
 										$total['startRoster'] += $game->started;
 										echo($game->started > 0 ? $game->started : $this->overallconfig['zero_events_value']);
 										?>
                                         </td>
-                                    <td class="" id="in">
+                                    <td class="" id="in-gameshistory">
                                     <?php
 										$total['in'] += $game->sub_in;
 										echo($game->sub_in > 0 ? $game->sub_in : $this->overallconfig['zero_events_value']);
 										?>
                                         </td>
-                                    <td class="" id="out">
+                                    <td class="" id="out-gameshistory">
                                     <?php
 										$total['out'] += $game->sub_out;
 										echo($game->sub_out > 0 ? $game->sub_out : $this->overallconfig['zero_events_value']);
 										?>
                                         </td>
-                                    <td class="" id="playedtime">
+                                    <td class="" id="playedtime-gameshistory">
                                     <?php
 										$total['playedtime'] += $timePlayed;
 										echo($timePlayed);
