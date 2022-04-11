@@ -81,6 +81,9 @@ jQuery.ajax({
 		console.log("useeventtime : " + useeventtime);
 		console.log("projecttime : " + projecttime);
 		console.log("doubleevents : " + doubleevents);
+		
+		console.log("url : " + url);
+		console.log("querystring : " + querystring);
       }
 });
         
