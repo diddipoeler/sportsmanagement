@@ -76,7 +76,7 @@ Joomla.popupWindow = function(mypage, myname, w, h, scroll) {
 
   
   
-<div class="container text-center d-flex align-items-center justify-content-center">
+<div class="container text-center align-items-center justify-content-center">
  <br/>
 	<?php echo Text::_("COM_SPORTSMANAGEMENT_DESC"); ?>
     <br/>
