@@ -62,10 +62,11 @@ $logo_width            = ComponentHelper::getParams($option)->get('logo_picture_
 
 </script>
 
-<div class="<?php echo $this->divclassrow; ?>" style="text-align:center; clear:both">
-    <br/>
-   
-    <br/>
+
+  
+  
+<div class="container text-center d-flex align-items-center justify-content-center">
+ <br/>
 	<?php echo Text::_("COM_SPORTSMANAGEMENT_DESC"); ?>
     <br/>
     <img src="<?php echo Uri::root(true); ?>/components/com_sportsmanagement/assets/images/fussballineuropa.png"
@@ -94,7 +95,7 @@ $logo_width            = ComponentHelper::getParams($option)->get('logo_picture_
 <div class="center">
 <?php echo Text::sprintf('COM_SPORTSMANAGEMENT_FOOTER_TIME', $this->jsmseitenaufbau); ?>
 </div>
-
+  
 <?php
 $link_onlinehelp = $cfg_help_server . 'SM-Frontend:' . $view ;                                                
 $cmd = "Joomla.popupWindow('$link_onlinehelp', '" . Text::_('COM_SPORTSMANAGEMENT_HELP_LINK', true) . "',". $modal_popup_width." ,". $modal_popup_height.", 1)";
@@ -110,7 +111,29 @@ Text::_('COM_SPORTSMANAGEMENT_HELP_LINK') . '"'
 echo ' '.Text::_('COM_SPORTSMANAGEMENT_HELP_LINK');
 ?>                      
 </button>
-</div>
-
-
-</div>
+</div>  
+  
+  
+</div>    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
