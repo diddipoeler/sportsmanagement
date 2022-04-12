@@ -1297,7 +1297,10 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 				break;
 			case 'jlextassociation':
 				$form->setFieldAttribute('assocflag', 'type', $cfg_which_media_tool);
+                $form->setFieldAttribute('assocflag', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_flags', ''));
+                
 				$form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
+                $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_big', ''));
 
 				$this->jsmquery->clear();
 				$this->jsmquery->select('*');
