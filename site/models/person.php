@@ -76,25 +76,17 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
-
-		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
 
-		// If ( is_null( $this->_inproject ) )
-		// {
 		$query->select('p.*,CONCAT_WS(\':\',p.id,p.alias) AS slug');
 		$query->select('pr.id,pr.notes AS prnotes,pr.picture');
 		$query->select('pos.name AS position_name');
-
 		$query->from('#__sportsmanagement_project_referee AS pr ');
-
 		$query->join('INNER', '#__sportsmanagement_season_person_id AS o ON o.id = pr.person_id');
 		$query->join('INNER', '#__sportsmanagement_person AS p ON p.id = o.person_id');
-
 		$query->join('LEFT', '#__sportsmanagement_project_position AS ppos ON ppos.id = pr.project_position_id');
 		$query->join('LEFT', '#__sportsmanagement_position AS pos ON pos.id = ppos.position_id');
-
 		$query->where('pr.project_id = ' . self::$projectid);
 		$query->where('p.published = 1 ');
 		$query->where('o.person_id = ' . self::$personid);
@@ -137,8 +129,6 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 	 */
 	public static function _isAdmin($user)
 	{
-
-		// Get a refrence of the page instance in joomla
 		$document = Factory::getDocument();
 		$app      = Factory::getApplication();
 		$option   = Factory::getApplication()->input->getCmd('option');
@@ -148,13 +138,13 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 		{
 			$project = sportsmanagementModelProject::getProject();
 
-			// Check if user is project admin or editor
+			/** Check if user is project admin or editor */
 			if (sportsmanagementModelProject::isUserProjectAdminOrEditor($user->id, $project))
 			{
 				$allowed = true;
 			}
 
-			// If not, then check if user has ACL rights
+			/** If not, then check if user has ACL rights */
 			if (!$allowed)
 			{
 				if (!$user->authorise('person.edit', $option))
@@ -205,14 +195,14 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 		$user   = Factory::getUser();
 		$result = true;
 
-		// Project admin and editor,see contact always
+		/** Project admin and editor,see contact always */
 		if ($config_showContactDataOnlyTeamMembers && !sportsmanagementModelProject::isUserProjectAdminOrEditor($user->id, sportsmanagementModelProject::getProject()))
 		{
 			$result = false;
 
 			if ($user->id > 0)
 			{
-				// Get project_team id to user-id from team-player or team-staff
+				/** Get project_team id to user-id from team-player or team-staff */
 				$projectTeamIds = self::_getProjectTeamIds4UserId($user->id);
 				$teamplayer     = sportsmanagementModelPlayer::getTeamPlayer();
 
@@ -324,23 +314,17 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 	 */
 	function getContactID($catid)
 	{
-		$app    = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
-		$query = $db->getQuery(true);
-
 		$person = self::getPerson();
+        
+        $this->jsmquery->clear();
+		$this->jsmquery->select('id');
+		$this->jsmquery->from('#__contact_details');
+		$this->jsmquery->where('user_id = ' . $person->jl_user_id);
+		$this->jsmquery->where('catid = ' . $catid);
 
-		$query->select('id');
-		$query->from('#__contact_details');
-		$query->where('user_id = ' . $person->jl_user_id);
-		$query->where('catid = ' . $catid);
-
-		$db->setQuery($query);
-		$contact_id = $db->loadResult();
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		$this->jsmdb->setQuery($this->jsmquery);
+		$contact_id = $this->jsmdb->loadResult();
+		$this->jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return $contact_id;
 	}
@@ -508,32 +492,19 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 	 */
 	function getPlayerChangedRecipients()
 	{
-		$app    = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
-		$query = $db->getQuery(true);
-
-		$query->select('email');
-		$query->from('#__users');
-		$query->where('usertype = \'Super Administrator\' OR usertype = \'Administrator\' ');
-
-		$db->setQuery($query);
+        $this->jsmquery->clear(); 
+		$this->jsmquery->select('email');
+		$this->jsmquery->from('#__users');
+		$this->jsmquery->where('usertype = \'Super Administrator\' OR usertype = \'Administrator\' ');
+		$this->jsmdb->setQuery($this->jsmquery);
 
 		if (version_compare(JVERSION, '3.0.0', 'ge'))
 		{
-			// Joomla! 3.0 code here
-			$res = $db->loadColumn();
-		}
-		elseif (version_compare(JVERSION, '2.5.0', 'ge'))
-		{
-			// Joomla! 2.5 code here
-			$res = $db->loadResultArray();
+			/** Joomla! 3.0 code here */
+			$res = $this->jsmdb->loadColumn();
 		}
 
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
+		$this->jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $res;
 	}
 
