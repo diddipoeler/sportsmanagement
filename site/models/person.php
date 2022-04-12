@@ -29,6 +29,10 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 	static $projectid = 0;
 	static $personid = 0;
 	static $person = null;
+    
+    static $jsmdb = null;
+    static $jsmquery = null;
+    
 	static $_inproject = null;
 	static $cfg_which_database = 0;
 	var $teamplayerid = 0;
@@ -52,8 +56,8 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 		self::$personid           = (int) $this->jsmjinput->get('pid', 0);
 		$this->teamplayerid       = (int) $this->jsmjinput->get('pt', 0);
 		self::$cfg_which_database = (int) $this->jsmjinput->get('cfg_which_database', 0);
-        $this->jsmdb     = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
-		$this->jsmquery  = $this->jsmdb->getQuery(true);
+        self::$jsmdb     = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
+		self::$jsmquery  = self::$jsmdb->getQuery(true);
 	}
 
 	/**
@@ -63,26 +67,22 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 	 */
 	public static function getReferee()
 	{
-		$option = Factory::getApplication()->input->getCmd('option');
-		$app    = Factory::getApplication();
-		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
-		$query = $db->getQuery(true);
+		self::$jsmquery->clear(); 
+        self::$jsmquery->select('p.*,CONCAT_WS(\':\',p.id,p.alias) AS slug');
+		self::$jsmquery->select('pr.id,pr.notes AS prnotes,pr.picture');
+		self::$jsmquery->select('pos.name AS position_name');
+		self::$jsmquery->from('#__sportsmanagement_project_referee AS pr ');
+		self::$jsmquery->join('INNER', '#__sportsmanagement_season_person_id AS o ON o.id = pr.person_id');
+		self::$jsmquery->join('INNER', '#__sportsmanagement_person AS p ON p.id = o.person_id');
+		self::$jsmquery->join('LEFT', '#__sportsmanagement_project_position AS ppos ON ppos.id = pr.project_position_id');
+		self::$jsmquery->join('LEFT', '#__sportsmanagement_position AS pos ON pos.id = ppos.position_id');
+		self::$jsmquery->where('pr.project_id = ' . self::$projectid);
+		self::$jsmquery->where('p.published = 1 ');
+		self::$jsmquery->where('o.person_id = ' . self::$personid);
+		self::$jsmdb->setQuery(self::$jsmquery);
+		self::$_inproject = self::$jsmdb->loadObject();
 
-		$query->select('p.*,CONCAT_WS(\':\',p.id,p.alias) AS slug');
-		$query->select('pr.id,pr.notes AS prnotes,pr.picture');
-		$query->select('pos.name AS position_name');
-		$query->from('#__sportsmanagement_project_referee AS pr ');
-		$query->join('INNER', '#__sportsmanagement_season_person_id AS o ON o.id = pr.person_id');
-		$query->join('INNER', '#__sportsmanagement_person AS p ON p.id = o.person_id');
-		$query->join('LEFT', '#__sportsmanagement_project_position AS ppos ON ppos.id = pr.project_position_id');
-		$query->join('LEFT', '#__sportsmanagement_position AS pos ON pos.id = ppos.position_id');
-		$query->where('pr.project_id = ' . self::$projectid);
-		$query->where('p.published = 1 ');
-		$query->where('o.person_id = ' . self::$personid);
-		$db->setQuery($query);
-		self::$_inproject = $db->loadObject();
-
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		self::$jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return self::$_inproject;
 	}
@@ -215,43 +215,43 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 	function _getProjectTeamIds4UserId($userId)
 	{
 		/** Team player */
-        $this->jsmquery->clear(); 
-		$this->jsmquery->select('tp.projectteam_id');
-		$this->jsmquery->from('#__sportsmanagement_person AS pr');
-		$this->jsmquery->join('INNER', '#__sportsmanagement_season_team_person_id AS tp ON tp.person_id = pr.id');
-		$this->jsmquery->where('pr.user_id = ' . $userId);
-		$this->jsmquery->where('pr.published = 1');
-		$this->jsmquery->where('tp.persontype = 1');
+        self::$jsmquery->clear(); 
+		self::$jsmquery->select('tp.projectteam_id');
+		self::$jsmquery->from('#__sportsmanagement_person AS pr');
+		self::$jsmquery->join('INNER', '#__sportsmanagement_season_team_person_id AS tp ON tp.person_id = pr.id');
+		self::$jsmquery->where('pr.user_id = ' . $userId);
+		self::$jsmquery->where('pr.published = 1');
+		self::$jsmquery->where('tp.persontype = 1');
 
-		$this->jsmdb->setQuery($this->jsmquery);
+		self::$jsmdb->setQuery(self::$jsmquery);
 
 		$projectTeamIds = array();
 
 		if (version_compare(JVERSION, '3.0.0', 'ge'))
 		{
 			/** Joomla! 3.0 code here */
-			$projectTeamIds = $this->jsmdb->loadColumn();
+			$projectTeamIds = self::$jsmdb->loadColumn();
 		}
 
 		/** Team_staff */
-        $this->jsmquery->clear(); 
-		$this->jsmquery->select('tp.projectteam_id');
-		$this->jsmquery->from('#__sportsmanagement_person AS pr');
-		$this->jsmquery->join('INNER', '#__sportsmanagement_season_team_person_id AS tp ON tp.person_id = pr.id');
-		$this->jsmquery->where('pr.user_id = ' . $userId);
-		$this->jsmquery->where('pr.published = 1');
-		$this->jsmquery->where('tp.persontype = 2');
+        self::$jsmquery->clear(); 
+		self::$jsmquery->select('tp.projectteam_id');
+		self::$jsmquery->from('#__sportsmanagement_person AS pr');
+		self::$jsmquery->join('INNER', '#__sportsmanagement_season_team_person_id AS tp ON tp.person_id = pr.id');
+		self::$jsmquery->where('pr.user_id = ' . $userId);
+		self::$jsmquery->where('pr.published = 1');
+		self::$jsmquery->where('tp.persontype = 2');
 
-		$this->jsmdb->setQuery($this->jsmquery);
+		self::$jsmdb->setQuery(self::$jsmquery);
 
 		if (version_compare(JVERSION, '3.0.0', 'ge'))
 		{
 			/** Joomla! 3.0 code here */
-			$res = $this->jsmdb->loadColumn();
+			$res = self::$jsmdb->loadColumn();
 		}
 		
 		$projectTeamIds = array_merge($projectTeamIds, $res);
-		$this->jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		self::$jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $projectTeamIds;
 	}
 
@@ -267,19 +267,19 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 	function getRefereeHistory($order = 'ASC')
 	{
 		$personid = $this->personid;
-        $this->jsmquery->clear();
-        $this->jsmquery->select('p.id AS person_id,tt.project_id,p.firstname AS fname,p.lastname AS lname,pj.name AS pname,s.name AS sname,pos.name AS position,COUNT(mr.id) AS matchesCount');
-        $this->jsmquery->from('#__sportsmanagement_match_referee AS mr');
-        $this->jsmquery->join('INNER', '#__sportsmanagement_match AS m ON m.id = mr.match_id ');
-		$this->jsmquery->join('INNER', '#__sportsmanagement_person AS p ON p.id = mr.project_referee_id ');
-		$this->jsmquery->join('INNER', '#__sportsmanagement_project_team AS tt ON tt.id = m.projectteam1_id ');
-		$this->jsmquery->join('INNER', '#__sportsmanagement_project AS pj ON pj.id = tt.project_id ');
-		$this->jsmquery->join('INNER', '#__sportsmanagement_season AS s ON s.id = pj.season_id ');
-		$this->jsmquery->join('INNER', '#__sportsmanagement_league AS l ON l.id = pj.league_id ');
-		$this->jsmquery->join('LEFT', '#__sportsmanagement_position AS pos ON pos.id = mr.project_position_id ');
-        $this->jsmquery->where('p.id = ' . (int) $personid);
-        $this->jsmquery->group('tt.project_id');
-        $this->jsmquery->order('s.ordering ASC, l.ordering ASC, pj.name ASC');
+        self::$jsmquery->clear();
+        self::$jsmquery->select('p.id AS person_id,tt.project_id,p.firstname AS fname,p.lastname AS lname,pj.name AS pname,s.name AS sname,pos.name AS position,COUNT(mr.id) AS matchesCount');
+        self::$jsmquery->from('#__sportsmanagement_match_referee AS mr');
+        self::$jsmquery->join('INNER', '#__sportsmanagement_match AS m ON m.id = mr.match_id ');
+		self::$jsmquery->join('INNER', '#__sportsmanagement_person AS p ON p.id = mr.project_referee_id ');
+		self::$jsmquery->join('INNER', '#__sportsmanagement_project_team AS tt ON tt.id = m.projectteam1_id ');
+		self::$jsmquery->join('INNER', '#__sportsmanagement_project AS pj ON pj.id = tt.project_id ');
+		self::$jsmquery->join('INNER', '#__sportsmanagement_season AS s ON s.id = pj.season_id ');
+		self::$jsmquery->join('INNER', '#__sportsmanagement_league AS l ON l.id = pj.league_id ');
+		self::$jsmquery->join('LEFT', '#__sportsmanagement_position AS pos ON pos.id = mr.project_position_id ');
+        self::$jsmquery->where('p.id = ' . (int) $personid);
+        self::$jsmquery->group('tt.project_id');
+        self::$jsmquery->order('s.ordering ASC, l.ordering ASC, pj.name ASC');
 
 		$this->_db->setQuery($query);
 		$results = $this->_db->loadObjectList();
@@ -298,15 +298,15 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 	{
 		$person = self::getPerson();
         
-        $this->jsmquery->clear();
-		$this->jsmquery->select('id');
-		$this->jsmquery->from('#__contact_details');
-		$this->jsmquery->where('user_id = ' . $person->jl_user_id);
-		$this->jsmquery->where('catid = ' . $catid);
+        self::$jsmquery->clear();
+		self::$jsmquery->select('id');
+		self::$jsmquery->from('#__contact_details');
+		self::$jsmquery->where('user_id = ' . $person->jl_user_id);
+		self::$jsmquery->where('catid = ' . $catid);
 
-		$this->jsmdb->setQuery($this->jsmquery);
-		$contact_id = $this->jsmdb->loadResult();
-		$this->jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		self::$jsmdb->setQuery(self::$jsmquery);
+		$contact_id = self::$jsmdb->loadResult();
+		self::$jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return $contact_id;
 	}
@@ -341,16 +341,15 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 
 		self::updateHits(self::$personid, $inserthits);
 
-		$db    = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query = $db->getQuery(true);
+        self::$jsmquery->clear(); 
 		$query->select('p.*');
 		$query->select('CONCAT_WS( \':\', p.id, p.alias ) AS slug ');
 		$query->from('#__sportsmanagement_person AS p ');
-		$query->where('p.id = ' . $db->Quote(self::$personid));
-		$db->setQuery($query);
+		$query->where('p.id = ' . self::$jsmdb->Quote(self::$personid));
+		self::$jsmdb->setQuery($query);
 
-		self::$person = $db->loadObject();
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		self::$person = self::$jsmdb->loadObject();
+		self::$jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return self::$person;
 	}
@@ -365,20 +364,15 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 	 */
 	public static function updateHits($personid = 0, $inserthits = 0)
 	{
-		$option = Factory::getApplication()->input->getCmd('option');
-		$app    = Factory::getApplication();
-		$db     = Factory::getDbo();
-		$query  = $db->getQuery(true);
 
-		if ($inserthits)
-		{
-			$query->update($db->quoteName('#__sportsmanagement_person'))->set('hits = hits + 1')->where('id = ' . $personid);
-
-			$db->setQuery($query);
-
-			$result = $db->execute();
-			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-		}
+	if ($inserthits)
+	{
+	self::$jsmquery->clear(); 
+	self::$jsmquery->update(self::$jsmdb->quoteName('#__sportsmanagement_person'))->set('hits = hits + 1')->where('id = ' . $personid);
+	self::$jsmdb->setQuery(self::$jsmquery);
+	$result = self::$jsmdb->execute();
+	self::$jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+	}
 
 	}
 
@@ -405,18 +399,18 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 			return array();
 		}
         
-        $this->jsmquery->clear(); 
-		$this->jsmquery->select('et.*');
-		$this->jsmquery->from('#__sportsmanagement_eventtype AS et');
-		$this->jsmquery->join('INNER', '#__sportsmanagement_position_eventtype AS pet ON pet.eventtype_id = et.id');
-		$this->jsmquery->where('published = 1');
-		$this->jsmquery->where('pet.position_id IN (' . implode(',', $positionhistory) . ')');
-		$this->jsmquery->order('et.ordering');
+        self::$jsmquery->clear(); 
+		self::$jsmquery->select('et.*');
+		self::$jsmquery->from('#__sportsmanagement_eventtype AS et');
+		self::$jsmquery->join('INNER', '#__sportsmanagement_position_eventtype AS pet ON pet.eventtype_id = et.id');
+		self::$jsmquery->where('published = 1');
+		self::$jsmquery->where('pet.position_id IN (' . implode(',', $positionhistory) . ')');
+		self::$jsmquery->order('et.ordering');
 
-		$this->jsmdb->setQuery($this->jsmquery);
+		self::$jsmdb->setQuery(self::$jsmquery);
 
-		$info = $this->jsmdb->loadObjectList();
-		$this->jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		$info = self::$jsmdb->loadObjectList();
+		self::$jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return $info;
 	}
@@ -433,37 +427,37 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 	 */
 	function getPlayerEvents($eventid, $projectid = null, $projectteamid = null,$show_events_as_sum = 1)
 	{
-		$this->jsmquery->clear(); 
+		self::$jsmquery->clear(); 
         if ( $show_events_as_sum )
         {
-        $this->jsmquery->select('SUM(me.event_sum) as total');    
+        self::$jsmquery->select('SUM(me.event_sum) as total');    
         }
         else
         {
-        $this->jsmquery->select('COUNT(me.event_sum) as total');    
+        self::$jsmquery->select('COUNT(me.event_sum) as total');    
         }        
         
-		$this->jsmquery->from('#__sportsmanagement_match_event AS me');
-		$this->jsmquery->join('INNER', '#__sportsmanagement_season_team_person_id AS tp1 ON tp1.id = me.teamplayer_id');
-		$this->jsmquery->where('me.event_type_id = ' . (int) $eventid);
-		$this->jsmquery->where('tp1.person_id = ' . (int) self::$personid);
+		self::$jsmquery->from('#__sportsmanagement_match_event AS me');
+		self::$jsmquery->join('INNER', '#__sportsmanagement_season_team_person_id AS tp1 ON tp1.id = me.teamplayer_id');
+		self::$jsmquery->where('me.event_type_id = ' . (int) $eventid);
+		self::$jsmquery->where('tp1.person_id = ' . (int) self::$personid);
 
 		if ($projectteamid)
 		{
-			$this->jsmquery->where('me.projectteam_id = ' . (int) $projectteamid);
+			self::$jsmquery->where('me.projectteam_id = ' . (int) $projectteamid);
 		}
 
-		$this->jsmquery->group('tp1.person_id');
-		$this->jsmdb->setQuery($this->jsmquery);
-		$result = $this->jsmdb->loadResult();
+		self::$jsmquery->group('tp1.person_id');
+		self::$jsmdb->setQuery(self::$jsmquery);
+		$result = self::$jsmdb->loadResult();
 
 		if (empty($result))
 		{
-			$this->jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+			self::$jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 			return 0;
 		}
 
-		$this->jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		self::$jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
 	}
 
@@ -474,19 +468,19 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 	 */
 	function getPlayerChangedRecipients()
 	{
-        $this->jsmquery->clear(); 
-		$this->jsmquery->select('email');
-		$this->jsmquery->from('#__users');
-		$this->jsmquery->where('usertype = \'Super Administrator\' OR usertype = \'Administrator\' ');
-		$this->jsmdb->setQuery($this->jsmquery);
+        self::$jsmquery->clear(); 
+		self::$jsmquery->select('email');
+		self::$jsmquery->from('#__users');
+		self::$jsmquery->where('usertype = \'Super Administrator\' OR usertype = \'Administrator\' ');
+		self::$jsmdb->setQuery(self::$jsmquery);
 
 		if (version_compare(JVERSION, '3.0.0', 'ge'))
 		{
 			/** Joomla! 3.0 code here */
-			$res = $this->jsmdb->loadColumn();
+			$res = self::$jsmdb->loadColumn();
 		}
 
-		$this->jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		self::$jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $res;
 	}
 
