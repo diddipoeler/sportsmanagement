@@ -278,26 +278,19 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 	function getRefereeHistory($order = 'ASC')
 	{
 		$personid = $this->personid;
-
-		$query = ' SELECT	p.id AS person_id, '
-			. ' tt.project_id, '
-			. ' p.firstname AS fname, '
-			. ' p.lastname AS lname, '
-			. ' pj.name AS pname, '
-			. ' s.name AS sname, '
-			. ' pos.name AS position, '
-			. ' COUNT(mr.id) AS matchesCount '
-			. ' FROM #__sportsmanagement_match_referee AS mr '
-			. ' INNER JOIN #__sportsmanagement_match AS m ON m.id = mr.match_id '
-			. ' INNER JOIN #__sportsmanagement_person AS p ON p.id = mr.project_referee_id '
-			. ' INNER JOIN #__sportsmanagement_project_team AS tt ON tt.id = m.projectteam1_id '
-			. ' INNER JOIN #__sportsmanagement_project AS pj ON pj.id = tt.project_id '
-			. ' INNER JOIN #__sportsmanagement_season AS s ON s.id = pj.season_id '
-			. ' INNER JOIN #__sportsmanagement_league AS l ON l.id = pj.league_id '
-			. ' LEFT JOIN #__sportsmanagement_position AS pos ON pos.id = mr.project_position_id '
-			. ' WHERE p.id = ' . (int) $personid
-			. ' GROUP BY (tt.project_id) '
-			. ' ORDER BY s.ordering ASC, l.ordering ASC, pj.name ASC ';
+        $this->jsmquery->clear();
+        $this->jsmquery->select('p.id AS person_id,tt.project_id,p.firstname AS fname,p.lastname AS lname,pj.name AS pname,s.name AS sname,pos.name AS position,COUNT(mr.id) AS matchesCount');
+        $this->jsmquery->from('#__sportsmanagement_match_referee AS mr');
+        $this->jsmquery->join('INNER', '#__sportsmanagement_match AS m ON m.id = mr.match_id ');
+		$this->jsmquery->join('INNER', '#__sportsmanagement_person AS p ON p.id = mr.project_referee_id ');
+		$this->jsmquery->join('INNER', '#__sportsmanagement_project_team AS tt ON tt.id = m.projectteam1_id ');
+		$this->jsmquery->join('INNER', '#__sportsmanagement_project AS pj ON pj.id = tt.project_id ');
+		$this->jsmquery->join('INNER', '#__sportsmanagement_season AS s ON s.id = pj.season_id ');
+		$this->jsmquery->join('INNER', '#__sportsmanagement_league AS l ON l.id = pj.league_id ');
+		$this->jsmquery->join('LEFT', '#__sportsmanagement_position AS pos ON pos.id = mr.project_position_id ');
+        $this->jsmquery->where('p.id = ' . (int) $personid);
+        $this->jsmquery->group('tt.project_id');
+        $this->jsmquery->order('s.ordering ASC, l.ordering ASC, pj.name ASC');
 
 		$this->_db->setQuery($query);
 		$results = $this->_db->loadObjectList();
