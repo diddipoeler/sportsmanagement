@@ -955,6 +955,7 @@ $result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_i
 					case 'associations':
 						File::copy(JPATH_ROOT . '/images/com_sportsmanagement/database/placeholders/placeholder_50.png', JPATH_ROOT . '/images/com_sportsmanagement/database/' . $folder . '/placeholder_50.png');
 						File::copy(JPATH_ROOT . '/images/com_sportsmanagement/database/placeholders/placeholder_wappen_50.png', JPATH_ROOT . '/images/com_sportsmanagement/database/' . $folder . '/placeholder_wappen_50.png');
+                        File::copy(JPATH_ROOT . '/images/com_sportsmanagement/database/placeholders/placeholder_flags.png', JPATH_ROOT . '/images/com_sportsmanagement/database/' . $folder . '/placeholder_flags.png');
 						break;
 					case 'clubs/large':
 						File::copy(JPATH_ROOT . '/images/com_sportsmanagement/database/placeholders/placeholder_150.png', JPATH_ROOT . '/images/com_sportsmanagement/database/' . $folder . '/placeholder_150.png');
