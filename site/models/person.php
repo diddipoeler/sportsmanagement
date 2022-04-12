@@ -324,6 +324,8 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 	{
 		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
+        $db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
+		$query = $db->getQuery(true);
 
 		if ($personid)
 		{
@@ -341,15 +343,15 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 
 		self::updateHits(self::$personid, $inserthits);
 
-        self::$jsmquery->clear(); 
+        $query->clear(); 
 		$query->select('p.*');
 		$query->select('CONCAT_WS( \':\', p.id, p.alias ) AS slug ');
 		$query->from('#__sportsmanagement_person AS p ');
-		$query->where('p.id = ' . self::$jsmdb->Quote(self::$personid));
-		self::$jsmdb->setQuery($query);
+		$query->where('p.id = ' . $db->Quote(self::$personid));
+		$db->setQuery($query);
 
-		self::$person = self::$jsmdb->loadObject();
-		self::$jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		self::$person = $db->loadObject();
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return self::$person;
 	}
@@ -364,14 +366,16 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 	 */
 	public static function updateHits($personid = 0, $inserthits = 0)
 	{
+	   $db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
+		$query = $db->getQuery(true);
 
 	if ($inserthits)
 	{
-	self::$jsmquery->clear(); 
-	self::$jsmquery->update(self::$jsmdb->quoteName('#__sportsmanagement_person'))->set('hits = hits + 1')->where('id = ' . $personid);
-	self::$jsmdb->setQuery(self::$jsmquery);
-	$result = self::$jsmdb->execute();
-	self::$jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+	$query->clear(); 
+	$query->update($db->quoteName('#__sportsmanagement_person'))->set('hits = hits + 1')->where('id = ' . $personid);
+	$db->setQuery($query);
+	$result = $db->execute();
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 	}
 
 	}
