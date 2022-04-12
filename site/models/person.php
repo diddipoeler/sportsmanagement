@@ -27,23 +27,12 @@ use Joomla\CMS\Utility\Utility;
 class sportsmanagementModelPerson extends BaseDatabaseModel
 {
 	static $projectid = 0;
-
 	static $personid = 0;
 	static $person = null;
-	/**
-	 * store person info specific to the project
-	 *
-	 * @var object
-	 */
 	static $_inproject = null;
 	static $cfg_which_database = 0;
 	var $teamplayerid = 0;
 	var $teamplayer = null;
-	/**
-	 * data array for player history
-	 *
-	 * @var array
-	 */
 	var $_playerhistory = null;
 
 	/**
