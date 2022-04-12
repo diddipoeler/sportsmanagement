@@ -262,6 +262,7 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		$query = $db->getQuery(true);
 		$query->select('l.id AS value,l.name AS text');
 		$query->from('#__sportsmanagement_league AS l');
+        $query->order('l.name');
 		if ($country)
 		{
 			$query->where('country LIKE ' . $db->Quote('' . $country . ''));
