@@ -465,12 +465,50 @@ if ( $config->get('debug') )
 						{
 							$person_1 = $data['person_id1'];
 							$person_2 = $data['person_id2'];
-							$table    = 'person';
-							$row      = Table::getInstance($table, 'sportsmanagementTable');
-							$row->load((int) $person_1);
-							$person_double[] = $row->firstname . ' ' . $row->lastname;
-							$row->load((int) $person_2);
-							$person_double[]   = $row->firstname . ' ' . $row->lastname;
+                            $this->jsmquery->clear(); 
+                            $this->jsmquery->select('firstname,lastname');
+                            $this->jsmquery->from('#__sportsmanagement_person');
+                            $this->jsmquery->where('id = ' . (int) $person_1);
+                            
+                            try
+		{
+			$this->jsmdb->setQuery($this->jsmquery );
+			$row = $this->jsmdb->loadObject();
+            $person_double[] = $row->firstname . ' ' . $row->lastname;
+		}
+		catch (Exception $e)
+		{
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+		
+		}
+        $this->jsmquery->clear(); 
+                            $this->jsmquery->select('firstname,lastname');
+                            $this->jsmquery->from('#__sportsmanagement_person');
+                            $this->jsmquery->where('id = ' . (int) $person_2);
+                            
+                            try
+		{
+			$this->jsmdb->setQuery($this->jsmquery );
+			$row = $this->jsmdb->loadObject();
+            $person_double[] = $row->firstname . ' ' . $row->lastname;
+		}
+		catch (Exception $e)
+		{
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+		
+		}
+                            
+//							$table    = 'person';
+//							$row      = Table::getInstance($table, 'sportsmanagementTable');
+//							$row->load((int) $person_1);
+//							$person_double[] = $row->firstname . ' ' . $row->lastname;
+//                            
+//							$row->load((int) $person_2);
+//                            
+//							$person_double[]   = $row->firstname . ' ' . $row->lastname;
+                            
 							$data['lastname']  = implode(" - ", $person_double);
 							$data['firstname'] = '';
 						}
