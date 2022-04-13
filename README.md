@@ -14,7 +14,7 @@ Das Team
 * Entwicklungsunterstützung: jst71, appukonrad, tdittmann, llambion, ortwin20000 
 * Language manager & Wiki: stony
 * Übersetzer: sk-plehanovec, teddy
-* Tester: svdoldie
+* Tester: svdoldie,Stefan Kemner
 * Designer: donclumsy
 
 Übersetzungen
