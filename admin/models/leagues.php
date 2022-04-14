@@ -189,9 +189,12 @@ class sportsmanagementModelLeagues extends JSMModelList
 			$this->jsmquery->where('obj.associations = ' . $this->getState('filter.search_associations'));
 		}
 
-		if ($this->getState('filter.search_federation'))
+		/** sonderselektion bei verbänden */
+        if ($this->getState('filter.search_federation'))
 		{
-			$this->jsmquery->where('obj.associations = ' . $this->getState('filter.search_federation'));
+		  $this->jsmquery->join('LEFT', '#__sportsmanagement_countries AS co ON co.alpha3 = obj.country');
+          $this->jsmquery->join('LEFT', '#__sportsmanagement_federations AS fe ON fe.id = co.federation');
+          $this->jsmquery->where('fe.id = ' . $this->getState('filter.search_federation'));
 		}
 
 		if ($this->getState('filter.search_agegroup'))
