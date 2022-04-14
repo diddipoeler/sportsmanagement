@@ -46,8 +46,10 @@ class JFormFieldFederationsList extends \JFormFieldList
 	protected function getOptions()
 	{
 		$app      = Factory::getApplication();
+        $view   = Factory::getApplication()->input->getCmd('view');
+        $db    = Factory::getDbo();
+		$query = $db->getQuery(true);
 		$selected = 0;
-
 		$options   = array();
 		$vartable  = (string) $this->element['targettable'];
 		$select_id = $app->input->getVar('id');
@@ -57,11 +59,21 @@ class JFormFieldFederationsList extends \JFormFieldList
 			$select_id = $select_id;
 		}
 
+
+
+switch ($view)
+{
+    case 'leagues':
+    $query->select('t.id,t.id AS value, t.name AS text');
+			$query->from('#__sportsmanagement_federations AS t');
+			$query->where('t.parent_id = 0');
+			$query->order('t.name');
+			$db->setQuery($query);
+			$options = $db->loadObjectList();
+    break;
+    default:
 		if ($select_id)
 		{
-			$db    = Factory::getDbo();
-			$query = $db->getQuery(true);
-
 			$query->select('t.id,t.id AS value, t.name AS text');
 			$query->from('#__sportsmanagement_federations AS t');
 			$query->where('t.parent_id = 0');
@@ -83,6 +95,8 @@ class JFormFieldFederationsList extends \JFormFieldList
 				$options [] = HTMLHelper::_('select.option', $item->id, $item->treename, 'value', 'text', !$sections && $item->section);
 			}
 		}
+        break;
+        }
 
 		/** Merge any additional options in the XML definition. */
 		$options = array_merge(parent::getOptions(), $options);
