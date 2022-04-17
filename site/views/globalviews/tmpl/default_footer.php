@@ -75,7 +75,7 @@ Joomla.popupWindow = function(mypage, myname, w, h, scroll) {
 
 
   
-  
+  <div class="row-fluid">
 <div class="container text-center align-items-center justify-content-center">
  <br/>
 	<?php echo Text::_("COM_SPORTSMANAGEMENT_DESC"); ?>
@@ -127,7 +127,7 @@ echo ' '.Text::_('COM_SPORTSMANAGEMENT_HELP_LINK');
   
 </div>    
   
-  
+</div>    
   
   
   
