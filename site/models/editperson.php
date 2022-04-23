@@ -139,11 +139,22 @@ class sportsmanagementModelEditPerson extends AdminModel
 	{
 		$id = Factory::getApplication()->input->getInt('pid', 0);
         $app = Factory::getApplication();
-		$table = $this->getTable('person', 'sportsmanagementTable');
+        
+        $db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
+		$query     = $db->getQuery(true);
+		
+        
+        $query->clear();
+        $query->select('*');
+        $query->from('#__sportsmanagement_person');
+        $query->where('id = ' . (int) $id);
+        
+
         
         try
 		{
-		$table->load($id);
+		$db->setQuery($query);  
+		$result = $db->loadObject();
         }
 		catch (Exception $e)
 		{
@@ -151,7 +162,7 @@ class sportsmanagementModelEditPerson extends AdminModel
 			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
 		}
 
-		return $table;
+		return $result;
 
 	}
 
