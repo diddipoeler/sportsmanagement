@@ -140,7 +140,7 @@ class sportsmanagementModelEditPerson extends AdminModel
 		$id = Factory::getApplication()->input->getInt('pid', 0);
         $app = Factory::getApplication();
         
-        $db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
+        $db        = sportsmanagementHelper::getDBConnection(true, $app->input->get('cfg_which_database', 0, ''));
 		$query     = $db->getQuery(true);
 		
         
