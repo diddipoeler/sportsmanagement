@@ -16,6 +16,7 @@ use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 JLoader::import('components.com_sportsmanagement.helpers.imageselect', JPATH_SITE);
 
@@ -44,6 +45,7 @@ class sportsmanagementModelEditPerson extends AdminModel
 	function updItem($data)
 	{
 		$app = Factory::getApplication();
+        //$app->enqueueMessage('<pre>'.print_r($data,true).'</pre>', 'error');
 
 		foreach ($data['request'] as $key => $value)
 		{
