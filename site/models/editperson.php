@@ -56,7 +56,7 @@ class sportsmanagementModelEditPerson extends AdminModel
 
 		try
 		{
-			$table = $this->getTable('person');
+			$table = $this->getTable('player');
 			$table->bind($data, $ignore);
 			$table->store();
 		}
@@ -78,7 +78,7 @@ class sportsmanagementModelEditPerson extends AdminModel
 	 * @return Table    A database object
 	 * @since  1.6
 	 */
-	public function getTable($type = 'person', $prefix = 'sportsmanagementTable', $config = array())
+	public function getTable($type = 'player', $prefix = 'sportsmanagementTable', $config = array())
 	{
 		return Table::getInstance($type, $prefix, $config);
 	}
