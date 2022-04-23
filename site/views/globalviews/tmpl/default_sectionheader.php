@@ -78,6 +78,7 @@ $view        = $jinput->getVar("view");
 							$routeparameter['tid']                = $this->teamPlayer->team_id;
 							$routeparameter['pid']                = $this->person->id;
 							$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('editperson', $routeparameter, 'person.edit');
+                            $link .= '&tmpl=component';
 							echo sportsmanagementHelperHtml::getBootstrapModalImage(
 								'editperson' . $this->person->id,
 								'administrator/components/com_sportsmanagement/assets/images/edit.png',
