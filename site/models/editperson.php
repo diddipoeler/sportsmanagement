@@ -137,7 +137,7 @@ class sportsmanagementModelEditPerson extends AdminModel
 	 */
 	function getData()
 	{
-		$id = Factory::getApplication()->input->getInt('pid', 0);
+		$id = Factory::getApplication()->input->getInt('id', 0);
         $app = Factory::getApplication();
         
         $db        = sportsmanagementHelper::getDBConnection(true, $app->input->get('cfg_which_database', 0, ''));
