@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage editperson
@@ -11,12 +9,11 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die;
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Session\Session;
 
 /**
  * sportsmanagementControllereditperson
@@ -42,10 +39,7 @@ class sportsmanagementControllereditperson extends FormController
 	{
 		parent::__construct($config);
 
-		/**
-		 *
-		 * Map the apply task to the save method.
-		 */
+		/** Map the apply task to the save method. */
 		$this->registerTask('apply', 'save');
 	}
 
@@ -70,26 +64,19 @@ class sportsmanagementControllereditperson extends FormController
 	 */
 	public function save($key = null, $urlVar = null)
 	{
-		/**
-		 *
-		 * Initialise variables.
-		 */
 		$app   = Factory::getApplication();
+        Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+        $msg           = '';
+        $post          = Factory::getApplication()->input->post->getArray(array());
 		$model = $this->getModel('editperson');
 
-		$data = Factory::getApplication()->input->post->getArray(array());
-		$id   = Factory::getApplication()->input->getInt('id');
+//		$data = Factory::getApplication()->input->post->getArray(array());
+//		$id   = Factory::getApplication()->input->getInt('id');
 
-		/**
-		 *
-		 * Now update the loaded data to the database via a function in the model
-		 */
-		$upditem = $model->updItem($data);
+		/** Now update the loaded data to the database via a function in the model */
+		$updateresult = $model->updItem($post);
 
-		/**
-		 *
-		 * Set the redirect based on the task.
-		 */
+		/** Set the redirect based on the task. */
 		switch ($this->getTask())
 		{
 			case 'apply':

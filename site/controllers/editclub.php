@@ -40,10 +40,7 @@ class sportsmanagementControllerEditClub extends FormController
 	{
 		parent::__construct($config);
 
-		/**
-		 *
-		 * Map the apply task to the save method.
-		 */
+		/** Map the apply task to the save method. */
 		$this->registerTask('apply', 'save');
 	}
 
@@ -58,7 +55,6 @@ class sportsmanagementControllerEditClub extends FormController
 	{
 		$msg = 'cancel';
 		$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);
-
 		return true;
 	}
 
@@ -70,11 +66,9 @@ class sportsmanagementControllerEditClub extends FormController
 	function load()
 	{
 		$cid = Factory::getApplication()->input->getInt('cid', 0);
-
 		$club = Table::getInstance('Club', 'sportsmanagementTable');
 		$club->load($cid);
 		$club->checkout($user->id);
-
 		$this->display();
 	}
 
@@ -103,57 +97,13 @@ class sportsmanagementControllerEditClub extends FormController
 	{
 		$app = Factory::getApplication();
 
-		// Check for request forgeries
 		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 		$msg           = '';
 		$address_parts = array();
 		$post          = Factory::getApplication()->input->post->getArray(array());
 
-		// $cid = Factory::getApplication()->input->getVar('cid', array(0), 'post', 'array');
-		// $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post '.'<pre>'.print_r($post,true).'</pre>'  ), '');
-		// $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' cid '.'<pre>'.print_r($cid,true).'</pre>'  ), '');
-		// $this->setRedirect('index.php?option=com_sportsmanagement&tmpl=component&view=editclub&cid='.$post['id'].'&id='.$post['id'].'&p='.$post['p'], $msg, $type);
-		// $post['id'] = (int) $cid[0];
 		$model = $this->getModel('editclub');
-/*
-		if (!empty($post['address']))
-		{
-			$address_parts[] = $post['address'];
-		}
 
-		if (!empty($post['state']))
-		{
-			$address_parts[] = $post['state'];
-		}
-
-		if (!empty($post['location']))
-		{
-			if (!empty($post['zipcode']))
-			{
-				$address_parts[] = $post['zipcode'] . ' ' . $post['location'];
-			}
-			else
-			{
-				$address_parts[] = $post['location'];
-			}
-		}
-
-		if (!empty($post['country']))
-		{
-			$address_parts[] = JSMCountries::getShortCountryName($post['country']);
-		}
-
-		$address = implode(', ', $address_parts);
-		$coords  = sportsmanagementHelper::resolveLocation($address);
-
-		foreach ($coords as $key => $value)
-		{
-			$post['extended'][$key] = $value;
-		}
-
-		$post['latitude']  = $coords['latitude'];
-		$post['longitude'] = $coords['longitude'];
-*/
 		if (isset($post['merge_teams']))
 		{
 			if (count($post['merge_teams']) > 0)
@@ -172,28 +122,11 @@ class sportsmanagementControllerEditClub extends FormController
 			$post['merge_teams'] = '';
 		}
 
-		$updateresult = $model->updItem($post);
+		/** Now update the loaded data to the database via a function in the model */
+        $updateresult = $model->updItem($post);
 
-		//        if ($model->updItem($post)) {
-		//            $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CTRL_SAVED');
-		//            $createTeam = Factory::getApplication()->input->getVar('createTeam');
-		//            if ($createTeam) {
-		//                $team_name = Factory::getApplication()->input->getVar('name');
-		//                $team_short_name = strtoupper(substr(preg_replace('/[^a-zA-Z]/','', $team_name), 0, 3));
-		//                $teammodel = $this->getModel('team');
-		//                $tpost['id'] = "0";
-		//                $tpost['name'] = $team_name;
-		//                $tpost['short_name'] = $team_short_name;
-		//                $tpost['club_id'] = $teammodel->getDbo()->insertid();
-		//                $teammodel->save($tpost);
-		//            }
-		//            $type = 'message';
-		//        } else {
-		//            $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CTRL_ERROR_SAVE') . $model->getError();
-		//            $type = 'error';
-		//        }
-
-		if ($this->getTask() == 'save')
+		/** Set the redirect based on the task. */
+        if ($this->getTask() == 'save')
 		{
 			$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');
 		}
