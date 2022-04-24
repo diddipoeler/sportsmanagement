@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage editprojectteam
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\AdminModel;
@@ -33,13 +29,11 @@ JLoader::import('components.com_sportsmanagement.helpers.imageselect', JPATH_SIT
  */
 class sportsmanagementModelEditprojectteam extends AdminModel
 {
-	/**
-	 *
-	 * interfaces
-	 */
-	var $latitude = null;
 
+	var $latitude = null;
 	var $longitude = null;
+    var $_id = 0;
+    var $_data = array();
 
 	/**
 	 * sportsmanagementModelEditprojectteam::updItem()
@@ -57,16 +51,15 @@ class sportsmanagementModelEditprojectteam extends AdminModel
 			$data[$key] = $value;
 		}
 
-		/**
-		 *
-		 * Specify which columns are to be ignored. This can be a string or an array.
-		 */
+		/** Specify which columns are to be ignored. This can be a string or an array. */
 		$ignore = '';
 
 		try
 		{
 			$table = $this->getTable('projectteam');
+			$data = array_filter($data);
 			$table->bind($data, $ignore);
+			$table->check();
 			$table->store();
 		}
 		catch (Exception $e)
@@ -106,7 +99,6 @@ class sportsmanagementModelEditprojectteam extends AdminModel
 		$cfg_which_media_tool = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('cfg_which_media_tool', 0);
 		$app                  = Factory::getApplication('site');
 
-		// Get the form.
 		$form = $this->loadForm('com_sportsmanagement.' . $this->name, $this->name, array('load_data' => $loadData));
 
 		if (empty($form))
@@ -125,7 +117,6 @@ class sportsmanagementModelEditprojectteam extends AdminModel
 	 */
 	protected function loadFormData()
 	{
-		// Check the session for previously entered form data.
 		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.' . $this->name . '.data', array());
 
 		if (empty($data))
@@ -146,7 +137,6 @@ class sportsmanagementModelEditprojectteam extends AdminModel
 		$this->_id   = Factory::getApplication()->input->getInt('ptid', 0);
 		$this->_data = $this->getTable('projectteam', 'sportsmanagementTable');
 		$this->_data->load($this->_id);
-
 		return $this->_data;
 	}
 
