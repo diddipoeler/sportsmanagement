@@ -59,13 +59,17 @@ class sportsmanagementModelEditPerson extends AdminModel
 		try
 		{
 			$table = $this->getTable('player');
+			$data = array_filter($data);
 			$table->bind($data, $ignore);
+			$table->check();
 			$table->store();
+            return true;
 		}
 		catch (Exception $e)
 		{
 			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
 			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+            return false;
 		}
 
 	}
