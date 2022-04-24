@@ -34,6 +34,8 @@ class sportsmanagementModelEditPerson extends AdminModel
 
 	var $latitude = null;
 	var $longitude = null;
+    var $_id = 0;
+    var $_data = array();
 
 	/**
 	 * sportsmanagementModelEditPerson::updItem()
@@ -139,32 +141,34 @@ class sportsmanagementModelEditPerson extends AdminModel
 	 */
 	function getData()
 	{
-		$id = Factory::getApplication()->input->getInt('id', 0);
-        $app = Factory::getApplication();
+    $this->_id = Factory::getApplication()->input->getInt('id', 0);
+	$this->_data = $this->getTable('player', 'sportsmanagementTable');
+	$this->_data->load($this->_id);
+	return $this->_data;
         
-        $db        = sportsmanagementHelper::getDBConnection(true, $app->input->get('cfg_which_database', 0, ''));
-		$query     = $db->getQuery(true);
-		
-        
-        $query->clear();
-        $query->select('*');
-        $query->from('#__sportsmanagement_person');
-        $query->where('id = ' . (int) $id);
-        
-
-        
-        try
-		{
-		$db->setQuery($query);  
-		$result = $db->loadObject();
-        }
-		catch (Exception $e)
-		{
-			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
-			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
-		}
-
-		return $result;
+//		$id = Factory::getApplication()->input->getInt('id', 0);
+//        $app = Factory::getApplication();
+//        
+//        $db        = sportsmanagementHelper::getDBConnection(true, $app->input->get('cfg_which_database', 0, ''));
+//		$query     = $db->getQuery(true);
+//        
+//        $query->clear();
+//        $query->select('*');
+//        $query->from('#__sportsmanagement_person');
+//        $query->where('id = ' . (int) $id);
+//        
+//        try
+//		{
+//		$db->setQuery($query);  
+//		$result = $db->loadObject();
+//        }
+//		catch (Exception $e)
+//		{
+//			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+//			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+//		}
+//
+//		return $result;
 
 	}
 
