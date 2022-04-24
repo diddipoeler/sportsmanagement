@@ -70,8 +70,8 @@ class sportsmanagementControllereditperson extends FormController
         $post          = Factory::getApplication()->input->post->getArray(array());
 		$model = $this->getModel('editperson');
 
-//		$data = Factory::getApplication()->input->post->getArray(array());
-//		$id   = Factory::getApplication()->input->getInt('id');
+		$data = Factory::getApplication()->input->post->getArray(array());
+		$id   = Factory::getApplication()->input->getInt('id');
 
 		/** Now update the loaded data to the database via a function in the model */
 		$updateresult = $model->updItem($post);
