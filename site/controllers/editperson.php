@@ -93,7 +93,7 @@ class sportsmanagementControllereditperson extends FormController
 		switch ($this->getTask())
 		{
 			case 'apply':
-				$message = Text::_('COM_SPORTSMANAGEMENT_SAVE_SUCCESS');
+				$message = Text::_('COM_SPORTSMANAGEMENT_EDIT_PERSON_SAVED');
 				$this->setRedirect('index.php?option=com_sportsmanagement&view=editperson&tmpl=component&id=' . $id . '&pid=' . $id . '&p=' . $data['p'] . '&tid=' . $data['tid'], $message);
 				break;
 

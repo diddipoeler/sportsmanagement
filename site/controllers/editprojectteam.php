@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage editprojectteam
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die;
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\Language\Text;
@@ -94,7 +90,7 @@ class sportsmanagementControllereditprojectteam extends FormController
 		switch ($this->getTask())
 		{
 			case 'apply':
-				$message = Text::_('COM_SPORTSMANAGEMENT_SAVE_SUCCESS');
+				$message = Text::_('COM_SPORTSMANAGEMENT_EDIT_PROJECTTEAM_SAVED');
 				$this->setRedirect('index.php?option=com_sportsmanagement&view=editprojectteam&tmpl=component&id=' . $id . '&ptid=' . $data['ptid'] . '&p=' . $data['p'] . '&tid=' . $data['tid'], $message);
 				break;
 
