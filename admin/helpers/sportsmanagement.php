@@ -3476,8 +3476,16 @@ $jinput = $app->input;
 		}
 
 		$query->where('catid =' . $project_category_id);
+		try{
 		Factory::getDBO()->setQuery($query);
 		$result = Factory::getDBO()->loadObjectList();
+	}
+catch (RuntimeException $e)
+				{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($this->jsmquery->dump(), true) . '</pre>', 'Error');
+				}
 
 		return $result;
 	}
