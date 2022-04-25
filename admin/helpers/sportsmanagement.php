@@ -3475,7 +3475,10 @@ $jinput = $app->input;
 				break;
 		}
 
+		if ( $project_category_id )
+		{
 		$query->where('catid =' . $project_category_id);
+		}
 		try{
 		Factory::getDBO()->setQuery($query);
 		$result = Factory::getDBO()->loadObjectList();
