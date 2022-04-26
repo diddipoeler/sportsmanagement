@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage editmatch
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -635,11 +631,12 @@ class sportsmanagementViewEditMatch extends sportsmanagementView
 		$javascript .= "var projecttime = " . $this->eventsprojecttime . ";" . "\n";
 		$javascript .= "var useeventtime = " . $this->useeventtime . ";" . "\n";
 		$javascript .= "var str_delete = '" . Text::_('JACTION_DELETE') . "';" . "\n";
-		$javascript .= 'jQuery(document).ready(function() {' . "\n";
-		$javascript .= "updatePlayerSelect();" . "\n";
-		$javascript .= "jQuery('#team_id').change(updatePlayerSelect);" . "\n";
-		$javascript .= '  });' . "\n";
-		$javascript .= "\n";
+        
+//		$javascript .= 'jQuery(document).ready(function() {' . "\n";
+//		$javascript .= "updatePlayerSelect();" . "\n";
+//		$javascript .= "jQuery('#team_id').change(updatePlayerSelect);" . "\n";
+//		$javascript .= '  });' . "\n";
+//		$javascript .= "\n";
 		$document->addScriptDeclaration($javascript);
 
 		$this->positions      = $projectpositions;
