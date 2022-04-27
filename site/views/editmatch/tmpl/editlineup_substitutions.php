@@ -90,7 +90,7 @@ $baseurl = "'" . Route::_(Uri::base() . 'index.php?option=com_sportsmanagement')
 							?>
                         </td>
                         <td>
-                            <input onclick="delete_subst(<?php echo $substitution->id; ?>,<?php echo $baseurl; ?>)"
+                            <input onClick="deletesubst(<?php echo $substitution->id; ?>)"
                                    id="deletesubst-<?php echo $substitution->id; ?>" type="button"
                                    class="inputbox button-delete-subst"
                                    value="<?php echo Text::_('JACTION_DELETE'); ?>"/>
