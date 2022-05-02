@@ -70,7 +70,7 @@ use Joomla\CMS\Language\Text;
                 <tr>
                     <td>
                     <?php
-						echo $this->lists['nation2'];
+						echo $this->lists['countrylist'];
 						?>
                     </td>
                     </tr>

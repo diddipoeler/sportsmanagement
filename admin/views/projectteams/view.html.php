@@ -286,7 +286,7 @@ $this->model->checkProjectTeamDivision($teams->projectteamid,$teams->id,$teams->
 		}
 
 		$lists['nation']  = $nation;
-        $lists['nation2'] = JHtmlSelect::genericlist(
+        $lists['countrylist'] = JHtmlSelect::genericlist(
 			$nation,
 			'filter_search_nation',
 			$inputappend . 'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
