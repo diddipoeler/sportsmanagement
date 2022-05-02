@@ -69,6 +69,13 @@ use Joomla\CMS\Language\Text;
             <table class="admintable" border="0">
                 <tr>
                     <td>
+                    <?php
+						echo $this->lists['nation'];
+						?>
+                    </td>
+                    </tr>
+                <tr>
+                    <td>
                         <b>
 							<?php
 							if ($this->project->project_art_id != 3)

@@ -276,6 +276,21 @@ $this->model->checkProjectTeamDivision($teams->projectteamid,$teams->id,$teams->
 }
 
 }
+
+
+/** Build the html options for nation */
+		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+
+		if ($res = JSMCountries::getCountryOptions())
+		{
+			$nation              = array_merge($nation, $res);
+			$this->search_nation = $res;
+		}
+
+		$lists['nation']  = $nation;
+        
+        
+        
 		switch ($this->getLayout())
 		{
 			case 'editlist';
