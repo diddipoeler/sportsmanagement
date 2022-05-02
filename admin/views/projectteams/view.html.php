@@ -261,10 +261,8 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 
 		$this->config         = Factory::getConfig();
 		$this->lists          = $lists;
-		//$this->divisions      = $projectdivisions;
 		$this->projectteam    = $items;
 		$this->pagination     = $pagination;
-//		$this->project        = $project;
 		$this->project_art_id = $this->project_art_id;
 
 /** pro division die punkte hinterlegen*/
