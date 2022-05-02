@@ -220,6 +220,14 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 			'text',
 			$this->state->get('filter.search_nation')
 		);
+        $lists['countrylist'] = JHtmlSelect::genericlist(
+			$nation,
+			'filter_search_nation',
+			'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+			'value',
+			'text',
+			$this->state->get('filter.search_nation')
+		);
 
 //		if ( $this->project->fast_projektteam )
 //		{
@@ -285,15 +293,7 @@ $this->model->checkProjectTeamDivision($teams->projectteamid,$teams->id,$teams->
 			$this->search_nation = $res;
 		}
 
-		$lists['nation']  = $nation;
-        $lists['countrylist'] = JHtmlSelect::genericlist(
-			$nation,
-			'filter_search_nation',
-			$inputappend . 'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
-			'value',
-			'text',
-			$this->state->get('filter.search_nation')
-		);
+        
         
         
 		switch ($this->getLayout())
