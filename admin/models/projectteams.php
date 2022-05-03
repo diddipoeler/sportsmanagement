@@ -530,19 +530,25 @@ $post      = Factory::getApplication()->input->post->getArray(array());
 		else
 		{
 			$this->jsmquery->clear();
-			$this->jsmquery->select('st.id AS value,t.name AS text,t.info');
-			$this->jsmquery->from('#__sportsmanagement_team AS t');
+			
 			if ( $post['edit_search_nation'] )
 		{
+              $this->jsmquery->select('0 AS value,t.name AS text,t.info');
+			$this->jsmquery->from('#__sportsmanagement_team AS t');
 			$this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
 			$this->jsmquery->join('LEFT', '#__sportsmanagement_club AS c ON c.id = t.club_id');	
+              $this->jsmquery->group('t.name');
 			}
 			else
 			{
+              $this->jsmquery->select('st.id AS value,t.name AS text,t.info');
+			$this->jsmquery->from('#__sportsmanagement_team AS t');
 			$this->jsmquery->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
 			$this->jsmquery->join('INNER', '#__sportsmanagement_club AS c ON c.id = t.club_id');
 				$this->jsmquery->where('st.season_id = ' . $this->_season_id);
 			}
+          
+          
 //			$this->jsmquery->where('st.season_id = ' . $this->_season_id);
 			$this->jsmquery->where('t.sports_type_id = ' . $this->sports_type_id);
 			
