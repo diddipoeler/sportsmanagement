@@ -136,7 +136,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 			$lists['project_teams'] = '<select name="project_teamslist[]" id="project_teamslist" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
 		}
 
-		if ($ress1 = $this->model->getTeams())
+		if ( $ress1 = $this->model->getTeams($this->state->get('filter.search_nation')) )
 		{
 			if ($ress = $this->model->getProjectTeams($this->project_id, false))
 			{
