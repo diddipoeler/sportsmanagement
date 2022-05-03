@@ -139,7 +139,7 @@ use Joomla\CMS\Language\Text;
 <input type="hidden" name="option" value="com_sportsmanagement"/>
 <input type="hidden" name="project_id" value="<?php echo $this->project->id; ?>"/>
 <input type="hidden" name="task" value="projectteam.save_matcheslist"/>
-<input type="hidden" name="edit_search_nation" value="<?php echo $this->state->get('filter.search_nation'); ?>"/>
+
 <?php echo HTMLHelper::_('form.token'); ?>
 </div>
 </form>
