@@ -493,7 +493,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 	 * @return array
 	 * @since  0.1
 	 */
-	function getTeams()
+	function getTeams($country='')
 	{
 		self::$_project_id    = $this->jsmapp->getUserState("$this->jsmoption.pid", '0');
 		$this->_season_id     = $this->jsmapp->getUserState("$this->jsmoption.season_id", '0');
@@ -532,6 +532,10 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 			if ($result->country && $result->use_nation)
 			{
 				$this->jsmquery->where('c.country LIKE ' . $this->jsmdb->Quote('' . $result->country . ''));
+			}
+			if ( $country )
+			{
+			$this->jsmquery->where('c.country LIKE ' . $this->jsmdb->Quote('' . $country . ''));	
 			}
 
 			$this->jsmquery->order('t.name ASC');
