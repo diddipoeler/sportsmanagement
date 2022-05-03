@@ -222,7 +222,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		);
         $lists['countrylist'] = JHtmlSelect::genericlist(
 			$nation,
-			'filter_search_nation',
+			'edit_search_nation',
 			'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
 			'value',
 			'text',
