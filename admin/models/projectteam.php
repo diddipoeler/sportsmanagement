@@ -468,6 +468,12 @@ $resultupdate = $this->jsmdb->execute();
 				$_pro_teams_to_delete[] = $row->projectteamid;
 			}
 		}
+		
+		/** season team id setzen wenn das team noch nicht zugeordnet ist*/
+		foreach ($assign_id as $key => $value) if ( !$value )
+		{
+			
+		}
 
 		foreach ($assign_id as $key => $value) if ( $value )
 		{
