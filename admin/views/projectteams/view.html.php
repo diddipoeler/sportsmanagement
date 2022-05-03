@@ -40,8 +40,16 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 	 */
 	public function init()
 	{
+		$edit_search_nation = '';
 $post = Factory::getApplication()->input->post->getArray(array());
-		//if ( $post['edit_search_nation'] )
+		if ( $post['edit_search_nation'] )
+		{
+		$edit_search_nation = $post['edit_search_nation'];	
+		}
+		else
+		{
+		$edit_search_nation = $this->state->get('filter.search_nation');	
+		}
 			
 		$this->state         = $this->get('State');
 		$this->sortDirection = $this->state->get('list.direction');
@@ -228,7 +236,7 @@ $post = Factory::getApplication()->input->post->getArray(array());
 			'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
 			'value',
 			'text',
-			$post['edit_search_nation']
+			$edit_search_nation
 		);
 
 //		if ( $this->project->fast_projektteam )
