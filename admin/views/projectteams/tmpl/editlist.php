@@ -50,6 +50,8 @@ use Joomla\CMS\Language\Text;
 				<?php echo Text::_('JSAVE'); ?></button>
             <button id="cancel" type="button" onclick="Joomla.submitform('projectteam.cancelmodal', this.form)">
 				<?php echo Text::_('JCANCEL'); ?></button>
+		<button id="reset" type="button" onclick="this.form.submit()">
+				<?php echo Text::_('JRESET'); ?></button>
         </div>
     </fieldset>
     <div class="col50">
