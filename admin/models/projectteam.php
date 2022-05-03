@@ -469,7 +469,7 @@ $resultupdate = $this->jsmdb->execute();
 			}
 		}
 
-		foreach ($assign_id as $key => $value)
+		foreach ($assign_id as $key => $value) if ( $value )
 		{
 			$query->clear();
 			$query->select('id');
