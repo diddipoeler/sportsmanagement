@@ -501,7 +501,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 		$this->_season_id     = $this->jsmapp->getUserState("$this->jsmoption.season_id", '0');
 		$this->project_art_id = $this->jsmapp->getUserState("$this->jsmoption.project_art_id", '0');
 		$this->sports_type_id = $this->jsmapp->getUserState("$this->jsmoption.sports_type_id", '0');
-$post      = Factory::getApplication()->input->post->getArray(array());
+$post = Factory::getApplication()->input->post->getArray(array());
 		if ( $post['edit_search_nation'] )
 		{
 		$country = $post['edit_search_nation'];
@@ -533,7 +533,7 @@ $post      = Factory::getApplication()->input->post->getArray(array());
 			
 			if ( $post['edit_search_nation'] )
 		{
-              $this->jsmquery->select('0 AS value,t.name AS text,t.info');
+              $this->jsmquery->select('0 AS value,concat(t.name,' - ',t.id,'' ) AS text,t.info');
 			$this->jsmquery->from('#__sportsmanagement_team AS t');
 			$this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
 			$this->jsmquery->join('LEFT', '#__sportsmanagement_club AS c ON c.id = t.club_id');	
