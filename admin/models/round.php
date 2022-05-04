@@ -200,6 +200,11 @@ class sportsmanagementModelround extends JSMModelAdmin
 		$add_round_count = (int) $post['add_round_count'];
 		$project_type = $post['project_type'];
 		$max = 0;
+		$round_divisions_league = array();
+		$round_divisions_league[1] = 'Gruppenspiele';
+		$round_divisions_league[2] = 'Halbfinale';
+		$round_divisions_league[3] = '3.Platz';
+		$round_divisions_league[4] = 'Finale';
 
 		if ($add_round_count > 0) // Only MassAdd a number of new and empty rounds
 		{
@@ -213,7 +218,26 @@ class sportsmanagementModelround extends JSMModelAdmin
 				$tblRound             =& $this->getTable();
 				$tblRound->project_id = $project_id;
 				$tblRound->roundcode  = $max;
-				$tblRound->name       = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_CTRL_ROUND_NAME', $max);
+				
+				if ( $add_round_count == 4 )
+				{
+				switch ( $project_type )
+				{
+				case 'DIVISIONS_LEAGUE':
+				$tblRound->name = $round_divisions_league[$i];		
+				break;
+				default:
+				$tblRound->name = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_CTRL_ROUND_NAME', $max);
+				break;
+				}	
+				}
+				else
+				{
+				$tblRound->name = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_CTRL_ROUND_NAME', $max);	
+				}
+				
+				
+				
                 $tblRound->alias = OutputFilter::stringURLSafe($tblRound->name);
                 $tblRound->modified         = $this->jsmdate->toSql();
 		        $tblRound->modified_by      = $this->jsmuser->get('id');
