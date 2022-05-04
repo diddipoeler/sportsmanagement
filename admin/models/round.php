@@ -243,7 +243,7 @@ class sportsmanagementModelround extends JSMModelAdmin
 				switch ( $project_type )
 				{
 				case 'DIVISIONS_LEAGUE':
-				$tblRound->name = $round_divisions_league4[$i];		
+				$tblRound->name = $round_divisions_league5[$i];		
 				break;
 				default:
 				$tblRound->name = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_CTRL_ROUND_NAME', $max);
