@@ -200,11 +200,18 @@ class sportsmanagementModelround extends JSMModelAdmin
 		$add_round_count = (int) $post['add_round_count'];
 		$project_type = $post['project_type'];
 		$max = 0;
-		$round_divisions_league = array();
-		$round_divisions_league[1] = 'Gruppenspiele';
-		$round_divisions_league[2] = 'Halbfinale';
-		$round_divisions_league[3] = '3.Platz';
-		$round_divisions_league[4] = 'Finale';
+		$round_divisions_league4 = array();
+		$round_divisions_league4[1] = 'Gruppenspiele';
+		$round_divisions_league4[2] = 'Halbfinale';
+		$round_divisions_league4[3] = '3.Platz';
+		$round_divisions_league4[4] = 'Finale';
+		
+		$round_divisions_league5 = array();
+		$round_divisions_league5[1] = 'Gruppenspiele';
+		$round_divisions_league5[2] = 'Viertelfinale';
+		$round_divisions_league5[3] = 'Halbfinale';
+		$round_divisions_league5[4] = '3.Platz';
+		$round_divisions_league5[5] = 'Finale';
 
 		if ($add_round_count > 0) // Only MassAdd a number of new and empty rounds
 		{
@@ -224,7 +231,19 @@ class sportsmanagementModelround extends JSMModelAdmin
 				switch ( $project_type )
 				{
 				case 'DIVISIONS_LEAGUE':
-				$tblRound->name = $round_divisions_league[$i];		
+				$tblRound->name = $round_divisions_league4[$i];		
+				break;
+				default:
+				$tblRound->name = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_CTRL_ROUND_NAME', $max);
+				break;
+				}	
+				}
+				elseif ( $add_round_count == 5 )
+				{
+				switch ( $project_type )
+				{
+				case 'DIVISIONS_LEAGUE':
+				$tblRound->name = $round_divisions_league4[$i];		
 				break;
 				default:
 				$tblRound->name = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_CTRL_ROUND_NAME', $max);
