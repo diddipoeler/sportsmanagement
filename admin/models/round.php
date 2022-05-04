@@ -198,6 +198,7 @@ class sportsmanagementModelround extends JSMModelAdmin
 		$post            = Factory::getApplication()->input->post->getArray(array());
 		$project_id      = $this->jsmapp->getUserState("$this->jsmoption.pid", '0');
 		$add_round_count = (int) $post['add_round_count'];
+		$project_type = $post['project_type'];
 		$max = 0;
 
 		if ($add_round_count > 0) // Only MassAdd a number of new and empty rounds
