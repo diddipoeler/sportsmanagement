@@ -160,7 +160,10 @@ console.log("move_list_items sourceid team : "+team);
 //alert(destinationid);
 jQuery("#"+sourceid+"  option:selected").appendTo("#"+destinationid);
 	
-jQuery("#"+destinationtext+"").append(jQuery('<option></option>').attr("value", laengetext).text(team));	
+jQuery("#"+destinationtext+"").append(jQuery('<option></option>').attr("value", laengetext).text(team));
+	
+jQuery('#postteamname').append("<input type='hidden' size='40' name='postteamname["+laengetext+"]' value='"+team+"' >"); 
+	
 }
 
 //this will move all selected items from source list to destination list
