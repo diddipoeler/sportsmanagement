@@ -117,6 +117,8 @@ $post = Factory::getApplication()->input->post->getArray(array());
 		$ress         = array();
 		$res1         = array();
 		$notusedteams = array();
+		$project_teamslist = array();
+		$project_teamslist_name = array();
 
 		if ($ress = $this->model->getProjectTeams($this->project_id, false))
 		{
@@ -132,10 +134,19 @@ $post = Factory::getApplication()->input->post->getArray(array());
 				{
 					$project_teamslist[] = JHtmlSelect::option($res->season_team_id, $res->text . ' (' . $res->info . ')');
 				}
+				
+				$project_teamslist_name[] = $res->text;
 			}
 
 			$lists['project_teams'] = JHtmlSelect::genericlist(
 				$project_teamslist, 'project_teamslist[]',
+				' style="width:250px; height:300px;" class="inputbox" multiple="true" size="' . min(30, count($ress)) . '"',
+				'value',
+				'text'
+			);
+			
+			$lists['$project_teamslist_name'] = JHtmlSelect::genericlist(
+				$$project_teamslist_name, '$project_teamslist_name[]',
 				' style="width:250px; height:300px;" class="inputbox" multiple="true" size="' . min(30, count($ress)) . '"',
 				'value',
 				'text'
