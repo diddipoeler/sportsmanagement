@@ -460,6 +460,7 @@ $resultupdate = $this->jsmdb->execute();
 		$assign_id   = $post['project_teamslist'];
 		$season_id   = $post['editlist_season_id'];
 		$delete_team = $post['teamslist'];
+		$postteamname = $post['postteamname'];
 
 		if ($delete_team)
 		{
@@ -475,6 +476,11 @@ $resultupdate = $this->jsmdb->execute();
 		/** season team id setzen wenn das team noch nicht zugeordnet ist*/
 		foreach ($assign_id as $key => $value) if ( !$value )
 		{
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . 'mann fehlt<pre>'.print_r($postteamname[$key],true).'</pre>', 'error');
+$teile = explode("-",$postteamname[$key]);
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . ' teile<pre>'.print_r($teile,true).'</pre>', 'error');
+$team_id = array_pop($teile);
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . ' team id<pre>'.print_r($team_id,true).'</pre>', 'error');
 			
 		}
 
