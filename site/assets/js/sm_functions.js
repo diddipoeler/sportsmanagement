@@ -149,6 +149,9 @@ function move_list_items(sourceid, destinationid, destinationtext)
 console.log("move_list_items sourceid : "+sourceid);
 console.log("move_list_items destinationid : "+destinationid);
 console.log("move_list_items destinationtext : "+destinationtext);
+
+var laengetext = jQuery("#"+destinationtext+" option").length;  
+console.log("move_list_items destinationtext laengetext: "+laengetext); 
 	
 var team = jQuery( "#"+sourceid+" option:selected" ).text();
 console.log("move_list_items sourceid team : "+team);
