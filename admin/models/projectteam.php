@@ -449,6 +449,8 @@ $resultupdate = $this->jsmdb->execute();
 		$post                 = $jinput->post->getArray();
 		$_pro_teams_to_delete = array();
 		$query                = Factory::getDbo()->getQuery(true);
+		
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . 'post<pre>'.print_r($post,true).'</pre>', 'error');		
 
 		if (ComponentHelper::getParams($option)->get('show_debug_info_backend'))
 		{
@@ -456,6 +458,7 @@ $resultupdate = $this->jsmdb->execute();
 
 		$project_id  = $post['project_id'];
 		$assign_id   = $post['project_teamslist'];
+		$season_id   = $post['editlist_season_id'];
 		$delete_team = $post['teamslist'];
 
 		if ($delete_team)
