@@ -159,6 +159,8 @@ console.log("move_list_items sourceid team : "+team);
 //alert(sourceid);
 //alert(destinationid);
 jQuery("#"+sourceid+"  option:selected").appendTo("#"+destinationid);
+	
+jQuery("#"+destinationtext+"").append(jQuery('<option></option>').attr("value", laengetext).text(team));	
 }
 
 //this will move all selected items from source list to destination list
