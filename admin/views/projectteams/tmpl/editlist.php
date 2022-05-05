@@ -46,7 +46,7 @@ use Joomla\CMS\Language\Text;
     <fieldset>
         <div class="fltrt">
             <button type="button"
-                    onclick="jQuery('select#project_teamslist > option').prop('selected', 'selected');Joomla.submitform('projectteams.assign', this.form)">
+                    onclick="jQuery('select#project_teamslist > option').prop('selected', 'selected');jQuery('select#project_teamslist_name > option').prop('selected', 'selected');Joomla.submitform('projectteams.assign', this.form)">
 				<?php echo Text::_('JSAVE'); ?></button>
 		<button id="reset" type="button" onclick="this.form.submit()">
 				<?php echo Text::_('JCLEAR'); ?></button>
