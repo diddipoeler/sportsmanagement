@@ -129,10 +129,15 @@ use Joomla\CMS\Language\Text;
 							?>
                         </b>
                         <br/>
-						<?php
-						echo $this->lists['project_teams'];
-						?>
+			<?php
+			echo $this->lists['project_teams'];
+			?>
                     </td>
+			<td>
+			<?php
+			echo $this->lists['project_teamslist_name'];
+			?>	
+			</td>
                 </tr>
             </table>
         </fieldset>
