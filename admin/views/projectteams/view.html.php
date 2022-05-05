@@ -155,6 +155,7 @@ $post = Factory::getApplication()->input->post->getArray(array());
 		else
 		{
 			$lists['project_teams'] = '<select name="project_teamslist[]" id="project_teamslist" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
+			$lists['project_teamslist_name'] = '<select name="project_teamslist_name[]" id="project_teamslist_name" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
 		}
 
 		if ( $ress1 = $this->model->getTeams($this->state->get('filter.search_nation')) )
