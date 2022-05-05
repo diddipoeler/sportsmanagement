@@ -145,8 +145,8 @@ $post = Factory::getApplication()->input->post->getArray(array());
 				'text'
 			);
 			
-			$lists['$project_teamslist_name'] = JHtmlSelect::genericlist(
-				$$project_teamslist_name, '$project_teamslist_name[]',
+			$lists['project_teamslist_name'] = JHtmlSelect::genericlist(
+				$project_teamslist_name, 'project_teamslist_name[]',
 				' style="width:250px; height:300px;" class="inputbox" multiple="true" size="' . min(30, count($ress)) . '"',
 				'value',
 				'text'
