@@ -144,11 +144,12 @@ return documentHeight - 100 ;
 
 
 //this will move selected items from source list to destination list   
-function move_list_items(sourceid, destinationid, destinationid2)
+function move_list_items(sourceid, destinationid, destinationtext)
 {
 console.log("move_list_items sourceid : "+sourceid);
 console.log("move_list_items destinationid : "+destinationid);
-
+console.log("move_list_items destinationtext : "+destinationtext);
+	
 var team jQuery( "#"+sourceid+" option:selected" ).text();
 console.log("move_list_items sourceid team : "+team);
 	
