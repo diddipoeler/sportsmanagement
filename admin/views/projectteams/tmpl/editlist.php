@@ -100,7 +100,7 @@ use Joomla\CMS\Language\Text;
 
                         <input id="moveright" type="button"
                                value="<?php echo Text::_('COM_SPORTSMANAGEMENT_ASSIGN_TEAM_TO_PROJECT'); ?>"
-                               onclick="move_list_items('teamslist','project_teamslist');move_list_items('teamslist','project_teamslist_name');"/>
+                               onclick="move_list_items('teamslist','project_teamslist','project_teamslist_name');"/>
                         <br/>
                         <input id="moverightall" type="button"
                                value="<?php echo Text::_('COM_SPORTSMANAGEMENT_ASSIGN_TEAM_ALL_TO_PROJECT'); ?>"
