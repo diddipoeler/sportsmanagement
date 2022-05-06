@@ -214,44 +214,46 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 	 */
 	function _getProjectTeamIds4UserId($userId)
 	{
+	   $db = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
+	$query = $db->getQuery(true);
 		/** Team player */
-        self::$jsmquery->clear(); 
-		self::$jsmquery->select('tp.projectteam_id');
-		self::$jsmquery->from('#__sportsmanagement_person AS pr');
-		self::$jsmquery->join('INNER', '#__sportsmanagement_season_team_person_id AS tp ON tp.person_id = pr.id');
-		self::$jsmquery->where('pr.user_id = ' . $userId);
-		self::$jsmquery->where('pr.published = 1');
-		self::$jsmquery->where('tp.persontype = 1');
+        $query->clear(); 
+		$query->select('tp.projectteam_id');
+		$query->from('#__sportsmanagement_person AS pr');
+		$query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp ON tp.person_id = pr.id');
+		$query->where('pr.user_id = ' . $userId);
+		$query>where('pr.published = 1');
+		$query->where('tp.persontype = 1');
 
-		self::$jsmdb->setQuery(self::$jsmquery);
+		$db->setQuery($query);
 
 		$projectTeamIds = array();
 
 		if (version_compare(JVERSION, '3.0.0', 'ge'))
 		{
 			/** Joomla! 3.0 code here */
-			$projectTeamIds = self::$jsmdb->loadColumn();
+			$projectTeamIds = $db->loadColumn();
 		}
 
 		/** Team_staff */
-        self::$jsmquery->clear(); 
-		self::$jsmquery->select('tp.projectteam_id');
-		self::$jsmquery->from('#__sportsmanagement_person AS pr');
-		self::$jsmquery->join('INNER', '#__sportsmanagement_season_team_person_id AS tp ON tp.person_id = pr.id');
-		self::$jsmquery->where('pr.user_id = ' . $userId);
-		self::$jsmquery->where('pr.published = 1');
-		self::$jsmquery->where('tp.persontype = 2');
+        $query->clear(); 
+		$query->select('tp.projectteam_id');
+		$query->from('#__sportsmanagement_person AS pr');
+		$query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp ON tp.person_id = pr.id');
+		$query->where('pr.user_id = ' . $userId);
+		$query->where('pr.published = 1');
+		$query->where('tp.persontype = 2');
 
-		self::$jsmdb->setQuery(self::$jsmquery);
+		$db->setQuery($query);
 
 		if (version_compare(JVERSION, '3.0.0', 'ge'))
 		{
 			/** Joomla! 3.0 code here */
-			$res = self::$jsmdb->loadColumn();
+			$res = $db->loadColumn();
 		}
 		
 		$projectTeamIds = array_merge($projectTeamIds, $res);
-		self::$jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $projectTeamIds;
 	}
 
