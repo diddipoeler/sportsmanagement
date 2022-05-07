@@ -222,7 +222,7 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 		$query->from('#__sportsmanagement_person AS pr');
 		$query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp ON tp.person_id = pr.id');
 		$query->where('pr.user_id = ' . $userId);
-		$query>where('pr.published = 1');
+		$query->where('pr.published = 1');
 		$query->where('tp.persontype = 1');
 
 		$db->setQuery($query);
