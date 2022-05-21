@@ -226,10 +226,13 @@ if ($this->project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART')
 				$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
 				$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
 				$routeparameter['p']                  = $this->project->slug;
+                $routeparameter['tid']                = $this->teamid;
+                $routeparameter['evid']               = $rows->event_slug;
+                $routeparameter['mid']                = (isset($this->matchid) ? $this->matchid : 0);
 				$routeparameter['division']           = (isset($this->division->id) ? $this->division->id : 0);
-				$routeparameter['tid']                = $this->teamid;
-				$routeparameter['evid']               = $rows->event_slug;
-				$routeparameter['mid']                = (isset($this->matchid) ? $this->matchid : 0);
+				
+				
+				
 				$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('eventsranking', $routeparameter);
 				echo HTMLHelper::link($link, Text::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_MORE')); ?>
             </div>
