@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_sports_type_statistics
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
@@ -33,24 +29,21 @@ if (!defined('JSM_PATH'))
 
 if (!class_exists('JSMModelList'))
 {
-	// Muss momentan eingebunden werden, ansonsten 500er seit update von model sportstypes
+	/** Muss momentan eingebunden werden, ansonsten 500er seit update von model sportstypes */
 	$classpath = JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'components/com_sportsmanagement' . DIRECTORY_SEPARATOR . 'libraries' . DIRECTORY_SEPARATOR . 'sportsmanagement' . DIRECTORY_SEPARATOR . 'model.php';
 	JLoader::register('JSMModelList', $classpath);
 }
 
-// Prüft vor Benutzung ob die gewünschte Klasse definiert ist
+/** Prüft vor Benutzung ob die gewünschte Klasse definiert ist */
 if (!class_exists('sportsmanagementHelper'))
 {
-	// Add the classes for handling
+	/** Add the classes for handling */
 	$classpath = JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'sportsmanagement.php';
 	JLoader::register('sportsmanagementHelper', $classpath);
 	BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
-/**
- *
- * Include the functions only once
- */
+/** Include the functions only once */
 JLoader::register('modJSMSportsHelper', __DIR__ . '/helper.php');
 
 $parameter   = $params->get('sportstypes');
@@ -74,7 +67,7 @@ if (!defined($data['sportstype'][$sportstypes]->name))
 	$base_dir     = JPATH_ADMINISTRATOR;
 	$language_tag = $langtag->getTag();
 	$reload       = true;
-	$lang->load($extension, $base_dir, $language_tag, $reload);
+	$langtag->load($extension, $base_dir, $language_tag, $reload);
 }
 
 ?>
