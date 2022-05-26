@@ -264,26 +264,26 @@ class sportsmanagementModelSportsTypes extends JSMModelList
 	 */
 	public function getLeaguesCount($sporttypeid = 0)
 	{
+	   $result = 0;
 		$this->jsmquery->clear();
-		$this->jsmquery->select('count(l.*) AS count');
+		$this->jsmquery->select('count(*) AS count');
 		$this->jsmquery->from('#__sportsmanagement_sports_type AS st');
 		$this->jsmquery->join('INNER', '#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
 		$this->jsmquery->join('INNER', '#__sportsmanagement_league AS l ON l.id = p.league_id');
 		$this->jsmquery->where('st.id = ' . $sporttypeid);
         $this->jsmquery->group('l.id');
-
+        try{
 		$this->jsmdb->setQuery($this->jsmquery);
-
-		if (!$this->jsmdb->execute())
-		{
-			$this->setError($this->jsmdb->getErrorMsg());
-
-			return false;
-		}
-
 		$result = $this->jsmdb->loadObject()->count;
+        }
+		catch (Exception $e)
+		{
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+		
+		}
+        
 		$this->jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
 		return $result;
 	}
 
