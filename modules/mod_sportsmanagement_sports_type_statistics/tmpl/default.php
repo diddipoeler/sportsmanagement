@@ -55,7 +55,7 @@ else
 						echo Text::_("MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_PROJECTS");
 					}
 					?>
-                    <span class="badge"><?php echo $data['projectscount'] ?></span>
+                    <span class=""><?php echo $data['projectscount'] ?></span>
                 </li>
 			<?php } ?>
 
@@ -74,7 +74,7 @@ else
 						echo Text::_("MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_LEAGUES");
 					}
 					?>
-                    <span class="badge"><?php echo $data['leaguescount'] ?></span>
+                    <span class=""><?php echo $data['leaguescount'] ?></span>
                 </li>
 			<?php } ?>
 
@@ -93,7 +93,7 @@ else
 						echo Text::_("MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SEASONS");
 					}
 					?>
-                    <span class="badge"><?php echo $data['seasonscount'] ?></span>
+                    <span class=""><?php echo $data['seasonscount'] ?></span>
                 </li>
 			<?php } ?>
 
@@ -112,7 +112,7 @@ else
 						echo Text::_("MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_PLAYGROUNDS");
 					}
 					?>
-                    <span class="badge"><?php echo $data['playgroundscount'] ?></span>
+                    <span class=""><?php echo $data['playgroundscount'] ?></span>
                 </li>
 			<?php } ?>
 
@@ -132,7 +132,7 @@ else
 						echo Text::_($params->get('text_clubs'));
 					}
 					?>
-                    <span class="badge"><?php echo $data['clubscount'] ?></span>
+                    <span class=""><?php echo $data['clubscount'] ?></span>
                 </li>
 			<?php } ?>
 
@@ -152,7 +152,7 @@ else
 						echo Text::_($params->get('text_teams'));
 					}
 					?>
-                    <span class="badge"><?php echo $data['projectteamscount'] ?></span>
+                    <span class=""><?php echo $data['projectteamscount'] ?></span>
                 </li>
 			<?php } ?>
 			<?php
@@ -171,7 +171,7 @@ else
 						echo Text::_($params->get('text_players'));
 					}
 					?>
-                    <span class="badge"><?php echo $data['personscount'] ?></span>
+                    <span class=""><?php echo $data['personscount'] ?></span>
                 </li>
 			<?php } ?>
 			<?php
@@ -190,7 +190,7 @@ else
 						echo Text::_($params->get('text_divisions'));
 					}
 					?>
-                    <span class="badge"><?php echo $data['projectdivisionscount'] ?></span>
+                    <span class=""><?php echo $data['projectdivisionscount'] ?></span>
                 </li>
 			<?php } ?>
 			<?php
@@ -209,7 +209,7 @@ else
 						echo Text::_($params->get('text_rounds'));
 					}
 					?>
-                    <span class="badge"><?php echo $data['projectroundscount'] ?></span>
+                    <span class=""><?php echo $data['projectroundscount'] ?></span>
                 </li>
 			<?php } ?>
 			<?php
@@ -228,7 +228,7 @@ else
 						echo Text::_($params->get('text_matches'));
 					}
 					?>
-                    <span class="badge"><?php echo $data['projectmatchescount'] ?></span>
+                    <span class=""><?php echo $data['projectmatchescount'] ?></span>
                 </li>
 			<?php } ?>
 			<?php
@@ -247,7 +247,7 @@ else
 						echo Text::_($params->get('text_player_events'));
 					}
 					?>
-                    <span class="badge"><?php echo $data['projectmatcheseventscount'] ?></span>
+                    <span class=""><?php echo $data['projectmatcheseventscount'] ?></span>
                 </li>
 				<?PHP
 				if (isset($data['projectmatcheseventsnamecount']))
@@ -267,7 +267,7 @@ else
 								echo Text::_($row->name);
 							}
 							?>
-                            <span class="badge"><?php echo $row->total ?></span>
+                            <span class=""><?php echo $row->total ?></span>
                         </li>
 						<?PHP
 					}
@@ -291,7 +291,7 @@ else
 						echo Text::_($params->get('text_player_stats'));
 					}
 					?>
-                    <span class="badge"><?php echo $data['projectmatchesstatscount'] ?></span>
+                    <span class=""><?php echo $data['projectmatchesstatscount'] ?></span>
                 </li>
 			<?php } ?>
         </ul>
