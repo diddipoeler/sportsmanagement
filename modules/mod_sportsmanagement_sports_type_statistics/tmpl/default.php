@@ -25,11 +25,19 @@ else
     <div class="">
         <h4>
 			<?php
+            if ( array_key_exists($sportstypes, $data['sportstype']) ) {
 			if ($data['sportstype'][$sportstypes]->icon)
 			{
-				?><img
-                src="<?php echo $data['sportstype'][$sportstypes]->icon; ?>"
-                alt=""/>    <?php } ?><?php echo Text::_($data['sportstype'][$sportstypes]->name); ?>
+				?>
+                <img src="<?php echo $data['sportstype'][$sportstypes]->icon; ?>" alt=""/>    
+                <?php 
+                } 
+                ?>
+                <?php 
+                echo Text::_($data['sportstype'][$sportstypes]->name); 
+                }
+                
+                ?>
         </h4>
         <ul class="list-group">
 			<?php if ($params->get('show_project', 1) == 1)
