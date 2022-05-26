@@ -15,7 +15,7 @@ use Joomla\CMS\Component\ComponentHelper;
 
 if (!class_exists('sportsmanagementHelper'))
 {
-	// Add the classes for handling
+	/** Add the classes for handling */
 	$classpath = JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'components/com_sportsmanagement' . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'sportsmanagement.php';
 	JLoader::register('sportsmanagementHelper', $classpath);
 }
@@ -270,6 +270,7 @@ class sportsmanagementModelSportsTypes extends JSMModelList
 		$this->jsmquery->join('INNER', '#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
 		$this->jsmquery->join('INNER', '#__sportsmanagement_league AS l ON l.id = p.league_id');
 		$this->jsmquery->where('st.id = ' . $sporttypeid);
+        $this->jsmquery->group('l.id');
 
 		$this->jsmdb->setQuery($this->jsmquery);
 
