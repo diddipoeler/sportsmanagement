@@ -60,6 +60,7 @@ $document = Factory::getDocument();
  * dann muss die sprachdatei aus dem backend geladen werden.
  * ansonsten wird der übersetzte text der sportart nicht angezeigt.
  */
+ if ( array_key_exists($sportstypes, $data['sportstype']) ) {
 if (!defined($data['sportstype'][$sportstypes]->name))
 {
 	$langtag      = Factory::getLanguage();
@@ -69,7 +70,7 @@ if (!defined($data['sportstype'][$sportstypes]->name))
 	$reload       = true;
 	$langtag->load($extension, $base_dir, $language_tag, $reload);
 }
-
+}
 ?>
 <div class="<?php echo $params->get('moduleclass_sfx'); ?>"
      id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">

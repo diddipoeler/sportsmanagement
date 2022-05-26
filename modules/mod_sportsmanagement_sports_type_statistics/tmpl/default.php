@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_sports_type_statistics
@@ -11,12 +9,10 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 
-// Check if any results returned
+/** Check if any results returned */
 if ($data['projectscount'] == 0)
 {
 	echo '<p class="modjlgsports">' . Text::_('MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_NO_PROJECTS') . '</p>';
