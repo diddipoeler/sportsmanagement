@@ -330,6 +330,7 @@ class sportsmanagementModelSportsTypes extends JSMModelList
 		$this->jsmquery->join('INNER', '#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
 		$this->jsmquery->join('INNER', '#__sportsmanagement_season AS s ON s.id = p.season_id');
 		$this->jsmquery->where('st.id = ' . $sporttypeid);
+        $this->jsmquery->group('s.id');
 
 		$this->jsmdb->setQuery($this->jsmquery);
 
