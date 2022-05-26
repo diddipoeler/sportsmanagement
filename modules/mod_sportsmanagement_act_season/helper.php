@@ -11,6 +11,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 
@@ -43,6 +44,8 @@ class modJSMActSeasonHelper
 		$result = array();
 
 		$seasons = implode(",", $season_ids);
+        if ( $seasons )
+        {
 		$query->select('pro.id,pro.name,CONCAT_WS(\':\',pro.id,pro.alias) AS project_slug,le.name as liganame,le.country');
 		$query->select('le.picture as league_picture,pro.picture as project_picture');
 		$query->select('CONCAT_WS(\':\',r.id,r.alias) AS roundcode');
@@ -63,6 +66,7 @@ class modJSMActSeasonHelper
 			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
 		
 		}
+        }
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return $result;
