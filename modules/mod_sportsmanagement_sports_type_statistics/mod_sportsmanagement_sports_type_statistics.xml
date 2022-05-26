@@ -63,6 +63,11 @@
                        default=""
                        label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SPORTS_TYPE_LABEL"
                        description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SPORTS_TYPE_DESC"/>
+					   
+				<field 	name="sportstypes_picture_width" type="text" default="40"
+				label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SPORTS_TYPE_WIDTH_LABEL" 
+				description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SPORTS_TYPE_WIDTH_DESC">
+		</field>
 
                 <field name="show_icon"
                        type="extensionradiobutton"

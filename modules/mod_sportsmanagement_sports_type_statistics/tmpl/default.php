@@ -29,7 +29,7 @@ else
 			if ($data['sportstype'][$sportstypes]->icon)
 			{
 				?>
-                <img src="<?php echo $data['sportstype'][$sportstypes]->icon; ?>" alt=""/>    
+                <img src="<?php echo $data['sportstype'][$sportstypes]->icon; ?>" alt="" width="<?php echo $params->get('sportstypes_picture_width', 40); ?>"   />    
                 <?php 
                 } 
                 ?>
