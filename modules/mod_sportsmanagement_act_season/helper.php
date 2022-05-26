@@ -43,9 +43,10 @@ class modJSMActSeasonHelper
 		$query  = $db->getQuery(true);
 		$result = array();
 
-		$seasons = implode(",", $season_ids);
-        if ( $seasons )
+		if ( $season_ids )
         {
+        $seasons = implode(",", $season_ids);
+        
 		$query->select('pro.id,pro.name,CONCAT_WS(\':\',pro.id,pro.alias) AS project_slug,le.name as liganame,le.country');
 		$query->select('le.picture as league_picture,pro.picture as project_picture');
 		$query->select('CONCAT_WS(\':\',r.id,r.alias) AS roundcode');
