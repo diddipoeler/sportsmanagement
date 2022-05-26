@@ -265,7 +265,7 @@ class sportsmanagementModelSportsTypes extends JSMModelList
 	public function getLeaguesCount($sporttypeid = 0)
 	{
 		$this->jsmquery->clear();
-		$this->jsmquery->select('count(*) AS count');
+		$this->jsmquery->select('count(l.*) AS count');
 		$this->jsmquery->from('#__sportsmanagement_sports_type AS st');
 		$this->jsmquery->join('INNER', '#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
 		$this->jsmquery->join('INNER', '#__sportsmanagement_league AS l ON l.id = p.league_id');
