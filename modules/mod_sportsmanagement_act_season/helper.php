@@ -53,8 +53,16 @@ class modJSMActSeasonHelper
 		$query->where('pro.season_id IN (' . $seasons . ')');
 		$query->order('le.country ASC, pro.name ASC');
 
-		$db->setQuery($query);
+		try{
+        $db->setQuery($query);
 		$result = $db->loadObjectList();
+        }
+		catch (Exception $e)
+		{
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+		
+		}
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return $result;
