@@ -52,13 +52,21 @@ class modJSMSportsHelper
         {
             $data_array['projectscount'] = $model->getProjectsCount($params->get('sportstypes'));
         }
+//        if( $params['show_leagues'] )
+//        {
+//            $data_array['leaguescount'] = $model->getLeaguesCount($params->get('sportstypes'));
+//        }
         if( $params['show_leagues'] )
         {
-            $data_array['leaguescount'] = $model->getLeaguesCount($params->get('sportstypes'));
+            $data_array['leaguescount'] = $model->getLeaguesOnlyCount($params->get('sportstypes'));
         }
+//        if( $params['show_seasons'] )
+//        {
+//            $data_array['seasonscount'] = $model->getSeasonsCount($params->get('sportstypes'));
+//        }
         if( $params['show_seasons'] )
         {
-            $data_array['seasonscount'] = $model->getSeasonsCount($params->get('sportstypes'));
+            $data_array['seasonscount'] = $model->getSeasonsOnlyCount($params->get('sportstypes'));
         }
         if( $params['show_playgrounds'] )
         {
