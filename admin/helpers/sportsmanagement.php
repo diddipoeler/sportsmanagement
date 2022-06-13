@@ -1220,7 +1220,7 @@ try
 	 *
 	 * @return object
 	 */
-	static function getExtendedStatistic($data = '', $file, $format = 'ini')
+	static function getExtendedStatistic($data = '', $file = '', $format = 'ini')
 	{
 		$app          = Factory::getApplication();
 		$templatepath = JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'statistics';
@@ -1239,7 +1239,7 @@ try
 	 *
 	 * @return object
 	 */
-	static function getExtended($data = '', $file, $format = 'ini', $frontend = false)
+	static function getExtended($data = '', $file = '', $format = 'ini', $frontend = false)
 	{
 		$app     = Factory::getApplication();
 		$xmlfile = JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'extended' . DIRECTORY_SEPARATOR . $file . '.xml';
