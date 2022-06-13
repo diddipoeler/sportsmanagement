@@ -599,7 +599,7 @@ class sportsmanagementHelperHtml
 	 *
 	 * @return
 	 */
-	public static function showDivisonRemark(&$hometeam, &$guestteam, &$config, $division_id = '')
+	public static function showDivisonRemark(&$hometeam, &$guestteam, &$config, $division_id = 0)
 	{
 		$app = Factory::getApplication();
 
@@ -612,19 +612,33 @@ class sportsmanagementHelperHtml
 			$guestteam = &$tmpteam;
 		}
 
-		/**
-		 * die gruppen aus der spielpaarung setzen
-		 */
-		$hometeam->division_id = $division_id;
+		/** die gruppen aus der spielpaarung setzen */
 		$division              = Table::getInstance('division', 'sportsmanagementTable');
-		$division->load((int) $division_id);
+        
+        if ( $division_id )
+        {
+        $division->load((int) $division_id);
+        $hometeam->division_id = $division_id;
 		$hometeam->division_slug       = $division->id . ':' . $division->alias;
 		$hometeam->division_name       = $division->name;
 		$hometeam->division_shortname  = $division->shortname;
 		$guestteam->division_id        = $division_id;
 		$guestteam->division_slug      = $division->id . ':' . $division->alias;
 		$guestteam->division_name      = $division->name;
-		$guestteam->division_shortname = $division->shortname;
+		$guestteam->division_shortname = $division->shortname;    
+        }
+        else
+        {
+        $hometeam->division_id = $division_id;
+		$hometeam->division_slug       = $division_id . ':' . '';
+		$hometeam->division_name       = '';
+		$hometeam->division_shortname  = '';
+		$guestteam->division_id        = $division_id;
+		$guestteam->division_slug      = $division_id . ':' . '';
+		$guestteam->division_name      = '';
+		$guestteam->division_shortname = '';    
+        }
+		
 
 		if ((isset($hometeam) && $hometeam->division_id > 0) && (isset($guestteam) && $guestteam->division_id > 0))
 		{
