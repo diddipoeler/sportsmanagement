@@ -33,6 +33,7 @@ class sportsmanagementHelperHtml
 	static $project = array();
 	static $teams = array();
 
+
 	/**
 	 * sportsmanagementHelperHtml::showEventsContainerInResults()
 	 * 
@@ -41,9 +42,10 @@ class sportsmanagementHelperHtml
 	 * @param mixed $matchevents
 	 * @param mixed $substitutions
 	 * @param mixed $config
+	 * @param mixed $project
 	 * @return
 	 */
-	public static function showEventsContainerInResults($matchInfo, $projectevents, $matchevents, $substitutions = null, $config, $project)
+	public static function showEventsContainerInResults($matchInfo = array(), $projectevents = array(), $matchevents = array(), $substitutions = null, $config = array(), $project = array())
 	{
 		$output = '';
 		$result = '';
