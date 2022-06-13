@@ -133,15 +133,15 @@ switch ($view)
 		return $options;
 	}
 
+
 	/**
-	 * FormFieldAssociationsList::JJ_categoryArray()
-	 *
-	 * @param   integer  $admin
-	 * @param   mixed    $country
-	 *
+	 * JFormFieldAssociationsList::JJ_categoryArray()
+	 * 
+	 * @param integer $admin
+	 * @param string $country
 	 * @return
 	 */
-	function JJ_categoryArray($admin = 0, $country)
+	function JJ_categoryArray($admin = 0, $country = '')
 	{
 		$db = sportsmanagementHelper::getDBConnection();
         $query     = $db->getQuery(true);
