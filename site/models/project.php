@@ -1835,15 +1835,16 @@ self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT')
 		return $allowed;
 	}
 
+	
 	/**
 	 * sportsmanagementModelProject::isUserProjectAdminOrEditor()
-	 *
-	 * @param   integer  $userId
-	 * @param   mixed    $project
-	 *
+	 * 
+	 * @param integer $userId
+	 * @param mixed $project
+	 * @param integer $cfg_which_database
 	 * @return
 	 */
-	public static function isUserProjectAdminOrEditor($userId = 0, $project, $cfg_which_database = 0)
+	public static function isUserProjectAdminOrEditor($userId = 0, $project = array(), $cfg_which_database = 0)
 	{
 		$result = false;
 
