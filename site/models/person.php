@@ -172,14 +172,14 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 		return false;
 	}
 
+	
 	/**
 	 * sportsmanagementModelPerson::isContactDataVisible()
-	 *
-	 * @param   mixed  $config_showContactDataOnlyTeamMembers
-	 *
+	 * 
+	 * @param mixed $config_showContactDataOnlyTeamMembers
 	 * @return
 	 */
-	public static function isContactDataVisible($config_showContactDataOnlyTeamMembers)
+	public static function isContactDataVisible($config_showContactDataOnlyTeamMembers = array() )
 	{
 		$user   = Factory::getUser();
 		$result = true;
@@ -205,14 +205,14 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 		return $result;
 	}
 
+	
 	/**
 	 * sportsmanagementModelPerson::_getProjectTeamIds4UserId()
-	 *
-	 * @param   mixed  $userId
-	 *
+	 * 
+	 * @param integer $userId
 	 * @return
 	 */
-	function _getProjectTeamIds4UserId($userId)
+	public static function _getProjectTeamIds4UserId($userId = 0)
 	{
 	   $app = Factory::getApplication();
 	   $db = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
