@@ -192,16 +192,16 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 		return $matches;
 	}
 
+	
 	/**
 	 * sportsmanagementModelMatch::getteampersons()
-	 *
-	 * @param   mixed  $projectteam_id
-	 * @param   bool   $filter
-	 * @param   mixed  $persontype
-	 *
+	 * 
+	 * @param integer $projectteam_id
+	 * @param bool $filter
+	 * @param integer $persontype
 	 * @return
 	 */
-	public static function getteampersons($projectteam_id, $filter = false, $persontype)
+	public static function getteampersons($projectteam_id = 0, $filter = false, $persontype = 0)
 	{
 		$option            = Factory::getApplication()->input->getCmd('option');
 		$app               = Factory::getApplication();
@@ -251,14 +251,15 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 		return $result;
 	}
 
+	
 	/**
-	 * Method to return substitutions made by a team during a match
-	 * if no team id is passed,all substitutions should be returned (to be done!!)
-	 *
-	 * @access public
-	 * @return array of substitutions
+	 * sportsmanagementModelMatch::getSubstitutions()
+	 * 
+	 * @param integer $tid
+	 * @param integer $match_id
+	 * @return
 	 */
-	public static function getSubstitutions($tid = 0, $match_id)
+	public static function getSubstitutions($tid = 0, $match_id = 0)
 	{
 		$option           = Factory::getApplication()->input->getCmd('option');
 		$app              = Factory::getApplication();
@@ -305,15 +306,17 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 		return $in_out;
 	}
 
+
 	/**
-	 * returns starters player id for the specified team
-	 *
-	 * @param   int  $team_id
-	 * @param   int  $project_position_id
-	 *
-	 * @return array of player ids
+	 * sportsmanagementModelMatch::getRoster()
+	 * 
+	 * @param integer $team_id
+	 * @param integer $project_position_id
+	 * @param integer $match_id
+	 * @param integer $position_value
+	 * @return
 	 */
-	public static function getRoster($team_id, $project_position_id = 0, $match_id, $position_value)
+	public static function getRoster($team_id = 0, $project_position_id = 0, $match_id = 0, $position_value = 0)
 	{
 		$option            = Factory::getApplication()->input->getCmd('option');
 		$app               = Factory::getApplication();
@@ -358,11 +361,12 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 		return $result;
 	}
 
+	
 	/**
 	 * sportsmanagementModelMatch::getMatchText()
-	 *
-	 * @param   mixed  $match_id
-	 *
+	 * 
+	 * @param integer $match_id
+	 * @param integer $cfg_which_database
 	 * @return
 	 */
 	public static function getMatchText($match_id = 0, $cfg_which_database = 0)
@@ -433,14 +437,15 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 		return $result;
 	}
 
+	
 	/**
-	 * Method to return the projects referees array
-	 *
-	 * @access public
-	 * @return array
-	 * @since  0.1
+	 * sportsmanagementModelMatch::getProjectReferees()
+	 * 
+	 * @param bool $already_sel
+	 * @param integer $project_id
+	 * @return
 	 */
-	public static function getProjectReferees($already_sel = false, $project_id)
+	public static function getProjectReferees($already_sel = false, $project_id = 0)
 	{
 		$db     = Factory::getDbo();
 		$query  = $db->getQuery(true);
@@ -474,17 +479,17 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 		return $result;
 	}
 
+	
 	/**
 	 * sportsmanagementModelMatch::getMatchPersons()
-	 *
-	 * @param   mixed    $projectteam_id
-	 * @param   integer  $project_position_id
-	 * @param   mixed    $match_id
-	 * @param   mixed    $table
-	 *
+	 * 
+	 * @param integer $projectteam_id
+	 * @param integer $project_position_id
+	 * @param integer $match_id
+	 * @param string $table
 	 * @return
 	 */
-	public static function getMatchPersons($projectteam_id, $project_position_id = 0, $match_id, $table)
+	public static function getMatchPersons($projectteam_id = 0, $project_position_id = 0, $match_id = 0, $table = 'player')
 	{
 		$app               = Factory::getApplication();
 		$option            = Factory::getApplication()->input->getCmd('option');
@@ -616,16 +621,16 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 		return $stats;
 	}
 
+
 	/**
 	 * sportsmanagementModelMatch::getMatchStaffStatsInput()
-	 *
-	 * @param   mixed  $match_id
-	 * @param   mixed  $projectteam1_id
-	 * @param   mixed  $projectteam2_id
-	 *
+	 * 
+	 * @param integer $match_id
+	 * @param integer $projectteam1_id
+	 * @param integer $projectteam2_id
 	 * @return
 	 */
-	public static function getMatchStaffStatsInput($match_id, $projectteam1_id, $projectteam2_id)
+	public static function getMatchStaffStatsInput($match_id = 0, $projectteam1_id = 0, $projectteam2_id = 0)
 	{
 		$option    = Factory::getApplication()->input->getCmd('option');
 		$app       = Factory::getApplication();
@@ -650,14 +655,16 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 		return $stats;
 	}
 
+
 	/**
-	 * Method to return the project positions array (id,name)
-	 *
-	 * @access public
-	 * @return array
-	 * @since  1.5
+	 * sportsmanagementModelMatch::getProjectPositionsOptions()
+	 * 
+	 * @param integer $id
+	 * @param integer $person_type
+	 * @param integer $project_id
+	 * @return
 	 */
-	public static function getProjectPositionsOptions($id = 0, $person_type = 1, $project_id)
+	public static function getProjectPositionsOptions($id = 0, $person_type = 1, $project_id = 0)
 	{
 		$starttime = microtime();
 		$db        = Factory::getDbo();
@@ -3588,6 +3595,13 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		return $db->loadObject();
 	}
 
+	/**
+	 * sportsmanagementModelMatch::getProjectReferee()
+	 * 
+	 * @param integer $person_id
+	 * @param integer $project_id
+	 * @return
+	 */
 	function getProjectReferee($person_id = 0, $project_id = 0)
 	{
 		$db = Factory::getDbo();
@@ -3603,16 +3617,16 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		return $db->loadObject();
 	}
 
+
 	/**
 	 * sportsmanagementModelMatch::getSeasonTeamPersonId()
-	 *
-	 * @param   integer  $person_id
-	 * @param   integer  $favteam
-	 * @param   mixed    $season_id
-	 *
-	 * @return void
+	 * 
+	 * @param integer $person_id
+	 * @param integer $favteam
+	 * @param integer $season_id
+	 * @return
 	 */
-	function getSeasonTeamPersonId($person_id = 0, $favteam = 0, $season_id)
+	function getSeasonTeamPersonId($person_id = 0, $favteam = 0, $season_id = 0)
 	{
 		// Reference global application object
 		$app = Factory::getApplication();
