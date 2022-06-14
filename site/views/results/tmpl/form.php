@@ -246,9 +246,7 @@ else
 					{
 						$this->game = $match;
 						$this->i    = $i;
-						/**
-						 * eingabe laden
-						 */
+						/** eingabe laden */
 						echo $this->loadTemplate('row');
 					}
 

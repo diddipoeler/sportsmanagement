@@ -1153,9 +1153,8 @@ class sportsmanagementViewResults extends sportsmanagementView
 		switch ($this->layout)
 		{
 			case 'form':
-				/**
-				 * projekt positionen
-				 */
+            $this->doubleevents = $this->project->double_events;
+				/** projekt positionen */
 				$selectpositions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REF_FUNCTION'));
 
 				if ($projectpositions = sportsmanagementModelMatch::getProjectPositionsOptions(0, 3, $this->project->id))

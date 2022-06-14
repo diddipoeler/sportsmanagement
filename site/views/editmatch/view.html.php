@@ -61,15 +61,11 @@ class sportsmanagementViewEditMatch extends sportsmanagementView
 
 		$user = Factory::getUser();
 
-		// JInput object
 		$jinput = $app->input;
 		$model  = $this->getModel();
-
 		$this->project_id = $jinput->getInt('p', 0);
 		sportsmanagementModelProject::setProjectID($this->project_id);
 		$projectws = sportsmanagementModelProject::getProject($jinput->getInt('cfg_which_database', 0));
-
-		// $projectws = sportsmanagementModelProject::getProject($this->project_id);
 
 		$app->setUserState("$option.pid", $projectws->id);
 		$app->setUserState("$option.season_id", $projectws->season_id);
@@ -77,8 +73,9 @@ class sportsmanagementViewEditMatch extends sportsmanagementView
 		$this->projectws         = $projectws;
 		$this->eventsprojecttime = $projectws->game_regular_time;
 		$this->useeventtime      = $projectws->useeventtime;
+        $this->doubleevents = $projectws->double_events;
 
-		// Get some data from the models
+		/** Get some data from the models */
 		$match          = $this->get('Data');
 		$extended       = sportsmanagementHelper::getExtended($match->extended, 'match');
 		$this->extended = $extended;
@@ -449,6 +446,7 @@ class sportsmanagementViewEditMatch extends sportsmanagementView
 		$javascript .= "var baseajaxurl = '" . Uri::root() . "index.php?option=com_sportsmanagement';" . "\n";
 		$javascript .= "var matchid = " . $this->match->id . ";" . "\n";
 		$javascript .= "var useeventtime = " . $this->useeventtime . ";" . "\n";
+        $javascript .= "var doubleevents = " . $this->doubleevents . ";" . "\n";
 		$javascript .= "var projecttime = " . $this->eventsprojecttime . ";" . "\n";
 		$javascript .= "var str_delete = '" . Text::_('JACTION_DELETE') . "';" . "\n";
 		$javascript .= "\n";
