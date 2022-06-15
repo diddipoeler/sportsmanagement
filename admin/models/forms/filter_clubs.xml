@@ -32,7 +32,8 @@
 		
 <field name="geo_daten" type="list" default="" 
 onchange="this.form.submit();"
-required="" label="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN" description="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN">
+required="" label="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN" 
+description="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN">
   <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN</option>
   <option value="0">JNO</option>
   <option value="1">JYES</option>
@@ -40,7 +41,8 @@ required="" label="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN" description="CO
 
 <field name="standard_picture" type="list" default="" 
 onchange="this.form.submit();"
-required="" label="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_STANDARD_PICTURE" description="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_STANDARD_PICTURE">
+required="" label="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_STANDARD_PICTURE" 
+description="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_STANDARD_PICTURE">
   <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_STANDARD_PICTURE</option>
   <option value="0">JNO</option>
   <option value="1">JYES</option>
