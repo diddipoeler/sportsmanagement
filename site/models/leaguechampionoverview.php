@@ -45,7 +45,7 @@ static $rankingalltimenotes = array();
         $db        = sportsmanagementHelper::getDBConnection(true, Factory::getApplication()->input->get('cfg_which_database', 0, 'INT'));
 		$query     = $db->getQuery(true);
         
-        $query->select('pt.id AS _ptid, pt.is_in_score, pt.division_id, pt.finaltablerank as rank');
+        $query->select('pt.id AS _ptid, pt.is_in_score, pt.division_id, pt.finaltablerank as rank, pt.champion');
         $query->select('CONCAT_WS(\':\',pt.id,t.alias) AS ptid_slug');
         $query->select('t.name as _name, t.id as _teamid, t.club_id, c.logo_big');
         $query->from('#__sportsmanagement_project_team AS pt ');
@@ -54,7 +54,8 @@ static $rankingalltimenotes = array();
         $query->join('INNER', '#__sportsmanagement_club AS c ON c.id = t.club_id ');
         $query->where('pt.project_id = ' . $project_id);
 		$query->where('pt.is_in_score = 1');
-        $query->where('pt.finaltablerank = 1');
+        //$query->where('pt.finaltablerank = 1');
+        $query->where('pt.champion = 1');
         $db->setQuery($query);
 		$res = $db->loadObjectList();
         
@@ -73,7 +74,7 @@ function _getRankingCriteria()
 
 		if (empty($this->_criteria))
 		{
-			// Get the values from ranking template setting
+			/** Get the values from ranking template setting */
 			$values = explode(',', $this->_params['ranking_order']);
 			$crit   = array();
 
@@ -91,7 +92,7 @@ function _getRankingCriteria()
 				}
 			}
 
-			// Set a default criteria if empty
+			/** Set a default criteria if empty */
 			if (!count($crit))
 			{
 				$crit[] = '_cmpPoints';
@@ -122,7 +123,6 @@ function _getRankingCriteria()
  */
 function _sortRanking(&$ranking,$order='points',$order_dir='DESC')
 	{
-		// Reference global application object
 		$app       = Factory::getApplication();
 		$jinput    = $app->input;
 

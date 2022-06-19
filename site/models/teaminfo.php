@@ -292,6 +292,7 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 			 $query->select('pt.cache_points_finally as points_finally,
              pt.cache_neg_points_finally as neg_points_finally,
              pt.finaltablerank,
+             pt.champion,
              pt.cache_matches_finally as matches_finally,
              pt.cache_won_finally as won_finally,
              pt.cache_draws_finally as draws_finally,
@@ -301,7 +302,7 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 			}
 			else
 			{
-		$query->select('pt.points_finally,pt.neg_points_finally,pt.finaltablerank,pt.matches_finally,pt.won_finally,pt.draws_finally,pt.lost_finally,pt.homegoals_finally,pt.guestgoals_finally');
+		$query->select('pt.points_finally,pt.neg_points_finally,pt.finaltablerank,pt.champion,pt.matches_finally,pt.won_finally,pt.draws_finally,pt.lost_finally,pt.homegoals_finally,pt.guestgoals_finally');
         }
 		$query->select('p.name as projectname,p.season_id,p.current_round, pt.division_id');
 		$query->select('s.name as season');

@@ -28,100 +28,20 @@ class JSMRanking
 	static $rankingalltimenotes = array();
 	static $rankingalltimewarnings = array();
 	static $rankingalltimetips = array();
-	
-	/**
-	 * project id
-	 *
-	 * @var integer
-	 */
 	var $_projectid = 0;
-	
 	static $_use_finaltablerank = 0;
-
-	/**
-	 * project model cache
-	 *
-	 * @var object
-	 */
 	var $_project = null;
-
-	/**
-	 * caching for the data
-	 *
-	 * @var object
-	 */
 	var $_data = null;
-
-	/**
-	 * ranking parameters
-	 *
-	 * @var array
-	 */
 	var $_params = null;
-
-	/**
-	 * criteria for ranking order
-	 *
-	 * @var array
-	 */
 	var $_criteria = null;
-
-	/**
-	 * ranking mode: 0/1/2 for normal/home/away ranking
-	 *
-	 * @var integer
-	 */
 	var $_mode = 0;
-
-	/**
-	 * starting roundid for the ranking
-	 *
-	 * @var integer
-	 */
 	var $_from = null;
-
-	/**
-	 * end roundid for the ranking
-	 *
-	 * @var integer
-	 */
 	var $_to = null;
-
-	/**
-	 * division id
-	 *
-	 * @var integer
-	 */
 	var $_division = null;
-
-	/**
-	 * caching for heat to head ranking
-	 *
-	 * @var array
-	 */
 	var $_h2h = null;
-
-	/**
-	 * storing current group id for caching h2h collect
-	 *
-	 * @var array
-	 */
 	var $_h2h_group = 0;
-
-	/**
-	 * divisions matching _division and childs
-	 *
-	 * @var unknown_type
-	 */
 	var $_divisions = null;
-
-	/**
-	 * array of roundcodes indexed by round id
-	 *
-	 * @var array
-	 */
 	var $_roundcodes = null;
-
 	
 	/**
 	 * JSMRanking::getInstance()
@@ -969,12 +889,17 @@ class JSMRanking
 		return $teams;
 	}
 
+	
 	/**
-	 * gets games from db
-	 *
-	 * @return array
+	 * JSMRanking::_getMatches()
+	 * 
+	 * @param integer $pid
+	 * @param integer $division
+	 * @param integer $cfg_which_database
+	 * @param string $sports_type_name
+	 * @return
 	 */
-	public static function _getMatches($pid, $division, $cfg_which_database = 0,$sports_type_name='')
+	public static function _getMatches($pid = 0, $division = 0, $cfg_which_database = 0,$sports_type_name='')
 	{
 		$app       = Factory::getApplication();
 		$option    = $app->input->getCmd('option');
