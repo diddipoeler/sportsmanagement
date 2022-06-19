@@ -45,7 +45,8 @@ static $rankingalltimenotes = array();
         $db        = sportsmanagementHelper::getDBConnection(true, Factory::getApplication()->input->get('cfg_which_database', 0, 'INT'));
 		$query     = $db->getQuery(true);
         
-        $query->select('pt.id AS _ptid, pt.is_in_score, pt.division_id, pt.finaltablerank as rank, pt.champion');
+        //$query->select('pt.id AS _ptid, pt.is_in_score, pt.division_id, pt.finaltablerank as rank, pt.champion');
+        $query->select('pt.id AS _ptid, pt.is_in_score, pt.division_id, pt.finaltablerank, pt.champion as rank');
         $query->select('CONCAT_WS(\':\',pt.id,t.alias) AS ptid_slug');
         $query->select('t.name as _name, t.id as _teamid, t.club_id, c.logo_big');
         $query->from('#__sportsmanagement_project_team AS pt ');
