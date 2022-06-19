@@ -1917,6 +1917,12 @@ class JSMRankingTeamClass
 		$this->_use_finally = (int) $val;
 	}
 	
+	/**
+	 * JSMRankingTeamClass::setuse_finaltablerank()
+	 * 
+	 * @param mixed $val
+	 * @return void
+	 */
 	function setuse_finaltablerank($val)
 	{
 		$this->_finaltablerank = (int) $val;

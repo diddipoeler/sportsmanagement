@@ -118,13 +118,15 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 	}
 
 
+
 	/**
 	 * sportsmanagementModelRanking::setFinalStanding()
 	 * 
 	 * @param mixed $current_ranking
+	 * @param string $project_type
 	 * @return void
 	 */
-	public static function setFinalStanding($current_ranking = array() )
+	public static function setFinalStanding($current_ranking = array(),$project_type = 'SIMPLE_LEAGUE' )
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
@@ -157,6 +159,18 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
   
             
             $object->finaltablerank = $value->rank;
+            
+            switch ($project_type)
+            {
+            case 'SIMPLE_LEAGUE':
+            switch ($object->finaltablerank)
+            {
+            case 1:
+            $object->champion = 1;
+            break;
+            }
+            break;
+            }
 
 				// Update their details in the users table using id as the primary key.
 				$result_update = Factory::getDbo()->updateObject('#__sportsmanagement_project_team', $object, 'id');
