@@ -229,9 +229,16 @@ class sportsmanagementModelProjects extends JSMModelList
 			$this->jsmquery->where('ef.id = ' . $this->getState('filter.userfields'));
 		}
 
-		if ($this->getState('filter.search'))
+		if ($this->getState('filter.search') )
 		{
+		  if ( is_numeric($this->getState('filter.search'))  )
+          {
+            $this->jsmquery->where('p.id = ' . $this->getState('filter.search'));
+          }
+          else
+          {
 			$this->jsmquery->where('LOWER(p.name) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%'));
+            }
 		}
 
 		if ($this->getState('filter.search_league'))
