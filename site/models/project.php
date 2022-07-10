@@ -398,7 +398,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 
 		if (!self::$_current_round && $project)
 		{
-			$current_date = strftime("%Y-%m-%d %H:%M:%S");
+			$current_date = date('Y-m-d', time());
 			$query->clear();
 			$query->select('r.id, r.roundcode, CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
 			$query->from('#__sportsmanagement_round AS r ');

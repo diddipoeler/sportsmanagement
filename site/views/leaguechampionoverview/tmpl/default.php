@@ -34,13 +34,20 @@ li.hm2 {
     /* Abstand */
     margin-right:15px;
 }
- 
+
+.legend .row:nth-of-type(odd) div {
+background: #f8f9fa;
+}
+.legend .row:nth-of-type(even) div {
+background: #FFFFFF;
+}
+    
 </style>
 
 
 
 
-<div class="<?php echo $this->divclasscontainer; ?> table-responsive" id="defaultleaguechampionoverview">
+<div class="<?php echo $this->divclasscontainer; ?> table-responsive legend" id="defaultleaguechampionoverview">
 <?php
 echo $this->loadTemplate('projectheading');
     
