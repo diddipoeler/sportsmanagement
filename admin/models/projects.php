@@ -233,11 +233,13 @@ class sportsmanagementModelProjects extends JSMModelList
 		{
 		  if ( is_numeric($this->getState('filter.search'))  )
           {
-            $this->jsmquery->where('p.id = ' . $this->getState('filter.search'));
+            $this->jsmquery->where( ('p.id = ' . $this->getState('filter.search')  . ' OR ' .
+				    $this->jsmquery->where( 'LOWER(p.name) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%') )
+				    );
           }
           else
           {
-			$this->jsmquery->where('LOWER(p.name) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%'));
+			$this->jsmquery->where( 'LOWER(p.name) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%') );
             }
 		}
 
