@@ -235,7 +235,7 @@ class sportsmanagementModelProjects extends JSMModelList
           {
             $this->jsmquery->where( ('p.id = ' . $this->getState('filter.search')  . ' OR ' .
 				     'LOWER(p.name) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%') 
-				    );
+				    ) );
           }
           else
           {
