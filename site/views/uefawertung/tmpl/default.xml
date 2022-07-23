@@ -20,7 +20,7 @@
 			<option value="1">JYES</option>
 		</field>
 
-	
+	<!--
     <field	name="s" 
     task="seasons" 
       type="dependsql"
@@ -32,7 +32,7 @@
 					required=""
           slug="true">
 			</field>
-
+-->
 			
 			
       
