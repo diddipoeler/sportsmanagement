@@ -52,7 +52,7 @@ $lists['coefficientyears'] = HTMLHelper::_(
 			'class="inputbox" onChange="this.form.submit();" style="width:120px"',
 			'id',
 			'name',
-			$this->jinput->post->get('coefficientyear', '')
+			$this->jinput->post->getString('coefficientyear', '')
 		);
 
 
