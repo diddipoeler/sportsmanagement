@@ -42,13 +42,23 @@ class JFormFieldcoefficientyears extends \JFormFieldList
 		$query = $db->getQuery(true);
 		$query->select('season AS value, season AS text');
 		$query->from('#__sportsmanagement_uefawertung');
-		$query->order('season DESC');
         $query->group('season');
+		$query->order('season DESC');
+        
+        try
+		{
 		$db->setQuery($query);
 		$options = $db->loadObjectList();
 
 		/** Merge any additional options in the XML definition. */
 		$options = array_merge(parent::getOptions(), $options);
+        }
+		catch (Exception $e)
+		{
+			Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+		
+		}
 
 		return $options;
 	}
