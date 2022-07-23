@@ -50,7 +50,7 @@ function __construct()
     {
         $result = array();
         $this->jsmquery->clear(); 
-        $this->jsmquery->select('season AS value, season AS text');
+        $this->jsmquery->select('season AS id, season AS name');
 		$this->jsmquery->from('#__sportsmanagement_uefawertung');
         $this->jsmquery->group('season');
 		$this->jsmquery->order('season DESC');
