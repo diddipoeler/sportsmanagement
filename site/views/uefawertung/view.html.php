@@ -59,6 +59,10 @@ $lists['coefficientyears'] = HTMLHelper::_(
 		$this->document->setTitle($this->pagetitle);
         $this->lists         = $lists;
 
+$this->uefapoints = $this->model->getcoefficientyearspoints($this->jinput->post->getString('coefficientyear', ''));
+$this->seasonnames = $this->model->getSeasonNames($this->jinput->post->getString('coefficientyear', ''));
+asort($this->seasonnames);
+
 	}
 
 }

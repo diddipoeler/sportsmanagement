@@ -31,6 +31,72 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 echo $this->lists['coefficientyears'];
 ?>
 
+ <table class="">
+        <thead>
+  <tr>
+  <td>
+  </td>
+<?php
+  foreach( $this->seasonnames as $key => $value )
+{
+    ?>
+    <td>
+<?php
+echo $value;
+?>
+</td>  
+      
+      <?php
+  }
+  
+  ?>
+     <td>
+  </td>
+    </tr>  
+        </thead>
+		<?php
+foreach( $this->uefapoints as $key => $value )
+{
+?>    
+<tr>
+<td>
+<?php
+echo $value->team;
+?>
+</td>
+
+  
+ <?php
+  foreach( $this->seasonnames as $key1 => $value1 )
+{
+    ?>
+    <td>
+<?php
+echo $value->$value1;
+?>
+</td>  
+      
+      <?php
+  }
+  
+  ?> 
+  
+  
+  
+  
+  
+<td>
+<?php
+echo $value->total;
+?>
+</td>
+</tr>  
+  
+<?php    
+}
+
+		?>
+    </table>
 
 
 
