@@ -31,7 +31,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 echo $this->lists['coefficientyears'];
 ?>
 
- <table class="">
+ <table class="table">
         <thead>
   <tr>
   <td>
