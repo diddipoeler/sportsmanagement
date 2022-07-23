@@ -23,7 +23,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		}
 
 
-echo $this->lists('coefficientyears');
+echo $this->lists['coefficientyears'];
 
 
 
