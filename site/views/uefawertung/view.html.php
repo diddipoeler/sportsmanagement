@@ -42,7 +42,7 @@ class sportsmanagementViewuefawertung extends sportsmanagementView
 
 
 /** Build the html options for coefficientyears */
-$coefficientyears[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL'));
+$coefficientyears[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SEASON'));
 $res = $this->model->getcoefficientyears();
 $coefficientyears = array_merge($coefficientyears, $res);
 $lists['coefficientyears'] = HTMLHelper::_(

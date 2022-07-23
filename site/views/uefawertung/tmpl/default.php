@@ -15,22 +15,29 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 ?>
 <div class="<?php echo $this->divclasscontainer; ?>" id="uefawertung">
+<form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($this->uri->toString()); ?>" method="post">
     <div class="<?php echo $this->divclassrow; ?> table-responsive" id="uefawertunganzeige">
 		<?php
 		if ($this->config['show_sectionheader'] == 1)
 		{
 			echo $this->loadTemplate('sectionheader');
 		}
-
+        ?>
+        
+        
+        
+<?php
 
 echo $this->lists['coefficientyears'];
+?>
 
 
 
 
 
-
+<?php
 		echo $this->loadTemplate('jsminfo');
 		?>
     </div>
+    </form>
 </div>
