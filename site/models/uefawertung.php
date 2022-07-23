@@ -12,19 +12,58 @@
 defined('_JEXEC') or die;
 use Joomla\CMS\Language\Text;
 
+
 /**
  * sportsmanagementModeluefawertung
- *
- * @package
- * @author    Dieter Plöger
- * @copyright 2017
- * @version   $Id$
- * @access    public
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2022
+ * @version $Id$
+ * @access public
  */
 class sportsmanagementModeluefawertung extends JSMModelLegacy
 {
     
+var $coefficientyear = '';
+
+/**
+ * sportsmanagementModeluefawertung::__construct()
+ * 
+ * @return void
+ */
+function __construct()
+	{
+		parent::__construct();
+		$this->coefficientyear = $this->jsmjinput->getString('coefficientyear', '');
+		
+	}
+    
+        
+    /**
+     * sportsmanagementModeluefawertung::getcoefficientyears()
+     * 
+     * @return void
+     */
+    function getcoefficientyears()
+    {
+        
+        
+    }
     
     
+    
+    
+    /**
+     * sportsmanagementModeluefawertung::getcoefficientyearspoints()
+     * 
+     * @param string $coefficientyear
+     * @return void
+     */
+    function getcoefficientyearspoints($coefficientyear = '')
+    {
+        
+        
+    }
     
 }
