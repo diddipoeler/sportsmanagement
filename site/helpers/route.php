@@ -39,6 +39,7 @@ class sportsmanagementHelperRoute
 
 	public static $views = array(
 		'about'    => array('cfg_which_database' => '', 's' => '', 'p' => '' ),
+        'uefawertung'    => array('cfg_which_database' => '', 's' => '', 'p' => '', 'coefficientyear' => '' ),
 		'calendar' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'division' => '', 'mode' => '', 'ptid' => ''),
 		'clubinfo' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'cid' => ''),
 		'clubplan' => array('cfg_which_database' => '', 's' => '', 'cid' => '', 'p' => '', 'startdate' => '', 'enddate' => ''  ),
@@ -94,6 +95,7 @@ class sportsmanagementHelperRoute
     
     	public static $views4 = array(
 		'about'    => array('cfg_which_database' => '', 's' => '', 'p' => '', 'Itemid' => '' ),
+        'uefawertung'    => array('cfg_which_database' => '', 's' => '', 'p' => '', 'coefficientyear' => '', 'Itemid' => '' ),
 		'calendar' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'division' => '', 'mode' => '', 'ptid' => '', 'Itemid' => ''),
 		'clubinfo' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'cid' => '', 'Itemid' => ''),
 		'clubplan' => array('cfg_which_database' => '', 's' => '', 'cid' => '', 'p' => '', 'startdate' => '', 'enddate' => '', 'Itemid' => ''),
