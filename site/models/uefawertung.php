@@ -35,6 +35,7 @@ var $coefficientyear = '';
 function __construct()
 	{
 		parent::__construct();
+        $this->coefficientyear = $this->jsmjinput->post->get('coefficientyear', '');
 		$this->coefficientyear = $this->jsmjinput->getString('coefficientyear', '');
 		
 	}
