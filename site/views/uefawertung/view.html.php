@@ -12,6 +12,7 @@
 defined('_JEXEC') or die;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * sportsmanagementViewuefawertung
@@ -40,8 +41,23 @@ class sportsmanagementViewuefawertung extends sportsmanagementView
 		$this->config        = $config;
 
 
+/** Build the html options for coefficientyears */
+$coefficientyears[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL'));
+$res = $this->model->getcoefficientyears();
+$coefficientyears = array_merge($coefficientyears, $res);
+$lists['coefficientyears'] = HTMLHelper::_(
+			'select.genericList',
+			$coefficientyears,
+			'coefficientyear',
+			'class="inputbox" onChange="this.form.submit();" style="width:120px"',
+			'id',
+			'name',
+			$this->jsmjinput->post->get('coefficientyear', '')
+		);
+
 
 		$this->document->setTitle($this->pagetitle);
+        $this->lists         = $lists;
 
 	}
 

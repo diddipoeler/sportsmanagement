@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage allleagues
@@ -12,7 +10,6 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -41,11 +38,8 @@ if (!class_exists('sportsmanagementHelperHtml'))
 class sportsmanagementViewallleagues extends sportsmanagementView
 {
 	protected $state = null;
-
 	protected $item = null;
-
 	protected $items = null;
-
 	protected $pagination = null;
 
 	/**

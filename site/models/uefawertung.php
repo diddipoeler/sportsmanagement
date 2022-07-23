@@ -11,7 +11,7 @@
  */
 defined('_JEXEC') or die;
 use Joomla\CMS\Language\Text;
-
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementModeluefawertung
@@ -48,8 +48,25 @@ function __construct()
      */
     function getcoefficientyears()
     {
+        $result = array();
+        $this->jsmquery->clear(); 
+        $this->jsmquery->select('season AS value, season AS text');
+		$this->jsmquery->from('#__sportsmanagement_uefawertung');
+        $this->jsmquery->group('season');
+		$this->jsmquery->order('season DESC');
+        try
+		{
+        $this->jsmdb->setQuery($this->jsmquery );
+        $result = $this->jsmdb->loadObjectList();
+        }
+		catch (Exception $e)
+		{
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+		
+		}
         
-        
+        return $result;
     }
     
     

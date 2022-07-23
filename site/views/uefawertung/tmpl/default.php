@@ -23,6 +23,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		}
 
 
+echo $this->lists('coefficientyears');
+
+
+
+
+
 
 		echo $this->loadTemplate('jsminfo');
 		?>
