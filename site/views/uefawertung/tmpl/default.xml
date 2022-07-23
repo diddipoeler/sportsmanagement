@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_SPORTSMANAGEMENT_XML_UEFAWERTUNG_LAYOUT_TITLE">
+		<message>
+			<![CDATA[COM_SPORTSMANAGEMENT_XML_UEFAWERTUNG_LAYOUT_DESCR]]>
+		</message>
+	</layout>
+	<fields name="request">
+		<fieldset	name="request"
+					label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
+					addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+					
+				<field name="cfg_which_database" 
+    type="extensionradiobutton" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+	
+    <field	name="s" 
+    task="seasons" 
+      type="dependsql"
+      depends="cfg_which_database"
+      value_field="cfg_which_database"
+      key_field="season_id"
+					label="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
+					required=""
+          slug="true">
+			</field>
+
+			
+			
+      
+
+			
+		</fieldset>
+	</fields>
+</metadata>
