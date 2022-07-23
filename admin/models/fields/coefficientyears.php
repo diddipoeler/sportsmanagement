@@ -4,7 +4,7 @@
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage fields
- * @file       actseason.php
+ * @file       coefficientyears.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
@@ -18,20 +18,20 @@ jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
 
 /**
- * FormFieldactseason
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
+ * JFormFieldcoefficientyears
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2022
+ * @version $Id$
+ * @access public
  */
-class JFormFieldactseason extends \JFormFieldList
+class JFormFieldcoefficientyears extends \JFormFieldList
 {
-	protected $type = 'actseason';
+	protected $type = 'coefficientyears';
 
 	/**
-	 * FormFieldactseason::getOptions()
+	 * FormFieldcoefficientyears::getOptions()
 	 *
 	 * @return
 	 */
@@ -40,9 +40,10 @@ class JFormFieldactseason extends \JFormFieldList
 		$options = array();
 		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
-		$query->select('s.id AS value, s.name AS text');
-		$query->from('#__sportsmanagement_season as s');
-		$query->order('s.name');
+		$query->select('season AS value, season AS text');
+		$query->from('#__sportsmanagement_uefawertung');
+		$query->order('season DESC');
+        $query->group('season');
 		$db->setQuery($query);
 		$options = $db->loadObjectList();
 
