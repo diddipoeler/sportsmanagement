@@ -61,6 +61,7 @@ foreach( $this->uefapoints as $key => $value )
 <tr>
 <td>
 <?php
+echo JSMCountries::getCountryFlag(substr($value->team, 1, 3));
 echo $value->team;
 ?>
 </td>
