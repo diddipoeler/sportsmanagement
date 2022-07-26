@@ -22,10 +22,25 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		{
 			echo $this->loadTemplate('sectionheader');
 		}
-        ?>
         
         
         
+$picture = '/images/com_sportsmanagement/database/placeholders/uefa5jahreswertung.jpg';
+			if (empty($picture))
+			{
+				$picture = sportsmanagementHelper::getDefaultPlaceholder("team");
+			}
+			echo sportsmanagementHelperHtml::getBootstrapModalImage(
+				'uefa' . '5',
+				$picture,
+				'UEFA 5-Jahreswertung',
+				'400',
+				'',
+				$this->modalwidth,
+				$this->modalheight,
+				$this->overallconfig['use_jquery_modal']
+			);
+?>
 <?php
 
 echo $this->lists['coefficientyears'];
