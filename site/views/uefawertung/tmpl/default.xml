@@ -9,7 +9,7 @@
 		<fieldset	name="request"
 					label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
 					addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
-					
+<!--					
 				<field name="cfg_which_database" 
     type="extensionradiobutton" 
     default="0"
@@ -19,7 +19,7 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-
+-->
 
 
 <field 	name="coefficientyear" type="coefficientyears" default="" 
