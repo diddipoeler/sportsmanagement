@@ -40,7 +40,19 @@ class sportsmanagementViewuefawertung extends sportsmanagementView
 		$this->overallconfig = sportsmanagementModelProject::getOverallConfig();
 		$this->config        = $config;
 
+//echo 'post '.$this->jinput->post->getString('coefficientyear', '').'<br>';
+//echo 'input '.$this->jinput->getString('coefficientyear', '').'<br>';   
 
+if ( !$this->jinput->post->getString('coefficientyear', '') )		
+{
+	$select_year = $this->jinput->getString('coefficientyear', '');
+}
+		else
+		{
+		$select_year = $this->jinput->post->getString('coefficientyear', '');
+		}
+		
+		
 /** Build the html options for coefficientyears */
 $coefficientyears[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SEASON'));
 $res = $this->model->getcoefficientyears();
@@ -52,15 +64,15 @@ $lists['coefficientyears'] = HTMLHelper::_(
 			'class="inputbox" onChange="this.form.submit();" style="width:120px"',
 			'id',
 			'name',
-			$this->jinput->post->getString('coefficientyear', '')
+			$select_year
 		);
 
 
 		$this->document->setTitle($this->pagetitle);
         $this->lists         = $lists;
 
-$this->uefapoints = $this->model->getcoefficientyearspoints($this->jinput->post->getString('coefficientyear', ''));
-$this->seasonnames = $this->model->getSeasonNames($this->jinput->post->getString('coefficientyear', ''));
+$this->uefapoints = $this->model->getcoefficientyearspoints($select_year);
+$this->seasonnames = $this->model->getSeasonNames($select_year);
 asort($this->seasonnames);
 
 	}
