@@ -81,7 +81,14 @@ $country = substr($value->team, 1, 3);
 switch ( $country )
 {
 	case 'GER':
-		$country = 'DEU';
+    case 'HOL':
+    case 'POR':
+    case 'SUI':
+    case 'GRE':
+    case 'CRO':
+    case 'DEN':
+    
+		$country = JSMCountries::getCountryalpha3fifa($country);;
 		break;
 	default:
 		break;

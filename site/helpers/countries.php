@@ -180,10 +180,39 @@ class JSMCountries
 		return Text::_($parts[0]);
 	}
 
+	
+    
+    /**
+     * JSMCountries::getCountryalpha3fifa()
+     * 
+     * @param string $fifa
+     * @return
+     */
+    public static function getCountryalpha3fifa($fifa='')
+	{
+		$app = Factory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+		$db     = sportsmanagementHelper::getDBConnection();
+
+		$query = $db->getQuery(true);
+		$query->select('alpha3');
+		$query->from('#__sportsmanagement_countries');
+		$query->where('fifa LIKE \'' . $fifa . '\'');
+		$db->setQuery($query);
+		$res = $db->loadResult();
+
+		if ($res)
+		{
+			return $res;
+		}
+	}
+    
 	/**
-	 * @param   string: an iso3 country code, e.g AUT
-	 *
-	 * @return string: a country name
+	 * JSMCountries::getCountryName()
+	 * 
+	 * @param mixed $iso3
+	 * @return
 	 */
 	public static function getCountryName($iso3)
 	{
