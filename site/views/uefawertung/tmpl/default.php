@@ -87,7 +87,11 @@ switch ( $country )
     case 'GRE':
     case 'CRO':
     case 'DEN':
-    
+    case 'BUL':
+    case 'SLO':
+    case 'KOS':
+    case 'LAT':
+    case 'FAR':
 		$country = JSMCountries::getCountryalpha3fifa($country);;
 		break;
 	default:
