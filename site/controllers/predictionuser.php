@@ -19,6 +19,7 @@ use Joomla\CMS\Session\Session;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementControllerPredictionUsers
@@ -51,7 +52,12 @@ class sportsmanagementControllerPredictionUsers extends FormController
 	 */
 	function cancel()
 	{
-		Factory::getApplication()->redirect(str_ireplace('&layout=edit', '', Factory::getURI()->toString()));
+		
+		/*$uri = JUri::getInstance(); 
+		$current_uri = $uri->toString();
+		Factory::getApplication()->redirect(str_ireplace('&layout=edit', '', $current_uri)); */
+	
+		//Factory::getApplication()->redirect(str_ireplace('&layout=edit', '', Factory::getURI()->toString()));
 	}
 
 	/**
@@ -128,9 +134,6 @@ class sportsmanagementControllerPredictionUsers extends FormController
 			}
 		}
 
-		// Echo '<br />';
-		// echo '' . $link . '<br />';
-		// echo '' . $msg . '<br />';
 		$this->setRedirect($link, $msg);
 	}
 
@@ -158,7 +161,6 @@ class sportsmanagementControllerPredictionUsers extends FormController
 
 		$link = JSMPredictionHelperRoute::getPredictionMemberRoute($pID, $uID, null, $pjID, $pggroup, $rID);
 
-		// Echo '<br />' . $link . '<br />';
 		$this->setRedirect($link);
 	}
 

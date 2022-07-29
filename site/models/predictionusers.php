@@ -401,8 +401,10 @@ class sportsmanagementModelPredictionUsers extends BaseDatabaseModel
 		}
 
 		$dChampTeams = trim($dChampTeams, ';');
+        
+		//$registerDate = sportsmanagementHelper::convertDate($pRegisterDate, 0) . ' ' . $pRegisterTime . ':00';
 
-		$registerDate = sportsmanagementHelper::convertDate($pRegisterDate, 0) . ' ' . $pRegisterTime . ':00';
+		$registerDate = sportsmanagementHelper::convertDate($pRegisterDate, 0) . ' ' . $pRegisterTime;
 
 		// Must be a valid primary key value.
 		$object               = new stdClass;
@@ -426,7 +428,7 @@ class sportsmanagementModelPredictionUsers extends BaseDatabaseModel
 		$object->reminder  = $reminder;
 		$object->receipt   = $receipt;
 		$object->admintipp = $admintipp;
-		$object->picture   = $picture;
+		$object->picture   = $picture; 
 
 		// Update their details in the table using id as the primary key.
 		$resultquery = sportsmanagementHelper::getDBConnection()->updateObject('#__sportsmanagement_prediction_member', $object, 'id');

@@ -158,6 +158,69 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		
+		
+				</fieldset>
+		
+				<fieldset name="views"
+				  label="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_VIEW"
+				  description="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_VIEW_DESC">
+		
+		
+					<field 	name="border" 
+							type="extensionradiobutton" 
+							default="1"
+							class="radio btn-group btn-group-yesno"
+							label="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_BORDER" 
+							description="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_BORDER_DESC">
+						<option value="0">JNO</option>
+						<option value="1">JYES</option>
+					</field>
+					
+					<field 	name="border_rounded" 
+							type="extensionradiobutton" 
+							default="1"
+							class="radio btn-group btn-group-yesno"
+							label="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_BORDER_ROUNDED" 
+							description="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_BORDER_ROUNDED_DESC">
+						<option value="0">JNO</option>
+						<option value="1">JYES</option>
+					</field>
+
+					<field 	name="border_shadow" 
+							type="extensionradiobutton" 
+							default="1"
+							class="radio btn-group btn-group-yesno"
+							label="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_BORDER_SHADOW" 
+							description="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_BORDER_SHADOW_DESC">
+						<option value="0">JNO</option>
+						<option value="1">JYES</option>
+					</field>
+
+					
+					<field name="border_color" type="text" default="#41008a"
+					label="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_BORDER_COLOR" 
+					description="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_BORDER_COLOR_DESC" />	
+
+					<field name="background_color" type="text" default="#eee"
+					label="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_BACK_COLOR" 
+					description="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_BACK_COLOR_DESC" />
+
+					<field name="title_color" type="text" default="#000000"
+					label="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_TITLE_COLOR" 
+					description="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_TITLE_COLOR_DESC" />				
+					
+					<field name="title_size" type="text" default="18"
+					label="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_TITLE_SIZE" 
+					description="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_TITLE_SIZE_DESC"/>					
+					
+					<field name="text_color" type="text" default="#000000"
+					label="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_TEXT_COLOR" 
+					description="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_TEXT_COLOR_DESC" />				
+					
+					<field name="text_size" type="text" default="14"
+					label="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_TEXT_SIZE" 
+					description="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_TEXT_SIZE_DESC"/>
 						
 			</fieldset>
 			
