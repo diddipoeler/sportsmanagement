@@ -143,9 +143,9 @@ class sportsmanagementControllerPredictionUsers extends BaseController
 			}
 		}
         
-		 Echo '<br />';
-		 echo '' . $link . '<br />';
-		 echo '' . $msg . '<br />';
+		 //Echo '<br />';
+		 //echo '' . $link . '<br />';
+		 //echo '' . $msg . '<br />';
 		$this->setRedirect($link, $msg); 
 	}
 
