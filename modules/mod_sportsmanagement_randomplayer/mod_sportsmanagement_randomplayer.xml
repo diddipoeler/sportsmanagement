@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="module" version="2.5" client="site" method="upgrade">
+<extension type="module" version="3.0" client="site" method="upgrade">
+<compatibility url="https://www.fussballineuropa.de">
+    <include>
+      <version if="gt">3.0</version> <!-- Ok for Joomla any version of 3.0 to less than 4 -->
+      <version>4</version> <!-- Ok for Joomla any version of 4 -->
+    </include>
+</compatibility>	
 	<name>MOD_SPORTSMANAGEMENT_RANDOMPLAYER</name>
 	<creationDate>2014-03-13</creationDate>
 	<author>JSM-TEAM</author>
@@ -28,83 +34,113 @@
 
 	<config>
 		<fields name="params"
-    addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
+				addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
 		
-      <fieldset name="basic"
+    <fieldset name="basic"
       description="MOD_SPORTSMANAGEMENT_BASIC_DESC">	
 
-<field type="extensionversion" version="1.0.0" />
-<field type="extensionauthor" />
-<field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
-<field type="extensionlink" linktype="translate" link="https://www.transifex.com/jsm/sportsmanagement/" />	
-<field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Random_Player" />
-<field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
-<field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
-<field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />	
-<field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />
+		<field type="extensionversion" version="1.1.0" />
+		<field type="extensionauthor" />
+		<field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
+		<field type="extensionlink" linktype="translate" link="https://www.transifex.com/jsm/sportsmanagement/" />	
+		<field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Random_Player" />
+		<field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
+		<field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
+		<field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />	
+		<field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />
 
-<field name="debug_modus" 
-type="extensionradiobutton" 
-default="0"
-class="radio btn-group btn-group-yesno"
-label="Debug Modus" 
-description="Debug Modus">
-<option value="0">JNO</option>
-<option value="1">JYES</option>
-</field>
+		<field name="debug_modus" 
+				type="extensionradiobutton" 
+				default="0"
+				class="radio btn-group btn-group-yesno"
+				label="Debug Modus" 
+				description="Debug Modus">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+		</field>
 	      
         <field name="cfg_which_database" 
-    type="extensionradiobutton" 
-    default="0"
-    class="radio btn-group btn-group-yesno"
-			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
+				type="extensionradiobutton" 
+				default="0"
+				class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
+				description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
 		</field>
 
 	
-    <field	name="s" 
-    task="seasons" 
-      type="dependsql"
-      depends="cfg_which_database"
-      value_field="cfg_which_database"
-      key_field="season_id"
-					label="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL"
-					description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
-					required="">
-			</field> 
+		<field	name="s" 
+				task="seasons" 
+				type="dependsql"
+				depends="cfg_which_database"
+				value_field="cfg_which_database"
+				key_field="season_id"
+				label="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL"
+				description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
+				required="">
+		</field> 
         
-     <field 	name="p" 
-			task="projects" 
-      type="dependsql"
-      depends="s"
-      key_field="season_id"
-			value_field="s"
-			required=""
-			size="10"
-			multiple="multiple"
-						label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_PROJECT_ID_LABEL" 
-						description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_PROJECT_ID_LABEL_DESC" />
-<!--               
-        <field name="projects" type="projects" default="" required="true"
-					label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_PROJECT_ID_LABEL"
-					description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_PROJECT_ID_LABEL_DESC" />
--->					
-					
-<!--					
-				<field name="teams" type="teams" default=""
-					label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_TEAM_ID_LABEL"
-					description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_TEAM_ID_LABEL_DESC" />
--->
+		<field 	name="p" 
+				task="projects" 
+				type="dependsql"
+				depends="s"
+				key_field="season_id"
+				value_field="s"
+				required=""
+				size="10"
+				multiple="multiple"
+				label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_PROJECT_ID_LABEL" 
+				description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_PROJECT_ID_LABEL_DESC" />
 				
         <field name="teams" type="dependsql" default="0" depends="p"
-					task="projectteamoptions" 
-					key_field="project_id"
-			value_field="p"
-					label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_TEAM_ID_LABEL" 
-					description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_TEAM_ID_LABEL_DESC" />
-          	
+				task="projectteamoptions" 
+				key_field="project_id"
+				value_field="p"
+				label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_TEAM_ID_LABEL" 
+				description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_TEAM_ID_LABEL_DESC" />
+								
+	</fieldset>
+
+		<fieldset name="views"
+				  label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_VIEW"
+				  description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_VIEW_DESC">
+			
+			
+				    <field 	name="mode" type="list" default="S" 
+							label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_TICKER_TEMPLATE_MODE"
+							description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_TICKER_TEMPLATE_MODE_DESC">
+							<option value="P">PLAIN</option>
+							<option value="S">STICKER</option>
+					</field>
+			
+					<field name="name_format" type="nameformat"
+					label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_NAME_FORMAT"
+					description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_NAME_FORMAT" />
+			
+			
+					<field type="spacer" 
+							default=""
+							label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_LABEL_SELECT_STICKER_VIEW" 
+					/>	
+			
+					<field name="border_color" type="text" default="rebeccapurple"
+					label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_BORDER_COLOR" 
+					description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_BORDER_COLOR_DESC" />	
+
+					<field name="background_color" type="text" default="#ccccc"
+					label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_INSIDE_COLOR" 
+					description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_INSIDE_COLOR_DESC" />					
+					
+					<field name="text_color" type="text" default="#ffffff"
+					label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_TEXT_COLOR" 
+					description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_TEXT_COLOR_DESC" />
+					
+					
+					<field type="spacer" 
+							default=""
+							label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_LABEL_SELECT_PLAIN_VIEW" 
+					/>	
 					
 				<field name="show_project_name" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_SHOW_PROJECT_NAME"
@@ -142,38 +178,29 @@ description="Debug Modus">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-				<field name="name_format" type="nameformat"
-					label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_NAME_FORMAT"
-					description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_NAME_FORMAT" />
+
 				<field name="picture_width" type="text" default="50"
 					label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_PICTURE_WIDTH" 
 					description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_PICTURE_WIDTH_DESC" />
-<!--
-				<field name="picture_height" type="text" default="50"
-					label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_PICTURE_HEIGHT" 
-					description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_PICTURE_HEIGHT_DESC" />
--->					
+					
 				<field name="team_picture_width" type="text" default="50"
 					label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_TEAM_PICTURE_WIDTH" 
-					description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_TEAM_PICTURE_WIDTH_DESC" />
-<!--				
-        <field name="team_picture_height" type="text" default="0"
-					label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_TEAM_PICTURE_HEIGHT"
-					description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_TEAM_PICTURE_HEIGHT_DESC" />
--->					
+					description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_TEAM_PICTURE_WIDTH_DESC" />	
+					
+			
 			</fieldset>
 
 			<fieldset name="advanced">
 			
 			  <field 	name="table_class" type="list" default="table" 
-		class=""
-				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
-				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
-			<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
-			<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
-			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
-			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
-			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
+						class=""
+						label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
+						description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
+						<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
+						<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
+						<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
+						<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
+						<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
 			
 		</field>
 		

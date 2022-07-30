@@ -3,7 +3,7 @@
  *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
- * @version   1.0.06
+ * @version   1.1.00
  * @file      default.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @modded 	  llambion (2020)
@@ -45,6 +45,15 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 
 $mode = $params->get('mode');
+
+if ($playgrounds == -1)
+	
+	{
+	  echo Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_NO_PLAYGROUND');
+	}
+	
+   else
+   {   
 
 switch ($mode)
 {
@@ -178,16 +187,51 @@ switch ($mode)
 	 * html mode template
 	 */
 	case 'L':
-		?>
-
-	<div class="container-fluid">
-        <div>
-
-			<?PHP
+	
+		$border = $params->get('border');
+		$border_color = $params->get('border_color');
+		$border_rounded = $params->get('border_rounded');
+		$border_shadow = $params->get('border_shadow');
+		$background_color = $params->get('background_color');
+		$text_color = $params->get('text_color');
+		$text_size = $params->get('text_size');
+		$title_color = $params->get('title_color');
+		$title_size = $params->get('title_size');
+		
+		$style = "";
+		
+		if ($border)
+		 {
+			$style = "border: 1px solid " . $border_color . "; " ;
+			$style =  $style . 'border-radius: 20px ; ';
+			if($border_rounded)
+			{
+				$style =  $style . 'border-radius: 20px ; ';
+			}
+			if($border_shadow)
+			{
+				$style =  $style . 'box-shadow: 10px 10px 6px 3px #474747; ';
+			}			
+			
+		 }	 
+	
+	if(count($playgrounds) > 0)
+		{	
+			
 			$a = 0;
 
 			foreach ($playgrounds AS $playground)
 			{
+				
+							
+			?>	
+				
+			<div class="container-fluid" style="<? echo $style; ?>
+											background-color: <? echo $background_color; ?>;
+											margin: 0 0 25px;">
+											
+			<?PHP								
+				
 				$active = ($a == 0) ? 'active' : '';
 
 				$playground->default_picture = sportsmanagementHelper::getDefaultPlaceholder('clublogobig');
@@ -207,94 +251,137 @@ switch ($mode)
 
 
 				?>
-                <div class="item <?php echo $active; ?>">
-                    <div class="row">
+                    <div class="row"style="text-align:left;
+												font-size: <? echo $title_size;?>px;
+												color: <? echo $title_color;?> ; 
+												display:block;
+												margin: 0px 0px 10px 10px;
+												clear:both;">
 							<?php // Nombre 
-									 //echo var_dump($playground);; 
 									If ($params->get('name')==1)
 									{							
-									?> <h3><?php echo $playground->playground_name; ?></h3>
+									?> <?php echo $playground->playground_name; ?>
 									<?
 									}
 							?>	
-                        <div>
-                            <div>
+					</div>
+
                                 <div class="photo">
                                     <img src="<?php echo $thispic; ?>" class="img-responsive" alt="a"
                                          width="<?php echo $params->get('picture_width', 50); ?>"/>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
+                    
 
-                    <div class="info">
-                        <div class="row">
-                            <div>
-                                
-                            </div>
-                            <div>
+
+                    <div>
+                        <div class="row" style="text-align:left;
+												font-size: <? echo $text_size;?>px;
+												color: <? echo $text_color;?> ; 
+												display:block;
+												margin: 0px 0px 0px 10px;
+												clear:both;">
 								<?php // Club
 									If ($params->get('club')==1)
 									{
-									?>	<h5 class="price-text-color"><?php echo Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_FORE_CLUB') . ', ' . $playground->club_name; ?></h5>	
+									?>	<?php echo Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_FORE_CLUB') . ', ' . $playground->club_name; ?>
 									<?
 									}								
 								?>
+						</div>	
+						<div class="row" style="text-align:left;
+												font-size: <? echo $text_size;?>px;
+												color: <? echo $text_color;?> ; 
+												display:block;
+												margin: 0px 0px 0px 10px;
+												clear:both;">
 								<?php // Visitors
 									If ($params->get('capacity')==1)
 									{
-									?>	<h5 class="price-text-color"><?php echo Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_FORE_CAPACITY') . ', ' . $playground->max_visitors; ?></h5>	
+									?>	<?php echo Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_FORE_CAPACITY') . ', ' . $playground->max_visitors; ?>
 									<?
 									}								
 								?>
+						</div>	
+						<div class="row" style="text-align:left;
+												font-size: <? echo $text_size;?>px;
+												color: <? echo $text_color;?> ; 
+												display:block;
+												margin: 0px 0px 0px 10px;
+												clear:both;">
 								<?php // Address
 									If ($params->get('address')==1)
 									{
-									?>	<h5 class="price-text-color"><?php echo Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_FORE_ADDRESS') . ', ' . $playground->address . '. ' . $playground->city; ?></h5>	
+									?>	<?php echo Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_FORE_ADDRESS') . ', ' . $playground->address . '. ' . $playground->city; ?>
 									<?
 									}								
 								?>								
-
+						</div>
+						<div class="row" style="text-align:left;
+												font-size: <? echo $text_size;?>px;
+												color: <? echo $text_color;?> ; 
+												display:block;
+												margin: 0px 0px 0px 10px;
+												clear:both;">
 								<?php // Gps Location
 									If ($params->get('gps_coor')==1)
 									{
-									?>	<h5 class="price-text-color"><?php echo Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_FORE_GPS') . ', ' . $playground->latitude . ', ' . $playground->longitude; ?></h5>	
+									?>	<?php echo Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_FORE_GPS') . ', ' . $playground->latitude . ', ' . $playground->longitude; ?>	
 									<?
 									}								
 								?>
-								
+						</div>
+						<div class="row" style="text-align:left;
+												font-size: <? echo $text_size;?>px;
+												color: <? echo $text_color;?> ; 
+												display:block;
+												margin: 0px 0px 0px 10px;
+												clear:both;">
 								<?php // Web
 									If ($params->get('web')==1)
 									{
-									?>	<h5 class="price-text-color"><?php echo Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_FORE_WEB') . ', ' . $playground->website; ?></h5>	
+									?>	<?php echo Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_FORE_WEB') . ', ' . $playground->website; ?>	
 									<?
 									}
 								
 								?>	                          
-								
+						</div>
+						<div class="row" style="text-align:left;
+												font-size: <? echo $text_size;?>px;
+												color: <? echo $text_color;?> ; 
+												display:block;
+												margin: 0px 0px 20px 10px;
+												clear:both;">
 								<?php // Game Field type
 									If ($params->get('field_type')==1)
 									{
-									?>	<h5 class="price-text-color"><?php Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_FORE_SURFACE') . ', '  . PlayGround_Surface($playground->extended); ?></h5>	
+									?>	<?php Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_FORE_SURFACE') . ', '  . PlayGround_Surface($playground->extended); ?>
 									<?
 									}
 								
 								?>	 								
-
-                            </div>
+						
+                         </div>
                         </div>
-                    </div>
                 </div>
 				<?PHP
 				$a++;
 			}
+			
+			} // if playgrounds
+			else
+				
+				{
+				  echo Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_NO_PLAYGROUND');	
+				}
+			
 			?>
-        </div>
 
-	</div>
 	<?PHP
 	break;
-}
+	}
+
+ }
+   
 Function PlayGround_Surface($extended)
 {
 

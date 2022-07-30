@@ -114,6 +114,10 @@ class modJSMPlaygroundTicker
 		
 			$estadios = count($result);
 			
+			if ($estadios > 0) 
+			
+			{
+			
 			// Search id's for random values
 		
 			$rands = array();
@@ -127,12 +131,22 @@ class modJSMPlaygroundTicker
 				{
 				$rands[$rand] = $result[$rand]->id;
 				}
-			}				
+			}
+
+            }
+			
 		}
+
+        //echo 'rands' . count($rands);
 
 		$queryparts = array();
 
         // Changed to consider all or only project stadiums
+		
+		if (count($rands) > 0)
+		
+	    {
+		
 		foreach ($rands as $rand)
 		{
 			if ($project = 0)
@@ -153,11 +167,21 @@ class modJSMPlaygroundTicker
 
 		$query = "(" . implode(") UNION ALL (", $queryparts) . ")";
 		
+		//echo $project . '<br>';
 		//echo $query;
 	
 		$db->setQuery($query);
 		$result = $db->loadObjectList();
+		
+		}
+		
+		else
+			
+			{
+				$result = -1;
+			}
 
+        //echo 'result' . $result;
 		return $result;
 
 	}
@@ -204,36 +228,46 @@ class modJSMPlaygroundTicker
 		$result = $db->loadObjectList(); 
 		
 		$estadios = count($result);
-			
-		// Busco los numeros aleatorios y extraigo los campos que me interesan
 		
-		$rands = array();
-		$x     = $params->get('limit', 1);
-
-		while (count($rands) < $x && $estadios > count($rands))
-		{
-			$rand = mt_rand(0, $estadios - 1);
+		if ($estadios > 0 )
 			
-			if (!isset($rands[$rand]))
 			{
-				//echo 'ale :' . $result[$rand]->id;
-				$rands[$rand] = $result[$rand]->id;
+		
+			// Busco los numeros aleatorios y extraigo los campos que me interesan
+		
+			$rands = array();
+			$x     = $params->get('limit', 1);
+
+			while (count($rands) < $x && $estadios > count($rands))
+			{
+				$rand = mt_rand(0, $estadios - 1);
+			
+				if (!isset($rands[$rand]))
+				{
+				
+					$rands[$rand] = $result[$rand]->id;
+				}
 			}
-		}
 
-		$queryparts = array();
+			$queryparts = array();
 
-		foreach ($rands as $rand)
-		{
-			$queryparts[] = "SELECT * FROM #__sportsmanagement_playground WHERE id=" . $rand ;
-		}
+			foreach ($rands as $rand)
+			{
+				$queryparts[] = "SELECT * FROM #__sportsmanagement_playground WHERE id=" . $rand ;
+			}
 
-		$query = "(" . implode(") UNION ALL (", $queryparts) . ")";
+			$query = "(" . implode(") UNION ALL (", $queryparts) . ")";
 		
-		//echo $query;
+			//echo $query;
 		
-		$db->setQuery($query);
-		$result = $db->loadObjectList();							
+			$db->setQuery($query);
+			$result = $db->loadObjectList();							
+			
+			}
+		else
+			{
+			 $result = -1;	
+			}	
 						
 		return $result;
 	}
