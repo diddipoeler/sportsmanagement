@@ -181,6 +181,7 @@ if ($params->get('use_which') <= 1)
 	else
 	{
 		$database->setQuery($query);
+		
 	}
 
 	try
@@ -191,6 +192,7 @@ if ($params->get('use_which') <= 1)
 	{
 		$mainframe->enqueueMessage(__FILE__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
 	}
+	
 }
 
 /**
@@ -286,4 +288,9 @@ if ($params->get('use_which') == 2)
 	{
 		$mainframe->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
 	}
+	
+	
 }
+
+
+

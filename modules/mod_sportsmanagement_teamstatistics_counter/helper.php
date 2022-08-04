@@ -3,11 +3,11 @@
  *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
- * @version    1.0.05
+ * @version    1.1.1
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_teamstatistics_counter
  * @file       helper.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de), llambion
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -67,7 +67,7 @@ class modJSMTeamStatisticsCounter
 		sportsmanagementModelTeamStats::$projectid     = $projectId;
 		sportsmanagementModelTeamStats::$teamid        = $teamId;
 		sportsmanagementModelTeamStats::$projectteamid = $projectTeamId;
-		Factory::getApplication()->input->setVar('p', $projectId);
+//		Factory::getApplication()->input->setVar('p', $projectId); 
 
 		/**
 		 *         Get data
@@ -100,7 +100,7 @@ class modJSMTeamStatisticsCounter
 			'team'    => $team,
 			'stats'   => $stats
 		);
-
+	
 	}
 
 }

@@ -1,11 +1,11 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ * @version    1.1.1
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_birthday
  * @file       default.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de), llambion
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * 
@@ -22,38 +22,41 @@ switch ($mode)
 {
 	/** bootstrap mode template */
 	case 'B':
-    if ( $params->def("load_bootstrap") )
+    if ( $params->def("load_bootstrap") ) // Could be removed, joomla has built in a bootstrap version
     {
 ?>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">	
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">	
 <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>	    
+<!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>	 -->    
 <?php
     }
 		?>
-        
-<div class="row">
-<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-  <ol class="carousel-indicators">
-  <?php
-  $a = 0;
-foreach ($persons AS $person)
-{
-    $active = ($a == 0) ? 'active' : '';
-  ?>
-    <li data-target="#carouselExampleIndicators" data-slide-to="<?php echo $a; ?>" class="<?php echo $active; ?>"></li>
-    <?php
-    $a++;
-}    
-    ?>
-  </ol>
-  <div class="carousel-inner">
-    <?php
-    $a = 0;
-foreach ($persons AS $person)
-{
-$text = htmlspecialchars(sportsmanagementHelper::formatName(null, $person['firstname'], $person['nickname'], $person['lastname'], $params->get("name_format")), ENT_QUOTES, 'UTF-8');
+	
+		<div class="row">
+		<div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+		<div class="carousel-indicators">
+		<?php
+		$text_color = $params->get('text_color');
+		$text_size = $params->get('text_size');
+		$a = 0;
+		foreach ($persons AS $person)
+			{
+				$active = ($a == 0) ? 'active' : '';
+		?>
+				<button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="<?php echo $a; ?>" class="<?php echo $active; ?>" aria-current="true" aria-label="Slide <?php echo $a; ?>"></button>
+		
+		<?php
+				$a++;
+			}    
+		?>
+		</div>
+				<div class="carousel-inner">
+		<?php
+				$a = 0;
+				foreach ($persons AS $person)
+					{
+						$text = htmlspecialchars(sportsmanagementHelper::formatName(null, $person['firstname'], $person['nickname'], $person['lastname'], $params->get("name_format")), ENT_QUOTES, 'UTF-8');
 
 						$active = ($a == 0) ? 'active' : '';
 
@@ -93,41 +96,47 @@ $text = htmlspecialchars(sportsmanagementHelper::formatName(null, $person['first
 						$birthdaytext   = str_replace('%BOLD%', '<b>', $birthdaytext);
 						$birthdaytext   = str_replace('%BOLDEND%', '</b>', $birthdaytext);
     
-    ?>
-<style>
-.w-100 {
-  width: <?php echo $params->get('picture_width'); ?>px !important;
-  height: auto;
-}	    
-</style>
-    <div class="carousel-item <?php echo $active; ?>">
-      <img class="d-block w-100" src="<?php echo $thispic; ?>" style="width:<?php echo $params->get('picture_width'); ?>px;height:auto" alt="<?php echo $text; ?>" />
-    <div class="carousel-caption d-none d-md-block">
-    <h5><?php echo $text; ?></h5>
-    <p><?php echo $birthdaytext; ?></p>
-  </div>
+				?>
+						<style>
+						.w-100 {
+						width: <?php echo $params->get('picture_width'); ?>px !important;
+						height: auto;
+							}	    
+						</style>
+						<div class="carousel-item <?php echo $active; ?>">
+						<img class="d-block w-100" src="<?php echo $thispic; ?>" style="width:<?php echo $params->get('picture_width'); ?>px;height:auto" alt="<?php echo $text; ?>" />
+						<div class="carousel-caption d-none d-md-block">
+						<p style=" 	color: <? echo $text_color;?>;
+									font-size: <? echo $text_size;?>px;
+									font-family: sans-serif; 
+									"> <?php echo $text; ?></p>
+						<p style=" 	color: <? echo $text_color;?>;
+									font-size: <? echo $text_size;?>px;
+									font-family: sans-serif; 
+									"><?php echo $birthdaytext; ?></p>
+						</div>
     
     
-    </div>
+						</div>
     
-    <?php
-    $a++;
-    }
-    ?>
-  </div>
+						<?php
+						$a++;
+					}
+				?>
+		</div>
   
-  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
-  </a>
+		<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+		<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+		<span class="sr-only">Previous</span>
+		</a>
+		<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+		<span class="carousel-control-next-icon" aria-hidden="true"></span>
+		<span class="sr-only">Next</span>
+		</a>
   
-</div>
+		</div>
 
-</div>        
+		</div>        
         
 
 		<?PHP

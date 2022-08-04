@@ -36,197 +36,131 @@
 
 	<config>
 		<fields name="params"
-    addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
+				addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
 
-			<fieldset	name="basic" 
-			description="MOD_SPORTSMANAGEMENT_BASIC_DESC"
-      >
+		<fieldset	name="basic" 
+					description="MOD_SPORTSMANAGEMENT_BASIC_DESC">
 	  
-<field type="extensionversion" version="1.1.0" />
-<field type="extensionauthor" />
-<field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
-<field type="extensionlink" linktype="translate" link="https://www.transifex.com/jsm/sportsmanagement/" />	
-<field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Birthday" />
-<field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
-<field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
-<field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />	
-<field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />	 
+					<field type="extensionversion" version="1.1.1" />
+					<field type="extensionauthor" />
+					<field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
+					<field type="extensionlink" linktype="translate" link="https://www.transifex.com/jsm/sportsmanagement/" />	
+					<field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Birthday" />
+					<field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
+					<field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
+					<field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />	
+					<field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />	 
 	  
-<field name="cfg_which_database" 
-type="extensionradiobutton" 
-default="0"
-class="radio btn-group btn-group-yesno"
-label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
-description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
-<option value="0">JNO</option>
-<option value="1">JYES</option>
-</field>
+					<field 	name="cfg_which_database" 
+							type="extensionradiobutton" 
+							default="0"
+							class="radio btn-group btn-group-yesno"
+							label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
+							description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
+							<option value="0">JNO</option>
+							<option value="1">JYES</option>
+					</field>
 	
-<field name="s" 
-task="seasons" 
-type="dependsql"
-depends="cfg_which_database"
-value_field="cfg_which_database"
-key_field="season_id"
-size="10"
-multiple="multiple"       
-label="COM_SPORTSMANAGEMENT_GLOBAL_SEASON"
-description="COM_SPORTSMANAGEMENT_GLOBAL_SEASON_DESC"
-required="">
-</field>
+					<field 	name="s" 
+							task="seasons" 
+							type="dependsql"
+							depends="cfg_which_database"
+							value_field="cfg_which_database"
+							key_field="season_id"
+							size="10"
+							multiple="multiple"       
+							label="COM_SPORTSMANAGEMENT_GLOBAL_SEASON"
+							description="COM_SPORTSMANAGEMENT_GLOBAL_SEASON_DESC"
+							required="">
+					</field>
 
-<field name="p" 
-task="projects" 
-type="dependsql"
-depends="s"
-key_field="season_id"
-value_field="s"
-required=""
-size="10"
-multiple="multiple"
-label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_PROJECTS_LABEL" 
-description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_PROJECTS_DESCR" />
-<!--				
-<field name="p"
-size="10"
-multiple="multiple" 
-task="projects" 
-type="dependsql"
-depends="s"
-key_field="season_id"
-value_field="s"
-required=""
-label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_PROJECTS_LABEL" 
-description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_PROJECTS_DESCR" />
--->
-				<field 	name="use_fav" 
-        type="extensionradiobutton" 
-        default="1"  
-        class="radio btn-group btn-group-yesno"
-						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_USE_FAVORITE_TEAM_LABEL"
-						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_USE_FAVORITE_TEAM_DESCR">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
-				
-<field name="teams" 
-type="dependsql" 
-default="0" 
-depends="p"
-task="projectteamoptions" 
-key_field="project_id"
-value_field="p"
-slug="true"
-required="false"
-size="10"
-label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_TEAM_IDS_LABEL"
-description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_TEAM_IDS_DESCR" />
-				
-<!--
-<field name="teams" 
-type="dependsql" 
-depends="p"
-task="projectteamoptions" 
-key_field="project_id"
-value_field="p"
-required="false"       
-label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_TEAM_IDS_LABEL" 
-description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_TEAM_IDS_DESCR" />
--->
-				<field name="agegrouplist" type="dependsql" default="0" 
- task="personagegroupoptions"
-					label="MOD_SPORTSMANAGEMENT_AGEGROUP_LABEL"
-					description="MOD_SPORTSMANAGEMENT_AGEGROUP_DESC">
+					<field 	name="p" 
+							task="projects" 
+							type="dependsql"
+							depends="s"
+							key_field="season_id"
+							value_field="s"
+							required=""
+							size="10"
+							multiple="multiple"
+							label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_PROJECTS_LABEL" 
+							description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_PROJECTS_DESCR" />
 
-				</field>
+					<field 	name="use_fav" 
+							type="extensionradiobutton" 
+							default="1"  
+							class="radio btn-group btn-group-yesno"
+							label="MOD_SPORTSMANAGEMENT_BIRTHDAY_USE_FAVORITE_TEAM_LABEL"
+							description="MOD_SPORTSMANAGEMENT_BIRTHDAY_USE_FAVORITE_TEAM_DESCR">
+							<option value="0">JNO</option>
+							<option value="1">JYES</option>
+					</field>
+				
+					<field 	name="teams" 
+							type="dependsql" 
+							default="0" 
+							depends="p"
+							task="projectteamoptions" 
+							key_field="project_id"
+							value_field="p"
+							slug="true"
+							required="false"
+							size="10"
+							label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_TEAM_IDS_LABEL"
+							description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_TEAM_IDS_DESCR" />
+				
+
+					<field 	name="agegrouplist" type="dependsql" default="0" 
+							task="personagegroupoptions"
+							label="MOD_SPORTSMANAGEMENT_AGEGROUP_LABEL"
+							description="MOD_SPORTSMANAGEMENT_AGEGROUP_DESC">
+
+					</field>
 					
-				<field 	name="limit" type="text" default="1"
-						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_MAX_BIRTHDAYS_LABEL" 
-						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_MAX_BIRTHDAYS_DESCR" />
+					<field 	name="limit" type="text" default="1"
+							label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_MAX_BIRTHDAYS_LABEL" 
+							description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_MAX_BIRTHDAYS_DESCR" />
 
-				<field 	name="use_which" type="list" default="0"
-						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_PERSON_TYPES_LABEL"
-						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_PERSON_TYPES_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_BIRTHDAY_PERSON_TYPE_PLAYERS_AND_STAFF</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_BIRTHDAY_PERSON_TYPE_ONLY_PLAYERS</option>
-					<option value="2">MOD_SPORTSMANAGEMENT_BIRTHDAY_PERSON_TYPE_ONLY_STAFF</option>
-				</field>
+					<field 	name="use_which" type="list" default="0"
+							label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_PERSON_TYPES_LABEL"
+							description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_PERSON_TYPES_DESCR">
+							<option value="0">MOD_SPORTSMANAGEMENT_BIRTHDAY_PERSON_TYPE_PLAYERS_AND_STAFF</option>
+							<option value="1">MOD_SPORTSMANAGEMENT_BIRTHDAY_PERSON_TYPE_ONLY_PLAYERS</option>
+							<option value="2">MOD_SPORTSMANAGEMENT_BIRTHDAY_PERSON_TYPE_ONLY_STAFF</option>
+					</field>
 
-				<field 	name="sort_order" type="list" default="-"
-						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SORT_ORDER_SAME_DAY_LABEL"
-						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SORT_ORDER_SAME_DAY_DESCR">
-					<option value="-">MOD_SPORTSMANAGEMENT_BIRTHDAY_SAME_DAY_SORTING_OLDEST_FIRST</option>
-					<option value="+">MOD_SPORTSMANAGEMENT_BIRTHDAY_SAME_DAY_SORTING_YOUNGEST_FIRST</option>
-				</field>
+					<field 	name="sort_order" type="list" default="-"
+							label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SORT_ORDER_SAME_DAY_LABEL"
+							description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SORT_ORDER_SAME_DAY_DESCR">
+							<option value="-">MOD_SPORTSMANAGEMENT_BIRTHDAY_SAME_DAY_SORTING_OLDEST_FIRST</option>
+							<option value="+">MOD_SPORTSMANAGEMENT_BIRTHDAY_SAME_DAY_SORTING_YOUNGEST_FIRST</option>
+					</field>
 
-				<field 	name="maxdays" type="text" default=""
-						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_MAX_DAYS_AHEAD_LABEL" 
-						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_MAX_DAYS_AHEAD_DESCR" />
+					<field 	name="maxdays" type="text" default=""
+							label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_MAX_DAYS_AHEAD_LABEL" 
+							description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_MAX_DAYS_AHEAD_DESCR" />
 
-				<field 	name="Itemid" type="text" default=""
-						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_ITEMID_FOR_LINKS_LABEL" 
-						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_ITEMID_FOR_LINKS_DESCR" />
+					<field 	name="Itemid" type="text" default=""
+							label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_ITEMID_FOR_LINKS_LABEL" 
+							description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_ITEMID_FOR_LINKS_DESCR" />
 <!--
             <field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_BIRTHDAY_SPACER_LAYOUT_SETTINGS" />
 				-->
-<field type="extensionsubtitle" title="MOD_SPORTSMANAGEMENT_BIRTHDAY_SPACER_LAYOUT_SETTINGS" color="#2672a6" />
-				
-    <field name="mode" type="list" default="L" 
-	label="MOD_SPORTSMANAGEMENT_BIRTHDAY_LABEL_MODE"
-	description="MOD_SPORTSMANAGEMENT_BIRTHDAY_DESC_MODE">
-	<option value="L">LIST</option>
-	<option value="B">BOOTSTRAP</option>
-	<option value="J">Jssor Slider</option>
-	</field>
-     
-<field name="load_bootstrap" type="extensionradiobutton" default="0"  class="radio btn-group btn-group-yesno"
-	label="MOD_SPORTSMANAGEMENT_BIRTHDAY_LOAD_BOOTSTRAP" 
-	description="MOD_SPORTSMANAGEMENT_BIRTHDAY_LOAD_BOOTSTRAP_DESCR">
-	<option value="0">JNO</option>
-	<option value="1">JYES</option>
-	</field>
-				
-	<field name="show_player_card" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
-	label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SHOW_PLAYER_CARD_LABEL" 
-	description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SHOW_PLAYER_CARD_DESCR">
-	<option value="0">JNO</option>
-	<option value="1">JYES</option>
-	</field>
+					<field type="extensionsubtitle" title="MOD_SPORTSMANAGEMENT_BIRTHDAY_SPACER_LAYOUT_SETTINGS" color="#2672a6" />
 	 
-				<field name="name_format" type="nameformat"
-						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_NAME_FORMAT_LABEL" 
-						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_NAME_FORMAT_DESCR" />
+					<field 	name="name_format" type="nameformat"
+							label="MOD_SPORTSMANAGEMENT_BIRTHDAY_NAME_FORMAT_LABEL" 
+							description="MOD_SPORTSMANAGEMENT_BIRTHDAY_NAME_FORMAT_DESCR" />
 
-				<field 	name="show_player_flag" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
-						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SHOW_PLAYER_FLAG_LABEL" 
-						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SHOW_PLAYER_FLAG_DESCR">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
 
-				<field 	name="heading_style" type="text" default="sectiontableheader"
-						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_HEADING_STYLE_LABEL"
-						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_HEADING_STYLE_DESCR" />
-
-				<field 	name="show_picture" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
-						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SHOW_PLAYER_PICTURE_LABEL" 
-						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SHOW_PLAYER_PICTURE_DESCR">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
-
-				<field 	name="picture_height" type="text" default="50"
-						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_PICTURE_HEIGHT_LABEL"
-						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_PICTURE_HEIGHT_DESCR" />
-				
-				<field 	name="picture_width" type="text" default="50"
-						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_PICTURE_WIDTH_LABEL"
-						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_PICTURE_WIDTH_DESCR" />
+					<field 	name="heading_style" type="text" default="sectiontableheader"
+							label="MOD_SPORTSMANAGEMENT_BIRTHDAY_HEADING_STYLE_LABEL"
+							description="MOD_SPORTSMANAGEMENT_BIRTHDAY_HEADING_STYLE_DESCR" />
 
 <!--
         <field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_BIRTHDAY_SPACER_CUSTOMIZE_MESSAGES_DESCR" />
 				-->
-<field type="extensionsubtitle" title="MOD_SPORTSMANAGEMENT_BIRTHDAY_SPACER_CUSTOMIZE_MESSAGES_DESCR" color="#2672a6" />
+					<field type="extensionsubtitle" title="MOD_SPORTSMANAGEMENT_BIRTHDAY_SPACER_CUSTOMIZE_MESSAGES_DESCR" color="#2672a6" />
 				
 				<!--
         <field 	name="@spacer" type="spacer" default=""
@@ -266,74 +200,219 @@ description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_TEAM_IDS_DESCR" />
 						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_NO_BIRTHDAY_MESSAGE_DESCR" />
 
 			</fieldset>
-
-      <fieldset name="advanced_front" label="MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_LABEL" description="MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_DESC">
 			
-      <field name="jssor_transition_use" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
-					label="MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_TRANSITION_USE_LABEL" 
-					description="MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_TRANSITION_USE_DESCR">
+	  	<fieldset name="views"
+				  label="MOD_SPORTSMANAGEMENT_BIRTHDAY_VIEW"
+				  description="MOD_SPORTSMANAGEMENT_BIRTHDAY_VIEW_DESC">
+		
+					<field 	name="load_bootstrap" type="extensionradiobutton" default="0"  class="radio btn-group btn-group-yesno"
+							label="MOD_SPORTSMANAGEMENT_BIRTHDAY_LOAD_BOOTSTRAP" 
+							description="MOD_SPORTSMANAGEMENT_BIRTHDAY_LOAD_BOOTSTRAP_DESCR">
+							<option value="0">JNO</option>
+							<option value="1">JYES</option>
+					</field>
+		
+		
+					<field 	name="mode" type="list" default="S" 
+							label="MOD_SPORTSMANAGEMENT_BIRTHDAY_LABEL_MODE"
+							description="MOD_SPORTSMANAGEMENT_BIRTHDAY_DESC_MODE">
+							<option value="L">LIST</option>
+							<option value="B">BOOTSTRAP</option>
+							<option value="J">Jssor Slider</option>
+							<option value="S">Sticker</option>
+					</field>
+					
+					<field name="show_player_card" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+							label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SHOW_PLAYER_CARD_LABEL" 
+							description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SHOW_PLAYER_CARD_DESCR"
+							showon="mode:L">
+							<option value="0">JNO</option>
+							<option value="1">JYES</option>							
+					</field>
+
+					<field 	name="show_picture" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
+							label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SHOW_PLAYER_PICTURE_LABEL" 
+							description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SHOW_PLAYER_PICTURE_DESCR"
+							showon="mode:L">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-      
-      
-      <field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_BIRTHDAY_TRANSITION_HELP" />
-      <field 	name="jssor_transition" 
-        type="textarea" 
-						default="{$Duration:1600,x:1,$Rows:2,$ChessMode:{$Row:3},$Easing:{$Left:$JssorEasing$.$EaseInOutQuart,$Opacity:$JssorEasing$.$EaseLinear},$Opacity:2,$Brother:{$Duration:1600,x:-1,$Rows:2,$ChessMode:{$Row:3},$Easing:{$Left:$JssorEasing$.$EaseInOutQuart,$Opacity:$JssorEasing$.$EaseLinear},$Opacity:2}}"
-						cols="25" rows="5"
-						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_TRANSITION_LABEL"
-						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_TRANSITION_DESCR" />
-			
-			<field name="jssor_playorientation" type="extensionradiobutton" default="1" 
-					label="MOD_SPORTSMANAGEMENT_BIRTHDAY_LABEL_JSSOR_PLAYORIENTATION" 
-					description="MOD_SPORTSMANAGEMENT_BIRTHDAY_DESC_JSSOR_PLAYORIENTATION">
-					<option value="1">MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_PLAYORIENTATION_HORIZENTAL</option>
-					<option value="2">MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_PLAYORIENTATION_VERTICAL</option>
-					<option value="5">MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_PLAYORIENTATION_HORIZENTAL_REVERSE</option>
-					<option value="6">MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_PLAYORIENTATION_VERTICAL_REVERSE</option>
-				</field>
 				
-			<field name="jssor_captiontransitions" type="extensionradiobutton" default="L-R" 
-					label="MOD_SPORTSMANAGEMENT_BIRTHDAY_LABEL_JSSOR_CAPTIONTRANSITIONS" 
-					description="MOD_SPORTSMANAGEMENT_BIRTHDAY_DESC_JSSOR_CAPTIONTRANSITIONS">
-					<option value="L-R">MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_CAPTIONTRANSITIONS_LEFT_TO_RIGHT</option>
-					<option value="R-L">MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_CAPTIONTRANSITIONS_RIGHT_TO_LEFT</option>
-					<option value="T-B">MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_CAPTIONTRANSITIONS_TOP_TO_BOTTOM</option>
-					<option value="B-T">MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_CAPTIONTRANSITIONS_BOTTOM_TO_TOP</option>
-				</field>	
+				<field 	name="show_player_flag" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SHOW_PLAYER_FLAG_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SHOW_PLAYER_FLAG_DESCR"
+						showon="mode:L">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>				
+				
+					
+					
+				<field 	name="picture_height" type="text" default="50"
+						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_PICTURE_HEIGHT_LABEL"
+						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_PICTURE_HEIGHT_DESCR" />
+				
+				<field 	name="picture_width" type="text" default="50"
+						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_PICTURE_WIDTH_LABEL"
+						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_PICTURE_WIDTH_DESCR"
+						showon="mode:B"	/>					
+		
+					<field 	name="border" 
+							type="extensionradiobutton" 
+							default="1"
+							class="radio btn-group btn-group-yesno"
+							label="MOD_SPORTSMANAGEMENT_BIRTHDAY_BORDER" 
+							description="MOD_SPORTSMANAGEMENT_BIRTHDAY_BORDER_DESC"
+							showon="mode:S">
+						<option value="0">JNO</option>
+						<option value="1">JYES</option>
+					</field>
+					
+					<field 	name="border_rounded" 
+							type="extensionradiobutton" 
+							default="1"
+							class="radio btn-group btn-group-yesno"
+							label="MOD_SPORTSMANAGEMENT_BIRTHDAY_BORDER_ROUNDED" 
+							description="MOD_SPORTSMANAGEMENT_BIRTHDAY_BORDER_ROUNDED_DESC"
+							showon="mode:S">
+						<option value="0">JNO</option>
+						<option value="1">JYES</option>
+					</field>
+
+					<field 	name="border_shadow" 
+							type="extensionradiobutton" 
+							default="1"
+							class="radio btn-group btn-group-yesno"
+							label="MOD_SPORTSMANAGEMENT_BIRTHDAY_BORDER_SHADOW" 
+							description="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_BORDER_SHADOW_DESC"
+							showon="mode:S">
+						<option value="0">JNO</option>
+						<option value="1">JYES</option>
+					</field>
+
+					<field 	name="birthday_cake" 
+							type="extensionradiobutton" 
+							default="1"
+							class="radio btn-group btn-group-yesno"
+							label="MOD_SPORTSMANAGEMENT_BIRTHDAY_CAKE" 
+							description="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_CAKE_DESC"
+							showon="mode:S">
+						<option value="0">JNO</option>
+						<option value="1">JYES</option>
+					</field>
+
+					<field 	name="cake_image" 
+							type="accessiblemedia" 
+							directory="stories"
+							showon="mode:S"/>
+					
+					
+					<field name="border_color" type="text" default="#41008a"
+					label="MOD_SPORTSMANAGEMENT_BIRTHDAY_BORDER_COLOR" 
+					description="MOD_SPORTSMANAGEMENT_BIRTHDAY_BORDER_COLOR_DESC"
+					showon="mode:S"/>					
+
+					<field name="background_color" type="text" default="#eee"
+					label="MOD_SPORTSMANAGEMENT_BIRTHDAY_BACK_COLOR" 
+					description="MOD_SPORTSMANAGEMENT_BIRTHDAY_BACK_COLOR_DESC" 
+					showon="mode:S"/>
+
+					<field name="title_color" type="text" default="#000000"
+					label="MOD_SPORTSMANAGEMENT_BIRTHDAY_TITLE_COLOR" 
+					description="MOD_SPORTSMANAGEMENT_BIRTHDAY_TITLE_COLOR_DESC" 
+					showon="mode:S"/>
+					
+					<field name="title_size" type="text" default="18"
+					label="MOD_SPORTSMANAGEMENT_BIRTHDAY_TITLE_SIZE" 
+					description="MOD_SPORTSMANAGEMENT_BIRTHDAY_TITLE_SIZE_DESC"
+					showon="mode:S"/>
+					
+					<field name="text_color" type="text" default="#000000"
+					label="MOD_SPORTSMANAGEMENT_BIRTHDAY_TEXT_COLOR" 
+					description="MOD_SPORTSMANAGEMENT_BIRTHDAY_TEXT_COLOR_DESC"
+					showon="mode:S[OR]mode:B"/>					
+					
+					<field name="text_size" type="text" default="14"
+					label="MOD_SPORTSMANAGEMENT_BIRTHDAY_TEXT_SIZE" 
+					description="MOD_SPORTSMANAGEMENT_BIRTHDAY_TEXT_SIZE_DESC"
+					showon="mode:S[OR]mode:B"/>
+						
+			</fieldset>	
+			
+
+			<fieldset 	name="advanced_front" 
+						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_DESC"
+						showon="mode:J">	
+			
+						<field 	name="jssor_transition_use" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+								label="MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_TRANSITION_USE_LABEL" 
+								description="MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_TRANSITION_USE_DESCR"
+								showon="mode:J">
+								<option value="0">JNO</option>
+								<option value="1">JYES</option>
+						</field>
+      
+      
+						<field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_BIRTHDAY_TRANSITION_HELP" />
+						<field 	name="jssor_transition" 
+								type="textarea" 
+								default="{$Duration:1600,x:1,$Rows:2,$ChessMode:{$Row:3},$Easing:{$Left:$JssorEasing$.$EaseInOutQuart,$Opacity:$JssorEasing$.$EaseLinear},$Opacity:2,$Brother:{$Duration:1600,x:-1,$Rows:2,$ChessMode:{$Row:3},$Easing:{$Left:$JssorEasing$.$EaseInOutQuart,$Opacity:$JssorEasing$.$EaseLinear},$Opacity:2}}"
+								cols="25" rows="5"
+								label="MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_TRANSITION_LABEL"
+								description="MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_TRANSITION_DESCR" 
+								showon="mode:J" />
+			
+						<field 	name="jssor_playorientation" type="extensionradiobutton" default="1" 
+								label="MOD_SPORTSMANAGEMENT_BIRTHDAY_LABEL_JSSOR_PLAYORIENTATION" 
+								description="MOD_SPORTSMANAGEMENT_BIRTHDAY_DESC_JSSOR_PLAYORIENTATION"
+								showon="mode:J">
+								<option value="1">MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_PLAYORIENTATION_HORIZENTAL</option>
+								<option value="2">MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_PLAYORIENTATION_VERTICAL</option>
+								<option value="5">MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_PLAYORIENTATION_HORIZENTAL_REVERSE</option>
+								<option value="6">MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_PLAYORIENTATION_VERTICAL_REVERSE</option>
+						</field>
+				
+						<field 	name="jssor_captiontransitions" type="extensionradiobutton" default="L-R" 
+								label="MOD_SPORTSMANAGEMENT_BIRTHDAY_LABEL_JSSOR_CAPTIONTRANSITIONS" 
+								description="MOD_SPORTSMANAGEMENT_BIRTHDAY_DESC_JSSOR_CAPTIONTRANSITIONS"
+								showon="mode:J">
+								<option value="L-R">MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_CAPTIONTRANSITIONS_LEFT_TO_RIGHT</option>
+								<option value="R-L">MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_CAPTIONTRANSITIONS_RIGHT_TO_LEFT</option>
+								<option value="T-B">MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_CAPTIONTRANSITIONS_TOP_TO_BOTTOM</option>
+								<option value="B-T">MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_CAPTIONTRANSITIONS_BOTTOM_TO_TOP</option>
+						</field>	
 				
 				
 			</fieldset>
 			
 			<fieldset name="advanced">
 
-      <field 	name="table_class" type="list" default="table" 
-		class=""
-				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
-				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
-			<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
-			<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
-			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
-			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
-			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
+					<field 	name="table_class" type="list" default="table" 
+							class=""
+							label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
+							description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
+							<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
+							<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
+							<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
+							<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
+							<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
 			
-		</field>
+					</field>
 		
-					<field
-						name="moduleclass_sfx"
-						default="container-fluid"
-						type="text"
-						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
-						description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+					<field	name="moduleclass_sfx"
+							default="container-fluid"
+							type="text"
+							label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+							description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
 
-				<field 	name="sectiontableentry1" type="text" default="sectiontableentry1"
-						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_PERSON_STYLE_ODD_LABEL"
-						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_PERSON_STYLE_ODD_DESCR" />
+					<field 	name="sectiontableentry1" type="text" default="sectiontableentry1"
+							label="MOD_SPORTSMANAGEMENT_BIRTHDAY_PERSON_STYLE_ODD_LABEL"
+							description="MOD_SPORTSMANAGEMENT_BIRTHDAY_PERSON_STYLE_ODD_DESCR" />
 
-				<field 	name="sectiontableentry2" type="text" default="sectiontableentry2"
-						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_PERSON_STYLE_EVEN_LABEL"
-						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_PERSON_STYLE_EVEN_DESCR" />
+					<field 	name="sectiontableentry2" type="text" default="sectiontableentry2"
+							label="MOD_SPORTSMANAGEMENT_BIRTHDAY_PERSON_STYLE_EVEN_LABEL"
+							description="MOD_SPORTSMANAGEMENT_BIRTHDAY_PERSON_STYLE_EVEN_DESCR" />
 
 			</fieldset>
 		</fields>

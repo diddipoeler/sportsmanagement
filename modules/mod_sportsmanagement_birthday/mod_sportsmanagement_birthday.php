@@ -1,11 +1,11 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ * @version    1.1.1
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_birthday
  * @file       mod_sportsmanagement_birthday.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de), llambion
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -73,6 +73,12 @@ switch ($mode)
 {
 	case 'B':
 		break;
+	case 'S':
+			$attribs['layout'] = 'default_player_sticker';
+			$document->addStyleSheet(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . 'player_sticker.css');
+			$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'administrator/components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css' . '" type="text/css" />' . "\n";
+			$document->addCustomTag($stylelink);
+			break;
 	default:
 		if ($mode == 'L' && $params->get('show_player_card'))
 		{
@@ -114,6 +120,9 @@ switch ($mode)
 	case 'L':
 		$layout = isset($attribs['layout']) ? $attribs['layout'] : 'default';
 		break;
+	case 'S':
+		$layout = isset($attribs['layout']) ? $attribs['layout'] : 'default_player_sticker';
+		break;		
 	case 'J':
 		$html_li    = '';
 		$html_ahref = '';
