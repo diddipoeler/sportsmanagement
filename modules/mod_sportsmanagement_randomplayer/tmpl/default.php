@@ -92,7 +92,7 @@ use Joomla\CMS\Language\Text;
 											width:180px; 
 											height: 230px;
 											background-image: url(<?php echo $picture; ?>);
-								   		    background-size: contain;
+								   		    background-size: cover;
 											position: absolute;
 											background-position: center;
 											background-repeat: no-repeat;

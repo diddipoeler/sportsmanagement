@@ -11,8 +11,7 @@
     <description>MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_XML_DESCRIPTION</description>
 
     <files>
-        <filename module="mod_sportsmanagement_teamstatistics_counter">mod_sportsmanagement_teamstatistics_counter.php
-        </filename>
+        <filename module="mod_sportsmanagement_teamstatistics_counter">mod_sportsmanagement_teamstatistics_counter.php</filename>
         <filename>index.html</filename>
         <filename>helper.php</filename>
 		<filename>update-server.xml</filename>
@@ -34,7 +33,7 @@
 
             <fieldset name="basic" description="MOD_SPORTSMANAGEMENT_BASIC_DESC">
 
-                <field type="extensionversion" version="1.1.0"/>
+                <field type="extensionversion" version="1.1.1"/>
                 <field type="extensionauthor"/>
                 <field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS"/>
                 <field type="extensionlink" linktype="translate" link="https://www.transifex.com/jsm/sportsmanagement/"/>
@@ -228,6 +227,85 @@
                     <option value="1">JYES</option>
                 </field>
             </fieldset>
+			
+	  	<fieldset name="views"
+				  label="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_VIEW"
+				  description="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_VIEW_DESC">	
+				  
+				  
+					<field 	name="mode" type="list" default="S" 
+							label="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_MODE_LABEL"
+							description="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_MODE_DESC">
+							<option value="C">Classic</option>
+							<option value="S">Sticker</option>
+					</field>
+
+
+					<field 	name="border" 
+							type="extensionradiobutton" 
+							default="1"
+							class="radio btn-group btn-group-yesno"
+							label="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_BORDER" 
+							description="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_BORDER_DESC"
+							showon="mode:S">
+						<option value="0">JNO</option>
+						<option value="1">JYES</option>
+					</field>
+					
+					<field 	name="border_rounded" 
+							type="extensionradiobutton" 
+							default="1"
+							class="radio btn-group btn-group-yesno"
+							label="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_BORDER_ROUNDED" 
+							description="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_BORDER_ROUNDED_DESC"
+							showon="mode:S">
+						<option value="0">JNO</option>
+						<option value="1">JYES</option>
+					</field>
+					
+					<field 	name="border_shadow" 
+							type="extensionradiobutton" 
+							default="1"
+							class="radio btn-group btn-group-yesno"
+							label="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_BORDER_SHADOW" 
+							description="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_BORDER_SHADOW_DESC"
+							showon="mode:S">
+						<option value="0">JNO</option>
+						<option value="1">JYES</option>
+					</field>					
+					
+					<field 	name="border_color" type="text" default="#41008a"
+							label="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_BORDER_COLOR" 
+							description="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_BORDER_COLOR_DESC"
+							showon="mode:S"/>					
+
+					<field 	name="background_color" type="text" default="#eee"
+							label="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_BACK_COLOR" 
+							description="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_BACK_COLOR_DESC" 
+							showon="mode:S"/>
+
+					<field 	name="title_color" type="text" default="#000000"
+							label="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_TITLE_COLOR" 
+							description="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_TITLE_COLOR_DESC" 
+							showon="mode:S"/>
+					
+					<field 	name="title_size" type="text" default="18"
+							label="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_TITLE_SIZE" 
+							description="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_TITLE_SIZE_DESC"
+							showon="mode:S"/>
+					
+					<field 	name="text_color" type="text" default="#000000"
+							label="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_TEXT_COLOR" 
+							description="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_TEXT_COLOR_DESC"
+							showon="mode:S"/>					
+					
+					<field 	name="text_size" type="text" default="14"
+							label="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_TEXT_SIZE" 
+							description="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_TEXT_SIZE_DESC"
+							showon="mode:S"/>					
+				  
+		
+		</fieldset>
 
             <fieldset name="advanced">
                 <field name="table_class"
