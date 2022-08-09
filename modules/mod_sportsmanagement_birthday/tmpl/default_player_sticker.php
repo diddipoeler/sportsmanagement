@@ -104,21 +104,41 @@ if (count($persons) > 0)
 		$birthday_cake = $params->get('birthday_cake');
 		$cake_image = $params->get('cake_image');
 		$cake_image = SubStr($cake_image->imagefile,0,Strpos($cake_image->imagefile,'#'));
+		$border = $params->get('border');
+		$border_rounded = $params->get('border_rounded');
+		$border_shadow = $params->get('border_shadow');
+		
+		
+		$style = "";
+		
+		if ($border)
+		 {
+			$style = "border: 1px solid " . $border_color . "; " ;
+			$style = $style . "background-color: " . $background_color . "; " ;
+			if($border_rounded)
+			{
+				$style =  $style . 'border-radius: 20px ; ';
+			}
+			if($border_shadow)
+			{
+				$style =  $style . 'box-shadow: 10px 10px 6px 3px #474747; ';
+			}			
+			
+		 }	
+
+		$style = $style . 'width:250px; ';
+		$style = $style . 'margin: 0px 0px 30px 0px;';
 
 	
 	?>
 		<div>
-		<div class="container-fluid" style="border: 2px solid <? echo $border_color;?>; 
-											background-color: <? echo $background_color;?>; 
-											border-radius: 20px;
-											width:250px; 
+		<div class="container-fluid" style="width:250px; 
 											height: 380px;
 											display: flex;
-											box-shadow: 10px 10px 6px 3px #474747;
-											margin: 0px 0px 30px 0px;
+											<?php echo $style;?> 
 											">
 											
-				<div  style="border: 1px solid <? echo $border_color;?>; 
+				<div  style="border: 1px solid <?php echo $border_color;?>; 
 											background-color: #eee;
 											border-radius: 20px;
 											width:180px; 
@@ -129,14 +149,11 @@ if (count($persons) > 0)
 											background-position: center;
 											background-repeat: no-repeat;
 											margin: 30px 0px 0px 5px;
-											">
-											
-											
-						
+											">					
 
 				</div>
 		
-			<p style="color: <? echo $text_color;?> ; 
+			<p style="color: <?php echo $text_color;?> ; 
 				    font-family: sans-serif;
 					width:180px; 
 					font-size: 18px; 
@@ -144,9 +161,9 @@ if (count($persons) > 0)
 									">	<?php echo $text ?> </p>
 		
 		
-		    <p style="color: <? echo $title_color;?>; 
+		    <p style="color: <?php echo $title_color;?>; 
 				      font-family: sans-serif; 
-					font-size: <? echo $title_size;?>px;
+					font-size: <?php echo $title_size;?>px;
 					position: absolute;
 					writing-mode: tb-rl;
 					transform: rotate(-180deg);
@@ -158,7 +175,6 @@ if (count($persons) > 0)
 					font-size: <? echo $text_size;?>px;
 					position: absolute;
 					margin: 260px 0px 0px 5px;
-			
 									">	<?php echo $person['position_name'] ?> </p>
 									
 									
@@ -167,7 +183,6 @@ if (count($persons) > 0)
 					font-size: <? echo $text_size;?>px;
 					position: absolute;
 					margin: 290px 0px 0px 5px;
-			
 									">	<?php echo $birthdaytext ?> </p>						
 									
 									
@@ -178,7 +193,6 @@ if (count($persons) > 0)
 					margin: 130px 0px 0px -20px;
 					writing-mode: tb-rl;
 					transform: rotate(-180deg);
-			
 									">	<?php echo $person['team_name'] ?> </p>	
 
 			<div  style="	background-color: #eee;
@@ -196,13 +210,9 @@ if (count($persons) > 0)
 		
 			</div>
 		
-		<? 
-		
+		<?php 
 			if ($today and $birthday_cake)
-				
 				{
-					
-		
 		?>
 			<div  style="	border-radius: 30px;
 							width:100px; 
@@ -213,18 +223,15 @@ if (count($persons) > 0)
 							background-position: center;
 							background-repeat: no-repeat;
 							margin: 0px 0px 0px 160px;
-							">
-									
-		
+							">			
 			</div>
-		
-					
-			<?
+			<?php
 				}
 			?>
 		
 		</div>	
-<?	
+	</div>
+<?php	
 	}
 }
 	else
@@ -238,19 +245,19 @@ if (count($persons) > 0)
                         </div>
                     </td>
                 </tr>
-		<?
+		<?php
 		}
 
 
-
-function get_string_between2($string, $start, $end){
+function get_string_between2($string, $start, $end)
+	{
     $string = ' ' . $string;
     $ini = strpos($string, $start);
     if ($ini == 0) return '';
     $ini += strlen($start);
     $len = strpos($string, $end, $ini) - $ini;
     return substr($string, $ini, $len);
-}
+	}
 
 
 ?>
