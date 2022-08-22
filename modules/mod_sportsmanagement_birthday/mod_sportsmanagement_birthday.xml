@@ -295,7 +295,7 @@
 							default="1"
 							class="radio btn-group btn-group-yesno"
 							label="MOD_SPORTSMANAGEMENT_BIRTHDAY_CAKE" 
-							description="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_CAKE_DESC"
+							description="MOD_SPORTSMANAGEMENT_BIRTHDAY_CAKE_DESC"
 							showon="mode:S">
 						<option value="0">JNO</option>
 						<option value="1">JYES</option>
@@ -305,6 +305,29 @@
 							type="accessiblemedia" 
 							directory="stories"
 							showon="mode:S"/>
+					
+					<field 	name="show_team" 
+							type="extensionradiobutton" 
+							default="1"
+							class="radio btn-group btn-group-yesno"
+							label="MOD_SPORTSMANAGEMENT_BIRTHDAY_TEAM_NAME" 
+							description="MOD_SPORTSMANAGEMENT_BIRTHDAY_TEAM_NAME_DESC"
+							showon="mode:S">
+						<option value="0">JNO</option>
+						<option value="1">JYES</option>
+					</field>					
+
+					<field 	name="show_project" 
+							type="extensionradiobutton" 
+							default="1"
+							class="radio btn-group btn-group-yesno"
+							label="MOD_SPORTSMANAGEMENT_BIRTHDAY_PROJECT_NAME" 
+							description="MOD_SPORTSMANAGEMENT_BIRTHDAY_PROJECT_NAME_DESC"
+							showon="mode:S">
+						<option value="0">JNO</option>
+						<option value="1">JYES</option>
+					</field>	
+					
 					
 					
 					<field name="border_color" type="text" default="#41008a"

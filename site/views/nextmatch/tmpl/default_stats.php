@@ -434,6 +434,7 @@ $this->chances[1] = '';
     </table>
     <!-- gesamtübersicht der spiele gegeneinander nach ligen  -->
     <h4><?php echo $this->teams[0]->name . " " . Text::_("COM_SPORTSMANAGEMENT_NEXTMATCH_VS") . " " . $this->teams[1]->name; ?></h4>
+	<h4><?php echo Text::_("COM_SPORTSMANAGEMENT_NEXTMATCH_DATA_OF") . ' ' . $this->teams[0]->name;?> </h4>
     <table class="table table-striped">
         <thead>
         <tr>
@@ -506,19 +507,97 @@ $this->chances[1] = '';
 		?>
     </table>
 
-    <h4><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY_COUNT_RESULT'); ?></h4>
-    <div class="panel-group" id="countresult">
+   <table class="table table-striped">
+        <thead>
+        <tr>
+            <td>
+				<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_LEAGUE'); ?>
+            </td>
+            <td>
+				<?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_LOCAL_WINS'); ?>
+            </td>
+            <td>
+				<?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_LOCAL_DRAWS'); ?>
+            </td>
+            <td>
+				<?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_LOCAL_LOSTS'); ?>
+            </td>
+            <td>
+				<?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_AWAY_WINS'); ?>
+            </td>
+            <td>
+				<?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_AWAY_DRAWS'); ?>
+            </td>
+            <td>
+				<?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_AWAY_LOSTS'); ?>
+            </td>
+        </tr>
+        </thead>
+		<?php
+		foreach ($this->gesamtspiele as $key => $value)
+		{
+			?>
+            <tr>
+                <td>
+					<?php
+					echo $key;
+					?>
+                </td>
+                <td>
+					<?php
+					echo $value->localwin;
+					?>
+                </td>
+                <td>
+					<?php
+					echo $value->localdraw;
+					?>
+                </td>
+                <td>
+					<?php
+					echo $value->locallost;
+					?>
+                </td>
+                <td>
+					<?php
+					echo $value->awaywin;
+					?>
+                </td>
+                <td>
+					<?php
+					echo $value->awaydraw;
+					?>
+                </td>
+                <td>
+					<?php
+					echo $value->awaylost;
+					?>
+                </td>
+            </tr>
+			<?php
+		}
+		?>
+    </table>
 
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#countresult"
-                       href="#countall"><?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_OVERALL'); ?></a>
-                </h4>
-            </div>
-            <div id="countall" class="panel-collapse collapse">
-                <div class="panel-body">
-                    <table class="table <?php echo $this->config['table_class'] ?>">
+    <h4><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY_COUNT_RESULT'); ?></h4>
+	
+	<div class="d-flex align-items-start">
+		<div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+			<button class="nav-link active" id="v-pills-countall-tab" data-bs-toggle="pill" data-bs-target="#v-pills-countall" type="button" role="tab" aria-controls="v-pills-countall" aria-selected="true"><?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_OVERALL'); ?></button>
+			<button class="nav-link" id="v-pills-counthome-tab" data-bs-toggle="pill" data-bs-target="#v-pills-counthome" type="button" role="tab" aria-controls="v-pills-counthome" aria-selected="false"><?php echo $this->teams[0]->name . " " . Text::_("COM_SPORTSMANAGEMENT_NEXTMATCH_VS") . " " . $this->teams[1]->name; ?></button>
+			<button class="nav-link" id="v-pills-countaway-tab" data-bs-toggle="pill" data-bs-target="#v-pills-countaway" type="button" role="tab" aria-controls="v-pills-countaway" aria-selected="false"><?php echo $this->teams[1]->name . " " . Text::_("COM_SPORTSMANAGEMENT_NEXTMATCH_VS") . " " . $this->teams[0]->name; ?></button>
+		</div>
+	
+	<div class="tab-content" id="v-pills-tabContent">
+
+		<div class="tab-pane fade show active" id="v-pills-countall" role="tabpanel" aria-labelledby="v-pills-countall-tab">
+			<table class="table table-striped">
+						<tr>
+							<td> <?php echo Text::_('COM_SPORTSMANAGEMENT_RESULTS_SCORE'); ?>
+							</td>
+							<td> <?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_SCORE_FRECUENCY'); ?>
+							</td>
+						</tr>	
 						<?php
 						ksort($this->statgames['gesamt']);
 
@@ -540,22 +619,17 @@ $this->chances[1] = '';
 							<?php
 						}
 						?>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#countresult"
-                       href="#counthome"><?php echo $this->teams[0]->name . " " . Text::_("COM_SPORTSMANAGEMENT_NEXTMATCH_VS") . " " . $this->teams[1]->name; ?></a>
-                </h4>
-            </div>
-            <div id="counthome" class="panel-collapse collapse">
-                <div class="panel-body">
-                    <table class="table <?php echo $this->config['table_class'] ?>">
+			</table>
+		</div>
+		
+		<div class="tab-pane fade" id="v-pills-counthome" role="tabpanel" aria-labelledby="v-pills-counthome-tab">
+			<table class="table table-striped">
+						<tr>
+							<td> <?php echo Text::_('COM_SPORTSMANAGEMENT_RESULTS_SCORE'); ?>
+							</td>
+							<td> <?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_SCORE_FRECUENCY'); ?>
+							</td>
+						</tr>				
 						<?php
 						ksort($this->statgames['home']);
 
@@ -577,21 +651,17 @@ $this->chances[1] = '';
 							<?php
 						}
 						?>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#countresult"
-                       href="#countaway"><?php echo $this->teams[1]->name . " " . Text::_("COM_SPORTSMANAGEMENT_NEXTMATCH_VS") . " " . $this->teams[0]->name; ?></a>
-                </h4>
-            </div>
-            <div id="countaway" class="panel-collapse collapse">
-                <div class="panel-body">
-                    <table class="table <?php echo $this->config['table_class'] ?>">
+			</table>
+		</div>
+		
+		<div class="tab-pane fade" id="v-pills-countaway" role="tabpanel" aria-labelledby="v-pills-countaway-tab">
+			<table class="table table-striped">
+						<tr>
+							<td> <?php echo Text::_('COM_SPORTSMANAGEMENT_RESULTS_SCORE'); ?>
+							</td>
+							<td> <?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_SCORE_FRECUENCY'); ?>
+							</td>
+						</tr>				
 						<?php
 						ksort($this->statgames['away']);
 
@@ -613,10 +683,10 @@ $this->chances[1] = '';
 							<?php
 						}
 						?>
-                    </table>
-                </div>
-            </div>
-        </div>
+			</table>
+		</div>	
+	</div>
+	
 
     </div>
 </div>
