@@ -51,7 +51,7 @@ $filename   = $params->get('filename', 'rquotes.txt');
 $randomtext = $params->get('randomtext');
 
 // Database params
-$style         = $params->get('style', 'default');
+$style         = $params->get('template', 'default');
 $category      = $params->get('category', '');
 $rotate        = $params->get('rotate');
 $num_of_random = $params->get('num_of_random');

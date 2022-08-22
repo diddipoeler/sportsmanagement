@@ -114,78 +114,78 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
 		$this->gesamtspiele = array();
         if ($this->games)
 		{
-
 			foreach ($this->games as $game)
 			{
-
-if ( !array_key_exists($game->leaguename, $this->gesamtspiele)) {
-$this->gesamtspiele[$game->leaguename] = new stdClass;
-$this->gesamtspiele[$game->leaguename]->gesamtspiele = 0;
-$this->gesamtspiele[$game->leaguename]->gewonnen = 0;
-$this->gesamtspiele[$game->leaguename]->verloren = 0;
-$this->gesamtspiele[$game->leaguename]->unentschieden = 0;
-
-$this->gesamtspiele[$game->leaguename]->plustore = 0;
-$this->gesamtspiele[$game->leaguename]->minustore = 0;
-}
+				if ( isset($game->team1_result) and isset($game->team2_result) )
+				{
+			      //echo 'valores no nulos en resultado' .'</br>';
+				  if ( !array_key_exists($game->leaguename, $this->gesamtspiele))
+					{
+						//echo 'creo array' . '</br>';	
+						$this->gesamtspiele[$game->leaguename] = new stdClass;
+						$this->gesamtspiele[$game->leaguename]->gesamtspiele = 0;
+						$this->gesamtspiele[$game->leaguename]->gewonnen = 0;
+						$this->gesamtspiele[$game->leaguename]->verloren = 0;
+						$this->gesamtspiele[$game->leaguename]->unentschieden = 0;
+						$this->gesamtspiele[$game->leaguename]->plustore = 0;
+						$this->gesamtspiele[$game->leaguename]->minustore = 0;
+						$this->gesamtspiele[$game->leaguename]->localwin = 0;
+						$this->gesamtspiele[$game->leaguename]->localdraw = 0;
+						$this->gesamtspiele[$game->leaguename]->locallost = 0;
+						$this->gesamtspiele[$game->leaguename]->awaywin = 0;
+						$this->gesamtspiele[$game->leaguename]->awaydraw = 0;
+						$this->gesamtspiele[$game->leaguename]->awaylost = 0;
+					}
 
 				$this->gesamtspiele[$game->leaguename]->gesamtspiele += 1;
-
+					
 				if ($game->team1_id == $this->teams[0]->id)
-				{
-				    if ( isset($game->team1_result) && isset($game->team2_result) )
-				{
-					if ($game->team1_result != null && $game->team2_result != null)
-					{
+					{  
 						if ($game->team1_result > $game->team2_result)
 						{
 							$this->gesamtspiele[$game->leaguename]->gewonnen += 1;
+							$this->gesamtspiele[$game->leaguename]->localwin += 1;
 						}
 
 						if ($game->team1_result < $game->team2_result)
 						{
 							$this->gesamtspiele[$game->leaguename]->verloren += 1;
+							$this->gesamtspiele[$game->leaguename]->localdraw += 1;
 						}
 
 						if ($game->team1_result == $game->team2_result)
 						{
 							$this->gesamtspiele[$game->leaguename]->unentschieden += 1;
+							$this->gesamtspiele[$game->leaguename]->locallost += 1;
 						}
 
 						$this->gesamtspiele[$game->leaguename]->plustore  += $game->team1_result;
 						$this->gesamtspiele[$game->leaguename]->minustore += $game->team2_result;
 					}
-                    }
-				}
-				elseif ($game->team2_id == $this->teams[0]->id)
-				{
-				    if ( isset($game->team1_result) && isset($game->team2_result) )
-				{
-					if ($game->team1_result != null && $game->team2_result != null)
+				if ($game->team2_id == $this->teams[0]->id)
 					{
 						if ($game->team1_result < $game->team2_result)
 						{
 							$this->gesamtspiele[$game->leaguename]->gewonnen += 1;
+							$this->gesamtspiele[$game->leaguename]->awaywin += 1;
 						}
 
 						if ($game->team1_result > $game->team2_result)
 						{
 							$this->gesamtspiele[$game->leaguename]->verloren += 1;
+							$this->gesamtspiele[$game->leaguename]->awaydraw += 1;
 						}
 
 						if ($game->team1_result == $game->team2_result)
 						{
 							$this->gesamtspiele[$game->leaguename]->unentschieden += 1;
+							$this->gesamtspiele[$game->leaguename]->awaylost += 1;
 						}
 
 						$this->gesamtspiele[$game->leaguename]->plustore  += $game->team2_result;
 						$this->gesamtspiele[$game->leaguename]->minustore += $game->team1_result;
 					}
-                    }
-				}
-                
-                if ( isset($game->team1_result) && isset($game->team2_result) )
-				{
+
 				if (!isset($this->statgames['home'][$game->team1_result . '-' . $game->team2_result]))
 				{
 					$this->statgames['home'][$game->team1_result . '-' . $game->team2_result] = 0;
@@ -216,7 +216,11 @@ $this->gesamtspiele[$game->leaguename]->minustore = 0;
 					$this->statgames['away'][$game->team1_result . '-' . $game->team2_result]   += 1;
 					$this->statgames['gesamt'][$game->team2_result . '-' . $game->team1_result] += 1;
 				}
-                }
+                				
+
+				
+				}	
+				
 			}
 		}
 

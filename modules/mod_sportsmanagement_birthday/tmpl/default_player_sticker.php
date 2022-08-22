@@ -107,6 +107,8 @@ if (count($persons) > 0)
 		$border = $params->get('border');
 		$border_rounded = $params->get('border_rounded');
 		$border_shadow = $params->get('border_shadow');
+		$show_team = $params->get('show_team');
+		$show_project = $params->get('show_project');
 		
 		
 		$style = "";
@@ -161,14 +163,23 @@ if (count($persons) > 0)
 									">	<?php echo $text ?> </p>
 		
 		
-		    <p style="color: <?php echo $title_color;?>; 
-				      font-family: sans-serif; 
-					font-size: <?php echo $title_size;?>px;
-					position: absolute;
-					writing-mode: tb-rl;
-					transform: rotate(-180deg);
-					margin: 110px 0px 0px 185px;
-									">	<?php echo SubStr($person['project_slug'],strpos($person['project_slug'],":")+1); ?> </p>						
+		    <?php
+		
+			if ($show_project)
+				{
+				?>
+					<p style="color: <?php echo $title_color;?>; 
+							font-family: sans-serif; 
+							font-size: <?php echo $title_size;?>px;
+							position: absolute;
+							writing-mode: tb-rl;
+							transform: rotate(-180deg);
+							margin: 110px 0px 0px 185px;
+											">	<?php echo SubStr($person['project_slug'],strpos($person['project_slug'],":")+1); ?> </p>						
+				<?php							
+				}
+
+			?>
 
 			<p style="color: <? echo $text_color;?>; 
 				      font-family: sans-serif; 
@@ -186,14 +197,25 @@ if (count($persons) > 0)
 									">	<?php echo $birthdaytext ?> </p>						
 									
 									
-            <p style="color: <? echo $title_color;?>; 
-				      font-family: sans-serif; 
-					font-size: <? echo $title_size;?>px;
-					position: absolute;
-					margin: 130px 0px 0px -20px;
-					writing-mode: tb-rl;
-					transform: rotate(-180deg);
-									">	<?php echo $person['team_name'] ?> </p>	
+		    <?php
+		
+			if ($show_team)
+				{
+				?>									
+									
+					<p style="color: <? echo $title_color;?>; 
+							font-family: sans-serif; 
+							font-size: <? echo $title_size;?>px;
+							position: absolute;
+							margin: 130px 0px 0px -20px;
+							writing-mode: tb-rl;
+							transform: rotate(-180deg);
+											">	<?php echo $person['team_name'] ?> </p>	
+				<?php							
+				}
+
+			?>
+
 
 			<div  style="	background-color: #eee;
 							border-radius: 30px;
