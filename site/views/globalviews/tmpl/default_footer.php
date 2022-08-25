@@ -83,7 +83,7 @@ Joomla.popupWindow = function(mypage, myname, w, h, scroll) {
     <img src="<?php echo Uri::root(true); ?>/components/com_sportsmanagement/assets/images/fussballineuropa.png"
          width="<?PHP echo $logo_width; ?>" height="auto"></a>
 	<?php echo Text::_("COM_SPORTSMANAGEMENT_COPYRIGHT"); ?> : &copy;
-    <a href="http://www.fussballineuropa.de" target="_blank">Fussball in Europa</a>
+    <a href="https://www.fussballineuropa.de" target="_blank">Fussball in Europa</a>
     <br/>
 	<?php
 	if ($show_facebook_link == 3)
