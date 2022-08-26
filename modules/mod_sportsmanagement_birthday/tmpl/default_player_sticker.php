@@ -5,7 +5,7 @@
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_birthday
  * @file       default_play_card.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de), llambion
+ * @author     diddipoeler (diddipoeler@gmx.de), stony, svdoldie und donclumsy , llambion
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -85,16 +85,14 @@ if (count($persons) > 0)
 		}
 
 		$text           = htmlspecialchars(sportsmanagementHelper::formatName(null, $person['firstname'], $person['nickname'], $person['lastname'], $params->get("name_format")), ENT_QUOTES, 'UTF-8');
-		$usedname       = $flag . $text;
+		$flag = JSMCountries::getCountryFlag($person['country']);
+		$flag_url = get_string_between2($flag, '"', '"');
+        $usedname       = $flag . $text;
 		$params_com     = ComponentHelper::getParams('com_sportsmanagement');
-		$usefontawesome = $params_com->get('use_fontawesome');
-
-		$showname = HTMLHelper::link($person_link, $usedname);
-	
+		$usefontawesome = $params_com->get('use_fontawesome');        
+		$showname = HTMLHelper::link($person_link, $usedname);	
 		$picture = $person['default_picture'];
 	
-		$flag = JSMCountries::getCountryFlag($person['country']);
-		$flag_url = get_string_between2($flag, '"', '"'); 
 		$border_color = $params->get('border_color');
 		$background_color = $params->get('background_color');
 		$text_color = $params->get('text_color');
@@ -186,7 +184,7 @@ if (count($persons) > 0)
 					font-size: <? echo $text_size;?>px;
 					position: absolute;
 					margin: 260px 0px 0px 5px;
-									">	<?php echo $person['position_name'] ?> </p>
+									">	<?php echo Text::_($person['position_name']) ?> </p>
 									
 									
 			<p style="color: <? echo $text_color;?>; 
