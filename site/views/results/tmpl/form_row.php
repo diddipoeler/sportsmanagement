@@ -312,7 +312,7 @@ $time = strftime("%H:%M", strtotime($time));
 		}
 
 
-		if (!isset($team2->projectteamid))
+		if ( !property_exists($team2,"projectteamid") )
 		{
 			$team2->projectteamid = 0;
 		}
