@@ -89,10 +89,13 @@ $time = strftime("%H:%M", strtotime($time));
 
 		if ($thismatch->checked_out && $thismatch->checked_out != $my->id)
 		{
-			$db    = Factory::getDBO();
-			$query = "	SELECT username
-				FROM #__users
-				WHERE id=" . $match->checked_out;
+			$db = Factory::getDBO();
+            $query = $db->getQuery(true);
+            $query->clear(); 
+            $query->select('username');
+            $query->from('#__users');
+            $query->where('id = ' . $match->checked_out);
+                            
 			$db->setQuery($query);
 			$username = $db->loadResult();
 			?>
@@ -312,7 +315,11 @@ $time = strftime("%H:%M", strtotime($time));
 		}
 
 
-		if ( !property_exists($team2,"projectteamid") )
+        if(!isset($team2))
+        {
+        $team2 = new stdClass;
+        }
+        if ( !property_exists($team2,"projectteamid") )
 		{
 			$team2->projectteamid = 0;
 		}
