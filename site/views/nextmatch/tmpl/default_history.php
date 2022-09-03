@@ -296,6 +296,13 @@ $this->alloverevents[ (int) $event->playerid ]->events = array();
 
 foreach ( $this->overallevents as $overallevents )
 {
+    
+if ( !property_exists($overallevents,"name") )
+{
+$overallevents->name = '';
+$overallevents->icon = '';
+}
+            
 $this->alloverevents[ (int) $event->playerid ]->events[$overallevents->id]->name = $overallevents->name;
 $this->alloverevents[ (int) $event->playerid ]->events[$overallevents->id]->eventtype_name = $overallevents->name;  
 $this->alloverevents[ (int) $event->playerid ]->events[$overallevents->id]->icon = $overallevents->icon;
