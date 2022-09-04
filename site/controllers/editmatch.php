@@ -71,12 +71,14 @@ class sportsmanagementControllerEditMatch extends FormController
 		return parent::getModel($name, $prefix, array('ignore_request' => false));
 	}
 
+
 	/**
 	 * sportsmanagementControllerEditMatch::cancel()
-	 *
+	 * 
+	 * @param mixed $key
 	 * @return
 	 */
-	public function cancel()
+	public function cancel($key = null)
 	{
 		$msg = 'cancel';
 		$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);
