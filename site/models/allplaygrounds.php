@@ -117,6 +117,12 @@ class sportsmanagementModelallplaygrounds extends ListModel
 		$query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = t.id');
 		$query->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
 		$query->join('INNER', '#__sportsmanagement_project AS p ON p.id = pt.project_id');
+        
+        if ( $this->use_current_season )
+        {
+            
+            
+        }
 
 		if ($this->getState('filter.search'))
 		{
