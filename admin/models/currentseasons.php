@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage currentseasons
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Component\ComponentHelper;
 
 /**
@@ -42,10 +38,7 @@ class sportsmanagementModelcurrentseasons extends JSMModelList
 			'p.name'
 		);
 
-		// $config['dbo'] = sportsmanagementHelper::getDBConnection();
 		parent::__construct($config);
-
-		//                $getDBConnection = sportsmanagementHelper::getDBConnection();
 		parent::setDbo($this->jsmdb);
 	}
 
@@ -72,11 +65,9 @@ class sportsmanagementModelcurrentseasons extends JSMModelList
 	{
 		$filter_season = ComponentHelper::getParams($this->jsmoption)->get('current_season', 0);
 
-		// Select some fields
 		$this->jsmquery->clear();
 		$this->jsmquery->select('p.id,p.project_art_id,p.name,st.name AS sportstype,s.name AS season,l.name AS league,l.country AS country,u.name AS editor');
 
-		// From table
 		$this->jsmquery->from('#__sportsmanagement_project AS p');
 		$this->jsmquery->join('LEFT', '#__sportsmanagement_season AS s ON s.id = p.season_id');
 		$this->jsmquery->join('LEFT', '#__sportsmanagement_league AS l ON l.id = p.league_id');

@@ -12,6 +12,7 @@
 defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelallplaygrounds
@@ -120,8 +121,12 @@ class sportsmanagementModelallplaygrounds extends ListModel
         
         if ( $this->use_current_season )
         {
-            
-            
+        $filter_season = ComponentHelper::getParams('com_sportsmanagement')->get('current_season', 0);    
+        if ($filter_season)
+		{
+			$filter_season = implode(",", $filter_season);
+			$query->where('p.season_id IN (' . $filter_season . ')');
+		}    
         }
 
 		if ($this->getState('filter.search'))
