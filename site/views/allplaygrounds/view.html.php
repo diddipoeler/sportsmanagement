@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage allplaygrounds
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -22,10 +18,10 @@ if (!defined('JSM_PATH'))
 	DEFINE('JSM_PATH', 'components/com_sportsmanagement');
 }
 
-// Prüft vor Benutzung ob die gewünschte Klasse definiert ist
+/** Prüft vor Benutzung ob die gewünschte Klasse definiert ist */
 if (!class_exists('sportsmanagementHelperHtml'))
 {
-	// Add the classes for handling
+	/** Add the classes for handling */
 	$classpath = JPATH_SITE . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'html.php';
 	JLoader::register('sportsmanagementHelperHtml', $classpath);
 }
@@ -42,11 +38,8 @@ if (!class_exists('sportsmanagementHelperHtml'))
 class sportsmanagementViewallplaygrounds extends sportsmanagementView
 {
 	protected $state = null;
-
 	protected $item = null;
-
 	protected $items = null;
-
 	protected $pagination = null;
 
 	/**
@@ -67,7 +60,7 @@ class sportsmanagementViewallplaygrounds extends sportsmanagementView
 		$this->items      = $this->get('Items');
 		$this->pagination = $this->get('Pagination');
 
-		// Build the html options for nation
+		/** Build the html options for nation */
 		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 
 		if ($res = JSMCountries::getCountryOptions())
@@ -85,14 +78,12 @@ class sportsmanagementViewallplaygrounds extends sportsmanagementView
 			$this->state->get('filter.search_nation')
 		);
 
-		// Set page title
+		/** Set page title */
 		$this->document->setTitle(Text::_('COM_SPORTSMANAGEMENT_ALLPLAYGROUNDS_PAGE_TITLE'));
 
-		$form             = new stdClass;
-		$form->limitField = $this->pagination->getLimitBox();
+		$this->form              = new stdClass;
+		$this->form ->limitField = $this->pagination->getLimitBox();
 		$this->filter     = $this->state->get('filter.search');
-		$this->form       = $form;
-
 		$this->sortDirection = $this->state->get('filter_order_Dir');
 		$this->sortColumn    = $this->state->get('filter_order');
 		$this->lists         = $lists;
