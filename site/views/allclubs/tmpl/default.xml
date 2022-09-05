@@ -88,7 +88,7 @@
             </field>
 
             <field
-                name="table_class" type="radio" default="table"
+                name="table_class" type="list" default="table"
                 class="radio btn-group"
                 label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
                 description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">

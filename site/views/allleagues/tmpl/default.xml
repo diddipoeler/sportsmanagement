@@ -39,9 +39,9 @@
     
             <field
                 name="table_class"
-                type="extensionradiobutton"
-                default="table" 
-                class="radio btn-group"
+                type="list"
+                default="table" layout="joomla.form.field.radio.switcher"
+				class="radio btn-group"
                 label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
                 description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE"
             >
