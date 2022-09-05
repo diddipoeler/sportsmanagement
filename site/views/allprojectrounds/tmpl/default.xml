@@ -16,7 +16,7 @@
      <field name="cfg_which_database" 
     type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
 			<option value="0">JNO</option>
@@ -62,7 +62,7 @@
 		</field>
 		
 <field	name="show_sectionheader" type="radio" default="1" 
-class="radio btn-group btn-group-yesno"
+layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_SECTIONHEADER" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
 			<option value="0">JNO</option>
@@ -70,6 +70,7 @@ class="radio btn-group btn-group-yesno"
 		</field>
 
     <field	name="show_columns" type="radio" default="1" 
+	   layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_COLUMNS" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_COLUMNS">
 			<option value="0">COM_SPORTSMANAGEMENT_1_COLUMNS</option>
@@ -77,21 +78,21 @@ class="radio btn-group btn-group-yesno"
 		</field>
 		
 		<field	name="show_firstroster" type="radio" default="1" 
-		class="radio btn-group btn-group-yesno"
+		layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_HOMEROSTER" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_HOMEEVENTS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		<field	name="show_firstsubst" type="radio" default="1" 
-		class="radio btn-group btn-group-yesno"
+		layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_HOMESUBST" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_HOMEEVENTS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		<field	name="show_firstevents" type="radio" default="1" 
-		class="radio btn-group btn-group-yesno"
+		layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_HOMEEVENTS" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_HOMEEVENTS">
 			<option value="0">JNO</option>
@@ -99,21 +100,21 @@ class="radio btn-group btn-group-yesno"
 		</field>
 		
 		<field	name="show_secondroster" type="radio" default="1" 
-		class="radio btn-group btn-group-yesno"
+		layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_AWAYROSTER" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_AWAYEVENTS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		<field	name="show_secondsubst" type="radio" default="1" 
-		class="radio btn-group btn-group-yesno"
+		layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_AWAYSUBST" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_AWAYEVENTS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		<field	name="show_secondevents" type="radio" default="1" 
-		class="radio btn-group btn-group-yesno"
+		layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_AWAYEVENTS" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_AWAYEVENTS">
 			<option value="0">JNO</option>
@@ -121,7 +122,7 @@ class="radio btn-group btn-group-yesno"
 		</field>
 		
 		<field	name="show_favteaminfo" type="radio" default="0" 
-		class="radio btn-group btn-group-yesno"
+		layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_FAVTEAMINFO" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_FAVTEAMINFO">
 			<option value="0">JNO</option>
