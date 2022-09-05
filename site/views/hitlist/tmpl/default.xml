@@ -12,35 +12,35 @@
 					label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
 					>
 
-          <field name="show_project" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+          <field name="show_project" type="radio" default="1"  layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_PROJECT"
 			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_PROJECT">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
   
-  <field name="show_club" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+  <field name="show_club" type="radio" default="1"  layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_CLUB"
 			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_CLUB">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
   
-  <field name="show_team" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+  <field name="show_team" type="radio" default="1"  layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_TEAM"
 			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_TEAM">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
   
-  <field name="show_person" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+  <field name="show_person" type="radio" default="1"  layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_PERSON"
 			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_PERSON">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
   
-  <field name="show_playground" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+  <field name="show_playground" type="radio" default="1"  layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_PLAYGROUND"
 			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_PLAYGROUND">
 			<option value="0">JNO</option>

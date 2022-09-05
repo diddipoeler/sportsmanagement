@@ -6,8 +6,8 @@
     label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS">
 	
 
-		<field name="show_sectionheader" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_sectionheader" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_SECTIONHEADER"
 			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
 			<option value="0">JNO</option>
@@ -15,7 +15,7 @@
 		</field>
 		
 		<field name="show_clubinfo_tabs" type="list" default="no_tabs"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_RESULT_TABS"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_RESULT_TABS">
 			<option value="no_tabs">COM_SPORTSMANAGEMENT_FES_CLUBINFO_NO_TABS</option>
@@ -23,45 +23,45 @@
 			<option value="show_slider">COM_SPORTSMANAGEMENT_FES_CLUBINFO_SLIDER</option>
 		</field>
 		
-		<field name="show_club_internetadress_picture" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_club_internetadress_picture" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_CLUB_INTERNETADRESS_PICTURE"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_CLUB_INTERNETADRESS_PICTURE">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_fusion" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_fusion" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FUSION"
 			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FUSION">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
-    		<field name="show_founded" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+    		<field name="show_founded" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED"
 			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-				<field name="show_founded_year" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+				<field name="show_founded_year" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED_YEAR"
 			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED_YEAR">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-				<field name="show_dissolved" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+				<field name="show_dissolved" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED"
 			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-				<field name="show_dissolved_year" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+				<field name="show_dissolved_year" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED_YEAR"
 			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED_YEAR">
 			<option value="0">JNO</option>
@@ -73,56 +73,56 @@
 
 
     
-		<field name="show_club_info" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_club_info" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_CLUBINFO"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_CLUBINFO">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
-		<field name="show_club_rssfeed" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_club_rssfeed" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_RSSFEED"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_RSSFEED">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
-		<field name="show_club_kunena_link" type="extensionradiobutton" default="0"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_club_kunena_link" type="radio" default="0"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_CLUB_KUNENA_LINK"
 			description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_SHOW_CLUB_KUNENA_LINK">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
-		<field name="show_extra_fields" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_extra_fields" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_EXTRA_FIELDS"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_EXTRA_FIELDS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
-		<field name="show_extended" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_extended" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_EXTENDED"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_EXTENDED">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
-		<field name="show_extended_geo_values" type="extensionradiobutton" default="0"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_extended_geo_values" type="radio" default="0"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_EXTENDED_GEO"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_EXTENDED_GEO">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
-		<field name="show_maps" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_maps" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_MAPS"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_MAPS">
 			<option value="0">JNO</option>
@@ -130,7 +130,7 @@
 		</field>
 		
 		<field name="show_teams_of_club" type="list" default="1"
-		class="radio btn-group btn-group-yesno"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_TEAMS_CLUB"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_TEAMS_CLUB">
 			<option value="0">JNO</option>
@@ -138,8 +138,8 @@
 			<option value="2">COM_SPORTSMANAGEMENT_SETTINGS_CURRENT_SEASON_TITLE</option>
 		</field>
 		
-		<field name="show_teams_picture" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_teams_picture" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_TEAM_PICTURE"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_TEAM_PICTURE">
 			<option value="0">JNO</option>
@@ -151,32 +151,32 @@
       description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_PICTURE_WIDTH">
 		</field>
 		
-		<field name="show_teams_description_of_club" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_teams_description_of_club" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_TEAMS_DESC_CLUB"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_TEAMS_DESC_CLUB">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
-		<field name="show_teams_shortcut_of_club" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_teams_shortcut_of_club" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_TEAMS_SHORTCUT_CLUB"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_TEAMS_SHORTCUT_CLUB">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
-		<field name="show_teams_trikot_of_club" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_teams_trikot_of_club" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_TEAMS_TRIKOT_CLUB"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_TEAMS_TRIKOT_CLUB">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
-		<field name="show_notes_club" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_notes_club" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_DESCRIPTION"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_DESCRIPTION">
 			<option value="0">JNO</option>
@@ -189,24 +189,24 @@
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
 		
-		<field name="show_club_logo" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_club_logo" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_CLUB_LOGO"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_CLUB_LOGO">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
-		<field name="show_club_logo_copyright" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_club_logo_copyright" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_CLUB_LOGO_COPYRIGHT"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_CLUB_LOGO_COPYRIGHT">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
-		<field name="show_bootstrap_tree" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_bootstrap_tree" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_CLUB_TREE"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_CLUB_TREE">
 			<option value="0">COM_SPORTSMANAGEMENT_FES_CLUBINFO_TREE</option>
@@ -227,24 +227,24 @@
 			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_ASSOC_LOGO_PICTURE_WIDTH">
 		</field>
 
-		<field name="show_route" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_route" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_ROUTE"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_ROUTE">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
-		<field name="show_playgrounds_of_club" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_playgrounds_of_club" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_VENUES_CLUB"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_VENUES_CLUB">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
-		<field name="show_playground_picture" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_playground_picture" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_PLAYGROUND_PARAM_LABEL_SHOW_VENUE_PICTURE"
 			description="COM_SPORTSMANAGEMENT_FES_PLAYGROUND_PARAM_DESCR_SHOW_VENUE_PICTURE">
 			<option value="0">JNO</option>
@@ -256,16 +256,16 @@
 			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PLAYGROUND_PICTURE_WIDTH">
 		</field>
 		
-		<field name="show_club_season_calendar" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_club_season_calendar" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_SEASON"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_SEASON">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
-		<field name="show_club_shirt" type="extensionradiobutton" default="0"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_club_shirt" type="radio" default="0"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_SHIRT"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_SHIRT">
 			<option value="0">JNO</option>

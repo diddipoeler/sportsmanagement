@@ -4,14 +4,14 @@
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
 		group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS" description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
 	
-		<field name="show_sectionheader" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+		<field name="show_sectionheader" type="radio" default="1" layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_SECTIONHEADER"
 			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_referees" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+		<field name="show_referees" type="radio" default="1"  layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_REFEREES_PARAM_LABEL_SHOW_REFEREES"
 			description="COM_SPORTSMANAGEMENT_FES_REFEREES_PARAM_DESCR_SHOW_REFEREES">
 			<option value="0">JNO</option>
@@ -40,7 +40,7 @@
 			<option value="4">COM_SPORTSMANAGEMENT_FES_REFEREES_PARAM_OPTION4_SHOW_BIRTHDAY</option>
 		</field>
 
-		<field name="show_icon" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+		<field name="show_icon" type="radio" default="1" layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_REFEREES_PARAM_LABEL_SHOW_ICON"
 			description="COM_SPORTSMANAGEMENT_FES_REFEREES_PARAM_DESCR_SHOW_ICON">
 			<option value="0">JNO</option>
@@ -59,14 +59,14 @@
 		</field>
 -->
 
-		<field name="link_name" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+		<field name="link_name" type="radio" default="1"  layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_REFEREES_PARAM_LABEL_LINK_NAME"
 			description="COM_SPORTSMANAGEMENT_FES_REFEREES_PARAM_DESCR_LINK_NAME">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field 	name="show_games_count" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+		<field 	name="show_games_count" type="radio" default="1"  layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_REFEREES_PARAM_LABEL_SHOW_GAMES_COUNT" 
 				description="COM_SPORTSMANAGEMENT_FES_REFEREES_PARAM_DESCR_SHOW_GAMES_COUNT">
 			<option value="0">JNO</option>

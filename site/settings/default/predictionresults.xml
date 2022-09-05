@@ -7,7 +7,7 @@
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
 
 <field	name="use_jquery_modal" type="list" default="2"
-		class="radio btn-group btn-group-yesno"
+		layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_USE_JQUERY_MODAL"
 				description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_USE_JQUERY_MODAL">
 			<option value="0">Bootstrap Modal</option>
@@ -43,7 +43,7 @@
 		
 </field>
 		
-		<field	name="show_all_user" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
+		<field	name="show_all_user" type="radio" default="0" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_LABEL_SHOW_ALL_USERS"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_DESCR_SHOW_ALL_USERS">
 			<option value="0">JNO</option>
@@ -56,21 +56,21 @@
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_DESCR_LIMIT_USERS" />
          -->
          
-		<field	name="link_name_to" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
+		<field	name="link_name_to" type="radio" default="0" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_LABEL_LINK_USERS_TO"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_DESCR_LINK_USERS_TO">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-    <field	name="show_pred_group" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
+    <field	name="show_pred_group" type="radio" default="0" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_LABEL_SHOW_PRED_GROUP"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_DESCR_SHOW_PRED_GROUP">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
-		<field	name="show_user_icon" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
+		<field	name="show_user_icon" type="radio" default="0" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_LABEL_SHOW_USERS_ICON"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_DESCR_SHOW_USERS_ICON">
 			<option value="0">JNO</option>
@@ -82,14 +82,14 @@
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PLAYER_PICTURE_WIDTH">
 		</field>
 		
-		<field	name="show_average_points" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+		<field	name="show_average_points" type="radio" default="1" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_LABEL_SHOW_AVERAGE_POINTS"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_DESCR_SHOW_AVERAGE_POINTS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field	name="show_points" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+		<field	name="show_points" type="radio" default="1" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_LABEL_SHOW_POINTS"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_DESCR_SHOW_POINTS">
 			<option value="0">JNO</option>
@@ -106,21 +106,21 @@
             <option value="no_logo">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_NO_LOGO</option>
 		</field>
 		
-    <field	name="show_team_names" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+    <field	name="show_team_names" type="radio" default="1" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_LABEL_SHOW_TEAM_NAMES"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_DESCR_SHOW_TEAM_NAMES">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
-		<field	name="show_help" type="extensionradiobutton" default="0"  class="radio btn-group btn-group-yesno"
+		<field	name="show_help" type="radio" default="0"  layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_LABEL_SHOW_HELP"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_DESCR_SHOW_HELP">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field	name="show_scoring" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+		<field	name="show_scoring" type="radio" default="1" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_LABEL_SHOW_SCORING"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_DESCR_SHOW_SCORING">
 			<option value="0">JNO</option>

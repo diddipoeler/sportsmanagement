@@ -17,8 +17,8 @@
 			
 		</field>
 
-<field name="show_leaguechampionoverview_season" type="extensionradiobutton" default="1"
-class="radio btn-group btn-group-yesno"
+<field name="show_leaguechampionoverview_season" type="radio" default="1"
+layout="joomla.form.field.radio.switcher"
 label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_LEAGUECHAMPION_SEASON" 
 description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_LEAGUECHAMPION_SEASON">
 <option value="0">JNO</option>

@@ -6,7 +6,7 @@
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
 
-		<field	name="show_points" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+		<field	name="show_points" type="radio" default="1"  layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONSRULES_PARAM_LABEL_SHOW_POINTS"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONSRULES_PARAM_DESCR_SHOW_POINTS">
 			<option value="0">JNO</option>
