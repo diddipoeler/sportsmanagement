@@ -5,6 +5,7 @@
 <fieldset name="details"
 label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
 description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
+
 <field
 name="id" 
 type="number" 
@@ -192,7 +193,46 @@ default="6"
 label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_GOALS" 
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_GOALS_DESC"
 />
-                                                                		
+
+<field
+			name="user_ids"
+			type="userlist"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PGAME_USER_IDS"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PGAME_USER_IDS_DESC"
+			multiple="true"
+			size="15"
+			class="inputbox">
+      <option
+				value="">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
+		</field>
+		
+<field
+            name="season"
+            type="seasonlist"
+            label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER"
+            description="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER"
+            required="false"
+        >
+            <option value="">COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER</option>
+        </field>																		
+<field
+			name="project_ids"
+			type="projectlist"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PGAME_PROJECT_IDS"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PGAME_PROJECT_IDS_DESC"
+			multiple="true"
+			size="15"
+			class="inputbox">
+      <option
+				value="">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
+		</field>	
+
+		
+																		
+																		
+																		
 </fieldset>
   
 <fieldset name="help"
