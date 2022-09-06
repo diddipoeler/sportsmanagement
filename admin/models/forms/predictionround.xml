@@ -47,9 +47,10 @@
 
 		<field
 			name="rien_ne_va_plus"
-			type="extensionradiobutton"
+			type="radio"
 			default="0"
 			class="radio btn-group btn-group-yesno"
+			layout="joomla.form.field.radio.switcher"
 			label="rien_ne_va_plus"
 			description="rien_ne_va_plus_DESC"
 			>
