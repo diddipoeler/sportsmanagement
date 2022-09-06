@@ -151,7 +151,7 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JED_LINK_DESC">
 		</field>
 		
 		<field name="cfg_which_media_tool" 
-    type="extensionradiobutton"
+    type="radio"
 			default="imageselect" 
 			layout="joomla.form.field.radio.switcher"
       label="COM_SPORTSMANAGEMENT_SETTINGS_MEDIA_TOOL_TITLE"
