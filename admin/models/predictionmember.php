@@ -462,7 +462,7 @@ try{
 	 * @return boolean    True on success
 	 * @since  1.5.0a
 	 */
-	function publishpredmembers($cid = array(), $publish = 1, $predictionGameID)
+	function publishpredmembers($cid = array(), $publish = 1, $predictionGameID = 0 )
 	{
 		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
