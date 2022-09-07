@@ -67,7 +67,7 @@ class sportsmanagementControllerpredictionmembers extends JSMControllerAdmin
 		$msg   = $model->save_memberlist();
 		if (version_compare(JVERSION, '4.0.0', 'ge'))
 		{
-		//$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);
+		$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);
 		}
 		else
 		{
