@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
  * @package    Sportsmanagement
@@ -83,13 +83,19 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 				$rowproject->approved      = 1;
 				$rowproject->modified      = $date->toSql();
 				$rowproject->modified_by   = $user->get('id');
-
+try{
 				if (!$rowproject->store())
 				{
 				}
 				else
 				{
 				}
+				}
+		catch (Exception $e)
+		{
+        $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+        $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+		}
 			}
 		}
 
