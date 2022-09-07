@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage predictionmember
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
@@ -81,6 +77,11 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 				$rowproject->user_id       = $value;
 				$rowproject->registerDate  = HTMLHelper::date(time(), '%Y-%m-%d %H:%M:%S');
 				$rowproject->approved      = 1;
+				
+				$rowproject->fav_team      = '';
+				$rowproject->champ_tipp      = '';
+				$rowproject->final4_tipp      = '';
+				
 				$rowproject->modified      = $date->toSql();
 				$rowproject->modified_by   = $user->get('id');
 try{
