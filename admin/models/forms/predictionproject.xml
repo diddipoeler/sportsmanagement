@@ -42,10 +42,10 @@ readonly="true"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_MODE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_MODE_DESC">
 	 <option
-				value="0">
+				value="1">
 				COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TIPP</option>
 			<option
-				value="1">
+				value="0">
 				COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TOTO</option>
 			
 		</field>
@@ -58,8 +58,8 @@ default="1"
 size="1"
 label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_OVERVIEW"
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_OVERVIEW_DESC">
-<option	value="0">COM_SPORTSMANAGEMENT_ADMIN_PGAMES_FULL_SEASON</option>
-<option	value="1">COM_SPORTSMANAGEMENT_ADMIN_PGAMES_HALF_SEASON</option>	
+<option	value="1">COM_SPORTSMANAGEMENT_ADMIN_PGAMES_FULL_SEASON</option>
+<option	value="0">COM_SPORTSMANAGEMENT_ADMIN_PGAMES_HALF_SEASON</option>	
 </field>
 
 <!-- punkte  -->
