@@ -87,7 +87,8 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 		$item = $menu->getActive();
         
         //$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($item,true).'</pre>'), 'error');
-        
+        if ( $item )
+	{
         if ( !property_exists($item, 'query') )
 		{
 		$item->query['view'] = '';  
@@ -96,7 +97,7 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 		{
 		$item->id = 0;  
 		}
-
+	}
 		$params = $menu->getParams($item->id);
         
         
