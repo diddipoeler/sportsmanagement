@@ -71,6 +71,22 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 
 			if (!$result)
 			{
+/** Create and populate an object. */
+$profile = new stdClass();
+$profile->prediction_id = $prediction_id;
+$profile->user_id       = $value;
+$profile->registerDate  = HTMLHelper::date(time(), '%Y-%m-%d %H:%M:%S');
+$profile->approved      = 1;
+$profile->fav_team      = '';
+$profile->champ_tipp      = '';
+$profile->final4_tipp      = '';
+$profile->modified      = $date->toSql();
+$profile->modified_by   = $user->get('id');				
+
+try{
+/** Insert the object into the user profile table. */
+$result = Factory::getDbo()->insertObject('#__sportsmanagement_prediction_member', $profile);
+				/**
 				$table                     = 'predictionentry';
 				$rowproject                = Table::getInstance($table, 'sportsmanagementTable');
 				$rowproject->prediction_id = $prediction_id;
@@ -84,13 +100,14 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 				
 				$rowproject->modified      = $date->toSql();
 				$rowproject->modified_by   = $user->get('id');
-try{
+
 				if (!$rowproject->store())
 				{
 				}
 				else
 				{
 				}
+	*/
 				}
 		catch (Exception $e)
 		{
