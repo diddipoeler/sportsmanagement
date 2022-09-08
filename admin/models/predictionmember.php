@@ -46,7 +46,7 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 		$app  = Factory::getApplication();
 		$date = Factory::getDate();
 		$user = Factory::getUser();
-
+$fehler = 0;
 		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
@@ -75,7 +75,7 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 $profile = new stdClass();
 $profile->prediction_id = $prediction_id;
 $profile->user_id       = $value;
-$profile->registerDate  = HTMLHelper::date(time(), '%Y-%m-%d %H:%M:%S');
+$profile->registerDate  = $date->toSql();
 $profile->approved      = 1;
 $profile->fav_team      = '';
 $profile->champ_tipp      = '';
@@ -108,15 +108,17 @@ $result = Factory::getDbo()->insertObject('#__sportsmanagement_prediction_member
 				{
 				}
 	*/
+	
 				}
 		catch (Exception $e)
 		{
         $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
         $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+			$fehler++;
 		}
 			}
 		}
-
+return $fehler;
 	}
 
 
