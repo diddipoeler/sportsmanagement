@@ -420,15 +420,15 @@ class sportsmanagementModelResults extends JSMModelList
 
 			if ($rssDoc != false)
 			{
-				// Channel header and link
+				/** Channel header and link */
 				$feed->title        = $rssDoc->get_title();
 				$feed->link         = $rssDoc->get_link();
 				$feed->description  = $rssDoc->get_description();
-				$feed->image        = null;
+				$feed->image        = new stdclass;
 				$feed->image->url   = '';
 				$feed->image->title = '';
 
-				// Channel image if exists
+				/**  Channel image if exists */
 				if (!is_null($rssDoc->get_image_url()))
 				{
 					$feed->image->url = $rssDoc->get_image_url();
@@ -447,10 +447,10 @@ class sportsmanagementModelResults extends JSMModelList
 					$feed->image->title = '';
 				}
 
-				// Items
+				/** Items */
 				$items = $rssDoc->get_items();
 
-				// Feed elements
+				/** Feed elements */
 				$feed->items = array_slice($items, 0, $rssitems);
 				$lists[]     = $feed;
 			}
