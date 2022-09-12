@@ -64,8 +64,11 @@ use Joomla\CMS\Factory;
 			$temp->event_sum = $value->events[$overallevents->id]->event_sum;  
 			$ranking[] = $temp; 
 		}
+		if ( is_array($ranking) )
+		{
 		/** absteigend sortieren */
 		usort($ranking, function($a, $b) { return $b->event_sum - $a->event_sum; });  
+		}
 	
 		?>
   
