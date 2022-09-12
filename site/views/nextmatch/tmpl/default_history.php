@@ -272,7 +272,8 @@ echo $this->loadTemplate('jsm_notes');
                                             
 //echo '<pre>'.print_r(sportsmanagementModelProject::getProjectEvents(0, Factory::getApplication()->input->getInt('cfg_which_database', 0)),true).'</pre>';                  
 //echo 'events <pre>'.print_r($events,true).'</pre>';                  
-//echo 'subs <pre>'.print_r($subs,true).'</pre>';           
+//echo 'subs <pre>'.print_r($subs,true).'</pre>';   
+					/**
 foreach ($events AS $event)
 {
 //echo 'playerid <pre>'.print_r((int) $event->playerid,true).'</pre>';  
@@ -316,6 +317,7 @@ $this->alloverevents[ (int) $event->playerid ]->events[$overallevents->id]->even
 $this->alloverevents[ (int) $event->playerid ]->events[$event->event_type_id]->eventtype_name = $event->eventtype_name;   
 $this->alloverevents[ (int) $event->playerid ]->events[$event->event_type_id]->event_sum += $event->event_sum;    
 }
+					*/
 //echo 'alloverevents <pre>'.print_r($this->alloverevents,true).'</pre>';                  
                   
                   
