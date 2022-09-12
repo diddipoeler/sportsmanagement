@@ -97,16 +97,34 @@ echo $this->loadTemplate('jsm_notes');
                                         if ($this->config['show_events'])
 					{
 						
-                            if ( isset($game->id) )
-                            {
-							$events = sportsmanagementModelProject::getMatchEvents($game->id, 0, 0, Factory::getApplication()->input->getInt('cfg_which_database', 0));
-							$subs   = sportsmanagementModelProject::getMatchSubstitutions($game->id, Factory::getApplication()->input->getInt('cfg_which_database', 0));
-                            }
-                            else
-                            {
-                            $events = array(); 
-                            $subs = array();   
-                            }
+                        if ( isset($game->id) )
+                        {
+			$events = sportsmanagementModelProject::getMatchEvents($game->id, 0, 0, Factory::getApplication()->input->getInt('cfg_which_database', 0));
+			$subs   = sportsmanagementModelProject::getMatchSubstitutions($game->id, Factory::getApplication()->input->getInt('cfg_which_database', 0));
+                        }
+                        else
+                        {
+                        $events = array(); 
+                        $subs = array();   
+                        }
+						
+foreach ($events AS $event)
+{
+if ( !isset($this->alloverevents[ (int) $event->playerid ] ) )  
+{
+$this->alloverevents[ (int) $event->playerid ] = new stdclass;  
+$this->alloverevents[ (int) $event->playerid ]->name = '';  
+$this->alloverevents[ (int) $event->playerid ]->icon = '';  	
+}  
+$this->alloverevents[ (int) $event->playerid ]->team_id = $event->team_id;  
+$this->alloverevents[ (int) $event->playerid ]->team_name = $event->team_name; 
+$this->alloverevents[ (int) $event->playerid ]->tppicture1 = $event->tppicture1;
+$this->alloverevents[ (int) $event->playerid ]->firstname1 = $event->firstname1;  
+$this->alloverevents[ (int) $event->playerid ]->nickname1 = $event->nickname1;
+$this->alloverevents[ (int) $event->playerid ]->lastname1 = $event->lastname1;
+$this->alloverevents[ (int) $event->playerid ]->picture1 = $event->picture1;  
+$this->alloverevents[ (int) $event->playerid ]->playerid = $event->playerid;   							
+}
 
 							if ($this->config['use_tabs_events'])
 							{
