@@ -27,7 +27,6 @@ use Joomla\CMS\Factory;
 class sportsmanagementViewNextMatch extends sportsmanagementView
 {
 
-
 	/**
 	 * sportsmanagementViewNextMatch::init()
 	 *
@@ -35,7 +34,7 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
 	 */
 	function init()
 	{
-		
+		$this->alloverevents = array();
 		$this->statgames = array();
 		$model           = $this->getModel();
 		$match           = $model->getMatch();
