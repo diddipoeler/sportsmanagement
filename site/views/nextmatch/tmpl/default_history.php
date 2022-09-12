@@ -280,6 +280,8 @@ foreach ($events AS $event)
 if ( !isset($this->alloverevents[ (int) $event->playerid ] ) )  
 {
 $this->alloverevents[ (int) $event->playerid ] = new stdclass;  
+$this->alloverevents[ (int) $event->playerid ]->name = '';  
+$this->alloverevents[ (int) $event->playerid ]->icon = '';  	
 }  
 $this->alloverevents[ (int) $event->playerid ]->team_id = $event->team_id;  
 $this->alloverevents[ (int) $event->playerid ]->team_name = $event->team_name; 
