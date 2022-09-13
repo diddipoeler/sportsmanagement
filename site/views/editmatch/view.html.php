@@ -123,7 +123,7 @@ class sportsmanagementViewEditMatch extends sportsmanagementView
 	{
 		// Projekt schiedsrichter
 		$allreferees = array();
-
+$default_name_format = 0;
 		// $allreferees = $model->getRefereeRoster(0,$this->item->id);
 		$allreferees      = sportsmanagementModelMatch::getRefereeRoster(0, $this->match->id);
 		$inroster         = array();
