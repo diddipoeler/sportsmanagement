@@ -662,7 +662,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		$jinput              = $app->input;
 		$option              = $jinput->getCmd('option');
 		$model               = $this->getModel();
-		$default_name_format = '';
+		$default_name_format = 0;
         $teamname = '';
 		$lists               = array();
 
