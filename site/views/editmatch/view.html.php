@@ -471,7 +471,7 @@ $default_name_format = 0;
 		$app                 = Factory::getApplication();
 		$option              = Factory::getApplication()->input->getCmd('option');
 		$document            = Factory::getDocument();
-		$default_name_format = '';
+		$default_name_format = 0;
 
 		$tid            = Factory::getApplication()->input->getVar('team', '0');
 		$this->tid      = $tid;
