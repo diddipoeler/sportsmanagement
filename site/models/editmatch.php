@@ -109,7 +109,8 @@ class sportsmanagementModelEditMatch extends AdminModel
 		$positions         = sportsmanagementModelMatch::getProjectPositionsOptions(0, 3, $data['project_id']);
 		$data['positions'] = $positions;
 
-		$result = sportsmanagementModelMatch::updateReferees($data);
+		//$result = sportsmanagementModelMatch::updateReferees($data);
+		$result = sportsmanagementModelMatch->updateReferees($data);
 
 		return $result;
 	}
@@ -125,7 +126,8 @@ class sportsmanagementModelEditMatch extends AdminModel
 	{
 		$app                    = Factory::getApplication();
 		$data['staffpositions'] = sportsmanagementModelMatch::getProjectPositionsOptions(0, 2, $data['project_id']);
-		$result                 = sportsmanagementModelMatch::updateStaff($data);
+		//$result                 = sportsmanagementModelMatch::updateStaff($data);
+		$result                 = sportsmanagementModelMatch->updateStaff($data);
 
 		return $result;
 	}
@@ -141,7 +143,8 @@ class sportsmanagementModelEditMatch extends AdminModel
 	{
 		$app               = Factory::getApplication();
 		$data['positions'] = sportsmanagementModelMatch::getProjectPositionsOptions(0, 1, $data['project_id']);
-		$result            = sportsmanagementModelMatch::updateRoster($data);
+		//$result            = sportsmanagementModelMatch::updateRoster($data);
+		$result            = sportsmanagementModelMatch->updateRoster($data);
 
 		return $result;
 	}
