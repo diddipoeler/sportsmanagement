@@ -62,7 +62,7 @@
             description="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TEMPLATE_FRONTEND_DESC">
             <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT</option>
             <option value="clubinfo">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_CLUBINFO</option>
-
+<option value="project">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_PROJECT</option>
         </field>	
 		
         <field
