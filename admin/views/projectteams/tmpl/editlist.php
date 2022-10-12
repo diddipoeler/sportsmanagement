@@ -46,10 +46,13 @@ use Joomla\CMS\Language\Text;
     <fieldset>
         <div class="fltrt">
             <button type="button"
-                    onclick="jQuery('select#project_teamslist > option').prop('selected', 'selected');Joomla.submitform('projectteams.assign', this.form)">
+                    onclick="jQuery('select#project_teamslist > option').prop('selected', 'selected');jQuery('select#project_teamslist_name > option').prop('selected', 'selected');Joomla.submitform('projectteams.assign', this.form)">
 				<?php echo Text::_('JSAVE'); ?></button>
+		<button id="reset" type="button" onclick="this.form.submit()">
+				<?php echo Text::_('JCLEAR'); ?></button>
             <button id="cancel" type="button" onclick="Joomla.submitform('projectteam.cancelmodal', this.form)">
 				<?php echo Text::_('JCANCEL'); ?></button>
+		
         </div>
     </fieldset>
     <div class="col50">
@@ -67,6 +70,13 @@ use Joomla\CMS\Language\Text;
 				?>
             </legend>
             <table class="admintable" border="0">
+                <tr>
+                    <td>
+                    <?php
+						echo $this->lists['countrylist'];
+						?>
+                    </td>
+                    </tr>
                 <tr>
                     <td>
                         <b>
@@ -90,7 +100,7 @@ use Joomla\CMS\Language\Text;
 
                         <input id="moveright" type="button"
                                value="<?php echo Text::_('COM_SPORTSMANAGEMENT_ASSIGN_TEAM_TO_PROJECT'); ?>"
-                               onclick="move_list_items('teamslist','project_teamslist');"/>
+                               onclick="move_list_items('teamslist','project_teamslist','project_teamslist_name');"/>
                         <br/>
                         <input id="moverightall" type="button"
                                value="<?php echo Text::_('COM_SPORTSMANAGEMENT_ASSIGN_TEAM_ALL_TO_PROJECT'); ?>"
@@ -119,12 +129,21 @@ use Joomla\CMS\Language\Text;
 							?>
                         </b>
                         <br/>
-						<?php
-						echo $this->lists['project_teams'];
-						?>
+			<?php
+			echo $this->lists['project_teams'];
+			?>
                     </td>
+			<td>
+			<?php
+			echo $this->lists['project_teamslist_name'];
+			?>	
+			</td>
                 </tr>
             </table>
+		
+<table class="admintable" border="0" id="postteamname">		
+		
+</table>		
         </fieldset>
         <div class="clr"></div>
 
@@ -132,6 +151,7 @@ use Joomla\CMS\Language\Text;
 <input type="hidden" name="option" value="com_sportsmanagement"/>
 <input type="hidden" name="project_id" value="<?php echo $this->project->id; ?>"/>
 <input type="hidden" name="task" value="projectteam.save_matcheslist"/>
+<input type="hidden" name="editlist_season_id" value="<?php echo $this->project->season_id; ?>"/>
 <?php echo HTMLHelper::_('form.token'); ?>
 </div>
 </form>

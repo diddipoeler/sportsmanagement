@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage editmatch
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -94,7 +90,7 @@ $baseurl = "'" . Route::_(Uri::base() . 'index.php?option=com_sportsmanagement')
 							?>
                         </td>
                         <td>
-                            <input onclick="delete_subst(<?php echo $substitution->id; ?>,<?php echo $baseurl; ?>)"
+                            <input onClick="deletesubst(<?php echo $substitution->id; ?>)"
                                    id="deletesubst-<?php echo $substitution->id; ?>" type="button"
                                    class="inputbox button-delete-subst"
                                    value="<?php echo Text::_('JACTION_DELETE'); ?>"/>

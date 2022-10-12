@@ -89,10 +89,13 @@ $time = strftime("%H:%M", strtotime($time));
 
 		if ($thismatch->checked_out && $thismatch->checked_out != $my->id)
 		{
-			$db    = Factory::getDBO();
-			$query = "	SELECT username
-				FROM #__users
-				WHERE id=" . $match->checked_out;
+			$db = Factory::getDBO();
+            $query = $db->getQuery(true);
+            $query->clear(); 
+            $query->select('username');
+            $query->from('#__users');
+            $query->where('id = ' . $match->checked_out);
+                            
 			$db->setQuery($query);
 			$username = $db->loadResult();
 			?>
@@ -312,7 +315,11 @@ $time = strftime("%H:%M", strtotime($time));
 		}
 
 
-		if (!isset($team2->projectteamid))
+        if(!isset($team2))
+        {
+        $team2 = new stdClass;
+        }
+        if ( !property_exists($team2,"projectteamid") )
 		{
 			$team2->projectteamid = 0;
 		}
@@ -474,7 +481,7 @@ $time = strftime("%H:%M", strtotime($time));
             <!-- Edit match events -->
             <td valign="top">
 				<?php
-				$url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid, $thismatch->id, 'editevents', $team1->projectteamid, $datum, null, sportsmanagementModelResults::$cfg_which_database, sportsmanagementModelProject::$seasonid, sportsmanagementModelProject::$roundslug, 0, 'form');
+				$url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid, $thismatch->id, 'editevents', $team1->projectteamid, $datum, null, sportsmanagementModelResults::$cfg_which_database, sportsmanagementModelProject::$seasonid, sportsmanagementModelProject::$roundslug, 0, 'form',$this->doubleevents);
 				?>
                 <!-- Button HTML (to Trigger Modal) -->
 				<?php
@@ -500,7 +507,7 @@ $time = strftime("%H:%M", strtotime($time));
             <!-- Edit match statistics -->
             <td valign="top">
 				<?php
-				$url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid, $thismatch->id, 'editstats', $team1->projectteamid, $datum, null, sportsmanagementModelResults::$cfg_which_database, sportsmanagementModelProject::$seasonid, sportsmanagementModelProject::$roundslug, 0, 'form');
+				$url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid, $thismatch->id, 'editstats', $team1->projectteamid, $datum, null, sportsmanagementModelResults::$cfg_which_database, sportsmanagementModelProject::$seasonid, sportsmanagementModelProject::$roundslug, 0, 'form',$this->doubleevents);
 				?>
                 <!-- Button HTML (to Trigger Modal) -->
 				<?php

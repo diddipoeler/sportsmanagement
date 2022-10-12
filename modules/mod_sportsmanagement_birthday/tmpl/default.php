@@ -1,13 +1,16 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ * @version    1.1.1
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_birthday
  * @file       default.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de), llambion
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * 
+ * https://getbootstrap.com/docs/4.0/components/carousel/
+ * 
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
@@ -17,31 +20,41 @@ use Joomla\CMS\Factory;
 
 switch ($mode)
 {
-	/**
-	 *
-	 * bootstrap mode template
-	 */
+	/** bootstrap mode template */
 	case 'B':
+    if ( $params->def("load_bootstrap") ) // Could be removed, joomla has built in a bootstrap version
+    {
+?>
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">	
+<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>	 -->    
+<?php
+    }
 		?>
-        <div class="row">
-            <!-- Controls -->
-            <div class="controls pull-right hidden-xs">
-                <a class="left fa fa-chevron-left btn btn-primary"
-                   href="#carousel-<?php echo $module->module; ?>-<?php echo $module->id; ?>"
-                   data-slide="prev"></a><a class="right fa fa-chevron-right btn btn-primary"
-                                            href="#carousel-<?php echo $module->module; ?>-<?php echo $module->id; ?>"
-                                            data-slide="next"></a>
-            </div>
-
-            <div id="carousel-<?php echo $module->module; ?>-<?php echo $module->id; ?>"
-                 class="carousel slide hidden-xs" data-ride="carousel">
-                <!-- Wrapper for slides -->
-                <div class="carousel-inner">
-
-					<?PHP
-					$a = 0;
-
-					foreach ($persons AS $person)
+	
+		<div class="row">
+		<div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+		<div class="carousel-indicators">
+		<?php
+		$text_color = $params->get('text_color');
+		$text_size = $params->get('text_size');
+		$a = 0;
+		foreach ($persons AS $person)
+			{
+				$active = ($a == 0) ? 'active' : '';
+		?>
+				<button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="<?php echo $a; ?>" class="<?php echo $active; ?>" aria-current="true" aria-label="Slide <?php echo $a; ?>"></button>
+		
+		<?php
+				$a++;
+			}    
+		?>
+		</div>
+				<div class="carousel-inner">
+		<?php
+				$a = 0;
+				foreach ($persons AS $person)
 					{
 						$text = htmlspecialchars(sportsmanagementHelper::formatName(null, $person['firstname'], $person['nickname'], $person['lastname'], $params->get("name_format")), ENT_QUOTES, 'UTF-8');
 
@@ -82,137 +95,53 @@ switch ($mode)
 						$birthdaytext   = str_replace('%BR%', '<br />', $birthdaytext);
 						$birthdaytext   = str_replace('%BOLD%', '<b>', $birthdaytext);
 						$birthdaytext   = str_replace('%BOLDEND%', '</b>', $birthdaytext);
-						?>
-                        <div class="item <?php echo $active; ?>">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="col-item">
-                                        <div class="photo">
-                                            <img src="<?php echo $thispic; ?>" class="img" alt="<?php echo $text; ?>"
-                                                 width="auto" height="<?php echo $params->get('picture_height'); ?>"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="info">
-                                <div class="row">
-                                    <div class="price col-md-6">
-                                        <h5><?php echo $text; ?></h5>
-
-                                    </div>
-                                    <div class="price col-md-6">
-
-                                        <h5 class="price-text-color"><?php echo $birthdaytext; ?></h5>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-						<?PHP
+    
+				?>
+						<style>
+						.w-100 {
+						width: <?php echo $params->get('picture_width'); ?>px !important;
+						height: auto;
+							}	    
+						</style>
+						<div class="carousel-item <?php echo $active; ?>">
+						<img class="d-block w-100" src="<?php echo $thispic; ?>" style="width:<?php echo $params->get('picture_width'); ?>px;height:auto" alt="<?php echo $text; ?>" />
+						<div class="carousel-caption d-none d-md-block">
+						<p style=" 	color: <? echo $text_color;?>;
+									font-size: <? echo $text_size;?>px;
+									font-family: sans-serif; 
+									"> <?php echo $text; ?></p>
+						<p style=" 	color: <? echo $text_color;?>;
+									font-size: <? echo $text_size;?>px;
+									font-family: sans-serif; 
+									"><?php echo $birthdaytext; ?></p>
+						</div>
+    
+    
+						</div>
+    
+						<?php
 						$a++;
 					}
-					?>
-                </div>
-            </div>
-        </div>
+				?>
+		</div>
+  
+		<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+		<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+		<span class="sr-only">Previous</span>
+		</a>
+		<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+		<span class="carousel-control-next-icon" aria-hidden="true"></span>
+		<span class="sr-only">Next</span>
+		</a>
+  
+		</div>
+
+		</div>        
+        
+
 		<?PHP
 		break;
-	/**
-	 *
-	 * bootstrap mode template
-	 */
-	case 'B2':
-		?>
-        <div id="myBirthday<?php echo $module->id; ?>" class="carousel slide" data-interval="3000" data-ride="carousel">
-            <!-- Indicators -->
-            <ol class="carousel-indicators">
-				<?PHP
-				for ($a = 0; $a < count($persons); $a++)
-				{
-					$active = ($a == 0) ? 'class="active"' : '';
-					?>
-                    <li data-target="#myBirthday<?php echo $module->id; ?>"
-                        data-slide-to="<?php echo $a; ?>" <?php echo $active; ?> ></li></li>
-					<?PHP
-				}
-				?>
-            </ol>
 
-            <!-- Wrapper for slides -->
-            <div class="carousel-inner" role="listbox">
-				<?PHP
-				$a = 0;
-
-				foreach ($persons AS $person)
-				{
-					$active  = ($a == 0) ? 'active' : '';
-					$thispic = "";
-					$text    = htmlspecialchars(sportsmanagementHelper::formatName(null, $person['firstname'], $person['nickname'], $person['lastname'], $params->get("name_format")), ENT_QUOTES, 'UTF-8');
-
-					if ($params->get('show_picture') == 1)
-					{
-						if (file_exists(JPATH_BASE . '/' . $person['picture']) && $person['picture'] != '')
-						{
-							$thispic = $person['picture'];
-						}
-                        elseif (file_exists(JPATH_BASE . '/' . $person['default_picture']) && $person['default_picture'] != '')
-						{
-							$thispic = $person['default_picture'];
-						}
-					}
-
-					switch ($person['days_to_birthday'])
-					{
-						case 0:
-							$whenmessage = $params->get('todaymessage');
-							break;
-						case 1:
-							$whenmessage = $params->get('tomorrowmessage');
-							break;
-						default:
-							$whenmessage = str_replace('%DAYS_TO%', $person['days_to_birthday'], trim($params->get('futuremessage')));
-							break;
-					}
-
-					$birthdaytext   = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
-					$dayformat      = htmlentities(trim($params->get('dayformat')));
-					$birthdayformat = htmlentities(trim($params->get('birthdayformat')));
-					$birthdaytext   = str_replace('%WHEN%', $whenmessage, $birthdaytext);
-					$birthdaytext   = str_replace('%AGE%', $person['age'], $birthdaytext);
-					$birthdaytext   = str_replace('%DATE%', strftime($dayformat, strtotime($person['year'] . '-' . $person['daymonth'])), $birthdaytext);
-					$birthdaytext   = str_replace('%DATE_OF_BIRTH%', strftime($birthdayformat, strtotime($person['date_of_birth'])), $birthdaytext);
-					$birthdaytext   = str_replace('%BR%', '<br />', $birthdaytext);
-					$birthdaytext   = str_replace('%BOLD%', '<b>', $birthdaytext);
-					$birthdaytext   = str_replace('%BOLDEND%', '</b>', $birthdaytext);
-					?>
-                    <div class="item <?php echo $active; ?>">
-                        <img src="<?php echo $thispic; ?>" alt="<?php echo $text; ?>"
-                             width="auto" height="<?php echo $params->get('picture_height'); ?>">
-                        <div class="carousel-caption">
-                            <h3><?php echo $text; ?></h3>
-                            <p><?php echo $birthdaytext; ?></p>
-                        </div>
-                    </div>
-					<?PHP
-					$a++;
-				}
-				?>
-
-            </div>
-            <!-- Left and right controls -->
-            <a class="left carousel-control" href="#myBirthday<?php echo $module->id; ?>" role="button"
-               data-slide="prev">
-                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="right carousel-control" href="#myBirthday<?php echo $module->id; ?>" role="button"
-               data-slide="next">
-                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
-        </div>
-		<?PHP
-		break;
 	default:
 		?>
 

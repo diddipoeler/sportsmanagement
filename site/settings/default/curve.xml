@@ -6,9 +6,9 @@
 
 		
 		<field 	name="show_sectionheader" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="1" 
-		class="radio btn-group btn-group-yesno"
+		layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_SECTIONHEADER" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
 			<option value="0">JNO</option>
@@ -16,9 +16,9 @@
 		</field>
 
 		<field 	name="show_curve" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="1" 
-		class="radio btn-group btn-group-yesno"
+		layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_CURVE_PARAM_LABEL_SHOW_CURVE" 
 				description="COM_SPORTSMANAGEMENT_FES_CURVE_PARAM_DESCR_SHOW_CURVE">
 			<option value="0">JNO</option>
@@ -26,9 +26,9 @@
 		</field>
 
 <field 	name="which_curve" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0" 
-		class="radio btn-group btn-group-yesno"
+		layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_CURVE_PARAM_LABEL_WHICH_CURVE" 
 				description="COM_SPORTSMANAGEMENT_FES_CURVE_PARAM_DESCR_WHICH_CURVE">
 			<option value="0">JNO</option>
@@ -36,9 +36,9 @@
 		</field>
 		
 		<field 	name="show_colorlegend" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="1" 
-		class="radio btn-group btn-group-yesno"
+		layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_CURVE_PARAM_LABEL_SHOW_COLOR" 
 				description="COM_SPORTSMANAGEMENT_FES_CURVE_PARAM_DESCR_SHOW_COLOR">
 			<option value="0">JNO</option>

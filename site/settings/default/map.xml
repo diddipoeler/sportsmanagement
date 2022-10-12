@@ -27,7 +27,7 @@
 			<option value="G_TERRAIN_MAP">COM_SPORTSMANAGEMENT_FES_MAP_PARAM_OPTION3_TYPE
 			</option>
 		</field>
-		<field name="map_ranking_club_icon" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+		<field name="map_ranking_club_icon" type="radio" default="1" layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_LABEL_RANKING_CLUB_ICON" description="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_DESCR_RANKING_CLUB_ICON">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
@@ -35,8 +35,8 @@
 		<field name="map_ranking_club_icon_width" type="text" default="20"
 			label="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_LABEL_RANKING_CLUB_ICON_WIDTH" description="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_DESCR_RANKING_CLUB_ICON_WIDTH">
 		</field>
-		<field name="map_kmlfile" type="extensionradiobutton" default="0"
-		class="radio btn-group btn-group-yesno"
+		<field name="map_kmlfile" type="radio" default="0"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_KMLFILE"
 			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_KMLFILE">
 			<option value="0">JNO</option>
@@ -100,42 +100,42 @@
 			</option>
 		</field>
 
-		<field name="map_type_select" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+		<field name="map_type_select" type="radio" default="1" layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_LABEL_TYPE_SELECT" description="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_DESCR_TYPE_SELECT">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="map_scale" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+		<field name="map_scale" type="radio" default="1"  layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_LABEL_SCALE" description="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_DESCR_SCALE">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_marker" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+		<field name="show_marker" type="radio" default="1"  layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_LABEL_MARKER" description="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_DESCR_MARKER">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="map_inset" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+		<field name="map_inset" type="radio" default="1"  layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_LABEL_INSET" description="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_DESCR_INSET">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="cont_zoom" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+		<field name="cont_zoom" type="radio" default="1"  layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_LABEL_CONT_ZOOM" description="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_DESCR_CONT_ZOOM">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="dblclick_zoom" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+		<field name="dblclick_zoom" type="radio" default="1"  layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_LABEL_DCLICK_ZOOM" description="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_DESCR_DCLICK_ZOOM">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		<field name="center_link" type="extensionradiobutton" default="0"  class="radio btn-group btn-group-yesno"
+		<field name="center_link" type="radio" default="0"  layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_LABEL_CENTER_LINK" description="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_DESCR_CENTER_LINK">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>

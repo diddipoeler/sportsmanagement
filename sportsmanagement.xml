@@ -9,7 +9,7 @@
 	<copyright>Copyright Info</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<!--  The version string is recorded in the components table -->
-	<version>3.15.00</version>
+	<version>4.00.00</version>
 	<!-- The description is optional and defaults to the name -->
 	<description>COM_SPORTSMANAGEMENT_DESCRIPTION</description>
  
@@ -157,6 +157,8 @@
 		
 	</administration>
  
+ 
+ <changelogurl>https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/changelog.xml</changelogurl>
 	<!-- UPDATESERVER DEFINITION -->
 	<updateservers>
 		<!-- Note: No spaces or linebreaks allowed between the server tags -->

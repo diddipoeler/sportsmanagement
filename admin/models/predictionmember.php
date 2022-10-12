@@ -1,8 +1,6 @@
 <?php
 /**
- *
- * SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
- *
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage predictionmember
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
@@ -50,7 +46,7 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 		$app  = Factory::getApplication();
 		$date = Factory::getDate();
 		$user = Factory::getUser();
-
+$fehler = 0;
 		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
@@ -75,12 +71,33 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 
 			if (!$result)
 			{
+/** Create and populate an object. */
+$profile = new stdClass();
+$profile->prediction_id = $prediction_id;
+$profile->user_id       = $value;
+$profile->registerDate  = $date->toSql();
+$profile->approved      = 1;
+$profile->fav_team      = '';
+$profile->champ_tipp      = '';
+$profile->final4_tipp      = '';
+$profile->modified      = $date->toSql();
+$profile->modified_by   = $user->get('id');				
+
+try{
+/** Insert the object into the user profile table. */
+$result = Factory::getDbo()->insertObject('#__sportsmanagement_prediction_member', $profile);
+				/**
 				$table                     = 'predictionentry';
 				$rowproject                = Table::getInstance($table, 'sportsmanagementTable');
 				$rowproject->prediction_id = $prediction_id;
 				$rowproject->user_id       = $value;
 				$rowproject->registerDate  = HTMLHelper::date(time(), '%Y-%m-%d %H:%M:%S');
 				$rowproject->approved      = 1;
+				
+				$rowproject->fav_team      = '';
+				$rowproject->champ_tipp      = '';
+				$rowproject->final4_tipp      = '';
+				
 				$rowproject->modified      = $date->toSql();
 				$rowproject->modified_by   = $user->get('id');
 
@@ -90,9 +107,18 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 				else
 				{
 				}
+	*/
+	
+				}
+		catch (Exception $e)
+		{
+        $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+        $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+			$fehler++;
+		}
 			}
 		}
-
+return $fehler;
 	}
 
 
@@ -455,7 +481,7 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 	 * @return boolean    True on success
 	 * @since  1.5.0a
 	 */
-	function publishpredmembers($cid = array(), $publish = 1, $predictionGameID)
+	function publishpredmembers($cid = array(), $publish = 1, $predictionGameID = 0 )
 	{
 		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');

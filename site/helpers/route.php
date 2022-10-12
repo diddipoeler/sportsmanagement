@@ -39,6 +39,7 @@ class sportsmanagementHelperRoute
 
 	public static $views = array(
 		'about'    => array('cfg_which_database' => '', 's' => '', 'p' => '' ),
+        'uefawertung'    => array('cfg_which_database' => '', 's' => '', 'p' => '', 'coefficientyear' => '' ),
 		'calendar' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'division' => '', 'mode' => '', 'ptid' => ''),
 		'clubinfo' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'cid' => ''),
 		'clubplan' => array('cfg_which_database' => '', 's' => '', 'cid' => '', 'p' => '', 'startdate' => '', 'enddate' => ''  ),
@@ -50,7 +51,7 @@ class sportsmanagementHelperRoute
 
 		'editclub'      => array('cfg_which_database' => '', 's' => '', 'p' => '', 'cid' => '', 'id' => '', 'tmpl' => ''),
 		'editmatch'     => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'division' => '', 'mode' => '', 'order' => '', 'layout' => '', 'matchid' => '', 'tmpl' => '', 'oldlayout' => '', 'team' => '', 'pteam' => ''),
-		'eventsranking' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'evid' => '', 'mid' => ''),
+		'eventsranking' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'evid' => '', 'mid' => '', 'division' => ''),
 		'ical'          => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'division' => '', 'mode' => '', 'ptid' => ''),
 		'scoresheet'    => array('cfg_which_database' => '', 'p' => '', 'mid' => ''),
 
@@ -94,6 +95,7 @@ class sportsmanagementHelperRoute
     
     	public static $views4 = array(
 		'about'    => array('cfg_which_database' => '', 's' => '', 'p' => '', 'Itemid' => '' ),
+        'uefawertung'    => array('cfg_which_database' => '', 's' => '', 'p' => '', 'coefficientyear' => '', 'Itemid' => '' ),
 		'calendar' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'division' => '', 'mode' => '', 'ptid' => '', 'Itemid' => ''),
 		'clubinfo' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'cid' => '', 'Itemid' => ''),
 		'clubplan' => array('cfg_which_database' => '', 's' => '', 'cid' => '', 'p' => '', 'startdate' => '', 'enddate' => '', 'Itemid' => ''),
@@ -105,7 +107,7 @@ class sportsmanagementHelperRoute
 
 		'editclub'      => array('cfg_which_database' => '', 's' => '', 'p' => '', 'cid' => '', 'id' => '', 'tmpl' => '', 'Itemid' => ''),
 		'editmatch'     => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'division' => '', 'mode' => '', 'order' => '', 'layout' => '', 'matchid' => '', 'tmpl' => '', 'oldlayout' => '', 'team' => '', 'pteam' => '', 'Itemid' => ''),
-		'eventsranking' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'evid' => '', 'mid' => '', 'Itemid' => ''),
+		'eventsranking' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'evid' => '', 'mid' => '','division' => '', 'Itemid' => ''),
 		'ical'          => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'division' => '', 'mode' => '', 'ptid' => '', 'Itemid' => ''),
 		'scoresheet'    => array('cfg_which_database' => '', 'p' => '', 'mid' => ''),
 
@@ -617,24 +619,25 @@ $parts['Itemid'] = $parts['Itemid'] < 0 ? $parts['Itemid'] : Factory::getApplica
 		return $link;
 	}
 
+	
 	/**
 	 * sportsmanagementHelperRoute::getEditLineupRoute()
-	 *
-	 * @param   mixed    $projectid
-	 * @param   mixed    $matchid
-	 * @param   string   $layout
-	 * @param   integer  $team
-	 * @param   integer  $projectTeam
-	 * @param   string   $match_date
-	 * @param   integer  $cfg_which_database
-	 * @param   integer  $s
-	 * @param   integer  $r
-	 * @param   integer  $division
-	 * @param   string   $oldlayout
-	 *
+	 * 
+	 * @param mixed $projectid
+	 * @param mixed $matchid
+	 * @param string $layout
+	 * @param integer $team
+	 * @param integer $projectTeam
+	 * @param string $match_date
+	 * @param integer $cfg_which_database
+	 * @param integer $s
+	 * @param integer $r
+	 * @param integer $division
+	 * @param string $oldlayout
+	 * @param integer $doubleevents
 	 * @return
 	 */
-	public static function getEditLineupRoute($projectid, $matchid, $layout = 'editlineup', $team = 0, $projectTeam = 0, $match_date = '0000-00-00', $cfg_which_database = 0, $s = 0, $r = 0, $division = 0, $oldlayout = '')
+	public static function getEditLineupRoute($projectid, $matchid, $layout = 'editlineup', $team = 0, $projectTeam = 0, $match_date = '0000-00-00', $cfg_which_database = 0, $s = 0, $r = 0, $division = 0, $oldlayout = '',$doubleevents = 0)
 	{
 
 		$params = array("option"             => "com_sportsmanagement",
@@ -652,7 +655,8 @@ $parts['Itemid'] = $parts['Itemid'] < 0 ? $parts['Itemid'] : Factory::getApplica
 		                "oldlayout"          => $oldlayout,
 		                "team"               => $team,
 		                "pteam"              => $projectTeam,
-		                "match_date"         => $match_date
+		                "match_date"         => $match_date,
+                        "doubleevents"         => $doubleevents
 		);
 
 		$query = self::buildQuery($params);

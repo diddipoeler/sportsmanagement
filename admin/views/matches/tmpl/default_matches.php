@@ -258,13 +258,13 @@ $pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=compon
 
                     </td>
 
-                    <td id="match_number" class="center">
+                    <td id="match_number_3" class="center">
                         <input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" type="text"
                                name="match_number<?php echo $row->id; ?>"
                                value="<?php echo $row->match_number; ?>" size="6" tabindex="1"
                                class="form-control form-control-inline"/>
                     </td>
-                    <td class="center" nowrap="nowrap">
+                    <td class="center" nowrap="nowrap" id="match_date_3">
 						<?php
 
 						/**
@@ -280,10 +280,15 @@ $pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=compon
 						 * echo HTMLHelper::_('calendar', Factory::getDate()->format('Y-m-d'), 'date', 'date', '%Y-%m-%d', $attribs); ?>
 						 */
 
-
+/*
 						$attribs = array(
 							'onChange' => "document.getElementById('cb" . $i . "').checked=true",
 						);
+                        */
+$attribs['class'] = 'input-large';
+$attribs['size'] = '10';
+$attribs['maxlength'] = '10';
+$attribs['onChange'] = "document.getElementById('cb" . $i . "').checked=true";                        
 						echo HTMLHelper::calendar(sportsmanagementHelper::convertDate($date),
 							'match_date' . $row->id,
 							'match_date' . $row->id,
@@ -298,7 +303,8 @@ $pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=compon
                                onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" type="text"
                                name="match_time<?php echo $row->id; ?>"
                                value="<?php echo $time; ?>" size="4" maxlength="5" tabindex="3"
-                               class="form-control form-control-inline"/>
+                               class="form-control form-control-inline"
+			       id="timepicker" />
 
                         <a href="javascript:void(0)"
                            onclick="switchMenu('present<?php echo $row->id; ?>')">&nbsp;
@@ -706,8 +712,8 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 
 							<?php
 							echo sportsmanagementHelper::getBootstrapModalImage('pressebericht' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/link.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_PRESSEBERICHT'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=pressebericht&id=' . $row->id, $this->modalwidth, $this->modalheight);
-							echo sportsmanagementHelper::getBootstrapModalImage('editevents' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/events.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_EVENTS'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editevents&id=' . $row->id . '&useeventtime=' . $this->projectws->useeventtime, $this->modalwidth, $this->modalheight);
-							echo sportsmanagementHelper::getBootstrapModalImage('editeventsbb' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/teams.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SBBEVENTS'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editeventsbb&id=' . $row->id . '&useeventtime=' . $this->projectws->useeventtime, $this->modalwidth, $this->modalheight);
+							echo sportsmanagementHelper::getBootstrapModalImage('editevents' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/events.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_EVENTS'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editevents&id=' . $row->id . '&useeventtime=' . $this->projectws->useeventtime.'&doubleevents='.$this->projectws->double_events, $this->modalwidth, $this->modalheight);
+							echo sportsmanagementHelper::getBootstrapModalImage('editeventsbb' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/teams.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SBBEVENTS'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editeventsbb&id=' . $row->id . '&useeventtime=' . $this->projectws->useeventtime.'&doubleevents='.$this->projectws->double_events, $this->modalwidth, $this->modalheight);
 
 							?>
 

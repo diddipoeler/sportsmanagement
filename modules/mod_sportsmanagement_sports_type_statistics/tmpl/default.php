@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_sports_type_statistics
@@ -11,12 +9,10 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 
-// Check if any results returned
+/** Check if any results returned */
 if ($data['projectscount'] == 0)
 {
 	echo '<p class="modjlgsports">' . Text::_('MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_NO_PROJECTS') . '</p>';
@@ -29,11 +25,19 @@ else
     <div class="">
         <h4>
 			<?php
+            if ( array_key_exists($sportstypes, $data['sportstype']) ) {
 			if ($data['sportstype'][$sportstypes]->icon)
 			{
-				?><img
-                src="<?php echo $data['sportstype'][$sportstypes]->icon; ?>"
-                alt=""/>    <?php } ?><?php echo Text::_($data['sportstype'][$sportstypes]->name); ?>
+				?>
+                <img src="<?php echo $data['sportstype'][$sportstypes]->icon; ?>" alt="" width="<?php echo $params->get('sportstypes_picture_width', 40); ?>"   />    
+                <?php 
+                } 
+                ?>
+                <?php 
+                echo Text::_($data['sportstype'][$sportstypes]->name); 
+                }
+                
+                ?>
         </h4>
         <ul class="list-group">
 			<?php if ($params->get('show_project', 1) == 1)
@@ -51,7 +55,7 @@ else
 						echo Text::_("MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_PROJECTS");
 					}
 					?>
-                    <span class="badge"><?php echo $data['projectscount'] ?></span>
+                    <span class=""><?php echo $data['projectscount'] ?></span>
                 </li>
 			<?php } ?>
 
@@ -70,7 +74,7 @@ else
 						echo Text::_("MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_LEAGUES");
 					}
 					?>
-                    <span class="badge"><?php echo $data['leaguescount'] ?></span>
+                    <span class=""><?php echo $data['leaguescount'] ?></span>
                 </li>
 			<?php } ?>
 
@@ -89,7 +93,7 @@ else
 						echo Text::_("MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SEASONS");
 					}
 					?>
-                    <span class="badge"><?php echo $data['seasonscount'] ?></span>
+                    <span class=""><?php echo $data['seasonscount'] ?></span>
                 </li>
 			<?php } ?>
 
@@ -108,7 +112,7 @@ else
 						echo Text::_("MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_PLAYGROUNDS");
 					}
 					?>
-                    <span class="badge"><?php echo $data['playgroundscount'] ?></span>
+                    <span class=""><?php echo $data['playgroundscount'] ?></span>
                 </li>
 			<?php } ?>
 
@@ -128,7 +132,7 @@ else
 						echo Text::_($params->get('text_clubs'));
 					}
 					?>
-                    <span class="badge"><?php echo $data['clubscount'] ?></span>
+                    <span class=""><?php echo $data['clubscount'] ?></span>
                 </li>
 			<?php } ?>
 
@@ -148,7 +152,7 @@ else
 						echo Text::_($params->get('text_teams'));
 					}
 					?>
-                    <span class="badge"><?php echo $data['projectteamscount'] ?></span>
+                    <span class=""><?php echo $data['projectteamscount'] ?></span>
                 </li>
 			<?php } ?>
 			<?php
@@ -167,7 +171,7 @@ else
 						echo Text::_($params->get('text_players'));
 					}
 					?>
-                    <span class="badge"><?php echo $data['personscount'] ?></span>
+                    <span class=""><?php echo $data['personscount'] ?></span>
                 </li>
 			<?php } ?>
 			<?php
@@ -186,7 +190,7 @@ else
 						echo Text::_($params->get('text_divisions'));
 					}
 					?>
-                    <span class="badge"><?php echo $data['projectdivisionscount'] ?></span>
+                    <span class=""><?php echo $data['projectdivisionscount'] ?></span>
                 </li>
 			<?php } ?>
 			<?php
@@ -205,7 +209,7 @@ else
 						echo Text::_($params->get('text_rounds'));
 					}
 					?>
-                    <span class="badge"><?php echo $data['projectroundscount'] ?></span>
+                    <span class=""><?php echo $data['projectroundscount'] ?></span>
                 </li>
 			<?php } ?>
 			<?php
@@ -224,7 +228,7 @@ else
 						echo Text::_($params->get('text_matches'));
 					}
 					?>
-                    <span class="badge"><?php echo $data['projectmatchescount'] ?></span>
+                    <span class=""><?php echo $data['projectmatchescount'] ?></span>
                 </li>
 			<?php } ?>
 			<?php
@@ -243,7 +247,7 @@ else
 						echo Text::_($params->get('text_player_events'));
 					}
 					?>
-                    <span class="badge"><?php echo $data['projectmatcheseventscount'] ?></span>
+                    <span class=""><?php echo $data['projectmatcheseventscount'] ?></span>
                 </li>
 				<?PHP
 				if (isset($data['projectmatcheseventsnamecount']))
@@ -263,7 +267,7 @@ else
 								echo Text::_($row->name);
 							}
 							?>
-                            <span class="badge"><?php echo $row->total ?></span>
+                            <span class=""><?php echo $row->total ?></span>
                         </li>
 						<?PHP
 					}
@@ -287,7 +291,7 @@ else
 						echo Text::_($params->get('text_player_stats'));
 					}
 					?>
-                    <span class="badge"><?php echo $data['projectmatchesstatscount'] ?></span>
+                    <span class=""><?php echo $data['projectmatchesstatscount'] ?></span>
                 </li>
 			<?php } ?>
         </ul>

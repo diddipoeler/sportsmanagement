@@ -15,8 +15,15 @@ use Joomla\CMS\Language\Text;
 
 $params = $this->form->getFieldsets('params');
 
+/** welche joomla version ? */
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
 
-HTMLHelper::_('behavior.modal');
+}
+elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
+{
+	HTMLHelper::_('behavior.modal');
+}
 ?>
 <div id="gamesevents">
     <form method="post" id="adminForm" class="form-validate">

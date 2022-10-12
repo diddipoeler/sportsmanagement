@@ -26,8 +26,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         <input type="hidden" name="task" value="treeto.display"/>
 		<?php echo HTMLHelper::_('form.token'); ?>
     </form>
-<div>
+
 <?PHP
 echo $this->loadTemplate('footer');
 ?>
-</div>

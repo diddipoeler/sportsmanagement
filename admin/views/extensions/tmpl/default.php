@@ -52,6 +52,6 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         </tr>
     </table>
 <?PHP
-echo "<div>";
+
 echo $this->loadTemplate('footer');
-echo "</div>";
+

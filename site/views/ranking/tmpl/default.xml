@@ -14,7 +14,7 @@
           	
           	
       <field name="cfg_which_database" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
     class=""
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 

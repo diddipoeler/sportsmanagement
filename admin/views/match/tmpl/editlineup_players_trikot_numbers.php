@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage match
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -28,7 +24,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 			?>
             <fieldset class="adminform">
                 <legend><?php echo Text::_($pos->text); ?></legend>
-                <table>
+                <table class="table">
 					<?PHP
 					// Get players assigned to this position
 					foreach ($this->starters[$position_id] AS $player)

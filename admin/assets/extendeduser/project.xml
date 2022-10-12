@@ -64,7 +64,9 @@
     <field name="ascneuenheimlink" type="textarea" rows="1" cols="100" label="ascneuenheimlink" description="ascneuenheimlink">
 		</field>
 		
-		<field name="ascneuenheimtyp" type="extensionradiobutton" default="0" label="ascneuenheimtyp" description="ascneuenheimtyp">
+		<field name="ascneuenheimtyp" type="radio" 
+		class="radio btn-group btn-group-yesno"
+		default="0" label="ascneuenheimtyp" description="ascneuenheimtyp">
 		<option value="0">Spielplan</option>
 		<option value="1">Tabelle mit S/U/N</option>
 		<option value="2">Tabelle ohne S/U/N</option>
@@ -143,7 +145,9 @@
 		</field>
     
            		
-		<field name="projectart" type="extensionradiobutton" default="1" label="Liga/Pokal/Freundschaftsspiele/Verbandsturnier ?" description="Liga/Pokal/Freundschaftsspiele/Verbandsturnier ?">
+		<field name="projectart" type="radio" 
+		class="radio btn-group btn-group-yesno"
+		default="1" label="Liga/Pokal/Freundschaftsspiele/Verbandsturnier ?" description="Liga/Pokal/Freundschaftsspiele/Verbandsturnier ?">
 			<option value="0">Pokal</option>
 			<option value="1">Liga</option>
 			<option value="2">Freundschaftsspiele</option>

@@ -13,9 +13,9 @@
 					>
 					
     <field name="cfg_which_database" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
 			<option value="0">JNO</option>
@@ -76,13 +76,13 @@
         <fieldset	name="advanced" label="COM_SPORTSMANAGEMENT_XML_ADVANCED_FIELDSET_LABEL"
         description="COM_SPORTSMANAGEMENT_XML_ADVANCED_FIELDSET_DESC">
 
-            <field	name="what_to_show_first" type="extensionradiobutton" default="0"
+            <field	name="what_to_show_first" type="radio" default="0"
                 	label="COM_SPORTSMANAGEMENT_XML_RESULTS_MATRIX_SELECT_SHOWFIRST_LABEL"
                 	description="COM_SPORTSMANAGEMENT_XML_RESULTS_MATRIX_SELECT_SHOWFIRST_DESCR">
                 <option value="0">COM_SPORTSMANAGEMENT_XML_RESULTS_MATRIX_BUTTON_RESULTS</option>
                 <option value="1">COM_SPORTSMANAGEMENT_XML_RESULTS_MATRIX_BUTTON_MATRIX</option>
             </field>
-<field	name="show_map" type="extensionradiobutton" default="0"
+<field	name="show_map" type="radio" default="0"
 			    	label="COM_SPORTSMANAGEMENT_TABS_MAP"
 			    	description="COM_SPORTSMANAGEMENT_TABS_MAP_DESC">
 			    <option value="0">JNO</option>

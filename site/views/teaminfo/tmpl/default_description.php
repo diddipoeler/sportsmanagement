@@ -28,7 +28,7 @@ echo $this->loadTemplate('jsm_notes');
 ?>       
     <div class="<?php echo $this->divclassrow; ?> table-responsive" id="playground_description">
 		<?php
-		$description = $this->team->notes;
+		$description = $this->team->projectteamnotes;
 		$description = HTMLHelper::_('content.prepare', $description);
 		echo $description;
 		?>

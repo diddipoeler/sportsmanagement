@@ -398,7 +398,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 
 		if (!self::$_current_round && $project)
 		{
-			$current_date = strftime("%Y-%m-%d %H:%M:%S");
+			$current_date = date('Y-m-d', time());
 			$query->clear();
 			$query->select('r.id, r.roundcode, CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
 			$query->from('#__sportsmanagement_round AS r ');
@@ -1835,15 +1835,16 @@ self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT')
 		return $allowed;
 	}
 
+	
 	/**
 	 * sportsmanagementModelProject::isUserProjectAdminOrEditor()
-	 *
-	 * @param   integer  $userId
-	 * @param   mixed    $project
-	 *
+	 * 
+	 * @param integer $userId
+	 * @param mixed $project
+	 * @param integer $cfg_which_database
 	 * @return
 	 */
-	public static function isUserProjectAdminOrEditor($userId = 0, $project, $cfg_which_database = 0)
+	public static function isUserProjectAdminOrEditor($userId = 0, $project = array(), $cfg_which_database = 0)
 	{
 		$result = false;
 

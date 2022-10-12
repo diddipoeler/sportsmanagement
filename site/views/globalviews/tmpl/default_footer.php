@@ -48,7 +48,18 @@ $logo_width            = ComponentHelper::getParams($option)->get('logo_picture_
 </style>
 
 <script type="text/javascript">
+Joomla.popupWindow = function(mypage, myname, w, h, scroll) {
+		var winl = (screen.width - w) / 2,
+		    wint = (screen.height - h) / 2,
+		    winprops = 'height=' + h +
+			    ',width=' + w +
+			    ',top=' + wint +
+			    ',left=' + winl +
+			    ',scrollbars=' + scroll +
+			    ',resizable';
 
+		window.open(mypage, myname, winprops).window.focus();
+	};
     function openLink(url) {
         var width = get_windowPopUpWidth();
         var heigth = get_windowPopUpHeight();
@@ -62,20 +73,17 @@ $logo_width            = ComponentHelper::getParams($option)->get('logo_picture_
 
 </script>
 
-<div class="<?php echo $this->divclassrow; ?>" style="text-align:center; clear:both">
-    <br/>
-    <!--
-<a title= "<?php echo Text::_('COM_SPORTSMANAGEMENT_SITE_LINK') ?>" target="_blank" href="http://www.fussballineuropa.de">
-<img src= "<?php echo Uri::root(true); ?>/components/com_sportsmanagement/assets/images/logo_transparent.png" width="<?PHP echo $logo_width; ?>" height="auto">
-</a>
--->
-    <br/>
+
+  
+  <div class="row">
+<div class="container text-center align-items-center justify-content-center">
+ <br/>
 	<?php echo Text::_("COM_SPORTSMANAGEMENT_DESC"); ?>
     <br/>
     <img src="<?php echo Uri::root(true); ?>/components/com_sportsmanagement/assets/images/fussballineuropa.png"
          width="<?PHP echo $logo_width; ?>" height="auto"></a>
 	<?php echo Text::_("COM_SPORTSMANAGEMENT_COPYRIGHT"); ?> : &copy;
-    <a href="http://www.fussballineuropa.de" target="_blank">Fussball in Europa</a>
+    <a href="https://www.fussballineuropa.de" target="_blank">Fussball in Europa</a>
     <br/>
 	<?php
 	if ($show_facebook_link == 3)
@@ -98,29 +106,45 @@ $logo_width            = ComponentHelper::getParams($option)->get('logo_picture_
 <div class="center">
 <?php echo Text::sprintf('COM_SPORTSMANAGEMENT_FOOTER_TIME', $this->jsmseitenaufbau); ?>
 </div>
-
-	<?PHP
-	/**
-	 *
-	 * welche joomla version ?
-	 */
-	if (version_compare(JVERSION, '3.0.0', 'ge'))
-	{
-	}
-    elseif (version_compare(JVERSION, '2.5.0', 'ge'))
-	{
-		/**
-		 * Joomla! 2.5 code here
-		 */
-		?>
-        <!-- Button HTML (to Trigger Modal) -->
-        <a href="<?php echo $cfg_bugtracker_server; ?>" rel="modaljsm:open">Bug-Tracker</a>
-        <br/>
-        <a href="<?php echo $cfg_help_server; ?>" rel="modaljsm:open">Online-Help</a>
-        <br/>
-		<?PHP
-	}
-
-	?>
-
-</div>
+  
+<?php
+$link_onlinehelp = $cfg_help_server . 'SM-Frontend:' . $view ;                                                
+$cmd = "Joomla.popupWindow('$link_onlinehelp', '" . Text::_('COM_SPORTSMANAGEMENT_HELP_LINK', true) . "',". $modal_popup_width." ,". $modal_popup_height.", 1)";
+?>
+<div class="center">
+<button onclick="<?php echo $cmd; ?>">
+<?php
+echo HTMLHelper::_(
+'image', 'media/com_sportsmanagement/jl_images/help.png',
+Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'), 'title= "' .
+Text::_('COM_SPORTSMANAGEMENT_HELP_LINK') . '"'
+);
+echo ' '.Text::_('COM_SPORTSMANAGEMENT_HELP_LINK');
+?>                      
+</button>
+</div>  
+  
+  
+</div>    
+  
+</div>    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

@@ -12,9 +12,9 @@
 					description="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_DESC"
 					>
    <field name="cfg_which_database" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
 			<option value="0">JNO</option>
@@ -74,27 +74,27 @@
         			label="COM_SPORTSMANAGEMENT_XML_ADVANCED_FIELDSET_LABEL"
               description="COM_SPORTSMANAGEMENT_XML_ADVANCED_FIELDSET_DESC">
 
-			<field	name="what_to_show_first" type="extensionradiobutton" default="0"
+			<field	name="what_to_show_first" type="radio" default="0"
 			    	label="COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_SELECT_SHOWFIRST_LABEL"
 			    	description="COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_SELECT_SHOWFIRST_DESCR">
 			    <option value="0">COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_BUTTON_RANKING</option>
 			    <option value="1">COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_BUTTON_RESULTS</option>
 			</field>
 
-<field	name="show_ranking_reiter" type="extensionradiobutton" default="1"
+<field	name="show_ranking_reiter" type="radio" default="1"
 			    	label="COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_BUTTON_RANKING_REITER"
 			    	description="COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_BUTTON_RANKING_REITER_DESRC">
 			    <option value="0">JNO</option>
 			    <option value="1">JYES</option>
 			</field>		
 		
-<field	name="show_allranking" type="extensionradiobutton" default="0"
+<field	name="show_allranking" type="radio" default="0"
 			    	label="COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_ALLRANKING_LABEL"
 			    	description="COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_ALLRANKING_DESCR">
 			    <option value="0">JNO</option>
 			    <option value="1">JYES</option>
 			</field>
-<field	name="show_map" type="extensionradiobutton" default="0"
+<field	name="show_map" type="radio" default="0"
 			    	label="COM_SPORTSMANAGEMENT_TABS_MAP"
 			    	description="COM_SPORTSMANAGEMENT_TABS_MAP_DESC">
 			    <option value="0">JNO</option>

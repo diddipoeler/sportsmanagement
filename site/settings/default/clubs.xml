@@ -5,16 +5,16 @@
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
 
 	
-		<field name="show_sectionheader" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_sectionheader" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_SECTIONHEADER"
 			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_clubs" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_clubs" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_LABEL_SHOW_CLUBS" description="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_DESCR_SHOW_CLUBS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
@@ -27,40 +27,40 @@
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
 
 
-		<field name="show_small_logo" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_small_logo" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_LABEL_SHOW_SMALL_LOGO"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_DESCR_SHOW_SMALL_LOGO">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_medium_logo" type="extensionradiobutton" default="0"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_medium_logo" type="radio" default="0"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_LABEL_SHOW_MEDIUM_LOGO"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_DESCR_SHOW_MEDIUM_LOGO">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_big_logo" type="extensionradiobutton" default="0"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_big_logo" type="radio" default="0"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_LABEL_SHOW_BIG_LOGO"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_DESCR_SHOW_BIG_LOGO">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_address" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_address" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_LABEL_SHOW_ADDRESS"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_DESCR_SHOW_ADDRESS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_club_teams" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_club_teams" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_LABEL_SHOW_CLUB_TEAMS"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_DESCR_SHOW_CLUB_TEAMS">
 			<option value="0">JNO</option>
@@ -80,9 +80,9 @@
 
 
     <field name="show_club_internetadress_picture" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="1"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_CLUB_INTERNETADRESS_PICTURE"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_CLUB_INTERNETADRESS_PICTURE">
 			<option value="0">JNO</option>
@@ -90,9 +90,9 @@
 		</field>
 		
     <field name="which_internetadress_picture_provider" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="thumbsniper"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_INTERNETADRESS_PICTURE_PROVIDER"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_INTERNETADRESS_PICTURE_PROVIDER">
 			<option value="thumbshots">thumbshots</option>
@@ -100,9 +100,9 @@
 		</field>
     
     <field name="internetadress_picture_thumbsniper_preview" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="2"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_INTERNETADRESS_PICTURE_THUMBSNIPER_PREVIEW"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_INTERNETADRESS_PICTURE_THUMBSNIPER_PREVIEW">
 			<option value="2">3D</option>

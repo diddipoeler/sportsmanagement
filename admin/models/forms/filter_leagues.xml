@@ -35,6 +35,17 @@
         </field>
 		
 		<field
+			name="search_federation"
+			type="federationslist"
+			class="select2-container"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_FEDERATION"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_FEDERATION"
+			required="false"
+       onchange="this.form.submit();">	
+			<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_FEDERATION</option>
+			</field>
+			
+		<field
             name="search_nation"
             type="countrylist"
             label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY"

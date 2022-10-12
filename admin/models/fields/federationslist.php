@@ -46,9 +46,10 @@ class JFormFieldFederationsList extends \JFormFieldList
 	protected function getOptions()
 	{
 		$app      = Factory::getApplication();
+        $view   = Factory::getApplication()->input->getCmd('view');
+        $db    = Factory::getDbo();
+		$query = $db->getQuery(true);
 		$selected = 0;
-
-		// Initialize variables.
 		$options   = array();
 		$vartable  = (string) $this->element['targettable'];
 		$select_id = $app->input->getVar('id');
@@ -58,11 +59,21 @@ class JFormFieldFederationsList extends \JFormFieldList
 			$select_id = $select_id;
 		}
 
+
+
+switch ($view)
+{
+    case 'leagues':
+    $query->select('t.id,t.id AS value, t.name AS text');
+			$query->from('#__sportsmanagement_federations AS t');
+			$query->where('t.parent_id = 0');
+			$query->order('t.name');
+			$db->setQuery($query);
+			$options = $db->loadObjectList();
+    break;
+    default:
 		if ($select_id)
 		{
-			$db    = Factory::getDbo();
-			$query = $db->getQuery(true);
-
 			$query->select('t.id,t.id AS value, t.name AS text');
 			$query->from('#__sportsmanagement_federations AS t');
 			$query->where('t.parent_id = 0');
@@ -84,8 +95,10 @@ class JFormFieldFederationsList extends \JFormFieldList
 				$options [] = HTMLHelper::_('select.option', $item->id, $item->treename, 'value', 'text', !$sections && $item->section);
 			}
 		}
+        break;
+        }
 
-		// Merge any additional options in the XML definition.
+		/** Merge any additional options in the XML definition. */
 		$options = array_merge(parent::getOptions(), $options);
 
 		return $options;
@@ -101,18 +114,16 @@ class JFormFieldFederationsList extends \JFormFieldList
 	function JJ_categoryArray($admin = 0)
 	{
 		$db = sportsmanagementHelper::getDBConnection();
-
-		// Get a list of the menu items
-		$query = "SELECT * FROM #__sportsmanagement_federations ";
-
-		$query .= " ORDER BY ordering, name";
+        $query = $db->getQuery(true);
+        $query->select('*');
+		$query->from('#__sportsmanagement_federations');
+		$query->order('ordering, name');
 		$db->setQuery($query);
 		$items = $db->loadObjectList();
 
-		// Establish the hierarchy of the menu
 		$children = array();
 
-		// First pass - collect children
+		/** First pass - collect children */
 		foreach ($items as $v)
 		{
 			$pt   = $v->parent_id;
@@ -121,7 +132,7 @@ class JFormFieldFederationsList extends \JFormFieldList
 			$children[$pt] = $list;
 		}
 
-		// Second pass - get an indent list of the items
+		/** Second pass - get an indent list of the items */
 		$array = $this->fbTreeRecurse(0, '', array(), $children, 10, 0, 1);
 
 		return $array;

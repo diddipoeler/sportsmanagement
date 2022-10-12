@@ -202,7 +202,7 @@ switch ($this->fieldset)
 
             <table class="table">
 				<?php
-				if (isset($this->lists) && $this->lists)
+				if ( isset($this->lists) && $this->lists && is_array($this->lists['ext_fields']) )
 				{
 					for ($p = 0; $p < count($this->lists['ext_fields']); $p++)
 					{

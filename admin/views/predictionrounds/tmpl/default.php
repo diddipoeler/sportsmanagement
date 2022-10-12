@@ -31,8 +31,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>"/>
 	<?php echo HTMLHelper::_('form.token') . "\n"; ?>
 </form>
-<div>
+
 	<?php
 	echo $this->loadTemplate('footer');
 	?>
-</div>
+

@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage predictiontemplate
@@ -11,10 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
@@ -48,7 +43,7 @@ class sportsmanagementViewPredictionTemplate extends sportsmanagementView
 		$form = Form::getInstance($item->template, $xmlfile, array('control' => 'params'));
 		$form->bind($item->params);
 
-		// Assign the Data
+		/** Assign the Data */
 		$this->form = $form;
 
 		$script       = $this->get('Script');

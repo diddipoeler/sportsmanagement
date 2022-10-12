@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage jsmgcalendar
@@ -12,19 +10,11 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * http://blog.mateuszzbylut.com/2018/01/19/fetching-data-google-calendar-without-user-authorization/
  */
-
 defined('_JEXEC') or die();
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Component\ComponentHelper;
-
-// Require_once('administrator'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'google-php'.DIRECTORY_SEPARATOR.'google-api-php-client'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'autoload.php');
-
-// JLoader::import('components.com_gcalendar.libraries.GCalendar.view', JPATH_ADMINISTRATOR);
-
-// Class GCalendarViewGCalendar extends GCalendarView
 
 /**
  * sportsmanagementViewjsmgcalendar
@@ -38,7 +28,6 @@ use Joomla\CMS\Component\ComponentHelper;
 class sportsmanagementViewjsmgcalendar extends sportsmanagementView
 {
 
-
 	/**
 	 * sportsmanagementViewjsmgcalendar::init()
 	 *
@@ -48,13 +37,16 @@ class sportsmanagementViewjsmgcalendar extends sportsmanagementView
 	 */
 	public function init()
 	{
+	   $this->description = '';
 
-		// Bei neuanlage user und passwort aus der konfiguration der komponente nehmen
+		/** Bei neuanlage user und passwort aus der konfiguration der komponente nehmen */
 		if ($this->item->id < 1)
 		{
 			$this->form->setValue('username', null, ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_account', ''));
 			$this->form->setValue('password', null, ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_password', ''));
 		}
+        
+        $this->formparams = sportsmanagementHelper::getExtended($this->item->params, 'jsmgcalendar');
 
 	}
 

@@ -191,6 +191,7 @@ $optteams = ' allowClear: true,
             <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DG'); ?></th>
             <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_IS_IN_SCORE'); ?></th>
             <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_USE_FINALLY'); ?></th>
+            <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_CHAMPION'); ?></th>
 	<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAM_FINALTABLERANK'); ?></th>
 
             <th>
@@ -821,11 +822,6 @@ elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
 echo $this->loadTemplate('switcher3');
 }                                         
 
-
-
-
-
-
 ?>
 <!--
 <input<?php echo $inputappend; ?> type="text" size="2" class="form-control form-control-inline"
@@ -837,10 +833,23 @@ echo $this->loadTemplate('switcher3');
 <?php
 }
 ?>                       
-                    
-                    
-                    
-                </td>
+</td>
+<td class="center">
+					<?php
+$this->switcher_value = $row->champion;    
+$this->switcher_name = 'champion' . $row->id;                
+/** welche joomla version ? */
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+echo $this->loadTemplate('switcher4');    
+}
+elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
+{    
+echo $this->loadTemplate('switcher3');
+}                                         
+					?>
+                    </td>
+
 		<td class="center">
 		<?php
 					$append = ' style="background-color:#bbffff"';

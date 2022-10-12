@@ -74,6 +74,6 @@ $params = $this->form->getFieldsets('params');
         </div>
     </form>
 <?PHP
-echo "<div>";
+
 echo $this->loadTemplate('footer');
-echo "</div>";
+

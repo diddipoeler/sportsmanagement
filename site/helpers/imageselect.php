@@ -46,20 +46,20 @@ abstract class ImageSelectSM
 
 	}
 
+	
 	/**
 	 * ImageSelectSM::getSelector()
-	 *
-	 * @param   mixed   $fieldname
-	 * @param   mixed   $fieldpreview_name
-	 * @param   mixed   $type
-	 * @param   mixed   $value
-	 * @param   string  $default
-	 * @param   string  $control_name
-	 * @param   mixed   $fieldid
-	 *
+	 * 
+	 * @param string $fieldname
+	 * @param string $fieldpreview_name
+	 * @param string $type
+	 * @param string $value
+	 * @param string $default
+	 * @param string $control_name
+	 * @param string $fieldid
 	 * @return
 	 */
-	public static function getSelector($fieldname, $fieldpreview_name, $type, $value, $default = '', $control_name = '', $fieldid)
+	public static function getSelector($fieldname = '', $fieldpreview_name = '', $type = '', $value = '', $default = '', $control_name = '', $fieldid = '')
 	{
 		$document          = Factory::getDocument();
 		$app               = Factory::getApplication();

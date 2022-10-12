@@ -19,8 +19,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 
-JFormHelper::loadFieldClass('radio');
-HTMLHelper::_('behavior.tooltip');
+//HTMLHelper::_('behavior.tooltip'); 
 
 if (version_compare(JSM_JVERSION, '4', 'eq'))
 {
@@ -52,6 +51,10 @@ $document->addScript(Uri::root() . 'includes/js/joomla.javascript.js');
 
 
 ?>
+
+
+
+
 <form name='adminForm' id='adminForm' method='post'>
     <table class="table">
         <tr>
@@ -60,6 +63,7 @@ $document->addScript(Uri::root() . 'includes/js/joomla.javascript.js');
         </tr>
     </table>
     <br/>
+
 	<?php // Approved show_profile fav_team champ_tipp slogan reminder receipt admintipp picture
 	?>
     <table class="table">
@@ -89,25 +93,60 @@ $document->addScript(Uri::root() . 'includes/js/joomla.javascript.js');
 				{
 					echo '<input type="hidden" name="registerDate" value="' . sportsmanagementHelper::convertDate($regDate) . '" />';
 					echo '<input type="hidden" name="registerTime" value="' . $regTime . '" />';
+					
 					echo $this->predictionMember->pmRegisterDate != '0000-00-00 00:00:00' ?
+						HTMLHelper::date($this->predictionMember->pmRegisterDate) :
+						Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_UNKNOWN');					
+					
+					
+/*					echo $this->predictionMember->pmRegisterDate != '0000-00-00 00:00:00' ?
 						HTMLHelper::date($this->predictionMember->pmRegisterDate, Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_REGDATE_FORMAT')) :
-						Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_UNKNOWN');
+						Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_UNKNOWN'); */
 				}
 				?></td>
-        </tr>
+        </tr>	
+
+		
         <tr>
 			<?php
 			echo sportsmanagementModelPrediction::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_APPROVED', 'COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_APPROVED');
 			?>
-            <td colspan='2'>
-				<?php
-				$field = new JFormFieldRadio;
-				$field->setup(new SimpleXMLElement('<field name="approved" type="radio" size="1" default="0" class="btn-group btn-group-yesno"><option value="0">JNO</option><option value="1">JYES</option></field>'), $this->predictionMember->approved);
-				echo $field->renderField(array('hiddenLabel' => true));
-				?>
+            <td colspan='2'>		
+			
 
+				<div class="form-check">
+				<? if($this->predictionMember->approved)
+							{ echo '<input class="form-check-input" type="radio" name="approved" id="approvedN" value="0" >'; }
+							else
+							{ echo '<input class="form-check-input" type="radio" name="approved" id="approvedN" value="0" checked >'; }
+				?> 
+				<label class="form-check-label" for="approved1">
+				<? echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO'); ?>
+				</label>
+				</div>
+				<div class="form-check">
+				<? if($this->predictionMember->approved)
+							{ echo '<input class="form-check-input" type="radio" name="approved" id="approvedY" value="1" checked>'; }
+							else
+							{ echo '<input class="form-check-input" type="radio" name="approved" id="approvedY" value="1" >'; }
+				?> 
+				<label class="form-check-label" for="approved2">
+				<? echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_YES'); ?>
+				</label>
+				</div>				
+							
+				<?
+				//$field->setup(new SimpleXMLElement('<field name="approved" type="radio" size="1" default="0" class="btn-group btn-group-yesno"><option value="0">JNO</option><option value="1">JYES</option></field>'), $this->predictionMember->approved);
+			
+   				//echo $field->renderField();
+				//echo $field->renderField(array('hiddenLabel' => true));
+				
+                ?>
+				
             </td>
         </tr>
+
+
 
         <?php if(isset($this->lists['grouplist'])) { ?>
         <tr>
@@ -128,6 +167,8 @@ $document->addScript(Uri::root() . 'includes/js/joomla.javascript.js');
         </tr>
 		<?php } ?>
 
+
+
 		<?php
 		if ($this->config['allow_alias'])
 		{
@@ -144,7 +185,7 @@ $document->addScript(Uri::root() . 'includes/js/joomla.javascript.js');
             </tr>
 			<?php
 		}
-		?>
+		?>			
 		<?php
 		if ($this->config['edit_slogan'])
 		{
@@ -162,18 +203,52 @@ $document->addScript(Uri::root() . 'includes/js/joomla.javascript.js');
 			<?php
 		}
 		?>
+	
+  	
+		
         <tr>
 			<?php
 			echo sportsmanagementModelPrediction::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_SHOW_PROFILE', 'COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_SHOW_PROFILE');
+			
 			?>
             <td colspan='2'>
-				<?php
+					
+
+			
+				<div class="form-check">
+				<? if($this->predictionMember->show_profile)
+							{ echo '<input class="form-check-input" type="radio" name="show_profile" id="show_profileN" value="0" >'; }
+							else
+							{ echo '<input class="form-check-input" type="radio" name="show_profile" id="show_profileN" value="0" checked >'; }
+				?> 
+				<label class="form-check-label" for="approved1">
+				<? echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO'); ?>
+				</label>
+				</div>
+				<div class="form-check">
+				<? if($this->predictionMember->show_profile)
+							{ echo '<input class="form-check-input" type="radio" name="show_profile" id="show_profileY" value="1" checked>'; }
+							else
+							{ echo '<input class="form-check-input" type="radio" name="show_profile" id="show_profileY" value="1" >'; }
+				?> 
+				<label class="form-check-label" for="approved2">
+				<? echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_YES'); ?>
+				</label>
+				</div>				
+<?
+			
+	/*			
 				$field = new JFormFieldRadio;
 				$field->setup(new SimpleXMLElement('<field name="show_profile" type="radio" size="1" default="0" class="btn-group btn-group-yesno"><option value="0">JNO</option><option value="1">JYES</option></field>'), $this->predictionMember->show_profile);
 				echo $field->renderField(array('hiddenLabel' => true));
+	
+	*/
+
 				?>
             </td>
         </tr>
+		
+		
 		<?php
 		if ($this->config['edit_reminder'])
 		{
@@ -183,13 +258,57 @@ $document->addScript(Uri::root() . 'includes/js/joomla.javascript.js');
 				echo sportsmanagementModelPrediction::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_REMINDER', 'COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_REMINDER');
 				?>
                 <td colspan='2'>
-					<?php
-					$field = new JFormFieldRadio;
-					$field->setup(new SimpleXMLElement('<field name="reminder" type="radio" size="1" default="0" class="btn-group btn-group-yesno"><option value="0">JNO</option><option value="1">JYES</option></field>'), $this->predictionMember->reminder);
-					echo $field->renderField(array('hiddenLabel' => true));
+				
+				<div class="form-check">
+				<? if($this->predictionMember->reminder)
+							{ echo '<input class="form-check-input" type="radio" name="reminder" id="reminderN" value="0" >'; }
+							else
+							{ echo '<input class="form-check-input" type="radio" name="reminder" id="reminderN" value="0" checked >'; }
+				?> 
+				<label class="form-check-label" for="approved1">
+				<? echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO'); ?>
+				</label>
+				</div>
+				<div class="form-check">
+				<? if($this->predictionMember->reminder)
+							{ echo '<input class="form-check-input" type="radio" name="reminder" id="reminderY" value="1" checked>'; }
+							else
+							{ echo '<input class="form-check-input" type="radio" name="reminder" id="reminderY" value="1" >'; }
+				?> 
+				<label class="form-check-label" for="approved2">
+				<? echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_YES'); ?>
+				</label>
+				</div>				
+				
+				
+<?php				
+	
+    /*	
+			<div class="form-check">
+				<input class="form-check-input" type="radio" name="reminder" id="exampleRadios1" value="0" checked>
+				<label class="form-check-label" for="reminder1">
+				No
+				</label>
+				</div>
+				<div class="form-check">
+				<input class="form-check-input" type="radio" name="reminder" id="exampleRadios2" value="1">
+				<label class="form-check-label" for="reminder2">
+				Si
+				</label>
+			</div>					
+				
+					
+//					$field = new JFormFieldRadio;
+//					$field->setup(new SimpleXMLElement('<field name="reminder" type="radio" size="1" default="0" class="btn-group btn-group-yesno"><option value="0">JNO</option><option value="1">JYES</option></field>'), $this->predictionMember->reminder);
+//					echo $field->renderField(array('hiddenLabel' => true));
 					?>
                 </td>
             </tr>
+			
+		*/	
+		
+		?>
+			
 			<?php
 		}
 		?>
@@ -202,13 +321,57 @@ $document->addScript(Uri::root() . 'includes/js/joomla.javascript.js');
 				echo sportsmanagementModelPrediction::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_RECEIPT', 'COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_RECEIPT');
 				?>
                 <td colspan='2'>
-					<?php
-					$field = new JFormFieldRadio;
-					$field->setup(new SimpleXMLElement('<field name="receipt" type="radio" size="1" default="0" class="btn-group btn-group-yesno"><option value="0">JNO</option><option value="1">JYES</option></field>'), $this->predictionMember->receipt);
-					echo $field->renderField(array('hiddenLabel' => true));
+				
+				<div class="form-check">
+				<? if($this->predictionMember->receipt)
+							{ echo '<input class="form-check-input" type="radio" name="receipt" id="receiptN" value="0" >'; }
+							else
+							{ echo '<input class="form-check-input" type="radio" name="receipt" id="receiptN" value="0" checked >'; }
+				?> 
+				<label class="form-check-label" for="approved1">
+				<? echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO'); ?>
+				</label>
+				</div>
+				<div class="form-check">
+				<? if($this->predictionMember->receipt)
+							{ echo '<input class="form-check-input" type="radio" name="receipt" id="receiptY" value="1" checked>'; }
+							else
+							{ echo '<input class="form-check-input" type="radio" name="receipt" id="receiptY" value="1" >'; }
+				?> 
+				<label class="form-check-label" for="approved2">
+				<? echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_YES'); ?>
+				</label>
+				</div>	
+				
+				
+	<?php			
+	/*			
+				
+			<div class="form-check">
+				<input class="form-check-input" type="radio" name="receipt" id="exampleRadios1" value="0" checked>
+				<label class="form-check-label" for="receipt1">
+				No
+				</label>
+				</div>
+				<div class="form-check">
+				<input class="form-check-input" type="radio" name="receipt" id="exampleRadios2" value="1">
+				<label class="form-check-label" for="receipt2">
+				Si
+				</label>
+			</div>					
+				
+					
+//					$field = new JFormFieldRadio;
+//					$field->setup(new SimpleXMLElement('<field name="receipt" type="radio" size="1" default="0" class="btn-group btn-group-yesno"><option value="0">JNO</option><option value="1">JYES</option></field>'), $this->predictionMember->receipt);
+//					echo $field->renderField(array('hiddenLabel' => true));
 					?>
                 </td>
             </tr>
+			
+		*/
+		
+		?>
+		
 			<?php
 		}
 		?>
@@ -217,13 +380,56 @@ $document->addScript(Uri::root() . 'includes/js/joomla.javascript.js');
 			echo sportsmanagementModelPrediction::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_ALLOW_ADMIN', 'COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_ALLOW_ADMIN');
 			?>
             <td colspan='2'>
+			
+				<div class="form-check">
+				<? if($this->predictionMember->admintipp)
+							{ echo '<input class="form-check-input" type="radio" name="admintipp" id="admintippN" value="0" >'; }
+							else
+							{ echo '<input class="form-check-input" type="radio" name="admintipp" id="admintippN" value="0" checked >'; }
+				?> 
+				<label class="form-check-label" for="approved1">
+				<? echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO'); ?>
+				</label>
+				</div>
+				<div class="form-check">
+				<? if($this->predictionMember->receipt)
+							{ echo '<input class="form-check-input" type="radio" name="admintipp" id="admintippY" value="1" checked>'; }
+							else
+							{ echo '<input class="form-check-input" type="radio" name="admintipp" id="admintippY" value="1" >'; }
+				?> 
+				<label class="form-check-label" for="approved2">
+				<? echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_YES'); ?>
+				</label>
+				</div>	
+	<?		
+			
+	/*		
+			
+			<div class="form-check">
+				<input class="form-check-input" type="radio" name="admintipp" id="exampleRadios1" value="0" checked>
+				<label class="form-check-label" for="admintipp1">
+				No
+				</label>
+				</div>
+				<div class="form-check">
+				<input class="form-check-input" type="radio" name="admintipp" id="exampleRadios2" value="1">
+				<label class="form-check-label" for="admintipp2">
+				Si
+				</label>
+			</div>				
+			
 				<?php
-				$field = new JFormFieldRadio;
-				$field->setup(new SimpleXMLElement('<field name="admintipp" type="radio" size="1" default="0" class="btn-group btn-group-yesno"><option value="0">JNO</option><option value="1">JYES</option></field>'), $this->predictionMember->admintipp);
-				echo $field->renderField(array('hiddenLabel' => true));
+//				$field = new JFormFieldRadio;
+//				$field->setup(new SimpleXMLElement('<field name="admintipp" type="radio" size="1" default="0" class="btn-group btn-group-yesno"><option value="0">JNO</option><option value="1">JYES</option></field>'), $this->predictionMember->admintipp);
+//				echo $field->renderField(array('hiddenLabel' => true));
+
+     */
+
 				?>
             </td>
         </tr>
+		
+		
 		<?php
 		if ($this->config['edit_favteam'])
 		{
@@ -236,7 +442,7 @@ $document->addScript(Uri::root() . 'includes/js/joomla.javascript.js');
 			foreach ($this->predictionProjectS AS $predictionProject)
 			{
 				?>
-                <td width='10%' style='text-align:right; '><?php
+                <td width='60%' style='text-align:right; '><?php
 					echo $this->lists['fav_team'][$predictionProject->project_id] . '<br>';
 					?><?php
 
@@ -273,7 +479,7 @@ $document->addScript(Uri::root() . 'includes/js/joomla.javascript.js');
 			foreach ($this->predictionProjectS AS $predictionProject)
 			{
 			?>
-            <td width='10%' style='text-align:right; '><?php
+            <td width='60%' style='text-align:right; '><?php
 
 
 				echo $this->lists['champ_tipp_enabled'][$predictionProject->project_id];
@@ -388,6 +594,8 @@ $document->addScript(Uri::root() . 'includes/js/joomla.javascript.js');
 			<?php
 		}
 		?>
+		
+		
         <tr>
             <td>&nbsp;</td>
             <td colspan='2'>
@@ -397,12 +605,26 @@ $document->addScript(Uri::root() . 'includes/js/joomla.javascript.js');
                        onClick="Joomla.submitform('predictionusers.cancel'); "/>
             </td>
         </tr>
+		
     </table>
+	
+	<?
+	
+	$memberID = (int) $this->predictionMember->pmID; 
+	
+	//echo 'pm' . $this->predictionMember->pmID . '<br>'; 
+	//echo 'id' .  $tuku . '<br>'; 
+	?>
+	
     <input type='hidden' name='p' value='<?php echo $this->predictionGame->id; ?>'/>
     <input type='hidden' name='prediction_id' value='<?php echo $this->predictionGame->id; ?>'/>
     <input type='hidden' name='user_id' value='<?php echo $this->actJoomlaUser->id; ?>'/>
-    <input type='hidden' name='member_id' value='<?php echo $this->predictionMember->pmID; ?>'/>
+    <input type='hidden' name='member_id' value='<?php echo $memberID ?>'/>
     <input type='hidden' name='option' value='com_sportsmanagement'/>
     <input type='hidden' name='task' value='predictionusers.savememberdata'/>
 	<?php echo HTMLHelper::_('form.token'); ?>
+
+
+
+
 </form><br/>

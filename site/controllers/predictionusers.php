@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage prediction
@@ -11,15 +9,13 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Session\Session;
-
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementControllerPredictionUsers
@@ -48,14 +44,19 @@ class sportsmanagementControllerPredictionUsers extends BaseController
 		parent::display($cachable, $urlparams = false);
 	}
 
+	
 	/**
 	 * sportsmanagementControllerPredictionUsers::cancel()
-	 *
-	 * @return
+	 * 
+	 * @param mixed $key
+	 * @return void
 	 */
-	function cancel()
+	function cancel($key = null)
 	{
-		Factory::getApplication()->redirect(str_ireplace('&layout=edit', '', Factory::getURI()->toString()));
+		$uri = JUri::getInstance(); 
+		$current_uri = $uri->toString();
+		Factory::getApplication()->redirect(str_ireplace('&layout=edit', '', $current_uri));
+		//Factory::getApplication()->redirect(str_ireplace('&layout=edit', '', Factory::getURI()->toString()));
 	}
 
 	/**
@@ -84,6 +85,7 @@ class sportsmanagementControllerPredictionUsers extends BaseController
 	 */
 	function savememberdata()
 	{
+		
 		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 		$option     = Factory::getApplication()->input->getCmd('option');
 		$optiontext = strtoupper(Factory::getApplication()->input->getCmd('option') . '_');
@@ -91,50 +93,57 @@ class sportsmanagementControllerPredictionUsers extends BaseController
 		$document   = Factory::getDocument();
 
 		$msg  = '';
-		$link = '';
+		$link = ''; 
 
 		$post             = Factory::getApplication()->input->post->getArray(array());
 		$predictionGameID = Factory::getApplication()->input->getVar('prediction_id', '', 'post', 'int');
 		$joomlaUserID     = Factory::getApplication()->input->getVar('user_id', '', 'post', 'int');
 
-		// $model            = $this->getModel('predictionusers');
+		$model            = $this->getModel('predictionusers');
 		$modelusers   = BaseDatabaseModel::getInstance("predictionusers", "sportsmanagementModel");
 		$model        = BaseDatabaseModel::getInstance("prediction", "sportsmanagementModel");
 		$user         = Factory::getUser();
 		$isMember     = $model->checkPredictionMembership();
 		$allowedAdmin = $model->getAllowed();
 
+       		
+
 		if ((($user->id != $joomlaUserID)) && (!$allowedAdmin))
 		{
 			$msg  .= Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_ERROR_1');
-			$link = Factory::getURI()->toString();
+			
+			$uri = JUri::getInstance(); 
+			$link = $uri->toString();
 		}
 		else
 		{
 			if ((!$isMember) && (!$allowedAdmin))
 			{
 				$msg  .= Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_ERROR_2');
-				$link = Factory::getURI()->toString();
-			}
+				$uri = JUri::getInstance(); 
+				$link = $uri->toString();
+			} 
 			else
 			{
 				if (!$modelusers->savememberdata())
 				{
 					$msg  .= Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_ERROR_3');
-					$link = Factory::getURI()->toString();
+					$uri = JUri::getInstance(); 
+					$link = $uri->toString();
 				}
 				else
 				{
 					$msg  .= Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_MSG_1');
-					$link = Factory::getURI()->toString();
+					$uri = JUri::getInstance(); 
+					$link = $uri->toString();
 				}
 			}
 		}
-
-		// Echo '<br />';
-		// echo '' . $link . '<br />';
-		// echo '' . $msg . '<br />';
-		$this->setRedirect($link, $msg);
+        
+		 //Echo '<br />';
+		 //echo '' . $link . '<br />';
+		 //echo '' . $msg . '<br />';
+		$this->setRedirect($link, $msg); 
 	}
 
 	/**

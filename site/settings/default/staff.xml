@@ -4,50 +4,50 @@
   label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"  
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
 
-		<field 	name="show_sectionheader" type="extensionradiobutton" default="1" 
-		class="radio btn-group btn-group-yesno"
+		<field 	name="show_sectionheader" type="radio" default="1" 
+		layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_SECTIONHEADER" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field 	name="show_info" type="extensionradiobutton" default="1"   class="radio btn-group btn-group-yesno"
+		<field 	name="show_info" type="radio" default="1"   layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_INFO" 
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_INFO">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field 	name="show_extended" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+		<field 	name="show_extended" type="radio" default="1"  layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_EXTENDED"
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_EXTENDED">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>	
 		
-		<field 	name="show_status" type="extensionradiobutton" default="1"   class="radio btn-group btn-group-yesno"
+		<field 	name="show_status" type="radio" default="1"   layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_STATUS" 
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_STATUS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_description" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+		<field name="show_description" type="radio" default="1" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_DESCRIPTION" 
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_DESCRIPTION">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field	name="show_careerstats" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+		<field	name="show_careerstats" type="radio" default="1"  layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_CAREER_STATS"
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_CAREER_STATS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field	name="show_career" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+		<field	name="show_career" type="radio" default="1"  layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_CAREER"
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_CAREER">
 			<option value="0">JNO</option>
@@ -66,7 +66,7 @@
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_NAME_FORMAT">
 		</field>
 
-		<field 	name="show_photo" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+		<field 	name="show_photo" type="radio" default="1"  layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_PHOTO" 
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_PHOTO">
 			<option value="0">JNO</option>
@@ -78,7 +78,7 @@
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_PICTURE_WIDTH">
 		</field>
 
-		<field 	name="show_nationality" type="extensionradiobutton" default="0"  class="radio btn-group btn-group-yesno"
+		<field 	name="show_nationality" type="radio" default="0"  layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_NATIONALITY" 
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_NATIONALITY">
 			<option value="0">JNO</option>
@@ -95,63 +95,63 @@
 			<option value="4">COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_OPTION4_BIRTHDAY</option>
 		</field>
 
-		<field 	name="show_person_address" type="extensionradiobutton" default="0"  class="radio btn-group btn-group-yesno"
+		<field 	name="show_person_address" type="radio" default="0"  layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_PERS_ADDRESS" 
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_PERS_ADDRESS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>		
 		
-		<field 	name="show_person_phone" type="extensionradiobutton" default="0"  class="radio btn-group btn-group-yesno"
+		<field 	name="show_person_phone" type="radio" default="0"  layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_PERS_PHONE" 
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_PERS_PHONE">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
-		<field 	name="show_person_mobile" type="extensionradiobutton" default="0"  class="radio btn-group btn-group-yesno"
+		<field 	name="show_person_mobile" type="radio" default="0"  layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_PERS_MOBILE" 
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_PERS_MOBILE">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>		
 		
-		<field 	name="show_person_email" type="extensionradiobutton" default="0"   class="radio btn-group btn-group-yesno"
+		<field 	name="show_person_email" type="radio" default="0"   layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_PERS_EMAIL" 
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_PERS_EMAIL">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
-		<field 	name="show_person_website" type="extensionradiobutton" default="0"   class="radio btn-group btn-group-yesno"
+		<field 	name="show_person_website" type="radio" default="0"   layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_PERS_WEBSITE" 
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_PERS_WEBSITE">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>		
 		
-		<field 	name="show_person_height" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+		<field 	name="show_person_height" type="radio" default="1"  layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_PERS_HEIGHT" 
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_PERS_HEIGHT">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>	
 
-		<field 	name="show_person_weight" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+		<field 	name="show_person_weight" type="radio" default="1"  layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_PERS_WEIGHT" 
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_PERS_WEIGHT">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>			
 
-		<field 	name="show_person_regnr" type="extensionradiobutton" default="1"   class="radio btn-group btn-group-yesno"
+		<field 	name="show_person_regnr" type="radio" default="1"   layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_REGNUMBER" 
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_REGNUMBER">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>			
 		
-		<field 	name="show_general_description" type="extensionradiobutton" default="0"  class="radio btn-group btn-group-yesno"
+		<field 	name="show_general_description" type="radio" default="0"  layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_GEN_DESCRIPTION" 
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_GEN_DESCRIPTION">
 			<option value="0">JNO</option>
@@ -186,7 +186,7 @@
   label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_EDIT_ELEMENTS"  
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_EDIT_ELEMENTS">	
 			
-	<field 	name="edit_own_player" type="extensionradiobutton" default="0"  class="radio btn-group btn-group-yesno"
+	<field 	name="edit_own_player" type="radio" default="0"  layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_EDIT_PLAYER" 
 				description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_EDIT_PLAYER">
 			<option value="0">JNO</option>

@@ -108,8 +108,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
         </div>
     </div>
-<div>
+
 	<?PHP
 	echo $this->loadTemplate('footer');
 	?> 
-</div>
+

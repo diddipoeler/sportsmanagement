@@ -132,7 +132,7 @@ class sportsmanagementModelLeagues extends JSMModelList
 		$this->setState('filter.search_champions_complete', $this->getUserStateFromRequest($this->context . '.filter.search_champions_complete', 'filter_search_champions_complete', ''));
 		
 		$this->setState('filter.search_associations', $this->getUserStateFromRequest($this->context . '.filter.search_associations', 'filter_search_associations', ''));
-		$this->setState('filter.federation', $this->getUserStateFromRequest($this->context . '.filter.federation', 'filter_federation', ''));
+		$this->setState('filter.search_federation', $this->getUserStateFromRequest($this->context . '.filter.search_federation', 'filter_search_federation', ''));
 		$this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
 		$this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
 
@@ -150,6 +150,7 @@ class sportsmanagementModelLeagues extends JSMModelList
 
 		//$this->jsmjinput->set('leaguenation', $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '') );
 		$this->jsmapp->setUserState("$this->jsmoption.leaguenation", $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '') );
+        $this->jsmapp->setUserState("$this->jsmoption.leaguefederation", $this->getUserStateFromRequest($this->context . '.filter.search_federation', 'filter_search_federation', '') );
 		$this->setState('list.direction', $listOrder);
 	}
 
@@ -188,9 +189,12 @@ class sportsmanagementModelLeagues extends JSMModelList
 			$this->jsmquery->where('obj.associations = ' . $this->getState('filter.search_associations'));
 		}
 
-		if ($this->getState('filter.federation'))
+		/** sonderselektion bei verbänden */
+        if ($this->getState('filter.search_federation'))
 		{
-			$this->jsmquery->where('obj.associations = ' . $this->getState('filter.federation'));
+		  $this->jsmquery->join('LEFT', '#__sportsmanagement_countries AS co ON co.alpha3 = obj.country');
+          $this->jsmquery->join('LEFT', '#__sportsmanagement_federations AS fe ON fe.id = co.federation');
+          $this->jsmquery->where('fe.id = ' . $this->getState('filter.search_federation'));
 		}
 
 		if ($this->getState('filter.search_agegroup'))

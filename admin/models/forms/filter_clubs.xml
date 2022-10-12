@@ -12,6 +12,7 @@
     <field
 			name="state"
 			type="status"
+			class="select2-container"
 			label="JOPTION_SELECT_PUBLISHED"
 			description="JOPTION_SELECT_PUBLISHED_DESC"
 			onchange="this.form.submit();"
@@ -30,17 +31,25 @@
             <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
         </field>
 		
-<field name="geo_daten" type="list" default="" 
+<field name="geo_daten" 
+type="list" 
+default="" 
 onchange="this.form.submit();"
-required="" label="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN" description="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN">
+class="select2-container"
+required="" label="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN" 
+description="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN">
   <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN</option>
   <option value="0">JNO</option>
   <option value="1">JYES</option>
 </field>
 
-<field name="standard_picture" type="list" default="" 
+<field name="standard_picture" 
+type="list" 
+default="" 
 onchange="this.form.submit();"
-required="" label="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_STANDARD_PICTURE" description="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_STANDARD_PICTURE">
+class="select2-container"
+required="" label="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_STANDARD_PICTURE" 
+description="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_STANDARD_PICTURE">
   <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_STANDARD_PICTURE</option>
   <option value="0">JNO</option>
   <option value="1">JYES</option>

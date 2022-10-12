@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage fields
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -41,19 +37,16 @@ class JFormFieldactseason extends \JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		// Initialize variables.
 		$options = array();
-
 		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
-
 		$query->select('s.id AS value, s.name AS text');
 		$query->from('#__sportsmanagement_season as s');
 		$query->order('s.name');
 		$db->setQuery($query);
 		$options = $db->loadObjectList();
 
-		// Merge any additional options in the XML definition.
+		/** Merge any additional options in the XML definition. */
 		$options = array_merge(parent::getOptions(), $options);
 
 		return $options;

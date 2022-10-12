@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die();
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
@@ -21,10 +17,9 @@ use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\Registry\Registry;
 
 JLoader::import('joomla.application.component.modeladmin');
-
-// JLoader::import('components.com_sportsmanagement.libraries.GCalendar.GCalendarZendHelper', JPATH_ADMINISTRATOR);
 JLoader::import('joomla.utilities.simplecrypt');
 
 /**
@@ -50,7 +45,6 @@ class sportsmanagementModeljsmGCalendar extends AdminModel
 	public function getTable($type = 'jsmGCalendar', $prefix = 'sportsmanagementTable', $config = array())
 	{
 		$config['dbo'] = sportsmanagementHelper::getDBConnection();
-
 		return Table::getInstance($type, $prefix, $config);
 	}
 
@@ -91,11 +85,18 @@ class sportsmanagementModeljsmGCalendar extends AdminModel
 		$config = Factory::getConfig();
 		$option = Factory::getApplication()->input->getCmd('option');
 		$post   = Factory::getApplication()->input->post->getArray(array());
-
-		// Get a db connection.
 		$db = Factory::getDbo();
 
 		$timezone = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('timezone', '');
+        
+        if (isset($post['extended']) && is_array($post['extended']))
+		{
+			/** Convert the extended field to a string. */
+			$parameter = new Registry;
+			$parameter->loadArray($post['extended']);
+			//$data['extended'] = (string) $parameter;
+			$data['params'] = (string) $parameter;
+		}
 
 		if (empty($data['id']))
 		{

@@ -7,41 +7,41 @@
 		description="COM_SPORTSMANAGEMENT_FES_FLASH_PARAMS_DESCR_SETTINGS">
 <field type="jsmmessage" style="info" text="COM_SPORTSMANAGEMENT_FES_FLASH_PARAM_LABEL_BG_COLOUR" />
 <field type="jsmmessage" style="warning" text="COM_SPORTSMANAGEMENT_XML_CURVE_LAYOUT_TITLE" />
-<field name="curve_team1_color" type="JLGColor" default="blue" class="radio btn-group btn-group-yesno" 
+<field name="curve_team1_color" type="JLGColor" default="blue" layout="joomla.form.field.radio.switcher" 
 			label="COM_SPORTSMANAGEMENT_FES_FLASH_PARAM_LABEL_BAR4_COLOUR"
 			description="COM_SPORTSMANAGEMENT_FES_FLASH_PARAM_DESCR_BAR4_COLOUR">
 
 		</field>		
-<field name="curve_team2_color" type="JLGColor" default="green" class="radio btn-group btn-group-yesno" 
+<field name="curve_team2_color" type="JLGColor" default="green" layout="joomla.form.field.radio.switcher" 
 			label="COM_SPORTSMANAGEMENT_FES_FLASH_PARAM_LABEL_BAR5_COLOUR"
 			description="COM_SPORTSMANAGEMENT_FES_FLASH_PARAM_DESCR_BAR5_COLOUR">
 
 		</field>  
   
 <field type="jsmmessage" style="warning" text="COM_SPORTSMANAGEMENT_XML_STATS_LAYOUT_TITLE" />  
-<field name="stats_home_color" type="JLGColor" default="red" class="radio btn-group btn-group-yesno" 
+<field name="stats_home_color" type="JLGColor" default="red" layout="joomla.form.field.radio.switcher" 
 			label="COM_SPORTSMANAGEMENT_FES_FLASH_PARAM_LABEL_BAR1_COLOUR"
 			description="COM_SPORTSMANAGEMENT_FES_FLASH_PARAM_DESCR_BAR1_COLOUR">
 
 		</field>
-<field name="stats_away_color" type="JLGColor" default="blue" class="radio btn-group btn-group-yesno" 
+<field name="stats_away_color" type="JLGColor" default="blue" layout="joomla.form.field.radio.switcher" 
 			label="COM_SPORTSMANAGEMENT_FES_FLASH_PARAM_LABEL_BAR2_COLOUR"
 			description="COM_SPORTSMANAGEMENT_FES_FLASH_PARAM_DESCR_BAR2_COLOUR">
 
 		</field>
-<field name="stats_overall_color" type="JLGColor" default="green" class="radio btn-group btn-group-yesno" 
+<field name="stats_overall_color" type="JLGColor" default="green" layout="joomla.form.field.radio.switcher" 
 			label="COM_SPORTSMANAGEMENT_FES_FLASH_PARAM_LABEL_BAR3_COLOUR"
 			description="COM_SPORTSMANAGEMENT_FES_FLASH_PARAM_DESCR_BAR3_COLOUR">
 
 		</field>  
 
 <field type="jsmmessage" style="warning" text="COM_SPORTSMANAGEMENT_XML_TEAMSTATS_LAYOUT_TITLE" />   
-<field name="teamstats_goalshome_color" type="JLGColor" default="red" class="radio btn-group btn-group-yesno" 
+<field name="teamstats_goalshome_color" type="JLGColor" default="red" layout="joomla.form.field.radio.switcher" 
 			label="COM_SPORTSMANAGEMENT_FES_FLASH_PARAM_LABEL_BAR6_COLOUR"
 			description="COM_SPORTSMANAGEMENT_FES_FLASH_PARAM_DESCR_BAR6_COLOUR">
 
 		</field>		
-<field name="teamstats_goalsaway_color" type="JLGColor" default="blue" class="radio btn-group btn-group-yesno" 
+<field name="teamstats_goalsaway_color" type="JLGColor" default="blue" layout="joomla.form.field.radio.switcher" 
 			label="COM_SPORTSMANAGEMENT_FES_FLASH_PARAM_LABEL_BAR7_COLOUR"
 			description="COM_SPORTSMANAGEMENT_FES_FLASH_PARAM_DESCR_BAR7_COLOUR">
 

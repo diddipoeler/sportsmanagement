@@ -1,0 +1,61 @@
+<changelogs>
+<!--
+	<changelog>
+		<element>com_sportsmanagement</element>
+		<type>component</type>
+		<version>3.15.00</version>
+		<note>
+			<item>Initial Version</item>
+		</note>
+		<security>
+			<item><![CDATA[<p>No security issues.</p>]]></item>
+		</security>
+		<fix>
+			<item>No fix</item>
+		</fix>
+		<language>
+			<item>German</item>
+		</language>
+		<addition>
+			<item>Change log Server added.</item>
+		</addition>
+		<change>
+			<item>No change</item>
+		</change>
+		<remove>
+			<item>No remove</item>
+		</remove>
+		
+		
+	</changelog>
+	-->
+	<changelog>
+		<element>com_sportsmanagement</element>
+		<type>component</type>
+		<version>4.00.00</version>
+		<security>
+			<item><![CDATA[<p>No security issues.</p>]]></item>
+		</security>
+		<fix>
+			
+			
+			<item>Vereins Wappen hochladen name wird zu Symbole
+#1284 closed 16 hours ago</item>
+		</fix>
+		<language>
+			<item>German</item>
+		</language>
+		<addition>
+			<item>Neues Feld im Projektteam zur Eingabe des Sieger/Gewinner</item>
+		</addition>
+		<change>
+			<item>No change</item>
+		</change>
+		<remove>
+			<item>No remove</item>
+		</remove>
+		<note>
+			<item>Neues Feld im Projektteam zur Eingabe des Sieger/Gewinner</item>
+		</note>
+	</changelog>
+</changelogs>

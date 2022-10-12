@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage editperson
@@ -11,14 +9,14 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 JLoader::import('components.com_sportsmanagement.helpers.imageselect', JPATH_SITE);
 
@@ -33,11 +31,11 @@ JLoader::import('components.com_sportsmanagement.helpers.imageselect', JPATH_SIT
  */
 class sportsmanagementModelEditPerson extends AdminModel
 {
-	// Interfaces
+
 	var $latitude = null;
-
 	var $longitude = null;
-
+    var $_id = 0;
+    var $_data = array();
 
 	/**
 	 * sportsmanagementModelEditPerson::updItem()
@@ -49,29 +47,29 @@ class sportsmanagementModelEditPerson extends AdminModel
 	function updItem($data)
 	{
 		$app = Factory::getApplication();
+        //$app->enqueueMessage('<pre>'.print_r($data,true).'</pre>', 'error');
 
 		foreach ($data['request'] as $key => $value)
 		{
 			$data[$key] = $value;
 		}
 
-		// Specify which columns are to be ignored. This can be a string or an array.
-		// $ignore = 'id';
 		$ignore = '';
 
 		try
 		{
-			// Get the table object from the model.
-			$table = $this->getTable('person');
-
-			// Bind the array to the table object.
+			$table = $this->getTable('player');
+			$data = array_filter($data);
 			$table->bind($data, $ignore);
+			$table->check();
 			$table->store();
+            return true;
 		}
 		catch (Exception $e)
 		{
-			Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
-			Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+            return false;
 		}
 
 	}
@@ -86,7 +84,7 @@ class sportsmanagementModelEditPerson extends AdminModel
 	 * @return Table    A database object
 	 * @since  1.6
 	 */
-	public function getTable($type = 'person', $prefix = 'sportsmanagementTable', $config = array())
+	public function getTable($type = 'player', $prefix = 'sportsmanagementTable', $config = array())
 	{
 		return Table::getInstance($type, $prefix, $config);
 	}
@@ -105,7 +103,6 @@ class sportsmanagementModelEditPerson extends AdminModel
 		$cfg_which_media_tool = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('cfg_which_media_tool', 0);
 		$app                  = Factory::getApplication('site');
 
-		// Get the form.
 		$form = $this->loadForm('com_sportsmanagement.' . $this->name, $this->name, array('load_data' => $loadData));
 
 		if (empty($form))
@@ -128,7 +125,7 @@ class sportsmanagementModelEditPerson extends AdminModel
 	 */
 	protected function loadFormData()
 	{
-		// Check the session for previously entered form data.
+		/** Check the session for previously entered form data. */
 		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.' . $this->name . '.data', array());
 
 		if (empty($data))
@@ -148,21 +145,35 @@ class sportsmanagementModelEditPerson extends AdminModel
 	 */
 	function getData()
 	{
-		$this->_id = Factory::getApplication()->input->getInt('pid', 0);
+    $this->_id = Factory::getApplication()->input->getInt('id', 0);
+	$this->_data = $this->getTable('player', 'sportsmanagementTable');
+	$this->_data->load($this->_id);
+	return $this->_data;
+        
+//		$id = Factory::getApplication()->input->getInt('id', 0);
+//        $app = Factory::getApplication();
+//        
+//        $db        = sportsmanagementHelper::getDBConnection(true, $app->input->get('cfg_which_database', 0, ''));
+//		$query     = $db->getQuery(true);
+//        
+//        $query->clear();
+//        $query->select('*');
+//        $query->from('#__sportsmanagement_person');
+//        $query->where('id = ' . (int) $id);
+//        
+//        try
+//		{
+//		$db->setQuery($query);  
+//		$result = $db->loadObject();
+//        }
+//		catch (Exception $e)
+//		{
+//			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+//			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+//		}
+//
+//		return $result;
 
-		//		// Lets load the content if it doesn't already exist
-		//		if (empty($this->_data))
-		//		{
-		$this->_data = $this->getTable('person', 'sportsmanagementTable');
-		$this->_data->load($this->_id);
-
-		//			$query='SELECT * FROM #__sportsmanagement_person WHERE id='.(int) $this->_id;
-		//			$this->_db->setQuery($query);
-		//			$this->_data = $this->_db->loadObject();
-		return $this->_data;
-
-		//		}
-		//		return true;
 	}
 
 }

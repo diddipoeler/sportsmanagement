@@ -882,6 +882,8 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project` (
   `cr_project` varchar(255) DEFAULT NULL,
   `use_leaguechampion` tinyint(1) NOT NULL DEFAULT '0',
 
+`double_events` TINYINT(1) NOT NULL DEFAULT '0' ,
+
   PRIMARY KEY (`id`) ,
   KEY `league_id` (`league_id`),
   KEY `season_id` (`season_id`),
@@ -996,7 +998,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project_team` (
   `cache_homegoals_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
   `cache_guestgoals_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
   `cache_diffgoals_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
-  
+  `champion` TINYINT(1) NOT NULL DEFAULT '0' ,
   PRIMARY KEY (`id`) ,
   KEY `project_id` (`project_id`),
   KEY `team_id` (`team_id`),

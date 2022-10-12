@@ -14,7 +14,7 @@ Das Team
 * Entwicklungsunterstützung: jst71, appukonrad, tdittmann, llambion, ortwin20000 
 * Language manager & Wiki: stony
 * Übersetzer: sk-plehanovec, teddy
-* Tester: svdoldie
+* Tester: svdoldie,Stefan Kemner
 * Designer: donclumsy
 
 Übersetzungen
@@ -25,6 +25,7 @@ vorgenommen und in die Komponente eingepflegt.
 Erweiterungen
 ================
 Google APIs Client Library for PHP https://github.com/googleapis/google-api-php-client
+The Tempus Dominus project https://cdnjs.com/libraries/tempusdominus-bootstrap-4
 
 Import functions ?
 ---------------------
@@ -41,6 +42,8 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   19-06-2022: **4.00.00** Anpassungen Joomla 4
+*   10-04-2022: **3.16.00** Anpassungen Dart
 *   30-03-2022: **3.15.00** Anpassungen Joomla 4
 *   30-03-2022: **3.14.00** Anpassungen Joomla 4
 *   30-03-2022: **3.13.00** Anpassungen Joomla 4

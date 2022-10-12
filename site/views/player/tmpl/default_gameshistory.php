@@ -8,9 +8,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -92,14 +90,12 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 							{
 								foreach ($this->gamesstats as $stat)
 								{
-									/**
-									 *                            do not show statheader when there are no stats
-									 */
+									/**	do not show statheader when there are no stats */
 									if (!empty($stat))
 									{
 										try
 										{
-											if ($stat->showInPlayer())
+											if ( $stat->showInPlayer() )
 											{
 												?>
                                                 <th class=""><?php echo $stat->getImage(); ?></th>
@@ -239,48 +235,56 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 								if ($this->config['show_substitution_stats'] && $this->overallconfig['use_jl_substitution'] == 1)
 								{
 									?>
-                                    <td class=""><?php
+                                    <td class="" id="startRoster-gameshistory">
+                                    <?php
 										$total['startRoster'] += $game->started;
 										echo($game->started > 0 ? $game->started : $this->overallconfig['zero_events_value']);
-										?></td>
-                                    <td class=""><?php
+										?>
+                                        </td>
+                                    <td class="" id="in-gameshistory">
+                                    <?php
 										$total['in'] += $game->sub_in;
 										echo($game->sub_in > 0 ? $game->sub_in : $this->overallconfig['zero_events_value']);
-										?></td>
-                                    <td class=""><?php
+										?>
+                                        </td>
+                                    <td class="" id="out-gameshistory">
+                                    <?php
 										$total['out'] += $game->sub_out;
 										echo($game->sub_out > 0 ? $game->sub_out : $this->overallconfig['zero_events_value']);
-										?></td>
-                                    <td class=""><?php
+										?>
+                                        </td>
+                                    <td class="" id="playedtime-gameshistory">
+                                    <?php
 										$total['playedtime'] += $timePlayed;
 										echo($timePlayed);
-										?></td>
+										?>
+                                        </td>
 
 									<?php
 								}
-								if ($this->config['show_career_events_stats'] && isset($this->AllEvents))
+								if ( $this->config['show_career_events_stats'] && isset($this->AllEvents) )
 								{
 									foreach ($this->AllEvents as $eventtype)
 									{
 										?>
-                                        <td class=""><?php
-											if (!isset($total_event_stats[$eventtype->id]))
+                                        <td class="" id="<?php echo $eventtype->name; ?>">
+                                        <?php
+											if ( !isset($total_event_stats[$eventtype->id]) )
 											{
 												$total_event_stats[$eventtype->id] = 0;
 											}
-											if (isset($this->gamesevents[$game->id][$eventtype->id]))
+											if ( isset($this->gamesevents[$game->id][$eventtype->id]) )
 											{
 												$total_event_stats[$eventtype->id] += $this->gamesevents[$game->id][$eventtype->id];
 												echo $this->gamesevents[$game->id][$eventtype->id];
 											}
 											else
 											{
-												/**
-												 *                        as only matches are shown here where the player was part of, output a 0 i.s.o. a '-'
-												 */
+												/** as only matches are shown here where the player was part of, output a 0 i.s.o. a '-' */
 												echo $this->overallconfig['zero_events_value'];
 											}
-											?></td>
+											?>
+                                            </td>
 										<?php
 									}
 								}
@@ -288,9 +292,7 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 								{
 									foreach ($this->gamesstats as $stat)
 									{
-										/**
-										 *                            do not show statheader when there are no stats
-										 */
+										/** do not show statheader when there are no stats */
 										if (!empty($stat))
 										{
 											if ($stat->showInPlayer())
@@ -303,9 +305,7 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 													}
 													else
 													{
-														/**
-														 *                                    as only matches are shown here where the player was part of, output a 0 i.s.o. a '-'
-														 */
+														/** as only matches are shown here where the player was part of, output a 0 i.s.o. a '-' */
 														echo $this->overallconfig['zero_events_value'];
 													}
 													?></td>
@@ -356,9 +356,7 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 							{
 								foreach ($this->gamesstats as $stat)
 								{
-									/**
-									 *                            do not show statheader when there are no stats
-									 */
+									/** do not show statheader when there are no stats */
 									if (!empty($stat))
 									{
 										if ($stat->showInPlayer() && isset($stat->gamesstats['totals']))

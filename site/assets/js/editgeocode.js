@@ -206,6 +206,11 @@ countryleaflet = dpjQuery("#address_country").val();
 	}
 */
 countryleaflet = dpjQuery("#country").val();	
+if ( countryleaflet === 'DDR')
+{
+countryleaflet = 'DEU';
+}		
+	
 console.log('getAddresString countryleaflet ' + countryleaflet);
 
 var url = baseurl + '/administrator/index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getCcountryAlpha2&country=' + countryleaflet;

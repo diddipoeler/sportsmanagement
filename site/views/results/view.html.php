@@ -378,7 +378,7 @@ class sportsmanagementViewResults extends sportsmanagementView
 		$routeparameter['mid']                = $game->id;
 		$report_link                          = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);
 
-		if ((($game->show_report) && (trim($game->summary) != '')) || ($game->alt_decision) || ($game->match_result_type > 0))
+		if ((($game->show_report) && (trim((string) $game->summary) != '')) || ($game->alt_decision) || ($game->match_result_type > 0))
 		{
 			if ($game->alt_decision)
 			{
@@ -848,8 +848,8 @@ class sportsmanagementViewResults extends sportsmanagementView
 			$output = self::showMatchState($game, $config);
 		}
 
-		$part_results_left  = explode(";", $game->team1_result_split);
-		$part_results_right = explode(";", $game->team2_result_split);
+		$part_results_left  = explode(";", (string)$game->team1_result_split);
+		$part_results_right = explode(";", (string)$game->team2_result_split);
 
 		if ($config['show_part_results'])
 		{
@@ -1153,9 +1153,8 @@ class sportsmanagementViewResults extends sportsmanagementView
 		switch ($this->layout)
 		{
 			case 'form':
-				/**
-				 * projekt positionen
-				 */
+            $this->doubleevents = $this->project->double_events;
+				/** projekt positionen */
 				$selectpositions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REF_FUNCTION'));
 
 				if ($projectpositions = sportsmanagementModelMatch::getProjectPositionsOptions(0, 3, $this->project->id))

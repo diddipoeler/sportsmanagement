@@ -90,7 +90,7 @@ $query->clear();
             $query->where('l.country LIKE ' . $db->Quote('' . $country_result . ''));  
               
             }
-		$query->order('l.name');
+		$query->order('text');
 		$db->setQuery($query);
 		$options = $db->loadObjectList();
 

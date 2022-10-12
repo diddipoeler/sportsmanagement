@@ -10,8 +10,8 @@
   >
 
 <field type="extensionsubtitle" title="COM_SPORTSMANAGEMENT_SETTINGS_DEFAULT_EXTENSIONSUBTITLE_START_INSTALL_HELPER" color="#2672a6" />
-<field name="start_install_helper" type="extensionradiobutton" default="1"
-class="radio btn-group btn-group-yesno"
+<field name="start_install_helper" type="radio" default="1"
+layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_START_INSTALL_HELPER" 
 			description="COM_SPORTSMANAGEMENT_SETTINGS_START_INSTALL_HELPER">
 			<option value="0">JNO</option>
@@ -21,9 +21,9 @@ class="radio btn-group btn-group-yesno"
 <field type="extensionsubtitle" title="" color="#2672a6" />
 <field type="extensionmessage" style="example" text="COM_SPORTSMANAGEMENT_SETTINGS_JSM_DEINSTALL_DESC" label="COM_SPORTSMANAGEMENT_SETTINGS_JSM_DEINSTALL" />		
 <field name="jsm_deinstall_module" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_INSTALLER_TYPE_MODULE" 
       description="COM_INSTALLER_TYPE_MODULE">
 			<option value="0">JNO</option>
@@ -31,9 +31,9 @@ class="radio btn-group btn-group-yesno"
 		</field>		
 		
 <field name="jsm_deinstall_plugin" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_INSTALLER_TYPE_PLUGIN" 
       description="COM_INSTALLER_TYPE_PLUGIN">
 			<option value="0">JNO</option>
@@ -41,9 +41,9 @@ class="radio btn-group btn-group-yesno"
 		</field>		
 		
 <field name="jsm_deinstall_database" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_INSTALLER_TITLE_DATABASE" 
       description="COM_INSTALLER_TITLE_DATABASE">
 			<option value="0">JNO</option>
@@ -52,9 +52,9 @@ class="radio btn-group btn-group-yesno"
 
 <field type="extensionsubtitle" title="" color="#2672a6" />		
 <field name="show_jed_link" 
-type="extensionradiobutton" 
+type="radio" 
 default="1"
-class="radio btn-group btn-group-yesno"
+layout="joomla.form.field.radio.switcher"
 label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JED_LINK" 
 description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JED_LINK_DESC">
 <option value="0">JNO</option>
@@ -64,9 +64,9 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JED_LINK_DESC">
 <field type="extensionsubtitle" title="" color="#2672a6" />
 		
 	<field name="cfg_jl_import" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="1"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_JL_IMPORT" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_JL_IMPORT_DESC">
 			<option value="0">JNO</option>
@@ -82,9 +82,9 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JED_LINK_DESC">
 		</field>
 		
  <field name="cfg_use_plz_table" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="1"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_PLZ_TABLE" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_USE_PLZ_TABLE_DESC">
 			<option value="0">JNO</option>
@@ -92,9 +92,9 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JED_LINK_DESC">
 		</field>
 	
         <field name="cfg_flags_css" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="1"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_CSS_FLAGS" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_USE_CSS_FLAGS_DESC">
 			<option value="0">JNO</option>
@@ -151,9 +151,9 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JED_LINK_DESC">
 		</field>
 		
 		<field name="cfg_which_media_tool" 
-    type="extensionradiobutton"
+    type="radio"
 			default="imageselect" 
-			class="radio btn-group btn-group-yesno"
+			layout="joomla.form.field.radio.switcher"
       label="COM_SPORTSMANAGEMENT_SETTINGS_MEDIA_TOOL_TITLE"
 			description="COM_SPORTSMANAGEMENT_SETTINGS_MEDIA_TOOL_DESC">
 			<option value="media">COM_SPORTSMANAGEMENT_JOOMLA_MEDIA_KOMPONENT</option>
@@ -161,9 +161,9 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JED_LINK_DESC">
 		</field>
 
 <field name="cfg_draganddrop" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_DRAG_AND_DROP" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_DRAG_AND_DROP_DESC">
 			<option value="0">JNO</option>
@@ -171,9 +171,9 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JED_LINK_DESC">
 		</field>
 		
 		<field name="cfg_load_bootstrap" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="1"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_LOAD_BOOTSTRAP" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_LOAD_BOOTSTRAP_DESC">
 			<option value="0">JNO</option>
@@ -181,9 +181,9 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JED_LINK_DESC">
 		</field>
 		
 		<field name="cfg_which_database" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
 			<option value="0">JNO</option>
@@ -269,9 +269,9 @@ size="29" />
 			size="10" />
 		
 	<field name="cfg_dbprefix" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_DATABASE_TABLE_PREFIX_TITLE" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_USE_DATABASE_TABLE_PREFIX_DESC">
 			<option value="0">JNO</option>
@@ -289,18 +289,18 @@ size="29" />
 		</field>
 
 <field name="show_debug_info_backend" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_BACKEND_TITLE" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_BACKEND_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>		
 <field name="show_debug_info_frontend" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_FRONTEND_TITLE" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_FRONTEND_DESC">
 			<option value="0">JNO</option>
@@ -308,9 +308,9 @@ size="29" />
 		</field>
 		
 <field name="show_query_debug_info" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_QUERY_DEBUG_TITLE" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_QUERY_DEBUG_DESC">
 			<option value="0">JNO</option>
@@ -689,22 +689,22 @@ filter="safehtml"/>
 	
 	
 <field type="extensionsubtitle" title="COM_SPORTSMANAGEMENT_SETTINGS_DEFAULT_EXTENSIONSUBTITLE_WARNINGS" color="#2672a6" />
-<field name="show_jsm_tips_front" type="extensionradiobutton" default="1"
-class="radio btn-group btn-group-yesno"
+<field name="show_jsm_tips_front" type="radio" default="1"
+layout="joomla.form.field.radio.switcher"
 label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_TIPS" 
 description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_TIPS_DESC">
 	<option value="0">JNO</option>
 	<option value="1">JYES</option>
 </field>
-<field name="show_jsm_notes_front" type="extensionradiobutton" default="1"
-class="radio btn-group btn-group-yesno"
+<field name="show_jsm_notes_front" type="radio" default="1"
+layout="joomla.form.field.radio.switcher"
 label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_NOTES" 
 description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_NOTES_DESC">
 	<option value="0">JNO</option>
 	<option value="1">JYES</option>
 </field>
-<field name="show_jsm_warnings_front" type="extensionradiobutton" default="1"
-class="radio btn-group btn-group-yesno"
+<field name="show_jsm_warnings_front" type="radio" default="1"
+layout="joomla.form.field.radio.switcher"
 label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_WARNINGS" 
 description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_WARNINGS_DESC">
 	<option value="0">JNO</option>
@@ -716,8 +716,8 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_WARNINGS_DESC">
 
 
 
-<field name="force_ranking_cache" type="extensionradiobutton" default="0"
-class="radio btn-group btn-group-yesno"
+<field name="force_ranking_cache" type="radio" default="0"
+layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_FORCE_RANKING_CACHE" description="COM_SPORTSMANAGEMENT_SETTINGS_FORCE_RANKING_CACHE_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
@@ -735,15 +735,15 @@ class="radio btn-group btn-group-yesno"
       description="COM_SPORTSMANAGEMENT_SETTINGS_LOGO_PICTURE_WIDTH_DESC">
 		</field>
  
-	<field name="show_facebook_link" type="extensionradiobutton" default="0"
-class="radio btn-group btn-group-yesno"
+	<field name="show_facebook_link" type="radio" default="0"
+layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_FACEBOOK_LINK" description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_FACEBOOK_LINK_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 	
-                <field name="use_jsmflex" type="extensionradiobutton" default="0"
-class="radio btn-group btn-group-yesno"
+                <field name="use_jsmflex" type="radio" default="0"
+layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JSM_FLEX" description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JSM_FLEX_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
@@ -761,20 +761,20 @@ class="radio btn-group btn-group-yesno"
                     class="alert-error" 
                      
                 />
-                <field name="use_jsmgrid" type="extensionradiobutton" default="0"
-class="radio btn-group btn-group-yesno"
+                <field name="use_jsmgrid" type="radio" default="0"
+layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JSM_GRID" description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JSM_GRID_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-                <field name="use_fontawesome" type="extensionradiobutton" default="0"
-class="radio btn-group btn-group-yesno"
+                <field name="use_fontawesome" type="radio" default="0"
+layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_FONTAWESOME" description="COM_SPORTSMANAGEMENT_SETTINGS_USE_FONTAWESOME_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-                <field name="add_fontawesome" type="extensionradiobutton" default="0"
-class="radio btn-group btn-group-yesno"
+                <field name="add_fontawesome" type="radio" default="0"
+layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_ADD_FONTAWESOME" description="COM_SPORTSMANAGEMENT_SETTINGS_ADD_FONTAWESOME_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
@@ -791,22 +791,22 @@ class="radio btn-group btn-group-yesno"
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 
 <field type="extensionsubtitle" title="COM_SPORTSMANAGEMENT_SETTINGS_DEFAULT_EXTENSIONSUBTITLE_WARNINGS" color="#2672a6" />
-<field name="show_jsm_tips" type="extensionradiobutton" default="1"
-class="radio btn-group btn-group-yesno"
+<field name="show_jsm_tips" type="radio" default="1"
+layout="joomla.form.field.radio.switcher"
 label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_TIPS" 
 description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_TIPS_DESC">
 	<option value="0">JNO</option>
 	<option value="1">JYES</option>
 </field>
-<field name="show_jsm_notes" type="extensionradiobutton" default="1"
-class="radio btn-group btn-group-yesno"
+<field name="show_jsm_notes" type="radio" default="1"
+layout="joomla.form.field.radio.switcher"
 label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_NOTES" 
 description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_NOTES_DESC">
 	<option value="0">JNO</option>
 	<option value="1">JYES</option>
 </field>
-<field name="show_jsm_warnings" type="extensionradiobutton" default="1"
-class="radio btn-group btn-group-yesno"
+<field name="show_jsm_warnings" type="radio" default="1"
+layout="joomla.form.field.radio.switcher"
 label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_WARNINGS" 
 description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_WARNINGS_DESC">
 	<option value="0">JNO</option>
@@ -816,16 +816,16 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_WARNINGS_DESC">
 
 
 <field type="extensionsubtitle" title="Einstellungen Spielerübersicht" color="#2672a6" />
-<field name="backend_show_players_agegroup" type="extensionradiobutton" default="1"
-class="radio btn-group btn-group-yesno"
+<field name="backend_show_players_agegroup" type="radio" default="1"
+layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_AGEGROUP" 
 			description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_AGEGROUP">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-<field name="backend_show_players_knvbnr" type="extensionradiobutton" default="1"
-class="radio btn-group btn-group-yesno"
+<field name="backend_show_players_knvbnr" type="radio" default="1"
+layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_KNVBNR" 
 			description="COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_KNVBNR">
 			<option value="0">JNO</option>
@@ -965,7 +965,7 @@ multiple="true"
       />
 
 <field name="which_article_component" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="com_content"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_WHICH_MATCH_ARTICLE_COMPONENT" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_WHICH_MATCH_ARTICLE_COMPONENT_DESC">
@@ -975,9 +975,9 @@ multiple="true"
 		
 		
 <field name="show_team_community" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_TEAM_COMMUNITY" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_TEAM_COMMUNITY_DESC">
 			<option value="0">JNO</option>
@@ -987,81 +987,81 @@ multiple="true"
 
 
 <field name="show_debug_info_clubs" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_CLUBS" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 <field name="show_debug_info_teams" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_TEAMS" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
     <field name="show_debug_info_leagues" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_LEAGUES" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
     <field name="show_debug_info_seasons" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_SEASONS" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
     <field name="show_debug_info_playgrounds" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_PLAYGROUNDS" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
     <field name="show_debug_info_positions" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_POSITIONS" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
     <field name="show_debug_info_statistics" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_STATISTICS" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
     <field name="show_debug_info_sportstypes" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_SPORTSTYPES" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
     <field name="show_debug_info_eventtypes" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_EVENTTYPES" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
@@ -1069,9 +1069,9 @@ multiple="true"
 		</field>
     
     <field name="show_debug_info_rounds" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_ROUNDS" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
@@ -1079,9 +1079,9 @@ multiple="true"
 		</field>
     
     <field name="show_debug_info_matches" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_MATCHES" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
 			<option value="0">JNO</option>
@@ -1099,9 +1099,9 @@ multiple="true"
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 
 <field name="install_agegroup" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_INSTALL_AGEGROUP" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_INSTALL_AGEGROUP_DESC">
 			<option value="0">JNO</option>
@@ -1109,9 +1109,9 @@ multiple="true"
 		</field>
 		
 <field name="install_standard_position" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_INSTALL_STANDARD_POSITION" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_INSTALL_STANDARD_POSITION_DESC">
 			<option value="0">JNO</option>
@@ -1119,9 +1119,9 @@ multiple="true"
 		</field>		
 
 <field name="auto_completion_club_name" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_AUTO_COMPLETION_CLUB_NAME" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_AUTO_COMPLETION_CLUB_NAME_DESC">
 			<option value="0">JNO</option>
@@ -1130,9 +1130,9 @@ multiple="true"
 		
 <!--
 <field name="show_option_projectteams_quickadd" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_PROJECTTEAMS_QUICKADD" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_PROJECTTEAMS_QUICKADD_DESC">
 			<option value="0">JNO</option>
@@ -1140,9 +1140,9 @@ multiple="true"
 		</field>
 	-->
 <field name="show_option_projectteam_change" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_PROJECTTEAM_CHANGE" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_PROJECTTEAM_CHANGE_DESC">
 			<option value="0">JNO</option>
@@ -1151,9 +1151,9 @@ multiple="true"
 	
 
 <field name="show_edit_matches_matrix" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 	label="COM_SPORTSMANAGEMENT_SETTINGS_EDIT_MATCHES_MATRIX" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_EDIT_MATCHES_MATRIX_DESC">
 			<option value="0">JNO</option>
@@ -1161,9 +1161,9 @@ multiple="true"
 		</field>
 	
 <field name="show_option_federation" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="1"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_FEDERATION" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_FEDERATION_DESC">
 			<option value="0">JNO</option>
@@ -1171,9 +1171,9 @@ multiple="true"
 		</field>  
 		
 <field name="show_option_association" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="1"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_ASSOCIATION" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_ASSOCIATION_DESC">
 			<option value="0">JNO</option>
@@ -1181,9 +1181,9 @@ multiple="true"
 		</field>
 		
 <field name="show_option_position" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="1"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_POSITION" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_POSITION_DESC">
 			<option value="0">JNO</option>
@@ -1191,9 +1191,9 @@ multiple="true"
 		</field>   
 		
 <field name="show_option_eventtypes" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="1"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_EVENTTYPES" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_EVENTTYPES_DESC">
 			<option value="0">JNO</option>
@@ -1201,9 +1201,9 @@ multiple="true"
 		</field>
 		
 <field name="show_option_agegroup" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="1"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_AGEGROUP" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_AGEGROUP_DESC">
 			<option value="0">JNO</option>
@@ -1211,9 +1211,9 @@ multiple="true"
 		</field>    
 
 <field name="show_option_person" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="1"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_PERSON" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_PERSON_DESC">
 			<option value="0">JNO</option>
@@ -1221,9 +1221,9 @@ multiple="true"
 		</field>
 		
 <field name="show_option_playground" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="1"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_PLAYGROUND" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_PLAYGROUND_DESC">
 			<option value="0">JNO</option>
@@ -1231,9 +1231,9 @@ multiple="true"
 		</field>
 		
 <field name="show_option_rosterposition" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="1"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_ROSTERPOSITION" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_ROSTERPOSITION_DESC">
 			<option value="0">JNO</option>
@@ -1241,9 +1241,9 @@ multiple="true"
 		</field>        
 
 <field name="show_option_extrafields" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="1"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_EXTRAFIELDS" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_EXTRAFIELDS_DESC">
 			<option value="0">JNO</option>
@@ -1251,9 +1251,9 @@ multiple="true"
 		</field>
 		
 <field name="show_option_statistics" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="1"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_STATISTICS" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_STATISTICS_DESC">
 			<option value="0">JNO</option>
@@ -1261,9 +1261,9 @@ multiple="true"
 		</field>
 		
 <field name="show_option_clubnames" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="1"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_CLUBNAMES" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_CLUBNAMES_DESC">
 			<option value="0">JNO</option>
@@ -1271,9 +1271,9 @@ multiple="true"
 		</field>
 		
 <field name="show_option_github" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="1"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_GITHUB" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_GITHUB_DESC">
 			<option value="0">JNO</option>
@@ -1281,9 +1281,9 @@ multiple="true"
 		</field>            
 
 <field name="show_option_smquotes" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="1"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_SMQUOTES" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_SMQUOTES_DESC">
 			<option value="0">JNO</option>
@@ -1393,9 +1393,9 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_OPENCAGEDATA_API_CLIENTID_DESC" />
 	>
 
 <field name="show_jsm_errors" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_ERRORS" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_ERRORS_DESC">
 			<option value="0">JNO</option>
@@ -1430,9 +1430,9 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_ERRORS_LEVEL_DESC">
 
 		
 <field name="show_jsm_errors_front" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_ERRORS_FRONT" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_ERRORS_FRONT_DESC">
 			<option value="0">JNO</option>
@@ -1440,9 +1440,9 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_ERRORS_LEVEL_DESC">
 		</field>
 		
 <field name="show_jsm_errors_file" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="1"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_ERRORS_FILE" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_ERRORS_FILE_DESC">
 			<option value="0">JNO</option>

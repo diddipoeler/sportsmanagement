@@ -34,8 +34,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 echo $this->loadTemplate('projectheading');
 
 ?>
-   <!-- <div class="<?php echo $this->divclasscontainer; ?>"> -->
-        <div class="<?php echo $this->divclassrow; ?>">
+        <div class="<?php echo $this->divclassrow; ?>" id="ranking_joomla4" >
 			<?PHP
             if ($this->config['show_result_tabs'] == 'show_tabs')
 			{
@@ -43,15 +42,7 @@ echo $this->loadTemplate('projectheading');
 			}
             else
             {
-			echo $this->loadTemplate('ranking');
-			echo $this->loadTemplate('jsminfo');
-            }
-			?>
-        </div>
-    <!-- </div> -->
-	<?PHP
-    
-/*
+			//echo $this->loadTemplate('ranking');
 echo HTMLHelper::_('bootstrap.' . $this->startPane, 'myTab', array('active' => 'tab1id'));
 
 if ($this->config['show_table_1'])
@@ -138,8 +129,17 @@ if ($this->config['show_table_5'])
 }
 
 echo HTMLHelper::_('bootstrap.' . $this->endPanel);
-echo HTMLHelper::_('bootstrap.' . $this->endPane, 'myTab');
-*/
+echo HTMLHelper::_('bootstrap.' . $this->endPane, 'myTab');		    
+		    
+		    
+			echo $this->loadTemplate('jsminfo');
+            }
+			?>
+        </div>
+
+	<?PHP
+    
+
 ?>
 
 <?PHP

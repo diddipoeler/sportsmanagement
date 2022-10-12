@@ -237,9 +237,16 @@ $tblProject->use_leaguechampion = $post['use_leaguechampion' . $pks[$x]] ? 0 : 1
 		$query->where('season_id = ' . $season_id);
 		$query->where('league_id = ' . $league_id);
 		$query->order('name');
+		try {
 		$db->setQuery($query);
 		$result = $db->loadObjectList();
-
+}
+catch (RuntimeException $e)
+				{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($query->dump(), true) . '</pre>', 'Error');
+				}
 		return $result;
 	}
 

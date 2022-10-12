@@ -467,6 +467,8 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 
 		$this->jsmquery->order('t.name ASC');
 
+		//$this->jsmapp->enqueueMessage('<pre>'.print_r($this->jsmquery->dump(),true).'</pre>', 'Notice');
+		
 		try
 		{
 			$this->jsmdb->setQuery($this->jsmquery);
@@ -493,13 +495,19 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 	 * @return array
 	 * @since  0.1
 	 */
-	function getTeams()
+	function getTeams($country='')
 	{
 		self::$_project_id    = $this->jsmapp->getUserState("$this->jsmoption.pid", '0');
 		$this->_season_id     = $this->jsmapp->getUserState("$this->jsmoption.season_id", '0');
 		$this->project_art_id = $this->jsmapp->getUserState("$this->jsmoption.project_art_id", '0');
 		$this->sports_type_id = $this->jsmapp->getUserState("$this->jsmoption.sports_type_id", '0');
-
+$post = Factory::getApplication()->input->post->getArray(array());
+		if ( $post['edit_search_nation'] )
+		{
+		$country = $post['edit_search_nation'];
+		}
+//$this->jsmapp->enqueueMessage('<pre>'.print_r($post,true).'</pre>', 'Notice');
+		
 		/** Noch das land der liga */
 		$this->jsmquery->clear();
 		$this->jsmquery->select('l.country,p.season_id,p.project_type,p.use_nation');
@@ -522,21 +530,43 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 		else
 		{
 			$this->jsmquery->clear();
-			$this->jsmquery->select('st.id AS value,t.name AS text,t.info');
+			
+			if ( $post['edit_search_nation'] )
+		{
+              //$this->jsmquery->select('0 AS value, concat(t.name,' - ',t.id,'' ) AS text,t.info');
+				$this->jsmquery->select('0 AS value, concat(t.name,"-",t.id) AS text,t.info');
+			$this->jsmquery->from('#__sportsmanagement_team AS t');
+			$this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
+			$this->jsmquery->join('LEFT', '#__sportsmanagement_club AS c ON c.id = t.club_id');	
+              $this->jsmquery->group('t.name');
+			}
+			else
+			{
+              $this->jsmquery->select('st.id AS value,t.name AS text,t.info');
 			$this->jsmquery->from('#__sportsmanagement_team AS t');
 			$this->jsmquery->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
 			$this->jsmquery->join('INNER', '#__sportsmanagement_club AS c ON c.id = t.club_id');
-			$this->jsmquery->where('st.season_id = ' . $this->_season_id);
+				$this->jsmquery->where('st.season_id = ' . $this->_season_id);
+			}
+          
+          
+//			$this->jsmquery->where('st.season_id = ' . $this->_season_id);
 			$this->jsmquery->where('t.sports_type_id = ' . $this->sports_type_id);
-
+			
 			if ($result->country && $result->use_nation)
 			{
 				$this->jsmquery->where('c.country LIKE ' . $this->jsmdb->Quote('' . $result->country . ''));
+			}
+			if ( $country )
+			{
+			$this->jsmquery->where('c.country LIKE ' . $this->jsmdb->Quote('' . $country . ''));	
 			}
 
 			$this->jsmquery->order('t.name ASC');
 		}
 
+		//$this->jsmapp->enqueueMessage('<pre>'.print_r($this->jsmquery->dump(),true).'</pre>', 'Notice');
+		
 		try
 		{
 			$this->jsmdb->setQuery($this->jsmquery);

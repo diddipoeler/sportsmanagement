@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage statistics
@@ -11,10 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -22,7 +17,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
 jimport('joomla.filesystem.file');
-
 
 /**
  * sportsmanagementViewStatistics
@@ -45,7 +39,7 @@ class sportsmanagementViewStatistics extends sportsmanagementView
 	{
 		$this->table = Table::getInstance('statistic', 'sportsmanagementTable');
 
-		// Build the html select list for sportstypes
+		/** Build the html select list for sportstypes */
 		$sportstypes[]  = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_SPORTSTYPE_FILTER'), 'id', 'name');
 		$allSportstypes = BaseDatabaseModel::getInstance('SportsTypes', 'sportsmanagementmodel')->getSportsTypes();
 
@@ -71,9 +65,8 @@ class sportsmanagementViewStatistics extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-		// Set toolbar items for the page
+		/** Set toolbar items for the page */
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_TITLE');
-
 		ToolbarHelper::publishList();
 		ToolbarHelper::unpublishList();
 		ToolbarHelper::divider();
@@ -81,7 +74,6 @@ class sportsmanagementViewStatistics extends sportsmanagementView
 		ToolbarHelper::addNew('statistic.add');
 		ToolbarHelper::custom('statistic.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
 		ToolbarHelper::archiveList('statistic.export', Text::_('JTOOLBAR_EXPORT'));
-
 		parent::addToolbar();
 	}
 }

@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Uri\Uri;
 
 $massadd         = Factory::getApplication()->input->getInt('massadd', 0);
 $templatesToLoad = array('footer', 'listheader');
@@ -48,10 +49,10 @@ break;
 }
 
 
-
+//$this->document->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/jquery.datetimepicker.js');
 ?>
-<div>
+
 <?PHP
 echo $this->loadTemplate('footer');
 ?>
-</div>
+

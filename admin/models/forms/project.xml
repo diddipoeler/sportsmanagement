@@ -47,7 +47,7 @@
 			
 		<field
 			name="published"
-			type="extensionradiobutton"
+			type="radio"
 			class="radio btn-group btn-group-yesno"
 			default="1"
 			size="1"
@@ -467,6 +467,17 @@
 		label="COM_SPORTSMANAGEMENT_TABS_COMPETITION"
 		description="COM_SPORTSMANAGEMENT_TABS_COMPETITION_DESC">
 	
+	<field 
+			name="double_events" 
+			type="extensionradiobutton" 
+			default="0"   
+      		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_DOUBLE_EVENTS" 
+			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_DOUBLE_EVENTS_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
 		<field
 			name="game_regular_time"
 			type="text"

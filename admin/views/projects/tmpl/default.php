@@ -29,8 +29,8 @@ echo $this->loadTemplate('joomla_version');
 <?php echo HTMLHelper::_('form.token'); ?>
 <?php echo $this->table_data_div; ?>
 </form>
-<div>
+
 <?PHP
 echo $this->loadTemplate('footer');
 ?>
-</div>
+

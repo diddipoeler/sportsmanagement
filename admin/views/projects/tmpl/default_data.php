@@ -228,11 +228,12 @@ $pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=compon
 					if ($this->state->get('filter.search_nation'))
 					{
 						$append = ' style="background-color:#bbffff"';
+						JHtml::_('formbehavior2.select2', '.test1');
 						echo HTMLHelper::_(
 							'select.genericlist',
 							$this->league,
 							'league' . $this->item->id,
-							$inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
+							$inputappend . 'class="form-control form-control-inline test1" size="1" onchange="document.getElementById(\'cb' .
 							$this->count_i . '\').checked=true"' . $append,
 							'id', 'name', $this->item->league_id
 						);
@@ -264,11 +265,12 @@ echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/asset
 					<?php
 					$inputappend = '';
 					$append      = ' style="background-color:#bbffff"';
+	JHtml::_('formbehavior2.select2', '.test2');
 					echo HTMLHelper::_(
 						'select.genericlist',
 						$this->lists['agegroup'],
 						'agegroup' . $this->item->id,
-						$inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
+						$inputappend . 'class="form-control form-control-inline test2" size="1" onchange="document.getElementById(\'cb' .
 						$this->count_i . '\').checked=true"' . $append,
 						'value', 'text', $this->item->agegroup_id
 					);

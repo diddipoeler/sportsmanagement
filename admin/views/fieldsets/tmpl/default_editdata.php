@@ -15,6 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 switch ( $this->view )
 {
@@ -79,6 +80,7 @@ if (version_compare(JSM_JVERSION, '4', 'eq'))
 									<?PHP
 									foreach ($this->form->getFieldset($fieldset->name) as $field)
 									{
+									  
 										?>
                                         <div class="control-group">
                                             <div class="control-label">
@@ -96,31 +98,28 @@ if (version_compare(JSM_JVERSION, '4', 'eq'))
 													case 'ids':
 														break;
 													default:
-														?>
-                                                        <a href="#<?php echo $var_onlinehelp; ?>"
-                                                           title="<?php echo $var_onlinehelp; ?>" class=""
-                                                           data-bs-toggle="modal">
-															<?php
-                                                            $image_attributes['title'] = Text::_('COM_SPORTSMANAGEMENT_HELP_LINK');
-															echo HTMLHelper::_(
-																'image', 'media/com_sportsmanagement/jl_images/help.png',
-																Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'), $image_attributes
-															);
-
-															echo HTMLHelper::_(
-																'bootstrap.renderModal',
-																$var_onlinehelp,
-																array(
-																	'title'  => Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'),
-																	'url'    => COM_SPORTSMANAGEMENT_HELP_SERVER . 'SM-Backend-Felder:' . $this->jinput->getVar("view") . '-' . $var_onlinehelp,
-																	'width'  => COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH,
-																	'height' => COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT
-																)
-															);
-															?>
-                                                        </a>
-
-														<?PHP
+														switch ($field->type)
+                                            {
+                                            case 'extensionsubtitle':
+                                            case 'Hidden':
+                                            break;
+                                            default:
+$link_onlinehelp = COM_SPORTSMANAGEMENT_HELP_SERVER . 'SM-Backend-Felder:' . $this->jinput->getVar("view") . '-' . $this->form->getName() . '-' . $var_onlinehelp;                                                
+$cmd = "Joomla.popupWindow('$link_onlinehelp', '" . Text::_('COM_SPORTSMANAGEMENT_HELP_LINK', true) . "',". COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH." ,". COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT.", 1)";
+?>
+<button onclick="<?php echo $cmd; ?>">
+<?php
+echo HTMLHelper::_(
+'image', 'media/com_sportsmanagement/jl_images/help.png',
+Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'), 'title= "' .
+Text::_('COM_SPORTSMANAGEMENT_HELP_LINK') . '"'
+);
+?>                      
+</button>
+<?PHP
+                                            break;
+                                            }
+											
 														if ($field->name == 'jform[country]')
 														{
 															echo JSMCountries::getCountryFlag($field->value);
@@ -329,20 +328,21 @@ elseif (version_compare(JSM_JVERSION, '3', 'eq'))
 											switch ($field->type)
                                             {
                                             case 'extensionsubtitle':
+                                            case 'Hidden':
                                             break;
                                             default:
+$link_onlinehelp = COM_SPORTSMANAGEMENT_HELP_SERVER . 'SM-Backend-Felder:' . $this->jinput->getVar("view") . '-' . $this->form->getName() . '-' . $var_onlinehelp;                                                
+$cmd = "Joomla.popupWindow('$link_onlinehelp', '" . Text::_('COM_SPORTSMANAGEMENT_HELP_LINK', true) . "',". COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH." ,". COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT.", 1)";
                                             ?>
-                                            <a rel="{handler: 'iframe',size: {x: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH; ?>,y: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT; ?>}}"
-                                               href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER . 'SM-Backend-Felder:' . $this->jinput->getVar("view") . '-' . $this->form->getName() . '-' . $var_onlinehelp; ?>"
-                                               class="modal">
-												<?php
-												echo HTMLHelper::_(
-													'image', 'media/com_sportsmanagement/jl_images/help.png',
-													Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'), 'title= "' .
-													Text::_('COM_SPORTSMANAGEMENT_HELP_LINK') . '"'
-												);
-												?>
-                                            </a>
+<button onclick="<?php echo $cmd; ?>">
+<?php
+echo HTMLHelper::_(
+'image', 'media/com_sportsmanagement/jl_images/help.png',
+Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'), 'title= "' .
+Text::_('COM_SPORTSMANAGEMENT_HELP_LINK') . '"'
+);
+?>                      
+</button>
 
 											<?PHP
                                             break;
@@ -582,8 +582,8 @@ else
 	?>
 </div>
 </form>
-<div>
+
 	<?PHP
 	echo $this->loadTemplate('footer');
 	?>
-</div>
+

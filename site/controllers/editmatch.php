@@ -71,12 +71,14 @@ class sportsmanagementControllerEditMatch extends FormController
 		return parent::getModel($name, $prefix, array('ignore_request' => false));
 	}
 
+
 	/**
 	 * sportsmanagementControllerEditMatch::cancel()
-	 *
+	 * 
+	 * @param mixed $key
 	 * @return
 	 */
-	public function cancel()
+	public function cancel($key = null)
 	{
 		$msg = 'cancel';
 		$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);
@@ -221,7 +223,15 @@ class sportsmanagementControllerEditMatch extends FormController
 		/**
 		 * Update their details in the table using id as the primary key.
 		 */
+		try{
 		$result_update = Factory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id', true);
+		}
+		catch (Exception $e)
+		{
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+		
+		}
 		$link          = $_SERVER['HTTP_REFERER'];
 		$msg           = sprintf(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'), $post['matchid']);
 		$this->setRedirect($link, $msg);

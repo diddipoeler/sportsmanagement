@@ -173,6 +173,7 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
 			$tblProjectteam->is_in_score = $post['is_in_score' . $pks[$x]];
 			$tblProjectteam->use_finally = $post['use_finally' . $pks[$x]];
 			$tblProjectteam->finaltablerank = $post['finaltablerank' . $pks[$x]];
+            $tblProjectteam->champion = $post['champion' . $pks[$x]];
 
 			$tblProjectteam->points_finally     = $post['points_finally' . $pks[$x]];
 			$tblProjectteam->neg_points_finally = $post['neg_points_finally' . $pks[$x]];
@@ -449,6 +450,8 @@ $resultupdate = $this->jsmdb->execute();
 		$post                 = $jinput->post->getArray();
 		$_pro_teams_to_delete = array();
 		$query                = Factory::getDbo()->getQuery(true);
+		
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . 'post<pre>'.print_r($post,true).'</pre>', 'error');		
 
 		if (ComponentHelper::getParams($option)->get('show_debug_info_backend'))
 		{
@@ -456,7 +459,9 @@ $resultupdate = $this->jsmdb->execute();
 
 		$project_id  = $post['project_id'];
 		$assign_id   = $post['project_teamslist'];
+		$season_id   = $post['editlist_season_id'];
 		$delete_team = $post['teamslist'];
+		$postteamname = $post['postteamname'];
 
 		if ($delete_team)
 		{
@@ -468,8 +473,19 @@ $resultupdate = $this->jsmdb->execute();
 				$_pro_teams_to_delete[] = $row->projectteamid;
 			}
 		}
+		
+		/** season team id setzen wenn das team noch nicht zugeordnet ist*/
+		foreach ($assign_id as $key => $value) if ( !$value )
+		{
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . 'mann fehlt<pre>'.print_r($postteamname[$key],true).'</pre>', 'error');
+$teile = explode("-",$postteamname[$key]);
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . ' teile<pre>'.print_r($teile,true).'</pre>', 'error');
+$team_id = array_pop($teile);
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . ' team id<pre>'.print_r($team_id,true).'</pre>', 'error');
+			
+		}
 
-		foreach ($assign_id as $key => $value)
+		foreach ($assign_id as $key => $value) if ( $value )
 		{
 			$query->clear();
 			$query->select('id');

@@ -40,7 +40,17 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 	 */
 	public function init()
 	{
-
+		$edit_search_nation = '';
+$post = Factory::getApplication()->input->post->getArray(array());
+		if ( $post['edit_search_nation'] )
+		{
+		$edit_search_nation = $post['edit_search_nation'];	
+		}
+		else
+		{
+		$edit_search_nation = $this->state->get('filter.search_nation');	
+		}
+			
 		$this->state         = $this->get('State');
 		$this->sortDirection = $this->state->get('list.direction');
 		$this->sortColumn    = $this->state->get('list.ordering');
@@ -107,6 +117,8 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		$ress         = array();
 		$res1         = array();
 		$notusedteams = array();
+		$project_teamslist = array();
+		$project_teamslist_name = array();
 
 		if ($ress = $this->model->getProjectTeams($this->project_id, false))
 		{
@@ -122,6 +134,8 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 				{
 					$project_teamslist[] = JHtmlSelect::option($res->season_team_id, $res->text . ' (' . $res->info . ')');
 				}
+				
+				$project_teamslist_name[] = $res->text;
 			}
 
 			$lists['project_teams'] = JHtmlSelect::genericlist(
@@ -130,13 +144,21 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 				'value',
 				'text'
 			);
+			
+			$lists['project_teamslist_name'] = JHtmlSelect::genericlist(
+				$project_teamslist_name, 'project_teamslist_name[]',
+				' id="project_teamslist_name" style="width:250px; height:300px;" class="inputbox" multiple="true" size="' . min(30, count($ress)) . '"',
+				'value',
+				'text'
+			);
 		}
 		else
 		{
 			$lists['project_teams'] = '<select name="project_teamslist[]" id="project_teamslist" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
+			$lists['project_teamslist_name'] = '<select name="project_teamslist_name[]" id="project_teamslist_name" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
 		}
 
-		if ($ress1 = $this->model->getTeams())
+		if ( $ress1 = $this->model->getTeams($this->state->get('filter.search_nation')) )
 		{
 			if ($ress = $this->model->getProjectTeams($this->project_id, false))
 			{
@@ -220,6 +242,14 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 			'text',
 			$this->state->get('filter.search_nation')
 		);
+        $lists['countrylist'] = JHtmlSelect::genericlist(
+			$nation,
+			'edit_search_nation',
+			'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+			'value',
+			'text',
+			$edit_search_nation
+		);
 
 //		if ( $this->project->fast_projektteam )
 //		{
@@ -261,10 +291,8 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 
 		$this->config         = Factory::getConfig();
 		$this->lists          = $lists;
-		//$this->divisions      = $projectdivisions;
 		$this->projectteam    = $items;
 		$this->pagination     = $pagination;
-//		$this->project        = $project;
 		$this->project_art_id = $this->project_art_id;
 
 /** pro division die punkte hinterlegen*/
@@ -276,6 +304,20 @@ $this->model->checkProjectTeamDivision($teams->projectteamid,$teams->id,$teams->
 }
 
 }
+
+
+/** Build the html options for nation */
+		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+
+		if ($res = JSMCountries::getCountryOptions())
+		{
+			$nation              = array_merge($nation, $res);
+			$this->search_nation = $res;
+		}
+
+        
+        
+        
 		switch ($this->getLayout())
 		{
 			case 'editlist';

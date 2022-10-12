@@ -114,8 +114,8 @@ class com_sportsmanagementInstallerScript
 	 * The release value would ideally be extracted from <version> in the manifest file,
 	 * but at preflight, the manifest file exists only in the uploaded temp folder.
 	 */
-	private $release = '3.15.00';
-    private $old_release = '3.14.00';
+	private $release = '4.00.00';
+    private $old_release = '3.16.00';
 
 	// $language_update = '';
 
@@ -955,6 +955,7 @@ $result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_i
 					case 'associations':
 						File::copy(JPATH_ROOT . '/images/com_sportsmanagement/database/placeholders/placeholder_50.png', JPATH_ROOT . '/images/com_sportsmanagement/database/' . $folder . '/placeholder_50.png');
 						File::copy(JPATH_ROOT . '/images/com_sportsmanagement/database/placeholders/placeholder_wappen_50.png', JPATH_ROOT . '/images/com_sportsmanagement/database/' . $folder . '/placeholder_wappen_50.png');
+                        File::copy(JPATH_ROOT . '/images/com_sportsmanagement/database/placeholders/placeholder_flags.png', JPATH_ROOT . '/images/com_sportsmanagement/database/' . $folder . '/placeholder_flags.png');
 						break;
 					case 'clubs/large':
 						File::copy(JPATH_ROOT . '/images/com_sportsmanagement/database/placeholders/placeholder_150.png', JPATH_ROOT . '/images/com_sportsmanagement/database/' . $folder . '/placeholder_150.png');

@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage editmatch
@@ -11,14 +9,13 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 JLoader::import('components.com_sportsmanagement.helpers.imageselect', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.models.project', JPATH_SITE);
@@ -109,7 +106,9 @@ class sportsmanagementModelEditMatch extends AdminModel
 		$positions         = sportsmanagementModelMatch::getProjectPositionsOptions(0, 3, $data['project_id']);
 		$data['positions'] = $positions;
 
-		$result = sportsmanagementModelMatch::updateReferees($data);
+		//$result = sportsmanagementModelMatch::updateReferees($data);
+		$mdlMatch = BaseDatabaseModel::getInstance("Match", "sportsmanagementModel");
+		$result = $mdlMatch->updateReferees($data);
 
 		return $result;
 	}
@@ -125,7 +124,9 @@ class sportsmanagementModelEditMatch extends AdminModel
 	{
 		$app                    = Factory::getApplication();
 		$data['staffpositions'] = sportsmanagementModelMatch::getProjectPositionsOptions(0, 2, $data['project_id']);
-		$result                 = sportsmanagementModelMatch::updateStaff($data);
+		//$result                 = sportsmanagementModelMatch::updateStaff($data);
+		$mdlMatch = BaseDatabaseModel::getInstance("Match", "sportsmanagementModel");
+		$result                 = $mdlMatch->updateStaff($data);
 
 		return $result;
 	}
@@ -141,7 +142,9 @@ class sportsmanagementModelEditMatch extends AdminModel
 	{
 		$app               = Factory::getApplication();
 		$data['positions'] = sportsmanagementModelMatch::getProjectPositionsOptions(0, 1, $data['project_id']);
-		$result            = sportsmanagementModelMatch::updateRoster($data);
+		//$result            = sportsmanagementModelMatch::updateRoster($data);
+		$mdlMatch = BaseDatabaseModel::getInstance("Match", "sportsmanagementModel");
+		$result            = $mdlMatch->updateRoster($data);
 
 		return $result;
 	}

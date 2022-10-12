@@ -198,7 +198,20 @@ class sportsmanagementModelround extends JSMModelAdmin
 		$post            = Factory::getApplication()->input->post->getArray(array());
 		$project_id      = $this->jsmapp->getUserState("$this->jsmoption.pid", '0');
 		$add_round_count = (int) $post['add_round_count'];
+		$project_type = $post['project_type'];
 		$max = 0;
+		$round_divisions_league4 = array();
+		$round_divisions_league4[1] = 'Gruppenspiele';
+		$round_divisions_league4[2] = 'Halbfinale';
+		$round_divisions_league4[3] = '3.Platz';
+		$round_divisions_league4[4] = 'Finale';
+		
+		$round_divisions_league5 = array();
+		$round_divisions_league5[1] = 'Gruppenspiele';
+		$round_divisions_league5[2] = 'Viertelfinale';
+		$round_divisions_league5[3] = 'Halbfinale';
+		$round_divisions_league5[4] = '3.Platz';
+		$round_divisions_league5[5] = 'Finale';
 
 		if ($add_round_count > 0) // Only MassAdd a number of new and empty rounds
 		{
@@ -212,7 +225,38 @@ class sportsmanagementModelround extends JSMModelAdmin
 				$tblRound             =& $this->getTable();
 				$tblRound->project_id = $project_id;
 				$tblRound->roundcode  = $max;
-				$tblRound->name       = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_CTRL_ROUND_NAME', $max);
+				
+				if ( $add_round_count == 4 )
+				{
+				switch ( $project_type )
+				{
+				case 'DIVISIONS_LEAGUE':
+				$tblRound->name = $round_divisions_league4[$i];		
+				break;
+				default:
+				$tblRound->name = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_CTRL_ROUND_NAME', $max);
+				break;
+				}	
+				}
+				elseif ( $add_round_count == 5 )
+				{
+				switch ( $project_type )
+				{
+				case 'DIVISIONS_LEAGUE':
+				$tblRound->name = $round_divisions_league5[$i];		
+				break;
+				default:
+				$tblRound->name = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_CTRL_ROUND_NAME', $max);
+				break;
+				}	
+				}
+				else
+				{
+				$tblRound->name = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_CTRL_ROUND_NAME', $max);	
+				}
+				
+				
+				
                 $tblRound->alias = OutputFilter::stringURLSafe($tblRound->name);
                 $tblRound->modified         = $this->jsmdate->toSql();
 		        $tblRound->modified_by      = $this->jsmuser->get('id');

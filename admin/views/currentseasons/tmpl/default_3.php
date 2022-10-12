@@ -8,9 +8,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -29,14 +27,14 @@ if ($this->items)
 	{
 		if (!$count)
 		{
-			// Define slides options
+			/* Define slides options */
 			$slidesOptions = array(
-				"active" => "slide" . $item->id . "_id" // It is the ID of the active tab.
+				"active" => "slide" . $item->id . "_id" /* It is the ID of the active tab. */
 			);
 
-			// Define tabs options for version of Joomla! 3.0
+			/* Define tabs options for version of Joomla! 3.0 */
 			$tabsOptions = array(
-				"active" => "tab" . $item->id . "_id" // It is the ID of the active tab.
+				"active" => "tab" . $item->id . "_id" /* It is the ID of the active tab. */
 			);
 		}
 		?>
@@ -67,15 +65,16 @@ if ($this->items)
             <section class="content-block" role="main">
 
 
-				<?php // This renders the beginning of the slides code. ?>
-				<?php echo HTMLHelper::_('bootstrap.startAccordion', 'slide-group-id', $slidesOptions); ?>
+				<?php
+                /* This renders the beginning of the slides code. */
+                echo HTMLHelper::_('bootstrap.startAccordion', 'slide-group-id', $slidesOptions); ?>
 
 				<?PHP
 				if ($this->items)
 				{
 					foreach ($this->items as $item)
 					{
-						// Open the first slide
+						/* Open the first slide */
 						echo HTMLHelper::_('bootstrap.addSlide', 'slide-group-id', JSMCountries::getCountryFlag($item->country) . ' ' . $item->name, 'slide' . $item->id . '_id');
 						?>
                         <a class="btn"
@@ -156,7 +155,7 @@ if ($this->items)
                         </a>
 
                         <a class="btn"
-                           href="index.php?option=com_sportsmanagement&view=jlxmlexports&pid=<?PHP echo $item->project->id; ?>">
+                           href="index.php?option=com_sportsmanagement&view=jlxmlexports&pid=<?PHP echo $item->id; ?>">
                             <img src="components/com_sportsmanagement/assets/icons/xmlexport.png"
                                  alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_P_PANEL_XML_EXPORT') ?>"/><br/>
                             <span><?php echo Text::_('COM_SPORTSMANAGEMENT_P_PANEL_XML_EXPORT') ?></span>
@@ -164,15 +163,17 @@ if ($this->items)
 
 
 						<?PHP
-// This is the closing tag of the first slide
+                /* This is the closing tag of the first slide */
 						echo HTMLHelper::_('bootstrap.endSlide');
 					}
 				}
 
-
 				?>
-				<?php // This renders the end part of the slides code. ?>
-				<?php echo HTMLHelper::_('bootstrap.endAccordion'); ?>
+				
+				<?php
+                /* This renders the end part of the slides code. */
+                echo HTMLHelper::_('bootstrap.endAccordion');
+                ?>
 
 
             </section>

@@ -186,8 +186,12 @@ if ($close == 1)
                     <td><?php echo $this->lists['teams']; ?></td>
                     <td id="cell-player">&nbsp;</td>
                     <td><?php echo $this->lists['events']; ?></td>
-                    <td style='text-align:center; '><input type="text" size="3" value="" id="event_sum" name="event_sum"
-                                                           class="inputbox"/></td>
+                    <td style='text-align:center; '>
+                    <input type="text" size="3" value="" id="event_sum" name="event_sum" class="inputbox"/>
+                    
+                    
+                    
+                    </td>
 					<?php
 					if ($this->useeventtime)
 					{
@@ -302,13 +306,14 @@ if ($close == 1)
             </table>
 
         </fieldset>
-    </div>
+    </div> 
     <div style="clear: both"></div>
     <input type="hidden" name="task" value=""/>
     <input type="hidden" name="useeventtime" value="<?php echo $this->useeventtime; ?>"/>
     <input type="hidden" name="view" value=""/>
     <input type="hidden" name="close" id="close" value="0"/>
     <input type="hidden" name="project_id" value="<?php echo $this->project_id; ?>"/>
+    <input type="hidden" name="doubleevents" value="<?php echo $this->doubleevents ; ?>"/>
     <input type="hidden" name="component" value="com_sportsmanagement"/>
 	<?php
 	echo HTMLHelper::_('form.token'); ?>
