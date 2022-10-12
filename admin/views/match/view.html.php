@@ -59,24 +59,21 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		$this->eventsprojecttime = $this->projectws->game_regular_time;
 		$this->match                = $this->model->getMatchData($this->item->id);
         
-        
-        $this->match->team1_legs = $this->match->team1_legs ? $this->match->team1_legs : 0;
-        $this->match->team2_legs = $this->match->team2_legs ? $this->match->team2_legs : 0;
-        
-//$this->app->enqueueMessage(Text::_('item id <pre>'.print_r($this->item->id ,true).'</pre>'), 'Error');
-//$this->app->enqueueMessage(Text::_('match <pre>'.print_r($this->match ,true).'</pre>'), 'Error');        
-        
-        if ( !property_exists($this->match, "hometeam") )
-        {
-        $this->match->hometeam = '';
-        }
-        if ( !property_exists($this->match, "awayteam") )
-        {
-        $this->match->awayteam = '';
-        }
-        if ( !property_exists($this->match, "playground_id") )
-        {
-        $this->match->playground_id = 0;
+        if($this->match) {
+            $this->match->team1_legs = $this->match->team1_legs ? $this->match->team1_legs : 0;
+            $this->match->team2_legs = $this->match->team2_legs ? $this->match->team2_legs : 0;
+            if ( !property_exists($this->match, "hometeam") )
+            {
+                $this->match->hometeam = '';
+            }
+            if ( !property_exists($this->match, "awayteam") )
+            {
+                $this->match->awayteam = '';
+            }
+            if ( !property_exists($this->match, "playground_id") )
+            {
+                $this->match->playground_id = 0;
+            }
         }
         
 		$this->extended             = sportsmanagementHelper::getExtended($this->item->extended, 'match');
