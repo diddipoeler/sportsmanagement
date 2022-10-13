@@ -162,6 +162,7 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
       
 
         $this->teamstotal = array();
+		$total = array();
 
 		foreach ((array) $this->teamseason as $rows => $value)
 		{
