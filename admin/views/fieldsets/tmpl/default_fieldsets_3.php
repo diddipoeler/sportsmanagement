@@ -379,13 +379,7 @@ echo $this->extendeduser->renderFieldset($fieldset->name);
 
 					foreach ($fields as $field)
 					{
-						if (COM_SPORTSMANAGEMENT_JOOMLAVERSION == '2.5')
-						{
-							echo $field->label;
-							echo $field->input;
-						}
-						else
-						{
+						
 							?>
                             <div class="control-group">
                                 <div class="control-label">
@@ -396,7 +390,7 @@ echo $this->extendeduser->renderFieldset($fieldset->name);
                                 </div>
                             </div>
 							<?php
-						}
+						
 					}
 					?>
                 </fieldset>
