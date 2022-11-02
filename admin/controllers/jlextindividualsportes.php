@@ -54,7 +54,7 @@ class sportsmanagementControllerjlextindividualsportes extends JSMControllerAdmi
 	 *
 	 * @since 1.6
 	 */
-	public function getModel($name = 'jlextindividualsport', $prefix = 'sportsmanagementModel')
+	public function getModel($name = 'jlextindividualsport', $prefix = 'sportsmanagementModel', $config = Array())
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 
