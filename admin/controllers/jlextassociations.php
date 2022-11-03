@@ -47,7 +47,7 @@ class sportsmanagementControllerjlextassociations extends JSMControllerAdmin
 	 *
 	 * @since 1.6
 	 */
-	public function getModel($name = 'jlextassociation', $prefix = 'sportsmanagementModel')
+	public function getModel($name = 'jlextassociation', $prefix = 'sportsmanagementModel', $config = Array())
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 

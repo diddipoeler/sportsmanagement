@@ -26,7 +26,7 @@ class sportsmanagementControllereventtypes extends JSMControllerAdmin
 	 *
 	 * @since 1.6
 	 */
-	public function getModel($name = 'Eventtype', $prefix = 'sportsmanagementModel')
+	public function getModel($name = 'Eventtype', $prefix = 'sportsmanagementModel', $config = Array())
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 
