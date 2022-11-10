@@ -21,7 +21,7 @@ $this->notes = array();
 $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_H2H');
 echo $this->loadTemplate('jsm_notes'); 
 ?>
-    <table class="table">
+    <table class="table" id="nextmatch-default_stats-anfang">
         <thead>
         <tr class="" align="center">
             <th class="h2h" width="33%">
@@ -435,7 +435,7 @@ $this->chances[1] = '';
     <!-- gesamtübersicht der spiele gegeneinander nach ligen  -->
     <h4><?php echo $this->teams[0]->name . " " . Text::_("COM_SPORTSMANAGEMENT_NEXTMATCH_VS") . " " . $this->teams[1]->name; ?></h4>
 	<h4><?php echo Text::_("COM_SPORTSMANAGEMENT_NEXTMATCH_DATA_OF") . ' ' . $this->teams[0]->name;?> </h4>
-    <table class="table table-striped">
+    <table class="table table-striped" id="nextmatch-default_stats-anfang-spiele-gegeneinander1">
         <thead>
         <tr>
             <td>
@@ -507,7 +507,7 @@ $this->chances[1] = '';
 		?>
     </table>
 
-   <table class="table table-striped">
+   <table class="table table-striped" id="nextmatch-default_stats-anfang-spiele-gegeneinander2">
         <thead>
         <tr>
             <td>
@@ -591,7 +591,7 @@ $this->chances[1] = '';
 	<div class="tab-content" id="v-pills-tabContent">
 
 		<div class="tab-pane fade show active" id="v-pills-countall" role="tabpanel" aria-labelledby="v-pills-countall-tab">
-			<table class="table table-striped">
+			<table class="table table-striped" id="history-1">
 						<tr>
 							<td> <?php echo Text::_('COM_SPORTSMANAGEMENT_RESULTS_SCORE'); ?>
 							</td>
@@ -623,7 +623,7 @@ $this->chances[1] = '';
 		</div>
 		
 		<div class="tab-pane fade" id="v-pills-counthome" role="tabpanel" aria-labelledby="v-pills-counthome-tab">
-			<table class="table table-striped">
+			<table class="table table-striped" id="history-2">
 						<tr>
 							<td> <?php echo Text::_('COM_SPORTSMANAGEMENT_RESULTS_SCORE'); ?>
 							</td>
@@ -655,7 +655,7 @@ $this->chances[1] = '';
 		</div>
 		
 		<div class="tab-pane fade" id="v-pills-countaway" role="tabpanel" aria-labelledby="v-pills-countaway-tab">
-			<table class="table table-striped">
+			<table class="table table-striped" id="history-3">
 						<tr>
 							<td> <?php echo Text::_('COM_SPORTSMANAGEMENT_RESULTS_SCORE'); ?>
 							</td>
