@@ -581,6 +581,23 @@ $this->chances[1] = '';
 
     <h4><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY_COUNT_RESULT'); ?></h4>
 	
+	
+<?php	
+echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'name'))	
+echo JHtml::_('bootstrap.addTab', 'myTab', 'name', Text::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_OVERALL'));
+	
+echo JHtml::_('bootstrap.endTab');
+	
+echo JHtml::_('bootstrap.addTab', 'myTab', 'desc', Text::_('COM_EXAMPLE_DESCRIPTION'));
+	
+echo JHtml::_('bootstrap.endTab');
+	
+echo JHtml::_('bootstrap.addTab', 'myTab', 'price', Text::_('COM_EXAMPLE_PRICE'));
+	
+echo JHtml::_('bootstrap.endTab');	
+	
+echo JHtml::_('bootstrap.endTabSet');	
+?>	
 	<div class="d-flex align-items-start">
 		<div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
 			<button class="nav-link active" id="v-pills-countall-tab" data-bs-toggle="pill" data-bs-target="#v-pills-countall" type="button" role="tab" aria-controls="v-pills-countall" aria-selected="true"><?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_OVERALL'); ?></button>
