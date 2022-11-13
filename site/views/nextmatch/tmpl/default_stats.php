@@ -594,7 +594,7 @@ echo JHtml::_('bootstrap.addTab', 'myTab', 'name', Text::_('COM_SPORTSMANAGEMENT
 							</td>
 						</tr>	
 						<?php
-						ksort($this->statgames['gesamt']);
+                        is_array($this->statgames['gesamt']) ? ksort($this->statgames['gesamt']) : '';
 
 						foreach ($this->statgames['gesamt'] as $key => $value)
 						{
@@ -628,7 +628,7 @@ echo JHtml::_('bootstrap.addTab', 'myTab', 'desc', $this->teams[0]->name . " " .
 							</td>
 						</tr>				
 						<?php
-						ksort($this->statgames['home']);
+                        is_array($this->statgames['home']) ? ksort($this->statgames['home']) : '';
 
 						foreach ($this->statgames['home'] as $key => $value)
 						{
@@ -663,7 +663,7 @@ echo JHtml::_('bootstrap.addTab', 'myTab', 'price', $this->teams[1]->name . " " 
 							</td>
 						</tr>				
 						<?php
-						ksort($this->statgames['away']);
+                        is_array($this->statgames['away']) ? ksort($this->statgames['away']) : '';
 
 						foreach ($this->statgames['away'] as $key => $value)
 						{
