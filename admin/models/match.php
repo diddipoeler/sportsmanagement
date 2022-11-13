@@ -2578,7 +2578,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 *
 	 * @return boolean
 	 */
-	function savesubstitution($data)
+	public static function savesubstitution($data)
 	{
 		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
@@ -2735,7 +2735,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 *
 	 * @return boolean
 	 */
-	function removeSubstitution($substitution_id)
+	public static function removeSubstitution($substitution_id)
 	{
 		$app   = Factory::getApplication();
 		$db    = sportsmanagementHelper::getDBConnection();
@@ -2770,7 +2770,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 *
 	 * @return
 	 */
-	function deleteevent($event_id)
+	public static function deleteevent($event_id)
 	{
 		$db = Factory::getDbo();
 
@@ -2814,7 +2814,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 *
 	 * @return
 	 */
-	function deletecommentary($event_id)
+	public static function deletecommentary($event_id)
 	{
 		$db = Factory::getDbo();
 
@@ -2861,7 +2861,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 *
 	 * @return
 	 */
-	function savecomment($data)
+	public static function savecomment($data)
 	{
 		$date = Factory::getDate();
 		$user = Factory::getUser();
@@ -2931,7 +2931,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 * @param mixed $data
 	 * @return
 	 */
-	function saveevent($data)
+	public static function saveevent($data)
 	{
 		$date = Factory::getDate();
 		$user = Factory::getUser();
