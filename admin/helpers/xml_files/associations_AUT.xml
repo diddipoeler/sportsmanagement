@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<structur>
+
+<associations><assocname country="AUT" icon="lv_aut_burgenland.gif" flag="" website="" shortname="BFV" main="1" parentmain="0">Burgenländischer Fußballverband</assocname></associations>
+<associations><assocname country="AUT" icon="lv_aut_kaernten.gif" flag="" website="" shortname="KFV" main="2" parentmain="0">Kärntner Fußballverband</assocname></associations>
+<associations><assocname country="AUT" icon="lv_aut_niederoesterreich.gif" flag="" website="" shortname="NÖFV" main="3" parentmain="0">Niederösterreichischer Fußballverband</assocname></associations>
+<associations><assocname country="AUT" icon="lv_aut_oberoesterreich.gif" flag="" website="" shortname="OÖFV" main="4" parentmain="0">Oberösterreichischer Fußballverband</assocname></associations>
+<associations><assocname country="AUT" icon="lv_aut_salzburg.gif" flag="" website="" shortname="SFV" main="5" parentmain="0">Salzburger Fußballverband</assocname></associations>
+<associations><assocname country="AUT" icon="lv_aut_steiermark.gif" flag="" website="" shortname="STFV" main="6" parentmain="0">Steirischer Fußballverband</assocname></associations>
+<associations><assocname country="AUT" icon="lv_aut_tirol.gif" flag="" website="" shortname="TFV" main="7" parentmain="0">Tiroler Fußballverband</assocname></associations>
+<associations><assocname country="AUT" icon="lv_aut_vorarlberg.gif" flag="" website="" shortname="VFV" main="8" parentmain="0">Vorarlberger Fußballverband</assocname></associations>
+<associations><assocname country="AUT" icon="lv_aut_wien.gif" flag="" website="" shortname="WFV" main="9" parentmain="0">Wiener Fußballverband</assocname></associations>
+  
+</structur>

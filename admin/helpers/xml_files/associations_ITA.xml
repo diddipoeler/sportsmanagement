@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<structur>
+
+
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="Lombardia" main="1" parentmain="0">Lombardei</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="Campania" main="2" parentmain="0">Kampanien</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="Lazio" main="3" parentmain="0">Latium</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="Sicilia" main="4" parentmain="0">Sizilien</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="Veneto" main="5" parentmain="0">Venetien</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="Piemonte" main="6" parentmain="0">Piemont</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="Emilia-Romagna" main="7" parentmain="0">Emilia-Romagna</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="Puglia" main="8" parentmain="0">Apulien</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="Toscana" main="9" parentmain="0">Toskana</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="Calabria" main="10" parentmain="0">Kalabrien</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="Sardegna" main="11" parentmain="0">Sardinien</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="Liguria" main="12" parentmain="0">Ligurien</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="Marche" main="13" parentmain="0">Marken</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="Abruzzo" main="14" parentmain="0">Abruzzen</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="Friuli-Venezia Giulia" main="15" parentmain="0">Friaul-Julisch Venetien</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="Trentino-Alto Adige" main="16" parentmain="0">Trentino-Südtirol</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="Umbria" main="17" parentmain="0">Umbrien</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="Basilicata" main="18" parentmain="0">Basilikata</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="Molise" main="19" parentmain="0">Molise</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="Valle d’Aosta" main="20" parentmain="0">Aostatal</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="AG" main="21" parentmain="4">Agrigent</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="AL" main="22" parentmain="6">Alessandria</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="AN" main="23" parentmain="13">Ancona</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="AO" main="24" parentmain="20">Aosta (Aostatal)</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="AR" main="25" parentmain="9">Arezzo</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="AP" main="26" parentmain="13">Ascoli Piceno</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="AT" main="27" parentmain="6">Asti</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="AV" main="28" parentmain="2">Avellino</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="BA" main="29" parentmain="8">Bari</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="BT" main="30" parentmain="8">Barletta-Andria-Trani</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="BL" main="31" parentmain="5">Belluno</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="BN" main="32" parentmain="2">Benevento</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="BG" main="33" parentmain="1">Bergamo</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="BI" main="34" parentmain="6">Biella</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="BO" main="35" parentmain="7">Bologna</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="BZ" main="36" parentmain="16">Bozen (Südtirol)</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="BS" main="37" parentmain="1">Brescia</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="BR" main="38" parentmain="8">Brindisi</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="CA" main="39" parentmain="11">Cagliari</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="CL" main="40" parentmain="4">Caltanissetta</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="CB" main="41" parentmain="19">Campobasso</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="CI" main="42" parentmain="11">Carbonia-Iglesias</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="CE" main="43" parentmain="2">Caserta</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="CT" main="44" parentmain="4">Catania</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="CZ" main="45" parentmain="10">Catanzaro</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="CH" main="46" parentmain="14">Chieti</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="CO" main="47" parentmain="1">Como</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="CS" main="48" parentmain="10">Cosenza</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="CR" main="49" parentmain="1">Cremona</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="KR" main="50" parentmain="10">Crotone</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="CN" main="51" parentmain="6">Cuneo</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="EN" main="52" parentmain="4">Enna</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="FM" main="53" parentmain="13">Fermo</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="FE" main="54" parentmain="7">Ferrara</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="FI" main="55" parentmain="9">Florenz</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="FG" main="56" parentmain="8">Foggia</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="FC" main="57" parentmain="7">Forlì-Cesena</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="FR" main="58" parentmain="3">Frosinone</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="GE" main="59" parentmain="12">Genua</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="GO" main="60" parentmain="15">Görz</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="GR" main="61" parentmain="9">Grosseto</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="IM" main="62" parentmain="12">Imperia</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="IS" main="63" parentmain="19">Isernia</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="SP" main="64" parentmain="12">La Spezia</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="AQ" main="65" parentmain="14">L’Aquila</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="LT" main="66" parentmain="3">Latina</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="LE" main="67" parentmain="8">Lecce</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="LC" main="68" parentmain="1">Lecco</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="LI" main="69" parentmain="9">Livorno</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="LO" main="70" parentmain="1">Lodi</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="LU" main="71" parentmain="9">Lucca</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="MC" main="72" parentmain="13">Macerata</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="MI" main="73" parentmain="1">Mailand</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="MN" main="74" parentmain="1">Mantua</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="MS" main="75" parentmain="9">Massa-Carrara</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="MT" main="76" parentmain="18">Matera</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="VS" main="77" parentmain="11">Medio Campidano</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="ME" main="78" parentmain="4">Messina</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="MO" main="79" parentmain="7">Modena</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="MB" main="80" parentmain="1">Monza und Brianza</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="NA" main="81" parentmain="2">Neapel</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="NO" main="82" parentmain="6">Novara</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="NU" main="83" parentmain="11">Nuoro</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="OG" main="84" parentmain="11">Ogliastra</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="OT" main="85" parentmain="11">Olbia-Tempio</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="OR" main="86" parentmain="11">Oristano</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="PD" main="87" parentmain="5">Padua</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="PA" main="88" parentmain="4">Palermo</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="PR" main="89" parentmain="7">Parma</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="PV" main="90" parentmain="1">Pavia</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="PG" main="91" parentmain="17">Perugia</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="PU" main="92" parentmain="13">Pesaro und Urbino</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="PE" main="93" parentmain="14">Pescara</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="PC" main="94" parentmain="7">Piacenza</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="PI" main="95" parentmain="9">Pisa</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="PT" main="96" parentmain="9">Pistoia</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="PN" main="97" parentmain="15">Pordenone</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="PZ" main="98" parentmain="18">Potenza</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="PO" main="99" parentmain="9">Prato</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="RG" main="100" parentmain="4">Ragusa</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="RA" main="101" parentmain="7">Ravenna</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="RC" main="102" parentmain="10">Reggio Calabria</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="RE" main="103" parentmain="7">Reggio Emilia</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="RI" main="104" parentmain="3">Rieti</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="RN" main="105" parentmain="7">Rimini</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="RM" main="106" parentmain="3">Rom</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="RO" main="107" parentmain="5">Rovigo</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="SA" main="108" parentmain="2">Salerno</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="SS" main="109" parentmain="11">Sassari</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="SV" main="110" parentmain="12">Savona</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="SI" main="111" parentmain="9">Siena</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="SR" main="112" parentmain="4">Syrakus</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="SO" main="113" parentmain="1">Sondrio</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="TA" main="114" parentmain="8">Tarent</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="TE" main="115" parentmain="14">Teramo</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="TR" main="116" parentmain="17">Terni</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="TP" main="117" parentmain="4">Trapani</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="TV" main="118" parentmain="5">Treviso</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="TN" main="119" parentmain="16">Trient (Trentino)</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="TS" main="120" parentmain="15">Triest</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="TO" main="121" parentmain="6">Turin</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="UD" main="122" parentmain="15">Udine</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="VA" main="123" parentmain="1">Varese</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="VE" main="124" parentmain="5">Venedig</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="VB" main="125" parentmain="6">Verbano-Cusio-Ossola</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="VC" main="126" parentmain="6">Vercelli</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="VR" main="127" parentmain="5">Verona</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="VV" main="128" parentmain="10">Vibo Valentia</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="VI" main="129" parentmain="5">Vicenza</assocname></associations>
+<associations><assocname country="ITA" icon="" flag="" website="" shortname="VT" main="130" parentmain="3">Viterbo</assocname></associations>
+
+  
+  
+</structur>

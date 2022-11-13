@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<structur>
+
+
+
+<associations><assocname country="CZE" icon="" flag="" website="http://www.fotbalpraha.cz/" shortname="Pražský" main="1" parentmain="0">Pražský fotbalový svaz (Prag)</assocname></associations>
+<associations><assocname country="CZE" icon="" flag="" website="http://www.skfs.cz/" shortname="Středočeský" main="2" parentmain="0">Stredoceský kraj (Mittelböhmen)</assocname></associations>
+<associations><assocname country="CZE" icon="" flag="" website="" shortname="Jihočeský" main="3" parentmain="0">Jihoceský kraj (Südböhmen)</assocname></associations>
+<associations><assocname country="CZE" icon="" flag="" website="" shortname="Plzeňský" main="4" parentmain="0">Plzenský kraj (Pilsen)</assocname></associations>
+<associations><assocname country="CZE" icon="" flag="" website="" shortname="Karlovarský" main="5" parentmain="0">Karlovarský kraj (Karlsbad)</assocname></associations>
+<associations><assocname country="CZE" icon="" flag="" website="" shortname="Ústecký" main="6" parentmain="0">Ústecký kraj (Ústí nad Labem)</assocname></associations>
+<associations><assocname country="CZE" icon="" flag="" website="" shortname="Liberecký" main="7" parentmain="0">Liberecký kraj (Liberec)</assocname></associations>
+<associations><assocname country="CZE" icon="" flag="" website="http://www.khfotbal.cz/" shortname="Královéhradecký" main="8" parentmain="0">Královehradecký kraj (Hradec Králové)</assocname></associations>
+<associations><assocname country="CZE" icon="" flag="" website="http://www.kfspce.cz/" shortname="Pardubický" main="9" parentmain="0">Pardubický kraj (Pardubice)</assocname></associations>
+<associations><assocname country="CZE" icon="" flag="" website="https://kfsvysocina-vzdelavani.webnode.cz/" shortname="Vysočina" main="10" parentmain="0">Kraj Vysocina (Vysocina)</assocname></associations>
+<associations><assocname country="CZE" icon="" flag="" website="" shortname="Jihomoravský" main="11" parentmain="0">Jihomoravský kraj (Südmähren)</assocname></associations>
+<associations><assocname country="CZE" icon="" flag="" website="http://www.kfsol.cz/" shortname="Olomoucký" main="12" parentmain="0">Olomoucký kraj (Olmütz)</assocname></associations>
+<associations><assocname country="CZE" icon="" flag="" website="http://new.kfszlin.cz/" shortname="Zlínský" main="13" parentmain="0">Zlínský kraj (Zlín)</assocname></associations>
+<associations><assocname country="CZE" icon="" flag="" website="" shortname="Moravskoslezký" main="14" parentmain="0">Moravskoslezský kraj (Mährisch-Schlesien)</assocname></associations>
+
+  
+</structur>

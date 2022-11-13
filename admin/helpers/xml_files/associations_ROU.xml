@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<structur>
+
+
+
+<associations><assocname country="ROU" icon="" flag="" website="http://www.ajfalba.ro/" shortname="" main="1" parentmain="0">Alba</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.ajf-arad.ro/" shortname="" main="2" parentmain="0">Arad</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/arges" shortname="" main="3" parentmain="0">Argeș</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/bacau" shortname="" main="4" parentmain="0">Bacău</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/bihor" shortname="" main="5" parentmain="0">Bihor</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/bistrita-nasaud" shortname="" main="6" parentmain="0">Bistrița-Năsăud</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/botosani" shortname="" main="7" parentmain="0">Botoșani</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/brasov" shortname="" main="8" parentmain="0">Brașov</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/braila" shortname="" main="9" parentmain="0">Brăila</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.amfb.ro/" shortname="" main="10" parentmain="0">București</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/buzau" shortname="" main="11" parentmain="0">Buzău</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/caras-severin" shortname="" main="12" parentmain="0">Caraș-Severin</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/calarasi" shortname="" main="13" parentmain="0">Călărași</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/cluj" shortname="" main="14" parentmain="0">Cluj</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/constanta" shortname="" main="15" parentmain="0">Constanța</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/covasna" shortname="" main="16" parentmain="0">Covasna</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/dambovita" shortname="" main="17" parentmain="0">Dâmbovița</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/dolj" shortname="" main="18" parentmain="0">Dolj</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/galati" shortname="" main="19" parentmain="0">Galați</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/giurgiu" shortname="" main="20" parentmain="0">Giurgiu</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.ajfgorj.ro/" shortname="" main="21" parentmain="0">Gorj</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/harghita" shortname="" main="22" parentmain="0">Harghita</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://ajfhunedoara.wgz.ro/" shortname="" main="23" parentmain="0">Hunedoara</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/ialomita" shortname="" main="24" parentmain="0">Ialomița</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/iasi" shortname="" main="25" parentmain="0">Iași</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/ilfov" shortname="" main="26" parentmain="0">Ilfov</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/maramures" shortname="" main="27" parentmain="0">Maramureș</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/mehedinti" shortname="" main="28" parentmain="0">Mehedinți</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/mures" shortname="" main="29" parentmain="0">Mureș</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/neamt" shortname="" main="30" parentmain="0">Neamț</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/olt" shortname="" main="31" parentmain="0">Olt</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/prahova" shortname="" main="32" parentmain="0">Prahova</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/satu-mare" shortname="" main="33" parentmain="0">Satu Mare</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/salaj" shortname="" main="34" parentmain="0">Sălaj</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/sibiu" shortname="" main="35" parentmain="0">Sibiu</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://ajf-suceava.ro/" shortname="" main="36" parentmain="0">Suceava</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.ajfteleorman.ro/" shortname="" main="37" parentmain="0">Teleorman</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/timis" shortname="" main="38" parentmain="0">Timiș</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/tulcea" shortname="" main="39" parentmain="0">Tulcea</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/vaslui" shortname="" main="40" parentmain="0">Vaslui</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/valcea" shortname="" main="41" parentmain="0">Vâlcea</assocname></associations>
+<associations><assocname country="ROU" icon="" flag="" website="http://www.frf-ajf.ro/vrancea" shortname="" main="42" parentmain="0">Vrancea</assocname></associations>
+
+  
+  
+  
+</structur>
