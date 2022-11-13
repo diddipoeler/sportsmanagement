@@ -100,7 +100,7 @@ else
         </tr>
     </table>
     <form name="adminForm" id="adminForm" method="post" action="<?php echo $uri->toString(); ?>">
-        <table class="<?php echo $this->config['table_class']; ?>">
+        <table class="<?php echo $this->config['table_class']; ?>" id="results-tmpl-form">
             <!-- Main START -->
 			<?php
 			if (count($this->matches) > 0)
