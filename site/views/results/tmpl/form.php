@@ -62,7 +62,7 @@ else
 </script>
 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultresultsform" style="overflow:auto;">
     <!-- edit results start -->
-    <table class="table">
+    <table class="table"  id="results-tmpl-form-contentheading">
         <tr>
             <td class="contentheading">
 				<?php
