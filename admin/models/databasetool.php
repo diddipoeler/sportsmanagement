@@ -1305,7 +1305,7 @@ self::runJoomlaQuery(__CLASS__, $this->jsmdb);
 	 */
 	function checkAssociations()
 	{
-		$country_assoc_del = '';
+$country_assoc_del = '';
         $country_assoc = array();
 
 		if (version_compare(JVERSION, '3.0.0', 'ge'))
@@ -1325,15 +1325,15 @@ self::runJoomlaQuery(__CLASS__, $this->jsmdb);
 		}
         
         
-        
+    /**    
         $url = Uri::root() . '/administrator/components/' . $this->jsmoption . '/helpers/xml_files/associations.xml';
         $http = HttpFactory::getHttp();
 		$response = $http->get($url);
         //echo __METHOD__.' '.__LINE__.' response<pre>'.print_r($response->body ,true).'</pre>';
         $xmlstring = simplexml_load_string($response->body);
         //echo __METHOD__.' '.__LINE__.' xmlstring<pre>'.print_r($xmlstring,true).'</pre>';
-  
-/*        
+  */
+/**        
 libxml_use_internal_errors(TRUE);
  
 $objXmlDocument = simplexml_load_file(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/associations.xml');
@@ -1364,7 +1364,9 @@ $arrOutput = json_decode($objJsonDocument, TRUE);
 			$country_assoc_del = "'" . implode("','", $country_assoc) . "'";
 		}
 
-		/**
+      //echo __METHOD__.' '.__LINE__.' country_assoc<pre>'.print_r($country_assoc,true).'</pre>';
+      
+      /**
 		 *
 		 * Ein JDatabaseQuery Objekt beziehen
 		 */
@@ -1376,7 +1378,22 @@ $arrOutput = json_decode($objJsonDocument, TRUE);
 			$result = self::runJoomlaQuery();
 		}
 
-		$image_path = 'images/' . $this->jsmoption . '/database/associations/';
+      $image_path = 'images/' . $this->jsmoption . '/database/associations/';
+      
+      foreach ($country_assoc as $key => $value )
+		{
+        
+        //echo __METHOD__.' '.__LINE__.' value<pre>'.print_r($value,true).'</pre>';
+        if (!File::exists(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/associations_'.$value.'.xml'))
+		{
+		$this->jsmapp->enqueueMessage('Für das Land: '.$value.' gibt es keine Datei mit Regionen.' ,'error');	
+          continue;
+		}
+        else
+        {
+        $xml = simplexml_load_file(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/associations_'.$value.'.xml');
+		$document = 'associations';  
+        	
 
 		/**
 		 *
@@ -1577,6 +1594,11 @@ $arrOutput = json_decode($objJsonDocument, TRUE);
 				}
 			}
 		}
+
+}
+      }	
+
+
 
 	}
 
