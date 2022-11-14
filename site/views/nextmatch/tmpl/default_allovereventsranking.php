@@ -24,44 +24,23 @@ use Joomla\CMS\Factory;
 	$this->notes = array();
 	$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_ALLOVEREVENTSRANKING');
 	echo $this->loadTemplate('jsm_notes'); 
-?>
+
 	
-	<div class="d-flex align-items-start">
-	  <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-		<?php
-		$active = 1;
-		foreach ( $this->overallevents as $overallevents )
+  
+echo JHtml::_('bootstrap.startTabSet', 'myTab2', array('active' => 'name1')); 
+$active = 1;
+foreach ( $this->overallevents as $overallevents => $value )
 		{
-		$width    = 20;
-		$height   = 20;
-		$type     = 4;
-		$imgTitle = Text::_($overallevents->name);
-		$icon     = sportsmanagementHelper::getPictureThumb($overallevents->icon, $imgTitle, $width, $height, $type);	
-
-		?>
-		<button class="nav-link <?php echo (1 == $active) ? 'active' : ''; ?>" id="v-pills-<?php echo str_replace(' ', '-', $overallevents->name); ?>-tab" data-bs-toggle="pill" data-bs-target="#v-pills-<?php echo str_replace(' ', '-', $overallevents->name); ?>" type="button" role="tab" aria-controls="v-pills-<?php echo str_replace(' ', '-', $overallevents->name); ?>" aria-selected="<?php echo (1 == $active) ? 'true' : 'false'; ?>"><?php echo $icon.' '.Text::_($overallevents->name); ?></button>
-		<?php
-		$active = 0;
-		}
-		?>
-
-	</div>
-	
-	<div class="tab-content" id="v-pills-tabContent">
-	
-	<?php
-
-	$active = 1;
-
-	foreach ( $this->overallevents as $overallevents )
-	{
-		unset($ranking);
+ // echo 'value <pre>'.print_r($value,true).'</pre>';
+  
+  unset($ranking);
 		/** tabelle pro ereignis */  
-		foreach ( $this->alloverevents as $alloverevents => $value ) if ( $value->events[$overallevents->id]->event_sum != 0  )
+		foreach ( $this->alloverevents as $alloverevents => $value2 ) if ( $value2->events[$overallevents->id]->event_sum != 0  )
 		{
+          echo 'value2 <pre>'.print_r($value2,true).'</pre>';
 			$temp = new stdclass;  
 			$temp->playerid = $alloverevents;
-			$temp->event_sum = $value->events[$overallevents->id]->event_sum;  
+			$temp->event_sum = $value2->events[$overallevents->id]->event_sum;  
 			$ranking[] = $temp; 
 		}
 		if ( is_array($ranking) )
@@ -69,12 +48,17 @@ use Joomla\CMS\Factory;
 		/** absteigend sortieren */
 		usort($ranking, function($a, $b) { return $b->event_sum - $a->event_sum; });  
 		}
-	
-		?>
+ 
   
-		<div class="tab-pane fade <?php echo (1 == $active) ? 'show active' : ''; ?>" id="v-pills-<?php echo str_replace(' ', '-', $overallevents->name); ?>" role="tabpanel" aria-labelledby="v-pills-<?php echo str_replace(' ', '-', $overallevents->name); ?>-tab">
-		
-				<table class="table table-striped">
+  
+		$width    = 20;
+		$height   = 20;
+		$type     = 4;
+		$imgTitle = Text::_($value->name);
+		$icon     = sportsmanagementHelper::getPictureThumb($value->icon, $imgTitle, $width, $height, $type);
+echo JHtml::_('bootstrap.addTab', 'myTab2', 'name'.$active,  $icon.' '.Text::_($value->name) );  
+?>
+<table class="table table-striped">
 						<?php
 						
 						foreach ( $ranking as $rankingkey => $rankingvalue )
@@ -118,13 +102,23 @@ use Joomla\CMS\Factory;
 							}  
 							
 							?>
-				</table>
-		</div>
-
+				</table>  
+  <?php
+  
+  
+echo JHtml::_('bootstrap.endTab');  
+  
+$active++;  
+} 
+echo JHtml::_('bootstrap.endTabSet');  
+?>  
+	
+	
+	
 	<?php
-	$active = 0;
-    }	
+
+	
 	?>	
 	
-  </div>
+ 
 </div>
