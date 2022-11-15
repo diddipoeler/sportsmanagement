@@ -40,7 +40,7 @@
 				description="COM_SPORTSMANAGEMENT_FES_ALLPERSONS_SHOW_COLUMNS_DESC">
 			<option value="firstname">COM_SPORTSMANAGEMENT_FES_ALLPERSONS_FIRSTNAME</option>
 			<option value="lastname">COM_SPORTSMANAGEMENT_FES_ALLPERSONS_LASTNAME</option>
-		  <option value="nickname">COM_SPORTSMANAGEMENT_FES_ALLPERSONS_PSEUDONYM</option>
+		  <option value="nickname">COM_SPORTSMANAGEMENT_FES_ALLPERSONS_NICKNAME</option>
 			<option value="picture">COM_SPORTSMANAGEMENT_FES_ALLPERSONS_PICTURE</option>
 			<option value="website">COM_SPORTSMANAGEMENT_FES_ALLPERSONS_WEBSITE</option>
 			<option value="address">COM_SPORTSMANAGEMENT_FES_ALLPERSONS_ADDRESS</option>
