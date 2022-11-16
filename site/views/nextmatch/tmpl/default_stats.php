@@ -588,9 +588,9 @@ echo JHtml::_('bootstrap.addTab', 'myTab', 'name', Text::_('COM_SPORTSMANAGEMENT
 	?>
       <table class="table table-striped" id="history-1">
 						<tr>
-							<td> <?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_SCORE_FREQUENCY'); ?>
+							<td> <?php echo Text::_('COM_SPORTSMANAGEMENT_RESULTS_SCORE'); ?>
 							</td>
-							<td> <?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_SCORE_FRECUENCY'); ?>
+							<td> <?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_SCORE_FREQUENCY'); ?>
 							</td>
 						</tr>	
 						<?php
@@ -622,9 +622,9 @@ echo JHtml::_('bootstrap.addTab', 'myTab', 'desc', $this->teams[0]->name . " " .
 	?>
       <table class="table table-striped" id="history-2">
 						<tr>
-							<td> <?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_SCORE_FREQUENCY'); ?>
+							<td> <?php echo Text::_('COM_SPORTSMANAGEMENT_RESULTS_SCORE'); ?>
 							</td>
-							<td> <?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_SCORE_FRECUENCY'); ?>
+							<td> <?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_SCORE_FREQUENCY'); ?>
 							</td>
 						</tr>				
 						<?php
@@ -657,9 +657,9 @@ echo JHtml::_('bootstrap.addTab', 'myTab', 'price', $this->teams[1]->name . " " 
 	?>
       <table class="table table-striped" id="history-3">
 						<tr>
-							<td> <?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_SCORE_FREQUENCY'); ?>
+							<td> <?php echo Text::_('COM_SPORTSMANAGEMENT_RESULTS_SCORE'); ?>
 							</td>
-							<td> <?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_SCORE_FRECUENCY'); ?>
+							<td> <?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_SCORE_FREQUENCY'); ?>
 							</td>
 						</tr>				
 						<?php
