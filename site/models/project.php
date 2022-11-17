@@ -1058,7 +1058,8 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	 * @param integer $sports_type_id
 	 * @return
 	 */
-	public static function getEventTypes($evid = '', $cfg_which_database = 0, $sports_type_id = 0)
+	public static function getEventTypes($evid = 0, $cfg_which_database = 0, $sports_type_id = 0,
+					    $p = 0,$tid = 0,$s = 0,$mid = 0)
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
