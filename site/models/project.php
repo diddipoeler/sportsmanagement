@@ -1071,6 +1071,18 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 		$query->from('#__sportsmanagement_eventtype AS et');
 		$query->join('LEFT', '#__sportsmanagement_match_event AS me ON et.id = me.event_type_id');
 
+		if ( $mid )
+        {
+        $query->where('me.match_id = ' . $mid);
+        }
+      
+      if ( $p )
+      {
+      $query->join('LEFT', '#__sportsmanagement_match AS mat ON mat.id = me.match_id');  
+      $query->join('LEFT', '#__sportsmanagement_round AS r ON r.id = mat.round_id');    
+      $query->where('r.project_id = ' . $p);  
+      }
+		
 		if ($evid)
 		{
 		$query->where("me.event_type_id IN (" . $evid . ")");
