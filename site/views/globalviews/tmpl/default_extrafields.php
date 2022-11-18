@@ -51,7 +51,27 @@ switch ($field_type)
 					}          
         
 $ausgabe .= '</tr>';          
-         
+          switch ( strtolower(Text::_($field->name)) )
+    {
+      case 'wikipedia':
+       
+       
+        $ausgabe .= '<tr><td>';   
+         ?>
+           <div class="row">
+
+   <div class="col-lg-12 col-md-12 col-sm-12">
+          
+  <iframe class="col-lg-12 col-md-12 col-sm-12" style="wheight: 200vh;" src="<?php echo $field->fvalue; ?>" ></iframe>
+
+            </div>
+
+</div>
+      <?php  
+        $ausgabe .= '</td></tr>'; 
+        break;
+    }    
+			
 		}
 	}
 $ausgabe .= '</table>';
