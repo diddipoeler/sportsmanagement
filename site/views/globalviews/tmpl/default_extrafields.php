@@ -62,7 +62,7 @@ $ausgabe .= '</tr>';
 
    <div class="col-lg-12 col-md-12 col-sm-12">
           
-  <iframe class="col-lg-12 col-md-12 col-sm-12" style="wheight: 200vh;" src="<?php echo $field->fvalue; ?>" ></iframe>
+  <iframe class="col-lg-12 col-md-12 col-sm-12" style="height: 400px;" src="<?php echo $field->fvalue; ?>" ></iframe>
 
             </div>
 
