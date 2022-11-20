@@ -230,8 +230,8 @@
             <option value="1">JYES</option>
         </field>
         
-        <field name="show_comments_count" type="radio" default="0"
-        layout="joomla.form.field.radio.switcher"
+        <field name="show_comments_count" type="list" default="0"
+        
             label="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_LABEL_SHOW_COMMENTS" description="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_DESCR_SHOW_COMMENTS">
             <option value="0">JNO</option>
             <option value="1">COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_OPTION1_SHOW_COMMENTS_GRAPHIC</option>
