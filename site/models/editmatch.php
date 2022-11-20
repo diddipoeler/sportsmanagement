@@ -38,7 +38,6 @@ class sportsmanagementModelEditMatch extends AdminModel
 	const MATCH_ROSTER_SUBSTITUTE_OUT = 2;
 	const MATCH_ROSTER_RESERVE = 3;
 
-	// Interfaces
 	static $projectid = 0;
 	static $divisionid = 0;
 	static $roundid = 0;
@@ -47,6 +46,7 @@ class sportsmanagementModelEditMatch extends AdminModel
 	static $order = 0;
 	static $cfg_which_database = 0;
 	static $oldlayout = '';
+    
 	var $latitude = null;
 	var $longitude = null;
 
@@ -105,8 +105,6 @@ class sportsmanagementModelEditMatch extends AdminModel
 
 		$positions         = sportsmanagementModelMatch::getProjectPositionsOptions(0, 3, $data['project_id']);
 		$data['positions'] = $positions;
-
-		//$result = sportsmanagementModelMatch::updateReferees($data);
 		$mdlMatch = BaseDatabaseModel::getInstance("Match", "sportsmanagementModel");
 		$result = $mdlMatch->updateReferees($data);
 
@@ -124,7 +122,6 @@ class sportsmanagementModelEditMatch extends AdminModel
 	{
 		$app                    = Factory::getApplication();
 		$data['staffpositions'] = sportsmanagementModelMatch::getProjectPositionsOptions(0, 2, $data['project_id']);
-		//$result                 = sportsmanagementModelMatch::updateStaff($data);
 		$mdlMatch = BaseDatabaseModel::getInstance("Match", "sportsmanagementModel");
 		$result                 = $mdlMatch->updateStaff($data);
 
@@ -142,7 +139,6 @@ class sportsmanagementModelEditMatch extends AdminModel
 	{
 		$app               = Factory::getApplication();
 		$data['positions'] = sportsmanagementModelMatch::getProjectPositionsOptions(0, 1, $data['project_id']);
-		//$result            = sportsmanagementModelMatch::updateRoster($data);
 		$mdlMatch = BaseDatabaseModel::getInstance("Match", "sportsmanagementModel");
 		$result            = $mdlMatch->updateRoster($data);
 
