@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage helpers
@@ -11,10 +9,8 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Router\Route;
-
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -172,7 +168,12 @@ class sportsmanagementModelComments
 		}
 		else
 		{
-			$link = sportsmanagementHelperRoute::getNextMatchRoute($project->slug, $match->id) . '#comments';
+				  $routeparameter                       = array();
+		$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+		$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+		$routeparameter['p']                  = $project->slug;
+		$routeparameter['mid']                = $match->id;
+		$link                       = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch', $routeparameter);
 		}
 
 		$viewComment = HTMLHelper::link($link, $href_text);
@@ -432,7 +433,15 @@ class sportsmanagementModelCommentsJSMJComments extends sportsmanagementModelCom
 		}
 		else
 		{
-			$link = sportsmanagementHelperRoute::getNextMatchRoute($project->slug, $match->id) . '#comments';
+	  $routeparameter                       = array();
+		$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+		$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+		$routeparameter['p']                  = $project->slug;
+		$routeparameter['mid']                = $match->id;
+		$link                       = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch', $routeparameter);
+          
+          
+			
 		}
 
 		$viewComment = HTMLHelper::link($link, $href_text);
