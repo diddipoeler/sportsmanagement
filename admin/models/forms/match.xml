@@ -16,7 +16,7 @@
 				label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MP"
 				description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MP_DESC"
 				width="450" 
-				filter="safehtml"/>		
+				filter="JComponentHelper::filterText"/>		
 	</fieldset>
 	
 	<fieldset name="matchdetails"
@@ -146,7 +146,7 @@
 				label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MR"
 				description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MR_DESC"
 				width="450" 
-				filter="safehtml"/>				
+				filter="JComponentHelper::filterText"/>				
 	</fieldset>	
 	
 	
