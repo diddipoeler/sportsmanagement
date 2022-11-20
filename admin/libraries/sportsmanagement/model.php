@@ -211,6 +211,18 @@ if ( $config->get('debug') )
 			$html          = $postData->get('notes', '', 'raw');
 			$data['notes'] = $html;
 		}
+        
+        if (array_key_exists('preview', $data))
+		{
+			$html          = $postData->get('preview', '', 'raw');
+			$data['preview'] = $html;
+		}
+        
+        if (array_key_exists('summary', $data))
+		{
+			$html          = $postData->get('summary', '', 'raw');
+			$data['summary'] = $html;
+		}
 
 		if (isset($post['extended']) && is_array($post['extended']))
 		{
