@@ -158,7 +158,21 @@ class sportsmanagementModelEditMatch extends AdminModel
 
 		foreach ($data['request'] as $key => $value)
 		{
-			$data[$key] = $value;
+			switch ( $key )
+			{
+				case 'preview':
+				$html          = $data['request']->get('preview', '', 'raw');
+			$data['preview'] = $html;	
+					break;
+					case 'summary':
+					$html          = $data['request']->get('summary', '', 'raw');
+			$data['summary'] = $html;
+					break;
+				default:
+				$data[$key] = $value;	
+					break;
+			}
+			
 		}
 
 		/**
