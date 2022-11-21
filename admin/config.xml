@@ -476,10 +476,12 @@ type="text"
 size="40" 
 default="" 
 label="COM_SPORTSMANAGEMENT_SETTINGS_ISHD_KENNWORT" 
-description="COM_SPORTSMANAGEMENT_SETTINGS_ISHD_KENNWORT_DESC" />     
+description="COM_SPORTSMANAGEMENT_SETTINGS_ISHD_KENNWORT_DESC" />  
+	
 <field name="ishd_stammverein" 
 type="clublist" 
 default="" 
+target="COM_SPORTSMANAGEMENT_ST_HANDBALL"       
 label="COM_SPORTSMANAGEMENT_SETTINGS_ISHD_CLUB" 
 description="COM_SPORTSMANAGEMENT_SETTINGS_ISHD_CLUB_DESC" />  
 
