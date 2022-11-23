@@ -265,9 +265,10 @@ $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($query->dum
 
 		$db    = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
-		$query->select('p.*, st.name AS sport_type_name');
+		$query->select('p.*, st.name AS sport_type_name,l.country ');
 		$query->from('#__sportsmanagement_project as p');
 		$query->join('INNER', '#__sportsmanagement_sports_type AS st ON p.sports_type_id = st.id ');
+		$query->join('INNER', '#__sportsmanagement_league AS l ON l.id = p.league_id ');
 		$query->where('p.id = ' . $project_id);
 		$db->setQuery($query);
 		$result = $db->loadObject();
