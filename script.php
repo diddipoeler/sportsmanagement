@@ -1065,7 +1065,7 @@ $path = $src . DIRECTORY_SEPARATOR . 'pkg' . DIRECTORY_SEPARATOR .'jcomments' . 
 $installer = new Installer;
 $result = $installer->install($path);	
 	
-	
+echo '<p>' . Text::_('Packages : ') . 'JComments 4.0' . ' installiert!</p>';	
 	
 }
 	
