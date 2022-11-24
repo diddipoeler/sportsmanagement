@@ -24,8 +24,8 @@
 	
 	<files folder="plugins">
 		
-		<file type="plugin" id="jcomments-avatar" group="jcomments">plg_jcomments_avatar_4.2.4.zip</file>
-		<file type="plugin" id="cbjcomments" group="user">plug_cbjcomments_v2.7.zip</file>
+		<file type="plugin" id="jcomments" group="jcomments">plg_jcomments_avatar_4.2.4.zip</file>
+		<file type="plugin" id="jcomments" group="user">plug_cbjcomments_v2.7.zip</file>
 		
 	</files>
 
