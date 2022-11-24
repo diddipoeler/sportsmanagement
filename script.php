@@ -1065,7 +1065,8 @@ public function installPackages( $adapter)
 		$db = Factory::getDBO();
 
 	
-$path = $src . DIRECTORY_SEPARATOR . 'pkg' . DIRECTORY_SEPARATOR .'jcomments' . DIRECTORY_SEPARATOR . 'pkg_jcomments_4.0.25.zip';
+//$path = $src . DIRECTORY_SEPARATOR . 'pkg' . DIRECTORY_SEPARATOR .'jcomments' . DIRECTORY_SEPARATOR . 'pkg_jcomments_4.0.25.zip';
+$path = $src . DIRECTORY_SEPARATOR . 'pkg' . DIRECTORY_SEPARATOR .'jcomments'. DIRECTORY_SEPARATOR ;
 	
 Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $src, 'error');
 Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $path, 'error');
