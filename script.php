@@ -1046,7 +1046,15 @@ $result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_i
 	//  }
 
 
-
+public function installPackages( $adapter)
+	{
+		$mainframe = Factory::getApplication();
+		$src = $adapter->getParent()->getPath('source');
+		$manifest = $adapter->getParent()->manifest;
+		$db = Factory::getDBO();
+	
+}
+	
 	/**
 	 * com_sportsmanagementInstallerScript::installPlugins()
 	 *
