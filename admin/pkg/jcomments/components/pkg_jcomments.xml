@@ -23,6 +23,12 @@
 		
 		<file type="plugin" id="jcomments" group="jcomments">plg_jcomments_avatar.zip</file>
 		<file type="plugin" id="jcomments" group="user">plug_cbjcomments.zip</file>
+		
+<file type="module" id="jcomments" client="administrator">mod_jcomments_latest_backend.zip</file>
+<file type="module" id="jcomments" client="site">mod_jcomments_latest_commented.zip</file>
+<file type="module" id="jcomments" client="site">mod_jcomments_top_posters.zip</file>
+<file type="module" id="jcomments" client="site">mod_jcomments_latest.zip</file>
+		
 	</files>
 	
 	
