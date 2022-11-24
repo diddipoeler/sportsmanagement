@@ -729,9 +729,13 @@ $result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_i
 					echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab4_id', Text::_(' Create/Update Images Folders'));
 					self::createImagesFolder();
 					/** führt zu fehlern */
-					// Self::installJoomlaExtensions($adapter);
+					// Self::installJoomlaExtensions($adapter); installPackages( $adapter)
 					echo HTMLHelper::_('bootstrap.' . $this->endPanel);
 
+					echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab5_id', Text::_(' Packages'));
+					self::installPackages($adapter);
+					echo HTMLHelper::_('bootstrap.' . $this->endPanel);
+					
 					self::setParams($newparams);
 					self::deleteinstallfiles();
 						break;
@@ -748,6 +752,10 @@ $result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_i
 					self::createImagesFolder();
 					/** führt zu fehlern */
 					// Self::installJoomlaExtensions($adapter);
+					echo HTMLHelper::_('bootstrap.' . $this->endPanel);
+					
+					echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab5_id', Text::_(' Packages'));
+					self::installPackages($adapter);
 					echo HTMLHelper::_('bootstrap.' . $this->endPanel);
 
 					self::setParams($newparams);
@@ -1052,6 +1060,12 @@ public function installPackages( $adapter)
 		$src = $adapter->getParent()->getPath('source');
 		$manifest = $adapter->getParent()->manifest;
 		$db = Factory::getDBO();
+	
+$path = $src . DIRECTORY_SEPARATOR . 'pkg' . DIRECTORY_SEPARATOR .'jcomments' . DIRECTORY_SEPARATOR . 'pkg_jcomments_4.0.25.zip';
+$installer = new Installer;
+$result = $installer->install($path);	
+	
+	
 	
 }
 	
