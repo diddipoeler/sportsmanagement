@@ -21,8 +21,8 @@
 		<file type="plugin" id="jcomments" group="user">plg_user_jcomments.zip</file>
 		<file type="plugin" id="jcomments" group="quickicon">plg_quickicon_jcomments.zip</file>
 		
-		<file type="plugin" id="jcomments" group="jcomments">plg_jcomments_avatar_4.2.4.zip</file>
-		<file type="plugin" id="jcomments" group="user">plug_cbjcomments_v2.7.zip</file>
+		<file type="plugin" id="jcomments" group="jcomments">plg_jcomments_avatar.zip</file>
+		<file type="plugin" id="jcomments" group="user">plug_cbjcomments.zip</file>
 	</files>
 	
 	
