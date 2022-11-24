@@ -18,6 +18,8 @@
  * https://api.joomla.org/cms-3/deprecated.html
  * https://www.joomla.org/announcements/release-news/5718-joomla-4-0-alpha-1-release.html
  *
+ *  https://github.com/exstreme/Jcomments-4
+ *
  * https://www.spiralscripts.co.uk/Joomla-Tips/modal-windows-in-joomla-3.html
  *
  * toolbar icons
@@ -1060,8 +1062,13 @@ public function installPackages( $adapter)
 		$src = $adapter->getParent()->getPath('source');
 		$manifest = $adapter->getParent()->manifest;
 		$db = Factory::getDBO();
+
 	
 $path = $src . DIRECTORY_SEPARATOR . 'pkg' . DIRECTORY_SEPARATOR .'jcomments' . DIRECTORY_SEPARATOR . 'pkg_jcomments_4.0.25.zip';
+	
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $src, 'error');
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $path, 'error');
+	
 $installer = new Installer;
 $result = $installer->install($path);	
 	
