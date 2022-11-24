@@ -1060,7 +1060,7 @@ public function installPackages( $adapter)
 	{
 		$mainframe = Factory::getApplication();
 		//$src = $adapter->getParent()->getPath('source');
-	$src = JPATH_COMPONENT_ADMINISTRATOR. '/components/'. 'com_sportsmanagement' ;
+	$src = JPATH_BASE. '/components/'. 'com_sportsmanagement' ;
 		$manifest = $adapter->getParent()->manifest;
 		$db = Factory::getDBO();
 
