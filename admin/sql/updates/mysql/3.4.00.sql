@@ -24,10 +24,9 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_prediction_tippround` (
 ENGINE = MyISAM
 DEFAULT CHARSET = utf8;
 
-ALTER TABLE `#__sportsmanagement_prediction_project` ADD `final4` TINYINT(4) NOT NULL DEFAULT '0';
-ALTER TABLE `#__sportsmanagement_prediction_project` ADD `points_tipp_final4` SMALLINT(6) NOT NULL DEFAULT '5';
-ALTER TABLE `#__sportsmanagement_prediction_project` ADD `league_final4` VARCHAR(128) NOT NULL DEFAULT '';
-ALTER TABLE `#__sportsmanagement_prediction_member` ADD `final4_tipp` VARCHAR(64) NOT NULL DEFAULT '';
+-- ALTER TABLE `#__sportsmanagement_prediction_project` ADD `final4` TINYINT(4) NOT NULL DEFAULT '0';
+-- ALTER TABLE `#__sportsmanagement_prediction_project` ADD `points_tipp_final4` SMALLINT(6) NOT NULL DEFAULT '5';
+-- ALTER TABLE `#__sportsmanagement_prediction_project` ADD `league_final4` VARCHAR(128) NOT NULL DEFAULT '';
+-- ALTER TABLE `#__sportsmanagement_prediction_member` ADD `final4_tipp` VARCHAR(64) NOT NULL DEFAULT '';
 
-INSERT INTO `#__sportsmanagement_version_history` (`id`, `date`, `text`, `version`) VALUES
-(NULL, '2020-04-18', 'COM_SPORTSMANAGEMENT_DB_UPDATE_2020-04-20', '3.4.00');
+-- INSERT INTO `#__sportsmanagement_version_history` (`id`, `date`, `text`, `version`) VALUES (NULL, '2020-04-18', 'COM_SPORTSMANAGEMENT_DB_UPDATE_2020-04-20', '3.4.00');
