@@ -10,7 +10,7 @@ ALTER TABLE  `#__sportsmanagement_countries` ADD `published` TINYINT(1) NOT NULL
 ALTER TABLE  `#__sportsmanagement_dfbkey` ADD `published` TINYINT(1) NOT NULL DEFAULT '1';
 
 ALTER TABLE  `#__sportsmanagement_match_commentary` ADD `published` TINYINT(1) NOT NULL DEFAULT '1';
-ALTER TABLE  `#__sportsmanagement_match_event` ADD `published` TINYINT(1) NOT NULL DEFAULT '1';
+-- ALTER TABLE  `#__sportsmanagement_match_event` ADD `published` TINYINT(1) NOT NULL DEFAULT '1';
 
 ALTER TABLE  `#__sportsmanagement_match_player` ADD `published` TINYINT(1) NOT NULL DEFAULT '1';
 ALTER TABLE  `#__sportsmanagement_match_statistic` ADD `published` TINYINT(1) NOT NULL DEFAULT '1';
