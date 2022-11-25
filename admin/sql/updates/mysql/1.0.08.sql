@@ -11,8 +11,8 @@ ALTER TABLE  `#__sportsmanagement_season_team_person_id` ADD `market_value` INT(
 ALTER TABLE  `#__sportsmanagement_season_team_person_id` ADD `extendeduser` TEXT NULL ;
 ALTER TABLE  `#__sportsmanagement_season_team_person_id` ADD `played_time` INT(11) NULL DEFAULT '0' ;
 
-ALTER TABLE  `#__sportsmanagement_person` ADD `twitter` VARCHAR(250) NOT NULL DEFAULT '' ;
-ALTER TABLE  `#__sportsmanagement_person` ADD `facebook` VARCHAR(250) NOT NULL DEFAULT '' ;
+-- ALTER TABLE  `#__sportsmanagement_person` ADD `twitter` VARCHAR(250) NOT NULL DEFAULT '' ;
+-- ALTER TABLE  `#__sportsmanagement_person` ADD `facebook` VARCHAR(250) NOT NULL DEFAULT '' ;
 ALTER TABLE  `#__sportsmanagement_club` ADD `twitter` VARCHAR(250) NOT NULL DEFAULT '' ;
 ALTER TABLE  `#__sportsmanagement_club` ADD `facebook` VARCHAR(250) NOT NULL DEFAULT '' ;
 
