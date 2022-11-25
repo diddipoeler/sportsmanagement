@@ -1,5 +1,5 @@
-ALTER TABLE `#__sportsmanagement_match` CHANGE `summary` `summary` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
-ALTER TABLE `#__sportsmanagement_match` CHANGE `preview` `preview` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+-- ALTER TABLE `#__sportsmanagement_match` CHANGE `summary` `summary` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+-- ALTER TABLE `#__sportsmanagement_match` CHANGE `preview` `preview` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
 
 
 INSERT INTO `#__sportsmanagement_version_history` (`id`, `date`, `text`, `version`) VALUES
