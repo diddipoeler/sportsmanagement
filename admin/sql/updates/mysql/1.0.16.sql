@@ -1,1 +1,0 @@
--- ALTER TABLE  `#__sportsmanagement_round` ADD  `picture` VARCHAR( 128 ) NOT NULL DEFAULT  'images/com_sportsmanagement/database/placeholders/placeholder_150.png';
