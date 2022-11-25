@@ -1,5 +1,5 @@
-ALTER TABLE `#__sportsmanagement_match` ADD `ringetotal_team1` int(11) DEFAULT NULL;
-ALTER TABLE `#__sportsmanagement_match` ADD `ringetotal_team2` int(11) DEFAULT NULL;
+-- ALTER TABLE `#__sportsmanagement_match` ADD `ringetotal_team1` int(11) DEFAULT NULL;
+-- ALTER TABLE `#__sportsmanagement_match` ADD `ringetotal_team2` int(11) DEFAULT NULL;
 
 ALTER TABLE `#__sportsmanagement_match_single` ADD `ringetotal_projectteam1_id` int(11) DEFAULT NULL;
 ALTER TABLE `#__sportsmanagement_match_single` ADD `ringetotal_projectteam2_id` int(11) DEFAULT NULL;
