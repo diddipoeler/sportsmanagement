@@ -1,5 +1,5 @@
-ALTER TABLE  `#__sportsmanagement_project` ADD  `approved_gcalendar` TINYINT(1)  NOT NULL DEFAULT '0' ;
-ALTER TABLE  `#__sportsmanagement_project` ADD  `gcalendar_id` INT( 11 ) NOT NULL DEFAULT  '0';
+-- ALTER TABLE  `#__sportsmanagement_project` ADD  `approved_gcalendar` TINYINT(1)  NOT NULL DEFAULT '0' ;
+-- ALTER TABLE  `#__sportsmanagement_project` ADD  `gcalendar_id` INT( 11 ) NOT NULL DEFAULT  '0';
 
 ALTER TABLE  `#__sportsmanagement_match` ADD  `gcal_event_id` VARCHAR(150) NULL DEFAULT NULL;
 

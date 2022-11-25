@@ -13,8 +13,8 @@ ALTER TABLE `#__sportsmanagement_playground` ADD `playground_size` VARCHAR(200) 
 ALTER TABLE  `#__sportsmanagement_club` CHANGE  `name`  `name` VARCHAR( 200 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT  '';
 ALTER TABLE  `#__sportsmanagement_club` CHANGE  `alias`  `alias` VARCHAR( 200 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT  '';
 
-ALTER TABLE  `#__sportsmanagement_project` CHANGE  `name`  `name` VARCHAR( 200 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT  '';
-ALTER TABLE  `#__sportsmanagement_project` CHANGE  `alias`  `alias` VARCHAR( 200 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT  '';
+-- ALTER TABLE  `#__sportsmanagement_project` CHANGE  `name`  `name` VARCHAR( 200 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT  '';
+-- ALTER TABLE  `#__sportsmanagement_project` CHANGE  `alias`  `alias` VARCHAR( 200 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT  '';
 
 
 INSERT INTO `#__sportsmanagement_version_history` (`id`, `date`, `text`, `version`) VALUES

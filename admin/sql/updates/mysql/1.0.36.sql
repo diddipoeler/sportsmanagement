@@ -1,5 +1,5 @@
 ALTER TABLE  `#__sportsmanagement_league` ADD  `agegroup_id` INT( 11 ) NOT NULL DEFAULT  '0';
-ALTER TABLE  `#__sportsmanagement_project` ADD  `agegroup_id` INT( 11 ) NOT NULL DEFAULT  '0';
+-- ALTER TABLE  `#__sportsmanagement_project` ADD  `agegroup_id` INT( 11 ) NOT NULL DEFAULT  '0';
 
 ALTER TABLE  `#__sportsmanagement_user_extra_fields` ADD  `field_type` VARCHAR(15) NOT NULL DEFAULT '';
 
