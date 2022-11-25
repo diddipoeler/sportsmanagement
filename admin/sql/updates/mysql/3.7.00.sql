@@ -1,6 +1,6 @@
 ALTER TABLE `#__sportsmanagement_project` ADD `openligaid` int(11) DEFAULT NULL;
 ALTER TABLE `#__sportsmanagement_round` ADD `openligaid` int(11) DEFAULT NULL;
-ALTER TABLE `#__sportsmanagement_match` ADD `openligaid` int(11) DEFAULT NULL;
+//ALTER TABLE `#__sportsmanagement_match` ADD `openligaid` int(11) DEFAULT NULL;
 ALTER TABLE `#__sportsmanagement_team` ADD `openligaid` int(11) DEFAULT NULL;
 ALTER TABLE `#__sportsmanagement_person` ADD `openligaid` int(11) DEFAULT NULL;
 ALTER TABLE `#__sportsmanagement_playground` ADD `openligaid` int(11) DEFAULT NULL;
