@@ -1,7 +1,7 @@
 ALTER TABLE `#__sportsmanagement_club` CHANGE `founded_timestamp` `founded_timestamp` BIGINT(20) NOT NULL DEFAULT '0';
 ALTER TABLE `#__sportsmanagement_club` CHANGE `dissolved_timestamp` `dissolved_timestamp` BIGINT(20) NOT NULL DEFAULT '0';
 
-ALTER TABLE `#__sportsmanagement_match` CHANGE `match_timestamp` `match_timestamp` BIGINT(20) NOT NULL DEFAULT '0';
+-- ALTER TABLE `#__sportsmanagement_match` CHANGE `match_timestamp` `match_timestamp` BIGINT(20) NOT NULL DEFAULT '0';
 
 ALTER TABLE `#__sportsmanagement_person` CHANGE `birthday_timestamp` `birthday_timestamp` BIGINT(20) NOT NULL DEFAULT '0';
 ALTER TABLE `#__sportsmanagement_person` CHANGE `deathday_timestamp` `deathday_timestamp` BIGINT(20) NOT NULL DEFAULT '0';
