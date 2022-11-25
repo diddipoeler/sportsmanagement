@@ -13,8 +13,8 @@ ALTER TABLE  `#__sportsmanagement_season_team_person_id` ADD `played_time` INT(1
 
 -- ALTER TABLE  `#__sportsmanagement_person` ADD `twitter` VARCHAR(250) NOT NULL DEFAULT '' ;
 -- ALTER TABLE  `#__sportsmanagement_person` ADD `facebook` VARCHAR(250) NOT NULL DEFAULT '' ;
-ALTER TABLE  `#__sportsmanagement_club` ADD `twitter` VARCHAR(250) NOT NULL DEFAULT '' ;
-ALTER TABLE  `#__sportsmanagement_club` ADD `facebook` VARCHAR(250) NOT NULL DEFAULT '' ;
+-- ALTER TABLE  `#__sportsmanagement_club` ADD `twitter` VARCHAR(250) NOT NULL DEFAULT '' ;
+-- ALTER TABLE  `#__sportsmanagement_club` ADD `facebook` VARCHAR(250) NOT NULL DEFAULT '' ;
 
 ALTER TABLE  `#__sportsmanagement_prediction_groups` ADD `countmembers` INT(11) NOT NULL DEFAULT '0';
 
