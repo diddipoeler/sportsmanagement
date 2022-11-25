@@ -1064,7 +1064,8 @@ public function installPackages( $adapter)
 		$manifest = $adapter->getParent()->manifest;
 		$db = Factory::getDBO();
 
-	
+	if (version_compare(substr(JVERSION, 0, 5), '4.0.0', 'ge'))
+		{
 //$path = $src . DIRECTORY_SEPARATOR . 'pkg' . DIRECTORY_SEPARATOR .'jcomments' . DIRECTORY_SEPARATOR . 'pkg_jcomments_4.0.25.zip';
 $path = $src . DIRECTORY_SEPARATOR . 'pkg' . DIRECTORY_SEPARATOR .'jcomments'. DIRECTORY_SEPARATOR.'components'. DIRECTORY_SEPARATOR ;
 	
@@ -1075,7 +1076,7 @@ $installer = new Installer;
 $result = $installer->install($path);	
 	
 echo '<p>' . Text::_('Packages : ') . 'JComments 4.0' . ' installiert!</p>';	
-	
+	}
 }
 	
 	/**
