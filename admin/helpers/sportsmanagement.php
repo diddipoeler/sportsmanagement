@@ -4002,7 +4002,7 @@ $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($query->dum
 	 *
 	 * @return
 	 */
-	function _setLeagueData($league)
+	public static function _setLeagueData($league)
 	{
 
 		if ($league)
@@ -4023,7 +4023,7 @@ $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($query->dum
 	 *
 	 * @return
 	 */
-	function _setProjectData($project)
+	public static function _setProjectData($project)
 	{
 		if ($project)
 		{
@@ -4043,7 +4043,7 @@ $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($query->dum
 	 *
 	 * @return
 	 */
-	function _setSeasonData($season)
+	public static function _setSeasonData($season)
 	{
 		if ($season)
 		{
