@@ -3896,7 +3896,7 @@ $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($query->dum
 	 * @since  1.5.0a
 	 *
 	 */
-	function _addToXml($data)
+	public static function _addToXml($data)
 	{
 		if (is_array($data) && count($data) > 0)
 		{
