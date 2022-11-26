@@ -844,14 +844,7 @@ class sportsmanagementModelResults extends JSMModelList
 	function saveshort($cfg_which_database = 0)
 	{
 		$app = Factory::getApplication();
-		/**
-		 *         JInput object
-		 */
 		$option = $app->input->getCmd('option');
-
-		/**
-		 *         Get a db connection.
-		 */
 		$db = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
 
 		$pks  = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
@@ -861,19 +854,13 @@ class sportsmanagementModelResults extends JSMModelList
 
 		for ($x = 0; $x < count($pks); $x++)
 		{
-			/**
-			 *             Änderungen im datum oder der uhrzeit
-			 */
+			/** Änderungen im datum oder der uhrzeit */
 			$tbl = $this->getTable();;
 			$tbl->load((int) $pks[$x]);
 
-			/**
-			 *             Create an object for the record we are going to update.
-			 */
+			/** Create an object for the record we are going to update. */
 			$object = new stdClass;
-			/**
-			 *             Must be a valid primary key value.
-			 */
+			/** Must be a valid primary key value. */
 			$object->id           = $pks[$x];
 			$object->team1_result = null;
 			$object->team2_result = null;
@@ -882,6 +869,10 @@ class sportsmanagementModelResults extends JSMModelList
 
 			if ($post['match_date' . $pks[$x]])
 			{
+			 if ( $post['match_time' . $pks[$x]] == '' )
+             {
+                $post['match_time' . $pks[$x]] = '00';
+             }
 				list($date, $time) = explode(" ", $tbl->match_date);
 				$this->_match_time_new = $post['match_time' . $pks[$x]] . ':00';
 				$this->_match_date_new = $post['match_date' . $pks[$x]];
