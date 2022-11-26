@@ -4063,7 +4063,7 @@ $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($query->dum
 	 *
 	 * @return
 	 */
-	function _setSportsType($sportstype)
+	public static function _setSportsType($sportstype)
 	{
 
 		if ($sportstype)
@@ -4085,7 +4085,7 @@ $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($query->dum
 	 *
 	 * @return
 	 */
-	function _setXMLData($data, $object)
+	public static function _setXMLData($data, $object)
 	{
 		if ($data)
 		{
