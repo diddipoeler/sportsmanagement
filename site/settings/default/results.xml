@@ -205,7 +205,6 @@
 		</field>
 
 		<field	name="show_comments_count" type="list" default="0"
-    layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_LABEL_SHOW_COMMENTS"
 				description="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_DESCR_SHOW_COMMENTS">
 			<option value="0">JNO</option>
