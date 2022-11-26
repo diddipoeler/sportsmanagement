@@ -32,21 +32,20 @@
 	<changelog>
 		<element>com_sportsmanagement</element>
 		<type>component</type>
-		<version>4.00.00</version>
+		<version>4.10.00</version>
 		<security>
 			<item><![CDATA[<p>No security issues.</p>]]></item>
 		</security>
 		<fix>
 			
 			
-			<item>Vereins Wappen hochladen name wird zu Symbole
-#1284 closed 16 hours ago</item>
+			<item>Mehrere Issues geschlossen</item>
 		</fix>
 		<language>
 			<item>German</item>
 		</language>
 		<addition>
-			<item>Neues Feld im Projektteam zur Eingabe des Sieger/Gewinner</item>
+			<item>JComments für Joomla 4</item>
 		</addition>
 		<change>
 			<item>No change</item>
@@ -55,7 +54,7 @@
 			<item>No remove</item>
 		</remove>
 		<note>
-			<item>Neues Feld im Projektteam zur Eingabe des Sieger/Gewinner</item>
+			<item>JComments für Joomla 4</item>
 		</note>
 	</changelog>
 </changelogs>

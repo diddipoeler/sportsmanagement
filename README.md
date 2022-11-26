@@ -65,6 +65,7 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   26-11-2022: **4.10.00** Jcomments 4
 *   19-06-2022: **4.00.00** Anpassungen Joomla 4
 *   10-04-2022: **3.16.00** Anpassungen Dart
 *   30-03-2022: **3.15.00** Anpassungen Joomla 4

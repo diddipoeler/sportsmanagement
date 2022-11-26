@@ -52,9 +52,9 @@ class sportsmanagementModelclub extends JSMModelAdmin
 		$this->jsmquery->where('uefv.jl_id = ' . $club_id);
 		$this->jsmquery->where('uef.name LIKE ' . $this->jsmdb->Quote('%' . $fieldtext . '%'));
 		$this->jsmquery->where('uef.template_backend LIKE ' . $this->jsmdb->Quote('' . 'club' . ''));
-		$this->jsmdb->setQuery($this->jsmquery);
 		
 	try{
+	   $this->jsmdb->setQuery($this->jsmquery);
 		$clubfieldvalue = $this->jsmdb->loadResult();
         return $clubfieldvalue;
         }
@@ -80,8 +80,6 @@ class sportsmanagementModelclub extends JSMModelAdmin
 	{
 		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
-
-		// Get the input
 		$pks  = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
 		$post = Factory::getApplication()->input->post->getArray(array());
 
