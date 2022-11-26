@@ -3933,7 +3933,7 @@ $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($query->dum
 	 *
 	 * @return string
 	 */
-	public function stripInvalidXml($value)
+	public static function stripInvalidXml($value)
 	{
 		$ret     = '';
 		$current = '';
