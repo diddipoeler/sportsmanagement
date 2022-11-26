@@ -3973,7 +3973,7 @@ $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($query->dum
 	 *
 	 * @return
 	 */
-	function _setSportsManagementVersion()
+	public static function _setSportsManagementVersion()
 	{
 		$exportRoutine              = '2010-09-23 15:00:00';
 		$result[0]['exportRoutine'] = $exportRoutine;
