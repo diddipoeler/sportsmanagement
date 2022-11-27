@@ -15,6 +15,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\Form\Form;
 
 JLoader::import('components.com_sportsmanagement.helpers.imageselect', JPATH_SITE);
 
