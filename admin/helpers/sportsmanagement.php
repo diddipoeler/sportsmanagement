@@ -104,6 +104,7 @@ public static function getMatchReferees($match_id = 0, $cfg_which_database = 0)
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
+        $result = array();
 
 		$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
 		$query     = $db->getQuery(true);
