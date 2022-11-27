@@ -58,9 +58,7 @@ class sportsmanagementViewTeam extends sportsmanagementView
 			}
 		}
 
-		/**
-		 * build the html select list for days of week
-		 */
+		/** build the html select list for days of week */
 		if ($trainingData = $this->model->getTrainigData($this->item->id))
 		{
 			$daysOfWeek = array(0 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'),
