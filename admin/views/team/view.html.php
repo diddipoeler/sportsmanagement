@@ -34,6 +34,7 @@ class sportsmanagementViewTeam extends sportsmanagementView
 	{
 
 		$lists = array();
+        $trainingData = array();
 
 		$this->change_training_date = $this->app->getUserState("$this->option.change_training_date", '0');
 
@@ -59,7 +60,11 @@ class sportsmanagementViewTeam extends sportsmanagementView
 		}
 
 		/** build the html select list for days of week */
-		if ($trainingData = $this->model->getTrainigData($this->item->id))
+        if ( $this->item->id )
+        {
+        $trainingData = $this->model->getTrainigData($this->item->id);    
+        }
+		if ( $trainingData )
 		{
 			$daysOfWeek = array(0 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'),
 			                    1 => Text::_('MONDAY'),
