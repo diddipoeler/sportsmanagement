@@ -155,6 +155,7 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 		$document = Factory::getDocument();
 		$db    = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
+        $matches = array();
 
 		$limit = ($this->params->get('limit', 0) > 0) ? $this->params->get('limit', 0) : 1;
 
@@ -426,7 +427,7 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 			$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
 			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
-			return false;
+			return $matches;
 		}
 
 	}
