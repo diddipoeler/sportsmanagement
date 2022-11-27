@@ -398,7 +398,7 @@ class sportsmanagementModelCommentsJSMJComments extends sportsmanagementModelCom
 	function __construct(&$config)
 	{
 		$this->comJcomments = true;
-		$dispatcher         = JDispatcher::getInstance();
+		//$dispatcher         = JDispatcher::getInstance();
 
 		if (file_exists(JPATH_ROOT . '/components/com_jcomments/classes/config.php'))
 		{
@@ -459,7 +459,7 @@ class sportsmanagementModelCommentsJSMJComments extends sportsmanagementModelCom
 	{
 		if ($this->separate_comments)
 		{
-			// Comments integration trigger when separate_comments in plugin is set to yes/1
+			/** Comments integration trigger when separate_comments in plugin is set to yes/1 */
 			if (isset($match->team1_result))
 			{
 				$joomleage_comments_object_group = 'com_sportsmanagement_matchreport';
@@ -471,7 +471,7 @@ class sportsmanagementModelCommentsJSMJComments extends sportsmanagementModelCom
 		}
 		else
 		{
-			// Comments integration trigger when separate_comments in plugin is set to no/0
+			/** Comments integration trigger when separate_comments in plugin is set to no/0 */
 			$joomleage_comments_object_group = 'com_sportsmanagement';
 		}
 
@@ -483,7 +483,7 @@ class sportsmanagementModelCommentsJSMJComments extends sportsmanagementModelCom
 
 		$href_text = parent::getHrefText($count, $config);
 
-		// Link
+		/** Link */
 		if (isset($match->team1_result))
 		{
 			$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
@@ -527,12 +527,12 @@ class sportsmanagementModelCommentsJSMJComments extends sportsmanagementModelCom
 
 		if ($this->separate_comments)
 		{
-			// Comments integration trigger when separate_comments in plugin is set to yes/1
+			/**  Comments integration trigger when separate_comments in plugin is set to yes/1*/
 			Factory::getApplication()->triggerEvent('onMatchReportComments', array($match, $hometeam->name . ' - ' . $guestteam->name, &$comments));
 		}
 		else
 		{
-			// Comments integration trigger when separate_comments in plugin is set to no/0
+			/** Comments integration trigger when separate_comments in plugin is set to no/0 */
 			Factory::getApplication()->triggerEvent('onMatchComments', array($match, $hometeam->name . ' - ' . $guestteam->name, &$comments));
 		}
 
