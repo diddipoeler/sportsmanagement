@@ -634,18 +634,18 @@ try{
 
 	}
 
+
 	/**
-	 * Method to remove
-	 *
-	 * @access public
-	 * @return boolean    True on success
-	 * @since  0.1
+	 * sportsmanagementModeljlextindividualsport::delete()
+	 * 
+	 * @param mixed $pks
+	 * @return
 	 */
-	function delete($pk = array())
+	function delete(&$pks)
 	{
 		$app = Factory::getApplication();
 
-		return parent::delete($pk);
+		return parent::delete($pks);
 
 		return true;
 	}
