@@ -31,9 +31,16 @@ use Joomla\CMS\Factory;
  */
 class sportsmanagementModelComments
 {
+    
+	/**
+	 * sportsmanagementModelComments::CreateInstance()
+	 * 
+	 * @param mixed $config
+	 * @return
+	 */
 	static function CreateInstance(&$config)
 	{
-		// Prefer Kunena Comments, if configured in overall template
+		/** Prefer Kunena Comments, if configured in overall template */
 		if (($config['show_project_kunena_link'] == true) && (ComponentHelper::isEnabled('com_kunena')))
 		{
 			return new sportsmanagementModelCommentsKunena($config);
@@ -46,9 +53,8 @@ class sportsmanagementModelComments
 			}
 			else
 			{
-				// Return a base class instance as dummy
+				/** Return a base class instance as dummy */
 				Log::add(Text::_('Es ist keine Kommentarkomponente installiert'));
-
 				return new sportsmanagementModelComments;
 			}
 		}
@@ -93,20 +99,13 @@ class sportsmanagementModelComments
 			$query->clear();
 
 			$query->select(' t1.name AS home,t2.name AS away ');
-
-			// From
 			$query->from('#__sportsmanagement_match AS m');
-
-			// Join
 			$query->join('LEFT', ' #__sportsmanagement_project_team as pt1 ON pt1.id = m.projectteam1_id ');
 			$query->join('LEFT', ' #__sportsmanagement_season_team_id as st1 ON st1.id = pt1.team_id ');
 			$query->join('LEFT', ' #__sportsmanagement_team as t1 ON st1.team_id = t1.id ');
-
 			$query->join('LEFT', ' #__sportsmanagement_project_team as pt2 ON pt2.id = m.projectteam2_id ');
 			$query->join('LEFT', ' #__sportsmanagement_season_team_id as st2 ON st2.id = pt2.team_id ');
 			$query->join('LEFT', ' #__sportsmanagement_team as t2 ON st2.team_id = t2.id ');
-
-			// Where
 			$query->where('m.id= ' . $match_id);
 
 			$database->setQuery($query);
@@ -252,10 +251,27 @@ class sportsmanagementModelComments
 	}
 }
 
+
+
+/**
+ * sportsmanagementModelCommentsKunena
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2022
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementModelCommentsKunena extends sportsmanagementModelComments
 {
 	protected $sbItemid = 0;
 
+	/**
+	 * sportsmanagementModelCommentsKunena::__construct()
+	 * 
+	 * @param mixed $config
+	 * @return void
+	 */
 	function __construct(&$config)
 	{
 		$database = Factory::getDBO();
@@ -272,16 +288,27 @@ class sportsmanagementModelCommentsKunena extends sportsmanagementModelComments
 		}
 	}
 
+	
 	/**
-	 * description see base class
+	 * sportsmanagementModelCommentsKunena::isEnabled()
+	 * 
+	 * @return
 	 */
 	function isEnabled()
 	{
 		return true;
 	}
 
+
 	/**
-	 * description see base class
+	 * sportsmanagementModelCommentsKunena::showMatchComments()
+	 * 
+	 * @param mixed $match
+	 * @param mixed $hometeam
+	 * @param mixed $guestteam
+	 * @param mixed $config
+	 * @param mixed $project
+	 * @return
 	 */
 	function showMatchComments(&$match, &$hometeam, &$guestteam, &$config, &$project)
 	{
@@ -299,8 +326,16 @@ class sportsmanagementModelCommentsKunena extends sportsmanagementModelComments
 		return $this->showMatchCommentIcon($match, $hometeam, $guestteam, $config, $project);
 	}
 
+	
 	/**
-	 * description see base class
+	 * sportsmanagementModelCommentsKunena::showMatchCommentIcon()
+	 * 
+	 * @param mixed $match
+	 * @param mixed $hometeam
+	 * @param mixed $guestteam
+	 * @param mixed $config
+	 * @param mixed $project
+	 * @return
 	 */
 	function showMatchCommentIcon(&$match, &$hometeam, &$guestteam, &$config, &$project)
 	{
@@ -339,12 +374,27 @@ class sportsmanagementModelCommentsKunena extends sportsmanagementModelComments
 	}
 }
 
+/**
+ * sportsmanagementModelCommentsJSMJComments
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2022
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementModelCommentsJSMJComments extends sportsmanagementModelComments
 {
 	protected $separate_comments;
 
 	protected $comJcomments;
 
+	/**
+	 * sportsmanagementModelCommentsJSMJComments::__construct()
+	 * 
+	 * @param mixed $config
+	 * @return void
+	 */
 	function __construct(&$config)
 	{
 		$this->comJcomments = true;
@@ -383,16 +433,27 @@ class sportsmanagementModelCommentsJSMJComments extends sportsmanagementModelCom
 		$this->separate_comments = $pluginParams->get('separate_comments', 0);
 	}
 
+
 	/**
-	 * description see base class
+	 * sportsmanagementModelCommentsJSMJComments::isEnabled()
+	 * 
+	 * @return
 	 */
 	function isEnabled()
 	{
 		return ($this->comJcomments == true);
 	}
 
+
 	/**
-	 * description see base class
+	 * sportsmanagementModelCommentsJSMJComments::showMatchCommentIcon()
+	 * 
+	 * @param mixed $match
+	 * @param mixed $hometeam
+	 * @param mixed $guestteam
+	 * @param mixed $config
+	 * @param mixed $project
+	 * @return
 	 */
 	function showMatchCommentIcon(&$match, &$hometeam, &$guestteam, &$config, &$project)
 	{
@@ -449,8 +510,16 @@ class sportsmanagementModelCommentsJSMJComments extends sportsmanagementModelCom
 		return $viewComment;
 	}
 
+
 	/**
-	 * description see base class
+	 * sportsmanagementModelCommentsJSMJComments::showMatchComments()
+	 * 
+	 * @param mixed $match
+	 * @param mixed $hometeam
+	 * @param mixed $guestteam
+	 * @param mixed $config
+	 * @param mixed $project
+	 * @return
 	 */
 	function showMatchComments(&$match, &$hometeam, &$guestteam, &$config, &$project)
 	{
