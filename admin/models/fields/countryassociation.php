@@ -64,7 +64,7 @@ class JFormFieldcountryassociation extends \JFormFieldList
 			$query->select('t.id AS value, t.name AS text');
 			$query->from('#__sportsmanagement_associations AS t');
 			$query->join('inner', '#__sportsmanagement_' . $vartable . ' AS wt ON wt.country = t.country ');
-			$query->where('wt.id = ' . $select_id);
+			$query->where('wt.id = ' . (int)$select_id);
 			$query->order('t.name');
 			try{
 			$db->setQuery($query);
