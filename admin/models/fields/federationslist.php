@@ -68,8 +68,16 @@ switch ($view)
 			$query->from('#__sportsmanagement_federations AS t');
 			$query->where('t.parent_id = 0');
 			$query->order('t.name');
+		try{
 			$db->setQuery($query);
 			$options = $db->loadObjectList();
+		 }
+		catch (Exception $e)
+		{
+	Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+
+		}
     break;
     default:
 		if ($select_id)
@@ -78,10 +86,17 @@ switch ($view)
 			$query->from('#__sportsmanagement_federations AS t');
 			$query->where('t.parent_id = 0');
 			$query->order('t.name');
+			try{
 			$db->setQuery($query);
 			$sections = $db->loadObjectList();
 			$list     = $this->JJ_categoryArray(0);
+ }
+		catch (Exception $e)
+		{
+	Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 
+		}
 			$preoptions = array();
 			$name       = 'parent_id';
 
