@@ -74,7 +74,7 @@ class JFormFieldcountryassociation extends \JFormFieldList
 		{
 	Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
    Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
-
+Factory::getApplication()->enqueueMessage(Text::('<pre>'.print_r($query->dump(),true).'</pre>'), 'notice');
 		}
 		}
 
