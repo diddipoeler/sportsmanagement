@@ -151,10 +151,19 @@ class sportsmanagementModelEditPerson extends AdminModel
 	 */
 	function getData()
 	{
+		$app                  = Factory::getApplication('site');
     $this->_id = Factory::getApplication()->input->getInt('id', 0);
+		try{
 	$this->_data = $this->getTable('player', 'sportsmanagementTable');
 	$this->_data->load($this->_id);
 	return $this->_data;
+		}
+		catch (Exception $e)
+		{
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+            return false;
+		}
         
 //		$id = Factory::getApplication()->input->getInt('id', 0);
 //        $app = Factory::getApplication();
