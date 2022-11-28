@@ -65,8 +65,16 @@ class JFormFieldcountryassociation extends \JFormFieldList
 			$query->join('inner', '#__sportsmanagement_' . $vartable . ' AS wt ON wt.country = t.country ');
 			$query->where('wt.id = ' . $select_id);
 			$query->order('t.name');
+			try{
 			$db->setQuery($query);
 			$options = $db->loadObjectList();
+			 }
+		catch (Exception $e)
+		{
+	Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+
+		}
 		}
 
 		/** Merge any additional options in the XML definition. */
