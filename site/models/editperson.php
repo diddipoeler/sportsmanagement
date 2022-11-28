@@ -105,6 +105,9 @@ class sportsmanagementModelEditPerson extends AdminModel
 	{
 		$cfg_which_media_tool = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('cfg_which_media_tool', 0);
 		$app                  = Factory::getApplication('site');
+		
+		Form::addFormPath(JPATH_COMPONENT_ADMINISTRATOR . '/models/forms');
+		Form::addFieldPath(JPATH_COMPONENT_ADMINISTRATOR . '/models/fields');
 
 		$form = $this->loadForm('com_sportsmanagement.' . $this->name, $this->name, array('load_data' => $loadData));
 
