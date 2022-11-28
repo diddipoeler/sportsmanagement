@@ -14,9 +14,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 
-//jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
-
 
 /**
  * FormFieldClublist
@@ -74,7 +72,7 @@ class JFormFieldClublist extends \JFormFieldList
       $query->join('INNER', '#__sportsmanagement_sports_type AS st ON st.id = t.sports_type_id');  
       $query->where("st.name LIKE '" . $sport_type . "'");
       }
-      
+      $query->group('c.id');
 		$query->order('c.name');
 		$db->setQuery($query);
 		$options = $db->loadObjectList();
