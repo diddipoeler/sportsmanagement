@@ -189,9 +189,7 @@ class sportsmanagementModelteam extends JSMModelAdmin
 			$rowtraining = Table::getInstance('TeamTrainingData', 'sportsmanagementTable');
 			$rowtraining->load((int) $post['tdids'][$a]);
 
-			// Create an object for the record we are going to update.
 			$object = new stdClass();
-			// Must be a valid primary key value.
 			$object->id         = $post['tdids'][$a];
 			$object->time_start = sportsmanagementHelper::time_to_sec($post['time_start'][$post['tdids'][$a]] . ':00');
 			$object->time_end   = sportsmanagementHelper::time_to_sec($post['time_end'][$post['tdids'][$a]] . ':00');
@@ -199,7 +197,6 @@ class sportsmanagementModelteam extends JSMModelAdmin
 			$object->notes      = $post['notes'][$post['tdids'][$a]];
 			$object->dayofweek  = $post['dayofweek'][$post['tdids'][$a]];
 
-			// Update their details in the table using id as the primary key.
 			$result_update = Factory::getDbo()->updateObject('#__sportsmanagement_team_trainingdata', $object, 'id', true);
 
 			if ($object->time_start <> $rowtraining->time_start

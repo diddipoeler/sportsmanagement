@@ -4245,7 +4245,7 @@ $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($query->dum
 	 *
 	 * @return
 	 */
-	function time_to_sec($time)
+	public static function time_to_sec($time)
 	{
 		$hours   = substr($time, 0, -6);
 		$minutes = substr($time, -5, 2);
