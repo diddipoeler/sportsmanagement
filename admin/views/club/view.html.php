@@ -102,7 +102,7 @@ $this->item->logo_small = ComponentHelper::getParams('com_sportsmanagement')->ge
 		$extendeduser       = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'club');
 		$this->extendeduser = $extendeduser;
 
-		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields();
+		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('backend',0,Factory::getApplication()->input->get('view'));
 		$lists                  = array();
 
 		if ($this->checkextrafields)

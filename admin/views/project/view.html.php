@@ -109,7 +109,7 @@ $name = File::getName($this->item->picture);
       }			
 		}
 
-		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields();
+		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('backend',0,Factory::getApplication()->input->get('view'));
 
 		if ($this->checkextrafields)
 		{

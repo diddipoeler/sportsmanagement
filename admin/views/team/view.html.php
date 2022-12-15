@@ -49,7 +49,7 @@ class sportsmanagementViewTeam extends sportsmanagementView
 		$extendeduser       = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'team');
 		$this->extendeduser = $extendeduser;
 
-		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields();
+		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('backend',0,Factory::getApplication()->input->get('view'));
 
 		if ($this->checkextrafields)
 		{
