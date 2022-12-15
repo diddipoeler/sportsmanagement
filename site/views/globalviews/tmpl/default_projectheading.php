@@ -66,7 +66,7 @@ if (!empty($this->overallconfig))
 				<?php
                 if ($this->overallconfig['show_project_extrafield'])
 				{
-                $this->extrafields = sportsmanagementHelper::getUserExtraFields($this->project->id, 'frontend', sportsmanagementModelClubInfo::$cfg_which_database,Factory::getApplication()->input->get('view'));
+                $this->extrafields = sportsmanagementHelper::getUserExtraFields($this->project->id, 'frontend', 0,Factory::getApplication()->input->get('view'));
                 
                 }
                 
