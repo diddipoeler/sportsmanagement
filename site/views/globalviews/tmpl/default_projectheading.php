@@ -68,7 +68,7 @@ if (!empty($this->overallconfig))
                 if ($this->overallconfig['show_project_extrafield'])
 				{
                 $this->extrafields = sportsmanagementHelper::getUserExtraFields($this->project->id, 'frontend', 0,Factory::getApplication()->input->get('view'));
-                $title = $this->project->name;
+                $title = $this->project->league_name;
                 foreach ($this->extrafields as $field)
 	{
 		$value      = $field->fvalue;
