@@ -63,6 +63,8 @@
             <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT</option>
             <option value="clubinfo">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_CLUBINFO</option>
 <option value="project">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_PROJECT</option>
+<option value="ranking">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_RANKING</option>
+
         </field>	
 		
         <field

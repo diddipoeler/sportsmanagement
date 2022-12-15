@@ -14,6 +14,8 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+
 
 /**
  * sportsmanagementViewClubInfo
@@ -35,13 +37,13 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
 	function init()
 	{
 	   
-		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('frontend', sportsmanagementModelClubInfo::$cfg_which_database);
+		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('frontend', sportsmanagementModelClubInfo::$cfg_which_database,Factory::getApplication()->input->get('view'));
 		$this->mapconfig = array();
 		$this->club = sportsmanagementModelClubInfo::getClub(1);
 
 		if ($this->checkextrafields)
 		{
-			$this->extrafields = sportsmanagementHelper::getUserExtraFields($this->club->id, 'frontend', sportsmanagementModelClubInfo::$cfg_which_database);
+			$this->extrafields = sportsmanagementHelper::getUserExtraFields($this->club->id, 'frontend', sportsmanagementModelClubInfo::$cfg_which_database,Factory::getApplication()->input->get('view'));
 		}
 
 		$lat = '';

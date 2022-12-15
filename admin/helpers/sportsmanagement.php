@@ -3046,14 +3046,16 @@ $jinput = $app->input;
 		}
 	}
 
+	
 	/**
 	 * sportsmanagementHelper::checkUserExtraFields()
-	 *
-	 * @param   string  $template
-	 *
+	 * 
+	 * @param string $template
+	 * @param integer $cfg_which_database
+	 * @param string $template_name
 	 * @return
 	 */
-	static function checkUserExtraFields($template = 'backend', $cfg_which_database = 0)
+	static function checkUserExtraFields($template = 'backend', $cfg_which_database = 0, $template_name = 'clubinfo')
 	{
 		$app    = Factory::getApplication();
 		$jinput = $app->input;
@@ -3063,7 +3065,7 @@ $jinput = $app->input;
 
 		$query->select('ef.id');
 		$query->from('#__sportsmanagement_user_extra_fields as ef ');
-		$query->where('ef.template_' . $template . ' LIKE ' . $db->Quote('' . $jinput->get('view') . ''));
+		$query->where('ef.template_' . $template . ' LIKE ' . $db->Quote('' . $template_name . ''));
 
 		try
 		{
@@ -3088,27 +3090,31 @@ $jinput = $app->input;
 		}
 	}
 
+	
 	/**
 	 * sportsmanagementHelper::getUserExtraFields()
-	 *
-	 * @param   mixed   $jlid
-	 * @param   string  $template
-	 *
+	 * 
+	 * @param mixed $jlid
+	 * @param string $template
+	 * @param integer $cfg_which_database
+	 * @param string $template_name
 	 * @return
 	 */
-	static function getUserExtraFields($jlid, $template = 'backend', $cfg_which_database = 0)
+	static function getUserExtraFields($jlid, $template = 'backend', $cfg_which_database = 0,$template_name = 'clubinfo')
 	{
 		$app    = Factory::getApplication();
 		$jinput = $app->input;
 		$db     = self::getDBConnection();
 		$query  = $db->getQuery(true);
+        
+        
 
 		if ($jlid)
 		{
 			$query->select('ef.*,ev.fieldvalue as fvalue,ev.id as value_id ');
 			$query->from('#__sportsmanagement_user_extra_fields as ef ');
 			$query->join('LEFT', '#__sportsmanagement_user_extra_fields_values as ev ON ( ef.id = ev.field_id AND ev.jl_id = ' . $jlid . ')');
-			$query->where('ef.template_' . $template . ' LIKE ' . $db->Quote('' . $jinput->get('view') . ''));
+			$query->where('ef.template_' . $template . ' LIKE ' . $db->Quote('' . $template_name . ''));
 			$query->order('ef.ordering');
 
 			try
