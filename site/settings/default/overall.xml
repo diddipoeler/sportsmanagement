@@ -78,6 +78,14 @@ description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_DIVCLASS_ROW">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		
+		<field name="show_project_extrafield" type="radio" default="1"   layout="joomla.form.field.radio.switcher"
+			label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_PROJECT_EXTRAFIELD"
+			description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_SHOW_PROJECT_EXTRAFIELD">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
 		<field name="show_project_country" type="radio" default="0" layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_PROJECT_COUNTRY"
 			description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_SHOW_PROJECT_COUNTRY">
@@ -143,6 +151,7 @@ description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_DIVCLASS_ROW">
 			<option value="1">JYES</option>
 		</field>
 	</fieldset>
+	
 <!-- register 2 -->	
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"

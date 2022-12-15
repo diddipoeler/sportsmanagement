@@ -1,5 +1,4 @@
 <?php
-
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version    1.0.05
@@ -11,7 +10,6 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -66,6 +64,13 @@ if (!empty($this->overallconfig))
 		<div class="<?php echo $this->divclassrow; ?>" id="projectheading" itemscope="itemscope" itemtype="http://schema.org/SportsOrganization">
 			<table class="table">
 				<?php
+                if ($this->overallconfig['show_project_extrafield'])
+				{
+                
+                
+                }
+                
+                
 				if ($this->overallconfig['show_project_country'])
 				{
 				?>
