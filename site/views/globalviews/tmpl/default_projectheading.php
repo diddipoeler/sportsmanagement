@@ -35,6 +35,7 @@ $document = Factory::getDocument();
 <?php
 
 $nbcols = 2;
+$ausgabe = '';
 
 if (!empty($this->overallconfig))
 {
@@ -68,6 +69,30 @@ if (!empty($this->overallconfig))
 				{
                 $this->extrafields = sportsmanagementHelper::getUserExtraFields($this->project->id, 'frontend', 0,Factory::getApplication()->input->get('view'));
                 
+                foreach ($this->extrafields as $field)
+	{
+		$value      = $field->fvalue;
+		$field_type = $field->field_type;
+                   $ausgabe .= '<tr>';          
+$ausgabe .= '<td>'.Text::_($field->name).'</td>';
+switch ($field_type)
+					{
+						case 'link':
+							$ausgabe .= '<td>'. HTMLHelper::_('link', $field->fvalue, $title, array("target" => "_blank")).'</td>';
+							break;
+						default:
+							$ausgabe .= '<td>'. Text::_($field->fvalue).'</td>';
+							break;
+					}          
+        
+$ausgabe .= '</tr>';       
+                   
+                   
+                   
+                   
+                    
+                }
+                echo $ausgabe;
                 }
                 
                 
