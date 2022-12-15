@@ -56,7 +56,7 @@ class sportsmanagementViewTeam extends sportsmanagementView
 		{
 			if ($this->item->id)
 			{
-				$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id,0,Factory::getApplication()->input->get('view'));
+				$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id,'backend',0,Factory::getApplication()->input->get('view'));
 			}
 		}
 

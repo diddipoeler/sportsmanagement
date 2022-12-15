@@ -115,7 +115,7 @@ $name = File::getName($this->item->picture);
 		{
 			if (!$isNew)
 			{
-				$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id,0,Factory::getApplication()->input->get('view'));
+				$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id,'backend',0,Factory::getApplication()->input->get('view'));
 			}
 		}
 
