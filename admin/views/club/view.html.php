@@ -107,7 +107,7 @@ $this->item->logo_small = ComponentHelper::getParams('com_sportsmanagement')->ge
 
 		if ($this->checkextrafields)
 		{
-			$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id);
+			$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id,0,Factory::getApplication()->input->get('view'));
 		}
 
 		/** die mannschaften zum verein */
