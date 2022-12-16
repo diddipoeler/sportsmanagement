@@ -15,7 +15,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 
 $display = ($params->get('update_module') == 1) ? 'block' : 'none';
-$show_teamlist = ($params->get('show_teamslist') == 1) ? 'show' : 'none';
+$show_teamlist = ($params->get('show_teamslist') == 1) ? 'show' : 'hidden';
 ?>
 
 <script type="text/javascript">
