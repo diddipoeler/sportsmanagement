@@ -845,8 +845,9 @@ try
 		{
 			if ($match->match_date)
 			{
+			 $date = date_create($match->match_date);
 				//return $match->match_date ? $match->match_date->format($format, true) : "xxxx-xx-xx xx:xx";
-				return $match->match_date ? date_format($match->match_date, $format) : "xxxx-xx-xx xx:xx";
+				return $match->match_date ? date_format($date, $format) : "xxxx-xx-xx xx:xx";
 			}
 		}
 		catch (Exception $e)
