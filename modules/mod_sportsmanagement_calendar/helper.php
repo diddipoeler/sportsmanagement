@@ -745,7 +745,8 @@ class JSMCalendar extends PHPCalendar
 	{
 		$teamslist = array();
 
-		if (count(self::$teams) > 0 && self::$params->get('show_teamslist', 0) == 1)
+		//if (count(self::$teams) > 0 && self::$params->get('show_teamslist', 0) == 1)
+        if (count(self::$teams) > 0 )
 		{
 			$teams       = self::sortObject(self::$teamslist, 'asc', 'name');
 			$teamslist[] = HTMLHelper::_('select.option', 0, Text::_(self::$params->get('teamslist_option')));
