@@ -70,6 +70,8 @@ class sportsmanagementViewLeague extends sportsmanagementView
 		{
 			$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id,'backend',0,Factory::getApplication()->input->get('view'));
 		}
+        
+        $this->lists = $lists;
 
 	}
 
