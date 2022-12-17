@@ -1093,6 +1093,10 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 					sportsmanagementHelper::saveExtraFields($post, $data['id']);
 					$this->jsmapp->setUserState("$this->jsmoption.club_id", $data['id']);
 					break;
+                    /** liga */
+				case 'league':
+					sportsmanagementHelper::saveExtraFields($post, $data['id']);
+					break;
 				/** projekt */
 				case 'project':
 					sportsmanagementHelper::saveExtraFields($post, $data['id']);

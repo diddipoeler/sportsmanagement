@@ -3151,16 +3151,13 @@ $jinput = $app->input;
 		$address_parts = array();
 		$db            = self::getDBConnection();
 
-		// -------extra fields-----------//
+		/** -------extra fields----------- */
 		if (isset($post['extraf']) && count($post['extraf']))
 		{
 			for ($p = 0; $p < count($post['extraf']);
 			     $p++)
 			{
-				// Create a new query object.
 				$query = $db->getQuery(true);
-
-				// Delete all
 				$conditions = array(
 					$db->quoteName('field_id') . '=' . $post['extra_id'][$p],
 					$db->quoteName('jl_id') . '=' . $pid
@@ -3169,8 +3166,6 @@ $jinput = $app->input;
 				$query->delete($db->quoteName('#__sportsmanagement_user_extra_fields_values'));
 				$query->where($conditions);
 
-				// $db->setQuery($query);
-
 				try
 				{
 					$db->setQuery($query);
@@ -3178,18 +3173,13 @@ $jinput = $app->input;
 				}
 				catch (Exception $e)
 				{
+				    $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
 				}
 
-				// Create a new query object.
 				$query = $db->getQuery(true);
-
-				// Insert columns.
 				$columns = array('field_id', 'jl_id', 'fieldvalue');
-
-				// Insert values.
 				$values = array($post['extra_id'][$p], $pid, '\'' . $post['extraf'][$p] . '\'');
-
-				// Prepare the insert query.
 				$query
 					->insert($db->quoteName('#__sportsmanagement_user_extra_fields_values'))
 					->columns($db->quoteName($columns))
@@ -3202,6 +3192,8 @@ $jinput = $app->input;
 				}
 				catch (Exception $e)
 				{
+				    	    $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
 				}
 			}
 		}
