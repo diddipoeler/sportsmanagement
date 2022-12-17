@@ -62,6 +62,14 @@ class sportsmanagementViewLeague extends sportsmanagementView
 
 		$this->extended = sportsmanagementHelper::getExtended($this->item->extended, 'league');
 		$this->extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'league');
+        
+        $this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('backend',0,Factory::getApplication()->input->get('view'));
+		$lists                  = array();
+
+		if ($this->checkextrafields)
+		{
+			$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id,'backend',0,Factory::getApplication()->input->get('view'));
+		}
 
 	}
 

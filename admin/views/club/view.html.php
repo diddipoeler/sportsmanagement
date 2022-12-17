@@ -97,10 +97,10 @@ $this->item->logo_small = ComponentHelper::getParams('com_sportsmanagement')->ge
 			$this->map = true;
 		}
 
-		$extended           = sportsmanagementHelper::getExtended($this->item->extended, 'club');
-		$this->extended     = $extended;
-		$extendeduser       = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'club');
-		$this->extendeduser = $extendeduser;
+		//$extended           = sportsmanagementHelper::getExtended($this->item->extended, 'club');
+		$this->extended     = sportsmanagementHelper::getExtended($this->item->extended, 'club');;
+		//$extendeduser       = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'club');
+		$this->extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'club');;
 
 		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('backend',0,Factory::getApplication()->input->get('view'));
 		$lists                  = array();
