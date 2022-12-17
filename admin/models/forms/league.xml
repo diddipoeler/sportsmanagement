@@ -302,4 +302,12 @@ directory="images/com_sportsmanagement/database/leagues"/>
 				filter="JComponentHelper::filterText"/>			
 	</fieldset>	
 	
+	<fieldset 
+        name="extra_fields"
+        label="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS"
+        description="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS_DESC"
+    >
+  
+    </fieldset>
+	
 </form>
