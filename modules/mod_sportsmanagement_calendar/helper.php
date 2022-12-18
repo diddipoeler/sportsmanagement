@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_calendar
@@ -11,10 +9,8 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Date\Date;
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
@@ -22,6 +18,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'calendarClass.php';
+
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'calendarFunctions.php';
 
 
 /**
