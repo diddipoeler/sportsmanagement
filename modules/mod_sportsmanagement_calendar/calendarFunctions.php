@@ -9,6 +9,10 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @package    mod_sportsmanagement_calendar
+ * 
+ * 
+ * https://www.codexworld.com/build-event-calendar-using-jquery-ajax-php/
+ * 
  */
 
 defined('_JEXEC') or die('Restricted access');
