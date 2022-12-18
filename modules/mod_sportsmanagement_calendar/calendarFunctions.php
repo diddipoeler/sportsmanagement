@@ -91,10 +91,10 @@ function getCalender($year = '', $month = ''){
                         // Current date 
                         $currentDate = $dateYear.'-'.$dateMonth.'-'.$dayCount; 
                          
-                        // Get number of events based on the current date 
-                        global $db; 
-                        $result = $db->query("SELECT title FROM events WHERE date = '".$currentDate."' AND status = 1"); 
-                        $eventNum = $result->num_rows; 
+                        //// Get number of events based on the current date 
+//                        global $db; 
+//                        $result = $db->query("SELECT title FROM events WHERE date = '".$currentDate."' AND status = 1"); 
+//                        $eventNum = $result->num_rows; 
                          
                         // Define date cell color 
                         if(strtotime($currentDate) == strtotime(date("Y-m-d"))){ 
