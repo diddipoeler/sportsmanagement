@@ -59,6 +59,13 @@
 			<option value="1">JYES</option>
 		</field>
 
+<field 	name="which_layout" type="list" default="default_jsm"
+label="MOD_SPORTSMANAGEMENT_CALENDAR_LABEL_LAYOUT_LABEL"
+description="MOD_SPORTSMANAGEMENT_CALENDAR_LABEL_LAYOUT_DESCR">
+<option value="default_jsm">MOD_SPORTSMANAGEMENT_CALENDAR_LABEL_JSM</option>
+<option value="default_bootstrap">MOD_SPORTSMANAGEMENT_CALENDAR_LABEL_LAYOUT_BOOTSTRAP</option>
+</field>
+				
 	
     <field	name="s" 
     task="seasons" 
