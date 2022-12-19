@@ -139,6 +139,6 @@ $calendar = $helper->showCal($params, $year, $month, $ajax, $module->id);
 ?>
 <div id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 	<?PHP
-	require ModuleHelper::getLayoutPath($module->module);
+	require ModuleHelper::getLayoutPath($module->module,$params->get('which_layout'));
 	?>
 </div>
