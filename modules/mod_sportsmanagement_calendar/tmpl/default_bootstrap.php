@@ -16,6 +16,12 @@ use Joomla\CMS\Factory;
 
 //$display = ($params->get('update_module') == 1) ? 'block' : 'none';
 //$show_teamlist = ($params->get('show_teamslist') == 1) ? 'show' : 'hidden';
+
+$cal       = new JSMCalendar; // This object creates the html for the calendar
+$cal::getMatches($month, $year);
+
+//echo '<pre>'.print_r($cal::$matches,true).'</pre>';
+
 ?>
   
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>  
