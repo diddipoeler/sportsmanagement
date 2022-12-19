@@ -14,6 +14,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 
+$template = $params->get('which_layout');
+
 $display = ($params->get('update_module') == 1) ? 'block' : 'none';
 $show_teamlist = ($params->get('show_teamslist') == 1) ? 'show' : 'hidden';
 ?>
