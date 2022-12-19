@@ -8,6 +8,9 @@
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ *
+ * https://github.com/ArrobeFr/jquery-calendar-bs4/blob/master/example/example.html
+ * 
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Date\Date;
