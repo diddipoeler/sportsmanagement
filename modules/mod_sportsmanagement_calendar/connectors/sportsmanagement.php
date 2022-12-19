@@ -195,6 +195,8 @@ class SportsmanagementConnector extends JSMCalendar
 
 		$query->where("m.published = 1");
 		$query->where("p.published = 1");
+		
+		$query->where("m.match_date NOT LIKE " . $db->Quote('' . '0000-00-00 00:00:00' . '') . "");
 
 		if (isset($caldates['start']))
 		{
