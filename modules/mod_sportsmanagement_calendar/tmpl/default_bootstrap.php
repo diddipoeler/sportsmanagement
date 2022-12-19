@@ -55,14 +55,23 @@ jQuery(document).ready(function($){
         }
       ];
   
-      /**
+     /**
        * Init the calendar
        */
       var calendar = $('#calendar').Calendar({
         locale: 'en',
+        defaultView: {
+         
+            largeScreen: 'month',
+            smallScreen: 'month'
+          
+        },
+        
+       // defaultView.largeScreen: 'month',
+        //defaultView.smallScreen: 'month',
         weekday: {
           timeline: {
-            intervalMinutes: 30,
+            intervalMinutes: 60,
             fromHour: 9
           }
         },
