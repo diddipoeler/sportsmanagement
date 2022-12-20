@@ -151,6 +151,10 @@ prevtoday.addEventListener("click", e => {
 prevBtn.addEventListener("click", e => {
   calendar.prev();
   month = month - 1;
+  if (month = 0) {
+    month = 12;
+    year = year - 1 ;
+    }
   console.log('month: ' + month );
   console.log('year: ' + year );
   <?php
@@ -166,6 +170,11 @@ prevBtn.addEventListener("click", e => {
 nextBtn.addEventListener("click", e => {
   calendar.next();
   month = month + 1;
+  
+  if (month = 13) {
+    month = 1;
+    year = year + 1 ;
+    }
   console.log('month: ' + month );
   console.log('year: ' + year );
   console.log(JSON.stringify(calendar.getOptions()));
