@@ -165,6 +165,16 @@ prevBtn.addEventListener("click", e => {
    
     ?>
   calendar.clear();
+  
+  $.ajax({ 
+                type:'POST', 
+                url:'functions.php', 
+                data:'func=getCalender&year='+year+'&month='+month, 
+                success:function(html){ 
+                    $('#'+target_div).html(html); 
+                } 
+            }); 
+            
 });
 
 nextBtn.addEventListener("click", e => {
@@ -185,6 +195,17 @@ nextBtn.addEventListener("click", e => {
    
     ?>
       calendar.clear();
+      
+      $.ajax({ 
+                type:'POST', 
+                url:'functions.php', 
+                data:'func=getCalender&year='+year+'&month='+month, 
+                success:function(html){ 
+                    $('#'+target_div).html(html); 
+                } 
+            }); 
+            
+            
 });
 
 
