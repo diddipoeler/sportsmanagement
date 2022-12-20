@@ -164,7 +164,7 @@ prevBtn.addEventListener("click", e => {
   //echo "console.log('Debug Objects: " . $event_month . "' );";
    
     ?>
-  
+  calendar.clear();
 });
 
 nextBtn.addEventListener("click", e => {
