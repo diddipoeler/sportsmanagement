@@ -151,7 +151,7 @@ prevtoday.addEventListener("click", e => {
 prevBtn.addEventListener("click", e => {
   calendar.prev();
   month = month - 1;
-  if (month = 0) {
+  if (month === 0) {
     month = 12;
     year = year - 1 ;
     }
@@ -171,7 +171,7 @@ nextBtn.addEventListener("click", e => {
   calendar.next();
   month = month + 1;
   
-  if (month = 13) {
+  if (month === 13) {
     month = 1;
     year = year + 1 ;
     }
