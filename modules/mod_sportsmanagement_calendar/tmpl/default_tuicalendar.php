@@ -177,7 +177,7 @@ nextBtn.addEventListener("click", e => {
     }
   console.log('month: ' + month );
   console.log('year: ' + year );
-  console.log(JSON.stringify(calendar.getOptions()));
+  //console.log(JSON.stringify(calendar.getOptions()));
   <?php
    // $event_month++;
  //$month = $event_month;
