@@ -8,6 +8,10 @@
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ *
+ * https://codesandbox.io/s/toast-ui-calendar-for-vanillajs-wz2s3?file=/index.html:212-246
+ * https://codesandbox.io/examples/package/tui-date-picker
+ *
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
@@ -22,7 +26,126 @@ $cal::getMatches($month, $year);
 
 //echo '<pre>'.print_r($cal::$matches,true).'</pre>';
 
-?>
+foreach ( $cal::$matches as $row )
+{
+  $event = "";
+  //$theStart_date = date(DATE_ATOM, strtotime($row['date']));
+  //echo __LINE__.'<pre>'.print_r($theStart_date,true).'</pre>';
+  
+  //$time = date("c", $row['timestamp']);
+  $time = date("Y-m-d\TH:i:s", $row['timestamp']);
+  //echo __LINE__.'<pre>'.print_r($time,true).'</pre>';
+  
+  
+  //$row['date'] = preg_replace(' ', 'T', $row['date']);
+  
+ $event .= "{id: '".$row['matchcode']."',";
+    $event .= "calendarId: 'spiele',";
+    $event .= "title: '".$row['homename'].$row['awayname'].$row['result']   ."',";
+    $event .= "start: '".$time."',";
+    $event .= "end: '".$time."',  }";
+  $events[] = $event;
+}
 
+//echo '<pre>'.print_r($events,true).'</pre>';
+$calendeer_events = implode(",",$events);
+//echo '<pre>'.print_r($calendeer_events,true).'</pre>';
+
+?>
+  <html>
+  <body>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css" />
-<script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.js"></script>
+<!-- <script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.js"></script> --->
+  <script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.ie11.min.js"></script>
+  
+  
+<link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
+<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>  
+  
+<link rel="stylesheet" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css">
+<script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.js"></script>  
+  
+  
+  
+  <div class="container" >
+  
+ 
+
+  
+  
+<!-- <div id="datepicker-wrapper"></div>  -->
+
+  
+
+  
+  
+
+ <div id="calendarMenu">
+  <button id="prevBtn">Prev</button>
+  <button id="nextBtn">Next</button>
+  
+  </div>
+
+  
+<div id="calendar" style="height: 600px;"></div>
+  </div>
+  
+  <script>
+  const el = document.getElementById("calendar");
+  const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+  
+const Calendar = tui.Calendar;
+const container = document.getElementById('calendar');
+const options = {
+  defaultView: 'month',
+  useDetailPopup: true,
+  timezone: {
+    zones: [
+      {
+        timezoneName: 'Europe/Berlin',
+        displayLabel: 'Berlin',
+      },
+    ],
+  },
+  calendars: [
+    {
+      id: 'cal1',
+      name: 'Personal',
+      backgroundColor: '#03bd9e',
+    },
+    {
+      id: 'cal2',
+      name: 'Work',
+      backgroundColor: '#00a9ff',
+    },
+  ],
+};
+
+const calendar = new Calendar(container, options); 
+/**
+start: '2022-12-30T19:30:00',
+   end: '2022-12-30T19:30:00'
+*/
+calendar.createEvents([
+  <?php echo $calendeer_events; ?>
+ ,
+  
+]);
+
+
+prevBtn.addEventListener("click", e => {
+  calendar.prev();
+});
+
+nextBtn.addEventListener("click", e => {
+  calendar.next();
+});
+
+
+
+</script>
+  
+  </body>
+  </html>
