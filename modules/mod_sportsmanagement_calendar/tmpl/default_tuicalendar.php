@@ -166,7 +166,7 @@ prevBtn.addEventListener("click", e => {
     ?>
   calendar.clear();
   
-  $.ajax({ 
+  jQuery.ajax({ 
                 type:'POST', 
                 url:'functions.php', 
                 data:'func=getCalender&year='+year+'&month='+month, 
@@ -196,7 +196,7 @@ nextBtn.addEventListener("click", e => {
     ?>
       calendar.clear();
       
-      $.ajax({ 
+      jQuery.ajax({ 
                 type:'POST', 
                 url:'functions.php', 
                 data:'func=getCalender&year='+year+'&month='+month, 
