@@ -24,6 +24,12 @@ use Joomla\CMS\Factory;
 $cal       = new JSMCalendar; // This object creates the html for the calendar
 $cal::getMatches($month, $year);
 
+$event_month = $month;
+$event_year = $year;
+
+//echo __LINE__.'<pre>'.print_r($month,true).'</pre>';
+//echo __LINE__.'<pre>'.print_r($year,true).'</pre>';
+
 //echo '<pre>'.print_r($cal::$matches,true).'</pre>';
 
 foreach ( $cal::$matches as $row )
@@ -94,6 +100,8 @@ $calendeer_events = implode(",",$events);
   </div>
   
   <script>
+  var month = <?php echo $month; ?>;
+var year = <?php echo $year; ?>;
   const el = document.getElementById("calendar");
   const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
@@ -142,13 +150,41 @@ prevtoday.addEventListener("click", e => {
 
 prevBtn.addEventListener("click", e => {
   calendar.prev();
+  month = month - 1;
+  console.log('month: ' + month );
+  console.log('year: ' + year );
+  <?php
+    //$event_month--;
+  //$month = $event_month;
+ 
+  //echo "console.log('Debug Objects: " . $event_month . "' );";
+   
+    ?>
+  
 });
 
 nextBtn.addEventListener("click", e => {
   calendar.next();
+  month = month + 1;
+  console.log('month: ' + month );
+  console.log('year: ' + year );
+  console.log(JSON.stringify(calendar.getOptions()));
+  <?php
+   // $event_month++;
+ //$month = $event_month;
+  //echo "console.log('Debug Objects: " . $event_month . "' );";
+   
+    ?>
+      calendar.clear();
 });
 
 
+/**
+calendar.on('clickEvent', ({ event }) => {
+  const el = document.getElementById('clicked-event');
+  el.innerText = event.title;
+});
+*/
 
 </script>
   
