@@ -40,7 +40,7 @@ foreach ( $cal::$matches as $row )
   //$row['date'] = preg_replace(' ', 'T', $row['date']);
   
  $event .= "{id: '".$row['matchcode']."',";
-    $event .= "calendarId: 'spiele',";
+    $event .= "calendarId: '1',";
     $event .= "title: '".$row['homename'].$row['awayname'].$row['result']   ."',";
     $event .= "start: '".$time."',";
     $event .= "end: '".$time."',  }";
@@ -82,8 +82,10 @@ $calendeer_events = implode(",",$events);
   
 
  <div id="calendarMenu">
-  <button id="prevBtn">Prev</button>
-  <button id="nextBtn">Next</button>
+  <button id="prevtoday">Heute</button>
+  
+  <button id="prevBtn"><img height="100%" src="https://nhn.github.io/tui.calendar/latest/examples/images/ic-arrow-line-left.png"/> Prev</button>
+  <button id="nextBtn">Next <img height="100%" src="https://nhn.github.io/tui.calendar/latest/examples/images/ic-arrow-line-right.png"/> </button>
   
   </div>
 
@@ -111,8 +113,8 @@ const options = {
   },
   calendars: [
     {
-      id: 'cal1',
-      name: 'Personal',
+      id: '1',
+      name: 'Spiele',
       backgroundColor: '#03bd9e',
     },
     {
@@ -134,6 +136,9 @@ calendar.createEvents([
   
 ]);
 
+prevtoday.addEventListener("click", e => {
+  calendar.today();
+});
 
 prevBtn.addEventListener("click", e => {
   calendar.prev();
