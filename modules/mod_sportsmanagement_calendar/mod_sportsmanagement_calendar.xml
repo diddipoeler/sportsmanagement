@@ -65,6 +65,7 @@ description="MOD_SPORTSMANAGEMENT_CALENDAR_LABEL_LAYOUT_DESCR">
 <option value="default_jsm">MOD_SPORTSMANAGEMENT_CALENDAR_LABEL_JSM</option>
 <option value="default_bootstrap">MOD_SPORTSMANAGEMENT_CALENDAR_LABEL_LAYOUT_BOOTSTRAP</option>
 <option value="default_zabuto">MOD_SPORTSMANAGEMENT_CALENDAR_LABEL_LAYOUT_ZABUTO</option>	
+<option value="default_tuicalendar">MOD_SPORTSMANAGEMENT_CALENDAR_LABEL_LAYOUT_TUICALENDAR</option>	
 </field>
 				
 	
