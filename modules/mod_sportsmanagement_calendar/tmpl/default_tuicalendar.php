@@ -11,6 +11,7 @@
  *
  * https://codesandbox.io/s/toast-ui-calendar-for-vanillajs-wz2s3?file=/index.html:212-246
  * https://codesandbox.io/examples/package/tui-date-picker
+ * https://stackoverflow.com/questions/71907057/how-to-send-json-value-to-tui-calendar-using-ajax
  *
  */
 defined('_JEXEC') or die('Restricted access');
@@ -18,11 +19,19 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 
+$app = Factory::getApplication('site');
+$post   = Factory::getApplication()->input->post->getArray(array()); 
+// JInput object
+$jinput = $app->input;
+
+//echo 'post <pre>'.print_r($post,true).'</pre>';
+
 //$display = ($params->get('update_module') == 1) ? 'block' : 'none';
 //$show_teamlist = ($params->get('show_teamslist') == 1) ? 'show' : 'hidden';
 
 $cal       = new JSMCalendar; // This object creates the html for the calendar
-$cal::getMatches($month, $year);
+$cal::$matches = array();
+$matches = $cal::getMatches($month, $year);
 
 $event_month = $month;
 $event_year = $year;
@@ -32,7 +41,7 @@ $event_year = $year;
 
 //echo '<pre>'.print_r($cal::$matches,true).'</pre>';
 
-foreach ( $cal::$matches as $row )
+foreach ( $matches as $row )
 {
   $event = "";
   //$theStart_date = date(DATE_ATOM, strtotime($row['date']));
@@ -62,9 +71,11 @@ $calendeer_events = implode(",",$events);
   <body>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css" />
-<!-- <script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.js"></script> --->
+
+  
   <script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.ie11.min.js"></script>
   
+  <!-- <script src="https://uicdn.toast.com/tui.code-snippet/v1.5.2/tui-code-snippet.min.js"></script> -->
   
 <link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
 <script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>  
@@ -72,7 +83,7 @@ $calendeer_events = implode(",",$events);
 <link rel="stylesheet" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css">
 <script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.js"></script>  
   
-  
+<!-- <script src="https://uicdn.toast.com/tui-calendar/latest/tui-calendar.js"></script>   --->
   
   <div class="container" >
   
@@ -97,11 +108,27 @@ $calendeer_events = implode(",",$events);
 
   
 <div id="calendar" style="height: 600px;"></div>
-  </div>
   
+<div id="target_div" style=""></div>  
+  
+  </div>
+
+  <?php
+$ajax    = $jinput->getVar('ajaxCalMod', 0, 'default', 'POST');
+$ajaxmod = $jinput->getVar('ajaxmodid', 0, 'default', 'POST');
+//$year = $jinput->getVar('year', 0, 'default', 'POST');
+//$year   = $jinput->getVar('year', '1111');
+//$month  = $jinput->getVar('month', '');
+
+echo "<script>console.log('Debug Objects ajax: + " . $ajax . "' );</script>";
+?>
   <script>
   var month = <?php echo $month; ?>;
 var year = <?php echo $year; ?>;
+
+console.log('start month: ' + month );
+console.log('start year: ' + year );
+
   const el = document.getElementById("calendar");
   const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
@@ -146,6 +173,54 @@ calendar.createEvents([
 
 prevtoday.addEventListener("click", e => {
   calendar.today();
+  month = <?php echo $month;?>;
+  year = <?php echo $year;?>;
+  
+  console.log('month: ' + month );
+  console.log('year: ' + year );
+   calendar.clear();
+  
+   var ajax = jlcnewAjax();
+  
+  ajax.open("POST", window.location.href, true);
+	ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	ajax.send('jlcteam=' + 0 + '&year=' + year + '&month=' + month
+			+ '&ajaxCalMod=1' + '&ajaxmodid=' + 0);
+  ajax.onreadystatechange = function() {
+    console.log('readyState: ' + ajax.readyState );
+  }
+   <?php
+     /*
+$post   = Factory::getApplication()->input->post->getArray(array());
+$year = $app->input->getInt('year', '');
+$month = $app->input->getint('month', '');  
+  **/
+$cal::getMatches($month, $year);
+foreach ( $cal::$matches as $row )
+{
+  $event = "";
+  $time = date("Y-m-d\TH:i:s", $row['timestamp']);
+ $event .= "{id: '".$row['matchcode']."',";
+    $event .= "calendarId: '1',";
+    $event .= "title: '".$row['homename'].$row['awayname'].$row['result']   ."',";
+    $event .= "start: '".$time."',";
+    $event .= "end: '".$time."',  }";
+  $events[] = $event;
+}
+
+//echo '<pre>'.print_r($events,true).'</pre>';
+$calendeer_events = implode(",",$events);  
+  
+  ?>
+   calendar.createEvents([
+  <?php echo $calendeer_events; ?>
+ ,
+  
+]); 
+ 
+  
+  
+  
 });
 
 prevBtn.addEventListener("click", e => {
@@ -166,15 +241,46 @@ prevBtn.addEventListener("click", e => {
     ?>
   calendar.clear();
   
-  jQuery.ajax({ 
-                type:'POST', 
-                url:'functions.php', 
-                data:'func=getCalender&year='+year+'&month='+month, 
-                success:function(html){ 
-                    $('#'+target_div).html(html); 
-                } 
-            }); 
-            
+   var ajax = jlcnewAjax();
+  
+  ajax.open("POST", window.location.href, true);
+	ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	ajax.send('jlcteam=' + 0 + '&year=' + year + '&month=' + month
+			+ '&ajaxCalMod=1' + '&ajaxmodid=' + 0);
+  ajax.onreadystatechange = function() {
+    console.log('readyState: ' + ajax.readyState );
+  }
+   <?php
+     /**
+$post   = Factory::getApplication()->input->post->getArray(array());
+  
+$year = $app->input->getInt('year', '');
+$month = $app->input->getint('month', '');  
+  */
+$cal::getMatches($month, $year);
+foreach ( $cal::$matches as $row )
+{
+  $event = "";
+  $time = date("Y-m-d\TH:i:s", $row['timestamp']);
+ $event .= "{id: '".$row['matchcode']."',";
+    $event .= "calendarId: '1',";
+    $event .= "title: '".$row['homename'].$row['awayname'].$row['result']   ."',";
+    $event .= "start: '".$time."',";
+    $event .= "end: '".$time."',  }";
+  $events[] = $event;
+}
+
+//echo '<pre>'.print_r($events,true).'</pre>';
+$calendeer_events = implode(",",$events);  
+  
+  ?>
+   calendar.createEvents([
+  <?php echo $calendeer_events; ?>
+ ,
+  
+]); 
+  
+  
 });
 
 nextBtn.addEventListener("click", e => {
@@ -195,19 +301,79 @@ nextBtn.addEventListener("click", e => {
    
     ?>
       calendar.clear();
-      
-      jQuery.ajax({ 
-                type:'POST', 
-                url:'functions.php', 
-                data:'func=getCalender&year='+year+'&month='+month, 
-                success:function(html){ 
-                    $('#'+target_div).html(html); 
-                } 
-            }); 
-            
+  var location = window.location.href ;
+    console.log('location: ' + location );
+    
+      /**
+ var location = window.location.pathname;
+var path = location.substring(0, location.lastIndexOf("/"));
+var directoryName = path.substring(path.lastIndexOf("/")+1);
+  
+  console.log('dir: ' + directoryName );
+  console.log('path: ' + path );
+  */
+  
+//  var url = location + 'modules/mod_sportsmanagement_calendar/tmpl/functions.php';
+  //console.log('url: ' + url );
+  
+  var ajax = jlcnewAjax();
+  
+  ajax.open("POST", window.location.href, true);
+	ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	ajax.send('jlcteam=' + 0 + '&year=' + year + '&month=' + month
+			+ '&ajaxCalMod=1' + '&ajaxmodid=' + 0);
+  ajax.onreadystatechange = function() {
+    console.log('readyState: ' + ajax.readyState );
+  }
+  
+  
+  <?php
+    $year = $jinput->getVar('year', 0);
+//$post   = Factory::getApplication()->input->post->getArray(array()); 
+//$year = $app->input->getInt('year', '');
+//$month = $app->input->getint('month', ''); 
+  
+//$year = $post['year'];
+//$month = $post['month']; 
+  /**
+$year   = $jinput->getVar('year', '');
+$month  = $jinput->getVar('month', '');
+  */
+$cal::getMatches($month, $year);
+foreach ( $cal::$matches as $row )
+{
+  $event = "";
+  $time = date("Y-m-d\TH:i:s", $row['timestamp']);
+ $event .= "{id: '".$row['matchcode']."',";
+    $event .= "calendarId: '1',";
+    $event .= "title: '".$row['homename'].$row['awayname'].$row['result']   ."',";
+    $event .= "start: '".$time."',";
+    $event .= "end: '".$time."',  }";
+  $events[] = $event;
+}
+
+//echo '<pre>'.print_r($events,true).'</pre>';
+$calendeer_events = implode(",",$events);  
+  
+  ?>
+    year = <?php echo $year; ?>;
+    console.log('post year: ' + year );
+   calendar.createEvents([
+  <?php echo $calendeer_events; ?>
+ ,
+  
+]); 
+    //console.log('input year: ' + <?php echo $year; ?> );
+  
+  
+  
             
 });
 
+  
+  
+  
+  
 
 /**
 calendar.on('clickEvent', ({ event }) => {
