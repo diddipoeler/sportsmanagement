@@ -33,8 +33,8 @@ $cal       = new JSMCalendar; // This object creates the html for the calendar
 $cal::$matches = array();
 $matches = $cal::getMatches($month, $year);
 
-$event_month = $month;
-$event_year = $year;
+//$event_month = $month;
+//$event_year = $year;
 
 //echo __LINE__.'<pre>'.print_r($month,true).'</pre>';
 //echo __LINE__.'<pre>'.print_r($year,true).'</pre>';
@@ -195,8 +195,9 @@ $post   = Factory::getApplication()->input->post->getArray(array());
 $year = $app->input->getInt('year', '');
 $month = $app->input->getint('month', '');  
   **/
-$cal::getMatches($month, $year);
-foreach ( $cal::$matches as $row )
+  $cal::$matches = array();
+$matches = $cal::getMatches($month, $year);
+foreach ( $matches as $row )
 {
   $event = "";
   $time = date("Y-m-d\TH:i:s", $row['timestamp']);
@@ -257,8 +258,9 @@ $post   = Factory::getApplication()->input->post->getArray(array());
 $year = $app->input->getInt('year', '');
 $month = $app->input->getint('month', '');  
   */
-$cal::getMatches($month, $year);
-foreach ( $cal::$matches as $row )
+  $cal::$matches = array();
+$matches = $cal::getMatches($month, $year);
+foreach ( $matches as $row )
 {
   $event = "";
   $time = date("Y-m-d\TH:i:s", $row['timestamp']);
@@ -339,8 +341,9 @@ var directoryName = path.substring(path.lastIndexOf("/")+1);
 $year   = $jinput->getVar('year', '');
 $month  = $jinput->getVar('month', '');
   */
-$cal::getMatches($month, $year);
-foreach ( $cal::$matches as $row )
+  $cal::$matches = array();
+$matches = $cal::getMatches($month, $year);
+foreach ( $matches as $row )
 {
   $event = "";
   $time = date("Y-m-d\TH:i:s", $row['timestamp']);
