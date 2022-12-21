@@ -361,8 +361,7 @@ foreach ( $matches as $row )
 $calendeer_events = implode(",",$events);  
   
   ?>
-    year = <?php echo $year; ?>;
-    console.log('post year: ' + year );
+    
    calendar.createEvents([
   <?php echo $calendeer_events; ?>
  ,
