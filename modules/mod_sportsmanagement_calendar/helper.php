@@ -34,6 +34,25 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'calendarFunctions.php';
 class modJSMCalendarHelper
 {
 
+/**
+* Wird von com_ajax aufgerufen
+* @return array Rückgabe an com_ajax
+*/
+public static function getAjax() {
+ 
+// Objekt zum ermitteln der übermittelten Parameter erzeugen
+$input = JFactory::getApplication()->input;
+ 
+// Übermittelter Wert des Formulars
+$formvalue=$input->get('formvalue');
+ 
+// Verarbeitung des Übermittelten Wert
+$result = 'Der übermittelte Wert: "'.strtoupper($formvalue).'"';
+ 
+// Ergebniss zurück an com_ajax
+return $result;
+}
+
 	/**
 	 * modJSMCalendarHelper::showCal()
 	 *

@@ -113,6 +113,11 @@ $calendeer_events = implode(",",$events);
   
   </div>
 
+  
+  <div class="mod_ajax_result">feld</div>
+  
+  
+  
   <?php
 $ajax    = $jinput->getVar('ajaxCalMod', 0, 'default', 'POST');
 $ajaxmod = $jinput->getVar('ajaxmodid', 0, 'default', 'POST');
@@ -305,7 +310,43 @@ nextBtn.addEventListener("click", e => {
       calendar.clear();
   var location = window.location.href ;
     console.log('location: ' + location );
-    
+
+  
+  // AJAX-Parameter als JavaScript Objekt
+    var ajax_params = {
+        'option' : 'com_ajax',
+        'module' : 'ajax',
+        'format' : 'json',
+        'formvalue': 'test'
+    };
+ 
+    // AJAX Verarbeitung
+    jQuery.ajax({
+        type   : 'POST',
+        data   : ajax_params,
+        context: this,
+        success: function (response) {
+            // AJAX Aufruf erfolgreich
+            if(response.success){
+                // Verarbeitung von com_ajax erfolgreich
+                jQuery('.mod_ajax_result').html(response.data);
+            }
+            else
+            {
+                // Fehler in der Verarbeitung von com_ajax
+                jQuery('.mod_ajax_result').html('Fehler');
+            }
+        },
+        error :function () {
+            // AJAX Aufruf fehlgeschlagen
+            jQuery('.mod_ajax_result').html('AJAX Fehler');
+        }
+    });
+  
+  
+  
+  
+  
       /**
  var location = window.location.pathname;
 var path = location.substring(0, location.lastIndexOf("/"));
