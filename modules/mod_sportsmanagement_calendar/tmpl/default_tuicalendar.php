@@ -315,7 +315,7 @@ nextBtn.addEventListener("click", e => {
   // AJAX-Parameter als JavaScript Objekt
     var ajax_params = {
         'option' : 'com_ajax',
-        'module' : 'ajax',
+        'module' : 'sportsmanagement_calendar',
         'format' : 'json',
         'formvalue': 'test'
     };
