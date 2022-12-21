@@ -326,6 +326,8 @@ var directoryName = path.substring(path.lastIndexOf("/")+1);
 			+ '&ajaxCalMod=1' + '&ajaxmodid=' + 0);
   ajax.onreadystatechange = function() {
     console.log('readyState: ' + ajax.readyState );
+    
+    console.log('href: ' + window.location.href );
   }
   
   
