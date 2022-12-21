@@ -73,7 +73,7 @@ $calendeer_events = implode(",",$events);
 <link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css" />
 
   
-  <script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.ie11.min.js"></script>
+  <script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.ie11.js"></script>
   
   <!-- <script src="https://uicdn.toast.com/tui.code-snippet/v1.5.2/tui-code-snippet.min.js"></script> -->
   
