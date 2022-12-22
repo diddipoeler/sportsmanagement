@@ -114,7 +114,7 @@ $calendeer_events = implode(",",$events);
   </div>
 
   
-  <div class="status">feld</div>
+  <div class="status" id="status">feld</div>
   
   
   
@@ -187,40 +187,37 @@ prevtoday.addEventListener("click", e => {
   console.log('month: ' + month );
   console.log('year: ' + year );
   
-   request = {
-					'option' : 'com_ajax',
-					'module' : 'sportsmanagement_calendar',
-					'formvaluemonth'   : month,
-  'formvalueyear'   : year,
-     'params'   : params,
-					'format' : 'raw'
-				};  
-var splits = jQuery.ajax({
-			type   : 'POST',
-			data   : request,
-            async: false,
-			success: function (response) {
-				jQuery('.status').html(response);
-              console.log('events: ' + response );
-              //responseevents = response;
-			}
-		}).responseText;  
+request = {
+'option' : 'com_ajax',
+'module' : 'sportsmanagement_calendar',
+'formvaluemonth'   : month,
+'formvalueyear'   : year,
+'params'   : params,
+'format' : 'raw'
+};
   
-   calendar.clear();
+jQuery.ajax({
+type   : 'POST',
+data   : request,
+async: false,
+success: eventsaved
+});  
   
-   splitssplit = splits.split(";",3);          
-              console.log('splitssplit: ' + splitssplit );
-  var arrayLength = splitssplit.length;
-for (var i = 0; i < arrayLength; i++) {
-    console.log(splitssplit[i]);
-    //Do something
-   calendar.createEvents([splitssplit[i]
- ,
-]);
-  } 
+   //calendar.clear();
   
-var caloptions = calendar.getOptions();  
-console.log('caloptions: ' + JSON.stringify(caloptions) );  
+  // splitssplit = splits.split(";",3);          
+//              console.log('splitssplit: ' + splitssplit );
+//  var arrayLength = splitssplit.length;
+//for (var i = 0; i < arrayLength; i++) {
+//    console.log(splitssplit[i]);
+//    //Do something
+//   calendar.createEvents([splitssplit[i]
+// ,
+//]);
+//  } 
+//  
+//var caloptions = calendar.getOptions();  
+//console.log('caloptions: ' + JSON.stringify(caloptions) );  
   
   
  
@@ -239,26 +236,23 @@ prevBtn.addEventListener("click", e => {
   console.log('month: ' + month );
   console.log('year: ' + year );
   
-  request = {
-					'option' : 'com_ajax',
-					'module' : 'sportsmanagement_calendar',
-					'formvaluemonth'   : month,
-  'formvalueyear'   : year,
-    'params'   : params,
-					'format' : 'raw'
-				};  
-var splits = jQuery.ajax({
-			type   : 'POST',
-			data   : request,
-            async: false,
-			success: function (response) {
-				jQuery('.status').html(response);
-              console.log('events: ' + response );
-              //responseevents = response;
-			}
-		}).responseText;  
+request = {
+'option' : 'com_ajax',
+'module' : 'sportsmanagement_calendar',
+'formvaluemonth'   : month,
+'formvalueyear'   : year,
+'params'   : params,
+'format' : 'raw'
+};
   
+jQuery.ajax({
+type   : 'POST',
+data   : request,
+async: false,
+success: eventsaved
+});  
   
+  /**
   calendar.clear();
   
    splitssplit = splits.split(";",3);          
@@ -274,7 +268,7 @@ for (var i = 0; i < arrayLength; i++) {
   
 var caloptions = calendar.getOptions();  
 console.log('caloptions: ' + JSON.stringify(caloptions) );  
-
+*/
 
   }
 
@@ -302,20 +296,20 @@ nextBtn.addEventListener("click", e => {
     console.log('location: ' + location );
 
 request = {
-					'option' : 'com_ajax',
-					'module' : 'sportsmanagement_calendar',
-					'formvaluemonth'   : month,
-  'formvalueyear'   : year,
-  'params'   : params,
-					'format' : 'raw'
-				};  
+'option' : 'com_ajax',
+'module' : 'sportsmanagement_calendar',
+'formvaluemonth'   : month,
+'formvalueyear'   : year,
+'params'   : params,
+'format' : 'raw'
+};  
                 
 jQuery.ajax({
-			type   : 'POST',
-			data   : request,
-  async: false,
-			success: eventsaved
-		});  
+type   : 'POST',
+data   : request,
+async: false,
+success: eventsaved
+});  
   
   
 //  console.log('danach splits: ' + splits );  
@@ -354,10 +348,45 @@ for (var i = 0; i < arrayLength; i++) {
 
 function eventsaved(response) 
 {  
+var scriptstring = '';  
+splitssplit = response.split(";",3);   
+var arrayLength = splitssplit.length;
+for (var i = 0; i < arrayLength; i++) {
+    console.log(splitssplit[i]);
+  if ( i === 0)
+  {
+  scriptstring = splitssplit[i];  
+  }
+  else
+  {
+   scriptstring = scriptstring + ',' + splitssplit[i];  
+  }
+}
+
+  
+scriptstring = 'calendar.createEvents([' + scriptstring + ',]);'  ;
+jQuery('.status').html(scriptstring);   
+var s = document.createElement("script");
+s.type = "text/javascript";
+//s.src = "http://somedomain.com/somescript";
+s.src = scriptstring;  
+jQuery("head").append(s);
   
   
+  /**
+var myscript = document.createElement('script');
+myscript.setAttribute('src',scriptstring);
+var div = document.getElementById('status');
+div.appendChild(scriptstring);
+  */
+
+  
+  
+//jQuery('.status').html(scriptstring);  
   
 }
+
+
 /**
 calendar.on('clickEvent', ({ event }) => {
   const el = document.getElementById('clicked-event');
