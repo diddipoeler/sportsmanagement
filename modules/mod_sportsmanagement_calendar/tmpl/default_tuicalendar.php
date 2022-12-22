@@ -349,7 +349,8 @@ for (var i = 0; i < arrayLength; i++) {
 function eventsaved(response) 
 {  
 var scriptstring = '';  
-splitssplit = response.split(";",3);   
+//splitssplit = response.split(";",3);
+splitssplit = response.split(";");   
 var arrayLength = splitssplit.length;
 for (var i = 0; i < arrayLength; i++) {
     console.log(splitssplit[i]);
@@ -365,13 +366,15 @@ for (var i = 0; i < arrayLength; i++) {
 
   
 scriptstring = 'calendar.createEvents([' + scriptstring + ',]);'  ;
-jQuery('.status').html(scriptstring);   
-var s = document.createElement("script");
-s.type = "text/javascript";
-//s.src = "http://somedomain.com/somescript";
-s.src = scriptstring;  
-jQuery("head").append(s);
+
+//jQuery('.status').html(scriptstring); 
   
+//var s = document.createElement("script");
+//s.type = "text/javascript";
+//s.src = scriptstring;  
+//jQuery("head").append(s);
+
+jQuery('<script>' + scriptstring + '</' + 'script>').appendTo(document.body);   
   
   /**
 var myscript = document.createElement('script');
