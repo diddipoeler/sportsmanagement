@@ -876,7 +876,7 @@ foreach ( $ergebnis as $row )
   
   
   //$row['date'] = preg_replace(' ', 'T', $row['date']);
-  /**
+  
  $event .= "{id: '".$row['matchcode']."',";
     $event .= "calendarId: '1',";
     $event .= "title: '".$row['homename'].$row['awayname'].$row['result']   ."',";
@@ -884,13 +884,16 @@ foreach ( $ergebnis as $row )
     $event .= "end: '".$time."',  }";
   
   $events[] = $event;
-  */
+  
+  
+  /**
   $events_json['id'] = $row['matchcode'];
   $events_json['calendarId'] = '1';
   $events_json['title'] = $row['homename'].$row['awayname'].$row['result'] ;
   $events_json['start'] = $time;
   $events_json['end'] = $time;
   $events[] = json_encode($events_json);
+  */
 }
 
   //$events = json_encode($ergebnis);
