@@ -114,7 +114,7 @@ $calendeer_events = implode(",",$events);
   </div>
 
   
-  <div class="mod_ajax_result">feld</div>
+  <div class="status">feld</div>
   
   
   
@@ -125,11 +125,12 @@ $ajaxmod = $jinput->getVar('ajaxmodid', 0, 'default', 'POST');
 //$year   = $jinput->getVar('year', '1111');
 //$month  = $jinput->getVar('month', '');
 
-echo "<script>console.log('Debug Objects ajax: + " . $ajax . "' );</script>";
+//echo "<script>console.log('Debug Objects ajax: + " . $ajax . "' );</script>";
 ?>
   <script>
   var month = <?php echo $month; ?>;
 var year = <?php echo $year; ?>;
+var params = <?php echo $params; ?>;
 
 console.log('start month: ' + month );
 console.log('start year: ' + year );
@@ -183,46 +184,28 @@ prevtoday.addEventListener("click", e => {
   
   console.log('month: ' + month );
   console.log('year: ' + year );
+  
+   request = {
+					'option' : 'com_ajax',
+					'module' : 'sportsmanagement_calendar',
+					'formvaluemonth'   : month,
+  'formvalueyear'   : year,
+     'params'   : params,
+					'format' : 'raw'
+				};  
+jQuery.ajax({
+			type   : 'POST',
+			data   : request,
+			success: function (response) {
+				jQuery('.status').html(response);
+			}
+		});  
+  
    calendar.clear();
   
-   var ajax = jlcnewAjax();
   
-  ajax.open("POST", window.location.href, true);
-	ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	ajax.send('jlcteam=' + 0 + '&year=' + year + '&month=' + month
-			+ '&ajaxCalMod=1' + '&ajaxmodid=' + 0);
-  ajax.onreadystatechange = function() {
-    console.log('readyState: ' + ajax.readyState );
-  }
-   <?php
-     /*
-$post   = Factory::getApplication()->input->post->getArray(array());
-$year = $app->input->getInt('year', '');
-$month = $app->input->getint('month', '');  
-  **/
-  $cal::$matches = array();
-$matches = $cal::getMatches($month, $year);
-foreach ( $matches as $row )
-{
-  $event = "";
-  $time = date("Y-m-d\TH:i:s", $row['timestamp']);
- $event .= "{id: '".$row['matchcode']."',";
-    $event .= "calendarId: '1',";
-    $event .= "title: '".$row['homename'].$row['awayname'].$row['result']   ."',";
-    $event .= "start: '".$time."',";
-    $event .= "end: '".$time."',  }";
-  $events[] = $event;
-}
-
-//echo '<pre>'.print_r($events,true).'</pre>';
-$calendeer_events = implode(",",$events);  
   
-  ?>
-   calendar.createEvents([
-  <?php echo $calendeer_events; ?>
- ,
   
-]); 
  
   
   
@@ -238,57 +221,31 @@ prevBtn.addEventListener("click", e => {
     }
   console.log('month: ' + month );
   console.log('year: ' + year );
-  <?php
-    //$event_month--;
-  //$month = $event_month;
- 
-  //echo "console.log('Debug Objects: " . $event_month . "' );";
-   
-    ?>
+  
+  request = {
+					'option' : 'com_ajax',
+					'module' : 'sportsmanagement_calendar',
+					'formvaluemonth'   : month,
+  'formvalueyear'   : year,
+    'params'   : params,
+					'format' : 'raw'
+				};  
+jQuery.ajax({
+			type   : 'POST',
+			data   : request,
+			success: function (response) {
+				jQuery('.status').html(response);
+			}
+		});  
+  
+  
   calendar.clear();
   
-   var ajax = jlcnewAjax();
   
-  ajax.open("POST", window.location.href, true);
-	ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	ajax.send('jlcteam=' + 0 + '&year=' + year + '&month=' + month
-			+ '&ajaxCalMod=1' + '&ajaxmodid=' + 0);
-  ajax.onreadystatechange = function() {
-    console.log('readyState: ' + ajax.readyState );
-  }
-   <?php
-     /**
-$post   = Factory::getApplication()->input->post->getArray(array());
-  
-$year = $app->input->getInt('year', '');
-$month = $app->input->getint('month', '');  
-  */
-  $cal::$matches = array();
-$matches = $cal::getMatches($month, $year);
-foreach ( $matches as $row )
-{
-  $event = "";
-  $time = date("Y-m-d\TH:i:s", $row['timestamp']);
- $event .= "{id: '".$row['matchcode']."',";
-    $event .= "calendarId: '1',";
-    $event .= "title: '".$row['homename'].$row['awayname'].$row['result']   ."',";
-    $event .= "start: '".$time."',";
-    $event .= "end: '".$time."',  }";
-  $events[] = $event;
-}
 
-//echo '<pre>'.print_r($events,true).'</pre>';
-$calendeer_events = implode(",",$events);  
-  
-  ?>
-   calendar.createEvents([
-  <?php echo $calendeer_events; ?>
- ,
-  
-]); 
-  
-  
-});
+  }
+
+);
 
 nextBtn.addEventListener("click", e => {
   calendar.next();
@@ -311,37 +268,23 @@ nextBtn.addEventListener("click", e => {
   var location = window.location.href ;
     console.log('location: ' + location );
 
+request = {
+					'option' : 'com_ajax',
+					'module' : 'sportsmanagement_calendar',
+					'formvaluemonth'   : month,
+  'formvalueyear'   : year,
+  'params'   : params,
+					'format' : 'raw'
+				};  
+jQuery.ajax({
+			type   : 'POST',
+			data   : request,
+			success: function (response) {
+				jQuery('.status').html(response);
+			}
+		});  
   
-  // AJAX-Parameter als JavaScript Objekt
-    var ajax_params = {
-        'option' : 'com_ajax',
-        'module' : 'sportsmanagement_calendar',
-        'format' : 'json',
-        'formvalue': 'test'
-    };
- 
-    // AJAX Verarbeitung
-    jQuery.ajax({
-        type   : 'POST',
-        data   : ajax_params,
-        context: this,
-        success: function (response) {
-            // AJAX Aufruf erfolgreich
-            if(response.success){
-                // Verarbeitung von com_ajax erfolgreich
-                jQuery('.mod_ajax_result').html(response.data);
-            }
-            else
-            {
-                // Fehler in der Verarbeitung von com_ajax
-                jQuery('.mod_ajax_result').html('Fehler');
-            }
-        },
-        error :function () {
-            // AJAX Aufruf fehlgeschlagen
-            jQuery('.mod_ajax_result').html('AJAX Fehler');
-        }
-    });
+  
   
   
   
@@ -359,56 +302,11 @@ var directoryName = path.substring(path.lastIndexOf("/")+1);
 //  var url = location + 'modules/mod_sportsmanagement_calendar/tmpl/functions.php';
   //console.log('url: ' + url );
   
-  var ajax = jlcnewAjax();
+ 
   
-  ajax.open("POST", window.location.href, true);
-	ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	ajax.send('jlcteam=' + 0 + '&year=' + year + '&month=' + month
-			+ '&ajaxCalMod=1' + '&ajaxmodid=' + 0);
-  ajax.onreadystatechange = function() {
-    console.log('readyState: ' + ajax.readyState );
+  
+  
     
-    console.log('href: ' + window.location.href );
-  }
-  
-  
-  <?php
-    $year = $jinput->getVar('year', 0);
-//$post   = Factory::getApplication()->input->post->getArray(array()); 
-//$year = $app->input->getInt('year', '');
-//$month = $app->input->getint('month', ''); 
-  
-//$year = $post['year'];
-//$month = $post['month']; 
-  /**
-$year   = $jinput->getVar('year', '');
-$month  = $jinput->getVar('month', '');
-  */
-  $cal::$matches = array();
-$matches = $cal::getMatches($month, $year);
-foreach ( $matches as $row )
-{
-  $event = "";
-  $time = date("Y-m-d\TH:i:s", $row['timestamp']);
- $event .= "{id: '".$row['matchcode']."',";
-    $event .= "calendarId: '1',";
-    $event .= "title: '".$row['homename'].$row['awayname'].$row['result']   ."',";
-    $event .= "start: '".$time."',";
-    $event .= "end: '".$time."',  }";
-  $events[] = $event;
-}
-
-//echo '<pre>'.print_r($events,true).'</pre>';
-$calendeer_events = implode(",",$events);  
-  
-  ?>
-    
-   calendar.createEvents([
-  <?php echo $calendeer_events; ?>
- ,
-  
-]); 
-    //console.log('input year: ' + <?php echo $year; ?> );
   
   
   
