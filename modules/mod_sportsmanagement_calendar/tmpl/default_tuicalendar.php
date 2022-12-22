@@ -365,7 +365,7 @@ for (var i = 0; i < arrayLength; i++) {
 }
 
   
-scriptstring = 'calendar.createEvents([' + scriptstring + ',]);'  ;
+scriptstring = 'calendar.clear();calendar.createEvents([' + scriptstring + ',]);'  ;
 
 //jQuery('.status').html(scriptstring); 
   
