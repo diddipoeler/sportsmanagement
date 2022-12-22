@@ -243,9 +243,17 @@ class SportsmanagementConnector extends JSMCalendar
 		$query->group('m.id');
 		$query->order('m.match_date ' . $ordering . ',p.id ' . $ordering);
 
+		try{
 		$db->setQuery($query, 0, $limit);
-
 		$result = $db->loadObjectList();
+		}
+		catch (Exception $e)
+		{
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+		return false;
+		}
+		
 
 		if ($result)
 		{
