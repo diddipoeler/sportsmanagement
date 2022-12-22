@@ -309,28 +309,29 @@ request = {
   'params'   : params,
 					'format' : 'raw'
 				};  
-var splits = jQuery.ajax({
+                
+jQuery.ajax({
 			type   : 'POST',
 			data   : request,
   async: false,
-			success: function (response) {
-				jQuery('.status').html(response);
-            
-			}
-		}).responseText;  
+			success: eventsaved
+		});  
   
   
-  console.log('danach splits: ' + splits );  
+//  console.log('danach splits: ' + splits );  
  //console.log('danach splits: ' + JSON.stringify(splits) );  
   //splitsarray = Object.entries(splits);
  // splitsarray = splits.split(";",3);          
   //console.log('splitsarray: ' + splitsarray );
   
   
-  calendar.clear();
-  splitssplit = splits.split(";",3);          
-              console.log('splitssplit: ' + splitssplit );
-  var arrayLength = splitssplit.length;
+//  calendar.clear();
+  
+//  splitssplit = splits.split(";",3);          
+//  console.log('splitssplit: ' + splitssplit );
+//  var arrayLength = splitssplit.length;
+  
+  /**
 for (var i = 0; i < arrayLength; i++) {
     console.log(splitssplit[i]);
     //Do something
@@ -338,26 +339,25 @@ for (var i = 0; i < arrayLength; i++) {
  ,
 ]);
   } 
+  */
   
-var caloptions = calendar.getOptions();  
-console.log('caloptions: ' + JSON.stringify(caloptions) );  
-     
- 
-  
-  
-  
-    
-  
-  
-  
+//var caloptions = calendar.getOptions();  
+//console.log('caloptions: ' + JSON.stringify(caloptions) );  
             
 });
 
-  
-  
-  
-  
 
+
+
+
+
+
+function eventsaved(response) 
+{  
+  
+  
+  
+}
 /**
 calendar.on('clickEvent', ({ event }) => {
   const el = document.getElementById('clicked-event');
