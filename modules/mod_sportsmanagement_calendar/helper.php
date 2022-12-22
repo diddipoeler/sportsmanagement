@@ -829,9 +829,9 @@ self::$params = $moduleParams;
    
   
 // Verarbeitung des Übermittelten Wert
-$result = 'Der übermittelte Wert: "'.$formvaluemonth.'"';
-$result .= 'Der übermittelte Wert: "'.$formvalueyear.'"';  
-  $result .= 'Der übermittelte Wert modul params: <pre>'.print_r($moduleParams,true).'</pre>'; 
+//$result = 'Der übermittelte Wert: "'.$formvaluemonth.'"';
+//$result .= 'Der übermittelte Wert: "'.$formvalueyear.'"';  
+//$result .= 'Der übermittelte Wert modul params: <pre>'.print_r($moduleParams,true).'</pre>'; 
   
 $cal       = new SportsmanagementConnector; // This object creates the html for the calendar  
 $cal::$params  = self::$params;
@@ -860,9 +860,9 @@ $matches = $cal::getMatches($formvaluemonth, $formvalueyear);
 $result .= 'Der übermittelte Wert: <pre>'.print_r($matches,true).'</pre>';    
   */
   
-$result .= 'Der übermittelte Wert: <pre>'.print_r($ergebnis,true).'</pre>';  
-$result .= 'Der übermittelte Wert: <pre>'.print_r($caldates,true).'</pre>';  
-$result .= 'Der übermittelte Wert: <pre>'.print_r(self::$params,true).'</pre>';    
+//$result .= 'Der übermittelte Wert: <pre>'.print_r($ergebnis,true).'</pre>';  
+//$result .= 'Der übermittelte Wert: <pre>'.print_r($caldates,true).'</pre>';  
+//$result .= 'Der übermittelte Wert: <pre>'.print_r(self::$params,true).'</pre>';    
 
 foreach ( $ergebnis as $row )
 {
@@ -876,21 +876,30 @@ foreach ( $ergebnis as $row )
   
   
   //$row['date'] = preg_replace(' ', 'T', $row['date']);
-  
+  /**
  $event .= "{id: '".$row['matchcode']."',";
     $event .= "calendarId: '1',";
     $event .= "title: '".$row['homename'].$row['awayname'].$row['result']   ."',";
     $event .= "start: '".$time."',";
     $event .= "end: '".$time."',  }";
+  
   $events[] = $event;
+  */
+  $events_json['id'] = $row['matchcode'];
+  $events_json['calendarId'] = '1';
+  $events_json['title'] = $row['homename'].$row['awayname'].$row['result'] ;
+  $events_json['start'] = $time;
+  $events_json['end'] = $time;
+  $events[] = json_encode($events_json);
 }
 
+  //$events = json_encode($ergebnis);
 //echo '<pre>'.print_r($events,true).'</pre>';
-$calendeer_events = implode(",",$events);  
+$calendeer_events = implode(";",$events);  
   
-$result .= 'Der übermittelte Wert events: <pre>'.print_r($calendeer_events,true).'</pre>';      
-  $result = $calendeer_events;
+//$result .= 'Der übermittelte Wert events: <pre>'.print_r($events,true).'</pre>';      
+ // $result = $events;
 // Ergebniss zurück an com_ajax
-return $result;
+return $calendeer_events;
 }  
 }
