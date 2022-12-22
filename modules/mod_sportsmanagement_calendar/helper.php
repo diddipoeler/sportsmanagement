@@ -836,7 +836,7 @@ $caldates                   = array();
 		$caldates['roundstart']     = "$formvalueyear-$formvaluemonth-01";
 		$caldates['roundend']       = "$formvalueyear-$formvaluemonth-31";  
 
-$ergebnis = $cal::getMatches($caldates);
+//$ergebnis = $cal::getMatches($caldates);
   
 $result .= 'Der übermittelte Wert: <pre>'.print_r($caldates,true).'</pre>';  
 $result .= 'Der übermittelte Wert: <pre>'.print_r(self::$params,true).'</pre>';    
