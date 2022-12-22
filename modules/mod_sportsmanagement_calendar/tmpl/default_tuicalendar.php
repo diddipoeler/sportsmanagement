@@ -106,9 +106,84 @@ $calendeer_events = implode(",",$events);
   
   </div>
 
+
   
-<div id="calendar" style="height: 600px;"></div>
+<!-- <div id="calendar" style="height: 600px;"></div> -->
   
+ <div id="right">
+        <div id="menu">
+            <span class="dropdown">
+                <button id="dropdownMenu-calendarType" class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="true">
+                    <i id="calendarTypeIcon" class="calendar-icon ic_view_month" style="margin-right: 4px;"></i>
+                    <span id="calendarTypeName">Dropdown</span>&nbsp;
+                    <i class="calendar-icon tui-full-calendar-dropdown-arrow"></i>
+                </button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu-calendarType">
+                    <li role="presentation">
+                        <a class="dropdown-menu-title" role="menuitem" data-action="toggle-daily">
+                            <i class="calendar-icon ic_view_day"></i>Daily
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a class="dropdown-menu-title" role="menuitem" data-action="toggle-weekly">
+                            <i class="calendar-icon ic_view_week"></i>Weekly
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a class="dropdown-menu-title" role="menuitem" data-action="toggle-monthly">
+                            <i class="calendar-icon ic_view_month"></i>Month
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a class="dropdown-menu-title" role="menuitem" data-action="toggle-weeks2">
+                            <i class="calendar-icon ic_view_week"></i>2 weeks
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a class="dropdown-menu-title" role="menuitem" data-action="toggle-weeks3">
+                            <i class="calendar-icon ic_view_week"></i>3 weeks
+                        </a>
+                    </li>
+                    <li role="presentation" class="dropdown-divider"></li>
+                    <li role="presentation">
+                        <a role="menuitem" data-action="toggle-workweek">
+                            <input type="checkbox" class="tui-full-calendar-checkbox-square" value="toggle-workweek" checked>
+                            <span class="checkbox-title"></span>Show weekends
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" data-action="toggle-start-day-1">
+                            <input type="checkbox" class="tui-full-calendar-checkbox-square" value="toggle-start-day-1">
+                            <span class="checkbox-title"></span>Start Week on Monday
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" data-action="toggle-narrow-weekend">
+                            <input type="checkbox" class="tui-full-calendar-checkbox-square" value="toggle-narrow-weekend">
+                            <span class="checkbox-title"></span>Narrower than weekdays
+                        </a>
+                    </li>
+                </ul>
+            </span>
+            <span id="menu-navi">
+                      <!--
+                <button type="button" class="btn btn-default btn-sm move-today" data-action="move-today">Today</button>
+                <button type="button" class="btn btn-default btn-sm move-day" data-action="move-prev">
+                    <i class="calendar-icon ic-arrow-line-left" data-action="move-prev"></i>
+                </button>
+                <button type="button" class="btn btn-default btn-sm move-day" data-action="move-next">
+                    <i class="calendar-icon ic-arrow-line-right" data-action="move-next"></i>
+                </button>
+                      -->
+            </span>
+            <span id="renderRange" class="render-range"></span>
+        </div>
+        <div id="calendar" style="height: 600px;"></div>
+    </div>
+                      
+                      
+                      
 <div id="target_div" style=""></div>  
   
   </div>
@@ -178,6 +253,23 @@ calendar.createEvents([
  ,
   
 ]);
+
+/**
+//calendar.setCalendars(CalendarList);
+ var calendarList = document.getElementById('calendarList');
+    var html = [];
+    CalendarList.forEach(function(calendar) {
+        html.push('<div class="lnb-calendars-item"><label>' +
+            '<input type="checkbox" class="tui-full-calendar-checkbox-round" value="' + calendar.id + '" checked>' +
+            '<span style="border-color: ' + calendar.borderColor + '; background-color: ' + calendar.borderColor + ';"></span>' +
+            '<span>' + calendar.name + '</span>' +
+            '</label></div>'
+        );
+    });
+    calendarList.innerHTML = html.join('\n');
+*/
+
+
 
 prevtoday.addEventListener("click", e => {
   calendar.today();
@@ -388,6 +480,171 @@ div.appendChild(scriptstring);
 //jQuery('.status').html(scriptstring);  
   
 }
+
+
+
+jQuery('#menu-navi').on('click', onClickNavi);
+jQuery('.dropdown-menu a[role="menuitem"]').on('click', onClickMenu);
+
+function getDataAction(target) {
+        return target.dataset ? target.dataset.action : target.getAttribute('data-action');
+    }
+
+function setDropdownCalendarType() {
+        var calendarTypeName = document.getElementById('calendarTypeName');
+        var calendarTypeIcon = document.getElementById('calendarTypeIcon');
+        var options = calendar.getOptions();
+        var type = calendar.getViewName();
+        var iconClassName;
+
+        if (type === 'day') {
+            type = 'Daily';
+            iconClassName = 'calendar-icon ic_view_day';
+        } else if (type === 'week') {
+            type = 'Weekly';
+            iconClassName = 'calendar-icon ic_view_week';
+        } else if (options.month.visibleWeeksCount === 2) {
+            type = '2 weeks';
+            iconClassName = 'calendar-icon ic_view_week';
+        } else if (options.month.visibleWeeksCount === 3) {
+            type = '3 weeks';
+            iconClassName = 'calendar-icon ic_view_week';
+        } else {
+            type = 'Monthly';
+            iconClassName = 'calendar-icon ic_view_month';
+        }
+
+        calendarTypeName.innerHTML = type;
+        calendarTypeIcon.className = iconClassName;
+    }
+
+ function setRenderRangeText() {
+        var renderRange = document.getElementById('renderRange');
+        var options = calendar.getOptions();
+        var viewName = calendar.getViewName();
+        var html = [];
+        if (viewName === 'day') {
+            html.push(moment(calendar.getDate().getTime()).format('YYYY.MM.DD'));
+        } else if (viewName === 'month' &&
+            (!options.month.visibleWeeksCount || options.month.visibleWeeksCount > 4)) {
+            html.push(moment(calendar.getDate().getTime()).format('YYYY.MM'));
+        } else {
+            html.push(moment(calendar.getDateRangeStart().getTime()).format('YYYY.MM.DD'));
+            html.push(' ~ ');
+            html.push(moment(calendar.getDateRangeEnd().getTime()).format(' MM.DD'));
+        }
+        renderRange.innerHTML = html.join('');
+    }
+
+    function setSchedules() {
+        calendar.clear();
+        generateSchedule(calendar.getViewName(), calendar.getDateRangeStart(), calendar.getDateRangeEnd());
+        calendar.createSchedules(ScheduleList);
+        refreshScheduleVisibility();
+    }
+
+function onClickNavi(e) {
+        var action = getDataAction(e.target);
+
+        switch (action) {
+            case 'move-prev':
+                calendar.prev();
+                break;
+            case 'move-next':
+                calendar.next();
+                break;
+            case 'move-today':
+                calendar.today();
+                break;
+            default:
+                return;
+        }
+
+        setRenderRangeText();
+        setSchedules();
+    }
+
+function onClickMenu(e) {
+        var target = jQuery(e.target).closest('a[role="menuitem"]')[0];
+        var action = getDataAction(target);
+        var options = calendar.getOptions();
+        var viewName = '';
+
+        console.log(target);
+        console.log(action);
+        switch (action) {
+            case 'toggle-daily':
+                viewName = 'day';
+                break;
+            case 'toggle-weekly':
+                viewName = 'week';
+                break;
+            case 'toggle-monthly':
+                options.month.visibleWeeksCount = 0;
+                viewName = 'month';
+                break;
+            case 'toggle-weeks2':
+                options.month.visibleWeeksCount = 2;
+                viewName = 'month';
+                break;
+            case 'toggle-weeks3':
+                options.month.visibleWeeksCount = 3;
+                viewName = 'month';
+                break;
+            case 'toggle-narrow-weekend':
+                options.month.narrowWeekend = !options.month.narrowWeekend;
+                options.week.narrowWeekend = !options.week.narrowWeekend;
+                viewName = calendar.getViewName();
+
+                target.querySelector('input').checked = options.month.narrowWeekend;
+                break;
+            case 'toggle-start-day-1':
+                options.month.startDayOfWeek = options.month.startDayOfWeek ? 0 : 1;
+                options.week.startDayOfWeek = options.week.startDayOfWeek ? 0 : 1;
+                viewName = calendar.getViewName();
+
+                target.querySelector('input').checked = options.month.startDayOfWeek;
+                break;
+            case 'toggle-workweek':
+                options.month.workweek = !options.month.workweek;
+                options.week.workweek = !options.week.workweek;
+                viewName = calendar.getViewName();
+
+                target.querySelector('input').checked = !options.month.workweek;
+                break;
+            default:
+                break;
+        }
+
+        calendar.setOptions(options, true);
+        calendar.changeView(viewName, true);
+
+        setDropdownCalendarType();
+        setRenderRangeText();
+        setSchedules();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /**
