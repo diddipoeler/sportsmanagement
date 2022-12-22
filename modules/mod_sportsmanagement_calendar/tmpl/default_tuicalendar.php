@@ -132,6 +132,7 @@ $ajaxmod = $jinput->getVar('ajaxmodid', 0, 'default', 'POST');
   var month = <?php echo $month; ?>;
 var year = <?php echo $year; ?>;
 var params = <?php echo $params; ?>;
+//var splits = '';
 
 console.log('start month: ' + month );
 console.log('start year: ' + year );
@@ -285,24 +286,57 @@ request = {
   'params'   : params,
 					'format' : 'raw'
 				};  
-jQuery.ajax({
+var splits = jQuery.ajax({
 			type   : 'POST',
 			data   : request,
+  async: false,
 			success: function (response) {
 				jQuery('.status').html(response);
-              console.log('events: ' + response );
-              responseevents = response;
+              //splits = response;
+              //splits.push(response);
+              //splits = jQuery('.status').html();
+              //console.log('events: ' + response.responseText );
+              //console.log('array ?: ' + Array.isArray(response) );
+//var price = jQuery.parseJSON(response);   
+  //            console.log('price: ' + price );
+              
+              /**
+    splits = response.split(";",3);          
+              console.log('splits: ' + splits );
+              console.log('splits array ?: ' + Array.isArray(splits) );
+              
+              
+             var arrayLength = splits.length;
+for (var i = 0; i < arrayLength; i++) {
+    console.log(splits[i]);
+    //Do something
+  }
+              */
 			}
-		});  
-  calendar.clear();
+		}).responseText;  
   
-  calendar.createEvents([responseevents
+  
+  console.log('danach splits: ' + splits );  
+ //console.log('danach splits: ' + JSON.stringify(splits) );  
+  //splitsarray = Object.entries(splits);
+ // splitsarray = splits.split(";",3);          
+  //console.log('splitsarray: ' + splitsarray );
+  
+  
+  calendar.clear();
+  splitssplit = splits.split(";",3);          
+              console.log('splitssplit: ' + splitssplit );
+  var arrayLength = splitssplit.length;
+for (var i = 0; i < arrayLength; i++) {
+    console.log(splitssplit[i]);
+    //Do something
+   calendar.createEvents([splitssplit[i]
  ,
 ]);
+  } 
   
-  
-  
-  
+var caloptions = calendar.getOptions();  
+console.log('caloptions: ' + JSON.stringify(caloptions) );  
      
  
   
