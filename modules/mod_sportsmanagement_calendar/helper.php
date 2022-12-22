@@ -10,7 +10,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * 
  * http://www.langer-webmedia.de/joomla/2014/joomla-und-ajax-teil-3-modul-helper/
- * 
+ * https://github.com/Joomla-Ajax-Interface/Hello-Ajax-World-Module
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Date\Date;
@@ -25,6 +25,10 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'calendarClass.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'calendarFunctions.php';
 
 
+
+
+
+
 /**
  * modJSMCalendarHelper
  *
@@ -37,24 +41,7 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'calendarFunctions.php';
 class modJSMCalendarHelper
 {
 
-/**
-* Wird von com_ajax aufgerufen
-* @return array Rückgabe an com_ajax
-*/
-public static function getAjax() {
- 
-// Objekt zum ermitteln der übermittelten Parameter erzeugen
-$input = JFactory::getApplication()->input;
- 
-// Übermittelter Wert des Formulars
-$formvalue=$input->get('formvalue');
- 
-// Verarbeitung des Übermittelten Wert
-$result = 'Der übermittelte Wert: "'.strtoupper($formvalue).'"';
- 
-// Ergebniss zurück an com_ajax
-return $result;
-}
+
 
 	/**
 	 * modJSMCalendarHelper::showCal()
@@ -808,4 +795,53 @@ class JSMCalendar extends PHPCalendar
 
 		return $array;
 	}
+}
+
+
+class ModSportsmanagementCalendarHelper {
+static $prefix;
+
+	static $params;
+
+	static $matches = array();  
+  
+/**
+* Wird von com_ajax aufgerufen
+* @return array Rückgabe an com_ajax
+*/
+public static function getAjax() {
+include_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'connectors' . DIRECTORY_SEPARATOR . 'sportsmanagement.php'; 
+// Objekt zum ermitteln der übermittelten Parameter erzeugen
+$input = Factory::getApplication()->input;
+ 
+// Übermittelter Wert des Formulars
+$formvaluemonth = $input->get('formvaluemonth');
+$formvalueyear = $input->get('formvalueyear');  
+self::$params = $input->get('params');   
+ 
+// Verarbeitung des Übermittelten Wert
+$result = 'Der übermittelte Wert: "'.$formvaluemonth.'"';
+$result .= 'Der übermittelte Wert: "'.$formvalueyear.'"';  
+  
+$cal       = new SportsmanagementConnector; // This object creates the html for the calendar  
+$cal::$params  = self::$params;
+$cal::$xparams = self::$params;
+$cal::$prefix  = self::$params->prefix;  
+  
+$caldates                   = array();
+		$caldates['start']          = "$formvalueyear-$formvaluemonth-01 00:00:00";
+		$caldates['end']            = "$formvalueyear-$formvaluemonth-31 23:59:59";
+		$caldates['starttimestamp'] = sportsmanagementHelper::getTimestamp($caldates['start']);
+		$caldates['endtimestamp']   = sportsmanagementHelper::getTimestamp($caldates['end']);
+		$caldates['roundstart']     = "$formvalueyear-$formvaluemonth-01";
+		$caldates['roundend']       = "$formvalueyear-$formvaluemonth-31";  
+
+$ergebnis = $cal::getMatches($caldates);
+  
+$result .= 'Der übermittelte Wert: <pre>'.print_r($caldates,true).'</pre>';  
+$result .= 'Der übermittelte Wert: <pre>'.print_r(self::$params,true).'</pre>';    
+  
+// Ergebniss zurück an com_ajax
+return $result;
+}  
 }
