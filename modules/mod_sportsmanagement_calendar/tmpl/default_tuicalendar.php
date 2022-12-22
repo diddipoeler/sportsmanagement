@@ -195,20 +195,19 @@ prevtoday.addEventListener("click", e => {
      'params'   : params,
 					'format' : 'raw'
 				};  
-jQuery.ajax({
+var splits = jQuery.ajax({
 			type   : 'POST',
 			data   : request,
+            async: false,
 			success: function (response) {
 				jQuery('.status').html(response);
               console.log('events: ' + response );
-              responseevents = response;
+              //responseevents = response;
 			}
-		});  
+		}).responseText;  
   
    calendar.clear();
-   calendar.createEvents([responseevents
- ,
-]);
+  
   
   
   
@@ -236,21 +235,19 @@ prevBtn.addEventListener("click", e => {
     'params'   : params,
 					'format' : 'raw'
 				};  
-jQuery.ajax({
+var splits = jQuery.ajax({
 			type   : 'POST',
 			data   : request,
+            async: false,
 			success: function (response) {
 				jQuery('.status').html(response);
               console.log('events: ' + response );
-              responseevents = response;
+              //responseevents = response;
 			}
-		});  
+		}).responseText;  
   
   
   calendar.clear();
-   calendar.createEvents([responseevents
- ,
-]);
   
 
   }
@@ -292,26 +289,7 @@ var splits = jQuery.ajax({
   async: false,
 			success: function (response) {
 				jQuery('.status').html(response);
-              //splits = response;
-              //splits.push(response);
-              //splits = jQuery('.status').html();
-              //console.log('events: ' + response.responseText );
-              //console.log('array ?: ' + Array.isArray(response) );
-//var price = jQuery.parseJSON(response);   
-  //            console.log('price: ' + price );
-              
-              /**
-    splits = response.split(";",3);          
-              console.log('splits: ' + splits );
-              console.log('splits array ?: ' + Array.isArray(splits) );
-              
-              
-             var arrayLength = splits.length;
-for (var i = 0; i < arrayLength; i++) {
-    console.log(splits[i]);
-    //Do something
-  }
-              */
+            
 			}
 		}).responseText;  
   
