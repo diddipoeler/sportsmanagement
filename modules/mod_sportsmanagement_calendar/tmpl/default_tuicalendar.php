@@ -208,7 +208,19 @@ var splits = jQuery.ajax({
   
    calendar.clear();
   
+   splitssplit = splits.split(";",3);          
+              console.log('splitssplit: ' + splitssplit );
+  var arrayLength = splitssplit.length;
+for (var i = 0; i < arrayLength; i++) {
+    console.log(splitssplit[i]);
+    //Do something
+   calendar.createEvents([splitssplit[i]
+ ,
+]);
+  } 
   
+var caloptions = calendar.getOptions();  
+console.log('caloptions: ' + JSON.stringify(caloptions) );  
   
   
  
@@ -249,6 +261,20 @@ var splits = jQuery.ajax({
   
   calendar.clear();
   
+   splitssplit = splits.split(";",3);          
+              console.log('splitssplit: ' + splitssplit );
+  var arrayLength = splitssplit.length;
+for (var i = 0; i < arrayLength; i++) {
+    console.log(splitssplit[i]);
+    //Do something
+   calendar.createEvents([splitssplit[i]
+ ,
+]);
+  } 
+  
+var caloptions = calendar.getOptions();  
+console.log('caloptions: ' + JSON.stringify(caloptions) );  
+
 
   }
 
