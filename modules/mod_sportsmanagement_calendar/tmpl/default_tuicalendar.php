@@ -128,6 +128,7 @@ $ajaxmod = $jinput->getVar('ajaxmodid', 0, 'default', 'POST');
 //echo "<script>console.log('Debug Objects ajax: + " . $ajax . "' );</script>";
 ?>
   <script>
+  var responseevents = '';
   var month = <?php echo $month; ?>;
 var year = <?php echo $year; ?>;
 var params = <?php echo $params; ?>;
@@ -198,11 +199,15 @@ jQuery.ajax({
 			data   : request,
 			success: function (response) {
 				jQuery('.status').html(response);
+              console.log('events: ' + response );
+              responseevents = response;
 			}
 		});  
   
    calendar.clear();
-  
+   calendar.createEvents([responseevents
+ ,
+]);
   
   
   
@@ -235,12 +240,16 @@ jQuery.ajax({
 			data   : request,
 			success: function (response) {
 				jQuery('.status').html(response);
+              console.log('events: ' + response );
+              responseevents = response;
 			}
 		});  
   
   
   calendar.clear();
-  
+   calendar.createEvents([responseevents
+ ,
+]);
   
 
   }
@@ -264,7 +273,7 @@ nextBtn.addEventListener("click", e => {
   //echo "console.log('Debug Objects: " . $event_month . "' );";
    
     ?>
-      calendar.clear();
+      
   var location = window.location.href ;
     console.log('location: ' + location );
 
@@ -281,27 +290,20 @@ jQuery.ajax({
 			data   : request,
 			success: function (response) {
 				jQuery('.status').html(response);
+              console.log('events: ' + response );
+              responseevents = response;
 			}
 		});  
+  calendar.clear();
+  
+  calendar.createEvents([responseevents
+ ,
+]);
   
   
   
   
-  
-  
-  
-      /**
- var location = window.location.pathname;
-var path = location.substring(0, location.lastIndexOf("/"));
-var directoryName = path.substring(path.lastIndexOf("/")+1);
-  
-  console.log('dir: ' + directoryName );
-  console.log('path: ' + path );
-  */
-  
-//  var url = location + 'modules/mod_sportsmanagement_calendar/tmpl/functions.php';
-  //console.log('url: ' + url );
-  
+     
  
   
   
