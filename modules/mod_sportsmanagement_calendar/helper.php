@@ -898,7 +898,8 @@ foreach ( $ergebnis as $row )
 
   //$events = json_encode($ergebnis);
 //echo '<pre>'.print_r($events,true).'</pre>';
-$calendeer_events = implode(";",$events);  
+//$calendeer_events = implode(";",$events);  
+$calendeer_events = implode(",",$events);
   
 //$result .= 'Der übermittelte Wert events: <pre>'.print_r($events,true).'</pre>';      
  // $result = $events;

@@ -92,6 +92,21 @@ $calendeer_events = implode(",",$events);
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chance/1.0.13/chance.min.js"></script>
   
+  
+<?php  
+if (version_compare(JVERSION, '4.0.0', 'ge'))
+{
+HTMLHelper::_('script', 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'assets/js' . DIRECTORY_SEPARATOR . 'schedules' . '.js');
+}
+elseif (version_compare(JVERSION, '3.0.0', 'ge'))
+{
+$doc->addScript(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'assets/js' . DIRECTORY_SEPARATOR . 'schedules' . '.js');
+}  
+  
+  
+  
+  
+?>
   <div class="container" >
   
  
@@ -451,7 +466,6 @@ for (var i = 0; i < arrayLength; i++) {
 function eventsaved(response) 
 {  
 var scriptstring = '';  
-//splitssplit = response.split(";",3);
 splitssplit = response.split(";");   
 var arrayLength = splitssplit.length;
 for (var i = 0; i < arrayLength; i++) {
@@ -465,29 +479,11 @@ for (var i = 0; i < arrayLength; i++) {
    scriptstring = scriptstring + ',' + splitssplit[i];  
   }
 }
-
   
-scriptstring = 'calendar.clear();calendar.createEvents([' + scriptstring + ',]);'  ;
-
-//jQuery('.status').html(scriptstring); 
-  
-//var s = document.createElement("script");
-//s.type = "text/javascript";
-//s.src = scriptstring;  
-//jQuery("head").append(s);
+//scriptstring = 'calendar.clear();calendar.createEvents([' + scriptstring + ',]);'  ;
+scriptstring = 'calendar.clear();calendar.createEvents([' + response + ',]);'  ;
 
 jQuery('<script>' + scriptstring + '</' + 'script>').appendTo(document.body);   
-  
-  /**
-var myscript = document.createElement('script');
-myscript.setAttribute('src',scriptstring);
-var div = document.getElementById('status');
-div.appendChild(scriptstring);
-  */
-
-  
-  
-//jQuery('.status').html(scriptstring);  
   
 }
 
