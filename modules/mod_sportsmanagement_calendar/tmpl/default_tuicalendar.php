@@ -213,8 +213,8 @@ $doc->addScript(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module 
   
   
   <?php
-$ajax    = $jinput->getVar('ajaxCalMod', 0, 'default', 'POST');
-$ajaxmod = $jinput->getVar('ajaxmodid', 0, 'default', 'POST');
+//$ajax    = $jinput->getVar('ajaxCalMod', 0, 'default', 'POST');
+//$ajaxmod = $jinput->getVar('ajaxmodid', 0, 'default', 'POST');
 //$year = $jinput->getVar('year', 0, 'default', 'POST');
 //$year   = $jinput->getVar('year', '1111');
 //$month  = $jinput->getVar('month', '');
@@ -366,7 +366,16 @@ setRenderRangeText();
     calendarList.innerHTML = html.join('\n');
 
 
+ jQuery(".toastui-calendar-grid-cell-more-events").bind("click", function () {
+    console.log('more events angeklickt: ');
+     });
+     
+     
+/**
+class = toastui-calendar-grid-cell-more-events
 
+
+*/
 
 prevtoday.addEventListener("click", e => {
   calendar.today();
@@ -614,7 +623,7 @@ function setDropdownCalendarType() {
         renderRange.innerHTML = html.join('');
     }
 
-    function setSchedules() {
+function setSchedules() {
         calendar.clear();
         generateSchedule(calendar.getViewName(), calendar.getDateRangeStart(), calendar.getDateRangeEnd());
         calendar.createSchedules(ScheduleList);
