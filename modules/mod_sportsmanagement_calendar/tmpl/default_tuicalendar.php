@@ -500,7 +500,7 @@ for (var i = 0; i < arrayLength; i++) {
 scriptstring = 'calendar.clear();calendar.createEvents([' + response + ',]);'  ;
 
 jQuery('<script>' + scriptstring + '</' + 'script>').appendTo(document.body);   
-  
+setRenderRangeText();  
 }
 
 
