@@ -12,6 +12,8 @@
  * https://codesandbox.io/s/toast-ui-calendar-for-vanillajs-wz2s3?file=/index.html:212-246
  * https://codesandbox.io/examples/package/tui-date-picker
  * https://stackoverflow.com/questions/71907057/how-to-send-json-value-to-tui-calendar-using-ajax
+ * 
+ * https://github.com/nhn/tui.calendar/tree/56f36b0ae0ac2331983fd2335017ae0fc7e24d7b/examples
  *
  */
 defined('_JEXEC') or die('Restricted access');
@@ -70,6 +72,7 @@ $calendeer_events = implode(",",$events);
   <html>
   <body>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
 <link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css" />
 
   
@@ -85,6 +88,10 @@ $calendeer_events = implode(",",$events);
   
 <!-- <script src="https://uicdn.toast.com/tui-calendar/latest/tui-calendar.js"></script>   --->
   
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chance/1.0.13/chance.min.js"></script>
+  
   <div class="container" >
   
  
@@ -99,10 +106,7 @@ $calendeer_events = implode(",",$events);
   
 
  <div id="calendarMenu">
-  <button id="prevtoday">Heute</button>
-  
-  <button id="prevBtn"><img height="100%" src="https://nhn.github.io/tui.calendar/latest/examples/images/ic-arrow-line-left.png"/> Prev</button>
-  <button id="nextBtn">Next <img height="100%" src="https://nhn.github.io/tui.calendar/latest/examples/images/ic-arrow-line-right.png"/> </button>
+
   
   </div>
 
@@ -167,6 +171,12 @@ $calendeer_events = implode(",",$events);
                 </ul>
             </span>
             <span id="menu-navi">
+              <button id="prevtoday">Heute</button>
+ 
+  <button id="prevBtn"><img height="100%" src="https://nhn.github.io/tui.calendar/latest/examples/images/ic-arrow-line-left.png"/> Prev</button>
+  <button id="nextBtn">Next <img height="100%" src="https://nhn.github.io/tui.calendar/latest/examples/images/ic-arrow-line-right.png"/> </button>
+            
+            
                       <!--
                 <button type="button" class="btn btn-default btn-sm move-today" data-action="move-today">Today</button>
                 <button type="button" class="btn btn-default btn-sm move-day" data-action="move-prev">
