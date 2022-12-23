@@ -76,7 +76,7 @@ $calendeer_events = implode(",",$events);
 
 
 
-<link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css" />
+<link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.css" />
 <script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.ie11.js"></script>
 <!-- <script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.js"></script>  -->
   
@@ -109,29 +109,16 @@ $doc->addScript(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module 
   
   
 ?>
-  <div class="container" >
-  
- 
-
-  
-  
-<!-- <div id="datepicker-wrapper"></div>  -->
-
-  
-
-  
+<div class="container" >
   
 
 <div id="calendarList">
 
   
 </div>
-
-
-  
-<!-- <div id="calendar" style="height: 600px;"></div> -->
-  
- <div id="right">
+ 
+ 
+<div id="right">
         <div id="menu">
             <span class="dropdown">
                 <button id="dropdownMenu-calendarType" class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown"
@@ -206,17 +193,22 @@ $doc->addScript(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module 
             </span>
             <span id="renderRange" class="render-range"></span>
         </div>
+        
         <div id="calendar" style="height: 600px;"></div>
+        
     </div>
                       
                       
                       
 <div id="target_div" style=""></div>  
   
-  </div>
+<div class="status" id="status">feld</div>  
+  
+  
+</div>
 
   
-  <div class="status" id="status">feld</div>
+  
   
   
   
