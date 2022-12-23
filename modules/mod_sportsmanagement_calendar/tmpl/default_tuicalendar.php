@@ -122,10 +122,10 @@ $doc->addScript(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module 
   
   
 
- <div id="calendarMenu">
+<div id="calendarList">
 
   
-  </div>
+</div>
 
 
   
@@ -294,8 +294,9 @@ calendar.createEvents([
  ,
   
 ]);
+setRenderRangeText(); 
 
-/**
+
 //calendar.setCalendars(CalendarList);
  var calendarList = document.getElementById('calendarList');
     var html = [];
@@ -308,7 +309,7 @@ calendar.createEvents([
         );
     });
     calendarList.innerHTML = html.join('\n');
-*/
+
 
 
 

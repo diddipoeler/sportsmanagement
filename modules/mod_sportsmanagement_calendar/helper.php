@@ -839,12 +839,12 @@ $cal::$xparams = self::$params;
 $cal::$prefix  = self::$params->prefix;  
   
 $caldates                   = array();
-		$caldates['start']          = "$formvalueyear-$formvaluemonth-01 00:00:00";
-		$caldates['end']            = "$formvalueyear-$formvaluemonth-31 23:59:59";
-		$caldates['starttimestamp'] = sportsmanagementHelper::getTimestamp($caldates['start']);
-		$caldates['endtimestamp']   = sportsmanagementHelper::getTimestamp($caldates['end']);
-		$caldates['roundstart']     = "$formvalueyear-$formvaluemonth-01";
-		$caldates['roundend']       = "$formvalueyear-$formvaluemonth-31";  
+$caldates['start']          = "$formvalueyear-$formvaluemonth-01 00:00:00";
+$caldates['end']            = "$formvalueyear-$formvaluemonth-31 23:59:59";
+$caldates['starttimestamp'] = sportsmanagementHelper::getTimestamp($caldates['start']);
+$caldates['endtimestamp']   = sportsmanagementHelper::getTimestamp($caldates['end']);
+$caldates['roundstart']     = "$formvalueyear-$formvaluemonth-01";
+$caldates['roundend']       = "$formvalueyear-$formvaluemonth-31";  
 
 $ergebnis = $cal::getMatches($caldates);
 $ergebnis = $cal::formatMatches($ergebnis, self::$matches);  
