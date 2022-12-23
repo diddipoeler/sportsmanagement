@@ -96,12 +96,12 @@ $calendeer_events = implode(",",$events);
 <?php  
 if (version_compare(JVERSION, '4.0.0', 'ge'))
 {
-HTMLHelper::_('script', 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'assets/js' . DIRECTORY_SEPARATOR . 'calenders' . '.js');    
+HTMLHelper::_('script', 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'assets/js' . DIRECTORY_SEPARATOR . 'calendars' . '.js');    
 HTMLHelper::_('script', 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'assets/js' . DIRECTORY_SEPARATOR . 'schedules' . '.js');
 }
 elseif (version_compare(JVERSION, '3.0.0', 'ge'))
 {
-$doc->addScript(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'assets/js' . DIRECTORY_SEPARATOR . 'calenders' . '.js');    
+$doc->addScript(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'assets/js' . DIRECTORY_SEPARATOR . 'calendars' . '.js');    
 $doc->addScript(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'assets/js' . DIRECTORY_SEPARATOR . 'schedules' . '.js');
 }  
   
@@ -256,18 +256,7 @@ const options = {
       },
     ],
   },
-  calendars: [
-    {
-      id: '1',
-      name: 'Spiele',
-      backgroundColor: '#03bd9e',
-    },
-    {
-      id: 'cal2',
-      name: 'Work',
-      backgroundColor: '#00a9ff',
-    },
-  ],
+  calendars: CalendarList
 };
 
 const calendar = new Calendar(container, options); 
