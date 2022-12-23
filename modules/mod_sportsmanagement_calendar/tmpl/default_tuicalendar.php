@@ -460,7 +460,7 @@ var scriptstring = '';
 splitssplit = response.split(";");   
 var arrayLength = splitssplit.length;
 for (var i = 0; i < arrayLength; i++) {
-    console.log(splitssplit[i]);
+   // console.log(splitssplit[i]);
   if ( i === 0)
   {
   scriptstring = splitssplit[i];  
