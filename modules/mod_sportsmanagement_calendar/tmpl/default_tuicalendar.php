@@ -239,10 +239,35 @@ var params = <?php echo $params; ?>;
 console.log('start month: ' + month );
 console.log('start year: ' + year );
 
-  const el = document.getElementById("calendar");
-  const prevBtn = document.getElementById("prevBtn");
+const el = document.getElementById("calendar");
+const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
-  
+
+
+var calendarinf;
+var infoid = 0;
+
+calendarinf = new CalendarInfo();
+infoid += 1;
+calendarinf.id = String(infoid);
+calendarinf.name = 'My Calendar';
+calendarinf.color = '#ffffff';
+calendarinf.bgColor = '#9e5fff';
+calendarinf.dragBgColor = '#9e5fff';
+calendarinf.borderColor = '#9e5fff';
+addCalendar(calendarinf);
+
+calendarinf = new CalendarInfo();
+infoid += 1;
+calendarinf.id = String(infoid);
+calendarinf.name = 'Company';
+calendarinf.color = '#ffffff';
+calendarinf.bgColor = '#00a9ff';
+calendarinf.dragBgColor = '#00a9ff';
+calendarinf.borderColor = '#00a9ff';
+addCalendar(calendarinf);
+    
+      
 const Calendar = tui.Calendar;
 const container = document.getElementById('calendar');
 const options = {
@@ -622,7 +647,54 @@ function onClickMenu(e) {
     }
 
 
+// event handlers
+    calendar.on({
+        'clickMore': function(e) {
+            console.log('clickMore', e);
+        },
+        'clickSchedule': function(e) {
+            console.log('clickSchedule', e);
+        },
+        'clickDayname': function(date) {
+            console.log('clickDayname', date);
+        },
+        'beforeCreateSchedule': function(e) {
+            console.log('beforeCreateSchedule', e);
+            saveNewSchedule(e);
+        },
+        'beforeUpdateSchedule': function(e) {
+            console.log('beforeUpdateSchedule', e);
+            e.schedule.start = e.start;
+            e.schedule.end = e.end;
+            calendar.updateSchedule(e.schedule.id, e.schedule.calendarId, e.schedule);
+        },
+        'beforeDeleteSchedule': function(e) {
+            console.log('beforeDeleteSchedule', e);
+            calendar.deleteSchedule(e.schedule.id, e.schedule.calendarId);
+        },
+        'afterRenderSchedule': function(e) {
+            var schedule = e.schedule;
+            // var element = cal.getElement(schedule.id, schedule.calendarId);
+            // console.log('afterRenderSchedule', element);
+        },
+        'clickTimezonesCollapseBtn': function(timezonesCollapsed) {
+            console.log('timezonesCollapsed', timezonesCollapsed);
 
+            if (timezonesCollapsed) {
+                calendar.setTheme({
+                    'week.daygridLeft.width': '77px',
+                    'week.timegridLeft.width': '77px'
+                });
+            } else {
+                calendar.setTheme({
+                    'week.daygridLeft.width': '60px',
+                    'week.timegridLeft.width': '60px'
+                });
+            }
+
+            return true;
+        }
+    });
 
 
 
