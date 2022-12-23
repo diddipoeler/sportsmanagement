@@ -14,6 +14,9 @@
  * https://stackoverflow.com/questions/71907057/how-to-send-json-value-to-tui-calendar-using-ajax
  * 
  * https://github.com/nhn/tui.calendar/tree/56f36b0ae0ac2331983fd2335017ae0fc7e24d7b/examples
+ * 
+ * https://ui.toast.com/tui-calendar
+ * https://github.com/nhn/tui.calendar
  *
  */
 defined('_JEXEC') or die('Restricted access');
@@ -69,16 +72,14 @@ $calendeer_events = implode(",",$events);
 //echo '<pre>'.print_r($calendeer_events,true).'</pre>';
 
 ?>
-  <html>
-  <body>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+ 
+
+
 
 <link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css" />
-
+<script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.ie11.js"></script>
+<!-- <script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.js"></script>  -->
   
-  <script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.ie11.js"></script>
-  
-  <!-- <script src="https://uicdn.toast.com/tui.code-snippet/v1.5.2/tui-code-snippet.min.js"></script> -->
   
 <link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
 <script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>  
@@ -86,8 +87,7 @@ $calendeer_events = implode(",",$events);
 <link rel="stylesheet" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css">
 <script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.js"></script>  
   
-<!-- <script src="https://uicdn.toast.com/tui-calendar/latest/tui-calendar.js"></script>   --->
-  
+ 
   
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chance/1.0.13/chance.min.js"></script>
@@ -726,5 +726,4 @@ calendar.on('clickEvent', ({ event }) => {
 
 </script>
   
-  </body>
-  </html>
+ 
