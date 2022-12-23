@@ -22,6 +22,7 @@
 		<folder>tmpl</folder>
 		<folder>connectors</folder>
 		<folder>language</folder>
+		<folder>tuicalendar</folder>
 	</files>
 
   <languages>
