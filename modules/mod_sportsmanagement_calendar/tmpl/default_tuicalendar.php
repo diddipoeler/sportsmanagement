@@ -57,26 +57,26 @@ $matches = $cal::getMatches($month, $year);
 
 foreach ( $matches as $row )
 {
-  $event = "";
+$event = "";
   //$theStart_date = date(DATE_ATOM, strtotime($row['date']));
   //echo __LINE__.'<pre>'.print_r($theStart_date,true).'</pre>';
   
   //$time = date("c", $row['timestamp']);
-  $time = date("Y-m-d\TH:i:s", $row['timestamp']);
+$time = date("Y-m-d\TH:i:s", $row['timestamp']);
   //echo __LINE__.'<pre>'.print_r($time,true).'</pre>';
   
   
   //$row['date'] = preg_replace(' ', 'T', $row['date']);
   
- $event .= "{id: '".$row['matchcode']."',";
-    $event .= "calendarId: '1',";
-  $event .= "category: 'time',";
+$event .= "{id: '".$row['matchcode']."',";
+$event .= "calendarId: '1',";
+$event .= "category: 'time',";
 $event .= "dueDateClass: '',";
 $event .= "isReadOnly: 'true',";
-    $event .= "title: '".$row['homename'].' - '.$row['awayname'].' '.$row['result']   ."',";
-    $event .= "start: '".$time."',";
-    $event .= "end: '".$time."',  }";
-  $events[] = $event;
+$event .= "title: '".$row['homename'].' - '.$row['awayname'].' '.$row['result']   ."',";
+$event .= "start: '".$time."',";
+$event .= "end: '".$time."',  }";
+$events[] = $event;
 }
 
 //echo '<pre>'.print_r($events,true).'</pre>';
@@ -258,6 +258,10 @@ var responseevents = '';
 var month = <?php echo $month; ?>;
 var year = <?php echo $year; ?>;
 var day = <?php echo $day; ?>;
+
+var daterangevon = '';
+var daterangebis = '';
+
 var params = <?php echo $params; ?>;
 
 var CalendarList = [];
@@ -558,14 +562,44 @@ function hexToRGBA(hex) {
             case 'move-prev':
                 cal.prev();
             setRenderRangeText();
+            
+var options = cal.getOptions();
+var viewName = cal.getViewName();
+console.log('viewName: ' + viewName );
+console.log('options: ' + JSON.stringify(options) );
+
+if (viewName === 'day') {
+console.log('monat: ' + moment(cal.getDate().getTime()).format('MM') );              
+console.log('jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
+console.log('tag: ' + moment(cal.getDate().getTime()).format('DD') );  
+month = moment(cal.getDate().getTime()).format('MM');  
+year = moment(cal.getDate().getTime()).format('YYYY');
+day = moment(cal.getDate().getTime()).format('DD');              
+}  
+else if (viewName === 'month' &&
+ (!options.month.visibleWeeksCount || options.month.visibleWeeksCount > 4)) {
+console.log('monat: ' + moment(cal.getDate().getTime()).format('MM') );              
+console.log('jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
+console.log('tag: ' + moment(cal.getDate().getTime()).format('DD') ); 
+month = moment(cal.getDate().getTime()).format('MM');  
+year = moment(cal.getDate().getTime()).format('YYYY');  
+}
+else {            
+daterangevon = moment(cal.getDateRangeStart().getTime()).format('YYYY-MM-DD');
+daterangebis = moment(cal.getDateRangeEnd().getTime()).format('YYYY-MM-DD');
+}
+      /**      
  month = month - 1;
   if (month === 0) {
     month = 12;
     year = year - 1 ;
     }
+    */
   console.log('month: ' + month );
   console.log('year: ' + year );
   console.log('day: ' + day );
+   console.log('daterangevon: ' + daterangevon );
+  console.log('daterangebis: ' + daterangebis );
   
 request = {
 'option' : 'com_ajax',
@@ -573,6 +607,9 @@ request = {
 'formvaluemonth'   : month,
 'formvalueyear'   : year,
 'formvalueday'   : day,
+'daterangevon'   : daterangevon,
+'daterangebis'   : daterangebis,
+'viewname'   : viewName,
 'params'   : params,
 'format' : 'raw'
 };
@@ -588,15 +625,50 @@ success: eventsaved
             case 'move-next':
                 cal.next();
             setRenderRangeText();
+            
+            
+var options = cal.getOptions();
+var viewName = cal.getViewName();
+console.log('viewName: ' + viewName );
+console.log('options: ' + JSON.stringify(options) );            
+
+            
+if (viewName === 'day') {
+console.log('monat: ' + moment(cal.getDate().getTime()).format('MM') );              
+console.log('jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
+console.log('tag: ' + moment(cal.getDate().getTime()).format('DD') );  
+month = moment(cal.getDate().getTime()).format('MM');  
+year = moment(cal.getDate().getTime()).format('YYYY');
+day = moment(cal.getDate().getTime()).format('DD');              
+}  
+else if (viewName === 'month' &&
+ (!options.month.visibleWeeksCount || options.month.visibleWeeksCount > 4)) {
+console.log('monat: ' + moment(cal.getDate().getTime()).format('MM') );              
+console.log('jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
+console.log('tag: ' + moment(cal.getDate().getTime()).format('DD') ); 
+month = moment(cal.getDate().getTime()).format('MM');  
+year = moment(cal.getDate().getTime()).format('YYYY');  
+}
+else {            
+daterangevon = moment(cal.getDateRangeStart().getTime()).format('YYYY-MM-DD');
+daterangebis = moment(cal.getDateRangeEnd().getTime()).format('YYYY-MM-DD');
+}
+  /**
 month = month + 1;
   
   if (month === 13) {
     month = 1;
     year = year + 1 ;
     }
+            */
+            
+            
   console.log('month: ' + month );
   console.log('year: ' + year );
   console.log('day: ' + day );
+  console.log('daterangevon: ' + daterangevon );
+  console.log('daterangebis: ' + daterangebis );
+  
   //console.log(JSON.stringify(calendar.getOptions()));
   <?php
    // $event_month++;
@@ -614,6 +686,10 @@ request = {
 'formvaluemonth'   : month,
 'formvalueyear'   : year,
 'formvalueday'   : day,
+
+'daterangevon'   : daterangevon,
+'daterangebis'   : daterangebis,
+'viewname'   : viewName,
 'params'   : params,
 'format' : 'raw'
 };  
@@ -631,12 +707,42 @@ success: eventsaved
             case 'move-today':
                 cal.today();
             setRenderRangeText();
+            
+var options = cal.getOptions();
+var viewName = cal.getViewName();
+console.log('viewName: ' + viewName );
+console.log('options: ' + JSON.stringify(options) );
+if (viewName === 'day') {
+console.log('monat: ' + moment(cal.getDate().getTime()).format('MM') );              
+console.log('jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
+console.log('tag: ' + moment(cal.getDate().getTime()).format('DD') );  
+month = moment(cal.getDate().getTime()).format('MM');  
+year = moment(cal.getDate().getTime()).format('YYYY');
+day = moment(cal.getDate().getTime()).format('DD');              
+}  
+else if (viewName === 'month' &&
+ (!options.month.visibleWeeksCount || options.month.visibleWeeksCount > 4)) {
+console.log('monat: ' + moment(cal.getDate().getTime()).format('MM') );              
+console.log('jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
+console.log('tag: ' + moment(cal.getDate().getTime()).format('DD') ); 
+month = moment(cal.getDate().getTime()).format('MM');  
+year = moment(cal.getDate().getTime()).format('YYYY');  
+}
+else {            
+daterangevon = moment(cal.getDateRangeStart().getTime()).format('YYYY-MM-DD');
+daterangebis = moment(cal.getDateRangeEnd().getTime()).format('YYYY-MM-DD');
+}
+
+  /**          
 month = <?php echo $month;?>;
   year = <?php echo $year;?>;
+  */
   
   console.log('month: ' + month );
   console.log('year: ' + year );
   console.log('day: ' + day );
+  console.log('daterangevon: ' + daterangevon );
+  console.log('daterangebis: ' + daterangebis );
   
 request = {
 'option' : 'com_ajax',
@@ -644,6 +750,9 @@ request = {
 'formvaluemonth'   : month,
 'formvalueyear'   : year,
 'formvalueday'   : day,
+'daterangevon'   : daterangevon,
+'daterangebis'   : daterangebis,
+'viewname'   : viewName,
 'params'   : params,
 'format' : 'raw'
 };
@@ -860,6 +969,9 @@ success: eventsaved
             type = 'Monthly';
             iconClassName = 'calendar-icon ic_view_month';
         }
+    
+    console.log('type ', type)
+      console.log('iconClassName ', iconClassName)
 
         calendarTypeName.innerHTML = type;
         calendarTypeIcon.className = iconClassName;
@@ -907,7 +1019,7 @@ cal.createSchedules([
 
 function eventsaved(response) 
 {  
-console.log('events response: ', response)  
+//console.log('events response: ', response)  
   /**
 var scriptstring = '';  
 splitssplit = response.split(";");   

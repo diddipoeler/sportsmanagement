@@ -816,7 +816,13 @@ $input = Factory::getApplication()->input;
  
 // Übermittelter Wert des Formulars
 $formvaluemonth = $input->get('formvaluemonth');
-$formvalueyear = $input->get('formvalueyear');  
+$formvalueyear = $input->get('formvalueyear');
+$formvalueday = $input->get('formvalueday');
+$daterangevon = $input->get('daterangevon');
+$daterangebis = $input->get('daterangebis');
+$viewName = $input->get('viewName');
+
+  
 $paramsmod = $input->get('params');   
 //self::$params = new JRegistry;
 //self::$params->loadArray($paramsmod);  
