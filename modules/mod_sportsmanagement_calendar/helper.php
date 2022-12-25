@@ -877,14 +877,19 @@ foreach ( $ergebnis as $row )
   
   //$row['date'] = preg_replace(' ', 'T', $row['date']);
   
- $event .= "{id: '".$row['matchcode']."',";
- $event .= "calendarId: '1',";
- $event .= "title: '".$row['homename'].' - '.$row['awayname'].' '.$row['result']   ."',";
- $event .= "start: '".$time."',";
- $event .= "end: '".$time."',  }";
+$event .= "{id: '".$row['matchcode']."',";
+$event .= "calendarId: '1',";
+ 
+$event .= "category: 'time',";
+$event .= "dueDateClass: '',";
+$event .= "isReadOnly: 'true',";
+
+$event .= "title: '".$row['homename'].' - '.$row['awayname'].' '.$row['result']   ."',";
+$event .= "start: '".$time."',";
+$event .= "end: '".$time."',  }";
   
- $events[] = $event;
-  
+$events[] = $event;
+ 
   
   /**
   $events_json['id'] = $row['matchcode'];
