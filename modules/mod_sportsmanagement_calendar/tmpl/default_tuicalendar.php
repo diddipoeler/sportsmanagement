@@ -73,6 +73,23 @@ $event .= "calendarId: '1',";
 $event .= "category: 'time',";
 $event .= "dueDateClass: '',";
 $event .= "isReadOnly: 'true',";
+
+$event .= "isAllDay: false, "; 
+$event .= "goingDuration: 30, ";
+$event .= "comingDuration: 30, ";
+$event .= "color: '#ffffff', ";
+$event .= "bgColor: '#69BB2D', ";
+$event .= "dragBgColor: '#69BB2D',"; 
+$event .= "borderColor: '#69BB2D',  "; 
+$event .= "customStyle: 'cursor: default;',"; 
+$event .= "isPending: false, ";
+$event .= "isFocused: false, ";
+$event .= "isPrivate: false, ";
+$event .= "isVisible: true,";
+$event .= "location: '', ";
+$event .= "attendees: '', ";
+$event .= "recurrenceRule: '',";
+
 $event .= "title: '".$row['homename'].' - '.$row['awayname'].' '.$row['result']   ."',";
 $event .= "start: '".$time."',";
 $event .= "end: '".$time."',  }";
@@ -910,7 +927,29 @@ success: eventsaved
     function setSchedules() {
         cal.clear();
         var schedules = [
-            {id: 489273, title: 'Workout for 2020-04-05', isAllDay: false, start: '2020-03-03T11:30:00+09:00', end: '2020-03-03T12:00:00+09:00', goingDuration: 30, comingDuration: 30, color: '#ffffff', isVisible: true, bgColor: '#69BB2D', dragBgColor: '#69BB2D', borderColor: '#69BB2D', calendarId: '1', category: 'allday', dueDateClass: '', customStyle: 'cursor: default;', isPending: false, isFocused: false, isReadOnly: false, isPrivate: false, location: '', attendees: '', recurrenceRule: '', state: ''},
+            {id: 489273, 
+            title: 'Workout for 2020-04-05', 
+            isAllDay: false, 
+            start: '2020-03-03T11:30:00+09:00', 
+            end: '2020-03-03T12:00:00+09:00', 
+            goingDuration: 30, 
+            comingDuration: 30, 
+            color: '#ffffff', isVisible: true, 
+            bgColor: '#69BB2D', 
+            dragBgColor: '#69BB2D', 
+            borderColor: '#69BB2D', 
+            calendarId: '1', 
+            category: 'allday', 
+            dueDateClass: '', 
+            customStyle: 'cursor: default;', 
+            isPending: false, 
+            isFocused: false, 
+            isReadOnly: false, 
+            isPrivate: false, 
+            location: '', 
+            attendees: '', 
+            recurrenceRule: '', 
+            state: ''},
             {id: 489273, title: 'Workout for 2020-04-05', isAllDay: false, start: '2020-03-11T11:30:00+09:00', end: '2020-03-11T12:00:00+09:00', goingDuration: 30, comingDuration: 30, color: '#ffffff', isVisible: true, bgColor: '#69BB2D', dragBgColor: '#69BB2D', borderColor: '#69BB2D', calendarId: '2', category: 'allday', dueDateClass: '', customStyle: 'cursor: default;', isPending: false, isFocused: false, isReadOnly: false, isPrivate: false, location: '', attendees: '', recurrenceRule: '', state: ''},
             {id: 18073, title: 'completed with blocks', isAllDay: false, start: '2020-03-20T09:00:00+09:00', end: '2020-03-20T10:00:00+09:00', color: '#ffffff', isVisible: true, bgColor: '#54B8CC', dragBgColor: '#54B8CC', borderColor: '#54B8CC', calendarId: '1', category: 'allday', dueDateClass: '', customStyle: '', isPending: false, isFocused: false, isReadOnly: false, isPrivate: false, location: '', attendees: '', recurrenceRule: '', state: ''},
             {id: 18073, title: 'completed with blocks', isAllDay: false, start: '2020-03-25T09:00:00+09:00', end: '2020-03-25T10:00:00+09:00', color: '#ffffff', isVisible: true, bgColor: '#54B8CC', dragBgColor: '#54B8CC', borderColor: '#54B8CC', calendarId: '1', category: 'allday', dueDateClass: '', customStyle: '', isPending: false, isFocused: false, isReadOnly: false, isPrivate: false, location: '', attendees: '', recurrenceRule: '', state: ''},

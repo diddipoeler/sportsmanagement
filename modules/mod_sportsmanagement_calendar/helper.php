@@ -890,10 +890,29 @@ $event .= "category: 'time',";
 $event .= "dueDateClass: '',";
 $event .= "isReadOnly: 'true',";
 
+$event .= "isAllDay: false, "; 
+$event .= "goingDuration: 30, ";
+$event .= "comingDuration: 30, ";
+$event .= "color: '#ffffff', ";
+$event .= "bgColor: '#69BB2D', ";
+$event .= "dragBgColor: '#69BB2D',"; 
+$event .= "borderColor: '#69BB2D',  "; 
+$event .= "customStyle: 'cursor: default;',"; 
+$event .= "isPending: false, ";
+$event .= "isFocused: false, ";
+$event .= "isPrivate: false, ";
+$event .= "isVisible: true,";
+$event .= "location: '', ";
+$event .= "attendees: '', ";
+$event .= "recurrenceRule: '',";
+
 $event .= "title: '".$row['homename'].' - '.$row['awayname'].' '.$row['result']   ."',";
 $event .= "start: '".$time."',";
 $event .= "end: '".$time."',  }";
   
+
+            
+            
 $events[] = $event;
  
   
