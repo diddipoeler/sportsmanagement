@@ -154,7 +154,7 @@ Factory::getDocument()->addStyleSheet(Uri::base() . 'modules' . DIRECTORY_SEPARA
         </div>
     </div>
   -->
-<div id="right" class="code-html">
+<div id="calender-right" class="code-html">
         <div id="menu">
             <span class="dropdown">
                 <button id="dropdownMenu-calendarType" class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown"
