@@ -565,22 +565,22 @@ function hexToRGBA(hex) {
             
 var options = cal.getOptions();
 var viewName = cal.getViewName();
-console.log('viewName: ' + viewName );
-console.log('options: ' + JSON.stringify(options) );
+console.log('move-prev viewName: ' + viewName );
+console.log('move-prev options: ' + JSON.stringify(options) );
 
 if (viewName === 'day') {
-console.log('monat: ' + moment(cal.getDate().getTime()).format('MM') );              
-console.log('jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
-console.log('tag: ' + moment(cal.getDate().getTime()).format('DD') );  
+console.log('move-prev monat: ' + moment(cal.getDate().getTime()).format('MM') );              
+console.log('move-prev jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
+console.log('move-prev tag: ' + moment(cal.getDate().getTime()).format('DD') );  
 month = moment(cal.getDate().getTime()).format('MM');  
 year = moment(cal.getDate().getTime()).format('YYYY');
 day = moment(cal.getDate().getTime()).format('DD');              
 }  
 else if (viewName === 'month' &&
  (!options.month.visibleWeeksCount || options.month.visibleWeeksCount > 4)) {
-console.log('monat: ' + moment(cal.getDate().getTime()).format('MM') );              
-console.log('jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
-console.log('tag: ' + moment(cal.getDate().getTime()).format('DD') ); 
+console.log('move-prev monat: ' + moment(cal.getDate().getTime()).format('MM') );              
+console.log('move-prev jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
+console.log('move-prev tag: ' + moment(cal.getDate().getTime()).format('DD') ); 
 month = moment(cal.getDate().getTime()).format('MM');  
 year = moment(cal.getDate().getTime()).format('YYYY');  
 }
@@ -595,11 +595,11 @@ daterangebis = moment(cal.getDateRangeEnd().getTime()).format('YYYY-MM-DD');
     year = year - 1 ;
     }
     */
-  console.log('month: ' + month );
-  console.log('year: ' + year );
-  console.log('day: ' + day );
-   console.log('daterangevon: ' + daterangevon );
-  console.log('daterangebis: ' + daterangebis );
+console.log('move-prev month: ' + month );
+console.log('move-prev year: ' + year );
+console.log('move-prev day: ' + day );
+console.log('move-prev daterangevon: ' + daterangevon );
+console.log('move-prev daterangebis: ' + daterangebis );
   
 request = {
 'option' : 'com_ajax',
@@ -629,23 +629,23 @@ success: eventsaved
             
 var options = cal.getOptions();
 var viewName = cal.getViewName();
-console.log('viewName: ' + viewName );
-console.log('options: ' + JSON.stringify(options) );            
+console.log('move-next viewName: ' + viewName );
+console.log('move-next options: ' + JSON.stringify(options) );            
 
             
 if (viewName === 'day') {
-console.log('monat: ' + moment(cal.getDate().getTime()).format('MM') );              
-console.log('jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
-console.log('tag: ' + moment(cal.getDate().getTime()).format('DD') );  
+console.log('move-next monat: ' + moment(cal.getDate().getTime()).format('MM') );              
+console.log('move-next jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
+console.log('move-next tag: ' + moment(cal.getDate().getTime()).format('DD') );  
 month = moment(cal.getDate().getTime()).format('MM');  
 year = moment(cal.getDate().getTime()).format('YYYY');
 day = moment(cal.getDate().getTime()).format('DD');              
 }  
 else if (viewName === 'month' &&
  (!options.month.visibleWeeksCount || options.month.visibleWeeksCount > 4)) {
-console.log('monat: ' + moment(cal.getDate().getTime()).format('MM') );              
-console.log('jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
-console.log('tag: ' + moment(cal.getDate().getTime()).format('DD') ); 
+console.log('move-next monat: ' + moment(cal.getDate().getTime()).format('MM') );              
+console.log('move-next jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
+console.log('move-next tag: ' + moment(cal.getDate().getTime()).format('DD') ); 
 month = moment(cal.getDate().getTime()).format('MM');  
 year = moment(cal.getDate().getTime()).format('YYYY');  
 }
@@ -663,11 +663,11 @@ month = month + 1;
             */
             
             
-  console.log('month: ' + month );
-  console.log('year: ' + year );
-  console.log('day: ' + day );
-  console.log('daterangevon: ' + daterangevon );
-  console.log('daterangebis: ' + daterangebis );
+console.log('move-next month: ' + month );
+console.log('move-next year: ' + year );
+console.log('move-next day: ' + day );
+console.log('move-next daterangevon: ' + daterangevon );
+console.log('move-next daterangebis: ' + daterangebis );
   
   //console.log(JSON.stringify(calendar.getOptions()));
   <?php
@@ -710,21 +710,21 @@ success: eventsaved
             
 var options = cal.getOptions();
 var viewName = cal.getViewName();
-console.log('viewName: ' + viewName );
-console.log('options: ' + JSON.stringify(options) );
+console.log('move-today viewName: ' + viewName );
+console.log('move-today options: ' + JSON.stringify(options) );
 if (viewName === 'day') {
-console.log('monat: ' + moment(cal.getDate().getTime()).format('MM') );              
-console.log('jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
-console.log('tag: ' + moment(cal.getDate().getTime()).format('DD') );  
+console.log('move-today monat: ' + moment(cal.getDate().getTime()).format('MM') );              
+console.log('move-today jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
+console.log('move-today tag: ' + moment(cal.getDate().getTime()).format('DD') );  
 month = moment(cal.getDate().getTime()).format('MM');  
 year = moment(cal.getDate().getTime()).format('YYYY');
 day = moment(cal.getDate().getTime()).format('DD');              
 }  
 else if (viewName === 'month' &&
  (!options.month.visibleWeeksCount || options.month.visibleWeeksCount > 4)) {
-console.log('monat: ' + moment(cal.getDate().getTime()).format('MM') );              
-console.log('jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
-console.log('tag: ' + moment(cal.getDate().getTime()).format('DD') ); 
+console.log('move-today monat: ' + moment(cal.getDate().getTime()).format('MM') );              
+console.log('move-today jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
+console.log('move-today tag: ' + moment(cal.getDate().getTime()).format('DD') ); 
 month = moment(cal.getDate().getTime()).format('MM');  
 year = moment(cal.getDate().getTime()).format('YYYY');  
 }
@@ -738,11 +738,11 @@ month = <?php echo $month;?>;
   year = <?php echo $year;?>;
   */
   
-  console.log('month: ' + month );
-  console.log('year: ' + year );
-  console.log('day: ' + day );
-  console.log('daterangevon: ' + daterangevon );
-  console.log('daterangebis: ' + daterangebis );
+console.log('move-today month: ' + month );
+console.log('move-today year: ' + year );
+console.log('move-today day: ' + day );
+console.log('move-today daterangevon: ' + daterangevon );
+console.log('move-today daterangebis: ' + daterangebis );
   
 request = {
 'option' : 'com_ajax',
