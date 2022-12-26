@@ -820,7 +820,7 @@ $formvalueyear = $input->get('formvalueyear');
 $formvalueday = $input->get('formvalueday');
 $daterangevon = $input->get('daterangevon');
 $daterangebis = $input->get('daterangebis');
-$viewName = $input->get('viewName');
+$viewName = $input->get('viewname');
 
 switch ( $viewName )
 {
