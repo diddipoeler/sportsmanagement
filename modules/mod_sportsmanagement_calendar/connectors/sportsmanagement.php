@@ -290,7 +290,7 @@ class SportsmanagementConnector extends JSMCalendar
 		foreach ($rows AS $key => $row)
 		{
 			$newrows[$key]['type']    = 'jlm';
-            $newrows[$key]['leaguecountry']    = JSMCountries::getCountryFlag($row->leaguecountry);
+            //$newrows[$key]['leaguecountry']    = JSMCountries::getCountryFlag($row->leaguecountry);
 			$newrows[$key]['homepic'] = self::buildImage($teams[$row->projectteam1_id]);
 			$newrows[$key]['awaypic'] = self::buildImage($teams[$row->projectteam2_id]);
 			$newrows[$key]['date']    = sportsmanagementHelper::getMatchStartTimestamp($row);
