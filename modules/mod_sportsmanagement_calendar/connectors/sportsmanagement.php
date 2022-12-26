@@ -181,7 +181,7 @@ class SportsmanagementConnector extends JSMCalendar
 		$query->select('p.timezone,p.name,p.alias');
 		$query->select('match_date AS caldate,r.roundcode, r.name AS roundname, r.round_date_first, r.round_date_last,m.id as matchcode, p.id as project_id');
 		$query->select('m.cancel,m.cancel_reason');
-        $query->select('l.country as leaguecountry');
+        $query->select('le.country as leaguecountry');
 		$query->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
 		$query->select('CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) AS match_slug ');
 		$query->from('#__sportsmanagement_match as m');
