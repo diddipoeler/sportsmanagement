@@ -567,12 +567,43 @@ function hexToRGBA(hex) {
         setDropdownCalendarType();
         setRenderRangeText();
         setSchedules();
+        
+        
+if (viewName === 'day') {
+console.log('onClickMenu monat: ' + moment(cal.getDate().getTime()).format('MM') );              
+console.log('onClickMenu jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
+console.log('onClickMenu tag: ' + moment(cal.getDate().getTime()).format('DD') );  
+month = moment(cal.getDate().getTime()).format('MM');  
+year = moment(cal.getDate().getTime()).format('YYYY');
+day = moment(cal.getDate().getTime()).format('DD');              
+}  
+else if (viewName === 'month' &&
+ (!options.month.visibleWeeksCount || options.month.visibleWeeksCount > 4)) {
+console.log('onClickMenu monat: ' + moment(cal.getDate().getTime()).format('MM') );              
+console.log('onClickMenu jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
+console.log('onClickMenu tag: ' + moment(cal.getDate().getTime()).format('DD') ); 
+month = moment(cal.getDate().getTime()).format('MM');  
+year = moment(cal.getDate().getTime()).format('YYYY');  
+}
+else {            
+daterangevon = moment(cal.getDateRangeStart().getTime()).format('YYYY-MM-DD');
+daterangebis = moment(cal.getDateRangeEnd().getTime()).format('YYYY-MM-DD');
+}
+console.log('onClickMenu month: ' + month );
+console.log('onClickMenu year: ' + year );
+console.log('onClickMenu day: ' + day );
+console.log('onClickMenu daterangevon: ' + daterangevon );
+console.log('onClickMenu daterangebis: ' + daterangebis );
+        
+        
+        
     } 
   
   
     function onClickNavi(e) {
         var action = getDataAction(e.target);
-
+var options = cal.getOptions();
+var viewName = cal.getViewName();
       console.log('action:  ', action)
   
         switch (action) {
@@ -580,31 +611,31 @@ function hexToRGBA(hex) {
                 cal.prev();
             setRenderRangeText();
             
-var options = cal.getOptions();
-var viewName = cal.getViewName();
-console.log('move-prev viewName: ' + viewName );
-console.log('move-prev options: ' + JSON.stringify(options) );
-
-if (viewName === 'day') {
-console.log('move-prev monat: ' + moment(cal.getDate().getTime()).format('MM') );              
-console.log('move-prev jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
-console.log('move-prev tag: ' + moment(cal.getDate().getTime()).format('DD') );  
-month = moment(cal.getDate().getTime()).format('MM');  
-year = moment(cal.getDate().getTime()).format('YYYY');
-day = moment(cal.getDate().getTime()).format('DD');              
-}  
-else if (viewName === 'month' &&
- (!options.month.visibleWeeksCount || options.month.visibleWeeksCount > 4)) {
-console.log('move-prev monat: ' + moment(cal.getDate().getTime()).format('MM') );              
-console.log('move-prev jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
-console.log('move-prev tag: ' + moment(cal.getDate().getTime()).format('DD') ); 
-month = moment(cal.getDate().getTime()).format('MM');  
-year = moment(cal.getDate().getTime()).format('YYYY');  
-}
-else {            
-daterangevon = moment(cal.getDateRangeStart().getTime()).format('YYYY-MM-DD');
-daterangebis = moment(cal.getDateRangeEnd().getTime()).format('YYYY-MM-DD');
-}
+//var options = cal.getOptions();
+//var viewName = cal.getViewName();
+//console.log('move-prev viewName: ' + viewName );
+//console.log('move-prev options: ' + JSON.stringify(options) );
+//
+//if (viewName === 'day') {
+//console.log('move-prev monat: ' + moment(cal.getDate().getTime()).format('MM') );              
+//console.log('move-prev jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
+//console.log('move-prev tag: ' + moment(cal.getDate().getTime()).format('DD') );  
+//month = moment(cal.getDate().getTime()).format('MM');  
+//year = moment(cal.getDate().getTime()).format('YYYY');
+//day = moment(cal.getDate().getTime()).format('DD');              
+//}  
+//else if (viewName === 'month' &&
+// (!options.month.visibleWeeksCount || options.month.visibleWeeksCount > 4)) {
+//console.log('move-prev monat: ' + moment(cal.getDate().getTime()).format('MM') );              
+//console.log('move-prev jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
+//console.log('move-prev tag: ' + moment(cal.getDate().getTime()).format('DD') ); 
+//month = moment(cal.getDate().getTime()).format('MM');  
+//year = moment(cal.getDate().getTime()).format('YYYY');  
+//}
+//else {            
+//daterangevon = moment(cal.getDateRangeStart().getTime()).format('YYYY-MM-DD');
+//daterangebis = moment(cal.getDateRangeEnd().getTime()).format('YYYY-MM-DD');
+//}
       /**      
  month = month - 1;
   if (month === 0) {
@@ -612,31 +643,31 @@ daterangebis = moment(cal.getDateRangeEnd().getTime()).format('YYYY-MM-DD');
     year = year - 1 ;
     }
     */
-console.log('move-prev month: ' + month );
-console.log('move-prev year: ' + year );
-console.log('move-prev day: ' + day );
-console.log('move-prev daterangevon: ' + daterangevon );
-console.log('move-prev daterangebis: ' + daterangebis );
-  
-request = {
-'option' : 'com_ajax',
-'module' : 'sportsmanagement_calendar',
-'formvaluemonth'   : month,
-'formvalueyear'   : year,
-'formvalueday'   : day,
-'daterangevon'   : daterangevon,
-'daterangebis'   : daterangebis,
-'viewname'   : viewName,
-'params'   : params,
-'format' : 'raw'
-};
-  
-jQuery.ajax({
-type   : 'POST',
-data   : request,
-async: false,
-success: eventsaved
-});              
+//console.log('move-prev month: ' + month );
+//console.log('move-prev year: ' + year );
+//console.log('move-prev day: ' + day );
+//console.log('move-prev daterangevon: ' + daterangevon );
+//console.log('move-prev daterangebis: ' + daterangebis );
+//  
+//request = {
+//'option' : 'com_ajax',
+//'module' : 'sportsmanagement_calendar',
+//'formvaluemonth'   : month,
+//'formvalueyear'   : year,
+//'formvalueday'   : day,
+//'daterangevon'   : daterangevon,
+//'daterangebis'   : daterangebis,
+//'viewname'   : viewName,
+//'params'   : params,
+//'format' : 'raw'
+//};
+//  
+//jQuery.ajax({
+//type   : 'POST',
+//data   : request,
+//async: false,
+//success: eventsaved
+//});              
             
                 break;
             case 'move-next':
@@ -644,32 +675,32 @@ success: eventsaved
             setRenderRangeText();
             
             
-var options = cal.getOptions();
-var viewName = cal.getViewName();
-console.log('move-next viewName: ' + viewName );
-console.log('move-next options: ' + JSON.stringify(options) );            
-
-            
-if (viewName === 'day') {
-console.log('move-next monat: ' + moment(cal.getDate().getTime()).format('MM') );              
-console.log('move-next jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
-console.log('move-next tag: ' + moment(cal.getDate().getTime()).format('DD') );  
-month = moment(cal.getDate().getTime()).format('MM');  
-year = moment(cal.getDate().getTime()).format('YYYY');
-day = moment(cal.getDate().getTime()).format('DD');              
-}  
-else if (viewName === 'month' &&
- (!options.month.visibleWeeksCount || options.month.visibleWeeksCount > 4)) {
-console.log('move-next monat: ' + moment(cal.getDate().getTime()).format('MM') );              
-console.log('move-next jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
-console.log('move-next tag: ' + moment(cal.getDate().getTime()).format('DD') ); 
-month = moment(cal.getDate().getTime()).format('MM');  
-year = moment(cal.getDate().getTime()).format('YYYY');  
-}
-else {            
-daterangevon = moment(cal.getDateRangeStart().getTime()).format('YYYY-MM-DD');
-daterangebis = moment(cal.getDateRangeEnd().getTime()).format('YYYY-MM-DD');
-}
+//var options = cal.getOptions();
+//var viewName = cal.getViewName();
+//console.log('move-next viewName: ' + viewName );
+//console.log('move-next options: ' + JSON.stringify(options) );            
+//
+//            
+//if (viewName === 'day') {
+//console.log('move-next monat: ' + moment(cal.getDate().getTime()).format('MM') );              
+//console.log('move-next jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
+//console.log('move-next tag: ' + moment(cal.getDate().getTime()).format('DD') );  
+//month = moment(cal.getDate().getTime()).format('MM');  
+//year = moment(cal.getDate().getTime()).format('YYYY');
+//day = moment(cal.getDate().getTime()).format('DD');              
+//}  
+//else if (viewName === 'month' &&
+// (!options.month.visibleWeeksCount || options.month.visibleWeeksCount > 4)) {
+//console.log('move-next monat: ' + moment(cal.getDate().getTime()).format('MM') );              
+//console.log('move-next jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
+//console.log('move-next tag: ' + moment(cal.getDate().getTime()).format('DD') ); 
+//month = moment(cal.getDate().getTime()).format('MM');  
+//year = moment(cal.getDate().getTime()).format('YYYY');  
+//}
+//else {            
+//daterangevon = moment(cal.getDateRangeStart().getTime()).format('YYYY-MM-DD');
+//daterangebis = moment(cal.getDateRangeEnd().getTime()).format('YYYY-MM-DD');
+//}
   /**
 month = month + 1;
   
@@ -680,11 +711,11 @@ month = month + 1;
             */
             
             
-console.log('move-next month: ' + month );
-console.log('move-next year: ' + year );
-console.log('move-next day: ' + day );
-console.log('move-next daterangevon: ' + daterangevon );
-console.log('move-next daterangebis: ' + daterangebis );
+//console.log('move-next month: ' + month );
+//console.log('move-next year: ' + year );
+//console.log('move-next day: ' + day );
+//console.log('move-next daterangevon: ' + daterangevon );
+//console.log('move-next daterangebis: ' + daterangebis );
   
   //console.log(JSON.stringify(calendar.getOptions()));
   <?php
@@ -694,29 +725,29 @@ console.log('move-next daterangebis: ' + daterangebis );
    
     ?>
       
-  var location = window.location.href ;
-    console.log('location: ' + location );
-
-request = {
-'option' : 'com_ajax',
-'module' : 'sportsmanagement_calendar',
-'formvaluemonth'   : month,
-'formvalueyear'   : year,
-'formvalueday'   : day,
-
-'daterangevon'   : daterangevon,
-'daterangebis'   : daterangebis,
-'viewname'   : viewName,
-'params'   : params,
-'format' : 'raw'
-};  
-                
-jQuery.ajax({
-type   : 'POST',
-data   : request,
-async: false,
-success: eventsaved
-});              
+  //var location = window.location.href ;
+//    console.log('location: ' + location );
+//
+//request = {
+//'option' : 'com_ajax',
+//'module' : 'sportsmanagement_calendar',
+//'formvaluemonth'   : month,
+//'formvalueyear'   : year,
+//'formvalueday'   : day,
+//
+//'daterangevon'   : daterangevon,
+//'daterangebis'   : daterangebis,
+//'viewname'   : viewName,
+//'params'   : params,
+//'format' : 'raw'
+//};  
+//                
+//jQuery.ajax({
+//type   : 'POST',
+//data   : request,
+//async: false,
+//success: eventsaved
+//});              
           
             
             
@@ -725,23 +756,82 @@ success: eventsaved
                 cal.today();
             setRenderRangeText();
             
-var options = cal.getOptions();
-var viewName = cal.getViewName();
-console.log('move-today viewName: ' + viewName );
-console.log('move-today options: ' + JSON.stringify(options) );
+//var options = cal.getOptions();
+//var viewName = cal.getViewName();
+//console.log('move-today viewName: ' + viewName );
+//console.log('move-today options: ' + JSON.stringify(options) );
+//if (viewName === 'day') {
+//console.log('move-today monat: ' + moment(cal.getDate().getTime()).format('MM') );              
+//console.log('move-today jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
+//console.log('move-today tag: ' + moment(cal.getDate().getTime()).format('DD') );  
+//month = moment(cal.getDate().getTime()).format('MM');  
+//year = moment(cal.getDate().getTime()).format('YYYY');
+//day = moment(cal.getDate().getTime()).format('DD');              
+//}  
+//else if (viewName === 'month' &&
+// (!options.month.visibleWeeksCount || options.month.visibleWeeksCount > 4)) {
+//console.log('move-today monat: ' + moment(cal.getDate().getTime()).format('MM') );              
+//console.log('move-today jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
+//console.log('move-today tag: ' + moment(cal.getDate().getTime()).format('DD') ); 
+//month = moment(cal.getDate().getTime()).format('MM');  
+//year = moment(cal.getDate().getTime()).format('YYYY');  
+//}
+//else {            
+//daterangevon = moment(cal.getDateRangeStart().getTime()).format('YYYY-MM-DD');
+//daterangebis = moment(cal.getDateRangeEnd().getTime()).format('YYYY-MM-DD');
+//}
+
+  /**          
+month = <?php echo $month;?>;
+  year = <?php echo $year;?>;
+  */
+  
+//console.log('move-today month: ' + month );
+//console.log('move-today year: ' + year );
+//console.log('move-today day: ' + day );
+//console.log('move-today daterangevon: ' + daterangevon );
+//console.log('move-today daterangebis: ' + daterangebis );
+//  
+//request = {
+//'option' : 'com_ajax',
+//'module' : 'sportsmanagement_calendar',
+//'formvaluemonth'   : month,
+//'formvalueyear'   : year,
+//'formvalueday'   : day,
+//'daterangevon'   : daterangevon,
+//'daterangebis'   : daterangebis,
+//'viewname'   : viewName,
+//'params'   : params,
+//'format' : 'raw'
+//};
+//  
+//jQuery.ajax({
+//type   : 'POST',
+//data   : request,
+//async: false,
+//success: eventsaved
+//});              
+            
+                break;
+            default:
+                return;
+        }
+
+console.log('onClickNavi viewName: ' + viewName );
+console.log('onClickNavi options: ' + JSON.stringify(options) );
 if (viewName === 'day') {
-console.log('move-today monat: ' + moment(cal.getDate().getTime()).format('MM') );              
-console.log('move-today jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
-console.log('move-today tag: ' + moment(cal.getDate().getTime()).format('DD') );  
+console.log('onClickNavi monat: ' + moment(cal.getDate().getTime()).format('MM') );              
+console.log('onClickNavi jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
+console.log('onClickNavi tag: ' + moment(cal.getDate().getTime()).format('DD') );  
 month = moment(cal.getDate().getTime()).format('MM');  
 year = moment(cal.getDate().getTime()).format('YYYY');
 day = moment(cal.getDate().getTime()).format('DD');              
 }  
 else if (viewName === 'month' &&
  (!options.month.visibleWeeksCount || options.month.visibleWeeksCount > 4)) {
-console.log('move-today monat: ' + moment(cal.getDate().getTime()).format('MM') );              
-console.log('move-today jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
-console.log('move-today tag: ' + moment(cal.getDate().getTime()).format('DD') ); 
+console.log('onClickNavi monat: ' + moment(cal.getDate().getTime()).format('MM') );              
+console.log('onClickNavi jahr: ' + moment(cal.getDate().getTime()).format('YYYY') );             
+console.log('onClickNavi tag: ' + moment(cal.getDate().getTime()).format('DD') ); 
 month = moment(cal.getDate().getTime()).format('MM');  
 year = moment(cal.getDate().getTime()).format('YYYY');  
 }
@@ -750,17 +840,15 @@ daterangevon = moment(cal.getDateRangeStart().getTime()).format('YYYY-MM-DD');
 daterangebis = moment(cal.getDateRangeEnd().getTime()).format('YYYY-MM-DD');
 }
 
-  /**          
-month = <?php echo $month;?>;
-  year = <?php echo $year;?>;
-  */
-  
-console.log('move-today month: ' + month );
-console.log('move-today year: ' + year );
-console.log('move-today day: ' + day );
-console.log('move-today daterangevon: ' + daterangevon );
-console.log('move-today daterangebis: ' + daterangebis );
-  
+
+
+
+console.log('onClickNavi month: ' + month );
+console.log('onClickNavi year: ' + year );
+console.log('onClickNavi day: ' + day );
+console.log('onClickNavi daterangevon: ' + daterangevon );
+console.log('onClickNavi daterangebis: ' + daterangebis );
+
 request = {
 'option' : 'com_ajax',
 'module' : 'sportsmanagement_calendar',
@@ -780,11 +868,7 @@ data   : request,
 async: false,
 success: eventsaved
 });              
-            
-                break;
-            default:
-                return;
-        }
+
 
         setRenderRangeText();
         setSchedules();

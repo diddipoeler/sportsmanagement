@@ -906,7 +906,7 @@ $event .= "location: '', ";
 $event .= "attendees: '', ";
 $event .= "recurrenceRule: '',";
 
-$event .= "title: '".$row['homename'].' - '.$row['awayname'].' '.$row['result']   ."',";
+$event .= "title: '". $row['leaguecountry'] ." ". $row['homename'].' - '.$row['awayname'].' '.$row['result']   ."',";
 $event .= "start: '".$time."',";
 $event .= "end: '".$time."',  }";
   

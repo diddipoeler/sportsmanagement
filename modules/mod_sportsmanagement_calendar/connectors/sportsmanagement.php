@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_calendar
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -30,11 +26,8 @@ use Joomla\CMS\Factory;
 class SportsmanagementConnector extends JSMCalendar
 {
 	static $xparams;
-
 	static $params;
-
 	static $prefix;
-
 	static $favteams;
 
 	/**
@@ -108,6 +101,13 @@ class SportsmanagementConnector extends JSMCalendar
 	}
 
 
+	/**
+	 * SportsmanagementConnector::getMatches()
+	 * 
+	 * @param mixed $caldates
+	 * @param string $ordering
+	 * @return
+	 */
 	static function getMatches($caldates, $ordering = 'ASC')
 	{
 		// Reference global application object
@@ -181,11 +181,13 @@ class SportsmanagementConnector extends JSMCalendar
 		$query->select('p.timezone,p.name,p.alias');
 		$query->select('match_date AS caldate,r.roundcode, r.name AS roundname, r.round_date_first, r.round_date_last,m.id as matchcode, p.id as project_id');
 		$query->select('m.cancel,m.cancel_reason');
+        $query->select('l.country as leaguecountry');
 		$query->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
 		$query->select('CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) AS match_slug ');
 		$query->from('#__sportsmanagement_match as m');
 		$query->join('INNER', '#__sportsmanagement_round as r ON r.id = m.round_id');
 		$query->join('INNER', '#__sportsmanagement_project as p ON p.id = r.project_id');
+        $query->join('INNER', '#__sportsmanagement_league as le ON le.id = p.league_id');
 		$query->join('LEFT', '#__sportsmanagement_project_team AS tt1 ON m.projectteam1_id = tt1.id');
 		$query->join('LEFT', '#__sportsmanagement_project_team AS tt2 ON m.projectteam2_id = tt2.id');
 		$query->join('LEFT', '#__sportsmanagement_season_team_id AS st1 ON st1.id = tt1.team_id ');
@@ -288,6 +290,7 @@ class SportsmanagementConnector extends JSMCalendar
 		foreach ($rows AS $key => $row)
 		{
 			$newrows[$key]['type']    = 'jlm';
+            $newrows[$key]['leaguecountry']    = JSMCountries::getCountryFlag($row->leaguecountry);
 			$newrows[$key]['homepic'] = self::buildImage($teams[$row->projectteam1_id]);
 			$newrows[$key]['awaypic'] = self::buildImage($teams[$row->projectteam2_id]);
 			$newrows[$key]['date']    = sportsmanagementHelper::getMatchStartTimestamp($row);
