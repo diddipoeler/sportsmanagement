@@ -946,6 +946,10 @@ $events[] = $event;
   //$events = json_encode($ergebnis);
 //echo '<pre>'.print_r($events,true).'</pre>';
 //$calendeer_events = implode(";",$events);  
+
+$results = "<pre>".print_r($caldates,true)."</pre>";
+
+
 $calendeer_events = implode(",",$events);
   
 //$result .= 'Der übermittelte Wert events: <pre>'.print_r($events,true).'</pre>';      
