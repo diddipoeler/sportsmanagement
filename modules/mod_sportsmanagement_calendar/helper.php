@@ -822,6 +822,22 @@ $daterangevon = $input->get('daterangevon');
 $daterangebis = $input->get('daterangebis');
 $viewName = $input->get('viewName');
 
+switch ( $viewName )
+{
+    case 'day':
+    $caldates_suchestart = $formvalueyear.'-'.$formvaluemonth.'-'.$formvalueday;
+    $caldates_sucheende = $formvalueyear.'-'.$formvaluemonth.'-'.$formvalueday;
+    break;
+    case 'month':
+    $caldates_suchestart = $formvalueyear.'-'.$formvaluemonth.'-01';
+    $caldates_sucheende = $formvalueyear.'-'.$formvaluemonth.'-31';
+    break;
+    default:
+    $caldates_suchestart = $daterangevon;
+    $caldates_sucheende = $daterangebis;
+    break;
+}
+
   
 $paramsmod = $input->get('params');   
 //self::$params = new JRegistry;
@@ -845,8 +861,8 @@ $cal::$xparams = self::$params;
 $cal::$prefix  = self::$params->prefix;  
   
 $caldates                   = array();
-$caldates['start']          = "$formvalueyear-$formvaluemonth-01 00:00:00";
-$caldates['end']            = "$formvalueyear-$formvaluemonth-31 23:59:59";
+$caldates['start']          = "$caldates_suchestart 00:00:00";
+$caldates['end']            = "$caldates_sucheende 23:59:59";
 $caldates['starttimestamp'] = sportsmanagementHelper::getTimestamp($caldates['start']);
 $caldates['endtimestamp']   = sportsmanagementHelper::getTimestamp($caldates['end']);
 $caldates['roundstart']     = "$formvalueyear-$formvaluemonth-01";

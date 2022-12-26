@@ -596,7 +596,27 @@ console.log('onClickMenu daterangevon: ' + daterangevon );
 console.log('onClickMenu daterangebis: ' + daterangebis );
         
         
-        
+request = {
+'option' : 'com_ajax',
+'module' : 'sportsmanagement_calendar',
+'formvaluemonth'   : month,
+'formvalueyear'   : year,
+'formvalueday'   : day,
+'daterangevon'   : daterangevon,
+'daterangebis'   : daterangebis,
+'viewname'   : viewName,
+'params'   : params,
+'format' : 'raw'
+};
+  
+jQuery.ajax({
+type   : 'POST',
+data   : request,
+async: false,
+success: eventsaved
+});        
+      
+      
     } 
   
   
@@ -609,7 +629,7 @@ var viewName = cal.getViewName();
         switch (action) {
             case 'move-prev':
                 cal.prev();
-            setRenderRangeText();
+            //setRenderRangeText();
             
 //var options = cal.getOptions();
 //var viewName = cal.getViewName();
@@ -672,7 +692,7 @@ var viewName = cal.getViewName();
                 break;
             case 'move-next':
                 cal.next();
-            setRenderRangeText();
+            //setRenderRangeText();
             
             
 //var options = cal.getOptions();
@@ -754,7 +774,7 @@ month = month + 1;
                 break;
             case 'move-today':
                 cal.today();
-            setRenderRangeText();
+            //setRenderRangeText();
             
 //var options = cal.getOptions();
 //var viewName = cal.getViewName();
@@ -871,7 +891,7 @@ success: eventsaved
 
 
         setRenderRangeText();
-        setSchedules();
+        //setSchedules();
     }
 
     function onNewSchedule() {
@@ -1142,7 +1162,7 @@ cal.createSchedules([
 
 function eventsaved(response) 
 {  
-//console.log('events response: ', response)  
+console.log('events response: ', response)  
   /**
 var scriptstring = '';  
 splitssplit = response.split(";");   
@@ -1164,7 +1184,7 @@ scriptstring = 'cal.clear();cal.createSchedules([' + response + ',]);'  ;
 //scriptstring = 'cal.createSchedules([' + response + ',]);'  ;  
 
 jQuery('<script>' + scriptstring + '</' + 'script>').appendTo(document.body);   
-cal.setRenderRangeText();  
+//cal.setRenderRangeText();  
 }
 
 //jQuery('#menu-navi').on('click', onClickNavi);

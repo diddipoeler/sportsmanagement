@@ -53,6 +53,12 @@ if (!class_exists('sportsmanagementHelperRoute'))
 	JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 }
 
+if (!class_exists('JSMCountries'))
+{
+	JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
+}
+
+
 if (!defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
 {
 	DEFINE('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE', ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database'));
