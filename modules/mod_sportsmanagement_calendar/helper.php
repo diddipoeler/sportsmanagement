@@ -918,7 +918,7 @@ $event .= "isPending: false, ";
 $event .= "isFocused: false, ";
 $event .= "isPrivate: false, ";
 $event .= "isVisible: true,";
-$event .= "location: '', ";
+$event .= "location: '".$row['leaguecountry'] ." ". $row['leaguename']."', ";
 $event .= "attendees: '', ";
 $event .= "recurrenceRule: '',";
 
