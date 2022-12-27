@@ -110,10 +110,7 @@ class SportsmanagementConnector extends JSMCalendar
 	 */
 	static function getMatches($caldates, $ordering = 'ASC')
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 		$db     = sportsmanagementHelper::getDBConnection();
 		$query  = $db->getQuery(true);
@@ -181,7 +178,7 @@ class SportsmanagementConnector extends JSMCalendar
 		$query->select('p.timezone,p.name,p.alias');
 		$query->select('match_date AS caldate,r.roundcode, r.name AS roundname, r.round_date_first, r.round_date_last,m.id as matchcode, p.id as project_id');
 		$query->select('m.cancel,m.cancel_reason');
-        $query->select('le.country as leaguecountry');
+        $query->select('le.country as leaguecountry,le.name as leaguename');
 		$query->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
 		$query->select('CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) AS match_slug ');
 		$query->from('#__sportsmanagement_match as m');
@@ -291,6 +288,8 @@ class SportsmanagementConnector extends JSMCalendar
 		{
 			$newrows[$key]['type']    = 'jlm';
             //$newrows[$key]['leaguecountry']    = JSMCountries::getCountryFlag($row->leaguecountry);
+            $newrows[$key]['leaguecountry']    = $row->leaguecountry;
+            $newrows[$key]['leaguename']    = $row->leaguename;
 			$newrows[$key]['homepic'] = self::buildImage($teams[$row->projectteam1_id]);
 			$newrows[$key]['awaypic'] = self::buildImage($teams[$row->projectteam2_id]);
 			$newrows[$key]['date']    = sportsmanagementHelper::getMatchStartTimestamp($row);
