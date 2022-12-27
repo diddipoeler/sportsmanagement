@@ -943,6 +943,8 @@ $events[] = $event;
   */
 }
 
+//echo "<script>".print_r($caldates,true)."</script>";
+
   //$events = json_encode($ergebnis);
 //echo '<pre>'.print_r($events,true).'</pre>';
 //$calendeer_events = implode(";",$events);  
