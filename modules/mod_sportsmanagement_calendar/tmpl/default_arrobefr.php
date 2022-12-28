@@ -67,7 +67,7 @@ $time = date("Y-m-d\TH:i:s", $row['timestamp']);
   
   
   //$row['date'] = preg_replace(' ', 'T', $row['date']);
-  
+  /*
 $event .= "{id: '".$row['matchcode']."',";
 $event .= "calendarId: '1',";
 $event .= "category: 'time',";
@@ -93,7 +93,18 @@ $event .= "recurrenceRule: '',";
 $event .= "title: '".$row['homename'].' - '.$row['awayname'].' '.$row['result']   ."',";
 $event .= "start: '".$time."',";
 $event .= "end: '".$time."',  }";
+  */
+  
+$event .= "{start: '".$row['timestamp']."',";
+$event .= "end: '".$row['timestamp'] ."', ";
+$event .= "title: '".$row['homename'].' - '.$row['awayname'].' '.$row['result']   ."',";  
+$event .= "content: '".$row['leaguecountry'] ." ". $row['leaguename']."', ";  
+$event .= "category: '".$row['leaguename']."',  }";  
 $events[] = $event;
+  
+  
+  
+  
 }
 
 //echo '<pre>'.print_r($events,true).'</pre>';
@@ -104,6 +115,7 @@ $calendeer_events = implode(",",$events);
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.touchswipe/1.6.19/jquery.touchSwipe.js"></script>  
 <script src="https://cdn.jsdelivr.net/npm/arrobefr-jquery-calendar-bs4@1.0.3/dist/js/jquery-calendar.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/arrobefr-jquery-calendar-bs4@1.0.3/dist/css/jquery-calendar.min.css">
   
@@ -123,13 +135,18 @@ $calendeer_events = implode(",",$events);
        * Many events
        */
       var events = [
+        <?php echo $calendeer_events; ?>
+        /*
         {
-          start: now.startOf('week').add(9, 'h').format('X'),
-          end: now.startOf('week').add(10, 'h').format('X'),
+          start: '2022-12-28',
+          end: '2022-12-28',
           title: '1',
           content: 'Hello World! <br> <p>Foo Bar</p>',
           category:'Professionnal'
-        },
+        }
+        */
+        ,
+        /*
         {
           start: now.startOf('week').add(10, 'h').format('X'),
           end: now.startOf('week').add(11, 'h').format('X'),
@@ -319,24 +336,27 @@ $calendeer_events = implode(",",$events);
          content: 'Hello World! <br> <p>Foo Bar</p>',
          category:'Baz'
        },
+        */
       ];
 
       /**
        * A daynote
        */
       var daynotes = [
+        /*
         {
           time: now.startOf('week').add(15, 'h').add(30, 'm').format('X'),
           title: 'Leo\'s holiday',
           content: 'yo',
           category: 'holiday'
         }
+        */
       ];
 
       /**
        * Init the calendar
        */
-      var calendar = jQuery$('#calendar').Calendar({
+      var calendar = jQuery('#calendar').Calendar({
         locale: 'en',
         weekday: {
           timeline: {
@@ -393,11 +413,11 @@ $calendeer_events = implode(",",$events);
       });
     });
   </script>
-  <div class="container-fluid px-4">
+    <div class="container-fluid px-4">
     <div class="row">
       <div class="col-xs-12">
-        <h1>Wow ! That calendar works !</h1>
-        <div id="calendar"></div>
+        
+        <div id="calendar" style="width: 100%;"></div>
       </div>
     </div>
   </div>
