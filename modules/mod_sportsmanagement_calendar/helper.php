@@ -843,9 +843,6 @@ self::$params = $moduleParams;
    
   
 // Verarbeitung des Übermittelten Wert
-//$result = 'Der übermittelte Wert: "'.$formvaluemonth.'"';
-//$result .= 'Der übermittelte Wert: "'.$formvalueyear.'"';  
-//$result .= 'Der übermittelte Wert modul params: <pre>'.print_r($moduleParams,true).'</pre>'; 
   
 $cal       = new SportsmanagementConnector; // This object creates the html for the calendar  
 $cal::$params  = self::$params;
@@ -880,24 +877,25 @@ $result .= 'Der übermittelte Wert: <pre>'.print_r($matches,true).'</pre>';
 
 foreach ( $ergebnis as $row )
 {
-  $event = "";
-  //$theStart_date = date(DATE_ATOM, strtotime($row['date']));
-  //echo __LINE__.'<pre>'.print_r($theStart_date,true).'</pre>';
-  
-  //$time = date("c", $row['timestamp']);
-  $time = date("Y-m-d\TH:i:s", $row['timestamp']);
-  //echo __LINE__.'<pre>'.print_r($time,true).'</pre>';
-  
-  
-  //$row['date'] = preg_replace(' ', 'T', $row['date']);
-  
+$event = "";
+$time = date("Y-m-d\TH:i:s", $row['timestamp']);
+switch ( $viewName )
+{
+case 'arrobefr':
+$event .= "{start: '".$row['timestamp']."',";
+$event .= "end: '".$row['timestamp'] + 3600 + 1800 + 900 ." ', ";
+$event .= "title: '".$row['homename'].' - '.$row['awayname'].' '.$row['result']   ."',";  
+$event .= "content: '".$row['leaguecountry'] ." ". $row['leaguename']."', ";  
+$event .= "category: '".$row['leaguename']."',  }";  
+
+
+break;
+default:
 $event .= "{id: '".$row['matchcode']."',";
 $event .= "calendarId: '1',";
- 
 $event .= "category: 'time',";
 $event .= "dueDateClass: '',";
 $event .= "isReadOnly: 'true',";
-
 $event .= "isAllDay: false, "; 
 $event .= "goingDuration: 30, ";
 $event .= "comingDuration: 30, ";
@@ -913,15 +911,14 @@ $event .= "isVisible: true,";
 $event .= "location: '".$row['leaguecountry'] ." ". $row['leaguename']."', ";
 $event .= "attendees: '', ";
 $event .= "recurrenceRule: '',";
-
 //$event .= "title: '". $row['leaguecountry'] ." ". $row['homename'].' - '.$row['awayname'].' '.$row['result']   ."',";
 $event .= "title: '". $row['homename'].' - '.$row['awayname'].' '.$row['result']   ."',";
 $event .= "start: '".$time."',";
 $event .= "end: '".$time."',  }";
-  
+break;  
 
             
-            
+}            
 $events[] = $event;
  
   
