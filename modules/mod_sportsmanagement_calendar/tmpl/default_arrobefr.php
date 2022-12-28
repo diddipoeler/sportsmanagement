@@ -103,7 +103,7 @@ $calendeer_events = implode(",",$events);
 ?>
 
 
-  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>  
 <script src="https://cdn.jsdelivr.net/npm/arrobefr-jquery-calendar-bs4@1.0.3/dist/js/jquery-calendar.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/arrobefr-jquery-calendar-bs4@1.0.3/dist/css/jquery-calendar.min.css">
   
@@ -115,7 +115,7 @@ $calendeer_events = implode(",",$events);
   
 ?>
  <script>
-    $(document).ready(function(){
+    jQuery(document).ready(function(){
       moment.locale('en');
       var now = moment();
 
@@ -336,7 +336,7 @@ $calendeer_events = implode(",",$events);
       /**
        * Init the calendar
        */
-      var calendar = $('#calendar').Calendar({
+      var calendar = jQuery$('#calendar').Calendar({
         locale: 'en',
         weekday: {
           timeline: {
@@ -352,40 +352,40 @@ $calendeer_events = implode(",",$events);
        * Listening for events
        */
 
-      $('#calendar').on('Calendar.init', function(event, instance, before, current, after){
+      jQuery('#calendar').on('Calendar.init', function(event, instance, before, current, after){
         console.log('event : Calendar.init');
         console.log(instance);
         console.log(before);
         console.log(current);
         console.log(after);
       });
-      $('#calendar').on('Calendar.daynote-mouseenter', function(event, instance, elem){
+      jQuery('#calendar').on('Calendar.daynote-mouseenter', function(event, instance, elem){
         console.log('event : Calendar.daynote-mouseenter');
         console.log(instance);
         console.log(elem);
       });
-      $('#calendar').on('Calendar.daynote-mouseleave', function(event, instance, elem){
+      jQuery('#calendar').on('Calendar.daynote-mouseleave', function(event, instance, elem){
         console.log('event : Calendar.daynote-mouseleave');
         console.log(instance);
         console.log(elem);
       });
-      $('#calendar').on('Calendar.event-mouseenter', function(event, instance, elem){
+      jQuery('#calendar').on('Calendar.event-mouseenter', function(event, instance, elem){
         console.log('event : Calendar.event-mouseenter');
         console.log(instance);
         console.log(elem);
       });
-      $('#calendar').on('Calendar.event-mouseleave', function(event, instance, elem){
+      jQuery('#calendar').on('Calendar.event-mouseleave', function(event, instance, elem){
         console.log('event : Calendar.event-mouseleave');
         console.log(instance);
         console.log(elem);
       });
-      $('#calendar').on('Calendar.daynote-click', function(event, instance, elem, evt){
+      jQuery('#calendar').on('Calendar.daynote-click', function(event, instance, elem, evt){
         console.log('event : Calendar.daynote-click');
         console.log(instance);
         console.log(elem);
         console.log(evt);
       });
-      $('#calendar').on('Calendar.event-click', function(event, instance, elem, evt){
+      jQuery('#calendar').on('Calendar.event-click', function(event, instance, elem, evt){
         console.log('event : Calendar.event-click');
         console.log(instance);
         console.log(elem);
