@@ -4,23 +4,12 @@
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_calendar
- * @file       default_tuicalendar.php
+ * @file       default_arrobefr.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  *
- * https://codesandbox.io/s/toast-ui-calendar-for-vanillajs-wz2s3?file=/index.html:212-246
- * https://codesandbox.io/examples/package/tui-date-picker
- * https://stackoverflow.com/questions/71907057/how-to-send-json-value-to-tui-calendar-using-ajax
- * 
- * https://github.com/nhn/tui.calendar/tree/56f36b0ae0ac2331983fd2335017ae0fc7e24d7b/examples
- * https://github.com/nhn/tui.calendar/tree/56f36b0ae0ac2331983fd2335017ae0fc7e24d7b
- * 
- * https://ui.toast.com/tui-calendar
- * https://github.com/nhn/tui.calendar
- * popup
- * https://codepen.io/AnzilkhaN/pen/GRJqPVK
- *
+ * https://github.com/ArrobeFr/jquery-calendar
  *
  *
  *
@@ -364,9 +353,15 @@ $calendeer_events = implode(",",$events);
             fromHour: 9
           }
         },
+        
+        defaultView:{
+        largeScreen: 'month', 
+        smallScreen: 'month'
+          },
         events: events,
         daynotes: daynotes
       }).init();
+
 
       /**
        * Listening for events
@@ -377,6 +372,17 @@ $calendeer_events = implode(",",$events);
         console.log('instance -> ' + instance);
         console.log('before -> ' + before);
         console.log('current -> ' + current);
+        
+        console.log('current von -> ' + current[0]);
+        console.log('current bis -> ' + current[1]);
+        
+        console.log('current von -> ' + moment.unix(current[0]).format("YYYY-MM-DD") ); 
+        console.log('current bis -> ' + moment.unix(current[1]).format("YYYY-MM-DD") ); 
+        
+        console.log(current);
+        
+        
+        
         console.log('after -> ' + after);
       });
       jQuery('#calendar').on('Calendar.daynote-mouseenter', function(event, instance, elem){

@@ -21,13 +21,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'calendarClass.php';
-
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'calendarFunctions.php';
-
-
-
-
-
 
 /**
  * modJSMCalendarHelper
@@ -40,8 +34,6 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'calendarFunctions.php';
  */
 class modJSMCalendarHelper
 {
-
-
 
 	/**
 	 * modJSMCalendarHelper::showCal()
