@@ -374,10 +374,10 @@ $calendeer_events = implode(",",$events);
 
       jQuery('#calendar').on('Calendar.init', function(event, instance, before, current, after){
         console.log('event : Calendar.init');
-        console.log(instance);
-        console.log(before);
-        console.log(current);
-        console.log(after);
+        console.log('instance -> ' + instance);
+        console.log('before -> ' + before);
+        console.log('current -> ' + current);
+        console.log('after -> ' + after);
       });
       jQuery('#calendar').on('Calendar.daynote-mouseenter', function(event, instance, elem){
         console.log('event : Calendar.daynote-mouseenter');
