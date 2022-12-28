@@ -177,6 +177,7 @@ var params = <?php echo $params; ?>;
 
       jQuery('#calendar').on('Calendar.init', function(event, instance, before, current, after){
         console.log('event : Calendar.init');
+        console.log(event);
         console.log('instance -> ' + instance);
         console.log('before -> ' + before);
         console.log('current -> ' + current);
@@ -202,12 +203,24 @@ var params = <?php echo $params; ?>;
 'format' : 'raw'
 };
   
-jQuery.ajax({
+var responseText = jQuery.ajax({
 type   : 'POST',
 data   : request,
 async: false,
-success: eventsaved
-});              
+success: function(data) {
+        return data;
+    }
+  
+}).responseText;            
+        
+        console.log('responseText -> ' + responseText);
+        calendar.setEvents([  responseText
+
+        ]);
+        calendar.init;
+        
+        
+        
         
         
         console.log('after -> ' + after);
@@ -255,7 +268,7 @@ var scriptstring = '';
 console.log('events response: ', response)  
  
 
-//scriptstring = 'cal.clear();cal.createSchedules([' + response + ',]);'  ;
+scriptstring = 'Calendar.setEvents([' + response + ',]); calendar.init;'  ;
 
 
 jQuery('<script>' + scriptstring + '</' + 'script>').appendTo(document.body);   
