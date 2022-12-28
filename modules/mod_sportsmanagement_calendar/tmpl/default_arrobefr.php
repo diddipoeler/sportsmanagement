@@ -96,7 +96,7 @@ $event .= "end: '".$time."',  }";
   */
   
 $event .= "{start: '".$row['timestamp']."',";
-$event .= "end: '".$row['timestamp'] ."', ";
+$event .= "end: '".$row['timestamp'] + 3600 + 1800 + 900 ." ', ";
 $event .= "title: '".$row['homename'].' - '.$row['awayname'].' '.$row['result']   ."',";  
 $event .= "content: '".$row['leaguecountry'] ." ". $row['leaguename']."', ";  
 $event .= "category: '".$row['leaguename']."',  }";  
