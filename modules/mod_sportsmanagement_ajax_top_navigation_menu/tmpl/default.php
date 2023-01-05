@@ -69,9 +69,10 @@ HTMLHelper::_('behavior.tooltip');
 					<?PHP
 					if ($country_id)
 					{
+					$flag =  JSMCountries::getCountryFlag($country_id,'',true);	
 						?>
                         <img style="float: right;"
-                             src="images/com_sportsmanagement/database/laender_karten/<?php echo strtolower($country_id) ?>.gif"
+                             src="<?php echo $flag; ?>"
                              alt="<?php echo $country_id ?>" width="144" height=""/>
 						<?PHP
 					}
