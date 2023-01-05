@@ -282,7 +282,7 @@ class JSMCountries
 	 *
 	 * @return string: html code for the flag image
 	 */
-	public static function getCountryFlag($countrycode, $attributes = '')
+	public static function getCountryFlag($countrycode, $attributes = '', $picture = false)
 	{
 		$app = Factory::getApplication();
 		$jinput   = $app->input;
@@ -296,6 +296,19 @@ class JSMCountries
 		//$src = self::getIso2Flag($countrycode);
 		//$src = self::getIso3Flag($countrycode);
 		$src = self::getIso2Flag($iso2);
+		
+		if ( $picture )
+		{
+			$query = $db->getQuery(true);
+			$query->select('picture');
+			$query->from('#__sportsmanagement_countries');
+			$query->where('alpha3 LIKE \'' . $countrycode . '\'');
+			$db->setQuery($query);
+			$src = $db->loadResult();
+			return $src;
+		}
+		else
+		{
 		if (!$src)
 		{
 			$query = $db->getQuery(true);
@@ -331,6 +344,7 @@ class JSMCountries
 			$countrycode = strtolower($countrycode);
 			$html        = '<span class="flag-icon flag-icon-' . $countrycode . '"></span>';
 		}
+	}
 
 		return $html;
 	}
