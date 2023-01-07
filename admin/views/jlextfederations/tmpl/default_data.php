@@ -51,9 +51,10 @@ HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolow
             </th>
 
 
-            <th width="5"
-                style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_FLAG'); ?></th>
+            <th width="5" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_FLAG'); ?></th>
             <th width="5" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_ICON'); ?></th>
+            <th width="5" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_FLAG_MAPS'); ?></th>
+            
 
             <th width="" class="nowrap center">
 				<?php
@@ -170,6 +171,30 @@ HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolow
 					}
 					?>
                 </td>
+                
+                <td style="text-align:center; ">
+					<?php
+					if (empty($this->item->flag_maps) || !File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $this->item->flag_maps))
+					{
+						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE') . $this->item->flag_maps;
+						echo HTMLHelper::_(
+							'image', 'administrator/components/com_sportsmanagement/assets/images/delete.png',
+							$imageTitle, 'title= "' . $imageTitle . '"'
+						);
+					}
+					else
+					{
+						?>
+                        <a href="<?php echo Uri::root() . $this->item->flag_maps; ?>" title="<?php echo $this->item->name; ?>"
+                           class="modal">
+                            <img src="<?php echo Uri::root() . $this->item->flag_maps; ?>" alt="<?php echo $this->item->name; ?>"
+                                 width="20"/>
+                        </a>
+						<?PHP
+					}
+					?>
+                </td>
+                
                 <td class="center">
                     <div class="btn-group">
 						<?php echo HTMLHelper::_('jgrid.published', $this->item->published, $this->count_i, 'jlextfederations.', $canChange, 'cb'); ?>
