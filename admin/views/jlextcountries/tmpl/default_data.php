@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Uri\Uri;
 
 $this->saveOrder = $this->sortColumn == 'objcountry.ordering';
 if ($this->saveOrder && !empty($this->items))
