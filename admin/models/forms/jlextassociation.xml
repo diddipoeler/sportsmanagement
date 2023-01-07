@@ -169,7 +169,7 @@ directory="images/com_sportsmanagement/database/associations"
 <field 	
 name="flag_maps" 
 type="media"     
-default="images/com_sportsmanagement/database/placeholders/placeholder_wappen_50.png"     
+default="images/com_sportsmanagement/database/flag_maps/placeholder_wappen_50.png"     
 preview="show"
 class="inputbox"
 targetfolder="flag_maps"	
