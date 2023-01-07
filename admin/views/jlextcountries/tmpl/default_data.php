@@ -43,13 +43,10 @@ HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolow
 				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_GLOBAL_NAME', 'objcountry.name', $this->sortDirection, $this->sortColumn);
 				?>
             </th>
-            <th width="5"
-                style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_FLAG'); ?></th>
-
-            <th width="5"
-                style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_TRANSLATION'); ?></th>
-            <th width="5"
-                style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_FEDERATION'); ?></th>
+            <th width="5" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_FLAG'); ?></th>
+            <th width="5" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_FLAG_MAPS'); ?></th>
+            <th width="5" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_TRANSLATION'); ?></th>
+            <th width="5" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_FEDERATION'); ?></th>
 
             <th>
 				<?php
@@ -169,6 +166,29 @@ $this->dragable_group = 'data-dragable-group="none"';
 				?>
 
                 <td><?php echo JSMCountries::getCountryFlag($this->item->alpha3); ?></td>
+                
+                 <td style="text-align:center; ">
+					<?php
+					if (empty($this->item->flag_maps) || !File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $this->item->flag_maps))
+					{
+						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE') . $this->item->flag_maps;
+						echo HTMLHelper::_(
+							'image', 'administrator/components/com_sportsmanagement/assets/images/delete.png',
+							$imageTitle, 'title= "' . $imageTitle . '"'
+						);
+					}
+					else
+					{
+						?>
+                        <a href="<?php echo Uri::root() . $this->item->flag_maps; ?>" title="<?php echo $this->item->name; ?>"
+                           class="modal">
+                            <img src="<?php echo Uri::root() . $this->item->flag_maps; ?>" alt="<?php echo $this->item->name; ?>"
+                                 width="20"/>
+                        </a>
+						<?PHP
+					}
+					?>
+                </td>
 
                 <td><?php echo Text::_($this->item->name); ?></td>
                 <td><?php echo $this->item->federation_name; ?></td>
