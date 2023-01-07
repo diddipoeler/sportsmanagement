@@ -143,22 +143,8 @@ if (empty($file['name']))
 
 			// $app->close();
 		}        
-        
-        
-        
-        
-        
-        
-        
-        
-        
               
     }
-    
-    
-    
-    
-    
     
 	/**
 	 * Proxy for getModel.

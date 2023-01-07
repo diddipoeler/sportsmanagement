@@ -331,6 +331,9 @@ console.log('getfolder: ' + '<?php echo $type;  ?>' );
 			case "flags_associations":
 				return "flags_associations";
 				break;
+                case "flag_maps":
+				return "flag_maps";
+				break;
 			case "associations":
 				return "associations";
 				break;

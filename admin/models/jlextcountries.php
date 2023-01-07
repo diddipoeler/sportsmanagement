@@ -38,6 +38,7 @@ class sportsmanagementModeljlextcountries extends JSMModelList
 		$config['filter_fields'] = array(
 			'objcountry.name',
 			'objcountry.picture',
+            'objcountry.flag_maps',
 			'objcountry.id',
 			'objcountry.alpha2',
 			'objcountry.alpha3',

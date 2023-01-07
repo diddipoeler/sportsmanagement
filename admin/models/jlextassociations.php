@@ -50,6 +50,7 @@ class sportsmanagementModeljlextassociations extends JSMModelList
 			'objassoc.checked_out_time',
 			'objassoc.assocflag',
 			'objassoc.picture',
+            'objassoc.flag_maps',
             'state','search_nation','federation'
 		);
 		parent::__construct($config);
