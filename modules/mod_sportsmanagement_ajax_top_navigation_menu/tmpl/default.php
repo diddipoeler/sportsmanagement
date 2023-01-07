@@ -69,7 +69,7 @@ HTMLHelper::_('behavior.tooltip');
 					<?PHP
 					if ($country_id)
 					{
-					$flag =  JSMCountries::getCountryFlag($country_id,'',true);	
+					$flag =  JSMCountries::getCountryFlag($country_id,'',false,true);	
 						?>
                         <img style="float: right;"
                              src="<?php echo $flag; ?>"

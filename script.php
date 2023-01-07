@@ -116,8 +116,8 @@ class com_sportsmanagementInstallerScript
 	 * The release value would ideally be extracted from <version> in the manifest file,
 	 * but at preflight, the manifest file exists only in the uploaded temp folder.
 	 */
-	private $release = '4.10.00';
-    private $old_release = '4.00.00';
+	private $release = '4.11.00';
+    private $old_release = '4.10.00';
 
 	// $language_update = '';
 
@@ -842,6 +842,7 @@ $result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_i
 		'projectteams/trikot_home',
 		'projectteams/trikot_away',
 		'associations',
+        'flag_maps',
 		'rosterground',
 		'matchreport',
 		'seasons',
@@ -963,6 +964,7 @@ $result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_i
 						break;
 					case 'clubs/medium':
 					case 'associations':
+                    case 'flag_maps':
 						File::copy(JPATH_ROOT . '/images/com_sportsmanagement/database/placeholders/placeholder_50.png', JPATH_ROOT . '/images/com_sportsmanagement/database/' . $folder . '/placeholder_50.png');
 						File::copy(JPATH_ROOT . '/images/com_sportsmanagement/database/placeholders/placeholder_wappen_50.png', JPATH_ROOT . '/images/com_sportsmanagement/database/' . $folder . '/placeholder_wappen_50.png');
                         File::copy(JPATH_ROOT . '/images/com_sportsmanagement/database/placeholders/placeholder_flags.png', JPATH_ROOT . '/images/com_sportsmanagement/database/' . $folder . '/placeholder_flags.png');

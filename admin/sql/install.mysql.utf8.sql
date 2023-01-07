@@ -23,12 +23,12 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_associations` (
   `zipcode` VARCHAR(10) NOT NULL DEFAULT '' ,
   `location` VARCHAR(50) NOT NULL DEFAULT '' ,
   `state` VARCHAR(50) NOT NULL DEFAULT '' ,
-  
   `founded` DATE NOT NULL DEFAULT '0000-00-00' ,
   `dissolved` DATE NOT NULL DEFAULT '0000-00-00' ,
   `dissolved_year` VARCHAR(4) NULL DEFAULT NULL,
   `founded_year` VARCHAR(4) NULL DEFAULT NULL,
   `notes` TEXT NULL DEFAULT NULL ,
+  `flag_maps` varchar(255) NOT NULL DEFAULT 'images/com_sportsmanagement/database/placeholders/placeholder_wappen_50.png',
   PRIMARY KEY (`id`),
   KEY `country` (`country`),
   KEY `parent_id` (`parent_id`),
@@ -61,12 +61,12 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_federations` (
   `zipcode` VARCHAR(10) NOT NULL DEFAULT '' ,
   `location` VARCHAR(50) NOT NULL DEFAULT '' ,
   `state` VARCHAR(50) NOT NULL DEFAULT '' ,
-  
   `founded` DATE NOT NULL DEFAULT '0000-00-00' ,
   `dissolved` DATE NOT NULL DEFAULT '0000-00-00' ,
   `dissolved_year` VARCHAR(4) NULL DEFAULT NULL,
   `founded_year` VARCHAR(4) NULL DEFAULT NULL,
   `notes` TEXT NULL DEFAULT NULL ,
+  `flag_maps` varchar(255) NOT NULL DEFAULT 'images/com_sportsmanagement/database/placeholders/placeholder_wappen_50.png',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
@@ -187,6 +187,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_countries` (
   `countrymap_mapdata` MEDIUMTEXT NULL DEFAULT NULL,
   `countrymap_mapinfo` MEDIUMTEXT NULL DEFAULT NULL,
   `country_picture` varchar(255) NOT NULL DEFAULT 'images/com_sportsmanagement/database/placeholders/placeholder_wappen_50.png',
+  `flag_maps` varchar(255) NOT NULL DEFAULT 'images/com_sportsmanagement/database/placeholders/placeholder_wappen_50.png',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`,`alpha3`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;

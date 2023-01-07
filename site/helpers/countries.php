@@ -274,15 +274,18 @@ class JSMCountries
 		return $resultString;
 	}
 
+	
+	
 	/**
-	 * example: echo JSMCountries::getCountryFlag($country);
-	 *
-	 * @param   string: an iso3 country code, e.g AUT
-	 * @param   string: additional html attributes for the img tag
-	 *
-	 * @return string: html code for the flag image
+	 * JSMCountries::getCountryFlag()
+	 * 
+	 * @param mixed $countrycode
+	 * @param string $attributes
+	 * @param bool $picture
+	 * @param bool $flag_map
+	 * @return
 	 */
-	public static function getCountryFlag($countrycode, $attributes = '', $picture = false)
+	public static function getCountryFlag($countrycode, $attributes = '', $picture = false, $flag_map = false)
 	{
 		$app = Factory::getApplication();
 		$jinput   = $app->input;
@@ -301,6 +304,16 @@ class JSMCountries
 		{
 			$query = $db->getQuery(true);
 			$query->select('picture');
+			$query->from('#__sportsmanagement_countries');
+			$query->where('alpha3 LIKE \'' . $countrycode . '\'');
+			$db->setQuery($query);
+			$src = $db->loadResult();
+			return $src;
+		}
+        elseif ( $flag_map )
+		{
+			$query = $db->getQuery(true);
+			$query->select('flag_maps');
 			$query->from('#__sportsmanagement_countries');
 			$query->where('alpha3 LIKE \'' . $countrycode . '\'');
 			$db->setQuery($query);
