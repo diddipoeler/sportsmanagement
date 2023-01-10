@@ -1381,6 +1381,9 @@ $arrOutput = json_decode($objJsonDocument, TRUE);
       $image_path = 'images/' . $this->jsmoption . '/database/associations/';
 	$flag_maps_path = 'images/' . $this->jsmoption . '/database/flag_maps/';
       
+//echo __METHOD__.' '.__LINE__.' flag_maps_path<pre>'.print_r($flag_maps_path,true).'</pre>';
+      
+      
       foreach ($country_assoc as $key => $value )
 		{
         
@@ -1418,13 +1421,16 @@ $arrOutput = json_decode($objJsonDocument, TRUE);
 						$parentmain = (string) $association->assocname->attributes()->parentmain;
 						$icon       = $image_path . (string) $association->assocname->attributes()->icon;
 						$flag       = (string) $association->assocname->attributes()->flag;
-						$flag_maps       = (string) $association->assocname->attributes()->flag_maps;
+						$flag_maps       = (string) $association->assocname->attributes()->flagmap;
 						$website    = (string) $association->assocname->attributes()->website;
 						$shortname  = (string) $association->assocname->attributes()->shortname;
 						$assocname  = (string) $association->assocname;
 						$middlename = $assocname;
 						$aliasname  = OutputFilter::stringURLSafe($assocname);
 
+//echo __METHOD__.' '.__LINE__.' flag_maps<pre>'.print_r($flag_maps,true).'</pre>';
+                      
+                      
 						if (!$shortname)
 						{
 							$shortname = $assocname;
@@ -1567,6 +1573,7 @@ $arrOutput = json_decode($objJsonDocument, TRUE);
 							 *
 							 * Fields to update.
 							 */
+                          /**
 							$this->jsmquery = $this->jsmdb->getQuery(true);
 							$fields         = array(
 								$this->jsmdb->quoteName('flag_maps') . '=' . '\'' . $flag_maps_path .$flag_maps. '\'',
@@ -1575,15 +1582,36 @@ $arrOutput = json_decode($objJsonDocument, TRUE);
 								$this->jsmdb->quoteName('alias') . '=' . '\'' . $aliasname . '\''
 
 							);
+                          */
 							/**
 							 *
 							 * Conditions for which records should be updated.
 							 */
+                          /**
 							$conditions = array(
 								$this->jsmdb->quoteName('id') . '=' . $result
 							);
 							$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_associations'))->set($fields)->where($conditions);
 							$this->jsmdb->setQuery($this->jsmquery);
+                          
+                          */
+// Create an object for the record we are going to update.
+$object = new stdClass();
+
+// Must be a valid primary key value.
+$object->id = $result;
+$object->flag_maps = $flag_maps_path .$flag_maps;
+$object->short_name = $shortname;
+$object->middle_name = $middlename;
+$object->alias = $aliasname;                          
+// Update their details in the users table using id as the primary key.
+// You should provide forth parameter with value TRUE, if you would like to store the NULL values.
+$result_update = $this->jsmdb->updateObject('#__sportsmanagement_associations', $object, 'id', TRUE);                          
+//echo __METHOD__.' '.__LINE__.' object<pre>'.print_r($object,true).'</pre>';                          
+                          
+                          
+                          
+                          
 							$result = self::runJoomlaQuery();
 						}
 					}
