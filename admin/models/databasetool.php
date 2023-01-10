@@ -1379,6 +1379,7 @@ $arrOutput = json_decode($objJsonDocument, TRUE);
 		}
 
       $image_path = 'images/' . $this->jsmoption . '/database/associations/';
+	$flag_maps_path = 'images/' . $this->jsmoption . '/database/flag_maps/';
       
       foreach ($country_assoc as $key => $value )
 		{
@@ -1417,6 +1418,7 @@ $arrOutput = json_decode($objJsonDocument, TRUE);
 						$parentmain = (string) $association->assocname->attributes()->parentmain;
 						$icon       = $image_path . (string) $association->assocname->attributes()->icon;
 						$flag       = (string) $association->assocname->attributes()->flag;
+						$flag_maps       = (string) $association->assocname->attributes()->flag_maps;
 						$website    = (string) $association->assocname->attributes()->website;
 						$shortname  = (string) $association->assocname->attributes()->shortname;
 						$assocname  = (string) $association->assocname;
@@ -1429,15 +1431,9 @@ $arrOutput = json_decode($objJsonDocument, TRUE);
 						}
 
 						$this->jsmquery = $this->jsmdb->getQuery(true);
-						/**
-						 *
-						 * Select some fields
-						 */
+						/** Select some fields */
 						$this->jsmquery->select('id');
-						/**
-						 *
-						 * From the table
-						 */
+						/** From the table */
 						$this->jsmquery->from('#__sportsmanagement_associations');
 						$this->jsmquery->where('country LIKE ' . $this->jsmdb->Quote('' . addslashes(stripslashes($country)) . ''));
 						$this->jsmquery->where('name LIKE ' . $this->jsmdb->Quote('' . addslashes(stripslashes($assocname)) . ''));
@@ -1507,12 +1503,12 @@ $arrOutput = json_decode($objJsonDocument, TRUE);
 								 *
 								 * Insert columns.
 								 */
-								$columns = array('country', 'name', 'parent_id', 'picture', 'assocflag', 'website', 'short_name', 'middle_name', 'alias');
+								$columns = array('country', 'name', 'parent_id', 'picture', 'assocflag', 'website', 'short_name', 'middle_name', 'alias', 'flag_maps');
 								/**
 								 *
 								 * Insert values.
 								 */
-								$values = array('\'' . $country . '\'', '\'' . $assocname . '\'', $parent_id[0]->id, '\'' . $icon . '\'', '\'' . $flag . '\'', '\'' . $website . '\'', '\'' . $shortname . '\'', '\'' . $middlename . '\'', '\'' . $aliasname . '\'');
+								$values = array('\'' . $country . '\'', '\'' . $assocname . '\'', $parent_id[0]->id, '\'' . $icon . '\'', '\'' . $flag . '\'', '\'' . $website . '\'', '\'' . $shortname . '\'', '\'' . $middlename . '\'', '\'' . $aliasname . '\'', '\'' . $flag_maps_path .$flag_maps . '\'');
 								/**
 								 *
 								 * Prepare the insert query.
@@ -1573,7 +1569,7 @@ $arrOutput = json_decode($objJsonDocument, TRUE);
 							 */
 							$this->jsmquery = $this->jsmdb->getQuery(true);
 							$fields         = array(
-								//$this->jsmdb->quoteName('picture') . '=' . '\'' . $icon . '\'',
+								$this->jsmdb->quoteName('flag_maps') . '=' . '\'' . $flag_maps_path .$flag_maps '\'',
 								$this->jsmdb->quoteName('short_name') . '=' . '\'' . $shortname . '\'',
 								$this->jsmdb->quoteName('middle_name') . '=' . '\'' . $middlename . '\'',
 								$this->jsmdb->quoteName('alias') . '=' . '\'' . $aliasname . '\''
