@@ -1569,7 +1569,7 @@ $arrOutput = json_decode($objJsonDocument, TRUE);
 							 */
 							$this->jsmquery = $this->jsmdb->getQuery(true);
 							$fields         = array(
-								$this->jsmdb->quoteName('flag_maps') . '=' . '\'' . $flag_maps_path .$flag_maps '\'',
+								$this->jsmdb->quoteName('flag_maps') . '=' . '\'' . $flag_maps_path .$flag_maps. '\'',
 								$this->jsmdb->quoteName('short_name') . '=' . '\'' . $shortname . '\'',
 								$this->jsmdb->quoteName('middle_name') . '=' . '\'' . $middlename . '\'',
 								$this->jsmdb->quoteName('alias') . '=' . '\'' . $aliasname . '\''
