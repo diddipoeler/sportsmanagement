@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<structur>
+
+<associations><assocname country="CAN" icon="" flagmap="Flag-map_of_British_Columbia.svg.png" flag="" website="" shortname="" main="1" parentmain="0">British Columbia</assocname></associations>
+<associations><assocname country="CAN" icon="" flagmap="Flag-map_of_Alberta.svg.png" flag="" website="" shortname="" main="2" parentmain="0">Alberta</assocname></associations>
+<associations><assocname country="CAN" icon="" flagmap="Flag-map_of_Saskatchewan.svg.png" flag="" website="" shortname="" main="3" parentmain="0">Saskatchewan</assocname></associations>
+<associations><assocname country="CAN" icon="" flagmap="Flag-map_of_Manitoba.svg.png" flag="" website="" shortname="" main="4" parentmain="0">Manitoba</assocname></associations>
+<associations><assocname country="CAN" icon="" flagmap="Flag-map_of_Ontario.svg.png" flag="" website="" shortname="" main="5" parentmain="0">Ontario</assocname></associations>
+<associations><assocname country="CAN" icon="" flagmap="Flag-map_of_Quebec.svg.png" flag="" website="" shortname="" main="6" parentmain="0">Québec</assocname></associations>
+<associations><assocname country="CAN" icon="" flagmap="Flag-map_of_New_Brunswick.svg.png" flag="" website="" shortname="" main="7" parentmain="0">New Brunswick</assocname></associations>
+
+<associations><assocname country="CAN" icon="" flagmap="Flag-map_of_Prince_Edward_Island.svg.png" flag="" website="" shortname="" main="8" parentmain="0">Prince Edward Island</assocname></associations>
+<associations><assocname country="CAN" icon="" flagmap="Flag-map_of_Nova_Scotia.svg.png" flag="" website="" shortname="" main="9" parentmain="0">Nova Scotia</assocname></associations>
+
+<associations><assocname country="CAN" icon="" flagmap="Flag-map_of_Newfoundland_and_Labrador.svg.png" flag="" website="" shortname="" main="10" parentmain="0">Neufundland und Labrador</assocname></associations>
+<associations><assocname country="CAN" icon="" flagmap="Flag-map_of_Yukon.svg.png" flag="" website="" shortname="" main="11" parentmain="0">Yukon</assocname></associations>
+<associations><assocname country="CAN" icon="" flagmap="Flag_Map_of_the_Northwest_Territories.png" flag="" website="" shortname="" main="12" parentmain="0">Nordwest-Territorien</assocname></associations>
+<associations><assocname country="CAN" icon="" flagmap="Flag_Map_of_Nunavut.png" flag="" website="" shortname="" main="13" parentmain="0">Nunavut</assocname></associations>
+
+  
+</structur>
