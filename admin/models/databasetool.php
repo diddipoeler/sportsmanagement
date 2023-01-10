@@ -1622,6 +1622,44 @@ $result_update = $this->jsmdb->updateObject('#__sportsmanagement_associations', 
 }
       }	
 
+      
+      
+ /** flag maps */
+$xml = simplexml_load_file(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/country_flag_maps.xml');
+$document = 'associations';     
+$flag_maps_path = 'images/' . $this->jsmoption . '/database/flag_maps/';      
+foreach ($xml->$document as $association)
+{
+$country = (string) $association->assocname->attributes()->country;
+$flag_maps       = (string) $association->assocname->attributes()->flagmap;  
+//echo __METHOD__.' '.__LINE__.' country<pre>'.print_r($country,true).'</pre>';
+//echo __METHOD__.' '.__LINE__.' flag_maps<pre>'.print_r($flag_maps,true).'</pre>';  
+$this->jsmquery = $this->jsmdb->getQuery(true);
+/** Select some fields */
+$this->jsmquery->select('id');
+/** From the table */
+$this->jsmquery->from('#__sportsmanagement_countries');
+$this->jsmquery->where('alpha3 LIKE ' . $this->jsmdb->Quote('' . addslashes(stripslashes($country)) . ''));
+$this->jsmdb->setQuery($this->jsmquery);
+$result = $this->jsmdb->loadResult();  
+//echo __METHOD__.' '.__LINE__.' result<pre>'.print_r($result,true).'</pre>';   
+if ($result)
+{
+// Create an object for the record we are going to update.
+$object = new stdClass();
+// Must be a valid primary key value.
+$object->id = $result;
+$object->flag_maps = $flag_maps_path .$flag_maps;
+// Update their details in the users table using id as the primary key.
+// You should provide forth parameter with value TRUE, if you would like to store the NULL values.
+$result_update = $this->jsmdb->updateObject('#__sportsmanagement_countries', $object, 'id', TRUE);   
+}
+  
+  
+}
+      
+      
+      
 
 
 	}
@@ -1665,6 +1703,11 @@ $result_update = $this->jsmdb->updateObject('#__sportsmanagement_associations', 
 
 			return $this->my_text;
 		}
+      
+      
+      
+     
+      
 	}
 
 	/**
