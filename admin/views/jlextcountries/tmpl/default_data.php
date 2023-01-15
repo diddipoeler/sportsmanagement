@@ -18,6 +18,7 @@ use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Uri\Uri;
 
 $this->saveOrder = $this->sortColumn == 'objcountry.ordering';
+$imageTitle = '';
 if ($this->saveOrder && !empty($this->items))
 {
 $saveOrderingUrl = 'index.php?option=com_sportsmanagement&task='.$this->view.'.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
@@ -30,6 +31,7 @@ else
 HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl,$this->saveOrderButton);    
 }
 }
+
 ?>
 <div class="table-responsive" id="editcell">
 <table class="<?php echo $this->table_data_class; ?>" id="<?php echo $this->view; ?>list">
