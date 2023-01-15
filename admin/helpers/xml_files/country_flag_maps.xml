@@ -101,7 +101,7 @@
 
 
 <associations><assocname country="GHA" flagmap="Flag-map_of_Ghana.svg.png" flag="" website="" shortname="" main="1" parentmain="0">GHA</assocname></associations>
-
+<associations><assocname country="GIB" flagmap="Flag-map_of_Gibraltar.svg.png" flag="" website="" shortname="" main="1" parentmain="0">GIB</assocname></associations>
 
 <associations><assocname country="GRC" flagmap="Greece-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">GRC</assocname></associations>
 
@@ -115,15 +115,15 @@
 
 
 
+<associations><assocname country="HTI" flagmap="Flag_map_of_Haiti.svg.png" flag="" website="" shortname="" main="1" parentmain="0">HTI</assocname></associations>
+
+<associations><assocname country="HND" flagmap="Flag-map_of_Honduras.svg.png" flag="" website="" shortname="" main="1" parentmain="0">HND</assocname></associations>
+<associations><assocname country="HKG" flagmap="Flag-map_of_Hong_Kong.svg.png" flag="" website="" shortname="" main="1" parentmain="0">HKG</assocname></associations>
 
 
 
-
-
-
-
-
-
+<associations><assocname country="IND" flagmap="India-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">IND</assocname></associations>
+<associations><assocname country="IDN" flagmap="Indonesia-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">IDN</assocname></associations>
 
 
 
@@ -134,11 +134,11 @@
 
 
 
+<associations><assocname country="JAM" flagmap="Flag-map_of_Jamaica.svg.png" flag="" website="" shortname="" main="1" parentmain="0">JAM</assocname></associations>
+<associations><assocname country="JPN" flagmap="Japan-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">JPN</assocname></associations>
 
 
-
-
-
+<associations><assocname country="JOR" flagmap="Jordan-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">JOR</assocname></associations>
 
 
 
@@ -146,11 +146,11 @@
 <associations><assocname country="CYM" flagmap="Flag_map_of_Cayman_Islands.png" flag="" website="" shortname="" main="1" parentmain="0">CYM</assocname></associations>
 
 <associations><assocname country="CMR" flagmap="Flag-map_of_Cameroon.svg.png" flag="" website="" shortname="" main="1" parentmain="0">CMR</assocname></associations>
-
+<associations><assocname country="CAN" flagmap="Canada_flag_map.svg.png" flag="" website="" shortname="" main="1" parentmain="0">CAN</assocname></associations>
 
 <associations><assocname country="CPV" flagmap="Flag-map_of_Cape_Verde.svg.png" flag="" website="" shortname="" main="1" parentmain="0">CPV</assocname></associations>
 
-
+<associations><assocname country="QAT" flagmap="Qatar-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">QAT</assocname></associations>
 <associations><assocname country="KEN" flagmap="Flag-map_of_Kenya.svg.png" flag="" website="" shortname="" main="1" parentmain="0">KEN</assocname></associations>
 
 
@@ -161,8 +161,8 @@
 
 <associations><assocname country="COG" flagmap="Flag-map_of_the_Republic_of_the_Congo.svg.png" flag="" website="" shortname="" main="1" parentmain="0">COG</assocname></associations>
 
-
-
+<associations><assocname country="PRK" flagmap="North_Korea-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">PRK</assocname></associations>
+<associations><assocname country="KOR" flagmap="South_Korea-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">KOR</assocname></associations>
 
 <associations><assocname country="HRV" flagmap="Croatia-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">HRV</assocname></associations>
 
@@ -337,7 +337,6 @@
 <associations><assocname country="ENG" flagmap="Flag_map_of_England.svg.png" flag="" website="" shortname="" main="1" parentmain="0">ENG</assocname></associations>
 <associations><assocname country="SCO" flagmap="Flag_map_of_Scotland.svg.png" flag="" website="" shortname="" main="1" parentmain="0">SCO</assocname></associations>
 <associations><assocname country="WAL" flagmap="Flag_map_of_Wales.svg.png" flag="" website="" shortname="" main="1" parentmain="0">WAL</assocname></associations>
-
 
 
 
