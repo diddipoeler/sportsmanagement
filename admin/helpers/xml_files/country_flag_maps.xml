@@ -346,7 +346,10 @@
 <associations><assocname country="SCO" flagmap="Flag_map_of_Scotland.svg.png" flag="" website="" shortname="" main="1" parentmain="0">SCO</assocname></associations>
 <associations><assocname country="WAL" flagmap="Flag_map_of_Wales.svg.png" flag="" website="" shortname="" main="1" parentmain="0">WAL</assocname></associations>
 
-
+<associations><assocname country="CHN" flagmap="Flag-map_of_the_People's_Republic_of_China.svg.png" flag="" website="" shortname="" main="1" parentmain="0">WAL</assocname></associations>
+<associations><assocname country="BLZ" flagmap="Flag-map_of_Belize.svg.png" flag="" website="" shortname="" main="1" parentmain="0">WAL</assocname></associations>
+<associations><assocname country="BMU" flagmap="Flag_map_of_Bermuda.png" flag="" website="" shortname="" main="1" parentmain="0">WAL</assocname></associations>
+<associations><assocname country="KHM" flagmap="Cambodia-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">WAL</assocname></associations>  
 
   
 </structur>
