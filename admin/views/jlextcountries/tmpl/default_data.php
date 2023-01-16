@@ -183,12 +183,10 @@ $this->dragable_group = 'data-dragable-group="none"';
 					}
 					else
 					{
+echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_picture' . $this->item->id, Uri::root() . $this->item->flag_maps,
+						    $this->item->name, '20', Uri::root() . $this->item->flag_maps);						
 						?>
-                        <a href="<?php echo Uri::root() . $this->item->flag_maps; ?>" title="<?php echo $this->item->name; ?>"
-                           class="modal">
-                            <img src="<?php echo Uri::root() . $this->item->flag_maps; ?>" alt="<?php echo $this->item->name; ?>"
-                                 width="20"/>
-                        </a>
+                        
 						<?PHP
 					}
 					?>
