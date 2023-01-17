@@ -4,7 +4,7 @@
  * @version   1.0.05
  * @file      default_rssfeed.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -1379,10 +1379,6 @@ $arrOutput = json_decode($objJsonDocument, TRUE);
 		}
 
       $image_path = 'images/' . $this->jsmoption . '/database/associations/';
-	$flag_maps_path = 'images/' . $this->jsmoption . '/database/flag_maps/';
-      
-//echo __METHOD__.' '.__LINE__.' flag_maps_path<pre>'.print_r($flag_maps_path,true).'</pre>';
-      
       
       foreach ($country_assoc as $key => $value )
 		{
@@ -1421,25 +1417,27 @@ $arrOutput = json_decode($objJsonDocument, TRUE);
 						$parentmain = (string) $association->assocname->attributes()->parentmain;
 						$icon       = $image_path . (string) $association->assocname->attributes()->icon;
 						$flag       = (string) $association->assocname->attributes()->flag;
-						$flag_maps       = (string) $association->assocname->attributes()->flagmap;
 						$website    = (string) $association->assocname->attributes()->website;
 						$shortname  = (string) $association->assocname->attributes()->shortname;
 						$assocname  = (string) $association->assocname;
 						$middlename = $assocname;
 						$aliasname  = OutputFilter::stringURLSafe($assocname);
 
-//echo __METHOD__.' '.__LINE__.' flag_maps<pre>'.print_r($flag_maps,true).'</pre>';
-                      
-                      
 						if (!$shortname)
 						{
 							$shortname = $assocname;
 						}
 
 						$this->jsmquery = $this->jsmdb->getQuery(true);
-						/** Select some fields */
+						/**
+						 *
+						 * Select some fields
+						 */
 						$this->jsmquery->select('id');
-						/** From the table */
+						/**
+						 *
+						 * From the table
+						 */
 						$this->jsmquery->from('#__sportsmanagement_associations');
 						$this->jsmquery->where('country LIKE ' . $this->jsmdb->Quote('' . addslashes(stripslashes($country)) . ''));
 						$this->jsmquery->where('name LIKE ' . $this->jsmdb->Quote('' . addslashes(stripslashes($assocname)) . ''));
@@ -1509,12 +1507,12 @@ $arrOutput = json_decode($objJsonDocument, TRUE);
 								 *
 								 * Insert columns.
 								 */
-								$columns = array('country', 'name', 'parent_id', 'picture', 'assocflag', 'website', 'short_name', 'middle_name', 'alias', 'flag_maps');
+								$columns = array('country', 'name', 'parent_id', 'picture', 'assocflag', 'website', 'short_name', 'middle_name', 'alias');
 								/**
 								 *
 								 * Insert values.
 								 */
-								$values = array('\'' . $country . '\'', '\'' . $assocname . '\'', $parent_id[0]->id, '\'' . $icon . '\'', '\'' . $flag . '\'', '\'' . $website . '\'', '\'' . $shortname . '\'', '\'' . $middlename . '\'', '\'' . $aliasname . '\'', '\'' . $flag_maps_path .$flag_maps . '\'');
+								$values = array('\'' . $country . '\'', '\'' . $assocname . '\'', $parent_id[0]->id, '\'' . $icon . '\'', '\'' . $flag . '\'', '\'' . $website . '\'', '\'' . $shortname . '\'', '\'' . $middlename . '\'', '\'' . $aliasname . '\'');
 								/**
 								 *
 								 * Prepare the insert query.
@@ -1573,45 +1571,23 @@ $arrOutput = json_decode($objJsonDocument, TRUE);
 							 *
 							 * Fields to update.
 							 */
-                          /**
 							$this->jsmquery = $this->jsmdb->getQuery(true);
 							$fields         = array(
-								$this->jsmdb->quoteName('flag_maps') . '=' . '\'' . $flag_maps_path .$flag_maps. '\'',
+								//$this->jsmdb->quoteName('picture') . '=' . '\'' . $icon . '\'',
 								$this->jsmdb->quoteName('short_name') . '=' . '\'' . $shortname . '\'',
 								$this->jsmdb->quoteName('middle_name') . '=' . '\'' . $middlename . '\'',
 								$this->jsmdb->quoteName('alias') . '=' . '\'' . $aliasname . '\''
 
 							);
-                          */
 							/**
 							 *
 							 * Conditions for which records should be updated.
 							 */
-                          /**
 							$conditions = array(
 								$this->jsmdb->quoteName('id') . '=' . $result
 							);
 							$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_associations'))->set($fields)->where($conditions);
 							$this->jsmdb->setQuery($this->jsmquery);
-                          
-                          */
-// Create an object for the record we are going to update.
-$object = new stdClass();
-
-// Must be a valid primary key value.
-$object->id = $result;
-$object->flag_maps = $flag_maps_path .$flag_maps;
-$object->short_name = $shortname;
-$object->middle_name = $middlename;
-$object->alias = $aliasname;                          
-// Update their details in the users table using id as the primary key.
-// You should provide forth parameter with value TRUE, if you would like to store the NULL values.
-$result_update = $this->jsmdb->updateObject('#__sportsmanagement_associations', $object, 'id', TRUE);                          
-//echo __METHOD__.' '.__LINE__.' object<pre>'.print_r($object,true).'</pre>';                          
-                          
-                          
-                          
-                          
 							$result = self::runJoomlaQuery();
 						}
 					}
@@ -1622,44 +1598,6 @@ $result_update = $this->jsmdb->updateObject('#__sportsmanagement_associations', 
 }
       }	
 
-      
-      
- /** flag maps */
-$xml = simplexml_load_file(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/country_flag_maps.xml');
-$document = 'associations';     
-$flag_maps_path = 'images/' . $this->jsmoption . '/database/flag_maps/';      
-foreach ($xml->$document as $association)
-{
-$country = (string) $association->assocname->attributes()->country;
-$flag_maps       = (string) $association->assocname->attributes()->flagmap;  
-//echo __METHOD__.' '.__LINE__.' country<pre>'.print_r($country,true).'</pre>';
-//echo __METHOD__.' '.__LINE__.' flag_maps<pre>'.print_r($flag_maps,true).'</pre>';  
-$this->jsmquery = $this->jsmdb->getQuery(true);
-/** Select some fields */
-$this->jsmquery->select('id');
-/** From the table */
-$this->jsmquery->from('#__sportsmanagement_countries');
-$this->jsmquery->where('alpha3 LIKE ' . $this->jsmdb->Quote('' . addslashes(stripslashes($country)) . ''));
-$this->jsmdb->setQuery($this->jsmquery);
-$result = $this->jsmdb->loadResult();  
-//echo __METHOD__.' '.__LINE__.' result<pre>'.print_r($result,true).'</pre>';   
-if ($result)
-{
-// Create an object for the record we are going to update.
-$object = new stdClass();
-// Must be a valid primary key value.
-$object->id = $result;
-$object->flag_maps = $flag_maps_path .$flag_maps;
-// Update their details in the users table using id as the primary key.
-// You should provide forth parameter with value TRUE, if you would like to store the NULL values.
-$result_update = $this->jsmdb->updateObject('#__sportsmanagement_countries', $object, 'id', TRUE);   
-}
-  
-  
-}
-      
-      
-      
 
 
 	}
@@ -1703,11 +1641,6 @@ $result_update = $this->jsmdb->updateObject('#__sportsmanagement_countries', $ob
 
 			return $this->my_text;
 		}
-      
-      
-      
-     
-      
 	}
 
 	/**
