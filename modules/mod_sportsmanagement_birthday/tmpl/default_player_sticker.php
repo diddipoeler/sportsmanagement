@@ -6,7 +6,7 @@
  * @subpackage mod_sportsmanagement_birthday
  * @file       default_play_card.php
  * @author     diddipoeler (diddipoeler@gmx.de), stony, svdoldie und donclumsy , llambion
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');

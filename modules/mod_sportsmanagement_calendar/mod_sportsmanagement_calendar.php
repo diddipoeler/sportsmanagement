@@ -6,7 +6,7 @@
  * @subpackage mod_sportsmanagement_calendar
  * @file       mod_sportsmanagement_calendar.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  *
  * https://github.com/ArrobeFr/jquery-calendar-bs4/blob/master/example/example.html
