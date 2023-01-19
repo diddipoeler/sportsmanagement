@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage teamstree
@@ -12,7 +10,6 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -65,11 +62,13 @@ class sportsmanagementViewTeamsTree extends sportsmanagementView
 			$this->genfamilytree         = $mdlClubInfo::generateTree($tree_club_id, $this->config['show_bootstrap_tree']);
 			$this->familytree            = $mdlClubInfo::$historyhtmltree;
 
+			if ( is_array($this->familyteamstree) )
+			{
 			if (!array_key_exists($tree_club_id, $this->familyteamstree))
 			{
 				$this->familyteamstree[$tree_club_id] = $this->familytree;
 			}
-
+			}
 			if ($tree_club_id)
 			{
 				$firstrowclub                    = $mdlClubInfo::getFirstClub($tree_club_id);
