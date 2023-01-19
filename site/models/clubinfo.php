@@ -187,9 +187,9 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 
 				$pt                  = $v->new_club_id;
 				$list[$id]           = $v;
-				$list[$id]->treename = $indent . $txt;
-				$list[$id]->children = !empty($children[$id]) ? count($children[$id]) : 0;
-				$list[$id]->section  = ($v->new_club_id == 0);
+				//$list[$id]->treename = $indent . $txt;
+				//$list[$id]->children = !empty($children[$id]) ? count($children[$id]) : 0;
+				//$list[$id]->section  = ($v->new_club_id == 0);
 
 				$list = self::fbTreeRecurse($id, $indent . $spacer, $list, $children, $maxlevel, $level + 1, $type);
 			}
