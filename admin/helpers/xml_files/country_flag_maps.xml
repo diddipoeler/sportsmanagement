@@ -32,7 +32,10 @@
 
 <associations><assocname country="AUS" flagmap="Flag-map_of_Australia.svg.png" flag="" website="" shortname="" main="1" parentmain="0">AUS</assocname></associations>
 
-
+<associations><assocname country="GEO" flagmap="Georgia-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">GEO</assocname></associations>
+<associations><assocname country="SGS" flagmap="Flag-map_of_South_Georgia_and_the_South_Sandwich_Islands.svg.png" flag="" website="" shortname="" main="1" parentmain="0">SGS</assocname></associations>
+<associations><assocname country="BHS" flagmap="Flag_map_of_the_Bahamas.svg.png" flag="" website="" shortname="" main="1" parentmain="0">BHS</assocname></associations>
+<associations><assocname country="BLR" flagmap="Belarus-flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">BLR</assocname></associations>
 
 
 <associations><assocname country="BHR" flagmap="Bahrain-Flagmap.png" flag="" website="" shortname="" main="1" parentmain="0">BHR</assocname></associations>
