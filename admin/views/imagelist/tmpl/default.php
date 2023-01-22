@@ -71,7 +71,8 @@ if (version_compare($baseVersion, '4.0', 'ge'))
 		<?php for ($i = 0, $n = count($this->images); $i < $n; $i++) :
 			$this->setImage($i);
 
-include( dirname(__FILE__) . '/default_image_4.php');
+//include( dirname(__FILE__) . '/default_image_4.php');
+include( dirname(__FILE__) . '/default_image.php');
 
 		endfor; ?>
 	
