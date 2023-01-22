@@ -96,6 +96,22 @@ use Joomla\CMS\Log\Log;
 use Joomla\CMS\Plugin\PluginHelper;
 
 
+$maxImportTime = 960;
+
+if ((int) ini_get('max_execution_time') < $maxImportTime)
+{
+	@set_time_limit($maxImportTime);
+}
+
+$maxImportMemory = '350M';
+
+if ((int) ini_get('memory_limit') < (int) $maxImportMemory)
+{
+	@ini_set('memory_limit', $maxImportMemory);
+}
+
+
+
 if (version_compare(JVERSION, '3.0.0', 'ge'))
 {
 	jimport('joomla.html.html.bootstrap');
