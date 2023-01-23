@@ -176,13 +176,20 @@ class sportsmanagementModelround extends JSMModelAdmin
 
 			$tblRound->rdatefirst_timestamp = sportsmanagementHelper::getTimestamp($tblRound->round_date_first);
 			$tblRound->rdatelast_timestamp  = sportsmanagementHelper::getTimestamp($tblRound->round_date_last);
-
-			if (!$tblRound->store())
-			{
-				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-
-				return false;
-			}
+try{
+	$tblRound->store();
+	}
+		catch (Exception $e)
+		{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+			return false;
+		}
+			
+			
+			
+			
+			
 		}
 
 		return Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_SAVE');
