@@ -154,7 +154,7 @@ class sportsmanagementModelround extends JSMModelAdmin
 
 		for ($x = 0; $x < count($pks); $x++)
 		{
-			$tblRound             = $this->getTable();
+			$tblRound             = new stdClass();
 			$tblRound->id         = $pks[$x];
 			$tblRound->roundcode  = $post['roundcode' . $pks[$x]];
 			$tblRound->tournement = $post['tournementround' . $pks[$x]];
@@ -177,7 +177,8 @@ class sportsmanagementModelround extends JSMModelAdmin
 			$tblRound->rdatefirst_timestamp = sportsmanagementHelper::getTimestamp($tblRound->round_date_first);
 			$tblRound->rdatelast_timestamp  = sportsmanagementHelper::getTimestamp($tblRound->round_date_last);
 try{
-	$tblRound->store();
+	//$tblRound->store();
+	$resultupdate = Factory::getDbo()->updateObject('#__sportsmanagement_round', $tblRound, 'id', true);
 	}
 		catch (Exception $e)
 		{
