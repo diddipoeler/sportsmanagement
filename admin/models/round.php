@@ -165,9 +165,19 @@ class sportsmanagementModelround extends JSMModelAdmin
 			// Set the values
 			$tblRound->modified    = $date->toSql();
 			$tblRound->modified_by = $user->get('id');
-
+			
+			if ( !$post['round_date_first' . $pks[$x]] )
+			{
+			$tblRound->round_date_first = '0000-00-00';
+			$tblRound->round_date_last  = '0000-00-00';	
+			}
+			else
+			{
 			$tblRound->round_date_first = sportsmanagementHelper::convertDate($post['round_date_first' . $pks[$x]], 0);
-			$tblRound->round_date_last  = sportsmanagementHelper::convertDate($post['round_date_last' . $pks[$x]], 0);;
+			$tblRound->round_date_last  = sportsmanagementHelper::convertDate($post['round_date_last' . $pks[$x]], 0);	
+			}
+
+			
 
 			if (($tblRound->round_date_last == '0000-00-00' || $tblRound->round_date_last == '') && $tblRound->round_date_first != '0000-00-00')
 			{
