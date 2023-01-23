@@ -65,7 +65,7 @@ class JFormFieldClublist extends \JFormFieldList
 
 		$query->select('c.id AS value, c.name AS text');
 		$query->from('#__sportsmanagement_club as c');
-      $query->join('INNER', '#__sportsmanagement_team AS t ON t.club_id = c.id');
+      $query->join('LEFT', '#__sportsmanagement_team AS t ON t.club_id = c.id');
       
       if ( $sport_type )
       {
