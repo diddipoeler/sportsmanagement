@@ -170,22 +170,26 @@ class sportsmanagementModelround extends JSMModelAdmin
 			{
 			$tblRound->round_date_first = '0000-00-00';
 			$tblRound->round_date_last  = '0000-00-00';	
+			$tblRound->rdatefirst_timestamp = 0;
+			$tblRound->rdatelast_timestamp  = 0;
 			}
 			else
 			{
 			$tblRound->round_date_first = sportsmanagementHelper::convertDate($post['round_date_first' . $pks[$x]], 0);
-			$tblRound->round_date_last  = sportsmanagementHelper::convertDate($post['round_date_last' . $pks[$x]], 0);	
+			$tblRound->round_date_last  = sportsmanagementHelper::convertDate($post['round_date_last' . $pks[$x]], 0);
+			$tblRound->rdatefirst_timestamp = sportsmanagementHelper::getTimestamp($tblRound->round_date_first);
+			$tblRound->rdatelast_timestamp  = sportsmanagementHelper::getTimestamp($tblRound->round_date_last);	
 			}
 
 			
-
+/**
 			if (($tblRound->round_date_last == '0000-00-00' || $tblRound->round_date_last == '') && $tblRound->round_date_first != '0000-00-00')
 			{
 				$tblRound->round_date_last = $tblRound->round_date_first;
 			}
-
-			$tblRound->rdatefirst_timestamp = sportsmanagementHelper::getTimestamp($tblRound->round_date_first);
-			$tblRound->rdatelast_timestamp  = sportsmanagementHelper::getTimestamp($tblRound->round_date_last);
+*/
+			
+			
 try{
 	//$tblRound->store();
 	$resultupdate = Factory::getDbo()->updateObject('#__sportsmanagement_round', $tblRound, 'id', true);
