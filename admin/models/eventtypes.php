@@ -60,6 +60,7 @@ class sportsmanagementModelEventtypes extends JSMModelList
 	{
 		$jsmdb    = sportsmanagementHelper::getDBConnection();
 		$jsmquery = $jsmdb->getQuery(true);
+		$result = array();
 
 		$jsmquery->clear();
 		$jsmquery->select('evt.id AS value, concat(evt.name, " (" , st.name, ")") AS text,evt.name as posname,st.name AS stname');
@@ -78,7 +79,7 @@ class sportsmanagementModelEventtypes extends JSMModelList
 
 		if (!$result = $jsmdb->loadObjectList())
 		{
-			return false;
+			return $result;
 		}
 
 		foreach ($result as $position)
