@@ -19,14 +19,14 @@
 <associations><assocname country="IRN" flagmap="Iran-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">IRN</assocname></associations>
 <associations><assocname country="IRQ" flagmap="Iraq-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">IRQ</assocname></associations>
 <associations><assocname country="LAO" flagmap="Laos-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">LAO</assocname></associations>
-
-
-
 <associations><assocname country="GNQ" flagmap="Flag-map_of_Equatorial_Guinea.svg.png" flag="" website="" shortname="" main="1" parentmain="0">GNQ</assocname></associations>
 <associations><assocname country="ARG" flagmap="Flag_map_of_Argentina.svg.png" flag="" website="" shortname="" main="1" parentmain="0">ARG</assocname></associations>
 <associations><assocname country="ARM" flagmap="Armenia-flagmap.png" flag="" website="" shortname="" main="1" parentmain="0">ARM</assocname></associations>
 <associations><assocname country="ABW" flagmap="Flag-map_of_Aruba.svg.png" flag="" website="" shortname="" main="1" parentmain="0">ABW</assocname></associations>
 
+  <associations><assocname country="ISR" flagmap="Israel-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">ISR</assocname></associations>
+  <associations><assocname country="KGZ" flagmap="Kyrgyzstan-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">KGZ</assocname></associations>
+  <associations><assocname country="TKM" flagmap="Turkmenistan-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">TKM</assocname></associations>
 
 <associations><assocname country="AZE" flagmap="Azerbaijan-flagmap.png" flag="" website="" shortname="" main="1" parentmain="0">AZE</assocname></associations>
 
