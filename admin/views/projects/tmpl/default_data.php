@@ -344,6 +344,13 @@ echo $this->loadTemplate('switcher3');
 						'value', 'text', $this->item->master_template
 					);
 					?>
+			<br>
+			
+			<input<?php //echo $inputappend; ?>
+                            type="text" size="50" class="form-control form-control-inline"
+                            name="cr_project<?php echo $this->item->id; ?>"
+                            value="<?php echo $this->item->cr_project; ?>"
+                            onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked = true"/>
                 </td>
                 <td class="center">
 					<?php
