@@ -90,6 +90,10 @@ HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolow
 				<?php
 				echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TEMPLATES');
 				?>
+		     <br>
+				<?php
+				echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_CR_PROJECT');
+				?>
             </th>
             <th>
 				<?php
