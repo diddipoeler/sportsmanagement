@@ -642,6 +642,7 @@ catch (Exception $e)
 			$tblProject->master_template = $post['master_template' . $pks[$x]];
 			$tblProject->fast_projektteam = $post['fast_projektteam' . $pks[$x]];
             $tblProject->use_leaguechampion = $post['use_leaguechampion' . $pks[$x]];
+			$tblProject->cr_project = $post['cr_project' . $pks[$x]];
 
 			if ($post['league' . $pks[$x]])
 			{
