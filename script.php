@@ -859,6 +859,7 @@ $result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_i
 		'projectteams/trikot_away',
 		'associations',
         'flag_maps',
+        'flag_maps_world',
 		'rosterground',
 		'matchreport',
 		'seasons',
