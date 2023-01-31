@@ -96,6 +96,8 @@ jQuery("#ajaxresponse").removeClass('ajax-loading');
 // first line contains the status, second line contains the new row.
 var resp = response.split('&');
 
+console.log("resp : " + resp);
+	
 if (resp[0] != '0') 
 {
 //var team = jQuery("#team_id").val();
