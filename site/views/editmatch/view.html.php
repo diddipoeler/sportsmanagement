@@ -393,15 +393,15 @@ $default_name_format = 0;
 			switch ($default_name_dropdown_list_order)
 			{
 				case 'lastname':
-					$obj->text = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
+					$obj->text = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $default_name_format);
 					break;
 
 				case 'firstname':
-					$obj->text = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
+					$obj->text = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $default_name_format);
 					break;
 
 				case 'position':
-					$obj->text = '(' . Text::_($player->positionname) . ') - ' . sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
+					$obj->text = '(' . Text::_($player->positionname) . ') - ' . sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $default_name_format);
 					break;
 			}
 
@@ -418,15 +418,15 @@ $default_name_format = 0;
 			switch ($default_name_dropdown_list_order)
 			{
 				case 'lastname':
-					$obj->text = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
+					$obj->text = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $default_name_format);
 					break;
 
 				case 'firstname':
-					$obj->text = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
+					$obj->text = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $default_name_format);
 					break;
 
 				case 'position':
-					$obj->text = '(' . Text::_($player->positionname) . ') - ' . sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
+					$obj->text = '(' . Text::_($player->positionname) . ') - ' . sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $default_name_format);
 					break;
 			}
 
