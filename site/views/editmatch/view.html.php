@@ -346,6 +346,7 @@ $default_name_format = 0;
 		$params                           = ComponentHelper::getParams($option);
 		$default_name_dropdown_list_order = $params->get("cfg_be_name_dropdown_list_order", "lastname");
 		$default_name_format              = $params->get("name_format", 14);
+		$temp = array();
 
 		// Mannschaften der paarung
 		$teams       = sportsmanagementModelMatch::getMatchTeams($this->match->id);
