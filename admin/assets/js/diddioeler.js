@@ -70,6 +70,9 @@ var querystring = 'teamplayer_id=' + player +
 	'&notice=' + notice +
     '&doubleevents=' + doubleevents;
 
+console.log("url: " + url);
+console.log("querystring :" + querystring);
+	
 jQuery.ajax({
   type: 'POST', // type of request either Get or Post
   url: url + querystring, // Url of the page where to post data and receive response 
