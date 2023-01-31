@@ -72,6 +72,9 @@ var querystring = 'teamplayer_id=' + player +
 
 console.log("url: " + url);
 console.log("querystring :" + querystring);
+console.log("useeventtime : " + useeventtime);
+console.log("projecttime : " + projecttime);
+console.log("doubleevents : " + doubleevents);
 	
 jQuery.ajax({
   type: 'POST', // type of request either Get or Post
@@ -81,12 +84,7 @@ jQuery.ajax({
   error: function (xhr, ajaxOptions, thrownError) {
         alert(xhr.status);
         alert(thrownError);
-		console.log("useeventtime : " + useeventtime);
-		console.log("projecttime : " + projecttime);
-		console.log("doubleevents : " + doubleevents);
 		
-		console.log("url : " + url);
-		console.log("querystring : " + querystring);
       }
 });
         
