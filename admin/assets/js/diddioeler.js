@@ -75,7 +75,8 @@ console.log("querystring :" + querystring);
 console.log("useeventtime : " + useeventtime);
 console.log("projecttime : " + projecttime);
 console.log("doubleevents : " + doubleevents);
-	
+	if (jQuery("#event_sum").val()) 
+{
 jQuery.ajax({
   type: 'POST', // type of request either Get or Post
   url: url + querystring, // Url of the page where to post data and receive response 
@@ -87,7 +88,8 @@ jQuery.ajax({
 		
       }
 });
-        
+}
+
 }
 
 function eventsaved(response) 
@@ -131,6 +133,9 @@ else
 {
 jQuery("#ajaxresponse").addClass("ajaxerror");
 jQuery("#ajaxresponse").text(resp[1]);
+jQuery("#notice").val('');
+jQuery("#event_time").val('');
+jQuery("#event_sum").val('');	
 } 	
 	
 }
