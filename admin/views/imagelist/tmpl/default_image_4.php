@@ -68,7 +68,7 @@ window.parent.Joomla.Modal.getCurrent().close();
 echo sportsmanagementHelper::getBootstrapModalImage(
 $this->_tmp_img->name,
 Uri::root() . 'images/com_sportsmanagement/database/' . $this->_tmp_img->path_relative . $this->_tmp_img->file,
-Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAM_PIC_DESC'),
+Text::_($this->_tmp_img->name),
 $this->_tmp_img->width_60,
 '',
 $this->modalwidth,
