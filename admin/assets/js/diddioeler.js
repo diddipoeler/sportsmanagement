@@ -128,6 +128,8 @@ jQuery("#ajaxresponse").text(resp[1]);
 jQuery("#notice").val('');
 jQuery("#event_time").val('');
 jQuery("#event_sum").val('');
+	jQuery("#teamplayer_id").val('');
+	jQuery("#team_id").val('');
 }
 else 
 {
@@ -136,6 +138,8 @@ jQuery("#ajaxresponse").text(resp[1]);
 jQuery("#notice").val('');
 jQuery("#event_time").val('');
 jQuery("#event_sum").val('');	
+	jQuery("#teamplayer_id").val('');
+	jQuery("#team_id").val('');
 } 	
 	
 }
