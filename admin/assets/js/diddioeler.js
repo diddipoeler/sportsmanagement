@@ -75,7 +75,8 @@ console.log("querystring :" + querystring);
 console.log("useeventtime : " + useeventtime);
 console.log("projecttime : " + projecttime);
 console.log("doubleevents : " + doubleevents);
-	if (jQuery("#event_sum").val()) 
+	
+if ( jQuery("#event_sum").val() ) 
 {
 jQuery.ajax({
   type: 'POST', // type of request either Get or Post
@@ -85,9 +86,14 @@ jQuery.ajax({
   error: function (xhr, ajaxOptions, thrownError) {
         alert(xhr.status);
         alert(thrownError);
-		
       }
 });
+jQuery("#notice").val('');
+jQuery("#event_time").val('');
+jQuery("#event_sum").val('');
+jQuery("#teamplayer_id").val('');
+jQuery("#team_id").val('');	
+	
 }
 
 }
@@ -128,8 +134,8 @@ jQuery("#ajaxresponse").text(resp[1]);
 jQuery("#notice").val('');
 jQuery("#event_time").val('');
 jQuery("#event_sum").val('');
-	jQuery("#teamplayer_id").val('');
-	jQuery("#team_id").val('');
+jQuery("#teamplayer_id").val('');
+jQuery("#team_id").val('');
 }
 else 
 {
@@ -138,8 +144,8 @@ jQuery("#ajaxresponse").text(resp[1]);
 jQuery("#notice").val('');
 jQuery("#event_time").val('');
 jQuery("#event_sum").val('');	
-	jQuery("#teamplayer_id").val('');
-	jQuery("#team_id").val('');
+jQuery("#teamplayer_id").val('');
+jQuery("#team_id").val('');
 } 	
 	
 }
