@@ -869,7 +869,7 @@ catch (Exception $e)
 		}
 
 		$query->clear();
-		$query->select('p.id,p.name,s.name as seasonname,p.projectinfo,p.league_id.p.season_id');
+		$query->select('p.id,p.name,s.name as seasonname,p.projectinfo,p.league_id,p.season_id');
 		$query->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
 		$query->from('#__sportsmanagement_project as p');
 		$query->join('INNER', '#__sportsmanagement_season AS s ON p.season_id = s.id ');
