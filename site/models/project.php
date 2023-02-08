@@ -133,17 +133,28 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 	 * @param integer $project_id
 	 * @return void
 	 */
-	public static function getProjectCountMatches($project_id = 0)
+	public static function getProjectCountMatches($project_id = 0,$alloverleagueid = false,$league_id = 0)
 	{
 $app    = Factory::getApplication();
 	$option = $app->input->getCmd('option');
     $totalresult = 0;
+		
 	$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-	$query     = $db->getQuery(true);	
+	$query     = $db->getQuery(true);
+		
+		$query->clear();
     $query->select('COUNT(distinct m.id) as totalmatch');
     $query->from('#__sportsmanagement_match as m');
     $query->join('INNER', '#__sportsmanagement_round as r ON r.id = m.round_id');
+		if ( $alloverleagueid && $league_id )
+		{
+		$query->join('INNER', '#__sportsmanagement_project as p ON p.id = r.project_id');
+		$query->where('p.league_id = ' . $league_id);
+		}
+		else
+		{
 	$query->where('r.project_id = ' . $project_id);
+		}
     try
     {
     $db->setQuery($query);
