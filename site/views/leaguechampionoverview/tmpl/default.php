@@ -131,7 +131,7 @@ $gesamtspiele += $this->team->project_count_matches;
 
 }  
 
-$output[$this->season][] = !$this->config['show_leaguechampionoverview_season'] ? '<div class="col-sm-12">' : ''   ;  
+$output[$this->season][] = !$this->config['show_leaguechampionoverview_season'] ? '<div class="col-sm-10"></div><div class="col-sm-2">' : ''   ;  
 $output[$this->season][] = Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHES').':'.$gesamtspiele;  
 $output[$this->season][] = !$this->config['show_leaguechampionoverview_season'] ? '</div>' : ''   ;       
 
