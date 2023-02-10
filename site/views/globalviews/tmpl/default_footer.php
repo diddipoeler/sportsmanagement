@@ -116,8 +116,7 @@ $cmd = "Joomla.popupWindow('$link_onlinehelp', '" . Text::_('COM_SPORTSMANAGEMEN
 <?php
 echo HTMLHelper::_(
 'image', 'media/com_sportsmanagement/jl_images/help.png',
-Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'), 'title= "' .
-Text::_('COM_SPORTSMANAGEMENT_HELP_LINK') . '"'
+Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'),
 );
 echo ' '.Text::_('COM_SPORTSMANAGEMENT_HELP_LINK');
 ?>                      
