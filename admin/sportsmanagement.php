@@ -5,10 +5,11 @@
  * @package    Sportsmanagement
  * @file       sportsmanagement.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Language\Text;
@@ -145,7 +146,7 @@ $view_pathes[]     = array();
 $template_pathes[] = array();
 
 /** Check for array format. */
-$filter = JFilterInput::getInstance();
+$filter = InputFilter::getInstance();
 
 if (is_array($command))
 {

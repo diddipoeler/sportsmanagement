@@ -6,7 +6,7 @@
  * @subpackage teamplayer
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -110,19 +110,19 @@ class sportsmanagementViewTeamPlayer extends sportsmanagementView
 			if ($this->item->contract_from == '0000-00-00')
 			{
 				$this->item->contract_from = '';
-				$this->form->setValue('contract_from', '');
+				$this->form->setValue('contract_from',null, '');
 			}
 
 			if ($this->item->contract_to == '0000-00-00')
 			{
 				$this->item->contract_to = '';
-				$this->form->setValue('contract_to', '');
+				$this->form->setValue('contract_to',null, '');
 			}
 		}
 		else
 		{
-			$this->form->setValue('contract_from', '');
-			$this->form->setValue('contract_to', '');
+			$this->form->setValue('contract_from',null, '');
+			$this->form->setValue('contract_to',null, '');
 		}
 
 		$project_position_id = $this->form->getValue('project_position_id');

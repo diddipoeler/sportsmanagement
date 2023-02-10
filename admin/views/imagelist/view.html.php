@@ -6,13 +6,13 @@
  * @subpackage imagelist
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * https://www.jqueryscript.net/form/Drag-Drop-File-Upload-Dialog-with-jQuery-Bootstrap.html
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Object\CMSObject;
 use Joomla\String\StringHelper;
-use Joomla\CMS\Application\WebApplication;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
@@ -38,10 +38,7 @@ class sportsmanagementViewimagelist extends sportsmanagementView
 	public function init()
 	{
 	Factory::getLanguage()->load('com_media', JPATH_ADMINISTRATOR);   
-    // Include jQuery
-//		JHtml::_('jquery.framework');
-//		JHtml::_('script', 'media/popup-imagemanager.js', true, true);
-//		JHtml::_('stylesheet', 'media/popup-imagemanager.css', array(), true);
+
        $lang = Factory::getLanguage();
        $this->filter_search = '';
 		
@@ -49,18 +46,15 @@ class sportsmanagementViewimagelist extends sportsmanagementView
 		$this->teamplayer_id = 0;
 		$this->player_id = 0;
 
-		//JHtml::_('stylesheet', 'media/popup-imagelist.css', array(), true);
+
 
 		if ($lang->isRtl())
 		{
-		//	JHtml::_('stylesheet', 'media/popup-imagelist_rtl.css', array(), true);
-		}
 
-//		$document = JFactory::getDocument();
-//		$document->addScriptDeclaration("var ImageManager = window.parent.ImageManager;");
-       
+		}
+      
    $data = Factory::getApplication()->input->getArray();
-//$post   = Factory::getApplication()->input->post->getArray(array());	
+
 //      echo '<pre>'.print_r($data,true).'</pre>';
 $this->folder = $data['folder'];
 $this->type = $data['type'];		
@@ -314,7 +308,7 @@ Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
 		}
 		else
 		{
-			$this->_tmp_img = new JObject;
+			$this->_tmp_img = new CMSObject;
 		}
 	}
 	

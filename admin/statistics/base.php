@@ -6,10 +6,11 @@
  * @subpackage statistics
  * @file       base.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -26,7 +27,7 @@ use Joomla\CMS\Log\Log;
  * @version   $Id$
  * @access    public
  */
-class SMStatistic extends JObject
+class SMStatistic extends CMSObject
 {
 	var $_name = 'default';
 	var $_calculated = 0;
@@ -430,13 +431,14 @@ class SMStatistic extends JObject
 		$params = self::getParams();
 
 		$stat_ids = $params->get($id_field);
-
+is_array($stat_ids) ? true : false;
+		/**
 		if (!count($stat_ids))
 		{
 //			Log::add(Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return (array(0));
 		}
-
+*/
 		$db   = sportsmanagementHelper::getDBConnection();
 		$sids = array();
 
@@ -1803,5 +1805,5 @@ class SMStatistic extends JObject
 		$query->group('gp.tpid');
 
 		return $query;
-	}
+	}   
 }

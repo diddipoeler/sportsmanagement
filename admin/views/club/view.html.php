@@ -6,7 +6,7 @@
  * @subpackage club
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Environment\Browser;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewClub
@@ -70,19 +71,20 @@ $this->item->logo_small = ComponentHelper::getParams('com_sportsmanagement')->ge
 			if ($this->item->founded == '0000-00-00')
 			{
 				$this->item->founded = '';
-				$this->form->setValue('founded', '');
+				$this->form->setValue('founded',null, '');
 			}
 
 			if ($this->item->dissolved == '0000-00-00')
 			{
 				$this->item->dissolved = '';
-				$this->form->setValue('dissolved', '');
+				$this->form->setValue('dissolved',null, '');
 			}
 		}
 		else
 		{
-			$this->form->setValue('founded', '');
-			$this->form->setValue('dissolved', '');
+			$this->form->setValue('founded',null, '');
+			$this->form->setValue('dissolved',null, '');
+            $this->form->setValue('country',null, Factory::getApplication()->getUserState("com_sportsmanagement.clubnation", ''));
 		}
 
 		if ($this->item->latitude == 255)
@@ -95,17 +97,17 @@ $this->item->logo_small = ComponentHelper::getParams('com_sportsmanagement')->ge
 			$this->map = true;
 		}
 
-		$extended           = sportsmanagementHelper::getExtended($this->item->extended, 'club');
-		$this->extended     = $extended;
-		$extendeduser       = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'club');
-		$this->extendeduser = $extendeduser;
+		//$extended           = sportsmanagementHelper::getExtended($this->item->extended, 'club');
+		$this->extended     = sportsmanagementHelper::getExtended($this->item->extended, 'club');;
+		//$extendeduser       = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'club');
+		$this->extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'club');;
 
-		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields();
+		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('backend',0,Factory::getApplication()->input->get('view'));
 		$lists                  = array();
 
 		if ($this->checkextrafields)
 		{
-			$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id);
+			$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id,'backend',0,Factory::getApplication()->input->get('view'));
 		}
 
 		/** die mannschaften zum verein */

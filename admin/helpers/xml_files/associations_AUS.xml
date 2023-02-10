@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<structur>
+  
+<associations><assocname country="AUS" icon="" flag="" website="" shortname="CT" main="1" parentmain="0">Australian Capital Territory</assocname></associations> 
+<associations><assocname country="AUS" icon="" flag="" website="" shortname="JB" main="2" parentmain="0">Jervis Bay Territory</assocname></associations> 
+<associations><assocname country="AUS" icon="" flag="" website="" shortname="NS" main="3" parentmain="0">New South Wales</assocname></associations> 
+<associations><assocname country="AUS" icon="" flag="" website="" shortname="NT" main="4" parentmain="0">Northern Territory</assocname></associations> 
+<associations><assocname country="AUS" icon="" flag="" website="" shortname="QL" main="5" parentmain="0">Queensland</assocname></associations> 
+<associations><assocname country="AUS" icon="" flag="" website="" shortname="SA" main="6" parentmain="0">South Australia</assocname></associations> 
+<associations><assocname country="AUS" icon="" flag="" website="" shortname="TS" main="7" parentmain="0">Tasmania</assocname></associations> 
+<associations><assocname country="AUS" icon="" flag="" website="" shortname="VI" main="8" parentmain="0">Victoria</assocname></associations> 
+<associations><assocname country="AUS" icon="" flag="" website="" shortname="WA" main="9" parentmain="0">Western Australia</assocname></associations> 
+  
+</structur>

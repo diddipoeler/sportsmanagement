@@ -6,10 +6,12 @@
  * @subpackage libraries
  * @file       view.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -18,11 +20,12 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Toolbar\Toolbar;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use sportsmanagementView as GlobalSportsmanagementView;
+
 
 /** welche joomla version ? */
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
@@ -130,6 +133,7 @@ class sportsmanagementView extends BaseHtmlView
 
 		$this->app       = Factory::getApplication();
 		$this->starttime = microtime();
+
 		/**
 		 * Check for errors.
 		 */
@@ -156,11 +160,13 @@ class sportsmanagementView extends BaseHtmlView
 		//$this->document->addStyleSheet(Uri::root() . 'components/com_sportsmanagement/assets/css/flex.css');
         if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
         {
-        $this->document->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/joomla4functions.js');
-		$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/extended-1.1.css');
+			$this->document->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/joomla4functions.js');
+			$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/extended-1.1.css');
+			$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/extended_4.css');
 			//$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/style.css'); 
 			$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/stylebox.css');
-        //$this->document->addScript(Uri::root() . 'media/system/js/searchtools.js');
+			$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/stylebox_4.css');
+			//$this->document->addScript(Uri::root() . 'media/system/js/searchtools.js');
         }
 	else	
 	{
@@ -204,6 +210,9 @@ img.car {
     $this->_persontype     = $this->jinput->get('persontype');
 	$this->jsmmessage     = '';
 	$this->jsmmessagetype = 'notice';
+	
+	$mdlProject               = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
+	$this->templateConfig = $mdlProject->getTemplateConfig($this->project_id, 'backend_' . $this->getName());
 		
 		
 		switch ($this->view)
@@ -725,7 +734,7 @@ break;
 					HTMLHelper::_('select.options', $this->userfields, 'id', 'name', $this->state->get('filter.userfields'), true)
 				);
 			}
-
+/*
 			if (isset($this->league))
 			{
 				JHtmlSidebar::addFilter(
@@ -734,6 +743,7 @@ break;
 					HTMLHelper::_('select.options', $this->league, 'id', 'name', $this->state->get('filter.league'), true)
 				);
 			}
+			*/
 /*
 			if (isset($this->sports_type))
 			{
@@ -1040,7 +1050,7 @@ document.getElementById("filter_season").classList.add("filter_season");
 		{
 		case 'rosterpositions';
         $title  = Text::_('JTOOLBAR_BATCH');
-		$layout = new JLayoutFile('rosterpositions', JPATH_ROOT . '/components/com_sportsmanagement/layouts');
+		$layout = new FileLayout('rosterpositions', JPATH_ROOT . '/components/com_sportsmanagement/layouts');
 		$html   = $layout->render();
 		Toolbar::getInstance('toolbar')->appendButton('Custom', $html, 'batch');
         $modal_params           = array();
@@ -1054,7 +1064,7 @@ document.getElementById("filter_season").classList.add("filter_season");
 
 		/** test */
 		$title  = Text::_('JTOOLBAR_BATCH');
-		$layout = new JLayoutFile('newissue', JPATH_ROOT . '/components/com_sportsmanagement/layouts');
+		$layout = new FileLayout('newissue', JPATH_ROOT . '/components/com_sportsmanagement/layouts');
 		$html   = $layout->render();
 		Toolbar::getInstance('toolbar')->appendButton('Custom', $html, 'batch');
 

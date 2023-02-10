@@ -4,7 +4,7 @@
  * @version   1.0.05
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  *
  * boostrap tree
@@ -14,6 +14,8 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+
 
 /**
  * sportsmanagementViewClubInfo
@@ -34,13 +36,14 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
 	 */
 	function init()
 	{
-		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('frontend', sportsmanagementModelClubInfo::$cfg_which_database);
+	   
+		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('frontend', sportsmanagementModelClubInfo::$cfg_which_database,Factory::getApplication()->input->get('view'));
 		$this->mapconfig = array();
 		$this->club = sportsmanagementModelClubInfo::getClub(1);
 
 		if ($this->checkextrafields)
 		{
-			$this->extrafields = sportsmanagementHelper::getUserExtraFields($this->club->id, 'frontend', sportsmanagementModelClubInfo::$cfg_which_database);
+			$this->extrafields = sportsmanagementHelper::getUserExtraFields($this->club->id, 'frontend', sportsmanagementModelClubInfo::$cfg_which_database,Factory::getApplication()->input->get('view'));
 		}
 
 		$lat = '';
@@ -48,7 +51,7 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
 
 		$this->clubassoc = sportsmanagementModelClubInfo::getClubAssociation($this->club->associations);
 		$this->extended  = sportsmanagementHelper::getExtended($this->club->extended, 'club', 'ini', true);
-		$this->teams     = sportsmanagementModelClubInfo::getTeamsByClubId();
+		$this->teams     = sportsmanagementModelClubInfo::getTeamsByClubId($this->config['show_teams_of_club']);
 
 		if (sportsmanagementModelClubInfo::$projectid)
 		{
@@ -157,6 +160,9 @@ jQuery(function ($) {
 		{
 			$this->config['table_class'] = 'table';
 		}
+		
+		
+        
 
 	}
 }

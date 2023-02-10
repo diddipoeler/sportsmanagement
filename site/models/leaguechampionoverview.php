@@ -5,7 +5,7 @@
  * @subpackage leaguechampionoverview
  * @file       leaguechampionoverview.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -15,9 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Log\Log;
-
-//jimport('joomla.utilities.array');
-//jimport('joomla.utilities.arrayhelper');
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelleaguechampionoverview
@@ -33,14 +31,51 @@ class sportsmanagementModelleaguechampionoverview extends BaseDatabaseModel
 static $rankingalltimenotes = array();
 	static $rankingalltimewarnings = array();
 	static $rankingalltimetips = array();
-	
+    
+    /**
+     * sportsmanagementModelleaguechampionoverview::getProjectWinner()
+     * 
+     * @param integer $project_id
+     * @return void
+     */
+    function getProjectWinner($project_id = 0)
+    {
+    $app = Factory::getApplication();  
+    $jinput = $app->input;  
+        $db        = sportsmanagementHelper::getDBConnection(true, Factory::getApplication()->input->get('cfg_which_database', 0, 'INT'));
+		$query     = $db->getQuery(true);
+        
+        //$query->select('pt.id AS _ptid, pt.is_in_score, pt.division_id, pt.finaltablerank as rank, pt.champion');
+        $query->select('pt.id AS _ptid, pt.is_in_score, pt.division_id, pt.finaltablerank, pt.champion as rank');
+        $query->select('CONCAT_WS(\':\',pt.id,t.alias) AS ptid_slug');
+        $query->select('t.name as _name, t.id as _teamid, t.club_id, c.logo_big');
+        $query->from('#__sportsmanagement_project_team AS pt ');
+        $query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.id = pt.team_id');
+		$query->join('INNER', '#__sportsmanagement_team AS t ON st1.team_id = t.id ');
+        $query->join('INNER', '#__sportsmanagement_club AS c ON c.id = t.club_id ');
+        $query->where('pt.project_id = ' . $project_id);
+		$query->where('pt.is_in_score = 1');
+        //$query->where('pt.finaltablerank = 1');
+        $query->where('pt.champion = 1');
+        $db->setQuery($query);
+		$res = $db->loadObjectList();
+        
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+        return $res;
+    }
+    
+/**
+ * sportsmanagementModelleaguechampionoverview::_getRankingCriteria()
+ * 
+ * @return
+ */
 function _getRankingCriteria()
 	{
 		$app = Factory::getApplication();
 
 		if (empty($this->_criteria))
 		{
-			// Get the values from ranking template setting
+			/** Get the values from ranking template setting */
 			$values = explode(',', $this->_params['ranking_order']);
 			$crit   = array();
 
@@ -58,7 +93,7 @@ function _getRankingCriteria()
 				}
 			}
 
-			// Set a default criteria if empty
+			/** Set a default criteria if empty */
 			if (!count($crit))
 			{
 				$crit[] = '_cmpPoints';
@@ -79,13 +114,18 @@ function _getRankingCriteria()
 	
 	
 	
+/**
+ * sportsmanagementModelleaguechampionoverview::_sortRanking()
+ * 
+ * @param mixed $ranking
+ * @param string $order
+ * @param string $order_dir
+ * @return
+ */
 function _sortRanking(&$ranking,$order='points',$order_dir='DESC')
 	{
-		// Reference global application object
 		$app       = Factory::getApplication();
 		$jinput    = $app->input;
-		//$order     = $jinput->request->get('order', '', 'STR');
-		//$order_dir = $jinput->request->get('dir', 'DESC', 'STR');
 
 		$arr2 = array();
 
@@ -238,6 +278,13 @@ function _sortRanking(&$ranking,$order='points',$order_dir='DESC')
 
 	}
 
+/**
+ * sportsmanagementModelleaguechampionoverview::array_msort()
+ * 
+ * @param mixed $array
+ * @param mixed $cols
+ * @return
+ */
 function array_msort($array, $cols)
 	{
 		$colarr = array();

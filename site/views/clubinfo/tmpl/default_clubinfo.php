@@ -6,7 +6,7 @@
  * @subpackage clubinfo
  * @file       default_clubinfo.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -387,6 +387,27 @@ else
 					<?PHP
 				}
 
+if ($this->config['show_notes_club'])
+		{
+?>
+
+<?php  
+$this->notes = array();
+$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAM_DESCRIPTION');
+echo $this->loadTemplate('jsm_notes');
+?>       
+    <div class="<?php echo $this->divclassrow; ?> table-responsive" id="playground_description">
+		<?php
+		$description = $this->club->notes;
+		$description = HTMLHelper::_('content.prepare', $description);
+		echo $description;
+		?>
+    </div>
+	<?php			
+		}
+			
+			
+			
 /*
 				if ($this->config['show_fusion'])
 				{

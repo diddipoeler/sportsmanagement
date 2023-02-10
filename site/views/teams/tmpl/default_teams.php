@@ -6,7 +6,7 @@
  * @subpackage teams
  * @file       default_teams.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -216,6 +216,9 @@ $image = HTMLHelper::image($picture, $clubTitle, array('title' => $clubTitle, ' 
 								break;
 							case 'pagepeeker':
 								echo '<img style="" src="http://free.pagepeeker.com/v2/thumbs.php?size=' . $this->config['pagepeeker_size'] . '&url=' . $team->club_www . '">';
+								break;
+								case 'miniature':
+echo '<img style="" src="https://api.miniature.io/?width=100&height=50&url=' . $team->club_www . '">';								
 								break;
 						}
 						?>

@@ -6,7 +6,7 @@
  * @subpackage clubplan
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -135,9 +135,7 @@ class sportsmanagementViewClubPlan extends sportsmanagementView
 
 		$lists['fromteamseasons'] = $fromteamseasons;
 
-		/**
-		 * auswahl welche spiele
-		 */
+		/** auswahl welche spiele */
 		$opp_arr   = array();
 		$opp_arr[] = HTMLHelper::_('select.option', "0", Text::_('COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_ALL'));
 		$opp_arr[] = HTMLHelper::_('select.option', "1", Text::_('COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_HOME'));

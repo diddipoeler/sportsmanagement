@@ -5,7 +5,7 @@
  * @subpackage rankingalltime
  * @file       rankingalltime.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\Component\ComponentHelper;
 
 //jimport('joomla.utilities.array');
 //jimport('joomla.utilities.arrayhelper');
@@ -75,7 +76,7 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 	{
 		$app                 = Factory::getApplication();
 		$jinput              = $app->input;
-		$this->alltimepoints = $jinput->request->get('points', '3,1,0', 'STR');
+		$this->alltimepoints = $jinput->get('points', '3,1,0', 'STR');
         $params = array();
 
 		$file = JPATH_SITE . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'ranking.php';
@@ -86,7 +87,8 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 		$item = $menu->getActive();
         
         //$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($item,true).'</pre>'), 'error');
-        
+        if ( $item )
+	{
         if ( !property_exists($item, 'query') )
 		{
 		$item->query['view'] = '';  
@@ -95,7 +97,7 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 		{
 		$item->id = 0;  
 		}
-
+	}
 		$params = $menu->getParams($item->id);
         
         
@@ -220,7 +222,7 @@ foreach ($field->fieldset as $fieldset)
                     
 				}
 
-				if ($r->use_finally)
+				if ( $r->use_finally || ComponentHelper::getParams('com_sportsmanagement')->get('force_ranking_cache', 0) )
 				{
 					$this->teams[$r->team_id]->sum_points        += $r->points_finally;
 					$this->teams[$r->team_id]->neg_points        += $r->neg_points_finally;
@@ -285,7 +287,25 @@ foreach ($field->fieldset as $fieldset)
 		{
 			$query->select('tl.id AS projectteamid,tl.division_id');
 			$query->select('tl.standard_playground,tl.admin,tl.start_points');
-			$query->select('tl.use_finally,tl.points_finally,tl.neg_points_finally,tl.matches_finally,tl.won_finally,tl.draws_finally,tl.lost_finally,tl.homegoals_finally,tl.guestgoals_finally,tl.diffgoals_finally');
+			
+if ( ComponentHelper::getParams('com_sportsmanagement')->get('force_ranking_cache', 0) )			
+{
+$query->select('tl.use_finally,
+tl.cache_points_finally as points_finally,
+tl.cache_neg_points_finally as neg_points_finally,
+tl.cache_matches_finally as matches_finally,
+tl.cache_won_finally as won_finally,
+tl.cache_draws_finally as draws_finally,
+tl.cache_lost_finally as lost_finally,
+tl.cache_homegoals_finally as homegoals_finally,
+tl.cache_guestgoals_finally as guestgoals_finally,
+tl.cache_diffgoals_finally as diffgoals_finally');	
+}
+else
+{
+$query->select('tl.use_finally,tl.points_finally,tl.neg_points_finally,tl.matches_finally,tl.won_finally,tl.draws_finally,tl.lost_finally,tl.homegoals_finally,tl.guestgoals_finally,tl.diffgoals_finally');
+}
+			
 			$query->select('tl.is_in_score,tl.info,st.team_id,tl.checked_out,tl.checked_out_time');
 			$query->select('tl.picture,tl.project_id');
 			$query->select('t.id,t.name,t.short_name,t.middle_name,t.notes,t.club_id');
@@ -811,24 +831,26 @@ catch (Exception $e)
 	}
 
 
+
 	/**
 	 * sportsmanagementModelRankingAllTime::getAllProjectNames()
 	 * 
+	 * @param integer $use_leaguechampion
 	 * @return
 	 */
-	function getAllProjectNames()
+	function getAllProjectNames($use_leaguechampion = 0)
 	{
 		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
 		$jinput = $app->input;
-		$league = $jinput->request->get('l', 0, 'INT');
+		$league = $jinput->get('l', 0, 'INT');
 
 		$db    = Factory::getDBO();
 		$query = Factory::getDbo()->getQuery(true);
 
 		if (!$league)
 		{
-			$projekt = $jinput->request->get('p', 0, 'INT');
+			$projekt = $jinput->get('p', 0, 'INT');
 			$query->clear();
 			$query->select('league_id');
 			$query->from('#__sportsmanagement_project');
@@ -839,55 +861,59 @@ catch (Exception $e)
             {
 			$league = $db->loadResult();
             }
-catch (Exception $e)
-{
-    Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), Log::INFO, 'jsmerror');
-    Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), Log::INFO, 'jsmerror');
-}
+            catch (Exception $e)
+            {
+            Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), Log::INFO, 'jsmerror');
+            Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), Log::INFO, 'jsmerror');
+            }
 		}
 
 		$query->clear();
-		$query->select('p.id,p.name,s.name as seasonname');
+		$query->select('p.id,p.name,s.name as seasonname,p.projectinfo,p.league_id,p.season_id');
 		$query->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
 		$query->from('#__sportsmanagement_project as p');
 		$query->join('INNER', '#__sportsmanagement_season AS s ON p.season_id = s.id ');
 		$query->where('p.league_id = ' . $league);
+        if ( $use_leaguechampion )
+        {
+            $query->where('p.use_leaguechampion = ' . $use_leaguechampion);
+        }
 		$query->order('s.name DESC ');
 		$db->setQuery($query);
         try
         {
 		$result = $db->loadObjectList();
         }
-catch (Exception $e)
-{
-    Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), Log::INFO, 'jsmerror');
-    Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), Log::INFO, 'jsmerror');
-}
+        catch (Exception $e)
+        {
+        Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), Log::INFO, 'jsmerror');
+        Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), Log::INFO, 'jsmerror');
+        }
 
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
 		return $result;
-
 	}
 
+	
 	/**
 	 * sportsmanagementModelRankingAllTime::getAllProject()
-	 *
+	 * 
+	 * @param integer $use_leaguechampion
 	 * @return
 	 */
-	function getAllProject()
+	function getAllProject($use_leaguechampion = 0)
 	{
 		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
 		$jinput = $app->input;
-		$league = $jinput->request->get('l', 0, 'INT');
+		$league = $jinput->get('l', 0, 'INT');
 
 		$db    = Factory::getDBO();
 		$query = Factory::getDbo()->getQuery(true);
 
 		if (!$league)
 		{
-			$projekt = $jinput->request->get('p', 0, 'INT');
+			$projekt = $jinput->get('p', 0, 'INT');
 			$query->clear();
 			$query->select('league_id');
 			$query->from('#__sportsmanagement_project');
@@ -901,18 +927,21 @@ catch (Exception $e)
 		$query->select('id');
 		$query->from('#__sportsmanagement_project');
 		$query->where('league_id = ' . $league);
+        if ( $use_leaguechampion )
+        {
+            $query->where('use_leaguechampion = ' . $use_leaguechampion);
+        }
 		$query->order('name ');
 		$db->setQuery($query);
-try{
+        try{
 		$result = $db->loadColumn(0);
 
 		$this->project_ids       = implode(",", $result);
 		$this->project_ids_array = $result;
 
 		$count_project = count($result);
-	self::$rankingalltimetips[] = Text::_('Wir verarbeiten ' . $count_project . ' Projekte/Saisons !');
-		//Log::add(Text::_('Wir verarbeiten ' . $count_project . ' Projekte/Saisons !'), Log::INFO, 'jsmerror');
-        
+	   self::$rankingalltimetips[] = Text::_('Wir verarbeiten ' . $count_project . ' Projekte/Saisons !');
+       
         }
 catch (Exception $e)
 {
@@ -1009,8 +1038,8 @@ catch (Exception $e)
 		// Reference global application object
 		$app       = Factory::getApplication();
 		$jinput    = $app->input;
-		$order     = $jinput->request->get('order', '', 'STR');
-		$order_dir = $jinput->request->get('dir', 'DESC', 'STR');
+		$order     = $jinput->get('order', '', 'STR');
+		$order_dir = $jinput->get('dir', 'DESC', 'STR');
 
 		$arr2 = array();
 

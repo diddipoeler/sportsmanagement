@@ -6,7 +6,7 @@
  * @subpackage matches
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -44,7 +44,11 @@ class sportsmanagementViewMatches extends sportsmanagementView
 		$option = $jinput->getCmd('option');
 		$model  = $this->getModel();
 		$params = ComponentHelper::getParams($option);
-
+//		$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/jquery.datetimepicker.css');
+//		$this->document->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/jquery.datetimepicker.js');
+//		$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/datetimepicker.css');
+//		$this->document->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/datetimepicker.js');
+		
 		$view = $jinput->get('view');
 		$_db  = sportsmanagementHelper::getDBConnection(); // The method is contextual so we must have a DBO
 

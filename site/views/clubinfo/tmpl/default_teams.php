@@ -1,15 +1,13 @@
 <?php
-
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      default_teams.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -17,7 +15,7 @@ use Joomla\CMS\Component\ComponentHelper;
 
 ?>
 <div class="<?php echo $this->divclassrow; ?>" id="default_teams" itemscope itemtype="http://schema.org/SportsTeam">
-	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	<!-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> -->
 		<?php
 		$this->notes = array();
 		$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_TEAMS');
@@ -28,7 +26,7 @@ use Joomla\CMS\Component\ComponentHelper;
 
 		foreach ($this->teams as $team)
 		{
-			if ($team->team_name)
+			if ($team->team_name && property_exists($team,'ptid'))
 			{
 				$routeparameter                       = array();
 				$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
@@ -39,7 +37,7 @@ use Joomla\CMS\Component\ComponentHelper;
 				$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);
 				?>
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
+<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
 					<?php
 
 					if ($team->team_shortcut)
@@ -82,7 +80,8 @@ use Joomla\CMS\Component\ComponentHelper;
 
 					echo "&nbsp;";
 					?>
-
+                      </div>
+<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
 				<?php
 				if ($team->team_description && $this->config['show_teams_description_of_club'])
 				{
@@ -92,7 +91,10 @@ use Joomla\CMS\Component\ComponentHelper;
 				{
 					echo "&nbsp;";
 				}
-
+?>
+                      </div>
+  <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+  <?php
 				if ($this->config['show_teams_picture'])
 				{
 					if (empty($team->project_team_picture))
@@ -114,10 +116,11 @@ use Joomla\CMS\Component\ComponentHelper;
 					);
 				}
 				?>
+                  </div>
 				</div>
 				<?PHP
 			}
 		}
 		?>
-	</div>
+	<!-- </div> -->
 </div>

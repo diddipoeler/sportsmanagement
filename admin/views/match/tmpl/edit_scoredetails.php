@@ -8,7 +8,7 @@
  * @subpackage match
  * @file       edit_scoredetails.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -50,14 +50,14 @@ use Joomla\CMS\Language\Text;
             <tr>
                 <td>
 					<?php
-					if ($this->table_config['alternative_legs'] == '')
-					{
+//					if ($this->table_config['alternative_legs'] == '')
+//					{
 						echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_SD_SETS');
-					}
-					else
-					{
-						echo $this->table_config['alternative_legs'];
-					}
+//					}
+//					else
+//					{
+//						echo $this->table_config['alternative_legs'];
+//					}
 					?>:
                 </td>
                 <td>

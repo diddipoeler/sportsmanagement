@@ -6,7 +6,7 @@
  * @subpackage positions
  * @file       default.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -37,8 +37,7 @@ echo $this->loadTemplate('joomla_version');
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>"/>
 <?php echo HTMLHelper::_('form.token') . "\n"; ?>
 </form>
-<div>
+
 <?PHP
 echo $this->loadTemplate('footer');
 ?>
-</div>

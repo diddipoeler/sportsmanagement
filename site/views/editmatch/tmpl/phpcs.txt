@@ -194,7 +194,7 @@ Changing into directory C:\Users\ortwin20001\Documents\GitHub\sportsmanagement\s
 Processing edit_matchpreview.php 
 	*** START PHP TOKENIZING ***
 	Process token [0]: T_OPEN_TAG => <?php\n
-	Process token [1]: T_DOC_COMMENT => /**\n * SportsManagement ein Programm zur Verwaltung für alle Sportarten\n *\n * @version    1.0.05\n * @file       edit_matchpreview.php\n * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)\n * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.\n * @license    GNU General Public License version 2 or later; see LICENSE.txt\n * @package    sportsmanagement\n * @subpackage editmatch\n */
+	Process token [1]: T_DOC_COMMENT => /**\n * SportsManagement ein Programm zur Verwaltung für alle Sportarten\n *\n * @version    1.0.05\n * @file       edit_matchpreview.php\n * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)\n * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.\n * @license    GNU General Public License version 2 or later; see LICENSE.txt\n * @package    sportsmanagement\n * @subpackage editmatch\n */
 		*** START COMMENT TOKENIZING ***
 		Create comment token: T_DOC_COMMENT_OPEN_TAG => /**
 		Create comment token: T_DOC_COMMENT_WHITESPACE => \n
@@ -232,7 +232,7 @@ Processing edit_matchpreview.php
 		Create comment token: T_DOC_COMMENT_WHITESPACE =>  
 		Create comment token: T_DOC_COMMENT_TAG => @copyright
 		Create comment token: T_DOC_COMMENT_WHITESPACE =>   
-		Create comment token: T_DOC_COMMENT_STRING => Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+		Create comment token: T_DOC_COMMENT_STRING => Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 		Create comment token: T_DOC_COMMENT_WHITESPACE => \n
 		Create comment token: T_DOC_COMMENT_WHITESPACE =>  
 		Create comment token: T_DOC_COMMENT_STAR => *
@@ -451,7 +451,7 @@ Processing edit_matchpreview.php
 	Process token 34 on line 8 [col:3;len:1;lvl:0;]: T_DOC_COMMENT_WHITESPACE =>  
 	Process token 35 on line 8 [col:4;len:10;lvl:0;]: T_DOC_COMMENT_TAG => @copyright
 	Process token 36 on line 8 [col:14;len:2;lvl:0;]: T_DOC_COMMENT_WHITESPACE =>   
-	Process token 37 on line 8 [col:16;len:85;lvl:0;]: T_DOC_COMMENT_STRING => Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+	Process token 37 on line 8 [col:16;len:85;lvl:0;]: T_DOC_COMMENT_STRING => Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 	Process token 38 on line 8 [col:101;len:0;lvl:0;]: T_DOC_COMMENT_WHITESPACE => \n
 	Process token 39 on line 9 [col:1;len:1;lvl:0;]: T_DOC_COMMENT_WHITESPACE =>  
 	Process token 40 on line 9 [col:2;len:1;lvl:0;]: T_DOC_COMMENT_STAR => *

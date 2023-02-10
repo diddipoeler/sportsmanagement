@@ -6,7 +6,7 @@
  * @subpackage fields
  * @file       dependsql.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -19,6 +19,11 @@ require_once JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'components' . DIRECTOR
 require_once JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'com_sportsmanagement' . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'sportsmanagement.php';
 
 jimport('joomla.form.helper');
+
+if (version_compare(JVERSION, '4.0.0', 'ge'))
+{
+	HTMLHelper::_('jquery.framework');
+}
 
 /**
  * Renders a Dynamic SQL field
@@ -52,6 +57,8 @@ class JFormFieldDependSQL extends FormField
 		$jinput = $app->input;
 		$view   = $jinput->getCmd('view');
 		$option = $jinput->getCmd('option');
+        
+        //Factory::getApplication()->enqueueMessage('<pre>'.print_r($view,true)      .'</pre>', 'error');
 
 		$lang = Factory::getLanguage();
 		$lang->load("com_sportsmanagement", JPATH_ADMINISTRATOR);
@@ -73,7 +80,8 @@ class JFormFieldDependSQL extends FormField
 
 		$project_id = $this->form->getValue('id');
 
-		if ($v = $this->element['size'])
+		$attribs   .= ' class="select2-container"';
+        if ( $v = $this->element['size'] )
 		{
 			$attribs .= ' size="' . $v . '"';
 		}
@@ -82,33 +90,40 @@ class JFormFieldDependSQL extends FormField
 		{
 			$attribs .= ' multiple="' . $v . '"';
 		}
+        
+        switch ( $depends )
+        {
+            case 'search_nation':
+            $attribs .= ' onchange="this.form.submit();"';
+            break;
+        }
 
 		switch ($option)
 		{
-			case 'com_modules':
-				$div = 'params';
-				break;
-			case 'com_sportsmanagement':
-				if ($norequest)
-				{
-					$div = '';
-				}
-				else
-				{
-					$div = 'request';
-				}
-				break;
-			default:
-				$div = 'request';
-				break;
+		case 'com_modules':
+		$div = 'params';
+		break;
+		case 'com_sportsmanagement':
+		if ($norequest)
+		{
+			$div = '';
+		}
+		else
+		{
+			$div = 'request';
+		}
+		break;
+		default:
+		$div = 'request';
+		break;
 		}
       
-      switch ($view)
-		{
-		case 'predictiongame':
-          $div = '';
-          break;
-      }
+    switch ($view)
+	{
+	case 'predictiongame':
+    $div = '';
+    break;
+    }
 
 		$value     = $this->form->getValue($val, $div);
 		$key_value = $this->form->getValue($key, $div);
@@ -211,7 +226,19 @@ $script[] = "var url = 'index.php?option=com_sportsmanagement&format=json&dbase=
 		Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
 
 		$ajaxtask = 'get' . $ajaxtask;
-		$result   = sportsmanagementModelAjax::$ajaxtask($value, $required, $slug);
+		switch($ajaxtask)
+		{
+			case 'getprojects':
+			case 'getprojectdivisionsoptions':
+				$result   = sportsmanagementModelAjax::$ajaxtask($value, $required, $slug, $cfg_which_database);
+				break;
+			case 'getprojectroundoptions':
+				$result   = sportsmanagementModelAjax::$ajaxtask($value, $required, $slug, null, null, $cfg_which_database);
+				break;
+			default:
+				$result   = sportsmanagementModelAjax::$ajaxtask($value, $required, $slug);
+				break;
+		}
 
 		if ($result)
 		{

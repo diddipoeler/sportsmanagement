@@ -8,11 +8,13 @@
  * @subpackage prediction
  * @file       prediction.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Access\Access;
+use Joomla\Registry\Registry;
 
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -859,7 +861,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 		// JUserobjekt holen
 		$user = Factory::getUser();
 
-		$authorised = JAccess::getAuthorisedViewLevels(Factory::getUser()->get('id'));
+		$authorised = Access::getAuthorisedViewLevels(Factory::getUser()->get('id'));
 
 		$authorisedgroups = $user->getAuthorisedGroups();
 
@@ -875,7 +877,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 			$groupNames .= '<br/>';
 		}
 
-		$groups = JAccess::getGroupsByUser($user->id, false);
+		$groups = Access::getGroupsByUser($user->id, false);
 
 		if ($user->id > 0)
 		{
@@ -1412,7 +1414,7 @@ $recipient = array();
 			}
 		}
 
-		$jRegistry = new JRegistry;
+		$jRegistry = new Registry;
 
 		if (version_compare(JVERSION, '3.0.0', 'ge'))
 		{
@@ -2623,7 +2625,7 @@ $recipient = array();
 				break;
 
 			case 'com_comprofiler':
-				$query->select('cf.cb_streetaddress,cf.cb_city,cf.cb_state,cf.cb_zip,cf.cb_country');
+				//$query->select('cf.cb_streetaddress,cf.cb_city,cf.cb_state,cf.cb_zip,cf.cb_country');
 				$query->join('LEFT', '#__comprofiler AS cf ON cf.user_id = u.id');
 				break;
 			case 'com_kunena':

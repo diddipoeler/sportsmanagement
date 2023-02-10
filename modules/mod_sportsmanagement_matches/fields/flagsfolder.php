@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
- *
  * @version    1.0.00
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_matches
@@ -11,17 +9,14 @@
  * @copyright  Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\Folder;
 
 jimport('joomla.form.formfield');
-
 
 /**
  * JFormFieldFlagsFolder
@@ -32,7 +27,7 @@ jimport('joomla.form.formfield');
  * @version   $Id$
  * @access    public
  */
-class JFormFieldFlagsFolder extends JFormField
+class JFormFieldFlagsFolder extends FormField
 {
 	protected $type = 'FlagsFolder';
 
@@ -49,12 +44,12 @@ class JFormFieldFlagsFolder extends JFormField
 
 		foreach ($folderlist1 AS $key => $val)
 		{
-			$folderlist[] = str_replace(JPATH_ROOT . DS, '', $val);
+			$folderlist[] = str_replace(JPATH_ROOT . DIRECTORY_SEPARATOR, '', $val);
 		}
 
 		foreach ($folderlist2 AS $key => $val)
 		{
-			$folderlist[] = str_replace(JPATH_ROOT . DS, '', $val);
+			$folderlist[] = str_replace(JPATH_ROOT . DIRECTORY_SEPARATOR, '', $val);
 		}
 
 		$lang = Factory::getLanguage();

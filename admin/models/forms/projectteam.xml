@@ -81,6 +81,18 @@
 		</field>
 		
 		<field
+			name="champion"
+			type="extensionradiobutton"
+			default="1"
+			class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_CHAMPION"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_CHAMPION">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+		
+		<field
 			name="start_points"
 			type="text"
 			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_INIT_POINTS"

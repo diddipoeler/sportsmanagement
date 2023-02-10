@@ -144,14 +144,26 @@ return documentHeight - 100 ;
 
 
 //this will move selected items from source list to destination list   
-function move_list_items(sourceid, destinationid)
+function move_list_items(sourceid, destinationid, destinationtext)
 {
 console.log("move_list_items sourceid : "+sourceid);
 console.log("move_list_items destinationid : "+destinationid);
+console.log("move_list_items destinationtext : "+destinationtext);
 
+var laengetext = jQuery("#"+destinationtext+" option").length;  
+console.log("move_list_items destinationtext laengetext: "+laengetext); 
+	
+var team = jQuery( "#"+sourceid+" option:selected" ).text();
+console.log("move_list_items sourceid team : "+team);
+	
 //alert(sourceid);
 //alert(destinationid);
 jQuery("#"+sourceid+"  option:selected").appendTo("#"+destinationid);
+	
+jQuery("#"+destinationtext+"").append(jQuery('<option></option>').attr("value", laengetext).text(team));
+	
+jQuery('#postteamname').append("<input type='hidden' size='40' name='postteamname["+laengetext+"]' value='"+team+"' >"); 
+	
 }
 
 //this will move all selected items from source list to destination list

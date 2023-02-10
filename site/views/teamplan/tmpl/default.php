@@ -6,7 +6,7 @@
  * @subpackage teamplan
  * @file       default.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -15,8 +15,13 @@ use Joomla\CMS\Language\Text;
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>  
 <div class="<?php echo $this->divclasscontainer; ?>" id="teamplan">
+<?php
+if ( $this->config['show_teamplan_print_option'] )
+{
+?>
+<script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>  
+
 <button id="exportButton" class="btn btn-primary clearfix"><span class="fa fa-file-pdf-o"></span> Export to PDF</button>
 <button id="btnPrint" class="btn btn-primary hidden-print"><span class="glyphicon glyphicon-print" aria-hidden="true"></span>Print Preview</button>
   
@@ -25,8 +30,10 @@ jQuery("#btnPrint").printPreview({
   obj2print:'#teamplanoutput' 
 }); 
 </script>  
-	
-	<?php
+<?php
+}
+
+
 	if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO)
 	{
 		echo $this->loadTemplate('debug');
@@ -58,6 +65,10 @@ jQuery("#btnPrint").printPreview({
 	echo $this->loadTemplate('jsminfo');
 	?>
 </div>
+<?php
+if ( $this->config['show_teamplan_print_option'] )
+{
+?>
 <script type="text/javascript">
     jQuery(function ($) {
         $("#exportButton").click(function () {
@@ -75,3 +86,6 @@ html2pdf().set(opt).from(element).save();
         });
     });
 </script>
+<?php
+}
+?>

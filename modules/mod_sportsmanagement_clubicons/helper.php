@@ -6,7 +6,7 @@
  * @subpackage mod_sportsmanagement_clubicons
  * @file       helper.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -196,6 +196,6 @@ class modJSMClubiconsHelper
 
 		$imgtitle = Text::_('View ') . $item->name;
 
-		return HTMLHelper::image($logourl, $item->name, 'border="0" width="auto" height="' . $this->params->get('picture_height') . '" class="' . $class . '" title="' . $imgtitle . '"');
+		return HTMLHelper::image($logourl, $item->name, 'border="0" style="width:auto; height:' . $this->params->get('picture_height') . 'px" class="' . $class . '" title="' . $imgtitle . '"');
 	}
 }

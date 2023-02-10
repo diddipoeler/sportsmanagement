@@ -6,10 +6,11 @@
  * @subpackage match
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Environment\Browser;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
@@ -41,7 +42,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 	 */
 	public function init()
 	{
-		$browser      = JBrowser::getInstance();
+		$browser      = Browser::getInstance();
 		$this->config = ComponentHelper::getParams('com_media');
 
 		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
@@ -55,73 +56,89 @@ class sportsmanagementViewMatch extends sportsmanagementView
 
 		$mdlProject      = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
 		$this->projectws = $mdlProject->getProject($this->project_id);
-
 		$this->eventsprojecttime = $this->projectws->game_regular_time;
-
 		$this->match                = $this->model->getMatchData($this->item->id);
+        
+        if($this->match) {
+            $this->match->team1_legs = $this->match->team1_legs ? $this->match->team1_legs : 0;
+            $this->match->team2_legs = $this->match->team2_legs ? $this->match->team2_legs : 0;
+            if ( !property_exists($this->match, "hometeam") )
+            {
+                $this->match->hometeam = '';
+            }
+            if ( !property_exists($this->match, "awayteam") )
+            {
+                $this->match->awayteam = '';
+            }
+            if ( !property_exists($this->match, "playground_id") )
+            {
+                $this->match->playground_id = 0;
+            }
+        }
+        
 		$this->extended             = sportsmanagementHelper::getExtended($this->item->extended, 'match');
 		$this->cfg_which_media_tool = ComponentHelper::getParams($this->option)->get('cfg_which_media_tool', 0);
 
 		switch ($this->getLayout())
 		{
-			case 'pressebericht';
-			case 'pressebericht_3';
-			case 'pressebericht_4';
-				$this->setLayout('pressebericht');
-				break;
-			case 'savepressebericht';
-			case 'savepressebericht_3';
-			case 'savepressebericht_4';
-				$this->setLayout('savepressebericht');
-				$this->_displaySavePressebericht();
-				break;
-			case 'readpressebericht';
-			case 'readpressebericht_3';
-			case 'readpressebericht_4';
-				$this->setLayout('readpressebericht');
-				$this->initPressebericht();
-				break;
-			case 'editreferees';
-			case 'editreferees_3';
-			case 'editreferees_4';
-				$this->setLayout('editreferees');
-				$this->initEditReferees();
-				break;
-			case 'editevents';
-			case 'editevents_3';
-			case 'editevents_4';
-				$this->setLayout('editevents');
-				$this->initEditEevents();
-				break;
-			case 'editeventsbb';
-			case 'editeventsbb_3';
-			case 'editeventsbb_4';
-				$this->setLayout('editeventsbb');
-				$this->initEditEeventsBB();
-				break;
-			case 'editstats';
-			case 'editstats_3';
-			case 'editstats_4';
-				$this->setLayout('editstats');
-				$this->initEditStats();
-				break;
-			case 'editlineup';
-			case 'editlineup_3';
-			case 'editlineup_4';
-				$this->setLayout('editlineup');
-				$this->initEditLineup();
-				break;
-			case 'edit';
-			case 'edit_3';
-			case 'edit_4';
-				$this->initEdit();
-				break;
-			case 'picture';
-			case 'picture_3';
-			case 'picture_4';
-				$this->setLayout('picture');
-				$this->initPicture();
-				break;
+		case 'pressebericht';
+		case 'pressebericht_3';
+		case 'pressebericht_4';
+		$this->setLayout('pressebericht');
+		break;
+		case 'savepressebericht';
+		case 'savepressebericht_3';
+		case 'savepressebericht_4';
+		$this->setLayout('savepressebericht');
+		$this->_displaySavePressebericht();
+		break;
+		case 'readpressebericht';
+		case 'readpressebericht_3';
+		case 'readpressebericht_4';
+		$this->setLayout('readpressebericht');
+		$this->initPressebericht();
+		break;
+		case 'editreferees';
+		case 'editreferees_3';
+		case 'editreferees_4';
+		$this->setLayout('editreferees');
+		$this->initEditReferees();
+		break;
+		case 'editevents';
+		case 'editevents_3';
+		case 'editevents_4';
+		$this->setLayout('editevents');
+		$this->initEditEevents();
+		break;
+		case 'editeventsbb';
+		case 'editeventsbb_3';
+		case 'editeventsbb_4';
+		$this->setLayout('editeventsbb');
+		$this->initEditEeventsBB();
+		break;
+    	case 'editstats';
+		case 'editstats_3';
+		case 'editstats_4';
+		$this->setLayout('editstats');
+		$this->initEditStats();
+		break;
+		case 'editlineup';
+		case 'editlineup_3';
+		case 'editlineup_4';
+		$this->setLayout('editlineup');
+		$this->initEditLineup();
+		break;
+		case 'edit';
+		case 'edit_3';
+		case 'edit_4';
+		$this->initEdit();
+		break;
+		case 'picture';
+		case 'picture_3';
+		case 'picture_4';
+    	$this->setLayout('picture');
+		$this->initPicture();
+		break;
 		}
 
 	}
@@ -436,6 +453,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		$jinput                           = $app->input;
 		$option                           = $jinput->getCmd('option');
 		$this->useeventtime               = $jinput->get('useeventtime');
+        $this->doubleevents               = $jinput->get('doubleevents');
 		$model                            = $this->getModel();
 		$params                           = ComponentHelper::getParams($option);
 		$default_name_dropdown_list_order = $params->get("cfg_be_name_dropdown_list_order", "lastname");
@@ -449,6 +467,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		$javascript .= "var baseajaxurl = '" . Uri::root() . "administrator/index.php?option=com_sportsmanagement';" . "\n";
 		$javascript .= "var matchid = " . $this->item->id . ";" . "\n";
 		$javascript .= "var useeventtime = " . $this->useeventtime . ";" . "\n";
+        $javascript .= "var doubleevents = " . $this->doubleevents . ";" . "\n";
 		$javascript .= "var projecttime = " . $this->eventsprojecttime . ";" . "\n";
 		$javascript .= "var str_delete = '" . Text::_('JACTION_DELETE') . "';" . "\n";
 
@@ -640,7 +659,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		$jinput              = $app->input;
 		$option              = $jinput->getCmd('option');
 		$model               = $this->getModel();
-		$default_name_format = '';
+		$default_name_format = 0;
         $teamname = '';
 		$lists               = array();
 

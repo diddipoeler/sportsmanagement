@@ -6,7 +6,7 @@
  * @subpackage rankingalltime
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -14,6 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementViewRankingAllTime
@@ -34,13 +35,20 @@ class sportsmanagementViewRankingAllTime extends sportsmanagementView
 	 */
 	function init()
 	{
+		
 	   $mdlRankingAllTime = BaseDatabaseModel::getInstance("RankingAllTime", "sportsmanagementModel");
 		$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
 		$this->projectids     = $this->model->getAllProject();
 		$this->projectnames   = $this->model->getAllProjectNames();
-		$this->project_ids          = implode(",", $this->projectids);
+		$this->project_ids    = implode(",", $this->projectids);
 		$this->teams          = $this->model->getAllTeamsIndexedByPtid($this->project_ids);
+        if ( ComponentHelper::getParams('com_sportsmanagement')->get('force_ranking_cache', 0) )
+		{
+		}
+        else
+        {
 		$this->matches        = $this->model->getAllMatches($this->project_ids);
+        }
 		$this->ranking        = $this->model->getAllTimeRanking();
 		$this->tableconfig    = $this->model->getAllTimeParams();
 		$this->config         = $this->model->getAllTimeParams();

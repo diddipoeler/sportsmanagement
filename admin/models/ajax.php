@@ -6,7 +6,7 @@
  * @subpackage models
  * @file       ajax.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -38,15 +38,9 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 	 */
 	static function getPredictionId($dabse = false, $required = false, $slug = false)
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$option = $app->input->getCmd('option');
 
-		// $required = 0;
-
-		// Get a db connection.
 		if (!$dabse)
 		{
 			$db = sportsmanagementHelper::getDBConnection();
@@ -58,7 +52,6 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 
 		$query = $db->getQuery(true);
 
-		// Select some fields
 		if ($slug)
 		{
 			$query->select('CONCAT_WS(\':\', id, alias) AS value,name AS text');
@@ -68,14 +61,11 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 			$query->select('id AS value,name AS text');
 		}
 
-		// From
 		$query->from('#__sportsmanagement_prediction_game');
 		$query->where('published = 1');
 		$query->order('name DESC');
-
 		$db->setQuery($query);
 
-		// Return $db->loadObjectList();
 		return self::addGlobalSelectElement($db->loadObjectList(), $required);
 
 	}
@@ -90,10 +80,7 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 	 */
 	public static function addGlobalSelectElement($elements, $required = false)
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		$mitems = '';
@@ -101,7 +88,6 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		if (!$required)
 		{
 			$mitems = array(HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
-
 			return array_merge($mitems, $elements);
 		}
 		else
@@ -134,7 +120,6 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 
-		// Get a db connection.
 		if (!$dabse)
 		{
 			$db = sportsmanagementHelper::getDBConnection();
@@ -145,8 +130,7 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		}
 
 		$query = $db->getQuery(true);
-
-		// Select some fields
+        
 		if ($slug)
 		{
 			$query->select('CONCAT_WS(\':\', p.id, p.alias) AS value,p.name AS text');
@@ -156,17 +140,11 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 			$query->select('p.id AS value,p.name AS text');
 		}
 
-		// From
 		$query->from('#__sportsmanagement_project as p');
 		$query->join('INNER', ' #__sportsmanagement_prediction_project AS prpro ON p.id = prpro.project_id ');
-
-		// Where
 		$query->where('prpro.prediction_id = ' . (int) $prediction_id);
 		$query->where('prpro.published = 1');
-
-		// Order
 		$query->order('p.name');
-
 		$db->setQuery($query);
 
 		return self::addGlobalSelectElement($db->loadObjectList(), $required);
@@ -188,7 +166,6 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 
-		// Get a db connection.
 		if (!$dabse)
 		{
 			$db = sportsmanagementHelper::getDBConnection();
@@ -200,7 +177,6 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 
 		$query = $db->getQuery(true);
 
-		// Select some fields
 		if ($slug)
 		{
 			$query->select('CONCAT_WS(\':\', p.id, p.alias) AS value,p.name AS text');
@@ -210,15 +186,9 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 			$query->select('p.id AS value,p.name AS text');
 		}
 
-		// From
 		$query->from('#__sportsmanagement_prediction_groups as p');
-
-		// Where
 		$query->where('p.published = 1');
-
-		// Order
 		$query->order('p.name');
-
 		$db->setQuery($query);
 
 		return self::addGlobalSelectElement($db->loadObjectList(), $required);
@@ -239,40 +209,78 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 
 		switch ($show_user_profile)
 		{
-			case 0:
-
-				break;
-			case 1:
-				$query = $db->getQuery(true);
-
-				// Select some fields
-				$query->select('a.id AS value,concat(a.name, \' - \',a.username) AS text');
-
-				// From
-				$query->from('#__users AS a');
-				$query->order('a.name');
-				$db->setQuery($query);
-
-				return self::addGlobalSelectElement($db->loadObjectList(), $required);
-				break;
-			case 2;
-				$query = $db->getQuery(true);
-
-				// Select some fields
-				$query->select('a.id AS value,concat(a.firstname, \' - \',a.lastname) AS text');
-
-				// From
-				$query->from('#__comprofiler AS a');
-				$query->order('a.lastname');
-				$db->setQuery($query);
-
-				return self::addGlobalSelectElement($db->loadObjectList(), $required);
-				break;
+		case 0:
+		break;
+		case 1:
+		$query = $db->getQuery(true);
+		$query->select('a.id AS value,concat(a.name, \' - \',a.username) AS text');
+		$query->from('#__users AS a');
+		$query->order('a.name');
+		$db->setQuery($query);
+		return self::addGlobalSelectElement($db->loadObjectList(), $required);
+		break;
+		case 2;
+		$query = $db->getQuery(true);
+		$query->select('a.id AS value,concat(a.firstname, \' - \',a.lastname) AS text');
+		$query->from('#__comprofiler AS a');
+		$query->order('a.lastname');
+		$db->setQuery($query);
+		return self::addGlobalSelectElement($db->loadObjectList(), $required);
+		break;
 		}
 
 	}
 
 
+	/**
+	 * sportsmanagementModelAjax::getcountryleagueoptions()
+	 * 
+	 * @param string $country
+	 * @param bool $required
+	 * @param bool $slug
+	 * @param bool $dbase
+	 * @return void
+	 */
+	static function getcountryleagueoptions($country = '', $required = false, $slug = false, $dbase = false)
+	{
+		$option = Factory::getApplication()->input->getCmd('option');
+        $post = Factory::getApplication()->input->post->getArray();
+        
+      $country = Factory::getApplication()->input->getCmd('search_nation_projects');
+//      Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_( $country   ), 'Error');
+//      Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_( '<pre>'.print_r($app->input,true).'</pre>'   ), 'Error');
+      
+       if (!$dbase)
+		{
+			$db = sportsmanagementHelper::getDBConnection();
+		}
+		else
+		{
+			$db = sportsmanagementHelper::getDBConnection(true, true);
+		}
+
+		$query = $db->getQuery(true);
+		$query->select('l.id AS value,l.name AS text');
+		$query->from('#__sportsmanagement_league AS l');
+        $query->order('l.name');
+		if ($country)
+		{
+			$query->where('country LIKE ' . $db->Quote('' . $country . ''));
+			$db->setQuery($query);
+
+			return self::addGlobalSelectElement($db->loadObjectList(), $required);
+		}
+		else
+		{
+			$temp        = new stdClass;
+			$temp->value = 0;
+			$temp->text  = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER');
+			$export[]    = $temp;
+
+			return self::addGlobalSelectElement($export, $required);
+		}
+       
+       }
 	/**
 	 * sportsmanagementModelAjax::getcountryclubagegroupoptions()
 	 *
@@ -285,10 +293,7 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 	 */
 	static function getcountryclubagegroupoptions($club_id = 0, $required = false, $slug = false, $dbase = false)
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$option = $app->input->getCmd('option');
 
 		// Get a db connection.

@@ -18,46 +18,48 @@ readonly="true"
 	
 	<field
 			name="published"
-			type="extensionradiobutton"
-			class="radio btn-group btn-group-yesno"
+			type="radio"
+			layout="joomla.form.field.radio.switcher"
 			default="1"
 			size="1"
 			label="JSTATUS"
 			description="JFIELD_PUBLISHED_DESC">
-			<option
-				value="1">
-				JPUBLISHED</option>
+			
 			<option
 				value="0">
 				JUNPUBLISHED</option>
+		<option
+				value="1">
+				JPUBLISHED</option>
 		</field>
     
  <field
 			name="mode"
-			type="extensionradiobutton"
-			class="radio btn-group btn-group-yesno"
+			type="radio"
+			layout="joomla.form.field.radio.switcher"
 			default="1"
 			size="1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_MODE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_MODE_DESC">
-			<option
+	 <option
 				value="1">
-				COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TOTO</option>
+				COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TIPP</option>
 			<option
 				value="0">
-				COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TIPP</option>
+				COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TOTO</option>
+			
 		</field>
 
 <field
 name="overview"
-type="extensionradiobutton"
-class="radio btn-group btn-group-yesno"
+type="radio"
+layout="joomla.form.field.radio.switcher"
 default="1"
 size="1"
 label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_OVERVIEW"
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_OVERVIEW_DESC">
-<option	value="1">COM_SPORTSMANAGEMENT_ADMIN_PGAMES_HALF_SEASON</option>
-<option	value="0">COM_SPORTSMANAGEMENT_ADMIN_PGAMES_FULL_SEASON</option>
+<option	value="1">COM_SPORTSMANAGEMENT_ADMIN_PGAMES_FULL_SEASON</option>
+<option	value="0">COM_SPORTSMANAGEMENT_ADMIN_PGAMES_HALF_SEASON</option>	
 </field>
 
 <!-- punkte  -->
@@ -103,15 +105,16 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_TENDENCY_DESC"
 
 <field
 name="use_cards"
-type="extensionradiobutton"
-class="radio btn-group btn-group-yesno"
+type="radio"
+layout="joomla.form.field.radio.switcher"
 default="0"
 size="1"
 label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_CARDS"
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_CARDS_DESC">
-<option	value="1">JYES</option>
 <option	value="0">JNO</option>
+<option	value="1">JYES</option>	
 </field>
+	
 <field 
 name="points_correct_yellow_cards" 
 showon="use_cards:1"        
@@ -120,6 +123,7 @@ default="6"
 label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_YELLOW_CARDS" 
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_YELLOW_CARDS_DESC"
 />  
+	
 <field 
 name="points_correct_yellow_red_cards" 
 showon="use_cards:1"        
@@ -128,6 +132,7 @@ default="6"
 label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_YELLOW_RED_CARDS" 
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_YELLOW_RED_CARDS_DESC"
 />
+	
 <field 
 name="points_correct_red_cards" 
 showon="use_cards:1"        
@@ -139,15 +144,17 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_RED_CARDS_DESC"
 
 <field
 name="use_penalties"
-type="extensionradiobutton"
-class="radio btn-group btn-group-yesno"
+type="radio"
+layout="joomla.form.field.radio.switcher"
 default="0"
 size="1"
 label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_PENALTIES"
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_PENALTIES_DESC">
+	<option	value="0">JNO</option>
 <option	value="1">JYES</option>
-<option	value="0">JNO</option>
+
 </field>
+	
 <field 
 name="points_correct_penalties" 
 showon="use_penalties:1"        
@@ -159,15 +166,17 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_PENALTIES_DESC"
 
 <field
 name="use_goals"
-type="extensionradiobutton"
-class="radio btn-group btn-group-yesno"
+type="radio"
+layout="joomla.form.field.radio.switcher"
 default="0"
 size="1"
 label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_GOALS"
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_GOALS_DESC">
-<option	value="1">JYES</option>
 <option	value="0">JNO</option>
+	<option	value="1">JYES</option>
+
 </field>
+	
 <field 
 name="points_correct_goals" 
 showon="use_goals:1"        
@@ -190,9 +199,9 @@ description="COM_SPORTSMANAGEMENT_TABS_PREDCHAMP_DESC">
 <!-- alles für den meister -->    
 <field 
 name="champ" 
-type="extensionradiobutton" 
+type="radio" 
 default="0"
-class="radio btn-group btn-group-yesno"
+layout="joomla.form.field.radio.switcher"
 label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_CHAMP" 
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_CHAMP_DESC">
 <option value="0">JNO</option>
@@ -226,9 +235,9 @@ description="COM_SPORTSMANAGEMENT_TABS_FINAL4TIPPS_DESC">
 <!-- alles für die Halbfinalisten -->    
 <field 
 name="final4" 
-type="extensionradiobutton" 
+type="radio" 
+layout="joomla.form.field.radio.switcher"
 default="0"
-class="radio btn-group btn-group-yesno"
 label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_FINAL4" 
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_FINAL4_DESC">
 <option value="0">JNO</option>
@@ -259,12 +268,13 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_TIPP_FINAL4_DESC"
 <fieldset name="predjoker"
 label="COM_SPORTSMANAGEMENT_TABS_PRED_JOKER"
 description="COM_SPORTSMANAGEMENT_TABS_PRED_JOKER_DESC">  
+	
 <!-- alles für die joker -->
 <field 
 name="joker" 
-type="extensionradiobutton" 
+type="radio" 
 default="0"
-class="radio btn-group btn-group-yesno"
+layout="joomla.form.field.radio.switcher"
 label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_JOKER" 
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_JOKER_DESC">
 <option value="0">JNO</option>
@@ -279,6 +289,7 @@ default="0"
 label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_JOKER_LIMIT" 
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_JOKER_LIMIT_DESC"
 />
+	
 <field 
 name="points_tipp_joker" 
 showon="joker:1"              
@@ -287,6 +298,7 @@ default="0"
 label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_WRONG_PREDICTION_JOKER" 
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_WRONG_PREDICTION_JOKER_DESC"
 />
+	
 <field 
 name="points_correct_result_joker" 
 showon="joker:1"              
@@ -295,6 +307,7 @@ default="0"
 label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_PREDICTION_JOKER" 
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_PREDICTION_JOKER_DESC"
 />
+	
 <field 
 name="points_correct_diff_joker" 
 showon="joker:1"              
@@ -302,7 +315,8 @@ type="text"
 default="0"
 label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_MARGIN_JOKER" 
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_MARGIN_JOKER_DESC"
-/>      
+/> 
+	
 <field 
 name="points_correct_draw_joker" 
 showon="joker:1"              
@@ -311,6 +325,7 @@ default="0"
 label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_DRAW_DIFFERENCE_JOKER" 
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_DRAW_DIFFERENCE_JOKER_DESC"
 />
+	
 <field 
 name="points_correct_tendence_joker"
 showon="joker:1"              

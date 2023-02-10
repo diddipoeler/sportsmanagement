@@ -14,7 +14,7 @@ Das Team
 * Entwicklungsunterstützung: jst71, appukonrad, tdittmann, llambion, ortwin20000 
 * Language manager & Wiki: stony
 * Übersetzer: sk-plehanovec, teddy
-* Tester: svdoldie
+* Tester: svdoldie,Stefan Kemner
 * Designer: donclumsy
 
 Übersetzungen
@@ -25,6 +25,35 @@ vorgenommen und in die Komponente eingepflegt.
 Erweiterungen
 ================
 Google APIs Client Library for PHP https://github.com/googleapis/google-api-php-client
+The Tempus Dominus project https://cdnjs.com/libraries/tempusdominus-bootstrap-4
+
+# (WIP) JComments 4.0
+
+![](https://img.shields.io/github/stars/exstreme/Jcomments-4.svg) ![](https://img.shields.io/github/forks/exstreme/Jcomments-4.svg) ![](https://img.shields.io/github/tag/exstreme/Jcomments-4.svg) ![](https://img.shields.io/github/release/exstreme/Jcomments-4.svg) ![](https://img.shields.io/github/issues/exstreme/Jcomments-4.svg)
+
+Adapting the component to work with Joomla 4.
+
+## Quick Start
+
+Download <a href="https://github.com/exstreme/Jcomments-4/releases/latest" target="_blank">latest version</a> of package
+
+## Migration from Jcomments 3
+- make backup
+- uninstall Jcomments 3 (your comments will be saved in the database)
+- install Jcomments 4 and run database repair (if need)
+
+## Modules
+
+Available modules can be downloaded <a href="https://github.com/exstreme/Jcomments-4/tree/master/build/modules" target="_blank">here</a>.
+
+## Plugins
+
+Available plugins can be downloaded <a href="https://github.com/exstreme/Jcomments-4/tree/master/build/plugins" target="_blank">here</a>.
+
+
+## Länderflaggen mit Karte ?
+
+Länderflaggen gibt es <a href="https://commons.wikimedia.org/wiki/Flag_map_of_the_world" target="_blank">hier</a>.
 
 Import functions ?
 ---------------------
@@ -41,6 +70,19 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   07-01-2023: **4.11.00** Neue Felder flag_maps
+*   26-11-2022: **4.10.00** Jcomments 4
+*   19-06-2022: **4.00.00** Anpassungen Joomla 4
+*   10-04-2022: **3.16.00** Anpassungen Dart
+*   30-03-2022: **3.15.00** Anpassungen Joomla 4
+*   30-03-2022: **3.14.00** Anpassungen Joomla 4
+*   30-03-2022: **3.13.00** Anpassungen Joomla 4
+*   10-01-2022: **3.12.00** Korrektur der Installation
+*   09-01-2022: **3.11.00** Anpassungen
+*   09-01-2022: **3.10.00** Anpassungen Joomla 4, richtige Anzeige der letzten Spiele in den Gruppen
+*   19-11-2021: **3.9.20** Anpassungen Joomla 4
+*   13-11-2021: **3.9.10** Meister im Project nutzen
+*   11-11-2021: **3.9.00** Anpassungen Joomla 4
 *   19-10-2021: **3.8.87** Anpassungen JSM Installation
 *   17-10-2021: **3.8.86** Anpassungen #1269
 *   11-10-2021: **3.8.85** Anpassungen Joomla 4

@@ -6,7 +6,7 @@
  * @subpackage players
  * @file       players.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -75,12 +75,12 @@ class sportsmanagementModelplayers extends JSMModelList
 		$this->_project_team_id = $this->jsmapp->getUserState("$this->jsmoption.project_team_id", '0');
         $season_id = $this->jsmjinput->get('season_id');
         
-        if ( $season_id )
-        {
-        $mdl = BaseDatabaseModel::getInstance("Seasons", "sportsmanagementModel");
-		$season_name = substr($mdl->getSeasonName($season_id),0,4);
-        $birthday = $season_name.'-01-01';  
-        }
+//        if ( $season_id )
+//        {
+//        $mdl = BaseDatabaseModel::getInstance("Seasons", "sportsmanagementModel");
+//		$season_name = substr($mdl->getSeasonName($season_id),0,4);
+//        $birthday = $season_name.'-01-01';  
+//        }
         
 		$this->jsmquery->clear();
 		$this->jsmsubquery1->clear();
@@ -90,10 +90,10 @@ class sportsmanagementModelplayers extends JSMModelList
 		$this->jsmquery->join('LEFT', '#__sportsmanagement_agegroup AS ag ON ag.id = pl.agegroup_id');
 		$this->jsmquery->select('uc.name AS editor');
 		$this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = pl.checked_out');
-        if ( $season_id )
-        {
-        $this->jsmquery->where('pl.birthday < ' . $this->jsmdb->Quote('' . $birthday . '') );
-        }
+//        if ( $season_id )
+//        {
+//        $this->jsmquery->where('pl.birthday < ' . $this->jsmdb->Quote('' . $birthday . '') );
+//        }
 
 		if ( $this->jsmjinput->getVar('layout') == 'assignplayers' )
 		{
@@ -421,13 +421,21 @@ class sportsmanagementModelplayers extends JSMModelList
 			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . ''), '');
 		}
 $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array(), 'array');
+$stateVar = $this->jsmapp->getUserStateFromRequest( "com_sportsmanagement.limit", 'limit', 0 );
 		
 		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
 		$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
 		$this->setState('filter.sports_type', $this->getUserStateFromRequest($this->context . '.filter.sports_type', 'filter_sports_type', ''));
 		$this->setState('filter.search_nation', $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', ''));
 		$this->setState('filter.search_agegroup', $this->getUserStateFromRequest($this->context . '.filter.search_agegroup', 'filter_search_agegroup', ''));
-		$this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
+		 if ( $stateVar )
+      {
+      $this->setState('list.limit',$stateVar );  
+      }
+      else
+      {
+      $this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
+      }
 		$this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
 		
 		$orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');

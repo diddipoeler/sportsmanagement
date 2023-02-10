@@ -5,10 +5,11 @@
  * @subpackage eventsranking
  * @file       eventsranking.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -40,20 +41,14 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 	 */
 	function __construct()
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 
 		parent::__construct();
 		self::$projectid  = $jinput->get('p', 0, 'INT');
 		self::$divisionid = $jinput->get('division', 0, 'INT');
 		self::$teamid     = $jinput->get('tid', 0, 'INT');
-
-		// Self::setEventid($jinput->get('evid'));
 		self::$matchid = $jinput->get('mid', 0, 'INT');
-
 		self::$eventid = (is_array($jinput->get('evid'))) ? implode(",", array_map('intval', $jinput->get('evid'))) : (int) $jinput->get('evid');
 
 		$config           = sportsmanagementModelProject::getTemplateConfig($this->getName());
@@ -61,10 +56,8 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 		self::$limit      = $jinput->getInt('limit', $defaultLimit);
 		self::$limitstart = $jinput->getInt('start', 0);
 		self::setOrder($jinput->getVar('order', 'desc'));
-
 		self::$cfg_which_database                = $jinput->getInt('cfg_which_database', 0);
 		sportsmanagementModelProject::$projectid = self::$projectid;
-
 	}
 
 	/**
@@ -121,21 +114,20 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 	{
 		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
-
-		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
 
 		if (empty($this->_total))
 		{
-			//          $eventids = is_array(self::$eventid) ? self::$eventid : array(self::$eventid);
-
-			// Make sure the same restrictions are used here as in statistics/basic.php in getPlayersRanking()
+			/** Make sure the same restrictions are used here as in statistics/basic.php in getPlayersRanking() */
 			$query->select('COUNT(DISTINCT(teamplayer_id)) as count_player');
 			$query->from('#__sportsmanagement_match_event AS me ');
 			$query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp ON me.teamplayer_id = tp.id');
-			$query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id');
+			$query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id and st.season_id = tp.season_id      ');
 			$query->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+          
+          $query->join('INNER', '#__sportsmanagement_project AS p ON p.id = pt.project_id and p.season_id = st.season_id  ');
+          
 			$query->join('INNER', '#__sportsmanagement_team AS t ON t.id = st.team_id');
 			$query->join('INNER', '#__sportsmanagement_person AS pl ON tp.person_id = pl.id');
 
@@ -145,6 +137,7 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 			if (self::$projectid > 0)
 			{
 				$query->where('pt.project_id = ' . self::$projectid);
+                $query->where('p.id = ' . self::$projectid);
 			}
 
 			if (self::$divisionid > 0)
@@ -163,6 +156,8 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 			}
 
 			$db->setQuery($query);
+            
+            //$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' <pre>' . print_r($query->dump(),true).  '</pre>'  ), 'error');
 
 			try
 			{
@@ -175,7 +170,8 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 				return false;
 			}
 		}
-
+		
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $this->_total;
 	}
 
@@ -242,11 +238,8 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 	{
 		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
-
-		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
-
 		$query->select('et.id as etid,me.event_type_id as id,et.*');
 		$query->select('CONCAT_WS( \':\', et.id, et.alias ) AS event_slug');
 		$query->from('#__sportsmanagement_eventtype as et');
@@ -276,13 +269,13 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 		try
 		{
 			$result = $db->loadObjectList('etid');
-
+			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 			return $result;
 		}
 		catch (Exception $e)
 		{
 			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
-
+			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 			return false;
 		}
 	}
@@ -305,8 +298,6 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 	{
 		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
-
-		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
 
@@ -399,7 +390,8 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 			$previousval    = $row->p;
 			$currentrank    = $row->rank;
 		}
-
+		
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $rows;
 	}
 

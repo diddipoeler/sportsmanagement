@@ -6,7 +6,7 @@
  * @subpackage rankingalltime
  * @file       default_rankingrows.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -200,6 +200,10 @@ foreach ($current as $ptid => $team)
 		{
 			$pic = $config['show_logo_small_table'];
 
+			if ( !$team->team->$pic )
+			{
+			$team->team->$pic = 'images/com_sportsmanagement/database/clubs/large/placeholder_wappen_150.png';	
+			}
 			switch ($pic)
 			{
 				case 'logo_small';

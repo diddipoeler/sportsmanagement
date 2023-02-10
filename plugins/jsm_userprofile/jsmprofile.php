@@ -9,12 +9,13 @@
  * @subpackage plugins
  * @file       jsmprofile.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @package    sportsmanagement
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Plugin\CMSPlugin;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
@@ -29,7 +30,7 @@ use Joomla\Utilities\ArrayHelper;
  * @version   $Id$
  * @access    public
  */
-class plgUserjsmprofile extends JPlugin
+class plgUserjsmprofile extends CMSPlugin
 {
 	/**
 	 * plgUserjsmprofile::onContentPrepareData()

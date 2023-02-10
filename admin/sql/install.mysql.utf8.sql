@@ -23,12 +23,12 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_associations` (
   `zipcode` VARCHAR(10) NOT NULL DEFAULT '' ,
   `location` VARCHAR(50) NOT NULL DEFAULT '' ,
   `state` VARCHAR(50) NOT NULL DEFAULT '' ,
-  
   `founded` DATE NOT NULL DEFAULT '0000-00-00' ,
   `dissolved` DATE NOT NULL DEFAULT '0000-00-00' ,
   `dissolved_year` VARCHAR(4) NULL DEFAULT NULL,
   `founded_year` VARCHAR(4) NULL DEFAULT NULL,
-  
+  `notes` TEXT NULL DEFAULT NULL ,
+  `flag_maps` varchar(255) NOT NULL DEFAULT 'images/com_sportsmanagement/database/placeholders/placeholder_wappen_50.png',
   PRIMARY KEY (`id`),
   KEY `country` (`country`),
   KEY `parent_id` (`parent_id`),
@@ -61,12 +61,12 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_federations` (
   `zipcode` VARCHAR(10) NOT NULL DEFAULT '' ,
   `location` VARCHAR(50) NOT NULL DEFAULT '' ,
   `state` VARCHAR(50) NOT NULL DEFAULT '' ,
-  
   `founded` DATE NOT NULL DEFAULT '0000-00-00' ,
   `dissolved` DATE NOT NULL DEFAULT '0000-00-00' ,
   `dissolved_year` VARCHAR(4) NULL DEFAULT NULL,
   `founded_year` VARCHAR(4) NULL DEFAULT NULL,
-  
+  `notes` TEXT NULL DEFAULT NULL ,
+  `flag_maps` varchar(255) NOT NULL DEFAULT 'images/com_sportsmanagement/database/placeholders/placeholder_wappen_50.png',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
@@ -132,6 +132,8 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_club` (
   `country_geocode` VARCHAR(3) NULL DEFAULT NULL,
   `instagram` VARCHAR(250) NOT NULL DEFAULT '' ,
   `linkedin` VARCHAR(250) NOT NULL DEFAULT '' ,
+  `complete_address` VARCHAR(200) NOT NULL DEFAULT '' ,
+  `notes` TEXT NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
   KEY `standard_playground` (`standard_playground`),
   KEY `country` (`country`),
@@ -185,6 +187,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_countries` (
   `countrymap_mapdata` MEDIUMTEXT NULL DEFAULT NULL,
   `countrymap_mapinfo` MEDIUMTEXT NULL DEFAULT NULL,
   `country_picture` varchar(255) NOT NULL DEFAULT 'images/com_sportsmanagement/database/placeholders/placeholder_wappen_50.png',
+  `flag_maps` varchar(255) NOT NULL DEFAULT 'images/com_sportsmanagement/database/placeholders/placeholder_wappen_50.png',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`,`alpha3`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
@@ -313,6 +316,8 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_league` (
 `founded_year` VARCHAR(4) NULL DEFAULT NULL,
 `dissolved` DATE NOT NULL DEFAULT '0000-00-00',
 `dissolved_year` VARCHAR(4) NULL DEFAULT NULL,
+`champions_complete` TINYINT(1) NOT NULL DEFAULT '0' ,
+`notes` TEXT NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
   KEY `country` (`country`),
   KEY `sports_type_id` (`sports_type_id`)
@@ -350,18 +355,18 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_match` (
   `alt_decision` TINYINT(4) NOT NULL DEFAULT '0' ,
   `team1_result_decision` FLOAT NULL DEFAULT NULL ,
   `team2_result_decision` FLOAT NULL DEFAULT NULL ,
-  `decision_info` VARCHAR(128) NOT NULL DEFAULT '' ,
+  `decision_info` VARCHAR(128) NULL DEFAULT NULL ,
   `cancel` TINYINT(4) NOT NULL DEFAULT '0' ,
-  `cancel_reason` VARCHAR(32) NOT NULL DEFAULT '' ,
+  `cancel_reason` VARCHAR(32) NULL DEFAULT NULL ,
   `count_result` TINYINT(4) NOT NULL DEFAULT '1' ,
   `crowd` INT(11) NOT NULL DEFAULT '0' ,
   `summary` TEXT NULL DEFAULT NULL  ,
   `show_report` TINYINT(4) NOT NULL DEFAULT '0' ,
   `preview` TEXT NULL DEFAULT NULL  ,
-  `match_result_detail` VARCHAR(64) NOT NULL DEFAULT '' ,
+  `match_result_detail` VARCHAR(64) NULL DEFAULT NULL ,
   `new_match_id` INT(11) NOT NULL DEFAULT '0' ,
   `old_match_id` INT(11) NOT NULL DEFAULT '0' ,
-  `extended` TEXT NULL ,
+  `extended` TEXT NULL DEFAULT NULL,
   `published` TINYINT(4) NOT NULL DEFAULT '1' ,
   `checked_out` INT(11) NOT NULL DEFAULT '0' ,
   `checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ,
@@ -875,7 +880,10 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project` (
   `facebook` VARCHAR(250) NOT NULL DEFAULT '' ,
   `single_matches` SMALLINT(6) NOT NULL DEFAULT '0' ,
   `use_smallcaliber` TINYINT(1)  NULL DEFAULT NULL ,
-  
+  `cr_project` varchar(255) DEFAULT NULL,
+  `use_leaguechampion` tinyint(1) NOT NULL DEFAULT '0',
+
+`double_events` TINYINT(1) NOT NULL DEFAULT '0' ,
 
   PRIMARY KEY (`id`) ,
   KEY `league_id` (`league_id`),
@@ -982,7 +990,16 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project_team` (
   `cr_picture` varchar(255) DEFAULT NULL,
   `finaltablerank` tinyint(1) NOT NULL DEFAULT '0',
   `picturenotes` TEXT NULL DEFAULT NULL ,
-  
+  `cache_points_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `cache_neg_points_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `cache_matches_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `cache_won_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `cache_draws_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `cache_lost_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `cache_homegoals_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `cache_guestgoals_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `cache_diffgoals_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `champion` TINYINT(1) NOT NULL DEFAULT '0' ,
   PRIMARY KEY (`id`) ,
   KEY `project_id` (`project_id`),
   KEY `team_id` (`team_id`),
@@ -990,6 +1007,69 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project_team` (
   KEY `import` (`import`),
   KEY `standard_playground` (`standard_playground`),
   UNIQUE INDEX `combi` (`project_id` ASC, `team_id` ASC)
+  )
+ENGINE = MyISAM
+DEFAULT CHARSET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `#__sportsmanagement_project_team_division`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project_team_division` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `project_id` INT(11) NOT NULL DEFAULT '0' ,
+  `team_id` INT(11) NOT NULL DEFAULT '0' ,
+  `division_id` INT(11) NULL DEFAULT NULL ,
+  `start_points` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `points_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `neg_points_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `matches_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `won_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `draws_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `lost_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `homegoals_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `guestgoals_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `diffgoals_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `is_in_score` TINYINT(1) NOT NULL DEFAULT '1' ,
+  `use_finally` TINYINT(1) NOT NULL DEFAULT '0' ,
+  `admin` INT(11) NOT NULL DEFAULT '0' ,
+  `info` VARCHAR(255) NOT NULL DEFAULT '' ,
+  `picture` VARCHAR(128) NULL DEFAULT NULL ,
+  `notes` TEXT NULL DEFAULT NULL ,
+  `standard_playground` INT(11) NULL DEFAULT NULL ,
+  `reason` VARCHAR(150) NULL DEFAULT NULL ,
+  `extended` TEXT NULL ,
+  `checked_out` INT(11) NOT NULL DEFAULT '0' ,
+  `checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ,
+  `modified` DATETIME NULL ,
+  `modified_by` INT NULL ,
+  `image_copy` TINYINT(4) NOT NULL DEFAULT '0' ,
+  `trikot_home` VARCHAR(255) NOT NULL DEFAULT 'images/com_sportsmanagement/database/placeholders/placeholder_small.gif' ,
+  `trikot_away` VARCHAR(255) NOT NULL DEFAULT 'images/com_sportsmanagement/database/placeholders/placeholder_small.gif' ,
+  `extendeduser` TEXT NULL ,
+  `penalty_points` INT(11) NOT NULL DEFAULT '0' ,
+  `import` TINYINT(1) NOT NULL DEFAULT '0' ,
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
+  `cr_picture` varchar(255) DEFAULT NULL,
+  `finaltablerank` tinyint(1) NOT NULL DEFAULT '0',
+  `picturenotes` TEXT NULL DEFAULT NULL ,
+  `cache_points_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `cache_neg_points_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `cache_matches_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `cache_won_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `cache_draws_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `cache_lost_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `cache_homegoals_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `cache_guestgoals_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  `cache_diffgoals_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
+  
+  PRIMARY KEY (`id`) ,
+  KEY `project_id` (`project_id`),
+  KEY `team_id` (`team_id`),
+  KEY `division_id` (`division_id`),
+  KEY `import` (`import`),
+  KEY `standard_playground` (`standard_playground`),
+  UNIQUE INDEX `combi` (`project_id` ASC, `team_id` ASC, `division_id` ASC)
   )
 ENGINE = MyISAM
 DEFAULT CHARSET = utf8;

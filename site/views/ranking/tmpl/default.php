@@ -6,7 +6,7 @@
  * @subpackage ranking
  * @file       deafult.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -31,7 +31,9 @@ if (!empty($this->mapconfig))
 	}
 }
 
-
+?>
+<div class="<?php echo $this->divclasscontainer; ?>" id="defaultranking">
+<?php
 echo $this->loadTemplate('jsm_warnings');
 echo $this->loadTemplate('jsm_tips');
 echo $this->loadTemplate('jsm_notes');
@@ -47,7 +49,7 @@ else
 
     </script>
 
-    <div class="<?php echo $this->divclasscontainer; ?>" id="defaultranking">
+    
 		<?php
 
 		if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO)

@@ -302,8 +302,8 @@ teamid = document.getElementById("jlamteams" + modid).options[document.getElemen
 loadHtml = "<p id='loadingDiv-"
 			+ modid
 			+ "' style='margin-left: 10px; margin-top: -10px; margin-bottom: 10px;'>";
-	loadHtml += "<img src='" + ajaxmenu_baseurl + 
-				"modules/mod_sportsmanagement_ajax_top_navigation_menu/img/ajax-loader.gif'>";
+	//loadHtml += "<img src='" + ajaxmenu_baseurl + "modules/mod_sportsmanagement_ajax_top_navigation_menu/img/ajax-loader.gif'>";
+	loadHtml += "Bitte warten";
 	loadHtml += "</p>";
 	$('jlajaxmenu-' + modid).innerHTML += loadHtml;
     

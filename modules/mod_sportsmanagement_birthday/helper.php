@@ -6,7 +6,7 @@
  * @subpackage mod_sportsmanagement_birthday
  * @file       helper.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -181,6 +181,7 @@ if ($params->get('use_which') <= 1)
 	else
 	{
 		$database->setQuery($query);
+		
 	}
 
 	try
@@ -191,6 +192,7 @@ if ($params->get('use_which') <= 1)
 	{
 		$mainframe->enqueueMessage(__FILE__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
 	}
+	
 }
 
 /**
@@ -286,4 +288,9 @@ if ($params->get('use_which') == 2)
 	{
 		$mainframe->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
 	}
+	
+	
 }
+
+
+

@@ -141,7 +141,7 @@
 <field 
 name="assocflag"
 type="media" 
-default="images/com_sportsmanagement/database/associations/placeholder_flags.png"
+default="images/com_sportsmanagement/database/flags_associations/placeholder_flags.png"
 preview="show"
 class="inputbox"
 targetfolder="flags_associations"
@@ -165,6 +165,22 @@ showon="show_info:1[AND]show_image:1"
 directory="images/com_sportsmanagement/database/associations"
 >
 </field>
+
+<field 	
+name="flag_maps" 
+type="media"     
+default="images/com_sportsmanagement/database/flag_maps/placeholder_wappen_50.png"     
+preview="show"
+class="inputbox"
+targetfolder="flag_maps"	
+label="COM_SPORTSMANAGEMENT_GLOBAL_FLAG_MAPS" 
+description="COM_SPORTSMANAGEMENT_GLOBAL_FLAG_MAPS"
+showon="show_info:1[AND]show_image:1"		
+directory="images/com_sportsmanagement/database/flag_maps"
+>
+</field>
+
+
 		
         <field
             name="cr_picture"
@@ -176,4 +192,16 @@ directory="images/com_sportsmanagement/database/associations"
 			
     </fieldset>
     			
+				<fieldset name="description"
+  label="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION"
+  description="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION_DESC">		
+			<field
+				name="notes"
+				type="editor"
+				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION"
+				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION_DESC"
+				width="450" 
+				filter="JComponentHelper::filterText"/>			
+	</fieldset>	
+	
 </form>

@@ -6,7 +6,7 @@
  * @subpackage division
  * @file       division.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -165,14 +165,17 @@ class sportsmanagementModeldivision extends JSMModelAdmin
                 $tblDivision->modified         = $this->jsmdate->toSql();
 		        $tblDivision->modified_by      = $this->jsmuser->get('id');
 
-				if ($tblDivision->store())
-				{
+				try{
+					$tblDivision->store();
 					$msg = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_CTRL_ROUNDS_ADDED', $i);
-				}
-				else
-				{
-					$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_CTRL_ERROR_ADD') . $this->_db->getErrorMsg();
-				}
+					}
+		catch (Exception $e)
+		{
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+		$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_CTRL_ERROR_ADD') . $e->getMessage();	
+		}
+				
 
 				$max++;
 			}

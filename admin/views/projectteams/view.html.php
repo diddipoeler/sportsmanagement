@@ -6,11 +6,12 @@
  * @subpackage projectteams
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -39,7 +40,17 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 	 */
 	public function init()
 	{
-
+		$edit_search_nation = '';
+$post = Factory::getApplication()->input->post->getArray(array());
+		if ( $post['edit_search_nation'] )
+		{
+		$edit_search_nation = $post['edit_search_nation'];	
+		}
+		else
+		{
+		$edit_search_nation = $this->state->get('filter.search_nation');	
+		}
+			
 		$this->state         = $this->get('State');
 		$this->sortDirection = $this->state->get('list.direction');
 		$this->sortColumn    = $this->state->get('list.ordering');
@@ -90,22 +101,24 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		}
 
 		$mdlDivisions     = BaseDatabaseModel::getInstance("divisions", "sportsmanagementModel");
-		$projectdivisions = array();
-		$projectdivisions = $mdlDivisions->getDivisions($this->project_id);
+		$this->divisions = array();
+		$this->divisions = $mdlDivisions->getDivisions($this->project_id);
 
 		$divisionsList[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
 
-		if ($projectdivisions)
+		if ($this->divisions)
 		{
-			$projectdivisions = array_merge($divisionsList, $projectdivisions);
+			$this->divisions = array_merge($divisionsList, $this->divisions);
 		}
 
-		$lists['divisions'] = $projectdivisions;
+		$lists['divisions'] = $this->divisions;
 
 		/** build the html select list for project assigned teams */
 		$ress         = array();
 		$res1         = array();
 		$notusedteams = array();
+		$project_teamslist = array();
+		$project_teamslist_name = array();
 
 		if ($ress = $this->model->getProjectTeams($this->project_id, false))
 		{
@@ -121,6 +134,8 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 				{
 					$project_teamslist[] = JHtmlSelect::option($res->season_team_id, $res->text . ' (' . $res->info . ')');
 				}
+				
+				$project_teamslist_name[] = $res->text;
 			}
 
 			$lists['project_teams'] = JHtmlSelect::genericlist(
@@ -129,13 +144,27 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 				'value',
 				'text'
 			);
+			
+			$lists['project_teamslist_name'] = JHtmlSelect::genericlist(
+				$project_teamslist_name, 'project_teamslist_name[]',
+				' id="project_teamslist_name" style="width:250px; height:300px;" class="inputbox" multiple="true" size="' . min(30, count($ress)) . '"',
+				'value',
+				'text'
+			);
 		}
 		else
 		{
 			$lists['project_teams'] = '<select name="project_teamslist[]" id="project_teamslist" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
+			$lists['project_teamslist_name'] = '<select name="project_teamslist_name[]" id="project_teamslist_name" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
 		}
 
-		if ($ress1 = $this->model->getTeams())
+		$filter_search_nation = $this->state->get('filter.search_nation');
+		if ( !$filter_search_nation )
+		{
+		$filter_search_nation = $this->project->country;	
+		}
+		
+		if ( $ress1 = $this->model->getTeams($filter_search_nation) )
 		{
 			if ($ress = $this->model->getProjectTeams($this->project_id, false))
 			{
@@ -219,6 +248,14 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 			'text',
 			$this->state->get('filter.search_nation')
 		);
+        $lists['countrylist'] = JHtmlSelect::genericlist(
+			$nation,
+			'edit_search_nation',
+			'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+			'value',
+			'text',
+			$edit_search_nation
+		);
 
 //		if ( $this->project->fast_projektteam )
 //		{
@@ -260,12 +297,33 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 
 		$this->config         = Factory::getConfig();
 		$this->lists          = $lists;
-		$this->divisions      = $projectdivisions;
 		$this->projectteam    = $items;
 		$this->pagination     = $pagination;
-//		$this->project        = $project;
 		$this->project_art_id = $this->project_art_id;
 
+/** pro division die punkte hinterlegen*/
+if ($this->project->project_type == 'DIVISIONS_LEAGUE')
+{
+foreach ($this->projectteam as $teams)
+{
+$this->model->checkProjectTeamDivision($teams->projectteamid,$teams->id,$teams->project_id,$teams->team_id);			
+}
+
+}
+
+
+/** Build the html options for nation */
+		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+
+		if ($res = JSMCountries::getCountryOptions())
+		{
+			$nation              = array_merge($nation, $res);
+			$this->search_nation = $res;
+		}
+
+        
+        
+        
 		switch ($this->getLayout())
 		{
 			case 'editlist';
@@ -317,7 +375,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		ToolbarHelper::deleteList('', 'projectteams.delete');
 		ToolbarHelper::apply('projectteams.saveshort');
 
-		$layout = new JLayoutFile('changeteams', JPATH_ROOT . '/components/com_sportsmanagement/layouts');
+		$layout = new FileLayout('changeteams', JPATH_ROOT . '/components/com_sportsmanagement/layouts');
 		$html   = $layout->render();
 		Toolbar::getInstance('toolbar')->appendButton('Custom', $html, 'batch');
 		$modal_params           = array();
@@ -327,7 +385,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		$modal_params['modalWidth']  = '60';
 		echo HTMLHelper::_('bootstrap.renderModal', 'collapseModalchangeTeams', $modal_params);
 
-		$layout = new JLayoutFile('assignteams', JPATH_ROOT . '/components/com_sportsmanagement/layouts');
+		$layout = new FileLayout('assignteams', JPATH_ROOT . '/components/com_sportsmanagement/layouts');
 		$html   = $layout->render();
 		Toolbar::getInstance('toolbar')->appendButton('Custom', $html, 'batch');
 		$modal_params           = array();

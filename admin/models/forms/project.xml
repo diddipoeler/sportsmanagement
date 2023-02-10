@@ -47,7 +47,7 @@
 			
 		<field
 			name="published"
-			type="extensionradiobutton"
+			type="radio"
 			class="radio btn-group btn-group-yesno"
 			default="1"
 			size="1"
@@ -164,6 +164,16 @@
 			class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_PROJECTTEAMS_QUICKADD" 
 		    description="COM_SPORTSMANAGEMENT_SETTINGS_PROJECTTEAMS_QUICKADD_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+		<field name="use_leaguechampion" 
+			type="extensionradiobutton" 
+			default="0"
+			class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_LEAGUECHAMPION" 
+		    description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_LEAGUECHAMPION_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
@@ -306,7 +316,19 @@
 <!-- reiter 2 --> 
 	<fieldset name="description"
 		label="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION"
-		description="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION_DESC">		
+		description="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION_DESC">	
+		
+<field
+			name="cr_project"
+			type="text"
+       size="75"
+		       maxlength="75"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_CR_PROJECT"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_CR_PROJECT_DESC"
+			class="input-xxlarge"
+			default=""/>		
+		
+		
 		<field
 			name="projectinfo"
 			type="editor"
@@ -445,6 +467,17 @@
 		label="COM_SPORTSMANAGEMENT_TABS_COMPETITION"
 		description="COM_SPORTSMANAGEMENT_TABS_COMPETITION_DESC">
 	
+	<field 
+			name="double_events" 
+			type="extensionradiobutton" 
+			default="0"   
+      		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_DOUBLE_EVENTS" 
+			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_DOUBLE_EVENTS_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
 		<field
 			name="game_regular_time"
 			type="text"

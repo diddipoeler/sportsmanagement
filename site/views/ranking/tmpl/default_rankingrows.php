@@ -6,7 +6,7 @@
  * @subpackage ranking
  * @file       deafult_rankingrows.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -893,7 +893,7 @@ foreach ($current as $ptid => $team)
 					<?php
 					if (isset($this->previousgames[$ptid]))
 					{
-						foreach ($this->previousgames[$ptid] as $g)
+						foreach ($this->previousgames[$ptid][$this->division] as $g)
 						{
 							$txt     = $this->teams[$g->projectteam1_id]->name . ' [ ' . $g->team1_result . ' - ' . $g->team2_result . ' ] ' . $this->teams[$g->projectteam2_id]->name;
 							$attribs = array('title' => $txt);

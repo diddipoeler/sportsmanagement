@@ -78,6 +78,17 @@
 <parentpositions>
 <parentname switch="persontype" parent="0" content="2" art="F" events="0" main="MAINTAINER_TEAM">MAINTAINER</parentname>
 </parentpositions>
+
+<parentpositions>
+<parentname switch="persontype" parent="0" content="2" art="F" events="0" main="COACHES">ATHLETIK_COACH</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="2" art="F" events="0" main="COACHES">TECHNIC_COACH</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="2" art="F" events="0" main="COACHES">GAME_ANALYST</parentname>
+</parentpositions>
+  
 <parentpositions>
 <parentname switch="persontype" parent="0" content="2" art="F" events="0" main="MEDICAL_STAFF">PHYSIO</parentname>
 </parentpositions>

@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="utf-8"?>
+<structur>
+
+<associations><assocname country="AFG" flagmap="Afghanistan-Flagmap.png" flag="" website="" shortname="" main="1" parentmain="0">AFG</assocname></associations>
+<associations><assocname country="EGY" flagmap="Flag-map_of_Egypt.svg.png" flag="" website="" shortname="" main="1" parentmain="0">EGY</assocname></associations>
+<associations><assocname country="ALA" flagmap="Flag_map_of_Aland.svg.png" flag="" website="" shortname="" main="1" parentmain="0">ALA</assocname></associations>
+<associations><assocname country="ALB" flagmap="Albania-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">ALB</assocname></associations>
+<associations><assocname country="DZA" flagmap="Flag_map_of_Algeria.svg.png" flag="" website="" shortname="" main="1" parentmain="0">DZA</assocname></associations>
+<associations><assocname country="ASM" flagmap="American_Samoa_Flag_Map.svg.png" flag="" website="" shortname="" main="1" parentmain="0">ASM</assocname></associations>
+<associations><assocname country="VIR" flagmap="Flag-map_of_the_United_States_Virgin_Islands.svg.png" flag="" website="" shortname="" main="1" parentmain="0">VIR</assocname></associations>
+<associations><assocname country="AND" flagmap="Andorra-flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">AND</assocname></associations>
+<associations><assocname country="AGO" flagmap="Flag-map_of_Angola.svg.png" flag="" website="" shortname="" main="1" parentmain="0">AGO</assocname></associations>
+<associations><assocname country="AIA" flagmap="Flag-map_of_Anguilla.svg.png" flag="" website="" shortname="" main="1" parentmain="0">AIA</assocname></associations>
+<associations><assocname country="CYP" flagmap="Cyprus-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">CYP</assocname></associations>
+<associations><assocname country="GUM" flagmap="Flag_map_of_Guam.svg.png" flag="" website="" shortname="" main="1" parentmain="0">GUM</assocname></associations>
+<associations><assocname country="GTM" flagmap="Flag_map_of_Guatemala.svg.png" flag="" website="" shortname="" main="1" parentmain="0">GTM</assocname></associations>
+<associations><assocname country="GRD" flagmap="Flag-map_of_Grenada.svg.png" flag="" website="" shortname="" main="1" parentmain="0">GRD</assocname></associations>
+<associations><assocname country="GRL" flagmap="Greenland_stub.svg.png" flag="" website="" shortname="" main="1" parentmain="0">GRL</assocname></associations>
+<associations><assocname country="IRN" flagmap="Iran-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">IRN</assocname></associations>
+<associations><assocname country="IRQ" flagmap="Iraq-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">IRQ</assocname></associations>
+<associations><assocname country="LAO" flagmap="Laos-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">LAO</assocname></associations>
+<associations><assocname country="GNQ" flagmap="Flag-map_of_Equatorial_Guinea.svg.png" flag="" website="" shortname="" main="1" parentmain="0">GNQ</assocname></associations>
+<associations><assocname country="ARG" flagmap="Flag_map_of_Argentina.svg.png" flag="" website="" shortname="" main="1" parentmain="0">ARG</assocname></associations>
+<associations><assocname country="ARM" flagmap="Armenia-flagmap.png" flag="" website="" shortname="" main="1" parentmain="0">ARM</assocname></associations>
+<associations><assocname country="ABW" flagmap="Flag-map_of_Aruba.svg.png" flag="" website="" shortname="" main="1" parentmain="0">ABW</assocname></associations>
+
+  <associations><assocname country="ISR" flagmap="Israel-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">ISR</assocname></associations>
+  <associations><assocname country="KGZ" flagmap="Kyrgyzstan-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">KGZ</assocname></associations>
+  <associations><assocname country="TKM" flagmap="Turkmenistan-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">TKM</assocname></associations>
+
+<associations><assocname country="AZE" flagmap="Azerbaijan-flagmap.png" flag="" website="" shortname="" main="1" parentmain="0">AZE</assocname></associations>
+
+<associations><assocname country="AUS" flagmap="Flag-map_of_Australia.svg.png" flag="" website="" shortname="" main="1" parentmain="0">AUS</assocname></associations>
+
+<associations><assocname country="GEO" flagmap="Georgia-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">GEO</assocname></associations>
+<associations><assocname country="SGS" flagmap="Flag-map_of_South_Georgia_and_the_South_Sandwich_Islands.svg.png" flag="" website="" shortname="" main="1" parentmain="0">SGS</assocname></associations>
+<associations><assocname country="BHS" flagmap="Flag_map_of_the_Bahamas.svg.png" flag="" website="" shortname="" main="1" parentmain="0">BHS</assocname></associations>
+<associations><assocname country="BLR" flagmap="Belarus-flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">BLR</assocname></associations>
+
+<associations><assocname country="BRA" flagmap="Mapa_do_Brasil_com_a_Bandeira_Nacional.png" flag="" website="" shortname="" main="1" parentmain="0">BRA</assocname></associations>
+
+<associations><assocname country="BHR" flagmap="Bahrain-Flagmap.png" flag="" website="" shortname="" main="1" parentmain="0">BHR</assocname></associations>
+<associations><assocname country="BGD" flagmap="Bangladesh-Flagmap.png" flag="" website="" shortname="" main="1" parentmain="0">BGD</assocname></associations>
+
+<associations><assocname country="BLR" flagmap="Belarus-flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">BLR</assocname></associations>
+<associations><assocname country="BEL" flagmap="Belgium-flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">BEL</assocname></associations>
+
+<associations><assocname country="BEN" flagmap="Flag-map_of_Benin.svg.png" flag="" website="" shortname="" main="1" parentmain="0">BEN</assocname></associations>
+
+<associations><assocname country="BTN" flagmap="Bhutan-Flagmap.png" flag="" website="" shortname="" main="1" parentmain="0">BTN</assocname></associations>
+<associations><assocname country="BOL" flagmap="Flag-map_of_Bolivia.svg.png" flag="" website="" shortname="" main="1" parentmain="0">BOL</assocname></associations>
+<associations><assocname country="BES" flagmap="Flag_map_of_Bonaire.png" flag="" website="" shortname="" main="1" parentmain="0">BES</assocname></associations>
+<associations><assocname country="BIH" flagmap="Bosnia_and_Herzegovina-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">BIH</assocname></associations>
+<associations><assocname country="BWA" flagmap="Flag-map_of_Botswana.svg.png" flag="" website="" shortname="" main="1" parentmain="0">BWA</assocname></associations>
+
+
+<associations><assocname country="VGB" flagmap="Flag-map_of_the_British_Virgin_Islands.svg.png" flag="" website="" shortname="" main="1" parentmain="0">VGB</assocname></associations>
+
+<associations><assocname country="BRN" flagmap="Brunei-Flagmap.png" flag="" website="" shortname="" main="1" parentmain="0">BRN</assocname></associations>
+<associations><assocname country="BGR" flagmap="Bulgaria-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">BGR</assocname></associations>
+<associations><assocname country="BFA" flagmap="Flag-map_of_Burkina_Faso.svg.png" flag="" website="" shortname="" main="1" parentmain="0">BFA</assocname></associations>
+
+<associations><assocname country="BDI" flagmap="Flag-map_of_Burundi.svg.png" flag="" website="" shortname="" main="1" parentmain="0">BDI</assocname></associations>
+
+
+
+
+<associations><assocname country="CHL" flagmap="Flag-map_of_Chile.svg.png" flag="" website="" shortname="" main="1" parentmain="0">CHL</assocname></associations>
+
+
+
+
+
+<associations><assocname country="CUW" flagmap="Flag-map_of_Curaçao.svg.png" flag="" website="" shortname="" main="1" parentmain="0">CUW</assocname></associations>
+
+
+
+<associations><assocname country="DNK" flagmap="Denmark-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">DNK</assocname></associations>
+
+<associations><assocname country="DEU" flagmap="Germany-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">DEU</assocname></associations>
+
+
+
+<associations><assocname country="DJI" flagmap="Flag-map_of_Djibouti.svg.png" flag="" website="" shortname="" main="1" parentmain="0">DJI</assocname></associations>
+
+
+
+
+<associations><assocname country="CIV" flagmap="Flag-map_of_Cote_d'Ivoire.svg.png" flag="" website="" shortname="" main="1" parentmain="0">CIV</assocname></associations>
+
+<associations><assocname country="ERI" flagmap="Flag-map_of_Eritrea.svg.png" flag="" website="" shortname="" main="1" parentmain="0">ERI</assocname></associations>
+<associations><assocname country="EST" flagmap="Estonia-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">EST</assocname></associations>
+<associations><assocname country="SWZ" flagmap="Flag-map_of_Eswatini.svg.png" flag="" website="" shortname="" main="1" parentmain="0">SWZ</assocname></associations>
+
+
+
+
+
+<associations><assocname country="FLK" flagmap="Flag-map_of_the_Falkland_Islands.svg.png" flag="" website="" shortname="" main="1" parentmain="0">FLK</assocname></associations>
+
+
+<associations><assocname country="FIN" flagmap="Finland-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">FIN</assocname></associations>
+<associations><assocname country="FRA" flagmap="France-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">FRA</assocname></associations>
+
+
+<associations><assocname country="GUF" flagmap="Flag_map_of_French_Guiana.svg.png" flag="" website="" shortname="" main="1" parentmain="0">GUF</assocname></associations>
+
+
+
+
+
+<associations><assocname country="GAB" flagmap="Flag-map_of_Gabon.svg.png" flag="" website="" shortname="" main="1" parentmain="0">GAB</assocname></associations>
+
+
+<associations><assocname country="GHA" flagmap="Flag-map_of_Ghana.svg.png" flag="" website="" shortname="" main="1" parentmain="0">GHA</assocname></associations>
+<associations><assocname country="GIB" flagmap="Flag-map_of_Gibraltar.svg.png" flag="" website="" shortname="" main="1" parentmain="0">GIB</assocname></associations>
+
+<associations><assocname country="GRC" flagmap="Greece-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">GRC</assocname></associations>
+
+<associations><assocname country="GLP" flagmap="Flag_map_of_Guadeloupe_(local).svg.png" flag="" website="" shortname="" main="1" parentmain="0">GLP</assocname></associations>
+
+
+
+<associations><assocname country="GIN" flagmap="Flag-map_of_Guinea.svg.png" flag="" website="" shortname="" main="1" parentmain="0">GIN</assocname></associations>
+<associations><assocname country="GNB" flagmap="Flag-map_of_Guinea-Bissau.svg.png" flag="" website="" shortname="" main="1" parentmain="0">GNB</assocname></associations>
+<associations><assocname country="GUY" flagmap="Flag-Map_of_Guyana-Disputed.png" flag="" website="" shortname="" main="1" parentmain="0">GUY</assocname></associations>
+
+
+
+<associations><assocname country="HTI" flagmap="Flag_map_of_Haiti.svg.png" flag="" website="" shortname="" main="1" parentmain="0">HTI</assocname></associations>
+
+<associations><assocname country="HND" flagmap="Flag-map_of_Honduras.svg.png" flag="" website="" shortname="" main="1" parentmain="0">HND</assocname></associations>
+<associations><assocname country="HKG" flagmap="Flag-map_of_Hong_Kong.svg.png" flag="" website="" shortname="" main="1" parentmain="0">HKG</assocname></associations>
+
+
+
+<associations><assocname country="IND" flagmap="India-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">IND</assocname></associations>
+<associations><assocname country="IDN" flagmap="Indonesia-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">IDN</assocname></associations>
+
+
+
+<associations><assocname country="IRL" flagmap="Ireland-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">IRL</assocname></associations>
+<associations><assocname country="ISL" flagmap="Iceland-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">ISL</assocname></associations>
+
+<associations><assocname country="ITA" flagmap="Italy-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">ITA</assocname></associations>
+
+
+
+<associations><assocname country="JAM" flagmap="Flag-map_of_Jamaica.svg.png" flag="" website="" shortname="" main="1" parentmain="0">JAM</assocname></associations>
+<associations><assocname country="JPN" flagmap="Japan-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">JPN</assocname></associations>
+
+
+<associations><assocname country="JOR" flagmap="Jordan-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">JOR</assocname></associations>
+
+
+
+
+<associations><assocname country="CYM" flagmap="Flag_map_of_Cayman_Islands.png" flag="" website="" shortname="" main="1" parentmain="0">CYM</assocname></associations>
+
+<associations><assocname country="CMR" flagmap="Flag-map_of_Cameroon.svg.png" flag="" website="" shortname="" main="1" parentmain="0">CMR</assocname></associations>
+<associations><assocname country="CAN" flagmap="Canada_flag_map.svg.png" flag="" website="" shortname="" main="1" parentmain="0">CAN</assocname></associations>
+
+<associations><assocname country="CPV" flagmap="Flag-map_of_Cape_Verde.svg.png" flag="" website="" shortname="" main="1" parentmain="0">CPV</assocname></associations>
+
+<associations><assocname country="QAT" flagmap="Qatar-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">QAT</assocname></associations>
+<associations><assocname country="KEN" flagmap="Flag-map_of_Kenya.svg.png" flag="" website="" shortname="" main="1" parentmain="0">KEN</assocname></associations>
+
+
+
+<associations><assocname country="COL" flagmap="Flag-map_of_Colombia.svg.png" flag="" website="" shortname="" main="1" parentmain="0">COL</assocname></associations>
+
+<associations><assocname country="COD" flagmap="Flag-map_of_the_Democratic_Republic_of_the_Congo.svg.png" flag="" website="" shortname="" main="1" parentmain="0">COD</assocname></associations>
+
+<associations><assocname country="COG" flagmap="Flag-map_of_the_Republic_of_the_Congo.svg.png" flag="" website="" shortname="" main="1" parentmain="0">COG</assocname></associations>
+
+<associations><assocname country="PRK" flagmap="North_Korea-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">PRK</assocname></associations>
+<associations><assocname country="KOR" flagmap="South_Korea-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">KOR</assocname></associations>
+
+<associations><assocname country="HRV" flagmap="Croatia-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">HRV</assocname></associations>
+
+
+
+
+
+
+<associations><assocname country="LSO" flagmap="Flag-map_of_Lesotho.svg.png" flag="" website="" shortname="" main="1" parentmain="0">LSO</assocname></associations>
+
+
+<associations><assocname country="LBR" flagmap="Flag-map_of_Liberia.svg.png" flag="" website="" shortname="" main="1" parentmain="0">LBR</assocname></associations>
+<associations><assocname country="LBY" flagmap="Flag-map_of_Libya.svg.png" flag="" website="" shortname="" main="1" parentmain="0">LBY</assocname></associations>
+<associations><assocname country="LIE" flagmap="Liechtenstein-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">LIE</assocname></associations>
+<associations><assocname country="LTU" flagmap="Lithuania-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">LTU</assocname></associations>
+<associations><assocname country="LUX" flagmap="Luxembourg-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">LUX</assocname></associations>
+
+
+
+
+<associations><assocname country="MDG" flagmap="Flag-map_of_Madagascar.svg.png" flag="" website="" shortname="" main="1" parentmain="0">MDG</assocname></associations>
+<associations><assocname country="MWI" flagmap="Flag-map_of_Malawi.svg.png" flag="" website="" shortname="" main="1" parentmain="0">MWI</assocname></associations>
+
+
+<associations><assocname country="MLI" flagmap="Flag-map_of_Mali.svg.png" flag="" website="" shortname="" main="1" parentmain="0">MLI</assocname></associations>
+<associations><assocname country="MLT" flagmap="Malta-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">MLT</assocname></associations>
+<associations><assocname country="MAR" flagmap="Flag-map_of_Morocco.svg.png" flag="" website="" shortname="" main="1" parentmain="0">MAR</assocname></associations>
+
+<associations><assocname country="MTQ" flagmap="Flag-map_of_Martinique.svg.png" flag="" website="" shortname="" main="1" parentmain="0">MTQ</assocname></associations>
+<associations><assocname country="MRT" flagmap="Flag-map_of_Mauritania.svg.png" flag="" website="" shortname="" main="1" parentmain="0">MRT</assocname></associations>
+<associations><assocname country="MUS" flagmap="Flag-map_of_Mauritius.png" flag="" website="" shortname="" main="1" parentmain="0">MUS</assocname></associations>
+
+
+
+<associations><assocname country="MDA" flagmap="Moldova-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">MDA</assocname></associations>
+<associations><assocname country="MCO" flagmap="Monaco-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">MCO</assocname></associations>
+
+<associations><assocname country="MNE" flagmap="Montenegro-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">MNE</assocname></associations>
+<associations><assocname country="MSR" flagmap="Flag-map_of_Montserrat.svg.png" flag="" website="" shortname="" main="1" parentmain="0">MSR</assocname></associations>
+<associations><assocname country="MOZ" flagmap="Flag-map_of_Mozambique.svg.png" flag="" website="" shortname="" main="1" parentmain="0">MOZ</assocname></associations>
+
+
+
+
+<associations><assocname country="NAM" flagmap="Flag-map_of_Namibia.svg.png" flag="" website="" shortname="" main="1" parentmain="0">NAM</assocname></associations>
+
+
+
+<associations><assocname country="NZL" flagmap="Flag_and_map_of_New_Zealand.svg.png" flag="" website="" shortname="" main="1" parentmain="0">NZL</assocname></associations>
+
+
+<associations><assocname country="NIR" flagmap="Flag-map_of_Northern_Ireland.svg.png" flag="" website="" shortname="" main="1" parentmain="0">NIR</assocname></associations>
+
+<associations><assocname country="NLD" flagmap="Netherlands-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">NLD</assocname></associations>
+
+<associations><assocname country="NER" flagmap="Flag-map_of_Niger.svg.png" flag="" website="" shortname="" main="1" parentmain="0">NER</assocname></associations>
+<associations><assocname country="NGA" flagmap="Flag-map_of_Nigeria.png" flag="" website="" shortname="" main="1" parentmain="0">NGA</assocname></associations>
+
+
+
+
+
+<associations><assocname country="NOR" flagmap="Norway-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">NOR</assocname></associations>
+
+
+
+
+<associations><assocname country="AUT" flagmap="Austria-flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">AUT</assocname></associations>
+
+
+
+
+
+
+<associations><assocname country="PLW" flagmap="Flag-Map_of_Palau.png" flag="" website="" shortname="" main="1" parentmain="0">PLW</assocname></associations>
+
+
+<associations><assocname country="PRY" flagmap="Flag-map_of_Paraguay.svg.png" flag="" website="" shortname="" main="1" parentmain="0">PRY</assocname></associations>
+<associations><assocname country="PER" flagmap="Flag-map_of_Peru.svg.png" flag="" website="" shortname="" main="1" parentmain="0">PER</assocname></associations>
+
+
+<associations><assocname country="POL" flagmap="Poland-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">POL</assocname></associations>
+<associations><assocname country="PRT" flagmap="Portugal-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">PRT</assocname></associations>
+<associations><assocname country="PRI" flagmap="Flag-map_of_Puerto_Rico.svg.png" flag="" website="" shortname="" main="1" parentmain="0">PRI</assocname></associations>
+
+
+
+
+
+
+<associations><assocname country="ROU" flagmap="Romania-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">ROU</assocname></associations>
+
+
+
+
+
+
+
+
+<associations><assocname country="WSM" flagmap="Flag-map_of_Samoa.svg.png" flag="" website="" shortname="" main="1" parentmain="0">WSM</assocname></associations>
+<associations><assocname country="SMR" flagmap="San_Marino-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">SMR</assocname></associations>
+
+
+<associations><assocname country="SWE" flagmap="Sweden-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">SWE</assocname></associations>
+<associations><assocname country="CHE" flagmap="Switzerland-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">CHE</assocname></associations>
+<associations><assocname country="SEN" flagmap="Flag-map_of_Senegal.svg.png" flag="" website="" shortname="" main="1" parentmain="0">SEN</assocname></associations>
+<associations><assocname country="SRB" flagmap="Serbia-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">SRB</assocname></associations>
+
+<associations><assocname country="SYC" flagmap="Flag-map_of_Seychelles.svg.png" flag="" website="" shortname="" main="1" parentmain="0">SYC</assocname></associations>
+<associations><assocname country="SLE" flagmap="Flag-map_of_Sierra_Leone.svg.png" flag="" website="" shortname="" main="1" parentmain="0">SLE</assocname></associations>
+
+
+
+<associations><assocname country="SVK" flagmap="Slovakia-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">SVK</assocname></associations>
+<associations><assocname country="SVN" flagmap="Slovenia-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">SVN</assocname></associations>
+<associations><assocname country="SOM" flagmap="Flag-map_of_Somalia.svg.png" flag="" website="" shortname="" main="1" parentmain="0">SOM</assocname></associations>
+
+<associations><assocname country="ESP" flagmap="Spain-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">ESP</assocname></associations>
+
+
+
+
+
+
+<associations><assocname country="ZAF" flagmap="Flag-map_of_South_Africa.svg.png" flag="" website="" shortname="" main="1" parentmain="0">ZAF</assocname></associations>
+<associations><assocname country="SDN" flagmap="Flag-map_of_Sudan.svg.png" flag="" website="" shortname="" main="1" parentmain="0">SDN</assocname></associations>
+
+<associations><assocname country="SSD" flagmap="Flag_map_of_South_Sudan.svg.png" flag="" website="" shortname="" main="1" parentmain="0">SSD</assocname></associations>
+<associations><assocname country="SUR" flagmap="Flag-Map_of_Suriname-Disputes.png" flag="" website="" shortname="" main="1" parentmain="0">SUR</assocname></associations>
+
+
+
+
+
+
+
+<associations><assocname country="TZA" flagmap="Flag-map_of_Tanzania.svg.png" flag="" website="" shortname="" main="1" parentmain="0">TZA</assocname></associations>
+
+<associations><assocname country="TGO" flagmap="Flag-map_of_Togo.svg.png" flag="" website="" shortname="" main="1" parentmain="0">TGO</assocname></associations>
+
+<associations><assocname country="TON" flagmap="Flag-map_of_Tonga.svg.png" flag="" website="" shortname="" main="1" parentmain="0">TON</assocname></associations>
+
+
+
+
+<associations><assocname country="CZE" flagmap="Czechia-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">CZE</assocname></associations>
+
+<associations><assocname country="TUN" flagmap="Flag_map_of_Tunisia.svg.png" flag="" website="" shortname="" main="1" parentmain="0">TUN</assocname></associations>
+
+
+
+
+
+
+
+<associations><assocname country="UGA" flagmap="Flag-map_of_Uganda.svg.png" flag="" website="" shortname="" main="1" parentmain="0">UGA</assocname></associations>
+
+<associations><assocname country="HUN" flagmap="Hungary-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">HUN</assocname></associations>
+
+<associations><assocname country="URY" flagmap="Flag-map_of_Uruguay.svg.png" flag="" website="" shortname="" main="1" parentmain="0">URY</assocname></associations>
+
+
+
+
+<associations><assocname country="VUT" flagmap="Flag-map_of_Vanuatu.svg.png" flag="" website="" shortname="" main="1" parentmain="0">VUT</assocname></associations>
+
+<associations><assocname country="VEN" flagmap="Flag-map_of_Venezuela_(state).svg.png" flag="" website="" shortname="" main="1" parentmain="0">VEN</assocname></associations>
+
+
+<associations><assocname country="GBR" flagmap="Flag_map_of_England.svg.png" flag="" website="" shortname="" main="1" parentmain="0">GBR</assocname></associations>
+
+<associations><assocname country="ENG" flagmap="Flag_map_of_England.svg.png" flag="" website="" shortname="" main="1" parentmain="0">ENG</assocname></associations>
+<associations><assocname country="SCO" flagmap="Flag_map_of_Scotland.svg.png" flag="" website="" shortname="" main="1" parentmain="0">SCO</assocname></associations>
+<associations><assocname country="WAL" flagmap="Flag_map_of_Wales.svg.png" flag="" website="" shortname="" main="1" parentmain="0">WAL</assocname></associations>
+
+<associations><assocname country="CHN" flagmap="Flag-map_of_the_People's_Republic_of_China.svg.png" flag="" website="" shortname="" main="1" parentmain="0">WAL</assocname></associations>
+<associations><assocname country="BLZ" flagmap="Flag-map_of_Belize.svg.png" flag="" website="" shortname="" main="1" parentmain="0">WAL</assocname></associations>
+<associations><assocname country="BMU" flagmap="Flag_map_of_Bermuda.png" flag="" website="" shortname="" main="1" parentmain="0">WAL</assocname></associations>
+<associations><assocname country="KHM" flagmap="Cambodia-Flagmap.svg.png" flag="" website="" shortname="" main="1" parentmain="0">WAL</assocname></associations>  
+
+  
+</structur>

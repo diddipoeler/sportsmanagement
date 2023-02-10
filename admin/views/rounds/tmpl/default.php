@@ -6,7 +6,7 @@
  * @subpackage rounds
  * @file       default.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -23,7 +23,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             if (cb = el.getElement("input[name^=cid]")) {
                 el.getElement("input[name^=roundcode]").addEvent('change', function () {
                     if (isNaN(this.value)) {
-                        alert(Joomla.JText._('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_CSJS_MSG_NOTANUMBER'));
+                        alert(Joomla.Text._('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_CSJS_MSG_NOTANUMBER'));
                         return false;
                     }
                 });

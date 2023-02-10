@@ -6,7 +6,7 @@
  * @subpackage projects
  * @file       default_data.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -28,7 +28,7 @@ HTMLHelper::_('draggablelist.draggable');
 }
 else
 {
-JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl,$this->saveOrderButton);    
+HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl,$this->saveOrderButton);    
 }
 }
 ?>
@@ -77,6 +77,10 @@ JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($t
 	<?php
 	echo Text::_('COM_SPORTSMANAGEMENT_SETTINGS_PROJECTTEAMS_QUICKADD');
 	?>	    
+    <br>
+	<?php
+	echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_LEAGUECHAMPION');
+	?>
             </th>
             <th class="title">
 				<?php
@@ -85,6 +89,10 @@ JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($t
                 <br>
 				<?php
 				echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TEMPLATES');
+				?>
+		     <br>
+				<?php
+				echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_CR_PROJECT');
 				?>
             </th>
             <th>
@@ -224,11 +232,12 @@ $pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=compon
 					if ($this->state->get('filter.search_nation'))
 					{
 						$append = ' style="background-color:#bbffff"';
+						JHtml::_('formbehavior2.select2', '.test1');
 						echo HTMLHelper::_(
 							'select.genericlist',
 							$this->league,
 							'league' . $this->item->id,
-							$inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
+							$inputappend . 'class="form-control form-control-inline test1" size="1" onchange="document.getElementById(\'cb' .
 							$this->count_i . '\').checked=true"' . $append,
 							'id', 'name', $this->item->league_id
 						);
@@ -260,11 +269,12 @@ echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/asset
 					<?php
 					$inputappend = '';
 					$append      = ' style="background-color:#bbffff"';
+	JHtml::_('formbehavior2.select2', '.test2');
 					echo HTMLHelper::_(
 						'select.genericlist',
 						$this->lists['agegroup'],
 						'agegroup' . $this->item->id,
-						$inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
+						$inputappend . 'class="form-control form-control-inline test2" size="1" onchange="document.getElementById(\'cb' .
 						$this->count_i . '\').checked=true"' . $append,
 						'value', 'text', $this->item->agegroup_id
 					);
@@ -291,9 +301,24 @@ elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
 {    
 echo $this->loadTemplate('switcher3');
 }                    
+					?>
+                    <br>
+<?php                    
+$this->switcher_value = $this->item->use_leaguechampion;    
+$this->switcher_name = 'use_leaguechampion' . $this->item->id;
+/** welche joomla version ? */
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+echo $this->loadTemplate('switcher4');    
+}
+elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
+{    
+echo $this->loadTemplate('switcher3');
+}                    
+
                     
-					?>    			
-                </td>
+                        			
+     ?>           </td>
 
                 <td class="center">
 					<?php
@@ -319,6 +344,13 @@ echo $this->loadTemplate('switcher3');
 						'value', 'text', $this->item->master_template
 					);
 					?>
+			<br>
+			
+			<input<?php //echo $inputappend; ?>
+                            type="text" size="50" class="form-control form-control-inline"
+                            name="cr_project<?php echo $this->item->id; ?>"
+                            value="<?php echo $this->item->cr_project; ?>"
+                            onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked = true"/>
                 </td>
                 <td class="center">
 					<?php
@@ -366,10 +398,11 @@ echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_picture' 
                 </td>
                 <td class="center">
 					<?php
-					echo $this->item->user_field;
+					//echo $this->item->user_field;
 					$teile = explode("<br>", $this->item->user_field);
 					for ($a = 0; $a < sizeof($teile); $a++)
 					{
+						echo $teile[$a];
 						echo HTMLHelper::link(
 								'index.php?option=com_sportsmanagement&view=' . $teile[$a] . '&pid=' . $this->item->id,
 								HTMLHelper::_('image',Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/information.png', Text::_($teile[$a]))

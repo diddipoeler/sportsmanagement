@@ -8,7 +8,7 @@
  * @subpackage globalviews
  * @file       default_show_tabs.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -22,6 +22,33 @@ use Joomla\CMS\Factory;
 	<?php
 	if (version_compare(JSM_JVERSION, '4', 'eq'))
 	{
+?>
+<?php echo HTMLHelper::_('bootstrap.startAccordion', 'collapseTypes', array('active' => 'collapse0', 'parent' => 'collapseTypes' )); 
+$i = 1;
+$view   = Factory::getApplication()->input->getCmd('view');
+foreach ($this->output as $key => $templ)
+		{
+
+			switch ($view)
+			{
+				case 'player':
+					$template = $templ['template'];
+					$text     = $templ['text'];
+					break;
+				default:
+					$template = $templ;
+					$text     = $key;
+					break;
+			}
+echo HTMLHelper::_('bootstrap.addSlide', 'collapseTypes', Text::_($key), 'collapse' . ($i++));
+
+
+echo $this->loadTemplate($template);
+echo HTMLHelper::_('bootstrap.endSlide');
+		}
+echo HTMLHelper::_('bootstrap.endAccordion'); ?>
+<?php
+/*
 		// Joomla! 4.0 code here
 		$idxTab = 1;
 		$view   = Factory::getApplication()->input->getCmd('view');
@@ -52,6 +79,7 @@ use Joomla\CMS\Factory;
 		}
 
 		echo HTMLHelper::_('bootstrap.endAccordion');
+		*/
 	}
     elseif (version_compare(JSM_JVERSION, '3', 'eq'))
 	{

@@ -6,13 +6,14 @@
  * @subpackage ranking
  * @file       ranking.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelRanking
@@ -117,6 +118,73 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 	}
 
 
+
+	/**
+	 * sportsmanagementModelRanking::setFinalStanding()
+	 * 
+	 * @param mixed $current_ranking
+	 * @param string $project_type
+	 * @return void
+	 */
+	public static function setFinalStanding($current_ranking = array(),$project_type = 'SIMPLE_LEAGUE' )
+	{
+		$app    = Factory::getApplication();
+		$option = $app->input->getCmd('option');
+		$jinput                 = $app->input;
+		$db        = sportsmanagementHelper::getDBConnection(true, $jinput->get('cfg_which_database', 0, '') );
+		$query     = $db->getQuery(true);
+		
+//echo '<pre>'.print_r($current_ranking,true).'</pre>';
+      foreach ($current_ranking as $division => $cu_rk) 
+{
+        foreach ($cu_rk as $key => $value) 
+{
+          //echo '<pre>'.print_r($key,true).'</pre>';
+          //echo '<pre>'.print_r($value,true).'</pre>';
+          // Create an object for the record we are going to update.
+				$object = new stdClass;
+
+				// Must be a valid primary key value.
+				$object->id      = $key;
+                
+                $object->cache_points_finally = $value->sum_points;
+                $object->cache_neg_points_finally = $value->neg_points;
+                $object->cache_matches_finally = $value->cnt_matches;
+                $object->cache_won_finally = $value->cnt_won;
+                $object->cache_draws_finally = $value->cnt_draw;
+                $object->cache_lost_finally = $value->cnt_lost;
+				$object->cache_homegoals_finally = $value->sum_team1_result;
+                $object->cache_guestgoals_finally = $value->sum_team2_result;
+                $object->cache_diffgoals_finally = $value->diff_team_results;
+  
+            
+            $object->finaltablerank = $value->rank;
+            
+            switch ($project_type)
+            {
+            case 'SIMPLE_LEAGUE':
+            switch ($object->finaltablerank)
+            {
+            case 1:
+            $object->champion = 1;
+            break;
+            }
+            break;
+            }
+
+				// Update their details in the users table using id as the primary key.
+				$result_update = Factory::getDbo()->updateObject('#__sportsmanagement_project_team', $object, 'id');
+          
+          
+          
+        }
+      
+      
+      
+      }		
+		
+	}
+	
 	/**
 	 * sportsmanagementModelRanking::getPreviousGames()
 	 * 
@@ -128,16 +196,23 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
-
-		// Create a new query object.
 		$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
 		$query     = $db->getQuery(true);
 		$starttime = microtime();
+        $division = array();
+        $prevgames = array();
 
+        $query->select('*');
+		$query->from('#__sportsmanagement_division');
+		$query->where('project_id = ' . (int) self::$projectid);
+        $query->where('published = 1');
+		$db->setQuery($query);
+		$divisions = $db->loadObjectList();
+                    
 		if (!self::$round)
 		{
 			sportsmanagementModelProject::$_current_round = 0;
-			self::$round                                  = sportsmanagementModelProject::getCurrentRound(__METHOD__ . ' ' . self::$viewName, $cfg_which_database);
+			self::$round = sportsmanagementModelProject::getCurrentRound(__METHOD__ . ' ' . self::$viewName, $cfg_which_database);
 		}
 		else
 		{
@@ -191,19 +266,15 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 		$query->select('m.*, r.roundcode');
 		$query->select('CASE WHEN CHAR_LENGTH(t1.alias) AND CHAR_LENGTH(t2.alias) THEN CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) ELSE m.id END AS slug');
 		$query->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
-
 		$query->from('#__sportsmanagement_match AS m ');
 		$query->join('INNER', '#__sportsmanagement_round AS r ON r.id = m.round_id ');
 		$query->join('INNER', '#__sportsmanagement_project AS p ON p.id = r.project_id ');
 		$query->join('INNER', '#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
 		$query->join('INNER', '#__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id ');
-
 		$query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id');
 		$query->join('INNER', '#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id');
-
 		$query->join('INNER', '#__sportsmanagement_team AS t1 ON st1.team_id = t1.id ');
 		$query->join('INNER', '#__sportsmanagement_team AS t2 ON st2.team_id = t2.id ');
-
 		$query->where('r.project_id = ' . self::$projectid);
 		$query->where('r.roundcode <= ' . $db->Quote($current->roundcode));
 		$query->where('m.team1_result IS NOT NULL');
@@ -215,7 +286,7 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 
 		$teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0, 'name', $cfg_which_database, __METHOD__);
 
-		// Get games per team
+		/** Get games per team */
 		$res = array();
 
 		foreach ($teams as $ptid => $team)
@@ -226,7 +297,7 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 			{
 				if ($g->projectteam1_id == $team->projectteamid || $g->projectteam2_id == $team->projectteamid)
 				{
-					$teamgames[] = $g;
+					$teamgames[$g->division_id][] = $g;
 				}
 			}
 
@@ -236,14 +307,30 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 				continue;
 			}
 
-			// Get last x games
-			// $nb_games = 5;
+			/** Get last x games $nb_games = 5; */
 			$config     = sportsmanagementModelProject::getTemplateConfig('ranking', $cfg_which_database, __METHOD__);
 			$nb_games   = $config['nb_previous'];
-			$res[$ptid] = array_slice($teamgames, -$nb_games);
+            $res[$ptid] = $teamgames;
+			//$res[$ptid] = array_slice($teamgames, -$nb_games);
 		}
+        
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+        
+        foreach ($res as $ptid => $value )
+		{
+        //$ptid[0] = array_slice($ptid[0], -$nb_games); 
+        foreach ($value as $g => $neu)
+        {
+        $neu = array_slice($neu, -$nb_games);   
+          //echo __LINE__.'<pre>'.print_r($g,true).'</pre>';  
+          $prevgames[$ptid][$g] = $neu;
+        }
+       
+      }
+      
+      //echo __LINE__.'<pre>'.print_r($prevgames,true).'</pre>'; 
 
-		return $res;
+		return $prevgames;
 	}
 
 	
@@ -405,6 +492,13 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 					self::$homeRank[$division]       = $ranking->getRankingHome(self::$from, self::$to, $division, $cfg_which_database,$sports_type_name);
 					self::$awayRank[$division]       = $ranking->getRankingAway(self::$from, self::$to, $division, $cfg_which_database,$sports_type_name);
 				}
+				
+				
+				if ( $division && !self::$currentRanking[$division] )
+				{
+					//echo 'gruppentabelle ist leer <br>';
+					//self::$currentRanking[$division] = self::getProjectTeamsDivision($division);
+				}
 
 				self::_sortRanking(self::$currentRanking[$division]);
 
@@ -454,7 +548,7 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 
 		return;
 	}
-
+		
 	/**
 	 * sportsmanagementModelRanking::_sortRanking()
 	 *
@@ -464,11 +558,10 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 	 */
 	public static function _sortRanking(&$ranking)
 	{
-		// Reference global application object
 		$app       = Factory::getApplication();
 		$jinput    = $app->input;
-		$order     = $jinput->request->get('order', '', 'STR');
-		$order_dir = $jinput->request->get('dir', 'ASC', 'STR');
+		$order     = $jinput->get('order', '', 'STR');
+		$order_dir = $jinput->get('dir', 'ASC', 'STR');
 
 		//		$order     = Factory::getApplication()->input->getVar( 'order', '' );
 		//		$order_dir = Factory::getApplication()->input->getVar( 'dir', 'ASC' );

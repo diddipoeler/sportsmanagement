@@ -8,11 +8,12 @@
  * @subpackage fieldsets
  * @file       default_fieldsets.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Plugin\PluginHelper;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -291,7 +292,7 @@ switch ($this->fieldset)
 
 	// Für google maps
 	case 'maps1':
-		$plugin       = JPluginHelper::getPlugin('system', 'plugin_googlemap3');
+		$plugin       = PluginHelper::getPlugin('system', 'plugin_googlemap3');
 		$paramsPlugin = new Registry($plugin->params);
 
 		$arrPluginParams = array();

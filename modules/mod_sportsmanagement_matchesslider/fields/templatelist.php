@@ -8,7 +8,7 @@
  * @subpackage mod_sportsmanagement_matchesslider
  * @file       templatelist.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -23,6 +23,7 @@ use Joomla\CMS\Filesystem\Folder;
 jimport('joomla.form.formfield');
 
 defined('JPATH_BASE') or die();
+use Joomla\CMS\Form\FormField;
 
 /**
  * JFormFieldTemplatelist
@@ -33,7 +34,7 @@ defined('JPATH_BASE') or die();
  * @version   $Id$
  * @access    public
  */
-class JFormFieldTemplatelist extends JFormField
+class JFormFieldTemplatelist extends FormField
 {
 	protected $type = 'Templatelist';
 

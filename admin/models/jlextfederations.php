@@ -6,7 +6,7 @@
  * @subpackage jlextfederations
  * @file       jlextfederations.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -42,6 +42,7 @@ class sportsmanagementModeljlextfederations extends JSMModelList
 			'objassoc.id',
 			'objassoc.ordering',
 			'objassoc.picture',
+            'objassoc.flag_maps',
 			'objassoc.assocflag',
 			'objassoc.published',
 			'objassoc.modified',

@@ -6,7 +6,7 @@
  * @subpackage models
  * @file       matches.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -172,6 +172,15 @@ class sportsmanagementModelMatches extends JSMModelList
 			$this->jsmquery->where('mr.match_id = ' . $item->id);
 			$this->jsmdb->setQuery($this->jsmquery);
 			$item->referees_count = $this->jsmdb->loadResult();
+
+			$this->jsmquery->clear();
+
+			// Get match referee
+			$this->jsmquery->select('mr.project_referee_id');
+			$this->jsmquery->from('#__sportsmanagement_match_referee AS mr ');
+			$this->jsmquery->where('mr.match_id = ' . $item->id);
+			$this->jsmdb->setQuery($this->jsmquery);
+			$item->referee_id = $this->jsmdb->loadResult();
 		}
 
 		return $items;

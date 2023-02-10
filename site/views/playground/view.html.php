@@ -6,7 +6,7 @@
  * @subpackage playground
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -33,6 +33,7 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 	 */
 	function init()
 	{
+		
 		sportsmanagementModelProject::setProjectID($this->jinput->getInt("p", 0), $this->jinput->getInt('cfg_which_database', 0));
 		$mdlJSMTeams          = BaseDatabaseModel::getInstance("teams", "sportsmanagementModel");
 		$this->playground     = sportsmanagementModelPlayground::getPlayground($this->jinput->getInt("pgid", 0), 1);

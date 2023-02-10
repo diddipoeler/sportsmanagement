@@ -6,7 +6,7 @@
  * @subpackage fieldsets
  * @file       default_fieldsets_4.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -173,6 +173,8 @@ switch ($this->fieldset)
                                 <input type="hidden" name="team_id[]" value="<?php echo $team->id; ?>"/>
                                 <input type="text" name="team_value_id[]" size='50' maxlength='100'
                                        value="<?php echo $team->name; ?>"/>
+				    <input type="text" name="team_short_name[]" size='100' maxlength='100' style="width:400px;"
+                                       value="<?php echo $team->short_name; ?>"/>
 				    <input type="text" name="club_value_id[]" size='50' maxlength='50'
                                        value="<?php echo $team->club_id; ?>"/>
                             </td>

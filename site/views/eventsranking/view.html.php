@@ -6,7 +6,7 @@
  * @subpackage eventsranking
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -42,7 +42,11 @@ class sportsmanagementViewEventsRanking extends sportsmanagementView
 		$this->teamid     = $this->model->getTeamId();
 		$this->teams      = sportsmanagementModelProject::getTeamsIndexedById(0, 'name', $this->jinput->getInt('cfg_which_database', 0));
 		$this->favteams   = sportsmanagementModelProject::getFavTeams($this->jinput->getInt('cfg_which_database', 0));
-		$this->eventtypes = sportsmanagementModelProject::getEventTypes(sportsmanagementModelEventsRanking::$eventid, $this->jinput->getInt('cfg_which_database', 0), $this->project->sports_type_id );
+		$this->eventtypes = sportsmanagementModelProject::getEventTypes(sportsmanagementModelEventsRanking::$eventid, $this->jinput->getInt('cfg_which_database', 0), $this->project->sports_type_id,
+									       $this->jinput->getInt('p', 0),
+									       $this->jinput->getInt('tid', 0),
+									       $this->jinput->getInt('s', 0),
+									       $this->jinput->getInt('mid', 0));
 		$this->limit      = $this->model->getLimit();
 		$this->limitstart = $this->model->getLimitStart();
 		$this->pagination = $this->get('Pagination');

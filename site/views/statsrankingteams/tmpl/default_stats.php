@@ -8,7 +8,7 @@
  * @subpackage statsrankingteams
  * @file       default_stats.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -49,7 +49,7 @@ use Joomla\CMS\Component\ComponentHelper;
 	{
 		$team                                 = $this->teams[$value[team_id]];
 		$routeparameter                       = array();
-		$routeparameter['cfg_which_database'] = Factory::getApplication()->input->get('cfg_which_database', 0), ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0));
+		$routeparameter['cfg_which_database'] = Factory::getApplication()->input->get('cfg_which_database', 0) ? ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0) : 0;
 	$routeparameter['s']        = Factory::getApplication()->input->get('s', '');
 	$routeparameter['p']        = $this->project->id;
 	$routeparameter['tid']      = $value[team_id];

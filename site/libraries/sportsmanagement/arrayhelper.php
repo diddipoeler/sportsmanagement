@@ -1,3 +1,4 @@
+use Joomla\CMS\Log\Log;
 <?php
 /**
  * @package     Joomla.Platform
@@ -90,7 +91,7 @@ abstract class JArrayHelper
 		}
 		else
 		{
-			JLog::add('This method is typehinted to be an array in \Joomla\Utilities\ArrayHelper::toObject.', JLog::WARNING, 'deprecated');
+			Log::add('This method is typehinted to be an array in \Joomla\Utilities\ArrayHelper::toObject.', Log::WARNING, 'deprecated');
 		}
 
 		return $obj;
@@ -119,7 +120,7 @@ abstract class JArrayHelper
 		}
 		else
 		{
-			JLog::add('This method is typehinted to be an array in \Joomla\Utilities\ArrayHelper::toString.', JLog::WARNING, 'deprecated');
+			Log::add('This method is typehinted to be an array in \Joomla\Utilities\ArrayHelper::toString.', Log::WARNING, 'deprecated');
 		}
 
 		return implode($outer_glue, $output);
@@ -219,7 +220,7 @@ abstract class JArrayHelper
 		}
 		else
 		{
-			JLog::add('This method is typehinted to be an array in \Joomla\Utilities\ArrayHelper::getColumn.', JLog::WARNING, 'deprecated');
+			Log::add('This method is typehinted to be an array in \Joomla\Utilities\ArrayHelper::getColumn.', Log::WARNING, 'deprecated');
 		}
 
 		return $result;
@@ -313,7 +314,7 @@ abstract class JArrayHelper
 		}
 		else
 		{
-			JLog::add('This method is typehinted to be an array in \Joomla\Utilities\ArrayHelper::pivot.', JLog::WARNING, 'deprecated');
+			Log::add('This method is typehinted to be an array in \Joomla\Utilities\ArrayHelper::pivot.', Log::WARNING, 'deprecated');
 		}
 
 		return $result;

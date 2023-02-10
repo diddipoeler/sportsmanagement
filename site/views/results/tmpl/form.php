@@ -1,23 +1,23 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage results
  * @file       form.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+
+$user = Factory::getUser();
+$saveshortall = $user->authorise('editmatch.saveshortall', 'com_sportsmanagement');
+$saveshortresults = $user->authorise('editmatch.saveshortresults', 'com_sportsmanagement');
 
 if (version_compare(JSM_JVERSION, '4', 'eq'))
 {
@@ -47,10 +47,8 @@ if (!$this->showediticon)
 	Factory::getApplication()->redirect(str_ireplace('layout=form', '', $uri->toString()), Text::_('ALERTNOTAUTH'));
 }
 
-// Load javascripts
 $document = Factory::getDocument();
-
-// Welche joomla version
+/** welche joomla version */
 if (version_compare(JVERSION, '3.0.0', 'ge'))
 {
 }
@@ -64,7 +62,7 @@ else
 </script>
 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultresultsform" style="overflow:auto;">
     <!-- edit results start -->
-    <table class="table">
+    <table class="table"  id="results-tmpl-form-contentheading">
         <tr>
             <td class="contentheading">
 				<?php
@@ -102,7 +100,7 @@ else
         </tr>
     </table>
     <form name="adminForm" id="adminForm" method="post" action="<?php echo $uri->toString(); ?>">
-        <table class="<?php echo $this->config['table_class']; ?>">
+        <table class="<?php echo $this->config['table_class']; ?>" id="results-tmpl-form">
             <!-- Main START -->
 			<?php
 			if (count($this->matches) > 0)
@@ -248,9 +246,7 @@ else
 					{
 						$this->game = $match;
 						$this->i    = $i;
-						/**
-						 * eingabe laden
-						 */
+						/** eingabe laden */
 						echo $this->loadTemplate('row');
 					}
 
@@ -273,6 +269,9 @@ else
         <input type='hidden' name='order' value='<?php echo sportsmanagementModelResults::$order; ?>'/>
         <input type='hidden' name='layout' value='form'/>
         <input type='hidden' name='task' value='results.saveshort'/>
+	    
+	    <input type='hidden' name='saveshortall' value='<?php echo $saveshortall; ?>'/>
+	    
         <input type='hidden' name='sel_r' value='<?php echo sportsmanagementModelProject::$roundslug; ?>'/>
         <input type='hidden' name='Itemid'
                value='<?php echo Factory::getApplication()->input->getInt('Itemid', 1, 'get'); ?>'/>

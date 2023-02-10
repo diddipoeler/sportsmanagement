@@ -6,7 +6,7 @@
  * @subpackage helpers
  * @file       countries.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -87,16 +87,12 @@ class JSMCountries
 	public static function getCountryOptions($value_tag = 'value', $text_tag = 'text', $useflag = 0)
 	{
 		$app = Factory::getApplication();
-		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		$db     = sportsmanagementHelper::getDBConnection();
 
-		// Create a new query object.
 		$query = $db->getQuery(true);
-
 		$query->select('alpha3,name');
-		// From table
 		$query->from('#__sportsmanagement_countries');
 		$db->setQuery($query);
 		$countries = $db->loadAssocList();
@@ -148,20 +144,14 @@ class JSMCountries
 	public static function convertIso2to3($iso_code_2)
 	{
 		$app = Factory::getApplication();
-		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		$db     = sportsmanagementHelper::getDBConnection();
 
-		// Create a new query object.
 		$query = $db->getQuery(true);
-
 		$query->select('alpha3');
-		// From table
 		$query->from('#__sportsmanagement_countries');
 		$query->where('alpha2 LIKE \'' . $iso_code_2 . '\'');
-
-
 		$db->setQuery($query);
 		$res = $db->loadResult();
 		if ($res)
@@ -190,28 +180,51 @@ class JSMCountries
 		return Text::_($parts[0]);
 	}
 
-	/**
-	 * @param   string: an iso3 country code, e.g AUT
-	 *
-	 * @return string: a country name
-	 */
-	public static function getCountryName($iso3)
+	
+    
+    /**
+     * JSMCountries::getCountryalpha3fifa()
+     * 
+     * @param string $fifa
+     * @return
+     */
+    public static function getCountryalpha3fifa($fifa='')
 	{
 		$app = Factory::getApplication();
-		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		$db     = sportsmanagementHelper::getDBConnection();
 
-		// Create a new query object.
 		$query = $db->getQuery(true);
+		$query->select('alpha3');
+		$query->from('#__sportsmanagement_countries');
+		$query->where('fifa LIKE \'' . $fifa . '\'');
+		$db->setQuery($query);
+		$res = $db->loadResult();
 
+		if ($res)
+		{
+			return $res;
+		}
+	}
+    
+	/**
+	 * JSMCountries::getCountryName()
+	 * 
+	 * @param mixed $iso3
+	 * @return
+	 */
+	public static function getCountryName($iso3)
+	{
+		$app = Factory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+		$db     = sportsmanagementHelper::getDBConnection();
+
+		$query = $db->getQuery(true);
 		$query->select('name');
-		// From table
 		$query->from('#__sportsmanagement_countries');
 		$query->where('alpha3 LIKE \'' . $iso3 . '\'');
-
-
 		$db->setQuery($query);
 		$res = $db->loadResult();
 
@@ -261,36 +274,58 @@ class JSMCountries
 		return $resultString;
 	}
 
+	
+	
 	/**
-	 * example: echo JSMCountries::getCountryFlag($country);
-	 *
-	 * @param   string: an iso3 country code, e.g AUT
-	 * @param   string: additional html attributes for the img tag
-	 *
-	 * @return string: html code for the flag image
+	 * JSMCountries::getCountryFlag()
+	 * 
+	 * @param mixed $countrycode
+	 * @param string $attributes
+	 * @param bool $picture
+	 * @param bool $flag_map
+	 * @return
 	 */
-	public static function getCountryFlag($countrycode, $attributes = '')
+	public static function getCountryFlag($countrycode, $attributes = '', $picture = false, $flag_map = false)
 	{
-
-
 		$app = Factory::getApplication();
-		// JInput object
 		$jinput   = $app->input;
 		$option   = $jinput->getCmd('option');
 		$params   = ComponentHelper::getParams('com_sportsmanagement');
 		$cssflags = $params->get('cfg_flags_css');
 
-		// Get a db connection.
 		$db = sportsmanagementHelper::getDBConnection();
 
-		$src = self::getIso3Flag($countrycode);
+		$iso2 = self::convertIso3to2($countrycode);
+		//$src = self::getIso2Flag($countrycode);
+		//$src = self::getIso3Flag($countrycode);
+		$src = self::getIso2Flag($iso2);
+		
+		if ( $picture )
+		{
+			$query = $db->getQuery(true);
+			$query->select('picture');
+			$query->from('#__sportsmanagement_countries');
+			$query->where('alpha3 LIKE \'' . $countrycode . '\'');
+			$db->setQuery($query);
+			$src = $db->loadResult();
+			return $src;
+		}
+        elseif ( $flag_map )
+		{
+			$query = $db->getQuery(true);
+			$query->select('flag_maps');
+			$query->from('#__sportsmanagement_countries');
+			$query->where('alpha3 LIKE \'' . $countrycode . '\'');
+			$db->setQuery($query);
+			$src = $db->loadResult();
+			return $src;
+		}
+		else
+		{
 		if (!$src)
 		{
-			// Create a new query object.
 			$query = $db->getQuery(true);
-
 			$query->select('picture');
-			// From table
 			$query->from('#__sportsmanagement_countries');
 			$query->where('alpha3 LIKE \'' . $countrycode . '\'');
 			$db->setQuery($query);
@@ -317,11 +352,12 @@ class JSMCountries
 			case "WAL":  $countrycode = "gb-wls"; break;
 			case "SCO":  $countrycode = "gb-sct"; break;
 			case "GBR":  $countrycode = "gb-eng"; break;
-			default: $countrycode = self::convertIso3to2($countrycode); break;
+			default: $countrycode = $iso2; break;
 			}
 			$countrycode = strtolower($countrycode);
 			$html        = '<span class="flag-icon flag-icon-' . $countrycode . '"></span>';
 		}
+	}
 
 		return $html;
 	}
@@ -339,6 +375,25 @@ class JSMCountries
 		if ($iso2)
 		{
 			$path = 'images/com_sportsmanagement/database/flags/' . strtolower($iso2) . '.png';
+
+			return $path;
+		}
+
+		return null;
+	}
+
+	/**
+	 * JSMCountries::getIso2Flag()
+	 *
+	 * @param   mixed  $iso_code_2
+	 *
+	 * @return
+	 */
+	public static function getIso2Flag($iso_code_2)
+	{
+		if ($iso_code_2)
+		{
+			$path = 'images/com_sportsmanagement/database/flags/' . strtolower($iso_code_2) . '.png';
 
 			return $path;
 		}

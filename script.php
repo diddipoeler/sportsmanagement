@@ -5,7 +5,7 @@
  * @subpackage installation
  * @file      script.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -17,6 +17,8 @@
  * https://github.com/joomla/joomla-cms/issues/14330
  * https://api.joomla.org/cms-3/deprecated.html
  * https://www.joomla.org/announcements/release-news/5718-joomla-4-0-alpha-1-release.html
+ *
+ *  https://github.com/exstreme/Jcomments-4
  *
  * https://www.spiralscripts.co.uk/Joomla-Tips/modal-windows-in-joomla-3.html
  *
@@ -78,6 +80,8 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Version;
+use Joomla\CMS\Form\Form;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -89,6 +93,24 @@ use Joomla\Registry\Registry;
 use Joomla\CMS\Installer\Installer;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\Plugin\PluginHelper;
+
+
+$maxImportTime = 960;
+
+if ((int) ini_get('max_execution_time') < $maxImportTime)
+{
+	@set_time_limit($maxImportTime);
+}
+
+$maxImportMemory = '350M';
+
+if ((int) ini_get('memory_limit') < (int) $maxImportMemory)
+{
+	@ini_set('memory_limit', $maxImportMemory);
+}
+
+
 
 if (version_compare(JVERSION, '3.0.0', 'ge'))
 {
@@ -110,8 +132,8 @@ class com_sportsmanagementInstallerScript
 	 * The release value would ideally be extracted from <version> in the manifest file,
 	 * but at preflight, the manifest file exists only in the uploaded temp folder.
 	 */
-	private $release = '3.8.87';
-    private $old_release = '3.8.86';
+	private $release = '4.11.00';
+    private $old_release = '4.10.00';
 
 	// $language_update = '';
 
@@ -454,7 +476,7 @@ echo '<p> alte Version ' .  $this->oldRelease . '</p>';
 			src="../administrator/components/com_sportsmanagement/assets/icons/logo_transparent.png"
 			alt="SportsManagement" title="SportsManagement" width="180"/>
 		<?php
-		$j = new JVersion;
+		$j = new Version;
 		echo '<h1>' . sprintf(Text::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), $j->getShortVersion()) . '</h1>';
 		?>
 
@@ -694,7 +716,7 @@ Like this extension?
 				// $form =& JForm::getInstance('com_sportsmanagement', $xmlfile, array('control'=> 'params'), false, "/config");
 				$newparams = array();
 
-				$form = JForm::getInstance('com_sportsmanagement', $xmlfile, array('control' => ''), false, "/config");
+				$form = Form::getInstance('com_sportsmanagement', $xmlfile, array('control' => ''), false, "/config");
 				$form->bind($jRegistry);
 
 				// Foreach($form->getFieldset($fieldset->name) as $field)
@@ -702,6 +724,14 @@ Like this extension?
 			{
 					$newparams[$field->name] = $field->value;
 			}
+
+$plugin_id = PluginHelper::getPlugin('system','jsm_registercomp')->id;
+$object = new stdClass();            
+$object->extension_id = $plugin_id;
+$object->enabled = 1;            
+$result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_id');      
+
+
 
 			switch ($route)
 			{
@@ -717,9 +747,13 @@ Like this extension?
 					echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab4_id', Text::_(' Create/Update Images Folders'));
 					self::createImagesFolder();
 					/** führt zu fehlern */
-					// Self::installJoomlaExtensions($adapter);
+					// Self::installJoomlaExtensions($adapter); installPackages( $adapter)
 					echo HTMLHelper::_('bootstrap.' . $this->endPanel);
 
+					echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab5_id', Text::_(' Packages'));
+					self::installPackages($adapter);
+					echo HTMLHelper::_('bootstrap.' . $this->endPanel);
+					
 					self::setParams($newparams);
 					self::deleteinstallfiles();
 						break;
@@ -736,6 +770,10 @@ Like this extension?
 					self::createImagesFolder();
 					/** führt zu fehlern */
 					// Self::installJoomlaExtensions($adapter);
+					echo HTMLHelper::_('bootstrap.' . $this->endPanel);
+					
+					echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab5_id', Text::_(' Packages'));
+					self::installPackages($adapter);
 					echo HTMLHelper::_('bootstrap.' . $this->endPanel);
 
 					self::setParams($newparams);
@@ -820,6 +858,8 @@ Like this extension?
 		'projectteams/trikot_home',
 		'projectteams/trikot_away',
 		'associations',
+        'flag_maps',
+        'flag_maps_world',
 		'rosterground',
 		'matchreport',
 		'seasons',
@@ -941,8 +981,10 @@ Like this extension?
 						break;
 					case 'clubs/medium':
 					case 'associations':
+                    case 'flag_maps':
 						File::copy(JPATH_ROOT . '/images/com_sportsmanagement/database/placeholders/placeholder_50.png', JPATH_ROOT . '/images/com_sportsmanagement/database/' . $folder . '/placeholder_50.png');
 						File::copy(JPATH_ROOT . '/images/com_sportsmanagement/database/placeholders/placeholder_wappen_50.png', JPATH_ROOT . '/images/com_sportsmanagement/database/' . $folder . '/placeholder_wappen_50.png');
+                        File::copy(JPATH_ROOT . '/images/com_sportsmanagement/database/placeholders/placeholder_flags.png', JPATH_ROOT . '/images/com_sportsmanagement/database/' . $folder . '/placeholder_flags.png');
 						break;
 					case 'clubs/large':
 						File::copy(JPATH_ROOT . '/images/com_sportsmanagement/database/placeholders/placeholder_150.png', JPATH_ROOT . '/images/com_sportsmanagement/database/' . $folder . '/placeholder_150.png');
@@ -1033,7 +1075,29 @@ Like this extension?
 	//  }
 
 
+public function installPackages( $adapter)
+	{
+		$mainframe = Factory::getApplication();
+		//$src = $adapter->getParent()->getPath('source');
+	$src = JPATH_BASE. '/components/'. 'com_sportsmanagement' ;
+		$manifest = $adapter->getParent()->manifest;
+		$db = Factory::getDBO();
 
+	if (version_compare(substr(JVERSION, 0, 5), '4.0.0', 'ge'))
+		{
+//$path = $src . DIRECTORY_SEPARATOR . 'pkg' . DIRECTORY_SEPARATOR .'jcomments' . DIRECTORY_SEPARATOR . 'pkg_jcomments_4.0.25.zip';
+$path = $src . DIRECTORY_SEPARATOR . 'pkg' . DIRECTORY_SEPARATOR .'jcomments'. DIRECTORY_SEPARATOR.'components'. DIRECTORY_SEPARATOR ;
+	
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $src, 'error');
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $path, 'error');
+	
+$installer = new Installer;
+$result = $installer->install($path);	
+	
+echo '<p>' . Text::_('Packages : ') . 'JComments 4.0' . ' installiert!</p>';	
+	}
+}
+	
 	/**
 	 * com_sportsmanagementInstallerScript::installPlugins()
 	 *
@@ -1074,26 +1138,36 @@ Like this extension?
 
 				switch ($name)
 				{
-					case 'jqueryeasy';
-
-						if ($plugin_id)
-						{
-							// Plugin ist vorhanden
-							// wurde vielleicht schon aktualisiert
-						}
-						else
-						{
-							// Plugin ist nicht vorhanden
-							// also installieren
-							$path = $src . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . $name . '_3';
-							$installer = new Installer;
-							$result = $installer->install($path);
-						}
+				case 'jqueryeasy';
+				if ($plugin_id)
+				{
+				// Plugin ist vorhanden
+				// wurde vielleicht schon aktualisiert
+				}
+				else
+				{
+				// Plugin ist nicht vorhanden
+				// also installieren
+				$path = $src . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . $name . '_3';
+				$installer = new Installer;
+				$result = $installer->install($path);
+				}
 				break;
-					default:
-						$path = $src . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . $name;
-						$installer = new Installer;
-						$result = $installer->install($path);
+//                case 'jsm_registercomp';
+//                $path = $src . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . $name . '_3';
+//				$installer = new Installer;
+//				$result = $installer->install($path);
+//                
+//                $object = new stdClass();            
+//                $object->extension_id = $plugin_id;
+//                $object->enabled = 1;            
+//                $result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_id');
+//                
+//                break;
+				default:
+				$path = $src . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . $name;
+				$installer = new Installer;
+				$result = $installer->install($path);
 				break;
 				}
 
@@ -1111,6 +1185,32 @@ Like this extension?
 				$result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_id');
 				*/
 			}
+  
+/*            
+$plugin_id = PluginHelper::getPlugin('system','jsm_registercomp')->id;
+$plugin = PluginHelper::getPlugin('system','jsm_registercomp');
+echo '<p>' . Text::_('Plugin : ') . $plugin_id . ' registercomp installiert!</p>';
+echo '<p>' . Text::_('Plugin : ') . '<pre>'.print_r($plugin,true) .'</pre>' . ' registercomp installiert!</p>';
+*/
+$name = 'jsm_registercomp';
+$group = 'system';
+$query = $db->getQuery(true);
+$query->clear();
+$query->select('extension_id');
+$query->from('#__extensions');
+$query->where("type = 'plugin' ");
+$query->where("element = '" . $name . "' ");
+$query->where("folder = '" . $group . "' ");
+$db->setQuery($query);
+$plugin_id = $db->loadResult();
+if ($plugin_id)
+{
+$object = new stdClass();            
+$object->extension_id = $plugin_id;
+$object->enabled = 1;            
+$result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_id');            
+}
+
 		}
 
 	}

@@ -6,7 +6,7 @@
  * @subpackage libraries
  * @file       view.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  *
  * fehlerbehandlung
@@ -92,6 +92,12 @@ if (version_compare(JVERSION, '3.0.0', 'ge'))
 $document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/extended-1.1.css');
 $document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/style.css');   
 $document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/stylebox.css');        
+
+if (version_compare(JVERSION, '4.0.0', 'ge'))
+{
+	$document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/extended_4.css');
+	$document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/stylebox_4.css');        
+}
 ?>        
 
 <?php       
@@ -164,12 +170,17 @@ class sportsmanagementView extends HtmlView
 	public $bootstrap_fileinput_version = '5.1.2';
 	public $bootstrap_fileinput_bootstrapversion = '4.3.1';
 	public $bootstrap_fileinput_popperversion = '1.14.7';
+	public $chart_version = '2.7.3';
 	public $leaflet_version = '1.7.1';
 	public $leaflet_css_integrity = 'sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==';
 	public $leaflet_js_integrity = 'sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==';
 	
 	public $leaflet_locatecontrol = '0.72.0';
 	public $leaflet_routing_machine = '3.2.12';
+	
+	public $jsmstartzeit = 0;
+	public $jsmendzeit = 0;
+	public $jsmseitenaufbau = 0;
     
     /** @var    array    An array of tips */
 	public $tips = array();
@@ -178,6 +189,33 @@ class sportsmanagementView extends HtmlView
     /** @var    array    An array of notes */
 	public $notes = array();
 
+	
+	/**
+	 * sportsmanagementView::getStartzeit()
+	 * 
+	 * @return
+	 */
+	public function getStartzeit()
+	{
+	$startzeit = explode(" ", microtime());
+	$this->jsmstartzeit = $startzeit[0]+$startzeit[1];	
+		return $this->jsmstartzeit;
+	}
+	
+	/**
+	 * sportsmanagementView::getEndzeit()
+	 * 
+	 * @return
+	 */
+	public function getEndzeit()
+	{
+	$endzeit = explode(" ", microtime());
+	$this->jsmendzeit = $endzeit[0]+$endzeit[1];	
+		return $this->jsmendzeit;
+	//$this->jsmseitenaufbau = round($this->jsmendzeit - $this->jsmstartzeit,6);	
+	}
+	
+	
 	/**
 	 * sportsmanagementView::display()
 	 *
@@ -187,6 +225,7 @@ class sportsmanagementView extends HtmlView
 	 */
 	public function display($tpl = null)
 	{
+	   $this->jsmstartzeit = $this->getStartzeit();
 
 		/**
 		 * alle fehlermeldungen online ausgeben
@@ -306,6 +345,9 @@ class sportsmanagementView extends HtmlView
 
 		$this->addToolbar();
 
+ $this->jsmendzeit  = $this->getEndzeit();
+	$this->jsmseitenaufbau = round($this->jsmendzeit - $this->jsmstartzeit,6);
+    
 		parent::display($tpl);
 	}
 

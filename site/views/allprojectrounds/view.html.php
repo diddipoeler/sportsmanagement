@@ -6,7 +6,7 @@
  * @subpackage allprojectrounds
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -33,8 +33,9 @@ class sportsmanagementViewallprojectrounds extends sportsmanagementView
 	 */
 	function init()
 	{
-		$this->tableclass = $this->jinput->request->get('table_class', 'table', 'STR');
-       	$this->show_favteaminfo  = $this->jinput->request->get('show_favteaminfo', 0, 'INT');
+		
+		$this->tableclass = $this->jinput->get('table_class', 'table', 'STR');
+       	$this->show_favteaminfo  = $this->jinput->get('show_favteaminfo', 0, 'INT');
 		$this->projectid      = $this->project->id;
 		$this->projectmatches = $this->model->getProjectMatches();
 		$this->rounds         = sportsmanagementModelProject::getRounds();

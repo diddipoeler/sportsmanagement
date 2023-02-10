@@ -6,14 +6,12 @@
  * @subpackage league
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewLeague
@@ -35,34 +33,45 @@ class sportsmanagementViewLeague extends sportsmanagementView
 	public function init()
 	{
 
+		//echo '<pre>'.print_r(Factory::getApplication()->getUserState("com_sportsmanagement.leaguenation", ''),true).'</pre>';
+		
 		if ($this->item->id)
 		{
-			// Alles ok
+			/** Alles ok */
 			if ($this->item->founded == '0000-00-00')
 			{
 				$this->item->founded = '';
-				$this->form->setValue('founded', '');
+				$this->form->setValue('founded',null, '');
 			}
 
 			if ($this->item->dissolved == '0000-00-00')
 			{
 				$this->item->dissolved = '';
-				$this->form->setValue('dissolved', '');
+				$this->form->setValue('dissolved',null, '');
 			}
 		}
 		else
 		{
-			$this->form->setValue('founded', '');
-			$this->form->setValue('dissolved', '');
+			$this->form->setValue('founded',null, '');
+			$this->form->setValue('dissolved',null, '');
+			$this->form->setValue('country',null, Factory::getApplication()->getUserState("com_sportsmanagement.leaguenation", ''));
 		}
         
         $this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
 		$this->form->setValue('agegroup_id', 'request', $this->item->agegroup_id);
 
-		$extended           = sportsmanagementHelper::getExtended($this->item->extended, 'league');
-		$this->extended     = $extended;
-		$extendeduser       = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'league');
-		$this->extendeduser = $extendeduser;
+		$this->extended = sportsmanagementHelper::getExtended($this->item->extended, 'league');
+		$this->extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'league');
+        
+        $this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('backend',0,Factory::getApplication()->input->get('view'));
+		$lists                  = array();
+
+		if ($this->checkextrafields)
+		{
+			$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id,'backend',0,Factory::getApplication()->input->get('view'));
+		}
+        
+        $this->lists = $lists;
 
 	}
 

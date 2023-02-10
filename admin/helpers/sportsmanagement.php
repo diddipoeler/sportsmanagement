@@ -6,16 +6,22 @@
  * @subpackage helpers
  * @file       sportsmanagement.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  *
  * toolbar
  * https://issues.joomla.org/tracker/joomla-cms/19670
  */
 defined('_JEXEC') or die;
+use Joomla\Data\DataObject;
+use Joomla\CMS\Date\Date;
+use Joomla\CMS\Version;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Object\CMSObject;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\Utilities\ArrayHelper;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -30,6 +36,7 @@ use Joomla\CMS\Table\Table;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Component\Actionlogs\Administrator\Model\ActionlogModel;
+use Joomla\CMS\Form\Form;
 //BaseDatabaseModel::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_actionlogs/models', 'ActionlogsModel');
 
 HTMLHelper::_('behavior.keepalive');
@@ -85,6 +92,58 @@ abstract class sportsmanagementHelper
     /** @var    array    An array of notes */
 	static $_notes = array();
     
+	
+/**
+ * sportsmanagementHelper::getMatchReferees()
+ * 
+ * @param integer $match_id
+ * @param integer $cfg_which_database
+ * @return
+ */
+public static function getMatchReferees($match_id = 0, $cfg_which_database = 0)
+	{
+		$app    = Factory::getApplication();
+		$option = $app->input->getCmd('option');
+        $result = array();
+
+		$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
+		$query     = $db->getQuery(true);
+		$starttime = microtime();
+        
+        $query->clear();
+        $query->select('COUNT(DISTINCT(mr.match_id)) as count_referees');
+        $query->from('#__sportsmanagement_match_referee AS mr');
+        $query->where('mr.match_id = ' . (int) $match_id);
+        $db->setQuery($query);
+        $total_referees = $db->loadResult();
+        if ( $total_referees )
+        {
+        $query->clear();
+		$query->select('p.id,pref.id AS person_id,p.firstname,p.lastname,pos.name AS position_name,CONCAT_WS(\':\',p.id,p.alias) AS person_slug,p.nickname ');
+		$query->select('mr.project_position_id,pos.name as position_name,pref.picture');
+		$query->from('#__sportsmanagement_match_referee AS mr');
+		$query->join('LEFT', '#__sportsmanagement_project_referee AS pref ON mr.project_referee_id=pref.id');
+		$query->join('INNER', '#__sportsmanagement_season_person_id AS spi ON pref.person_id=spi.id');
+		$query->join('INNER', '#__sportsmanagement_person AS p ON spi.person_id=p.id');
+		$query->join('LEFT', '#__sportsmanagement_project_position AS ppos ON mr.project_position_id=ppos.id');
+		$query->join('LEFT', '#__sportsmanagement_position AS pos ON ppos.position_id=pos.id');
+		$query->where('mr.match_id = ' . (int) $match_id);
+		$query->where('p.published = 1');
+		$query->order('pos.name,mr.ordering');
+		$db->setQuery($query);
+		$result = $db->loadObjectList();
+        }
+
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+
+		return $result;
+
+	}
+	
+	
+	
+	
+	
     /**
      * sportsmanagementHelper::getTips()
      * 
@@ -295,7 +354,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 * @param string $modalWidth
 	 * @return
 	 */
-	public static function getBootstrapModalImage($target = '', $picture = '', $text = '', $picturewidth = '20', $url = '', $width = '100', $height = '200', $extrabutton = '',$modalWidth = '80')
+	public static function getBootstrapModalImage($target = '', $picture = '', $text = '', $picturewidth = '20', $url = '', $width = '100', $height = '200', $extrabutton = '',$modalWidth = '80', $body = '')
 	{
 		$app = Factory::getApplication();
 		$jinput = $app->input;
@@ -341,7 +400,8 @@ var <?php echo $placeholder; ?> = new Array;
                 'bodyHeight'  => '60',
 				'modalWidth'  => $modalWidth,
 				'footer' => $footer
-			)
+			),
+			$body
 		);
 
 		return $modaltext;
@@ -499,7 +559,7 @@ var <?php echo $placeholder; ?> = new Array;
 
 		// Echo '<pre>'.print_r($params,true).'</pre>';
 		// Log::add(Text::_($params->get('cfg_which_database')), Log::ERROR, 'jsmerror');
-		if ($params->get('cfg_which_database'))
+		if ($params->get('cfg_which_database') || $value == 1)
 		{
 			$options             = array(); // Prevent problems
 			$options['driver']   = $params->get('jsm_dbtype');            // Database driver name
@@ -643,7 +703,7 @@ try
 	 */
 	public static function getTimestamp($date = null, $use_offset = 0, $offset = null)
 	{
-		$date = $date ? $date : 'now';
+		$date = $date != '0000-00-00 00:00:00' ? $date : 'now';
 		$app  = Factory::getApplication();
 
 		try
@@ -682,10 +742,11 @@ try
 		}
 		catch (Exception $e)
 		{
-			$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-			$code = $e->getCode(); // Returns
-			$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
-
+//			$msg  = $e->getMessage(); // Returns "Normally you would have other code...
+//			$code = $e->getCode(); // Returns
+//			$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+            $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
 			return false;
 		}
 	}
@@ -785,8 +846,9 @@ try
 		{
 			if ($match->match_date)
 			{
+			 $date = date_create($match->match_date);
 				//return $match->match_date ? $match->match_date->format($format, true) : "xxxx-xx-xx xx:xx";
-				return $match->match_date ? date_format($match->match_date, $format) : "xxxx-xx-xx xx:xx";
+				return $match->match_date ? date_format($date, $format) : "xxxx-xx-xx xx:xx";
 			}
 		}
 		catch (Exception $e)
@@ -843,7 +905,7 @@ try
 					$timezone = $user->getParam('timezone', $match->timezone);
 				}
 
-				$matchDate = new JDate($match->match_date);
+				$matchDate = new Date($match->match_date);
 
 				if ($timezone)
 				{
@@ -882,7 +944,7 @@ try
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 
-		$j = new JVersion;
+		$j = new Version;
 
 		if (!defined('COM_SPORTSMANAGEMENT_JOOMLAVERSION'))
 		{
@@ -1131,7 +1193,7 @@ try
 	public static function getActions($messageId = 0)
 	{
 		$user   = Factory::getUser();
-		$result = new JObject;
+		$result = new CMSObject;
 
 		if (empty($messageId))
 		{
@@ -1154,33 +1216,37 @@ try
 		return $result;
 	}
 
+	
 	/**
-	 *
-	 * @param   string  $data
-	 * @param   string  $file
-	 *
-	 * @return object
+	 * sportsmanagementHelper::getExtendedStatistic()
+	 * 
+	 * @param string $data
+	 * @param string $file
+	 * @param string $format
+	 * @return
 	 */
-	static function getExtendedStatistic($data = '', $file, $format = 'ini')
+	static function getExtendedStatistic($data = '', $file = '', $format = 'ini')
 	{
 		$app          = Factory::getApplication();
 		$templatepath = JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'statistics';
 		$xmlfile      = $templatepath . DIRECTORY_SEPARATOR . $file . '.xml';
-		$extended     = JForm::getInstance('params', $xmlfile, array('control' => 'params'), false, '/config');
+		$extended     = Form::getInstance('params', $xmlfile, array('control' => 'params'), false, '/config');
 		$extended->bind($data);
 
 		return $extended;
 	}
 
+	
 	/**
-	 * support for extensions which can overload extended data
-	 *
-	 * @param   string  $data
-	 * @param   string  $file
-	 *
-	 * @return object
+	 * sportsmanagementHelper::getExtended()
+	 * 
+	 * @param string $data
+	 * @param string $file
+	 * @param string $format
+	 * @param bool $frontend
+	 * @return
 	 */
-	static function getExtended($data = '', $file, $format = 'ini', $frontend = false)
+	static function getExtended($data = '', $file = '', $format = 'ini', $frontend = false)
 	{
 		$app     = Factory::getApplication();
 		$xmlfile = JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'extended' . DIRECTORY_SEPARATOR . $file . '.xml';
@@ -1205,7 +1271,7 @@ try
 					}
 				}
 
-				$extended = JForm::getInstance('extended', $xmlfile, array('control' => 'extended'), false, '/config');
+				$extended = Form::getInstance('extended', $xmlfile, array('control' => 'extended'), false, '/config');
 				$extended->bind($jRegistry);
 
 				if ($frontend)
@@ -1232,16 +1298,16 @@ try
 		}
 	}
 
+
 	/**
 	 * sportsmanagementHelper::getExtendedUser()
-	 *
-	 * @param   string  $data
-	 * @param   mixed   $file
-	 * @param   string  $format
-	 *
+	 * 
+	 * @param string $data
+	 * @param string $file
+	 * @param string $format
 	 * @return
 	 */
-	static function getExtendedUser($data = '', $file, $format = 'ini')
+	static function getExtendedUser($data = '', $file = '', $format = 'ini')
 	{
 		$app     = Factory::getApplication();
 		$xmlfile = JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'extendeduser' . DIRECTORY_SEPARATOR . $file . '.xml';
@@ -1268,7 +1334,7 @@ try
 					}
 				}
 
-				$extended = JForm::getInstance('extendeduser', $xmlfile, array('control' => 'extendeduser'), false, '/config');
+				$extended = Form::getInstance('extendeduser', $xmlfile, array('control' => 'extendeduser'), false, '/config');
 				$extended->bind($jRegistry);
 
 				return $extended;
@@ -1839,11 +1905,23 @@ try
 	 */
 	public static function getProjectFavTeams($project_id)
 	{
+$app    = Factory::getApplication();
+$jinput = $app->input;
 
+		
 		if ($project_id)
 		{
-			$row = Table::getInstance('project', 'sportsmanagementTable');
-			$row->load($project_id);
+		$db    = sportsmanagementHelper::getDBConnection(true, $jinput->get('cfg_which_database', 0, '') );	
+		$query = $db->getQuery(true);
+		$query->select('fav_team, fav_team_text_bold, fav_team_text_color, fav_team_color');
+		$query->from('#__sportsmanagement_project');
+		$query->where('id = ' . (int) $project_id);
+		$db->setQuery($query);
+		$row = $db->loadObject();
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+			
+			//$row = Table::getInstance('project', 'sportsmanagementTable');
+			//$row->load($project_id);
 
 			return $row;
 		}
@@ -2018,8 +2096,8 @@ try
 			$routeparameter                       = array();
 			$routeparameter['cfg_which_database'] = $cfg_which_database;
 			$routeparameter['s']                  = $s;
+            $routeparameter['cid']                = $clubSlug;
 			$routeparameter['p']                  = $projectSlug;
-			$routeparameter['cid']                = $clubSlug;
 			$routeparameter['task']               = null;
 
 			$link    = sportsmanagementHelperRoute::getSportsmanagementRoute('clubplan', $routeparameter);
@@ -2069,7 +2147,7 @@ try
 	public static function getPictureThumb($picture, $alttext, $width = 40, $height = 40, $type = 0)
 	{
 		$ret            = "";
-		$picturepath    = JPath::clean(JPATH_SITE . DIRECTORY_SEPARATOR . str_replace(JPATH_SITE . DIRECTORY_SEPARATOR, '', $picture));
+		$picturepath    = Path::clean(JPATH_SITE . DIRECTORY_SEPARATOR . str_replace(JPATH_SITE . DIRECTORY_SEPARATOR, '', $picture));
 		$params         = ComponentHelper::getParams('com_sportsmanagement');
 		$ph_player      = $params->get('ph_player', 0);
 		$ph_logo_big    = $params->get('ph_logo_big', 0);
@@ -2320,45 +2398,48 @@ try
 
 		foreach ($divisions as $division)
 		{
-			echo '<tr>';
-			echo '<td align="center" style=""><b>' . $division->name . '</b>&nbsp;</td>';
-			$jRegistry = new Registry;
-
-			if ( version_compare(JVERSION, '3.0.0', 'ge') )
+			if (isset($division->rankingparams))
 			{
-				$jRegistry->loadString($division->rankingparams);
-			}
-			else
-			{
-				$jRegistry->loadJSON($division->rankingparams);
-			}
-
-			$configvalues = $jRegistry->toArray();
-			$colors       = array();
-
-			if (isset($configvalues['rankingparams']))
-			{
-				for ($a = 1; $a <= sizeof($configvalues['rankingparams']); $a++)
+				echo '<tr>';
+				echo '<td align="center" style=""><b>' . $division->name . '</b>&nbsp;</td>';
+				$jRegistry = new Registry;
+	
+				if ( version_compare(JVERSION, '3.0.0', 'ge') )
 				{
-					$colors[] = implode(",", $configvalues['rankingparams'][$a]);
+					$jRegistry->loadString($division->rankingparams);
 				}
-			}
-
-			$configvalues = implode(";", $colors);
-			$colors       = sportsmanagementModelProject::getColors($configvalues, sportsmanagementModelProject::$cfg_which_database);
-
-			foreach ($colors as $color)
-			{
-				if (trim($color['description']) != '')
+				else
 				{
-					// Echo '<tr>';
-					echo '<td align="center" style="background-color:' . $color['color'] . ';"><b>' . $color['description'] . '</b>&nbsp;</td>';
-
-					// Echo '</tr>';
+					$jRegistry->loadJSON($division->rankingparams);
 				}
+	
+				$configvalues = $jRegistry->toArray();
+				$colors       = array();
+	
+				if (isset($configvalues['rankingparams']))
+				{
+					for ($a = 1; $a <= sizeof($configvalues['rankingparams']); $a++)
+					{
+						$colors[] = implode(",", $configvalues['rankingparams'][$a]);
+					}
+				}
+	
+				$configvalues = implode(";", $colors);
+				$colors       = sportsmanagementModelProject::getColors($configvalues, sportsmanagementModelProject::$cfg_which_database);
+	
+				foreach ($colors as $color)
+				{
+					if (trim($color['description']) != '')
+					{
+						// Echo '<tr>';
+						echo '<td align="center" style="background-color:' . $color['color'] . ';"><b>' . $color['description'] . '</b>&nbsp;</td>';
+	
+						// Echo '</tr>';
+					}
+				}
+	
+				echo '</tr>';
 			}
-
-			echo '</tr>';
 		}
 	}
 
@@ -2967,14 +3048,16 @@ try
 		}
 	}
 
+	
 	/**
 	 * sportsmanagementHelper::checkUserExtraFields()
-	 *
-	 * @param   string  $template
-	 *
+	 * 
+	 * @param string $template
+	 * @param integer $cfg_which_database
+	 * @param string $template_name
 	 * @return
 	 */
-	static function checkUserExtraFields($template = 'backend', $cfg_which_database = 0)
+	static function checkUserExtraFields($template = 'backend', $cfg_which_database = 0, $template_name = 'clubinfo')
 	{
 		$app    = Factory::getApplication();
 		$jinput = $app->input;
@@ -2984,7 +3067,7 @@ try
 
 		$query->select('ef.id');
 		$query->from('#__sportsmanagement_user_extra_fields as ef ');
-		$query->where('ef.template_' . $template . ' LIKE ' . $db->Quote('' . $jinput->get('view') . ''));
+		$query->where('ef.template_' . $template . ' LIKE ' . $db->Quote('' . $template_name . ''));
 
 		try
 		{
@@ -3001,35 +3084,37 @@ try
 		}
 		catch (Exception $e)
 		{
-			$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-			$code = $e->getCode(); // Returns
-			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
-
+            Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
 			return false;
 		}
 	}
 
+	
 	/**
 	 * sportsmanagementHelper::getUserExtraFields()
-	 *
-	 * @param   mixed   $jlid
-	 * @param   string  $template
-	 *
+	 * 
+	 * @param mixed $jlid
+	 * @param string $template
+	 * @param integer $cfg_which_database
+	 * @param string $template_name
 	 * @return
 	 */
-	static function getUserExtraFields($jlid, $template = 'backend', $cfg_which_database = 0)
+	static function getUserExtraFields($jlid, $template = 'backend', $cfg_which_database = 0,$template_name = 'clubinfo')
 	{
 		$app    = Factory::getApplication();
 		$jinput = $app->input;
 		$db     = self::getDBConnection();
 		$query  = $db->getQuery(true);
+        
+        
 
 		if ($jlid)
 		{
 			$query->select('ef.*,ev.fieldvalue as fvalue,ev.id as value_id ');
 			$query->from('#__sportsmanagement_user_extra_fields as ef ');
 			$query->join('LEFT', '#__sportsmanagement_user_extra_fields_values as ev ON ( ef.id = ev.field_id AND ev.jl_id = ' . $jlid . ')');
-			$query->where('ef.template_' . $template . ' LIKE ' . $db->Quote('' . $jinput->get('view') . ''));
+			$query->where('ef.template_' . $template . ' LIKE ' . $db->Quote('' . $template_name . ''));
 			$query->order('ef.ordering');
 
 			try
@@ -3041,10 +3126,8 @@ try
 			}
 			catch (Exception $e)
 			{
-				$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-				$code = $e->getCode(); // Returns
-				Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
-
+				Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
 				return false;
 			}
 		}
@@ -3068,16 +3151,13 @@ try
 		$address_parts = array();
 		$db            = self::getDBConnection();
 
-		// -------extra fields-----------//
+		/** -------extra fields----------- */
 		if (isset($post['extraf']) && count($post['extraf']))
 		{
 			for ($p = 0; $p < count($post['extraf']);
 			     $p++)
 			{
-				// Create a new query object.
 				$query = $db->getQuery(true);
-
-				// Delete all
 				$conditions = array(
 					$db->quoteName('field_id') . '=' . $post['extra_id'][$p],
 					$db->quoteName('jl_id') . '=' . $pid
@@ -3086,8 +3166,6 @@ try
 				$query->delete($db->quoteName('#__sportsmanagement_user_extra_fields_values'));
 				$query->where($conditions);
 
-				// $db->setQuery($query);
-
 				try
 				{
 					$db->setQuery($query);
@@ -3095,18 +3173,13 @@ try
 				}
 				catch (Exception $e)
 				{
+				    $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
 				}
 
-				// Create a new query object.
 				$query = $db->getQuery(true);
-
-				// Insert columns.
 				$columns = array('field_id', 'jl_id', 'fieldvalue');
-
-				// Insert values.
 				$values = array($post['extra_id'][$p], $pid, '\'' . $post['extraf'][$p] . '\'');
-
-				// Prepare the insert query.
 				$query
 					->insert($db->quoteName('#__sportsmanagement_user_extra_fields_values'))
 					->columns($db->quoteName($columns))
@@ -3119,6 +3192,8 @@ try
 				}
 				catch (Exception $e)
 				{
+				    	    $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
 				}
 			}
 		}
@@ -3390,18 +3465,31 @@ try
 		{
 			case 'com_content':
 				$query->from('#__content as c');
+				$query->order('created DESC');
 				break;
 			case 'com_k2':
 				$query->from('#__k2_items as c');
+				$query->order('created DESC');
 				break;
 			default:
 				$query->from('#__content as c');
 				break;
 		}
 
+		if ( $project_category_id )
+		{
 		$query->where('catid =' . $project_category_id);
+		}
+		try{
 		Factory::getDBO()->setQuery($query);
 		$result = Factory::getDBO()->loadObjectList();
+	}
+catch (RuntimeException $e)
+				{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($query->dump(), true) . '</pre>', 'Error');
+				}
 
 		return $result;
 	}
@@ -3805,7 +3893,7 @@ try
 	 * @since  1.5.0a
 	 *
 	 */
-	function _addToXml($data)
+	public static function _addToXml($data)
 	{
 		if (is_array($data) && count($data) > 0)
 		{
@@ -3842,7 +3930,7 @@ try
 	 *
 	 * @return string
 	 */
-	public function stripInvalidXml($value)
+	public static function stripInvalidXml($value)
 	{
 		$ret     = '';
 		$current = '';
@@ -3882,7 +3970,7 @@ try
 	 *
 	 * @return
 	 */
-	function _setSportsManagementVersion()
+	public static function _setSportsManagementVersion()
 	{
 		$exportRoutine              = '2010-09-23 15:00:00';
 		$result[0]['exportRoutine'] = $exportRoutine;
@@ -3911,7 +3999,7 @@ try
 	 *
 	 * @return
 	 */
-	function _setLeagueData($league)
+	public static function _setLeagueData($league)
 	{
 
 		if ($league)
@@ -3932,7 +4020,7 @@ try
 	 *
 	 * @return
 	 */
-	function _setProjectData($project)
+	public static function _setProjectData($project)
 	{
 		if ($project)
 		{
@@ -3952,7 +4040,7 @@ try
 	 *
 	 * @return
 	 */
-	function _setSeasonData($season)
+	public static function _setSeasonData($season)
 	{
 		if ($season)
 		{
@@ -3972,7 +4060,7 @@ try
 	 *
 	 * @return
 	 */
-	function _setSportsType($sportstype)
+	public static function _setSportsType($sportstype)
 	{
 
 		if ($sportstype)
@@ -3994,7 +4082,7 @@ try
 	 *
 	 * @return
 	 */
-	function _setXMLData($data, $object)
+	public static function _setXMLData($data, $object)
 	{
 		if ($data)
 		{
@@ -4101,9 +4189,9 @@ try
 	 */
 	function isMootools12()
 	{
-		$version = new JVersion;
+		$version = new Version;
 
-		if ($version->RELEASE == '1.5' && $version->DEV_LEVEL >= 19 && JPluginHelper::isEnabled('system', 'mtupgrade'))
+		if ($version->RELEASE == '1.5' && $version->DEV_LEVEL >= 19 && PluginHelper::isEnabled('system', 'mtupgrade'))
 		{
 			return true;
 		}
@@ -4153,7 +4241,7 @@ try
 	 *
 	 * @return
 	 */
-	function time_to_sec($time)
+	public static function time_to_sec($time)
 	{
 		$hours   = substr($time, 0, -6);
 		$minutes = substr($time, -5, 2);

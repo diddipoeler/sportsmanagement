@@ -8,11 +8,12 @@
  * @subpackage referee
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\MVC\View\HtmlView;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -28,7 +29,7 @@ jimport('joomla.application.component.view');
  * @version   $Id$
  * @access    public
  */
-class sportsmanagementViewReferee extends JViewLegacy
+class sportsmanagementViewReferee extends HtmlView
 {
 
 	/**

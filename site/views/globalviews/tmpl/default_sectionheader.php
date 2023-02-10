@@ -6,7 +6,7 @@
  * @subpackage globalviews
  * @file       default_sectionheader.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -71,13 +71,16 @@ $view        = $jinput->getVar("view");
 
 							// $link = sportsmanagementHelperRoute::getPlayerRoute( $this->project->id, $this->teamPlayer->team_id, $this->person->id, 'person.edit' );
 
-							$routeparameter                       = array();
-							$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-							$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-							$routeparameter['p']                  = $this->project->id;
-							$routeparameter['tid']                = $this->teamPlayer->team_id;
-							$routeparameter['pid']                = $this->person->id;
-							$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('editperson', $routeparameter, 'person.edit');
+//							$routeparameter                       = array();
+//							$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+//							$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+//							$routeparameter['p']                  = $this->project->id;
+//							$routeparameter['tid']                = $this->teamPlayer->team_id;
+//							$routeparameter['pid']                = $this->person->id;
+//							$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('editperson', $routeparameter, 'person.edit');
+//                            $link .= '&tmpl=component';
+                            //echo '<pre>'.print_r($this->person->id,true).'</pre>';
+							$link = "index.php?option=com_sportsmanagement&tmpl=component&view=editperson&id=".$this->person->id;
 							echo sportsmanagementHelperHtml::getBootstrapModalImage(
 								'editperson' . $this->person->id,
 								'administrator/components/com_sportsmanagement/assets/images/edit.png',
@@ -139,7 +142,7 @@ $view        = $jinput->getVar("view");
 
 						if ($this->showediticon)
 						{
-							$link = "index.php?option=com_sportsmanagement&tmpl=component&view=editperson&id=<?php echo $this->person->id; ?>";
+							$link = "index.php?option=com_sportsmanagement&tmpl=component&view=editperson&id=".$this->person->id;
 							echo sportsmanagementHelperHtml::getBootstrapModalImage(
 								'personedit' . $this->person->id,
 								'administrator/components/com_sportsmanagement/assets/images/edit.png',
@@ -295,7 +298,7 @@ $view        = $jinput->getVar("view");
 			?>
             <table class="table">
                 <tr>
-                    <td class="contentheading"><a name="division<?php echo $this->divisions; ?>"></a>
+                    <td class="contentheading"><a name="division<?php echo $this->divisions[0]->name; ?>"></a>
 
 						<?php
 						echo Text::_('COM_SPORTSMANAGEMENT_CURVE_TITLE');

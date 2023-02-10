@@ -6,7 +6,7 @@
  * @subpackage matchreport
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -37,6 +37,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 	 */
 	public function init()
 	{
+		
 	   $this->playgroundheight = 0;
        
 		$this->model->matchid = $this->jinput->getInt('mid', 0);
@@ -67,7 +68,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 		$this->matchstaffpositions   = $this->model->getMatchPositions('staff');
 		$this->matchstaffs           = $this->model->getMatchPersons('staff');
 		$this->matchrefereepositions = $this->model->getMatchPositions('referee');
-		$this->matchreferees         = $this->model->getMatchReferees();
+		$this->matchreferees         = sportsmanagementHelper::getMatchReferees($this->match->id);
 		$this->matchcommentary       = sportsmanagementModelMatch::getMatchCommentary($this->match->id);
 		$this->substitutes           = sportsmanagementModelProject::getMatchSubstitutions($this->model->matchid, sportsmanagementModelProject::$cfg_which_database);
 		$this->eventtypes            = $this->model->getEventTypes();
@@ -152,16 +153,16 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 
 				if ($legresult)
 				{
-					if ($team == 1)
-					{
-						$string = "(" . $legresult[0];
-					}
-					else
-					{
-						$string = $legresult[0] . ")";
+					$string = '';
+					for ($x = 0; $x < ($this->project->game_parts); $x++)
+					{		
+						if ($legresult[$x] != null)
+						{
+							$string .= $legresult[$x];
+							$string .= '<br/>';
+						}
 					}
 				}
-
 				return $string;
 			}
 			else
@@ -639,7 +640,9 @@ function showSubstitution_Timelines($sub = 0,$projectteam_id = 'projectteam1_id'
 		$result              = '';
 		$tiptext              = '';
 		$substitutioncounter = array();
+        $substitutioncounter2 = array();
 		$eventstimecounter   = $this->getEventsTimes();
+        $first = 0;
 		
 		$pic_out  = 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/out.png';
 		$pic_in   = 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/in.png';
@@ -670,11 +673,15 @@ function showSubstitution_Timelines($sub = 0,$projectteam_id = 'projectteam1_id'
 		
 			}
 		}
+        
+if ( $substitutioncounter2 )
+{        
         arsort($substitutioncounter2);
         $first = array_shift($substitutioncounter2);
         if ( $first > $this->playgroundheight )
 {
     $this->playgroundheight = $first;
+}
 }
 
 if ( $this->config["show_row_timeline"] )

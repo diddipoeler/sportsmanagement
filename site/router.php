@@ -5,7 +5,7 @@
  * @package    Sportsmanagement
  * @file       router.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die;
@@ -64,7 +64,7 @@ class SportsmanagementRouter extends RouterBase
 					 *
 					 * Itemid doesn't exist or is invalid
 					 */
-					unset($query ['Itemid']);
+					//unset($query ['Itemid']);
 				}
 			}
 
@@ -95,6 +95,8 @@ class SportsmanagementRouter extends RouterBase
 			$defaults = sportsmanagementHelperRoute::$views[$view];
 		}
 
+//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' .'<pre>'.print_r($query,true).'</pre>'    ), 'error');
+		
 		$segments [] = $view;
 		unset($query['view']);
 		/**

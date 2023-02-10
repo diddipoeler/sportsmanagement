@@ -6,16 +6,16 @@
  * @subpackage ranking
  * @file       deafult_ranking.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\Registry\Registry;
-
+//echo '<pre>'.print_r($this->previousgames,true).'</pre>';
 if ( $this->currentRanking )
 {	
 /** es wird als erstes die farblegende der divisionen/gruppen gelesen */
-foreach ($this->currentRanking as $division => $cu_rk) 
+foreach ($this->currentRanking as $division => $cu_rk) if ( array_key_exists($division, $this->divisions) || !$division )
 {
 	if ($division)
 	{

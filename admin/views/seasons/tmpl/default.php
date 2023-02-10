@@ -6,7 +6,7 @@
  * @subpackage seasons
  * @file       default.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -26,8 +26,8 @@ echo $this->loadTemplate('joomla_version');
 <?php echo HTMLHelper::_('form.token') . "\n"; ?>
 <?php echo $this->table_data_div; ?>
 </form>
-<div>
+
 <?PHP
 echo $this->loadTemplate('footer');
 ?>
-</div> 
+

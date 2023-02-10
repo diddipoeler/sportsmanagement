@@ -1,22 +1,18 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_matches
  * @file       sportsmanagement.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Router\Route;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 
@@ -159,6 +155,7 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 		$document = Factory::getDocument();
 		$db    = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
+        $matches = array();
 
 		$limit = ($this->params->get('limit', 0) > 0) ? $this->params->get('limit', 0) : 1;
 
@@ -430,7 +427,7 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 			$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
 			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
-			return false;
+			return $matches;
 		}
 
 	}
@@ -631,7 +628,7 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 		if ($this->params->get('show_act_report_link', 0) == 1 && $match->show_report == 1)
 		{
 			$uri               = 'index.php?option=com_sportsmanagement' . $this->arrayToUri($linkstructure['report']) . $this->itemid;
-			$row['reportlink'] = '<a href="' . JRoute::_($uri) . '" title="' . $this->params->get('show_act_report_text') . '">';
+			$row['reportlink'] = '<a href="' . Route::_($uri) . '" title="' . $this->params->get('show_act_report_text') . '">';
 			$row['reportlink'] .= ($useicons) ? HTMLHelper::_(
 				'image', $this->iconpath . 'report.png', $this->params->get('show_act_report_text'), array(
 					'title'  => $this->params->get('show_act_report_text'),

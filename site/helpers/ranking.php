@@ -6,7 +6,7 @@
  * @subpackage helpers
  * @file       ranking.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -28,100 +28,20 @@ class JSMRanking
 	static $rankingalltimenotes = array();
 	static $rankingalltimewarnings = array();
 	static $rankingalltimetips = array();
-	
-	/**
-	 * project id
-	 *
-	 * @var integer
-	 */
 	var $_projectid = 0;
-	
 	static $_use_finaltablerank = 0;
-
-	/**
-	 * project model cache
-	 *
-	 * @var object
-	 */
 	var $_project = null;
-
-	/**
-	 * caching for the data
-	 *
-	 * @var object
-	 */
 	var $_data = null;
-
-	/**
-	 * ranking parameters
-	 *
-	 * @var array
-	 */
 	var $_params = null;
-
-	/**
-	 * criteria for ranking order
-	 *
-	 * @var array
-	 */
 	var $_criteria = null;
-
-	/**
-	 * ranking mode: 0/1/2 for normal/home/away ranking
-	 *
-	 * @var integer
-	 */
 	var $_mode = 0;
-
-	/**
-	 * starting roundid for the ranking
-	 *
-	 * @var integer
-	 */
 	var $_from = null;
-
-	/**
-	 * end roundid for the ranking
-	 *
-	 * @var integer
-	 */
 	var $_to = null;
-
-	/**
-	 * division id
-	 *
-	 * @var integer
-	 */
 	var $_division = null;
-
-	/**
-	 * caching for heat to head ranking
-	 *
-	 * @var array
-	 */
 	var $_h2h = null;
-
-	/**
-	 * storing current group id for caching h2h collect
-	 *
-	 * @var array
-	 */
 	var $_h2h_group = 0;
-
-	/**
-	 * divisions matching _division and childs
-	 *
-	 * @var unknown_type
-	 */
 	var $_divisions = null;
-
-	/**
-	 * array of roundcodes indexed by round id
-	 *
-	 * @var array
-	 */
 	var $_roundcodes = null;
-
 	
 	/**
 	 * JSMRanking::getInstance()
@@ -801,6 +721,33 @@ class JSMRanking
 		return $data;
 	}
 
+
+	/**
+	 * JSMRanking::getProjectTeamsDivision()
+	 * 
+	 * @param integer $division_id
+	 * @param integer $project_team_id
+	 * @return
+	 */
+	public static function getProjectTeamsDivision($division_id = 0,$project_team_id = 0)
+	{
+	$app = Factory::getApplication();
+	$jinput = $app->input;	
+	$db = sportsmanagementHelper::getDBConnection(true, $jinput->get('cfg_which_database', 0, '') );
+	$query = $db->getQuery(true);
+	$query->select('*');
+	$query->from('#__sportsmanagement_project_team_division');
+	$query->where('division_id = ' . (int) $division_id);
+    $query->where('team_id = ' . (int) $project_team_id);
+    $query->where('is_in_score = 1');
+	$query->where('use_finally = 1');
+	$db->setQuery($query);
+	$division_points = $db->loadObject();	
+		
+	return $division_points;	
+		
+	}
+    
 	/**
 	 * gets team info from db
 	 *
@@ -839,24 +786,29 @@ class JSMRanking
 
 		/**
 		 * es kann aber auch vorkommen, dass nur abschlusstabellen zu den gruppen vorhanden sind.
-		 * deshalb muss die komponente auch in der lage das darzustellen.
+		 * deshalb muss die komponente auch in der lage sein das darzustellen.
 		 */
 		if (!$res && $division)
 		{
 			$query->clear();
-			$query->select('pt.id AS ptid, pt.is_in_score, pt.start_points, pt.division_id');
+			$query->select('pt.id AS ptid, pt.is_in_score, ptd.start_points, ptd.division_id');
 			$query->select('t.name, t.id as teamid, pt.neg_points_finally');
-			$query->select('pt.use_finally, pt.points_finally,pt.matches_finally,pt.won_finally,pt.draws_finally,pt.lost_finally');
-			$query->select('pt.homegoals_finally, pt.guestgoals_finally,pt.diffgoals_finally,pt.penalty_points,pt.finaltablerank');
+			$query->select('ptd.use_finally, ptd.points_finally,ptd.matches_finally,ptd.won_finally,ptd.draws_finally,ptd.lost_finally');
+			$query->select('ptd.homegoals_finally, ptd.guestgoals_finally,ptd.diffgoals_finally,ptd.penalty_points,ptd.finaltablerank');
 			$query->select('CONCAT_WS(\':\',pt.id,t.alias) AS ptid_slug');
 			$query->from('#__sportsmanagement_project_team AS pt ');
 			$query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.id = pt.team_id');
 			$query->join('INNER', '#__sportsmanagement_team AS t ON st1.team_id = t.id ');
+          $query->join('INNER', '#__sportsmanagement_project_team_division AS ptd ON ptd.team_id = pt.id and ptd.project_id = pt.project_id');
 			$query->where('pt.project_id = ' . $pid);
-			$query->where('pt.is_in_score = 1');
+			$query->where('ptd.is_in_score = 1');
+          $query->where('ptd.use_finally = 1');
+          $query->where('ptd.division_id = ' . $division);
 			$db->setQuery($query);
 			$res = $db->loadObjectList();
 		}
+
+//echo __LINE__.'<pre>'.print_r($res,true).'</pre>';
 
 		$teams = array();
 
@@ -866,7 +818,7 @@ class JSMRanking
 			$t->setTeamid($r->teamid);
 			$t->setPtid($r->ptid);
 
-			// Diddipoeler
+			/** Diddipoeler */
 			$t->ptid_slug = $r->ptid_slug;
 
 			if ($division && !$r->division_id)
@@ -882,11 +834,11 @@ class JSMRanking
 			$t->setNegpoints($r->neg_points_finally);
 			$t->setName($r->name);
 
-			// New for is_in_score
+			/** New for is_in_score */
 			$t->setIs_In_Score($r->is_in_score);
 			$t->setuse_finaltablerank($r->finaltablerank);
 
-			// New for use_finally
+			/** New for use_finally */
 			$t->setuse_finally($r->use_finally);
 			$t->setpoints_finally($r->points_finally);
 			$t->setneg_points_finally($r->neg_points_finally);
@@ -900,7 +852,7 @@ class JSMRanking
 
 			$t->penalty_points = $r->penalty_points;
 
-			if ($r->use_finally)
+			if ( $r->use_finally )
 			{
 				$t->sum_points        = $r->points_finally;
 				$t->neg_points        = $r->neg_points_finally;
@@ -912,6 +864,24 @@ class JSMRanking
 				$t->sum_team2_result  = $r->guestgoals_finally;
 				$t->diff_team_results = $r->diffgoals_finally;
 			}
+//            elseif ( $r->use_finally && $division )
+//			{
+//			$division_points = self::getProjectTeamsDivision($division,$r->ptid); 
+//				$t->sum_points        = $division_points->points_finally;
+//				$t->neg_points        = $division_points->neg_points_finally;
+//				$t->cnt_matches       = $division_points->matches_finally;
+//				$t->cnt_won           = $division_points->won_finally;
+//				$t->cnt_draw          = $division_points->draws_finally;
+//				$t->cnt_lost          = $division_points->lost_finally;
+//				$t->sum_team1_result  = $division_points->homegoals_finally;
+//				$t->sum_team2_result  = $division_points->guestgoals_finally;
+//				$t->diff_team_results = $division_points->diffgoals_finally;
+//			}
+            
+            
+            
+            
+            
 
 			$teams[$r->ptid] = $t;
 		}
@@ -919,12 +889,17 @@ class JSMRanking
 		return $teams;
 	}
 
+	
 	/**
-	 * gets games from db
-	 *
-	 * @return array
+	 * JSMRanking::_getMatches()
+	 * 
+	 * @param integer $pid
+	 * @param integer $division
+	 * @param integer $cfg_which_database
+	 * @param string $sports_type_name
+	 * @return
 	 */
-	public static function _getMatches($pid, $division, $cfg_which_database = 0,$sports_type_name='')
+	public static function _getMatches($pid = 0, $division = 0, $cfg_which_database = 0,$sports_type_name='')
 	{
 		$app       = Factory::getApplication();
 		$option    = $app->input->getCmd('option');
@@ -1346,8 +1321,9 @@ class JSMRanking
 		{
 			$query->select('id');
 			$query->from('#__sportsmanagement_division ');
-			$query->where('project_id = ' . $db->Quote($this->_projectid));
-			$query->where('parent_id = ' . $db->Quote($this->_division));
+			$query->where('project_id = ' . $db->Quote($this->_projectid) );
+			$query->where('parent_id = ' . $db->Quote($this->_division) );
+            $query->where('published = 1');
 
 			$db->setQuery($query);
 
@@ -1356,11 +1332,11 @@ class JSMRanking
 				// Joomla! 3.0 code here
 				$res = $db->loadColumn();
 			}
-			elseif (version_compare(JVERSION, '2.5.0', 'ge'))
-			{
-				// Joomla! 2.5 code here
-				$res = $db->loadResultArray();
-			}
+//			elseif (version_compare(JVERSION, '2.5.0', 'ge'))
+//			{
+//				// Joomla! 2.5 code here
+//				$res = $db->loadResultArray();
+//			}
 
 			$res[]            = $this->_division;
 			$this->_divisions = $res;
@@ -1941,6 +1917,12 @@ class JSMRankingTeamClass
 		$this->_use_finally = (int) $val;
 	}
 	
+	/**
+	 * JSMRankingTeamClass::setuse_finaltablerank()
+	 * 
+	 * @param mixed $val
+	 * @return void
+	 */
 	function setuse_finaltablerank($val)
 	{
 		$this->_finaltablerank = (int) $val;

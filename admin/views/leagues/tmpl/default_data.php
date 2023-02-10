@@ -6,7 +6,7 @@
  * @subpackage leagues
  * @file       default_data.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -27,7 +27,7 @@ HTMLHelper::_('draggablelist.draggable');
 }
 else
 {
-JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl,$this->saveOrderButton);    
+HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl,$this->saveOrderButton);    
 }
 }
 ?>
@@ -78,6 +78,9 @@ JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($t
         </th>
         <th>
 			<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ACT_SEASON_MOD'); ?>
+        </th>
+        <th>
+			<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_CHAMPIONS_COMPLETE'); ?>
         </th>
         <th width="" class="nowrap center">
 			<?php
@@ -214,8 +217,33 @@ elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
 {    
 echo $this->loadTemplate('switcher3');
 }   
+
+
+
+
+
+
+
+
 				?>
             </td>
+            <td class="center">
+				<?php
+$this->switcher_value = $this->item->champions_complete;    
+$this->switcher_name = 'champions_complete' . $this->item->id;
+/** welche joomla version ? */
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+echo $this->loadTemplate('switcher4');    
+}
+elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
+{    
+echo $this->loadTemplate('switcher3');
+}                  
+                
+                ?>
+            </td>
+            
             <td class="center">
                 <div class="btn-group">
 					<?php echo HTMLHelper::_('jgrid.published', $this->item->published, $this->count_i, 'leagues.', $canChange, 'cb'); ?>

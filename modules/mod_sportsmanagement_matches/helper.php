@@ -6,7 +6,7 @@
  * @subpackage mod_sportsmanagement_matches
  * @file       helper.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -42,8 +42,9 @@ class modMatchesSportsmanagementHelper
 		$this->module_id = $id;
 		$this->params    = $params;
 		$this->app       = Factory::getApplication();
-		$itemid          = $this->params->get('Itemid');
-		$this->itemid    = (!empty($itemid)) ? '&amp;Itemid=' . $itemid : '';
+        $params_component = ComponentHelper::getParams('com_sportsmanagement');
+		$itemid          = intval($params_component->get('default_itemid'));
+		$this->itemid    = (!empty($itemid)) ? '&Itemid=' . $itemid : '&Itemid=0';
 		$this->id        = $match_id;
 		$this->usedteams = array(
 			0 => array()
@@ -217,7 +218,6 @@ class modMatchesSportsmanagementHelper
 	 */
 	public function formatMatches(&$matches)
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
 
 		if ($this->params->get('lastsortorder') == 'desc')
@@ -505,20 +505,20 @@ class modMatchesSportsmanagementHelper
 				$size       = getimagesize($matchpart_pic);
 				$pic_width  = $size[0];
 				$pic_height = $size[1];
-				$whichparam = ($pic_width > $pic_height) ? ' width' : ' height';
+				$whichparam = ($pic_width > $pic_height) ? 'width' : 'height';
 
 				if ($this->params->get('xsize') > 0)
 				{
-					$appendimage .= $whichparam . '="' . $this->params->get('xsize') . '"';
+					$appendimage .= 'style="' . $whichparam . ':' . $this->params->get('xsize') . 'px"';
 				}
 				elseif ($this->params->get('ysize') > 0)
 				{
-					$appendimage .= $whichparam . '="' . $this->params->get('ysize') . '"';
+					$appendimage .= 'style="' . $whichparam . ':"' . $this->params->get('ysize') . 'px"';
 				}
 			}
 			else
 			{
-				$appendimage .= 'width="' . $this->params->get('xsize') . '"';
+				$appendimage .= 'style="width:' . $this->params->get('xsize') . 'px"';
 			}
 
 			$pic['src'] = trim($matchpart_pic) != "" ? $matchpart_pic : $defaultlogos[$pt];
@@ -580,22 +580,9 @@ class modMatchesSportsmanagementHelper
 	{
 		$row['notice'] = ($match->match_result_detail != '' && $this->params->get('show_match_notice') == 1) ? $match->match_result_detail : '';
 
-		//if ( $this->params->get('show_referee', 1) == 1 && $match->refname != '')
 		if ( $this->params->get('show_referee', 1) )
 		{
-			/*
-			$row['referee'] = '<span style="float:right;">';
-			$row['referee'] .= ($this->iconpath) ? HTMLHelper::_(
-				'image', $this->iconpath . 'referee.png', Text::_('MOD_SPORTSMANAGEMENT_MATCHES_REFEREE'), array(
-					'title'  => Text::_('MOD_SPORTSMANAGEMENT_MATCHES_REFEREE'),
-					'height' => '16',
-					'width'  => '16'
-				)
-			) : Text::_('MOD_SPORTSMANAGEMENT_MATCHES_REFEREE') . ': ';
-			$row['referee'] .= $this->jl_utf8_convert($match->refname, 'iso-8859-1', 'utf-8') . '</span>';
-			*/
-			$actionsModel = BaseDatabaseModel::getInstance('clubplan', 'sportsmanagementModel');
-			$row['referee'] = $actionsModel->getMatchReferees($match->match_id);
+			$row['referee'] = sportsmanagementHelper::getMatchReferees($match->match_id);
 		}
 		else
 		{
@@ -740,7 +727,6 @@ class modMatchesSportsmanagementHelper
 
 		$row['partresults'] = $partresults;
 
-		// Print_r($row);
 		if ($row['cancel'] == 1)
 		{
 			$row['result'] = $row['cancel_reason'];
@@ -750,17 +736,13 @@ class modMatchesSportsmanagementHelper
 			$row['result'] = $row['homescore'] . $this->params->get('team_separator') . $row['awayscore'];
 		}
 
-		/**
-		 * verlängerung
-		 */
+		/** verlängerung */
 		if ($this->params->get('show_text_overtime') && $match->team1_result_ot)
 		{
 			$row['resultovertime'] = Text::_('IET') . ' ' . $match->team1_result_ot . $this->params->get('team_separator') . $match->team2_result_ot;
 		}
 
-		/**
-		 * elfmeter/penalty
-		 */
+		/** elfmeter/penalty */
 		if ($this->params->get('show_text_penalty') && $match->team1_result_so)
 		{
 			$row['resultpenalty'] = Text::_('INP') . ' ' . $match->team1_result_so . $this->params->get('team_separator') . $match->team2_result_so;
@@ -836,7 +818,7 @@ class modMatchesSportsmanagementHelper
 			'style'   => 'cursor:pointer;'
 		);
 
-		// Start ajaxifying
+		/** Start ajaxifying */
 		if ($this->params->get('next_last'))
 		{
 			$showhome = $this->usedteamscheck($row->team1_id, $row->project_id,$row->club1_id);

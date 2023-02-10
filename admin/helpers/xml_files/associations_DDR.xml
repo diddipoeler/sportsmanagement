@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<structur>
+
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="1" parentmain="0">Berlin</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="2" parentmain="0">Cottbus</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="3" parentmain="0">Dresden</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="4" parentmain="0">Erfurt</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="5" parentmain="0">Frankfurt (Oder)</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="6" parentmain="0">Gera</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="7" parentmain="0">Halle</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="8" parentmain="0">Karl-Marx-Stadt</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="9" parentmain="0">Leipzig</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="10" parentmain="0">Magedeburg</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="11" parentmain="0">Neubrandenburg</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="12" parentmain="0">Potsdam</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="13" parentmain="0">Rostock</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="14" parentmain="0">Schwerin</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="15" parentmain="0">Suhl</assocname></associations>
+
+
+
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="16"  parentmain="1">KFA Berlin-Friedrichshain</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="17"  parentmain="1">KFA Berlin-Köpenick</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="18"  parentmain="1">KFA Berlin-Lichtenberg</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="19"  parentmain="1">KFA Berlin-Marzahn</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="20"  parentmain="1">KFA Berlin-Mitte</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="21"  parentmain="1">KFA Berlin-Pankow</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="22"  parentmain="1">KFA Berlin-Prenzlauer Berg</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="23"  parentmain="1">KFA Berlin-Treptow</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="24"  parentmain="1">KFA Berlin-Weißensee</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="25"  parentmain="2">KFA Bad Liebenwerda</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="26"  parentmain="2">KFA Finsterwalde</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="27"  parentmain="2">KFA Herzberg</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="28"  parentmain="3">KFA Bautzen</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="29"  parentmain="3">KFA Kamenz</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="30"  parentmain="4">KFA Eisenach</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="31"  parentmain="4">KFA Gotha</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="32"  parentmain="4">KFA Heiligenstadt</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="33"  parentmain="4">KFA Mühlhausen</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="34"  parentmain="4">KFA Worbis</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="35"  parentmain="5">KFA Angermünde</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="36"  parentmain="5">KFA Bad Freienwalde</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="37"  parentmain="5">KFA Beeskow</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="38"  parentmain="5">KFA Bernau</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="39"  parentmain="5">KFA Eberswalde</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="40"  parentmain="5">KFA Eisenhüttenstadt</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="41"  parentmain="5">KFA Frankfurt/Oder</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="42"  parentmain="5">KFA Fürstenwalde</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="43"  parentmain="5">KFA Schwedt</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="44"  parentmain="5">KFA Seelow</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="45"  parentmain="5">KFA Strausberg</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="46"  parentmain="7">KFA Aschersleben</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="47"  parentmain="7">KFA Halle</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="48"  parentmain="7">KFA Köthen</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="49"  parentmain="7">KFA Merseburg</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="50"  parentmain="7">KFA Sangerhausen</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="51"  parentmain="8">KFA Annaberg</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="52"  parentmain="8">KFA Aue</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="53"  parentmain="8">KFA Auerbach</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="54"  parentmain="8">KFA Brand-Erbisdorf</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="55"  parentmain="8">KFA Flöha</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="56"  parentmain="8">KFA Freiberg</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="57"  parentmain="8">KFA Glauchau</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="58"  parentmain="8">KFA Glauchau/Hohenstein-Ernstthal</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="59"  parentmain="8">KFA Hainichen</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="60"  parentmain="8">KFA Hohenstein-Ernstthal</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="61"  parentmain="8">KFA Karl-Marx-Stadt/Land</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="62"  parentmain="8">KFA Karl-Marx-Stadt/Stadt</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="63"  parentmain="8">KFA Klingenthal/Oelsnitz</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="64"  parentmain="8">KFA Marienberg</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="65"  parentmain="8">KFA Plauen</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="66"  parentmain="8">KFA Plauen/Land</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="67"  parentmain="8">KFA Plauen/Stadt</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="68"  parentmain="8">KFA Reichenbach</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="69"  parentmain="8">KFA Rochlitz</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="70"  parentmain="8">KFA Schwarzenberg</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="71"  parentmain="8">KFA Stollberg</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="72"  parentmain="8">KFA Werdau</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="73"  parentmain="8">KFA Zschopau</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="74"  parentmain="8">KFA Zwickau/Land</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="75"  parentmain="8">KFA Zwickau/Stadt</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="76"  parentmain="9">KFA Altenburg</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="77"  parentmain="9">KFA Borna-Geithain</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="78"  parentmain="9">KFA Altenburg</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="79"  parentmain="9">KFA Döbeln</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="80"  parentmain="9">KFA Leipzig Land</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="81"  parentmain="9">KFA Torgau-Oschatz</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="82"  parentmain="9">KFA Schmölln</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="83"  parentmain="9">KFA Wurzen</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="84"  parentmain="11">KFA Altentreptow</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="85"  parentmain="11">KFA Anklam</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="86"  parentmain="11">KFA Demmin</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="87"  parentmain="11">KFA Malchin</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="88"  parentmain="11">KFA Neubrandenburg-Land</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="89"  parentmain="11">KFA Neustrelitz</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="90"  parentmain="11">KFA Pasewalk</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="91"  parentmain="11">KFA Prenzlau</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="92"  parentmain="11">KFA Röbel/Müritz</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="93"  parentmain="11">KFA Strasburg</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="94"  parentmain="11">KFA Templin</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="95"  parentmain="11">KFA Teterow</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="96"  parentmain="11">KFA Ueckermünde</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="97"  parentmain="11">KFA Waren</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="98"  parentmain="13">KFA Bad Doberan</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="99"  parentmain="13">KFA Bergen</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="100"  parentmain="13">KFA Greifswald</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="101"  parentmain="13">KFA Grevesmühlen</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="102"  parentmain="13">KFA Grimmen</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="103"  parentmain="13">KFA Putbus</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="104"  parentmain="13">KFA Ribnitz-Damgarten</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="105"  parentmain="13">KFA Rostock-Land</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="106"  parentmain="13">KFA Rostock-Stadt</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="107"  parentmain="13">KFA Rügen</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="108"  parentmain="13">KFA Stralsund</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="109"  parentmain="13">KFA Wismar</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="110"  parentmain="13">KFA Wolgast</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="111"  parentmain="13">Spielunion Stralsund/Grimmen</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="112"  parentmain="14">KFA Bützow</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="113"  parentmain="14">KFA Gadebusch</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="114"  parentmain="14">KFA Güstrow</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="115"  parentmain="14">KFA Hagenow</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="116"  parentmain="14">KFA Ludwigslust</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="117"  parentmain="14">KFA Lübz</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="118"  parentmain="14">KFA Parchim</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="119"  parentmain="14">KFA Perleberg</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="120"  parentmain="14">KFA Schwerin-Land</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="121"  parentmain="14">KFA Sternberg</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="122"  parentmain="15">KFA Bad Salzungen</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="123"  parentmain="15">KFA Hildburghausen</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="124"  parentmain="15">KFA Ilmenau</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="125"  parentmain="15">KFA Meiningen</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="126"  parentmain="15">KFA Neuhaus</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="127"  parentmain="15">KFA Schmalkalden</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="128"  parentmain="15">KFA Sonneberg</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="129"  parentmain="15">KFA Suhl</assocname></associations>
+
+  
+</structur>

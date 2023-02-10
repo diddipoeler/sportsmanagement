@@ -6,10 +6,11 @@
  * @subpackage matchreport
  * @file       matchreport.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Table;
@@ -224,7 +225,7 @@ class sportsmanagementModelMatchReport extends JSMModelLegacy
 					{
 						if ($search == '')
 						{
-							$tmp           = new JObject;
+							$tmp           = new CMSObject;
 							$tmp->name     = $file;
 							$tmp->sitepath = $sitePath;
 							$tmp->path     = Path::clean($basePath . DIRECTORY_SEPARATOR . $file);
@@ -233,7 +234,7 @@ class sportsmanagementModelMatchReport extends JSMModelLegacy
 						}
 						elseif (stristr($file, $search))
 						{
-							$tmp           = new JObject;
+							$tmp           = new CMSObject;
 							$tmp->name     = $file;
 							$tmp->sitepath = $sitePath;
 							$tmp->path     = Path::clean($basePath . DIRECTORY_SEPARATOR . $file);
@@ -376,50 +377,6 @@ class sportsmanagementModelMatchReport extends JSMModelLegacy
 		return $result;
 	}
 
-
-	/**
-	 * sportsmanagementModelMatchReport::getMatchReferees()
-	 *
-	 * @return
-	 */
-	function getMatchReferees()
-	{
-		$option = Factory::getApplication()->input->getCmd('option');
-		$app    = Factory::getApplication();
-		$db     = sportsmanagementHelper::getDBConnection(true, sportsmanagementModelProject::$cfg_which_database);
-		$query  = $db->getQuery(true);
-
-		$query->select('p.id,p.firstname,p.nickname,p.lastname,CONCAT_WS(\':\',p.id,p.alias) AS person_slug,p.picture');
-		$query->select('ppos.position_id,ppos.id AS pposid');
-		$query->select('pos.name AS position_name');
-		$query->from('#__sportsmanagement_match_referee AS mr');
-		$query->join('INNER', '#__sportsmanagement_project_referee AS pref ON mr.project_referee_id=pref.id ');
-		$query->join('INNER', '#__sportsmanagement_season_person_id AS tp on tp.id = pref.person_id');
-
-		$query->join('INNER', '#__sportsmanagement_person AS p ON tp.person_id=p.id');
-		$query->join('LEFT', '#__sportsmanagement_project_position AS ppos ON ppos.id=mr.project_position_id');
-		$query->join('LEFT', '#__sportsmanagement_position AS pos ON ppos.position_id=pos.id');
-		$query->where('mr.match_id=' . (int) $this->matchid);
-		$query->where('p.published = 1');
-		$query->where('tp.persontype = 3');
-
-		try
-		{
-			$db->setQuery($query);
-			$result = $db->loadObjectList();
-		}
-		catch (Exception $e)
-		{
-			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
-			$result = false;
-		}
-
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
-		return $result;
-	}
-
-
 	/**
 	 * sportsmanagementModelMatchReport::getEventTypes()
 	 *
@@ -486,8 +443,8 @@ class sportsmanagementModelMatchReport extends JSMModelLegacy
 		{
 			case 'com_content':
 				$query->from('#__content as c');
-                $query->join('INNER', '#__fields_values AS fv ON fv.item_id = c.id ');
-				$query->join('INNER', '#__fields AS f ON f.id = fv.field_id ');
+                //$query->join('INNER', '#__fields_values AS fv ON fv.item_id = c.id ');
+		//		$query->join('INNER', '#__fields AS f ON f.id = fv.field_id ');
 
 				if ($article_id && !$match_id)
 				{
@@ -495,13 +452,16 @@ class sportsmanagementModelMatchReport extends JSMModelLegacy
 				}
 				elseif (!$article_id && $match_id)
 				{
+					$query->join('INNER', '#__fields_values AS fv ON fv.item_id = c.id ');
+				$query->join('INNER', '#__fields AS f ON f.id = fv.field_id ');
 				    $query->where("f.title LIKE 'jsmmatchid' ");
 					$query->where('fv.value = ' . $match_id);
 				}
 				elseif ($article_id && $match_id)
 				{
-				    $query->where("f.title LIKE 'jsmmatchid' ");
-					$query->where('(fv.value = ' . $match_id . ' OR c.id = ' . $article_id . ' )');
+				    //$query->where("f.title LIKE 'jsmmatchid' ");
+					//$query->where('(fv.value = ' . $match_id . ' OR c.id = ' . $article_id . ' )');
+					$query->where('c.id = ' . $article_id);
 				}
 
 				if ($cat_id)

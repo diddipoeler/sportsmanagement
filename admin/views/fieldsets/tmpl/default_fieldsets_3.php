@@ -6,7 +6,7 @@
  * @subpackage fieldsets
  * @file       default_fieldsets_3.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -176,6 +176,9 @@ switch ($this->fieldset)
 
                                 <input type="text" name="team_value_id[]" size='100' maxlength='100' style="width:400px;"
                                        value="<?php echo $team->name; ?>"/>
+	
+	<input type="text" name="team_short_name[]" size='100' maxlength='100' style="width:400px;"
+                                       value="<?php echo $team->short_name; ?>"/>
 
 				    <input type="text" name="club_value_id[]" size='50' maxlength='50' style=""
                                        value="<?php echo $team->club_id; ?>"/>
@@ -199,7 +202,7 @@ switch ($this->fieldset)
 
             <table class="table">
 				<?php
-				if (isset($this->lists) && $this->lists)
+				if ( isset($this->lists) && $this->lists && is_array($this->lists['ext_fields']) )
 				{
 					for ($p = 0; $p < count($this->lists['ext_fields']); $p++)
 					{
@@ -376,13 +379,7 @@ echo $this->extendeduser->renderFieldset($fieldset->name);
 
 					foreach ($fields as $field)
 					{
-						if (COM_SPORTSMANAGEMENT_JOOMLAVERSION == '2.5')
-						{
-							echo $field->label;
-							echo $field->input;
-						}
-						else
-						{
+						
 							?>
                             <div class="control-group">
                                 <div class="control-label">
@@ -393,7 +390,7 @@ echo $this->extendeduser->renderFieldset($fieldset->name);
                                 </div>
                             </div>
 							<?php
-						}
+						
 					}
 					?>
                 </fieldset>

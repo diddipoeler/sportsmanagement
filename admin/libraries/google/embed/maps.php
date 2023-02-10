@@ -10,6 +10,8 @@
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Registry\Registry;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Http\Http;
 
 /**
  * Google Maps embed class for the Joomla Platform.
@@ -34,10 +36,10 @@ class JGoogleEmbedMaps extends JGoogleEmbed
 	 *
 	 * @since   3.1.4
 	 */
-	public function __construct(Registry $options = null, JUri $uri = null, JHttp $http = null)
+	public function __construct(Registry $options = null, Uri $uri = null, Http $http = null)
 	{
 		parent::__construct($options, $uri);
-		$this->http = $http ? $http : new JHttp($this->options);
+		$this->http = $http ? $http : new Http($this->options);
 	}
 
 	/**

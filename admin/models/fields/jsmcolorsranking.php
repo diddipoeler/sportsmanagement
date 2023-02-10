@@ -6,7 +6,7 @@
  * @subpackage fields
  * @file       jsmcolorsranking.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -113,15 +113,23 @@ class JFormFieldjsmcolorsranking extends FormField
 
 		for ($a = 1; $a <= $rankingteams; $a++)
 		{
-
+if ( is_array($this->value) )
+			{
 			if (!array_key_exists($a, $this->value)) {
                 $this->value[$a]['von']   = '';
 				$this->value[$a]['bis']   = '';
 				$this->value[$a]['text']  = '';
 				$this->value[$a]['color'] = '';
 			}
-			
-
+		}
+if ( !$this->value )
+{
+$this->value = array();	
+$this->value[$a]['von']   = '';
+$this->value[$a]['bis']   = '';
+$this->value[$a]['text']  = '';
+$this->value[$a]['color'] = '';	
+}
 			$html[] = '<tr>';
 			$html[] = '<td>';
 			$html[] = HTMLHelper::_(

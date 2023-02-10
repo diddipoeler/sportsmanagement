@@ -6,7 +6,7 @@
  * @subpackage matchreport
  * @file       default_rosterplayground.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -188,23 +188,19 @@ for ($a = 0; $a < sizeof($favteams1); $a++)
 
 							if ($schemaguest)
 							{
+                                echo "<div style=\"position:absolute; width:103px; left:0px; top:" . $height . "px; text-align:center;\">";
+
+								echo sportsmanagementHelperHtml::getBootstrapModalImage(
+									'rosterplaygroundteamaway',
+									$this->team2_club->logo_big,
+									$this->team2_club->name,
+									'50',
+									'',
+									$this->modalwidth,
+									$this->modalheight,
+									$this->overallconfig['use_jquery_modal']
+								);
 								?>
-                                <div style="position:absolute; width:103px; left:0px; top:950px; text-align:center;">
-
-
-									<?PHP
-
-									echo sportsmanagementHelperHtml::getBootstrapModalImage(
-										'rosterplaygroundteamaway',
-										$this->team2_club->logo_big,
-										$this->team2_club->name,
-										'50',
-										'',
-										$this->modalwidth,
-										$this->modalheight,
-										$this->overallconfig['use_jquery_modal']
-									);
-									?>
 
 
                                 </div>
@@ -234,17 +230,21 @@ for ($a = 0; $a < sizeof($favteams1); $a++)
 										{
 											if ($player->pposid == $pos->pposid && $player->ptid == $this->match->projectteam1_id)
 											{
-$picture2 = sportsmanagementHelper::getDefaultPlaceholder("player");
-//if ( $player->ppic )
-//{
-//$picture  = $player->ppic;  
-//}
-//else
-//{
-//$picture  = ($player->picture != $picture2) ? $player->picture : $player->ppic;
-//}
-$picture  = $player->picture; 
-
+												$picture2 = sportsmanagementHelper::getDefaultPlaceholder("player");
+												//if ( $player->ppic )
+												//{
+												//$picture  = $player->ppic;  
+												//}
+												//else
+												//{
+												//$picture  = ($player->picture != $picture2) ? $player->picture : $player->ppic;
+												//}
+												$picture  = $player->picture; 
+												
+												if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player")) || !curl_init($picture))
+												{
+													$picture = $player->ppic;
+												}
 												?>
 
                                                 <div id="<?php echo $player->person_id; ?>"
@@ -313,7 +313,13 @@ $picture  = $player->picture;
 											{
 												$picture2 = sportsmanagementHelper::getDefaultPlaceholder("player");
 												//$picture  = ($player->picture != $picture2) ? $player->picture : $player->ppic;
-                                                $picture  = $player->picture; 
+                                                $picture  = $player->picture;
+												
+												if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player")) || !curl_init($picture))
+												{
+													$picture = $player->ppic;
+												}
+			
 												?>
                                                 <div id="<?php echo $player->person_id; ?>"
                                                      style="display:<?php echo $div_display; ?>;position:absolute; width:103px; left:<?PHP echo $this->schemaaway[$schemaguest][$testlauf]['gast']['links']; ?>px; top:<?PHP echo $this->schemaaway[$schemaguest][$testlauf]['gast']['oben']; ?>px; text-align:center;">

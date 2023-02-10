@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<structur>
+
+
+
+
+<associations><assocname country="SWE" icon="" flag="" website="" shortname="" main="1" parentmain="0">Blekinge FF</assocname></associations>
+<associations><assocname country="SWE" icon="" flag="" website="" shortname="" main="2" parentmain="0">Bohuslän FF</assocname></associations>
+<associations><assocname country="SWE" icon="" flag="" website="" shortname="" main="3" parentmain="0">Dalarna FF</assocname></associations>
+<associations><assocname country="SWE" icon="" flag="" website="" shortname="" main="4" parentmain="0">Dalsland FF</assocname></associations>
+<associations><assocname country="SWE" icon="" flag="" website="" shortname="" main="5" parentmain="0">Gestrikland FF</assocname></associations>
+<associations><assocname country="SWE" icon="" flag="" website="" shortname="" main="6" parentmain="0">Gotland FF</assocname></associations>
+<associations><assocname country="SWE" icon="" flag="" website="" shortname="" main="7" parentmain="0">Göteborg FF</assocname></associations>
+<associations><assocname country="SWE" icon="" flag="" website="" shortname="" main="8" parentmain="0">Halland FF</assocname></associations>
+<associations><assocname country="SWE" icon="" flag="" website="" shortname="" main="9" parentmain="0">Hälsingland FF</assocname></associations>
+<associations><assocname country="SWE" icon="" flag="" website="" shortname="" main="10" parentmain="0">Jämtland-Härjedalen FF</assocname></associations>
+<associations><assocname country="SWE" icon="" flag="" website="" shortname="" main="11" parentmain="0">Medelpad FF</assocname></associations>
+<associations><assocname country="SWE" icon="" flag="" website="" shortname="" main="12" parentmain="0">Norrbotten FF</assocname></associations>
+<associations><assocname country="SWE" icon="" flag="" website="" shortname="" main="13" parentmain="0">Örebro Läns FF</assocname></associations>
+<associations><assocname country="SWE" icon="" flag="" website="" shortname="" main="14" parentmain="0">Östergötland FF</assocname></associations>
+<associations><assocname country="SWE" icon="" flag="" website="" shortname="" main="15" parentmain="0">Skåne FF</assocname></associations>
+<associations><assocname country="SWE" icon="" flag="" website="" shortname="" main="16" parentmain="0">Småland FF</assocname></associations>
+<associations><assocname country="SWE" icon="" flag="" website="" shortname="" main="17" parentmain="0">Stockholm FF</assocname></associations>
+<associations><assocname country="SWE" icon="" flag="" website="" shortname="" main="18" parentmain="0">Södermanland FF</assocname></associations>
+<associations><assocname country="SWE" icon="" flag="" website="" shortname="" main="19" parentmain="0">Uppland FF</assocname></associations>
+<associations><assocname country="SWE" icon="" flag="" website="" shortname="" main="20" parentmain="0">Värmland FF</assocname></associations>
+<associations><assocname country="SWE" icon="" flag="" website="" shortname="" main="21" parentmain="0">Västerbotten FF</assocname></associations>
+<associations><assocname country="SWE" icon="" flag="" website="" shortname="" main="22" parentmain="0">Västergötland FF</assocname></associations>
+<associations><assocname country="SWE" icon="" flag="" website="" shortname="" main="23" parentmain="0">Västmanland FF</assocname></associations>
+<associations><assocname country="SWE" icon="" flag="" website="" shortname="" main="24" parentmain="0">Ångermanland FF</assocname></associations>
+
+  
+  
+  
+</structur>

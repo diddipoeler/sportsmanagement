@@ -6,7 +6,7 @@
  * @subpackage mod_sportsmanagement_ajax_top_navigation_menu
  * @file       mod_sportsmanagement_ajax_top_navigation_menu.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  *
  * https://stackoverflow.com/questions/1145208/how-to-add-li-in-an-existing-ul
@@ -57,7 +57,10 @@ $base_dir     = JPATH_ADMINISTRATOR;
 $language_tag = $langtag->getTag();
 $reload       = true;
 $lang->load($extension, $base_dir, $language_tag, $reload);
-
+$countryassocselect = array();
+$leagueselect = array();
+$divisionsselect = array();
+$projectselect = array();
 /**
  *
  * Include the functions only once
@@ -95,7 +98,7 @@ foreach ($points as $row)
 }
 
 
-$tab_points[]                = 'NON';
+//$tab_points[]                = 'NON';
 $user_name                   = '';
 $ende_if                     = false;
 $league_assoc_id             = 0;
@@ -165,6 +168,7 @@ console.log('tabpoints = ' + '<?php echo $row->name;?>');
 <?php
 }
 
+/*
 $federationselect['NON'] = $helper->getFederationSelect('NON', 0);
 $countryassocselect['NON'] = array();
 $countryassocselect['NON']['assocs'] = array();
@@ -175,18 +179,17 @@ $countrysubsubassocselect['NON'] = array();
 $countrysubsubsubassocselect['NON'] = array();
 $projectselect['NON'] = array();
 $divisionsselect['NON'] = array();
-
 $countrysubsubassocselect['NON']['subassocs'] = array();
 $countrysubsubsubassocselect['NON']['subsubassocs'] = array();
 $leagueselect['NON']['leagues'] = array();
 $projectselect['NON']['projects'] = array();
 $projectselect['NON']['teams'] = array();	
-	
+*/	
 $country_federation = $helper->getCountryFederation($country_id);
 
 if (!$country_federation)
 {
-	$country_federation = 'NON';
+	$country_federation = 'NONFED';
 }
 
 ?>
@@ -606,9 +609,39 @@ $script[] = "});";
 Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
 
 /** php fehler unterbinden */
+if ( !array_key_exists($country_federation, $countryassocselect) ) {
+$countryassocselect[$country_federation] = array();
+}
+
+
+if ( !array_key_exists($country_federation, $countrysubsubassocselect) ) {
+$countrysubsubassocselect[$country_federation] = array();
+}
+
+
+if ( !array_key_exists($country_federation, $countrysubsubsubassocselect) ) {
+$countrysubsubsubassocselect[$country_federation] = array();
+}
+
+if ( !array_key_exists($country_federation, $leagueselect) ) {
+$leagueselect[$country_federation] = array();
+}
+if ( !array_key_exists($country_federation, $divisionsselect) ) {
+$divisionsselect[$country_federation] = array();
+}
+if ( !array_key_exists($country_federation, $projectselect) ) {
+$projectselect[$country_federation] = array();
+}
+
+
 if ( !array_key_exists('assocs', $countryassocselect[$country_federation]) ) {
 $countryassocselect[$country_federation]['assocs'] = array();
 }
+
+//echo __LINE__.'<pre>'.print_r($country_federation,true).'</pre>';
+//echo __LINE__.'<pre>'.print_r($countrysubsubassocselect,true).'</pre>';
+//echo __LINE__.'<pre>'.print_r($countrysubsubassocselect[$country_federation],true).'</pre>';
+
 if ( !array_key_exists('subassocs', $countrysubsubassocselect[$country_federation]) ) {
 $countrysubsubassocselect[$country_federation]['subassocs'] = array();
 }

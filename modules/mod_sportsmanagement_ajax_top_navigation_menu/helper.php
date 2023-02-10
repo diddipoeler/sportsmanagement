@@ -6,7 +6,7 @@
  * @subpackage mod_sportsmanagement_ajax_top_navigation_menu
  * @file       helper.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -414,6 +414,9 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 
 		if ($country_id)
 		{
+			if ( !array_key_exists($country_id, self::$_country_fed)) {
+    self::$_country_fed[$country_id] = '';
+}
 			$result = self::$_country_fed[$country_id];
 		}
 

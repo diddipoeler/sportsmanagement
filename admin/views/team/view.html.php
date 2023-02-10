@@ -6,12 +6,13 @@
  * @subpackage team
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewTeam
@@ -34,6 +35,7 @@ class sportsmanagementViewTeam extends sportsmanagementView
 	{
 
 		$lists = array();
+        $trainingData = array();
 
 		$this->change_training_date = $this->app->getUserState("$this->option.change_training_date", '0');
 
@@ -48,20 +50,22 @@ class sportsmanagementViewTeam extends sportsmanagementView
 		$extendeduser       = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'team');
 		$this->extendeduser = $extendeduser;
 
-		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields();
+		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('backend',0,Factory::getApplication()->input->get('view'));
 
 		if ($this->checkextrafields)
 		{
 			if ($this->item->id)
 			{
-				$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id);
+				$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id,'backend',0,Factory::getApplication()->input->get('view'));
 			}
 		}
 
-		/**
-		 * build the html select list for days of week
-		 */
-		if ($trainingData = $this->model->getTrainigData($this->item->id))
+		/** build the html select list for days of week */
+        if ( $this->item->id )
+        {
+        $trainingData = $this->model->getTrainigData($this->item->id);    
+        }
+		if ( $trainingData )
 		{
 			$daysOfWeek = array(0 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'),
 			                    1 => Text::_('MONDAY'),

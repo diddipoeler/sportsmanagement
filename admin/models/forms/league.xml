@@ -66,7 +66,7 @@
 			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_COUNTRY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_COUNTRY_DESC"
 			class="form-control form-control-inline"
-      required="true">
+      required="false">
 		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
 	</field>	
 	
@@ -113,7 +113,21 @@
         />	  
 
 
-
+<field
+			name="champions_complete"
+			type="extensionradiobutton"
+			class="radio btn-group btn-group-yesno"
+			default="0"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_CHAMPIONS_COMPLETE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_CHAMPIONS_COMPLETE_DESC">
+			<option
+				value="1">
+				JYES</option>
+			<option
+				value="0">
+				JNO</option>
+		</field>
 
 
 
@@ -275,5 +289,25 @@ directory="images/com_sportsmanagement/database/leagues"/>
   description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC">
   
   </fieldset> 
+	
+	<fieldset name="description"
+  label="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION"
+  description="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION_DESC">		
+			<field
+				name="notes"
+				type="editor"
+				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION"
+				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION_DESC"
+				width="450" 
+				filter="JComponentHelper::filterText"/>			
+	</fieldset>	
+	
+	<fieldset 
+        name="extra_fields"
+        label="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS"
+        description="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS_DESC"
+    >
+  
+    </fieldset>
 	
 </form>

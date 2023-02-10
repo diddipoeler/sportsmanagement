@@ -1,23 +1,20 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage prediction
  * @file       predictionuser.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Session\Session;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementControllerPredictionUsers
@@ -43,14 +40,21 @@ class sportsmanagementControllerPredictionUsers extends FormController
 		$this->showfooter();
 	}
 
+
 	/**
 	 * sportsmanagementControllerPredictionUsers::cancel()
-	 *
+	 * 
+	 * @param mixed $key
 	 * @return void
 	 */
-	function cancel()
+	function cancel($key = null)
 	{
-		Factory::getApplication()->redirect(str_ireplace('&layout=edit', '', Factory::getURI()->toString()));
+		
+		/*$uri = JUri::getInstance(); 
+		$current_uri = $uri->toString();
+		Factory::getApplication()->redirect(str_ireplace('&layout=edit', '', $current_uri)); */
+	
+		//Factory::getApplication()->redirect(str_ireplace('&layout=edit', '', Factory::getURI()->toString()));
 	}
 
 	/**
@@ -60,7 +64,7 @@ class sportsmanagementControllerPredictionUsers extends FormController
 	 */
 	function select()
 	{
-		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 		$pID = Factory::getApplication()->input->getVar('prediction_id', '', 'post', 'int');
 		$uID = Factory::getApplication()->input->getVar('uid', null, 'post', 'int');
 
@@ -82,7 +86,7 @@ class sportsmanagementControllerPredictionUsers extends FormController
 	 */
 	function savememberdata()
 	{
-		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 		$option     = Factory::getApplication()->input->getCmd('option');
 		$optiontext = strtoupper(Factory::getApplication()->input->getCmd('option') . '_');
 		$app        = Factory::getApplication();
@@ -127,9 +131,6 @@ class sportsmanagementControllerPredictionUsers extends FormController
 			}
 		}
 
-		// Echo '<br />';
-		// echo '' . $link . '<br />';
-		// echo '' . $msg . '<br />';
 		$this->setRedirect($link, $msg);
 	}
 
@@ -140,7 +141,7 @@ class sportsmanagementControllerPredictionUsers extends FormController
 	 */
 	function selectprojectround()
 	{
-		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
 		// Reference global application object
 		$app = Factory::getApplication();
@@ -157,7 +158,6 @@ class sportsmanagementControllerPredictionUsers extends FormController
 
 		$link = JSMPredictionHelperRoute::getPredictionMemberRoute($pID, $uID, null, $pjID, $pggroup, $rID);
 
-		// Echo '<br />' . $link . '<br />';
 		$this->setRedirect($link);
 	}
 

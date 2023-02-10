@@ -6,7 +6,7 @@
  * @subpackage models
  * @file       projectteams.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -79,6 +79,80 @@ class sportsmanagementModelProjectteams extends JSMModelList
 
 	}
 
+
+
+/**
+ * sportsmanagementModelProjectteams::getProjectTeamDivisionPoints()
+ * 
+ * @param integer $project_id
+ * @param integer $projectteamid
+ * @param integer $division_id
+ * @param string $field
+ * @return void
+ */
+function getProjectTeamDivisionPoints($project_id = 0,$projectteamid = 0,$division_id = 0,$field = '')
+	{
+		$db             = Factory::getDBO();
+		$query          = $db->getQuery(true);
+		$app            = Factory::getApplication();
+        $query->select($field);
+		$query->from('#__sportsmanagement_project_team_division');
+		$query->where('project_id = ' . $project_id);
+        $query->where('team_id = ' . $projectteamid);
+        $query->where('division_id = ' . $division_id);
+        //$query->where('published = 1');
+		$db->setQuery($query);
+		$result = $db->loadResult();
+        
+        return $result;
+        }
+        
+        
+/**
+ * sportsmanagementModelProjectteams::checkProjectTeamDivision()
+ * 
+ * @param integer $projectteamid
+ * @param integer $id
+ * @param integer $project_id
+ * @param integer $team_id
+ * @return void
+ */
+function checkProjectTeamDivision($projectteamid = 0,$id = 0,$project_id = 0,$team_id = 0)
+	{
+		$db             = Factory::getDBO();
+		$query          = $db->getQuery(true);
+		$app            = Factory::getApplication();
+        
+        $query->select('*');
+		$query->from('#__sportsmanagement_division');
+		$query->where('project_id = ' . $project_id);
+        //$query->where('published = 1');
+		$db->setQuery($query);
+		$divisions = $db->loadObjectList();
+        
+        foreach ($divisions as $d)
+					{
+        $temp = new stdClass;
+				$temp->project_id = $project_id;
+				$temp->team_id = $projectteamid;
+                $temp->division_id = $d->id;
+                try
+		{
+				$result = Factory::getDbo()->insertObject('#__sportsmanagement_project_team_division', $temp);
+}
+		catch (Exception $e)
+		{
+//			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
+//			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');
+//			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $query->dump()), Log::ERROR, 'jsmerror');
+//			return false;
+		}
+
+					}
+
+        
+        
+        }
 	/**
 	 * sportsmanagementModelProjectteams::addNewProjectTeam()
 	 *
@@ -94,7 +168,7 @@ class sportsmanagementModelProjectteams extends JSMModelList
 		$app            = Factory::getApplication();
 		$season_team_id = 0;
 
-		// Holen wir uns das land der liga
+		/** Holen wir uns das land der liga */
 		$query->clear();
 		$query->select('l.country,p.season_id,p.project_type,p.master_template,p.extendeduser,p.points_after_regular_time');
 		$query->from('#__sportsmanagement_league as l');
@@ -363,35 +437,27 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 	 *
 	 * @return
 	 */
-	function getCountryTeams()
+	function getCountryTeams($season_id = 0)
 	{
 		self::$_project_id    = $this->jsmapp->getUserState("$this->jsmoption.pid", '0');
 		$this->_season_id     = $this->jsmapp->getUserState("$this->jsmoption.season_id", '0');
 		$this->project_art_id = $this->jsmapp->getUserState("$this->jsmoption.project_art_id", '0');
 		$this->sports_type_id = $this->jsmapp->getUserState("$this->jsmoption.sports_type_id", '0');
 
-		// Noch das land der liga
+		/** Noch das land der liga */
 		$this->jsmquery->clear();
 		$this->jsmquery->select('l.country,p.season_id,p.project_type');
 		$this->jsmquery->from('#__sportsmanagement_league as l');
 		$this->jsmquery->join('INNER', '#__sportsmanagement_project as p on p.league_id = l.id');
 		$this->jsmquery->where('p.id = ' . self::$_project_id);
-
 		$this->jsmdb->setQuery($this->jsmquery);
 		$result = $this->jsmdb->loadObject();
 
 		$this->jsmquery->clear();
-
-		// Select some fields
-		$this->jsmquery->select('t.id AS value,t.name AS text,a.name as info,c.logo_big as picture');
-
-		// From table
+		$this->jsmquery->select('t.id AS value,t.name AS text,t.short_name, a.name as info,c.logo_big as picture');
 		$this->jsmquery->from('#__sportsmanagement_team AS t');
 		$this->jsmquery->join('INNER', '#__sportsmanagement_club AS c ON c.id = t.club_id');
-		/**
-		 *
-		 * mit alter
-		 */
+		/** mit alter */
 		$this->jsmquery->join('LEFT', '#__sportsmanagement_agegroup AS a ON a.id = t.agegroup_id');
 
 		if ($result->country)
@@ -401,6 +467,8 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 
 		$this->jsmquery->order('t.name ASC');
 
+		//$this->jsmapp->enqueueMessage('<pre>'.print_r($this->jsmquery->dump(),true).'</pre>', 'Notice');
+		
 		try
 		{
 			$this->jsmdb->setQuery($this->jsmquery);
@@ -408,15 +476,13 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 
 			foreach ($result as $key => $value)
 			{
-				$value->text = $value->text . ' (' . $value->info . ')';
+				$value->text = $value->text .' ['.$value->short_name.']'.' (' . $value->info . ')';
 			}
-
 			return $result;
 		}
 		catch (Exception $e)
 		{
 			$this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
-
 			return false;
 		}
 
@@ -429,13 +495,19 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 	 * @return array
 	 * @since  0.1
 	 */
-	function getTeams()
+	function getTeams($country='')
 	{
 		self::$_project_id    = $this->jsmapp->getUserState("$this->jsmoption.pid", '0');
 		$this->_season_id     = $this->jsmapp->getUserState("$this->jsmoption.season_id", '0');
 		$this->project_art_id = $this->jsmapp->getUserState("$this->jsmoption.project_art_id", '0');
 		$this->sports_type_id = $this->jsmapp->getUserState("$this->jsmoption.sports_type_id", '0');
-
+$post = Factory::getApplication()->input->post->getArray(array());
+		if ( $post['edit_search_nation'] )
+		{
+		$country = $post['edit_search_nation'];
+		}
+//$this->jsmapp->enqueueMessage('<pre>'.print_r($post,true).'</pre>', 'Notice');
+		
 		/** Noch das land der liga */
 		$this->jsmquery->clear();
 		$this->jsmquery->select('l.country,p.season_id,p.project_type,p.use_nation');
@@ -458,21 +530,43 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 		else
 		{
 			$this->jsmquery->clear();
-			$this->jsmquery->select('st.id AS value,t.name AS text,t.info');
+			
+			if ( $post['edit_search_nation'] )
+		{
+              //$this->jsmquery->select('0 AS value, concat(t.name,' - ',t.id,'' ) AS text,t.info');
+				$this->jsmquery->select('0 AS value, concat(t.name,"-",t.id) AS text,t.info');
+			$this->jsmquery->from('#__sportsmanagement_team AS t');
+			$this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
+			$this->jsmquery->join('LEFT', '#__sportsmanagement_club AS c ON c.id = t.club_id');	
+              $this->jsmquery->group('t.name');
+			}
+			else
+			{
+              $this->jsmquery->select('st.id AS value,t.name AS text,t.info');
 			$this->jsmquery->from('#__sportsmanagement_team AS t');
 			$this->jsmquery->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
 			$this->jsmquery->join('INNER', '#__sportsmanagement_club AS c ON c.id = t.club_id');
-			$this->jsmquery->where('st.season_id = ' . $this->_season_id);
+				$this->jsmquery->where('st.season_id = ' . $this->_season_id);
+			}
+          
+          
+//			$this->jsmquery->where('st.season_id = ' . $this->_season_id);
 			$this->jsmquery->where('t.sports_type_id = ' . $this->sports_type_id);
-
+			
 			if ($result->country && $result->use_nation)
 			{
 				$this->jsmquery->where('c.country LIKE ' . $this->jsmdb->Quote('' . $result->country . ''));
+			}
+			if ( $country )
+			{
+			$this->jsmquery->where('c.country LIKE ' . $this->jsmdb->Quote('' . $country . ''));	
 			}
 
 			$this->jsmquery->order('t.name ASC');
 		}
 
+		//$this->jsmapp->enqueueMessage('<pre>'.print_r($this->jsmquery->dump(),true).'</pre>', 'Notice');
+		
 		try
 		{
 			$this->jsmdb->setQuery($this->jsmquery);

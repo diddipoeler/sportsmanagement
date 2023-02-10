@@ -5,7 +5,7 @@
  * @subpackage clubplan
  * @file       default_matches_sorted_by_date.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -260,7 +260,7 @@ $cnt = 0;
 				?>
                 <td>
 					<?php
-					$matchReferees =& $this->model->getMatchReferees($game->id);
+					$matchReferees = sportsmanagementHelper::getMatchReferees($game->id,Factory::getApplication()->input->getInt('cfg_which_database', 0) );
 
 					foreach ($matchReferees AS $matchReferee)
 					{
@@ -271,7 +271,7 @@ $cnt = 0;
 						$routeparameter['pid']                = $matchReferee->id;
 						$referee_link                         = sportsmanagementHelperRoute::getSportsmanagementRoute('referee', $routeparameter);
                         $ref = sportsmanagementHelper::formatName(null, $matchReferee->firstname, $matchReferee->nickname, $matchReferee->lastname, $this->config["referee_name_format"]);
-						echo HTMLHelper::link($referee_link, $$ref);
+						echo HTMLHelper::link($referee_link, $ref);
 						echo '<br />';
 					}
 					?>

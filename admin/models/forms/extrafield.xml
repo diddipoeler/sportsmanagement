@@ -48,6 +48,7 @@
             description="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TEMPLATE_BACKEND_DESC">
             <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT</option>
             <option value="club">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_CLUB</option>
+			<option value="league">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_LEAGUE</option>
             <option value="team">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_TEAM</option>
             <option value="person">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_PERSON</option>
             <option value="project">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_PROJECT</option>
@@ -62,6 +63,8 @@
             description="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TEMPLATE_FRONTEND_DESC">
             <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT</option>
             <option value="clubinfo">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_CLUBINFO</option>
+<option value="project">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_PROJECT</option>
+<option value="ranking">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_RANKING</option>
 
         </field>	
 		

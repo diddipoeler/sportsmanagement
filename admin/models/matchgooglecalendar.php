@@ -8,11 +8,12 @@
  * @subpackage models
  * @file       matchgooglecalendar.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Input\Input;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
@@ -90,7 +91,7 @@ class sportsmanagementModelmatchgooglecalendar extends JSMModelAdmin
 		$google_client_secret = ComponentHelper::getParams($option)->get('google_api_clientsecret', '');
 
 		$options = new Registry;
-		$input   = new JInput;
+		$input   = new Input;
 
 		// $options->set('clientid', $google_client_id.'.apps.googleusercontent.com');
 		// $options->set('clientsecret', $google_client_secret);

@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<form>
+<!-- register 1 -->
+	<fieldset name="details"
+		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS"
+    label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS">
+	
+
+		<field name="show_published_check" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
+			label="COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_PUBLISHED_CHECK"
+			description="COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_PUBLISHED_CHECK_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_result_check" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
+			label="COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_RESULT_CHECK"
+			description="COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_RESULT_CHECK_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_tournament_round" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
+			label="COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_TOURNEMENT"
+			description="COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_TOURNEMENT_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_ordering" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
+			label="JGRID_HEADING_ORDERING"
+			description="JGRID_HEADING_ORDERING_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_id" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
+			label="JGRID_HEADING_ID"
+			description="JGRID_HEADING_ID_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+	</fieldset>
+</form>

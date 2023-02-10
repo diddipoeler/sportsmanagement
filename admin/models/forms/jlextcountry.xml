@@ -121,6 +121,21 @@
             targetfolder="flags"		
             directory=""
         />
+	
+		
+<field 	
+name="flag_maps" 
+type="media"     
+default="images/com_sportsmanagement/database/flag_maps/placeholder_wappen_50.png"     
+preview="show"
+class="inputbox"
+targetfolder="flag_maps"	
+label="COM_SPORTSMANAGEMENT_GLOBAL_FLAG_MAPS" 
+description="COM_SPORTSMANAGEMENT_GLOBAL_FLAG_MAPS"
+showon="show_info:1[AND]show_image:1"		
+directory="images/com_sportsmanagement/database/flag_maps"
+>
+</field>		
         
     </fieldset>	
 	  	

@@ -6,7 +6,7 @@
  * @subpackage fields
  * @file       federationslist.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -14,6 +14,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
@@ -46,9 +47,10 @@ class JFormFieldFederationsList extends \JFormFieldList
 	protected function getOptions()
 	{
 		$app      = Factory::getApplication();
+        $view   = Factory::getApplication()->input->getCmd('view');
+        $db    = Factory::getDbo();
+		$query = $db->getQuery(true);
 		$selected = 0;
-
-		// Initialize variables.
 		$options   = array();
 		$vartable  = (string) $this->element['targettable'];
 		$select_id = $app->input->getVar('id');
@@ -58,19 +60,44 @@ class JFormFieldFederationsList extends \JFormFieldList
 			$select_id = $select_id;
 		}
 
+
+
+switch ($view)
+{
+    case 'leagues':
+    $query->select('t.id,t.id AS value, t.name AS text');
+			$query->from('#__sportsmanagement_federations AS t');
+			$query->where('t.parent_id = 0');
+			$query->order('t.name');
+		try{
+			$db->setQuery($query);
+			$options = $db->loadObjectList();
+		 }
+		catch (Exception $e)
+		{
+	Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+
+		}
+    break;
+    default:
 		if ($select_id)
 		{
-			$db    = Factory::getDbo();
-			$query = $db->getQuery(true);
-
 			$query->select('t.id,t.id AS value, t.name AS text');
 			$query->from('#__sportsmanagement_federations AS t');
 			$query->where('t.parent_id = 0');
 			$query->order('t.name');
+			try{
 			$db->setQuery($query);
 			$sections = $db->loadObjectList();
 			$list     = $this->JJ_categoryArray(0);
+ }
+		catch (Exception $e)
+		{
+	Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 
+		}
 			$preoptions = array();
 			$name       = 'parent_id';
 
@@ -84,8 +111,10 @@ class JFormFieldFederationsList extends \JFormFieldList
 				$options [] = HTMLHelper::_('select.option', $item->id, $item->treename, 'value', 'text', !$sections && $item->section);
 			}
 		}
+        break;
+        }
 
-		// Merge any additional options in the XML definition.
+		/** Merge any additional options in the XML definition. */
 		$options = array_merge(parent::getOptions(), $options);
 
 		return $options;
@@ -101,18 +130,16 @@ class JFormFieldFederationsList extends \JFormFieldList
 	function JJ_categoryArray($admin = 0)
 	{
 		$db = sportsmanagementHelper::getDBConnection();
-
-		// Get a list of the menu items
-		$query = "SELECT * FROM #__sportsmanagement_federations ";
-
-		$query .= " ORDER BY ordering, name";
+        $query = $db->getQuery(true);
+        $query->select('*');
+		$query->from('#__sportsmanagement_federations');
+		$query->order('ordering, name');
 		$db->setQuery($query);
 		$items = $db->loadObjectList();
 
-		// Establish the hierarchy of the menu
 		$children = array();
 
-		// First pass - collect children
+		/** First pass - collect children */
 		foreach ($items as $v)
 		{
 			$pt   = $v->parent_id;
@@ -121,7 +148,7 @@ class JFormFieldFederationsList extends \JFormFieldList
 			$children[$pt] = $list;
 		}
 
-		// Second pass - get an indent list of the items
+		/** Second pass - get an indent list of the items */
 		$array = $this->fbTreeRecurse(0, '', array(), $children, 10, 0, 1);
 
 		return $array;

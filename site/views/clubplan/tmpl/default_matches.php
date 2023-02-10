@@ -5,7 +5,7 @@
  * @subpackage clubplan
  * @file       default_matches.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -321,7 +321,7 @@ use Joomla\CMS\Factory;
 				<?php if ($this->config['show_referee']) { ?>
                     <td>
 						<?php
-						$matchReferees = $this->model->getMatchReferees($game->match_id);
+						$matchReferees = sportsmanagementHelper::getMatchReferees($game->match_id,Factory::getApplication()->input->getInt('cfg_which_database', 0) );
 						foreach ($matchReferees AS $matchReferee)
 						{
 							$routeparameter                       = array();

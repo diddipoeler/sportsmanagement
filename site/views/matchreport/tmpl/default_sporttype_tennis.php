@@ -6,7 +6,7 @@
  * @subpackage matchreport
  * @file       defaul_sporttype_tennis.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -89,6 +89,11 @@ if ($this->project->use_tie_break)
 					{
 						$picture = $player->picture;
 
+						if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player")) || !curl_init($picture))
+						{
+							$picture = $player->ppic;
+						}
+
 						if (!File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $picture))
 						{
 							$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
@@ -126,6 +131,11 @@ if ($this->project->use_tie_break)
 					{
 						$picture = $player->picture;
 
+						if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player")) || !curl_init($picture))
+						{
+							$picture = $player->ppic;
+						}
+						
 						if (!File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $picture))
 						{
 							$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
@@ -263,6 +273,11 @@ if ($this->project->use_tie_break)
 					{
 						$picture1 = $player->picture;
 
+						if ((empty($picture1)) || ($picture1 == sportsmanagementHelper::getDefaultPlaceholder("player")) || !curl_init($picture1))
+						{
+							$picture1 = $player->ppic;
+						}
+
 						if (!File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $picture1))
 						{
 							$picture1 = sportsmanagementHelper::getDefaultPlaceholder("player");
@@ -275,6 +290,11 @@ if ($this->project->use_tie_break)
 					foreach ($playerinfo2 as $player)
 					{
 						$picture2 = $player->picture;
+
+						if ((empty($picture2)) || ($picture2 == sportsmanagementHelper::getDefaultPlaceholder("player")) || !curl_init($picture2))
+						{
+							$picture2 = $player->ppic;
+						}
 
 						if (!File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $picture2))
 						{
@@ -324,6 +344,11 @@ if ($this->project->use_tie_break)
 					{
 						$picture1 = $player->picture;
 
+						if ((empty($picture1)) || ($picture1 == sportsmanagementHelper::getDefaultPlaceholder("player")) || !curl_init($picture1))
+						{
+							$picture1 = $player->ppic;
+						}
+
 						if (!File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $picture1))
 						{
 							$picture1 = sportsmanagementHelper::getDefaultPlaceholder("player");
@@ -336,6 +361,11 @@ if ($this->project->use_tie_break)
 					foreach ($playerinfo2 as $player)
 					{
 						$picture2 = $player->picture;
+
+						if ((empty($picture2)) || ($picture2 == sportsmanagementHelper::getDefaultPlaceholder("player")) || !curl_init($picture2))
+						{
+							$picture2 = $player->ppic;
+						}
 
 						if (!File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $picture2))
 						{

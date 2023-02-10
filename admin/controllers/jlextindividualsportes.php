@@ -6,7 +6,7 @@
  * @subpackage controllers
  * @file       jlextindividualsportes.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -54,7 +54,7 @@ class sportsmanagementControllerjlextindividualsportes extends JSMControllerAdmi
 	 *
 	 * @since 1.6
 	 */
-	public function getModel($name = 'jlextindividualsport', $prefix = 'sportsmanagementModel')
+	public function getModel($name = 'jlextindividualsport', $prefix = 'sportsmanagementModel', $config = Array())
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 

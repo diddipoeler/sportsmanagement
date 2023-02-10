@@ -4,7 +4,7 @@
  * @version   1.0.05
  * @file      default_rssfeed.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -401,8 +401,6 @@ $message['message'] = $getmessage;
 	{
 		$this->jsmquery = $this->jsmdb->getQuery(true);
 		$this->jsmquery->select('template,params');
-
-		// From table
 		$this->jsmquery->from('#__sportsmanagement_template_config');
 		$this->jsmquery->where('params not LIKE ' . $this->jsmdb->Quote('' . ''));
 		$this->jsmquery->where('import_id != 0');
@@ -411,32 +409,29 @@ $message['message'] = $getmessage;
 		$record_jl   = $this->jsmdb->loadObjectList();
 		$defaultpath = JPATH_COMPONENT_SITE . DIRECTORY_SEPARATOR . 'settings' . DIRECTORY_SEPARATOR . 'default';
 
-		foreach ($record_jl as $row)
-		{
-			$defaultvalues = array();
-			$defaultvalues = explode('\n', $row->params);
-			$parameter     = new Registry;
 
-			if (version_compare(JVERSION, '3.0.0', 'ge'))
-			{
-				$ini = $parameter->loadString($defaultvalues[0]);
-			}
-			else
-			{
-				$ini = $parameter->loadINI($defaultvalues[0]);
-			}
+//$this->jsmapp->enqueueMessage(__LINE__.' templates<pre>'.print_r($record_jl,true).'</pre>'       ,'Notice');
+foreach ($record_jl as $row)
+{
+$parameter     = new Registry;	
+//$this->jsmapp->enqueueMessage(__LINE__.' params<pre>'.print_r($row->params,true).'</pre>'       ,'Notice');
+$defaultvalues = explode('\n', $row->params);
+//$this->jsmapp->enqueueMessage(__LINE__.' defaultvalues<pre>'.print_r($defaultvalues,true).'</pre>'       ,'Notice');
+$ini = $parameter->loadString($defaultvalues[0]);
+//$this->jsmapp->enqueueMessage(__LINE__.' ini<pre>'.print_r($ini,true).'</pre>'       ,'Notice');
+$ini      = $parameter->toArray($ini);
+$t_params = json_encode($ini);
+//$this->jsmapp->enqueueMessage(__LINE__.' t_params<pre>'.print_r($t_params,true).'</pre>'       ,'Notice');
 
-			/**
-			 * beim import kann es vorkommen, das wir in der neuen komponente
-			 * zusätzliche felder haben, die mit abgespeichert werden müssen
-			 */
-			$xmlfile = $defaultpath . DIRECTORY_SEPARATOR . $row->template . '.xml';
 
-			if (file_exists($xmlfile))
-			{
-				$newparams = array();
-				$xml       = Factory::getXML($xmlfile, true);
 
+$xmlfile = $defaultpath . DIRECTORY_SEPARATOR . $row->template . '.xml';
+//$this->jsmapp->enqueueMessage(__LINE__.' xmlfile<pre>'.print_r($xmlfile,true).'</pre>'       ,'Notice');
+
+if (file_exists($xmlfile))
+{
+$newparams = array();
+$xml      = simplexml_load_file($xmlfile);
 				foreach ($xml->fieldset as $paramGroup)
 				{
 					foreach ($paramGroup->field as $param)
@@ -445,32 +440,197 @@ $message['message'] = $getmessage;
 					}
 				}
 
-				foreach ($newparams as $key => $value)
-				{
-					if (version_compare(JVERSION, '3.0.0', 'ge'))
-					{
-						$value = $ini->get($key);
-					}
-					else
-					{
-						// $value = $ini->getValue($key);
-					}
+//$this->jsmapp->enqueueMessage(__LINE__.' '.$xmlfile.' newparams<pre>'.print_r($newparams,true).'</pre>'       ,'Notice');
 
-					if (isset($value))
-					{
-						$newparams[$key] = $value;
-					}
-				}
+$t_params = json_encode($newparams);
+//$this->jsmapp->enqueueMessage(__LINE__.' '.$xmlfile.' t_params<pre>'.print_r($t_params,true).'</pre>'       ,'Notice');
 
-				$t_params = json_encode($newparams);
+
+}
+else
+{
+//$this->jsmapp->enqueueMessage(__LINE__.' xmlfile nicht vorhanden<pre>'.print_r($xmlfile,true).'</pre>'       ,'Error');
+
+
+}
+
+
+
+$this->jsmquery = $this->jsmdb->getQuery(true);
+$fields = array(
+	$this->jsmdb->quoteName('params') . ' = ' . $this->jsmdb->Quote('' . $t_params . '')
+);
+$conditions = array(
+	$this->jsmdb->quoteName('template') . ' LIKE ' . $this->jsmdb->Quote('' . $row->template . '')
+);
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_template_config'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->jsmquery);
+self::runJoomlaQuery(__CLASS__, $this->jsmdb);
+
+
+}
+
+
+
+
+//		foreach ($record_jl as $row)
+//		{
+//			$defaultvalues = array();
+//			$defaultvalues = explode('\n', $row->params);
+//			$parameter     = new Registry;
+//
+//			if (version_compare(JVERSION, '3.0.0', 'ge'))
+//			{
+//				$ini = $parameter->loadString($defaultvalues[0]);
+//			}
+//			else
+//			{
+//				$ini = $parameter->loadINI($defaultvalues[0]);
+//			}
+//
+//			/**
+//			 * beim import kann es vorkommen, das wir in der neuen komponente
+//			 * zusätzliche felder haben, die mit abgespeichert werden müssen
+//			 */
+//			$xmlfile = $defaultpath . DIRECTORY_SEPARATOR . $row->template . '.xml';
+//
+//			if (file_exists($xmlfile))
+//			{
+//				$newparams = array();
+//                // Joomla versionen
+//				if (version_compare(JVERSION, '3.0.0', 'ge'))
+//				{
+//					$xml      = simplexml_load_file(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/quote_' . $temp[0] . '.xml');
+//                    }
+//                    else
+//                    {
+//				$xml       = Factory::getXML($xmlfile, true);
+//                }
+//
+//				foreach ($xml->fieldset as $paramGroup)
+//				{
+//					foreach ($paramGroup->field as $param)
+//					{
+//						$newparams[(string) $param->attributes()->name] = (string) $param->attributes()->default;
+//					}
+//				}
+//
+//				foreach ($newparams as $key => $value)
+//				{
+//					if (version_compare(JVERSION, '3.0.0', 'ge'))
+//					{
+//						$value = $ini->get($key);
+//					}
+//					else
+//					{
+//						// $value = $ini->getValue($key);
+//					}
+//
+//					if (isset($value))
+//					{
+//						$newparams[$key] = $value;
+//					}
+//				}
+//
+//				$t_params = json_encode($newparams);
+//			}
+//			else
+//			{
+//				$ini      = $parameter->toArray($ini);
+//				$t_params = json_encode($ini);
+//			}
+//
+//			$this->jsmquery = $this->jsmdb->getQuery(true);
+//
+//			// Fields to update.
+//			$fields = array(
+//				$this->jsmdb->quoteName('params') . ' = ' . $this->jsmdb->Quote('' . $t_params . '')
+//			);
+//
+//			// Conditions for which records should be updated.
+//			$conditions = array(
+//				$this->jsmdb->quoteName('template') . ' LIKE ' . $this->jsmdb->Quote('' . $row->template . '')
+//			);
+//			$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_template_config'))->set($fields)->where($conditions);
+//			$this->jsmdb->setQuery($this->jsmquery);
+//			self::runJoomlaQuery(__CLASS__, $this->jsmdb);
+//		}
+        
+        
+//        $this->jsmquery = $this->jsmdb->getQuery(true);
+//		$this->jsmquery->select('template,params');
+//		$this->jsmquery->from('#__sportsmanagement_template_config');
+//		$this->jsmquery->where('params LIKE ' . $this->jsmdb->Quote('' . ''));
+//		$this->jsmquery->where('import_id != 0');
+//		$this->jsmquery->group('template');
+//		$this->jsmdb->setQuery($this->jsmquery);
+//		$record_jl   = $this->jsmdb->loadObjectList();
+        
+        /*
+        	foreach ($record_jl as $row)
+		{
+        $parameter     = new Registry;
+        $xmlfile = $defaultpath . DIRECTORY_SEPARATOR . $row->template . '.xml';
+
+			if (file_exists($xmlfile))
+			{
+			 $strXmlFile = $xmlfile;
+								$form       = Form::getInstance($row->template, $strXmlFile, array('control' => ''));
+								$fieldsets  = $form->getFieldsets();
+
+								foreach ($fieldsets as $fieldset)
+								{
+									foreach ($form->getFieldset($fieldset->name) as $field)
+									{
+										$arrStandardSettings[$field->name] = $field->value;
+									}
+								}
+                                
+                                $t_params = json_encode($arrStandardSettings);
+			//	$newparams = array();
+//                // Joomla versionen
+//				if (version_compare(JVERSION, '3.0.0', 'ge'))
+//				{
+//					$xml      = simplexml_load_file(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/quote_' . $temp[0] . '.xml');
+//                    }
+//                    else
+//                    {
+//				$xml       = Factory::getXML($xmlfile, true);
+//                }
+//
+//				foreach ($xml->fieldset as $paramGroup)
+//				{
+//					foreach ($paramGroup->field as $param)
+//					{
+//						$newparams[(string) $param->attributes()->name] = (string) $param->attributes()->default;
+//					}
+//				}
+//
+//				foreach ($newparams as $key => $value)
+//				{
+//					if (version_compare(JVERSION, '3.0.0', 'ge'))
+//					{
+//						$value = $ini->get($key);
+//					}
+//					else
+//					{
+//						// $value = $ini->getValue($key);
+//					}
+//
+//					if (isset($value))
+//					{
+//						$newparams[$key] = $value;
+//					}
+//				}
+//
+//				$t_params = json_encode($newparams);
 			}
 			else
 			{
-				$ini      = $parameter->toArray($ini);
-				$t_params = json_encode($ini);
+//				$ini      = $parameter->toArray($ini);
+//				$t_params = json_encode($ini);
 			}
-
-			$this->jsmquery = $this->jsmdb->getQuery(true);
+        $this->jsmquery = $this->jsmdb->getQuery(true);
 
 			// Fields to update.
 			$fields = array(
@@ -484,7 +644,16 @@ $message['message'] = $getmessage;
 			$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_template_config'))->set($fields)->where($conditions);
 			$this->jsmdb->setQuery($this->jsmquery);
 			self::runJoomlaQuery(__CLASS__, $this->jsmdb);
-		}
+        
+        
+        
+        
+        
+        
+        
+        }
+        */
+        
 	}
 
 	/**
@@ -1136,7 +1305,7 @@ $message['message'] = $getmessage;
 	 */
 	function checkAssociations()
 	{
-		$country_assoc_del = '';
+$country_assoc_del = '';
         $country_assoc = array();
 
 		if (version_compare(JVERSION, '3.0.0', 'ge'))
@@ -1156,15 +1325,15 @@ $message['message'] = $getmessage;
 		}
         
         
-        
+    /**    
         $url = Uri::root() . '/administrator/components/' . $this->jsmoption . '/helpers/xml_files/associations.xml';
         $http = HttpFactory::getHttp();
 		$response = $http->get($url);
         //echo __METHOD__.' '.__LINE__.' response<pre>'.print_r($response->body ,true).'</pre>';
         $xmlstring = simplexml_load_string($response->body);
         //echo __METHOD__.' '.__LINE__.' xmlstring<pre>'.print_r($xmlstring,true).'</pre>';
-  
-/*        
+  */
+/**        
 libxml_use_internal_errors(TRUE);
  
 $objXmlDocument = simplexml_load_file(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/associations.xml');
@@ -1195,7 +1364,9 @@ $arrOutput = json_decode($objJsonDocument, TRUE);
 			$country_assoc_del = "'" . implode("','", $country_assoc) . "'";
 		}
 
-		/**
+      //echo __METHOD__.' '.__LINE__.' country_assoc<pre>'.print_r($country_assoc,true).'</pre>';
+      
+      /**
 		 *
 		 * Ein JDatabaseQuery Objekt beziehen
 		 */
@@ -1207,7 +1378,22 @@ $arrOutput = json_decode($objJsonDocument, TRUE);
 			$result = self::runJoomlaQuery();
 		}
 
-		$image_path = 'images/' . $this->jsmoption . '/database/associations/';
+      $image_path = 'images/' . $this->jsmoption . '/database/associations/';
+      
+      foreach ($country_assoc as $key => $value )
+		{
+        
+        //echo __METHOD__.' '.__LINE__.' value<pre>'.print_r($value,true).'</pre>';
+        if (!File::exists(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/associations_'.$value.'.xml'))
+		{
+		$this->jsmapp->enqueueMessage('Für das Land: '.$value.' gibt es keine Datei mit Regionen.' ,'error');	
+          continue;
+		}
+        else
+        {
+        $xml = simplexml_load_file(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/associations_'.$value.'.xml');
+		$document = 'associations';  
+        	
 
 		/**
 		 *
@@ -1408,6 +1594,11 @@ $arrOutput = json_decode($objJsonDocument, TRUE);
 				}
 			}
 		}
+
+}
+      }	
+
+
 
 	}
 

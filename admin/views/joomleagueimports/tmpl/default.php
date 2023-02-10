@@ -6,7 +6,7 @@
  * @subpackage joomleagueimports
  * @file       default.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -18,7 +18,9 @@ HTMLHelper::_('jquery.framework');
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-if ($this->jl_table_import_step != 'ENDE')
+if ( $this->jl_table_import_step != 0 )
+{
+if ( $this->jl_table_import_step != 'ENDE' )
 {
 ?>
 <script>
@@ -38,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         function delayRedirect() {
             document.getElementById('delayMsg').innerHTML = '<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP'); ?>';
-            var count = 5;
+            var count = 3;
             setInterval(function () {
                 count--;
                 document.getElementById('countDown').innerHTML = count;
@@ -85,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </script>
 <?PHP
 }
-
+}
 ?>
     <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 		<?PHP
@@ -155,4 +157,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		<?php echo HTMLHelper::_('form.token') . "\n"; ?>
     </form>
-<div><?PHP echo $this->loadTemplate('footer');?></div>
+<?PHP echo $this->loadTemplate('footer');?>

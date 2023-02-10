@@ -8,6 +8,8 @@
  */
 
 defined('JPATH_PLATFORM') or die;
+use Joomla\CMS\Date\Date;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * GitHub API Issues class for the Joomla Platform.
@@ -215,7 +217,7 @@ class JGithubPackageIssues extends JGithubPackage
 	 *
 	 */
 	public function getList($filter = null, $state = null, $labels = null, $sort = null,
-	                        $direction = null, JDate $since = null, $page = 0, $limit = 0
+	                        $direction = null, Date $since = null, $page = 0, $limit = 0
 	)
 	{
 		// Build the request path.
@@ -259,13 +261,13 @@ class JGithubPackageIssues extends JGithubPackage
 	 *
 	 */
 	public function getListByRepository($user, $repo, $milestone = null, $state = null, $assignee = null, $mentioned = null, $labels = null,
-	                                    $sort = null, $direction = null, JDate $since = null, $page = 0, $limit = 0
+	                                    $sort = null, $direction = null, Date $since = null, $page = 0, $limit = 0
 	)
 	{
 		// Build the request path.
 		$path = '/repos/' . $user . '/' . $repo . '/issues';
 
-		$uri = new JUri($this->fetchUrl($path, $page, $limit));
+		$uri = new Uri($this->fetchUrl($path, $page, $limit));
 
 		if ($milestone)
 		{

@@ -8,7 +8,7 @@
  * @subpackage matches
  * @file       defaul_massadd.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -90,6 +90,18 @@ use Joomla\CMS\HTML\HTMLHelper;
                                                    maxlength='5' class='inputbox'/>
                                         </td>
                                     </tr>
+									<tr>
+										<td width="100" align="right"
+											class="key"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_VENUE'); ?>
+										</td>
+										<td>
+											<?php
+											echo HTMLHelper::_('select.genericlist', $this->playgrounds, 'playground_id',
+												'class="form-control form-control-inline" size="1"', 'value', 'text'
+											);
+											?>
+										</td>
+									</tr>
                                     <tr>
                                         <td width="100" colspan='2'>
                                             <input type='submit'

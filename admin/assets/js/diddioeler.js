@@ -67,8 +67,17 @@ var querystring = 'teamplayer_id=' + player +
 	'&useeventtime=' + useeventtime +
     '&projecttime=' + projecttime + 
 	'&event_sum=' + event_sum +
-	'&notice=' + notice;
+	'&notice=' + notice +
+    '&doubleevents=' + doubleevents;
 
+console.log("url: " + url);
+console.log("querystring :" + querystring);
+console.log("useeventtime : " + useeventtime);
+console.log("projecttime : " + projecttime);
+console.log("doubleevents : " + doubleevents);
+	
+if ( jQuery("#event_sum").val() ) 
+{
 jQuery.ajax({
   type: 'POST', // type of request either Get or Post
   url: url + querystring, // Url of the page where to post data and receive response 
@@ -79,7 +88,14 @@ jQuery.ajax({
         alert(thrownError);
       }
 });
-        
+//jQuery("#notice").val('');
+//jQuery("#event_time").val('');
+//jQuery("#event_sum").val('');
+//jQuery("#teamplayer_id").val('');
+//jQuery("#team_id").val('');	
+	
+}
+
 }
 
 function eventsaved(response) 
@@ -88,6 +104,8 @@ jQuery("#ajaxresponse").removeClass('ajax-loading');
 // first line contains the status, second line contains the new row.
 var resp = response.split('&');
 
+console.log("resp : " + resp);
+	
 if (resp[0] != '0') 
 {
 //var team = jQuery("#team_id").val();
@@ -116,11 +134,18 @@ jQuery("#ajaxresponse").text(resp[1]);
 jQuery("#notice").val('');
 jQuery("#event_time").val('');
 jQuery("#event_sum").val('');
+jQuery("#teamplayer_id").val('');
+jQuery("#team_id").val('');
 }
 else 
 {
 jQuery("#ajaxresponse").addClass("ajaxerror");
 jQuery("#ajaxresponse").text(resp[1]);
+jQuery("#notice").val('');
+jQuery("#event_time").val('');
+jQuery("#event_sum").val('');	
+jQuery("#teamplayer_id").val('');
+jQuery("#team_id").val('');
 } 	
 	
 }

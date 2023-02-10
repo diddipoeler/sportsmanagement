@@ -5,7 +5,7 @@
  * @subpackage teamplan
  * @file       default_plan_sorted_by_date.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -54,7 +54,7 @@ if (!empty($this->matches))
 			{
 				?>
                 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="teamplansbd">
-                <table class="<?php echo $this->config['table_class']; ?>">
+                <table class="<?php echo $this->config['table_class']; ?>" id="teamplanoutput">
                 <tr class="sectiontableheader">
                     <th class="td_l" colspan=16>
 						<?php echo HTMLHelper::date($match->match_date, Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE')); ?>

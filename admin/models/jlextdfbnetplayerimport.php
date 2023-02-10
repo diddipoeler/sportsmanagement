@@ -6,7 +6,7 @@
  * @subpackage jlextdfbnetplayerimport
  * @file       jlextdfbnetplayerimport.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -52,7 +52,7 @@ JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE)
 $class_name = 'icaljsm';
 $class_file = JPATH_COMPONENT_ADMINISTRATOR . '/helpers/' . 'icaljsm.php';
 // Require the driver file
-     if (JFile::exists($class_file)) {
+     if (File::exists($class_file)) {
          JLoader::register($class_name, $class_file);
        //throw new RuntimeException(sprintf('Driver not load: %s', $class_file));
      }
@@ -66,7 +66,7 @@ $class_file = JPATH_COMPONENT_ADMINISTRATOR . '/helpers/' . 'icaljsm.php';
 $class_name = 'Event';
 $class_file = JPATH_COMPONENT_ADMINISTRATOR . '/helpers/' . 'Event.php';
 // Require the driver file
-     if (JFile::exists($class_file)) {
+     if (File::exists($class_file)) {
          JLoader::register($class_name, $class_file);
        //throw new RuntimeException(sprintf('Driver not load: %s', $class_file));
      }

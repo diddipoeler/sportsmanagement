@@ -6,7 +6,7 @@
  * @subpackage ranking
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -68,6 +68,7 @@ class sportsmanagementViewRanking extends sportsmanagementView
 			$rounds                 = sportsmanagementHelper::getRoundsOptions($this->project->id, 'ASC', true, null, sportsmanagementModelProject::$cfg_which_database);
 			sportsmanagementModelProject::setProjectId($this->project->id, sportsmanagementModelProject::$cfg_which_database);
 			$this->projectinfo = $this->project->projectinfo;
+			$this->cr_project = $this->project->cr_project;
 			$extended          = sportsmanagementHelper::getExtended($this->project->extended, 'project');
 			$this->extended    = $extended;
 		}
@@ -183,6 +184,17 @@ class sportsmanagementViewRanking extends sportsmanagementView
 		$this->current_round = sportsmanagementModelProject::getCurrentRound(__METHOD__ . ' ' . $this->jinput->getVar("view"), sportsmanagementModelProject::$cfg_which_database);
 		$this->teams         = sportsmanagementModelProject::getTeamsIndexedByPtid(0, 'name', sportsmanagementModelProject::$cfg_which_database, __METHOD__);
 
+		//echo 'currentRanking<pre>'.print_r($this->currentRanking,true).'</pre>';
+      //echo 'currentRanking<pre>'.print_r($this->divisions,true).'</pre>';
+      foreach ($this->divisions as $division_key => $division_value)
+      {
+      
+        if ( !$this->currentRanking[$division_value->id] )
+        {
+        //echo 'keine tabelle vorhanden<br>';  
+        }
+      }
+		
 		$no_ranking_reason = '';
 		$ranking_reason    = array();
 
@@ -343,11 +355,13 @@ class sportsmanagementViewRanking extends sportsmanagementView
 		{
 			$this->config['show_result_tabs'] = 'no_tabs';
 		}
-        
+        $this->setFinalStanding = sportsmanagementModelRanking::setFinalStanding($this->currentRanking,$this->project->project_type);
+		
         $this->tips = sportsmanagementModelProject::$tips;
         $this->warnings = sportsmanagementModelProject::$warnings;
         $this->notes = sportsmanagementModelProject::$notes;
-        
+       
+		
 	}
 
 }

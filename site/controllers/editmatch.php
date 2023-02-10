@@ -1,19 +1,15 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage editmatch
  * @file       editmatch.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\Language\Text;
@@ -75,16 +71,17 @@ class sportsmanagementControllerEditMatch extends FormController
 		return parent::getModel($name, $prefix, array('ignore_request' => false));
 	}
 
+
 	/**
 	 * sportsmanagementControllerEditMatch::cancel()
-	 *
+	 * 
+	 * @param mixed $key
 	 * @return
 	 */
-	public function cancel()
+	public function cancel($key = null)
 	{
 		$msg = 'cancel';
 		$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);
-
 		return true;
 	}
 
@@ -141,16 +138,10 @@ class sportsmanagementControllerEditMatch extends FormController
 		$post   = Factory::getApplication()->input->post->getArray(array());
 		$option = Factory::getApplication()->input->getCmd('option');
 
-		/**
-		 *
-		 * Ein Datenbankobjekt beziehen
-		 */
+		/** Ein Datenbankobjekt beziehen */
 		$db = Factory::getDbo();
 
-		/**
-		 *
-		 * Set the values
-		 */
+		/** Set the values */
 		$data['team1_bonus'] = null;
 		$data['team2_bonus'] = null;
 		$data['team1_legs']  = null;
@@ -169,6 +160,11 @@ class sportsmanagementControllerEditMatch extends FormController
 		$data['team_won']      = $post['team_won'];
 		$data['preview']       = $post['preview'];
 
+if ( $post['overtime'] == '' )
+{
+    $post['overtime'] = 0;
+    $data['overtime'] = 0;
+}
 		if ($post['team1_bonus'] != '')
 		{
 			$data['team1_bonus'] = $post['team1_bonus'];
@@ -199,10 +195,7 @@ class sportsmanagementControllerEditMatch extends FormController
 
 		if (isset($post['extended']) && is_array($post['extended']))
 		{
-			/**
-			 *
-			 * Convert the extended field to a string.
-			 */
+			/** Convert the extended field to a string. */
 			$parameter = new Registry;
 			$parameter->loadArray($post['extended']);
 			$data['extended'] = (string) $parameter;
@@ -212,9 +205,7 @@ class sportsmanagementControllerEditMatch extends FormController
 		$data['team2_result_decision'] = $post['team2_result_decision'];
 		$data['decision_info']         = $post['decision_info'];
 
-		/**
-		 * Create an object for the record we are going to update.
-		 */
+		/** Create an object for the record we are going to update. */
 		$object = new stdClass;
 
 		foreach ($data as $key => $value)
@@ -222,10 +213,16 @@ class sportsmanagementControllerEditMatch extends FormController
 			$object->$key = $value;
 		}
 
-		/**
-		 * Update their details in the table using id as the primary key.
-		 */
+		/** Update their details in the table using id as the primary key. */
+		try{
 		$result_update = Factory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id', true);
+		}
+		catch (Exception $e)
+		{
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+		
+		}
 		$link          = $_SERVER['HTTP_REFERER'];
 		$msg           = sprintf(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'), $post['matchid']);
 		$this->setRedirect($link, $msg);

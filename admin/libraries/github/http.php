@@ -10,6 +10,8 @@
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Registry\Registry;
+use Joomla\CMS\Http\Http;
+use Joomla\CMS\Http\TransportInterface;
 
 /**
  * HTTP client class for connecting to a GitHub instance.
@@ -17,7 +19,7 @@ use Joomla\Registry\Registry;
  * @since       11.3
  * @deprecated  4.0  Use the `joomla/github` package via Composer instead
  */
-class JGithubHttp extends JHttp
+class JGithubHttp extends Http
 {
 	/**
 	 * @const  integer  Use no authentication for HTTP connections.
@@ -45,7 +47,7 @@ class JGithubHttp extends JHttp
 	 *
 	 * @since   11.3
 	 */
-	public function __construct(Registry $options = null, JHttpTransport $transport = null)
+	public function __construct(Registry $options = null, TransportInterface $transport = null)
 	{
 		// Call the JHttp constructor to setup the object.
 		parent::__construct($options, $transport);

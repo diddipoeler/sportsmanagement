@@ -1,31 +1,27 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage results
  * @file       form_row.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
+use Joomla\CMS\Helper\ContentHelper;
 
 if ($this->overallconfig['use_jquery_modal'])
 {
-	?>
+?>
 
 
-	<?php
+<?php
 }
 
 $match     = $this->game;
@@ -67,6 +63,19 @@ foreach ($teams AS $team)
 
 $user       = Factory::getUser();
 $canEdit    = $user->authorise('core.edit', 'com_sportsmanagement');
+
+$saveshortall    = $user->authorise('editmatch.saveshortall', 'com_sportsmanagement');
+$saveshortresults    = $user->authorise('editmatch.saveshortresults', 'com_sportsmanagement');
+
+
+$canactions = ContentHelper::getActions('com_sportsmanagement');
+
+//echo __LINE__.' all <pre>'.print_r($canactions,true).'</pre>';
+
+//echo __LINE__.' all '.$saveshortall.'<br>';
+//echo __LINE__.' results '.$saveshortresults.'<br>';
+
+
 $canCheckin = $user->authorise('core.manage', 'com_checkin') || $thismatch->checked_out == $user->get('id') || $thismatch->checked_out == 0;
 $checked    = HTMLHelper::_('jgrid.checkedout', $i, $user->get('id'), $thismatch->checked_out_time, 'matches.', $canCheckin);
 
@@ -80,14 +89,17 @@ $time = strftime("%H:%M", strtotime($time));
 
 		if ($thismatch->checked_out && $thismatch->checked_out != $my->id)
 		{
-			$db    = Factory::getDBO();
-			$query = "	SELECT username
-				FROM #__users
-				WHERE id=" . $match->checked_out;
+			$db = Factory::getDBO();
+            $query = $db->getQuery(true);
+            $query->clear(); 
+            $query->select('username');
+            $query->from('#__users');
+            $query->where('id = ' . $match->checked_out);
+                            
 			$db->setQuery($query);
 			$username = $db->loadResult();
 			?>
-            <acronym title="CHECKED OUT BY <?php echo $username; ?>">X</acronym>';
+            <acronym title="CHECKED OUT BY <?php echo $username; ?>">X</acronym>;
 			<?php
 		}
 		else
@@ -102,7 +114,13 @@ $time = strftime("%H:%M", strtotime($time));
 		?>
         <!-- Button HTML (to Trigger Modal) -->
 		<?php
-		echo sportsmanagementHelperHtml::getBootstrapModalImage(
+          switch ( $saveshortall )
+          {
+            case 0:
+              echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/edit.png', '', array('title' => 'Keine Berechtigung'  ) );
+              break;
+            case 1:
+          echo sportsmanagementHelperHtml::getBootstrapModalImage(
 			'edit' . $thismatch->id,
 			'administrator/components/com_sportsmanagement/assets/images/edit.png',
 			Text::_('COM_SPORTSMANAGEMENT_EDIT_MATCH_DETAILS_BACKEND'),
@@ -111,13 +129,25 @@ $time = strftime("%H:%M", strtotime($time));
 			$this->modalwidth,
 			$this->modalheight,
 			$this->overallconfig['use_jquery_modal']
-		);
+		);    
+              break;
+          }
+		
 		?>
 
     </td>
 
 	<?PHP
 	$append = ' class="inputbox" size="1" onchange="document.getElementById(\'cb<?php echo $i; ?>\').checked=true; " style="font-size:9px;" ';
+    switch ( $saveshortall )
+          {
+            case 0:
+      $append .= ' disabled="disabled"';  
+              break;
+            case 1:
+        $append .= ' ';
+              break;
+          }      
 	?>
     <td style="text-align:center; ">
 		<?PHP
@@ -169,7 +199,7 @@ $time = strftime("%H:%M", strtotime($time));
 						"fillTable"    => true,
 						"singleHeader" => true,
 					);
-					echo JHtml::_(
+					echo HTMLHelper::_(
 						'calendar',
 						sportsmanagementHelper::convertDate($datum, 1),
 						'match_date' . $thismatch->id,
@@ -230,7 +260,13 @@ $time = strftime("%H:%M", strtotime($time));
 		?>
         <!-- Button HTML (to Trigger Modal) -->
 		<?php
-		echo sportsmanagementHelperHtml::getBootstrapModalImage(
+          switch ( $saveshortall )
+          {
+            case 0:
+              echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/players_add.png', '', array('title' => 'Keine Berechtigung'  ) );
+              break;
+            case 1:
+        echo sportsmanagementHelperHtml::getBootstrapModalImage(
 			'home_lineup' . $team1->projectteamid,
 			'administrator/components/com_sportsmanagement/assets/images/players_add.png',
 			Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_HOME'),
@@ -240,6 +276,9 @@ $time = strftime("%H:%M", strtotime($time));
 			$this->modalheight,
 			$this->overallconfig['use_jquery_modal']
 		);
+              break;
+          }
+		
 		?>
     </td>
     <td>
@@ -247,7 +286,7 @@ $time = strftime("%H:%M", strtotime($time));
 		<?php
 		$append = ' class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true; " style="font-size:9px;" ';
 
-		if ((!$userIsTeamAdmin) && (!$match->allowed))
+		if ( ((!$userIsTeamAdmin) && (!$match->allowed)) || !$saveshortall )
 		{
 			$append .= ' disabled="disabled"';
 		}
@@ -276,7 +315,11 @@ $time = strftime("%H:%M", strtotime($time));
 		}
 
 
-		if (!isset($team2->projectteamid))
+        if(!isset($team2))
+        {
+        $team2 = new stdClass;
+        }
+        if ( !property_exists($team2,"projectteamid") )
 		{
 			$team2->projectteamid = 0;
 		}
@@ -291,7 +334,13 @@ $time = strftime("%H:%M", strtotime($time));
     <td>
         <!-- Button HTML (to Trigger Modal) -->
 		<?php
-		echo sportsmanagementHelperHtml::getBootstrapModalImage(
+          switch ( $saveshortall )
+          {
+            case 0:
+              echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/players_add.png', '', array('title' => 'Keine Berechtigung'  ) );
+              break;
+            case 1:
+        echo sportsmanagementHelperHtml::getBootstrapModalImage(
 			'away_lineup' . $team2->projectteamid,
 			'administrator/components/com_sportsmanagement/assets/images/players_add.png',
 			Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_AWAY'),
@@ -301,6 +350,9 @@ $time = strftime("%H:%M", strtotime($time));
 			$this->modalheight,
 			$this->overallconfig['use_jquery_modal']
 		);
+              break;
+          }
+		
 		?>
 
 
@@ -429,7 +481,7 @@ $time = strftime("%H:%M", strtotime($time));
             <!-- Edit match events -->
             <td valign="top">
 				<?php
-				$url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid, $thismatch->id, 'editevents', $team1->projectteamid, $datum, null, sportsmanagementModelResults::$cfg_which_database, sportsmanagementModelProject::$seasonid, sportsmanagementModelProject::$roundslug, 0, 'form');
+				$url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid, $thismatch->id, 'editevents', $team1->projectteamid, $datum, null, sportsmanagementModelResults::$cfg_which_database, sportsmanagementModelProject::$seasonid, sportsmanagementModelProject::$roundslug, 0, 'form',$this->doubleevents);
 				?>
                 <!-- Button HTML (to Trigger Modal) -->
 				<?php
@@ -455,7 +507,7 @@ $time = strftime("%H:%M", strtotime($time));
             <!-- Edit match statistics -->
             <td valign="top">
 				<?php
-				$url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid, $thismatch->id, 'editstats', $team1->projectteamid, $datum, null, sportsmanagementModelResults::$cfg_which_database, sportsmanagementModelProject::$seasonid, sportsmanagementModelProject::$roundslug, 0, 'form');
+				$url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid, $thismatch->id, 'editstats', $team1->projectteamid, $datum, null, sportsmanagementModelResults::$cfg_which_database, sportsmanagementModelProject::$seasonid, sportsmanagementModelProject::$roundslug, 0, 'form',$this->doubleevents);
 				?>
                 <!-- Button HTML (to Trigger Modal) -->
 				<?php
@@ -500,10 +552,23 @@ $time = strftime("%H:%M", strtotime($time));
             </td>
 			<?php
 		}
+      
+       switch ( $saveshortall )
+          {
+            case 0:
+      $append = ' disabled="disabled"';  
+              break;
+            case 1:
+        $append = ' ';
+              break;
+          }
+      
+      
+      
 		?>
         <!-- Published -->
         <td valign='top' style='text-align: center;'>
-            <input type='checkbox' name='published<?php echo $thismatch->id; ?>' id='cbp<?php echo $thismatch->id; ?>'
+            <input <?php echo $append; ?> type='checkbox' name='published<?php echo $thismatch->id; ?>' id='cbp<?php echo $thismatch->id; ?>'
                    value='<?php echo((isset($thismatch->published) && (!$thismatch->published)) ? 0 : 1); ?>'
 				<?php
 				if ($thismatch->published)

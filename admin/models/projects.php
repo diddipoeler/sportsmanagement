@@ -6,12 +6,13 @@
  * @subpackage modelss
  * @file       projects.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementModelProjects
@@ -43,6 +44,7 @@ class sportsmanagementModelProjects extends JSMModelList
 			'st.name',
 			'p.project_type',
 			'p.master_template',
+			'p.cr_project',
 			'p.published',
 			'p.id',
 			'p.ordering',
@@ -108,7 +110,7 @@ class sportsmanagementModelProjects extends JSMModelList
 			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . $this->context . ''), '');
 			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . ''), '');
 		}
-$list = $this->getUserStateFromRequest($this->context . '.list', 'list', array(), 'array');
+        $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array(), 'array');
 
         $this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
 		$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
@@ -117,7 +119,7 @@ $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array()
 		$this->setState('filter.season', $this->getUserStateFromRequest($this->context . '.filter.season', 'filter_season', ''));
 		$this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
 		$this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
-		$this->setState('filter.league', $this->getUserStateFromRequest($this->context . '.filter.league', 'filter_league', ''));
+		$this->setState('filter.search_league', $this->getUserStateFromRequest($this->context . '.filter.search_league', 'filter_search_league', ''));
 		$this->setState('filter.sports_type', $this->getUserStateFromRequest($this->context . '.filter.sports_type', 'filter_sports_type', ''));
 		$this->setState('filter.search_association', $this->getUserStateFromRequest($this->context . '.filter.search_association', 'filter_search_association', ''));
 		$this->setState('filter.project_type', $this->getUserStateFromRequest($this->context . '.filter.project_type', 'filter_project_type', ''));
@@ -126,6 +128,8 @@ $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array()
 		$this->setState('filter.unique_id', $this->getUserStateFromRequest($this->context . '.filter.unique_id', 'filter_unique_id', ''));
 
 		$orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
+        
+        Factory::getApplication()->input->set('search_nation_projects', $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', ''));
 
 		if (!in_array($orderCol, $this->filter_fields))
 		{
@@ -139,6 +143,8 @@ $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array()
 		{
 			$listOrder = 'ASC';
 		}
+        
+        $this->jsmapp->setUserState("$this->jsmoption.projectnation", $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '') );
 
 		$this->setState('list.direction', $listOrder);
 
@@ -151,7 +157,6 @@ $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array()
 	 */
 	protected function getListQuery()
 	{
-		// Create a new query object.
 		$this->jsmquery->clear();
 		$this->jsmsubquery1->clear();
 		$this->jsmsubquery2->clear();
@@ -159,28 +164,29 @@ $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array()
 		switch ($this->getState('filter.unique_id'))
 		{
 			case 0:
-				$this->jsmsubquery1->select('count(pt.id)');
-				$this->jsmsubquery1->from('#__sportsmanagement_project_team AS pt');
-				$this->jsmsubquery1->where('pt.project_id = p.id');
-				break;
+			case '':
+			$this->jsmsubquery1->select('count(pt.id)');
+			$this->jsmsubquery1->from('#__sportsmanagement_project_team AS pt');
+			$this->jsmsubquery1->where('pt.project_id = p.id');
+			break;
 			case 1:
-				$this->jsmsubquery1->select('count(pt.id)');
-				$this->jsmsubquery1->from('#__sportsmanagement_project_team AS pt');
-				$this->jsmsubquery1->join('INNER', '#__sportsmanagement_season_team_id as st ON st.id = pt.team_id');
-				$this->jsmsubquery1->join('INNER', '#__sportsmanagement_team as t ON t.id = st.team_id');
-				$this->jsmsubquery1->join('INNER', '#__sportsmanagement_club as c ON c.id = t.club_id');
-				$this->jsmsubquery1->where('pt.project_id = p.id');
-				$this->jsmsubquery1->where('( c.unique_id IS NULL OR c.unique_id LIKE ' . $this->jsmdb->Quote('' . '') . ' )');
-				break;
+			$this->jsmsubquery1->select('count(pt.id)');
+			$this->jsmsubquery1->from('#__sportsmanagement_project_team AS pt');
+			$this->jsmsubquery1->join('INNER', '#__sportsmanagement_season_team_id as st ON st.id = pt.team_id');
+			$this->jsmsubquery1->join('INNER', '#__sportsmanagement_team as t ON t.id = st.team_id');
+			$this->jsmsubquery1->join('INNER', '#__sportsmanagement_club as c ON c.id = t.club_id');
+			$this->jsmsubquery1->where('pt.project_id = p.id');
+			$this->jsmsubquery1->where('( c.unique_id IS NULL OR c.unique_id LIKE ' . $this->jsmdb->Quote('' . '') . ' )');
+			break;
 			case 2:
-				$this->jsmsubquery1->select('count(pt.id)');
-				$this->jsmsubquery1->from('#__sportsmanagement_project_team AS pt');
-				$this->jsmsubquery1->join('INNER', '#__sportsmanagement_season_team_id as st ON st.id = pt.team_id');
-				$this->jsmsubquery1->join('INNER', '#__sportsmanagement_team as t ON t.id = st.team_id');
-				$this->jsmsubquery1->join('INNER', '#__sportsmanagement_club as c ON c.id = t.club_id');
-				$this->jsmsubquery1->where('pt.project_id = p.id');
-				$this->jsmsubquery1->where('( c.unique_id NOT LIKE ' . $this->jsmdb->Quote('' . '') . ' )');
-				break;
+			$this->jsmsubquery1->select('count(pt.id)');
+			$this->jsmsubquery1->from('#__sportsmanagement_project_team AS pt');
+			$this->jsmsubquery1->join('INNER', '#__sportsmanagement_season_team_id as st ON st.id = pt.team_id');
+			$this->jsmsubquery1->join('INNER', '#__sportsmanagement_team as t ON t.id = st.team_id');
+			$this->jsmsubquery1->join('INNER', '#__sportsmanagement_club as c ON c.id = t.club_id');
+			$this->jsmsubquery1->where('pt.project_id = p.id');
+			$this->jsmsubquery1->where('( c.unique_id NOT LIKE ' . $this->jsmdb->Quote('' . '') . ' )');
+			break;
 		}
 
 		$this->jsmsubquery2->select('ef.name');
@@ -196,7 +202,7 @@ $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array()
 		$this->jsmsubquery3->where('co.team_id = 0');
 
 		$this->jsmquery->select('p.id,p.ordering,p.published,p.project_type,p.name,p.alias,p.checked_out,p.checked_out_time,p.sports_type_id,p.current_round,p.picture,p.agegroup_id,p.master_template,p.fast_projektteam ');
-		$this->jsmquery->select('p.league_id');
+		$this->jsmquery->select('p.league_id,p.use_leaguechampion,p.cr_project');
 		$this->jsmquery->select('p.modified,p.modified_by');
 		$this->jsmquery->select('u1.username');
 
@@ -224,14 +230,26 @@ $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array()
 			$this->jsmquery->where('ef.id = ' . $this->getState('filter.userfields'));
 		}
 
-		if ($this->getState('filter.search'))
+		if ($this->getState('filter.search') )
 		{
-			$this->jsmquery->where('LOWER(p.name) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%'));
+			$this->jsmquery->where( 'LOWER(p.name) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%') );
+			/**
+		  if ( is_numeric($this->getState('filter.search'))  )
+          {
+            $this->jsmquery->where( ('p.id = ' . $this->getState('filter.search')  . ' OR ' .
+				     'LOWER(p.name) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%') 
+				    ) );
+          }
+          else
+          {
+			$this->jsmquery->where( 'LOWER(p.name) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%') );
+            }
+			*/
 		}
 
-		if ($this->getState('filter.league'))
+		if ($this->getState('filter.search_league'))
 		{
-			$this->jsmquery->where('p.league_id = ' . $this->getState('filter.league'));
+			$this->jsmquery->where('p.league_id = ' . $this->getState('filter.search_league'));
 		}
 
 		if ($this->getState('filter.sports_type'))

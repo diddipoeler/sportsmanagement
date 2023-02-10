@@ -1,22 +1,19 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage predictiontemplates
  * @file       predictiontemplates.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\Registry\Registry;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Form\Form;
 
 /**
  * sportsmanagementModelPredictionTemplates
@@ -207,7 +204,7 @@ class sportsmanagementModelPredictionTemplates extends JSMModelList
 						if ((empty($records)) || (!in_array($template, $records)))
 						{
 							$jRegistry = new Registry;
-							$form      = JForm::getInstance($file, $xmldir . DIRECTORY_SEPARATOR . $file);
+							$form      = Form::getInstance($file, $xmldir . DIRECTORY_SEPARATOR . $file);
 							$fieldsets = $form->getFieldsets();
 
 							$defaultvalues = array();

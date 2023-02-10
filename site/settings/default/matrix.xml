@@ -4,22 +4,22 @@
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
 		group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS" description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
 		
-		<field name="show_sectionheader" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_sectionheader" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_MATRIX_PARAM_LABEL_SHOW_HEADER"
 			description="COM_SPORTSMANAGEMENT_FES_MATRIX_PARAM_DESCR_SHOW_HEADER">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		<field name="show_matrix" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_matrix" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_MATRIX_PARAM_LABEL_SHOW_MATRIX"
 			description="COM_SPORTSMANAGEMENT_FES_MATRIX_PARAM_DESCR_SHOW_MATRIX">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		<field name="show_matrix_russia" type="extensionradiobutton" default="0"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_matrix_russia" type="radio" default="0"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_MATRIX_PARAM_LABEL_SHOW_MATRIX_RUSSIA"
 			description="COM_SPORTSMANAGEMENT_FES_MATRIX_PARAM_DESCR_SHOW_MATRIX_RUSSIA">
 			<option value="0">JNO</option>
@@ -45,29 +45,29 @@
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
 
-		<field name="crosstable_icons_horizontal" type="extensionradiobutton" default="0"
-		class="radio btn-group btn-group-yesno"
+		<field name="crosstable_icons_horizontal" type="radio" default="0"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_MATRIX_PARAM_LABEL_SHOW_HORZ_ICONS"
 			description="COM_SPORTSMANAGEMENT_FES_MATRIX_PARAM_DESCR_SHOW_HORZ_ICONS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		<field name="crosstable_icons_vertical" type="extensionradiobutton" default="0"
-		class="radio btn-group btn-group-yesno"
+		<field name="crosstable_icons_vertical" type="radio" default="0"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_MATRIX_PARAM_LABEL_SHOW_VERT_ICONS"
 			description="COM_SPORTSMANAGEMENT_FES_MATRIX_PARAM_DESCR_SHOW_VERT_ICONS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		<field name="link_teams" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+		<field name="link_teams" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_MATRIX_PARAM_LABEL_LINK_TEAMNAMES"
 			description="COM_SPORTSMANAGEMENT_FES_MATRIX_PARAM_DESCR_LINK_TEAMNAMES">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		<field name="force_link_report" type="extensionradiobutton" default="0"
-		class="radio btn-group btn-group-yesno"
+		<field name="force_link_report" type="radio" default="0"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_MATRIX_PARAM_LABEL_FORCE_LINK_REPORT"
 			description="COM_SPORTSMANAGEMENT_FES_MATRIX_PARAM_DESCR_FORCE_LINK_REPORT">
 			<option value="0">JNO</option>
@@ -92,22 +92,22 @@
 			<option value="2">COM_SPORTSMANAGEMENT_FES_MATRIX_PARAM_OPTION2_HIGHLIGHT_FAVTEAM
 			</option>
 		</field>
-		<field name="show_help" type="extensionradiobutton" default="0"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_help" type="radio" default="0"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_MATRIX_PARAM_LABEL_SHOW_HELP" description="COM_SPORTSMANAGEMENT_FES_MATRIX_PARAM_DESCR_SHOW_HELP">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
-		<field name="show_division_picture" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_division_picture" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_MATRIX_PARAM_LABEL_DIVISION_PICTURE"
 			description="COM_SPORTSMANAGEMENT_FES_MATRIX_PARAM_DESCR_DIVISION_PICTURE">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		<field name="show_division_desc" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_division_desc" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_MATRIX_PARAM_LABEL_DIVISION_DESC"
 			description="COM_SPORTSMANAGEMENT_FES_MATRIX_PARAM_DESCR_DIVISION_DESC">
 			<option value="0">JNO</option>

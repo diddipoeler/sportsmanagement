@@ -6,7 +6,7 @@
  * @subpackage models
  * @file       projectteam.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -139,6 +139,9 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
 
 		$project_id     = $post['pid'];
 		$new_project_id = $post['all_project_id'];
+        
+        $division_points = $post['division_points'];
+        
 		$this->jsmquery->clear();
 		$this->jsmquery->select('l.associations');
 		$this->jsmquery->from('#__sportsmanagement_league as l');
@@ -170,6 +173,7 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
 			$tblProjectteam->is_in_score = $post['is_in_score' . $pks[$x]];
 			$tblProjectteam->use_finally = $post['use_finally' . $pks[$x]];
 			$tblProjectteam->finaltablerank = $post['finaltablerank' . $pks[$x]];
+            $tblProjectteam->champion = $post['champion' . $pks[$x]];
 
 			$tblProjectteam->points_finally     = $post['points_finally' . $pks[$x]];
 			$tblProjectteam->neg_points_finally = $post['neg_points_finally' . $pks[$x]];
@@ -212,6 +216,72 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
 
 			$result = Factory::getDbo()->updateObject('#__sportsmanagement_club', $object, 'id');
 		}
+        
+      //  Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . 'division_points<pre>'.print_r($division_points,true).'</pre>', 'error');
+      
+        for ($x = 0; $x < count($pks); $x++)
+		{
+         // Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . 'ptid '.$pks[$x].'', 'error');
+		foreach ( $division_points[$pks[$x]] as $division_id => $division_value )  
+          {
+           // Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . 'division_id '.$division_id.'', 'error');
+          //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . 'division value<pre>'.print_r($division_value,true).'</pre>', 'error');
+          //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . 'matches_finally '.$division_value['matches_finally'].'', 'error');
+          
+          $fields_neu = array(); 
+          foreach ( $division_value as $key => $value ) 
+          {
+           
+            //$fields_neu[] = $this->jsmdb->quoteName($key) . ' = ' . $this->jsmdb->Quote($value);
+            $fields_neu[] = $this->jsmdb->quoteName(str_replace('\'', '', $key)) . ' = ' . $value;
+          }
+          //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . 'fields_neu<pre>'.print_r($fields_neu,true).'</pre>', 'error');
+          
+          /*
+// Fields to update.
+$fields = array(
+    $this->jsmdb->quoteName('start_points') . ' = ' . $division_value['start_points'],
+    $this->jsmdb->quoteName('matches_finally') . ' = '.$division_value['matches_finally'],
+    $this->jsmdb->quoteName('points_finally') . ' = '.$division_value['points_finally'],
+    $this->jsmdb->quoteName('neg_points_finally') . ' = '.$division_value['neg_points_finally'],
+    $this->jsmdb->quoteName('won_finally') . ' = '.$division_value['won_finally'],
+    $this->jsmdb->quoteName('draws_finally') . ' = '.$division_value['draws_finally'],
+    $this->jsmdb->quoteName('lost_finally') . ' = '.$division_value['lost_finally'],
+    $this->jsmdb->quoteName('diffgoals_finally') . ' = '.$division_value['diffgoals_finally'],
+    $this->jsmdb->quoteName('guestgoals_finally') . ' = '.$division_value['guestgoals_finally']
+);
+   
+          Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . 'fields<pre>'.print_r($fields,true).'</pre>', 'error');
+          */
+          
+          
+          if ( $fields_neu )
+          {
+// Conditions for which records should be updated.
+$conditions = array(
+    $this->jsmdb->quoteName('team_id') . ' = ' . $pks[$x],
+    $this->jsmdb->quoteName('division_id') . ' = ' . $division_id
+);       
+            
+            
+$this->jsmquery->clear();    
+try
+		{
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_project_team_division'))->set($fields_neu)->where($conditions);
+$this->jsmdb->setQuery($this->jsmquery);
+$resultupdate = $this->jsmdb->execute();           
+        	}
+		catch (Exception $e)
+		{
+//          Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . 'dump<pre>'.print_r($this->jsmquery->dump(),true).'</pre>', 'error');
+//$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+//$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+		}  
+        }
+            
+          }
+          
+          }
 
 		return $result;
 	}
@@ -380,6 +450,8 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
 		$post                 = $jinput->post->getArray();
 		$_pro_teams_to_delete = array();
 		$query                = Factory::getDbo()->getQuery(true);
+		
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . 'post<pre>'.print_r($post,true).'</pre>', 'error');		
 
 		if (ComponentHelper::getParams($option)->get('show_debug_info_backend'))
 		{
@@ -387,7 +459,9 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
 
 		$project_id  = $post['project_id'];
 		$assign_id   = $post['project_teamslist'];
+		$season_id   = $post['editlist_season_id'];
 		$delete_team = $post['teamslist'];
+		$postteamname = $post['postteamname'];
 
 		if ($delete_team)
 		{
@@ -399,8 +473,19 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
 				$_pro_teams_to_delete[] = $row->projectteamid;
 			}
 		}
+		
+		/** season team id setzen wenn das team noch nicht zugeordnet ist*/
+		foreach ($assign_id as $key => $value) if ( !$value )
+		{
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . 'mann fehlt<pre>'.print_r($postteamname[$key],true).'</pre>', 'error');
+$teile = explode("-",$postteamname[$key]);
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . ' teile<pre>'.print_r($teile,true).'</pre>', 'error');
+$team_id = array_pop($teile);
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . ' team id<pre>'.print_r($team_id,true).'</pre>', 'error');
+			
+		}
 
-		foreach ($assign_id as $key => $value)
+		foreach ($assign_id as $key => $value) if ( $value )
 		{
 			$query->clear();
 			$query->select('id');

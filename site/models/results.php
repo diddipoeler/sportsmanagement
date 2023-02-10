@@ -6,7 +6,7 @@
  * @subpackage results
  * @file       results.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -92,43 +92,6 @@ class sportsmanagementModelResults extends JSMModelList
 
 		sportsmanagementHelperHtml::$roundid = (int) self::$roundid;
 		$this->config                        = sportsmanagementModelProject::getTemplateConfig('results', self::$cfg_which_database);
-	}
-
-	/**
-	 * sportsmanagementModelResults::getMatchReferees()
-	 *
-	 * @param   mixed  $match_id
-	 *
-	 * @return
-	 */
-	public static function getMatchReferees($match_id = 0, $cfg_which_database = 0)
-	{
-		$app    = Factory::getApplication();
-		$option = $app->input->getCmd('option');
-
-		// Get a db connection.
-		$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query     = $db->getQuery(true);
-		$starttime = microtime();
-		$query->select('pref.id AS person_id,p.firstname,p.lastname,pos.name AS position_name');
-		$query->from('#__sportsmanagement_match_referee AS mr');
-		$query->join('LEFT', '#__sportsmanagement_project_referee AS pref ON mr.project_referee_id=pref.id');
-		$query->join('INNER', '#__sportsmanagement_season_person_id AS spi ON pref.person_id=spi.id');
-		$query->join('INNER', '#__sportsmanagement_person AS p ON spi.person_id=p.id');
-		$query->join('LEFT', '#__sportsmanagement_project_position AS ppos ON mr.project_position_id=ppos.id');
-		$query->join('LEFT', '#__sportsmanagement_position AS pos ON ppos.position_id=pos.id');
-		$query->where('mr.match_id = ' . (int) $match_id);
-		$query->where('p.published = 1');
-		$query->order('pos.name,mr.ordering');
-
-		$db->setQuery($query);
-
-		$result = $db->loadObjectList();
-
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
-		return $result;
-
 	}
 
 	/**
@@ -457,15 +420,15 @@ class sportsmanagementModelResults extends JSMModelList
 
 			if ($rssDoc != false)
 			{
-				// Channel header and link
+				/** Channel header and link */
 				$feed->title        = $rssDoc->get_title();
 				$feed->link         = $rssDoc->get_link();
 				$feed->description  = $rssDoc->get_description();
-				$feed->image        = null;
+				$feed->image        = new stdclass;
 				$feed->image->url   = '';
 				$feed->image->title = '';
 
-				// Channel image if exists
+				/**  Channel image if exists */
 				if (!is_null($rssDoc->get_image_url()))
 				{
 					$feed->image->url = $rssDoc->get_image_url();
@@ -484,10 +447,10 @@ class sportsmanagementModelResults extends JSMModelList
 					$feed->image->title = '';
 				}
 
-				// Items
+				/** Items */
 				$items = $rssDoc->get_items();
 
-				// Feed elements
+				/** Feed elements */
 				$feed->items = array_slice($items, 0, $rssitems);
 				$lists[]     = $feed;
 			}
@@ -758,7 +721,7 @@ class sportsmanagementModelResults extends JSMModelList
 	 *
 	 * @return
 	 */
-	function getMatchRefereeTeams($match_id = 0, $cfg_which_database = 0)
+	public static function getMatchRefereeTeams($match_id = 0, $cfg_which_database = 0)
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
@@ -881,14 +844,7 @@ class sportsmanagementModelResults extends JSMModelList
 	function saveshort($cfg_which_database = 0)
 	{
 		$app = Factory::getApplication();
-		/**
-		 *         JInput object
-		 */
 		$option = $app->input->getCmd('option');
-
-		/**
-		 *         Get a db connection.
-		 */
 		$db = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
 
 		$pks  = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
@@ -898,19 +854,13 @@ class sportsmanagementModelResults extends JSMModelList
 
 		for ($x = 0; $x < count($pks); $x++)
 		{
-			/**
-			 *             Änderungen im datum oder der uhrzeit
-			 */
+			/** Änderungen im datum oder der uhrzeit */
 			$tbl = $this->getTable();;
 			$tbl->load((int) $pks[$x]);
 
-			/**
-			 *             Create an object for the record we are going to update.
-			 */
+			/** Create an object for the record we are going to update. */
 			$object = new stdClass;
-			/**
-			 *             Must be a valid primary key value.
-			 */
+			/** Must be a valid primary key value. */
 			$object->id           = $pks[$x];
 			$object->team1_result = null;
 			$object->team2_result = null;
@@ -919,6 +869,10 @@ class sportsmanagementModelResults extends JSMModelList
 
 			if ($post['match_date' . $pks[$x]])
 			{
+			 if ( $post['match_time' . $pks[$x]] == '' )
+             {
+                $post['match_time' . $pks[$x]] = '00';
+             }
 				list($date, $time) = explode(" ", $tbl->match_date);
 				$this->_match_time_new = $post['match_time' . $pks[$x]] . ':00';
 				$this->_match_date_new = $post['match_date' . $pks[$x]];

@@ -10,6 +10,7 @@
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\Registry\Registry;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * Google API object class for the Joomla Platform.
@@ -39,10 +40,10 @@ abstract class JGoogleEmbed
 	 *
 	 * @since   3.1.4
 	 */
-	public function __construct(Registry $options = null, JUri $uri = null)
+	public function __construct(Registry $options = null, Uri $uri = null)
 	{
 		$this->options = $options ? $options : new Registry;
-		$this->uri     = $uri ? $uri : JUri::getInstance();
+		$this->uri     = $uri ? $uri : Uri::getInstance();
 	}
 
 	/**

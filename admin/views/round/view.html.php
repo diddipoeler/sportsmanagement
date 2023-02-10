@@ -6,7 +6,7 @@
  * @subpackage round
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -52,37 +52,13 @@ class sportsmanagementViewRound extends sportsmanagementView
           if ($this->item->round_date_first == '0000-00-00')
 			{
 				$this->form->setValue('round_date_first',null, date("Y-m-d"));
-				//$this->form->setValue('round_date_first', '');
 			}  
             if ($this->item->round_date_last == '0000-00-00')
 			{
 				$this->form->setValue('round_date_last', null, date("Y-m-d"));
-				//$this->form->setValue('round_date_last', '');
 			}
             
           }
-
-//		if ($this->item->id)
-//		{
-//			/** alles ok */
-//            if ($this->item->round_date_first == '0000-00-00')
-//			{
-//				$this->item->round_date_first = '';
-//				$this->form->setValue('round_date_first', '');
-//			}
-//
-//			if ($this->item->round_date_last == '0000-00-00')
-//			{
-//				$this->item->round_date_last = '';
-//				$this->form->setValue('round_date_last', '');
-//			}
-//		}
-//		else
-//		{
-//			$this->form->setValue('round_date_first','');
-//			$this->form->setValue('round_date_last', '');
-//			$this->form->setValue('project_id', null, $this->project_id);
-//		}
 
 	}
 

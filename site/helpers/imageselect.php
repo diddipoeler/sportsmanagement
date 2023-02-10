@@ -6,7 +6,7 @@
  * @subpackage helpers
  * @file       imageselect.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * https://css-tricks.com/examples/DragAndDropFileUploading/
  */
@@ -46,20 +46,20 @@ abstract class ImageSelectSM
 
 	}
 
+	
 	/**
 	 * ImageSelectSM::getSelector()
-	 *
-	 * @param   mixed   $fieldname
-	 * @param   mixed   $fieldpreview_name
-	 * @param   mixed   $type
-	 * @param   mixed   $value
-	 * @param   string  $default
-	 * @param   string  $control_name
-	 * @param   mixed   $fieldid
-	 *
+	 * 
+	 * @param string $fieldname
+	 * @param string $fieldpreview_name
+	 * @param string $type
+	 * @param string $value
+	 * @param string $default
+	 * @param string $control_name
+	 * @param string $fieldid
 	 * @return
 	 */
-	public static function getSelector($fieldname, $fieldpreview_name, $type, $value, $default = '', $control_name = '', $fieldid)
+	public static function getSelector($fieldname = '', $fieldpreview_name = '', $type = '', $value = '', $default = '', $control_name = '', $fieldid = '')
 	{
 		$document          = Factory::getDocument();
 		$app               = Factory::getApplication();
@@ -330,6 +330,9 @@ console.log('getfolder: ' + '<?php echo $type;  ?>' );
 				break;
 			case "flags_associations":
 				return "flags_associations";
+				break;
+                case "flag_maps":
+				return "flag_maps";
 				break;
 			case "associations":
 				return "associations";

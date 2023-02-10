@@ -6,7 +6,7 @@
  * @subpackage player
  * @file       default_info.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -68,6 +68,15 @@ use Joomla\CMS\Factory;
 					Text::_(JSMCountries::getCountryName($this->person->country));
 				?>
             </address>
+	    
+	     <address>
+                <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_NATIONALITY'); ?></strong>
+				<?php
+				echo JSMCountries::getCountryFlag($this->person->second_country) . " " .
+					Text::_(JSMCountries::getCountryName($this->person->second_country));
+				?>
+            </address>
+	    
 			<?php
 		}
 		?>

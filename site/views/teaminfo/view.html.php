@@ -6,7 +6,7 @@
  * @subpackage teaminfo
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -31,6 +31,7 @@ class sportsmanagementViewTeamInfo extends sportsmanagementView
 	 */
 	function init()
 	{
+		
     $this->warnings = array();
     $this->tips = array();
     $this->notes = array();
@@ -41,7 +42,7 @@ class sportsmanagementViewTeamInfo extends sportsmanagementView
 		{
 			$this->team          = sportsmanagementModelTeamInfo::getTeamByProject(1);
 			$this->club          = sportsmanagementModelTeamInfo::getClub();
-			$this->seasons       = sportsmanagementModelTeamInfo::getSeasons($this->config, 0);
+			//$this->seasons       = sportsmanagementModelTeamInfo::getSeasons($this->config, 0);
 			$this->showediticon  = sportsmanagementModelProject::hasEditPermission('projectteam.edit');
 			$this->projectteamid = sportsmanagementModelTeamInfo::$projectteamid;
 			$this->teamid        = sportsmanagementModelTeamInfo::$teamid;

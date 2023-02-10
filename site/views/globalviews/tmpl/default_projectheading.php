@@ -1,5 +1,4 @@
 <?php
-
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version    1.0.05
@@ -7,11 +6,10 @@
  * @subpackage globalviews
  * @file       default_projectheading.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -37,6 +35,7 @@ $document = Factory::getDocument();
 <?php
 
 $nbcols = 2;
+$ausgabe = '';
 
 if (!empty($this->overallconfig))
 {
@@ -66,6 +65,37 @@ if (!empty($this->overallconfig))
 		<div class="<?php echo $this->divclassrow; ?>" id="projectheading" itemscope="itemscope" itemtype="http://schema.org/SportsOrganization">
 			<table class="table">
 				<?php
+                if ($this->overallconfig['show_project_extrafield'])
+				{
+                $this->extrafields = sportsmanagementHelper::getUserExtraFields($this->project->league_id, 'frontend', 0,Factory::getApplication()->input->get('view'));
+                $title = $this->project->league_name;
+                foreach ($this->extrafields as $field ) if ( $field->fvalue )
+	{
+		$value      = $field->fvalue;
+		$field_type = $field->field_type;
+                   $ausgabe .= '<tr>';          
+$ausgabe .= '<td>'.Text::_($field->name).'</td>';
+switch ($field_type)
+					{
+						case 'link':
+							$ausgabe .= '<td>'. HTMLHelper::_('link', $field->fvalue, $title, array("target" => "_blank")).'</td>';
+							break;
+						default:
+							$ausgabe .= '<td>'. Text::_($field->fvalue).'</td>';
+							break;
+					}          
+        
+$ausgabe .= '</tr>';       
+                   
+                   
+                   
+                   
+                    
+                }
+                echo $ausgabe;
+                }
+                
+                
 				if ($this->overallconfig['show_project_country'])
 				{
 				?>
@@ -125,14 +155,15 @@ if (!empty($this->overallconfig))
 						<td>
 
 							<?PHP
-							if (!sportsmanagementHelper::existPicture($this->project->sport_type_picture))
+							//if (!sportsmanagementHelper::existPicture($this->project->sport_type_picture))
+							if (!curl_init(COM_SPORTSMANAGEMENT_PICTURE_SERVER . $this->project->sport_type_picture))
 							{
 								$this->project->sport_type_picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
 							}
 
 							echo sportsmanagementHelperHtml::getBootstrapModalImage(
 								'sporttype_picture',
-								$this->project->sport_type_picture,
+								COM_SPORTSMANAGEMENT_PICTURE_SERVER . $this->project->sport_type_picture,
 								Text::_($this->project->sport_type_name),
 								$this->overallconfig['picture_width'],
 								'',
@@ -163,13 +194,14 @@ if (!empty($this->overallconfig))
 
 
 							<?php
-							if (!sportsmanagementHelper::existPicture($picture))
+							//if (!sportsmanagementHelper::existPicture($picture))
+							if (!curl_init(COM_SPORTSMANAGEMENT_PICTURE_SERVER . $picture))
 							{
 								$picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
 							}
 							echo sportsmanagementHelperHtml::getBootstrapModalImage(
 								'project_picture',
-								$picture,
+								COM_SPORTSMANAGEMENT_PICTURE_SERVER . $picture,
 								$this->project->name,
 								$this->overallconfig['picture_width'],
 								'',
@@ -279,4 +311,79 @@ if (!empty($this->overallconfig))
 		<?php
 		}
 	}
+	
+	switch ( $this->view )
+	{
+		case 'ranking':
+?>
+<div class="<?php echo $this->divclassrow; ?>">
+
+<div class="col-sm-6 text-left">
+<?php  
+//echo 'navigation <pre>'. print_r($this->config['show_project_navigation'],true) .'</pre>';  
+if ( !array_key_exists('show_project_navigation', $this->config) ) {
+    $this->config['show_project_navigation'] = 1;
+}			
+			
+$this->config['show_project_navigation'] = $this->config['show_project_navigation'] = '' ? 1 : $this->config['show_project_navigation'];  
+if ( $this->config['show_project_navigation'] )  
+{
+//echo 'name <pre>'. print_r($this->project->name,true) .'</pre>';    
+//echo 'league_id <pre>'. print_r($this->project->league_id,true) .'</pre>';   
+  
+$nextproject = sportsmanagementModelProject::getnextproject($this->project->name, $this->project->league_id);  
+//echo 'league_id <pre>'. print_r($nextproject,true) .'</pre>';   
+$prevproject = sportsmanagementModelProject::getprevproject($this->project->name, $this->project->league_id);  
+//echo 'league_id <pre>'. print_r($prevproject,true) .'</pre>';   
+if ( $prevproject )
+  {
+$routeparameter                       = array();
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+$routeparameter['s']                  = $prevproject->season_id;
+$routeparameter['p']                  = $prevproject->slug;
+$routeparameter['type']               = 0;
+$routeparameter['r']                  = 0;
+$routeparameter['from']               = 0;
+$routeparameter['to']                 = 0;
+$routeparameter['division']           = 0;
+$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);  
+    ?>
+<a href="<?php echo $link; ?>" class="btn btn-primary btn-sm active" role="button" aria-pressed="true"><< <?php echo $prevproject->name; ?></a> 
+  <?php
+    }
+  ?>
+  
+  
+  </div>
+  <div class="col-sm-6 text-right">
+  <?php
+  if ( $nextproject )
+  {
+    $routeparameter                       = array();
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+$routeparameter['s']                  = $nextproject->season_id;
+$routeparameter['p']                  = $nextproject->slug;
+$routeparameter['type']               = 0;
+$routeparameter['r']                  = 0;
+$routeparameter['from']               = 0;
+$routeparameter['to']                 = 0;
+$routeparameter['division']           = 0;
+$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);  
+    ?>
+<a href="<?php echo $link; ?>" class="btn btn-primary btn-sm active" role="button" aria-pressed="true"><?php echo $nextproject->name; ?> >></a> 
+  <?php
+    }
+}
+  
+?>
+  
+</div>
+</div>
+<?php  	
+break;
+}	
+	
+	
+	
+	
 }

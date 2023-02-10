@@ -257,9 +257,9 @@
 		
         <field 
             name="enable_sb" 
-            type="extensionradiobutton" 
+            type="radio" 
             default="0"
-            class="radio btn-group btn-group-yesno"
+            layout="joomla.form.field.radio.switcher"
             label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_KUNENA" 
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_KUNENA_DESC">
             <option value="0">JNO</option>

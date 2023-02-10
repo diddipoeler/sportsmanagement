@@ -1,19 +1,15 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
  * @file       league.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
@@ -70,6 +66,7 @@ class sportsmanagementModelleague extends JSMModelAdmin
 			$tblLeague->country              = $post['country' . $pks[$x]];
 			$tblLeague->agegroup_id          = $post['agegroup' . $pks[$x]];
 			$tblLeague->published_act_season = $post['published_act_season' . $pks[$x]];
+            $tblLeague->champions_complete = $post['champions_complete' . $pks[$x]];
 
 			if (!$tblLeague->store())
 			{

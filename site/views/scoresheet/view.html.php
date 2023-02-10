@@ -8,7 +8,7 @@
  * @subpackage scoresheet
  * @file       view.html.php
  * @author     ortwin20000, diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -38,6 +38,7 @@ class sportsmanagementViewScoresheet extends sportsmanagementView
 	 */
 	function init()
 	{
+		
 		$this->match       = $this->model->getMatch($this->jinput->getInt('mid', 0), $this->jinput->getInt('cfg_which_database', 0));
 		$this->teamplayer1 = $this->model->getTeamPlayer($this->match[0]->team1_id, $this->match[0]->season_id, $this->jinput->getInt('cfg_which_database', 0));
 		$this->teamplayer2 = $this->model->getTeamPlayer($this->match[0]->team2_id, $this->match[0]->season_id, $this->jinput->getInt('cfg_which_database', 0));

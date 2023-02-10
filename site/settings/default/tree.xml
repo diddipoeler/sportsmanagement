@@ -4,20 +4,20 @@
 	label="COM_SPORTSMANAGEMENT_FES_FIELDS_GROUP_PAGE_ELEMENTS"
 		group="COM_SPORTSMANAGEMENT_FES_FIELDS_GROUP_PAGE_ELEMENTS" description="COM_SPORTSMANAGEMENT_FES_FIELDS_DESCR_PAGE_ELEMENTS">
 
-		<field name="show_sectionheader" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+		<field name="show_sectionheader" type="radio" default="1" layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_FIELD_LABEL_SHOW_SECTIONHEADER"
 			description="COM_SPORTSMANAGEMENT_FES_FIELD_DESCR_SHOW_SECTIONHEADER">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_treeoverlib" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+		<field name="show_treeoverlib" type="radio" default="1" layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_SHOW_OVERLIB" description="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_DESCR_SHOW_OVERLIB">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_treeheader" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
+		<field name="show_treeheader" type="radio" default="0" layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_SHOW_TREEHEADER"
 			description="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_DESCR_SHOW_TREEHEADER">
 			<option value="0">JNO</option>
@@ -75,7 +75,7 @@
 			<option value="2">COM_SPORTSMANAGEMENT_FES_TREE_FIELD_OPTION_TEAMNAME_LINK_TEAMSTATS</option>
 		</field>
 
-		<field	name="highlight_fav" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+		<field	name="highlight_fav" type="radio" default="1" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_RESULTS_FIELD_LABEL_HIGHLIGHT_FAV"
 				description="COM_SPORTSMANAGEMENT_FES_RESULTS_FIELD_DESCR_HIGHLIGHT_FAV">
 			<option value="0">JNO</option>
@@ -127,21 +127,21 @@
 	label= "COM_SPORTSMANAGEMENT_FES_TREE_FIELDS_GROUP_OVERLIB_OPTIONS" 
 		description="COM_SPORTSMANAGEMENT_FES_TREE_FIELDS_DESCR_OVERLIB_OPTIONS">
 
-		<field 	name="show_overlib_left_right" type="extensionradiobutton" default="1" 
+		<field 	name="show_overlib_left_right" type="radio" default="1" 
 				label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_SHOW_OVERLIB_LR" 
 				description="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_DESCR_SHOW_OVERLIB_LR">
 			<option value="0">COM_SPORTSMANAGEMENT_FES_TREE_FIELD_OPTION_SHOW_OVERLIB_LR_LEFT</option>
 			<option value="1">COM_SPORTSMANAGEMENT_FES_TREE_FIELD_OPTION_SHOW_OVERLIB_LR_RIGHT</option>
 		</field>
 
-		<field 	name="show_overlib_below_above" type="extensionradiobutton" default="1" 
+		<field 	name="show_overlib_below_above" type="radio" default="1" 
 				label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_SHOW_OVERLIB_BA" 
 				description="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_DESCR_SHOW_OVERLIB_BA">
 			<option value="0">COM_SPORTSMANAGEMENT_FES_TREE_FIELD_OPTION_SHOW_OVERLIB_BA_BELOW</option>
 			<option value="1">COM_SPORTSMANAGEMENT_FES_TREE_FIELD_OPTION_SHOW_OVERLIB_BA_ABOVE</option>
 		</field>
 
-		<field 	name="show_overlib_seed" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
+		<field 	name="show_overlib_seed" type="radio" default="0" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_SHOW_OVERLIB_SEED" 
 				description="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_DESCR_SHOW_OVERLIB_SEED">
 			<option value="0">JNO</option>
@@ -163,7 +163,7 @@
 			<option value="2">COM_SPORTSMANAGEMENT_FES_TREE_FIELD_OPTION_LENGTHNAME_LONG</option>
 		</field>
 
-		<field	name="show_playground" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
+		<field	name="show_playground" type="radio" default="0" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_RESULTS_FIELD_LABEL_SHOW_PLAYGROUND"
 				description="COM_SPORTSMANAGEMENT_FES_RESULTS_FIELD_DESCR_SHOW_PLAYGROUND">
 			<option value="0">JNO</option>
@@ -182,14 +182,14 @@
 	label= "COM_SPORTSMANAGEMENT_FES_TREE_FIELDS_GROUP_TREEHEADER_OPTIONS" 
 		description="COM_SPORTSMANAGEMENT_FES_TREE_FIELDS_DESCR_TREEHEADER_OPTIONS">
 
-		<field 	name="show_round_date" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
+		<field 	name="show_round_date" type="radio" default="0" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_SHOW_ROUND_DATE" 
 				description="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_DESCR_SHOW_ROUND_DATE">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field 	name="show_name_from" type="extensionradiobutton" default="0" 
+		<field 	name="show_name_from" type="radio" default="0" 
 				label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_SHOW_NAME_FROM" 
 				description="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_DESCR_SHOW_NAME_FROM">
 			<option value="0">COM_SPORTSMANAGEMENT_FES_TREE_FIELD_OPTION_SHOW_FROM_MATCHDAY</option>

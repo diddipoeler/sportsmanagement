@@ -6,11 +6,12 @@
  * @subpackage jlxmlimport
  * @file       jlxmlimport.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\Registry\Registry;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -6687,7 +6688,7 @@ where m.round_id = '$rounddate->round_id'
 							if (file_exists($xmlfile))
 							{
 								$strXmlFile = $xmlfile;
-								$form       = JForm::getInstance($template, $strXmlFile, array('control' => ''));
+								$form       = Form::getInstance($template, $strXmlFile, array('control' => ''));
 								$fieldsets  = $form->getFieldsets();
 								foreach ($fieldsets as $fieldset)
 								{
@@ -6815,7 +6816,7 @@ where m.round_id = '$rounddate->round_id'
 					$t_params      = $this->_getDataFromObject($value, 'params');
 					$defaultvalues = array();
 					$defaultvalues = explode('\n', $t_params);
-					$parameter     = new JRegistry;
+					$parameter     = new Registry;
 
 					if (version_compare(JVERSION, '3.0.0', 'ge'))
 					{

@@ -8,7 +8,7 @@
  * @subpackage teaminfo
  * @file       deafult_description.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -19,44 +19,43 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
 
-<?php
-// Show team-description if defined.
-if (!isset($this->team->notes))
-{
-	$description = "";
-}
-else
-{
-	$description = $this->team->notes;
-}
 
-if (trim($description != ""))
-{
-	?>
-    <div class="<?php echo $this->divclassrow; ?> table-responsive" id="teamdescription">
-        <br/>
-        <table class="table">
-            <tr class="sectiontableheader">
-                <td>
-					<?php
-					echo '&nbsp;' . Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TEAMINFORMATION');
-					?>
-                </td>
-            </tr>
-        </table>
 
-        <table class="table">
-            <tr>
-                <td>
-					<?php
-					$description = HTMLHelper::_('content.prepare', $description);
-					echo stripslashes($description);
-					?>
-                </td>
-            </tr>
-        </table>
+<?php  
+$this->notes = array();
+$this->notes[] = Text::_('Beschreibung Projektteam');
+echo $this->loadTemplate('jsm_notes');
+?>       
+    <div class="<?php echo $this->divclassrow; ?> table-responsive" id="playground_description">
+		<?php
+		$description = $this->team->projectteamnotes;
+		$description = HTMLHelper::_('content.prepare', $description);
+		echo $description;
+		?>
     </div>
-	<?php
-}
+	
+<?php  
+$this->notes = array();
+$this->notes[] = Text::_('Beschreibung Stammdaten Team');
+echo $this->loadTemplate('jsm_notes');
+?>       
+    <div class="<?php echo $this->divclassrow; ?> table-responsive" id="playground_description">
+		<?php
+		$description = $this->team->teamnotes;
+		$description = HTMLHelper::_('content.prepare', $description);
+		echo $description;
+		?>
+    </div>
+
+
+
+
+
+
+
+<?php
+
+
+
 ?>
 <br/>

@@ -6,7 +6,7 @@
  * @subpackage matchreport
  * @file       default_staff.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -54,6 +54,12 @@ use Joomla\CMS\Factory;
 											echo HTMLHelper::link($player_link, $match_player);
 											$imgTitle = Text::sprintf('COM_SPORTSMANAGEMENT_MATCHREPORT_PIC', $match_player);
 											$picture  = $player->picture;
+											
+											if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player")) || !curl_init($picture))
+											{
+												$picture = $player->ppic;
+											}
+											
 											if (!file_exists($picture))
 											{
 												$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
@@ -89,6 +95,12 @@ use Joomla\CMS\Factory;
 											$match_player = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->config["name_format"]);
 											$imgTitle     = Text::sprintf('COM_SPORTSMANAGEMENT_MATCHREPORT_PIC', $match_player);
 											$picture      = $player->picture;
+
+											if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player")) || !curl_init($picture))
+											{
+												$picture = $player->ppic;
+											}
+
 											if (!file_exists($picture))
 											{
 												$picture = sportsmanagementHelper::getDefaultPlaceholder("player");

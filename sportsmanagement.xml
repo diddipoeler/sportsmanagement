@@ -9,7 +9,7 @@
 	<copyright>Copyright Info</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<!--  The version string is recorded in the components table -->
-	<version>3.8.87</version>
+	<version>4.11.00</version>
 	<!-- The description is optional and defaults to the name -->
 	<description>COM_SPORTSMANAGEMENT_DESCRIPTION</description>
  
@@ -71,6 +71,7 @@
 		<folder>events</folder>
 		<folder>event_icons</folder>
 		<folder>flags</folder>
+		<folder>flag_maps</folder>
 		<folder>flags_associations</folder>
 		<folder>jl_images</folder>
 		<folder>leagues</folder>
@@ -145,6 +146,7 @@
 			<folder>sisdata</folder>
 			<folder>modules</folder>
 			<folder>libraries</folder>
+			<folder>pkg</folder>
 			<folder>layouts</folder>
 		</files>
  
@@ -157,6 +159,8 @@
 		
 	</administration>
  
+ 
+ <changelogurl>https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/changelog.xml</changelogurl>
 	<!-- UPDATESERVER DEFINITION -->
 	<updateservers>
 		<!-- Note: No spaces or linebreaks allowed between the server tags -->
@@ -197,6 +201,8 @@
 <module module="mod_sportsmanagement_teamstatistics_counter" client="site"  position="" published=""/>
 	
 <module module="mod_sportsmanagement_projectmap" client="site"  position="" published=""/>
+<module module="mod_sportsmanagement_uefawertung" client="site"  position="" published=""/>
+<module module="mod_sportsmanagement_firstleagueoverview" client="site"  position="" published=""/>
 	
 </modules>
 
@@ -208,6 +214,7 @@
 <plugin plugin="jsm_ishupdate" group="system" />
 <plugin plugin="jcemediabox" group="system" />
 <plugin plugin="jsm_siscron" group="system" />	
+
 </plugins>
 
 <plugins3>
@@ -218,6 +225,7 @@
 <plugin plugin="jsm_ishupdate" group="system" />
 <plugin plugin="jcemediabox" group="system" />
 <plugin plugin="jsm_siscron" group="system" />	
+
 </plugins3>
      
 </extension>

@@ -8,7 +8,7 @@
  * @subpackage helpers
  * @file       pagination.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -60,7 +60,7 @@ class sportsmanagementModelPagination extends BaseDatabaseModel
 		$layout     = $app->input->getVar('layout', '', 'request', 'word');
 		$controller = $app->input->getVar('controller');
 		$divLevel   = $app->input->getInt('divLevel', 0);
-		$division   = $jinput->request->get('division', '0', 'STR');
+		$division   = $jinput->get('division', '0', 'STR');
 		$firstlink  = '';
 		$lastlink   = '';
 

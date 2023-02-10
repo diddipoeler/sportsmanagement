@@ -6,7 +6,7 @@
  * @subpackage nextmatch
  * @file       default_details.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -19,7 +19,8 @@ use Joomla\CMS\Factory;
 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="nextmatch">
 <?php
 $this->notes = array();
-$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DETAILS') . " " . $this->club->name;
+//$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DETAILS') . " " . $this->club->name;
+$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DETAILS');
 echo $this->loadTemplate('jsm_notes'); 
 ?>
     <table class="table">

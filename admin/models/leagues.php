@@ -6,7 +6,7 @@
  * @subpackage models
  * @file       leagues.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -41,6 +41,7 @@ class sportsmanagementModelLeagues extends JSMModelList
 			'obj.short_name',
 			'obj.country',
 			'obj.published_act_season',
+            'obj.champions_complete',
 			'st.name',
 			'obj.id',
 			'obj.ordering',
@@ -67,10 +68,12 @@ class sportsmanagementModelLeagues extends JSMModelList
 	{
 
 		$search_nation = '';
+        $search_associations = '';
 
 		if ($this->jsmapp->isClient('administrator'))
 		{
 			$search_nation = $this->getState('filter.search_nation');
+            $search_associations = $this->getState('filter.search_associations');
 		}
 
         $this->jsmquery->clear();
@@ -81,6 +84,11 @@ class sportsmanagementModelLeagues extends JSMModelList
 		{
 			$this->jsmquery->where('country LIKE ' . $this->jsmdb->Quote('' . $search_nation . ''));
 		}
+        if ( $search_associations )
+        {
+            $this->jsmquery->where('associations = ' . $search_associations );
+            
+        }
 
 		$this->jsmquery->order('name ASC');
 
@@ -119,8 +127,12 @@ class sportsmanagementModelLeagues extends JSMModelList
 		$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
 		$this->setState('filter.search_nation', $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', ''));
 		$this->setState('filter.search_agegroup', $this->getUserStateFromRequest($this->context . '.filter.search_agegroup', 'filter_search_agegroup', ''));
-		$this->setState('filter.search_association', $this->getUserStateFromRequest($this->context . '.filter.search_association', 'filter_search_association', ''));
-		$this->setState('filter.federation', $this->getUserStateFromRequest($this->context . '.filter.federation', 'filter_federation', ''));
+		
+		$this->setState('filter.search_league_level', $this->getUserStateFromRequest($this->context . '.filter.search_league_level', 'filter_search_league_level', ''));
+		$this->setState('filter.search_champions_complete', $this->getUserStateFromRequest($this->context . '.filter.search_champions_complete', 'filter_search_champions_complete', ''));
+		
+		$this->setState('filter.search_associations', $this->getUserStateFromRequest($this->context . '.filter.search_associations', 'filter_search_associations', ''));
+		$this->setState('filter.search_federation', $this->getUserStateFromRequest($this->context . '.filter.search_federation', 'filter_search_federation', ''));
 		$this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
 		$this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
 
@@ -136,6 +148,9 @@ class sportsmanagementModelLeagues extends JSMModelList
 			$listOrder = 'ASC';
 		}
 
+		//$this->jsmjinput->set('leaguenation', $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '') );
+		$this->jsmapp->setUserState("$this->jsmoption.leaguenation", $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '') );
+        $this->jsmapp->setUserState("$this->jsmoption.leaguefederation", $this->getUserStateFromRequest($this->context . '.filter.search_federation', 'filter_search_federation', '') );
 		$this->setState('list.direction', $listOrder);
 	}
 
@@ -148,7 +163,7 @@ class sportsmanagementModelLeagues extends JSMModelList
 	{
 		$this->jsmquery->clear();
 		$this->jsmquery->select('obj.name,obj.short_name,obj.alias,obj.associations,obj.country,obj.ordering,obj.id,obj.picture,obj.checked_out,obj.checked_out_time,obj.agegroup_id');
-		$this->jsmquery->select('obj.published,obj.modified,obj.modified_by,obj.published_act_season,obj.league_level');
+		$this->jsmquery->select('obj.published,obj.modified,obj.modified_by,obj.published_act_season,obj.league_level,obj.champions_complete');
 		$this->jsmquery->select('st.name AS sportstype');
 		$this->jsmquery->from('#__sportsmanagement_league as obj');
 		$this->jsmquery->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = obj.sports_type_id');
@@ -169,19 +184,32 @@ class sportsmanagementModelLeagues extends JSMModelList
 			$this->jsmquery->where('obj.country LIKE ' . $this->jsmdb->Quote('' . $this->getState('filter.search_nation') . ''));
 		}
 
-		if ($this->getState('filter.search_association'))
+		if ($this->getState('filter.search_associations'))
 		{
-			$this->jsmquery->where('obj.associations = ' . $this->getState('filter.search_association'));
+			$this->jsmquery->where('obj.associations = ' . $this->getState('filter.search_associations'));
 		}
 
-		if ($this->getState('filter.federation'))
+		/** sonderselektion bei verbänden */
+        if ($this->getState('filter.search_federation'))
 		{
-			$this->jsmquery->where('obj.associations = ' . $this->getState('filter.federation'));
+		  $this->jsmquery->join('LEFT', '#__sportsmanagement_countries AS co ON co.alpha3 = obj.country');
+          $this->jsmquery->join('LEFT', '#__sportsmanagement_federations AS fe ON fe.id = co.federation');
+          $this->jsmquery->where('fe.id = ' . $this->getState('filter.search_federation'));
 		}
 
 		if ($this->getState('filter.search_agegroup'))
 		{
 			$this->jsmquery->where('obj.agegroup_id = ' . $this->getState('filter.search_agegroup'));
+		}
+		
+		if ($this->getState('filter.search_league_level'))
+		{
+			$this->jsmquery->where('obj.league_level = ' . $this->getState('filter.search_league_level'));
+		}
+		
+		if ( $this->getState('filter.search_champions_complete') != '' )
+		{
+			$this->jsmquery->where('obj.champions_complete = ' . $this->getState('filter.search_champions_complete'));
 		}
 
 		if (is_numeric($this->getState('filter.state')))

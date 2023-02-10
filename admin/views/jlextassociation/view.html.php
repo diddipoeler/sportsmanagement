@@ -6,7 +6,7 @@
  * @subpackage jlextassociastion
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -37,19 +37,19 @@ class sportsmanagementViewJlextassociation extends sportsmanagementView
 			if ($this->item->founded == '0000-00-00')
 			{
 				$this->item->founded = '';
-				$this->form->setValue('founded', '');
+				$this->form->setValue('founded',null, '');
 			}
 
 			if ($this->item->dissolved == '0000-00-00')
 			{
 				$this->item->dissolved = '';
-				$this->form->setValue('dissolved', '');
+				$this->form->setValue('dissolved',null, '');
 			}
 		}
 		else
 		{
-			$this->form->setValue('founded', '');
-			$this->form->setValue('dissolved', '');
+			$this->form->setValue('founded',null, '');
+			$this->form->setValue('dissolved',null, '');
 		}
         if ( !$this->item->founded_year )
         {

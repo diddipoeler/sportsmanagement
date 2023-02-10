@@ -6,7 +6,7 @@
  * @subpackage clubs
  * @file       default_data.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -31,7 +31,7 @@ HTMLHelper::_('draggablelist.draggable');
 }
 else
 {
-JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl,$this->saveOrderButton);    
+HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl,$this->saveOrderButton);    
 }
 }
 ?>
@@ -119,7 +119,6 @@ JHtml::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($t
         <tbody <?php if ( $this->saveOrder && version_compare(substr(JVERSION, 0, 3), '4.0', 'ge') ) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($this->sortDirection); ?>" <?php endif; ?>>
 		<?php
           
-//          echo JHtml::_('sliders.start');
 echo HTMLHelper::_('bootstrap.startAccordion', 'slider', array('useCookie' => 0));
  foreach ($this->items as $this->count_i => $this->item)
 		{
@@ -354,7 +353,7 @@ echo $this->loadTemplate('data_order');
             </tr>
 			<?php
 		}
-//echo JHtml::_('sliders.end');
+
 echo HTMLHelper::_('bootstrap.endAccordion');
 		?>
         </tbody>

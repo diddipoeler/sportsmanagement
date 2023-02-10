@@ -6,7 +6,7 @@
  * @subpackage helpers
  * @file       route.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -16,6 +16,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Router\Router;
 use Joomla\CMS\Component\Router\RouterBase;
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementHelperRoute
@@ -37,11 +38,12 @@ class sportsmanagementHelperRoute
 	static $cfg_which_database = 0;
 
 	public static $views = array(
-		'about'    => array('cfg_which_database' => '', 's' => '', 'p' => ''),
+		'about'    => array('cfg_which_database' => '', 's' => '', 'p' => '' ),
+        'uefawertung'    => array('cfg_which_database' => '', 's' => '', 'p' => '', 'coefficientyear' => '' ),
 		'calendar' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'division' => '', 'mode' => '', 'ptid' => ''),
 		'clubinfo' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'cid' => ''),
-		'clubplan' => array('cfg_which_database' => '', 's' => '', 'p' => ''),
-		'curve'    => array('cfg_which_database' => '', 's' => '', 'p' => ''),
+		'clubplan' => array('cfg_which_database' => '', 's' => '', 'cid' => '', 'p' => '', 'startdate' => '', 'enddate' => ''  ),
+		'curve'    => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid1' => '', 'tid2' => '','division' => ''),
 
 		'editprojectteam' => array('tmpl' => '', 'ptid' => '', 'tid' => '', 'p' => ''),
 		'editteam'        => array('tmpl' => '', 'ptid' => '', 'tid' => '', 'p' => ''),
@@ -49,7 +51,7 @@ class sportsmanagementHelperRoute
 
 		'editclub'      => array('cfg_which_database' => '', 's' => '', 'p' => '', 'cid' => '', 'id' => '', 'tmpl' => ''),
 		'editmatch'     => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'division' => '', 'mode' => '', 'order' => '', 'layout' => '', 'matchid' => '', 'tmpl' => '', 'oldlayout' => '', 'team' => '', 'pteam' => ''),
-		'eventsranking' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'evid' => '', 'mid' => ''),
+		'eventsranking' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'evid' => '', 'mid' => '', 'division' => ''),
 		'ical'          => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'division' => '', 'mode' => '', 'ptid' => ''),
 		'scoresheet'    => array('cfg_which_database' => '', 'p' => '', 'mid' => ''),
 
@@ -87,6 +89,62 @@ class sportsmanagementHelperRoute
 		'predictionranking' => array('cfg_which_database' => '', 'prediction_id' => '', 'pggroup' => '', 'pj' => '', 'r' => '', 'pggrouprank' => '', 'type' => '', 'from' => '', 'to' => ''),
 		'predictionuser'    => array('cfg_which_database' => '', 'prediction_id' => '', 'pggroup' => '', 'pj' => '', 'r' => '', 'uid' => '', 'layout' => 'edit'),
 		'predictionusers'   => array('cfg_which_database' => '', 'prediction_id' => '', 'pggroup' => '', 'pj' => '', 'r' => '', 'uid' => ''),
+		'predictionrules'   => array('cfg_which_database' => '', 'prediction_id' => ''),
+
+	);
+    
+    	public static $views4 = array(
+		'about'    => array('cfg_which_database' => '', 's' => '', 'p' => '', 'Itemid' => '' ),
+        'uefawertung'    => array('cfg_which_database' => '', 's' => '', 'p' => '', 'coefficientyear' => '', 'Itemid' => '' ),
+		'calendar' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'division' => '', 'mode' => '', 'ptid' => '', 'Itemid' => ''),
+		'clubinfo' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'cid' => '', 'Itemid' => ''),
+		'clubplan' => array('cfg_which_database' => '', 's' => '', 'cid' => '', 'p' => '', 'startdate' => '', 'enddate' => '', 'Itemid' => ''),
+		'curve'    => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid1' => '', 'tid2' => '','division' => '', 'Itemid' => ''),
+
+		'editprojectteam' => array('tmpl' => '', 'ptid' => '', 'tid' => '', 'p' => '', 'Itemid' => ''),
+		'editteam'        => array('tmpl' => '', 'ptid' => '', 'tid' => '', 'p' => '', 'Itemid' => ''),
+		'editperson'      => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'pid' => '', 'Itemid' => ''),
+
+		'editclub'      => array('cfg_which_database' => '', 's' => '', 'p' => '', 'cid' => '', 'id' => '', 'tmpl' => '', 'Itemid' => ''),
+		'editmatch'     => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'division' => '', 'mode' => '', 'order' => '', 'layout' => '', 'matchid' => '', 'tmpl' => '', 'oldlayout' => '', 'team' => '', 'pteam' => '', 'Itemid' => ''),
+		'eventsranking' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'evid' => '', 'mid' => '','division' => '', 'Itemid' => ''),
+		'ical'          => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'division' => '', 'mode' => '', 'ptid' => '', 'Itemid' => ''),
+		'scoresheet'    => array('cfg_which_database' => '', 'p' => '', 'mid' => ''),
+
+		'jltournamenttree' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'Itemid' => ''),
+		'matchreport'      => array('cfg_which_database' => '', 's' => '', 'p' => '', 'mid' => '', 'Itemid' => ''),
+		'matrix'           => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'r' => '', 'Itemid' => ''),
+		'nextmatch'        => array('cfg_which_database' => '', 's' => '', 'p' => '', 'mid' => '', 'Itemid' => ''),
+		'player'           => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'pid' => '', 'Itemid' => ''),
+
+		'playground' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'pgid' => '', 'Itemid' => ''),
+        
+        'leaguechampionoverview'    => array('cfg_which_database' => '', 'l' => '', 's' => '', 'p' => '', 'Itemid' => ''),
+
+		'ranking'           => array('cfg_which_database' => '', 's' => '', 'p' => '', 'type' => '', 'r' => '', 'from' => '', 'to' => '', 'division' => '', 'Itemid' => ''),
+		'rankingalltime'    => array('cfg_which_database' => '', 'l' => '', 'points' => '', 'type' => '', 'order' => '', 'dir' => '', 's' => '', 'p' => '', 'Itemid' => ''),
+		'referee'           => array('cfg_which_database' => '', 's' => '', 'p' => '', 'pid' => '', 'Itemid' => ''),
+		'referees'          => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'r' => '', 'Itemid' => ''),
+		'results'           => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'division' => '', 'mode' => '', 'order' => '', 'layout' => '', 'Itemid' => ''),
+		'resultsranking'    => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'mode' => '', 'order' => '', 'layout' => '', 'division' => '', 'Itemid' => ''),
+		'rivals'            => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'Itemid' => ''),
+		'roster'            => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'ptid' => '', 'Itemid' => ''),
+        'rosteralltime'     => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'start' => '', 'Itemid' => ''),
+        
+		'staff'             => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'pid' => '', 'Itemid' => ''),
+		'stats'             => array('cfg_which_database' => '', 's' => '', 'p' => '', 'Itemid' => ''),
+		'statsranking'      => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'tid' => '', 'sid' => '', 'order' => '', 'Itemid' => ''),
+		'teaminfo'          => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'ptid' => '', 'Itemid' => ''),
+		'teamplan'          => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'division' => '', 'mode' => '', 'ptid' => '', 'Itemid' => ''),
+		'teams'             => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'Itemid' => ''),
+		'teamstats'         => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'Itemid' => ''),
+		'teamstree'         => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'Itemid' => ''),
+		'treetonode'        => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tnid' => '', 'Itemid' => ''),
+		'predictionentry'   => array('cfg_which_database' => '', 'prediction_id' => '', 'pggroup' => '', 'pj' => '', 'r' => '', 'uid' => '', 'Itemid' => ''),
+		'predictionresults' => array('cfg_which_database' => '', 'prediction_id' => '', 'pggroup' => '', 'pj' => '', 'r' => '', 'uid' => '', 'Itemid' => ''),
+		'predictionranking' => array('cfg_which_database' => '', 'prediction_id' => '', 'pggroup' => '', 'pj' => '', 'r' => '', 'pggrouprank' => '', 'type' => '', 'from' => '', 'to' => '', 'Itemid' => ''),
+		'predictionuser'    => array('cfg_which_database' => '', 'prediction_id' => '', 'pggroup' => '', 'pj' => '', 'r' => '', 'uid' => '', 'layout' => 'edit', 'Itemid' => ''),
+		'predictionusers'   => array('cfg_which_database' => '', 'prediction_id' => '', 'pggroup' => '', 'pj' => '', 'r' => '', 'uid' => '', 'Itemid' => ''),
 		'predictionrules'   => array('cfg_which_database' => '', 'prediction_id' => ''),
 
 	);
@@ -136,19 +194,24 @@ class sportsmanagementHelperRoute
 	 */
 	public static function buildQuery($parts)
 	{
-		if ($item = self::_findItem($parts))
-		{
-			$parts['Itemid'] = $item->id;
-		}
-		else
-		{
-			$params = ComponentHelper::getParams('com_sportsmanagement');
-
-			if ($params->get('default_itemid'))
-			{
+if ( !array_key_exists('Itemid', $parts) ) {
+    $params = ComponentHelper::getParams('com_sportsmanagement');
 				$parts['Itemid'] = intval($params->get('default_itemid'));
-			}
-		}
+}
+
+//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' parts' .'<pre>'.print_r($parts,true).'</pre>'    ), '');		
+		
+$parts['Itemid'] = $parts['Itemid'] < 0 ? $parts['Itemid'] : Factory::getApplication()->getMenu()->getActive()->id;
+		
+//		if ($item = self::_findItem($parts))
+//		{
+//			$parts['Itemid'] = $item->id;
+//		}
+//		else
+//		{
+//			$params = ComponentHelper::getParams('com_sportsmanagement');
+//			$parts['Itemid'] = intval($params->get('default_itemid'));
+//		}
 
 		return Uri::buildQuery($parts);
 	}
@@ -556,24 +619,25 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+	
 	/**
 	 * sportsmanagementHelperRoute::getEditLineupRoute()
-	 *
-	 * @param   mixed    $projectid
-	 * @param   mixed    $matchid
-	 * @param   string   $layout
-	 * @param   integer  $team
-	 * @param   integer  $projectTeam
-	 * @param   string   $match_date
-	 * @param   integer  $cfg_which_database
-	 * @param   integer  $s
-	 * @param   integer  $r
-	 * @param   integer  $division
-	 * @param   string   $oldlayout
-	 *
+	 * 
+	 * @param mixed $projectid
+	 * @param mixed $matchid
+	 * @param string $layout
+	 * @param integer $team
+	 * @param integer $projectTeam
+	 * @param string $match_date
+	 * @param integer $cfg_which_database
+	 * @param integer $s
+	 * @param integer $r
+	 * @param integer $division
+	 * @param string $oldlayout
+	 * @param integer $doubleevents
 	 * @return
 	 */
-	public static function getEditLineupRoute($projectid, $matchid, $layout = 'editlineup', $team = 0, $projectTeam = 0, $match_date = '0000-00-00', $cfg_which_database = 0, $s = 0, $r = 0, $division = 0, $oldlayout = '')
+	public static function getEditLineupRoute($projectid, $matchid, $layout = 'editlineup', $team = 0, $projectTeam = 0, $match_date = '0000-00-00', $cfg_which_database = 0, $s = 0, $r = 0, $division = 0, $oldlayout = '',$doubleevents = 0)
 	{
 
 		$params = array("option"             => "com_sportsmanagement",
@@ -591,7 +655,8 @@ class sportsmanagementHelperRoute
 		                "oldlayout"          => $oldlayout,
 		                "team"               => $team,
 		                "pteam"              => $projectTeam,
-		                "match_date"         => $match_date
+		                "match_date"         => $match_date,
+                        "doubleevents"         => $doubleevents
 		);
 
 		$query = self::buildQuery($params);

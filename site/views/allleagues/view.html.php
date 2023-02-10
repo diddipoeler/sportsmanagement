@@ -1,18 +1,15 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage allleagues
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -41,11 +38,8 @@ if (!class_exists('sportsmanagementHelperHtml'))
 class sportsmanagementViewallleagues extends sportsmanagementView
 {
 	protected $state = null;
-
 	protected $item = null;
-
 	protected $items = null;
-
 	protected $pagination = null;
 
 	/**
@@ -55,6 +49,7 @@ class sportsmanagementViewallleagues extends sportsmanagementView
 	 */
 	function init()
 	{
+		
 		$inputappend            = '';
 		$this->tableclass       = $this->jinput->getVar('table_class', 'table', 'request', 'string');
 		$this->use_jquery_modal = $this->jinput->getVar('use_jquery_modal', '2', 'request', 'string');

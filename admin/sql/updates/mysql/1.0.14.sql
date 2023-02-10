@@ -1,1 +1,1 @@
-ALTER TABLE  `#__sportsmanagement_agegroup` ADD  `country` VARCHAR( 3 ) NULL DEFAULT NULL ;
+-- ALTER TABLE  `#__sportsmanagement_agegroup` ADD  `country` VARCHAR( 3 ) NULL DEFAULT NULL ;

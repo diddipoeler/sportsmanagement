@@ -6,7 +6,7 @@
  * @subpackage models
  * @file       eventtypes.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -60,6 +60,7 @@ class sportsmanagementModelEventtypes extends JSMModelList
 	{
 		$jsmdb    = sportsmanagementHelper::getDBConnection();
 		$jsmquery = $jsmdb->getQuery(true);
+		$result = array();
 
 		$jsmquery->clear();
 		$jsmquery->select('evt.id AS value, concat(evt.name, " (" , st.name, ")") AS text,evt.name as posname,st.name AS stname');
@@ -78,7 +79,7 @@ class sportsmanagementModelEventtypes extends JSMModelList
 
 		if (!$result = $jsmdb->loadObjectList())
 		{
-			return false;
+			return $result;
 		}
 
 		foreach ($result as $position)

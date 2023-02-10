@@ -6,7 +6,7 @@
  * @subpackage ranking
  * @file       deafult_joomla_vier.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -27,25 +27,22 @@ $tabsOptions = array(
     "active" => "tab1id" // It is the ID of the active tab.
 );
 */
-// Make sure that in case extensions are written for mentioned (common) views,
-// that they are loaded i.s.o. of the template of this view
+
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 echo $this->loadTemplate('projectheading');
 
 ?>
-    <div class="<?php echo $this->divclasscontainer; ?>">
-        <div class="<?php echo $this->divclassrow; ?>">
+        <div class="<?php echo $this->divclassrow; ?>" id="ranking_joomla4" >
 			<?PHP
-			echo $this->loadTemplate('ranking');
-			echo $this->loadTemplate('jsminfo');
-			?>
-        </div>
-    </div>
-	<?PHP
-    
-/*
+            if ($this->config['show_result_tabs'] == 'show_tabs')
+			{
+				echo $this->loadTemplate('tabs');
+			}
+            else
+            {
+			//echo $this->loadTemplate('ranking');
 echo HTMLHelper::_('bootstrap.' . $this->startPane, 'myTab', array('active' => 'tab1id'));
 
 if ($this->config['show_table_1'])
@@ -132,8 +129,17 @@ if ($this->config['show_table_5'])
 }
 
 echo HTMLHelper::_('bootstrap.' . $this->endPanel);
-echo HTMLHelper::_('bootstrap.' . $this->endPane, 'myTab');
-*/
+echo HTMLHelper::_('bootstrap.' . $this->endPane, 'myTab');		    
+		    
+		    
+			echo $this->loadTemplate('jsminfo');
+            }
+			?>
+        </div>
+
+	<?PHP
+    
+
 ?>
 
 <?PHP

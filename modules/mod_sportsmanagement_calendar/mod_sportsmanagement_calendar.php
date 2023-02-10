@@ -1,28 +1,28 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_calendar
  * @file       mod_sportsmanagement_calendar.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ *
+ * https://github.com/ArrobeFr/jquery-calendar-bs4/blob/master/example/example.html
+ * 
  */
-
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Date\Date;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 
 if (version_compare(JVERSION, '4.0.0', 'ge'))
 {
-	JHtml::_('jquery.framework');
+	HTMLHelper::_('jquery.framework');
 }
 
 $app = Factory::getApplication();
@@ -52,6 +52,12 @@ if (!class_exists('sportsmanagementHelperRoute'))
 {
 	JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 }
+
+if (!class_exists('JSMCountries'))
+{
+	JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
+}
+
 
 if (!defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
 {
@@ -83,7 +89,7 @@ if (!$params->get('cal_start_date'))
 }
 else
 {
-	$startDate = new JDate($params->get('cal_start_date'));
+	$startDate = new Date($params->get('cal_start_date'));
 
 	if (version_compare(JVERSION, '3.0.0', 'ge'))
 	{
@@ -117,10 +123,10 @@ if (!defined('JLC_MODULESCRIPTLOADED'))
 	}
 	elseif (version_compare(JVERSION, '3.0.0', 'ge'))
 	{
-		$mooconfig = JFactory::getConfig();
+		$mooconfig = Factory::getConfig();
 		$moodebug = $mooconfig->get('debug');
 		$moouncompressed   = $moodebug ? '-uncompressed' : '';
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$doc->addScript('/media/system/js/mootools-core' . $moouncompressed . '.js', array('version' => $document->getMediaVersion()));
 		$doc->addScript('/media/system/js/mootools-more' . $moouncompressed . '.js', array('version' => $document->getMediaVersion()));
 		$doc->addScript('/media/system/js/modal' . $moouncompressed . '.js', array('version' => $document->getMediaVersion()));
@@ -139,6 +145,6 @@ $calendar = $helper->showCal($params, $year, $month, $ajax, $module->id);
 ?>
 <div id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 	<?PHP
-	require ModuleHelper::getLayoutPath($module->module);
+	require ModuleHelper::getLayoutPath($module->module,$params->get('which_layout'));
 	?>
 </div>

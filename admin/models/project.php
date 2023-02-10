@@ -6,7 +6,7 @@
  * @subpackage models
  * @file       project.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -14,6 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Log\Log;
+use Joomla\Registry\Registry;
 
 /**
  * sportsmanagementModelProject
@@ -30,13 +31,186 @@ class sportsmanagementModelProject extends JSMModelAdmin
 
 	var $_tables_to_delete = array();
 
+	
+	
 	/**
-	 * Override parent constructor.
-	 *
-	 * @param   array  $config  An optional associative array of configuration settings.
-	 *
-	 * @see   BaseDatabaseModel
-	 * @since 3.2
+	 * sportsmanagementModelProject::setleaguechampion()
+	 * 
+	 * @return
+	 */
+	public function setleaguechampion()
+	{
+		$app   = Factory::getApplication();
+		$date  = Factory::getDate();
+		$db    = sportsmanagementHelper::getDBConnection();
+		$query = $db->getQuery(true);
+
+		// JInput object
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+
+		// Get the input
+		$pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
+
+		if (!$pks)
+		{
+			return Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SAVE_NO_SELECT');
+		}
+
+		$post = Factory::getApplication()->input->post->getArray(array());
+		// $app->enqueueMessage('<pre>'.print_r($post,true).'</pre>'   , 'notice');
+for ($x = 0; $x < count($pks); $x++)
+		{
+			$tblProject                  = &$this->getTable();
+			$tblProject->id              = $pks[$x];
+
+$tblProject->use_leaguechampion = $post['use_leaguechampion' . $pks[$x]] ? 0 : 1;
+
+			$tblProject->modified           = $date->toSql();
+			$tblProject->modified_timestamp = sportsmanagementHelper::getTimestamp($date->toSql());
+
+			if (!$tblProject->store())
+			{
+				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+
+				return false;
+			}
+
+			
+		}
+
+		return Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SAVE');		
+		
+		
+		
+		
+	}
+	
+	
+	/**
+	 * sportsmanagementModelProject::getTemplateConfig()
+	 * 
+	 * @param mixed $project_id
+	 * @param mixed $template
+	 * @param integer $cfg_which_database
+	 * @param string $call_function
+	 * @return
+	 */
+	public static function getTemplateConfig($project_id, $template, $cfg_which_database = 0, $call_function = '')
+	{
+		$app           = Factory::getApplication();
+		$option        = $app->input->getCmd('option');
+		$view          = $app->input->getVar("view");
+		$db            = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
+		$query         = $db->getQuery(true);
+		$checktemplate = false;
+
+		switch ($view)
+		{
+			case 'editmatch':
+			case 'editprojectteam':
+			case 'editteam':
+			case 'editperson':
+			case 'editclub':
+			case 'jltournamenttree':
+				break;
+			default:
+				$checktemplate = true;
+				break;
+		}
+
+		/**
+		 *
+		 * first load the default settings from the default <template>.xml file
+		 */
+		$paramsdata          = "";
+		$arrStandardSettings = array();
+
+		$xmlfile = JPATH_COMPONENT_SITE . DIRECTORY_SEPARATOR . 'settings' . DIRECTORY_SEPARATOR . 'default' . DIRECTORY_SEPARATOR . $template . '.xml';
+
+		if ($project_id == 0)
+		{
+			return $arrStandardSettings;
+		}
+
+		$query->select('t.params');
+		$query->from('#__sportsmanagement_template_config AS t');
+		$query->join('INNER', '#__sportsmanagement_project AS p ON p.id = t.project_id');
+		$query->where('t.template LIKE ' . $db->Quote($template));
+		$query->where('p.id = ' . (int) $project_id);
+
+		$starttime = microtime();
+		$db->setQuery($query);
+		$result = $db->loadResult();
+
+		if ($checktemplate)
+		{
+			if (!$result)
+			{
+				$project = self::getProject($project_id);
+
+				if (!empty($project) && $project->master_template > 0)
+				{
+					$query->clear();
+					$query->select('t.params');
+					$query->from('#__sportsmanagement_template_config AS t');
+					$query->join('INNER', '#__sportsmanagement_project AS p ON p.id = t.project_id');
+					$query->where('t.template LIKE ' . $db->Quote($template));
+					$query->where('p.id = ' . $project->master_template);
+
+					$starttime = microtime();
+					$db->setQuery($query);
+					$result = $db->loadResult();
+
+					if (!$result)
+					{
+						// self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING') . " " . $template;
+						// self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING_PID') . $project->master_template;
+						// self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT');
+					
+						return $arrStandardSettings;
+					}
+				}
+				else
+				{
+					/**
+					 *
+					 * there are no saved settings found, use the standard xml file default values
+					 */
+					return $arrStandardSettings;
+				}
+			}
+		}
+
+		$jRegistry = new Registry;
+
+		if (version_compare(JVERSION, '3.0.0', 'ge'))
+		{
+			$jRegistry->loadString($result);
+		}
+		else
+		{
+			$jRegistry->loadJSON($result);
+		}
+
+		$configvalues = $jRegistry->toArray();
+
+		/**
+		 *
+		 * merge and overwrite standard settings with individual view settings
+		 */
+		$settings = array_merge($arrStandardSettings, $configvalues);
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+
+		return $settings;
+
+	}
+	
+	/**
+	 * sportsmanagementModelProject::__construct()
+	 * 
+	 * @param mixed $config
+	 * @return void
 	 */
 	public function __construct($config = array())
 	{
@@ -63,9 +237,16 @@ class sportsmanagementModelProject extends JSMModelAdmin
 		$query->where('season_id = ' . $season_id);
 		$query->where('league_id = ' . $league_id);
 		$query->order('name');
+		try {
 		$db->setQuery($query);
 		$result = $db->loadObjectList();
-
+}
+catch (RuntimeException $e)
+				{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($query->dump(), true) . '</pre>', 'Error');
+				}
 		return $result;
 	}
 
@@ -84,9 +265,10 @@ class sportsmanagementModelProject extends JSMModelAdmin
 
 		$db    = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
-		$query->select('p.*, st.name AS sport_type_name');
+		$query->select('p.*, st.name AS sport_type_name,l.country ');
 		$query->from('#__sportsmanagement_project as p');
 		$query->join('INNER', '#__sportsmanagement_sports_type AS st ON p.sports_type_id = st.id ');
+		$query->join('INNER', '#__sportsmanagement_league AS l ON l.id = p.league_id ');
 		$query->where('p.id = ' . $project_id);
 		$db->setQuery($query);
 		$result = $db->loadObject();
@@ -109,12 +291,12 @@ catch (Exception $e)
 		return $result;
 	}
 
+	
 	/**
-	 * return
-	 *
-	 * @param   int team_id
-	 *
-	 * @return integer
+	 * sportsmanagementModelProject::getProjectTeam()
+	 * 
+	 * @param mixed $projectteam_id
+	 * @return
 	 */
 	function getProjectTeam($projectteam_id)
 	{
@@ -137,11 +319,13 @@ catch (Exception $e)
 		return $db->loadObject();
 	}
 
+	
 	/**
-	 * @param   int iDivisionId
-	 * return project teams as options
-	 *
-	 * @return unknown_type
+	 * sportsmanagementModelProject::getProjectTeamsOptions()
+	 * 
+	 * @param mixed $project_id
+	 * @param integer $iDivisionId
+	 * @return
 	 */
 	function getProjectTeamsOptions($project_id, $iDivisionId = 0)
 	{
@@ -199,12 +383,12 @@ catch (Exception $e)
 	}
 
 
+	
 	/**
-	 * Method to remove projects
-	 *
-	 * @access public
-	 * @return boolean    True on success
-	 * @since  0.1
+	 * sportsmanagementModelProject::delete()
+	 * 
+	 * @param mixed $pks
+	 * @return
 	 */
 	public function delete(&$pks)
 	{
@@ -224,18 +408,16 @@ catch (Exception $e)
 
 	}
 
+
 	/**
-	 * Method to remove all project datas
-	 *
-	 * @access public
-	 * @return boolean    True on success
-	 * @since  0.1
+	 * sportsmanagementModelProject::deleteProjectsData()
+	 * 
+	 * @param mixed $pk
+	 * @return
 	 */
 	function deleteProjectsData($pk = array())
 	{
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 
@@ -248,7 +430,7 @@ catch (Exception $e)
 		{
 			$cids = implode(',', $pk);
 
-			// Rounds
+			/** Rounds */
 			$query->clear();
 			$query->select('r.id');
 			$query->from('#__sportsmanagement_round as r');
@@ -256,7 +438,7 @@ catch (Exception $e)
 			Factory::getDBO()->setQuery($query);
 			$rounds = Factory::getDbo()->loadColumn();
 
-			// Matches
+			/** Matches */
 			if ($rounds)
 			{
 				$query->clear();
@@ -386,11 +568,11 @@ catch (Exception $e)
 
 			$this->_tables_to_delete = array_merge($export);
 
-			// Jetzt starten wir das löschen
+			/** Jetzt starten wir das löschen */
 			foreach ($this->_tables_to_delete as $row_to_delete)
 			{
 				$query->clear();
-				$query->delete()->from('#__' . COM_SPORTSMANAGEMENT_TABLE . $row_to_delete->table)->where($row_to_delete->field . ' IN (' . $row_to_delete->id . ')');
+				$query->delete()->from('#__sportsmanagement' . $row_to_delete->table)->where($row_to_delete->field . ' IN (' . $row_to_delete->id . ')');
 				$db->setQuery($query);
 				sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 
@@ -404,11 +586,11 @@ catch (Exception $e)
 		return true;
 	}
 
+
 	/**
-	 * Method to update checked project
-	 *
-	 * @access public
-	 * @return boolean    True on success
+	 * sportsmanagementModelProject::saveshort()
+	 * 
+	 * @return
 	 */
 	public function saveshort()
 	{
@@ -416,12 +598,8 @@ catch (Exception $e)
 		$date  = Factory::getDate();
 		$db    = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
-
-		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-
-		// Get the input
 		$pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
 
 		if (!$pks)
@@ -444,9 +622,7 @@ catch (Exception $e)
 				$temp           = new stdClass;
 				$temp->field_id = $value->id;
 				$temp->jl_id    = $pks[$x];
-				/**
-				 * Insert the object into the table.
-				 */
+				/** Insert the object into the table. */
 				try
 				{
 					$resultinsert = $db->insertObject('#__sportsmanagement_user_extra_fields_values', $temp);
@@ -465,6 +641,8 @@ catch (Exception $e)
 			$tblProject->agegroup_id     = $post['agegroup' . $pks[$x]];
 			$tblProject->master_template = $post['master_template' . $pks[$x]];
 			$tblProject->fast_projektteam = $post['fast_projektteam' . $pks[$x]];
+            $tblProject->use_leaguechampion = $post['use_leaguechampion' . $pks[$x]];
+			$tblProject->cr_project = $post['cr_project' . $pks[$x]];
 
 			if ($post['league' . $pks[$x]])
 			{
@@ -483,14 +661,9 @@ catch (Exception $e)
 
 			if ($post['user_field_id' . $pks[$x]])
 			{
-				// Create an object for the record we are going to update.
 				$object = new stdClass;
-
-				// Must be a valid primary key value.
 				$object->id         = $post['user_field_id' . $pks[$x]];
 				$object->fieldvalue = $post['user_field' . $pks[$x]];
-
-				// Update their details in the users table using id as the primary key.
 				$result = Factory::getDbo()->updateObject('#__sportsmanagement_user_extra_fields_values', $object, 'id');
 			}
 		}

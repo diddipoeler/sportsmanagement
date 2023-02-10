@@ -27,9 +27,9 @@ addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
 					description="COM_SPORTSMANAGEMENT_EXT_PREDICTION_MEMBERS"
 					query="" />
 <field name="edit_modus" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 	label="COM_SPORTSMANAGEMENT_EXT_PREDICTION_MEMBER_EDIT" 
       description="COM_SPORTSMANAGEMENT_EXT_PREDICTION_MEMBER_EDIT_DESC">
 	<option value="0">JNO</option>
@@ -37,9 +37,9 @@ addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
 	</field>
 			
     <field name="cfg_which_database" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
 			<option value="0">JNO</option>

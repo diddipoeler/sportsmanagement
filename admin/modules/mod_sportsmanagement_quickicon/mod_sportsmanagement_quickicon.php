@@ -8,7 +8,7 @@
  * @subpackage mod_sportsmanagement_quickicon
  * @file       mod_sportsmanagement_quickicon.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -22,7 +22,7 @@ use Joomla\CMS\Log\Log;
 // Make sure Sportsmanagement is enabled
 if (!ComponentHelper::isEnabled('com_sportsmanagement', true))
 {
-	Log::add(Text('SM_NOT_ENABLED'), Log::ERROR, 'jsmerror');
+	Log::add(Text::_('SM_NOT_ENABLED'), Log::ERROR, 'jsmerror');
 
 	return;
 }

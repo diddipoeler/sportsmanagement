@@ -33,135 +33,103 @@
 		<filename>update-server.xml</filename>
 		<folder>assets</folder>
 		<folder>elements</folder>
-		
 		<folder>mod_sportsmanagement_rquotes</folder>
-		
-		<folder>tmpl</folder>
-		
+		<folder>tmpl</folder>		
 	</files>
 	
 
-<languages >
-		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_rquotes.ini</language>
-		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_rquotes.sys.ini</language>
-		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_rquotes.ini</language>
-		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_rquotes.sys.ini</language>
-  </languages>
+	<languages >
+			<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_rquotes.ini</language>
+			<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_rquotes.sys.ini</language>
+			<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_rquotes.ini</language>
+			<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_rquotes.sys.ini</language>
+	</languages>
 
 
 	<config>
 
-	<fields name="params" 
-  addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">	
+	<fields name="params"  addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">	
 	  
-		<fieldset name="basic"
-    description="MOD_SPORTSMANAGEMENT_BASIC_DESC">
+		<fieldset name="basic" description="MOD_SPORTSMANAGEMENT_BASIC_DESC">
 
-<field type="extensionversion" version="1.1.0" />
-<field type="extensionauthor" />
-<field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
-<field type="extensionlink" linktype="translate" link="https://www.transifex.com/jsm/sportsmanagement/" />	
-<field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Rquotes" />
-<field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
-<field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
-<field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />	
-<field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />	 
+		<field type="extensionversion" version="1.1.0" />
+		<field type="extensionauthor" />
+		<field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
+		<field type="extensionlink" linktype="translate" link="https://www.transifex.com/jsm/sportsmanagement/" />	
+		<field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Rquotes" />
+		<field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
+		<field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
+		<field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />	
+		<field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />	 
 	
- <field name="cfg_which_database" 
-    type="extensionradiobutton" 
-    default="0"
-    class="radio btn-group btn-group-yesno"
+	<field 	name="cfg_which_database" 
+			type="extensionradiobutton" 
+			default="0"
+			class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
+			description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+	</field>
 			
-	<field 
-		name="source"
-		type="list"
-		default="text" 
-		label="MOD_SPORTSMANAGEMENT_RQUOTES_FIELD_QUOTE_SOURCE"
-		description="MOD_SPORTSMANAGEMENT_RQUOTES_FIELD_QUOTE_SOURCE_DESC">
+	<field 	name="source"
+			type="list"
+			default="text" 
+			label="MOD_SPORTSMANAGEMENT_RQUOTES_FIELD_QUOTE_SOURCE"
+			description="MOD_SPORTSMANAGEMENT_RQUOTES_FIELD_QUOTE_SOURCE_DESC">
 			<option value="text">TEXT_FILE</option>
 			<option value="db">DATABASE</option>
 	</field>
 	
-  <field 
-	name="showpicture" 
-	type="extensionradiobutton" 
-	default="0" 
-  class="radio btn-group btn-group-yesno"
-	label="MOD_SPORTSMANAGEMENT_RQUOTES_SHOW_PICTURE" 
-	description="MOD_SPORTSMANAGEMENT_RQUOTES_SHOW_PICTURE_DESC"
-	 >
-		<option value ="0">JNO</option>
-    <option value ="1">JYES</option>
-		
-	</field>
+
   
-	<field 
-	type="spacer" 
-	default=""
-	label="MOD_SPORTSMANAGEMENT_RQUOTES_LABEL_SELECT_TEXT_FILE" 
-	/>
+	<field 	type="spacer" 
+			default=""
+			label="MOD_SPORTSMANAGEMENT_RQUOTES_LABEL_SELECT_TEXT_FILE" />
 	
 	
  
-	<field 
-	name="filename"
-	 type="filelist"
-	 default="rquotes.txt"
-	 label="MOD_SPORTSMANAGEMENT_RQUOTES_FIELD_SELECT_TEXT_FILE" 
-	 description="MOD_SPORTSMANAGEMENT_RQUOTES_FIELD_SELECT_TEXT_FILE_DESC" 
-	 directory="modules/mod_sportsmanagement_rquotes/mod_sportsmanagement_rquotes" 
-	 filter="" 
-	 exclude="" 
-	 stripext="" 
-	 hide_default='true' 
-	 hide_none='true'
-	 />
+	<field 	name="filename"
+			type="filelist"
+			default="rquotes.txt"
+			label="MOD_SPORTSMANAGEMENT_RQUOTES_FIELD_SELECT_TEXT_FILE" 
+			description="MOD_SPORTSMANAGEMENT_RQUOTES_FIELD_SELECT_TEXT_FILE_DESC" 
+			directory="modules/mod_sportsmanagement_rquotes/mod_sportsmanagement_rquotes" 
+			filter="" 
+			exclude="" 
+			stripext="" 
+			hide_default='true' 
+			hide_none='true' />
 
-	<field 
-	name="randomtext" 
-	type="extensionradiobutton" 
-	default="0" 
-  class="radio btn-group btn-group-yesno"
-	label="MOD_SPORTSMANAGEMENT_RQUOTES_FIELD_TEXT_FILE_ROTATE" 
-	description="MOD_SPORTSMANAGEMENT_RQUOTES_FIELD_ROTATE_TEXT_FILE_DESC"
-	 >
-		<option value ="1">MOD_SPORTSMANAGEMENT_RQUOTES_SELECT_DAILY_TEXT</option>
-		<option value ="0">MOD_SPORTSMANAGEMENT_RQUOTES_SELECT_RANDOM_TEXT</option>
+	<field 	name="randomtext" 
+			type="extensionradiobutton" 
+			default="0" 
+			class="radio btn-group btn-group-yesno"
+			label="MOD_SPORTSMANAGEMENT_RQUOTES_FIELD_TEXT_FILE_ROTATE" 
+			description="MOD_SPORTSMANAGEMENT_RQUOTES_FIELD_ROTATE_TEXT_FILE_DESC" >
+			<option value ="1">MOD_SPORTSMANAGEMENT_RQUOTES_SELECT_DAILY_TEXT</option>
+			<option value ="0">MOD_SPORTSMANAGEMENT_RQUOTES_SELECT_RANDOM_TEXT</option>
 	</field>
 
 	
-	<field 
-	type="spacer" 
-	default=""
-	label="MOD_SPORTSMANAGEMENT_RQUOTES_LABEL_SELECT_DB" 
-	/>
-
-	
-
+	<field 	type="spacer" 
+			default=""
+			label="MOD_SPORTSMANAGEMENT_RQUOTES_LABEL_SELECT_DB" />
 	 
- <field 
- 		name="category" 
- 		type="category" 
-    extension="com_sportsmanagement"
- 
- 		default="" 
- 		label="JCATEGORY" 
- 		description="MOD_SPORTSMANAGEMENT_RQUOTES_FIELD_CATEGORY_DESC"
- 		multiple="true" 
-
- 		 /> 
+	<field 	name="category" 
+			type="category" 
+			extension="com_sportsmanagement"
+			default="" 
+			label="JCATEGORY" 
+			description="MOD_SPORTSMANAGEMENT_RQUOTES_FIELD_CATEGORY_DESC"
+			multiple="true"  /> 
 
 
- 	<field name="rotate" 
- 		type="list" 
- 		default="single_random" 
- 		label="MOD_SPORTSMANAGEMENT_RQUOTES_FIELD_LABEL_ROTATE" 
- 		description="MOD_SPORTSMANAGEMENT_RQUOTES_FIELD_ROTATE_DESC" >
+ 	<field 	name="rotate" 
+			type="list" 
+			default="single_random" 
+			label="MOD_SPORTSMANAGEMENT_RQUOTES_FIELD_LABEL_ROTATE" 
+			description="MOD_SPORTSMANAGEMENT_RQUOTES_FIELD_ROTATE_DESC" >
 			<option value ="single_random">SELECT_SINGLE_RANDOM</option>
 			<option value ="multiple_random">SELECT_MULTIPLE_RANDOM</option>
 			<option value ="sequential">SELECT_SEQUENTIAL</option>
@@ -172,106 +140,229 @@
 			<option value ="today">SELECT_DB_TODAY</option>
 	</field>
 	
-	<field 
-		name="num_of_random" 
-		type="text"
-		default="2" 
-		label="MOD_SPORTSMANAGEMENT_RQUOTES_NUMBER_RANDOM_QUOTES" 
-		description="MOD_SPORTSMANAGEMENT_RQUOTES_NUN_RANDOM_QUOTES_DESC" />
-		
-		<field name="@spacer" 
-		type="spacer" 
-		default="rotate_note" 
-		label="MOD_SPORTSMANAGEMENT_RQUOTES_STYLE_TEXT"
-		 description="MOD_SPORTSMANAGEMENT_RQUOTES_STYLE_TEXT_DESC" />
-		
-		
+	<field 	name="num_of_random" 
+			type="text"
+			default="2" 
+			label="MOD_SPORTSMANAGEMENT_RQUOTES_NUMBER_RANDOM_QUOTES" 
+			description="MOD_SPORTSMANAGEMENT_RQUOTES_NUN_RANDOM_QUOTES_DESC" />
 
-	<field name="style" 
-		type="list" 
-		default="default" 
-		label="MOD_SPORTSMANAGEMENT_RQUOTES_LABEL_DISPLAY_OPTIONS"
-		description="MOD_SPORTSMANAGEMENT_RQUOTES_LABEL_DISPLAY_OPTIONS_DESC">		
-			<option value="default">JDEFAULT</option>
-			<option value="bold">SELECT_BOLD</option>
-			<option value="italic">SELECT_ITALIC</option>
-			<option value="style">SELECT_CSS</option>
-	</field>
-		
-			
+	</fieldset>
 	
-	<field name="quotemarks" 
-		type="list" 
-		default="0" 
-		label="MOD_SPORTSMANAGEMENT_RQUOTES_LABEL_DISPLAY_QUOTATION_MARKS" 
-		description="MOD_SPORTSMANAGEMENT_RQUOTES_LABEL_DISPLAY_QUOTATION_MARKS_DESC">
-			<option value="0">JNO</option>
-			<option value="1">TEXT</option>
-			<option value="2">GRAPHIC</option>
-			<option value="3">CSS_STYLE</option>
-	</field>
 
-</fieldset>
+	<fieldset name="views"
+			  label="MOD_SPORTSMANAGEMENT_RQUOTES_VIEW"
+			  description="MOD_SPORTSMANAGEMENT_RQUOTES_VIEW_DESC">
 
-<fieldset
-name="advanced">
 
-<field 	name="table_class" type="list" default="table" 
-		class=""
+					<field 	name="@spacer" 
+							type="spacer" 
+							default="rotate_note" 
+							label="MOD_SPORTSMANAGEMENT_RQUOTES_STYLE_TEXT"
+							description="MOD_SPORTSMANAGEMENT_RQUOTES_STYLE_TEXT_DESC" />	
+
+					<field 	name="template" 
+							type="list" 
+							default="sticker" 
+							label="MOD_SPORTSMANAGEMENT_RQUOTES_LABEL_DISPLAY_OPTIONS"
+							description="MOD_SPORTSMANAGEMENT_RQUOTES_LABEL_DISPLAY_OPTIONS_DESC">		
+						<option value="default">JDEFAULT</option>
+						<option value="bold">SELECT_BOLD</option>
+						<option value="italic">SELECT_ITALIC</option>
+						<option value="style">SELECT_CSS</option>
+						<option value="sticker">Sticker</option>
+					</field>
+					
+	
+					<field 	name="quotemarks" 
+							type="list" 
+							default="0" 
+							label="MOD_SPORTSMANAGEMENT_RQUOTES_LABEL_DISPLAY_QUOTATION_MARKS" 
+							description="MOD_SPORTSMANAGEMENT_RQUOTES_LABEL_DISPLAY_QUOTATION_MARKS_DESC"
+							showon="template!:sticker">
+						<option value="0">JNO</option>
+						<option value="1">TEXT</option>
+						<option value="2">GRAPHIC</option>
+						<option value="3">CSS_STYLE</option>
+					</field>
+			
+					<field 	name="showpicture" 
+							type="extensionradiobutton" 
+							default="0" 
+							class="radio btn-group btn-group-yesno"
+							label="MOD_SPORTSMANAGEMENT_RQUOTES_SHOW_PICTURE" 
+							description="MOD_SPORTSMANAGEMENT_RQUOTES_SHOW_PICTURE_DESC">
+						<option value ="0">JNO</option>
+						<option value ="1">JYES</option>
+					
+					</field>			
+
+					<field 	name="picture" 
+							type="extensionradiobutton" 
+							default="1"
+							class="radio btn-group btn-group-yesno"
+							label="MOD_SPORTSMANAGEMENT_RQUOTES_BORDER" 
+							description="MOD_SPORTSMANAGEMENT_RQUOTES_BORDER_DESC"
+							showon="template:sticker">
+						<option value="0">JNO</option>
+						<option value="1">JYES</option>
+					</field>
+
+
+		
+					<field 	name="border" 
+							type="extensionradiobutton" 
+							default="1"
+							class="radio btn-group btn-group-yesno"
+							label="MOD_SPORTSMANAGEMENT_RQUOTES_BORDER" 
+							description="MOD_SPORTSMANAGEMENT_RQUOTES_BORDER_DESC"
+							showon="template:sticker">
+						<option value="0">JNO</option>
+						<option value="1">JYES</option>
+					</field>
+					
+					<field 	name="border_rounded" 
+							type="extensionradiobutton" 
+							default="1"
+							class="radio btn-group btn-group-yesno"
+							label="MOD_SPORTSMANAGEMENT_RQUOTES_BORDER_ROUNDED" 
+							description="MOD_SPORTSMANAGEMENT_RQUOTES_BORDER_ROUNDED_DESC"
+							showon="template:sticker">
+						<option value="0">JNO</option>
+						<option value="1">JYES</option>
+					</field>
+
+					<field 	name="border_shadow" 
+							type="extensionradiobutton" 
+							default="1"
+							class="radio btn-group btn-group-yesno"
+							label="MOD_SPORTSMANAGEMENT_RQUOTES_BORDER_SHADOW" 
+							description="MOD_SPORTSMANAGEMENT_RQUOTES_BORDER_SHADOW_DESC"
+							showon="template:sticker">
+						<option value="0">JNO</option>
+						<option value="1">JYES</option>
+					</field>
+
+					
+					<field 	name="border_color" type="text" default="#41008a"
+							label="MOD_SPORTSMANAGEMENT_RQUOTES_BORDER_COLOR" 
+							description="MOD_SPORTSMANAGEMENT_RQUOTES_BORDER_COLOR_DESC"
+							showon="template:sticker"/>	
+
+					<field 	name="background_color" type="text" default="#eee"
+							label="MOD_SPORTSMANAGEMENT_RQUOTES_BACK_COLOR" 
+							description="MOD_SPORTSMANAGEMENT_RQUOTES_BACK_COLOR_DESC"
+							showon="template:sticker"/>	
+							
+					<field 	name="author_italic" 
+							type="extensionradiobutton" 
+							default="1"
+							class="radio btn-group btn-group-yesno"
+							label="MOD_SPORTSMANAGEMENT_RQUOTES_TEXT_ITALIC" 
+							description="MOD_SPORTSMANAGEMENT_RQUOTES_TEXT_ITALIC_DESC"
+							showon="template:sticker">
+						<option value="0">JNO</option>
+						<option value="1">JYES</option>
+					</field>								
+							
+					<field 	name="author_color" type="text" default="#000000"
+							label="MOD_SPORTSMANAGEMENT_RQUOTES_AUTHOR_COLOR" 
+							description="MOD_SPORTSMANAGEMENT_RQUOTES_AUTHOR_COLOR_DESC"
+							showon="template:sticker"/>	
+					
+					<field 	name="author_size" type="text" default="18"
+							label="MOD_SPORTSMANAGEMENT_RQUOTES_AUTHOR_SIZE" 
+							description="MOD_SPORTSMANAGEMENT_RQUOTES_AUTHOR_SIZE_DESC"
+							showon="template:sticker"/>	
+							
+					<field 	name="text_italic" 
+							type="extensionradiobutton" 
+							default="1"
+							class="radio btn-group btn-group-yesno"
+							label="MOD_SPORTSMANAGEMENT_RQUOTES_AUTHOR_ITALIC" 
+							description="MOD_SPORTSMANAGEMENT_RQUOTES_AUTHOR_ITALIC_DESC"
+							showon="template:sticker">
+						<option value="0">JNO</option>
+						<option value="1">JYES</option>
+					</field>	
+
+					<field 	name="author_align" 
+							type="extensionradiobutton" 
+							default="1"
+							class="radio btn-group btn-group-yesno"
+							label="MOD_SPORTSMANAGEMENT_RQUOTES_AUTHOR_ALIGN" 
+							description="MOD_SPORTSMANAGEMENT_RQUOTES_AUTHOR_ALIGN_DESC"
+							showon="template:sticker">
+						<option value="0">MOD_SPORTSMANAGEMENT_RQUOTES_AUTHOR_ALIGN_LEFT</option>
+						<option value="1">MOD_SPORTSMANAGEMENT_RQUOTES_AUTHOR_ALIGN_RIGHT</option>
+					</field>					
+							
+					
+					<field 	name="text_color" type="text" default="#000000"
+							label="MOD_SPORTSMANAGEMENT_RQUOTES_TEXT_COLOR" 
+							description="MOD_SPORTSMANAGEMENT_RQUOTES_TEXT_COLOR_DESC"
+							showon="template:sticker"/>	
+					
+					<field 	name="text_size" type="text" default="14"
+							label="MOD_SPORTSMANAGEMENT_RQUOTES_TEXT_SIZE" 
+							description="MOD_SPORTSMANAGEMENT_RQUOTES_TEXT_SIZE_DESC"
+							showon="template:sticker"/>	
+						
+			</fieldset>
+	
+
+	<fieldset name="advanced">
+
+		<field 	name="table_class" type="list" default="table" 
+				class=""
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
-			<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
-			<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
-			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
-			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
-			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
+				<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
+				<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
+				<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
+				<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
+				<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
 			
-		</field>
+			</field>
 		
-<field
-name="layout"
-type="modulelayout"
-label="JFIELD_ALT_LAYOUT_LABEL"
-description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+		<field	name="layout"
+				type="modulelayout"
+				label="JFIELD_ALT_LAYOUT_LABEL"
+				description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
 
-<field
-name="moduleclass_sfx"
-default="container-fluid"
-type="text"
-label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
-description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+		<field	name="moduleclass_sfx"
+				default="container-fluid"
+				type="text"
+				label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+				description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
 
-<field
-name="cache"
-type="list"
-default="1"
-label="COM_MODULES_FIELD_CACHING_LABEL"
-description="COM_MODULES_FIELD_CACHING_DESC">
-<option value="1">JGLOBAL_USE_GLOBAL</option>
-<option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
-</field>
+		<field	name="cache"
+				type="list"
+				default="1"
+				label="COM_MODULES_FIELD_CACHING_LABEL"
+				description="COM_MODULES_FIELD_CACHING_DESC">
+				<option value="1">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+		</field>
 
-<field
-name="cache_time"
-type="text"
-default="900"
-label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
-description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
+		<field 	name="cache_time"
+				type="text"
+				default="900"
+				label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
+				description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
 
-<field
-name="cachemode"
-type="hidden"
-default="itemid">
-<option value="itemid"></option>
-</field>
+		<field	name="cachemode"
+				type="hidden"
+				default="itemid">
+				<option value="itemid"></option>
+		</field>
 
-</fieldset>
+	</fieldset>
 
 </fields>
 </config>
 
 <updateservers>
-<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/modules/mod_sportsmanagement_rquotes/update-server.xml</server>
+	<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/modules/mod_sportsmanagement_rquotes/update-server.xml</server>
 </updateservers>
 
 </extension>

@@ -6,7 +6,7 @@
  * @subpackage models
  * @file       round.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -154,7 +154,7 @@ class sportsmanagementModelround extends JSMModelAdmin
 
 		for ($x = 0; $x < count($pks); $x++)
 		{
-			$tblRound             = $this->getTable();
+			$tblRound             = new stdClass();
 			$tblRound->id         = $pks[$x];
 			$tblRound->roundcode  = $post['roundcode' . $pks[$x]];
 			$tblRound->tournement = $post['tournementround' . $pks[$x]];
@@ -165,24 +165,46 @@ class sportsmanagementModelround extends JSMModelAdmin
 			// Set the values
 			$tblRound->modified    = $date->toSql();
 			$tblRound->modified_by = $user->get('id');
-
+			
+			if ( !$post['round_date_first' . $pks[$x]] )
+			{
+			$tblRound->round_date_first = '0000-00-00';
+			$tblRound->round_date_last  = '0000-00-00';	
+			$tblRound->rdatefirst_timestamp = 0;
+			$tblRound->rdatelast_timestamp  = 0;
+			}
+			else
+			{
 			$tblRound->round_date_first = sportsmanagementHelper::convertDate($post['round_date_first' . $pks[$x]], 0);
-			$tblRound->round_date_last  = sportsmanagementHelper::convertDate($post['round_date_last' . $pks[$x]], 0);;
+			$tblRound->round_date_last  = sportsmanagementHelper::convertDate($post['round_date_last' . $pks[$x]], 0);
+			$tblRound->rdatefirst_timestamp = sportsmanagementHelper::getTimestamp($tblRound->round_date_first);
+			$tblRound->rdatelast_timestamp  = sportsmanagementHelper::getTimestamp($tblRound->round_date_last);	
+			}
 
+			
+/**
 			if (($tblRound->round_date_last == '0000-00-00' || $tblRound->round_date_last == '') && $tblRound->round_date_first != '0000-00-00')
 			{
 				$tblRound->round_date_last = $tblRound->round_date_first;
 			}
-
-			$tblRound->rdatefirst_timestamp = sportsmanagementHelper::getTimestamp($tblRound->round_date_first);
-			$tblRound->rdatelast_timestamp  = sportsmanagementHelper::getTimestamp($tblRound->round_date_last);
-
-			if (!$tblRound->store())
-			{
-				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-
-				return false;
-			}
+*/
+			
+			
+try{
+	//$tblRound->store();
+	$resultupdate = Factory::getDbo()->updateObject('#__sportsmanagement_round', $tblRound, 'id', true);
+	}
+		catch (Exception $e)
+		{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+			return false;
+		}
+			
+			
+			
+			
+			
 		}
 
 		return Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_SAVE');
@@ -198,7 +220,20 @@ class sportsmanagementModelround extends JSMModelAdmin
 		$post            = Factory::getApplication()->input->post->getArray(array());
 		$project_id      = $this->jsmapp->getUserState("$this->jsmoption.pid", '0');
 		$add_round_count = (int) $post['add_round_count'];
+		$project_type = $post['project_type'];
 		$max = 0;
+		$round_divisions_league4 = array();
+		$round_divisions_league4[1] = 'Gruppenspiele';
+		$round_divisions_league4[2] = 'Halbfinale';
+		$round_divisions_league4[3] = '3.Platz';
+		$round_divisions_league4[4] = 'Finale';
+		
+		$round_divisions_league5 = array();
+		$round_divisions_league5[1] = 'Gruppenspiele';
+		$round_divisions_league5[2] = 'Viertelfinale';
+		$round_divisions_league5[3] = 'Halbfinale';
+		$round_divisions_league5[4] = '3.Platz';
+		$round_divisions_league5[5] = 'Finale';
 
 		if ($add_round_count > 0) // Only MassAdd a number of new and empty rounds
 		{
@@ -212,7 +247,38 @@ class sportsmanagementModelround extends JSMModelAdmin
 				$tblRound             =& $this->getTable();
 				$tblRound->project_id = $project_id;
 				$tblRound->roundcode  = $max;
-				$tblRound->name       = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_CTRL_ROUND_NAME', $max);
+				
+				if ( $add_round_count == 4 )
+				{
+				switch ( $project_type )
+				{
+				case 'DIVISIONS_LEAGUE':
+				$tblRound->name = $round_divisions_league4[$i];		
+				break;
+				default:
+				$tblRound->name = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_CTRL_ROUND_NAME', $max);
+				break;
+				}	
+				}
+				elseif ( $add_round_count == 5 )
+				{
+				switch ( $project_type )
+				{
+				case 'DIVISIONS_LEAGUE':
+				$tblRound->name = $round_divisions_league5[$i];		
+				break;
+				default:
+				$tblRound->name = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_CTRL_ROUND_NAME', $max);
+				break;
+				}	
+				}
+				else
+				{
+				$tblRound->name = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_CTRL_ROUND_NAME', $max);	
+				}
+				
+				
+				
                 $tblRound->alias = OutputFilter::stringURLSafe($tblRound->name);
                 $tblRound->modified         = $this->jsmdate->toSql();
 		        $tblRound->modified_by      = $this->jsmuser->get('id');
@@ -288,13 +354,7 @@ class sportsmanagementModelround extends JSMModelAdmin
 	public function deleteRoundMatches($pks = array())
 	{
 		$app = Factory::getApplication();
-
-		// Ein Datenbankobjekt beziehen
-
 		$db = Factory::getDbo();
-
-		// Ein JDatabaseQuery Objekt beziehen
-
 		$query = $db->getQuery(true);
 
 		if (count($pks))
@@ -348,7 +408,7 @@ class sportsmanagementModelround extends JSMModelAdmin
 				$temp->field = $field;
 				$temp->id    = $id;
 				$export[]    = $temp;
-			}
+			
 
 			$this->_tables_to_delete = array_merge($export);
 
@@ -356,7 +416,7 @@ class sportsmanagementModelround extends JSMModelAdmin
 			foreach ($this->_tables_to_delete as $row_to_delete)
 			{
 				$query->clear();
-				$query->delete()->from('#__' . COM_SPORTSMANAGEMENT_TABLE . $row_to_delete->table)->where($row_to_delete->field . ' IN (' . $row_to_delete->id . ')');
+				$query->delete()->from('#__sportsmanagement' . $row_to_delete->table)->where($row_to_delete->field . ' IN (' . $row_to_delete->id . ')');
 				Factory::getDbo()->setQuery($query);
 				sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 
@@ -365,6 +425,7 @@ class sportsmanagementModelround extends JSMModelAdmin
 					$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT' . strtoupper($row_to_delete->table) . '_ITEMS_DELETED', self::$db_num_rows), '');
 				}
 			}
+				}
 		}
 
 		return true;

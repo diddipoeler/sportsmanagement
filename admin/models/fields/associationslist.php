@@ -1,19 +1,15 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage fields
  * @file       associationslist.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -21,7 +17,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
-
 
 /**
  * FormFieldAssociationsList
@@ -52,40 +47,86 @@ class JFormFieldAssociationsList extends \JFormFieldList
 	{
 		$app      = Factory::getApplication();
 		$option   = Factory::getApplication()->input->getCmd('option');
+        $view   = Factory::getApplication()->input->getCmd('view');
+        $db    = Factory::getDbo();
+		$query = $db->getQuery(true);
 		$selected = 0;
-
-		// Initialize variables.
+        $country = '';
 		$options   = array();
 		$vartable  = (string) $this->element['targettable'];
 		$select_id = Factory::getApplication()->input->getVar('id');
+        $post = Factory::getApplication()->input->post->getArray();
+        
+        //Factory::getApplication()->enqueueMessage('<pre>'.print_r($view,true)      .'</pre>', 'error');
+        //Factory::getApplication()->enqueueMessage('<pre>'.print_r($post,true)      .'</pre>', 'error');
 
 		if (is_array($select_id))
 		{
 			$select_id = $select_id[0];
 		}
 
-		if ($select_id)
+switch ($view)
+{
+    case 'leagues':
+    $country = $post['filter']['search_nation'];
+    if ( $country )
+    {
+        $query->clear();
+    $query->select('t.id AS value, t.name AS text');
+			$query->from('#__sportsmanagement_associations AS t');
+			$query->where("t.country = '" . $country . "'");
+			$query->where('t.parent_id = 0');
+			$query->order('t.name');
+	    try{
+			$db->setQuery($query);
+			$options = $db->loadObjectList();    
+         }
+		catch (Exception $e)
 		{
-			$db    = Factory::getDbo();
-			$query = $db->getQuery(true);
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+
+		}
+    }
+    
+    break;
+    default:
+    if ($select_id)
+		{
+			
+            $query->clear();
 			$query->select('country');
 			$query->from('#__sportsmanagement_' . $vartable . ' AS t');
 			$query->where('t.id = ' . $select_id);
+	    try{
 			$db->setQuery($query);
 			$country = $db->loadResult();
+ }
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 
-			$db    = Factory::getDbo();
-			$query = $db->getQuery(true);
+		}
+		
+			$query->clear();
 
 			$query->select('t.id AS value, t.name AS text');
 			$query->from('#__sportsmanagement_associations AS t');
 			$query->where("t.country = '" . $country . "'");
 			$query->where('t.parent_id = 0');
 			$query->order('t.name');
+	    try{
 			$db->setQuery($query);
-
 			$sections = $db->loadObjectList();
+ }
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 
+		}
+		
 			$categoryparent = empty($sections) ? 0 : $sections[0]->value;
 
 			$list = $this->JJ_categoryArray(0, $country);
@@ -103,36 +144,43 @@ class JFormFieldAssociationsList extends \JFormFieldList
 				$options [] = HTMLHelper::_('select.option', $item->id, $item->treename, 'value', 'text', !$sections && $item->section);
 			}
 		}
+    break;
+    
+}
+		
 
-		// Merge any additional options in the XML definition.
+		/** Merge any additional options in the XML definition. */
 		$options = array_merge(parent::getOptions(), $options);
 
 		return $options;
 	}
 
+
 	/**
-	 * FormFieldAssociationsList::JJ_categoryArray()
-	 *
-	 * @param   integer  $admin
-	 * @param   mixed    $country
-	 *
+	 * JFormFieldAssociationsList::JJ_categoryArray()
+	 * 
+	 * @param integer $admin
+	 * @param string $country
 	 * @return
 	 */
-	function JJ_categoryArray($admin = 0, $country)
+	function JJ_categoryArray($admin = 0, $country = '')
 	{
 		$db = sportsmanagementHelper::getDBConnection();
+        $query     = $db->getQuery(true);
+        $query->clear();
+        
+        $query->select('*');
+        $query->from('#__sportsmanagement_associations');
+        $query->where('country LIKE ' . $db->Quote('' . $country . ''));
+        $query->order('ordering, name');
 
-		// Get a list of the menu items
-		$query = "SELECT * FROM #__sportsmanagement_associations where country = '" . $country . "'";
-
-		$query .= " ORDER BY ordering, name";
 		$db->setQuery($query);
 		$items = $db->loadObjectList();
 
-		// Establish the hierarchy of the menu
+		/** Establish the hierarchy of the menu */
 		$children = array();
 
-		// First pass - collect children
+		/** First pass - collect children */
 		foreach ($items as $v)
 		{
 			$pt   = $v->parent_id;
@@ -141,7 +189,7 @@ class JFormFieldAssociationsList extends \JFormFieldList
 			$children[$pt] = $list;
 		}
 
-		// Second pass - get an indent list of the items
+		/** Second pass - get an indent list of the items */
 		$array = $this->fbTreeRecurse(0, '', array(), $children, 10, 0, 1);
 
 		return $array;

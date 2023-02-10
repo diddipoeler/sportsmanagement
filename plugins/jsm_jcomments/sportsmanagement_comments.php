@@ -8,12 +8,13 @@
  * @subpackage plugins
  * @file       sportsmanagement_comments.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @package    sportsmanagement
  */
 
 defined('_JEXEC') or die;
+use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Factory;
 
@@ -26,7 +27,7 @@ use Joomla\CMS\Factory;
  * @version   $Id$
  * @access    public
  */
-class plgContentSportsmanagement_Comments extends JPlugin
+class plgContentSportsmanagement_Comments extends CMSPlugin
 {
 
     public $params = null;
@@ -60,7 +61,7 @@ class plgContentSportsmanagement_Comments extends JPlugin
             }
         }
       
-        JPlugin::loadLanguage('plg_sportsmanagement_comments', JPATH_ADMINISTRATOR);
+        CMSPlugin::loadLanguage('plg_sportsmanagement_comments', JPATH_ADMINISTRATOR);
     }
 
     /**
