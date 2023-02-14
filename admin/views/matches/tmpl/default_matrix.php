@@ -90,7 +90,7 @@ $teams = array();
 
 	$k = 0;
 
-	for ($rows = 0; $rows <= count($teams); $rows++)
+	for ($rows = 0; $rows <= count($teams); $rows++) if ( is_array($teams) )
 	{
 		if ($rows == 0)
 		{
