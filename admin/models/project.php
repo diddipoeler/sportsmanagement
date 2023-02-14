@@ -330,6 +330,7 @@ catch (Exception $e)
 	function getProjectTeamsOptions($project_id, $iDivisionId = 0)
 	{
 		$app = Factory::getApplication();
+		$result = array();
 
 		// JInput object
 		$jinput               = $app->input;
@@ -374,7 +375,7 @@ catch (Exception $e)
 		{
 			Log::add($db->getErrorMsg());
 
-			return false;
+			return $result;
 		}
 		else
 		{
