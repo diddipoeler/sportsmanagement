@@ -33,28 +33,18 @@ class sportsmanagementViewCurrentseasons extends sportsmanagementView
 	public function init()
 	{
 
-		if ($this->items)
-		{
-			foreach ($this->items as $item)
-			{
-				$item->count_projectdivisions = 0;
-				$mdlProjectDivisions          = BaseDatabaseModel::getInstance("divisions", "sportsmanagementModel");
+		if ($this->items) {
+			$mdlProjectDivisions = BaseDatabaseModel::getInstance("divisions", "sportsmanagementModel");
+			$mdlProjectPositions = BaseDatabaseModel::getInstance("Projectpositions", "sportsmanagementModel");
+			$mdlProjectReferees = BaseDatabaseModel::getInstance("Projectreferees", "sportsmanagementModel");
+			$mdlProjecteams = BaseDatabaseModel::getInstance("Projectteams", "sportsmanagementModel");
+			$mdlRounds = BaseDatabaseModel::getInstance("Rounds", "sportsmanagementModel");
+
+			foreach ($this->items as $item) {
 				$item->count_projectdivisions = $mdlProjectDivisions->getProjectDivisionsCount($item->id);
-
-				$item->count_projectpositions = 0;
-				$mdlProjectPositions          = BaseDatabaseModel::getInstance("Projectpositions", "sportsmanagementModel");
 				$item->count_projectpositions = $mdlProjectPositions->getProjectPositionsCount($item->id);
-
-				$item->count_projectreferees = 0;
-				$mdlProjectReferees          = BaseDatabaseModel::getInstance("Projectreferees", "sportsmanagementModel");
 				$item->count_projectreferees = $mdlProjectReferees->getProjectRefereesCount($item->id);
-
-				$item->count_projectteams = 0;
-				$mdlProjecteams           = BaseDatabaseModel::getInstance("Projectteams", "sportsmanagementModel");
 				$item->count_projectteams = $mdlProjecteams->getProjectTeamsCount($item->id);
-
-				$item->count_matchdays = 0;
-				$mdlRounds             = BaseDatabaseModel::getInstance("Rounds", "sportsmanagementModel");
 				$item->count_matchdays = $mdlRounds->getRoundsCount($item->id);
 			}
 		}
@@ -71,7 +61,7 @@ class sportsmanagementViewCurrentseasons extends sportsmanagementView
 
 		// Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_TITLE');
-		$this->icon  = 'currentseason';
+		$this->icon = 'currentseason';
 
 		parent::addToolbar();
 	}
