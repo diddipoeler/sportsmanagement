@@ -355,7 +355,7 @@ class JSMCountries
 			default: $countrycode = $iso2; break;
 			}
 			$countrycode = strtolower($countrycode);
-			$html        = '<span class="flag-icon flag-icon-' . $countrycode . '"></span>';
+			$html        = '<span class="fi fi-' . $countrycode . '"></span>';
 		}
 	}
 
