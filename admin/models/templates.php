@@ -75,9 +75,9 @@ class sportsmanagementModelTemplates extends JSMModelList
 	 *
 	 * @return
 	 */
-	function getMasterTemplatesList()
+	function getMasterTemplatesList($_getALL = 0)
 	{
-
+$this->_getALL = $_getALL;
 		$this->jsmquery->clear();
 
 		// Get current project settings
