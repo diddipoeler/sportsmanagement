@@ -55,8 +55,8 @@ class sportsmanagementViewTemplates extends sportsmanagementView
 
 		if ($project->master_template) {
 			// Get all master templates from another project
-			$allMasterTemplates = $this->model->getMasterTemplatesList(_getALL, 1);
-			$masterTemplates = $this->model->getMasterTemplatesList(_getALL, 0);
+			$allMasterTemplates = $this->model->getMasterTemplatesList(1);
+			$masterTemplates = $this->model->getMasterTemplatesList(0);
 
 			// Update the text of template titles
 			foreach ($masterTemplates as $temptext) {
