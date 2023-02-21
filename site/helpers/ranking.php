@@ -808,7 +808,35 @@ class JSMRanking
 			$res = $db->loadObjectList();
 		}
 
-//echo __LINE__.'<pre>'.print_r($res,true).'</pre>';
+		
+ if (!$res )
+		{
+			$query->clear();
+			$query->select('pt.id AS ptid, pt.is_in_score, pt.start_points, pt.division_id');
+			$query->select('t.name, t.id as teamid, pt.neg_points_finally');
+			$query->select('pt.use_finally, pt.points_finally,pt.matches_finally,pt.won_finally,pt.draws_finally,pt.lost_finally');
+			$query->select('pt.homegoals_finally, pt.guestgoals_finally,pt.diffgoals_finally,pt.penalty_points,pt.finaltablerank');
+			$query->select('CONCAT_WS(\':\',pt.id,t.alias) AS ptid_slug');
+			$query->from('#__sportsmanagement_project_team AS pt ');
+			$query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.id = pt.team_id');
+			$query->join('INNER', '#__sportsmanagement_team AS t ON st1.team_id = t.id ');
+          //$query->join('INNER', '#__sportsmanagement_project_team_division AS ptd ON ptd.team_id = pt.id and ptd.project_id = pt.project_id');
+			$query->where('pt.project_id = ' . $pid);
+			$query->where('pt.is_in_score = 1');
+          $query->where('pt.use_finally = 1');
+          //$query->where('ptd.division_id = ' . $division);
+			$db->setQuery($query);
+			$res = $db->loadObjectList();
+		}
+
+
+      //echo __LINE__.' dump <pre>'.print_r($query->dump(),true).'</pre>'; 
+      
+//echo __LINE__.' division <pre>'.print_r($division,true).'</pre>';      
+//echo __LINE__.' res <pre>'.print_r($res,true).'</pre>';		
+		
+		
+
 
 		$teams = array();
 
