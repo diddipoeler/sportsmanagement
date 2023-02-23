@@ -46,7 +46,7 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel
 	/**
 	 * Returns a reference to the a Table object, always creating it.
 	 *
-	 * @param   type    The table type to instantiate
+	 * @param   type  $type  The table type to instantiate
 	 * @param   string    A prefix for the table class name. Optional.
 	 * @param   array    Configuration array for model. Optional.
 	 *
@@ -81,7 +81,8 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel
 	/**
 	 * sportsmanagementModelsmimageimport::import()
 	 *
-	 * @return
+	 * @return false|void
+	 * @throws Exception
 	 */
 	function import()
 	{
@@ -208,7 +209,8 @@ Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text
 					else
 					{
                         Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_UNZIP_DONE', $name), Log::NOTICE, 'jsmerror');
-						$object->id        = $value;
+						$object = new stdClass();
+						$object->id = $value;
 						$object->published = 1;
 						$result = Factory::getDbo()->updateObject('#__sportsmanagement_pictures', $object, 'id');
 					}
