@@ -16,7 +16,6 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 
-
 /**
  * sportsmanagementViewClubInfo
  *
