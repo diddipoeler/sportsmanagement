@@ -421,16 +421,16 @@ use Joomla\CMS\Factory;
 						if ($team1 > $team2)
 						{
 							echo '<td align="center" valign="middle">' .
-								HTMLHelper::image("media/com_sportsmanagement/jl_images/thumbs_up.png",
-									"thumbs_up.png",
+								HTMLHelper::image("media/com_sportsmanagement/jl_images/won.png",
+									"won.png",
 									array("title" => Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_WON'))
 								) . "&nbsp;</td>";
 						}
                         elseif ($team2 > $team1)
 						{
 							echo '<td align="center" valign="middle">' .
-								HTMLHelper::image("media/com_sportsmanagement/jl_images/thumbs_down.png",
-									"thumbs_down.png",
+								HTMLHelper::image("media/com_sportsmanagement/jl_images/lost.png",
+									"lost.png",
 									array("title" => Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_LOST'))
 								) . "&nbsp;</td>";
 						}
