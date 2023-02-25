@@ -107,6 +107,15 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
 		/** clubhistory	 */
 		$this->clubhistory     = sportsmanagementModelClubInfo::getClubHistory($this->club->id);
 		$this->clubhistoryhtml = sportsmanagementModelClubInfo::getClubHistoryHTML($this->club->id);
+        
+        if ( $this->club->new_club_id )
+        {
+        $this->clubhistoryhtml = sportsmanagementModelClubInfo::getClubHistoryHTML($this->club->new_club_id);
+        $this->new_club = sportsmanagementModelClubInfo::getClub(0,$this->club->new_club_id);    
+        
+//        echo 'clubhistoryhtml<pre>'.print_r($this->clubhistoryhtml,true).'</pre>';
+//        echo 'new_club<pre>'.print_r($this->new_club,true).'</pre>';
+        }
 
 		$this->clubhistoryfamilytree = sportsmanagementModelClubInfo::fbTreeRecurse($this->club->id, '', array(), sportsmanagementModelClubInfo::$tree_fusion, 10, 0, 1);
 		$this->genfamilytree         = sportsmanagementModelClubInfo::generateTree($this->club->id, $this->config['show_bootstrap_tree']);
