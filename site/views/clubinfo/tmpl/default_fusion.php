@@ -44,6 +44,14 @@ use Joomla\CMS\Log\Log;
 								?>
 							</li>
 						</ul>
+                        
+                        <?php
+                        if ( $this->clubhistoryhtml )
+                        {
+                            echo $this->clubhistoryhtml;
+                        }
+                        
+                        ?>
 					</div>
 
 				</div>
