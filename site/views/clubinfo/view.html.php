@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * sportsmanagementViewClubInfo
@@ -110,11 +111,24 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
         
         if ( $this->club->new_club_id )
         {
-        $this->clubhistoryhtml = sportsmanagementModelClubInfo::getClubHistoryHTML($this->club->new_club_id);
-        $this->new_club = sportsmanagementModelClubInfo::getClub(0,$this->club->new_club_id);    
+        sportsmanagementModelClubInfo::$club = NULL;    
+        $this->new_club = sportsmanagementModelClubInfo::getClub(0,$this->club->new_club_id);  
+          
+        $this->clubhistoryhtml = '<ul>';  
+          
+          
+        $link       = sportsmanagementHelperRoute::getClubInfoRoute($this->project->id, $this->new_club->id, null, Factory::getApplication()->input->getInt('cfg_which_database', 0) );  
+        $imageTitle = Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_HISTORY_FROM');
+        $this->clubhistoryhtml .= HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/club_from.png', $imageTitle, 'title= "' . $imageTitle . '"');
+		$this->clubhistoryhtml .= "&nbsp;";
+		$this->clubhistoryhtml .= HTMLHelper::link($link,  $this->new_club->name);
+        $this->clubhistoryhtml .= '<ul>';  
+        $this->clubhistoryhtml .= sportsmanagementModelClubInfo::getClubHistoryHTML($this->club->new_club_id);
+        $this->clubhistoryhtml .= '</ul>';  
+        $this->clubhistoryhtml .= '</ul>';  
         
-//        echo 'clubhistoryhtml<pre>'.print_r($this->clubhistoryhtml,true).'</pre>';
-//        echo 'new_club<pre>'.print_r($this->new_club,true).'</pre>';
+//echo __LINE__.' clubhistoryhtml<pre>'.print_r($this->clubhistoryhtml,true).'</pre>';
+//echo 'new_club<pre>'.print_r($this->new_club,true).'</pre>';
         }
 
 		$this->clubhistoryfamilytree = sportsmanagementModelClubInfo::fbTreeRecurse($this->club->id, '', array(), sportsmanagementModelClubInfo::$tree_fusion, 10, 0, 1);
