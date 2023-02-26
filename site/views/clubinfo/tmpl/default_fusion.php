@@ -46,7 +46,7 @@ use Joomla\CMS\Log\Log;
 						</ul>
                         
                         <?php
-                        if ( $this->clubhistoryhtml )
+                        if ( $this->club->new_club_id )
                         {
                             echo $this->clubhistoryhtml;
                         }
