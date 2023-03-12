@@ -219,8 +219,15 @@ class modJSMprojectmaphelper
 
 		//echo '<pre>'.print_r($regions,true).'</pre>';    
 		//echo '<pre>'.print_r(implode(",",$regions),true).'</pre>';      
-
+if ( is_array($regions) )
+{
 		return implode(",\n", $regions);
+}
+		else
+		{
+		return '';	
+		}
+		
 	}
 
 
