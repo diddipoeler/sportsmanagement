@@ -278,6 +278,17 @@ federation_picture
 
 		//echo '<pre>'.print_r($state_specific,true).'</pre>';    
 		//echo '<pre>'.print_r(implode(",",$state_specific),true).'</pre>';  
+		
+if ( is_array($state_specific) )
+{
 		return implode(",\n", $state_specific);
+}
+		else
+		{
+		return '';	
+		}		
+		
+		
+		
 	}
 }
