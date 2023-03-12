@@ -129,8 +129,17 @@ class modJSMprojectmaphelper
 		$db     = Factory::getDBO();
 		$query  = $db->getQuery(true);
 		$result = array();
+		
+		if ( is_array($season_ids) )
+		{
+		$seasons = implode(",", $season_ids);	
+		}
+		else
+		{
+		$seasons = $season_ids;		
+		}
 
-		$seasons = implode(",", $season_ids);
+		
 		$query->select('MAX( pro.id ) as id,pro.name,CONCAT_WS(\':\',pro.id,pro.alias) AS project_slug,le.name as liganame,le.country');
 		$query->select('le.picture as league_picture,pro.picture as project_picture');
 		$query->select('CONCAT_WS(\':\',r.id,r.alias) AS roundcode');
