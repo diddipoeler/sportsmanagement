@@ -193,8 +193,15 @@ class modJSMprojectmaphelper
 			$regionscountry[$project->country_federation][] = $project->country_alpha2;
 			$regionsimage[$project->country_federation] = $project->federation_picture;
 		}
+		if ( is_array($regionsname) )
+		{
 		ksort($regionsname);
+		}
+		
+		if ( is_array($regionscountry) )
+		{
 		ksort($regionscountry);
+		}
 		//echo '<pre>'.print_r($regionsname,true).'</pre>';
 		//echo '<pre>'.print_r($regionscountry,true).'</pre>';  
 		//echo '<pre>'.print_r($regionsimage,true).'</pre>';
