@@ -31,21 +31,35 @@ HTMLHelper::_('behavior.tooltip');
 
     <div class="container-fluid">
 
+
+
+
+
+
+
         <!-- Nav tabs -->
-        <ul class="nav nav-tabs" role="tablist">
+        <ul class="nav nav-tabs" >
 
 			<?PHP
 			foreach ($tab_points as $key => $value)
 			{
 				$fed_array = strtoupper($value);
 				$active    = ($value == $country_federation) ? 'active' : '';
+				$selected    = ($value == $country_federation) ? 'show active' : '';
 				?>
 
 
-                <li role="presentation" class="<?php echo $active ?>"><a
-                            href="#jlajaxtopmenu-<?php echo $value ?><?php echo $module->id ?>"
-                            aria-controls="jlajaxtopmenu-<?php echo $value ?><?php echo $module->id ?>" role="tab"
-                            data-toggle="tab"><?php echo Text::_(strtoupper($value)) ?></a></li>
+                <li  class="nav-item">
+				<a class="nav-link <?php echo $active ?>"
+				
+				
+                href="#jlajaxtopmenu-<?php echo $value ?><?php echo $module->id ?>"
+                
+				
+                data-bs-toggle="tab">
+				<?php echo Text::_(strtoupper($value)) ?>
+				</a>
+				</li>
 
 				<?PHP
 			}
@@ -61,11 +75,13 @@ HTMLHelper::_('behavior.tooltip');
 			{
 				$fed_array = strtoupper($value);
 				$active    = ($value == $country_federation) ? 'active' : '';
+				$selected    = ($value == $country_federation) ? 'show active' : '';
 				?>
                 <!--jlajaxtopmenu<?php echo $value ?>-<?php echo $module->id ?> start-->
 
-                <div role="tabpanel" class="tab-pane <?php echo $active ?>"
-                     id="jlajaxtopmenu-<?php echo $value ?><?php echo $module->id ?>">
+                <div  class="tab-pane fade <?php echo $selected ?>"
+                     id="jlajaxtopmenu-<?php echo $value ?><?php echo $module->id ?>"
+					 >
 					<?PHP
 					if ($country_id)
 					{
