@@ -47,6 +47,8 @@ if (!class_exists('sportsmanagementHelper'))
 	BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
+JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
+
 /** Include the functions only once */
 JLoader::register('modjsmfirstleagueoverview', __DIR__ . '/helper.php');
 
