@@ -39,7 +39,9 @@ $ausgabe = '';
 
 if (!empty($this->overallconfig))
 {
-	if ($this->overallconfig['show_project_sporttype_picture'] && isset($this->overallconfig['show_project_sporttype_picture']))
+	//echo '<pre>'.print_r($this->overallconfig,true).'</pre>';
+    //echo '<pre>'.print_r($this->config,true).'</pre>';
+    if ($this->overallconfig['show_project_sporttype_picture'] && isset($this->overallconfig['show_project_sporttype_picture']))
 	{
 		$nbcols++;
 	}
@@ -65,7 +67,7 @@ if (!empty($this->overallconfig))
 		<div class="<?php echo $this->divclassrow; ?>" id="projectheading" itemscope="itemscope" itemtype="http://schema.org/SportsOrganization">
 			<table class="table">
 				<?php
-                if ($this->overallconfig['show_project_extrafield'])
+                if ($this->config['show_project_extrafield'])
 				{
                 $this->extrafields = sportsmanagementHelper::getUserExtraFields($this->project->league_id, 'frontend', 0,Factory::getApplication()->input->get('view'));
                 $title = $this->project->league_name;
