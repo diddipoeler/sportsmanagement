@@ -206,7 +206,7 @@ $colors   = $list['colors'];
 				$routeparameter['from']               = 0;
 				$routeparameter['to']                 = 0;
 				$routeparameter['division']           = $divisionid;
-		    $routeparameter['Itemid']                 = 0;
+		    //$routeparameter['Itemid']                 = 0;
 				$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);
 		    
 				echo HTMLHelper::link($link, Text::_('MOD_SPORTSMANAGEMENT_RANKING_VIEW_FULL_TABLE')); ?></p>
