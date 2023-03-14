@@ -14,7 +14,8 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
-
+$start = 0;
+$show = '';
 //echo '<pre>'.print_r($firstleagueoverview,true).'</pre>';
 ?>
 <div class="">
@@ -33,6 +34,7 @@ echo Text::_('MOD_SPORTSMANAGEMENT_FIRSTLEAGUEOVERVIEW_DESCRIPTION');
 <?php	
 foreach ($federations as $key => $value)
 {
+$show = $start = 0 ? 'show' : '';	
 ?>
 
 
@@ -45,7 +47,7 @@ foreach ($federations as $key => $value)
       </button>
     </h2>
     
-<div id="collapse<?php echo $value->name;?>" class="accordion-collapse collapse " aria-labelledby="heading<?php echo $value->name;?>" data-bs-parent="#accordionExample">
+<div id="collapse<?php echo $value->name;?>" class="accordion-collapse collapse <?php echo $show;?>" aria-labelledby="heading<?php echo $value->name;?>" data-bs-parent="#accordionExample">
       <div class="accordion-body">
  <?php
 	foreach( $firstleagueoverview as $key2 => $value2 ) if ( $value->id == $value2->federation )
@@ -74,6 +76,7 @@ echo JSMCountries::getCountryFlag($value2->country).' '.HTMLHelper::link($link, 
 
 
  <?php
+$start++; 
 }	
 ?>   
   
