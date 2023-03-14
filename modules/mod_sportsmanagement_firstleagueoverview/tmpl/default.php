@@ -25,32 +25,29 @@ echo Text::_('MOD_SPORTSMANAGEMENT_FIRSTLEAGUEOVERVIEW_DESCRIPTION');
 			?>
 </div>
 
-	<?php
 
-//$federations
-	
-?>
-<div class="panel-group" id="<?php echo $module->module; ?>-<?php echo $module->id . '-' . $module->id; ?>">
+
+
+<div class="accordion" id="accordionExample">
+  <div class="accordion-item">
 <?php	
 foreach ($federations as $key => $value)
 {
 ?>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a data-toggle="collapse"
-                           data-parent="#<?php echo $module->module; ?>-<?php echo $module->id . '-' . $module->id; ?>"
-                           href="#<?php echo $key; ?>">
-				<?php 
- echo HTMLHelper::_('image',Uri::root() . $value->picture, $value->name, array(' title' => $value->name, ' width' => 50));
+
+
+    <h2 class="accordion-header" id="heading<?php echo $value->name;?>">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?php echo $value->name;?>" aria-expanded="true" aria-controls="collapse<?php echo $value->name;?>">
+      <?php
+        echo HTMLHelper::_('image',Uri::root() . $value->picture, $value->name, array(' title' => $value->name, ' width' => 50));
  echo $value->name; 
-				?>
-			    </a>
-                    </h4>
-                </div>
-                <div id="<?php echo $key; ?>" class="panel-collapse collapse <?php echo $collapse; ?>">
-                    <div class="panel-body">
-	<?php
+        ?>
+      </button>
+    </h2>
+    
+<div id="collapse<?php echo $value->name;?>" class="accordion-collapse collapse " aria-labelledby="heading<?php echo $value->name;?>" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+ <?php
 	foreach( $firstleagueoverview as $key2 => $value2 ) if ( $value->id == $value2->federation )
 {
 $routeparameter                       = array();
@@ -68,96 +65,34 @@ $link                                 = sportsmanagementHelperRoute::getSportsma
 echo JSMCountries::getCountryFlag($value2->country).' '.HTMLHelper::link($link, $value2->name);    
     
     
-}
-                  
-                  ?>
-		    </div>
-		</div>
-	
-	
-	
-	
-	</div>
-	<?php
+}      
+    ?>   
+
+      </div>
+    </div>
+
+
+
+ <?php
 }	
-?>
-</div>
-<?php	
-	
-	
-if ( $params->get('display_div_table') )
-{
-?>
-<div class="">
-<?php    
-foreach( $firstleagueoverview as $key => $value )
-{
-$routeparameter                       = array();
-$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-$routeparameter['s']                  = $value->season_id;
-$routeparameter['p']                  = $value->id;
-$routeparameter['type']               = 0;
-$routeparameter['r']                  = 0;
-$routeparameter['from']               = 0;
-$routeparameter['to']                 = 0;
-$routeparameter['division']           = 0;
-$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);
-
-//echo $value->name.' '.$link;
-//echo JSMCountries::getCountryFlag($value->country).' '.HTMLHelper::link($link, $value->name);    
-    
-    
-}
-?>
-</div>
-<?php
-}
-else
-{
-	?>
-
-    <table class="<?php echo $params->get('table_class'); ?>">
-        <thead>
-  <tr>
-
-<?php
-  foreach( $firstleagueoverview as $key => $value )
-{
-    ?>
-    <td>
-<?php
-$routeparameter                       = array();
-$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-$routeparameter['s']                  = $value->season_id;
-$routeparameter['p']                  = $value->id;
-$routeparameter['type']               = 0;
-$routeparameter['r']                  = 0;
-$routeparameter['from']               = 0;
-$routeparameter['to']                 = 0;
-$routeparameter['division']           = 0;
-$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);
-
-
-
-
-//echo $value->name.' '.$link;
-echo JSMCountries::getCountryFlag($value->country);
-echo HTMLHelper::link($link, $value->name);
-?>
-</td>  
-      
-      <?php
-  }
+?>   
   
-  ?>
 
-    </tr>  
-        </thead>
-	
 
-    </table>
-    <br/>
-	<?php
-}
-	?>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </div>
