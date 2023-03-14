@@ -34,7 +34,7 @@ echo Text::_('MOD_SPORTSMANAGEMENT_FIRSTLEAGUEOVERVIEW_DESCRIPTION');
 <?php	
 foreach ($federations as $key => $value)
 {
-$show = $start = 0 ? 'show' : '';	
+$show = $start == 0 ? 'show' : '';	
 ?>
 
 
