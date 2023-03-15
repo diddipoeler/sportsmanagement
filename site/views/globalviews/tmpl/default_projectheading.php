@@ -318,7 +318,7 @@ $ausgabe .= '</tr>';
 	{
 		case 'ranking':
 ?>
-<div class="<?php echo $this->divclassrow; ?>">
+<div class="row">
 
 <div class="col-sm-6 text-left">
 <?php  
