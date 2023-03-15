@@ -135,7 +135,7 @@ class plgSearchsearch_sportsmanagement extends CMSPlugin
         // Reference global application object
         $app = Factory::getApplication();
         $params = ComponentHelper::getParams('com_sportsmanagement');
-		$Itemid = intval($params->get('default_itemid'));
+	$Itemid = intval($params->get('default_itemid'));
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         $user    = Factory::getUser();
@@ -291,7 +291,7 @@ class plgSearchsearch_sportsmanagement extends CMSPlugin
             $query->select('c.founded AS created,c.country,c.logo_big AS picture');
             $query->select('CONCAT( \'Address: \',c.address,\' \',c.zipcode,\' \',c.location,\' Phone: \',c.phone,\' Fax: \',c.fax,\' E-Mail: \',c.email,\' Vereinsnummer: \',c.unique_id ) AS text');
             $query->select('pt.project_id AS project');
-            $query->select('CONCAT( \'index.php?option=com_sportsmanagement&view=clubinfo&cfg_which_database=0&s=0&p=\', CONCAT_WS(\':\',p.id,p.alias) ,\'&cid=\', CONCAT_WS(\':\',c.id,c.alias) ) AS href');
+            $query->select('CONCAT( \'index.php?option=com_sportsmanagement&view=clubinfo&cfg_which_database=0&s=0&p=\', CONCAT_WS(\':\',p.id,p.alias) ,\'&cid=\', CONCAT_WS(\':\',c.id,c.alias), "?Itemid='.$Itemid.'" ) AS href');
             $query->select('2 AS browsernav');
           
             $query->from('#__sportsmanagement_club AS c');
