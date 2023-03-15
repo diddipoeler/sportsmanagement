@@ -134,7 +134,8 @@ class plgSearchsearch_sportsmanagement extends CMSPlugin
     {
         // Reference global application object
         $app = Factory::getApplication();
-        //$db 	= Factory::getDBO();
+        $params = ComponentHelper::getParams('com_sportsmanagement');
+		$Itemid = intval($params->get('default_itemid'));
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         $user    = Factory::getUser();
