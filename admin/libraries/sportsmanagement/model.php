@@ -838,7 +838,12 @@ if ( $config->get('debug') )
 				$data['category_id']  = 0;	
 				}
 
-				$data['start_date']         = sportsmanagementHelper::convertDate($data['start_date'], 0);
+				if ($data['start_date'] != '00-00-0000' && $data['start_date'] != '')
+			{
+			$data['start_date'] = sportsmanagementHelper::convertDate($data['start_date'], 0);
+			}
+				
+				
 				$data['sports_type_id']     = $data['request']['sports_type_id'];
 				$data['agegroup_id']        = $data['request']['agegroup_id'];
 				$data['modified_timestamp'] = sportsmanagementHelper::getTimestamp($data['modified']);
