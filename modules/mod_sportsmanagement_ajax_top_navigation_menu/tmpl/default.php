@@ -336,7 +336,7 @@ HTMLHelper::_('behavior.tooltip');
                                                     <fieldset class="">
 
                                                         <!-- <ul class="nav-list"> -->
-                                                        <ul class="pagination">
+                                                        <ul class="">
 															<?php if ($params->get('show_nav_links'))
 																:
 																?>
