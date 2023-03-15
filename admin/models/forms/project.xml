@@ -387,7 +387,6 @@
 		<field
 			name="start_date"
 			size="10"
-			default="00-00-0000"
 			type="calendar"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_STARTDATE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_STARTDATE_DESC"
