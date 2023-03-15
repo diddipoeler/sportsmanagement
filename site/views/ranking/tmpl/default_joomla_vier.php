@@ -130,7 +130,39 @@ if ($this->config['show_table_5'])
 
 echo HTMLHelper::_('bootstrap.' . $this->endPanel);
 echo HTMLHelper::_('bootstrap.' . $this->endPane, 'myTab');		    
-		    
+
+if ($this->config['show_colorlegend'])
+					{
+						echo $this->loadTemplate('colorlegend');
+					}
+		    if ($this->config['show_explanation'])
+					{
+						echo $this->loadTemplate('explanation');
+					}
+		    if ($this->config['show_pagnav'])
+					{
+						echo $this->loadTemplate('pagnav');
+					}
+		    if ($this->config['show_help'])
+					{
+						echo $this->loadTemplate('hint');
+					}
+		    if ($this->config['show_projectinfo'])
+					{
+						echo $this->loadTemplate('projectinfo');
+					}
+		    if ($this->config['show_club_short_names'])
+					{
+						echo $this->loadTemplate('clubnames');
+					}
+		    if ($this->config['show_notes'])
+					{
+						echo $this->loadTemplate('notes');
+					}
+		    if ($this->config['show_ranking_maps'])
+					{
+						echo $this->loadTemplate('googlemap');
+					}
 		    
 			echo $this->loadTemplate('jsminfo');
             }
