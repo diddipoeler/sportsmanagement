@@ -50,7 +50,7 @@ if ($params->get("show_slider"))
       </button>
     </h2>
     <div id="collapsectseason<?php echo $key; ?>" class="accordion-collapse collapse <?php echo $collapse; ?>" aria-labelledby="headingctseason<?php echo $key; ?>" data-bs-parent="#accordionactseason">
-      <div class="accordion-body">
+      <div class="row">
 <?php
 						foreach ($list as $row)
 						{
