@@ -15,6 +15,17 @@
 			readonly="true"
 		/>
 		<field
+name="checked_out"
+type="hidden"
+filter="unset"
+/>
+
+<field
+name="checked_out_time"
+type="hidden"
+filter="unset"
+/>	
+		<field
 			name="prediction_id" 
 			type="number" 
 			label="JGLOBAL_FIELD_ID_LABEL"

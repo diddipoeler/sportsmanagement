@@ -16,6 +16,7 @@ size="11"
 default="0"
 readonly="true"
 />
+
 <field
 name="checked_out"
 type="hidden"
@@ -27,6 +28,7 @@ name="checked_out_time"
 type="hidden"
 filter="unset"
 />	
+
 <field
 			name="name"
 			type="text"

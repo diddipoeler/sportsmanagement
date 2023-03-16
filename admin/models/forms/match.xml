@@ -7,7 +7,17 @@
 			type="hidden"
 			default="0"
 		/>
-		
+		<field
+name="checked_out"
+type="hidden"
+filter="unset"
+/>
+
+<field
+name="checked_out_time"
+type="hidden"
+filter="unset"
+/>	
 	<fieldset name="matchpreview"
 	label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MP">
 		<field
