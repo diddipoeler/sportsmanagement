@@ -39,7 +39,7 @@ use Joomla\Component\Actionlogs\Administrator\Model\ActionlogModel;
 use Joomla\CMS\Form\Form;
 //BaseDatabaseModel::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_actionlogs/models', 'ActionlogsModel');
 
-HTMLHelper::_('behavior.keepalive');
+//HTMLHelper::_('behavior.keepalive');
 
 if (version_compare(JVERSION, '3.0.0', 'ge'))
 {
