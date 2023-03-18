@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage jlextindividualsportes
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
@@ -23,8 +19,7 @@ use Joomla\CMS\Language\Text;
     <fieldset class="adminform">
         <legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_MATCHES_MASSADD_TITLE', '<i>' . $this->projectws->name . '</i>'); ?></legend>
         <form name='copyform' method='post' style='display:inline' id='copyform'>
-            <input type='hidden' name='match_date'
-                   value='<?php echo $this->roundws->round_date_first . ' ' . $this->projectws->start_time; ?>'/>
+            <input type='hidden' name='match_date' value='<?php echo $this->roundws->round_date_first . ' ' . $this->projectws->start_time; ?>'/>
             <input type='hidden' name='round_id' value='<?php echo $this->roundws->id; ?>'/>
             <input type='hidden' name='project_id' value='<?php echo $this->roundws->project_id; ?>'/>
             <input type='hidden' name='act' value='rounds'/>

@@ -99,7 +99,7 @@ use Joomla\CMS\HTML\HTMLHelper;
             background-color: #BBB;
         }
     </style>
-<div id="alt_decision_enter" style="display:<?php echo ($massadd == 0) ? 'none' : 'block'; ?>">
+<div id="alt_decision_enter" style="display:<?php echo ($this->massadd == 0) ? 'none' : 'block'; ?>">
 </div>
 
 <?php

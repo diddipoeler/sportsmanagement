@@ -41,8 +41,8 @@ class sportsmanagementViewjlextindividualsportes extends sportsmanagementView
 			case 'default';
 			case 'default_3';
 			case 'default_4';
-				$this->_displayDefault($tpl);
-				break;
+			$this->_displayDefault($tpl);
+			break;
 		}
 
 	}
@@ -65,21 +65,23 @@ class sportsmanagementViewjlextindividualsportes extends sportsmanagementView
 		$cid = $this->jinput->request->get('cid', null, array());
 
 		$project_id      = $this->app->getUserState("$this->option.pid", '0');
-		$match_id        = $this->jinput->getInt('id', 0);
-		$rid             = $this->jinput->getInt('rid', 0);
+		$this->match_id        = $this->jinput->getInt('id', 0);
+		$this->rid              = $this->jinput->getInt('rid', 0);
 		$this->projectteam1_id = $this->jinput->getInt('team1', 0);
 		$this->projectteam2_id = $this->jinput->getInt('team2', 0);
+        
+        $this->massadd              = $this->jinput->getInt('massadd', 0);
 
 		$mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
 		$this->projectws   = $mdlProject->getProject($project_id);
 		$mdlRound   = BaseDatabaseModel::getInstance("Round", "sportsmanagementModel");
-		$roundws    = $mdlRound->getRound($rid);
+		$roundws    = $mdlRound->getRound($this->rid );
 
-		$this->model->checkGames($this->projectws , $match_id, $rid, $this->projectteam1_id, $this->projectteam2_id);
+		$this->model->checkGames($this->projectws , $this->match_id, $this->rid , $this->projectteam1_id, $this->projectteam2_id);
 
-		$matches    = $this->get('Items');
-		$total      = $this->get('Total');
-		$pagination = $this->get('Pagination');
+		$this->matches    = $this->get('Items');
+		$this->total      = $this->get('Total');
+		$this->pagination = $this->get('Pagination');
 
 		$teams[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM_PLAYER'));
 
@@ -101,15 +103,15 @@ class sportsmanagementViewjlextindividualsportes extends sportsmanagementView
 		$lists['awayplayer'] = $teams;
 		unset($teams);
 
-		$this->matches    = $matches;
-		$this->pagination = $pagination;
+//		$this->matches    = $matches;
+		//$this->pagination = $pagination;
 
 		// $this->request_url    = $uri->toString();
 
 		$this->ProjectTeams = $this->model->getProjectTeams($project_id);
 
-		$this->match_id = $match_id;
-		$this->rid      = $rid;
+		//$this->match_id = $match_id;
+		//$this->rid      = $rid;
 
 //		$this->projectteam1_id = $projectteam1_id;
 //		$this->projectteam2_id = $projectteam2_id;
