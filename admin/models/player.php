@@ -160,7 +160,7 @@ $this->jsmquery->where('firstname like ' . $this->jsmdb->Quote('' . $value->firs
 $this->jsmquery->where('lastname like ' . $this->jsmdb->Quote('' . $value->lastname . '') );
 $this->jsmquery->where('birthday like ' . $this->jsmdb->Quote('' . $value->birthday . '') );
 $this->jsmquery->where('country like ' . $this->jsmdb->Quote('' . $value->country . '') );
-
+$this->jsmdb->setQuery($this->jsmquery );
 $res = $this->jsmdb->loadResult();
 
 if ( !$res )
@@ -173,8 +173,17 @@ $profile->alias  = $value->alias;
 $profile->knvbnr   = $value->knvbnr;
 $profile->gender   = $value->gender;
 $profile->country   = $value->country;
-
-$insertresult = $this->jsmdb->insertObject('#__sportsmanagement_person', $profile);    
+try
+{
+$insertresult = $this->jsmdb->insertObject('#__sportsmanagement_person', $profile);   
+}
+		catch (Exception $e)
+		{
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+		
+		}
+            
 }
 
 
