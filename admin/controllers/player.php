@@ -48,7 +48,7 @@ class sportsmanagementControllerplayer extends JSMControllerForm
     function import()
     {
     //      $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$this->view_list), '');
-    $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list.'&layout=player_upload', false));
+    $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list.'&layout=players_upload', false));
     
         
         
