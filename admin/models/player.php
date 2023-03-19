@@ -14,7 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Filesystem\File;
-
+use Joomla\CMS\Filter\OutputFilter;
 
 /**
  * sportsmanagementModelplayer
@@ -84,15 +84,92 @@ Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' file
 Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' src <pre>'.print_r($src,true).'</pre>'  ), '');
 Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' dest <pre>'.print_r($dest,true).'</pre>'  ), '');
 
+
+
 if (File::upload($src, $dest)) 
 {
-      echo 'The file has successfully been uploaded :)';
+      echo 'The file has successfully been uploaded :)<br>';
 } 
 else 
 {
-      echo 'Oh crap, something happened. Run!';
+      echo 'Oh crap, something happened. Run!<br>';
 }
-    
+
+
+// lastname,firstname,birthday,country,club,classement (extrafield),licence/registrationN,gender
+$file = $dest;
+$handle = fopen($file,"r");
+
+        while(($fileop = fgetcsv($handle,1000,",")) !== false)
+        {
+			/**
+            echo $fileop[0].' - ';
+			echo $fileop[1].' - ';
+			echo $fileop[2].' - ';
+			echo $fileop[3].' - ';
+			echo $fileop[4].' - ';
+			echo $fileop[5].' - ';
+			echo $fileop[6].' - ';
+			echo $fileop[7].' <br> ';
+			*/
+            $temp = new stdClass();
+     $temp->id = 0; 
+$temp->lastname  = ucfirst(strtolower($fileop[0]));
+$temp->firstname  = $fileop[1];
+$temp->birthday  = $fileop[2];
+
+switch ( $fileop[3] )
+{
+	case 'France':
+$temp->country  = 'FRA';
+	break;
+}
+
+switch ( $fileop[7] )
+{
+	case 'Male':
+$temp->gender  = 1;
+	break;
+	case 'Female':
+$temp->gender  = 2;
+	break;
+}
+
+//$temp->alias = OutputFilter::stringURLSafe($this->name);
+$parts = array(trim($temp->firstname), trim($temp->lastname));
+$temp->alias = OutputFilter::stringURLSafe(implode(' ', $parts));
+
+$temp->club  = $fileop[4];
+$temp->classement  = $fileop[5];
+$temp->knvbnr  = $fileop[6];
+//$temp->gender  = $fileop[7];
+$players_upload[] = $temp;
+
+        }
+
+Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' players_upload <pre>'.print_r($players_upload,true).'</pre>'  ), '');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     }
     
