@@ -13,6 +13,8 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Filesystem\File;
+
 
 /**
  * sportsmanagementModelplayer
@@ -48,6 +50,9 @@ class sportsmanagementModelplayer extends JSMModelAdmin
  */
 function importupload($post = array())
 {
+jimport('joomla.filesystem.file');
+
+/**    
 Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' task <pre>'.print_r(Factory::getApplication()->input->post->getArray(),true).'</pre>'  ), '');
 $target_dir = "tmp/";
 $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
@@ -67,8 +72,22 @@ if ($uploadOk == 0) {
     echo "Sorry, there was an error uploading your file.";
   }
 }
+*/
 
+// Cleans the name of teh file by removing weird characters
+$filename = File::makeSafe($_FILES["fileToUpload"]['name']); 
 
+$src  = $_FILES["fileToUpload"]['tmp_name'];
+$dest = JPATH_BASE . '/tmp/' . $filename;
+
+if (File::upload($src, $dest)) 
+{
+      // The file has successfully been uploaded :)
+} 
+else 
+{
+      // Oh crap, something happened. Run!
+}
     
     
     }
