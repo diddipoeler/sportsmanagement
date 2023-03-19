@@ -149,16 +149,36 @@ $players_upload[] = $temp;
 
 Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' players_upload <pre>'.print_r($players_upload,true).'</pre>'  ), '');
 
+foreach ( $players_upload as $key => $value) if ( $key > 0 )
+{
+//for($a=1; $a < sizeof($players_upload); $a++ )        
+//{  
+$this->jsmquery->clear();
+$this->jsmquery->select('id');
+$this->jsmquery->from('#__sportsmanagement_person');
+$this->jsmquery->where('firstname ' . $this->jsmdb->Quote('' . $value->firstname . '') );
+$this->jsmquery->where('lastname ' . $this->jsmdb->Quote('' . $value->lastname . '') );
+$this->jsmquery->where('birthday ' . $this->jsmdb->Quote('' . $value->birthday . '') );
+$this->jsmquery->where('country ' . $this->jsmdb->Quote('' . $value->country . '') );
+
+$res = $this->jsmdb->loadResult();
+
+if ( !$res )
+{
+$profile             = new stdClass;
+$profile->firstname       = $value->firstname;
+$profile->lastname      = $value->lastname;
+$profile->birthday  = $value->birthday;
+$profile->alias  = $value->alias;
+$profile->knvbnr   = $value->knvbnr;
+$profile->gender   = $value->gender;
+$profile->country   = $value->country;
+
+$insertresult = $this->jsmdb->insertObject('#__sportsmanagement_person', $profile);    
+}
 
 
-
-
-
-
-
-
-
-
+}
 
 
 
