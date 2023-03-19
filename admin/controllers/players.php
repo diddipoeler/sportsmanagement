@@ -28,6 +28,22 @@ use Joomla\CMS\Router\Route;
 class sportsmanagementControllerplayers extends JSMControllerAdmin
 {
 
+
+/**
+ * sportsmanagementControllerplayers::importupload()
+ * 
+ * @return void
+ */
+function importupload()
+{
+$model = $this->getModel();    
+$post = Factory::getApplication()->input->post->getArray(array());
+Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+$model = $this->getModel();
+$msg   = $model->importupload($post);
+            
+}
+
 	/**
 	 * sportsmanagementControllerplayers::assign()
 	 *

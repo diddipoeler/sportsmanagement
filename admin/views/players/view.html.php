@@ -47,6 +47,8 @@ class sportsmanagementViewplayers extends sportsmanagementView
 		$this->persontype = 0;
 		$this->whichview = $this->jinput->get('whichview');
 
+// Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' task <pre>'.print_r(Factory::getApplication()->input->post->getArray(),true).'</pre>'  ), '');
+
 		switch ($this->getLayout())
 		{
 			case 'assignpersons':
