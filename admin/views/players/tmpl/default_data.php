@@ -182,22 +182,22 @@ else
                                                            value="<?php echo stripslashes(htmlspecialchars($this->item->lastname)); ?>"
                                                            onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
                     </td>
-                    <td class="center">
-						<?php
-						$picture    = ($this->item->picture == sportsmanagementHelper::getDefaultPlaceholder("player")) ? 'information.png' : 'ok.png';
-						$imageTitle = ($this->item->picture == sportsmanagementHelper::getDefaultPlaceholder("player")) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE');
+<td class="center">
+<?php
+$picture    = ($this->item->picture == sportsmanagementHelper::getDefaultPlaceholder("player")) ? 'information.png' : 'ok.png';
+$imageTitle = ($this->item->picture == sportsmanagementHelper::getDefaultPlaceholder("player")) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE');
 $image_attributes['title'] = $imageTitle;
 echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/'.$picture,$imageTitle,$image_attributes);
-						$playerName = sportsmanagementHelper::formatName(null, $this->item->firstname, $this->item->nickname, $this->item->lastname, 0);
-						echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_person' . $this->item->id, Uri::root() . $this->item->picture, $playerName, '20', Uri::root() . $this->item->picture);
-						?>
-                        <br />
- <?php
+$playerName = sportsmanagementHelper::formatName(null, $this->item->firstname, $this->item->nickname, $this->item->lastname, 0);
+echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_person' . $this->item->id, Uri::root() . $this->item->picture, $playerName, '20', Uri::root() . $this->item->picture);
+?>
+<br />
+<?php
 $link2 = 'index.php?option=com_sportsmanagement&view=imagelist' .'&player_id='.$this->item->id.
 '&imagelist=1&asset=com_sportsmanagement&folder=persons' . '&author=&fieldid=' . '&tmpl=component&type=persons'.'&fieldname=picture';
 echo sportsmanagementHelper::getBootstrapModalImage('select'.$this->item->id, '', Text::_('JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE').' ', '20', Uri::base() . $link2, $this->modalwidth, $this->modalheight);        
-        ?>                        
-                    </td>
+?>                        
+</td>
                     <td class="nowrap" class="center">
 						<?php
 						$append = '';

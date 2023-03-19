@@ -35,5 +35,18 @@ class sportsmanagementControllerplayer extends JSMControllerForm
 	{
 		parent::__construct($config);
 	}
+    
+    
+    
+    /**
+     * sportsmanagementControllerplayer::import()
+     * 
+     * @return void
+     */
+    function import()
+    {
+    //      $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$this->view_list), '');    
+        
+    }
 
 }

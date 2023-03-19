@@ -14,7 +14,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
-
 /**
  * sportsmanagementModelplayer
  *
@@ -26,7 +25,6 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
  */
 class sportsmanagementModelplayer extends JSMModelAdmin
 {
-
 
 	/**
 	 * sportsmanagementModelplayer::__construct()
@@ -110,13 +108,11 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 		try
 		{
 			$this->jsmdb->setQuery($this->jsmquery);
-
 			return $this->jsmdb->loadObject();
 		}
 		catch (Exception $e)
 		{
 			$this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
-
 			return false;
 		}
 
@@ -242,8 +238,8 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 						Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
 					}
 
-					// Projekt position eintragen
-					// zuerst die positions id zum projekt ermitteln.
+					/** Projekt position eintragen
+					zuerst die positions id zum projekt ermitteln. */
 					$this->jsmquery->clear();
 					$this->jsmquery->select('id');
 					$this->jsmquery->from('#__sportsmanagement_project_position');
@@ -326,8 +322,8 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 						Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
 					}
 
-					// Projekt position eintragen
-					// zuerst die positions id zum projekt ermitteln.
+					/** Projekt position eintragen
+					 zuerst die positions id zum projekt ermitteln. */
 					$this->jsmquery->clear();
 					$this->jsmquery->select('id');
 					$this->jsmquery->from('#__sportsmanagement_project_position');
