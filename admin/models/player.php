@@ -80,13 +80,17 @@ $filename = File::makeSafe($_FILES["fileToUpload"]['name']);
 $src  = $_FILES["fileToUpload"]['tmp_name'];
 $dest = JPATH_BASE . '/tmp/' . $filename;
 
+Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' filename <pre>'.print_r($filename,true).'</pre>'  ), '');
+Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' src <pre>'.print_r($src,true).'</pre>'  ), '');
+Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' dest <pre>'.print_r($dest,true).'</pre>'  ), '');
+
 if (File::upload($src, $dest)) 
 {
-      // The file has successfully been uploaded :)
+      echo 'The file has successfully been uploaded :)';
 } 
 else 
 {
-      // Oh crap, something happened. Run!
+      echo 'Oh crap, something happened. Run!';
 }
     
     
