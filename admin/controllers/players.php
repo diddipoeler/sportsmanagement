@@ -54,7 +54,6 @@ class sportsmanagementControllerplayers extends JSMControllerAdmin
 	public function getModel($name = 'player', $prefix = 'sportsmanagementModel', $config = Array())
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
-
 		return $model;
 	}
 
