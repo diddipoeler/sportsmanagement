@@ -156,10 +156,10 @@ foreach ( $players_upload as $key => $value) if ( $key > 0 )
 $this->jsmquery->clear();
 $this->jsmquery->select('id');
 $this->jsmquery->from('#__sportsmanagement_person');
-$this->jsmquery->where('firstname ' . $this->jsmdb->Quote('' . $value->firstname . '') );
-$this->jsmquery->where('lastname ' . $this->jsmdb->Quote('' . $value->lastname . '') );
-$this->jsmquery->where('birthday ' . $this->jsmdb->Quote('' . $value->birthday . '') );
-$this->jsmquery->where('country ' . $this->jsmdb->Quote('' . $value->country . '') );
+$this->jsmquery->where('firstname like ' . $this->jsmdb->Quote('' . $value->firstname . '') );
+$this->jsmquery->where('lastname like ' . $this->jsmdb->Quote('' . $value->lastname . '') );
+$this->jsmquery->where('birthday like ' . $this->jsmdb->Quote('' . $value->birthday . '') );
+$this->jsmquery->where('country like ' . $this->jsmdb->Quote('' . $value->country . '') );
 
 $res = $this->jsmdb->loadResult();
 
