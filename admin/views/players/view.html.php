@@ -58,6 +58,15 @@ class sportsmanagementViewplayers extends sportsmanagementView
 			$this->assign     = true;
 			break;
 		}
+        
+        switch ($this->getLayout())
+		{
+			case 'players_upload':
+			case 'players_upload_3':
+			case 'players_upload_4':
+			$this->setLayout('players_upload');
+			break;
+		}
 
 		$this->table = Table::getInstance('player', 'sportsmanagementTable');
 		$this->app->setUserState($this->option . 'task', '');

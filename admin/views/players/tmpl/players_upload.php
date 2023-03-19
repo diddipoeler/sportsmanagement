@@ -14,7 +14,7 @@ use Joomla\CMS\Language\Text;
 
 ?>
 <fieldset class="adminform">
-    <form action="" method="post" enctype="multipart/form-data" id="js-upload-form">
+    <form action="<?php echo $this->request_url; ?>" method="post" enctype="multipart/form-data" id="adminForm" name="adminForm">
             <div class="form-inline">
               
                 <span class="btn btn-success fileinput-button">
