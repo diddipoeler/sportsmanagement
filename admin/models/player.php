@@ -40,6 +40,41 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 	}
 
 
+/**
+ * sportsmanagementModelplayers::importupload()
+ * https://www.w3schools.com/php/php_file_upload.asp
+ * @param mixed $post
+ * @return void
+ */
+function importupload($post = array())
+{
+Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' task <pre>'.print_r(Factory::getApplication()->input->post->getArray(),true).'</pre>'  ), '');
+$target_dir = "tmp/";
+$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+$uploadOk = 1;
+$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' task <pre>'.print_r($target_file,true).'</pre>'  ), '');
+
+
+// Check if $uploadOk is set to 0 by an error
+if ($uploadOk == 0) {
+  echo "Sorry, your file was not uploaded.";
+// if everything is ok, try to upload file
+} else {
+  if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+    echo "The file ". htmlspecialchars( basename( $_FILES["fileToUpload"]["name"])). " has been uploaded.";
+  } else {
+    echo "Sorry, there was an error uploading your file.";
+  }
+}
+
+
+    
+    
+    }
+    
+    
+    
 	/**
 	 * sportsmanagementModelplayer::getAgeGroupID()
 	 *
