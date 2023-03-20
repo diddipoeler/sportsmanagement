@@ -120,19 +120,21 @@ $temp->birthday  = $fileop[2];
 
 switch ( $fileop[3] )
 {
-	case 'France':
+case 'France':
 $temp->country  = 'FRA';
-	break;
+break;
 }
 
 switch ( $fileop[7] )
 {
-	case 'Male':
+case 'Male':
 $temp->gender  = 1;
-	break;
-	case 'Female':
+$temp->picture  = 'images/com_sportsmanagement/database/persons/men_small.png';
+break;
+case 'Female':
 $temp->gender  = 2;
-	break;
+$temp->picture  = 'images/com_sportsmanagement/database/persons/woman_small.png';
+break;
 }
 
 //$temp->alias = OutputFilter::stringURLSafe($this->name);
@@ -165,24 +167,24 @@ $res = $this->jsmdb->loadResult();
 
 if ( !$res )
 {
-$profile             = new stdClass;
-$profile->firstname       = $value->firstname;
-$profile->lastname      = $value->lastname;
-$profile->birthday  = $value->birthday;
-$profile->alias  = $value->alias;
-$profile->knvbnr   = $value->knvbnr;
-$profile->gender   = $value->gender;
-$profile->country   = $value->country;
+$profile = new stdClass;
+$profile->firstname = $value->firstname;
+$profile->lastname = $value->lastname;
+$profile->birthday = $value->birthday;
+$profile->alias = $value->alias;
+$profile->knvbnr = $value->knvbnr;
+$profile->gender = $value->gender;
+$profile->country = $value->country;
+$profile->published = 1;
 try
 {
 $insertresult = $this->jsmdb->insertObject('#__sportsmanagement_person', $profile);   
 }
-		catch (Exception $e)
-		{
-			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
-			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
-		
-		}
+catch (Exception $e)
+{
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+}
             
 }
 
