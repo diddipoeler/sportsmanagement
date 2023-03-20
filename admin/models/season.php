@@ -90,8 +90,16 @@ $this->jsmquery->select('id');
 $this->jsmquery->from('#__sportsmanagement_project_position');
 $this->jsmquery->where('project_id = ' . $project_id);
 $this->jsmquery->where('position_id = ' . $personposition);
+try
+{
 $this->jsmdb->setQuery($this->jsmquery);
 $project_position_id = $this->jsmdb->loadResult();		
+}
+catch (Exception $e)
+{
+	$msg .= '<br>'.Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage());
+	$msg .= '<br>'.Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__);
+}
 		
 $profile = new stdClass;
 $profile->project_id = $project_id;
