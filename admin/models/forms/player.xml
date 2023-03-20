@@ -65,6 +65,7 @@ filter="unset"
 			<option	value="0">COM_SPORTSMANAGEMENT_ADMIN_PERSON_UNKNOWN</option>
 			<option	value="1">COM_SPORTSMANAGEMENT_ADMIN_PERSON_MALE</option>
 			<option	value="2">COM_SPORTSMANAGEMENT_ADMIN_PERSON_FEMALE</option>	
+	<option	value="3">COM_SPORTSMANAGEMENT_ADMIN_PERSON_DIVERS</option>
 </field> 	  
 	  
 	  <field
