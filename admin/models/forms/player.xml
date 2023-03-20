@@ -56,10 +56,10 @@ filter="unset"
 		
 <field
 			name="gender"
-			type="extensionradiobutton"
+			type="list"
 			class="radio btn-group btn-group-yesno"
 			default="0"
-			size="1"
+			size="4"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_GENDER"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_GENDER_DESC">
 			<option	value="0">COM_SPORTSMANAGEMENT_ADMIN_PERSON_UNKNOWN</option>
