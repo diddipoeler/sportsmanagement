@@ -340,7 +340,14 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		$db     = sportsmanagementHelper::getDBConnection();
-		$uri    = Factory::getURI();
+        if (version_compare(JSM_JVERSION, '4', 'eq'))
+        {
+            $uri = Uri::getInstance();
+        }
+        else
+        {
+            $uri = Factory::getURI();
+        }
 		$model  = BaseDatabaseModel::getInstance('JLXMLImport', 'sportsmanagementmodel');
 		$lists  = array();
 
