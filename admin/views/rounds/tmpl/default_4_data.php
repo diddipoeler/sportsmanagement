@@ -215,11 +215,7 @@ $attribs['onChange'] = "document.getElementById('cb" . $this->count_i . "').chec
 style="width: 120px; <?php echo $append; ?>" 
                     data-toggle="datetimepicker"
                     class="form-control datetimepicker-input " data-target="#round_date_first<?php echo $this->item->id; ?>" value="<?php echo $date1; ?>"  />
-<!--
-                    <div class="input-group-append" data-target="#datepicker<?php echo $row->id; ?>" data-toggle="datetimepicker">
-                       <div class="input-group-text" style="position:relative"><i class="fa fa-calendar"></i></div>
-                    </div>
-					 -->
+
 </div>  
 
 
