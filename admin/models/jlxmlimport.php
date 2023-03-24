@@ -799,7 +799,7 @@ class sportsmanagementModelJLXMLImport extends JSMModelAdmin
 				}
 			}
 
-			$this->_success_text = '';
+			$this->_success_text = array();
 
 			//set $this->_importType
 			$this->_importType = $post['importType'];
