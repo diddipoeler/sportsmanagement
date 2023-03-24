@@ -35,10 +35,12 @@ else
 var last_value;
 var current_value;
 var attribute_cbnummer;
+var id_cbnummer;
 
 jQuery(document).on("click","select",function(){
     last_value = $(this).val();
 	attribute_cbnummer = $(this).attr('cbnummer');
+	id_cbnummer = $(this).attr('id');
 
 }).on("change","select",function(){
     current_value = $(this).val();
@@ -46,11 +48,15 @@ jQuery(document).on("click","select",function(){
     console.log('last value - '+last_value);
     console.log('current value - '+current_value);
 	console.log('attribute_cbnummer - '+attribute_cbnummer);
+	console.log('id_cbnummer - '+id_cbnummer);
 
 	if ( last_value != current_value )
 	{
 console.log('geändert');
-
+//jQuery("." + attribute_cbnummer).prop('checked', true);
+//attribute_cbnummer.prop('checked', true);
+//document.getElementById(attribute_cbnummer).checked = true;
+jQuery( "#"+ attribute_cbnummer ).prop( "checked", true );
 	}
 	else
 	{
