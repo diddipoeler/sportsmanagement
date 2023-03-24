@@ -34,13 +34,28 @@ else
 <script>
 var last_value;
 var current_value;
+var attribute_cbnummer;
+
 jQuery(document).on("click","select",function(){
     last_value = $(this).val();
+	attribute_cbnummer = $(this).attr('cbnummer');
+
 }).on("change","select",function(){
     current_value = $(this).val();
 
     console.log('last value - '+last_value);
     console.log('current value - '+current_value);
+	console.log('attribute_cbnummer - '+attribute_cbnummer);
+
+	if ( last_value != current_value )
+	{
+console.log('geändert');
+
+	}
+	else
+	{
+		console.log('keine änderung');
+	}
 });
 
 </script>
@@ -269,8 +284,7 @@ style="width: 120px; <?php echo $append; ?>"
 							'select.genericlist',
 							$this->lists['agegroup'],
 							'agegroup' . $this->item->id,
-							$inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
-							$this->count_i . '\').checked=true"' . $append,
+							$inputappend . ' cbnummer="cb' . $this->count_i . '" class="form-control form-control-inline" size="1" ' . $append,
 							'value', 'text', $this->item->agegroup_id
 						);
 						?>
@@ -287,7 +301,7 @@ style="width: 120px; <?php echo $append; ?>"
 						echo JHtmlSelect::genericlist(
 							$this->lists['nation'],
 							'country' . $this->item->id,
-							$inputappend . ' class="form-control form-control-inline" style="width:140px; ' . $append . '" onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true"',
+							$inputappend . ' cbnummer="cb' . $this->count_i . '" class="form-control form-control-inline" style="width:140px; ' . $append . '" ',
 							'value',
 							'text',
 							$this->item->country
@@ -301,10 +315,11 @@ style="width: 120px; <?php echo $append; ?>"
 						{
 							$append = ' background-color:#FFCCCC;';
 						}
+						
 						echo JHtmlSelect::genericlist(
 							$this->lists['positions'],
 							'position' . $this->item->id,
-							$inputappend . 'class="form-control form-control-inline" style="width:140px; ' . $append . '" onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true"',
+							$inputappend . ' cbnummer="cb' . $this->count_i . '" class="form-control form-control-inline" style="width:140px; ' . $append . ' " ',
 							'value',
 							'text',
 							$this->item->position_id
