@@ -31,6 +31,20 @@ else
 	$this->readonly = '';
 }
 ?>
+<script>
+var last_value;
+var current_value;
+jQuery(document).on("click","select",function(){
+    last_value = $(this).val();
+}).on("change","select",function(){
+    current_value = $(this).val();
+
+    console.log('last value - '+last_value);
+    console.log('current value - '+current_value);
+});
+
+</script>
+
 
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha512-MoRNloxbStBcD8z3M/2BmnT+rg4IsMxPkXaGh2zD6LGNNFE80W3onsAhRcMAMrSoyWL9xD7Ert0men7vR8LUZg==" crossorigin="anonymous" /> -->
 <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" />
@@ -207,33 +221,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('select'.$this->item->id, ''
 							$append = ' style="background-color:#FFCCCC;" ';
 							$date1  = '';
 						}
-						/**
-						 * das wurde beim kalender geändert
-						 * $attribs = array(
-						 *            'onChange' => "alert('it works')",
-						 *            "showTime" => 'false',
-						 *            "todayBtn" => 'true',
-						 *            "weekNumbers" => 'false',
-						 *            "fillTable" => 'true',
-						 *            "singleHeader" => 'false',
-						 *        );
-						 *    echo HTMLHelper::_('calendar', Factory::getDate()->format('Y-m-d'), 'date', 'date', '%Y-%m-%d', $attribs); ?>
-						 */
 
-/*
-						$attribs = array(
-							'onChange' => "document.getElementById('cb" . $this->count_i . "').checked=true",
-							'readonly' => trim($this->readonly),
-						);
-						echo HTMLHelper::calendar(
-							$date1,
-							'birthday' . $this->item->id,
-							'birthday' . $this->item->id,
-							'%d-%m-%Y',
-							$attribs
-						);
-						*/								
-                        //}
 						?>
 
 <div class="input-group date" id="birthday<?php echo $this->item->id; ?>" data-target-input="nearest"  >
@@ -242,11 +230,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('select'.$this->item->id, ''
 style="width: 120px; <?php echo $append; ?>" 
                     data-toggle="datetimepicker"
                     class="form-control datetimepicker-input " data-target="#birthday<?php echo $this->item->id; ?>" value="<?php echo $date1; ?>"  />
-<!--
-                    <div class="input-group-append" data-target="#datepicker<?php echo $row->id; ?>" data-toggle="datetimepicker">
-                       <div class="input-group-text" style="position:relative"><i class="fa fa-calendar"></i></div>
-                    </div>
-					 -->
+
 </div>  
 
 
