@@ -442,7 +442,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 
 			case '3':
 				{ // Select Person
-					$mdl              = BaseDatabaseModel::getInstance('persons', 'sportsmanagementModel');
+					$mdl              = BaseDatabaseModel::getInstance('players', 'sportsmanagementModel');
 					$this->persons    = $mdl->getPersonListSelect();
 					$personlist       = array();
 					$personlist[]     = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_PERSON'));
