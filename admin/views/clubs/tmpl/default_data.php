@@ -45,7 +45,7 @@ jQuery(document).on("click","select",function(){
     last_value = $(this).val();
 	attribute_cbnummer = $(this).attr('cbnummer');
 	id_cbnummer = $(this).attr('id');
-
+$( "#"+ attribute_cbnummer ).prop( "checked", false );
 }).on("change","select",function(){
     current_value = $(this).val();
 
@@ -60,7 +60,7 @@ console.log('geändert');
 //jQuery("." + attribute_cbnummer).prop('checked', true);
 //attribute_cbnummer.prop('checked', true);
 //document.getElementById(attribute_cbnummer).checked = true;
-jQuery( "#"+ attribute_cbnummer ).prop( "checked", true );
+$( "#"+ attribute_cbnummer ).prop( "checked", true );
 	}
 	else
 	{
