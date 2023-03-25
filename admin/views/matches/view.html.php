@@ -86,37 +86,37 @@ class sportsmanagementViewMatches extends sportsmanagementView
 		$this->projectws  = $mdlProject->getProject($this->project_id);
 
 		$mdlRound = BaseDatabaseModel::getInstance('Round', 'sportsmanagementModel');
-		$roundws  = $mdlRound->getRound($this->rid);
+		$this->roundws  = $mdlRound->getRound($this->rid);
 
 		/** Build the html selectlist for rounds */
-		$ress = sportsmanagementHelper::getRoundsOptions($this->project_id, 'ASC', true);
+		$this->ress = sportsmanagementHelper::getRoundsOptions($this->project_id, 'ASC', true);
 
 		/** dadurch werden die spaltenbreiten optimiert */
 		$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/form_control.css');
 
-		foreach ($ress as $res)
+		foreach ($this->ress as $res)
 		{
 			$datum                = sportsmanagementHelper::convertDate($res->round_date_first, 1) . ' - ' . sportsmanagementHelper::convertDate($res->round_date_last, 1);
 			$project_roundslist[] = HTMLHelper::_('select.option', $res->id, sprintf("%s (%s)", $res->name, $datum));
 		}
 
-		$lists['project_rounds'] = HTMLHelper::_(
+		$this->lists['project_rounds'] = HTMLHelper::_(
 			'select.genericList', $project_roundslist, 'rid', 'class="inputbox" ' .
 			'onChange="document.getElementById(\'short_act\').value=\'rounds\';' .
-			'document.roundForm.submit();" ', 'value', 'text', $roundws->id
+			'document.roundForm.submit();" ', 'value', 'text', $this->roundws->id
 		);
 
-		$lists['project_rounds2'] = HTMLHelper::_('select.genericList', $project_roundslist, 'rid', 'class="inputbox" ', 'value', 'text', $roundws->id);
+		$this->lists['project_rounds2'] = HTMLHelper::_('select.genericList', $project_roundslist, 'rid', 'class="inputbox" ', 'value', 'text', $this->roundws->id);
 
 		/** Diddipoeler rounds for change in match */
 		$project_change_roundslist = array();
 
-		if ($ress = sportsmanagementHelper::getRoundsOptions($this->project_id, 'ASC', true))
+		if ($this->ress = sportsmanagementHelper::getRoundsOptions($this->project_id, 'ASC', true))
 		{
-			$project_change_roundslist = array_merge($project_change_roundslist, $ress);
+			$project_change_roundslist = array_merge($project_change_roundslist, $this->ress);
 		}
 
-		$lists['project_change_rounds'] = $project_change_roundslist;
+		$this->lists['project_change_rounds'] = $project_change_roundslist;
 		unset($project_change_roundslist);
 
 		/** Build the html options for teams */
@@ -143,8 +143,8 @@ class sportsmanagementViewMatches extends sportsmanagementView
 
 			$divhomeid = 0;
 
-			// Apply the filter only if both teams are from the same division
-			// teams are not from the same division in tournament mode with divisions
+			/**  Apply the filter only if both teams are from the same division
+			   teams are not from the same division in tournament mode with divisions */
 			if ($row->divhomeid == $row->divawayid)
 			{
 				$divhomeid = $row->divhomeid;
@@ -164,8 +164,8 @@ class sportsmanagementViewMatches extends sportsmanagementView
                 $teams = array();
             }
 
-			$lists['teams_' . $divhomeid] = $teams;
-			$lists['projectteams']        = $teams;
+			$this->lists['teams_' . $divhomeid] = $teams;
+			$this->lists['projectteams']        = $teams;
 			unset($teams);
 
 			/** Sind die verzeichnisse vorhanden ? */
@@ -184,7 +184,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
 		$match_result_type[]        = JHtmlSelect::option('0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RT'));
 		$match_result_type[]        = JHtmlSelect::option('1', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_OT'));
 		$match_result_type[]        = JHtmlSelect::option('2', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SO'));
-		$lists['match_result_type'] = $match_result_type;
+		$this->lists['match_result_type'] = $match_result_type;
 		unset($match_result_type);
 
 		/** Build the html options for article */
@@ -195,7 +195,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
 			$articles = array_merge($articles, $res);
 		}
 
-		$lists['articles'] = $articles;
+		$this->lists['articles'] = $articles;
 		unset($articles);
 
 		/** Build the html options for divisions */
@@ -207,7 +207,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
 			$divisions = array_merge($divisions, $res);
 		}
 
-		$lists['divisions'] = $divisions;
+		$this->lists['divisions'] = $divisions;
 		unset($divisions);
 
 		$playground[]  = JHtmlSelect::option('0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYGROUND'));
@@ -217,7 +217,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
 		
 		$this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/matches.js');
 
-		$selectlist = array();
+		$this->selectlist = array();
 
 		if (isset($table_info['#__sportsmanagement_match']))
 		{
@@ -229,26 +229,39 @@ class sportsmanagementViewMatches extends sportsmanagementView
 				{
 					$select[]           = JHtmlSelect::option('0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'));
 					$select             = array_merge($select, $select_Options);
-					$selectlist[$field] = $select;
+					$this->selectlist[$field] = $select;
 					unset($select);
 				}
 			}
 		}
 
 		$this->user       = Factory::getUser();
-		$this->lists      = $lists;
-		$this->selectlist = $selectlist;
+		//$this->lists      = $lists;
+//		$this->selectlist = $selectlist;
 		$this->option     = $option;
 		$this->matches    = $this->model->prepareItems($this->items);
-		$this->ress       = $ress;
+//		$this->ress       = $ress;
 //		$this->projectws  = $projectws;
-		$this->roundws    = $roundws;
+//		$this->roundws    = $roundws;
 		$this->prefill    = $params->get('use_prefilled_match_roster', 0);
 
 
 		if (!array_key_exists('search_mode', $this->lists))
 		{
 			$this->lists['search_mode'] = '';
+		}
+        
+        if (!array_key_exists('createTypes', $this->lists))
+		{
+			$this->lists['createTypes'] = '';
+		}
+        if (!array_key_exists('addToRound', $this->lists))
+		{
+			$this->lists['addToRound'] = '';
+		}
+        if (!array_key_exists('autoPublish', $this->lists))
+		{
+			$this->lists['autoPublish'] = '';
 		}
 
 		switch ($this->getLayout())
@@ -268,7 +281,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
 					$ctOptions[] = JHtmlSelect::option($key, $value);
 				}
 
-				$lists['createTypes'] = JHtmlSelect::genericlist($ctOptions, 'ct[]', 'class="inputbox" onchange="javascript:displayTypeView();"', 'value', 'text', 1, 'ct');
+				$this->lists['createTypes'] = JHtmlSelect::genericlist($ctOptions, 'ct[]', 'class="inputbox" onchange="javascript:displayTypeView();"', 'value', 'text', 1, 'ct');
 				unset($createTypes);
 
 				/** Build the html radio for adding into one round / all rounds */
@@ -280,11 +293,11 @@ class sportsmanagementViewMatches extends sportsmanagementView
 					$ynOptions[] = JHtmlSelect::option($key, $value);
 				}
 
-				$lists['addToRound'] = JHtmlSelect::radiolist($ynOptions, 'addToRound', 'class="inputbox"', 'value', 'text', 0);
+				$this->lists['addToRound'] = JHtmlSelect::radiolist($ynOptions, 'addToRound', 'class="inputbox"', 'value', 'text', 0);
 
 				/** Build the html radio for auto publish new matches */
-				$lists['autoPublish'] = JHtmlSelect::radiolist($ynOptions, 'autoPublish', 'class="inputbox"', 'value', 'text', 0);
-				$this->lists          = $lists;
+				$this->lists['autoPublish'] = JHtmlSelect::radiolist($ynOptions, 'autoPublish', 'class="inputbox"', 'value', 'text', 0);
+				//$this->lists          = $lists;
 				$this->setLayout('massadd');
 				break;
 		}

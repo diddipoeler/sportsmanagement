@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage matches
@@ -11,15 +9,11 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
-
-
 <legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_TITLE', '<i>' . $this->projectws->name . '</i>'); ?></legend>
 <form name='copyform' method='post' style='display:inline' id='copyform'>
     <input type='hidden' name='match_date'
