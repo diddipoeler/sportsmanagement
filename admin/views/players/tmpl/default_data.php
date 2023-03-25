@@ -201,21 +201,21 @@ jQuery( "#"+ attribute_cbnummer ).prop( "checked", true );
                                                            class="form-control form-control-inline"
                                                            name="firstname<?php echo $this->item->id; ?>"
                                                            value="<?php echo stripslashes(htmlspecialchars($this->item->firstname)); ?>"
-                                                           onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
+                                                           onchange=""/>
                     </td>
                     <td class="center">
                         <input <?php echo $inputappend; ?> type="text" size="15"
                                                            class="form-control form-control-inline"
                                                            name="nickname<?php echo $this->item->id; ?>"
                                                            value="<?php echo stripslashes(htmlspecialchars($this->item->nickname)); ?>"
-                                                           onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
+                                                           onchange=""/>
                     </td>
                     <td class="center">
                         <input <?php echo $inputappend; ?> type="text" size="15"
                                                            class="form-control form-control-inline"
                                                            name="lastname<?php echo $this->item->id; ?>"
                                                            value="<?php echo stripslashes(htmlspecialchars($this->item->lastname)); ?>"
-                                                           onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
+                                                           onchange=""/>
                     </td>
 <td class="center">
 <?php
@@ -264,8 +264,8 @@ style="width: 120px; <?php echo $append; ?>"
                 );
 		$("#birthday<?php echo $this->item->id; ?>").on("change.datetimepicker", ({date, oldDate}) => {
               console.log("New date", date);
-              console.log("Old date", oldDate);
-			  document.getElementById('cb<?php echo $this->count_i; ?>').checked=true
+              console.log("Old date", oldDate)
+			  
               //alert("Changed date")
       })    
             });
@@ -278,7 +278,7 @@ style="width: 120px; <?php echo $append; ?>"
                                                            class="form-control form-control-inline"
                                                            name="knvbnr<?php echo $this->item->id; ?>"
                                                            value="<?php echo stripslashes(htmlspecialchars($this->item->knvbnr)); ?>"
-                                                           onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
+                                                           onchange=""/>
                     </td>
                     <?php } ?>
                     <?php if (ComponentHelper::getParams($this->option)->get('backend_show_players_agegroup')){ ?>
@@ -335,7 +335,8 @@ style="width: 120px; <?php echo $append; ?>"
                     <td class="center">
                         <div class="btn-group">
 							<?php echo HTMLHelper::_('jgrid.published', $this->item->published, $this->count_i, 'players.', $canChange, 'cb'); ?>
-							<?php // Create dropdown items and render the dropdown list.
+							<?php 
+                            /** Create dropdown items and render the dropdown list. */
 							if ($canChange && !$this->assign)
 							{
 								HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === 2 ? 'un' : '') . 'archive', 'cb' . $this->count_i, 'players');

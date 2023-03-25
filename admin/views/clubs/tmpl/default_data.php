@@ -227,7 +227,7 @@ $this->dragable_group = 'data-dragable-group="none"';
                             type="text" size="40" class="form-control form-control-inline"
                             name="club_name<?php echo $this->item->id; ?>"
                             value="<?php echo $this->item->name; ?>"
-                            onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked = true"/>
+                            onchange=""/>
 			</div>
 			
 			<div class="small">
@@ -301,18 +301,18 @@ HTMLHelper::_('bootstrap.endSlide');
                     <input<?php echo $inputappend; ?> type="text" size="10" class="form-control form-control-inline"
                                                       name="unique_id<?php echo $this->item->id; ?>"
                                                       value="<?php echo $this->item->unique_id; ?>"
-                                                      onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
+                                                      onchange=""/>
 
                     <br/>
                     <input<?php echo $inputappend; ?> type="text" size="10" class="form-control form-control-inline"
                                                       name="new_club_id<?php echo $this->item->id; ?>"
                                                       value="<?php echo $this->item->new_club_id; ?>"
-                                                      onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
+                                                      onchange=""/>
 			<br/>
 			<input<?php echo $inputappend; ?> type="text" size="10" class="form-control form-control-inline"
                                                       name="founded_year<?php echo $this->item->id; ?>"
                                                       value="<?php echo $this->item->founded_year; ?>"
-                                                      onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
+                                                      onchange=""/>
 			<br/>
 					<?php echo $this->escape($this->item->state); ?>
                 </td>
@@ -336,17 +336,17 @@ echo sportsmanagementHelper::getBootstrapModalImage('select'.$this->item->id, ''
                     <input<?php echo $inputappend; ?> type="text" size="10" class="form-control form-control-inline"
                                                       name="zipcode<?php echo $this->item->id; ?>"
                                                       value="<?php echo $this->item->zipcode; ?>"
-                                                      onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
+                                                      onchange=""/>
                     <br/>
                     <input<?php echo $inputappend; ?> type="text" size="30" class="form-control form-control-inline"
                                                       name="location<?php echo $this->item->id; ?>"
                                                       value="<?php echo $this->item->location; ?>"
-                                                      onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
+                                                      onchange=""/>
                     <br/>
                     <input<?php echo $inputappend; ?> type="text" size="30" class="form-control form-control-inline"
                                                       name="address<?php echo $this->item->id; ?>"
                                                       value="<?php echo $this->item->address; ?>"
-                                                      onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
+                                                      onchange=""/>
                 </td>
 
                 <td class="">
