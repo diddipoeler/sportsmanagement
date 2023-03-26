@@ -13,12 +13,9 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
-
-$templatesToLoad = array('footer', 'listheader');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+use Joomla\CMS\Session\Session;
 
 $this->saveOrder = $this->sortColumn == 'obj.ordering';
-
 if ($this->saveOrder && !empty($this->items))
 {
 $saveOrderingUrl = 'index.php?option=com_sportsmanagement&task='.$this->view.'.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
@@ -32,10 +29,9 @@ HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolow
 }
 }
 
-
 ?>
 <div class="table-responsive" id="editcell_clubnames">
-    <table class="<?php echo $this->table_data_class; ?>">
+<table class="<?php echo $this->table_data_class; ?>" id="<?php echo $this->view; ?>list">
         <thead>
         <tr>
             <th width="5" style="vertical-align: top; ">

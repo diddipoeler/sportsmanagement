@@ -31,7 +31,7 @@ HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolow
 }
 ?>
 
-<div class="table-responsive" id="editcell">
+<div class="table-responsive" id="editcell_sportstypes">
 <table class="<?php echo $this->table_data_class; ?>" id="<?php echo $this->view; ?>list">
         <thead>
         <tr>
