@@ -98,7 +98,7 @@ HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolow
 
         <tbody <?php if ( $this->saveOrder && version_compare(substr(JVERSION, 0, 3), '4.0', 'ge') ) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($this->sortDirection); ?>" <?php endif; ?>>
 		<?php
-	//	$k = 0;
+
 		foreach ($this->items as $this->count_i => $this->item)
 	{
 
@@ -106,7 +106,7 @@ if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
 $this->dragable_group = 'data-dragable-group="none"';
 }    
-			//$row        =& $this->items[$i];
+
 			$link       = Route::_('index.php?option=com_sportsmanagement&task=clubname.edit&id=' . $this->item->id);
 			$canEdit    = $this->user->authorise('core.edit', 'com_sportsmanagement');
 			$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $this->item->checked_out == $this->user->get('id') || $this->item->checked_out == 0;
@@ -180,7 +180,7 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
                     </div>
 
                 </td>
-                <td class="order" id="defaultdataorder">
+<td class="order" id="defaultdataorder">
 <?php
 echo $this->loadTemplate('data_order');
 ?>
