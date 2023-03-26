@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage extrafields
@@ -11,10 +9,7 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -38,7 +33,6 @@ class sportsmanagementViewextrafields extends sportsmanagementView
 	 */
 	public function init()
 	{
-
 		$this->table = Table::getInstance('club', 'sportsmanagementTable');
 
 	}
@@ -50,13 +44,11 @@ class sportsmanagementViewextrafields extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-		// Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_EXTRAFIELDS_TITLE');
 		ToolbarHelper::addNew('extrafield.add');
 		ToolbarHelper::editList('extrafield.edit');
 		ToolbarHelper::custom('extrafield.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
 		ToolbarHelper::archiveList('extrafield.export', Text::_('JTOOLBAR_EXPORT'));
-
 		parent::addToolbar();
 	}
 }

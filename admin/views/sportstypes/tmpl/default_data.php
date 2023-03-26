@@ -158,7 +158,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_icon' . $
                     </div>
                 </td>
 
-                <td class="order" id="defaultdataorder">
+<td class="order" id="defaultdataorder">
 <?php
 echo $this->loadTemplate('data_order');
 ?>
