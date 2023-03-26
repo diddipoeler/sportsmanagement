@@ -393,7 +393,10 @@ class sportsmanagementModelResults extends JSMModelList
 		{
 			$options['rssUrl'] = $rssId;
 
-			if (version_compare(JVERSION, '3.0.0', 'ge'))
+			if (version_compare(JVERSION, '4.0.0', 'ge'))
+			{
+			}
+            elseif (version_compare(JVERSION, '3.0.0', 'ge'))
 			{
 				// Joomla! 3.0 code here
 				$rssDoc = Factory::getFeedParser($options);
@@ -416,8 +419,29 @@ class sportsmanagementModelResults extends JSMModelList
 				// Joomla! 1.5 code here
 			}
 
-			$feed = new stdclass;
+if (version_compare(JVERSION, '4.0.0', 'ge'))
+			{
+				try
+				{
+					$feed = new \FeedFactory;
 
+					// $feeds = new stdclass();
+					$rssDoc = $feed->getFeed($rssId);
+
+					return $rssDoc;
+				}
+				catch (\InvalidArgumentException $e)
+				{
+					Factory::getApplication()->enqueueMessage(Text::_('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED'), 'Notice');
+				}
+				catch (\RuntimeException $e)
+				{
+					Factory::getApplication()->enqueueMessage(Text::_('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED'), 'Notice');
+				}
+			}
+            else
+            {
+			$feed = new stdclass;
 			if ($rssDoc != false)
 			{
 				/** Channel header and link */
@@ -454,6 +478,7 @@ class sportsmanagementModelResults extends JSMModelList
 				$feed->items = array_slice($items, 0, $rssitems);
 				$lists[]     = $feed;
 			}
+            }
 		}
 
 		return $lists;

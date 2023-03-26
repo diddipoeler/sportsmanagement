@@ -221,15 +221,15 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 		{
 			$options['rssUrl'] = $rssId;
 
-			if (version_compare(JSM_JVERSION, '4', 'eq'))
+			if (version_compare(JVERSION, '4.0.0', 'ge'))
 			{
 			}
-			elseif (version_compare(JSM_JVERSION, '3', 'eq'))
+			elseif (version_compare(JVERSION, '3.0.0', 'ge'))
 			{
 				// Joomla! 3.0 code here
 				$rssDoc = Factory::getFeedParser($options);
 			}
-			elseif (version_compare(JSM_JVERSION, '2', 'eq'))
+			elseif (version_compare(JVERSION, '2.0.0', 'ge'))
 			{
 				// Joomla! 2.5 code here
 				$rssDoc = Factory::getXMLparser('RSS', $options);
@@ -247,7 +247,7 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 				// Joomla! 1.5 code here
 			}
 
-			if (version_compare(JSM_JVERSION, '4', 'eq'))
+			if (version_compare(JVERSION, '4.0.0', 'ge'))
 			{
 				try
 				{
@@ -270,7 +270,6 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 			else
 			{
 				$feed = new stdclass;
-
 				if ($rssDoc != false)
 				{
 					// Channel header and link
