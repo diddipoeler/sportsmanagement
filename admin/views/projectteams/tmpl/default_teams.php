@@ -22,6 +22,22 @@ $view                  = $this->jinput->getVar("view");
 $view                  = ucfirst(strtolower($view));
 $cfg_help_server       = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('cfg_help_server', '');
 $cfg_bugtracker_server = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('cfg_bugtracker_server', '');
+
+$this->saveOrder = $this->sortColumn == 't.ordering';
+
+if ($this->saveOrder && !empty($this->items))
+{
+$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task='.$this->view.'.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{    
+HTMLHelper::_('draggablelist.draggable');
+}
+else
+{
+HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl,$this->saveOrderButton);    
+}
+}
+
 ?>
 <script type="text/javascript">
     var teampicture = new Array;
@@ -68,7 +84,7 @@ $optteams = ' allowClear: true,
 
 ?>
 
-<div class="table-responsive" id="editcell">
+<div class="table-responsive" id="editcell_projectteams">
 
     <legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_LEGEND', '<i>' . $this->project->name . '</i>'); ?></legend>
 	<?php $cell_count = 25; ?>

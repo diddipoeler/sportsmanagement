@@ -16,8 +16,25 @@ use Joomla\CMS\Router\Route;
 
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+
+$this->saveOrder = $this->sortColumn == 'obj.ordering';
+
+if ($this->saveOrder && !empty($this->items))
+{
+$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task='.$this->view.'.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{    
+HTMLHelper::_('draggablelist.draggable');
+}
+else
+{
+HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl,$this->saveOrderButton);    
+}
+}
+
+
 ?>
-<div class="table-responsive">
+<div class="table-responsive" id="editcell_clubnames">
     <table class="<?php echo $this->table_data_class; ?>">
         <thead>
         <tr>
