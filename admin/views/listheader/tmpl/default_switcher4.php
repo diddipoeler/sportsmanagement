@@ -19,6 +19,7 @@ $this->document->addStyleSheet(Uri::root() . 'media/system/css/fields/switcher.c
 //$attr = 'id="' . $this->item->id . '"';
 $readonly = false;
 $disabled = false;
+$label = '';
 $input = '<input type="radio" id="%1$s" name="%2$s" value="%3$s" %4$s '.$this->switcher_onchange.'   >';
 ?>    			
 <fieldset <?php echo $this->switcher_attr; ?>>

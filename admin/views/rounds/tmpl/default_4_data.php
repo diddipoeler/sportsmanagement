@@ -162,24 +162,6 @@ if ($this->templateConfig['show_id'] == 1) $columns++;
                 <td class="center" id="round_date_first4">
 					<?php
 
-					/**
-					 * das wurde beim kalender geändert
-					 * $attribs = array(
-					 * 'onChange' => "alert('it works')",
-					 * "showTime" => 'false',
-					 * "todayBtn" => 'true',
-					 * "weekNumbers" => 'false',
-					 * "fillTable" => 'true',
-					 * "singleHeader" => 'false',
-					 * );
-					 * echo HTMLHelper::_('calendar', Factory::getDate()->format('Y-m-d'), 'date', 'date', '%Y-%m-%d', $attribs); ?>
-					 */
-
-/*
-					$attribs = array(
-						'onChange' => "document.getElementById('cb" . $this->count_i . "').checked=true",
-					);
-			*/
 $date1   = sportsmanagementHelper::convertDate($this->item->round_date_first, 1);
 if (($date1 == '00-00-0000') || ($date1 == ''))
 					{
@@ -187,26 +169,6 @@ if (($date1 == '00-00-0000') || ($date1 == ''))
 						$date1  = '';
 					}
 
-			/*
-$attribs['class'] = 'input-large';
-$attribs['size'] = '10';
-$attribs['maxlength'] = '10';
-$attribs['onChange'] = "document.getElementById('cb" . $this->count_i . "').checked=true";			
-					$date1   = sportsmanagementHelper::convertDate($this->item->round_date_first, 1);
-					$append  = '';
-					if (($date1 == '00-00-0000') || ($date1 == ''))
-					{
-						$append = ' style="background-color:#FFCCCC;" ';
-						$date1  = '';
-					}
-					echo HTMLHelper::calendar(
-						$date1,
-						'round_date_first' . $this->item->id,
-						'round_date_first' . $this->item->id,
-						'%d-%m-%Y',
-						$attribs
-					);
-					*/
 					?>
 
 <div class="input-group date" id="round_date_first<?php echo $this->item->id; ?>" data-target-input="nearest"  >
@@ -265,11 +227,7 @@ style="width: 120px; <?php echo $append; ?>"
 style="width: 120px; <?php echo $append; ?>" 
                     data-toggle="datetimepicker"
                     class="form-control datetimepicker-input " data-target="#round_date_last<?php echo $this->item->id; ?>" value="<?php echo $date2; ?>"  />
-<!--
-                    <div class="input-group-append" data-target="#datepicker<?php echo $row->id; ?>" data-toggle="datetimepicker">
-                       <div class="input-group-text" style="position:relative"><i class="fa fa-calendar"></i></div>
-                    </div>
-					 -->
+
 </div>  
 
 
