@@ -14,6 +14,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Session\Session;
 
 $this->saveOrder = $this->sortColumn == 'v.ordering';
 if ($this->saveOrder && !empty($this->items))
