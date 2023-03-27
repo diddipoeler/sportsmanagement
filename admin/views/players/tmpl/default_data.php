@@ -30,6 +30,23 @@ else
 {
 	$this->readonly = '';
 }
+/**
+changeBg(row, isChecked) {
+      // Check if it should add or remove the background colour
+      if (isChecked) {
+        [].slice.call(row.querySelectorAll('td, th')).forEach(elementToMark => {
+          elementToMark.classList.add('row-selected');
+        });
+      } else {
+        [].slice.call(row.querySelectorAll('td, th')).forEach(elementToMark => {
+          elementToMark.classList.remove('row-selected');
+        });
+      }
+    }
+
+
+
+*/
 ?>
 <script>
 var last_value;
