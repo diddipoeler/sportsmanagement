@@ -70,6 +70,7 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   27-03-2023: **4.12.00** Anpassungen Joomla 4
 *   07-01-2023: **4.11.00** Neue Felder flag_maps
 *   26-11-2022: **4.10.00** Jcomments 4
 *   19-06-2022: **4.00.00** Anpassungen Joomla 4
