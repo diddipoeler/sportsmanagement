@@ -37,6 +37,8 @@ class modJSMPlaygroundTicker
 	{
 		$app = Factory::getApplication();
         $result = array();
+        $rands = array();
+        $queryparts = array();
 		
 		// llambion
 		$project = (int) $params->get('p');
@@ -72,7 +74,7 @@ class modJSMPlaygroundTicker
 			* Bei der abschließenden Abfrage wird UNION ALL benutzt statt UNION, damit MySQL die Einzelergebnisse nicht noch versucht zu gruppieren
 			* wir wissen ja durch die while-Schleife bereits, dass keine Duplikate selektiert werden können). UNION bedeutet nämlich in Wirklichkeit UNION DISTINCT.
 			*/
-			$rands = array();
+			
 
 			while (count($rands) < $x && $anz_cnt > count($rands))
 			{
@@ -101,7 +103,7 @@ class modJSMPlaygroundTicker
 			if ($estadios > 0) 
 			{
 			/** Search id's for random values */
-			$rands = array();
+			
 			$x     = $params->get('limit', 1);
 
 			while (count($rands) < $x && $estadios > count($rands))
@@ -117,7 +119,7 @@ class modJSMPlaygroundTicker
 			
 		}
 
-		$queryparts = array();
+		
 
         /** Changed to consider all or only project stadiums */
 		
@@ -166,6 +168,7 @@ class modJSMPlaygroundTicker
 	{
 		$app = Factory::getApplication();
         $result = array();
+        $queryparts = array();
 		$p = (int) $params->get('p');
 		$x = $params->get('limit', 1);
 		$jinput             = $app->input;
@@ -198,7 +201,7 @@ class modJSMPlaygroundTicker
 				}
 			}
 
-			$queryparts = array();
+			
 
 			foreach ($rands as $rand)
 			{
