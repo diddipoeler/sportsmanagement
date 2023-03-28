@@ -53,35 +53,33 @@ var last_value;
 var current_value;
 var attribute_cbnummer;
 var id_cbnummer;
+jQuery(document).ready(function() {
+    jQuery("tr").click(function(){
+jQuery(this).children("td:even").addClass("row-selected").end().children("td:odd").addClass("row-selected");
+            		
+       //alert("Click! "+ jQuery(this).find('td').html());
+    });
+});
 
 jQuery(document).on("click","select",function(){
     last_value = $(this).val();
 	attribute_cbnummer = $(this).attr('cbnummer');
 	id_cbnummer = $(this).attr('id');
-$( "#"+ attribute_cbnummer ).prop( "checked", false );
+});
 
-}).on("change","select",function(){
-    current_value = $(this).val();
+jQuery(document).on("change","select",function(){
+	//last_value = $(this).val();
+	//attribute_cbnummer = $(this).attr('cbnummer');
+	//id_cbnummer = $(this).attr('id');
+current_value = $(this).val();
 
     console.log('last value - '+last_value);
     console.log('current value - '+current_value);
 	console.log('attribute_cbnummer - '+attribute_cbnummer);
 	console.log('id_cbnummer - '+id_cbnummer);
+$( "#"+attribute_cbnummer).prop( "checked", true );
 
-	if ( last_value != current_value )
-	{
-console.log('geändert');
-//jQuery("." + attribute_cbnummer).prop('checked', true);
-//attribute_cbnummer.prop('checked', true);
-//document.getElementById(attribute_cbnummer).checked = true;
-$( "#"+ attribute_cbnummer ).prop( "checked", true );
-	}
-	else
-	{
-		console.log('keine änderung');
-	}
 });
-
 </script>
 
 
