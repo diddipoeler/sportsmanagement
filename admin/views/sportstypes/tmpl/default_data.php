@@ -30,7 +30,39 @@ HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolow
 }
 }
 ?>
+<script>
+var last_value;
+var current_value;
+var attribute_cbnummer;
+var id_cbnummer;
+jQuery(document).ready(function() {
+    jQuery("tr").click(function(){
+jQuery(this).children("td:even").addClass("row-selected").end().children("td:odd").addClass("row-selected");
+            		
+       //alert("Click! "+ jQuery(this).find('td').html());
+    });
+});
 
+jQuery(document).on("click","select",function(){
+    last_value = $(this).val();
+	attribute_cbnummer = $(this).attr('cbnummer');
+	id_cbnummer = $(this).attr('id');
+});
+
+jQuery(document).on("change","select",function(){
+	//last_value = $(this).val();
+	//attribute_cbnummer = $(this).attr('cbnummer');
+	//id_cbnummer = $(this).attr('id');
+current_value = $(this).val();
+
+    console.log('last value - '+last_value);
+    console.log('current value - '+current_value);
+	console.log('attribute_cbnummer - '+attribute_cbnummer);
+	console.log('id_cbnummer - '+id_cbnummer);
+$( "#"+attribute_cbnummer).prop( "checked", true );
+
+});
+</script>
 <div class="table-responsive" id="editcell_sportstypes">
 <table class="<?php echo $this->table_data_class; ?>" id="<?php echo $this->view; ?>list">
         <thead>
@@ -138,10 +170,11 @@ echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_icon' . $
 					?>
                 </td>
                 <td>
-					<?php
-					$append = ' onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true" style="background-color:#bbffff"';
-					echo HTMLHelper::_('select.genericlist', $this->lists['sportart'], 'sportstype_id' . $this->item->id, 'class="form-control form-control-inline" size="1"' . $append, 'value', 'text', $this->item->sportsart);
-					?>
+<?php
+$append = ' cbnummer="cb' . $this->count_i . '" style="background-color:#bbffff"';
+echo HTMLHelper::_('select.genericlist', $this->lists['sportart'], 'sportstype_id' . $this->item->id, 'class="form-control form-control-inline" size="1"' . $append, 'value', 'text', $this->item->sportsart);
+?>
+			
                 </td>
                 <td class="center">
                     <div class="btn-group">
