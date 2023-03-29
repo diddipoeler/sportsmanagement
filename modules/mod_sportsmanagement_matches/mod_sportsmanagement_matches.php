@@ -117,7 +117,8 @@ $doc = Factory::getDocument();
 
 if ($params->get('mootools'))
 {
-	$doc->addScript(Uri::root() . '/media/system/js/mootools-core.js');
+	//$doc->addScript(Uri::root() . '/media/system/js/mootools-core.js');
+	$doc->addScript('https://www.unpkg.com/browse/mootools@1.5.2/lib/mootools-core-1.5.2-server.js');
 }
 
 if (version_compare(JVERSION, '3.0.0', 'ge'))
