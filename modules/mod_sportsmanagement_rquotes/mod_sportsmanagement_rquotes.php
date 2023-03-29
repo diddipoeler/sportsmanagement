@@ -55,6 +55,7 @@ $style         = $params->get('template', 'default');
 $category      = $params->get('category', '');
 $rotate        = $params->get('rotate');
 $num_of_random = $params->get('num_of_random');
+$category = implode(",", $category);
 
 switch ($source)
 {
