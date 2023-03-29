@@ -386,13 +386,21 @@ Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_FORE_SURFACE') . ', '  . PlayGro
 Function PlayGround_Surface($extended)
 {
 
+//echo 'extended <pre>'.print_r(json_decode($extended),true).'</pre>';
+$extended = json_decode($extended);
+/**
   $surface = '';
   $pos = strpos($extended,'"COM_SPORTSMANAGEMENT_EXT_PLAYGROUND_GROUND":');
   $pos = $pos + strlen('"COM_SPORTSMANAGEMENT_EXT_PLAYGROUND_GROUND":') + 1;
   $end = strpos($extended,'"',$pos) ;
   
   $text = substr($extended, $pos, $end-$pos);
-  
+  */
+foreach( $extended as $key => $value ) if ( $key == 'COM_SPORTSMANAGEMENT_EXT_PLAYGROUND_GROUND' )
+{
+$text = $value;
+}
+//echo 'text <pre>'.print_r(json_decode($text),true).'</pre>';
   switch ($text)
   {
 	case 'Naturrasen':
