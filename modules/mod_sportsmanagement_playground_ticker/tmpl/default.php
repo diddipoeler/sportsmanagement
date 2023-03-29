@@ -351,14 +351,15 @@ switch ($mode)
 												display:block;
 												margin: 0px 0px 20px 10px;
 												clear:both;">
-								<?php // Game Field type
-									If ($params->get('field_type')==1)
-									{
-									?>	<?php Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_FORE_SURFACE') . ', '  . PlayGround_Surface($playground->extended); ?>
-									<?
-									}
-								
-								?>	 								
+<?php // Game Field type
+If ($params->get('field_type')==1)
+{
+if ( $playground->extended )
+{
+Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_FORE_SURFACE') . ', '  . PlayGround_Surface($playground->extended);
+}
+}
+?>	 								
 						
                          </div>
                         </div>
