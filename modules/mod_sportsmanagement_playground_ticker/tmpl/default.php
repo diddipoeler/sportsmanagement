@@ -352,13 +352,13 @@ switch ($mode)
 												margin: 0px 0px 20px 10px;
 												clear:both;">
 <?php // Game Field type
-If ($params->get('field_type')==1)
-{
+//If ($params->get('field_type')==1)
+//{
 if ( $playground->extended )
 {
-Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_FORE_SURFACE') . ', '  . PlayGround_Surface($playground->extended);
+echo Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_FORE_SURFACE') . ', '  . PlayGround_Surface($playground->extended);
 }
-}
+//}
 ?>	 								
 						
                          </div>
@@ -388,6 +388,7 @@ Function PlayGround_Surface($extended)
 
 //echo 'extended <pre>'.print_r(json_decode($extended),true).'</pre>';
 $extended = json_decode($extended);
+//echo 'extended <pre>'.print_r($extended,true).'</pre>';
 /**
   $surface = '';
   $pos = strpos($extended,'"COM_SPORTSMANAGEMENT_EXT_PLAYGROUND_GROUND":');
@@ -396,11 +397,19 @@ $extended = json_decode($extended);
   
   $text = substr($extended, $pos, $end-$pos);
   */
-foreach( $extended as $key => $value ) if ( $key == 'COM_SPORTSMANAGEMENT_EXT_PLAYGROUND_GROUND' )
+foreach( $extended as $key => $value ) 
 {
+//echo 'key <pre>'.print_r($key,true).'</pre>';	
+switch ($key)
+{
+	case 'COM_SPORTSMANAGEMENT_EXT_PLAYGROUND_GROUND':
+	//echo 'value <pre>'.print_r($value,true).'</pre>';
 $text = $value;
+	break;
 }
-//echo 'text <pre>'.print_r(json_decode($text),true).'</pre>';
+
+}
+//echo 'text <pre>'.print_r($text,true).'</pre>';
   switch ($text)
   {
 	case 'Naturrasen':
@@ -425,7 +434,7 @@ $text = $value;
 		  $surface = Text::_('COM_SPORTSMANAGEMENT_ST_PLAYGROUND_RUBBERIZED_COURT');				  
 		  break;
   }  
-	
+	//echo 'surface <pre>'.print_r($surface,true).'</pre>';
 return $surface;	
 }
 
