@@ -46,7 +46,7 @@ if (empty($zaehlerfed))
 ?>
 <div class="accordion-item">
     <h2 class="accordion-header" id="headingctseasonfed<?php echo $keyfed; ?>">
-      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapsectseasonfed<?php echo $keyfed; ?>" aria-expanded="true" aria-controls="collapsectseasonfed<?php echo $value; ?>">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapsectseasonfed<?php echo $keyfed; ?>" aria-expanded="true" aria-controls="collapsectseasonfed<?php echo $valuefed; ?>">
         <?php echo $valuefed->name; ?>
       </button>
     </h2>
@@ -55,7 +55,6 @@ if (empty($zaehlerfed))
 
 
 <div class="accordion" id="accordionactseason">
-
 <?php
 /** anfang schleife länder */
 		foreach ($ausland as $key => $value) if ( $value->federation == $keyfed  )
@@ -121,22 +120,24 @@ echo JSMCountries::getCountryFlag($row->country);
   </div>
 <!-- end div season item -->
 <?php
-		}
-        /** ende schleife länder */
-			?>
+}
+/** ende schleife länder */
+?>
 </div>
 <!-- end div season -->
 
 </div>
-
+<!-- ende div row fed -->
 
 <?php
-		}
-			?>
+}
+?>
 </div>
+<!-- ende div collaps fed -->
 </div>
+<!-- ende div item fed -->
 </div>
-
+<!-- ende div federation -->
 
 
 

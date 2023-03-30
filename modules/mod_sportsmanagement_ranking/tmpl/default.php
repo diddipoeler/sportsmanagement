@@ -20,7 +20,6 @@ $items = count($list['ranking']);
 if (!$items)
 {
 	echo '<p class="modjlgranking">' . Text::_('NO ITEMS') . '</p>';
-
 	return;
 }
 
