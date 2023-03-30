@@ -18,16 +18,25 @@ use Joomla\CMS\HTML\HTMLHelper;
 if ($params->get("show_slider"))
 {
 	$ausland = array();
+	$auslandfed = array();
 	$zaehler = 0;
 	foreach ($list as $row)
 	{
 		$ausland[$row->country] = JSMCountries::getCountryName($row->country);
+		$auslandfed[$row->country] = $row->federation;
 		$zaehler++;
 	}
 
 	$zaehler = 0;
 	$zaehlerfed = 0;
 	asort($ausland);	
+
+
+//echo '<pre>'.print_r($ausland,true).'</pre>';	
+//echo '<pre>'.print_r($list,true).'</pre>';	
+//echo '<pre>'.print_r($auslandfed,true).'</pre>';
+
+
 ?>
 <div class="accordion" id="accordionactseasonfederation">
 <?php
@@ -57,7 +66,7 @@ if (empty($zaehlerfed))
 <div class="accordion" id="accordionactseason">
 <?php
 /** anfang schleife länder */
-		foreach ($ausland as $key => $value) if ( $value->federation == $keyfed  )
+		foreach ($auslandfed as $key => $value) if ( $value == $keyfed  )
 		{
 			if (empty($zaehler))
 			{
@@ -139,21 +148,11 @@ echo JSMCountries::getCountryFlag($row->country);
 </div>
 <!-- ende div federation -->
 
-
-
-
-
-
-
-
-
-
 <?php	
 	
-	?>
-    
+?>
 
-	<?php
+<?php
 }
 else
 {
