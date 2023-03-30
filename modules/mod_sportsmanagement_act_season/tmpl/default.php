@@ -46,7 +46,7 @@ if (empty($zaehlerfed))
 ?>
 <div class="accordion-item">
     <h2 class="accordion-header" id="headingctseasonfed<?php echo $keyfed; ?>">
-      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapsectseasonfed<?php echo $keyfed; ?>" aria-expanded="true" aria-controls="collapsectseasonfed<?php echo $valuefed; ?>">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapsectseasonfed<?php echo $keyfed; ?>" aria-expanded="true" aria-controls="collapsectseasonfed<?php echo $keyfed; ?>">
         <?php echo $valuefed->name; ?>
       </button>
     </h2>
