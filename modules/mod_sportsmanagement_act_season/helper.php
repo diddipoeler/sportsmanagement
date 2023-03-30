@@ -57,7 +57,7 @@ $db->setQuery($query);
 $federation[$key]  = $db->loadObject(); 
          }
          
-         
+         return $federation;
         // echo '<pre>'.print_r($federation,true).'</pre>';
          
        }
