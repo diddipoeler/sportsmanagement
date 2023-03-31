@@ -39,7 +39,7 @@ class modJSMActSeasonHelper
 $query->select('alpha3,federation');
 $query->from('#__sportsmanagement_countries');
 $db->setQuery($query);
-$federation = $db->loadObject(); 
+$federation = $db->loadObjectList(); 
 	return $federation;	
 	}
 /**
