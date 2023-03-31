@@ -65,6 +65,7 @@ $season_ids = ComponentHelper::getParams('com_sportsmanagement')->get('current_s
 
 $list = modJSMActSeasonHelper::getData($season_ids);
 $federation = modJSMActSeasonHelper::getDataFederation($list);
+$countryfederation = modJSMActSeasonHelper::getDataCcountryFederation();
 
 /** add css file */
 // $document->addStyleSheet(Uri::base().'modules/mod_sportsmanagement_new_project/css/mod_sportsmanagement_new_project.css');
