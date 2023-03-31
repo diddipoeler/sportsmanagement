@@ -3106,8 +3106,7 @@ $jinput = $app->input;
 		$jinput = $app->input;
 		$db     = self::getDBConnection();
 		$query  = $db->getQuery(true);
-        
-        
+        $result = array();
 
 		if ($jlid)
 		{
@@ -3128,12 +3127,12 @@ $jinput = $app->input;
 			{
 				Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
 			Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
-				return false;
+				return $result;
 			}
 		}
 		else
 		{
-			return false;
+			return $result;
 		}
 	}
 
