@@ -35,7 +35,8 @@ if ($params->get("show_slider"))
 //echo '<pre>'.print_r($ausland,true).'</pre>';	
 //echo '<pre>'.print_r($list,true).'</pre>';	
 //echo '<pre>'.print_r($auslandfed,true).'</pre>';
-
+//echo '<pre>'.print_r($countryfederation,true).'</pre>';
+	
 echo HTMLHelper::_('bootstrap.startTabSet', 'defaulttabsfederation', array('active' => 'show_table_NON')); // Start tab set
 foreach ($federation as $keyfed => $valuefed) if ( $keyfed != 0 )
 {
