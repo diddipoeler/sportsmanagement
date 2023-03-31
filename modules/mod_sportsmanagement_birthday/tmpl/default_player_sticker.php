@@ -126,7 +126,7 @@ if (count($persons) > 0)
 			
 		 }	
 
-		$style = $style . 'width:250px; ';
+		//$style = $style . 'width:250px; ';
 		$style = $style . 'margin: 0px 0px 30px 0px;';
 
 	
