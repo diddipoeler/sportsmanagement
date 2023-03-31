@@ -37,10 +37,10 @@ if ($params->get("show_slider"))
 //echo '<pre>'.print_r($auslandfed,true).'</pre>';
 //echo '<pre>'.print_r($countryfederation,true).'</pre>';
 	
-echo HTMLHelper::_('bootstrap.startTabSet', 'defaulttabsfederation', array('active' => 'show_table_NON')); // Start tab set
+echo HTMLHelper::_('bootstrap.startTabSet', 'defaulttabsfederation', array('active' => 'show_table_0')); // Start tab set
 foreach ($federation as $keyfed => $valuefed) if ( $keyfed != 0 )
 {
-echo HTMLHelper::_('bootstrap.addTab', 'defaulttabsfederation', 'show_table_'.$valuefed->name, Text::_($valuefed->name));
+echo HTMLHelper::_('bootstrap.addTab', 'defaulttabsfederation', 'show_table_'.$zaehler, Text::_($valuefed->name));
 foreach ($countryfederation as $key => $value) if ( $value->federation == $keyfed  )
 {
 //echo $value->alpha3;
@@ -85,6 +85,7 @@ echo JSMCountries::getCountryFlag($row->country);
 
 }							
 echo HTMLHelper::_('bootstrap.endTab');
+$zaehler++;
 }
 ?>
 
