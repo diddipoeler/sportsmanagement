@@ -351,7 +351,14 @@ echo Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_FORE_SURFACE') . ', '  . Pl
 	}
 
  }
+
    
+/**
+ * PlayGround_Surface()
+ * 
+ * @param mixed $extended
+ * @return
+ */
 Function PlayGround_Surface($extended)
 {
 
