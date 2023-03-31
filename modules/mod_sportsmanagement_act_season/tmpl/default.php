@@ -36,9 +36,20 @@ if ($params->get("show_slider"))
 //echo '<pre>'.print_r($list,true).'</pre>';	
 //echo '<pre>'.print_r($auslandfed,true).'</pre>';
 
-
+echo HTMLHelper::_('bootstrap.startTabSet', 'defaulttabsfederation', array('active' => 'show_table_NON')); // Start tab set
+foreach ($federation as $keyfed => $valuefed) if ( $keyfed != 0 )
+{
+echo HTMLHelper::_('bootstrap.addTab', 'defaulttabsranking', 'show_table_'.$valuefed->name, Text::_($valuefed->name));
+foreach ($auslandfed as $key => $value) if ( $value == $keyfed  )
+		{
+echo $key;
+		}							
+echo HTMLHelper::_('bootstrap.endTab');
+}
 ?>
-<div class="accordion" id="accordionactseasonfederation">
+
+
+<div class="accordion_one" id="accordionactseasonfederation">
 <?php
 foreach ($federation as $keyfed => $valuefed) if ( $keyfed != 0 )
 		{
@@ -63,7 +74,7 @@ if (empty($zaehlerfed))
       <div class="row">
 
 
-<div class="accordion" id="accordionactseason">
+<div class="accordion_two" id="accordionactseason">
 <?php
 /** anfang schleife länder */
 		foreach ($auslandfed as $key => $value) if ( $value == $keyfed  )
