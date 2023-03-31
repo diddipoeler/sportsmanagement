@@ -26,6 +26,22 @@ JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 class modJSMActSeasonHelper
 {
 
+	public static function getDataCcountryFederation()
+	{
+	  $app    = Factory::getApplication();
+		$date   = Factory::getDate();
+		$user   = Factory::getUser();
+		$db     = Factory::getDBO();
+		$query  = $db->getQuery(true);
+		$result = array();
+         $federation = array();
+		$query->clear();
+$query->select('alpha3,federation');
+$query->from('#__sportsmanagement_countries');
+$db->setQuery($query);
+$federation = $db->loadObject(); 
+	return $federation;	
+	}
 /**
  * modJSMActSeasonHelper::getDataFederation()
  * 
