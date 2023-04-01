@@ -1078,7 +1078,7 @@ public function installPackages( $adapter)
  * https://github.com/exstreme/Jcomments-4/releases/download/v4.0.27/pkg_jcomments_4.0.27.zip 
  *  
 */
-$link = "https://github.com/exstreme/Jcomments-4/releases/download/v4.0.27/pkg_jcomments_4.0.27.zip";
+$link = "https://raw.githubusercontent.com/exstreme/Jcomments-4/master/update-jcomments.xml";
 $path = $src . DIRECTORY_SEPARATOR . 'pkg' . DIRECTORY_SEPARATOR .'jcomments'. DIRECTORY_SEPARATOR.'components'. DIRECTORY_SEPARATOR ;
 
 $installer = new Installer;
