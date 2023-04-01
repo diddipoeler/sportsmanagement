@@ -1082,10 +1082,15 @@ public function installPackages( $adapter)
 $link = "https://raw.githubusercontent.com/exstreme/Jcomments-4/master/update-jcomments.xml";
 $path = $src . DIRECTORY_SEPARATOR . 'pkg' . DIRECTORY_SEPARATOR .'jcomments'. DIRECTORY_SEPARATOR.'components'. DIRECTORY_SEPARATOR ;
 
+
 $installer = new Installer;
-//$result = $installer->install($path);	
+$result = $installer->install($path);
+
+
+/**
+$update = new Update();	
 $result = $installer->install($link);
-	
+*/	
 echo '<p>' . Text::_('Packages : ') . 'JComments 4.0' . ' installiert!</p>';	
 	}
 }
