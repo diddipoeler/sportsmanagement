@@ -94,7 +94,8 @@ use Joomla\CMS\Installer\Installer;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Plugin\PluginHelper;
-
+use Joomla\CMS\Updater\Update;
+use Joomla\CMS\Updater\Updater;
 
 $maxImportTime = 960;
 
