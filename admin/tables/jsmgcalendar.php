@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage tables
@@ -11,16 +9,11 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Table\Table;
-
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Crypt\Crypt;
-
-JLoader::import('joomla.database.table');
-
 
 /**
  * sportsmanagementTablejsmGCalendar
@@ -31,7 +24,7 @@ JLoader::import('joomla.database.table');
  * @version   2014
  * @access    public
  */
-class  sportsmanagementTablejsmGCalendar extends Table
+class  sportsmanagementTablejsmGCalendar extends JSMTable
 {
 	/**
 	 * sportsmanagementTablejsmGCalendar::__construct()

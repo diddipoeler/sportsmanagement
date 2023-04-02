@@ -75,7 +75,7 @@ class sportsmanagementViewjlextindividualsportes extends sportsmanagementView
 		$mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
 		$this->projectws   = $mdlProject->getProject($project_id);
 		$mdlRound   = BaseDatabaseModel::getInstance("Round", "sportsmanagementModel");
-		$roundws    = $mdlRound->getRound($this->rid );
+		$this->roundws    = $mdlRound->getRound($this->rid );
 
 		$this->model->checkGames($this->projectws , $this->match_id, $this->rid , $this->projectteam1_id, $this->projectteam2_id);
 
@@ -117,7 +117,7 @@ class sportsmanagementViewjlextindividualsportes extends sportsmanagementView
 //		$this->projectteam2_id = $projectteam2_id;
 
 		//$this->projectws = $projectws;
-		$this->roundws   = $roundws;
+		//$this->roundws   = $roundws;
 
 		if ($result = $this->model->getPlayer($this->projectteam1_id, $project_id))
 		{
