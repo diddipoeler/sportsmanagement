@@ -19,7 +19,7 @@ use Joomla\CMS\Component\ComponentHelper;
 HTMLHelper::_('bootstrap.framework');
 jimport('joomla.html.html.bootstrap');
 
-$version           = '3.8.8';
+$version           = '4.12.00';
 
 $minor = 0;
 $major = 0;
