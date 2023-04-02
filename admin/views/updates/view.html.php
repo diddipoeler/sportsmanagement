@@ -13,7 +13,6 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
-
 jimport('joomla.html.html.bootstrap');
 
 /**
@@ -73,10 +72,8 @@ class sportsmanagementViewUpdates extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_TITLE');
 		$this->icon  = 'updates';
-
 		parent::addToolbar();
 	}
 

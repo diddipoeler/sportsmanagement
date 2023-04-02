@@ -34,16 +34,14 @@ $this->endPanel = 'endPanel';
 ?>
 
 <?php
-// Define tabs options for version of Joomla! 3.0
+/** Define tabs options for version of Joomla! 3.0 */
 			$tabsOptions = array(
 			"active" => "tab1_id1" // It is the ID of the active tab.
 			);
-	// tabs anzeigen
+	/** tabs anzeigen */
 	$idxTab = 1;
     echo HTMLHelper::_('bootstrap.' . $this->startPane, 'ID-Tabs-Group', $tabsOptions);
-//	echo HTMLHelper::_('tabs.start', 'tabs_updates', array('useCookie' => 1));    
 	echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab1_id'. ($idxTab++), Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_LIST'));
-//	echo HTMLHelper::_('tabs.panel', Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_LIST'), 'panel' . ($idxTab++));
 	?>
     <table class="table">
         <thead>
@@ -84,30 +82,8 @@ $this->endPanel = 'endPanel';
 					<?PHP
 $link = 'index.php?option=com_sportsmanagement&tmpl=component&view=update&task=update.save&file_name=' . $row['file_name'];
 echo sportsmanagementHelper::getBootstrapModalImage('ModalSelect' . $i, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/link.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_MAKE_UPDATE'), '20', Uri::base() . $link, $this->modalwidth, $this->modalheight);
-/*
-$html = '<a href="#' . '" title="' . Text::_('') . '" data-bs-toggle="modal"' .'data-bs-target="#ModalSelect' . $i . '">'.      'starten '.'</a>';
 
-$html .= HTMLHelper::_(
-				'bootstrap.renderModal',
-				'ModalSelect' . $i,
-				array(
-					'title'       => Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_MAKE_UPDATE'),
-					'url'         => 'index.php?option=com_sportsmanagement&tmpl=component&view=update&task=update.save&file_name=' . $row['file_name'],
-					'height'      => '400px',
-					'width'       => '800px',
-					'bodyHeight'  => 70,
-					'modalWidth'  => 80,
-					'footer'      => '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">'
-										. Text::_('JLIB_HTML_BEHAVIOR_CLOSE') . '</button>',
-				)
-			);
-echo $html;		
-*/
 echo $row['file_name'];
-
-
-
-
 
 					?>
                 </td>
@@ -135,7 +111,7 @@ echo $row['file_name'];
 	<?PHP
     echo HTMLHelper::_('bootstrap.' . $this->endPanel);
     echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab1_id'. ($idxTab++), Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_HISTORY'));
-//	echo HTMLHelper::_('tabs.panel', Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_HISTORY'), 'panel' . ($idxTab++));
+
 	foreach ($this->versionhistory as $history)
 	{
 		?>
@@ -143,13 +119,11 @@ echo $row['file_name'];
             <legend>
                 <strong>
 					<?php
-					//echo $history->date;
 					echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_VERSIONEN', $history->version, HTMLHelper::date($history->date, Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_DAYDATE')));
 					?>
                 </strong>
             </legend>
 			<?php
-			//echo $history->text;
 			echo Text::_($history->text);
 			?>
         </fieldset>
@@ -157,5 +131,4 @@ echo $row['file_name'];
 	}
     echo HTMLHelper::_('bootstrap.' . $this->endPanel);
     echo HTMLHelper::_('bootstrap.' . $this->endPane, 'ID-Tabs-Group');
-//	echo HTMLHelper::_('tabs.end');
 	?>
