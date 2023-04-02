@@ -295,6 +295,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 				<?PHP
 			}
 			?>
+            <a class="btn btn-jsm-dash" href="index.php?option=com_sportsmanagement&view=databasetools">
+                <img src="components/com_sportsmanagement/assets/icons/jcomments_j4_256.png"
+                     alt="<?php echo Text::_('JComments for Joomla 4') ?>"/><br/>
+                <span><?php echo Text::_('JComments for Joomla 4') ?></span>
+            </a>
+            
         </div>
         <hr>
         <div class="">
