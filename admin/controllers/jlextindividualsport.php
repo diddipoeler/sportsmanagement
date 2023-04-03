@@ -13,9 +13,6 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
-//jimport('joomla.application.component.controller');
-
-
 /**
  * sportsmanagementControllerjlextindividualsport
  *
@@ -45,42 +42,45 @@ class sportsmanagementControllerjlextindividualsport extends JSMControllerAdmin
 		$post['project_id'] = $app->getUserState("$option.pid", '0');
 		$post['round_id']   = $app->getUserState("$option.rid", '0');
         
-        $msg = 'post <pre>'.print_r($post,true).'</pre>';
+        //$msg = 'post <pre>'.print_r($post,true).'</pre>';
 
 		// $post['match_id'] = $post['id'];
 
 		$model = $this->getModel('jlextindividualsport');
 
-		// $model->addmatch();
+//		// $model->addmatch();
+//
+//		$row = $model->getTable();
+//
+//		// Bind the form fields to the table
+//		if (!$row->bind($post))
+//		{
+//			$this->setError($this->_db->getErrorMsg());
+//
+//			return false;
+//		}
+//
+//		// Make sure the record is valid
+//		if (!$row->check())
+//		{
+//			$this->setError($this->_db->getErrorMsg());
+//
+//			return false;
+//		}
 
-		$row = $model->getTable();
 
-		// Bind the form fields to the table
-		if (!$row->bind($post))
-		{
-			$this->setError($this->_db->getErrorMsg());
+$result = $model->addmatch($post);
 
-			return false;
-		}
-
-		// Make sure the record is valid
-		if (!$row->check())
-		{
-			$this->setError($this->_db->getErrorMsg());
-
-			return false;
-		}
-
-try{
-    $result = $row->store($post);
-    $msg .= Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ADD_MATCH');
+if ( $result )
+{
+$msg .= Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ADD_MATCH');    
 }
-		catch (Exception $e)
-		{
-			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
-			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
-		$msg .= Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_ADD_MATCH') . $model->getError();
-		}
+else
+{
+$msg .= Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_ADD_MATCH') . $model->getError();    
+}
+
+
 //		// Store to the database
 //		if ($row->store($post))
 //		{

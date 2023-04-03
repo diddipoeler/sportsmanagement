@@ -71,6 +71,43 @@ class sportsmanagementModeljlextindividualsport extends JSMModelAdmin
 		return $form;
 	}
 
+
+
+/**
+ * sportsmanagementModeljlextindividualsport::addmatch()
+ * 
+ * @param mixed $post
+ * @return void
+ */
+function addmatch($post = array() )
+{
+$rowmatch = new stdClass;
+$rowmatch->match_date = $post['match_date'];
+$rowmatch->projectteam1_id = $post['projectteam1_id'];
+$rowmatch->projectteam2_id = $post['projectteam2_id'] ;
+$rowmatch->match_id = $post['match_id'];
+$rowmatch->teamplayer1_id = $post['teamplayer1_id'];
+$rowmatch->teamplayer2_id = $post['teamplayer2_id'];
+$rowmatch->published = $post['published'];
+$rowmatch->project_id = $post['project_id'];
+$rowmatch->round_id = $post['round_id'];
+
+try
+{
+$result_insert = $this->jsmdb->insertObject('#__sportsmanagement_match_single', $rowmatch);
+return true;
+}
+catch (Exception $e)
+{
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+return false;
+}    
+    
+    
+}
+
+
 	/**
 	 * sportsmanagementModeljlextindividualsport::saveshort()
 	 *
