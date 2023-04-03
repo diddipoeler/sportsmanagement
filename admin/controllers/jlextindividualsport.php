@@ -38,11 +38,14 @@ class sportsmanagementControllerjlextindividualsport extends JSMControllerAdmin
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
 		$db     = Factory::getDbo();
+        $msg = '';
 
 		// Option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&id=241&team1=23&team2=31&rid=31
 		$post               = Factory::getApplication()->input->post->getArray(array());
 		$post['project_id'] = $app->getUserState("$option.pid", '0');
 		$post['round_id']   = $app->getUserState("$option.rid", '0');
+        
+        $msg = 'post <pre>'.print_r($post,true).'</pre>';
 
 		// $post['match_id'] = $post['id'];
 
@@ -70,13 +73,13 @@ class sportsmanagementControllerjlextindividualsport extends JSMControllerAdmin
 
 try{
     $result = $row->store($post);
-    $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ADD_MATCH');
+    $msg .= Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ADD_MATCH');
 }
 		catch (Exception $e)
 		{
 			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
 			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
-		$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_ADD_MATCH') . $model->getError();
+		$msg .= Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_ADD_MATCH') . $model->getError();
 		}
 //		// Store to the database
 //		if ($row->store($post))
