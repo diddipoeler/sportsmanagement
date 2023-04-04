@@ -177,6 +177,7 @@
 					<option value="T">TICKER</option>
 					<option value="L">LIST</option>
 					<option value="B">BOOTSTRAP</option>
+					<option value="BC">BOOTSTRAP Carousel</option>
 					<option value="J">Jssor Slider</option>
 				</field>
 

@@ -156,6 +156,9 @@ if (count($clubs) > 0)
 	{
 		case 'B':
 			$layout = isset($attribs['layout']) ? $attribs['layout'] : 'default';
+            
+            case 'BC':
+			$layout = 'default_carousel';
 
 			// $document->addStyleSheet(Uri::base().'modules/mod_sportsmanagement_club_birthday/css/mod_sportsmanagement_club_birthday.css');
 			break;
