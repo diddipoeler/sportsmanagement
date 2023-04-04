@@ -38,6 +38,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 	var $_sport_types_events = array();
 	var $_sport_types_position = array();
 	var $_sport_types_position_parent = array();
+	var $_assoclist = array();
 	var $_success_text = '';
 	var $my_text = '';
 	var $storeFailedColor = 'red';
