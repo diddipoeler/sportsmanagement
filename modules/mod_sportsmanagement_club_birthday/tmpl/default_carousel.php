@@ -10,6 +10,8 @@
  * 
  * https://getbootstrap.com/docs/4.3/components/carousel/
  * 
+ * https://getbootstrap.com/docs/5.2/components/carousel/
+ * 
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
