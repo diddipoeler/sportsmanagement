@@ -14,8 +14,10 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
-// Save and close
+/** Save and close */
 $close = Factory::getApplication()->input->getInt('close', 0);
+$partresults1 = array();
+$partresults2 = array();
 
 if ($close == 1)
 {
@@ -269,8 +271,14 @@ if ($close == 1)
 											<table>
 											<tr>
 						<?php
+					if ( !is_null($row->team1_result_split) )
+					{
 						$partresults1 = explode(";", $row->team1_result_split);
+					}
+						if ( !is_null($row->team2_result_split) )
+					{
 						$partresults2 = explode(";", $row->team2_result_split);
+				}
 
 						for ($x = 0; $x < ($this->projectws->game_parts); $x++)
 						{
