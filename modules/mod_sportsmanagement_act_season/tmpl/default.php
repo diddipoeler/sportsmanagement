@@ -43,6 +43,9 @@ foreach ($federation as $keyfed => $valuefed) if ( $keyfed != 0 )
 echo HTMLHelper::_('bootstrap.addTab', 'defaulttabsfederation', 'show_table_'.$zaehler, Text::_($valuefed->name));
 foreach ($countryfederation as $key => $value) if ( $value->federation == $keyfed  )
 {
+?>
+<div class="row">
+<?php	
 //echo $value->alpha3;
 foreach ($list as $row)
 						{
@@ -63,7 +66,7 @@ foreach ($list as $row)
 								$query = sportsmanagementHelperRoute::buildQuery($createroute);
 								$link  = Route::_('index.php?' . $query, false);
 								?>
-                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
                                     <a href="<?PHP echo $link; ?>"
                                        class="<?PHP echo $params->get('button_class'); ?>  btn-block" role="button">
 <span>
@@ -80,9 +83,9 @@ echo JSMCountries::getCountryFlag($row->country);
 								<?php
 							}
 						}
-
-
-
+?>
+</div>
+<?php
 }							
 echo HTMLHelper::_('bootstrap.endTab');
 $zaehler++;
