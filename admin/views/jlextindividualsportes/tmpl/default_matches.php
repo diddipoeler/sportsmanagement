@@ -113,7 +113,7 @@ if ($close == 1)
 					$published = HTMLHelper::_('grid.published', $row, $i, 'tick.png', 'publish_x.png', 'jlextindividualsportes.');
 
 					list($date, $time) = explode(" ", $row->match_date);
-					$time = strftime("%H:%M", strtotime($time));
+					$time = date("%H:%M", strtotime($time));
 					?>
                     <tr class="<?php echo "row$k"; ?>">
 						<?php
