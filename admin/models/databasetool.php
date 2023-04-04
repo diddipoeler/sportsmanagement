@@ -1364,6 +1364,10 @@ $arrOutput = json_decode($objJsonDocument, TRUE);
 		{
 			$country_assoc_del = "'" . implode("','", $country_assoc) . "'";
 		}
+		else
+		{
+$country_assoc = array();
+		}
 
       //echo __METHOD__.' '.__LINE__.' country_assoc<pre>'.print_r($country_assoc,true).'</pre>';
       
