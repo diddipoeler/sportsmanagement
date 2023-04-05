@@ -120,6 +120,8 @@ img {vertical-align: middle;}
 
 
 <?PHP
+//echo '<pre>'.print_r($clubs,true).'</pre>';
+
 						$a = 1;
 $gesamtclubs = count($clubs);
 						foreach ($clubs AS $club)
