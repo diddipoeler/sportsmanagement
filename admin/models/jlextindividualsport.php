@@ -247,6 +247,7 @@ return false;
 
 
         break;
+	case 'COM_SPORTSMANAGEMENT_ST_TABLETENNIS':
         case 'COM_SPORTSMANAGEMENT_ST_TENNIS':
 
 		if ($use_tie_break->use_tie_break)
