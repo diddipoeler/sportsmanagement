@@ -12,6 +12,9 @@
  * 
  * https://getbootstrap.com/docs/5.2/components/carousel/
  * 
+ * https://www.w3schools.com/howto/howto_js_slideshow.asp
+ * https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_slideshow_auto
+ * 
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
