@@ -674,9 +674,9 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
         }
 		$this->teamname            = $teamname;
 		$this->preFillSuccess      = false;
-		$this->positions           = false;
-		$this->substitutions       = false;
-		$this->staffpositions      = false;
+		$this->positions           = array();
+		$this->substitutions       = array();
+		$this->staffpositions      = array();
 		$lists['team_players']     = '';
 		$lists['team_staffs']      = '';
 		$lists['projectpositions'] = '';
