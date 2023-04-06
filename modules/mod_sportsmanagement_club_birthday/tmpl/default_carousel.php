@@ -122,6 +122,39 @@ img {vertical-align: middle;}
 <?PHP
 //echo '<pre>'.print_r($clubs,true).'</pre>';
 
+foreach ($clubs AS $club)
+						{
+if ( !$club->founded_timestamp )
+{
+$club->founded_timestamp = strtotime($club->date_of_birth);
+}
+            }
+
+//echo '<pre>'.print_r($clubs,true).'</pre>'; 
+/**
+usort($clubs, function($a, $b) {
+      if ($a->founded_timestamp == $b->founded_timestamp) {
+        return 0;
+    }
+    return ($a->founded_timestamp < $b->founded_timestamp) ? -1 : 1;
+});
+*/
+
+// Asc sort
+usort($clubs,function($first,$second){
+    return $first->founded_timestamp > $second->founded_timestamp;
+});
+
+
+
+//echo '<pre>'.print_r($clubs,true).'</pre>'; 	
+	
+	
+	
+	
+	
+	
+	
 						$a = 1;
 $gesamtclubs = count($clubs);
 						foreach ($clubs AS $club)
