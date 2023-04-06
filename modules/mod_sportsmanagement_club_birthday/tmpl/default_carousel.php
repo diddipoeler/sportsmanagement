@@ -142,7 +142,7 @@ usort($clubs, function($a, $b) {
 
 // Asc sort
 usort($clubs,function($first,$second){
-    return $first->founded_timestamp > $second->founded_timestamp;
+    return $first->daymonth > $second->daymonth;
 });
 
 
