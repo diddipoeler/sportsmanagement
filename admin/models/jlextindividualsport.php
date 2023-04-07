@@ -461,6 +461,12 @@ return false;
 
 		$result = $this->jsmdb->loadObjectList();
 		$temp   = new stdClass;
+        $temp->team1_result = 0;
+        $temp->team2_result = 0;
+        $temp->team1_single_sets = 0;
+		$temp->team2_single_sets = 0;
+        $temp->team1_single_games = 0;
+        $temp->team2_single_games = 0;
 
 		foreach ($result as $row)
 		{
