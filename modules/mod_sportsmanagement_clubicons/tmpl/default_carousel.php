@@ -13,18 +13,3 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 
-<style>
-.img-height {
-	width: auto;
-	height: <?php echo $params->get('picture_height', '30'); ?>;
-}	
-</style>
-
-<table id="clubicons<?php echo $module->id; ?>" cellpadding="0" cellspacing="0"
-       class="modjsmclubicons">
-    <tr>
-		<?php
-		
-		?>
-    </tr>
-</table>

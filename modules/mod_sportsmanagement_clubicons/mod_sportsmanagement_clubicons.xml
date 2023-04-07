@@ -62,9 +62,10 @@
 			</field>
 			
 		
-		
+			
 	<field name="template" type="list" default="default" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_TEMPLATE" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_TEMPLATE_DESC">
-	  <option value="default">default</option>
+	  <option value="default">Standard</option>
+	  <option value="default_carousel">BOOTSTRAP Carousel</option>
 	</field>
 	
 	<field name="max_width_after_mouse_over" type="text" default="10" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_WIDTH_AFTER_MOUSE_OVER" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_WIDTH_AFTER_MOUSE_OVER_DESC" />

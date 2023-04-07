@@ -16,11 +16,6 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 
-//if (!defined('DS'))
-//{
-//	define('DS', DIRECTORY_SEPARATOR);
-//}
-
 if (!defined('JSM_PATH'))
 {
 	DEFINE('JSM_PATH', 'components/com_sportsmanagement');
@@ -110,7 +105,18 @@ else
 	HTMLHelper::_('behavior.mootools');
 }
 
+
+$template = $params->def("template");
+
+
 $doc = Factory::getDocument();
+
+switch ( $template )
+{
+    case 'default_carousel':
+    
+    break;
+    case 'default':
 /** Add styles */
 $percent = $params->get('max_width_after_mouse_over', '10');
 $transition = (100 + $percent)/100;
@@ -140,10 +146,16 @@ width: auto;
 ';
 $doc->addStyleDeclaration($style);
 
+break;
+}
+
+
 if ($cnt)
 {
-	$script = 'script';
-	$doc->addScript(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'js/' . $script . '.js');
+	//$script = 'script';
+	$doc->addScript(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'js/' . $params->get('template', 'default') . '.js');
+    $doc->addStyleSheet(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'css/' . $params->get('template', 'default') . '.css');
+    
 	?>
     <div id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 		<?PHP
