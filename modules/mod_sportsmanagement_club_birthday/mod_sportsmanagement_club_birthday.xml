@@ -176,9 +176,9 @@
 					description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_DESC_MODE">
 					<option value="T">TICKER</option>
 					<option value="L">LIST</option>
-					<option value="B">BOOTSTRAP</option>
+		<!--			<option value="B">BOOTSTRAP</option> -->
 					<option value="BC">BOOTSTRAP Carousel</option>
-					<option value="J">Jssor Slider</option>
+	<!--				<option value="J">Jssor Slider</option> -->
 				</field>
 
 <!--				
