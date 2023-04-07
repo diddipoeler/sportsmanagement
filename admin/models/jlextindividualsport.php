@@ -213,13 +213,6 @@ return false;
         $result = $this->jsmdb->insertObject('#__sportsmanagement_match_event', $profile);    
             
         }
-
-
-
-
-
-        
-        
           
         }
         
@@ -267,7 +260,9 @@ return false;
 
 		for ($x = 0; $x < count($pks); $x++)
 		{
-			// änderungen im datum oder der uhrzeit
+		  if ( array_key_exists($x, $pks) )
+          {
+			/** änderungen im datum oder der uhrzeit */
 			$tbl = $this->getTable();;
 			$tbl->load((int) $pks[$x]);
 
@@ -339,123 +334,125 @@ return false;
 			{
 			}
 
-			// Ereignisse speichern heim
+			/** Ereignisse speichern heim */
 			if ($tblMatch->teamplayer1_id)
 			{
 				if ($tblMatch->team1_result > $tblMatch->team2_result)
 				{
-					// Ereignis_id
-					$event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_SINGLE_WON']->id;
+					/** Ereignis_id */
+					$event_id = $event_list[$sports_type_id_name->name.'_E_SINGLE_WON']->id;
 				}
 
 				if ($tblMatch->team1_result < $tblMatch->team2_result)
 				{
-					// Ereignis_id
-					$event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_SINGLE_LOST']->id;
+					/** Ereignis_id */
+					$event_id = $event_list[$sports_type_id_name->name.'_E_SINGLE_LOST']->id;
 				}
 
 				self::deleteevents($post['match_id'], $tblMatch->teamplayer1_id, $event_id);
 				self::insertevents($post['match_id'], $post['projectteam1_id'], $tblMatch->teamplayer1_id, $event_id);
 			}
 
-			// Ereignisse speichern heim
+			/** Ereignisse speichern heim */
 			if ($tblMatch->double_team1_player1)
 			{
 				if ($tblMatch->team1_result > $tblMatch->team2_result)
 				{
-					// Ereignis_id
-					$event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_DOUBLE_WON']->id;
+					/** Ereignis_id */
+					$event_id = $event_list[$sports_type_id_name->name.'_E_DOUBLE_WON']->id;
 				}
 
 				if ($tblMatch->team1_result < $tblMatch->team2_result)
 				{
-					// Ereignis_id
-					$event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_DOUBLE_LOST']->id;
+					/** Ereignis_id */
+					$event_id = $event_list[$sports_type_id_name->name.'_E_DOUBLE_LOST']->id;
 				}
 
 				self::deleteevents($post['match_id'], $tblMatch->double_team1_player1, $event_id);
 				self::insertevents($post['match_id'], $post['projectteam1_id'], $tblMatch->double_team1_player1, $event_id);
 			}
 
-			// Ereignisse speichern heim
+			/** Ereignisse speichern heim */
 			if ($tblMatch->double_team1_player2)
 			{
 				if ($tblMatch->team1_result > $tblMatch->team2_result)
 				{
-					// Ereignis_id
-					$event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_DOUBLE_WON']->id;
+					/** Ereignis_id */
+					$event_id = $event_list[$sports_type_id_name->name.'_E_DOUBLE_WON']->id;
 				}
 
 				if ($tblMatch->team1_result < $tblMatch->team2_result)
 				{
-					// Ereignis_id
-					$event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_DOUBLE_LOST']->id;
+					/** Ereignis_id */
+					$event_id = $event_list[$sports_type_id_name->name.'_E_DOUBLE_LOST']->id;
 				}
 
 				self::deleteevents($post['match_id'], $tblMatch->double_team1_player2, $event_id);
 				self::insertevents($post['match_id'], $post['projectteam1_id'], $tblMatch->double_team1_player2, $event_id);
 			}
 
-			// Ereignisse speichern gast
+			/** Ereignisse speichern gast */
 			if ($tblMatch->teamplayer2_id)
 			{
 				if ($tblMatch->team1_result < $tblMatch->team2_result)
 				{
-					// Ereignis_id
-					$event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_SINGLE_WON']->id;
+					/** Ereignis_id */
+					$event_id = $event_list[$sports_type_id_name->name.'_E_SINGLE_WON']->id;
 				}
 
 				if ($tblMatch->team1_result > $tblMatch->team2_result)
 				{
-					// Ereignis_id
-					$event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_SINGLE_LOST']->id;
+					/** Ereignis_id */
+					$event_id = $event_list[$sports_type_id_name->name.'_E_SINGLE_LOST']->id;
 				}
 
 				self::deleteevents($post['match_id'], $tblMatch->teamplayer2_id, $event_id);
 				self::insertevents($post['match_id'], $post['projectteam2_id'], $tblMatch->teamplayer2_id, $event_id);
 			}
 
-			// Ereignisse speichern gast
+			/** Ereignisse speichern gast */
 			if ($tblMatch->double_team2_player1)
 			{
 				if ($tblMatch->team1_result < $tblMatch->team2_result)
 				{
-					// Ereignis_id
-					$event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_DOUBLE_WON']->id;
+					/** Ereignis_id */
+					$event_id = $event_list[$sports_type_id_name->name.'_E_DOUBLE_WON']->id;
 				}
 
 				if ($tblMatch->team1_result > $tblMatch->team2_result)
 				{
-					// Ereignis_id
-					$event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_DOUBLE_LOST']->id;
+					/** Ereignis_id */
+					$event_id = $event_list[$sports_type_id_name->name.'_E_DOUBLE_LOST']->id;
 				}
 
 				self::deleteevents($post['match_id'], $tblMatch->double_team2_player1, $event_id);
 				self::insertevents($post['match_id'], $post['projectteam2_id'], $tblMatch->double_team2_player1, $event_id);
 			}
 
-			// Ereignisse speichern gast
+			/** Ereignisse speichern gast */
 			if ($tblMatch->double_team2_player2)
 			{
 				if ($tblMatch->team1_result < $tblMatch->team2_result)
 				{
-					// Ereignis_id
-					$event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_DOUBLE_WON']->id;
+					/** Ereignis_id */
+					$event_id = $event_list[$sports_type_id_name->name.'_E_DOUBLE_WON']->id;
 				}
 
 				if ($tblMatch->team1_result > $tblMatch->team2_result)
 				{
-					// Ereignis_id
-					$event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_DOUBLE_LOST']->id;
+					/** Ereignis_id */
+					$event_id = $event_list[$sports_type_id_name->name.'_E_DOUBLE_LOST']->id;
 				}
 
 				self::deleteevents($post['match_id'], $tblMatch->double_team2_player2, $event_id);
 				self::insertevents($post['match_id'], $post['projectteam2_id'], $tblMatch->double_team2_player2, $event_id);
 			}
+            }
+            
 		}
 
-		// Alles ok
-		// jetzt die einzelergebnisse zum hauptspiel addieren
+		/** Alles ok
+		 jetzt die einzelergebnisse zum hauptspiel addieren */
 		$this->jsmquery->clear();
 		$this->jsmquery->select('mc.*');
 		$this->jsmquery->from('#__sportsmanagement_match_single AS mc');
