@@ -167,9 +167,13 @@ break;
 		$event_type_id   = $this->jsmdb->loadResult();
         
         $ringetotal = 0;
-        
-//        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($pks,true).'</pre>'), 'error');
-//        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($post,true).'</pre>'), 'error');
+
+if ( $this->joomlaconfig->get('debug') )
+{        
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($pks,true).'</pre>'), 'error');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($post,true).'</pre>'), 'error');
+}
+
         for ($x = 0; $x < count($pks); $x++)
 		{
 		$save_match = true;  
@@ -269,7 +273,10 @@ case 'COM_SPORTSMANAGEMENT_ST_TENNIS':
 		$this->jsmdb->setQuery($this->jsmquery);
 		$event_list = $this->jsmdb->loadObjectList('name');
 
-//        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . ' eventlist <pre>'.print_r($event_list,true).'</pre>'), 'notice');
+if ( $this->joomlaconfig->get('debug') )
+{
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . ' eventlist <pre>'.print_r($event_list,true).'</pre>'), 'notice');
+}
 
 		$result = true;
 
@@ -363,7 +370,12 @@ case 'COM_SPORTSMANAGEMENT_ST_TENNIS':
 					/** Ereignis_id */
 					$event_id = $event_list[$event_st_search.'_E_SINGLE_LOST']->id;
 				}
-//        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . ' event_id <pre>'.print_r($event_id,true).'</pre>'), 'notice');
+                
+                if ( $this->joomlaconfig->get('debug') )
+{
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . ' event_id <pre>'.print_r($event_id,true).'</pre>'), 'notice');
+}
+
 if ( $event_id )
 {
 				self::deleteevents($post['match_id'], $tblMatch->teamplayer1_id, $event_id);
@@ -385,7 +397,11 @@ if ( $event_id )
 					/** Ereignis_id */
 					$event_id = $event_list[$event_st_search.'_E_DOUBLE_LOST']->id;
 				}
-//        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . ' event_id <pre>'.print_r($event_id,true).'</pre>'), 'notice');
+                
+                if ( $this->joomlaconfig->get('debug') )
+{
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . ' event_id <pre>'.print_r($event_id,true).'</pre>'), 'notice');
+}
 if ( $event_id )
 {
 				self::deleteevents($post['match_id'], $tblMatch->double_team1_player1, $event_id);
@@ -407,7 +423,12 @@ if ( $event_id )
 					/** Ereignis_id */
 					$event_id = $event_list[$event_st_search.'_E_DOUBLE_LOST']->id;
 				}
-//        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . ' event_id <pre>'.print_r($event_id,true).'</pre>'), 'notice');
+                
+                if ( $this->joomlaconfig->get('debug') )
+{
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . ' event_id <pre>'.print_r($event_id,true).'</pre>'), 'notice');
+}
+
 if ( $event_id )
 {
 				self::deleteevents($post['match_id'], $tblMatch->double_team1_player2, $event_id);
@@ -429,7 +450,12 @@ if ( $event_id )
 					/** Ereignis_id */
 					$event_id = $event_list[$event_st_search.'_E_SINGLE_LOST']->id;
 				}
-//        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . ' event_id <pre>'.print_r($event_id,true).'</pre>'), 'notice');
+                
+                if ( $this->joomlaconfig->get('debug') )
+{
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . ' event_id <pre>'.print_r($event_id,true).'</pre>'), 'notice');
+}
+
 if ( $event_id )
 {
 				self::deleteevents($post['match_id'], $tblMatch->teamplayer2_id, $event_id);
@@ -451,7 +477,12 @@ if ( $event_id )
 					/** Ereignis_id */
 					$event_id = $event_list[$event_st_search.'_E_DOUBLE_LOST']->id;
 				}
-//        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . ' event_id <pre>'.print_r($event_id,true).'</pre>'), 'notice');
+                
+                if ( $this->joomlaconfig->get('debug') )
+{
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . ' event_id <pre>'.print_r($event_id,true).'</pre>'), 'notice');
+}
+
 if ( $event_id )
 {
 				self::deleteevents($post['match_id'], $tblMatch->double_team2_player1, $event_id);
@@ -473,7 +504,12 @@ if ( $event_id )
 					/** Ereignis_id */
 					$event_id = $event_list[$event_st_search.'_E_DOUBLE_LOST']->id;
 				}
-//        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . ' event_id <pre>'.print_r($event_id,true).'</pre>'), 'notice');
+                
+                if ( $this->joomlaconfig->get('debug') )
+{
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . ' event_id <pre>'.print_r($event_id,true).'</pre>'), 'notice');
+}
+
 if ( $event_id )
 {
 				self::deleteevents($post['match_id'], $tblMatch->double_team2_player2, $event_id);
