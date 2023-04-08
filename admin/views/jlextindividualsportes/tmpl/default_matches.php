@@ -367,11 +367,26 @@ if ($close == 1)
 						?>
 
 
-                        <td style="text-align:center; ">
+                        
+                        <td class="center">
+                        <div class="btn-group">
+							<?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'matches.', $canChange, 'cb'); ?>
 							<?php
-							echo $published;
+							// Create dropdown items and render the dropdown list.
+							if ($canChange)
+							{
+								HTMLHelper::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'matches');
+								HTMLHelper::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'matches');
+								echo HTMLHelper::_('actionsdropdown.render', $this->escape($row->id));
+							}
 							?>
-                        </td>
+                        </div>
+                    </td>
+                        
+                        
+                        
+                        
+                        
                         <td style="text-align:center; ">
 							<?php
 							echo $row->id;
@@ -389,7 +404,6 @@ if ($close == 1)
 
             <input type='hidden' name='match_date' value='<?php echo $dValue; ?>'/>
             <input type='hidden' name='act' value='' id='short_act'/>
-
             <input type='hidden' name='boxchecked' value='0'/>
             <input type='hidden' name='search_mode' value='<?php echo $this->lists['search_mode']; ?>'/>
             <input type='hidden' name='filter_order' value='<?php echo $this->sortColumn; ?>'/>
@@ -400,8 +414,6 @@ if ($close == 1)
             <input type='hidden' name='match_id' value='<?php echo $this->match_id; ?>'/>
             <input type='hidden' name='projectteam1_id' value='<?php echo $this->projectteam1_id; ?>'/>
             <input type='hidden' name='projectteam2_id' value='<?php echo $this->projectteam2_id; ?>'/>
-
-
             <input type='hidden' name='act' value=''/>
             <input type='hidden' name='task' value='' id='task'/>
 			<?php echo HTMLHelper::_('form.token') . "\n"; ?>
