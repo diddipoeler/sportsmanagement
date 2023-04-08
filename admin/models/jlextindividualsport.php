@@ -364,8 +364,11 @@ case 'COM_SPORTSMANAGEMENT_ST_TENNIS':
 					$event_id = $event_list[$event_st_search.'_E_SINGLE_LOST']->id;
 				}
 //        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . ' event_id <pre>'.print_r($event_id,true).'</pre>'), 'notice');
+if ( $event_id )
+{
 				self::deleteevents($post['match_id'], $tblMatch->teamplayer1_id, $event_id);
 				self::insertevents($post['match_id'], $post['projectteam1_id'], $tblMatch->teamplayer1_id, $event_id);
+                }
 			}
 
 			/** Ereignisse speichern heim */
@@ -383,8 +386,11 @@ case 'COM_SPORTSMANAGEMENT_ST_TENNIS':
 					$event_id = $event_list[$event_st_search.'_E_DOUBLE_LOST']->id;
 				}
 //        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . ' event_id <pre>'.print_r($event_id,true).'</pre>'), 'notice');
+if ( $event_id )
+{
 				self::deleteevents($post['match_id'], $tblMatch->double_team1_player1, $event_id);
 				self::insertevents($post['match_id'], $post['projectteam1_id'], $tblMatch->double_team1_player1, $event_id);
+                }
 			}
 
 			/** Ereignisse speichern heim */
@@ -402,8 +408,11 @@ case 'COM_SPORTSMANAGEMENT_ST_TENNIS':
 					$event_id = $event_list[$event_st_search.'_E_DOUBLE_LOST']->id;
 				}
 //        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . ' event_id <pre>'.print_r($event_id,true).'</pre>'), 'notice');
+if ( $event_id )
+{
 				self::deleteevents($post['match_id'], $tblMatch->double_team1_player2, $event_id);
 				self::insertevents($post['match_id'], $post['projectteam1_id'], $tblMatch->double_team1_player2, $event_id);
+                }
 			}
 
 			/** Ereignisse speichern gast */
@@ -421,9 +430,12 @@ case 'COM_SPORTSMANAGEMENT_ST_TENNIS':
 					$event_id = $event_list[$event_st_search.'_E_SINGLE_LOST']->id;
 				}
 //        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . ' event_id <pre>'.print_r($event_id,true).'</pre>'), 'notice');
+if ( $event_id )
+{
 				self::deleteevents($post['match_id'], $tblMatch->teamplayer2_id, $event_id);
 				self::insertevents($post['match_id'], $post['projectteam2_id'], $tblMatch->teamplayer2_id, $event_id);
-			}
+                }
+ 			}
 
 			/** Ereignisse speichern gast */
 			if ($tblMatch->double_team2_player1)
@@ -440,8 +452,11 @@ case 'COM_SPORTSMANAGEMENT_ST_TENNIS':
 					$event_id = $event_list[$event_st_search.'_E_DOUBLE_LOST']->id;
 				}
 //        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . ' event_id <pre>'.print_r($event_id,true).'</pre>'), 'notice');
+if ( $event_id )
+{
 				self::deleteevents($post['match_id'], $tblMatch->double_team2_player1, $event_id);
 				self::insertevents($post['match_id'], $post['projectteam2_id'], $tblMatch->double_team2_player1, $event_id);
+                }
 			}
 
 			/** Ereignisse speichern gast */
@@ -459,8 +474,11 @@ case 'COM_SPORTSMANAGEMENT_ST_TENNIS':
 					$event_id = $event_list[$event_st_search.'_E_DOUBLE_LOST']->id;
 				}
 //        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . ' event_id <pre>'.print_r($event_id,true).'</pre>'), 'notice');
+if ( $event_id )
+{
 				self::deleteevents($post['match_id'], $tblMatch->double_team2_player2, $event_id);
 				self::insertevents($post['match_id'], $post['projectteam2_id'], $tblMatch->double_team2_player2, $event_id);
+                }
 			}
             }
             
@@ -509,21 +527,23 @@ case 'COM_SPORTSMANAGEMENT_ST_TENNIS':
 			$team1_result_split = explode(";", $row->team1_result_split);
 			$team2_result_split = explode(";", $row->team2_result_split);
 
-//        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . ' team1_result_split <pre>'.print_r($team1_result_split,true).'</pre>'), 'notice');
-//        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . ' team2_result_split <pre>'.print_r($team2_result_split,true).'</pre>'), 'notice');
-
+if ( $this->joomlaconfig->get('debug') )
+{
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . ' team1_result_split <pre>'.print_r($team1_result_split,true).'</pre>'), 'notice');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . ' team2_result_split <pre>'.print_r($team2_result_split,true).'</pre>'), 'notice');
+}
 			foreach ($team1_result_split as $key => $value)
 			{
 				if ($use_tie_break->use_tie_break)
 				{
 					if ($key < $result_tie_break)
 					{
-						$temp->team1_single_games += $value;
+						$temp->team1_single_games += (int) $value;
 					}
 				}
 				else
 				{
-					$temp->team1_single_games += $value;
+					$temp->team1_single_games += (int) $value;
 				}
 			}
 
@@ -533,12 +553,12 @@ case 'COM_SPORTSMANAGEMENT_ST_TENNIS':
 				{
 					if ($key < $result_tie_break)
 					{
-						$temp->team2_single_games += $value;
+						$temp->team2_single_games += (int) $value;
 					}
 				}
 				else
 				{
-					$temp->team2_single_games += $value;
+					$temp->team2_single_games += (int) $value;
 				}
 			}
 

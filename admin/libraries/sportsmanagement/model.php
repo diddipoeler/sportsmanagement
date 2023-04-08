@@ -132,6 +132,7 @@ class JSMModelAdmin extends AdminModel
 		$this->jsmdate        = Factory::getDate();
 		$this->jsmmessage     = '';
 		$this->jsmmessagetype = 'notice';
+        $this->joomlaconfig = Factory::getConfig();
 
 		$this->project_id = $this->jsmjinput->getint('pid');
 
