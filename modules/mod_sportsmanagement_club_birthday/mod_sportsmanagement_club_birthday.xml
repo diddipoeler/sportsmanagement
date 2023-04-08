@@ -19,7 +19,7 @@
 		<folder>tmpl</folder>
 		<folder>css</folder>
 		<folder>js</folder>
-		<folder>wowslider</folder>
+		<!-- <folder>wowslider</folder> -->
 	</files>
 
 	<languages>
