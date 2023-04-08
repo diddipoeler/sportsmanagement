@@ -260,6 +260,51 @@ if ( $this->joomlaconfig->get('debug') )
 case 'COM_SPORTSMANAGEMENT_ST_TABLETENNIS':
 case 'COM_SPORTSMANAGEMENT_ST_TENNIS':
 
+
+for ($x = 0; $x < count($pks); $x++)
+		{
+		$save_match = true;  
+		$rowmatch                          = new stdClass;
+		$rowmatch->id                      = $pks[$x];
+        $rowmatch->teamplayer1_id       = $post['teamplayer1_id' . $pks[$x]];
+        $rowmatch->team1_result       = $post['team1_result' . $pks[$x]];
+        $rowmatch->team2_result       = $post['team2_result' . $pks[$x]];
+        
+        if ( !$rowmatch->team1_result )
+        {
+            $rowmatch->team1_result = 0;
+        }
+        if ( !$rowmatch->team2_result )
+        {
+            $rowmatch->team2_result = 0;
+        }
+        
+        $rowmatch->ringetotal       = $rowmatch->team1_result;
+        
+        $rowmatch->modified    = $this->jsmdate->toSql();
+		$rowmatch->modified_by = $this->jsmuser->get('id');
+        try
+		{
+		$result_update = $this->jsmdb->updateObject('#__sportsmanagement_match_single', $rowmatch, 'id', true);
+        $ringetotal += $rowmatch->ringetotal;
+		}
+		catch (Exception $e)
+		{
+        $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+        $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+		}
+}
+
+
+
+
+
+
+
+
+
+
+
 		if ($use_tie_break->use_tie_break)
 		{
 			$result_tie_break = $result_tie_break - 1;
