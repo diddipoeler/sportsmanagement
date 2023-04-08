@@ -117,7 +117,7 @@ return false;
 	{
 		$this->jsmquery->clear();
         $event_st_search = '';
-		$pks      = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
+		$pks      = Factory::getApplication()->input->getVar('cid', null, 'post', 'array') ? Factory::getApplication()->input->getVar('cid', null, 'post', 'array') : array()   ;
 		$post     = Factory::getApplication()->input->post->getArray(array());
 		$match_id = $post['match_id'];
         $projectteam1_id = $post['projectteam1_id'];
