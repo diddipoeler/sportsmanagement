@@ -279,7 +279,7 @@ if ($close == 1)
                             <span id="part<?php echo $this->item->id; ?>" style="">
 					   <br/>
 											<table>
-											<tr>
+											
 						<?php
 					if ( !is_null($this->item->team1_result_split) )
 					{
@@ -293,7 +293,7 @@ if ($close == 1)
 						for ($x = 0; $x < ($this->projectws->game_parts); $x++)
 						{
 							?>
-
+<tr>
                             <td>
 										<?PHP
 										echo ($x + 1) . ".: ";
@@ -317,11 +317,11 @@ if ($close == 1)
                                                size="3" tabindex="1" class="inputbox"/>
                                                <br />
 							</td>
-
+</tr>
 							<?php
 						}
 						?>
-									</tr>
+									
 									</table>
 									<?PHP
 									if ($this->projectws->allow_add_time == 1)
