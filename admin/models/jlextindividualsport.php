@@ -123,6 +123,12 @@ return false;
         $projectteam1_id = $post['projectteam1_id'];
         $projectteam2_id = $post['projectteam2_id'];
 
+if ( $this->joomlaconfig->get('debug') )
+{        
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($pks,true).'</pre>'), 'error');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($post,true).'</pre>'), 'error');
+}
+
 		$result_tie_break = 0;
         $save_match = false;
 
@@ -167,12 +173,6 @@ break;
 		$event_type_id   = $this->jsmdb->loadResult();
         
         $ringetotal = 0;
-
-if ( $this->joomlaconfig->get('debug') )
-{        
-        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($pks,true).'</pre>'), 'error');
-        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($post,true).'</pre>'), 'error');
-}
 
         for ($x = 0; $x < count($pks); $x++)
 		{
@@ -320,23 +320,23 @@ if ( $this->joomlaconfig->get('debug') )
 		  if ( array_key_exists($x, $pks) )
           {
 			/** änderungen im datum oder der uhrzeit */
-			$tbl = $this->getTable();;
-			$tbl->load((int) $pks[$x]);
+//			$tbl = $this->getTable();;
+//			$tbl->load((int) $pks[$x]);
+//
+//			list($date, $time) = explode(" ", $tbl->match_date);
+//			$this->_match_time_new = $post['match_time' . $pks[$x]] . ':00';
+//			$this->_match_date_new = $post['match_date' . $pks[$x]];
+//			$this->_match_time_old = $time;
+//			$this->_match_date_old = sportsmanagementHelper::convertDate($date);
 
-			list($date, $time) = explode(" ", $tbl->match_date);
-			$this->_match_time_new = $post['match_time' . $pks[$x]] . ':00';
-			$this->_match_date_new = $post['match_date' . $pks[$x]];
-			$this->_match_time_old = $time;
-			$this->_match_date_old = sportsmanagementHelper::convertDate($date);
-
-			$post['match_date' . $pks[$x]] = sportsmanagementHelper::convertDate($post['match_date' . $pks[$x]], 0);
-			$post['match_date' . $pks[$x]] = $post['match_date' . $pks[$x]] . ' ' . $post['match_time' . $pks[$x]] . ':00';
+//			$post['match_date' . $pks[$x]] = sportsmanagementHelper::convertDate($post['match_date' . $pks[$x]], 0);
+//			$post['match_date' . $pks[$x]] = $post['match_date' . $pks[$x]] . ' ' . $post['match_time' . $pks[$x]] . ':00';
 
 			//$tblMatch                       = self::getTable();
             $tblMatch                       = new stdClass;
 			$tblMatch->id                   = $pks[$x];
 			$tblMatch->match_number         = $post['match_number' . $pks[$x]];
-			$tblMatch->match_date           = $post['match_date' . $pks[$x]];
+			$tblMatch->match_date           = $post['match_date' . $pks[$x]]. ':00';
 			$tblMatch->crowd                = $post['crowd' . $pks[$x]];
 			$tblMatch->round_id             = $post['round_id' . $pks[$x]];
 			$tblMatch->division_id          = $post['division_id' . $pks[$x]];
