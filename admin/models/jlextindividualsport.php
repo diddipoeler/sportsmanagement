@@ -295,16 +295,6 @@ for ($x = 0; $x < count($pks); $x++)
 		}
 }
 
-
-
-
-
-
-
-
-
-
-
 		if ($use_tie_break->use_tie_break)
 		{
 			$result_tie_break = $result_tie_break - 1;
@@ -342,7 +332,8 @@ if ( $this->joomlaconfig->get('debug') )
 			$post['match_date' . $pks[$x]] = sportsmanagementHelper::convertDate($post['match_date' . $pks[$x]], 0);
 			$post['match_date' . $pks[$x]] = $post['match_date' . $pks[$x]] . ' ' . $post['match_time' . $pks[$x]] . ':00';
 
-			$tblMatch                       = self::getTable();
+			//$tblMatch                       = self::getTable();
+            $tblMatch                       = new stdClass;
 			$tblMatch->id                   = $pks[$x];
 			$tblMatch->match_number         = $post['match_number' . $pks[$x]];
 			$tblMatch->match_date           = $post['match_date' . $pks[$x]];
@@ -392,14 +383,24 @@ if ( $this->joomlaconfig->get('debug') )
 
 			$tblMatch->team1_result_split = implode(";", $post['team1_result_split' . $pks[$x]]);
 			$tblMatch->team2_result_split = implode(";", $post['team2_result_split' . $pks[$x]]);
+         try
+         {   
+            $result = Factory::getDbo()->updateObject('#__sportsmanagement_match_single', $tblMatch, 'id', true);
+            }
+		catch (Exception $e)
+		{
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+		
+		}
 
-			if (!$tblMatch->store())
-			{
-				$result = false;
-			}
-			else
-			{
-			}
+//			if (!$tblMatch->store())
+//			{
+//				$result = false;
+//			}
+//			else
+//			{
+//			}
 
 			/** Ereignisse speichern heim */
 			if ($tblMatch->teamplayer1_id)
