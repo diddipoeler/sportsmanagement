@@ -39,8 +39,7 @@ filter="unset"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_L_NAME"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_L_NAME_DESC"
 			class="inputbox"
-			size="90"
-			required="true"/>		
+			size="90"/>		
 		<field
 			name="nickname"
 			type="text"
