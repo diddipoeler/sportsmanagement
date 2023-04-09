@@ -281,6 +281,8 @@ if ($close == 1)
 											<table>
 											
 						<?php
+                        $partresults1 = array();
+$partresults2 = array();
 					if ( !is_null($this->item->team1_result_split) )
 					{
 						$partresults1 = explode(";", $this->item->team1_result_split);
