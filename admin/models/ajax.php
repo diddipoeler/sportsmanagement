@@ -924,7 +924,7 @@ $app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'person_a
 
         
 
-		$query->select("CONCAT_WS(':', p.id, p.alias) AS value");
+		$query->select("stp.id AS value");
 		$query->select("CONCAT(p.lastname, ', ', p.firstname, ' (', p.birthday, ')') AS text");
 		$query->from('#__sportsmanagement_person AS p');
 		$query->join('INNER', ' #__sportsmanagement_season_team_person_id AS stp ON stp.person_id = p.id ');
