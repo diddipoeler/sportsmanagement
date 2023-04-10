@@ -119,6 +119,8 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 	{
 		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
+        $result = array();
+        $query->clear();
 		$query->select('m.*');
 		$query->from('#__sportsmanagement_match_single AS m');
 		$query->where('m.match_id = ' . (int) $match_id);
@@ -131,8 +133,24 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 		catch (Exception $e)
 		{
 			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
-			$result = false;
 		}
+
+
+foreach ( $result as $key => $value )
+{
+$query->clear();    
+$query->select('person_art,person_id1,person_id2');
+$query->from('#__sportsmanagement_season_team_person');
+$query->where('id = ' . (int) $value->teamplayer1_id);
+$db->setQuery($query);    
+$result2 = $db->loadObject();
+$value->person_art = $result2->person_art;     
+$value->person_id1 = $result2->person_id1;    
+$value->person_id2 = $result2->person_id2;    
+    
+}
+
+
 
 		return $result;
 	}
