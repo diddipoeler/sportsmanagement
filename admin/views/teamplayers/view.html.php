@@ -88,6 +88,13 @@ class sportsmanagementViewteamplayers extends sportsmanagementView
 		$this->app->setUserState("$this->option.season_id", $project->season_id);
 		$this->app->setUserState("$this->option.project_art_id", $project->project_art_id);
 		$this->app->setUserState("$this->option.sports_type_id", $project->sports_type_id);
+        
+        $this->app->setUserState("$this->option.project_id", $this->project_id);
+        $this->app->setUserState("$this->option.persontype", $this->_persontype);
+        $this->app->setUserState("$this->option.project_team_id", $this->project_team_id);
+        $this->app->setUserState("$this->option.team_id", $this->team_id);
+        $this->app->setUserState("$this->option.season_team_id", $this->season_team_id);
+        
 
 		$mdlProjectTeam = BaseDatabaseModel::getInstance('ProjectTeam', 'sportsmanagementModel');
 		$project_team   = $mdlProjectTeam->getProjectTeam($this->team_id);
