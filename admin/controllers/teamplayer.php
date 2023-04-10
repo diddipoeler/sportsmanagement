@@ -43,9 +43,14 @@ Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LIN
 Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'team_id<pre>'.print_r(Factory::getApplication()->input->getInt('team_id'),true).'</pre>'), 'notice');
 Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'persontype<pre>'.print_r(Factory::getApplication()->input->getInt('persontype'),true).'</pre>'), 'notice');
 
+Factory::getApplication()->setUserState("teamplayer.project_team_id", Factory::getApplication()->input->getInt('project_team_id'));
+Factory::getApplication()->setUserState("teamplayer.person_id", Factory::getApplication()->input->getInt('person_id'));
+Factory::getApplication()->setUserState("teamplayer.id", Factory::getApplication()->input->getInt('id'));
+Factory::getApplication()->setUserState("teamplayer.pid", Factory::getApplication()->input->getInt('pid'));
+Factory::getApplication()->setUserState("teamplayer.team_id", Factory::getApplication()->input->getInt('team_id'));
+Factory::getApplication()->setUserState("teamplayer.persontype", Factory::getApplication()->input->getInt('persontype'));
 
 
-//Factory::getApplication()->setUserState("Factory::getApplication()->input->getCmd('option').project_team_id", Factory::getApplication()->input->getInt('project_team_id'));
        
 		parent::__construct($config);
 	}
