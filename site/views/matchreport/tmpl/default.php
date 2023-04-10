@@ -26,6 +26,13 @@ echo $this->loadTemplate('result');
 echo $this->loadTemplate('details');
 echo $this->loadTemplate('sporttype_tennis');
 break;
+case 'COM_SPORTSMANAGEMENT_ST_TABLETENNIS';
+echo $this->loadTemplate('projectheading');
+echo $this->loadTemplate('sectionheader');
+echo $this->loadTemplate('result');
+echo $this->loadTemplate('details');
+echo $this->loadTemplate('sporttype_tennis');
+break;
 default:
 $hasMatchPlayerStats = false;
 $hasMatchStaffStats  = false;
