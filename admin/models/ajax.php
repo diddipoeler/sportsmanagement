@@ -891,18 +891,20 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 	$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
         
-$team_id         = $app->getUserState("$option.team_id", '0');
-$project_team_id = $app->getUserState("$ption.project_team_id", '0');
-$project_id = $app->getUserState("$ption.pid", '0');
-$season_id  = $app->getUserState("$ption.season_id", '0');
-$season_team_id  = $app->getUserState("$ption.season_team_id", '0');
+//$team_id         = $app->getUserState("$option.team_id", '0');
+//$project_team_id = $app->getUserState("$ption.project_team_id", '0');
+//$project_id = $app->getUserState("$ption.pid", '0');
+//$season_id  = $app->getUserState("$ption.season_id", '0');
+//$season_team_id  = $app->getUserState("$ption.season_team_id", '0');
+//        
+//$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'team_id<pre>'.print_r($team_id,true).'</pre>'), 'notice');        
+//$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'project_team_id<pre>'.print_r($project_team_id,true).'</pre>'), 'notice');
+//$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'project_id<pre>'.print_r($project_id,true).'</pre>'), 'notice');        
+//$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'season_id<pre>'.print_r($season_id,true).'</pre>'), 'notice');        
+//$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'season_team_id<pre>'.print_r($season_team_id,true).'</pre>'), 'notice');
+
+Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'persontype<pre>'.print_r(Factory::getApplication()->getUserState(),true).'</pre>'), 'notice');
         
-        
-$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'team_id<pre>'.print_r($team_id,true).'</pre>'), 'notice');        
-$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'project_team_id<pre>'.print_r($project_team_id,true).'</pre>'), 'notice');
-$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'project_id<pre>'.print_r($project_id,true).'</pre>'), 'notice');        
-$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'season_id<pre>'.print_r($season_id,true).'</pre>'), 'notice');        
-$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'season_team_id<pre>'.print_r($season_team_id,true).'</pre>'), 'notice');        
            
        
        }
