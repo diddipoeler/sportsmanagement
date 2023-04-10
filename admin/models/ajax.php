@@ -892,14 +892,14 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		$option = $app->input->getCmd('option');
         
 
-$project_team_id = $app->getUserState("teamplayer.project_team_id", '0');
+$season_team_id = $app->getUserState("teamplayer.season_team_id", '0');
 $person_id = $app->getUserState("teamplayer.person_id", '0');
 $id = $app->getUserState("teamplayer.id", '0');
 $pid = $app->getUserState("teamplayer.pid", '0');
 $team_id = $app->getUserState("teamplayer.team_id", '0');
 $persontype = $app->getUserState("teamplayer.persontype", '0');
 
-$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'project_team_id<pre>'.print_r($project_team_id,true).'</pre>'), 'notice');
+$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'season_team_id<pre>'.print_r($season_team_id,true).'</pre>'), 'notice');
 $app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'person_id<pre>'.print_r($person_id,true).'</pre>'), 'notice');
 $app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'id<pre>'.print_r($id,true).'</pre>'), 'notice');
 $app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'pid<pre>'.print_r($pid,true).'</pre>'), 'notice');
