@@ -144,9 +144,30 @@ $query->from('#__sportsmanagement_season_team_person_id');
 $query->where('id = ' . (int) $value->teamplayer1_id);
 $db->setQuery($query);    
 $result2 = $db->loadObject();
-$value->person_art = $result2->person_art;     
-$value->person_id1 = $result2->person_id1;    
-$value->person_id2 = $result2->person_id2;    
+$value->person_art = $result2->person_art;
+switch ( $result2->person_art )
+{
+    case 1:
+    break;
+    case 2:
+$value->double_team1_player1 = $result2->person_id1;    
+$value->double_team1_player2 = $result2->person_id2;
+$query->clear();    
+$query->select('person_art,person_id1,person_id2');
+$query->from('#__sportsmanagement_season_team_person_id');
+$query->where('id = ' . (int) $value->teamplayer2_id);
+$db->setQuery($query);    
+$result3 = $db->loadObject();
+$value->person_art = $result3->person_art;
+$value->double_team2_player1 = $result3->person_id1;    
+$value->double_team2_player2 = $result3->person_id2;
+
+
+
+    break;
+}
+     
+    
     
 }
 

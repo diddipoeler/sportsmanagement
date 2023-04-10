@@ -76,7 +76,7 @@ if ($this->project->use_tie_break)
 		<?PHP
 		foreach ($this->matchsingle as $single)
 		{
-			if ($single->match_type == 'SINGLE')
+			if ($single->person_art == 1)
 			{
 				echo '<tr>';
 				echo '<td>';
@@ -259,7 +259,7 @@ if ($this->project->use_tie_break)
 		<?PHP
 		foreach ($this->matchsingle as $single)
 		{
-			if ($single->match_type == 'DOUBLE')
+			if ($single->person_art == 2 )
 			{
 				echo '<tr>';
 				echo '<td>';
