@@ -47,7 +47,7 @@ Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LIN
 
 Factory::getApplication()->setUserState("teamplayer.project_team_id", Factory::getApplication()->input->getInt('project_team_id'));
 Factory::getApplication()->setUserState("teamplayer.season_team_id", Factory::getApplication()->input->getInt('season_team_id'));
-Factory::getApplication()->setUserState("teamplayer.season_id", Factory::getApplication()->input->getInt('season_team_id'));
+Factory::getApplication()->setUserState("teamplayer.season_id", Factory::getApplication()->input->getInt('season_id'));
 Factory::getApplication()->setUserState("teamplayer.person_id", Factory::getApplication()->input->getInt('person_id'));
 Factory::getApplication()->setUserState("teamplayer.id", Factory::getApplication()->input->getInt('id'));
 Factory::getApplication()->setUserState("teamplayer.pid", Factory::getApplication()->input->getInt('pid'));

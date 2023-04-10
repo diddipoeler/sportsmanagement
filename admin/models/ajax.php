@@ -930,10 +930,10 @@ $app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'person_a
 		$query->join('INNER', ' #__sportsmanagement_season_team_person_id AS stp ON stp.person_id = p.id ');
 		$query->join('INNER', ' #__sportsmanagement_season_team_id AS st ON st.team_id = stp.team_id ');
 		$query->join('INNER', ' #__sportsmanagement_project_team pt ON pt.team_id = st.id ');
-		if ($project_id)
-		{
+//		if ($project_id)
+//		{
 			$query->where('pt.project_id = ' . (int) $pid);
-		}
+//		}
         
         $query->where('st.season_id = ' . (int) $season_id);
         $query->where('stp.season_id = ' . (int) $season_id);
@@ -945,11 +945,12 @@ $app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'person_a
 		$query->where('stp.persontype = 1');
         $query->where('stp.person_art = 1');
 
-		// Group
 		$query->group('p.id');
 		$query->order('text');
 
 		$db->setQuery($query);
+
+$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'person_art<pre>'.print_r($query->dump(),true).'</pre>'), 'notice');
 
 		return self::addGlobalSelectElement($db->loadObjectList(), $required);
         
