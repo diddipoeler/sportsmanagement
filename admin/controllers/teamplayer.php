@@ -34,8 +34,9 @@ class sportsmanagementControllerteamplayer extends JSMControllerForm
 	 */
 	function __construct($config = array())
 	{
-	   //Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'person_art<pre>'.print_r(Factory::getApplication()->input,true).'</pre>'), 'notice');
-       
+
+if ( Factory::getConfig()->get('debug') )
+{        
 Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'project_team_id<pre>'.print_r(Factory::getApplication()->input->getInt('project_team_id'),true).'</pre>'), 'notice');
 Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'season_team_id<pre>'.print_r(Factory::getApplication()->input->getInt('season_team_id'),true).'</pre>'), 'notice');
 Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'season_id<pre>'.print_r(Factory::getApplication()->input->getInt('season_id'),true).'</pre>'), 'notice');
@@ -44,6 +45,7 @@ Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LIN
 Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'pid<pre>'.print_r(Factory::getApplication()->input->getInt('pid'),true).'</pre>'), 'notice');
 Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'team_id<pre>'.print_r(Factory::getApplication()->input->getInt('team_id'),true).'</pre>'), 'notice');
 Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'persontype<pre>'.print_r(Factory::getApplication()->input->getInt('persontype'),true).'</pre>'), 'notice');
+}
 
 Factory::getApplication()->setUserState("teamplayer.project_team_id", Factory::getApplication()->input->getInt('project_team_id'));
 Factory::getApplication()->setUserState("teamplayer.season_team_id", Factory::getApplication()->input->getInt('season_team_id'));

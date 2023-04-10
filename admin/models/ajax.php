@@ -890,7 +890,6 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 	{
 	$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
-        // Get a db connection.
 		if (!$dbase)
 		{
 			$db = sportsmanagementHelper::getDBConnection();
@@ -912,15 +911,7 @@ $pid = $app->getUserState("teamplayer.pid", '0');
 $team_id = $app->getUserState("teamplayer.team_id", '0');
 $persontype = $app->getUserState("teamplayer.persontype", '0');
 
-$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'project_team_id<pre>'.print_r($project_team_id,true).'</pre>'), 'notice');
-$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'season_team_id<pre>'.print_r($season_team_id,true).'</pre>'), 'notice');
-$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'season_id<pre>'.print_r($season_id,true).'</pre>'), 'notice');
-$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'person_id<pre>'.print_r($person_id,true).'</pre>'), 'notice');
-$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'id<pre>'.print_r($id,true).'</pre>'), 'notice');
-$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'pid<pre>'.print_r($pid,true).'</pre>'), 'notice');
-$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'team_id<pre>'.print_r($team_id,true).'</pre>'), 'notice');
-$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'persontype<pre>'.print_r($persontype,true).'</pre>'), 'notice');
-$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'person_art<pre>'.print_r($person_art,true).'</pre>'), 'notice');
+
 
         
 
@@ -930,27 +921,33 @@ $app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'person_a
 		$query->join('INNER', ' #__sportsmanagement_season_team_person_id AS stp ON stp.person_id = p.id ');
 		$query->join('INNER', ' #__sportsmanagement_season_team_id AS st ON st.team_id = stp.team_id ');
 		$query->join('INNER', ' #__sportsmanagement_project_team pt ON pt.team_id = st.id ');
-//		if ($project_id)
-//		{
-			$query->where('pt.project_id = ' . (int) $pid);
-//		}
-        
+		$query->where('pt.project_id = ' . (int) $pid);
         $query->where('st.season_id = ' . (int) $season_id);
         $query->where('stp.season_id = ' . (int) $season_id);
-        
         $query->where('st.team_id = ' . (int) $team_id);
         $query->where('stp.team_id = ' . (int) $team_id);
-        
 		$query->where('p.published = 1');
 		$query->where('stp.persontype = 1');
         $query->where('stp.person_art = 1');
-
 		$query->group('p.id');
 		$query->order('text');
 
 		$db->setQuery($query);
 
+if ( Factory::getConfig()->get('debug') )
+{ 
+$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'project_team_id<pre>'.print_r($project_team_id,true).'</pre>'), 'notice');
+$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'season_team_id<pre>'.print_r($season_team_id,true).'</pre>'), 'notice');
+$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'season_id<pre>'.print_r($season_id,true).'</pre>'), 'notice');
+$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'person_id<pre>'.print_r($person_id,true).'</pre>'), 'notice');
+$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'id<pre>'.print_r($id,true).'</pre>'), 'notice');
+$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'pid<pre>'.print_r($pid,true).'</pre>'), 'notice');
+$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'team_id<pre>'.print_r($team_id,true).'</pre>'), 'notice');
+$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'persontype<pre>'.print_r($persontype,true).'</pre>'), 'notice');
+$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'person_art<pre>'.print_r($person_art,true).'</pre>'), 'notice');
 $app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'person_art<pre>'.print_r($query->dump(),true).'</pre>'), 'notice');
+}
+
 
 		return self::addGlobalSelectElement($db->loadObjectList(), $required);
         
