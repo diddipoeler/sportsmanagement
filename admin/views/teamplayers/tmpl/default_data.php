@@ -142,7 +142,7 @@ $this->dragable_group = 'data-dragable-group="none"';
 }  
 			$link        = Route::_(
 				'index.php?option=com_sportsmanagement&task=teamplayer.edit&project_team_id=' .
-				$this->project_team_id . '&person_id=' . $this->item->id . '&id=' . $this->item->tpid . '&pid=' . $this->project->id . '&team_id=' . $this->team_id . '&persontype=' . $this->_persontype. '&season_team_id='.$this->season_team_id	);
+				$this->project_team_id . '&person_id=' . $this->item->id . '&id=' . $this->item->tpid . '&pid=' . $this->project->id . '&team_id=' . $this->team_id . '&persontype=' . $this->_persontype. '&season_team_id='.$this->season_team_id. '&season_id='.$this->season_id	);
 			$canEdit     = $this->user->authorise('core.edit', 'com_sportsmanagement');
 			$canCheckin  = $this->user->authorise('core.manage', 'com_checkin') || $this->item->checked_out == $this->user->get('id') || $this->item->checked_out == 0;
 			$checked     = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'teamplayers.', $canCheckin);
