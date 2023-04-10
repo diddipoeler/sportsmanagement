@@ -903,7 +903,7 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 //$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'season_id<pre>'.print_r($season_id,true).'</pre>'), 'notice');        
 //$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'season_team_id<pre>'.print_r($season_team_id,true).'</pre>'), 'notice');
 
-Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'persontype<pre>'.print_r(Factory::getApplication()->getUserState(),true).'</pre>'), 'notice');
+//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'persontype<pre>'.print_r(Factory::getApplication()->getUserState(),true).'</pre>'), 'notice');
         
            
        
