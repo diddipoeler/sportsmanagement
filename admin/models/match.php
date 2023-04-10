@@ -140,7 +140,7 @@ foreach ( $result as $key => $value )
 {
 $query->clear();    
 $query->select('person_art,person_id1,person_id2');
-$query->from('#__sportsmanagement_season_team_person');
+$query->from('#__sportsmanagement_season_team_person_id');
 $query->where('id = ' . (int) $value->teamplayer1_id);
 $db->setQuery($query);    
 $result2 = $db->loadObject();
