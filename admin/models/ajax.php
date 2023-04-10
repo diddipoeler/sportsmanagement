@@ -876,6 +876,25 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 
 	}
 
+
+	/**
+	 * sportsmanagementModelAjax::getpersonlistoptionsprojectteam()
+	 * 
+	 * @param mixed $person_art
+	 * @param bool $required
+	 * @param bool $slug
+	 * @param bool $dbase
+	 * @return void
+	 */
+	static function getpersonlistoptionsprojectteam($person_art, $required = false, $slug = false, $dbase = false)
+	{
+	   
+       
+       }
+       
+       
+       
+       
 	/**
 	 * sportsmanagementModelAjax::getProjectDivisionsOptions()
 	 *
