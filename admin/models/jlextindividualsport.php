@@ -253,9 +253,6 @@ break;
 		}
         }
 
-
-
-
         break;
 case 'COM_SPORTSMANAGEMENT_ST_TABLETENNIS':
 case 'COM_SPORTSMANAGEMENT_ST_TENNIS':
@@ -319,20 +316,7 @@ if ( $this->joomlaconfig->get('debug') )
 		{
 		  if ( array_key_exists($x, $pks) )
           {
-			/** änderungen im datum oder der uhrzeit */
-//			$tbl = $this->getTable();;
-//			$tbl->load((int) $pks[$x]);
-//
-//			list($date, $time) = explode(" ", $tbl->match_date);
-//			$this->_match_time_new = $post['match_time' . $pks[$x]] . ':00';
-//			$this->_match_date_new = $post['match_date' . $pks[$x]];
-//			$this->_match_time_old = $time;
-//			$this->_match_date_old = sportsmanagementHelper::convertDate($date);
-
-//			$post['match_date' . $pks[$x]] = sportsmanagementHelper::convertDate($post['match_date' . $pks[$x]], 0);
-//			$post['match_date' . $pks[$x]] = $post['match_date' . $pks[$x]] . ' ' . $post['match_time' . $pks[$x]] . ':00';
-
-			//$tblMatch                       = self::getTable();
+			/** änderungen */
             $tblMatch                       = new stdClass;
 			$tblMatch->id                   = $pks[$x];
 			$tblMatch->match_number         = $post['match_number' . $pks[$x]];
@@ -376,8 +360,7 @@ if ( $this->joomlaconfig->get('debug') )
 				}
 				else
 				{
-					//                        $tblMatch->team1_result	= NULL;
-					//                        $tblMatch->team2_result	= NULL;
+				    /** keine funktion */
 				}
 			}
 
@@ -393,14 +376,6 @@ if ( $this->joomlaconfig->get('debug') )
 			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
 		
 		}
-
-//			if (!$tblMatch->store())
-//			{
-//				$result = false;
-//			}
-//			else
-//			{
-//			}
 
 			/** Ereignisse speichern heim */
 			if ($tblMatch->teamplayer1_id)
