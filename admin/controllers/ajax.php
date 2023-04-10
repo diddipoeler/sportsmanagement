@@ -213,10 +213,10 @@ class sportsmanagementControllerAjax extends BaseController
 		$jinput = $app->input;
 		$model  = $this->getModel('ajax');
         
-$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'person_art<pre>'.print_r(Factory::getApplication()->input->getInt('person_art'),true).'</pre>'), 'notice');        
-$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'team_id<pre>'.print_r(Factory::getApplication()->input->getInt('team_id'),true).'</pre>'), 'notice');
-$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'season_team_id<pre>'.print_r(Factory::getApplication()->input->getInt('season_team_id'),true).'</pre>'), 'notice');          
-$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'project_team_id<pre>'.print_r(Factory::getApplication()->input->getInt('project_team_id'),true).'</pre>'), 'notice');          
+$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'person_art<pre>'.print_r(Factory::getApplication()->input->getInt('person_art'),true).'</pre>'), 'notice');        
+$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'team_id<pre>'.print_r(Factory::getApplication()->input->getInt('team_id'),true).'</pre>'), 'notice');
+$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'season_team_id<pre>'.print_r(Factory::getApplication()->input->getInt('season_team_id'),true).'</pre>'), 'notice');          
+$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'project_team_id<pre>'.print_r(Factory::getApplication()->input->getInt('project_team_id'),true).'</pre>'), 'notice');          
         
         
 		echo json_encode((array) $model->getpersonlistoptions(Factory::getApplication()->input->getInt('person_art'), $jinput->getVar('required', 'false'), Factory::getApplication()->input->getInt('slug'), Factory::getApplication()->input->getInt('dbase')));
