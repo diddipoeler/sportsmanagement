@@ -108,14 +108,14 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 		return $db->loadObjectList();
 	}
 
+
 	/**
 	 * sportsmanagementModelMatch::getMatchSingleData()
-	 *
-	 * @param   mixed  $match_id
-	 *
+	 * 
+	 * @param integer $match_id
 	 * @return
 	 */
-	public static function getMatchSingleData($match_id)
+	public static function getMatchSingleData($match_id = 0)
 	{
 		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);

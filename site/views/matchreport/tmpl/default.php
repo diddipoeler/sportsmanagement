@@ -31,7 +31,7 @@ echo $this->loadTemplate('projectheading');
 echo $this->loadTemplate('sectionheader');
 echo $this->loadTemplate('result');
 echo $this->loadTemplate('details');
-echo $this->loadTemplate('sporttype_tennis');
+echo $this->loadTemplate('sporttype_tabletennis');
 break;
 default:
 $hasMatchPlayerStats = false;
