@@ -1242,6 +1242,10 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_season_team_person_id` (
   `contract_from` DATE NOT NULL DEFAULT '0000-00-00' ,
   `contract_to` DATE NOT NULL DEFAULT '0000-00-00' ,
   
+  `person_id1` INT( 11 ) NOT NULL DEFAULT  '0',
+  `person_id2` INT( 11 ) NOT NULL DEFAULT  '0',
+  `person_art` TINYINT( 4 ) NOT NULL DEFAULT  '1',
+  
   PRIMARY KEY (`id`) ,
   UNIQUE KEY `combi` (`person_id`,`season_id`,`team_id`,`persontype`) ,
   KEY `team_id` (`team_id`),
