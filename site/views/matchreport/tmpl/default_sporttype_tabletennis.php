@@ -234,7 +234,7 @@ if ($this->project->use_tie_break)
 
 
     <h3><?php echo Text::_('COM_SPORTSMANAGEMENT_DOUBLE'); ?></h3>
-    <table class="matchreport">
+    <table class="table table-striped ">
         <tr style="">
             <th>Nr</th>
             <th>Pos</th>
@@ -473,7 +473,7 @@ if ($this->project->use_tie_break)
     </table>
 
     <h3><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TENNIS_RESULTS'); ?></h3>
-    <table class="matchreport">
+    <table class="table table-striped ">
         <tr style="">
             <th></th>
             <th><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TENNIS_RESULTS_POINTS'); ?></th>
