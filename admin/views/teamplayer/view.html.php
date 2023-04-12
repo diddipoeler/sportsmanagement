@@ -43,6 +43,10 @@ $this->team_id = $this->app->getUserState("$this->option.team_id", '0');
 $this->project_team_id = $this->app->getUserState("$this->option.project_team_id", '0');
 $this->season_id  = $this->app->getUserState("$this->option.season_id", '0');	
 		
+		$this->project_art_id  = $this->app->getUserState("$this->option.project_art_id", '0');
+		$this->sports_type_id  = $this->app->getUserState("$this->option.sports_type_id", '0');
+		$this->season_team_id  = $this->app->getUserState("$this->option.season_team_id", '0');
+		
         //$this->_persontype     = $this->jinput->get('persontype');
 		
 
