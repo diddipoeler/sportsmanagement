@@ -156,7 +156,7 @@ if ($close == 1)
 $dwOptions  = array();                            
 $dwOptions[] = HTMLHelper::_('select.option', 'SINGLE', Text::_('COM_SPORTSMANAGEMENT_PERSON_SINGLE'));                            
 $dwOptions[] = HTMLHelper::_('select.option', 'DOUBLE', Text::_('COM_SPORTSMANAGEMENT_PERSON_DOUBLE'));
-echo HTMLHelper::_('select.genericlist', $dwOptions, 'match_type', 'class="inputbox"', 'value', 'text', $this->item->match_type);
+echo HTMLHelper::_('select.genericlist', $dwOptions, 'match_type'.$this->item->id, 'class="inputbox"', 'value', 'text', $this->item->match_type);
                             
 							//echo Text::_('COM_SPORTSMANAGEMENT_' . $this->item->match_type);
 							?>

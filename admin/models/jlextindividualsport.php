@@ -180,7 +180,6 @@ break;
 		$rowmatch                          = new stdClass;
 		$rowmatch->id                      = $pks[$x];
         $rowmatch->teamplayer1_id       = $post['teamplayer1_id' . $pks[$x]];
-        
         $rowmatch->team1_result       = $post['team1_result' . $pks[$x]];
         $rowmatch->team2_result       = $post['team2_result' . $pks[$x]];
         
@@ -320,6 +319,7 @@ if ( $this->joomlaconfig->get('debug') )
             $tblMatch                       = new stdClass;
 			$tblMatch->id                   = $pks[$x];
 			$tblMatch->match_number         = $post['match_number' . $pks[$x]];
+            $tblMatch->match_type         = $post['match_type' . $pks[$x]];
 			//$tblMatch->match_date           = $post['match_date' . $pks[$x]]. ':00';
 			$tblMatch->crowd                = $post['crowd' . $pks[$x]] ? $post['crowd' . $pks[$x]] : 0;
 			$tblMatch->round_id             = $post['round_id' . $pks[$x]] ? $post['round_id' . $pks[$x]] : 0;
