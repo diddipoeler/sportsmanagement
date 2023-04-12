@@ -274,13 +274,8 @@ format="%d-%m-%Y"/>
 			format="%d-%m-%Y"/>		
 
 	</fieldset>
-	<!--
-<fieldset name="persondetails"
-  label="COM_SPORTSMANAGEMENT_TABS_PERSON_DETAILS"
-  description="COM_SPORTSMANAGEMENT_TABS_PERSON_DETAILS_DESC">
 
-	</fieldset>			
--->	
+
   <fieldset name="picture"
   label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
   description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">		

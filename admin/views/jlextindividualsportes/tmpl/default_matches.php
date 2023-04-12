@@ -153,7 +153,12 @@ if ($close == 1)
                         </td>
                         <td style="text-align:center; ">
 							<?php
-							echo Text::_('COM_SPORTSMANAGEMENT_' . $this->item->match_type);
+$dwOptions  = array();                            
+$dwOptions[] = HTMLHelper::_('select.option', 'SINGLE', Text::_('COM_SPORTSMANAGEMENT_PERSON_SINGLE'));                            
+$dwOptions[] = HTMLHelper::_('select.option', 'DOUBLE', Text::_('COM_SPORTSMANAGEMENT_PERSON_DOUBLE'));
+echo HTMLHelper::_('select.genericlist', $dwOptions, 'match_type', 'class="inputbox"', 'value', 'text', $this->item->match_type);
+                            
+							//echo Text::_('COM_SPORTSMANAGEMENT_' . $this->item->match_type);
 							?>
                         </td>
 
