@@ -37,14 +37,17 @@ class sportsmanagementViewTeamPlayer extends sportsmanagementView
 	public function init()
 	{
 		$lists = array();
-
-		$this->team_id         = $this->app->getUserState("$this->option.team_id", '0');
-		//$this->_persontype     = $this->app->getUserState("$this->option.persontype", '0');
+$this->persontype = $this->app->getUserState("$this->option.persontype", '0');
+$this->project_id = $this->app->getUserState("$this->option.pid", '0');	
+$this->team_id = $this->app->getUserState("$this->option.team_id", '0');
+$this->project_team_id = $this->app->getUserState("$this->option.project_team_id", '0');
+$this->season_id  = $this->app->getUserState("$this->option.season_id", '0');	
+		
         //$this->_persontype     = $this->jinput->get('persontype');
-		$this->project_team_id = $this->app->getUserState("$this->option.project_team_id", '0');
+		
 
-		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
-		$this->season_id  = $this->app->getUserState("$this->option.season_id", '0');
+		
+		
 
 		$mdlProject    = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
 		$this->project       = $mdlProject->getProject($this->project_id);
