@@ -47,7 +47,7 @@ class sportsmanagementViewTeams extends sportsmanagementView
 			case 'assignteams':
 			case 'assignteams_3':
 			case 'assignteams_4':
-			$this->season_id  = $this->Jinput->get('season_id');
+			$this->season_id  = $this->jinput->get('season_id');
 			$this->assign     = true;
 			break;
 		}
