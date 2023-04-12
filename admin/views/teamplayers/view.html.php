@@ -93,6 +93,18 @@ $this->app->setUserState("$this->option.persontype", $this->_persontype);
 $this->app->setUserState("$this->option.project_team_id", $this->project_team_id);
 $this->app->setUserState("$this->option.team_id", $this->team_id);
 $this->app->setUserState("$this->option.season_team_id", $this->season_team_id);
+		
+Factory::getApplication()->input->set("pid", $project->id);
+Factory::getApplication()->input->set("season_id", $project->season_id);
+Factory::getApplication()->input->set("project_art_id", $project->project_art_id);
+Factory::getApplication()->input->set("sports_type_id", $project->sports_type_id);
+Factory::getApplication()->input->set("project_id", $this->project_id);
+Factory::getApplication()->input->set("persontype", $this->_persontype);
+Factory::getApplication()->input->set("project_team_id", $this->project_team_id);
+Factory::getApplication()->input->set("team_id", $this->team_id);
+Factory::getApplication()->input->set("season_team_id", $this->season_team_id);		
+		
+		
 $values = array();
 $values[] = $project->id;
 $values[] = $project->season_id;
@@ -103,6 +115,8 @@ $values[] = $this->_persontype;
 $values[] = $this->project_team_id;
 $values[] = $this->team_id;
 $values[] = $this->season_team_id;
+Factory::getApplication()->input->set("teamplayers", $values);	
+		
 		
 // Get the cookie
 $value = Factory::getApplication()->input->cookie->get('teamplayers', null);
