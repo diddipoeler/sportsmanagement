@@ -84,18 +84,34 @@ class sportsmanagementViewteamplayers extends sportsmanagementView
 		}
 
 		$this->table = Table::getInstance('teamplayer', 'sportsmanagementTable');
-		$this->app->setUserState("$this->option.pid", $project->id);
-		$this->app->setUserState("$this->option.season_id", $project->season_id);
-		$this->app->setUserState("$this->option.project_art_id", $project->project_art_id);
-		$this->app->setUserState("$this->option.sports_type_id", $project->sports_type_id);
-        
-        $this->app->setUserState("$this->option.project_id", $this->project_id);
-        $this->app->setUserState("$this->option.persontype", $this->_persontype);
-        $this->app->setUserState("$this->option.project_team_id", $this->project_team_id);
-        $this->app->setUserState("$this->option.team_id", $this->team_id);
-        $this->app->setUserState("$this->option.season_team_id", $this->season_team_id);
-        
-
+$this->app->setUserState("$this->option.pid", $project->id);
+$this->app->setUserState("$this->option.season_id", $project->season_id);
+$this->app->setUserState("$this->option.project_art_id", $project->project_art_id);
+$this->app->setUserState("$this->option.sports_type_id", $project->sports_type_id);
+$this->app->setUserState("$this->option.project_id", $this->project_id);
+$this->app->setUserState("$this->option.persontype", $this->_persontype);
+$this->app->setUserState("$this->option.project_team_id", $this->project_team_id);
+$this->app->setUserState("$this->option.team_id", $this->team_id);
+$this->app->setUserState("$this->option.season_team_id", $this->season_team_id);
+$values = array();
+$values[] = $project->id;
+$values[] = $project->season_id;
+$values[] = $project->project_art_id;
+$values[] = $project->sports_type_id;
+$values[] = $this->project_id;
+$values[] = $this->_persontype;
+$values[] = $this->project_team_id;
+$values[] = $this->team_id;
+$values[] = $this->season_team_id;
+		
+// Get the cookie
+$value = Factory::getApplication()->input->cookie->get('teamplayers', null);
+// Set the cookie
+$time = time() + 604800; // 1 week
+Factory::getApplication()->input->cookie->set('teamplayers', implode(";", $values), $time, Factory::getApplication()->get('cookie_path', '/'), Factory::getApplication()->get('cookie_domain'), Factory::getApplication()->isSSLConnection());		
+		
+		
+		
 		$mdlProjectTeam = BaseDatabaseModel::getInstance('ProjectTeam', 'sportsmanagementModel');
 		$project_team   = $mdlProjectTeam->getProjectTeam($this->team_id);
 
