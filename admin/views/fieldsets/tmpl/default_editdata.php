@@ -569,6 +569,9 @@ else
 	<input type="hidden" name="project_team_id" value="<?php echo $this->project_team_id; ?>"/>
 	<input type="hidden" name="season_id" value="<?php echo $this->season_id; ?>"/>
 	
+	<input type="hidden" name="project_art_id" value="<?php echo $this->project_art_id; ?>"/>
+	<input type="hidden" name="sports_type_id" value="<?php echo $this->sports_type_id; ?>"/>
+	<input type="hidden" name="season_team_id" value="<?php echo $this->season_team_id; ?>"/>
 	
 	
 	
