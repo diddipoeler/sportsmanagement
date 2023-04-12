@@ -562,9 +562,16 @@ else
 	if ($view == 'teamplayer')
 	{
 		?>
-        <input type="hidden" name="persontype" value="<?php echo $this->_persontype; ?>"/>
+        <input type="hidden" name="persontype" value="<?php echo $this->persontype; ?>"/>
         <input type="hidden" name="project_id" value="<?php echo $this->project_id; ?>"/>
         <input type="hidden" name="pid" value="<?php echo $this->project_id; ?>"/>
+	<input type="hidden" name="team_id" value="<?php echo $this->team_id; ?>"/>
+	<input type="hidden" name="project_team_id" value="<?php echo $this->project_team_id; ?>"/>
+	<input type="hidden" name="season_id" value="<?php echo $this->season_id; ?>"/>
+	
+	
+	
+	
 		<?php
 	}
 
