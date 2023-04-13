@@ -135,7 +135,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
 		}
 
-
+/**
 foreach ( $result as $key => $value )
 {
 $query->clear();    
@@ -147,9 +147,9 @@ $result2 = $db->loadObject();
 $value->person_art = $result2->person_art;
 switch ( $result2->person_art )
 {
-    case 1:
-    break;
-    case 2:
+case 1:
+break;
+case 2:
 $value->double_team1_player1 = $result2->person_id1;    
 $value->double_team1_player2 = $result2->person_id2;
 $query->clear();    
@@ -161,16 +161,10 @@ $result3 = $db->loadObject();
 $value->person_art = $result3->person_art;
 $value->double_team2_player1 = $result3->person_id1;    
 $value->double_team2_player2 = $result3->person_id2;
-
-
-
-    break;
+break;
 }
-     
-    
-    
 }
-
+*/
 
 
 		return $result;
