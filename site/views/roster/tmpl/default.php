@@ -153,8 +153,13 @@ switch ($this->project->sport_type_name )
 {
 case 'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION':
 echo $this->loadTemplate('players_small_bore_rifle');
-
 break;
+
+case 'COM_SPORTSMANAGEMENT_ST_TABLETENNIS':
+echo $this->loadTemplate('players_tabletennis');
+break;
+
+
 default:
 		if ($this->config['show_players'])
 		{
