@@ -262,10 +262,11 @@ for ($x = 0; $x < count($pks); $x++)
 		$save_match = true;  
 		$rowmatch                          = new stdClass;
 		$rowmatch->id                      = $pks[$x];
-        $rowmatch->teamplayer1_id       = $post['teamplayer1_id' . $pks[$x]];
-        $rowmatch->team1_result       = $post['team1_result' . $pks[$x]];
-        $rowmatch->team2_result       = $post['team2_result' . $pks[$x]];
-        
+        $rowmatch->teamplayer1_id = $post['teamplayer1_id'.$pks[$x]] ? $post['teamplayer1_id'.$pks[$x]] : 0  ;
+	$rowmatch->teamplayer2_id = $post['teamplayer2_id'.$pks[$x]] ? $post['teamplayer2_id'.$pks[$x]] : 0  ;
+        $rowmatch->team1_result = $post['team1_result'.$pks[$x]] ? $post['team1_result'.$pks[$x]] : 0;
+        $rowmatch->team2_result = $post['team2_result'.$pks[$x]] ? $post['team2_result'.$pks[$x]] : 0;
+        /**
         if ( !$rowmatch->team1_result )
         {
             $rowmatch->team1_result = 0;
@@ -274,7 +275,7 @@ for ($x = 0; $x < count($pks); $x++)
         {
             $rowmatch->team2_result = 0;
         }
-        
+        */
         $rowmatch->ringetotal       = $rowmatch->team1_result;
         
         $rowmatch->modified    = $this->jsmdate->toSql();
