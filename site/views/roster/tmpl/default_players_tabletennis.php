@@ -15,6 +15,11 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 
+if ( Factory::getConfig()->get('debug') )
+{
+        echo __METHOD__ . ' ' . ' ' . __LINE__ . ' ' . ' eventlist <pre>'.print_r($this->rows,true).'</pre>';
+}
+
 ?>
 <div class="container">
 
