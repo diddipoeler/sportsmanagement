@@ -65,7 +65,7 @@ filter="unset"
             class="readonly"
             size="22"
             readonly="true"
-            format="%Y-%m-%d %H:%M:%S"
+            format="%Y-%m-%d %H:%i:%s"
             filter="user_utc"
         />
 
@@ -87,7 +87,7 @@ filter="unset"
             class="readonly"
             size="22"
             readonly="true"
-            format="%Y-%m-%d %H:%M:%S"
+            format="%Y-%m-%d %H:%i:%s"
             filter="user_utc"
         />
 

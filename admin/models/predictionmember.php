@@ -91,7 +91,7 @@ $result = Factory::getDbo()->insertObject('#__sportsmanagement_prediction_member
 				$rowproject                = Table::getInstance($table, 'sportsmanagementTable');
 				$rowproject->prediction_id = $prediction_id;
 				$rowproject->user_id       = $value;
-				$rowproject->registerDate  = HTMLHelper::date(time(), '%Y-%m-%d %H:%M:%S');
+				$rowproject->registerDate  = HTMLHelper::date(time(), '%Y-%m-%d %H:%i:%s');
 				$rowproject->approved      = 1;
 				
 				$rowproject->fav_team      = '';

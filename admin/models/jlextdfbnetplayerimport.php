@@ -1418,7 +1418,7 @@ $projectname = $events[$a]->description;
 								}
 								break;
 							case 'verlegtUhrzeit':
-								if ($val)
+								if (preg_match('^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$', $val))
 								{
 									$temp['Uhrzeit'] = $val;
 								}
