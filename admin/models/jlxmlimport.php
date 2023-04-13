@@ -613,6 +613,26 @@ class sportsmanagementModelJLXMLImport extends JSMModelAdmin
 		$this->_newstatisticsname = array();
 		$this->_newstatisticsid   = array();
 		$this->_dbstatisticsid    = array();
+		
+		$this->_convertEventID = array();
+		$this->_convertStatisticID = array();
+		$this->_convertParentPositionID = array();
+		$this->_convertPositionID = array();
+		$this->_convertPlaygroundID = array();
+		$this->_convertClubID = array();
+		$this->_convertTeamID = array();
+		$this->_convertPersonID = array();
+		$this->_convertDivisionID = array();
+		$this->_convertProjectPositionID = array();
+		$this->_convertProjectRefereeID = array();
+		$this->_convertProjectTeamID = array();
+		$this->_convertTeamPlayerID = array();
+		$this->_convertTeamStaffID = array();
+		$this->_convertRoundID = array();
+		$this->_convertMatchID = array();
+		$this->_convertTreetoID = array();
+		$this->_convertTreetonodeID = array();
+		$this->_convertTreetomatchID = array();
 
 		if (is_array($post) && count($post) > 0)
 		{

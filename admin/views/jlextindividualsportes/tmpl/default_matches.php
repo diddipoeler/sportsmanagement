@@ -123,7 +123,7 @@ if ($close == 1)
 					$published = HTMLHelper::_('grid.published', $this->item, $this->count_i, 'tick.png', 'publish_x.png', 'jlextindividualsportes.');
 
 					list($date, $time) = explode(" ", $this->item->match_date);
-					$time = date("%H:%M", strtotime($time));
+					$time = date("%H:%i", strtotime($time));
 					?>
                     <tr class="row<?php echo $this->count_i % 2; ?>" >
 						<?php
@@ -153,11 +153,11 @@ if ($close == 1)
                         </td>
                         <td style="text-align:center; ">
 							<?php
-$dwOptions  = array();                            
-$dwOptions[] = HTMLHelper::_('select.option', 'SINGLE', Text::_('COM_SPORTSMANAGEMENT_PERSON_SINGLE'));                            
+$dwOptions  = array();
+$dwOptions[] = HTMLHelper::_('select.option', 'SINGLE', Text::_('COM_SPORTSMANAGEMENT_PERSON_SINGLE'));
 $dwOptions[] = HTMLHelper::_('select.option', 'DOUBLE', Text::_('COM_SPORTSMANAGEMENT_PERSON_DOUBLE'));
 echo HTMLHelper::_('select.genericlist', $dwOptions, 'match_type'.$this->item->id, 'class="inputbox" onchange="document.getElementById(\'cb'.$this->count_i.'\').checked=true"', 'value', 'text', $this->item->match_type);
-                            
+       
 							//echo Text::_('COM_SPORTSMANAGEMENT_' . $this->item->match_type);
 							?>
                         </td>

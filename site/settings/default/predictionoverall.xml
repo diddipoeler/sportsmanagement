@@ -117,7 +117,7 @@ default="0"
 		</field>
 
 		<field name="time_format" type="text" size="10" maxlength="15"
-				default="%H:%M"
+				default="%H:%i"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONOVERALL_PARAM_LABEL_TIME_FORMAT"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONOVERALL_PARAM_DESCR_TIME_FORMAT" >
 		</field>

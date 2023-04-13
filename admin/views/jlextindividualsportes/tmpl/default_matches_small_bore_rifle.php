@@ -113,7 +113,7 @@ if ($close == 1)
 					//$published = HTMLHelper::_('grid.published', $this->item, $this->count_i, 'tick.png', 'publish_x.png', 'jlextindividualsportes.');
 
 					list($date, $time) = explode(" ", $this->item->match_date);
-					$time = strftime("%H:%M", strtotime($time));
+					$time = strftime("%H:%i", strtotime($time));
 					?>
                     <tr class="row<?php echo $this->count_i % 2; ?>">
 						<?php
