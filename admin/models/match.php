@@ -145,11 +145,32 @@ $query->where('id = ' . (int) $value->teamplayer1_id);
 $db->setQuery($query);    
 $result2 = $db->loadObject();
 $value->person_art = $result2->person_art;
-switch ( $result2->person_art )
+
+
+
+
+switch ( $value->match_type )
 {
-case 1:
+case 'SINGLE':
 break;
-case 2:
+case 'DOUBLE':
+$value->person_art = 2;
+/**
+$query->clear();    
+$query->select('person_id');
+$query->from('#__sportsmanagement_season_team_person_id');
+$query->where('id = ' . (int) $value->double_team1_player1);
+$db->setQuery($query);  
+$value->double_team1_player1 = $db->loadResult();
+$query->clear();    
+$query->select('person_id');
+$query->from('#__sportsmanagement_season_team_person_id');
+$query->where('id = ' . (int) $value->double_team1_player2);
+$db->setQuery($query);  
+$value->double_team1_player2 = $db->loadResult();
+*/
+
+/**
 $value->double_team1_player1 = $result2->person_id1;    
 $value->double_team1_player2 = $result2->person_id2;
 $query->clear();    
@@ -161,6 +182,7 @@ $result3 = $db->loadObject();
 $value->person_art = $result3->person_art;
 $value->double_team2_player1 = $result3->person_id1;    
 $value->double_team2_player2 = $result3->person_id2;
+*/
 break;
 }
 }
