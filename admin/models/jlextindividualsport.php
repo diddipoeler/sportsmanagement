@@ -337,27 +337,31 @@ if ( $this->joomlaconfig->get('debug') )
 			$tblMatch->team1_result = null;
 			$tblMatch->team2_result = null;
 
-			foreach ($post['team1_result_split' . $pks[$x]] as $key => $value)
+			foreach ( $post['team1_result_split'.$pks[$x]] as $key => $value )
 			{
-				if ($post['team1_result_split' . $pks[$x]][$key] != '' && $post['team2_result_split' . $pks[$x]][$key] != '')
+				if ( $post['team1_result_split'.$pks[$x]][$key] != '' && $post['team2_result_split'.$pks[$x]][$key] != '' )
 				{
-					if ($post['team1_result_split' . $pks[$x]][$key] > $post['team2_result_split' . $pks[$x]][$key])
+					if ( $post['team1_result_split'.$pks[$x]][$key] > $post['team2_result_split'.$pks[$x]][$key] )
 					{
 						$tblMatch->team1_result += 1;
 						$tblMatch->team2_result += 0;
 					}
 
-					if ($post['team1_result_split' . $pks[$x]][$key] < $post['team2_result_split' . $pks[$x]][$key])
+					if ( $post['team1_result_split'.$pks[$x]][$key] < $post['team2_result_split'.$pks[$x]][$key] )
 					{
 						$tblMatch->team1_result += 0;
 						$tblMatch->team2_result += 1;
 					}
 
-					if ($post['team1_result_split' . $pks[$x]][$key] == $post['team2_result_split' . $pks[$x]][$key])
+					if ( $post['team1_result_split'.$pks[$x]][$key] == $post['team2_result_split'.$pks[$x]][$key] )
 					{
 						$tblMatch->team1_result += 1;
 						$tblMatch->team2_result += 1;
 					}
+                    
+                    $tblMatch->ringetotal_teamplayer1_id += $post['team1_result_split'.$pks[$x]][$key];
+                    $tblMatch->ringetotal_teamplayer2_id += $post['team2_result_split'.$pks[$x]][$key];
+                        
 				}
 				else
 				{
