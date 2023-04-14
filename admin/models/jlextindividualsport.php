@@ -74,6 +74,61 @@ class sportsmanagementModeljlextindividualsport extends JSMModelAdmin
 
 
 /**
+ * sportsmanagementModeljlextindividualsport::getmatchsingle_rowshome()
+ * 
+ * @param integer $project_id
+ * @param integer $projectteam_id
+ * @param integer $season_team_person_id
+ * @param string $match_type
+ * @param string $homeaway
+ * @return
+ */
+public static function getmatchsingle_rowshome($project_id = 0, $projectteam_id = 0, $season_team_person_id = 0, $match_type = 'SINGLE', $homeaway = 'HOME') 
+{
+$result = array();
+$app = Factory::getApplication();
+$db = sportsmanagementHelper::getDBConnection();
+$query = $db->getQuery(true);
+$query->clear();
+$query->select('ms.*');
+$query->from('#__sportsmanagement_match_single as ms');
+$query->join('INNER', '#__sportsmanagement_round AS r ON r.id = ms.round_id');
+$query->where('r.project_id = ' . $project_id);
+switch ( $homeaway )
+{
+case 'HOME':
+$query->where('ms.projectteam1_id = ' . $projectteam_id);    
+$query->where('ms.teamplayer1_id = ' . $season_team_person_id);    
+break;
+case 'AWAY':
+$query->where('ms.projectteam2_id = ' . $projectteam_id);    
+$query->where('ms.teamplayer2_id = ' . $season_team_person_id);    
+break;
+}
+
+$query->where('ms.match_type LIKE ' . $db->Quote('' . $match_type . '') );
+try
+{
+$db->setQuery($query);
+$result = $db->loadObjectList();
+}
+catch (Exception $e)
+{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+}    
+    
+return $result;    
+    
+}
+
+
+
+
+
+
+
+/**
  * sportsmanagementModeljlextindividualsport::addmatch()
  * 
  * @param mixed $post
