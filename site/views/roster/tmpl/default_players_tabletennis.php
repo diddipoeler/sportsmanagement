@@ -70,8 +70,32 @@ foreach ($players as $row)
                                   'image'
 								);
 								?>
-
                             </td>
+                            <td width=""  class=""nowrap="nowrap" style="text-align:center; ">
+							<?php echo JSMCountries::getCountryFlag($row->country); ?>
+                            </td>
+                            <td class="" width=""><?php
+							if ($this->config['link_player'] == 1)
+							{
+								$routeparameter                       = array();
+								$routeparameter['cfg_which_database'] = Factory::getApplication()->input->get('cfg_which_database', 0);
+								$routeparameter['s']                  = Factory::getApplication()->input->get('s', '');
+								$routeparameter['p']                  = $this->project->slug;
+								$routeparameter['tid']                = $this->team->slug;
+								$routeparameter['pid']                = $row->person_slug;
+
+								$link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
+								//echo HTMLHelper::link($link, '<span class="playername">' . $playerName . '</span>');
+                                echo HTMLHelper::link($link, $playerName);
+							}
+							else
+							{
+								//echo '<span class="playername">' . $playerName . '</span>';
+                                echo $playerName;
+							}
+							?>
+                            </td>
+                            
 							<?php
                                                     
                         

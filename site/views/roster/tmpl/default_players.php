@@ -582,7 +582,8 @@ $picture = $row->picture;
 							?>
                             <td width=""  class=""nowrap="nowrap" style="text-align:center; ">
 							<?php echo JSMCountries::getCountryFlag($row->country); ?>
-                            </td><?php
+                            </td>
+                            <?php
 						}
                         elseif ($this->config['show_country_flag_staff'])
 						{
