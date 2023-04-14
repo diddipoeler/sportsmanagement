@@ -95,8 +95,63 @@ foreach ($players as $row)
 							}
 							?>
                             </td>
-                            
-							<?php
+                            	<?php
+						if ($this->config['show_birthday'] > 0)
+						{
+							?>
+                            <td class="" width="" nowrap="nowrap" style="text-align: center;"><?php
+							if ($row->birthday != "0000-00-00")
+							{
+								switch ($this->config['show_birthday'])
+								{
+									case 1:     // Show Birthday and Age
+										$birthdateStr = HTMLHelper::date($row->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
+										$birthdateStr .= "&nbsp;(" . sportsmanagementHelper::getAge($row->birthday, $row->deathday) . ")";
+										break;
+
+									case 2:     // Show Only Birthday
+										$birthdateStr = HTMLHelper::date($row->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
+										break;
+
+									case 3:     // Show Only Age
+										$birthdateStr = "(" . sportsmanagementHelper::getAge($row->birthday, $row->deathday) . ")";
+										break;
+
+									case 4:     // Show Only Year of birth
+										$birthdateStr = HTMLHelper::date($row->birthday, 'Y');
+										break;
+									default:
+										$birthdateStr = "";
+										break;
+								}
+
+								/**
+								 * das alter berechnen zur weiterberechnung des durchschnittsalters
+								 * nicht das alter normal berechnen, sonder das alter des spielers in der saison
+								 */
+								$age += sportsmanagementHelper::getAge($row->birthday, $this->lastseasondate);
+								$countplayer++;
+							}
+							else
+							{
+								$birthdateStr = "-";
+							}
+
+							/**
+							 *
+							 * deathday
+							 */
+							if ($row->deathday != "0000-00-00")
+							{
+								$birthdateStr .= ' [&dagger; ' . HTMLHelper::date($row->deathday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')) . ']';
+							}
+
+							echo $birthdateStr;
+							?>
+                            </td>
+                            <?php
+						}
+						
                                                     
                         
       }             
