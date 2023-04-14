@@ -157,8 +157,8 @@ foreach ($players as $row)
                          * projectteam_id 
                          * project_id
                         */
-                        $single_matches_home = sportsmanagementModeljlextindividualsport::getmatchsingle_rowshome($row->project_id , $$row->rojectteam_id , $row->season_team_person_id, 'SINGLE', 'HOME');                            
-                        $single_matches_away = sportsmanagementModeljlextindividualsport::getmatchsingle_rowshome($row->project_id , $$row->rojectteam_id , $row->season_team_person_id, 'SINGLE', 'AWAY');
+                        $single_matches_home = sportsmanagementModeljlextindividualsport::getmatchsingle_rowshome($row->project_id , $row->rojectteam_id , $row->season_team_person_id, 'SINGLE', 'HOME');                            
+                        $single_matches_away = sportsmanagementModeljlextindividualsport::getmatchsingle_rowshome($row->project_id , $row->rojectteam_id , $row->season_team_person_id, 'SINGLE', 'AWAY');
 if ( Factory::getConfig()->get('debug') )
 {
 echo __METHOD__ . ' ' . ' ' . __LINE__ . ' ' . ' matches home <pre>'.print_r($single_matches_home,true).'</pre>';
