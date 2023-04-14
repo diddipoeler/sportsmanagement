@@ -323,10 +323,10 @@ if ( $this->joomlaconfig->get('debug') )
             $tblMatch->match_type         = $post['match_type' . $pks[$x]];
 			//$tblMatch->match_date           = $post['match_date' . $pks[$x]]. ':00';
 			$tblMatch->crowd                = $post['crowd'.$pks[$x]] ? $post['crowd'.$pks[$x]] : 0;
-			$tblMatch->round_id             = $post['rid'.$pks[$x]] ? $post['rid'.$pks[$x]] : 0;
-			$tblMatch->division_id          = $post['division_id'.$pks[$x]] ? $post['division_id'.$pks[$x]] : 0;
-			$tblMatch->projectteam1_id      = $post['projectteam1_id'.$pks[$x]] ? $post['projectteam1_id'.$pks[$x]] : 0;
-			$tblMatch->projectteam2_id      = $post['projectteam2_id'.$pks[$x]] ? $post['projectteam2_id'.$pks[$x]] : 0;
+			$tblMatch->round_id             = $post['rid'] ? $post['rid'] : 0;
+			$tblMatch->division_id          = $post['division_id'] ? $post['division_id'] : 0;
+			$tblMatch->projectteam1_id      = $post['projectteam1_id'] ? $post['projectteam1_id'] : 0;
+			$tblMatch->projectteam2_id      = $post['projectteam2_id'] ? $post['projectteam2_id'] : 0;
 			$tblMatch->teamplayer1_id       = $post['teamplayer1_id'.$pks[$x]] ? $post['teamplayer1_id'.$pks[$x]] : 0;
 			$tblMatch->teamplayer2_id       = $post['teamplayer2_id'.$pks[$x]] ? $post['teamplayer2_id'.$pks[$x]] : 0;
 			$tblMatch->double_team1_player1 = $post['double_team1_player1'.$pks[$x]] ? $post['double_team1_player1'.$pks[$x]] : 0;
