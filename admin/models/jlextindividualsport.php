@@ -116,6 +116,7 @@ catch (Exception $e)
 {
 $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
 $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+$app->enqueueMessage(' query<pre>'.print_r($query->dump(),true).'</pre>', 'error');
 }    
     
 return $result;    
