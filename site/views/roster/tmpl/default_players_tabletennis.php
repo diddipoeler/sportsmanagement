@@ -48,7 +48,7 @@ foreach ($players as $row)
 							$row->lastname,
 							$this->config["name_format"]
 						); 
-                        $picture = $row->ppic;      
+                        $picture = $row->ppic ? $row->ppic : $row->picture;      
 ?>
                             <td class="" width="" nowrap="nowrap">
                               <span itemprop="name" content="<?php echo $playerName;?>"></span> 
