@@ -47,7 +47,8 @@ foreach ($players as $row)
 							$row->nickname,
 							$row->lastname,
 							$this->config["name_format"]
-						);       
+						); 
+                        $picture = $row->ppic;      
 ?>
                             <td class="" width="" nowrap="nowrap">
                               <span itemprop="name" content="<?php echo $playerName;?>"></span> 
