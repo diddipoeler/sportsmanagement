@@ -246,32 +246,24 @@ class sportsmanagementModelteamplayer extends JSMModelAdmin
 
 		for ($x = 0; $x < count($pks); $x++)
 		{
-			if ($post['jerseynumber' . $pks[$x]] == '')
-			{
-				$post['jerseynumber' . $pks[$x]] = 0;
-			}
-
-			if ($post['market_value' . $pks[$x]] == '')
-			{
-				$post['market_value' . $pks[$x]] = 0;
-			}
-
-			// Fields to update.
+		  $post['jerseynumber'.$pks[$x]] = $post['jerseynumber'.$pks[$x]] ? $post['jerseynumber'.$pks[$x]] : 0;
+          $post['market_value'.$pks[$x]] = $post['market_value'.$pks[$x]] ? $post['market_value'.$pks[$x]] : 0;
+          $post['tt_startpoints'.$pks[$x]] = $post['tt_startpoints'.$pks[$x]] ? $post['tt_startpoints'.$pks[$x]] : 0;
+          
 			$fields = array(
 				$this->jsmdb->quoteName('project_position_id') . ' = ' . $post['project_position_id' . $pks[$x]],
 				$this->jsmdb->quoteName('jerseynumber') . ' = ' . $post['jerseynumber' . $pks[$x]],
 				$this->jsmdb->quoteName('market_value') . ' = ' . $post['market_value' . $pks[$x]],
+                $this->jsmdb->quoteName('tt_startpoints') . ' = ' . $post['tt_startpoints' . $pks[$x]],
 				$this->jsmdb->quoteName('modified') . ' = ' . $this->jsmdb->Quote('' . $this->jsmdate->toSql() . ''),
 				$this->jsmdb->quoteName('modified_by') . ' = ' . $this->jsmuser->get('id')
 
 			);
 
-			// Conditions for which records should be updated.
 			$conditions = array(
 				$this->jsmdb->quoteName('id') . ' = ' . $post['person_id' . $pks[$x]]
 			);
 
-			// Exit;
 			try
 			{
 			$this->jsmquery->clear();
