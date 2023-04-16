@@ -71,6 +71,18 @@ if ($this->project->use_tie_break)
 
 
            <!-- <th>gsp.</th> -->
+           <th>Start Player 1</th>
+           <th>Start Player 2</th>
+           <th>Normal Player 1 won</th>
+           <th>Normal Player 1 lost</th>
+           <th>Normal Player 2 won</th>
+           <th>Normal Player 2 lost</th>
+           
+           <th>Anormal Player 1 won</th>
+           <th>Anormal Player 1 lost</th>
+           <th>Anormal Player 2 won</th>
+           <th>Anormal Player 2 lost</th>
+           
         </tr>
 
 		<?PHP
@@ -257,7 +269,26 @@ echo $single->tt_teamplayer2_id_normal_lost;
 </td>
 
 
-
+<td>
+<?php
+echo $single->tt_teamplayer1_id_anormal_won;
+?>
+</td>
+<td>
+<?php
+echo $single->tt_teamplayer1_id_anormal_lost;
+?>
+</td>
+<td>
+<?php
+echo $single->tt_teamplayer2_id_anormal_won;
+?>
+</td>
+<td>
+<?php
+echo $single->tt_teamplayer2_id_anormal_lost;
+?>
+</td>
 
 
 
