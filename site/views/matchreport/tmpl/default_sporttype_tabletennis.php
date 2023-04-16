@@ -223,7 +223,50 @@ if ($this->project->use_tie_break)
 				{
 					$complete_results['COM_SPORTSMANAGEMENT_SINGLE']['POINTS2'] += 1;
 				}
+                
+?>                
+<td>
+<?php
+echo $single->tt_startpoints_teamplayer1_id;
+?>
+</td>                
+<td>
+<?php
+echo $single->tt_startpoints_teamplayer2_id;
+?>
+</td>
+<td>
+<?php
+echo $single->tt_teamplayer1_id_normal_won;
+?>
+</td>
+<td>
+<?php
+echo $single->tt_teamplayer1_id_normal_lost;
+?>
+</td>
+<td>
+<?php
+echo $single->tt_teamplayer2_id_normal_won;
+?>
+</td>
+<td>
+<?php
+echo $single->tt_teamplayer2_id_normal_lost;
+?>
+</td>
 
+
+
+
+
+
+
+
+
+
+                
+<?php
 				echo '</tr>';
 			}
 		}
