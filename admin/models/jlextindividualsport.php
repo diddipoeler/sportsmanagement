@@ -381,42 +381,42 @@ $temp->bis = 49;
 $temp->normale = 6;
 $temp->anormale = 6;
 $range_points[] = $temp;
-$range_points = array(); 
+ 
 $temp = new stdClass;
 $temp->von = 50;
 $temp->bis = 99;
 $temp->normale = 5;
 $temp->anormale = 8;
 $range_points[] = $temp;
-$range_points = array(); 
+ 
 $temp = new stdClass;
 $temp->von = 100;
 $temp->bis = 149;
 $temp->normale = 4;
 $temp->anormale = 10;
 $range_points[] = $temp;
-$range_points = array(); 
+ 
 $temp = new stdClass;
 $temp->von = 150;
 $temp->bis = 199;
 $temp->normale = 3;
 $temp->anormale = 12;
 $range_points[] = $temp;
-$range_points = array(); 
+ 
 $temp = new stdClass;
 $temp->von = 200;
 $temp->bis = 299;
 $temp->normale = 2;
 $temp->anormale = 15;
 $range_points[] = $temp;
-$range_points = array(); 
+ 
 $temp = new stdClass;
 $temp->von = 300;
 $temp->bis = 399;
 $temp->normale = 1;
 $temp->anormale = 19;
 $range_points[] = $temp;
-$range_points = array(); 
+ 
 $temp = new stdClass;
 $temp->von = 400;
 $temp->bis = 40000;
