@@ -316,12 +316,13 @@ case 'COM_SPORTSMANAGEMENT_ST_TENNIS':
 for ($x = 0; $x < count($pks); $x++)
 		{
 		$save_match = true;  
-		$rowmatch                          = new stdClass;
-		$rowmatch->id                      = $pks[$x];
-        $rowmatch->teamplayer1_id = $post['teamplayer1_id'.$pks[$x]] ? $post['teamplayer1_id'.$pks[$x]] : 0  ;
-	$rowmatch->teamplayer2_id = $post['teamplayer2_id'.$pks[$x]] ? $post['teamplayer2_id'.$pks[$x]] : 0  ;
-        $rowmatch->team1_result = $post['team1_result'.$pks[$x]] ? $post['team1_result'.$pks[$x]] : 0;
-        $rowmatch->team2_result = $post['team2_result'.$pks[$x]] ? $post['team2_result'.$pks[$x]] : 0;
+        
+$rowmatch = new stdClass;
+$rowmatch->id = $pks[$x];
+$rowmatch->teamplayer1_id = $post['teamplayer1_id'.$pks[$x]] ? $post['teamplayer1_id'.$pks[$x]] : 0  ;
+$rowmatch->teamplayer2_id = $post['teamplayer2_id'.$pks[$x]] ? $post['teamplayer2_id'.$pks[$x]] : 0  ;
+$rowmatch->team1_result = $post['team1_result'.$pks[$x]] ? $post['team1_result'.$pks[$x]] : 0;
+$rowmatch->team2_result = $post['team2_result'.$pks[$x]] ? $post['team2_result'.$pks[$x]] : 0;
 
         $rowmatch->ringetotal       = $rowmatch->team1_result;
         
@@ -358,6 +359,75 @@ if ( $this->joomlaconfig->get('debug') )
 }
 
 		$result = true;
+
+/**
+ * jetzt die punkte nach den kriterien zuordnen
+ * 
+ * Ecarts de points	Points gagnés lors d'une victoire	Points perdus lors d'une défaite
+ * 
+                Normale	Anormale	Normale	Anormale
+entre 0 et 49	     6	6	         -6	     -6
+entre 50 et 99	     5	8	         -5	        -8
+entre 100 et 149	4	10	          -4	-10
+entre 150 et 199	3	12	          -3	-12
+entre 200 et 299	2	15	          -2	-15
+entre 300 et 399	1	19	          -1	-19
+au-dessus de 400	0	25	          0	-25
+ */            
+$range_points = array(); 
+$temp = new stdClass;
+$temp->von = 0;
+$temp->bis = 49;
+$temp->normale = 6;
+$temp->anormale = 6;
+$range_points[] = $temp;
+$range_points = array(); 
+$temp = new stdClass;
+$temp->von = 50;
+$temp->bis = 99;
+$temp->normale = 5;
+$temp->anormale = 8;
+$range_points[] = $temp;
+$range_points = array(); 
+$temp = new stdClass;
+$temp->von = 100;
+$temp->bis = 149;
+$temp->normale = 4;
+$temp->anormale = 10;
+$range_points[] = $temp;
+$range_points = array(); 
+$temp = new stdClass;
+$temp->von = 150;
+$temp->bis = 199;
+$temp->normale = 3;
+$temp->anormale = 12;
+$range_points[] = $temp;
+$range_points = array(); 
+$temp = new stdClass;
+$temp->von = 200;
+$temp->bis = 299;
+$temp->normale = 2;
+$temp->anormale = 15;
+$range_points[] = $temp;
+$range_points = array(); 
+$temp = new stdClass;
+$temp->von = 300;
+$temp->bis = 399;
+$temp->normale = 1;
+$temp->anormale = 19;
+$range_points[] = $temp;
+$range_points = array(); 
+$temp = new stdClass;
+$temp->von = 400;
+$temp->bis = 40000;
+$temp->normale = 0;
+$temp->anormale = 25;
+$range_points[] = $temp;
+if ( $this->joomlaconfig->get('debug') )
+{
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . ' range_points <pre>'.print_r($range_points,true).'</pre>'), 'notice');
+}
+
 
 		for ($x = 0; $x < count($pks); $x++)
 		{
@@ -430,6 +500,51 @@ $tblMatch->tt_startpoints_teamplayer2_id = $this->jsmdb->loadResult();
 				    /** keine funktion */
 				}
 			}
+
+
+$points_normale = 0;
+$points_anormale = 0;
+$differenc_points = 0;
+$differenc_points = $tblMatch->tt_startpoints_teamplayer1_id >= $tblMatch->tt_startpoints_teamplayer2_id ? $tblMatch->tt_startpoints_teamplayer1_id - $tblMatch->tt_startpoints_teamplayer2_id : $tblMatch->tt_startpoints_teamplayer2_id - $tblMatch->tt_startpoints_teamplayer1_id;
+
+foreach( $range_points as $range => $points )
+{
+if ( $differenc_points >= $points->von && $differenc_points <= $points->bis )
+{
+$points_normale = $points->normale;
+$points_anormale = $points->anormale;
+}     
+}
+
+if ( $tblMatch->team1_result > $tblMatch->team2_result )
+{
+$tblMatch->tt_teamplayer1_id_normal_won = $points_normale;
+$tblMatch->tt_teamplayer1_id_normal_lost = 0;
+$tblMatch->tt_teamplayer1_id_anormal_won = $points_anormale;
+$tblMatch->tt_teamplayer1_id_anormal_lost = 0;
+
+$tblMatch->tt_teamplayer2_id_normal_won = 0;
+$tblMatch->tt_teamplayer2_id_normal_lost = $points_normale * -1;
+$tblMatch->tt_teamplayer2_id_anormal_won = 0;
+$tblMatch->tt_teamplayer2_id_anormal_lost = $points_anormale * -1;
+}
+elseif ( $tblMatch->team1_result < $tblMatch->team2_result )
+{
+$tblMatch->tt_teamplayer1_id_normal_won = 0;
+$tblMatch->tt_teamplayer1_id_normal_lost = $points_normale * -1;
+$tblMatch->tt_teamplayer1_id_anormal_won = 0;
+$tblMatch->tt_teamplayer1_id_anormal_lost = $points_anormale * -1;
+
+$tblMatch->tt_teamplayer2_id_normal_won = $points_normale;
+$tblMatch->tt_teamplayer2_id_normal_lost = 0;
+$tblMatch->tt_teamplayer2_id_anormal_won = $points_anormale;
+$tblMatch->tt_teamplayer2_id_anormal_lost = 0;   
+    
+    
+}
+
+
+
 
 			$tblMatch->team1_result_split = implode(";", $post['team1_result_split' . $pks[$x]]);
 			$tblMatch->team2_result_split = implode(";", $post['team2_result_split' . $pks[$x]]);
