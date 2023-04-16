@@ -296,7 +296,7 @@ echo $single->tt_teamplayer2_id_normal_lost;
 			?>
 
 
-            <th>gsp.</th>
+           <!-- <th>gsp.</th> -->
         </tr>
 
 		<?PHP
