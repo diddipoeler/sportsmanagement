@@ -32,7 +32,7 @@
 	<changelog>
 		<element>com_sportsmanagement</element>
 		<type>component</type>
-		<version>4.11.00</version>
+		<version>4.15.00</version>
 		<security>
 			<item><![CDATA[<p>No security issues.</p>]]></item>
 		</security>
@@ -46,7 +46,7 @@
 		</language>
 		<addition>
 			<item>JComments für Joomla 4</item>
-			<item>Neue Felder für glags_maps</item>
+			<item>Neue Felder für Tischtennis</item>
 		</addition>
 		<change>
 			<item>No change</item>

@@ -70,6 +70,7 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   16-04-2023: **4.15.00** Neue Felder für Einzelsportart Tischtennis
 *   10-04-2023: **4.14.00** Neue Felder für Einzelsportart
 *   03-04-2023: **4.13.00** Anpassungen Joomla 4
 *   27-03-2023: **4.12.00** Anpassungen Joomla 4

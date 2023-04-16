@@ -1246,6 +1246,8 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_season_team_person_id` (
   `person_id2` INT( 11 ) NOT NULL DEFAULT  '0',
   `person_art` TINYINT( 4 ) NOT NULL DEFAULT  '1',
   
+  `tt_startpoints` INT( 11 ) NOT NULL DEFAULT  '0',
+  
   PRIMARY KEY (`id`) ,
   UNIQUE KEY `combi` (`person_id`,`season_id`,`team_id`,`persontype`) ,
   KEY `team_id` (`team_id`),
@@ -1741,6 +1743,19 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_match_single` (
   `ringetotal_projectteam2_id` int(11) DEFAULT NULL,
   `ringetotal_teamplayer1_id` int(11) DEFAULT NULL,
   `ringetotal_teamplayer2_id` int(11) DEFAULT NULL,
+  
+  `tt_startpoints_teamplayer1_id` INT( 11 ) NOT NULL DEFAULT  '0',
+  `tt_startpoints_teamplayer2_id` INT( 11 ) NOT NULL DEFAULT  '0',
+  
+  `tt_teamplayer1_id_normal_won` INT( 11 ) NOT NULL DEFAULT  '0',
+  `tt_teamplayer1_id_normal_lost` INT( 11 ) NOT NULL DEFAULT  '0',
+  `tt_teamplayer1_id_anormal_won` INT( 11 ) NOT NULL DEFAULT  '0',
+  `tt_teamplayer1_id_anormal_lost` INT( 11 ) NOT NULL DEFAULT  '0',
+  
+  `tt_teamplayer2_id_normal_won` INT( 11 ) NOT NULL DEFAULT  '0',
+  `tt_teamplayer2_id_normal_lost` INT( 11 ) NOT NULL DEFAULT  '0',
+  `tt_teamplayer2_id_anormal_won` INT( 11 ) NOT NULL DEFAULT  '0',
+  `tt_teamplayer2_id_anormal_lost` INT( 11 ) NOT NULL DEFAULT  '0',
   
   PRIMARY KEY (`id`),
   KEY `round_id` (`round_id`),
