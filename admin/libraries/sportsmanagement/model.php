@@ -294,8 +294,8 @@ if ( $config->get('debug') )
 			break;
 			/** runden */
 			case 'rounds':
-				$data['round_date_first'] = sportsmanagementHelper::convertDate($data['round_date_first'], 0);
-				$data['round_date_last']  = sportsmanagementHelper::convertDate($data['round_date_last'], 0);
+				$data['round_date_first'] = sportsmanagementHelper::convertDate($data['round_date_first'], 0) ? sportsmanagementHelper::convertDate($data['round_date_first'], 0) : '0000-00-00';
+				$data['round_date_last']  = sportsmanagementHelper::convertDate($data['round_date_last'], 0) ? sportsmanagementHelper::convertDate($data['round_date_last'], 0) : $data['round_date_first'] ;
 
 				if (!isset($data['id']))
 				{
