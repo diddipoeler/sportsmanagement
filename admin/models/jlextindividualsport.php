@@ -452,14 +452,14 @@ $this->jsmquery->select('tt_startpoints');
 $this->jsmquery->from('#__sportsmanagement_season_team_person_id');
 $this->jsmquery->where('id = ' . $tblMatch->teamplayer1_id );
 $this->jsmdb->setQuery($this->jsmquery);            
-$tblMatch->tt_startpoints_teamplayer1_id = $this->jsmdb->loadResult();
+$tblMatch->tt_startpoints_teamplayer1_id = $this->jsmdb->loadResult() ? $this->jsmdb->loadResult() : 0;
 
 $this->jsmquery->clear();
 $this->jsmquery->select('tt_startpoints');
 $this->jsmquery->from('#__sportsmanagement_season_team_person_id');
 $this->jsmquery->where('id = ' . $tblMatch->teamplayer2_id );
 $this->jsmdb->setQuery($this->jsmquery);            
-$tblMatch->tt_startpoints_teamplayer2_id = $this->jsmdb->loadResult();
+$tblMatch->tt_startpoints_teamplayer2_id = $this->jsmdb->loadResult() ? $this->jsmdb->loadResult() : 0;
             
 			$tblMatch->double_team1_player1 = $post['double_team1_player1'.$pks[$x]] ? $post['double_team1_player1'.$pks[$x]] : 0;
 			$tblMatch->double_team1_player2 = $post['double_team1_player2'.$pks[$x]] ? $post['double_team1_player2'.$pks[$x]] : 0;
