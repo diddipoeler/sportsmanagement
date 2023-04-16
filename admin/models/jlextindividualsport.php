@@ -322,16 +322,7 @@ for ($x = 0; $x < count($pks); $x++)
 	$rowmatch->teamplayer2_id = $post['teamplayer2_id'.$pks[$x]] ? $post['teamplayer2_id'.$pks[$x]] : 0  ;
         $rowmatch->team1_result = $post['team1_result'.$pks[$x]] ? $post['team1_result'.$pks[$x]] : 0;
         $rowmatch->team2_result = $post['team2_result'.$pks[$x]] ? $post['team2_result'.$pks[$x]] : 0;
-        /**
-        if ( !$rowmatch->team1_result )
-        {
-            $rowmatch->team1_result = 0;
-        }
-        if ( !$rowmatch->team2_result )
-        {
-            $rowmatch->team2_result = 0;
-        }
-        */
+
         $rowmatch->ringetotal       = $rowmatch->team1_result;
         
         $rowmatch->modified    = $this->jsmdate->toSql();
@@ -376,7 +367,7 @@ if ( $this->joomlaconfig->get('debug') )
             $tblMatch                       = new stdClass;
 			$tblMatch->id                   = $pks[$x];
 			$tblMatch->match_number         = $post['match_number'.$pks[$x]];
-            $tblMatch->match_type         = $post['match_type' . $pks[$x]];
+            $tblMatch->match_type         = $post['match_type'.$pks[$x]];
 			//$tblMatch->match_date           = $post['match_date' . $pks[$x]]. ':00';
 			$tblMatch->crowd                = $post['crowd'.$pks[$x]] ? $post['crowd'.$pks[$x]] : 0;
 			$tblMatch->round_id             = $post['rid'] ? $post['rid'] : 0;
@@ -385,6 +376,21 @@ if ( $this->joomlaconfig->get('debug') )
 			$tblMatch->projectteam2_id      = $post['projectteam2_id'] ? $post['projectteam2_id'] : 0;
 			$tblMatch->teamplayer1_id       = $post['teamplayer1_id'.$pks[$x]] ? $post['teamplayer1_id'.$pks[$x]] : 0;
 			$tblMatch->teamplayer2_id       = $post['teamplayer2_id'.$pks[$x]] ? $post['teamplayer2_id'.$pks[$x]] : 0;
+            
+$this->jsmquery->clear();
+$this->jsmquery->select('tt_startpoints');
+$this->jsmquery->from('#__sportsmanagement_season_team_person_id');
+$this->jsmquery->where('id = ' . $tblMatch->teamplayer1_id );
+$this->jsmdb->setQuery($this->jsmquery);            
+$tblMatch->tt_startpoints_teamplayer1_id = $this->jsmdb->loadResult();
+
+$this->jsmquery->clear();
+$this->jsmquery->select('tt_startpoints');
+$this->jsmquery->from('#__sportsmanagement_season_team_person_id');
+$this->jsmquery->where('id = ' . $tblMatch->teamplayer2_id );
+$this->jsmdb->setQuery($this->jsmquery);            
+$tblMatch->tt_startpoints_teamplayer2_id = $this->jsmdb->loadResult();
+            
 			$tblMatch->double_team1_player1 = $post['double_team1_player1'.$pks[$x]] ? $post['double_team1_player1'.$pks[$x]] : 0;
 			$tblMatch->double_team1_player2 = $post['double_team1_player2'.$pks[$x]] ? $post['double_team1_player2'.$pks[$x]] : 0;
 			$tblMatch->double_team2_player1 = $post['double_team2_player1'.$pks[$x]] ? $post['double_team2_player1'.$pks[$x]] : 0;
@@ -427,6 +433,9 @@ if ( $this->joomlaconfig->get('debug') )
 
 			$tblMatch->team1_result_split = implode(";", $post['team1_result_split' . $pks[$x]]);
 			$tblMatch->team2_result_split = implode(";", $post['team2_result_split' . $pks[$x]]);
+            
+            
+            
          try
          {   
             $result = Factory::getDbo()->updateObject('#__sportsmanagement_match_single', $tblMatch, 'id', true);

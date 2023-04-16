@@ -68,7 +68,7 @@ HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolow
 				?>
             </th>
 			<?PHP
-            switch ( $this->sport_type_name )
+            switch ( $this->project->sport_type_name )
             {
                 case 'COM_SPORTSMANAGEMENT_ST_TABLETENNIS':
                 ?>
@@ -282,7 +282,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('select'.$this->item->id, ''
                 </td>
 				<?PHP
                 
-                switch ( $this->sport_type_name )
+                switch ( $this->project->sport_type_name )
             {
                 case 'COM_SPORTSMANAGEMENT_ST_TABLETENNIS':
                 ?>
