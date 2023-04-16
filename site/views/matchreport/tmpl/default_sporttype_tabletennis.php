@@ -70,7 +70,7 @@ if ($this->project->use_tie_break)
 			?>
 
 
-            <th>gsp.</th>
+           <!-- <th>gsp.</th> -->
         </tr>
 
 		<?PHP
