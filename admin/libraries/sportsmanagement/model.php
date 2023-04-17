@@ -1022,14 +1022,14 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 							$this->jsmquery->where('spi.person_id =' . $data['id']);
 							$this->jsmquery->where('spi.season_id =' . $value);
 							$this->jsmdb->setQuery($this->jsmquery);
-							$res             = $this->jsmdb->loadObject();
+							$res = $this->jsmdb->loadObject();
 							$delete_season[] = $value;
 
 							if (!$res)
 							{
 								$this->jsmquery->clear();
-								$columns = array('person_id', 'season_id', 'modified', 'modified_by');
-								$values = array($data['id'], $value, $this->jsmdb->Quote('' . $data['modified'] . ''), $data['modified_by']);
+								$columns = array('person_id', 'season_id','club_id', 'modified', 'modified_by');
+								$values = array($data['id'], $value,$data['club_id'], $this->jsmdb->Quote('' . $data['modified'] . ''), $data['modified_by']);
 								$this->jsmquery
 									->insert($this->jsmdb->quoteName('#__sportsmanagement_season_person_id'))
 									->columns($this->jsmdb->quoteName($columns))

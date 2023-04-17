@@ -310,6 +310,7 @@ landesverband
 
 	</fieldset>
 
+<!-- reiter 2 -->
 <fields name="request">
 <fieldset name="request"
 label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
@@ -417,6 +418,7 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_2_DESC"
 
 </fields>		
   
+<!-- reiter 3 -->  
 	<fieldset name="description"
   label="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION"
   description="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION_DESC">		
@@ -429,6 +431,7 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_2_DESC"
 				filter="JComponentHelper::filterText"/>			
 	</fieldset>	
   
+  <!-- reiter 4 saisons -->
   <fieldset name="seasons" 
   label="COM_SPORTSMANAGEMENT_TABS_SEASON"
   description="COM_SPORTSMANAGEMENT_TABS_SEASON_DESC">		
@@ -443,8 +446,25 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_2_DESC"
 			class="inputbox"/>	
 
 
+<field
+            name="club_id"
+            type="clublist"
+            class="inputbox"
+            default="0"
+            size="1"
+            required="true"
+            label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_CLUB"
+            description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_CLUB_DESC" >
+
+            <option
+                value="">
+                COM_SPORTSMANAGEMENT_GLOBAL_SELECT_CLUB</option>
+        </field>	
+
+
 	</fieldset>
  
+ <!-- reiter 5 zugeordnetes team in der saison -->
  <fieldset name="seasonsteams" 
   label="COM_SPORTSMANAGEMENT_TABS_SEASON_TEAM_PERSON"
   description="COM_SPORTSMANAGEMENT_TABS_SEASON_TEAM_PERSON_DESC">		
@@ -457,6 +477,10 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_2_DESC"
 			label=""
 			description=""
 			class=""/>	
+
+
+
+
 
 
 	</fieldset>
