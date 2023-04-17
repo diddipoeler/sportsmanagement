@@ -65,38 +65,42 @@ class JFormFieldseasoncheckbox extends FormField
 		Factory::getDbo()->setQuery($query);
 		$options = Factory::getDbo()->loadObjectList();
 
-		// Teilnehmende saisons selektieren
+		/** Teilnehmende saisons selektieren */
 		if ($select_id)
 		{
 			$query = Factory::getDbo()->getQuery(true);
 
 			switch ( $targettable )
 			{
-				case 'season_team_id':
-				$query->select('season_id,teamname');
+			case 'season_team_id':
+			$query->select('season_id,teamname');
 			$query->from('#__sportsmanagement_' . $targettable);
-				break;
-				case 'season_person_id':
-					$query->select('season_id');
+			break;
+			case 'season_person_id':
+			$query->select('season_id');
 			$query->from('#__sportsmanagement_' . $targettable);
-				break;
+			break;
 			}
 			
 			$query->where($targetid . '=' . $select_id);
-			$query->group('season_id');
+			$query->group('season_id,position_id,club_id');
 			$starttime = microtime();
-            try
-		{
-			Factory::getDbo()->setQuery($query);
-			$this->value = Factory::getDbo()->loadColumn();
-              $this->teamvalue = Factory::getDbo()->loadAssocList('season_id');
-            }
-		catch (Exception $e)
-		{
-		$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
-        $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
-		$this->value = '';
-		}
+try
+{
+Factory::getDbo()->setQuery($query);
+$this->value = Factory::getDbo()->loadColumn();
+$this->teamvalue = Factory::getDbo()->loadAssocList('season_id');
+}
+catch (Exception $e)
+{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+$this->value = '';
+}
+
+
+//$app->enqueueMessage('<pre>'.print_r($this->teamvalue,true).'</pre>', 'notice');
+
         
           //echo '<pre>'.print_r($this->teamvalue,true).'</pre>';
             
