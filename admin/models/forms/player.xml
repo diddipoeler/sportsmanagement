@@ -452,7 +452,6 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_2_DESC"
             class="inputbox"
             default="0"
             size="1"
-            required="true"
             label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_CLUB"
             description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_CLUB_DESC" >
 
