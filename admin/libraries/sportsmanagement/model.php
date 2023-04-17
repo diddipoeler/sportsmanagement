@@ -1049,6 +1049,13 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 							else
 							{
 								$message .= 'Saisonzuordnung : ' . $res->name . ' schon vorhanden.<br>';
+                                $rowupdate = new stdClass;
+                                $rowupdate->id = $res->id;
+                                $rowupdate->club_id = $data['club_id'];
+                                $result_update = $this->jsmdb->updateObject('#__sportsmanagement_season_person_id', $rowupdate, 'id', true);
+                                
+                                
+                                
 							}
 						}
 
