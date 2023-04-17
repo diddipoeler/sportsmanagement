@@ -77,13 +77,13 @@ class JFormFieldseasoncheckbox extends FormField
 			$query->from('#__sportsmanagement_' . $targettable);
 			break;
 			case 'season_person_id':
-			$query->select('season_id');
+			$query->select('season_id,position_id,club_id');
 			$query->from('#__sportsmanagement_' . $targettable);
 			break;
 			}
 			
 			$query->where($targetid . '=' . $select_id);
-			$query->group('season_id,position_id,club_id');
+			$query->group('season_id');
 			$starttime = microtime();
 try
 {
