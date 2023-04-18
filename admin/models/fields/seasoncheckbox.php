@@ -15,6 +15,7 @@ use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\HTML\HTMLHelper;
 
 FormHelper::loadFieldClass('list');
 jimport('joomla.html.html');
@@ -169,7 +170,13 @@ $html[] = '</td>';
 switch ( $targettable )
 {
 case 'season_person_id':
-
+$html[]  = '<td>';
+$html[] = HTMLHelper::_('select.genericlist', $optionsclub, 'season_person_club_id' . '[]', 'class="inputbox" ', 'value', 'text', 'value', 'id');		
+$html[] = '</td>';		
+$html[]  = '<td>';
+$html[] = HTMLHelper::_('select.genericlist', $optionsposition, 'season_person_position_id' . '[]', 'class="inputbox" ', 'value', 'text', 'value', 'id');		
+$html[] = '</td>';		
+		
 break;
 }			
 			
