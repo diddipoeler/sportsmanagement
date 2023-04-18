@@ -182,6 +182,60 @@ class sportsmanagementModelplayers extends JSMModelList
 			}
 		}
 
+if ($this->jsmapp->input->getVar('layout') == 'assignpersonsclub')
+{
+$this->_season_id = $this->jsmapp->input->get('season_id');
+
+switch ($this->_type)
+{
+case 1:
+/** spieler */
+$this->jsmsubquery1->select('stp.person_id');
+$this->jsmsubquery1->from('#__sportsmanagement_season_team_person_id AS stp ');
+$this->jsmsubquery1->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = stp.team_id');
+$this->jsmsubquery1->join('INNER', '#__sportsmanagement_team AS t ON t.id = st.team_id' );		
+$this->jsmsubquery1->join('INNER', '#__sportsmanagement_club AS c ON c.id = t.club_id' );				
+$this->jsmsubquery1->join('INNER', '#__sportsmanagement_season_person_id AS spi ON spi.person_id = stp.person_id and spi.club_id = c.id' );
+		
+$this->jsmsubquery1->where('st.team_id = ' . $this->_team_id);
+$this->jsmsubquery1->where('t.id = ' . $this->_team_id);		
+$this->jsmsubquery1->where('stp.season_id = ' . $this->_season_id);
+$this->jsmsubquery1->where('stp.persontype = 1');
+$this->jsmsubquery1->where('spi.season_id = ' . $this->_season_id);
+$this->jsmquery->where('pl.id NOT IN (' . $this->jsmsubquery1 . ')');
+break;
+case 2:
+/** trainer */
+$this->jsmsubquery1->select('stp.person_id');
+$this->jsmsubquery1->from('#__sportsmanagement_season_team_person_id AS stp  ');
+$this->jsmsubquery1->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = stp.team_id');
+$this->jsmsubquery1->where('st.team_id = ' . $this->_team_id);
+$this->jsmsubquery1->where('stp.season_id = ' . $this->_season_id);
+$this->jsmsubquery1->where('stp.persontype = 2');
+$this->jsmquery->where('pl.id NOT IN (' . $this->jsmsubquery1 . ')');
+break;
+case 3:
+/** schiedsrichter */
+$this->jsmsubquery1->select('stp.person_id');
+$this->jsmsubquery1->from('#__sportsmanagement_season_person_id AS stp ');
+$this->jsmsubquery1->join('INNER', '#__sportsmanagement_project_referee AS prof ON prof.person_id = stp.id');
+$this->jsmsubquery1->where('stp.season_id = ' . $this->_season_id);
+$this->jsmsubquery1->where('stp.persontype = 3');
+$this->jsmsubquery1->where('prof.project_id = ' . $this->_project_id);
+$this->jsmquery->where('pl.id NOT IN (' . $this->jsmsubquery1 . ')');
+$this->jsmquery->group('pl.id');
+break;
+default:
+$this->jsmsubquery1->select('stp.person_id');
+$this->jsmsubquery1->from('#__sportsmanagement_season_person_id AS stp ');
+$this->jsmsubquery1->where('stp.season_id = ' . $this->_season_id);
+$this->jsmquery->where('pl.id NOT IN (' . $this->jsmsubquery1 . ')');
+$this->jsmquery->group('pl.id');
+break;
+}
+}
+
+		
 		$this->jsmquery->order(
 			$this->jsmdb->escape($this->getState('list.ordering', 'pl.lastname')) . ' ' .
 			$this->jsmdb->escape($this->getState('list.direction', 'ASC'))
