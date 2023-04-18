@@ -445,7 +445,7 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_2_DESC"
 			description="COM_SPORTSMANAGEMENT_GLOBAL_SEASONLIST_DESC"
 			class="inputbox"/>	
 
-
+<!--
 <field
             name="club_id"
             type="clublist"
@@ -459,7 +459,7 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_2_DESC"
                 value="">
                 COM_SPORTSMANAGEMENT_GLOBAL_SELECT_CLUB</option>
         </field>	
-
+-->
 
 	</fieldset>
  
