@@ -161,12 +161,12 @@ $html[] = '</td>';
           $html[]  = '<td>';
 			$html[] = '<label for="' . $this->id . $i . '"' . $class . '>' . Text::_($option->text) . '</label>';
 			$html[] = '</td>';
-          
+          /**
           $html[]  = '<td>';
           $html[]  = '<input type="text" id="' . 'jform_teamvalue' . $i . '" name="' . 'jform[teamvalue]['.$option->value.']"' . ' value="'
 				. $this->teamvalue[$option->value]['teamname']. '"' .  '/>';
           $html[] = '</td>';
-			
+			*/
 switch ( $targettable )
 {
 case 'season_person_id':
