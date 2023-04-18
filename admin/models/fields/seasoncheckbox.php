@@ -81,6 +81,18 @@ class JFormFieldseasoncheckbox extends FormField
 		$query->order('name DESC');
 		Factory::getDbo()->setQuery($query);
 		$optionsposition = Factory::getDbo()->loadObjectList();
+		$mitemsclub = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+		foreach ($optionsclub as $club)
+		{
+		$mitemsclub[] = HTMLHelper::_('select.option', $club->id,  $club->name );
+		}
+				
+		$mitemsposition = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+		foreach ($optionsposition as $position)
+		{
+		$mitemsposition[] = HTMLHelper::_('select.option', $position->id,  $position->name );
+		}		
+				
 		break;
 		}
 		
@@ -171,10 +183,10 @@ switch ( $targettable )
 {
 case 'season_person_id':
 $html[]  = '<td>';
-$html[] = HTMLHelper::_('select.genericlist', $optionsclub, 'season_person_club_id' . '[]', 'class="inputbox" ', 'value', 'text', 'value', 'id');		
+$html[] = HTMLHelper::_('select.genericlist', $mitemsclub, 'season_person_club_id' . '[]', 'class="inputbox" ', 'value', 'text', $this->teamvalue[$option->value]['club_id'], 'id');		
 $html[] = '</td>';		
 $html[]  = '<td>';
-$html[] = HTMLHelper::_('select.genericlist', $optionsposition, 'season_person_position_id' . '[]', 'class="inputbox" ', 'value', 'text', 'value', 'id');		
+$html[] = HTMLHelper::_('select.genericlist', $mitemsposition, 'season_person_position_id' . '[]', 'class="inputbox" ', 'value', 'text', $this->teamvalue[$option->value]['position_id'], 'id');		
 $html[] = '</td>';		
 		
 break;
