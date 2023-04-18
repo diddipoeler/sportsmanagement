@@ -1012,7 +1012,11 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 					{
 						$message       = '';
 						$delete_season = array();
-
+if ( $config->get('debug') )
+{
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post season_person_club_id<pre>'.print_r($post['season_person_club_id],true).'</pre>'), '');
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post season_person_position_id<pre>'.print_r($post['season_person_position_id'],true).'</pre>'), '');
+}						
 						foreach ($data['season_ids'] as $key => $value)
 						{
 							$this->jsmquery->clear();
