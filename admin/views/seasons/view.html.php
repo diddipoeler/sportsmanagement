@@ -86,6 +86,15 @@ class sportsmanagementViewSeasons extends sportsmanagementView
 			$lists['season_teams'] = $season_teams;
 			$this->lists           = $lists;
 			$this->setLayout('assignpersons');
+			case 'assignpersonsclub':
+			case 'assignpersonsclub_3':
+			case 'assignpersonsclub_4':
+			$season_teams[]        = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
+			$res                   = $this->model->getSeasonTeams($season_id);
+			$season_teams          = array_merge($season_teams, $res);
+			$lists['season_teams'] = $season_teams;
+			$this->lists           = $lists;
+			$this->setLayout('assignpersonsclub');	
 			break;
 		}
 
