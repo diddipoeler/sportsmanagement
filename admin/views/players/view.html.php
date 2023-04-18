@@ -54,6 +54,9 @@ class sportsmanagementViewplayers extends sportsmanagementView
 			case 'assignpersons':
 			case 'assignpersons_3':
 			case 'assignpersons_4':
+			case 'assignpersonsclub':
+			case 'assignpersonsclub_3':
+			case 'assignpersonsclub_4':
 			$this->season_id  = $this->jinput->get('season_id');
 			$this->team_id    = $this->jinput->get('team_id');
 			$this->persontype = $this->jinput->get('persontype');
