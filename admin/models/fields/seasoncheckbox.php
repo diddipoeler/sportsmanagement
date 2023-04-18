@@ -84,13 +84,13 @@ class JFormFieldseasoncheckbox extends FormField
 		$mitemsclub = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
 		foreach ($optionsclub as $club)
 		{
-		$mitemsclub[] = HTMLHelper::_('select.option', $club->id,  $club->name );
+		$mitemsclub[] = HTMLHelper::_('select.option', $club->value,  $club->text );
 		}
 				
 		$mitemsposition = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
 		foreach ($optionsposition as $position)
 		{
-		$mitemsposition[] = HTMLHelper::_('select.option', $position->id,  $position->name );
+		$mitemsposition[] = HTMLHelper::_('select.option', $position->value,  $position->text );
 		}		
 				
 		break;
