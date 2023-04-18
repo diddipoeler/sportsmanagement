@@ -1023,7 +1023,7 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post season_pers
 						{
 							
 $club_id = $post['season_person_club_id'][$key] ? $post['season_person_club_id'][$key] : 0;						
-$position_id =  = $post['season_person_position_id'][$key] ? $post['season_person_position_id'][$key] : 0;												
+$position_id = $post['season_person_position_id'][$key] ? $post['season_person_position_id'][$key] : 0;												
 	
 	
 							$this->jsmquery->clear();
