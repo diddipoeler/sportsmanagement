@@ -54,16 +54,39 @@ class JFormFieldseasoncheckbox extends FormField
 		$targettable = $this->element['targettable'];
 		$targetid    = $this->element['targetid'];
         $this->teamvalue = array();
+		$options = array();
+		$optionsclub = array();
+		$optionsposition = array();
 
 		$query = Factory::getDbo()->getQuery(true);
 
 		$query->select('id AS value, name AS text');
 		$query->from('#__sportsmanagement_season');
 		$query->order('name DESC');
-
-		$starttime = microtime();
 		Factory::getDbo()->setQuery($query);
 		$options = Factory::getDbo()->loadObjectList();
+		switch ( $targettable )
+		{
+		case 'season_person_id':
+		$query->clear();
+		$query->select('id AS value, name AS text');
+		$query->from('#__sportsmanagement_club');
+		$query->order('name DESC');
+		Factory::getDbo()->setQuery($query);
+		$optionsclub = Factory::getDbo()->loadObjectList();
+		$query->clear();
+		$query->select('id AS value, name AS text');
+		$query->from('#__sportsmanagement_position');
+		$query->order('name DESC');
+		Factory::getDbo()->setQuery($query);
+		$optionsposition = Factory::getDbo()->loadObjectList();
+		break;
+		}
+		
+		
+
+		$starttime = microtime();
+		
 
 		/** Teilnehmende saisons selektieren */
 		if ($select_id)
@@ -142,6 +165,15 @@ $html[] = '</td>';
           $html[]  = '<input type="text" id="' . 'jform_teamvalue' . $i . '" name="' . 'jform[teamvalue]['.$option->value.']"' . ' value="'
 				. $this->teamvalue[$option->value]['teamname']. '"' .  '/>';
           $html[] = '</td>';
+			
+switch ( $targettable )
+{
+case 'season_person_id':
+
+break;
+}			
+			
+			
           $html[] = '</tr>';
           
 		}
