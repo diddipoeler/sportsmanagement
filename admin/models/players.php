@@ -14,6 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementModelplayers
@@ -76,6 +77,17 @@ class sportsmanagementModelplayers extends JSMModelList
 		$this->_project_team_id = $this->jsmapp->getUserState("$this->jsmoption.project_team_id", '0');
         $season_id = $this->jsmjinput->get('season_id');
         
+		
+if ( Factory::getConfig()->get('debug') )
+{  
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' _type' . $this->_type), Log::NOTICE, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' _project_id' . $this->_project_id), Log::NOTICE, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' _team_id' . $this->_team_id), Log::NOTICE, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' _season_id' . $this->_season_id), Log::NOTICE, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' _project_team_id' . $this->_project_team_id), Log::NOTICE, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' layout' . $this->jsmjinput->getVar('layout'), Log::NOTICE, 'jsmerror');
+}
+		
 //        if ( $season_id )
 //        {
 //        $mdl = BaseDatabaseModel::getInstance("Seasons", "sportsmanagementModel");
@@ -252,8 +264,10 @@ break;
 			$this->jsmdb->escape($this->getState('list.direction', 'ASC'))
 		);
         
-        //Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $this->jsmquery->dump()), Log::NOTICE, 'jsmerror');
-
+if ( Factory::getConfig()->get('debug') )
+{  
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $this->jsmquery->dump()), Log::NOTICE, 'jsmerror');
+}
 		return $this->jsmquery;
 
 	}
