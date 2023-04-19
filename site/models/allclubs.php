@@ -116,20 +116,23 @@ class sportsmanagementModelallclubs extends ListModel
 		$query->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
 		$query->join('INNER', '#__sportsmanagement_project AS p ON p.id = pt.project_id');
 
-		if ($this->getState('filter.search'))
+		if ( $this->getState('filter.search') )
 		{
 			$query->where('LOWER(v.name) LIKE ' . $db->Quote('%' . $this->getState('filter.search') . '%'));
 		}
 
-		if ($this->getState('filter.search_nation'))
+		if ( $this->getState('filter.search_nation') )
 		{
 			$query->where('v.country LIKE ' . $db->Quote('' . $this->getState('filter.search_nation') . ''));
 		}
 
-		if ($this->use_current_season)
+		if ( $this->use_current_season )
 		{
 			$filter_season = ComponentHelper::getParams($option)->get('current_season', 0);
+            if ( is_array($filter_season) )
+            {
 			$query->where('p.season_id IN (' . implode(',', $filter_season) . ')');
+            }
 		}
 
 		$query->group('v.id');
