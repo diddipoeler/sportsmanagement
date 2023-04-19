@@ -76,6 +76,8 @@ class sportsmanagementModelplayers extends JSMModelList
 		$this->_season_id       = $this->jsmapp->getUserState("$this->jsmoption.season_id", '0');
 		$this->_project_team_id = $this->jsmapp->getUserState("$this->jsmoption.project_team_id", '0');
         $season_id = $this->jsmjinput->get('season_id');
+		$clubselect = $this->jsmjinput->get('club');
+		$layout = $this->jsmjinput->get('layout');
         
 		
 if ( Factory::getConfig()->get('debug') )
@@ -111,10 +113,23 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' club ' . $this->jsmjinput->get(
 
 		if ( $this->jsmjinput->getVar('layout') == 'assignpersons' )
 		{
+			if ( $clubselect )
+			{
+			$this->jsmquery->join('INNER', '#__sportsmanagement_season_person_id AS sp ON sp.person_id = pl.id');
+            $this->jsmquery->join('INNER', '#__sportsmanagement_club AS c ON c.id = sp.club_id' );
+            $this->jsmquery->join('INNER', '#__sportsmanagement_team AS t ON t.club_id = c.id' );
+            $this->jsmquery->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = t.id');
+            
+			$this->jsmquery->where('sp.season_id = ' . $this->_season_id);
+            $this->jsmquery->where('t.id = ' . $this->_team_id);	
+			}
+			else
+			{
 			$this->jsmquery->join('INNER', '#__sportsmanagement_season_person_id AS sp ON sp.person_id = pl.id');
 			$this->jsmquery->where('sp.season_id = ' . $this->_season_id);
+			}
 		}
-        
+  /**      
         if ( $this->jsmjinput->getVar('layout') == 'assignpersonsclub' )
 		{
 			$this->jsmquery->join('INNER', '#__sportsmanagement_season_person_id AS sp ON sp.person_id = pl.id');
@@ -125,7 +140,7 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' club ' . $this->jsmjinput->get(
 			$this->jsmquery->where('sp.season_id = ' . $this->_season_id);
             $this->jsmquery->where('t.id = ' . $this->_team_id);
 		}
-
+*/
 		if ($this->getState('filter.search'))
 		{
 			$this->jsmquery->where(
@@ -158,7 +173,7 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' club ' . $this->jsmjinput->get(
 			$this->jsmquery->where('pl.published = ' . $this->getState('filter.state'));
 		}
 
-		if ($this->jsmapp->input->getVar('layout') == 'assignpersons')
+		if ( $layout == 'assignpersons' && !$clubselect )
 		{
 			$this->_season_id = $this->jsmapp->input->get('season_id');
 
@@ -206,7 +221,7 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' club ' . $this->jsmjinput->get(
 			}
 		}
 
-if ($this->jsmapp->input->getVar('layout') == 'assignpersonsclub')
+if ( $layout == 'assignpersons' && $clubselect )
 {
 //$this->_season_id = $this->jsmapp->input->get('season_id');
 
