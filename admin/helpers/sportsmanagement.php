@@ -2801,11 +2801,16 @@ $jinput = $app->input;
 		switch ($layout)
 		{
 		case 'assignpersons':
+		$zusatz .= '&team_id=' . $jinput->get('team_id');
+		$zusatz .= '&persontype=' . $jinput->get('persontype');
+		$zusatz .= '&season_id=' . $app->getUserState("$option.season_id", '0');
+                $zusatz .= '&whichview='.$jinput->get('view');		
 		case 'assignpersonsclub':		
 		$zusatz .= '&team_id=' . $jinput->get('team_id');
 		$zusatz .= '&persontype=' . $jinput->get('persontype');
 		$zusatz .= '&season_id=' . $app->getUserState("$option.season_id", '0');
                 $zusatz .= '&whichview='.$jinput->get('view');
+		$zusatz .= '&club=1';		
 		break;
 		}
 
