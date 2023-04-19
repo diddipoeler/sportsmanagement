@@ -48,7 +48,10 @@ class JSMControllerAdmin extends AdminController
 		$this->jsmapp    = Factory::getApplication();
 		$this->jsmjinput = $this->jsmapp->input;
 		$this->jsmoption = $this->jsmjinput->getCmd('option');
-
+if ( Factory::getConfig()->get('debug') )
+{  
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' layout' . $this->jsmjinput->getVar('layout')), Log::NOTICE, 'jsmerror');
+}
 	}
     
     /**
