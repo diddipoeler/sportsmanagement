@@ -164,6 +164,12 @@ class JSMModelAdmin extends AdminModel
 		if ($this->jsmapp->isClient('site'))
 		{
 		}
+		
+if ( Factory::getConfig()->get('debug') )
+{  
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' layout ' . $this->jsmjinput->getVar('layout')), Log::NOTICE, 'jsmerror');
+}		
+		
 	}
     
     
@@ -1878,6 +1884,11 @@ class JSMModelList extends ListModel
 		 * mit der kategorie: jsmerror
 		 */
 		Log::addLogger(array('logger' => 'messagequeue'), Log::ALL, array('jsmerror'));
+		
+if ( Factory::getConfig()->get('debug') )
+{  
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' layout ' . $this->jsmjinput->getVar('layout')), Log::NOTICE, 'jsmerror');
+}		
 
 	}
     
