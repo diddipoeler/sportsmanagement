@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage allclubs
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -22,14 +18,10 @@ if (!defined('JSM_PATH'))
 	DEFINE('JSM_PATH', 'components/com_sportsmanagement');
 }
 
-/**
- * prüft vor Benutzung ob die gewünschte Klasse definiert ist
- */
+/** prüft vor Benutzung ob die gewünschte Klasse definiert ist */
 if (!class_exists('sportsmanagementHelperHtml'))
 {
-	/**
-	 * add the classes for handling
-	 */
+	/** add the classes for handling */
 	$classpath = JPATH_SITE . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'html.php';
 	JLoader::register('sportsmanagementHelperHtml', $classpath);
 }
@@ -45,16 +37,14 @@ if (!class_exists('sportsmanagementHelperHtml'))
  */
 class sportsmanagementViewallclubs extends sportsmanagementView
 {
+    
 	protected $state = null;
-
 	protected $item = null;
-
 	protected $items = null;
-
 	protected $pagination = null;
 
-	/**
-	 * sportsmanagementViewallclubs::init()
+	/** 
+     * sportsmanagementViewallclubs::init()
 	 *
 	 * @return void
 	 */
@@ -71,9 +61,7 @@ class sportsmanagementViewallclubs extends sportsmanagementView
 
 		$this->pagination = $this->get('Pagination');
 
-		/**
-		 * build the html options for nation
-		 */
+		/** build the html options for nation */
 		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 
 		if ($res = JSMCountries::getCountryOptions())
@@ -84,9 +72,7 @@ class sportsmanagementViewallclubs extends sportsmanagementView
 		$lists['nation']  = $nation;
 		$lists['nation2'] = JHtmlSelect::genericlist($nation, 'filter_search_nation', $inputappend . 'class="inputbox" style="width:140px; " onchange="this.form.submit();"', 'value', 'text', $this->state->get('filter.search_nation'));
 
-		/**
-		 * Set page title
-		 */
+		/** Set page title */
 		$this->document->setTitle(Text::_('COM_SPORTSMANAGEMENT_ALLCLUBS_PAGE_TITLE'));
 
 		$form                = new stdClass;
