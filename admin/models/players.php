@@ -85,7 +85,7 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' _project_id' . $this->_project_
 Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' _team_id' . $this->_team_id), Log::NOTICE, 'jsmerror');
 Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' _season_id' . $this->_season_id), Log::NOTICE, 'jsmerror');
 Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' _project_team_id' . $this->_project_team_id), Log::NOTICE, 'jsmerror');
-Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' layout' . $this->jsmjinput->getVar('layout'), Log::NOTICE, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' layout' . $this->jsmjinput->getVar('layout')), Log::NOTICE, 'jsmerror');
 }
 		
 //        if ( $season_id )
