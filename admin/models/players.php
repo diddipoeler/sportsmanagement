@@ -108,13 +108,13 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' layout' . $this->jsmjinput->get
 //        $this->jsmquery->where('pl.birthday < ' . $this->jsmdb->Quote('' . $birthday . '') );
 //        }
 
-		if ( $this->jsmjinput->getVar('layout') == 'assignplayers' )
+		if ( $this->jsmjinput->getVar('layout') == 'assignpersons' )
 		{
 			$this->jsmquery->join('INNER', '#__sportsmanagement_season_person_id AS sp ON sp.person_id = pl.id');
 			$this->jsmquery->where('sp.season_id = ' . $this->_season_id);
 		}
         
-        if ( $this->jsmjinput->getVar('layout') == 'assignplayersclub' )
+        if ( $this->jsmjinput->getVar('layout') == 'assignpersonsclub' )
 		{
 			$this->jsmquery->join('INNER', '#__sportsmanagement_season_person_id AS sp ON sp.person_id = pl.id');
             $this->jsmquery->join('INNER', '#__sportsmanagement_club AS c ON c.id = sp.club_id' );
