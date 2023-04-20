@@ -46,6 +46,7 @@ class sportsmanagementViewplayers extends sportsmanagementView
 		$this->team_id    = 0;
 		$this->persontype = 0;
 		$this->whichview = $this->jinput->get('whichview');
+		$this->assignclub = $this->jinput->get('assignclub');
 
 if ( Factory::getConfig()->get('debug') )
 {  
