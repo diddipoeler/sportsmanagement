@@ -2810,7 +2810,7 @@ $jinput = $app->input;
 		$zusatz .= '&persontype=' . $jinput->get('persontype');
 		$zusatz .= '&season_id=' . $app->getUserState("$option.season_id", '0');
                 $zusatz .= '&whichview='.$jinput->get('view');
-		$zusatz .= '&club=1';		
+		$zusatz .= '&assignclub=1';		
 		break;
 		}
 
