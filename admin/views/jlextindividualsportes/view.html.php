@@ -45,6 +45,7 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' team1' . $this->jinput->getInt(
 Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' team2' . $this->jinput->getInt('team2', 0)), Log::NOTICE, 'jsmerror');
 Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' rid' . $this->jinput->getInt('rid', 0)), Log::NOTICE, 'jsmerror');
 Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' layout' . $this->getLayout()), Log::NOTICE, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' generate' . $this->jinput->getInt('generate', 0)), Log::NOTICE, 'jsmerror');
 }		
 
 
