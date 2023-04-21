@@ -381,6 +381,15 @@ if ( $generate )
 		$this->jsmsubquery1->where('ppp.project_id = ' . $project_id);
 		$this->jsmsubquery1->where('ppp.persontype = 1');
 		$this->jsmquery->select('(' . $this->jsmsubquery1 . ') AS project_position_id');
+        
+$this->jsmsubquery1->clear();
+$this->jsmsubquery1->select('pos.name');
+		$this->jsmsubquery1->from('#__sportsmanagement_position AS pos');
+$this->jsmsubquery1->join('LEFT', '#__sportsmanagement_project_position AS ppp on ppp.position_id = pos.id');
+$this->jsmsubquery1->where('ppp.project_id = ' . $project_id);
+$this->jsmsubquery1->where('ppp.id = project_position_id' );
+$this->jsmquery->select('(' . $this->jsmsubquery1 . ') AS project_position_name');
+        
         }
         
 		try
