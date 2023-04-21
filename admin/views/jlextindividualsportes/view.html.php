@@ -14,6 +14,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementViewjlextindividualsportes
@@ -54,10 +55,37 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' layout' . $this->getLayout()), 
 			case 'default_4';
 			$this->_displayDefault($tpl);
 			break;
+            case 'generate';
+			case 'generate_3';
+			case 'generate_4';
+			$this->_displayGenerate($tpl);
+			break;
 		}
 
 	}
 
+
+/**
+ * sportsmanagementViewjlextindividualsportes::_displayGenerate()
+ * 
+ * @param mixed $tpl
+ * @return void
+ */
+function _displayGenerate($tpl)
+	{
+	   
+      $this->id = $this->jinput->getInt('id', 0);
+      $this->team1 =  $this->jinput->getInt('team1', 0);
+       $this->team2 = $this->jinput->getInt('team2', 0);
+       $this->rid = $this->jinput->getInt('rid', 0);
+       
+       
+       
+       
+       $this->setLayout('default_generate');
+       }
+       
+       
 	/**
 	 * sportsmanagementViewjlextindividualsportes::_displayDefault()
 	 *
