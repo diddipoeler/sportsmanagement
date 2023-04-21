@@ -37,8 +37,8 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 
 
-echo 'homeplayers<pre>'.print_r($this_homeplayers,true).'</pre>';
+echo 'homeplayers<pre>'.print_r($this->homeplayers,true).'</pre>';
 
-echo 'awayplayers<pre>'.print_r($this_awayplayers,true).'</pre>';
+echo 'awayplayers<pre>'.print_r($this->awayplayers,true).'</pre>';
 
 ?>

@@ -90,8 +90,8 @@ function _displayGenerate($tpl)
        $this->rid = $this->jinput->getInt('rid', 0);
        
        
-       $this_homeplayers = $mdlTeamplayers->getProjectTeamplayers(0, $this->project->season_id, $this->projectteam1_id, 1);
-       $this_awayplayers = $mdlTeamplayers->getProjectTeamplayers(0, $this->project->season_id, $this->projectteam2_id, 1);
+       $this->homeplayers = $mdlTeamplayers->getProjectTeamplayers(0, $this->project->season_id, $this->projectteam1_id, 1);
+       $this->awayplayers = $mdlTeamplayers->getProjectTeamplayers(0, $this->project->season_id, $this->projectteam2_id, 1);
        
        $this->setLayout('default_generate');
        }
