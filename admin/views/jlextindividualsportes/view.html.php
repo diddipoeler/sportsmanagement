@@ -78,14 +78,20 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' generate' . $this->jinput->getI
  */
 function _displayGenerate($tpl)
 	{
+	   
+       $mdlProject               = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
+       $mdlTeamplayers               = BaseDatabaseModel::getInstance('teamplayers', 'sportsmanagementModel');
+		$this->project                  = $mdlProject->getProject($this->project_id);
+        
 	  $this->pid = $this->jinput->getInt('pid', 0); 
       $this->id = $this->jinput->getInt('id', 0);
-      $this->team1 =  $this->jinput->getInt('team1', 0);
-       $this->team2 = $this->jinput->getInt('team2', 0);
+      $this->projectteam1_id =  $this->jinput->getInt('team1', 0);
+       $this->projectteam2_id = $this->jinput->getInt('team2', 0);
        $this->rid = $this->jinput->getInt('rid', 0);
        
        
-       
+       $this_homeplayers = $mdlTeamplayers->getProjectTeamplayers(0, $this->project->season_id, $this->projectteam1_id, 1);
+       $this_awayplayers = $mdlTeamplayers->getProjectTeamplayers(0, $this->project->season_id, $this->projectteam2_id, 1);
        
        $this->setLayout('default_generate');
        }

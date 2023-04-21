@@ -177,6 +177,7 @@ class sportsmanagementModelteamplayers extends JSMModelList
 	 */
 	function PersonProjectPosition($project_id, $_persontype)
 	{
+	   $result = array();
 		$this->jsmquery->clear();
 		$this->jsmquery->select('ppl.*');
 		$this->jsmquery->from('#__sportsmanagement_person_project_position AS ppl');
@@ -187,7 +188,7 @@ class sportsmanagementModelteamplayers extends JSMModelList
 
 		if (!$result)
 		{
-			return false;
+			return $result;
 		}
 
 		return $result;
@@ -332,17 +333,19 @@ class sportsmanagementModelteamplayers extends JSMModelList
 
 	
 	
+	
 	/**
 	 * sportsmanagementModelteamplayers::getProjectTeamplayers()
 	 * 
 	 * @param integer $team_id
 	 * @param integer $season_id
 	 * @param integer $projectteam_id
+	 * @param integer $generate
 	 * @return
 	 */
-	function getProjectTeamplayers($team_id = 0, $season_id = 0, $projectteam_id = 0)
+	function getProjectTeamplayers($team_id = 0, $season_id = 0, $projectteam_id = 0, $generate = 0)
 	{
-	   
+	   $result = array();
 //$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' team_id -> ' . $team_id . ''), '');
 //$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' season_id -> ' . $season_id . ''), '');
 //$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' projectteam_id -> ' . $projectteam_id . ''), '');
@@ -374,7 +377,7 @@ class sportsmanagementModelteamplayers extends JSMModelList
 		}
 		catch (Exception $e)
 		{
-			$result = false;
+			//$result = false;
 		}
 
 		return $result;
