@@ -40,6 +40,10 @@ class sportsmanagementViewjlextindividualsportes extends sportsmanagementView
 
 if ( Factory::getConfig()->get('debug') )
 {  
+// QUERY_STRING    
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' id' . '<pre>'.print_r($this->jinput,true).'</pre>' ), Log::NOTICE, 'jsmerror');
+
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' pid' . $this->jinput->getInt('pid', 0)), Log::NOTICE, 'jsmerror');    
 Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' id' . $this->jinput->getInt('id', 0)), Log::NOTICE, 'jsmerror');
 Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' team1' . $this->jinput->getInt('team1', 0)), Log::NOTICE, 'jsmerror');
 Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' team2' . $this->jinput->getInt('team2', 0)), Log::NOTICE, 'jsmerror');
@@ -74,7 +78,7 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' generate' . $this->jinput->getI
  */
 function _displayGenerate($tpl)
 	{
-	   
+	  $this->pid = $this->jinput->getInt('pid', 0); 
       $this->id = $this->jinput->getInt('id', 0);
       $this->team1 =  $this->jinput->getInt('team1', 0);
        $this->team2 = $this->jinput->getInt('team2', 0);
