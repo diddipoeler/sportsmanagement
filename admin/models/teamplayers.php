@@ -335,6 +335,7 @@ class sportsmanagementModelteamplayers extends JSMModelList
 	
 	
 	
+	
 	/**
 	 * sportsmanagementModelteamplayers::getProjectTeamplayers()
 	 * 
@@ -342,9 +343,10 @@ class sportsmanagementModelteamplayers extends JSMModelList
 	 * @param integer $season_id
 	 * @param integer $projectteam_id
 	 * @param integer $generate
+	 * @param integer $project_id
 	 * @return
 	 */
-	function getProjectTeamplayers($team_id = 0, $season_id = 0, $projectteam_id = 0, $generate = 0)
+	function getProjectTeamplayers($team_id = 0, $season_id = 0, $projectteam_id = 0, $generate = 0, $project_id = 0)
 	{
 	   $result = array();
 //$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' team_id -> ' . $team_id . ''), '');
@@ -369,6 +371,18 @@ class sportsmanagementModelteamplayers extends JSMModelList
 		$this->jsmquery->where('st.season_id = ' . $season_id);
 		$this->jsmquery->where('tp.season_id = ' . $season_id);
 
+if ( $generate )
+{
+        $this->jsmsubquery1->clear();
+		$this->jsmsubquery1->select('ppos.id');
+		$this->jsmsubquery1->from('#__sportsmanagement_project_position AS ppos');
+		$this->jsmsubquery1->join('LEFT', '#__sportsmanagement_person_project_position AS ppp on ppp.project_position_id = ppos.id');
+		$this->jsmsubquery1->where('ppp.person_id = ppl.id');
+		$this->jsmsubquery1->where('ppp.project_id = ' . $project_id);
+		$this->jsmsubquery1->where('ppp.persontype = 1');
+		$this->jsmquery->select('(' . $this->jsmsubquery1 . ') AS project_position_id');
+        }
+        
 		try
 		{
 			$this->jsmdb->setQuery($this->jsmquery);
