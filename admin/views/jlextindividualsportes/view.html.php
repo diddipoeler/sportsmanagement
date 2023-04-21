@@ -41,7 +41,7 @@ class sportsmanagementViewjlextindividualsportes extends sportsmanagementView
 if ( Factory::getConfig()->get('debug') )
 {  
 // QUERY_STRING    
-Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' id' . '<pre>'.print_r($this->jinput,true).'</pre>' ), Log::NOTICE, 'jsmerror');
+//Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' id' . '<pre>'.print_r($this->jinput,true).'</pre>' ), Log::NOTICE, 'jsmerror');
 
 Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' pid' . $this->jinput->getInt('pid', 0)), Log::NOTICE, 'jsmerror');    
 Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' id' . $this->jinput->getInt('id', 0)), Log::NOTICE, 'jsmerror');
