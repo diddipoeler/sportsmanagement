@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModelteamplayers
@@ -368,8 +369,6 @@ class sportsmanagementModelteamplayers extends JSMModelList
 		$this->jsmquery->where('st.season_id = ' . $season_id);
 		$this->jsmquery->where('tp.season_id = ' . $season_id);
 
-//$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' jsmquery -> ' . $this->jsmquery->dump() . ''), '');
-
 		try
 		{
 			$this->jsmdb->setQuery($this->jsmquery);
@@ -377,8 +376,17 @@ class sportsmanagementModelteamplayers extends JSMModelList
 		}
 		catch (Exception $e)
 		{
-			//$result = false;
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 		}
+
+if ( Factory::getConfig()->get('debug') )
+{  
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' query' . '<pre>'.print_r($this->jsmquery->dump(),true).'</pre>' ), Log::NOTICE, 'jsmerror');
+}
+
+
+
 
 		return $result;
 	}
