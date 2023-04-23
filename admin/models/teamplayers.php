@@ -375,8 +375,10 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 
 				/** Count match */
 				$this->jsmquery->clear();
-				$this->jsmquery->select('mp.teamplayer_id, mp.project_position_id');
+				$this->jsmquery->select('mp.teamplayer_id, mp.project_position_id, pos.name as project_position_name');
 				$this->jsmquery->from('#__sportsmanagement_match_player AS mp  ');
+                $this->jsmquery->join('INNER', '#__sportsmanagement_project_position AS ppos ON ppos.id = mp.project_position_id');
+                $this->jsmquery->join('INNER', '#__sportsmanagement_position AS pos ON pos.id = ppos.position_id');
 				$this->jsmquery->where('mp.match_id = ' . $match_id . ' AND (came_in=0 OR came_in=1) AND mp.teamplayer_id in (' . $players . ')');
                 try
 		{
