@@ -60,9 +60,16 @@ echo 'show_matches<pre>'.print_r($this->show_matches,true).'</pre>';
 <?php
 foreach ( $this->show_matches as $count_i => $item )
 {
+    
+$match_type = ( $item->teamplayer1_position == 'Double' || $item->teamplayer2_position  == 'Double' ) ? 'DOUBLE' : 'SINGLE';     
+    
 ?>       
 <tr>     
 <td>
+
+<input type="hidden" name="match_type[]" value="<?php echo $match_type; ?>" />
+
+
 <?php
 echo $item->teamplayer1_position;
 ?>
@@ -72,8 +79,6 @@ echo $item->teamplayer1_position;
 echo $item->teamplayer2_position;
 ?>
 </td>
-
-
 
 
 <?php

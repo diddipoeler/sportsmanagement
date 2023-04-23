@@ -81,7 +81,54 @@ function generatematchsingles()
 {
 $post = Factory::getApplication()->input->post->getArray(array());
 $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($post,true).'</pre>'), 'error');
+$match_single_id = 0;    
+
+foreach ( $post['teamplayer1_id']  as $count_i => $item )
+{
+$this->jsmquery->clear();
+$this->jsmquery->select('id');
+$this->jsmquery->from('#__sportsmanagement_match_single');
+$this->jsmquery->where('round_id = ' . $post['round_id'] );
+$this->jsmquery->where('match_id = ' . $post['match_id'] );
+$this->jsmquery->where('projectteam1_id = ' . $post['projectteam1_id'] );
+$this->jsmquery->where('projectteam2_id = ' . $post['projectteam2_id'] );
+$this->jsmquery->where('teamplayer1_id = ' . $post['teamplayer1_id'][$count_i] );
+$this->jsmquery->where('teamplayer2_id = ' . $post['teamplayer2_id'][$count_i] );
+
+$this->jsmdb->setQuery($this->jsmquery);
+$match_single_id = $this->jsmdb->loadResult();
+
+if ( !$match_single_id )
+{
+$rowmatch = new stdClass;
+$rowmatch->projectteam1_id = $post['projectteam1_id'];
+$rowmatch->projectteam2_id = $post['projectteam2_id'] ;
+$rowmatch->match_id = $post['match_id'];
+$rowmatch->teamplayer1_id = $post['teamplayer1_id'][$count_i] ;
+$rowmatch->teamplayer2_id = $post['teamplayer2_id'][$count_i] ;
+$rowmatch->published = 1;
+$rowmatch->match_type = $post['match_type'][$count_i] ;
+//$rowmatch->project_id = $post['project_id'];
+$rowmatch->round_id = $post['round_id'];    
+$rowmatch->modified = $this->jsmdate->toSql();
+$rowmatch->modified_by = $this->jsmuser->get('id');    
     
+try
+{
+$result_insert = $this->jsmdb->insertObject('#__sportsmanagement_match_single', $rowmatch);
+//return true;
+}
+catch (Exception $e)
+{
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+//return false;
+}        
+    
+}
+
+
+}
     
     
 }
@@ -160,7 +207,7 @@ $rowmatch->match_id = $post['match_id'];
 $rowmatch->teamplayer1_id = $post['teamplayer1_id'];
 $rowmatch->teamplayer2_id = $post['teamplayer2_id'];
 $rowmatch->published = $post['published'];
-$rowmatch->project_id = $post['project_id'];
+//$rowmatch->project_id = $post['project_id'];
 $rowmatch->round_id = $post['round_id'];
 
 try
