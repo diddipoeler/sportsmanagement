@@ -334,7 +334,50 @@ class sportsmanagementModelteamplayers extends JSMModelList
 
 	
 	
-	
+	/**
+	 * sportsmanagementModelteamplayers::getTeamplayersMatch()
+	 * 
+	 * @param integer $team_id
+	 * @param integer $season_id
+	 * @param integer $projectteam_id
+	 * @param integer $project_id
+	 * @return void
+	 */
+	function getTeamplayersMatch($team_id = 0, $season_id = 0, $projectteam_id = 0, $project_id = 0)
+	{
+$result = array();
+$homeplayers_count = 0;
+
+$this->jsmquery->clear();
+			$this->jsmquery->select('tp.id');
+			$this->jsmquery->from('#__sportsmanagement_season_team_person_id AS tp ');
+			$this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = tp.team_id and st.season_id = tp.season_id');
+			$this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pthome ON pthome.team_id = st.id');
+			$this->jsmquery->where('pthome.id =' . $projectteam_id);
+			$this->jsmquery->where('tp.season_id = ' . $season_id);
+			$this->jsmquery->where('tp.persontype = 1');
+			$this->jsmdb->setQuery($this->jsmquery);
+
+			$result = $this->jsmdb->loadColumn();
+
+			if ($result)
+			{
+				$players = implode(",", $result);
+
+				/** Count match homeplayers */
+				$this->jsmquery->clear();
+				$this->jsmquery->select('count(mp.id)');
+				$this->jsmquery->from('#__sportsmanagement_match_player AS mp  ');
+				$this->jsmquery->where('mp.match_id = ' . $item->id . ' AND (came_in=0 OR came_in=1) AND mp.teamplayer_id in (' . $players . ')');
+				$this->jsmdb->setQuery($this->jsmquery);
+				$item->homeplayers_count = $this->jsmdb->loadResult();
+			}
+       
+       
+       
+       return $homeplayers_count;
+       
+       }
 	
 	/**
 	 * sportsmanagementModelteamplayers::getProjectTeamplayers()

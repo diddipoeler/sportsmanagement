@@ -83,7 +83,7 @@ class sportsmanagementModelMatches extends JSMModelList
 			{
 				$players = implode(",", $result);
 
-				// Count match homeplayers
+				/** Count match homeplayers */
 				$this->jsmquery->clear();
 				$this->jsmquery->select('count(mp.id)');
 				$this->jsmquery->from('#__sportsmanagement_match_player AS mp  ');
@@ -107,7 +107,7 @@ class sportsmanagementModelMatches extends JSMModelList
 			{
 				$players = implode(",", $result);
 
-				// Count match homeplayers
+				/** Count match homeplayers */
 				$this->jsmquery->clear();
 				$this->jsmquery->select('count(mp.id)');
 				$this->jsmquery->from('#__sportsmanagement_match_player AS mp  ');
@@ -131,7 +131,7 @@ class sportsmanagementModelMatches extends JSMModelList
 			{
 				$players = implode(",", $result);
 
-				// Count match homeplayers
+				/** Count match homeplayers */
 				$this->jsmquery->clear();
 				$this->jsmquery->select('count(mp.id)');
 				$this->jsmquery->from('#__sportsmanagement_match_player AS mp  ');
@@ -155,7 +155,7 @@ class sportsmanagementModelMatches extends JSMModelList
 			{
 				$players = implode(",", $result);
 
-				// Count match homeplayers
+				/** Count match homeplayers */
 				$this->jsmquery->clear();
 				$this->jsmquery->select('count(mp.id)');
 				$this->jsmquery->from('#__sportsmanagement_match_player AS mp  ');
@@ -166,7 +166,7 @@ class sportsmanagementModelMatches extends JSMModelList
 
 			$this->jsmquery->clear();
 
-			// Count match referee
+			/** Count match referee */
 			$this->jsmquery->select('count(mr.id)');
 			$this->jsmquery->from('#__sportsmanagement_match_referee AS mr ');
 			$this->jsmquery->where('mr.match_id = ' . $item->id);
@@ -175,7 +175,7 @@ class sportsmanagementModelMatches extends JSMModelList
 
 			$this->jsmquery->clear();
 
-			// Get match referee
+			/** Get match referee */
 			$this->jsmquery->select('mr.project_referee_id');
 			$this->jsmquery->from('#__sportsmanagement_match_referee AS mr ');
 			$this->jsmquery->where('mr.match_id = ' . $item->id);
