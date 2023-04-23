@@ -35,25 +35,32 @@ Double against Double
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 
 
+if ( Factory::getConfig()->get('debug') )
+{  
 echo 'homeplayers<pre>'.print_r($this->homeplayers,true).'</pre>';
-
 echo 'awayplayers<pre>'.print_r($this->awayplayers,true).'</pre>';
-
+}
 
 
 echo 'show_matches<pre>'.print_r($this->show_matches,true).'</pre>';
 
 
-
-
-
-
-
-
-
-
-
-
 ?>
+<div class="table-responsive" id="editcell">
+<!-- Start games list -->
+<form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id='adminForm'>
+
+
+<input type='hidden' name='project_id' value='<?php echo $this->pid; ?>'/>
+<input type='hidden' name='match_id' value='<?php echo $this->id; ?>'/>
+<input type='hidden' name='projectteam1_id' value='<?php echo $this->projectteam1_id; ?>'/>
+<input type='hidden' name='projectteam2_id' value='<?php echo $this->projectteam2_id; ?>'/>
+<input type='hidden' name='round_id' value='<?php echo $this->rid; ?>'/>
+
+<input type='hidden' name='task' value='' id='task'/>
+<?php echo HTMLHelper::_('form.token') . "\n"; ?>
+</form>
+</div>
