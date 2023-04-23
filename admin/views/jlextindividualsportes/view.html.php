@@ -84,8 +84,8 @@ function _displayGenerate($tpl)
        $this->homeplayers_position = array();
 	   $this->awayplayers_position = array();
        
-       $count_homeplayers = 0;
-       $count_awayplayers = 0;
+       $count_homeplayers = array();
+       $count_awayplayers = array();
        
        $this->generate_matches = 0;
        
@@ -109,6 +109,11 @@ function _displayGenerate($tpl)
        
        $count_homeplayers = $mdlTeamplayers->getTeamplayersMatch(0, $this->project->season_id, $this->projectteam1_id, $this->project_id,$this->id);
        $count_awayplayers = $mdlTeamplayers->getTeamplayersMatch(0, $this->project->season_id, $this->projectteam2_id, $this->project_id,$this->id);
+
+echo 'homeplayers<pre>'.print_r($count_homeplayers,true).'</pre>';
+echo 'awayplayers<pre>'.print_r($count_awayplayers,true).'</pre>';
+
+
        
        if ( $count_homeplayers != $count_awayplayers )
        {
