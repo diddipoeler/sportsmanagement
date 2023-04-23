@@ -44,16 +44,71 @@ echo 'homeplayers<pre>'.print_r($this->homeplayers,true).'</pre>';
 echo 'awayplayers<pre>'.print_r($this->awayplayers,true).'</pre>';
 }
 
-
 echo 'show_matches<pre>'.print_r($this->show_matches,true).'</pre>';
+
+
+
+
 
 
 ?>
 <div class="table-responsive" id="editcell">
 <!-- Start games list -->
 <form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id='adminForm'>
+<table>
+<?php
+foreach ( $this->show_matches as $count_i => $item )
+{
+?>       
+<tr>     
+<?php
+foreach ( $this->homeplayers as $count_home => $home )
+{
+   
+if ( $home->season_team_person_id == $item->teamplayer1_id )
+{
+?>
+<td>
+<?php
+echo $home->lastname;
+?>
+</td>
+<td>
+<?php
+echo $home->firstname;
+?>
+</td>
+<?php    
+}       
+       
+}
 
-
+foreach ( $this->awayplayers as $count_away => $away )
+{
+if ( $away->season_team_person_id == $item->teamplayer2_id )
+{
+?>
+<td>
+<?php
+echo $away->lastname;
+?>
+</td>
+<td>
+<?php
+echo $away->firstname;
+?>
+</td>
+<?php    
+}       
+       
+       
+}	   
+?>       
+</tr>  
+<?php       
+}
+?>
+</table>
 <input type='hidden' name='project_id' value='<?php echo $this->pid; ?>'/>
 <input type='hidden' name='match_id' value='<?php echo $this->id; ?>'/>
 <input type='hidden' name='projectteam1_id' value='<?php echo $this->projectteam1_id; ?>'/>

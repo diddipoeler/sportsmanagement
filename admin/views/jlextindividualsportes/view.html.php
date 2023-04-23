@@ -124,12 +124,12 @@ echo 'awayplayers<pre>'.print_r($count_awayplayers,true).'</pre>';
        {
        $this->generate_matches = sizeof($count_homeplayers);
        
-       foreach ($count_homeplayers as $count_i => $item)
+       foreach ( $count_homeplayers as $count_i => $item )
 	{
     $this->homeplayers_position[$item->project_position_name] = $item->teamplayer_id;
     }
     
-     foreach ($count_awayplayers as $count_i => $item)
+     foreach ( $count_awayplayers as $count_i => $item )
 	{
     $this->awayplayers_position[$item->project_position_name] = $item->teamplayer_id;
     }      
