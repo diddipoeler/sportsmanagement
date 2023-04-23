@@ -348,7 +348,7 @@ class sportsmanagementModelteamplayers extends JSMModelList
 	function getTeamplayersMatch($team_id = 0, $season_id = 0, $projectteam_id = 0, $project_id = 0, $match_id = 0)
 	{
 $result = array();
-$homeplayers_count = 0;
+$players_count = 0;
 
 $this->jsmquery->clear();
 			$this->jsmquery->select('tp.id');
@@ -373,7 +373,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 			{
 				$players = implode(",", $result);
 
-				/** Count match homeplayers */
+				/** Count match */
 				$this->jsmquery->clear();
 				$this->jsmquery->select('count(mp.id)');
 				$this->jsmquery->from('#__sportsmanagement_match_player AS mp  ');
@@ -381,7 +381,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
                 try
 		{
 				$this->jsmdb->setQuery($this->jsmquery);
-				$item->homeplayers_count = $this->jsmdb->loadResult();
+				$players_count = $this->jsmdb->loadResult();
                 }
 		catch (Exception $e)
 		{
@@ -395,7 +395,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
        
        
        
-       return $homeplayers_count;
+       return $players_count;
        
        }
 	
