@@ -35,11 +35,12 @@ class sportsmanagementControllerjlextindividualsportes extends JSMControllerAdmi
 function generatematchsingles()
 {
 $model = $this->getModel();
-$model->generatematchsingles();
+$generatematchsingles = $model->generatematchsingles();
+$msg = '';
 
-
-//$msg = '';
-//$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);    
+$msg .= 'Wir haben '.$generatematchsingles[0].' Spiele eingefügt!<br />';
+$msg .= 'Wir konnten '.$generatematchsingles[1].' Spiele nicht einfügen!';
+$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);    
     
 }
 

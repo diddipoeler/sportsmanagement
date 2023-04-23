@@ -79,6 +79,9 @@ class sportsmanagementModeljlextindividualsport extends JSMModelAdmin
  */
 function generatematchsingles()
 {
+$insert = 0;
+$notinsert = 0;    
+$returnarray = array();
 $post = Factory::getApplication()->input->post->getArray(array());
 $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($post,true).'</pre>'), 'error');
 $match_single_id = 0;    
@@ -116,13 +119,13 @@ $rowmatch->modified_by = $this->jsmuser->get('id');
 try
 {
 $result_insert = $this->jsmdb->insertObject('#__sportsmanagement_match_single', $rowmatch);
-//return true;
+$insert++;
 }
 catch (Exception $e)
 {
 $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
 $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
-//return false;
+$notinsert++;
 }        
     
 }
@@ -130,7 +133,9 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 
 }
     
-    
+$returnarray[] = $insert;
+$returnarray[] = $notinsert;
+return;    
 }
 
 
