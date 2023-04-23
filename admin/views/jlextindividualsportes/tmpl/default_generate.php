@@ -14,7 +14,7 @@
  
   When we are in the screen to enter the individual match is it possible to :
 - automaticly generate all individual match for the game ? Exemple for Espoirs :
-  A or C against W (depending if the team is composed of 2 or 3 players)
+A or C against W (depending if the team is composed of 2 or 3 players)
 B or C against X (depending if the team is composed of 2 or 3 players)
 Double against Double
 A against X or Y (depending if the team is composed of 2 or 3 players)
@@ -40,5 +40,20 @@ use Joomla\CMS\HTML\HTMLHelper;
 echo 'homeplayers<pre>'.print_r($this->homeplayers,true).'</pre>';
 
 echo 'awayplayers<pre>'.print_r($this->awayplayers,true).'</pre>';
+
+
+
+echo 'show_matches<pre>'.print_r($this->show_matches,true).'</pre>';
+
+
+
+
+
+
+
+
+
+
+
 
 ?>

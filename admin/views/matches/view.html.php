@@ -327,6 +327,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
 
 		if (!$massadd)
 		{
+		  ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=rounds');
 			ToolbarHelper::publish('match.insertgooglecalendar', 'JLIB_HTML_CALENDAR', true);
 			ToolbarHelper::divider();
 			ToolbarHelper::publish('matches.count_result_yes', 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_INCL', true);
@@ -343,7 +344,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
 			ToolbarHelper::addNew('match.addmatch', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_ADD_MATCH'));
 			ToolbarHelper::divider();
 
-			ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=rounds');
+			
 		}
 		else
 		{
