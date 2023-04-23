@@ -334,6 +334,7 @@ class sportsmanagementModelteamplayers extends JSMModelList
 
 	
 	
+	
 	/**
 	 * sportsmanagementModelteamplayers::getTeamplayersMatch()
 	 * 
@@ -341,9 +342,10 @@ class sportsmanagementModelteamplayers extends JSMModelList
 	 * @param integer $season_id
 	 * @param integer $projectteam_id
 	 * @param integer $project_id
-	 * @return void
+	 * @param integer $match_id
+	 * @return
 	 */
-	function getTeamplayersMatch($team_id = 0, $season_id = 0, $projectteam_id = 0, $project_id = 0)
+	function getTeamplayersMatch($team_id = 0, $season_id = 0, $projectteam_id = 0, $project_id = 0, $match_id = 0)
 	{
 $result = array();
 $homeplayers_count = 0;
@@ -356,10 +358,17 @@ $this->jsmquery->clear();
 			$this->jsmquery->where('pthome.id =' . $projectteam_id);
 			$this->jsmquery->where('tp.season_id = ' . $season_id);
 			$this->jsmquery->where('tp.persontype = 1');
+            try
+		{
 			$this->jsmdb->setQuery($this->jsmquery);
-
 			$result = $this->jsmdb->loadColumn();
-
+}
+		catch (Exception $e)
+		{
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+		}
+        
 			if ($result)
 			{
 				$players = implode(",", $result);
@@ -368,9 +377,20 @@ $this->jsmquery->clear();
 				$this->jsmquery->clear();
 				$this->jsmquery->select('count(mp.id)');
 				$this->jsmquery->from('#__sportsmanagement_match_player AS mp  ');
-				$this->jsmquery->where('mp.match_id = ' . $item->id . ' AND (came_in=0 OR came_in=1) AND mp.teamplayer_id in (' . $players . ')');
+				$this->jsmquery->where('mp.match_id = ' . $match_id . ' AND (came_in=0 OR came_in=1) AND mp.teamplayer_id in (' . $players . ')');
+                try
+		{
 				$this->jsmdb->setQuery($this->jsmquery);
 				$item->homeplayers_count = $this->jsmdb->loadResult();
+                }
+		catch (Exception $e)
+		{
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+		}
+                
+                
+                
 			}
        
        

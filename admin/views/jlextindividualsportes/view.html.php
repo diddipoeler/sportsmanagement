@@ -107,8 +107,8 @@ function _displayGenerate($tpl)
        $this->homeplayers = $mdlTeamplayers->getProjectTeamplayers(0, $this->project->season_id, $this->projectteam1_id, 1,$this->project_id);
        $this->awayplayers = $mdlTeamplayers->getProjectTeamplayers(0, $this->project->season_id, $this->projectteam2_id, 1,$this->project_id);
        
-       $count_homeplayers = $mdlTeamplayers->getTeamplayersMatch(0, $this->project->season_id, $this->projectteam1_id, $this->project_id);
-       $count_awayplayers = $mdlTeamplayers->getTeamplayersMatch(0, $this->project->season_id, $this->projectteam2_id, $this->project_id);
+       $count_homeplayers = $mdlTeamplayers->getTeamplayersMatch(0, $this->project->season_id, $this->projectteam1_id, $this->project_id,$this->id);
+       $count_awayplayers = $mdlTeamplayers->getTeamplayersMatch(0, $this->project->season_id, $this->projectteam2_id, $this->project_id,$this->id);
        
        if ( $count_homeplayers != $count_awayplayers )
        {
