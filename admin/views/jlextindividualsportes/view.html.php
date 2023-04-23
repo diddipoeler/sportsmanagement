@@ -115,14 +115,14 @@ echo 'awayplayers<pre>'.print_r($count_awayplayers,true).'</pre>';
 
 
        
-       if ( $count_homeplayers != $count_awayplayers )
+       if ( sizeof($count_homeplayers) != sizeof($count_awayplayers) )
        {
        Log::add(Text::_('Die Anzahl der Heimspieler stimmt nicht mit der Anzahl der Gastspieler überein!' ), Log::ERROR, 'jsmerror'); 
        $this->generate_matches = 0; 
        }
        else
        {
-       $this->generate_matches = $count_homeplayers;
+       $this->generate_matches = sizeof($count_homeplayers);
        
        foreach ($this->homeplayers as $count_i => $item)
 	{
