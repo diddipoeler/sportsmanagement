@@ -25,6 +25,25 @@ use Joomla\CMS\Factory;
 class sportsmanagementControllerjlextindividualsportes extends JSMControllerAdmin
 {
 
+
+
+/**
+ * sportsmanagementControllerjlextindividualsportes::generatematchsingles()
+ * 
+ * @return void
+ */
+function generatematchsingles()
+{
+$model = $this->getModel();
+$model->generatematchsingles();
+
+
+//$msg = '';
+//$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);    
+    
+}
+
+
 	/**
 	 * Method to update checked matches
 	 *

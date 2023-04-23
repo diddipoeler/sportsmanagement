@@ -72,6 +72,21 @@ class sportsmanagementModeljlextindividualsport extends JSMModelAdmin
 	}
 
 
+/**
+ * sportsmanagementModeljlextindividualsport::generatematchsingles()
+ * 
+ * @return void
+ */
+function generatematchsingles()
+{
+$post = Factory::getApplication()->input->post->getArray(array());
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($post,true).'</pre>'), 'error');
+    
+    
+    
+}
+
+
 
 /**
  * sportsmanagementModeljlextindividualsport::getmatchsingle_rowshome()

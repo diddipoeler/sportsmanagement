@@ -110,9 +110,11 @@ function _displayGenerate($tpl)
        $count_homeplayers = $mdlTeamplayers->getTeamplayersMatch(0, $this->project->season_id, $this->projectteam1_id, $this->project_id,$this->id);
        $count_awayplayers = $mdlTeamplayers->getTeamplayersMatch(0, $this->project->season_id, $this->projectteam2_id, $this->project_id,$this->id);
 
+if ( Factory::getConfig()->get('debug') )
+{ 
 echo 'homeplayers<pre>'.print_r($count_homeplayers,true).'</pre>';
 echo 'awayplayers<pre>'.print_r($count_awayplayers,true).'</pre>';
-
+}
 
        
        if ( sizeof($count_homeplayers) != sizeof($count_awayplayers) )

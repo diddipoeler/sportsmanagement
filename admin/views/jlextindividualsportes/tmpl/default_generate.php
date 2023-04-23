@@ -42,19 +42,25 @@ if ( Factory::getConfig()->get('debug') )
 {  
 echo 'homeplayers<pre>'.print_r($this->homeplayers,true).'</pre>';
 echo 'awayplayers<pre>'.print_r($this->awayplayers,true).'</pre>';
-}
-
 echo 'show_matches<pre>'.print_r($this->show_matches,true).'</pre>';
-
-
-
-
-
+}
 
 ?>
 <div class="table-responsive" id="editcell">
 <!-- Start games list -->
 <form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id='adminForm'>
+<fieldset>
+                <div class="fltlft">
+                    <button type="button" onclick="Joomla.submitform('jlextindividualsportes.generatematchsingles', this.form);">
+						<?php echo Text::_('JAPPLY'); ?></button>
+                    
+
+                    
+
+                </div>
+
+            </fieldset>
+            
 <table class="table">
 <?php
 foreach ( $this->show_matches as $count_i => $item )
@@ -83,6 +89,8 @@ if ( $home->season_team_person_id == $item->teamplayer1_id )
 {
 ?>
 <td>
+<input type="hidden" name="teamplayer1_id[]" value="<?php echo $home->season_team_person_id; ?>" />
+
 <?php
 echo $home->lastname;
 ?>
@@ -103,6 +111,7 @@ if ( $away->season_team_person_id == $item->teamplayer2_id )
 {
 ?>
 <td>
+<input type="hidden" name="teamplayer2_id[]" value="<?php echo $away->season_team_person_id; ?>" />
 <?php
 echo $away->lastname;
 ?>
