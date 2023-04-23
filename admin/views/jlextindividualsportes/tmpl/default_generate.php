@@ -55,12 +55,26 @@ echo 'show_matches<pre>'.print_r($this->show_matches,true).'</pre>';
 <div class="table-responsive" id="editcell">
 <!-- Start games list -->
 <form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id='adminForm'>
-<table>
+<table class="table">
 <?php
 foreach ( $this->show_matches as $count_i => $item )
 {
 ?>       
 <tr>     
+<td>
+<?php
+echo $item->teamplayer1_position;
+?>
+</td>
+<td>
+<?php
+echo $item->teamplayer2_position;
+?>
+</td>
+
+
+
+
 <?php
 foreach ( $this->homeplayers as $count_home => $home )
 {
