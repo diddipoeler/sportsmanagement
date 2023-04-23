@@ -36,7 +36,7 @@ Double against Double
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Language\Text;
 
 if ( Factory::getConfig()->get('debug') )
 {  
@@ -50,16 +50,11 @@ echo 'show_matches<pre>'.print_r($this->show_matches,true).'</pre>';
 <!-- Start games list -->
 <form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id='adminForm'>
 <fieldset>
-                <div class="fltlft">
-                    <button type="button" onclick="Joomla.submitform('jlextindividualsportes.generatematchsingles', this.form);">
-						<?php echo Text::_('JAPPLY'); ?></button>
-                    
-
-                    
-
-                </div>
-
-            </fieldset>
+<div class="fltlft">
+<button type="button" onclick="Joomla.submitform('jlextindividualsportes.generatematchsingles', this.form);">
+<?php echo Text::_('JAPPLY'); ?></button>
+</div>
+</fieldset>
             
 <table class="table">
 <?php
