@@ -13,6 +13,13 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
+
+if ( Factory::getConfig()->get('debug') )
+{  
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' fieldset' . $this->fieldset), Log::NOTICE, 'jsmerror');
+}	
 
 switch ($this->fieldset)
 {
