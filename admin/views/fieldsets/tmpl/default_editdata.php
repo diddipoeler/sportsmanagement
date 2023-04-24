@@ -51,6 +51,23 @@ catch (Exception $e)
 $view = $this->jinput->getCmd('view', 'cpanel');
 
 
+switch ($view)
+{
+case 'club':
+case 'playground':
+case 'player':
+case 'events':
+case 'statistics':
+$links = 6;
+$rechts = 6;
+break;
+default:
+$links = 12;
+$rechts = 0;		
+break;
+}
+
+
 /**
  *
  * welche joomla version ?
@@ -89,7 +106,7 @@ case 'COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS':
 case 'COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS':
 ?>
 <div class="row">
-<div class="col-lg-6">
+<div class="col-lg-<?php echo $links; ?>">
 <?PHP
 foreach ($this->form->getFieldset($fieldset->name) as $field)
 {
@@ -188,7 +205,7 @@ break;
 					}
 					
 					?>
-                                <div class="col-lg-6">
+                                <div class="col-lg-<?php echo $rechts; ?>">
                                     <div class="control-group">
                                         <style type="text/css">.map_canvas {
                                                 width: 100%;
