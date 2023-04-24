@@ -18,7 +18,7 @@ use Joomla\CMS\Log\Log;
 
 if ( Factory::getConfig()->get('debug') )
 {  
-Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' fieldset' . $this->fieldset), Log::NOTICE, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' fieldset -> ' . $this->fieldset), Log::NOTICE, 'jsmerror');
 }	
 
 switch ($this->fieldset)
