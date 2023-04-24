@@ -82,6 +82,11 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' fieldset name -> ' . $fieldset-
 switch ($fieldset->name)
 {
 case 'details':
+case 'request':
+case 'COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS':
+case 'COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_DIV_OPTIONS':
+case 'COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS':
+case 'COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS':
 ?>
 <div class="row">
 <div class="col-lg-6">
