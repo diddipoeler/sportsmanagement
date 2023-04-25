@@ -14,23 +14,48 @@
  
   When we are in the screen to enter the individual match is it possible to :
 - automaticly generate all individual match for the game ? Exemple for Espoirs :
-A or C against W (depending if the team is composed of 2 or 3 players)
-B or C against X (depending if the team is composed of 2 or 3 players)
-Double against Double
-A against X or Y (depending if the team is composed of 2 or 3 players)
-B against W or Y (depending if the team is composed of 2 or 3 players)
- 
-For Classement par equipes : 
-C against Y
+2 players
+A against W
 B against X
-A against Y or Z (depending if the team is composed of 3 or 4 players)
-C or D against W (depending if the team is composed of 3 or 4 players)
+Double against Double
 A against X
 B against W
-C against X or Z (depending if the team is composed of 3 or 4 players)
-B or D against Y (depending if the team is composed of 3 or 4 players)
+ 
+3 players
+C against W
+C against X
+Double against Double
+A against Y
+B against Y
+
+
+ 
+For Classement par equipes : 
+3 players
+
+C against Y
+B against X
+A against Y
+C against W
+A against X
+B against W
+C against X
+B against Y
 A against W
 Double against Double
+
+4 players
+C against Y
+B against X
+A against Z
+D against W
+A against X
+B against W
+C against Z
+D against Y
+A against W
+Double against Double
+
 
  */
 defined('_JEXEC') or die('Restricted access');

@@ -137,8 +137,28 @@ echo 'awayplayers<pre>'.print_r($count_awayplayers,true).'</pre>';
     }      
        
        }
+/**       
+When we are in the screen to enter the individual match is it possible to :
+- automaticly generate all individual match for the game ? Exemple for Espoirs :
+  A or C against W (depending if the team is composed of 2 or 3 players)
+B or C against X (depending if the team is composed of 2 or 3 players)
+Double against Double
+A against X or Y (depending if the team is composed of 2 or 3 players)
+B against W or Y (depending if the team is composed of 2 or 3 players)
+ 
+For Classement par equipes : 
+C against Y
+B against X
+A against Y or Z (depending if the team is composed of 3 or 4 players)
+C or D against W (depending if the team is composed of 3 or 4 players)
+A against X
+B against W
+C against X or Z (depending if the team is composed of 3 or 4 players)
+B or D against Y (depending if the team is composed of 3 or 4 players)
+A against W
+Double against Double       
        
-       
+*/       
        switch ( $this->generate_matches )
        {
        case 0:
