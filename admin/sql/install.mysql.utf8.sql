@@ -884,6 +884,8 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project` (
   `use_leaguechampion` tinyint(1) NOT NULL DEFAULT '0',
 
 `double_events` TINYINT(1) NOT NULL DEFAULT '0' ,
+`match_generated` INT( 11 ) NOT NULL DEFAULT  '0',
+
 
   PRIMARY KEY (`id`) ,
   KEY `league_id` (`league_id`),

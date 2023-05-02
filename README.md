@@ -70,6 +70,7 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   02-05-2023: **4.17.00** Neue Felder für Einzelsportart Tischtennis
 *   17-04-2023: **4.16.00** Neue Felder für Einzelsportart Tischtennis
 *   16-04-2023: **4.15.00** Neue Felder für Einzelsportart Tischtennis
 *   10-04-2023: **4.14.00** Neue Felder für Einzelsportart

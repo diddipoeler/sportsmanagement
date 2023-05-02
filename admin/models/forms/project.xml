@@ -430,6 +430,30 @@ filter="unset"
 		description="COM_SPORTSMANAGEMENT_TABS_PROJECT_DESC">	
 
 		<field
+			name="match_generated"
+			type="list"
+			class="form-control form-control-inline"
+			default="1"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_AUTO_MATCH_GENERATED"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_AUTO_MATCH_GENERATED_DESC">
+			<option
+				value="0">
+				COM_SPORTSMANAGEMENT_ADMIN_PROJECT_MATCH_GENERATED</option>
+			<option
+				value="1">
+				COM_SPORTSMANAGEMENT_ADMIN_PROJECT_MATCH_GENERATED_CLASSEMENT_PAR_EQUIPES</option>
+			<option
+				value="2">
+				COM_SPORTSMANAGEMENT_ADMIN_PROJECT_MATCH_GENERATED_ESPOIRS</option>
+			<option
+				value="3">
+				COM_SPORTSMANAGEMENT_ADMIN_PROJECT_MATCH_GENERATED_COUPE</option>
+			
+		</field>
+		
+
+		<field
 			name="current_round_auto"
 			type="list"
 			class="form-control form-control-inline"
