@@ -451,7 +451,12 @@ B against W (Y if there is a 3rd player in away team)
 
 if ( Factory::getConfig()->get('debug') )
 { 
+echo 'homeplayers<pre>'.print_r($count_homeplayers,true).'</pre>';
+echo 'awayplayers<pre>'.print_r($count_awayplayers,true).'</pre>';    
+echo 'match_generated selektion<pre>'.print_r($this->match_generated[$this->project->match_generated][$count_homeplayers.$count_awayplayers],true).'</pre>';
+
 echo 'match_generated<pre>'.print_r($this->match_generated,true).'</pre>';
+//$this->project->match_generated;
 }
 
 
