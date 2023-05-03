@@ -437,17 +437,35 @@ $this->match_generated['2']['33'][] = $temp;
 
 /**
 We also have another competition named "Coupe" (cup)
-
 This is like a davis cup and the match card is like that (the third player if he's present can only play the double) :
-
-A  against W  (C if there is a 3rd player in home team)
-B  against X  (C if there is a 3rd player in home team)
+A  against W
+B  against X
 Double (A B or C) against Double (W X or Y)
-A against X  (Y if there is a 3rd player in away team)
-B against W (Y if there is a 3rd player in away team)       
-       
-       
+A against X
+B against W       
 */      
+$temp = new stdClass;
+$temp->position_home = 'A';
+$temp->position_away = 'W';
+$this->match_generated['3']['33'][] = $temp;
+$temp = new stdClass;
+$temp->position_home = 'B';
+$temp->position_away = 'X';
+$this->match_generated['3']['33'][] = $temp;
+$temp = new stdClass;
+$temp->position_home = 'Double';
+$temp->position_away = 'Double';
+$this->match_generated['3']['33'][] = $temp;
+$temp = new stdClass;
+$temp->position_home = 'A';
+$temp->position_away = 'X';
+$this->match_generated['3']['33'][] = $temp;
+$temp = new stdClass;
+$temp->position_home = 'B';
+$temp->position_away = 'W';
+$this->match_generated['3']['33'][] = $temp;
+
+
 
 if ( Factory::getConfig()->get('debug') )
 { 
