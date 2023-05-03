@@ -137,7 +137,7 @@ img.car {
 		$query = $db->getQuery(true);
 
 		$query->select('id AS value, name AS text');
-		$query->from('#__sportsmanagement_playground');
+		$query->from('#__sportsmanagement_agegroup');
 		$query->order('name');
 		$db->setQuery($query);
 		$options = $db->loadObjectList();
