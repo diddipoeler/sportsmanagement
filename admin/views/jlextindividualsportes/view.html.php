@@ -465,20 +465,31 @@ $temp->position_home = 'B';
 $temp->position_away = 'W';
 $this->match_generated['3']['33'][] = $temp;
 
+$player_counts = 0;
+switch ( $this->project->match_generated )
+{
+    case 1:
+    case 2:
+    $player_counts = sizeof($count_homeplayers).sizeof($count_awayplayers);
+    break;
+    case 3:
+    $player_counts = 33;
+    break;
+}
 
 
 if ( Factory::getConfig()->get('debug') )
 { 
 echo __LINE__.' project->match_generated<pre>'.print_r($this->project->match_generated,true).'</pre>';
-echo __LINE__.' sizeof<pre>'.print_r(sizeof($count_homeplayers).sizeof($count_awayplayers),true).'</pre>';    
-echo __LINE__.' match_generated selektion<pre>'.print_r($this->match_generated[$this->project->match_generated][sizeof($count_homeplayers).sizeof($count_awayplayers)],true).'</pre>';
+echo __LINE__.' sizeof<pre>'.print_r($player_counts,true).'</pre>';    
+echo __LINE__.' match_generated selektion<pre>'.print_r($this->match_generated[$this->project->match_generated][$player_counts],true).'</pre>';
 
 //echo 'match_generated<pre>'.print_r($this->match_generated,true).'</pre>';
 //$this->project->match_generated;
 }
 
 
-foreach ( $this->match_generated[$this->project->match_generated][sizeof($count_homeplayers).sizeof($count_awayplayers)]  as $key => $value )
+foreach ( $this->match_generated[$this->project->match_generated][$player_counts]  as $key => $value )
 {
 $temp = new stdClass;
 $temp->teamplayer1_id = $this->homeplayers_position[$value->position_home];
