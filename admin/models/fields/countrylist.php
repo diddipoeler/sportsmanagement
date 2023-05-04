@@ -138,7 +138,7 @@ img.car {
     
     $html[] = HTMLHelper::_(
 				'select.genericlist', $options, $this->name,
-				'style="width:225px;" class="'.$this->fieldname.'" size="1"' . $append, 'value', 'text', $this->value 
+				'style="width:225px;" class="'.$this->fieldname.' form-select " size="1"' . $append, 'value', 'text', $this->value 
 			);
     
     

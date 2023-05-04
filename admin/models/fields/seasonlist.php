@@ -90,7 +90,7 @@ class JFormFieldseasonlist extends FormField
 		break;
 		}
 
-		$attribs   .= ' class="select2-container"';
+		$attribs   .= ' class="form-select select2-container"';
         if ($v = $this->element['size'])
 		{
 			$attribs .= ' size="' . $v . '"';
