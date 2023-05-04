@@ -837,6 +837,8 @@ if ( $config->get('debug') )
 				$data['category_id']  = 0;	
 				}
 
+$data['start_date'] = $data['start_date'] = '' ? '00-00-0000' : $data['start_date'];
+
 				if ($data['start_date'] != '00-00-0000' && $data['start_date'] != '')
 			{
 			$data['start_date'] = sportsmanagementHelper::convertDate($data['start_date'], 0);
