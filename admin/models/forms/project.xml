@@ -402,7 +402,7 @@ filter="unset"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_STARTDATE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_STARTDATE_DESC"
 			class="inputbox"
-			required="true"
+			required="false"
 			format="%d-%m-%Y"/>
 			
 		<field
@@ -411,7 +411,7 @@ filter="unset"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_STARTTIME"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_STARTTIME_DESC"
 			class="inputbox validate-time"
-			required="true"
+			required="false"
 			size="5"
 			validate="time"/>
 		
