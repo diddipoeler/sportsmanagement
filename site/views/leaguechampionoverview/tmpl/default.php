@@ -93,7 +93,7 @@ $routeparameter['ptid']               = $this->team->ptid_slug;
 $teaminfo1_link                       = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);  
   
 $output[$this->season][] = !$this->config['show_leaguechampionoverview_season'] ? '<div class="col-sm-6">' : ''   ;  
-$output[$this->season][] =  HTMLHelper::_('image', $this->team->logo_big, $this->team->teamname, array('width' => 'auto','height' => '25'));  
+$output[$this->season][] =  HTMLHelper::_('image', $this->team->logo_big, $this->team->teamname, array('width' => '25','height' => 'auto'));  
 $output[$this->season][] =  HTMLHelper::link($teaminfo1_link, $this->team->teamname);  
   
 $output[$this->season][] = !$this->config['show_leaguechampionoverview_season'] ? '</div>' : ''   ;  

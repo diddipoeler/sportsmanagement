@@ -61,10 +61,8 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
              {
     	$rankinghelper = JSMRanking::getInstance($project, 0);
 		$rankinghelper->setProjectId($project->id, 0);
-          //echo '<pre>'.print_r($project,true).'</pre>';
           
         $mdlRanking = BaseDatabaseModel::getInstance("Ranking", "sportsmanagementModel");
-		//echo '<pre>'.print_r($this->project_id,true).'</pre>';
         $mdlRanking::$projectid = $this->project_id;
         $mdlRanking::$round = $project->current_round;
         $mdlRanking::$currentRanking = array();
@@ -80,8 +78,6 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
           switch ( $this->champion->rank )
           {
           case 1:
-//        echo '<pre>'.print_r($project->season_name,true).'</pre>';    
-//        echo '<pre>'.print_r($this->champion->_name,true).'</pre>';
         $object = new stdClass;
 		$object->teamname = $this->champion->_name;
         $object->ptid_slug = $this->champion->ptid_slug;
@@ -112,8 +108,6 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
 		$object->logo_big = $clubinfo->logo_big;
         }
 			  
-        
-			  
         /** welche saison zu welchem team */
         $this->teamseason[$object->teamid]['season'][] = $project->season_name;
         /** wenn nötig, array variabel initialisieren */
@@ -134,10 +128,7 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
        
          
         }
-        
-      
-      //echo '<pre>'.print_r($this->projectnames,true).'</pre>';
-      
+     
         /** jetzt noch die saisons, bei denen der sieger nicht bekannt ist */
         foreach ($this->projectnames as $this->count_i => $this->project_id)
 		{
@@ -155,12 +146,6 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
 
         }
       
-      
-      //echo '<pre>'.print_r($this->leaguechampions,true).'</pre>';
-      
-      
-      
-
         $this->teamstotal = array();
 		$total = array();
 
@@ -176,11 +161,8 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
 		}
 
 		array_multisort($total, SORT_DESC, $this->teamstotal);
-        //echo '<pre>'.print_r($this->teamstotal,true).'</pre>';      
       
-        // ksort($this->leaguechampions);
 		krsort($this->leaguechampions);
-		
 
 		/** Set page title */
 		$pageTitle = Text::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE');

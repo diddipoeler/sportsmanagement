@@ -1114,12 +1114,15 @@ class JSMRanking
 		return $this->_roundcodes[(int) $round_id];
 	}
 
+
 	/**
-	 * returns the ranking for selected teams
-	 *
-	 * @param   array teams objects
+	 * JSMRanking::_buildRanking()
+	 * 
+	 * @param mixed $teams
+	 * @param integer $cfg_which_database
+	 * @return
 	 */
-	function _buildRanking($teams, $cfg_which_database = 0)
+	function _buildRanking($teams = array(), $cfg_which_database = 0)
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
