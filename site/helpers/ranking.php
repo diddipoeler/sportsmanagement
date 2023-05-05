@@ -1127,9 +1127,9 @@ class JSMRanking
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 
-		// Division filtering
-		$teams = array_filter($teams, array($this, "_filterdivision"));
-
+		/** Division filtering */
+        $teams = is_array($teams) ? array_filter($teams, array($this, "_filterdivision")) : array();
+		
 		// Initial group contains all teams, unordered, indexed by starting rank 1
 		$groups = array(1 => $teams);
 
