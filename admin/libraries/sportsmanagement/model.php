@@ -1028,10 +1028,17 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post season_pers
 
 						foreach ($data['season_ids'] as $key => $value)
 						{
-							
+						  
+if ( ComponentHelper::getParams('com_sportsmanagement')->get('assign_clup_position_to_player', 0) )
+{	
 $club_id = $post['season_person_club_id'][$key] ? $post['season_person_club_id'][$key] : 0;						
 $position_id = $post['season_person_position_id'][$key] ? $post['season_person_position_id'][$key] : 0;												
-	
+}
+else
+{
+$club_id = 0;
+$position_id = 0;    
+}	
 	
 							$this->jsmquery->clear();
 							$this->jsmquery->select('spi.id,s.name');

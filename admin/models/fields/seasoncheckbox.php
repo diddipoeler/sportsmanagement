@@ -16,6 +16,7 @@ use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
 
 FormHelper::loadFieldClass('list');
 jimport('joomla.html.html');
@@ -81,13 +82,13 @@ class JFormFieldseasoncheckbox extends FormField
 		$query->order('name DESC');
 		Factory::getDbo()->setQuery($query);
 		$optionsposition = Factory::getDbo()->loadObjectList();
-		$mitemsclub = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+		$mitemsclub = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_CLUB')));
 		foreach ($optionsclub as $club)
 		{
 		$mitemsclub[] = HTMLHelper::_('select.option', $club->value,  $club->text );
 		}
 				
-		$mitemsposition = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+		$mitemsposition = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_POSITION')));
 		foreach ($optionsposition as $position)
 		{
 		$mitemsposition[] = HTMLHelper::_('select.option', $position->value,  $position->text );
@@ -133,12 +134,6 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION
 $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 $this->value = '';
 }
-
-
-//$app->enqueueMessage('<pre>'.print_r($this->teamvalue,true).'</pre>', 'notice');
-
-        
-          //echo '<pre>'.print_r($this->teamvalue,true).'</pre>';
             
 		}
 		else
@@ -182,13 +177,16 @@ $html[] = '</td>';
 switch ( $targettable )
 {
 case 'season_person_id':
+
+if ( ComponentHelper::getParams('com_sportsmanagement')->get('assign_clup_position_to_player', 0) )
+{
 $html[]  = '<td>';
 $html[] = HTMLHelper::_('select.genericlist', $mitemsclub, 'season_person_club_id' . '[]', 'class="inputbox" ', 'value', 'text', $this->teamvalue[$option->value]['club_id'], 'id');		
 $html[] = '</td>';		
 $html[]  = '<td>';
 $html[] = HTMLHelper::_('select.genericlist', $mitemsposition, 'season_person_position_id' . '[]', 'class="inputbox" ', 'value', 'text', $this->teamvalue[$option->value]['position_id'], 'id');		
 $html[] = '</td>';		
-		
+}		
 break;
 }			
 			

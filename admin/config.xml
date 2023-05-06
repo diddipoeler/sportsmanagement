@@ -1100,6 +1100,16 @@ multiple="true"
 	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 
+<field name="assign_clup_position_to_player" 
+    type="radio" 
+    default="0"
+    layout="joomla.form.field.radio.switcher"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_ASSIGN_CLUB_POSITION_TO_PLAYER" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_ASSIGN_CLUB_POSITION_TO_PLAYER_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
 <field name="install_agegroup" 
     type="radio" 
     default="0"

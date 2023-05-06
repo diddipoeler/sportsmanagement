@@ -2,7 +2,8 @@
 <form
 	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
-	
+
+<!-- register 1 -->	
   <fieldset name="details"
     label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
   description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
@@ -484,7 +485,7 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_2_DESC"
 
 	</fieldset>
  
- 
+ <!-- register 6 -->	
 <fieldset name="injury" 
 label="COM_SPORTSMANAGEMENT_TABS_INJURY"
 description="COM_SPORTSMANAGEMENT_TABS_INJURY_DESC">		
@@ -524,6 +525,7 @@ class="inputbox"
 format="%d-%m-%Y"/>		
 </fieldset>
  
+ <!-- register 7 -->	
    <fieldset name="suspension" 
   label="COM_SPORTSMANAGEMENT_TABS_SUSPENSION"
   description="COM_SPORTSMANAGEMENT_TABS_SUSPENSION_DESC">		
@@ -564,6 +566,7 @@ format="%d-%m-%Y"/>
 
 	</fieldset>
   
+  <!-- register 8 -->	
 <fieldset name="away" 
   label="COM_SPORTSMANAGEMENT_TABS_AWAY"
   description="COM_SPORTSMANAGEMENT_TABS_AWAY_DESC">		
@@ -604,7 +607,7 @@ format="%d-%m-%Y"/>
 
 	</fieldset>
   
-        			
+        			<!-- register 9 -->	
 	<fieldset name="picture"
   label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
   description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
@@ -629,18 +632,21 @@ format="%d-%m-%Y"/>
         		
 	</fieldset>	
 
+<!-- register 10 -->	
 <fieldset name="extended"
   label="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
   description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC">
   
   </fieldset>
 
+<!-- register 11 -->	
   <fieldset name="extra_fields"
   label="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS"
   description="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS_DESC">
   
   </fieldset>
   	
+<!-- register 12 -->		
 	<fieldset name="frontend"
   label="COM_SPORTSMANAGEMENT_TABS_FRONTEND"
   description="COM_SPORTSMANAGEMENT_TABS_FRONTEND_DESC">		
@@ -686,6 +692,7 @@ format="%d-%m-%Y"/>
 			</field>			
 	</fieldset>
   
+  <!-- register 13 -->	
   <fieldset name="memberdata"
   label="COM_SPORTSMANAGEMENT_TABS_MEMBER_DATA"
   description="COM_SPORTSMANAGEMENT_TABS_MEMBER_DATA_DESC">
