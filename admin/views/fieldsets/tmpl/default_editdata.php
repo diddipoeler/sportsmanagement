@@ -105,6 +105,11 @@ case 'description':
 case 'seasons':
 case 'seasonsteams':
 
+case 'injury':
+case 'suspension':
+case 'away':
+
+
 case 'COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS':
 case 'COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_DIV_OPTIONS':
 case 'COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS':

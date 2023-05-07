@@ -74,6 +74,7 @@ class JFormFieldDependSQL extends FormField
 		
 		$ajaxtask  = $this->element['task'];
 		$depends   = $this->element['depends'];
+        $depends2   = $this->element['depends2'];
 		$slug      = $this->element['slug'] == "true" ? 'true' : 'false';
 		$query     = (string) $this->element['query'];
 		$norequest = $this->element['norequest'];
@@ -160,10 +161,8 @@ class JFormFieldDependSQL extends FormField
 		switch ($ajaxtask)
 		{
 		case 'projectteamoptions':
-//$script[] = "var url = 'index.php?option=com_sportsmanagement&format=json&dbase=" . $cfg_which_database . "&slug=" . $slug . "&task=ajax." . $ajaxtask . "&" . $depends . "=' + value &club_id=;";								
 $script[] = "var url = 'index.php?option=com_sportsmanagement&format=json&dbase=" . $cfg_which_database . "&slug=" . $slug . "&club_id=".$value_clubid."&task=ajax." . $ajaxtask . "&" . $depends . "=' + value;";				
 		break;
-				
 		default:
 $script[] = "var url = 'index.php?option=com_sportsmanagement&format=json&dbase=" . $cfg_which_database . "&slug=" . $slug . "&task=ajax." . $ajaxtask . "&" . $depends . "=' + value;";				
 		break;
