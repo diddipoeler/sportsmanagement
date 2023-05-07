@@ -18,6 +18,9 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Log\Log;
 
+$wa = $this->document->getWebAssetManager();
+$wa->useScript('showon');
+
 switch ( $this->view )
 {
 case 'projectteam':
