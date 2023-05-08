@@ -446,14 +446,14 @@ switch ($this->fieldset)
 	case 'request':
 		echo $this->form->renderFieldset('request');
 		break;
-	case 'injury':
-		echo $this->form->renderFieldset('injury');
+	case 'save_injury':
+		echo $this->form->renderFieldset('save_injury');
 		break;
-	case 'suspension':
-		echo $this->form->renderFieldset('suspension');
+	case 'save_suspension':
+		echo $this->form->renderFieldset('save_suspension');
 		break;
-	case 'away':
-		echo $this->form->renderFieldset('away');
+	case 'save_away':
+		echo $this->form->renderFieldset('save_away');
 		break;
 	case 'competition':
 		echo $this->form->renderFieldset('competition');
