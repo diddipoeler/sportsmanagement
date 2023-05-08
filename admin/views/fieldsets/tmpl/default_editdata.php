@@ -102,7 +102,7 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' fieldset name -> ' . $fieldset-
 switch ($fieldset->name)
 {
 case 'details':
-case 'request':
+//case 'request':
 case 'description':
 
 case 'seasons':
