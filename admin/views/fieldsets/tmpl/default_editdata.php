@@ -87,7 +87,17 @@ if (version_compare(JSM_JVERSION, '4', 'eq'))
 
 		foreach ($fieldsets as $fieldset)
 		{
-			echo HTMLHelper::_('uitab.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));
+$help_link = '';
+$link_onlinehelp = COM_SPORTSMANAGEMENT_HELP_SERVER . 'SM-Backend-Felder:' . $this->jinput->getVar("view") . '-' . $fieldset->name ;                                                
+$cmd = "Joomla.popupWindow('$link_onlinehelp', '" . Text::_('COM_SPORTSMANAGEMENT_HELP_LINK', true) . "',". COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH." ,". COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT.", 1)";
+$help_link = '  <button onclick="'.$cmd.'">';
+$help_link .= HTMLHelper::_(
+'image', 'media/com_sportsmanagement/jl_images/help.png',
+Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'), 'title= "' .
+Text::_('COM_SPORTSMANAGEMENT_HELP_LINK') . '"'
+);
+$help_link .= '</button>';
+			echo HTMLHelper::_('uitab.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true).$help_link   );
 			?>
             <!-- <div class="row"> -->
                 <!-- <div class="col-md-12"> -->
