@@ -519,9 +519,27 @@ if ( $config->get('debug') )
 		
 		}
         
-        /** vor- und nachname nicht setzen*/
-//							$data['lastname']  = implode(" - ", $person_double);
-//							$data['firstname'] = '';
+        
+$this->jsmquery->clear(); 
+$this->jsmquery->select('name');
+$this->jsmquery->from('#__sportsmanagement_sports_type');
+$this->jsmquery->where('id = ' . (int) $data['sports_type_id']);
+$this->jsmdb->setQuery($this->jsmquery );        
+$row_sports_type = $this->jsmdb->loadResult();        
+
+switch ( $row_sports_type )
+{
+    case 'COM_SPORTSMANAGEMENT_ST_TABLETENNIS';
+    /** vor- und nachname nicht setzen*/
+    break;
+    default:
+	$data['lastname']  = implode(" - ", $person_double);
+	$data['firstname'] = '';
+    break;
+    
+}        
+        
+
 						}
 						break;
 				}
