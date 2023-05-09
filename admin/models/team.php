@@ -14,6 +14,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Table;
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * sportsmanagementModelteam
@@ -47,6 +48,45 @@ class sportsmanagementModelteam extends JSMModelAdmin
 		$this->club_id = $this->app->getUserState("$this->option.club_id", '0');
 	}
 
+/**
+ * sportsmanagementModelteam::copysave()
+ * 
+ * @return
+ */
+public function copysave()
+	{
+		$this->jsmquery->clear();
+		$pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
+		if (!$pks)
+		{
+			return Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_SAVE_NO_SELECT');
+		}
+
+		for ($x = 0; $x < count($pks); $x++)
+		{
+			$team = $this->getTeam($pks[$x]);
+			$team->id = null;
+			$team->name = $team->name . ' (Kopie)';
+			try
+			{
+				parent::save(ArrayHelper::fromObject($team));
+				$table      = $this->getTable();
+	
+				foreach ($table->getErrors() as $error)
+				{
+					$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $error), 'error');
+				}
+			}
+			catch (Exception $e)
+			{
+				$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
+				$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), 'error');
+			}
+		}
+
+		return Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_SAVE');
+	}
+    
 	/**
 	 * sportsmanagementModelteam::getTeamLogo()
 	 *

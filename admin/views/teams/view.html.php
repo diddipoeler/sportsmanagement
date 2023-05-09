@@ -110,7 +110,7 @@ class sportsmanagementViewTeams extends sportsmanagementView
 		ToolbarHelper::apply('teams.saveshort');
 		ToolbarHelper::addNew('team.add');
 		ToolbarHelper::editList('team.edit');
-		ToolbarHelper::custom('team.copysave', 'copy.png', 'copy_f2.png', Text::_('JTOOLBAR_DUPLICATE'), true);
+		ToolbarHelper::custom('teams.copysave', 'copy.png', 'copy_f2.png', Text::_('JTOOLBAR_DUPLICATE'), true);
 		ToolbarHelper::custom('team.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
 		ToolbarHelper::archiveList('team.export', Text::_('JTOOLBAR_EXPORT'));
 
