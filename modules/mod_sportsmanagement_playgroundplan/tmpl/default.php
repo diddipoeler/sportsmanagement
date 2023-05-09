@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_playgroundplan
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -116,9 +112,16 @@ $n = 1;
 			$textdiv .= '<div class="jlplplanedate">';
 			$textdiv .= HTMLHelper::date($match->match_date, $dateformat);
 			$textdiv .= " " . Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_JSM_START_TIME') . " ";
-			list($date, $time) = explode(" ", $match->match_date);
-			$time    = strftime("%H:%i", strtotime($time));
-			$textdiv .= $time;
+//			list($date, $time) = explode(" ", $match->match_date);
+//			$time    = strftime("%H:%i", strtotime($time));
+//			$textdiv .= $time;
+/**
+list($date, $time) = explode(" ", $match->match_date);
+$time    = strftime("%H:%M", strtotime($time));
+$textdiv .= $time;
+*/
+
+            $textdiv .= HTMLHelper::date($match->match_date, $timeformat);
 			$textdiv .= '</div>';
 
 			if ($params->get('show_project_name', 0))
