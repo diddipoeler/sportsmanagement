@@ -43,7 +43,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		$edit_search_nation = '';
 $post = Factory::getApplication()->input->post->getArray(array());
 
-$edit_search_nation = array_key_exists('edit_search_nation', $post) ? $post['edit_search_nation'] : $edit_search_nation = $this->state->get('filter.search_nation');
+$edit_search_nation = array_key_exists('edit_search_nation', $post) ? $post['edit_search_nation'] : $this->state->get('filter.search_nation');
 
 //		if ( $post['edit_search_nation'] )
 //		{

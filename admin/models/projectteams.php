@@ -495,17 +495,21 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 	 * @return array
 	 * @since  0.1
 	 */
-	function getTeams($country='')
+	function getTeams($country = '')
 	{
 		self::$_project_id    = $this->jsmapp->getUserState("$this->jsmoption.pid", '0');
 		$this->_season_id     = $this->jsmapp->getUserState("$this->jsmoption.season_id", '0');
 		$this->project_art_id = $this->jsmapp->getUserState("$this->jsmoption.project_art_id", '0');
 		$this->sports_type_id = $this->jsmapp->getUserState("$this->jsmoption.sports_type_id", '0');
 $post = Factory::getApplication()->input->post->getArray(array());
-		if ( $post['edit_search_nation'] )
-		{
-		$country = $post['edit_search_nation'];
-		}
+
+$country = array_key_exists('edit_search_nation', $post) ? $post['edit_search_nation'] : $country;
+$postcountry = array_key_exists('edit_search_nation', $post) ? $post['edit_search_nation'] : '';
+
+//		if ( $post['edit_search_nation'] )
+//		{
+//		$country = $post['edit_search_nation'];
+//		}
 //$this->jsmapp->enqueueMessage('<pre>'.print_r($post,true).'</pre>', 'Notice');
 		
 		/** Noch das land der liga */
@@ -531,7 +535,7 @@ $post = Factory::getApplication()->input->post->getArray(array());
 		{
 			$this->jsmquery->clear();
 			
-			if ( $post['edit_search_nation'] )
+			if ( $postcountry )
 		{
               //$this->jsmquery->select('0 AS value, concat(t.name,' - ',t.id,'' ) AS text,t.info');
 				$this->jsmquery->select('0 AS value, concat(t.name,"-",t.id) AS text,t.info');
