@@ -58,7 +58,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         <input type="hidden" name="search_mode" value="<?php echo $this->lists['search_mode']; ?>"/>
         <input type="hidden" name="task" value=""/>
         <input type="hidden" name="boxchecked" value="0"/>
-        <input type="hidden" name="season_id" value="<?php //echo $this->season_id; todo fix undefined $season_id ?>"/>
+        <input type="hidden" name="season_id" value="<?php echo $this->season_id; ?>"/>
         <input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>"/>
         <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>"/>
         <input type="hidden" name="club_id" value="<?php echo $this->club_id; ?>"/>
