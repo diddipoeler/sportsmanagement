@@ -2800,18 +2800,19 @@ $jinput = $app->input;
 
 		switch ($layout)
 		{
-		case 'assignpersons':
-		$zusatz .= '&team_id=' . $jinput->get('team_id');
-		$zusatz .= '&persontype=' . $jinput->get('persontype');
-		$zusatz .= '&season_id=' . $app->getUserState("$option.season_id", '0');
-                $zusatz .= '&whichview='.$jinput->get('view');		
-		case 'assignpersonsclub':		
-		$zusatz .= '&team_id=' . $jinput->get('team_id');
-		$zusatz .= '&persontype=' . $jinput->get('persontype');
-		$zusatz .= '&season_id=' . $app->getUserState("$option.season_id", '0');
-                $zusatz .= '&whichview='.$jinput->get('view');
-		$zusatz .= '&assignclub=1';		
-		break;
+			case 'assignpersons':
+				$zusatz .= '&team_id=' . $jinput->get('team_id');
+				$zusatz .= '&persontype=' . $jinput->get('persontype');
+				$zusatz .= '&season_id=' . $app->getUserState("$option.season_id", '0');
+				$zusatz .= '&whichview='.$jinput->get('view');	
+				break;	
+			case 'assignpersonsclub':		
+				$zusatz .= '&team_id=' . $jinput->get('team_id');
+				$zusatz .= '&persontype=' . $jinput->get('persontype');
+				$zusatz .= '&season_id=' . $app->getUserState("$option.season_id", '0');
+				$zusatz .= '&whichview='.$jinput->get('view');
+				$zusatz .= '&assignclub=1';		
+				break;
 		}
 
 		$modal_popup_width  = ComponentHelper::getParams($option)->get('modal_popup_width', 0);
