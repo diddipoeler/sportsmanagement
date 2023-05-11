@@ -460,8 +460,8 @@ $resultupdate = $this->jsmdb->execute();
 		$project_id  = $post['project_id'];
 		$assign_id   = $post['project_teamslist'];
 		$season_id   = $post['editlist_season_id'];
-		$delete_team = $post['teamslist'];
-		$postteamname = $post['postteamname'];
+		$delete_team = array_key_exists('teamslist', $post) ? $post['teamslist'] : array();
+		$postteamname = array_key_exists('postteamname', $post) ? $post['postteamname'] : array();
 
 		if ($delete_team)
 		{
