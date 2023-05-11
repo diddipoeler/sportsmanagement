@@ -155,11 +155,16 @@ console.log("move_list_items destinationtext laengetext: "+laengetext);
 	
 var team = jQuery( "#"+sourceid+" option:selected" ).text();
 console.log("move_list_items sourceid team : "+team);
+
+let $options = jQuery("#"+sourceid+" option:selected");
+$options.appendTo("#"+destinationid);
+var $options2 = jQuery("#"+destinationid+" > option").clone();
+jQuery('#'+destinationtext).append($options2);
 	
 //alert(sourceid);
 //alert(destinationid);
-jQuery("#"+sourceid+"  option:selected").appendTo("#"+destinationid);
-jQuery("#"+sourceid+"  option:selected").appendTo("#"+destinationtext);
+//jQuery("#"+sourceid+"  option:selected").appendTo("#"+destinationid);
+//jQuery("#"+sourceid+"  option:selected").appendTo("#"+destinationtext);
 	
 //jQuery("#"+destinationtext+"").append(jQuery('<option></option>').attr("value", laengetext).text(team));
 //jQuery('#postteamname').append("<input type='hidden' size='40' name='postteamname["+laengetext+"]' value='"+team+"' >"); 
