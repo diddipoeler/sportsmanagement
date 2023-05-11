@@ -121,7 +121,7 @@ $time    = strftime("%H:%M", strtotime($time));
 $textdiv .= $time;
 */
 
-            $textdiv .= HTMLHelper::date($match->match_date, $timeformat);
+            $textdiv .= HTMLHelper::date($match->match_date, $timeformat, null);
 			$textdiv .= '</div>';
 
 			if ($params->get('show_project_name', 0))
