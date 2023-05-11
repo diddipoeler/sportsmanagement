@@ -155,7 +155,7 @@ if (!empty($this->matches))
 				if ($this->config['show_events'])
 				{
 					?>
-                    <td width='5' class='ko'>
+                    <td width='3%' class='ko'>
 						<?php
 						$events = sportsmanagementModelProject::getMatchEvents($match->id);
 						$subs   = sportsmanagementModelProject::getMatchSubstitutions($match->id);
