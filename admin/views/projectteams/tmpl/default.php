@@ -43,6 +43,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
             var teampicture = new Array;
 			<?php
+		
+$this->lists['country_teams_picture'] = array_key_exists('country_teams_picture', $this->lists) ? $this->lists['country_teams_picture'] : array();
+		
 			foreach ($this->lists['country_teams_picture'] as $key => $value)
 			{
 				if (!$value)
