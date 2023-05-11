@@ -1037,26 +1037,39 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 					{
 						$message       = '';
 						$delete_season = array();
-if ( $config->get('debug') )
-{
-$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post season_person_club_id<pre>'.print_r($post['season_person_club_id'],true).'</pre>'), '');
-$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post season_person_position_id<pre>'.print_r($post['season_person_position_id'],true).'</pre>'), '');
-}	
-						
+
+						if ( $config->get('debug') )
+						{
+						$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post season_person_club_id<pre>'.print_r($post['season_person_club_id'],true).'</pre>'), '');
+						$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post season_person_position_id<pre>'.print_r($post['season_person_position_id'],true).'</pre>'), '');
+						}	
+
+						$options = array();
+						$query = Factory::getDbo()->getQuery(true);
+
+						$query->select('id AS value, name AS text');
+						$query->from('#__sportsmanagement_season');
+						$query->order('name DESC');
+						Factory::getDbo()->setQuery($query);
+						$options = Factory::getDbo()->loadObjectList();
 
 						foreach ($data['season_ids'] as $key => $value)
 						{
-						  
-if ( ComponentHelper::getParams('com_sportsmanagement')->get('assign_clup_position_to_player', 0) )
-{	
-$club_id = $post['season_person_club_id'][$key] ? $post['season_person_club_id'][$key] : 0;						
-$position_id = $post['season_person_position_id'][$key] ? $post['season_person_position_id'][$key] : 0;												
-}
-else
-{
-$club_id = 0;
-$position_id = 0;    
-}	
+							$club_id = 0;
+							$position_id = 0;    
+					  
+							if ( ComponentHelper::getParams('com_sportsmanagement')->get('assign_clup_position_to_player', 0) )
+							{	
+								foreach($options as $entry => $saison)
+								{
+									if ($value == $saison->value)
+									{
+										$club_id = $post['season_person_club_id'][$entry] ? $post['season_person_club_id'][$entry] : 0;						
+										$position_id = $post['season_person_position_id'][$entry] ? $post['season_person_position_id'][$entry] : 0;												
+										break;
+									}
+								}						
+							}
 	
 							$this->jsmquery->clear();
 							$this->jsmquery->select('spi.id,s.name');
