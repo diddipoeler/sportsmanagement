@@ -27,6 +27,8 @@ if (!empty($this->matches))
 	$teamid = Factory::getApplication()->input->getInt('tid');
 	?>
     <!--	<thead> -->
+	<div class="<?php echo $this->divclassrow; ?> table-responsive" id="teamplanoutput">
+
 	<?php
 	//sort matches by dates
 	$gamesByDate = Array();
@@ -740,7 +742,7 @@ usort($match->referees, function ($a, $b) {
 				?>
                 <!-- Show icon for editing events in edit mode -->
                 <tr class="events <?php echo ($k == 0) ? '' : 'alt'; ?>">
-                    <td colspan="<?php echo $nbcols; ?>">
+                    <td>
                         <div id="info<?php echo $match->id; ?>" class="jsmeventsshowhide" style="display: none;">
                             <table class='matchreport' border='0'>
                                 <tr>
@@ -770,6 +772,7 @@ usort($match->referees, function ($a, $b) {
 	?>
     </table>
     </div>
+</div>
 	<?php
 }
 else
