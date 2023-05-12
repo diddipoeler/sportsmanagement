@@ -453,16 +453,6 @@ if ( $config->get('debug') )
 					$data['susp_date_end'] = '0000-00-00';
 				}
 
-				if ($data['referee_valid'] == '')
-				{
-					$data['referee_valid'] = '0000-00-00';
-				}
-
-				if ($data['coach_valid'] == '')
-				{
-					$data['coach_valid'] = '0000-00-00';
-				}
-
 				if ($data['away_date_start'] == '')
 				{
 					$data['away_date_start'] = '0000-00-00';
