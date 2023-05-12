@@ -186,13 +186,16 @@ switch ( $targettable )
 {
 case 'season_person_id':
 
+$html_club_id = array_key_exists('club_id', $this->teamvalue[$option->value]) ? $this->teamvalue[$option->value]['club_id'] : 0;
+$html_position_id = array_key_exists('position_id', $this->teamvalue[$option->value]) ? $this->teamvalue[$option->value]['position_id'] : 0;
+
 if ( ComponentHelper::getParams('com_sportsmanagement')->get('assign_club_position_to_player', 0) || $sports_type_name == 'COM_SPORTSMANAGEMENT_ST_TABLETENNIS' )
 {
 $html[]  = '<td>';
-$html[] = HTMLHelper::_('select.genericlist', $mitemsclub, 'season_person_club_id' . '[]', 'class="inputbox" ', 'value', 'text', $this->teamvalue[$option->value]['club_id'], 'id');		
+$html[] = HTMLHelper::_('select.genericlist', $mitemsclub, 'season_person_club_id' . '[]', 'class="inputbox" ', 'value', 'text', $html_club_id, 'id');		
 $html[] = '</td>';		
 $html[]  = '<td>';
-$html[] = HTMLHelper::_('select.genericlist', $mitemsposition, 'season_person_position_id' . '[]', 'class="inputbox" ', 'value', 'text', $this->teamvalue[$option->value]['position_id'], 'id');		
+$html[] = HTMLHelper::_('select.genericlist', $mitemsposition, 'season_person_position_id' . '[]', 'class="inputbox" ', 'value', 'text', $html_position_id, 'id');		
 $html[] = '</td>';		
 }		
 break;
