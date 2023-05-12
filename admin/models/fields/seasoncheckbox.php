@@ -70,6 +70,14 @@ class JFormFieldseasoncheckbox extends FormField
 		switch ( $targettable )
 		{
 		case 'season_person_id':
+        $query->clear();
+        $query->select('st.name');
+		$query->from('#__sportsmanagement_sports_type as st');
+        $query->join('INNER', '#__sportsmanagement_person AS p ON p.sports_type_id = st.id ');
+        $query->where('p.id =' . $select_id);
+        Factory::getDbo()->setQuery($query);
+        $sports_type_name = Factory::getDbo()->loadResult();
+        
 		$query->clear();
 		$query->select('id AS value, name AS text');
 		$query->from('#__sportsmanagement_club');
@@ -178,7 +186,7 @@ switch ( $targettable )
 {
 case 'season_person_id':
 
-if ( ComponentHelper::getParams('com_sportsmanagement')->get('assign_club_position_to_player', 0) )
+if ( ComponentHelper::getParams('com_sportsmanagement')->get('assign_club_position_to_player', 0) || $sports_type_name == 'COM_SPORTSMANAGEMENT_ST_TABLETENNIS' )
 {
 $html[]  = '<td>';
 $html[] = HTMLHelper::_('select.genericlist', $mitemsclub, 'season_person_club_id' . '[]', 'class="inputbox" ', 'value', 'text', $this->teamvalue[$option->value]['club_id'], 'id');		
