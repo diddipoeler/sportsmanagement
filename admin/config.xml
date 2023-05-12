@@ -1100,7 +1100,7 @@ multiple="true"
 	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 
-<field name="assign_clup_position_to_player" 
+<field name="assign_club_position_to_player" 
     type="radio" 
     default="0"
     layout="joomla.form.field.radio.switcher"

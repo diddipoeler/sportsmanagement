@@ -178,7 +178,7 @@ switch ( $targettable )
 {
 case 'season_person_id':
 
-if ( ComponentHelper::getParams('com_sportsmanagement')->get('assign_clup_position_to_player', 0) )
+if ( ComponentHelper::getParams('com_sportsmanagement')->get('assign_club_position_to_player', 0) )
 {
 $html[]  = '<td>';
 $html[] = HTMLHelper::_('select.genericlist', $mitemsclub, 'season_person_club_id' . '[]', 'class="inputbox" ', 'value', 'text', $this->teamvalue[$option->value]['club_id'], 'id');		
