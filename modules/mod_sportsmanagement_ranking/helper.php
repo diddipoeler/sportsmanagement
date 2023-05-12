@@ -259,43 +259,51 @@ class modJSMRankingHelper
 		{
 			if (!empty($item->team->logo_small))
 			{
-				return HTMLHelper::image($item->team->logo_small, $item->team->short_name, 'class="teamlogo" width="20" ');
+				$logo = $item->team->logo_small;
 			}
+		}
+		elseif ($type == 2 && !empty($item->team->country))
+		{
+			return JSMCountries::getCountryFlag($item->team->country, 'class="teamcountry"');
 		}
 		elseif ($type == 3) // Club small logo
 		{
 			if (!empty($item->team->logo_middle))
 			{
-				return HTMLHelper::image($item->team->logo_middle, $item->team->short_name, 'class="teamlogo" width="20" ');
+				$logo = $item->team->logo_middle;
 			}
 		}
 		elseif ($type == 4) // Club small logo
 		{
 			if (!empty($item->team->logo_big))
 			{
-				return HTMLHelper::image($item->team->logo_big, $item->team->short_name, 'class="teamlogo" width="20" ');
+				$logo = $item->team->logo_big;
 			}
 		}
 		elseif ($type == 5) // Trikot Home
 		{
 			if (!empty($item->team->trikot_home))
 			{
-				return HTMLHelper::image($item->team->trikot_home, $item->team->short_name, 'class="teamlogo" width="20" ');
+				$logo = $item->team->trikot_home;
 			}
 		}
 		elseif ($type == 6) // Trikot Away
 		{
 			if (!empty($item->team->trikot_away))
 			{
-				return HTMLHelper::image($item->team->trikot_away, $item->team->short_name, 'class="teamlogo" width="20" ');
+				$logo = $item->team->trikot_away;
 			}
 		}		
 		
-		elseif ($type == 2 && !empty($item->team->country))
+		if (version_compare(JVERSION, '4.0.0', 'ge'))
 		{
-			return JSMCountries::getCountryFlag($item->team->country, 'class="teamcountry"');
+			$logo = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($logo);
 		}
-
+		
+		if (!empty($logo))
+		{
+			return HTMLHelper::image($logo, $item->team->short_name, 'class="teamlogo" width="20" ');
+		}
 		return '';
 	}
 
