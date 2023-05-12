@@ -566,16 +566,6 @@ switch ( $row_sports_type )
 					$data['birthday'] = sportsmanagementHelper::convertDate($data['birthday'], 0);
 				}
 
-				if ($data['referee_valid'] != '0000-00-00' && $data['referee_valid'] != '')
-				{
-					$data['referee_valid'] = sportsmanagementHelper::convertDate($data['referee_valid'], 0);
-				}
-
-				if ($data['coach_valid'] != '0000-00-00' && $data['coach_valid'] != '')
-				{
-					$data['coach_valid'] = sportsmanagementHelper::convertDate($data['coach_valid'], 0);
-				}
-
 				if ($data['deathday'] != '0000-00-00' && $data['deathday'] != '')
 				{
 					$data['deathday'] = sportsmanagementHelper::convertDate($data['deathday'], 0);
