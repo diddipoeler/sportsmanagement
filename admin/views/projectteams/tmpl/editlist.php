@@ -139,9 +139,11 @@ use Joomla\CMS\Language\Text;
 			?>	
 			</td>
             <td>
+            <div hidden>
             <select name="postteamname[]" id="postteamname">
     
 </select>
+</div>
    			</td>
             </tr>
             </table>
