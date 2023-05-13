@@ -160,6 +160,8 @@ $edit_search_nation = array_key_exists('edit_search_nation', $post) ? $post['edi
 			$lists['project_teams'] = '<select name="project_teamslist[]" id="project_teamslist" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
 			$lists['project_teamslist_name'] = '<select name="project_teamslist_name[]" id="project_teamslist_name" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
 		}
+        
+        $lists['project_new_teams'] = '<select name="project_new_teams[]" id="project_new_teams" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
 
 		$filter_search_nation = $this->state->get('filter.search_nation');
 		if ( !$filter_search_nation )

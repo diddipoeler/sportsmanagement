@@ -443,8 +443,6 @@ $resultupdate = $this->jsmdb->execute();
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
-
-		// JInput object
 		$jinput               = $app->input;
 		$option               = $jinput->getCmd('option');
 		$post                 = $jinput->post->getArray();
@@ -462,6 +460,7 @@ $resultupdate = $this->jsmdb->execute();
 		$season_id   = $post['editlist_season_id'];
 		$delete_team = array_key_exists('teamslist', $post) ? $post['teamslist'] : array();
 		$postteamname = array_key_exists('postteamname', $post) ? $post['postteamname'] : array();
+        $project_new_teams = array_key_exists('project_new_teams', $post) ? $post['project_new_teams'] : array();
 
 		if ($delete_team)
 		{
