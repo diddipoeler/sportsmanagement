@@ -150,30 +150,76 @@ console.log("move_list_items sourceid : "+sourceid);
 console.log("move_list_items destinationid : "+destinationid);
 console.log("move_list_items destinationtext : "+destinationtext);
 
-var laengetext = jQuery("#"+destinationtext+" option").length;  
-console.log("move_list_items destinationtext laengetext: "+laengetext); 
+
 	
 var team = jQuery( "#"+sourceid+" option:selected" ).text();
 console.log("move_list_items sourceid team : "+team);
 
 let $options = jQuery("#"+sourceid+" option:selected");
 $options.appendTo("#"+destinationid);
+
+//$options.appendTo('#postteamname');
+
 var $options2 = jQuery("#"+destinationid+" > option").clone();
 jQuery('#'+destinationtext).append($options2);
-	
-	
-var $options2 = jQuery("#"+destinationtext+" > option").clone();
-jQuery('#postteamname').empty();
-jQuery('#postteamname').append($options2);
-jQuery('#postteamname').val(jQuery('#'+destinationtext).val());	
-	
-	
+
+var laengetext = jQuery("#"+destinationtext+" option").length;  
+console.log("move_list_items destinationtext laengetext: "+laengetext); 
+
+
+//var $options2 = jQuery("#"+destinationtext+" > option").clone();
+//jQuery('#postteamname').empty();
+//jQuery('#postteamname').append($options2);
+//jQuery('#postteamname').val(jQuery('#'+destinationtext).val());
+
+var neuerzaehler = 0;
+jQuery("#"+destinationid+"  > option:selected").each(function() {
+    //alert(jQuery(this).text() + ' ' + jQuery(this).val());
+	var text = jQuery(this).text();
+	var val = jQuery(this).val();
+
+if ( val == 0 )
+{
+	console.log("move_list_items val: "+val); 
+	console.log("move_list_items text: "+text); 
+
+jQuery('#postteamname').append(jQuery('<option>', {value:val, text:text }));
+
+console.log("move_list_items neuerzaehler: "+neuerzaehler); 
+neuerzaehler = neuerzaehler + 1;
+
+
+
+
+}
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//jQuery('#postteamname').append($options2);
+
 //alert(sourceid);
 //alert(destinationid);
 //jQuery("#"+sourceid+"  option:selected").appendTo("#"+destinationid);
 //jQuery("#"+sourceid+"  option:selected").appendTo("#"+destinationtext);
 	
-//jQuery("#"+destinationtext+"").append(jQuery('<option></option>').attr("value", laengetext).text(team));
+//jQuery("#postteamname").append(jQuery('<option></option>').attr("value", laengetext).text(team));
 //jQuery('#postteamname').append("<input type='hidden' size='40' name='postteamname["+laengetext+"]' value='"+team+"' >"); 
 	
 }
