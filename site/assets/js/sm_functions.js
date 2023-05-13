@@ -161,6 +161,10 @@ $options.appendTo("#"+destinationid);
 var $options2 = jQuery("#"+destinationid+" > option").clone();
 jQuery('#'+destinationtext).append($options2);
 	
+	
+var $options3 = jQuery("#"+destinationtext+" > option").clone();	
+	
+	
 //alert(sourceid);
 //alert(destinationid);
 //jQuery("#"+sourceid+"  option:selected").appendTo("#"+destinationid);
