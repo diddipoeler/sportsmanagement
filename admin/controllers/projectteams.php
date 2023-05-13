@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementControllerprojectteams
@@ -82,10 +83,21 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
 	function assign()
 	{
 		$post  = Factory::getApplication()->input->post->getArray(array());
-		//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . 'post<pre>'.print_r($post,true).'</pre>', 'error');
+        if ( ComponentHelper::getParams($option)->get('show_debug_info_backend') )
+		{
+		Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . 'post<pre>'.print_r($post,true).'</pre>', 'notice');  
+		}
+
 		$model = $this->getModel();
 		$msg   = $model->storeAssign($post);
-		$this->setRedirect('index.php?option=' . $this->option . '&view=close&tmpl=component', $msg);
+        if ( ComponentHelper::getParams($option)->get('show_debug_info_backend') )
+		{
+		}
+        else
+        {
+        $this->setRedirect('index.php?option=' . $this->option . '&view=close&tmpl=component', $msg);    
+        }
+		
 	}
 
 	/**

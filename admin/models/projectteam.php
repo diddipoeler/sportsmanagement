@@ -449,10 +449,11 @@ $resultupdate = $this->jsmdb->execute();
 		$_pro_teams_to_delete = array();
 		$query                = Factory::getDbo()->getQuery(true);
 		
-//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . 'post<pre>'.print_r($post,true).'</pre>', 'error');		
+
 
 		if (ComponentHelper::getParams($option)->get('show_debug_info_backend'))
 		{
+		Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . 'post<pre>'.print_r($post,true).'</pre>', 'notice');  
 		}
 
 		$project_id  = $post['project_id'];
