@@ -423,7 +423,7 @@ if (version_compare(JVERSION, '4.0.0', 'ge'))
 			{
 				try
 				{
-					$feed = new \FeedFactory;
+					$feed = new FeedFactory;
 
 					// $feeds = new stdclass();
 					$rssDoc = $feed->getFeed($rssId);
