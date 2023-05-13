@@ -140,10 +140,11 @@ use Joomla\CMS\Language\Text;
 			</td>
                 </tr>
             </table>
-		
+<!--		
 <table class="admintable" border="0" id="postteamname">		
 		
-</table>		
+</table>	
+-->	
         </fieldset>
         <div class="clr"></div>
         

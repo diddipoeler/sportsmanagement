@@ -162,7 +162,10 @@ var $options2 = jQuery("#"+destinationid+" > option").clone();
 jQuery('#'+destinationtext).append($options2);
 	
 	
-var $options3 = jQuery("#"+destinationtext+" > option").clone();	
+var $options2 = jQuery("#"+destinationtext+" > option").clone();
+jQuery('#postteamname').empty();
+jQuery('#postteamname').append($options2);
+jQuery('#postteamname').val(jQuery('#'+destinationtext).val());	
 	
 	
 //alert(sourceid);
