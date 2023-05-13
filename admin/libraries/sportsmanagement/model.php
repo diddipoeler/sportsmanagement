@@ -654,15 +654,37 @@ switch ( $row_sports_type )
 				{
 					$data['logo_big'] = ComponentHelper::getParams($option)->get('ph_logo_big', '');
 				}
+				else if (version_compare(JVERSION, '4.0.0', 'ge'))
+				{
+					$data['logo_big'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['logo_big']);
+				}
 
 				if (empty($data['logo_middle']))
 				{
 					$data['logo_middle'] = ComponentHelper::getParams($option)->get('ph_logo_medium', '');
 				}
+				else if (version_compare(JVERSION, '4.0.0', 'ge'))
+				{
+					$data['logo_middle'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['logo_middle']);
+				}
 
 				if (empty($data['logo_small']))
 				{
 					$data['logo_small'] = ComponentHelper::getParams($option)->get('ph_logo_small', '');
+				}
+				else if (version_compare(JVERSION, '4.0.0', 'ge'))
+				{
+					$data['logo_small'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['logo_small']);
+				}
+
+				if (!empty($data['trikot_home']) && version_compare(JVERSION, '4.0.0', 'ge'))
+				{
+					$data['trikot_home'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['trikot_home']);
+				}
+
+				if (!empty($data['trikot_away']) && version_compare(JVERSION, '4.0.0', 'ge'))
+				{
+					$data['trikot_away'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['trikot_away']);
 				}
 
 				/** wurden jahre mitgegeben ? */
@@ -1058,7 +1080,7 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 							$club_id = 0;
 							$position_id = 0;    
 					  
-							if ( ComponentHelper::getParams('com_sportsmanagement')->get('assign_clup_position_to_player', 0) )
+							if ( ComponentHelper::getParams('com_sportsmanagement')->get('assign_club_position_to_player', 0) )
 							{	
 								foreach($options as $entry => $saison)
 								{
