@@ -451,7 +451,7 @@ $resultupdate = $this->jsmdb->execute();
 		
 
 
-		if (ComponentHelper::getParams($option)->get('show_debug_info_backend'))
+		if ( Factory::getConfig()->get('debug') )
 		{
 		Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . 'post<pre>'.print_r($post,true).'</pre>', 'notice');  
 		}

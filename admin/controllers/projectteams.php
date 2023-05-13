@@ -83,14 +83,14 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
 	function assign()
 	{
 		$post  = Factory::getApplication()->input->post->getArray(array());
-        if ( ComponentHelper::getParams($option)->get('show_debug_info_backend') )
+        if ( Factory::getConfig()->get('debug') )
 		{
 		Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . 'post<pre>'.print_r($post,true).'</pre>', 'notice');  
 		}
 
 		$model = $this->getModel();
 		$msg   = $model->storeAssign($post);
-        if ( ComponentHelper::getParams($option)->get('show_debug_info_backend') )
+        if ( Factory::getConfig()->get('debug') )
 		{
 		}
         else
