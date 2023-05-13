@@ -184,7 +184,7 @@ if ( val == 0 )
 	console.log("move_list_items val: "+val); 
 	console.log("move_list_items text: "+text); 
 
-jQuery('#postteamname').append(jQuery('<option>', {value:val, text:text }));
+jQuery('#postteamname').append(jQuery('<option>', {value:neuerzaehler, text:text }));
 
 console.log("move_list_items neuerzaehler: "+neuerzaehler); 
 neuerzaehler = neuerzaehler + 1;
