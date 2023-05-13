@@ -144,6 +144,7 @@ return documentHeight - 100 ;
 
 
 //this will move selected items from source list to destination list   
+// http://mycodeprograms.blogspot.com/2013/09/how-to-handle-select-and-option-tag-in.html
 function move_list_items(sourceid, destinationid, destinationtext)
 {
 console.log("move_list_items sourceid : "+sourceid);

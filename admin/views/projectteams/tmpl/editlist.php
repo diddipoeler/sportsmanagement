@@ -138,7 +138,12 @@ use Joomla\CMS\Language\Text;
 			echo $this->lists['project_teamslist_name'];
 			?>	
 			</td>
-                </tr>
+            <td>
+            <select name="postteamname[]" id="postteamname">
+    
+</select>
+   			</td>
+            </tr>
             </table>
 <!--		
 <table class="admintable" border="0" id="postteamname">		
@@ -148,7 +153,7 @@ use Joomla\CMS\Language\Text;
         </fieldset>
         <div class="clr"></div>
         
-<input type="hidden" name="postteamname[]" id="postteamname" value=""/>
+<!-- <input type="hidden" name="postteamname[]" id="postteamname" value=""/> -->
 
 <input type="hidden" name="teamschanges_check" value="0" id="teamschanges_check"/>
 <input type="hidden" name="option" value="com_sportsmanagement"/>
