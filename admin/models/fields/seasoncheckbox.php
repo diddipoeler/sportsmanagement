@@ -70,6 +70,8 @@ class JFormFieldseasoncheckbox extends FormField
 		switch ( $targettable )
 		{
 		case 'season_person_id':
+        if ( $select_id )
+        {
         $query->clear();
         $query->select('st.name');
 		$query->from('#__sportsmanagement_sports_type as st');
@@ -77,6 +79,7 @@ class JFormFieldseasoncheckbox extends FormField
         $query->where('p.id =' . $select_id);
         Factory::getDbo()->setQuery($query);
         $sports_type_name = Factory::getDbo()->loadResult();
+        }
         
 		$query->clear();
 		$query->select('id AS value, name AS text');
