@@ -20,7 +20,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 if ( $this->config['show_teamplan_print_option'] )
 {
 ?>
-<script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>  
 
 <button id="exportButton" class="btn btn-primary clearfix"><span class="fa fa-file-pdf-o"></span> Export to PDF</button>
 <button id="btnPrint" class="btn btn-primary hidden-print"><span class="glyphicon glyphicon-print" aria-hidden="true"></span>Print Preview</button>
