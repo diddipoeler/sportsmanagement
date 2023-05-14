@@ -189,7 +189,7 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
                                                            class="inputbox"/></td>
                     <td style='text-align:center; '>
                         <input id="save-new-event"
-                               onclick="save_new_event(<?php echo implode(",", $savenewcomment); ?>)" type="button"
+                               type="button"
                                class="inputbox button-save-event" value="<?php echo Text::_('JSAVE'); ?>"/>
                     </td>
                 </tr>
