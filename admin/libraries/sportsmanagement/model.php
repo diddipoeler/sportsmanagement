@@ -321,6 +321,21 @@ if ( $config->get('debug') )
 					$data['trikot_away'] = $post['copy_jform']['trikot_away'];
 				}
 
+				if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['picture']))
+				{
+					$data['picture'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['picture']);
+				}
+
+				if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['trikot_home']))
+				{
+					$data['trikot_home'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['trikot_home']);
+				}
+
+				if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['trikot_away']))
+				{
+					$data['trikot_away'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['trikot_away']);
+				}
+
 				if ($post['delete'])
 				{
 					$mdlTeam = BaseDatabaseModel::getInstance("Team", "sportsmanagementModel");
@@ -359,7 +374,12 @@ if ( $config->get('debug') )
 				{
 					$data['picture'] = $post['copy_jform']['picture'];
 				}
-                
+
+				if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['picture']))
+				{
+					$data['picture'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['picture']);
+				}
+				
                 if ( !$data['founded'] )
                 {
                     $data['founded'] = '0000-00-00';
@@ -380,11 +400,17 @@ if ( $config->get('debug') )
 					$data['dissolved'] = sportsmanagementHelper::convertDate($data['dissolved'], 0);
 				}
 				break;
-    case 'teamplayer':
+			case 'teamplayer':
                 if (array_key_exists('copy_jform', $post))
 				{
 					$data['picture'] = $post['copy_jform']['picture'];
 				}
+
+				if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['picture']))
+				{
+					$data['picture'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['picture']);
+				}
+
                 if ($data['contract_from'] == '')
 				{
 					$data['contract_from'] = '0000-00-00';
@@ -475,6 +501,11 @@ if ( $config->get('debug') )
 					$data['picture'] = $post['copy_jform']['picture'];
 				}
 
+				if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['picture']))
+				{
+					$data['picture'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['picture']);
+				}
+
 				switch ($data['person_art'])
 				{
 					case 1:
@@ -559,6 +590,11 @@ switch ( $row_sports_type )
 							$data['picture'] = ComponentHelper::getParams($this->jsmoption)->get('ph_player_woman_small', '');
 							break;
 					}
+				}
+
+				if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['picture']))
+				{
+					$data['picture'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['picture']);
 				}
 
 				if ($data['birthday'] != '0000-00-00' && $data['birthday'] != '')
@@ -837,6 +873,10 @@ switch ( $row_sports_type )
 				{
 					$data['picture'] = $post['copy_jform']['picture'];
 				}
+				if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['picture']))
+				{
+					$data['picture'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['picture']);
+				}
 
 				if ($post['delete'])
 				{
@@ -860,6 +900,12 @@ switch ( $row_sports_type )
 				{
 					$data['picture'] = $post['copy_jform']['picture'];
 				}
+
+				if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['picture']))
+				{
+					$data['picture'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['picture']);
+				}
+
 				if ($data['max_visitors'] == '')
 				{
 					$data['max_visitors'] = 0;
@@ -872,6 +918,12 @@ switch ( $row_sports_type )
 				{
 					$data['picture'] = $post['copy_jform']['picture'];
 				}
+
+				if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['picture']))
+				{
+					$data['picture'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['picture']);
+				}
+
 				if ( $data['category_id'] == '' )
 				{
 				$data['category_id']  = 0;	
