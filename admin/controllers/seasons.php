@@ -50,7 +50,7 @@ class sportsmanagementControllerseasons extends JSMControllerAdmin
 		$post   = Factory::getApplication()->input->post->getArray(array());
 		$model  = $this->getModel();
 		$msg = $model->saveshortpersons();
-		$this->setRedirect('index.php?option=com_sportsmanagement&tmpl=component&view=players&layout=assignpersons&season_id=' . $post['season_id'] . '&team_id=' . $post['team_id'] . '&persontype=' . $post['persontype'], $msg);
+		$this->setRedirect('index.php?option=com_sportsmanagement&tmpl=component&view=players&layout=assignpersons&season_id=' . $post['season_id'] . '&team_id=' . $post['team_id'] . '&persontype=' . $post['persontype'] . '&whichview=' . $post['whichview'], $msg);
 	}
 
 	/**
