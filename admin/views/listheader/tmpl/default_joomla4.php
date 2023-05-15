@@ -16,7 +16,10 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Layout\LayoutHelper;
 
+/**
+* #1471
 HTMLHelper::_('behavior.multiselect');
+*/
 
 $app = Factory::getApplication();
 $jinput = $app->input;
