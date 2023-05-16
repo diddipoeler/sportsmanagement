@@ -27,7 +27,7 @@ class JEventsConnector extends JSMCalendar
 
 	static $jevent;
 
-	function getEntries($caldates, $params, &$matches)
+	static function getEntries($caldates, $params, &$matches)
 	{
 
 		if (!self::_checkJEvents())
@@ -57,7 +57,7 @@ class JEventsConnector extends JSMCalendar
 		return $formatted;
 	}
 
-	private function _checkJEvents()
+	private static function _checkJEvents()
 	{
 
 		if (file_exists(JPATH_SITE . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'com_jevents' . DIRECTORY_SEPARATOR . 'mod.defines.php')
@@ -95,12 +95,12 @@ class JEventsConnector extends JSMCalendar
 		return true;
 	}
 
-	private function _raiseError($message)
+	private static function _raiseError($message)
 	{
 		echo $message;
 	}
 
-	function formatEntries($rows, &$matches)
+	static function formatEntries($rows, &$matches)
 	{
 		$newrows = array();
 
@@ -142,7 +142,7 @@ class JEventsConnector extends JSMCalendar
 
 	}
 
-	function buildLink(&$event, $year, $month)
+	static function buildLink(&$event, $year, $month)
 	{
 		include_once JPATH_SITE . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'com_jevents' . DIRECTORY_SEPARATOR . 'router.php';
 		$link = 'index.php?option=com_jevents&amp;task=icalrepeat.detail&amp;evid='
