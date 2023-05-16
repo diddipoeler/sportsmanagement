@@ -164,6 +164,10 @@ class sportsmanagementModelgithub extends BaseDatabaseModel
 		if ($params->get('gh_token', ''))
 		{
 			$gh_options->set('gh.token', $params->get('gh_token', ''));
+
+			$headers = array();
+			$headers['Authorization'] = 'token ' . $params->get('gh_token', '');
+			$gh_options->set('headers', $headers);
 		}
 		/** Set the username and password if set in the params */
 		else
