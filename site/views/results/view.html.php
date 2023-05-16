@@ -1230,7 +1230,7 @@ class sportsmanagementViewResults extends sportsmanagementView
 				}
 				else
 				{
-					echo '$(\'cb' . $i . '\').checked=true;';
+					echo "document.getElementById('cb" . $i . "').checked=true;";
 				}
 
 				echo '"';
