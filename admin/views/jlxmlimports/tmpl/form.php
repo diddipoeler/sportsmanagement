@@ -17,6 +17,7 @@ use Joomla\CMS\Log\Log;
 
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+$visible = "text";
 
 if (isset($this->xml) && is_array($this->xml))
 {
@@ -502,11 +503,7 @@ if (isset($this->xml) && is_array($this->xml))
             }"/>
 									<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CREATE_NEW'); ?>
                                     <input type='text' name='leagueNew' size='90' maxlength='75' id='leagueNew'
-                                           value="<?php echo stripslashes(htmlspecialchars($dLeagueName)); ?>"
-										<?php if ($foundMatchingLeague)
-										{
-											echo " disabled='disabled'";
-										} ?>/>
+                                           value="<?php echo stripslashes(htmlspecialchars($dLeagueName)); ?>"/>
 									<?php
 								}
 								else
@@ -551,10 +548,7 @@ if (isset($this->xml) && is_array($this->xml))
 										$options .= '</option>';
 									}
 									?>
-                                    <select name='season' id='season' <?php if (!$foundMatchingSeason)
-									{
-										echo " disabled='disabled'";
-									} ?>>
+                                    <select name='season' id='season'>
                                         <option selected
                                                 value="0"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SEASON_SELECT'); ?></option>
 										<?php echo $options; ?>
