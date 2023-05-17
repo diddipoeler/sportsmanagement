@@ -55,8 +55,8 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
 
 		if (sportsmanagementModelClubInfo::$projectid)
 		{
-			$this->stadiums    = sportsmanagementModelClubInfo::getStadiums();
-			$this->playgrounds = sportsmanagementModelClubInfo::getPlaygrounds();
+			$this->stadiums    = sportsmanagementModelClubInfo::getStadiums($this->config['show_teams_of_club']);
+			$this->playgrounds = sportsmanagementModelClubInfo::getPlaygrounds($this->config['show_teams_of_club']);
 		}
 
 		$this->showediticon   = sportsmanagementModelProject::hasEditPermission('club.edit');

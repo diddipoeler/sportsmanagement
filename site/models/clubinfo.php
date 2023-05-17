@@ -359,7 +359,7 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 	 *
 	 * @return
 	 */
-	public static function getPlaygrounds()
+	public static function getPlaygrounds($show_teams_of_club = 1)
 	{
 		$app = Factory::getApplication();
 		$jinput = $app->input;
@@ -369,7 +369,7 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 
 		$playgrounds = array();
 
-		$stadiums = self::getStadiums();
+		$stadiums = self::getStadiums($show_teams_of_club);
 
 		if (!isset($stadiums))
 		{
@@ -403,7 +403,7 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 	 *
 	 * @return
 	 */
-	public static function getStadiums()
+	public static function getStadiums($show_teams_of_club = 1)
 	{
 		$app = Factory::getApplication();
 		$jinput = $app->input;
@@ -425,7 +425,7 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel
 			$stadiums[] = $club->standard_playground;
 		}
 
-		$teams = self::getTeamsByClubId();
+		$teams = self::getTeamsByClubId($show_teams_of_club);
 
 		if (count($teams) > 0)
 		{
