@@ -137,13 +137,13 @@ class sportsmanagementViewCurve extends sportsmanagementView
 
 				if ($this->config['which_curve'])
 				{
-					$team1select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid1_' . $div->id, 'onchange="" class="inputbox" style="font-size:9px;"', 'value', 'text', $teamid1);
-					$team2select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid2_' . $div->id, 'onchange="" class="inputbox" style="font-size:9px;"', 'value', 'text', $teamid2);
+					$team1select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid1', 'onchange="" class="inputbox" style="font-size:9px;"', 'value', 'text', $teamid1);
+					$team2select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid2', 'onchange="" class="inputbox" style="font-size:9px;"', 'value', 'text', $teamid2);
 				}
 				else
 				{
-					$team1select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid1_' . $div->id, 'onchange="reload_curve_chart_' . $div->id . '()" class="inputbox" style="font-size:9px;"', 'value', 'text', $teamid1);
-					$team2select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid2_' . $div->id, 'onchange="reload_curve_chart_' . $div->id . '()" class="inputbox" style="font-size:9px;"', 'value', 'text', $teamid2);
+					$team1select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid1', 'onchange="reload_curve_chart_' . $div->id . '()" class="inputbox" style="font-size:9px;"', 'value', 'text', $teamid1);
+					$team2select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid2', 'onchange="reload_curve_chart_' . $div->id . '()" class="inputbox" style="font-size:9px;"', 'value', 'text', $teamid2);
 				}
 			}
 
