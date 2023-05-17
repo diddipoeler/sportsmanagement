@@ -479,10 +479,7 @@ if (isset($this->xml) && is_array($this->xml))
 										$options .= '</option>';
 									}
 									?>
-                                    <select name='league' id='league' <?php if (!$foundMatchingLeague)
-									{
-										echo " disabled='disabled'";
-									} ?>>
+                                    <select name='league' id='league'>
                                         <option selected
                                                 value="0"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_LEAGUE_SELECT'); ?></option>
 										<?php echo $options; ?>
