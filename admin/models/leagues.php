@@ -99,10 +99,10 @@ class sportsmanagementModelLeagues extends JSMModelList
 			return array();
 		}
 
-		foreach ($result as $league)
-		{
-			$league->name = Text::_($league->name).' ('.$league->league_level.')';
-		}
+		// foreach ($result as $league)
+		// {
+		// 	$league->name = Text::_($league->name).' ('.$league->league_level.')';
+		// }
 
 		return $result;
 	}
