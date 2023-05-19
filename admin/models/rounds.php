@@ -366,7 +366,7 @@ class sportsmanagementModelRounds extends JSMModelList
 
 		if (!strtotime($start))
 		{
-			$start = strftime('%Y-%m-%d');
+			$start = date('Y-m-d');
 		}
 
 		if (!preg_match("/^[0-9]+:[0-9]+$/", $time))
@@ -468,7 +468,7 @@ class sportsmanagementModelRounds extends JSMModelList
 			{
 				$round                   = new stdClass;
 				$round->project_id       = $project_id;
-				$round->round_date_first = strtotime($current_date) ? strftime('%Y-%m-%d', strtotime($current_date) + $interval * 24 * 3600) : $start;
+				$round->round_date_first = strtotime($current_date) ? date('Y-m-d', strtotime($current_date) + $interval * 24 * 3600) : $start;
 				$round->round_date_last  = $round->round_date_first;
 				$round->roundcode        = $current_code ? $current_code + 1 : 1;
 				$round->name             = sprintf($roundname, $round->roundcode);

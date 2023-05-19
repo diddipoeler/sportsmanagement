@@ -56,7 +56,7 @@ use Joomla\CMS\Factory;
 
                             <tr class="">
                                 <td><?php
-									echo HTMLHelper::link($report_link, strftime($this->config['games_date_format'], strtotime($game->match_date)));
+									echo HTMLHelper::link($report_link, date($this->config['games_date_format'], strtotime($game->match_date)));
 									?>
                                 </td>
                                 <td class="td_r">

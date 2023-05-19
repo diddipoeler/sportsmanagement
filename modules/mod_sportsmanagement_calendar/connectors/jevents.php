@@ -118,14 +118,14 @@ class JEventsConnector extends JSMCalendar
 					}
 
 					$newrow['link'] = self::buildLink($event, $row['year'], $row['month']);
-					$newrow['date'] = strftime('%Y-%m-%d', $row['cellDate']) . ' ' . strftime('%H:%i', $event->_dtstart);
+					$newrow['date'] = date('Y-m-d', $row['cellDate']) . ' ' . date('H:i', $event->_dtstart);
 					$newrow['type'] = 'jevents';
 					$newrow['time'] = '';
 
 					if ($event->_alldayevent != 1)
 					{
-						$newrow['time'] = strftime('%H:%i', $event->_dtstart);
-						$newrow['time'] .= ($event->_dtstart != $event->_dtend && $event->_noendtime == 0) ? '-' . strftime('%H:%i', $event->_dtend) : '';
+						$newrow['time'] = date('H:i', $event->_dtstart);
+						$newrow['time'] .= ($event->_dtstart != $event->_dtend && $event->_noendtime == 0) ? '-' . date('H:i', $event->_dtend) : '';
 					}
 
 					$newrow['headingtitle'] = self::$xparams->get('jevents_text', 'JEvents');

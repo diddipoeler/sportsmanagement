@@ -70,7 +70,7 @@ use Joomla\CMS\Factory;
 		{
 			if ($this->config['type_matches'] == 0)
 			{
-				$gameDate = strftime("%Y-%m-%d", strtotime($game->match_date));
+				$gameDate = date('Y-m-d', strtotime($game->match_date));
 				if ($gameDate != $prevDate)
 				{
 					?>

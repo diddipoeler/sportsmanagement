@@ -82,7 +82,7 @@ $checked    = HTMLHelper::_('jgrid.checkedout', $i, $user->get('id'), $thismatch
 $published = HTMLHelper::_('grid.published', $match, $i);
 
 list($date, $time) = explode(" ", $match->match_date);
-$time = strftime("%H:%i", strtotime($time));
+$time = date('H:i', strtotime($time));
 ?>
 <tr id="result-<?php echo $match->id; ?>" class="row-result">
     <td valign="top"><?php

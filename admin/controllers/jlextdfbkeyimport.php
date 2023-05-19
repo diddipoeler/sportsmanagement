@@ -117,7 +117,7 @@ class sportsmanagementControllerjlextdfbkeyimport extends BaseController
 			// Convert dates back to mysql date format
 			if (isset($post[round_date_first][$i]))
 			{
-				$post[round_date_first][$i] = strtotime($post[round_date_first][$i]) ? strftime('%Y-%m-%d', strtotime($post[round_date_first][$i])) : null;
+				$post[round_date_first][$i] = strtotime($post[round_date_first][$i]) ? date('Y-m-d', strtotime($post[round_date_first][$i])) : null;
 			}
 			else
 			{
@@ -126,7 +126,7 @@ class sportsmanagementControllerjlextdfbkeyimport extends BaseController
 
 			if (isset($post[round_date_last][$i]))
 			{
-				$post[round_date_last][$i] = strtotime($post[round_date_last][$i]) ? strftime('%Y-%m-%d', strtotime($post[round_date_last][$i])) : null;
+				$post[round_date_last][$i] = strtotime($post[round_date_last][$i]) ? date('Y-m-d', strtotime($post[round_date_last][$i])) : null;
 			}
 			else
 			{
@@ -179,7 +179,7 @@ class sportsmanagementControllerjlextdfbkeyimport extends BaseController
 			// Convert dates back to mysql date format
 			if (isset($post[match_date][$i]))
 			{
-				$post[match_date][$i] = strtotime($post[match_date][$i]) ? strftime('%Y-%m-%d', strtotime($post[match_date][$i])) : null;
+				$post[match_date][$i] = strtotime($post[match_date][$i]) ? date('Y-m-d', strtotime($post[match_date][$i])) : null;
 			}
 			else
 			{

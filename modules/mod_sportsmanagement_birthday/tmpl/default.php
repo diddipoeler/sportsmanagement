@@ -90,8 +90,8 @@ switch ($mode)
 						$birthdayformat = htmlentities(trim($params->get('birthdayformat')));
 						$birthdaytext   = str_replace('%WHEN%', $whenmessage, $birthdaytext);
 						$birthdaytext   = str_replace('%AGE%', $person['age'], $birthdaytext);
-						$birthdaytext   = str_replace('%DATE%', strftime($dayformat, strtotime($person['year'] . '-' . $person['daymonth'])), $birthdaytext);
-						$birthdaytext   = str_replace('%DATE_OF_BIRTH%', strftime($birthdayformat, strtotime($person['date_of_birth'])), $birthdaytext);
+						$birthdaytext   = str_replace('%DATE%', date($dayformat, strtotime($person['year'] . '-' . $person['daymonth'])), $birthdaytext);
+						$birthdaytext   = str_replace('%DATE_OF_BIRTH%', date($birthdayformat, strtotime($person['date_of_birth'])), $birthdaytext);
 						$birthdaytext   = str_replace('%BR%', '<br />', $birthdaytext);
 						$birthdaytext   = str_replace('%BOLD%', '<b>', $birthdaytext);
 						$birthdaytext   = str_replace('%BOLDEND%', '</b>', $birthdaytext);
@@ -244,8 +244,8 @@ switch ($mode)
 							$birthdayformat = htmlentities(trim($params->get('birthdayformat')));
 							$birthdaytext   = str_replace('%WHEN%', $whenmessage, $birthdaytext);
 							$birthdaytext   = str_replace('%AGE%', $person['age'], $birthdaytext);
-							$birthdaytext   = str_replace('%DATE%', strftime($dayformat, strtotime($person['year'] . '-' . $person['daymonth'])), $birthdaytext);
-							$birthdaytext   = str_replace('%DATE_OF_BIRTH%', strftime($birthdayformat, strtotime($person['date_of_birth'])), $birthdaytext);
+							$birthdaytext   = str_replace('%DATE%', date($dayformat, strtotime($person['year'] . '-' . $person['daymonth'])), $birthdaytext);
+							$birthdaytext   = str_replace('%DATE_OF_BIRTH%', date($birthdayformat, strtotime($person['date_of_birth'])), $birthdaytext);
 							$birthdaytext   = str_replace('%BR%', '<br />', $birthdaytext);
 							$birthdaytext   = str_replace('%BOLD%', '<b>', $birthdaytext);
 							$birthdaytext   = str_replace('%BOLDEND%', '</b>', $birthdaytext);

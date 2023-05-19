@@ -113,11 +113,11 @@ $n = 1;
 			$textdiv .= HTMLHelper::date($match->match_date, $dateformat);
 			$textdiv .= " " . Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_JSM_START_TIME') . " ";
 //			list($date, $time) = explode(" ", $match->match_date);
-//			$time    = strftime("%H:%i", strtotime($time));
+//			$time    = date('H:i', strtotime($time));
 //			$textdiv .= $time;
 /**
 list($date, $time) = explode(" ", $match->match_date);
-$time    = strftime("%H:%M", strtotime($time));
+$time    = date('H:i', strtotime($time));
 $textdiv .= $time;
 */
 

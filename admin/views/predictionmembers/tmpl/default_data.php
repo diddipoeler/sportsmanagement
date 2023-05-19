@@ -177,7 +177,7 @@ use Joomla\CMS\Router\Route;
 						if (isset($row->last_tipp))
 						{
 							list($date, $time) = explode(" ", $row->last_tipp);
-							$time = strftime("%H:%i", strtotime($time));
+							$time = date('H:i', strtotime($time));
 							echo sportsmanagementHelper::convertDate($date);
 							echo ' / ';
 							echo $time;
