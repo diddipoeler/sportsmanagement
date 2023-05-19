@@ -18,8 +18,11 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Log\Log;
 
-$wa = $this->document->getWebAssetManager();
-$wa->useScript('showon');
+if (version_compare(JSM_JVERSION, '4', 'eq'))
+{
+	$wa = $this->document->getWebAssetManager();
+	$wa->useScript('showon');
+}
 
 switch ( $this->view )
 {
