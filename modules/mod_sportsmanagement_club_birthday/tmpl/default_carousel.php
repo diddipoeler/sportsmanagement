@@ -202,8 +202,8 @@ $gesamtclubs = count($clubs);
 								$birthdayformat = htmlentities(trim($params->get('birthdayformat')));
 								$birthdaytext2  = str_replace('%WHEN%', $whenmessage, $birthdaytext2);
 								$birthdaytext2  = str_replace('%AGE%', $club->age, $birthdaytext2);
-								$birthdaytext2  = str_replace('%DATE%', strftime($dayformat, strtotime($club->year . '-' . $club->daymonth)), $birthdaytext2);
-								$birthdaytext2  = str_replace('%DATE_OF_BIRTH%', strftime($birthdayformat, strtotime($club->date_of_birth)), $birthdaytext2);
+								$birthdaytext2  = str_replace('%DATE%', date($dayformat, strtotime($club->year . '-' . $club->daymonth)), $birthdaytext2);
+								$birthdaytext2  = str_replace('%DATE_OF_BIRTH%', date($birthdayformat, strtotime($club->date_of_birth)), $birthdaytext2);
 							}
 							else
 							{

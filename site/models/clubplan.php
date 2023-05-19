@@ -78,7 +78,7 @@ class sportsmanagementModelClubPlan extends BaseDatabaseModel
 		// Should be in proper sql format
 		if (strtotime($date))
 		{
-			self::$startdate = strftime("%Y-%m-%d", strtotime($date));
+			self::$startdate = date('Y-m-d', strtotime($date));
 		}
 		else
 		{
@@ -100,7 +100,7 @@ class sportsmanagementModelClubPlan extends BaseDatabaseModel
 		// Should be in proper sql format
 		if (strtotime($date))
 		{
-			self::$enddate = strftime("%Y-%m-%d", strtotime($date));
+			self::$enddate = date('Y-m-d', strtotime($date));
 		}
 		else
 		{
