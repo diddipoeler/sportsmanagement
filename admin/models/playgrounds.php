@@ -131,7 +131,7 @@ $this->jsmquery->select('picture as playgroundpicture');
 		$starttime = microtime();
 		$results   = array();
 		$this->jsmquery->clear();
-		$this->jsmquery->select('id,name,id AS value,name AS text,short_name,club_id');
+		$this->jsmquery->select('id,name,id AS value,name AS text,short_name,club_id, country');
 		$this->jsmquery->from('#__sportsmanagement_playground');
 		$this->jsmquery->order('name');
 
