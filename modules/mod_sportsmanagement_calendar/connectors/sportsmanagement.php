@@ -124,6 +124,10 @@ class SportsmanagementConnector extends JSMCalendar
 		$favConds           = array();
 
 		$customteam = $jinput->getVar('jlcteam', 0, 'default', 'POST');
+		if ($customteam == 'undefined')
+		{
+			$customteam = 0;
+		}
 
 		$teamid = self::$xparams->get('team_ids');
 
