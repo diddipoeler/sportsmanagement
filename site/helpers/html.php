@@ -418,7 +418,7 @@ class sportsmanagementHelperHtml
 	 */
 	public static function showMatchTime(&$game, &$config, &$overallconfig, &$project)
 	{
-		// Overallconfig could be deleted here and replaced below by config as both array were merged in view.html.php
+		/** Overallconfig could be deleted here and replaced below by config as both array were merged in view.html.php */
 		$output = '';
 
 		if (!isset($overallconfig['time_format'])) {
@@ -492,7 +492,7 @@ class sportsmanagementHelperHtml
 	 *
 	 * @return string
 	 */
-	function mark_now_playing($thistime, $match_stamp, &$config, &$project)
+	public static function mark_now_playing($thistime , $match_stamp, &$config, &$project)
 	{
 		$whichpart = 1;
 		$gone_since_begin = intval(($thistime - $match_stamp) / 60);
