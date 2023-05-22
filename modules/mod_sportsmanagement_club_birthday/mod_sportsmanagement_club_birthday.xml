@@ -129,7 +129,7 @@
 						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SPACER_CUSTOMIZE_MESSAGES_DESCR" />
 -->
 
-				<field 	name="dayformat" type="text" default="d. F Y"
+				<field 	name="dayformat" type="text" default="d.m.Y"
 						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_DATE_FORMAT_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_DATE_FORMAT_DESCR" />
 
