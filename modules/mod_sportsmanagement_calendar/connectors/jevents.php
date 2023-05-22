@@ -37,6 +37,7 @@ class JEventsConnector extends JSMCalendar
 
 		$year  = substr($caldates['start'], 0, 4);
 		$month = (substr($caldates['start'], 5, 1) == '0') ? substr($caldates['start'], 6, 1) : substr($caldates['start'], 5, 2);
+		$month = str_replace('-', '', $month);
 
 		self::$xparams = $params;
 		/**

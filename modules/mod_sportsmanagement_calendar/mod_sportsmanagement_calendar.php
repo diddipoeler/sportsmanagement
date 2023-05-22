@@ -120,6 +120,9 @@ if (!defined('JLC_MODULESCRIPTLOADED'))
 	if (version_compare(JVERSION, '4.0.0', 'ge'))
 	{
 		HTMLHelper::_('script', 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'assets/js' . DIRECTORY_SEPARATOR . $module->module . '.js');
+		$doc->getWebAssetManager()
+    	->useScript('bootstrap.modal');
+
 	}
 	elseif (version_compare(JVERSION, '3.0.0', 'ge'))
 	{
