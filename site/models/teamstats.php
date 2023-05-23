@@ -660,7 +660,7 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
 			}
 			else
 			{
-				if ($match->team1_id == $this->teamid)
+				if ($match->team1_id == self::$teamid)
 				{
 					// We are the home team
 					if (empty($match->team1_result_decision))

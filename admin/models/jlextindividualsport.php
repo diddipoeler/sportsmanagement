@@ -1048,7 +1048,7 @@ try{
 	 *
 	 * @return
 	 */
-	function save_array($cid = null, $post = null, $zusatz = false, $project_id)
+	function save_array($project_id, $cid = null, $post = null, $zusatz = false)
 	{
 		$app          = Factory::getApplication();
 		$datatable[0] = '#__sportsmanagement_match_single';

@@ -277,7 +277,7 @@ use Joomla\CMS\Factory;
                     <td>
 						<?PHP
 						echo sportsmanagementHelperHtml::getBootstrapModalImage('clubplan' . $game->match_id . '-' . $game->team1_id,
-							$game->$picture,
+							$game->home_logo_big,
 							$game->tname1,
 							'20',
 							'',
@@ -301,7 +301,7 @@ use Joomla\CMS\Factory;
                     <td>
 						<?PHP
 						echo sportsmanagementHelperHtml::getBootstrapModalImage('clubplan' . $game->match_id . '-' . $game->team2_id,
-							$game->$picture,
+							$game->away_logo_big,
 							$game->tname2,
 							'20',
 							'',
