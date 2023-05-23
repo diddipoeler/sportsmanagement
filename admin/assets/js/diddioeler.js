@@ -114,13 +114,13 @@ var team = jQuery("#team_id option:selected").text();
 	  
 jQuery("#table-event").last().append('<tr id="rowevent-' 
     + resp[0] + '"><td>' 
-	+ team + '</td><td>' + player + '</td><td>' 
-    + jQuery("#event_type_id option:selected").text() + '</td><td>' 
-	+ jQuery("#event_sum").val() + '</td><td>' 
+	+ team + '</td><td>' + player + '</td><td style="text-align:center; ">' 
+    + jQuery("#event_type_id option:selected").text() + '</td><td style="text-align:center; ">' 
+	+ jQuery("#event_sum").val() + '</td><td style="text-align:center; ">' 
     + jQuery("#event_time").val() + '</td><td>' 
     + jQuery("#notice").val() + '</td><td><input id="deleteevent-' + resp[0] 
     + '" type="button" onClick="deleteevent(' + resp[0] + ')" class="inputbox button-delete-event" value="' 
-    + str_delete + '"</td></tr>');
+    + str_delete + '"></td></tr>');
 
 console.log("team : " + team);
 console.log("player : " + player);
@@ -228,11 +228,12 @@ if (resp[0] != '0')
 {
 jQuery("#table-commentary").last().append('<tr id="rowcomment-' 
     + resp[0] + '"><td>' 
-    + jQuery("#ctype").val() + '</td><td>' 
+	+ jQuery("#ctype option:selected").text() + '</td><td style="text-align:center; ">' 
+//	+ jQuery("#ctype").val() + '</td><td>' 
     + jQuery("#c_event_time").val() + '</td><td>' 
-    + jQuery("#notes").val() + '</td><td><input	id="deletecomment-' + resp[0] 
+    + jQuery("#notes").val() + '</td><td style="text-align:center; "><input	id="deletecomment-' + resp[0] 
     + '" type="button" class="inputbox button-delete-commentary" value="' 
-    + str_delete + '"</td></tr>');
+    + str_delete + '" onClick="deletecommentary(' + resp[0] + ')"></td></tr>');
 		
     jQuery("#ajaxresponse").addClass("ajaxsuccess");
     jQuery("#ajaxresponse").text(resp[1]);

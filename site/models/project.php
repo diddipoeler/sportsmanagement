@@ -1716,7 +1716,7 @@ self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT')
 		}
 		else
 		{
-			$join = 'INNER';
+			$join = 'LEFT';
 
 			// $addline = '';
 		}
@@ -1749,7 +1749,7 @@ self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT')
 
 		// Where
 		$query->where('me.match_id = ' . (int) $match_id);
-		$query->where('p.published = 1');
+		$query->where('COALESCE(p.published,1) = 1');
 		$query->group('me.event_type_id,me.id,me.event_time,me.notice,me.event_sum,me.projectteam_id,t.alias, t.id, et.name, t.name, p.picture, tp.picture,p.firstname, p.nickname, p.lastname, p.alias, p.id');
 
 		// Order
