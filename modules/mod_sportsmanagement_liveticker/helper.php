@@ -158,7 +158,7 @@ class modTurtushoutHelper
 	 *
 	 * @return
 	 */
-	function shout($display_username, $display_title, $add_timeout)
+	public static function shout($display_username, $display_title, $add_timeout)
 	{
 
 	}
@@ -169,7 +169,7 @@ class modTurtushoutHelper
 	 *
 	 * @return
 	 */
-	function delete()
+	public static function delete()
 	{
 
 	}

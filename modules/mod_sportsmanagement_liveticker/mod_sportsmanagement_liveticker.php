@@ -268,7 +268,7 @@ if (!$is_ajaxed || ($action == "turtushout_shouts"))
 		$anstossdatum = explode(" ", $list[$i]->match_date);
 
 		$anstoss = $anstossdatum[1];
-		$abpfiff = $anstoss + (($list[$i]->game_regular_time + $list[$i]->halftime) * 60);
+		//$abpfiff = $anstoss + (($list[$i]->game_regular_time + $list[$i]->halftime) * 60);
 
 		$abpfiff = date('H:i:s', strtotime($anstoss) + ($list[$i]->game_regular_time + $list[$i]->halftime) * 60);
 
