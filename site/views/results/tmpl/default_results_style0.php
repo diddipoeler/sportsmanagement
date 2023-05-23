@@ -277,11 +277,13 @@ if ($this->config['show_comments_count'])
 				?>
 				<div itemscope itemtype="http://schema.org/SportsEvent">
 					<?php
-					$starttime = sportsmanagementHelperHtml::showMatchTime($game, $this->config, $this->overallconfig, $this->project);
+					$config_tmp = $this->config;
+					$config_tmp['mark_now_playing'] = 0;
+					$starttime = sportsmanagementHelperHtml::showMatchTime($game, $config_tmp, $this->overallconfig, $this->project);
 					?>
 					<span itemprop="startDate" datetime="<?php echo $date; ?>T<?php echo $starttime; ?>" content="<?php echo $date; ?>T<?php echo $starttime; ?>"></span>
 					<?php
-					$endtime = sportsmanagementHelperHtml::showMatchTime($game, $this->config, $this->overallconfig, $this->project);
+					$endtime = sportsmanagementHelperHtml::showMatchTime($game, $config_tmp, $this->overallconfig, $this->project);
 
 					$ergebnis = date('H:i:s', strtotime('+' . $this->project->game_regular_time + $this->project->halftime . ' minutes', strtotime($game->match_date)));
 
