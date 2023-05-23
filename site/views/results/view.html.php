@@ -647,7 +647,7 @@ class sportsmanagementViewResults extends sportsmanagementView
 
 			foreach ((array) $matchevents as $me)
 			{
-				if ($me->ptid == $matchInfo->projectteam1_id)
+				if (isset($me->ptid) && $me->ptid == $matchInfo->projectteam1_id)
 				{
 					$output .= self::_formatEventContainerInResults($me, $projectevents[$me->event_type_id], $matchInfo->projectteam1_id, $showEventInfo, $config);
 				}
@@ -664,7 +664,7 @@ class sportsmanagementViewResults extends sportsmanagementView
 
 			foreach ($matchevents as $me)
 			{
-				if ($me->ptid == $matchInfo->projectteam2_id)
+				if (isset($me->ptid) && $me->ptid == $matchInfo->projectteam2_id)
 				{
 					$output .= self::_formatEventContainerInResults($me, $projectevents[$me->event_type_id], $matchInfo->projectteam2_id, $showEventInfo, $config);
 				}
