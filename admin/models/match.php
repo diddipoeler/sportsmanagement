@@ -85,10 +85,6 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 	 */
 	public static function getMatchEvents($match_id = 0)
 	{
-		$app        = Factory::getApplication();
-		$jinput     = $app->input;
-		$option     = $jinput->getCmd('option');
-		$project_id = $app->getUserState("$option.pid", '0');
 		$db         = sportsmanagementHelper::getDBConnection();
 		$query      = $db->getQuery(true);
 		$query->select('me.*,t.name AS team,et.name AS event,CONCAT(t1.firstname," \'",t1.nickname,"\' ",t1.lastname) AS player1');
@@ -100,7 +96,6 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 		$query->join('LEFT', '#__sportsmanagement_team AS t ON t.id = st1.team_id');
 		$query->join('LEFT', '#__sportsmanagement_eventtype AS et ON et.id = me.event_type_id ');
 		$query->join('LEFT', '#__sportsmanagement_person_project_position AS ppp on ppp.person_id = tp1.id and ppp.project_id = pt1.project_id');
-		$query->where('pt1.project_id = ' . $project_id);
 		$query->where('me.match_id = ' . $match_id);
 		$query->order('me.event_time ASC');
 		$db->setQuery($query);
