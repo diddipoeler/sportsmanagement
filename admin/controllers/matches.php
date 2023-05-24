@@ -176,7 +176,7 @@ class sportsmanagementControllermatches extends JSMControllerAdmin
 		}
 		else
 		{
-			$result = $result . "&" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_EVENT');
+			$result = $resultsave . "&" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_EVENT');
 		}
 
 		echo json_encode($result);
