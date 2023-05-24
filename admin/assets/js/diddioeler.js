@@ -118,7 +118,7 @@ jQuery("#table-event").last().append('<tr id="rowevent-'
     + jQuery("#event_type_id option:selected").text() + '</td><td style="text-align:center; ">' 
 	+ jQuery("#event_sum").val() + '</td><td style="text-align:center; ">' 
     + jQuery("#event_time").val() + '</td><td>' 
-    + jQuery("#notice").val() + '</td><td><input id="deleteevent-' + resp[0] 
+    + jQuery("#notice").val() + '</td><td style="text-align:center; "><input id="deleteevent-' + resp[0] 
     + '" type="button" onClick="deleteevent(' + resp[0] + ')" class="inputbox button-delete-event" value="' 
     + str_delete + '"></td></tr>');
 
