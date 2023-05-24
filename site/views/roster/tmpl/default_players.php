@@ -275,7 +275,8 @@ if (!empty($this->rows))
 			 *
 			 * jetzt kommt die schleife über die positionen
 			 */
-			foreach ($this->rows as $position_id => $players) if ( $position_id == $position->id )
+			foreach ($this->rows as $position_id => $players) 
+			if ( isset($position->id) && $position_id == $position->id )
 			{
 			$positionpdf = $position->id;
 				$meanage     = 0;

@@ -284,7 +284,7 @@ class sportsmanagementModelRivals extends BaseDatabaseModel
 				}
 				else
 				{
-					if (empty($match->team2_result_decision))
+					if (empty($match->team2_result_decision) && isset($opo[$match->team1_id]['forfeit']))
 					{
 						$opo[$match->team1_id]['forfeit'] += 1;
 					}
