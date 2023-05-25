@@ -1030,7 +1030,7 @@ $app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'person_a
 	 *
 	 * @return
 	 */
-	public static function getProjectTeamsByDivisionOptions($project_id, $division_id = 0, $required = false, $slug = false, $dbase = false)
+	public static function getProjectTeamsByDivisionOptions($project_id, $required = false, $slug = false, $dbase = false, $division_id = 0)
 	{
 
 		$app    = Factory::getApplication();
@@ -1850,7 +1850,7 @@ $app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'person_a
 	 *
 	 * @return
 	 */
-	function getRefereesOptions($project_id, $required = false, $slug = false, $dbase = false)
+	public static function getRefereesOptions($project_id, $required = false, $slug = false, $dbase = false)
 	{
 
 		$app    = Factory::getApplication();
@@ -1877,7 +1877,23 @@ $app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'person_a
 		$query->join('INNER', ' #__sportsmanagement_project_referee AS pr ON pr.person_id = sp.id ');
 
 		// Where
-		$query->where('pr.project_id = ' . $db->Quote($project_id));
+		if ($project_id)
+		{
+			if (!is_array($project_id))
+			{
+				$project_id = explode(",", $project_id);
+			}
+
+			if (is_array($project_id))
+			{
+				$ids = implode(",", array_map('intval', $project_id));
+				$query->where('pr.project_id IN (' . $ids . ')');
+			}
+			else
+			{
+				$query->where('pr.project_id = ' . (int) $project_id);
+			}
+		}
 		$query->where('p.published = 1');
 
 		// Order
