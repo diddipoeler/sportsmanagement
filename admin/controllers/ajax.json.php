@@ -630,10 +630,10 @@ class sportsmanagementControllerAjax extends BaseController
 		{
 			$result = $this->getModel('ajax')->getProjectTeamsByDivisionOptions(
 				$this->jinput->get->getString('p'),
-				$this->jinput->get->getString('division'),
 				$this->jinput->get->getString('required'),
 				$this->jinput->get->getString('slug'),
-				$this->jinput->get->getString('dbase')
+				$this->jinput->get->getString('dbase'),
+				$this->jinput->get->getString('division')
 			);
 
 			echo new JsonResponse($result);

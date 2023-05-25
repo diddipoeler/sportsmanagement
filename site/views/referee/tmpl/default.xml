@@ -43,6 +43,8 @@
 					required="">
 			</field>
 			<field	name="pid" type="dependsql" depends="p" task="refereesoptions"
+					key_field="project_id"
+					value_field="p"
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_REFEREE_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_REFEREE_DESCR"
 					required="">

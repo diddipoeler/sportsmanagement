@@ -297,7 +297,7 @@ class sportsmanagementControllerAjax extends BaseController
 		$app    = Factory::getApplication();
 		$jinput = $app->input;
 		$model  = $this->getModel('ajax');
-		echo json_encode((array) $model->getProjectTeamsByDivisionOptions($jinput->getVar('p', '0'), Factory::getApplication()->input->getInt('division'), $jinput->getVar('required', 'false'), $jinput->getVar('slug', 'false'), Factory::getApplication()->input->getInt('dbase')));
+		echo json_encode((array) $model->getProjectTeamsByDivisionOptions($jinput->getVar('p', '0'), $jinput->getVar('required', 'false'), $jinput->getVar('slug', 'false'), Factory::getApplication()->input->getInt('dbase'), Factory::getApplication()->input->getInt('division')));
 		Factory::getApplication()->close();
 	}
 

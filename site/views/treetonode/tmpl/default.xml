@@ -47,9 +47,11 @@
 			</field>
       
 			<field	name="tnid" 
-      type="dependsql" 
-      depends="p" 
-      task="projecttreenodeoptions"
+	      			type="dependsql" 
+      				depends="p" 
+      				task="projecttreenodeoptions"
+  					key_field="project_id"
+					value_field="p"
 					label="COM_SPORTSMANAGEMENT_XML_TREETO_SELECT_TREETONODE_LABEL" 
 					description="COM_SPORTSMANAGEMENT_XML_TREETO_SELECT_TREETONODE_DESCR"
 					required="false">
