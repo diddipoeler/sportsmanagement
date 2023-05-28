@@ -35,7 +35,6 @@
 		</field>
 
 		<field 	name="show_players_layout" type="list" default="player_standard" 
-    layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_PLAYERS_LAYOUT" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_PLAYERS_LAYOUT">
 			<option value="player_standard">COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION1_PLAYER_STANDARD</option>
@@ -51,7 +50,6 @@
 		</field>
 
 		<field 	name="show_staff_layout" type="list" default="staff_standard" 
-    layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_STAFF_LAYOUT" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_STAFF_LAYOUT">
 			<option value="staff_standard">COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION1_STAFF_STANDARD</option>

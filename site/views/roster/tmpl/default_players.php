@@ -532,16 +532,16 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
                   
 						if ($this->config['show_player_icon'])
 						{
-							$picture = $row->ppic;
-/*
+							$picture    = $row->picture;
 							if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player")))
 							{
 								$picture = $row->ppic;
 							}
-                          */
-if (preg_match("/placeholder/i", $picture)) {
-$picture = $row->picture;
-}  
+							if (!curl_init($picture))
+							{
+								$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
+							}
+						  
 							?>
                             <td class="" width="" nowrap="nowrap">
                               <span itemprop="name" content="<?php echo $playerName;?>"></span> 
