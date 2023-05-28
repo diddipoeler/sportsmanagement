@@ -15,7 +15,6 @@
 		</field>
 		
 		<field name="show_clubinfo_tabs" type="list" default="no_tabs"
-    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_RESULT_TABS"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_RESULT_TABS">
 			<option value="no_tabs">COM_SPORTSMANAGEMENT_FES_CLUBINFO_NO_TABS</option>
@@ -130,7 +129,6 @@
 		</field>
 		
 		<field name="show_teams_of_club" type="list" default="1"
-		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_TEAMS_CLUB"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_TEAMS_CLUB">
 			<option value="0">JNO</option>

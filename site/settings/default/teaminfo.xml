@@ -18,7 +18,6 @@
 		</field>
     
     <field name="show_teaminfo_tabs" type="list" default="no_tabs"
-    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_TEAMINFO_PARAM_LABEL_SHOW_RESULT_TABS"
 			description="COM_SPORTSMANAGEMENT_FES_TEAMINFO_PARAM_DESCR_SHOW_RESULT_TABS">
 			<option value="no_tabs">COM_SPORTSMANAGEMENT_FES_TEAMINFO_NO_TABS</option>

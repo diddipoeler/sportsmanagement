@@ -115,7 +115,6 @@
 		</field>
 
 		<field	name="show_referee" type="list" default="0"
-		layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_LABEL_SHOW_REFEREES"
 				description="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_DESCR_SHOW_REFEREES">
 			<option value="0">JNO</option>
@@ -148,7 +147,6 @@
 		</field>
 
 		<field	name="show_playground_alert" type="list" default="0"
-		layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_LABEL_SHOW_PLAYGROUND_ALERT"
 				description="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_DESCR_SHOW_PLAYGROUND_ALERT">
 			<option value="0">JNO</option>
