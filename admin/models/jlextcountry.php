@@ -190,7 +190,15 @@ class sportsmanagementModeljlextcountry extends JSMModelAdmin
 						$profile->accuracy     = $value->accuracy;
 
 						// Insert the object into the table.
-						$result = Factory::getDbo()->insertObject('#__sportsmanagement_countries_plz', $profile);
+						try
+						{
+							$result = Factory::getDbo()->insertObject('#__sportsmanagement_countries_plz', $profile);
+						}
+						catch (Exception $e)
+						{
+							$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+							$result = false;
+						}
 					}
 				}
 				else
