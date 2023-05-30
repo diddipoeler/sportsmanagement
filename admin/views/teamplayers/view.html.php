@@ -11,11 +11,13 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Log\Log;
 
 /**
@@ -196,8 +198,37 @@ Factory::getApplication()->input->cookie->set('teamplayers', implode(";", $value
 
 		ToolbarHelper::apply('teamplayers.saveshort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_APPLY'));
 		ToolbarHelper::divider();
-		sportsmanagementHelper::ToolbarButton('assignpersons', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN'), 'players', 0);
-		sportsmanagementHelper::ToolbarButton('assignpersonsclub', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN_CLUB'), 'players', 0);
+		//sportsmanagementHelper::ToolbarButton('assignpersons', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN'), 'players', 0);
+		//sportsmanagementHelper::ToolbarButton('assignpersonsclub', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN_CLUB'), 'players', 0);
+		$layout = new FileLayout('assignpersons', JPATH_ROOT . '/components/com_sportsmanagement/layouts');
+		$html   = $layout->render();
+		Toolbar::getInstance('toolbar')->appendButton('Custom', $html, 'upload');
+		$modal_params           = array();
+
+		$zusatz = '&team_id=' . $this->team_id;
+		$zusatz .= '&persontype=' . $this->_persontype;
+		$zusatz .= '&season_id=' . $this->season_id;
+		$zusatz .= '&whichview=teamplayers';
+
+		$modal_params['url']    = 'index.php?option=com_sportsmanagement&view=players&tmpl=component&layout=assignpersons&type=0&issueview=&issuelayout=' . $zusatz;
+		$modal_params['height'] = $this->modalheight;
+		$modal_params['width']  = $this->modalwidth;
+		$modal_params['modalWidth']  = '60';
+		echo HTMLHelper::_('bootstrap.renderModal', 'collapseModalassignPersons', $modal_params);
+
+		$layout = new FileLayout('assignpersonsclub', JPATH_ROOT . '/components/com_sportsmanagement/layouts');
+		$html   = $layout->render();
+		Toolbar::getInstance('toolbar')->appendButton('Custom', $html, 'upload');
+		$modal_params           = array();
+
+		$zusatz .= '&whichview=teamplayers&assignclub=1';
+
+		$modal_params['url']    = 'index.php?option=com_sportsmanagement&view=players&tmpl=component&layout=assignpersons&type=0&issueview=&issuelayout=' . $zusatz;
+		$modal_params['height'] = $this->modalheight;
+		$modal_params['width']  = $this->modalwidth;
+		$modal_params['modalWidth']  = '60';
+		echo HTMLHelper::_('bootstrap.renderModal', 'collapseModalassignPersonsClub', $modal_params);
+		
 		ToolbarHelper::apply('teamplayers.assignplayerscountry', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN_COUNTRY'));
 		ToolbarHelper::divider();
 		ToolbarHelper::back('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_BACK', 'index.php?option=' . $this->option . '&view=projectteams&pid=' . $this->project_id . '&id=' . $this->project_id);
