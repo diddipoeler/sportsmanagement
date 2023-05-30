@@ -118,7 +118,7 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' club ' . $this->jsmjinput->get(
 			$this->jsmquery->join('INNER', '#__sportsmanagement_season_person_id AS sp ON sp.person_id = pl.id');
             $this->jsmquery->join('INNER', '#__sportsmanagement_club AS c ON c.id = sp.club_id' );
             $this->jsmquery->join('INNER', '#__sportsmanagement_team AS t ON t.club_id = c.id' );
-            $this->jsmquery->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = t.id');
+            //$this->jsmquery->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = t.id');
             
 			$this->jsmquery->where('sp.season_id = ' . $this->_season_id);
             $this->jsmquery->where('t.id = ' . $this->_team_id);	
