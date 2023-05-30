@@ -2180,7 +2180,7 @@ class vcalendar
 			for ($i = 0; $i < count($this->unparsed); $i++)
 			{ // concatenate lines
 				$line = rtrim($this->unparsed[$i], $nl);
-				while (isset($this->unparsed[$i + 1]) && !empty($this->unparsed[$i + 1]) && (' ' == $this->unparsed[$i + 1]{0}))
+				while (isset($this->unparsed[$i + 1]) && !empty($this->unparsed[$i + 1]) && (' ' == $this->unparsed[$i + 1][0]))
 				{
 					$line .= rtrim(substr($this->unparsed[++$i], 1), $nl);
 				}
@@ -2657,7 +2657,11 @@ class vcalendar
 				return $this->nl . ' version="' . $this->version . '"';
 				break;
 			default:
-				return 'VERSION:' . $this->version . $this->nl;
+				if (!isset($this->nl))
+				{
+					$this->nl = "\r\n";
+				}
+				return $this->nl . 'VERSION:' . $this->version . $this->nl;
 				break;
 		}
 	}
@@ -3000,6 +3004,7 @@ class calendarComponent
 			default:
 				$objectname               = (isset($this->timezonetype)) ?
 					strtoupper($this->timezonetype) : strtoupper($this->objName);
+				//$objectname = strtoupper(get_class($this));
 				$this->componentStart1    = 'BEGIN:';
 				$this->componentStart2    = null;
 				$this->componentEnd1      = 'END:';
@@ -3350,7 +3355,7 @@ class calendarComponent
 		$str    = null;
 		for ($p = 0; $p < $length; $p++)
 		{
-			$unique .= $base{mt_rand($start, $end)};
+			$unique .= $base[mt_rand($start, $end)];
 		}
 		$this->uid          = array('params' => null);
 		$this->uid['value'] = $date . '-' . $unique . '@' . $this->getConfig('unique_id');
@@ -5289,7 +5294,7 @@ class calendarComponent
 	 */
 	function createUid()
 	{
-		if (0 >= count($this->uid))
+		if ($this->uid == null || 0 >= count($this->uid))
 		{
 			$this->_makeuid();
 		}
@@ -6662,7 +6667,7 @@ class calendarComponent
 		for ($i = 0; $i < count($this->unparsed); $i++)
 		{ // concatenate lines
 			$line = rtrim($this->unparsed[$i], $nl);
-			while (isset($this->unparsed[$i + 1]) && !empty($this->unparsed[$i + 1]) && (' ' == $this->unparsed[$i + 1]{0}))
+			while (isset($this->unparsed[$i + 1]) && !empty($this->unparsed[$i + 1]) && (' ' == $this->unparsed[$i + 1][0]))
 			{
 				$line .= rtrim(substr($this->unparsed[++$i], 1), $nl);
 			}
@@ -7043,7 +7048,7 @@ class calendarComponent
 		$arglist = func_get_args();
 		if ($this->_notExistProp($arglist[0]))
 		{
-			return false;
+			//return false;
 		}
 		if (!$this->getConfig('allowEmpty') && (!isset($arglist[1]) || empty($arglist[1])))
 		{
@@ -7959,10 +7964,10 @@ class calendarComponent
 					}
 				}
 				elseif ((3 <= strlen(trim($fbMember)))     // string format duration
-					&& (in_array($fbMember{0}, array('P', '+', '-')))
+					&& (in_array($fbMember[0], array('P', '+', '-')))
 				)
 				{
-					if ('P' != $fbMember{0})
+					if ('P' != $fbMember[0])
 					{
 						$fbmember = substr($fbMember, 1);
 					}
@@ -8792,7 +8797,7 @@ class calendarComponent
 		elseif (is_string($year) && (is_array($month) || empty($month)))
 		{  // duration or date in a string
 			$params = iCalUtilityFunctions::_setParams($month);
-			if (in_array($year{0}, array('P', '+', '-')))
+			if (in_array($year[0], array('P', '+', '-')))
 			{ // duration
 				$relatedStart = (isset($params['RELATED']) && ('END' == strtoupper($params['RELATED']))) ? false : true;
 				$before       = ('-' == $year[0]) ? true : false;
@@ -9386,6 +9391,13 @@ class calendarComponent
 	 */
 	function & newComponent($compType)
 	{
+		if (strtoupper($compType) == 'STANDARD')
+		{
+			$this->components[] = new vtimezone('STANDARD', $config);
+			$ix = 0;
+			return $this->components[$ix];
+		}
+
 		$config = $this->getConfig();
 		$keys   = array_keys($this->components);
 		$ix     = end($keys) + 1;
@@ -9526,7 +9538,7 @@ class vevent extends calendarComponent
 	 * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
 	 * @since  2.8.2 - 2011-05-01
 	 */
-	function vevent($config = array())
+	function __construct($config = array())
 	{
 		$this->calendarComponent();
 
@@ -10222,7 +10234,7 @@ class vtimezone extends calendarComponent
 	 * @since  2.8.2 - 2011-05-01
 	 * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
 	 */
-	function vtimezone($timezonetype = false, $config = array())
+	function __construct($timezonetype = false, $config = array())
 	{
 		if (is_array($timezonetype))
 		{
@@ -10475,7 +10487,7 @@ class iCalUtilityFunctions
 				}
 				else
 				{
-					$tzid = (isset($theDate['tz'])) ? $theDate['tz'] : (7 == count($theDate)) ? end($theDate) : null;
+					$tzid = (isset($theDate['tz'])) ? $theDate['tz'] : ((7 == count($theDate)) ? end($theDate) : null);
 				}
 				if (!empty($tzid))
 				{
