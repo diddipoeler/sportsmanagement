@@ -18,9 +18,13 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filesystem\File;
+use Joomla\Archive\Archive;
 
 jimport('joomla.filesystem.folder');
-jimport('joomla.filesystem.archive');
+if (version_compare(JSM_JVERSION, '3', 'eq'))
+{
+	jimport('joomla.filesystem.archive');
+}
 
 /**
  * sportsmanagementModeljlextcountry
@@ -69,7 +73,33 @@ class sportsmanagementModeljlextcountry extends JSMModelAdmin
 			else
 			{
 				$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_COPY_PLZ_SUCCESS'), 'Notice');
-				$result = JArchive::extract($filepath, $base_Dir);
+
+				if (version_compare(JSM_JVERSION, '3', 'eq'))
+				{	
+					try
+					{
+						$result = JArchive::extract($filepath, $base_Dir);
+					}
+					catch (Exception $e)
+					{
+						$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+						$result = false;
+					}
+				}
+				elseif (version_compare(JSM_JVERSION, '4', 'eq'))
+				{
+					$archive = new Archive;
+	
+					try
+					{
+						$result = $archive->extract($filepath, $base_Dir);
+					}
+					catch (Exception $e)
+					{
+						$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+						$result = false;
+					}
+				}
 
 				if ($result)
 				{
@@ -77,7 +107,14 @@ class sportsmanagementModeljlextcountry extends JSMModelAdmin
 
 					$file = $base_Dir . $alpha2 . '.txt';
 
-					$source = File::read($file);
+					if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+					{
+						$source = file_get_contents($file);    
+					}
+					elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
+					{
+						$source = File::read($file);
+					}										
 
 					// # tab delimited, and encoding conversion
 					$csv = new JSMparseCSV;
@@ -153,7 +190,15 @@ class sportsmanagementModeljlextcountry extends JSMModelAdmin
 						$profile->accuracy     = $value->accuracy;
 
 						// Insert the object into the table.
-						$result = Factory::getDbo()->insertObject('#__sportsmanagement_countries_plz', $profile);
+						try
+						{
+							$result = Factory::getDbo()->insertObject('#__sportsmanagement_countries_plz', $profile);
+						}
+						catch (Exception $e)
+						{
+							$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+							$result = false;
+						}
 					}
 				}
 				else
