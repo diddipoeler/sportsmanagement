@@ -656,7 +656,7 @@ is_array($stat_ids) ? true : false;
 		// $statistic_views = explode(',', $params->get('statistic_views'));
 		$statistic_views = $params->get('statistic_views');
 
-		if (!count($statistic_views))
+		if (!isset($statistic_views) || !count($statistic_views))
 		{
 //			Log::add(get_class($this) . ' ' . __FUNCTION__ . ' ' . __LINE__ . ' ' . Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return (array(0));

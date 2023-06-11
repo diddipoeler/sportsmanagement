@@ -325,7 +325,7 @@ class sportsmanagementModelMatchReport extends JSMModelLegacy
 		$starttime = microtime();
 		$db        = sportsmanagementHelper::getDBConnection(true, sportsmanagementModelProject::$cfg_which_database);
 		$query     = $db->getQuery(true);
-		$query->select('pt.id,pt.id as ptid');
+		$query->select('DISTINCT pt.id,pt.id as ptid');
 		$query->select('p.firstname,p.nickname,p.lastname,p.picture AS ppic');
 		$query->select('ppos.id AS pposid');
 		$query->select('st.team_id,st.id as stid');
