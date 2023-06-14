@@ -160,6 +160,8 @@ $time = date('H:i', strtotime($time));
 		?>
         <td style="text-align:center; ">
 			<?php echo $match->divhome; ?>
+			<input type='hidden' style='font-size: 9px;' size='3' name='division_id<?php echo $thismatch->id; ?>'
+				value='<?php echo $match->divhomeid; ?>' />
         </td>
 		<?php
 	}

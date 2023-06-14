@@ -188,8 +188,8 @@ class sportsmanagementModelResults extends JSMModelList
 			$query->select('m.*,DATE_FORMAT(m.time_present,"%H:%i") time_present');
 			$query->select('playground.name AS playground_name,playground.short_name AS playground_short_name,playground.address AS playground_address,playground.zipcode AS playground_zipcode,playground.city as playground_city');
 			$query->select('pt1.project_id');
-			$query->select('d1.name as divhome');
-			$query->select('d2.name as divaway');
+			$query->select('d1.name as divhome, d1.id as divhomeid');
+			$query->select('d2.name as divaway, d2.id as divawayid');
 			$query->select('CASE WHEN CHAR_LENGTH(t1.alias) AND CHAR_LENGTH(t2.alias) THEN CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) ELSE m.id END AS slug ');
 			$query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
 			$query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
