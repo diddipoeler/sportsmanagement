@@ -890,7 +890,7 @@ switch ( $row_sports_type )
 
 				if ($post['add_trainingData'])
 				{
-					sportsmanagementModelteam::addNewTrainigData($data[id]);
+					sportsmanagementModelteam::addNewTrainigData($data['id']);
 				}
 				break;
 
