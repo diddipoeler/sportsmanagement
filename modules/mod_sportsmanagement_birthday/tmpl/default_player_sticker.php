@@ -91,7 +91,7 @@ if (count($persons) > 0)
 		$params_com     = ComponentHelper::getParams('com_sportsmanagement');
 		$usefontawesome = $params_com->get('use_fontawesome');        
 		$showname = HTMLHelper::link($person_link, $usedname);	
-		$picture = $person['default_picture'];
+		$picture = $person['picture'];
 	
 		$border_color = $params->get('border_color');
 		$background_color = $params->get('background_color');
