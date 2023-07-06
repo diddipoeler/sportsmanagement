@@ -35,7 +35,7 @@ if (!empty($this->sidebar))
 <?php endif; 
 */
 ?>
-
+<div class="col-md-10">
 	    
 <?php
 echo $this->loadTemplate('jsm_warnings');
