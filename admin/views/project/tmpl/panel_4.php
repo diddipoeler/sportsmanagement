@@ -17,8 +17,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <?php
 require(JPATH_COMPONENT_ADMINISTRATOR . '/views/listheader/tmpl/default_4_start_menu.php');   
 ?>
+
+<?php 
 /**
-<?php if (!empty($this->sidebar))
+if (!empty($this->sidebar))
 	:
 	?>
     <div id="j-sidebar-container" class="col-md-2">
@@ -30,8 +32,10 @@ require(JPATH_COMPONENT_ADMINISTRATOR . '/views/listheader/tmpl/default_4_start_
 	:
 	?>
     <div class="col-md-10">
-<?php endif; ?>
+<?php endif; 
 */
+?>
+
 	    
 <?php
 echo $this->loadTemplate('jsm_warnings');
