@@ -14,6 +14,11 @@ $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
     <div class="row">
+<?php
+echo $this->loadTemplate('start_menu');
+?>
+
+/**	    
 <?php if (!empty($this->sidebar))
 	:
 	?>
@@ -27,6 +32,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	?>
     <div class="col-md-10">
 <?php endif; ?>
+*/
+	    
 <?php
 echo $this->loadTemplate('jsm_warnings');
 echo $this->loadTemplate('jsm_notes');			    
