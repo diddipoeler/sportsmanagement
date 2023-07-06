@@ -22,57 +22,57 @@ use Joomla\CMS\Log\Log;
     <nav class="quick-icons px-3 pb-3" aria-label="Schnellstartlinks Sportspamangement">
 		<ul class="nav flex-wrap">
 			<li class="quickicon quickicon-single">
-				<a title="<?php echo Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_PANEL_LINK') ?>"
+				<a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_MENU') ?>"
 				   href="index.php?option=com_sportsmanagement">
 					<div class="quickicon-icon">
 						<img src="<?php echo JURI::base(false) ?>/components/com_sportsmanagement/assets/icons/transparent_schrift_48.png">
 					</div>
 					<div class="quickicon-name d-flex align-items-end">
-						<?php echo Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_PANEL_LABEL') ?>             
+						<?php echo Text::_('COM_SPORTSMANAGEMENT_MENU') ?>             
 					</div>
 				</a>
 			</li>
 			<li class="quickicon quickicon-single">
-				<a title="<?php echo Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_EXTENSIONS_LINK') ?>"
+				<a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_EXTENSIONS') ?>"
 				   href="index.php?option=com_sportsmanagement&view=extensions">
 					<div class="quickicon-icon">
 						<img src="<?php echo JURI::base(false) ?>/components/com_sportsmanagement/assets/icons/extensions.png">
 					</div>
 					<div class="quickicon-name d-flex align-items-end">
-						<?php echo Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_EXTENSIONS_LABEL') ?>             
+						<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_EXTENSIONS') ?>             
 					</div>
 				</a>
 			</li>
 			<li class="quickicon quickicon-single">
-				<a title="<?php echo Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_PROJECTS_LINK') ?>"
+				<a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_PROJECTS') ?>"
 				   href="index.php?option=com_sportsmanagement&view=projects">
 					<div class="quickicon-icon">
 						<img src="<?php echo JURI::base(false) ?>/components/com_sportsmanagement/assets/icons/projekte.png">
 					</div>
 					<div class="quickicon-name d-flex align-items-end">
-						<?php echo Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_PROJECTS_LABEL') ?>             
+						<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_PROJECTS') ?>             
 					</div>
 				</a>
 			</li>
 			<li class="quickicon quickicon-single">
-				<a title="<?php echo Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_PREDICTIONS_LINK') ?>"
+				<a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_PREDICTIONS') ?>"
 				   href="index.php?option=com_sportsmanagement&view=predictions">
 					<div class="quickicon-icon">
 						<img src="<?php echo JURI::base(false) ?>/components/com_sportsmanagement/assets/icons/tippspiele.png">
 					</div>
 					<div class="quickicon-name d-flex align-items-end">
-						<?php echo Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_PREDICTIONS_LABEL') ?>             
+						<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_PREDICTIONS') ?>             
 					</div>
 				</a>
 			</li>
 			<li class="quickicon quickicon-single">
-				<a title="<?php echo Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_CURRENT_SAISON_LINK') ?>"
+				<a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_CURRENT_SEASONS') ?>"
 				   href="index.php?option=com_sportsmanagement&view=currentseasons">
 					<div class="quickicon-icon">
 						<img src="<?php echo JURI::base(false) ?>/components/com_sportsmanagement/assets/icons/aktuellesaison.png">
 					</div>
 					<div class="quickicon-name d-flex align-items-end">
-						<?php echo Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_CURRENT_SAISON_LABEL') ?>             
+						<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_CURRENT_SEASONS') ?>             
 					</div>
 				</a>
 			</li>
