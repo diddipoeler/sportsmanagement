@@ -51,7 +51,7 @@ $project_id = $app->getUserState("$option.pid", '0');
 require(JPATH_COMPONENT_ADMINISTRATOR . '/views/listheader/tmpl/default_4_start_menu.php');   
 ?>
 
-<div class="col-md-10">
+<div class="col-md-12">
 <div id="j-main-container" class="j-main-container">
 <?php
 
