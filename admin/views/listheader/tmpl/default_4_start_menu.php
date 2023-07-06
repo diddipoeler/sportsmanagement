@@ -18,6 +18,7 @@ use Joomla\CMS\Log\Log;
 
 
 ?>
+<div class="col-md-10">
     <nav class="quick-icons px-3 pb-3" aria-label="Schnellstartlinks Sportspamangement">
 		<ul class="nav flex-wrap">
 			<li class="quickicon quickicon-single">
@@ -77,4 +78,5 @@ use Joomla\CMS\Log\Log;
 			</li>
 		</ul>
     </nav>
+				</div>
 	<?PHP
