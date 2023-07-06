@@ -14,8 +14,9 @@ $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
     <div class="row">
+<?php
 require(JPATH_COMPONENT_ADMINISTRATOR . '/views/listheader/tmpl/default_4_start_menu.php');   
-
+?>
 /**
 <?php if (!empty($this->sidebar))
 	:
