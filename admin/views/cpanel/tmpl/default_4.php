@@ -18,10 +18,15 @@ $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <div class="row">
+<?php
+echo $this->loadTemplate('start_menu');
+?>
+	<!--
     <div id="j-sidebar-container" class="col-md-2">
 		<?php echo $this->sidebar; ?>
     </div>
-    <div class="col-md-8">
+-->
+    <div class="col-md-10">
     <?php
             if ( ComponentHelper::getParams('com_sportsmanagement')->get('start_install_helper') && !$this->sporttypes )
             {
