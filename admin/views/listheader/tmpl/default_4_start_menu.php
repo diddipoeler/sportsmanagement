@@ -89,6 +89,20 @@ use Joomla\CMS\Log\Log;
 					</div>
 				</a>
 			</li>
+
+			<li class="quickicon quickicon-single">
+				<a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_GOOGLE_CALENDAR') ?>"
+				   href="index.php?option=com_sportsmanagement&view=currentseasons">
+					<div class="quickicon-icon">
+						<img src="<?php echo JURI::base(false) ?>/components/com_sportsmanagement/assets/icons/google-calendar-48-icon.png">
+					</div>
+					<div class="quickicon-name d-flex align-items-end">
+						<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_GOOGLE_CALENDAR') ?>             
+					</div>
+				</a>
+			</li>
+
+			
 		</ul>
     </nav>
 				</div>
