@@ -21,7 +21,9 @@ $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <div class="row">
-    <?php if (!empty($this->sidebar))
+    <?php
+/**
+if (!empty($this->sidebar))
     :
         ?>
         <div id="j-sidebar-container" class="col-md-2">
@@ -33,7 +35,15 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     :
         ?>
             <div class="col-md-10">
-            <?php endif; ?>
+            <?php endif; 
+*/
+?>
+
+
+<?php
+require(JPATH_COMPONENT_ADMINISTRATOR . '/views/listheader/tmpl/default_4_start_menu.php');   
+?>
+            <div class="col-md-12">
             <div id="dashboard-iconss" class="dashboard-icons">
 
                 <?php
