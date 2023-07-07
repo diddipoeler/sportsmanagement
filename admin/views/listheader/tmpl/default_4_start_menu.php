@@ -18,7 +18,7 @@ use Joomla\CMS\Log\Log;
 
 
 ?>
-<div class="col-md-10">
+<div class="col-md-12">
     <nav class="quick-icons px-3 pb-3" aria-label="Schnellstartlinks Sportspamangement">
 		<ul class="nav flex-wrap">
 			<li class="quickicon quickicon-single">
