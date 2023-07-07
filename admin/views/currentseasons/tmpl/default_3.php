@@ -46,7 +46,9 @@ if ($this->items)
 ?>
 
 
-<?php if (!empty($this->sidebar))
+<?php
+/**
+if (!empty($this->sidebar))
 	:
 	?>
     <div id="j-sidebar-container" class="span2">
@@ -57,8 +59,14 @@ if ($this->items)
 	:
 	?>
     <div id="j-main-container">
-<?php endif; ?>
+<?php endif; 
+*/
+?>
 
+<?php
+require(JPATH_COMPONENT_ADMINISTRATOR . '/views/listheader/tmpl/default_4_start_menu.php');   
+?>
+    <div id="j-main-container">
     <div id="jsm" class="admin override">
 
         <div id="j-main-container" class="span10">
