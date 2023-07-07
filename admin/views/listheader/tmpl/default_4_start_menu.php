@@ -43,6 +43,19 @@ use Joomla\CMS\Log\Log;
 					</div>
 				</a>
 			</li>
+
+			<li class="quickicon quickicon-single">
+				<a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_SPECIAL_EXTENSIONS') ?>"
+				   href="index.php?option=com_sportsmanagement&view=specialextensions">
+					<div class="quickicon-icon">
+						<img src="<?php echo JURI::base(false) ?>/components/com_sportsmanagement/assets/icons/extensions.png">
+					</div>
+					<div class="quickicon-name d-flex align-items-end">
+						<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_SPECIAL_EXTENSIONS') ?>             
+					</div>
+				</a>
+			</li>
+			
 			<li class="quickicon quickicon-single">
 				<a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_PROJECTS') ?>"
 				   href="index.php?option=com_sportsmanagement&view=projects">
