@@ -86,6 +86,9 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' _type ' . $this->_type), Log::N
 Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' _project_id ' . $this->_project_id), Log::NOTICE, 'jsmerror');
 Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' _team_id ' . $this->_team_id), Log::NOTICE, 'jsmerror');
 Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' _season_id ' . $this->_season_id), Log::NOTICE, 'jsmerror');
+
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' season_id ' . $season_id), Log::NOTICE, 'jsmerror');
+
 Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' _project_team_id ' . $this->_project_team_id), Log::NOTICE, 'jsmerror');
 Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' layout ' . $this->jsmjinput->getVar('layout')), Log::NOTICE, 'jsmerror');
 Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' club ' . $this->jsmjinput->get('club')), Log::NOTICE, 'jsmerror');	
@@ -173,7 +176,7 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' club ' . $this->jsmjinput->get(
 			$this->jsmquery->where('pl.published = ' . $this->getState('filter.state'));
 		}
 
-		if ( $layout == 'assignpersons' && !$clubselect )
+		if ( $layout ===  'assignpersons' && !$clubselect )
 		{
 			$this->_season_id = $this->jsmapp->input->get('season_id');
 
