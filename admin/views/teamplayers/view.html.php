@@ -19,6 +19,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementViewteamplayers
@@ -216,19 +217,21 @@ Factory::getApplication()->input->cookie->set('teamplayers', implode(";", $value
 		$modal_params['modalWidth']  = '60';
 		echo HTMLHelper::_('bootstrap.renderModal', 'collapseModalassignPersons', $modal_params);
 
+if ( ComponentHelper::getParams($this->option)->get('assign_club_position_to_player', 0) )
+{
 		$layout = new FileLayout('assignpersonsclub', JPATH_ROOT . '/components/com_sportsmanagement/layouts');
 		$html   = $layout->render();
 		Toolbar::getInstance('toolbar')->appendButton('Custom', $html, 'upload');
 		$modal_params           = array();
-
 		$zusatz .= '&whichview=teamplayers&assignclub=1';
-
 		$modal_params['url']    = 'index.php?option=com_sportsmanagement&view=players&tmpl=component&layout=assignpersons&type=0&issueview=&issuelayout=' . $zusatz;
 		$modal_params['height'] = $this->modalheight;
 		$modal_params['width']  = $this->modalwidth;
 		$modal_params['modalWidth']  = '60';
 		echo HTMLHelper::_('bootstrap.renderModal', 'collapseModalassignPersonsClub', $modal_params);
-		
+}		
+        
+        
 		ToolbarHelper::apply('teamplayers.assignplayerscountry', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN_COUNTRY'));
 		ToolbarHelper::divider();
 		ToolbarHelper::back('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_BACK', 'index.php?option=' . $this->option . '&view=projectteams&pid=' . $this->project_id . '&id=' . $this->project_id);
