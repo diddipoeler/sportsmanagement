@@ -194,13 +194,13 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
              $persontype = 1;   
              }
              
-				$this->jsmquery->clear();
-				$columns = array('person_id', 'season_id', 'team_id', 'published', 'persontype', 'modified', 'modified_by', 'weltfussballlink'  );
-				$values  = array($value, $season_id, $teams, '1', $persontype, $this->jsmdb->Quote('' . $this->jsmdate->toSql() . ''), $this->jsmuser->get('id'), 'kein' );
-				$this->jsmquery
-					->insert($this->jsmdb->quoteName('#__sportsmanagement_season_team_person_id'))
-					->columns($this->jsmdb->quoteName($columns))
-					->values(implode(',', $values));
+$this->jsmquery->clear();
+$columns = array('person_id', 'season_id', 'team_id', 'published', 'persontype', 'modified', 'modified_by', 'weltfussballlink'  );
+$values  = array($value, $season_id, $teams, '1', $persontype, $this->jsmdb->Quote('' . $this->jsmdate->toSql() . ''), $this->jsmuser->get('id'), $this->jsmdb->Quote('' . 'kein' . '') );
+$this->jsmquery
+	->insert($this->jsmdb->quoteName('#__sportsmanagement_season_team_person_id'))
+	->columns($this->jsmdb->quoteName($columns))
+	->values(implode(',', $values));
 				try
 				{
 					$this->jsmdb->setQuery($this->jsmquery);
