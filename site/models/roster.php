@@ -309,6 +309,10 @@ class sportsmanagementModelRoster extends JSMModelLegacy
 if ( Factory::getConfig()->get('debug') )
 {  
 Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $query->dump()), Log::NOTICE, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' .'projectteam <pre>'.print_r($projectteam,true).'</pre>'  ), Log::NOTICE, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' .'players <pre>'.print_r(self::$_players,true).'</pre>'  ), Log::NOTICE, 'jsmerror');
+
+	
 }
 		switch ($persontype)
 		{
