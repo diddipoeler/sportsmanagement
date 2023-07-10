@@ -107,9 +107,17 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 		{
 			$query->where('mp.match_id = ' . $match_id);
 		}
-
+try
+{
 		$db->setQuery($query);
 		$totalresult = $db->loadObject();
+}
+		catch (Exception $e)
+		{
+			Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), Log::ERROR, 'jsmerror');
+			Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), Log::ERROR, 'jsmerror');
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $query->dump()), Log::NOTICE, 'jsmerror');
+		}
 
 		if ($add_time)
 		{
@@ -121,9 +129,17 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 			$query->join('INNER', '#__sportsmanagement_round as r ON r.id = m.round_id');
 			$query->where('r.project_id = ' . $project_id);
 			$query->where('m.match_result_type = 1');
+		try
+		{
 			$db->setQuery($query);
 			$totalresult2 = $db->loadObject();
-
+}
+		catch (Exception $e)
+		{
+			Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), Log::ERROR, 'jsmerror');
+			Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), Log::ERROR, 'jsmerror');
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $query->dump()), Log::NOTICE, 'jsmerror');
+		}
 			if ($totalresult2)
 			{
 				$result += $totalresult2->totalmatch * ($game_regular_time + $add_time);
@@ -163,8 +179,17 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 			$query->where('mp.match_id = ' . $match_id);
 		}
 
+		try
+		{
 		$db->setQuery($query);
 		$cameinresult = $db->loadObject();
+}
+		catch (Exception $e)
+		{
+			Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), Log::ERROR, 'jsmerror');
+			Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), Log::ERROR, 'jsmerror');
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $query->dump()), Log::NOTICE, 'jsmerror');
+		}
 
 		if ($add_time)
 		{
@@ -176,9 +201,17 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 			$query->join('INNER', '#__sportsmanagement_round as r ON r.id = m.round_id');
 			$query->where('r.project_id = ' . $project_id);
 			$query->where('m.match_result_type = 1');
+			try
+			{
 			$db->setQuery($query);
 			$cameinresult2 = $db->loadObject();
-
+}
+		catch (Exception $e)
+		{
+			Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), Log::ERROR, 'jsmerror');
+			Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), Log::ERROR, 'jsmerror');
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $query->dump()), Log::NOTICE, 'jsmerror');
+		}
 			if ($cameinresult2)
 			{
 				$result += ($cameinresult2->totalmatch * ($game_regular_time + $add_time)) - ($cameinresult2->totalin);
@@ -217,9 +250,17 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 			$query->where('mp.match_id = ' . $match_id);
 		}
 
+		try
+		{
 		$db->setQuery($query);
 		$cameautresult = $db->loadObject();
-
+}
+		catch (Exception $e)
+		{
+			Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), Log::ERROR, 'jsmerror');
+			Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), Log::ERROR, 'jsmerror');
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $query->dump()), Log::NOTICE, 'jsmerror');
+		}
 		if ($add_time)
 		{
 			$query->clear('where');
