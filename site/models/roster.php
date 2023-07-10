@@ -262,6 +262,7 @@ $app    = Factory::getApplication();
       $query->select('st.id AS season_team_id');
       $query->select('pt.project_id AS project_id');
 		$query->select('pt.id AS projectteam_id');
+	$query->select('tp.id AS playerid,tp.id AS season_team_person_id,tp.jerseynumber AS position_number,tp.notes AS description,tp.market_value AS market_value,tp.picture');
 		
 		/**
       $query->select('tp.id AS playerid,tp.id AS season_team_person_id,tp.jerseynumber AS position_number,tp.notes AS description,tp.market_value AS market_value,tp.picture');
