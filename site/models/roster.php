@@ -566,6 +566,7 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' .'players <pre>'.print_r(self
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
+		$rows = array();
 
 		// Create a new query object.
 		$db        = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
@@ -589,11 +590,17 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' .'players <pre>'.print_r(self
 		$query->where('stp.id = ' . $player_id);
 		$query->where('pr.published = 1');
 		$query->where('stp.published = 1');
-
+try
+{
 		$db->setQuery($query);
-
 		$rows = $db->loadObjectList();
-
+}
+		catch (Exception $e)
+		{
+			Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), Log::ERROR, 'jsmerror');
+			Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), Log::ERROR, 'jsmerror');
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $query->dump()), Log::NOTICE, 'jsmerror');
+		}
 		return $rows;
 	}
 
