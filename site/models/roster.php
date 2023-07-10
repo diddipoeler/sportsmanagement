@@ -306,6 +306,10 @@ class sportsmanagementModelRoster extends JSMModelLegacy
 			Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), Log::ERROR, 'jsmerror');
 		}
 
+if ( Factory::getConfig()->get('debug') )
+{  
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $query->dump()), Log::NOTICE, 'jsmerror');
+}
 		switch ($persontype)
 		{
 			case 1:
