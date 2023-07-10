@@ -149,9 +149,13 @@ class sportsmanagementModelteamplayer extends JSMModelAdmin
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 */
-		$pks = array();
+		
 		// Get the input
 		$pks = $this->jsmjinput->getVar('cid', null, 'post', 'array');
+		 if ( !is_array($pks) )
+      {
+        $pks = array();
+      }
 
 		// $post = Factory::getApplication()->input->post->getArray(array());
 		$post              = $this->jsmjinput->post->getArray(array());
