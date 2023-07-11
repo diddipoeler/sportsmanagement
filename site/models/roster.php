@@ -309,7 +309,7 @@ $app    = Factory::getApplication();
       //$query->where('st.season_id = ' . self::$seasonid);
 		//$query->where('pt.project_id = ' . self::$projectid);
 		$query->where('pro.id = ' . self::$projectid);
-		//$query->order('pos.ordering, ppos.position_id, tp.ordering, tp.jerseynumber, pr.lastname, pr.firstname');
+		$query->order('pos.ordering, ppos.position_id, tp.ordering, tp.jerseynumber, pr.lastname, pr.firstname');
 
 		try
 		{
