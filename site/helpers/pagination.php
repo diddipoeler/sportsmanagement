@@ -135,7 +135,7 @@ class sportsmanagementModelPagination extends BaseDatabaseModel
 			$params['order']    = 0;
 
 			$query          = Uri::buildQuery($params);
-			$link           = Route::_('index.php?' . $query . '#' . $option . '_top');
+			$link           = Route::_('index.php?' . $query .'/?Itemid=-1'. '#' . $option . '_top');
 			self::$prevlink = $link;
 			$prevlink       = HTMLHelper::link($link, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_PREV'));
 
@@ -162,7 +162,7 @@ class sportsmanagementModelPagination extends BaseDatabaseModel
 			$params['order']    = 0;
 
 			$query          = Uri::buildQuery($params);
-			$link           = Route::_('index.php?' . $query . '#' . $option . '_top');
+			$link           = Route::_('index.php?' . $query .'/?Itemid=-1'. '#' . $option . '_top');
 			self::$nextlink = $link;
 
 			$nextlink = $spacer4;
