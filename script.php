@@ -1136,6 +1136,7 @@ echo '<p>' . Text::_('Packages : ') . 'JComments 4.0' . ' installiert!</p>';
 				switch ($name)
 				{
 				case 'jqueryeasy';
+					case 'jcemediabox';
 				if ($plugin_id)
 				{
 				// Plugin ist vorhanden
