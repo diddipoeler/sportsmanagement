@@ -106,7 +106,7 @@ $ausgabe .= '</tr>';
 							<?php
 							$country = $this->project->country;
 							echo JSMCountries::getCountryFlag($country) . ' ' . JSMCountries::getCountryName($country);
-
+/**
 							$country_info = JSMCountries::getCountry($country);
 
 							//echo '<pre>'.print_r($country_info,true).'</pre>';
@@ -130,7 +130,7 @@ $ausgabe .= '</tr>';
 							$javascript = "\n";
 							$javascript .= file_get_contents('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps2.js');
 							$document->addScriptDeclaration($javascript);
-
+*/
 							/*
 							$document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps1.js');
 							$javascript = "\n";
