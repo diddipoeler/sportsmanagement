@@ -17,7 +17,9 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Log\Log;
 
 
+
 ?>
+<div class="row-fluid">
 <div class="col-md-12">
     <nav class="quick-icons px-3 pb-3" aria-label="Schnellstartlinks Sportspamangement">
 		<ul class="nav flex-wrap">
@@ -106,4 +108,5 @@ use Joomla\CMS\Log\Log;
 		</ul>
     </nav>
 				</div>
+	</div>
 	<?PHP
