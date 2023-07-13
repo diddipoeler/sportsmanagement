@@ -19,6 +19,7 @@ $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <div id="jsm" class="admin override">
+	<!--
 	<?php if (!empty($this->sidebar))
 	:
 	?>
@@ -32,6 +33,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		?>
         <div id="j-main-container">
 			<?php endif; ?>
+-->
+<div id="j-main-container">		
+<?php
+echo $this->loadTemplate('start_menu');
+?>
+		
             <?php
             if ( ComponentHelper::getParams('com_sportsmanagement')->get('start_install_helper') && !$this->sporttypes )
             {
