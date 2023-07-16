@@ -169,6 +169,8 @@ $this->dragable_group = 'data-dragable-group="none"';
 			$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $this->item->checked_out == $this->user->get('id') || $this->item->checked_out == 0;
 			$checked    = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'clubs.', $canCheckin);
 			$canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.club.' . $this->item->id) && $canCheckin;
+
+			$onChange = ' onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true" style="background-color:#bbffff"';
 			?>
             <tr class="row<?php echo $this->count_i % 2; ?>" <?php echo $this->dragable_group; ?>>
                 <td class="center">
@@ -301,18 +303,18 @@ HTMLHelper::_('bootstrap.endSlide');
                     <input<?php echo $inputappend; ?> type="text" size="10" class="form-control form-control-inline"
                                                       name="unique_id<?php echo $this->item->id; ?>"
                                                       value="<?php echo $this->item->unique_id; ?>"
-                                                      onchange=""/>
+                                                      onchange="<?php echo $onChange; ?>"/>
 
                     <br/>
                     <input<?php echo $inputappend; ?> type="text" size="10" class="form-control form-control-inline"
                                                       name="new_club_id<?php echo $this->item->id; ?>"
                                                       value="<?php echo $this->item->new_club_id; ?>"
-                                                      onchange=""/>
+                                                      onchange="<?php echo $onChange; ?>"/>
 			<br/>
 			<input<?php echo $inputappend; ?> type="text" size="10" class="form-control form-control-inline"
                                                       name="founded_year<?php echo $this->item->id; ?>"
                                                       value="<?php echo $this->item->founded_year; ?>"
-                                                      onchange=""/>
+                                                      onchange="<?php echo $onChange; ?>"/>
 			<br/>
 					<?php echo $this->escape($this->item->state); ?>
                 </td>
