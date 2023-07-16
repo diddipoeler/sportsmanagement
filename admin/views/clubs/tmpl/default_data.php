@@ -229,7 +229,7 @@ $this->dragable_group = 'data-dragable-group="none"';
                             type="text" size="40" class="form-control form-control-inline"
                             name="club_name<?php echo $this->item->id; ?>"
                             value="<?php echo $this->item->name; ?>"
-                            onchange=""/>
+                            onchange="<?php echo $onChange; ?>"/>
 			</div>
 			
 			<div class="small">
@@ -338,17 +338,17 @@ echo sportsmanagementHelper::getBootstrapModalImage('select'.$this->item->id, ''
                     <input<?php echo $inputappend; ?> type="text" size="10" class="form-control form-control-inline"
                                                       name="zipcode<?php echo $this->item->id; ?>"
                                                       value="<?php echo $this->item->zipcode; ?>"
-                                                      onchange=""/>
+                                                      onchange="<?php echo $onChange; ?>"/>
                     <br/>
                     <input<?php echo $inputappend; ?> type="text" size="30" class="form-control form-control-inline"
                                                       name="location<?php echo $this->item->id; ?>"
                                                       value="<?php echo $this->item->location; ?>"
-                                                      onchange=""/>
+                                                      onchange="<?php echo $onChange; ?>"/>
                     <br/>
                     <input<?php echo $inputappend; ?> type="text" size="30" class="form-control form-control-inline"
                                                       name="address<?php echo $this->item->id; ?>"
                                                       value="<?php echo $this->item->address; ?>"
-                                                      onchange=""/>
+                                                      onchange="<?php echo $onChange; ?>"/>
                 </td>
 
                 <td class="">
