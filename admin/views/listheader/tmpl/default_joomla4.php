@@ -6,7 +6,7 @@
  * @subpackage listheader
  * @file       default_joomla4.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -16,7 +16,10 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Layout\LayoutHelper;
 
+/**
+* #1471
 HTMLHelper::_('behavior.multiselect');
+*/
 
 $app = Factory::getApplication();
 $jinput = $app->input;
@@ -39,10 +42,16 @@ $project_id = $app->getUserState("$option.pid", '0');
 ?>
 
 <div class="row">
+<!--
 <div id="j-sidebar-container" class="col-md-2">
 <?php echo $this->sidebar; ?>
 </div>
-<div class="col-md-10">
+-->
+<?php
+require(JPATH_COMPONENT_ADMINISTRATOR . '/views/listheader/tmpl/default_4_start_menu.php');   
+?>
+
+<div class="col-md-12">
 <div id="j-main-container" class="j-main-container">
 <?php
 

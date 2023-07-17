@@ -6,7 +6,7 @@
  * @subpackage editmatch
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -123,7 +123,7 @@ class sportsmanagementViewEditMatch extends sportsmanagementView
 	{
 		// Projekt schiedsrichter
 		$allreferees = array();
-
+$default_name_format = 0;
 		// $allreferees = $model->getRefereeRoster(0,$this->item->id);
 		$allreferees      = sportsmanagementModelMatch::getRefereeRoster(0, $this->match->id);
 		$inroster         = array();
@@ -346,6 +346,7 @@ class sportsmanagementViewEditMatch extends sportsmanagementView
 		$params                           = ComponentHelper::getParams($option);
 		$default_name_dropdown_list_order = $params->get("cfg_be_name_dropdown_list_order", "lastname");
 		$default_name_format              = $params->get("name_format", 14);
+		$temp = array();
 
 		// Mannschaften der paarung
 		$teams       = sportsmanagementModelMatch::getMatchTeams($this->match->id);
@@ -393,15 +394,15 @@ class sportsmanagementViewEditMatch extends sportsmanagementView
 			switch ($default_name_dropdown_list_order)
 			{
 				case 'lastname':
-					$obj->text = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
+					$obj->text = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $default_name_format);
 					break;
 
 				case 'firstname':
-					$obj->text = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
+					$obj->text = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $default_name_format);
 					break;
 
 				case 'position':
-					$obj->text = '(' . Text::_($player->positionname) . ') - ' . sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
+					$obj->text = '(' . Text::_($player->positionname) . ') - ' . sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $default_name_format);
 					break;
 			}
 
@@ -418,15 +419,15 @@ class sportsmanagementViewEditMatch extends sportsmanagementView
 			switch ($default_name_dropdown_list_order)
 			{
 				case 'lastname':
-					$obj->text = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
+					$obj->text = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $default_name_format);
 					break;
 
 				case 'firstname':
-					$obj->text = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
+					$obj->text = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $default_name_format);
 					break;
 
 				case 'position':
-					$obj->text = '(' . Text::_($player->positionname) . ') - ' . sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
+					$obj->text = '(' . Text::_($player->positionname) . ') - ' . sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $default_name_format);
 					break;
 			}
 
@@ -471,7 +472,7 @@ class sportsmanagementViewEditMatch extends sportsmanagementView
 		$app                 = Factory::getApplication();
 		$option              = Factory::getApplication()->input->getCmd('option');
 		$document            = Factory::getDocument();
-		$default_name_format = '';
+		$default_name_format = 0;
 
 		$tid            = Factory::getApplication()->input->getVar('team', '0');
 		$this->tid      = $tid;

@@ -5,7 +5,7 @@
  * @subpackage teamplan
  * @file       default_plan_sorted_by_date.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -27,6 +27,8 @@ if (!empty($this->matches))
 	$teamid = Factory::getApplication()->input->getInt('tid');
 	?>
     <!--	<thead> -->
+	<div class="<?php echo $this->divclassrow; ?> table-responsive" id="teamplanoutput">
+
 	<?php
 	//sort matches by dates
 	$gamesByDate = Array();
@@ -155,7 +157,7 @@ if (!empty($this->matches))
 				if ($this->config['show_events'])
 				{
 					?>
-                    <td width='5' class='ko'>
+                    <td width='3%' class='ko'>
 						<?php
 						$events = sportsmanagementModelProject::getMatchEvents($match->id);
 						$subs   = sportsmanagementModelProject::getMatchSubstitutions($match->id);
@@ -740,7 +742,7 @@ usort($match->referees, function ($a, $b) {
 				?>
                 <!-- Show icon for editing events in edit mode -->
                 <tr class="events <?php echo ($k == 0) ? '' : 'alt'; ?>">
-                    <td colspan="<?php echo $nbcols; ?>">
+                    <td>
                         <div id="info<?php echo $match->id; ?>" class="jsmeventsshowhide" style="display: none;">
                             <table class='matchreport' border='0'>
                                 <tr>
@@ -770,6 +772,7 @@ usort($match->referees, function ($a, $b) {
 	?>
     </table>
     </div>
+</div>
 	<?php
 }
 else

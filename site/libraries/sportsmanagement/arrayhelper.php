@@ -1,4 +1,3 @@
-use Joomla\CMS\Log\Log;
 <?php
 /**
  * @package     Joomla.Platform

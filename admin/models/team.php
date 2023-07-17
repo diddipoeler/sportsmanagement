@@ -1,23 +1,20 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
  * @file       team.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Table;
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * sportsmanagementModelteam
@@ -51,6 +48,45 @@ class sportsmanagementModelteam extends JSMModelAdmin
 		$this->club_id = $this->app->getUserState("$this->option.club_id", '0');
 	}
 
+/**
+ * sportsmanagementModelteam::copysave()
+ * 
+ * @return
+ */
+public function copysave()
+	{
+		$this->jsmquery->clear();
+		$pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
+		if (!$pks)
+		{
+			return Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_SAVE_NO_SELECT');
+		}
+
+		for ($x = 0; $x < count($pks); $x++)
+		{
+			$team = $this->getTeam($pks[$x]);
+			$team->id = null;
+			$team->name = $team->name . ' (Kopie)';
+			try
+			{
+				parent::save(ArrayHelper::fromObject($team));
+				$table      = $this->getTable();
+	
+				foreach ($table->getErrors() as $error)
+				{
+					$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $error), 'error');
+				}
+			}
+			catch (Exception $e)
+			{
+				$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
+				$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), 'error');
+			}
+		}
+
+		return Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_SAVE');
+	}
+    
 	/**
 	 * sportsmanagementModelteam::getTeamLogo()
 	 *
@@ -65,13 +101,10 @@ class sportsmanagementModelteam extends JSMModelAdmin
 		$db     = Factory::getDbo();
 		$query  = $db->getQuery(true);
 
-		// Select some fields
 		$query->select('c.logo_' . $club_logo . ' as logo_small,c.country,t.name,t.id as team_id');
-		// From table
 		$query->from('#__sportsmanagement_team as t');
 		$query->join('LEFT', '#__sportsmanagement_club c ON c.id = t.club_id');
 		$query->where('t.id = ' . $team_id);
-
 
 		$db->setQuery($query);
 		try
@@ -196,9 +229,7 @@ class sportsmanagementModelteam extends JSMModelAdmin
 			$rowtraining = Table::getInstance('TeamTrainingData', 'sportsmanagementTable');
 			$rowtraining->load((int) $post['tdids'][$a]);
 
-			// Create an object for the record we are going to update.
 			$object = new stdClass();
-			// Must be a valid primary key value.
 			$object->id         = $post['tdids'][$a];
 			$object->time_start = sportsmanagementHelper::time_to_sec($post['time_start'][$post['tdids'][$a]] . ':00');
 			$object->time_end   = sportsmanagementHelper::time_to_sec($post['time_end'][$post['tdids'][$a]] . ':00');
@@ -206,7 +237,6 @@ class sportsmanagementModelteam extends JSMModelAdmin
 			$object->notes      = $post['notes'][$post['tdids'][$a]];
 			$object->dayofweek  = $post['dayofweek'][$post['tdids'][$a]];
 
-			// Update their details in the table using id as the primary key.
 			$result_update = Factory::getDbo()->updateObject('#__sportsmanagement_team_trainingdata', $object, 'id', true);
 
 			if ($object->time_start <> $rowtraining->time_start
@@ -228,23 +258,18 @@ class sportsmanagementModelteam extends JSMModelAdmin
 		return true;
 	}
 
+
 	/**
-	 * Method to return a team trainingdata array
-	 *
-	 * @access public
-	 * @return array
-	 * @since  0.1
+	 * sportsmanagementModelteam::getTrainigData()
+	 * 
+	 * @param integer $team_id
+	 * @param integer $pro_team_id
+	 * @return
 	 */
 	function getTrainigData($team_id = 0, $pro_team_id = 0)
 	{
-		//		$option = Factory::getApplication()->input->getCmd('option');
-		//		$app	= Factory::getApplication();
-		//        //$db		= $this->getDbo();
-		//		$query	= Factory::getDbo()->getQuery(true);
 		$this->jsmquery->clear();
-		// Select some fields
 		$this->jsmquery->select('tt.*');
-		// From table
 		$this->jsmquery->from('#__sportsmanagement_team_trainingdata as tt');
 
 		if ($team_id)
@@ -275,42 +300,30 @@ class sportsmanagementModelteam extends JSMModelAdmin
 		if (!$result)
 		{
 			$this->jsmapp->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TITLE_NO_TRAINING'), 'Notice');
-
 			return $result;
 		}
 
 		return $result;
 	}
 
+	
 	/**
-	 * Method to add a team trainingdata
-	 *
-	 * @access public
-	 * @return array
-	 * @since  0.1
+	 * sportsmanagementModelteam::addNewTrainigData()
+	 * 
+	 * @param integer $team_id
+	 * @return
 	 */
 	function addNewTrainigData($team_id = 0)
 	{
-		//$option = Factory::getApplication()->input->getCmd('option');
-		//		$app	= Factory::getApplication();
-		//
-		//        // Get a db connection.
-		//        $db = Factory::getDbo();
-		//        // Create a new query object.
-		//        $query = $db->getQuery(true);
 		$this->jsmquery->clear();
-		// Insert columns.
 		$columns = array('team_id', 'notes');
-		// Insert values.
 		$values = array($team_id, $this->jsmdb->quote('-'));
-		// Prepare the insert query.
 		$this->jsmquery
 			->insert($this->jsmdb->quoteName('#__sportsmanagement_team_trainingdata'))
 			->columns($this->jsmdb->quoteName($columns))
 			->values(implode(',', $values));
 		try
 		{
-			// Set the query using our newly populated query object and execute it.
 			$this->jsmdb->setQuery($this->jsmquery);
 			$result = $this->jsmdb->execute();
 		}
@@ -323,8 +336,7 @@ class sportsmanagementModelteam extends JSMModelAdmin
 
 		$this->jsmapp->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TITLE_INSERT_TRAINING'), 'Notice');
 
-		// store the variable that we would like to keep for next time
-		// function syntax is setUserState( $key, $value );
+		/** store the variable that we would like to keep for next time */
 		self::$change_training_date = $result;
 		$this->jsmapp->setUserState("$this->jsmoption.change_training_date", self::$change_training_date);
 
@@ -343,7 +355,6 @@ class sportsmanagementModelteam extends JSMModelAdmin
 		$option = Factory::getApplication()->input->getCmd('option');
 
 		$this->jsmquery->clear();
-		// Get the input
 		$pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
 		if (!$pks)
 		{
@@ -351,7 +362,6 @@ class sportsmanagementModelteam extends JSMModelAdmin
 		}
 		$post = Factory::getApplication()->input->post->getArray(array());
 
-		//$result=true;
 		for ($x = 0; $x < count($pks); $x++)
 		{
 			$tblProject                 = &$this->getTable();

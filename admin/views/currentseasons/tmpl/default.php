@@ -1,17 +1,14 @@
 <?php
-
 /** SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage currentseasons
  * @file       default.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -50,7 +47,9 @@ if ($this->items)
 
 
 <div class="row">
-	<?php if (!empty($this->sidebar)) :
+	<?php 
+/**
+if (!empty($this->sidebar)) :
 	?>
 		<div id="j-sidebar-container" class="col-md-2">
 			<?php echo $this->sidebar; ?>
@@ -59,7 +58,14 @@ if ($this->items)
 		<?php else :
 		?>
 			<div class="col-md-12">
-			<?php endif; ?>
+			<?php endif; 
+*/
+?>
+
+<?php
+require(JPATH_COMPONENT_ADMINISTRATOR . '/views/listheader/tmpl/default_4_start_menu.php');   
+?>    				
+							<div class="col-md-12">
 			<div id="j-main-container">
 
 				<div id="jsm" class="admin override">

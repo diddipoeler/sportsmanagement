@@ -6,12 +6,13 @@
  * @subpackage results
  * @file       results.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Feed\FeedFactory;
 use Joomla\CMS\User\UserHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
@@ -103,12 +104,11 @@ class sportsmanagementModelResults extends JSMModelList
 	 */
 	public function getStart()
 	{
-		// $limitstart = $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart');
 		$this->setState('list.start', self::$limitstart);
 
 		$store = $this->getStoreId('getstart');
 
-		// Try to load the data from internal storage.
+		/** Try to load the data from internal storage. */
 		if (isset($this->cache[$store]))
 		{
 			return $this->cache[$store];
@@ -123,7 +123,7 @@ class sportsmanagementModelResults extends JSMModelList
 			$start = max(0, (int) (ceil($total / $limit) - 1) * $limit);
 		}
 
-		// Add the total to the internal cache.
+		/** Add the total to the internal cache. */
 		$this->cache[$store] = $start;
 
 		return $this->cache[$store];
@@ -188,8 +188,8 @@ class sportsmanagementModelResults extends JSMModelList
 			$query->select('m.*,DATE_FORMAT(m.time_present,"%H:%i") time_present');
 			$query->select('playground.name AS playground_name,playground.short_name AS playground_short_name,playground.address AS playground_address,playground.zipcode AS playground_zipcode,playground.city as playground_city');
 			$query->select('pt1.project_id');
-			$query->select('d1.name as divhome');
-			$query->select('d2.name as divaway');
+			$query->select('d1.name as divhome, d1.id as divhomeid');
+			$query->select('d2.name as divaway, d2.id as divawayid');
 			$query->select('CASE WHEN CHAR_LENGTH(t1.alias) AND CHAR_LENGTH(t2.alias) THEN CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) ELSE m.id END AS slug ');
 			$query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
 			$query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
@@ -393,7 +393,10 @@ class sportsmanagementModelResults extends JSMModelList
 		{
 			$options['rssUrl'] = $rssId;
 
-			if (version_compare(JVERSION, '3.0.0', 'ge'))
+			if (version_compare(JVERSION, '4.0.0', 'ge'))
+			{
+			}
+            elseif (version_compare(JVERSION, '3.0.0', 'ge'))
 			{
 				// Joomla! 3.0 code here
 				$rssDoc = Factory::getFeedParser($options);
@@ -416,19 +419,40 @@ class sportsmanagementModelResults extends JSMModelList
 				// Joomla! 1.5 code here
 			}
 
-			$feed = new stdclass;
+if (version_compare(JVERSION, '4.0.0', 'ge'))
+			{
+				try
+				{
+					$feed = new FeedFactory;
 
+					// $feeds = new stdclass();
+					$rssDoc = $feed->getFeed($rssId);
+
+					return $rssDoc;
+				}
+				catch (\InvalidArgumentException $e)
+				{
+					Factory::getApplication()->enqueueMessage(Text::_('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED'), 'Notice');
+				}
+				catch (\RuntimeException $e)
+				{
+					Factory::getApplication()->enqueueMessage(Text::_('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED'), 'Notice');
+				}
+			}
+            else
+            {
+			$feed = new stdclass;
 			if ($rssDoc != false)
 			{
-				// Channel header and link
+				/** Channel header and link */
 				$feed->title        = $rssDoc->get_title();
 				$feed->link         = $rssDoc->get_link();
 				$feed->description  = $rssDoc->get_description();
-				$feed->image        = null;
+				$feed->image        = new stdclass;
 				$feed->image->url   = '';
 				$feed->image->title = '';
 
-				// Channel image if exists
+				/**  Channel image if exists */
 				if (!is_null($rssDoc->get_image_url()))
 				{
 					$feed->image->url = $rssDoc->get_image_url();
@@ -447,13 +471,14 @@ class sportsmanagementModelResults extends JSMModelList
 					$feed->image->title = '';
 				}
 
-				// Items
+				/** Items */
 				$items = $rssDoc->get_items();
 
-				// Feed elements
+				/** Feed elements */
 				$feed->items = array_slice($items, 0, $rssitems);
 				$lists[]     = $feed;
 			}
+            }
 		}
 
 		return $lists;
@@ -844,14 +869,7 @@ class sportsmanagementModelResults extends JSMModelList
 	function saveshort($cfg_which_database = 0)
 	{
 		$app = Factory::getApplication();
-		/**
-		 *         JInput object
-		 */
 		$option = $app->input->getCmd('option');
-
-		/**
-		 *         Get a db connection.
-		 */
 		$db = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
 
 		$pks  = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
@@ -861,19 +879,13 @@ class sportsmanagementModelResults extends JSMModelList
 
 		for ($x = 0; $x < count($pks); $x++)
 		{
-			/**
-			 *             Änderungen im datum oder der uhrzeit
-			 */
+			/** Änderungen im datum oder der uhrzeit */
 			$tbl = $this->getTable();;
 			$tbl->load((int) $pks[$x]);
 
-			/**
-			 *             Create an object for the record we are going to update.
-			 */
+			/** Create an object for the record we are going to update. */
 			$object = new stdClass;
-			/**
-			 *             Must be a valid primary key value.
-			 */
+			/** Must be a valid primary key value. */
 			$object->id           = $pks[$x];
 			$object->team1_result = null;
 			$object->team2_result = null;
@@ -882,6 +894,10 @@ class sportsmanagementModelResults extends JSMModelList
 
 			if ($post['match_date' . $pks[$x]])
 			{
+			 if ( $post['match_time' . $pks[$x]] == '' )
+             {
+                $post['match_time' . $pks[$x]] = '00';
+             }
 				list($date, $time) = explode(" ", $tbl->match_date);
 				$this->_match_time_new = $post['match_time' . $pks[$x]] . ':00';
 				$this->_match_date_new = $post['match_date' . $pks[$x]];

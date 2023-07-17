@@ -1,7 +1,6 @@
-ALTER TABLE  `#__sportsmanagement_league` ADD  `agegroup_id` INT( 11 ) NOT NULL DEFAULT  '0';
-ALTER TABLE  `#__sportsmanagement_project` ADD  `agegroup_id` INT( 11 ) NOT NULL DEFAULT  '0';
-
-ALTER TABLE  `#__sportsmanagement_user_extra_fields` ADD  `field_type` VARCHAR(15) NOT NULL DEFAULT '';
+-- ALTER TABLE  `#__sportsmanagement_league` ADD  `agegroup_id` INT( 11 ) NOT NULL DEFAULT  '0';
+-- ALTER TABLE  `#__sportsmanagement_project` ADD  `agegroup_id` INT( 11 ) NOT NULL DEFAULT  '0';
+-- ALTER TABLE  `#__sportsmanagement_user_extra_fields` ADD  `field_type` VARCHAR(15) NOT NULL DEFAULT '';
 
 CREATE TABLE IF NOT EXISTS `#__sportsmanagement_confidential` (
 `id` INT( 11 ) NOT NULL AUTO_INCREMENT ,
@@ -18,5 +17,4 @@ PRIMARY KEY (  `id` ),
   UNIQUE KEY `schluessel` (`name`(150),`link`(150)) 
 ) ENGINE = MYISAM DEFAULT CHARSET = utf8;
 
-INSERT INTO `#__sportsmanagement_version_history` (`id`, `date`, `text`, `version`) VALUES
-(NULL, '2014-04-30', 'COM_SPORTSMANAGEMENT_DB_UPDATE_2014_04_30', '1.0.36');
+-- INSERT INTO `#__sportsmanagement_version_history` (`id`, `date`, `text`, `version`) VALUES (NULL, '2014-04-30', 'COM_SPORTSMANAGEMENT_DB_UPDATE_2014_04_30', '1.0.36');

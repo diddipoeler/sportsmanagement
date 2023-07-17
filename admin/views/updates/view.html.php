@@ -6,14 +6,13 @@
  * @subpackage updates
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
-
 jimport('joomla.html.html.bootstrap');
 
 /**
@@ -73,10 +72,8 @@ class sportsmanagementViewUpdates extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_TITLE');
 		$this->icon  = 'updates';
-
 		parent::addToolbar();
 	}
 

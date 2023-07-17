@@ -6,7 +6,7 @@
  * @subpackage models
  * @file       updates.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -405,17 +405,7 @@ $updateFiles[$i]['count'] = '';
 $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
 $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 		}
-/*
-				if (!$result = Factory::getDbo()->loadObject())
-				{
-					$this->setError($this->_db->getErrorMsg());
-				}
-				else
-				{
-					$updateFiles[$i]['date']  = $result->date;
-					$updateFiles[$i]['count'] = $result->count;
-				}
-*/
+
 				$i++;
 			}
             catch (Exception $e)

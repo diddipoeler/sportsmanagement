@@ -1,23 +1,19 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage matches
  * @file       defaul_matrix.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-
+$teams = array();
 ?>
 
 <!--[if IE]>
@@ -94,7 +90,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 	$k = 0;
 
-	for ($rows = 0; $rows <= count($teams); $rows++)
+	for ($rows = 0; $rows <= count($teams); $rows++) if ( is_array($teams) )
 	{
 		if ($rows == 0)
 		{

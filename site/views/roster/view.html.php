@@ -6,7 +6,7 @@
  * @subpackage roster
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -40,24 +40,21 @@ class sportsmanagementViewRoster extends sportsmanagementView
 		$this->lastseasondate = $this->model->getLastSeasonDate();
 		$this->projectpositions = sportsmanagementModelProject::getProjectPositions();
 
-		$type      = $this->jinput->getVar("type", 0);
-		$typestaff = $this->jinput->getVar("typestaff", 0);
+		$this->type      = $this->jinput->getVar("type", 0);
+		$this->typestaff = $this->jinput->getVar("typestaff", 0);
 
-		if (!$type)
+		if (!$this->type)
 		{
-			$type = $this->config['show_players_layout'];
+			$this->type = $this->config['show_players_layout'];
 		}
 
-		if (!$typestaff)
+		if (!$this->typestaff)
 		{
-			$typestaff = $this->config['show_staff_layout'];
+			$this->typestaff = $this->config['show_staff_layout'];
 		}
 
-		$this->type      = $type;
-		$this->typestaff = $typestaff;
-
-		$this->config['show_players_layout'] = $type;
-		$this->config['show_staff_layout']   = $typestaff;
+		$this->config['show_players_layout'] = $this->type;
+		$this->config['show_staff_layout']   = $this->typestaff;
 
 		if ($this->projectteam)
 		{

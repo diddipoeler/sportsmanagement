@@ -1,20 +1,19 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_calendar
  * @file       helper.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * 
+ * http://www.langer-webmedia.de/joomla/2014/joomla-und-ajax-teil-3-modul-helper/
+ * https://github.com/Joomla-Ajax-Interface/Hello-Ajax-World-Module
  */
-
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Date\Date;
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
@@ -22,7 +21,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'calendarClass.php';
-
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'calendarFunctions.php';
 
 /**
  * modJSMCalendarHelper
@@ -745,7 +744,8 @@ class JSMCalendar extends PHPCalendar
 	{
 		$teamslist = array();
 
-		if (count(self::$teams) > 0 && self::$params->get('show_teamslist', 0) == 1)
+		//if (count(self::$teams) > 0 && self::$params->get('show_teamslist', 0) == 1)
+        if (count(self::$teams) > 0 )
 		{
 			$teams       = self::sortObject(self::$teamslist, 'asc', 'name');
 			$teamslist[] = HTMLHelper::_('select.option', 0, Text::_(self::$params->get('teamslist_option')));
@@ -787,4 +787,165 @@ class JSMCalendar extends PHPCalendar
 
 		return $array;
 	}
+}
+
+
+class ModSportsmanagementCalendarHelper {
+static $prefix;
+
+	static $params;
+static $xparams;
+	static $matches = array();  
+  
+/**
+* Wird von com_ajax aufgerufen
+* @return array Rückgabe an com_ajax
+*/
+public static function getAjax() {
+include_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'connectors' . DIRECTORY_SEPARATOR . 'sportsmanagement.php'; 
+// Objekt zum ermitteln der übermittelten Parameter erzeugen
+$input = Factory::getApplication()->input;
+ 
+// Übermittelter Wert des Formulars
+$formvaluemonth = $input->get('formvaluemonth');
+$formvalueyear = $input->get('formvalueyear');
+$formvalueday = $input->get('formvalueday');
+$daterangevon = $input->get('daterangevon');
+$daterangebis = $input->get('daterangebis');
+$viewName = $input->get('viewname');
+
+switch ( $viewName )
+{
+    case 'day':
+    $caldates_suchestart = $formvalueyear.'-'.$formvaluemonth.'-'.$formvalueday;
+    $caldates_sucheende = $formvalueyear.'-'.$formvaluemonth.'-'.$formvalueday;
+    break;
+    case 'month':
+    $caldates_suchestart = $formvalueyear.'-'.$formvaluemonth.'-01';
+    $caldates_sucheende = $formvalueyear.'-'.$formvaluemonth.'-31';
+    break;
+    default:
+    $caldates_suchestart = $daterangevon;
+    $caldates_sucheende = $daterangebis;
+    break;
+}
+
+  
+$paramsmod = $input->get('params');   
+//self::$params = new JRegistry;
+//self::$params->loadArray($paramsmod);  
+
+jimport('joomla.application.module.helper');
+$module = JModuleHelper::getModule('mod_sportsmanagement_calendar', '');
+$moduleParams = new JRegistry;
+$moduleParams->loadString($module->params);
+self::$params = $moduleParams; 
+   
+  
+// Verarbeitung des Übermittelten Wert
+  
+$cal       = new SportsmanagementConnector; // This object creates the html for the calendar  
+$cal::$params  = self::$params;
+$cal::$xparams = self::$params;
+$cal::$prefix  = self::$params->prefix;  
+  
+$caldates                   = array();
+$caldates['start']          = "$caldates_suchestart 00:00:00";
+$caldates['end']            = "$caldates_sucheende 23:59:59";
+$caldates['starttimestamp'] = sportsmanagementHelper::getTimestamp($caldates['start']);
+$caldates['endtimestamp']   = sportsmanagementHelper::getTimestamp($caldates['end']);
+$caldates['roundstart']     = "$formvalueyear-$formvaluemonth-01";
+$caldates['roundend']       = "$formvalueyear-$formvaluemonth-31";  
+
+$ergebnis = $cal::getMatches($caldates);
+$ergebnis = $cal::formatMatches($ergebnis, self::$matches);  
+  
+  /**
+$cal       = new JSMCalendar; // This object creates the html for the calendar
+  $cal::$params  = self::$params;
+$cal::$xparams = self::$params;
+$cal::$prefix  = self::$params->prefix;  
+$cal::$matches = array();
+$matches = $cal::getMatches($formvaluemonth, $formvalueyear);
+  
+$result .= 'Der übermittelte Wert: <pre>'.print_r($matches,true).'</pre>';    
+  */
+  
+//$result .= 'Der übermittelte Wert: <pre>'.print_r($ergebnis,true).'</pre>';  
+//$result .= 'Der übermittelte Wert: <pre>'.print_r($caldates,true).'</pre>';  
+//$result .= 'Der übermittelte Wert: <pre>'.print_r(self::$params,true).'</pre>';    
+
+foreach ( $ergebnis as $row )
+{
+$event = "";
+$time = date("Y-m-d\TH:i:s", $row['timestamp']);
+switch ( $viewName )
+{
+case 'arrobefr':
+$event .= "{start: '".$row['timestamp']."',";
+$event .= "end: '".$row['timestamp'] + 3600 + 1800 + 900 ." ', ";
+$event .= "title: '".$row['homename'].' - '.$row['awayname'].' '.$row['result']   ."',";  
+$event .= "content: '".$row['leaguecountry'] ." ". $row['leaguename']."', ";  
+$event .= "category: '".$row['leaguename']."',  }";  
+
+
+break;
+default:
+$event .= "{id: '".$row['matchcode']."',";
+$event .= "calendarId: '1',";
+$event .= "category: 'time',";
+$event .= "dueDateClass: '',";
+$event .= "isReadOnly: 'true',";
+$event .= "isAllDay: false, "; 
+$event .= "goingDuration: 30, ";
+$event .= "comingDuration: 30, ";
+$event .= "color: '#ffffff', ";
+$event .= "bgColor: '#69BB2D', ";
+$event .= "dragBgColor: '#69BB2D',"; 
+$event .= "borderColor: '#69BB2D',  "; 
+$event .= "customStyle: 'cursor: default;',"; 
+$event .= "isPending: false, ";
+$event .= "isFocused: false, ";
+$event .= "isPrivate: false, ";
+$event .= "isVisible: true,";
+$event .= "location: '".$row['leaguecountry'] ." ". $row['leaguename']."', ";
+$event .= "attendees: '', ";
+$event .= "recurrenceRule: '',";
+//$event .= "title: '". $row['leaguecountry'] ." ". $row['homename'].' - '.$row['awayname'].' '.$row['result']   ."',";
+$event .= "title: '". $row['homename'].' - '.$row['awayname'].' '.$row['result']   ."',";
+$event .= "start: '".$time."',";
+$event .= "end: '".$time."',  }";
+break;  
+
+            
+}            
+$events[] = $event;
+ 
+  
+  /**
+  $events_json['id'] = $row['matchcode'];
+  $events_json['calendarId'] = '1';
+  $events_json['title'] = $row['homename'].$row['awayname'].$row['result'] ;
+  $events_json['start'] = $time;
+  $events_json['end'] = $time;
+  $events[] = json_encode($events_json);
+  */
+}
+
+//echo "<script>".print_r($caldates,true)."</script>";
+
+  //$events = json_encode($ergebnis);
+//echo '<pre>'.print_r($events,true).'</pre>';
+//$calendeer_events = implode(";",$events);  
+
+$results = "<pre>".print_r($caldates,true)."</pre>";
+
+
+$calendeer_events = implode(",",$events);
+  
+//$result .= 'Der übermittelte Wert events: <pre>'.print_r($events,true).'</pre>';      
+ // $result = $events;
+// Ergebniss zurück an com_ajax
+return $calendeer_events;
+}  
 }

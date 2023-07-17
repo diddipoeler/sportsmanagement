@@ -1,7 +1,7 @@
-ALTER TABLE  `#__sportsmanagement_match` ADD  `approved` TINYINT(1)  NOT NULL DEFAULT '0' ;
-ALTER TABLE  `#__sportsmanagement_match` ADD  `approved_date` TIME NOT NULL DEFAULT  '00:00';
-ALTER TABLE  `#__sportsmanagement_match` ADD  `approved_time` DATE NOT NULL DEFAULT  '0000-00-00';
-ALTER TABLE  `#__sportsmanagement_match` ADD  `approved_user` INT( 11 ) NOT NULL DEFAULT  '0';
+-- ALTER TABLE  `#__sportsmanagement_match` ADD  `approved` TINYINT(1)  NOT NULL DEFAULT '0' ;
+-- ALTER TABLE  `#__sportsmanagement_match` ADD  `approved_date` TIME NOT NULL DEFAULT  '00:00';
+-- ALTER TABLE  `#__sportsmanagement_match` ADD  `approved_time` DATE NOT NULL DEFAULT  '0000-00-00';
+-- ALTER TABLE  `#__sportsmanagement_match` ADD  `approved_user` INT( 11 ) NOT NULL DEFAULT  '0';
 
 --
 -- Tabellenstruktur für google kalender api Tabellen
@@ -46,5 +46,4 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_gcalendarap_comment` (
 
 -- TRUNCATE TABLE  `#__sportsmanagement_version_history`;
 
-INSERT INTO `#__sportsmanagement_version_history` (`id`, `date`, `text`, `version`) VALUES
-(NULL, '2014-04-13', 'COM_SPORTSMANAGEMENT_DB_UPDATE_2014_04_13', '1.0.30');
+-- INSERT INTO `#__sportsmanagement_version_history` (`id`, `date`, `text`, `version`) VALUES (NULL, '2014-04-13', 'COM_SPORTSMANAGEMENT_DB_UPDATE_2014_04_13', '1.0.30');

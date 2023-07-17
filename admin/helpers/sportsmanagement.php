@@ -6,7 +6,7 @@
  * @subpackage helpers
  * @file       sportsmanagement.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  *
  * toolbar
@@ -39,7 +39,7 @@ use Joomla\Component\Actionlogs\Administrator\Model\ActionlogModel;
 use Joomla\CMS\Form\Form;
 //BaseDatabaseModel::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_actionlogs/models', 'ActionlogsModel');
 
-HTMLHelper::_('behavior.keepalive');
+//HTMLHelper::_('behavior.keepalive');
 
 if (version_compare(JVERSION, '3.0.0', 'ge'))
 {
@@ -104,6 +104,7 @@ public static function getMatchReferees($match_id = 0, $cfg_which_database = 0)
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
+        $result = array();
 
 		$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
 		$query     = $db->getQuery(true);
@@ -702,7 +703,7 @@ try
 	 */
 	public static function getTimestamp($date = null, $use_offset = 0, $offset = null)
 	{
-		$date = $date ? $date : 'now';
+		$date = $date != '0000-00-00 00:00:00' ? $date : 'now';
 		$app  = Factory::getApplication();
 
 		try
@@ -741,10 +742,11 @@ try
 		}
 		catch (Exception $e)
 		{
-			$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-			$code = $e->getCode(); // Returns
-			$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
-
+//			$msg  = $e->getMessage(); // Returns "Normally you would have other code...
+//			$code = $e->getCode(); // Returns
+//			$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+            $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
 			return false;
 		}
 	}
@@ -844,8 +846,9 @@ try
 		{
 			if ($match->match_date)
 			{
+			 $date = date_create($match->match_date);
 				//return $match->match_date ? $match->match_date->format($format, true) : "xxxx-xx-xx xx:xx";
-				return $match->match_date ? date_format($match->match_date, $format) : "xxxx-xx-xx xx:xx";
+				return $match->match_date ? date_format($date, $format) : "xxxx-xx-xx xx:xx";
 			}
 		}
 		catch (Exception $e)
@@ -2801,7 +2804,14 @@ $jinput = $app->input;
 				$zusatz .= '&team_id=' . $jinput->get('team_id');
 				$zusatz .= '&persontype=' . $jinput->get('persontype');
 				$zusatz .= '&season_id=' . $app->getUserState("$option.season_id", '0');
-                $zusatz .= '&whichview='.$jinput->get('view');
+				$zusatz .= '&whichview='.$jinput->get('view');	
+				break;	
+			case 'assignpersonsclub':		
+				$zusatz .= '&team_id=' . $jinput->get('team_id');
+				$zusatz .= '&persontype=' . $jinput->get('persontype');
+				$zusatz .= '&season_id=' . $app->getUserState("$option.season_id", '0');
+				$zusatz .= '&whichview='.$jinput->get('view');
+				$zusatz .= '&assignclub=1';		
 				break;
 		}
 
@@ -3045,14 +3055,16 @@ $jinput = $app->input;
 		}
 	}
 
+	
 	/**
 	 * sportsmanagementHelper::checkUserExtraFields()
-	 *
-	 * @param   string  $template
-	 *
+	 * 
+	 * @param string $template
+	 * @param integer $cfg_which_database
+	 * @param string $template_name
 	 * @return
 	 */
-	static function checkUserExtraFields($template = 'backend', $cfg_which_database = 0)
+	static function checkUserExtraFields($template = 'backend', $cfg_which_database = 0, $template_name = 'clubinfo')
 	{
 		$app    = Factory::getApplication();
 		$jinput = $app->input;
@@ -3062,7 +3074,7 @@ $jinput = $app->input;
 
 		$query->select('ef.id');
 		$query->from('#__sportsmanagement_user_extra_fields as ef ');
-		$query->where('ef.template_' . $template . ' LIKE ' . $db->Quote('' . $jinput->get('view') . ''));
+		$query->where('ef.template_' . $template . ' LIKE ' . $db->Quote('' . $template_name . ''));
 
 		try
 		{
@@ -3079,35 +3091,36 @@ $jinput = $app->input;
 		}
 		catch (Exception $e)
 		{
-			$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-			$code = $e->getCode(); // Returns
-			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
-
+            Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
 			return false;
 		}
 	}
 
+	
 	/**
 	 * sportsmanagementHelper::getUserExtraFields()
-	 *
-	 * @param   mixed   $jlid
-	 * @param   string  $template
-	 *
+	 * 
+	 * @param mixed $jlid
+	 * @param string $template
+	 * @param integer $cfg_which_database
+	 * @param string $template_name
 	 * @return
 	 */
-	static function getUserExtraFields($jlid, $template = 'backend', $cfg_which_database = 0)
+	static function getUserExtraFields($jlid, $template = 'backend', $cfg_which_database = 0,$template_name = 'clubinfo')
 	{
 		$app    = Factory::getApplication();
 		$jinput = $app->input;
 		$db     = self::getDBConnection();
 		$query  = $db->getQuery(true);
+        $result = array();
 
 		if ($jlid)
 		{
 			$query->select('ef.*,ev.fieldvalue as fvalue,ev.id as value_id ');
 			$query->from('#__sportsmanagement_user_extra_fields as ef ');
 			$query->join('LEFT', '#__sportsmanagement_user_extra_fields_values as ev ON ( ef.id = ev.field_id AND ev.jl_id = ' . $jlid . ')');
-			$query->where('ef.template_' . $template . ' LIKE ' . $db->Quote('' . $jinput->get('view') . ''));
+			$query->where('ef.template_' . $template . ' LIKE ' . $db->Quote('' . $template_name . ''));
 			$query->order('ef.ordering');
 
 			try
@@ -3119,16 +3132,14 @@ $jinput = $app->input;
 			}
 			catch (Exception $e)
 			{
-				$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-				$code = $e->getCode(); // Returns
-				Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
-
-				return false;
+				Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+				return $result;
 			}
 		}
 		else
 		{
-			return false;
+			return $result;
 		}
 	}
 
@@ -3146,16 +3157,13 @@ $jinput = $app->input;
 		$address_parts = array();
 		$db            = self::getDBConnection();
 
-		// -------extra fields-----------//
+		/** -------extra fields----------- */
 		if (isset($post['extraf']) && count($post['extraf']))
 		{
 			for ($p = 0; $p < count($post['extraf']);
 			     $p++)
 			{
-				// Create a new query object.
 				$query = $db->getQuery(true);
-
-				// Delete all
 				$conditions = array(
 					$db->quoteName('field_id') . '=' . $post['extra_id'][$p],
 					$db->quoteName('jl_id') . '=' . $pid
@@ -3164,8 +3172,6 @@ $jinput = $app->input;
 				$query->delete($db->quoteName('#__sportsmanagement_user_extra_fields_values'));
 				$query->where($conditions);
 
-				// $db->setQuery($query);
-
 				try
 				{
 					$db->setQuery($query);
@@ -3173,18 +3179,13 @@ $jinput = $app->input;
 				}
 				catch (Exception $e)
 				{
+				    $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
 				}
 
-				// Create a new query object.
 				$query = $db->getQuery(true);
-
-				// Insert columns.
 				$columns = array('field_id', 'jl_id', 'fieldvalue');
-
-				// Insert values.
 				$values = array($post['extra_id'][$p], $pid, '\'' . $post['extraf'][$p] . '\'');
-
-				// Prepare the insert query.
 				$query
 					->insert($db->quoteName('#__sportsmanagement_user_extra_fields_values'))
 					->columns($db->quoteName($columns))
@@ -3197,6 +3198,8 @@ $jinput = $app->input;
 				}
 				catch (Exception $e)
 				{
+				    	    $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
 				}
 			}
 		}
@@ -3896,7 +3899,7 @@ $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($query->dum
 	 * @since  1.5.0a
 	 *
 	 */
-	function _addToXml($data)
+	public static function _addToXml($data)
 	{
 		if (is_array($data) && count($data) > 0)
 		{
@@ -3933,7 +3936,7 @@ $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($query->dum
 	 *
 	 * @return string
 	 */
-	public function stripInvalidXml($value)
+	public static function stripInvalidXml($value)
 	{
 		$ret     = '';
 		$current = '';
@@ -3973,7 +3976,7 @@ $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($query->dum
 	 *
 	 * @return
 	 */
-	function _setSportsManagementVersion()
+	public static function _setSportsManagementVersion()
 	{
 		$exportRoutine              = '2010-09-23 15:00:00';
 		$result[0]['exportRoutine'] = $exportRoutine;
@@ -4002,7 +4005,7 @@ $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($query->dum
 	 *
 	 * @return
 	 */
-	function _setLeagueData($league)
+	public static function _setLeagueData($league)
 	{
 
 		if ($league)
@@ -4023,7 +4026,7 @@ $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($query->dum
 	 *
 	 * @return
 	 */
-	function _setProjectData($project)
+	public static function _setProjectData($project)
 	{
 		if ($project)
 		{
@@ -4043,7 +4046,7 @@ $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($query->dum
 	 *
 	 * @return
 	 */
-	function _setSeasonData($season)
+	public static function _setSeasonData($season)
 	{
 		if ($season)
 		{
@@ -4063,7 +4066,7 @@ $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($query->dum
 	 *
 	 * @return
 	 */
-	function _setSportsType($sportstype)
+	public static function _setSportsType($sportstype)
 	{
 
 		if ($sportstype)
@@ -4085,7 +4088,7 @@ $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($query->dum
 	 *
 	 * @return
 	 */
-	function _setXMLData($data, $object)
+	public static function _setXMLData($data, $object)
 	{
 		if ($data)
 		{
@@ -4244,7 +4247,7 @@ $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($query->dum
 	 *
 	 * @return
 	 */
-	function time_to_sec($time)
+	public static function time_to_sec($time)
 	{
 		$hours   = substr($time, 0, -6);
 		$minutes = substr($time, -5, 2);

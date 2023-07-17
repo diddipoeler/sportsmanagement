@@ -8,7 +8,7 @@
  * @subpackage rules
  * @file       calendarClass.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @package    mod_sportsmanagement_calendar
  */
@@ -256,6 +256,7 @@ class PHPCalendar
 						$todaylink = $click;
 						$s         .= $class . 'jlcCalendarTodayLink' . $tdEnd
 							. '<a class="hasTip jlcCalendarToday jlcmodal' . $this->modid . '"'
+							. ' data-bs-toggle="modal" data-bs-target="#myModal' . $this->modid . '"'
 							. ' href="' . $link . '" onclick="' . $click . '"';
 						$s         .= $modalrel . " >$divday</a>";
 					}
@@ -263,6 +264,7 @@ class PHPCalendar
 					{
 						$s .= (($link == "") ? $class . $tdEnd . $divday : "jlcCalendarDay"
 							. $tdEnd . '<a class="jlcCalendarDay hasTip jlcmodal' . $this->modid
+							. '" data-bs-toggle="modal" data-bs-target="#myModal' . $this->modid
 							. '" href="' . $link . '" onclick="' . $click . '"'
 							. $modalrel . " >$divday</a>");
 					}

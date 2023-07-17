@@ -6,7 +6,7 @@
  * @subpackage mod_sportsmanagement_birthday
  * @file       mod_sportsmanagement_birthday.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de), llambion
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -76,7 +76,7 @@ switch ($mode)
 	case 'S':
 			$attribs['layout'] = 'default_player_sticker';
 			$document->addStyleSheet(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . 'player_sticker.css');
-			$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'administrator/components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css' . '" type="text/css" />' . "\n";
+			$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css' . '" type="text/css" />' . "\n";
 			$document->addCustomTag($stylelink);
 			break;
 	default:
@@ -84,14 +84,14 @@ switch ($mode)
 		{
 			$attribs['layout'] = 'default_player_card';
 			$document->addStyleSheet(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . 'player_card.css');
-			$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'administrator/components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css' . '" type="text/css" />' . "\n";
+			$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css' . '" type="text/css" />' . "\n";
 			$document->addCustomTag($stylelink);
 		}
 		else
 		{
 			// Add css file
 			$document->addStyleSheet(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . $module->module . '.css');
-			$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'administrator/components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css' . '" type="text/css" />' . "\n";
+			$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css' . '" type="text/css" />' . "\n";
 			$document->addCustomTag($stylelink);
 		}
 		break;
@@ -207,8 +207,8 @@ switch ($mode)
 				$birthdayformat = htmlentities(trim($params->get('birthdayformat')));
 				$birthdaytext   = str_replace('%WHEN%', $whenmessage, $birthdaytext);
 				$birthdaytext   = str_replace('%AGE%', $person['age'], $birthdaytext);
-				$birthdaytext   = str_replace('%DATE%', strftime($dayformat, strtotime($person['year'] . '-' . $person['daymonth'])), $birthdaytext);
-				$birthdaytext   = str_replace('%DATE_OF_BIRTH%', strftime($birthdayformat, strtotime($person['date_of_birth'])), $birthdaytext);
+				$birthdaytext   = str_replace('%DATE%', date($dayformat, strtotime($person['year'] . '-' . $person['daymonth'])), $birthdaytext);
+				$birthdaytext   = str_replace('%DATE_OF_BIRTH%', date($birthdayformat, strtotime($person['date_of_birth'])), $birthdaytext);
 				$birthdaytext   = str_replace('%BR%', '<br />', $birthdaytext);
 				$birthdaytext   = str_replace('%BOLD%', '<b>', $birthdaytext);
 				$birthdaytext   = str_replace('%BOLDEND%', '</b>', $birthdaytext);

@@ -4,7 +4,7 @@
  * @version   1.0.05
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -79,7 +79,7 @@ $this->form->setValue('editor', null, $this->user->id);
 
 		if ($isNew)
 		{
-			$this->form->setValue('start_date', null, date("Y-m-d"));
+			$this->form->setValue('start_date', null, '');
 			$this->form->setValue('start_time', null, '18:00');
 			$this->form->setValue('admin', null, $this->user->id);
 			$this->form->setValue('editor', null, $this->user->id);
@@ -87,6 +87,12 @@ $this->form->setValue('editor', null, $this->user->id);
 		}
 		else
 		{
+		  if ($this->item->start_date == '0000-00-00')
+			{
+				$this->item->start_date = '';
+				$this->form->setValue('start_date',null, '');
+			}
+            
 $endung = strtolower(File::getExt($this->item->picture));
 
 
@@ -109,13 +115,13 @@ $name = File::getName($this->item->picture);
       }			
 		}
 
-		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields();
+		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('backend',0,Factory::getApplication()->input->get('view'));
 
 		if ($this->checkextrafields)
 		{
 			if (!$isNew)
 			{
-				$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id);
+				$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id,'backend',0,Factory::getApplication()->input->get('view'));
 			}
 		}
 

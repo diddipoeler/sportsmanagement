@@ -1,0 +1,10 @@
+ALTER TABLE `#__sportsmanagement_position_eventtype` CHANGE `checked_out` `checked_out` INT(11) NOT NULL DEFAULT '0';
+ALTER TABLE `#__sportsmanagement_position_statistic` CHANGE `checked_out` `checked_out` INT(11) NOT NULL DEFAULT '0';
+ALTER TABLE `#__sportsmanagement_prediction_admin` CHANGE `checked_out` `checked_out` INT(11) NOT NULL DEFAULT '0';
+ALTER TABLE `#__sportsmanagement_prediction_game` CHANGE `checked_out` `checked_out` INT(11) NOT NULL DEFAULT '0';
+ALTER TABLE `#__sportsmanagement_prediction_member` CHANGE `checked_out` `checked_out` INT(11) NOT NULL DEFAULT '0';
+ALTER TABLE `#__sportsmanagement_prediction_project` CHANGE `checked_out` `checked_out` INT(11) NOT NULL DEFAULT '0';
+ALTER TABLE `#__sportsmanagement_prediction_result` CHANGE `checked_out` `checked_out` INT(11) NOT NULL DEFAULT '0';
+ALTER TABLE `#__sportsmanagement_prediction_result_round` CHANGE `checked_out` `checked_out` INT(11) NOT NULL DEFAULT '0';
+ALTER TABLE `#__sportsmanagement_prediction_tippround` CHANGE `checked_out` `checked_out` INT(11) NOT NULL DEFAULT '0';
+ALTER TABLE `#__sportsmanagement_project` CHANGE `checked_out` `checked_out` INT(11) NOT NULL DEFAULT '0';

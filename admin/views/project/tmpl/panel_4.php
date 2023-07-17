@@ -4,7 +4,7 @@
  * @version   1.0.60
  * @file      panel_4.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -14,7 +14,13 @@ $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
     <div class="row">
-<?php if (!empty($this->sidebar))
+<?php
+require(JPATH_COMPONENT_ADMINISTRATOR . '/views/listheader/tmpl/default_4_start_menu.php');   
+?>
+
+<?php 
+/**
+if (!empty($this->sidebar))
 	:
 	?>
     <div id="j-sidebar-container" class="col-md-2">
@@ -26,7 +32,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	:
 	?>
     <div class="col-md-10">
-<?php endif; ?>
+<?php endif; 
+*/
+?>
+<div class="col-md-10">
+	    
 <?php
 echo $this->loadTemplate('jsm_warnings');
 echo $this->loadTemplate('jsm_notes');			    

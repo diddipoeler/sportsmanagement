@@ -6,7 +6,7 @@
  * @subpackage player
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -48,86 +48,41 @@ class sportsmanagementViewplayer extends sportsmanagementView
 		$this->form->setValue('person_id1', 'request', $this->item->person_id1);
 		$this->form->setValue('person_id2', 'request', $this->item->person_id2);
 
-		if ($this->item->latitude == 255)
-		{
+		if ($this->item->latitude == 255) {
 			$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_NO_GEOCODE'), 'Error');
 			$this->map = false;
-		}
-		else
-		{
+		} else {
 			$this->map = true;
 		}
 
 		$isNew = $this->item->id == 0;
 
-		if ($this->item->birthday == '0000-00-00')
-		{
-			$this->item->birthday = '';
-			$this->form->setValue('birthday',null, '');
+		$fields = array('birthday', 'deathday', 'injury_date_start', 'injury_date_end', 'susp_date_start', 'susp_date_end', 'away_date_start', 'away_date_end');
+		foreach ($fields as $field) {
+			if ($this->item->$field == '0000-00-00') {
+				$this->item->$field = '';
+				$this->form->setValue($field, null, '');
+			}
 		}
 
-		if ($this->item->deathday == '0000-00-00')
-		{
-			$this->item->birthday = '';
-			$this->form->setValue('deathday',null, '');
-		}
+		$extended = sportsmanagementHelper::getExtended($this->item->extended, 'player');
+		$this->extended = $extended;
+		$extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'player');
+		$this->extendeduser = $extendeduser;
+		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('backend', 0, Factory::getApplication()->input->get('view'));
+		$lists = array();
 
-		if ($this->item->injury_date_start == '0000-00-00')
-		{
-			$this->item->injury_date_start = '';
-			$this->form->setValue('injury_date_start',null, '');
-		}
-
-		if ($this->item->injury_date_end == '0000-00-00')
-		{
-			$this->item->injury_date_end = '';
-			$this->form->setValue('injury_date_end',null, '');
-		}
-
-		if ($this->item->susp_date_start == '0000-00-00')
-		{
-			$this->item->susp_date_start = '';
-			$this->form->setValue('susp_date_start',null, '');
-		}
-
-		if ($this->item->susp_date_end == '0000-00-00')
-		{
-			$this->item->susp_date_end = '';
-			$this->form->setValue('susp_date_end',null, '');
-		}
-
-		if ($this->item->away_date_start == '0000-00-00')
-		{
-			$this->item->away_date_start = '';
-			$this->form->setValue('away_date_start',null, '');
-		}
-
-		if ($this->item->away_date_end == '0000-00-00')
-		{
-			$this->item->away_date_end = '';
-			$this->form->setValue('away_date_end',null, '');
-		}
-
-		$extended               = sportsmanagementHelper::getExtended($this->item->extended, 'player');
-		$this->extended         = $extended;
-		$extendeduser           = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'player');
-		$this->extendeduser     = $extendeduser;
-		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields();
-		$lists                  = array();
-
-		if ($this->checkextrafields)
-		{
-			$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id);
+		if ($this->checkextrafields) {
+			$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id, 'backend', 0, Factory::getApplication()->input->get('view'));
 		}
 
 		$this->lists = $lists;
 		unset($lists);
 
-		$person_age   = sportsmanagementHelper::getAge($this->form->getValue('birthday'), $this->form->getValue('deathday'));
+		$person_age = sportsmanagementHelper::getAge($this->form->getValue('birthday'), $this->form->getValue('deathday'));
 		$person_range = $this->model->getAgeGroupID($person_age);
 
-		if ($person_range)
-		{
+		if ($person_range) {
 			$this->form->setValue('agegroup_id', null, $person_range);
 		}
 
@@ -148,7 +103,6 @@ class sportsmanagementViewplayer extends sportsmanagementView
 
 	}
 
-
 	/**
 	 * sportsmanagementViewplayer::addToolBar()
 	 *
@@ -157,11 +111,10 @@ class sportsmanagementViewplayer extends sportsmanagementView
 	protected function addToolBar()
 	{
 		$this->jinput->set('hidemainmenu', true);
-		$isNew      = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSON_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSON_NEW');
+		$isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSON_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSON_NEW');
 		$this->icon = 'person';
 		parent::addToolbar();
 
 	}
-
 
 }

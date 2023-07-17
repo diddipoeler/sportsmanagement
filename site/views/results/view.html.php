@@ -6,7 +6,7 @@
  * @subpackage results
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -647,7 +647,7 @@ class sportsmanagementViewResults extends sportsmanagementView
 
 			foreach ((array) $matchevents as $me)
 			{
-				if ($me->ptid == $matchInfo->projectteam1_id)
+				if (isset($me->ptid) && $me->ptid == $matchInfo->projectteam1_id)
 				{
 					$output .= self::_formatEventContainerInResults($me, $projectevents[$me->event_type_id], $matchInfo->projectteam1_id, $showEventInfo, $config);
 				}
@@ -664,7 +664,7 @@ class sportsmanagementViewResults extends sportsmanagementView
 
 			foreach ($matchevents as $me)
 			{
-				if ($me->ptid == $matchInfo->projectteam2_id)
+				if (isset($me->ptid) && $me->ptid == $matchInfo->projectteam2_id)
 				{
 					$output .= self::_formatEventContainerInResults($me, $projectevents[$me->event_type_id], $matchInfo->projectteam2_id, $showEventInfo, $config);
 				}
@@ -1230,7 +1230,7 @@ class sportsmanagementViewResults extends sportsmanagementView
 				}
 				else
 				{
-					echo '$(\'cb' . $i . '\').checked=true;';
+					echo "document.getElementById('cb" . $i . "').checked=true;";
 				}
 
 				echo '"';

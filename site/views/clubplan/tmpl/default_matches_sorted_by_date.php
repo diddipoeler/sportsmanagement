@@ -5,7 +5,7 @@
  * @subpackage clubplan
  * @file       default_matches_sorted_by_date.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -360,16 +360,16 @@ $cnt = 0;
 					if ($team1 > $team2)
 					{
 						echo '<td align="center" valign="middle">' .
-							HTMLHelper::image("media/com_sportsmanagement/jl_images/thumbs_up.png",
-								"thumbs_up.png",
+							HTMLHelper::image("media/com_sportsmanagement/jl_images/won.png",
+								"won.png",
 								array("title" => Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_WON'))
 							) . "&nbsp;</td>";
 					}
                     elseif ($team2 > $team1)
 					{
 						echo '<td align="center" valign="middle">' .
-							HTMLHelper::image("media/com_sportsmanagement/jl_images/thumbs_down.png",
-								"thumbs_down.png",
+							HTMLHelper::image("media/com_sportsmanagement/jl_images/lost.png",
+								"lost.png",
 								array("title" => Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_LOST'))
 							) . "&nbsp;</td>";
 					}

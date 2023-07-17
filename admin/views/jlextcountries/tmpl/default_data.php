@@ -6,7 +6,7 @@
  * @subpackage jlextcountries
  * @file       default_data.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -14,8 +14,11 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Uri\Uri;
 
 $this->saveOrder = $this->sortColumn == 'objcountry.ordering';
+$imageTitle = '';
 if ($this->saveOrder && !empty($this->items))
 {
 $saveOrderingUrl = 'index.php?option=com_sportsmanagement&task='.$this->view.'.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
@@ -28,6 +31,7 @@ else
 HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl,$this->saveOrderButton);    
 }
 }
+
 ?>
 <div class="table-responsive" id="editcell">
 <table class="<?php echo $this->table_data_class; ?>" id="<?php echo $this->view; ?>list">
@@ -43,13 +47,10 @@ HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolow
 				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_GLOBAL_NAME', 'objcountry.name', $this->sortDirection, $this->sortColumn);
 				?>
             </th>
-            <th width="5"
-                style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_FLAG'); ?></th>
-
-            <th width="5"
-                style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_TRANSLATION'); ?></th>
-            <th width="5"
-                style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_FEDERATION'); ?></th>
+            <th width="5" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_FLAG'); ?></th>
+            <th width="5" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_FLAG_MAPS'); ?></th>
+            <th width="5" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_TRANSLATION'); ?></th>
+            <th width="5" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_FEDERATION'); ?></th>
 
             <th>
 				<?php
@@ -169,6 +170,27 @@ $this->dragable_group = 'data-dragable-group="none"';
 				?>
 
                 <td><?php echo JSMCountries::getCountryFlag($this->item->alpha3); ?></td>
+                
+                 <td style="text-align:center; ">
+					<?php
+					if (empty($this->item->flag_maps) || !File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $this->item->flag_maps))
+					{
+						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE') . $this->item->flag_maps;
+						echo HTMLHelper::_(
+							'image', 'administrator/components/com_sportsmanagement/assets/images/delete.png',
+							$imageTitle, 'title= "' . $imageTitle . '"'
+						);
+					}
+					else
+					{
+echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_picture' . $this->item->id, Uri::root() . $this->item->flag_maps,
+						    $this->item->name, '20', Uri::root() . $this->item->flag_maps);						
+						?>
+                        
+						<?PHP
+					}
+					?>
+                </td>
 
                 <td><?php echo Text::_($this->item->name); ?></td>
                 <td><?php echo $this->item->federation_name; ?></td>

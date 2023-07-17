@@ -4,7 +4,7 @@
  * @version   1.0.05
  * @file      default_teams.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -15,7 +15,7 @@ use Joomla\CMS\Component\ComponentHelper;
 
 ?>
 <div class="<?php echo $this->divclassrow; ?>" id="default_teams" itemscope itemtype="http://schema.org/SportsTeam">
-	<!-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> -->
+	
 		<?php
 		$this->notes = array();
 		$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_TEAMS');
@@ -36,7 +36,7 @@ use Joomla\CMS\Component\ComponentHelper;
 				$routeparameter['ptid']               = $team->ptid;
 				$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);
 				?>
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<div class="row">
 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
 					<?php
 

@@ -6,7 +6,7 @@
  * @subpackage players
  * @file       default_data.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -30,7 +30,58 @@ else
 {
 	$this->readonly = '';
 }
+/**
+changeBg(row, isChecked) {
+      // Check if it should add or remove the background colour
+      if (isChecked) {
+        [].slice.call(row.querySelectorAll('td, th')).forEach(elementToMark => {
+          elementToMark.classList.add('row-selected');
+        });
+      } else {
+        [].slice.call(row.querySelectorAll('td, th')).forEach(elementToMark => {
+          elementToMark.classList.remove('row-selected');
+        });
+      }
+    }
+
+
+
+*/
 ?>
+<script>
+var last_value;
+var current_value;
+var attribute_cbnummer;
+var id_cbnummer;
+jQuery(document).ready(function() {
+    jQuery("tr").click(function(){
+jQuery(this).children("td:even").addClass("row-selected").end().children("td:odd").addClass("row-selected");
+            		
+       //alert("Click! "+ jQuery(this).find('td').html());
+    });
+});
+
+jQuery(document).on("click","select",function(){
+    last_value = $(this).val();
+	attribute_cbnummer = $(this).attr('cbnummer');
+	id_cbnummer = $(this).attr('id');
+});
+
+jQuery(document).on("change","select",function(){
+	//last_value = $(this).val();
+	//attribute_cbnummer = $(this).attr('cbnummer');
+	//id_cbnummer = $(this).attr('id');
+current_value = $(this).val();
+
+    console.log('last value - '+last_value);
+    console.log('current value - '+current_value);
+	console.log('attribute_cbnummer - '+attribute_cbnummer);
+	console.log('id_cbnummer - '+id_cbnummer);
+$( "#"+attribute_cbnummer).prop( "checked", true );
+
+});
+</script>
+
 
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha512-MoRNloxbStBcD8z3M/2BmnT+rg4IsMxPkXaGh2zD6LGNNFE80W3onsAhRcMAMrSoyWL9xD7Ert0men7vR8LUZg==" crossorigin="anonymous" /> -->
 <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" />
@@ -166,38 +217,38 @@ else
                                                            class="form-control form-control-inline"
                                                            name="firstname<?php echo $this->item->id; ?>"
                                                            value="<?php echo stripslashes(htmlspecialchars($this->item->firstname)); ?>"
-                                                           onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
+                                                           onchange=""/>
                     </td>
                     <td class="center">
                         <input <?php echo $inputappend; ?> type="text" size="15"
                                                            class="form-control form-control-inline"
                                                            name="nickname<?php echo $this->item->id; ?>"
                                                            value="<?php echo stripslashes(htmlspecialchars($this->item->nickname)); ?>"
-                                                           onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
+                                                           onchange=""/>
                     </td>
                     <td class="center">
                         <input <?php echo $inputappend; ?> type="text" size="15"
                                                            class="form-control form-control-inline"
                                                            name="lastname<?php echo $this->item->id; ?>"
                                                            value="<?php echo stripslashes(htmlspecialchars($this->item->lastname)); ?>"
-                                                           onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
+                                                           onchange=""/>
                     </td>
-                    <td class="center">
-						<?php
-						$picture    = ($this->item->picture == sportsmanagementHelper::getDefaultPlaceholder("player")) ? 'information.png' : 'ok.png';
-						$imageTitle = ($this->item->picture == sportsmanagementHelper::getDefaultPlaceholder("player")) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE');
+<td class="center">
+<?php
+$picture    = ($this->item->picture == sportsmanagementHelper::getDefaultPlaceholder("player")) ? 'information.png' : 'ok.png';
+$imageTitle = ($this->item->picture == sportsmanagementHelper::getDefaultPlaceholder("player")) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE');
 $image_attributes['title'] = $imageTitle;
 echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/'.$picture,$imageTitle,$image_attributes);
-						$playerName = sportsmanagementHelper::formatName(null, $this->item->firstname, $this->item->nickname, $this->item->lastname, 0);
-						echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_person' . $this->item->id, Uri::root() . $this->item->picture, $playerName, '20', Uri::root() . $this->item->picture);
-						?>
-                        <br />
- <?php
+$playerName = sportsmanagementHelper::formatName(null, $this->item->firstname, $this->item->nickname, $this->item->lastname, 0);
+echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_person' . $this->item->id, Uri::root() . $this->item->picture, $playerName, '20', Uri::root() . $this->item->picture);
+?>
+<br />
+<?php
 $link2 = 'index.php?option=com_sportsmanagement&view=imagelist' .'&player_id='.$this->item->id.
 '&imagelist=1&asset=com_sportsmanagement&folder=persons' . '&author=&fieldid=' . '&tmpl=component&type=persons'.'&fieldname=picture';
 echo sportsmanagementHelper::getBootstrapModalImage('select'.$this->item->id, '', Text::_('JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE').' ', '20', Uri::base() . $link2, $this->modalwidth, $this->modalheight);        
-        ?>                        
-                    </td>
+?>                        
+</td>
                     <td class="nowrap" class="center">
 						<?php
 						$append = '';
@@ -207,33 +258,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('select'.$this->item->id, ''
 							$append = ' style="background-color:#FFCCCC;" ';
 							$date1  = '';
 						}
-						/**
-						 * das wurde beim kalender geändert
-						 * $attribs = array(
-						 *            'onChange' => "alert('it works')",
-						 *            "showTime" => 'false',
-						 *            "todayBtn" => 'true',
-						 *            "weekNumbers" => 'false',
-						 *            "fillTable" => 'true',
-						 *            "singleHeader" => 'false',
-						 *        );
-						 *    echo HTMLHelper::_('calendar', Factory::getDate()->format('Y-m-d'), 'date', 'date', '%Y-%m-%d', $attribs); ?>
-						 */
 
-/*
-						$attribs = array(
-							'onChange' => "document.getElementById('cb" . $this->count_i . "').checked=true",
-							'readonly' => trim($this->readonly),
-						);
-						echo HTMLHelper::calendar(
-							$date1,
-							'birthday' . $this->item->id,
-							'birthday' . $this->item->id,
-							'%d-%m-%Y',
-							$attribs
-						);
-						*/								
-                        //}
 						?>
 
 <div class="input-group date" id="birthday<?php echo $this->item->id; ?>" data-target-input="nearest"  >
@@ -242,11 +267,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('select'.$this->item->id, ''
 style="width: 120px; <?php echo $append; ?>" 
                     data-toggle="datetimepicker"
                     class="form-control datetimepicker-input " data-target="#birthday<?php echo $this->item->id; ?>" value="<?php echo $date1; ?>"  />
-<!--
-                    <div class="input-group-append" data-target="#datepicker<?php echo $row->id; ?>" data-toggle="datetimepicker">
-                       <div class="input-group-text" style="position:relative"><i class="fa fa-calendar"></i></div>
-                    </div>
-					 -->
+
 </div>  
 
 
@@ -259,8 +280,8 @@ style="width: 120px; <?php echo $append; ?>"
                 );
 		$("#birthday<?php echo $this->item->id; ?>").on("change.datetimepicker", ({date, oldDate}) => {
               console.log("New date", date);
-              console.log("Old date", oldDate);
-			  document.getElementById('cb<?php echo $this->count_i; ?>').checked=true
+              console.log("Old date", oldDate)
+			  
               //alert("Changed date")
       })    
             });
@@ -273,7 +294,7 @@ style="width: 120px; <?php echo $append; ?>"
                                                            class="form-control form-control-inline"
                                                            name="knvbnr<?php echo $this->item->id; ?>"
                                                            value="<?php echo stripslashes(htmlspecialchars($this->item->knvbnr)); ?>"
-                                                           onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
+                                                           onchange=""/>
                     </td>
                     <?php } ?>
                     <?php if (ComponentHelper::getParams($this->option)->get('backend_show_players_agegroup')){ ?>
@@ -285,8 +306,7 @@ style="width: 120px; <?php echo $append; ?>"
 							'select.genericlist',
 							$this->lists['agegroup'],
 							'agegroup' . $this->item->id,
-							$inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
-							$this->count_i . '\').checked=true"' . $append,
+							$inputappend . ' cbnummer="cb' . $this->count_i . '" class="form-control form-control-inline" size="1" ' . $append,
 							'value', 'text', $this->item->agegroup_id
 						);
 						?>
@@ -303,7 +323,7 @@ style="width: 120px; <?php echo $append; ?>"
 						echo JHtmlSelect::genericlist(
 							$this->lists['nation'],
 							'country' . $this->item->id,
-							$inputappend . ' class="form-control form-control-inline" style="width:140px; ' . $append . '" onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true"',
+							$inputappend . ' cbnummer="cb' . $this->count_i . '" class="form-control form-control-inline" style="width:140px; ' . $append . '" ',
 							'value',
 							'text',
 							$this->item->country
@@ -317,10 +337,11 @@ style="width: 120px; <?php echo $append; ?>"
 						{
 							$append = ' background-color:#FFCCCC;';
 						}
+						
 						echo JHtmlSelect::genericlist(
 							$this->lists['positions'],
 							'position' . $this->item->id,
-							$inputappend . 'class="form-control form-control-inline" style="width:140px; ' . $append . '" onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true"',
+							$inputappend . ' cbnummer="cb' . $this->count_i . '" class="form-control form-control-inline" style="width:140px; ' . $append . ' " ',
 							'value',
 							'text',
 							$this->item->position_id
@@ -330,7 +351,8 @@ style="width: 120px; <?php echo $append; ?>"
                     <td class="center">
                         <div class="btn-group">
 							<?php echo HTMLHelper::_('jgrid.published', $this->item->published, $this->count_i, 'players.', $canChange, 'cb'); ?>
-							<?php // Create dropdown items and render the dropdown list.
+							<?php 
+                            /** Create dropdown items and render the dropdown list. */
 							if ($canChange && !$this->assign)
 							{
 								HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === 2 ? 'un' : '') . 'archive', 'cb' . $this->count_i, 'players');

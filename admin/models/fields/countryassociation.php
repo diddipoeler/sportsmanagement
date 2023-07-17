@@ -6,13 +6,14 @@
  * @subpackage fields
  * @file       countryassociation.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Language\Text;
 
 jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
@@ -63,10 +64,18 @@ class JFormFieldcountryassociation extends \JFormFieldList
 			$query->select('t.id AS value, t.name AS text');
 			$query->from('#__sportsmanagement_associations AS t');
 			$query->join('inner', '#__sportsmanagement_' . $vartable . ' AS wt ON wt.country = t.country ');
-			$query->where('wt.id = ' . $select_id);
+			$query->where('wt.id = ' . (int)$select_id);
 			$query->order('t.name');
+			try{
 			$db->setQuery($query);
 			$options = $db->loadObjectList();
+			 }
+		catch (Exception $e)
+		{
+	Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+Factory::getApplication()->enqueueMessage(Text::_('<pre>'.print_r($query->dump(),true).'</pre>'), 'notice');
+		}
 		}
 
 		/** Merge any additional options in the XML definition. */

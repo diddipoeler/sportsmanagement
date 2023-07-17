@@ -6,7 +6,7 @@
  * @subpackage updates
  * @file       jsm_update_db_tables.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -19,7 +19,7 @@ use Joomla\CMS\Component\ComponentHelper;
 HTMLHelper::_('bootstrap.framework');
 jimport('joomla.html.html.bootstrap');
 
-$version           = '3.8.8';
+$version           = '4.12.00';
 
 $minor = 0;
 $major = 0;

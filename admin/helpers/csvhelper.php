@@ -242,7 +242,7 @@ class JSMparseCSV
 				$this->limit = $limit;
 			}
 
-			if (count($conditions) > 0)
+			if (isset($conditions) && count($conditions) > 0)
 			{
 				$this->conditions = $conditions;
 			}

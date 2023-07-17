@@ -2,4 +2,19 @@
 <structur>
 <version>1.0.00</version>
 
+<events>
+<name icon="single_won.png">SINGLE_WON</name>
+</events>
+<events>
+<name icon="single_lost.png">SINGLE_LOST</name>
+</events>
+<events>
+<name icon="double_won.png">DOUBLE_WON</name>
+</events>
+<events>
+<name icon="double_lost.png">DOUBLE_LOST</name>
+</events>
+
+
+
 </structur>

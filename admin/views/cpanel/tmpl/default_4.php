@@ -6,7 +6,7 @@
  * @subpackage cpanel
  * @file       default_4.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -18,10 +18,15 @@ $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <div class="row">
+<?php
+echo $this->loadTemplate('start_menu');
+?>
+	<!--
     <div id="j-sidebar-container" class="col-md-2">
 		<?php echo $this->sidebar; ?>
     </div>
-    <div class="col-md-8">
+-->
+    <div class="col-md-10">
     <?php
             if ( ComponentHelper::getParams('com_sportsmanagement')->get('start_install_helper') && !$this->sporttypes )
             {
@@ -295,6 +300,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 				<?PHP
 			}
 			?>
+            <a class="btn btn-jsm-dash" href="index.php?option=com_sportsmanagement&view=update&task=update.save&file_name=jsm_install_jcomments.php">
+                <img src="components/com_sportsmanagement/assets/icons/jcomments_j4_256.png" width="50px"
+                     alt="<?php echo Text::_('JComments for Joomla 4') ?>"/><br/>
+                <span><?php echo Text::_('JComments for Joomla 4') ?></span>
+            </a>
+            
         </div>
         <hr>
         <div class="">

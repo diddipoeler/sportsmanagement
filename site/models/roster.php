@@ -6,7 +6,7 @@
  * @subpackage roster
  * @file       roster.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -243,7 +243,8 @@ class sportsmanagementModelRoster extends JSMModelLegacy
 	 */
 	public static function getTeamPlayers($persontype = 1)
 	{
-		$app    = Factory::getApplication();
+		
+$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 
 		// Create a new query object.
@@ -255,7 +256,16 @@ class sportsmanagementModelRoster extends JSMModelLegacy
 
 		$query->select('pr.firstname,pr.nickname,pr.lastname,pr.country,pr.birthday,pr.deathday,pr.id AS pid,pr.id AS person_id,pr.picture AS ppic');
 		$query->select('pr.suspension AS suspension,pr.away AS away,pr.injury AS injury,pr.id AS pid,pr.picture AS ppic,CONCAT_WS(\':\',pr.id,pr.alias) AS person_slug');
-		$query->select('tp.id AS playerid,tp.id AS season_team_person_id,tp.jerseynumber AS position_number,tp.notes AS description,tp.market_value AS market_value,tp.picture');
+      //$query->select('perpos.project_position_id as position_id');
+      $query->select('ppos.position_id as position_id');
+      $query->select('pos.name AS position');
+      $query->select('st.id AS season_team_id');
+      $query->select('pt.project_id AS project_id');
+		$query->select('pt.id AS projectteam_id');
+	$query->select('tp.id AS playerid,tp.id AS season_team_person_id,tp.jerseynumber AS position_number,tp.notes AS description,tp.market_value AS market_value,tp.picture');
+		
+		/**
+      $query->select('tp.id AS playerid,tp.id AS season_team_person_id,tp.jerseynumber AS position_number,tp.notes AS description,tp.market_value AS market_value,tp.picture');
 		$query->select('st.id AS season_team_id');
 		$query->select('pt.project_id AS project_id');
 		$query->select('pt.id AS projectteam_id');
@@ -263,11 +273,14 @@ class sportsmanagementModelRoster extends JSMModelLegacy
 		$query->select('ppos.position_id,ppos.id as pposid');
 		$query->select('CONCAT_WS(\':\',pro.id,pro.alias) AS project_slug');
 		$query->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
+      */
+      
 		$query->from('#__sportsmanagement_season_team_person_id AS tp ');
-		$query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id and st.season_id = tp.season_id');
+		$query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
 		$query->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
 		$query->join('INNER', '#__sportsmanagement_person AS pr ON tp.person_id = pr.id');
-		$query->join('INNER', '#__sportsmanagement_project AS pro ON pro.id = pt.project_id and pro.season_id = st.season_id');
+		
+      $query->join('INNER', '#__sportsmanagement_project AS pro ON pro.id = pt.project_id and pro.season_id = tp.season_id');
 		$query->join('INNER', '#__sportsmanagement_team AS t ON t.id = st.team_id');
 		$query->join('LEFT', '#__sportsmanagement_person_project_position AS perpos ON perpos.project_id = pro.id AND perpos.person_id = pr.id');
 		$query->join('LEFT', '#__sportsmanagement_project_position AS ppos ON ppos.id = perpos.project_position_id');
@@ -284,14 +297,17 @@ class sportsmanagementModelRoster extends JSMModelLegacy
 				break;
 		}
 
-		$query->where('pt.id = ' . $projectteam->id);
-		$query->where('pr.published = 1');
-		$query->where('tp.published = 1');
-		$query->where('perpos.published = 1');
+		//$query->where('pt.id = ' . $projectteam->id);
+		//$query->where('pr.published = 1');
+		//$query->where('tp.published = 1');
+		//$query->where('perpos.published = 1');
 		$query->where('tp.persontype = ' . $persontype);
-		$query->where('pos.persontype = ' . $persontype);
+		//$query->where('pos.persontype = ' . $persontype);
 		$query->where('tp.season_id = ' . self::$seasonid);
-		$query->where('pt.project_id = ' . self::$projectid);
+      $query->where('tp.team_id = ' . $projectteam->season_team_id);
+      
+      //$query->where('st.season_id = ' . self::$seasonid);
+		//$query->where('pt.project_id = ' . self::$projectid);
 		$query->where('pro.id = ' . self::$projectid);
 		$query->order('pos.ordering, ppos.position_id, tp.ordering, tp.jerseynumber, pr.lastname, pr.firstname');
 
@@ -306,6 +322,14 @@ class sportsmanagementModelRoster extends JSMModelLegacy
 			Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), Log::ERROR, 'jsmerror');
 		}
 
+if ( Factory::getConfig()->get('debug') )
+{  
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $query->dump()), Log::NOTICE, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' .'projectteam <pre>'.print_r($projectteam,true).'</pre>'  ), Log::NOTICE, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' .'players <pre>'.print_r(self::$_players,true).'</pre>'  ), Log::NOTICE, 'jsmerror');
+
+	
+}
 		switch ($persontype)
 		{
 			case 1:
@@ -329,7 +353,6 @@ class sportsmanagementModelRoster extends JSMModelLegacy
 				return self::$_players;
 				break;
 		}
-
 	}
 
 	/**
@@ -546,6 +569,7 @@ class sportsmanagementModelRoster extends JSMModelLegacy
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
+		$rows = array();
 
 		// Create a new query object.
 		$db        = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
@@ -569,11 +593,17 @@ class sportsmanagementModelRoster extends JSMModelLegacy
 		$query->where('stp.id = ' . $player_id);
 		$query->where('pr.published = 1');
 		$query->where('stp.published = 1');
-
+try
+{
 		$db->setQuery($query);
-
 		$rows = $db->loadObjectList();
-
+}
+		catch (Exception $e)
+		{
+			Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), Log::ERROR, 'jsmerror');
+			Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), Log::ERROR, 'jsmerror');
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $query->dump()), Log::NOTICE, 'jsmerror');
+		}
 		return $rows;
 	}
 

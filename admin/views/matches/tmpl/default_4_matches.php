@@ -6,7 +6,7 @@
  * @subpackage matches
  * @file       defaul_matches.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  *
  * https://cdnjs.com/libraries/tempusdominus-bootstrap-4
@@ -192,7 +192,7 @@ if ($this->templateConfig['show_number'] == 0) $colspan--;
 				$canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.match.' . $row->id) && $canCheckin;
 
 				list($date, $time) = explode(" ", $row->match_date);
-				$time = strftime("%H:%M", strtotime($time));
+				$time = date("%H:%i", strtotime($time));
 
 				if ($date == '0000-00-00')
 				{
@@ -254,19 +254,21 @@ if ($this->templateConfig['show_number'] == 0) $colspan--;
 						<?php
 						echo sportsmanagementHelper::getBootstrapModalImage('matchpicture' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/link.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_MATCHPICTURE'), '20', Uri::base() . $pcture_link, $this->modalwidth, $this->modalheight);
 						?>
-                        <br>
-						<?php
-						// Diddipoeler einzelsportart
-						if ($this->projectws->project_art_id == 2)
-						{
-							$pcture_link = "index.php?option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&id=" . $row->id . "&team1=" . $row->projectteam1_id . "&team2=" . $row->projectteam2_id . "&rid=" . $row->round_id;
-							echo sportsmanagementHelper::getBootstrapModalImage('einzelsportart' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/players_add.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SINGLE_SPORT'), '20', Uri::base() . $pcture_link, $this->modalwidth, $this->modalheight);
-							?>
+                        <br />
+<?php
+/** Diddipoeler einzelsportart */
+if ($this->projectws->project_art_id == 2)
+{
+$pcture_link = "index.php?option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&id=" . $row->id . "&team1=" . $row->projectteam1_id . "&team2=" . $row->projectteam2_id . "&rid=" . $row->round_id;
+echo sportsmanagementHelper::getBootstrapModalImage('einzelsportart' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/players_add.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SINGLE_SPORT'), '20', Uri::base() . $pcture_link, $this->modalwidth, $this->modalheight);
 
-							<?php
-							
-						}
-						?>
+$pcture_link = "index.php?option=com_sportsmanagement&view=jlextindividualsportes&generate=1&layout=generate&tmpl=component&id=" . $row->id . "&team1=" . $row->projectteam1_id . "&team2=" . $row->projectteam2_id . "&rid=" . $row->round_id;
+echo sportsmanagementHelper::getBootstrapModalImage('einzelsportartgenerate' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/info.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_GENERATE_TT_MATCHES'), '20', Uri::base() . $pcture_link, $this->modalwidth, $this->modalheight);
+
+?>
+<?php
+}
+?>
 
 
                     </td>

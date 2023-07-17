@@ -6,7 +6,7 @@
  * @subpackage project
  * @file       project.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -133,17 +133,29 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 	 * @param integer $project_id
 	 * @return void
 	 */
-	public static function getProjectCountMatches($project_id = 0)
+	public static function getProjectCountMatches($project_id = 0,$alloverleagueid = false,$league_id = 0,$season_id = 0)
 	{
 $app    = Factory::getApplication();
 	$option = $app->input->getCmd('option');
     $totalresult = 0;
+		
 	$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-	$query     = $db->getQuery(true);	
+	$query     = $db->getQuery(true);
+		
+		$query->clear();
     $query->select('COUNT(distinct m.id) as totalmatch');
     $query->from('#__sportsmanagement_match as m');
     $query->join('INNER', '#__sportsmanagement_round as r ON r.id = m.round_id');
+		if ( $alloverleagueid && $league_id && $season_id )
+		{
+		$query->join('INNER', '#__sportsmanagement_project as p ON p.id = r.project_id');
+		$query->where('p.league_id = ' . $league_id);
+		$query->where('p.season_id = ' . $season_id);
+		}
+		else
+		{
 	$query->where('r.project_id = ' . $project_id);
+		}
     try
     {
     $db->setQuery($query);
@@ -1058,7 +1070,8 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	 * @param integer $sports_type_id
 	 * @return
 	 */
-	public static function getEventTypes($evid = '', $cfg_which_database = 0, $sports_type_id = 0)
+	public static function getEventTypes($evid = 0, $cfg_which_database = 0, $sports_type_id = 0,
+					    $p = 0,$tid = 0,$s = 0,$mid = 0)
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
@@ -1070,6 +1083,18 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 		$query->from('#__sportsmanagement_eventtype AS et');
 		$query->join('LEFT', '#__sportsmanagement_match_event AS me ON et.id = me.event_type_id');
 
+		if ( $mid )
+        {
+        $query->where('me.match_id = ' . $mid);
+        }
+      
+      if ( $p )
+      {
+      $query->join('LEFT', '#__sportsmanagement_match AS mat ON mat.id = me.match_id');  
+      $query->join('LEFT', '#__sportsmanagement_round AS r ON r.id = mat.round_id');    
+      $query->where('r.project_id = ' . $p);  
+      }
+		
 		if ($evid)
 		{
 		$query->where("me.event_type_id IN (" . $evid . ")");
@@ -1691,7 +1716,7 @@ self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT')
 		}
 		else
 		{
-			$join = 'INNER';
+			$join = 'LEFT';
 
 			// $addline = '';
 		}
@@ -1724,7 +1749,7 @@ self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT')
 
 		// Where
 		$query->where('me.match_id = ' . (int) $match_id);
-		$query->where('p.published = 1');
+		$query->where('COALESCE(p.published,1) = 1');
 		$query->group('me.event_type_id,me.id,me.event_time,me.notice,me.event_sum,me.projectteam_id,t.alias, t.id, et.name, t.name, p.picture, tp.picture,p.firstname, p.nickname, p.lastname, p.alias, p.id');
 
 		// Order

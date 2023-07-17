@@ -6,7 +6,7 @@
  * @subpackage persons
  * @file       default.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -63,7 +63,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         <input type="hidden" name="project_id" value="<?php echo $this->project_id; ?>"/>
         <input type="hidden" name="team_id" value="<?php echo $this->team_id; ?>"/>
         <input type="hidden" name="persontype" value="<?php echo $this->persontype; ?>"/>
-	    <input type="hidden" name="whichview" value="<?php echo $this->whichview; ?>"/>
+	<input type="hidden" name="whichview" value="<?php echo $this->whichview; ?>"/>
+	<input type="hidden" name="assignclub" value="<?php echo $this->assignclub; ?>"/>
         <input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>"/>
         <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>"/>
 		<?php echo HTMLHelper::_('form.token') . "\n"; ?>

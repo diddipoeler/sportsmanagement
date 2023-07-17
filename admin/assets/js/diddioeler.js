@@ -70,6 +70,14 @@ var querystring = 'teamplayer_id=' + player +
 	'&notice=' + notice +
     '&doubleevents=' + doubleevents;
 
+console.log("url: " + url);
+console.log("querystring :" + querystring);
+console.log("useeventtime : " + useeventtime);
+console.log("projecttime : " + projecttime);
+console.log("doubleevents : " + doubleevents);
+	
+if ( jQuery("#event_sum").val() ) 
+{
 jQuery.ajax({
   type: 'POST', // type of request either Get or Post
   url: url + querystring, // Url of the page where to post data and receive response 
@@ -78,15 +86,16 @@ jQuery.ajax({
   error: function (xhr, ajaxOptions, thrownError) {
         alert(xhr.status);
         alert(thrownError);
-		console.log("useeventtime : " + useeventtime);
-		console.log("projecttime : " + projecttime);
-		console.log("doubleevents : " + doubleevents);
-		
-		console.log("url : " + url);
-		console.log("querystring : " + querystring);
       }
 });
-        
+//jQuery("#notice").val('');
+//jQuery("#event_time").val('');
+//jQuery("#event_sum").val('');
+//jQuery("#teamplayer_id").val('');
+//jQuery("#team_id").val('');	
+	
+}
+
 }
 
 function eventsaved(response) 
@@ -95,6 +104,8 @@ jQuery("#ajaxresponse").removeClass('ajax-loading');
 // first line contains the status, second line contains the new row.
 var resp = response.split('&');
 
+console.log("resp : " + resp);
+	
 if (resp[0] != '0') 
 {
 //var team = jQuery("#team_id").val();
@@ -103,13 +114,13 @@ var team = jQuery("#team_id option:selected").text();
 	  
 jQuery("#table-event").last().append('<tr id="rowevent-' 
     + resp[0] + '"><td>' 
-	+ team + '</td><td>' + player + '</td><td>' 
-    + jQuery("#event_type_id option:selected").text() + '</td><td>' 
-	+ jQuery("#event_sum").val() + '</td><td>' 
+	+ team + '</td><td>' + player + '</td><td style="text-align:center; ">' 
+    + jQuery("#event_type_id option:selected").text() + '</td><td style="text-align:center; ">' 
+	+ jQuery("#event_sum").val() + '</td><td style="text-align:center; ">' 
     + jQuery("#event_time").val() + '</td><td>' 
-    + jQuery("#notice").val() + '</td><td><input id="deleteevent-' + resp[0] 
+    + jQuery("#notice").val() + '</td><td style="text-align:center; "><input id="deleteevent-' + resp[0] 
     + '" type="button" onClick="deleteevent(' + resp[0] + ')" class="inputbox button-delete-event" value="' 
-    + str_delete + '"</td></tr>');
+    + str_delete + '"></td></tr>');
 
 console.log("team : " + team);
 console.log("player : " + player);
@@ -123,11 +134,18 @@ jQuery("#ajaxresponse").text(resp[1]);
 jQuery("#notice").val('');
 jQuery("#event_time").val('');
 jQuery("#event_sum").val('');
+//jQuery("#teamplayer_id").val('');
+//jQuery("#team_id").val('');
 }
 else 
 {
 jQuery("#ajaxresponse").addClass("ajaxerror");
 jQuery("#ajaxresponse").text(resp[1]);
+jQuery("#notice").val('');
+jQuery("#event_time").val('');
+jQuery("#event_sum").val('');	
+//jQuery("#teamplayer_id").val('');
+//jQuery("#team_id").val('');
 } 	
 	
 }
@@ -210,11 +228,12 @@ if (resp[0] != '0')
 {
 jQuery("#table-commentary").last().append('<tr id="rowcomment-' 
     + resp[0] + '"><td>' 
-    + jQuery("#ctype").val() + '</td><td>' 
+	+ jQuery("#ctype option:selected").text() + '</td><td style="text-align:center; ">' 
+//	+ jQuery("#ctype").val() + '</td><td>' 
     + jQuery("#c_event_time").val() + '</td><td>' 
-    + jQuery("#notes").val() + '</td><td><input	id="deletecomment-' + resp[0] 
+    + jQuery("#notes").val() + '</td><td style="text-align:center; "><input	id="deletecomment-' + resp[0] 
     + '" type="button" class="inputbox button-delete-commentary" value="' 
-    + str_delete + '"</td></tr>');
+    + str_delete + '" onClick="deletecommentary(' + resp[0] + ')"></td></tr>');
 		
     jQuery("#ajaxresponse").addClass("ajaxsuccess");
     jQuery("#ajaxresponse").text(resp[1]);

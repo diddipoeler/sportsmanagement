@@ -1,46 +1,15 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version   1.1.00
- * @file      default.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @version    1.1.1
+ * @package    Sportsmanagement
+ * @subpackage mod_sportsmanagement_playground_ticker
+ * @file       default.php
+ * @author     diddipoeler (diddipoeler@gmx.de), stony, svdoldie und donclumsy
  * @modded 	  llambion (2020)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- *
- * SportsManagement is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * SportsManagement is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
- *
- * Diese Datei ist Teil von SportsManagement.
- *
- * SportsManagement ist Freie Software: Sie können es unter den Bedingungen
- * der GNU General Public License, wie von der Free Software Foundation,
- * Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
- * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
- *
- * SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
- * OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
- * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
- * Siehe die GNU General Public License für weitere Details.
- *
- * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
- * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
- *
- * Note : All ini files need to be saved as UTF-8 without BOM
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 
@@ -351,14 +320,15 @@ switch ($mode)
 												display:block;
 												margin: 0px 0px 20px 10px;
 												clear:both;">
-								<?php // Game Field type
-									If ($params->get('field_type')==1)
-									{
-									?>	<?php Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_FORE_SURFACE') . ', '  . PlayGround_Surface($playground->extended); ?>
-									<?
-									}
-								
-								?>	 								
+<?php // Game Field type
+//If ($params->get('field_type')==1)
+//{
+if ( $playground->extended )
+{
+echo Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_FORE_SURFACE') . ', '  . PlayGround_Surface($playground->extended);
+}
+//}
+?>	 								
 						
                          </div>
                         </div>
@@ -381,17 +351,41 @@ switch ($mode)
 	}
 
  }
+
    
+/**
+ * PlayGround_Surface()
+ * 
+ * @param mixed $extended
+ * @return
+ */
 Function PlayGround_Surface($extended)
 {
 
+//echo 'extended <pre>'.print_r(json_decode($extended),true).'</pre>';
+$extended = json_decode($extended);
+//echo 'extended <pre>'.print_r($extended,true).'</pre>';
+/**
   $surface = '';
   $pos = strpos($extended,'"COM_SPORTSMANAGEMENT_EXT_PLAYGROUND_GROUND":');
   $pos = $pos + strlen('"COM_SPORTSMANAGEMENT_EXT_PLAYGROUND_GROUND":') + 1;
   $end = strpos($extended,'"',$pos) ;
   
   $text = substr($extended, $pos, $end-$pos);
-  
+  */
+foreach( $extended as $key => $value ) 
+{
+//echo 'key <pre>'.print_r($key,true).'</pre>';	
+switch ($key)
+{
+	case 'COM_SPORTSMANAGEMENT_EXT_PLAYGROUND_GROUND':
+	//echo 'value <pre>'.print_r($value,true).'</pre>';
+$text = $value;
+	break;
+}
+
+}
+//echo 'text <pre>'.print_r($text,true).'</pre>';
   switch ($text)
   {
 	case 'Naturrasen':
@@ -416,7 +410,7 @@ Function PlayGround_Surface($extended)
 		  $surface = Text::_('COM_SPORTSMANAGEMENT_ST_PLAYGROUND_RUBBERIZED_COURT');				  
 		  break;
   }  
-	
+	//echo 'surface <pre>'.print_r($surface,true).'</pre>';
 return $surface;	
 }
 

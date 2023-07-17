@@ -11,6 +11,17 @@
 			default="0"
 		/>
 		<field
+name="checked_out"
+type="hidden"
+filter="unset"
+/>
+
+<field
+name="checked_out_time"
+type="hidden"
+filter="unset"
+/>	
+		<field
 			name="name"
 			type="text"
 			size="100"

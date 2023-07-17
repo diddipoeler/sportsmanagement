@@ -6,7 +6,7 @@
  * @subpackage matches
  * @file       defaul_matches_small_bore_rifle.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * 
  * https://cdnjs.com/libraries/tempusdominus-bootstrap-4
@@ -154,7 +154,7 @@ use Joomla\CMS\Uri\Uri;
 				$canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.match.' . $row->id) && $canCheckin;
 
 				list($date, $time) = explode(" ", $row->match_date);
-				$time = strftime("%H:%M", strtotime($time));
+				$time = date('H:i', strtotime($time));
 
 				if ($date == '0000-00-00')
 				{

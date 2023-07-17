@@ -6,13 +6,14 @@
  * @subpackage teamplayers
  * @file       teamplayers.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModelteamplayers
@@ -113,7 +114,7 @@ class sportsmanagementModelteamplayers extends JSMModelList
 
 		$this->jsmquery->select('ppl.id,ppl.firstname,ppl.lastname,ppl.nickname,ppl.picture,ppl.id as person_id,ppl.injury,ppl.suspension,ppl.away,ppl.ordering,ppl.checked_out,ppl.checked_out_time  ');
 		$this->jsmquery->select('ppl.position_id as person_position_id');
-		$this->jsmquery->select('tp.id as tpid, tp.market_value, tp.jerseynumber,tp.picture as season_picture,tp.published');
+		$this->jsmquery->select('tp.id as tpid, tp.market_value, tp.jerseynumber,tp.picture as season_picture,tp.published,tp.tt_startpoints');
 		$this->jsmquery->select('u.name AS editor');
 		$this->jsmquery->select('st.season_id AS season_id,st.id as projectteam_id');
 		$this->jsmquery->select('ppl.country');
@@ -177,6 +178,7 @@ class sportsmanagementModelteamplayers extends JSMModelList
 	 */
 	function PersonProjectPosition($project_id, $_persontype)
 	{
+	   $result = array();
 		$this->jsmquery->clear();
 		$this->jsmquery->select('ppl.*');
 		$this->jsmquery->from('#__sportsmanagement_person_project_position AS ppl');
@@ -187,7 +189,7 @@ class sportsmanagementModelteamplayers extends JSMModelList
 
 		if (!$result)
 		{
-			return false;
+			return $result;
 		}
 
 		return $result;
@@ -332,17 +334,86 @@ class sportsmanagementModelteamplayers extends JSMModelList
 
 	
 	
+	
+	/**
+	 * sportsmanagementModelteamplayers::getTeamplayersMatch()
+	 * 
+	 * @param integer $team_id
+	 * @param integer $season_id
+	 * @param integer $projectteam_id
+	 * @param integer $project_id
+	 * @param integer $match_id
+	 * @return
+	 */
+	function getTeamplayersMatch($team_id = 0, $season_id = 0, $projectteam_id = 0, $project_id = 0, $match_id = 0)
+	{
+$result = array();
+$players_count = array();
+
+$this->jsmquery->clear();
+			$this->jsmquery->select('tp.id');
+			$this->jsmquery->from('#__sportsmanagement_season_team_person_id AS tp ');
+			$this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = tp.team_id and st.season_id = tp.season_id');
+			$this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pthome ON pthome.team_id = st.id');
+			$this->jsmquery->where('pthome.id =' . $projectteam_id);
+			$this->jsmquery->where('tp.season_id = ' . $season_id);
+			$this->jsmquery->where('tp.persontype = 1');
+            try
+		{
+			$this->jsmdb->setQuery($this->jsmquery);
+			$result = $this->jsmdb->loadColumn();
+}
+		catch (Exception $e)
+		{
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+		}
+        
+			if ($result)
+			{
+				$players = implode(",", $result);
+
+				/** Count match */
+				$this->jsmquery->clear();
+				$this->jsmquery->select('mp.teamplayer_id, mp.project_position_id, pos.name as project_position_name');
+				$this->jsmquery->from('#__sportsmanagement_match_player AS mp  ');
+                //$this->jsmquery->join('INNER', '#__sportsmanagement_project_position AS ppos ON ppos.id = mp.project_position_id');
+                $this->jsmquery->join('INNER', '#__sportsmanagement_position AS pos ON pos.id = mp.project_position_id');
+				$this->jsmquery->where('mp.match_id = ' . $match_id . ' AND (came_in=0 OR came_in=1) AND mp.teamplayer_id in (' . $players . ')');
+                try
+		{
+				$this->jsmdb->setQuery($this->jsmquery);
+				$players_count = $this->jsmdb->loadObjectList();
+                }
+		catch (Exception $e)
+		{
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+		}
+                
+                
+                
+			}
+       
+       
+       
+       return $players_count;
+       
+       }
+	
 	/**
 	 * sportsmanagementModelteamplayers::getProjectTeamplayers()
 	 * 
 	 * @param integer $team_id
 	 * @param integer $season_id
 	 * @param integer $projectteam_id
+	 * @param integer $generate
+	 * @param integer $project_id
 	 * @return
 	 */
-	function getProjectTeamplayers($team_id = 0, $season_id = 0, $projectteam_id = 0)
+	function getProjectTeamplayers($team_id = 0, $season_id = 0, $projectteam_id = 0, $generate = 0, $project_id = 0)
 	{
-	   
+	   $result = array();
 //$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' team_id -> ' . $team_id . ''), '');
 //$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' season_id -> ' . $season_id . ''), '');
 //$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' projectteam_id -> ' . $projectteam_id . ''), '');
@@ -365,8 +436,27 @@ class sportsmanagementModelteamplayers extends JSMModelList
 		$this->jsmquery->where('st.season_id = ' . $season_id);
 		$this->jsmquery->where('tp.season_id = ' . $season_id);
 
-//$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' jsmquery -> ' . $this->jsmquery->dump() . ''), '');
-
+if ( $generate )
+{
+        $this->jsmsubquery1->clear();
+		$this->jsmsubquery1->select('ppos.id');
+		$this->jsmsubquery1->from('#__sportsmanagement_project_position AS ppos');
+		$this->jsmsubquery1->join('LEFT', '#__sportsmanagement_person_project_position AS ppp on ppp.project_position_id = ppos.id');
+		$this->jsmsubquery1->where('ppp.person_id = ppl.id');
+		$this->jsmsubquery1->where('ppp.project_id = ' . $project_id);
+		$this->jsmsubquery1->where('ppp.persontype = 1');
+		$this->jsmquery->select('(' . $this->jsmsubquery1 . ') AS project_position_id');
+        
+$this->jsmsubquery1->clear();
+$this->jsmsubquery1->select('pos.name');
+		$this->jsmsubquery1->from('#__sportsmanagement_position AS pos');
+$this->jsmsubquery1->join('LEFT', '#__sportsmanagement_project_position AS ppp on ppp.position_id = pos.id');
+$this->jsmsubquery1->where('ppp.project_id = ' . $project_id);
+$this->jsmsubquery1->where('ppp.id = project_position_id' );
+$this->jsmquery->select('(' . $this->jsmsubquery1 . ') AS project_position_name');
+        
+        }
+        
 		try
 		{
 			$this->jsmdb->setQuery($this->jsmquery);
@@ -374,8 +464,17 @@ class sportsmanagementModelteamplayers extends JSMModelList
 		}
 		catch (Exception $e)
 		{
-			$result = false;
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 		}
+
+if ( Factory::getConfig()->get('debug') )
+{  
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' query' . '<pre>'.print_r($this->jsmquery->dump(),true).'</pre>' ), Log::NOTICE, 'jsmerror');
+}
+
+
+
 
 		return $result;
 	}

@@ -19,7 +19,17 @@
             default="0"
             readonly="true"
         />
-        
+        <field
+name="checked_out"
+type="hidden"
+filter="unset"
+/>
+
+<field
+name="checked_out_time"
+type="hidden"
+filter="unset"
+/>	
         <field
 			name="project_id"
 			type="number"

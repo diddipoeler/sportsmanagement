@@ -8,7 +8,7 @@
  * @subpackage ical
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -58,7 +58,7 @@ class sportsmanagementViewical extends sportsmanagementView
 			if ($match->match_date)
 			{
 				$totalMatchTime = isset($this->project) ? ($this->project->halftime * ($this->project->game_parts - 1)) + $this->project->game_regular_time : 90;
-				sportsmanagementHelper::convertMatchDateToTimezone($match);
+				//sportsmanagementHelper::convertMatchDateToTimezone($match);
 				$start = sportsmanagementHelper::getMatchStartTimestamp($match, 'Y-m-d H:i:s');
 				$end   = sportsmanagementHelper::getMatchEndTimestamp($match, $totalMatchTime, 'Y-m-d H:i:s');
 

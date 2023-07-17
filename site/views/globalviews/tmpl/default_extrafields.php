@@ -6,7 +6,7 @@
  * @subpackage globalviews
  * @file       deafault_extrafields.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -51,7 +51,27 @@ switch ($field_type)
 					}          
         
 $ausgabe .= '</tr>';          
-         
+          switch ( strtolower(Text::_($field->name)) )
+    {
+      case 'wikipedia':
+       
+       
+        $ausgabe .= '<tr><td>';   
+         ?>
+           <div class="row">
+
+   <div class="col-lg-12 col-md-12 col-sm-12">
+          
+  <iframe class="col-lg-12 col-md-12 col-sm-12" style="height: 400px;" src="<?php echo $field->fvalue; ?>" ></iframe>
+
+            </div>
+
+</div>
+      <?php  
+        $ausgabe .= '</td></tr>'; 
+        break;
+    }    
+			
 		}
 	}
 $ausgabe .= '</table>';

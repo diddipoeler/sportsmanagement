@@ -6,7 +6,7 @@
  * @subpackage fields
  * @file       seasonlist.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -90,7 +90,7 @@ class JFormFieldseasonlist extends FormField
 		break;
 		}
 
-		$attribs   .= ' class="select2-container"';
+		$attribs   .= ' class="form-select select2-container"';
         if ($v = $this->element['size'])
 		{
 			$attribs .= ' size="' . $v . '"';

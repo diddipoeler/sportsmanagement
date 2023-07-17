@@ -6,7 +6,7 @@
  * @subpackage controllers
  * @file       teamplayers.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -14,6 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Filter\OutputFilter;
 
 /**
  * sportsmanagementControllerteamplayers
@@ -48,6 +49,34 @@ class sportsmanagementControllerteamplayers extends JSMControllerAdmin
 	}
 
 
+	function assignpersonsclub()
+{
+$zusatz     = '';
+$layout = 'assignpersonsclub';
+$view = 'players';
+//echo '<pre>'.print_r($this->jinput,true).'</pre>';
+
+$project_id = $this->jinput->get('pid');
+if ($project_id)
+		{
+			$zusatz .= '&pid=' . $project_id;
+		}
+
+$zusatz .= '&team_id=' . $this->jinput->get('team_id');
+		$zusatz .= '&persontype=' . $this->jinput->get('persontype');
+		$zusatz .= '&season_id=' . $this->app->getUserState("$this->option.season_id", '0');
+                $zusatz .= '&whichview='.$this->jinput->get('view');		
+
+$page_url = OutputFilter::ampReplace('index.php?option=com_sportsmanagement&view=' . $view . '&tmpl=component&layout=' . $layout . '&type=' . $type . '&issueview=' . $issueview . '&issuelayout=' . $issuelayout . $zusatz);
+
+//echo '<pre>'.print_r($page_url,true).'</pre>';
+
+$this->setRedirect(Route::_($page_url, false));
+
+
+
+}
+	
 	/**
 	 * sportsmanagementControllerteamplayers::set_season_team_state()
 	 *

@@ -6,7 +6,7 @@
  * @subpackage helpers
  * @file       countries.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -274,15 +274,18 @@ class JSMCountries
 		return $resultString;
 	}
 
+	
+	
 	/**
-	 * example: echo JSMCountries::getCountryFlag($country);
-	 *
-	 * @param   string: an iso3 country code, e.g AUT
-	 * @param   string: additional html attributes for the img tag
-	 *
-	 * @return string: html code for the flag image
+	 * JSMCountries::getCountryFlag()
+	 * 
+	 * @param mixed $countrycode
+	 * @param string $attributes
+	 * @param bool $picture
+	 * @param bool $flag_map
+	 * @return
 	 */
-	public static function getCountryFlag($countrycode, $attributes = '')
+	public static function getCountryFlag($countrycode, $attributes = '', $picture = false, $flag_map = false)
 	{
 		$app = Factory::getApplication();
 		$jinput   = $app->input;
@@ -296,6 +299,29 @@ class JSMCountries
 		//$src = self::getIso2Flag($countrycode);
 		//$src = self::getIso3Flag($countrycode);
 		$src = self::getIso2Flag($iso2);
+		
+		if ( $picture )
+		{
+			$query = $db->getQuery(true);
+			$query->select('picture');
+			$query->from('#__sportsmanagement_countries');
+			$query->where('alpha3 LIKE \'' . $countrycode . '\'');
+			$db->setQuery($query);
+			$src = $db->loadResult();
+			return $src;
+		}
+        elseif ( $flag_map )
+		{
+			$query = $db->getQuery(true);
+			$query->select('flag_maps');
+			$query->from('#__sportsmanagement_countries');
+			$query->where('alpha3 LIKE \'' . $countrycode . '\'');
+			$db->setQuery($query);
+			$src = $db->loadResult();
+			return $src;
+		}
+		else
+		{
 		if (!$src)
 		{
 			$query = $db->getQuery(true);
@@ -329,8 +355,9 @@ class JSMCountries
 			default: $countrycode = $iso2; break;
 			}
 			$countrycode = strtolower($countrycode);
-			$html        = '<span class="flag-icon flag-icon-' . $countrycode . '"></span>';
+			$html        = '<span class="fi fi-' . $countrycode . '"></span>';
 		}
+	}
 
 		return $html;
 	}

@@ -6,7 +6,7 @@
  * @subpackage mod_sportsmanagement_birthday
  * @file       default_play_card.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -40,8 +40,8 @@ foreach ($persons AS $person)
 	$birthdayformat = htmlentities(trim($params->get('birthdayformat')));
 	$birthdaytext   = str_replace('%WHEN%', $whenmessage, $birthdaytext);
 	$birthdaytext   = str_replace('%AGE%', $person['age'], $birthdaytext);
-	$birthdaytext   = str_replace('%DATE%', strftime($dayformat, strtotime($person['year'] . '-' . $person['daymonth'])), $birthdaytext);
-	$birthdaytext   = str_replace('%DATE_OF_BIRTH%', strftime($birthdayformat, strtotime($person['date_of_birth'])), $birthdaytext);
+	$birthdaytext   = str_replace('%DATE%', date($dayformat, strtotime($person['year'] . '-' . $person['daymonth'])), $birthdaytext);
+	$birthdaytext   = str_replace('%DATE_OF_BIRTH%', date($birthdayformat, strtotime($person['date_of_birth'])), $birthdaytext);
 	$birthdaytext   = str_replace('%BR%', '<br />', $birthdaytext);
 	$birthdaytext   = str_replace('%BOLD%', '<b>', $birthdaytext);
 	$birthdaytext   = str_replace('%BOLDEND%', '</b>', $birthdaytext);

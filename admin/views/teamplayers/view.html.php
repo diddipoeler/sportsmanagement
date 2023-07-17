@@ -6,17 +6,20 @@
  * @subpackage teamplayers
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementViewteamplayers
@@ -84,11 +87,48 @@ class sportsmanagementViewteamplayers extends sportsmanagementView
 		}
 
 		$this->table = Table::getInstance('teamplayer', 'sportsmanagementTable');
-		$this->app->setUserState("$this->option.pid", $project->id);
-		$this->app->setUserState("$this->option.season_id", $project->season_id);
-		$this->app->setUserState("$this->option.project_art_id", $project->project_art_id);
-		$this->app->setUserState("$this->option.sports_type_id", $project->sports_type_id);
-
+$this->app->setUserState("$this->option.pid", $project->id);
+$this->app->setUserState("$this->option.season_id", $project->season_id);
+$this->app->setUserState("$this->option.project_art_id", $project->project_art_id);
+$this->app->setUserState("$this->option.sports_type_id", $project->sports_type_id);
+$this->app->setUserState("$this->option.project_id", $this->project_id);
+$this->app->setUserState("$this->option.persontype", $this->_persontype);
+$this->app->setUserState("$this->option.project_team_id", $this->project_team_id);
+$this->app->setUserState("$this->option.team_id", $this->team_id);
+$this->app->setUserState("$this->option.season_team_id", $this->season_team_id);
+		
+Factory::getApplication()->input->set("pid", $project->id);
+Factory::getApplication()->input->set("season_id", $project->season_id);
+Factory::getApplication()->input->set("project_art_id", $project->project_art_id);
+Factory::getApplication()->input->set("sports_type_id", $project->sports_type_id);
+Factory::getApplication()->input->set("project_id", $this->project_id);
+Factory::getApplication()->input->set("persontype", $this->_persontype);
+Factory::getApplication()->input->set("project_team_id", $this->project_team_id);
+Factory::getApplication()->input->set("team_id", $this->team_id);
+Factory::getApplication()->input->set("season_team_id", $this->season_team_id);		
+		
+		
+$values = array();
+$values[] = $project->id;
+$values[] = $project->season_id;
+$values[] = $project->project_art_id;
+$values[] = $project->sports_type_id;
+$values[] = $this->project_id;
+$values[] = $this->_persontype;
+$values[] = $this->project_team_id;
+$values[] = $this->team_id;
+$values[] = $this->season_team_id;
+Factory::getApplication()->input->set("teamplayers", $values);	
+		
+		
+// Get the cookie
+$value = Factory::getApplication()->input->cookie->get('teamplayers', null);
+// Set the cookie
+$time = time() + 604800; // 1 week
+Factory::getApplication()->input->cookie->set('teamplayers', implode(";", $values), $time, Factory::getApplication()->get('cookie_path', '/'), Factory::getApplication()->get('cookie_domain'), Factory::getApplication()->isSSLConnection());		
+		
+		
+		
 		$mdlProjectTeam = BaseDatabaseModel::getInstance('ProjectTeam', 'sportsmanagementModel');
 		$project_team   = $mdlProjectTeam->getProjectTeam($this->team_id);
 
@@ -159,7 +199,39 @@ class sportsmanagementViewteamplayers extends sportsmanagementView
 
 		ToolbarHelper::apply('teamplayers.saveshort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_APPLY'));
 		ToolbarHelper::divider();
-		sportsmanagementHelper::ToolbarButton('assignpersons', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN'), 'players', 0);
+		//sportsmanagementHelper::ToolbarButton('assignpersons', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN'), 'players', 0);
+		//sportsmanagementHelper::ToolbarButton('assignpersonsclub', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN_CLUB'), 'players', 0);
+		$layout = new FileLayout('assignpersons', JPATH_ROOT . '/components/com_sportsmanagement/layouts');
+		$html   = $layout->render();
+		Toolbar::getInstance('toolbar')->appendButton('Custom', $html, 'upload');
+		$modal_params           = array();
+
+		$zusatz = '&team_id=' . $this->team_id;
+		$zusatz .= '&persontype=' . $this->_persontype;
+		$zusatz .= '&season_id=' . $this->season_id;
+		$zusatz .= '&whichview=teamplayers';
+
+		$modal_params['url']    = 'index.php?option=com_sportsmanagement&view=players&tmpl=component&layout=assignpersons&type=0&issueview=&issuelayout=' . $zusatz;
+		$modal_params['height'] = $this->modalheight;
+		$modal_params['width']  = $this->modalwidth;
+		$modal_params['modalWidth']  = '60';
+		echo HTMLHelper::_('bootstrap.renderModal', 'collapseModalassignPersons', $modal_params);
+
+if ( ComponentHelper::getParams($this->option)->get('assign_club_position_to_player', 0) )
+{
+		$layout = new FileLayout('assignpersonsclub', JPATH_ROOT . '/components/com_sportsmanagement/layouts');
+		$html   = $layout->render();
+		Toolbar::getInstance('toolbar')->appendButton('Custom', $html, 'upload');
+		$modal_params           = array();
+		$zusatz .= '&whichview=teamplayers&assignclub=1';
+		$modal_params['url']    = 'index.php?option=com_sportsmanagement&view=players&tmpl=component&layout=assignpersons&type=0&issueview=&issuelayout=' . $zusatz;
+		$modal_params['height'] = $this->modalheight;
+		$modal_params['width']  = $this->modalwidth;
+		$modal_params['modalWidth']  = '60';
+		echo HTMLHelper::_('bootstrap.renderModal', 'collapseModalassignPersonsClub', $modal_params);
+}		
+        
+        
 		ToolbarHelper::apply('teamplayers.assignplayerscountry', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN_COUNTRY'));
 		ToolbarHelper::divider();
 		ToolbarHelper::back('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_BACK', 'index.php?option=' . $this->option . '&view=projectteams&pid=' . $this->project_id . '&id=' . $this->project_id);

@@ -6,7 +6,7 @@
  * @subpackage jlextindividualsportes
  * @file       default_matches.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -113,7 +113,7 @@ if ($close == 1)
 					//$published = HTMLHelper::_('grid.published', $this->item, $this->count_i, 'tick.png', 'publish_x.png', 'jlextindividualsportes.');
 
 					list($date, $time) = explode(" ", $this->item->match_date);
-					$time = strftime("%H:%M", strtotime($time));
+					$time = date('H:i', strtotime($time));
 					?>
                     <tr class="row<?php echo $this->count_i % 2; ?>">
 						<?php

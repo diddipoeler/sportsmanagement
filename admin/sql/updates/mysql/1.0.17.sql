@@ -1,1 +1,1 @@
-ALTER TABLE  `#__sportsmanagement_project` ADD  `project_art_id` TINYINT( 1 ) NOT NULL DEFAULT  '1';
+-- -- ALTER TABLE  `#__sportsmanagement_project` ADD  `project_art_id` TINYINT( 1 ) NOT NULL DEFAULT  '1';

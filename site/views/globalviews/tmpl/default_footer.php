@@ -6,7 +6,7 @@
  * @subpackage globalviews
  * @file       deafault_footer.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -83,7 +83,7 @@ Joomla.popupWindow = function(mypage, myname, w, h, scroll) {
     <img src="<?php echo Uri::root(true); ?>/components/com_sportsmanagement/assets/images/fussballineuropa.png"
          width="<?PHP echo $logo_width; ?>" height="auto"></a>
 	<?php echo Text::_("COM_SPORTSMANAGEMENT_COPYRIGHT"); ?> : &copy;
-    <a href="http://www.fussballineuropa.de" target="_blank">Fussball in Europa</a>
+    <a href="https://www.fussballineuropa.de" target="_blank">Fussball in Europa</a>
     <br/>
 	<?php
 	if ($show_facebook_link == 3)
@@ -116,8 +116,7 @@ $cmd = "Joomla.popupWindow('$link_onlinehelp', '" . Text::_('COM_SPORTSMANAGEMEN
 <?php
 echo HTMLHelper::_(
 'image', 'media/com_sportsmanagement/jl_images/help.png',
-Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'), 'title= "' .
-Text::_('COM_SPORTSMANAGEMENT_HELP_LINK') . '"'
+Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'),
 );
 echo ' '.Text::_('COM_SPORTSMANAGEMENT_HELP_LINK');
 ?>                      

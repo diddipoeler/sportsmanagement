@@ -6,7 +6,7 @@
  * @subpackage controllers
  * @file       ajax.json.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -630,10 +630,10 @@ class sportsmanagementControllerAjax extends BaseController
 		{
 			$result = $this->getModel('ajax')->getProjectTeamsByDivisionOptions(
 				$this->jinput->get->getString('p'),
-				$this->jinput->get->getString('division'),
 				$this->jinput->get->getString('required'),
 				$this->jinput->get->getString('slug'),
-				$this->jinput->get->getString('dbase')
+				$this->jinput->get->getString('dbase'),
+				$this->jinput->get->getString('division')
 			);
 
 			echo new JsonResponse($result);

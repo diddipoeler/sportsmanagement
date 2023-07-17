@@ -19,21 +19,21 @@
 			
 		</field>
 		
-		<field	name="show_points" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+		<field	name="show_points" type="radio" default="1"  layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONENTRY_PARAM_LABEL_SHOW_POINTS"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONENTRY_PARAM_DESCR_SHOW_POINTS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field	name="use_tipp_admin" type="extensionradiobutton" default="0"  class="radio btn-group btn-group-yesno"
+		<field	name="use_tipp_admin" type="radio" default="0"  layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONENTRY_PARAM_LABEL_USE_TIPP_ADMIN"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONENTRY_PARAM_DESCR_USE_TIPP_ADMIN">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field	name="show_tipp_tendence" type="extensionradiobutton" default="0"  class="radio btn-group btn-group-yesno"
+		<field	name="show_tipp_tendence" type="radio" default="0"  layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONENTRY_PARAM_LABEL_SHOW_TIPP_TENDENCE"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONENTRY_PARAM_DESCR_SHOW_TIPP_TENDENCE">
 			<option value="0">JNO</option>
@@ -91,8 +91,8 @@
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS_TIPRESULTS_MATCHES_EDIT">
 	
 	<field	name="use_pred_select_matches" 
-  type="extensionradiobutton" 
-  default="0" class="radio btn-group btn-group-yesno"
+  type="radio" 
+  default="0" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTION_USE_SELECT_MATCH_LABEL"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTION_USE_SELECT_MATCH_DESCR">
 			<option value="0">JNO</option>
@@ -109,8 +109,8 @@
 
 
 <field	name="use_pred_select_rounds" 
-  type="extensionradiobutton" 
-  default="0"   class="radio btn-group btn-group-yesno"
+  type="radio" 
+  default="0"   layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTION_USE_SELECT_ROUND_LABEL"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTION_USE_SELECT_ROUND_DESCR">
 			<option value="0">JNO</option>
@@ -127,8 +127,8 @@
 
 
 <field	name="use_pred_select_proteams" 
-  type="extensionradiobutton" 
-  default="0"    class="radio btn-group btn-group-yesno"
+  type="radio" 
+  default="0"    layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTION_USE_SELECT_PROTEAM_LABEL"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTION_USE_SELECT_PROTEAM_DESCR">
 			<option value="0">JNO</option>

@@ -23,7 +23,7 @@
 				name="cancel"
 				type="extensionradiobutton"
 				default="0"
-        class="radio btn-group btn-group-yesno"
+        layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_CANCEL"
 				description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_CANCEL_DESC">
 			<option value="0">JNO</option>
@@ -62,7 +62,7 @@
 				name="show_report"
 				type="extensionradiobutton"
 				default="0"			
-        class="radio btn-group btn-group-yesno"
+        layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MR_SHOW"
 				description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MR_SHOW_DESC">
 			<option value="0">JNO</option>
@@ -82,7 +82,7 @@
 				name="count_result"
 				type="extensionradiobutton"
 				default="0"			
-        class="radio btn-group btn-group-yesno"
+        layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_INCL"
 				description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_INCL">
 			<option value="0">JNO</option>

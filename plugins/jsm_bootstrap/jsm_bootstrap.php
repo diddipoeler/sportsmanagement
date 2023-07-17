@@ -1,14 +1,12 @@
 <?php
 /**
-*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage plugins
  * @file       jsm_bootstrap.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -43,7 +41,6 @@ https://datatables.net/
  * This event is triggered in 'JApplication' class in file 'application.php' at location
  * 'Joomla_base\libraries\joomla\application'.
  */
-
 defined('_JEXEC') or die();
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Uri\Uri;
@@ -78,7 +75,7 @@ class PlgSystemjsm_bootstrap extends CMSPlugin
      * @param  mixed $params
      * @return void
      */
-    public function __construct(&$subject, $params)
+    public function __construct(object $subject, array $params)
     {
         parent::__construct($subject, $params);
 

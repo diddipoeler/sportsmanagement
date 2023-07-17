@@ -6,7 +6,7 @@
  * @subpackage projectteams
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -42,14 +42,17 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 	{
 		$edit_search_nation = '';
 $post = Factory::getApplication()->input->post->getArray(array());
-		if ( $post['edit_search_nation'] )
-		{
-		$edit_search_nation = $post['edit_search_nation'];	
-		}
-		else
-		{
-		$edit_search_nation = $this->state->get('filter.search_nation');	
-		}
+
+$edit_search_nation = array_key_exists('edit_search_nation', $post) ? $post['edit_search_nation'] : $this->state->get('filter.search_nation');
+
+//		if ( $post['edit_search_nation'] )
+//		{
+//		$edit_search_nation = $post['edit_search_nation'];	
+//		}
+//		else
+//		{
+//		$edit_search_nation = $this->state->get('filter.search_nation');	
+//		}
 			
 		$this->state         = $this->get('State');
 		$this->sortDirection = $this->state->get('list.direction');
@@ -157,8 +160,16 @@ $post = Factory::getApplication()->input->post->getArray(array());
 			$lists['project_teams'] = '<select name="project_teamslist[]" id="project_teamslist" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
 			$lists['project_teamslist_name'] = '<select name="project_teamslist_name[]" id="project_teamslist_name" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
 		}
+        
+        $lists['project_new_season_teams'] = '<select name="project_new_season_teams[]" id="project_new_season_teams" style="width:250px; height:300px; display:none" class="inputbox" multiple="true" size="10"></select>';
 
-		if ( $ress1 = $this->model->getTeams($this->state->get('filter.search_nation')) )
+		$filter_search_nation = $this->state->get('filter.search_nation');
+		if ( !$filter_search_nation )
+		{
+		$filter_search_nation = $this->project->country;	
+		}
+		
+		if ( $ress1 = $this->model->getTeams($filter_search_nation) )
 		{
 			if ($ress = $this->model->getProjectTeams($this->project_id, false))
 			{

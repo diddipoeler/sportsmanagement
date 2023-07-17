@@ -8,7 +8,7 @@
  * @subpackage sportsmanagement
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -33,21 +33,21 @@ class sportsmanagementViewsportsmanagement extends sportsmanagementView
 	public function init()
 	{
 		// Get the Data
-		$form   = $this->get('Form');
-		$item   = $this->get('Item');
+		$form = $this->get('Form');
+		$item = $this->get('Item');
 		$script = $this->get('Script');
+		$errors = $this->get('Errors');
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors')))
-		{
+		if (count($errors)) {
 			Log::add(implode('<br />', $errors));
 
 			return false;
 		}
 
 		// Assign the Data
-		$this->form   = $form;
-		$this->item   = $item;
+		$this->form = $form;
+		$this->item = $item;
 		$this->script = $script;
 
 		// Set the toolbar
@@ -73,42 +73,35 @@ class sportsmanagementViewsportsmanagement extends sportsmanagementView
 		$document->addCustomTag($stylelink);
 		$jinput = Factory::getApplication()->input;
 		$jinput->set('hidemainmenu', true);
-		$user   = Factory::getUser();
+		$user = Factory::getUser();
 		$userId = $user->id;
-		$isNew  = $this->item->id == 0;
-		$canDo  = sportsmanagementHelper::getActions($this->item->id);
+		$isNew = $this->item->id == 0;
+		$canDo = sportsmanagementHelper::getActions($this->item->id);
 		ToolbarHelper::title($isNew ? Text::_('COM_SPORTSMANAGEMENT__NEW') : Text::_('COM_SPORTSMANAGEMENT__EDIT'), 'helloworld');
 
 		// Built the actions for new and existing records.
-		if ($isNew)
-		{
+		if ($isNew) {
 			// For new records, check the create permission.
-			if ($canDo->get('core.create'))
-			{
+			if ($canDo->get('core.create')) {
 				ToolbarHelper::apply('sportsmanagement.apply', 'JTOOLBAR_APPLY');
 				ToolbarHelper::save('sportsmanagement.save', 'JTOOLBAR_SAVE');
 				ToolbarHelper::custom('sportsmanagement.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
 			}
 
 			ToolbarHelper::cancel('sportsmanagement.cancel', 'JTOOLBAR_CANCEL');
-		}
-		else
-		{
-			if ($canDo->get('core.edit'))
-			{
+		} else {
+			if ($canDo->get('core.edit')) {
 				// We can save the new record
 				ToolbarHelper::apply('sportsmanagement.apply', 'JTOOLBAR_APPLY');
 				ToolbarHelper::save('sportsmanagement.save', 'JTOOLBAR_SAVE');
 
 				// We can save this record, but check the create permission to see if we can return to make a new one.
-				if ($canDo->get('core.create'))
-				{
+				if ($canDo->get('core.create')) {
 					ToolbarHelper::custom('sportsmanagement.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
 				}
 			}
 
-			if ($canDo->get('core.create'))
-			{
+			if ($canDo->get('core.create')) {
 				ToolbarHelper::custom('sportsmanagement.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
 			}
 
@@ -123,7 +116,7 @@ class sportsmanagementViewsportsmanagement extends sportsmanagementView
 	 */
 	protected function setDocument()
 	{
-		$isNew    = $this->item->id == 0;
+		$isNew = $this->item->id == 0;
 		$document = Factory::getDocument();
 		$document->setTitle($isNew ? Text::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : Text::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
 		$document->addScript(Uri::root() . $this->script);

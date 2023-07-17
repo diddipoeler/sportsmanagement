@@ -8,7 +8,7 @@
  * @subpackage referee
  * @file       default_gamehistory.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -56,7 +56,7 @@ use Joomla\CMS\Factory;
 
                             <tr class="">
                                 <td><?php
-									echo HTMLHelper::link($report_link, strftime($this->config['games_date_format'], strtotime($game->match_date)));
+									echo HTMLHelper::link($report_link, date($this->config['games_date_format'], strtotime($game->match_date)));
 									?>
                                 </td>
                                 <td class="td_r">

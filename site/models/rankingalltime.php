@@ -5,7 +5,7 @@
  * @subpackage rankingalltime
  * @file       rankingalltime.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -87,7 +87,8 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 		$item = $menu->getActive();
         
         //$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($item,true).'</pre>'), 'error');
-        
+        if ( $item )
+	{
         if ( !property_exists($item, 'query') )
 		{
 		$item->query['view'] = '';  
@@ -96,7 +97,7 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 		{
 		$item->id = 0;  
 		}
-
+	}
 		$params = $menu->getParams($item->id);
         
         
@@ -868,7 +869,7 @@ catch (Exception $e)
 		}
 
 		$query->clear();
-		$query->select('p.id,p.name,s.name as seasonname,p.projectinfo');
+		$query->select('p.id,p.name,s.name as seasonname,p.projectinfo,p.league_id,p.season_id');
 		$query->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
 		$query->from('#__sportsmanagement_project as p');
 		$query->join('INNER', '#__sportsmanagement_season AS s ON p.season_id = s.id ');

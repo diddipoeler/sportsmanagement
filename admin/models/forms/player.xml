@@ -2,7 +2,8 @@
 <form
 	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
-	
+
+<!-- register 1 -->	
   <fieldset name="details"
     label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
   description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
@@ -16,7 +17,17 @@
 			default="0"
 			readonly="true"
 		/>
-	
+	<field
+name="checked_out"
+type="hidden"
+filter="unset"
+/>
+
+<field
+name="checked_out_time"
+type="hidden"
+filter="unset"
+/>	
 		<field
 			name="firstname"
 			type="text"
@@ -29,8 +40,7 @@
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_L_NAME"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_L_NAME_DESC"
 			class="inputbox"
-			size="90"
-			required="true"/>		
+			size="90"/>		
 		<field
 			name="nickname"
 			type="text"
@@ -46,15 +56,16 @@
 		
 <field
 			name="gender"
-			type="extensionradiobutton"
+			type="list"
 			class="radio btn-group btn-group-yesno"
 			default="0"
-			size="1"
+			size="4"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_GENDER"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_GENDER_DESC">
 			<option	value="0">COM_SPORTSMANAGEMENT_ADMIN_PERSON_UNKNOWN</option>
 			<option	value="1">COM_SPORTSMANAGEMENT_ADMIN_PERSON_MALE</option>
 			<option	value="2">COM_SPORTSMANAGEMENT_ADMIN_PERSON_FEMALE</option>	
+	<option	value="3">COM_SPORTSMANAGEMENT_ADMIN_PERSON_DIVERS</option>
 </field> 	  
 	  
 	  <field
@@ -300,6 +311,7 @@ landesverband
 
 	</fieldset>
 
+<!-- reiter 2 -->
 <fields name="request">
 <fieldset name="request"
 label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
@@ -375,36 +387,39 @@ description="COM_SPORTSMANAGEMENT_GLOBAL_PERSON_ART_DESC">
 name="person_id1"
 type="dependsql"
 depends="person_art"
+depends2="sports_type_id"
 task="personlistoptions" 
 class="inputbox"
 showon="person_art:2"
 default="0"
 size="1"
 label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_1"
-description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_1_DESC"
->
+description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_1_DESC">
 <option	value="0">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PERSON</option>
 </field>	
-		
+	
+	
 <field
 name="person_id2"
 type="dependsql"
 depends="person_art"
+depends2="sports_type_id"
 task="personlistoptions"
 class="inputbox"
 showon="person_art:2"
 default="0"
 size="1"
 label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_2"
-description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_2_DESC"
->
+description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_2_DESC">
 <option	value="0">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PERSON</option>
-</field>	
+</field>
+	
 </fieldset>
 
 
 </fields>		
   
+<!-- reiter 3 -->  
 	<fieldset name="description"
   label="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION"
   description="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION_DESC">		
@@ -417,6 +432,7 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_2_DESC"
 				filter="JComponentHelper::filterText"/>			
 	</fieldset>	
   
+  <!-- reiter 4 saisons -->
   <fieldset name="seasons" 
   label="COM_SPORTSMANAGEMENT_TABS_SEASON"
   description="COM_SPORTSMANAGEMENT_TABS_SEASON_DESC">		
@@ -430,9 +446,25 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_2_DESC"
 			description="COM_SPORTSMANAGEMENT_GLOBAL_SEASONLIST_DESC"
 			class="inputbox"/>	
 
+<!--
+<field
+            name="club_id"
+            type="clublist"
+            class="inputbox"
+            default="0"
+            size="1"
+            label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_CLUB"
+            description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_CLUB_DESC" >
+
+            <option
+                value="">
+                COM_SPORTSMANAGEMENT_GLOBAL_SELECT_CLUB</option>
+        </field>	
+-->
 
 	</fieldset>
  
+ <!-- reiter 5 zugeordnetes team in der saison -->
  <fieldset name="seasonsteams" 
   label="COM_SPORTSMANAGEMENT_TABS_SEASON_TEAM_PERSON"
   description="COM_SPORTSMANAGEMENT_TABS_SEASON_TEAM_PERSON_DESC">		
@@ -447,17 +479,22 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_2_DESC"
 			class=""/>	
 
 
+
+
+
+
 	</fieldset>
  
- 
-<fieldset name="injury" 
+ <!-- register 6 -->	
+<fieldset name="save_injury" 
 label="COM_SPORTSMANAGEMENT_TABS_INJURY"
 description="COM_SPORTSMANAGEMENT_TABS_INJURY_DESC">		
 <field
 name="injury"
-type="extensionradiobutton"
+type="radio"
 default="0"
-class="radio btn-group btn-group-yesno"
+layout="joomla.form.field.radio.switcher"
+
 label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURED"
 description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURED_DESC">
 <option value="0">JNO</option>
@@ -489,14 +526,16 @@ class="inputbox"
 format="%d-%m-%Y"/>		
 </fieldset>
  
-   <fieldset name="suspension" 
+ <!-- register 7 -->	
+   <fieldset name="save_suspension" 
   label="COM_SPORTSMANAGEMENT_TABS_SUSPENSION"
   description="COM_SPORTSMANAGEMENT_TABS_SUSPENSION_DESC">		
   <field
 			name="suspension"
-			type="extensionradiobutton"
+			type="radio"
 			default="0"
-      class="radio btn-group btn-group-yesno"
+      layout="joomla.form.field.radio.switcher"
+	  
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SUSPENDED"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SUSPENDED_DESC">
 		<option value="0">JNO</option>
@@ -529,14 +568,16 @@ format="%d-%m-%Y"/>
 
 	</fieldset>
   
-<fieldset name="away" 
+  <!-- register 8 -->	
+<fieldset name="save_away" 
   label="COM_SPORTSMANAGEMENT_TABS_AWAY"
   description="COM_SPORTSMANAGEMENT_TABS_AWAY_DESC">		
   <field
 			name="away"
-			type="extensionradiobutton"
+			type="radio"
 			default="0"
-      class="radio btn-group btn-group-yesno"
+      layout="joomla.form.field.radio.switcher"
+	  
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AWAY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AWAY_DESC">
 		<option value="0">JNO</option>
@@ -569,7 +610,7 @@ format="%d-%m-%Y"/>
 
 	</fieldset>
   
-        			
+        			<!-- register 9 -->	
 	<fieldset name="picture"
   label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
   description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
@@ -594,18 +635,21 @@ format="%d-%m-%Y"/>
         		
 	</fieldset>	
 
+<!-- register 10 -->	
 <fieldset name="extended"
   label="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
   description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC">
   
   </fieldset>
 
+<!-- register 11 -->	
   <fieldset name="extra_fields"
   label="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS"
   description="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS_DESC">
   
   </fieldset>
   	
+<!-- register 12 -->		
 	<fieldset name="frontend"
   label="COM_SPORTSMANAGEMENT_TABS_FRONTEND"
   description="COM_SPORTSMANAGEMENT_TABS_FRONTEND_DESC">		
@@ -651,6 +695,7 @@ format="%d-%m-%Y"/>
 			</field>			
 	</fieldset>
   
+  <!-- register 13 -->	
   <fieldset name="memberdata"
   label="COM_SPORTSMANAGEMENT_TABS_MEMBER_DATA"
   description="COM_SPORTSMANAGEMENT_TABS_MEMBER_DATA_DESC">

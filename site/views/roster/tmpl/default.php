@@ -6,7 +6,7 @@
  * @subpackage roster
  * @file       default.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -153,8 +153,13 @@ switch ($this->project->sport_type_name )
 {
 case 'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION':
 echo $this->loadTemplate('players_small_bore_rifle');
-
 break;
+
+case 'COM_SPORTSMANAGEMENT_ST_TABLETENNIS':
+echo $this->loadTemplate('players_tabletennis');
+break;
+
+
 default:
 		if ($this->config['show_players'])
 		{

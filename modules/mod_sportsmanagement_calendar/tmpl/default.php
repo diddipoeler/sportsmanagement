@@ -1,26 +1,23 @@
 <?php
-
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_calendar
  * @file       default.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 
-$display = ($params->get('update_module') == 1) ? 'block' : 'none';
+$template = $params->get('which_layout');
 
+$display = ($params->get('update_module') == 1) ? 'block' : 'none';
+$show_teamlist = ($params->get('show_teamslist') == 1) ? 'show' : 'hidden';
 ?>
 
 <script type="text/javascript">
@@ -56,14 +53,14 @@ $display = ($params->get('update_module') == 1) ? 'block' : 'none';
 		<!-- Modal content-->
 		<div id="myModalcontent<?php echo $module->id; ?>" class="modal-content">
 			<div id="myModalheader<?php echo $module->id; ?>" class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<button type="button" class="close" data-bs-dismiss="modal">&times;</button>
 				<h4 class="modal-title">Modal Header</h4>
 			</div>
 			<div id="myModalbody<?php echo $module->id; ?>" class="modal-body">
 				<p>Some text in the modal.</p>
 			</div>
 			<div id="myModalfooter<?php echo $module->id; ?>" class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
 			</div>
 		</div>
 
@@ -80,15 +77,20 @@ $display = ($params->get('update_module') == 1) ? 'block' : 'none';
 		<!--jlccalendar-<?php echo $module->id ?> start-->
 
 		<?php echo $calendar['calendar'] ?> <?php
-										} ?> <?php if (count($calendar['teamslist']) > 0)
-				{
-				?>
-		<div style="margin: 0 auto;"><?php
-										echo HTMLHelper::_('select.genericlist', $calendar['teamslist'], 'jlcteam' . $module->id, 'class="inputbox" style="width:100%;visibility:show;" size="1" onchange="jlcnewDate(' . $month . ',' . $year . ',' . $module->id . ');"', 'value', 'text', Factory::getApplication()->input->getVar('jlcteam', 0, 'default', 'POST'));
-										?>
-		</div>
-	<?php
-				}
+										} ?>
+                                         
+<?php 
+if (count($calendar['teamslist']) > 0)
+{
+?>
+<div style="margin: 0 auto;">
+<?php
+echo HTMLHelper::_('select.genericlist', $calendar['teamslist'], 'jlcteam' . $module->id, 'class="inputbox" style="width:100%;visibility:'.$show_teamlist.';" size="1" onchange="jlcnewDate(' . $month . ',' . $year . ',' . $module->id . ');"', 'value', 'text', Factory::getApplication()->input->getVar('jlcteam', 0, 'default', 'POST'));
+?>
+</div>
+<?php
+}
+
 	?> <?php
 			if (isset($calendar['list']))
 			{

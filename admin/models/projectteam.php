@@ -6,7 +6,7 @@
  * @subpackage models
  * @file       projectteam.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -443,25 +443,25 @@ $resultupdate = $this->jsmdb->execute();
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
-
-		// JInput object
 		$jinput               = $app->input;
 		$option               = $jinput->getCmd('option');
 		$post                 = $jinput->post->getArray();
 		$_pro_teams_to_delete = array();
 		$query                = Factory::getDbo()->getQuery(true);
 		
-//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . 'post<pre>'.print_r($post,true).'</pre>', 'error');		
 
-		if (ComponentHelper::getParams($option)->get('show_debug_info_backend'))
+
+		if ( Factory::getConfig()->get('debug') )
 		{
+		Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . 'post<pre>'.print_r($post,true).'</pre>', 'notice');  
 		}
 
 		$project_id  = $post['project_id'];
 		$assign_id   = $post['project_teamslist'];
 		$season_id   = $post['editlist_season_id'];
-		$delete_team = $post['teamslist'];
-		$postteamname = $post['postteamname'];
+		$delete_team = array_key_exists('teamslist', $post) ? $post['teamslist'] : array();
+		$postteamname = array_key_exists('postteamname', $post) ? $post['postteamname'] : array();
+        $project_new_teams = array_key_exists('project_new_teams', $post) ? $post['project_new_teams'] : array();
 
 		if ($delete_team)
 		{

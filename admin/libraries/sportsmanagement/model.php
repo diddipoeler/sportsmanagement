@@ -6,7 +6,7 @@
  * @subpackage libraries
  * @file       model.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -132,6 +132,7 @@ class JSMModelAdmin extends AdminModel
 		$this->jsmdate        = Factory::getDate();
 		$this->jsmmessage     = '';
 		$this->jsmmessagetype = 'notice';
+        $this->joomlaconfig = Factory::getConfig();
 
 		$this->project_id = $this->jsmjinput->getint('pid');
 
@@ -163,6 +164,12 @@ class JSMModelAdmin extends AdminModel
 		if ($this->jsmapp->isClient('site'))
 		{
 		}
+		
+if ( Factory::getConfig()->get('debug') )
+{  
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' layout ' . $this->jsmjinput->getVar('layout')), Log::NOTICE, 'jsmerror');
+}		
+		
 	}
     
     
@@ -210,6 +217,18 @@ if ( $config->get('debug') )
 		{
 			$html          = $postData->get('notes', '', 'raw');
 			$data['notes'] = $html;
+		}
+        
+        if (array_key_exists('preview', $data))
+		{
+			$html          = $postData->get('preview', '', 'raw');
+			$data['preview'] = $html;
+		}
+        
+        if (array_key_exists('summary', $data))
+		{
+			$html          = $postData->get('summary', '', 'raw');
+			$data['summary'] = $html;
 		}
 
 		if (isset($post['extended']) && is_array($post['extended']))
@@ -281,8 +300,8 @@ if ( $config->get('debug') )
 			break;
 			/** runden */
 			case 'rounds':
-				$data['round_date_first'] = sportsmanagementHelper::convertDate($data['round_date_first'], 0);
-				$data['round_date_last']  = sportsmanagementHelper::convertDate($data['round_date_last'], 0);
+				$data['round_date_first'] = sportsmanagementHelper::convertDate($data['round_date_first'], 0) ? sportsmanagementHelper::convertDate($data['round_date_first'], 0) : '0000-00-00';
+				$data['round_date_last']  = sportsmanagementHelper::convertDate($data['round_date_last'], 0) ? sportsmanagementHelper::convertDate($data['round_date_last'], 0) : $data['round_date_first'] ;
 
 				if (!isset($data['id']))
 				{
@@ -300,6 +319,21 @@ if ( $config->get('debug') )
 					$data['picture']     = $post['copy_jform']['picture'];
 					$data['trikot_home'] = $post['copy_jform']['trikot_home'];
 					$data['trikot_away'] = $post['copy_jform']['trikot_away'];
+				}
+
+				if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['picture']))
+				{
+					$data['picture'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['picture']);
+				}
+
+				if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['trikot_home']))
+				{
+					$data['trikot_home'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['trikot_home']);
+				}
+
+				if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['trikot_away']))
+				{
+					$data['trikot_away'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['trikot_away']);
 				}
 
 				if ($post['delete'])
@@ -340,7 +374,12 @@ if ( $config->get('debug') )
 				{
 					$data['picture'] = $post['copy_jform']['picture'];
 				}
-                
+
+				if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['picture']))
+				{
+					$data['picture'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['picture']);
+				}
+				
                 if ( !$data['founded'] )
                 {
                     $data['founded'] = '0000-00-00';
@@ -361,11 +400,17 @@ if ( $config->get('debug') )
 					$data['dissolved'] = sportsmanagementHelper::convertDate($data['dissolved'], 0);
 				}
 				break;
-    case 'teamplayer':
+			case 'teamplayer':
                 if (array_key_exists('copy_jform', $post))
 				{
 					$data['picture'] = $post['copy_jform']['picture'];
 				}
+
+				if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['picture']))
+				{
+					$data['picture'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['picture']);
+				}
+
                 if ($data['contract_from'] == '')
 				{
 					$data['contract_from'] = '0000-00-00';
@@ -456,6 +501,11 @@ if ( $config->get('debug') )
 					$data['picture'] = $post['copy_jform']['picture'];
 				}
 
+				if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['picture']))
+				{
+					$data['picture'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['picture']);
+				}
+
 				switch ($data['person_art'])
 				{
 					case 1:
@@ -499,18 +549,28 @@ if ( $config->get('debug') )
 			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
 		
 		}
-                            
-//							$table    = 'person';
-//							$row      = Table::getInstance($table, 'sportsmanagementTable');
-//							$row->load((int) $person_1);
-//							$person_double[] = $row->firstname . ' ' . $row->lastname;
-//                            
-//							$row->load((int) $person_2);
-//                            
-//							$person_double[]   = $row->firstname . ' ' . $row->lastname;
-                            
-							$data['lastname']  = implode(" - ", $person_double);
-							$data['firstname'] = '';
+        
+        
+$this->jsmquery->clear(); 
+$this->jsmquery->select('name');
+$this->jsmquery->from('#__sportsmanagement_sports_type');
+$this->jsmquery->where('id = ' . (int) $data['sports_type_id']);
+$this->jsmdb->setQuery($this->jsmquery );        
+$row_sports_type = $this->jsmdb->loadResult();        
+
+switch ( $row_sports_type )
+{
+    case 'COM_SPORTSMANAGEMENT_ST_TABLETENNIS';
+    /** vor- und nachname nicht setzen*/
+    break;
+    default:
+	$data['lastname']  = implode(" - ", $person_double);
+	$data['firstname'] = '';
+    break;
+    
+}        
+        
+
 						}
 						break;
 				}
@@ -530,6 +590,11 @@ if ( $config->get('debug') )
 							$data['picture'] = ComponentHelper::getParams($this->jsmoption)->get('ph_player_woman_small', '');
 							break;
 					}
+				}
+
+				if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['picture']))
+				{
+					$data['picture'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['picture']);
 				}
 
 				if ($data['birthday'] != '0000-00-00' && $data['birthday'] != '')
@@ -625,15 +690,37 @@ if ( $config->get('debug') )
 				{
 					$data['logo_big'] = ComponentHelper::getParams($option)->get('ph_logo_big', '');
 				}
+				else if (version_compare(JVERSION, '4.0.0', 'ge'))
+				{
+					$data['logo_big'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['logo_big']);
+				}
 
 				if (empty($data['logo_middle']))
 				{
 					$data['logo_middle'] = ComponentHelper::getParams($option)->get('ph_logo_medium', '');
 				}
+				else if (version_compare(JVERSION, '4.0.0', 'ge'))
+				{
+					$data['logo_middle'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['logo_middle']);
+				}
 
 				if (empty($data['logo_small']))
 				{
 					$data['logo_small'] = ComponentHelper::getParams($option)->get('ph_logo_small', '');
+				}
+				else if (version_compare(JVERSION, '4.0.0', 'ge'))
+				{
+					$data['logo_small'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['logo_small']);
+				}
+
+				if (!empty($data['trikot_home']) && version_compare(JVERSION, '4.0.0', 'ge'))
+				{
+					$data['trikot_home'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['trikot_home']);
+				}
+
+				if (!empty($data['trikot_away']) && version_compare(JVERSION, '4.0.0', 'ge'))
+				{
+					$data['trikot_away'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['trikot_away']);
 				}
 
 				/** wurden jahre mitgegeben ? */
@@ -786,6 +873,10 @@ if ( $config->get('debug') )
 				{
 					$data['picture'] = $post['copy_jform']['picture'];
 				}
+				if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['picture']))
+				{
+					$data['picture'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['picture']);
+				}
 
 				if ($post['delete'])
 				{
@@ -799,7 +890,7 @@ if ( $config->get('debug') )
 
 				if ($post['add_trainingData'])
 				{
-					sportsmanagementModelteam::addNewTrainigData($data[id]);
+					sportsmanagementModelteam::addNewTrainigData($data['id']);
 				}
 				break;
 
@@ -809,6 +900,12 @@ if ( $config->get('debug') )
 				{
 					$data['picture'] = $post['copy_jform']['picture'];
 				}
+
+				if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['picture']))
+				{
+					$data['picture'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['picture']);
+				}
+
 				if ($data['max_visitors'] == '')
 				{
 					$data['max_visitors'] = 0;
@@ -821,12 +918,24 @@ if ( $config->get('debug') )
 				{
 					$data['picture'] = $post['copy_jform']['picture'];
 				}
+
+				if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['picture']))
+				{
+					$data['picture'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['picture']);
+				}
+
 				if ( $data['category_id'] == '' )
 				{
 				$data['category_id']  = 0;	
 				}
 
-				$data['start_date']         = sportsmanagementHelper::convertDate($data['start_date'], 0);
+				if ($data['start_date'] != '00-00-0000' && $data['start_date'] != '')
+			{
+			$data['start_date'] = sportsmanagementHelper::convertDate($data['start_date'], 0);
+			}
+
+$data['start_date'] = !$data['start_date'] ? '0000-00-00' : $data['start_date'];				
+				
 				$data['sports_type_id']     = $data['request']['sports_type_id'];
 				$data['agegroup_id']        = $data['request']['agegroup_id'];
 				$data['modified_timestamp'] = sportsmanagementHelper::getTimestamp($data['modified']);
@@ -1003,8 +1112,39 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 						$message       = '';
 						$delete_season = array();
 
+						if ( $config->get('debug') )
+						{
+						$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post season_person_club_id<pre>'.print_r($post['season_person_club_id'],true).'</pre>'), '');
+						$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post season_person_position_id<pre>'.print_r($post['season_person_position_id'],true).'</pre>'), '');
+						}	
+
+						$options = array();
+						$query = Factory::getDbo()->getQuery(true);
+
+						$query->select('id AS value, name AS text');
+						$query->from('#__sportsmanagement_season');
+						$query->order('name DESC');
+						Factory::getDbo()->setQuery($query);
+						$options = Factory::getDbo()->loadObjectList();
+
 						foreach ($data['season_ids'] as $key => $value)
 						{
+							$club_id = 0;
+							$position_id = 0;    
+					  
+							if ( ComponentHelper::getParams('com_sportsmanagement')->get('assign_club_position_to_player', 0) )
+							{	
+								foreach($options as $entry => $saison)
+								{
+									if ($value == $saison->value)
+									{
+										$club_id = $post['season_person_club_id'][$entry] ? $post['season_person_club_id'][$entry] : 0;						
+										$position_id = $post['season_person_position_id'][$entry] ? $post['season_person_position_id'][$entry] : 0;												
+										break;
+									}
+								}						
+							}
+	
 							$this->jsmquery->clear();
 							$this->jsmquery->select('spi.id,s.name');
 							$this->jsmquery->from('#__sportsmanagement_season_person_id as spi');
@@ -1012,14 +1152,14 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 							$this->jsmquery->where('spi.person_id =' . $data['id']);
 							$this->jsmquery->where('spi.season_id =' . $value);
 							$this->jsmdb->setQuery($this->jsmquery);
-							$res             = $this->jsmdb->loadObject();
+							$res = $this->jsmdb->loadObject();
 							$delete_season[] = $value;
 
 							if (!$res)
 							{
 								$this->jsmquery->clear();
-								$columns = array('person_id', 'season_id', 'modified', 'modified_by');
-								$values = array($data['id'], $value, $this->jsmdb->Quote('' . $data['modified'] . ''), $data['modified_by']);
+								$columns = array('person_id', 'season_id','position_id','club_id', 'modified', 'modified_by');
+								$values = array($data['id'], $value,$position_id,$club_id, $this->jsmdb->Quote('' . $data['modified'] . ''), $data['modified_by']);
 								$this->jsmquery
 									->insert($this->jsmdb->quoteName('#__sportsmanagement_season_person_id'))
 									->columns($this->jsmdb->quoteName($columns))
@@ -1039,6 +1179,15 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 							else
 							{
 								$message .= 'Saisonzuordnung : ' . $res->name . ' schon vorhanden.<br>';
+                                
+                                $rowupdate = new stdClass;
+                                $rowupdate->id = $res->id;
+                                $rowupdate->club_id = $club_id;
+				$rowupdate->position_id = $position_id;
+                                $result_update = $this->jsmdb->updateObject('#__sportsmanagement_season_person_id', $rowupdate, 'id', true);
+                                
+                                
+                                
 							}
 						}
 
@@ -1080,6 +1229,10 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 				case 'club':
 					sportsmanagementHelper::saveExtraFields($post, $data['id']);
 					$this->jsmapp->setUserState("$this->jsmoption.club_id", $data['id']);
+					break;
+                    /** liga */
+				case 'league':
+					sportsmanagementHelper::saveExtraFields($post, $data['id']);
 					break;
 				/** projekt */
 				case 'project':
@@ -1207,10 +1360,7 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 
 		if ($cfg_which_media_tool == 'media')
 		{
-			/**
-			 *
-			 * welche joomla version ?
-			 */
+			/** welche joomla version ? */
 			if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 			{
 				$joomladirectory = 'local-0:/';
@@ -1281,7 +1431,13 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 				break;
 			case 'jlextfederation':
 				$form->setFieldAttribute('assocflag', 'type', $cfg_which_media_tool);
+                $form->setFieldAttribute('assocflag', 'default', 'images/com_sportsmanagement/database/flags_associations/placeholder_flags.png' );
+                
 				$form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
+                $form->setFieldAttribute('picture', 'default', 'images/com_sportsmanagement/database/associations/placeholder_wappen_50.png' );
+                
+                $form->setFieldAttribute('flag_maps', 'type', $cfg_which_media_tool);
+                $form->setFieldAttribute('flag_maps', 'default', 'images/com_sportsmanagement/database/flag_maps/placeholder_wappen_50.png' );
 
 				$this->jsmquery->clear();
 				$this->jsmquery->select('*');
@@ -1304,6 +1460,9 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 				$form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_flags', ''));
 				$form->setFieldAttribute('picture', 'directory', $joomladirectory . 'com_sportsmanagement/database/flags');
 				$form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
+                
+                $form->setFieldAttribute('flag_maps', 'type', $cfg_which_media_tool);
+                $form->setFieldAttribute('flag_maps', 'default', 'images/com_sportsmanagement/database/flag_maps/placeholder_wappen_50.png' );
 
 				$this->jsmquery->clear();
 				$this->jsmquery->select('*');
@@ -1335,10 +1494,13 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 				break;
 			case 'jlextassociation':
 				$form->setFieldAttribute('assocflag', 'type', $cfg_which_media_tool);
-                $form->setFieldAttribute('assocflag', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_flags', ''));
+                $form->setFieldAttribute('assocflag', 'default', 'images/com_sportsmanagement/database/flags_associations/placeholder_flags.png' );
                 
 				$form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
-                $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_big', ''));
+                $form->setFieldAttribute('picture', 'default', 'images/com_sportsmanagement/database/associations/placeholder_wappen_50.png' );
+                
+                $form->setFieldAttribute('flag_maps', 'type', $cfg_which_media_tool);
+                $form->setFieldAttribute('flag_maps', 'default', 'images/com_sportsmanagement/database/flag_maps/placeholder_wappen_50.png' );
 
 				$this->jsmquery->clear();
 				$this->jsmquery->select('*');
@@ -1357,6 +1519,8 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 					}
 				}
 				break;
+                
+                
 			case 'eventtype':
 				$form->setFieldAttribute('icon', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_icon', ''));
 				$form->setFieldAttribute('icon', 'directory', $joomladirectory . 'com_sportsmanagement/database/events');
@@ -1387,12 +1551,6 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 				$form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
 				break;
 			case 'project':
-				// if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
-				// {
-				// 	$form->setFieldAttribute('use_legs', 'type', 'radio');
-				// 	$form->setFieldAttribute('use_legs', 'class', 'switcher');
-				// }
-
 				$sports_type_id = $form->getValue('sports_type_id');
 				$this->jsmquery->clear();
 				$this->jsmquery->select('name');
@@ -1401,18 +1559,6 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 				$this->jsmdb->setQuery($this->jsmquery);
 				$result = $this->jsmdb->loadResult();
 
-				/*
-				switch ($result)
-				{
-			 case 'COM_SPORTSMANAGEMENT_ST_TENNIS';
-			 break;
-			 default:
-			 $form->setFieldAttribute('use_tie_break', 'type', 'hidden');
-			 $form->setFieldAttribute('tennis_single_matches', 'type', 'hidden');
-			 $form->setFieldAttribute('tennis_double_matches', 'type', 'hidden');
-			 break;
-				}
-				*/
 				switch (ComponentHelper::getParams($this->jsmoption)->get('which_article_component'))
 				{
 					case 'com_content':
@@ -1851,6 +1997,11 @@ class JSMModelList extends ListModel
 		 * mit der kategorie: jsmerror
 		 */
 		Log::addLogger(array('logger' => 'messagequeue'), Log::ALL, array('jsmerror'));
+		
+if ( Factory::getConfig()->get('debug') )
+{  
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' layout ' . $this->jsmjinput->getVar('layout')), Log::NOTICE, 'jsmerror');
+}		
 
 	}
     

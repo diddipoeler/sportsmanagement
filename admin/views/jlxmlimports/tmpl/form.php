@@ -6,7 +6,7 @@
  * @subpackage jlxmlimports
  * @file       form.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -17,6 +17,7 @@ use Joomla\CMS\Log\Log;
 
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+$visible = "text";
 
 if (isset($this->xml) && is_array($this->xml))
 {
@@ -478,10 +479,7 @@ if (isset($this->xml) && is_array($this->xml))
 										$options .= '</option>';
 									}
 									?>
-                                    <select name='league' id='league' <?php if (!$foundMatchingLeague)
-									{
-										echo " disabled='disabled'";
-									} ?>>
+                                    <select name='league' id='league'>
                                         <option selected
                                                 value="0"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_LEAGUE_SELECT'); ?></option>
 										<?php echo $options; ?>
@@ -502,11 +500,7 @@ if (isset($this->xml) && is_array($this->xml))
             }"/>
 									<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CREATE_NEW'); ?>
                                     <input type='text' name='leagueNew' size='90' maxlength='75' id='leagueNew'
-                                           value="<?php echo stripslashes(htmlspecialchars($dLeagueName)); ?>"
-										<?php if ($foundMatchingLeague)
-										{
-											echo " disabled='disabled'";
-										} ?>/>
+                                           value="<?php echo stripslashes(htmlspecialchars($dLeagueName)); ?>"/>
 									<?php
 								}
 								else
@@ -551,10 +545,7 @@ if (isset($this->xml) && is_array($this->xml))
 										$options .= '</option>';
 									}
 									?>
-                                    <select name='season' id='season' <?php if (!$foundMatchingSeason)
-									{
-										echo " disabled='disabled'";
-									} ?>>
+                                    <select name='season' id='season'>
                                         <option selected
                                                 value="0"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SEASON_SELECT'); ?></option>
 										<?php echo $options; ?>

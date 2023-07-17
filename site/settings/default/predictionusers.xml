@@ -7,7 +7,7 @@
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS"
       addfieldpath="/administrator/components/com_sportsmanagement/elements">
 
-		<field	name="show_photo" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+		<field	name="show_photo" type="radio" default="1"  layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_PHOTO"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_PHOTO">
 			<option value="0">JNO</option>
@@ -20,28 +20,28 @@
 			
 		</field>
 
-		<field	name="show_register_date" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+		<field	name="show_register_date" type="radio" default="1"  layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_REGISTER_DATE"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_REGISTER_DATE">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field	name="show_fav_team" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+		<field	name="show_fav_team" type="radio" default="1"  layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_FAV_TEAM"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_FAV_TEAM">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field	name="show_slogan" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+		<field	name="show_slogan" type="radio" default="1" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_SLOGAN"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_SLOGAN">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field	name="show_lasttip" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+		<field	name="show_lasttip" type="radio" default="1" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_LASTTIP"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_LASTTIP">
 			<option value="0">JNO</option>
@@ -60,77 +60,77 @@
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_LABEL_CONTACT_CAT_ID"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_DESCR_CONTACT_CAT_ID" />
 
-		<field	name="show_ranking" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+		<field	name="show_ranking" type="radio" default="1" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_RANKING"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_RANKING">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field	name="show_totalpoints" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+		<field	name="show_totalpoints" type="radio" default="1" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_TOTAL_POINTS"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_TOTAL_POINTS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field	name="show_lastpoints" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+		<field	name="show_lastpoints" type="radio" default="1" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_LAST_POINTS"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_LAST_POINTS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field	name="show_counttipps" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+		<field	name="show_counttipps" type="radio" default="1" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_COUNT_TIPS"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_COUNT_TIPS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field	name="show_averagepoints" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+		<field	name="show_averagepoints" type="radio" default="1" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_AVERAGE_POINTS"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_AVERAGE_POINTS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field	name="show_toptipps" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+		<field	name="show_toptipps" type="radio" default="1"  layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_TOP_TIPS"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_TOP_TIPS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field	name="show_difftipps" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+		<field	name="show_difftipps" type="radio" default="1" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_DIFF_TIPS"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_DIFF_TIPS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field	name="show_tendtipps" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+		<field	name="show_tendtipps" type="radio" default="1" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_TEND_TIPS"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_TEND_TIPS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field	name="show_form" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+		<field	name="show_form" type="radio" default="1"  layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_FORM"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_FORM">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field	name="show_flash_statistic_points" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+		<field	name="show_flash_statistic_points" type="radio" default="1" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_FLASH_POINTS"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_FLASH_POINTS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field	name="show_flash_statistic_ranks" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+		<field	name="show_flash_statistic_ranks" type="radio" default="1"  layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_LABEL_SHOW_FLASH_RANKS"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_DESCR_SHOW_FLASH_RANKS">
 			<option value="0">JNO</option>
@@ -145,28 +145,28 @@
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PERSONAL_OPTIONS_EDIT"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PERSONAL_OPTIONS_EDIT">
 
-		<field	name="edit_favteam" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+		<field	name="edit_favteam" type="radio" default="1" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_LABEL_EDIT_FAV_TEAM"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_DESCR_EDIT_FAV_TEAM">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field	name="edit_slogan" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+		<field	name="edit_slogan" type="radio" default="1" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_LABEL_EDIT_SLOGAN"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_DESCR_EDIT_SLOGAN">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field	name="edit_reminder" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
+		<field	name="edit_reminder" type="radio" default="0" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_LABEL_EDIT_REMINDER"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_DESCR_EDIT_REMINDER">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
-		<field	name="edit_avatar_upload" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+		<field	name="edit_avatar_upload" type="radio" default="1" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_LABEL_EDIT_AVATAR_UPLOAD"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_DESCR_EDIT_AVATAR_UPLOAD">
 			<option value="0">JNO</option>
@@ -188,7 +188,7 @@
     				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_LABEL_EDIT_REMINDER_FOOTER"
     				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_DESCR_EDIT_REMINDER_FOOTER" rows="3" cols="50" />
 
-		<field	name="edit_receipt" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
+		<field	name="edit_receipt" type="radio" default="0" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_LABEL_EDIT_RECEIPT"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONUSERS_PARAM_DESCR_EDIT_RECEIPT">
 			<option value="0">JNO</option>

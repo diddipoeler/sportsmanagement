@@ -6,14 +6,15 @@
  * @subpackage player
  * @file       player.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filter\OutputFilter;
 
 /**
  * sportsmanagementModelplayer
@@ -26,7 +27,6 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
  */
 class sportsmanagementModelplayer extends JSMModelAdmin
 {
-
 
 	/**
 	 * sportsmanagementModelplayer::__construct()
@@ -42,6 +42,170 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 	}
 
 
+/**
+ * sportsmanagementModelplayers::importupload()
+ * https://www.w3schools.com/php/php_file_upload.asp
+ * @param mixed $post
+ * @return void
+ */
+function importupload($post = array())
+{
+jimport('joomla.filesystem.file');
+
+/**    
+Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' task <pre>'.print_r(Factory::getApplication()->input->post->getArray(),true).'</pre>'  ), '');
+$target_dir = "tmp/";
+$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+$uploadOk = 1;
+$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' task <pre>'.print_r($target_file,true).'</pre>'  ), '');
+
+
+// Check if $uploadOk is set to 0 by an error
+if ($uploadOk == 0) {
+  echo "Sorry, your file was not uploaded.";
+// if everything is ok, try to upload file
+} else {
+  if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+    echo "The file ". htmlspecialchars( basename( $_FILES["fileToUpload"]["name"])). " has been uploaded.";
+  } else {
+    echo "Sorry, there was an error uploading your file.";
+  }
+}
+*/
+
+// Cleans the name of teh file by removing weird characters
+$filename = File::makeSafe($_FILES["fileToUpload"]['name']); 
+
+$src  = $_FILES["fileToUpload"]['tmp_name'];
+$dest = JPATH_BASE . '/tmp/' . $filename;
+
+Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' filename <pre>'.print_r($filename,true).'</pre>'  ), '');
+Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' src <pre>'.print_r($src,true).'</pre>'  ), '');
+Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' dest <pre>'.print_r($dest,true).'</pre>'  ), '');
+
+
+
+if (File::upload($src, $dest)) 
+{
+      echo 'The file has successfully been uploaded :)<br>';
+} 
+else 
+{
+      echo 'Oh crap, something happened. Run!<br>';
+}
+
+
+// lastname,firstname,birthday,country,club,classement (extrafield),licence/registrationN,gender
+$file = $dest;
+$handle = fopen($file,"r");
+
+        while(($fileop = fgetcsv($handle,1000,",")) !== false)
+        {
+			/**
+            echo $fileop[0].' - ';
+			echo $fileop[1].' - ';
+			echo $fileop[2].' - ';
+			echo $fileop[3].' - ';
+			echo $fileop[4].' - ';
+			echo $fileop[5].' - ';
+			echo $fileop[6].' - ';
+			echo $fileop[7].' <br> ';
+			*/
+            $temp = new stdClass();
+     $temp->id = 0; 
+$temp->lastname  = ucfirst(strtolower($fileop[0]));
+$temp->firstname  = $fileop[1];
+$temp->birthday  = $fileop[2];
+
+switch ( $fileop[3] )
+{
+case 'France':
+$temp->country  = 'FRA';
+break;
+}
+
+switch ( $fileop[7] )
+{
+case 'Male':
+$temp->gender  = 1;
+$temp->picture  = 'images/com_sportsmanagement/database/persons/men_small.png';
+break;
+case 'Female':
+$temp->gender  = 2;
+$temp->picture  = 'images/com_sportsmanagement/database/persons/woman_small.png';
+break;
+}
+
+//$temp->alias = OutputFilter::stringURLSafe($this->name);
+$parts = array(trim($temp->firstname), trim($temp->lastname));
+$temp->alias = OutputFilter::stringURLSafe(implode(' ', $parts));
+
+$temp->club  = $fileop[4];
+$temp->classement  = $fileop[5];
+$temp->knvbnr  = $fileop[6];
+//$temp->gender  = $fileop[7];
+$players_upload[] = $temp;
+
+        }
+
+Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' players_upload <pre>'.print_r($players_upload,true).'</pre>'  ), '');
+
+foreach ( $players_upload as $key => $value) if ( $key > 0 )
+{
+//for($a=1; $a < sizeof($players_upload); $a++ )        
+//{  
+$this->jsmquery->clear();
+$this->jsmquery->select('id');
+$this->jsmquery->from('#__sportsmanagement_person');
+$this->jsmquery->where('firstname like ' . $this->jsmdb->Quote('' . $value->firstname . '') );
+$this->jsmquery->where('lastname like ' . $this->jsmdb->Quote('' . $value->lastname . '') );
+$this->jsmquery->where('birthday like ' . $this->jsmdb->Quote('' . $value->birthday . '') );
+$this->jsmquery->where('country like ' . $this->jsmdb->Quote('' . $value->country . '') );
+$this->jsmdb->setQuery($this->jsmquery );
+$res = $this->jsmdb->loadResult();
+
+if ( !$res )
+{
+$profile = new stdClass;
+$profile->firstname = $value->firstname;
+$profile->lastname = $value->lastname;
+$profile->birthday = $value->birthday;
+$profile->alias = $value->alias;
+$profile->knvbnr = $value->knvbnr;
+$profile->gender = $value->gender;
+$profile->country = $value->country;
+$profile->published = 1;
+try
+{
+$insertresult = $this->jsmdb->insertObject('#__sportsmanagement_person', $profile);   
+}
+catch (Exception $e)
+{
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+}
+            
+}
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+    
+    }
+    
+    
+    
 	/**
 	 * sportsmanagementModelplayer::getAgeGroupID()
 	 *
@@ -110,13 +274,11 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 		try
 		{
 			$this->jsmdb->setQuery($this->jsmquery);
-
 			return $this->jsmdb->loadObject();
 		}
 		catch (Exception $e)
 		{
 			$this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
-
 			return false;
 		}
 
@@ -242,8 +404,8 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 						Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
 					}
 
-					// Projekt position eintragen
-					// zuerst die positions id zum projekt ermitteln.
+					/** Projekt position eintragen
+					zuerst die positions id zum projekt ermitteln. */
 					$this->jsmquery->clear();
 					$this->jsmquery->select('id');
 					$this->jsmquery->from('#__sportsmanagement_project_position');
@@ -326,8 +488,8 @@ class sportsmanagementModelplayer extends JSMModelAdmin
 						Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
 					}
 
-					// Projekt position eintragen
-					// zuerst die positions id zum projekt ermitteln.
+					/** Projekt position eintragen
+					 zuerst die positions id zum projekt ermitteln. */
 					$this->jsmquery->clear();
 					$this->jsmquery->select('id');
 					$this->jsmquery->from('#__sportsmanagement_project_position');

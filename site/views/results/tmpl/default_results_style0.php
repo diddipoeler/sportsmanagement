@@ -6,7 +6,7 @@
  * @subpackage results
  * @file       default_results_style0.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -277,11 +277,13 @@ if ($this->config['show_comments_count'])
 				?>
 				<div itemscope itemtype="http://schema.org/SportsEvent">
 					<?php
-					$starttime = sportsmanagementHelperHtml::showMatchTime($game, $this->config, $this->overallconfig, $this->project);
+					$config_tmp = $this->config;
+					$config_tmp['mark_now_playing'] = 0;
+					$starttime = sportsmanagementHelperHtml::showMatchTime($game, $config_tmp, $this->overallconfig, $this->project);
 					?>
 					<span itemprop="startDate" datetime="<?php echo $date; ?>T<?php echo $starttime; ?>" content="<?php echo $date; ?>T<?php echo $starttime; ?>"></span>
 					<?php
-					$endtime = sportsmanagementHelperHtml::showMatchTime($game, $this->config, $this->overallconfig, $this->project);
+					$endtime = sportsmanagementHelperHtml::showMatchTime($game, $config_tmp, $this->overallconfig, $this->project);
 
 					$ergebnis = date('H:i:s', strtotime('+' . $this->project->game_regular_time + $this->project->halftime . ' minutes', strtotime($game->match_date)));
 

@@ -8,7 +8,7 @@
  * @subpackage rules
  * @file       jevents.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -27,7 +27,7 @@ class JEventsConnector extends JSMCalendar
 
 	static $jevent;
 
-	function getEntries($caldates, $params, &$matches)
+	static function getEntries($caldates, $params, &$matches)
 	{
 
 		if (!self::_checkJEvents())
@@ -37,6 +37,7 @@ class JEventsConnector extends JSMCalendar
 
 		$year  = substr($caldates['start'], 0, 4);
 		$month = (substr($caldates['start'], 5, 1) == '0') ? substr($caldates['start'], 6, 1) : substr($caldates['start'], 5, 2);
+		$month = str_replace('-', '', $month);
 
 		self::$xparams = $params;
 		/**
@@ -57,7 +58,7 @@ class JEventsConnector extends JSMCalendar
 		return $formatted;
 	}
 
-	private function _checkJEvents()
+	private static function _checkJEvents()
 	{
 
 		if (file_exists(JPATH_SITE . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'com_jevents' . DIRECTORY_SEPARATOR . 'mod.defines.php')
@@ -95,12 +96,12 @@ class JEventsConnector extends JSMCalendar
 		return true;
 	}
 
-	private function _raiseError($message)
+	private static function _raiseError($message)
 	{
 		echo $message;
 	}
 
-	function formatEntries($rows, &$matches)
+	static function formatEntries($rows, &$matches)
 	{
 		$newrows = array();
 
@@ -118,14 +119,14 @@ class JEventsConnector extends JSMCalendar
 					}
 
 					$newrow['link'] = self::buildLink($event, $row['year'], $row['month']);
-					$newrow['date'] = strftime('%Y-%m-%d', $row['cellDate']) . ' ' . strftime('%H:%M', $event->_dtstart);
+					$newrow['date'] = date('Y-m-d', $row['cellDate']) . ' ' . date('H:i', $event->_dtstart);
 					$newrow['type'] = 'jevents';
 					$newrow['time'] = '';
 
 					if ($event->_alldayevent != 1)
 					{
-						$newrow['time'] = strftime('%H:%M', $event->_dtstart);
-						$newrow['time'] .= ($event->_dtstart != $event->_dtend && $event->_noendtime == 0) ? '-' . strftime('%H:%M', $event->_dtend) : '';
+						$newrow['time'] = date('H:i', $event->_dtstart);
+						$newrow['time'] .= ($event->_dtstart != $event->_dtend && $event->_noendtime == 0) ? '-' . date('H:i', $event->_dtend) : '';
 					}
 
 					$newrow['headingtitle'] = self::$xparams->get('jevents_text', 'JEvents');
@@ -142,7 +143,7 @@ class JEventsConnector extends JSMCalendar
 
 	}
 
-	function buildLink(&$event, $year, $month)
+	static function buildLink(&$event, $year, $month)
 	{
 		include_once JPATH_SITE . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'com_jevents' . DIRECTORY_SEPARATOR . 'router.php';
 		$link = 'index.php?option=com_jevents&amp;task=icalrepeat.detail&amp;evid='

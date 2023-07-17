@@ -6,7 +6,7 @@
  * @subpackage fields
  * @file       dependsql.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -74,13 +74,14 @@ class JFormFieldDependSQL extends FormField
 		
 		$ajaxtask  = $this->element['task'];
 		$depends   = $this->element['depends'];
+        $depends2   = $this->element['depends2'];
 		$slug      = $this->element['slug'] == "true" ? 'true' : 'false';
 		$query     = (string) $this->element['query'];
 		$norequest = $this->element['norequest'];
 
 		$project_id = $this->form->getValue('id');
 
-		$attribs   .= ' class="select2-container"';
+		$attribs   .= ' class="form-select select2-container"';
         if ( $v = $this->element['size'] )
 		{
 			$attribs .= ' size="' . $v . '"';
@@ -160,10 +161,8 @@ class JFormFieldDependSQL extends FormField
 		switch ($ajaxtask)
 		{
 		case 'projectteamoptions':
-//$script[] = "var url = 'index.php?option=com_sportsmanagement&format=json&dbase=" . $cfg_which_database . "&slug=" . $slug . "&task=ajax." . $ajaxtask . "&" . $depends . "=' + value &club_id=;";								
 $script[] = "var url = 'index.php?option=com_sportsmanagement&format=json&dbase=" . $cfg_which_database . "&slug=" . $slug . "&club_id=".$value_clubid."&task=ajax." . $ajaxtask . "&" . $depends . "=' + value;";				
 		break;
-				
 		default:
 $script[] = "var url = 'index.php?option=com_sportsmanagement&format=json&dbase=" . $cfg_which_database . "&slug=" . $slug . "&task=ajax." . $ajaxtask . "&" . $depends . "=' + value;";				
 		break;

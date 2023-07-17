@@ -6,7 +6,7 @@
  * @subpackage statistics
  * @file       base.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -431,13 +431,14 @@ class SMStatistic extends CMSObject
 		$params = self::getParams();
 
 		$stat_ids = $params->get($id_field);
-
+is_array($stat_ids) ? true : false;
+		/**
 		if (!count($stat_ids))
 		{
 //			Log::add(Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return (array(0));
 		}
-
+*/
 		$db   = sportsmanagementHelper::getDBConnection();
 		$sids = array();
 
@@ -655,7 +656,7 @@ class SMStatistic extends CMSObject
 		// $statistic_views = explode(',', $params->get('statistic_views'));
 		$statistic_views = $params->get('statistic_views');
 
-		if (!count($statistic_views))
+		if (!isset($statistic_views) || !count($statistic_views))
 		{
 //			Log::add(get_class($this) . ' ' . __FUNCTION__ . ' ' . __LINE__ . ' ' . Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return (array(0));
@@ -1804,5 +1805,5 @@ class SMStatistic extends CMSObject
 		$query->group('gp.tpid');
 
 		return $query;
-	}
+	}   
 }

@@ -1,20 +1,16 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.06
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_playground_ticker
  * @file       helper.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @modded 	   llambion (2020)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
@@ -40,19 +36,17 @@ class modJSMPlaygroundTicker
 	public static function getData($params)
 	{
 		$app = Factory::getApplication();
+        $result = array();
+        $rands = array();
+        $queryparts = array();
 		
 		// llambion
 		$project = (int) $params->get('p');
 		$x = $params->get('limit', 1);
 
-		// JInput object
 		$jinput             = $app->input;
 		$cfg_which_database = $jinput->getInt('cfg_which_database', 0);
-
-		// Get a db connection.
 		$db = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-
-		// Create a new query object.
 		$query = $db->getQuery(true);
 
 		/**
@@ -60,9 +54,8 @@ class modJSMPlaygroundTicker
 		 * Zuerst wird die Gesamtanzahl an Datensätzen bestimmt, die die Bedingungen erfüllt.
 		 * Anschließend müssen x Zufallszahlen gebildet werden. Und mit diesen wird dann eine SQL-Abfrage mit UNIONs gebaut.
 		 */
-		// Select some fields
-		
-		// 2020.07.22 All estadiums or only certain 
+	
+		/** 2020.07.22 All estadiums or only certain */ 
 		
 		
 		if ($project < 1)
@@ -81,7 +74,7 @@ class modJSMPlaygroundTicker
 			* Bei der abschließenden Abfrage wird UNION ALL benutzt statt UNION, damit MySQL die Einzelergebnisse nicht noch versucht zu gruppieren
 			* wir wissen ja durch die while-Schleife bereits, dass keine Duplikate selektiert werden können). UNION bedeutet nämlich in Wirklichkeit UNION DISTINCT.
 			*/
-			$rands = array();
+			
 
 			while (count($rands) < $x && $anz_cnt > count($rands))
 			{
@@ -98,35 +91,24 @@ class modJSMPlaygroundTicker
 		else // added 20.07.24 Llambion
 			
 		{		
-			/* Select playgrounds that belong to certain proyect  */
-
+			/** Select playgrounds that belong to certain proyect  */
 			$query->select('estadio.id');
-			
 			$query->from('#__sportsmanagement_playground AS estadio');
-			
 			$query->join('INNER','#__sportsmanagement_project_team t ON estadio.id = t.standard_playground');
-		
 			$query->where('t.project_id = '. $project);
-		
 			$db->setQuery($query); 
-				
 			$result = $db->loadObjectList(); 
-		
 			$estadios = count($result);
 			
 			if ($estadios > 0) 
-			
 			{
+			/** Search id's for random values */
 			
-			// Search id's for random values
-		
-			$rands = array();
 			$x     = $params->get('limit', 1);
 
 			while (count($rands) < $x && $estadios > count($rands))
 			{
 				$rand = mt_rand(0, $estadios - 1);
-			
 				if (!isset($rands[$rand]))
 				{
 				$rands[$rand] = $result[$rand]->id;
@@ -137,16 +119,12 @@ class modJSMPlaygroundTicker
 			
 		}
 
-        //echo 'rands' . count($rands);
+		
 
-		$queryparts = array();
-
-        // Changed to consider all or only project stadiums
+        /** Changed to consider all or only project stadiums */
 		
 		if (count($rands) > 0)
-		
 	    {
-		
 		foreach ($rands as $rand)
 		{
 			if ($project = 0)
@@ -166,22 +144,14 @@ class modJSMPlaygroundTicker
 		}
 
 		$query = "(" . implode(") UNION ALL (", $queryparts) . ")";
-		
-		//echo $project . '<br>';
-		//echo $query;
-	
 		$db->setQuery($query);
 		$result = $db->loadObjectList();
-		
 		}
-		
 		else
-			
-			{
-				$result = -1;
-			}
+		{
+			return $result;
+		}
 
-        //echo 'result' . $result;
 		return $result;
 
 	}
@@ -196,52 +166,34 @@ class modJSMPlaygroundTicker
 	 */
 	public static function getEstadios_Proyecto($params)
 	{
-
 		$app = Factory::getApplication();
-
+        $result = array();
+        $queryparts = array();
 		$p = (int) $params->get('p');
 		$x = $params->get('limit', 1);
-
-		// JInput object
 		$jinput             = $app->input;
 		$cfg_which_database = $jinput->getInt('cfg_which_database', 0);
-
-		// Get a db connection.
 		$db = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-
-		// Create a new query object.
 		$query = $db->getQuery(true);
-
  
-        /* Select playgrounds that belong to certain teams proyect  */
-
+        /** Select playgrounds that belong to certain teams proyect  */
 		$query->select('estadio.id');
-		
 		$query->from('#__sportsmanagement_playground AS estadio');
-		
 		$query->join('INNER','#__sportsmanagement_project_team t ON estadio.id = t.standard_playground');
-		
 		$query->where('t.project_id = '. $p);
-		
 		$db->setQuery($query); 
-				
 		$result = $db->loadObjectList(); 
-		
 		$estadios = count($result);
 		
 		if ($estadios > 0 )
-			
 			{
-		
-			// Busco los numeros aleatorios y extraigo los campos que me interesan
-		
+			/** Busco los numeros aleatorios y extraigo los campos que me interesan */
 			$rands = array();
 			$x     = $params->get('limit', 1);
 
 			while (count($rands) < $x && $estadios > count($rands))
 			{
 				$rand = mt_rand(0, $estadios - 1);
-			
 				if (!isset($rands[$rand]))
 				{
 				
@@ -249,7 +201,7 @@ class modJSMPlaygroundTicker
 				}
 			}
 
-			$queryparts = array();
+			
 
 			foreach ($rands as $rand)
 			{
@@ -257,16 +209,12 @@ class modJSMPlaygroundTicker
 			}
 
 			$query = "(" . implode(") UNION ALL (", $queryparts) . ")";
-		
-			//echo $query;
-		
 			$db->setQuery($query);
 			$result = $db->loadObjectList();							
-			
 			}
 		else
 			{
-			 $result = -1;	
+			 return $result;	
 			}	
 						
 		return $result;

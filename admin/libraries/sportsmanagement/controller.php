@@ -6,7 +6,7 @@
  * @subpackage libraries
  * @file       controller.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -48,7 +48,10 @@ class JSMControllerAdmin extends AdminController
 		$this->jsmapp    = Factory::getApplication();
 		$this->jsmjinput = $this->jsmapp->input;
 		$this->jsmoption = $this->jsmjinput->getCmd('option');
-
+if ( Factory::getConfig()->get('debug') )
+{  
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' layout' . $this->jsmjinput->getVar('layout')), Log::NOTICE, 'jsmerror');
+}
 	}
     
     /**

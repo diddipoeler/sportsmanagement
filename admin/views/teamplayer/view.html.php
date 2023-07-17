@@ -6,7 +6,7 @@
  * @subpackage teamplayer
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -37,14 +37,21 @@ class sportsmanagementViewTeamPlayer extends sportsmanagementView
 	public function init()
 	{
 		$lists = array();
-
-		$this->team_id         = $this->app->getUserState("$this->option.team_id", '0');
-		//$this->_persontype     = $this->app->getUserState("$this->option.persontype", '0');
+$this->persontype = $this->app->getUserState("$this->option.persontype", '0');
+$this->project_id = $this->app->getUserState("$this->option.pid", '0');	
+$this->team_id = $this->app->getUserState("$this->option.team_id", '0');
+$this->project_team_id = $this->app->getUserState("$this->option.project_team_id", '0');
+$this->season_id  = $this->app->getUserState("$this->option.season_id", '0');	
+		
+		$this->project_art_id  = $this->app->getUserState("$this->option.project_art_id", '0');
+		$this->sports_type_id  = $this->app->getUserState("$this->option.sports_type_id", '0');
+		$this->season_team_id  = $this->app->getUserState("$this->option.season_team_id", '0');
+		
         //$this->_persontype     = $this->jinput->get('persontype');
-		$this->project_team_id = $this->app->getUserState("$this->option.project_team_id", '0');
+		
 
-		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
-		$this->season_id  = $this->app->getUserState("$this->option.season_id", '0');
+		
+		
 
 		$mdlProject    = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
 		$this->project       = $mdlProject->getProject($this->project_id);

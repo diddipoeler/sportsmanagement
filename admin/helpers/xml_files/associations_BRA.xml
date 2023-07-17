@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<structur>
+
+<associations><assocname country="BRA" icon="" flag="" website="" shortname="" main="1" parentmain="0">Acre</assocname></associations>
+<associations><assocname country="BRA" icon="" flag="" website="" shortname="" main="2" parentmain="0">Alagoas</assocname></associations>
+<associations><assocname country="BRA" icon="" flag="" website="" shortname="" main="3" parentmain="0">Amapá</assocname></associations>
+<associations><assocname country="BRA" icon="" flag="" website="" shortname="" main="4" parentmain="0">Amazonas</assocname></associations>
+<associations><assocname country="BRA" icon="" flag="" website="" shortname="" main="5" parentmain="0">Bahia</assocname></associations>
+<associations><assocname country="BRA" icon="" flag="" website="" shortname="" main="6" parentmain="0">Ceará</assocname></associations>
+<associations><assocname country="BRA" icon="" flag="" website="" shortname="" main="7" parentmain="0">Distrito Federal</assocname></associations>
+<associations><assocname country="BRA" icon="" flag="" website="" shortname="" main="8" parentmain="0">Espírito Santo</assocname></associations>
+<associations><assocname country="BRA" icon="" flag="" website="" shortname="" main="9" parentmain="0">Goiás</assocname></associations>
+<associations><assocname country="BRA" icon="" flag="" website="" shortname="" main="10" parentmain="0">Maranhão</assocname></associations>
+<associations><assocname country="BRA" icon="" flag="" website="" shortname="" main="11" parentmain="0">Mato Grosso</assocname></associations>
+<associations><assocname country="BRA" icon="" flag="" website="" shortname="" main="12" parentmain="0">Mato Grosso do Sul</assocname></associations>
+<associations><assocname country="BRA" icon="" flag="" website="" shortname="" main="13" parentmain="0">Minas Gerais</assocname></associations>
+<associations><assocname country="BRA" icon="" flag="" website="" shortname="" main="14" parentmain="0">Pará</assocname></associations>
+<associations><assocname country="BRA" icon="" flag="" website="" shortname="" main="15" parentmain="0">Paraíba</assocname></associations>
+<associations><assocname country="BRA" icon="" flag="" website="" shortname="" main="16" parentmain="0">Paraná</assocname></associations>
+<associations><assocname country="BRA" icon="" flag="" website="" shortname="" main="17" parentmain="0">Pernambuco</assocname></associations>
+<associations><assocname country="BRA" icon="" flag="" website="" shortname="" main="18" parentmain="0">Piauí</assocname></associations>
+<associations><assocname country="BRA" icon="" flag="" website="" shortname="" main="19" parentmain="0">Rio de Janeiro</assocname></associations>
+<associations><assocname country="BRA" icon="" flag="" website="" shortname="" main="20" parentmain="0">Rio Grande do Norte</assocname></associations>
+<associations><assocname country="BRA" icon="" flag="" website="" shortname="" main="21" parentmain="0">Rio Grande do Sul</assocname></associations>
+<associations><assocname country="BRA" icon="" flag="" website="" shortname="" main="22" parentmain="0">Rondônia</assocname></associations>
+<associations><assocname country="BRA" icon="" flag="" website="" shortname="" main="23" parentmain="0">Roraima</assocname></associations>
+<associations><assocname country="BRA" icon="" flag="" website="" shortname="" main="24" parentmain="0">Santa Catarina</assocname></associations>
+<associations><assocname country="BRA" icon="" flag="" website="" shortname="" main="25" parentmain="0">São Paulo</assocname></associations>
+<associations><assocname country="BRA" icon="" flag="" website="" shortname="" main="26" parentmain="0">Sergipe</assocname></associations>
+<associations><assocname country="BRA" icon="" flag="" website="" shortname="" main="27" parentmain="0">Tocantins</assocname></associations>
+  
+</structur>

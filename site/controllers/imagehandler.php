@@ -1,19 +1,15 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @file       imagehandler.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Session\Session;
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Language\Text;
@@ -61,7 +57,6 @@ class sportsmanagementControllerImagehandler extends BaseController
 		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
 
-		// Check for request forgeries
 		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
 		$file        = Factory::getApplication()->input->getVar('userfile', '', 'files', 'array');
@@ -70,18 +65,18 @@ class sportsmanagementControllerImagehandler extends BaseController
 		$field       = Factory::getApplication()->input->getVar('field');
 		$linkaddress = Factory::getApplication()->input->getVar('linkaddress');
 
-		// Set FTP credentials, if given
+		/** Set FTP credentials, if given */
 		jimport('joomla.client.helper');
 		ClientHelper::setCredentialsFromRequest('ftp');
 
-		// Set the target directory
+		/** Set the target directory */
 		$base_Dir = JPATH_SITE . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $option . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . $folder . DS;
 
 		$app->enqueueMessage(Text::_($type), '');
 		$app->enqueueMessage(Text::_($folder), '');
 		$app->enqueueMessage(Text::_($base_Dir), '');
 
-		// Do we have an imagelink?
+		/**  Do we have an imagelink? */
 		if (!empty($linkaddress))
 		{
 			$file['name'] = basename($linkaddress);
@@ -92,7 +87,7 @@ class sportsmanagementControllerImagehandler extends BaseController
 			}
 			else
 			{
-				// Sanitize the image filename
+				/** Sanitize the image filename */
 				$filename = ImageSelectSM::sanitize($base_Dir, $file['name']);
 			}
 
@@ -101,27 +96,20 @@ class sportsmanagementControllerImagehandler extends BaseController
 			if (!copy($linkaddress, $filepath))
 			{
 				echo "<script> alert('" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_COPY_FAILED') . "'); window.history.go(-1); </script>\n";
-
-				// $app->close();
 			}
 			else
 			{
-				// Echo "<script> alert('" . Text::_( 'COPY COMPLETE'.'-'.$folder.'-'.$type.'-'.$filename.'-'.$field ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
 				echo "<script>  window.parent.selectImage_" . $type . "('$filename', '$filename','$field');window.parent.SqueezeBox.close(); </script>\n";
-
-				// $app->close();
 			}
 		}
 
-		// Do we have an upload?
+		/** Do we have an upload? */
 		if (empty($file['name']))
 		{
 			echo "<script> alert('" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_IMAGE_EMPTY') . "'); window.history.go(-1); </script>\n";
-
-			// $app->close();
 		}
 
-		// Check the image
+		/** Check the image */
 		$check = ImageSelectSM::check($file);
 
 		if ($check === false)
@@ -129,24 +117,18 @@ class sportsmanagementControllerImagehandler extends BaseController
 			$app->redirect($_SERVER['HTTP_REFERER']);
 		}
 
-		// Sanitize the image filename
+		/** Sanitize the image filename */
 		$filename = ImageSelectSM::sanitize($base_Dir, $file['name']);
 		$filepath = $base_Dir . $filename;
 
-		// Upload the image
+		/** Upload the image */
 		if (!File::upload($file['tmp_name'], $filepath))
 		{
 			echo "<script> alert('" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_FAILED') . "'); window.history.go(-1); </script>\n";
-
-			//          $app->close();
 		}
 		else
 		{
-			//          echo "<script> alert('" . Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE'.'-'.$folder.'-'.$type.'-'.$filename.'-'.$field ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
-			//          echo "<script> alert('" . Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE' ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
 			echo "<script>  window.parent.selectImage_" . $type . "('$filename', '$filename','$field');window.parent.SqueezeBox.close(); </script>\n";
-
-			//          $app->close();
 		}
 	}
 
@@ -162,11 +144,11 @@ class sportsmanagementControllerImagehandler extends BaseController
 		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
 
-		// Set FTP credentials, if given
+		/** Set FTP credentials, if given */
 		jimport('joomla.client.helper');
 		ClientHelper::setCredentialsFromRequest('ftp');
 
-		// Get some data from the request
+		/** Get some data from the request */
 		$images = Factory::getApplication()->input->getVar('rm', array(), '', 'array');
 		$type   = Factory::getApplication()->input->getVar('type');
 

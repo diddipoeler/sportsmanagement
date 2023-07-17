@@ -8,7 +8,7 @@
  * @subpackage jlxmlimports
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -340,7 +340,14 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		$db     = sportsmanagementHelper::getDBConnection();
-		$uri    = Factory::getURI();
+        if (version_compare(JSM_JVERSION, '4', 'eq'))
+        {
+            $uri = Uri::getInstance();
+        }
+        else
+        {
+            $uri = Factory::getURI();
+        }
 		$model  = BaseDatabaseModel::getInstance('JLXMLImport', 'sportsmanagementmodel');
 		$lists  = array();
 
@@ -435,7 +442,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 
 			case '3':
 				{ // Select Person
-					$mdl              = BaseDatabaseModel::getInstance('persons', 'sportsmanagementModel');
+					$mdl              = BaseDatabaseModel::getInstance('players', 'sportsmanagementModel');
 					$this->persons    = $mdl->getPersonListSelect();
 					$personlist       = array();
 					$personlist[]     = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_PERSON'));

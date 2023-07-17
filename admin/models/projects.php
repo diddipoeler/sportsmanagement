@@ -6,7 +6,7 @@
  * @subpackage modelss
  * @file       projects.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -44,6 +44,7 @@ class sportsmanagementModelProjects extends JSMModelList
 			'st.name',
 			'p.project_type',
 			'p.master_template',
+			'p.cr_project',
 			'p.published',
 			'p.id',
 			'p.ordering',
@@ -201,7 +202,7 @@ class sportsmanagementModelProjects extends JSMModelList
 		$this->jsmsubquery3->where('co.team_id = 0');
 
 		$this->jsmquery->select('p.id,p.ordering,p.published,p.project_type,p.name,p.alias,p.checked_out,p.checked_out_time,p.sports_type_id,p.current_round,p.picture,p.agegroup_id,p.master_template,p.fast_projektteam ');
-		$this->jsmquery->select('p.league_id,p.use_leaguechampion');
+		$this->jsmquery->select('p.league_id,p.use_leaguechampion,p.cr_project');
 		$this->jsmquery->select('p.modified,p.modified_by');
 		$this->jsmquery->select('u1.username');
 

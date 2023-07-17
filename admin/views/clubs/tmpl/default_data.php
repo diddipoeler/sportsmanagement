@@ -6,7 +6,7 @@
  * @subpackage clubs
  * @file       default_data.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -35,6 +35,43 @@ HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolow
 }
 }
 ?>
+<script>
+var last_value;
+var current_value;
+var attribute_cbnummer;
+var id_cbnummer;
+
+jQuery(document).on("click","select",function(){
+    last_value = $(this).val();
+	attribute_cbnummer = $(this).attr('cbnummer');
+	id_cbnummer = $(this).attr('id');
+$( "#"+ attribute_cbnummer ).prop( "checked", false );
+}).on("change","select",function(){
+    current_value = $(this).val();
+
+    console.log('last value - '+last_value);
+    console.log('current value - '+current_value);
+	console.log('attribute_cbnummer - '+attribute_cbnummer);
+	console.log('id_cbnummer - '+id_cbnummer);
+
+	if ( last_value != current_value )
+	{
+console.log('geändert');
+//jQuery("." + attribute_cbnummer).prop('checked', true);
+//attribute_cbnummer.prop('checked', true);
+//document.getElementById(attribute_cbnummer).checked = true;
+$( "#"+ attribute_cbnummer ).prop( "checked", true );
+	}
+	else
+	{
+		console.log('keine änderung');
+	}
+});
+
+</script>
+
+
+
 <div class="table-responsive" id="editcell">
 <table class="<?php echo $this->table_data_class; ?>" id="<?php echo $this->view; ?>list">
         <thead>
@@ -132,6 +169,8 @@ $this->dragable_group = 'data-dragable-group="none"';
 			$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $this->item->checked_out == $this->user->get('id') || $this->item->checked_out == 0;
 			$checked    = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'clubs.', $canCheckin);
 			$canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.club.' . $this->item->id) && $canCheckin;
+
+			$onChange = ' document.getElementById(\'cb' . $this->count_i . '\').checked=true" style="background-color:#bbffff';
 			?>
             <tr class="row<?php echo $this->count_i % 2; ?>" <?php echo $this->dragable_group; ?>>
                 <td class="center">
@@ -190,7 +229,7 @@ $this->dragable_group = 'data-dragable-group="none"';
                             type="text" size="40" class="form-control form-control-inline"
                             name="club_name<?php echo $this->item->id; ?>"
                             value="<?php echo $this->item->name; ?>"
-                            onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked = true"/>
+                            onchange="<?php echo $onChange; ?>"/>
 			</div>
 			
 			<div class="small">
@@ -264,18 +303,18 @@ HTMLHelper::_('bootstrap.endSlide');
                     <input<?php echo $inputappend; ?> type="text" size="10" class="form-control form-control-inline"
                                                       name="unique_id<?php echo $this->item->id; ?>"
                                                       value="<?php echo $this->item->unique_id; ?>"
-                                                      onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
+                                                      onchange="<?php echo $onChange; ?>"/>
 
                     <br/>
                     <input<?php echo $inputappend; ?> type="text" size="10" class="form-control form-control-inline"
                                                       name="new_club_id<?php echo $this->item->id; ?>"
                                                       value="<?php echo $this->item->new_club_id; ?>"
-                                                      onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
+                                                      onchange="<?php echo $onChange; ?>"/>
 			<br/>
 			<input<?php echo $inputappend; ?> type="text" size="10" class="form-control form-control-inline"
                                                       name="founded_year<?php echo $this->item->id; ?>"
                                                       value="<?php echo $this->item->founded_year; ?>"
-                                                      onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
+                                                      onchange="<?php echo $onChange; ?>"/>
 			<br/>
 					<?php echo $this->escape($this->item->state); ?>
                 </td>
@@ -299,17 +338,17 @@ echo sportsmanagementHelper::getBootstrapModalImage('select'.$this->item->id, ''
                     <input<?php echo $inputappend; ?> type="text" size="10" class="form-control form-control-inline"
                                                       name="zipcode<?php echo $this->item->id; ?>"
                                                       value="<?php echo $this->item->zipcode; ?>"
-                                                      onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
+                                                      onchange="<?php echo $onChange; ?>"/>
                     <br/>
                     <input<?php echo $inputappend; ?> type="text" size="30" class="form-control form-control-inline"
                                                       name="location<?php echo $this->item->id; ?>"
                                                       value="<?php echo $this->item->location; ?>"
-                                                      onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
+                                                      onchange="<?php echo $onChange; ?>"/>
                     <br/>
                     <input<?php echo $inputappend; ?> type="text" size="30" class="form-control form-control-inline"
                                                       name="address<?php echo $this->item->id; ?>"
                                                       value="<?php echo $this->item->address; ?>"
-                                                      onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
+                                                      onchange="<?php echo $onChange; ?>"/>
                 </td>
 
                 <td class="">
@@ -319,7 +358,8 @@ echo sportsmanagementHelper::getBootstrapModalImage('select'.$this->item->id, ''
                 </td>
                 <td class="center">
 					<?php
-					$append = ' onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true" style="background-color:#bbffff"';
+					//$append = ' onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true" style="background-color:#bbffff"';
+                    $append = '  style="background-color:#bbffff"';
 					echo HTMLHelper::_(
 						'select.genericlist', $this->lists['nation'], 'country' . $this->item->id,
 						'class="form-control form-control-inline" size="1"' . $append, 'value', 'text', $this->item->country

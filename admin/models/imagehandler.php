@@ -6,7 +6,7 @@
  * @subpackage imagehandler
  * @file       imagehandler.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -49,12 +49,10 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
-
 		$limit      = $app->getUserStateFromRequest($option . '.imageselect' . 'limit', 'limit', $app->getCfg('list_limit'), 'int');
 		$limitstart = $app->getUserStateFromRequest($option . '.imageselect' . 'limitstart', 'limitstart', 0, 'int');
 		$search     = $app->getUserStateFromRequest($option . '.search', 'search', '', 'string');
 		$search     = trim(StringHelper::strtolower($search));
-
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
 		$this->setState('search', $search);
@@ -131,14 +129,6 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
 	/**
 	 * Build imagelist
 	 *
@@ -167,9 +157,6 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 				$info             = @getimagesize($list[$i]->path);
 				$list[$i]->width  = @$info[0];
 				$list[$i]->height = @$info[1];
-
-				// $list[$i]->type      = @$info[2];
-				// $list[$i]->mime      = @$info['mime'];
 
 				if (($info[0] > 60) || ($info[1] > 60))
 				{
@@ -201,32 +188,26 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
 
-		// JInput object
 		$jinput = $app->input;
-
 		static $list;
 
-		// Only process the list once per request
+		/** Only process the list once per request */
 		if (is_array($list))
 		{
 			return $list;
 		}
 
-		// Get folder from request
+		/** Get folder from request */
 		$folder = $jinput->getString('folder', '');
 
-		// $folder = $this->getState('folder');
 		$search = $this->getState('search');
-
-		// Initialize variables
 		$basePath = JPATH_SITE . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $option . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . $folder;
 
 		$images = array();
 
-		// Get the list of files and folders from the given folder
 		$fileList = Folder::files($basePath);
 
-		// Iterate over the files if they exist
+		/** Iterate over the files if they exist */
 		if ($fileList !== false)
 		{
 			foreach ($fileList as $file)

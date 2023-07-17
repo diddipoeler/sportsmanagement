@@ -6,7 +6,7 @@
  * @subpackage mod_sportsmanagement_ranking
  * @file       default.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -20,7 +20,6 @@ $items = count($list['ranking']);
 if (!$items)
 {
 	echo '<p class="modjlgranking">' . Text::_('NO ITEMS') . '</p>';
-
 	return;
 }
 
@@ -206,7 +205,9 @@ $colors   = $list['colors'];
 				$routeparameter['from']               = 0;
 				$routeparameter['to']                 = 0;
 				$routeparameter['division']           = $divisionid;
+		    //$routeparameter['Itemid']                 = 0;
 				$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);
+		    
 				echo HTMLHelper::link($link, Text::_('MOD_SPORTSMANAGEMENT_RANKING_VIEW_FULL_TABLE')); ?></p>
 		<?php endif; ?>
     </div>

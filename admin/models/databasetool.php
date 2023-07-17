@@ -4,7 +4,7 @@
  * @version   1.0.05
  * @file      default_rssfeed.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -38,6 +38,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 	var $_sport_types_events = array();
 	var $_sport_types_position = array();
 	var $_sport_types_position_parent = array();
+	var $_assoclist = array();
 	var $_success_text = '';
 	var $my_text = '';
 	var $storeFailedColor = 'red';
@@ -1305,7 +1306,7 @@ self::runJoomlaQuery(__CLASS__, $this->jsmdb);
 	 */
 	function checkAssociations()
 	{
-		$country_assoc_del = '';
+$country_assoc_del = '';
         $country_assoc = array();
 
 		if (version_compare(JVERSION, '3.0.0', 'ge'))
@@ -1325,15 +1326,15 @@ self::runJoomlaQuery(__CLASS__, $this->jsmdb);
 		}
         
         
-        
+    /**    
         $url = Uri::root() . '/administrator/components/' . $this->jsmoption . '/helpers/xml_files/associations.xml';
         $http = HttpFactory::getHttp();
 		$response = $http->get($url);
         //echo __METHOD__.' '.__LINE__.' response<pre>'.print_r($response->body ,true).'</pre>';
         $xmlstring = simplexml_load_string($response->body);
         //echo __METHOD__.' '.__LINE__.' xmlstring<pre>'.print_r($xmlstring,true).'</pre>';
-  
-/*        
+  */
+/**        
 libxml_use_internal_errors(TRUE);
  
 $objXmlDocument = simplexml_load_file(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/associations.xml');
@@ -1363,8 +1364,14 @@ $arrOutput = json_decode($objJsonDocument, TRUE);
 		{
 			$country_assoc_del = "'" . implode("','", $country_assoc) . "'";
 		}
+		else
+		{
+$country_assoc = array();
+		}
 
-		/**
+      //echo __METHOD__.' '.__LINE__.' country_assoc<pre>'.print_r($country_assoc,true).'</pre>';
+      
+      /**
 		 *
 		 * Ein JDatabaseQuery Objekt beziehen
 		 */
@@ -1376,7 +1383,22 @@ $arrOutput = json_decode($objJsonDocument, TRUE);
 			$result = self::runJoomlaQuery();
 		}
 
-		$image_path = 'images/' . $this->jsmoption . '/database/associations/';
+      $image_path = 'images/' . $this->jsmoption . '/database/associations/';
+      
+      foreach ($country_assoc as $key => $value )
+		{
+        
+        //echo __METHOD__.' '.__LINE__.' value<pre>'.print_r($value,true).'</pre>';
+        if (!File::exists(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/associations_'.$value.'.xml'))
+		{
+		$this->jsmapp->enqueueMessage('Für das Land: '.$value.' gibt es keine Datei mit Regionen.' ,'error');	
+          continue;
+		}
+        else
+        {
+        $xml = simplexml_load_file(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/associations_'.$value.'.xml');
+		$document = 'associations';  
+        	
 
 		/**
 		 *
@@ -1578,6 +1600,11 @@ $arrOutput = json_decode($objJsonDocument, TRUE);
 			}
 		}
 
+}
+      }	
+
+
+
 	}
 
 	/**
@@ -1651,9 +1678,7 @@ $arrOutput = json_decode($objJsonDocument, TRUE);
 
 		if ($result)
 		{
-			/**
-			 * nur wenn in den optionen ja eingestellt ist, werden die positionen installiert
-			 */
+			/** nur wenn in den optionen ja eingestellt ist, werden die positionen installiert */
 			if ($install_standard_position)
 			{
 				$sports_type_id   = $result;
@@ -1663,22 +1688,13 @@ $arrOutput = json_decode($objJsonDocument, TRUE);
 		}
 		else
 		{
-			// Create a new query object.
 			$this->jsmquery = $this->jsmdb->getQuery(true);
-
-			// Insert columns.
 			$columns = array('name', 'icon');
-
-			// Insert values.
 			$values = array('\'' . 'COM_SPORTSMANAGEMENT_ST_' . strtoupper($type) . '\'', '\'' . 'images/com_sportsmanagement/database/placeholders/placeholder_21.png' . '\'');
-
-			// Prepare the insert query.
 			$this->jsmquery
 				->insert($this->jsmdb->quoteName('#__sportsmanagement_sports_type'))
 				->columns($this->jsmdb->quoteName($columns))
 				->values(implode(',', $values));
-
-			// Set the query using our newly populated query object and execute it.
 			$this->jsmdb->setQuery($this->jsmquery);
 
 			if (!$this->jsmdb->execute())
@@ -1691,9 +1707,7 @@ $arrOutput = json_decode($objJsonDocument, TRUE);
 				$this->my_text    .= Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_SUCCESS', strtoupper($type)) . '</strong></span><br />';
 				$sports_type_id   = $this->jsmdb->insertid();
 				$sports_type_name = 'COM_SPORTSMANAGEMENT_ST_' . strtoupper($type);
-				/**
-				 * nur wenn in den optionen ja eingestellt ist, werden die positionen installiert
-				 */
+				/** nur wenn in den optionen ja eingestellt ist, werden die positionen installiert */
 				if ($install_standard_position)
 				{
 					self::addStandardForSportType($sports_type_name, $sports_type_id, $type, $update = 0);
@@ -1714,6 +1728,7 @@ $arrOutput = json_decode($objJsonDocument, TRUE);
 	function checkSportTypeStructur($type)
 	{
 		$app = Factory::getApplication();
+//        $app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . ' type <pre>'.print_r($type,true).'</pre>'), 'error');
 
 if (File::exists(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/sp_structur/' . $type . '.xml'))
 		{

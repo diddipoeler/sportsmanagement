@@ -6,7 +6,7 @@
  * @subpackage clubplan
  * @file       clubplan.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -78,7 +78,7 @@ class sportsmanagementModelClubPlan extends BaseDatabaseModel
 		// Should be in proper sql format
 		if (strtotime($date))
 		{
-			self::$startdate = strftime("%Y-%m-%d", strtotime($date));
+			self::$startdate = date('Y-m-d', strtotime($date));
 		}
 		else
 		{
@@ -100,7 +100,7 @@ class sportsmanagementModelClubPlan extends BaseDatabaseModel
 		// Should be in proper sql format
 		if (strtotime($date))
 		{
-			self::$enddate = strftime("%Y-%m-%d", strtotime($date));
+			self::$enddate = date('Y-m-d', strtotime($date));
 		}
 		else
 		{

@@ -4,7 +4,7 @@
  * @version   1.0.05
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  *
  * boostrap tree
@@ -14,6 +14,8 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * sportsmanagementViewClubInfo
@@ -35,13 +37,13 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
 	function init()
 	{
 	   
-		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('frontend', sportsmanagementModelClubInfo::$cfg_which_database);
+		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('frontend', sportsmanagementModelClubInfo::$cfg_which_database,Factory::getApplication()->input->get('view'));
 		$this->mapconfig = array();
 		$this->club = sportsmanagementModelClubInfo::getClub(1);
 
 		if ($this->checkextrafields)
 		{
-			$this->extrafields = sportsmanagementHelper::getUserExtraFields($this->club->id, 'frontend', sportsmanagementModelClubInfo::$cfg_which_database);
+			$this->extrafields = sportsmanagementHelper::getUserExtraFields($this->club->id, 'frontend', sportsmanagementModelClubInfo::$cfg_which_database,Factory::getApplication()->input->get('view'));
 		}
 
 		$lat = '';
@@ -53,8 +55,8 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
 
 		if (sportsmanagementModelClubInfo::$projectid)
 		{
-			$this->stadiums    = sportsmanagementModelClubInfo::getStadiums();
-			$this->playgrounds = sportsmanagementModelClubInfo::getPlaygrounds();
+			$this->stadiums    = sportsmanagementModelClubInfo::getStadiums($this->config['show_teams_of_club']);
+			$this->playgrounds = sportsmanagementModelClubInfo::getPlaygrounds($this->config['show_teams_of_club']);
 		}
 
 		$this->showediticon   = sportsmanagementModelProject::hasEditPermission('club.edit');
@@ -106,6 +108,28 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
 		/** clubhistory	 */
 		$this->clubhistory     = sportsmanagementModelClubInfo::getClubHistory($this->club->id);
 		$this->clubhistoryhtml = sportsmanagementModelClubInfo::getClubHistoryHTML($this->club->id);
+        
+        if ( $this->club->new_club_id )
+        {
+        sportsmanagementModelClubInfo::$club = NULL;    
+        $this->new_club = sportsmanagementModelClubInfo::getClub(0,$this->club->new_club_id);  
+          
+        $this->clubhistoryhtml = '<ul>';  
+          
+          
+        $link       = sportsmanagementHelperRoute::getClubInfoRoute($this->project->id, $this->new_club->id, null, Factory::getApplication()->input->getInt('cfg_which_database', 0) );  
+        $imageTitle = Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_HISTORY_FROM');
+        $this->clubhistoryhtml .= HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/club_from.png', $imageTitle, 'title= "' . $imageTitle . '"');
+		$this->clubhistoryhtml .= "&nbsp;";
+		$this->clubhistoryhtml .= HTMLHelper::link($link,  $this->new_club->name);
+        $this->clubhistoryhtml .= '<ul>';  
+        $this->clubhistoryhtml .= sportsmanagementModelClubInfo::getClubHistoryHTML($this->club->new_club_id);
+        $this->clubhistoryhtml .= '</ul>';  
+        $this->clubhistoryhtml .= '</ul>';  
+        
+//echo __LINE__.' clubhistoryhtml<pre>'.print_r($this->clubhistoryhtml,true).'</pre>';
+//echo 'new_club<pre>'.print_r($this->new_club,true).'</pre>';
+        }
 
 		$this->clubhistoryfamilytree = sportsmanagementModelClubInfo::fbTreeRecurse($this->club->id, '', array(), sportsmanagementModelClubInfo::$tree_fusion, 10, 0, 1);
 		$this->genfamilytree         = sportsmanagementModelClubInfo::generateTree($this->club->id, $this->config['show_bootstrap_tree']);

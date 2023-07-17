@@ -14,7 +14,17 @@ addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 			readonly="true"
 		/>
 		
-    
+<field
+name="checked_out"
+type="hidden"
+filter="unset"
+/>
+
+<field
+name="checked_out_time"
+type="hidden"
+filter="unset"
+/>	    
     		
 	</fieldset>		
   

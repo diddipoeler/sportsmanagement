@@ -6,7 +6,7 @@
  * @subpackage projectteams
  * @file       editlist.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -138,14 +138,24 @@ use Joomla\CMS\Language\Text;
 			echo $this->lists['project_teamslist_name'];
 			?>	
 			</td>
-                </tr>
+            <td>
+            <div hidden>
+            <?php
+			echo $this->lists['project_new_teams'];
+			?>	
+</div>
+   			</td>
+            </tr>
             </table>
-		
+<!--		
 <table class="admintable" border="0" id="postteamname">		
 		
-</table>		
+</table>	
+-->	
         </fieldset>
         <div class="clr"></div>
+        
+<!-- <input type="hidden" name="postteamname[]" id="postteamname" value=""/> -->
 
 <input type="hidden" name="teamschanges_check" value="0" id="teamschanges_check"/>
 <input type="hidden" name="option" value="com_sportsmanagement"/>

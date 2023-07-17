@@ -41,6 +41,7 @@
             size="1"
             label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP"
             description="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP"
+			class="form-select select2-container"
             onchange="this.form.submit();">
             <option
                 value="">
@@ -52,6 +53,7 @@
             type="countrylist"
             label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY"
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY_DESC"
+			class="form-select select2-container"
             required="false"
        onchange="this.form.submit();"
         >
@@ -80,23 +82,18 @@
             size="1"
   depends="search_nation" 
   task="countryleagueoptions"
-			class="select2-container"
+			class="form-select select2-container"
             label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER"
             description="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER"
             onchange="this.form.submit();">
             
         </field>
-
-
-
-
-
-		
+	
 		
 		<field
             name="season"
             type="seasonlist"
-			class="select2-container"
+			class="form-select select2-container"
             label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER"
             description="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER"
             required="false"
@@ -104,7 +101,6 @@
         >
             <option value="">COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER</option>
         </field>
-		
 		
 		
     </fields>

@@ -6,7 +6,7 @@
  * @subpackage club
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -97,17 +97,17 @@ $this->item->logo_small = ComponentHelper::getParams('com_sportsmanagement')->ge
 			$this->map = true;
 		}
 
-		$extended           = sportsmanagementHelper::getExtended($this->item->extended, 'club');
-		$this->extended     = $extended;
-		$extendeduser       = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'club');
-		$this->extendeduser = $extendeduser;
+		//$extended           = sportsmanagementHelper::getExtended($this->item->extended, 'club');
+		$this->extended     = sportsmanagementHelper::getExtended($this->item->extended, 'club');;
+		//$extendeduser       = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'club');
+		$this->extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'club');;
 
-		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields();
+		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('backend',0,Factory::getApplication()->input->get('view'));
 		$lists                  = array();
 
 		if ($this->checkextrafields)
 		{
-			$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id);
+			$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id,'backend',0,Factory::getApplication()->input->get('view'));
 		}
 
 		/** die mannschaften zum verein */

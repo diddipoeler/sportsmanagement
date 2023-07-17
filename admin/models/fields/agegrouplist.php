@@ -6,7 +6,7 @@
  * @subpackage fields
  * @file       agegrouplist.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -110,7 +110,7 @@ img.car {
     
     $html[] = HTMLHelper::_(
 				'select.genericlist', $options, $this->name,
-				'style="width:225px;" class="'.$this->fieldname.'" size="1"' . $append, 'value', 'text', $this->value 
+				'style="width:225px;" class="'.$this->fieldname.' form-select " size="1"' . $append, 'value', 'text', $this->value 
 			);
     
     
@@ -137,7 +137,7 @@ img.car {
 		$query = $db->getQuery(true);
 
 		$query->select('id AS value, name AS text');
-		$query->from('#__sportsmanagement_playground');
+		$query->from('#__sportsmanagement_agegroup');
 		$query->order('name');
 		$db->setQuery($query);
 		$options = $db->loadObjectList();

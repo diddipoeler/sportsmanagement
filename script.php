@@ -5,7 +5,7 @@
  * @subpackage installation
  * @file      script.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -17,6 +17,8 @@
  * https://github.com/joomla/joomla-cms/issues/14330
  * https://api.joomla.org/cms-3/deprecated.html
  * https://www.joomla.org/announcements/release-news/5718-joomla-4-0-alpha-1-release.html
+ *
+ *  https://github.com/exstreme/Jcomments-4
  *
  * https://www.spiralscripts.co.uk/Joomla-Tips/modal-windows-in-joomla-3.html
  *
@@ -92,6 +94,23 @@ use Joomla\CMS\Installer\Installer;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Updater\Update;
+use Joomla\CMS\Updater\Updater;
+
+$maxImportTime = 960;
+
+if ((int) ini_get('max_execution_time') < $maxImportTime)
+{
+	@set_time_limit($maxImportTime);
+}
+
+$maxImportMemory = '350M';
+
+if ((int) ini_get('memory_limit') < (int) $maxImportMemory)
+{
+	@ini_set('memory_limit', $maxImportMemory);
+}
+
 
 
 if (version_compare(JVERSION, '3.0.0', 'ge'))
@@ -114,8 +133,8 @@ class com_sportsmanagementInstallerScript
 	 * The release value would ideally be extracted from <version> in the manifest file,
 	 * but at preflight, the manifest file exists only in the uploaded temp folder.
 	 */
-	private $release = '4.00.00';
-    private $old_release = '3.16.00';
+	private $release = '4.17.00';
+    private $old_release = '4.16.00';
 
 	// $language_update = '';
 
@@ -729,9 +748,13 @@ $result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_i
 					echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab4_id', Text::_(' Create/Update Images Folders'));
 					self::createImagesFolder();
 					/** führt zu fehlern */
-					// Self::installJoomlaExtensions($adapter);
+					// Self::installJoomlaExtensions($adapter); installPackages( $adapter)
 					echo HTMLHelper::_('bootstrap.' . $this->endPanel);
 
+					echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab5_id', Text::_(' Packages'));
+					self::installPackages($adapter);
+					echo HTMLHelper::_('bootstrap.' . $this->endPanel);
+					
 					self::setParams($newparams);
 					self::deleteinstallfiles();
 						break;
@@ -748,6 +771,10 @@ $result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_i
 					self::createImagesFolder();
 					/** führt zu fehlern */
 					// Self::installJoomlaExtensions($adapter);
+					echo HTMLHelper::_('bootstrap.' . $this->endPanel);
+					
+					echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab5_id', Text::_(' Packages'));
+					self::installPackages($adapter);
 					echo HTMLHelper::_('bootstrap.' . $this->endPanel);
 
 					self::setParams($newparams);
@@ -832,6 +859,8 @@ $result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_i
 		'projectteams/trikot_home',
 		'projectteams/trikot_away',
 		'associations',
+        'flag_maps',
+        'flag_maps_world',
 		'rosterground',
 		'matchreport',
 		'seasons',
@@ -953,6 +982,7 @@ $result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_i
 						break;
 					case 'clubs/medium':
 					case 'associations':
+                    case 'flag_maps':
 						File::copy(JPATH_ROOT . '/images/com_sportsmanagement/database/placeholders/placeholder_50.png', JPATH_ROOT . '/images/com_sportsmanagement/database/' . $folder . '/placeholder_50.png');
 						File::copy(JPATH_ROOT . '/images/com_sportsmanagement/database/placeholders/placeholder_wappen_50.png', JPATH_ROOT . '/images/com_sportsmanagement/database/' . $folder . '/placeholder_wappen_50.png');
                         File::copy(JPATH_ROOT . '/images/com_sportsmanagement/database/placeholders/placeholder_flags.png', JPATH_ROOT . '/images/com_sportsmanagement/database/' . $folder . '/placeholder_flags.png');
@@ -1028,25 +1058,43 @@ $result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_i
 
 
 
-	//    /**
-	//     * com_sportsmanagementInstallerScript::installJoomlaExtensions()
-	//     *
-	//     * @param mixed $adapter
-	//     * @return void
-	//     */
-	//    public function installJoomlaExtensions( $adapter)
-	//  {
-	//  $mainframe = Factory::getApplication();
-	//  $src = $adapter->getParent()->getPath('source');
-	//  $manifest = $adapter->getParent()->manifest;
-	//  $db = Factory::getDBO();
-	//
-	//  Folder::copy(JPATH_ROOT.'/administrator/components/com_sportsmanagement/libraries/joomla/', JPATH_ROOT.'/', '', true);
-	//
-	//  }
 
+/**
+ * com_sportsmanagementInstallerScript::installPackages()
+ * 
+ * @param mixed $adapter
+ * @return void
+ */
+public function installPackages( $adapter)
+	{
+		$mainframe = Factory::getApplication();
+		//$src = $adapter->getParent()->getPath('source');
+	$src = JPATH_BASE. '/components/'. 'com_sportsmanagement' ;
+		$manifest = $adapter->getParent()->manifest;
+		$db = Factory::getDBO();
 
+	if (version_compare(substr(JVERSION, 0, 5), '4.0.0', 'ge'))
+		{
+/**
+ * https://github.com/exstreme/Jcomments-4/releases/download/v4.0.27/pkg_jcomments_4.0.27.zip 
+ *  
+*/
+$link = "https://raw.githubusercontent.com/exstreme/Jcomments-4/master/update-jcomments.xml";
+$path = $src . DIRECTORY_SEPARATOR . 'pkg' . DIRECTORY_SEPARATOR .'jcomments'. DIRECTORY_SEPARATOR.'components'. DIRECTORY_SEPARATOR ;
 
+/**
+$installer = new Installer;
+$result = $installer->install($path);
+*/
+
+/**
+$update = new Update();	
+$result = $installer->install($link);
+*/	
+echo '<p>' . Text::_('Packages : ') . 'JComments 4.0' . ' installiert!</p>';	
+	}
+}
+	
 	/**
 	 * com_sportsmanagementInstallerScript::installPlugins()
 	 *
@@ -1088,6 +1136,7 @@ $result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_i
 				switch ($name)
 				{
 				case 'jqueryeasy';
+					case 'jcemediabox';
 				if ($plugin_id)
 				{
 				// Plugin ist vorhanden

@@ -6,7 +6,7 @@
  * @subpackage listheader
  * @file       default_switcher4.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -19,6 +19,7 @@ $this->document->addStyleSheet(Uri::root() . 'media/system/css/fields/switcher.c
 //$attr = 'id="' . $this->item->id . '"';
 $readonly = false;
 $disabled = false;
+$label = '';
 $input = '<input type="radio" id="%1$s" name="%2$s" value="%3$s" %4$s '.$this->switcher_onchange.'   >';
 ?>    			
 <fieldset <?php echo $this->switcher_attr; ?>>

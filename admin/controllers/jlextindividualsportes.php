@@ -6,7 +6,7 @@
  * @subpackage controllers
  * @file       jlextindividualsportes.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -24,6 +24,26 @@ use Joomla\CMS\Factory;
  */
 class sportsmanagementControllerjlextindividualsportes extends JSMControllerAdmin
 {
+
+
+
+/**
+ * sportsmanagementControllerjlextindividualsportes::generatematchsingles()
+ * 
+ * @return void
+ */
+function generatematchsingles()
+{
+$model = $this->getModel();
+$generatematchsingles = $model->generatematchsingles();
+$msg = '';
+
+$msg .= 'Wir haben '.$generatematchsingles[0].' Spiele eingefügt!<br />';
+$msg .= 'Wir konnten '.$generatematchsingles[1].' Spiele nicht einfügen!';
+$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);    
+    
+}
+
 
 	/**
 	 * Method to update checked matches
@@ -54,7 +74,7 @@ class sportsmanagementControllerjlextindividualsportes extends JSMControllerAdmi
 	 *
 	 * @since 1.6
 	 */
-	public function getModel($name = 'jlextindividualsport', $prefix = 'sportsmanagementModel')
+	public function getModel($name = 'jlextindividualsport', $prefix = 'sportsmanagementModel', $config = Array())
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 

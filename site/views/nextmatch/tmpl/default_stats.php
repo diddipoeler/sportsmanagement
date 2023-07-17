@@ -6,7 +6,7 @@
  * @subpackage nextmatch
  * @file       default_stats.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -21,7 +21,7 @@ $this->notes = array();
 $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_H2H');
 echo $this->loadTemplate('jsm_notes'); 
 ?>
-    <table class="table">
+    <table class="table" id="nextmatch-default_stats-anfang">
         <thead>
         <tr class="" align="center">
             <th class="h2h" width="33%">
@@ -435,7 +435,7 @@ $this->chances[1] = '';
     <!-- gesamtübersicht der spiele gegeneinander nach ligen  -->
     <h4><?php echo $this->teams[0]->name . " " . Text::_("COM_SPORTSMANAGEMENT_NEXTMATCH_VS") . " " . $this->teams[1]->name; ?></h4>
 	<h4><?php echo Text::_("COM_SPORTSMANAGEMENT_NEXTMATCH_DATA_OF") . ' ' . $this->teams[0]->name;?> </h4>
-    <table class="table table-striped">
+    <table class="table table-striped" id="nextmatch-default_stats-anfang-spiele-gegeneinander1">
         <thead>
         <tr>
             <td>
@@ -507,7 +507,7 @@ $this->chances[1] = '';
 		?>
     </table>
 
-   <table class="table table-striped">
+   <table class="table table-striped" id="nextmatch-default_stats-anfang-spiele-gegeneinander2">
         <thead>
         <tr>
             <td>
@@ -581,25 +581,20 @@ $this->chances[1] = '';
 
     <h4><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY_COUNT_RESULT'); ?></h4>
 	
-	<div class="d-flex align-items-start">
-		<div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-			<button class="nav-link active" id="v-pills-countall-tab" data-bs-toggle="pill" data-bs-target="#v-pills-countall" type="button" role="tab" aria-controls="v-pills-countall" aria-selected="true"><?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_OVERALL'); ?></button>
-			<button class="nav-link" id="v-pills-counthome-tab" data-bs-toggle="pill" data-bs-target="#v-pills-counthome" type="button" role="tab" aria-controls="v-pills-counthome" aria-selected="false"><?php echo $this->teams[0]->name . " " . Text::_("COM_SPORTSMANAGEMENT_NEXTMATCH_VS") . " " . $this->teams[1]->name; ?></button>
-			<button class="nav-link" id="v-pills-countaway-tab" data-bs-toggle="pill" data-bs-target="#v-pills-countaway" type="button" role="tab" aria-controls="v-pills-countaway" aria-selected="false"><?php echo $this->teams[1]->name . " " . Text::_("COM_SPORTSMANAGEMENT_NEXTMATCH_VS") . " " . $this->teams[0]->name; ?></button>
-		</div>
 	
-	<div class="tab-content" id="v-pills-tabContent">
-
-		<div class="tab-pane fade show active" id="v-pills-countall" role="tabpanel" aria-labelledby="v-pills-countall-tab">
-			<table class="table table-striped">
+<?php	
+echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'name'))	;
+echo JHtml::_('bootstrap.addTab', 'myTab', 'name', Text::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_OVERALL') );
+	?>
+      <table class="table table-striped" id="history-1">
 						<tr>
 							<td> <?php echo Text::_('COM_SPORTSMANAGEMENT_RESULTS_SCORE'); ?>
 							</td>
-							<td> <?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_SCORE_FRECUENCY'); ?>
+							<td> <?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_SCORE_FREQUENCY'); ?>
 							</td>
 						</tr>	
 						<?php
-						ksort($this->statgames['gesamt']);
+                        is_array($this->statgames['gesamt']) ? ksort($this->statgames['gesamt']) : '';
 
 						foreach ($this->statgames['gesamt'] as $key => $value)
 						{
@@ -620,18 +615,20 @@ $this->chances[1] = '';
 						}
 						?>
 			</table>
-		</div>
-		
-		<div class="tab-pane fade" id="v-pills-counthome" role="tabpanel" aria-labelledby="v-pills-counthome-tab">
-			<table class="table table-striped">
+      <?php
+echo JHtml::_('bootstrap.endTab');
+	
+echo JHtml::_('bootstrap.addTab', 'myTab', 'desc', $this->teams[0]->name . " " . Text::_("COM_SPORTSMANAGEMENT_NEXTMATCH_VS") . " " . $this->teams[1]->name);
+	?>
+      <table class="table table-striped" id="history-2">
 						<tr>
 							<td> <?php echo Text::_('COM_SPORTSMANAGEMENT_RESULTS_SCORE'); ?>
 							</td>
-							<td> <?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_SCORE_FRECUENCY'); ?>
+							<td> <?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_SCORE_FREQUENCY'); ?>
 							</td>
 						</tr>				
 						<?php
-						ksort($this->statgames['home']);
+                        is_array($this->statgames['home']) ? ksort($this->statgames['home']) : '';
 
 						foreach ($this->statgames['home'] as $key => $value)
 						{
@@ -652,18 +649,21 @@ $this->chances[1] = '';
 						}
 						?>
 			</table>
-		</div>
-		
-		<div class="tab-pane fade" id="v-pills-countaway" role="tabpanel" aria-labelledby="v-pills-countaway-tab">
-			<table class="table table-striped">
+                          <?php
+      
+echo JHtml::_('bootstrap.endTab');
+	
+echo JHtml::_('bootstrap.addTab', 'myTab', 'price', $this->teams[1]->name . " " . Text::_("COM_SPORTSMANAGEMENT_NEXTMATCH_VS") . " " . $this->teams[0]->name);
+	?>
+      <table class="table table-striped" id="history-3">
 						<tr>
 							<td> <?php echo Text::_('COM_SPORTSMANAGEMENT_RESULTS_SCORE'); ?>
 							</td>
-							<td> <?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_SCORE_FRECUENCY'); ?>
+							<td> <?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_SCORE_FREQUENCY'); ?>
 							</td>
 						</tr>				
 						<?php
-						ksort($this->statgames['away']);
+                        is_array($this->statgames['away']) ? ksort($this->statgames['away']) : '';
 
 						foreach ($this->statgames['away'] as $key => $value)
 						{
@@ -684,11 +684,12 @@ $this->chances[1] = '';
 						}
 						?>
 			</table>
-		</div>	
-	</div>
+      <?php
+echo JHtml::_('bootstrap.endTab');	
 	
-
-    </div>
+echo JHtml::_('bootstrap.endTabSet');	
+?>	
+	
 </div>
 <!-- Main END -->
 <br/>

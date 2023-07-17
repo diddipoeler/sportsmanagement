@@ -8,7 +8,7 @@
  * @subpackage plugins
  * @file       search_sportsmanagement.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @package    sportsmanagement
  */
@@ -134,7 +134,8 @@ class plgSearchsearch_sportsmanagement extends CMSPlugin
     {
         // Reference global application object
         $app = Factory::getApplication();
-        //$db 	= Factory::getDBO();
+        $params = ComponentHelper::getParams('com_sportsmanagement');
+	$Itemid = intval($params->get('default_itemid'));
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         $user    = Factory::getUser();
@@ -290,7 +291,7 @@ class plgSearchsearch_sportsmanagement extends CMSPlugin
             $query->select('c.founded AS created,c.country,c.logo_big AS picture');
             $query->select('CONCAT( \'Address: \',c.address,\' \',c.zipcode,\' \',c.location,\' Phone: \',c.phone,\' Fax: \',c.fax,\' E-Mail: \',c.email,\' Vereinsnummer: \',c.unique_id ) AS text');
             $query->select('pt.project_id AS project');
-            $query->select('CONCAT( \'index.php?option=com_sportsmanagement&view=clubinfo&cfg_which_database=0&s=0&p=\', CONCAT_WS(\':\',p.id,p.alias) ,\'&cid=\', CONCAT_WS(\':\',c.id,c.alias) ) AS href');
+            $query->select('CONCAT( \'index.php?option=com_sportsmanagement&view=clubinfo&cfg_which_database=0&s=0&p=\', CONCAT_WS(\':\',p.id,p.alias) ,\'&cid=\', CONCAT_WS(\':\',c.id,c.alias), "?Itemid='.$Itemid.'" ) AS href');
             $query->select('2 AS browsernav');
           
             $query->from('#__sportsmanagement_club AS c');
@@ -331,7 +332,7 @@ class plgSearchsearch_sportsmanagement extends CMSPlugin
             $query->select('t.checked_out_time AS created,st.picture,c.country');
             $query->select('CONCAT( \'Teamart:\',t.info , \' Notes:\', t.notes ) AS text');
             $query->select('pt.project_id AS project');
-            $query->select('CONCAT( \'index.php?option=com_sportsmanagement&view=teaminfo&cfg_which_database=0&s=0&p=\', CONCAT_WS(\':\',p.id,p.alias) ,\'&tid=\', CONCAT_WS(\':\',t.id,t.alias) ) AS href');
+            $query->select('CONCAT( \'index.php?option=com_sportsmanagement&view=teaminfo&cfg_which_database=0&s=0&p=\', CONCAT_WS(\':\',p.id,p.alias) ,\'&tid=\', CONCAT_WS(\':\',t.id,t.alias), "?Itemid='.$Itemid.'" ) AS href');
             $query->select('2 AS browsernav');
           
             $query->from('#__sportsmanagement_team AS t');
@@ -365,7 +366,7 @@ class plgSearchsearch_sportsmanagement extends CMSPlugin
             $query->select('pe.picture AS picture');
             $query->select('CONCAT( \'Birthday:\',pe.birthday , \' Notes:\', pe.notes ) AS text');
             $query->select('pt.project_id AS project');
-            $query->select('CONCAT( \'index.php?option=com_sportsmanagement&view=player&cfg_which_database=0&s=0&p=\', CONCAT_WS(\':\',p.id,p.alias) ,\'&tid=\', CONCAT_WS(\':\',t.id,t.alias) , \'&pid=\', CONCAT_WS(\':\',pe.id,pe.alias) ) AS href');
+            $query->select('CONCAT( \'index.php?option=com_sportsmanagement&view=player&cfg_which_database=0&s=0&p=\', CONCAT_WS(\':\',p.id,p.alias) ,\'&tid=\', CONCAT_WS(\':\',t.id,t.alias) , \'&pid=\', CONCAT_WS(\':\',pe.id,pe.alias), "?Itemid='.$Itemid.'" ) AS href');
             $query->select('2 AS browsernav');
           
             $query->from('#__sportsmanagement_person AS pe');
@@ -399,7 +400,7 @@ class plgSearchsearch_sportsmanagement extends CMSPlugin
             $query->select('pe.picture AS picture');
             $query->select('CONCAT( \'Birthday:\',pe.birthday , \' Notes:\', pe.notes ) AS text');
             $query->select('pt.project_id AS project');
-            $query->select('CONCAT( \'index.php?option=com_sportsmanagement&view=player&cfg_which_database=0&s=0&p=\', CONCAT_WS(\':\',p.id,p.alias) ,\'&tid=\', CONCAT_WS(\':\',t.id,t.alias) , \'&pid=\', CONCAT_WS(\':\',pe.id,pe.alias) ) AS href');
+            $query->select('CONCAT( \'index.php?option=com_sportsmanagement&view=player&cfg_which_database=0&s=0&p=\', CONCAT_WS(\':\',p.id,p.alias) ,\'&tid=\', CONCAT_WS(\':\',t.id,t.alias) , \'&pid=\', CONCAT_WS(\':\',pe.id,pe.alias), "?Itemid='.$Itemid.'" ) AS href');
             $query->select('2 AS browsernav');
           
             $query->from('#__sportsmanagement_person AS pe');
@@ -429,7 +430,7 @@ class plgSearchsearch_sportsmanagement extends CMSPlugin
             $query->select("'Referee' as section, REPLACE(CONCAT(pe.firstname, ' \'', pe.nickname, '\' ' , pe.lastname ),'\'\'','') AS title");
             $query->select('pe.birthday AS created,pe.country,pe.picture AS picture,CONCAT( \'Birthday:\', pe.birthday, \' Notes:\', pe.notes ) AS text');
             $query->select('pr.project_id AS project');
-            $query->select('CONCAT( \'index.php?option=com_sportsmanagement&view=referee&cfg_which_database=0&s=0&p=\', CONCAT_WS(\':\',pro.id,pro.alias) ,\'&pid=\',CONCAT_WS(\':\',pe.id,pe.alias) ) AS href');
+            $query->select('CONCAT( \'index.php?option=com_sportsmanagement&view=referee&cfg_which_database=0&s=0&p=\', CONCAT_WS(\':\',pro.id,pro.alias) ,\'&pid=\',CONCAT_WS(\':\',pe.id,pe.alias), "?Itemid='.$Itemid.'" ) AS href');
             $query->select('2 AS browsernav');
         
             $query->from('#__sportsmanagement_person AS pe');
@@ -456,7 +457,7 @@ class plgSearchsearch_sportsmanagement extends CMSPlugin
             $query->select("'Playground' as section, pl.name AS title");
             $query->select('pl.checked_out_time AS created,pl.country,pl.picture AS picture,pl.notes AS text');
             $query->select('r.project_id AS project');
-            $query->select('CONCAT( \'index.php?option=com_sportsmanagement&view=playground&cfg_which_database=0&s=0&p=\', CONCAT_WS(\':\',pro.id,pro.alias) ,\'&pgid=\',CONCAT_WS(\':\',pl.id,pl.alias) ) AS href');
+            $query->select('CONCAT( \'index.php?option=com_sportsmanagement&view=playground&cfg_which_database=0&s=0&p=\', CONCAT_WS(\':\',pro.id,pro.alias) ,\'&pgid=\',CONCAT_WS(\':\',pl.id,pl.alias), "?Itemid='.$Itemid.'" ) AS href');
             $query->select('2 AS browsernav');
           
             $query->from('#__sportsmanagement_playground AS pl');
@@ -486,7 +487,7 @@ class plgSearchsearch_sportsmanagement extends CMSPlugin
             $query->select('pro.picture AS picture');
             $query->select('CONCAT( pro.name, \' Staffel-ID (\', pro.staffel_id, \')\' ) AS text');
             $query->select('pro.id AS project');
-            $query->select('CONCAT( \'index.php?option=com_sportsmanagement&view=ranking&cfg_which_database=0&s=0&p=\', CONCAT_WS(\':\',pro.id,pro.alias) ,\'&type=0\' ) AS href');
+            $query->select('CONCAT( \'index.php?option=com_sportsmanagement&view=ranking&cfg_which_database=0&s=0&p=\', CONCAT_WS(\':\',pro.id,pro.alias) ,\'&type=0\', "?Itemid='.$Itemid.'" ) AS href');
             $query->select('2 AS browsernav');
           
             $query->from('#__sportsmanagement_project AS pro');

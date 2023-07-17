@@ -6,7 +6,7 @@
  * @subpackage season
  * @file       season.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -90,8 +90,17 @@ $this->jsmquery->select('id');
 $this->jsmquery->from('#__sportsmanagement_project_position');
 $this->jsmquery->where('project_id = ' . $project_id);
 $this->jsmquery->where('position_id = ' . $personposition);
+try
+{
 $this->jsmdb->setQuery($this->jsmquery);
 $project_position_id = $this->jsmdb->loadResult();		
+}
+catch (Exception $e)
+{
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+$this->jsmapp->enqueueMessage('<pre>'.print_r($this->jsmquery->dump(),true).'</pre>', 'error');
+}
 		
 $profile = new stdClass;
 $profile->project_id = $project_id;
@@ -107,8 +116,8 @@ $result = $this->jsmdb->insertObject('#__sportsmanagement_person_project_positio
 }
 catch (Exception $e)
 {
-	$msg .= '<br>'.Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage());
-	$msg .= '<br>'.Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__);
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');    
 }
 break;
 }
@@ -136,8 +145,8 @@ break;
 					}
 					catch (Exception $e)
 					{
-						$msg .= '<br>'.Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage());
-						$msg .= '<br>'.Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__);
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
 					}
 
 		    			$this->jsmquery->clear();
@@ -155,6 +164,7 @@ break;
 					$profile->project_id  = $project_id;
 					$profile->person_id   = $new_id;
 					$profile->published   = 1;
+			    
 					$profile->modified    = $this->jsmdate->toSql();
 					$profile->modified_by = $this->jsmuser->get('id');
 
@@ -164,13 +174,11 @@ break;
 					}
 					catch (Exception $e)
 					{
-						$msg .= '<br>'.Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage());
-						$msg .= '<br>'.Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__);
+					   $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
 					}
 		    
 	    }
-		    
-		    
 		    
 				}
             
@@ -186,13 +194,17 @@ break;
              $persontype = 1;   
              }
              
-				$this->jsmquery->clear();
-				$columns = array('person_id', 'season_id', 'team_id', 'published', 'persontype', 'modified', 'modified_by');
-				$values  = array($value, $season_id, $teams, '1', $persontype, $this->jsmdb->Quote('' . $this->jsmdate->toSql() . ''), $this->jsmuser->get('id'));
-				$this->jsmquery
-					->insert($this->jsmdb->quoteName('#__sportsmanagement_season_team_person_id'))
-					->columns($this->jsmdb->quoteName($columns))
-					->values(implode(',', $values));
+$this->jsmquery->clear();
+				/**
+$columns = array('person_id', 'season_id', 'team_id', 'published', 'persontype', 'modified', 'modified_by', 'weltfussballlink'  );
+$values  = array($value, $season_id, $teams, '1', $persontype, $this->jsmdb->Quote('' . $this->jsmdate->toSql() . ''), $this->jsmuser->get('id'), $this->jsmdb->Quote('' . 'kein' . '') );
+				*/
+$columns = array('person_id', 'season_id', 'team_id', 'published', 'persontype', 'modified', 'modified_by'  );
+$values  = array($value, $season_id, $teams, '1', $persontype, $this->jsmdb->Quote('' . $this->jsmdate->toSql() . ''), $this->jsmuser->get('id') );				
+$this->jsmquery
+	->insert($this->jsmdb->quoteName('#__sportsmanagement_season_team_person_id'))
+	->columns($this->jsmdb->quoteName($columns))
+	->values(implode(',', $values));
 				try
 				{
 					$this->jsmdb->setQuery($this->jsmquery);
@@ -200,8 +212,9 @@ break;
 				}
 				catch (Exception $e)
 				{
-					$msg .= '<br>'.Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage());
-					$msg .= '<br>'.Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__);
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+$this->jsmapp->enqueueMessage('<pre>'.print_r($this->jsmquery->dump(),true).'</pre>', 'error');					
 				}
 			}
 		}

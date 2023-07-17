@@ -6,13 +6,20 @@
  * @subpackage fieldsets
  * @file       default_fieldsets_4.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
+
+if ( Factory::getConfig()->get('debug') )
+{  
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' fieldset -> ' . $this->fieldset), Log::NOTICE, 'jsmerror');
+}	
 
 switch ($this->fieldset)
 {
@@ -439,14 +446,14 @@ switch ($this->fieldset)
 	case 'request':
 		echo $this->form->renderFieldset('request');
 		break;
-	case 'injury':
-		echo $this->form->renderFieldset('injury');
+	case 'save_injury':
+		echo $this->form->renderFieldset('save_injury');
 		break;
-	case 'suspension':
-		echo $this->form->renderFieldset('suspension');
+	case 'save_suspension':
+		echo $this->form->renderFieldset('save_suspension');
 		break;
-	case 'away':
-		echo $this->form->renderFieldset('away');
+	case 'save_away':
+		echo $this->form->renderFieldset('save_away');
 		break;
 	case 'competition':
 		echo $this->form->renderFieldset('competition');

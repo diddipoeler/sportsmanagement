@@ -6,7 +6,7 @@
  * @subpackage fields
  * @file       federationslist.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -14,6 +14,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
@@ -68,8 +69,16 @@ switch ($view)
 			$query->from('#__sportsmanagement_federations AS t');
 			$query->where('t.parent_id = 0');
 			$query->order('t.name');
+		try{
 			$db->setQuery($query);
 			$options = $db->loadObjectList();
+		 }
+		catch (Exception $e)
+		{
+	Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+
+		}
     break;
     default:
 		if ($select_id)
@@ -78,10 +87,17 @@ switch ($view)
 			$query->from('#__sportsmanagement_federations AS t');
 			$query->where('t.parent_id = 0');
 			$query->order('t.name');
+			try{
 			$db->setQuery($query);
 			$sections = $db->loadObjectList();
 			$list     = $this->JJ_categoryArray(0);
+ }
+		catch (Exception $e)
+		{
+	Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 
+		}
 			$preoptions = array();
 			$name       = 'parent_id';
 

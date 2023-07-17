@@ -6,7 +6,7 @@
  * @subpackage mod_sportsmanagement_eventsranking
  * @file       helper.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -71,11 +71,11 @@ class modSMEventsrankingHelper
 
 		if ($project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART')
 		{
-			$events = sportsmanagementModelEventsRanking::_getEventsRanking($params->get('evid'), $params->get('ranking_order'), 20, 0, true);
+			$events = sportsmanagementModelEventsRanking::_getEventsRanking($params->get('evid'), $params->get('ranking_order'), 20, 0, true, $params->get('ranking_order'));
 		}
 		else
 		{
-			$events = sportsmanagementModelEventsRanking::_getEventsRanking($params->get('evid'), $params->get('ranking_order'), 20, 0, false);
+			$events = sportsmanagementModelEventsRanking::_getEventsRanking($params->get('evid'), $params->get('ranking_order'), 20, 0, false, $params->get('ranking_order'));
 		}
 
 		$teams = sportsmanagementModelProject::getTeamsIndexedById();

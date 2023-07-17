@@ -8,7 +8,7 @@
  * @subpackage mod_sportsmanagement_liveticker
  * @file       helper.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -158,7 +158,7 @@ class modTurtushoutHelper
 	 *
 	 * @return
 	 */
-	function shout($display_username, $display_title, $add_timeout)
+	public static function shout($display_username, $display_title, $add_timeout)
 	{
 
 	}
@@ -169,7 +169,7 @@ class modTurtushoutHelper
 	 *
 	 * @return
 	 */
-	function delete()
+	public static function delete()
 	{
 
 	}

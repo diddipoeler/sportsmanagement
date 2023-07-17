@@ -8,7 +8,7 @@
  * @subpackage mod_sportsmanagement_rquotes
  * @file       mod_sportsmanagement_rquotes.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -55,6 +55,7 @@ $style         = $params->get('template', 'default');
 $category      = $params->get('category', '');
 $rotate        = $params->get('rotate');
 $num_of_random = $params->get('num_of_random');
+$category = implode(",", $category);
 
 switch ($source)
 {

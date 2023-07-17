@@ -49,5 +49,5 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_dfbkey` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
-ALTER TABLE  `#__sportsmanagement_associations` CHANGE  `name`  `name` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT  '';
-ALTER TABLE  `#__sportsmanagement_associations` CHANGE  `alias`  `alias` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT  '';
+-- ALTER TABLE  `#__sportsmanagement_associations` CHANGE  `name`  `name` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT  '';
+-- ALTER TABLE  `#__sportsmanagement_associations` CHANGE  `alias`  `alias` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT  '';

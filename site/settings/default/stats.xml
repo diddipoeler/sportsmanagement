@@ -4,56 +4,56 @@
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
 		group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS" description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
 
-		<field name="show_sectionheader" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+		<field name="show_sectionheader" type="radio" default="1"  layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_SECTIONHEADER"
 			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_general_stats" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+		<field name="show_general_stats" type="radio" default="1" layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_STATS_PARAM_LABEL_SHOW_GENERAL_STATS"
 			description="COM_SPORTSMANAGEMENT_FES_STATS_PARAM_DESCR_SHOW_GENERAL_STATS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field 	name="show_general_stats" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+		<field 	name="show_general_stats" type="radio" default="1" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_STATS_PARAM_LABEL_SHOW_GENERAL_STATS" 
 				description="COM_SPORTSMANAGEMENT_FES_STATS_PARAM_DESCR_SHOW_GENERAL_STATS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
-		<field 	name="home_away_stats" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+		<field 	name="home_away_stats" type="radio" default="1" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_STATS_PARAM_LABEL_SHOW_HA_STATS" 
 				description="COM_SPORTSMANAGEMENT_FES_STATS_PARAM_DESCR_SHOW_HA_STATS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 	
-		<field 	name="show_goals_stats" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+		<field 	name="show_goals_stats" type="radio" default="1" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_STATS_PARAM_LABEL_SHOW_GOAL_STATS" 
 				description="COM_SPORTSMANAGEMENT_FES_STATS_PARAM_DESCR_SHOW_GOAL_STATS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
-		<field 	name="show_attendance_stats" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
+		<field 	name="show_attendance_stats" type="radio" default="0" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_STATS_PARAM_LABEL_SHOW_ATTENDANCE_STATS" 
 				description="COM_SPORTSMANAGEMENT_FES_STATS_PARAM_DESCR_SHOW_ATTENDANCE_STATS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
-		<field 	name="show_goals_stats_flash" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+		<field 	name="show_goals_stats_flash" type="radio" default="1" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_STATS_PARAM_LABEL_SHOW_FLASH" 
 				description="COM_SPORTSMANAGEMENT_FES_STATS_PARAM_DESCR_SHOW_FLASH">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
-		<field 	name="show_attendance_ranking" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
+		<field 	name="show_attendance_ranking" type="radio" default="0" layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_STATS_PARAM_LABEL_SHOW_ATTENDANCE_RANK" 
 				description="COM_SPORTSMANAGEMENT_FES_STATS_PARAM_DESCR_SHOW_ATTENDANCE_RANK">
 			<option value="0">JNO</option>

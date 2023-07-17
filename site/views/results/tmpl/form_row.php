@@ -6,7 +6,7 @@
  * @subpackage results
  * @file       form_row.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -82,17 +82,20 @@ $checked    = HTMLHelper::_('jgrid.checkedout', $i, $user->get('id'), $thismatch
 $published = HTMLHelper::_('grid.published', $match, $i);
 
 list($date, $time) = explode(" ", $match->match_date);
-$time = strftime("%H:%M", strtotime($time));
+$time = date('H:i', strtotime($time));
 ?>
 <tr id="result-<?php echo $match->id; ?>" class="row-result">
     <td valign="top"><?php
 
 		if ($thismatch->checked_out && $thismatch->checked_out != $my->id)
 		{
-			$db    = Factory::getDBO();
-			$query = "	SELECT username
-				FROM #__users
-				WHERE id=" . $match->checked_out;
+			$db = Factory::getDBO();
+            $query = $db->getQuery(true);
+            $query->clear(); 
+            $query->select('username');
+            $query->from('#__users');
+            $query->where('id = ' . $match->checked_out);
+                            
 			$db->setQuery($query);
 			$username = $db->loadResult();
 			?>
@@ -157,6 +160,8 @@ $time = strftime("%H:%M", strtotime($time));
 		?>
         <td style="text-align:center; ">
 			<?php echo $match->divhome; ?>
+			<input type='hidden' style='font-size: 9px;' size='3' name='division_id<?php echo $thismatch->id; ?>'
+				value='<?php echo $match->divhomeid; ?>' />
         </td>
 		<?php
 	}
@@ -312,7 +317,11 @@ $time = strftime("%H:%M", strtotime($time));
 		}
 
 
-		if (!isset($team2->projectteamid))
+        if(!isset($team2))
+        {
+        $team2 = new stdClass;
+        }
+        if ( !property_exists($team2,"projectteamid") )
 		{
 			$team2->projectteamid = 0;
 		}

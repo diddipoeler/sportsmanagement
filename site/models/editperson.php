@@ -6,7 +6,7 @@
  * @subpackage editperson
  * @file       editperson.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -17,6 +17,9 @@ use Joomla\CMS\Table\Table;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Form\FormHelper;
 
 JLoader::import('components.com_sportsmanagement.helpers.imageselect', JPATH_SITE);
 
@@ -102,6 +105,9 @@ class sportsmanagementModelEditPerson extends AdminModel
 	{
 		$cfg_which_media_tool = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('cfg_which_media_tool', 0);
 		$app                  = Factory::getApplication('site');
+		
+		Form::addFormPath(JPATH_COMPONENT_ADMINISTRATOR . '/models/forms');
+		Form::addFieldPath(JPATH_COMPONENT_ADMINISTRATOR . '/models/fields');
 
 		$form = $this->loadForm('com_sportsmanagement.' . $this->name, $this->name, array('load_data' => $loadData));
 
@@ -145,10 +151,19 @@ class sportsmanagementModelEditPerson extends AdminModel
 	 */
 	function getData()
 	{
+		$app                  = Factory::getApplication('site');
     $this->_id = Factory::getApplication()->input->getInt('id', 0);
+		try{
 	$this->_data = $this->getTable('player', 'sportsmanagementTable');
 	$this->_data->load($this->_id);
 	return $this->_data;
+		}
+		catch (Exception $e)
+		{
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+            return false;
+		}
         
 //		$id = Factory::getApplication()->input->getInt('id', 0);
 //        $app = Factory::getApplication();

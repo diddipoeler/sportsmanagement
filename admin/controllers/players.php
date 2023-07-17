@@ -1,19 +1,15 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage controllers
  * @file       players.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Session\Session;
@@ -32,6 +28,21 @@ use Joomla\CMS\Router\Route;
 class sportsmanagementControllerplayers extends JSMControllerAdmin
 {
 
+
+/**
+ * sportsmanagementControllerplayers::importupload()
+ * 
+ * @return void
+ */
+function importupload()
+{
+$model = $this->getModel();    
+$post = Factory::getApplication()->input->post->getArray(array());
+Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+$model = $this->getModel();
+$msg   = $model->importupload($post);
+            
+}
 
 	/**
 	 * sportsmanagementControllerplayers::assign()
@@ -59,7 +70,6 @@ class sportsmanagementControllerplayers extends JSMControllerAdmin
 	public function getModel($name = 'player', $prefix = 'sportsmanagementModel', $config = Array())
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
-
 		return $model;
 	}
 

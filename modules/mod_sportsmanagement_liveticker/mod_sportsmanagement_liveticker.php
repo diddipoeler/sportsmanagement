@@ -8,7 +8,7 @@
  * @subpackage mod_sportsmanagement_liveticker
  * @file       mod_sportsmanagement_liveticker.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -268,7 +268,7 @@ if (!$is_ajaxed || ($action == "turtushout_shouts"))
 		$anstossdatum = explode(" ", $list[$i]->match_date);
 
 		$anstoss = $anstossdatum[1];
-		$abpfiff = $anstoss + (($list[$i]->game_regular_time + $list[$i]->halftime) * 60);
+		//$abpfiff = $anstoss + (($list[$i]->game_regular_time + $list[$i]->halftime) * 60);
 
 		$abpfiff = date('H:i:s', strtotime($anstoss) + ($list[$i]->game_regular_time + $list[$i]->halftime) * 60);
 

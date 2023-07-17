@@ -6,7 +6,7 @@
  * @subpackage models
  * @file       round.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -154,7 +154,7 @@ class sportsmanagementModelround extends JSMModelAdmin
 
 		for ($x = 0; $x < count($pks); $x++)
 		{
-			$tblRound             = $this->getTable();
+			$tblRound             = new stdClass();
 			$tblRound->id         = $pks[$x];
 			$tblRound->roundcode  = $post['roundcode' . $pks[$x]];
 			$tblRound->tournement = $post['tournementround' . $pks[$x]];
@@ -165,24 +165,46 @@ class sportsmanagementModelround extends JSMModelAdmin
 			// Set the values
 			$tblRound->modified    = $date->toSql();
 			$tblRound->modified_by = $user->get('id');
-
+			
+			if ( !$post['round_date_first' . $pks[$x]] )
+			{
+			$tblRound->round_date_first = '0000-00-00';
+			$tblRound->round_date_last  = '0000-00-00';	
+			$tblRound->rdatefirst_timestamp = 0;
+			$tblRound->rdatelast_timestamp  = 0;
+			}
+			else
+			{
 			$tblRound->round_date_first = sportsmanagementHelper::convertDate($post['round_date_first' . $pks[$x]], 0);
-			$tblRound->round_date_last  = sportsmanagementHelper::convertDate($post['round_date_last' . $pks[$x]], 0);;
+			$tblRound->round_date_last  = sportsmanagementHelper::convertDate($post['round_date_last' . $pks[$x]], 0);
+			$tblRound->rdatefirst_timestamp = sportsmanagementHelper::getTimestamp($tblRound->round_date_first);
+			$tblRound->rdatelast_timestamp  = sportsmanagementHelper::getTimestamp($tblRound->round_date_last);	
+			}
 
+			
+/**
 			if (($tblRound->round_date_last == '0000-00-00' || $tblRound->round_date_last == '') && $tblRound->round_date_first != '0000-00-00')
 			{
 				$tblRound->round_date_last = $tblRound->round_date_first;
 			}
-
-			$tblRound->rdatefirst_timestamp = sportsmanagementHelper::getTimestamp($tblRound->round_date_first);
-			$tblRound->rdatelast_timestamp  = sportsmanagementHelper::getTimestamp($tblRound->round_date_last);
-
-			if (!$tblRound->store())
-			{
-				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-
-				return false;
-			}
+*/
+			
+			
+try{
+	//$tblRound->store();
+	$resultupdate = Factory::getDbo()->updateObject('#__sportsmanagement_round', $tblRound, 'id', true);
+	}
+		catch (Exception $e)
+		{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+			return false;
+		}
+			
+			
+			
+			
+			
 		}
 
 		return Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_SAVE');

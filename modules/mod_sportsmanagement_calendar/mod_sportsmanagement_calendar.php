@@ -6,8 +6,11 @@
  * @subpackage mod_sportsmanagement_calendar
  * @file       mod_sportsmanagement_calendar.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ *
+ * https://github.com/ArrobeFr/jquery-calendar-bs4/blob/master/example/example.html
+ * 
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Date\Date;
@@ -49,6 +52,12 @@ if (!class_exists('sportsmanagementHelperRoute'))
 {
 	JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 }
+
+if (!class_exists('JSMCountries'))
+{
+	JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
+}
+
 
 if (!defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
 {
@@ -111,6 +120,9 @@ if (!defined('JLC_MODULESCRIPTLOADED'))
 	if (version_compare(JVERSION, '4.0.0', 'ge'))
 	{
 		HTMLHelper::_('script', 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'assets/js' . DIRECTORY_SEPARATOR . $module->module . '.js');
+		$doc->getWebAssetManager()
+    	->useScript('bootstrap.modal');
+
 	}
 	elseif (version_compare(JVERSION, '3.0.0', 'ge'))
 	{
@@ -136,6 +148,6 @@ $calendar = $helper->showCal($params, $year, $month, $ajax, $module->id);
 ?>
 <div id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 	<?PHP
-	require ModuleHelper::getLayoutPath($module->module);
+	require ModuleHelper::getLayoutPath($module->module,$params->get('which_layout'));
 	?>
 </div>

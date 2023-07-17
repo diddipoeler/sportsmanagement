@@ -6,7 +6,7 @@
  * @subpackage sportstypes
  * @file       default_data.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -30,8 +30,40 @@ HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolow
 }
 }
 ?>
+<script>
+var last_value;
+var current_value;
+var attribute_cbnummer;
+var id_cbnummer;
+jQuery(document).ready(function() {
+    jQuery("tr").click(function(){
+jQuery(this).children("td:even").addClass("row-selected").end().children("td:odd").addClass("row-selected");
+            		
+       //alert("Click! "+ jQuery(this).find('td').html());
+    });
+});
 
-<div class="table-responsive" id="editcell">
+jQuery(document).on("click","select",function(){
+    last_value = $(this).val();
+	attribute_cbnummer = $(this).attr('cbnummer');
+	id_cbnummer = $(this).attr('id');
+});
+
+jQuery(document).on("change","select",function(){
+	//last_value = $(this).val();
+	//attribute_cbnummer = $(this).attr('cbnummer');
+	//id_cbnummer = $(this).attr('id');
+current_value = $(this).val();
+
+    console.log('last value - '+last_value);
+    console.log('current value - '+current_value);
+	console.log('attribute_cbnummer - '+attribute_cbnummer);
+	console.log('id_cbnummer - '+id_cbnummer);
+$( "#"+attribute_cbnummer).prop( "checked", true );
+
+});
+</script>
+<div class="table-responsive" id="editcell_sportstypes">
 <table class="<?php echo $this->table_data_class; ?>" id="<?php echo $this->view; ?>list">
         <thead>
         <tr>
@@ -138,10 +170,11 @@ echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_icon' . $
 					?>
                 </td>
                 <td>
-					<?php
-					$append = ' onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true" style="background-color:#bbffff"';
-					echo HTMLHelper::_('select.genericlist', $this->lists['sportart'], 'sportstype_id' . $this->item->id, 'class="form-control form-control-inline" size="1"' . $append, 'value', 'text', $this->item->sportsart);
-					?>
+<?php
+$append = ' cbnummer="cb' . $this->count_i . '" style="background-color:#bbffff"';
+echo HTMLHelper::_('select.genericlist', $this->lists['sportart'], 'sportstype_id' . $this->item->id, 'class="form-control form-control-inline" size="1"' . $append, 'value', 'text', $this->item->sportsart);
+?>
+			
                 </td>
                 <td class="center">
                     <div class="btn-group">
@@ -158,7 +191,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_icon' . $
                     </div>
                 </td>
 
-                <td class="order" id="defaultdataorder">
+<td class="order" id="defaultdataorder">
 <?php
 echo $this->loadTemplate('data_order');
 ?>

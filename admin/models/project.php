@@ -6,7 +6,7 @@
  * @subpackage models
  * @file       project.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -265,9 +265,10 @@ $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($query->dum
 
 		$db    = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
-		$query->select('p.*, st.name AS sport_type_name');
+		$query->select('p.*, st.name AS sport_type_name,l.country ');
 		$query->from('#__sportsmanagement_project as p');
 		$query->join('INNER', '#__sportsmanagement_sports_type AS st ON p.sports_type_id = st.id ');
+		$query->join('INNER', '#__sportsmanagement_league AS l ON l.id = p.league_id ');
 		$query->where('p.id = ' . $project_id);
 		$db->setQuery($query);
 		$result = $db->loadObject();
@@ -329,6 +330,7 @@ catch (Exception $e)
 	function getProjectTeamsOptions($project_id, $iDivisionId = 0)
 	{
 		$app = Factory::getApplication();
+		$result = array();
 
 		// JInput object
 		$jinput               = $app->input;
@@ -373,7 +375,7 @@ catch (Exception $e)
 		{
 			Log::add($db->getErrorMsg());
 
-			return false;
+			return $result;
 		}
 		else
 		{
@@ -641,6 +643,7 @@ catch (Exception $e)
 			$tblProject->master_template = $post['master_template' . $pks[$x]];
 			$tblProject->fast_projektteam = $post['fast_projektteam' . $pks[$x]];
             $tblProject->use_leaguechampion = $post['use_leaguechampion' . $pks[$x]];
+			$tblProject->cr_project = $post['cr_project' . $pks[$x]];
 
 			if ($post['league' . $pks[$x]])
 			{

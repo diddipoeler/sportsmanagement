@@ -1,5 +1,4 @@
 <?php
-
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version    1.0.05
@@ -7,11 +6,10 @@
  * @subpackage globalviews
  * @file       default_projectheading.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -37,10 +35,13 @@ $document = Factory::getDocument();
 <?php
 
 $nbcols = 2;
+$ausgabe = '';
 
 if (!empty($this->overallconfig))
 {
-	if ($this->overallconfig['show_project_sporttype_picture'] && isset($this->overallconfig['show_project_sporttype_picture']))
+	//echo '<pre>'.print_r($this->overallconfig,true).'</pre>';
+    //echo '<pre>'.print_r($this->config,true).'</pre>';
+    if ($this->overallconfig['show_project_sporttype_picture'] && isset($this->overallconfig['show_project_sporttype_picture']))
 	{
 		$nbcols++;
 	}
@@ -66,6 +67,37 @@ if (!empty($this->overallconfig))
 		<div class="<?php echo $this->divclassrow; ?>" id="projectheading" itemscope="itemscope" itemtype="http://schema.org/SportsOrganization">
 			<table class="table">
 				<?php
+                if ($this->config['show_project_extrafield'])
+				{
+                $this->extrafields = sportsmanagementHelper::getUserExtraFields($this->project->league_id, 'frontend', 0,Factory::getApplication()->input->get('view'));
+                $title = $this->project->league_name;
+                foreach ($this->extrafields as $field ) if ( $field->fvalue )
+	{
+		$value      = $field->fvalue;
+		$field_type = $field->field_type;
+                   $ausgabe .= '<tr>';          
+$ausgabe .= '<td>'.Text::_($field->name).'</td>';
+switch ($field_type)
+					{
+						case 'link':
+							$ausgabe .= '<td>'. HTMLHelper::_('link', $field->fvalue, $title, array("target" => "_blank")).'</td>';
+							break;
+						default:
+							$ausgabe .= '<td>'. Text::_($field->fvalue).'</td>';
+							break;
+					}          
+        
+$ausgabe .= '</tr>';       
+                   
+                   
+                   
+                   
+                    
+                }
+                echo $ausgabe;
+                }
+                
+                
 				if ($this->overallconfig['show_project_country'])
 				{
 				?>
@@ -74,7 +106,7 @@ if (!empty($this->overallconfig))
 							<?php
 							$country = $this->project->country;
 							echo JSMCountries::getCountryFlag($country) . ' ' . JSMCountries::getCountryName($country);
-
+/**
 							$country_info = JSMCountries::getCountry($country);
 
 							//echo '<pre>'.print_r($country_info,true).'</pre>';
@@ -98,7 +130,7 @@ if (!empty($this->overallconfig))
 							$javascript = "\n";
 							$javascript .= file_get_contents('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps2.js');
 							$document->addScriptDeclaration($javascript);
-
+*/
 							/*
 							$document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps1.js');
 							$javascript = "\n";
@@ -286,7 +318,7 @@ if (!empty($this->overallconfig))
 	{
 		case 'ranking':
 ?>
-<div class="<?php echo $this->divclassrow; ?>">
+<div class="row">
 
 <div class="col-sm-6 text-left">
 <?php  

@@ -6,7 +6,7 @@
  * @subpackage predictionmembers
  * @file       default_data.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -177,7 +177,7 @@ use Joomla\CMS\Router\Route;
 						if (isset($row->last_tipp))
 						{
 							list($date, $time) = explode(" ", $row->last_tipp);
-							$time = strftime("%H:%M", strtotime($time));
+							$time = date('H:i', strtotime($time));
 							echo sportsmanagementHelper::convertDate($date);
 							echo ' / ';
 							echo $time;

@@ -53,7 +53,7 @@
 			description="COM_SPORTSMANAGEMENT_FES_FLASH_PARAM_DESCR_X_AXIS_COLOUR_INNER">
 		</field>
 
-		<field name="x_axis_legend" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno" 
+		<field name="x_axis_legend" type="radio" default="1" layout="joomla.form.field.radio.switcher" 
 			label="COM_SPORTSMANAGEMENT_FES_FLASH_PARAM_LABEL_X_AXIS_LEGEND"
 			description="COM_SPORTSMANAGEMENT_FES_FLASH_PARAM_DESCR_X_AXIS_LEGEND">
 			<option value="0">JNO</option>
@@ -76,7 +76,7 @@
 			description="COM_SPORTSMANAGEMENT_FES_FLASH_PARAM_LABEL_Y_AXIS_COLOUR_INNER">
 		</field>
 
-		<field name="y_axis_legend" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno" 
+		<field name="y_axis_legend" type="radio" default="1"  layout="joomla.form.field.radio.switcher" 
 			label="COM_SPORTSMANAGEMENT_FES_FLASH_PARAM_LABEL_Y_AXIS_LEGEND"
 			description="COM_SPORTSMANAGEMENT_FES_FLASH_PARAM_DESCR_Y_AXIS_LEGEND">
 			<option value="0">JNO</option>

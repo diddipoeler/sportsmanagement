@@ -6,7 +6,7 @@
  * @subpackage helpers
  * @file       imageselect.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * https://css-tricks.com/examples/DragAndDropFileUploading/
  */
@@ -330,6 +330,9 @@ console.log('getfolder: ' + '<?php echo $type;  ?>' );
 				break;
 			case "flags_associations":
 				return "flags_associations";
+				break;
+                case "flag_maps":
+				return "flag_maps";
 				break;
 			case "associations":
 				return "associations";

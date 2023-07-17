@@ -6,7 +6,7 @@
  * @subpackage fields
  * @file       associationslist.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -77,9 +77,16 @@ switch ($view)
 			$query->where("t.country = '" . $country . "'");
 			$query->where('t.parent_id = 0');
 			$query->order('t.name');
+	    try{
 			$db->setQuery($query);
 			$options = $db->loadObjectList();    
-        
+         }
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+
+		}
     }
     
     break;
@@ -91,9 +98,17 @@ switch ($view)
 			$query->select('country');
 			$query->from('#__sportsmanagement_' . $vartable . ' AS t');
 			$query->where('t.id = ' . $select_id);
+	    try{
 			$db->setQuery($query);
 			$country = $db->loadResult();
+ }
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 
+		}
+		
 			$query->clear();
 
 			$query->select('t.id AS value, t.name AS text');
@@ -101,10 +116,17 @@ switch ($view)
 			$query->where("t.country = '" . $country . "'");
 			$query->where('t.parent_id = 0');
 			$query->order('t.name');
+	    try{
 			$db->setQuery($query);
-
 			$sections = $db->loadObjectList();
+ }
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 
+		}
+		
 			$categoryparent = empty($sections) ? 0 : $sections[0]->value;
 
 			$list = $this->JJ_categoryArray(0, $country);

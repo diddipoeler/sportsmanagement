@@ -6,7 +6,7 @@
  * @subpackage rounds
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -83,7 +83,7 @@ class sportsmanagementViewRounds extends sportsmanagementView
 		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
 
 		$mdlProject               = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
-		$project                  = $mdlProject->getProject($this->project_id);
+		$this->project                  = $mdlProject->getProject($this->project_id);
 		$myoptions                = array();
 		$myoptions[]              = HTMLHelper::_('select.option', '0', Text::_('JNO'));
 		$myoptions[]              = HTMLHelper::_('select.option', '1', Text::_('JYES'));
@@ -91,7 +91,7 @@ class sportsmanagementViewRounds extends sportsmanagementView
 
 		$this->lists    = $lists;
 		$this->matchday = $this->items;
-		$this->project  = $project;
+		
 		
 	}
 

@@ -6,7 +6,7 @@
  * @subpackage fieldsets
  * @file       default_fieldsets_3.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -202,7 +202,7 @@ switch ($this->fieldset)
 
             <table class="table">
 				<?php
-				if (isset($this->lists) && $this->lists)
+				if ( isset($this->lists) && $this->lists && is_array($this->lists['ext_fields']) )
 				{
 					for ($p = 0; $p < count($this->lists['ext_fields']); $p++)
 					{
@@ -379,13 +379,7 @@ echo $this->extendeduser->renderFieldset($fieldset->name);
 
 					foreach ($fields as $field)
 					{
-						if (COM_SPORTSMANAGEMENT_JOOMLAVERSION == '2.5')
-						{
-							echo $field->label;
-							echo $field->input;
-						}
-						else
-						{
+						
 							?>
                             <div class="control-group">
                                 <div class="control-label">
@@ -396,7 +390,7 @@ echo $this->extendeduser->renderFieldset($fieldset->name);
                                 </div>
                             </div>
 							<?php
-						}
+						
 					}
 					?>
                 </fieldset>
@@ -447,14 +441,14 @@ echo $this->extendeduser->renderFieldset($fieldset->name);
 	case 'request':
 		echo $this->form->renderFieldset('request');
 		break;
-	case 'injury':
-		echo $this->form->renderFieldset('injury');
+	case 'save_injury':
+		echo $this->form->renderFieldset('save_injury');
 		break;
-	case 'suspension':
-		echo $this->form->renderFieldset('suspension');
+	case 'save_suspension':
+		echo $this->form->renderFieldset('save_suspension');
 		break;
-	case 'away':
-		echo $this->form->renderFieldset('away');
+	case 'save_away':
+		echo $this->form->renderFieldset('save_away');
 		break;
 	case 'competition':
 		echo $this->form->renderFieldset('competition');

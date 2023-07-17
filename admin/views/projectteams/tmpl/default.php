@@ -6,7 +6,7 @@
  * @subpackage projectteams
  * @file       default.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -43,6 +43,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
             var teampicture = new Array;
 			<?php
+		
+$this->lists['country_teams_picture'] = array_key_exists('country_teams_picture', $this->lists) ? $this->lists['country_teams_picture'] : array();
+		
 			foreach ($this->lists['country_teams_picture'] as $key => $value)
 			{
 				if (!$value)

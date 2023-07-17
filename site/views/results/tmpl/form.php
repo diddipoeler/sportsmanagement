@@ -6,7 +6,7 @@
  * @subpackage results
  * @file       form.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -62,7 +62,7 @@ else
 </script>
 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultresultsform" style="overflow:auto;">
     <!-- edit results start -->
-    <table class="table">
+    <table class="table"  id="results-tmpl-form-contentheading">
         <tr>
             <td class="contentheading">
 				<?php
@@ -100,7 +100,7 @@ else
         </tr>
     </table>
     <form name="adminForm" id="adminForm" method="post" action="<?php echo $uri->toString(); ?>">
-        <table class="<?php echo $this->config['table_class']; ?>">
+        <table class="<?php echo $this->config['table_class']; ?>" id="results-tmpl-form">
             <!-- Main START -->
 			<?php
 			if (count($this->matches) > 0)

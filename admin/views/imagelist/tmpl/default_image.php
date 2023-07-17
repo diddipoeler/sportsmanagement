@@ -6,7 +6,7 @@
  * @subpackage imagelist
  * @file       default_imagelist.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die;
@@ -46,7 +46,7 @@ $dispatcher->trigger('onContentBeforeDisplay', array('com_media.file', &$this->_
 echo sportsmanagementHelper::getBootstrapModalImage(
 $this->_tmp_img->name,
 Uri::root() . 'images/com_sportsmanagement/database/'.$this->_tmp_img->path_relative.'/'.$this->_tmp_img->file,
-Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
+Text::_($this->_tmp_img->name),
 $this->_tmp_img->width_60,
 '',
 $this->modalwidth,

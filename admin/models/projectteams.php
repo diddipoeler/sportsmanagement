@@ -6,7 +6,7 @@
  * @subpackage models
  * @file       projectteams.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -437,7 +437,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 	 *
 	 * @return
 	 */
-	function getCountryTeams()
+	function getCountryTeams($season_id = 0)
 	{
 		self::$_project_id    = $this->jsmapp->getUserState("$this->jsmoption.pid", '0');
 		$this->_season_id     = $this->jsmapp->getUserState("$this->jsmoption.season_id", '0');
@@ -495,17 +495,21 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 	 * @return array
 	 * @since  0.1
 	 */
-	function getTeams($country='')
+	function getTeams($country = '')
 	{
 		self::$_project_id    = $this->jsmapp->getUserState("$this->jsmoption.pid", '0');
 		$this->_season_id     = $this->jsmapp->getUserState("$this->jsmoption.season_id", '0');
 		$this->project_art_id = $this->jsmapp->getUserState("$this->jsmoption.project_art_id", '0');
 		$this->sports_type_id = $this->jsmapp->getUserState("$this->jsmoption.sports_type_id", '0');
 $post = Factory::getApplication()->input->post->getArray(array());
-		if ( $post['edit_search_nation'] )
-		{
-		$country = $post['edit_search_nation'];
-		}
+
+$country = array_key_exists('edit_search_nation', $post) ? $post['edit_search_nation'] : $country;
+$postcountry = array_key_exists('edit_search_nation', $post) ? $post['edit_search_nation'] : '';
+
+//		if ( $post['edit_search_nation'] )
+//		{
+//		$country = $post['edit_search_nation'];
+//		}
 //$this->jsmapp->enqueueMessage('<pre>'.print_r($post,true).'</pre>', 'Notice');
 		
 		/** Noch das land der liga */
@@ -531,7 +535,7 @@ $post = Factory::getApplication()->input->post->getArray(array());
 		{
 			$this->jsmquery->clear();
 			
-			if ( $post['edit_search_nation'] )
+			if ( $postcountry )
 		{
               //$this->jsmquery->select('0 AS value, concat(t.name,' - ',t.id,'' ) AS text,t.info');
 				$this->jsmquery->select('0 AS value, concat(t.name,"-",t.id) AS text,t.info');
@@ -769,6 +773,7 @@ $post = Factory::getApplication()->input->post->getArray(array());
 		$this->_season_id     = $this->jsmapp->getUserState("$this->jsmoption.season_id", '0');
 		$this->project_art_id = $this->jsmapp->getUserState("$this->jsmoption.project_art_id", '0');
 		$this->sports_type_id = $this->jsmapp->getUserState("$this->jsmoption.sports_type_id", '0');
+        $result = array();
 
 		if (isset(self::$_pro_teams_in_used))
 		{
@@ -779,10 +784,7 @@ $post = Factory::getApplication()->input->post->getArray(array());
 
 		if ($this->project_art_id == 3)
 		{
-			// Select some fields
 			$this->jsmquery->select("pt.id AS value,concat(t.lastname,' - ',t.firstname,'' ) AS text,t.notes, pt.info");
-
-			// From table
 			$this->jsmquery->from('#__sportsmanagement_person AS t');
 			$this->jsmquery->join('LEFT', '#__sportsmanagement_season_person_id AS st on st.person_id = t.id');
 			$this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
@@ -791,10 +793,7 @@ $post = Factory::getApplication()->input->post->getArray(array());
 		}
 		else
 		{
-			// Select some fields
 			$this->jsmquery->select('pt.id AS value,t.name AS text,t.notes, pt.info,st.id as season_team_id');
-
-			// From table
 			$this->jsmquery->from('#__sportsmanagement_team AS t');
 			$this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
 			$this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
@@ -816,7 +815,7 @@ $post = Factory::getApplication()->input->post->getArray(array());
 
 		if (!$result = $this->jsmdb->loadObjectList())
 		{
-			return false;
+			return $result;
 		}
 		else
 		{

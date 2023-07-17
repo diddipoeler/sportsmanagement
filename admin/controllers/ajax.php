@@ -6,7 +6,7 @@
  * @subpackage controllers
  * @file       ajax.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -199,6 +199,22 @@ class sportsmanagementControllerAjax extends BaseController
 		echo json_encode((array) $model->getpersonlistoptions(Factory::getApplication()->input->getInt('person_art'), $jinput->getVar('required', 'false'), Factory::getApplication()->input->getInt('slug'), Factory::getApplication()->input->getInt('dbase')));
 		Factory::getApplication()->close();
 	}
+    
+    
+    
+    /**
+     * sportsmanagementControllerAjax::personlistoptionsprojectteam()
+     * 
+     * @return void
+     */
+    public function personlistoptionsprojectteam()
+	{
+		$app    = Factory::getApplication();
+		$jinput = $app->input;
+		$model  = $this->getModel('ajax');
+		echo json_encode((array) $model->getpersonlistoptions(Factory::getApplication()->input->getInt('person_art'), $jinput->getVar('required', 'false'), Factory::getApplication()->input->getInt('slug'), Factory::getApplication()->input->getInt('dbase')));
+		Factory::getApplication()->close();
+	}
 
 	/**
 	 * sportsmanagementControllerAjax::personpositionoptions()
@@ -281,7 +297,7 @@ class sportsmanagementControllerAjax extends BaseController
 		$app    = Factory::getApplication();
 		$jinput = $app->input;
 		$model  = $this->getModel('ajax');
-		echo json_encode((array) $model->getProjectTeamsByDivisionOptions($jinput->getVar('p', '0'), Factory::getApplication()->input->getInt('division'), $jinput->getVar('required', 'false'), $jinput->getVar('slug', 'false'), Factory::getApplication()->input->getInt('dbase')));
+		echo json_encode((array) $model->getProjectTeamsByDivisionOptions($jinput->getVar('p', '0'), $jinput->getVar('required', 'false'), $jinput->getVar('slug', 'false'), Factory::getApplication()->input->getInt('dbase'), Factory::getApplication()->input->getInt('division')));
 		Factory::getApplication()->close();
 	}
 

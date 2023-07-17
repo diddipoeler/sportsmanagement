@@ -4,16 +4,16 @@
 label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS" 
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
 
-		<field 	name="show_sectionheader" type="extensionradiobutton" default="1" 
-		class="radio btn-group btn-group-yesno"
+		<field 	name="show_sectionheader" type="radio" default="1" 
+		layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_SECTIONHEADER" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
-		<field name="show_bootstrap_tree" type="extensionradiobutton" default="0"
-		class="radio btn-group btn-group-yesno"
+		<field name="show_bootstrap_tree" type="radio" default="0"
+		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_CLUB_TREE"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_CLUB_TREE">
 			<option value="0">COM_SPORTSMANAGEMENT_FES_CLUBINFO_TREE</option>

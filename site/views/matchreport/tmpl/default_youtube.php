@@ -6,7 +6,7 @@
  * @subpackage matchreport
  * @file       default_youtube.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  *
  * https://www.html-seminar.de/responsive-webdesign-externe-videos-einbinden.htm

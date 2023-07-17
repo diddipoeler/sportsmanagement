@@ -6,7 +6,7 @@
  * @subpackage libraries
  * @file       view.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die();
@@ -1037,7 +1037,7 @@ document.getElementById("filter_season").classList.add("filter_season");
 		$cfg_help_server = ComponentHelper::getParams($this->option)->get('cfg_help_server', '');
 		$layout          = $this->jinput->get('layout');
 		$view            = ucfirst(strtolower($this->view));
-		$layout          = ucfirst(strtolower($layout));
+		$layout          = ucfirst(strtolower($layout ?? '')); //remove strtolower(): Passing null to parameter #1 ($string) of type string is deprecated 
 
 		if ($canDo->get('core.admin'))
 		{

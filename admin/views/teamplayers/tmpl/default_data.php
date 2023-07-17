@@ -6,7 +6,7 @@
  * @subpackage teamplayers
  * @file       default_data.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -68,6 +68,22 @@ HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolow
 				?>
             </th>
 			<?PHP
+            switch ( $this->project->sport_type_name )
+            {
+                case 'COM_SPORTSMANAGEMENT_ST_TABLETENNIS':
+                ?>
+                <th>
+				<?php
+				echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_STARTPOINTS');
+				?>
+            </th>
+                <?php
+                break;
+            }
+            
+            
+            
+            
 			if ($this->_persontype == 1)
 			{
 				?>
@@ -135,15 +151,14 @@ HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolow
 
 foreach ($this->items as $this->count_i => $this->item)
 	{
-//$this->count_i = $i;
+
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
 $this->dragable_group = 'data-dragable-group="none"';
 }  
 			$link        = Route::_(
 				'index.php?option=com_sportsmanagement&task=teamplayer.edit&project_team_id=' .
-				$this->item->projectteam_id . '&person_id=' . $this->item->id . '&id=' . $this->item->tpid . '&pid=' . $this->project->id . '&team_id=' . $this->team_id . '&persontype=' . $this->_persontype
-			);
+				$this->project_team_id . '&person_id=' . $this->item->id . '&id=' . $this->item->tpid . '&pid=' . $this->project->id . '&team_id=' . $this->team_id . '&persontype=' . $this->_persontype. '&season_team_id='.$this->season_team_id. '&season_id='.$this->season_id	);
 			$canEdit     = $this->user->authorise('core.edit', 'com_sportsmanagement');
 			$canCheckin  = $this->user->authorise('core.manage', 'com_checkin') || $this->item->checked_out == $this->user->get('id') || $this->item->checked_out == 0;
 			$checked     = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'teamplayers.', $canCheckin);
@@ -266,6 +281,27 @@ echo sportsmanagementHelper::getBootstrapModalImage('select'.$this->item->id, ''
         ?>
                 </td>
 				<?PHP
+                
+                switch ( $this->project->sport_type_name )
+            {
+                case 'COM_SPORTSMANAGEMENT_ST_TABLETENNIS':
+                ?>
+                <td class="center">
+                        <input<?php echo $inputappend; ?> type="text" size="4" class="form-control form-control-inline"
+                                                          name="tt_startpoints<?php echo $this->item->id; ?>"
+                                                          value="<?php echo $this->item->tt_startpoints; ?>"
+                                                          onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
+                    </td>
+                <?php
+                break;
+            }
+                
+                
+                
+                
+                
+                
+                
 				if ($this->_persontype == 1)
 				{
 					?>
@@ -450,7 +486,7 @@ echo $this->loadTemplate('data_order');
                 </td>
             </tr>
 			<?php
-			//$k = 1 - $k;
+
 		}
 		?>
         </tbody>

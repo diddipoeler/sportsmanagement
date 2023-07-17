@@ -6,7 +6,7 @@
  * @subpackage matchreport
  * @file       defaul_sporttype_tennis.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -51,7 +51,7 @@ if ($this->project->use_tie_break)
 
 <div id="verein_display">
     <h3><?php echo Text::_('COM_SPORTSMANAGEMENT_SINGLE'); ?></h3>
-    <table class="matchreport">
+    <table class="table table-striped ">
         <tr style="">
             <th>Nr</th>
             <th>Pos</th>

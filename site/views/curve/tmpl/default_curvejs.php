@@ -8,7 +8,7 @@
  * @subpackage curve
  * @file       default_curvejs.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -41,7 +41,7 @@ use Joomla\CMS\Router\Route;
 		}
 		?>
         <form name="curveform<?php echo $division->id; ?>" method="post"
-              action="<?php echo Route::_('index.php?option=com_sportsmanagement'); ?>"
+			action="<?php echo htmlspecialchars($this->uri->toString()); ?>"
               id="curveform<?php echo $division->id; ?>">
             <table class="table">
                 <tr>
@@ -64,8 +64,8 @@ use Joomla\CMS\Router\Route;
                                value="<?php echo $this->cfg_which_database; ?>"/>
                         <input type="hidden" name="s" value="<?php echo $this->season_id; ?>"/>
                         <input type="hidden" name="p" value="<?php echo $this->project->id; ?>"/>
-                        <input type="hidden" name="tid1" value="<?php echo sportsmanagementModelCurve::$teamid1; ?>"/>
-                        <input type="hidden" name="tid2" value="<?php echo sportsmanagementModelCurve::$teamid2; ?>"/>
+                        <!-- <input type="hidden" name="tid1" value="<?php echo sportsmanagementModelCurve::$teamid1; ?>"/>
+                        <input type="hidden" name="tid2" value="<?php echo sportsmanagementModelCurve::$teamid2; ?>"/> -->
                         <input type="hidden" name="division" value="<?php echo $division->id; ?>"/>
                         <input type="submit" style="" class="<?PHP echo $this->config['button_style']; ?>"
                                value="<?php echo Text::_('COM_SPORTSMANAGEMENT_CURVE_GO'); ?>"/>

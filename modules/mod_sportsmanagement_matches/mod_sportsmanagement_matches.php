@@ -6,7 +6,7 @@
  * @subpackage mod_sportsmanagement_matches
  * @file       mod_sportsmanagement_matches.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Direct Access to this location is not allowed.');
@@ -117,7 +117,8 @@ $doc = Factory::getDocument();
 
 if ($params->get('mootools'))
 {
-	$doc->addScript(Uri::root() . '/media/system/js/mootools-core.js');
+	//$doc->addScript(Uri::root() . '/media/system/js/mootools-core.js');
+	$doc->addScript('https://www.unpkg.com/browse/mootools@1.5.2/lib/mootools-core-1.5.2-server.js');
 }
 
 if (version_compare(JVERSION, '3.0.0', 'ge'))

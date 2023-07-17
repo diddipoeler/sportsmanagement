@@ -6,7 +6,7 @@
  * @subpackage projects
  * @file       default_data.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -89,6 +89,10 @@ HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolow
                 <br>
 				<?php
 				echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TEMPLATES');
+				?>
+		     <br>
+				<?php
+				echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_CR_PROJECT');
 				?>
             </th>
             <th>
@@ -340,6 +344,13 @@ echo $this->loadTemplate('switcher3');
 						'value', 'text', $this->item->master_template
 					);
 					?>
+			<br>
+			
+			<input<?php //echo $inputappend; ?>
+                            type="text" size="50" class="form-control form-control-inline"
+                            name="cr_project<?php echo $this->item->id; ?>"
+                            value="<?php echo $this->item->cr_project; ?>"
+                            onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked = true"/>
                 </td>
                 <td class="center">
 					<?php

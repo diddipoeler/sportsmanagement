@@ -6,7 +6,7 @@
  * @subpackage mod_sportsmanagement_projectmap
  * @file       helper.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -129,8 +129,17 @@ class modJSMprojectmaphelper
 		$db     = Factory::getDBO();
 		$query  = $db->getQuery(true);
 		$result = array();
+		
+		if ( is_array($season_ids) )
+		{
+		$seasons = implode(",", $season_ids);	
+		}
+		else
+		{
+		$seasons = $season_ids;		
+		}
 
-		$seasons = implode(",", $season_ids);
+		
 		$query->select('MAX( pro.id ) as id,pro.name,CONCAT_WS(\':\',pro.id,pro.alias) AS project_slug,le.name as liganame,le.country');
 		$query->select('le.picture as league_picture,pro.picture as project_picture');
 		$query->select('CONCAT_WS(\':\',r.id,r.alias) AS roundcode');
@@ -150,9 +159,16 @@ class modJSMprojectmaphelper
 		$query->where('pro.season_id IN (' . $seasons . ')');
 		$query->order('le.country ASC, pro.name ASC');
 		$query->group('le.country');
-
+ try
+    {
 		$db->setQuery($query);
 		$result = $db->loadObjectList();
+		}
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+		}
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		//echo '<pre>'.print_r($result,true).'</pre>';
@@ -177,8 +193,15 @@ class modJSMprojectmaphelper
 			$regionscountry[$project->country_federation][] = $project->country_alpha2;
 			$regionsimage[$project->country_federation] = $project->federation_picture;
 		}
+		if ( is_array($regionsname) )
+		{
 		ksort($regionsname);
+		}
+		
+		if ( is_array($regionscountry) )
+		{
 		ksort($regionscountry);
+		}
 		//echo '<pre>'.print_r($regionsname,true).'</pre>';
 		//echo '<pre>'.print_r($regionscountry,true).'</pre>';  
 		//echo '<pre>'.print_r($regionsimage,true).'</pre>';
@@ -196,8 +219,15 @@ class modJSMprojectmaphelper
 
 		//echo '<pre>'.print_r($regions,true).'</pre>';    
 		//echo '<pre>'.print_r(implode(",",$regions),true).'</pre>';      
-
+if ( is_array($regions) )
+{
 		return implode(",\n", $regions);
+}
+		else
+		{
+		return '';	
+		}
+		
 	}
 
 
@@ -248,6 +278,17 @@ federation_picture
 
 		//echo '<pre>'.print_r($state_specific,true).'</pre>';    
 		//echo '<pre>'.print_r(implode(",",$state_specific),true).'</pre>';  
+		
+if ( is_array($state_specific) )
+{
 		return implode(",\n", $state_specific);
+}
+		else
+		{
+		return '';	
+		}		
+		
+		
+		
 	}
 }

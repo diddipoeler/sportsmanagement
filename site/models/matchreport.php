@@ -6,7 +6,7 @@
  * @subpackage matchreport
  * @file       matchreport.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -325,7 +325,7 @@ class sportsmanagementModelMatchReport extends JSMModelLegacy
 		$starttime = microtime();
 		$db        = sportsmanagementHelper::getDBConnection(true, sportsmanagementModelProject::$cfg_which_database);
 		$query     = $db->getQuery(true);
-		$query->select('pt.id,pt.id as ptid');
+		$query->select('DISTINCT pt.id,pt.id as ptid');
 		$query->select('p.firstname,p.nickname,p.lastname,p.picture AS ppic');
 		$query->select('ppos.id AS pposid');
 		$query->select('st.team_id,st.id as stid');

@@ -1,8 +1,8 @@
-ALTER TABLE  `#__sportsmanagement_match` CHANGE  `published`  `published` TINYINT( 4 ) NOT NULL DEFAULT  '1'    ;
-ALTER TABLE  `#__sportsmanagement_match` CHANGE  `division_id`  `division_id` INT(11) NOT NULL DEFAULT  '0'      ;
+-- ALTER TABLE  `#__sportsmanagement_match` CHANGE  `published`  `published` TINYINT( 4 ) NOT NULL DEFAULT  '1'    ;
+-- ALTER TABLE  `#__sportsmanagement_match` CHANGE  `division_id`  `division_id` INT(11) NOT NULL DEFAULT  '0'      ;
 
 --
--- Tabellenstruktur für Tabelle `#__sportsmanagement_club_names`
+-- Tabellenstruktur fÃ¼r Tabelle `#__sportsmanagement_club_names`
 --
 
 CREATE TABLE IF NOT EXISTS `#__sportsmanagement_club_names` (
@@ -22,5 +22,4 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_club_names` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 
-INSERT INTO `#__sportsmanagement_version_history` (`id`, `date`, `text`, `version`) VALUES
-(NULL, '2015-11-10', 'COM_SPORTSMANAGEMENT_DB_UPDATE_2015_11_10', '1.0.51');
+-- INSERT INTO `#__sportsmanagement_version_history` (`id`, `date`, `text`, `version`) VALUES (NULL, '2015-11-10', 'COM_SPORTSMANAGEMENT_DB_UPDATE_2015_11_10', '1.0.51');

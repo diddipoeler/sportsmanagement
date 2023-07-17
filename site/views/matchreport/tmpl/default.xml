@@ -11,9 +11,9 @@
 					label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
 					>
   <field name="cfg_which_database" 
-    type="extensionradiobutton" 
+    type="radio" 
     default="0"
-    class="radio btn-group btn-group-yesno"
+    layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
 			<option value="0">JNO</option>
@@ -28,7 +28,7 @@
       key_field="season_id"
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
-					required="">
+					required="true">
 			</field>
 			
 			<field	name="p" 
@@ -39,15 +39,17 @@
 			value_field="s"
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_DESCR"
-					required=""
+					required="true"
           size="">
 			</field>
 			
-			<field	name="mid" type="dependsql" depends="p" task="matchesoptions" 
+			<field	name="mid" type="dependsql" depends="p" task="matchesoptions"
+			key_field="project_id"
+			value_field="p" 
 					label="COM_SPORTSMANAGEMENT_XML_MATCHREPORT_SELECT_MATCH_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_MATCHREPORT_SELECT_MATCH_DESCR"
 					
-					required="false">
+					required="true">
 			</field>
 
 		</fieldset>

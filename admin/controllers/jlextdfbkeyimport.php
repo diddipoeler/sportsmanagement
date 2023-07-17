@@ -6,7 +6,7 @@
  * @subpackage controllers
  * @file       jlextdfbkeyimport.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -117,7 +117,7 @@ class sportsmanagementControllerjlextdfbkeyimport extends BaseController
 			// Convert dates back to mysql date format
 			if (isset($post[round_date_first][$i]))
 			{
-				$post[round_date_first][$i] = strtotime($post[round_date_first][$i]) ? strftime('%Y-%m-%d', strtotime($post[round_date_first][$i])) : null;
+				$post[round_date_first][$i] = strtotime($post[round_date_first][$i]) ? date('Y-m-d', strtotime($post[round_date_first][$i])) : null;
 			}
 			else
 			{
@@ -126,7 +126,7 @@ class sportsmanagementControllerjlextdfbkeyimport extends BaseController
 
 			if (isset($post[round_date_last][$i]))
 			{
-				$post[round_date_last][$i] = strtotime($post[round_date_last][$i]) ? strftime('%Y-%m-%d', strtotime($post[round_date_last][$i])) : null;
+				$post[round_date_last][$i] = strtotime($post[round_date_last][$i]) ? date('Y-m-d', strtotime($post[round_date_last][$i])) : null;
 			}
 			else
 			{
@@ -179,7 +179,7 @@ class sportsmanagementControllerjlextdfbkeyimport extends BaseController
 			// Convert dates back to mysql date format
 			if (isset($post[match_date][$i]))
 			{
-				$post[match_date][$i] = strtotime($post[match_date][$i]) ? strftime('%Y-%m-%d', strtotime($post[match_date][$i])) : null;
+				$post[match_date][$i] = strtotime($post[match_date][$i]) ? date('Y-m-d', strtotime($post[match_date][$i])) : null;
 			}
 			else
 			{

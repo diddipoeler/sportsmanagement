@@ -6,7 +6,7 @@
  * @subpackage teamplan
  * @file       default_plan.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -386,7 +386,7 @@ if (!empty($this->matches))
 					if ($this->config['show_events'])
 					{
 						?>
-                        <td width='5' class='ko'>
+                        <td width='3%' class='ko'>
 							<?php
 							$events = sportsmanagementModelProject::getMatchEvents($match->id, 0, 0, Factory::getApplication()->input->getInt('cfg_which_database', 0));
 							$subs   = sportsmanagementModelProject::getMatchSubstitutions($match->id, Factory::getApplication()->input->getInt('cfg_which_database', 0));

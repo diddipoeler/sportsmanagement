@@ -6,7 +6,7 @@
  * @subpackage jlxmlimport
  * @file       jlxmlimport.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -613,6 +613,26 @@ class sportsmanagementModelJLXMLImport extends JSMModelAdmin
 		$this->_newstatisticsname = array();
 		$this->_newstatisticsid   = array();
 		$this->_dbstatisticsid    = array();
+		
+		$this->_convertEventID = array();
+		$this->_convertStatisticID = array();
+		$this->_convertParentPositionID = array();
+		$this->_convertPositionID = array();
+		$this->_convertPlaygroundID = array();
+		$this->_convertClubID = array();
+		$this->_convertTeamID = array();
+		$this->_convertPersonID = array();
+		$this->_convertDivisionID = array();
+		$this->_convertProjectPositionID = array();
+		$this->_convertProjectRefereeID = array();
+		$this->_convertProjectTeamID = array();
+		$this->_convertTeamPlayerID = array();
+		$this->_convertTeamStaffID = array();
+		$this->_convertRoundID = array();
+		$this->_convertMatchID = array();
+		$this->_convertTreetoID = array();
+		$this->_convertTreetonodeID = array();
+		$this->_convertTreetomatchID = array();
 
 		if (is_array($post) && count($post) > 0)
 		{
@@ -799,7 +819,7 @@ class sportsmanagementModelJLXMLImport extends JSMModelAdmin
 				}
 			}
 
-			$this->_success_text = '';
+			$this->_success_text = array();
 
 			//set $this->_importType
 			$this->_importType = $post['importType'];

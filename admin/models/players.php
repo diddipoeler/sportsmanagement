@@ -6,7 +6,7 @@
  * @subpackage players
  * @file       players.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -14,6 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementModelplayers
@@ -61,6 +62,7 @@ class sportsmanagementModelplayers extends JSMModelList
 		parent::setDbo($this->jsmdb);
 	}
 
+    
 	/**
 	 * sportsmanagementModelplayers::getListQuery()
 	 *
@@ -74,7 +76,24 @@ class sportsmanagementModelplayers extends JSMModelList
 		$this->_season_id       = $this->jsmapp->getUserState("$this->jsmoption.season_id", '0');
 		$this->_project_team_id = $this->jsmapp->getUserState("$this->jsmoption.project_team_id", '0');
         $season_id = $this->jsmjinput->get('season_id');
+		$clubselect = $this->jsmjinput->get('assignclub');
+		$layout = $this->jsmjinput->get('layout');
         
+		
+if ( Factory::getConfig()->get('debug') )
+{  
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' _type ' . $this->_type), Log::NOTICE, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' _project_id ' . $this->_project_id), Log::NOTICE, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' _team_id ' . $this->_team_id), Log::NOTICE, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' _season_id ' . $this->_season_id), Log::NOTICE, 'jsmerror');
+
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' season_id ' . $season_id), Log::NOTICE, 'jsmerror');
+
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' _project_team_id ' . $this->_project_team_id), Log::NOTICE, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' layout ' . $this->jsmjinput->getVar('layout')), Log::NOTICE, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' club ' . $this->jsmjinput->get('club')), Log::NOTICE, 'jsmerror');	
+}
+		
 //        if ( $season_id )
 //        {
 //        $mdl = BaseDatabaseModel::getInstance("Seasons", "sportsmanagementModel");
@@ -95,12 +114,41 @@ class sportsmanagementModelplayers extends JSMModelList
 //        $this->jsmquery->where('pl.birthday < ' . $this->jsmdb->Quote('' . $birthday . '') );
 //        }
 
-		if ( $this->jsmjinput->getVar('layout') == 'assignplayers' )
+		if ( $this->jsmjinput->getVar('layout') === 'assignpersons' )
+		{
+			if ( $clubselect )
+			{
+			$this->jsmquery->join('INNER', '#__sportsmanagement_season_person_id AS sp ON sp.person_id = pl.id');
+            $this->jsmquery->join('INNER', '#__sportsmanagement_club AS c ON c.id = sp.club_id' );
+            $this->jsmquery->join('INNER', '#__sportsmanagement_team AS t ON t.club_id = c.id' );
+            //$this->jsmquery->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = t.id');
+            if ( $this->_season_id )
+            {
+			$this->jsmquery->where('sp.season_id = ' . $this->_season_id);
+            }
+            $this->jsmquery->where('t.id = ' . $this->_team_id);	
+			}
+			else
+			{
+			$this->jsmquery->join('INNER', '#__sportsmanagement_season_person_id AS sp ON sp.person_id = pl.id');
+            if ( $this->_season_id )
+            {
+			$this->jsmquery->where('sp.season_id = ' . $this->_season_id);
+            }
+			}
+		}
+  /**      
+        if ( $this->jsmjinput->getVar('layout') == 'assignpersonsclub' )
 		{
 			$this->jsmquery->join('INNER', '#__sportsmanagement_season_person_id AS sp ON sp.person_id = pl.id');
+            $this->jsmquery->join('INNER', '#__sportsmanagement_club AS c ON c.id = sp.club_id' );
+            $this->jsmquery->join('INNER', '#__sportsmanagement_team AS t ON t.club_id = c.id' );
+            $this->jsmquery->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = t.id');
+            
 			$this->jsmquery->where('sp.season_id = ' . $this->_season_id);
+            $this->jsmquery->where('t.id = ' . $this->_team_id);
 		}
-
+*/
 		if ($this->getState('filter.search'))
 		{
 			$this->jsmquery->where(
@@ -133,7 +181,8 @@ class sportsmanagementModelplayers extends JSMModelList
 			$this->jsmquery->where('pl.published = ' . $this->getState('filter.state'));
 		}
 
-		if ($this->jsmapp->input->getVar('layout') == 'assignpersons')
+/** personenzuordnung ohne club */
+		if ( $layout ===  'assignpersons' && !$clubselect )
 		{
 			$this->_season_id = $this->jsmapp->input->get('season_id');
 
@@ -181,13 +230,70 @@ class sportsmanagementModelplayers extends JSMModelList
 			}
 		}
 
+/** personenzuordnung mit club */
+if ( $layout === 'assignpersons' && $clubselect )
+{
+//$this->_season_id = $this->jsmapp->input->get('season_id');
+
+switch ($this->_type)
+{
+case 1:
+/** spieler */
+$this->jsmsubquery1->select('stp.person_id');
+$this->jsmsubquery1->from('#__sportsmanagement_season_team_person_id AS stp ');
+$this->jsmsubquery1->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = stp.team_id');
+$this->jsmsubquery1->join('INNER', '#__sportsmanagement_team AS t ON t.id = st.team_id' );		
+$this->jsmsubquery1->join('INNER', '#__sportsmanagement_club AS c ON c.id = t.club_id' );				
+$this->jsmsubquery1->join('INNER', '#__sportsmanagement_season_person_id AS spi ON spi.person_id = stp.person_id and spi.club_id = c.id' );
+		
+$this->jsmsubquery1->where('st.team_id = ' . $this->_team_id);
+$this->jsmsubquery1->where('t.id = ' . $this->_team_id);		
+$this->jsmsubquery1->where('stp.season_id = ' . $this->_season_id);
+$this->jsmsubquery1->where('stp.persontype = 1');
+$this->jsmsubquery1->where('spi.season_id = ' . $this->_season_id);
+$this->jsmquery->where('pl.id NOT IN (' . $this->jsmsubquery1 . ')');
+break;
+case 2:
+/** trainer */
+$this->jsmsubquery1->select('stp.person_id');
+$this->jsmsubquery1->from('#__sportsmanagement_season_team_person_id AS stp  ');
+$this->jsmsubquery1->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = stp.team_id');
+$this->jsmsubquery1->where('st.team_id = ' . $this->_team_id);
+$this->jsmsubquery1->where('stp.season_id = ' . $this->_season_id);
+$this->jsmsubquery1->where('stp.persontype = 2');
+$this->jsmquery->where('pl.id NOT IN (' . $this->jsmsubquery1 . ')');
+break;
+case 3:
+/** schiedsrichter */
+$this->jsmsubquery1->select('stp.person_id');
+$this->jsmsubquery1->from('#__sportsmanagement_season_person_id AS stp ');
+$this->jsmsubquery1->join('INNER', '#__sportsmanagement_project_referee AS prof ON prof.person_id = stp.id');
+$this->jsmsubquery1->where('stp.season_id = ' . $this->_season_id);
+$this->jsmsubquery1->where('stp.persontype = 3');
+$this->jsmsubquery1->where('prof.project_id = ' . $this->_project_id);
+$this->jsmquery->where('pl.id NOT IN (' . $this->jsmsubquery1 . ')');
+$this->jsmquery->group('pl.id');
+break;
+default:
+$this->jsmsubquery1->select('stp.person_id');
+$this->jsmsubquery1->from('#__sportsmanagement_season_person_id AS stp ');
+$this->jsmsubquery1->where('stp.season_id = ' . $this->_season_id);
+$this->jsmquery->where('pl.id NOT IN (' . $this->jsmsubquery1 . ')');
+$this->jsmquery->group('pl.id');
+break;
+}
+}
+
+		
 		$this->jsmquery->order(
 			$this->jsmdb->escape($this->getState('list.ordering', 'pl.lastname')) . ' ' .
 			$this->jsmdb->escape($this->getState('list.direction', 'ASC'))
 		);
         
-        //Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $this->jsmquery->dump()), Log::NOTICE, 'jsmerror');
-
+if ( Factory::getConfig()->get('debug') )
+{  
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $this->jsmquery->dump()), Log::NOTICE, 'jsmerror');
+}
 		return $this->jsmquery;
 
 	}

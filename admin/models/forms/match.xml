@@ -7,7 +7,17 @@
 			type="hidden"
 			default="0"
 		/>
-		
+		<field
+name="checked_out"
+type="hidden"
+filter="unset"
+/>
+
+<field
+name="checked_out_time"
+type="hidden"
+filter="unset"
+/>	
 	<fieldset name="matchpreview"
 	label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MP">
 		<field
@@ -16,7 +26,7 @@
 				label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MP"
 				description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MP_DESC"
 				width="450" 
-				filter="safehtml"/>		
+				filter="JComponentHelper::filterText"/>		
 	</fieldset>
 	
 	<fieldset name="matchdetails"
@@ -146,7 +156,7 @@
 				label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MR"
 				description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MR_DESC"
 				width="450" 
-				filter="safehtml"/>				
+				filter="JComponentHelper::filterText"/>				
 	</fieldset>	
 	
 	

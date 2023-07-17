@@ -17,6 +17,17 @@
 			readonly="true"
 		/>
 		<field
+name="checked_out"
+type="hidden"
+filter="unset"
+/>
+
+<field
+name="checked_out_time"
+type="hidden"
+filter="unset"
+/>	
+		<field
 			name="name"
 			type="text"
 			label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
@@ -387,12 +398,11 @@
 		<field
 			name="start_date"
 			size="10"
-			default="00-00-0000"
 			type="calendar"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_STARTDATE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_STARTDATE_DESC"
 			class="inputbox"
-			required="true"
+			required="false"
 			format="%d-%m-%Y"/>
 			
 		<field
@@ -401,7 +411,7 @@
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_STARTTIME"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_STARTTIME_DESC"
 			class="inputbox validate-time"
-			required="true"
+			required="false"
 			size="5"
 			validate="time"/>
 		
@@ -418,6 +428,30 @@
 	<fieldset name="project"
 		label="COM_SPORTSMANAGEMENT_TABS_PROJECT"
 		description="COM_SPORTSMANAGEMENT_TABS_PROJECT_DESC">	
+
+		<field
+			name="match_generated"
+			type="list"
+			class="form-control form-control-inline"
+			default="1"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_AUTO_MATCH_GENERATED"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_AUTO_MATCH_GENERATED_DESC">
+			<option
+				value="0">
+				COM_SPORTSMANAGEMENT_ADMIN_PROJECT_MATCH_GENERATED</option>
+			<option
+				value="1">
+				COM_SPORTSMANAGEMENT_ADMIN_PROJECT_MATCH_GENERATED_CLASSEMENT_PAR_EQUIPES</option>
+			<option
+				value="2">
+				COM_SPORTSMANAGEMENT_ADMIN_PROJECT_MATCH_GENERATED_ESPOIRS</option>
+			<option
+				value="3">
+				COM_SPORTSMANAGEMENT_ADMIN_PROJECT_MATCH_GENERATED_COUPE</option>
+			
+		</field>
+		
 
 		<field
 			name="current_round_auto"

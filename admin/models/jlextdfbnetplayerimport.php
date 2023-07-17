@@ -6,7 +6,7 @@
  * @subpackage jlextdfbnetplayerimport
  * @file       jlextdfbnetplayerimport.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -1418,7 +1418,7 @@ $projectname = $events[$a]->description;
 								}
 								break;
 							case 'verlegtUhrzeit':
-								if ($val)
+								if (preg_match('^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$', $val))
 								{
 									$temp['Uhrzeit'] = $val;
 								}

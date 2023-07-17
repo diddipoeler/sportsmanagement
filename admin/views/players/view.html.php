@@ -6,7 +6,7 @@
  * @subpackage jsmpersons
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -46,16 +46,40 @@ class sportsmanagementViewplayers extends sportsmanagementView
 		$this->team_id    = 0;
 		$this->persontype = 0;
 		$this->whichview = $this->jinput->get('whichview');
+		$this->assignclub = $this->jinput->get('assignclub');
+
+if ( Factory::getConfig()->get('debug') )
+{  
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' assign ' . $this->assign), Log::NOTICE, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' season_id ' . $this->season_id), Log::NOTICE, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' team_id ' . $this->team_id), Log::NOTICE, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' persontype ' . $this->persontype), Log::NOTICE, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' whichview ' . $this->whichview), Log::NOTICE, 'jsmerror');
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' layout ' . $this->getLayout()), Log::NOTICE, 'jsmerror');
+}		
+
 
 		switch ($this->getLayout())
 		{
 			case 'assignpersons':
 			case 'assignpersons_3':
 			case 'assignpersons_4':
+			case 'assignpersonsclub':
+			case 'assignpersonsclub_3':
+			case 'assignpersonsclub_4':
 			$this->season_id  = $this->jinput->get('season_id');
 			$this->team_id    = $this->jinput->get('team_id');
 			$this->persontype = $this->jinput->get('persontype');
 			$this->assign     = true;
+			break;
+		}
+        
+        switch ($this->getLayout())
+		{
+			case 'players_upload':
+			case 'players_upload_3':
+			case 'players_upload_4':
+			$this->setLayout('players_upload');
 			break;
 		}
 

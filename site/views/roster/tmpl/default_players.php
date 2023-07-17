@@ -6,7 +6,7 @@
  * @subpackage roster
  * @file       default_players.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  *
  * https://github.com/eKoopmans/html2pdf.js
@@ -275,7 +275,8 @@ if (!empty($this->rows))
 			 *
 			 * jetzt kommt die schleife über die positionen
 			 */
-			foreach ($this->rows as $position_id => $players) if ( $position_id == $position->id )
+			foreach ($this->rows as $position_id => $players) 
+			if ( isset($position->id) && $position_id == $position->id )
 			{
 			$positionpdf = $position->id;
 				$meanage     = 0;
@@ -531,16 +532,16 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
                   
 						if ($this->config['show_player_icon'])
 						{
-							$picture = $row->ppic;
-/*
+							$picture    = $row->picture;
 							if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player")))
 							{
 								$picture = $row->ppic;
 							}
-                          */
-if (preg_match("/placeholder/i", $picture)) {
-$picture = $row->picture;
-}  
+							if (!curl_init($picture))
+							{
+								$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
+							}
+						  
 							?>
                             <td class="" width="" nowrap="nowrap">
                               <span itemprop="name" content="<?php echo $playerName;?>"></span> 
@@ -582,7 +583,8 @@ $picture = $row->picture;
 							?>
                             <td width=""  class=""nowrap="nowrap" style="text-align:center; ">
 							<?php echo JSMCountries::getCountryFlag($row->country); ?>
-                            </td><?php
+                            </td>
+                            <?php
 						}
                         elseif ($this->config['show_country_flag_staff'])
 						{

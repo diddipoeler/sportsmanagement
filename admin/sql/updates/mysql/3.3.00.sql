@@ -28,14 +28,13 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_prediction_result_round` (
 ENGINE = MyISAM
 DEFAULT CHARSET = utf8;
 
-ALTER TABLE `#__sportsmanagement_prediction_result` ADD `yellow_red_cards` int(11) DEFAULT NULL;
-ALTER TABLE `#__sportsmanagement_prediction_project` ADD `points_correct_yellow_cards` SMALLINT(6) NOT NULL DEFAULT '6' ;
-ALTER TABLE `#__sportsmanagement_prediction_project` ADD `points_correct_yellow_red_cards` SMALLINT(6) NOT NULL DEFAULT '6' ;
-ALTER TABLE `#__sportsmanagement_prediction_project` ADD `points_correct_red_cards` SMALLINT(6) NOT NULL DEFAULT '6' ;
-ALTER TABLE `#__sportsmanagement_prediction_project` ADD `points_correct_penalties` SMALLINT(6) NOT NULL DEFAULT '6' ;
-ALTER TABLE `#__sportsmanagement_prediction_project` ADD `points_correct_goals` SMALLINT(6) NOT NULL DEFAULT '6' ;
-ALTER TABLE `#__sportsmanagement_prediction_project` ADD `use_cards` TINYINT(4) NOT NULL DEFAULT '0' ;
-ALTER TABLE `#__sportsmanagement_prediction_project` ADD `use_penalties` TINYINT(4) NOT NULL DEFAULT '0' ;
-ALTER TABLE `#__sportsmanagement_prediction_project` ADD `use_goals` TINYINT(4) NOT NULL DEFAULT '0' ;
-INSERT INTO `#__sportsmanagement_version_history` (`id`, `date`, `text`, `version`) VALUES
-(NULL, '2019-12-25', 'COM_SPORTSMANAGEMENT_DB_UPDATE_2019-12-25', '3.3.00');
+-- ALTER TABLE `#__sportsmanagement_prediction_result` ADD `yellow_red_cards` int(11) DEFAULT NULL;
+-- ALTER TABLE `#__sportsmanagement_prediction_project` ADD `points_correct_yellow_cards` SMALLINT(6) NOT NULL DEFAULT '6' ;
+-- ALTER TABLE `#__sportsmanagement_prediction_project` ADD `points_correct_yellow_red_cards` SMALLINT(6) NOT NULL DEFAULT '6' ;
+-- ALTER TABLE `#__sportsmanagement_prediction_project` ADD `points_correct_red_cards` SMALLINT(6) NOT NULL DEFAULT '6' ;
+-- ALTER TABLE `#__sportsmanagement_prediction_project` ADD `points_correct_penalties` SMALLINT(6) NOT NULL DEFAULT '6' ;
+-- ALTER TABLE `#__sportsmanagement_prediction_project` ADD `points_correct_goals` SMALLINT(6) NOT NULL DEFAULT '6' ;
+-- ALTER TABLE `#__sportsmanagement_prediction_project` ADD `use_cards` TINYINT(4) NOT NULL DEFAULT '0' ;
+-- ALTER TABLE `#__sportsmanagement_prediction_project` ADD `use_penalties` TINYINT(4) NOT NULL DEFAULT '0' ;
+-- ALTER TABLE `#__sportsmanagement_prediction_project` ADD `use_goals` TINYINT(4) NOT NULL DEFAULT '0' ;
+-- INSERT INTO `#__sportsmanagement_version_history` (`id`, `date`, `text`, `version`) VALUES (NULL, '2019-12-25', 'COM_SPORTSMANAGEMENT_DB_UPDATE_2019-12-25', '3.3.00');

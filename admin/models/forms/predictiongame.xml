@@ -5,6 +5,7 @@
 <fieldset name="details"
 label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
 description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
+
 <field
 name="id" 
 type="number" 
@@ -15,10 +16,36 @@ size="11"
 default="0"
 readonly="true"
 />
+
+<field
+name="checked_out"
+type="hidden"
+filter="unset"
+/>
+
+<field
+name="checked_out_time"
+type="hidden"
+filter="unset"
+/>	
+
+<field
+			name="name"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
+			class="inputbox"
+			required="true"/>
+		<field
+			name="alias"
+			type="text"
+			label="JFIELD_ALIAS_LABEL"
+			description="JFIELD_ALIAS_DESC"
+			class="inputbox"/>	
 	
 	<field
 			name="published"
-			type="extensionradiobutton"
+			type="radio"
             layout="joomla.form.field.radio.switcher"
 			default="1"
 			size="1"
@@ -34,7 +61,7 @@ readonly="true"
     
     <field
 			name="mode"
-			type="extensionradiobutton"
+			type="radio"
 			layout="joomla.form.field.radio.switcher"
 			default="1"
 			size="1"
@@ -50,7 +77,7 @@ readonly="true"
 
     <field
             name="overview"
-type="extensionradiobutton"
+type="radio"
 layout="joomla.form.field.radio.switcher"
 default="1"
 size="1"
@@ -104,7 +131,7 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_TENDENCY_DESC"
 
 <field
 name="use_cards"
-type="extensionradiobutton"
+type="radio"
 layout="joomla.form.field.radio.switcher"
 default="0"
 size="1"
@@ -140,7 +167,7 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_RED_CARDS_DESC"
 
 <field
 name="use_penalties"
-type="extensionradiobutton"
+type="radio"
 layout="joomla.form.field.radio.switcher"
 default="0"
 size="1"
@@ -160,7 +187,7 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_PENALTIES_DESC"
 
 <field
 name="use_goals"
-type="extensionradiobutton"
+type="radio"
 layout="joomla.form.field.radio.switcher"
 default="0"
 size="1"
@@ -177,7 +204,46 @@ default="6"
 label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_GOALS" 
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_GOALS_DESC"
 />
-                                                                		
+
+<field
+			name="user_ids"
+			type="userlist"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PGAME_USER_IDS"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PGAME_USER_IDS_DESC"
+			multiple="true"
+			size="15"
+			class="inputbox">
+      <option
+				value="">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
+		</field>
+		
+<field
+            name="season"
+            type="seasonlist"
+            label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER"
+            description="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER"
+            required="false"
+        >
+            <option value="">COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER</option>
+        </field>																		
+<field
+			name="project_ids"
+			type="projectlist"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PGAME_PROJECT_IDS"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PGAME_PROJECT_IDS_DESC"
+			multiple="true"
+			size="15"
+			class="inputbox">
+      <option
+				value="">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
+		</field>	
+
+		
+																		
+																		
+																		
 </fieldset>
   
 <fieldset name="help"
@@ -191,7 +257,7 @@ description="COM_SPORTSMANAGEMENT_TABS_PREDCHAMP_DESC">
 <!-- alles für den meister -->    
 <field 
 name="champ" 
-type="extensionradiobutton"
+type="radio"
 layout="joomla.form.field.radio.switcher"
 default="0"
 label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_CHAMP" 
@@ -227,7 +293,7 @@ description="COM_SPORTSMANAGEMENT_TABS_FINAL4TIPPS_DESC">
 <!-- alles für die Halbfinalisten -->    
 <field 
 name="final4" 
-type="extensionradiobutton" 
+type="radio" 
 default="0"
 layout="joomla.form.field.radio.switcher"
 label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_FINAL4" 
@@ -263,7 +329,7 @@ description="COM_SPORTSMANAGEMENT_TABS_PRED_JOKER_DESC">
 <!-- alles für die joker -->
 <field 
 name="joker" 
-type="extensionradiobutton"
+type="radio"
 layout="joomla.form.field.radio.switcher"
 default="0"
 label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_JOKER" 

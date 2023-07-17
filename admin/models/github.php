@@ -6,7 +6,7 @@
  * @subpackage models
  * @file       github.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * github icons
  * https://octicons.github.com/
@@ -164,6 +164,10 @@ class sportsmanagementModelgithub extends BaseDatabaseModel
 		if ($params->get('gh_token', ''))
 		{
 			$gh_options->set('gh.token', $params->get('gh_token', ''));
+
+			$headers = array();
+			$headers['Authorization'] = 'token ' . $params->get('gh_token', '');
+			$gh_options->set('headers', $headers);
 		}
 		/** Set the username and password if set in the params */
 		else

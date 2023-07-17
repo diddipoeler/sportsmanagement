@@ -6,7 +6,7 @@
  * @subpackage match
  * @file       view.html.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -59,24 +59,21 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		$this->eventsprojecttime = $this->projectws->game_regular_time;
 		$this->match                = $this->model->getMatchData($this->item->id);
         
-        
-        $this->match->team1_legs = $this->match->team1_legs ? $this->match->team1_legs : 0;
-        $this->match->team2_legs = $this->match->team2_legs ? $this->match->team2_legs : 0;
-        
-//$this->app->enqueueMessage(Text::_('item id <pre>'.print_r($this->item->id ,true).'</pre>'), 'Error');
-//$this->app->enqueueMessage(Text::_('match <pre>'.print_r($this->match ,true).'</pre>'), 'Error');        
-        
-        if ( !property_exists($this->match, "hometeam") )
-        {
-        $this->match->hometeam = '';
-        }
-        if ( !property_exists($this->match, "awayteam") )
-        {
-        $this->match->awayteam = '';
-        }
-        if ( !property_exists($this->match, "playground_id") )
-        {
-        $this->match->playground_id = 0;
+        if($this->match) {
+            $this->match->team1_legs = $this->match->team1_legs ? $this->match->team1_legs : 0;
+            $this->match->team2_legs = $this->match->team2_legs ? $this->match->team2_legs : 0;
+            if ( !property_exists($this->match, "hometeam") )
+            {
+                $this->match->hometeam = '';
+            }
+            if ( !property_exists($this->match, "awayteam") )
+            {
+                $this->match->awayteam = '';
+            }
+            if ( !property_exists($this->match, "playground_id") )
+            {
+                $this->match->playground_id = 0;
+            }
         }
         
 		$this->extended             = sportsmanagementHelper::getExtended($this->item->extended, 'match');
@@ -662,7 +659,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		$jinput              = $app->input;
 		$option              = $jinput->getCmd('option');
 		$model               = $this->getModel();
-		$default_name_format = '';
+		$default_name_format = 0;
         $teamname = '';
 		$lists               = array();
 
@@ -677,9 +674,9 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
         }
 		$this->teamname            = $teamname;
 		$this->preFillSuccess      = false;
-		$this->positions           = false;
-		$this->substitutions       = false;
-		$this->staffpositions      = false;
+		$this->positions           = array();
+		$this->substitutions       = array();
+		$this->staffpositions      = array();
 		$lists['team_players']     = '';
 		$lists['team_staffs']      = '';
 		$lists['projectpositions'] = '';

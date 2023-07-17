@@ -5,7 +5,7 @@
  * @package    Sportsmanagement
  * @file       sportsmanagement.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -136,6 +136,7 @@ switch ($view)
 	case 'roster':
     case 'rosteralltime':
 		JLoader::import('components.com_sportsmanagement.models.player', JPATH_SITE);
+        JLoader::import('components.com_sportsmanagement.models.jlextindividualsport', JPATH_ADMINISTRATOR);
 		break;
 	case 'teamplan':
 		JLoader::import('components.com_sportsmanagement.helpers.comments', JPATH_SITE);

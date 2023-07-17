@@ -8,7 +8,7 @@
  * @subpackage editmatch
  * @file       editevents.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -189,7 +189,7 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
                                                            class="inputbox"/></td>
                     <td style='text-align:center; '>
                         <input id="save-new-event"
-                               onclick="save_new_event(<?php echo implode(",", $savenewcomment); ?>)" type="button"
+                               type="button"
                                class="inputbox button-save-event" value="<?php echo Text::_('JSAVE'); ?>"/>
                     </td>
                 </tr>

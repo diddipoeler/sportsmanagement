@@ -6,7 +6,7 @@
  * @subpackage teamstats
  * @file       teamstats.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -660,7 +660,7 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
 			}
 			else
 			{
-				if ($match->team1_id == $this->teamid)
+				if ($match->team1_id == self::$teamid)
 				{
 					// We are the home team
 					if (empty($match->team1_result_decision))

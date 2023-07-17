@@ -8,7 +8,7 @@
  * @subpackage results
  * @file       form_dfcday_row.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -63,7 +63,7 @@ $checked    = HTMLHelper::_('jgrid.checkedout', $i, $user->get('id'), $thismatch
 $published = HTMLHelper::_('grid.published', $match, $i);
 
 list($date, $time) = explode(" ", $match->match_date);
-$time = strftime("%H:%M", strtotime($time));
+$time = date('H:i', strtotime($time));
 ?>
 <tr id="result-<?php echo $match->id; ?>" class="">
     <td valign="top"><?php

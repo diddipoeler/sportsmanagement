@@ -6,7 +6,7 @@
  * @subpackage cpanel
  * @file       default_3.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -19,6 +19,7 @@ $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <div id="jsm" class="admin override">
+	<!--
 	<?php if (!empty($this->sidebar))
 	:
 	?>
@@ -32,6 +33,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		?>
         <div id="j-main-container">
 			<?php endif; ?>
+-->
+<div id="j-main-container">		
+<?php
+echo $this->loadTemplate('start_menu');
+?>
+		
             <?php
             if ( ComponentHelper::getParams('com_sportsmanagement')->get('start_install_helper') && !$this->sporttypes )
             {

@@ -6,7 +6,7 @@
  * @subpackage mod_sportsmanagement_ajax_top_navigation_menu
  * @file       default.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -31,21 +31,35 @@ HTMLHelper::_('behavior.tooltip');
 
     <div class="container-fluid">
 
+
+
+
+
+
+
         <!-- Nav tabs -->
-        <ul class="nav nav-tabs" role="tablist">
+        <ul class="nav nav-tabs" >
 
 			<?PHP
 			foreach ($tab_points as $key => $value)
 			{
 				$fed_array = strtoupper($value);
 				$active    = ($value == $country_federation) ? 'active' : '';
+				$selected    = ($value == $country_federation) ? 'show active' : '';
 				?>
 
 
-                <li role="presentation" class="<?php echo $active ?>"><a
-                            href="#jlajaxtopmenu-<?php echo $value ?><?php echo $module->id ?>"
-                            aria-controls="jlajaxtopmenu-<?php echo $value ?><?php echo $module->id ?>" role="tab"
-                            data-toggle="tab"><?php echo Text::_(strtoupper($value)) ?></a></li>
+                <li  class="nav-item">
+				<a class="nav-link <?php echo $active ?>"
+				
+				
+                href="#jlajaxtopmenu-<?php echo $value ?><?php echo $module->id ?>"
+                
+				
+                data-bs-toggle="tab">
+				<?php echo Text::_(strtoupper($value)) ?>
+				</a>
+				</li>
 
 				<?PHP
 			}
@@ -61,17 +75,20 @@ HTMLHelper::_('behavior.tooltip');
 			{
 				$fed_array = strtoupper($value);
 				$active    = ($value == $country_federation) ? 'active' : '';
+				$selected    = ($value == $country_federation) ? 'show active' : '';
 				?>
                 <!--jlajaxtopmenu<?php echo $value ?>-<?php echo $module->id ?> start-->
 
-                <div role="tabpanel" class="tab-pane <?php echo $active ?>"
-                     id="jlajaxtopmenu-<?php echo $value ?><?php echo $module->id ?>">
+                <div  class="tab-pane fade <?php echo $selected ?>"
+                     id="jlajaxtopmenu-<?php echo $value ?><?php echo $module->id ?>"
+					 >
 					<?PHP
 					if ($country_id)
 					{
+					$flag =  JSMCountries::getCountryFlag($country_id,'',false,true);	
 						?>
                         <img style="float: right;"
-                             src="images/com_sportsmanagement/database/laender_karten/<?php echo strtolower($country_id) ?>.gif"
+                             src="<?php echo $flag; ?>"
                              alt="<?php echo $country_id ?>" width="144" height=""/>
 						<?PHP
 					}
@@ -237,7 +254,7 @@ HTMLHelper::_('behavior.tooltip');
                                                     <fieldset class="">
 
                                                         <!-- <ul class="nav-list"> -->
-                                                        <ul class="pagination">
+                                                        <ul class="">
 															<?php if ($params->get('show_nav_links'))
 																:
 																?>
@@ -319,7 +336,7 @@ HTMLHelper::_('behavior.tooltip');
                                                     <fieldset class="">
 
                                                         <!-- <ul class="nav-list"> -->
-                                                        <ul class="pagination">
+                                                        <ul class="">
 															<?php if ($params->get('show_nav_links'))
 																:
 																?>
