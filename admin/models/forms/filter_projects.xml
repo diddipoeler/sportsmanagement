@@ -91,6 +91,18 @@
 	
 		
 		<field
+            name="userfields"
+            type="userfields"
+			class="form-select select2-container"
+            label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_USERFIELD_FILTER"
+            description="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_USERFIELD_FILTER"
+            required="false"
+       onchange="this.form.submit();"
+        >
+            <option value="">COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_USERFIELD_FILTER</option>
+        </field>
+
+<field
             name="season"
             type="seasonlist"
 			class="form-select select2-container"
