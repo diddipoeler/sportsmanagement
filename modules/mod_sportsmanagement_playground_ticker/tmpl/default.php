@@ -54,7 +54,7 @@ switch ($mode)
         <!-- Wrapper for slides -->
         <div class="carousel-inner">
 
-			<?PHP
+			<?php
 			$a = 0;
 
 			foreach ($playgrounds AS $playground)
@@ -97,7 +97,7 @@ switch ($mode)
 									If ($params->get('club')==1)
 									{							
 									?> <h5><?php echo $playground->name; ?></h5>
-									<?
+									<?php
 									}
 							?>		
                             </div>
@@ -106,14 +106,14 @@ switch ($mode)
 									If ($params->get('capacity')==1)
 									{
 									?>	<h5 class="price-text-color"><?php echo 'Aforo: ' . $playground->max_visitors; ?></h5>	
-									<?
+									<?php
 									}								
 								?>
 							<?php // Address
 									If ($params->get('address')==1)
 									{
 									?>	<h5 class="price-text-color"><?php echo 'Dirección: ' . $playground->address . '. ' . $playground->city; ?></h5>	
-									<?
+									<?php
 									}								
 							?>								
 
@@ -121,7 +121,7 @@ switch ($mode)
 									If ($params->get('gps_coor')==1)
 									{
 									?>	<h5 class="price-text-color"><?php echo 'Coordenadas GPS: ' . $playground->latitude . ', ' . $playground->longitude; ?></h5>	
-									<?
+									<?php
 									}								
 							?>
 								
@@ -129,7 +129,7 @@ switch ($mode)
 									If ($params->get('web')==1)
 									{
 									?>	<h5 class="price-text-color"><?php echo 'Web: ' . $playground->website; ?></h5>	
-									<?
+									<?php
 									}
 								
 							?>	         								
@@ -138,7 +138,7 @@ switch ($mode)
                         </div>
                     </div>
                 </div>
-				<?PHP
+				<?php
 				$a++;
 			}
 			?>
@@ -195,11 +195,11 @@ switch ($mode)
 							
 			?>	
 				
-			<div class="container-fluid" style="<? echo $style; ?>
-											background-color: <? echo $background_color; ?>;
+			<div class="container-fluid" style="<?php echo $style; ?>
+											background-color: <?php echo $background_color; ?>;
 											margin: 0 0 25px;">
 											
-			<?PHP								
+			<?php								
 				
 				$active = ($a == 0) ? 'active' : '';
 
@@ -221,8 +221,8 @@ switch ($mode)
 
 				?>
                     <div class="row"style="text-align:left;
-												font-size: <? echo $title_size;?>px;
-												color: <? echo $title_color;?> ; 
+												font-size: <?php echo $title_size;?>px;
+												color: <?php echo $title_color;?> ; 
 												display:block;
 												margin: 0px 0px 10px 10px;
 												clear:both;">
@@ -230,7 +230,7 @@ switch ($mode)
 									If ($params->get('name')==1)
 									{							
 									?> <?php echo $playground->playground_name; ?>
-									<?
+									<?php
 									}
 							?>	
 					</div>
@@ -244,8 +244,8 @@ switch ($mode)
 
                     <div>
                         <div class="row" style="text-align:left;
-												font-size: <? echo $text_size;?>px;
-												color: <? echo $text_color;?> ; 
+												font-size: <?php echo $text_size;?>px;
+												color: <?php echo $text_color;?> ; 
 												display:block;
 												margin: 0px 0px 0px 10px;
 												clear:both;">
@@ -253,13 +253,13 @@ switch ($mode)
 									If ($params->get('club')==1)
 									{
 									?>	<?php echo Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_FORE_CLUB') . ', ' . $playground->club_name; ?>
-									<?
+									<?php
 									}								
 								?>
 						</div>	
 						<div class="row" style="text-align:left;
-												font-size: <? echo $text_size;?>px;
-												color: <? echo $text_color;?> ; 
+												font-size: <?php echo $text_size;?>px;
+												color: <?php echo $text_color;?> ; 
 												display:block;
 												margin: 0px 0px 0px 10px;
 												clear:both;">
@@ -267,13 +267,13 @@ switch ($mode)
 									If ($params->get('capacity')==1)
 									{
 									?>	<?php echo Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_FORE_CAPACITY') . ', ' . $playground->max_visitors; ?>
-									<?
+									<?php
 									}								
 								?>
 						</div>	
 						<div class="row" style="text-align:left;
-												font-size: <? echo $text_size;?>px;
-												color: <? echo $text_color;?> ; 
+												font-size: <?php echo $text_size;?>px;
+												color: <?php echo $text_color;?> ; 
 												display:block;
 												margin: 0px 0px 0px 10px;
 												clear:both;">
@@ -281,13 +281,13 @@ switch ($mode)
 									If ($params->get('address')==1)
 									{
 									?>	<?php echo Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_FORE_ADDRESS') . ', ' . $playground->address . '. ' . $playground->city; ?>
-									<?
+									<?php
 									}								
 								?>								
 						</div>
 						<div class="row" style="text-align:left;
-												font-size: <? echo $text_size;?>px;
-												color: <? echo $text_color;?> ; 
+												font-size: <?php echo $text_size;?>px;
+												color: <?php echo $text_color;?> ; 
 												display:block;
 												margin: 0px 0px 0px 10px;
 												clear:both;">
@@ -295,13 +295,13 @@ switch ($mode)
 									If ($params->get('gps_coor')==1)
 									{
 									?>	<?php echo Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_FORE_GPS') . ', ' . $playground->latitude . ', ' . $playground->longitude; ?>	
-									<?
+									<?php
 									}								
 								?>
 						</div>
 						<div class="row" style="text-align:left;
-												font-size: <? echo $text_size;?>px;
-												color: <? echo $text_color;?> ; 
+												font-size: <?php echo $text_size;?>px;
+												color: <?php echo $text_color;?> ; 
 												display:block;
 												margin: 0px 0px 0px 10px;
 												clear:both;">
@@ -309,14 +309,14 @@ switch ($mode)
 									If ($params->get('web')==1)
 									{
 									?>	<?php echo Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_FORE_WEB') . ', ' . $playground->website; ?>	
-									<?
+									<?php
 									}
 								
 								?>	                          
 						</div>
 						<div class="row" style="text-align:left;
-												font-size: <? echo $text_size;?>px;
-												color: <? echo $text_color;?> ; 
+												font-size: <?php echo $text_size;?>px;
+												color: <?php echo $text_color;?> ; 
 												display:block;
 												margin: 0px 0px 20px 10px;
 												clear:both;">
@@ -333,7 +333,7 @@ echo Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_FORE_SURFACE') . ', '  . Pl
                          </div>
                         </div>
                 </div>
-				<?PHP
+				<?php
 				$a++;
 			}
 			
@@ -346,7 +346,7 @@ echo Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_FORE_SURFACE') . ', '  . Pl
 			
 			?>
 
-	<?PHP
+	<?php
 	break;
 	}
 
