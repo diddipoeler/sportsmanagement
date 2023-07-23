@@ -15,7 +15,6 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Session\Session;
-
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Router\Route;
@@ -137,21 +136,31 @@ class sportsmanagementControllerPredictionEntry extends BaseController
 						$msg .= ' - ';
 						$msg .= Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_ERROR_6');
 					}
-
+                    
 					$params = array('option'        => 'com_sportsmanagement',
 					                'view'          => 'predictionentry',
 					                'prediction_id' => $predictionGameID,
 					                's'             => '1');
-
+                    
 					$query = sportsmanagementHelperRoute::buildQuery($params);
-					$link  = Route::_('index.php?' . $query, false);
+					
+					$uri = Uri::root();								
+					$link = Route::link("site", $uri . 'index.php?' . $query);
+										
+					/*echo '<script type="text/javascript"> 
+						window.onload = function () { alert("'. $link.'"); }
+						</script>'; */
+
+					//$link  = Route::_('index.php?' . $query);
+
+					
 				}
 			}
 		}
 
 		echo '<br /><br />';
 		echo '#' . $msg . '#<br />';
-		$this->setRedirect($link, $msg);
+		$this->setRedirect($link, $msg); 
 	}
 
 	/**

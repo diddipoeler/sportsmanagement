@@ -76,8 +76,8 @@ use Joomla\CMS\Language\Text;
          
 ?>		
 		<div>
-		<div class="container-fluid" style="border: 2px solid <? echo $border_color;?>; 
-											background-color: <? echo $inside_color;?>; 
+		<div class="container-fluid" style="border: 2px solid <?php echo $border_color;?>; 
+											background-color: <?php echo $inside_color;?>; 
 											border-radius: 20px;
 											width:250px; 
 											height: 350px;
@@ -86,7 +86,7 @@ use Joomla\CMS\Language\Text;
 											margin: 0px 0px 30px 0px;
 											">
 											
-				<div  style="border: 1px solid <? echo $border_color;?>; 
+				<div  style="border: 1px solid <?php echo $border_color;?>; 
 											background-color: #eee;
 											border-radius: 20px;
 											width:180px; 
@@ -104,7 +104,7 @@ use Joomla\CMS\Language\Text;
 
 				</div>
 		
-			<p style="color: <? echo $text_color;?> ; 
+			<p style="color: <?php echo $text_color;?> ; 
 				    font-family: sans-serif;
 					width:180px; 
 					font-size: 18px; 
@@ -112,7 +112,7 @@ use Joomla\CMS\Language\Text;
 									">	<?php echo $text ?> </p>
 		
 		
-		    <p style="color: <? echo $text_color;?>; 
+		    <p style="color: <?php echo $text_color;?>; 
 				      font-family: sans-serif; 
 					font-size: 18px;
 					position: absolute;
@@ -120,7 +120,7 @@ use Joomla\CMS\Language\Text;
 									">	<?php echo $list['project']->name; ?> </p>						
 									
 									
-			<p style="color: <? echo $text_color;?>; 
+			<p style="color: <?php echo $text_color;?>; 
 				      font-family: sans-serif; 
 					font-size: 20px;
 					position: absolute;
@@ -129,7 +129,7 @@ use Joomla\CMS\Language\Text;
 									">	<?php echo $list['inprojectinfo']->position_name; ?> </p>						
 									
 									
-            <p style="color: <? echo $text_color;?>; 
+            <p style="color: <?php echo $text_color;?>; 
 				      font-family: sans-serif; 
 					font-size: 20px;
 					position: absolute;

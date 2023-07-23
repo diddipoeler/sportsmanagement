@@ -37,7 +37,7 @@ $time_for_match = $list['project']->game_regular_time;
 
 			<div class="container-fluid">
 
-			<?	
+			<?php
 
 
 switch ($mode)
@@ -58,7 +58,7 @@ switch ($mode)
 			<div class="projectname"><?php echo $list['project']->team_name; ?></div>
 			<?php endif; ?>
 
-			<?
+			<?php
 			/* Llambion, añado la posicion de los jugadores */
 			$pos = "";
 			$oldpos = "";
@@ -68,18 +68,18 @@ switch ($mode)
 			<tbody>
 			<tr class="sectiontableheader">
 				<td class="eventtype">Jugador</td>
-				<?
+				<?php
 					if ($params->get('show_mins_played') == 1)
 					{				
 					?>		
 						<td class="eventtype">Mins</td>
-					<?	
+					<?php	
 					}
 				?>	
 			</tr>
 
  
-           <? 
+           <?php 
 			
 			$players = array(); 
 			$plink ="";
@@ -91,7 +91,7 @@ switch ($mode)
 
 				<?php foreach (array_slice($items, 0, $params->get('limit', 24)) as $item) : ?>
 				
-                    <?				
+                    <?php				
 	                 $plink = modSportsmanagementTeamPlayersHelper::getPlayerLink($item, $params, $list['project'], $module);			
 					 $mins  = modSportsmanagementTeamPlayersHelper::getPlayerMinsPlayed($item, $params, $list['project'], $module, $time_for_match);		
 					 
@@ -103,7 +103,7 @@ switch ($mode)
 
 			<?php endforeach; ?>
 			
-<?
+<?php
 
 			if ($params->get('show_positions') == 0)
 				{	
@@ -145,14 +145,14 @@ switch ($mode)
 					{
 					  ?>						
 					  <tr class="sectiontableentry1">
-					  <?
+					  <?php
 					  $odd = !$odd;
 					}  
 				else
 					{
 					  ?>						
 					  <tr class="sectiontableentry2">
-					  <?
+					  <?php
 					  $odd = !$odd;
 					}
 				?>
@@ -160,18 +160,18 @@ switch ($mode)
 				<?php echo $sortedData[$i]['jugador']; ?>					
 				</td>
 				</div></div>
-				<?
+				<?php
 				if ($params->get('show_mins_played') == 1)
 					{
 					?>	
 					<td>
 					<?php echo $sortedData[$i]['mins_played']; 	?>					
 					</td>
-					<?
+					<?php
 					}
 				?>
 				</tr>
-				<?
+				<?php
 			} // end for			
 			?>			
 						
@@ -203,7 +203,7 @@ switch ($mode)
 			<div class="projectname"><?php echo $list['project']->team_name; ?></div>
 			<?php endif; ?>
 
-			<?
+			<?php
 			
 			$players = array(); 
 			$plink ="";
@@ -215,7 +215,7 @@ switch ($mode)
 
 				<?php foreach (array_slice($items, 0, $params->get('limit', 24)) as $item) : ?>
 				
-                    <?				
+                    <?php				
 	                 $plink = modSportsmanagementTeamPlayersHelper::getPlayerLinkAndFlag($item, $params, $list['project'], $module);			
 					 $mins  = modSportsmanagementTeamPlayersHelper::getPlayerMinsPlayed($item, $params, $list['project'], $module, $time_for_match);
 					 $image = $item->picture;
@@ -228,7 +228,7 @@ switch ($mode)
 
 			<?php endforeach; ?>
 
-			<?
+			<?php
 			if ($params->get('show_positions') == 0)
 				{	
 							// Sort criteria
@@ -254,7 +254,7 @@ switch ($mode)
 			
 			<ul class="tukuslider">
 			
-			<?
+			<?php
 			for($i=0; $i<$max; $i++) {
 					
 				$pos = $sortedData[$i]['posicion'];	
@@ -280,7 +280,7 @@ switch ($mode)
 								background-color: white;
 								box-shadow: 10px 10px 5px #aaaaaa;">
 				
-				     <? echo '				
+				     <?php echo '				
 						<div style="position: absolute; 
 									top: 50px;
 									width: 140px;
@@ -295,41 +295,41 @@ switch ($mode)
 						</div>
 
 
-						<? // Player's flag
+						<?php // Player's flag
 							if ($params->get('show_player_flag') == 1)
 								{
 						?>						
 									<div style="position: absolute; top: 10px; left: 10px;">	
-									<?	echo $sortedData[$i]['flag'] .'<br>'; ?>
+									<?php	echo $sortedData[$i]['flag'] .'<br>'; ?>
 									</div>
-						<?
+						<?php
 								}
 						?>										
 
 						<div style="position: absolute; top: 5px; left: 30px;">	
-							<?	echo $sortedData[$i]['jugador'] .'<br>'; ?>
+							<?php	echo $sortedData[$i]['jugador'] .'<br>'; ?>
 						</div>
 
 						
-						<? // Mins played
+						<?php // Mins played
 							if ($params->get('show_positions') == 1)
 								{
 						?>					
 									<div style="position: absolute; bottom: 25px; left: 10px; font-size: 15px;">	
-									<?	echo Text::_($sortedData[$i]['posicion']) .'<br>'; ?>
+									<?php	echo Text::_($sortedData[$i]['posicion']) .'<br>'; ?>
 									</div>
-						<?
+						<?php
 								}
 						?>	
 					
-						<?
+						<?php
 							if ($params->get('show_mins_played') == 1)
 								{
 						?>					
 									<div style="position: absolute; bottom: 5px; left: 10px;">	
-									<?	echo Text::_('MOD_SPORTSMANAGEMENT_TEAMPLAYERS_MINS_PLAYED') .', ' . $sortedData[$i]['mins_played'] .'<br>'; ?>
+									<?php	echo Text::_('MOD_SPORTSMANAGEMENT_TEAMPLAYERS_MINS_PLAYED') .', ' . $sortedData[$i]['mins_played'] .'<br>'; ?>
 									</div>				
-						<?
+						<?php
 								}
 						?>									
 
@@ -337,7 +337,7 @@ switch ($mode)
 				</div>
 
 
-			<?	
+			<?php	
 	
 			} // end for
 
@@ -409,24 +409,24 @@ switch ($mode)
 
 			$jQ(document).ready(function(){
 				$jQ('.tukuslider').bxSlider({
-				slideWidth: <? echo $slider_width; ?>,
-				mode: '<? echo $slider_mode; ?>',
-				minSlides: <? echo $params->get('max_slides'); ?>,
-				maxSlides: <? echo $params->get('max_slides'); ?>,
-				moveSlides: <? echo $params->get('max_slides'); ?>,
+				slideWidth: <?php echo $slider_width; ?>,
+				mode: '<?php echo $slider_mode; ?>',
+				minSlides: <?php echo $params->get('max_slides'); ?>,
+				maxSlides: <?php echo $params->get('max_slides'); ?>,
+				moveSlides: <?php echo $params->get('max_slides'); ?>,
 				slideMargin: 10,
 				preloadImages: 'visible',
-				speed: <? echo $params->get('slider_speed'); ?>,
-				pager: <? echo $pagination; ?>,
-				controls: <? echo $navigation; ?>,
-				responsive: <? echo $responsive; ?>,
-				auto: <? echo $auto_slider; ?>
+				speed: <?php echo $params->get('slider_speed'); ?>,
+				pager: <?php echo $pagination; ?>,
+				controls: <?php echo $navigation; ?>,
+				responsive: <?php echo $responsive; ?>,
+				auto: <?php echo $auto_slider; ?>
 				});
 			});
 
 			</script>	
 		
-		<?PHP
+		<?php
 		
 
 	break;
