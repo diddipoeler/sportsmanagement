@@ -88,7 +88,13 @@ else
 class plgSearchsearch_sportsmanagement extends CMSPlugin
 {
 
-
+/**
+	 * Load the language file on instantiation.
+	 *
+	 * @var    boolean
+	 * @since  3.1
+	 */
+	protected $autoloadLanguage = true;
 
     /**
      * plgSearchsearch_sportsmanagement::plgSearchsearch_sportsmanagement()
