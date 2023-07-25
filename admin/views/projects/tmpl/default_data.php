@@ -363,8 +363,9 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
                     elseif ($this->item->picture == sportsmanagementHelper::getDefaultPlaceholder("player"))
 					{
 $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
-$image_attributes['title'] = $imageTitle;			    
-echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/green-start-button.png',$imageTitle, $image_attributes);
+$image_attributes['title'] = $imageTitle;	
+$image_attributes['width'] = '25';						
+echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/information.png',$imageTitle, $image_attributes);
 					}
 					else
 					{
@@ -403,6 +404,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_picture' 
 					for ($a = 0; $a < sizeof($teile); $a++)
 					{
 						$image_attributes['title'] = Text::_($teile[$a]);
+						$image_attributes['width'] = '25';
 						echo $teile[$a];
 						echo HTMLHelper::link(
 								'index.php?option=com_sportsmanagement&view=' . $teile[$a] . '&pid=' . $this->item->id,
