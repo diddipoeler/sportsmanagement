@@ -364,7 +364,7 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 					{
 $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
 $image_attributes['title'] = $imageTitle;			    
-echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/information.png',$imageTitle, $image_attributes);
+echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/green-start-button.png',$imageTitle, $image_attributes);
 					}
 					else
 					{
@@ -402,10 +402,11 @@ echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_picture' 
 					$teile = explode("<br>", $this->item->user_field);
 					for ($a = 0; $a < sizeof($teile); $a++)
 					{
+						$image_attributes['title'] = Text::_($teile[$a]);
 						echo $teile[$a];
 						echo HTMLHelper::link(
 								'index.php?option=com_sportsmanagement&view=' . $teile[$a] . '&pid=' . $this->item->id,
-								HTMLHelper::_('image',Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/information.png', Text::_($teile[$a]))
+								HTMLHelper::_('image',Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/green-start-button.png', Text::_($teile[$a]), $image_attributes )
 							) . '<br>';
 					}
 					if ($this->state->get('filter.userfields'))
