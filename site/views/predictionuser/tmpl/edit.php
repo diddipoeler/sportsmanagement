@@ -115,27 +115,27 @@ $document->addScript(Uri::root() . 'includes/js/joomla.javascript.js');
 			
 
 				<div class="form-check">
-				<? if($this->predictionMember->approved)
+				<?php if($this->predictionMember->approved)
 							{ echo '<input class="form-check-input" type="radio" name="approved" id="approvedN" value="0" >'; }
 							else
 							{ echo '<input class="form-check-input" type="radio" name="approved" id="approvedN" value="0" checked >'; }
 				?> 
 				<label class="form-check-label" for="approved1">
-				<? echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO'); ?>
+				<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO'); ?>
 				</label>
 				</div>
 				<div class="form-check">
-				<? if($this->predictionMember->approved)
+				<?php if($this->predictionMember->approved)
 							{ echo '<input class="form-check-input" type="radio" name="approved" id="approvedY" value="1" checked>'; }
 							else
 							{ echo '<input class="form-check-input" type="radio" name="approved" id="approvedY" value="1" >'; }
 				?> 
 				<label class="form-check-label" for="approved2">
-				<? echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_YES'); ?>
+				<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_YES'); ?>
 				</label>
 				</div>				
 							
-				<?
+				<?php
 				//$field->setup(new SimpleXMLElement('<field name="approved" type="radio" size="1" default="0" class="btn-group btn-group-yesno"><option value="0">JNO</option><option value="1">JYES</option></field>'), $this->predictionMember->approved);
 			
    				//echo $field->renderField();
@@ -216,26 +216,26 @@ $document->addScript(Uri::root() . 'includes/js/joomla.javascript.js');
 
 			
 				<div class="form-check">
-				<? if($this->predictionMember->show_profile)
+				<?php if($this->predictionMember->show_profile)
 							{ echo '<input class="form-check-input" type="radio" name="show_profile" id="show_profileN" value="0" >'; }
 							else
 							{ echo '<input class="form-check-input" type="radio" name="show_profile" id="show_profileN" value="0" checked >'; }
 				?> 
 				<label class="form-check-label" for="approved1">
-				<? echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO'); ?>
+				<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO'); ?>
 				</label>
 				</div>
 				<div class="form-check">
-				<? if($this->predictionMember->show_profile)
+				<?php if($this->predictionMember->show_profile)
 							{ echo '<input class="form-check-input" type="radio" name="show_profile" id="show_profileY" value="1" checked>'; }
 							else
 							{ echo '<input class="form-check-input" type="radio" name="show_profile" id="show_profileY" value="1" >'; }
 				?> 
 				<label class="form-check-label" for="approved2">
-				<? echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_YES'); ?>
+				<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_YES'); ?>
 				</label>
 				</div>				
-<?
+<?php
 			
 	/*			
 				$field = new JFormFieldRadio;
@@ -260,23 +260,23 @@ $document->addScript(Uri::root() . 'includes/js/joomla.javascript.js');
                 <td colspan='2'>
 				
 				<div class="form-check">
-				<? if($this->predictionMember->reminder)
+				<?php if($this->predictionMember->reminder)
 							{ echo '<input class="form-check-input" type="radio" name="reminder" id="reminderN" value="0" >'; }
 							else
 							{ echo '<input class="form-check-input" type="radio" name="reminder" id="reminderN" value="0" checked >'; }
 				?> 
 				<label class="form-check-label" for="approved1">
-				<? echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO'); ?>
+				<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO'); ?>
 				</label>
 				</div>
 				<div class="form-check">
-				<? if($this->predictionMember->reminder)
+				<?php if($this->predictionMember->reminder)
 							{ echo '<input class="form-check-input" type="radio" name="reminder" id="reminderY" value="1" checked>'; }
 							else
 							{ echo '<input class="form-check-input" type="radio" name="reminder" id="reminderY" value="1" >'; }
 				?> 
 				<label class="form-check-label" for="approved2">
-				<? echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_YES'); ?>
+				<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_YES'); ?>
 				</label>
 				</div>				
 				
@@ -323,23 +323,23 @@ $document->addScript(Uri::root() . 'includes/js/joomla.javascript.js');
                 <td colspan='2'>
 				
 				<div class="form-check">
-				<? if($this->predictionMember->receipt)
+				<?php if($this->predictionMember->receipt)
 							{ echo '<input class="form-check-input" type="radio" name="receipt" id="receiptN" value="0" >'; }
 							else
 							{ echo '<input class="form-check-input" type="radio" name="receipt" id="receiptN" value="0" checked >'; }
 				?> 
 				<label class="form-check-label" for="approved1">
-				<? echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO'); ?>
+				<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO'); ?>
 				</label>
 				</div>
 				<div class="form-check">
-				<? if($this->predictionMember->receipt)
+				<?php if($this->predictionMember->receipt)
 							{ echo '<input class="form-check-input" type="radio" name="receipt" id="receiptY" value="1" checked>'; }
 							else
 							{ echo '<input class="form-check-input" type="radio" name="receipt" id="receiptY" value="1" >'; }
 				?> 
 				<label class="form-check-label" for="approved2">
-				<? echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_YES'); ?>
+				<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_YES'); ?>
 				</label>
 				</div>	
 				
@@ -382,26 +382,26 @@ $document->addScript(Uri::root() . 'includes/js/joomla.javascript.js');
             <td colspan='2'>
 			
 				<div class="form-check">
-				<? if($this->predictionMember->admintipp)
+				<?php if($this->predictionMember->admintipp)
 							{ echo '<input class="form-check-input" type="radio" name="admintipp" id="admintippN" value="0" >'; }
 							else
 							{ echo '<input class="form-check-input" type="radio" name="admintipp" id="admintippN" value="0" checked >'; }
 				?> 
 				<label class="form-check-label" for="approved1">
-				<? echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO'); ?>
+				<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO'); ?>
 				</label>
 				</div>
 				<div class="form-check">
-				<? if($this->predictionMember->receipt)
+				<?php if($this->predictionMember->receipt)
 							{ echo '<input class="form-check-input" type="radio" name="admintipp" id="admintippY" value="1" checked>'; }
 							else
 							{ echo '<input class="form-check-input" type="radio" name="admintipp" id="admintippY" value="1" >'; }
 				?> 
 				<label class="form-check-label" for="approved2">
-				<? echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_YES'); ?>
+				<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_YES'); ?>
 				</label>
 				</div>	
-	<?		
+	<?php		
 			
 	/*		
 			
@@ -608,7 +608,7 @@ $document->addScript(Uri::root() . 'includes/js/joomla.javascript.js');
 		
     </table>
 	
-	<?
+	<?php
 	
 	$memberID = (int) $this->predictionMember->pmID; 
 	
