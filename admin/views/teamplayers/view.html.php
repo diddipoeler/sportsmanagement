@@ -197,6 +197,8 @@ Factory::getApplication()->input->cookie->set('teamplayers', implode(";", $value
 			$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_TITLE') . ' ' . $this->project_team->name;
 		}
 
+		ToolbarHelper::back('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_BACK', 'index.php?option=' . $this->option . '&view=projectteams&pid=' . $this->project_id . '&id=' . $this->project_id);
+
 		ToolbarHelper::apply('teamplayers.saveshort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_APPLY'));
 		ToolbarHelper::divider();
 		//sportsmanagementHelper::ToolbarButton('assignpersons', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN'), 'players', 0);
@@ -234,7 +236,7 @@ if ( ComponentHelper::getParams($this->option)->get('assign_club_position_to_pla
         
 		ToolbarHelper::apply('teamplayers.assignplayerscountry', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN_COUNTRY'));
 		ToolbarHelper::divider();
-		ToolbarHelper::back('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_BACK', 'index.php?option=' . $this->option . '&view=projectteams&pid=' . $this->project_id . '&id=' . $this->project_id);
+		
 		parent::addToolbar();
 	}
 
