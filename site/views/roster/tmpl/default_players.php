@@ -292,7 +292,7 @@ if (!empty($this->rows))
 				?>
                 <thead>
                 <tr class="sectiontableheader rosterheader" id="rosterheader">
-                    <th class="" width="" colspan="">
+                    <th class="" width="5%" colspan="">
 						<?php echo '&nbsp;' . Text::_($row->position); ?>
                     </th>
 					<?php
@@ -300,7 +300,7 @@ if (!empty($this->rows))
 					for ($i = 1, $n = $positionHeaderSpan; $i < $n; $i++)
 			{
 				?>
-				<th class="" width="">
+				<th class="" width="5%">
 				</th>
 				<?php
 				}
@@ -308,7 +308,7 @@ if (!empty($this->rows))
 					if ($this->config['show_birthday'])
 					{
 						?>
-                        <th class="" width="" id="show_birthday">
+                        <th class="" width="10%" id="show_birthday">
 							<?php
 							switch ($this->config['show_birthday'])
 							{
