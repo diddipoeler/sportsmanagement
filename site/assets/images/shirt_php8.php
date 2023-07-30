@@ -11,7 +11,7 @@ $image_file = dirname(__FILE__).'/shirt_php8.png';
 $data = getimagesize($image_file);
 $image = imagecreatefrompng($image_file);
 
- $xpos = ( $text > 9 )?9:12;
+ $xpos = ( $string > 9 ) ? 9 : 12;
     if (function_exists('imagesavealpha') ) {
         imageAlphaBlending($image, false);
         imageSaveAlpha($image, true);
