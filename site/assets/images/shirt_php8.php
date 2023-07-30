@@ -1,34 +1,46 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage media
- * @file       shirt.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-//defined( '_JEXEC' ) or die( 'Restricted access' );
-defined('_JEXEC');
-//use Joomla\CMS\Factory;
-//$text = Factory::getApplication()->input->getInt('text', 0);
-$text = intval($_GET['text']);
-$image_file = dirname(__FILE__).'/shirt.png';
+header ("Content-type: image/png");
+$string = $_GET['text'];                                              
+$font   = 2;
+$width  = ImageFontWidth($font) * strlen($string);
+$height = ImageFontHeight($font);
 
-if(is_file($image_file)) {
-    $data = getimagesize($image_file);
-    $image = imagecreatefrompng($image_file);
-    $textcolor = imagecolorallocate($image, 0, 0, 0);
-    $xpos = ( $text > 9 )?9:12;
+
+$image_file = dirname(__FILE__).'/shirt_php8.png';
+
+$data = getimagesize($image_file);
+$image = imagecreatefrompng($image_file);
+
+ $xpos = ( $text > 9 )?9:12;
     if (function_exists('imagesavealpha') ) {
         imageAlphaBlending($image, false);
         imageSaveAlpha($image, true);
     }
-    imagestring($image, 2, $xpos, 1, $text, $textcolor);
-    header("Content-Type: image/png");
-    imagepng($image);
-    imagedestroy($image);
-} else {
-    echo 'cannot find template picture in ' . $image_file;
-}
+
+
+$text_color = imagecolorallocate ($image, 0, 0,0);//black text
+
+
+//imagestring($image, 2, $xpos, 1, $text, $textcolor);
+imagestring ($image, $font, $xpos , 1,  $string, $text_color);
+
+//echo $image_file;
+//$background_color = imagecolorallocate ($image, 255, 255, 255); //white background
+//$text_color = imagecolorallocate ($image, 0, 0,0);//black text
+//imagestring ($image, $font, 0, 0,  $string, $text_color);
+imagepng ($image);
+
+
+
+/**
+$im = @imagecreate ($width,$height);
+$background_color = imagecolorallocate ($im, 255, 255, 255); //white background
+$text_color = imagecolorallocate ($im, 0, 0,0);//black text
+imagestring ($im, $font, 0, 0,  $string, $text_color);
+imagepng ($im);
+*/
+
+
+
+
+?>

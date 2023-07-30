@@ -517,7 +517,11 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
 								$value = $pnr;
 							}
 							?>
-                            <td class="" width=""><?php echo $value; ?></td><?php
+                            <td class="" width="">
+                            <?php //echo $value; ?>
+                            <img src="components/com_sportsmanagement/assets/images/shirt_php8.php?text=<? echo $pnr; ?>&font_size=4&R=FF&G=FF&B=00">  
+                            </td>
+                            <?php
 						}
 
 						$playerName = sportsmanagementHelper::formatName(
