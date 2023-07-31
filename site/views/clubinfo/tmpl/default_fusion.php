@@ -24,7 +24,7 @@ use Joomla\CMS\Log\Log;
 	?>
 	<div class="panel-group" id="<?php echo $this->club->name; ?>">
 		<div class="panel panel-default">
-			<div id="<?php echo $this->club->id; ?>" class="panel-collapse collapse in">
+			<div id="<?php echo $this->club->id; ?>" class="">
 				<div class="panel-body">
 
 					<div class="tree" style="display: flow-root;">
