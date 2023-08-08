@@ -44,8 +44,8 @@ function jlml_loadMatch(usedteam, matchid, moduleid, nr, origin) {
 
 			//alert(justMatch);
 
-			var myFx = new Fx.Morph(classadd);
-			myFx.start({'opacity': 1});
+			//var myFx = new Fx.Morph(classadd);
+			//myFx.start({'opacity': 1});
 			//jQuery(classadd).innerHTML=justMatch;
 			document.getElementById(classadd).innerHTML = justMatch;
 
