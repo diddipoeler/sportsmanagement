@@ -21,7 +21,7 @@ use Joomla\CMS\Form\FormHelper;
 jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
 
-
+/**
 if (!defined('JSM_PATH'))
 {
 	DEFINE('JSM_PATH', 'components/com_sportsmanagement');
@@ -35,6 +35,8 @@ if (!class_exists('sportsmanagementHelper'))
 	JLoader::register('sportsmanagementHelper', $classpath);
 	BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
+*/
+
 
 /**
  * FormFieldPredictiongame
@@ -51,34 +53,22 @@ class JFormFieldPredictiongames extends \JFormFieldList
 
 	protected function getOptions()
 	{
-		// Initialize variables.
 		$options = array();
-		$lang    = Factory::getLanguage();
-		$db      = sportsmanagementHelper::getDBConnection(false, false);
-		$query   = $db->getQuery(true);
-
-		$query->select('id AS value, name AS text');
-		$query->from('#__sportsmanagement_prediction_game');
-		$query->order('name');
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true);
+		$query->select('s.id AS value, s.name AS text');
+		$query->from('#__sportsmanagement_prediction_game as s');
+		$query->order('s.name');
 		$db->setQuery($query);
 		$options = $db->loadObjectList();
 
-		$extension = "COM_SPORTSMANAGEMENT";
-		$source    = JPATH_ADMINISTRATOR . '/components/' . $extension;
-		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
-		|| $lang->load($extension, $source, null, false, false)
-		|| $lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
-		|| $lang->load($extension, $source, $lang->getDefault(), false, false);
-
-		foreach ($options as $row)
-		{
-			$row->text = Text::_($row->text);
-		}
-
-		// Merge any additional options in the XML definition.
+		/** Merge any additional options in the XML definition. */
 		$options = array_merge(parent::getOptions(), $options);
 
 		return $options;
+
+		
+		
 	}
 	
 	/**
