@@ -69,7 +69,7 @@ use Joomla\CMS\Log\Log;
 			</li>
 			<li class="quickicon quickicon-single">
 				<a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_PREDICTIONS') ?>"
-				   href="index.php?option=com_sportsmanagement&view=predictions">
+				   href="index.php?option=com_sportsmanagement&view=predictiongames">
 					<div class="quickicon-icon">
 						<img src="<?php echo JURI::base(false) ?>/components/com_sportsmanagement/assets/icons/tippspiele.png">
 					</div>
