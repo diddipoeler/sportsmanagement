@@ -125,31 +125,32 @@ if ($this->dPredictionID > 0)
 		<?php
 		$k = 0;
 
-		for ($i = 0, $n = count($this->items); $i < $n; $i++)
+		//for ($i = 0, $n = count($this->items); $i < $n; $i++)
+			foreach ($this->items as $this->count_i => $this->item)
 		{
 
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
 $this->dragable_group = 'data-dragable-group="none"';
 }    			
-			$row           =& $this->items[$i];
-			$pred_projects = $this->getModel()->getChilds($row->id);
-			$pred_admins   = $this->getModel()->getAdmins($row->id);
-			$published     = HTMLHelper::_('grid.published', $row, $i, 'tick.png', 'publish_x.png', 'predictiongames.');
+			//$row           =& $this->items[$i];
+			$pred_projects = $this->getModel()->getChilds($this->item->id);
+			$pred_admins   = $this->getModel()->getAdmins($this->item->id);
+			$published     = HTMLHelper::_('grid.published', $this->item, $i, 'tick.png', 'publish_x.png', 'predictiongames.');
 			$canEdit       = $this->user->authorise('core.edit', 'com_sportsmanagement');
-			$canCheckin    = $this->user->authorise('core.manage', 'com_checkin') || $row->checked_out == $this->user->get('id') || $row->checked_out == 0;
-			$checked       = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'predictiongames.', $canCheckin);
-			$link          = Route::_('index.php?option=com_sportsmanagement&task=predictiongame.edit&id=' . $row->id);
+			$canCheckin    = $this->user->authorise('core.manage', 'com_checkin') || $this->item->checked_out == $this->user->get('id') || $this->item->checked_out == 0;
+			$checked       = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $this->item->checked_out_time, 'predictiongames.', $canCheckin);
+			$link          = Route::_('index.php?option=com_sportsmanagement&task=predictiongame.edit&id=' . $this->item->id);
 			?>
-            <tr class='<?php echo "row$k"; ?>'>
-                <td style='text-align:right; '><?php echo $this->pagination->getRowOffset($i); ?></td>
-                <td><?php echo HTMLHelper::_('grid.id', $i, $row->id); ?></td>
+            <tr class="row<?php echo $this->count_i % 2; ?>" <?php echo $this->dragable_group; ?>>
+                <td style='text-align:right; '><?php echo $this->pagination->getRowOffset($this->count_i); ?></td>
+                <td><?php echo HTMLHelper::_('grid.id', $this->count_i, $row->id); ?></td>
                 <td style='text-align:center; '>
 					<?php
 					if ($row->checked_out)
 						:
 						?>
-						<?php echo HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'predictiongames.', $canCheckin); ?>
+						<?php echo HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'predictiongames.', $canCheckin); ?>
 					<?php endif; ?>
                     <a href='<?php echo $link; ?>'>
                         <img src='<?php echo Uri::root(); ?>administrator/components/com_sportsmanagement/assets/images/edit.png'
@@ -162,17 +163,17 @@ $this->dragable_group = 'data-dragable-group="none"';
 					?></td>
                 <td>
 					<?php
-					//						if ( $this->table->isCheckedOut($this->user->get ('id'), $row->checked_out ) )
+					//						if ( $this->table->isCheckedOut($this->user->get ('id'), $this->item->checked_out ) )
 					//						{
 					//							echo $row->name;
 					//						}
 					//						else
 					//						{
-					$link = Route::_('index.php?option=com_sportsmanagement&view=predictiongames&prediction_id=' . $row->id);
+					$link = Route::_('index.php?option=com_sportsmanagement&view=predictiongames&prediction_id=' . $this->item->id);
 					?><a href="<?php echo $link; ?>"
-                         title="<?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_SELECT_PGAME', $row->name); ?>">
+                         title="<?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_SELECT_PGAME', $this->item->name); ?>">
 						<?php
-						echo $row->name;
+						echo $this->item->name;
 						?>
                     </a>
 					<?php
@@ -187,7 +188,7 @@ $this->dragable_group = 'data-dragable-group="none"';
 					<?php
 					$image = 'players.png';
 					$title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USERS');
-					$link2 = Route::_('index.php?option=com_sportsmanagement&view=predictionmembers&prediction_id=' . $row->id);
+					$link2 = Route::_('index.php?option=com_sportsmanagement&view=predictionmembers&prediction_id=' . $this->item->id);
 					?>
                     <a href="<?php echo $link2; ?>">
 						<?php
@@ -204,7 +205,7 @@ $this->dragable_group = 'data-dragable-group="none"';
 					<?php
 					$image = 'division.png';
 					$title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_GROUPS');
-					$link2 = Route::_('index.php?option=com_sportsmanagement&view=predictiongroups&prediction_id=' . $row->id);
+					$link2 = Route::_('index.php?option=com_sportsmanagement&view=predictiongroups&prediction_id=' . $this->item->id);
 					?>
                     <a href="<?php echo $link2; ?>">
 						<?php
@@ -221,7 +222,7 @@ $this->dragable_group = 'data-dragable-group="none"';
 					<?php
 					$image = 'templates.png';
 					$title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TEMPLATES');
-					$link2 = Route::_('index.php?option=com_sportsmanagement&view=predictiontemplates&prediction_id=' . $row->id);
+					$link2 = Route::_('index.php?option=com_sportsmanagement&view=predictiontemplates&prediction_id=' . $this->item->id);
 					?>
                     <a href="<?php echo $link2; ?>">
 						<?php
@@ -234,12 +235,12 @@ $this->dragable_group = 'data-dragable-group="none"';
                     </a>
                 </td>
 
-                <td style='text-align:center; '><?php echo $row->id; ?></td>
-                <td><?php echo $row->modified; ?></td>
-                <td><?php echo $row->username; ?></td>
+                <td style='text-align:center; '><?php echo $this->item->id; ?></td>
+                <td><?php echo $this->item->modified; ?></td>
+                <td><?php echo $this->item->username; ?></td>
             </tr>
 			<?php
-			$k = 1 - $k;
+			//$k = 1 - $k;
 		}
 
 		if ($this->dPredictionID > 0)
