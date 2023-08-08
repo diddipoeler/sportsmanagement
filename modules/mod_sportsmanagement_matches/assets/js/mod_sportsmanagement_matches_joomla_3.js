@@ -159,10 +159,12 @@ var JLMLToolTip = new Class({
 });
 
 function addJLMLtips(els, suffix) {
+	/**
 	$$(els).each(function (el) {
 		var tipsource = el.id + '_' + suffix;
 		if ($(tipsource)) {
 			new JLMLToolTip({tipper: el, sticky: true, message: $(tipsource).innerHTML});
 		}
 	});
+	*/
 }
