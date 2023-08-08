@@ -347,8 +347,9 @@ class sportsmanagementModelPredictionGames extends JSMModelList
                 $app->redirect('index.php?option='.$this->option.'&view='.$this->name);
             }
         }
-		$this->setState('filter.prediction_id', $this->prediction_id);
-
+		//$this->setState('filter.prediction_id', $this->prediction_id);
+$this->setState('filter.prediction_id', $this->getUserStateFromRequest($this->context . '.filter.prediction_id', 'filter_prediction_id', '', 'string'));
+		
 		/**
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
