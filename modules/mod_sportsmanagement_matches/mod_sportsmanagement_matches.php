@@ -114,13 +114,13 @@ else
 }
 
 $doc = Factory::getDocument();
-
+/**
 if ($params->get('mootools'))
 {
 	//$doc->addScript(Uri::root() . '/media/system/js/mootools-core.js');
 	$doc->addScript('https://www.unpkg.com/browse/mootools@1.5.2/lib/mootools-core-1.5.2-server.js');
 }
-
+*/
 if (version_compare(JVERSION, '3.0.0', 'ge'))
 {
 	/** Joomla! 3.0 code here */
@@ -149,7 +149,7 @@ elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
 {	
 HTMLHelper::_('behavior.tooltip');
 }
-
+/**
 $doc->addScriptDeclaration(
 	'
   window.addEvent(\'domready\', function() {
@@ -158,6 +158,7 @@ $doc->addScriptDeclaration(
   );
   '
 );
+*/
 $mod          = new MatchesSportsmanagementConnector($params, $module->id, $match_id);
 $lastheading  = '';
 $oldprojectid = 0;
