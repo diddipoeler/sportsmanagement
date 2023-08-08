@@ -474,7 +474,7 @@ $this->dragable_group = 'data-dragable-group="none"';
 	?>
         </tbody>
     </table>
-	</div>div>
+	</div>
 <?php
 if ($this->dPredictionID > 0)
 {
