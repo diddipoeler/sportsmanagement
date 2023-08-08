@@ -310,7 +310,7 @@ if (preg_match("/ordering/i", $this->sortColumn)) {
             case 'playgrounds':
             case 'rosterpositions':
 
-//            case 'extrafields':
+            case 'predictiongames':
 //            case 'statistics':
             case 'clubnames':
 
