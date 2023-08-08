@@ -79,7 +79,7 @@ class JFormFieldPredictiongames extends FormField
 			$mitems[] = HTMLHelper::_('select.option', $option->id, '&nbsp;' . $option->name . ' (' . $option->id . ')');
 		}
 
-		$output = HTMLHelper::_('select.genericlist', $mitems, $this->name, 'class="inputbox" multiple="multiple" size="10"', 'value', 'text', $this->value, $this->id);
+		$output = HTMLHelper::_('select.genericlist', $mitems, $this->name, 'class="inputbox" multiple="" size="1"', 'value', 'text', $this->value, $this->id);
 
 		return $output;
 	}
