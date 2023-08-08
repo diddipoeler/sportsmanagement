@@ -85,7 +85,7 @@ if (version_compare(JVERSION, '4.0.0', 'ge'))
 			</li>
 			<li class="quickicon quickicon-single">
 				<a title="<?php echo Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_PREDICTIONS_LINK') ?>"
-				   href="index.php?option=com_sportsmanagement&view=predictions">
+				   href="index.php?option=com_sportsmanagement&view=predictiongames">
 					<div class="quickicon-icon">
 						<img src="<?php echo JURI::base(false) ?>/components/com_sportsmanagement/assets/icons/tippspiele.png">
 					</div>
