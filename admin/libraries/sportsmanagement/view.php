@@ -311,6 +311,9 @@ if (preg_match("/ordering/i", $this->sortColumn)) {
             case 'rosterpositions':
 
             case 'predictiongames':
+			case 'predictiontemplates':
+			case 'predictiongroups':
+			case 'predictionmembers':
 //            case 'statistics':
             case 'clubnames':
 
