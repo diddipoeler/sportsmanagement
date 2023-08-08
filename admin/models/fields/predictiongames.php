@@ -44,6 +44,38 @@ class JFormFieldPredictiongames extends FormField
 {
 	protected $type = 'predictiongames';
 
+	protected function getOptions()
+	{
+		// Initialize variables.
+		$options = array();
+		$lang    = Factory::getLanguage();
+		$db      = sportsmanagementHelper::getDBConnection(false, false);
+		$query   = $db->getQuery(true);
+
+		$query->select('id AS value, name AS text');
+		$query->from('#__sportsmanagement_prediction_game');
+		$query->order('name');
+		$db->setQuery($query);
+		$options = $db->loadObjectList();
+
+		$extension = "COM_SPORTSMANAGEMENT";
+		$source    = JPATH_ADMINISTRATOR . '/components/' . $extension;
+		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
+		|| $lang->load($extension, $source, null, false, false)
+		|| $lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
+		|| $lang->load($extension, $source, $lang->getDefault(), false, false);
+
+		foreach ($options as $row)
+		{
+			$row->text = Text::_($row->text);
+		}
+
+		// Merge any additional options in the XML definition.
+		$options = array_merge(parent::getOptions(), $options);
+
+		return $options;
+	}
+	
 	/**
 	 * FormFieldPredictiongame::getInput()
 	 *
@@ -51,6 +83,7 @@ class JFormFieldPredictiongames extends FormField
 	 */
 	function getInput()
 	{
+		/**
 		$db     = sportsmanagementHelper::getDBConnection();
 		$lang   = Factory::getLanguage();
 		$mitems = array();
@@ -82,5 +115,6 @@ class JFormFieldPredictiongames extends FormField
 		$output = HTMLHelper::_('select.genericlist', $mitems, $this->name, 'class="inputbox" multiple="" size="1"', 'value', 'text', $this->value, $this->id);
 
 		return $output;
+		*/
 	}
 }
