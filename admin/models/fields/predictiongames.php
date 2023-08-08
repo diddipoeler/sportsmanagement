@@ -64,52 +64,12 @@ class JFormFieldPredictiongames extends \JFormFieldList
 
 		/** Merge any additional options in the XML definition. */
 		$options = array_merge(parent::getOptions(), $options);
-
+// Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($options,true).'</pre>' , 'Error');
 		return $options;
 
 		
 		
 	}
 	
-	/**
-	 * FormFieldPredictiongame::getInput()
-	 *
-	 * @return
-	 */
-	function getInput()
-	{
-		/**
-		$db     = sportsmanagementHelper::getDBConnection();
-		$lang   = Factory::getLanguage();
-		$mitems = array();
-
-		// Welche tabelle soll genutzt werden
-		$params = ComponentHelper::getParams('com_sportsmanagement');
-		$query  = $db->getQuery(true);
-
-		$query->select('pg.id');
-
-		// $query->select('pg.id');
-		$query->select('pg.name');
-
-		$query->from('#__sportsmanagement_prediction_game pg');
-
-		$query->where('pg.published = 1');
-		$query->order('pg.name');
-
-		$db->setQuery($query);
-		$options = $db->loadObjectList();
-
-		// $mitems = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
-
-		foreach ($options as $option)
-		{
-			$mitems[] = HTMLHelper::_('select.option', $option->id, '&nbsp;' . $option->name . ' (' . $option->id . ')');
-		}
-
-		$output = HTMLHelper::_('select.genericlist', $mitems, $this->name, 'class="inputbox" multiple="" size="1"', 'value', 'text', $this->value, $this->id);
-
-		return $output;
-		*/
-	}
+	
 }
