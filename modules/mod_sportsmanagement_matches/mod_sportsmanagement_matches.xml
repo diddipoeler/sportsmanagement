@@ -51,7 +51,7 @@
 				<field type="extensionlink" linktype="report"
 					   link="https://github.com/diddipoeler/sportsmanagement/issues"/>
 				<field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/"/>
-
+<!--
 				<field name="mootools"
                        type="extensionradiobutton"
                        default="1"
@@ -61,7 +61,7 @@
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-
+-->
 				<field name="cfg_which_database"
 					   type="extensionradiobutton"
 					   default="0"
