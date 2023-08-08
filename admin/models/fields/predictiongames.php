@@ -16,6 +16,11 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Form\FormHelper;
+
+jimport('joomla.filesystem.folder');
+FormHelper::loadFieldClass('list');
+
 
 if (!defined('JSM_PATH'))
 {
@@ -40,7 +45,7 @@ if (!class_exists('sportsmanagementHelper'))
  * @version   2014
  * @access    public
  */
-class JFormFieldPredictiongames extends FormField
+class JFormFieldPredictiongames extends \JFormFieldList
 {
 	protected $type = 'predictiongames';
 
