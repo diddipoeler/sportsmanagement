@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -11,9 +9,8 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelpredictiongroups
@@ -84,26 +81,22 @@ class sportsmanagementModelpredictiongroups extends JSMModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
+	   if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info'))
+		{
+			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . $this->context . ''), '');
+			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . ''), '');
+		}
+        $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array(), 'array');
+        
 		// Load the filter state.
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
-		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string');
-		$this->setState('filter.state', $published);
+		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
+		$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
 
-		if ($this->jsmjinput->getInt('prediction_id'))
-		{
-			$this->setState('filter.prediction_id', $this->jsmjinput->getInt('prediction_id'));
-			$this->jsmapp->setUserState("com_sportsmanagement.prediction_id", $this->jsmjinput->getInt('prediction_id'));
-		}
-		else
-		{
-			$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.prediction_id', 'filter_prediction_id', '');
-			$this->setState('filter.prediction_id', $temp_user_request);
-		}
+		$this->setState('filter.prediction_id', $this->getUserStateFromRequest($this->context . '.filter.prediction_id', 'filter_prediction_id', '', 'string'));
 
 		// List state information.
-		$value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
-		$this->setState('list.start', $value);
+		$this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
+		$this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
 
 		// Filter.order
 		$orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');

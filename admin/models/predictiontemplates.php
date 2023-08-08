@@ -14,6 +14,7 @@ use Joomla\Registry\Registry;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Form\Form;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelPredictionTemplates
@@ -328,28 +329,22 @@ class sportsmanagementModelPredictionTemplates extends JSMModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
+	   if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info'))
+		{
+			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . $this->context . ''), '');
+			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . ''), '');
+		}
+        $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array(), 'array');
+        
 		// Load the filter state.
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
+		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
+		$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
 
-		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string');
-		$this->setState('filter.state', $published);
-
-		if ($this->jsmjinput->getInt('prediction_id'))
-		{
-			$this->setState('filter.prediction_id', $this->jsmjinput->getInt('prediction_id'));
-			$this->jsmapp->setUserState("com_sportsmanagement.prediction_id", $this->jsmjinput->getInt('prediction_id'));
-		}
-		else
-		{
-			$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.prediction_id', 'filter_prediction_id', '');
-			$this->setState('filter.prediction_id', $temp_user_request);
-			$this->jsmapp->setUserState("com_sportsmanagement.prediction_id", $temp_user_request);
-		}
+		$this->setState('filter.prediction_id', $this->getUserStateFromRequest($this->context . '.filter.prediction_id', 'filter_prediction_id', '', 'string'));
 
 		// List state information.
-		$value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
-		$this->setState('list.start', $value);
+		$this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
+		$this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
 
 		// Filter.order
 		$orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');

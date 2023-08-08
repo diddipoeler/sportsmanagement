@@ -14,8 +14,22 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
 
+$this->saveOrder = $this->sortColumn == 'obj.ordering';
+if ($this->saveOrder && !empty($this->items))
+{
+$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task='.$this->view.'.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{    
+HTMLHelper::_('draggablelist.draggable');
+}
+else
+{
+HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl,$this->saveOrderButton);    
+}
+}
+
 ?>
-<div id="editcell">
+<div class="table-responsive" id="editcell_predictiongames">
     <table class="<?php echo $this->table_data_class; ?>">
         <thead>
         <tr>
@@ -97,45 +111,50 @@ use Joomla\CMS\Router\Route;
             </td>
         </tr>
         </tfoot>
-        <tbody>
+        <tbody <?php if ( $this->saveOrder && version_compare(substr(JVERSION, 0, 3), '4.0', 'ge') ) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($this->sortDirection); ?>" <?php endif; ?>>
 		<?php
 		if (isset($this->items))
 		{
 			$k = 0;
 
-			for ($i = 0, $n = count($this->items); $i < $n; $i++)
-			{
-				$row =& $this->items[$i];
+				foreach ($this->items as $this->count_i => $this->item)
+		{
 
-				$link       = Route::_('index.php?option=com_sportsmanagement&task=prediction.edit&id=' . $row->id);
-				$link2      = Route::_('index.php?option=com_sportsmanagement&task=predictionmember.edit&id=' . $row->id);
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+$this->dragable_group = 'data-dragable-group="none"';
+}    
+				//$this->item =& $this->items[$i];
+
+				$link       = Route::_('index.php?option=com_sportsmanagement&task=prediction.edit&id=' . $this->item->id);
+				$link2      = Route::_('index.php?option=com_sportsmanagement&task=predictionmember.edit&id=' . $this->item->id);
 				$canEdit    = $this->user->authorise('core.edit', 'com_sportsmanagement');
-				$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $row->checked_out == $this->user->get('id') || $row->checked_out == 0;
-				$checked    = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'predictionmembers.', $canCheckin);
+				$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $this->item->checked_out == $this->user->get('id') || $this->item->checked_out == 0;
+				$checked    = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'predictionmembers.', $canCheckin);
 
 				?>
-                <tr class="<?php echo "row$k"; ?>">
+                <tr class="row<?php echo $this->count_i % 2; ?>" <?php echo $this->dragable_group; ?>>
                     <td>
 						<?php
-						echo $this->pagination->getRowOffset($i);
+						echo $this->pagination->getRowOffset($this->count_i);
 						?>
                     </td>
                     <td>
 						<?php
-						echo HTMLHelper::_('grid.id', $i, $row->id);
+						echo HTMLHelper::_('grid.id', $this->count_i, $this->item->id);
 						?>
                     </td>
                     <td>
 						<?php
-						if ($row->checked_out)
+						if ($this->item->checked_out)
 							:
 							?>
-							<?php echo HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'predictionmembers.', $canCheckin); ?>
+							<?php echo HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'predictionmembers.', $canCheckin); ?>
 						<?php endif; ?>
                         <a href="<?php echo $link2; ?>"
                            title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_EDIT_USER'); ?>">
 							<?php
-							echo $row->username;
+							echo $this->item->username;
 							?>
                         </a>
 						<?php
@@ -144,9 +163,9 @@ use Joomla\CMS\Router\Route;
                     </td>
                     <td>
 						<?php
-						// If ( $this->table->($this->user->get( 'id' ), $row->checked_out ) )
+						// If ( $this->table->($this->user->get( 'id' ), $this->item->checked_out ) )
 						// {
-						// 	echo $row->realname;
+						// 	echo $this->item->realname;
 						// }
 						// else
 						{
@@ -157,7 +176,7 @@ use Joomla\CMS\Router\Route;
 							title="<?php echo Text::_( 'Edit SportsManagement-Prediction User' ); ?>">
 							<?php */ ?>
 							<?php
-							echo $row->realname;
+							echo $this->item->realname;
 							?>
 							<?php /*
 							?>
@@ -169,14 +188,14 @@ use Joomla\CMS\Router\Route;
                     </td>
                     <td nowrap='nowrap'>
 						<?php
-						echo $row->predictionname;
+						echo $this->item->predictionname;
 						?>
                     </td>
                     <td style='text-align: center; '>
 						<?php
-						if (isset($row->last_tipp))
+						if (isset($this->item->last_tipp))
 						{
-							list($date, $time) = explode(" ", $row->last_tipp);
+							list($date, $time) = explode(" ", $this->item->last_tipp);
 							$time = date('H:i', strtotime($time));
 							echo sportsmanagementHelper::convertDate($date);
 							echo ' / ';
@@ -190,7 +209,7 @@ use Joomla\CMS\Router\Route;
                     </td>
                     <td style='text-align: center; '>
 						<?php
-						if ($row->reminder)
+						if ($this->item->reminder)
 						{
 							$imgfile  = 'ok.png';
 							$imgtitle = Text::_('Active');
@@ -209,7 +228,7 @@ use Joomla\CMS\Router\Route;
                     </td>
                     <td style='text-align: center; '>
 						<?php
-						if ($row->receipt)
+						if ($this->item->receipt)
 						{
 							$imgfile  = 'ok.png';
 							$imgtitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_ACTIVE');
@@ -228,7 +247,7 @@ use Joomla\CMS\Router\Route;
                     </td>
                     <td style='text-align: center; '>
 						<?php
-						if ($row->show_profile)
+						if ($this->item->show_profile)
 						{
 							$imgfile  = 'ok.png';
 							$imgtitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_ALLOWED');
@@ -247,7 +266,7 @@ use Joomla\CMS\Router\Route;
                     </td>
                     <td style='text-align: center; '>
 						<?php
-						if ($row->admintipp)
+						if ($this->item->admintipp)
 						{
 							$imgfile  = 'ok.png';
 							$imgtitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_ACTIVE');
@@ -266,7 +285,7 @@ use Joomla\CMS\Router\Route;
                     </td>
                     <td style='text-align: center; '>
 						<?php
-						if ($row->approved)
+						if ($this->item->approved)
 						{
 							$imgfile  = 'ok.png';
 							$imgtitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_APPROVED');
@@ -283,8 +302,8 @@ use Joomla\CMS\Router\Route;
 						);
 						?>
                     </td>
-                    <td><?php echo $row->modified; ?></td>
-                    <td><?php echo $row->modusername; ?></td>
+                    <td><?php echo $this->item->modified; ?></td>
+                    <td><?php echo $this->item->modusername; ?></td>
                 </tr>
 				<?php
 				$k = 1 - $k;

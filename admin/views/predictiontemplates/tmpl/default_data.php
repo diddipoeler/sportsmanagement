@@ -14,6 +14,21 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
+$this->saveOrder = $this->sortColumn == 'obj.ordering';
+if ($this->saveOrder && !empty($this->items))
+{
+$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task='.$this->view.'.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{    
+HTMLHelper::_('draggablelist.draggable');
+}
+else
+{
+HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl,$this->saveOrderButton);    
+}
+}
+
+
 ?>
 
 <!--	<div id='editcell'> -->
@@ -46,6 +61,8 @@ if (($this->pred_id > 0) && ($this->predictiongame->master_template))
 if ($this->pred_id > 0)
 {
 	?>
+    
+    <div class="table-responsive" id="editcell_predictiongames">
     <table class="<?php echo $this->table_data_class; ?>">
         <thead>
         <tr>
@@ -101,36 +118,41 @@ if ($this->pred_id > 0)
             </td>
         </tr>
         </tfoot>
-        <tbody>
+        <tbody <?php if ( $this->saveOrder && version_compare(substr(JVERSION, 0, 3), '4.0', 'ge') ) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($this->sortDirection); ?>" <?php endif; ?>>
 		<?php
 		$k = 0;
 
-		for ($i = 0, $n = count($this->items); $i < $n; $i++)
+			foreach ($this->items as $this->count_i => $this->item)
 		{
-			$row =& $this->items[$i];
 
-			$link       = Route::_('index.php?option=com_sportsmanagement&task=predictiontemplate.edit&id=' . $row->id . '&predid=' . $this->prediction_id);
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+$this->dragable_group = 'data-dragable-group="none"';
+}    
+			//$this->item =& $this->items[$i];
+
+			$link       = Route::_('index.php?option=com_sportsmanagement&task=predictiontemplate.edit&id=' . $this->item->id . '&predid=' . $this->prediction_id);
 			$canEdit    = $this->user->authorise('core.edit', 'com_sportsmanagement');
-			$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $row->checked_out == $this->user->get('id') || $row->checked_out == 0;
-			$checked    = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'predictiontemplates.', $canCheckin);
+			$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $this->item->checked_out == $this->user->get('id') || $this->item->checked_out == 0;
+			$checked    = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'predictiontemplates.', $canCheckin);
 			?>
-            <tr class='<?php echo "row$k"; ?>'>
+            <tr class="row<?php echo $this->count_i % 2; ?>" <?php echo $this->dragable_group; ?>>
                 <td>
 					<?php
-					echo $this->pagination->getRowOffset($i);
+					echo $this->pagination->getRowOffset($this->count_i);
 					?>
                 </td>
                 <td>
 					<?php
-					echo HTMLHelper::_('grid.id', $i, $row->id);
+					echo HTMLHelper::_('grid.id', $this->count_i, $this->item->id);
 					?>
                 </td>
                 <td style='text-align:center; '>
 					<?php
-					if ($row->checked_out)
+					if ($this->item->checked_out)
 						:
 						?>
-						<?php echo HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'predictiontemplates.', $canCheckin); ?>
+						<?php echo HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'predictiontemplates.', $canCheckin); ?>
 					<?php endif; ?>
                     <a href='<?php echo $link; ?>'>
 						<?php
@@ -145,21 +167,21 @@ if ($this->pred_id > 0)
                 </td>
                 <td style='text-align:left; ' nowrap='nowrap'>
 					<?php
-					echo $row->template;
+					echo $this->item->template;
 					?>
                 </td>
                 <td style='text-align:left; ' nowrap='nowrap'>
 					<?php
-					echo Text::_($row->title);
+					echo Text::_($this->item->title);
 					?>
                 </td>
                 <td style='text-align:center; '>
 					<?php
-					echo $row->id;
+					echo $this->item->id;
 					?>
                 </td>
-                <td><?php echo $row->modified; ?></td>
-                <td><?php echo $row->username; ?></td>
+                <td><?php echo $this->item->modified; ?></td>
+                <td><?php echo $this->item->username; ?></td>
             </tr>
 			<?php
 			$k = 1 - $k;
@@ -167,6 +189,7 @@ if ($this->pred_id > 0)
 		?>
         </tbody>
     </table>
+    </div>
 	<?php
 }
 ?>
