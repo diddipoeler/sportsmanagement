@@ -47,6 +47,7 @@ if ($this->dPredictionID > 0)
 	<?php
 }
 ?>
+	<div class="table-responsive" id="editcell_predictiongames">
     <table class="<?php echo $this->table_data_class; ?>">
         <thead>
         <tr>
@@ -120,12 +121,17 @@ if ($this->dPredictionID > 0)
 			<?php
 		}
 		?>
-        <tbody>
+        <tbody <?php if ( $this->saveOrder && version_compare(substr(JVERSION, 0, 3), '4.0', 'ge') ) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($this->sortDirection); ?>" <?php endif; ?>>
 		<?php
 		$k = 0;
 
 		for ($i = 0, $n = count($this->items); $i < $n; $i++)
 		{
+
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+$this->dragable_group = 'data-dragable-group="none"';
+}    			
 			$row           =& $this->items[$i];
 			$pred_projects = $this->getModel()->getChilds($row->id);
 			$pred_admins   = $this->getModel()->getAdmins($row->id);
@@ -468,6 +474,7 @@ if ($this->dPredictionID > 0)
 	?>
         </tbody>
     </table>
+	</div>div>
 <?php
 if ($this->dPredictionID > 0)
 {
