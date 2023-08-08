@@ -136,15 +136,15 @@ $this->dragable_group = 'data-dragable-group="none"';
 			//$row           =& $this->items[$i];
 			$pred_projects = $this->getModel()->getChilds($this->item->id);
 			$pred_admins   = $this->getModel()->getAdmins($this->item->id);
-			$published     = HTMLHelper::_('grid.published', $this->item, $i, 'tick.png', 'publish_x.png', 'predictiongames.');
+			//$published     = HTMLHelper::_('grid.published', $this->item, $this->count_i, 'tick.png', 'publish_x.png', 'predictiongames.');
 			$canEdit       = $this->user->authorise('core.edit', 'com_sportsmanagement');
 			$canCheckin    = $this->user->authorise('core.manage', 'com_checkin') || $this->item->checked_out == $this->user->get('id') || $this->item->checked_out == 0;
-			$checked       = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $this->item->checked_out_time, 'predictiongames.', $canCheckin);
+			$checked       = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'predictiongames.', $canCheckin);
 			$link          = Route::_('index.php?option=com_sportsmanagement&task=predictiongame.edit&id=' . $this->item->id);
 			?>
             <tr class="row<?php echo $this->count_i % 2; ?>" <?php echo $this->dragable_group; ?>>
                 <td style='text-align:right; '><?php echo $this->pagination->getRowOffset($this->count_i); ?></td>
-                <td><?php echo HTMLHelper::_('grid.id', $this->count_i, $row->id); ?></td>
+                <td><?php echo HTMLHelper::_('grid.id', $this->count_i, $this->item->id); ?></td>
                 <td style='text-align:center; '>
 					<?php
 					if ($row->checked_out)
@@ -182,7 +182,21 @@ $this->dragable_group = 'data-dragable-group="none"';
                 </td>
                 <td style='text-align:center; ' colspan='2'><?php echo count($pred_projects); ?></td>
                 <td style='text-align:center; ' colspan='2'><?php echo count($pred_admins); ?></td>
-                <td style='text-align:center; '><?php echo $published; ?></td>
+                <td class="center">
+                    <div class="btn-group">
+						<?php echo HTMLHelper::_('jgrid.published', $this->item->published, $this->count_i, 'predictiongames.', $canChange, 'cb'); ?>
+						<?php
+						// Create dropdown items and render the dropdown list.
+						if ($canChange)
+						{
+							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === 2 ? 'un' : '') . 'archive', 'cb' . $this->count_i, 'predictiongames');
+							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === -2 ? 'un' : '') . 'trash', 'cb' . $this->count_i, 'predictiongames');
+							echo HTMLHelper::_('actionsdropdown.render', $this->escape($this->item->name));
+						}
+						?>
+                    </div>
+
+                </td>
 
                 <td style='text-align:center; '>
 					<?php
