@@ -21,11 +21,11 @@ function jlmlnewAjax() {
 
 function jlml_loadMatch(usedteam, matchid, moduleid, nr, origin) {
 	var classadd = 'modJLML' + moduleid + '_row' + nr;
-	var myFx = new Fx.Morph(classadd);
-	myFx.start({'opacity': 0});
+	//var myFx = new Fx.Morph(classadd);
+	//myFx.start({'opacity': 0});
 	jQuery(classadd).addClass('ajaxloading');
-	var myFx = new Fx.Morph(classadd);
-	myFx.start({'opacity': 1});
+	//var myFx = new Fx.Morph(classadd);
+	//myFx.start({'opacity': 1});
 	var ajax = jlmlnewAjax();
 	ajax.open("POST", location.href, true);
 	ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
