@@ -367,6 +367,20 @@ if ( $config->get('debug') )
 				$object->modified_by = $this->jsmuser->get('id');
 				$result = Factory::getDbo()->updateObject('#__sportsmanagement_season_team_id', $object, 'id');
 
+
+// Fields to update.
+$fields = array(
+    $this->jsmdb->quoteName('picture') . ' = ' . $this->jsmdb->quote($data['picture']),
+);
+// Conditions for which records should be updated.
+$conditions = array(
+    $this->jsmdb->quoteName('team_id') . ' = ' . (int) $post['jform']['team_id']
+);
+$this->jsmquery->clear(); 
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_project_team'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->jsmquery);
+$result = $this->jsmdb->execute();
+
 				break;
 			/** liga */
 			case 'league':
