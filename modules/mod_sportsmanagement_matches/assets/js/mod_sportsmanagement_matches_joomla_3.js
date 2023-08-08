@@ -54,7 +54,7 @@ function jlml_loadMatch(usedteam, matchid, moduleid, nr, origin) {
 	};
 	return false;
 }
-
+/**
 var JLMLToolTip = new Class({
 	initialize: function (options) {
 		this.options = Object.extend({
@@ -157,7 +157,8 @@ var JLMLToolTip = new Class({
 		this.message = new Element('span').inject(new Element('div', {'class': this.options.ToolTipClass + '-text'}).inject(this.wrapper));
 	}
 });
-
+*/
+	
 function addJLMLtips(els, suffix) {
 	/**
 	$$(els).each(function (el) {
