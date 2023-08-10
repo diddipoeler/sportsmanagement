@@ -12,6 +12,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModelLeagues
@@ -221,7 +223,12 @@ class sportsmanagementModelLeagues extends JSMModelList
 			$this->jsmdb->escape($this->getState('list.ordering', 'obj.name')) . ' ' .
 			$this->jsmdb->escape($this->getState('list.direction', 'ASC'))
 		);
-
+		
+if ( Factory::getConfig()->get('debug') )
+{  
+Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' layout ' . '<pre>'.print_r($this->jsmquery->dump(),true).'</pre>'  , Log::NOTICE, 'jsmerror');
+}	
+		
 		return $this->jsmquery;
 	}
 
