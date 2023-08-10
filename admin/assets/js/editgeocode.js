@@ -148,6 +148,7 @@ console.log('geocode latitude ' + val.lat);
 console.log('geocode longitude ' + val.lon);
 dpjQuery("#jform_latitude").val(val.lat);
 dpjQuery("#jform_longitude").val(val.lon);
+addLayer(val.lat,val.lon);	
 }); 
 }
 });
