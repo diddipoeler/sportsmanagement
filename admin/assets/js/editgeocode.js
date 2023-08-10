@@ -105,10 +105,56 @@ return '';
 
 	
 	
-var inp = dpjQuery("#jform_geocomplete").val();
+var inp = encodeURI(dpjQuery("#jform_geocomplete").val());
+
+//encodeURI(uri);
 console.log('jform_geocomplete ' + inp );
 //var xmlhttp = new XMLHttpRequest();
-var url = "https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=1&q=" + inp ;
+zip = dpjQuery("#jform_zipcode").val();
+
+var url3 = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getCcountryName&country=' + countryleaflet;
+dpjQuery.ajax({
+url: url3,
+dataType: 'json',
+async: false,
+type : 'POST'
+}).done(function(data2) {
+console.log(data2);
+
+dpjQuery.each(data2, function (i, val) {
+console.log(i);
+console.log(val.text);
+
+country = val.text;
+
+});
+
+});	
+
+var url2 = "https://geocode.maps.co/search?street=" + street + "&city="+ city + "&state=&postalcode=" + zip + "&country=" + country;
+console.log('geocode url ' + url2 );
+
+dpjQuery.ajax({
+url:url2,
+dataType: 'json',
+async: false,
+type: "POST",
+success:function(res){
+console.log('geocode ' );
+dpjQuery.each(res , function (i, val) {
+console.log(i);
+console.log(val);
+console.log('geocode latitude ' + val.lat);
+console.log('geocode longitude ' + val.lon);
+dpjQuery("#jform_latitude").val(val.lat);
+dpjQuery("#jform_longitude").val(val.lon);
+}); 
+}
+});
+
+
+/**
+var url = "https://nominatim.openstreetmap.org/search?format=geojson&addressdetails=1&limit=1&q=" + inp ;
 console.log('openstreetmap url ' + url );
 dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME").val('');
 dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_SHORT_NAME").val('');
@@ -179,7 +225,7 @@ addLayer(val.lat,val.lon);
 }); 
 }
 });
-
+*/
 }
 
 function getAddresString()
