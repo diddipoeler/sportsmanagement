@@ -59,7 +59,7 @@ $fieldsets = $this->form->getFieldsets();
 				break;
                 case 'picture':
 			    echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));
-				//echo $this->loadTemplate($fieldset->name);
+				echo $this->loadTemplate($fieldset->name);
 				echo HTMLHelper::_('bootstrap.endTab');
                 break;
                 case 'description':
