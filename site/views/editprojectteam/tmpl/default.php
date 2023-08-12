@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage editprojectteam
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -57,12 +53,21 @@ $fieldsets = $this->form->getFieldsets();
 		switch ($fieldset->name)
 		{
 			case 'details':
-				// Case 'picture':
-				// case 'extended':
 				echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));
 				echo $this->loadTemplate($fieldset->name);
 				echo HTMLHelper::_('bootstrap.endTab');
 				break;
+                case 'picture':
+			    echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));
+				//echo $this->loadTemplate($fieldset->name);
+				echo HTMLHelper::_('bootstrap.endTab');
+                break;
+                case 'description':
+                
+                break;
+                case 'training':
+                
+                break;
 		}
 	endforeach;
 
