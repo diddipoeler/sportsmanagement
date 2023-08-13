@@ -18,6 +18,7 @@ use Joomla\CMS\Log\Log;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Language\Text;
 
 JLoader::import('components.com_sportsmanagement.helpers.imageselect', JPATH_SITE);
 
@@ -47,7 +48,10 @@ class sportsmanagementModelEditprojectteam extends AdminModel
 	 */
 	function updItem($data)
 	{
+	   // Log::add(Text::_('<pre>'.print_r($data,true).'</pre>'   ), Log::ERROR, 'jsmerror');
+       // Factory::getApplication()->enqueueMessage(Text::_('<pre>'.print_r($data,true).'</pre>'   ), Log::ERROR, 'jsmerror');  
 		$app = Factory::getApplication();
+        $query = Factory::getDbo()->getQuery(true);
 
 		foreach ($data['request'] as $key => $value)
 		{
@@ -70,6 +74,23 @@ class sportsmanagementModelEditprojectteam extends AdminModel
 			Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
 			Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
 		}
+        
+        
+// Fields to update.
+$fields = array(
+    Factory::getDbo()->quoteName('picture') . ' = ' . $data['picture'],
+);
+// Conditions for which records should be updated.
+$conditions = array(
+    Factory::getDbo()->quoteName('team_id') . ' = ' . (int) $data['team_id']
+);
+$query->clear(); 
+$query->update(Factory::getDbo()->quoteName('#__sportsmanagement_project_team'))->set($fields)->where($conditions);
+Factory::getDbo()->setQuery($query);
+$result = Factory::getDbo()->execute();
+
+
+        
 
 	}
 
