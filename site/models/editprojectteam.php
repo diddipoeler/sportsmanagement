@@ -78,7 +78,7 @@ class sportsmanagementModelEditprojectteam extends AdminModel
         
 // Fields to update.
 $fields = array(
-    Factory::getDbo()->quoteName('picture') . ' = ' . $data['picture'],
+    Factory::getDbo()->quoteName('picture') . ' = ' . Factory::getDbo()->quote($data['picture']),
 );
 // Conditions for which records should be updated.
 $conditions = array(
@@ -93,8 +93,8 @@ $result = Factory::getDbo()->execute();
 	}
 		catch (Exception $e)
 		{
-		Factory::getApplication()->enqueueMessage(Text::_('data <pre>'.print_r($data,true).'</pre>'   ), Log::ERROR, 'jsmerror');
-        Factory::getApplication()->enqueueMessage(Text::_('query <pre>'.print_r($query->dump(),true).'</pre>'   ), Log::ERROR, 'jsmerror');
+		Factory::getApplication()->enqueueMessage(Text::_('data <pre>'.print_r($data,true).'</pre>'   ),  'error');
+        Factory::getApplication()->enqueueMessage(Text::_('query <pre>'.print_r($query->dump(),true).'</pre>'   ), 'error');
         Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
 		Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
 //			Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
