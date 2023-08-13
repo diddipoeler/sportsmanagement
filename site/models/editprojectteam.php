@@ -87,8 +87,19 @@ $conditions = array(
 $query->clear(); 
 $query->update(Factory::getDbo()->quoteName('#__sportsmanagement_project_team'))->set($fields)->where($conditions);
 Factory::getDbo()->setQuery($query);
+try
+		{
 $result = Factory::getDbo()->execute();
-
+	}
+		catch (Exception $e)
+		{
+		Factory::getApplication()->enqueueMessage(Text::_('data <pre>'.print_r($data,true).'</pre>'   ), Log::ERROR, 'jsmerror');
+        Factory::getApplication()->enqueueMessage(Text::_('query <pre>'.print_r($query->dump(),true).'</pre>'   ), Log::ERROR, 'jsmerror');
+        Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+		Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+//			Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
+//			Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+		}
 
         
 
