@@ -188,6 +188,7 @@ else
 $html = HTMLHelper::_('links.linksgroups', $groupedButtons);
 
 ?>
+<!--
 <?php if (!empty($this->sidebar)) : ?>
 
 <div id="j-sidebar-container" class="span2">
@@ -201,8 +202,10 @@ $html = HTMLHelper::_('links.linksgroups', $groupedButtons);
 	<?php else : ?>
     <div id="j-main-container">
 		<?php endif; ?>
-
+-->
 <?php
+require(JPATH_COMPONENT_ADMINISTRATOR . '/views/listheader/tmpl/default_3_start_menu.php');   
+
 switch ($view)
 {
 case 'agegroups':
