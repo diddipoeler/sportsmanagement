@@ -190,6 +190,13 @@ document.getElementById('" . $fieldid . "_preview').src = pictureprev;
         jQuery(document).ready(function(){
 		console.log('fieldid: " . $fieldid . "');	
 		select = document.getElementById('" . $fieldid . "').value;
+        console.log('select : ' + select  );
+        if( select === undefined )
+        {
+        select = jQuery('#" . $fieldid . "').val();    
+            
+        }
+        
 		console.log('select : ' + select  );
 		document.getElementById('" . $fieldid . "_preview').src = '" . Uri::root() . "' + select  ;
 
