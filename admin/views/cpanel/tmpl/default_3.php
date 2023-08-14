@@ -35,9 +35,17 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 			<?php endif; ?>
 -->
 <div id="j-main-container">		
+ <section class="content-block" role="main">
+                <div class="row-fluid">
+                    <div class="span12">
+                        <div class="well well-small">              
 <?php
 echo $this->loadTemplate('start_menu');
 ?>
+ </div>
+                    </div>
+                </div>
+            </section>  
 		
             <?php
             if ( ComponentHelper::getParams('com_sportsmanagement')->get('start_install_helper') && !$this->sporttypes )
