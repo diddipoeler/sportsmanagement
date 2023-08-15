@@ -14,6 +14,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementModelRanking
@@ -207,8 +208,18 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 		$query->where('project_id = ' . (int) self::$projectid);
         $query->where('published = 1');
 		$db->setQuery($query);
+		try
+		{
 		$divisions = $db->loadObjectList();
-                    
+}
+		catch (Exception $e)
+		{
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+		
+		}
+
+			
 		if (!self::$round)
 		{
 			sportsmanagementModelProject::$_current_round = 0;
@@ -227,10 +238,13 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 				$db->setQuery($query);
 				$result = $db->loadObject();
 			}
-			catch (Exception $e)
-			{
-				echo $e->getMessage();
-			}
+		catch (Exception $e)
+		{
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+		
+		}
+
 
 			if (!$result)
 			{
@@ -279,10 +293,17 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 		$query->where('r.roundcode <= ' . $db->Quote($current->roundcode));
 		$query->where('m.team1_result IS NOT NULL');
 		$query->order('r.roundcode ASC ');
-
+try
+{
 		$db->setQuery($query);
-
 		$games = $db->loadObjectList();
+}
+		catch (Exception $e)
+		{
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+		
+		}
 
 		$teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0, 'name', $cfg_which_database, __METHOD__);
 
@@ -679,7 +700,8 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 		$query->order('roundcode ASC');
 
 		$db->setQuery($query);
-
+try
+{
 		if (version_compare(JVERSION, '3.0.0', 'ge'))
 		{
 			// Joomla! 3.0 code here
@@ -690,7 +712,15 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 			// Joomla! 2.5 code here
 			$res = $db->loadResultArray();
 		}
+}
+		catch (Exception $e)
+		{
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+		
+		}
 
+		
 		if (!$res)
 		{
 			return $round_id;
