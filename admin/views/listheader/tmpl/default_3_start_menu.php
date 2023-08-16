@@ -19,7 +19,10 @@ use Joomla\CMS\Router\Route;
 
 
 ?>
-  
+<section class="content-block" role="main">
+                <div class="row-fluid">
+                    <div class="span9">
+                        <div class="well well-small">       
 
                                <a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_MENU') ?>"
 				   href="index.php?option=com_sportsmanagement">
@@ -85,7 +88,10 @@ use Joomla\CMS\Router\Route;
 					</div>
 				</a>    
   
-
+ </div>
+                    </div>
+                </div>
+            </section>
   
   
 
