@@ -22,7 +22,8 @@ use Joomla\CMS\Router\Route;
 <section class="content-block" role="main">
                 <div class="row-fluid">
                     <div class="span12">
-                        <div class="well well-small">       
+                       <!-- <div class="well well-small">       -->
+			    <div>
 <div class="span1">
                                <a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_MENU') ?>"
 				   href="index.php?option=com_sportsmanagement">
