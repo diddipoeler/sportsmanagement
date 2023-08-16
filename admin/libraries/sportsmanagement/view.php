@@ -564,7 +564,7 @@ break;
 			}
 			else
 			{
-				$this->sidebar = JHtmlSidebar::render();
+				//$this->sidebar = JHtmlSidebar::render();
 			}
 		}
 	/*	
