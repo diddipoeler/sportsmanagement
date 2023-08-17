@@ -163,7 +163,7 @@ $teams = array();
 					}
 				}
 
-				$text = sprintf("<td width=\"20\" align=\"center\" title=\"%s - %s\" bgcolor=\"%s\"><input type=\"radio\" name=\"match_%s\" %s %s></td>\n", $trow->text, $tcol->text, $color, $trow->value . $tcol->value, $onClick, $checked);
+				$text = sprintf("<td width=\"20\" align=\"center\" title=\"%s - %s\" bgcolor=\"%s\"><input type=\"radio\" name=\"match_%s\" %s %s><br>".$trow->text."<br>".$tcol->text."</td>\n", $trow->text, $tcol->text, $color, $trow->value . $tcol->value, $onClick, $checked);
 			}
 
 			$matrix .= $text;
