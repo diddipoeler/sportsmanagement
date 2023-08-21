@@ -173,6 +173,13 @@ class sportsmanagementModelround extends JSMModelAdmin
 			$tblRound->rdatefirst_timestamp = 0;
 			$tblRound->rdatelast_timestamp  = 0;
 			}
+			elseif ( $post['round_date_first' . $pks[$x]] && !$post['round_date_last' . $pks[$x]] )
+			{
+			$tblRound->round_date_first = sportsmanagementHelper::convertDate($post['round_date_first' . $pks[$x]], 0);;
+			$tblRound->round_date_last  = sportsmanagementHelper::convertDate($post['round_date_first' . $pks[$x]], 0);;	
+			$tblRound->rdatefirst_timestamp = sportsmanagementHelper::getTimestamp($tblRound->round_date_first);;
+			$tblRound->rdatelast_timestamp  = sportsmanagementHelper::getTimestamp($tblRound->round_date_first);;
+			}
 			else
 			{
 			$tblRound->round_date_first = sportsmanagementHelper::convertDate($post['round_date_first' . $pks[$x]], 0);
