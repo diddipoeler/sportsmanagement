@@ -148,16 +148,18 @@ class sportsmanagementModelPredictionTemplate extends AdminModel
 
 		$db->setQuery($query);
 
-		if (!$result = $db->loadObject())
+		try
 		{
-			$this->setError($db->getErrorMsg());
-
-			return false;
+			$db->setQuery($query);
+			$result = $db->loadObject();
 		}
-		else
+		catch (Exception $e)
 		{
-			return $result;
+			$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+			$result = false;
 		}
+        
+        return $result;
 	}
 
 	/**
