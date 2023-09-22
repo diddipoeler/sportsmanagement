@@ -65,7 +65,7 @@ if (!defined('COM_SPORTSMANAGEMENT_GLOBAL_MONDAY'))
 	$base_dir     = JPATH_SITE;
 	$language_tag = $langtag->getTag();
 	$reload       = true;
-	$lang->load($extension, $base_dir, $language_tag, $reload);
+	$langtag->load($extension, $base_dir, $language_tag, $reload);
 }
 
 //$daysOfWeek = array(
