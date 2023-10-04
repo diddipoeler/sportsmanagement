@@ -154,15 +154,17 @@ addLayer(val.lat,val.lon);
 });
 
 
-/**
+
 var url = "https://nominatim.openstreetmap.org/search?format=geojson&addressdetails=1&limit=1&q=" + inp ;
 console.log('openstreetmap url ' + url );
+	/**
 dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME").val('');
 dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_SHORT_NAME").val('');
 dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME").val('');
 dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_SHORT_NAME").val('');
 dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_LONG_NAME").val('');
 dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_SHORT_NAME").val('');
+	*/
 	
 dpjQuery.ajax({
 url:url,
@@ -192,7 +194,7 @@ console.log('road ' + val.address.road);
 console.log('suburb ' + val.address.suburb);
 console.log('neighbourhood ' + val.address.neighbourhood);
 
-
+/**
 state = val.address.state;
 municipality = val.address.municipality;	
 
@@ -223,10 +225,16 @@ if ( result )
 {
 addLayer(val.lat,val.lon);
 }
+*/	
+
+	
 }); 
 }
 });
-*/
+
+
+
+	
 }
 
 function getAddresString()
