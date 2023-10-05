@@ -131,7 +131,7 @@ country = val.text;
 
 });	
 
-var url2 = "https://geocode.maps.co/search?street=" + street + "&city="+ city + "&state=&postalcode=" + zip + "&country=" + country;
+var url2 = "http://geocode.maps.co/search?street=" + street + "&city="+ city + "&state=&postalcode=" + zip + "&country=" + country;
 console.log('geocode url ' + url2 );
 
 dpjQuery.ajax({
