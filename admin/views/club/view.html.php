@@ -16,6 +16,7 @@ use Joomla\CMS\Environment\Browser;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Http\HttpFactory;
 
 /**
  * sportsmanagementViewClub
@@ -37,6 +38,44 @@ class sportsmanagementViewClub extends sportsmanagementView
 	public function init()
 	{
 		//$this->document->addScript('https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js');
+
+//$extended           = sportsmanagementHelper::getExtended($this->item->extended, 'club');
+$this->extended     = sportsmanagementHelper::getExtended($this->item->extended, 'club');;
+//$extendeduser       = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'club');
+$this->extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'club');;
+
+/**
+Parameter 	Value
+amenity 	name and/or type of POI
+street 	housenumber and streetname
+city 	city
+county 	county
+state 	state
+country 	country
+postalcode 	postal code
+*/
+$headers = array();
+$query = $this->item->address;
+$query .=  ', '.$this->item->location;     
+$query .=  ', '.$this->item->zipcode;      
+//$link = 'http://nominatim.openstreetmap.org/search?format=geojson&addressdetails=1&limit=1&q='.$this->item->address.', '.$this->item->location;
+      
+$link = 'http://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=1&q=';      
+      
+$link .= urlencode($query);   
+      
+$http = HttpFactory::getHttp();
+$getresult = $http->get($link);
+$data = json_decode($getresult->body);
+$this->item->state = $data[0]->address->state;      
+$this->form->setValue('state',null, $this->item->state);  
+      
+
+//echo ' head <br><pre>'.print_r($this->item->extended->COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME  ,true).'</pre><br>'; 
+//echo ' link <br><pre>'.print_r($link ,true).'</pre><br>'; 
+//echo ' data <br><pre>'.print_r($data ,true).'</pre><br>';       
+
+		
 		$starttime  = microtime();
 		$this->tmpl = $this->jinput->get('tmpl');
 
@@ -96,12 +135,12 @@ $this->item->logo_small = ComponentHelper::getParams('com_sportsmanagement')->ge
 		{
 			$this->map = true;
 		}
-
+/**
 		//$extended           = sportsmanagementHelper::getExtended($this->item->extended, 'club');
 		$this->extended     = sportsmanagementHelper::getExtended($this->item->extended, 'club');;
 		//$extendeduser       = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'club');
 		$this->extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'club');;
-
+*/
 		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('backend',0,Factory::getApplication()->input->get('view'));
 		$lists                  = array();
 
