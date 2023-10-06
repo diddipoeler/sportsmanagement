@@ -19,7 +19,24 @@ $this->notes = array();
 $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERENCES');
 echo $this->loadTemplate('jsm_notes');		  
 }
- 
+
+if ( $this->extended )
+{
+//$this->extended->getFieldsets();
+foreach($this->extended as $key => $field) : 
+  ?>
+<div class="row">            
+<div class="col-sm-3"><label for="<?php echo $key; ?>"><?php echo Text::_($key); ?></label></div>
+<div class="col-sm-9"><?php echo $field; ?></div>
+</div>  
+<?php
+//echo '<pre>'.print_r($key,true).'</pre>';  
+//echo '<pre>'.print_r($field,true).'</pre>';
+  
+  
+endforeach;  
+}
+
 if ( $this->extended2 )
 {
 //echo 'extended2<pre>'.print_r($this->extended2,true).'</pre>';          
