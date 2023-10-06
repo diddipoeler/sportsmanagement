@@ -17,6 +17,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Http\HttpFactory;
+use Joomla\Registry\Registry;
 
 /**
  * sportsmanagementViewClub
@@ -38,12 +39,39 @@ class sportsmanagementViewClub extends sportsmanagementView
 	public function init()
 	{
 		//$this->document->addScript('https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js');
-
+/**
 //$extended           = sportsmanagementHelper::getExtended($this->item->extended, 'club');
 $this->extended     = sportsmanagementHelper::getExtended($this->item->extended, 'club');;
 //$extendeduser       = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'club');
 $this->extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'club');;
+*/
+      /**
+      foreach ($this->extended->getFieldsets() as $fieldset)
+			{
+$fields = $this->extended->getFieldset($fieldset->name);
 
+
+echo '<pre>'.print_r($fieldset->name,true).'</pre>';
+              
+
+              
+					foreach ($fields as $field)
+					{ 
+                     // echo 'name '.$field->name.'<br>';
+        //echo 'label '.$field->label.'<br>';
+                      
+                     $field->value = 'test';
+          //            echo 'value '.$field->value.'<br>'; 
+                      
+            //          echo 'input '.$field->input.'<br>';
+                      
+                      
+                      
+                      
+                    }
+        
+      }
+      */
 /**
 Parameter 	Value
 amenity 	name and/or type of POI
@@ -54,25 +82,93 @@ state 	state
 country 	country
 postalcode 	postal code
 */
+$country = JSMCountries::getCountryName($this->item->country) ;     
 $headers = array();
 $query = $this->item->address;
 $query .=  ', '.$this->item->location;     
 $query .=  ', '.$this->item->zipcode;      
+$query .=  ', '.$country;        
 //$link = 'http://nominatim.openstreetmap.org/search?format=geojson&addressdetails=1&limit=1&q='.$this->item->address.', '.$this->item->location;
       
 $link = 'http://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=1&q=';      
       
 $link .= urlencode($query);   
+
+//echo ' link <br><pre>'.print_r($link ,true).'</pre><br>';
+      
       
 $http = HttpFactory::getHttp();
 $getresult = $http->get($link);
 $data = json_decode($getresult->body);
-$this->item->state = $data[0]->address->state;      
+      
+      if ( $data[0]->address->state )
+      {
+$this->item->state = $data[0]->address->state;    
+      }
+      if ( $data[0]->address->state_district && !$this->item->state )
+      {
+$this->item->state = $data[0]->address->state_district;    
+      }
+      
+      
 $this->form->setValue('state',null, $this->item->state);  
+      
+      if ( $data[0]->lat )
+      {
+        $this->item->latitude = $data[0]->lat;      
+        $this->form->setValue('latitude',null, $this->item->latitude);
+        
+        $this->item->longitude = $data[0]->lon;      
+        $this->form->setValue('longitude',null, $this->item->longitude);
+        
+      }
+  
+      
+$your_array = json_decode($this->item->extended,true);     
+$your_array["COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME"] = $data[0]->address->county;      
+$your_array["COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_SHORT_NAME"] = $data[0]->address->state_district;        
+$your_array["COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME"] = $data[0]->address->suburb;        
+$your_array["COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_SHORT_NAME"] = $data[0]->address->quarter;        
+      
+$your_array["COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_LONG_NAME"] = $data[0]->address->region;        
+$your_array["COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_SHORT_NAME"] = $data[0]->address->city_district;              
+      
+//echo ' your_array <br><pre>'.print_r($your_array ,true).'</pre><br>';
+$parameter = new Registry;
+$parameter->loadArray($your_array);
+$this->item->extended = (string) $parameter;      
+//echo ' dataextended <br><pre>'.print_r($dataextended ,true).'</pre><br>';
+      
+      
+      
+      
+      /**
+$jRegistry = new Registry;
+//$jRegistry->loadString($this->item->extended);   
+$jRegistry->toArray($this->item->extended);      
+$jRegistry->set("COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME", $data[0]->address->county);
+      
+      
+  
+echo ' jRegistry <br><pre>'.print_r($jRegistry ,true).'</pre><br>'; 
+
+$parameter = new Registry;
+$parameter->loadArray($jRegistry);
+$dataextended = (string) $parameter;      
+echo ' dataextended <br><pre>'.print_r($dataextended ,true).'</pre><br>';       
+*/      
+      
+//$this->form->setValue('COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME','extended', $this->item->county);      
       
 
 //echo ' head <br><pre>'.print_r($this->item->extended->COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME  ,true).'</pre><br>'; 
 //echo ' link <br><pre>'.print_r($link ,true).'</pre><br>'; 
+      
+//echo ' item extended <br><pre>'.print_r($this->item->extended ,true).'</pre><br>';   
+      
+//echo ' item <br><pre>'.print_r($this->item ,true).'</pre><br>'; 
+      
+      
 //echo ' data <br><pre>'.print_r($data ,true).'</pre><br>';       
 
 		
@@ -135,12 +231,12 @@ $this->item->logo_small = ComponentHelper::getParams('com_sportsmanagement')->ge
 		{
 			$this->map = true;
 		}
-/**
+
 		//$extended           = sportsmanagementHelper::getExtended($this->item->extended, 'club');
 		$this->extended     = sportsmanagementHelper::getExtended($this->item->extended, 'club');;
 		//$extendeduser       = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'club');
 		$this->extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'club');;
-*/
+
 		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('backend',0,Factory::getApplication()->input->get('view'));
 		$lists                  = array();
 
