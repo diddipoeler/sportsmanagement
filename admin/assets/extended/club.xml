@@ -95,6 +95,24 @@
         description="COM_SPORTSMANAGEMENT_OSM_BUILDING_DESC">
     </field>
 
+    <field   name="COM_SPORTSMANAGEMENT_OSM_QUARTER" type="text" 
+        label="COM_SPORTSMANAGEMENT_OSM_QUARTER_LABEL"
+        description="COM_SPORTSMANAGEMENT_OSM_QUARTER_DESC">
+    </field>
+     <field   name="COM_SPORTSMANAGEMENT_OSM_SUBURB" type="text" 
+        label="COM_SPORTSMANAGEMENT_OSM_SUBURB_LABEL"
+        description="COM_SPORTSMANAGEMENT_OSM_SUBURB_DESC">
+    </field>
+
+    <field   name="COM_SPORTSMANAGEMENT_OSM_CITY_DISTRICT" type="text" 
+        label="COM_SPORTSMANAGEMENT_OSM_CITY_DISTRICT_LABEL"
+        description="COM_SPORTSMANAGEMENT_OSM_CITY_DISTRICT_DESC">
+    </field>
+     <field   name="COM_SPORTSMANAGEMENT_OSM_CITY" type="text" 
+        label="COM_SPORTSMANAGEMENT_OSM_CITY_LABEL"
+        description="COM_SPORTSMANAGEMENT_OSM_CITY_DESC">
+    </field>
+
 
 
 
