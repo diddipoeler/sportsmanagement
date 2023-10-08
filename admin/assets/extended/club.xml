@@ -55,6 +55,65 @@
         label="COM_SPORTSMANAGEMENT_SUBLOCALITY_LONG_NAME_LABEL"
         description="COM_SPORTSMANAGEMENT_SUBLOCALITY_LONG_NAME_DESC">
     </field>
+
+
+<field   name="COM_SPORTSMANAGEMENT_OSM_LEISURE" type="text" 
+        label="COM_SPORTSMANAGEMENT_OSM_LEISURE_LABEL"
+        description="COM_SPORTSMANAGEMENT_OSM_LEISURE_DESC">
+    </field>
+<field   name="COM_SPORTSMANAGEMENT_OSM_HOUSE_NUMBER" type="text" 
+        label="COM_SPORTSMANAGEMENT_OSM_HOUSE_NUMBER_LABEL"
+        description="COM_SPORTSMANAGEMENT_OSM_HOUSE_NUMBER_DESC">
+    </field>
+    <field   name="COM_SPORTSMANAGEMENT_OSM_ROAD" type="text" 
+        label="COM_SPORTSMANAGEMENT_OSM_ROAD_LABEL"
+        description="COM_SPORTSMANAGEMENT_OSM_ROAD_DESC">
+    </field>
+    <field   name="COM_SPORTSMANAGEMENT_OSM_VILLAGE" type="text" 
+        label="COM_SPORTSMANAGEMENT_OSM_VILLAGE_LABEL"
+        description="COM_SPORTSMANAGEMENT_OSM_VILLAGE_DESC">
+    </field>
+    <field   name="COM_SPORTSMANAGEMENT_OSM_MUNICIPALITY" type="text" 
+        label="COM_SPORTSMANAGEMENT_OSM_MUNICIPALITY_LABEL"
+        description="COM_SPORTSMANAGEMENT_OSM_MUNICIPALITY_DESC">
+    </field>
+    <field   name="COM_SPORTSMANAGEMENT_OSM_COUNTY" type="text" 
+        label="COM_SPORTSMANAGEMENT_OSM_COUNTY_LABEL"
+        description="COM_SPORTSMANAGEMENT_OSM_COUNTY_DESC">
+    </field>
+    <field   name="COM_SPORTSMANAGEMENT_OSM_STATE" type="text" 
+        label="COM_SPORTSMANAGEMENT_OSM_STATE_LABEL"
+        description="COM_SPORTSMANAGEMENT_OSM_STATE_DESC">
+    </field>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     
   </fieldset>
