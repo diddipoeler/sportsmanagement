@@ -112,7 +112,10 @@
         label="COM_SPORTSMANAGEMENT_OSM_CITY_LABEL"
         description="COM_SPORTSMANAGEMENT_OSM_CITY_DESC">
     </field>
-
+ <field   name="COM_SPORTSMANAGEMENT_OSM_TOWN" type="text" 
+        label="COM_SPORTSMANAGEMENT_OSM_TOWN_LABEL"
+        description="COM_SPORTSMANAGEMENT_OSM_TOWN_DESC">
+    </field>
 
 
 
