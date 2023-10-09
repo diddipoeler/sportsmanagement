@@ -117,7 +117,14 @@
         description="COM_SPORTSMANAGEMENT_OSM_TOWN_DESC">
     </field>
 
-
+ <field   name="COM_SPORTSMANAGEMENT_OSM_HAMLET" type="text" 
+        label="COM_SPORTSMANAGEMENT_OSM_HAMLET_LABEL"
+        description="COM_SPORTSMANAGEMENT_OSM_HAMLET_DESC">
+    </field>
+ <field   name="COM_SPORTSMANAGEMENT_OSM_NEIGHBOURHOOD" type="text" 
+        label="COM_SPORTSMANAGEMENT_OSM_NEIGHBOURHOOD_LABEL"
+        description="COM_SPORTSMANAGEMENT_OSM_NEIGHBOURHOOD_DESC">
+    </field>
 
 
 
