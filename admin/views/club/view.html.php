@@ -145,7 +145,7 @@ $your_array["COM_SPORTSMANAGEMENT_OSM_QUARTER"] = $data[0]->address->quarter;
 $your_array["COM_SPORTSMANAGEMENT_OSM_SUBURB"] = $data[0]->address->suburb;      
 $your_array["COM_SPORTSMANAGEMENT_OSM_CITY_DISTRICT"] = $data[0]->address->city_district;      
 $your_array["COM_SPORTSMANAGEMENT_OSM_CITY"] = $data[0]->address->city;      
-
+$your_array["COM_SPORTSMANAGEMENT_OSM_TOWN"] = $data[0]->address->town;  
 		
 //echo ' your_array <br><pre>'.print_r($your_array ,true).'</pre><br>';
 $parameter = new Registry;
