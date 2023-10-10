@@ -850,8 +850,9 @@ document.getElementById("filter_season").classList.add("filter_season");
 				{
 					if (version_compare(JSM_JVERSION, '3', 'eq'))
 					{
-						ToolbarHelper::apply($this->view . '.apply', 'JTOOLBAR_APPLY');
 						ToolbarHelper::save($this->view . '.save', 'JTOOLBAR_SAVE');
+						ToolbarHelper::apply($this->view . '.apply', 'JTOOLBAR_APPLY');
+						
 
 						if (!array_key_exists($this->view, $search_tmpl_array))
 						{
@@ -860,8 +861,9 @@ document.getElementById("filter_season").classList.add("filter_season");
 					}
 					elseif (version_compare(JSM_JVERSION, '4', 'eq'))
 					{
-						$toolbarButtons[] = array('apply', $this->view . '.apply');
 						$toolbarButtons[] = array('save', $this->view . '.save');
+						$toolbarButtons[] = array('apply', $this->view . '.apply');
+						
 
 						if (!array_key_exists($this->view, $search_tmpl_array))
 						{
