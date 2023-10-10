@@ -879,13 +879,15 @@ document.getElementById("filter_season").classList.add("filter_season");
 					if (version_compare(JSM_JVERSION, '3', 'eq'))
 					{
 						// We can save the new record
-						ToolbarHelper::apply($this->view . '.apply', 'JTOOLBAR_APPLY');
 						ToolbarHelper::save($this->view . '.save', 'JTOOLBAR_SAVE');
+						ToolbarHelper::apply($this->view . '.apply', 'JTOOLBAR_APPLY');
+						
 					}
 					elseif (version_compare(JSM_JVERSION, '4', 'eq'))
 					{
-						$toolbarButtons[] = array('apply', $this->view . '.apply');
 						$toolbarButtons[] = array('save', $this->view . '.save');
+						$toolbarButtons[] = array('apply', $this->view . '.apply');
+						
 					}
 
 					// We can save this record, but check the create permission to see if we can return to make a new one.
