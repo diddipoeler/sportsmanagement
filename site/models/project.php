@@ -1665,7 +1665,7 @@ self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT')
 
 		if (is_null(self::$_match))
 		{
-			$query->select('m.*,DATE_FORMAT(m.time_present,"%H:%i") time_present, r.project_id, p.timezone ');
+			$query->select('m.*,DATE_FORMAT(m.time_present,"%H:%i") time_present, r.project_id, p.timezone, p.game_parts ');
 			$query->from('#__sportsmanagement_match AS m ');
 			$query->join('INNER', '#__sportsmanagement_round AS r on r.id = m.round_id ');
 			$query->join('INNER', '#__sportsmanagement_project AS p on r.project_id = p.id ');
