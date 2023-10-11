@@ -93,9 +93,6 @@ $query .=  ', '.$country;
 $link = 'http://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=1&q=';      
       
 $link .= urlencode($query);   
-
-//echo ' link <br><pre>'.print_r($link ,true).'</pre><br>';
-      
       
 $http = HttpFactory::getHttp();
 $getresult = $http->get($link);
@@ -185,7 +182,7 @@ echo ' dataextended <br><pre>'.print_r($dataextended ,true).'</pre><br>';
       
 //echo ' item <br><pre>'.print_r($this->item ,true).'</pre><br>'; 
       
-      
+//echo ' link <br><pre>'.print_r($link ,true).'</pre><br>';      
 //echo ' data <br><pre>'.print_r($data ,true).'</pre><br>';       
 
 		
