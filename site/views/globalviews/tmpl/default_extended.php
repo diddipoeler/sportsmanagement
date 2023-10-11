@@ -26,7 +26,7 @@ if ( $this->extended )
 foreach($this->extended as $key => $field) : 
   ?>
 <div class="row">            
-<div class="col-sm-3"><label for="<?php echo $key; ?>"><?php echo Text::_($key); ?></label></div>
+<div class="col-sm-3"><label for="<?php echo Text::_($key); ?>"><?php echo Text::_($key); ?></label></div>
 <div class="col-sm-9"><?php echo $field; ?></div>
 </div>  
 <?php
