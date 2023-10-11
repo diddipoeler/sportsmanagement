@@ -18,6 +18,9 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Component\ComponentHelper;
 
+$lang = Factory::getApplication()->getLanguage();
+$currentLanguage = substr($lang->getTag(), 0, 2);
+
 $user            = Factory::getUser();
 $userId          = $user->get('id');
 $templatesToLoad = array('footer', 'listheader');
@@ -275,7 +278,8 @@ style="width: 120px; <?php echo $append; ?>"
             jQuery(function ($) {
                 $('#birthday<?php echo $this->item->id; ?>').datetimepicker(
                 {
-                    format: 'DD-MM-YYYY'
+                    format: 'DD-MM-YYYY',
+                    locale: <?php echo "'" . $currentLanguage . "'"; ?>
                 }
                 );
 		$("#birthday<?php echo $this->item->id; ?>").on("change.datetimepicker", ({date, oldDate}) => {
