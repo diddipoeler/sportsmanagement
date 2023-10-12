@@ -21,6 +21,9 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Uri\Uri;
 
+$lang = Factory::getApplication()->getLanguage();
+$currentLanguage = substr($lang->getTag(), 0, 2);
+
 $this->saveOrder = $this->sortColumn == 'r.ordering';
 if ($this->saveOrder && !empty($this->items))
 {
@@ -183,9 +186,10 @@ style="width: 120px; <?php echo $append; ?>"
 
 <script type="text/javascript">
             jQuery(function ($) {
-                $('#round_date_first<?php echo $this->item->id; ?>').datetimepicker(
+				$('#round_date_first<?php echo $this->item->id; ?>').datetimepicker(
                 {
-                    format: 'DD-MM-YYYY'
+					format: 'DD-MM-YYYY',
+					locale: <?php echo "'" . $currentLanguage . "'"; ?>
                 }
                 );
 		$("#round_date_first<?php echo $this->item->id; ?>").on("change.datetimepicker", ({date, oldDate}) => {
@@ -233,9 +237,10 @@ style="width: 120px; <?php echo $append; ?>"
 
 <script type="text/javascript">
             jQuery(function ($) {
-                $('#round_date_last<?php echo $this->item->id; ?>').datetimepicker(
+				$('#round_date_last<?php echo $this->item->id; ?>').datetimepicker(
                 {
-                    format: 'DD-MM-YYYY'
+                    format: 'DD-MM-YYYY',
+					locale: <?php echo "'" . $currentLanguage . "'"; ?>
                 }
                 );
 		$("#round_date_last<?php echo $this->item->id; ?>").on("change.datetimepicker", ({date, oldDate}) => {

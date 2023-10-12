@@ -19,6 +19,9 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
 
+$lang = Factory::getApplication()->getLanguage();
+$currentLanguage = substr($lang->getTag(), 0, 2);
+
 $colspan = ($this->projectws->allow_add_time) ? 20 : 19;
 
 if ($this->templateConfig == null)
@@ -333,7 +336,8 @@ style="width: 120px;"
             jQuery(function ($) {
                 $('#datepicker<?php echo $row->id; ?>').datetimepicker(
                 {
-                    format: 'DD-MM-YYYY'
+                    format: 'DD-MM-YYYY',
+                    locale: <?php echo "'" . $currentLanguage . "'"; ?>
                 }
                 );
 		$("#datepicker<?php echo $row->id; ?>").on("change.datetimepicker", ({date, oldDate}) => {
@@ -374,7 +378,8 @@ data-toggle="datetimepicker"
             jQuery(function ($) {
                 $('#timepicker<?php echo $row->id; ?>').datetimepicker(
                 {
-                    format: 'HH:mm'
+                    format: 'HH:mm',
+                    locale: <?php echo "'" . $currentLanguage . "'"; ?>
                 }
                 );
 		    
