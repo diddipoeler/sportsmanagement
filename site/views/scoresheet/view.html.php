@@ -74,7 +74,7 @@ class sportsmanagementViewScoresheet extends sportsmanagementView
 			$fields['SpielernummerB' . $position] = $player->knvbnr;
 		}
 
-		if ($this->match[0]->game_parts == "3")
+		if ($this->match[0]->game_parts <= "3")
 		{
 			$pdf = new FPDM('media/' . $this->option . DIRECTORY_SEPARATOR . $this->view . DIRECTORY_SEPARATOR . 'Spielbericht_3.pdf');
 		}
