@@ -70,37 +70,39 @@ class sportsmanagementModelplayers extends JSMModelList
 	 */
 	function getListQuery()
 	{
-		$this->_type            = $this->jsmapp->getUserState("$this->jsmoption.persontype", '0');
-		$this->_project_id      = $this->jsmapp->getUserState("$this->jsmoption.pid", '0');
-		$this->_team_id         = $this->jsmapp->getUserState("$this->jsmoption.team_id", '0');
-		$this->_season_id       = $this->jsmapp->getUserState("$this->jsmoption.season_id", '0');
-		$this->_project_team_id = $this->jsmapp->getUserState("$this->jsmoption.project_team_id", '0');
-        $season_id = $this->jsmjinput->get('season_id');
+		$whichview = $this->jsmjinput->get('whichview');
+		if ($whichview === 'seasons')
+		{
+			$this->_type            = 0;
+			$this->_project_id      = 0;
+			$this->_team_id         = 0;
+			$this->_season_id       = 0;
+			$this->_project_team_id = 0;
+		}
+		else
+		{
+			$this->_type            = $this->jsmapp->getUserState("$this->jsmoption.persontype", '0');
+			$this->_project_id      = $this->jsmapp->getUserState("$this->jsmoption.pid", '0');
+			$this->_team_id         = $this->jsmapp->getUserState("$this->jsmoption.team_id", '0');
+			$this->_season_id       = $this->jsmapp->getUserState("$this->jsmoption.season_id", '0');
+			$this->_project_team_id = $this->jsmapp->getUserState("$this->jsmoption.project_team_id", '0');
+		}
+		
 		$clubselect = $this->jsmjinput->get('assignclub');
 		$layout = $this->jsmjinput->get('layout');
-        
-		
-if ( Factory::getConfig()->get('debug') )
-{  
-Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' _type ' . $this->_type), Log::NOTICE, 'jsmerror');
-Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' _project_id ' . $this->_project_id), Log::NOTICE, 'jsmerror');
-Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' _team_id ' . $this->_team_id), Log::NOTICE, 'jsmerror');
-Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' _season_id ' . $this->_season_id), Log::NOTICE, 'jsmerror');
+	    
+		if ( Factory::getConfig()->get('debug') )
+		{  
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' _type ' . $this->_type), Log::NOTICE, 'jsmerror');
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' _project_id ' . $this->_project_id), Log::NOTICE, 'jsmerror');
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' _team_id ' . $this->_team_id), Log::NOTICE, 'jsmerror');
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' _season_id ' . $this->_season_id), Log::NOTICE, 'jsmerror');
+						
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' _project_team_id ' . $this->_project_team_id), Log::NOTICE, 'jsmerror');
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' layout ' . $this->jsmjinput->getVar('layout')), Log::NOTICE, 'jsmerror');
+			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' club ' . $this->jsmjinput->get('club')), Log::NOTICE, 'jsmerror');	
+		}
 
-Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' season_id ' . $season_id), Log::NOTICE, 'jsmerror');
-
-Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' _project_team_id ' . $this->_project_team_id), Log::NOTICE, 'jsmerror');
-Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' layout ' . $this->jsmjinput->getVar('layout')), Log::NOTICE, 'jsmerror');
-Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' club ' . $this->jsmjinput->get('club')), Log::NOTICE, 'jsmerror');	
-}
-		
-//        if ( $season_id )
-//        {
-//        $mdl = BaseDatabaseModel::getInstance("Seasons", "sportsmanagementModel");
-//		$season_name = substr($mdl->getSeasonName($season_id),0,4);
-//        $birthday = $season_name.'-01-01';  
-//        }
-        
 		$this->jsmquery->clear();
 		$this->jsmsubquery1->clear();
 		$this->jsmquery->select('pl.*');
@@ -109,10 +111,6 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' club ' . $this->jsmjinput->get(
 		$this->jsmquery->join('LEFT', '#__sportsmanagement_agegroup AS ag ON ag.id = pl.agegroup_id');
 		$this->jsmquery->select('uc.name AS editor');
 		$this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = pl.checked_out');
-//        if ( $season_id )
-//        {
-//        $this->jsmquery->where('pl.birthday < ' . $this->jsmdb->Quote('' . $birthday . '') );
-//        }
 
 		if ( $this->jsmjinput->getVar('layout') === 'assignpersons' )
 		{
