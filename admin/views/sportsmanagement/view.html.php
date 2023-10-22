@@ -114,7 +114,8 @@ class sportsmanagementViewsportsmanagement extends sportsmanagementView
 	 *
 	 * @return void
 	 */
-	protected function setDocument()
+	 /**
+	public function setDocument($document)
 	{
 		$isNew = $this->item->id == 0;
 		$document = Factory::getDocument();
@@ -123,4 +124,5 @@ class sportsmanagementViewsportsmanagement extends sportsmanagementView
 		$document->addScript(Uri::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
 		Text::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
 	}
+	*/
 }

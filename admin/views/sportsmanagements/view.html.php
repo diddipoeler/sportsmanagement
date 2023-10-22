@@ -105,9 +105,11 @@ class sportsmanagementViewsportsmanagements extends sportsmanagementView
 	 *
 	 * @return void
 	 */
-	protected function setDocument()
+	 /**
+	public function setDocument($document)
 	{
 		$document = Factory::getDocument();
 		$document->setTitle(Text::_('COM_HELLOWORLD_ADMINISTRATION'));
 	}
+	*/
 }

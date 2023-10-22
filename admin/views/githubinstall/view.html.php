@@ -48,10 +48,12 @@ class sportsmanagementViewgithubinstall extends sportsmanagementView
 	 *
 	 * @return void
 	 */
-	protected function setDocument()
+	 /**
+	public function setDocument($document)
 	{
 		$this->document->setTitle(Text::_('COM_SPORTSMANAGEMENT_GITHUBINSTALL'));
 		$this->document->addScript(Uri::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
 		Text::script('COM_SPORTSMANAGEMENT_GITHUB_UPDATE');
 	}
+	*/
 }

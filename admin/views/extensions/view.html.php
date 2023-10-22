@@ -89,9 +89,11 @@ class sportsmanagementViewextensions extends sportsmanagementView
 	 *
 	 * @return void
 	 */
-	protected function setDocument()
+	 /**
+	public function setDocument($document)
 	{
 		$this->document->setTitle(Text::_('COM_SPORTSMANAGEMENT_ADMIN_EXTENSIONS'));
 	}
+	*/
 
 }

@@ -72,10 +72,12 @@ class sportsmanagementViewTreeto extends sportsmanagementView
 	 *
 	 * @return void
 	 */
-	protected function setDocument()
+	 /**
+	public function setDocument($document)
 	{
 
 	}
+*/
 
 	/**
 	 * sportsmanagementViewTreeto::_displayGennode()
