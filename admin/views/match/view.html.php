@@ -1033,7 +1033,7 @@ $mdlPlayground      = BaseDatabaseModel::getInstance("Playgrounds", "sportsmanag
 	 *
 	 * @return void
 	 */
-	protected function setDocument()
+	public function setDocument(Document $document)
 	{
 		$isNew = $this->item->id == 0;
 		$this->document->setTitle($isNew ? Text::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : Text::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
