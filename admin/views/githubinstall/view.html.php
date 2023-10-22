@@ -40,7 +40,7 @@ class sportsmanagementViewgithubinstall extends sportsmanagementView
 		{
 		$this->notes[] = $value;		
 		}
-		$this->setDocument();
+		//$this->setDocument();
 	}
 
 	/**
