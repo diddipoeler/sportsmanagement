@@ -126,6 +126,9 @@ class sportsmanagementModelplayers extends JSMModelList
             }
             $this->jsmquery->where('t.id = ' . $this->_team_id);	
 			}
+			else if ($whichview === 'seasons')
+			{
+			}
 			else
 			{
 			$this->jsmquery->join('INNER', '#__sportsmanagement_season_person_id AS sp ON sp.person_id = pl.id');
