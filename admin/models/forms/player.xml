@@ -57,7 +57,6 @@ filter="unset"
 <field
 			name="gender"
 			type="list"
-			class="radio btn-group btn-group-yesno"
 			default="0"
 			size="4"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_GENDER"
