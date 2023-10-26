@@ -69,7 +69,17 @@ img.car {
    escapeMarkup: function(m) { return m; }
 ';
 $append = '';
+
+if (version_compare( substr(JVERSION, 0, 3), '5.0', 'ge'))
+{
+HTMLHelper::_('formbehavior.chosen', '.test1', $opt);
+}
+else
+{
 HTMLHelper::_('formbehavior2.select2', '.test1', $opt);
+}
+
+
 
 ?>
 <fieldset class="adminform">

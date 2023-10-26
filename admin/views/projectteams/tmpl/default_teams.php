@@ -395,7 +395,18 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 					<?PHP
 					if (ComponentHelper::getParams($this->jinput->getCmd('option'))->get('show_option_projectteam_change', ''))
 					{
-						HTMLHelper::_('formbehavior2.select2', '.optteams', $optteams);
+						
+if (version_compare( substr(JVERSION, 0, 3), '5.0', 'ge'))
+{
+HTMLHelper::_('formbehavior.chosen', '.optteams', $optteams);
+}
+else
+{
+HTMLHelper::_('formbehavior2.select2', '.optteams', $optteams);
+}									
+						
+						
+						
 						echo HTMLHelper::_(
 							'select.genericlist', $this->projectsbyleagueseason, 'new_project_id' . $this->item->id,
 							'style="width:225px;" class="optteams" size="1" onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true"' . '', 'value', 'text', $this->project_id

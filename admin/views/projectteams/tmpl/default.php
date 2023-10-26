@@ -104,7 +104,18 @@ img.car {
 ';
 
 		$append = '';
-		HTMLHelper::_('formbehavior2.select2', '.test1', $opt);
+		
+if (version_compare( substr(JVERSION, 0, 3), '5.0', 'ge'))
+{
+HTMLHelper::_('formbehavior.chosen', '.test1', $opt);
+}
+else
+{
+HTMLHelper::_('formbehavior2.select2', '.test1', $opt);
+}
+
+		
+
 
 		if (isset($this->lists['country_teams']))
 		{
@@ -122,7 +133,18 @@ img.car {
 
 		if (ComponentHelper::getParams($this->jinput->getCmd('option'))->get('show_option_projectteam_change', ''))
 		{
-			HTMLHelper::_('formbehavior2.select2', '.optproject', $optproject);
+			
+if (version_compare( substr(JVERSION, 0, 3), '5.0', 'ge'))
+{
+HTMLHelper::_('formbehavior.chosen', '.optproject', $optproject);
+}
+else
+{
+HTMLHelper::_('formbehavior2.select2', '.optproject', $optproject);
+}			
+			
+			
+			
 			echo HTMLHelper::_(
 				'select.genericlist', $this->projectsbyleagueseason, 'all_project_id',
 				'style="width:225px;" class="optproject" size="1" ' . '', 'value', 'text', $this->project_id
