@@ -193,7 +193,11 @@ $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array()
 
 		if ($this->getState('filter.search'))
 		{
-			$this->jsmquery->where(' ( LOWER(a.name) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%') . ' OR LOWER(a.unique_id) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%') . ')');
+			$this->jsmquery->where(' ( LOWER(a.name) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%') .
+                                  ' OR a.id = ' . $this->jsmdb->Quote('' . $this->getState('filter.search') . '') .
+                                   ' OR LOWER(a.unique_id) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%') . ')'  
+                                  
+                                  );
 		}
 
 		if ($this->getState('filter.search_nation'))
