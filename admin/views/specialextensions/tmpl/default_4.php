@@ -54,11 +54,22 @@ require(JPATH_COMPONENT_ADMINISTRATOR . '/views/listheader/tmpl/default_4_start_
 							$logo = Uri::root() . 'images/com_sportsmanagement/database/placeholders/placeholder_150.png';
 						}
 						?>
-                        <a class="btn btn-jsm-dash"
-                           href="index.php?option=com_sportsmanagement&view=<?php echo Text::_($value) ?>">
-                            <img src="<?php echo $logo ?>" width="125" alt="<?php echo Text::_($value) ?>"/><br/>
-                            <span><?php echo Text::_($value) ?></span>
-                        </a>
+						<nav class="quick-icons px-3 py-3">
+							<ul class="nav flex-wrap" style="grid-gap: 0.5rem; grid-template-columns: repeat(auto-fit,minmax(180px,1fr));">
+								<li class="quickicon quickicon-single">
+									<a title="<?php echo Text::_($value) ?>"
+									href="index.php?option=com_sportsmanagement&view=<?php echo Text::_($value) ?>">
+										<div class="quickicon-icon">
+											<img src="<?php echo $logo ?>" 
+											height="48px" alt="<?php echo Text::_($value) ?>"/>
+										</div>
+										<div class="quickicon-name d-flex align-items-end">
+											<?php echo Text::_($value) ?>
+										</div>
+									</a>
+								</li>
+							</ul>
+						</nav>
 						<?php
 					}
 					?>
