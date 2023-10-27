@@ -15,17 +15,14 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Log\Log;
-use Joomla\CMS\Router\Route;
 
 
 ?>
-<section class="content-block" role="main">
-                <div class="row-fluid">
-                    <div class="span12">
-                       <!-- <div class="well well-small">       -->
-			    <div>
-<div class="span1">
-                               <a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_MENU') ?>"
+<div class="col-md-12">
+    <nav class="quick-icons px-3 pb-3" aria-label="Schnellstartlinks Sportspamangement">
+		<ul class="nav flex-wrap">
+			<li class="quickicon quickicon-single">
+				<a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_MENU') ?>"
 				   href="index.php?option=com_sportsmanagement">
 					<div class="quickicon-icon">
 						<img src="<?php echo JURI::base(false) ?>/components/com_sportsmanagement/assets/icons/transparent_schrift_48.png">
@@ -34,9 +31,9 @@ use Joomla\CMS\Router\Route;
 						<?php echo Text::_('COM_SPORTSMANAGEMENT_MENU') ?>             
 					</div>
 				</a>
-</div>
-<div class="span1">				
-                   <a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_EXTENSIONS') ?>"
+			</li>
+			<li class="quickicon quickicon-single">
+				<a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_EXTENSIONS') ?>"
 				   href="index.php?option=com_sportsmanagement&view=extensions">
 					<div class="quickicon-icon">
 						<img src="<?php echo JURI::base(false) ?>/components/com_sportsmanagement/assets/icons/extensions.png">
@@ -44,10 +41,11 @@ use Joomla\CMS\Router\Route;
 					<div class="quickicon-name d-flex align-items-end">
 						<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_EXTENSIONS') ?>             
 					</div>
-				</a>       
-</div>
-<div class="span1">				
-                   <a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_SPECIAL_EXTENSIONS') ?>"
+				</a>
+			</li>
+
+			<li class="quickicon quickicon-single">
+				<a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_SPECIAL_EXTENSIONS') ?>"
 				   href="index.php?option=com_sportsmanagement&view=specialextensions">
 					<div class="quickicon-icon">
 						<img src="<?php echo JURI::base(false) ?>/components/com_sportsmanagement/assets/icons/extensions.png">
@@ -55,10 +53,11 @@ use Joomla\CMS\Router\Route;
 					<div class="quickicon-name d-flex align-items-end">
 						<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_SPECIAL_EXTENSIONS') ?>             
 					</div>
-				</a>       
-</div>
-<div class="span1">				
-                  <a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_PROJECTS') ?>"
+				</a>
+			</li>
+			
+			<li class="quickicon quickicon-single">
+				<a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_PROJECTS') ?>"
 				   href="index.php?option=com_sportsmanagement&view=projects">
 					<div class="quickicon-icon">
 						<img src="<?php echo JURI::base(false) ?>/components/com_sportsmanagement/assets/icons/projekte.png">
@@ -66,21 +65,21 @@ use Joomla\CMS\Router\Route;
 					<div class="quickicon-name d-flex align-items-end">
 						<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_PROJECTS') ?>             
 					</div>
-				</a>      
-</div>
-<div class="span1">				
-                  <a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_PREDICTIONS') ?>"
-				   href="index.php?option=com_sportsmanagement&view=predictions">
+				</a>
+			</li>
+			<li class="quickicon quickicon-single">
+				<a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_PREDICTIONS') ?>"
+				   href="index.php?option=com_sportsmanagement&view=predictiongames">
 					<div class="quickicon-icon">
 						<img src="<?php echo JURI::base(false) ?>/components/com_sportsmanagement/assets/icons/tippspiele.png">
 					</div>
 					<div class="quickicon-name d-flex align-items-end">
 						<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_PREDICTIONS') ?>             
 					</div>
-				</a>      
-</div>
-<div class="span1">				
-                       <a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_CURRENT_SEASONS') ?>"
+				</a>
+			</li>
+			<li class="quickicon quickicon-single">
+				<a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_CURRENT_SEASONS') ?>"
 				   href="index.php?option=com_sportsmanagement&view=currentseasons">
 					<div class="quickicon-icon">
 						<img src="<?php echo JURI::base(false) ?>/components/com_sportsmanagement/assets/icons/aktuellesaison.png">
@@ -88,10 +87,11 @@ use Joomla\CMS\Router\Route;
 					<div class="quickicon-name d-flex align-items-end">
 						<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_CURRENT_SEASONS') ?>             
 					</div>
-				</a>   
-</div>
-<div class="span1">				
-                      <a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_GOOGLE_CALENDAR') ?>"
+				</a>
+			</li>
+
+			<li class="quickicon quickicon-single">
+				<a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_GOOGLE_CALENDAR') ?>"
 				   href="index.php?option=com_sportsmanagement&view=jsmgcalendars">
 					<div class="quickicon-icon">
 						<img src="<?php echo JURI::base(false) ?>/components/com_sportsmanagement/assets/icons/google-calendar-48-icon.png">
@@ -99,32 +99,11 @@ use Joomla\CMS\Router\Route;
 					<div class="quickicon-name d-flex align-items-end">
 						<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_GOOGLE_CALENDAR') ?>             
 					</div>
-				</a>    
-</div>
+				</a>
+			</li>
 
-  
- </div>
-                    </div>
-                </div>
-            </section>
-  
-  
-
+			
+		</ul>
+    </nav>
+				</div>
 	<?PHP
-
-                          
-                          
-          
-                          
-                          
-                          
-                          
-                          
-                          
-                          
-                          
-                          
-                          
-                          
-                          
-                          
