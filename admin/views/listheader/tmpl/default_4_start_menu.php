@@ -61,7 +61,7 @@ use Joomla\CMS\Log\Log;
 					<a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_PROJECTS') ?>"
 					href="index.php?option=com_sportsmanagement&view=projects">
 						<div class="quickicon-icon">
-							<img src="<?php echo JURI::base(false) ?>/components/com_sportsmanagement/assets/icons/projekte.png">
+							<img src="<?php echo JURI::base(false) ?>/components/com_sportsmanagement/assets/icons/projekte.png" style="background:white;">
 						</div>
 						<div class="quickicon-name d-flex align-items-end">
 							<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_PROJECTS') ?>             
@@ -72,7 +72,7 @@ use Joomla\CMS\Log\Log;
 					<a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_PREDICTIONS') ?>"
 					href="index.php?option=com_sportsmanagement&view=predictiongames">
 						<div class="quickicon-icon">
-							<img src="<?php echo JURI::base(false) ?>/components/com_sportsmanagement/assets/icons/tippspiele.png">
+							<img src="<?php echo JURI::base(false) ?>/components/com_sportsmanagement/assets/icons/tippspiele.png" style="background:white;">
 						</div>
 						<div class="quickicon-name d-flex align-items-end">
 							<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_PREDICTIONS') ?>             
@@ -83,7 +83,7 @@ use Joomla\CMS\Log\Log;
 					<a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_CURRENT_SEASONS') ?>"
 					href="index.php?option=com_sportsmanagement&view=currentseasons">
 						<div class="quickicon-icon">
-							<img src="<?php echo JURI::base(false) ?>/components/com_sportsmanagement/assets/icons/aktuellesaison.png">
+							<img src="<?php echo JURI::base(false) ?>/components/com_sportsmanagement/assets/icons/aktuellesaison.png" style="background:white;">
 						</div>
 						<div class="quickicon-name d-flex align-items-end">
 							<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_CURRENT_SEASONS') ?>             
