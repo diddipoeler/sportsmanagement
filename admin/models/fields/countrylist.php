@@ -134,7 +134,16 @@ img.car {
 	  }
 	  
 		$html = array();
-    $html[] = HTMLHelper::_('formbehavior2.select2', '.'.$this->fieldname, $opt);
+        
+if (version_compare( substr(JVERSION, 0, 3), '5.0', 'ge'))
+{
+$html[] = HTMLHelper::_('formbehavior.chosen', '.'.$this->fieldname, $opt);
+}
+else
+{
+$html[] = HTMLHelper::_('formbehavior2.select2', '.'.$this->fieldname, $opt);
+}        
+    
     
     $html[] = HTMLHelper::_(
 				'select.genericlist', $options, $this->name,
