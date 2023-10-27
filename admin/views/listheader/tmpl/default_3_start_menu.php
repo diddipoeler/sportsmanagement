@@ -92,7 +92,7 @@ use Joomla\CMS\Router\Route;
 </div>
 <div class="span1">				
                       <a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SUBMENU_GOOGLE_CALENDAR') ?>"
-				   href="index.php?option=com_sportsmanagement&view=currentseasons">
+				   href="index.php?option=com_sportsmanagement&view=jsmgcalendars">
 					<div class="quickicon-icon">
 						<img src="<?php echo JURI::base(false) ?>/components/com_sportsmanagement/assets/icons/google-calendar-48-icon.png">
 					</div>
