@@ -490,7 +490,7 @@ break;
 		{
 		}
 
-		if (version_compare(JSM_JVERSION, '4', 'eq'))
+		if (version_compare(JVERSION, '4.0.0', 'ge'))
 		{
 			$this->setLayout($this->getLayout() . '_4');
 			$this->table_data_class = 'table table-striped';
