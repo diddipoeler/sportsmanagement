@@ -496,7 +496,7 @@ break;
 			$this->table_data_class = 'table table-striped';
 			$this->table_data_div   = '</div>';
 		}
-		elseif (version_compare(JSM_JVERSION, '3', 'eq'))
+		elseif (version_compare(JVERSION, '3.0.0', 'ge'))
 		{
 			$this->setLayout($this->getLayout() . '_3');
 			$this->table_data_class = 'table table-striped';
