@@ -124,7 +124,7 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel
 // Download the package
 		try
 		{
-			if (version_compare(JSM_JVERSION, '4', 'eq'))
+			if (version_compare(JVERSION, '4.0.0', 'ge'))
 			{
 			$result = HttpFactory::getHttp([], ['curl', 'stream'])->get($servercopy);
 			}
@@ -181,7 +181,7 @@ Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text
 
 				if (strtolower(File::getExt($dest)) == 'zip')
 				{
-					if (version_compare(JSM_JVERSION, '4', 'eq'))
+					if (version_compare(JVERSION, '4.0.0', 'ge'))
 					{
 						try
 		{

@@ -20,15 +20,6 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Registry\Registry;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Log\Log;
-/*
-if (version_compare(JSM_JVERSION, '4', 'eq'))
-{
-}
-else
-{
-	JLoader::import('libraries.joomla.github.github', JPATH_ADMINISTRATOR);
-}
-*/
 
 /**
  * sportsmanagementModelgithub
