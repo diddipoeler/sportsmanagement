@@ -921,7 +921,7 @@ document.getElementById("filter_season").classList.add("filter_season");
 				ToolbarHelper::cancel($this->view . '.cancel', 'JTOOLBAR_CLOSE');
 			}
 
-			if (version_compare(JSM_JVERSION, '4', 'eq'))
+			if (version_compare(JVERSION, '4.0.0', 'ge'))
 			{
 				ToolbarHelper::saveGroup(
 					$toolbarButtons,

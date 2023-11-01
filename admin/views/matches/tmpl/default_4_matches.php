@@ -242,7 +242,7 @@ if ($this->templateConfig['show_number'] == 0) $colspan--;
 							echo sportsmanagementHelper::getBootstrapModalImage('matchdetails' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/edit.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_DETAILS'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=edit&id=' . $row->id, $this->modalwidth, $this->modalheight);
 						endif;
 
-						if (version_compare(JSM_JVERSION, '4', 'eq'))
+						if (version_compare(JVERSION, '4.0.0', 'ge'))
 						{
 							$pcture_link   = 'index.php?option=com_media&tmpl=component&path=local-images:/com_sportsmanagement/database/matchreport/' . $row->id;
 						}

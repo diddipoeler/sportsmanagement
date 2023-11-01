@@ -59,7 +59,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_3');
 		$this->icon  = 'xmlimports';
 
-		if (version_compare(JSM_JVERSION, '4', 'eq'))
+		if (version_compare(JVERSION, '4.0.0', 'ge'))
 		{
 			$uri = Uri::getInstance();
 		}
@@ -340,7 +340,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		$db     = sportsmanagementHelper::getDBConnection();
-        if (version_compare(JSM_JVERSION, '4', 'eq'))
+        if (version_compare(JVERSION, '4.0.0', 'ge'))
         {
             $uri = Uri::getInstance();
         }

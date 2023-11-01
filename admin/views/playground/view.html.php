@@ -48,7 +48,7 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 
 		$this->extended = sportsmanagementHelper::getExtended($this->item->extended, 'playground');
 
-		if (version_compare(JSM_JVERSION, '4', 'eq'))
+		if (version_compare(JVERSION, '4.0.0', 'ge'))
 		{
 		  $this->document->addScript(Uri::base() . 'components/' . $this->option . '/assets/js/editgeocode.js');
 		}
