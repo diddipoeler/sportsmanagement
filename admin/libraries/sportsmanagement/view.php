@@ -28,7 +28,7 @@ use sportsmanagementView as GlobalSportsmanagementView;
 
 
 /** welche joomla version ? */
-if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+if (version_compare(JVERSION, '4.0.0', 'ge'))
 {
 	/** Include the component HTML helpers. */
 	HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
@@ -36,7 +36,7 @@ if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 	HTMLHelper::_('behavior.keepalive');
 	HTMLHelper::_('jquery.framework');
 }
-elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
+elseif (version_compare(JVERSION, '3.0.0', 'ge'))
 {
 	HTMLHelper::_('jquery.framework');
 	HTMLHelper::_('behavior.framework', true);
@@ -44,7 +44,7 @@ elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
 	HTMLHelper::_('behavior.tooltip');
 	HTMLHelper::_('behavior.formvalidation');
 }
-elseif (version_compare(substr(JVERSION, 0, 3), '2.0', 'ge'))
+elseif (version_compare(JVERSION, '2.0.0', 'ge'))
 {
 	HTMLHelper::_('behavior.mootools');
 }
@@ -845,23 +845,12 @@ document.getElementById("filter_season").classList.add("filter_season");
 
 			if ($isNew)
 			{
-				// For new records, check the create permission.
+				// For new records, check the create permission. if (version_compare(JVERSION, '4.0.0', 'ge'))
 				if ($canDo->get('core.create'))
 				{
-					if (version_compare(JSM_JVERSION, '3', 'eq'))
+					if (version_compare(JVERSION, '4.0.0', 'ge'))
 					{
-						ToolbarHelper::save($this->view . '.save', 'JTOOLBAR_SAVE');
-						ToolbarHelper::apply($this->view . '.apply', 'JTOOLBAR_APPLY');
-						
-
-						if (!array_key_exists($this->view, $search_tmpl_array))
-						{
-							ToolbarHelper::custom($this->view . '.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-						}
-					}
-					elseif (version_compare(JSM_JVERSION, '4', 'eq'))
-					{
-						$toolbarButtons[] = array('save', $this->view . '.save');
+					   $toolbarButtons[] = array('save', $this->view . '.save');
 						$toolbarButtons[] = array('apply', $this->view . '.apply');
 						
 
@@ -869,6 +858,21 @@ document.getElementById("filter_season").classList.add("filter_season");
 						{
 							$toolbarButtons[] = array('save2new', $this->view . '.save2new');
 						}
+                       
+					
+					}
+					elseif (version_compare(JVERSION, '3.0.0', 'ge'))
+					{
+					   	ToolbarHelper::save($this->view . '.save', 'JTOOLBAR_SAVE');
+						ToolbarHelper::apply($this->view . '.apply', 'JTOOLBAR_APPLY');
+						
+
+						if (!array_key_exists($this->view, $search_tmpl_array))
+						{
+							ToolbarHelper::custom($this->view . '.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+						}
+                       
+						
 					}
 				}
 
@@ -878,43 +882,49 @@ document.getElementById("filter_season").classList.add("filter_season");
 			{
 				if ($canDo->get('core.edit'))
 				{
-					if (version_compare(JSM_JVERSION, '3', 'eq'))
+					if (version_compare(JVERSION, '4.0.0', 'ge'))
 					{
-						// We can save the new record
+					   $toolbarButtons[] = array('save', $this->view . '.save');
+						$toolbarButtons[] = array('apply', $this->view . '.apply');
+					
+						
+					}
+					elseif (version_compare(JVERSION, '3.0.0', 'ge'))
+					{
+					   	// We can save the new record
 						ToolbarHelper::save($this->view . '.save', 'JTOOLBAR_SAVE');
 						ToolbarHelper::apply($this->view . '.apply', 'JTOOLBAR_APPLY');
 						
-					}
-					elseif (version_compare(JSM_JVERSION, '4', 'eq'))
-					{
-						$toolbarButtons[] = array('save', $this->view . '.save');
-						$toolbarButtons[] = array('apply', $this->view . '.apply');
 						
 					}
 
 					// We can save this record, but check the create permission to see if we can return to make a new one.
 					if ($canDo->get('core.create') && !array_key_exists($this->view, $search_tmpl_array))
 					{
-						if (version_compare(JSM_JVERSION, '3', 'eq'))
+						if (version_compare(JVERSION, '4.0.0', 'ge'))
 						{
-							ToolbarHelper::custom($this->view . '.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+						  $toolbarButtons[] = array('save2new', $this->view . '.save2new');
+							
 						}
-						elseif (version_compare(JSM_JVERSION, '4', 'eq'))
+						elseif (version_compare(JVERSION, '3.0.0', 'ge'))
 						{
-							$toolbarButtons[] = array('save2new', $this->view . '.save2new');
+						  ToolbarHelper::custom($this->view . '.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+							
 						}
 					}
 				}
 
 				if ($canDo->get('core.create') && !array_key_exists($this->view, $search_tmpl_array))
 				{
-					if (version_compare(JSM_JVERSION, '3', 'eq'))
+					if (version_compare(JVERSION, '4.0.0', 'ge'))
 					{
-						ToolbarHelper::custom($this->view . '.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
-					}
-					elseif (version_compare(JSM_JVERSION, '4', 'eq'))
-					{
+					   
 						$toolbarButtons[] = array('save2copy', $this->view . '.save2copy');
+					}
+					elseif (version_compare(JVERSION, '3.0.0', 'ge'))
+					{
+					   ToolbarHelper::custom($this->view . '.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
+						
 					}
 				}
 
