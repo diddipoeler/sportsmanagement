@@ -45,12 +45,12 @@ JLoader::import('components.com_sportsmanagement.models.databasetool', JPATH_ADM
 JLoader::import('components.com_sportsmanagement.helpers.csvhelper', JPATH_ADMINISTRATOR);
 
 /** Get the base version */
-$baseVersion = substr(JVERSION, 0, 3);
+//$baseVersion = substr(JVERSION, 0, 3);
 
-if (version_compare($baseVersion, '4.0', 'ge'))
+if (version_compare(JVERSION, '4.0.0', 'ge'))
 {
 	/** Joomla! 4.0 code here */
-	defined('JSM_JVERSION') or define('JSM_JVERSION', 4);
+	//defined('JSM_JVERSION') or define('JSM_JVERSION', 4);
 	JLoader::import('components.com_sportsmanagement.libraries.github.github', JPATH_ADMINISTRATOR);
 	JLoader::import('components.com_sportsmanagement.libraries.github.object', JPATH_ADMINISTRATOR);
 	JLoader::import('components.com_sportsmanagement.libraries.github.http', JPATH_ADMINISTRATOR);
@@ -63,23 +63,23 @@ if (version_compare($baseVersion, '4.0', 'ge'))
 	JLoader::import('components.com_sportsmanagement.libraries.github.package.activity.starring', JPATH_ADMINISTRATOR);
 }
 
-if (version_compare($baseVersion, '3.0', 'ge'))
+elseif (version_compare(JVERSION, '3.0.0', 'ge'))
 {
 	/** Joomla! 3.0 code here */
-	defined('JSM_JVERSION') or define('JSM_JVERSION', 3);
+	//defined('JSM_JVERSION') or define('JSM_JVERSION', 3);
     JLoader::import('libraries.joomla.github.github', JPATH_ADMINISTRATOR);
 }
 
-if (version_compare($baseVersion, '2.5', 'ge'))
+elseif (version_compare(JVERSION, '2.5.0', 'ge'))
 {
 	/** Joomla! 2.5 code here */
-	defined('JSM_JVERSION') or define('JSM_JVERSION', 2);
+	//defined('JSM_JVERSION') or define('JSM_JVERSION', 2);
 }
-elseif (version_compare($baseVersion, '1.7.0', 'ge'))
+elseif (version_compare(JVERSION, '1.7.0', 'ge'))
 {
 	/** Joomla! 1.7 code here */
 }
-elseif (version_compare($baseVersion, '1.6', 'ge'))
+elseif (version_compare(JVERSION, '1.6.0', 'ge'))
 {
 	/** Joomla! 1.6 code here */
 }

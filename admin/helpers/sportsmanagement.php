@@ -47,27 +47,27 @@ if (version_compare(JVERSION, '3.0.0', 'ge'))
 }
 
 // Get the base version
-$baseVersion = substr(JVERSION, 0, 3);
+//$baseVersion = substr(JVERSION, 0, 3);
 
-if (version_compare($baseVersion, '4.0', 'ge'))
-{
-	// Joomla! 4.0 code here
-	defined('JSM_JVERSION') or define('JSM_JVERSION', 4);
-}
-
-
-if (version_compare($baseVersion, '3.0', 'ge'))
-{
-	// Joomla! 3.0 code here
-	defined('JSM_JVERSION') or define('JSM_JVERSION', 3);
-}
+//if (version_compare($baseVersion, '4.0', 'ge'))
+//{
+//	// Joomla! 4.0 code here
+//	defined('JSM_JVERSION') or define('JSM_JVERSION', 4);
+//}
 
 
-if (version_compare($baseVersion, '2.5', 'ge'))
-{
-	// Joomla! 2.5 code here
-	defined('JSM_JVERSION') or define('JSM_JVERSION', 2);
-}
+//if (version_compare($baseVersion, '3.0', 'ge'))
+//{
+//	// Joomla! 3.0 code here
+//	defined('JSM_JVERSION') or define('JSM_JVERSION', 3);
+//}
+
+
+//if (version_compare($baseVersion, '2.5', 'ge'))
+//{
+//	// Joomla! 2.5 code here
+//	defined('JSM_JVERSION') or define('JSM_JVERSION', 2);
+//}
 
 /**
  * sportsmanagementHelper
@@ -575,7 +575,7 @@ var <?php echo $placeholder; ?> = new Array;
 			{
 				// Zuerst noch überprüfen, ob der user
 				// überhaupt den zugriff auf die datenbank hat.
-				if (version_compare(JSM_JVERSION, '4', 'eq'))
+				if (version_compare(JVERSION, '4.0.0', 'ge'))
 				{
 					self::$_jsm_db = JDatabaseDriver::getInstance($options);
 				}
