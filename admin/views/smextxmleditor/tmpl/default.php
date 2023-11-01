@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage smextxmleditor
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die;
-
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -29,7 +25,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     Joomla.submitbutton = function (task) {
         if (task == 'source.cancel' || document.formvalidator.isValid(document.id('source-form'))) {
 			<?php
-			if (version_compare(JSM_JVERSION, '3', 'eq'))
+			if (version_compare(JVERSION, '3.0.0', 'ge'))
 			{
 				echo $this->form->getField('source')->save();
 			}

@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
@@ -21,7 +17,7 @@ use Joomla\CMS\Filesystem\File;
 use Joomla\Archive\Archive;
 
 jimport('joomla.filesystem.folder');
-if (version_compare(JSM_JVERSION, '3', 'eq'))
+if (version_compare(JVERSION, '3.0.0', 'ge'))
 {
 	jimport('joomla.filesystem.archive');
 }
@@ -74,21 +70,9 @@ class sportsmanagementModeljlextcountry extends JSMModelAdmin
 			{
 				$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_COPY_PLZ_SUCCESS'), 'Notice');
 
-				if (version_compare(JSM_JVERSION, '3', 'eq'))
+				if (version_compare(JVERSION, '4.0.0', 'ge'))
 				{	
-					try
-					{
-						$result = JArchive::extract($filepath, $base_Dir);
-					}
-					catch (Exception $e)
-					{
-						$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
-						$result = false;
-					}
-				}
-				elseif (version_compare(JSM_JVERSION, '4', 'eq'))
-				{
-					$archive = new Archive;
+				    	$archive = new Archive;
 	
 					try
 					{
@@ -99,6 +83,23 @@ class sportsmanagementModeljlextcountry extends JSMModelAdmin
 						$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
 						$result = false;
 					}
+                    
+				
+				}
+				elseif (version_compare(JVERSION, '3.0.0', 'ge'))
+				{
+				    	try
+					{
+						$result = JArchive::extract($filepath, $base_Dir);
+					}
+					catch (Exception $e)
+					{
+						$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+						$result = false;
+					}
+                    
+                    
+				
 				}
 
 				if ($result)

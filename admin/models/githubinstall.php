@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -14,7 +12,6 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Http\HttpFactory;
-
 use Joomla\CMS\Language\Text;
 use Joomla\Archive\Archive;
 use Joomla\CMS\Filesystem\Folder;
@@ -24,7 +21,7 @@ use Joomla\CMS\Log\Log;
 use Joomla\CMS\Installer\Installer;
 use Joomla\CMS\Installer\InstallerHelper;
 
-if (version_compare(JSM_JVERSION, '3', 'eq'))
+if (version_compare(JVERSION, '3.0.0', 'ge'))
 {
 	jimport('joomla.filesystem.archive');
 }
@@ -80,12 +77,31 @@ class sportsmanagementModelgithubinstall extends JSMModelLegacy
 
 			$my_text = '';
 
-			if (version_compare(JSM_JVERSION, '3', 'eq'))
+			if (version_compare(JVERSION, '4.0.0', 'ge'))
 			{
-				/**
-				 *
-				 * Get the handler to download the package
-				 */
+                /** Download the package at the URL given. */
+				$p_file = InstallerHelper::downloadPackage($link);
+				/** Was the package downloaded? */
+				if (!$p_file)
+				{
+					$my_text = '<span style="color:' . $this->storeFailedColor . '">';
+					$my_text .= Text::sprintf('Die ZIP-Datei der Komponente [ %1$s ] konnte nicht kopiert werden!', "</span><strong>" . $p_file . "</strong>");
+					$my_text .= '<br />';
+					Factory::getApplication()->enqueueMessage(Text::_('COM_INSTALLER_MSG_INSTALL_INVALID_URL'), 'error');
+
+					return false;
+				}
+				else
+				{
+					$my_text = '<span style="color:' . $this->storeSuccessColor . '">';
+					$my_text .= Text::sprintf('Die ZIP-Datei der Komponente [ %1$s ] konnte kopiert werden!', "</span><strong>" . $p_file . "</strong>");
+					$my_text .= '<br />';
+				}
+                
+			}
+			elseif (version_compare(JVERSION, '3.0.0', 'ge'))
+			{
+				/** Get the handler to download the package	 */
 				try
 				{
 					$http = HttpFactory::getHttp(null, array('curl', 'stream'));
@@ -97,10 +113,7 @@ class sportsmanagementModelgithubinstall extends JSMModelLegacy
 					return false;
 				}
 
-				/**
-				 *
-				 * Download the package
-				 */
+				/** Download the package */
 				try
 				{
 					$result  = $http->get($link);
@@ -124,10 +137,7 @@ class sportsmanagementModelgithubinstall extends JSMModelLegacy
 
 				try
 				{
-					/**
-					 *
-					 * Write the file to disk
-					 */
+					/** Write the file to disk */
 					File::write($filepath, $result->body);
 				}
 				catch (RuntimeException $e)
@@ -138,33 +148,6 @@ class sportsmanagementModelgithubinstall extends JSMModelLegacy
 					return false;
 				}
 			}
-			elseif (version_compare(JSM_JVERSION, '4', 'eq'))
-			{
-				/**
-				 *
-				 * Download the package at the URL given.
-				 */
-				$p_file = InstallerHelper::downloadPackage($link);
-				/**
-				 *
-				 * Was the package downloaded?
-				 */
-				if (!$p_file)
-				{
-					$my_text = '<span style="color:' . $this->storeFailedColor . '">';
-					$my_text .= Text::sprintf('Die ZIP-Datei der Komponente [ %1$s ] konnte nicht kopiert werden!', "</span><strong>" . $p_file . "</strong>");
-					$my_text .= '<br />';
-					Factory::getApplication()->enqueueMessage(Text::_('COM_INSTALLER_MSG_INSTALL_INVALID_URL'), 'error');
-
-					return false;
-				}
-				else
-				{
-					$my_text = '<span style="color:' . $this->storeSuccessColor . '">';
-					$my_text .= Text::sprintf('Die ZIP-Datei der Komponente [ %1$s ] konnte kopiert werden!', "</span><strong>" . $p_file . "</strong>");
-					$my_text .= '<br />';
-				}
-			}
 
 			$this->_success_text['Komponente:'] = $my_text;
 
@@ -172,23 +155,9 @@ class sportsmanagementModelgithubinstall extends JSMModelLegacy
 
 			// $dest = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$file['name'];
 
-			if (version_compare(JSM_JVERSION, '3', 'eq'))
+			if (version_compare(JVERSION, '4.0.0', 'ge'))
 			{
-				$dest = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . $file['name'];
-
-				try
-				{
-					$result = JArchive::extract($dest, $extractdir);
-				}
-				catch (Exception $e)
-				{
-					$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
-					$result = false;
-				}
-			}
-			elseif (version_compare(JSM_JVERSION, '4', 'eq'))
-			{
-				$dest    = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'sportsmanagement-' . $file['name'];
+			 $dest    = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'sportsmanagement-' . $file['name'];
 				$archive = new Archive;
 
 				try
@@ -200,29 +169,34 @@ class sportsmanagementModelgithubinstall extends JSMModelLegacy
 					$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
 					$result = false;
 				}
+				
+			}
+			elseif (version_compare(JVERSION, '3.0.0', 'ge'))
+			{
+			 $dest = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . $file['name'];
+
+				try
+				{
+					$result = JArchive::extract($dest, $extractdir);
+				}
+				catch (Exception $e)
+				{
+					$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+					$result = false;
+				}
+				
 			}
 
-			/**
-			 *
-			 * Get an installer instance
-			 */
-
+			/** Get an installer instance */
 			$installer = Installer::getInstance();
 
-			/**
-			 *
-			 * Get the path to the package to install
-			 */
-
+			/** Get the path to the package to install */
 			$p_dir = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'sportsmanagement-' . str_replace(".zip", "", $file['name']) . DIRECTORY_SEPARATOR;
 
 			// $p_dir_modules = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement-master'.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR;
 			$p_dir_modules = JPATH_SITE . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR;
 
-			/**
-			 *
-			 * Detect the package type
-			 */
+			/** Detect the package type	 */
 			$type = InstallerHelper::detectType($p_dir);
 
 			$package['packagefile'] = null;
@@ -230,10 +204,7 @@ class sportsmanagementModelgithubinstall extends JSMModelLegacy
 			$package['dir']         = $p_dir;
 			$package['type']        = $type;
 
-			/**
-			 *
-			 * Install the package
-			 */
+			/** Install the package */
 
 			if (!$installer->install($package['dir']))
 			{

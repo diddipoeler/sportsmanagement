@@ -270,7 +270,7 @@ $this->item->logo_small = ComponentHelper::getParams('com_sportsmanagement')->ge
 		//$this->document->addScript('https://maps.googleapis.com/maps/api/js?libraries=places&language=de');
 		//$this->document->addScript(Uri::base() . 'components/' . $this->option . '/assets/js/geocomplete.js');
 
-		if (version_compare(JSM_JVERSION, '4', 'eq'))
+		if (version_compare(JVERSION, '4.0.0', 'ge'))
 		{
 			$this->document->addScript(Uri::base() . 'components/' . $this->option . '/assets/js/editgeocode.js');
 		}

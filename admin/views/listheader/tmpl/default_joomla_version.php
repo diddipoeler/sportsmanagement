@@ -13,12 +13,12 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 
-if (version_compare(JSM_JVERSION, '4', 'eq'))
+if (version_compare(JVERSION, '4.0.0', 'ge'))
 {
 	echo $this->loadTemplate('joomla4');
 	$no_items = '';
 }
-elseif (version_compare(JSM_JVERSION, '3', 'eq'))
+elseif (version_compare(JVERSION, '3.0.0', 'ge'))
 {
 	echo $this->loadTemplate('joomla3');
 	$no_items = '';

@@ -36,11 +36,6 @@ if (!class_exists('sportsmanagementHelper'))
 	include_once JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'sportsmanagement.php';
 }
 
-// If( version_compare(JSM_JVERSION,'3','eq') )
-// {
-// jimport('joomla.filesystem.archive');
-// }
-
 Table::addIncludePath(JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'tables');
 
 /**
@@ -81,9 +76,42 @@ class sportsmanagementModeljsmGCalendars extends ListModel
 			$filename     = $file['name'];
 			$filepath     = $base_Dir . $filename;
 
-			if (version_compare(JSM_JVERSION, '3', 'eq'))
+			if (version_compare(JVERSION, '4.0.0', 'ge'))
 			{
+				
+                
+                
+                /**
+				 *
+				 * Download the package at the URL given.
+				 */
+				$p_file = InstallerHelper::downloadPackage($link);
 				/**
+				 *
+				 * Was the package downloaded?
+				 */
+				if (!$p_file)
+				{
+					$my_text = '<span style="color:' . $this->storeFailedColor . '">';
+					$my_text .= Text::sprintf('Die ZIP-Datei der Komponente [ %1$s ] konnte nicht kopiert werden!', "</span><strong>" . $p_file . "</strong>");
+					$my_text .= '<br />';
+					Factory::getApplication()->enqueueMessage(Text::_('COM_INSTALLER_MSG_INSTALL_INVALID_URL'), 'error');
+
+					return false;
+				}
+				else
+				{
+					$my_text = '<span style="color:' . $this->storeSuccessColor . '">';
+					$my_text .= Text::sprintf('Die ZIP-Datei der Komponente [ %1$s ] konnte kopiert werden!', "</span><strong>" . $p_file . "</strong>");
+					$my_text .= '<br />';
+				}
+                
+                
+			}
+			elseif (version_compare(JVERSION, '4.0.0', 'ge'))
+			{
+				
+                /**
 				 *
 				 * Get the handler to download the package
 				 */
@@ -137,33 +165,8 @@ class sportsmanagementModeljsmGCalendars extends ListModel
 
 					return false;
 				}
-			}
-			elseif (version_compare(JSM_JVERSION, '4', 'eq'))
-			{
-				/**
-				 *
-				 * Download the package at the URL given.
-				 */
-				$p_file = InstallerHelper::downloadPackage($link);
-				/**
-				 *
-				 * Was the package downloaded?
-				 */
-				if (!$p_file)
-				{
-					$my_text = '<span style="color:' . $this->storeFailedColor . '">';
-					$my_text .= Text::sprintf('Die ZIP-Datei der Komponente [ %1$s ] konnte nicht kopiert werden!', "</span><strong>" . $p_file . "</strong>");
-					$my_text .= '<br />';
-					Factory::getApplication()->enqueueMessage(Text::_('COM_INSTALLER_MSG_INSTALL_INVALID_URL'), 'error');
-
-					return false;
-				}
-				else
-				{
-					$my_text = '<span style="color:' . $this->storeSuccessColor . '">';
-					$my_text .= Text::sprintf('Die ZIP-Datei der Komponente [ %1$s ] konnte kopiert werden!', "</span><strong>" . $p_file . "</strong>");
-					$my_text .= '<br />';
-				}
+                
+                
 			}
 
 			/**
