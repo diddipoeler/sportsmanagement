@@ -38,7 +38,7 @@ echo $this->loadTemplate('jsm_warnings');
 echo $this->loadTemplate('jsm_tips');
 echo $this->loadTemplate('jsm_notes');
 
-if (version_compare(JSM_JVERSION, '4', 'eq'))
+if (version_compare(JVERSION, '4.0.0', 'ge'))
 {
 	echo $this->loadTemplate('joomla_vier');
 }

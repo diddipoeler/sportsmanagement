@@ -326,7 +326,7 @@ class sportsmanagementModelPredictionResults extends JSMModelList
 		$option   = $jinput->getCmd('option');
 		$document = Factory::getDocument();
 
-		if (version_compare(JSM_JVERSION, '4', 'eq'))
+		if (version_compare(JVERSION, '4.0.0', 'ge'))
 		{
 			$uri = Uri::getInstance();
 		}

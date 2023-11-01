@@ -29,7 +29,7 @@ HTMLHelper::_('behavior.modal');
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-if (version_compare(JSM_JVERSION, '4', 'eq'))
+if (version_compare(JVERSION, '4.0.0', 'ge'))
 {
 	$uri = Uri::getInstance();
 }

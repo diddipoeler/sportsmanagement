@@ -46,7 +46,7 @@ class sportsmanagementViewImagehandler extends HtmlView
 		$app      = Factory::getApplication();
 		$document = Factory::getDocument();
 
-		if (version_compare(JSM_JVERSION, '4', 'eq'))
+		if (version_compare(JVERSION, '4.0.0', 'ge'))
 		{
 			$uri = Uri::getInstance();
 		}

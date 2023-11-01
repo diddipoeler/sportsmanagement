@@ -19,7 +19,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 
-if (version_compare(JSM_JVERSION, '4', 'eq'))
+if (version_compare(JVERSION, '4.0.0', 'ge'))
 {
 	$uri = Uri::getInstance();
 }

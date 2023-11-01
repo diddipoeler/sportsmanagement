@@ -23,7 +23,7 @@ $this->divclass     = '';
 $this->divclassrest = '';
 $this->columns      = 12;
 
-if (version_compare(JSM_JVERSION, '4', 'eq'))
+if (version_compare(JVERSION, '4.0.0', 'ge'))
 {
 	$uri = Uri::getInstance();
 }

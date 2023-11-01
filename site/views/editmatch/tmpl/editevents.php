@@ -98,13 +98,7 @@ $baseurl          = "'" . Route::_(Uri::base() . 'index.php?option=com_sportsman
 
 </script>
 <?php
-/*
-if (version_compare(JSM_JVERSION, '4', 'eq')) {
-    $uri = Uri::getInstance();
-} else {
-    $uri = Factory::getURI();
-}
-*/
+
 ?>
 
 <form action="<?php echo $this->uri->toString(); ?>" id='editevents' method='post' name='editevents'>

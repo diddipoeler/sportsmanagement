@@ -247,7 +247,7 @@ class sportsmanagementView extends HtmlView
 		$this->modalheight = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_height', 600);
 		$this->modalwidth  = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_width', 900);
 
-		if (version_compare(JSM_JVERSION, '4', 'eq'))
+		if (version_compare(JVERSION, '4.0.0', 'ge'))
 		{
 			$this->uri = Uri::getInstance();
 		}

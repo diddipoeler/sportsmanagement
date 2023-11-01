@@ -19,7 +19,7 @@ $user = Factory::getUser();
 $saveshortall = $user->authorise('editmatch.saveshortall', 'com_sportsmanagement');
 $saveshortresults = $user->authorise('editmatch.saveshortresults', 'com_sportsmanagement');
 
-if (version_compare(JSM_JVERSION, '4', 'eq'))
+if (version_compare(JVERSION, '4.0.0', 'ge'))
 {
 	$uri = Uri::getInstance();
 }

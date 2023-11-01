@@ -50,7 +50,7 @@ class sportsmanagementViewEditMatch extends sportsmanagementView
 		$document = Factory::getDocument();
 		$db       = Factory::getDBO();
 
-		if (version_compare(JSM_JVERSION, '4', 'eq'))
+		if (version_compare(JVERSION, '4.0.0', 'ge'))
 		{
 			$this->uri = Uri::getInstance();
 		}
