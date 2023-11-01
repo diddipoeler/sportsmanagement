@@ -678,12 +678,11 @@ class JSMRanking
 			return false;
 		}
 
-		if (version_compare(JSM_JVERSION, '4', 'eq'))
+		if (version_compare(JVERSION, '4.0.0', 'ge'))
 		{
 			$data = self::_cachedGetData($this->_projectid, $this->_division, $cfg_which_database,$sports_type_name);
 		}
-
-		if (version_compare(JSM_JVERSION, '3', 'eq'))
+		elseif (version_compare(JVERSION, '3.0.0', 'ge'))
 		{
 			$data = self::_cachedGetData($this->_projectid, $this->_division, $cfg_which_database,$sports_type_name);
 		}

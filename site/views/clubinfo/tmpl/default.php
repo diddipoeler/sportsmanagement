@@ -24,7 +24,7 @@ if ($this->mapconfig['map_kmlfile'])
 
 $params = ComponentHelper::getParams('com_sportsmanagement');
 
-if (version_compare(JSM_JVERSION, '4', 'eq') || $params->get('use_jsmgrid'))
+if (version_compare(JVERSION, '4.0.0', 'ge') || $params->get('use_jsmgrid'))
 {
 	$container = 'container';
 }
@@ -106,7 +106,7 @@ else
 	{
 		if ($this->rssfeeditems)
 		{
-			if (version_compare(JSM_JVERSION, '4', 'eq'))
+			if (version_compare(JVERSION, '4.0.0', 'ge'))
 			{
 				$this->output['COM_SPORTSMANAGEMENT_CLUBINFO_RSSFEED'] = 'rssfeed_4';
 			}

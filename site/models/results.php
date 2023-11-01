@@ -242,7 +242,7 @@ class sportsmanagementModelResults extends JSMModelList
 			$query->where('m.published = 1');
 			$query->where('r.project_id = ' . (int) $project->id);
 
-			if (version_compare(JSM_JVERSION, '3', 'eq'))
+			if (version_compare(JVERSION, '3.0.0', 'ge'))
 			{
 				$query->group('m.id ');
 			}

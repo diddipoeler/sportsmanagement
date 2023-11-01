@@ -20,7 +20,7 @@ use Joomla\CMS\Factory;
 ?>
 <div class="<?php echo $this->divclassrow; ?>" id="show_slider">
 	<?php
-	if (version_compare(JSM_JVERSION, '4', 'eq'))
+	if (version_compare(JVERSION, '4.0.0', 'ge'))
 	{
 ?>
 <?php echo HTMLHelper::_('bootstrap.startAccordion', 'collapseTypes', array('active' => 'collapse0', 'parent' => 'collapseTypes' )); 
@@ -81,7 +81,7 @@ echo HTMLHelper::_('bootstrap.endAccordion'); ?>
 		echo HTMLHelper::_('bootstrap.endAccordion');
 		*/
 	}
-    elseif (version_compare(JSM_JVERSION, '3', 'eq'))
+    elseif (version_compare(JVERSION, '3.0.0', 'ge'))
 	{
 		// Joomla! 3.0 code here
 		$idxTab = 1;
@@ -114,7 +114,7 @@ echo HTMLHelper::_('bootstrap.endAccordion'); ?>
 
 		echo HTMLHelper::_('bootstrap.endAccordion');
 	}
-    elseif (version_compare(JSM_JVERSION, '2', 'eq'))
+    elseif (version_compare(JVERSION, '2.0.0', 'ge'))
 	{
 		// Joomla! 2.5 code here
 		?>

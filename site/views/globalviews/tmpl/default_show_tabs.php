@@ -35,7 +35,7 @@ use Joomla\CMS\Factory;
 	}
 
 
-	if (version_compare(JSM_JVERSION, '4', 'eq'))
+	if (version_compare(JVERSION, '4.0.0', 'ge'))
 	{
 		$idxTab = 0;
 		echo HTMLHelper::_('bootstrap.startTabSet', 'myTab4', array('active' => 'name'));
@@ -62,7 +62,7 @@ use Joomla\CMS\Factory;
 
 		echo HTMLHelper::_('bootstrap.endTabSet');
 	}
-    elseif (version_compare(JSM_JVERSION, '3', 'eq'))
+    elseif (version_compare(JVERSION, '3.0.0', 'ge'))
 	{
 		// Joomla! 3.0 code here
 		$idxTab = 0;
@@ -149,7 +149,7 @@ use Joomla\CMS\Factory;
 
 		echo HTMLHelper::_('bootstrap.endTabSet');
 	}
-    elseif (version_compare(JSM_JVERSION, '2', 'eq'))
+    elseif (version_compare(JVERSION, '2.0.0', 'ge'))
 	{
 		// Joomla! 2.5 code here
 		$view = Factory::getApplication()->input->getCmd('view');
