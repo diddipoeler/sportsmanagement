@@ -21,7 +21,7 @@ $this->divclass = '';
 
 $paramscomponent = ComponentHelper::getParams('com_sportsmanagement');
 
-if (version_compare(JVERSION, '4.0.0', 'ge')) || $paramscomponent->get('use_jsmgrid'))
+if ( version_compare(JVERSION, '4.0.0', 'ge') || $paramscomponent->get('use_jsmgrid'))
 {
 	$this->divclass = 'p-2 col';
 }
