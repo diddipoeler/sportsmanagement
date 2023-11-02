@@ -75,7 +75,7 @@ else
 	/** welche bootstrap version */
 	$params = ComponentHelper::getParams('com_sportsmanagement');
 
-	if (version_compare(JVERSION, '4.0.0', 'ge')) || $params->get('use_jsmgrid'))
+	if ( version_compare(JVERSION, '4.0.0', 'ge') || $params->get('use_jsmgrid'))
 	{
 		$this->divclass = 'col p-2';
 	}
