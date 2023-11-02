@@ -197,7 +197,7 @@ echo $this->loadTemplate('start_menu');
 					<ul class="nav flex-wrap" style="grid-gap: 0.5rem; grid-template-columns: repeat(auto-fit,minmax(120px,1fr));">
 						<li class="quickicon quickicon-single">
 							<a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_CLUBS') ?>" 
-							href="index.php?option=com_sportsmanagement&view=vereine">
+							href="index.php?option=com_sportsmanagement&view=clubs">
 								<div class="quickicon-icon">
 									<img src="components/com_sportsmanagement/assets/icons/vereine.png" style="background-color:white;"
 										alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_CLUBS') ?>"/>
