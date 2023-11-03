@@ -129,6 +129,8 @@ echo $this->loadTemplate('jsm_tips');
 					</li>
 				<?PHP
 				}
+				if (isset($item->teams_as_referees) && $item->teams_as_referees == 0 )
+				{
 				?>
 				<li class="quickicon quickicon-single">
 					<a title="<?php echo Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_REFEREES', $this->count_projectreferees) ?>"
@@ -142,6 +144,9 @@ echo $this->loadTemplate('jsm_tips');
 						</div>
 					</a>
 				</li>
+				<?PHP
+				}
+				?>
 				<li class="quickicon quickicon-single">
 					<a title="<?php echo Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_TEAMS', $this->count_projectteams) ?>"
 					href="index.php?option=com_sportsmanagement&view=projectteams&pid=<?PHP echo $this->project->id; ?>">
