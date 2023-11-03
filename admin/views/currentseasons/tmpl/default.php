@@ -124,10 +124,10 @@ require(JPATH_COMPONENT_ADMINISTRATOR . '/views/listheader/tmpl/default_4_start_
 													href="index.php?option=com_sportsmanagement&view=divisions&pid=<?PHP echo $item->id; ?>">
 														<div class="quickicon-icon">
 															<img src="components/com_sportsmanagement/assets/icons/divisionen.png" style="background-color:white;"
-																alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_P_PANEL_DIVISIONS') ?>"/>
+																alt="<?php echo Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_DIVISIONS', $item->count_projectdivisions) ?>"/>
 														</div>
 														<div class="quickicon-name d-flex align-items-end">
-															<?php echo Text::_('COM_SPORTSMANAGEMENT_P_PANEL_DIVISIONS') ?>
+															<?php echo Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_DIVISIONS', $item->count_projectdivisions) ?>
 														</div>
 													</a>
 												</li>
@@ -172,19 +172,24 @@ require(JPATH_COMPONENT_ADMINISTRATOR . '/views/listheader/tmpl/default_4_start_
 												</li>
 											<?PHP
 											}
+											if (isset($item->teams_as_referees) && $item->teams_as_referees == 0 )
+											{
 											?>
-											<li class="quickicon quickicon-single">
-												<a title="<?php echo Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_REFEREES', $item->count_projectreferees) ?>"
-												href="index.php?option=com_sportsmanagement&view=projectreferees&persontype=3&pid=<?PHP echo $item->id; ?>">
-													<div class="quickicon-icon">
-														<img src="components/com_sportsmanagement/assets/icons/projektschiedsrichter.png" style="background-color:white;"
-															alt="<?php echo Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_REFEREES', $item->count_projectreferees) ?>"/>
-													</div>
-													<div class="quickicon-name d-flex align-items-end">
-														<?php echo Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_REFEREES', $item->count_projectreferees) ?>
-													</div>
-												</a>
-											</li>
+												<li class="quickicon quickicon-single">
+													<a title="<?php echo Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_REFEREES', $item->count_projectreferees) ?>"
+													href="index.php?option=com_sportsmanagement&view=projectreferees&persontype=3&pid=<?PHP echo $item->id; ?>">
+														<div class="quickicon-icon">
+															<img src="components/com_sportsmanagement/assets/icons/projektschiedsrichter.png" style="background-color:white;"
+																alt="<?php echo Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_REFEREES', $item->count_projectreferees) ?>"/>
+														</div>
+														<div class="quickicon-name d-flex align-items-end">
+															<?php echo Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_REFEREES', $item->count_projectreferees) ?>
+														</div>
+													</a>
+												</li>
+											<?PHP
+											}
+											?>
 											<li class="quickicon quickicon-single">
 												<a title="<?php echo Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_TEAMS', $item->count_projectteams) ?>"
 												href="index.php?option=com_sportsmanagement&view=projectteams&pid=<?PHP echo $item->id; ?>">
