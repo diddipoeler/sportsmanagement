@@ -124,10 +124,10 @@ require(JPATH_COMPONENT_ADMINISTRATOR . '/views/listheader/tmpl/default_4_start_
 													href="index.php?option=com_sportsmanagement&view=divisions&pid=<?PHP echo $item->id; ?>">
 														<div class="quickicon-icon">
 															<img src="components/com_sportsmanagement/assets/icons/divisionen.png" style="background-color:white;"
-																alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_P_PANEL_DIVISIONS') ?>"/>
+																alt="<?php echo Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_DIVISIONS', $item->count_projectdivisions) ?>"/>
 														</div>
 														<div class="quickicon-name d-flex align-items-end">
-															<?php echo Text::_('COM_SPORTSMANAGEMENT_P_PANEL_DIVISIONS') ?>
+															<?php echo Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_DIVISIONS', $item->count_projectdivisions) ?>
 														</div>
 													</a>
 												</li>
