@@ -1670,7 +1670,8 @@ try
 		foreach ($templatesToLoad as $template)
 		{
 			$view->addTemplatePath(JPATH_COMPONENT . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . $template . DIRECTORY_SEPARATOR . 'tmpl');
-
+			$view->addTemplatePath(JPATH_THEMES . '/' . Factory::getApplication()->getTemplate() . '/html/com_sportsmanagement/' . $template);
+			
 			if (is_array($extensions) && count($extensions) > 0)
 			{
 				foreach ($extensions as $e => $extension)
