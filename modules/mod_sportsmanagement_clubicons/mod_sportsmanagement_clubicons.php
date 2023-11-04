@@ -123,7 +123,7 @@ $transition = (100 + $percent)/100;
 $style = '
 .img-zoom {
 width: auto;
-    height: ' . $params->get('picture_height', '50') . ';
+    height: ' . $params->get('picture_height', '50') . px';
     -webkit-transition: all .2s ease-in-out;
     -moz-transition: all .2s ease-in-out;
     -o-transition: all .2s ease-in-out;
