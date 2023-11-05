@@ -205,6 +205,8 @@ switch ($this->fieldset)
 				<?php
 				if ($this->lists)
 				{
+				    if ( is_countable($this->lists['ext_fields']) )
+                    {
 					for ($p = 0; $p < count($this->lists['ext_fields']); $p++)
 					{
 						?>
@@ -223,6 +225,7 @@ switch ($this->fieldset)
                         </tr>
 						<?php
 					}
+                    }
 				}
 				?>
             </table>
