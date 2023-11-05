@@ -191,7 +191,7 @@ input.blue-btn:hover{background-color:#6AA0CF;cursor:pointer}
 .social-media a i{position:relative;top:3px}
 .social-media .icon-mail:before{font-size:15px;font-weight:400;top:2px;position:relative}
 .social-media em{font-style:normal;position:relative;top:2px}
-a.previous-page,a.next-page{background:#ededed;color:#616161;text-align:center;margin-top:53px;position:relative;font-size:22px;font-family:'icomoon'!important}
+a.previous-page,a.next-page{background:#ededed;color:#616161;text-align:center;margin-top:53px;position:relative;font-size:22px;font-family:'icomoon'}
 a.previous-page:hover,a.next-page:hover{text-decoration:none;background:#1ebba3;color:#fff}
 a.previous-page{margin-right:35px;z-index:9}
 a.next-page{margin-right:-67px;z-index:8}
