@@ -2220,18 +2220,25 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 			/** jetzt werden die teams zugeordnet */
 			$my_text = '';
 
-			// $my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
+// $my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
 			// $my_text .= '<br />';
 			$query = $dbjsm->getQuery(true);
 			$query->clear();
-			$query->select('name,id,import_id');
-			$query->from('#__sportsmanagement_team');
-			$query->where('import_id != 0 AND id != import_id');
+			$query->select('pt.id,pt.team_id,t.name,t.id as new_team_id');
+			$query->from('#__sportsmanagement_project_team as pt');
+          $query->join('INNER', '#__sportsmanagement_team AS t ON t.import_id = pt.team_id');
+			//$query->where('import_id != 0 AND id != import_id');
 			$dbjsm->setQuery($query);
 			$result = $dbjsm->loadObjectList();
 
+			
 			foreach ($result as $row)
 			{
+$mdlTable                      = new stdClass;
+$mdlTable->id                  = $row->id;
+$mdlTable->team_id = $row->new_team_id;
+$result_update = $dbjsm->updateObject('#__sportsmanagement_project_team', $mdlTable, 'id');
+				/**
 				// Fields to update.
 				$fields = array(
 					$dbjsm->quoteName('team_id') . ' = ' . $row->id
@@ -2254,7 +2261,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 				catch (Exception $e)
 				{
 				}
-
+*/
 				$my_text .= '<span style="color:' . self::$storeSuccessColor . '"<strong>Verein ' . $row->name . ' im Projektteam aktualisiert !</strong>' . '</span>';
 				$my_text .= '<br />';
 			}
