@@ -2987,9 +2987,13 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 
 			$query = $dbjsm->getQuery(true);
 			$query->clear();
-			$query->select('p.id,p.season_id,pt.id as pt_id,pt.team_id');
+			//$query->select('p.id,p.season_id,pt.id as pt_id,pt.team_id');
+			$query->select('p.id,p.season_id,pt.id as pt_id,t.id as team_id');
 			$query->from('#__sportsmanagement_project as p');
 			$query->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.project_id = p.id');
+
+			$query->join('INNER', '#__sportsmanagement_team AS t ON t.import_id = pt.team_id');
+			
 			$query->where('p.import_id != 0');
 			$query->where('pt.import_id != 0');
 			$dbjsm->setQuery($query);
