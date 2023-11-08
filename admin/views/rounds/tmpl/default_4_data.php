@@ -313,24 +313,25 @@ style="width: 120px; <?php echo $append; ?>"
 						}
 						?>
 					</td>
-				<?php } ?>
-				<?php if ($this->templateConfig['show_tournament_round'] == 1) { ?>
-					<td class="center">
-						<?php
-						$append = ' style="background-color:#bbffff"';
-						echo HTMLHelper::_(
-							'select.genericlist',
-							$this->lists['tournementround'],
-							'tournementround' . $this->item->id,
-							'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
-							$this->count_i . '\').checked=true"' . $append,
-							'value', 'text', $this->item->tournement
-						);
-						?>
-					</td>
-				<?php
+				<?php }
+				if ($this->templateConfig['show_tournament_round'] == 0) {
+					echo '<td class="center" style="display:none;">';
 				}
-				?>
+				else
+				{
+					echo '<td class="center">';
+				}
+					$append = ' style="background-color:#bbffff"';
+					echo HTMLHelper::_(
+						'select.genericlist',
+						$this->lists['tournementround'],
+						'tournementround' . $this->item->id,
+						'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
+						$this->count_i . '\').checked=true"' . $append,
+						'value', 'text', $this->item->tournement
+					);
+					?>
+				</td>
 
                 <td class="center">
                     <div class="btn-group">
