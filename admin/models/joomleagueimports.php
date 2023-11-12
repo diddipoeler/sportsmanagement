@@ -1090,6 +1090,45 @@ return $jl_dberror;
 		/** importschritt 7 */
 		if ($jl_table_import_step == 7)
 		{
+		  /** fehlerhafte daten in der tabelle match_event korrigieren */
+          $query = $db->getQuery(true);
+			$query->clear();
+			$query->select('me.id');
+			$query->from('#__joomleague_match_event as me');
+			$query->where('me.event_time LIKE '.$db->Quote('' . '' . ''));
+			try
+			{
+			$db->setQuery($query);
+			$result = $db->loadObjectList();
+            $infocolor = self::$storeSuccessColor;
+            $infotext = self::$storeSuccessText;
+            }
+			catch (Exception $e)
+			{
+			Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+		    Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror'); 
+            $infocolor = self::$storeFailedColor;
+            $infotext = self::$storeFailedText;
+			}
+            
+            foreach ($result as $row)
+			{
+				$mdlTable                      = new stdClass;
+				$mdlTable->id                  = $row->id;
+				$mdlTable->event_time  = '1';
+				try
+				{
+				$result_update = $db->updateObject('#__joomleague_match_event', $mdlTable, 'id');
+				}
+				catch (Exception $e)
+				{
+				}
+			}
+            
+            
+            $my_text                          .= '<span style="color:' . $infocolor . '"<strong>Daten in der Tabelle: ( __joomleague_match_event ) ' . $infotext . ' zum ändern gefunden!</strong>' . '</span>';
+			$my_text                          .= '<br />';
+            
 			$endtime                          = sportsmanagementModeldatabasetool::getRunTime();
 			$totaltime                        = ($endtime - $starttime);
 			self::$_success['Laufzeit:']      = Text::sprintf('This page was created in %1$s seconds', $totaltime);
