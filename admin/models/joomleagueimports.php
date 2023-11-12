@@ -2276,7 +2276,19 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 $mdlTable                      = new stdClass;
 $mdlTable->id                  = $row->id;
 $mdlTable->team_id = $row->new_team_id;
+try{
 $result_update = $dbjsm->updateObject('#__sportsmanagement_project_team', $mdlTable, 'id');
+	}
+				catch (Exception $e)
+				{
+				    Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+		                        Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror'); 
+                                $infocolor = self::$storeFailedColor;
+                                $infotext = self::$storeFailedText;
+				}
+
+
+
 				/**
 				// Fields to update.
 				$fields = array(
