@@ -132,7 +132,7 @@ if (count($persons) > 0)
 	
 	?>
 		<div>
-		<div class="container-fluid" style="width:250px; 
+		<div class="container-fluid" style="
 											height: 380px;
 											display: flex;
 											<?php echo $style;?> 
