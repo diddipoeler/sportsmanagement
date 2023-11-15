@@ -17,6 +17,27 @@ use Joomla\CMS\Component\ComponentHelper;
 
 ?>
 
+<style>
+.text_rotate {  
+    -webkit-transform: rotate(90deg); 
+    -moz-transform: rotate(90deg); 
+    -ms-transform: rotate(90deg); 
+    -o-transform: rotate(90deg); 
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3); 
+    transform: rotate(90deg);
+    //display:block; 
+    transform-origin: 0% 50%;
+}
+
+.vertical{
+     transform: rotate(180deg);
+     writing-mode: vertical-lr;
+     text-align: center;
+  color: #000000;
+}  
+  
+  
+</style>
 <!--<link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">-->
 
 <?php
@@ -131,90 +152,126 @@ if (count($persons) > 0)
 
 	
 	?>
-		<div>
-		<div class="container-fluid" style="
-											height: 380px;
-											display: flex;
+		
+		<div class="container" style="
+											
+											
 											<?php echo $style;?> 
 											">
-											
-				<div  style="border: 1px solid <?php echo $border_color;?>; 
-											background-color: #eee;
-											border-radius: 20px;
-											width:180px; 
-											height: 230px;
-											background-image: url(<?php echo $picture; ?>);
-								   		    background-size: cover;
-											position: absolute;
-											background-position: center;
-											background-repeat: no-repeat;
-											margin: 30px 0px 0px 5px;
-											">					
-
-				</div>
-		
-			<p style="color: <?php echo $text_color;?> ; 
+			
+          <div class="row">
+            
+            
+            <div class="col-12 d-flex justify-content-center">
+           <p style="color: <?php echo $text_color;?> ; 
 				    font-family: sans-serif;
 					width:180px; 
 					font-size: 18px; 
 					margin: 0px 0px 0px 15px;
-									">	<?php echo $text ?> </p>
-		
-		
-		    <?php
-		
-			if ($show_project)
-				{
-				?>
-					<p style="color: <?php echo $title_color;?>; 
-							font-family: sans-serif; 
-							font-size: <?php echo $title_size;?>px;
-							position: absolute;
-							writing-mode: tb-rl;
-							transform: rotate(-180deg);
-							margin: 110px 0px 0px 185px;
-											">	<?php echo SubStr($person['project_slug'],strpos($person['project_slug'],":")+1); ?> </p>						
-				<?php							
-				}
+									">	<?php echo $text ?> </p> 
+            </div>
+            </div>
+          
+          
+          
+             <div class="row">
+               
+                <div class="col-1 vertical">
 
-			?>
-
-			<p style="color: <? echo $text_color;?>; 
-				      font-family: sans-serif; 
-					font-size: <? echo $text_size;?>px;
-					position: absolute;
-					margin: 260px 0px 0px 5px;
-									">	<?php echo Text::_($person['position_name']) ?> </p>
-									
-									
-			<p style="color: <? echo $text_color;?>; 
-				      font-family: sans-serif; 
-					font-size: <? echo $text_size;?>px;
-					position: absolute;
-					margin: 290px 0px 0px 5px;
-									">	<?php echo $birthdaytext ?> </p>						
-									
-									
-		    <?php
-		
-			if ($show_team)
-				{
-				?>									
-									
-					<p style="color: <? echo $title_color;?>; 
+                  <?php echo $person['team_name'] ?>
+                  
+                  <!--
+ <div style="color: <? echo $title_color;?>; 
 							font-family: sans-serif; 
 							font-size: <? echo $title_size;?>px;
 							position: absolute;
 							margin: 130px 0px 0px -20px;
 							writing-mode: tb-rl;
 							transform: rotate(-180deg);
-											">	<?php echo $person['team_name'] ?> </p>	
+											">	<?php echo $person['team_name'] ?> </div>	-->
+               </div>
+               
+                <div class="col-10 d-flex justify-content-center">
+          <picture>
+             <img src="<?php echo $picture; ?>" class="img-fluid" alt="a" width="180px"/>
+          </picture>
+			
+               </div>
+                <div class="col-1 vertical">
+            <?php
+		
+			if ($show_project)
+				{
+				?>
+                 <img src="<?php echo $flag_url; ?>"  >
+                  <?php echo SubStr($person['project_slug'],strpos($person['project_slug'],":")+1); ?>
+                  
+                  
+                  
+                  <!--
+					<div style="color: <?php echo $title_color;?>; 
+							font-family: sans-serif; 
+							font-size: <?php echo $title_size;?>px;
+							position: absolute;
+							writing-mode: tb-rl;
+							transform: rotate(-180deg);
+							margin: 110px 0px 0px 185px;
+											">	<?php echo SubStr($person['project_slug'],strpos($person['project_slug'],":")+1); ?> </div>		
+                  -->
 				<?php							
 				}
 
+			?>    
+           
+               
+           </div>    
+           </div>
+          
+          
+		
+		
+		   
+<div class="row">
+  <div class="col-12 d-flex justify-content-center text-dark">
+  <?php echo Text::_($person['position_name']) ?>
+  </div>
+  </div>
+  
+  <div class="row">
+  <div class="col-12 d-flex justify-content-center text-dark">
+  <?php echo $birthdaytext ?>
+  </div>
+  
+  
+  <!--
+			<p style="color: <? echo $text_color;?>; 
+				      font-family: sans-serif; 
+					font-size: <? echo $text_size;?>px;
+					position: absolute;
+					margin: 260px 0px 0px 5px;
+									">	<?php echo Text::_($person['position_name']) ?> </p>
+					
+  
+  
+			<p style="color: <? echo $text_color;?>; 
+				      font-family: sans-serif; 
+					font-size: <? echo $text_size;?>px;
+					position: absolute;
+					margin: 290px 0px 0px 5px;
+									">	<?php echo $birthdaytext ?> </p>	
+  
+            -->
+         </div>		
+									
+				
+          
+          
+          
+		    <?php
+		
 			?>
 
-
+<!--
 			<div  style="	background-color: #eee;
 							border-radius: 30px;
 							width:30px; 
@@ -228,7 +285,7 @@ if (count($persons) > 0)
 							">
 									
 		
-			</div>
+			</div> -->
 		
 		<?php 
 			if ($today and $birthday_cake)
@@ -250,7 +307,7 @@ if (count($persons) > 0)
 			?>
 		
 		</div>	
-	</div>
+	
 <?php	
 	}
 }
