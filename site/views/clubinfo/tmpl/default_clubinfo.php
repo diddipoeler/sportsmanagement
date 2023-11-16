@@ -23,7 +23,7 @@ $paramscomponent = ComponentHelper::getParams('com_sportsmanagement');
 
 if ( version_compare(JVERSION, '4.0.0', 'ge') || $paramscomponent->get('use_jsmgrid'))
 {
-	$this->divclass = 'p-2 col';
+	$this->divclass = 'p-2 col-lg-';
 }
 elseif ($this->overallconfig['use_bootstrap_version'] && !$paramscomponent->get('use_jsmgrid'))
 {
