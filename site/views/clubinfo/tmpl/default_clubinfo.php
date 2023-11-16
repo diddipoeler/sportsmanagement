@@ -107,12 +107,12 @@ else
 			?>
             <!-- SHOW SMALL LOGO - END -->
         </div>
-
+<div class="<?php echo $this->divclass; ?>6">
 		<?php
 		if ($this->config['show_club_info'])
 		{
 			?>
-            <div class="<?php echo $this->divclass; ?>9">
+            
 				<?php
 				if ($this->club->address || $this->club->zipcode || $this->club->location)
 				{
@@ -387,71 +387,38 @@ else
 					<?PHP
 				}
 
+
+			
+			
+			
+
+				?>
+				
+        
+		<?php 
+		}
+		?>
+		    </div>
+			<?PHP
 if ($this->config['show_notes_club'])
 		{
 ?>
-
+<div class="<?php echo $this->divclass; ?>2 center">
 <?php  
 $this->notes = array();
 $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAM_DESCRIPTION');
 echo $this->loadTemplate('jsm_notes');
 ?>       
-    <div class="<?php echo $this->divclassrow; ?> table-responsive" id="playground_description">
+   
 		<?php
 		$description = $this->club->notes;
 		$description = HTMLHelper::_('content.prepare', $description);
 		echo $description;
 		?>
-    </div>
+   </div>
 	<?php			
-		}
+		}			
 			
-			
-			
-/*
-				if ($this->config['show_fusion'])
-				{
-					if ($this->familytree)
-					{
-						$class_collapse = 'collapse in';
-					}
-					else
-					{
-						$class_collapse = 'collapse';
-					}
-					?>
-                    <a href="#fusion" class="btn btn-info btn-block" data-toggle="collapse">
-                        <strong>
-							<?php echo Text::_('Fusionen'); ?>
-                        </strong>
-                    </a>
-                    <div id="fusion" class="<?PHP echo $class_collapse; ?>">
-                        <div class="tree">
-
-                            <ul>
-                                <li>
-									<?php
-									if (!$this->config['show_bootstrap_tree'])
-									{
-										?>
-                                        <span><i class="icon-folder-open"></i> aktueller Verein</span>
-										<?php
-									}
-									?>
-                                    <a href="#"><?PHP echo HTMLHelper::image($this->club->logo_big, $this->club->name, 'width="30"') . ' ' . $this->club->name; ?></a>
-									<?php
-									echo $this->familytree;
-									?>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-					<?php
-				}
-			*/
-				?>
-            </div>
-		<?php }
 		?>
     </div>
 <?php } ?>
