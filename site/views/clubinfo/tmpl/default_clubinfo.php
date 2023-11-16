@@ -45,11 +45,11 @@ if (!isset($this->club))
 else
 {
 	?>
-    <div class="<?php echo $this->divclassrow; ?>" itemscope="" itemtype="http://schema.org/SportsClub" id="default_clubinfo">
-        <div class="<?php echo $this->divclass; ?>3 center">
-		<span itemprop="priceRange"></span>
-			<?PHP ?>
-            <!-- SHOW LOGO - START -->
+
+
+<div class="row">
+    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="">
+   <!-- SHOW LOGO - START -->
 			<?php
 			if ($this->config['show_club_logo'] && $this->club->logo_big != '')
 			{
@@ -84,31 +84,14 @@ else
 
 			}
 			?>
-            <br/>
-
-            <!-- SHOW LOGO - END -->
-            <!-- SHOW SMALL LOGO - START -->
-			<?php
-	/*
-			if (($this->config['show_club_shirt']) && ($this->club->logo_small != ''))
-			{
-				$club_trikot_title = str_replace("%CLUBNAME%", $this->club->name, Text::_("COM_SPORTSMANAGEMENT_CLUBINFO_TRIKOT_TITLE"));
-				$picture           = $this->club->logo_small;
-				echo sportsmanagementHelper::getPictureThumb($picture, $club_emblem_title, 20, 20, 3);
-			}
-	*/
-			if ($this->club->website)
-			{
-				if ($this->config['show_club_internetadress_picture'])
-				{
-					echo '<img itemprop="logo" style="" src="http://free.pagepeeker.com/v2/thumbs.php?size=m&url=' . $this->club->website . '">';
-				}
-			}
-			?>
-            <!-- SHOW SMALL LOGO - END -->
-        </div>
-<div class="<?php echo $this->divclass; ?>6">
-		<?php
+            <br/>    
+  
+  </div>
+  
+  
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="">
+      
+     <?php
 		if ($this->config['show_club_info'])
 		{
 			?>
@@ -397,13 +380,20 @@ else
         
 		<?php 
 		}
-		?>
-		    </div>
-			<?PHP
+		?> 
+  
+  
+  
+  
+  
+  </div>
+   
+    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7" style="">
+<?PHP
 if ($this->config['show_notes_club'])
 		{
 ?>
-<div class="<?php echo $this->divclass; ?>2 center">
+
 <?php  
 $this->notes = array();
 $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAM_DESCRIPTION');
@@ -415,10 +405,32 @@ echo $this->loadTemplate('jsm_notes');
 		$description = HTMLHelper::_('content.prepare', $description);
 		echo $description;
 		?>
-   </div>
+   
 	<?php			
 		}			
 			
-		?>
-    </div>
-<?php } ?>
+		?>      
+  
+  
+  
+  
+  </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   <?php } ?>
