@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage teaminfo
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -28,8 +24,9 @@ if (!isset($this->team))
 {
 ?>
 <!-- anfang default_teaminfo -->
-<div class="<?php echo $this->divclasscontainer; ?>" id="default_teaminfo">
-    <div class="<?php echo $this->divclassrow; ?>" id="default_teaminfo_row">
+<!-- <div class="<?php echo $this->divclasscontainer; ?>" id="default_teaminfo"> -->
+    <!-- <div class="<?php echo $this->divclassrow; ?>" id="default_teaminfo_row"> -->
+    <div class="row">
         <!-- anfang default_teaminfo_left -->
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" id="default_teaminfo-left">
 			<?PHP
@@ -263,5 +260,5 @@ if (!isset($this->team))
         </div>
         <!-- ende default_teaminfo -->
     </div>
-</div>
+<!-- </div> -->
 <!-- ende default_teaminfo -->

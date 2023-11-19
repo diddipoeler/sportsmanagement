@@ -17,10 +17,11 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Log\Log;
 
 //$this->columns = 2;
-$this->divclass = '';
+//$this->divclass = '';
 
 $paramscomponent = ComponentHelper::getParams('com_sportsmanagement');
 
+/**
 if ( version_compare(JVERSION, '4.0.0', 'ge') || $paramscomponent->get('use_jsmgrid'))
 {
 	$this->divclass = 'col-lg-';
@@ -37,6 +38,7 @@ else
 {
 	$this->divclass = "span";
 }
+*/
 
 if (!isset($this->club))
 {
