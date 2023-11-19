@@ -98,10 +98,21 @@ $http = HttpFactory::getHttp();
 $getresult = $http->get($link);
 $data = json_decode($getresult->body);
       
-      if ( $data[0]->address->state )
+       if ( $data[0]->address->state )
       {
+        
+        if ( $data[0]->address->country_code == 'gb' )
+      {
+        $this->item->state = $data[0]->address->county;   
+        }
+        else
+        {
 $this->item->state = $data[0]->address->state;    
+        }
+        
+        
       }
+		
       if ( $data[0]->address->state_district && !$this->item->state )
       {
 $this->item->state = $data[0]->address->state_district;    
