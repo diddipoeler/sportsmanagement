@@ -345,7 +345,7 @@ class SMStatisticComplexsum extends SMStatistic
 	 *
 	 * @return
 	 */
-	function getTeamsRanking($project_id, $limit = 20, $limitstart = 0, $order = null)
+	function getTeamsRanking($project_id, $limit = 20, $limitstart = 0, $order = null, $select = '', $statistic_id = 0)
 	{
 		$sids    = SMStatistic::getSids($this->_ids);
 		$sqids   = SMStatistic::getQuotedSids($this->_ids);

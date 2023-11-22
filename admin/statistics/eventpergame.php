@@ -225,7 +225,7 @@ class SMStatisticEventPergame extends SMStatistic
 	 *
 	 * @return
 	 */
-	function getTeamsRanking($project_id = 0, $limit = 20, $limitstart = 0, $order = null)
+	function getTeamsRanking($project_id = 0, $limit = 20, $limitstart = 0, $order = null, $select = '', $statistic_id = 0)
 	{
 		$app       = Factory::getApplication();
 		$sids      = SMStatistic::getQuotedSids($this->_ids);
