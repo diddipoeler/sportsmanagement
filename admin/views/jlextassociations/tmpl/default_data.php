@@ -37,7 +37,7 @@ HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolow
         <tr>
             <th width="5" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
             <th width="20" style="vertical-align: top; ">
-                <input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->items); ?>);"/>
+                <?php echo HTMLHelper::_('grid.checkall'); ?>
             </th>
 
             <th class="title" nowrap="nowrap" style="vertical-align: top; ">
