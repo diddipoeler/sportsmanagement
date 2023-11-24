@@ -375,10 +375,11 @@ $this->model->checkProjectTeamDivision($teams->projectteamid,$teams->id,$teams->
 		}
 
 		ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=project&layout=panel&id=' . $this->project_id);
+        ToolbarHelper::apply('projectteams.saveshort');
 		ToolbarHelper::custom('projectteams.setseasonid', 'purge.png', 'purge_f2.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_SET_SEASON_ID'), true);
 		ToolbarHelper::custom('projectteams.matchgroups', 'purge.png', 'purge_f2.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_CHANGE_MATCH_GROUPS'), true);
 		ToolbarHelper::deleteList('', 'projectteams.delete');
-		ToolbarHelper::apply('projectteams.saveshort');
+		
 
 		$layout = new FileLayout('changeteams', JPATH_ROOT . '/components/com_sportsmanagement/layouts');
 		$html   = $layout->render();
