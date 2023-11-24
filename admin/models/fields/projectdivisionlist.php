@@ -75,7 +75,7 @@ class JFormFieldprojectdivisionlist extends \JFormFieldList
 		}
 		catch (Exception $e)
 		{
-			Factory::getApplication()->enqueueMessage($db->getErrorMsg());
+			Factory::getApplication()->enqueueMessage($e->getMessage());
 		}
 
 		foreach ($options as $row)
