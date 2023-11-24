@@ -48,26 +48,6 @@ class sportsmanagementControllerjlextindividualsport extends JSMControllerAdmin
 
 		$model = $this->getModel('jlextindividualsport');
 
-//		// $model->addmatch();
-//
-//		$row = $model->getTable();
-//
-//		// Bind the form fields to the table
-//		if (!$row->bind($post))
-//		{
-//			$this->setError($this->_db->getErrorMsg());
-//
-//			return false;
-//		}
-//
-//		// Make sure the record is valid
-//		if (!$row->check())
-//		{
-//			$this->setError($this->_db->getErrorMsg());
-//
-//			return false;
-//		}
-
 
 $result = $model->addmatch($post);
 
