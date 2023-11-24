@@ -528,12 +528,13 @@ class sportsmanagementModelSportsTypes extends JSMModelList
 
 		$this->jsmdb->setQuery($this->jsmquery);
 
-		if (!$result = $this->jsmdb->loadObjectList())
-		{
-			$this->setError($this->jsmdb->getErrorMsg());
-
-			return false;
-		}
+try {
+	$result = $this->jsmdb->loadObjectList()
+	} catch (Exception $e) {
+ $this->setError($e->getMessage());
+ return false;
+}
+	
 
 		return $result;
 	}
