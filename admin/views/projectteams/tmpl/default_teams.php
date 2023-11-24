@@ -421,7 +421,21 @@ if ( $this->modelclub->getuserextrafieldvalue((int) $this->item->club_id,'soccer
 	 }			
 			
 			?>
+            <br>
+            <?php
+            echo sportsmanagementHelper::getBootstrapModalImage(
+							'projectteam_logo' . $this->item->club_id,
+							Uri::root() . $this->item->club_logo,
+							Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE'),
+							'30',
+							Uri::base() . $link,
+							$this->modalwidth,
+							$this->modalheight
+						);
+            ?>
                 </td>
+                
+                
                 <td class="center">
 					<?php
 					echo JSMCountries::getCountryFlag($this->item->country);
