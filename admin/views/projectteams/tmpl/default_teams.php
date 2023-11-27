@@ -454,6 +454,19 @@ if ( $this->modelclub->getuserextrafieldvalue((int) $this->item->club_id,'soccer
                                                       value="<?php echo $this->item->location; ?>"
                                                       onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
                     <br>
+
+			<input<?php echo $inputappend; ?> type="text" size="25" class="form-control form-control-inline"
+                                                      name="zipcode<?php echo $this->item->id; ?>"
+                                                      value="<?php echo $this->item->zipcode; ?>"
+                                                      onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
+                    <br>
+
+			<input<?php echo $inputappend; ?> type="text" size="25" class="form-control form-control-inline"
+                                                      name="address<?php echo $this->item->id; ?>"
+                                                      value="<?php echo $this->item->address; ?>"
+                                                      onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
+                    <br>
+			
                     <input<?php echo $inputappend; ?> type="text" size="25" class="form-control form-control-inline"
                                                       name="founded_year<?php echo $this->item->id; ?>"
                                                       value="<?php echo $this->item->founded_year; ?>"
