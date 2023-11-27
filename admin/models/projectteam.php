@@ -206,6 +206,10 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
 			$object = new stdClass;
 			$object->id           = $post['club_id' . $pks[$x]];
 			$object->location     = $post['location' . $pks[$x]];
+
+			$object->zipcode     = $post['zipcode' . $pks[$x]];
+			$object->address     = $post['address' . $pks[$x]];
+			
 			$object->founded_year = $post['founded_year' . $pks[$x]];
 			$object->unique_id    = $post['unique_id' . $pks[$x]];
 
