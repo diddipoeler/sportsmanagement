@@ -134,6 +134,17 @@ $optteams = ' allowClear: true,
 				echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY');
 				?>
                 <br/>
+
+		    <?php
+				echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_POSTAL_CODE');
+				?>
+                <br/>
+
+		    <?php
+				echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS');
+				?>
+                <br/>
+		    
 				<?php
 				echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED_YEAR');
 				?>
