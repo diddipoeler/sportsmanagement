@@ -189,9 +189,17 @@ $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS slug');
 $query->from('#__sportsmanagement_project AS p ');
 $query->where('p.league_id = ' . $league_id);
 $query->where('p.name > ' . $db->Quote($name));
-		$query->order('p.name ASC '); 
+		$query->order('p.name ASC ');
+        try{ 
 $db->setQuery($query, 0, 1);
-$result = $db->loadObject();		
+$result = $db->loadObject();	
+}
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+
+		}	
 $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect		
 		return $result;		
 		
@@ -215,9 +223,17 @@ $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS slug');
 $query->from('#__sportsmanagement_project AS p ');
 $query->where('p.league_id = ' . $league_id);
 $query->where('p.name < ' . $db->Quote($name));
-		$query->order('p.name DESC '); 
+		$query->order('p.name DESC ');
+        try{ 
 $db->setQuery($query, 0, 1);
-$result = $db->loadObject();		
+$result = $db->loadObject();
+}
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+
+		}		
 $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect		
 		return $result;		
 		
@@ -302,10 +318,17 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 				$query->join('LEFT', '#__sportsmanagement_season AS s ON p.season_id = s.id ');
 				$query->join('LEFT', '#__sportsmanagement_round AS r ON p.current_round = r.id ');
 				$query->where('p.id = ' . (int) self::$projectid);
-
+try{
 				$db->setQuery($query, 0, 1);
 
 				self::$_project = $db->loadObject();
+                }
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+
+		}
 				// $query->clear();
 				// $query->select('eventtime');
 				// $query->from('#__sportsmanagement_sports_type');
@@ -357,10 +380,17 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 		if ($inserthits)
 		{
 			$query->update($db->quoteName('#__sportsmanagement_project'))->set('hits = hits + 1')->where('id = ' . (int) $projectid);
-
+try{
 			$db->setQuery($query);
 
 			$result = $db->execute();
+            }
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+
+		}
 			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		}
 
@@ -455,10 +485,12 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 				$db->setQuery($query);
 				$result = $db->loadObject();
 			}
-			catch (Exception $e)
-			{
-				echo $e->getMessage();
-			}
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+
+		}
 
 			// If result is empty, it probably means either this is not started, either this is over, depending on the mode.
 			// Either way, do not change current value
@@ -506,10 +538,12 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 						$db->setQuery($query);
 						$result = $db->loadObject();
 					}
-					catch (Exception $e)
-					{
-						echo $e->getMessage();
-					}
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+
+		}
 				}
 			}
 
@@ -656,9 +690,16 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 					$query->from('#__sportsmanagement_division');
 					$query->where('project_id = ' . (int) self::$projectid);
                     $query->where('published = 1');
-
+try{
 					$db->setQuery($query);
 					self::$_divisions = $db->loadObjectList('id');
+                    }
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+
+		}
 				}
 
 				if ($divLevel)
@@ -714,13 +755,21 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 		}
 
 		$query->order('ordering');
+        
+        try{
 		$db->setQuery($query);
 
 		if (version_compare(JVERSION, '3.0.0', 'ge'))
 		{
 			$res = $db->loadColumn();
 		}
+}
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 
+		}
 		if (count($res) == 0)
 		{
             self::$warnings[] = Text::_('COM_SPORTSMANAGEMENT_RANKING_NO_SUBLEVEL_DIVISION_FOUND') . $divLevel;
@@ -770,11 +819,13 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 			{
 				$db->setQuery($query);
 				self::$_rounds = $db->loadObjectList();
-			}
-			catch (Exception $e)
-			{
-				$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
-			}
+		}
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+
+		}
 		}
 
 		if ($ordering == 'DESC')
@@ -818,9 +869,16 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 		$query->from('#__sportsmanagement_round ');
 		$query->where('project_id = ' . (int) self::$projectid);
 		$query->order('roundcode ' . $ordering);
+        try{
 		$db->setQuery($query);
 		$result = $db->loadObjectList();
+}
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 
+		}
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
 	}
@@ -852,10 +910,16 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 			$query->join('INNER', '#__sportsmanagement_team AS t ON st.team_id = t.id ');
 			$query->join('INNER', '#__sportsmanagement_club AS c ON t.club_id = c.id  ');
 			$query->where('pt.id = ' . (int) $projectteamid);
-
+try{
 			$db->setQuery($query);
-
 			$result = $db->loadObject();
+            }
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+
+		}
 		}
 		else
 		{
@@ -977,10 +1041,17 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 		$query->join('LEFT', ' #__sportsmanagement_playground plg ON plg.id = tl.standard_playground ');
 		$query->join('LEFT', ' #__sportsmanagement_project AS p ON p.id = tl.project_id ');
 		$query->where('tl.project_id = ' . (int) self::$projectid);
-
+try{
 		$db->setQuery($query);
 
 		self::$_teams = $db->loadObjectList();
+        }
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+
+		}
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return self::$_teams;
@@ -1104,9 +1175,16 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         $query->where('et.sports_type_id = ' . $sports_type_id);
         }
 
+try{
 		$db->setQuery($query);
 		$result = $db->loadObjectList('etid');
-        
+        }
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+
+		}
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
 	}
@@ -1134,8 +1212,15 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 		$query->from('#__sportsmanagement_project_team');
 		$query->where('team_id = ' . (int) $teamid);
 		$query->where('project_id = ' . (int) self::$projectid);
+        try{
 		$db->setQuery($query);
-		$result = $db->loadResult();
+		$result = $db->loadResult();}
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+
+		}
         
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
@@ -1202,9 +1287,17 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 		$query->where('p.id = ' . (int) self::$projectid);
 
 		$starttime = microtime();
+        try{
 		$db->setQuery($query);
 		$result = $db->loadResult();
+}
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 
+		}
+        
 		if ($checktemplate)
 		{
 			if (!$result)
@@ -1221,9 +1314,16 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 					$query->where('p.id = ' . $project->master_template);
 
 					$starttime = microtime();
+                    try{
 					$db->setQuery($query);
 					$result = $db->loadResult();
+}
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 
+		}
 					if (!$result)
 					{
 self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING') . " " . $template;
@@ -1305,9 +1405,9 @@ self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT')
 		}
 		catch (Exception $e)
 		{
-			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
-			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), 'error');
-			$events = false;
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+$events = false;
 		}
 
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
@@ -1360,11 +1460,13 @@ self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT')
 			{
 				$db->setQuery($query);
 				self::$_stats = $db->loadObjectList();
-			}
-			catch (Exception $e)
-			{
-				$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
-			}
+		}
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+
+		}
 		}
 
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
@@ -1430,10 +1532,12 @@ self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT')
 				$db->setQuery($query);
 				self::$_positions = $db->loadObjectList('id');
 			}
-			catch (Exception $e)
-			{
-				$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
-			}
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+
+		}
 		}
 
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
@@ -1547,12 +1651,15 @@ self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT')
 				$db->setQuery($query);
 				$result2        = $db->loadObject();
 				$inout->pposid1 = $result2->id;
-			}
-			catch (Exception $e)
-			{
-				// Catch any database errors.
-				$inout->pposid1 = 0;
-			}
+                }
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+$inout->pposid1 = 0;
+		}
+        
+		
 
 			$query->clear();
 			$query->select('p.firstname AS out_firstname,p.nickname AS out_nickname,p.lastname AS out_lastname,p.id AS out_ptid');
@@ -1612,12 +1719,13 @@ self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT')
 				$result2 = $db->loadObject();
 
 				$inout->pposid2 = $result2->id;
-			}
-			catch (Exception $e)
-			{
-				// Catch any database errors.
-				$inout->pposid2 = 0;
-			}
+		 }
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+$inout->pposid2 = 0;
+		}
 
 			$query->clear();
 			$query->select('pt.team_id,pt.id AS ptid');
@@ -1670,10 +1778,15 @@ self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT')
 			$query->join('INNER', '#__sportsmanagement_round AS r on r.id = m.round_id ');
 			$query->join('INNER', '#__sportsmanagement_project AS p on r.project_id = p.id ');
 			$query->where('m.id = ' . (int) self::$matchid);
-
+try{
 			$db->setQuery($query, 0, 1);
 			self::$_match = $db->loadObject();
-
+ }
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+		}
 			if (self::$_match)
 			{
 				sportsmanagementHelper::convertMatchDateToTimezone(self::$_match);
@@ -1762,8 +1875,8 @@ self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT')
 		}
 		catch (Exception $e)
 		{
-			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
-			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), 'error');
+		$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 			$events = false;
 		}
 
@@ -1781,10 +1894,15 @@ self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT')
 
 		// Where
 		$query->where('match_id = ' . (int) $match_id);
-
+try{
 		$db->setQuery($query);
 		$commentary = $db->loadObjectList();
-
+}
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+		}
 		if ($commentary)
 		{
 			foreach ($commentary as $comment)
@@ -1919,9 +2037,15 @@ self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT')
 		$query->select('id AS value,name AS text');
 		$query->from('#__sportsmanagement_playground');
 		$query->order('text ASC');
-
+try{
 		$db->setQuery($query);
 		$result = $db->loadObjectList();
+        }
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+		}
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return $result;
@@ -1946,8 +2070,15 @@ self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT')
 		$query->select('game_regular_time');
 		$query->from('#__sportsmanagement_project');
 		$query->where('id = ' . (int) $project_id);
+        try{
 		$db->setQuery($query);
 		$result = $db->loadObject();
+        }
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+		}
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		$gameprojecttime += $result->game_regular_time;
@@ -1990,10 +2121,15 @@ self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT')
 			$query->select('id AS value,firstname,lastname');
 			$query->from('#__sportsmanagement_project_referee');
 			$query->order('lastname');
-
+try{
 			$db->setQuery($query);
 			$refs = $db->loadObjectList();
-
+}
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+		}
 			foreach ($refs as $ref)
 			{
 				$ref->text = $ref->lastname . "," . $ref->firstname;
@@ -2035,9 +2171,15 @@ self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT')
 		$query->from('#__sportsmanagement_league as l');
 		$query->join('INNER', '#__sportsmanagement_project as pro ON pro.league_id = l.id ');
 		$query->where('pro.id = ' . (int) self::$projectid);
-
+try{
 		$db->setQuery($query);
 		$this->country = $db->loadResult();
+        }
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+		}
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return $this->country;
