@@ -111,13 +111,12 @@ class sportsmanagementModelclubnames extends JSMModelList
 		try
 		{
 			$this->jsmdb->setQuery($this->jsmquery);
-
 			return $this->jsmdb->loadObjectList();
 		}
 		catch (Exception $e)
 		{
-			$this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
-
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 			return false;
 		}
 
