@@ -919,6 +919,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 		$app   = Factory::getApplication();
 		$db    = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
+		$res = array();
 
 		if (empty($this->_teamoptions))
 		{
@@ -929,10 +930,16 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 
 			$query->where('pt.project_id = ' . intval($project_id));
 			$query->order('t.name ASC');
-
+try{
 			$db->setQuery($query);
-
 			$res = $db->loadObjectList();
+			}
+		catch (Exception $e)
+		{
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+		
+		}
 
 			if (!$res)
 			{
