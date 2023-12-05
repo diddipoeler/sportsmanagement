@@ -941,10 +941,7 @@ try{
 		
 		}
 
-			if (!$res)
-			{
-				Log::add($db->getErrorMsg());
-			}
+			
 
 			$this->_teamoptions = $res;
 		}
