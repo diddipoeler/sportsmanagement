@@ -81,7 +81,7 @@ $routeparameter['to']                 = 0;
 $routeparameter['division']           = 0;
 $link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);   
   
-$output[$this->season][] = $this->config['show_leaguechampionoverview_season'] ? HTMLHelper::link($link, $this->season).' : ' : '<div class="col-sm-4" id="seasonname">'.HTMLHelper::link($link, $this->season).' : '.'</div>'   ;
+$output[$this->season][] = $this->config['show_leaguechampionoverview_season'] ? HTMLHelper::link($link, $this->season.' - '.$this->team->project_name).' : ' : '<div class="col-sm-4" id="seasonname">'.HTMLHelper::link($link, $this->season.' - '.$this->team->project_name).' : '.'</div>'   ;
 if ( $this->team->teamid )
 {     
 $routeparameter                       = array();

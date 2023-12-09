@@ -780,9 +780,16 @@ class JSMRanking
 		{
 		}
 
+try{
 		$db->setQuery($query);
 		$res = $db->loadObjectList();
-
+}
+		catch (Exception $e)
+		{
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+		
+		}
 		/**
 		 * es kann aber auch vorkommen, dass nur abschlusstabellen zu den gruppen vorhanden sind.
 		 * deshalb muss die komponente auch in der lage sein das darzustellen.
@@ -803,12 +810,20 @@ class JSMRanking
 			$query->where('ptd.is_in_score = 1');
           $query->where('ptd.use_finally = 1');
           $query->where('ptd.division_id = ' . $division);
+          try{
 			$db->setQuery($query);
 			$res = $db->loadObjectList();
+            }
+		catch (Exception $e)
+		{
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+		
+		}
 		}
 
 		
- if (!$res )
+        if (!$res )
 		{
 			$query->clear();
 			$query->select('pt.id AS ptid, pt.is_in_score, pt.start_points, pt.division_id');
@@ -824,8 +839,16 @@ class JSMRanking
 			$query->where('pt.is_in_score = 1');
           $query->where('pt.use_finally = 1');
           //$query->where('ptd.division_id = ' . $division);
+          try{
 			$db->setQuery($query);
 			$res = $db->loadObjectList();
+            }
+		catch (Exception $e)
+		{
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+		
+		}
 		}
 
 
@@ -947,8 +970,6 @@ class JSMRanking
         break;
         }
 
-
-
 		$query->select('m.id');
 		$query->select('m.projectteam1_id');
 		$query->select('m.projectteam2_id');
@@ -997,11 +1018,6 @@ class JSMRanking
 		$query->where('(m.cancel IS NULL OR m.cancel = 0)');
 //		$query->where('m.projectteam1_id > 0 AND m.projectteam2_id > 0');
 
-
-
-
-
-
 		switch ($viewName)
 		{
 		case 'rankingalltime':
@@ -1011,9 +1027,17 @@ class JSMRanking
 		break;
 		}
 
+try{
 		$db->setQuery($query);
-
 		$res     = $db->loadObjectList();
+}
+		catch (Exception $e)
+		{
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+		
+		}        
+        
 //echo __METHOD__.' '.__LINE__ .' res <pre>'.print_r($res,true).'</pre>';        
 		$matches = array();
 
@@ -1089,8 +1113,16 @@ class JSMRanking
 			$query->from('#__sportsmanagement_round AS r ');
 			$query->where('r.project_id = ' . $this->_projectid);
 			$query->order('r.roundcode');
+            try{
 			$db->setQuery($query);
 			$this->_roundcodes = $db->loadAssocList('id');
+            }
+		catch (Exception $e)
+		{
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+		
+		}
 		}
 
 		if (!isset($this->_roundcodes[(int) $round_id]))
@@ -1354,7 +1386,7 @@ class JSMRanking
 			$query->where('project_id = ' . $db->Quote($this->_projectid) );
 			$query->where('parent_id = ' . $db->Quote($this->_division) );
             $query->where('published = 1');
-
+try{
 			$db->setQuery($query);
 
 			if (version_compare(JVERSION, '3.0.0', 'ge'))
@@ -1362,6 +1394,13 @@ class JSMRanking
 				// Joomla! 3.0 code here
 				$res = $db->loadColumn();
 			}
+            }
+		catch (Exception $e)
+		{
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+		
+		}
 //			elseif (version_compare(JVERSION, '2.5.0', 'ge'))
 //			{
 //				// Joomla! 2.5 code here
@@ -1418,7 +1457,6 @@ class JSMRanking
 	function _cmpPoints($a, $b)
 	{
 		$res = -($a->getPoints() - $b->getPoints());
-
 		return (int) $res;
 	}
     
@@ -1433,7 +1471,6 @@ class JSMRanking
     function _cmpShooterrings($a, $b)
 	{
 		$res = -($a->shooterrings - $b->shooterrings);
-
 		return (int) $res;
 	}
     
@@ -1451,7 +1488,6 @@ class JSMRanking
 	{
 		// $res =- ($a->penalty_points - $b->penalty_points );
 		$res = -($b->penalty_points - $a->penalty_points);
-
 		return (int) $res;
 	}
 
@@ -1466,7 +1502,6 @@ class JSMRanking
 	function _cmpBonus($a, $b)
 	{
 		$res = -($a->bonus_points - $b->bonus_points);
-
 		return $res;
 	}
 
@@ -1481,7 +1516,6 @@ class JSMRanking
 	function _cmpAgainst($a, $b)
 	{
 		$res = ($a->sum_team2_result - $b->sum_team2_result);
-
 		return $res;
 	}
 
@@ -1496,7 +1530,6 @@ class JSMRanking
 	function _cmpScoreAvg($a, $b)
 	{
 		$res = -($a->scoreAvg() - $b->scoreAvg());
-
 		return $res;
 	}
 
@@ -1511,7 +1544,6 @@ class JSMRanking
 	function _cmpScorePct($a, $b)
 	{
 		$res = -($a->scorePct() - $b->scorePct());
-
 		return $res;
 	}
 
@@ -1526,12 +1558,10 @@ class JSMRanking
 	function _cmpWinpct($a, $b)
 	{
 		$res = -($a->winPct() - $b->winPct());
-
 		if ($res != 0)
 		{
 			$res = ($res >= 0 ? 1 : -1);
 		}
-
 		return $res;
 	}
 
@@ -1546,7 +1576,6 @@ class JSMRanking
 	function _cmpGb($a, $b)
 	{
 		$res = -(($a->cnt_won - $b->cnt_won) + ($b->cnt_lost - $a->cnt_lost));
-
 		return $res;
 	}
 
@@ -1561,10 +1590,8 @@ class JSMRanking
 	function _cmpH2h($a, $b)
 	{
 		$teams = $this->_geth2h();
-
-		// We do not include start points in h2h comparison
+		/** We do not include start points in h2h comparison */
 		$res = -($teams[$a->_ptid]->getPoints(false) - $teams[$b->_ptid]->getPoints(false));
-
 		return $res;
 	}
 
@@ -1606,7 +1633,6 @@ class JSMRanking
 	function _cmpH2h_diff($a, $b)
 	{
 		$teams = $this->_geth2h();
-
 		return $this->_cmpDiff($teams[$a->_ptid], $teams[$b->_ptid]);
 	}
 
@@ -1621,7 +1647,6 @@ class JSMRanking
 	function _cmpDiff($a, $b)
 	{
 		$res = -($a->diff_team_results - $b->diff_team_results);
-
 		return $res;
 	}
 
@@ -1636,7 +1661,6 @@ class JSMRanking
 	function _cmpH2h_for($a, $b)
 	{
 		$teams = $this->_geth2h();
-
 		return $this->_cmpFor($teams[$a->_ptid], $teams[$b->_ptid]);
 	}
 
@@ -1651,7 +1675,6 @@ class JSMRanking
 	function _cmpFor($a, $b)
 	{
 		$res = -($a->sum_team1_result - $b->sum_team1_result);
-
 		return $res;
 	}
 
@@ -1666,7 +1689,6 @@ class JSMRanking
 	function _cmpH2h_away($a, $b)
 	{
 		$teams = $this->_geth2h();
-
 		return $this->_cmpAwayfor($teams[$a->_ptid], $teams[$b->_ptid]);
 	}
 
@@ -1681,7 +1703,6 @@ class JSMRanking
 	function _cmpAwayfor($a, $b)
 	{
 		$res = -($a->sum_away_for - $b->sum_away_for);
-
 		return $res;
 	}
 
@@ -1696,7 +1717,6 @@ class JSMRanking
 	function _cmpLegs_diff($a, $b)
 	{
 		$res = -($a->diff_team_legs - $b->diff_team_legs);
-
 		return $res;
 	}
 
@@ -1711,12 +1731,10 @@ class JSMRanking
 	function _cmpLegs_ratio($a, $b)
 	{
 		$res = -($a->legsRatio() - $b->legsRatio());
-
 		if ($res != 0)
 		{
 			$res = ($res >= 0 ? 1 : -1);
 		}
-
 		return $res;
 	}
 
@@ -1731,7 +1749,6 @@ class JSMRanking
 	function _cmpLegs_win($a, $b)
 	{
 		$res = -($a->sum_team1_legs - $b->sum_team1_legs);
-
 		return $res;
 	}
 
@@ -1746,7 +1763,6 @@ class JSMRanking
 	function _cmpWins($a, $b)
 	{
 		$res = -($a->cnt_won - $b->cnt_won);
-
 		return $res;
 	}
 
@@ -1761,7 +1777,6 @@ class JSMRanking
 	function _cmpPlayedasc($a, $b)
 	{
 		$res = -($this->_cmpPlayed($a, $b));
-
 		return $res;
 	}
 
@@ -1776,7 +1791,6 @@ class JSMRanking
 	function _cmpPlayed($a, $b)
 	{
 		$res = -($a->cnt_matches - $b->cnt_matches);
-
 		return $res;
 	}
 
@@ -1791,12 +1805,10 @@ class JSMRanking
 	function _cmpPoints_ratio($a, $b)
 	{
 		$res = -($a->pointsRatio() - $b->pointsRatio());
-
 		if ($res != 0)
 		{
 			$res = ($res >= 0 ? 1 : -1);
 		}
-
 		return $res;
 	}
 
@@ -1811,7 +1823,6 @@ class JSMRanking
 	function _cmpWOT($a, $b)
 	{
 		$res = -($a->cnt_wot - $b->cnt_wot);
-
 		return $res;
 	}
 
@@ -1826,7 +1837,6 @@ class JSMRanking
 	function _cmpWSO($a, $b)
 	{
 		$res = -($a->cnt_wso - $b->cnt_wso);
-
 		return $res;
 	}
 }

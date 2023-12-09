@@ -95,15 +95,21 @@ function getProjectTeamDivisionPoints($project_id = 0,$projectteamid = 0,$divisi
 		$db             = Factory::getDBO();
 		$query          = $db->getQuery(true);
 		$app            = Factory::getApplication();
+        $result = array();
         $query->select($field);
 		$query->from('#__sportsmanagement_project_team_division');
 		$query->where('project_id = ' . $project_id);
         $query->where('team_id = ' . $projectteamid);
         $query->where('division_id = ' . $division_id);
-        //$query->where('published = 1');
+try{
 		$db->setQuery($query);
 		$result = $db->loadResult();
-        
+}
+		catch (Exception $e)
+		{
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+		}        
         return $result;
         }
         
@@ -126,9 +132,16 @@ function checkProjectTeamDivision($projectteamid = 0,$id = 0,$project_id = 0,$te
         $query->select('*');
 		$query->from('#__sportsmanagement_division');
 		$query->where('project_id = ' . $project_id);
-        //$query->where('published = 1');
+
+try{
 		$db->setQuery($query);
 		$divisions = $db->loadObjectList();
+        }
+		catch (Exception $e)
+		{
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+		}
         
         foreach ($divisions as $d)
 					{
@@ -142,10 +155,8 @@ function checkProjectTeamDivision($projectteamid = 0,$id = 0,$project_id = 0,$te
 }
 		catch (Exception $e)
 		{
-//			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
-//			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');
-//			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $query->dump()), Log::ERROR, 'jsmerror');
-//			return false;
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 		}
 
 					}
@@ -182,9 +193,8 @@ function checkProjectTeamDivision($projectteamid = 0,$id = 0,$project_id = 0,$te
 		}
 		catch (Exception $e)
 		{
-			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
-			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');
-			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $query->dump()), Log::ERROR, 'jsmerror');
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 
 			return false;
 		}
@@ -202,9 +212,8 @@ function checkProjectTeamDivision($projectteamid = 0,$id = 0,$project_id = 0,$te
 		}
 		catch (Exception $e)
 		{
-			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
-			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');
-			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $query->dump()), Log::ERROR, 'jsmerror');
+		$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 
 			return false;
 		}
@@ -221,9 +230,8 @@ function checkProjectTeamDivision($projectteamid = 0,$id = 0,$project_id = 0,$te
 			}
 			catch (Exception $e)
 			{
-				$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-				$code = $e->getCode(); // Returns '500';
-				Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
+				$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 			}
 
 			if ($result_season_team_id)
@@ -284,10 +292,8 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 			}
 			catch (Exception $e)
 			{
-				$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-				$code = $e->getCode(); // Returns
-				Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
-
+				$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 				return false;
 			}
 		}
@@ -306,10 +312,8 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 			}
 			catch (Exception $e)
 			{
-				$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-				$code = $e->getCode(); // Returns
-				Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
-
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 				return false;
 			}
 
@@ -326,9 +330,8 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 			}
 			catch (Exception $e)
 			{
-				$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-				$code = $e->getCode(); // Returns
-				Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+				$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 
 				return false;
 			}
@@ -346,9 +349,8 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 			}
 			catch (Exception $e)
 			{
-				$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-				$code = $e->getCode(); // Returns
-				Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 
 				return false;
 			}
@@ -368,9 +370,8 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 			}
 			catch (Exception $e)
 			{
-				$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-				$code = $e->getCode(); // Returns
-				Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 
 				return false;
 			}
@@ -426,7 +427,8 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 		}
 		catch (Exception $e)
 		{
-			$this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 
 			return false;
 		}
@@ -482,7 +484,8 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 		}
 		catch (Exception $e)
 		{
-			$this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 			return false;
 		}
 
@@ -580,7 +583,8 @@ $postcountry = array_key_exists('edit_search_nation', $post) ? $post['edit_searc
 		}
 		catch (Exception $e)
 		{
-			$this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 
 			return false;
 		}
@@ -664,6 +668,7 @@ $postcountry = array_key_exists('edit_search_nation', $post) ? $post['edit_searc
 	 */
 	function getAllTeams($pid)
 	{
+	   $result = array();
 		// Reference global application object
 		$app = Factory::getApplication();
 
@@ -742,13 +747,18 @@ $postcountry = array_key_exists('edit_search_nation', $post) ? $post['edit_searc
 
 		$query->order('t.name ASC');
 
+try{
 		$db->setQuery($query);
-
-		if (!$result = $db->loadObjectList())
+$result = $db->loadObjectList();
+}
+		catch (Exception $e)
 		{
-			//$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_CHANGE_TEAMS'), 'Notice');
-			return false;
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+//			return false;
 		}
+
+
 
 		foreach ($result as $teams)
 		{
@@ -811,21 +821,27 @@ $postcountry = array_key_exists('edit_search_nation', $post) ? $post['edit_searc
 			$this->jsmquery->order('t.name ASC');
 		}
 
+try{
 		$this->jsmdb->setQuery($this->jsmquery);
-
-		if (!$result = $this->jsmdb->loadObjectList())
+        $result = $this->jsmdb->loadObjectList();
+}
+		catch (Exception $e)
 		{
-			return $result;
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+//			return false;
 		}
-		else
-		{
-			foreach ($result as $row)
+        
+
+        
+        foreach ($result as $row)
 			{
 				self::$_pro_teams_in_used[] = $row->season_team_id;
 			}
 
 			return $result;
-		}
+        
+        
 	}
 
 	/**
@@ -883,9 +899,8 @@ $postcountry = array_key_exists('edit_search_nation', $post) ? $post['edit_searc
 		}
 		catch (Exception $e)
 		{
-			$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-			$code = $e->getCode(); // Returns '500';
-			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
+						$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 		}
 	}
 
@@ -975,6 +990,7 @@ $postcountry = array_key_exists('edit_search_nation', $post) ? $post['edit_searc
 	{
 		// Reference global application object
 		$app = Factory::getApplication();
+        $result = 0;
 
 		// JInput object
 		$jinput = $app->input;
@@ -989,10 +1005,18 @@ $postcountry = array_key_exists('edit_search_nation', $post) ? $post['edit_searc
 		$query->from('#__sportsmanagement_project_team AS pt ');
 		$query->join('INNER', '#__sportsmanagement_project AS p on p.id = pt.project_id ');
 		$query->where('p.id =' . $project_id);
-
+try{
 		$db->setQuery($query);
-
-		return $db->loadResult();
+		$result = $db->loadResult();
+        
+        }
+		catch (Exception $e)
+		{
+						$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+		}
+        return $result;
+        
 	}
 
 	/**
