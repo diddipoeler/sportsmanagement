@@ -27,7 +27,7 @@ use Joomla\CMS\Factory;
  * @version   $Id$
  * @access    public
  */
-class modJSMRankingHelper
+class modJSMRankingHelper extends \stdClass
 {
 
 	/**
