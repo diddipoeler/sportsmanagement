@@ -68,21 +68,21 @@ class sportsmanagementModelDivisions extends JSMModelList
 	 */
 	function getDivisions($project_id)
 	{
+	   $result = array();
 		$starttime = microtime();
 		$this->jsmquery->clear();
 		$this->jsmquery->select('id AS value,name AS text');
 		$this->jsmquery->from('#__sportsmanagement_division');
 		$this->jsmquery->where('project_id = ' . $project_id);
 		$this->jsmquery->order('name ASC');
+        try{
 		$this->jsmdb->setQuery($this->jsmquery);
-
-		if (!$result = $this->jsmdb->loadObjectList("value"))
+		$result = $this->jsmdb->loadObjectList("value");
+}
+		catch (Exception $e)
 		{
-			return array();
-		}
-		else
-		{
-			return $result;
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 		}
 
 	}
@@ -96,15 +96,22 @@ class sportsmanagementModelDivisions extends JSMModelList
 	 */
 	function getProjectDivisionsCount($project_id)
 	{
+	   $result = array();
 		$starttime = microtime();
 		$this->jsmquery->clear();
 		$this->jsmquery->select('count(*) AS count');
 		$this->jsmquery->from('#__sportsmanagement_division AS d');
 		$this->jsmquery->join('INNER', '#__sportsmanagement_project AS p on p.id = d.project_id');
 		$this->jsmquery->where('p.id = ' . $project_id);
+        try{
 		$this->jsmdb->setQuery($this->jsmquery);
-
-		return $this->jsmdb->loadResult();
+		$result = $this->jsmdb->loadResult();
+        }
+		catch (Exception $e)
+		{
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+		}
 	}
 
 	/**

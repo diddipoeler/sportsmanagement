@@ -84,6 +84,7 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         $object->ptid = $this->champion->_ptid;
         $object->teamid = $this->champion->_teamid;
 		$object->project_id = $project->slug;
+		  $object->project_name = $project->name;
         $object->project_count_matches = $mdlProject::getProjectCountMatches($project->id,true,$project->league_id,$project->season_id);
         
         if ( $this->champion->club_id )
