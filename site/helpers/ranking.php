@@ -23,7 +23,7 @@ use Joomla\CMS\Log\Log;
  * @version   2014
  * @access    public
  */
-class JSMRanking
+class JSMRanking extends \stdClass
 {
 	static $rankingalltimenotes = array();
 	static $rankingalltimewarnings = array();
@@ -1855,7 +1855,7 @@ try{
  * @version   2014
  * @access    public
  */
-class JSMRankingTeamClass
+class JSMRankingTeamClass extends \stdClass
 {
 	var $_use_finally = 0;
 	var $_finaltablerank = 0;
