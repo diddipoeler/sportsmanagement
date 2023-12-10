@@ -156,15 +156,15 @@
 		</field>
 		
 		<field 	name="show_row_timeline" type="radio" default="0" layout="joomla.form.field.radio.switcher"
-				label="Ereignisse in einer Zeile ?" 
-				description="Ereignisse in einer Zeile ?">
+				label="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_LABEL_SHOW_ROW_TIMELINE" 
+				description="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_SHOW_ROW_TIMELINE">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
 		<field 	name="which_position_tooltip_subst" type="list" default="bottom"
-				label="Welche Position des Tooltips bei den Wechseln ?" 
-				description="Welche Position des Tooltips bei den Wechseln ?">
+				label="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_LABEL_WHICH_POSITION_TOOLTIP_SUBST" 
+				description="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_WHICH_POSITION_TOOLTIP_SUBST">
 			<option value="bottom">bottom</option>
 			<option value="top">JGLOBAL_TOP</option>
 			<option value="left">JGLOBAL_LEFT</option>
@@ -174,10 +174,10 @@
 		
 		
 		<field 	name="show_which_timeline" type="radio" default="0" layout="joomla.form.field.radio.switcher"
-				label="Welche Zeitlinie ?" 
-				description="Welche Zeitlinie ?">
-			<option value="0">playground</option>
-			<option value="1">graph</option>
+				label="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_LABEL_SHOW_WHICH_TIMELINE"
+				description="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_SHOW_WHICH_TIMELINE">
+			<option value="0">COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ROSTER_PLAYGROUND</option>
+			<option value="1">COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_SHOW_GRAPH</option>
 		</field>
 
     <field 	name="show_timeline_under_results" type="radio" default="0"   layout="joomla.form.field.radio.switcher"
