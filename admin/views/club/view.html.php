@@ -131,8 +131,18 @@ $this->form->setValue('state',null, $this->item->state);
         
       }
   
-      
-$your_array = json_decode($this->item->extended,true);     
+      if ( is_null($this->item->extended) )
+      {
+$your_array = array();
+      }
+      else
+      {
+	$your_array = json_decode($this->item->extended,true);        
+      }
+		
+ 
+
+		
 if (isset($data[0]->address->county))
 {
 $your_array["COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME"] = $data[0]->address->county;
