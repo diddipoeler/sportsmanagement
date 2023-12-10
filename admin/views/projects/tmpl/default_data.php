@@ -165,7 +165,7 @@ HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolow
 		<?php
 foreach ($this->items as $this->count_i => $this->item)
 		{
-
+$image_attributes['width'] = '16';
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
 $this->dragable_group = 'data-dragable-group="none"';
@@ -385,7 +385,6 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 					{
 $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
 $image_attributes['title'] = $imageTitle;	
-$image_attributes['width'] = '25';						
 echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/information.png',$imageTitle, $image_attributes);
 					}
 					else

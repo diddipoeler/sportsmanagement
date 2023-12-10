@@ -133,30 +133,95 @@ $this->form->setValue('state',null, $this->item->state);
   
       
 $your_array = json_decode($this->item->extended,true);     
-$your_array["COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME"] = $data[0]->address->county;      
-$your_array["COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_SHORT_NAME"] = $data[0]->address->state_district;        
-$your_array["COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME"] = $data[0]->address->suburb;        
-$your_array["COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_SHORT_NAME"] = $data[0]->address->quarter;        
-$your_array["COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_LONG_NAME"] = $data[0]->address->region;        
-$your_array["COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_SHORT_NAME"] = $data[0]->address->city_district;              
-
-$your_array["COM_SPORTSMANAGEMENT_OSM_LEISURE"] = $data[0]->address->leisure;      
-$your_array["COM_SPORTSMANAGEMENT_OSM_HOUSE_NUMBER"] = $data[0]->address->house_number;      
+if (isset($data[0]->address->county))
+{
+$your_array["COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME"] = $data[0]->address->county;
+}
+if (isset($data[0]->address->state_district))
+{
+$your_array["COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_SHORT_NAME"] = $data[0]->address->state_district;
+}
+if (isset($data[0]->address->suburb))
+{
+$your_array["COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME"] = $data[0]->address->suburb;
+}
+if (isset($data[0]->address->quarter))
+{
+$your_array["COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_SHORT_NAME"] = $data[0]->address->quarter;   
+} 
+if (isset($data[0]->address->region))
+{
+$your_array["COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_LONG_NAME"] = $data[0]->address->region;
+}
+if (isset($data[0]->address->city_district))
+{
+$your_array["COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_SHORT_NAME"] = $data[0]->address->city_district;         
+}
+if (isset($data[0]->address->leisure))
+{    
+$your_array["COM_SPORTSMANAGEMENT_OSM_LEISURE"] = $data[0]->address->leisure;    
+}
+if (isset($data[0]->address->house_number))
+{
+$your_array["COM_SPORTSMANAGEMENT_OSM_HOUSE_NUMBER"] = $data[0]->address->house_number; 
+}
+if (isset($data[0]->address->road))
+{
 $your_array["COM_SPORTSMANAGEMENT_OSM_ROAD"] = $data[0]->address->road;      
-$your_array["COM_SPORTSMANAGEMENT_OSM_VILLAGE"] = $data[0]->address->village;      
-$your_array["COM_SPORTSMANAGEMENT_OSM_MUNICIPALITY"] = $data[0]->address->municipality;      
-$your_array["COM_SPORTSMANAGEMENT_OSM_COUNTY"] = $data[0]->address->county;      
-$your_array["COM_SPORTSMANAGEMENT_OSM_STATE"] = $data[0]->address->state;      
-$your_array["COM_SPORTSMANAGEMENT_OSM_INDUSTRIAL"] = $data[0]->address->industrial;      
-$your_array["COM_SPORTSMANAGEMENT_OSM_BUILDING"] = $data[0]->address->building;      
-$your_array["COM_SPORTSMANAGEMENT_OSM_QUARTER"] = $data[0]->address->quarter;      
-$your_array["COM_SPORTSMANAGEMENT_OSM_SUBURB"] = $data[0]->address->suburb;      
-$your_array["COM_SPORTSMANAGEMENT_OSM_CITY_DISTRICT"] = $data[0]->address->city_district;      
-$your_array["COM_SPORTSMANAGEMENT_OSM_CITY"] = $data[0]->address->city;      
-$your_array["COM_SPORTSMANAGEMENT_OSM_TOWN"] = $data[0]->address->town;  
+}
+if (isset($data[0]->address->village))
+{
+$your_array["COM_SPORTSMANAGEMENT_OSM_VILLAGE"] = $data[0]->address->village;   
+}
+if (isset($data[0]->address->municipality))
+{
+$your_array["COM_SPORTSMANAGEMENT_OSM_MUNICIPALITY"] = $data[0]->address->municipality;   
+}   
+if (isset($data[0]->address->county))
+{
+$your_array["COM_SPORTSMANAGEMENT_OSM_COUNTY"] = $data[0]->address->county;  
+}
+if (isset($data[0]->address->state))
+{
+$your_array["COM_SPORTSMANAGEMENT_OSM_STATE"] = $data[0]->address->state;   
+}
+if (isset($data[0]->address->industrial))
+{
+$your_array["COM_SPORTSMANAGEMENT_OSM_INDUSTRIAL"] = $data[0]->address->industrial;   
+}
+if (isset($data[0]->address->building))
+{
+$your_array["COM_SPORTSMANAGEMENT_OSM_BUILDING"] = $data[0]->address->building; 
+}
+if (isset($data[0]->address->quarter)) 
+{    
+$your_array["COM_SPORTSMANAGEMENT_OSM_QUARTER"] = $data[0]->address->quarter;   
+}
+if (isset($data[0]->address->suburb))
+{
+$your_array["COM_SPORTSMANAGEMENT_OSM_SUBURB"] = $data[0]->address->suburb; 
+}
+if (isset($data[0]->address->city_district))
+{     
+$your_array["COM_SPORTSMANAGEMENT_OSM_CITY_DISTRICT"] = $data[0]->address->city_district;
+}
+if (isset($data[0]->address->city))
+{    
+$your_array["COM_SPORTSMANAGEMENT_OSM_CITY"] = $data[0]->address->city;
+}
+if (isset($data[0]->address->town))
+{
+$your_array["COM_SPORTSMANAGEMENT_OSM_TOWN"] = $data[0]->address->town; 
+}
 
+if (isset($data[0]->address->hamlet))
+{
 $your_array["COM_SPORTSMANAGEMENT_OSM_HAMLET"] = $data[0]->address->hamlet;
+}
+if (isset($data[0]->address->neighbourhood))
+{
 $your_array["COM_SPORTSMANAGEMENT_OSM_NEIGHBOURHOOD"] = $data[0]->address->neighbourhood;
+}
 		
 //echo ' your_array <br><pre>'.print_r($your_array ,true).'</pre><br>';
 $parameter = new Registry;
