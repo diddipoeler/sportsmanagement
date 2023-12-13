@@ -34,6 +34,7 @@ else
         <input type="hidden" name="r" value="<?php echo Factory::getApplication()->input->getVar('r'); ?>"/>
         <input type="hidden" name="division"
                value="<?php echo Factory::getApplication()->input->getVar('division'); ?>"/>
+
                
                
         <div class="display-limit col-lg-6 col-md-6 col-sm-6 col-xs-6">
