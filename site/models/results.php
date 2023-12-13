@@ -1059,6 +1059,130 @@ if (version_compare(JVERSION, '4.0.0', 'ge'))
 		return $result;
 	}
 
+
+	/**
+	 * sportsmanagementModelResults::getListQuery()
+	 * 
+	 * @return void
+	 */
+	function getListQuery()
+	{
+	   
+	$app    = Factory::getApplication();
+		$option = $app->input->getCmd('option');
+        $round = 0;
+
+		// Get a db connection.
+		$db    = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
+		$query = $db->getQuery(true);
+
+		$project = sportsmanagementModelProject::getProject($cfg_which_database, __METHOD__);
+
+		if (!$round && $project)
+		{
+			$round = $project->current_round;
+		}
+
+		$result = array();
+
+		if ($project)
+		{
+			$query->select('m.*,DATE_FORMAT(m.time_present,"%H:%i") time_present');
+			$query->select('playground.name AS playground_name,playground.short_name AS playground_short_name,playground.address AS playground_address,playground.zipcode AS playground_zipcode,playground.city as playground_city');
+			$query->select('pt1.project_id');
+			$query->select('d1.name as divhome, d1.id as divhomeid');
+			$query->select('d2.name as divaway, d2.id as divawayid');
+			$query->select('CASE WHEN CHAR_LENGTH(t1.alias) AND CHAR_LENGTH(t2.alias) THEN CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) ELSE m.id END AS slug ');
+			$query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
+			$query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
+			$query->select('CONCAT_WS( \':\', playground.id, playground.alias ) AS playground_slug');
+/**
+			if ($params)
+			{
+				$query->select('c1.' . $params->get('picture_type') . ' as logohome');
+				$query->select('c2.' . $params->get('picture_type') . ' as logoaway');
+				$query->select('t1.' . $params->get('team_names') . ' as teamhome');
+				$query->select('t2.' . $params->get('team_names') . ' as teamaway');
+
+				// Favorisierte teams nutzen
+				if ($params->get('use_fav'))
+				{
+					$query->where('(t1.id IN (' . $project->fav_team . ') OR t2.id IN (' . $project->fav_team . '))');
+				}
+
+				// Ganze saison ?
+				if (!$params->get('project_season'))
+				{
+					$query->where('r.id = ' . (int) $round);
+				}
+			}
+			else
+			{
+				$query->where('r.id = ' . (int) $round);
+			}
+            */
+            $query->where('r.id = ' . (int) $round);
+
+			$query->from('#__sportsmanagement_match AS m');
+			$query->join('INNER', '#__sportsmanagement_round AS r ON m.round_id = r.id ');
+			$query->join('INNER', '#__sportsmanagement_project AS p ON p.id = r.project_id ');
+			$query->join('LEFT', '#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id');
+			$query->join('LEFT', '#__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id');
+			$query->join('LEFT', '#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id ');
+			$query->join('LEFT', '#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id ');
+			$query->join('LEFT', '#__sportsmanagement_team AS t1 ON t1.id = st1.team_id');
+			$query->join('LEFT', '#__sportsmanagement_club AS c1 ON c1.id = t1.club_id');
+			$query->join('LEFT', '#__sportsmanagement_team AS t2 ON t2.id = st2.team_id');
+			$query->join('LEFT', '#__sportsmanagement_club AS c2 ON c2.id = t2.club_id');
+			$query->join('LEFT', '#__sportsmanagement_division AS d1 ON m.division_id = d1.id');
+			$query->join('LEFT', '#__sportsmanagement_division AS d2 ON m.division_id = d2.id');
+			$query->join('LEFT', '#__sportsmanagement_playground AS playground ON playground.id = m.playground_id');
+/**
+			if ($team)
+			{
+				$query->where('(st1.team_id = ' . $team . ' OR st2.team_id = ' . $team . ')');
+			}
+*/
+			$query->where('m.published = 1');
+			$query->where('r.project_id = ' . (int) $project->id);
+
+			if (version_compare(JVERSION, '3.0.0', 'ge'))
+			{
+				$query->group('m.id ');
+			}
+
+			$query->order('m.match_date ASC,m.match_number');
+/**
+			if ($division > 0)
+			{
+				$query->where('(d1.id = ' . (int) $division . ' OR d1.parent_id = ' . (int) $division . ' OR d2.id = ' . (int) $division . ' OR d2.parent_id = ' . (int) $division . ')');
+			}
+*/
+			try
+			{
+				
+				
+					$result = $query;
+				
+			}
+			catch (Exception $e)
+			{
+				$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
+				$result = false;
+			}
+            
+		}
+
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+
+		return $result;   
+       
+       
+       
+       
+       }
+       
+       
 	/**
 	 * Method to auto-populate the model state.
 	 *

@@ -1038,6 +1038,10 @@ class sportsmanagementViewResults extends sportsmanagementView
 			sportsmanagementModelResults::$limit = 0;
 		}
 
+//		$this->state = $this->get('State');
+//		$this->items = $this->get('Items');
+//		$this->pagination = $this->get('Pagination');
+        
 		$matches          = $this->get('Data');
 		$this->pagination = $this->get('Pagination');
 		sportsmanagementModelPagination::pagenav($project, $model::$cfg_which_database);
