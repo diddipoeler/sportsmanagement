@@ -1121,7 +1121,7 @@ if (version_compare(JVERSION, '4.0.0', 'ge'))
 				$query->where('r.id = ' . (int) $round);
 			}
             */
-            $query->where('r.id = ' . (int) $round);
+            $query->where('r.id = ' . (int) self::$roundid);
 
 			$query->from('#__sportsmanagement_match AS m');
 			$query->join('INNER', '#__sportsmanagement_round AS r ON m.round_id = r.id ');
