@@ -36,13 +36,13 @@ else
                value="<?php echo Factory::getApplication()->input->getVar('division'); ?>"/>
 
                
-               
+        <div class="row">       
         <div class="display-limit col-lg-6 col-md-6 col-sm-6 col-xs-6">
 			<?php echo Text::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
 			<?php echo $this->pagination->getLimitBox(); ?>
         </div>
 
-        <div class="pagination  col-lg-6 col-md-6 col-sm-6 col-xs-6">
+        <div class="  col-lg-6 col-md-6 col-sm-6 col-xs-6">
             <p class="counter">
 				<?php echo $this->pagination->getPagesCounter(); ?>
             </p>
@@ -51,7 +51,7 @@ else
             </p>
 			<?php echo $this->pagination->getPagesLinks(); ?>
         </div>
-        
+        </div>
         
         
 		<?php
