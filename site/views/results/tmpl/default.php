@@ -11,6 +11,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
@@ -34,12 +35,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	{
 		echo $this->loadTemplate('pagnav');
 	}
-
+/**
 	if ($this->config['show_pagenav'])
 	{
 		echo $this->loadTemplate('pagination');
 	}
-
+*/
 	echo $this->loadTemplate('results');
 
 	if ($this->config['show_matchday_pagenav'] == 1 || $this->config['show_matchday_pagenav'] == 3)
