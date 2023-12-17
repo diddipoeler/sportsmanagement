@@ -1047,6 +1047,10 @@ class sportsmanagementViewResults extends sportsmanagementView
 		sportsmanagementModelPagination::pagenav($project, $model::$cfg_which_database);
 		$mdlPagination = BaseDatabaseModel::getInstance("Pagination", "sportsmanagementModel");
 
+
+//$mdlPagination->getLimitBox();
+
+
 		$roundcode = sportsmanagementModelRound::getRoundcode((int) $model::$roundid, $model::$cfg_which_database);
 
 		$rounds = sportsmanagementModelProject::getRoundOptions('ASC', $model::$cfg_which_database);
