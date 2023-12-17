@@ -13,33 +13,71 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
-?>
-<div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultpagination">
-    <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($this->uri->toString()); ?>"
-          method="post">
-        <input type="hidden" name="limitstart" value=""/>
-        <input type="hidden" name="view" value="<?php echo Factory::getApplication()->input->getVar('view'); ?>"/>
-        <input type="hidden" name="option" value="<?php echo Factory::getApplication()->input->getCmd('option'); ?>"/>
-        <input type="hidden" name="cfg_which_database"
-               value="<?php echo Factory::getApplication()->input->getVar('cfg_which_database'); ?>"/>
-        <input type="hidden" name="p" value="<?php echo Factory::getApplication()->input->getVar('p'); ?>"/>
-        <input type="hidden" name="r" value="<?php echo Factory::getApplication()->input->getVar('r'); ?>"/>
-        <input type="hidden" name="division"
-               value="<?php echo Factory::getApplication()->input->getVar('division'); ?>"/>
-        <div class="display-limit">
-			<?php echo Text::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
-			<?php echo $this->pagination->getLimitBox(); ?>
-        </div>
+/**
+ * https://gist.github.com/heesienooi/de010131dce82685bb0f
+ * Override joomla default pagination list render method
+ * @param  array	$list	Pagination raw data
+ * @return string			HTML string
+ */
+function pagination_list_render($list) {
+	$displayedPages = 6;
 
-        <div class="pagination">
-            <p class="counter">
-				<?php echo $this->pagination->getPagesCounter(); ?>
-            </p>
-            <p class="counter">
-				<?php echo $this->pagination->getResultsCounter(); ?>
-            </p>
-			<?php echo $this->pagination->getPagesLinks(); ?>
-        </div>
+	// Reduce number of displayed pages to 6 instead of 10
+	$list['pages'] = _reduce_displayed_pages($list['pages'], $displayedPages);
 
-    </form>
-</div>
+	return _list_render($list);
+}
+
+/**
+ * Reduce number of displayed pages in pagination
+ * @param  array	$pages			Pagination pages raw data
+ * @param  integer	$displayedPages	Number of displayed pages
+ * @return string					HTML string
+ */
+function _reduce_displayed_pages($pages, $displayedPages) {
+	$currentPageIndex = _get_current_page_index($pages);
+	$midPoint = ceil($displayedPages / 2);
+
+	if ($currentPageIndex >= 6) {
+		$pages = array_slice($pages, -$displayedPages);
+	} else {
+		$startIndex = max($currentPageIndex - $midPoint, 0); 	
+		$pages = array_slice($pages, $startIndex, $displayedPages);
+	}
+
+	return $pages;
+}
+
+/**
+ * Get current page index
+ * @param  array	$pages	Pagination pages raw data
+ * @return integer			Current page index
+ */
+function _get_current_page_index($pages) {
+	$counter = 0;
+	foreach ($pages as $page) {
+		if (!$page['active']) return $counter;
+		$counter++;
+	}
+}
+
+/**
+ * Function copied from joomla html pagination to render pagination data into html string
+ * @param  array	$list	Pagination raw data
+ * @return string			HTML string
+ */
+function _list_render($list) {
+	// Reverse output rendering for right-to-left display.
+	$html = '<ul>';
+	$html .= '<li class="pagination-start">' . $list['start']['data'] . '</li>';
+	$html .= '<li class="pagination-prev">' . $list['previous']['data'] . '</li>';
+	foreach ($list['pages'] as $page)
+	{
+		$html .= '<li>' . $page['data'] . '</li>';
+	}
+	$html .= '<li class="pagination-next">' . $list['next']['data'] . '</li>';
+	$html .= '<li class="pagination-end">' . $list['end']['data'] . '</li>';
+	$html .= '</ul>';
+
+	return $html;
+}

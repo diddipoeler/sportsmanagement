@@ -32,11 +32,14 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	{
 		echo $this->loadTemplate('sectionheader');
 	}
-
+    
+/**
 	if ($this->config['show_matchday_pagenav'] == 2 || $this->config['show_matchday_pagenav'] == 3)
 	{
 		echo $this->loadTemplate('pagnav');
 	}
+    */
+    
 /**
 	if ($this->config['show_pagenav'])
 	{
@@ -45,10 +48,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 */
 	echo $this->loadTemplate('results');
 
+/**
 	if ($this->config['show_matchday_pagenav'] == 1 || $this->config['show_matchday_pagenav'] == 3)
 	{
 		echo $this->loadTemplate('pagnav');
 	}
+*/
 
 	if ($this->overallconfig['show_project_rss_feed'])
 	{
