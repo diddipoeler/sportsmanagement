@@ -1482,23 +1482,24 @@ $country_assoc = array();
 									->insert($this->jsmdb->quoteName('#__sportsmanagement_associations'))
 									->columns($this->jsmdb->quoteName($columns))
 									->values(implode(',', $values));
-								/**
-								 *
-								 * Set the query using our newly populated query object and execute it.
-								 */
-								$this->jsmdb->setQuery($insertquery);
+								/** Set the query using our newly populated query object and execute it. */
 
-								if (!self::runJoomlaQuery())
-								{
-									self::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->jsmdb->getErrorMsg(), __LINE__);
-								}
-								else
-								{
-									$temp                              = new stdClass;
+try{
+								$this->jsmdb->setQuery($insertquery);
+                                self::runJoomlaQuery();
+                                $temp                              = new stdClass;
 									$temp->id                          = $this->jsmdb->insertid();
 									$export[]                          = $temp;
 									$this->_assoclist[$country][$main] = array_merge($export);
-								}
+
+}
+		catch (Exception $e)
+		{
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+		
+		}
+							
 							}
 							else
 							{
