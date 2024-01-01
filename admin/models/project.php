@@ -636,7 +636,8 @@ catch (Exception $e)
 
 		for ($x = 0; $x < count($pks); $x++)
 		{
-			$tblProject                  = &$this->getTable();
+			//$tblProject                  = &$this->getTable();
+            $tblProject                  = new stdClass;;
 			$tblProject->id              = $pks[$x];
 			$tblProject->project_type    = $post['project_type' . $pks[$x]];
 			$tblProject->agegroup_id     = $post['agegroup' . $pks[$x]];
@@ -653,13 +654,23 @@ catch (Exception $e)
 			$tblProject->modified           = $date->toSql();
 			$tblProject->modified_timestamp = sportsmanagementHelper::getTimestamp($date->toSql());
 
+try{
+    $result = Factory::getDbo()->updateObject('#__sportsmanagement_project', $tblProject, 'id');
+}
+catch (RuntimeException $e)
+				{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($query->dump(), true) . '</pre>', 'Error');
+				}
+                
+/**
 			if (!$tblProject->store())
 			{
 				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-
 				return false;
 			}
-
+*/
 			if ($post['user_field_id' . $pks[$x]])
 			{
 				$object = new stdClass;
