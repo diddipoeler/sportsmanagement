@@ -27,5 +27,7 @@
 <associations><assocname country="ESP" icon="" flag="" website="" shortname="F. de Las Palmas" main="21" parentmain="0">Las Palmas</assocname></associations>
 <associations><assocname country="ESP" icon="" flag="" website="" shortname="F. de Tenerife" main="22" parentmain="0">Teneriffa</assocname></associations>  
 <associations><assocname country="ESP" icon="" flag="" website="" shortname="F. Vizcaína" main="24" parentmain="0">Vizcaína</assocname></associations>  
+<associations><assocname country="ESP" icon="" flag="" website="" shortname="F. Vasca" main="25" parentmain="0">Vasca</assocname></associations>  
+<associations><assocname country="ESP" icon="" flag="" website="" shortname="F. de Murcia" main="26" parentmain="0">Murcia</assocname></associations> 
   
 </structur>
