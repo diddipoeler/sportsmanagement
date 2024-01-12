@@ -14,8 +14,8 @@
 <associations><assocname country="ESP" icon="" flag="" website="" shortname="F. de Ceuta" main="10" parentmain="0">Ceuta</assocname></associations>
 <associations><assocname country="ESP" icon="" flag="" website="" shortname="F. Valenciana" main="11" parentmain="0">Com.Valenciana</assocname></associations>
 <associations><assocname country="ESP" icon="" flag="" website="" shortname="" main="12" parentmain="0">Euskadi</assocname></associations>
-<associations><assocname country="ESP" icon="" flag="" website="" shortname="" main="13" parentmain="0">Extremadura</assocname></associations>
-<associations><assocname country="ESP" icon="" flag="" website="" shortname="" main="14" parentmain="0">Galicia</assocname></associations>
+<associations><assocname country="ESP" icon="" flag="" website="" shortname="F. Extremeña" main="13" parentmain="0">Extremadura</assocname></associations>
+<associations><assocname country="ESP" icon="" flag="" website="" shortname="F. Gallega" main="14" parentmain="0">Galicia</assocname></associations>
 <associations><assocname country="ESP" icon="" flag="" website="" shortname="F. Riojana" main="15" parentmain="0">La Rioja</assocname></associations>
 <associations><assocname country="ESP" icon="" flag="" website="" shortname="F. de Madrid" main="16" parentmain="0">Madrid</assocname></associations>
 <associations><assocname country="ESP" icon="" flag="" website="" shortname="F. Melillense" main="17" parentmain="0">Melilla</assocname></associations>
