@@ -158,12 +158,14 @@ HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolow
 					}
 					else
 					{
+echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_picture' . $this->item->id, Uri::root() . $this->item->assocflag, $this->item->name, '20', Uri::root() . $this->item->assocflag);						
 						?>
+						<!--
                         <a href="<?php echo Uri::root() . $this->item->assocflag; ?>" title="<?php echo $this->item->name; ?>"
                            class="modal">
                             <img src="<?php echo Uri::root() . $this->item->assocflag; ?>" alt="<?php echo $this->item->name; ?>"
                                  width="20"/>
-                        </a>
+                        </a> -->
 						<?PHP
 					}
 					?>
@@ -180,12 +182,14 @@ HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolow
 					}
 					else
 					{
+echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_picture' . $this->item->id, Uri::root() . $this->item->picture, $this->item->name, '20', Uri::root() . $this->item->picture);						
 						?>
+						<!--
                         <a href="<?php echo Uri::root() . $this->item->picture; ?>" title="<?php echo $this->item->name; ?>"
                            class="modal">
                             <img src="<?php echo Uri::root() . $this->item->picture; ?>" alt="<?php echo $this->item->name; ?>"
                                  width="20"/>
-                        </a>
+                        </a> -->
 						<?PHP
 					}
 					?>
