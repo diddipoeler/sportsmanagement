@@ -31,5 +31,8 @@
 <associations><assocname country="ESP" icon="" flag="" website="" shortname="F. de Murcia" main="26" parentmain="0">Murcia</assocname></associations> 
 
 <associations><assocname country="ESP" icon="" flag="" website="" shortname="F. Española" main="27" parentmain="0">Española</assocname></associations>
+
+<associations><assocname country="ESP" icon="" flag="" website="" shortname="Almería" main="28" parentmain="1">Almería</assocname></associations>
+
   
 </structur>
