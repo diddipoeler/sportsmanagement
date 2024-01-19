@@ -87,29 +87,29 @@ $this->season_id  = $this->app->getUserState("$this->option.season_id", '0');
 		$this->item->name = $this->project_person->lastname . ' - ' . $this->project_person->firstname;
 
 		/** personendaten setzen */
-		$this->form->setValue('position_id', null, $this->project_person->position_id);
-		$this->form->setValue('projectteam_id', null, $this->project_team_id);
-		$this->form->setValue('injury', null, $this->project_person->injury);
-		$this->form->setValue('injury_date', null, $this->project_person->injury_date);
-		$this->form->setValue('injury_end', null, $this->project_person->injury_end);
-		$this->form->setValue('injury_detail', null, $this->project_person->injury_detail);
-		$this->form->setValue('injury_date_start', null, $this->project_person->injury_date_start);
-		$this->form->setValue('injury_date_end', null, $this->project_person->injury_date_end);
+$this->form->setValue('position_id', null, $this->project_person->position_id);
+$this->form->setValue('projectteam_id', null, $this->project_team_id);
+$this->form->setValue('injury', null, $this->project_person->injury);
+$this->form->setValue('injury_date', null, $this->project_person->injury_date);
+$this->form->setValue('injury_end', null, $this->project_person->injury_end);
+$this->form->setValue('injury_detail', null, $this->project_person->injury_detail);
+$this->form->setValue('injury_date_start', null, $this->project_person->injury_date_start == "0000-00-00" ? null : $this->project_person->injury_date_start);
+$this->form->setValue('injury_date_end', null, $this->project_person->injury_date_end == "0000-00-00" ? null : $this->project_person->injury_date_end);
 
-		$this->form->setValue('suspension', null, $this->project_person->suspension);
-		$this->form->setValue('suspension_date', null, $this->project_person->suspension_date);
-		$this->form->setValue('suspension_end', null, $this->project_person->suspension_end);
-		$this->form->setValue('suspension_detail', null, $this->project_person->suspension_detail);
-		$this->form->setValue('susp_date_start', null, $this->project_person->susp_date_start);
-		$this->form->setValue('susp_date_end', null, $this->project_person->susp_date_end);
+$this->form->setValue('suspension', null, $this->project_person->suspension);
+$this->form->setValue('suspension_date', null, $this->project_person->suspension_date);
+$this->form->setValue('suspension_end', null, $this->project_person->suspension_end);
+$this->form->setValue('suspension_detail', null, $this->project_person->suspension_detail);
+$this->form->setValue('susp_date_start', null, $this->project_person->susp_date_start == "0000-00-00" ? null : $this->project_person->susp_date_start);
+$this->form->setValue('susp_date_end', null, $this->project_person->susp_date_end == "0000-00-00" ? null : $this->project_person->susp_date_end);
 
-		$this->form->setValue('away', null, $this->project_person->away);
-		$this->form->setValue('away_date', null, $this->project_person->away_date);
-		$this->form->setValue('away_end', null, $this->project_person->away_end);
-		$this->form->setValue('away_detail', null, $this->project_person->away_detail);
-		$this->form->setValue('away_date_start', null, $this->project_person->away_date_start);
-		$this->form->setValue('away_date_end', null, $this->project_person->away_date_end);
-		$this->form->setValue('persontype', null, $this->app->getUserState("$this->option.persontype", '0'));
+$this->form->setValue('away', null, $this->project_person->away);
+$this->form->setValue('away_date', null, $this->project_person->away_date);
+$this->form->setValue('away_end', null, $this->project_person->away_end);
+$this->form->setValue('away_detail', null, $this->project_person->away_detail);
+$this->form->setValue('away_date_start', null, $this->project_person->away_date_start == "0000-00-00" ? null : $this->project_person->away_date_start);
+$this->form->setValue('away_date_end', null, $this->project_person->away_date_end == "0000-00-00" ? null : $this->project_person->away_date_end);
+$this->form->setValue('persontype', null, $this->app->getUserState("$this->option.persontype", '0'));
         
         if ($this->item->id)
 		{
