@@ -69,7 +69,7 @@ class sportsmanagementModelsmimageimports extends ListModel
 		$query->select(array('folder as id', 'folder as name'))
 			->from('#__sportsmanagement_pictures')
 			->order('folder ASC')
-			->group('folder ASC');
+			->group('folder');
 
 		$db->setQuery($query);
 

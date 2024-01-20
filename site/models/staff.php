@@ -80,7 +80,7 @@ class sportsmanagementModelStaff extends BaseDatabaseModel
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
-
+/**
 		$query = '	SELECT	count(mp.id) AS present
 					FROM #__sportsmanagement_match_staff AS mp
 					INNER JOIN #__sportsmanagement_match AS m ON mp.match_id=m.id
@@ -89,6 +89,19 @@ class sportsmanagementModelStaff extends BaseDatabaseModel
 					WHERE tp.person_id=' . $this->_db->Quote((int) $person_id) . '
 					  AND pt.project_id=' . $this->_db->Quote((int) $project_id) . '
 					  AND tp.published = 1';
+                      */
+                      
+$query = ' SELECT count(mp.id) AS present
+ FROM #__sportsmanagement_match_staff AS mp
+ INNER JOIN #__sportsmanagement_match AS m ON mp.match_id=m.id
+ INNER JOIN #__sportsmanagement_season_team_person_id AS tp ON 
+tp.id=mp.team_staff_id
+ INNER JOIN #__sportsmanagement_project_team AS pt ON 
+m.projectteam1_id=pt.id
+ WHERE tp.person_id=' . $this->_db->Quote((int) $person_id) . '
+ AND pt.project_id=' . $this->_db->Quote((int) $project_id) . '
+ AND tp.published = 1';
+                       
 		$db->setQuery($query, 0, 1);
 		$inoutstat = $db->loadResult();
 
@@ -219,7 +232,11 @@ class sportsmanagementModelStaff extends BaseDatabaseModel
 		$query->join('INNER', '#__sportsmanagement_project AS p ON p.id = tt.project_id');
 		$query->join('INNER', '#__sportsmanagement_season AS s ON s.id = p.season_id');
 		$query->join('INNER', '#__sportsmanagement_league AS l ON l.id = p.league_id');
-		$query->join('LEFT', '#__sportsmanagement_project_position AS ppos ON ppos.id = o.project_position_id');
+        
+		//$query->join('LEFT', '#__sportsmanagement_project_position AS ppos ON ppos.id = o.project_position_id');
+        $query->join('LEFT', '#__sportsmanagement_person_project_position AS ppp ON ppp.person_id = o.person_id and ppp.project_id = p.id and ppp.persontype = o.persontype');
+$query->join('LEFT', '#__sportsmanagement_project_position AS ppos ON ppos.id = ppp.project_position_id');
+
 		$query->join('LEFT', '#__sportsmanagement_position AS pos ON pos.id = ppos.position_id ');
 		$query->where('o.person_id = ' . self::$personid);
 		$query->where('pr.published = 1');

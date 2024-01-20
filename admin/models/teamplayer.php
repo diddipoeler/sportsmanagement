@@ -548,6 +548,91 @@ class sportsmanagementModelteamplayer extends JSMModelAdmin
 		}
 
 		// Update personendaten
+        if ($data['injury_date'] == '')
+{
+$data['injury_date'] = '0';
+}
+if ($data['injury_end'] == '')
+{
+$data['injury_end'] = '0';
+}
+if ($data['suspension_date'] == '')
+{
+$data['suspension_date'] = '0';
+}
+if ($data['suspension_end'] == '')
+{
+$data['suspension_end'] = '0';
+}
+if ($data['away_date'] == '')
+{
+$data['away_date'] = '0';
+}
+if ($data['away_end'] == '')
+{
+$data['away_end'] = '0';
+}
+if ($data['injury_date_start'] == '')
+{
+$data['injury_date_start'] = '0000-00-00';
+}
+if ($data['injury_date_end'] == '')
+{
+$data['injury_date_end'] = '0000-00-00';
+}
+if ($data['susp_date_start'] == '')
+{
+$data['susp_date_start'] = '0000-00-00';
+}
+if ($data['susp_date_end'] == '')
+{
+$data['susp_date_end'] = '0000-00-00';
+}
+if ($data['away_date_start'] == '')
+{
+$data['away_date_start'] = '0000-00-00';
+}
+if ($data['away_date_end'] == '')
+{
+$data['away_date_end'] = '0000-00-00';
+}
+if ($data['injury_date_start'] != '0000-00-00' && 
+$data['injury_date_start'] != '')
+{
+$data['injury_date_start'] = 
+sportsmanagementHelper::convertDate($data['injury_date_start'], 0);
+}
+if ($data['injury_date_end'] != '0000-00-00' && 
+$data['injury_date_end'] != '')
+{
+$data['injury_date_end'] = 
+sportsmanagementHelper::convertDate($data['injury_date_end'], 0);
+}
+if ($data['susp_date_start'] != '0000-00-00' && 
+$data['susp_date_start'] != '')
+{
+$data['susp_date_start'] = 
+sportsmanagementHelper::convertDate($data['susp_date_start'], 0);
+}
+if ($data['susp_date_end'] != '0000-00-00' && 
+$data['susp_date_end'] != '')
+{
+$data['susp_date_end'] = 
+sportsmanagementHelper::convertDate($data['susp_date_end'], 0);
+}
+if ($data['away_date_start'] != '0000-00-00' && 
+$data['away_date_start'] != '')
+{
+$data['away_date_start'] = 
+sportsmanagementHelper::convertDate($data['away_date_start'], 0);
+}
+if ($data['away_date_end'] != '0000-00-00' && 
+$data['away_date_end'] != '')
+{
+$data['away_date_end'] = 
+sportsmanagementHelper::convertDate($data['away_date_end'], 0);
+}
+
 		// Fields to update.
 		$fields = array(
 			$this->jsmdb->quoteName('injury') . '=\'' . $data['injury'] . '\'',

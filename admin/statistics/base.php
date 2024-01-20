@@ -527,7 +527,7 @@ is_array($stat_ids) ? true : false;
 
 		$event_ids = $params->get($id_field);
 
-		if (!count($event_ids))
+		if ($event_ids == null || !count($event_ids))
 		{
 //			Log::add(Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return (array(0));
