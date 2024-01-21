@@ -161,9 +161,9 @@ label="COM_SPORTSMANAGEMENT_TABS_INJURY"
 description="COM_SPORTSMANAGEMENT_TABS_INJURY_DESC">		
 <field
 name="injury"
-type="extensionradiobutton"
+type="radio"
 default="0"
-class="radio btn-group btn-group-yesno"
+layout="joomla.form.field.radio.switcher"
 label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURED"
 description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURED_DESC">
 <option value="0">JNO</option>
@@ -200,9 +200,9 @@ format="%d-%m-%Y"/>
   description="COM_SPORTSMANAGEMENT_TABS_SUSPENSION_DESC">		
   <field
 			name="suspension"
-			type="extensionradiobutton"
-			default="0"
-      class="radio btn-group btn-group-yesno"
+			type="radio"
+default="0"
+layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SUSPENDED"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SUSPENDED_DESC">
 		<option value="0">JNO</option>
@@ -240,9 +240,9 @@ format="%d-%m-%Y"/>
   description="COM_SPORTSMANAGEMENT_TABS_AWAY_DESC">		
   <field
 			name="away"
-			type="extensionradiobutton"
-			default="0"
-      class="radio btn-group btn-group-yesno"
+			type="radio"
+default="0"
+layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AWAY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AWAY_DESC">
 		<option value="0">JNO</option>
