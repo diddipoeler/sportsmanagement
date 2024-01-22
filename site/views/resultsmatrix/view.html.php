@@ -64,14 +64,14 @@ class sportsmanagementViewResultsmatrix extends sportsmanagementView
 
 		if ($resultsmodel::$roundid)
 		{
-			$roundcode = $mdlRound->getRoundcode($resultsmodel::$roundid);
+			$roundcode = $mdlRound->getRoundcode($resultsmodel::$roundid, $this->jinput->getInt('cfg_which_database', 0) );
 		}
 		else
 		{
 			$roundcode = '';
 		}
 
-		$rounds = sportsmanagementModelProject::getRoundOptions('ASC', $this->jinput->getInt('cfg_which_database', 0));
+		$rounds = sportsmanagementModelProject::getRoundOptions('ASC', $this->jinput->getInt('cfg_which_database', 0) );
 
 		if (!isset($resultsconfig['switch_home_guest']))
 		{
