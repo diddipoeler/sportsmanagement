@@ -38,6 +38,7 @@ class sportsmanagementModelround extends JSMModelAdmin
 	 */
 	public static function getRoundcode($round_id = 0, $cfg_which_database = 0)
 	{
+		$result = '';
 		// Reference global application object
 		$app = Factory::getApplication();
 
@@ -63,7 +64,6 @@ class sportsmanagementModelround extends JSMModelAdmin
 		{
 			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
 			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), 'error');
-			$result = false;
 		}
 
 		return $result;
