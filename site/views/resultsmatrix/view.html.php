@@ -64,7 +64,7 @@ class sportsmanagementViewResultsmatrix extends sportsmanagementView
 
 		if ($resultsmodel::$roundid)
 		{
-			$roundcode = $mdlRound->getRoundcode($resultsmodel::$roundid, $this->jinput->getInt('cfg_which_database', 0) );
+			$roundcode = $mdlRound->getRoundcode($this->jinput->getInt('r', 0), $this->jinput->getInt('cfg_which_database', 0) );
 		}
 		else
 		{
