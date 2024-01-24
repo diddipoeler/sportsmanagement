@@ -107,13 +107,13 @@ class sportsmanagementModelMatches extends JSMModelList
 			{
 				$players = implode(",", $result);
 
-				/** Count match homeplayers */
-				$this->jsmquery->clear();
-				$this->jsmquery->select('count(mp.id)');
-				$this->jsmquery->from('#__sportsmanagement_match_player AS mp  ');
-				$this->jsmquery->where('mp.match_id = ' . $item->id . ' AND (came_in=0 OR came_in=1) AND mp.teamplayer_id in (' . $players . ')');
-				$this->jsmdb->setQuery($this->jsmquery);
-				$item->homestaff_count = $this->jsmdb->loadResult();
+				/** Count match homestaff */
+                $this->jsmquery->clear();
+                $this->jsmquery->select('count(mp.id)');
+                $this->jsmquery->from('#__sportsmanagement_match_staff AS mp  ');
+                $this->jsmquery->where('mp.match_id = ' . $item->id . ' AND mp.team_staff_id in (' . $players . ')');
+                $this->jsmdb->setQuery($this->jsmquery);
+                $item->homestaff_count = $this->jsmdb->loadResult();
 			}
 
 			$this->jsmquery->clear();
@@ -155,13 +155,13 @@ class sportsmanagementModelMatches extends JSMModelList
 			{
 				$players = implode(",", $result);
 
-				/** Count match homeplayers */
-				$this->jsmquery->clear();
-				$this->jsmquery->select('count(mp.id)');
-				$this->jsmquery->from('#__sportsmanagement_match_player AS mp  ');
-				$this->jsmquery->where('mp.match_id = ' . $item->id . ' AND (came_in=0 OR came_in=1) AND mp.teamplayer_id in (' . $players . ')');
-				$this->jsmdb->setQuery($this->jsmquery);
-				$item->awaystaff_count = $this->jsmdb->loadResult();
+				/** Count match awaystaff */
+                $this->jsmquery->clear();
+                $this->jsmquery->select('count(mp.id)');
+                $this->jsmquery->from('#__sportsmanagement_match_staff AS mp  ');
+                $this->jsmquery->where('mp.match_id = ' . $item->id . ' AND mp.team_staff_id in (' . $players . ')');
+                $this->jsmdb->setQuery($this->jsmquery);
+                $item->awaystaff_count = $this->jsmdb->loadResult();
 			}
 
 			$this->jsmquery->clear();
