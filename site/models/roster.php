@@ -305,6 +305,7 @@ $app    = Factory::getApplication();
 		//$query->where('pos.persontype = ' . $persontype);
 		$query->where('tp.season_id = ' . self::$seasonid);
       $query->where('tp.team_id = ' . $projectteam->season_team_id);
+      $query->where('pr.show_on_frontend = 1');
       
       //$query->where('st.season_id = ' . self::$seasonid);
 		//$query->where('pt.project_id = ' . self::$projectid);
