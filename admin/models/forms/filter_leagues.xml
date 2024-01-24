@@ -68,7 +68,7 @@
 			onchange="this.form.submit();">
       <option
 				value="0">
-				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
+				COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ASSOCIATION</option>
 		</field>
 <!-- 	
  <field
