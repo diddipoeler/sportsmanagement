@@ -75,7 +75,7 @@ class sportsmanagementModelLeagues extends JSMModelList
 		if ($this->jsmapp->isClient('administrator'))
 		{
 			$search_nation = $this->getState('filter.search_nation');
-            $search_associations = $this->getState('filter.search_associations');
+            $search_associations = $this->getState('filter.search_associations_leagues');
 		}
 
         $this->jsmquery->clear();
@@ -133,7 +133,7 @@ class sportsmanagementModelLeagues extends JSMModelList
 		$this->setState('filter.search_league_level', $this->getUserStateFromRequest($this->context . '.filter.search_league_level', 'filter_search_league_level', ''));
 		$this->setState('filter.search_champions_complete', $this->getUserStateFromRequest($this->context . '.filter.search_champions_complete', 'filter_search_champions_complete', ''));
 		
-		$this->setState('filter.search_associations', $this->getUserStateFromRequest($this->context . '.filter.search_associations', 'filter_search_associations', ''));
+		$this->setState('filter.search_associations_leagues', $this->getUserStateFromRequest($this->context . '.filter.search_associations_leagues', 'filter_search_associations_leagues', ''));
 		$this->setState('filter.search_federation', $this->getUserStateFromRequest($this->context . '.filter.search_federation', 'filter_search_federation', ''));
 		$this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
 		$this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
@@ -186,9 +186,9 @@ class sportsmanagementModelLeagues extends JSMModelList
 			$this->jsmquery->where('obj.country LIKE ' . $this->jsmdb->Quote('' . $this->getState('filter.search_nation') . ''));
 		}
 
-		if ($this->getState('filter.search_associations'))
+		if ($this->getState('filter.search_associations_leagues'))
 		{
-			$this->jsmquery->where('obj.associations = ' . $this->getState('filter.search_associations'));
+			$this->jsmquery->where('obj.associations = ' . $this->getState('filter.search_associations_leagues'));
 		}
 
 		/** sonderselektion bei verbänden */
