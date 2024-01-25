@@ -57,43 +57,18 @@
         </field>
 	
 <field
-			name="search_associations"
-			type="associationslist" 
-      size="1"
-			default="0"
-      
-			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ASSOCIATION"
-			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ASSOCIATION_DESC"
-			class="select2-container"
-			onchange="this.form.submit();">
-      <option
-				value="0">
-				COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ASSOCIATION</option>
-		</field>
-<!-- 	
- <field
-			name="search_associations"
-			type="dependsql" 
-      size="10"
-      
-      depends="search_nation"
-			task="associationsoptions" 
-      value_field="search_nation"
-      key_field="search_nation"
-			default="0"
-      norequest="1"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ASSOCIATION"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ASSOCIATION_DESC"
-			class="form-control form-control-inline"
-			onchange="this.form.submit();">
-      <option
-				value="0">
-				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
-		</field>
--->
-
-
-		
+name="search_associations_leagues"
+type="associationslist" 
+size="1"
+default="0"
+label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ASSOCIATION"
+description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ASSOCIATION_DESC"
+class="select2-container"
+onchange="this.form.submit();">
+<option
+value="0">
+COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ASSOCIATION</option>
+</field>
 <field
 			name="search_league_level"
 			type="leaguelevel"
