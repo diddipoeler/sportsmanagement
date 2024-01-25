@@ -75,7 +75,7 @@ class sportsmanagementModelLeagues extends JSMModelList
 		if ($this->jsmapp->isClient('administrator'))
 		{
 			$search_nation = $this->getState('filter.search_nation');
-			if ( $this->jinput->getCmd('view', 'leagues') == 'leagues' )
+			if ( $this->jsmapp->input->getCmd('view', 'leagues') == 'leagues' )
 			{
             $search_associations = $this->getState('filter.search_associations_leagues');
 			}
