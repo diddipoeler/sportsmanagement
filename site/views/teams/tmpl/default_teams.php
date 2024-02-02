@@ -299,6 +299,18 @@ echo '<img style="" src="https://api.miniature.io/?width=100&height=50&url=' . $
 						);
 					}
 
+			if ($this->config['show_club_instagram'] && $team->instagram)
+					{
+						?>
+                        <br/>
+						<?php
+						$googlelink = $team->instagram;
+						echo HTMLHelper::link(
+							$googlelink,
+							HTMLHelper::image('administrator/components/com_sportsmanagement/assets/images/instagram.png', $team->instagram), array('target' => '_blank', 'title' => $team->club_name)
+						);
+					}
+
 					if ($this->config['show_club_twitter'] && $team->twitter)
 					{
 						?>
