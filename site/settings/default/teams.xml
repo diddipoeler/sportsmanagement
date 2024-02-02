@@ -149,6 +149,14 @@ description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TWITTER">
 <option value="0">JNO</option>
 <option value="1">JYES</option>
 </field>
+
+<field name="show_club_instagram" type="radio" default="1"
+layout="joomla.form.field.radio.switcher"
+label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_INSTAGRAM"
+description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_INSTAGRAM">
+<option value="0">JNO</option>
+<option value="1">JYES</option>
+</field>	
 	
 	<field name="show_club_playground" type="radio" default="1"
 		layout="joomla.form.field.radio.switcher"
