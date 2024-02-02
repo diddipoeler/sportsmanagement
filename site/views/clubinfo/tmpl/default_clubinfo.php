@@ -218,7 +218,7 @@ else
 				{
 					?>
                     <address>
-                        <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_INSRAGRAM'); ?></strong>
+                        <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_PERSON_INSTAGRAM'); ?></strong>
 <span itemprop="url">
 						<?php echo HTMLHelper::_('link', $this->club->instagram, $this->club->instagram, array("target" => "_blank")); ?>
 </span>
