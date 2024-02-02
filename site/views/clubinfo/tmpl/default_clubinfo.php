@@ -214,6 +214,18 @@ else
 					<?php
 				}
 
+			if ($this->club->instagram)
+				{
+					?>
+                    <address>
+                        <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_INSRAGRAM'); ?></strong>
+<span itemprop="url">
+						<?php echo HTMLHelper::_('link', $this->club->instagram, $this->club->instagram, array("target" => "_blank")); ?>
+</span>
+                    </address>
+					<?php
+				}
+			
 				if ($this->club->twitter)
 				{
 					?>
