@@ -350,7 +350,7 @@ catch (Exception $e)
 		{
 			Log::add(Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO'), Log::WARNING, 'jsmerror');
 
-			return false;
+			return $this->_teams;
 		}
 
 	}
