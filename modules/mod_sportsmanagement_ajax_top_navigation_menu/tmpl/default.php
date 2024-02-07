@@ -254,7 +254,7 @@ HTMLHelper::_('behavior.tooltip');
                                                     <fieldset class="">
 
                                                         <!-- <ul class="nav-list"> -->
-                                                        <ul class="">
+                                                        <ul class="" id="ajax-nav-list">
 															<?php if ($params->get('show_nav_links'))
 																:
 																?>
