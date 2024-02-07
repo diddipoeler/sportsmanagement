@@ -521,6 +521,7 @@ loadHtml = \"<p id='loadingDiv-\"
 				\"modules/mod_sportsmanagement_ajax_top_navigation_menu/img/ajax-loader.gif'>\";
 	loadHtml += \"</p>\";
 	document.getElementById('pagination').innerHTML += loadHtml;
+ document.getElementById('ajax-nav-list').innerHTML = '';
   ";
 
 	$script[] = "var value10 = $('#jlamtopprojects" . $row->name . $module->id . "').val();";
