@@ -581,7 +581,8 @@ if (data11.link != '')
 
 //const linktext = Joomla.getOptions('linktext');
 //console.log('linktext ajax-> ' + linktext);
-$('ul.jsmpage').append('<li class=\'nav-item\' ><a href=\"' + data11.link + '\">' + data11.linktext + '</a></li>');  
+//$('ul.jsmpage').append('<li class=\'nav-item\' ><a href=\"' + data11.link + '\">' + data11.linktext + '</a></li>'); 
+$('#ajax-nav-list').append('<li class=\'nav-item\' ><a href=\"' + data11.link + '\">' + data11.linktext + '</a></li>');  
 }
 
 });
