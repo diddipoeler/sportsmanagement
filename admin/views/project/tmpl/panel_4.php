@@ -129,7 +129,7 @@ echo $this->loadTemplate('jsm_tips');
 					</li>
 				<?PHP
 				}
-				if (isset($item->teams_as_referees) && $item->teams_as_referees == 0 )
+				if (isset($this->project->teams_as_referees) && $this->project->teams_as_referees == 0 )
 				{
 				?>
 				<li class="quickicon quickicon-single">
