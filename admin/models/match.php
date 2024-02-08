@@ -1588,7 +1588,7 @@ $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($t
 					}
 				}
 
-				if (($post['team1_result_ot' . $pks[$x]]) && ($post['team2_result_ot' . $pks[$x]]))
+				if (is_numeric($post['team1_result_ot' . $pks[$x]]) && is_numeric($post['team2_result_ot' . $pks[$x]]))
 				{
 					$object->team1_result_ot = $post['team1_result_ot' . $pks[$x]];
 					$object->team2_result_ot = $post['team2_result_ot' . $pks[$x]];
@@ -1612,7 +1612,7 @@ $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($t
 					}
 				}
 
-				if (($post['team1_result_so' . $pks[$x]]) && ($post['team2_result_so' . $pks[$x]]))
+				if (is_numeric($post['team1_result_so' . $pks[$x]]) && is_numeric($post['team2_result_so' . $pks[$x]]))
 				{
 					$object->team1_result_so = $post['team1_result_so' . $pks[$x]];
 					$object->team2_result_so = $post['team2_result_so' . $pks[$x]];
