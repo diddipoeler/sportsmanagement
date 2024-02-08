@@ -243,7 +243,8 @@ $query->join('LEFT', '#__sportsmanagement_project_position AS ppos ON ppos.id = 
 		$query->where('o.published = 1');
 		$query->where('p.published = 1');
 		$query->where('o.persontype = 2');
-		$query->order('s.ordering ' . $order . ', l.ordering ASC, p.name ASC ');
+		//$query->order('s.ordering ' . $order . ', l.ordering ASC, p.name ASC ');
+		$query->order('s.name DESC ');
 		$db->setQuery($query);
 		self::$_history = $db->loadObjectList();
 
