@@ -609,6 +609,13 @@ class JSMRanking extends \stdClass
 			$home->sum_team2_legs    += $leg2;
 			$home->diff_team_legs    = $home->sum_team1_legs - $home->sum_team2_legs;
 			
+            if ($sports_type_name == 'COM_SPORTSMANAGEMENT_ST_SOCCER')
+			{
+				$home->neg_points = ( $home->cnt_lost * $loss_points ) + ( $home->cnt_draw * $draw_points );
+				$away->neg_points = ( $away->cnt_lost * $loss_points ) + ( $away->cnt_draw * $draw_points );
+			}
+            
+            
 			if ($sports_type_name == 'COM_SPORTSMANAGEMENT_ST_FAUSTBALL')
 			{
 				$home->sum_team1_balls   += $balls1;
