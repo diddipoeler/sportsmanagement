@@ -1611,6 +1611,11 @@ $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($t
 						}
 					}
 				}
+				else
+				{
+					$object->team1_result_ot = null;
+					$object->team2_result_ot = null;
+				}
 
 				if (is_numeric($post['team1_result_so' . $pks[$x]]) && is_numeric($post['team2_result_so' . $pks[$x]]))
 				{
@@ -1634,6 +1639,11 @@ $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($t
 							$object->team_lost = $object->projectteam1_id;
 						}
 					}
+				}
+				else
+				{
+					$object->team1_result_so = null;
+					$object->team2_result_so = null;
 				}
 			}
 
