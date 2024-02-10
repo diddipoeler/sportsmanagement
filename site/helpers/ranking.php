@@ -315,6 +315,8 @@ class JSMRanking extends \stdClass
 			$draw_points = (isset($arr[1])) ? $arr[1] : 1;
 			$loss_points = (isset($arr[2])) ? $arr[2] : 0;
 
+//Factory::getApplication()->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' arr<pre>'.print_r($arr,true).'</pre>'),'');
+
 			$home_ot = $match->home_score_ot;
 			$away_ot = $match->away_score_ot;
 			$home_so = $match->home_score_so;
@@ -666,7 +668,7 @@ class JSMRanking extends \stdClass
             }
             
             
-		
+		// Factory::getApplication()->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _teams<pre>'.print_r($data->_teams,true).'</pre>'),'');
 
 		return $data->_teams;
 	}
