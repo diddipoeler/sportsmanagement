@@ -609,14 +609,17 @@ class JSMRanking extends \stdClass
 			$home->sum_team2_legs    += $leg2;
 			$home->diff_team_legs    = $home->sum_team1_legs - $home->sum_team2_legs;
 			
-            if ($sports_type_name == 'COM_SPORTSMANAGEMENT_ST_SOCCER')
+            if ( $sports_type_name == 'COM_SPORTSMANAGEMENT_ST_SOCCER' )
 			{
+            $home->sum_points = ( $home->cnt_won * $win_points ) + ( $home->cnt_draw * $draw_points );
+			$away->sum_points = ( $away->cnt_won * $win_points ) + ( $away->cnt_draw * $draw_points );
+                
 				$home->neg_points = ( $home->cnt_lost * $loss_points ) + ( $home->cnt_draw * $draw_points );
 				$away->neg_points = ( $away->cnt_lost * $loss_points ) + ( $away->cnt_draw * $draw_points );
 			}
             
             
-			if ($sports_type_name == 'COM_SPORTSMANAGEMENT_ST_FAUSTBALL')
+			if ( $sports_type_name == 'COM_SPORTSMANAGEMENT_ST_FAUSTBALL' )
 			{
 				$home->sum_team1_balls   += $balls1;
 				$home->sum_team2_balls   += $balls2;
@@ -640,7 +643,7 @@ class JSMRanking extends \stdClass
 			$away->sum_team2_legs    += $leg1;
 			$away->diff_team_legs    = $away->sum_team1_legs - $away->sum_team2_legs;
 			
-			if ($sports_type_name == 'COM_SPORTSMANAGEMENT_ST_FAUSTBALL')
+			if ( $sports_type_name == 'COM_SPORTSMANAGEMENT_ST_FAUSTBALL' )
 			{
 				$away->sum_team1_balls    += $balls2;
 				$away->sum_team2_balls    += $balls1;
