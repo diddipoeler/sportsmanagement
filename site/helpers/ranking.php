@@ -616,8 +616,8 @@ class JSMRanking extends \stdClass
             $home->sum_points = ( $home->cnt_won * $win_points ) + ( $home->cnt_draw * $draw_points );
 			$away->sum_points = ( $away->cnt_won * $win_points ) + ( $away->cnt_draw * $draw_points );
                 
-				$home->neg_points = ( $home->cnt_lost * $loss_points ) + ( $home->cnt_draw * $draw_points );
-				$away->neg_points = ( $away->cnt_lost * $loss_points ) + ( $away->cnt_draw * $draw_points );
+				$home->neg_points = ( $home->cnt_lost * $win_points ) + ( $home->cnt_draw * $draw_points );
+				$away->neg_points = ( $away->cnt_lost * $win_points ) + ( $away->cnt_draw * $draw_points );
 			}
             
             
