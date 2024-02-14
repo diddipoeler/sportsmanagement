@@ -146,7 +146,9 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         $this->leaguechampions[$this->project_id->seasonname] = $object;
         }  
         
-        
+        if ( !array_key_exists($this->project_id->seasonname, $this->leaguechampions_detail) ) {
+        $this->leaguechampions_detail[$this->project_id->seasonname] = array();  
+        }
         if ( !array_key_exists($this->project_id->id, $this->leaguechampions_detail[$this->project_id->seasonname]  ) ) {
 		$object = new stdClass;
 		$object->teamname = $this->project_id->projectinfo;
