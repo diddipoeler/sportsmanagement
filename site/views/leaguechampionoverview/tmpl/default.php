@@ -16,6 +16,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 
 //echo 'config<pre>'.print_r($this->config,true).'</pre>';
+//echo 'leaguechampions<pre>'.print_r($this->leaguechampions,true).'</pre>';
+//echo 'leaguechampions_detail<pre>'.print_r($this->leaguechampions_detail,true).'</pre>';
 
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
@@ -56,10 +58,10 @@ ksort($this->leaguechampions);
 $this->notes = array();
 $this->notes[] = Text::_('Übersicht nach Saisons');
 
-    if ( $this->project->champions_complete )
-    {
-        $this->notes[] = Text::_('Alle Meister/Erstplazierte Mannschaften der Saisons vorhanden.');
-    }
+if ( $this->project->champions_complete )
+{
+$this->notes[] = Text::_('Alle Meister/Erstplazierte Mannschaften der Saisons vorhanden.');
+}
 echo $this->loadTemplate('jsm_notes');
 
 ?>
@@ -67,6 +69,8 @@ echo $this->loadTemplate('jsm_notes');
   
 <?php  
 $output = array();
+$output_detail = array();
+
 $gesamtspiele = 0;
 foreach ($this->leaguechampions as $this->season => $this->team)
 {  
@@ -140,7 +144,7 @@ $output[$this->season][] = !$this->config['show_leaguechampionoverview_season'] 
 if ( $this->config['show_leaguechampionoverview_season'] )  
 {
 ?>
-  <div class="row">
+<div class="row">
 <ul>  
 <?php
 foreach ($output as $season => $printoutput)
