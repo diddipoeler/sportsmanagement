@@ -85,14 +85,14 @@ $routeparameter['from']               = 0;
 $routeparameter['to']                 = 0;
 $routeparameter['division']           = 0;
 $link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);      
-$output_detail[] = $this->config['show_leaguechampionoverview_season'] ? HTMLHelper::link($link, $this->season.' - '.$this->team->project_name).' : ' : '<div class="col-sm-4" id="seasonname">'.HTMLHelper::link($link, $this->season.' - '.$this->team->project_name).' : '.'</div>'   ;    
+$output_detail[$this->season][] = $this->config['show_leaguechampionoverview_season'] ? HTMLHelper::link($link, $this->season.' - '.$this->team->project_name).' : ' : '<div class="col-sm-4" id="seasonname">'.HTMLHelper::link($link, $this->season.' - '.$this->team->project_name).' : '.'</div>'   ;    
     
     
 }    
 }
-$output_detail[] = !$this->config['show_leaguechampionoverview_season'] ? '<div class="col-sm-10"></div><div class="col-sm-2">' : ''   ;  
-$output_detail[] = Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHES').':'.$gesamtspiele_detail;  
-$output_detail[] = !$this->config['show_leaguechampionoverview_season'] ? '</div>' : ''   ;       
+$output_detail[$this->season][] = !$this->config['show_leaguechampionoverview_season'] ? '<div class="col-sm-10"></div><div class="col-sm-2">' : ''   ;  
+$output_detail[$this->season][] = Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHES').':'.$gesamtspiele_detail;  
+$output_detail[$this->season][] = !$this->config['show_leaguechampionoverview_season'] ? '</div>' : ''   ;       
 
 
 $gesamtspiele = 0;
