@@ -180,6 +180,7 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
 		array_multisort($total, SORT_DESC, $this->teamstotal);
       
 		krsort($this->leaguechampions);
+        krsort($this->leaguechampions_detail);
 
 		/** Set page title */
 		$pageTitle = Text::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE');

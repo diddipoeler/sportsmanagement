@@ -210,31 +210,26 @@ $output[$this->season][] = !$this->config['show_leaguechampionoverview_season'] 
 
 //echo 'output<pre>'.print_r($output,true).'</pre>';
 
-//if ( $this->config['show_leaguechampionoverview_season'] )  
-//{
+if ( $this->config['show_leaguechampionoverview_season'] )  
+{
 ?>
-<div class="row">
-<ul>  
+
 <?php
 foreach ($output_detail as $season => $printoutput)
 {  
 ?>
-<li class="hm2">   
+<div class="row">  
 <?php   
 echo implode("", $printoutput);  
 ?>
-</li>   
+  </div>
 <?php
 }
 ?>
-</ul>  
-  </div>
+
 <?php
-//}  
-
-
-
-if ( $this->config['show_leaguechampionoverview_season'] )  
+}  
+elseif ( $this->config['paulpanzer'] )  
 {
 ?>
 <div class="row">
