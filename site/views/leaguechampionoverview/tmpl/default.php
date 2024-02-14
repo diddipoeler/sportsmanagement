@@ -70,6 +70,30 @@ echo $this->loadTemplate('jsm_notes');
 <?php  
 $output = array();
 $output_detail = array();
+$gesamtspiele_detail = 0;
+foreach ($this->leaguechampions_detail as $this->season => $this->project_id)
+{  
+foreach ($this->project_id as $this->project => $this->team)
+{ 
+$routeparameter                       = array();
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+$routeparameter['p']                  = $this->team->project_id;
+$routeparameter['type']               = 0;
+$routeparameter['r']                  = 0;
+$routeparameter['from']               = 0;
+$routeparameter['to']                 = 0;
+$routeparameter['division']           = 0;
+$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);      
+$output_detail[] = $this->config['show_leaguechampionoverview_season'] ? HTMLHelper::link($link, $this->season.' - '.$this->team->project_name).' : ' : '<div class="col-sm-4" id="seasonname">'.HTMLHelper::link($link, $this->season.' - '.$this->team->project_name).' : '.'</div>'   ;    
+    
+    
+}    
+}
+$output_detail[] = !$this->config['show_leaguechampionoverview_season'] ? '<div class="col-sm-10"></div><div class="col-sm-2">' : ''   ;  
+$output_detail[] = Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHES').':'.$gesamtspiele_detail;  
+$output_detail[] = !$this->config['show_leaguechampionoverview_season'] ? '</div>' : ''   ;       
+
 
 $gesamtspiele = 0;
 foreach ($this->leaguechampions as $this->season => $this->team)
