@@ -36,6 +36,7 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
 	function init()
 	{
 	   $this->leaguechampions = array();
+       $this->leaguechampions_detail = array();
        $this->teamseason = array();
        $this->leagueteamchampions = array();
        
@@ -143,6 +144,18 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
 		$object->project_id = $this->project_id->project_slug;  
         $object->project_count_matches = $mdlProject::getProjectCountMatches($this->project_id->id,true,$this->project_id->league_id,$this->project_id->season_id);
         $this->leaguechampions[$this->project_id->seasonname] = $object;
+        }  
+        
+        
+        if ( !array_key_exists($this->project_id->id, $this->leaguechampions_detail[$this->project_id->seasonname]  ) ) {
+		$object = new stdClass;
+		$object->teamname = $this->project_id->projectinfo;
+        $object->ptid_slug = '';
+        $object->ptid = 0;
+        $object->teamid = 0;
+		$object->project_id = $this->project_id->project_slug;  
+        $object->project_count_matches = $mdlProject::getProjectCountMatches($this->project_id->id,true,$this->project_id->league_id,$this->project_id->season_id);
+        $this->leaguechampions_detail[$this->project_id->seasonname][$this->project_id->id] = $object;
         }  
 
         }
