@@ -918,6 +918,7 @@ catch (Exception $e)
 			$query->select('league_id');
 			$query->from('#__sportsmanagement_project');
 			$query->where('id = ' . $projekt);
+            $query->where('published != -2 ');
 			$query->order('name ');
 			$db->setQuery($query);
 			$league = $db->loadResult();
@@ -927,6 +928,7 @@ catch (Exception $e)
 		$query->select('id');
 		$query->from('#__sportsmanagement_project');
 		$query->where('league_id = ' . $league);
+        $query->where('published != -2 ');
         if ( $use_leaguechampion )
         {
             $query->where('use_leaguechampion = ' . $use_leaguechampion);
