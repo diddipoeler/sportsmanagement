@@ -855,6 +855,7 @@ catch (Exception $e)
 			$query->select('league_id');
 			$query->from('#__sportsmanagement_project');
 			$query->where('id = ' . $projekt);
+            $query->where('published != -2 ');
 			$query->order('name ');
 			$db->setQuery($query);
             try
@@ -874,6 +875,7 @@ catch (Exception $e)
 		$query->from('#__sportsmanagement_project as p');
 		$query->join('INNER', '#__sportsmanagement_season AS s ON p.season_id = s.id ');
 		$query->where('p.league_id = ' . $league);
+        $query->where('p.published != -2 ');
         if ( $use_leaguechampion )
         {
             $query->where('p.use_leaguechampion = ' . $use_leaguechampion);
