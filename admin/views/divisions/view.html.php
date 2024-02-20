@@ -16,6 +16,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewDivisions
@@ -37,7 +38,7 @@ class sportsmanagementViewDivisions extends sportsmanagementView
 	public function init()
 	{
 		$lists            = array();
-		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
+		$this->project_id = $this->app->getUserState("$this->option.pid", '0') ? $this->app->getUserState("$this->option.pid", '0') : Factory::getApplication()->input->get( "pid", '0' );
 		$mdlProject       = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
 		$this->projectws  = $mdlProject->getProject($this->project_id);
 		$this->table      = Table::getInstance('division', 'sportsmanagementTable');

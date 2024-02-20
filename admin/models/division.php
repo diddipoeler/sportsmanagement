@@ -42,7 +42,7 @@ class sportsmanagementModeldivision extends JSMModelAdmin
 		$project_id = $post['pid'];
 
 		$this->jsmquery->clear();
-		$this->jsmquery->select('s.name');
+		$this->jsmquery->select('p.name');
 		$this->jsmquery->from('#__sportsmanagement_season AS s');
 		$this->jsmquery->join('INNER', '#__sportsmanagement_project AS p on p.season_id = s.id');
 		$this->jsmquery->where('p.id = ' . $project_id);
@@ -67,7 +67,7 @@ class sportsmanagementModeldivision extends JSMModelAdmin
 			$orig_table = clone $this->getTable('project');
 			$orig_table->load((int) $project_id);
 			$orig_table->id    = null;
-			$orig_table->name  = $resultdvname . ' ' . $reaulseasonname;
+			$orig_table->name  = $reaulseasonname . ' ' . $resultdvname ;
 			$orig_table->alias = OutputFilter::stringURLSafe($orig_table->name);
 
 			// $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' orig_table -> <pre>'.print_r($orig_table,true).'</pre>'),'');
