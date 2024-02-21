@@ -331,6 +331,7 @@ class sportsmanagementModelStats extends BaseDatabaseModel
 			}
 
 			$query->where('matches.published = 1');
+			$query->where('matches.crowd > 0 ');
 			$query->group('matches.projectteam1_id');
 			$query->order('avgspectatorspt DESC');
 

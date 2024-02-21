@@ -32,6 +32,7 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
 	static $cfg_which_database = 0;
 	var $project = null;
 	var $divisionid = 0;
+	var $divisionid2 = 0;
 	var $ranking = null;
 	var $teams = null;
 	/**
@@ -298,6 +299,7 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
 			 *             determined for a division, if the team is part of a division
 			 */
 			$this->divisionid = $team1->division_id;
+			$this->divisionid2 = $team2->division_id;
 		}
 
 		return $this->teams;
@@ -853,7 +855,11 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
 		if (empty($this->ranking))
 		{
 			$project  = sportsmanagementModelProject::getProject(self::$cfg_which_database);
-			$division = $this->divisionid;
+			$division = $this->divisionid;			
+			if ($this->divisionid != $this->divisionid2)
+			{
+				$division = 0;
+			}
 			$ranking  = JSMRanking::getInstance($project, self::$cfg_which_database);
 			$ranking->setProjectId($project->id, self::$cfg_which_database);
 			$this->ranking = $ranking->getRanking(0, sportsmanagementModelProject::getCurrentRound(null, self::$cfg_which_database), $division, self::$cfg_which_database);
