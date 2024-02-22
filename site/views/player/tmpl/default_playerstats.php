@@ -404,7 +404,7 @@ $this->LeaguehistoryPlayer[$player_hist->league_id]['playedtime'] = 0;
 								$stat = $player->getPlayerEvents($eventtype->id, $player_hist->project_id, $player_hist->ptid, $this->config['show_events_as_sum'] );
                                 
                                 
-if ( !array_key_exists( $eventtype->name, $this->LeaguehistoryPlayer[$player_hist->league_id] ) );
+if ( !array_key_exists( $eventtype->name, $this->LeaguehistoryPlayer[$player_hist->league_id] ) )
 {              
 $this->LeaguehistoryPlayer[$player_hist->league_id][$eventtype->name] = 0;              
 }                                
