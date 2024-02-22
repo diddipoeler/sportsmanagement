@@ -64,6 +64,7 @@ $j = 0;
 									<?php $val = isset($this->playerstats[$row->projectteam_id][$row->tpid][$ev->id]) ? $this->playerstats[$row->projectteam_id][$row->tpid][$ev->id] : ""; ?>
                                     <input type="text" size="3" class="inputbox stat" title="<?php echo $ev->name; ?>"
                                            name="stat<?php echo $row->tpid; ?>_<?php echo $ev->id; ?>"
+                                           onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" 
                                            value="<?php echo $val; ?>"/>
                                 </td>
 							<?php endif; ?>
