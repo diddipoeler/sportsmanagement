@@ -158,7 +158,7 @@ HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolow
 					}
 					else
 					{
-echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_picture' . $this->item->id, Uri::root() . $this->item->assocflag, $this->item->name, '20', Uri::root() . $this->item->assocflag);						
+echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_assocflag' . $this->item->id, Uri::root() . $this->item->assocflag, $this->item->name, '20', Uri::root() . $this->item->assocflag);						
 						?>
 						<!--
                         <a href="<?php echo Uri::root() . $this->item->assocflag; ?>" title="<?php echo $this->item->name; ?>"
@@ -207,7 +207,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_picture' 
 					}
 					else
 					{
-echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_picture' . $this->item->id, Uri::root() . $this->item->flag_maps, $this->item->name, '20', Uri::root() . $this->item->flag_maps);						
+echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_flag_maps' . $this->item->id, Uri::root() . $this->item->flag_maps, $this->item->name, '20', Uri::root() . $this->item->flag_maps);						
 						?>
 						<!--
                         <a href="<?php echo Uri::root() . $this->item->flag_maps; ?>" title="<?php echo $this->item->name; ?>"
