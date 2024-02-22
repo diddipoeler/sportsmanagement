@@ -2582,6 +2582,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 				$query->clear();
 				$query->delete(Factory::getDBO()->quoteName('#__sportsmanagement_match_staff'));
 				$query->where('id IN (' . implode(",", $result) . ')');
+				$db->setQuery($query);
 
 				try
 				{
