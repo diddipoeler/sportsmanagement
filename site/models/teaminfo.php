@@ -360,9 +360,9 @@ if ( Factory::getConfig()->get('debug') )
 			/** noch nicht freigeschaltet */
 			$seasons[$k]->rank          = $season->finaltablerank;
           		$seasons[$k]->games          = $season->matches_finally;
-          		$seasons[$k]->playercnt      = self::getPlayerCount($season->projectid, $season->ptid, $season->season_id);
-			$seasons[$k]->playermeanage  = self::getPlayerMeanAge($season->projectid, $season->ptid, $season->season_id);
-			$seasons[$k]->market_value   = self::getPlayerMarketValue($season->projectid, $season->ptid, $season->season_id);
+          		$seasons[$k]->playercnt      = self::getPlayerCount($season->projectid, $season->ptid, $season->season_id, 1);
+			$seasons[$k]->playermeanage  = self::getPlayerMeanAge($season->projectid, $season->ptid, $season->season_id, 1);
+			$seasons[$k]->market_value   = self::getPlayerMarketValue($season->projectid, $season->ptid, $season->season_id, 1);
           		$seasons[$k]->goals          = $season->homegoals_finally.':'.$season->guestgoals_finally;
           		$seasons[$k]->series          = $season->won_finally.'/'.$season->draws_finally.'/'.$season->lost_finally;
           		$seasons[$k]->points         = $season->points_finally;
@@ -419,9 +419,9 @@ if ( Factory::getConfig()->get('debug') )
 				$seasons[$k]->points         = $ranking['points'];
 				$seasons[$k]->series         = $ranking['series'];
 				$seasons[$k]->goals          = $ranking['goals'];
-				$seasons[$k]->playercnt      = self::getPlayerCount($season->projectid, $season->ptid, $season->season_id);
-				$seasons[$k]->playermeanage  = self::getPlayerMeanAge($season->projectid, $season->ptid, $season->season_id);
-				$seasons[$k]->market_value   = self::getPlayerMarketValue($season->projectid, $season->ptid, $season->season_id);
+				$seasons[$k]->playercnt      = self::getPlayerCount($season->projectid, $season->ptid, $season->season_id, 1);
+				$seasons[$k]->playermeanage  = self::getPlayerMeanAge($season->projectid, $season->ptid, $season->season_id, 1);
+				$seasons[$k]->market_value   = self::getPlayerMarketValue($season->projectid, $season->ptid, $season->season_id, 1);
 			}
 			else
 			{
@@ -522,7 +522,7 @@ if ( Factory::getConfig()->get('debug') )
 	 *
 	 * @return integer
 	 */
-	public static function getPlayerCount($projectid, $projectteamid, $season_id)
+	public static function getPlayerCount($projectid, $projectteamid, $season_id, $persontype = 0)
 	{
 		$app = Factory::getApplication();
 		$jinput = $app->input;
@@ -542,6 +542,11 @@ if ( Factory::getConfig()->get('debug') )
 		$query->where('tp.season_id = ' . $season_id);
 		$query->where('st.season_id = ' . $season_id);
 		$query->where('ps.published = 1');
+
+		if ($persontype > 0)
+		{
+			$query->where('tp.persontype = ' . $persontype);
+		}
 
 		$db->setQuery($query);
 		$player = $db->loadResult();
@@ -565,7 +570,7 @@ if ( Factory::getConfig()->get('debug') )
 	 *
 	 * @return
 	 */
-	public static function getPlayerMeanAge($projectid, $projectteamid, $season_id)
+	public static function getPlayerMeanAge($projectid, $projectteamid, $season_id, $persontype = 0)
 	{
 		$app = Factory::getApplication();
 		$jinput = $app->input;
@@ -589,6 +594,11 @@ if ( Factory::getConfig()->get('debug') )
 		$query->where('st.season_id = ' . $season_id);
 		$query->where('tp.published = 1');
 		$query->where('ps.published = 1');
+
+		if ($persontype > 0)
+		{
+			$query->where('tp.persontype = ' . $persontype);
+		}
 
 		$db->setQuery($query);
 		$players = $db->loadObjectList();
@@ -628,7 +638,7 @@ if ( Factory::getConfig()->get('debug') )
 	 *
 	 * @return
 	 */
-	public static function getPlayerMarketValue($projectid, $projectteamid, $season_id)
+	public static function getPlayerMarketValue($projectid, $projectteamid, $season_id, $persontype = 0)
 	{
 		$app = Factory::getApplication();
 		$jinput = $app->input;
@@ -648,6 +658,11 @@ if ( Factory::getConfig()->get('debug') )
 		$query->where('st.season_id = ' . $season_id);
 		$query->where('stp.season_id = ' . $season_id);
 		$query->where('stp.published = 1');
+
+		if ($persontype > 0)
+		{
+			$query->where('stp.persontype = ' . $persontype);
+		}
 
 		$db->setQuery($query);
 
