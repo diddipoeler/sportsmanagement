@@ -1017,7 +1017,8 @@ try
 
 		if ($teamplayer_id)
 		{
-			$query->where('tp1.id = ' . (int) $teamplayer_id);
+			//$query->where('tp1.id = ' . (int) $teamplayer_id);
+			$query->where('( mp.teamplayer_id = ' . (int) $teamplayer_id . ' OR mp.in_for = ' . (int) $teamplayer_id . ' )');
 		}
 
 		if ($project_id)
@@ -1062,10 +1063,10 @@ try
 		foreach ($rows AS $row)
 		{
 			$inoutstat->played  += ($row->came_in == 0);
-			$inoutstat->played  += ($row->came_in == 1);
+			$inoutstat->played  += ($row->came_in == 1) && ($row->teamplayer_id == $teamplayer_id);
 			$inoutstat->started += ($row->came_in == 0);
-			$inoutstat->sub_in  += ($row->came_in == 1);
-			$inoutstat->sub_out += ($row->out == 1);
+			$inoutstat->sub_in  += ($row->came_in == 1) && ($row->teamplayer_id == $teamplayer_id);
+			$inoutstat->sub_out += ($row->out == 1) || ($row->in_for == $teamplayer_id);
 		}
       /*
         foreach ($rows2 AS $row)
