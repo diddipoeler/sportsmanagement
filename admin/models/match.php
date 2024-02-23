@@ -91,11 +91,11 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 		$query->from('#__sportsmanagement_match_event AS me');
 		$query->join('LEFT', '#__sportsmanagement_season_team_person_id AS tp1 ON tp1.id = me.teamplayer_id');
 		$query->join('LEFT', '#__sportsmanagement_season_team_id AS st1 ON st1.team_id = tp1.team_id and st1.season_id = tp1.season_id');
-		$query->join('LEFT', '#__sportsmanagement_project_team AS pt1 ON st1.id = pt1.team_id');
+		//$query->join('LEFT', '#__sportsmanagement_project_team AS pt1 ON st1.id = pt1.team_id');
 		$query->join('LEFT', '#__sportsmanagement_person AS t1 ON t1.id = tp1.person_id AND t1.published = 1');
 		$query->join('LEFT', '#__sportsmanagement_team AS t ON t.id = st1.team_id');
 		$query->join('LEFT', '#__sportsmanagement_eventtype AS et ON et.id = me.event_type_id ');
-		$query->join('LEFT', '#__sportsmanagement_person_project_position AS ppp on ppp.person_id = tp1.id and ppp.project_id = pt1.project_id');
+		//$query->join('LEFT', '#__sportsmanagement_person_project_position AS ppp on ppp.person_id = tp1.id and ppp.project_id = pt1.project_id');
 		$query->where('me.match_id = ' . $match_id);
 		$query->order('me.event_time ASC');
 		$db->setQuery($query);
