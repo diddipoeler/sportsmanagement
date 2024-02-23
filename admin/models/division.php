@@ -70,6 +70,7 @@ class sportsmanagementModeldivision extends JSMModelAdmin
 			$orig_table->name  = $reaulseasonname . ' ' . $resultdvname ;
             $orig_table->project_type = 'SIMPLE_LEAGUE';
 			$orig_table->alias = OutputFilter::stringURLSafe($orig_table->name);
+            $orig_table->published = 1;
 
 			// $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' orig_table -> <pre>'.print_r($orig_table,true).'</pre>'),'');
 			$new_project_id = 0;
