@@ -305,28 +305,28 @@ $this->inoutstat->playedtime = 0;
 						<?PHP
 					}
 
-if ( !array_key_exists( $player_hist->league_id, $this->LeaguehistoryPlayer ) );
+if ( !array_key_exists( $player_hist->league_id, $this->LeaguehistoryPlayer ) )
 {              
 $this->LeaguehistoryPlayer[$player_hist->league_id] = array();              
 }              
               
-if ( !array_key_exists( 'played', $this->LeaguehistoryPlayer[$player_hist->league_id] ) );
+if ( !array_key_exists( 'played', $this->LeaguehistoryPlayer[$player_hist->league_id] ) )
 {              
 $this->LeaguehistoryPlayer[$player_hist->league_id]['played'] = 0;              
 }
-if ( !array_key_exists( 'started', $this->LeaguehistoryPlayer[$player_hist->league_id] ) );
+if ( !array_key_exists( 'started', $this->LeaguehistoryPlayer[$player_hist->league_id] ) )
 {              
 $this->LeaguehistoryPlayer[$player_hist->league_id]['started'] = 0;              
 } 
-if ( !array_key_exists( 'in', $this->LeaguehistoryPlayer[$player_hist->league_id] ) );
+if ( !array_key_exists( 'in', $this->LeaguehistoryPlayer[$player_hist->league_id] ) )
 {              
 $this->LeaguehistoryPlayer[$player_hist->league_id]['in'] = 0;              
 } 
-if ( !array_key_exists( 'out', $this->LeaguehistoryPlayer[$player_hist->league_id] ) );
+if ( !array_key_exists( 'out', $this->LeaguehistoryPlayer[$player_hist->league_id] ) )
 {              
 $this->LeaguehistoryPlayer[$player_hist->league_id]['out'] = 0;              
 } 
-if ( !array_key_exists( 'playedtime', $this->LeaguehistoryPlayer[$player_hist->league_id] ) );
+if ( !array_key_exists( 'playedtime', $this->LeaguehistoryPlayer[$player_hist->league_id] ) )
 {              
 $this->LeaguehistoryPlayer[$player_hist->league_id]['playedtime'] = 0;              
 }               
@@ -404,7 +404,7 @@ $this->LeaguehistoryPlayer[$player_hist->league_id]['playedtime'] = 0;
 								$stat = $player->getPlayerEvents($eventtype->id, $player_hist->project_id, $player_hist->ptid, $this->config['show_events_as_sum'] );
                                 
                                 
-if ( !array_key_exists( $eventtype->name, $this->LeaguehistoryPlayer[$player_hist->league_id] ) );
+if ( !array_key_exists( $eventtype->name, $this->LeaguehistoryPlayer[$player_hist->league_id] ) )
 {              
 $this->LeaguehistoryPlayer[$player_hist->league_id][$eventtype->name] = 0;              
 }                                
