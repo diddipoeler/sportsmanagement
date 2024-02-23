@@ -69,15 +69,20 @@ use Joomla\CMS\Factory;
 				?>
             </address>
 	    
-	     <address>
-                <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_NATIONALITY'); ?></strong>
-				<?php
-				echo JSMCountries::getCountryFlag($this->person->second_country) . " " .
-					Text::_(JSMCountries::getCountryName($this->person->second_country));
-				?>
-            </address>
+			<?php
+			if (!empty($this->person->second_country))
+			{
+			?>
+				<address>
+					<strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_NATIONALITY'); ?></strong>
+					<?php
+					echo JSMCountries::getCountryFlag($this->person->second_country) . " " .
+						Text::_(JSMCountries::getCountryName($this->person->second_country));
+					?>
+				</address>
 	    
 			<?php
+			}
 		}
 		?>
 
