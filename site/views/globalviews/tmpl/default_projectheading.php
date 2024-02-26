@@ -67,7 +67,7 @@ if (!empty($this->overallconfig))
 		<div class="<?php echo $this->divclassrow; ?>" id="projectheading" itemscope="itemscope" itemtype="http://schema.org/SportsOrganization">
 			<table class="table">
 				<?php
-                if ($this->config['show_project_extrafield'])
+                if ($this->overallconfig['show_project_extrafield'])
 				{
                 $this->extrafields = sportsmanagementHelper::getUserExtraFields($this->project->league_id, 'frontend', 0,Factory::getApplication()->input->get('view'));
                 $title = $this->project->league_name;
@@ -314,76 +314,79 @@ $ausgabe .= '</tr>';
 		}
 	}
 	
-	switch ( $this->view )
+	if (isset($this->view))
 	{
-		case 'ranking':
-?>
-<div class="row">
+		switch ( $this->view )
+		{
+			case 'ranking':
+			?>
+			<div class="row">
 
-<div class="col-sm-6 text-left">
-<?php  
-//echo 'navigation <pre>'. print_r($this->config['show_project_navigation'],true) .'</pre>';  
-if ( !array_key_exists('show_project_navigation', $this->config) ) {
-    $this->config['show_project_navigation'] = 1;
-}			
-			
-$this->config['show_project_navigation'] = $this->config['show_project_navigation'] = '' ? 1 : $this->config['show_project_navigation'];  
-if ( $this->config['show_project_navigation'] )  
-{
-//echo 'name <pre>'. print_r($this->project->name,true) .'</pre>';    
-//echo 'league_id <pre>'. print_r($this->project->league_id,true) .'</pre>';   
-  
-$nextproject = sportsmanagementModelProject::getnextproject($this->project->name, $this->project->league_id);  
-//echo 'league_id <pre>'. print_r($nextproject,true) .'</pre>';   
-$prevproject = sportsmanagementModelProject::getprevproject($this->project->name, $this->project->league_id);  
-//echo 'league_id <pre>'. print_r($prevproject,true) .'</pre>';   
-if ( $prevproject )
-  {
-$routeparameter                       = array();
-$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-$routeparameter['s']                  = $prevproject->season_id;
-$routeparameter['p']                  = $prevproject->slug;
-$routeparameter['type']               = 0;
-$routeparameter['r']                  = 0;
-$routeparameter['from']               = 0;
-$routeparameter['to']                 = 0;
-$routeparameter['division']           = 0;
-$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);  
-    ?>
-<a href="<?php echo $link; ?>" class="btn btn-primary btn-sm active" role="button" aria-pressed="true"><< <?php echo $prevproject->name; ?></a> 
-  <?php
-    }
-  ?>
-  
-  
-  </div>
-  <div class="col-sm-6 text-right">
-  <?php
-  if ( $nextproject )
-  {
-    $routeparameter                       = array();
-$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-$routeparameter['s']                  = $nextproject->season_id;
-$routeparameter['p']                  = $nextproject->slug;
-$routeparameter['type']               = 0;
-$routeparameter['r']                  = 0;
-$routeparameter['from']               = 0;
-$routeparameter['to']                 = 0;
-$routeparameter['division']           = 0;
-$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);  
-    ?>
-<a href="<?php echo $link; ?>" class="btn btn-primary btn-sm active" role="button" aria-pressed="true"><?php echo $nextproject->name; ?> >></a> 
-  <?php
-    }
-}
-  
-?>
-  
-</div>
-</div>
-<?php  	
-break;
-}	
+			<div class="col-sm-6 text-left">
+			<?php  
+			//echo 'navigation <pre>'. print_r($this->config['show_project_navigation'],true) .'</pre>';  
+			if ( !array_key_exists('show_project_navigation', $this->config) ) {
+				$this->config['show_project_navigation'] = 1;
+			}			
+						
+			$this->config['show_project_navigation'] = $this->config['show_project_navigation'] = '' ? 1 : $this->config['show_project_navigation'];  
+			if ( $this->config['show_project_navigation'] )  
+			{
+				//echo 'name <pre>'. print_r($this->project->name,true) .'</pre>';    
+				//echo 'league_id <pre>'. print_r($this->project->league_id,true) .'</pre>';   
+
+				$nextproject = sportsmanagementModelProject::getnextproject($this->project->name, $this->project->league_id);  
+				//echo 'league_id <pre>'. print_r($nextproject,true) .'</pre>';   
+				$prevproject = sportsmanagementModelProject::getprevproject($this->project->name, $this->project->league_id);  
+				//echo 'league_id <pre>'. print_r($prevproject,true) .'</pre>';   
+				if ( $prevproject )
+				{
+					$routeparameter                       = array();
+					$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+					$routeparameter['s']                  = $prevproject->season_id;
+					$routeparameter['p']                  = $prevproject->slug;
+					$routeparameter['type']               = 0;
+					$routeparameter['r']                  = 0;
+					$routeparameter['from']               = 0;
+					$routeparameter['to']                 = 0;
+					$routeparameter['division']           = 0;
+					$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);  
+						?>
+					<a href="<?php echo $link; ?>" class="btn btn-primary btn-sm active" role="button" aria-pressed="true"><< <?php echo $prevproject->name; ?></a> 
+					<?php
+				}
+				?>
+
+
+				</div>
+				<div class="col-sm-6 text-right">
+				<?php
+				if ( $nextproject )
+				{
+					$routeparameter                       = array();
+					$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+					$routeparameter['s']                  = $nextproject->season_id;
+					$routeparameter['p']                  = $nextproject->slug;
+					$routeparameter['type']               = 0;
+					$routeparameter['r']                  = 0;
+					$routeparameter['from']               = 0;
+					$routeparameter['to']                 = 0;
+					$routeparameter['division']           = 0;
+					$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);  
+						?>
+					<a href="<?php echo $link; ?>" class="btn btn-primary btn-sm active" role="button" aria-pressed="true"><?php echo $nextproject->name; ?> >></a> 
+					<?php
+				}
+			}
+
+			?>
+
+			</div>
+			</div>
+			<?php  	
+			break;
+		}	
+	}
 	
 	
 	

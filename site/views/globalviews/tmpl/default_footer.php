@@ -103,9 +103,16 @@ Joomla.popupWindow = function(mypage, myname, w, h, scroll) {
 	?>
     <br/>
 
-<div class="center">
-<?php echo Text::sprintf('COM_SPORTSMANAGEMENT_FOOTER_TIME', $this->jsmseitenaufbau); ?>
-</div>
+	<?php
+	if(isset($this->jsmseitenaufbau))
+	{
+	?>
+		<div class="center">
+		<?php echo Text::sprintf('COM_SPORTSMANAGEMENT_FOOTER_TIME', $this->jsmseitenaufbau); ?>
+		</div>
+	<?php
+	}
+	?>
   
 <?php
 $link_onlinehelp = $cfg_help_server . 'SM-Frontend:' . $view ;                                                

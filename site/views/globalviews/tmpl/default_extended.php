@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
-if ($this->config['show_extended_text'])
+if (isset ($this->config['show_extended_text']) && $this->config['show_extended_text'])
 {
 $this->notes = array();
 $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERENCES');
@@ -37,7 +37,7 @@ foreach($this->extended as $key => $field) :
 endforeach;  
 }
 
-if ( $this->extended2 )
+if ( isset($this->extended2) && $this->extended2 )
 {
 //echo 'extended2<pre>'.print_r($this->extended2,true).'</pre>';          
 //echo $this->extended2->renderFieldset('COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERENCES');          
