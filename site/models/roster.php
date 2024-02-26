@@ -257,7 +257,7 @@ $app    = Factory::getApplication();
 		$query->select('pr.firstname,pr.nickname,pr.lastname,pr.country,pr.birthday,pr.deathday,pr.id AS pid,pr.id AS person_id,pr.picture AS ppic');
 		$query->select('pr.suspension AS suspension,pr.away AS away,pr.injury AS injury,pr.id AS pid,pr.picture AS ppic,CONCAT_WS(\':\',pr.id,pr.alias) AS person_slug');
       //$query->select('perpos.project_position_id as position_id');
-      $query->select('ppos.position_id as position_id');
+      $query->select('ppos.position_id as position_id,ppos.id as pposid');
       $query->select('pos.name AS position');
       $query->select('st.id AS season_team_id');
       $query->select('pt.project_id AS project_id');
