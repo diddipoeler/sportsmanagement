@@ -144,7 +144,7 @@ if (!defined('JLC_MODULESCRIPTLOADED'))
 	define('JLC_MODULESCRIPTLOADED', 1);
 }
 
-$calendar = $helper->showCal($params, $year, $month, $ajax, $module->id);
+$calendar = $helper->showCal($params, $year, $month, $module->id, $ajax);
 ?>
 <div id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 	<?PHP
