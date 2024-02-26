@@ -203,7 +203,7 @@ use Joomla\CMS\Factory;
 								$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
 								$routeparameter['p']                  = $this->project->slug;
 								$routeparameter['tid']                = $this->team->slug;
-								$routeparameter['pid']                = $row->slug;
+								$routeparameter['pid']                = $row->person_slug;
 								$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('staff', $routeparameter);
 								echo HTMLHelper::link($link, '<i>' . $playerName . '</i>'); ?></div>
                         </td>
