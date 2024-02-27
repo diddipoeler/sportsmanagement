@@ -56,7 +56,10 @@ use Joomla\CMS\Factory;
 
                             <tr class="">
                                 <td><?php
-									echo HTMLHelper::link($report_link, date($this->config['games_date_format'], strtotime($game->match_date)));
+									$jdate = Factory::getDate($game->match_date);
+									$jdate->setTimezone(new DateTimeZone($this->project->timezone));
+									$body = $jdate->format('l, d. F Y H:i');
+									echo HTMLHelper::link($report_link, $body);
 									?>
                                 </td>
                                 <td class="td_r">
