@@ -68,7 +68,7 @@
       depends="p" 
       key_field="project_id"
 			value_field="p"
-      task="projectstatoptions"
+      task="projectstatsoptions"
 					label="COM_SPORTSMANAGEMENT_XML_STATSRANKING_SELECT_STAT_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_STATSRANKING_SELECT_STAT_DESCR"
 					required="false">

@@ -234,6 +234,8 @@ $script[] = "var url = 'index.php?option=com_sportsmanagement&format=json&dbase=
 			case 'getprojectroundoptions':
 				$result   = sportsmanagementModelAjax::$ajaxtask($value, $required, $slug, null, null, $cfg_which_database);
 				break;
+			case 'getprojectstatsoptions':
+				break;
 			default:
 				$result   = sportsmanagementModelAjax::$ajaxtask($value, $required, $slug);
 				break;
