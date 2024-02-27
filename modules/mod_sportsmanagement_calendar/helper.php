@@ -46,7 +46,7 @@ class modJSMCalendarHelper
 	 *
 	 * @return
 	 */
-	function showCal(&$params, $year, $month, $ajax = 0, $modid) // This function returns the html of the calendar for a given month
+	function showCal(&$params, $year, $month, $modid, $ajax = 0) // This function returns the html of the calendar for a given month
 	{
 		// Global $mainframe;
 		// Reference global application object
