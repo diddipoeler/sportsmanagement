@@ -538,7 +538,8 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' .'players <pre>'.print_r(self
 		$query     = $db->getQuery(true);
 		$starttime = microtime();
 		$result    = '';
-		$query->select('max(round_date_last)');
+		//$query->select('max(round_date_last)');
+		$query->select('max(round_date_first) as firstday, max(round_date_last) as lastday');
 		$query->from('#__sportsmanagement_round ');
 		$query->where('project_id =' . (int) self::$projectid);
 
@@ -547,7 +548,20 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' .'players <pre>'.print_r(self
 		try
 		{
 			$db->setQuery($query);
-			$result = $db->loadResult();
+			//$result = $db->loadResult();
+			$round_date = $db->loadObjectList();
+			if ($round_date[0]->firstday == null && $round_date[0]->lastday == null)
+			{
+				$result = '0000-00-00';
+			}
+			else if ($round_date[0]->lastday == null || $round_date[0]->lastday == '0000-00-00' || $round_date[0]->firstday > $round_date[0]->lastday)
+			{
+				$result = $round_date[0]->firstday;
+			}
+			else
+			{
+				$result =  $round_date[0]->lastday;
+			}
 		}
 		catch (Exception $e)
 		{
