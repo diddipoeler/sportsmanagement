@@ -602,17 +602,51 @@ if ( Factory::getConfig()->get('debug') )
 
 		$db->setQuery($query);
 		$players = $db->loadObjectList();
-
-if ( Factory::getConfig()->get('debug') )
-{
-		$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data <pre>'.print_r($query->dump(),true).'</pre>'  ), ''); 
-}
 		
+		if ( Factory::getConfig()->get('debug') )
+		{
+				$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data <pre>'.print_r($query->dump(),true).'</pre>'  ), ''); 
+		}
+
+		$query->clear();
+		$query->select('max(round_date_first) as firstday, max(round_date_last) as lastday');
+		$query->from('#__sportsmanagement_round ');
+		$query->where('project_id =' . $projectid);
+
+		$db->setQuery($query);
+
+		try
+		{
+			$db->setQuery($query);
+			$round_date = $db->loadObjectList();
+			if ($round_date[0]->firstday == null && $round_date[0]->lastday == null)
+			{
+				$lastprojectday = '0000-00-00';
+			}
+			else if ($round_date[0]->lastday == null || $round_date[0]->lastday == '0000-00-00' || $round_date[0]->firstday > $round_date[0]->lastday)
+			{
+				$lastprojectday = $round_date[0]->firstday;
+			}
+			else
+			{
+				$lastprojectday =  $round_date[0]->lastday;
+			}
+		}
+		catch (Exception $e)
+		{
+			echo $e->getMessage();
+		}
+
 		foreach ($players as $player)
 		{
 			if ($player->birthday != '0000-00-00')
 			{
-				$age += sportsmanagementHelper::getAge($player->birthday, $player->deathday);
+				$lastday = $lastprojectday;
+				if ($player->deathday != '0000-00-00' && $player->deathday < $lastday)
+				{
+					$lastday = $player->deathday;
+				}
+				$age += sportsmanagementHelper::getAge($player->birthday, $lastday);
 				$countplayer++;
 			}
 		}

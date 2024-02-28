@@ -1073,10 +1073,10 @@ if (version_compare(JVERSION, '4.0.0', 'ge'))
         $round = 0;
 
 		// Get a db connection.
-		$db    = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
+		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
 		$query = $db->getQuery(true);
 
-		$project = sportsmanagementModelProject::getProject($cfg_which_database, __METHOD__);
+		$project = sportsmanagementModelProject::getProject(self::$cfg_which_database, __METHOD__);
 
 		if (!$round && $project)
 		{

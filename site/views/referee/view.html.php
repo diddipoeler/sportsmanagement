@@ -29,7 +29,7 @@ jimport('joomla.application.component.view');
  * @version   $Id$
  * @access    public
  */
-class sportsmanagementViewReferee extends HtmlView
+class sportsmanagementViewReferee extends sportsmanagementView
 {
 
 	/**

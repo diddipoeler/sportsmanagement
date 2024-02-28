@@ -336,8 +336,11 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 
 		if (self::$projectid)
 		{
+			$query->join('INNER', '#__sportsmanagement_match AS m ON me.match_id = m.id');
+			$query->join('INNER', '#__sportsmanagement_round AS r ON m.round_id = r.id');
 			$query->where('pt.project_id IN (' . self::$projectid . ')');
 			$query->where('p.id IN (' . self::$projectid . ')');
+			$query->where('r.project_id IN (' . self::$projectid . ')');
 		}
 
 		if (self::$divisionid > 0)

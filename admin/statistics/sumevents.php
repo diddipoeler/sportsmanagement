@@ -282,13 +282,13 @@ class SMStatisticSumevents extends SMStatistic
 		$app       = Factory::getApplication();
 		$db        = sportsmanagementHelper::getDBConnection();
 		$query_num = $db->getQuery(true);
-		$query_num->select('SUM(es.event_sum) AS num, pt.team_id');
+		$query_num->select('SUM(es.event_sum) AS total, pt.team_id');
 		$query_num->from('#__sportsmanagement_season_team_person_id AS tp');
 		$query_num->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
 		$query_num->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');
 		$query_num->join('INNER', '#__sportsmanagement_match_event AS es ON es.teamplayer_id = tp.id AND es.event_type_id IN (' . implode(',', $sids) . ')');
 		$query_num->join('INNER', '#__sportsmanagement_match AS m ON m.id = es.match_id AND m.published = 1 ');
-		$query_num->where('pt.project_id = ' . $projectid);
+		$query_num->where('pt.project_id = ' . $project_id);
 		$query_num->where('tp.published = 1');
 		$query_num->group('pt.id');
 		$query_num->order('total ' . (!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')) . ', tp.id');

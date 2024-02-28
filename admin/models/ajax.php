@@ -1577,7 +1577,29 @@ $app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'person_a
 		$query->join('INNER', ' #__sportsmanagement_project p ON p.id = ppos.project_id ');
 
 		// Where
-		$query->where('ppos.project_id = ' . $db->Quote($project_id));
+		//$query->where('ppos.project_id = ' . $db->Quote($project_id));
+		if ($project_id)
+		{
+			if (!is_array($project_id))
+			{
+				$project_id = explode(",", $project_id);
+			}
+
+			// Ist es ein array ?
+			if (is_array($project_id))
+			{
+				$ids = implode(",", array_map('intval', $project_id));
+				$query->where('ppos.project_id IN (' . $ids . ')');
+			}
+			else
+			{
+				$query->where('ppos.project_id = ' . (int) $project_id);
+			}
+		}
+		else
+		{
+			$query->where('ppos.project_id = 0');
+		}
 
 		// Group
 		$query->group('s.id');
