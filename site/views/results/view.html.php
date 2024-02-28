@@ -1039,7 +1039,8 @@ class sportsmanagementViewResults extends sportsmanagementView
 		}
 
 		$this->state = $this->get('State');
-		$matches = $this->get('Items');
+		//$matches = $this->get('Items');
+		$matches = $this->get('Data');
 		$this->pagination = $this->get('Pagination');
         
 //		$matches          = $this->get('Data');
