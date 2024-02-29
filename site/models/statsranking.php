@@ -94,9 +94,17 @@ class sportsmanagementModelStatsRanking extends BaseDatabaseModel
 	 */
 	function setStatid($statid)
 	{
-		// Allow for multiple statistics IDs, arranged in a single parameters (sid) as string
-		// with "|" as separator
-		$sidarr        = explode("|", $statid);
+		if (is_array($statid))
+		{
+			$sidarr = $statid;
+		}
+		else
+		{
+			// Allow for multiple statistics IDs, arranged in a single parameters (sid) as string
+			// with "|" as separator		
+			$sidarr        = explode("|", $statid);
+		}
+
 		$this->stat_id = array();
 
 		foreach ($sidarr as $sid)

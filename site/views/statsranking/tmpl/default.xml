@@ -64,7 +64,8 @@
 			</field>
 			
 			<field	name="sid" 
-      type="dependsql" 
+	  multiple="multiple"			       
+	  type="dependsql" 
       depends="p" 
       key_field="project_id"
 			value_field="p"
