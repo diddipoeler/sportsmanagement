@@ -1449,7 +1449,14 @@ $events = false;
 
 			if ($statid)
 			{
-				$query->where('stat.id = ' . (int) $statid);
+				if (is_array($statid))
+				{
+					$query->where('stat.id in (' . implode(",", $statid) . ')');
+				}
+				else
+				{
+					$query->where('stat.id = ' . (int) $statid);
+				}
 			}
 
 			$query->where('stat.published = 1');

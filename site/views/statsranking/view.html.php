@@ -72,11 +72,20 @@ class sportsmanagementViewStatsRanking extends sportsmanagementView
 		$this->limitstart     = $this->model->getLimitStart();
 		$this->multiple_stats = count($this->stats) > 1;
 
-		$prefix = Text::_('COM_SPORTSMANAGEMENT_STATSRANKING_PAGE_TITLE');
+		if ($this->teamid > 0)
+		{
+			$prefix = Text::sprintf('COM_SPORTSMANAGEMENT_STATSRANKING_PAGE_TITLE', $this->teams[$this->teamid]->name);
+			$prefix .= " - ";
+		}
+		else
+		{
+			$prefix = Text::sprintf('COM_SPORTSMANAGEMENT_STATSRANKING_PAGE_TITLE', ' ');
+		}
+		//$prefix = Text::_('COM_SPORTSMANAGEMENT_STATSRANKING_PAGE_TITLE');
 
 		if ($this->multiple_stats)
 		{
-			$prefix .= " - " . Text::_('COM_SPORTSMANAGEMENT_STATSRANKING_TITLE');
+			$prefix .= Text::_('COM_SPORTSMANAGEMENT_STATSRANKING_TITLE');
 		}
 		else
 		{
@@ -84,7 +93,7 @@ class sportsmanagementViewStatsRanking extends sportsmanagementView
 			$sid = array_keys($this->stats);
 
 			// Take the first result then.
-			$prefix .= " - " . $this->stats[$sid[0]]->name;
+			$prefix .= $this->stats[$sid[0]]->name;
 		}
 
 		// Set page title
