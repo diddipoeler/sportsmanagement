@@ -1549,7 +1549,7 @@ $app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'person_a
 	 *
 	 * @return
 	 */
-	public static function getProjectStatOptions($project_id, $required = false, $slug = false, $dbase = false)
+	public static function getProjectStatsOptions($project_id, $required = false, $slug = false, $dbase = false)
 	{
 
 		$app    = Factory::getApplication();
