@@ -510,7 +510,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
 						{
 							if ($this->config['player_numbers_pictures'])
 							{
-								$value = HTMLHelper::image(Uri::root() . 'images/com_sportsmanagement/database/teamplayers/shirt.php?text=' . $pnr, $pnr, array('title' => $pnr));
+								$value = HTMLHelper::image(Uri::root() . 'images/com_sportsmanagement/database/teamplayers/shirt.php?text=' . $pnr . '#', $pnr, array('title' => $pnr));
 							}
 							else
 							{
@@ -518,8 +518,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
 							}
 							?>
                             <td class="" width="">
-                            <?php //echo $value; ?>
-                            <img src="components/com_sportsmanagement/assets/images/shirt_php8.php?text=<? echo $pnr; ?>&font_size=4&R=FF&G=FF&B=00">  
+                            <?php echo $value; ?>
+                            <!--<img src="components/com_sportsmanagement/assets/images/shirt_php8.php?text=<?php echo $pnr; ?>&font_size=4&R=FF&G=FF&B=00">-->
                             </td>
                             <?php
 						}

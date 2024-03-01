@@ -65,7 +65,7 @@ use Joomla\CMS\Factory;
                 <span class="jl_rosterperson_position_number">
 				<?php
 				$playerNumber = ($this->config['player_numbers_pictures'] && function_exists('imagecreatefrompng')) ?
-					HTMLHelper::image(Uri::root() . 'images/com_sportsmanagement/database/teamplayers/shirt.php?text=' . $pnr, $pnr, array('title' => $pnr))
+					HTMLHelper::image(Uri::root() . 'images/com_sportsmanagement/database/teamplayers/shirt.php?text=' . $pnr . '#', $pnr, array('title' => $pnr))
 					: $pnr;
 				echo $playerNumber;
 
