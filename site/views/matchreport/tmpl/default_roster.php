@@ -108,7 +108,7 @@ elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
 
 														if ($this->config['show_player_profile_link_alignment'] == 0)
 														{
-															echo HTMLHelper::link($player_link, $match_player . HTMLHelper::image(Uri::root() . 'images/com_sportsmanagement/database/teamplayers/shirt.php?text=' . $player->jerseynumber, $player->jerseynumber, array('title' => $player->jerseynumber)));
+															echo HTMLHelper::link($player_link, $match_player . HTMLHelper::image(Uri::root() . 'images/com_sportsmanagement/database/teamplayers/shirt.php?text=' . $player->jerseynumber . '#', $player->jerseynumber, array('title' => $player->jerseynumber)));
 														}
 													}
 												}
@@ -158,7 +158,7 @@ elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
 														if ($this->config['show_player_profile_link_alignment'] == 1)
 														{
 															echo '<br>';
-															echo HTMLHelper::link($player_link, $match_player . HTMLHelper::image(Uri::root() . 'images/com_sportsmanagement/database/teamplayers/shirt.php?text=' . $player->jerseynumber, $player->jerseynumber, array('title' => $player->jerseynumber)));
+															echo HTMLHelper::link($player_link, $match_player . HTMLHelper::image(Uri::root() . 'images/com_sportsmanagement/database/teamplayers/shirt.php?text=' . $player->jerseynumber . '#', $player->jerseynumber, array('title' => $player->jerseynumber)));
 														}
 														echo '&nbsp;';
 													}
@@ -228,7 +228,7 @@ elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
 														if ($this->config['show_player_profile_link_alignment'] == 1)
 														{
 															echo '<br>';
-															echo HTMLHelper::link($player_link, HTMLHelper::image(Uri::root() . 'images/com_sportsmanagement/database/teamplayers/shirt.php?text=' . $player->jerseynumber, $player->jerseynumber, array('title' => $player->jerseynumber)) . $match_player);
+															echo HTMLHelper::link($player_link, HTMLHelper::image(Uri::root() . 'images/com_sportsmanagement/database/teamplayers/shirt.php?text=' . $player->jerseynumber . '#', $player->jerseynumber, array('title' => $player->jerseynumber)) . $match_player);
 														}
 													}
 													else
@@ -247,7 +247,7 @@ elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
 														if ($this->config['show_player_profile_link_alignment'] == 1)
 														{
 															echo '<br>';
-															echo HTMLHelper::link($player_link, HTMLHelper::image(Uri::root() . 'images/com_sportsmanagement/database/teamplayers/shirt.php?text=' . $player->jerseynumber, $player->jerseynumber, array('title' => $player->jerseynumber)) . $match_player);
+															echo HTMLHelper::link($player_link, HTMLHelper::image(Uri::root() . 'images/com_sportsmanagement/database/teamplayers/shirt.php?text=' . $player->jerseynumber . '#', $player->jerseynumber, array('title' => $player->jerseynumber)) . $match_player);
 														}
 														echo '&nbsp;';
 													}
@@ -264,7 +264,7 @@ elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
 
 														if ($this->config['show_player_profile_link_alignment'] == 0)
 														{
-															echo HTMLHelper::link($player_link, HTMLHelper::image(Uri::root() . 'images/com_sportsmanagement/database/teamplayers/shirt.php?text=' . $player->jerseynumber, $player->jerseynumber, array('title' => $player->jerseynumber)) . $match_player);
+															echo HTMLHelper::link($player_link, HTMLHelper::image(Uri::root() . 'images/com_sportsmanagement/database/teamplayers/shirt.php?text=' . $player->jerseynumber . '#', $player->jerseynumber, array('title' => $player->jerseynumber)) . $match_player);
 														}
 
 													}

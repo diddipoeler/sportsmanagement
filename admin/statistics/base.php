@@ -986,6 +986,7 @@ is_array($stat_ids) ? true : false;
 
 		$query->from('#__sportsmanagement_match_statistic AS ms');
 		$query->join('INNER', '#__sportsmanagement_match AS m ON m.id = ms.match_id AND m.published = 1');
+		$query->join('INNER', '#__sportsmanagement_round AS r ON r.id = m.round_id AND r.published = 1');
 		$query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp ON tp.id = ms.teamplayer_id ');
 		$query->join('INNER', '#__sportsmanagement_project_position AS ppos ON ppos.id = tp.project_position_id ');
 		$query->join('INNER', '#__sportsmanagement_position AS pos ON ppos.position_id = pos.id ');
@@ -995,6 +996,7 @@ is_array($stat_ids) ? true : false;
 		$query->join('INNER', '#__sportsmanagement_project AS p ON pt.project_id = p.id AND p.id=' . $db->Quote($project_id));
 		$query->where('ms.teamplayer_id IN (' . implode(',', $quoted_tpids) . ')');
 		$query->where('p.published = 1');
+		$query->where('r.project_id = p.id');
 		$query->where('ms.statistic_id IN (' . implode(',', $quoted_sids) . ')');
 
 		if (isset($factors))
@@ -1103,6 +1105,7 @@ is_array($stat_ids) ? true : false;
 
 		$query->from('#__sportsmanagement_match_statistic AS ms');
 		$query->join('INNER', '#__sportsmanagement_match AS m ON m.id = ms.match_id AND m.published = 1');
+		$query->join('INNER', '#__sportsmanagement_round AS r ON r.id = m.round_id AND r.published = 1');
 		$query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp ON tp.id = ms.teamplayer_id ');
 		$query->join('INNER', '#__sportsmanagement_project_position AS ppos ON ppos.id = tp.project_position_id ');
 		$query->join('INNER', '#__sportsmanagement_position AS pos ON ppos.position_id = pos.id ');
@@ -1123,6 +1126,7 @@ is_array($stat_ids) ? true : false;
 			$query->where('p.id = ' . $project_id);
 			$query->where('pt.project_id = ' . $project_id);
 			$query->where('ppos.project_id = ' . $project_id);
+			$query->where('r.project_id = ' . $project_id);
 		}
 
 		if ($sports_type_id)
