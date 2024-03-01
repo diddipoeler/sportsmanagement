@@ -594,24 +594,27 @@ echo JHtml::_('bootstrap.addTab', 'myTab', 'name', Text::_('COM_SPORTSMANAGEMENT
 							</td>
 						</tr>	
 						<?php
-                        is_array($this->statgames['gesamt']) ? ksort($this->statgames['gesamt']) : '';
-
-						foreach ($this->statgames['gesamt'] as $key => $value)
+                        if (isset($this->statgames['gesamt']))
 						{
-							?>
-                            <tr>
-                                <td>
-									<?php
-									echo $key;
-									?>
-                                </td>
-                                <td>
-									<?php
-									echo $value;
-									?>
-                                </td>
-                            </tr>
-							<?php
+							is_array($this->statgames['gesamt']) ? ksort($this->statgames['gesamt']) : '';
+	
+							foreach ($this->statgames['gesamt'] as $key => $value)
+							{
+								?>
+								<tr>
+									<td>
+										<?php
+										echo $key;
+										?>
+									</td>
+									<td>
+										<?php
+										echo $value;
+										?>
+									</td>
+								</tr>
+								<?php
+							}
 						}
 						?>
 			</table>
@@ -628,24 +631,27 @@ echo JHtml::_('bootstrap.addTab', 'myTab', 'desc', $this->teams[0]->name . " " .
 							</td>
 						</tr>				
 						<?php
-                        is_array($this->statgames['home']) ? ksort($this->statgames['home']) : '';
-
-						foreach ($this->statgames['home'] as $key => $value)
+                        if (isset($this->statgames['home']))
 						{
-							?>
-                            <tr>
-                                <td>
-									<?php
-									echo $key;
-									?>
-                                </td>
-                                <td>
-									<?php
-									echo $value;
-									?>
-                                </td>
-                            </tr>
-							<?php
+							is_array($this->statgames['home']) ? ksort($this->statgames['home']) : '';
+	
+							foreach ($this->statgames['home'] as $key => $value)
+							{
+								?>
+								<tr>
+									<td>
+										<?php
+										echo $key;
+										?>
+									</td>
+									<td>
+										<?php
+										echo $value;
+										?>
+									</td>
+								</tr>
+								<?php
+							}
 						}
 						?>
 			</table>
@@ -663,24 +669,27 @@ echo JHtml::_('bootstrap.addTab', 'myTab', 'price', $this->teams[1]->name . " " 
 							</td>
 						</tr>				
 						<?php
-                        is_array($this->statgames['away']) ? ksort($this->statgames['away']) : '';
-
-						foreach ($this->statgames['away'] as $key => $value)
+                        if (isset($this->statgames['away']))
 						{
-							?>
-                            <tr>
-                                <td>
-									<?php
-									echo $key;
-									?>
-                                </td>
-                                <td>
-									<?php
-									echo $value;
-									?>
-                                </td>
-                            </tr>
-							<?php
+							is_array($this->statgames['away']) ? ksort($this->statgames['away']) : '';
+	
+							foreach ($this->statgames['away'] as $key => $value)
+							{
+								?>
+								<tr>
+									<td>
+										<?php
+										echo $key;
+										?>
+									</td>
+									<td>
+										<?php
+										echo $value;
+										?>
+									</td>
+								</tr>
+								<?php
+							}
 						}
 						?>
 			</table>
