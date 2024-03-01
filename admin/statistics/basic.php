@@ -205,11 +205,14 @@ class SMStatisticBasic extends SMStatistic
 		$query_core->join('INNER', '#__sportsmanagement_person AS p ON p.id = tp.person_id ');
 		$query_core->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
 		$query_core->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+		$query_core->join('INNER', '#__sportsmanagement_project AS pr ON pt.project_id = pr.id');
 		$query_core->join('INNER', '#__sportsmanagement_team AS t ON st.team_id = t.id');
 		$query_core->join('INNER', '#__sportsmanagement_match_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id = ' . $db->Quote($this->id));
 		$query_core->join('INNER', '#__sportsmanagement_match AS m ON m.id = ms.match_id AND m.published = 1');
+		$query_core->join('INNER', '#__sportsmanagement_round AS r ON r.id = m.round_id AND r.published = 1');
 		$query_core->where('pt.project_id = ' . $project_id);
 		$query_core->where('p.published = 1');
+		$query_core->where('r.project_id = ' . $project_id);
 
 		if ($division_id != 0)
 		{
