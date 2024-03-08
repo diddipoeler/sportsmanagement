@@ -138,7 +138,7 @@ class com_sportsmanagementInstallerScript
 	 * The release value would ideally be extracted from <version> in the manifest file,
 	 * but at preflight, the manifest file exists only in the uploaded temp folder.
 	 */
-	private $release = '4.18.00';
+	private $release = '4.19.00';
     private $old_release = '4.18.00';
 
 	// $language_update = '';
@@ -1144,13 +1144,11 @@ echo '<p>' . Text::_('Packages : ') . 'JComments 4.0' . ' installiert!</p>';
 					case 'jcemediabox';
 				if ($plugin_id)
 				{
-				// Plugin ist vorhanden
-				// wurde vielleicht schon aktualisiert
+				/** Plugin ist vorhanden wurde vielleicht schon aktualisiert */
 				}
 				else
 				{
-				// Plugin ist nicht vorhanden
-				// also installieren
+				/** Plugin ist nicht vorhanden also installieren */
 				$path = $src . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . $name . '_3';
 				$installer = new Installer;
 				$result = $installer->install($path);

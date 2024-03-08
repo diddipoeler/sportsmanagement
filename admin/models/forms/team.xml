@@ -83,25 +83,7 @@ filter="unset"
             description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_INFO_DESC"
             class="inputbox"/>
 
-        <!--
-                            addfieldpath="/administrator/components/com_sportsmanagement/elements"
-        -->
-
-        <!--      
-        <field  
-                                name="sports_type_id"
-                                type="sportstypes"
-                                default="0"
-                                size="1"
-                                label="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE"
-                                description="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE_DESC"
-                                required="false">
-                                <option
-                                        value="0">
-                                        COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SPORT_TYPE</option>
-                        </field>
-        -->
-
+        
         <field  
             name="sports_type_id"
             type="sportstypelist"
@@ -148,23 +130,6 @@ filter="unset"
                 COM_SPORTSMANAGEMENT_GLOBAL_SELECT_AGEGROUP</option>
         </field>
     
-        <!--		
-        <field
-                            addfieldpath="/administrator/components/com_sportsmanagement/elements"
-                                name="agegroup_id"
-                                type="agegroups"
-                                default="0"
-                                size="1"
-                                label="COM_SPORTSMANAGEMENT_GLOBAL_AGEGROUP_TYPE"
-                                description="COM_SPORTSMANAGEMENT_GLOBAL_AGEGROUP_TYPE_DESC"
-                                required="false">
-                                <option
-                                        value="0">
-                                        COM_SPORTSMANAGEMENT_GLOBAL_SELECT_AGEGROUP</option>
-                        </field>		
-        -->
-          	
-	
     
         <field
             name="merge_clubs"

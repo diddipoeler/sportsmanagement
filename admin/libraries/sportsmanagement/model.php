@@ -1288,10 +1288,13 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 							}
                             else
                             {
-                            $teamname = $data['teamvalue'][$value];  
+                            $teamname = $data['teamvalue'][$value];
+                            $season_teamname = $data['season_teamname'][$value];   
                             $object = new stdClass;
 				$object->id          = $result;
                 $object->teamname          = $teamname;
+                $object->season_teamname          = $season_teamname;
+                
 				$object->modified    = $this->jsmdate->toSql();
 				$object->modified_by = $this->jsmuser->get('id');
 				$resultupdate = $this->jsmdb->updateObject('#__sportsmanagement_season_team_id', $object, 'id');  

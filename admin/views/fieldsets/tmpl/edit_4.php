@@ -18,7 +18,7 @@ use Joomla\CMS\Factory;
 $templatesToLoad = array('footer','fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-// Include the component HTML helpers.
+/** Include the component HTML helpers. */
 HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
 // Jimport( 'joomla.html.html.tabs' );

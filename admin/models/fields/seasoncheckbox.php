@@ -121,7 +121,7 @@ class JFormFieldseasoncheckbox extends FormField
 			switch ( $targettable )
 			{
 			case 'season_team_id':
-			$query->select('season_id,teamname');
+			$query->select('season_id,teamname,season_teamname');
 			$query->from('#__sportsmanagement_' . $targettable);
 			break;
 			case 'season_person_id':
@@ -179,12 +179,32 @@ $html[] = '</td>';
           $html[]  = '<td>';
 			$html[] = '<label for="' . $this->id . $i . '"' . $class . '>' . Text::_($option->text) . '</label>';
 			$html[] = '</td>';
+            
+            switch ( $targettable )
+			{
+			case 'season_team_id':
+			$html[]  = '<td>';
+          $html[]  = '<input size="70" type="text" id="' . 'jform_teamvalue' . $i . '" name="' . 'jform[teamvalue]['.$option->value.']"' . ' value="'
+				. $this->teamvalue[$option->value]['teamname']. '"' .  '/>';
+          $html[] = '</td>';
+			break;
+			case 'season_person_id':
+			
+			break;
+			}
           /**
           $html[]  = '<td>';
           $html[]  = '<input type="text" id="' . 'jform_teamvalue' . $i . '" name="' . 'jform[teamvalue]['.$option->value.']"' . ' value="'
 				. $this->teamvalue[$option->value]['teamname']. '"' .  '/>';
           $html[] = '</td>';
 			*/
+            
+            /**
+            $html[]  = '<td>';
+          $html[]  = '<input type="text" id="' . 'jform_teamvalue2' . $i . '" name="' . 'jform[teamvalue2]['.$option->value.']"' . ' value="'
+				. $this->teamvalue2[$option->value]['season_teamname']. '"' .  '/>';
+          $html[] = '</td>';
+          */
 switch ( $targettable )
 {
 case 'season_person_id':

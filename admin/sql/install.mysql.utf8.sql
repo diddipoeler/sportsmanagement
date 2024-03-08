@@ -1175,6 +1175,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_season_team_id` (
   `cr_logo_big` varchar(255) DEFAULT NULL,
   `kaderlink` VARCHAR( 250 ) NULL DEFAULT NULL,
   `teamname` VARCHAR( 75 ) NULL DEFAULT NULL,
+  `season_teamname` VARCHAR( 200 ) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   UNIQUE KEY `combi` (`team_id`,`season_id`) ,
   KEY `team_id` (`team_id`),
