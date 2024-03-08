@@ -776,6 +776,7 @@ class JSMRanking extends \stdClass
 		$query->select('t.name, t.id as teamid, pt.neg_points_finally');
 		$query->select('pt.use_finally, pt.points_finally,pt.matches_finally,pt.won_finally,pt.draws_finally,pt.lost_finally');
 		$query->select('pt.homegoals_finally, pt.guestgoals_finally,pt.diffgoals_finally,pt.penalty_points,pt.finaltablerank');
+        $query->select('st1.teamname,st1.season_teamname');
 		$query->select('CONCAT_WS(\':\',pt.id,t.alias) AS ptid_slug');
 		$query->from('#__sportsmanagement_project_team AS pt ');
 		$query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.id = pt.team_id');
@@ -813,6 +814,7 @@ try{
 			$query->select('t.name, t.id as teamid, pt.neg_points_finally');
 			$query->select('ptd.use_finally, ptd.points_finally,ptd.matches_finally,ptd.won_finally,ptd.draws_finally,ptd.lost_finally');
 			$query->select('ptd.homegoals_finally, ptd.guestgoals_finally,ptd.diffgoals_finally,ptd.penalty_points,ptd.finaltablerank');
+            $query->select('st1.teamname,st1.season_teamname');
 			$query->select('CONCAT_WS(\':\',pt.id,t.alias) AS ptid_slug');
 			$query->from('#__sportsmanagement_project_team AS pt ');
 			$query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.id = pt.team_id');
@@ -842,6 +844,7 @@ try{
 			$query->select('t.name, t.id as teamid, pt.neg_points_finally');
 			$query->select('pt.use_finally, pt.points_finally,pt.matches_finally,pt.won_finally,pt.draws_finally,pt.lost_finally');
 			$query->select('pt.homegoals_finally, pt.guestgoals_finally,pt.diffgoals_finally,pt.penalty_points,pt.finaltablerank');
+            $query->select('st1.teamname,st1.season_teamname');
 			$query->select('CONCAT_WS(\':\',pt.id,t.alias) AS ptid_slug');
 			$query->from('#__sportsmanagement_project_team AS pt ');
 			$query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.id = pt.team_id');
@@ -895,6 +898,9 @@ try{
 			$t->setStartpoints($r->start_points);
 			$t->setNegpoints($r->neg_points_finally);
 			$t->setName($r->name);
+            
+            $t->teamname        = $r->teamname;
+            $t->season_teamname        = $r->season_teamname;
 
 			/** New for is_in_score */
 			$t->setIs_In_Score($r->is_in_score);
@@ -1884,6 +1890,10 @@ class JSMRankingTeamClass extends \stdClass
 	var $_divisionid = 0;
 	var $_startpoints = 0;
 	var $_name = null;
+    
+    var $teamname = null;
+    var $season_teamname = null;
+            
 	var $cnt_matches = 0;
 	var $cnt_won = 0;
 	var $cnt_draw = 0;
