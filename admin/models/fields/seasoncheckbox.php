@@ -155,7 +155,14 @@ $this->value = '';
 		$html = array();
 		$class = $this->element['class'] ? ' class="checkboxes ' . (string) $this->element['class'] . '"' : ' class="checkboxes"';
 		$html[] = '<fieldset id="' . $this->id . '"' . $class . '>';
-		$html[] = '<table>';
+		$html[] = '<table class="table-striped">';
+        $html[]  = '<thead><tr>';
+        $html[]  = '<th scope="col">#</th>';
+      $html[]  = '<th scope="col">Saison</th>';
+      $html[]  = '<th scope="col">1 Teamname</th>';
+      $html[]  = '<th scope="col">2 Teamname</th>';
+        $html[]  = '</tr></thead>';
+        
 
 		foreach ($options as $i => $option)
 		{
