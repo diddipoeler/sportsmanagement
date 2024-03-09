@@ -222,7 +222,7 @@ foreach ($current as $ptid => $team)
 	$isFavTeam               = in_array($team->team->id, explode(",", $this->project->fav_team));
 	$config['highlight_fav'] = $isFavTeam;
     
-    $team->team = $team->teamname != '' ? $team->teamname : $team->team;
+    $team->team->name = !empty($team->teamname) ? $team->teamname : $team->team->name;
     //$team->team = $team->season_teamname != '' ? $team->season_teamname : $team->team;
     
 	echo sportsmanagementHelper::formatTeamName($team->team, $this->teamrow . $team->team->id, $config, $isFavTeam, null, $this->cfg_which_database);
