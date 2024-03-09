@@ -187,6 +187,13 @@ $html[] = '</td>';
           $html[]  = '<input size="70" type="text" id="' . 'jform_teamvalue' . $i . '" name="' . 'jform[teamvalue]['.$option->value.']"' . ' value="'
 				. $this->teamvalue[$option->value]['teamname']. '"' .  '/>';
           $html[] = '</td>';
+          
+          
+           $html[]  = '<td>';
+          $html[]  = '<input size="70" type="text" id="' . 'jform_season_teamname' . $i . '" name="' . 'jform[season_teamname]['.$option->value.']"' . ' value="'
+				. $this->teamvalue[$option->value]['season_teamname']. '"' .  '/>';
+          $html[] = '</td>';
+          
 			break;
 			case 'season_person_id':
 			
