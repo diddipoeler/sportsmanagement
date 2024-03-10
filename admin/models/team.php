@@ -131,6 +131,7 @@ public function copysave()
 	 */
 	function getTeam($team_id = 0, $pro_team_id = 0)
 	{
+	   $result = array();
 		//	   $app = Factory::getApplication();
 		//        $option = Factory::getApplication()->input->getCmd('option');
 		//		$db		= Factory::getDbo();
@@ -147,6 +148,7 @@ public function copysave()
 		}
 		else
 		{
+		  $this->jsmquery->select('st.logo_big');
 			$this->jsmquery->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
 			$this->jsmquery->where('st.id = ' . $pro_team_id);
 		}
@@ -162,7 +164,7 @@ public function copysave()
 			$msg  = $e->getMessage(); // Returns "Normally you would have other code...
 			$code = $e->getCode(); // Returns '500';
 			$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
-			$result = false;
+			//$result = false;
 		}
 
 		return $result;
