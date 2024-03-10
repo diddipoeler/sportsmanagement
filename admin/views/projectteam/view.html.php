@@ -14,6 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Table;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewProjectteam
@@ -49,6 +50,14 @@ class sportsmanagementViewProjectteam extends sportsmanagementView
 
 		$season_team = Table::getInstance('seasonteam', 'sportsmanagementTable');
 		$season_team->load($team_id);
+        
+      //Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' season_team <pre>'.print_r($season_team->team_id,true).'</pre>'  ), '');
+      //Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' season_team <pre>'.print_r($season_team->logo_big,true).'</pre>'  ), '');
+      
+      if ( $season_team->logo_big )
+      {
+        $this->item->logo_big = $season_team->logo_big;
+      }
 
 		$mdlTeam      = BaseDatabaseModel::getInstance('Team', 'sportsmanagementModel');
 		$this->project_team = $mdlTeam->getTeam($season_team->team_id, 0);
@@ -94,6 +103,8 @@ class sportsmanagementViewProjectteam extends sportsmanagementView
 		$this->lists        = $lists;
 		//$this->project_team = $project_team;
 		//$this->trainingData = $trainingdata;
+        
+        //Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' item <pre>'.print_r($this->item,true).'</pre>'  ), '');
 
 	}
 
