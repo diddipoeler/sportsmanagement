@@ -57,6 +57,7 @@ class sportsmanagementViewProjectteam extends sportsmanagementView
       if ( $season_team->logo_big )
       {
         $this->item->logo_big = $season_team->logo_big;
+        $this->form->setValue('logo_big', null, $season_team->logo_big);
       }
 
 		$mdlTeam      = BaseDatabaseModel::getInstance('Team', 'sportsmanagementModel');
