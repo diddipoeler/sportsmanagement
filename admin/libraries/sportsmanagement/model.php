@@ -363,6 +363,7 @@ if ( $config->get('debug') )
 				$object = new stdClass;
 				$object->id          = (int) $post['jform']['team_id'];
 				$object->picture     = $data['picture'];
+                $object->logo_big     = $data['logo_big'];
 				$object->modified    = $this->jsmdate->toSql();
 				$object->modified_by = $this->jsmuser->get('id');
 				$result = Factory::getDbo()->updateObject('#__sportsmanagement_season_team_id', $object, 'id');
@@ -1591,6 +1592,7 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 				break;
 			case 'projectteam':
 				$form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
+                $form->setFieldAttribute('logo_big', 'type', $cfg_which_media_tool);
 				$form->setFieldAttribute('trikot_home', 'type', $cfg_which_media_tool);
 				$form->setFieldAttribute('trikot_away', 'type', $cfg_which_media_tool);
 				break;
