@@ -317,6 +317,7 @@ if ( $config->get('debug') )
 				if (array_key_exists('copy_jform', $post))
 				{
 					$data['picture']     = $post['copy_jform']['picture'];
+                    $data['logo_big']     = $post['copy_jform']['logo_big'];
 					$data['trikot_home'] = $post['copy_jform']['trikot_home'];
 					$data['trikot_away'] = $post['copy_jform']['trikot_away'];
 				}
@@ -324,6 +325,11 @@ if ( $config->get('debug') )
 				if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['picture']))
 				{
 					$data['picture'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['picture']);
+				}
+                
+                if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['logo_big']))
+				{
+					$data['logo_big'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['logo_big']);
 				}
 
 				if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['trikot_home']))
