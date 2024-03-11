@@ -467,6 +467,14 @@ filter="unset"
         
     </fieldset>	
 
+	<fieldset 
+        name="clublogohistory"
+        label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_HISTORY"
+        description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_HISTORY_DESC"
+    >
+
+	</fieldset>	
+	
     <fieldset 
         name="extended"
         label="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
