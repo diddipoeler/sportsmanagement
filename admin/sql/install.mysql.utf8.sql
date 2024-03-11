@@ -2282,3 +2282,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_log_entries` (
   `category` varchar(255) DEFAULT NULL,
   KEY `idx_category_date_priority` (`category`,`date`,`priority`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+
+
