@@ -297,7 +297,13 @@ showon="show_info:1[AND]show_image:1"
   </fieldset>
 	
 	
+<fieldset name="playgroundnotic"
+  label="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_NOTIZ"
+  description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_NOTIZ_DESC">
+  
+  </fieldset>
 
+	
 
   	
 </form>
