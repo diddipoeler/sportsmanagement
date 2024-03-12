@@ -942,8 +942,8 @@ switch ( $row_sports_type )
 				$profile->name_visitors  = $post['name_visitors'][$key];
 				$profile->notes  = $post['notes'][$key];
 				$profile->max_visitors   = $post['max_visitors'][$key];
-                $profile->timestamp_von = sportsmanagementHelper::getTimestamp($post['date_von'][$key]);
-                $profile->timestamp_bis = sportsmanagementHelper::getTimestamp($post['date_bis'][$key]);
+                $profile->timestamp_von = sportsmanagementHelper::getTimestamp($profile->date_von);
+                $profile->timestamp_bis = sportsmanagementHelper::getTimestamp($profile->date_bis);
                 $profile->modified         = $this->jsmdate->toSql();
 		        $profile->modified_by      = $this->jsmuser->get('id');
                 
