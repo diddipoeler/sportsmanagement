@@ -73,6 +73,8 @@ var input = jQuery('<input>');
 input.attr('type', 'text');          
 input.attr('id', 'name_visitors');
 input.attr('name', 'name_visitors[]');
+input.attr('value', '<?php echo $this->namevisitorsoptions;?>');
+        
 column4.append(input);          
 row.append(column4);            
           
