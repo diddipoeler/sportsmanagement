@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Environment\Browser;
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * sportsmanagementViewPlayground
@@ -63,6 +64,15 @@ class sportsmanagementViewPlayground extends sportsmanagementView
         {
         $this->playgroundnotic = $this->model->getPlaygroundNotic($this->item->id);    
         }
+
+		$daysOfWeek = array('NAME' => Text::_('NAME'),
+			                    'VISITORS' => Text::_('VISITORS'));
+			$dwOptions  = array();
+
+			foreach ($daysOfWeek AS $key => $value)
+			{
+				$this->namevisitorsoptions[] = HTMLHelper::_('select.option', $key, $value);
+			}
 
 	}
 
