@@ -1,12 +1,12 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für Sportarten
+ * SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage fieldsets
  * @file       default_clublogos.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: Â© 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -16,7 +16,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 
-echo 'Hier können Sie die Wappen zu den Vereinen hinterlegen. <br>';
+echo 'Hier kÃ¶nnen Sie die Wappen zu den Vereinen hinterlegen. <br>';
 
 ?>
 <script type="text/javascript">
@@ -54,7 +54,7 @@ body.append(row);
          }   
 </script>            
 
-<input type="button" value="Neues Wappen hinzufügen" onclick="addRows()" />
+<input type="button" value="Neues Wappen hinzufÃ¼gen" onclick="addRows()" />
 
 <table class="table table-striped" id="clublogos">
   <thead>
