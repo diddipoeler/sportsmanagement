@@ -33,9 +33,11 @@ var column = jQuery('<td>');
 // Create a new image element
 var image = jQuery('<input>');
 image.attr('type', 'text');
-image.attr('id', 'id');          
+image.attr('id', 'plnotic_id');          
 image.attr('type', 'text');
-image.attr('disabled', 'disabled');   
+image.attr('name', 'plnotic_id[]');
+image.attr('disabled', 'disabled');
+image.attr('value', 'NEW');   
 
 // Append the image to the column element
 column.append(image);
