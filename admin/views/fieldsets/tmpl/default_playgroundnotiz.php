@@ -31,9 +31,11 @@ var row = jQuery('<tr>');
 // Create a new column element
 var column = jQuery('<td>');
 // Create a new image element
-var image = jQuery('<img>');
-image.attr('src', 'img.png');
-image.text('Image cell');
+var image = jQuery('<input>');
+image.attr('type', 'text');
+image.attr('id', 'id');          
+image.attr('type', 'text');
+image.attr('disabled', 'disabled');   
 
 // Append the image to the column element
 column.append(image);
@@ -45,6 +47,7 @@ var input = jQuery('<input>');
 input.attr('type', 'text');          
 input.attr('id', 'playground_id');
 input.attr('name', 'playground_id');
+input.attr('disabled', 'disabled');          
 input.attr('value', '<?php echo $this->item->id; ?>');          
 column1.append(input);          
 row.append(column1); 
@@ -88,6 +91,7 @@ var input = jQuery('<input>');
 input.attr('type', 'text');          
 input.attr('id', 'max_visitors');
 input.attr('name', 'max_visitors');
+input.attr('size', '10');          
 column6.append(input);          
 row.append(column6); 
           
