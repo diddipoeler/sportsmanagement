@@ -28,7 +28,7 @@ class sportsmanagementModelPlayground extends JSMModelAdmin
 	static $cfg_which_database = 0;
 
 
-	function getPlaygroundNotic($playground__id)
+	function getPlaygroundNotic($playground_id)
 	{
 		$app    = Factory::getApplication();
 // Get a db connection.
@@ -38,7 +38,7 @@ $result    = array();
 
 $query->select('*');
 $query->from('#__sportsmanagement_playground_details');
-$query->where('id = ' . $playground__id);
+$query->where('playground_id = ' . $playground_id);
 $db->setQuery($query);
 try
 			{
