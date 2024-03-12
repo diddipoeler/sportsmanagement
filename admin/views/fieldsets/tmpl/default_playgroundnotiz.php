@@ -85,11 +85,11 @@ input.attr('name', 'name_visitors[]');
         
 var inputoption = jQuery('<option>');
 inputoption.attr('value', 'NAME');          
-inputoption.attr('text', 'NAME');          
+inputoption.prop('text', 'NAME');          
 input.append(inputoption);           
 var inputoption = jQuery('<option>');
 inputoption.attr('value', 'VISITORS');          
-inputoption.attr('text', 'VISITORS');          
+inputoption.prop('text', 'VISITORS');          
 input.append(inputoption);          
           
           
