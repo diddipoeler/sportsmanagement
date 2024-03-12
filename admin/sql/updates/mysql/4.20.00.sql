@@ -1,7 +1,7 @@
 --
 -- Tabellenstruktur für Tabelle `#__sportsmanagement_playground_details`
 --
-CREATE TABLE `#__sportsmanagement_playground_details` (
+CREATE TABLE IF NOT EXISTS `#__sportsmanagement_playground_details` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
   `playground_id` int(11) NOT NULL DEFAULT 0,
   `date_von` date NOT NULL DEFAULT '0000-00-00',
@@ -28,7 +28,7 @@ CREATE TABLE `#__sportsmanagement_playground_details` (
 --
 -- Tabellenstruktur für Tabelle `#__sportsmanagement_club_logos`
 --
-CREATE TABLE `#__sportsmanagement_club_logos` (
+CREATE TABLE IF NOT EXISTS `#__sportsmanagement_club_logos` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
   `club_id` int(11) NOT NULL DEFAULT 0,
   `season_id` int(11) NOT NULL DEFAULT 1,
