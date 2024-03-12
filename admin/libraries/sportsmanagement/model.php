@@ -931,6 +931,28 @@ switch ( $row_sports_type )
 				{
 					$data['max_visitors'] = 0;
 				}
+                
+                /** informationen zum playground */
+                foreach ( $post['date_von'] as $key => $value )
+                {
+                $profile             = new stdClass;
+				$profile->playground_id = $data['id'];
+				$profile->date_von       = sportsmanagementHelper::convertDate($post['date_von'][$key], 0) ;
+				$profile->date_bis      = sportsmanagementHelper::convertDate($post['date_bis'][$key], 0) ;
+				$profile->name_visitors  = $post['name_visitors'][$key];
+				$profile->notes  = $post['notes'][$key];
+				$profile->max_visitors   = $post['max_visitors'][$key];
+                $profile->timestamp_von = sportsmanagementHelper::getTimestamp($post['date_von']);
+                $profile->timestamp_bis = sportsmanagementHelper::getTimestamp($post['date_bis']);
+                $profile->modified         = $this->jsmdate->toSql();
+		        $profile->modified_by      = $this->jsmuser->get('id');
+                
+				$insertresult = $this->jsmdb->insertObject('#__sportsmanagement_playground_details', $profile);    
+                    
+                    
+                }
+                
+                
 				break;
 
 			/** projekt */
