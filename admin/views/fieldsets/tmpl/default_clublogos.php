@@ -15,3 +15,11 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
+
+echo 'Hier können Sie die Wappen zu den Vereinen hinterlegen. <br>';
+
+?>
+
+
+<input type="button" value="Neues Wappen hinzufügen" onclick="addRows()" />
+
