@@ -27,6 +27,37 @@ class sportsmanagementModelPlayground extends JSMModelAdmin
 	static $playground = null;
 	static $cfg_which_database = 0;
 
+
+	function getPlaygroundNotic($playground__id)
+	{
+		$app    = Factory::getApplication();
+// Get a db connection.
+$db    = Factory::getDbo();
+$query = $db->getQuery(true);
+$result    = array();
+
+$query->select('*');
+$query->from('#__sportsmanagement_playground_details');
+$query->where('id = ' . $playground__id);
+$db->setQuery($query);
+try
+			{
+				$result = $db->loadObjectList();
+				$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+			}
+			catch (Exception $e)
+			{
+				$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+				$msg  = $e->getMessage(); // Returns "Normally you would have other code...
+				$code = $e->getCode(); // Returns '500';
+				$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
+				//$result = false;
+			}		
+
+		
+return $result;
+}
+
 	/**
 	 * sportsmanagementModelplayground::getAddressString()
 	 *
@@ -215,7 +246,7 @@ class sportsmanagementModelPlayground extends JSMModelAdmin
 				$msg  = $e->getMessage(); // Returns "Normally you would have other code...
 				$code = $e->getCode(); // Returns '500';
 				$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
-				$result = false;
+				
 			}
 		}
 
