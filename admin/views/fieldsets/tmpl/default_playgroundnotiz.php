@@ -56,7 +56,12 @@ var column2 = jQuery('<td>');
 var input = jQuery('<input>');          
 input.attr('type', 'text');          
 input.attr('id', 'date_von');
+input.attr('value', '00-00-0000');
 input.attr('name', 'date_von[]');
+//input.attr('class', 'form-control datetimepicker-input');          
+//input.attr('data-toggle', 'datetimepicker');
+//input.attr('data-target', '#date_von<?php echo $this->item->id; ?>');
+          
 column2.append(input);          
 row.append(column2);          
 
@@ -64,6 +69,7 @@ var column3 = jQuery('<td>');
 var input = jQuery('<input>');          
 input.attr('type', 'text');          
 input.attr('id', 'date_bis');
+input.attr('value', '00-00-0000');
 input.attr('name', 'date_bis[]');
 column3.append(input);          
 row.append(column3);                    
@@ -73,7 +79,7 @@ var input = jQuery('<input>');
 input.attr('type', 'text');          
 input.attr('id', 'name_visitors');
 input.attr('name', 'name_visitors[]');
-input.attr('value', '<?php echo $this->namevisitorsoptions;?>');
+input.attr('value', '<?php echo ''; ?>');
         
 column4.append(input);          
 row.append(column4);            
@@ -101,6 +107,23 @@ row.append(column6);
 // Append the row to the table body
 body.append(row);
         }
+  
+  
+jQuery(function ($) {
+				$('#date_von<?php echo $this->item->id; ?>').datetimepicker(
+                {
+					format: 'DD-MM-YYYY',
+					locale: <?php echo "'" . $currentLanguage . "'"; ?>
+                }
+                );
+		$("#date_von<?php echo $this->item->id; ?>").on("change.datetimepicker", ({date, oldDate}) => {
+              console.log("New date", date);
+              console.log("Old date", oldDate);
+			  //document.getElementById('cb<?php echo $this->count_i; ?>').checked=true
+              //alert("Changed date")
+      })    
+            });
+  
   
         </script>
 
