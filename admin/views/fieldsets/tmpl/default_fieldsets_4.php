@@ -26,6 +26,10 @@ switch ($this->fieldset)
 	case 'playgroundnotic';
 	echo $this->loadTemplate('playgroundnotiz');
 	break;
+    
+    case 'clublogohistory';
+	echo $this->loadTemplate('clublogos');
+	break;
 	
 	/**
 	 *
