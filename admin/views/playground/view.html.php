@@ -59,6 +59,11 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 		$this->document->addScript(Uri::base() . 'components/' . $this->option . '/assets/js/editgeocode.js');
 		}
 
+	if ( $this->item->id )
+        {
+        $this->playgroundnotic = $this->model->getPlaygroundNotic($this->item->id);    
+        }
+
 	}
 
 
