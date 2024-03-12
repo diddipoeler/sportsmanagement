@@ -19,7 +19,7 @@ use Joomla\CMS\Component\ComponentHelper;
 HTMLHelper::_('bootstrap.framework');
 jimport('joomla.html.html.bootstrap');
 
-$version           = '4.12.00';
+$version           = '4.20.00';
 
 $minor = 0;
 $major = 0;
@@ -27,7 +27,7 @@ $build = 0;
 $revision = '';
 
 
-$updateFileDate    = '2021-03-12';
+$updateFileDate    = '2024-03-11';
 $updateFileTime    = '00:05';
 $updateDescription = '<span style="color:orange">'.Text::_('COM_SPORTSMANAGEMENT_GLOBAL_UPDATES_DB_TABLES').'</span>';
 $excludeFile       = 'false';
