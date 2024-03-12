@@ -23,6 +23,10 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' fieldset -> ' . $this->fieldset
 
 switch ($this->fieldset)
 {
+	case 'playgroundnotic';
+	echo $this->loadTemplate('playgroundnotiz');
+	break;
+	
 	/**
 	 *
 	 * für die spielfeldpositionen
