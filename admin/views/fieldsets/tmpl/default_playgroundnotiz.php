@@ -75,13 +75,33 @@ column3.append(input);
 row.append(column3);                    
           
 var column4 = jQuery('<td>');          
-var input = jQuery('<input>');          
-input.attr('type', 'text');          
-input.attr('id', 'name_visitors');
-input.attr('name', 'name_visitors[]');
-input.attr('value', '<?php echo ''; ?>');
+//var input = jQuery('<input>');          
+//input.attr('type', 'text');          
+//input.attr('id', 'name_visitors');
+//input.attr('name', 'name_visitors[]');
+//input.attr('value', '<?php echo ''; ?>');
+var input = jQuery('<select>');          
+input.attr('name', 'name_visitors[]');          
         
-column4.append(input);          
+var inputoption = jQuery('<option>');
+inputoption.attr('value', 'NAME');          
+inputoption.attr('text', 'NAME');          
+input.append(inputoption);           
+var inputoption = jQuery('<option>');
+inputoption.attr('value', 'VISITORS');          
+inputoption.attr('text', 'VISITORS');          
+input.append(inputoption);          
+          
+          
+          
+          
+//column4.append(input);  
+//var inputoption = jQuery('<option>');           
+//inputoption.attr('value', 'NAME');
+          
+//input.append(inputoption);           
+          
+column4.append(input);            
 row.append(column4);            
           
           
