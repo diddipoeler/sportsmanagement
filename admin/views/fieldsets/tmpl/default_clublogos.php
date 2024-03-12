@@ -24,7 +24,7 @@ echo 'Hier können Sie die Wappen zu den Vereinen hinterlegen. <br>';
         {
 
  // Reference to the table body
-var body = jQuery("#playgroundnotic").find('tbody');
+var body = jQuery("#clublogos").find('tbody');
 // Create a new row element
 var row = jQuery('<tr>');
 // Create a new column element
