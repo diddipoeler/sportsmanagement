@@ -29,7 +29,8 @@
             label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER"
             description="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER"
             required="false"
-       onchange="this.form.submit();"
+      multiple="true" 
+		 size="10"
         >
             <option value="">COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER</option>
         </field>
