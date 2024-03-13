@@ -791,7 +791,7 @@ switch ( $row_sports_type )
             }
 
 /** historische logos */
-                foreach ( $post['season_history'] as $key => $value )
+                foreach ( $post['season_history'] as $key => $value ) if ( $value )
                 {
                 $profile             = new stdClass;
 				$profile->club_id = $data['id'];
