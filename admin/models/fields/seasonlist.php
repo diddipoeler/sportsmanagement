@@ -105,6 +105,9 @@ break;
 case 'project':
 $attribs .= 'onchange="javascript:setseasonname();"';
 break;
+case 'club':
+$attribs .= ' multiple="true"';
+break;	
 default:
 $attribs .= '';
 break;
