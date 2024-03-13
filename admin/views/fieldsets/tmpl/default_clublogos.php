@@ -15,8 +15,24 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\Form\Form;
 
 echo 'Hier können Sie die Wappen zu den Vereinen hinterlegen. <br>';
+
+
+//echo JPATH_COMPONENT.'<br>';
+
+
+$myForm = new Form('clublogohistory');
+$myForm->addFormPath(JPATH_COMPONENT . '/models/forms');
+$myForm->loadFile('clublogohistory', false);
+
+
+//echo '<pre>'.print_r($myForm,true).'</pre>';
+
+echo $myForm->renderFieldset('picture');
+
+
 
 ?>
 <script type="text/javascript">
