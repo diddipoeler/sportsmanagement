@@ -789,7 +789,24 @@ switch ( $row_sports_type )
             {
             $data['founded_year'] = 'kein';
             }
-				
+
+/** historische logos */
+                foreach ( $post['season_history'] as $key => $value )
+                {
+                $profile             = new stdClass;
+				$profile->club_id = $data['id'];
+				$profile->season_id       = $value;
+				$profile->logo_big   = $post['logo_big_history'];
+                $profile->modified         = $this->jsmdate->toSql();
+		        $profile->modified_by      = $this->jsmuser->get('id');
+                
+				$insertresult = $this->jsmdb->insertObject('#__sportsmanagement_club_logos', $profile);    
+                    
+                    
+                }
+
+
+			
 				break;
                 case 'jlextfederation':
                 /** wurden jahre mitgegeben ? */
