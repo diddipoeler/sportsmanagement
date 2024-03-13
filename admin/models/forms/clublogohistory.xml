@@ -23,7 +23,7 @@
         />	
 
 	 <field
-            name="season"
+            name="season_history"
             type="seasonlist"
 			class="form-select select2-container"
             label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER"
