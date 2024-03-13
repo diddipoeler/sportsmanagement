@@ -22,7 +22,18 @@
             directory="images/com_sportsmanagement/database/clubs/large"
         />	
 
-	 <field
+	
+	 
+ </fieldset> 
+
+  <fieldset 
+        name="seasons"
+        label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO"
+        description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_DESC"
+    >
+  
+    
+     <field
             name="season_history"
             type="seasonlist"
 			class="form-select select2-container"
@@ -34,8 +45,12 @@
         >
             <option value="">COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER</option>
         </field>
-	 
- </fieldset> 
-
+    
+    
+    
+    
+    
+    
+  </fieldset> 
   
 </form>
