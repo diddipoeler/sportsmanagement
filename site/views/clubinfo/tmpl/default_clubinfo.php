@@ -423,13 +423,36 @@ echo $this->loadTemplate('jsm_notes');
 	<?php			
 		}			
 
-
-foreach ( $this->logohistory_detail as $key => $value )
+?>
+<table class="table">
+	<?php			
+foreach ( $this->logohistory_detail as $key => $value )					
 {
-echo HTMLHelper::image($key, 'name1', array('title' => 'name2', 'width' => 50 )).'-'.implode(",", $value);    
-    
-}		
-        
+?>
+<tr>
+<td>
+	<?php			
+echo HTMLHelper::image($key, 'name1', array('title' => 'name2', 'width' => 50 ));					
+
+?>
+</td>
+
+<td>
+	<?php			
+echo implode(",", $value); 					
+
+?>
+</td>
+
+</tr>
+	<?php			
+					
+}
+?>
+</table>
+<?php
+
+      
         	
 		?>      
   
