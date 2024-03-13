@@ -45,7 +45,7 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
         $mdlClub = BaseDatabaseModel::getInstance("club", "sportsmanagementModel");
         if ( $this->club->id )
 {
-$this->logohistory = $mdlClubl->getlogohistory($this->club->id,0);
+$this->logohistory = $mdlClub->getlogohistory($this->club->id,0);
 
 foreach ( $this->logohistory as $key => $value )
 {
