@@ -80,10 +80,10 @@ body.append(row);
     id
     </th>
     <th>
-    club_id
+    seasonname
     </th>
     <th>
-    picture
+    logo_big
     </th>
     
   </tr>
@@ -92,8 +92,8 @@ body.append(row);
 <tbody>
   
 <?php  
-/**
-  foreach( $this->playgroundnotic as $key => $value )
+
+  foreach( $this->logohistory as $key => $value )
   {
     ?>
   <tr>
@@ -105,44 +105,27 @@ body.append(row);
 
      <td>
     <?php
-    echo $value->playground_id;
+    echo $value->seasonname;
     ?>
     </td>
 
      <td>
     <?php
-    //echo $value->date_von;
-    echo sportsmanagementHelper::convertDate($value->date_von, 1)
+    echo $value->logo_big;
+   
     ?>
     </td>
 
-     <td>
-    <?php
-    //echo $value->date_bis;
-    echo sportsmanagementHelper::convertDate($value->date_bis, 1)
-    ?>
-    </td>
-     <td>
-    <?php
-    echo $value->name_visitors;
-    ?>
-    </td>
-     <td>
-    <?php
-    echo $value->notes;
-    ?>
-    </td>
-     <td>
-    <?php
-    echo $value->max_visitors;
-    ?>
-    </td>
+   
+    
+    
+    
   
   </tr>
  
     <?php  
   }
-  */
+  
   
   ?>
   
