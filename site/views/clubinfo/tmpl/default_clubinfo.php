@@ -426,7 +426,7 @@ echo $this->loadTemplate('jsm_notes');
 
 foreach ( $this->logohistory_detail as $key => $value )
 {
-echo $key.''.implode(",", $value);    
+echo HTMLHelper::image($key, 'name1', array('title' => 'name2', 'width' => 50 )).'-'.implode(",", $value);    
     
 }		
         
