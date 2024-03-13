@@ -40,6 +40,44 @@ class sportsmanagementModelclub extends JSMModelAdmin
 
 	}
 
+
+
+function getlogohistory($club_id = 0,$season_id = 0)
+	{
+$app    = Factory::getApplication();
+// Get a db connection.
+$db    = Factory::getDbo();
+$query = $db->getQuery(true);
+$result    = array();
+
+$query->select('cl.*,se.name as seasonname');
+$query->from('#__sportsmanagement_club_logos as cl');
+$query->join('INNER', '#__sportsmanagement_season AS se ON se.id = cl.season_id');		
+$query->where('cl.club_id = ' . $club_id);
+if ( $season_id )
+{
+$query->where('se.id = ' . $season_id);
+}
+$db->setQuery($query);
+try
+			{
+				$result = $db->loadObjectList();
+				$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+			}
+			catch (Exception $e)
+			{
+				$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+				$msg  = $e->getMessage(); // Returns "Normally you would have other code...
+				$code = $e->getCode(); // Returns '500';
+				$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
+				//$result = false;
+			}		
+
+		
+return $result;
+
+
+	}
 	
 	function getuserextrafieldvalue($club_id = 0,$fieldtext = '' )
 	{
