@@ -69,8 +69,9 @@ row.append(column);
 body.append(row);            
          }   
 </script>            
-
+<!--
 <input type="button" value="Neues Wappen hinzufügen" onclick="addRows()" />
+-->
 
 <table class="table table-striped" id="clublogos">
   <thead>
@@ -111,8 +112,8 @@ body.append(row);
 
      <td>
     <?php
-    echo $value->logo_big;
-   
+    //echo $value->logo_big;
+   echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_big' . $value->id, Uri::root() . $value->logo_big, 'Logo', '20', Uri::root() . $value->logo_big);
     ?>
     </td>
 
