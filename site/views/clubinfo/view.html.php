@@ -16,6 +16,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementViewClubInfo
@@ -37,9 +38,21 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
 	function init()
 	{
 	   
+	   $this->logohistory_detail = array();
 		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('frontend', sportsmanagementModelClubInfo::$cfg_which_database,Factory::getApplication()->input->get('view'));
 		$this->mapconfig = array();
 		$this->club = sportsmanagementModelClubInfo::getClub(1);
+        $mdlClub = BaseDatabaseModel::getInstance("club", "sportsmanagementModel");
+        if ( $this->club->id )
+{
+$this->logohistory = $mdlClubl->getlogohistory($this->club->id,0);
+
+foreach ( $this->logohistory as $key => $value )
+{
+   $this->logohistory_detail[$value->logo_big][] = $value->seasonname;  
+}
+
+}
 
 		if ($this->checkextrafields)
 		{

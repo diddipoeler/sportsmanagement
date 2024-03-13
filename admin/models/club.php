@@ -42,10 +42,17 @@ class sportsmanagementModelclub extends JSMModelAdmin
 
 
 
-function getlogohistory($club_id = 0,$season_id = 0)
+/**
+ * sportsmanagementModelclub::getlogohistory()
+ * 
+ * @param integer $club_id
+ * @param integer $season_id
+ * @param bool $logoonly
+ * @return
+ */
+function getlogohistory($club_id = 0, $season_id = 0, $logoonly = false )
 	{
 $app    = Factory::getApplication();
-// Get a db connection.
 $db    = Factory::getDbo();
 $query = $db->getQuery(true);
 $result    = array();
@@ -79,6 +86,13 @@ return $result;
 
 	}
 	
+	/**
+	 * sportsmanagementModelclub::getuserextrafieldvalue()
+	 * 
+	 * @param integer $club_id
+	 * @param string $fieldtext
+	 * @return
+	 */
 	function getuserextrafieldvalue($club_id = 0,$fieldtext = '' )
 	{
 	if ( $club_id && $fieldtext )

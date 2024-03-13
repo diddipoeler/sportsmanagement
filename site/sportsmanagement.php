@@ -142,6 +142,9 @@ switch ($view)
 		JLoader::import('components.com_sportsmanagement.models.player', JPATH_SITE);
         JLoader::import('components.com_sportsmanagement.models.jlextindividualsport', JPATH_ADMINISTRATOR);
 		break;
+case 'clubinfo':        
+        JLoader::import('components.com_sportsmanagement.models.club', JPATH_ADMINISTRATOR);
+        break;
 	case 'teamplan':
 		JLoader::import('components.com_sportsmanagement.helpers.comments', JPATH_SITE);
 		break;
@@ -150,7 +153,6 @@ switch ($view)
 	case 'teamstree':
 	case 'matrix':
 	case 'rankingalltime':
-	case 'clubinfo':
 	case 'clubplan':
 	case 'eventsranking':
 	case 'stats':
