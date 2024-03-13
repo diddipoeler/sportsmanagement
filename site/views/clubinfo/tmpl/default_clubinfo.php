@@ -401,7 +401,7 @@ else
   
   
   </div>
-   
+   <!-- beschreibung -->
     <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7" style="">
 <?PHP
 if ($this->config['show_notes_club'])
@@ -422,29 +422,19 @@ echo $this->loadTemplate('jsm_notes');
    
 	<?php			
 		}			
-			
+
+
+foreach ( $this->logohistory_detail as $key => $value )
+{
+echo $key.''.implode(",", $value);    
+    
+}		
+        
+        	
 		?>      
   
-  
-  
-  
   </div>
   </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
    <?php } ?>
