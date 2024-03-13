@@ -82,6 +82,13 @@ state 	state
 country 	country
 postalcode 	postal code
 */
+
+
+if ( $this->item->id )
+{
+$this->logohistory = $this->model->getlogohistory($this->item->id,0);
+}
+		
 $country = JSMCountries::getCountryName($this->item->country) ;     
 $headers = array();
 $query = $this->item->address;
@@ -412,6 +419,9 @@ $this->item->logo_small = ComponentHelper::getParams('com_sportsmanagement')->ge
 			$javascript .= "\n";
 			$this->document->addScriptDeclaration($javascript);
 		}
+
+
+		
 	}
 
 	/**
