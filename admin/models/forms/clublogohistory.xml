@@ -22,6 +22,18 @@
             directory="images/com_sportsmanagement/database/clubs/large"
         />	
 
+	 <field
+            name="season"
+            type="seasonlist"
+			class="form-select select2-container"
+            label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER"
+            description="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER"
+            required="false"
+       onchange="this.form.submit();"
+        >
+            <option value="">COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER</option>
+        </field>
+	 
  </fieldset> 
 
   
