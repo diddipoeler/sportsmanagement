@@ -30,11 +30,26 @@ $myForm->loadFile('clublogohistory', false);
 
 //echo '<pre>'.print_r($myForm,true).'</pre>';
 
-echo $myForm->renderFieldset('picture');
+//echo $myForm->renderFieldset('picture');
 
 
 
 ?>
+<table class="table">
+  <tr>
+<td>
+    <?php
+  echo $myForm->renderFieldset('picture');
+  ?>
+    </td>  
+  
+    <td>
+     <?php
+  echo $myForm->renderFieldset('seasons');
+  ?>
+    </td>
+  </tr>
+</table>
 <script type="text/javascript">
         function addRows()
         {
