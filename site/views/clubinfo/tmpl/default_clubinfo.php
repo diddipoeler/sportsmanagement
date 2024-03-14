@@ -423,33 +423,52 @@ echo $this->loadTemplate('jsm_notes');
 	<?php			
 		}			
 
+  
+$this->notes = array();
+$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_CLUB_HISTORYLOGO');
+echo $this->loadTemplate('jsm_notes');
+  
 ?>
-<table class="table">
+      
+      
+     
+      
+      
+      
+
 	<?php			
 foreach ( $this->logohistory_detail as $key => $value )					
 {
 ?>
-<tr>
-<td>
+<div class="row">
+ <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+    
+  
 	<?php			
 echo HTMLHelper::image($key, 'name1', array('title' => 'name2', 'width' => 50 ));					
 
 ?>
-</td>
-
-<td>
+   </div>
+    
+  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+    <p class="text-break" > 
+      
+    
 	<?php			
 echo implode(",", $value); 					
 
 ?>
-</td>
+    
+     </p> 
+   </div>
 
-</tr>
+  </div>
 	<?php			
 					
 }
 ?>
-</table>
+
+      
 <?php
 
       
