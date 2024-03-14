@@ -50,7 +50,7 @@ class sportsmanagementModelclub extends JSMModelAdmin
  * @param bool $logoonly
  * @return
  */
-function getlogohistory($club_id = 0, $season_id = 0, $logoonly = false )
+function getlogohistory($club_id = 0, $season_id = 0, $team_id = 0, $logoonly = false )
 	{
 $app    = Factory::getApplication();
 $db    = Factory::getDbo();
@@ -59,12 +59,25 @@ $result    = array();
 
 $query->select('cl.*,se.name as seasonname');
 $query->from('#__sportsmanagement_club_logos as cl');
-$query->join('INNER', '#__sportsmanagement_season AS se ON se.id = cl.season_id');		
+$query->join('INNER', '#__sportsmanagement_season AS se ON se.id = cl.season_id');
+
+if ( $team_id )
+{
+$query->join('INNER', '#__sportsmanagement_club AS c ON c.id = cl.club_id');
+$query->join('INNER', '#__sportsmanagement_team AS t ON t.club_id = c.id');
+$query->where('t.id = ' . $team_id);    
+}
+
+if ( $club_id )
+{		
 $query->where('cl.club_id = ' . $club_id);
+}
+
 if ( $season_id )
 {
 $query->where('se.id = ' . $season_id);
 }
+
 $query->order('seasonname DESC');		
 $db->setQuery($query);
 try
