@@ -149,7 +149,9 @@ foreach ($current as $ptid => $team)
 	$team->team->logo_big   = empty($team->team->logo_big) ? sportsmanagementHelper::getDefaultPlaceholder('logo_big') : $team->team->logo_big;
 
     $logohistory = $this->mdlClub->getlogohistory(0,$this->project->season_id,$team->_teamid);
-
+foreach ($logohistory as $key => $value) {
+ $team->team->logo_big = $value->logo_big;
+}
 	if ($config['show_logo_small_table'] != "no_logo")
 	{
 		echo '<td class="rankingrow_logo"';
