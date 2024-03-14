@@ -36,6 +36,8 @@ class sportsmanagementViewRanking extends sportsmanagementView
 	function init()
 	{
 		$this->matchimages = array();
+        
+        $this->mdlClub = BaseDatabaseModel::getInstance("club", "sportsmanagementModel");
 
 		if ($this->config['show_pictures'])
 		{
