@@ -65,6 +65,7 @@ if ( $season_id )
 {
 $query->where('se.id = ' . $season_id);
 }
+$query->order('seasonname DESC');		
 $db->setQuery($query);
 try
 			{
