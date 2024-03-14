@@ -799,9 +799,15 @@ switch ( $row_sports_type )
 				$profile->logo_big   = $post['logo_big_history'];
                 $profile->modified         = $this->jsmdate->toSql();
 		        $profile->modified_by      = $this->jsmuser->get('id');
-                
+                try{
 				$insertresult = $this->jsmdb->insertObject('#__sportsmanagement_club_logos', $profile);    
-                    
+                    }
+		catch (Exception $e)
+		{
+        //$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+        //$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+        //return false;
+		}	
                     
                 }
 
