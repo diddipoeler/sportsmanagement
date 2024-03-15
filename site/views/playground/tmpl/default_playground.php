@@ -114,7 +114,30 @@ $this->notes = array();
 $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_HISTORY_NOTIC');
 echo $this->loadTemplate('jsm_notes');
 
+foreach ( $this->playgroundnotic as $key => $value ) 
+{
+?>    
+<div>
+<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="">
 
+</div>
+<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="">
+
+</div>
+<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="">
+
+</div>
+<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="">
+
+</div>
+<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="">
+
+</div>
+
+
+</div>  
+<?php  
+}
 
 
 ?>

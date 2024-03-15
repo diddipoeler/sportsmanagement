@@ -45,6 +45,7 @@ $result    = array();
 $query->select('*');
 $query->from('#__sportsmanagement_playground_details');
 $query->where('playground_id = ' . $playground_id);
+$query->order('date_von DESC ');
 $db->setQuery($query);
 try
 			{
