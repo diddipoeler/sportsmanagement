@@ -119,19 +119,29 @@ foreach ( $this->playgroundnotic as $key => $value )
 ?>    
 <div>
 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="">
-
+<?php
+echo $value->date_von;
+?>
 </div>
 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="">
-
+<?php
+echo $value->date_bis;
+?>
 </div>
 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="">
-
+<?php
+echo $value->name_visitors;
+?>
 </div>
 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="">
-
+<?php
+echo $value->notes;
+?>
 </div>
 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="">
-
+<?php
+echo $value->max_visitors;
+?>
 </div>
 
 
