@@ -33,3 +33,8 @@ echo $this->loadTemplate('jsm_notes');
     </div>
 	<?php
 }
+
+
+$this->notes = array();
+$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_HISTORY_NOTIC');
+echo $this->loadTemplate('jsm_notes');
