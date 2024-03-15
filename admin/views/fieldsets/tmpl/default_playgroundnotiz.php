@@ -200,14 +200,14 @@ jQuery(function ($) {
      <td>
     <?php
     //echo $value->date_von;
-    echo sportsmanagementHelper::convertDate($value->date_von, 1)
+    echo sportsmanagementHelper::convertDate($value->date_von, 1);
     ?>
     </td>
 
      <td>
     <?php
     //echo $value->date_bis;
-    echo sportsmanagementHelper::convertDate($value->date_bis, 1)
+    echo sportsmanagementHelper::convertDate($value->date_bis, 1);
     ?>
     </td>
      <td>

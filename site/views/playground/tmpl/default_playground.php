@@ -117,15 +117,15 @@ echo $this->loadTemplate('jsm_notes');
 foreach ( $this->playgroundnotic as $key => $value ) 
 {
 ?>    
-<div>
+<div class="row" >
 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="">
 <?php
-echo $value->date_von;
+echo sportsmanagementHelper::convertDate($value->date_von, 1);
 ?>
 </div>
 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="">
 <?php
-echo $value->date_bis;
+echo sportsmanagementHelper::convertDate($value->date_bis, 1)
 ?>
 </div>
 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="">
