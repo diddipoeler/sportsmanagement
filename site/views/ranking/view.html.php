@@ -300,6 +300,12 @@ class sportsmanagementViewRanking extends sportsmanagementView
 
 				foreach ($this->allteams as $row)
 				{
+/** historisches logo */
+$logohistory = $this->mdlClub->getlogohistory(0,$this->project->season_id,team_id);
+foreach ($logohistory as $key => $value) {
+ $row->logo_big = $value->logo_big;
+}			
+					
 					$address_parts = array();
 
 					if (!empty($row->club_address))
