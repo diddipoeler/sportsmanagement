@@ -108,3 +108,13 @@ use Joomla\CMS\HTML\HTMLHelper;
     </table>
 </div>
 <br/>
+
+<?php
+$this->notes = array();
+$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_HISTORY_NOTIC');
+echo $this->loadTemplate('jsm_notes');
+
+
+
+
+?>

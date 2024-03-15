@@ -35,6 +35,6 @@ echo $this->loadTemplate('jsm_notes');
 }
 
 
-$this->notes = array();
-$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_HISTORY_NOTIC');
-echo $this->loadTemplate('jsm_notes');
+//$this->notes = array();
+//$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_HISTORY_NOTIC');
+//echo $this->loadTemplate('jsm_notes');
