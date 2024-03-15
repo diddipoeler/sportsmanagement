@@ -28,6 +28,12 @@ class sportsmanagementModelPlayground extends JSMModelAdmin
 	static $cfg_which_database = 0;
 
 
+	/**
+	 * sportsmanagementModelPlayground::getPlaygroundNotic()
+	 * 
+	 * @param mixed $playground_id
+	 * @return
+	 */
 	function getPlaygroundNotic($playground_id)
 	{
 		$app    = Factory::getApplication();

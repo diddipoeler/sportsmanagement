@@ -36,9 +36,11 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 		
 		sportsmanagementModelProject::setProjectID($this->jinput->getInt("p", 0), $this->jinput->getInt('cfg_which_database', 0));
 		$mdlJSMTeams          = BaseDatabaseModel::getInstance("teams", "sportsmanagementModel");
+        $mdlJSMPlayground          = BaseDatabaseModel::getInstance("playground", "sportsmanagementModel");
 		$this->playground     = sportsmanagementModelPlayground::getPlayground($this->jinput->getInt("pgid", 0), 1);
 		$this->address_string = $this->model->getAddressString();
 		$this->teams          = $mdlJSMTeams->getTeams($this->playground->id);
+        $this->playgroundnotic          = $mdlJSMPlayground->getPlaygroundNotic($this->playground->id);
 		$this->mapconfig = array();
 
 		if ($this->config['show_matches'])
