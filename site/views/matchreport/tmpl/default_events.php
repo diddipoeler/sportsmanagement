@@ -15,7 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
 <!-- START of match events -->
-<div class="<?php echo $this->divclassrow; ?> table-responsive" id="matchreport-events">
+<div class="<?php echo $this->divclassrow; ?> " id="matchreport-events">
     <h2>
 		<?php
 		echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS');
@@ -28,32 +28,35 @@ use Joomla\CMS\HTML\HTMLHelper;
 		echo $this->loadTemplate('timeline');
 	}
 	?>
-    <table class="table " id="events">
+    <div class="row ">
 		<?php
 		foreach ($this->eventtypes as $event)
 		{
 			?>
-            <tr>
-                <td colspan="2" class="eventid">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 d-flex justify-content-center" style="">
 					<?php echo HTMLHelper::_('image', $event->icon, Text::_($event->icon), null) . Text::_($event->name); ?>
-                </td>
-            </tr>
-            <tr>
-                <td class="list">
+            </div>
+            
+
+                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 d-flex justify-content-end" style="">
                     <dl>
 						<?php echo $this->showEvents($event->id, $this->match->projectteam1_id); ?>
                     </dl>
-                </td>
-                <td class="list">
+                </div>
+                
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="">
+                  </div>
+                
+               <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 d-flex justify-content-start" style="">
                     <dl>
 						<?php echo $this->showEvents($event->id, $this->match->projectteam2_id); ?>
                     </dl>
-                </td>
-            </tr>
+                </div>
+
 			<?php
 		}
 		?>
-    </table>
+    </div>
     <!-- END of match events -->
 </div>
 <br/>
