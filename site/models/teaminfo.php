@@ -334,7 +334,7 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 			}
 		}
 
-		$query->order('s.name ' . $season_ordering . ', pt.name' );
+		$query->order('s.name ' . $season_ordering . ', p.name' );
 
 		$db->setQuery($query);
 		$seasons = $db->loadObjectList();
