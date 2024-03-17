@@ -576,13 +576,13 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DEFAULT_IMAGE');
 $image_attributes['title'] = $imageTitle;
 echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/information.png',$imageTitle,$image_attributes);
-
+echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_picture' . $this->item->id, Uri::root() . $this->item->picture, $imageTitle, '100', Uri::root() . $this->item->picture); 
 						?>
-                        <a href="<?php echo Uri::root() . $this->item->picture; ?>" title="<?php echo $imageTitle; ?>"
+                        <!-- <a href="<?php echo Uri::root() . $this->item->picture; ?>" title="<?php echo $imageTitle; ?>"
                            class="modal">
                             <img src="<?php echo Uri::root() . $this->item->picture; ?>" alt="<?php echo $imageTitle; ?>"
                                  width="100"/>
-                        </a>
+                        </a> -->
 						<?PHP
 
 					}
@@ -593,12 +593,14 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_CUSTOM_IMAGE');
 $image_attributes['title'] = $imageTitle;
 echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/ok.png',$imageTitle,$image_attributes);
+echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_picture' . $this->item->id, Uri::root() . $this->item->picture, $imageTitle, '100', Uri::root() . $this->item->picture); 
 							?>
+                            <!--
                             <a href="<?php echo Uri::root() . $this->item->picture; ?>" title="<?php echo $imageTitle; ?>"
                                class="modal">
                                 <img src="<?php echo Uri::root() . $this->item->picture; ?>" alt="<?php echo $imageTitle; ?>"
                                      width="100"/>
-                            </a>
+                            </a> -->
 							<?PHP
 						}
 						else
@@ -614,12 +616,14 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 					<?PHP
 					if ($this->item->playground_picture)
 					{
+echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_picture' . $this->item->id, Uri::root() . $this->item->playground_picture, $imageTitle, '100', Uri::root() . $this->item->playground_picture); 					   
 						?>
+                        <!--
                         <a href="<?php echo Uri::root() . $this->item->playground_picture; ?>"
                            title="<?php echo $imageTitle; ?>" class="modal">
                             <img src="<?php echo Uri::root() . $this->item->playground_picture; ?>"
                                  alt="<?php echo $imageTitle; ?>" width="100"/>
-                        </a>
+                        </a> -->
 						<?PHP
 					}
 					?>
