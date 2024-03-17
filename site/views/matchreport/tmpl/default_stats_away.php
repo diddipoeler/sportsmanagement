@@ -16,25 +16,28 @@ use Joomla\CMS\Factory;
 
 ?>
 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="matchreport-stats-away">
-    <table class="<?php echo $this->config["table_class"];?>">
+    
 		<?php
 		foreach ($this->matchplayerpositions as $pos)
 		{
 			if (isset($this->stats[$pos->position_id]) && count($this->stats[$pos->position_id]) > 0)
 				:
 				?>
-                <tr>
-                    <td colspan="2" class="positionid">
+                
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="">
+                  
 						<?php echo Text::_($pos->name); ?>
-                    </td>
-                </tr>
-                <tr>
-                    <!-- list of guest-team -->
-                    <td>
-                        <table class="<?php echo $this->config["table_class"];?>">
-                            <thead>
-                            <tr>
-                                <th class="playername"><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_NAME'); ?></th>
+                  </div>
+                
+               
+                    <!-- list of home-team -->
+               
+                            <div class="row">
+                            
+                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 d-flex justify-content-start" style="">
+                                  <?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_NAME'); ?>
+                                  </div>
+                              <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 d-flex justify-content-start" style="">
 								<?php
 								if (isset($this->stats[$pos->position_id]))
 									:
@@ -44,25 +47,26 @@ use Joomla\CMS\Factory;
 										<?php if ($stat->showInSingleMatchReports() && $stat->showInMatchReport())
 										:
 										?>
-                                        <th><?php echo $stat->getImage(); ?></th>
-									<?php endif; ?>
-									<?php
+                                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 d-flex justify-content-start" style="">
+                                          <?php echo $stat->getImage(); ?>
+                                          </div>
+									<?php endif;
 									endforeach;
-								endif;
-								?>
-                            </tr>
-                            </thead>
-                            <tbody>
+								endif; ?>
+                            </div>
+                            </div>
+                            
 							<?php $person_id_list = array(); ?>
 							<?php
+          
 							foreach ($this->matchplayers as $player)
 								:
 								?>
 								<?php if ($player->pposid == $pos->pposid && $player->ptid == $this->match->projectteam2_id && !in_array($player->person_id, $person_id_list))
 								:
 								?>
-                                <tr class="starter">
-                                    <td class="playername">
+                                <div class="row">
+                                    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 d-flex justify-content-start" style="">
 										<?php
 										$routeparameter                       = array();
 										$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
@@ -71,9 +75,11 @@ use Joomla\CMS\Factory;
 										$routeparameter['tid']                = $player->team_slug;
 										$routeparameter['pid']                = $player->person_slug;
 										$player_link                          = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
-										$prefix                               = $player->jerseynumber ? $player->jerseynumber . "." : null;
-										$match_player                         = sportsmanagementHelper::formatName($prefix, $player->firstname, $player->nickname, $player->lastname, $this->config["name_format"]);
-										$isFavTeam                            = in_array($player->team_id, explode(",", $this->project->fav_team));
+
+
+										$prefix       = $player->jerseynumber ? $player->jerseynumber . "." : null;
+										$match_player = sportsmanagementHelper::formatName($prefix, $player->firstname, $player->nickname, $player->lastname, $this->config["name_format"]);
+										$isFavTeam    = in_array($player->team_id, explode(",", $this->project->fav_team));
 
 										if (($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)))
 										{
@@ -84,26 +90,30 @@ use Joomla\CMS\Factory;
 											echo $match_player;
 										}
 										?>
-                                    </td>
-									<?php
-									if (isset($this->stats[$pos->position_id]))
+                                    </div>
+                                   <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 d-flex justify-content-start" style="">
+									<?php foreach ($this->stats[$pos->position_id] as $stat)
 										:
-										foreach ($this->stats[$pos->position_id] as $stat)
-											:
-											?>
-											<?php if ($stat->showInSingleMatchReports() && $stat->showInMatchReport())
-											:
-											?>
-                                            <td><?php echo $stat->getMatchPlayerStat($this->model, $player->teamplayer_id); ?></td>
-										<?php endif; ?>
-										<?php
-										endforeach;
-									endif;
-									?>
-                                </tr>
+										?>
+										<?php if ($stat->showInSingleMatchReports() && $stat->showInMatchReport())
+										:
+										?>
+                                         <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 d-flex justify-content-start" style="">
+                                           <?php echo $stat->getMatchPlayerStat($this->model, $player->teamplayer_id); ?>
+                                  </div>
+                                     
+									<?php endif;
+									endforeach; ?>
+                                     </div>
+                                </div>
 								<?php $person_id_list[] = $player->person_id;
 							endif; ?>
 							<?php endforeach; ?>
+                              
+                              
+                              
+                              
+                              
 							<?php
 							foreach ($this->substitutes as $sub)
 								:
@@ -111,18 +121,19 @@ use Joomla\CMS\Factory;
 								<?php if ($sub->pposid1 == $pos->pposid && $sub->ptid == $this->match->projectteam2_id && !in_array($sub->person_id, $person_id_list))
 								:
 								?>
-                                <tr class="sub">
-                                    <td class="playername">
+                                 <div class="row">
+                                    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 d-flex justify-content-start" style="">
 										<?php
 										$routeparameter                       = array();
 										$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
 										$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
 										$routeparameter['p']                  = $this->project->slug;
 										$routeparameter['tid']                = $sub->team_slug;
-										$routeparameter['pid']                = $sub->person_slug;
+										$routeparameter['pid']                = $sub->sub_person_slug;
 										$player_link                          = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
-										$match_player                         = sportsmanagementHelper::formatName(null, $sub->firstname, $sub->nickname, $sub->lastname, $this->config["name_format"]);
-										$isFavTeam                            = in_array($sub->team_id, explode(",", $this->project->fav_team));
+
+										$match_player = sportsmanagementHelper::formatName(null, $sub->firstname, $sub->nickname, $sub->lastname, $this->config["name_format"]);
+										$isFavTeam    = in_array($sub->team_id, explode(",", $this->project->fav_team));
 
 										if (($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)))
 										{
@@ -133,24 +144,30 @@ use Joomla\CMS\Factory;
 											echo $match_player;
 										}
 										?>
-                                    </td>
+                                    </div>
+                                   <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 d-flex justify-content-start" style="">
 									<?php foreach ($this->stats[$pos->position_id] as $stat)
 										:
 										?>
 										<?php if ($stat->showInSingleMatchReports() && $stat->showInMatchReport())
 										:
 										?>
-                                        <td><?php echo $stat->getMatchPlayerStat($this->model, $sub->teamplayer_id); ?></td>
+                                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 d-flex justify-content-start" style="">
+                                          <?php echo $stat->getMatchPlayerStat($this->model, $sub->teamplayer_id); ?>
+                                          </div>
 									<?php endif; ?>
 									<?php endforeach; ?>
-                                </tr>
+                                </div>
+                                </div>
 								<?php $person_id_list[] = $sub->person_id;
 							endif; ?>
 							<?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
+                              
+                              
+                            
+                       
+                    
+                
 			<?php
 			endif;
 		}
@@ -161,18 +178,20 @@ use Joomla\CMS\Factory;
 			if (isset($this->stats[$pos->position_id]) && count($this->stats[$pos->position_id]) > 0)
 				:
 				?>
-                <tr>
-                    <td colspan="2" class="positionid">
+                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="">
+                  
 						<?php echo Text::_($pos->name); ?>
-                    </td>
-                </tr>
-                <tr>
-                    <!-- list of guest-team -->
-                    <td>
-                        <table class="<?php echo $this->config["table_class"];?>">
-                            <thead>
-                            <tr>
-                                <th class="playername"><?php echo Text::_('Name'); ?></th>
+                  </div>
+                
+                    <!-- list of home-team -->
+                    
+                         <div class="row">
+                            
+                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 d-flex justify-content-start" style="">
+                                <?php echo Text::_('Name'); ?>
+                                </div>
+                                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 d-flex justify-content-start" style="">
+                                
 								<?php
 								foreach ($this->stats[$pos->position_id] as $stat)
 									:
@@ -180,20 +199,29 @@ use Joomla\CMS\Factory;
 									<?php if ($stat->showInSingleMatchReports() && $stat->showInMatchReport())
 									:
 									?>
-                                    <th><?php echo $stat->getImage(); ?></th>
+                                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 d-flex justify-content-start" style="">
+                                    <?php echo $stat->getImage(); ?>
+                                    </div>
 								<?php endif; ?>
 								<?php endforeach; ?>
-                            </tr>
-                            </thead>
-                            <tbody>
+                            
+                            
+                            
+                            
+                            </div>
+                            </div>
+                            
+                            
+                            
+                            
 							<?php foreach ($this->matchstaffs as $player)
 								:
 								?>
 								<?php if ($player->pposid == $pos->pposid && $player->ptid == $this->match->projectteam2_id)
 								:
 								?>
-                                <tr class="starter">
-                                    <td class="playername">
+                                 <div class="row">
+                                    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 d-flex justify-content-start" style="">
 										<?php
 										$routeparameter                       = array();
 										$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
@@ -215,26 +243,33 @@ use Joomla\CMS\Factory;
 											echo $match_player;
 										}
 										?>
-                                    </td>
+                                    </div>
+                                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 d-flex justify-content-start" style="">
 									<?php foreach ($this->stats[$pos->position_id] as $stat)
 										:
 										?>
 										<?php if ($stat->showInSingleMatchReports() && $stat->showInMatchReport())
 										:
 										?>
-                                        <td><?php echo $stat->getMatchStaffStat($this->model, $player->team_staff_id); ?></td>
+                                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 d-flex justify-content-start" style="">
+                                        <?php echo $stat->getMatchStaffStat($this->model, $player->team_staff_id); ?>
+                                        </div>
 									<?php endif; ?>
 									<?php endforeach; ?>
-                                </tr>
+                                    </div>
+                                
 							<?php endif; ?>
+                            
+                            
 							<?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
+                            
+                            
+                        
+                    
+                
 			<?php
 			endif;
 		}
 		?>
-    </table>
+    
 </div>
