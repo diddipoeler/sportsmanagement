@@ -19,7 +19,7 @@ usort(
 );
 ?>
 <!-- START of Substitutions -->
-<div class="<?php echo $this->divclassrow; ?> table-responsive" id="matchreport-subst">
+<div class="<?php echo $this->divclassrow; ?> " id="matchreport-subst">
 	<?php
 	if ($this->config['show_substitutions'])
 	{
@@ -27,10 +27,12 @@ usort(
 		{
 			?>
             <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTES'); ?></h2>
-            <table class="table ">
-                <tr>
-                    <td class="list">
-                        <ul><?php
+            <div class="row ">
+               
+                    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 d-flex justify-content-end" style="">
+                      
+                        <ul class="">
+                          <?php
 							foreach ($this->substitutes as $sub)
 							{
 								if ($sub->ptid == $this->match->projectteam1_id)
@@ -39,10 +41,15 @@ usort(
                                     <li class="list"><?php echo $this->showSubstitution($sub); ?></li><?php
 								}
 							}
-							?></ul>
-                    </td>
-                    <td class="list">
-                        <ul><?php
+							?>
+                      </ul>
+                      
+                    </div>
+                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="">
+                  </div>
+                    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 d-flex justify-content-start" style="">
+                        <ul class="">
+                          <?php
 							foreach ($this->substitutes as $sub)
 							{
 								if ($sub->ptid == $this->match->projectteam2_id)
@@ -51,10 +58,11 @@ usort(
                                     <li class="list"><?php echo $this->showSubstitution($sub); ?></li><?php
 								}
 							}
-							?></ul>
-                    </td>
-                </tr>
-            </table>
+							?>
+                      </ul>
+                    </div>
+             
+            </div>
 			<?php
 		}
 	}
