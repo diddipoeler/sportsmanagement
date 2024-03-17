@@ -61,7 +61,7 @@ elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
 						<!-- list of home-team -->
 						
 							<div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 d-flex justify-content-end" style="">
-								<ul style="list-style-type: none;">
+								<ul style="list-style-type: none;text-align: right;">
 									<?php
 									foreach ($this->matchplayers as $player)
 									{
