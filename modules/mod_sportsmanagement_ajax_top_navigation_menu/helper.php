@@ -1115,6 +1115,7 @@ try{
 				break;
 
 			case "results":
+			case "jlallprojectrounds":
 				$routeparameter                       = array();
 				$routeparameter['cfg_which_database'] = $this->_app->input->getInt('cfg_which_database', ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0));
 				$routeparameter['s']                  = $this->_app->input->getInt('s', 0);
@@ -1302,11 +1303,11 @@ try{
 			case "jltournamenttree":
 				$link = sportsmanagementHelperRoute::getTournamentRoute($this->_project_slug, $this->_round_slug);
 				break;
-
+/**
 			case "jlallprojectrounds":
 				$link = sportsmanagementHelperRoute::getAllProjectrounds($this->_project_slug, $this->_round_slug);
 				break;
-
+*/
 			case "separator":
 				return false;
 
