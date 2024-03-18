@@ -73,7 +73,7 @@ class JFormFieldJSMMenuItems extends \JFormFieldList
 			HTMLHelper::_('select.option', 'teamstats', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_TEAMSTATS')),
 			HTMLHelper::_('select.option', 'jltournamenttree', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_JLTOURNAMENTTREE')),
 			HTMLHelper::_('select.option', 'treetonode', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_TREETONODE')),
-			HTMLHelper::_('select.option', 'jlallprojectrounds', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_JLALLPROJECTROUNDS')),
+			HTMLHelper::_('select.option', 'allprojectrounds', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_JLALLPROJECTROUNDS')),
 			HTMLHelper::_('select.option', 'jlxmlexports', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_XMLEXPORT')),
             HTMLHelper::_('select.option', 'leaguechampionoverview', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_LEAGUECHAMPIONOVERVIEW')),
 		);
