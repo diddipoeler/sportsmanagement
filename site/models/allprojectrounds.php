@@ -191,7 +191,7 @@ $query->clear();
           		$query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');
 			$query->where('pt.project_id =' . $this->projectid);
 			$db->setQuery($query);
-			$this->ProjectTeams = $db->loadOjectList();
+			$this->ProjectTeams = $db->loadObjectList();
 
 
 		}
