@@ -70,13 +70,19 @@ class sportsmanagementModelallprojectrounds extends BaseDatabaseModel
 		$this->_params['show_columns']       = $jinput->get('show_columns', 0, 'INT');
 		$this->_params['show_sectionheader'] = $jinput->get('show_sectionheader', 0, 'INT');
 
-		$this->_params['show_firstroster']  = $jinput->get('show_firstroster', 0, 'INT');
-		$this->_params['show_firstsubst']   = $jinput->get('show_firstsubst', 0, 'INT');
-		$this->_params['show_firstevents']  = $jinput->get('show_firstevents', 0, 'INT');
-		$this->_params['show_secondroster'] = $jinput->get('show_secondroster', 0, 'INT');
-		$this->_params['show_secondsubst']  = $jinput->get('show_secondsubst', 0, 'INT');
-		$this->_params['show_secondevents'] = $jinput->get('show_secondevents', 0, 'INT');
-        $this->_params['show_favteaminfo'] = $jinput->get('show_favteaminfo', 0, 'INT');
+      
+      $config       = sportsmanagementModelProject::getTemplateConfig('allprojectrounds', $jinput->getInt('cfg_which_database', 0));
+      
+     // echo '<pre>'.print_r($config,true).'</pre>';
+      
+      
+		$this->_params['show_firstroster']  = $config['show_firstroster'] ;
+		$this->_params['show_firstsubst']   = $config['show_firstsubst'];
+		$this->_params['show_firstevents']  = $config['show_firstevents'];
+		$this->_params['show_secondroster'] =$config['show_secondroster'];
+		$this->_params['show_secondsubst']  = $config['show_secondsubst'];
+		$this->_params['show_secondevents'] = $config['show_secondevents'];
+        $this->_params['show_favteaminfo'] = $config['show_favteaminfo'];
 
 		$this->_params['s']           = $jinput->get('s', 0, 'INT');
 		$this->_params['p']           = $jinput->get('p', 0, 'INT');
@@ -223,6 +229,8 @@ $query->clear();
 	{
 		$app = Factory::getApplication();
 
+     // echo __LINE__.' config<pre>'.print_r($config,true).'</pre>';
+      
 		if (count($rounds) % 2)
 		{
 			//   echo "Zahl ist ungrade<br>";
@@ -273,14 +281,14 @@ $query->clear();
 
 						foreach ($this->ProjectTeams as $key => $value)
 						{
-							if ((int) $match->projectteam1_id === (int) $value || (int) $match->projectteam2_id === (int) $value)
+							if ((int) $match->projectteam1_id === (int) $value->id || (int) $match->projectteam2_id === (int) $value->id)
 							{
 								if ($config['show_firstroster'])
 								{
 									$htmlcontent[$a]['first'] .= '<tr><td colspan="4"><b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP') . ' : </b>';
 									//$this->matchid                  = $match->id;
 									//$this->projectteam_id           = $value;
-									$htmlcontent[$a]['first'] .= implode(",", self::getMatchPlayers($match->id,$value));
+									$htmlcontent[$a]['first'] .= implode(",", self::getMatchPlayers($match->id,$value->id));
 									$htmlcontent[$a]['first'] .= '</td></tr>';
 								}
 
@@ -289,7 +297,7 @@ $query->clear();
 									$htmlcontent[$a]['first'] .= '<tr><td colspan="4"><b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTES') . ' : </b>';
 									//$this->matchid                 = $match->id;
 									//$this->projectteam_id          = $value;
-									$htmlcontent[$a]['first'] .= implode(",", self::getSubstitutes($match->id,$value));
+									$htmlcontent[$a]['first'] .= implode(",", self::getSubstitutes($match->id,$value->id));
 									$htmlcontent[$a]['first'] .= '</td></tr>';
 								}
 
@@ -298,7 +306,7 @@ $query->clear();
 									$htmlcontent[$a]['first'] .= '<tr><td colspan="4"><b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS') . ' : </b>';
 									//$this->matchid                  = $match->id;
 									//$this->projectteam_id           = $value;
-									$htmlcontent[$a]['first'] .= implode(",", self::getPlayersEvents($match->id,$value));
+									$htmlcontent[$a]['first'] .= implode(",", self::getPlayersEvents($match->id,$value->id));
 									$htmlcontent[$a]['first'] .= '</td></tr>';
 								}
 							}
@@ -314,14 +322,14 @@ $query->clear();
 
 						foreach ($this->ProjectTeams as $key => $value)
 						{
-							if ((int) $match->projectteam1_id === (int) $value || (int) $match->projectteam2_id === (int) $value)
+							if ((int) $match->projectteam1_id === (int) $value->id || (int) $match->projectteam2_id === (int) $value->id)
 							{
 								if ($config['show_secondroster'])
 								{
 									$htmlcontent[$a]['second'] .= '<tr><td colspan="4"><b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP') . ' : </b>';
 									//$this->matchid                   = $match->id;
 									//$this->projectteam_id            = $value;
-									$htmlcontent[$a]['second'] .= implode(",", $this->getMatchPlayers($match->id,$value));
+									$htmlcontent[$a]['second'] .= implode(",", $this->getMatchPlayers($match->id,$value->id));
 									$htmlcontent[$a]['second'] .= '</td></tr>';
 								}
 
@@ -330,7 +338,7 @@ $query->clear();
 									$htmlcontent[$a]['second'] .= '<tr><td colspan="4"><b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTES') . ' : </b>';
 									//$this->matchid                  = $match->id;
 									//$this->projectteam_id           = $value;
-									$htmlcontent[$a]['second'] .= implode(",", $this->getSubstitutes($match->id,$value));
+									$htmlcontent[$a]['second'] .= implode(",", $this->getSubstitutes($match->id,$value->id));
 									$htmlcontent[$a]['second'] .= '</td></tr>';
 								}
 
@@ -339,7 +347,7 @@ $query->clear();
 									$htmlcontent[$a]['second'] .= '<tr><td colspan="4"><b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS') . ' : </b>';
 									//$this->matchid                   = $match->id;
 									//$this->projectteam_id            = $value;
-									$htmlcontent[$a]['second'] .= implode(",", $this->getPlayersEvents($match->id,$value));
+									$htmlcontent[$a]['second'] .= implode(",", $this->getPlayersEvents($match->id,$value->id));
 									$htmlcontent[$a]['second'] .= '</td></tr>';
 								}
 							}
@@ -369,14 +377,14 @@ $query->clear();
 
 						foreach ($this->ProjectTeams as $key => $value)
 						{
-							if ((int) $match->projectteam1_id === (int) $value || (int) $match->projectteam2_id === (int) $value)
+							if ((int) $match->projectteam1_id === (int) $value->id || (int) $match->projectteam2_id === (int) $value->id)
 							{
 								if ($config['show_firstroster'])
 								{
 									$htmlcontent[$a]['first'] .= '<tr><td colspan="4"><b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP') . ' : </b>';
 									//$this->matchid                  = $match->id;
 									//$this->projectteam_id           = $value;
-									$htmlcontent[$a]['first'] .= implode(",", self::getMatchPlayers($match->id,$value));
+									$htmlcontent[$a]['first'] .= implode(",", self::getMatchPlayers($match->id,$value->id));
 									$htmlcontent[$a]['first'] .= '</td></tr>';
 								}
 
@@ -385,7 +393,7 @@ $query->clear();
 									$htmlcontent[$a]['first'] .= '<tr><td colspan="4"><b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTES') . ' : </b>';
 									//$this->matchid                 = $match->id;
 									//$this->projectteam_id          = $value;
-									$htmlcontent[$a]['first'] .= implode(",", self::getSubstitutes($match->id,$value));
+									$htmlcontent[$a]['first'] .= implode(",", self::getSubstitutes($match->id,$value->id));
 									$htmlcontent[$a]['first'] .= '</td></tr>';
 								}
 
@@ -394,7 +402,7 @@ $query->clear();
 									$htmlcontent[$a]['first'] .= '<tr><td colspan="4"><b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS') . ' : </b>';
 									//$this->matchid                  = $match->id;
 									//$this->projectteam_id           = $value;
-									$htmlcontent[$a]['first'] .= implode(",", self::getPlayersEvents($match->id,$value));
+									$htmlcontent[$a]['first'] .= implode(",", self::getPlayersEvents($match->id,$value->id));
 									$htmlcontent[$a]['first'] .= '</td></tr>';
 								}
 							}
