@@ -186,7 +186,7 @@ class sportsmanagementModelallprojectrounds extends BaseDatabaseModel
 		if ( !$this->ProjectTeams )
 		{
 $query->clear();
-			$query->select('*');
+			$query->select('pt.*');
 			$query->from('#__sportsmanagement_project_team as pt');
           		$query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');
 			$query->where('pt.project_id =' . $this->projectid);
