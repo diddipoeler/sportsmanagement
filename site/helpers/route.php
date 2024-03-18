@@ -70,6 +70,9 @@ class sportsmanagementHelperRoute
 		'referee'           => array('cfg_which_database' => '', 's' => '', 'p' => '', 'pid' => ''),
 		'referees'          => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'r' => ''),
 		'results'           => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'division' => '', 'mode' => '', 'order' => '', 'layout' => ''),
+		'jlallprojectrounds'           => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'division' => '', 'mode' => '', 'order' => '', 'layout' => ''),
+		
+		
 		'resultsranking'    => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'mode' => '', 'order' => '', 'layout' => '', 'division' => ''),
         'resultsmatrix'    => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'mode' => '', 'order' => '', 'layout' => '', 'division' => '', 'Itemid' => ''),
 		'rivals'            => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => ''),
@@ -127,6 +130,7 @@ class sportsmanagementHelperRoute
 		'referee'           => array('cfg_which_database' => '', 's' => '', 'p' => '', 'pid' => '', 'Itemid' => ''),
 		'referees'          => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'r' => '', 'Itemid' => ''),
 		'results'           => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'division' => '', 'mode' => '', 'order' => '', 'layout' => '', 'Itemid' => ''),
+		'jlallprojectrounds'           => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'division' => '', 'mode' => '', 'order' => '', 'layout' => '', 'Itemid' => ''),
 		'resultsranking'    => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'mode' => '', 'order' => '', 'layout' => '', 'division' => '', 'Itemid' => ''),
         'resultsmatrix'    => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'mode' => '', 'order' => '', 'layout' => '', 'division' => '', 'Itemid' => ''),
 		'rivals'            => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'Itemid' => ''),
