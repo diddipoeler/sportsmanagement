@@ -1115,7 +1115,7 @@ try{
 				break;
 
 			case "results":
-			case "jlallprojectrounds":
+			case "allprojectrounds":
 				$routeparameter                       = array();
 				$routeparameter['cfg_which_database'] = $this->_app->input->getInt('cfg_which_database', ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0));
 				$routeparameter['s']                  = $this->_app->input->getInt('s', 0);
