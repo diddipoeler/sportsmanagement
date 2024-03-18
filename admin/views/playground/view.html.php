@@ -50,6 +50,19 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 		$this->extended = sportsmanagementHelper::getExtended($this->item->extended, 'playground');
 		$this->extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'playground');
 
+$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('backend',0,Factory::getApplication()->input->get('view'));
+		$lists                  = array();
+
+		if ($this->checkextrafields)
+		{
+			$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id,'backend',0,Factory::getApplication()->input->get('view'));
+		}
+        
+        $this->lists = $lists;
+
+
+
+		
 		if (version_compare(JVERSION, '4.0.0', 'ge'))
 		{
 		  $this->document->addScript(Uri::base() . 'components/' . $this->option . '/assets/js/editgeocode.js');
