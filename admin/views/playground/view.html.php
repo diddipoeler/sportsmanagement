@@ -48,6 +48,7 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 		}
 
 		$this->extended = sportsmanagementHelper::getExtended($this->item->extended, 'playground');
+		$this->extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'playground');
 
 		if (version_compare(JVERSION, '4.0.0', 'ge'))
 		{
