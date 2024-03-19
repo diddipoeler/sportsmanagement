@@ -397,15 +397,15 @@ $query->clear();
 						
 						
 $htmlcontent[$a]['first'] .= '<div class="row">';
-						foreach ($this->ProjectTeams as $key => $value)
-						{
+						//foreach ($this->ProjectTeams as $key => $value)
+						//{
                           /** heimmannschaft */
                           
                           //echo 'projectteam id -> '.$match->projectteam1_id.' projektteam id -> '.$value->id.'<br>';
                             
                             
-							if ((int) $match->projectteam1_id === (int) $value->id )
-							{
+							//if ((int) $match->projectteam1_id === (int) $value->id )
+							//{
                               $htmlcontent[$a]['first'] .= '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">';
 								if ($config['show_firstroster'])
 								{
@@ -440,11 +440,11 @@ $htmlcontent[$a]['first'] .= '<div class="row">';
 									$htmlcontent[$a]['first'] .= '</div>';
 								}
                               $htmlcontent[$a]['first'] .= '</div>';
-							}
+							//}
                           
                           
-                          if ( (int) $match->projectteam2_id === (int) $value->id)
-							{
+                          //if ( (int) $match->projectteam2_id === (int) $value->id)
+							//{
                             /** gastmannschaft */
                             $htmlcontent[$a]['first'] .= '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">';
 								if ($config['show_firstroster'])
@@ -480,12 +480,12 @@ $htmlcontent[$a]['first'] .= '<div class="row">';
 									$htmlcontent[$a]['first'] .= '</div>';
 								}
                             $htmlcontent[$a]['first'] .= '</div>';
-							}
+							//}
                           
                           
                           
                           
-						}
+						//}
                       				$htmlcontent[$a]['first'] .= '</div>';
                       
                       
