@@ -43,6 +43,7 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
 
 		$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
         $this->pagination = $this->get('Pagination');
+		 $this->mdlClub = BaseDatabaseModel::getInstance("club", "sportsmanagementModel");
 
 //$menu = Factory::getApplication()->getMenu()->getActive()->id;
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_(' menu: ' . $menu   ), 'Error');
