@@ -215,6 +215,23 @@ if (!$country_federation)
 // Build the script.
 $script   = array();
 $script[] = "\n";
+
+$script[] = "$(document).ready(function(){
+// Handling data-toggle manually
+    $('.nav-tabs a').click(function(){
+        $(this).tab('show');
+    });
+// The on tab shown event
+    $('.nav-tabs a').on('shown.bs.tab', function (e) {
+       // alert('Hello from the other siiiiiide!');
+        var current_tab = e.target;
+        //alert('Hello from the other siiiiiide!' + current_tab );
+        console.log('current_tab ' + current_tab);
+        var previous_tab = e.relatedTarget;
+    });
+});";
+
+
 $script[] = "jQuery(document).ready(function ($){";
 
 foreach ($points as $row)
