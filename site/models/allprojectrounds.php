@@ -400,6 +400,10 @@ $htmlcontent[$a]['first'] .= '<div class="row">';
 						foreach ($this->ProjectTeams as $key => $value)
 						{
                           /** heimmannschaft */
+                          
+                          //echo 'projectteam id -> '.$match->projectteam1_id.' projektteam id -> '.$value->id.'<br>';
+                            
+                            
 							if ((int) $match->projectteam1_id === (int) $value->id )
 							{
                               $htmlcontent[$a]['first'] .= '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">';
@@ -410,7 +414,7 @@ $htmlcontent[$a]['first'] .= '<div class="row">';
 									//$this->projectteam_id           = $value;
                                   $htmlcontent[$a]['first'] .= '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">';
                                   $htmlcontent[$a]['first'] .= '<b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP') . ' : </b>';
-									$htmlcontent[$a]['first'] .= implode(",", self::getMatchPlayers($match->id,$value->id));
+									$htmlcontent[$a]['first'] .= implode(",", self::getMatchPlayers($match->id,$match->projectteam1_id));
 									$htmlcontent[$a]['first'] .= '</div>';
 								}
 
@@ -421,7 +425,7 @@ $htmlcontent[$a]['first'] .= '<div class="row">';
 									//$this->projectteam_id          = $value;
                                   $htmlcontent[$a]['first'] .= '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">';
                                   $htmlcontent[$a]['first'] .= '<b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTES') . ' : </b>';
-									$htmlcontent[$a]['first'] .= implode(",", self::getSubstitutes($match->id,$value->id));
+									$htmlcontent[$a]['first'] .= implode(",", self::getSubstitutes($match->id,$match->projectteam1_id));
 									$htmlcontent[$a]['first'] .= '</div>';
 								}
 
@@ -432,7 +436,7 @@ $htmlcontent[$a]['first'] .= '<div class="row">';
 									//$this->projectteam_id           = $value;
                                   $htmlcontent[$a]['first'] .= '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">';
                                   $htmlcontent[$a]['first'] .= '<b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS') . ' : </b>';
-									$htmlcontent[$a]['first'] .= implode(",", self::getPlayersEvents($match->id,$value->id));
+									$htmlcontent[$a]['first'] .= implode(",", self::getPlayersEvents($match->id,$match->projectteam1_id));
 									$htmlcontent[$a]['first'] .= '</div>';
 								}
                               $htmlcontent[$a]['first'] .= '</div>';
@@ -450,7 +454,7 @@ $htmlcontent[$a]['first'] .= '<div class="row">';
 									//$this->projectteam_id           = $value;
                                   $htmlcontent[$a]['first'] .= '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">';
                                   $htmlcontent[$a]['first'] .= '<b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP') . ' : </b>';
-									$htmlcontent[$a]['first'] .= implode(",", self::getMatchPlayers($match->id,$value->id));
+									$htmlcontent[$a]['first'] .= implode(",", self::getMatchPlayers($match->id,$match->projectteam2_id));
 									$htmlcontent[$a]['first'] .= '</div>';
 								}
 
@@ -461,7 +465,7 @@ $htmlcontent[$a]['first'] .= '<div class="row">';
 									//$this->projectteam_id          = $value;
                                   $htmlcontent[$a]['first'] .= '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">';
                                   $htmlcontent[$a]['first'] .= '<b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTES') . ' : </b>';
-									$htmlcontent[$a]['first'] .= implode(",", self::getSubstitutes($match->id,$value->id));
+									$htmlcontent[$a]['first'] .= implode(",", self::getSubstitutes($match->id,$match->projectteam2_id));
 									$htmlcontent[$a]['first'] .= '</div>';
 								}
 
@@ -472,7 +476,7 @@ $htmlcontent[$a]['first'] .= '<div class="row">';
 									//$this->projectteam_id           = $value;
                                   $htmlcontent[$a]['first'] .= '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">';
                                   $htmlcontent[$a]['first'] .= '<b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS') . ' : </b>';
-									$htmlcontent[$a]['first'] .= implode(",", self::getPlayersEvents($match->id,$value->id));
+									$htmlcontent[$a]['first'] .= implode(",", self::getPlayersEvents($match->id,$match->projectteam2_id));
 									$htmlcontent[$a]['first'] .= '</div>';
 								}
                             $htmlcontent[$a]['first'] .= '</div>';
