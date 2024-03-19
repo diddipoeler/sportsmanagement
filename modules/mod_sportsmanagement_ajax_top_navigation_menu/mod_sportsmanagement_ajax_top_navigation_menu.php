@@ -215,7 +215,7 @@ if (!$country_federation)
 // Build the script.
 $script   = array();
 $script[] = "\n";
-
+/**
 $script[] = "$(document).ready(function(){
 // Handling data-toggle manually
     $('.nav-tabs a').click(function(){
@@ -230,8 +230,28 @@ $script[] = "$(document).ready(function(){
         var previous_tab = e.relatedTarget;
     });
 });";
+*/
 
+$script[] = "$(document).ready(function(){
 
+var id = $('.tab-content .active').attr('id');
+console.log('current_tab ' + id);
+//console.log('aktueller index ' + $($(this).attr('href')).index() );
+
+    
+$('.nav-tabs a').click(function (e) {
+     e.preventDefault();
+     //alert( $($(this).attr('href')).index() );
+     
+     console.log('klick index ' + $($(this).attr('href')).index() );
+     console.log('klick tab ' + $('.tab-content .active').attr('id') );
+});   
+
+    
+
+});";
+
+  
 $script[] = "jQuery(document).ready(function ($){";
 
 foreach ($points as $row)
