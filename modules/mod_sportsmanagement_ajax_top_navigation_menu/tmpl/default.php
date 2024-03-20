@@ -85,17 +85,7 @@ $div_col_3 = 2;
                 <div  class="tab-pane fade <?php echo $selected ?>"
                      id="jlajaxtopmenu-<?php echo $value ?><?php echo $module->id ?>"
 					 >
-					<?PHP
-					if ($country_id)
-					{
-					$flag =  JSMCountries::getCountryFlag($country_id,'',false,true);	
-						?>
-                        <img style="float: right;"
-                             src="<?php echo $flag; ?>"
-                             alt="<?php echo $country_id ?>" width="144" height=""/>
-						<?PHP
-					}
-					?>
+					
 
                     <table>
                         <tr>
@@ -311,7 +301,17 @@ $div_col_3 = 2;
 
 </div>
 <div class="col-lg-<?php echo $div_col_2; ?> col-md-<?php echo $div_col_2; ?> col-sm-<?php echo $div_col_2; ?> col-xs-<?php echo $div_col_2; ?>">
-  
+<?PHP
+					if ($country_id)
+					{
+					$flag =  JSMCountries::getCountryFlag($country_id,'',false,true);	
+						?>
+                        <img style="float: right;"
+                             src="<?php echo $flag; ?>"
+                             alt="<?php echo $country_id ?>" width="144" height=""/>
+						<?PHP
+					}
+					?>  
 </div>  
 <div class="col-lg-<?php echo $div_col_3; ?> col-md-<?php echo $div_col_3; ?> col-sm-<?php echo $div_col_3; ?> col-xs-<?php echo $div_col_3; ?>">
 <div style="margin: 0 auto;">
