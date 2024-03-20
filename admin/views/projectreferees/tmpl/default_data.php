@@ -224,7 +224,7 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 					{
 						HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === 2 ? 'un' : '') . 'archive', 'cb' . $this->count_i, 'projectreferees');
 						HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === -2 ? 'un' : '') . 'trash', 'cb' . $this->count_i, 'projectreferees');
-						echo HTMLHelper::_('actionsdropdown.render', $this->escape($this->item->name));
+						echo HTMLHelper::_('actionsdropdown.render', $this->escape($this->item->lastname));
 					}
 					?>
                 </div>
