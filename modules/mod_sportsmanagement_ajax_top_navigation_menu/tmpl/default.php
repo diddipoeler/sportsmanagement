@@ -23,6 +23,9 @@ elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
 HTMLHelper::_('behavior.tooltip');
 }
 
+$div_col_1 = 8;
+$div_col_2 = 2;
+$div_col_3 = 2;
 
 ?>
     <script type="text/javascript">
@@ -34,7 +37,7 @@ HTMLHelper::_('behavior.tooltip');
 <div class="row">
 
 
-<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+<div class="col-lg-<?php echo $div_col_1; ?> col-md-<?php echo $div_col_1; ?> col-sm-<?php echo $div_col_1; ?> col-xs-<?php echo $div_col_1; ?>">
 
 
         <!-- Nav tabs -->
@@ -241,10 +244,7 @@ HTMLHelper::_('behavior.tooltip');
                                     <tr>
                                         <td>
 
-                                            <ul class="jsmpage pagination" id="pagination">
-
-
-                                            </ul>
+                                           
 
 
 											<?php if ($project_id)
@@ -310,8 +310,15 @@ HTMLHelper::_('behavior.tooltip');
         </div>
 
 </div>
-<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+<div class="col-lg-<?php echo $div_col_2; ?> col-md-<?php echo $div_col_2; ?> col-sm-<?php echo $div_col_2; ?> col-xs-<?php echo $div_col_2; ?>">
+  
+</div>  
+<div class="col-lg-<?php echo $div_col_3; ?> col-md-<?php echo $div_col_3; ?> col-sm-<?php echo $div_col_3; ?> col-xs-<?php echo $div_col_3; ?>">
 <div style="margin: 0 auto;">
+   <ul class="jsmpage pagination" id="pagination">
+
+
+                                            </ul>
 <?php if ($project_id)
 											{
 												?>
