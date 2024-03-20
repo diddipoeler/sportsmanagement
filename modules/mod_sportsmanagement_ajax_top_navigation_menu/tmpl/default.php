@@ -23,9 +23,9 @@ elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
 HTMLHelper::_('behavior.tooltip');
 }
 
-$div_col_1 = 8;
-$div_col_2 = 1;
-$div_col_3 = 3;
+$div_col_1 = $params->get('col_tabs');
+$div_col_2 = $params->get('col_img');
+$div_col_3 = $params->get('col_menu');
 
 ?>
     <script type="text/javascript">
