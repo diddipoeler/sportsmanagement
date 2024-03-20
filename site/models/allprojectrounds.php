@@ -15,6 +15,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\Uri\Uri;
 
 jimport('joomla.utilities.array');
 jimport('joomla.utilities.arrayhelper');
@@ -229,7 +230,7 @@ $query->clear();
 	{
 		$app = Factory::getApplication();
 
-      //echo __LINE__.' rounds<pre>'.print_r($rounds,true).'</pre>';
+      //echo __LINE__.' rounds<pre>'.print_r($this->result,true).'</pre>';
       
 		if (count($rounds) % 2)
 		{
@@ -488,8 +489,14 @@ $htmlcontent[$key2]['first'] .= '<div class="row">';
                             $htmlcontent[$key2]['first'] .= '</div>';
 							//}
                           
-                          
-                          
+                      $htmlcontent[$key2]['first'] .= '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">';
+                      $htmlcontent[$key2]['first'] .=  HTMLHelper::image(Uri::root() ."administrator/components/com_sportsmanagement/assets/images/stadion.png","stadion.png",array("title" => 'Stadion' )).  $match->playground_name.
+                        '  ' . HTMLHelper::image(Uri::root() ."administrator/components/com_sportsmanagement/assets/images/zuschauer.png","stadion.png",array("title" => 'Stadion' )).  $match->crowd;
+                        ;
+                          $htmlcontent[$key2]['first'] .= '</div>';
+                                            $htmlcontent[$key2]['first'] .= '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">';
+                      //$htmlcontent[$key2]['first'] .=  HTMLHelper::image(Uri::root() ."administrator/components/com_sportsmanagement/assets/images/zuschauer.png","stadion.png",array("title" => 'Stadion' )).  $match->crowd;
+                          $htmlcontent[$key2]['first'] .= '</div>';
                           
 						//}
                       				$htmlcontent[$key2]['first'] .= '</div>';
