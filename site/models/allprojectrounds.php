@@ -229,7 +229,7 @@ $query->clear();
 	{
 		$app = Factory::getApplication();
 
-      //echo __LINE__.' config<pre>'.print_r($config,true).'</pre>';
+      //echo __LINE__.' rounds<pre>'.print_r($rounds,true).'</pre>';
       
 		if (count($rounds) % 2)
 		{
@@ -255,8 +255,12 @@ $query->clear();
 		$htmlcontent = array();
 		$content     = '<table class="' . $this->_params['table_class'] . '">';
 
-		for ($a = 0; $a < $countrows; $a++)
+      foreach ($rounds as $round)
+		//for ($a = 0; $a < $countrows; $a++)
 		{
+        
+        //echo __LINE__.' round name<pre>'.print_r($round->name,true).'</pre>';
+        
 			if ($config['show_columns'] == 1)
 			{
 				// Zwei spalten
@@ -272,7 +276,7 @@ $query->clear();
 
 				foreach ($this->result as $match)
 				{
-					if ((int) $match->roundcode === (int) $roundcode)
+					if ((int) $match->round_id === (int) $round->id)
 					{
 						$htmlcontent[$a]['first'] .= '<tr><td width="40%">' . $match->home_name . '</td>';
 						$htmlcontent[$a]['first'] .= '<td width="10%">' . $match->team1_result . '</td>';
@@ -360,21 +364,22 @@ $query->clear();
 			}
 			else
 			{
+              //echo __LINE__.' round name<pre>'.print_r($round->name,true).'</pre>';
 				// Nur eine spalte
               $htmlcontent[$a]['header'] = '<div class="row">';
               $htmlcontent[$a]['header'] .= '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">';
-              $htmlcontent[$a]['header'] .= '<b>' .$rounds[$a]->name .'</b>';
+              $htmlcontent[$a]['header'] .= '<b>' .$round->name .'</b>';
               $htmlcontent[$a]['header'] .= '</div>';
               $htmlcontent[$a]['header'] .= '</div>';
               
 				//$htmlcontent[$a]['header'] = '';
 				//$htmlcontent[$a]['first']  = '<table class="' . $this->_params['table_class'] . '">';
 				//$htmlcontent[$a]['header'] = '<thead><tr><th colspan="" >' . $rounds[$a]->name . '</th></tr></thead>';
-				$roundcode                 = $a + 1;
+				//$roundcode                 = $a + 1;
 
 				foreach ($this->result as $match)
 				{
-					if ((int) $match->roundcode === (int) $roundcode)
+					if ((int) $match->round_id === (int) $round->id)
 					{
                       $htmlcontent[$a]['first'] .= '<div class="row">';
                       //$htmlcontent[$a]['first'] .= '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">';
