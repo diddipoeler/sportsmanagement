@@ -24,8 +24,8 @@ HTMLHelper::_('behavior.tooltip');
 }
 
 $div_col_1 = 8;
-$div_col_2 = 2;
-$div_col_3 = 2;
+$div_col_2 = 1;
+$div_col_3 = 3;
 
 ?>
     <script type="text/javascript">
