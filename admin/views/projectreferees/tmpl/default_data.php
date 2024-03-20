@@ -216,10 +216,28 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 					?>
                 </td>
                 <td class="center">
+                <div class="btn-group">
+					<?php echo HTMLHelper::_('jgrid.published', $this->item->published, $this->count_i, 'projectreferees.', $canChange, 'cb'); ?>
+					<?php
+					/**  Create dropdown items and render the dropdown list. */
+					if ($canChange)
+					{
+						HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === 2 ? 'un' : '') . 'archive', 'cb' . $this->count_i, 'projectreferees');
+						HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === -2 ? 'un' : '') . 'trash', 'cb' . $this->count_i, 'projectreferees');
+						echo HTMLHelper::_('actionsdropdown.render', $this->escape($this->item->name));
+					}
+					?>
+                </div>
+            </td>
+                <!--
+                <td class="center">
 					<?php
 					echo HTMLHelper::_('grid.published', $this->item, $this->count_i, 'tick.png', 'publish_x.png', 'projectreferees.');
 					?>
                 </td>
+                -->
+                
+                
                 <td class="order" id="defaultdataorder">
 <?php
 echo $this->loadTemplate('data_order');
