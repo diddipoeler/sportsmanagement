@@ -47,7 +47,7 @@ class sportsmanagementControllerprojectreferees extends JSMControllerAdmin
 	 *
 	 * @since 1.6
 	 */
-	public function getModel($name = 'Projectreferee', $prefix = 'sportsmanagementModel', $config = Array())
+	public function getModel($name = 'projectreferee', $prefix = 'sportsmanagementModel', $config = Array())
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 
