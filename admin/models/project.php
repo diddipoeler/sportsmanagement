@@ -270,9 +270,17 @@ $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($query->dum
 		$query->join('INNER', '#__sportsmanagement_sports_type AS st ON p.sports_type_id = st.id ');
 		$query->join('INNER', '#__sportsmanagement_league AS l ON l.id = p.league_id ');
 		$query->where('p.id = ' . $project_id);
+		try{
 		$db->setQuery($query);
 		$result = $db->loadObject();
-		
+		}
+catch (RuntimeException $e)
+				{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($query->dump(), true) . '</pre>', 'Error');
+				}
+
 		try{
 		$query->clear();
 		$query->select('eventtime,name as sports_type_name');
