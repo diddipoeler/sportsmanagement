@@ -38,6 +38,9 @@ class sportsmanagementModelprojectreferee extends JSMModelAdmin
 		$pks  = $this->jsmjinput->getVar('cid', null, 'post', 'array');
 		$post = $this->jsmjinput->post->getArray(array());
 		$app = Factory::getApplication();
+        
+//         $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . 'post<pre>' . print_r($post, true) . '</pre>', 'Error');
+//      $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . 'pks <pre>' . print_r($pks, true) . '</pre>', 'Error');
 
 		$result = true;
 
