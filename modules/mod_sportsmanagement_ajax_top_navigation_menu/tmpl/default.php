@@ -31,10 +31,10 @@ HTMLHelper::_('behavior.tooltip');
 
     <div class="container-fluid">
 
+<div class="row">
 
 
-
-
+<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
 
 
         <!-- Nav tabs -->
@@ -250,7 +250,71 @@ HTMLHelper::_('behavior.tooltip');
 											<?php if ($project_id)
 											{
 												?>
+                                                
+											<?php } ?>
+                                        </td>
+
+                                        <td>
+											<?php if ($team_id)
+											{
+												?>
                                                 <div style="margin: 0 auto;">
+                                                    <fieldset class="">
+
+                                                        <!-- <ul class="nav-list"> -->
+                                                        <ul class="">
+															<?php if ($params->get('show_nav_links'))
+																:
+																?>
+
+																<?php for ($i = 17; $i < 23; $i++)
+																:
+																?>
+																<?php
+																if ($params->get('navpointct' . $i) && $link = $helper->getLink($params->get('navpointct' . $i)))
+																	:
+																	?>
+                                                                    <li class="nav-item"><?php echo HTMLHelper::link(Route::_($link), $params->get('navpointct_label' . $i)); ?></li>
+																<?php elseif ($params->get('navpointct' . $i) == "separator")
+																	:
+																	?>
+                                                                    <li class="nav-item separator"><?php echo $params->get('navpointct_label' . $i); ?></li>
+																<?php endif; ?>
+															<?php endfor; ?>
+
+
+															<?php
+															endif;
+															?>
+                                                        </ul>
+                                                    </fieldset>
+                                                </div>
+											<?php } ?>
+                                        </td>
+
+                                    </tr>
+
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+
+                <!--jlajaxtopmenu<?php echo $value ?>-<?php echo $module->id ?> end-->
+
+				<?PHP
+			}
+			?>
+
+        </div>
+
+</div>
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+<div style="margin: 0 auto;">
+<?php if ($project_id)
+											{
+												?>
                                                     <fieldset class="">
 
                                                         <!-- <ul class="nav-list"> -->
@@ -324,68 +388,13 @@ HTMLHelper::_('behavior.tooltip');
 															?>
                                                         </ul>
                                                     </fieldset>
+													<?php } ?>
                                                 </div>
-											<?php } ?>
-                                        </td>
 
-                                        <td>
-											<?php if ($team_id)
-											{
-												?>
-                                                <div style="margin: 0 auto;">
-                                                    <fieldset class="">
-
-                                                        <!-- <ul class="nav-list"> -->
-                                                        <ul class="">
-															<?php if ($params->get('show_nav_links'))
-																:
-																?>
-
-																<?php for ($i = 17; $i < 23; $i++)
-																:
-																?>
-																<?php
-																if ($params->get('navpointct' . $i) && $link = $helper->getLink($params->get('navpointct' . $i)))
-																	:
-																	?>
-                                                                    <li class="nav-item"><?php echo HTMLHelper::link(Route::_($link), $params->get('navpointct_label' . $i)); ?></li>
-																<?php elseif ($params->get('navpointct' . $i) == "separator")
-																	:
-																	?>
-                                                                    <li class="nav-item separator"><?php echo $params->get('navpointct_label' . $i); ?></li>
-																<?php endif; ?>
-															<?php endfor; ?>
-
-
-															<?php
-															endif;
-															?>
-                                                        </ul>
-                                                    </fieldset>
-                                                </div>
-											<?php } ?>
-                                        </td>
-
-                                    </tr>
-
-                                </table>
-                            </td>
-                        </tr>
-                    </table>
-
-                </div>
-
-                <!--jlajaxtopmenu<?php echo $value ?>-<?php echo $module->id ?> end-->
-
-				<?PHP
-			}
-			?>
-
-        </div>
-
+</div>
     </div>
 
-
+    </div>
 <?PHP
 
 ?>
