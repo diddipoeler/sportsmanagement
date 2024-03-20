@@ -255,7 +255,7 @@ $query->clear();
 		$htmlcontent = array();
 		$content     = '<table class="' . $this->_params['table_class'] . '">';
 
-      foreach ($rounds as $round)
+      foreach ($rounds as $key2 => $round)
 		//for ($a = 0; $a < $countrows; $a++)
 		{
         
@@ -366,11 +366,11 @@ $query->clear();
 			{
               //echo __LINE__.' round name<pre>'.print_r($round->name,true).'</pre>';
 				// Nur eine spalte
-              $htmlcontent[$a]['header'] = '<div class="row">';
-              $htmlcontent[$a]['header'] .= '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">';
-              $htmlcontent[$a]['header'] .= '<b>' .$round->name .'</b>';
-              $htmlcontent[$a]['header'] .= '</div>';
-              $htmlcontent[$a]['header'] .= '</div>';
+              $htmlcontent[$key2]['header'] = '<div class="row">';
+              $htmlcontent[$key2]['header'] .= '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">';
+              $htmlcontent[$key2]['header'] .= '<b>' .$round->name .'</b>';
+              $htmlcontent[$key2]['header'] .= '</div>';
+              $htmlcontent[$key2]['header'] .= '</div>';
               
 				//$htmlcontent[$a]['header'] = '';
 				//$htmlcontent[$a]['first']  = '<table class="' . $this->_params['table_class'] . '">';
@@ -381,27 +381,28 @@ $query->clear();
 				{
 					if ((int) $match->round_id === (int) $round->id)
 					{
-                      $htmlcontent[$a]['first'] .= '<div class="row">';
+                      $htmlcontent[$key2]['first'] .= '<div class="row">';
+
                       //$htmlcontent[$a]['first'] .= '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">';
-                      $htmlcontent[$a]['first'] .= '<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">';
-                      $htmlcontent[$a]['first'] .=  $match->home_name;
-                      $htmlcontent[$a]['first'] .= '</div>';
-                      $htmlcontent[$a]['first'] .= '<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">';
-                      $htmlcontent[$a]['first'] .= $match->team1_result;
-                      $htmlcontent[$a]['first'] .= '</div>';
-                      $htmlcontent[$a]['first'] .= '<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">';
-                      $htmlcontent[$a]['first'] .= $match->team2_result;
-                      $htmlcontent[$a]['first'] .= '</div>';
-                      $htmlcontent[$a]['first'] .= '<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">';
-                      $htmlcontent[$a]['first'] .= $match->away_name;
-                      $htmlcontent[$a]['first'] .= '</div>';
+                      $htmlcontent[$key2]['first'] .= '<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">';
+                      $htmlcontent[$key2]['first'] .=  $match->home_name;
+                      $htmlcontent[$key2]['first'] .= '</div>';
+                      $htmlcontent[$key2]['first'] .= '<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">';
+                      $htmlcontent[$key2]['first'] .= $match->team1_result;
+                      $htmlcontent[$key2]['first'] .= '</div>';
+                      $htmlcontent[$key2]['first'] .= '<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">';
+                      $htmlcontent[$key2]['first'] .= $match->team2_result;
+                      $htmlcontent[$key2]['first'] .= '</div>';
+                      $htmlcontent[$key2]['first'] .= '<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">';
+                      $htmlcontent[$key2]['first'] .= $match->away_name;
+                      $htmlcontent[$key2]['first'] .= '</div>';
                       //$htmlcontent[$a]['first'] .= '</div>';
-                      $htmlcontent[$a]['first'] .= '</div>';
+                      $htmlcontent[$key2]['first'] .= '</div>';
 						
 						
 						
 						
-$htmlcontent[$a]['first'] .= '<div class="row">';
+$htmlcontent[$key2]['first'] .= '<div class="row">';
 						//foreach ($this->ProjectTeams as $key => $value)
 						//{
                           /** heimmannschaft */
@@ -411,16 +412,16 @@ $htmlcontent[$a]['first'] .= '<div class="row">';
                             
 							//if ((int) $match->projectteam1_id === (int) $value->id )
 							//{
-                              $htmlcontent[$a]['first'] .= '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">';
+                              $htmlcontent[$key2]['first'] .= '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">';
 								if ($config['show_firstroster'])
 								{
 									//$htmlcontent[$a]['first'] .= '<tr><td colspan="4"><b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP') . ' : </b>';
 									//$this->matchid                  = $match->id;
 									//$this->projectteam_id           = $value;
-                                 $htmlcontent[$a]['first'] .= '<div>';
-                                  $htmlcontent[$a]['first'] .= '<b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP') . ' : </b>';
-									$htmlcontent[$a]['first'] .= implode(",", self::getMatchPlayers($match->id,$match->projectteam1_id));
-									$htmlcontent[$a]['first'] .= '</div>';
+                                 $htmlcontent[$key2]['first'] .= '<div>';
+                                  $htmlcontent[$key2]['first'] .= '<b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP') . ' : </b>';
+									$htmlcontent[$key2]['first'] .= implode(",", self::getMatchPlayers($match->id,$match->projectteam1_id));
+									$htmlcontent[$key2]['first'] .= '</div>';
 								}
 
 								if ($config['show_firstsubst'])
@@ -428,10 +429,10 @@ $htmlcontent[$a]['first'] .= '<div class="row">';
 									//$htmlcontent[$a]['first'] .= '<tr><td colspan="4"><b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTES') . ' : </b>';
 									//$this->matchid                 = $match->id;
 									//$this->projectteam_id          = $value;
-                                  $htmlcontent[$a]['first'] .= '<div >';
-                                  $htmlcontent[$a]['first'] .= '<b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTES') . ' : </b>';
-									$htmlcontent[$a]['first'] .= implode(",", self::getSubstitutes($match->id,$match->projectteam1_id));
-									$htmlcontent[$a]['first'] .= '</div>';
+                                  $htmlcontent[$key2]['first'] .= '<div >';
+                                  $htmlcontent[$key2]['first'] .= '<b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTES') . ' : </b>';
+									$htmlcontent[$key2]['first'] .= implode(",", self::getSubstitutes($match->id,$match->projectteam1_id));
+									$htmlcontent[$key2]['first'] .= '</div>';
 								}
 
 								if ($config['show_firstevents'])
@@ -439,28 +440,28 @@ $htmlcontent[$a]['first'] .= '<div class="row">';
 									//$htmlcontent[$a]['first'] .= '<tr><td colspan="4"><b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS') . ' : </b>';
 									//$this->matchid                  = $match->id;
 									//$this->projectteam_id           = $value;
-                                  $htmlcontent[$a]['first'] .= '<div>';
-                                  $htmlcontent[$a]['first'] .= '<b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS') . ' : </b>';
-									$htmlcontent[$a]['first'] .= implode(",", self::getPlayersEvents($match->id,$match->projectteam1_id));
-									$htmlcontent[$a]['first'] .= '</div>';
+                                  $htmlcontent[$key2]['first'] .= '<div>';
+                                  $htmlcontent[$key2]['first'] .= '<b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS') . ' : </b>';
+									$htmlcontent[$key2]['first'] .= implode(",", self::getPlayersEvents($match->id,$match->projectteam1_id));
+									$htmlcontent[$key2]['first'] .= '</div>';
 								}
-                              $htmlcontent[$a]['first'] .= '</div>';
+                              $htmlcontent[$key2]['first'] .= '</div>';
 							//}
                           
                           
                           //if ( (int) $match->projectteam2_id === (int) $value->id)
 							//{
                             /** gastmannschaft */
-                            $htmlcontent[$a]['first'] .= '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">';
+                            $htmlcontent[$key2]['first'] .= '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">';
 								if ($config['show_firstroster'])
 								{
 									//$htmlcontent[$a]['first'] .= '<tr><td colspan="4"><b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP') . ' : </b>';
 									//$this->matchid                  = $match->id;
 									//$this->projectteam_id           = $value;
-                                  $htmlcontent[$a]['first'] .= '<div>';
-                                  $htmlcontent[$a]['first'] .= '<b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP') . ' : </b>';
-									$htmlcontent[$a]['first'] .= implode(",", self::getMatchPlayers($match->id,$match->projectteam2_id));
-									$htmlcontent[$a]['first'] .= '</div>';
+                                  $htmlcontent[$key2]['first'] .= '<div>';
+                                  $htmlcontent[$key2]['first'] .= '<b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP') . ' : </b>';
+									$htmlcontent[$key2]['first'] .= implode(",", self::getMatchPlayers($match->id,$match->projectteam2_id));
+									$htmlcontent[$key2]['first'] .= '</div>';
 								}
 
 								if ($config['show_firstsubst'])
@@ -468,10 +469,10 @@ $htmlcontent[$a]['first'] .= '<div class="row">';
 									//$htmlcontent[$a]['first'] .= '<tr><td colspan="4"><b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTES') . ' : </b>';
 									//$this->matchid                 = $match->id;
 									//$this->projectteam_id          = $value;
-                                  $htmlcontent[$a]['first'] .= '<div>';
-                                  $htmlcontent[$a]['first'] .= '<b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTES') . ' : </b>';
-									$htmlcontent[$a]['first'] .= implode(",", self::getSubstitutes($match->id,$match->projectteam2_id));
-									$htmlcontent[$a]['first'] .= '</div>';
+                                  $htmlcontent[$key2]['first'] .= '<div>';
+                                  $htmlcontent[$key2]['first'] .= '<b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTES') . ' : </b>';
+									$htmlcontent[$key2]['first'] .= implode(",", self::getSubstitutes($match->id,$match->projectteam2_id));
+									$htmlcontent[$key2]['first'] .= '</div>';
 								}
 
 								if ($config['show_firstevents'])
@@ -479,19 +480,19 @@ $htmlcontent[$a]['first'] .= '<div class="row">';
 									//$htmlcontent[$a]['first'] .= '<tr><td colspan="4"><b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS') . ' : </b>';
 									//$this->matchid                  = $match->id;
 									//$this->projectteam_id           = $value;
-                                  $htmlcontent[$a]['first'] .= '<div>';
-                                  $htmlcontent[$a]['first'] .= '<b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS') . ' : </b>';
-									$htmlcontent[$a]['first'] .= implode(",", self::getPlayersEvents($match->id,$match->projectteam2_id));
-									$htmlcontent[$a]['first'] .= '</div>';
+                                  $htmlcontent[$key2]['first'] .= '<div>';
+                                  $htmlcontent[$key2]['first'] .= '<b>' . Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS') . ' : </b>';
+									$htmlcontent[$key2]['first'] .= implode(",", self::getPlayersEvents($match->id,$match->projectteam2_id));
+									$htmlcontent[$key2]['first'] .= '</div>';
 								}
-                            $htmlcontent[$a]['first'] .= '</div>';
+                            $htmlcontent[$key2]['first'] .= '</div>';
 							//}
                           
                           
                           
                           
 						//}
-                      				$htmlcontent[$a]['first'] .= '</div>';
+                      				$htmlcontent[$key2]['first'] .= '</div>';
                       
                       
 					}
