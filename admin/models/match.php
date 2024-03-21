@@ -500,8 +500,9 @@ break;
 	{
 		$db     = Factory::getDbo();
 		$query  = $db->getQuery(true);
-		$result = '';
+		$result = array();
 		$query->select('pref.id AS value,pl.firstname,pl.nickname,pl.lastname,pl.info,pos.name AS positionname');
+		$query->select('concat(pl.firstname, \' - \',pl.lastname   ) AS text');
 		$query->from('#__sportsmanagement_person AS pl');
 		$query->join('LEFT', '#__sportsmanagement_season_person_id AS spi ON spi.person_id=pl.id');
 		$query->join('LEFT', '#__sportsmanagement_project_referee AS pref ON pref.person_id=spi.id AND pref.published=1');
