@@ -421,7 +421,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 						{
 							$temp[$key][] = HTMLHelper::_(
 								'select.option', $referee->value,
-								sportsmanagementHelper::formatName(null, $referee->firstname, $referee->nickname, $referee->lastname, $default_name_format)
+								$referee->text
 							);
 						}
 					}
