@@ -2116,10 +2116,14 @@ break;
 					$this->jsmdb->setQuery($this->jsmquery);
 					$result_referee = $this->jsmdb->loadResult();
 
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' result <pre>'.print_r($result,true).'</pre>'   , 'notice');
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' project_referee_id <pre>'.print_r($project_referee_id,true).'</pre>'   , 'notice');
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' result_referee <pre>'.print_r($result_referee,true).'</pre>'   , 'notice');
+					
 					if ($result_referee)
 					{
 						$object                      = new stdClass;
-						$object->id                  = $result;
+						$object->id                  = $result_referee;
 						$object->project_position_id = $key;
 						$object->ordering            = $x;
 
