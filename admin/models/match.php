@@ -2360,7 +2360,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	{
 		$db     = Factory::getDbo();
 		$query  = $db->getQuery(true);
-		$result = '';
+		$result = array();
 		$query->select('pref.id AS value,pr.firstname,pr.nickname,pr.lastname,pr.email');
 		$query->from('#__sportsmanagement_match_referee AS mr');
 		$query->join('LEFT', '#__sportsmanagement_project_referee AS pref ON mr.project_referee_id=pref.id AND pref.published = 1');
