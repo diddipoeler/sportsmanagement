@@ -97,10 +97,10 @@ echo $this->loadTemplate('jsm_notes');
 
 
                                         <input id="moveright" type="button"
-                                               value="<?php echo Text::_('JGLOBAL_RIGHT'); ?>"
+                                               value="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_ASSIGN'); ?>"
                                                onclick="move_list_items('roster','position<?php echo $key; ?>');"/>
                                         <input id="moveleft" type="button"
-                                               value="<?php echo Text::_('JGLOBAL_LEFT'); ?>"
+                                               value="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_UNASSIGN'); ?>"
                                                onclick="move_list_items('position<?php echo $key; ?>','roster');"/>
 
                                     </td>
