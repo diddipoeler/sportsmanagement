@@ -19,6 +19,11 @@
 <events>
 <name icon="penalty_goal.png">PENALTY_GOAL</name>
 </events>
+
+<events>
+<name icon="penalty_goal.png">PENALTY_GOAL_OVERTIME</name>
+</events>
+  
 <events>
 <name icon="injured.png">INJURY</name>
 </events>
