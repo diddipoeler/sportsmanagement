@@ -501,6 +501,19 @@ $htmlcontent[$key2]['first'] .= '<div class="row">';
 						//}
                       				$htmlcontent[$key2]['first'] .= '</div>';
                       
+                      $referees = self::getMatchReferees($match->id);
+                     // echo __LINE__.' referees <pre>'.print_r($referees,true).'</pre>';
+                      
+                      if ( $referees )
+                      {
+                       $htmlcontent[$key2]['first'] .= '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">';
+                       $htmlcontent[$key2]['first'] .=  HTMLHelper::image(Uri::root() ."administrator/components/com_sportsmanagement/assets/images/schiedsrichter.png","stadion.png",array("title" => 'Stadion' )); 
+                        foreach ( $referees as $key => $value )
+                        {
+                          $htmlcontent[$key2]['first'] .= $value->text.' / '; 
+                        }
+                       $htmlcontent[$key2]['first'] .= '</div>'; 
+                      }
                       
 					}
 				}
@@ -785,6 +798,7 @@ $htmlcontent[$key2]['first'] .= '<div class="row">';
 		 $query->clear();
 		$query->select('p.id,pref.id AS person_id,p.firstname,p.lastname,pos.name AS position_name,CONCAT_WS(\':\',p.id,p.alias) AS person_slug,p.nickname ');
 		$query->select('mr.project_position_id,pos.name as position_name,pref.picture');
+      $query->select('concat(p.firstname, \' - \',p.lastname) AS text');
 		$query->from('#__sportsmanagement_match_referee AS mr');
 		$query->join('LEFT', '#__sportsmanagement_project_referee AS pref ON mr.project_referee_id=pref.id');
 		$query->join('INNER', '#__sportsmanagement_season_person_id AS spi ON pref.person_id=spi.id');
