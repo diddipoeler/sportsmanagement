@@ -782,6 +782,22 @@ $htmlcontent[$key2]['first'] .= '<div class="row">';
 		$query = $db->getQuery(true);
 		$referees = array();
 
+		 $query->clear();
+		$query->select('p.id,pref.id AS person_id,p.firstname,p.lastname,pos.name AS position_name,CONCAT_WS(\':\',p.id,p.alias) AS person_slug,p.nickname ');
+		$query->select('mr.project_position_id,pos.name as position_name,pref.picture');
+		$query->from('#__sportsmanagement_match_referee AS mr');
+		$query->join('LEFT', '#__sportsmanagement_project_referee AS pref ON mr.project_referee_id=pref.id');
+		$query->join('INNER', '#__sportsmanagement_season_person_id AS spi ON pref.person_id=spi.id');
+		$query->join('INNER', '#__sportsmanagement_person AS p ON spi.person_id=p.id');
+		$query->join('LEFT', '#__sportsmanagement_project_position AS ppos ON mr.project_position_id=ppos.id');
+		$query->join('LEFT', '#__sportsmanagement_position AS pos ON ppos.position_id=pos.id');
+		$query->where('mr.match_id = ' . (int) $match_id);
+		$query->where('p.published = 1');
+		$query->order('pos.name,mr.ordering');
+		$db->setQuery($query);
+		$referees = $db->loadObjectList();
+		
+return $referees;
 
 	}
 
