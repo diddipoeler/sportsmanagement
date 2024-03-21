@@ -775,4 +775,14 @@ $htmlcontent[$key2]['first'] .= '<div class="row">';
 
 	}
 
+	function getMatchReferees($match_id = 0)
+	{
+		$app = Factory::getApplication();
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true);
+		$referees = array();
+
+
+	}
+
 }
