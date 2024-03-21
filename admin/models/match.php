@@ -466,7 +466,7 @@ break;
 	{
 		$db     = Factory::getDbo();
 		$query  = $db->getQuery(true);
-		$result = '';
+		$result = array();
 
 		$query->select('spi.id AS value,pr.name,pr.middle_name,pr.short_name,pr.alias');
 		$query->from('#__sportsmanagement_match_referee AS mr');
