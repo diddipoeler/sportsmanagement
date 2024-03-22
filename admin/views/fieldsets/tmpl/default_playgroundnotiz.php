@@ -160,6 +160,9 @@ jQuery(function ($) {
     <th>
     playground_id
     </th>
+	     <th>
+    löschen ?
+    </th>
     <th>
     date_von
     </th>
@@ -199,6 +202,24 @@ jQuery(function ($) {
     ?>
     </td>
 
+<td>
+<?php
+    $daysOfWeek = array(0' => Text::_('Nein'),
+			                    1 => Text::_('Ja'));
+			$dwOptions  = array();
+
+			foreach ($daysOfWeek AS $key => $value)
+			{
+				$dwOptions[] = HTMLHelper::_('select.option', $key, $value);
+			}
+
+	
+				$lists['dayOfWeek'] = HTMLHelper::_('select.genericlist', $dwOptions, 'change_name_visitors[]', 'class="inputbox"', 'value', 'text', 0);
+	
+    
+    ?>
+
+	</td>
      <td>
               <input type="text" id="date_von" name="change_date_von[]" value="<?php echo sportsmanagementHelper::convertDate($value->date_von, 1);?>" />
     <?php
@@ -213,25 +234,11 @@ jQuery(function ($) {
     ?>
     </td>
      <td>
-       <?php
-    $daysOfWeek = array('NAME' => Text::_('NAME'),
-			                    'VISITORS' => Text::_('VISITORS'));
-			$dwOptions  = array();
-
-			foreach ($daysOfWeek AS $key => $value)
-			{
-				$dwOptions[] = HTMLHelper::_('select.option', $key, $value);
-			}
-
-	
-				$lists['dayOfWeek'] = HTMLHelper::_('select.genericlist', $dwOptions, 'change_name_visitors[]', 'class="inputbox"', 'value', 'text', $value->name_visitors);
-	
-    
-    ?>
-       <!-- <input type="text" id="name_visitors" name="name_visitors[]" value="<?php echo $value->name_visitors;?>" /> -->
+       
+       <input type="hidden" id="name_visitors" name="name_visitors[]" value="<?php echo $value->name_visitors;?>" /> 
     <?php
-    echo $lists['dayOfWeek'];
-    //echo $value->name_visitors;
+    //echo $lists['dayOfWeek'];
+    echo $value->name_visitors;
     ?>
     </td>
      <td>
