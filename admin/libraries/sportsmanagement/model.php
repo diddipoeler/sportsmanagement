@@ -956,6 +956,7 @@ switch ( $row_sports_type )
 				}
                 
                 /** informationen zum playground */
+			//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post <pre>'.print_r($post,true).'</pre>'  ), '');
                 foreach ( $post['date_von'] as $key => $value )
                 {
                 $profile             = new stdClass;
@@ -969,12 +970,28 @@ switch ( $row_sports_type )
                 $profile->timestamp_bis = sportsmanagementHelper::getTimestamp($profile->date_bis);
                 $profile->modified         = $this->jsmdate->toSql();
 		        $profile->modified_by      = $this->jsmuser->get('id');
-                
 				$insertresult = $this->jsmdb->insertObject('#__sportsmanagement_playground_details', $profile);    
-                    
-                    
                 }
-                
+                if ($post['change_id'])
+				{
+            foreach ( $post['change_id'] as $key => $value )
+                {
+              $profile             = new stdClass;
+              $profile->id = $post['change_id'][$value];
+				$profile->playground_id = $post['change_playground_id'][$value];;
+				$profile->date_von       = sportsmanagementHelper::convertDate($post['change_date_von'][$key], 0) ;
+				$profile->date_bis      = sportsmanagementHelper::convertDate($post['change_date_bis'][$key], 0) ;
+				$profile->name_visitors  = $post['change_name_visitors'][$key];
+				$profile->notes  = $post['change_notes'][$key];
+				$profile->max_visitors   = $post['change_max_visitors'][$key] ? $post['change_max_visitors'][$key] : 0;
+                $profile->timestamp_von = sportsmanagementHelper::getTimestamp($profile->date_von);
+                $profile->timestamp_bis = sportsmanagementHelper::getTimestamp($profile->date_bis);
+                $profile->modified         = $this->jsmdate->toSql();
+		        $profile->modified_by      = $this->jsmuser->get('id');
+              $result = Factory::getDbo()->updateObject('#__sportsmanagement_playground_details', $profile, 'id');
+            }
+            
+            }
                 
 				break;
 
