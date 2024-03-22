@@ -213,8 +213,24 @@ jQuery(function ($) {
     ?>
     </td>
      <td>
-       <input type="text" id="name_visitors" name="name_visitors[]" value="<?php echo $value->name_visitors;?>" />
+       <?php
+    $daysOfWeek = array('NAME' => Text::_('NAME'),
+			                    'VISITORS' => Text::_('VISITORS'));
+			$dwOptions  = array();
+
+			foreach ($daysOfWeek AS $key => $value)
+			{
+				$dwOptions[] = HTMLHelper::_('select.option', $key, $value);
+			}
+
+	
+				$lists['dayOfWeek'] = HTMLHelper::_('select.genericlist', $dwOptions, 'name_visitors[]', 'class="inputbox"', 'value', 'text', $value->name_visitors);
+	
+    
+    ?>
+       <!-- <input type="text" id="name_visitors" name="name_visitors[]" value="<?php echo $value->name_visitors;?>" /> -->
     <?php
+    echo $lists['dayOfWeek'];
     //echo $value->name_visitors;
     ?>
     </td>
