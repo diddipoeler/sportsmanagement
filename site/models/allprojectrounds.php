@@ -368,7 +368,7 @@ $query->clear();
               //echo __LINE__.' round name<pre>'.print_r($round->name,true).'</pre>';
 				// Nur eine spalte
               $htmlcontent[$key2]['header'] = '<div class="row">';
-              $htmlcontent[$key2]['header'] .= '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">';
+              $htmlcontent[$key2]['header'] .= '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 d-flex justify-content-center">';
               $htmlcontent[$key2]['header'] .= '<b>' .$round->name .'</b>';
               $htmlcontent[$key2]['header'] .= '</div>';
               $htmlcontent[$key2]['header'] .= '</div>';
