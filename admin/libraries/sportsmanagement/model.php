@@ -988,6 +988,8 @@ switch ( $row_sports_type )
                 $profile->timestamp_bis = sportsmanagementHelper::getTimestamp($profile->date_bis);
                 $profile->modified         = $this->jsmdate->toSql();
 		        $profile->modified_by      = $this->jsmuser->get('id');
+$result = Factory::getDbo()->updateObject('#__sportsmanagement_playground_details', $profile, 'id');
+/**			
 			try{
               $result = Factory::getDbo()->updateObject('#__sportsmanagement_playground_details', $profile, 'id');
 			}
@@ -996,7 +998,7 @@ catch (Exception $e)
 Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
 Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__.' profile <br><pre>'.print_r($profile,true).'</pre>'),'error');        
 } 
-
+*/
 				
             }
             
