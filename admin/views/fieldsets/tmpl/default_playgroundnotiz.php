@@ -186,14 +186,16 @@ jQuery(function ($) {
     ?>
   <tr>
   <td>
+    <input type="text" id="id" name="id[]" value="<?php echo $value->id;?>" disabled />
     <?php
-    echo $value->id;
+    //echo $value->id;
     ?>
     </td>
 
      <td>
+       <input type="text" id="playground_id" name="playground_id[]" value="<?php echo $value->playground_id;?>" disabled />
     <?php
-    echo $value->playground_id;
+    //echo $value->playground_id;
     ?>
     </td>
 
