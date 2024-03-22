@@ -1009,9 +1009,8 @@ is_array($stat_ids) ? true : false;
 			}
 			catch (Exception $e)
 			{
-				$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-				$code = $e->getCode(); // Returns '500';
-				Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
+			 Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
 			}
 
 			// Apply weighting using factors
@@ -1045,9 +1044,8 @@ is_array($stat_ids) ? true : false;
 			}
 			catch (Exception $e)
 			{
-				$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-				$code = $e->getCode(); // Returns '500';
-				Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
+							 Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
 			}
 		}
 
