@@ -198,31 +198,34 @@ jQuery(function ($) {
     </td>
 
      <td>
+              <input type="text" id="date_von" name="date_von[]" value="<?php echo sportsmanagementHelper::convertDate($value->date_von, 1);?>" />
     <?php
-    //echo $value->date_von;
-    echo sportsmanagementHelper::convertDate($value->date_von, 1);
+//    echo sportsmanagementHelper::convertDate($value->date_von, 1);
     ?>
     </td>
 
      <td>
+       <input type="text" id="date_bis" name="date_bis[]" value="<?php echo sportsmanagementHelper::convertDate($value->date_bis, 1);?>" />
     <?php
-    //echo $value->date_bis;
-    echo sportsmanagementHelper::convertDate($value->date_bis, 1);
+    //echo sportsmanagementHelper::convertDate($value->date_bis, 1);
     ?>
     </td>
      <td>
+       <input type="text" id="name_visitors" name="name_visitors[]" value="<?php echo $value->name_visitors;?>" />
     <?php
-    echo $value->name_visitors;
+    //echo $value->name_visitors;
     ?>
     </td>
      <td>
+       <input type="text" id="notes" name="notes[]" value="<?php echo $value->notes;?>" />
     <?php
-    echo $value->notes;
+    //echo $value->notes;
     ?>
     </td>
      <td>
+       <input type="text" id="max_visitors" name="max_visitors[]" value="<?php echo $value->max_visitors;?>" />
     <?php
-    echo $value->max_visitors;
+    //echo $value->max_visitors;
     ?>
     </td>
   
