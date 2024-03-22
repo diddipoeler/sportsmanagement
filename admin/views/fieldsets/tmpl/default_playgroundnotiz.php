@@ -186,28 +186,28 @@ jQuery(function ($) {
     ?>
   <tr>
   <td>
-    <input type="text" id="id" name="id[]" value="<?php echo $value->id;?>" disabled />
+    <input type="text" id="id" name="change_id[]" value="<?php echo $value->id;?>" disabled />
     <?php
     //echo $value->id;
     ?>
     </td>
 
      <td>
-       <input type="text" id="playground_id" name="playground_id[]" value="<?php echo $value->playground_id;?>" disabled />
+       <input type="text" id="playground_id" name="change_playground_id[]" value="<?php echo $value->playground_id;?>" disabled />
     <?php
     //echo $value->playground_id;
     ?>
     </td>
 
      <td>
-              <input type="text" id="date_von" name="date_von[]" value="<?php echo sportsmanagementHelper::convertDate($value->date_von, 1);?>" />
+              <input type="text" id="date_von" name="change_date_von[]" value="<?php echo sportsmanagementHelper::convertDate($value->date_von, 1);?>" />
     <?php
 //    echo sportsmanagementHelper::convertDate($value->date_von, 1);
     ?>
     </td>
 
      <td>
-       <input type="text" id="date_bis" name="date_bis[]" value="<?php echo sportsmanagementHelper::convertDate($value->date_bis, 1);?>" />
+       <input type="text" id="date_bis" name="change_date_bis[]" value="<?php echo sportsmanagementHelper::convertDate($value->date_bis, 1);?>" />
     <?php
     //echo sportsmanagementHelper::convertDate($value->date_bis, 1);
     ?>
@@ -224,7 +224,7 @@ jQuery(function ($) {
 			}
 
 	
-				$lists['dayOfWeek'] = HTMLHelper::_('select.genericlist', $dwOptions, 'name_visitors[]', 'class="inputbox"', 'value', 'text', $value->name_visitors);
+				$lists['dayOfWeek'] = HTMLHelper::_('select.genericlist', $dwOptions, 'change_name_visitors[]', 'class="inputbox"', 'value', 'text', $value->name_visitors);
 	
     
     ?>
@@ -235,13 +235,13 @@ jQuery(function ($) {
     ?>
     </td>
      <td>
-       <input type="text" id="notes" name="notes[]" value="<?php echo $value->notes;?>" />
+       <input type="text" id="notes" name="change_notes[]" value="<?php echo $value->notes;?>" />
     <?php
     //echo $value->notes;
     ?>
     </td>
      <td>
-       <input type="text" id="max_visitors" name="max_visitors[]" value="<?php echo $value->max_visitors;?>" />
+       <input type="text" id="max_visitors" name="change_max_visitors[]" value="<?php echo $value->max_visitors;?>" />
     <?php
     //echo $value->max_visitors;
     ?>
