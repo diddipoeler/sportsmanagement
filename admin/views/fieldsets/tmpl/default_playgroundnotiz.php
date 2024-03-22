@@ -149,7 +149,7 @@ jQuery(function ($) {
   
         </script>
 
-<input type="button" value="Add Rows" onclick="addRows()" />
+<input type="button" value="Neuen eintrag einfügen. " onclick="addRows()" />
 <table class="table table-striped" id="playgroundnotic">
   <thead>
     <tr>
