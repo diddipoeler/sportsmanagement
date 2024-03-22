@@ -204,7 +204,7 @@ jQuery(function ($) {
 
 <td>
 <?php
-    $daysOfWeek = array(0' => Text::_('Nein'),
+    $daysOfWeek = array(0 => Text::_('Nein'),
 			                    1 => Text::_('Ja'));
 			$dwOptions  = array();
 
