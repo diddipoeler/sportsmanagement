@@ -37,11 +37,13 @@ if (isset($this->person))
 		/** player view start */
 		$this->output = array();
 		echo $this->loadTemplate('info');
-
+        
+        /**
 		if ($this->config['show_playfield'])
 		{
 			$this->output[intval($this->config['show_order_playfield'])] = array('text' => 'COM_SPORTSMANAGEMENT_PERSON_PLAYFIELD', 'template' => 'playfield');
 		}
+        */
 
 		if ($this->config['show_extra_fields'])
 		{

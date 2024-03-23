@@ -20,7 +20,7 @@ use Joomla\CMS\Factory;
 <h4><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_PERSONAL_DATA'); ?></h4>
 
 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="player">
-    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
 
 		<?php
 		if ($this->config['show_player_photo'])
@@ -56,7 +56,7 @@ use Joomla\CMS\Factory;
 		?>
         <br/>
     </div>
-    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
 		<?php
 		if (!empty($this->person->country) && $this->config["show_nationality"])
 		{
@@ -350,4 +350,13 @@ use Joomla\CMS\Factory;
 		}
 		?>
     </div>
+    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+    <?php
+    if ($this->config['show_playfield'])
+		{
+		  echo $this->loadTemplate('playfield');
+          }
+    ?>
+    </div>
+    
 </div>
