@@ -295,6 +295,14 @@ directory="images/com_sportsmanagement/database/leagues"/>
       		
 	</fieldset>
 
+
+<fieldset 
+        name="leaguelogohistory"
+        label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LOGO_HISTORY"
+        description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LOGO_HISTORY_DESC"
+    >
+
+
 <fieldset name="extended"
   label="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
   description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC">

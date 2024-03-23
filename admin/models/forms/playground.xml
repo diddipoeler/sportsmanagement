@@ -284,6 +284,13 @@ showon="show_info:1[AND]show_image:1"
       				
 	</fieldset>
 
+<fieldset 
+        name="playgroundlogohistory"
+        label="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_LOGO_HISTORY"
+        description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_LOGO_HISTORY_DESC"
+    >
+	
+	
 <fieldset name="extended"
   label="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
   description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC">
