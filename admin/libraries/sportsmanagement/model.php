@@ -427,7 +427,7 @@ foreach ( $post['season_history'] as $key => $value ) if ( $value )
 $profile             = new stdClass;
 $profile->league_id = $data['id'];
 $profile->season_id       = $value;
-$profile->logo_big   = $post['logo_big_history'];
+$profile->logo_big   = $post['league_logo_history'];
 $profile->modified         = $this->jsmdate->toSql();
 $profile->modified_by      = $this->jsmuser->get('id');
 try{
@@ -1030,7 +1030,7 @@ foreach ( $post['season_history'] as $key => $value ) if ( $value )
 $profile             = new stdClass;
 $profile->playground_id = $data['id'];
 $profile->season_id       = $value;
-$profile->logo_big   = $post['logo_big_history'];
+$profile->logo_big   = $post['playground_logo_history'];
 $profile->modified         = $this->jsmdate->toSql();
 $profile->modified_by      = $this->jsmuser->get('id');
 try{
