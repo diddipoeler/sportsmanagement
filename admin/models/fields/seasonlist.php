@@ -107,7 +107,13 @@ $attribs .= 'onchange="javascript:setseasonname();"';
 break;
 case 'club':
 $attribs .= ' multiple="true"';
+break;
+case 'league':
+$attribs .= ' multiple="true"';
 break;	
+case 'playground':
+$attribs .= ' multiple="true"';
+break;		
 default:
 $attribs .= '';
 break;
