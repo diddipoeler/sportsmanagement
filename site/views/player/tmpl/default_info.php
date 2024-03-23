@@ -19,7 +19,7 @@ use Joomla\CMS\Factory;
 <!-- person data START -->
 <h4><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_PERSONAL_DATA'); ?></h4>
 
-<div class="<?php echo $this->divclassrow; ?> table-responsive" id="player">
+<div class="row table-responsive" id="player">
     <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
 
 		<?php
