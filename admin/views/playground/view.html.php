@@ -129,7 +129,8 @@ $this->form->setValue('state',null, $this->item->state);
 
 	if ( $this->item->id )
         {
-        $this->playgroundnotic = $this->model->getPlaygroundNotic($this->item->id);    
+        $this->playgroundnotic = $this->model->getPlaygroundNotic($this->item->id);   
+        $this->logohistory = $this->model->getlogohistoryPlayground($this->item->id,0); 
         }
 
 		$daysOfWeek = array('NAME' => Text::_('NAME'),

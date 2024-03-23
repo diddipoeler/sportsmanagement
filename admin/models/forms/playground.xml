@@ -136,6 +136,15 @@ filter="unset"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_CAPACITY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_CAPACITY_DESC"
 			class="inputbox"/>	
+			
+<field
+			name="max_visitors_int"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_CAPACITY_INT"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_CAPACITY_INT_DESC"
+			class="inputbox"/>				
+			
+			
 	<field
 			name="club_id"
 			type="clublist"

@@ -55,7 +55,7 @@ $myForm->loadFile('playgroundlogohistory', false);
         {
 
  // Reference to the table body
-var body = jQuery("#clublogos").find('tbody');
+var body = jQuery("#playgroundlogos").find('tbody');
 // Create a new row element
 var row = jQuery('<tr>');
 // Create a new column element
@@ -85,10 +85,10 @@ body.append(row);
          }   
 </script>            
 <!--
-<input type="button" value="Neues Wappen hinzufügen" onclick="addRows()" />
+<input type="button" value="Neues Bild hinzufügen" onclick="addRows()" />
 -->
 
-<table class="table table-striped" id="clublogos">
+<table class="table table-striped" id="playgroundlogos">
   <thead>
     <tr>
     

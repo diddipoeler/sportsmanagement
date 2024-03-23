@@ -723,6 +723,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_playground` (
   `state` VARCHAR(50) NOT NULL DEFAULT '' ,
   `openligaid` int(11) DEFAULT NULL,
   `playground_size` VARCHAR(200) NOT NULL DEFAULT '' ,
+  `max_visitors_int` INT(11) NOT NULL DEFAULT '0' ,
   PRIMARY KEY (`id`) ,
   KEY `club_id` (`club_id`),
   KEY `country` (`country`)
@@ -2306,6 +2307,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_playground_details` (
   `cr_picture` varchar(255) DEFAULT NULL,
   `timestamp_von` bigint(20) NOT NULL DEFAULT 0,
   `timestamp_bis` bigint(20) NOT NULL DEFAULT 0,
+  `max_visitors_int` INT(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `history` (`playground_id`,`date_von`,`date_bis`,`name_visitors`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
@@ -2329,6 +2331,70 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_club_logos` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `clubseason` (`club_id`,`season_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+
+--
+-- Tabellenstruktur für Tabelle `#__sportsmanagement_league_logos`
+--
+CREATE TABLE IF NOT EXISTS `#__sportsmanagement_league_logos` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `league_id` int(11) NOT NULL DEFAULT 0,
+  `season_id` int(11) NOT NULL DEFAULT 1,
+  `logo_big` varchar(255) DEFAULT NULL,
+  `ordering` int(11) NOT NULL DEFAULT 0,
+  `checked_out` int(11) NOT NULL DEFAULT 0,
+  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) DEFAULT NULL,
+  `published` tinyint(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `clubseason` (`league_id`,`season_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+--
+-- Tabellenstruktur für Tabelle `#__sportsmanagement_playground_logos`
+--
+CREATE TABLE IF NOT EXISTS `#__sportsmanagement_playground_logos` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `playground_id` int(11) NOT NULL DEFAULT 0,
+  `season_id` int(11) NOT NULL DEFAULT 1,
+  `logo_big` varchar(255) DEFAULT NULL,
+  `ordering` int(11) NOT NULL DEFAULT 0,
+  `checked_out` int(11) NOT NULL DEFAULT 0,
+  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) DEFAULT NULL,
+  `published` tinyint(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `clubseason` (`playground_id`,`season_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

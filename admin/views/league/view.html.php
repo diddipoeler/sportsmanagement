@@ -49,6 +49,7 @@ class sportsmanagementViewLeague extends sportsmanagementView
 				$this->item->dissolved = '';
 				$this->form->setValue('dissolved',null, '');
 			}
+            $this->logohistory = $this->model->getlogohistoryLeague($this->item->id,0);
 		}
 		else
 		{

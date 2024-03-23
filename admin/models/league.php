@@ -38,6 +38,70 @@ class sportsmanagementModelleague extends JSMModelAdmin
 		parent::__construct($config);
 	}
 
+
+/**
+ * sportsmanagementModelleague::getlogohistoryLeague()
+ * 
+ * @param integer $league_id
+ * @param integer $season_id
+ * @param bool $logoonly
+ * @return
+ */
+function getlogohistoryLeague($league_id = 0, $season_id = 0, $logoonly = false )
+	{
+$app    = Factory::getApplication();
+$db    = Factory::getDbo();
+$query = $db->getQuery(true);
+$result    = array();
+
+$query->select('cl.*,se.name as seasonname');
+$query->from('#__sportsmanagement_league_logos as cl');
+$query->join('INNER', '#__sportsmanagement_season AS se ON se.id = cl.season_id');
+
+if ( $league_id )
+{		
+$query->where('cl.league_id = ' . $league_id);
+}
+
+if ( $season_id )
+{
+$query->where('se.id = ' . $season_id);
+}
+
+$query->order('seasonname DESC');		
+$db->setQuery($query);
+try
+			{
+				$result = $db->loadObjectList();
+				$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+			}
+			catch (Exception $e)
+			{
+				$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+				$msg  = $e->getMessage(); // Returns "Normally you would have other code...
+				$code = $e->getCode(); // Returns '500';
+				$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
+				//$result = false;
+			}		
+
+		
+return $result;
+
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
 	/**
 	 * Method to update checked leagues
 	 *
