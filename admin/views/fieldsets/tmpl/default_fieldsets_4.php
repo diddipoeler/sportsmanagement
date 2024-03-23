@@ -30,6 +30,15 @@ switch ($this->fieldset)
     case 'clublogohistory';
 	echo $this->loadTemplate('clublogos');
 	break;
+    
+    
+     case 'playgroundlogohistory';
+	echo $this->loadTemplate('playgroundlogos');
+	break;
+    
+     case 'leaguelogohistory';
+	echo $this->loadTemplate('leaguelogos');
+	break;
 	
 	/**
 	 *
