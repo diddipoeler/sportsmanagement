@@ -301,7 +301,7 @@ directory="images/com_sportsmanagement/database/leagues"/>
         label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LOGO_HISTORY"
         description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LOGO_HISTORY_DESC"
     >
-
+</fieldset>
 
 <fieldset name="extended"
   label="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
