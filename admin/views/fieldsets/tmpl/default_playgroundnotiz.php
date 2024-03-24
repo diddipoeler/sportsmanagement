@@ -123,7 +123,16 @@ input.attr('id', 'max_visitors');
 input.attr('name', 'max_visitors[]');
 input.attr('size', '10');          
 column6.append(input);          
-row.append(column6); 
+row.append(column6);
+
+var column7 = jQuery('<td>');          
+var input = jQuery('<input>');          
+input.attr('type', 'text');          
+input.attr('id', 'max_visitors_int');
+input.attr('name', 'max_visitors_int[]');
+input.attr('size', '10');          
+column7.append(input);          
+row.append(column7);  
           
           
 // Append the row to the table body
