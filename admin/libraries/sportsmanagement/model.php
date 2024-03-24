@@ -986,6 +986,7 @@ catch (Exception $e)
 				$profile->name_visitors  = $post['name_visitors'][$key];
 				$profile->notes  = $post['notes'][$key];
 				$profile->max_visitors   = $post['max_visitors'][$key];
+                $profile->max_visitors_int   = $post['max_visitors_int'][$key];
                 $profile->timestamp_von = sportsmanagementHelper::getTimestamp($profile->date_von);
                 $profile->timestamp_bis = sportsmanagementHelper::getTimestamp($profile->date_bis);
                 $profile->modified         = $this->jsmdate->toSql();
