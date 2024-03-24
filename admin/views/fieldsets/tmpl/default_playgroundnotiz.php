@@ -279,6 +279,13 @@ jQuery(function ($) {
     //echo $value->max_visitors;
     ?>
     </td>
+    
+    <td>
+       <input type="text" id="max_visitors_int" name="change_max_visitors_int[]" value="<?php echo $value->max_visitors_int;?>" />
+    <?php
+    //echo $value->max_visitors;
+    ?>
+    </td>
   
   </tr>
  

@@ -1005,6 +1005,7 @@ catch (Exception $e)
 				$profile->name_visitors  = $post['change_name_visitors'][$value];
 				$profile->notes  = $post['change_notes'][$value];
 				$profile->max_visitors   = $post['change_max_visitors'][$value] ? $post['change_max_visitors'][$value] : 0;
+                $profile->max_visitors_int   = $post['change_max_visitors_int'][$value] ? $post['change_max_visitors_int'][$value] : 0;
                 $profile->timestamp_von = sportsmanagementHelper::getTimestamp($profile->date_von);
                 $profile->timestamp_bis = sportsmanagementHelper::getTimestamp($profile->date_bis);
                 $profile->modified         = $this->jsmdate->toSql();
