@@ -467,6 +467,10 @@ try
 		$query->select('p.game_regular_time,p.add_time');
 		$query->select('c.logo_big as club_picture');
 		$query->select('p.league_id,l.name as league_name');
+      
+      $query->select('p.season_id as pro_season_id');
+      $query->select('p.league_id as pro_league_id');
+      
 		$query->from('#__sportsmanagement_person AS pr');
 		$query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp ON tp.person_id = pr.id');
 		$query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id AND st.season_id = tp.season_id');
@@ -502,9 +506,31 @@ try
 		{
 			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
 			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), 'error');
-			$result = false;
+			$result = array();
 		}
 
+$standard_pic_projekt = '/images/com_sportsmanagement/database/placeholders/placeholder_450_2.png';     
+$standard_pic_projekt2 = '/images/com_sportsmanagement/database/placeholders/placeholder_150.png';
+      
+      foreach ( $result as $key => $value )
+      {
+     $query->clear();
+$query->select('logo_big');
+$query->from('#__sportsmanagement_league_logos');
+$query->where('league_id = ' . $value->pro_league_id );
+$query->where('season_id = ' . $value->pro_season_id );	
+$db->setQuery($query);
+$result2 = $db->loadResult();
+if ( $result2 )
+{
+  
+$value->project_picture = !preg_match("/placeholder/i", $value->project_picture)  ? $value->project_picture : $result2;
+
+}	   
+        
+      }
+      
+      
 		switch ($persontype)
 		{
 			case 1:
