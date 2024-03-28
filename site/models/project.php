@@ -304,6 +304,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 
 			if (self::$projectid > 0)
 			{
+				$query->clear();
 				$query->select('p.*, l.country, st.id AS sport_type_id, st.name AS sport_type_name');
 				$query->select('st.icon AS sport_type_picture, st.eventtime as useeventtime, l.picture as leaguepicture, l.name as league_name, s.name as season_name,r.name as round_name');
 				$query->select('LOWER(SUBSTR(st.name, CHAR_LENGTH( "COM_SPORTSMANAGEMENT_ST_")+1)) AS fs_sport_type_name');
@@ -320,8 +321,19 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 				$query->where('p.id = ' . (int) self::$projectid);
 try{
 				$db->setQuery($query, 0, 1);
-
 				self::$_project = $db->loadObject();
+
+$query->clear();
+$query->select('logo_big');
+$query->from('#__sportsmanagement_league_logos');
+$query->where('league_id = ' . (int) self::$_project->league_id );
+$query->where('season_id = ' . (int) self::$_project->season_id );	
+$db->setQuery($query);
+$result = $db->loadResult();
+if ( $result )
+{
+self::$_project->leaguepicture = $result;
+}	
                 }
 		catch (Exception $e)
 		{
