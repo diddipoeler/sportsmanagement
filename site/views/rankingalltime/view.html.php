@@ -36,11 +36,11 @@ class sportsmanagementViewRankingAllTime extends sportsmanagementView
 	 */
 	function init()
 	{
-	   $values = array();
+	   $this->ranking_order = array();
        $crit = array();
-	   $values = explode(',', $this->config['ranking_order']);
+	   $this->ranking_order = explode(',', $this->config['ranking_order']);
        
-       
+       /**
        foreach ($values as $v)
 			{
 				$v = ucfirst(strtolower(trim($v)));
@@ -54,6 +54,7 @@ class sportsmanagementViewRankingAllTime extends sportsmanagementView
 					Log::add(Text::_('COM_SPORTSMANAGEMENT_RANKING_NOT_VALID_CRITERIA') . ': ' . $v, Log::WARNING, 'jsmerror');
 				}
 			}
+            */
             
 	//echo 'config<pre>'.print_r($this->config,true).'</pre>';
     //echo '$values<pre>'.print_r($values,true).'</pre>';
@@ -72,10 +73,12 @@ class sportsmanagementViewRankingAllTime extends sportsmanagementView
         {
 		$this->matches        = $this->model->getAllMatches($this->project_ids);
         }
+        
 		$this->ranking        = $this->model->getAllTimeRanking( $this->config['use_negpoints_ranking_all_time'] );
 		$this->tableconfig    = $this->model->getAllTimeParams();
+        $this->currentRanking = $this->model->getCurrentRanking( $this->ranking_order );
 		$this->config         = $this->model->getAllTimeParams();
-		$this->currentRanking = $this->model->getCurrentRanking();
+		
 		$this->action         = $this->uri->toString();
 		$this->colors         = $this->model->getColors($this->config['colors']);
 		/** Set page title */

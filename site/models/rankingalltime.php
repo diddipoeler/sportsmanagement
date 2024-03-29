@@ -977,7 +977,7 @@ catch (Exception $e)
 	 *
 	 * @return
 	 */
-	function getCurrentRanking()
+	function getCurrentRanking($ranking_order = array() )
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
@@ -1010,7 +1010,7 @@ catch (Exception $e)
 			$newranking[0][$key->team_id] = $new;
 		}
 
-		$newranking[0] = self::_sortRanking($newranking[0]);
+		$newranking[0] = self::_sortRanking($newranking[0],$ranking_order);
 
 		$oldpoints = 0;
 		$rank      = 0;
@@ -1042,7 +1042,7 @@ catch (Exception $e)
 	 *
 	 * @return
 	 */
-	function _sortRanking(&$ranking)
+	function _sortRanking($ranking = array(), $ranking_order = array() )
 	{
 		// Reference global application object
 		$app       = Factory::getApplication();
@@ -1056,6 +1056,10 @@ catch (Exception $e)
 		{
 			$arr2[$row->_teamid] = ArrayHelper::fromObject($row);
 		}
+
+
+//echo 'ranking_order<pre>'.print_r($ranking_order,true).'</pre>';
+//echo 'order<pre>'.print_r($order,true).'</pre>';
 
 		if (!$order)
 		{
@@ -1095,7 +1099,10 @@ catch (Exception $e)
 		}
 		else //     if ( !$order_dir)
 		{
-			switch ($order)
+		  
+          foreach ($ranking_order as $order)
+			{
+			switch ( strtolower($order) )
 			{
 				case 'played':
 					// Uasort($ranking, array(self::$classname, "playedCmp"));
@@ -1183,6 +1190,7 @@ catch (Exception $e)
 					}
 					break;
 			}
+            }
 
 			$arr2 = $this->array_msort($arr2, $sortarray);
 
