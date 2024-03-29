@@ -15,6 +15,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementViewRankingAllTime
@@ -35,7 +36,28 @@ class sportsmanagementViewRankingAllTime extends sportsmanagementView
 	 */
 	function init()
 	{
+	   $values = array();
+       $crit = array();
+	   $values = explode(',', $this->config['ranking_order']);
+       
+       
+       foreach ($values as $v)
+			{
+				$v = ucfirst(strtolower(trim($v)));
+
+				if (method_exists($this, '_cmp' . $v))
+				{
+					$crit[] = '_cmp' . $v;
+				}
+				else
+				{
+					Log::add(Text::_('COM_SPORTSMANAGEMENT_RANKING_NOT_VALID_CRITERIA') . ': ' . $v, Log::WARNING, 'jsmerror');
+				}
+			}
+            
 	//echo 'config<pre>'.print_r($this->config,true).'</pre>';
+    //echo '$values<pre>'.print_r($values,true).'</pre>';
+    //echo 'crit<pre>'.print_r($crit,true).'</pre>';
     	
 	   $mdlRankingAllTime = BaseDatabaseModel::getInstance("RankingAllTime", "sportsmanagementModel");
 		$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
