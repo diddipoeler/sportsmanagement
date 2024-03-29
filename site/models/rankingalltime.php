@@ -754,11 +754,13 @@ catch (Exception $e)
 		 *
 		 *
 		 */
-		/*
+		if ( $use_negpoints_ranking_all_time )
+        {
 		foreach ( $this->_teams as $team )
 		{
-		if ( $team->use_finally )
-		{
+		//if ( $team->use_finally )
+		//{
+		  /**
 		if ( $win_points )
         {
 		if ( $team->won_finally && $team->draws_finally )
@@ -770,7 +772,9 @@ catch (Exception $e)
 		$team->neg_points_finally = ( $loss_points * $team->lost_finally ) + ( $draw_points * $team->draws_finally );
 		}
 		}
-		$this->teams[$team->team_id]->sum_points += $team->points_finally;
+        */
+		$this->teams[$team->team_id]->sum_points += $team->start_points;
+        /**
 		$this->teams[$team->team_id]->neg_points += $team->neg_points_finally;
 		$this->teams[$team->team_id]->cnt_matches += $team->matches_finally;
 		$this->teams[$team->team_id]->cnt_won += $team->won_finally;
@@ -779,9 +783,10 @@ catch (Exception $e)
 		$this->teams[$team->team_id]->sum_team1_result += $team->homegoals_finally;
 		$this->teams[$team->team_id]->sum_team2_result += $team->guestgoals_finally;
 		$this->teams[$team->team_id]->diff_team_results += $team->diffgoals_finally;
-        }
+        */
+        //}
 		}
-		*/
+		}
 
 		return $this->teams;
 
