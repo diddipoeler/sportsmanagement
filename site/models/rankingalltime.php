@@ -429,7 +429,7 @@ catch (Exception $e)
 	 *
 	 * @return
 	 */
-	function getAllTimeRanking()
+	function getAllTimeRanking($use_negpoints_ranking_all_time = 0)
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();

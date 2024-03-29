@@ -50,7 +50,7 @@ class sportsmanagementViewRankingAllTime extends sportsmanagementView
         {
 		$this->matches        = $this->model->getAllMatches($this->project_ids);
         }
-		$this->ranking        = $this->model->getAllTimeRanking();
+		$this->ranking        = $this->model->getAllTimeRanking( $this->config['use_negpoints_ranking_all_time'] );
 		$this->tableconfig    = $this->model->getAllTimeParams();
 		$this->config         = $this->model->getAllTimeParams();
 		$this->currentRanking = $this->model->getCurrentRanking();
