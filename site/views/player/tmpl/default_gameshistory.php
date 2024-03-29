@@ -168,7 +168,8 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 									<?php
 									$jdate = Factory::getDate($game->match_date);
 									$jdate->setTimezone(new DateTimeZone($this->project->timezone));
-									$body = $jdate->format('l, d. F Y H:i');
+									//$body = $jdate->format('l, d. F Y H:i');
+                                    $body = $jdate->format($this->config['games_date_format']);
 									echo HTMLHelper::link($report_link, $body);
 									?>
                                 </td>
