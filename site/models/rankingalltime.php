@@ -606,8 +606,8 @@ catch (Exception $e)
 
 					if ($shownegpoints == 1)
 					{
-						$home->neg_points += ($decision == 0 || isset($home_score) ? ($win_points - $draw_points) : 0); // Bug fixed, timoline 250709
-						$away->neg_points += ($decision == 0 || isset($away_score) ? ($win_points - $draw_points) : 0);// ex. for soccer, your loss = 2 points not 1 point
+						$home->neg_points += ($decision == 0 || isset($home_score) ? ($win_points - $draw_points) : 0); 
+						$away->neg_points += ($decision == 0 || isset($away_score) ? ($win_points - $draw_points) : 0);
 					}
 				}
 				elseif ($home_score < $away_score)
@@ -669,13 +669,13 @@ catch (Exception $e)
 					$away->neg_points += $loss_points;
 				}
 
-				// Final Win/Loss Decision
+				/** Final Win/Loss Decision */
 				if ($match->team_won == 0)
 				{
 					$home->cnt_lost++;
 					$away->cnt_lost++;
 
-					// Record a won on the home team
+					/** Record a won on the home team */
 				}
 				elseif ($match->team_won == 1)
 				{
@@ -684,7 +684,7 @@ catch (Exception $e)
 					$home->sum_points += $win_points;
 					$away->cnt_lost_home++;
 
-					// Record a won on the away team
+					/** Record a won on the away team */
 				}
 				elseif ($match->team_won == 2)
 				{
@@ -693,7 +693,7 @@ catch (Exception $e)
 					$away->sum_points += $win_points;
 					$home->cnt_lost_home++;
 
-					// Record a loss on both teams
+					/** Record a loss on both teams */
 				}
 				elseif ($match->team_won == 3)
 				{
@@ -702,7 +702,7 @@ catch (Exception $e)
 					$away->cnt_lost_home++;
 					$home->cnt_lost_home++;
 
-					// Record a won on both teams
+					/** Record a won on both teams */
 				}
 				elseif ($match->team_won == 4)
 				{
@@ -713,11 +713,11 @@ catch (Exception $e)
 				}
 			}
 
-			// Winpoints
+			/** Winpoints */
 
 			$home->winpoints = $win_points;
 
-			// Bonus points
+			/** Bonus points */
 
 			$home->sum_points   += $match->home_bonus;
 			$home->bonus_points += $match->home_bonus;
@@ -725,7 +725,7 @@ catch (Exception $e)
 			$away->sum_points   += $match->away_bonus;
 			$away->bonus_points += $match->away_bonus;
 
-			// Goals for/against/diff
+			// Goals for/against/diff */
 
 			$home->sum_team1_result  += $home_score;
 			$home->sum_team2_result  += $away_score;

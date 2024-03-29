@@ -35,7 +35,8 @@ class sportsmanagementViewRankingAllTime extends sportsmanagementView
 	 */
 	function init()
 	{
-		
+	//echo 'config<pre>'.print_r($this->config,true).'</pre>';
+    	
 	   $mdlRankingAllTime = BaseDatabaseModel::getInstance("RankingAllTime", "sportsmanagementModel");
 		$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
 		$this->projectids     = $this->model->getAllProject();
