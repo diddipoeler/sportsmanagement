@@ -13,6 +13,15 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		
+		
+<field 	name="ranking_order" type="text" default="POINTS, PLAYEDASC, DIFF, FOR" 
+				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_RANKING_CRITERIA" 
+				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_RANKING_CRITERIA" 
+				size="150">
+		</field>
+
+		
 
   </fieldset>
 </form>
