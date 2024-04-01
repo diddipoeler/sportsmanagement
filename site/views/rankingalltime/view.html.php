@@ -38,14 +38,31 @@ class sportsmanagementViewRankingAllTime extends sportsmanagementView
 	{
 	   $this->ranking_order = array();
        $crit = array();
-	   $this->ranking_order = explode(',', $this->config['ranking_order']);
+	   
        
 $menu = Factory::getApplication()->getMenu();
 $item = $menu->getActive();
 $params = $menu->getParams($item->id);
 //echo 'item<pre>'.print_r($item,true).'</pre>';        
 //echo 'params<pre>'.print_r($params,true).'</pre>';
-       
+	if ($item->query['view'] == 'rankingalltime')
+		{
+			/** Diddipoeler menueeintrag vorhanden */
+
+			//$registry = new Registry;
+			//$registry->loadArray($params);
+			//$newparams = $registry->toArray();
+			$newparams = $params->toArray();
+
+			foreach ($newparams as $key => $value)
+			{
+				$this->config[$key] = $value;
+			}
+		}
+        
+       $this->ranking_order = explode(',', $this->config['ranking_order']); 
+        
+               
        /**
        foreach ($values as $v)
 			{
