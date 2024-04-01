@@ -961,7 +961,7 @@ catch (Exception $e)
        }
        else
        {
-		return $this->_params;
+		return $config;
         }
         
 	}
