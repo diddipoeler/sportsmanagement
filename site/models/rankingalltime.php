@@ -76,7 +76,7 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 	{
 		$app                 = Factory::getApplication();
 		$jinput              = $app->input;
-		//$this->alltimepoints = $jinput->get('points', '3,1,0', 'STR');
+		$this->alltimepoints = $jinput->get('points', '3,1,0', 'STR');
         $params = array();
 
 		$file = JPATH_SITE . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'ranking.php';
