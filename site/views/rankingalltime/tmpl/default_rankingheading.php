@@ -12,6 +12,9 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 
+
+//echo __LINE__.' config<pre>'.print_r($this->config,true).'</pre>';
+
 $columns      = explode(',', $this->config['ordered_columns']);
 $column_names = explode(',', $this->config['ordered_columns_names']);
 ?>

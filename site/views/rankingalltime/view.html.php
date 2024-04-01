@@ -38,6 +38,7 @@ class sportsmanagementViewRankingAllTime extends sportsmanagementView
 	{
 	   $this->ranking_order = array();
        $crit = array();
+       $come_from_menue = false;
 	   
        
 $menu = Factory::getApplication()->getMenu();
@@ -45,14 +46,15 @@ $item = $menu->getActive();
 $params = $menu->getParams($item->id);
 //echo 'item<pre>'.print_r($item,true).'</pre>';        
 //echo 'params<pre>'.print_r($params,true).'</pre>';
+
 	if ($item->query['view'] == 'rankingalltime')
 		{
 			/** Diddipoeler menueeintrag vorhanden */
-
 			//$registry = new Registry;
 			//$registry->loadArray($params);
 			//$newparams = $registry->toArray();
 			$newparams = $params->toArray();
+            $come_from_menue = true;
 
 			foreach ($newparams as $key => $value)
 			{
@@ -98,9 +100,13 @@ $params = $menu->getParams($item->id);
         }
         
 		$this->ranking        = $this->model->getAllTimeRanking( $this->config['use_negpoints_ranking_all_time'] );
-		$this->tableconfig    = $this->model->getAllTimeParams();
+        
+		$this->tableconfig    = $this->model->getAllTimeParams($come_from_menue,$this->config);
+        //echo __LINE__.' config<pre>'.print_r($this->config,true).'</pre>';
         $this->currentRanking = $this->model->getCurrentRanking( $this->ranking_order );
-		$this->config         = $this->model->getAllTimeParams();
+        
+		$this->config         = $this->model->getAllTimeParams($come_from_menue,$this->config);
+        //echo __LINE__.' config<pre>'.print_r($this->config,true).'</pre>';
 		
 		$this->action         = $this->uri->toString();
 		$this->colors         = $this->model->getColors($this->config['colors']);

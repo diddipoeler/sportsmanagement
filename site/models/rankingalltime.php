@@ -945,14 +945,25 @@ catch (Exception $e)
 		return $result;
 	}
 
+	
 	/**
 	 * sportsmanagementModelRankingAllTime::getAllTimeParams()
-	 *
+	 * 
+	 * @param bool $come_from_menue
+	 * @param mixed $config
 	 * @return
 	 */
-	function getAllTimeParams()
+	function getAllTimeParams($come_from_menue = false, $config = array() )
 	{
+	   if ( !$come_from_menue )
+       {
+       return $config; 
+       }
+       else
+       {
 		return $this->_params;
+        }
+        
 	}
 
 	/**
