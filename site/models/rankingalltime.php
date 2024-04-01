@@ -76,7 +76,7 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 	{
 		$app                 = Factory::getApplication();
 		$jinput              = $app->input;
-		$this->alltimepoints = $jinput->get('points', '3,1,0', 'STR');
+		//$this->alltimepoints = $jinput->get('points', '3,1,0', 'STR');
         $params = array();
 
 		$file = JPATH_SITE . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'ranking.php';
@@ -85,7 +85,7 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 		//$menu = JMenu::getInstance('site');
         $menu = Factory::getApplication()->getMenu();
 		$item = $menu->getActive();
-        
+        /**
         //$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($item,true).'</pre>'), 'error');
         if ( $item )
 	{
@@ -99,9 +99,9 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 		}
 	}
 		$params = $menu->getParams($item->id);
+        */
         
-        
-
+/**
 		if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO)
 		{
 			$this->debug_info = true;
@@ -111,9 +111,9 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 			$this->debug_info = false;
 		}
         
-        
+        */
         //$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($params,true).'</pre>'), 'error');
-
+/**
 		if ($item->query['view'] == 'rankingalltime')
 		{
 			// Diddipoeler
@@ -152,26 +152,9 @@ foreach ($field->fieldset as $fieldset)
 			}          
           
           
-		  /*
-			$strXmlFile = JPATH_SITE . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'rankingalltime' . DIRECTORY_SEPARATOR . 'tmpl' . DIRECTORY_SEPARATOR . 'default.xml';
-			$xml      = Factory::getXML($strXmlFile);
-			$children = $xml->document->children();
-			
-			foreach ($xml->children() as $field)
-			{
-				foreach ($field->fieldset as $fieldset)
-				{
-					foreach ($fieldset->field as $param)
-					{
-						$attributes = $param->attributes();
-
-						$this->_params[(string) $param->attributes()->name[0]] = (string) $param->attributes()->default[0];
-					}
-				}
-			}
-            */
+		  
 		}
-
+*/
 		parent::__construct();
 
 	}
