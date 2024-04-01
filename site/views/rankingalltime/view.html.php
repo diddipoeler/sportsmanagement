@@ -40,6 +40,10 @@ class sportsmanagementViewRankingAllTime extends sportsmanagementView
        $crit = array();
 	   $this->ranking_order = explode(',', $this->config['ranking_order']);
        
+$menu = Factory::getApplication()->getMenu();
+$item = $menu->getActive();
+//echo '$item<pre>'.print_r($item,true).'</pre>';        
+       
        /**
        foreach ($values as $v)
 			{
