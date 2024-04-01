@@ -42,7 +42,9 @@ class sportsmanagementViewRankingAllTime extends sportsmanagementView
        
 $menu = Factory::getApplication()->getMenu();
 $item = $menu->getActive();
-//echo '$item<pre>'.print_r($item,true).'</pre>';        
+$params = $menu->getParams($item->id);
+//echo 'item<pre>'.print_r($item,true).'</pre>';        
+//echo 'params<pre>'.print_r($params,true).'</pre>';
        
        /**
        foreach ($values as $v)
