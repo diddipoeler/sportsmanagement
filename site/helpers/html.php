@@ -1024,6 +1024,7 @@ class sportsmanagementHelperHtml
 
 			$params["s"] = $jinput->get('s');
 			$params["p"] = $jinput->get('p');
+            $params["Itemid"] = $jinput->get('Itemid');
 
 			$query = Uri::buildQuery($params);
 			echo HTMLHelper::link(

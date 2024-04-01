@@ -38,10 +38,7 @@ foreach ($current as $ptid => $team)
 {
 	$team->team = $this->teams[$ptid];
 
-	/**
-	 *
-	 * Table colors
-	 */
+	/** Table colors */
 	$color = "";
 
 	if (isset($this->colors[$j]["from"]) && $counter == $this->colors[$j]["from"])
@@ -61,10 +58,7 @@ foreach ($current as $ptid => $team)
 		$j++;
 	}
 
-	/**
-	 *
-	 * Favorite Team
-	 */
+	/** Favorite Team */
 	$format   = "%s";
 	$favStyle = '';
 
@@ -94,10 +88,7 @@ foreach ($current as $ptid => $team)
 	echo '<tr class=""' . $favStyle . '>';
 	echo "\n";
 
-	/**
-	 *
-	 * rank row
-	 */
+	/** rank row */
 	echo '<td class="rankingrow_rank" ';
 
 	if ($color != '')
@@ -119,10 +110,7 @@ foreach ($current as $ptid => $team)
 	echo '</td>';
 	echo "\n";
 
-	/**
-	 *
-	 * Last rank (image)
-	 */
+	/** Last rank (image) */
 	echo '<td class="rankingrow_lastrankimg" ';
 
 	if ($color != '' && $config['use_background_row_color'])
@@ -135,10 +123,7 @@ foreach ($current as $ptid => $team)
 	echo '</td>';
 	echo "\n";
 
-	/**
-	 *
-	 * Last rank (number)
-	 */
+	/** Last rank (number) */
 	echo '<td class="rankingrow_lastrank" nowrap="nowrap" ';
 
 	if ($color != '' && $config['use_background_row_color'])
@@ -157,10 +142,7 @@ foreach ($current as $ptid => $team)
 	echo '</td>';
 	echo "\n";
 
-	/**
-	 *
-	 * logo - jersey
-	 */
+	/** logo - jersey */
 	if ($config['show_logo_small_table'] != "no_logo")
 	{
 		echo '<td class="rankingrow_logo"';
@@ -222,10 +204,7 @@ foreach ($current as $ptid => $team)
 		echo "\n";
 	}
 
-	/**
-	 *
-	 * Team name
-	 */
+	/** Team name */
 	echo '<td class="rankingrow_teamname" nowrap="nowrap"';
 
 	if ($color != '' && $config['use_background_row_color'])
@@ -241,10 +220,7 @@ foreach ($current as $ptid => $team)
 	echo '</td>';
 	echo "\n";
 
-	/**
-	 *
-	 * START OPTIONAL COLUMNS DISPLAY
-	 */
+	/** START OPTIONAL COLUMNS DISPLAY */
 	foreach ($columns AS $c)
 	{
 		//	   $routeparameter = array();
