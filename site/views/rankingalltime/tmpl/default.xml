@@ -15,6 +15,16 @@
                 query="SELECT id AS value, name AS l FROM #__sportsmanagement_league ORDER BY name" />
         
         <field name="points" type="text" default="3,1,0" label="COM_SPORTSMANAGEMENT_XML_RANKINGALLTIME_POINTS_LABEL" description="COM_SPORTSMANAGEMENT_XML_RANKINGALLTIME_POINTS_LABEL_DESCR" size="10"/>
+		
+<field 	name="use_negpoints_ranking_all_time" type="radio" default="0"  layout="joomla.form.field.radio.switcher"
+				label="COM_SPORTSMANAGEMENT_FES_RANKINGALLTIME_PARAM_LABEL_USE_NEGPOINTS" 
+				description="COM_SPORTSMANAGEMENT_FES_RANKINGALLTIME_PARAM_DESCR_USE_NEGPOINTS">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>		
+		
+		
+		
 </fieldset>
 	</fields>    
     
