@@ -286,12 +286,12 @@ Factory::getApplication()->setUserState( "$this->jsmoption.projects_search_leagu
 		{
 			$this->jsmquery->where("l.associations = " . $this->getState('filter.search_association'));
 		}
-
+/**
 		if ($this->getState('filter.show_notassign'))
 		{
 			$this->jsmquery->where("notassign != 0" );
 		}
-
+*/
 		if ($this->getState('filter.project_type'))
 		{
 			$this->jsmquery->where('p.project_type LIKE ' . $this->jsmdb->Quote('' . $this->getState('filter.project_type') . ''));
