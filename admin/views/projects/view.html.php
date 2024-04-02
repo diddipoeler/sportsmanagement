@@ -59,6 +59,8 @@ class sportsmanagementViewProjects extends sportsmanagementView
 		$res = array();
 		$starttime = microtime();
 
+		$this->show_notassign = $this->state->get('filter.show_notassign');
+
 		Table::addIncludePath(JPATH_COMPONENT . DIRECTORY_SEPARATOR . 'tables');
 		$table       = Table::getInstance('project', 'sportsmanagementTable');
 		$this->table = $table;
