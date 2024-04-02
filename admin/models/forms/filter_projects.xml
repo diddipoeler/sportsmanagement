@@ -114,6 +114,17 @@
             <option value="">COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER</option>
         </field>
 		
+<field name="show_notassign" 
+type="list" 
+default="" 
+onchange="this.form.submit();"
+class="select2-container"
+required="" label="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_NOT_ASSIGN" 
+description="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_NOT_ASSIGN">
+  <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_NOT_ASSIGN</option>
+  <option value="0">JNO</option>
+  <option value="1">JYES</option>
+</field>
 		
     </fields>
 	
