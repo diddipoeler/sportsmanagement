@@ -16,7 +16,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
-
+use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
@@ -29,7 +29,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
  * @version   2014
  * @access    public
  */
-class sportsmanagementModelJSMPagination extends BaseDatabaseModel
+class sportsmanagementModelJSMPagination extends Pagination
 {
  /**
      * @var    integer  The record number to start displaying from.
@@ -645,7 +645,7 @@ class sportsmanagementModelJSMPagination extends BaseDatabaseModel
      *
      * @since   1.5
      */
-    protected function _item_active(PaginationObject $item)
+    protected function _item_active( $item)
     {
         return LayoutHelper::render('joomla.pagination.link', ['data' => $item, 'active' => true]);
     }
@@ -659,7 +659,7 @@ class sportsmanagementModelJSMPagination extends BaseDatabaseModel
      *
      * @since   1.5
      */
-    protected function _item_inactive(PaginationObject $item)
+    protected function _item_inactive( $item)
     {
         return LayoutHelper::render('joomla.pagination.link', ['data' => $item, 'active' => false]);
     }
