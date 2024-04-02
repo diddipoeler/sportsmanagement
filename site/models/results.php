@@ -17,6 +17,8 @@ use Joomla\CMS\User\UserHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
 
+use sportsmanagement\Site\Model\JSMSportsmanagementPagination;
+
 jimport('joomla.html.pane');
 
 /** welche joomla version ? */
@@ -95,6 +97,25 @@ class sportsmanagementModelResults extends JSMModelList
 		$this->config                        = sportsmanagementModelProject::getTemplateConfig('results', self::$cfg_which_database);
 	}
 
+
+ public function getPagination()
+{
+    // Get a storage key.
+    $store = $this->getStoreId('getPagination');
+
+    // Try to load the data from internal storage.
+    if (isset($this->cache[$store])) {
+        return $this->cache[$store];
+    }
+
+    $limit = (int) $this->getState('list.limit') - (int) $this->getState('list.links');
+
+    // Create the pagination object and add the object to the internal cache.
+    $this->cache[$store] = new JSMSportsmanagementPagination($this->getTotal(), $this->getStart(), $limit);
+
+    return $this->cache[$store];
+}
+	
 	/**
 	 * Method to get the starting number of items for the data set.
 	 *
