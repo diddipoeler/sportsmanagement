@@ -205,6 +205,10 @@ Factory::getApplication()->setUserState( "$this->jsmoption.projects_search_leagu
 		$this->jsmsubquery3->from('#__sportsmanagement_confidential AS co');
 		$this->jsmsubquery3->where('co.project = p.id');
 		$this->jsmsubquery3->where('co.team_id = 0');
+		if ($this->getState('filter.show_notassign'))
+		{
+			$this->jsmsubquery3->having('count(co.id) != 0');
+		}
 
 		$this->jsmquery->select('p.id,p.ordering,p.published,p.project_type,p.name,p.alias,p.checked_out,p.checked_out_time,p.sports_type_id,p.current_round,p.picture,p.agegroup_id,p.master_template,p.fast_projektteam ');
 		$this->jsmquery->select('p.league_id,p.use_leaguechampion,p.cr_project');
