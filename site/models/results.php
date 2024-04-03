@@ -469,7 +469,7 @@ if (version_compare(JVERSION, '4.0.0', 'ge'))
 
 			try
 			{
-				$this->_data = $this->_getList($query,self::$limit,self::$limitstart);
+				$this->_data = $this->_getList($query,self::$limitstart,self::$limit);
 			}
 			catch (Exception $e)
 			{
