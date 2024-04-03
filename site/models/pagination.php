@@ -9,6 +9,9 @@ Instead of the usual getListFooter() line shown above use:
 <?php echo $this->pagination->getPaginationLinks('pagination.links'); ?>
 The getPaginationLinks function has the signature public function getPaginationLinks($layoutId = 'joomla.pagination.links', $options = []) so it will take an alternative layout to use.
 Now you can modify the links.php file for your component to get exactly the output you require.
+
+https://joomla.stackexchange.com/questions/33113/joomla-4-javascript-processing-of-the-paginator
+
 */
 
 namespace sportsmanagement\Site\Model;
