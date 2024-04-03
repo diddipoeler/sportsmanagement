@@ -1130,7 +1130,7 @@ if (version_compare(JVERSION, '4.0.0', 'ge'))
 			try
 			{
 				
-				
+				$query->setLimit(self::$limit,self::$limitstart);
 					$result = $query;
 				
 			}
