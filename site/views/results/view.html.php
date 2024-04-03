@@ -1033,12 +1033,23 @@ class sportsmanagementViewResults extends sportsmanagementView
 		$this->ausgabeende  = $this->limitstart + $this->limit;
 		$this->state        = $this->get('State');
 */
+
+		/**
 		if (!$config['show_pagenav'])
 		{
 			sportsmanagementModelResults::$limit = 0;
 		}
-
+*/
 		$this->state = $this->get('State');
+		
+      $limitStart = $this->state->get('list.start');
+      sportsmanagementModelResults::$limitstart = $limitStart;
+      $limit = $this->state->get('list.limit');
+      sportsmanagementModelResults::$limit = $limit;
+      
+      //Factory::getApplication()->enqueueMessage(__LINE__.' limitstart<pre>'.print_r($limitStart,true).'</pre>', 'notice');
+      //Factory::getApplication()->enqueueMessage(__LINE__.' limit<pre>'.print_r($limit,true).'</pre>', 'notice');
+		
 		//$matches = $this->get('Items');
 		$matches = $this->get('Data');
 		$this->pagination = $this->get('Pagination');
