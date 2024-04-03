@@ -99,7 +99,7 @@ $params = $menu->getParams($item->id);
 		$this->matches        = $this->model->getAllMatches($this->project_ids);
         }
         
-		$this->ranking        = $this->model->getAllTimeRanking( $this->config['use_negpoints_ranking_all_time'] );
+		$this->ranking        = $this->model->getAllTimeRanking( $item->query['use_negpoints_ranking_all_time'] );
         
 		$this->tableconfig    = $this->model->getAllTimeParams($come_from_menue,$this->config);
         //echo __LINE__.' config<pre>'.print_r($this->config,true).'</pre>';
