@@ -1045,8 +1045,8 @@ class sportsmanagementViewResults extends sportsmanagementView
         
 //		$matches          = $this->get('Data');
 //		$this->pagination = $this->get('Pagination');
-		sportsmanagementModelPagination::pagenav($project, $model::$cfg_which_database);
-		$mdlPagination = BaseDatabaseModel::getInstance("Pagination", "sportsmanagementModel");
+		//sportsmanagementModelPagination::pagenav($project, $model::$cfg_which_database);
+		//$mdlPagination = BaseDatabaseModel::getInstance("Pagination", "sportsmanagementModel");
 
 
 //$mdlPagination->getLimitBox();
