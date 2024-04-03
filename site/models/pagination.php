@@ -15,8 +15,9 @@ namespace sportsmanagement\Site\Model;
 
 \defined('_JEXEC') or die();
 
-
 use Joomla\CMS\Pagination\Pagination;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 class JSMSportsmanagementPagination extends Pagination 
 {
