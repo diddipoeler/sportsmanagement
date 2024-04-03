@@ -121,66 +121,9 @@ class sportsmanagementModelResults extends JSMModelList
     return $this->cache[$store];
 }
 	
-	/**
-	 * Method to get the starting number of items for the data set.
-	 *
-	 * @return integer  The starting number of items available in the data set.
-	 *
-	 * @since 11.1
-	 */
-	public function getStart()
-	{
-		$this->setState('list.start', self::$limitstart);
+	
 
-		$store = $this->getStoreId('getstart');
-
-		/** Try to load the data from internal storage. */
-		if (isset($this->cache[$store]))
-		{
-			return $this->cache[$store];
-		}
-
-		$start = $this->getState('list.start');
-		$limit = $this->getState('list.limit');
-		$total = $this->getTotal();
-
-		if ($start > $total - $limit)
-		{
-			$start = max(0, (int) (ceil($total / $limit) - 1) * $limit);
-		}
-
-		/** Add the total to the internal cache. */
-		$this->cache[$store] = $start;
-
-		return $this->cache[$store];
-	}
-
-	/**
-	 * sportsmanagementModelResults::getTotal()
-	 *
-	 * @return
-	 */
-	function getTotal()
-	{
-		// Load the content if it doesn't already exist
-		if (empty($this->_total))
-		{
-			$query = self::getResultsRows((int) self::$roundid, (int) self::$divisionid, $this->config, null, self::$cfg_which_database, 0, true);
-
-			try
-			{
-				$this->_total = $this->_getListCount($query);
-			}
-			catch (Exception $e)
-			{
-				$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
-
-				return false;
-			}
-		}
-
-		return $this->_total;
-	}
+	
 
 	/**
 	 * sportsmanagementModelResults::getResultsRows()
