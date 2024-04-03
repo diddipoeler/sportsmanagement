@@ -113,6 +113,11 @@ class sportsmanagementModelResults extends JSMModelList
     // Create the pagination object and add the object to the internal cache.
     $this->cache[$store] = new JSMSportsmanagementPagination($this->getTotal(), $this->getStart(), $limit);
 
+//echo 'store<pre>.print_r($store,true).'</pre>;
+//echo 'limit<pre>.print_r($limit,true).'</pre>;
+//echo 'getTotal<pre>.print_r($this->getTotal(),true).'</pre>;
+//echo 'getStart<pre>.print_r($this->getStart(),true).'</pre>;
+	
     return $this->cache[$store];
 }
 	
