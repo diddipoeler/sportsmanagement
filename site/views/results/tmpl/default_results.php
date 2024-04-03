@@ -37,23 +37,32 @@ else
 
                
         <div class="row">       
-        <div class="display-limit col-lg-6 col-md-6 col-sm-6 col-xs-6">
+        <div class="display-limit col-lg-2 col-md-2 col-sm-2 col-xs-2">
 			<?php echo Text::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
-			<?php //echo $this->pagination->getLimitBox(); ?>
+			<?php echo $this->pagination->getLimitBox(); ?>
         </div>
 
-        <div class="  col-lg-6 col-md-6 col-sm-6 col-xs-6">
+        <div class="  col-lg-5 col-md-5 col-sm-5 col-xs-5">
             <p class="counter">
-				<?php //echo $this->pagination->getPagesCounter(); ?>
+				<?php echo $this->pagination->getPagesCounter(); ?>
             </p>
+           
+			
+        </div>
+          <div class="  col-lg-5 col-md-5 col-sm-5 col-xs-5">
+           
             <p class="counter">
-				<?php //echo $this->pagination->getResultsCounter(); ?>
+				<?php echo $this->pagination->getResultsCounter(); ?>
             </p>
-			<?php //echo $this->pagination->getPagesLinks(); ?>
+			
         </div>
+          
         </div>
-        
-        
+         <div class="row"> 
+        <div class="  col-lg-12 col-md-12 col-sm-12 col-xs-12">
+           <?php echo $this->pagination->getPagesLinks(); ?>
+           </div>
+           </div>
 		<?php
 		if (count($this->matches) > 0)
 		{
