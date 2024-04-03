@@ -26,6 +26,11 @@ public function getPaginationLinks($layoutId = 'joomla.pagination.links', $optio
         'pagesTotal'   => $this->pagesTotal,
     ];
 
+//echo 'getLimitBox<pre>.print_r($this->getLimitBox(),true).'</pre>;
+//echo 'getPagesCounter<pre>.print_r($this->getPagesCounter(),true).'</pre>;
+//echo 'getPaginationPages<pre>.print_r($this->getPaginationPages(),true).'</pre>;
+//echo 'pagesTotal<pre>.print_r($this->pagesTotal(),true).'</pre>;
+    
     return LayoutHelper::render($layoutId, ['list' => $list, 'options' => $options]);
 }
   
