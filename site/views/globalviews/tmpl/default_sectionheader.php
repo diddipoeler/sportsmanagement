@@ -215,7 +215,7 @@ $view        = $jinput->getVar("view");
 								<?php
 
 								$imgtitle = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_PREV');
-								echo HTMLHelper::link(sportsmanagementModelPagination::$prevlink, HTMLHelper::image('images/com_sportsmanagement/database/jl_images/arrow_left_small.png', $imgtitle, 'title= "' . $imgtitle . '"'));
+								//echo HTMLHelper::link(sportsmanagementModelPagination::$prevlink, HTMLHelper::image('images/com_sportsmanagement/database/jl_images/arrow_left_small.png', $imgtitle, 'title= "' . $imgtitle . '"'));
 								//echo sportsmanagementModelPagination::$prevlink;
 								?>
                             </td>
@@ -224,11 +224,13 @@ $view        = $jinput->getVar("view");
                             </td>
                             <td>
 								<?php
+						/**
 								if (sportsmanagementModelPagination::$nextlink)
 								{
 									$imgtitle = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NEXT');
 									echo HTMLHelper::link(sportsmanagementModelPagination::$nextlink, HTMLHelper::image('images/com_sportsmanagement/database/jl_images/arrow_right_small.png', $imgtitle, 'title= "' . $imgtitle . '"'));
 								}
+									*/
 								?>
                             </td>
                         </form>
