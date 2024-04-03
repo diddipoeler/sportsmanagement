@@ -102,8 +102,8 @@ switch ($view)
 		break;
 	case 'results':
 		JLoader::import('components.com_sportsmanagement.helpers.comments', JPATH_SITE);
-		JLoader::import('components.com_sportsmanagement.helpers.pagination', JPATH_SITE);
-        JLoader::import('components.com_sportsmanagement.helpers.jsmpagination', JPATH_SITE);
+		//JLoader::import('components.com_sportsmanagement.helpers.pagination', JPATH_SITE);
+        	//JLoader::import('components.com_sportsmanagement.helpers.jsmpagination', JPATH_SITE);
 		JLoader::import('components.com_sportsmanagement.models.rounds', JPATH_ADMINISTRATOR);
 		JLoader::import('components.com_sportsmanagement.models.round', JPATH_ADMINISTRATOR);
 		JLoader::import('components.com_sportsmanagement.models.match', JPATH_ADMINISTRATOR);
