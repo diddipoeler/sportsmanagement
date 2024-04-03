@@ -67,7 +67,7 @@ class sportsmanagementModelResults extends JSMModelList
 	function __construct()
 	{
 		parent::__construct();
-		self::$limitstart = $this->jsmjinput->getVar('limitstart', 0, '', 'int');
+		//self::$limitstart = $this->jsmjinput->getVar('limitstart', 0, '', 'int');
 		self::$divisionid = $this->jsmjinput->getVar('division', '0');
 		self::$mode       = $this->jsmjinput->getVar('mode', '0');
 		self::$order      = $this->jsmjinput->getVar('order', '0');
@@ -232,7 +232,7 @@ class sportsmanagementModelResults extends JSMModelList
 				}
 				else
 				{
-					$db->setQuery($query);
+					$db->setQuery($query, self::$limitstart, self::$limit);
 					$result = $db->loadObjectList('id');
 				}
 			}
