@@ -63,13 +63,19 @@ else
         </div>
         <?php
         }
+        if ( $this->view == 'results' )
+               {
         ?>
          <div class="row"> 
         <div class="  col-lg-12 col-md-12 col-sm-12 col-xs-12">
            <?php echo $this->pagination->getPagesLinks(); ?>
            </div>
            </div>
+           
+           
+           
 		<?php
+        }
 		if (count($this->matches) > 0)
 		{
 			switch ($this->config['result_style'])
