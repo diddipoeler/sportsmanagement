@@ -35,6 +35,6 @@
   
 <associations><assocname country="ESP" icon="" flag="" website="" shortname="Almería" main="28" parentmain="1">Almería</assocname></associations>
 
-<associations><assocname country="ESP" icon="" flag="" website="" shortname="F. Castellana" main="30" parentmain="1">Castellana</assocname></associations>
+<associations><assocname country="ESP" icon="" flag="" website="" shortname="F. Castellana" main="30" parentmain="0">Castellana</assocname></associations>
   
 </structur>
