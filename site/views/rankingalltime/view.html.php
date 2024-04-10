@@ -62,7 +62,7 @@ $params = $menu->getParams($item->id);
 			}
 		}
         
-       $this->ranking_order = explode(',', $this->config['ranking_order']); 
+       $this->ranking_order = explode(',', $this->config['ranking_order']);
         
                
        /**
@@ -91,6 +91,10 @@ $params = $menu->getParams($item->id);
 		$this->projectnames   = $this->model->getAllProjectNames();
 		$this->project_ids    = implode(",", $this->projectids);
 		$this->teams          = $this->model->getAllTeamsIndexedByPtid($this->project_ids);
+        if ($come_from_menue )
+        {
+        $this->ranking        = $this->model->getAllTimeRanking( $item->query['use_negpoints_ranking_all_time'] );
+        }
         if ( ComponentHelper::getParams('com_sportsmanagement')->get('force_ranking_cache', 0) )
 		{
 		}
@@ -99,10 +103,10 @@ $params = $menu->getParams($item->id);
 		$this->matches        = $this->model->getAllMatches($this->project_ids);
         }
         
-		$this->ranking        = $this->model->getAllTimeRanking( $item->query['use_negpoints_ranking_all_time'] );
+		$this->ranking        = $this->model->getAllTimeRanking( $this->config['use_negpoints_ranking_all_time'] );
         
 		$this->tableconfig    = $this->model->getAllTimeParams($come_from_menue,$this->config);
-        //echo __LINE__.' config<pre>'.print_r($this->config,true).'</pre>';
+        //echo __LINE__.' tableconfig<pre>'.print_r($this->config,true).'</pre>';
         $this->currentRanking = $this->model->getCurrentRanking( $this->ranking_order );
         
 		$this->config         = $this->model->getAllTimeParams($come_from_menue,$this->config);
