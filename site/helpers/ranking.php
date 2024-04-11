@@ -140,7 +140,6 @@ class JSMRanking extends \stdClass
 	/**
 	 * sets division id
 	 * if not null, the return ranking will be for this division
-	 *
 	 * @param $id
 	 */
 	function setDivisionId($id, $cfg_which_database = 0)
@@ -151,7 +150,6 @@ class JSMRanking extends \stdClass
 
 	/**
 	 * return teams data according to match result in ranking object table
-	 *
 	 * @param   array int project team ids: only collect for games between specified teams (usefull for head to head)
 	 */
 	function _collect($ptids = null, $cfg_which_database = 0,$sports_type_name='')
@@ -167,7 +165,7 @@ class JSMRanking extends \stdClass
 		$project = sportsmanagementModelProject::getProject($cfg_which_database, __METHOD__);
 		$data    = self::_initData($cfg_which_database,$sports_type_name);
 
-// echo __METHOD__.' '.__LINE__ .' data <pre>'.print_r($data,true).'</pre>';
+/* echo __METHOD__.' '.__LINE__ .' data <pre>'.print_r($data,true).'</pre>'; */
 
 
 	
@@ -195,8 +193,8 @@ class JSMRanking extends \stdClass
             
             
             }
-//            $home = new JSMRankingTeamClass(0);
-//            $away = new JSMRankingTeamClass(0);
+            /* $home = new JSMRankingTeamClass(0);
+            $away = new JSMRankingTeamClass(0); */
             
             
             }
@@ -292,7 +290,7 @@ class JSMRanking extends \stdClass
 
 			$resultType = ($project->allow_add_time) ? $match->match_result_type : 0;
 
-			// $resultType=2;
+			/* $resultType=2; */
 
 			$arr[0] = 0;
 			$arr[1] = 0;
@@ -315,7 +313,7 @@ class JSMRanking extends \stdClass
 			$draw_points = (isset($arr[1])) ? $arr[1] : 1;
 			$loss_points = (isset($arr[2])) ? $arr[2] : 0;
 
-//Factory::getApplication()->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' arr<pre>'.print_r($arr,true).'</pre>'),'');
+/* Factory::getApplication()->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' arr<pre>'.print_r($arr,true).'</pre>'),''); */
 
 			$home_ot = $match->home_score_ot;
 			$away_ot = $match->away_score_ot;
@@ -338,13 +336,13 @@ class JSMRanking extends \stdClass
 							$home->cnt_wot++;
 							$home->cnt_wot_home++;
 							/** keine summierung für hockey */
-							//						$home->cnt_won++;
-							//						$home->cnt_won_home++;
+							/* $home->cnt_won++; */
+							/* $home->cnt_won_home++; */
 							$away->cnt_lot++;
 							$away->cnt_lot_away++;
 							/** keine summierung für hockey */
-							// $away->cnt_lost++;
-							// $away->cnt_lost_home++;
+							/* $away->cnt_lost++; */
+							/* $away->cnt_lost_home++; */
 							break;
 						case 2:
 							$home->cnt_wso++;
@@ -352,8 +350,8 @@ class JSMRanking extends \stdClass
 							/**
 							 * keine summierung für hockey
 							 */
-							//						$home->cnt_won++;
-							//						$home->cnt_won_home++;
+							/* $home->cnt_won++; */
+							/* $home->cnt_won_home++; */
 							$away->cnt_lso++;
 							$away->cnt_lso_away++;
 							$away->cnt_lot++;
@@ -361,16 +359,16 @@ class JSMRanking extends \stdClass
 							/**
 							 * keine summierung für hockey
 							 */
-							// $away->cnt_lost++;
-							// $away->cnt_lost_home++;
+							/* $away->cnt_lost++;
+							$away->cnt_lost_home++; */
 							break;
 					}
 
-					$home->sum_points += $win_points; // Home_score can't be null...
+					$home->sum_points += $win_points; /* Home_score can't be null... */
 					$away->sum_points += ($decision == 0 || isset($away_score) ? $loss_points : 0);
 
-					// $home::$sum_points += $win_points; //home_score can't be null...
-					// $away::$sum_points += ( $decision == 0 || isset($away_score) ? $loss_points : 0);
+					/* $home::$sum_points += $win_points; //home_score can't be null...
+					$away::$sum_points += ( $decision == 0 || isset($away_score) ? $loss_points : 0); */
 
 					if ($shownegpoints == 1)
 					{
@@ -395,15 +393,15 @@ class JSMRanking extends \stdClass
 								/**
 								 * keine summierung für hockey
 								 */
-								//							$home->cnt_won++;
-								//							$home->cnt_won_home++;
+															/* $home->cnt_won++;
+															$home->cnt_won_home++; */
 								$home->cnt_wot++;
 								$home->cnt_wot_home++;
 								/**
 								 * keine summierung für hockey
 								 */
-								//							$away->cnt_lost++;
-								//							$away->cnt_lost_away++;
+															/* $away->cnt_lost++;
+															$away->cnt_lost_away++; */
 								$away->cnt_lot++;
 								$away->cnt_lot_away++;
 							}
@@ -413,15 +411,15 @@ class JSMRanking extends \stdClass
 								/**
 								 * keine summierung für hockey
 								 */
-								//							$away->cnt_won++;
-								//							$away->cnt_won_home++;
+															/* $away->cnt_won++;
+															$away->cnt_won_home++; */
 								$away->cnt_wot++;
 								$away->cnt_wot_home++;
 								/**
 								 * keine summierung für hockey
 								 */
-								//							$home->cnt_lost++;
-								//							$home->cnt_lost_away++;
+															/* $home->cnt_lost++;
+                                                            $home->cnt_lost_away++; */
 								$home->cnt_lot++;
 								$home->cnt_lot_away++;
 							}
@@ -432,15 +430,15 @@ class JSMRanking extends \stdClass
 								/**
 								 * keine summierung für hockey
 								 */
-								//							$home->cnt_won++;
-								//							$home->cnt_won_home++;
+															/* $home->cnt_won++;
+															$home->cnt_won_home++; */
 								$home->cnt_wso++;
 								$home->cnt_wso_home++;
 								/**
 								 * keine summierung für hockey
 								 */
-								//							$away->cnt_lost++;
-								//							$away->cnt_lost_away++;
+															/* $away->cnt_lost++;
+															$away->cnt_lost_away++; */
 								$away->cnt_lso++;
 								$away->cnt_lso_away++;
 							}
@@ -450,15 +448,15 @@ class JSMRanking extends \stdClass
 								/**
 								 * keine summierung für hockey
 								 */
-								//							$away->cnt_won++;
-								//							$away->cnt_won_home++;
+															/* $away->cnt_won++;
+															$away->cnt_won_home++; */
 								$away->cnt_wso++;
 								$away->cnt_wso_home++;
 								/**
 								 * keine summierung für hockey
 								 */
-								//							$home->cnt_lost++;
-								//							$home->cnt_lost_away++;
+															/* $home->cnt_lost++;
+															$home->cnt_lost_away++; */
 								$home->cnt_lso++;
 								$home->cnt_lso_away++;
 							}
@@ -491,15 +489,15 @@ class JSMRanking extends \stdClass
 							/**
 							 * keine summierung für hockey
 							 */
-							// $home->cnt_lost++;
-							// $home->cnt_lost_home++;
+							/* $home->cnt_lost++;
+							$home->cnt_lost_home++; */
 							$away->cnt_wot++;
 							$away->cnt_wot_away++;
 							/**
 							 * keine summierung für hockey
 							 */
-							//						$away->cnt_won++;
-							//                      $away->cnt_won_away++;
+													/* $away->cnt_won++;
+                                                    $away->cnt_won_away++; */
 							break;
 						case 2:
 							$home->cnt_lso++;
@@ -509,23 +507,23 @@ class JSMRanking extends \stdClass
 							/**
 							 * keine summierung für hockey
 							 */
-							// $home->cnt_lost++;
-							// $home->cnt_lost_home++;
+                                                    /* $home->cnt_lost++;
+                                                    $home->cnt_lost_home++; */
 							$away->cnt_wso++;
 							$away->cnt_wso_away++;
 							/**
 							 * keine summierung für hockey
 							 */
-							//						$away->cnt_won++;
-							//                      $away->cnt_won_away++;
+													/* $away->cnt_won++;
+                                                    $away->cnt_won_away++; */
 							break;
 					}
 
 					$home->sum_points += ($decision == 0 || isset($home_score) ? $loss_points : 0);
 					$away->sum_points += $win_points;
 
-					// $home::$sum_points += ( $decision == 0 || isset($home_score) ? $loss_points : 0);
-					// $away::$sum_points += $win_points;
+					/* $home::$sum_points += ( $decision == 0 || isset($home_score) ? $loss_points : 0);
+					$away::$sum_points += $win_points; */
 
 					if ($shownegpoints == 1)
 					{
@@ -542,13 +540,13 @@ class JSMRanking extends \stdClass
 					$away->neg_points += $loss_points;
 				}
 
-				// Final Win/Loss Decision
+                   /*  Final Win/Loss Decision */
 				if ($match->team_won == 0)
 				{
 					$home->cnt_lost++;
 					$away->cnt_lost++;
 
-					// Record a won on the home team
+					/* Record a won on the home team */
 				}
 				elseif ($match->team_won == 1)
 				{
@@ -557,7 +555,7 @@ class JSMRanking extends \stdClass
 					$home->sum_points += $win_points;
 					$away->cnt_lost_home++;
 
-					// Record a won on the away team
+					/* Record a won on the away team */
 				}
 				elseif ($match->team_won == 2)
 				{
@@ -566,7 +564,7 @@ class JSMRanking extends \stdClass
 					$away->sum_points += $win_points;
 					$home->cnt_lost_home++;
 
-					// Record a loss on both teams
+					/* Record a loss on both teams */
 				}
 				elseif ($match->team_won == 3)
 				{
@@ -575,7 +573,7 @@ class JSMRanking extends \stdClass
 					$away->cnt_lost_home++;
 					$home->cnt_lost_home++;
 
-					// Record a won on both teams
+					/* Record a won on both teams */
 				}
 				elseif ($match->team_won == 4)
 				{
@@ -586,23 +584,23 @@ class JSMRanking extends \stdClass
 				}
 			}
 
-			// Winpoints
+			/* Winpoints */
 
 			$home->winpoints = $win_points;
 
-			// Bonus points
+			/* Bonus points */
 
 			$home->sum_points += $match->home_bonus;
 
-			// $home::$sum_points += $match->home_bonus;
+			/* $home::$sum_points += $match->home_bonus; */
 			$home->bonus_points += $match->home_bonus;
 
 			$away->sum_points += $match->away_bonus;
 
-			// $away::$sum_points += $match->away_bonus;
+			/* $away::$sum_points += $match->away_bonus; */
 			$away->bonus_points += $match->away_bonus;
 
-			// Goals for/against/diff
+			/* Goals for/against/diff */
 
 			$home->sum_team1_result  += $home_score;
 			$home->sum_team2_result  += $away_score;
@@ -615,9 +613,9 @@ class JSMRanking extends \stdClass
 			{
             $home->sum_points = ( $home->cnt_won * $win_points ) + ( $home->cnt_draw * $draw_points );
 			$away->sum_points = ( $away->cnt_won * $win_points ) + ( $away->cnt_draw * $draw_points );
-                
-				$home->neg_points = ( $home->cnt_lost * $win_points ) + ( $home->cnt_draw * $draw_points );
-				$away->neg_points = ( $away->cnt_lost * $win_points ) + ( $away->cnt_draw * $draw_points );
+            /* Table with OLDNEGPOINTS Even with the 3 point rule (stony) */
+				$home->neg_points = ( $home->cnt_lost * $win_points ) + ( $home->cnt_draw * ( $win_points - $draw_points ));
+				$away->neg_points = ( $away->cnt_lost * $win_points ) + ( $away->cnt_draw * ( $win_points - $draw_points ));
 			}
             
             
@@ -668,7 +666,7 @@ class JSMRanking extends \stdClass
             }
             
             
-		// Factory::getApplication()->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _teams<pre>'.print_r($data->_teams,true).'</pre>'),'');
+		/* Factory::getApplication()->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _teams<pre>'.print_r($data->_teams,true).'</pre>'),''); */
 
 		return $data->_teams;
 	}
