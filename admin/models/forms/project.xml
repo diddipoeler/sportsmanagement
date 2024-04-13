@@ -730,17 +730,17 @@ filter="unset"
 			class="form-control form-control-inline"
 			default="0"
 			size="1"
-			label="Spieländerungen benachrichtigen"
-			description="Spieländerungen an Teamspieler per E-Mail benachrichtigen">
+			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_LABEL_FAV_TEAM_SEND_MAIL"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_DESCR_FAV_TEAM_SEND_MAIL">
 			<option
 				value="0">
-				Keine</option>
+				COM_SPORTSMANAGEMENT_ADMIN_PROJECT_FAV_TEAM_SEND_MAIL_OPTION_0</option>
 			<option
 				value="1">
-				Alle Spiele</option>
+				COM_SPORTSMANAGEMENT_ADMIN_PROJECT_FAV_TEAM_SEND_MAIL_OPTION_1</option>
 			<option
 				value="2">
-				Nur eigene Spiele</option>
+				COM_SPORTSMANAGEMENT_ADMIN_PROJECT_FAV_TEAM_SEND_MAIL_OPTION_2</option>
 		</field>
 	</fieldset>	
 	
