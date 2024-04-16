@@ -83,7 +83,7 @@ $db    = Factory::getDbo();
       
 		
 $query->clear();
-		$query->select('l.id AS value, l.name AS text');
+		$query->select('l.id AS value, concat(l.name, \' (\' , l.id, \')\') AS text');
 		$query->from('#__sportsmanagement_league as l');
        if ( $country_result )
             {
