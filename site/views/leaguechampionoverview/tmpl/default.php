@@ -106,12 +106,19 @@ $output_detail[$this->season][] = !$this->config['show_leaguechampionoverview_se
 $output_detail[$this->season][] = Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHES').':'.$this->team->project_count_matches;  
 $output_detail[$this->season][] = !$this->config['show_leaguechampionoverview_season'] ? '</div>' : ''   ;    
 $gesamtspiele_detail += $this->team->project_count_matches;
+  
+ // echo $this->team->project_count_matches.'<br>';
+  
 }
 else
 {
 if ( $this->team->teamname )
 {
-$output_detail[$this->season][] =  $this->config['show_leaguechampionoverview_season'] ? $this->team->teamname : '<div class="col-sm-4">'.$this->team->teamname.'</div>';        
+$output_detail[$this->season][] =  $this->config['show_leaguechampionoverview_season'] ? $this->team->teamname : '<div class="col-sm-4">'.$this->team->teamname.'</div>';    
+$output_detail[$this->season][] = !$this->config['show_leaguechampionoverview_season'] ? '<div class="col-sm-2">' : ''   ;  
+$output_detail[$this->season][] = Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHES').':'.$this->team->project_count_matches;  
+$output_detail[$this->season][] = !$this->config['show_leaguechampionoverview_season'] ? '</div>' : ''   ;    
+$gesamtspiele_detail += $this->team->project_count_matches;  
 }
 else
 {
@@ -126,11 +133,11 @@ $routeparameter['to']                 = 0;
 $routeparameter['division']           = 0;
 $link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);    
 $output_detail[$this->season][] =  $this->config['show_leaguechampionoverview_season'] ? HTMLHelper::link($link, $this->season) : '<div class="col-sm-4">'.HTMLHelper::link($link, $this->season).'</div>';
-}
 $output_detail[$this->season][] = !$this->config['show_leaguechampionoverview_season'] ? '<div class="col-sm-2">' : ''   ;  
-$output_detail[$this->season][] = Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHES').':'.$this->team->project_count_matches;  
-$output_detail[$this->season][] = !$this->config['show_leaguechampionoverview_season'] ? '</div>' : ''   ;    
-$gesamtspiele_detail += $this->team->project_count_matches;
+$output_detail[$this->season][] = Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHES').':'.'0';  
+$output_detail[$this->season][] = !$this->config['show_leaguechampionoverview_season'] ? '</div>' : ''   ;      
+}
+
 }      
     
 }    
