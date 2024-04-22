@@ -38,6 +38,7 @@ class sportsmanagementViewClub extends sportsmanagementView
 	 */
 	public function init()
 	{
+		$your_array = array();
 		//$this->document->addScript('https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js');
 /**
 //$extended           = sportsmanagementHelper::getExtended($this->item->extended, 'club');
@@ -138,14 +139,11 @@ $this->form->setValue('state',null, $this->item->state);
         
       }
   
-      if ( is_null($this->item->extended) )
+      if ( $this->item->extended )
       {
-$your_array = array();
+$your_array = json_decode($this->item->extended,true); 
       }
-      else
-      {
-	$your_array = json_decode($this->item->extended,true);        
-      }
+
 		
  
 
