@@ -75,6 +75,9 @@ foreach ($this->leaguechampions_detail as $this->season => $this->project_id)
 {  
 foreach ($this->project_id as $this->project => $this->team)
 { 
+  
+//echo '<pre>'.print_r($this->team,true).'</pre>'  ;
+  
 $routeparameter                       = array();
 $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
 $routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
@@ -116,9 +119,19 @@ if ( $this->team->teamname )
 {
 $output_detail[$this->season][] =  $this->config['show_leaguechampionoverview_season'] ? $this->team->teamname : '<div class="col-sm-4">'.$this->team->teamname.'</div>';    
 $output_detail[$this->season][] = !$this->config['show_leaguechampionoverview_season'] ? '<div class="col-sm-2">' : ''   ;  
+  
+  if ( $this->team->ptid )
+{
 $output_detail[$this->season][] = Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHES').':'.$this->team->project_count_matches;  
-$output_detail[$this->season][] = !$this->config['show_leaguechampionoverview_season'] ? '</div>' : ''   ;    
 $gesamtspiele_detail += $this->team->project_count_matches;  
+  } 
+  else
+  {
+$output_detail[$this->season][] = Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHES').':'.'0';      
+  }
+  
+$output_detail[$this->season][] = !$this->config['show_leaguechampionoverview_season'] ? '</div>' : ''   ;    
+
 }
 else
 {
