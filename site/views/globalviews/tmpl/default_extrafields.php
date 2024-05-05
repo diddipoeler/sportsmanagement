@@ -20,6 +20,16 @@ echo $this->loadTemplate('jsm_notes');
 
 $this->tips = array();
 
+switch (Factory::getApplication()->input->getVar('view'))
+{
+case 'clubinfo':
+$this->extrafields = sportsmanagementHelper::getUserExtraFields($this->club->id, 'frontend', sportsmanagementModelClubInfo::$cfg_which_database,Factory::getApplication()->input->get('view'));
+break;
+}
+
+
+//echo '<pre>'.print_r($this->extrafields,true).'</pre>';
+
 if (isset($this->extrafields))
 {
     $ausgabe = '<table class="table">';
