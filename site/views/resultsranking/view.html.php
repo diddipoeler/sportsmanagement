@@ -125,6 +125,7 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
 		$routeparameter['mode']     = 0;
 		$routeparameter['order']    = 0;
 		$routeparameter['layout']   = 0;
+		$routeparameter['to']       = sportsmanagementModelProject::$roundslug;
 		$link                       = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsranking', $routeparameter);
 
 		$this->currenturl    = $link;
@@ -275,6 +276,7 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
 			$routeparameter['mode']               = 0;
 			$routeparameter['order']              = 0;
 			$routeparameter['layout']             = 0;
+			$routeparameter['to']                 =	$r->slug;
 			$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsranking', $routeparameter);
 
 			$options[] = HTMLHelper::_('select.option', $link, $r->text);

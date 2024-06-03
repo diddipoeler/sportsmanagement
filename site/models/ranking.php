@@ -553,17 +553,17 @@ try
 						/** Away rank */
 						if (self::$type == 2)
 						{
-							self::$previousRanking[$division] = $ranking->getRankingAway(self::$from, self::_getPreviousRoundId(self::$to, $cfg_which_database), $division, $cfg_which_database);
+							self::$previousRanking[$division] = $ranking->getRankingAway(self::$from, self::_getPreviousRoundId(self::$to, $cfg_which_database), $division, $cfg_which_database, $sports_type_name);
 						}
 						/** Home rank */
 						elseif (self::$type == 1)
 						{
-							self::$previousRanking[$division] = $ranking->getRankingHome(self::$from, self::_getPreviousRoundId(self::$to, $cfg_which_database), $division, $cfg_which_database);
+							self::$previousRanking[$division] = $ranking->getRankingHome(self::$from, self::_getPreviousRoundId(self::$to, $cfg_which_database), $division, $cfg_which_database, $sports_type_name);
 						}
 						/** Total rank */
 						else
 						{
-							self::$previousRanking[$division] = $ranking->getRanking(self::$from, self::_getPreviousRoundId(self::$to, $cfg_which_database), $division, $cfg_which_database);
+							self::$previousRanking[$division] = $ranking->getRanking(self::$from, self::_getPreviousRoundId(self::$to, $cfg_which_database), $division, $cfg_which_database, $sports_type_name);
 						}
 
 						self::_sortRanking(self::$previousRanking[$division]);
