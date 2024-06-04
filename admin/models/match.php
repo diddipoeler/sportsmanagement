@@ -1979,10 +1979,10 @@ break;
 
 		$data['playground_id'] = $post['playground_id'];
 		// $data['alt_decision'] = $post['alt_decision'];
-		$data['team1_result_decision'] = $post['team1_result_decision'];
-		$data['team2_result_decision'] = $post['team2_result_decision'];
-		$data['decision_info']         = $post['decision_info'];
-		$data['team_won']              = $post['team_won'];
+		//$data['team1_result_decision'] = $post['team1_result_decision'];
+		//$data['team2_result_decision'] = $post['team2_result_decision'];
+		//$data['decision_info']         = $post['decision_info'];
+		//$data['team_won']              = $post['team_won'];
 
 		if ($data['id'] && !empty($data['match_date']))
 		{
