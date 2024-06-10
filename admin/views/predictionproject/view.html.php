@@ -70,7 +70,7 @@ class sportsmanagementViewpredictionproject extends sportsmanagementView
 		$this->app->setUserState("$this->option.pid", $this->item->project_id);
 
 		// Set the document
-		$this->setDocument();
+		//$this->setDocument();
 
 		switch ($this->getLayout())
 		{
