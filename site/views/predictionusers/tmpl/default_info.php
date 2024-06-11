@@ -252,7 +252,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 										//echo $showDate;
 										$thisTimeDate             = sportsmanagementHelper::getTimestamp(date("Y-m-d H:i:s"), 1, $predictionProjectSettings->timezone);
 										$competitionStartTimeDate = sportsmanagementHelper::getTimestamp($showDate, 1, $predictionProjectSettings->timezone);
-										$showChamp                = ($thisTimeDate > $competitionStartTimeDate);
+										$showChamp                = ($thisTimeDate > $competitionStartTimeDate || $this->actJoomlaUser->id == $this->predictionMember->user_id);
 										//if (($showChamp) || ($this->showediticon))
 
 										if (($showChamp))

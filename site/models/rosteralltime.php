@@ -183,7 +183,7 @@ class sportsmanagementModelRosteralltime extends ListModel
         $this->jsmquery->clear();
 		$this->jsmquery->select('po.*');
 		$this->jsmquery->from('#__sportsmanagement_position as po');
-		$this->jsmquery->where('po.parent_id != 0 ');
+		$this->jsmquery->where('po.parent_id = 0 ');
 		$this->jsmquery->where('po.persontype = 1 ');
 
 try
