@@ -99,11 +99,12 @@ $federation[$key]  = $db->loadObject();
         $seasons = implode(",", $season_ids);
         
 		$query->select('pro.id,pro.name,CONCAT_WS(\':\',pro.id,pro.alias) AS project_slug,le.name as liganame,le.country');
-		$query->select('le.picture as league_picture,pro.picture as project_picture,le.federation');
+		$query->select('le.picture as league_picture,pro.picture as project_picture,co.federation');
 		$query->select('CONCAT_WS(\':\',r.id,r.alias) AS roundcode');
 		$query->from('#__sportsmanagement_project as pro');
 		$query->join('INNER', '#__sportsmanagement_league as le on le.id = pro.league_id');
 		$query->join('INNER', '#__sportsmanagement_round as r on r.id = pro.current_round');
+		$query->join('INNER', '#__sportsmanagement_countries as co on co.alpha3 = le.country');
 		$query->where('le.published_act_season = 1 ');
 		$query->where('pro.season_id IN (' . $seasons . ')');
 		$query->order('le.country ASC, pro.name ASC');
