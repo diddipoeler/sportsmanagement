@@ -54,12 +54,14 @@ if (!empty($this->matches))
 			//if date is the same dont show header
 			if (substr($match->match_date, 0, 10) != $pr_id)
 			{
+				$jdate = Factory::getDate($match->match_date);
+				$jdate->setTimezone(new DateTimeZone($this->project->timezone));
 				?>
                 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="teamplansbd">
                 <table class="<?php echo $this->config['table_class']; ?>" id="teamplanoutput">
                 <tr class="sectiontableheader">
                     <th class="td_l" colspan=16>
-						<?php echo HTMLHelper::date($match->match_date, Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE')); ?>
+						<?php echo $jdate->format(Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE')); ?>
                     </th>
                 </tr>
                 <h3><?php echo $match->name; ?></h3>
