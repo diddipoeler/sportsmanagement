@@ -15,6 +15,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\File;
 
 // Show team-staff as defined
 if (count($this->stafflist) > 0)
