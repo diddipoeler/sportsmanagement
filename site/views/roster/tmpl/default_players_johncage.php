@@ -15,6 +15,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\File;
 
 $totalEvents = array();
 if (count($this->rows) > 0)
