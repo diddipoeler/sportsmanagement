@@ -497,7 +497,9 @@ if (!empty($this->matches))
 							{
 								if (!strstr($match->match_date, "0000-00-00"))
 								{
-									echo HTMLHelper::date($match->match_date, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE'));
+									$jdate = Factory::getDate($match->match_date);
+									$jdate->setTimezone(new DateTimeZone($this->project->timezone));
+									echo $jdate->format(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE'));
 								}
 								else
 								{
