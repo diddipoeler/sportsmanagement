@@ -17,6 +17,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Filesystem\File;
 
 if (PluginHelper::isEnabled('system', 'jsm_bootstrap'))
 {
