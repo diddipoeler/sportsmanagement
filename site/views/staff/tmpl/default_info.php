@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage staff
@@ -11,12 +9,12 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Filesystem\File;
 
 ?>
 <!-- person data START -->
@@ -39,7 +37,10 @@ use Joomla\CMS\Factory;
 			{
 				$picture = $this->person->picture;
 			}
-
+if ( !File::exists(Uri::root() .$picture) )
+							{
+								$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
+							}
 
 			echo sportsmanagementHelperHtml::getBootstrapModalImage(
 				'staffinfo' . $this->person->id,
