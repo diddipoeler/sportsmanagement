@@ -14,6 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
 
 ?>
 <!-- person data START -->
@@ -33,6 +34,10 @@ use Joomla\CMS\Factory;
 			{
 				$picture = $this->person->picture;
 			}
+			if ( !File::exists(Uri::root() .$picture) )
+							{
+								$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
+							}
 
 			echo sportsmanagementHelperHtml::getBootstrapModalImage(
 				'playerinfo' . $this->person->id,
