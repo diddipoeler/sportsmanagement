@@ -242,6 +242,12 @@ Factory::getApplication()->setUserState( "$this->jsmoption.projects_search_leagu
 			$this->jsmquery->where('ef.id = ' . $this->getState('filter.userfields'));
 		}
 
+		if ($this->getState('filter.search_associations_leagues'))
+		{
+			$this->jsmquery->where('l.associations = ' . $this->getState('filter.search_associations_leagues'));
+		}
+		
+
 		if ($this->getState('filter.search') )
 		{
 			$this->jsmquery->where( 'LOWER(p.name) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%') );
