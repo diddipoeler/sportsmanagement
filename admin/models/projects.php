@@ -127,6 +127,8 @@ class sportsmanagementModelProjects extends JSMModelList
 		$this->setState('filter.search_agegroup', $this->getUserStateFromRequest($this->context . '.filter.search_agegroup', 'filter_search_agegroup', ''));
 		$this->setState('filter.unique_id', $this->getUserStateFromRequest($this->context . '.filter.unique_id', 'filter_unique_id', ''));
 
+		$this->setState('filter.search_associations_leagues', $this->getUserStateFromRequest($this->context . '.filter.search_associations_leagues', 'filter_search_associations_leagues', ''));
+
 		$this->setState('filter.show_notassign', $this->getUserStateFromRequest($this->context . '.filter.show_notassign', 'filter_show_notassign', ''));
 
 
