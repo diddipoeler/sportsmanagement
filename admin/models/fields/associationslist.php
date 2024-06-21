@@ -90,6 +90,29 @@ switch ($view)
     }
     
     break;
+	case 'projects':
+    $country = $post['filter']['search_nation'];
+    if ( $country )
+    {
+        $query->clear();
+    $query->select('t.id AS value, t.name AS text');
+			$query->from('#__sportsmanagement_associations AS t');
+			$query->where("t.country = '" . $country . "'");
+			$query->where('t.parent_id = 0');
+			$query->order('t.name');
+	    try{
+			$db->setQuery($query);
+			$options = $db->loadObjectList();    
+         }
+		catch (Exception $e)
+		{
+	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+
+		}
+    }
+    
+    break;
     default:
     if ($select_id)
 		{
