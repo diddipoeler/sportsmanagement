@@ -98,7 +98,7 @@ switch ($view)
     $query->select('t.id AS value, t.name AS text');
 			$query->from('#__sportsmanagement_associations AS t');
 			$query->where("t.country = '" . $country . "'");
-			$query->where('t.parent_id = 0');
+			//$query->where('t.parent_id = 0');
 			$query->order('t.name');
 	    try{
 			$db->setQuery($query);
