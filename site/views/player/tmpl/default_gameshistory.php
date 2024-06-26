@@ -12,6 +12,8 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Filesystem\File;
 
 $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 

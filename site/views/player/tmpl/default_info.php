@@ -34,10 +34,11 @@ use Joomla\CMS\Filesystem\File;
 			{
 				$picture = $this->person->picture;
 			}
+            
 			if ( !File::exists(Uri::root() .$picture) )
-							{
-								$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
-							}
+			{
+				$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
+			}
 
 			echo sportsmanagementHelperHtml::getBootstrapModalImage(
 				'playerinfo' . $this->person->id,
